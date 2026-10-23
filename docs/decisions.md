@@ -4,132 +4,18 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**PR-1. Map 0: a sure card on the first clear only** · Decide · Rewards · asked 2026-10-23
-- Your report: 0-1 paid a card on 5 of 5 wins. Cause: the 2026-10-13 rule "every win on Map 0 brings a card" paid a card on every Map 0 win, skipping the drop chance the fight panel shows. Built (PR): the sure card comes with the first clear only; replays roll the panel's drop (3% for 0-1). The other choice keeps a card on every Map 0 win and changes the panel to say so.
-  - First clear only (built)
-  - Every Map 0 win
-- **Default:** First clear only (built)
+**FLY-1. Flying maps and the Windy buff (Gannet Cliffs): how should they be toned down? (you're thinking it over)** · Decide · Balance · asked 2026-10-23
+- Owner, 17:01: "Yeah the flying maps are really strong. let me think about them." and "Im abit stuck in Gannet cliffs because its so difficult. I realise the windy buff is reallly strong. let me think". Waiting on the owner. EN2 fixes Headwind (skills twice, not acts twice) and reports Gannet Cliffs win rates before and after.
+  - Owner to decide
+- **Default:** Owner to decide
 
-**RW4-1. How much better is "much better" from fight 2-1** · Decide · Swap · asked 2026-10-23
-- Built (RW4): from your first fight on Map 2 a swap window opens only when the incoming card scores at least 35% (and at least 2 points) above the deck card, by the stat budget (2A + H + skills). "As good or better in every stat" no longer counts on its own. Maps 0 and 1 and the forced teaching swaps keep today's 10% rule. The numbers are three named constants (SWAP_MUCH_BETTER_MARGIN, _MIN_GAIN, _FROM_MAP) so they can scale by rarity and collection score later.
-  - 35% and +2 points (built)
-  - 25%
-  - 50%
-- **Default:** 35% and +2 points (built)
-
-**RW4-2. Where the NEW! tag for a revealed skill shows** · Decide · Skills · asked 2026-10-23
-- Built (RW4): the "Skill revealed" popup is off. When a map opens a hidden skill (Diurnal on Map 1, Tide on Map 2) its line in the card details wears a small NEW! tag, one skill at a time, until the next fight starts after you saw it. Crepuscular and Nocturnal never get a tag. Say if you would rather have the tag on the skill chip on the card face too, or on the Skills codex entry.
-  - Card details only (built)
-  - Also the card-face chip
-  - Also the Skills codex
-- **Default:** Card details only (built)
-
-**RW4-3. The B label on items (#14)** · Decide · Rewards · asked 2026-10-23
-- Built (RW4): items (Energy capsule, Raid Ticket, field-kit items) are bare icons in the first-clear box and on the results, explained on hover, and never carry a rank emblem. I read "don't show the B rank/unlock label on them" as the rank hex on item chips. The rank hex on a reward CARD (and after the card back in the "Possible drops" line) is unchanged. Tell me if the B you saw was on something else.
-  - Items only, cards keep it (built)
-  - Drop it from the drops line too
-- **Default:** Items only, cards keep it (built)
-
-**RW4-4. The egg: no toast, "You got an egg!" on the results** · Decide · Rewards · asked 2026-10-23
-- Built (RW4): finding an egg shows no toast. The results screen's egg chip reads "You got an egg!" and its hover says "An egg! You'll need a nest to hatch it!" until the Nest opens. The old long line that named the Map and the Nest is gone. If you meant the toast itself to say "You got an egg!", that is a one-line change.
-  - No toast (built)
-  - Short toast "You got an egg!"
-- **Default:** No toast (built)
-
-**AR3-6. Apply the Group Dungeon SQL: 3-4 player online rooms** · Apply · Server · asked 2026-10-23
+**AR3-6. Apply the Group Dungeon SQL for 3-4 player online rooms? (say "apply it")** · Apply · Server · asked 2026-10-23
 - supabase/proposed/20261023_coop_rooms_4p.sql (not applied). Live today, coop_rooms seats a host and ONE guest, so an online Group Dungeon room takes 2 players. The file adds seats for 4 (coop_room_members, RLS on), join_coop_room_v2 (friends of the host only, seats C, D, B; a rejoin keeps its seat), leave_coop_room, promote_coop_host (host migration recorded) and private room channels (only a room's members hear its topic). The game finds it by itself once applied. Checked on a throwaway local Postgres with stand-ins for Supabase's auth and realtime: applied twice, 4 joins, a 5th refused, a non-friend refused, an outsider can't send on the room's topic.
   - Apply it
   - Not yet
 - **Default:** Not yet
 
-**AR3-1. Group Dungeon rows: 7 columns (3 + shared centre + 3)** · Decide · Dungeons · asked 2026-10-23
-- D49 drew 10 cells a row (4 left, 2 shared, 4 right). Built on the raid's board, which is 7 columns: each seat has 3 cells and the centre column is shared by the row's two seats. A 2-seat party (1-2 players) plays columns -3..0 only; the right half is blocked ground on both sides.
-  - As built (7 columns, 1 shared)
-  - 10 columns (4 + 2 shared + 4)
-- **Default:** As built (7 columns, 1 shared)
-
-**AR3-2. Who sees the Group Dungeon** · Decide · Dungeons · asked 2026-10-23
-- The Dungeons tab now opens for every player past the tutorial, holding only the Group Dungeon (and the Spire once open). The daily dungeons stay hidden (TU2): no daily slots, no keys row and no key button for players. Admin Mode sees everything as before.
-  - As built (after the tutorial)
-  - Only after a map is cleared (say Map 3)
-  - Admins only until it is tested live
-- **Default:** As built (after the tutorial)
-
-**AR3-3. Group Dungeon cost: 5 Energy a climb** · Decide · Dungeons · asked 2026-10-23
-- The design sets no cost. Built: each player pays 5 Energy when the climb starts, given back if the party clears no floor (as a lost Spire floor). No daily dungeon key (the keys are hidden with the daily dungeons).
-  - As built (5 Energy, back if nothing cleared)
-  - A dungeon key
-  - Free
-- **Default:** As built (5 Energy, back if nothing cleared)
-
-**AR3-4. Group Dungeon rewards** · Decide · Rewards · asked 2026-10-23
-- Each player's own game pays each floor's chest: 40 / 55 / 70 / 120 Maple Leaves and 10 / 14 / 18 / 40 Magic Dust. Clearing the Matriarch offers a pick of 3 of the dungeon's own cards (the Salamander Pools' and the Matriarch's decks), once a day per player. D49's co-op-only card pool doesn't exist: those would be new cards.
-  - As built
-  - Design a co-op-only card pool
-  - The pick once a week
-- **Default:** As built
-
-**AR3-5. Group Dungeon cards fight at Level 1** · Decide · Dungeons · asked 2026-10-23
-- Every card fights at Level 1 (Standard, as Ranked Live, D74), so every player's game runs the very same fight from the plans alone. Your own levels would need each player's card stats sent and checked.
-  - As built (Level 1)
-  - Each player's own levels
-- **Default:** As built (Level 1)
-
-**AR3-7. Party size counts CPU allies** · Decide · Dungeons · asked 2026-10-23
-- D49 scales the dungeon's Health x1 / x1.7 / x2.3 / x2.8 for 1-4 players. Built by seats on the board, CPU allies included: a solo player with a CPU ally fights two decks, as a duo does, so both get x1.7; a 4-seat board x2.8. CPU parties (tools/coop_sim_2026_10_23.js, 40 runs, each floor's rate among parties that reached it): 2 seats 95% / 82% / 52% / 38%; 4 seats 100% / 98% / 92% / 47%.
-  - As built (seats)
-  - Human players only
-- **Default:** As built (seats)
-
-**AR3-8. Group Dungeon placement: any free cell of your half** · Decide · Battle rules · asked 2026-10-23
-- A seat plays into any free cell of its own half (and the shared centre), not only beside a unit as in other open fights; the back-row seats play their row directly. A back-row unit steps up when the cell ahead empties (D49), into the front seat's half. What combat gives the party (draws, Bounty Lumber) goes to the round's lead seat, which rotates.
-  - As built
-  - The usual beside-a-unit rule
-- **Default:** As built
-
-**AR3-9. Group Dungeon board: its own screen for now** · Decide · UI · asked 2026-10-23
-- The fight is drawn on a co-op board of its own (the cave screen in docs/screens/ar3/), not on the animated battle board: each round's result appears when it lands, without hit animations. Porting it to the main battle board (animations, hover details) would be a follow-up package.
-  - As built for now, port next
-  - Keep its own board
-- **Default:** As built for now, port next
-
-**FX4-1. The line of fire's name: Wildfire Front** · Decide · Battle rules · asked 2026-10-23
-- Your 11:11 answer on FX3-1: "Still do the line of fire thing ... all take 1 fire damage ... (Find a name for this field effect)". Built (FX4): the line of fire is its own field effect, Wildfire Front (rules.wildfire): from round 2, every round, a flame band crosses both front lines from left to right and each unit takes 1 fire as the band reaches it (fire-resistant units, Lava Waders wearers and Mountain Climbers are passed by). On 14-6 Jaguar Run (Savanna Reaches, was Scorching I) and 20-8 The Iron Cataphract (Sundered Peak, was Scorching III, which FX3 had already turned into Scorched Ground); one ground fire a fight, so neither has Scorched Ground or Scorching beside it. In Edit skirmish as "Wildfire Front". Its card borrows Scorching's picture until it has its own.
-  - Wildfire Front
-  - Grass Fire
-  - Fire Line
-- **Default:** Wildfire Front
-
-**FX4-2. How often Wildfire Front burns** · Decide · Balance · asked 2026-10-23
-- Built: every round from round 2, 1 fire to every unit on both front lines (FX3's line as it was). On a full board that is 5 a side a round, more than Scorched Ground's 1 a side. Both sides take it, so it mostly shortens the fight and punishes low-Health swarms.
-  - Every round (as built)
-  - Every other round
-  - Every 3rd round
-- **Default:** Every round (as built)
-
-**FX4-3. Scorched Ground's hit on its one unit: 1 or 2** · Decide · Balance · asked 2026-10-23
-- Your 11:11 answer on FX3-1: "it only hits one unit. It looks like the ground boils beneath the units chosen." Built: one random unit a side, 1 fire, every round from round 2 (your FX3 rule "1 for every turn ones"), shown as a lava pool boiling under the chosen card. Your other rule ("2 for single target") would make it 2, as the Eruption and Lava Tide are. Map 20's elite and boss fights and 22-7 carry it.
-  - 1 (an every-round hazard, as built)
-  - 2 (a single target)
-  - The fight's own number again (elites 2, bosses 3)
-- **Default:** 1 (an every-round hazard, as built)
-
-**FX4-4. Lava Waders: stats, price and where it comes from** · Decide · Cards · asked 2026-10-23
-- Your 11:11 answer on FX3-3: "let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance". Built: Lava Waders, Uncommon equipment, Lumber 1, +0/+3 and Fire Resistance (fire hits halved; the volcano's ground fires, Scorched Ground and Wildfire Front pass the wearer by). By formula (its grant counted as its skills, like the other Blacksmith pieces): N 15.88 at Level 1; 2A+H+S = 4, well under. Resist has no price of its own in canonical/skill-costs.json, so it counts the default 1. Source: the Blacksmith (2 Iron Shards, 1 Ember Core and a Basalt Boar, a Sundered Peak card; 300 Dust and 400 Leaves), because packs and skirmish rewards never give equipment today. Placeholder icon; NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md.
-  - As built (+0/+3, Blacksmith)
-  - +1/+2 instead
-  - Rare, +0/+5
-  - A volcano skirmish reward (equipment rewards to be allowed)
-- **Default:** As built (+0/+3, Blacksmith)
-
-**BF11-1. 23 cards the new cap would cut down: held at their stats** · Decide · Balance · asked 2026-10-23
-- With cap 2 at 2×(N/3)², these cards (over budget before, kept as they were) now have a legal line, but it is lower than their stats, so the re-fit would cut them: alley-cat 1/8 → 1/6; colony 0/11 → 0/9; honey-badger-fury 2/9 → 1/7; chipmunk-hoarder 3/8 → 2/5; pyroclast-wyrm 5/17 → 3/12; otter-guard 4/8 → 3/6; tunnel-ant 2/9 → 2/8; beaver-lumberjack 4/4 → 2/2; sunfeather-scout 1/7 → 1/4; sunspire-choirmother 3/6 → 2/5; old-willow-of-the-ford 2/24 → 2/20; thornwood-palisade 0/16 → 0/12; the-contradiction 2/19 → 1/14; magma-wraith 1/9 → 1/6; lone-grey-wolf 4/15 → 1/3; puffball-bombardier 1/10 → 1/8; sheep 1/7 → 1/4; starfall-owl 5/26 → 2/11; fumarole-ibex 1/13 → 1/11; battlement-heron 1/14 → 1/10; ashmantle-fiend 5/22 → 4/17; truffle-piglet 3/11 → 2/8; krill-swarm 1/7 → 1/5. The biggest: Lone Grey Wolf 4/15 → 1/3 and Starfall Owl 5/26 → 2/11. They were held at their stats; the cure would usually be trimming a skill instead.
-  - Hold them, trim skills per card later
-  - Apply the formula's lines
-  - Trim the biggest (Lone Grey Wolf, Starfall Owl, Pyroclast Wyrm) now
-- **Default:** Hold them, trim skills per card later
-
-**EQ-1. How equipment is damaged or removed** · Decide · Battle rules · asked 2026-10-23
+**EQ-1. How should equipment be damaged or removed: durability worn by hits and acid (recommended), or another design?** · Decide · Battle rules · asked 2026-10-23
 - Owner (10-23 11:11): "New: How to deal damage to equipment. (They do not have 'health stats'.) If the opponent has many equipment on the field, they act as perma buffs (albeit activating only 1 turn later). I don't think this rule is fun: 'When an equipped creature dies, the equipment has 50% chance to be destroyed. If defeated by acid damage, the equipment is 100% destroyed'" The rule today (bramblewood-engine.js, eqDrop, package EQ 10-19): the quoted 50% / acid rule is not in the engine or the texts. When the wearer dies, the piece stays in its slot and the next unit played there picks it up (Codex: "it stays when its unit dies"). It goes to the graveyard only if its card has equip.breaks, or if the slot already holds a loose piece. A reviving unit keeps its piece. A loose piece cannot be hit (swings pass it to the bramble). The only answer is Disarm (Glintsnatch Magpie), which steals a piece. So equipment is close to a permanent buff, as you say. Alternatives. (A) Durability: each piece has 2-4 durability pips. It loses 1 each time its wearer takes a hit (or, for weapons, each swing) and breaks at 0. A dropped piece keeps its pips. Pros: no randomness, hitting the wearer is the counterplay, readable. Cons: a new number on every equipment card and in the budget. (B) Corrosion: acid hits and Corrode strip durability (or destroy a loose piece outright), and fire burns wooden pieces. Pros: gives acid its own job and uses existing statuses. Cons: alone it answers equipment only for acid decks. (C) A Sunder family next to Disarm: Sunder N (On Hit: the target's piece loses N durability, or breaks if it has none), Shatter (On Play: break the nearest loose enemy piece), and Demolisher also hits loose pieces. Pros: a deck-building answer. Cons: if few cards carry it, pieces stay permanent buffs. (D) Pieces drop and rust: when the wearer dies, the piece lies loose for 2 rounds, then rusts away unless a unit of its side picks it up; the killer's Disarm or Scavenge can claim it. Pros: keeps the drop-and-pick-up idea, ends permanent buffs. Cons: a timer to show on the board. Recommended: A with B folded in. Durability 3 by default (set per card), -1 each time the wearer is hit, -2 for an acid hit or each Corrode applied; dropped pieces keep their durability. Add C's Sunder to a few cards later.
   - Durability with acid / Corrode wear (A+B)
   - Durability only (A)
@@ -138,126 +24,185 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Break on the wearer's death (equip.breaks for all)
 - **Default:** Durability with acid / Corrode wear (A+B)
 
-**SX-2. Hero levels now need Materia: how much** · Decide · Hero · asked 2026-10-23
-- Each Hero level needs a third of its XP from Materia crafts (your H2 rule, built in SX). A Hero that only fights stalls at about two thirds of a level. Cost: Lv 20 needs 7 crafts (875 Dust), Lv 50 needs 44 (5,500), Lv 100 about 240 (30,000). Recommended: as built for now; add Materia XP from quests / raids if the pace feels slow.
-  - As built (equal thirds)
-  - A smaller Materia part (e.g. Battle 45%, Materia 20%, Either 35%)
-  - More Materia XP sources (quests, raids)
-- **Default:** As built (equal thirds)
-
-**LEAD-4. The CPU never saves Lumber for its leader, so costly leaders rarely come out** · Decide · Battle · asked 2026-10-23
-- The CPU saves Lumber only for cards in its hand, never for its reserve leader, so costly leaders (Marshal Tuskwell 4, the Magnate Duck 4, Gorge Wyrm 3) never came out in 60 test fights, while cheap ones came out in most. Making the CPU save for its leader makes many fights harder and needs a road retune. Recommended: leave it now; revisit with DF-1's retune.
-  - Leave it (as built)
-  - The CPU saves Lumber for its leader (then retune)
-  - Enemy leaders cost no Lumber
-- **Default:** Leave it (as built)
-
-**DF-1. Difficulty doesn't climb: from Map 16 the road gets easier, not harder** · Decide · Balance · asked 2026-10-23
-- Measured on all 179 fights of Maps 0-24 (docs/balance/df-2026-10-23.json): the road gets easier from Map 16, not harder. The ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24; a collected deck 81%. Causes: your level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2; the level curve is stepped; and every map's targets restart at 90% -> 40%. A trial 'pace' curve (the enemy 0.5-2.5 levels under your Forge cap) lowers Maps 16-24 skirmishes to 88% (ant) / 73% (collected). Recommended: the pace curve, plus DF-3's boons, plus targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks.
-  - The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+**DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
+- Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
+  - The pace enemy curve plus drifting road targets (recommended)
   - The pace enemy curve only
-  - No level change: get the climb from DF-3 and from retuning each fight against the ant and collected decks
+  - No level change: DF-2, DF-3 and per-fight retunes are enough
   - Leave it
-- **Default:** The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+- **Default:** The pace enemy curve plus drifting road targets (recommended)
 
-**DF-2. Levels gate by map, not by resources; Base decks never need replacing** · Decide · Balance · asked 2026-10-23
-- Model in docs/balance/df-2026-10-23.json: every deck reaches the Forge cap on the map that opens it (Lv 3 at Map 11, Lv 8 at Map 16), light or binge player alike, so levels gate by map, not by resources. What holds decks back is duplicates outside Base (about 56 repeat fights for one more copy of a common), so the strongest deck is a cheap Base synergy deck that never needs replacing. Recommended: Base cards stop at Lv 4 and pay full Forge cost; a fight's own first-clear card drops 10% a repeat, so 4-copy decks form by about Maps 10-15.
-  - Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
-  - Base cards stop at Lv 4 only
-  - Slow the Forge instead: the Ember Forge (Map 16) caps at Lv 6, Lv 8 from Map 21
-  - Leave levelling as is
-- **Default:** Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
-
-**DF-3. Selfish map effects from Map 5: a boon only the enemy's deck can use** · Decide · Map effects · asked 2026-10-23
-- A design: from Map 5 each map names a theme, and its boon turns on in a fight when at least half the enemy deck shares it. It counts only the CPU's deck, so copying the deck gains nothing. The Environment card shows the count ('11/16 Cave', red outline, a 'theirs' mark). 15 boons are proposed (e.g. Map 8 Blind Fury: Cave units deal 2x in Darkness; Map 17 Frostborn; Map 24 Royal Treasury); Maps 6, 11, 14, 15 and 21 get none. The full list is in this item's earlier text (git history of docs/decisions.json, 10-23). Recommended: build it on every fight of those maps, then retune the road.
-  - Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
-  - Only on elites, mini-bosses and bosses
-  - On skirmishes too, but only from Map 10
-  - Not now
-- **Default:** Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
-
-**DF-4. Five spots break the curve: Maps 1, 7, 11, 14 and Map 20's elites** · Decide · Balance · asked 2026-10-23
-- Spots that break the road's targets (docs/balance/df-2026-10-23.json). Already handled: Map 1 (retuned, EB-2) and Map 20's double fire (Scorched Ground only, FX3-2; volcano damage lowered, FX3-3). Left: Map 7 Morel Hollow (ant deck 48%; 7-3 holds it to 8%), Map 11 Eyrie Heights (38%: flyers and Guardians in a Gale), Map 14 Savanna Reaches (46%). Recommended: retune Maps 7, 11 and 14 to the road targets against the ant and collected decks (tools/skirmish_pass.js).
-  - Retune Maps 7, 11 and 14 (deck and Shield moves)
-  - Leave them: DF-1 and DF-3 reshape the curve first
-- **Default:** Retune Maps 7, 11 and 14 (deck and Shield moves)
-
-**D17. Sound direction and sourcing** · Decide · Sound · asked 2026-10-03
-- Overall feel for the cue sheet (sfx-cue-sheet.md), and whether to use CC0 packs or your own recordings. Real samples will beat more synthesis; I can't download them from here. Owner (10-23 00:10): "The musics right now have to be improved. only 2-3 tracks are usable." Not a pick between the options: the music needs better tracks, and only 2-3 are usable now, so it needs CC0 files from him (see the 10-23 backlog).
-  - A. Cosy and organic
-  - B. Chiptune
-  - C. Mixed (organic world, chiptune UI)
-  - Drop CC0 files (Kenney Impact/Casino) into audio/
-  - Send your own files
-- **Default:** C, CC0 when files arrive
-
-**L1. Which beasts the Hummingbirds befriend; proposed card renames** · Decide · Lore · asked 2026-10-06
-- Open questions from lore-bible.md. Dogs and cats are settled (see L2).
-- **Default:** Keep current names
-
-**H1. Hero levelling pace, stat prices, and Materia socketing (v2)** · Feedback · Hero · asked 2026-10-06
-- Play a few fights with a Hero and say how it feels; do you want Materia socketing next?
-- **Default:** Play a few fights with a Hero, then answer
-
-**C1. Which cards get the six new finishes** · Decide · Cards · asked 2026-10-08
+**C1. Which cards get the six new finishes (Hex, Etched, Ice, Gold leaf, Reverse, Prism)? (you said later)** · Decide · Cards · asked 2026-10-08
 - Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige? Owner (10-23 00:10): "- later. Pack foil chances - evaluate also. Should be rare." Stays open for later; the pack foil chances are to be evaluated in package RW3 and kept rare. Built (RW3, the pack-foil part): a card comes out foil 1% (Hedgerow Pouch), 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster), faction packs 1%; was 4 / 8 / 12 / 10 / 4%, and every Highcrest Case had one foil guaranteed (about 1.3 foils a Case; now 0.16). An Advanced pack's first five cards keep 10x (10 / 15 / 20%). Call RW3-4.
 - **Default:** Later (pack foils are already rare, RW3-4)
 
-**G2. Siding with Otters or Hummingbirds (proposal)** · Decide · Lore · asked 2026-10-08
+**G2. Siding with Otters or Hummingbirds: approve the proposal as written, or answer its questions (a)-(f) first?** · Decide · Lore · asked 2026-10-08
 - (Rewritten 10-23 at the owner's request, all inside this item; the older siding-proposal-2026-10-08.md is source material, to move into the hub later.) What it is: the player is a traveller both peoples want on their side: the Otters (Rivergate Legion) and the Hummingbirds (Sunfeather Tribes). A hidden Standing number from -100 (Otters) to +100 (Hummingbirds) moves with the player's choices, and the band it sits in decides which rewards, titles, shops and story branches open. Where it lives today: the side picked in the tutorial is stored as `bramblewood_arena_faction` (saveFactionChoice / loadFactionChoice, arena_app.js) and today only sets the starter deck, the voice in warnings and the faction pack; cards carry `faction` (14 Hummingbird cards, 27 base) and `source.side` ('tribes', 'shared'); the faction reward track (noteFactionReceived) counts faction-pack pulls. Dialogue choices already exist (playDialogue with onDone replies, for example the Old Well in visitOldWell). Nothing reads a Standing yet. What siding changes for the player: (1) Reward cards: some skirmishes offer two reward cards, one per side; the player gets the one matching their band, Neutral gets a third (road-folk, dog or cat card). (2) Side shops: a Legion Quartermaster and a Tribe Trader on later maps, different stock. (3) Titles and character looks (Legion Outrider, Friend of the Tribes, Wanderer of Both Banks). (4) Materia leaning: Otter crafting nudges Shield/Formation, Hummingbird crafting Flight/Bond. (5) Story: dialogue warms or cools by band; from Map 6 a key skirmish plays differently by band; a Neutral track keeps the peace through a series of tests, hardest, with unique rewards. (6) It never locks a people's cards away: off-side cards stay in packs and the Market, only the story rewards differ; and nobody is punished for the tutorial pick. What moves Standing: dialogue choices +/-2 to 8 (no number shown on the button), first clears of one people's skirmishes +/-1 (fighting Otters drifts you to the Hummingbirds and the reverse), side quests +/-5 to 15 (a few per map, often exclusive), neutral acts (helping dogs, cats, road-folk, the Traveller) pull toward 0. Drift is slow: 2-3 maps of consistent choices to a friend band, most of the campaign to be Sworn. Five bands: Sworn Otter (<= -60), Otter friend (-59 to -20), Neutral (-19 to 19), Sunfeather friend (20 to 59), Sworn Sunfeather (>= 60); a two-coloured banner on Profile and the Conquest map shows the band. Build in four steps: (1) the Standing store (saved with the account), the banner and hidden weights on dialogue choices, Old Well first; (2) two-sided reward cards on 3-4 skirmishes of Maps 1-3, picked in the skirmish editor; (3) two side quests per map for Maps 1-3; (4) side shops from Map 4, titles, the Map 6 fork. Open questions for you: (a) start at +/-10 from the tutorial pick, or everyone at 0? (b) is the meter shown as a number or only as the band name? (c) is Neutral a full third path with its own ending, or only a resting place? (d) should the two-sided rewards and the side quests wait until the factions are symmetric (RP4), so neither side is the stronger pick? (e) how does siding interact with the Hummingbird gate (the faction pack) and the 0-2 faction pack? (f) can the player reset Standing, or does drift back by effort only? Options stay: Approve as written, Change parts, Not yet. Waiting for your pass over (a)-(f).
   - Approve as written
   - Change parts
   - Not yet
 
-**S3. Turn on leaked-password protection** · Do · Security · asked 2026-10-08
+**S3. Leaked-password protection needs Supabase Pro: upgrade to turn it on, or skip it?** · Do · Security · asked 2026-10-08
 - Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
-  - Done
-  - Skip
-- **Default:** Done
+  - Upgrade to Pro and turn it on (your purchase)
+  - Skip it
+- **Default:** Skip it
 
-**S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08
-- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner. 10-23 06:59: the repo is public, so SonarCloud is free for it. It needs the owner to log in at sonarcloud.io with GitHub (Claude cannot sign in or create accounts); then the repo can be imported and its token stored as a GitHub secret (asked before doing it).
-  - Add SonarCloud
-  - CodeQL is enough
-- **Default:** CodeQL is enough
-
-**A1. API keys + monthly caps for GPT Image and fal/Kling** · Do · Art · asked 2026-10-08
-- Nothing here is bought; every step is yours, in your browser, and no key ever goes into the repo or a chat. 1. OpenAI (GPT Image): sign in at platform.openai.com, open the Billing page and read the plan; add a payment method only if the dashboard asks for one before the key works (that is your call, I never add one). 2. Set the monthly cap there first: Settings > Limits (or Billing > Usage limits), set a monthly budget (the asset plan assumes a few dollars: about 30 splash sprites, 5-10 images per skin, so start with a low cap) and an email alert at 50% and 80%. 3. Create the key: API keys > Create new secret key, name it bramblewood-local, restrict it to the project if the dashboard offers a project; copy it once. 4. fal.ai (FLUX LoRA training and Kling video): sign in at fal.ai, open Billing and Usage; fal is prepaid credits, so the cap is the amount you load (load the smallest top-up, or none until you decide on A2), and use the usage view to watch the spend. 5. Create the fal key: Keys > Add key, scope API, name it bramblewood-local; copy it once. Kling comes through fal (image-to-video), so it needs no separate account; if you ever use Kling's own site instead, set its monthly credit cap in its billing page and keep auto-renew off. 6. Store both keys as local environment variables on your machine, not in any file in the repo: for example OPENAI_API_KEY and FAL_KEY in your shell profile or the OS key store. The art tools read them from the environment only, and `git grep` must never find them. 7. Tell me 'keys are set' (never paste the keys). I will check only that the variables exist (set or not set, never their value), run one test image through the pixel pass (`tools/art/pixelize.py`) and report what it cost on the dashboard. 8. Rotate or delete a key at once in the dashboard if you ever think it leaked. What is still open after A1: the review gate (generated assets land in the hub's Visual Library as 'proposed'), and the commercial-use terms for OpenAI, fal and Kling before any paid marketing (asset-pipeline-action-items.md, items 13-14).
-  - Done
+**A1. Which AI services should we set up, free tiers first, and will you create the accounts? (your browser; nothing bought)** · Do · Art · asked 2026-10-08
+- Owner (10-23 17:38): "A1 description - list all the AIs that could help us, esp through omnirouting to gain utility without spending tokens." Researched 2026-10-23 (free limits change often; each is re-checked on its own page before use). The idea: send cheap or bulk work (translations, drafts, sim summaries, second-opinion reviews) to free tiers through one router, and keep Claude for design, engine and final review. Every account below is yours to create; Claude never creates accounts, enters passwords or buys anything, and no key goes into the repo or a chat (keys live as local environment variables). ROUTERS (one key, many models). (1) OpenRouter: 20+ ":free" models from several providers behind one OpenAI-style API; 20 requests/min and 50/day free, 1,000/day after a one-time $10 top-up (your call). Account: openrouter.ai. (2) LiteLLM (open source, runs on your machine): one local endpoint that routes to the free tiers below and falls back when one is rate-limited; no account. (3) Vercel AI Gateway: multi-provider with your own keys (BYOK), on the Vercel account you already have. FREE TEXT / CODE MODELS (behind a router). Google AI Studio (Gemini Flash / Flash-Lite and 2.5 Pro free; free-tier prompts may be used by Google to improve its products, fine for this public repo, not for secrets); Groq (about 30/min, 1,000/day; Llama 3.3 70B); Cerebras (about 1M tokens/day); Mistral (about 1B tokens/month, Codestral for code); GitHub Models (150-1,000/day, on your GitHub login); Cloudflare Workers AI; NVIDIA NIM. Use for us: first-draft translations of the 12 language packs, text and lore drafts, summarising sim logs, a second reviewer on diffs. Local and free with no account: Ollama with open models (Qwen, Llama, Gemma) on your own machine. TRANSLATION. DeepL API Free: 500,000 characters a month at no cost (account at deepl.com; it may ask for a card to verify, nothing is charged on Free). Good for checking the language packs against the English. CODE REVIEW. CodeRabbit: free reviews on public repositories with the paid-tier features for open source (sign in with GitHub); CodeQL already scans every push (S4). ART (beside PixelLab and NightCafe, already in use). ChatGPT image generation free daily cap (commercial use allowed by OpenAI's terms); Gemini "Nano Banana" free in the app (visible and invisible SynthID watermark, so drafts only); Ideogram about 10 slow credits/day (free images are public); Leonardo 150 tokens/day (free-tier images not for commercial use); Microsoft Copilot 15 fast boosts, then slower. Best use: concept drafts and splash/marketing comps, then PixelLab or the pixel pass for anything that ships. SOUND, MUSIC, VOICE. Stable Audio Open 1.0 (open weights, runs locally, up to 47 s, better at sound effects than music; Stability Community License, check stability.ai/license for commercial use); ElevenLabs free 10,000 credits a month (about 50 sound effects or 10 minutes of voice) but no commercial licence on free (Starter $6/month has it: your call); Suno free 50 credits/day (about 10 songs) but non-commercial and few downloads, so reference tracks only. For the shipped music (D17) CC0 packs remain the safe route. VIDEO (trailer, A3). Kling via fal stays the plan; it needs a paid key and a cap (below). PAID KEYS (only if you choose): OpenAI (platform.openai.com, set a monthly budget and alerts at 50% / 80% first) and fal.ai (prepaid credits, load the smallest top-up or none until A2); name each key bramblewood-local, store as OPENAI_API_KEY / FAL_KEY in your environment, tell me 'keys are set' and I check only that they exist, then run one test through tools/art/pixelize.py. Recommended order: free tiers first (OpenRouter free + Google AI Studio + DeepL API Free + CodeRabbit), routed through LiteLLM or OpenRouter; paid OpenAI / fal keys only when A2 or A3 go ahead. Sources: openrouter.ai/blog/tutorials/free-llm-apis-compared/ ; layer3labs.io/guides/is-gemini-free ; support.deepl.com/hc/en-us/articles/360021200939-DeepL-API-Free ; aicodereview.cc/blog/is-coderabbit-free ; krea.ai/blog/best-free-ai-image-generators-in-2026 ; dupple.com/learn/is-elevenlabs-free ; dupple.com/learn/is-suno-free ; huggingface.co/stabilityai/stable-audio-open-1.0
+  - Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
+  - Free tiers plus paid OpenAI and fal keys with monthly caps
   - Not yet
-- **Default:** Not yet
+- **Default:** Free tiers first (OpenRouter free, Google AI Studio, DeepL API Free, CodeRabbit)
 
-**A2. Train a Bramblewood pixel LoRA?** · Decide · Art · asked 2026-10-08
+**A2. Spend about $7-15 to train a Bramblewood pixel LoRA and test it on 10 cards?** · Decide · Art · asked 2026-10-08
 - What a Bramblewood pixel LoRA is: a small add-on trained on our own card art so a general image model (FLUX.2 [dev], trained on fal) draws new cards in the same house style; PixelLab stays the main source and heroes stay PixelLab. Data: 20-40 of the best existing PixelLab cards from art/cards (633 PNGs, 256x256 today), picked for one coherent look: same outline weight, same palette (tools/art/palette.json), a spread of subjects (mammal, bird, insect, structure), no text in the image, no watermarked stock. Each image gets a short caption in the style of docs/art-style-prompts.md with a trigger word (for example 'bwpixel') so the style can be called on and off. About half a day of curation, which I can do from the repo; you pick or veto the 30. Tool options: (a) fal's FLUX.2 trainer (hosted, no GPU, upload a zip of images and captions, about 1,000-2,000 steps, roughly $6.40 per 1,000 steps on fal's list, so about $6-13 per training run plus about a few cents per generated image; check the current price on fal's page before any run); (b) Replicate's FLUX trainer (similar, per-run pricing); (c) a local or rented GPU with ai-toolkit/kohya (cheaper per run, but needs a rented GPU and setup time; not worth it for a 10-card test). Recommendation: (a), because A1 already puts a fal key and cap in place. Cost range: a first test is about $7-15 in total (one 1,000-step training plus 10-40 generations), and a retrain with fixes is the same again; a full set of Maps 9-10 cards afterwards is cents per card. All of it stays under the cap you set in A1; nothing runs without your OK on the amount. Test plan on 10 cards: (1) train once on the 30; (2) generate the 10 test cards, chosen from existing cards whose PixelLab art we already like, so each result can be set beside the original (a mix: 3 small animals, 2 birds, 2 insects, 1 structure, 1 large beast, 1 fantasy creature); (3) run each through `tools/art/pixelize.py` (nearest-neighbour downscale to the 160 px grid, palette snap, outline clean-up); (4) review in the hub's Visual Library as 'proposed', scoring each on outline, palette, readable silhouette at card size and fit beside the PixelLab neighbours; (5) pass if at least 7 of 10 are usable with at most a pixel pass and one retry, fail otherwise; (6) if it passes, spend the same amount on the Maps 9-10 cards and the Home sprites that wait on PixelLab; if it fails, delete the LoRA and keep PixelLab only. Needs from you: A1 done, a yes on the training spend, and a veto pass over the 30 picks.
   - Yes, test on 10 cards
   - Not yet
 - **Default:** Yes, test on 10 cards
 
-**A3. 30 s trailer from Kling clips** · Decide · Marketing · asked 2026-10-08
-- 5–6 Kling 3.0 image-to-video clips (splash crowd, pack tear, Shiny reveal, Ember Chipmunk fire, castle fall) cut with gameplay capture.
-  - Go
-  - Later
-- **Default:** Later
-
-**TU2-3. The tutorial brambles' Health: 9 and 11, or the 12 you set** · Decide · Tutorial · asked 2026-10-23
-- The tutorial fights carry their own Health (9 and 11; shown halved as 5 and 6), so the editor's 12 never applied. EB-6 has since tuned around 9 / 11 (T-1 95%, T-2 78% wins). Changing them is a live fight edit, so it waits for you. Recommended: keep 9 and 11.
-  - Keep 9 and 11 (as now)
-  - 12 and 14 (your 12; Part 2 two sturdier)
-  - Other numbers (set them in the editor)
-- **Default:** Keep 9 and 11 (as now)
-
-**RW3-2. Rare notices: rarer tickets, or rarer notices?** · Decide · Raid · asked 2026-10-23
-- Your RK4: "SS / SSS raid notices about once a month or two". Built: the notices appear as often as before (S 3.5%, SS 0.8%, SSS 0.2%) and only their Raid Ticket got rarer (40% each: S tickets 0.59 a week, SS + SSS one every 1.4 months). Read literally, your words make the SS / SSS notices themselves rarer (1.0% -> about 0.5% of notices, their big rewards too). Recommended: rarer SS / SSS notices, since that is what your note names.
-  - As built (rarer tickets)
-  - Rarer SS / SSS notices (about 0.5%)
-  - Both
-- **Default:** Rarer SS / SSS notices (about 0.5%)
-
 ## Decided
+
+**PR-1. Map 0: a sure card on the first clear only** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
+- Your report: 0-1 paid a card on 5 of 5 wins. Cause: the 2026-10-13 rule "every win on Map 0 brings a card" paid a card on every Map 0 win, skipping the drop chance the fight panel shows. Built (PR): the sure card comes with the first clear only; replays roll the panel's drop (3% for 0-1). The other choice keeps a card on every Map 0 win and changes the panel to say so.
+  - First clear only (built)
+  - Every Map 0 win
+- **Default:** First clear only (built)
+- **Outcome:** Owner (10-23 17:34): "PR-1 OKAY". First clear only, as built: each Map 0 fight's sure card comes with its first clear; replays roll the drop the fight panel shows (3% for 0-1).
+
+**RW4-1. How much better is "much better" from fight 2-1** · Decide · Swap · asked 2026-10-23 · decided 2026-10-23
+- Built (RW4): from your first fight on Map 2 a swap window opens only when the incoming card scores at least 35% (and at least 2 points) above the deck card, by the stat budget (2A + H + skills). "As good or better in every stat" no longer counts on its own. Maps 0 and 1 and the forced teaching swaps keep today's 10% rule. The numbers are three named constants (SWAP_MUCH_BETTER_MARGIN, _MIN_GAIN, _FROM_MAP) so they can scale by rarity and collection score later.
+  - 35% and +2 points (built)
+  - 25%
+  - 50%
+- **Default:** 35% and +2 points (built)
+- **Outcome:** Owner (10-23 17:34): "RW4-1 OKAY". 35% and +2 points, as built: from 2-1 a swap window opens only for a card at least 35% and 2 points above the deck card by the stat budget; Maps 0-1 and the teaching swaps keep the 10% rule.
+
+**RW4-2. Where the NEW! tag for a revealed skill shows** · Decide · Skills · asked 2026-10-23 · decided 2026-10-23
+- Built (RW4): the "Skill revealed" popup is off. When a map opens a hidden skill (Diurnal on Map 1, Tide on Map 2) its line in the card details wears a small NEW! tag, one skill at a time, until the next fight starts after you saw it. Crepuscular and Nocturnal never get a tag. Say if you would rather have the tag on the skill chip on the card face too, or on the Skills codex entry.
+  - Card details only (built)
+  - Also the card-face chip
+  - Also the Skills codex
+- **Default:** Card details only (built)
+- **Outcome:** Default taken (DC3, 2026-10-23): Card details only, as built: a skill a map opens wears the NEW! tag on its line in the card details only, not on the card-face chip or the Skills codex.
+
+**RW4-3. The B label on items (#14)** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
+- Built (RW4): items (Energy capsule, Raid Ticket, field-kit items) are bare icons in the first-clear box and on the results, explained on hover, and never carry a rank emblem. I read "don't show the B rank/unlock label on them" as the rank hex on item chips. The rank hex on a reward CARD (and after the card back in the "Possible drops" line) is unchanged. Tell me if the B you saw was on something else.
+  - Items only, cards keep it (built)
+  - Drop it from the drops line too
+- **Default:** Items only, cards keep it (built)
+- **Outcome:** Default taken (DC3, 2026-10-23): Items only, as built: items (Energy capsule, Raid Ticket, field-kit items) never carry the rank emblem; reward cards and the "Possible drops" line keep theirs.
+
+**RW4-4. The egg: no toast, "You got an egg!" on the results** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
+- Built (RW4): finding an egg shows no toast. The results screen's egg chip reads "You got an egg!" and its hover says "An egg! You'll need a nest to hatch it!" until the Nest opens. The old long line that named the Map and the Nest is gone. If you meant the toast itself to say "You got an egg!", that is a one-line change.
+  - No toast (built)
+  - Short toast "You got an egg!"
+- **Default:** No toast (built)
+- **Outcome:** Default taken (DC3, 2026-10-23): No toast, as built: finding an egg shows no toast; the results screen's egg chip says "You got an egg!". A short toast is a one-line change if he wants one.
 
 **MAP2-AP. Armor Piercing first appears on Map 2** · Decide · Content · asked 2026-10-23
 - Owner, 2026-10-23 13:16: "Armor piercing: Which map? Map 2".
 - **Outcome:** Map 2
+
+**AR3-1. Group Dungeon rows: 7 columns (3 + shared centre + 3)** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
+- D49 drew 10 cells a row (4 left, 2 shared, 4 right). Built on the raid's board, which is 7 columns: each seat has 3 cells and the centre column is shared by the row's two seats. A 2-seat party (1-2 players) plays columns -3..0 only; the right half is blocked ground on both sides.
+  - As built (7 columns, 1 shared)
+  - 10 columns (4 + 2 shared + 4)
+- **Default:** As built (7 columns, 1 shared)
+- **Outcome:** Default taken (DC3, 2026-10-23): 7 columns, as built: the Group Dungeon uses the raid's board, 3 cells per seat and a shared centre column; D49's 10-column row is not built.
+
+**AR3-2. Who sees the Group Dungeon** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
+- The Dungeons tab now opens for every player past the tutorial, holding only the Group Dungeon (and the Spire once open). The daily dungeons stay hidden (TU2): no daily slots, no keys row and no key button for players. Admin Mode sees everything as before.
+  - As built (after the tutorial)
+  - Only after a map is cleared (say Map 3)
+  - Admins only until it is tested live
+- **Default:** As built (after the tutorial)
+- **Outcome:** Default taken (DC3, 2026-10-23): After the tutorial, as built: the Dungeons tab opens for every player past the tutorial and holds the Group Dungeon (and the Spire once open); the daily dungeons stay hidden.
+
+**AR3-3. Group Dungeon cost: 5 Energy a climb** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
+- The design sets no cost. Built: each player pays 5 Energy when the climb starts, given back if the party clears no floor (as a lost Spire floor). No daily dungeon key (the keys are hidden with the daily dungeons).
+  - As built (5 Energy, back if nothing cleared)
+  - A dungeon key
+  - Free
+- **Default:** As built (5 Energy, back if nothing cleared)
+- **Outcome:** Default taken (DC3, 2026-10-23): 5 Energy a climb, as built: each player pays 5 Energy when the climb starts, given back if the party clears no floor; no dungeon key.
+
+**AR3-4. Group Dungeon rewards** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
+- Each player's own game pays each floor's chest: 40 / 55 / 70 / 120 Maple Leaves and 10 / 14 / 18 / 40 Magic Dust. Clearing the Matriarch offers a pick of 3 of the dungeon's own cards (the Salamander Pools' and the Matriarch's decks), once a day per player. D49's co-op-only card pool doesn't exist: those would be new cards.
+  - As built
+  - Design a co-op-only card pool
+  - The pick once a week
+- **Default:** As built
+- **Outcome:** Default taken (DC3, 2026-10-23): As built: floor chests of 40 / 55 / 70 / 120 Maple Leaves and 10 / 14 / 18 / 40 Magic Dust, and a pick of 3 of the dungeon's own cards for clearing the Matriarch, once a day per player. No co-op-only card pool for now (those would be new cards, a later design).
+
+**AR3-5. Group Dungeon cards fight at Level 1** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
+- Every card fights at Level 1 (Standard, as Ranked Live, D74), so every player's game runs the very same fight from the plans alone. Your own levels would need each player's card stats sent and checked.
+  - As built (Level 1)
+  - Each player's own levels
+- **Default:** As built (Level 1)
+- **Outcome:** Default taken (DC3, 2026-10-23): Level 1, as built: every card in the Group Dungeon fights at Level 1, so every player's game runs the same fight.
+
+**AR3-7. Party size counts CPU allies** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
+- D49 scales the dungeon's Health x1 / x1.7 / x2.3 / x2.8 for 1-4 players. Built by seats on the board, CPU allies included: a solo player with a CPU ally fights two decks, as a duo does, so both get x1.7; a 4-seat board x2.8. CPU parties (tools/coop_sim_2026_10_23.js, 40 runs, each floor's rate among parties that reached it): 2 seats 95% / 82% / 52% / 38%; 4 seats 100% / 98% / 92% / 47%.
+  - As built (seats)
+  - Human players only
+- **Default:** As built (seats)
+- **Outcome:** Default taken (DC3, 2026-10-23): Seats, as built: the dungeon's Health scales by seats on the board, CPU allies included (solo + CPU ally x1.7, 4 seats x2.8).
+
+**AR3-8. Group Dungeon placement: any free cell of your half** · Decide · Battle rules · asked 2026-10-23 · decided 2026-10-23
+- A seat plays into any free cell of its own half (and the shared centre), not only beside a unit as in other open fights; the back-row seats play their row directly. A back-row unit steps up when the cell ahead empties (D49), into the front seat's half. What combat gives the party (draws, Bounty Lumber) goes to the round's lead seat, which rotates.
+  - As built
+  - The usual beside-a-unit rule
+- **Default:** As built
+- **Outcome:** Default taken (DC3, 2026-10-23): As built: a seat plays into any free cell of its half and the shared centre; back-row units step up when the cell ahead empties; combat gains go to the round's lead seat, which rotates.
+
+**AR3-9. Group Dungeon board: its own screen for now** · Decide · UI · asked 2026-10-23 · decided 2026-10-23
+- The fight is drawn on a co-op board of its own (the cave screen in docs/screens/ar3/), not on the animated battle board: each round's result appears when it lands, without hit animations. Porting it to the main battle board (animations, hover details) would be a follow-up package.
+  - As built for now, port next
+  - Keep its own board
+- **Default:** As built for now, port next
+- **Outcome:** Default taken (DC3, 2026-10-23): Its own board for now, as built: the Group Dungeon keeps its own co-op board without hit animations; porting it to the main battle board is a later package (docs/action-items.md, 10-23 17:34).
+
+**FX4-1. The line of fire's name: Wildfire Front** · Decide · Battle rules · asked 2026-10-23 · decided 2026-10-23
+- Your 11:11 answer on FX3-1: "Still do the line of fire thing ... all take 1 fire damage ... (Find a name for this field effect)". Built (FX4): the line of fire is its own field effect, Wildfire Front (rules.wildfire): from round 2, every round, a flame band crosses both front lines from left to right and each unit takes 1 fire as the band reaches it (fire-resistant units, Lava Waders wearers and Mountain Climbers are passed by). On 14-6 Jaguar Run (Savanna Reaches, was Scorching I) and 20-8 The Iron Cataphract (Sundered Peak, was Scorching III, which FX3 had already turned into Scorched Ground); one ground fire a fight, so neither has Scorched Ground or Scorching beside it. In Edit skirmish as "Wildfire Front". Its card borrows Scorching's picture until it has its own.
+  - Wildfire Front
+  - Grass Fire
+  - Fire Line
+- **Default:** Wildfire Front
+- **Outcome:** Default taken (DC3, 2026-10-23): Wildfire Front, as built (he asked Claude to find the name): the line of fire is the field effect Wildfire Front, on 14-6 and 20-8.
+
+**FX4-2. How often Wildfire Front burns** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- Built: every round from round 2, 1 fire to every unit on both front lines (FX3's line as it was). On a full board that is 5 a side a round, more than Scorched Ground's 1 a side. Both sides take it, so it mostly shortens the fight and punishes low-Health swarms.
+  - Every round (as built)
+  - Every other round
+  - Every 3rd round
+- **Default:** Every round (as built)
+- **Outcome:** Default taken (DC3, 2026-10-23): Every round, as built: from round 2 Wildfire Front burns every unit on both front lines for 1, every round.
+
+**FX4-3. Scorched Ground's hit on its one unit: 1 or 2** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- Your 11:11 answer on FX3-1: "it only hits one unit. It looks like the ground boils beneath the units chosen." Built: one random unit a side, 1 fire, every round from round 2 (your FX3 rule "1 for every turn ones"), shown as a lava pool boiling under the chosen card. Your other rule ("2 for single target") would make it 2, as the Eruption and Lava Tide are. Map 20's elite and boss fights and 22-7 carry it.
+  - 1 (an every-round hazard, as built)
+  - 2 (a single target)
+  - The fight's own number again (elites 2, bosses 3)
+- **Default:** 1 (an every-round hazard, as built)
+- **Outcome:** Default taken (DC3, 2026-10-23): 1, as built: Scorched Ground hits one random unit a side for 1 fire every round from round 2.
+
+**FX4-4. Lava Waders: stats, price and where it comes from** · Decide · Cards · asked 2026-10-23 · decided 2026-10-23
+- Your 11:11 answer on FX3-3: "let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance". Built: Lava Waders, Uncommon equipment, Lumber 1, +0/+3 and Fire Resistance (fire hits halved; the volcano's ground fires, Scorched Ground and Wildfire Front pass the wearer by). By formula (its grant counted as its skills, like the other Blacksmith pieces): N 15.88 at Level 1; 2A+H+S = 4, well under. Resist has no price of its own in canonical/skill-costs.json, so it counts the default 1. Source: the Blacksmith (2 Iron Shards, 1 Ember Core and a Basalt Boar, a Sundered Peak card; 300 Dust and 400 Leaves), because packs and skirmish rewards never give equipment today. Placeholder icon; NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md.
+  - As built (+0/+3, Blacksmith)
+  - +1/+2 instead
+  - Rare, +0/+5
+  - A volcano skirmish reward (equipment rewards to be allowed)
+- **Default:** As built (+0/+3, Blacksmith)
+- **Outcome:** Default taken (DC3, 2026-10-23): As built: Lava Waders, Uncommon equipment, Lumber 1, +0/+3 and Fire Resistance, made at the Blacksmith.
+
+**BF11-1. 23 cards the new cap would cut down: held at their stats** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- With cap 2 at 2×(N/3)², these cards (over budget before, kept as they were) now have a legal line, but it is lower than their stats, so the re-fit would cut them: alley-cat 1/8 → 1/6; colony 0/11 → 0/9; honey-badger-fury 2/9 → 1/7; chipmunk-hoarder 3/8 → 2/5; pyroclast-wyrm 5/17 → 3/12; otter-guard 4/8 → 3/6; tunnel-ant 2/9 → 2/8; beaver-lumberjack 4/4 → 2/2; sunfeather-scout 1/7 → 1/4; sunspire-choirmother 3/6 → 2/5; old-willow-of-the-ford 2/24 → 2/20; thornwood-palisade 0/16 → 0/12; the-contradiction 2/19 → 1/14; magma-wraith 1/9 → 1/6; lone-grey-wolf 4/15 → 1/3; puffball-bombardier 1/10 → 1/8; sheep 1/7 → 1/4; starfall-owl 5/26 → 2/11; fumarole-ibex 1/13 → 1/11; battlement-heron 1/14 → 1/10; ashmantle-fiend 5/22 → 4/17; truffle-piglet 3/11 → 2/8; krill-swarm 1/7 → 1/5. The biggest: Lone Grey Wolf 4/15 → 1/3 and Starfall Owl 5/26 → 2/11. They were held at their stats; the cure would usually be trimming a skill instead.
+  - Hold them, trim skills per card later
+  - Apply the formula's lines
+  - Trim the biggest (Lone Grey Wolf, Starfall Owl, Pyroclast Wyrm) now
+- **Default:** Hold them, trim skills per card later
+- **Outcome:** Default taken (DC3, 2026-10-23): Hold them, as built: the 23 cards keep their stats; a later balance pass trims a skill per card instead of applying the formula's lower lines.
 
 **SX-1. The armour konk is folded into the new armour ting** · Decide · Sound · asked 2026-10-23 · decided 2026-10-23
 - Your #95: a target-modifier sound after the source's. Built (SX): every damage mark plays its own short cue 75 ms after the hit (armour ting, full-block ring, Shield thud, Shell tok, Sturdy thunk, stone clack, Resist / Rage / Scare muffle, Fragile crack, Weakness sting, Shock zap, Immune whiff). Armor already had the 10-16 konk ("the attacker hit metal"); two metal sounds on one hit blurred, so the ting carries a soft konk body and the separate konk now plays only in replays recorded before the marks existed.
@@ -266,6 +211,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Ting only, no konk body
 - **Default:** As built (ting with a konk body)
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): As built (ting with a konk body), kept as built (the ting with a soft konk body).
+
+**SX-2. Hero levels now need Materia: how much** · Decide · Hero · asked 2026-10-23 · decided 2026-10-23
+- Each Hero level needs a third of its XP from Materia crafts (your H2 rule, built in SX). A Hero that only fights stalls at about two thirds of a level. Cost: Lv 20 needs 7 crafts (875 Dust), Lv 50 needs 44 (5,500), Lv 100 about 240 (30,000). Recommended: as built for now; add Materia XP from quests / raids if the pace feels slow.
+  - As built (equal thirds)
+  - A smaller Materia part (e.g. Battle 45%, Materia 20%, Either 35%)
+  - More Materia XP sources (quests, raids)
+- **Default:** As built (equal thirds)
+- **Outcome:** Default taken (DC3, 2026-10-23): Equal thirds, as built: each Hero level needs a third of its XP from Materia crafts; more Materia XP sources (quests, raids) get added if the pace feels slow.
 
 **SX-3. Existing Heroes: level kept, XP into it counted as Battle XP** · Decide · Hero · asked 2026-10-23 · decided 2026-10-23
 - Saves had one XP pool. Built (SX): the level a Hero has is kept as its base (no lost levels or stat points), and the XP already into that level goes to the Battle pool (almost all Hero XP so far came from battles). Its Materia part starts empty.
@@ -297,6 +250,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - The boss unit leads everywhere; let the win rate move on these 11
 - **Default:** As built
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): As built, kept as built (another deck card leads on the 11 fights (he said any card can lead)).
+
+**LEAD-4. The CPU never saves Lumber for its leader, so costly leaders rarely come out** · Decide · Battle · asked 2026-10-23 · decided 2026-10-23
+- The CPU saves Lumber only for cards in its hand, never for its reserve leader, so costly leaders (Marshal Tuskwell 4, the Magnate Duck 4, Gorge Wyrm 3) never came out in 60 test fights, while cheap ones came out in most. Making the CPU save for its leader makes many fights harder and needs a road retune. Recommended: leave it now; revisit with DF-1's retune.
+  - Leave it (as built)
+  - The CPU saves Lumber for its leader (then retune)
+  - Enemy leaders cost no Lumber
+- **Default:** Leave it (as built)
+- **Outcome:** Default taken (DC3, 2026-10-23): Leave it, as built: the CPU doesn't save Lumber for its reserve leader, so costly enemy leaders rarely come out; revisited with the difficulty retune (DF-1b, DF-3).
 
 **LEAD-5. Skirmish leaders: from Map 2 (SK) or from Map 11 (your 01:03 note)** · Decide · Maps · asked 2026-10-23 · decided 2026-10-23
 - Your 01:03 #12 says normal skirmishes past Map 10 should have leaders. Since SK (your 09:52 call) every skirmish from Map 2 already leads with its highlighted card, unshown, so all 81 skirmishes on Maps 11+ have one. Built: SK's Map 2 rule is unchanged. Elites and above now show their leader on the VS opener; skirmishes don't.
@@ -464,6 +425,40 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Make 0-4 plain too (about 42% at its old 8 Health)
 - **Default:** As built
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): As built, kept as built (Map 0's plain brambles; he rebalances Maps 0-2 himself (EB-3)).
+
+**DF-1. Difficulty doesn't climb: from Map 16 the road gets easier, not harder** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- Measured on all 179 fights of Maps 0-24 (docs/balance/df-2026-10-23.json): the road gets easier from Map 16, not harder. The ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24; a collected deck 81%. Causes: your level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2; the level curve is stepped; and every map's targets restart at 90% -> 40%. A trial 'pace' curve (the enemy 0.5-2.5 levels under your Forge cap) lowers Maps 16-24 skirmishes to 88% (ant) / 73% (collected). Recommended: the pace curve, plus DF-3's boons, plus targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks.
+  - The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+  - The pace enemy curve only
+  - No level change: get the climb from DF-3 and from retuning each fight against the ant and collected decks
+  - Leave it
+- **Default:** The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
+- **Outcome:** Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point. Map MUST absolutely contribute at 0.2* per Map. In the backend, I think you define Map as the reward source. But for Pack rewards - what source do you select? If its a Pack reward, select the first Map it appears (along the main line, not submaps). 20*0.2=4, a reasonable bonus. This may be enough to balance stronger maps and also make them appealing." Two rules for the stat budget: (1) the Map term is 0.2 per map (bramblewood-budget.js has perMap 0.1 since BF6 halved the coefficients, so it goes back to 0.2: a Map 20 card gets +4 N); (2) a pack card's map is the first main-line map it appears on, never a submap (today cardObtainMap uses the map where its pack goes on sale). New work: a balance package sets perMap 0.2, changes the pack rule in cardObtainMap, regenerates canonical/card-obtain-maps.json and re-fits the cards (docs/action-items.md, 10-23 17:34). Which climb fix goes in (the pace curve or another option) waits for his own play-through: DF-1b.
+
+**DF-2. Levels gate by map, not by resources; Base decks never need replacing** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- Model in docs/balance/df-2026-10-23.json: every deck reaches the Forge cap on the map that opens it (Lv 3 at Map 11, Lv 8 at Map 16), light or binge player alike, so levels gate by map, not by resources. What holds decks back is duplicates outside Base (about 56 repeat fights for one more copy of a common), so the strongest deck is a cheap Base synergy deck that never needs replacing. Recommended: Base cards stop at Lv 4 and pay full Forge cost; a fight's own first-clear card drops 10% a repeat, so 4-copy decks form by about Maps 10-15.
+  - Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
+  - Base cards stop at Lv 4 only
+  - Slow the Forge instead: the Ember Forge (Map 16) caps at Lv 6, Lv 8 from Map 21
+  - Leave levelling as is
+- **Default:** Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
+- **Outcome:** Owner (10-23 17:34): "DF-2 OKAY. But of course, don't look down on the grind they have to do to level up their cards to that tier's gate." The recommended option: Base cards stop at Lv 4 and pay the full Forge cost (x1), and a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Maps 10-15. His note: the model and the tuning must count the grind it takes to level cards up to each tier's gate, not treat reaching it as free. New work: a balance package (docs/action-items.md, 10-23 17:34).
+
+**DF-3. Selfish map effects from Map 5: a boon only the enemy's deck can use** · Decide · Map effects · asked 2026-10-23 · decided 2026-10-23
+- A design: from Map 5 each map names a theme, and its boon turns on in a fight when at least half the enemy deck shares it. It counts only the CPU's deck, so copying the deck gains nothing. The Environment card shows the count ('11/16 Cave', red outline, a 'theirs' mark). 15 boons are proposed (e.g. Map 8 Blind Fury: Cave units deal 2x in Darkness; Map 17 Frostborn; Map 24 Royal Treasury); Maps 6, 11, 14, 15 and 21 get none. The full list is in this item's earlier text (git history of docs/decisions.json, 10-23). Recommended: build it on every fight of those maps, then retune the road.
+  - Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
+  - Only on elites, mini-bosses and bosses
+  - On skirmishes too, but only from Map 10
+  - Not now
+- **Default:** Build it: one boon per map from Map 5, on every fight of that map, the 15 above, theme at half the deck
+- **Outcome:** Owner (10-23 17:34): "DF-3 Okay." Build it: one selfish boon per map from Map 5 (the 15 proposed; Maps 6, 11, 14, 15 and 21 none), on every fight of that map, on when at least half the enemy deck shares the theme; the Environment card shows the count. Then retune the road. New work: a map-effects package (docs/action-items.md, 10-23 17:34).
+
+**DF-4. Five spots break the curve: Maps 1, 7, 11, 14 and Map 20's elites** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
+- Spots that break the road's targets (docs/balance/df-2026-10-23.json). Already handled: Map 1 (retuned, EB-2) and Map 20's double fire (Scorched Ground only, FX3-2; volcano damage lowered, FX3-3). Left: Map 7 Morel Hollow (ant deck 48%; 7-3 holds it to 8%), Map 11 Eyrie Heights (38%: flyers and Guardians in a Gale), Map 14 Savanna Reaches (46%). Recommended: retune Maps 7, 11 and 14 to the road targets against the ant and collected decks (tools/skirmish_pass.js).
+  - Retune Maps 7, 11 and 14 (deck and Shield moves)
+  - Leave them: DF-1 and DF-3 reshape the curve first
+- **Default:** Retune Maps 7, 11 and 14 (deck and Shield moves)
+- **Outcome:** Default taken (DC3, 2026-10-23): Retune Maps 7, 11 and 14 to the road targets against the ant and collected decks (deck and Shield moves), done in the same pass as DF-3's road retune so they are tuned once with the boons on (docs/action-items.md, 10-23 17:34).
 
 **BF10-1. Evasive and Shadow cost more than they are worth too** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
 - The robust skill test measured the other half-miss skills against their ×1.5 price: Evasive worth 5.77 vs 7.14 paid (deck wins 23.8%), Shadow 1.94 vs 7.14 (1.8%), Swift 7.03 vs 7.14 (fair). That points to Evasive ×1.37 and Shadow ×1.1. Only Flying (×1.39) was changed.
@@ -1202,10 +1197,25 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Wait (local seeds keep working)
 - **Outcome:** Owner (10-23 06:59): "Apply it". Checked live (read-only): the fight_sessions migration was already applied on 2026-10-16 (Supabase migration 20261016012658); nothing to run. This item was out of date.
 
+**D17. Sound direction and sourcing** · Decide · Sound · asked 2026-10-03 · decided 2026-10-23
+- Overall feel for the cue sheet (sfx-cue-sheet.md), and whether to use CC0 packs or your own recordings. Real samples will beat more synthesis; I can't download them from here. Owner (10-23 00:10): "The musics right now have to be improved. only 2-3 tracks are usable." Not a pick between the options: the music needs better tracks, and only 2-3 are usable now, so it needs CC0 files from him (see the 10-23 backlog).
+  - A. Cosy and organic
+  - B. Chiptune
+  - C. Mixed (organic world, chiptune UI)
+  - Drop CC0 files (Kenney Impact/Casino) into audio/
+  - Send your own files
+- **Default:** C, CC0 when files arrive
+- **Outcome:** Default taken (DC3, 2026-10-23): C, mixed (an organic world, chiptune UI), with CC0 sounds when files arrive. The music still needs better tracks, which waits on CC0 files from him (an owner to-do in docs/action-items.md, not a decision).
+
 **D18. Play Maps 1–4 and say how difficulty and rewards feel** · Feedback · Balance · asked 2026-10-03 · decided 2026-10-23
 - Map 1 is an on-ramp; Maps 1–2 have reward cards; Map 2 retuned. Note: since 2026-10-08 Conquest fights default to Open mode (no collapsing), which changes how the AI and positions play, so the old difficulty numbers need a re-check.
 - **Default:** I re-simulate win rates under Open mode next
 - **Outcome:** Owner (10-23 00:10): "played - seems OKAY" Maps 1-4 feel right; no change to difficulty or rewards.
+
+**L1. Which beasts the Hummingbirds befriend; proposed card renames** · Decide · Lore · asked 2026-10-06 · decided 2026-10-23
+- Open questions from lore-bible.md. Dogs and cats are settled (see L2).
+- **Default:** Keep current names
+- **Outcome:** Default taken (DC3, 2026-10-23): Keep current names: no card is renamed, and the Hummingbirds befriend the big beasts only (stags, bears, boars, big cats), as the lore bible already says. The rename table in docs/lore-bible.md stays a list of proposals he can pick from any time.
 
 **I1. Native-speaker review for Tagalog, Tamil, Japanese and Korean** · Decide · Languages · asked 2026-10-06 · decided 2026-10-23
 - Machine-quality translations ship now (including card names). A native pass would catch tone and idiom.
@@ -1220,6 +1230,11 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Leave English
 - **Default:** Approve
 - **Outcome:** Owner (10-23 00:10): "Template change" Approve the template change (number-aware templates for each language). Package not named in the 10-23 split (translations); queue it as an i18n package. Built (SX): 18 TX templates replace 33 numbered literals in arena_app.js (achievements, daily and weekly quests, the Lumber rules, the battle-rating colours, the raid's Top N%), plus the 3 results.raid-tier-top keys. In the 12 packs 396 numbered rows (33 a language) became 216 template rows (18 a language); every old row still translates to what it said. The page translator now writes a template's number the language's way (4,000 is 4.000 in German, 2.5 is 2,5 in French). tools/text/templatize_numbers.py does and checks it; keyify reuses a number template; tools/i18n_ui.py counts numbered texts a template covers.
+
+**H1. Hero levelling pace, stat prices, and Materia socketing (v2)** · Feedback · Hero · asked 2026-10-06 · decided 2026-10-23
+- Play a few fights with a Hero and say how it feels; do you want Materia socketing next?
+- **Default:** Play a few fights with a Hero, then answer
+- **Outcome:** Owner (10-23 17:34): "Maybe all uniques and above are also liable for materia (gem) socketing - but only 1. Costs to apply, costs to remove." Materia socketing comes next: besides Heroes, every card of Unique rarity or above can take one materia (gem) socket, never more; applying a gem costs and removing it costs (placeholder prices, editable in the master hub like the other upgrade costs, UI4-1). No comment on the Hero levelling pace, so it stays as built (SX-2). New work: a design and build package (docs/action-items.md, 10-23 17:34).
 
 **H2. The 3-part Hero XP bar (feedback item 17)** · Decide · Hero · asked 2026-10-08 · decided 2026-10-23
 - How the three XP bars should split (battle XP, Materia XP, ...?) — needs your picture of it.
@@ -1354,11 +1369,25 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Apply tier 1
 - **Outcome:** Owner (10-23 06:59): "Apply it". Checked live: anticheat_tier1 was already applied on 2026-10-16 (migration 20261016012841); nothing to run.
 
+**S4. SonarCloud as well as CodeQL?** · Decide · Security · asked 2026-10-08 · decided 2026-10-23
+- CodeQL now scans every push (free, GitHub → Security). SonarCloud adds code-quality and duplication reports; it needs you to sign in at sonarcloud.io and add a token. Owner (10-23 00:10): "Chrome". Needs a Chrome session with the owner. 10-23 06:59: the repo is public, so SonarCloud is free for it. It needs the owner to log in at sonarcloud.io with GitHub (Claude cannot sign in or create accounts); then the repo can be imported and its token stored as a GitHub secret (asked before doing it).
+  - Add SonarCloud
+  - CodeQL is enough
+- **Default:** CodeQL is enough
+- **Outcome:** Default taken (DC3, 2026-10-23): CodeQL is enough: CodeQL keeps scanning every push; SonarCloud can be added any time he signs in at sonarcloud.io.
+
 **E7. Pack contents and foil odds** · Decide · Economy · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Pack editor (Admin): per pack price, size, pool, rarity weights, foil chance per card, guaranteed foil, and finish weights (By rarity 60, Prism 9, Hex 8, Etched 7, Ice 7, Reverse 6, Gold 3). Sprout Pouch 4% foil per card, Acorn Chest 8%, Golden Bramble Case 12% with one guaranteed. A card's From picks its pack pool. Publishes live as __cfg:shop-packs.
 
 **E8. Over-size decks and the main deck** · Decide · Decks · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Decks can hold any number of cards while building (calm 'N over' note, no red shake). ★ Main deck is chosen explicitly and is what you play with; only a 20-card main deck can be played.
+
+**A3. 30 s trailer from Kling clips** · Decide · Marketing · asked 2026-10-08 · decided 2026-10-23
+- 5–6 Kling 3.0 image-to-video clips (splash crowd, pack tear, Shiny reveal, Ember Chipmunk fire, castle fall) cut with gameplay capture.
+  - Go
+  - Later
+- **Default:** Later
+- **Outcome:** Owner (10-23 17:34): "A3: Prepare the text prompts." Prepared (DC3): six shots, each with a start-frame image prompt, a Kling image-to-video motion prompt and its place in a 30 s cut, in docs/art-style-prompts.md ("Trailer (A3)"). Nothing generated: making the clips needs A1 (his keys and caps) and his OK on the spend.
 
 **F1. Upgrade / Refine / Enchant** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Forge has three tabs. Upgrade = level 1–10 then Prestige. Refine = your best copy up the finish ladder Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf (costs rise; Prism/Gold need Gold Leaves); never makes Shiny. Enchant = socket one Materia (Ember +1⚔ and scorching hits, Stone +3❤, Tide +2❤, Grove +1⚔+1❤); crystals are the player's now, crafted from Dust without a Hero.
@@ -1653,6 +1682,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** New copies come at Level 0, trained in the Nest (as built)
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): New copies come at Level 0, trained in the Nest (as built), kept as built (new faction copies come at Level 0 and train in the Nest).
 
+**TU2-3. The tutorial brambles' Health: 9 and 11, or the 12 you set** · Decide · Tutorial · asked 2026-10-23 · decided 2026-10-23
+- The tutorial fights carry their own Health (9 and 11; shown halved as 5 and 6), so the editor's 12 never applied. EB-6 has since tuned around 9 / 11 (T-1 95%, T-2 78% wins). Changing them is a live fight edit, so it waits for you. Recommended: keep 9 and 11.
+  - Keep 9 and 11 (as now)
+  - 12 and 14 (your 12; Part 2 two sturdier)
+  - Other numbers (set them in the editor)
+- **Default:** Keep 9 and 11 (as now)
+- **Outcome:** Owner (10-23 17:34): "TU2-3 great if i can edit it." The tutorial brambles keep 9 and 11 Health for now, and the value in the editor becomes the one the tutorial fights use, so he sets it himself. New work: a small editor package (docs/action-items.md, 10-23 17:34).
+
 **TU2-4. The Worker Ant's Promotion in the Forge is hidden** · Decide · Economy · asked 2026-10-23 · decided 2026-10-23
 - E10: "Combining or converting cards to different cards is a concept we havent explored. HOWEVER, please prepare this tab ... it will be its own feature page!" The Forge did have a working Promotion: the Worker Ant (promotesTo, at Level 3, for 300 Maple Leaves + 100 Magic Dust) could become an Ant Warrior or one of two other ants. Package TU2 replaced that panel with a pointer to the new Promotion page, which says "Coming soon" and has no controls; the code and the card data stay (PROMOTION_PAGE_LIVE).
   - Keep it hidden until the Promotion page is designed (as built)
@@ -1675,6 +1712,14 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Only elite +1 / boss +2 / world +3 / final +4, nothing for sub-bosses
 - **Default:** As built
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): As built, kept as built (the shield bonuses: elite +1, sub-boss +2, boss +3, world / final +4).
+
+**RW3-2. Rare notices: rarer tickets, or rarer notices?** · Decide · Raid · asked 2026-10-23 · decided 2026-10-23
+- Your RK4: "SS / SSS raid notices about once a month or two". Built: the notices appear as often as before (S 3.5%, SS 0.8%, SSS 0.2%) and only their Raid Ticket got rarer (40% each: S tickets 0.59 a week, SS + SSS one every 1.4 months). Read literally, your words make the SS / SSS notices themselves rarer (1.0% -> about 0.5% of notices, their big rewards too). Recommended: rarer SS / SSS notices, since that is what your note names.
+  - As built (rarer tickets)
+  - Rarer SS / SSS notices (about 0.5%)
+  - Both
+- **Default:** Rarer SS / SSS notices (about 0.5%)
+- **Outcome:** Owner (10-23 17:34): "RW3-2 SS/SSS was talking about notices. SS per 1mo, SSS per 2-3mo. (for a person that always full clears, full resets to reset low tier quests). So a passive player is unlikely to see it till 6-8 months actually." Rarer notices, not only rarer tickets: an SS notice about once a month and an SSS notice about once every 2-3 months for a player who always full-clears and fully resets the low-tier quests; a passive player first sees one after about 6-8 months. New work: retune the notice rates (today S 3.5%, SS 0.8%, SSS 0.2% of notices) to those targets, and check the tickets' 40% cut so the two don't stack (docs/action-items.md, 10-23 17:34).
 
 **RW3-3. Packs: no new-card guarantee, faction packs keep their track** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
 - "Packs outputs can never be changed by anything" also turned off the new-card guarantee (the Tidemire Chest and the Highcrest Case promised one card you don't own) and the 10-12 weight that made a recently pulled card less likely. A faction pack's two faction cards still follow the faction reward track (RP: Commons first, then Uncommons...), which reads your collection; its general card is fully random.
