@@ -39,16 +39,21 @@ ok(en.filter(e => e.kind === 'mirror' && !e.neutral).length >= fights3 - 2 && en
 ok(Math.abs(en.reduce((a, e) => a + e.weight, 0) - 1) < 1e-9 && en.filter(e => e.neutral).every(e => e.weight === 0), 'weights sum to 1; no-field entries only for the final');
 
 // ---- the same run inline and over workers, and its output
-const common = ['--map', '0', '--gens1', '1', '--gens2', '1', '--final-games', '2', '--pop', '3', '--children', '3', '--gmax', '2', '--screen-max', '3', '--quiet'];
+// 2026-10-23 (OPT2): --gens1 / --gens2 gave way to --budget (search games per map); a small ladder and head-to-head keep it short
+const common = ['--map', '0', '--budget', '300', '--final-games', '2', '--pop', '3', '--children', '3', '--gmax', '2', '--screen-max', '3', '--restarts', '1', '--h2h-games', '2', '--ladder', '300', '--ladder-games', '2', '--ladder-walks', '1', '--quiet'];
 const run = (dir, extra) => cp.execFileSync(process.execPath, [OPT].concat(common, ['--out', path.join(OUT, dir), '--ckpt-dir', path.join(OUT, 'ck-' + dir)], extra || []), { cwd: ROOT, encoding: 'utf8' });
 run('w0', ['--workers', '0']); run('w2', ['--workers', '2']);
 const file = d => { const f = fs.readdirSync(path.join(OUT, d)).find(x => /^deckopt-map00-m1-.*\.json$/.test(x)); return f && JSON.parse(fs.readFileSync(path.join(OUT, d, f), 'utf8')); };
-const a = file('w0'), b = file('w2'), strip = r => JSON.stringify([r.phase1, r.phase2, r.gap, r.road, r.fieldImpact]);
+const a = file('w0'), b = file('w2'), strip = r => JSON.stringify([r.phase1, r.phase2, r.gap, r.road, r.fieldImpact, r.optima, r.optimaH2H, r.ladder]);
 ok(a && b && strip(a) === strip(b), 'same results inline and over 2 workers');
 ok(a.phase1.best.cards.reduce((s, c) => s + c.copies, 0) === 20 && a.phase1.best.cards.every(c => !c.outOfMap), 'phase 1 best: 20 map cards');
 ok(a.gap.length >= 4 && a.gap.every(g => g.h2h != null && g.eloCI.length === 2 && g.pointsBelow != null), 'the gap per opponent deck (h2h, Elo, points below)');
 ok(a.road.length === O.fightsOf(m0).length && a.fieldImpact.length === a.gap.length, 'road results and field impact per fight');
-ok(/--gens1 1 --gens2 1 --final-games 2 --screen-max 3/.test(a.reproduce), 'reproduce line');
+ok(/--budget 300 --final-games 2 --method ga --level 1/.test(a.reproduce), 'reproduce line');
+ok(a.level === 1, 'your level is 1 by default (OPT2)');
+ok(a.candidates && a.candidates.list.length >= 5 && a.candidates.list.length <= 25, 'phase 2: 5-25 candidates');
+ok(!a.phase2.best || a.phase2.best.cards.every(c => !c.outOfMap || a.candidates.list.some(x => x.id === c.id)), 'phase 2 uses only the logic-filtered candidates');
+ok(a.optima.length >= 1 && a.ladder.length === 1 && a.ladder[0].sharedWithOptimum >= 10, 'distinct optima and a ladder deck sharing >= 10 copies');
 ok(a.throughput.games > 0 && a.throughput.gamesPerSecond > 0, 'throughput recorded');
 ok(fs.readdirSync(path.join(OUT, 'w0')).some(f => /^deckopt-summary-.*\.md$/.test(f)), 'summary markdown');
 // resume: a finished checkpoint replays to the same report without new search games
@@ -56,7 +61,7 @@ run('w0r', ['--workers', '0', '--resume', '--ckpt-dir', path.join(OUT, 'ck-w0')]
 const c = file('w0r'); ok(c && strip(c) === strip(a), 'resume from the checkpoint gives the same report');
 
 // ---- CLI, exe build, workflow
-ok(/--cross-share/.test(cp.execFileSync(process.execPath, [OPT, '--help'], { encoding: 'utf8' })), '--help lists --cross-share');
+ok(/--cross-share[\s\S]*--ladder[\s\S]*--compare/.test(cp.execFileSync(process.execPath, [OPT, '--help'], { encoding: 'utf8' })), '--help lists --cross-share, --ladder, --compare');
 const sh = fs.readFileSync(path.join(ROOT, 'tools', 'opt', 'build-exe.sh'), 'utf8');
 ok(/--experimental-sea-config/.test(sh) && /postject/.test(sh) && /npx pkg/.test(sh), 'build-exe.sh: SEA + postject, pkg documented');
 const wf = fs.readFileSync(path.join(ROOT, '.github', 'workflows', 'deckopt.yml'), 'utf8');

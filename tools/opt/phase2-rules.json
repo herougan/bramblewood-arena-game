@@ -1,0 +1,56 @@
+{
+  "_about": "2026-10-23 (package OPT2, owner 22:23, OPT-1: \"use logic first - must be related, cannot be selected leaders or boss cards for future skirmishes, cannot be strange Map 40+ cards etc. maybe have similar attacks like arrows in an arrow map - that really limits the number of cards to prob 5-25.\"): the rules that pick phase 2's candidate cards for a map in tools/opt/deckopt.js. A card outside the map's phase-1 pool (its own cards and what a player owns by then) is a candidate when no exclusion hits it and its relatedness score reaches minScore. The best maxCards by score (then the nearest obtain map, then the id) are kept; when fewer than minCards qualify, minScore drops one step at a time (the output says so). Edit the numbers and lists here; deckopt reads this file from the game checkout (--rules FILE for another).",
+
+  "minCards": 5,
+  "maxCards": 25,
+  "minScore": 3,
+
+  "_weights": "Points per kind of relatedness. biome: the card's biome (canonical/unit-themes.json) is the map's; kinBiome: a kin biome of the map's (unit-themes vocab, either way). terrainType: a unit type matches a fight's terrain types (it gets the terrain's bonus). sharedType: a unit type at least sharedTypeMin of the map's own cards have (cap sharedTypeCap). animalGroup: the same animal group as one of the map's cards. mechanic: a skill family at least mechanicMin of the map's cards have (cap mechanicCap), e.g. ranged skills on an arrow map. fieldMechanic: a skill family the map's field rewards (fieldFamilies below).",
+  "weights": { "biome": 2, "kinBiome": 1, "terrainType": 1, "sharedType": 1, "sharedTypeCap": 2, "animalGroup": 1, "mechanic": 1, "mechanicCap": 2, "fieldMechanic": 1 },
+  "sharedTypeMin": 2,
+  "mechanicMin": 2,
+  "_ignoreTypes": "Unit types too broad to say anything about a map.",
+  "ignoreTypes": ["Mammal", "Structure", "Elemental"],
+
+  "_families": "Skill families: engine effect keys that play alike. A card is in a family when it has any of the keys. Flying, Diurnal and Nocturnal alone count only through fieldFamilies (they are on too many cards to make a map's theme).",
+  "families": {
+    "ranged": ["arrow", "fireArrow", "iceArrow", "volley", "twinShot", "archer", "archerStyle", "arrowCount", "snipe", "fletcher", "boomerang", "bananarang", "reload", "fireBolt", "iceBolt", "acidBolt", "poisonBolt", "shockBolt", "keenEye", "sentry"],
+    "poison": ["poison", "venomous", "venomMaster", "toxin", "poisonGas", "fester", "festering"],
+    "bleed": ["bleed", "gash", "render", "rupture", "scar", "puncture", "perforate"],
+    "armor": ["armor", "shell", "helmet", "sturdy", "brambleArmor", "rockSolid", "crabClaws"],
+    "guard": ["guardian", "taunt", "rampart", "bulwark", "shield"],
+    "swarm": ["swarm", "swarmN", "brood", "onDeathSpawn", "pack", "packHowl", "packLeader", "kinship"],
+    "tide": ["tide", "tideGrant", "wave", "tsunami", "supremeTide", "trident"],
+    "evasion": ["evasive", "stealth", "invisible", "smokeBomb", "shade", "shadow", "ambush"],
+    "strike-first": ["pounce", "quick", "charge", "haste", "speed", "backstab"],
+    "spite": ["thorns", "spiteful", "counterattack", "reflect"],
+    "heal": ["regen", "healing", "cure", "renewal", "revive", "nursing"],
+    "economy": ["onReadyGold", "bounty", "midas", "hoard", "lumberjack", "timber"],
+    "cleave": ["sweep", "fork", "twinStrike", "swipe", "overwhelm", "pierce"],
+    "siege": ["siege", "dynamite", "explode", "detonate", "landslide", "earthquake", "onReadyDamage"],
+    "cold": ["frostbite", "freeze", "iceArrow", "iceBolt", "absoluteZero"],
+    "fire": ["fireArrow", "fireBolt", "immolation", "fireball", "spitfire", "slashBurn", "chilli"],
+    "rally": ["inspiring", "banner", "kinRally", "leader", "rage", "frenzy", "bloodlust"],
+    "climb": ["mountainClimber"],
+    "flying": ["flying"],
+    "night": ["nocturnal", "darksight", "nocturnalHp", "moonborn", "crepuscular", "crepuscularHp"],
+    "day": ["diurnal", "diurnalHp"]
+  },
+  "_familiesFieldOnly": "Families that count only through the field (never as the map's own mechanic theme).",
+  "familiesFieldOnly": ["flying", "night", "day"],
+  "_fieldFamilies": "A field rule (canonical fight rules, arena_app.js fightRules) and the skill families it rewards. Wind acts on Flyers (tailwind / headwind); the Tide and wet fields on Tide cards; Mist hides, so evasion; a day / night cycle the Diurnal and Nocturnal cards.",
+  "fieldFamilies": { "wind": ["flying"], "tide": ["tide"], "highTide": ["tide"], "tideSpout": ["tide"], "wet": ["tide"], "misty": ["evasion"], "phase:cycle": ["night", "day"], "phase:night": ["night"], "phase:day": ["day"] },
+
+  "_exclude": "Never a candidate. maxObtainMap: the card's first obtainable map (HUB3 plan adv, else canonical/card-obtain-maps.json) must be at most this (owner: no Map 40+ cards). buckets: plan buckets that are not ordinary obtainable cards. flags: card fields that mark strange cards (hidden, Easter eggs, the world boss, raid units, ranked monsters, Devilry summons, spells, equipment, Materia, hazards, field cards, cards still waiting for a source, Ecclesia prayers). futureLeaders / futureShowcase / futureBossOnly / futureBossRewards: a later map's fight leaders, its showcased cards, cards met only in later boss fights, and the rewards of later boss and map-ender fights (owner: not the selected leaders or boss cards of future skirmishes). A faction reward's obtain map waits for its rarity's gate (FACTION_RARITY_GATES). challengeRewards: SS challenge cards (canonical source challenge:true). specialTier: any map's SPECIAL tier (canonical/map-pools.json).",
+  "exclude": {
+    "maxObtainMap": 39,
+    "buckets": ["unsorted", "raid", "materia", "smith", "nest"],
+    "flags": ["hidden", "easterEgg", "worldBoss", "raid", "creatureRank", "darkSummon", "spell", "equip", "hazard", "field", "cardType", "awaitingSource", "prayerReq"],
+    "futureLeaders": true,
+    "futureShowcase": true,
+    "futureBossOnly": true,
+    "futureBossRewards": true,
+    "challengeRewards": true,
+    "specialTier": true
+  }
+}
