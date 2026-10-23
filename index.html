@@ -47045,7 +47045,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6f9e83bd06ed', BUILD_CARD_HASH = '730ce7849f589763a5cbdca9d5e61fd82b59d26022086227d59a1f79e4f6872f';
+const BUILD_ID = 'be20130bc40e', BUILD_CARD_HASH = '730ce7849f589763a5cbdca9d5e61fd82b59d26022086227d59a1f79e4f6872f';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -68251,7 +68251,7 @@ function openMultiDeckSwap(item){
   const colHTML = side=>{ const list = side === 'out' ? outList : offer, sel = side === 'out' ? outSel : inSel, many = list.length > 1, idOf = x=> side === 'out' ? x : pack[x];
     return `<div class="ds2-col is-${side}" data-col="${side}"><div class="ds2-col-h">${escapeHtml(TX(side === 'out' ? 'ui.ui4-swap-your-deck' : 'ui.ui4-swap-from-pack'))}</div>
       <div class="ds2-pick">${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="-1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-prev' : 'ui.fx4-swap-prev-pack'))}">‹</button>` : ''}<div class="ds2-${side === 'out' ? 'old' : 'new'}">${tile(idOf(sel))}</div>${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-next' : 'ui.fx4-swap-next-pack'))}">›</button>` : ''}</div>
-      ${many ? `<div class="ds2-thumbs">${list.map((x, i)=> `<button type="button" class="ds2-thumb ${x === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(String(x))}" aria-label="${escapeAttr(defs[idOf(x)].name)}" aria-pressed="${x === sel}">${tile(idOf(x))}${i === 0 && side === 'out' ? '<i class="ds2-rec" aria-hidden="true">★</i>' : ''}</button>`).join('')}</div>` : ''}</div>`; };
+      ${many ? `<div class="ds2-thumbs">${list.map((x, i)=> `<button type="button" class="ds2-thumb ${x === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(String(x))}" aria-label="${escapeAttr(defs[idOf(x)].name)}" aria-pressed="${x === sel}">${tile(idOf(x))}${'' /* 2026-10-23 (RW4, owner #3): no ★ on the mini cards; it read as "best in your deck" */}</button>`).join('')}</div>` : ''}</div>`; };
   const sayHTML = ()=>{ const dIn = defs[pack[inSel]], dOut = defs[outSel];
     return `<b>${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-say-again' : 'ui.fx4-swap-say', {n: offer.length}))}</b><br><span>${escapeHtml(TX('ui.fx4-swap-q', {out: dOut.name, in: dIn.name}))} ⚔${dOut.attack||0} ❤${dOut.health||0} → ⚔${dIn.attack||0} ❤${dIn.health||0}</span>`; };
   const actionsHTML = again=> again

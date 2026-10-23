@@ -91,6 +91,6 @@ ok(/function bountyOf\(def\)\{ const e = \(def && def\.effects\) \|\| \{\}; cons
 ok(/function bountyN\(e\)\{ e = e \|\| \{\}; return Math\.max\(0, Number\(e\.bounty\)\|\|0\); \}/.test(src), 'A. ...and so does the card text');
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true, reserved:true, label:'', kind:'number', min:0, desc:\(\)=> ''\}/.test(src), 'A. the worthy slot is kept, empty, hidden and reserved');
 ok(!/^\s*worthy: v=>/m.test(src) && !/worthy:'🪵'/.test(src), 'A. no card line or icon for it');
-ok(/PASSIVE_DEFS\.forEach\(p=>\{ if\(p\.reserved\) return;/.test(src) && /if\(p\.reserved \|\| l\.length < 4/.test(src), 'A. reserved slots stay off the card text and the keyword list');
+ok(/PASSIVE_DEFS\.forEach\(p=>\{ (?:const nL0 = lines\.length; \(\(p\)=>\{ )?if\(p\.reserved\) return;/.test(src) /* 2026-10-23: RW4 wraps the card-text loop to tag NEW! skills */ && /if\(p\.reserved \|\| l\.length < 4/.test(src), 'A. reserved slots stay off the card text and the keyword list');
 ok(!/[`'"][^`'"\n]*\bWorthy\b[^`'"\n]*[`'"]/.test(src.split('\n').filter(l=> !/^\s*\/\//.test(l)).join('\n').replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/ .*$/gm, '')), 'A. no player-visible "Worthy" string left in the app');
 console.log(`keywords-2026-10-16b: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

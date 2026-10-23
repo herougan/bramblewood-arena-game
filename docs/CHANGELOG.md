@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 release 10-23d (batch: AR3, PR, FX4, RW4)
+- Group Dungeon (AR3), Map 0's sure card on first clears only (PR), swaps/fields/Lava Waders (FX4), swap and reward screens (RW4).
+- Release fixes: the swap window's mini-card star came back through the FX4 merge (removed again); two old tests follow RW4's code (item tip, NEW! tag loop); card-matrix golden refreshed.
+- Checks: full unit tier, no new failures against release 10-23c; ui_smoke 0 failures; flows 0 issues; rw4 e2e passed.
+
 ## 2026-10-23 (package RW4: owner's 13:16 list, items 3, 5, 6, 7, 8, 10, 13, 14, 15)
 - Swap window (#3): the two columns sit further apart (the several-swap rows too), the star on the mini cards is gone, the mini cards have a squarer
   corner, the "2/8 against 1/6" line is gone (a teaching swap still says what it teaches), "Better card!" is "Good Choice!", and hovering a card
