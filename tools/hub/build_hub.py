@@ -369,6 +369,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
   ('🎚️', 'budget', 'Budget & stats', 'Edit the budget constants, card Attack / Health and the special monsters; see what flips'),  # 2026-10-19 (package HB)
   ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
+  ('💰', 'ucosts', 'Upgrade & Forge costs', 'Edit what levelling, limit breaks, the Forge tiers, duplicates, prestige and disenchanting cost'),  # 2026-10-23 (package HUB2)
   ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
@@ -439,6 +440,12 @@ _sm_path = os.path.join(ROOT, 'canonical', 'special-monsters.json')
 _sm = json.load(open(_sm_path, encoding='utf-8')) if os.path.exists(_sm_path) else None
 _sm_slim = {k: _sm.get(k) for k in ('generated', 'doc', 'nonPlayer', 'others')} if _sm else None
 if _sm: _sm_slim['budget'] = {'v5': (_sm.get('budget') or {}).get('v5', {}).get('formula'), 'v6': (_sm.get('budget') or {}).get('v6', {}).get('formula'), 'playerTop': (_sm.get('budget') or {}).get('playerTop')}
+# 2026-10-23 (package HUB2, owner 11:11: "put the upgrade and forge costs in the master hub and let them be editable"): the 💰 Upgrade costs tab.
+# canonical/upgrade-costs.json (the seed), tools/upgrade_costs_lib.js (the same path list the fold tool uses) and the tab's script, inlined.
+# Edits live in the artifact's db (collection upgradeCosts), so the hub is published with capabilities {db: {}}; tools/hub/pull_upgrade_costs.md.
+_uc_seed = json.load(open(os.path.join(ROOT, 'canonical', 'upgrade-costs.json'), encoding='utf-8'))
+UC_INLINE = (f'const UC_SEED = {_js(_uc_seed)};\n' + re.sub(r'^#!.*\n', '', open(os.path.join(ROOT, 'tools', 'upgrade_costs_lib.js'), encoding='utf-8').read())
+             + '\n' + open(os.path.join(ROOT, 'tools', 'hub', 'upgrade_costs_tab.js'), encoding='utf-8').read())
 UT_INLINE = (f'const UT_DATA = {_js(_ut)};\nconst SM_DATA = {_js(_sm_slim)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.js'), encoding='utf-8').read()) if _ut else ''
 UT_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'units_tab.css'), encoding='utf-8').read()
 # 2026-10-19 (package HB, owner 17:44: "Where is our balance, monsters, and skills file -> can it be put into the artefact for my assessment.
@@ -621,6 +628,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-budget" aria-controls="p-budget" data-tab="budget">🎚️ Budget &amp; stats</button>
 <button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
+<button role="tab" id="t-ucosts" aria-controls="p-ucosts" data-tab="ucosts">💰 Upgrade costs</button>
 <button role="tab" id="t-units" aria-controls="p-units" data-tab="units">🗂 Units by theme</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
@@ -657,6 +665,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
 <section class="panel" id="p-budget" role="tabpanel" aria-labelledby="t-budget" hidden><div class="bal hb" id="hbHost"><p class="dec-empty">Loading the budget…</p></div></section>
 <section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
+<section class="panel" id="p-ucosts" role="tabpanel" aria-labelledby="t-ucosts" hidden><div class="bal sc" id="ucHost"><p class="dec-empty">Loading the upgrade costs…</p></div></section>
 <section class="panel" id="p-units" role="tabpanel" aria-labelledby="t-units" hidden><div class="bal ut" id="utHost"><p class="dec-empty">{'Loading the units…' if _ut else 'Run node tools/unit_themes.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
 {curve_panel}
@@ -747,6 +756,7 @@ const SEARCH = {SEARCH_JSON};
 {HUB_JS}
 {SC_INLINE}
 {UT_INLINE}
+{UC_INLINE}
 {HB_INLINE}
 {CH_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');

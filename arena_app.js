@@ -12582,7 +12582,7 @@ const ENERGY_UPGRADES_KEY = 'bramblewood_energy_upgrades_v1', ENERGY_UPGRADE_MAX
 function energyUpgradesBought(){ try{ return Math.max(0, Math.min(ENERGY_UPGRADE_MAX, parseInt(localStorage.getItem(ENERGY_UPGRADES_KEY)||'0', 10) || 0)); }catch(e){ return 0; } }
 function energyMarksEarned(){ return Math.min(ENERGY_UPGRADE_MAX, Math.floor(energyClears() / 20)); }
 function energyUpgradesReady(){ return Math.max(0, energyMarksEarned() - energyUpgradesBought()); }
-function energyUpgradeCost(){ return 150 * (energyUpgradesBought() + 1); } // Maple Leaves: 150, 300 … 1500
+function energyUpgradeCost(){ return UPGRADE_COSTS.energyUpgradeStep * (energyUpgradesBought() + 1); } // Maple Leaves: 150, 300 … 1500
 function buyEnergyUpgrade(){
   if(!energyUpgradesReady()) return 'none';
   const c = energyUpgradeCost(); if((myCurrencies.gold||0) < c) return 'cost';
@@ -12993,10 +12993,12 @@ function saveCardLevels(skipCloudPush){ try{ localStorage.setItem('bramblewood_a
 // cloudPullState yet — it's local-only this batch (device-bound, like the rest of this session's
 // very first localStorage-only saves were before cloud sync existed). Low-stakes to add later
 // (same additive-overlay pattern as myCardLevels) but out of scope for landing the feature itself.
+// 2026-10-23 (package HUB2, owner: "put the upgrade and forge costs in the master hub and let them be editable"): the cost tables below read canonical/upgrade-costs.json (hub Costs tab, tools/fold_upgrade_costs.js)
+const UPGRADE_COSTS = __UPGRADE_COSTS__;
 const PRESTIGE_TIERS = [
-  {key:'gold', label:'Gold', icon:'🥇', cssClass:'prestige-gold', cost:{dust:750, gold:600}, desc:'A gilded ring around the card — the first mark of true mastery.'},
-  {key:'rainbow', label:'Rainbow', icon:'🌈', cssClass:'prestige-rainbow', cost:{dust:1600, gold:1300}, desc:'The gold ring shifts through every color, slow and continuous.'},
-  {key:'extended', label:'Extended Art', icon:'🖼️', cssClass:'prestige-extended', cost:{dust:2750, gold:2250}, desc:'An ornate double frame — the card that says you never stopped.'},
+  {key:'gold', label:'Gold', icon:'🥇', cssClass:'prestige-gold', cost:{dust:UPGRADE_COSTS.prestige.find(x=> x.key==='gold').dust, gold:UPGRADE_COSTS.prestige.find(x=> x.key==='gold').gold}, desc:'A gilded ring around the card — the first mark of true mastery.'},
+  {key:'rainbow', label:'Rainbow', icon:'🌈', cssClass:'prestige-rainbow', cost:{dust:UPGRADE_COSTS.prestige.find(x=> x.key==='rainbow').dust, gold:UPGRADE_COSTS.prestige.find(x=> x.key==='rainbow').gold}, desc:'The gold ring shifts through every color, slow and continuous.'},
+  {key:'extended', label:'Extended Art', icon:'🖼️', cssClass:'prestige-extended', cost:{dust:UPGRADE_COSTS.prestige.find(x=> x.key==='extended').dust, gold:UPGRADE_COSTS.prestige.find(x=> x.key==='extended').gold}, desc:'An ornate double frame — the card that says you never stopped.'},
 ];
 function loadCardPrestige(){
   try{ const raw = localStorage.getItem('bramblewood_arena_prestige'); if(raw) return JSON.parse(raw)||{}; }catch(e){}
@@ -13564,7 +13566,7 @@ function bestCopyClass(id, d){
 // give >+1 multiplier ... Quest and event cards cannot be disenchanted"). A copy melts for that % of a Materia Unit, times
 // (1 + its treatments): a foil finish +1 to +3 (rainbow +2), extended art +1, an alternate-art skin +1, shiny +1. A spare
 // copy is worth far more fed to its own card as a duplicate (see feedDuplicate).
-const MATERIA_UNIT = {dust:675, gold:450}; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below); 1.1 Units since 2026-10-21 (package FG, FORGE_STEP_DUST), the Unit itself unchanged
+const MATERIA_UNIT = Object.assign({}, UPGRADE_COSTS.materiaUnit); // 2026-10-23 (HUB2): was {dust:675, gold:450}, now canonical/upgrade-costs.json; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below); 1.1 Units since 2026-10-21 (package FG, FORGE_STEP_DUST), the Unit itself unchanged
 const MU = f=> Math.round(f * MATERIA_UNIT.dust); // MU fraction → Dust
 const DISENCHANT_PCT = {starter:0.25, common:0.25, uncommon:0.55, rare:1.15, veryrare:1.75, superrare:2.4, epic:3.25, heroic:4.1, unique:5.0, legendary:6.2, mythic:7.3, ancient:8.5, divine:10};
 const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
@@ -13582,7 +13584,7 @@ function copyTreatmentBonus(d, copy){
 // counts as Common (Starter cards can't be melted anyway); the special rarities as their tier (cardRarityTier: Quest = Uncommon,
 // Special / Event-Rare = Rare, Dev- / Event-Legendary = Legendary, Dev-Ancient = Ancient). Treatments still multiply it (1 + bonus).
 // Was DISENCHANT_PCT of a Materia Unit (Common 2, Rare 8, Legendary 42 Dust).
-const DISENCHANT_DUST = {starter:5, common:5, uncommon:10, rare:25, veryrare:45, superrare:65, epic:100, heroic:150, unique:250, legendary:400, mythic:700, ancient:1200, divine:2000, void:3000, daemonic:4500};
+const DISENCHANT_DUST = Object.assign({}, UPGRADE_COSTS.disenchantDust); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 function disenchantValue(d, copy){ const base = DISENCHANT_DUST[cardRarityTier(d)] || DISENCHANT_DUST.common; return Math.max(1, Math.round(base * (1 + copyTreatmentBonus(d, copy)))); }
 function canDisenchantCard(d){ if(!d || d.token || d.hero || d.cardType === 'materia') return false; const r = d.rarity || 'common'; return !(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique' || isEventCard(d) || (d.source && d.source.kind === 'quest')); }
 function disenchantableCopies(id, keepUid){
@@ -13735,7 +13737,7 @@ syncTestRules();
 //                         Legendary 21, Mythic 25, Ancient 30 (and 36 for anything beyond Ancient)
 //   Base and Quest cards (not from boosters) ×0.5; Event cards ×1.5; a hero card ×2; castles: levels 1-10 cost what a
 //   card of their rarity costs, 10-20 three times that (4× in all).
-const LEVEL_COST_MULT = {starter:1, common:1, uncommon:2, rare:4, veryrare:6, superrare:8, epic:11, heroic:14, unique:17, legendary:21, mythic:25, ancient:30, divine:36, void:42, daemonic:48};
+const LEVEL_COST_MULT = Object.assign({}, UPGRADE_COSTS.levelCostMult); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 function cardRarityTier(d){ if(!d) return 'common'; const r = d.rarity || 'common'; if(LEVEL_COST_MULT[r] != null && r !== 'starter') return r; const as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return as || (r === 'starter' ? 'common' : 'common'); }
 function forgeBaseDef(defId){ return defId && ((typeof CARD_DEFS_BASELINE!=='undefined' && CARD_DEFS_BASELINE[defId]) || getCardDefs()[defId]); }
 function isEventCard(d){ return !!(d && (/^event/.test(d.rarity||'') || (d.source && d.source.kind==='event'))); }
@@ -13744,7 +13746,7 @@ function levelCostTierMult(defId){ return LEVEL_COST_MULT[cardRarityTier(forgeBa
 function levelCostMult(defId){
   const d = forgeBaseDef(defId); if(!d) return 1;
   let k = levelCostTierMult(defId);
-  if(d.hero) k *= 2; else if(isEventCard(d)) k *= 1.5; else if(isQuestOrBaseCard(d)) k *= 0.5;
+  if(d.hero) k *= UPGRADE_COSTS.modifiers.hero; else if(isEventCard(d)) k *= UPGRADE_COSTS.modifiers.event; else if(isQuestOrBaseCard(d)) k *= UPGRADE_COSTS.modifiers.questBase;
   return k;
 }
 // Material gates (2026-10-11, forge-economy note "so it sticks"): Dust alone never finishes a top card. Levels 7-10 of
@@ -13764,8 +13766,8 @@ function levelUpMats(currentLevel, defId){
 // break (10 → 11) costs LIMIT_BREAK_COST_MULT times the whole road to 10 (was once).
 //   step     1→2 2→3 3→4 4→5 5→6 6→7 | 7→8 8→9 9→10 | 10→11
 //   Dust      35  44  53  62  71  80 | 120 133  146  | 2× the road (≈1,520)
-const FORGE_STEP_DUST = [0, 35, 44, 53, 62, 71, 80, 120, 133, 146];
-const LIMIT_BREAK_COST_MULT = 2;
+const FORGE_STEP_DUST = UPGRADE_COSTS.forgeStepDust.slice(); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
+const LIMIT_BREAK_COST_MULT = UPGRADE_COSTS.limitBreakCostMult;
 function levelUpCostRaw(currentLevel, defId){
   if((currentLevel||0) <= 0 && typeof MATERIA_MOTE !== 'undefined') return {dust: MATERIA_MOTE.dust, gold: MATERIA_MOTE.gold, mote:true};
   const L = Math.max(1, Math.min(9, currentLevel||0)), k = levelCostMult(defId), dust = FORGE_STEP_DUST[L];
@@ -13777,7 +13779,7 @@ function forgeSpentOn(defId, toLevel){ const d = forgeBaseDef(defId), from = car
 // 1-10 ... Legendary and beyond, the power of duplicates increases"): feeding a spare copy to its own card banks 1/N of
 // that card's whole 1→10 cost as credit on it, spent before your wallet. N: up to Super Rare 18.75, Epic-Unique 17.5,
 // Legendary 15, Mythic 13, Ancient 10, beyond 8.5.
-const DUPLICATE_DIVISOR = {starter:18.75, common:18.75, uncommon:18.75, rare:18.75, veryrare:18.75, superrare:18.75, epic:17.5, heroic:17.5, unique:17.5, legendary:15, mythic:13, ancient:10, divine:8.5};
+const DUPLICATE_DIVISOR = Object.assign({}, UPGRADE_COSTS.duplicateDivisor); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 const FORGE_CREDIT_KEY = 'bramblewood_forge_credit_v1';
 let myForgeCredit = (()=>{ try{ return JSON.parse(localStorage.getItem(FORGE_CREDIT_KEY)||'{}') || {}; }catch(e){ return {}; } })();
 function saveForgeCredit(){ try{ localStorage.setItem(FORGE_CREDIT_KEY, JSON.stringify(myForgeCredit)); }catch(e){} }
@@ -13811,9 +13813,7 @@ function feedDuplicate(id, uid){
 // Everything else - 5, Ancient - 4, Divine and above - 3. As you can see - this is supremely hard."). The old 5-duplicates-fed rule
 // is gone: a card now needs N LIFETIME duplicates (every extra copy you ever got, even ones since melted, fused or fed; see
 // lifetimeDuplicates). Special rarities count as the tier they stand for; Quest-Unique sits with "everything else".
-const LIMIT_BREAK_DUPS = {starter:10, common:10, uncommon:9, quest:9, rare:8, special:8, eventrare:8, veryrare:8, superrare:8,
-  epic:7, heroic:7, unique:6, questunique:5, legendary:5, devlegendary:5, eventlegendary:5, mythic:5, ancient:4, devancient:4,
-  divine:3, void:3, daemonic:3};
+const LIMIT_BREAK_DUPS = Object.assign({}, UPGRADE_COSTS.limitBreakDups); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 function limitBreakDupsNeeded(d){ const r = (d && d.rarity) || 'common'; if(LIMIT_BREAK_DUPS[r] != null) return LIMIT_BREAK_DUPS[r]; const as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return LIMIT_BREAK_DUPS[as] || 10; }
 const LIMIT_BREAK_LEVEL = 11, DUPS_FED_KEY = 'bramblewood_dups_fed_v1';
 let myDupsFed = (()=>{ try{ return JSON.parse(localStorage.getItem(DUPS_FED_KEY)||'{}') || {}; }catch(e){ return {}; } })();
@@ -13831,7 +13831,7 @@ function levelGateMap(toLevel){ return toLevel >= 11 ? 50 : toLevel >= 10 ? 31 :
 function levelGateNeed(toLevel){ if(adminModeEnabled) return 0; const need = levelGateMap(toLevel); return need && playerMapReach() < need ? need : 0; }
 // A mote of materia (2026-10-12, user: "Going from level 0 to 1 takes a mote of materia"): 1/45 of a Materia Unit, the
 // same for every card, whatever its rarity.
-const MATERIA_MOTE = {dust: Math.round(MATERIA_UNIT.dust/45), gold: Math.round(MATERIA_UNIT.gold/45)};
+const MATERIA_MOTE = {dust: Math.round(MATERIA_UNIT.dust/UPGRADE_COSTS.moteDivisor), gold: Math.round(MATERIA_UNIT.gold/UPGRADE_COSTS.moteDivisor)};
 function limitBreakState(defId, uid){
   const d = forgeBaseDef(defId), L = forgeCopyLevel(defId, uid), dups = lifetimeDuplicates(defId), dupsNeed = limitBreakDupsNeeded(d); // 2026-10-18 (package NF): one copy breaks
   if(!canLimitBreakDef(d)) return {ok:false, why:'none'};
@@ -13893,13 +13893,8 @@ function resetForgeProgress(){
 // upgrade that feature"): the Forge has five tiers. Each raises the highest level it tempers to and the rarest card it will
 // work, and each upgrade waits for the map the old level gates used (Lv 5–8 at Map 16, 9 at Map 26, 10 at Map 31).
 // Limit breaks still wait for Map 50.
-const FORGE_TIERS = [
-  {tier:1, name:'Village Forge', cap:3, upTo:'quest'},
-  {tier:2, name:'Iron Forge', cap:4, upTo:'superrare', map:13, cost:{gold:600, dust:300}, strange:1},
-  {tier:3, name:'Ember Forge', cap:8, upTo:'unique', map:16, cost:{gold:1500, dust:800}, strange:1},
-  {tier:4, name:'Dragonfire Forge', cap:9, upTo:'legendary', map:26, cost:{gold:3000, dust:1500}, strange:2},
-  {tier:5, name:'Heartfire Forge', cap:10, upTo:'ancient', map:31, cost:{gold:5000, dust:2500}, strange:3},
-];
+const FORGE_TIER_NAMES = ['Village Forge', 'Iron Forge', 'Ember Forge', 'Dragonfire Forge', 'Heartfire Forge']; // names stay literal here: the language packs key on source text (the file's `name` is for the hub)
+const FORGE_TIERS = UPGRADE_COSTS.forgeTiers.map(t=> { const o = {tier:t.tier, name:FORGE_TIER_NAMES[t.tier - 1], cap:t.cap, upTo:t.upTo}; if(t.gold != null){ o.map = t.map; o.cost = {gold:t.gold, dust:t.dust}; o.strange = t.strange; } return o; }); // 2026-10-23 (HUB2): canonical/upgrade-costs.json
 // Strange Materia (2026-10-12, 11:39 list: "Upgrading the forge requires strange materia at certain levels - only gotten after
 // defeating a certain map's boss. we can tweak this as we go"): each Forge tier also needs Strange Materia 🔮 (1, 1, 2, 3).
 // The boss of the map before each tier's map drops them on its first clear (Maps 12, 15, 25 and 30: one, one, two, three).
@@ -14964,7 +14959,7 @@ function statKeyFor(side, defId){ return side + '|' + defId; }
 // Materia (T4, first version): crafted in the Forge from Magic Dust. Each craft grants Hero XP and
 // a crystal of one of four kinds, kept for socketing later.
 const MATERIA_KINDS = [{id:'ember', icon:'🔥', name:'Ember'}, {id:'tide', icon:'💧', name:'Tide'}, {id:'grove', icon:'🌿', name:'Grove'}, {id:'stone', icon:'🪨', name:'Stone'}];
-const MATERIA_DUST_COST = 125, MATERIA_HERO_XP = 30; // ×5 with the forge economy v2 income (2026-10-11)
+const MATERIA_DUST_COST = UPGRADE_COSTS.materiaDustCost, MATERIA_HERO_XP = 30; // ×5 with the forge economy v2 income (2026-10-11)
 // Materia belongs to the player now (2026-10-08), not the Hero: it is what Enchanting spends.
 // A Hero's old crystals move over once. Crafting still gives a Hero XP when you have one.
 var myMateria = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_materia_v1')||'null'); }catch(e){ return null; } })();

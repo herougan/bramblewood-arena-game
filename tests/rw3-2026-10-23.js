@@ -147,7 +147,7 @@ ok(/DROP_CHANCE_CAP/.test(fnSrc('ticketedDungeonDropChance')) && !/DROP_CHANCE_C
   ok(hit > 60 && hit < 140, '8. about 1 card in 2,000'); }
 
 // ======================= 68. disenchant =======================
-{ const D = vm.runInNewContext('(' + constSrc('DISENCHANT_DUST').replace(/^\nconst DISENCHANT_DUST = /, '').replace(/;.*$/, '') + ')');
+{ const D = vm.runInNewContext('(' + constSrc('DISENCHANT_DUST').replace(/^\nconst DISENCHANT_DUST = /, '').replace(/;.*$/, '') + ')', {Object, UPGRADE_COSTS: JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'upgrade-costs.json'), 'utf8'))}); // 2026-10-23 (HUB2): the table is canonical/upgrade-costs.json
   const want = {common: 5, uncommon: 10, rare: 25, veryrare: 45, superrare: 65, epic: 100, heroic: 150, unique: 250, legendary: 400, mythic: 700, ancient: 1200, divine: 2000, void: 3000, daemonic: 4500};
   Object.entries(want).forEach(([k, v])=> ok(D[k] === v, `68. ${k}: ${v} Magic Dust (got ${D[k]})`));
   ok(/DISENCHANT_DUST\[cardRarityTier\(d\)\]/.test(fnSrc('disenchantValue')) && /1 \+ copyTreatmentBonus\(d, copy\)/.test(fnSrc('disenchantValue')), '68. by rarity tier (special rarities as their tier), treatments still multiply'); }
