@@ -3466,6 +3466,9 @@
   .coach-tip::after{content:''; position:absolute; left:var(--arrow-x, 50%); bottom:-9px; transform:translateX(-50%); border:9px solid transparent; border-bottom:0; border-top-color:#fff8e6;}
   .coach-tip.below::after{bottom:auto; top:-9px; border-top:0; border-bottom:9px solid #fff8e6;}
   .coach-tip .coach-ok{align-self:flex-end;}
+  /* 2026-10-24 (package TT): the Triggers lesson's Skip + Next row (the tip itself takes no clicks) */
+  .coach-tip .coach-btns{display:flex; gap:8px; justify-content:flex-end; align-items:center;}
+  .coach-tip .coach-skip-lesson{pointer-events:auto; align-self:flex-end; color:#6b5a3e; background:transparent; border:1px solid rgba(107,90,62,.45);}
   .coach-tip .kw.kw-term{color:#b4590c; background:rgba(255,190,90,.28); padding:0 4px; border-radius:4px; text-decoration:none;}
   .coach-tip .kw-jargon{color:#b4590c; background:rgba(255,190,90,.28); padding:0 4px; border-radius:4px; font-weight:800; letter-spacing:.01em;} /* 2026-10-12: game words in tips */
   .coach-shield{position:fixed; inset:0; z-index:1140; background:rgba(10,8,4,.28); cursor:not-allowed;}
@@ -11281,6 +11284,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* the skills book */
 .bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
 .bk-bar .bk-filter{flex:none; display:flex; align-items:center; gap:10px; width:min(560px, 100%); margin:0 auto;}
+.bk-bar #tlReplayBtn{margin:0 auto;} /* 2026-10-24 (package TT): the Triggers lesson replay button */
 .bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
 .bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
 .bk-book{position:relative; touch-action:pan-y;}
@@ -41499,7 +41503,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2a259354a3", "es": "assets/lang/es.js?v=de58f1099a", "fr": "assets/lang/fr.js?v=dd159a6638", "id": "assets/lang/id.js?v=8abd1c8605", "it": "assets/lang/it.js?v=748dbaa4f2", "ja": "assets/lang/ja.js?v=cd1a87612f", "ko": "assets/lang/ko.js?v=30ec947f76", "pt": "assets/lang/pt.js?v=8e6389d51c", "ta": "assets/lang/ta.js?v=b0e1526452", "tl": "assets/lang/tl.js?v=1ad4fa2be8", "zh-Hans": "assets/lang/zh-Hans.js?v=9941a6eaaa", "zh-Hant": "assets/lang/zh-Hant.js?v=1f2665368f"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ce9b0ad577", "es": "assets/lang/es.js?v=be25b2aaab", "fr": "assets/lang/fr.js?v=2050bf9613", "id": "assets/lang/id.js?v=930d015f98", "it": "assets/lang/it.js?v=2f30bee37a", "ja": "assets/lang/ja.js?v=766a327c6b", "ko": "assets/lang/ko.js?v=3afe8c97f8", "pt": "assets/lang/pt.js?v=13d83c3aa4", "ta": "assets/lang/ta.js?v=155a44c532", "tl": "assets/lang/tl.js?v=db46181546", "zh-Hans": "assets/lang/zh-Hans.js?v=435de15d42", "zh-Hant": "assets/lang/zh-Hant.js?v=147d5ece91"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -42384,6 +42388,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.you-can-hold-5-cards-extra": "✋ You can hold 5 cards. Extra cards turn into 🪵 Lumber.",
   "coach.this-badge-is-a-trigger-an": "⚡ This badge is a trigger: an effect the card fires by itself. Greyed out means it is off for now: triggers that fire every round or when hit stay off while the card is Waiting (⏳), Stunned, Frozen or Asleep.",
   "coach.lit-up-means-ready-once-its": "⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.",
+  "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
+  "coach.tl-when": "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.",
+  "ui.tl-replay": "🎓 Triggers lesson",
+  "ui.tl-replay-title": "Play the triggers lesson again in your next fight with a trigger card",
+  "ui.tl-replay-toast": "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.",
   "coach.okay-next-turn-you-ll-draw": "Okay — next turn you’ll draw 1 more card.",
   "coach.this-card-needs-lumber-get-lumber": "🪵 This card needs Lumber. Get Lumber by giving up a card.",
   "coach.drag-a-card-you-don-t": "👉 Drag a card you don’t need onto the Graveyard.",
@@ -48076,7 +48085,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'fb50f5f9382f', BUILD_CARD_HASH = '7429cef329cd4ff0434a75a676e104c629d20bc327b3a586c6e4651d7d7ec4bd';
+const BUILD_ID = '75f780e7e316', BUILD_CARD_HASH = '7429cef329cd4ff0434a75a676e104c629d20bc327b3a586c6e4651d7d7ec4bd';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -53514,8 +53523,10 @@ const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, 
 function renderSkillBook(body){
   body.innerHTML = `<div class="bk" id="bkWrap">
     <div class="bk-bar">
-      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div></div>
+      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>
+      <button type="button" class="btn small" id="tlReplayBtn" title="${escapeAttr(TX('ui.tl-replay-title'))}">${escapeHtml(TX('ui.tl-replay'))}</button></div>
     <div class="bk-book" id="bkBook"></div></div>`;
+  { const rb = body.querySelector('#tlReplayBtn'); if(rb) rb.addEventListener('click', ()=>{ replayTriggerLesson(); showToast(TX('ui.tl-replay-toast'), 'ok'); }); } // 2026-10-24 (package TT)
   const all = skillBookEntries();
   codexBookState = {all, entries:null, pages:null, items:null, L:null};
   const inp = body.querySelector('#skFilterInput'); let t = null;
@@ -85881,6 +85892,32 @@ function pitchLessonTip(m){
   if(next.id === 'pl-do' && !pitchLessonSpare(m)){ if(m._plWaitRound === m.round) return null; m._plWaitRound = m.round; return PITCH_WAIT_TIP; }
   return next;
 }
+// 2026-10-24 (package TT, owner 13:16 #4: "A tutorial for triggers."): the Triggers lesson, two spotlighted steps on the trigger chip (⚡ -> action) the
+// first time a card with a trigger shows up in your hand or on the board (the enemy's included). Step 1 says what a trigger is, step 2 names the moments
+// (On Spawn, On Attack, On Hit, On Attacked, On Kill, On Death, On Turn Start). Each step has Next and Skip; Skip ends the lesson and the two passive
+// trigger tips that follow it (trig-off, trig-on). It is a coach tip, so a map tile is never held back by it (EN5's MAP-3: tutorialLessonOn). Seen ids
+// live in coachSeen, so it never repeats; the Skill Codex's "Triggers lesson" button clears them to play it again (replayTriggerLesson).
+function triggerLessonChip(m){
+  if(m._tlChip && m._tlChip.isConnected && !m._tlChip.classList.contains('is-spent')) return m._tlChip; // step 2 points at the chip step 1 did
+  const hand = document.querySelector('#handStrip [data-handuid] .ab-trig:not(.is-spent)'); if(hand) return (m._tlChip = hand);
+  for(const p of [2, 1]){ const r = m.players[p].row;
+    for(const c of [...r.left, ...r.center, ...r.right]){ if(!(c.hp > 0)) continue; const el = boardCardEl(c.uid), chip = el && el.querySelector('.ab-trig:not(.is-spent)'); if(chip) return (m._tlChip = chip); } }
+  return null;
+}
+const TRIGGER_LESSON = [
+  {id:'tl-what', gate:true, pause:true, next:true, skip:true, text:TX('coach.tl-what'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+  {id:'tl-when', gate:true, pause:true, skip:true, text:TX('coach.tl-when'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+];
+function triggerLessonTip(m){
+  if(!m || m.over || m.mode === 'tutorial' || m.mode === 'sandbox' || m.adminTest || m.fxLib) return null;
+  const next = TRIGGER_LESSON.find(t=> !coachSeen.has(t.id)); if(!next) return null;
+  return triggerLessonChip(m) ? next : null;
+}
+function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('trig-off'); markCoachSeen('trig-on'); }
+function replayTriggerLesson(){
+  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
+  try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
+}
 function peekGateTip(m){
   if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
   return firstUncommonEnemy(m) ? PEEK_GATE : null;
@@ -85922,6 +85959,8 @@ function maybeShowCoachTip(){
   matchNumberOf(m);
   const pl = pitchLessonTip(m);
   if(pl){ const el = pl.anchor(); if(el){ showCoachTip(pl, el); return; } }
+  const tl = triggerLessonTip(m); // 2026-10-24 (package TT)
+  if(tl){ const el = tl.anchor(); if(el){ showCoachTip(tl, el); return; } }
   const pg = peekGateTip(m);
   if(pg){ lastPeekUid = null; const el = pg.anchor(); if(el){ showCoachTip(pg, el); return; } }
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
@@ -85952,7 +85991,7 @@ function showCoachTip(tip, anchorEl){
   hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
-  const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
+  const btnLabel = tip.action ? '' : (tip.block || tip.next ? 'Next ▶' : 'Got it'); // 2026-10-24 (package TT): tip.next = a step that leads to another
   b.innerHTML = `<div class="coach-text">${keywordizeHTML(tip.html && !(GUIDED_STEPS.includes(tip) && tutorialCfg.steps && tutorialCfg.steps[tip.id]) ? tip.html : escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text))}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
@@ -86036,6 +86075,11 @@ function showCoachTip(tip, anchorEl){
   if(tip.gate) setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip && !b.querySelector('.coach-ok')){ const s = document.createElement('button'); s.type = 'button'; s.className = 'btn small coach-ok coach-skip'; s.textContent = 'Okay'; s.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); }; b.appendChild(s); } }, 12000);
   const ok = b.querySelector('.coach-ok');
   if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
+  if(tip.skip){ // 2026-10-24 (package TT): a lesson you can leave (the Triggers lesson)
+    const sk = document.createElement('button'); sk.type = 'button'; sk.className = 'btn small ghost coach-skip-lesson'; sk.textContent = 'Skip';
+    sk.onclick = ()=>{ skipTriggerLesson(); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
+    if(ok){ const row = document.createElement('div'); row.className = 'coach-btns'; ok.replaceWith(row); row.appendChild(sk); row.appendChild(ok); } else b.appendChild(sk);
+  }
 }
 let tutorialLock = null;
 ['pointerdown','mousedown','click','dragstart','touchstart','keydown'].forEach(type=> document.addEventListener(type, e=>{

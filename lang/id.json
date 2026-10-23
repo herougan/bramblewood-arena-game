@@ -3110,5 +3110,11 @@
  "Empty deck slot": "Slot dek kosong",
  "Tap to build a deck here": "Ketuk untuk membuat dek di sini",
  "Your copies ({n})": "Salinanmu ({n})",
- "Tap a copy to see its level": "Ketuk salinan untuk melihat levelnya"
+ "Tap a copy to see its level": "Ketuk salinan untuk melihat levelnya",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Chip ini adalah pemicu: sesuatu yang dilakukan kartu dengan sendirinya saat waktunya tiba. Sisi kiri menyatakan kapan, sisi kanan menyatakan apa. Arahkan penunjuk ke sana (atau tekan lama) untuk membacanya lengkap.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "Kapan aktif? On Spawn: saat kartu dimainkan. On Attack dan Saat Mengenai: saat menyerang dan saat pukulannya mengenai. On Attacked: saat terkena serangan. On Kill dan On Death: saat membunuh dan saat mati. On Turn Start (🕐): setiap ronde setelah Siap.",
+ "🎓 Triggers lesson": "🎓 Pelajaran pemicu",
+ "Play the triggers lesson again in your next fight with a trigger card": "Putar ulang pelajaran pemicu di pertarungan berikutnya dengan kartu pemicu",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 Pelajaran pemicu akan muncul lagi saat kartu pemicu berikutnya muncul di pertarungan.",
+ "Next ▶": "Lanjut ▶"
 }

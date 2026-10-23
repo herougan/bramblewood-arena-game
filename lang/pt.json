@@ -3110,5 +3110,11 @@
  "Empty deck slot": "Espaço de baralho vazio",
  "Tap to build a deck here": "Toca para criar um baralho aqui",
  "Your copies ({n})": "As tuas cópias ({n})",
- "Tap a copy to see its level": "Toca numa cópia para ver o seu nível"
+ "Tap a copy to see its level": "Toca numa cópia para ver o seu nível",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Esta ficha é um gatilho: algo que a carta faz sozinha quando chega o seu momento. À esquerda diz quando, à direita diz o quê. Pousa o ponteiro nela (ou prime longamente) para ler tudo.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "Quando dispara? On Spawn: no instante em que a carta é jogada. On Attack e Ao acertar: quando ataca e quando o golpe acerta. On Attacked: quando é atingida. On Kill e On Death: quando mata e quando morre. On Turn Start (🕐): todas as rondas, depois de estar pronta.",
+ "🎓 Triggers lesson": "🎓 Lição dos gatilhos",
+ "Play the triggers lesson again in your next fight with a trigger card": "Repetir a lição dos gatilhos no teu próximo combate com uma carta com gatilho",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 A lição dos gatilhos volta a aparecer na próxima vez que uma carta com gatilho surgir num combate.",
+ "Next ▶": "Seguinte ▶"
 }

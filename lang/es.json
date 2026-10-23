@@ -3108,5 +3108,11 @@
  "Empty deck slot": "Hueco de mazo vacío",
  "Tap to build a deck here": "Toca para crear un mazo aquí",
  "Your copies ({n})": "Tus copias ({n})",
- "Tap a copy to see its level": "Toca una copia para ver su nivel"
+ "Tap a copy to see its level": "Toca una copia para ver su nivel",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Esta ficha es un disparador: algo que la carta hace sola cuando llega su momento. A la izquierda dice cuándo, a la derecha qué. Deja el puntero encima (o mantén pulsado) para leerlo entero.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "¿Cuándo salta? Al aparecer: en cuanto se juega la carta. Al atacar y Al recibir golpe: cuando ataca y cuando su golpe da en el blanco. Al ser atacada: cuando la golpean. Al matar y Al morir: cuando mata y cuando muere. Al inicio del turno (🕐): cada ronda una vez que está lista.",
+ "🎓 Triggers lesson": "🎓 Lección de disparadores",
+ "Play the triggers lesson again in your next fight with a trigger card": "Repetir la lección de disparadores en tu próximo combate con una carta con disparador",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 La lección de disparadores volverá la próxima vez que aparezca una carta con disparador en un combate.",
+ "Next ▶": "Siguiente ▶"
 }

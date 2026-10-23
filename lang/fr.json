@@ -3109,5 +3109,11 @@
  "Empty deck slot": "Emplacement de deck vide",
  "Tap to build a deck here": "Touchez pour construire un deck ici",
  "Your copies ({n})": "Vos exemplaires ({n})",
- "Tap a copy to see its level": "Touchez un exemplaire pour voir son niveau"
+ "Tap a copy to see its level": "Touchez un exemplaire pour voir son niveau",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Cette pastille est un déclencheur : quelque chose que la carte fait toute seule quand son moment arrive. La gauche dit quand, la droite dit quoi. Posez le pointeur dessus (ou appuyez longuement) pour la lire en entier.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "Quand se déclenche-t-il ? À l’apparition : à l’instant où la carte est jouée. À l’attaque et Quand touchée : quand elle frappe et quand son coup porte. Quand attaquée : quand elle est touchée. À l’élimination et À la mort : quand elle tue et quand elle meurt. Au début du tour (🕐) : chaque tour une fois Prête.",
+ "🎓 Triggers lesson": "🎓 Leçon des déclencheurs",
+ "Play the triggers lesson again in your next fight with a trigger card": "Rejouer la leçon des déclencheurs lors de votre prochain combat avec une carte à déclencheur",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 La leçon des déclencheurs reviendra la prochaine fois qu’une carte à déclencheur apparaîtra en combat.",
+ "Next ▶": "Suivant ▶"
 }

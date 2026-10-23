@@ -8768,8 +8768,10 @@ const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, 
 function renderSkillBook(body){
   body.innerHTML = `<div class="bk" id="bkWrap">
     <div class="bk-bar">
-      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div></div>
+      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>
+      <button type="button" class="btn small" id="tlReplayBtn" title="${escapeAttr(TX('ui.tl-replay-title'))}">${escapeHtml(TX('ui.tl-replay'))}</button></div>
     <div class="bk-book" id="bkBook"></div></div>`;
+  { const rb = body.querySelector('#tlReplayBtn'); if(rb) rb.addEventListener('click', ()=>{ replayTriggerLesson(); showToast(TX('ui.tl-replay-toast'), 'ok'); }); } // 2026-10-24 (package TT)
   const all = skillBookEntries();
   codexBookState = {all, entries:null, pages:null, items:null, L:null};
   const inp = body.querySelector('#skFilterInput'); let t = null;
@@ -41135,6 +41137,32 @@ function pitchLessonTip(m){
   if(next.id === 'pl-do' && !pitchLessonSpare(m)){ if(m._plWaitRound === m.round) return null; m._plWaitRound = m.round; return PITCH_WAIT_TIP; }
   return next;
 }
+// 2026-10-24 (package TT, owner 13:16 #4: "A tutorial for triggers."): the Triggers lesson, two spotlighted steps on the trigger chip (⚡ -> action) the
+// first time a card with a trigger shows up in your hand or on the board (the enemy's included). Step 1 says what a trigger is, step 2 names the moments
+// (On Spawn, On Attack, On Hit, On Attacked, On Kill, On Death, On Turn Start). Each step has Next and Skip; Skip ends the lesson and the two passive
+// trigger tips that follow it (trig-off, trig-on). It is a coach tip, so a map tile is never held back by it (EN5's MAP-3: tutorialLessonOn). Seen ids
+// live in coachSeen, so it never repeats; the Skill Codex's "Triggers lesson" button clears them to play it again (replayTriggerLesson).
+function triggerLessonChip(m){
+  if(m._tlChip && m._tlChip.isConnected && !m._tlChip.classList.contains('is-spent')) return m._tlChip; // step 2 points at the chip step 1 did
+  const hand = document.querySelector('#handStrip [data-handuid] .ab-trig:not(.is-spent)'); if(hand) return (m._tlChip = hand);
+  for(const p of [2, 1]){ const r = m.players[p].row;
+    for(const c of [...r.left, ...r.center, ...r.right]){ if(!(c.hp > 0)) continue; const el = boardCardEl(c.uid), chip = el && el.querySelector('.ab-trig:not(.is-spent)'); if(chip) return (m._tlChip = chip); } }
+  return null;
+}
+const TRIGGER_LESSON = [
+  {id:'tl-what', gate:true, pause:true, next:true, skip:true, text:TX('coach.tl-what'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+  {id:'tl-when', gate:true, pause:true, skip:true, text:TX('coach.tl-when'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+];
+function triggerLessonTip(m){
+  if(!m || m.over || m.mode === 'tutorial' || m.mode === 'sandbox' || m.adminTest || m.fxLib) return null;
+  const next = TRIGGER_LESSON.find(t=> !coachSeen.has(t.id)); if(!next) return null;
+  return triggerLessonChip(m) ? next : null;
+}
+function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('trig-off'); markCoachSeen('trig-on'); }
+function replayTriggerLesson(){
+  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
+  try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
+}
 function peekGateTip(m){
   if(coachSeen.has(PEEK_GATE.id) || m.mode==='tutorial' || m.adminTest) return null;
   return firstUncommonEnemy(m) ? PEEK_GATE : null;
@@ -41176,6 +41204,8 @@ function maybeShowCoachTip(){
   matchNumberOf(m);
   const pl = pitchLessonTip(m);
   if(pl){ const el = pl.anchor(); if(el){ showCoachTip(pl, el); return; } }
+  const tl = triggerLessonTip(m); // 2026-10-24 (package TT)
+  if(tl){ const el = tl.anchor(); if(el){ showCoachTip(tl, el); return; } }
   const pg = peekGateTip(m);
   if(pg){ lastPeekUid = null; const el = pg.anchor(); if(el){ showCoachTip(pg, el); return; } }
   // 2026-10-05 (user: "if there's a set tutorial sequence, that comes first. Until there's none
@@ -41206,7 +41236,7 @@ function showCoachTip(tip, anchorEl){
   hideCoachTip(); if(tip && tip.id === coachPendingId) coachPendingId = null;
   const b = document.createElement('div');
   b.className = 'coach-tip'+(tip.block?' is-blocking':''); b.setAttribute('role', tip.block ? 'dialog' : 'status');
-  const btnLabel = tip.action ? '' : (tip.block ? 'Next ▶' : 'Got it');
+  const btnLabel = tip.action ? '' : (tip.block || tip.next ? 'Next ▶' : 'Got it'); // 2026-10-24 (package TT): tip.next = a step that leads to another
   b.innerHTML = `<div class="coach-text">${keywordizeHTML(tip.html && !(GUIDED_STEPS.includes(tip) && tutorialCfg.steps && tutorialCfg.steps[tip.id]) ? tip.html : escapeHtml(GUIDED_STEPS.includes(tip) ? guidedStepText(tip) : tip.text))}</div>${btnLabel?`<button type="button" class="btn small primary coach-ok">${btnLabel}</button>`:''}`;
   if(tip.block){
     // see-through shield: blocks clicks/drags on the match, but not on the bubble itself
@@ -41290,6 +41320,11 @@ function showCoachTip(tip, anchorEl){
   if(tip.gate) setTimeout(()=>{ if(coachOpen && coachOpen.tip === tip && !b.querySelector('.coach-ok')){ const s = document.createElement('button'); s.type = 'button'; s.className = 'btn small coach-ok coach-skip'; s.textContent = 'Okay'; s.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); }; b.appendChild(s); } }, 12000);
   const ok = b.querySelector('.coach-ok');
   if(ok) ok.onclick = ()=>{ markCoachSeen(tip.id); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
+  if(tip.skip){ // 2026-10-24 (package TT): a lesson you can leave (the Triggers lesson)
+    const sk = document.createElement('button'); sk.type = 'button'; sk.className = 'btn small ghost coach-skip-lesson'; sk.textContent = 'Skip';
+    sk.onclick = ()=>{ skipTriggerLesson(); hideCoachTip(); setTimeout(maybeShowCoachTip, 350); };
+    if(ok){ const row = document.createElement('div'); row.className = 'coach-btns'; ok.replaceWith(row); row.appendChild(sk); row.appendChild(ok); } else b.appendChild(sk);
+  }
 }
 let tutorialLock = null;
 ['pointerdown','mousedown','click','dragstart','touchstart','keydown'].forEach(type=> document.addEventListener(type, e=>{

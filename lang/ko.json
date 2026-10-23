@@ -3111,5 +3111,11 @@
  "Empty deck slot": "빈 덱 슬롯",
  "Tap to build a deck here": "눌러서 여기에 덱 만들기",
  "Your copies ({n})": "보유한 카드 ({n})",
- "Tap a copy to see its level": "카드를 눌러 레벨을 보세요"
+ "Tap a copy to see its level": "카드를 눌러 레벨을 보세요",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ 이 칩은 트리거예요. 때가 되면 카드가 스스로 하는 일이에요. 왼쪽은 언제, 오른쪽은 무엇을 하는지 알려 줘요. 포인터를 올리거나 길게 누르면 전체를 읽을 수 있어요.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "언제 발동할까요? On Spawn: 카드를 내는 순간. On Attack과 적중 시: 공격에 나설 때와 그 일격이 적중할 때. On Attacked: 공격을 받을 때. On Kill과 On Death: 처치할 때와 쓰러질 때. On Turn Start(🕐): 준비된 뒤 매 라운드.",
+ "🎓 Triggers lesson": "🎓 트리거 수업",
+ "Play the triggers lesson again in your next fight with a trigger card": "다음에 트리거 카드가 나오는 전투에서 트리거 수업을 다시 보기",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 다음 전투에서 트리거 카드가 나오면 트리거 수업이 다시 나와요.",
+ "Next ▶": "다음 ▶"
 }

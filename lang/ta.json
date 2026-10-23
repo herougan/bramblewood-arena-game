@@ -3111,5 +3111,11 @@
  "Empty deck slot": "காலியான டெக் இடம்",
  "Tap to build a deck here": "இங்கே ஒரு டெக் உருவாக்கத் தட்டுங்கள்",
  "Your copies ({n})": "உங்கள் நகல்கள் ({n})",
- "Tap a copy to see its level": "நிலையைப் பார்க்க ஒரு நகலைத் தட்டுங்கள்"
+ "Tap a copy to see its level": "நிலையைப் பார்க்க ஒரு நகலைத் தட்டுங்கள்",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ இந்த சிப் ஒரு தூண்டி: அட்டை தன் தருணம் வரும்போது தானாகச் செய்யும் ஒன்று. இடப்பக்கம் எப்போது என்றும், வலப்பக்கம் என்ன என்றும் சொல்லும். முழுவதும் படிக்க சுட்டியை அதன் மேல் வையுங்கள் (அல்லது அழுத்திப் பிடியுங்கள்).",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "இது எப்போது செயல்படும்? On Spawn: அட்டை விளையாடப்படும் கணத்தில். On Attack மற்றும் அடிக்கும்போது: அது தாக்கும்போதும் அதன் அடி படும்போதும். On Attacked: அது அடிவாங்கும்போது. On Kill மற்றும் On Death: அது கொல்லும்போதும் இறக்கும்போதும். On Turn Start (🕐): தயாரானதும் ஒவ்வொரு சுற்றிலும்.",
+ "🎓 Triggers lesson": "🎓 தூண்டி பாடம்",
+ "Play the triggers lesson again in your next fight with a trigger card": "தூண்டி அட்டையுடன் உங்கள் அடுத்த சண்டையில் தூண்டி பாடத்தை மீண்டும் காட்டு",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 சண்டையில் அடுத்த முறை தூண்டி அட்டை வரும்போது தூண்டி பாடம் மீண்டும் வரும்.",
+ "Next ▶": "அடுத்து ▶"
 }

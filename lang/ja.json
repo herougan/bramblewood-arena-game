@@ -3109,5 +3109,11 @@
  "Empty deck slot": "空きデッキ枠",
  "Tap to build a deck here": "タップしてここにデッキを作る",
  "Your copies ({n})": "所持しているカード（{n}）",
- "Tap a copy to see its level": "カードをタップするとレベルが見える"
+ "Tap a copy to see its level": "カードをタップするとレベルが見える",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ このチップはトリガー。タイミングが来ると、カードが自分で行うことです。左がいつ、右が何をするか。ポインタを乗せる（または長押し）と全文が読めます。",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "いつ発動する？出現時：カードを出した瞬間。攻撃時と被弾時：攻撃に出るときと、その一撃が当たったとき。被攻撃時：攻撃を受けたとき。撃破時と死亡時：倒したときと倒れたとき。ターン開始時（🕐）：準備ができたあと毎ラウンド。",
+ "🎓 Triggers lesson": "🎓 トリガーのレッスン",
+ "Play the triggers lesson again in your next fight with a trigger card": "次にトリガー持ちのカードが出る戦闘で、もう一度レッスンを見る",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 次の戦闘でトリガー持ちのカードが出たとき、レッスンがもう一度流れます。",
+ "Next ▶": "次へ ▶"
 }

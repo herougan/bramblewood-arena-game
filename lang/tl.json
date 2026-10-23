@@ -3109,5 +3109,11 @@
  "Empty deck slot": "Bakanteng puwang ng deck",
  "Tap to build a deck here": "I-tap para bumuo ng deck dito",
  "Your copies ({n})": "Ang mga kopya mo ({n})",
- "Tap a copy to see its level": "I-tap ang kopya para makita ang level nito"
+ "Tap a copy to see its level": "I-tap ang kopya para makita ang level nito",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Ang chip na ito ay isang trigger: isang bagay na kusang ginagawa ng card kapag dumating ang sandali nito. Sinasabi ng kaliwa kung kailan, sinasabi ng kanan kung ano. Ihinto ang pointer dito (o pindutin nang matagal) para mabasa nang buo.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "Kailan ito gumagana? On Spawn: sa sandaling nilaro ang card. On Attack at Kapag Tumama: kapag umaatake ito at kapag tumama ang hampas nito. On Attacked: kapag tinamaan ito. On Kill at On Death: kapag pumatay ito at kapag namatay ito. On Turn Start (🕐): bawat round kapag Handa na ito.",
+ "🎓 Triggers lesson": "🎓 Aralin sa mga trigger",
+ "Play the triggers lesson again in your next fight with a trigger card": "Ulitin ang aralin sa mga trigger sa susunod mong laban na may trigger card",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 Muling lalabas ang aralin sa mga trigger sa susunod na may trigger card na lumabas sa laban.",
+ "Next ▶": "Susunod ▶"
 }

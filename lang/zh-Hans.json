@@ -3109,5 +3109,11 @@
  "Empty deck slot": "空的卡组栏位",
  "Tap to build a deck here": "点这里组一副卡组",
  "Your copies ({n})": "你的副本（{n}）",
- "Tap a copy to see its level": "点一张副本看它的等级"
+ "Tap a copy to see its level": "点一张副本看它的等级",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ 这个小标记是触发效果：时机一到，卡牌会自动做的事。左边说明何时，右边说明做什么。把指针停在上面（或长按）即可读完整说明。",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "何时触发？生成时：卡牌打出的那一刻。攻击时和受击时：它出手时，以及它的攻击命中时。受到攻击时：它被击中时。击杀时和死亡时：它击杀时和它死亡时。回合开始时（🕐）：就绪后每一回合。",
+ "🎓 Triggers lesson": "🎓 触发效果教程",
+ "Play the triggers lesson again in your next fight with a trigger card": "下次遇到带触发效果的卡牌时再播放一次触发效果教程",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 下次战斗中出现带触发效果的卡牌时，会再次播放触发效果教程。",
+ "Next ▶": "下一步 ▶"
 }

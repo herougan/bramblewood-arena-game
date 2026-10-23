@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package TT: the Triggers lesson)
+- **A tutorial for triggers (owner 13:16 #4):** the first time a card with a trigger is in your hand or on the field (the enemy's too), play pauses
+  on a spotlight over its trigger chip (⚡ → what it does). Step 1: what a trigger is (left says when, right says what; rest the pointer on it to
+  read it). Step 2: the moments, with the game's own names: On Spawn, On Attack, On Hit, On Attacked, On Kill, On Death, On Turn Start. Each step
+  has Skip and Next / Got it; it never repeats. Skip also ends the two later trigger tips (grey / lit). It comes after the Pitching lesson, never in
+  the Tutorial or Sandbox.
+- **It is a coach tip, not an NPC talk:** it uses the same bubble and spotlight as the other lessons, so a map tile is never held back while it is up
+  (MAP-3); it locks nothing in the fight.
+- **Replay:** a "🎓 Triggers lesson" button in the Skill Codex's bar clears it to play in the next fight with a trigger chip. The Skill Codex opens
+  on Map 9; where all lessons should be replayable from is call TT-1.
+- Texts: `coach.tl-what`, `coach.tl-when`, `ui.tl-replay*` in 12 packs (`tools/i18n_2026_10_24_tt.py`; the trigger names reuse each pack's own chip
+  words, English where a pack has none), and "Next ▶" had no translation until now. Tagalog, Tamil, Japanese and Korean deserve a native read.
+- Tests: `tests/tt-2026-10-24.js`, `tests/e2e/tt_2026_10_24.py` (390 and 1366, shots in `docs/screens/TT/`).
+
 ## 2026-10-24 (package NE: the Nest, the Camp's copy fan, deck slots, the Codex's copies, the fight panel, the pack viewer, filters reset)
 - **What you hold where you spend it (17:01 #9):** a "You have" row of the currencies a place spends: the Nest (Maple Leaves, Dust, Kibble), its
   subwindow, the Tavern (Maple Leaves, Dust, Beer) and the Camp's deck slots (the Shop, Forge and Profile had one).

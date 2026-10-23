@@ -3110,5 +3110,11 @@
  "Empty deck slot": "Slot del mazzo vuoto",
  "Tap to build a deck here": "Tocca per creare un mazzo qui",
  "Your copies ({n})": "Le tue copie ({n})",
- "Tap a copy to see its level": "Tocca una copia per vederne il livello"
+ "Tap a copy to see its level": "Tocca una copia per vederne il livello",
+ "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.": "⚡ Questo gettone è un innesco: qualcosa che la carta fa da sola quando arriva il suo momento. A sinistra dice quando, a destra cosa. Tieni il puntatore sopra (o premi a lungo) per leggerlo per intero.",
+ "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.": "Quando scatta? On Spawn: nel momento in cui la carta viene giocata. On Attack e Al colpo: quando colpisce e quando il suo colpo va a segno. On Attacked: quando viene colpita. On Kill e On Death: quando uccide e quando muore. On Turn Start (🕐): ogni round, una volta pronta.",
+ "🎓 Triggers lesson": "🎓 Lezione sugli inneschi",
+ "Play the triggers lesson again in your next fight with a trigger card": "Rigioca la lezione sugli inneschi nel prossimo scontro con una carta con innesco",
+ "🎓 The triggers lesson will play again the next time a trigger card shows up in a fight.": "🎓 La lezione sugli inneschi tornerà la prossima volta che in uno scontro comparirà una carta con innesco.",
+ "Next ▶": "Avanti ▶"
 }
