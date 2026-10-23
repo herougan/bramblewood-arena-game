@@ -27,7 +27,7 @@ ok(copyBlock.length > 2000 && resetBlock.length > 500, 'the CARD_COPIES_NF and F
 const forgeFns = ['disenchantableCopies', 'disenchantSummary', 'meltCardValue', 'meltCard', 'forgeCreditOf', 'addForgeCredit', 'spareCopyIndex', 'feedDuplicate', 'spendForgeCredit',
   'forgeSetCopyLevel', 'forgeCopyLevel', 'spareDuplicatesTotal', 'fuseAllPlan', 'fuseAllDuplicates', 'fuseSpareCount', 'fuseCreditReach', 'fusePreview', 'fuseCopies', 'levelUpCostRaw', 'forgeSpentOn', 'limitBreakCost'];
 forgeFns.forEach(f=> ok(fnSrc(f), `arena_app.js has ${f}`));
-const STEP = between('const FORGE_STEP_DUST = ', ';') + '\n' + between('const LIMIT_BREAK_COST_MULT = ', ';');
+const STEP = 'const UPGRADE_COSTS = ' + fs.readFileSync(path.join(ROOT, 'canonical', 'upgrade-costs.json'), 'utf8') + ';\n' + between('const FORGE_STEP_DUST = ', ';') + '\n' + between('const LIMIT_BREAK_COST_MULT = ', ';');
 function make(o){
   o = o || {};
   const BASE = Object.assign({

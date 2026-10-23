@@ -247,7 +247,7 @@ function fitRatings(rows, refRows){
 function economy(Bm){
   const src = Bm.src, G = Bm.G;
   const grabObj = name=>{ const i = src.indexOf('const ' + name + ' = '); const j = src.indexOf('};', i); return eval('(' + src.slice(src.indexOf('{', i), j + 1) + ')'); };
-  const REW = grabObj('CONQUEST_NODE_REWARDS'), MULT = grabObj('LEVEL_COST_MULT');
+  const REW = grabObj('CONQUEST_NODE_REWARDS'), MULT = JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'canonical', 'upgrade-costs.json'), 'utf8')).levelCostMult; // 2026-10-23 (HUB2): canonical/upgrade-costs.json
   const KB = {champion:'elite', miniboss:'elite', subboss:'boss', dungeon:'elite', worldboss:'raidboss', megaraid:'raidboss'};
   const mains = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved);
   const cum = []; let dust = 0, gold = 0;

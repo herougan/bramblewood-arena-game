@@ -12,6 +12,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - A3: the trailer's six Kling shot prompts and the 30 s cut, in `docs/art-style-prompts.md` ("Trailer (A3)"). Nothing generated.
 - Build list in `docs/action-items.md` ("10-23 17:34: building"): DF-1's Map term (0.2 per map, pack cards from their first
   main-line map), DF-2, DF-3 with DF-4, RW3-2's notice rates, TU2-3's editable tutorial Health, H1's materia socket, AR3-9's port.
+## 2026-10-23 (package HUB2: owner 11:11, "put the upgrade and forge costs in the master hub and let them be editable")
+- No player-visible change: every card upgrade and Forge cost has the same value as before (checked against the old code).
+- The cost tables moved out of `arena_app.js` into `canonical/upgrade-costs.json` (level road, rarity and card-kind multipliers, limit break and its duplicates, duplicate credit, the five Forge tiers, prestige rings, disenchant Dust, Materia Unit / bench, energy upgrade); `assemble_arena.py` bakes it in.
+- Master hub: new 💰 Upgrade costs tab, every number an input, with live Lv 1-10 / limit break / duplicate totals per rarity. Edits save in the hub db (`upgradeCosts`); `node tools/fold_upgrade_costs.js edits.json` folds them into the file (`tools/hub/pull_upgrade_costs.md`). New test `tests/upgrade-costs-2026-10-23.js`.
 
 ## 2026-10-23 release 10-23d (batch: AR3, PR, FX4, RW4)
 - Group Dungeon (AR3), Map 0's sure card on first clears only (PR), swaps/fields/Lava Waders (FX4), swap and reward screens (RW4).

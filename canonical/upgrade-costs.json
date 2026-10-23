@@ -1,0 +1,27 @@
+{
+ "_about": "Card upgrade and Forge costs, 2026-10-23 (package HUB2, owner 11:11: \"For all these upgrade costs and forge costs, put them in the master hub and let them be editable.\"). Moved here from constants in arena_app.js with the same values. The game build (assemble_arena.py, into arena_app.js UPGRADE_COSTS) bakes this file in; the master hub's Costs tab (tools/hub/upgrade_costs_tab.js) edits it, edits fold back with tools/fold_upgrade_costs.js (tools/hub/pull_upgrade_costs.md). Level road: the Dust of one step L -> L+1 on a Common is forgeStepDust[L] (x levelCostMult of the card), its Leaves (gold) two thirds of that; the first step (Level 0 -> 1) is one Materia Mote = materiaUnit / moteDivisor. A limit break (10 -> 11) costs limitBreakCostMult times the whole road to 10. levelCostMult is per rarity; hero cards also x modifiers.hero, event cards x modifiers.event, quest/base cards x modifiers.questBase. The Forge tiers' gold/dust/strange/map can also be overridden live by the admin editor (card_overrides __cfg:forge-tiers); fold those in here too, then clear them.",
+ "version": "2026-10-23",
+ "materiaUnit": {"dust":675,"gold":450},
+ "moteDivisor": 45,
+ "forgeStepDust": [0,35,44,53,62,71,80,120,133,146],
+ "limitBreakCostMult": 2,
+ "levelCostMult": {"starter":1,"common":1,"uncommon":2,"rare":4,"veryrare":6,"superrare":8,"epic":11,"heroic":14,"unique":17,"legendary":21,"mythic":25,"ancient":30,"divine":36,"void":42,"daemonic":48},
+ "modifiers": {"hero":2,"event":1.5,"questBase":0.5},
+ "duplicateDivisor": {"starter":18.75,"common":18.75,"uncommon":18.75,"rare":18.75,"veryrare":18.75,"superrare":18.75,"epic":17.5,"heroic":17.5,"unique":17.5,"legendary":15,"mythic":13,"ancient":10,"divine":8.5},
+ "limitBreakDups": {"starter":10,"common":10,"uncommon":9,"quest":9,"rare":8,"special":8,"eventrare":8,"veryrare":8,"superrare":8,"epic":7,"heroic":7,"unique":6,"questunique":5,"legendary":5,"devlegendary":5,"eventlegendary":5,"mythic":5,"ancient":4,"devancient":4,"divine":3,"void":3,"daemonic":3},
+ "disenchantDust": {"starter":5,"common":5,"uncommon":10,"rare":25,"veryrare":45,"superrare":65,"epic":100,"heroic":150,"unique":250,"legendary":400,"mythic":700,"ancient":1200,"divine":2000,"void":3000,"daemonic":4500},
+ "forgeTiers": [
+  {"tier":1,"name":"Village Forge","cap":3,"upTo":"quest"},
+  {"tier":2,"name":"Iron Forge","cap":4,"upTo":"superrare","map":13,"gold":600,"dust":300,"strange":1},
+  {"tier":3,"name":"Ember Forge","cap":8,"upTo":"unique","map":16,"gold":1500,"dust":800,"strange":1},
+  {"tier":4,"name":"Dragonfire Forge","cap":9,"upTo":"legendary","map":26,"gold":3000,"dust":1500,"strange":2},
+  {"tier":5,"name":"Heartfire Forge","cap":10,"upTo":"ancient","map":31,"gold":5000,"dust":2500,"strange":3}
+ ],
+ "prestige": [
+  {"key":"gold","dust":750,"gold":600},
+  {"key":"rainbow","dust":1600,"gold":1300},
+  {"key":"extended","dust":2750,"gold":2250}
+ ],
+ "materiaDustCost": 125,
+ "energyUpgradeStep": 150
+}

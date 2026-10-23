@@ -358,6 +358,8 @@ app_src = _re.sub(r"art:'(art/raids/[a-z0-9_-]+\.(?:svg|png))'", lambda m: "art:
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 # 2026-10-21 (package CX5): the canonical skill-cost table the hub folds into (tools/hub/apply_skill_costs.js), read by SkillCosts.make
 app_src = sub_once(app_src, "__SKILL_COSTS__", json.dumps(json.load(open(SCRATCH + "canonical/skill-costs.json", encoding="utf-8")), ensure_ascii=False))
+# 2026-10-23 (package HUB2): card upgrade and Forge costs (canonical/upgrade-costs.json); the hub Costs tab edits it, tools/fold_upgrade_costs.js folds the edits back
+app_src = sub_once(app_src, "__UPGRADE_COSTS__", json.dumps(json.load(open(SCRATCH + "canonical/upgrade-costs.json", encoding="utf-8")), ensure_ascii=False))
 # 2026-10-22 (package MP): which cards belong to which map (canonical/map-pools.json); the admin's live edits (card_overrides __cfg:map-pools:<id>) win over it at load, tools/fold_map_pools.js folds them back
 app_src = sub_once(app_src, "__MAP_POOLS__", json.dumps(json.load(open(SCRATCH + "canonical/map-pools.json", encoding="utf-8")), ensure_ascii=False))
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
