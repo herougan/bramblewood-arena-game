@@ -46945,7 +46945,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd4537322e7aa', BUILD_CARD_HASH = '762fac3f64d02cafa9c4e11733e449a49e43be23de82c145da376c2afb3e696c';
+const BUILD_ID = '731abc273321', BUILD_CARD_HASH = '762fac3f64d02cafa9c4e11733e449a49e43be23de82c145da376c2afb3e696c';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -82721,7 +82721,9 @@ async function resolveRoundCore(opts){
           const tid = teachingCardPick();
           if(tid && grantOne(tid, 'map0Win')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat([tid]); queueDeckSwap({id:tid, teach:teachingKeyOf(tid), forced:true}); setDialogueFlag('teach:' + teachingKeyOf(tid), true); }
           else if(mapNo === 0){
-            if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
+            // 2026-10-23 (package PR, owner: "I played 0-1 5 times and got a card reward 5 times"): the sure Map 0 card is a first clear's
+            // only; a repeat win gets the fight's card-drop roll (rollCardDrop, the panel's %) like any other fight. Was: every Map 0 win.
+            if(isFirstClear && !(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
             (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); }
           else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true}));
         } else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); // offered only when it clearly beats a deck card (2026-10-15)

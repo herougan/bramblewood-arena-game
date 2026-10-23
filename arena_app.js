@@ -39008,7 +39008,9 @@ async function resolveRoundCore(opts){
           const tid = teachingCardPick();
           if(tid && grantOne(tid, 'map0Win')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat([tid]); queueDeckSwap({id:tid, teach:teachingKeyOf(tid), forced:true}); setDialogueFlag('teach:' + teachingKeyOf(tid), true); }
           else if(mapNo === 0){
-            if(!(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
+            // 2026-10-23 (package PR, owner: "I played 0-1 5 times and got a card reward 5 times"): the sure Map 0 card is a first clear's
+            // only; a repeat win gets the fight's card-drop roll (rollCardDrop, the panel's %) like any other fight. Was: every Map 0 win.
+            if(isFirstClear && !(m.conquestCardsEarned||[]).length){ let id = factionReward(); if(!id){ id = trackPick(baseTrackPool()); if(id && !grantOne(id, 'map0Win')) id = null; } if(id) m.conquestCardsEarned = [id]; }
             (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); }
           else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true}));
         } else (m.conquestCardsEarned||[]).forEach(id=> queueDeckSwap({id, natural:true})); // offered only when it clearly beats a deck card (2026-10-15)

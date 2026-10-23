@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package PR: Map 0 repeat wins no longer always pay a card)
+- Owner: "I played 0-1 5 times and got a card reward 5 times." Map 0's sure card (a Faction Reward, else a base-track card; the 2026-10-13
+  rule "every win on Map 0 brings a card") is now paid on a fight's first clear only. A repeat win of a Map 0 fight rolls the normal card
+  drop shown on its panel (3% for 0-1). First clears are unchanged (0-1 one card, 0-2 the faction pack, 0-3 / 0-4 their card).
+- Checked, not a bug: 0-1 wins are recorded (one first clear, then repeats), and a cloud pull never undoes newer wins on the device
+  (headless repro with a mocked row like the owner's newer account). That account's cloud row is old because it has not signed in since
+  2026-10-22 15:18 UTC (no requests from it in the logs since); MK's healMapProgress opens Map 1 for a cleared Map 0.
+- Test: `tests/pr-2026-10-23.js`.
+
 ## 2026-10-23 (release: batch 10-23c)
 - Shipped together: LEAD, SX, BF11, BF12, DC2 (decisions sweep), MK (the map marker and the Map 0 self-heal) (entries below). FX4 and AR3 follow in the next release.
 - Release checks: full suite as the 10-23b release (darkness-1013 and skills-sk2b now pass); keywords-2026-10-14's Rabid Jackal check follows BF11's re-fit (2/2); raid-rb and shields follow SX's template and LEAD's 20-A-4 shield. e2e ui_smoke 0 failures (a first run timed out loading the page under load; the rerun passed), flows 0 issues.
