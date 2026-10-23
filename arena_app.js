@@ -23815,7 +23815,7 @@ function gdFightHTML(){
   const lum = me ? (me.lumber || 0) + (GD.pitch != null ? 1 : 0) : 0;
   const actions = !me ? '' : locked ? `<div class="gd-actions"><span class="gd-locked">🔒 ${escapeHtml(TX('ui.ar3-locked', {n: waitingN}))}</span></div>`
     : `<div class="gd-actions"><span class="gd-lumber" title="${escapeAttr(TX('ui.ar3-lumber'))}">🪵 ${lum}</span>
-      <button type="button" class="btn small" data-gd-act="pitch" ${GD.sel == null && GD.pitch == null ? 'disabled' : ''}>${escapeHtml(GD.sel != null ? TX('ui.ar3-pitch') : TX('ui.ar3-unpitch'))}</button>
+      <button type="button" class="btn small" data-gd-act="pitch" ${GD.sel == null && GD.pitch == null ? 'disabled' : ''}>${escapeHtml(GD.sel == null && GD.pitch != null ? TX('ui.ar3-unpitch') : TX('ui.ar3-pitch'))}</button>
       ${noCell ? `<button type="button" class="btn small" data-gd-act="playnocell">${escapeHtml(TX('ui.ar3-play-here'))}</button>` : ''}
       <button type="button" class="btn small" data-gd-act="clear" ${GD.sel == null && GD.pitch == null && !GD.play ? 'disabled' : ''}>${escapeHtml(TX('ui.ar3-clear'))}</button>
       <button type="button" class="btn primary gd-lock" data-gd-act="lock">${escapeHtml(GD.play || GD.pitch != null ? TX('ui.ar3-lock') : TX('ui.ar3-pass'))}</button></div>`;
