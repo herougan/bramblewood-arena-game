@@ -1,0 +1,2167 @@
+{
+ "generated": "2026-10-23",
+ "tool": "node tools/rw5_faction_pacing_2026_10_23.js",
+ "rules": "RW5: pool both sides + shared at the deck cap + 1 of each Base card (as the game builds it: every card whose source gives it; releasedOnly rows leave out the 30 still flagged unattainable); set rewards by FACTION_STANDARD_PATTERN (R skipped before Map 14, PP-2); random rewards (0-2 and end-of-map faction packs) by the gates",
+ "results": [
+  {
+   "side": "otters",
+   "endPacks": true,
+   "releasedOnly": false,
+   "seeds": 20,
+   "pool": {
+    "cards": 60,
+    "copies": 204,
+    "byRarity": {
+     "common": 110,
+     "uncommon": 59,
+     "rare": 26,
+     "veryrare": 4,
+     "epic": 1,
+     "high": 1,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 10,
+     "own": 22,
+     "other": 22,
+     "shared": 6
+    }
+   },
+   "median": {
+    "firstRare": 14,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 15,
+    "lastUncommonAny": 24,
+    "dryAt": null
+   },
+   "verdict": "inside the window (below Very Rare by Map 15, past Uncommons by Map 17)",
+   "receivedBy": {
+    "3": 26,
+    "7": 48,
+    "13": 74,
+    "15": 83,
+    "17": 91,
+    "20": 109
+   },
+   "tutorialSeed1": [
+    "shell-cracker (common)",
+    "rivergate-recruit (common)",
+    "sunfeather-scout (common)",
+    "otter-shieldback (uncommon)",
+    "nectar-sipper (common)",
+    "shellwright-apprentice (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 13,
+     "got": {
+      "common": 10,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 191,
+     "lowLeft": 182
+    },
+    {
+     "map": 1,
+     "received": 18,
+     "got": {
+      "common": 5
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 186,
+     "lowLeft": 177
+    },
+    {
+     "map": 2,
+     "received": 21,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 183,
+     "lowLeft": 174
+    },
+    {
+     "map": 3,
+     "received": 26,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 179,
+     "lowLeft": 170
+    },
+    {
+     "map": 4,
+     "received": 32,
+     "got": {
+      "uncommon": 2,
+      "common": 4
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "poolLeft": 173,
+     "lowLeft": 164
+    },
+    {
+     "map": 5,
+     "received": 36,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 169,
+     "lowLeft": 160
+    },
+    {
+     "map": 6,
+     "received": 43,
+     "got": {
+      "uncommon": 3,
+      "common": 4
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "poolLeft": 162,
+     "lowLeft": 153
+    },
+    {
+     "map": 7,
+     "received": 48,
+     "got": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 157,
+     "lowLeft": 148
+    },
+    {
+     "map": 8,
+     "received": 52,
+     "got": {
+      "common": 3,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 153,
+     "lowLeft": 144
+    },
+    {
+     "map": 9,
+     "received": 56,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 149,
+     "lowLeft": 140
+    },
+    {
+     "map": 10,
+     "received": 60,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "poolLeft": 145,
+     "lowLeft": 136
+    },
+    {
+     "map": 11,
+     "received": 65,
+     "got": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 140,
+     "lowLeft": 131
+    },
+    {
+     "map": 12,
+     "received": 70,
+     "got": {
+      "uncommon": 4,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 3
+     },
+     "poolLeft": 135,
+     "lowLeft": 126
+    },
+    {
+     "map": 13,
+     "received": 74,
+     "got": {
+      "uncommon": 3,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 2
+     },
+     "poolLeft": 131,
+     "lowLeft": 122
+    },
+    {
+     "map": 14,
+     "received": 78,
+     "got": {
+      "uncommon": 2,
+      "rare": 1,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "poolLeft": 127,
+     "lowLeft": 118
+    },
+    {
+     "map": 15,
+     "received": 83,
+     "got": {
+      "rare": 1,
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "rare": 1,
+      "uncommon": 2
+     },
+     "poolLeft": 122,
+     "lowLeft": 113
+    },
+    {
+     "map": 16,
+     "received": 87,
+     "got": {
+      "uncommon": 1,
+      "common": 2,
+      "rare": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "poolLeft": 118,
+     "lowLeft": 109
+    },
+    {
+     "map": 17,
+     "received": 91,
+     "got": {
+      "uncommon": 1,
+      "rare": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "poolLeft": 114,
+     "lowLeft": 105
+    },
+    {
+     "map": 18,
+     "received": 96,
+     "got": {
+      "rare": 4,
+      "common": 1
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 109,
+     "lowLeft": 100
+    },
+    {
+     "map": 19,
+     "received": 101,
+     "got": {
+      "rare": 3,
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 104,
+     "lowLeft": 95
+    },
+    {
+     "map": 20,
+     "received": 109,
+     "got": {
+      "rare": 4,
+      "uncommon": 1,
+      "common": 3
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 96,
+     "lowLeft": 87
+    },
+    {
+     "map": 21,
+     "received": 114,
+     "got": {
+      "common": 3,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 91,
+     "lowLeft": 82
+    },
+    {
+     "map": 22,
+     "received": 118,
+     "got": {
+      "common": 2,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 87,
+     "lowLeft": 78
+    },
+    {
+     "map": 23,
+     "received": 123,
+     "got": {
+      "common": 3,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 82,
+     "lowLeft": 73
+    },
+    {
+     "map": 24,
+     "received": 127,
+     "got": {
+      "common": 2,
+      "rare": 2
+     },
+     "set": {},
+     "poolLeft": 78,
+     "lowLeft": 69
+    }
+   ]
+  },
+  {
+   "side": "otters",
+   "endPacks": false,
+   "releasedOnly": false,
+   "seeds": 20,
+   "pool": {
+    "cards": 60,
+    "copies": 204,
+    "byRarity": {
+     "common": 110,
+     "uncommon": 59,
+     "rare": 26,
+     "veryrare": 4,
+     "epic": 1,
+     "high": 1,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 10,
+     "own": 22,
+     "other": 22,
+     "shared": 6
+    }
+   },
+   "median": {
+    "firstRare": 15,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 21,
+    "lastUncommonAny": 21,
+    "dryAt": null
+   },
+   "verdict": "too many: standard rewards still give Uncommons at Map 21",
+   "receivedBy": {
+    "3": 18,
+    "7": 32,
+    "13": 46,
+    "15": 51,
+    "17": 55,
+    "20": 67
+   },
+   "tutorialSeed1": [
+    "shell-cracker (common)",
+    "rivergate-recruit (common)",
+    "sunfeather-scout (common)",
+    "otter-shieldback (uncommon)",
+    "nectar-sipper (common)",
+    "shellwright-apprentice (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 11,
+     "got": {
+      "common": 8,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 193,
+     "lowLeft": 184
+    },
+    {
+     "map": 1,
+     "received": 14,
+     "got": {
+      "common": 3
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 190,
+     "lowLeft": 181
+    },
+    {
+     "map": 2,
+     "received": 15,
+     "got": {
+      "uncommon": 1
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 189,
+     "lowLeft": 180
+    },
+    {
+     "map": 3,
+     "received": 18,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 187,
+     "lowLeft": 178
+    },
+    {
+     "map": 4,
+     "received": 22,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "poolLeft": 183,
+     "lowLeft": 174
+    },
+    {
+     "map": 5,
+     "received": 24,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 181,
+     "lowLeft": 172
+    },
+    {
+     "map": 6,
+     "received": 29,
+     "got": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "poolLeft": 176,
+     "lowLeft": 167
+    },
+    {
+     "map": 7,
+     "received": 32,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 173,
+     "lowLeft": 164
+    },
+    {
+     "map": 8,
+     "received": 34,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 171,
+     "lowLeft": 162
+    },
+    {
+     "map": 9,
+     "received": 36,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 169,
+     "lowLeft": 160
+    },
+    {
+     "map": 10,
+     "received": 38,
+     "got": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "poolLeft": 167,
+     "lowLeft": 158
+    },
+    {
+     "map": 11,
+     "received": 41,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 164,
+     "lowLeft": 155
+    },
+    {
+     "map": 12,
+     "received": 44,
+     "got": {
+      "common": 2,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 2,
+      "uncommon": 1
+     },
+     "poolLeft": 161,
+     "lowLeft": 152
+    },
+    {
+     "map": 13,
+     "received": 46,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 159,
+     "lowLeft": 150
+    },
+    {
+     "map": 14,
+     "received": 48,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 157,
+     "lowLeft": 148
+    },
+    {
+     "map": 15,
+     "received": 51,
+     "got": {
+      "rare": 1,
+      "common": 2
+     },
+     "set": {
+      "rare": 1,
+      "common": 2
+     },
+     "poolLeft": 154,
+     "lowLeft": 145
+    },
+    {
+     "map": 16,
+     "received": 53,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 152,
+     "lowLeft": 143
+    },
+    {
+     "map": 17,
+     "received": 55,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 150,
+     "lowLeft": 141
+    },
+    {
+     "map": 18,
+     "received": 58,
+     "got": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "poolLeft": 147,
+     "lowLeft": 138
+    },
+    {
+     "map": 19,
+     "received": 61,
+     "got": {
+      "rare": 1,
+      "uncommon": 2
+     },
+     "set": {
+      "rare": 1,
+      "uncommon": 2
+     },
+     "poolLeft": 144,
+     "lowLeft": 135
+    },
+    {
+     "map": 20,
+     "received": 67,
+     "got": {
+      "uncommon": 4,
+      "rare": 2
+     },
+     "set": {
+      "uncommon": 4,
+      "rare": 2
+     },
+     "poolLeft": 138,
+     "lowLeft": 129
+    },
+    {
+     "map": 21,
+     "received": 70,
+     "got": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "poolLeft": 135,
+     "lowLeft": 126
+    },
+    {
+     "map": 22,
+     "received": 72,
+     "got": {
+      "rare": 2
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 133,
+     "lowLeft": 124
+    },
+    {
+     "map": 23,
+     "received": 75,
+     "got": {
+      "rare": 3
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 130,
+     "lowLeft": 121
+    },
+    {
+     "map": 24,
+     "received": 77,
+     "got": {
+      "rare": 2
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 128,
+     "lowLeft": 119
+    }
+   ]
+  },
+  {
+   "side": "otters",
+   "endPacks": true,
+   "releasedOnly": true,
+   "seeds": 20,
+   "pool": {
+    "cards": 26,
+    "copies": 81,
+    "byRarity": {
+     "common": 37,
+     "uncommon": 30,
+     "rare": 11,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 6,
+     "own": 9,
+     "other": 11
+    }
+   },
+   "median": {
+    "firstRare": 14,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 5,
+    "lastUncommonAny": 19,
+    "dryAt": 19
+   },
+   "verdict": "the pool runs dry at Map 19",
+   "receivedBy": {
+    "3": 24,
+    "7": 46,
+    "13": 62,
+    "15": 69,
+    "17": 73,
+    "20": 79
+   },
+   "tutorialSeed1": [
+    "dominion-nestguard (common)",
+    "crimson-wing-duelist-cadet (common)",
+    "shellwright-apprentice (common)",
+    "hummingbird-needler (uncommon)",
+    "helmeted-otter (common)",
+    "cobalt-talon-skirmisher (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 13,
+     "got": {
+      "common": 10,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 68,
+     "lowLeft": 65
+    },
+    {
+     "map": 1,
+     "received": 18,
+     "got": {
+      "common": 5
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 63,
+     "lowLeft": 60
+    },
+    {
+     "map": 2,
+     "received": 21,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 60,
+     "lowLeft": 57
+    },
+    {
+     "map": 3,
+     "received": 24,
+     "got": {
+      "uncommon": 2
+     },
+     "set": {
+      "uncommon": 2
+     },
+     "poolLeft": 58,
+     "lowLeft": 55
+    },
+    {
+     "map": 4,
+     "received": 30,
+     "got": {
+      "uncommon": 6
+     },
+     "set": {
+      "uncommon": 4
+     },
+     "poolLeft": 52,
+     "lowLeft": 49
+    },
+    {
+     "map": 5,
+     "received": 34,
+     "got": {
+      "uncommon": 3,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 48,
+     "lowLeft": 45
+    },
+    {
+     "map": 6,
+     "received": 41,
+     "got": {
+      "common": 5,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 41,
+     "lowLeft": 38
+    },
+    {
+     "map": 7,
+     "received": 46,
+     "got": {
+      "common": 2,
+      "uncommon": 3
+     },
+     "set": {},
+     "poolLeft": 36,
+     "lowLeft": 33
+    },
+    {
+     "map": 8,
+     "received": 50,
+     "got": {
+      "common": 2,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 32,
+     "lowLeft": 29
+    },
+    {
+     "map": 9,
+     "received": 52,
+     "got": {
+      "common": 2
+     },
+     "set": {},
+     "poolLeft": 30,
+     "lowLeft": 27
+    },
+    {
+     "map": 10,
+     "received": 54,
+     "got": {
+      "common": 2
+     },
+     "set": {},
+     "poolLeft": 28,
+     "lowLeft": 25
+    },
+    {
+     "map": 11,
+     "received": 57,
+     "got": {
+      "common": 3
+     },
+     "set": {},
+     "poolLeft": 25,
+     "lowLeft": 22
+    },
+    {
+     "map": 12,
+     "received": 60,
+     "got": {
+      "uncommon": 2,
+      "common": 1
+     },
+     "set": {},
+     "poolLeft": 22,
+     "lowLeft": 19
+    },
+    {
+     "map": 13,
+     "received": 62,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {},
+     "poolLeft": 20,
+     "lowLeft": 17
+    },
+    {
+     "map": 14,
+     "received": 66,
+     "got": {
+      "rare": 4
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 16,
+     "lowLeft": 13
+    },
+    {
+     "map": 15,
+     "received": 69,
+     "got": {
+      "rare": 3
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 13,
+     "lowLeft": 10
+    },
+    {
+     "map": 16,
+     "received": 71,
+     "got": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "set": {},
+     "poolLeft": 11,
+     "lowLeft": 8
+    },
+    {
+     "map": 17,
+     "received": 73,
+     "got": {
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 9,
+     "lowLeft": 6
+    },
+    {
+     "map": 18,
+     "received": 76,
+     "got": {
+      "uncommon": 2,
+      "rare": 1
+     },
+     "set": {},
+     "poolLeft": 6,
+     "lowLeft": 3
+    },
+    {
+     "map": 19,
+     "received": 79,
+     "got": {
+      "rare": 3
+     },
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 20,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 21,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 22,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 23,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 24,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    }
+   ]
+  },
+  {
+   "side": "hummingbirds",
+   "endPacks": true,
+   "releasedOnly": false,
+   "seeds": 20,
+   "pool": {
+    "cards": 60,
+    "copies": 204,
+    "byRarity": {
+     "common": 110,
+     "uncommon": 59,
+     "rare": 26,
+     "veryrare": 4,
+     "epic": 1,
+     "high": 1,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 10,
+     "other": 22,
+     "own": 22,
+     "shared": 6
+    }
+   },
+   "median": {
+    "firstRare": 14,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 16,
+    "lastUncommonAny": 24,
+    "dryAt": null
+   },
+   "verdict": "inside the window (below Very Rare by Map 15, past Uncommons by Map 17)",
+   "receivedBy": {
+    "3": 26,
+    "7": 48,
+    "13": 74,
+    "15": 83,
+    "17": 91,
+    "20": 109
+   },
+   "tutorialSeed1": [
+    "shell-cracker (common)",
+    "rivergate-recruit (common)",
+    "petal-fletcher (common)",
+    "otter-shieldback (uncommon)",
+    "daily-post (common)",
+    "hush-wing-spy (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 13,
+     "got": {
+      "common": 10,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 191,
+     "lowLeft": 182
+    },
+    {
+     "map": 1,
+     "received": 18,
+     "got": {
+      "common": 5
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 186,
+     "lowLeft": 177
+    },
+    {
+     "map": 2,
+     "received": 21,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 183,
+     "lowLeft": 174
+    },
+    {
+     "map": 3,
+     "received": 26,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 179,
+     "lowLeft": 170
+    },
+    {
+     "map": 4,
+     "received": 32,
+     "got": {
+      "uncommon": 2,
+      "common": 4
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "poolLeft": 173,
+     "lowLeft": 164
+    },
+    {
+     "map": 5,
+     "received": 36,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 169,
+     "lowLeft": 160
+    },
+    {
+     "map": 6,
+     "received": 43,
+     "got": {
+      "uncommon": 2,
+      "common": 5
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "poolLeft": 162,
+     "lowLeft": 153
+    },
+    {
+     "map": 7,
+     "received": 48,
+     "got": {
+      "uncommon": 1,
+      "common": 4
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 157,
+     "lowLeft": 148
+    },
+    {
+     "map": 8,
+     "received": 52,
+     "got": {
+      "common": 2,
+      "uncommon": 2
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 153,
+     "lowLeft": 144
+    },
+    {
+     "map": 9,
+     "received": 56,
+     "got": {
+      "common": 4
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 149,
+     "lowLeft": 140
+    },
+    {
+     "map": 10,
+     "received": 60,
+     "got": {
+      "uncommon": 1,
+      "common": 3
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "poolLeft": 145,
+     "lowLeft": 136
+    },
+    {
+     "map": 11,
+     "received": 65,
+     "got": {
+      "uncommon": 3,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 3
+     },
+     "poolLeft": 140,
+     "lowLeft": 131
+    },
+    {
+     "map": 12,
+     "received": 70,
+     "got": {
+      "uncommon": 3,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 3
+     },
+     "poolLeft": 135,
+     "lowLeft": 126
+    },
+    {
+     "map": 13,
+     "received": 74,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 2
+     },
+     "poolLeft": 131,
+     "lowLeft": 122
+    },
+    {
+     "map": 14,
+     "received": 78,
+     "got": {
+      "uncommon": 3,
+      "rare": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "poolLeft": 127,
+     "lowLeft": 118
+    },
+    {
+     "map": 15,
+     "received": 83,
+     "got": {
+      "rare": 2,
+      "uncommon": 2,
+      "common": 1
+     },
+     "set": {
+      "rare": 1,
+      "uncommon": 2
+     },
+     "poolLeft": 122,
+     "lowLeft": 113
+    },
+    {
+     "map": 16,
+     "received": 87,
+     "got": {
+      "rare": 2,
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 118,
+     "lowLeft": 109
+    },
+    {
+     "map": 17,
+     "received": 91,
+     "got": {
+      "rare": 2,
+      "uncommon": 1,
+      "common": 1
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 114,
+     "lowLeft": 105
+    },
+    {
+     "map": 18,
+     "received": 96,
+     "got": {
+      "rare": 4,
+      "common": 1
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 109,
+     "lowLeft": 100
+    },
+    {
+     "map": 19,
+     "received": 101,
+     "got": {
+      "rare": 3,
+      "common": 2
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 104,
+     "lowLeft": 95
+    },
+    {
+     "map": 20,
+     "received": 109,
+     "got": {
+      "common": 6,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 96,
+     "lowLeft": 87
+    },
+    {
+     "map": 21,
+     "received": 114,
+     "got": {
+      "common": 5
+     },
+     "set": {},
+     "poolLeft": 91,
+     "lowLeft": 82
+    },
+    {
+     "map": 22,
+     "received": 118,
+     "got": {
+      "common": 3,
+      "uncommon": 1
+     },
+     "set": {},
+     "poolLeft": 87,
+     "lowLeft": 78
+    },
+    {
+     "map": 23,
+     "received": 123,
+     "got": {
+      "common": 5
+     },
+     "set": {},
+     "poolLeft": 82,
+     "lowLeft": 73
+    },
+    {
+     "map": 24,
+     "received": 127,
+     "got": {
+      "common": 4
+     },
+     "set": {},
+     "poolLeft": 78,
+     "lowLeft": 69
+    }
+   ]
+  },
+  {
+   "side": "hummingbirds",
+   "endPacks": false,
+   "releasedOnly": false,
+   "seeds": 20,
+   "pool": {
+    "cards": 60,
+    "copies": 204,
+    "byRarity": {
+     "common": 110,
+     "uncommon": 59,
+     "rare": 26,
+     "veryrare": 4,
+     "epic": 1,
+     "high": 1,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 10,
+     "other": 22,
+     "own": 22,
+     "shared": 6
+    }
+   },
+   "median": {
+    "firstRare": 15,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 22,
+    "lastUncommonAny": 22,
+    "dryAt": null
+   },
+   "verdict": "too many: standard rewards still give Uncommons at Map 22",
+   "receivedBy": {
+    "3": 18,
+    "7": 32,
+    "13": 46,
+    "15": 51,
+    "17": 55,
+    "20": 67
+   },
+   "tutorialSeed1": [
+    "shell-cracker (common)",
+    "rivergate-recruit (common)",
+    "petal-fletcher (common)",
+    "otter-shieldback (uncommon)",
+    "daily-post (common)",
+    "hush-wing-spy (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 11,
+     "got": {
+      "common": 8,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 193,
+     "lowLeft": 184
+    },
+    {
+     "map": 1,
+     "received": 14,
+     "got": {
+      "common": 3
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 190,
+     "lowLeft": 181
+    },
+    {
+     "map": 2,
+     "received": 15,
+     "got": {
+      "uncommon": 1
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 189,
+     "lowLeft": 180
+    },
+    {
+     "map": 3,
+     "received": 18,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 187,
+     "lowLeft": 178
+    },
+    {
+     "map": 4,
+     "received": 22,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "poolLeft": 183,
+     "lowLeft": 174
+    },
+    {
+     "map": 5,
+     "received": 24,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 181,
+     "lowLeft": 172
+    },
+    {
+     "map": 6,
+     "received": 29,
+     "got": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 3
+     },
+     "poolLeft": 176,
+     "lowLeft": 167
+    },
+    {
+     "map": 7,
+     "received": 32,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 173,
+     "lowLeft": 164
+    },
+    {
+     "map": 8,
+     "received": 34,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 171,
+     "lowLeft": 162
+    },
+    {
+     "map": 9,
+     "received": 36,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 169,
+     "lowLeft": 160
+    },
+    {
+     "map": 10,
+     "received": 38,
+     "got": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 1
+     },
+     "poolLeft": 167,
+     "lowLeft": 158
+    },
+    {
+     "map": 11,
+     "received": 41,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "poolLeft": 164,
+     "lowLeft": 155
+    },
+    {
+     "map": 12,
+     "received": 44,
+     "got": {
+      "common": 2,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 2,
+      "uncommon": 1
+     },
+     "poolLeft": 161,
+     "lowLeft": 152
+    },
+    {
+     "map": 13,
+     "received": 46,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 159,
+     "lowLeft": 150
+    },
+    {
+     "map": 14,
+     "received": 48,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 157,
+     "lowLeft": 148
+    },
+    {
+     "map": 15,
+     "received": 51,
+     "got": {
+      "rare": 1,
+      "common": 2
+     },
+     "set": {
+      "rare": 1,
+      "common": 2
+     },
+     "poolLeft": 154,
+     "lowLeft": 145
+    },
+    {
+     "map": 16,
+     "received": 53,
+     "got": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 152,
+     "lowLeft": 143
+    },
+    {
+     "map": 17,
+     "received": 55,
+     "got": {
+      "common": 2
+     },
+     "set": {
+      "common": 2
+     },
+     "poolLeft": 150,
+     "lowLeft": 141
+    },
+    {
+     "map": 18,
+     "received": 58,
+     "got": {
+      "uncommon": 2,
+      "common": 1
+     },
+     "set": {
+      "uncommon": 2,
+      "common": 1
+     },
+     "poolLeft": 147,
+     "lowLeft": 138
+    },
+    {
+     "map": 19,
+     "received": 61,
+     "got": {
+      "rare": 1,
+      "common": 1,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 1,
+      "common": 1,
+      "uncommon": 1
+     },
+     "poolLeft": 144,
+     "lowLeft": 135
+    },
+    {
+     "map": 20,
+     "received": 67,
+     "got": {
+      "uncommon": 4,
+      "rare": 2
+     },
+     "set": {
+      "uncommon": 4,
+      "rare": 2
+     },
+     "poolLeft": 138,
+     "lowLeft": 129
+    },
+    {
+     "map": 21,
+     "received": 70,
+     "got": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "set": {
+      "rare": 2,
+      "uncommon": 1
+     },
+     "poolLeft": 135,
+     "lowLeft": 126
+    },
+    {
+     "map": 22,
+     "received": 72,
+     "got": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "set": {
+      "uncommon": 1,
+      "rare": 1
+     },
+     "poolLeft": 133,
+     "lowLeft": 124
+    },
+    {
+     "map": 23,
+     "received": 75,
+     "got": {
+      "rare": 3
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 130,
+     "lowLeft": 121
+    },
+    {
+     "map": 24,
+     "received": 77,
+     "got": {
+      "rare": 2
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 128,
+     "lowLeft": 119
+    }
+   ]
+  },
+  {
+   "side": "hummingbirds",
+   "endPacks": true,
+   "releasedOnly": true,
+   "seeds": 20,
+   "pool": {
+    "cards": 26,
+    "copies": 81,
+    "byRarity": {
+     "common": 37,
+     "uncommon": 30,
+     "rare": 11,
+     "superrare": 1,
+     "heroic": 2
+    },
+    "bySide": {
+     "base": 6,
+     "other": 9,
+     "own": 11
+    }
+   },
+   "median": {
+    "firstRare": 14,
+    "firstVeryRarePlus": null,
+    "firstVeryRarePlusSet": null,
+    "lastUncommonSet": 5,
+    "lastUncommonAny": 16,
+    "dryAt": 17
+   },
+   "verdict": "the pool runs dry at Map 17",
+   "receivedBy": {
+    "3": 26,
+    "7": 48,
+    "13": 67,
+    "15": 76,
+    "17": 79,
+    "20": 79
+   },
+   "tutorialSeed1": [
+    "crimson-wing-duelist-cadet (common)",
+    "sunthroat-courier (common)",
+    "dominion-nestguard (common)",
+    "hummingbird-needler (uncommon)",
+    "cobalt-talon-skirmisher (common)",
+    "shellwright-apprentice (common)"
+   ],
+   "perMapSeed1": [
+    {
+     "map": 0,
+     "received": 13,
+     "got": {
+      "common": 10,
+      "uncommon": 3
+     },
+     "set": {
+      "common": 6,
+      "uncommon": 3
+     },
+     "poolLeft": 68,
+     "lowLeft": 65
+    },
+    {
+     "map": 1,
+     "received": 18,
+     "got": {
+      "common": 5
+     },
+     "set": {
+      "common": 3
+     },
+     "poolLeft": 63,
+     "lowLeft": 60
+    },
+    {
+     "map": 2,
+     "received": 21,
+     "got": {
+      "uncommon": 1,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 1
+     },
+     "poolLeft": 60,
+     "lowLeft": 57
+    },
+    {
+     "map": 3,
+     "received": 26,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 2
+     },
+     "poolLeft": 56,
+     "lowLeft": 53
+    },
+    {
+     "map": 4,
+     "received": 32,
+     "got": {
+      "uncommon": 4,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 4
+     },
+     "poolLeft": 50,
+     "lowLeft": 47
+    },
+    {
+     "map": 5,
+     "received": 36,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {
+      "uncommon": 2
+     },
+     "poolLeft": 46,
+     "lowLeft": 43
+    },
+    {
+     "map": 6,
+     "received": 43,
+     "got": {
+      "common": 6,
+      "uncommon": 1
+     },
+     "set": {},
+     "poolLeft": 39,
+     "lowLeft": 36
+    },
+    {
+     "map": 7,
+     "received": 48,
+     "got": {
+      "common": 2,
+      "uncommon": 3
+     },
+     "set": {},
+     "poolLeft": 34,
+     "lowLeft": 31
+    },
+    {
+     "map": 8,
+     "received": 52,
+     "got": {
+      "uncommon": 2,
+      "common": 2
+     },
+     "set": {},
+     "poolLeft": 30,
+     "lowLeft": 27
+    },
+    {
+     "map": 9,
+     "received": 56,
+     "got": {
+      "common": 2,
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 26,
+     "lowLeft": 23
+    },
+    {
+     "map": 10,
+     "received": 59,
+     "got": {
+      "uncommon": 3
+     },
+     "set": {},
+     "poolLeft": 23,
+     "lowLeft": 20
+    },
+    {
+     "map": 11,
+     "received": 62,
+     "got": {
+      "common": 2,
+      "uncommon": 1
+     },
+     "set": {},
+     "poolLeft": 20,
+     "lowLeft": 17
+    },
+    {
+     "map": 12,
+     "received": 65,
+     "got": {
+      "uncommon": 3
+     },
+     "set": {},
+     "poolLeft": 17,
+     "lowLeft": 14
+    },
+    {
+     "map": 13,
+     "received": 67,
+     "got": {
+      "uncommon": 2
+     },
+     "set": {},
+     "poolLeft": 15,
+     "lowLeft": 12
+    },
+    {
+     "map": 14,
+     "received": 71,
+     "got": {
+      "rare": 4
+     },
+     "set": {
+      "rare": 2
+     },
+     "poolLeft": 11,
+     "lowLeft": 8
+    },
+    {
+     "map": 15,
+     "received": 76,
+     "got": {
+      "rare": 5
+     },
+     "set": {
+      "rare": 3
+     },
+     "poolLeft": 6,
+     "lowLeft": 3
+    },
+    {
+     "map": 16,
+     "received": 78,
+     "got": {
+      "rare": 1,
+      "uncommon": 1
+     },
+     "set": {},
+     "poolLeft": 4,
+     "lowLeft": 1
+    },
+    {
+     "map": 17,
+     "received": 79,
+     "got": {
+      "rare": 1
+     },
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 18,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 19,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 20,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 21,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 22,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 23,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    },
+    {
+     "map": 24,
+     "received": 79,
+     "got": {},
+     "set": {},
+     "poolLeft": 3,
+     "lowLeft": 0
+    }
+   ]
+  }
+ ]
+}

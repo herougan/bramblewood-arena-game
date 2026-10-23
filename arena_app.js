@@ -3689,7 +3689,7 @@ function cardObtainMap(d){
   if(s.kind === 'pack'){ if(Number(s.tier) === 99) return OBTAIN_MAP_OF.mystery; if(Number(s.tier) === 11) return OBTAIN_MAP_OF.pack;
     // 2026-10-22 (package DV): a basic-pack card comes no earlier than its map (source.map: the base track hands it out from there) and
     // its rarity's reveal (RARITY_INTRO); without a map, where the packs go on sale
-    const at = s.map ? mapNumberOf(s.map) : null; return Math.max(at != null ? at : OBTAIN_MAP_OF.pack, rarityIntroMap(d.rarity)); }
+    const at = s.map ? mapUnlockNumberOf(s.map) : null; return Math.max(at != null ? at : OBTAIN_MAP_OF.pack, rarityIntroMap(d.rarity)); } // RW5: a side map counts from the map that unlocks it
   return OBTAIN_MAP_OF[s.kind] != null ? OBTAIN_MAP_OF[s.kind] : 0;
 }
 // How a card can actually be obtained right now (null = it can't).
@@ -3729,7 +3729,7 @@ function cardWhereToGetText(d){
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
   if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
-  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */ : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
+  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */ : (Number(src.tier) || 1) <= 3 && packTierName(Number(src.tier) || 1) ? TX('ui.rw5-where-pack', {name: packTierName(Number(src.tier) || 1)}) /* RW5: its own pack */ : TX('ui.rw5-where-pack-later'));
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
@@ -3780,6 +3780,15 @@ function u3WireChipPeek(listEl){
   ['pointerup', 'pointercancel', 'pointerleave'].forEach(k=> listEl.addEventListener(k, ()=>{ clear(); hide(); }, {passive:true}));
   listEl.addEventListener('click', e=>{ if(held){ held = false; e.stopPropagation(); e.preventDefault(); } }, true);
   listEl.addEventListener('contextmenu', e=>{ if(e.target.closest('.conquest-map-item')) e.preventDefault(); });
+}
+// 2026-10-23 (package RW5, owner 19:27 item 15: "Submap cards are found in the Pack tier following the maps that unlock them"): the map number a
+// side map opens at: the later of its parent's number and the map its entry waits for (entry.afterMapCleared). A main map: its own number. A pack
+// card's source.map reads it (cardObtainMap, packCardReached), so a card of the Old Bramble (opens after Map 21) is not a Map 0 card.
+function mapUnlockNumberOf(mapId, seen){
+  const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
+  const n = mapNumberOf(mapId); if(!m.sub) return n; seen = seen || new Set(); if(seen.has(mapId)) return n; seen.add(mapId);
+  const after = m.entry && m.entry.afterMapCleared, an = after ? mapUnlockNumberOf(after, seen) : null;
+  return Math.max(n || 0, an || 0);
 }
 function mapNumberOf(mapId){
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
@@ -3932,10 +3941,15 @@ function mapBandOf(num){
 // pool 99 the advanced Mystery Booster.
 // 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): Factions, Packs and Mystery
 // Booster; the packs' names and "in every basic pack" moved to the tooltip.
-function packPoolSection(k){ return k === 11 ? {label:TX('ui.cx-sec-factions'), tip:TX('ui.cx-sec-factions-tip')} : k === 99 ? {label:TX('ui.cx-sec-mystery'), tip:TX('ui.cx-sec-mystery-tip')} : {label:TX('ui.cx-sec-packs'), tip:TX('ui.cx-sec-packs-tip')}; }
-function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : 1;
+function packPoolSection(k){ return k === 11 ? {label:TX('ui.cx-sec-factions'), tip:TX('ui.cx-sec-factions-tip')} : k === 99 ? {label:TX('ui.cx-sec-mystery'), tip:TX('ui.cx-sec-mystery-tip')}
+  : k >= 1 && k <= 3 && typeof packTierName === 'function' && packTierName(k) ? {label:TX('ui.rw5-cx-pack', {n: k, name: packTierName(k)}), tip:TX('ui.rw5-cx-pack-tip', {from: [0, 7, 14][k - 1], to: [6, 13, 20][k - 1]})} /* RW5 */
+  : k === 4 && typeof packTierName === 'function' ? {label:TX('ui.rw5-cx-pack-later'), tip:TX('ui.rw5-cx-pack-later-tip')} : {label:TX('ui.cx-sec-packs'), tip:TX('ui.cx-sec-packs-tip')}; }
+// 2026-10-23 (package RW5, item 15 and the 19:27 note: "the codex should name the pack, not just 'Packs'"): one section per pack tier, named
+// for its pack (Pack 1 · Hedgerow Pouch ...); tier 4 (after Map 20) is "Later packs".
+function packSectionOf(src, pre){ const t = Number(src.tier) || 1; const k = t === 99 ? 99 : (t >= 11 && t <= 13) ? 11 : (t >= 1 && t <= 4 ? t : 1);
   // 2026-10-13 (user: "Move the factions pool first, before the Base pool"): the factions' own cards lead the Codex.
-  return Object.assign({key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 3 : 1, 0, '']}, packPoolSection(k)); }
+  return Object.assign({key: pre + '-pk-' + k, order: k === 11 ? [-1, 0, 0, ''] : [2, k === 99 ? 9 : k, 0, '']}, packPoolSection(k)); }
+function packTierName(t){ const id = Object.keys(PACK_TIER_POOL).find(k=> PACK_TIER_POOL[k] === t); const p = id && SHOP_PACKS_DEFAULT.find(x=> x.id === id); return p ? p.name : null; }
 // Easter eggs' own Codex section (2026-10-19, package EE), last before the materia, in every view but the per-source ones.
 // 2026-10-19 (package CX): "Easter eggs", with "not obtainable yet" as its tooltip.
 function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], label:TX('ui.cx-sec-eggs'), tip:TX('ui.cx-sec-eggs-tip')}; }
@@ -4193,6 +4207,10 @@ let cloudCardAdmin = false;
 // every 30 s while the tab is visible, and straight away when you come back to the tab — and
 // redraws the map or Codex if something changed. (Polling, so no database change was needed.)
 let cloudOverridesSince = '';
+// Renamed card ids (2026-10-23, package RW5, HUB3's junk id): the old id's live card_overrides row is skipped (the card is in cards.json under the
+// new id; supabase/proposed/20261023_rw5_clear_ember_tetra.sql deletes the row on "apply it"), and a save's copies, unlock, levels and decks move
+// to the new id once (migrateRenamedCardIds).
+const CARD_ID_RENAMED = {'ember-tetra-3caj': 'ember-tetra'};
 async function pollCloudOverrides(){
   if(!sbClient || document.hidden || !cloudOverridesSince) return;
   try{
@@ -4202,6 +4220,7 @@ async function pollCloudOverrides(){
     data.forEach(r=>{
       if(r.updated_at > cloudOverridesSince) cloudOverridesSince = r.updated_at;
       if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); cfg = true; return; }
+      if(CARD_ID_RENAMED[r.id]) return; // 2026-10-23 (RW5): the live row of a renamed card (folded already)
       cloudOverrideIds.add(r.id); cards = true;
       if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
       else if(r.data && cloudCardData(r)){ liveCards[r.id] = cloudCardData(r); delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
@@ -4224,6 +4243,7 @@ async function loadCloudCardOverrides(){
     data.forEach(r=>{
       // `__cfg:*` rows are admin-published game config (e.g. map layouts), not cards.
       if(typeof r.id==='string' && r.id.startsWith('__cfg:')){ applyCloudCfgRow(r); return; }
+      if(CARD_ID_RENAMED[r.id]) return; // 2026-10-23 (RW5): the live row of a renamed card (folded already)
       cloudOverrideIds.add(r.id);
       if(r.deleted){ liveDeletes[r.id] = true; liveTombstones[r.id] = {id:r.id, __deleted:true, deletedSnapshot:r.deleted_snapshot, deletedAt:r.updated_at}; delete liveCards[r.id]; }
       else if(r.data && cloudCardData(r)){ liveCards[r.id] = cloudCardData(r); delete liveDeletes[r.id]; delete liveTombstones[r.id]; }
@@ -12984,8 +13004,14 @@ function cardBaseLevel(d){
   // come as Level 0 is the special thing."): the old 'otters' cards are faction 'base' now (Base cards: skirmish rewards, not packs)
   // and still start at Level 1; only the copies the tutorial hands out are Level 0 (tutorialCopyLevel0 below).
   if(d.faction || d.id==='wandering-traveller') return 1;
+  if(['bee-knight', 'forager-ant'].includes(d.derivedFrom || d.id)) return 1; // 2026-10-23 (package RW5, PP-3; the list is PP3_LEVEL1_BASE below, inline so the tools that lift this function alone still run)
   return (d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1;
 }
+// 2026-10-23 (package RW5, PP-3 default "Only tutorial base + babies", owner 19:27: "Which cards start at level 0? Only the tutorial base units
+// AND the baby cards"): the two Base cards the rule above still put at Level 0 although they are not tutorial base (HUB3's list: the old
+// shared basics Bee Knight and Forager Ant) start at Level 1, like every other Base card. The Sparrow Chick (a baby) stays at 0. The
+// tutorial's own Level 0 copies (tutorialCopyLevel0) are unchanged; TU2's faction Level 0 copies are off (FACTION_COPY_LEVEL0).
+const PP3_LEVEL1_BASE = new Set(['bee-knight', 'forager-ant']);
 // Level range per card (2026-10-11, user: "let me edit the stats PER level ... The start level and end level depend on the
 // rarity of the card. Base cards start at 0 ... Castles end at 20, Heroes end at 100"). Every rarity tops out at 10 for
 // now (that is what the Forge levels to); change a rarity here to give it a longer road.
@@ -14041,6 +14067,15 @@ function canAffordLevelUp(currentLevel, defId, uid){
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
 }
 let myDeckCounts = loadMyDeck();
+function migrateRenamedCardIds(){ // 2026-10-23 (package RW5): see CARD_ID_RENAMED
+  Object.entries(CARD_ID_RENAMED).forEach(([from, to])=>{ try{
+    if(myCardCopies[from]){ myCardCopies[to] = (myCardCopies[to] || []).concat(myCardCopies[from]); delete myCardCopies[from]; saveCardCopies(); }
+    if(myUnlockedCardIds.has(from)){ myUnlockedCardIds.delete(from); myUnlockedCardIds.add(to); saveUnlockedCardIds(true); }
+    if(myCardLevels[from] != null){ myCardLevels[to] = Math.max(myCardLevels[to] || 0, myCardLevels[from]); delete myCardLevels[from]; saveCardLevels(true); }
+    if(myDeckCounts && myDeckCounts[from]){ myDeckCounts[to] = (myDeckCounts[to] || 0) + myDeckCounts[from]; delete myDeckCounts[from]; try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
+  }catch(e){} });
+}
+try{ migrateRenamedCardIds(); }catch(e){}
 window.__bwMainDeck = ()=> myDeckCounts; // startMatchInner shadows the name with the chosen deck
 let myCharacterId = loadMyCharacter();
 function loadMyCharacter(){
@@ -15044,6 +15079,10 @@ const REFINE_LADDER = [
   {key:'prism', label:'Prism', cost:{dust:750, gold:1750, gems:5}},
   {key:'gold', label:'Gold leaf', cost:{dust:1000, gold:2250, gems:10}},
 ];
+// 2026-10-23 (package RW5, owner 19:27 item 14: "Foil treatment 'upgrade fragments' needed/bars need 10% more"): every Refine step (the foil
+// finish ladder, the Forge's ✨ Refine) costs 10% more Dust, Maple Leaves and Gold Leaves (rounded up). The table above keeps the old numbers.
+const REFINE_COST_MULT = 1.1;
+REFINE_LADDER.forEach(st=>{ if(st.cost) Object.keys(st.cost).forEach(k=> st.cost[k] = Math.ceil(st.cost[k] * REFINE_COST_MULT - 1e-9)); });
 function copyRefineRank(c){
   if(!c || !c.foil) return 0;
   const i = REFINE_LADDER.findIndex(r=> r.key === (c.finish || 'auto'));
@@ -22513,7 +22552,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // through the tutorial flow (tutorialRewardIds, tutorialRewards2 for your side), not the node's reward list, so their First Clear box
   // was empty. It shows those cards now; no rank is ever needed and a won tutorial greys them all.
   const isTutNode = !!(node && node.kind === 'tutorial');
-  const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both') : tutorialRewardIds(); }catch(e){ return []; } })() : nodeFirstClearCardIds(mapId, node.key); // + a first-clear pack card (GD2, GD-5)
+  const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both', loadTutorialDone() ? undefined : 'peek' /* RW5: Part 1's draw comes first */) : tutorialRewardIds(); }catch(e){ return []; } })() : nodeFirstClearCardIds(mapId, node.key); // + a first-clear pack card (GD2, GD-5)
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   // 2026-10-23 (package RW4, owner 13:16 #7 and #14: "Hovering a first-clear reward explains it (which pack, which item, which resources). Items shouldn't
@@ -25610,7 +25649,7 @@ function grantRaidShards(raidId, n){
 function raidRewardPools(def){
   const defs = getCardDefs(), w = id=> legendaryHeldBack(defs[id]) ? 0 : Math.max(0, +(PACK_RARITY_WEIGHT[defs[id].rarity || 'common'] ?? 4) || 0);
   let faction = []; try{ faction = factionTrackPool(); }catch(e){}
-  return {pack: packCardPool(defs, 1, false, true /* RW3: gated, a raid claim is not a pack */), faction, raid: raidCardIds(def), rarityOf: id=> (defs[id] || {}).rarity || 'common', weight: w};
+  return {pack: packCardPool(defs, 'basic', false, true /* RW3: gated, a raid claim is not a pack; RW5: every pack tier */), faction, raid: raidCardIds(def), rarityOf: id=> (defs[id] || {}).rarity || 'common', weight: w};
 }
 // What a claim's cards are, granted: [{id, from:'pack'|'faction'|'raid'}].
 function grantRaidRewardCards(def, rw){
@@ -27345,7 +27384,24 @@ const STARTER_SHOWN = 8, STARTER_BASE_SIZE = 17;
 const PG_STARTER_TOP_UP = ['pond-duck', 'acorn-chipmunk', 'cottontail', 'chipmunk-forager', 'river-carp', 'burrow-rabbit', 'meadow-rabbit', 'duckling', 'harvest-mouse', 'sheep', 'garden-snail', 'earthworm', 'guppy'];
 function starterTopUpList(cfg){ const t = cfg && Array.isArray(cfg.starterTopUp) ? cfg.starterTopUp : null;
   return !t || JSON.stringify(t) === JSON.stringify(PG_STARTER_TOP_UP) ? STARTER_CFG_DEFAULT.starterTopUp : t; }
-function starterDeckTarget(pick){ let r = 0; try{ r = tutorialRewardIds().length + tutorialRewards2(pick || 'both').length; }catch(e){} return Math.max(STARTER_SHOWN, DECK_SIZE - r); }
+function starterDeckTarget(pick){ let r = 0; try{ r = typeof TUTORIAL_FACTION_REWARDS !== 'undefined' && TUTORIAL_FACTION_REWARDS ? TUTORIAL_FACTION_REWARDS[0] + TUTORIAL_FACTION_REWARDS[1] /* RW5 */ : tutorialRewardIds().length + tutorialRewards2(pick || 'both').length; }catch(e){} return Math.max(STARTER_SHOWN, DECK_SIZE - r); }
+// The tutorial's rewards are faction rewards (2026-10-23, package RW5, owner 19:27 item 10: "Change the otter/hummingbird rewards to just the
+// faction card rewards x3, then x3 again ... I don't want uncommons and rares being divvied out so fast"): Part 1 pays 3 set faction rewards,
+// Part 2 3 more (the standard pattern's first six steps: C, C, C, then U, C, C), drawn out of the faction pool once (factionDrawSet) and kept
+// in TUT_FACTION_RW_KEY so the results screen, the deck window and the grant show the same cards. The editor's Part 1 / Part 2 lists (and the
+// live __cfg:tutorial row's rewards2) are not read while this is on; null brings them back.
+const TUTORIAL_FACTION_REWARDS = [3, 3];
+const TUT_FACTION_RW_KEY = 'bramblewood_tut_faction_rewards_v1';
+PROGRESS_KEYS.push(TUT_FACTION_RW_KEY);
+function tutorialFactionRewards(stage, forGrant){ // forGrant: true = the grant (may draw), 'peek' = never draw (the admin editor)
+  if(!TUTORIAL_FACTION_REWARDS) return null;
+  let o = {}; try{ o = JSON.parse(localStorage.getItem(TUT_FACTION_RW_KEY) || '{}') || {}; }catch(e){ o = {}; }
+  const defs = getCardDefs(); if(Array.isArray(o[stage])) return o[stage].filter(id=> defs[id]);
+  if(forGrant === 'peek' || !loadFactionChoice() || (typeof matchState !== 'undefined' && matchState && matchState.adminTest)) return [];
+  if(forGrant !== true && (stage === 2 ? loadTutorial2Done() : loadTutorialDone())) return []; // past it already (a save from before RW5): nothing to draw
+  const ids = factionDrawSet(TUTORIAL_FACTION_REWARDS[stage - 1]); o[stage] = ids;
+  try{ localStorage.setItem(TUT_FACTION_RW_KEY, JSON.stringify(o)); }catch(e){} return ids;
+}
 function starterDeckParts(pick){
   const defs = getCardDefs(), cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT;
   const side = pick==='otters' ? cfg.starterOtters : pick==='hummingbirds' ? cfg.starterHummingbirds : cfg.starterBoth;
@@ -27368,11 +27424,13 @@ function starterDeckParts(pick){
   ids.slice(0, Math.max(STARTER_SHOWN, target - keepWeak.length)).concat(keepWeak).slice(0, target).forEach((id, i)=>{ (i < STARTER_SHOWN ? shown : hidden)[id] = 1; all[id] = 1; });
   return {shown, hidden, all};
 }
-function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
+function tutorialRewardIds(forGrant){ if(TUTORIAL_FACTION_REWARDS) return tutorialFactionRewards(1, forGrant); // RW5
+  const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
   // an older saved config listed all three rewards for part 1; the part-2 cards now come with part 2
   return (Array.isArray(cfg.rewards) ? cfg.rewards : STARTER_CFG_DEFAULT.rewards).filter(id=> getCardDefs()[id] && !later.has(id) && !TUTORIAL_REWARD_RETIRED.has(id)); } // + RW3: a retired reward (the Quarry Mole) is skipped
 function tutorialRewards2Cfg(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || {}; return Object.assign({}, STARTER_CFG_DEFAULT.rewards2, cfg.rewards2 || {}); }
-function tutorialRewards2(pick){ const r = tutorialRewards2Cfg(); return (r[pick] || r.both || []).filter(id=> getCardDefs()[id]); }
+function tutorialRewards2(pick, forGrant){ if(TUTORIAL_FACTION_REWARDS) return tutorialFactionRewards(2, forGrant); // RW5
+  const r = tutorialRewards2Cfg(); return (r[pick] || r.both || []).filter(id=> getCardDefs()[id]); }
 function rivalOf(pick){ return pick==='otters' ? 'hummingbirds' : (pick==='hummingbirds' ? 'otters' : 'both'); }
 // Wait-0 vs Wait-1 Basics, split straight off card data. For a plain single-faction pick this is
 // just basicCardIds filtered by wait; for the 'both' fallback pick it evenly mixes both rosters
@@ -27728,7 +27786,7 @@ function openTutorialRewardsEditor(mapId, nodeKey, node){
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'nodeRewardsOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   const st = node.stage === 2 ? 2 : 1, sides = st === 2 ? ['otters', 'hummingbirds', 'both'] : [null];
   let q = '', side = st === 2 ? (loadFactionChoice() || 'both') : null;
-  const listOf = sd=> st === 1 ? tutorialRewardIds().slice() : (tutorialRewards2Cfg()[sd] || []).filter(id=> getCardDefs()[id]);
+  const listOf = sd=> st === 1 ? (tutorialRewardIds('peek') || []).slice() : (tutorialRewards2Cfg()[sd] || []).filter(id=> getCardDefs()[id]);
   const save = async (sd, ids)=>{ const next = Object.assign({}, tutorialCfg);
     if(st === 1) next.rewards = ids; else next.rewards2 = Object.assign({}, tutorialRewards2Cfg(), {[sd]: ids});
     tutorialCfg = Object.assign({}, TUTORIAL_CFG_DEFAULT, next); const pub = await publishTutorialCfg();
@@ -27797,7 +27855,8 @@ function openTutorialEditor(){
       ${deckBox('teStOtters', 'Otters', c.starterOtters, 4)}
       ${deckBox('teStHb', 'Hummingbirds', c.starterHummingbirds, 4)}
       ${deckBox('teStBoth', 'Picked both', c.starterBoth, 4)}
-      ${deckBox('teRewards', 'Part 1 reward', tutorialRewardIds().reduce((o, id)=>{ o[id] = (o[id]||0) + 1; return o; }, {}), 4, true)}
+      ${TUTORIAL_FACTION_REWARDS ? `<p class="panel-sub rw5-tut-note">${escapeHtml(TX('ui.rw5-tut-faction-note', {a: TUTORIAL_FACTION_REWARDS[0], b: TUTORIAL_FACTION_REWARDS[1]}))}</p>` : '' /* 2026-10-23 (package RW5) */}
+      ${deckBox('teRewards', 'Part 1 reward', tutorialRewardIds('peek').reduce((o, id)=>{ o[id] = (o[id]||0) + 1; return o; }, {}), 4, true)}
       ${['otters','hummingbirds','both'].map(f=> deckBox('teRw2_' + f, `Part 2 rewards <small>(${f === 'both' ? 'picked both' : f})</small>`, (tutorialRewards2Cfg()[f]||[]).reduce((o, id)=>{ o[id] = (o[id]||0) + 1; return o; }, {}), 3, true)).join('')}
     </div>
     <h3>Guided steps</h3>
@@ -28239,7 +28298,7 @@ function claimTutorialWin(pick){
   return firstTime;
 }
 function grantTutorialSeriesRewards(pick){
-  const rewardIds = tutorialRewardIds();
+  const rewardIds = tutorialRewardIds(true); // RW5: the grant may draw them
   rewardIds.forEach(id=> unlockCardForPlayer(id, 'tutorialReward'));
   return rewardIds;
 }
@@ -28253,6 +28312,7 @@ function grantTutorialSeriesRewards(pick){
 // skirmishes start at their normal level (grantCardCopy).
 function isTutorialCopySource(source){ return source === 'tutorialReward' || source === 'tutorialBonus' || source === 'starterDeck'; }
 function tutorialMarkLevel0(id, c){
+  if(typeof tutorialCopyKeepsLevel === 'function' && tutorialCopyKeepsLevel(id)) return; // 2026-10-23 (package RW5, PP-3): a faction reward keeps its level
   const d = copyBaseDef(id); if(!d || !c) return;
   c.level = 0; c.tut = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
 }
@@ -28283,9 +28343,14 @@ function tutorialStarterCopiesLevel0(deck){
 // copy of a faction card comes as a Level 0 copy (c.lv0, and the hatchling mark while no copy is above 0) that the Nest trains to
 // Level 1 with Kibble. Only while the card has no copy above Level 0: a card you have already raised keeps its level. Copies owned
 // before today are left as they are. The Wandering Traveller (no faction) still comes at Level 1.
+// 2026-10-23 (package RW5, PP-3 default, owner 19:27: "Only the tutorial base units AND the baby cards" start at Level 0): off. A new faction
+// copy comes at the card's own level again (Level 1). The tutorial's faction rewards (TUTORIAL_FACTION_REWARDS) keep it too.
+const FACTION_COPY_LEVEL0 = false;
+function isFactionPoolDef(d){ const s = d && cardSourceOf(d); return !!(s && s.kind === 'pack' && (parseInt(s.tier, 10) || 1) === 11); }
+function tutorialCopyKeepsLevel(id){ try{ return !FACTION_COPY_LEVEL0 && isFactionPoolDef(copyBaseDef(id)); }catch(e){ return false; } }
 function isFactionLevel0Def(d){ return !!(d && d.faction && d.id !== 'wandering-traveller' && !d.token && d.cardType !== 'materia' && d.cardType !== 'equipment'); }
 function factionCopyLevel0(id){
-  try{ if(!copyModelOn()) return; const d = copyBaseDef(id); if(!isFactionLevel0Def(d)) return;
+  try{ if(!FACTION_COPY_LEVEL0 || !copyModelOn()) return; const d = copyBaseDef(id); if(!isFactionLevel0Def(d)) return;
     const a = myCardCopies[id] || [], c = a[a.length - 1]; if(!c) return;
     if(a.slice(0, -1).some(x=> x && copyLevel(id, x) > 0) || (myCardLevels[id] | 0) > cardBaseLevel(d)) return;
     c.level = 0; c.lv0 = 1; if(cardBaseLevel(d) > 0) c.hatch = 1;
@@ -30976,6 +31041,20 @@ async function loadAdminPlayers(){
     ${(rows||[]).map(r=> `<tr><td>${escapeHtml(r.display_name || '(no name)')}${r.is_admin ? ' 🛠️' : ''}<small>${escapeHtml(r.friend_code||'')}</small></td><td>${ago(r.last_seen_at || r.created_at)}</td><td>${escapeHtml(String(lvl(r)))}</td><td>${escapeHtml(tut(r))}</td><td>${r.cards_unlocked ?? 0}</td><td>${r.wins ?? 0} / ${r.matches ?? 0}</td></tr>`).join('')}
   </tbody></table></div>`;
 }
+// Admin: every resource at once (2026-10-23, package RW5, owner 19:27 item 10: "As an admin, let me press a button to get 99,999 of each
+// resource - then also zero it out"): every currency (CURRENCY_META: Maple Leaves, Gold Leaves, Dust, Metal, Krooni, Laurels, Kibble, Beer
+// ...), the four Materia crystals, every raid's trophy shards and your Raid Tickets to n (0 or ADMIN_RESOURCE_MAX). Energy has its own refill.
+const ADMIN_RESOURCE_MAX = 99999;
+function adminSetAllResources(n){
+  if(!adminAllowed()) return false; n = Math.max(0, Math.floor(+n || 0));
+  Object.keys(CURRENCY_META).forEach(k=> myCurrencies[k] = n);
+  try{ const st = materiaStore(); MATERIA_KINDS.forEach(k=> st[k.id] = n); saveMateria(); }catch(e){}
+  try{ const sh = {}; (typeof allRaidDefs === 'function' ? allRaidDefs() : []).forEach(r=>{ if(n) sh[r.id] = n; }); myCurrencies.raidShards = sh; }catch(e){}
+  saveCurrencies();
+  try{ adminSetRaidTickets(n); }catch(e){}
+  try{ refreshShopAfford && refreshShopAfford(); }catch(e){}
+  return true;
+}
 function renderAdmin(){
   const root = document.getElementById('view-admin'); if(!root) return;
   const flat = flattenConquestNodes();
@@ -30986,7 +31065,8 @@ function renderAdmin(){
     </div>
     <div class="panel admin-subpanel"><h3>💰 My currencies</h3><p class="panel-sub">Set your own balances (admins only). Saved to this browser and, where the cloud has a column for it, to your account.</p>
       <div class="admin-cur-row">${Object.keys(CURRENCY_META).map(k=> `<label>${CURRENCY_META[k].glyph} ${escapeHtml(CURRENCY_META[k].label)}<input type="number" min="0" step="1" data-admin-cur="${k}" value="${Math.floor(myCurrencies[k]||0)}"></label>`).join('')}</div>
-      <button type="button" class="btn small primary" id="adminCurSave">💾 Set balances</button></div>
+      <button type="button" class="btn small primary" id="adminCurSave">💾 Set balances</button>
+      <div class="rw5-admin-res"><button type="button" class="btn small" id="adminResMax">${escapeHtml(TX('ui.rw5-admin-res-max', {n: ADMIN_RESOURCE_MAX.toLocaleString('en-US')}))}</button><button type="button" class="btn small ghost" id="adminResZero">${escapeHtml(TX('ui.rw5-admin-res-zero'))}</button></div></div>
     <div class="panel admin-subpanel"><h3>🎫 ${escapeHtml(TX('ui.raid-tickets'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.ar-admin-rt-sub', {cap: RAID_POINTS_MAX}))}</p>${adminRaidTicketsHTML('admin') /* 2026-10-21 (package AR) */}</div>
     <div class="panel admin-subpanel"><h3>📣 World call-out</h3><p class="panel-sub">Everyone online sees it within 3 minutes, and anyone who logs in within a day. GM messages show 📣, events 🌍.</p>
       <div class="admin-cur-row"><select id="adminWeKind"><option value="gm">📣 GM message</option><option value="event">🌍 Event</option></select><input type="text" id="adminWeTitle" maxlength="140" placeholder="Headline"><input type="text" id="adminWeBody" maxlength="600" placeholder="Details (optional)"><label>Hours <input type="number" id="adminWeHours" min="0" value="24" class="w-60"></label></div>
@@ -31096,6 +31176,9 @@ function renderAdmin(){
   { const cs = document.getElementById('adminCurSave'); if(cs) cs.onclick = ()=>{ if(!adminAllowed()){ showToast('Admins only.', 'warn'); return; }
       document.querySelectorAll('[data-admin-cur]').forEach(i=>{ const v = Math.max(0, Math.floor(Number(i.value)||0)); myCurrencies[i.dataset.adminCur] = v; });
       saveCurrencies(); try{ refreshShopAfford && refreshShopAfford(); }catch(e){} showToast('💰 Balances set.', 'ok'); }; }
+  [['adminResMax', ADMIN_RESOURCE_MAX], ['adminResZero', 0]].forEach(([bid, v])=>{ const b = document.getElementById(bid); if(b) b.onclick = ()=>{ // 2026-10-23 (package RW5)
+    if(!adminAllowed()){ showToast('Admins only.', 'warn'); return; } adminSetAllResources(v); renderAdmin();
+    showToast(TX(v ? 'toast.rw5-admin-res-max' : 'toast.rw5-admin-res-zero', {n: ADMIN_RESOURCE_MAX.toLocaleString('en-US')}), 'ok'); }; });
   const devModeChk = document.getElementById('adminDevModeChk');
   if(devModeChk) devModeChk.addEventListener('change', e=>{
     setDevMode(e.target.checked);
@@ -32984,7 +33067,7 @@ function renderMatchUI(){
   // clicked. Always clickable (not gated on m.resolving) so the pace can be set ahead of time.
   if(ffBtn){
     const steps = speedSteps();
-    if(!m._speedInit){ m._speedInit = true; const keep = keptSpeed(); if(keep && steps.includes(keep) && m.speedMult === 1){ m.speedMult = keep; } }
+    if(!m._speedInit){ m._speedInit = true; const keep = keptSpeed(); if(keep && steps.includes(keep) && m.speedMult === 1){ m.speedMult = keep; } try{ speedUnlockBanner(m, ffBtn); }catch(e){} /* RW5: "2× unlocked!" */ }
     ffBtn.innerHTML = ffBtnLabel(m.speedMult); ffBtn.title = steps.length > 1 ? ffBtnTitle(m.speedMult) : 'Faster playback opens after your first skirmish';
     if(steps.length < 2) ffBtn.setAttribute('aria-disabled', 'true');
     // 2026-10-14 (user: "I don't know how to go back in speed. it always goes to 5x, then 1x. Include the 0.5x. Anyway, shift click
@@ -33112,7 +33195,7 @@ function renderMatchUI(){
         // came from (endMatch put it back, still without its title); the Outskirts, with their zoom-out and title card, only load once
         // the cards are in the deck and the window has gone. Was: toMap first, so the Outskirts title played under the window.
         const onToMap = ()=>{ toMap(null); after(); }; // the training-wheels dialogue says it (2026-10-12: fewer toasts)
-        if(first) popTutorialRewardStep(()=> openDeckTopUpStep(tutorialRewards2(pick), onToMap), onToMap); else onToMap();
+        if(first) popTutorialRewardStep(()=> openDeckTopUpStep(tutorialRewards2(pick, true /* RW5: the grant may draw them */), onToMap), onToMap); else onToMap();
         return;
       }
       if(mode==='dungeon'){
@@ -33673,6 +33756,27 @@ const SPEED_KEEP_KEY = 'bramblewood_speed_keep_v1';
 // is cleared, 4× at Map 40 and 5× at Map 60 (were Maps 2, 15 and 30). Map numbers are play order (mainConquestMaps, Map 0 first),
 // as the Forge's Map 11. A locked speed is left out of the cycle; Admin Mode has them all. 1.5× and 2× keep their gates.
 const SPEED_GATES = [{speed:3, map:20}, {speed:4, map:40}, {speed:5, map:60}];
+// 2026-10-23 (package RW5, owner 19:27 item 18: "Push 2x speed to be unlocked 1 map ahead. And it to be announced! liek 2x unlocked, in the
+// skirmish. Remember my 2x setting across skirmishes. Push 3x, 4x, 5x to further maps ahead. Like Map 20, 40, 60."): 2× opens with Map 0
+// cleared (its last fight), one map before the first elite (1-5) that opened it; the speed you pick is kept from fight to fight from the
+// start (SPEED_KEEP_ALWAYS; was only after Map 5); the first fight after a fast speed opens says so ("2× unlocked!", speedUnlockBanner).
+// 3×, 4×, 5× stay at Maps 20, 40, 60 (BU).
+const SPEED_2X_MAP = 0, SPEED_KEEP_ALWAYS = true, SPEED_ANNOUNCED_KEY = 'bramblewood_speed_announced_v1';
+function speedUnlockNews(steps){
+  let seen = []; try{ seen = JSON.parse(localStorage.getItem(SPEED_ANNOUNCED_KEY) || '[]') || []; }catch(e){ seen = []; }
+  const fresh = (steps || []).filter(s=> s > 1 && !seen.includes(s)); if(!fresh.length) return null;
+  try{ localStorage.setItem(SPEED_ANNOUNCED_KEY, JSON.stringify([...new Set(seen.concat(fresh))])); }catch(e){}
+  return Math.max(...fresh);
+}
+function speedUnlockBanner(m, ffBtn){
+  if(!m || adminModeEnabled || !(m.mode === 'conquest' || m.mode === 'dungeon')) return; // a skirmish (Admin Mode has every speed)
+  const sp = speedUnlockNews(speedSteps()); if(!sp) return;
+  const b = document.createElement('div'); b.className = 'rw5-speed-banner'; b.setAttribute('role', 'status');
+  b.innerHTML = `<b>${escapeHtml(TX('ui.rw5-speed-unlocked', {speed: sp}))}</b><small>${escapeHtml(TX('ui.rw5-speed-unlocked-tip'))}</small>`;
+  document.body.appendChild(b);
+  try{ if(ffBtn) ffBtn.classList.add('rw5-ff-new'); }catch(e){}
+  setTimeout(()=>{ b.classList.add('is-out'); setTimeout(()=>{ b.remove(); try{ ffBtn && ffBtn.classList.remove('rw5-ff-new'); }catch(e){} }, 700); }, 3200);
+}
 // The cycle for a player's progress (pure, unit-tested: tests/bu-2026-10-19.js). p: {admin, firstWin, firstElite, cleared(n)}.
 function speedStepsFor(p){
   // 2026-10-14 (user: "it always goes to 5x, then 1x. Include the 0.5x."): Admin Mode returned early with every fast speed and
@@ -33681,7 +33785,7 @@ function speedStepsFor(p){
   const out = [1];
   try{
     if(p && p.firstWin) out.push(1.5);
-    if(p && p.firstElite) out.push(2);
+    if(p && (p.firstElite || (p.cleared && p.cleared(typeof SPEED_2X_MAP !== 'undefined' ? SPEED_2X_MAP : 0)))) out.push(2); // 2026-10-23 (package RW5): or Map 0 cleared
     SPEED_GATES.forEach(g=>{ if(p && p.cleared && p.cleared(g.map)) out.push(g.speed); });
   }catch(e){}
   out.push(0.5); // 2026-10-14 (user: "We need a 0.5x mode."): slow motion is always there, last in the cycle before normal
@@ -33716,7 +33820,7 @@ function speedLockedHints(){
 // GSAP's lag smoothing is also off while a round plays, so a long frame (a phone, a heavy shader) can't leave the lunges behind the
 // timer-driven numbers and deaths either.
 function syncFightTimeScale(m){ try{ if(hasGsap()){ gsap.globalTimeline.timeScale(1); gsap.ticker.lagSmoothing(m && m.resolving ? 0 : 500, 33); } }catch(e){} }
-function speedKeeps(){ try{ const mains = mainConquestMaps(); return adminModeEnabled || !!(mains[5] && conquestMapCleared(mains[5].id)); }catch(e){ return false; } }
+function speedKeeps(){ if(SPEED_KEEP_ALWAYS) return true; /* RW5 */ try{ const mains = mainConquestMaps(); return adminModeEnabled || !!(mains[5] && conquestMapCleared(mains[5].id)); }catch(e){ return false; } }
 function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getItem(SPEED_KEEP_KEY) || 0; }catch(e){ return 0; } }
 function ffBtnLabel(mult){ if(mult > 0 && mult < 1) return `<span class="ff-arrows">▷</span> ${mult}×`; const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
 // 2026-10-14: the tooltip names the whole cycle and how to go back (Shift-click, or a long press on a touch screen).
@@ -39150,7 +39254,7 @@ async function resolveRoundCore(opts){
       // Card drops (2026-10-12, 11:39 list): any win can drop one of the enemy's cards. See rollCardDrop.
       if(!opening) try{ const cd = rollCardDrop((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, m.conquestNode.mapId, {rank, firstClear: !!isFirstClear}); /* 2026-10-22 (RW): the win's rank gates the drop; + firstClear (GD): a repeat win of a reward-card skirmish rolls 21% */ if(cd){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(cd); m.conquestCardDrop = cd; } }catch(e){}
       // Map table rewards (2026-10-12): free packs on a map's boss first clear, and Base cards grow from bosses.
-      try{ const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; }catch(e){}
+      try{ lastMapEndPacks = null; const fp = grantMapFreePack(m.conquestNode.mapId, m.conquestNode.nodeId, isFirstClear); if(fp && fp.held) m.conquestPackHeld = fp.id; else if(fp) m.conquestFreePack = fp; if(lastMapEndPacks) m.conquestEndPacks = lastMapEndPacks; /* RW5: the end-of-map packs */ }catch(e){}
       try{ const bx = baseCardBossGrowth((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode, isFirstClear); if(bx) m.conquestBaseGrowth = bx; }catch(e){}
       // Errands (2026-10-12): sometimes someone on the road asks a favour once the result screen has settled.
       setTimeout(()=>{ try{ maybeOfferErrand(); }catch(e){} }, 2600);
@@ -41520,6 +41624,7 @@ function rewardsPanelHTML(m){
   if(m.conquestFactionPack) packRefs.push({kind:'faction', id:m.conquestFactionPack});
   if(m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned]) packRefs.push({kind:'faction', id:m.conquestPackEarned});
   if(m.conquestFreePack) packRefs.push({kind:'free', id:m.conquestFreePack});
+  (m.conquestEndPacks || []).forEach(r=> packRefs.push(r)); // 2026-10-23 (package RW5): the end-of-map pack of 3 and faction pack
   const packInfos = packRefs.map(rewardPackInfo).filter(Boolean);
   const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
   const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(TX('results.cards-it-opens-as-soon-as', {name: escapeAttr(pi.name), cards: pi.cards}))}">${TX('results.cards-opens-next', {v1: rewardPackBoosterHTML(pi), name: escapeHtml(pi.name), cards: pi.cards})}</div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
@@ -47699,8 +47804,10 @@ function skirmishDropRarityRoll(mapNo, rng){
 function skirmishDropPick(node, rar, rng){
   rng = rng || Math.random;
   const defs = getCardDefs(), ladder = RARITY_DEFS.filter(r=> !r.as && r.key !== 'starter').map(r=> r.key), base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
-  const poolIds = packCardPool(defs, 1, false, true /* RW3: a drop keeps the map / rarity gate */).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
-  const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity || 'common') === r), pick = a=> a[Math.floor(rng() * a.length)];
+  const poolIds = packCardPool(defs, 'basic', false, true /* RW3: a drop keeps the map / rarity gate; RW5: every pack tier */).filter(id=>{ const d = defs[id]; return d && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !isEasterEgg(d) && !(d.archetypes||[]).includes('Castle'); }), inPool = new Set(poolIds);
+  const deckPack = [...new Set(Object.keys(node.deck || {}).map(base))].filter(id=> inPool.has(id)), at = (ids, r)=> ids.filter(id=> (defs[id].rarity || 'common') === r), pick0 = a=> a[Math.floor(rng() * a.length)];
+  // 2026-10-23 (package RW5, owner 19:36: "only give 1 per card"): a card you don't own yet first, while the list has one
+  const pick = a=>{ let f = []; try{ if(typeof REWARD_NEW_FIRST !== 'undefined' && REWARD_NEW_FIRST && typeof copiesOwned === 'function') f = a.filter(id=> !copiesOwned(id)); }catch(e){} return pick0(f.length ? f : a); };
   for(let i = ladder.indexOf(rar); i >= 0; i--){
     const own = at(deckPack, ladder[i]); if(own.length && rng() < SKIRMISH_OWN_SHARE) return pick(own);
     let rest = at(poolIds, ladder[i]).filter(id=> !own.includes(id)); if(!rest.length) rest = own.length ? own : at(poolIds, ladder[i]);
@@ -48689,7 +48796,13 @@ function giftFounderRenameTicket(guild){
   addRenameTickets(1); return true;
 }
 // On the Shop's shelf once the Guild tab is open (the Arena spot); one a buy, up to RENAME_TICKET_CAP held.
-function shopTicketOnShelf(){ return adminModeEnabled || tabOpen('guild'); }
+// 2026-10-23 (package RW5, owner 19:27 item 16: "If you don't own a guild, guild management related items don't appear in the shop. I think
+// there is also a guild shop, in the guild page."): the Rename Ticket (the one guild-management item) is on the Shop's shelf only for a guild's
+// owner (GUILD_OWNER_KEY, set when your guild loads), and the guild page now has its own 🛒 Guild shop that sells it (guildShopPanelHTML).
+const GUILD_OWNER_KEY = 'bramblewood_guild_owner_v1';
+function ownsGuild(){ try{ if(typeof myGuild !== 'undefined' && myGuild && Array.isArray(myGuildMembers)) return myGuildMembers.some(m=> m.profile_id === cloudUserId && m.role === 'owner'); return localStorage.getItem(GUILD_OWNER_KEY) === '1'; }catch(e){ return false; } }
+function noteGuildOwner(isOwner){ try{ if(isOwner) localStorage.setItem(GUILD_OWNER_KEY, '1'); else localStorage.removeItem(GUILD_OWNER_KEY); }catch(e){} }
+function shopTicketOnShelf(){ return adminModeEnabled || (tabOpen('guild') && ownsGuild()); }
 function shopTicketFull(){ return renameTickets() >= RENAME_TICKET_CAP; }
 function shopTicketShelfHTML(i, selected){
   const k = 'ticket:1', full = shopTicketFull(), tilt = ((i*37) % 7) - 3;
@@ -48719,6 +48832,10 @@ function shopTicketCounter(el){
 // cut by the cap; only buying stops there. The count travels in the progress blob like the Rename Ticket's.
 const RAID_TICKET_ITEM_KEY = 'bramblewood_raid_ticket_items_v1';
 const RAID_TICKET_ITEM_PRICE = 300, RAID_TICKET_ITEM_CAP = 9;
+// 2026-10-23 (package RW5, owner 19:27 item 16: "Raid ticket should be alittle more expensive, and cost at least abit of advanced resources"):
+// 400 Maple Leaves and 5 Gold Leaves (was 300 Maple Leaves). RAID_TICKET_ITEM_PRICE stays the old Maple Leaf price for old notes.
+const RAID_TICKET_ITEM_COST = {gold:400, gems:5};
+function raidTicketAffordable(){ return (myCurrencies.gold||0) >= RAID_TICKET_ITEM_COST.gold && (myCurrencies.gems||0) >= RAID_TICKET_ITEM_COST.gems; }
 PROGRESS_KEYS.push(RAID_TICKET_ITEM_KEY);
 function raidTicketItemName(){ return TX('ui.raid-ticket-item-name'); }
 // the item's icon: the raid's 🎫 with a small 🐙, so it isn't taken for the Rename Ticket beside it
@@ -48817,17 +48934,17 @@ function shopRaidTicketOnShelf(){ if(adminModeEnabled) return true; if(!tabOpen(
 function shopRaidTicketFull(){ return raidTicketItems() >= RAID_TICKET_ITEM_CAP || shopRaidTicketStock() < 1; } // + out of stock (RW3)
 function shopRaidTicketShelfHTML(i, selected){
   const k = 'raidticket:1', full = shopRaidTicketFull(), tilt = ((i*37) % 7) - 3, name = raidTicketItemName();
-  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(name)}</span><span class="shelf-tag">${shopRaidTicketStock() < 1 ? escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out' : 'ui.rw3-rt-not-today')) : full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span></button>`;
+  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(name)}</span><span class="shelf-tag">${shopRaidTicketStock() < 1 ? escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out' : 'ui.rw3-rt-not-today')) : full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML(RAID_TICKET_ITEM_COST) /* RW5 */}</span></button>`;
 }
 function shopRaidTicketDetailHTML(){
-  return `<b class="sd-name">${raidTicketItemIcon()} ${escapeHtml(raidTicketItemName())}</b><span class="sd-line">${escapeHtml(TX('ui.raid-ticket-shop-line', {cap: RAID_POINTS_MAX}))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: raidTicketItems(), cap: RAID_TICKET_ITEM_CAP}))}</span><span class="sd-line">${escapeHtml(TX('ui.rw3-rt-stock', {n: shopRaidTicketStock()}))}</span><span class="sd-price">${shelfPriceHTML({gold:RAID_TICKET_ITEM_PRICE, gems:0})}</span>${shopRaidTicketStock() < 1 ? `<span class="sd-why">${escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out-why' : 'ui.rw3-rt-not-today-why'))}</span>` : shopRaidTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RAID_TICKET_ITEM_CAP}))}</span>` : ''}`;
+  return `<b class="sd-name">${raidTicketItemIcon()} ${escapeHtml(raidTicketItemName())}</b><span class="sd-line">${escapeHtml(TX('ui.raid-ticket-shop-line', {cap: RAID_POINTS_MAX}))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: raidTicketItems(), cap: RAID_TICKET_ITEM_CAP}))}</span><span class="sd-line">${escapeHtml(TX('ui.rw3-rt-stock', {n: shopRaidTicketStock()}))}</span><span class="sd-price">${shelfPriceHTML(RAID_TICKET_ITEM_COST) /* RW5 */}</span>${shopRaidTicketStock() < 1 ? `<span class="sd-why">${escapeHtml(TX(shopRaidTicketSoldOut() ? 'ui.rw3-rt-sold-out-why' : 'ui.rw3-rt-not-today-why'))}</span>` : shopRaidTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RAID_TICKET_ITEM_CAP}))}</span>` : ''}`;
 }
 function shopRaidTicketCounter(el){
-  const full = shopRaidTicketFull(), afford = (myCurrencies.gold||0) >= RAID_TICKET_ITEM_PRICE;
-  el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span></div><div class="counter-info">${shopRaidTicketDetailHTML()}</div><div class="counter-act">${full ? '' : `<button class="btn primary" id="shopBuyRaidTicket" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${RAID_TICKET_ITEM_PRICE - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
+  const full = shopRaidTicketFull(), afford = raidTicketAffordable(), needG = Math.max(0, RAID_TICKET_ITEM_COST.gold - (myCurrencies.gold||0)), needL = Math.max(0, RAID_TICKET_ITEM_COST.gems - (myCurrencies.gems||0)); // RW5
+  el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${raidTicketItemIcon()}</span></span></div><div class="counter-info">${shopRaidTicketDetailHTML()}</div><div class="counter-act">${full ? '' : `<button class="btn primary" id="shopBuyRaidTicket" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : [needG ? `Need ${needG} more 🍁` : '', needL ? escapeHtml(TX('ui.rw5-need-gold-leaves', {n: needL})) : ''].filter(Boolean).join(' · ')}</button>`}</div>`;
   const b = el.querySelector('#shopBuyRaidTicket'); if(b) b.onclick = ()=>{
-    if(shopRaidTicketFull() || (myCurrencies.gold||0) < RAID_TICKET_ITEM_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
-    myCurrencies.gold -= RAID_TICKET_ITEM_PRICE; saveCurrencies(); addRaidTicketItems(1);
+    if(shopRaidTicketFull() || !raidTicketAffordable()){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+    myCurrencies.gold -= RAID_TICKET_ITEM_COST.gold; myCurrencies.gems -= RAID_TICKET_ITEM_COST.gems; saveCurrencies(); addRaidTicketItems(1); // RW5
     try{ localStorage.setItem(RAID_TICKET_SHOP_KEY, String(itemDay())); }catch(e){} // RW3: stock 1, sold out until another day rolls one
     try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
     showToast(TX('toast.raid-ticket-bought', {n: raidTicketItems()}), 'ok');
@@ -49815,12 +49932,12 @@ const SHOP_PACKS_DEFAULT = [
   // 2026-10-23 (package RW3, owner on C1: "Pack foil chances - evaluate also. Should be rare."): a card comes out foil 1% (Hedgerow Pouch),
   // 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster); faction packs 1%. Was 4 / 8 / 12 (+ one foil guaranteed in every Highcrest
   // Case, about 1.3 foils a Case) / 10 / 4%. The guarantee is off. An Advanced pack's first five cards keep 10x (10 / 15 / 20%).
-  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1, foilChance:0.01, foilGuaranteed:false},
-  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:1, foilChance:0.015, foilGuaranteed:false},
+  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1 /* RW5: Pack 1 (Maps 0-6) */, foilChance:0.01, foilGuaranteed:false},
+  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:2 /* RW5: Pack 2 (Maps 7-13) */, foilChance:0.015, foilGuaranteed:false},
   // Mystery Booster (2026-10-10, user: "Mystery booster with strange cards"): its own pool (tier 99) of oddities that
   // don't come out of any other pack.
   {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.02, foilGuaranteed:false},
-  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:1, foilChance:0.02, foilGuaranteed:false}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
+  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:3 /* RW5: Pack 3 (Maps 14-20) */, foilChance:0.02, foilGuaranteed:false}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
@@ -49832,8 +49949,12 @@ const FOIL_FINISHES = [
   {key:'sakura', label:'Sakura'}, {key:'sparkle', label:'Glitter field'}, {key:'scanline', label:'Holo scanlines'}, {key:'old', label:'Cards of old'},
 ];
 const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
+// 2026-10-23 (package RW5, item 15): the basic packs' own pools (packCardPool). A saved admin edit or a published table from before RW5 says
+// pool 1 for all three; that old default is read as the pack's own pool. Any other pool an admin picked is kept.
+const PACK_TIER_POOL = {bronze:1, silver:2, gold:3};
 function normalizePack(p){
   const o = Object.assign({pool:1, foilChance:0.01, foilGuaranteed:false}, p); // RW3: default 1% (was 4%)
+  if(PACK_TIER_POOL[o.id] && (+o.pool || 1) === 1) o.pool = PACK_TIER_POOL[o.id]; // RW5
   o.cost = Object.assign({gold:0, gems:0}, p.cost||{});
   o.foilFinishes = Object.assign({}, p.foilFinishes && Object.keys(p.foilFinishes).length ? p.foilFinishes : PACK_FOIL_FINISHES_DEFAULT);
   o.rarityWeights = Object.assign({}, PACK_RARITY_WEIGHT, p.rarityWeights||{});
@@ -49887,7 +50008,7 @@ function getShopPacks(){
 const PACK_SALE_MAP = {bronze:5, silver:8, gold:13};
 function advancedPackOf(p){
   const n = p.cards||3, foil = Math.min(0.9, (+p.foilChance||0.02) * 10);
-  return Object.assign({}, p, {id: p.id + '-adv', baseId: p.id, advanced:true, name: 'Advanced ' + p.name, cards: 10, mainCards: 5, mainFoilChance: foil,
+  return Object.assign({}, p, {id: p.id + '-adv', baseId: p.id, advanced:true, name: TX('ui.rw5-collector-pack', {name: p.name}) /* 2026-10-23 (package RW5, owner 19:27 item 14: "The advanced packs will be called collector packs"); was 'Advanced ' + name */, cards: 10, mainCards: 5, mainFoilChance: foil,
     cost: {gold: Math.round((p.cost.gold||0) * 12), gems: Math.round((p.cost.gems||0) * 12)}, newGuaranteed: p.newGuaranteed, comingSoon:false});
 }
 function advancedPacksOpen(){ const reach = playerMapReach(); return getShopPacks().filter(p=> PACK_SALE_MAP[p.id] && (adminModeEnabled || reach >= PACK_SALE_MAP[p.id] + 25)); }
@@ -50216,7 +50337,7 @@ function renderShop(){
   const signedInShop = isSignedIn();
   const merchants = merchantsUnlocked();
   root.innerHTML = `${cartDoodadsHTML()}<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
-      <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool(null, 1).length} cards).</p>
+      <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}${escapeHtml(TX('ui.rw5-shop-sub'))}</p> <!-- 2026-10-23 (package RW5): each pack its own pool; was "Packs of cards from Pack 1 (N cards)" -->
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
       <div class="forge-currency-row" id="shopCurrencyRow">${shopCurrencyRowInnerHTML()}</div>${tabsHTML}
@@ -50883,9 +51004,15 @@ const BASIC_PACK_POOLS = [1]; // 2026-10-13 (user: "the otters and hummingbirds 
 // draws from its whole pool, whatever the player has reached: no map gate, no rarity gate, no Lumber-before-pitching gate (a Lumber
 // card that comes early waits for pitching in unlockCardForPlayer, as any other). `gated` keeps DV's gates for the things that are not
 // packs and read the pack pool: the skirmish / fight card drop (skirmishDropPick), the base reward track and a raid claim's pack cards.
+// 2026-10-23 (package RW5, owner 19:27 item 15 / PP-1: "Those cards in Map 0-6 go into Pack 1. 7-13 go into Pack 2. And [14]-20 go into Pack 3"):
+// each basic pack has its own pool now, by the map where its cards are first found (source.tier 1 / 2 / 3; 4 = after Map 20, no pack sells it
+// yet; tools/rw5_pack_tiers_2026_10_23.js set them). Pack 1 is the Hedgerow Pouch, 2 the Tidemire Chest, 3 the Highcrest Case
+// (PACK_TIER_POOL). pool 'basic' is every basic-pack card (tiers 1-4) for the givers that are not packs: the base reward track, the
+// skirmish / fight card drop, a raid claim and a people's bundle (they keep DV's map and rarity gates through `gated`).
+const BASIC_PACK_TIERS = [1, 2, 3, 4];
 function packCardPool(defs, pool, exact, gated){
   defs = defs || getCardDefs();
-  const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
+  const ok = pool === 'basic' ? new Set(BASIC_PACK_TIERS) : (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = gated && !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12; gated callers only since RW3)
   const reach = !gated || adminModeEnabled ? Infinity : (()=>{ try{ return trackMapReached(); }catch(e){ return 0; } })();
   return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || isEasterEgg(d) /* 2026-10-19 (package EE) */ || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; if(!packCardReached(d, reach)) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
@@ -50897,7 +51024,7 @@ function packCardPool(defs, pool, exact, gated){
 function packCardReached(d, reach){
   if(reach === Infinity) return true;
   const s = cardSourceOf(d); if(s.kind !== 'pack' || Number(s.tier) === 11) return true;
-  if(s.map){ const n = mapNumberOf(s.map); if(n != null && reach < n) return false; }
+  if(s.map){ const n = mapUnlockNumberOf(s.map); if(n != null && reach < n) return false; } // RW5: a side map counts from the map that unlocks it
   return rarityRevealedForPlayer(d.rarity, reach);
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
@@ -50912,8 +51039,10 @@ const PACK_RARITY_WEIGHT = {special:0, devlegendary:0, devancient:0, eventlegend
 // has enough different ones, and every card pulled recently (this session, fading pack by pack) is much less likely to come
 // again, so a bundle spreads across the whole pool.
 const packRecentPulls = {};
-function rollPackCards(pack){
-  const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1);
+// opts (2026-10-23, package RW5; never passed for a pack you buy, RW3): {newFirst: a card you don't own yet while one is left (the reward
+// packs, REWARD_NEW_FIRST), gated: the pool up to the map you reached (packCardPool's gate)}.
+function rollPackCards(pack, opts){
+  const defs = getCardDefs(), pool = packCardPool(defs, pack.pool||1, false, !!(opts && opts.gated));
   if(!pool.length) return [];
   const weights = Object.assign({}, PACK_RARITY_WEIGHT, pack.rarityWeights||{});
   // 2026-10-23 (package RW3, DV4: "Packs outputs can never be changed by anything"): no memory of earlier packs (the 10-12 fading
@@ -50933,7 +51062,9 @@ function rollPackCards(pack){
   // (RW3: pack.newGuaranteed is no longer read here; see above)
   const n = pack.cards||3, cap = Math.max(1, Math.ceil(n / Math.max(1, pool.length)));
   let guard = 0;
-  while(out.length < n && guard++ < 500){ const left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break; out.push(pick(left)); }
+  while(out.length < n && guard++ < 500){ let left = pool.filter(id=> out.filter(x=> x===id).length < cap); if(!left.length) break;
+    if(opts && opts.newFirst){ const fresh = left.filter(id=> !out.includes(id) && !copiesOwned(id) && !myUnlockedCardIds.has(id)); if(fresh.length) left = fresh; } // RW5
+    out.push(pick(left)); }
   while(out.length < n) out.push(pick(pool));
   return out.sort(()=> Math.random()-0.5);
 }
@@ -51064,8 +51195,8 @@ function rollBonusCopy(r, source){
   try{ unlockCardForPlayer(r.id, source, {foil: !!r.foil, finish: r.finish || undefined, shiny: !!r.shiny}); }catch(e){ return false; }
   r.bonusCopy = true; return true;
 }
-function purchasePackOnce(pack, prepaid){
-  let pulls = rollPackCards(pack);
+function purchasePackOnce(pack, prepaid, opts){
+  let pulls = rollPackCards(pack, opts); // opts: RW5's reward packs only
   if(!pulls.length) return null;
   let jackpot = false;
   { const defs = getCardDefs(), pno = packNumberOf(pack), top = (pno && pno <= 3) ? [] /* 2026-10-16: no Legendary from the Map 0–20 packs */ : packCardPool(defs, pack.pool||1).filter(id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common') >= RARITY_TIER_BANDS.indexOf('legendary'));
@@ -51090,6 +51221,16 @@ function purchasePackOnce(pack, prepaid){
   }
   const glow = jackpot ? {tier:RARITY_TIER_BANDS.length - 1, rarity:RARITY_TIER_BANDS[RARITY_TIER_BANDS.length - 1], jackpot:true} : rollPackGlow(results, getCardDefs());
   return {results, leveledId, glow, jackpot};
+}
+// 2026-10-23 (package RW5, owner 19:27 item 13: "After buying a pack, what does 3 free level-ups mean?"): a pack's levelChance (Hedgerow Pouch
+// 20%, Tidemire Chest 40%, Highcrest Case 80%) levels one card you own by 1 for free. The bundle summary now says which: "⭐ 3 free level-ups:
+// Alley Cat → Lv 3, Pond Duck → Lv 2 ...", the same card twice counted once with its last level, and a tooltip saying where they come from.
+function packLevelUpsHTML(levels, defs){
+  defs = defs || getCardDefs(); const by = new Map(); levels.forEach(id=>{ if(defs[id]) by.set(id, (by.get(id) || 0) + 1); });
+  const names = [...by.keys()].map(id=> `${escapeHtml(defs[id].name)} → ${escapeHtml(TX('ui.rw5-lv', {n: getCardLevel(id)}))}${by.get(id) > 1 ? ` (×${by.get(id)})` : ''}`);
+  const SHOW = 5, more = names.length - SHOW; // a 100-pack bundle can level 80 cards: five names on the line, every one in the tooltip
+  const plain = [...by.keys()].map(id=> `${defs[id].name} → ${TX('ui.rw5-lv', {n: getCardLevel(id)})}`).join(', ');
+  return `<span class="rw5-pack-levels" title="${escapeAttr(TX('ui.rw5-pack-levels-tip') + (more > 0 ? '\n' + plain : ''))}">⭐ ${escapeHtml(TX(levels.length === 1 ? 'ui.rw5-pack-level-1' : 'ui.rw5-pack-levels', {n: levels.length}))}: ${names.slice(0, SHOW).join(', ')}${more > 0 ? ` +${more}` : ''}</span>`;
 }
 function canAffordPacks(pack, qty){ const c = qty > 1 ? packSetCost(pack, qty) : {gold:(pack.cost.gold||0), gems:(pack.cost.gems||0)}; return (myCurrencies.gold||0) >= c.gold && (myCurrencies.gems||0) >= c.gems; }
 // Faction packs (2026-10-11, user: "a special Otters and Hummingbird pack. Each contains 10 otter or hummingbird
@@ -51230,14 +51371,14 @@ function myFactionPackId(){ const f = (typeof loadFactionChoice === 'function') 
 // with that people's Common/Uncommon map rewards when the packs hold fewer than six of them; general = the basic pools.
 function factionPackPool(fp, which){
   const defs = getCardDefs();
-  if(which === 'general') return packCardPool(defs, 1).filter(id=> !(fp.own && packPoolOf(defs[id]) === fp.own));
+  if(which === 'general') return packCardPool(defs, 'basic', false, true /* RW5: every pack tier, up to the map you reached */).filter(id=> !(fp.own && packPoolOf(defs[id]) === fp.own));
   // 2026-10-12 (21:01, user: "Combine the rivergate and sunfeather pools into a factions pool"): one pool (11); a card's
   // source.side ('tribes' = hummingbird side, 'shared' = Riverbank, none = otter side) still picks a faction pack's own cards.
   if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want); }
   const ofPeople = id=>{ try{ const ps = peopleOfCard(defs[id]); return fp.people === 'folk' ? (ps.size === 0 || ps.has('folk')) : ps.has(fp.people); }catch(e){ return false; } }; // folk = everyone without another people (villagers, farm animals)
   // 2026-10-21 (package RP, owner Oct 21: skirmish rewards "CANNOT be pack rewards"): a people's bundle no longer tops itself up with
   // that people's map rewards when the packs hold fewer than six of them; it draws from the basic pack pool only.
-  return packCardPool(defs, 1).filter(ofPeople);
+  return packCardPool(defs, 'basic', false, true).filter(ofPeople); // RW5: every pack tier, up to the map you reached
 }
 function rollFactionPackCards(fp, rnd){
   rnd = rnd || Math.random;
@@ -51246,7 +51387,7 @@ function rollFactionPackCards(fp, rnd){
   const out = [], own = factionPackPool(fp, 'own'), gen = factionPackPool(fp, 'general');
   // 2026-10-21 (package RP): a faction pack's own cards are faction rewards, so they follow the faction reward track (rarity gates,
   // lowest first, plain first on Maps 0-1); a people's bundle keeps the pack weights
-  const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
+  const ownPick = fp.kind === 'faction' ? (list=>{ const got = []; return ()=>{ const id = factionPackPoolPick(list, rnd, got.length) /* 2026-10-23 (RW5): out of the faction pool */ || factionTrackPick(list, rnd, {received: factionReceived() + got.length}); if(id) got.push(id); return id; }; })(own) : ()=> pick(own);
   for(let i = 0; i < FACTION_PACK_OWN; i++){ const id = ownPick(); if(id) out.push({id, from:'own'}); }
   for(let i = 0; i < FACTION_PACK_GENERAL; i++){ const id = pick(gen); if(id) out.push({id, from:'general'}); }
   return {pulls: out, bonus: null};
@@ -51296,7 +51437,7 @@ function trackPick(pool, rnd){
   let r = rnd()*tot; for(const [id, w] of dupes){ r -= w; if(r <= 0) return id; } return dupes[dupes.length-1][0];
 }
 function factionTrackPool(){ const fp = FACTION_PACKS[myFactionPackId()]; return fp ? factionPackPool(fp, 'own') : []; }
-function baseTrackPool(){ return packCardPool(getCardDefs(), 1, true, true); } // RW3: the base track keeps DV's gate (it is not a pack)
+function baseTrackPool(){ return packCardPool(getCardDefs(), 'basic', true, true); } // RW3: the base track keeps DV's gate (it is not a pack); RW5: every pack tier (the gate keeps it to the maps you reached)
 // One step of progress: a card from your faction's track and one from the base track. Returns the ids granted.
 function grantTrackCards(why, extraPool){
   const out = [];
@@ -51403,17 +51544,88 @@ function factionTrackOnWin(node, isFirstClear){
 function factionMilestone(node){ return !!(node && node.ender && (FACTION_REWARD_TRACK.milestone | 0) > 0); }
 // n faction rewards at once (an achievement's factionCards). Returns the ids granted.
 function grantFactionRewardCards(n){ const out = []; for(let i = 0; i < (n|0); i++){ const id = factionReward(); if(id) out.push(id); } return out; }
+// The standard faction rewards (2026-10-23, package RW5, owner 19:27: "The standard faction rewards follow a predictable pattern - Common,
+// C, C, U, C, C, U, C, U, R, ... The faction pool contains both sides" and item 10: "There are set faction rewards and random faction
+// rewards"). Two kinds of hand-out take a card out of the one faction pool (loadFactionPool):
+//   - SET rewards (factionReward: the tutorial's 3 + 3, each map's milestone, every everyWins-th first clear, the achievements) follow
+//     FACTION_STANDARD_PATTERN, one step a reward. A step names a rarity relative to the lowest rarity the pool still holds, so once its
+//     Commons are gone the block climbs one rarity (C -> U, U -> R, R -> VR): "climbing the rarity tree". PP-2 (default, owner to
+//     confirm): the pattern skips its R step before Map FACTION_PATTERN_RARE_FROM_MAP (the 10-21 rule "the rare should only come in Map
+//     14+"); Very Rare and up still wait for the maps in FACTION_RARITY_GATES.
+//   - RANDOM rewards (factionRandomReward: a fight's 🎁 Faction Reward token, a faction pack's own cards) draw by the rarity gates above.
+// factionPatternRarity is pure (the sim and the tests call it): step = set rewards given so far, left = {rarityKey: copies left}.
+const FACTION_STANDARD_PATTERN = ['common', 'common', 'common', 'uncommon', 'common', 'common', 'uncommon', 'common', 'uncommon', 'rare'];
+const FACTION_PATTERN_RARE_FROM_MAP = 14; // PP-2
+const FACTION_PATTERN_LADDER = ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'high'];
+function factionPatternRarity(step, map, left, ctx){
+  const P = FACTION_STANDARD_PATTERN, L = FACTION_PATTERN_LADDER; let used = 0, p = P[step % P.length];
+  while(p === 'rare' && map < FACTION_PATTERN_RARE_FROM_MAP && used < P.length){ used++; p = P[(step + used) % P.length]; }
+  const allowed = r=> (left[r] || 0) > 0 && (r === 'common' || r === 'uncommon' || (r === 'rare' ? map >= FACTION_PATTERN_RARE_FROM_MAP : factionRarityOpen(r === 'high' ? 'unique' : r, Object.assign({}, ctx || {}, {map, received: Infinity}))));
+  const base = L.findIndex(allowed); if(base < 0) return {rarity: null, steps: used + 1};
+  const want = Math.min(L.length - 1, base + Math.max(0, L.indexOf(p)));
+  for(let i = want; i < L.length; i++) if(allowed(L[i])) return {rarity: L[i], steps: used + 1};
+  for(let i = want - 1; i >= base; i--) if(allowed(L[i])) return {rarity: L[i], steps: used + 1};
+  return {rarity: null, steps: used + 1};
+}
+// Which side a pool card is on for you: 'own', 'shared', 'other' or 'base' (one copy of each Base card, owner item 10: "In the faction card
+// pool, help me, as a rule, add 1 of each base card inside as well"). Your own side's cards come first, the other side's last ("depending
+// on your faction, you will slowly get 1-2x of each copy along the way"; the other side is "how you would get the other faction's cards").
+const FACTION_SIDE_WEIGHT = {own:3, shared:2, base:1.5, other:1};
+// Climbing the rarity tree (owner 19:27: "depending on your faction, you will slowly get 1-2x of each copy along the way, climbing the rarity
+// tree"): for the pattern a rarity is done once you hold FACTION_CLIMB_HOLD copies of each of its cards (2 of your side and the shared ones,
+// 1 of the other side and of each Base card); the pattern then climbs. The copies past that stay in the pool (up to the deck cap) for the
+// random faction rewards. factionClimbWant(side, have, left): the copies of a card the pattern may still hand out.
+const FACTION_CLIMB_HOLD = {own:2, shared:2, other:1, base:1};
+function factionClimbWant(side, have, left){ return Math.max(0, Math.min(left, (FACTION_CLIMB_HOLD[side] || 1) - (have || 0))); }
 // FACTION_REWARD_TRACK:END
 function factionCardsOfMine(){
   const defs = getCardDefs(), fp = FACTION_PACKS[myFactionPackId()]; if(!fp) return [];
   const want = fp.faction === 'hummingbirds' ? 'tribes' : '';
   return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || isUnattainable(d)) return false; const src = cardSourceOf(d); if(src.kind !== 'pack' || (parseInt(src.tier, 10)||1) !== 11) return false; const side = src.side || ''; return side === want || side === 'shared'; });
 }
+// 2026-10-23 (package RW5, owner items 10 / 11): the faction pool holds both sides, the shared cards and 1 copy of each Base card (not the
+// tutorial base; the Wandering Traveller is one). A faction card's copies in the pool = the most a deck may hold ("The number of cards in
+// the pool = the maximum number of duplicates you can hold in the deck": maxCopiesForRarity, Common 5, Uncommon 4, Rare 3, Very Rare 2,
+// Super Rare and up 1); was FACTION_POOL_COPIES (your side and shared only, Super Rare 2). FACTION_POOL_RW5 = false brings the old pool back.
+const FACTION_POOL_RW5 = true;
+function factionSideOf(d, want){
+  if(!d) return 'other'; const src = cardSourceOf(d);
+  if(src.kind !== 'pack' || (parseInt(src.tier, 10)||1) !== 11) return 'base';
+  const side = src.side || ''; return side === 'shared' ? 'shared' : side === (want == null ? ((FACTION_PACKS[myFactionPackId()] || {}).faction === 'hummingbirds' ? 'tribes' : '') : want) ? 'own' : 'other';
+}
+// Base = HUB3's Base bucket: source Base, starting at Level 1 (PP-3: the tutorial base starts at 0), not a tutorial reward.
+function factionPoolBaseIds(defs){
+  defs = defs || getCardDefs();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero || isUnattainable(d) || isEasterEgg(d) || isEquipmentDef(d) || d.cardType === 'materia' || d.derivedFrom) return false;
+    const src = cardSourceOf(d); return src.kind === 'base' && !src.tutorialReward && d.rarity !== 'starter' && cardBaseLevel(d) > 0 && !(TUTORIAL_REWARD_IDS || []).includes(id) && !tutorialBaseIdSet().has(id); });
+}
+// The tutorial base (HUB3's reading): the cards of the starting deck lists, its top-up and the tutorial fights' decks, in the shipped and the live
+// tutorial config. They are not Base for the faction pool.
+let tutorialBaseMemo = null;
+function tutorialBaseIdSet(){
+  if(tutorialBaseMemo) return tutorialBaseMemo; const out = new Set();
+  [STARTER_CFG_DEFAULT, TUTORIAL_CFG_DEFAULT, (typeof tutorialCfg !== 'undefined' && tutorialCfg) || {}].forEach(cfg=>{
+    ['starterShared', 'starterOtters', 'starterHummingbirds', 'starterBoth', 'starterFiller', 'myDeck', 'myDeck2', 'rivalDeck', 'rivalDeck2'].forEach(k=> Object.keys((cfg && cfg[k]) || {}).forEach(id=> out.add(id)));
+    ((cfg && cfg.starterTopUp) || []).forEach(id=> out.add(id)); });
+  return (tutorialBaseMemo = out);
+}
+function factionPoolCardIds(){
+  if(!FACTION_POOL_RW5) return factionCardsOfMine();
+  const defs = getCardDefs();
+  const fac = Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || isUnattainable(d) || isEquipmentDef(d) || isEasterEgg(d)) return false; const src = cardSourceOf(d); return src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11; });
+  return fac.concat(factionPoolBaseIds(defs).filter(id=> !fac.includes(id)));
+}
+function factionPoolCopiesOf(d){ return !d ? 0 : !FACTION_POOL_RW5 ? (FACTION_POOL_COPIES[d.rarity||'common'] || 1) : factionSideOf(d, '') === 'base' ? 1 : maxCopiesForRarity(d.rarity === 'starter' ? 'common' : d.rarity); }
 function loadFactionPool(){
   let st; try{ st = JSON.parse(localStorage.getItem(FACTION_POOL_KEY) || 'null'); }catch(e){ st = null; }
   st = st && typeof st === 'object' ? st : {left:{}, collected:0, growth:[], seen:{}}; st.left = st.left || {}; st.growth = st.growth || []; st.seen = st.seen || {};
-  const defs = getCardDefs();
-  factionCardsOfMine().forEach(id=>{ if(st.seen[id]) return; st.seen[id] = 1; st.left[id] = FACTION_POOL_COPIES[defs[id].rarity||'common'] || 1; st.growth.push(id); });
+  const defs = getCardDefs(), fresh = !Object.keys(st.seen).length;
+  // RW5: a save from before keeps its own side's numbers (capped at the deck cap); a card it never saw comes in at the deck cap less the copies you hold
+  if(FACTION_POOL_RW5 && st.v !== 2){ Object.keys(st.left).forEach(id=>{ if(defs[id]) st.left[id] = Math.min(st.left[id], factionPoolCopiesOf(defs[id])); }); st.v = 2; }
+  const mine = new Set(factionCardsOfMine());
+  factionPoolCardIds().forEach(id=>{ if(st.seen[id] || !defs[id]) return; st.seen[id] = 1;
+    let own = 0; try{ own = fresh ? 0 : copiesOwned(id); }catch(e){} st.left[id] = Math.max(0, factionPoolCopiesOf(defs[id]) - own);
+    if(mine.has(id)) st.growth.push(id); }); // Faction Growth stays "1 of each card in your faction"
   // 2026-10-21 (package RP): the track's count of faction cards received; a save from before it starts from the faction copies it holds
   if(typeof st.received !== 'number'){ try{ st.received = Object.keys(st.seen).reduce((t, id)=> t + copiesOwned(id), 0); }catch(e){ st.received = 0; } }
   return st;
@@ -51424,12 +51636,50 @@ function rarityClass(r){ r = r || 'common'; return (r === 'common' || r === 'unc
 function grantOne(id, why){ const before = copiesOwned(id); unlockCardForPlayer(id, why); return copiesOwned(id) > before || (loadPitchHeld()||[]).some(h=> h.id === id); }
 // 2026-10-21 (package RP): a Faction Reward picks through the faction reward track (factionTrackPick: the rarity gates, lowest first,
 // plain first on Maps 0-1), weighted by the copies left in your pool; was FACTION_TIER_ODDS by cards collected. Counts as received.
+// 2026-10-23 (package RW5): factionReward is now the SET (standard) reward: its rarity comes from FACTION_STANDARD_PATTERN
+// (factionPatternRarity), the card from factionPoolPickOf (a card you don't have first, your own side first). factionRandomReward is the
+// gated draw it was. factionDrawSet takes n set rewards out of the pool WITHOUT granting them (the tutorial's, which its windows grant).
+function factionPoolPickOf(st, ids, rnd, map){
+  const defs = getCardDefs();
+  let pool = ids.filter(id=> st.left[id] > 0 && defs[id]); if(!pool.length) return null;
+  const unowned = pool.filter(id=> !copiesOwned(id) && !(st.given && st.given[id])); if(REWARD_NEW_FIRST && unowned.length) pool = unowned; // 19:36: new cards first
+  if(map <= PLAIN_REWARDS_UPTO_MAP){ const plain = pool.filter(id=> isPlainCard(defs[id])); if(plain.length) pool = plain; }
+  const w = id=> (FACTION_SIDE_WEIGHT[factionSideOf(defs[id])] || 1) * Math.max(1, st.left[id]);
+  const tot = pool.reduce((t, id)=> t + w(id), 0); let r = rnd() * tot; for(const id of pool){ r -= w(id); if(r <= 0) return id; } return pool[pool.length - 1];
+}
+function factionSetPick(st, rnd){
+  const defs = getCardDefs(), map = trackMapReached();
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id]));
+  const want = id=> factionClimbWant(factionSideOf(defs[id]), Math.max(copiesOwned(id), (st.given && st.given[id]) || 0), st.left[id]); // RW5: climbing the tree
+  const left = {}; live.forEach(id=>{ const k = factionRarityKey(defs[id].rarity); left[k] = (left[k] || 0) + want(id); });
+  const step = st.patternStep | 0, pr = factionPatternRarity(step, map, left);
+  if(!pr.rarity) return null;
+  const id = factionPoolPickOf(st, live.filter(x=> factionRarityKey(defs[x].rarity) === pr.rarity && want(x) > 0), rnd, map); if(!id) return null;
+  st.patternStep = step + pr.steps; return id;
+}
+function factionTakeOut(st, id){ st.left[id] -= 1; st.collected = (st.collected|0) + 1; st.given = st.given || {}; st.given[id] = (st.given[id] || 0) + 1; noteFactionReceived(1, st); }
 function factionReward(rnd){
+  rnd = rnd || Math.random; if(!FACTION_POOL_RW5) return factionRandomReward(rnd);
+  const st = loadFactionPool(), pick = factionSetPick(st, rnd); if(!pick) return factionRandomReward(rnd); // nothing the pattern can name: a gated draw
+  factionTakeOut(st, pick); saveFactionPool(st);
+  return grantOne(pick, 'factionReward') ? pick : null;
+}
+function factionDrawSet(n, rnd){ rnd = rnd || Math.random; const st = loadFactionPool(), out = [];
+  for(let i = 0; i < (n|0); i++){ const id = factionSetPick(st, rnd); if(!id) break; factionTakeOut(st, id); out.push(id); }
+  saveFactionPool(st); return out; }
+function factionRandomReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
   const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id]) && !legendaryHeldBack(defs[id])); if(!live.length) return null; // 2026-10-16: no Legendary before Map 21; 2026-10-17: no equipment
   const pick = factionTrackPick(live, rnd, {received: factionReceived(st)}, id=> st.left[id]); if(!pick) return null;
-  st.left[pick] -= 1; st.collected += 1; noteFactionReceived(1, st); saveFactionPool(st);
+  factionTakeOut(st, pick); saveFactionPool(st);
   return grantOne(pick, 'factionReward') ? pick : null;
+}
+// A faction pack's own card (RW5): out of the pool too (that side's copies left), by the gated random draw; null when none are left.
+function factionPackPoolPick(ids, rnd, extra){
+  if(!FACTION_POOL_RW5) return null; const st = loadFactionPool(), set = new Set(ids);
+  const live = Object.keys(st.left).filter(id=> set.has(id) && st.left[id] > 0); if(!live.length) return null;
+  const id = factionTrackPick(live, rnd || Math.random, {received: factionReceived(st) + (extra|0)}, x=> st.left[x]); if(!id) return null;
+  st.left[id] -= 1; st.given = st.given || {}; st.given[id] = (st.given[id] || 0) + 1; saveFactionPool(st); return id; // creditFactionPack counts it as received
 }
 function factionGrowth(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
@@ -51443,7 +51693,7 @@ function factionGrowth(rnd){
 // 2026-10-23 (package EB): the item tokens (item: true: the Energy capsule, the Raid Ticket) come on top of the fight's own first-clear reward
 // and its card drop (grantItemRewardTokens, at the win); only the card placeholders stand in for the reward (cardRewardTokens). Before, a
 // capsule or ticket token took the place of an elite's track card and shut off the skirmish's card drop.
-const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionReward()}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', item:true, run:()=>{ addEnergyCapsules(1); return null; }},
+const REWARD_TOKENS = {factionReward:{icon:'🎁', label:'Faction Reward', run:()=> factionRandomReward() /* 2026-10-23 (RW5): a token is a random faction reward */}, factionGrowth:{icon:'🌱', label:'Faction Growth', run:()=> factionGrowth()}, energyCapsule:{icon:'🔋', label:'Energy capsule', item:true, run:()=>{ addEnergyCapsules(1); return null; }},
   raidTicket:{icon:'🎫', label:'Raid Ticket', item:true, run:()=>{ grantRaidTicketItems(1); return null; }} /* 2026-10-21 (package RK): a Raid Ticket on a fight, set in ✏️ Edit rewards */};
 function cardRewardTokens(node){ return ((node && node.rewardTokens) || []).filter(t=> REWARD_TOKENS[t] && !REWARD_TOKENS[t].item); }
 function itemRewardTokens(node){ return ((node && node.rewardTokens) || []).filter(t=> REWARD_TOKENS[t] && REWARD_TOKENS[t].item); }
@@ -51546,6 +51796,7 @@ function rewardPackInfo(ref){
     return {id:'fp-both', name:'Faction Pack', icon:'🦦🌺', tint:'#7a4f7a', cards: FACTION_PACK_OWN + FACTION_PACK_GENERAL, kind:'faction'};
   }
   const p = getShopPacks().find(x=> x.id === ref.id); if(!p) return null;
+  if(ref.kind === 'end') return {id:p.id, name: TX('ui.rw5-end-pack', {name: p.name}), icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards: MAP_END_PACK_CARDS, kind:'free'}; // RW5
   return {id:p.id, name: 'Free ' + p.name, icon:p.icon || '🎁', tint: PACK_TINT[p.id], cards:p.cards || 3, kind:'free'};
 }
 function rewardPackBoosterHTML(info, cls){ return info ? boosterHTML({id:info.id, name:info.name.replace(/^Free /, ''), icon:info.icon, tint:info.tint}, cls) : ''; }
@@ -51556,6 +51807,7 @@ function nodeFirstClearPacks(mapId, node){
   if(node.firstPack) out.push({kind:'free', id:node.firstPack});
   if(node.firstFactionPack) out.push({kind:'faction', id: FACTION_PACKS[node.firstFactionPack] ? node.firstFactionPack : 'mine'});
   if(!node.firstPack && !node.firstFactionPack){ const rp = SKIRMISH_FIRST_PACKS[mapId + ':' + node.key]; if(rp) out.push(Object.assign({}, rp)); } // 2026-10-23 (package RW3, GD2-4)
+  if(!node.firstPack) try{ mapEndPackRefs(mapId, node).forEach(r=> out.push(r)); }catch(e){} // 2026-10-23 (package RW5): the end-of-map packs
   try{ const idx = mainConquestMaps().findIndex(m=> m.id === mapId), pid = MAP_FREE_PACKS[idx]; if(pid && !node.firstPack && mapRewardNodeKey(mainConquestMaps()[idx]) === node.key) out.push({kind:'free', id:pid}); }catch(e){}
   return out;
 }
@@ -51567,7 +51819,7 @@ function armouryOpen(){ try{ return featureUnlocked('deck'); }catch(e){ return t
 function holdPackForArmoury(ref){ try{ const a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); a.push(ref); localStorage.setItem(HELD_PACKS_KEY, JSON.stringify(a)); }catch(e){} }
 function releaseHeldPacks(){
   let a = []; try{ a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); localStorage.removeItem(HELD_PACKS_KEY); }catch(e){}
-  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else grantFreePack(ref.id, 1); }catch(e){} });
+  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else if(ref.kind === 'end') grantEndPack(ref.id) /* RW5 */; else grantFreePack(ref.id, 1); }catch(e){} });
   return (a || []).length;
 }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
@@ -51576,10 +51828,39 @@ function grantMapFreePack(mapId, nodeKey, isFirstClear){
     if(!armouryOpen()){ holdPackForArmoury({kind:'free', id:n0.firstPack}); return {held:true, id:n0.firstPack}; } // 2026-10-15: no packs before the Armoury
     grantFreePack(n0.firstPack, 1); return n0.firstPack; } } // a skirmish can pay a pack (T-2, 2026-10-13)
   const idx = mainConquestMaps().findIndex(m=> m.id === mapId); if(idx < 0) return null;
-  const pid = MAP_FREE_PACKS[idx], map = mainConquestMaps()[idx]; if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
+  const pid = MAP_FREE_PACKS[idx], map = mainConquestMaps()[idx];
+  if(mapRewardNodeKey(map) === nodeKey) try{ lastMapEndPacks = grantMapEndPacks(idx); }catch(e){ lastMapEndPacks = null; } // RW5
+  if(!pid || mapRewardNodeKey(map) !== nodeKey) return null;
   grantFreePack(pid, 1);
   return pid;
 }
+// The end of each map (2026-10-23, package RW5, owner 19:36: "i think at the end of each map, give a pack of 3 + 1 faction pack, corresponding to
+// that map series"; an owner call, MAP_END_PACKS on): a main map's last fight, first clear, gives a 3-card pack of that map's pack series
+// (Maps 0-6 the Hedgerow Pouch's pool, 7-13 the Tidemire Chest's, 14+ the Highcrest Case's; MAP_END_PACK_CARDS cards, new cards first) and
+// one faction pack of your side. They come on top of the map's free pack (MAP_FREE_PACKS) where it has one. Before the Armoury opens they wait
+// like any pack. REWARD_NEW_FIRST (19:36: "we get too much duplicates during the early game. besides the starting deck, only give 1 per
+// card"): the reward packs here and the set faction rewards hand out a card you don't have yet while one is left; shop packs stay random (RW3).
+const MAP_END_PACKS = true, MAP_END_PACK_CARDS = 3;
+const REWARD_NEW_FIRST = true;
+let lastMapEndPacks = null;
+function mapEndPackId(idx){ return idx <= 6 ? 'bronze' : idx <= 13 ? 'silver' : 'gold'; }
+function mapEndPackRefs(mapId, node){
+  if(!MAP_END_PACKS || !node) return [];
+  const mains = mainConquestMaps(), idx = mains.findIndex(m=> m.id === mapId); if(idx < 0 || mapRewardNodeKey(mains[idx]) !== node.key) return [];
+  return [{kind:'end', id: mapEndPackId(idx)}, {kind:'faction', id:'mine'}];
+}
+function grantMapEndPacks(idx){
+  if(!MAP_END_PACKS) return null; const map = mainConquestMaps()[idx]; if(!map) return null;
+  const refs = mapEndPackRefs(map.id, map.nodes.find(n=> n.key === mapRewardNodeKey(map)));
+  if(!armouryOpen()){ refs.forEach(holdPackForArmoury); return refs; }
+  refs.forEach(ref=>{ if(ref.kind === 'end') grantEndPack(ref.id); else grantFactionPack(myFactionPackId(), 1); });
+  return refs;
+}
+function endPackOf(id){ const p = getShopPacks().find(x=> x.id === id); return p ? Object.assign({}, p, {cards: MAP_END_PACK_CARDS, metal:0, kroon:0, endReward:true, name: TX('ui.rw5-end-pack', {name: p.name})}) : null; }
+function grantEndPack(id){ const pack = endPackOf(id); if(!pack) return null;
+  const o = purchasePackOnce(pack, true, {newFirst: REWARD_NEW_FIRST, gated: true}); if(!o) return null;
+  saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  queuePackReveal(pack, o); return o; }
 function openFreePack(id){
   const busy = document.getElementById('packOpenOverlay'); if(busy && !busy.hidden) return false;
   const inv = loadFreePacks(); if(!((inv[id]|0) > 0)) return false;
@@ -51945,7 +52226,7 @@ function openPackAnimation(pack, opened, opts){
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
-    const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
+    const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
       <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
@@ -52143,7 +52424,7 @@ async function loadMyGuild(){
     const { data: membership, error: memErr } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
     if(memErr) throw memErr;
     if(!membership){
-      myGuild = null; myGuildMembers = null;
+      myGuild = null; myGuildMembers = null; noteGuildOwner(false); // RW5
       resetGuildSkills(); // 2026-10-19 (guild skills): no guild, no guild bonus in raids
       loadGuildBrowseList();
     } else {
@@ -52155,6 +52436,7 @@ async function loadMyGuild(){
       myGuildMembers = members || [];
       // 2026-10-18 (guild rename): the founders' gift, one 🎫 Rename Ticket for an owner of a guild made before it shipped
       const me = myGuildMembers.find(m=> m.profile_id===cloudUserId);
+      noteGuildOwner(!!(me && me.role === 'owner')); // 2026-10-23 (package RW5): the Shop shows guild items to an owner only
       if(me && me.role==='owner' && giftFounderRenameTicket(guild)) setTimeout(()=>{ try{ showToast(TX('toast.rename-ticket-gift'), 'ok'); }catch(e){} }, 600);
       // 2026-10-19 (guild skills): the guild's skill levels and Seeds, after the roster (it shows a loading line until then)
       loadGuildSkills(guild.id).then(()=>{ if(currentTab==='guild' && myGuild && myGuild.id === guild.id) renderGuild(); });
@@ -52459,9 +52741,10 @@ function renderGuild(){
   }
   root.innerHTML = `
     <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
-    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) + guildSkillsPanelHTML(myGuild, myGuildMembers||[]) /* 2026-10-19 (guild skills) */ : guildBrowseCreatePanelHTML()}`;
+    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) + guildSkillsPanelHTML(myGuild, myGuildMembers||[]) /* 2026-10-19 (guild skills) */ + guildShopPanelHTML() /* 2026-10-23 (RW5) */ : guildBrowseCreatePanelHTML()}`;
   document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
+    wireGuildShop(root); // 2026-10-23 (package RW5)
     const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
     wireGuildSkills(root); // 2026-10-19 (guild skills): upgrade buttons, admin preview
     if(renameBtn) renameBtn.addEventListener('click', openGuildRenameDialog);
@@ -52504,6 +52787,24 @@ function renderGuild(){
       loadMyGuild();
     }));
   }
+}
+// The guild shop (2026-10-23, package RW5, owner item 16: "I think there is also a guild shop, in the guild page"): there was none; this is
+// the minimal one. It sells the guild-management goods, today the 🎫 Rename Ticket (RENAME_TICKET_PRICE Maple Leaves, up to RENAME_TICKET_CAP),
+// to the guild's owner; a member sees what it holds and who can buy it.
+function guildShopPanelHTML(){
+  const owner = ownsGuild(), full = shopTicketFull(), price = RENAME_TICKET_PRICE, afford = (myCurrencies.gold||0) >= price;
+  return `<div class="panel rw5-guild-shop" id="guildShopPanel"><h2>🛒 ${escapeHtml(TX('ui.rw5-guild-shop'))}</h2><p class="panel-sub">${escapeHtml(TX(owner ? 'ui.rw5-guild-shop-sub' : 'ui.rw5-guild-shop-member'))}</p>
+    <div class="rw5-gs-row"><span class="rw5-gs-ico" aria-hidden="true">${RENAME_TICKET.icon}</span><span class="rw5-gs-text"><b>${escapeHtml(RENAME_TICKET.name)}</b><small>${escapeHtml(TX('ui.rename-ticket-shop-line'))} ${escapeHtml(TX('ui.rename-ticket-you-carry', {n: renameTickets(), cap: RENAME_TICKET_CAP}))}</small></span>
+      <span class="shelf-tag">${shelfPriceHTML({gold:price, gems:0})}</span>
+      ${owner ? (full ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RENAME_TICKET_CAP}))}</span>` : `<button type="button" class="btn primary small" id="guildShopBuyTicket" ${afford ? '' : 'aria-disabled="true"'}>${afford ? escapeHtml(TX('ui.rw5-buy')) : escapeHtml(TX('ui.rw5-need-leaves', {n: price - (myCurrencies.gold||0)}))}</button>`) : ''}</div></div>`;
+}
+function wireGuildShop(root){
+  const b = root && root.querySelector('#guildShopBuyTicket'); if(!b) return;
+  b.onclick = ()=>{
+    if(!ownsGuild() || shopTicketFull() || (myCurrencies.gold||0) < RENAME_TICKET_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+    myCurrencies.gold -= RENAME_TICKET_PRICE; saveCurrencies(); addRenameTickets(1);
+    try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
+    showToast(TX('toast.rename-ticket-bought', {n: renameTickets()}), 'ok'); renderGuild(); };
 }
 function guildRosterPanelHTML(guild, members){
   const mine = members.find(m=>m.profile_id===cloudUserId);

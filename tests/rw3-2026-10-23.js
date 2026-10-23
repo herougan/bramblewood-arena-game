@@ -134,7 +134,8 @@ ok(/DROP_CHANCE_CAP/.test(fnSrc('ticketedDungeonDropChance')) && !/DROP_CHANCE_C
 { const pcp = fnSrc('packCardPool'), rpc = fnSrc('rollPackCards');
   ok(/const reach = !gated \|\| adminModeEnabled \? Infinity/.test(pcp) && /const early = gated &&/.test(pcp), '53. a pack draws from its whole pool (no map / rarity / pitching gate unless a caller asks for it)');
   ok(!/newGuaranteed && unowned/.test(rpc) && !/recent\[id\] \*= 0\.6/.test(rpc) && /const recent = \{\};/.test(rpc), '53. no memory: no new-card guarantee, no recent-pull weight');
-  ok(/packCardPool\(defs, 1, false, true/.test(fnSrc('skirmishDropPick')) && /packCardPool\(getCardDefs\(\), 1, true, true\)/.test(fnSrc('baseTrackPool')), '53. the card drop and the base track keep the gate (they are not packs)');
+  // 2026-10-23 (package RW5): each pack has its own tier now, so the drop and the base track read every tier (pool 'basic'), still gated
+  ok(/packCardPool\(defs, (1|'basic'), false, true/.test(fnSrc('skirmishDropPick')) && /packCardPool\(getCardDefs\(\), (1|'basic'), true, true\)/.test(fnSrc('baseTrackPool')), '53. the card drop and the base track keep the gate (they are not packs)');
   ok(!/1 new guaranteed/.test(src.replace(/\/\*[\s\S]*?\*\//g, '')), '53. the Shop no longer promises a new card'); }
 
 // ======================= 8. Easter eggs in Mystery Boosters =======================

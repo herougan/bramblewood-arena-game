@@ -2,7 +2,7 @@
 
 The owner's definitions for where cards come from, how many of each kind the game should have, and the balancing suggestions made from them. This file is the canonical text; the hub's 📚 Progression plan tab renders it, with the live counts from `node tools/progression_plan_2026_10_23.js` (`docs/balance/progression-plan-2026-10-23.json`).
 
-Quotes are the owner's words (notes of 2026-10-23, 19:27 and 19:36). Nothing here changes the game; package RW5 fixes the data.
+Quotes are the owner's words (notes of 2026-10-23, 19:27 and 19:36). Nothing here changes the game; package RW5 fixed the data (see Leftover mistakes).
 
 ## Definitions
 
@@ -46,9 +46,31 @@ The hub's tab shows today's count for each, the gap, and every card in it, sorta
 
 ## Open questions
 
+RW5 (2026-10-23) built the default of each (decisions PP-1, PP-2, PP-3): packs 0-6 / 7-13 / 14-20; the pattern's R skipped before Map 14; Level 0 only for the tutorial base and the babies.
+
 - **Pack ranges.** Item 15 gives Maps 0-6 / 7-13 / 13-20 (Map 13 is in two packs); the 19:27 note gives Pack 1 over Maps 0-7 (8 maps) and Packs 2 and 3 over 7 maps each, which reads as 0-7 / 8-14 / 15-21. The counts here use item 15, with Map 13 in Pack 2.
 - **Level 0 for Base cards.** "Only the tutorial base units and the baby cards" start at 0, but also "the other base cards that aren't babies can be raised in the hatchery to Level 1". Read here as: every Base card starts at 0 and the Nest raises it, babies cannot be raised.
 - **Standard pattern past the 10th reward.** The pattern is written for 10 rewards. The pacing check reads it two ways (see Suggestions).
+
+## Leftover mistakes (HUB3) and what RW5 fixed
+
+The hub's list (`mistakes` in `docs/balance/progression-plan-2026-10-23.json`) re-checks itself on every run of the tool; a fixed one carries `fixed: "RW5 (2026-10-23)"`.
+
+- [x] 1. The three packs shared one pool, with lava creatures in Pack 1: each pack has its own pool by map now (`tools/rw5_pack_tiers_2026_10_23.js`, PP-1 default).
+- [x] 2. Pack cards whose source map and first map pool disagreed: re-pointed to the pool's map; 10 are held (6 where that puts them over budget, 4 that are a map's first-clear pack card; decision RW5-3); some of them so sit one pack tier later than the side map where you meet them.
+- [x] 3. Pack cards with no map: each got a map by theme (the tool's NOMAP table).
+- [x] 4. Pack cards naming a map but in no pool: added to that map's pool.
+- [x] 5. The Hummingbird faction cards that came as Base: in the faction pool (side tribes); the Cobalt-talon Fledgling stays Base (the Hummingbird starting deck).
+- [x] 6. Base above ~10: 6 now (with the Ember Tetra, decision RW5-4).
+- [x] 7. Faction cards outside the faction pool: 2 neutral otters (Otter Guard, the River Bundle egg), no Hummingbirds.
+- [x] 8-11. The faction pool holds both sides and 1 of each Base card, copies = the deck cap, set rewards follow the standard pattern (PP-2 default), random rewards keep the gates.
+- [ ] 12. The Mystery Booster / Pack Secrets I pool is still empty (not in RW5).
+- [x] 13. Level 0: only the tutorial base and the babies (PP-3 default).
+- [x] 14. Collector packs.
+- [ ] 15. "Skirmish base" naming in the Codex (not in RW5).
+- [x] The junk id `ember-tetra-3caj` is `ember-tetra`.
+
+Note (RW5): the hub counts 30 faction cards and others as "unplaced" because they carry the old `unattainable` flag, but the game no longer reads that flag (obtainability comes from the source, `isUnattainable`), so those cards are in the game's pools today. `tools/rw5_faction_pacing_2026_10_23.js` reads the pool as the game builds it (and, for comparison, with the flagged cards left out).
 
 ## Balancing suggestions
 

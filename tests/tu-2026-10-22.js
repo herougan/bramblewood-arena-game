@@ -57,7 +57,7 @@ ok(/'bramblewood_tutorial2_done_v1'\];/.test(src) && /const TUTORIAL2_KEY = 'bra
 
 // --- 3. T-1 / T-2 first-clear cards
 const strip = fnSrc('cnpRewardStripHTML');
-ok(/const isTutNode = !!\(node && node\.kind === 'tutorial'\);/.test(strip) && /node\.stage === 2 \? tutorialRewards2\(loadFactionChoice\(\) \|\| 'both'\) : tutorialRewardIds\(\)/.test(strip), '3. a tutorial node lists the tutorial reward cards');
+ok(/const isTutNode = !!\(node && node\.kind === 'tutorial'\);/.test(strip) && /node\.stage === 2 \? tutorialRewards2\(loadFactionChoice\(\) \|\| 'both'(, [\s\S]*?\*\/)?\) : tutorialRewardIds\(\)/ /* 2026-10-23 (RW5): Part 2's preview peeks until Part 1 is done */.test(strip), '3. a tutorial node lists the tutorial reward cards');
 ok(/needR = \(got \|\| isTutNode\) \? null : cardRewardRankFor/.test(strip), '3. no rank emblem on a tutorial reward');
 
 console.log(fail ? `tu-2026-10-22: ${fail} of ${checks} checks failed` : `tu-2026-10-22: all ${checks} checks pass`);
