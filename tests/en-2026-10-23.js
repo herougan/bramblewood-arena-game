@@ -112,7 +112,7 @@ ok(sk('king').value === 1.4 && sk('kingly').value === 3.5, `King 1.4, Kingly 3.5
 ok(sk('assault').scale === 'n' && sk('assault').value === 1.8, `Assault 1.8 a point (${sk('assault').value})`);
 ok(sk('liege').value === 1.08 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.08 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
 ok(BB.CONTEXT_MULT_BY.rageGrant === 0.4 && !BB.CONTEXT_FLAG.rage, 'Rage – {…}: Rage keeps its price, + 0.4 x the braces');
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 8, `Bulwark 8 a point (${sk('bulwark').value})`);
+ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 6, `Bulwark 6 a point (BF11, owner 11:11) (${sk('bulwark').value})`);
 ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.6, `Backstab 0.6 a point (${sk('backstab').value})`);
 ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolute').value === 3, 'EV-5: Evolute, Alpha and Omega 3');
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');
@@ -130,7 +130,7 @@ ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform &
 { const babies = cards.filter(c=> c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].stem);
   ok(babies.length >= 20 && babies.every(c=> !(c.effects || {}).stem && c.mechanicLine !== 'evolution'), `EV-6: ${babies.length} baby-like cards gain Stem (Fodder) at Level 1, none has it at Level 0`); }
 { const m = byId.get('coffer-mimic');
-  ok(m && m.effects.shapeshifter && m.effects.thorns === 4 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 4, Lumber 1, Wait 1');
+  ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
   ok(pools.maps.m4.cards.includes('coffer-mimic'), 'the Coffer Mimic is in Map 8\'s pool (the caves)');
   ok(cards.filter(c=> c.numericId === m.numericId).length === 1, 'its numericId is unique'); }

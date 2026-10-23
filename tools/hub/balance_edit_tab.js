@@ -65,11 +65,11 @@
   function baseOf(d, cfg, M){ const b = BB.baseOf(Object.assign({}, d, {obtainMap: M || 0}), cfg); return HAS_MAP ? b : r2(b + (+cfg.perMap || 0) * (M || 0)); }
   const st = {view:'budget', level:'1', q:'', v:'all', r:'*', map:'*', an:'*', key:'status', dir:-1, open:null, mq:'', mv:'all', mg:'*', mkey:'over', mdir:-1, mopen:null};
   const levelFor = c=> st.level === 'start' ? SC.levelOf(c) : 1;
-  function statusOf(x1, x2, N, cfg){ const N2 = r2((N / 3) * (N / 3)); if(x1 > N + EPS || x2 > N2 + EPS) return 'over'; if(x1 <= (+cfg.bandLow) * N + EPS) return 'under'; return 'in'; }
+  function statusOf(x1, x2, N, cfg){ const N2 = r2(BB.cap2Limit(N, cfg)); /* BF11 */ if(x1 > N + EPS || x2 > N2 + EPS) return 'over'; if(x1 <= (+cfg.bandLow) * N + EPS) return 'under'; return 'in'; }
   // 2026-10-22 (package BF7): the caps' left sides from the helper (BB.capScores: the half-miss m on the stat terms only, Fragile's f on the whole
   // left side), N x the card's N multiplier (BB.nMultOf) and an Archer's Attack at 0, as tools/skill_costs.js budget() does
   function evalCard(c, cfg, s){ const A = +s.attack || 0, H = +s.health || 0, sc = sOf(c, A), m = Math.pow(+cfg.missMult, c.halves), L = levelFor(c), e = c.effects || {}, Ae = (e.archer && !(Number(e.archer) < 0)) ? 0 : A;
-    const base = baseOf(c, cfg, c.mapN), N = r2(BB.nAt(base, L, cfg) * (BB.nMultOf ? BB.nMultOf(e, cfg) : 1)), N2 = r2((N / 3) * (N / 3)), cs = BB.capScores(Ae, H, sc.S, e, cfg, {m}), x1 = cs.x1, x2 = cs.x2 /* 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A·H + S·|S| */;
+    const base = baseOf(c, cfg, c.mapN), N = r2(BB.nAt(base, L, cfg) * (BB.nMultOf ? BB.nMultOf(e, cfg) : 1)), N2 = r2(BB.cap2Limit(N, cfg)), cs = BB.capScores(Ae, H, sc.S, e, cfg, {m}), x1 = cs.x1, x2 = cs.x2 /* 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A·H + S·|S| */;
     return {base, L, N, N2, S: sc.S, parts: sc.parts, missing: sc.missing, m, x1, x2, status: statusOf(x1, x2, N, cfg), share: x1 / N}; }
   let FILE = {}, NOW = {};
   function recomputeFile(){ const cfg = cfgOf(null); FILE = {}; cards.forEach(c=> FILE[c.id] = evalCard(c, cfg, c)); }
@@ -85,7 +85,7 @@
   function evalMon(r, cfg, s){
     const A = +s.attack || 0, H = +s.health || 0, m = Math.pow(+cfg.missMult, r.halves), S = +r.S || 0, d = {rarity: r.st.rarity, wait: r.st.wait || 0, cost: r.st.cost || 0, effects: {}};
     const cs = BB.capScores(A, H, S, null, cfg, {m, f: r.f || 1}) /* BF7 (10-22): m on the stats only */, x1 = cs.x1, x2 = cs.x2 /* BF6: cap 2 A·H + S·|S| */, need = r2(Math.max(x1, 3 * Math.sqrt(Math.max(0, x2))));
-    const nAt = (dd, L)=> BB.nAt(baseOf(dd, cfg, r.map), L, cfg), holds = N=> x1 <= N + EPS && x2 <= (N / 3) * (N / 3) + EPS;
+    const nAt = (dd, L)=> BB.nAt(baseOf(dd, cfg, r.map), L, cfg), holds = N=> x1 <= N + EPS && x2 <= BB.cap2Limit(N, cfg) + EPS;
     const N = nAt(d, r.lv); let eq = null;
     for(let k = Math.min(LEG, BB.rankOf(d.rarity)); k <= LEG && !eq; k++){ const dd = Object.assign({}, d, {rarity: BB.LADDER[k]}); for(let L = 1; L <= 11; L++) if(holds(nAt(dd, L))){ eq = {rarity: BB.LADDER[k], level: L, past: false}; break; } }
     if(!eq){ const leg = Object.assign({}, d, {rarity: 'legendary'}); let L = 12; for(; L <= 2000 && !holds(nAt(leg, L)); L++); eq = {rarity: 'legendary', level: L, past: true, Y: r2(need / nAt(leg, 11))}; }

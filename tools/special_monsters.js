@@ -54,7 +54,7 @@ const rarityKey = r=> BB.LADDER[BB.rankOf(r)];
 const startLevel = d=> G.cardBaseLevel(d);
 // The score of a card as it fights ({attack, health, wait, cost, rarity, effects}); N plays no part in x1 / x2.
 function scoreOf(d){ const b = T.budget(d, {N: 0}); return {S: b.S, m: b.m, x1: b.x1, x2: b.x2, need: r2(Math.max(b.x1, 3 * Math.sqrt(Math.max(0, b.x2)))), missing: b.missing}; }
-const holds = (N, sc)=> N > sc.x1 && (N / 3) * (N / 3) > sc.x2;
+const holds = (N, sc)=> N > sc.x1 && require('../bramblewood-budget.js').cap2Limit(N) > sc.x2; // BF11 (2026-10-23)
 // The biggest N any player card reaches at Level 11 (its own rarity, Wait and Lumber), the top of every player budget.
 const PLAYER_TOP = (()=>{ let best = {N: 0}; CARDS.filter(c=> !c.pool && !c.test && !c.token && !c.baseId && !c.field && !c.eggKind && !c.hatchInto && !c.equip && c.attack != null && c.health != null && (c.source || c.hidden)).forEach(c=>{
   const N5 = nOf(c, 11, CFG.v5, 0), N6 = nOf(c, 11, CFG.v6, 20); if(N5 > best.N) best = {N: N5, N6, id: c.id, name: c.name, rarity: c.rarity, wait: c.wait, cost: c.cost}; }); return best; })();
