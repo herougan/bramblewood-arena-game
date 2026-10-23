@@ -2849,7 +2849,6 @@
  "Fire Resistance": "火焰抗性",
  "Resist {x}": "抗{x}",
  "🔥 A wildfire front sweeps across the field.": "🔥 野火前线扫过战场。",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 野火前线烧到{name}：{n} 🔥 火焰伤害。",
  "The shields are Structures with Guardian. With no free slot, no shield.": "护盾是带守护的建筑。没有空位就没有护盾。",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "战斗状态变差：仍在等待、触电、暴露、失明、眩晕、冰冻、沉睡、混乱、微醺、踉跄、麻痹、束缚、被网缠住或石化，或它在黑暗中看不见而本单位看得见。",
  "New cards that beat cards in your deck: {n}.": "胜过你卡组中卡牌的新卡：{n}。",
@@ -2857,5 +2856,6 @@
  "Swap {out} for {in}?": "用{in}换下{out}？",
  "Swap Again": "再换一张",
  "Previous pack card": "上一张卡包卡牌",
- "Next pack card": "下一张卡包卡牌"
+ "Next pack card": "下一张卡包卡牌",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "野火前线烧到{name}：{n} 🔥 火焰伤害。"
 }

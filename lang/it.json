@@ -2850,7 +2850,6 @@
  "Fire Resistance": "Resistenza al fuoco",
  "Resist {x}": "Resiste: {x}",
  "🔥 A wildfire front sweeps across the field.": "🔥 Un fronte di fuoco spazza il campo.",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 Il fronte di fuoco brucia {name}: {n} 🔥 danni da fuoco.",
  "The shields are Structures with Guardian. With no free slot, no shield.": "Gli scudi sono Strutture con Guardiano. Senza spazio libero, niente scudo.",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "Indebolita in combattimento: ancora in Attesa, Folgorata, Esposta, Accecata, Stordita, Congelata, Addormentata, Confusa, Brilla, Barcollante, Paralizzata, Legata, Invischiata o pietrificata, oppure non vede al buio mentre questa sì.",
  "New cards that beat cards in your deck: {n}.": "Carte nuove migliori di carte del tuo mazzo: {n}.",
@@ -2858,5 +2857,6 @@
  "Swap {out} for {in}?": "Scambiare {out} con {in}?",
  "Swap Again": "Scambia ancora",
  "Previous pack card": "Carta precedente del pacchetto",
- "Next pack card": "Carta successiva del pacchetto"
+ "Next pack card": "Carta successiva del pacchetto",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "Il fronte di fuoco brucia {name}: {n} 🔥 danni da fuoco."
 }

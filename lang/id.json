@@ -2850,7 +2850,6 @@
  "Fire Resistance": "Tahan Api",
  "Resist {x}": "Tahan {x}",
  "🔥 A wildfire front sweeps across the field.": "🔥 Garis depan api menyapu medan.",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 Garis depan api membakar {name}: {n} 🔥 kerusakan api.",
  "The shields are Structures with Guardian. With no free slot, no shield.": "Perisai adalah Bangunan dengan Penjaga. Tanpa slot kosong, tidak ada perisai.",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "Lemah dalam pertempuran: masih Menunggu, Tersetrum, Terekspos, Buta, Pingsan, Membeku, Tertidur, Bingung, Mabuk, Terhuyung, Lumpuh, Terikat, Terjerat jaring atau membatu, atau ia tak bisa melihat dalam gelap sementara unit ini bisa.",
  "New cards that beat cards in your deck: {n}.": "Kartu baru yang lebih kuat dari kartu di dekmu: {n}.",
@@ -2858,5 +2857,6 @@
  "Swap {out} for {in}?": "Tukar {out} dengan {in}?",
  "Swap Again": "Tukar Lagi",
  "Previous pack card": "Kartu paket sebelumnya",
- "Next pack card": "Kartu paket berikutnya"
+ "Next pack card": "Kartu paket berikutnya",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "Garis depan api membakar {name}: {n} 🔥 kerusakan api."
 }

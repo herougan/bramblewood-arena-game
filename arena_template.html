@@ -6559,6 +6559,7 @@
     transition:transform .3s cubic-bezier(.2,1.35,.4,1), box-shadow .3s ease !important;
     box-shadow:0 0 0 1.5px #ffe9a0 inset, 0 0 0 3px #3e5f2c, 0 0 0 4.5px #ffd75e, 0 0 20px 6px rgba(255,214,110,.7), 0 6px 14px rgba(0,0,0,.45) !important;}
   .card-tile.env-card.is-firing-out{transition:transform .32s ease-in, box-shadow .32s ease !important;}
+  @media (max-width:699px){ .card-tile.env-card.is-firing{transform:translateY(-2px) rotate(0deg) scale(1.06) !important;} } /* the phone's header sits at the top edge */
   .card-tile.env-card .env-shine{position:absolute; inset:0; border-radius:10px; overflow:hidden; pointer-events:none; z-index:7;}
   .card-tile.env-card .env-shine::after{content:''; position:absolute; top:-20%; bottom:-20%; left:-60%; width:45%;
     background:linear-gradient(100deg, transparent, rgba(255,255,240,.85), transparent); transform:skewX(-16deg); animation:envShine .75s .18s ease-out both;}

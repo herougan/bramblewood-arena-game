@@ -2851,7 +2851,6 @@
  "Fire Resistance": "화염 저항",
  "Resist {x}": "{x} 저항",
  "🔥 A wildfire front sweeps across the field.": "🔥 들불 전선이 전장을 휩쓸어요.",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 들불 전선이 {name}을(를) 태워요: {n} 🔥 화염 피해.",
  "The shields are Structures with Guardian. With no free slot, no shield.": "방패는 수호자를 가진 건축물입니다. 빈칸이 없으면 방패도 없습니다.",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "전투에 불리한 상태: 아직 대기 중, 감전, 노출, 실명, 기절, 빙결, 수면, 혼란, 취함, 비틀거림, 마비, 속박, 거미줄 또는 석화, 또는 이 유닛은 보이는데 상대는 어둠 속에서 보지 못함.",
  "New cards that beat cards in your deck: {n}.": "덱의 카드보다 강한 새 카드: {n}장.",
@@ -2859,5 +2858,6 @@
  "Swap {out} for {in}?": "{out}을(를) {in}(으)로 바꿀까요?",
  "Swap Again": "한 번 더 교체",
  "Previous pack card": "이전 팩 카드",
- "Next pack card": "다음 팩 카드"
+ "Next pack card": "다음 팩 카드",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "들불 전선이 {name}을(를) 태워요: {n} 🔥 화염 피해."
 }

@@ -2851,7 +2851,6 @@
  "Fire Resistance": "நெருப்பு எதிர்ப்பு",
  "Resist {x}": "{x} எதிர்ப்பு",
  "🔥 A wildfire front sweeps across the field.": "🔥 ஒரு காட்டுத்தீ முனை களத்தைக் கடக்கிறது.",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 காட்டுத்தீ முனை {name}-ஐ எரிக்கிறது: {n} 🔥 நெருப்புச் சேதம்.",
  "The shields are Structures with Guardian. With no free slot, no shield.": "கேடயங்கள் காவலன் திறனுள்ள கட்டடங்கள். காலி இடம் இல்லையெனில் கேடயம் இல்லை.",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "போரில் பலவீனம்: இன்னும் காத்திருப்பு, மின்னதிர்ச்சி, வெளிப்பட்டது, குருடு, மயக்கம், உறைவு, தூக்கம், குழப்பம், போதை, தடுமாற்றம், முடக்கம், கட்டுண்டது, வலையில் சிக்கியது அல்லது கல்லானது; அல்லது இது பார்க்கும்போது அது இருளில் பார்க்க முடியாதது.",
  "New cards that beat cards in your deck: {n}.": "உன் தளத்திலுள்ள அட்டைகளை விடச் சிறந்த புதிய அட்டைகள்: {n}.",
@@ -2859,5 +2858,6 @@
  "Swap {out} for {in}?": "{out}-ஐ {in}-க்கு மாற்றவா?",
  "Swap Again": "மீண்டும் மாற்று",
  "Previous pack card": "முந்தைய பொதி அட்டை",
- "Next pack card": "அடுத்த பொதி அட்டை"
+ "Next pack card": "அடுத்த பொதி அட்டை",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "காட்டுத்தீ முனை {name}-ஐ எரிக்கிறது: {n} 🔥 நெருப்புச் சேதம்."
 }

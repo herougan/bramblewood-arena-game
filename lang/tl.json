@@ -2849,7 +2849,6 @@
  "Fire Resistance": "Tibay sa Apoy",
  "Resist {x}": "Matibay sa {x}",
  "🔥 A wildfire front sweeps across the field.": "🔥 Dumaan ang harap ng sunog sa larangan.",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 Sinunog ng harap ng sunog si {name}: {n} 🔥 pinsalang apoy.",
  "The shields are Structures with Guardian. With no free slot, no shield.": "Ang mga kalasag ay Istrukturang may Guardian. Kung walang bakanteng puwesto, walang kalasag.",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "Mahina sa laban: Naghihintay pa, Nakuryente, Nakalantad, Bulag, Tulala, Nagyelo, Tulog, Lito, Lasing, Pasuray-suray, Paralisado, Nakagapos, Nasa sapot o naging bato, o hindi ito makakita sa dilim habang nakakakita ang unit na ito.",
  "New cards that beat cards in your deck: {n}.": "Mga bagong card na mas mahusay kaysa sa nasa deck mo: {n}.",
@@ -2857,5 +2856,6 @@
  "Swap {out} for {in}?": "Ipalit ang {out} sa {in}?",
  "Swap Again": "Ipalit Ulit",
  "Previous pack card": "Naunang card ng pack",
- "Next pack card": "Susunod na card ng pack"
+ "Next pack card": "Susunod na card ng pack",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "Sinunog ng harap ng sunog si {name}: {n} 🔥 pinsalang apoy."
 }

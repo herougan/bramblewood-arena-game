@@ -2,6 +2,49 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package FX4: one swap row and Swap Again, Scorched Ground boils under one unit, Wildfire Front, one ground fire, field-number gaps, the Environment card that fires, Lava Tide half as often, Lava Waders, Guardian shields, Backstab's new targets, the starting deck's weak cards, Exit)
+- The owner's 11:11 answers on UI4-3, FX3-1, FX3-2, FX3-3, EN-3, EN-5, EB-1 and the Tutorial's way out. New calls FX4-1 .. FX4-4.
+- **Swap (UI4-3):** a faction pack's swap is one row again, in the one-card window's style: your deck card on the left (up to 3, ‹ › and
+  thumbs), up to 3 pack cards on the right. Swap trades the pair (the cards cross over, "Nice!"); 0.8 s later **Swap Again** appears beside
+  Done while a pack card still beats a deck card: the right side moves on to the next one, and a deck card already swapped out is out of the
+  running. Was (UI4): a ticked row per pack card and "Swap N". First faction pack free, later ones one of the 10 offers, as before.
+- **Scorched Ground (FX3-1):** one random unit a side again, 1 fire, every round from round 2 (fire-resistant units and Mountain Climbers
+  never chosen). On screen the ground boils under the chosen card: a lava pool opens at its foot, bubbles rise, a heat haze, then the 🔥1
+  (`groundBoilVfx`). Map 20's elite and boss fights and 22-7 carry it (call FX4-3: 1 or 2).
+- **Wildfire Front (FX3-1, new field effect):** FX3's line of fire on its own (`rules.wildfire`): from round 2, every round, it crosses both
+  front lines left to right and each unit takes 1 fire as the band reaches it, one card after another (`scorchSweepVfx`; events
+  `wildfireSweep` / `wildfire`). Placed on **14-6 Jaguar Run** (Savanna Reaches, was Scorching I) and **20-8 The Iron Cataphract**
+  (Sundered Peak, was Scorching III). In Edit skirmish and the Effects library. Its card borrows Scorching's picture. Calls FX4-1 (the
+  name: Wildfire Front, or Grass Fire / Fire Line) and FX4-2 (how often).
+- **One ground fire (FX3-2):** a fight with Wildfire Front drops the volcano's automatic Scorched Ground and any Scorching (`fightRules`; the
+  engine also skips Scorched Ground where Wildfire Front is on).
+- **Field-number gaps (FX3-2):** two field hits on one unit in one upkeep (a comet and a Lava Tide, say) float 250 ms apart (`FIELD_GAP_MS`,
+  `fieldGapStamp`; faster at 2x / 5x), so both numbers read; the upkeep holds for the last one. A field hit now holds the upkeep 900 ms
+  (was 650), Scorched Ground's boil 1.25 s.
+- **The Environment card that fires (FX3-2):** when a field effect does something at the round's start, its card in the fight's header leaves
+  the fan's tilt, lifts a little, a light sweeps across it, and it eases back into the fan 0.26 s before the upkeep ends (`envCardsFire`,
+  `.is-firing`, `.env-shine`; reduced motion: a still glow).
+- **Lava Tide half as often (FX3-3):** its odds are x0.5 at every level (Very Low 0.5%, Low 5%, Medium 10%, 1 in 2 22.5% rising, High 30%;
+  engine `LAVA_TIDE_FACTOR` and the game's odds words); a fight's own Lava Tide chance is kept as set.
+- **Lava Waders (FX3-3, new equipment):** Uncommon, Lumber 1, +0/+3 and **Fire Resistance** (`equip.grant {resist:['heat']}`: fire hits
+  halved; Scorched Ground, Wildfire Front and Scorching pass the wearer by). Budget by formula, the grant counted as its skills: N 15.88,
+  2A+H+S 4. Made at the **Blacksmith** (2 Iron Shards, 1 Ember Core, 1 Basalt Boar from the Sundered Peak; 300 Dust, 400 Leaves): packs and
+  skirmish rewards never give equipment. Placeholder 🥾, NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md` (call FX4-4).
+  Engine: a granted Resist / Immune list adds to the unit's own (`deriveDef`); the volcano's ground-fire check reads `effects.resist` too.
+  The card reads "Fire Resistance" (`eqResistText`).
+- **Bulwark Shields (EN-3):** the two shields Bulwark raises have **Guardian** (were skill-less).
+- **Backstab (EN-5):** its +N also lands on a target still **Waiting**, **Shocked** or **Exposed**. Price unchanged (0.6 a point).
+- **Starting deck (EB-1):** one Honey Bee and one Silver Minnow are back in the real deck after T-2 for variety (in its hidden places, still
+  20 cards, one copy each); the **Sparrow Chick** is out (any saved tutorial config too) and is now a **Gannet Cliffs (Map 3)** basic-pack card
+  (`source {pack, map mc}`, `canonical/map-pools.json`, obtain map 3).
+- **Tutorial:** the start map's way out says **Exit** (was "↑ To Map 0").
+- Effects Lab: "Built 10-21/23" tab, group FX4: Scorched Ground's boil and Wildfire Front, played with the game's code (`groundBoilVfx`,
+  `scorchSweepVfx`; `fx-src-extra.txt`); the Smoke & war tab's Wildfire front says where it is used now. The hub is rebuilt at release.
+- Texts: 18 TX keys new or changed, 12 packs, the Lava Waders name and flavour (`tools/i18n_2026_10_23_fx4.py`); `ui.ui4-swap-say` /
+  `-n` and `ui.fx-scorched-sweep-log` retired. Tests: `tests/fx4-2026-10-23.js` (new, 95 checks), `tests/e2e/fx4_2026_10_23.py` (390 /
+  1366); `fx3-2026-10-23`, `keywords-2026-10-14` (Lava Tide x0.5) and `ui4-2026-10-23` follow the new rules. Card matrix: 0 failures, golden
+  diffs 8341 against 8247 on batch-1023b before FX4 (Backstab, the Guardian shields, Scorched Ground). Screens: `docs/screens/FX4/`.
+
 ## 2026-10-23 (package BF12: Evasive ×1.37, Shadow ×1.1)
 - **Call BF10-1** (settled by Claude, the owner asked to settle the easy calls): the robust skill test measured both as overpriced at ×1.5 (Evasive worth 5.77 vs 7.14 paid, its deck won 23.8%; Shadow 1.94 vs 7.14, 1.8%). `MISS_MULT_BY` in `bramblewood-budget.js` is now Flying 1.39, Evasive 1.37, Shadow 1.1; Swift stays 1.5. `tools/skill_costs.js` follows.
 - **Re-fit:** no card moves up a whole stat point; the Magma Wraith would go down and stays held (BF11-1).

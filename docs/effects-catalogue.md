@@ -762,7 +762,8 @@ blood. Overlays are fixed nodes on `<body>` with the class `fxw-*`, removed when
 | Friction sparks | the Friction skill: `FX.A` `friction` | yes |
 | Crit sparks | a critical hit: `FX.A` | yes |
 | Rally standard (banner) | `FX.A.rallyStandard` | **Lab only** (nothing calls it) |
-| Wildfire front | `FX.B.wildfire` | **Lab only** |
+| Wildfire front | the Wildfire Front field effect's line of fire (FX3, 2026-10-23; its own field since FX4): `scorchSweepVfx`, `FX.B.wildfire` | yes |
+| Ground boil | Scorched Ground's hit on one unit a side (FX4, 2026-10-23): `groundBoilVfx` | yes |
 | Fog banks | `FX.B.fogBanks` | **Lab only** |
 
 The ambient looks (Thick Fog, Ashy and the weather and sky layers) belong to the field and weather code and are described in the sections

@@ -2849,7 +2849,6 @@
  "Fire Resistance": "炎耐性",
  "Resist {x}": "{x}耐性",
  "🔥 A wildfire front sweeps across the field.": "🔥 野火の前線が戦場を横切る。",
- "🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": "🔥 野火の前線が{name}を焼く：{n} 🔥 火炎ダメージ。",
  "The shields are Structures with Guardian. With no free slot, no shield.": "シールドはガーディアンを持つ建造物。空きマスがなければ出ない。",
  "Worse at combat: still Waiting, Shocked, Exposed, Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.": "戦闘で不利な状態：まだ待機中、感電、無防備、盲目、気絶、凍結、睡眠、混乱、ほろ酔い、よろめき、麻痺、拘束、蜘蛛の巣、石化、またはこのユニットは見えるのに相手は暗闇で見えない。",
  "New cards that beat cards in your deck: {n}.": "デッキのカードより強い新しいカード：{n}枚。",
@@ -2857,5 +2856,6 @@
  "Swap {out} for {in}?": "{out}を{in}と入れ替える？",
  "Swap Again": "もう一度入れ替え",
  "Previous pack card": "前のパックカード",
- "Next pack card": "次のパックカード"
+ "Next pack card": "次のパックカード",
+ "The wildfire front burns {name}: {n} 🔥 fire damage.": "野火の前線が{name}を焼く：{n} 🔥 火炎ダメージ。"
 }

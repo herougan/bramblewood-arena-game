@@ -17789,7 +17789,7 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
     if(r.ashyAfterEruption == null) r.ashyAfterEruption = true; }
   // 2026-10-23 (package FX4, owner FX3-2: one ground fire a fight): where a fight has Wildfire Front (rules.wildfire), the volcano's automatic
   // Scorched Ground (rules.eruption without volcano odds) and Scorching stay off. A fight's own eruption number is kept.
-  if(r.wildfire && node){ if(!volcanoRulesOn(r) && !(node.rules && Number(node.rules.eruption) > 0)) delete r.eruption; if(r.field === 'heatwave'){ delete r.field; delete r.heatLevel; } }
+  if(r.wildfire && node){ if(!(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) &&!(node.rules && Number(node.rules.eruption) > 0)) delete r.eruption; if(r.field === 'heatwave'){ delete r.field; delete r.heatLevel; } }
   if(r.terrain == null && node && mid){ const t = terrainFor(mid, node); if(t) r.terrain = t; }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
@@ -24036,7 +24036,7 @@ function openMultiDeckSwap(item){
       <div class="ds2-pick">${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="-1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-prev' : 'ui.fx4-swap-prev-pack'))}">‹</button>` : ''}<div class="ds2-${side === 'out' ? 'old' : 'new'}">${tile(idOf(sel))}</div>${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-next' : 'ui.fx4-swap-next-pack'))}">›</button>` : ''}</div>
       ${many ? `<div class="ds2-thumbs">${list.map((x, i)=> `<button type="button" class="ds2-thumb ${x === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(String(x))}" aria-label="${escapeAttr(defs[idOf(x)].name)}" aria-pressed="${x === sel}">${tile(idOf(x))}${i === 0 && side === 'out' ? '<i class="ds2-rec" aria-hidden="true">★</i>' : ''}</button>`).join('')}</div>` : ''}</div>`; };
   const sayHTML = ()=>{ const dIn = defs[pack[inSel]], dOut = defs[outSel];
-    return `<b>${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-say-again' : 'ui.fx4-swap-say', {n: offer.length}))}</b><br><span>${escapeHtml(TX('ui.fx4-swap-q', {out: dOut.name, in: dIn.name}))} ⚔${dIn.attack||0} ❤${dIn.health||0} · ⚔${dOut.attack||0} ❤${dOut.health||0}</span>`; };
+    return `<b>${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-say-again' : 'ui.fx4-swap-say', {n: offer.length}))}</b><br><span>${escapeHtml(TX('ui.fx4-swap-q', {out: dOut.name, in: dIn.name}))} ⚔${dOut.attack||0} ❤${dOut.health||0} → ⚔${dIn.attack||0} ❤${dIn.health||0}</span>`; };
   const actionsHTML = again=> again
     ? `<button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX('ui.fx4-swap-done'))}</button><button type="button" class="btn primary big ds4-again" id="dsAgain">🔁 ${escapeHtml(TX('ui.fx4-swap-again'))}</button>`
     : `<button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-done' : 'ui.ui4-swap-keep'))}</button><button type="button" class="btn primary big" id="dsSwap">🔁 ${escapeHtml(TX('ui.ui4-swap-tick'))}</button>`;
@@ -43336,7 +43336,8 @@ function castleShotMs(ev){
 function upkeepHoldMs(events, m){
   let ms = 0;
   (events || []).forEach(ev=>{ if(!ev || ev.type === 'draw') return;
-    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250 : 650); }); // + an Awash ride plays out (2026-10-17)
+    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250
+      : ev.type === 'fieldTick' && ev.field === 'scorched' ? GROUND_BOIL_MS : ev.type === 'fieldTick' && ev.uid != null ? 900 : 650); }); // + an Awash ride plays out (2026-10-17); 2026-10-23 (package FX4): Scorched Ground's boil plays out, a field hit holds 900 ms (was 650) so its Environment card can light up and settle back (envCardsFire)
   const mult = (m && m.speedMult) || 1;
   const sweep = (events || []).some(ev=> ev && ev.type === 'fieldTick' && (ev.field === 'wildfireSweep' || ev.field === 'scorchedSweep')) ? scorchSweepMs(m) + Math.round(450 / mult) : 0; // the line of fire (FX3; Wildfire Front since FX4)
   const gap = fieldGapMaxMs(events, m); // FX4 (2026-10-23): the field numbers' small gaps on one unit

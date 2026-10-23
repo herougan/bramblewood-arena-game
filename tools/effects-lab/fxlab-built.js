@@ -3,7 +3,8 @@
    played with the game's own code (functions copied from arena_app.js into fx-src.js, listed in fx-src-extra.txt), on the sticky field.
    Owner: "Update the effects lab with all the new effects." Every entry carries "In game: <where>".
    Packages: EV (Evolute), MT (Mimic), TR (Crown and Transforms), UI3 (Shield on the battlefield bars), EL (ten element attack plates),
-   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch), and from 2026-10-22 CB (the Galactic Condor turns to fire its Position Beam).
+   RK (total raid rank), BX (Stonedrop Vulture), FG (Forge centre stage, the hatch), and from 2026-10-22 CB (the Galactic Condor turns to fire its Position Beam),
+   from 2026-10-23 FX4 (Scorched Ground's boil, Wildfire Front's line of fire).
    Where the game's handler is inline in renderVfxForEvent (evolve, hatch) the same calls are made in the same order (noted per entry).
    ============================================================ */
 (function(){
@@ -284,10 +285,50 @@ add('cb', 'cb-condor', 'Galactic Condor turns to fire its Position Beam', 'the G
    ['Effects Low (beam only)', c=> condorBeam(c, {at:4, lane:'side', col:2, hits:[3, 2], low:true})]],
   {sig:'positionBeamVfx(ev) + lightningBoltOf(hit) + drawLightningBolt(hit)'});
 
+// -- FX4 (2026-10-23): Scorched Ground's boil under one unit a side, and Wildfire Front, the line of fire as its own field effect
+// The game: the upkeep's 'scorched' event reaches renderVfxForEvent, which calls groundBoilVfx(ev) (a lava pool opens under the card, bubbles,
+// a heat haze, then DN's 🔥1); 'wildfireSweep' then one 'wildfire' event a unit call scorchSweepVfx(ev) (FX.B.wildfire crosses the field, each
+// card's 🔥1 floats as the band reaches its middle). The stand-in lends the Lab's field the battlefield's id for the length of the play
+// (scorchSweepVfx measures #battlefieldEl), the same calls in the same order.
+// a checkout whose .fxcat/fx-src.js lacks DN's number (dnFloat): a plain fire number in its place, so the entries still read
+function labFireNumber(){ if(typeof window.dnFloat === 'function') return;
+  window.dnFloat = (el, d)=>{ if(!el) return; if(typeof window.floatText === 'function') return window.floatText(el, '🔥' + d, 'heat');
+    const s = document.createElement('div'); s.textContent = '🔥' + d; s.style.cssText = 'position:absolute; left:50%; top:30%; transform:translateX(-50%); z-index:5; font:900 22px/1 "Baloo 2", system-ui, sans-serif; color:#ffb02e; text-shadow:0 2px 3px #000; pointer-events:none; transition:top 1s ease-out, opacity 1s ease-in;';
+    el.appendChild(s); requestAnimationFrame(()=> requestAnimationFrame(()=>{ s.style.top = '-12%'; s.style.opacity = '0'; })); setTimeout(()=> s.remove(), 1150); }; }
+async function withBattlefield(c, run){
+  const a = c.tab.arena, was = a.id; let other = document.getElementById('battlefieldEl'); if(other && other !== a) other.id = 'battlefieldEl-lab-off'; else other = null;
+  a.id = 'battlefieldEl'; try{ await run(); } finally { a.id = was; if(other) other.id = 'battlefieldEl'; }
+}
+async function boilPlay(c, which){
+  labFireNumber(); matchWith(c); await c.wait(300);
+  const ws = which === 'both' ? [c.foeW[1], c.mineW[2]] : [c.foeW[2]];
+  ws.forEach((w, i)=>{ try{ groundBoilVfx({type:'fieldTick', field:'scorched', uid:uidOf(c, w), dmg:1, mods:[]}); }catch(e){} });
+  await c.wait(2200);
+}
+async function wildfirePlay(c, o){
+  labFireNumber();
+  if(!('scorchSweepNow' in window)) window.scorchSweepNow = null; // the game's `let`, which the Lab's copied code assigns
+  matchWith(c, {speedMult: (o && o.speed) || 1}); await c.wait(300);
+  await withBattlefield(c, async ()=>{
+    scorchSweepVfx({type:'fieldTick', field:'wildfireSweep', dmg:1});
+    const cols = [...c.foeW, ...c.mineW].map(w=> ({w, x: w.getBoundingClientRect().left})).sort((a, b)=> a.x - b.x);
+    cols.forEach(({w})=>{ try{ scorchSweepVfx({type:'fieldTick', field:'wildfire', uid:uidOf(c, w), dmg:1, mods:[]}); }catch(e){} });
+    await c.wait(scorchSweepMs(window.matchState) + 1600);
+  });
+}
+add('fx4', 'fx4-boil', 'Scorched Ground: the ground boils beneath the unit', 'Scorched Ground on the volcano maps\' big fights: one random unit a side each round from round 2 (engine field \'scorched\', renderVfxForEvent calls groundBoilVfx)',
+  'A pool of glowing lava opens at the chosen card\'s foot, six bubbles rise and pop, a little heat haze lifts, the card flinches and its 🔥1 floats as the boil peaks. One unit a side, so two pools a round. Effects Low / reduced motion: no pool, the number alone.',
+  [['One unit a side', c=> boilPlay(c, 'both')], ['One unit', c=> boilPlay(c, 'one')]],
+  {sig:'groundBoilVfx(ev)', inGame:true});
+add('fx4', 'fx4-wildfire', 'Wildfire Front: the line of fire, one card at a time', 'the Wildfire Front field effect (rules.wildfire: 14-6 Jaguar Run on the Savanna Reaches, 20-8 The Iron Cataphract on the Sundered Peak; Edit skirmish); engine fieldTick \'wildfireSweep\' then \'wildfire\', renderVfxForEvent calls scorchSweepVfx',
+  'From round 2, every round, a flame band (FX.B.wildfire) crosses the battlefield from left to right in 1.6 s; every unit on both front lines takes 1 fire, and each card\'s 🔥1 floats as the band reaches its middle, so the damage lands one card after another. Fire-resistant units (Lava Waders) and Mountain Climbers are passed by. Faster at 2x / 5x; Effects Low / reduced motion: no band, the numbers at once.',
+  [['Play', c=> wildfirePlay(c)], ['At 2x', c=> wildfirePlay(c, {speed:2})]],
+  {sig:'scorchSweepVfx(ev) + FX.B.wildfire', inGame:true});
+
 L.mount({
-  id:'built', title:'Built 10-21 and 10-22', pill:['live', 'New'],
+  id:'built', title:'Built 10-21 to 10-23', pill:['live', 'New'],
   sub:'Everything built on 2026-10-21 and 2026-10-22 that the Lab did not show yet, played with the game\'s own code. Every entry says where it shows up in the game. The field stays pinned at the top while you scroll; pick any button to play it there.',
-  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch'], ['cb', 'Condor beam']],
+  chips:[['ev', 'Evolute'], ['mt', 'Mimic'], ['tr', 'Crown and Transforms'], ['ui3', 'Shield bars'], ['el', 'Element plates'], ['rk', 'Raid rank'], ['bx', 'Archer'], ['fg', 'Forge and hatch'], ['cb', 'Condor beam'], ['fx4', 'Ground fire']],
   groups:[
     {key:'ev', title:'Evolute (package EV)', tag:'Evolute', tone:'evo'},
     {key:'mt', title:'Mimic (package MT)', tag:'Mimic', tone:'evo'},
@@ -298,6 +339,7 @@ L.mount({
     {key:'bx', title:'Archer stone drop (package BX)', tag:'BX', tone:'war'},
     {key:'fg', title:'Forge centre stage and the hatch (package FG)', tag:'FG', tone:'forge'},
     {key:'cb', title:'Galactic Condor: Position Beam (package CB, 2026-10-22)', tag:'CB', tone:'sky'},
+    {key:'fx4', title:'Scorched Ground and Wildfire Front (package FX4, 2026-10-23)', tag:'FX4', tone:'war'},
   ],
   entries:E,
 });

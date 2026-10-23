@@ -15,7 +15,7 @@ DEAD = ["🔥 A line of fire sweeps across the scorched ground.",
   "The shields are Structures with no skills. With no free slot, no shield.",
   "Worse at combat: Blind, Stunned, Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone, or it can't see in the dark while this unit can.",
   "To Map {n}",
-  "{n} new cards beat cards in your deck. Untick any you'd rather keep.", "Swap {n}"]
+  "{n} new cards beat cards in your deck. Untick any you'd rather keep.", "Swap {n}"]  # UI4's ticked rows (ui.ui4-swap-say / -n), gone with them
 # rows copied from the pack's own UI table into the main table (TX keys read the main table first)
 COPY = ["Exit"]
 T = {
@@ -54,13 +54,13 @@ T = {
   "🔥 Un fronte di fuoco spazza il campo.", "🔥 Uma frente de incêndio varre o campo.", "🔥 Dumaan ang harap ng sunog sa larangan.",
   "🔥 ஒரு காட்டுத்தீ முனை களத்தைக் கடக்கிறது.", "🔥 Garis depan api menyapu medan.", "🔥 野火前线扫过战场。", "🔥 野火前線掃過戰場。",
   "🔥 野火の前線が戦場を横切る。", "🔥 들불 전선이 전장을 휩쓸어요."],
-"🔥 The wildfire front burns {name}: {n} 🔥 fire damage.": [
-  "🔥 Le front de feu brûle {name} : {n} 🔥 dégâts de feu.", "🔥 Die Feuerfront verbrennt {name}: {n} 🔥 Feuerschaden.",
-  "🔥 El frente de incendio quema a {name}: {n} 🔥 de daño de fuego.", "🔥 Il fronte di fuoco brucia {name}: {n} 🔥 danni da fuoco.",
-  "🔥 A frente de incêndio queima {name}: {n} 🔥 de dano de fogo.", "🔥 Sinunog ng harap ng sunog si {name}: {n} 🔥 pinsalang apoy.",
-  "🔥 காட்டுத்தீ முனை {name}-ஐ எரிக்கிறது: {n} 🔥 நெருப்புச் சேதம்.", "🔥 Garis depan api membakar {name}: {n} 🔥 kerusakan api.",
-  "🔥 野火前线烧到{name}：{n} 🔥 火焰伤害。", "🔥 野火前線燒到{name}：{n} 🔥 火焰傷害。", "🔥 野火の前線が{name}を焼く：{n} 🔥 火炎ダメージ。",
-  "🔥 들불 전선이 {name}을(를) 태워요: {n} 🔥 화염 피해."],
+"The wildfire front burns {name}: {n} 🔥 fire damage.": [
+  "Le front de feu brûle {name} : {n} 🔥 dégâts de feu.", "Die Feuerfront verbrennt {name}: {n} 🔥 Feuerschaden.",
+  "El frente de incendio quema a {name}: {n} 🔥 de daño de fuego.", "Il fronte di fuoco brucia {name}: {n} 🔥 danni da fuoco.",
+  "A frente de incêndio queima {name}: {n} 🔥 de dano de fogo.", "Sinunog ng harap ng sunog si {name}: {n} 🔥 pinsalang apoy.",
+  "காட்டுத்தீ முனை {name}-ஐ எரிக்கிறது: {n} 🔥 நெருப்புச் சேதம்.", "Garis depan api membakar {name}: {n} 🔥 kerusakan api.",
+  "野火前线烧到{name}：{n} 🔥 火焰伤害。", "野火前線燒到{name}：{n} 🔥 火焰傷害。", "野火の前線が{name}を焼く：{n} 🔥 火炎ダメージ。",
+  "들불 전선이 {name}을(를) 태워요: {n} 🔥 화염 피해."],
 "The shields are Structures with Guardian. With no free slot, no shield.": [
   "Les boucliers sont des Structures avec Gardien. Sans case libre, pas de bouclier.", "Die Schilde sind Bauwerke mit Wächter. Kein freier Platz, kein Schild.",
   "Los escudos son Estructuras con Guardián. Sin casilla libre, no hay escudo.", "Gli scudi sono Strutture con Guardiano. Senza spazio libero, niente scudo.",
