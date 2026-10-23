@@ -53,12 +53,16 @@ ok(/--budget 300 --final-games 2 --method ga --level 1/.test(a.reproduce), 'repr
 ok(a.level === 1, 'your level is 1 by default (OPT2)');
 ok(a.candidates && a.candidates.list.length >= 5 && a.candidates.list.length <= 25, 'phase 2: 5-25 candidates');
 ok(!a.phase2.best || a.phase2.best.cards.every(c => !c.outOfMap || a.candidates.list.some(x => x.id === c.id)), 'phase 2 uses only the logic-filtered candidates');
-ok(a.optima.length >= 1 && a.ladder.length === 1 && a.ladder[0].sharedWithOptimum >= 10, 'distinct optima and a ladder deck sharing >= 10 copies');
+ok(a.optima.length >= 1 && a.ladder.length === 1 && a.ladder[0].sharedWithOptimum >= 6 && a.ladder[0].n > 0, 'distinct optima and a ladder deck sharing >= 6 copies (the core floor)');
+ok(a.ladder.every(x => x.eloCI[0] <= x.eloGap && x.eloGap <= x.eloCI[1] && (x.eloGap >= 0) === (x.optimumH2H >= 0.5)), 'ladder: the Elo gap inside its interval, the optimum\'s score on the same side');
 ok(a.throughput.games > 0 && a.throughput.gamesPerSecond > 0, 'throughput recorded');
 ok(fs.readdirSync(path.join(OUT, 'w0')).some(f => /^deckopt-summary-.*\.md$/.test(f)), 'summary markdown');
 // resume: a finished checkpoint replays to the same report without new search games
 run('w0r', ['--workers', '0', '--resume', '--ckpt-dir', path.join(OUT, 'ck-w0')]);
 const c = file('w0r'); ok(c && strip(c) === strip(a), 'resume from the checkpoint gives the same report');
+// 2026-10-23 (OPT2): --redo ladder runs the ladder again from the checkpoint and gets the same ladder (its own generator)
+run('w0l', ['--workers', '0', '--resume', '--redo', 'ladder', '--ckpt-dir', path.join(OUT, 'ck-w0')]);
+const l = file('w0l'); ok(l && JSON.stringify(l.ladder) === JSON.stringify(a.ladder), '--redo ladder repeats the ladder exactly');
 
 // ---- CLI, exe build, workflow
 ok(/--cross-share[\s\S]*--ladder[\s\S]*--compare/.test(cp.execFileSync(process.execPath, [OPT, '--help'], { encoding: 'utf8' })), '--help lists --cross-share, --ladder, --compare');

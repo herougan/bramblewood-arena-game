@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package OPT2: the deck optimizer, logic first, at Level 1, with a difficulty ladder)
+- **Tools only; nothing in the game changed.** `tools/opt/deckopt.js` 2.0 (owner 22:23, OPT-1..3).
+- **Phase 2 is a logic-filtered list of 5-25 related cards a map** (OPT-1/2), each printed with its reasons; the rules are a small
+  config, `tools/opt/phase2-rules.json` (biome / kin biome, terrain types, shared unit types and animal groups, shared skill families
+  such as ranged skills on an arrow map, skill families the field rewards; never a later map's leaders, showcased, boss-only or boss /
+  ender reward cards, strange cards, challenge cards or Map 40+ cards). `--candidates-only` prints the lists with no games.
+- **The optimum at Level 1 first** (`--level 1` default), then a **difficulty ladder** (OPT-3): legal decks from the same pool at Elo
+  gaps 600 / 450 / 300 / 150 below the optimum, sharing 6-18 of its 20 copies, measured head to head under the map's fields.
+- **Several local maxima, reported**: GA restarts and niching, a new discrete coordinate descent (`--method descent`), the distinct
+  optima (6+ copies apart) with their head-to-head; `--compare` runs both searches at equal game budgets on independent eval seeds.
+- Game budgets (`--budget`) instead of generation counts, so runs reproduce exactly; per-stage checkpoints with `--resume` / `--redo`.
+- Results for Maps 0-3: `docs/balance/opt/opt2-summary-2026-10-23.md`. Tests: `tests/opt2-2026-10-23.js`, `tests/opt-2026-10-23.js`.
+
 ## 2026-10-23 (package SKD: design restrictions in the skirmish tuning guide)
 - **The hub's Design tab now lists the rules we set ourselves** (owner 21:07). `docs/skirmish-tuning-guide.md` has a new section near the top, "Design restrictions we set ourselves": 11 groups (deck shape, leaders, rarity by map, enemy levels, brambles, field effects, rewards, theme, road structure, win-rate bands, CPU), each rule with its decision id or owner note and, where code enforces it, the constant. A last list names where dated docs and code disagree. No code or card changed.
 ## 2026-10-23 (package EN3: Bleed bleeds first, a Boomerang thrown on a miss, a Guardian for a Guardian, Rampart and Bramble Armor, Bleed / Poison and Bulwark re-priced)

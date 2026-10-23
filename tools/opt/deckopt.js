@@ -388,7 +388,7 @@ function nicheSelect(ranked, n, radius, cap) { // clearing: at most `cap` elites
 }
 const fitK = (X, k) => fitness(X.entries, X.stats.get(k), X.main);
 async function gaSearch(X, pool, budget, seeds, rng, credit, bias, label) {
-  const { gm, ev, stats, entries, main, o } = X, g0 = ev.games, used = () => ev.games - g0, trace = [], shOpt = { g0: o.g0, gmax: o.gmax, keep: o.pop, top: o.top };
+  const { gm, ev, stats, entries, main, o } = X, g0 = ev.games, tg = Date.now(), used = () => ev.games - g0, trace = [], shOpt = { g0: o.g0, gmax: o.gmax, keep: o.pop, top: o.top };
   let ranked = await halving(ev, stats, entries, main, uniqDecks(seeds), shOpt); updateCredit(credit, ranked);
   let pop = nicheSelect(ranked, o.pop, o.nicheRadius, o.nicheCap), gens = 0; trace.push([used(), ranked[0].k]);
   X.log(`  ${label} seeds: best ${r1(ranked[0].f * 100)}% (${used()} games)`);
@@ -397,7 +397,7 @@ async function gaSearch(X, pool, budget, seeds, rng, credit, bias, label) {
     while (kids.length < o.children && tries++ < o.children * 5) { const a = tournament(pop, rng), c = rng.next() < 0.5 ? mutate(gm, crossover(gm, a, tournament(pop, rng), pool, credit, rng), pool, credit, rng, bias) : mutate(gm, a, pool, credit, rng, bias); if (deckTotal(c) === 20) kids.push(c); }
     ranked = await halving(ev, stats, entries, main, uniqDecks(pop.map(x => x.d).concat(kids)), shOpt);
     updateCredit(credit, ranked); pop = nicheSelect(ranked, o.pop, o.nicheRadius, o.nicheCap); gens++; trace.push([used(), ranked[0].k]);
-    X.log(`  ${label} gen ${gens}: best ${r1(ranked[0].f * 100)}% ±${r1(ranked[0].se * 196)}  ${used()} games  ${r1(ev.games / Math.max(1, (Date.now() - X.t0) / 1000))} games/s`);
+    X.log(`  ${label} gen ${gens}: best ${r1(ranked[0].f * 100)}% ±${r1(ranked[0].se * 196)}  ${used()} games  ${r1(used() / Math.max(1, (Date.now() - tg) / 1000))} games/s`);
   }
   return { method: 'ga', label, gens, games: used(), best: ranked[0].k, pop: pop.map(x => x.k), trace };
 }
@@ -483,7 +483,7 @@ function parseArgs(argv) {
     method: 'ga', restarts: 2, nicheRadius: 5, nicheCap: 2, neighbours: 10, patience: 3, dgmax: 16,
     pop: 16, children: 32, g0: 2, gmax: 32, top: 3, screenCopies: 3, screenMax: null, finalGames: 0, finalMax: 200, finalShare: 0.2, level: 1, beeTank: false,
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
-    ladder: [600, 450, 300, 150], ladderCore: 10, ladderGames: 32, ladderWalks: 8, ladderTol: 60,
+    ladder: [600, 450, 300, 150], ladderCore: 10, ladderCoreMin: 6, redo: [], ladderGames: 32, ladderWalks: 8, ladderTol: 60,
     compare: false, evalGames: 48, candidatesOnly: false, rules: null,
     out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
   const a = argv.slice(), take = () => a.shift();
@@ -500,7 +500,7 @@ function parseArgs(argv) {
       case '--level': { const v = take(); o.level = v === 'ref' ? null : +v; break; } case '--bee-tank': o.beeTank = true; break;
       case '--distinct-radius': o.distinctRadius = +take(); break; case '--distinct-window': o.distinctWindow = +take(); break; case '--distinct-max': o.distinctMax = +take(); break; case '--h2h-games': o.h2hGames = +take(); break;
       case '--ladder': { const v = take(); o.ladder = v === 'none' ? [] : v.split(',').map(Number).filter(x => x > 0); break; } case '--no-ladder': o.ladder = []; break;
-      case '--ladder-core': o.ladderCore = +take(); break; case '--ladder-games': o.ladderGames = +take(); break; case '--ladder-walks': o.ladderWalks = +take(); break; case '--ladder-tol': o.ladderTol = +take(); break;
+      case '--ladder-core': o.ladderCore = +take(); break; case '--ladder-core-min': o.ladderCoreMin = +take(); break; case '--redo': o.redo = take().split(','); break; case '--ladder-games': o.ladderGames = +take(); break; case '--ladder-walks': o.ladderWalks = +take(); break; case '--ladder-tol': o.ladderTol = +take(); break;
       case '--compare': o.compare = true; break; case '--eval-games': o.evalGames = +take(); break; case '--candidates-only': o.candidatesOnly = true; break;
       case '--out': o.out = take(); break; case '--ckpt-dir': o.ckptDir = take(); break; case '--resume': o.resume = true; break; case '--root': o.root = take(); break;
       case '--quiet': o.quiet = true; break; case '--no-summary': o.summary = false; break; case '--tag': o.tag = take(); break;
@@ -529,9 +529,9 @@ const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramb
   --final-games G     games per entry in the final (default: 64 with --budget, else what fits --final-share 0.2 of the time)
   --distinct-radius D --distinct-window W --distinct-max N   distinct optima: D copies apart (6), within W of the best (0.1), at most N (4); --h2h-games G (16 per field)
   --ladder 600,450,300,150 | none   the difficulty ladder's Elo gaps below the optimum; --ladder-core C (10 copies shared with the optimum),
-                      --ladder-games G (32 per field), --ladder-walks W (8), --ladder-tol T (60 Elo)
+                      --ladder-games G (32 per field), --ladder-walks W (8), --ladder-tol T (60 Elo); a target out of reach relaxes the core to --ladder-core-min (6)
   --compare           GA vs descent on the map cards at equal --budget each; best-so-far decks scored on independent seeds (--eval-games 48)
-  --ckpt-dir D --resume   per-stage checkpoints (default <tmp>/deckopt) and picking up from them
+  --ckpt-dir D --resume   per-stage checkpoints (default <tmp>/deckopt) and picking up from them; --redo ladder (or p2, final ...) runs that stage and the later ones again
   --out DIR           output folder (default docs/balance/opt)                  --root DIR     the game checkout (default: this repo; the exe: the working folder)
   --bee-tank          give your side the engine's Bee Tank fallback, as the game's reference harness does (off)
   --tag T             file tag (default: today's date)                          --quiet  --no-summary  --version`;
@@ -554,12 +554,17 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
   const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
-  if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {} };
+  if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {}, rngAt: {} };
+  // --redo ladder (or any stage): run that stage again from the generator state it started with (as a fresh run would)
+  if (o.redo.length && S.stages) { let from = null; ['budget', 'p1', 'screen', 'p2', 'final', 'h2h', 'ladder'].forEach(k => { if (o.redo.includes(k) && S.stages[k] && from == null) from = k; });
+    if (from) { const order = ['budget', 'p1', 'screen', 'p2', 'final', 'h2h', 'ladder'], i = order.indexOf(from); order.slice(i).forEach(k => { delete S.stages[k]; }); delete S.stages.done; if (S.rngAt && S.rngAt[from] != null) S.rng = S.rngAt[from]; log('  redo from stage ' + from); } }
+  S.rngAt = S.rngAt || {}; S.tp = S.tp || { games: 0, ms: 0, sessions: 0 }; S.tp.sessions++;
   const rng = mulberry(S.rng), stats = new Stats(entries.length, S.stats), X = { gm, ev, stats, entries, main, o, log, t0 }, games0 = ev.games;
   let hX = null; // the head-to-head context (set up after the final)
   // kept: every deck a stage names, and the fight / reference decks the report rates as your deck
-  const checkpoint = () => { S.rng = rng.s; const keep = [...keysIn(S.stages)].concat(entries.filter(e => e.kind === 'mirror' && !e.neutral).map(e => deckKey(e.opp))); S.stats = stats.toJSON(keep); if (hX) S.hstats = hX.stats.toJSON(keep); saveJSON(ckFile, S); };
-  const stage = async (name, fn) => { if (S.stages[name]) return S.stages[name]; const r = await fn(); S.stages[name] = r; checkpoint(); return r; };
+  let tpG = ev.games, tpT = Date.now(); const tick = () => { S.tp.games += ev.games - tpG; S.tp.ms += Date.now() - tpT; tpG = ev.games; tpT = Date.now(); };
+  const checkpoint = () => { tick(); S.rng = rng.s; const keep = [...keysIn(S.stages)].concat(entries.filter(e => e.kind === 'mirror' && !e.neutral).map(e => deckKey(e.opp))); S.stats = stats.toJSON(keep); if (hX) S.hstats = hX.stats.toJSON(keep); saveJSON(ckFile, S); };
+  const stage = async (name, fn) => { if (S.stages[name]) return S.stages[name]; S.rngAt[name] = rng.s; const r = await fn(); S.stages[name] = r; checkpoint(); return r; };
   await ev.setup(spec);
   log(`  phase 2 candidates (${cands.list.length}, score >= ${cands.minScore}${cands.minScore < cands.minScoreAsked ? ', lowered from ' + cands.minScoreAsked : ''}${cands.cut ? ', ' + cands.cut + ' more cut' : ''}): ` + cands.list.map(c => c.name + ' ' + c.score).join(', '));
   // ---- the budget (games): --budget, or --minutes x the games/s of the seed decks' first games (those games are reused by the search)
@@ -631,8 +636,8 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
       const st = hX.stats.get(fin.optima[i]), f = fitness(hEntries, st, idx), n = idx.reduce((a, x) => a + st.n[x], 0);
       M[i][j] = { p: r3(f.f), elo: Math.round(elo(f.f, n)), n }; M[j][i] = { p: r3(1 - f.f), elo: -Math.round(elo(f.f, n)), n }; }
     return { matrix: M }; });
-  const ladder = !o.ladder.length ? null : await stage('ladder', async () => makeLadder(hX, map, deckFromKey(fin.optimum), p2pool, rng, log));
-  const wallS = (Date.now() - t0) / 1000, played = ev.games - games0;
+  const ladder = !o.ladder.length ? null : await stage('ladder', async () => makeLadder(hX, map, deckFromKey(fin.optimum), p2pool, mulberry(fnv(o.seed + '|ladder|' + fin.optimum)), log)); // its own generator: the ladder depends only on the optimum, so --redo ladder repeats it exactly
+  tick(); const wallS = S.tp.ms / 1000, played = S.tp.games; // every session of this map's run (a --resume adds to the checkpoint's)
   // ---- the report
   const per = (k, idx) => { const st = stats.get(k); return idx.map(i => { const n = st.n[i], p = n ? st.s[i] / n : null, ci = wilson(p || 0, n); return { entry: entries[i].key, label: entries[i].label, kind: entries[i].kind, neutral: !!entries[i].neutral, p: r3(p), lo: r3(ci[0]), hi: r3(ci[1]), n }; }); };
   const allIdx = entries.map((e, i) => i);
@@ -660,7 +665,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     pools: { phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),
-    throughput: { games: played, seconds: r1(wallS), gamesPerSecond: r1(played / wallS), workers: o.workers },
+    throughput: { games: played, seconds: r1(wallS), gamesPerSecond: r1(played / wallS), workers: o.workers, sessions: S.tp.sessions },
     phase1: { search: searchOut(s1), best: opt1 },
     phase2: { search: searchOut(s2), screenBaseline: scr.base, screened: scr.list.length,
       topSwaps: scr.list.slice(0, 15).map(x => ({ card: x.card, name: gm.D[x.card].name, rarity: gm.D[x.card].rarity, obtainMap: obtainMapOf(gm, x.card), copies: x.copies, out: x.out, score: x.f, delta: x.delta, n: x.n })),
@@ -679,31 +684,43 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
 // refined by single-copy swaps, and the pick is measured to --ladder-games per field.
 async function makeLadder(hX, map, optimum, pool, rng, log) {
   const { gm, ev, stats, entries, o } = hX, G = gm.G, idx = hX.main, size = deckTotal(optimum);
-  const gapOf = d => { const st = stats.get(deckKey(d)), f = fitness(entries, st, idx), n = idx.reduce((a, x) => a + st.n[x], 0); return { gap: elo(1 - f.f, n), p: 1 - f.f, n, se: f.se }; };
-  const keep = d => overlap(d, optimum) >= o.ladderCore;
-  const weak = pool.slice().sort((a, b) => G.skirmishCardScore(gm.D[a]) - G.skirmishCardScore(gm.D[b]) || (a < b ? -1 : 1)).slice(0, Math.ceil(pool.length / 2));
-  const cands = [];
-  for (let w = 0; w < o.ladderWalks; w++) { let d = Object.assign({}, optimum); const from = w % 2 ? weak : pool;
-    for (let s = 1; s <= size - o.ladderCore; s++) {
-      const shared = []; Object.keys(d).sort().forEach(id => { for (let c = 0; c < Math.min(d[id], optimum[id] || 0); c++) shared.push(id); });
-      if (!shared.length) break; const x = shared[Math.floor(rng.next() * shared.length)], e = Object.assign({}, d); if (--e[x] <= 0) delete e[x];
-      const ok = from.filter(y => canAdd(gm, e, y) && (e[y] || 0) >= (optimum[y] || 0)); if (!ok.length) break;
-      const y = ok[Math.floor(rng.next() * ok.length)]; e[y] = (e[y] || 0) + 1; d = e;
-      if (s % 2 === 0) cands.push(d); } }
-  const pool0 = uniqDecks(cands); await ensure(ev, stats, pool0, 4, idx);
-  log(`  ladder: ${pool0.length} candidate decks (>= ${o.ladderCore} copies shared with the optimum)`);
+  const gapOf = d => { const st = stats.get(deckKey(d)), f = fitness(entries, st, idx), n = idx.reduce((a, x) => a + st.n[x], 0); return { gap: elo(1 - f.f, n), p: 1 - f.f, n, se: f.se }; }; // p = the optimum's score against the deck
+  const byScore = pool.slice().sort((a, b) => G.skirmishCardScore(gm.D[a]) - G.skirmishCardScore(gm.D[b]) || (a < b ? -1 : 1));
+  const weak = byScore.slice(0, Math.ceil(pool.length / 2)), weakest = byScore.slice(0, Math.ceil(pool.length / 4));
+  const walks = (n, core, pick) => { const cands = []; // n random walks from the optimum down to `core` shared copies; a candidate every 2 steps
+    for (let w = 0; w < n; w++) { let d = Object.assign({}, optimum); const from = pick(w);
+      for (let s = 1; s <= size - core; s++) {
+        const shared = []; Object.keys(d).sort().forEach(id => { for (let c = 0; c < Math.min(d[id], optimum[id] || 0); c++) shared.push(id); });
+        if (!shared.length) break; const x = shared[Math.floor(rng.next() * shared.length)], e = Object.assign({}, d); if (--e[x] <= 0) delete e[x];
+        const ok = from.filter(y => canAdd(gm, e, y) && (e[y] || 0) >= (optimum[y] || 0)); if (!ok.length) break;
+        const y = ok[Math.floor(rng.next() * ok.length)]; e[y] = (e[y] || 0) + 1; d = e;
+        if (s % 2 === 0) cands.push(d); } }
+    return cands; };
+  let pool0 = uniqDecks(walks(o.ladderWalks, o.ladderCore, w => w % 2 ? weak : pool)); await ensure(ev, stats, pool0, 8, idx);
+  // 2026-10-23 (OPT2): a target further than the walks reach (600 below a strong optimum needs more than 10 copies changed): the core
+  // relaxes 2 copies at a time, never below --ladder-core-min, with walks toward the pool's weakest quarter
+  // (the reach is judged by each deck's lower 95% bound, so a deck that lost every one of its few games does not count as 600 below)
+  let core = o.ladderCore; const far = Math.max(...o.ladder), lowGap = d => { const g = gapOf(d), ci = wilson(g.p, g.n); return elo(ci[0], g.n); }, maxGap = () => Math.max(...pool0.map(lowGap));
+  while (maxGap() < far - o.ladderTol && core - 2 >= o.ladderCoreMin) { core -= 2;
+    const more = uniqDecks(walks(Math.max(2, o.ladderWalks / 2), core, () => weakest)).filter(d => !pool0.some(x => deckKey(x) === deckKey(d)));
+    await ensure(ev, stats, more, 8, idx); pool0 = pool0.concat(more); }
+  log(`  ladder: ${pool0.length} candidate decks (>= ${core} copies shared with the optimum${core < o.ladderCore ? ', relaxed from ' + o.ladderCore : ''})`);
   const out = [];
+  const seen = pool0.slice();
   for (const t of o.ladder) {
     const near = list => list.map(d => ({ d, ...gapOf(d) })).sort((a, b) => Math.abs(a.gap - t) - Math.abs(b.gap - t) || (deckKey(a.d) < deckKey(b.d) ? -1 : 1));
-    let top = near(pool0).slice(0, 3).map(x => x.d); await ensure(ev, stats, top, 12, idx);
+    let top = near(pool0).slice(0, 3).map(x => x.d); await ensure(ev, stats, top, 16, idx); seen.push(...top);
     let cur = near(top)[0].d;
     for (let round = 0; round < 2 && Math.abs(gapOf(cur).gap - t) > o.ladderTol; round++) {
-      const nb = neighbours(gm, cur, pool, rng, 8, keep); await ensure(ev, stats, nb, 6, idx);
-      const b = near(nb).slice(0, 2).map(x => x.d); await ensure(ev, stats, b, 12, idx);
+      const floor = Math.min(o.ladderCore, overlap(cur, optimum)), nb = neighbours(gm, cur, pool, rng, 8, d => overlap(d, optimum) >= floor); await ensure(ev, stats, nb, 8, idx);
+      const b = near(nb).slice(0, 2).map(x => x.d); await ensure(ev, stats, b, 16, idx); seen.push(...nb);
       const c = near(b.concat([cur]))[0].d; cur = c; }
-    await ensure(ev, stats, [cur], o.ladderGames, idx);
+    // the pick: the nearest two of every deck measured to >= 16 games a field (earlier targets' picks included) and this target's
+    // walk end, all measured to --ladder-games, so 16-game noise does not decide it
+    const fin = uniqDecks([cur].concat(near(seen.filter(d => stats.get(deckKey(d)).n[idx[0]] >= 16)).slice(0, 2).map(x => x.d)));
+    await ensure(ev, stats, fin, o.ladderGames, idx); cur = near(fin)[0].d;
     const g = gapOf(cur), ci = wilson(g.p, g.n);
-    out.push({ target: t, key: deckKey(cur), deck: cur, eloGap: Math.round(g.gap), eloCI: [Math.round(elo(1 - ci[1], g.n)), Math.round(elo(1 - ci[0], g.n))], optimumH2H: r3(1 - g.p), n: g.n, sharedWithOptimum: overlap(cur, optimum), hit: Math.abs(g.gap - t) <= o.ladderTol });
+    out.push({ target: t, key: deckKey(cur), deck: cur, eloGap: Math.round(g.gap), eloCI: [Math.round(elo(ci[0], g.n)), Math.round(elo(ci[1], g.n))], optimumH2H: r3(g.p), n: g.n, sharedWithOptimum: overlap(cur, optimum), hit: Math.abs(g.gap - t) <= o.ladderTol });
     log(`  ladder ${t}: Elo gap ${Math.round(g.gap)} (${g.n} games, ${overlap(cur, optimum)} copies shared)${Math.abs(g.gap - t) <= o.ladderTol ? '' : ' (nearest found)'}`);
   }
   return out;
@@ -766,7 +783,7 @@ function summaryMd(reports, tag) {
   reports.forEach(r => {
     L.push(`## Map ${r.map.num}: ${r.map.name} (\`${r.map.id}\`), your level ${r.level}`, '');
     const s1 = r.phase1.search, s2 = r.phase2.search;
-    L.push(`- Throughput: ${r.throughput.games} games in ${r.throughput.seconds} s = **${r.throughput.gamesPerSecond} games/s** (${r.throughput.workers} workers). Search: ${s1.method}, budget ${r.settings.budget} games (${s1.games} map cards${s1.gens != null ? ', ' + s1.gens + ' generations' : ''}${s1.restarts ? ', ' + s1.restarts + ' restarts' : ''}; ${s2.games} with the candidates). Reproduce: \`${r.reproduce}\``);
+    L.push(`- Throughput: ${r.throughput.games} games in ${r.throughput.seconds} s = **${r.throughput.gamesPerSecond} games/s** (${r.throughput.workers} workers${r.throughput.sessions > 1 ? ', ' + r.throughput.sessions + ' sessions (resumed)' : ''}). Search: ${s1.method}, budget ${r.settings.budget} games (${s1.games} map cards${s1.gens != null ? ', ' + s1.gens + ' generations' : ''}${s1.restarts ? ', ' + s1.restarts + ' restarts' : ''}; ${s2.games} with the candidates). Reproduce: \`${r.reproduce}\``);
     L.push(`- Pool: ${r.pools.phase1} cards (${r.pools.mapCards.length} map cards + ${r.pools.owned.length} owned by then); phase 2 ${r.pools.phase2} (+${r.candidates.list.length} candidates).`, '');
     candidatesMd(r.candidates).forEach(x => L.push(x));
     L.push(`- **Optimum (map cards)**: score ${pct(r.phase1.best.score)} [${pct(r.phase1.best.ci[0])}, ${pct(r.phase1.best.ci[1])}], mirror ${pct(r.phase1.best.mirror)}, road ${pct(r.phase1.best.road)}: ${deckLine(r.phase1.best)}`);
