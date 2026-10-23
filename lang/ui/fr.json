@@ -634,7 +634,6 @@
  "Bloodlust 2: it does not slow down once it starts swinging. It speeds up.": "Soif de sang 2 : il ne ralentit pas une fois qu’il commence à frapper. Il accélère.",
  "Bloodlust: when it kills the unit facing it, it leaps to the next creature": "Soif de sang : quand elle tue l’unité en face, elle bondit sur la créature suivante",
  "Bloom": "Floraison",
- "Bloom heals 1 more.": "Floraison soigne 1 de plus.",
  "Bloom When": "Fleurit quand",
  "Bloomtide": "Marée des Fleurs",
  "Blossom": "Fleur",
@@ -5058,5 +5057,6 @@
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Attaque pour chaque allié qui partage un type avec elle. Les Structures ne comptent pas.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Attaque pour chaque allié qui est {v2}. Les Structures ne comptent pas.",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Des cuissardes en peau de salamandre et en poix. Entre dans la lave, garde tes orteils.",
- "One claw for waving, one for winning. This one only grew the second.": "Une pince pour saluer, une pour gagner. Celui-ci n'a fait pousser que la seconde."
+ "One claw for waving, one for winning. This one only grew the second.": "Une pince pour saluer, une pour gagner. Celui-ci n'a fait pousser que la seconde.",
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "Une pellicule verte sur l'eau dormante. Donnez-lui du soleil et un jour humide, et le soir elles sont deux."
 }

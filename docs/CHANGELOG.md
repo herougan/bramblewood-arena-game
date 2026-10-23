@@ -2,6 +2,30 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package BL: Bloom rebuilt, Nectar Vintner's Heal, default values, Bleed's fade)
+- **Bloom – {conditions} (11:23, 17:34 #3 "Bloom hasn't changed"):** a new skill (`effects.bloomCopy`). Once, the first round its conditions hold at
+  the round's start, a copy of it grows in a free slot beside it and the copy gains +1/+1 (19:30: "bloom only gives the new one +1/+1, not
+  itself"; the unit is unchanged): its Attack and Health with every change made without counters, plus 1/+1, minus its damage, none of its counters or statuses, its printed Wait. The copy can't bloom and leaves no card behind
+  (BL-1); with no free slot beside it the bloom waits a round (BL-2). New conditions: **Sunny** (day or Twilight, no Rain / Fog / darkness) and
+  **Killed an enemy**; a Lumber price ("+ 1 Lumber"). A short bloom look: petals (spores for a fungus, a green film for an alga) drift into the
+  slot and the copy opens out of a ring of light; "🌸 +1/+1" on the copy; the chip greys once spent.
+  Cards: Fungal Colossus Bloom (Wet & Sunny + 1 Lumber), Puffball Bombardier Bloom (Wet & Killed an enemy) (a third skill, BL-4), Lotus Frog
+  Bloom (Tide & Night) (was Bloom When +2/+2), and a new card, **Pond Algae** (Common Plant, Bloom (Wet & Sunny), 1/9, awaiting a source, BL-3).
+  The old Bloom N heal and Bloom When are retired (hidden; the engine still runs them for old custom cards). The Open Meadow grants Healing 1,
+  Wildpath's Pollen Drift adds to Healing.
+- **Bloom's price** (`bramblewood-budget.js` `bloomOdds`): p = its conditions' odds (estimates, not measured) x 0.85, x 0.85 per Lumber; S = 3p
+  (the copy's +1/+1) and cap 1's stat terms x (1 + p). Re-fit (`tools/bl_bloom_2026_10_23.js refit`, through `tools/refit_pass_2026_10_21.js`): the three
+  down-moves are held at their stats (Fungal Colossus 2/21, Puffball 1/10, Lotus Frog 3/12; `docs/balance/bl-held-2026-10-23.json`, BL-5); the
+  flagged list is merged, not overwritten.
+- **Nectar Vintner (11:23):** Healing 1 instead of the old Bloom 1 (same price, stats unchanged at 1/1).
+- **Default values (17:34 #4):** Diurnal, Nocturnal and Crepuscular default to +1/+0 (the card editor's default too). A skill at its default value
+  has a bare name on its card line: "Diurnal — By day: +1/+0." (was "Diurnal +1/+0 — ..."); the same for every skill with a default (Fire Bolt 2,
+  Full Moon 3, Pack 2, Cleave 1 ...). Other values keep their number ("Diurnal +1/+2").
+- **Bleed's fade (17:34 #14):** the rule was already: the stack drops by 1 at the start of every round, whether it bled or not (Festering holds it);
+  the texts now say so, and that Cleanse (not heals) removes it. As a stack fades, one greyed-out 🩸 drops from the card's Bleed pip to the ground
+  under the card.
+- Texts in 12 packs (`tools/i18n_2026_10_23_bl.py`); `docs/effects-catalogue.md`; tests `tests/bl-2026-10-23.js`, `tests/e2e/bl_2026_10_23.py`
+  (screens in `docs/screens/BL/`); `tests/bf5-2026-10-21.js` lists the Puffball as a thematic exception.
 ## 2026-10-23 (package DC3: the owner's 17:34 answers, and the easy defaults cleared)
 - Decisions only, no code. `docs/decisions.json`: 9 of the owner's 17:34 answers recorded (PR-1, RW4-1, DF-1, DF-2, DF-3, RW3-2,
   TU2-3, A3, H1). At his request (#7, "clear all those easy defaults"), 22 more closed as "Default taken (DC3)": RW4-2..4,

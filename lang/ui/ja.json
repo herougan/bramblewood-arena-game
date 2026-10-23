@@ -634,7 +634,6 @@
  "Bloodlust 2: it does not slow down once it starts swinging. It speeds up.": "血の渇き2：振り始めたら遅くならない。速くなる。",
  "Bloodlust: when it kills the unit facing it, it leaps to the next creature": "血の渇き：正面のユニットを倒すと、次のクリーチャーへ飛びかかる",
  "Bloom": "開花",
- "Bloom heals 1 more.": "開花の回復量+1。",
  "Bloom When": "開花の条件",
  "Bloomtide": "花潮",
  "Blossom": "花",
@@ -5058,5 +5057,6 @@
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "同じタイプを持つ味方1体ごとに攻撃+{v1}。 建造物は数えない。",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}の味方1体ごとに攻撃+{v1}。 建造物は数えない。",
  "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "サラマンダーの革と松脂でできた腿まであるブーツ。踏み込んでも、つま先は無事。",
- "One claw for waving, one for winning. This one only grew the second.": "片方のはさみは手を振るため、もう片方は勝つため。こいつは二つ目しか育てなかった。"
+ "One claw for waving, one for winning. This one only grew the second.": "片方のはさみは手を振るため、もう片方は勝つため。こいつは二つ目しか育てなかった。",
+ "A green film on still water. Give it sun and a wet day, and by evening there are two.": "よどんだ水に張る緑の膜。日差しと雨の一日を与えれば、夕方には二つになっている。"
 }
