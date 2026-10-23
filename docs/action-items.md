@@ -1,5 +1,29 @@
 # Action items
 
+## 10-23 11:11: building
+
+From the owner's 10-23 11:11 answers and Claude's sweep of the easy calls (package DC2). Quotes and meaning in `docs/decisions.json`. Order: FX4, then HUB2; BF11 is the coordinator's.
+
+| Decision | Package | Item |
+|---|---|---|
+| UI4-3 | FX4 | Swap window: one row, your deck card on the left, up to 3 pack cards on the right; 0.8 s after Swap a "Swap Again" button; the right side moves on to select another card; the deck card swapped out leaves the choice. |
+| FX3-1 | FX4 | Scorched Ground hits one unit, drawn as the ground boiling beneath it. The line of fire becomes its own field effect (fx in the master hub; find it a name): every unit takes 1 fire damage, one by one as the line passes. |
+| FX3-2 | FX4 | A small gap between consecutive field-effect damage animations so both numbers read; the active field-effect card straightens, shines a little, and tilts back as the effect completes. |
+| FX3-3 | FX4 | Lava Tide at 50% of its as-built strength; new equipment Lava Waders (boots that grant Fire Resistance). |
+| EN-3 | FX4 | Bulwark's shields get Guardian. |
+| EN-5 | FX4 | Backstab also triggers on a target still Waiting, Shocked or Exposed. |
+| EB-1 | FX4 | The real deck after T-2 keeps one copy of each weak trainee card for variety; the Sparrow Chick leaves the starting cards (Gannet Cliffs onwards). |
+| (note) | FX4 | Tutorial: the "To Map 0" button just says "Exit". |
+| UI4-1 | HUB2 (after FX4) | Every upgrade and Forge cost (deck slot prices included; placeholders kept as built) is editable in the master hub. |
+| EN-1 | BF11 | Trim the Magnate Duck's skills / numbers until it fits; the Muskrat Lodgekeeper keeps only Bulwark 1 and Tide. |
+| EN-2 | BF11 | Bulwark priced 6 a point (was 8); re-fit the Ancient Sloth Titan. |
+| EN-4 | BF11 | Thorns under 2 a point (Thorns 1 worth less than +1 Attack); Coffer Mimic Thorns 2; cap 2 becomes 2·(N/3)². |
+| EB-3 | Later package (small UI) | The fight panel's deck tiles show the stats at the level the enemy fights at, not the printed ones. |
+| BF10-1 | Later package (balance) | Evasive ×1.37 and Shadow ×1.1 in `canonical/skill-costs.json`, then a card re-fit. |
+| EQ-1 | Waiting on the owner | How equipment is damaged or removed (design question; recommended: durability with acid / Corrode wear). |
+
+Owner's own: he rebalances Maps 0-2 himself (EB-3).
+
 ## 10-23 owner answers: building
 
 From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW3, EN, SX, AR3. Details and quotes in `docs/decisions.json`. Live database writes (T3, S1, S2) wait for his "apply it"; S3 and S4 wait for a Chrome session with him.
