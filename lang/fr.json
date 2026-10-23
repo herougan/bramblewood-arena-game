@@ -2947,5 +2947,14 @@
  "The Hollow Warren is cleared!": "La Garenne creuse est vaincue !",
  "The climb is over": "L’ascension est terminée",
  "Floors cleared: {n}/{total}": "Étages terminés : {n}/{total}",
- "Back to the dungeons": "Retour aux donjons"
+ "Back to the dungeons": "Retour aux donjons",
+ "Good Choice!": "Bon choix !",
+ "A card you'll get with this win.": "Une carte que vous gagnerez avec cette victoire.",
+ "You get {n} Maple Leaves.": "Vous gagnez {n} feuilles d'érable.",
+ "You get {n} Magic Dust.": "Vous gagnez {n} poussière magique.",
+ "Energy capsules: {n}": "Capsules d'Énergie : {n}",
+ "+{n} Energy each": "+{n} Énergie chacune",
+ "Use": "Utiliser",
+ "An egg! You'll need a nest to hatch it!": "Un œuf ! Il vous faut un nid pour le faire éclore !",
+ "You got an egg!": "Vous avez un œuf !"
 }

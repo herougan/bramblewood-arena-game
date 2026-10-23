@@ -171,7 +171,7 @@ async def run(b, url, w):
       const tip = (document.querySelector('.rw-kit') || {getAttribute: ()=> null}).getAttribute('data-tip');
       return Object.assign({tip, over: !!(m && m.over)}, seen || {before:0, after:0, kept:-1}); })()""")
     ok(r['over'] and r['after'] >= 1 and r['kept'] == r['after'], f"01:09 #2. the board's cards are the same elements under the results ({r['kept']} of {r['after']} kept)")
-    ok(r['tip'] == 'Your bramble heals 5 Health.', f"01:57 #8. the item chip's tip just says what it does ({r['tip']!r})")
+    ok((r['tip'] or '').endswith('Your bramble heals 5 Health.'), f"01:57 #8. the item chip's tip just says what it does (RW4: after its name) ({r['tip']!r})")
     await shot(pg, 'results', w)
     await pg.close()
     # EB: the map panel's enemy tiles at the fight's level

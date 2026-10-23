@@ -2948,5 +2948,14 @@
  "The Hollow Warren is cleared!": "A Toca Oca foi conquistada!",
  "The climb is over": "A subida terminou",
  "Floors cleared: {n}/{total}": "Andares concluídos: {n}/{total}",
- "Back to the dungeons": "Voltar às masmorras"
+ "Back to the dungeons": "Voltar às masmorras",
+ "Good Choice!": "Boa escolha!",
+ "A card you'll get with this win.": "Uma carta que você ganha com esta vitória.",
+ "You get {n} Maple Leaves.": "Você ganha {n} folhas de bordo.",
+ "You get {n} Magic Dust.": "Você ganha {n} de pó mágico.",
+ "Energy capsules: {n}": "Cápsulas de Energia: {n}",
+ "+{n} Energy each": "+{n} de Energia cada",
+ "Use": "Usar",
+ "An egg! You'll need a nest to hatch it!": "Um ovo! Você vai precisar de um ninho para chocá-lo!",
+ "You got an egg!": "Você ganhou um ovo!"
 }

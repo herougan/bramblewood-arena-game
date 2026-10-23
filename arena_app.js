@@ -2910,14 +2910,24 @@ function revealInTutorial(){ try{ return typeof matchState !== 'undefined' && !!
 const SKILL_REVEAL_KEY = 'bramblewood_skill_revealed_v1';
 const SKILL_Q_TIP = "Something about this card you'll learn soon.";
 let skillRevealMemo = null;
-function skillRevealState(){ try{ const s = JSON.parse(localStorage.getItem(SKILL_REVEAL_KEY) || '{}') || {}; return {maxMap: Number.isFinite(Number(s.maxMap)) && s.maxMap != null ? Number(s.maxMap) : -1, keys: Array.isArray(s.keys) ? s.keys.slice() : []}; }catch(e){ return {maxMap:-1, keys:[]}; } }
+function skillRevealState(){ try{ const s = JSON.parse(localStorage.getItem(SKILL_REVEAL_KEY) || '{}') || {}; return {maxMap: Number.isFinite(Number(s.maxMap)) && s.maxMap != null ? Number(s.maxMap) : -1, keys: Array.isArray(s.keys) ? s.keys.slice() : [], fresh: Array.isArray(s.fresh) ? s.fresh.slice() : []}; }catch(e){ return {maxMap:-1, keys:[], fresh:[]}; } }
 function skillRevealSave(st){ try{ localStorage.setItem(SKILL_REVEAL_KEY, JSON.stringify(st)); }catch(e){} skillRevealMemo = null; }
 // The furthest map the player has been on: the last one entered, or the furthest one with a cleared fight.
 function furthestMapReached(){ let n = skillRevealState().maxMap; try{ (loadConquestProgress().completed||[]).forEach(id=>{ const k = mapNumberOf(String(id).split(':')[0]); if(k != null && k > n) n = k; }); }catch(e){} return n; }
 // Called when a Conquest fight starts: entering Map N reveals every skill gated at N or below.
 function noteMapEnteredForReveal(mapId){ let n = null; try{ n = mapNumberOf(mapId); }catch(e){} if(n == null) return;
   const st = skillRevealState(); if(n > st.maxMap) st.maxMap = n;
-  Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)){ st.keys.push(k); try{ fxHook('skillReveal', k); }catch(e){} } }); skillRevealSave(st); } // fxHook: 2026-10-15 batch F
+  // 2026-10-23 (package RW4, owner 13:16 #6: "No skill reveal popups for now; never more than one at once; just a NEW! tag; especially not for
+  // crepuscular/nocturnal."): the FX.F "Skill revealed" popup (fxHook 'skillReveal') is off. A skill that opens now is marked fresh instead: its
+  // line in the card details wears a NEW! tag (one skill at a time, SKILL_NEW_SKIP never), until the next fight starts after it was seen.
+  st.fresh = (st.fresh || []).filter(x=> !x.seen);
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)){ st.keys.push(k); if(!SKILL_NEW_SKIP.has(k) && !st.fresh.some(x=> x.k === k)) st.fresh.push({k, seen:false}); } }); skillRevealSave(st); }
+const SKILL_NEW_SKIP = new Set(['crepuscular', 'nocturnal']); // 2026-10-23 (RW4): never tagged
+// The one skill that wears NEW! right now (or ''), and the note that its tag was shown.
+function skillNewKey(){ try{ const st = skillRevealState(); const f = (st.fresh || [])[0]; return f && !SKILL_NEW_SKIP.has(f.k) && !hiddenSkillSet().has(f.k) ? f.k : ''; }catch(e){ return ''; } }
+function skillNewTagHTML(key){ const k = skillNewKey(); if(!k || k !== key) return '';
+  try{ const st = skillRevealState(), f = (st.fresh || []).find(x=> x.k === k); if(f && !f.seen){ f.seen = true; skillRevealSave(st); } }catch(e){}
+  return ` <span class="sk-new">${escapeHtml(TX('results.new'))}</span>`; }
 function hiddenSkillSet(){
   if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return new Set();
   const now = Date.now(), tut = revealInTutorial(); if(skillRevealMemo && now - skillRevealMemo.at < 500 && skillRevealMemo.tut === tut) return skillRevealMemo.set;
@@ -2998,7 +3008,7 @@ function describeEffects(def, liveCard, opt){
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
   // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
-  PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
+  PASSIVE_DEFS.forEach(p=>{ const nL0 = lines.length; ((p)=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
@@ -3037,7 +3047,7 @@ function describeEffects(def, liveCard, opt){
     const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
-    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
+    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; })(p); if(lines.length > nL0){ const tg = skillNewTagHTML(p.key); if(tg) lines[nL0] += tg; } }); // "Answered by" lives in the Skill Codex now (2026-10-13); NEW! on a freshly revealed skill (2026-10-23, RW4)
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): the "+ Add Skill" skills that live
   // only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained, Revive) had no line on the
   // card at all. Each gets its short text now, like every other skill.
@@ -12645,7 +12655,7 @@ function openEnergyPanel(anchor){
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
   pop.innerHTML = `<b>⚡ ${s.current}/${energyMax()} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small><small class="ep-grow">${escapeHtml(energyNextStepText())}</small>
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
-    ${energyCapsules() ? `<button type="button" class="btn small" id="epCapsule">🔋 Use an Energy capsule (+${ENERGY_CAPSULE_AMOUNT}) · ${energyCapsules()} left</button>` : ''}
+    ${energyCapsules() ? `<div class="ep-cap"><span class="ep-cap-l"><i aria-hidden="true">🔋</i><span><b>${escapeHtml(TX('ui.rw4-capsules', {n: energyCapsules()}))}</b><small>${escapeHtml(TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}))}</small></span></span><button type="button" class="btn primary small" id="epCapsule">${escapeHtml(TX('ui.rw4-use'))}</button></div>` : ''}
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
@@ -22455,7 +22465,13 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const ids = isTutNode ? (()=>{ try{ return node.stage === 2 ? tutorialRewards2(loadFactionChoice() || 'both') : tutorialRewardIds(); }catch(e){ return []; } })() : nodeFirstClearCardIds(mapId, node.key); // + a first-clear pack card (GD2, GD-5)
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
-  const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
+  // 2026-10-23 (package RW4, owner 13:16 #7 and #14: "Hovering a first-clear reward explains it (which pack, which item, which resources). Items shouldn't
+  // look like cards." + "Items: icons only, explained on hover; don't show the 'B' rank/unlock label on them."): an item token (Energy capsule, Raid Ticket) is
+  // just its icon, no card frame and no rank emblem; hovering or focusing it says what it is. A card token keeps its card back, with a tip too.
+  const tokenChips = ((node && node.rewardTokens) || []).map(t=>{ const T = REWARD_TOKENS[t]; if(!T) return '';
+    const lbl = _t(T.label), line = t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : t === 'raidTicket' ? TX('results.eb-ticket-tip') : T.item ? '' : TX('ui.rw4-tip-card-token'), tip = lbl + (line ? '|' + line : '');
+    return T.item ? `<span class="cnp-rw-item ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl + (line ? ': ' + line : ''))}">${T.icon}</span>`
+      : `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl)}"><span class="cnp-rw-back">${T.icon}</span></span>`; }).join('');
   // 2026-10-22 (package RW, owner N22-4): the rank is per card (cardRewardRankFor), so a fight paying a Common and a Rare shows a different
   // emblem on each; a card already yours (the ledger, per card) is greyed with no emblem. The emblem is the hex, never the words.
   const nid0 = conquestNodeId(mapId, node.key), gotOf = id=> !!done && (isTutNode || cardRewardIsGot(nid0, id));
@@ -22472,8 +22488,8 @@ function cnpRewardStripHTML(mapId, node, done, rank){
     ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
     : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}</span>`; }).join('');
   const cur = [];
-  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
-  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" tabindex="0" aria-label="${pay.gold} Maple Leaves" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-leaves-t') + '|' + TX('ui.rw4-tip-leaves', {n: pay.gold}))}">${mapleLeafIconHTML()} ${pay.gold}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" tabindex="0" aria-label="${pay.dust} Magic Dust" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-dust-t') + '|' + TX('ui.rw4-tip-dust', {n: pay.dust}))}">✨ ${pay.dust}</span>`);
   { const gl = dungeonGoldLeavesPreview(mapId, node); if(gl) cur.push(`<span class="cnp-rw-cur cnp-rw-gems" aria-label="${escapeAttr(gl.label)}" data-zoom-tip="${escapeAttr('Gold Leaves|' + gl.label)}" tabindex="0">🍂 ${gl.n}</span>`); } // 2026-10-16: daily dungeon Gold Leaves
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   // 2026-10-15 (user: "0-2 will give a faction pack. (This has to be clearly seen in the first clear rewards section of the skirmish
@@ -22513,10 +22529,10 @@ function cnpDropsLineHTML(mapId, node, done){
       const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">❓</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardTileHTML(d, {inPlay:true})}</span>`;
       parts.push(`<span class="cnp-drop cnp-drop-own" role="img" aria-label="${escapeAttr(TX('ui.gd-drop-own', {name: isCardHiddenForPlayer(d) ? '?' : d.name, p: fmtDropPct(o.p)}))}">${tile}<span aria-hidden="true">${fmtDropPct(o.p)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); });
     if(odds.pack > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
-      parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
+      parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true"><i class="cnp-drop-back bw-back bk-unit"></i> ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
   } else
   if(card > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
-    parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(card)}))}"><span aria-hidden="true">🃏 ${fmtDropPct(card)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
+    parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(card)}))}"><span aria-hidden="true"><i class="cnp-drop-back bw-back bk-unit"></i> ${fmtDropPct(card)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
   return `<div class="cnp-drops"><span class="cnp-drops-l">${escapeHtml(TX('ui.rw-drops'))}</span> ${parts.join('<span class="cnp-drops-sep" aria-hidden="true"> · </span>')}</div>`; // a div (2026-10-22, GD: was a <p>, which a card tile's divs would break open)
 }
 function fitFirstClearLabels(){
@@ -24320,20 +24336,28 @@ function swapStrength(d){
   return BB && BB.capScores ? BB.capScores(A, H, S, d.effects || {}, null, {m}).x1 : Math.round(((2 * A + H) * m + S) * 100) / 100;
 }
 function swapCostBracket(d){ const c = (+(d && d.cost) || 0) + 2 * (+(d && d.stoneCost) || 0) + 3 * (+(d && d.metalCost) || 0); return c <= 0 ? 0 : c <= 2 ? 1 : c <= 4 ? 2 : 3; }
+// 2026-10-23 (package RW4, owner 13:16 #15: "Swap windows still appear when the offered cards aren't better. From fight 2-1 onward, only
+// offer a swap when the card is much better (make the threshold a named constant; later it will scale by rarity and collection score).
+// Map 0 and 1 keep today's rule."): from the player's first fight on Map 2 (2-1; furthestMapReached() >= SWAP_MUCH_BETTER_FROM_MAP) a swap
+// needs the incoming card to score at least SWAP_MUCH_BETTER_MARGIN (35%, and at least SWAP_MUCH_BETTER_MIN_GAIN points) above the deck card;
+// being merely "as good or better in every way" (strictlyDominates) no longer counts. Maps 0-1 and the forced teaching swaps keep SWAP_CLEAR_MARGIN.
+const SWAP_MUCH_BETTER_MARGIN = 0.35, SWAP_MUCH_BETTER_MIN_GAIN = 2, SWAP_MUCH_BETTER_FROM_MAP = 2;
+function swapMuchBetterOn(){ try{ return furthestMapReached() >= SWAP_MUCH_BETTER_FROM_MAP; }catch(e){ return false; } }
 function swapClearlyBetter(d, o, opts){
   if(!d || !o || d.id === o.id || typeof d.attack !== 'number' || typeof o.attack !== 'number') return false;
   if(!(opts && opts.anyCost) && swapCostBracket(d) > swapCostBracket(o)) return false;
   if((+d.wait || 0) > (+o.wait || 0)) return false;
   const a = swapStrength(d), b = swapStrength(o); if(!(a > b)) return false;
+  if(!(opts && opts.legacy) && swapMuchBetterOn()) return a - b >= Math.max(SWAP_MUCH_BETTER_MIN_GAIN, b * SWAP_MUCH_BETTER_MARGIN);
   return strictlyDominates(d, o) || a - b >= Math.max(1, b * SWAP_CLEAR_MARGIN);
 }
-function swapOptsFor(item){ return item && item.teach === 'lumber' ? {anyCost: true} : null; }
+function swapOptsFor(item){ return item && item.teach === 'lumber' ? {anyCost: true, legacy: true} : item && item.forced ? {legacy: true} : null; }
 // SWAP_STRENGTH:END
 function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && !isEggRewardCard(d) /* 2026-10-18: eggs hatch in the Nest, never a swap */ && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
 // The weakest card in your main deck that `id` strictly dominates, or null.
 function dominatedDeckCard(id){
   const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
-  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]) && swapClearlyBetter(d, defs[k])); // + a higher score (2026-10-19, package MX: a dominating card with cheaper skills could score lower)
+  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && (swapMuchBetterOn() || strictlyDominates(d, defs[k])) && swapClearlyBetter(d, defs[k])); // 2026-10-23 (package RW4): from 2-1 a much-better score is enough (swapClearlyBetter), it need not dominate every stat // + a higher score (2026-10-19, package MX: a dominating card with cheaper skills could score lower)
   const pw = x=> (x.attack||0) + (x.health||0);
   return ids.sort((a, b)=> pw(defs[a]) - pw(defs[b]) || (defs[b].cost||0) - (defs[a].cost||0) || a.localeCompare(b))[0] || null;
 }
@@ -24376,7 +24400,7 @@ function queueMultiDeckSwap(ids, source){
 function multiSwapCandidates(inId, deckLeft, defs){
   const dIn = defs[inId]; if(!swapEligibleDef(dIn)) return [];
   const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
-  return Object.keys(deckLeft).filter(k=> deckLeft[k] > 0 && defs[k] && swapEligibleDef(defs[k]) && swapOutAllowed(k, inId) && (swapClearlyBetter(dIn, defs[k], {anyCost:true}) || swapStrength(dIn) > swapStrength(defs[k])))
+  return Object.keys(deckLeft).filter(k=> deckLeft[k] > 0 && defs[k] && swapEligibleDef(defs[k]) && swapOutAllowed(k, inId) && (swapMuchBetterOn() ? swapClearlyBetter(dIn, defs[k], {anyCost:true}) : (swapClearlyBetter(dIn, defs[k], {anyCost:true}) || swapStrength(dIn) > swapStrength(defs[k]))))
     .sort((a, b)=> (swapClearlyBetter(dIn, defs[b]) ? 1 : 0) - (swapClearlyBetter(dIn, defs[a]) ? 1 : 0) || pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
 }
 function openMultiDeckSwap(item){
@@ -24457,7 +24481,12 @@ function ds2CrossSwap(root, pairs){
     });
   }catch(e){}
 }
+let mapTitleHoldUntil = 0, mapTitleHoldSince = 0;
+// A map's title banner is due or on screen (FX.G's .fxg-title-stage): a swap window waits for it, at most ~9 s (2026-10-23, package RW4).
+function mapTitleHold(){ const on = Date.now() < mapTitleHoldUntil || !!document.querySelector('.fxg-title-stage');
+  if(!on){ mapTitleHoldSince = 0; return false; } if(!mapTitleHoldSince) mapTitleHoldSince = Date.now(); if(Date.now() - mapTitleHoldSince > 9000){ mapTitleHoldUntil = 0; return false; } return true; }
 function maybeOfferDeckSwap(){
+  if(pendingDeckSwap && pendingDeckSwap.length && !(typeof matchState !== 'undefined' && matchState) && mapTitleHold()){ setTimeout(maybeOfferDeckSwap, 400); return; }
   if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending) return;
   // not over a pack being opened, nor with one still waiting to be shown (2026-10-15); the opener calls back when it closes
   // 2026-10-18: ...nor while a won pack is floating up into the opener (packRevealBusy covers the queue, the flight and the opener)
@@ -24489,14 +24518,13 @@ function maybeOfferDeckSwap(){
     const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId) && swapClearlyBetter(defs[inId], defs[k], o2)) // 2026-10-19 (package MX): never a stronger deck card.sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
     return (rec ? [rec] : []).concat(rest).slice(0, 3); };
   let inSel = id, outList = outListFor(id), outSel = out;
-  const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (item.teach === 'lumber' ? TX('ui.swap-teach-lumber') : (TEACH_SAY[item.teach] || '')) : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
-    : strictlyDominates(dIn, dOut) ? `⚔${dIn.attack||0} ❤${dIn.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dIn.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dIn.cost||0}` : ''} against ⚔${dOut.attack||0} ❤${dOut.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dOut.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dOut.cost||0}` : ''}: as good or better in every way.`
-    : `⚔${dIn.attack||0} ❤${dIn.health||0} 🪵${dIn.cost||0} against ⚔${dOut.attack||0} ❤${dOut.health||0} 🪵${dOut.cost||0}.`;
+  // 2026-10-23 (package RW4, owner 13:16 #3: "don't explain 2/8 vs 1/6"): only a teaching swap says why (what the card teaches); the stats are on the cards
+  const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (item.teach === 'lumber' ? TX('ui.swap-teach-lumber') : (TEACH_SAY[item.teach] || '')) : '';
   const colHTML = (side, list, sel)=>{ const many = list.length > 1;
     return `<div class="ds2-col is-${side}" data-col="${side}"><div class="ds2-col-h">${side === 'out' ? 'Your deck' : 'Not in your deck'}</div>
       <div class="ds2-pick">${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="-1" aria-label="${side === 'out' ? 'Previous deck card' : 'Previous card'}">‹</button>` : ''}<div class="ds2-${side === 'out' ? 'old' : 'new'}">${cardTileHTML(defs[sel], {inPlay:true})}</div>${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="1" aria-label="${side === 'out' ? 'Next deck card' : 'Next card'}">›</button>` : ''}</div>
-      ${many ? `<div class="ds2-thumbs">${list.map((k, i)=> `<button type="button" class="ds2-thumb ${k === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(k)}" aria-label="${escapeAttr(defs[k].name)}" aria-pressed="${k === sel}">${cardTileHTML(defs[k], {inPlay:true})}${i === 0 ? '<i class="ds2-rec" aria-hidden="true">★</i>' : ''}</button>`).join('')}</div>` : ''}</div>`; };
-  const sayHTML = ()=> `<b>${item.teach && inSel === id ? 'New card!' : inSel === id ? 'Better card!' : 'Your pick!'}</b> Swap <b>${escapeHtml(defs[outSel].name)}</b> for <b>${escapeHtml(defs[inSel].name)}</b>?<br><span>${escapeHtml(whyFor(defs[inSel], defs[outSel]))}</span>`;
+      ${many ? `<div class="ds2-thumbs">${list.map((k, i)=> `<button type="button" class="ds2-thumb ${k === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(k)}" aria-label="${escapeAttr(defs[k].name)}" aria-pressed="${k === sel}">${cardTileHTML(defs[k], {inPlay:true})}</button>`).join('')}</div>` : ''}</div>`; };
+  const sayHTML = ()=> `<b>${item.teach && inSel === id ? 'New card!' : inSel === id ? TX('ui.rw4-swap-good') : 'Your pick!'}</b> Swap <b>${escapeHtml(defs[outSel].name)}</b> for <b>${escapeHtml(defs[inSel].name)}</b>?${whyFor(defs[inSel], defs[outSel]) ? `<br><span>${escapeHtml(whyFor(defs[inSel], defs[outSel]))}</span>` : ''}`; // 2026-10-23 (package RW4): "Good Choice!" for "Better card!", no stat line
   const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'ds2-overlay';
   ov.innerHTML = `<div class="ds2" role="dialog" aria-modal="true" aria-label="Swap a card">
     <div class="ds2-stage">${colHTML('out', outList, outSel)}<span class="ds2-arrows" aria-hidden="true">⇄</span>${colHTML('in', inList, inSel)}</div>
@@ -24923,6 +24951,10 @@ function renderConquestSubTab(body){
   // has T1-5, from Bramblewood Outskirts"): no title over the first tutorial run; it waits until you come back from the Outskirts.
   if(map.id === 'm1' && loadTutorial2Done()){ try{ localStorage.setItem('bramblewood_tut_title_ok_v1', '1'); }catch(e){} }
   const tutTitleWait = map.id === 'mtut' && (!loadTutorial2Done() || (()=>{ try{ return localStorage.getItem('bramblewood_tut_title_ok_v1') !== '1'; }catch(e){ return false; } })());
+  // 2026-10-23 (package RW4, owner 13:16 #5: "After winning Map 0's last skirmish and moving to Map 1, show the map banner animation BEFORE the
+  // swap screen"): while the map's title banner is due or playing, a waiting swap holds (maybeOfferDeckSwap reads mapTitleHold).
+  try{ if(!tutPhase && !conquestLayoutEdit && !tutTitleWait){ let seenT = []; try{ seenT = JSON.parse(sessionStorage.getItem('bw_fxg_map_titles') || '[]'); }catch(e){}
+    if(!seenT.includes(map.id)) mapTitleHoldUntil = Date.now() + ((document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300) + 700; } }catch(e){}
   try{ if(!tutPhase && !conquestLayoutEdit && !tutTitleWait) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:isDailyDungeonMap(map) ? 'Daily dungeon' : map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
   // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
   // little darker and castle-dungeony. with dripping swamp shit"): Murgle Mayhem's theme is now FX.G's 'dungeon' (the ribbon banner in its
@@ -40812,11 +40844,14 @@ function playRewardReveal(m){
     // comes out."): the unlocks drop onto the bright board (the dim waits at 0); when they've all landed the dim comes up, and only
     // then the results window opens under it as the stage fades away. A tap still skips straight through.
     const dimEl = stage.querySelector('.rr-dim');
-    if(!cards.length) gsap.set(dimEl, {opacity:0});
+    // 2026-10-23 (package RW4, owner 13:16 #10: "The screen darkens too early and too much before the reward screen; the dim and the reward screen should
+    // arrive together."): the stage's dim is lighter (CSS) and rises with the first card instead of being on from the first frame; after the unlocks it
+    // no longer darkens the board by itself, the results' own backdrop fades in as this stage fades out.
+    if(!cards.length) gsap.set(dimEl, {opacity:0}); else gsap.fromTo(dimEl, {opacity:0}, {opacity:1, duration:.35, ease:'power1.out'});
     const finish = natural=>{ if(done) return; done = true; timers.forEach(clearTimeout); document.removeEventListener('keydown', onKey, true);
       if(natural === true && unlocks.length){
         stage.querySelectorAll('.rr-token').forEach(tk=> gsap.to(tk, {opacity:0, scale:.92, duration:.3, ease:'power1.in'}));
-        gsap.to(dimEl, {opacity:1, duration:.45, ease:'power1.out', onComplete:()=>{ resolve(); setTimeout(()=> gsap.to(stage, {opacity:0, duration:.32, onComplete:()=> stage.remove()}), 60); }});
+        resolve(); gsap.to(stage, {opacity:0, duration:.3, delay:.05, onComplete:()=> stage.remove()});
         return; }
       gsap.to(stage, {opacity:0, duration:.18, onComplete:()=> stage.remove()}); setTimeout(resolve, 120); };
     const onKey = e=>{ if(e.key==='Tab') return; e.preventDefault(); finish(); };
@@ -41418,14 +41453,15 @@ function rewardsPanelHTML(m){
   // 2026-10-17: a field-kit item found on the road. 2026-10-23 (package UI4, owner 01:57 #8: "Don't explain so much in SS#2. Just say what
   // the healing draught is."): its tip is the item's own line (ITEM_DEFS desc), no rule about where items come from (that rule changed, EB).
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
-    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(kd.desc)}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+    acts.push(`<span class="rw-act rw-kit rw-icon-only" role="img" aria-label="${escapeAttr(kd.name)}" data-tip="${escapeAttr(kd.name + ': ' + kd.desc)}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon}</span>`); } // 2026-10-23 (package RW4, owner #14): icon only
   (m.conquestItemTokens || []).forEach(t=>{ const T = REWARD_TOKENS[t]; if(!T) return; // 2026-10-23 (package EB): a first-clear Energy capsule / Raid Ticket
-    acts.push(`<span class="rw-act rw-kit rw-token" data-tip="${escapeAttr(t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : TX('results.eb-ticket-tip'))}">${T.icon} ${escapeHtml(t === 'energyCapsule' ? TX('results.eb-capsule', {n: ENERGY_CAPSULE_AMOUNT}) : _t(T.label))}</span>`); });
+    { const nm = t === 'energyCapsule' ? TX('results.eb-capsule', {n: ENERGY_CAPSULE_AMOUNT}) : _t(T.label); // 2026-10-23 (package RW4, owner #14): the icon alone; the hover says what it is
+      acts.push(`<span class="rw-act rw-kit rw-token rw-icon-only" role="img" aria-label="${escapeAttr(nm)}" data-tip="${escapeAttr(nm + ': ' + (t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : TX('results.eb-ticket-tip')))}">${T.icon}</span>`); } });
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
-    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(kd.desc) /* 2026-10-23 (package UI4): what the item does */}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+    acts.push(`<span class="rw-act rw-kit rw-icon-only" role="img" aria-label="${escapeAttr(kd.name)}" data-tip="${escapeAttr(kd.name + ': ' + kd.desc) /* 2026-10-23 (package UI4): what the item does; RW4: icon only */}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon}</span>`); }
   { const lk = lockedCardChipsHTML(m, 'rw-act'); if(lk) acts.push(lk); } // 2026-10-22 (RW): a reward card waiting for a better win, as lock + card + the rank emblem
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
-    acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
+    acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(TX('ui.rw4-got-egg'))}</span>`); } // 2026-10-23 (RW4): "You got an egg!", not the egg's kind
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
   eggCards.forEach(id=>{ const d = getCardDefs()[id];
     acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
@@ -49979,12 +50015,12 @@ function rollEggDrop(node, mapId, firstClear){
 function eggNeedsNestNote(){
   try{ if(featureUnlocked('nest')) return ''; }catch(e){ return ''; }
   const sp = FEATURE_SPOTS.find(x=> x.key === 'nest'), n = sp ? sp.mapNumber : 4, m = sp && CONQUEST_MAPS.find(x=> x.id === sp.map);
-  return `An egg! You'll need a Nest to hatch it — there's one on Map ${n}${m ? ` (${m.name})` : ''}. It waits safely in your pack until then.`;
+  void n; void m; return TX('ui.rw4-egg-nest'); // 2026-10-23 (package RW4, owner #8): "An egg! You'll need a nest to hatch it!" (was the long note with the map)
 }
 function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] ? kind : 'woodland'; const now = Date.now();
   n.eggs.push({id:'egg'+now.toString(36)+Math.floor(Math.random()*1e4), kind:k, laidAt:now, hatchAt:null, placed:false, from: from||''}); saveNestState(n);
-  const noNest = eggNeedsNestNote();
-  try{ showToast(noNest ? `${EGG_KINDS[k].icon} ${noNest}` : TX('toast.you-found-a-set-it-in', {v1: EGG_KINDS[k].icon, v2: EGG_KINDS[k].name, v3: NEST_TYPES[EGG_KINDS[k].type].name}), 'ok'); }catch(e){} }
+  // 2026-10-23 (package RW4, owner 13:16 #8: "No egg toast; just 'You got an egg!'"): no toast; the results screen shows the egg as "You got an egg!"
+  void k; }
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
 // NEST_SLOTS_NF:BEGIN (tests/nf-2026-10-19.js evaluates this block)

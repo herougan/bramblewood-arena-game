@@ -2,6 +2,26 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package RW4: owner's 13:16 list, items 3, 5, 6, 7, 8, 10, 13, 14, 15)
+- Swap window (#3): the two columns sit further apart (the several-swap rows too), the star on the mini cards is gone, the mini cards have a squarer
+  corner, the "2/8 against 1/6" line is gone (a teaching swap still says what it teaches), "Better card!" is "Good Choice!", and hovering a card
+  in the window opens its details over it (it was hidden behind the window). The faction pack's one-row "Swap Again" flow is unchanged.
+- Swap rule (#15): from your first fight on Map 2 (2-1) a swap window opens only for a much better card: at least 35% and 2 points above the deck
+  card by the stat budget (SWAP_MUCH_BETTER_MARGIN / _MIN_GAIN / _FROM_MAP; "as good in every stat" no longer counts alone). Maps 0 and 1 and the
+  forced teaching swaps keep today's 10% rule.
+- Map banner first (#5): a waiting swap holds while the new map's title banner is due or playing (at most 9 s), so winning 0-4 shows Map 1's banner,
+  then the swap.
+- Skills (#6): no "Skill revealed" popup. A skill a map opens wears a NEW! tag in the card details, one skill at a time; Crepuscular and Nocturnal never.
+- First-clear box (#7, #14): hovering the Maple Leaves, Magic Dust, an item or a card token says what it is (packs already did). Items (Energy
+  capsule, Raid Ticket, field-kit items) are bare icons, never a card shape, with no rank emblem, also on the results. Clicking the Energy meter shows
+  the capsule count and a Use button.
+- Eggs (#8): no toast; the results chip says "You got an egg!" and its hover "An egg! You'll need a nest to hatch it!".
+- Reward dim (#10): the reward stage's dim is lighter and rises with the first card; after "New fight" tokens it no longer darkens the board before
+  the results, whose own backdrop fades in as the stage fades out; the Victory sign's own dim is lighter too.
+- "Possible drops" (#13): the card chance shows the card back instead of the joker.
+- Owner calls in docs/decisions.json (RW4-1 to RW4-4). Texts: 11 new keys in the 12 packs. Tests: `tests/rw4-2026-10-23.js`, `tests/e2e/rw4_2026_10_23.py`;
+  UI4's item-chip tip check now expects "name: what it does".
+
 ## 2026-10-23 (package PR: Map 0 repeat wins no longer always pay a card)
 - Owner: "I played 0-1 5 times and got a card reward 5 times." Map 0's sure card (a Faction Reward, else a base-track card; the 2026-10-13
   rule "every win on Map 0 brings a card") is now paid on a fight's first clear only. A repeat win of a Map 0 fight rolls the normal card

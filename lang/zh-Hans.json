@@ -2947,5 +2947,14 @@
  "The Hollow Warren is cleared!": "空心洞窟已通关！",
  "The climb is over": "攀登结束",
  "Floors cleared: {n}/{total}": "通过楼层：{n}/{total}",
- "Back to the dungeons": "返回地下城"
+ "Back to the dungeons": "返回地下城",
+ "Good Choice!": "好选择！",
+ "A card you'll get with this win.": "赢下这场可获得的一张卡牌。",
+ "You get {n} Maple Leaves.": "获得 {n} 枫叶。",
+ "You get {n} Magic Dust.": "获得 {n} 魔法尘。",
+ "Energy capsules: {n}": "能量胶囊：{n}",
+ "+{n} Energy each": "每个 +{n} 能量",
+ "Use": "使用",
+ "An egg! You'll need a nest to hatch it!": "一颗蛋！你需要一个巢才能孵化它！",
+ "You got an egg!": "你得到了一颗蛋！"
 }

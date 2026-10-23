@@ -2946,5 +2946,14 @@
  "The Hollow Warren is cleared!": "¡La Madriguera Hueca está superada!",
  "The climb is over": "La subida ha terminado",
  "Floors cleared: {n}/{total}": "Pisos superados: {n}/{total}",
- "Back to the dungeons": "Volver a las mazmorras"
+ "Back to the dungeons": "Volver a las mazmorras",
+ "Good Choice!": "¡Buena elección!",
+ "A card you'll get with this win.": "Una carta que ganarás con esta victoria.",
+ "You get {n} Maple Leaves.": "Ganas {n} hojas de arce.",
+ "You get {n} Magic Dust.": "Ganas {n} de polvo mágico.",
+ "Energy capsules: {n}": "Cápsulas de Energía: {n}",
+ "+{n} Energy each": "+{n} de Energía cada una",
+ "Use": "Usar",
+ "An egg! You'll need a nest to hatch it!": "¡Un huevo! ¡Necesitarás un nido para incubarlo!",
+ "You got an egg!": "¡Conseguiste un huevo!"
 }

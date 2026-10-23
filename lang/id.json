@@ -2948,5 +2948,14 @@
  "The Hollow Warren is cleared!": "Liang Berongga sudah ditaklukkan!",
  "The climb is over": "Pendakian selesai",
  "Floors cleared: {n}/{total}": "Lantai selesai: {n}/{total}",
- "Back to the dungeons": "Kembali ke dungeon"
+ "Back to the dungeons": "Kembali ke dungeon",
+ "Good Choice!": "Pilihan bagus!",
+ "A card you'll get with this win.": "Kartu yang kamu dapat dari kemenangan ini.",
+ "You get {n} Maple Leaves.": "Kamu mendapat {n} Daun Maple.",
+ "You get {n} Magic Dust.": "Kamu mendapat {n} Debu Sihir.",
+ "Energy capsules: {n}": "Kapsul Energi: {n}",
+ "+{n} Energy each": "+{n} Energi per kapsul",
+ "Use": "Pakai",
+ "An egg! You'll need a nest to hatch it!": "Sebuah telur! Kamu butuh sarang untuk menetaskannya!",
+ "You got an egg!": "Kamu dapat sebuah telur!"
 }

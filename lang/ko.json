@@ -2949,5 +2949,14 @@
  "The Hollow Warren is cleared!": "텅 빈 굴을 정복했습니다!",
  "The climb is over": "도전이 끝났습니다",
  "Floors cleared: {n}/{total}": "통과한 층: {n}/{total}",
- "Back to the dungeons": "던전으로 돌아가기"
+ "Back to the dungeons": "던전으로 돌아가기",
+ "Good Choice!": "좋은 선택!",
+ "A card you'll get with this win.": "이 승리로 얻는 카드.",
+ "You get {n} Maple Leaves.": "단풍잎 {n}개를 얻습니다.",
+ "You get {n} Magic Dust.": "마법 가루 {n}개를 얻습니다.",
+ "Energy capsules: {n}": "에너지 캡슐: {n}",
+ "+{n} Energy each": "개당 에너지 +{n}",
+ "Use": "사용",
+ "An egg! You'll need a nest to hatch it!": "알이다! 부화시키려면 둥지가 필요해요!",
+ "You got an egg!": "알을 얻었어요!"
 }
