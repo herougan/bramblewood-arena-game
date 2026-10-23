@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package MK: the map marker stays put after a win; a cleared Map 0 no longer strands you)
+- **Owner (11:28):** "why does completing a skirmish put my conquest map marker ... move to Map N-1?" The results' Back to map ends the fight inside its own click; that click then reached the map's "click outside the skirmish panel closes it" listener, with the button already gone from the page, so the picked fight was dropped and the pawn walked to the next fight, or to the map's first one (N-1) on a cleared map. A click that began during a fight, or whose target left the page, no longer closes the panel; on a cleared map with nothing picked the pawn keeps its spot.
+- **Owner (11:29):** "i'm stuck in Map 0 in my new account." Map 1 was open but out of reach: until Thistlewood's reward fight opens the world, a map shows no map list and no › edge, every page load starts on Map 0, and PG's step onto the next map happened only in memory on the clearing win. `healMapProgress` (on load and each time the map opens) reads old node-id spellings as the new ones and finds the furthest map open in order; with the world still hidden the road opens there, once for each new furthest map. Nothing is marked open: a map whose fights are not won stays locked.
+- Test `tests/mk-2026-10-23.js` (Back to map, Fight again, Auto-sweep on Maps 1 / 2 / 5 at 1366 and 390; stuck saves after a reload, old ids, a still-locked save); screenshots in `docs/screens/MK/`.
+
 ## 2026-10-23 (package BF12: Evasive ×1.37, Shadow ×1.1)
 - **Call BF10-1** (settled by Claude, the owner asked to settle the easy calls): the robust skill test measured both as overpriced at ×1.5 (Evasive worth 5.77 vs 7.14 paid, its deck won 23.8%; Shadow 1.94 vs 7.14, 1.8%). `MISS_MULT_BY` in `bramblewood-budget.js` is now Flying 1.39, Evasive 1.37, Shadow 1.1; Swift stays 1.5. `tools/skill_costs.js` follows.
 - **Re-fit:** no card moves up a whole stat point; the Magma Wraith would go down and stays held (BF11-1).
