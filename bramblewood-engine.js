@@ -1200,7 +1200,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.lavaSpout && r >= 2) out.lavaSpout = true; // 2026-10-16
     if(cometRounds > 0) out.comets = cometRounds; // comets still to fall after an Eruption (2026-10-14)
     if(vc){ out.volcano = vc; const lv = volcanoLevelAt(r); if(lv) out.volcanoLevel = lv; } // the hazards' odds next round (2026-10-14); whether they come stays a roll; + the level it is at (FX2-1, EN 2026-10-23)
-    else if(Number(rules.eruption) > 0 && r >= 2){ out.eruption = VOLCANO_EVERY; out.scorched = true; } // the line of fire, 1 a unit (FX3, 2026-10-23; was the map's number)
+    else if(Number(rules.eruption) > 0 && r >= 2 && !rules.wildfire){ out.eruption = VOLCANO_EVERY; out.scorched = true; } // Scorched Ground: one unit a side, 1 (FX4, 2026-10-23; FX3's line of fire is Wildfire Front now)
+    if(rules.wildfire && r >= 2) out.wildfire = VOLCANO_EVERY; // Wildfire Front: the line of fire, 1 to every front unit (FX4, 2026-10-23)
     return out;
   }
   function isWindy(){ return windNow; }
@@ -1541,6 +1542,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 'even' climbs +2 a round after round 2 ("and increasing"). Without any of these, rules.eruption N is the old guaranteed
   // eruption every round, unchanged.
   const VOLCANO_LEVELS = {verylow:[1,2,3], low:[10,12,14], medium:[20,22,24], even:[45,50,55], high:[60,65,70]};
+  // 2026-10-23 (package FX4, owner on FX3-3: "Still too much damage. Let Lava Tide be 50%."): Lava Tide comes half as often: its odds at every
+  // level are x0.5 (Very Low 0.5%, Low 5%, Medium 10%, 1 in 2 22.5% and rising 1 a round, High 30%). A fight's own lavaTideChance is kept as set.
+  const LAVA_TIDE_FACTOR = 0.5;
   let volcanoRiseFrom = 2, cometRounds = 0; // after an Eruption: the round the rise restarts from, and comet rounds still to fall
   // FX2-1 (2026-10-23, package EN, owner: "After eruptions, it restarts to very low again."): after each Eruption the volcano's level drops
   // to Very Low for the next round and climbs one level a round (VOLCANO_ORDER) back to the fight's own level (rules.volcano); 'even' rises
@@ -1556,8 +1560,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function volcanoChances(round){
     if(!volcanoOn()) return null;
     const lv = volcanoLevelAt(round), t = VOLCANO_LEVELS[lv] || [0, 0, 0], up = lv === 'even' && rules.volcano === 'even' ? 2 * Math.max(0, (Number(round)||0) - volcanoRiseFrom) : 0;
-    const pick = (ov, base)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? base + up : 0)));
-    return {lavaTide: pick(rules.lavaTideChance, t[0]), petrify: pick(rules.petrifyChance, t[1]), eruption: pick(rules.eruptionChance, t[2])};
+    const pick = (ov, base, f)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? (base + up) * (f || 1) : 0)));
+    return {lavaTide: pick(rules.lavaTideChance, t[0], LAVA_TIDE_FACTOR), petrify: pick(rules.petrifyChance, t[1]), eruption: pick(rules.eruptionChance, t[2])};
   }
   // Tide-spout (2026-10-14, user: "Okay anyway, new effect on the beach map - Tide-spout!"): rules.tideSpout. From round 2, every
   // round a spout bursts in one random column. If the tide hasn't come in yet, it comes in now (Flow). The units in that column,
@@ -1582,7 +1586,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function volcanoTick(players, round, sideOf, stats, events, paused){
     const o = rules.enemyOre; const P2 = players[2];
     if(o && P2){ if(o.stone) addOre(P2, 'stone', o.stone); if(o.metal && round % Math.max(1, o.metalEvery||2) === 0) addOre(P2, 'metal', o.metal); }
-    const heatProof = c=>{ const d = CARD_DEFS[c.defId] || {}; return (d.resist||[]).includes('heat') || (d.resist||[]).includes('fire'); };
+    const heatProof = c=>{ const d = CARD_DEFS[c.defId] || {}, er = (d.effects && d.effects.resist) || []; return (d.resist||[]).includes('heat') || (d.resist||[]).includes('fire') || er.includes('heat') || er.includes('fire'); }; // + effects.resist (2026-10-23, package FX4: Lava Waders' granted Fire Resistance)
     const groundProof = c=> heatProof(c) || climbs(c); // Mountain Climber (2026-10-16): the volcano's ground hazards pass it by (Immolation is a unit's, not the ground's)
     let burnt = false;
     [1,2].forEach(pid=>{ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.petrified && !(c.petrifyLeft > 0)) c.petrified = false; }); }); // last round's stone wears off (not a Petrify N's, 2026-10-19 SK3: its own count)
@@ -1593,13 +1597,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const erupt = (n, ground)=> [1,2].forEach(pid=>{ const cs = allLive(players[pid]).filter(c=> !groundProof(c)); if(!cs.length) return;
       const c = cs[Math.floor(rnd()*cs.length)]; const hp0 = c.hp; damageCardFlat(c, n, 'heat'); burnt = true;
       if(recordEvents && events) events.push({type:'fieldTick', field: ground ? 'scorched' : 'eruption', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), mods:dnModsFor(c.uid)}); }); // + mods (DN2)
+    // 2026-10-23 (package FX4, owner on FX3-1: "Still do the line of fire thing ... all take 1 fire damage. It doing damage one by one as
+    // the line passes them feels very interactive too. (Find a name for this field effect)"): FX3's line of fire is its own field effect now,
+    // Wildfire Front (rules.wildfire): from round 2, every round, it crosses both front lines column by column from the left and every unit
+    // it passes takes 1 fire (fire-resistant units and Mountain Climbers are spared; a raid's back rows are not crossed). Events: one
+    // 'wildfireSweep' header, then one 'wildfire' a unit, in sweep order. (FX3 had it as Scorched Ground: 'scorchedSweep' / 'scorched'.)
     const scorchSweep = ()=>{ const cols = {1: combatColumnsOf(players[1]), 2: combatColumnsOf(players[2])};
       const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
-      if(recordEvents && events) events.push({type:'fieldTick', field:'scorchedSweep', round, cols: keys, dmg: VOLCANO_EVERY});
+      if(recordEvents && events) events.push({type:'fieldTick', field:'wildfireSweep', round, cols: keys, dmg: VOLCANO_EVERY});
       keys.forEach(col=> [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
         if(!c || c.gap || !(c.hp > 0) || c.cageOf || groundProof(c)) return;
         const hp0 = c.hp; damageCardFlat(c, VOLCANO_EVERY, 'heat'); burnt = true;
-        if(recordEvents && events) events.push({type:'fieldTick', field:'scorched', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col, mods:dnModsFor(c.uid)}); })); }; // FX3 (2026-10-23)
+        if(recordEvents && events) events.push({type:'fieldTick', field:'wildfire', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:Math.max(0, hp0 - c.hp), col, mods:dnModsFor(c.uid)}); })); }; // FX3 (2026-10-23)
     // Comets (2026-10-14, user: "After eruption, the cycle resets, but for the next 3 turns, comets rain down, dealing 2-5 (random)
     // fire damage to each unit. The damage dealt to each unit is random."): for 3 rounds after an Eruption, at the start of the round
     // every unit on both sides is struck for its own 2–5 fire damage (the fight's seeded roll; fire-resistant units take half).
@@ -1637,8 +1646,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // row; a raid's reserve rows are not crossed), column by column from the left, and every unit it touches takes 1 fire: no roll, so
       // it is the same in every replay. Fire / heat-resistant units and Mountain Climbers are spared, as before. rules.eruption only turns
       // it on now (its number is the volcano Eruption's, above). One header event, then one 'scorched' event a unit, in sweep order.
-      if(Number(rules.eruption) > 0 && round > 1 && !volcanoOn()) scorchSweep();
+      // 2026-10-23 (package FX4, owner on FX3-1: "Okay, it only hits one unit. It looks like the ground boils beneath the units chosen."):
+      // Scorched Ground is one random unit a side again, for 1 (VOLCANO_EVERY: an every-round hazard), and the line of fire is Wildfire
+      // Front (below). One ground fire a fight (FX3-2): where Wildfire Front is on, Scorched Ground stays off.
+      if(Number(rules.eruption) > 0 && round > 1 && !volcanoOn() && !rules.wildfire) erupt(VOLCANO_EVERY, true);
     }
+    if(rules.wildfire && round > 1) scorchSweep(); // Wildfire Front (FX4, 2026-10-23)
     [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
       liveRowsOf(pl).forEach(src=>{ const k = Number(((CARD_DEFS[src.defId]||{}).effects||{}).immolation)||0; if(!(k > 0) || !(src.hp > 0)) return; // + a raid's middle / back rows, their own row's neighbours (2026-10-19, RR)
         const order = rowOrderOf(pl, src), i = order.indexOf(src), hits = [];
@@ -1824,7 +1837,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function deriveDef(card, grant){
     const base = CARD_DEFS[card.defId]; const id = (base.derivedFrom || base.id) + '~dv' + (++derivedSeq);
-    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, effects: Object.assign({}, base.effects||{}, grant)});
+    const eff = Object.assign({}, base.effects||{}, grant);
+    // 2026-10-23 (package FX4): a granted Resist / Immune list (Lava Waders' {resist:['heat']}) adds to the unit's own, never replaces it
+    ['resist', 'immune'].forEach(k=>{ if(Array.isArray(grant && grant[k]) && Array.isArray(base.effects && base.effects[k])) eff[k] = [...new Set([...base.effects[k], ...grant[k]])]; });
+    CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, base, {id, derivedFrom: base.derivedFrom || base.id, effects: eff});
     card.defId = id; return id;
   }
   // Actions per turn (2026-10-11, user: "New game modifier - number of actions per turn"): rules.actions plays a turn
@@ -1976,6 +1992,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function backstabEdge(att, attPid, t, tPid){
     if(!t || t.gap || !(t.hp > 0)) return false;
     if(t.stunned || t.petrified || BACKSTAB_STATUSES.some(k=> (Number(t[k]) || 0) > 0)) return 'status';
+    // 2026-10-23 (package FX4, owner on EN-5: "Target waiting, shocked and exposed would count I think."): + a target still Waiting (its
+    // clock not yet run down), Shocked or Exposed
+    if((Number(t.wait) || 0) > 0 || (Number(t.shocked) || 0) > 0 || (Number(t.exposed) || 0) > 0) return 'status';
     try{ if(sightMiss(t, tPid) > 0 && !(sightMiss(att, attPid) > 0)) return 'sight'; }catch(e){}
     return false;
   }
@@ -2675,8 +2694,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const BULWARK_SHIELDS = 2, BULWARK_HP_PER = 4;
   function bulwarkShieldDefOf(n){
     const hp = Math.max(1, Math.round(BULWARK_HP_PER * n)), id = 'bulwark-shield~' + hp;
+    // 2026-10-23 (package FX4, owner on EN-3: "oh sorry, i meant guardian!"): each shield has Guardian (was no skill)
     if(!CARD_DEFS[id]) CARD_DEFS[id] = derivedDefs[id] = {id, name:'Bulwark Shield', icon:'🛡️', attack:0, health:hp, wait:0, cost:0, rarity:'common', token:true,
-      bulwarkShield:true, archetypes:['Structure'], species:[], subtype:'structure', effects:{}};
+      bulwarkShield:true, archetypes:['Structure'], species:[], subtype:'structure', effects:{guardian:true}};
     return id;
   }
   function bulwarkRaise(players, sideOf, pid, src, stats, events){
@@ -4976,7 +4996,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function fieldPaused(){ return fieldBreakUntil >= 0 && turnNo <= fieldBreakUntil; }
   function fieldBreak(sideOf, pid, card, n, events){ fieldBreakUntil = Math.max(fieldBreakUntil, turnNo + n);
     if(recordEvents && events) events.push({type:'fieldBreak', side:sideOf(pid), defId:card.defId, uid:card.uid, rounds:n, until:fieldBreakUntil}); }
-  function fieldHazardRules(){ return ['swampFever', 'tideSpout', 'leylines2', 'leylines3', 'sulphurFumes', 'ashRain', 'arrowSlits', 'landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'awash', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].filter(k=> rules[k]).concat(volcanoOn() || rules.eruption ? ['volcano'] : []); }
+  function fieldHazardRules(){ return ['swampFever', 'tideSpout', 'leylines2', 'leylines3', 'sulphurFumes', 'ashRain', 'arrowSlits', 'landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'awash', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'wildfire' /* FX4 */].filter(k=> rules[k]).concat(volcanoOn() || rules.eruption ? ['volcano'] : []); }
   // Kin Rally N: On Ally Played (Kin): that ally gets +N/+N. Pack Howl N: On Ally Played (Wolf): Bleed N on the enemy facing it. Both are
   // ordinary On Ally Played triggers (off while Waiting, Stunned, Frozen or Asleep; Confused fumbles; the layer cap) built from the
   // keyword; "that ally" is the trigger's subject (sub:'subject' / 'subjectFacing', and filterKin, in runCustomTriggers).

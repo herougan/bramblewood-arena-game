@@ -5062,5 +5062,6 @@
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "每个洞穴都有一个重得打不开的宝箱。你去抓它，它就反过来抓你。",
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "每有一个与它同类型的友方，+{v1} 攻击（例如蚂蚁旁边的每只其他蚂蚁）。 建筑不算。",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "每有一个与它同类型的友方，+{v1} 攻击。 建筑不算。",
- "+{v1} Attack for every ally that is {v2}. Structures don't count.": "每有一个{v2}友军，+{v1} 攻击。 建筑不算。"
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "每有一个{v2}友军，+{v1} 攻击。 建筑不算。",
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "用蝾螈皮和沥青做的过膝长靴。蹚进去，脚趾还在。"
 }

@@ -2586,5 +2586,6 @@
  "{v1} foil per card.": "ஒரு அட்டைக்கு {v1} மினுமினுப்பு.",
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "ஒவ்வொரு குகையிலும் திறக்க முடியாத அளவு கனமான ஒரு பெட்டி உண்டு. அதைப் பிடித்தால், அது உங்களைப் பிடிக்கும்.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "அதனுடன் ஒரு வகையைப் பகிரும் ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
- "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2} ஆக உள்ள ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை."
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2} ஆக உள்ள ஒவ்வொரு கூட்டாளிக்கும் +{v1} தாக்குதல். கட்டடங்கள் கணக்கில் இல்லை.",
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "சாலமாண்டர் தோலும் தாரும் கொண்ட தொடை உயரக் காலணிகள். இறங்கி நட, விரல்கள் பத்திரம்."
 }
