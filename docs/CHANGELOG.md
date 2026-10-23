@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (release: batch 10-23b)
+- Shipped together: EN, FX3, UI4 (entries below), plus the live RW3-9 tutorial-reward clear (owner: "apply it").
+- Release checks: full suite as the 10-23 release, with nv, st and ts-status-chips back to passing; darkness-1013 and skills-sk2b updated to FX3's Scorching II (1) and EN's appended card. e2e ui_smoke 0 failures, flows 0 issues.
+
 ## 2026-10-23 (package UI4: swaps that cross over, several swaps at once, deck slots, the hand's blue numbers, no redraw under the results)
 - Owner notes 01:03 #1 #2 #3 #5 #7, 01:09 #2, 01:57 #6 #7 #8 #11, and EB's panel-level note. Owner calls UI4-1..UI4-3.
 - **Swap (01:03 #1):** pressing Swap sends the offered card over the top to your deck's side (left) and your card under it to the right

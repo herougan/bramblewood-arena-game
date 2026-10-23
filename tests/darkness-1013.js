@@ -26,7 +26,7 @@ ok(missOf({phase:'day'}, 'd-plain') === 0, 'day: no miss');
   e.roundStart(P, 2, so, {}, []); ok(c.wait + c.frozen === w + 1 && c.frozen === 1 && c.hp === h - 2, `cold-weak unit: +1 on the clock (a freeze counter, 2026-10-14) and ice damage (clock ${c.wait + c.frozen - w}, dmg ${h - c.hp})`); }
 { const {e, P} = mk({field:'heatwave', heatLevel:2}); ['d-plain','d-hotweak','d-dry'].forEach((id, i)=> e.debugSpawnCard(P, so, 1, id, i ? 'right' : 'left', {}, []));
   e.roundStart(P, 2, so, {}, []); const g = id=> all(P[1]).find(c=> c.defId===id);
-  ok(g('d-plain').hp === 28, `Scorching level 2: 2 fire damage (${30 - g('d-plain').hp})`); ok(g('d-hotweak').hp === 26, `heat-weak takes double (${30 - g('d-hotweak').hp})`); ok(g('d-dry').hp === 30, 'Dry is spared'); }
+  ok(g('d-plain').hp === 29, `Scorching level 2: 1 fire damage (FX3, 2026-10-23: every-round hazards deal 1) (${30 - g('d-plain').hp})`); ok(g('d-hotweak').hp === 28, `heat-weak takes double (${30 - g('d-hotweak').hp})`); ok(g('d-dry').hp === 30, 'Dry is spared'); }
 // Zeitgebers retired 2026-10-14 (user: "I think Night/Day, Darkness are all natural elements depending on the map. Not brought up by
 // playing a card"): a Nocturnal unit no longer starts the cycle, even where a fight once allowed it; the map's phase decides.
 { const e = E.makeSimEngine(defs, E.mulberry32(2), {recordEvents:true, battleMode:'open', rules:{phase:'day', zeitgeber:true, phaseLen:2}}); const P = {1:e.newPlayer(1,{'d-noc':10}), 2:e.newPlayer(2,{})};
