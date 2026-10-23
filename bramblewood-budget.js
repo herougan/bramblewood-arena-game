@@ -51,7 +51,7 @@
 // perLumber 2, perLumber2 0.2, perRitual 0.5, perMap 0.1), the Level term L/15, Level 0 Base − 1, and no scale on the whole N (scale 1;
 // kept as a parameter). N(L) = (Base + L/15) × (1 + L/30). A Common Wait 0 Lumber 0 Map 0: BF5 10 / 10.9 / 14.67 at Lv 0 / 1 / 10,
 // now 10 / 11.44 / 15.56 (before its multiplier). Rarity weighs twice what it did under BF5 (a Legendary +4.5 over BF5). BF5's multipliers stay.
-const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.1, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7};
+const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.1, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7};
 // N multipliers by what a card can do (2026-10-21, BF5; owner): plainBonus (N x 1.05) for a card with no abilities at all; lightBonus
 // (x 1.02) for a card whose only abilities are the light ones (LIGHT: Flying, Tide, and the time-of-day ones, Diurnal / Nocturnal /
 // Crepuscular, Sunshy / Nightblind). An ability is an effects key that is not a parameter of another skill (PARAMS: swarmN, espritHp, ...),
@@ -187,7 +187,7 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
   // BF7 (2026-10-22): the half-miss m on the stat terms only; Fragile's f on the whole left side (capScores)
-  return {cap1: '(2A + H)×m + S ≤ N', cap2: 'A·H×m + S·|S| ≤ (N/3)²' /* BF6 (owner 15:15); BF7 m on the stats only */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse'),
+  return {cap1: '(2A + H)×m + S ≤ N', cap2: `A·H×m + S·|S| ≤ ${g('cap2Mult')}×(N/3)²` /* BF6 (owner 15:15); BF7 m on the stats only */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse'),
     miss: `m = ${g('missMult')} per half-miss skill (Evasive, Swift, Shadow; Flying ${MISS_MULT_BY.flying}), on the stats only, not on S` /* BF7; BF10 Flying */,
     fragileText: `Fragile, Purblind: both left sides × ${g('fragileUse')} (more stats for a card that takes double damage or swings blind)` /* BF7 */,
     context: `Context skills ({…}): ${CONTEXT_MULT} × S of the skills in their braces` /* CX2 */,
@@ -201,6 +201,9 @@ function productScore(A, H, S){ A = +A || 0; H = +H || 0; S = +S || 0; return A 
 // (docs/balance/skill-test-robust-mono-2000-2026-10-22.md) measured Flying's worth at 5.88 stat points against 6.89 paid at x1.5, so
 // Flying is x1.4. A skill not listed uses missMult (1.5). cfg.missMultBy overrides the table.
 const MISS_MULT_BY = {flying: 1.39}; // owner 01:57: "I estimate Flying is worth x1.39"
+// Cap 2's limit (2026-10-23, package BF11; owner 11:11: "Im also starting to think N/3 ^2 is too restrictive. Maybe 2*(N/3)^2 since we
+// have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
+function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }
 function missMultFor(k, cfg){ const t = (cfg && cfg.missMultBy) || MISS_MULT_BY; return t[k] != null ? +t[k] : num(cfg, 'missMult'); }
 function missMultOf(effects, cfg){ const e = effects || {}; let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= missMultFor(k, cfg); }); return x; }
 // BF7 (2026-10-22, owner: "things that must be less than N have a x0.7 multiplier!"): f, fragileUse (0.7) for a Fragile card, else 1.
@@ -225,7 +228,7 @@ function forgeCurve(d, from, top, cfg){
   const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), room0 = Math.pow(NL(from) / 3, 2) - m * a0 * h0;
   let A = a0, H = h0, P = 0, bank = 0;
   for(let L = from + 1; L <= top; L++){
-    const N = NL(L), kind = levelKind(L), room = h=> (N / 3) * (N / 3) - m * h.a * h.h;
+    const N = NL(L), kind = levelKind(L), room = h=> cap2Limit(N, cfg) - m * h.a * h.h; /* BF11 */
     bank = r2(bank + (N - NL(L - 1)) / m);
     let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
     // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
@@ -248,5 +251,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package BF11: cap 2 doubled, Thorns 1.25, Bulwark 6, two cards trimmed)
+- **Owner (11:11):** "Thorn 1 is roughly worse than Attack +1. So it must be less than 2." "Maybe 2*(N/3)^2 since we have A*H + S*|S|." "Bulwark should be scored only for 6." "Those 2 cards have too many skills or at too high number. Trim. For the muskrat, just bulwark 1 and Tide is sufficient." "Thorns 2" (Coffer Mimic).
+- **Formula:** cap 2 is A·H×m + S·|S| ≤ **2**×(N/3)² (`cap2Mult` in `bramblewood-budget.js` DEFAULTS, one helper `cap2Limit` read by the helper's level room, `tools/skill_costs.js`, the game's Test Lab (`sbCheck`), the hub's Budget & stats tab and `tools/special_monsters.js`).
+- **Prices:** Thorns 2.7 → **1.25** a point (the robust test: Thorns 2 worth 2.48, its deck won 5%); Bulwark 8 → **6** a point.
+- **Trims:** The Magnate Duck: Swipe off, Armor 3 → 1, Bounty 3 → 1 (keeps King, Midas 3, Hoard 3): 1/22 → **2/34**. Muskrat Lodgekeeper (Tide, Bulwark 1): 3/13 → 2/10, now inside the formula. Coffer Mimic Thorns 4 → 2.
+- **Re-fit** (every card, shape kept): 160 cards applied, almost all up (mean about +3 stat points). Band cards without a legal line: 101 → 24. **23 cards held at their stats** (the formula would cut them; they were over budget before): alley-cat 1/8→1/6, colony 0/11→0/9, honey-badger-fury 2/9→1/7, chipmunk-hoarder 3/8→2/5, pyroclast-wyrm 5/17→3/12, otter-guard 4/8→3/6, tunnel-ant 2/9→2/8, beaver-lumberjack 4/4→2/2, sunfeather-scout 1/7→1/4, sunspire-choirmother 3/6→2/5, old-willow-of-the-ford 2/24→2/20, thornwood-palisade 0/16→0/12, the-contradiction 2/19→1/14, magma-wraith 1/9→1/6, lone-grey-wolf 4/15→1/3, puffball-bombardier 1/10→1/8, sheep 1/7→1/4, starfall-owl 5/26→2/11, fumarole-ibex 1/13→1/11, battlement-heron 1/14→1/10, ashmantle-fiend 5/22→4/17, truffle-piglet 3/11→2/8, krill-swarm 1/7→1/5. Call BF11-1.
+
 ## 2026-10-23 (package SX: target-modifier sounds, poison's crit colour, the 3-part Hero XP bar, number-aware translations)
 - Owner 10-23 00:10 #95, #11 (DN2-4), #66 (H2), #64 (I2). Calls SX-1..SX-3.
 - **A sound for each damage mark (#95):** every damage number with a mark plays that mark's own SoundKit cue 75 ms after the hit, so the

@@ -110,7 +110,7 @@
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
-      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2((N / 3) * (N / 3));
+      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A*H + S*|S| <= (N/3)^2 (the helper's productScore)
       // 2026-10-22 (BF7, owner, pass III): the helper's capScores: m on the stat terms only, f x the whole left side for Fragile (0.7)

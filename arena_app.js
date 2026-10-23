@@ -28670,7 +28670,7 @@ function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 const SB_WELL_UNDER = 0.6;
 // 2026-10-22 (package BF7, owner pass III): the left sides come from BramblewoodBudget.capScores: M (the half-miss ×1.5s) on the stat terms only,
 // F (Fragile's fragileUse 0.7, sbFragileUse) on the whole left side: F × ((2A + H) × M + S) ≤ N, F × (A×H × M + S×|S|) ≤ (N/3)².
-function sbCheck(A, D, S, N, M, F){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, null, null, {m: M, f: F}), x1 = sc.x1, x2 = sc.x2, N2 = r2d((N/3) * (N/3)); // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
+function sbCheck(A, D, S, N, M, F){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, null, null, {m: M, f: F}), x1 = sc.x1, x2 = sc.x2, N2 = r2d(BramblewoodBudget.cap2Limit(N, SB_V3_DEFAULTS)) /* BF11 (2026-10-23): 2×(N/3)² */; // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
   const r1 = x1 <= N, r2 = x2 <= N2, ok = r1 && r2; return {r1, r2, x1, x2, N2, ok, wellUnder: ok && x1 <= N * SB_WELL_UNDER}; } // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): inclusive
 // "Fit" lowers Attack, then Health, until both rules pass.
 function sbFit(d, S, N, M, F){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, M, F).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
