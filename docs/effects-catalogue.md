@@ -650,7 +650,7 @@ The rules as built (engine: `bloodlustGain`, `useExposed`, `dodgeCheck` / `comba
   while it is Exposed, attacks at it can't miss (no Evasive, Swift, Flying, Smoke, Fog or Shadow dodge, no Blind or darkness miss).
   Poison, Bleed, Decay, curse and Chilli ticks aren't hits.
 - **Pounce N**: unchanged in the engine: one hit of N on one random enemy unit (the castle with none). Windy / Gale never doubled it
-  (Headwind doubles a Flyer's triggers and shots, and Pounce is neither).
+  (Headwind doubles a Flyer's active skills, and Pounce is not one; since EN2, 2026-10-23, its other triggers go once: see the EN2 section).
 
 ## 2026-10-17 additions: the Effects Lab catches up with 10-16 and 10-17
 
@@ -902,3 +902,37 @@ neighbours with `.is-attacking` while it turns, and `clearProps:'transform'` at 
 All three: a short recoil as the beam fires, then it settles back (0.45 s). The direction is read from where the units hit are on screen, so it works
 from either side and for an enemy Condor. Effects Lab: **Built 10-21/22** tab, group "Galactic Condor: Position Beam" (7 looks: Centre, Side from the
 right and the left, Edge left and right, Enemy Condor, Effects Low). In game: yes.
+
+## EN2 (2026-10-23): Guardian vs Taunt, Boomerang, the wind, Swarm, the Ironclaw's looks
+
+The engine decides (`bramblewood-engine.js`); this describes it.
+
+**Guardian and Taunt reach different units, in different ways.**
+
+| | Guardian | Taunt |
+|---|---|---|
+| What it changes | Where a blow lands: a plain attack aimed at an ally next to it hits the Guardian instead (`redirectToGuardian`). The attacker still aims at the ally. | Who the attacker aims at: enemy units facing it, or one column to either side, must attack it (even ones that would hit the bramble). |
+| Reach | Its neighbours: left and right in its row; in a raid, also the unit in front and behind (`adjacentOf`). Never itself. | Enemies in the three columns facing it (its own and one either side). |
+| What it covers | Plain swings only (a unit's main swing and its Fork / Trident / Pitchfork / Octolash prongs). Not skills, arrows, Bolts, shots, areas or Cleave's spread (Spellward covers skills). | Swings. Stealth slips past. |
+| Several | One of them at random (seeded). | The nearest to the attacker (ties at random, `tauntTargetOf`). |
+| On the board | The Guardian slides over in front of the ally it guards a beat before the blow lands, takes the hit there and slides home; if the blow kills it, it flinches and dies on that spot (`en2GuardStepIn`, from the hit's `guardedUid`). | The attacker turns to it. |
+
+**Boomerang.** The throw swings at Speed 0 (its old base of 1 is gone; Speed and Haste still add). A throw at the bramble flies on past it at the
+same speed (`en2BoomCastleThrow`); next round it comes back the same way: it strikes the bramble again, then the unit now in its lane on that
+side (`boomCastleLaneUnit`; the `hitHQ` carries `thenUid`, the unit's own `hit` carries `viaCastle`), then flies home (`en2BoomCastleReturn`).
+With the thrower dead it still flies home: it hits its far target again, then the unit standing in the thrower's slot (a Boomerang unit catches
+it), else the side's own bramble; the `boomerangReturn` event names `homeUid` / `homeCastle` / `farUid` and the board draws one flight
+(`en2BoomOrphanFlight`). Price: 3 → 1.9 (Bananarang too).
+
+**Wind.** Tailwind: the side's Flyers are Quick for the round (their swing at Speed 2, `_windQuick`); no Fast Forward turn, so a Waiting Flyer
+still waits. Headwind: a Flyer's active skills go off twice: its Speed-1 shots (Arrow, Fire / Ice Arrow, Twin Shot, Volley, the Bolts,
+Spitfire), Snipe, and its On Action skills (Archer). Its swing, passives and other triggers (On Hit, On Death, On Play, On Round Start ...) go
+once (`HEADWIND_HOOKS`).
+
+**Swarm** counts allies by Type only: the archetypes a card lists and the wider Types above them (Coral Reef is Ocean is Aquatic), never its
+species or animal (`swarmTypeShares`). Structures never count. The board's Attack follows the replay: as an ally dies mid-round the Swarm
+unit's number drops at once (`liveSwarmBonus` reads the replay's living units), and each swing puts the Attack the engine used on the
+attacker's plate (`liveAtk` on its hit).
+
+**Ironclaw Fiddler** (card `fx`): `play: 'crabClack'`: on arrival the card sways side to side four times in 1 s while its one big claw snaps
+beside it ("🦀 Clack!"); `attack: 'crabClaw'`: the claw closes on the target as the blow lands.

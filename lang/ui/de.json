@@ -1813,7 +1813,6 @@
  "Hit last turn: it backs off this turn (no attack, heals 2).": "Letzten Zug getroffen: Sie weicht diesen Zug zurück (kein Angriff, heilt 2).",
  "Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).": "Letzten Zug getroffen: Sie versteckt sich diesen Zug in ihrem Panzer (kein Angriff, Angriffe können ihr nichts anhaben).",
  "Hit through front gaps": "Treffer durch vordere Lücken",
- "Plain attacks aimed at an adjacent ally land on this card instead. Skills and area hits don't.": "Normale Angriffe auf einen angrenzenden Verbündeten treffen stattdessen diese Karte. Fähigkeiten und Flächentreffer nicht.",
  "Hits like a landslide. Please don't touch it.": "Schlägt zu wie ein Erdrutsch. Bitte nicht anfassen.",
  "hits more than one target at once — avoid clustering your own weak units together.": "trifft mehr als ein Ziel auf einmal — stell deine schwachen Einheiten nicht dicht zusammen.",
  "Hits the 8 nearest enemy units with full Attack.": "Trifft die 8 nächsten gegnerischen Einheiten mit vollem Angriff.",
@@ -3471,7 +3470,6 @@
  "strikes again, quick as a flash ❔": "schlägt noch einmal zu, schnell wie der Blitz ❔",
  "Strikes first, bows second, never apologises.": "Schlägt zuerst zu, verbeugt sich danach, entschuldigt sich nie.",
  "stripped {v1} Armor from {v2} for good 🛡": "hat {v1} Rüstung von {v2} dauerhaft abgerissen 🛡",
- "Strong wind from side {v1}: Tailwind for its Flyers (an extra turn), Headwind for the other side's (skills twice).": "Starker Wind von Seite {v1}: Rückenwind für ihre Flieger (ein Extrazug), Gegenwind für die der anderen Seite (Fähigkeiten zweimal).",
  "Strong wind, random way": "Starker Wind, zufällige Richtung",
  "Strong, and absolutely no fun to stand next to.": "Stark, und absolut kein Spaß, wenn man daneben steht.",
  "Struck once, and a swarmling boils out immediately to keep the line held.": "Einmal getroffen, und sofort quillt ein Schwärmling heraus, um die Linie zu halten.",
@@ -4079,7 +4077,6 @@
  "Three points, three targets, one very fast fish.": "Drei Spitzen, drei Ziele, ein sehr schneller Fisch.",
  "Three rows a side": "Drei Reihen pro Seite",
  "Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.": "Endlich durchs Tor. Innerhalb der Mauern ist alles vergoldet, bewacht und gezählt, und der Magnaten-Erpel wartet oben auf dem Bergfried.",
- "Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!": "Wirft beim Angriff. Nächste Runde fliegt er schnell zurück und trifft dasselbe Ziel noch einmal. Verfehlt fliegende Einheiten nie. Bloß nicht danebengreifen beim Fangen!",
  "Tickets": "Tickets",
  "Tidal Ring": "Gezeitenring",
  "Tide & Night +2/+2  ·  Wind or Wet": "Gezeiten & Nacht +2/+2  ·  Wind oder Nass",
@@ -5060,5 +5057,6 @@
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der einen Typ mit ihr teilt (z. B. jede andere Ameise neben einer Ameise). Bauwerke zählen nicht.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der einen Typ mit ihr teilt. Bauwerke zählen nicht.",
  "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der {v2} ist. Bauwerke zählen nicht.",
- "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Hüfthohe Stiefel aus Salamanderhaut und Pech. Hineinwaten, Zehen behalten."
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Hüfthohe Stiefel aus Salamanderhaut und Pech. Hineinwaten, Zehen behalten.",
+ "One claw for waving, one for winning. This one only grew the second.": "Eine Schere zum Winken, eine zum Siegen. Diese hier ließ nur die zweite wachsen."
 }

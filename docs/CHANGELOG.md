@@ -16,6 +16,39 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - No player-visible change: every card upgrade and Forge cost has the same value as before (checked against the old code).
 - The cost tables moved out of `arena_app.js` into `canonical/upgrade-costs.json` (level road, rarity and card-kind multipliers, limit break and its duplicates, duplicate credit, the five Forge tiers, prestige rings, disenchant Dust, Materia Unit / bench, energy upgrade); `assemble_arena.py` bakes it in.
 - Master hub: new 💰 Upgrade costs tab, every number an input, with live Lv 1-10 / limit break / duplicate totals per rarity. Edits save in the hub db (`upgradeCosts`); `node tools/fold_upgrade_costs.js edits.json` folds them into the file (`tools/hub/pull_upgrade_costs.md`). New test `tests/upgrade-costs-2026-10-23.js`.
+## 2026-10-23 (package EN2: Boomerang, the CPU's lanes, Guardian, the wind, Swarm, live stats, the Ironclaw Fiddler)
+- **Boomerang (13:16 #9, 17:34 #2):** the throw swings at Speed 0 (its hidden base of 1 is gone). A throw at the bramble flies on past it at the same
+  speed; next round it comes back the same way: the bramble again, then the unit now in its lane, then home. With its thrower dead it still comes home
+  and hits the card now in the thrower's slot (a Boomerang card catches it), else your bramble; the board now draws that flight (the engine always
+  flew it; the board had no thrower card to draw from). Price 3 → **1.9** (Bananarang too): the robust skill test measured its worth 1.71 → 1.06
+  (`tools/skill_test_robust.js --mono --skills boomerang --games 3000`). Re-fit: Otter Centurion 3/6→3/7, Howler Monkey 2/4→2/5, Net Thrower
+  3/9→3/10, Otter Royal Guard 4/9→4/10; no card would go down. Call EN2-1.
+- **The CPU's lanes (13:16 #2, #11):** measured first (`tests/en2-cpu-side-sim-2026-10-23.js`, `docs/balance/en2-cpu-side-*.json`): the basic and
+  smart CPUs had no left lean; the smartest did (40.8% left / 33.3% right) through its ties. Built: the CPU's "anywhere" slot is weighted to the middle
+  three slots and to slots facing or beside your units; the smartest adds a small middle bonus and breaks ties toward your units (else a coin).
+  Smartest mean slot −0.18 → +0.01; contested placements +1.5 to +3 points; CPU win rate about −2 points. Call EN2-2 (a rule for both sides instead?).
+- **Guardian (13:16 #22):** it slides in front of the ally it guards just before the blow, takes it there and slides home; if the blow kills it, it
+  flinches and dies on that spot (the hit carries `guardedUid`). Its text says its reach (beside it; in a raid in front / behind; plain attacks only)
+  and how Taunt differs; `docs/effects-catalogue.md` has the table.
+- **Wind (17:01 #15, 17:34 #15):** Headwind doubles a Flyer's active skills only (Arrow and the other shots, Snipe, Archer's On Action), no longer
+  every trigger. Tailwind makes a Flyer Quick for the round (Speed 2), no Fast Forward turn, so a Waiting Flyer still waits. Texts, badges and the log
+  say so. Calls EN2-3, EN2-4. **Gannet Cliffs (Map 3), 300 games a fight** (`tests/en2-gannet-sim-2026-10-23.js`, `docs/balance/en2-gannet-*.json`):
+  Starter deck 56.7% → 75.8%, Mid deck 58.0% → 82.4% (mean of the 7 fights; 3-4 Condor Thermals 29% → 47% for the Starter). The wind's own cost:
+  before 16.5 / 15.4 points (the same fights with no wind: 73.2 / 73.4%), now 6.4 / 3.7 points (82.2 / 86.1%). The no-wind numbers rose too: the
+  Kittiwake Flock's Swarm now counts only Bird-typed allies (below) and the CPU's lane weights cost it a little.
+- **Swarm by Type (17:34 #18):** Swarm compares the Types a card lists (and the Types above them: Coral Reef is Ocean), never its species or animal;
+  the hand's would-be numbers follow. Call EN2-6.
+- **Live stats (17:34 #22):** a Swarm unit's Attack on the board now changes as each ally falls during the round's replay (it showed the round's end
+  value throughout), and every swing puts the Attack the engine used on the attacker's plate (`liveAtk`). The armour case: 600 seeded fights of armoured
+  units found no hit whose shown number disagrees with the damage dealt (deaths matched the hits plus Poison / Bleed ticks); the stale number was
+  the attacker's shown Attack, which these two fixes cover.
+- **Ironclaw Fiddler (13:16 #17):** new Rare crab with one huge claw: Lumber 2, Wait 3, Tide, Bludgeon, Armor 1, 7/12 by the budget. On play it sways
+  side to side for 1 s while its claw clacks; its attack closes the claw on the target (card `fx`). Awaiting its source: proposed The Kelp Mangroves
+  basic pack (Map 9; the pool and obtain-map rows are outside this package; then 7/13). Placeholder 🦀; NightCafe prompt in
+  `docs/art/new-cards-2026-10-21-briefs.md`. Call EN2-5.
+- Texts: 11 strings and the card's name / flavour in the 12 packs. Tests: `tests/en2-2026-10-23.js`, `tests/e2e/en2_2026_10_23.py` (screens in
+  `docs/screens/EN2/`). Card matrix: 0 failures; 52,524 golden diffs (the new card shifts the sampled pairings; the throw's Speed, the wind, Swarm and
+  the CPU's lanes change results), to accept at release.
 
 ## 2026-10-23 release 10-23d (batch: AR3, PR, FX4, RW4)
 - Group Dungeon (AR3), Map 0's sure card on first clears only (PR), swaps/fields/Lava Waders (FX4), swap and reward screens (RW4).

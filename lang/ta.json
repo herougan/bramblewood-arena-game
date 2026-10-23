@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "வைக்கோல் பயிற்சி பொம்மை",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "தொடர்: {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "இடது, வலது பக்க இரு எதிரிகளையும் தாக்கும்; ஒன்று இல்லையெனில், எதிரே உள்ளதை மட்டும்.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "ஒவ்வொரு சுற்றும் வலுவான காற்று, பின்னால் அல்லது முன்னால். பின்காற்றில் பறப்பவை முதலில் செயல்படும்; எதிர்க்காற்றில் இருமுறை தூண்டிச் சுடும்.",
  "Stronger allies in your raid rows.": "உன் படையெடுப்பு வரிசைகளில் வலிமையான கூட்டாளிகள்.",
  "Structures never catch it.": "கட்டமைப்புகள் ஒருபோதும் இதைப் பெறாது.",
  "Stunned: skips its attack this round.": "மயக்கம்: இந்தச் சுற்றில் தாக்குதலைத் தவிர்க்கும்.",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "ஆராயப்படாத அடுக்கு ஆடத் தகுதியற்றது.",
  "The water is still. Something down there remembers you.": "நீர் அசைவற்றிருக்கிறது. கீழே ஏதோ ஒன்று உங்களை நினைவில் வைத்திருக்கிறது.",
  "The wind spins the sand into a pillar and walks it straight at you.": "காற்று மணலைச் சுழற்றித் தூணாக்கி, நேராக உன்னை நோக்கி நடத்துகிறது.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "காற்று ஒவ்வொரு சுற்றும் மாறும் (பின்னால், முன்னால், அமைதி). பின்காற்றில் பறப்பவை முதலில் செயல்படும்; எதிர்க்காற்றில் இருமுறை தூண்டிச் சுடும்.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "உலகம் திறக்கிறது: நீங்கள் அடையக்கூடிய ஒவ்வொரு வரைபடமும் இடப்பக்கம் உள்ளது, 🧭 அனைத்தையும் காட்டும்.",
  "Their bramble has a passive of its own.": "அவர்களின் முட்புதருக்கும் தனி செயலற்றத் திறன் உண்டு.",
  "There are three jackals. Now there are six. There were never any.": "மூன்று குள்ளநரிகள் இருக்கின்றன. இப்போது ஆறு. ஒன்றுகூட இருந்ததே இல்லை.",
@@ -2969,5 +2967,16 @@
  "+{n} Energy each": "ஒவ்வொன்றும் +{n} ஆற்றல்",
  "Use": "பயன்படுத்து",
  "An egg! You'll need a nest to hatch it!": "ஒரு முட்டை! அதைப் பொரிக்க உனக்கு ஒரு கூடு தேவை!",
- "You got an egg!": "உனக்கு ஒரு முட்டை கிடைத்தது!"
+ "You got an egg!": "உனக்கு ஒரு முட்டை கிடைத்தது!",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "தாக்கும்போது எறிகிறது. அடுத்த சுற்றில் வேகமாகத் திரும்பி அதே இலக்கை மீண்டும் தாக்கும்; முட்புதரை நோக்கி எறிந்தால் அது கடந்து பறந்து, திரும்பும் வழியில் முட்புதரையும் பின் தன் பாதையிலுள்ள அலகையும் தாக்கும். பறக்கும் அலகுகளைத் தவறவிடாது. பிடிக்கத் தவறாதீர்கள்!",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "அருகிலுள்ள கூட்டாளியின் முன் வந்து (பக்கத்தில்; ரெய்டில் முன்னால் அல்லது பின்னால்) அதை நோக்கிய சாதாரணத் தாக்குதல்களைத் தான் ஏற்கிறது. திறன்களையும் பரப்புத் தாக்குதல்களையும் அல்ல. சீண்டல் வேறு: எதிரே உள்ள எதிரிகள் அதையே குறிவைக்கச் செய்கிறது.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "பறத்தல் – பின்காற்று: இந்தச் சுற்றில் விரைவு (வேகம் 2-இல் தாக்கும்; காத்திருக்கும் அலகு இன்னும் காத்திருக்கும்)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "பறத்தல் – எதிர்காற்று: அதன் செயல் திறன்கள் (அம்பு, மின்னல், குறிசுடல்) இருமுறை; அதன் தாக்குதலும் நிலைத் திறன்களும் ஒருமுறை",
+ "Tailwind: Quick this round (swings at Speed 2)": "பின்காற்று: இந்தச் சுற்றில் விரைவு (வேகம் 2-இல் தாக்கும்)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "பக்கம் {v1}-இலிருந்து பலத்த காற்று: அதன் பறப்பவைக்குப் பின்காற்று (விரைவு), மறுபக்கத்தவைக்கு எதிர்காற்று (செயல் திறன்கள் இருமுறை).",
+ "caught the Tailwind: Quick this round 🪁": "பின்காற்றைப் பிடித்தது: இந்தச் சுற்றில் விரைவு 🪁",
+ "Tailwind: Quick!": "பின்காற்று: விரைவு!",
+ "Clack!": "கிளாக்!",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "ஒவ்வொரு சுற்றிலும் காற்று மாறும் (பின், முன், அமைதி): பின்காற்றில் பறப்பவை விரைவு, எதிர்காற்றில் அம்புகளும் குறிசுடலும் இருமுறை.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "ஒவ்வொரு சுற்றிலும் பலத்த காற்று, பின்னால் அல்லது முன்னால்: பின்காற்றில் பறப்பவை விரைவு, எதிர்காற்றில் அம்புகளும் குறிசுடலும் இருமுறை."
 }

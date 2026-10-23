@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "Boneka Latihan Jerami",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "Beruntun: {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "Menyerang dua musuh di kiri dan kanannya; jika salah satunya tak ada, hanya yang di depan.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Angin kencang tiap ronde, dari belakang atau depan. Angin buritan: unit terbang bertindak dulu; angin haluan: memicu dan menembak dua kali.",
  "Stronger allies in your raid rows.": "Sekutu lebih kuat di baris raidmu.",
  "Structures never catch it.": "Bangunan tak pernah tertular.",
  "Stunned: skips its attack this round.": "Pingsan: melewatkan serangannya ronde ini.",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "Dek yang tak pernah diperiksa tak layak dimainkan.",
  "The water is still. Something down there remembers you.": "Airnya tenang. Sesuatu di bawah sana mengingatmu.",
  "The wind spins the sand into a pillar and walks it straight at you.": "Angin memutar pasir menjadi tiang dan menggiringnya lurus ke arahmu.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Angin berubah tiap ronde (dari belakang, depan, atau tenang). Angin buritan: unit terbang bertindak dulu; angin haluan: memicu dan menembak dua kali.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "Dunia terbuka: setiap peta yang bisa kamu capai ada di kiri, dan 🧭 menampilkan semuanya.",
  "Their bramble has a passive of its own.": "Semak mereka punya pasifnya sendiri.",
  "There are three jackals. Now there are six. There were never any.": "Ada tiga serigala. Sekarang enam. Tak pernah ada satu pun.",
@@ -2968,5 +2966,16 @@
  "+{n} Energy each": "+{n} Energi per kapsul",
  "Use": "Pakai",
  "An egg! You'll need a nest to hatch it!": "Sebuah telur! Kamu butuh sarang untuk menetaskannya!",
- "You got an egg!": "Kamu dapat sebuah telur!"
+ "You got an egg!": "Kamu dapat sebuah telur!",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "Dilempar saat menyerang. Ronde berikutnya ia kembali dengan cepat dan mengenai target yang sama lagi; lemparan ke semak duri terus melaju, dan saat kembali mengenai semak duri lalu unit di jalurnya. Tak pernah meleset dari unit terbang. Jangan lupa menangkapnya!",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "Melangkah ke depan sekutu yang bersebelahan (di sampingnya; dalam raid, di depan atau belakang) dan menerima serangan biasa yang ditujukan padanya. Bukan kemampuan atau serangan area. Ejekan berbeda: memaksa musuh di depannya untuk membidiknya.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "Terbang – Angin buritan: Cepat ronde ini (menyerang di Kecepatan 2; unit yang menunggu tetap menunggu)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "Terbang – Angin haluan: kemampuan aktifnya (Panah, Petir, Penembak Jitu) aktif dua kali; serangan dan pasifnya sekali",
+ "Tailwind: Quick this round (swings at Speed 2)": "Angin buritan: Cepat ronde ini (menyerang di Kecepatan 2)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "Angin kencang dari sisi {v1}: angin buritan bagi penerbangnya (Cepat), angin haluan bagi milik sisi lain (kemampuan aktif dua kali).",
+ "caught the Tailwind: Quick this round 🪁": "menangkap angin buritan: Cepat ronde ini 🪁",
+ "Tailwind: Quick!": "Angin buritan: Cepat!",
+ "Clack!": "Klak!",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Angin berubah tiap ronde (belakang, depan, tenang): penerbang berangin buritan Cepat, tembakan dan Penembak Jitu berangin haluan dua kali.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Angin kencang tiap ronde, dari belakang atau depan: penerbang berangin buritan Cepat, tembakan dan Penembak Jitu berangin haluan dua kali."
 }

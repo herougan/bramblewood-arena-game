@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "稻草訓練假人",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "連勝：{gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "攻擊左右兩側的兩個敵人；若缺一個，則只攻擊正前方的敵人。",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "每回合都有強風，從背後或迎面吹來。順風的飛行單位先行動；逆風的飛行單位觸發和射擊兩次。",
  "Stronger allies in your raid rows.": "突襲陣列中的盟友更強。",
  "Structures never catch it.": "建築永遠不會染上。",
  "Stunned: skips its attack this round.": "暈眩：本輪跳過攻擊。",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "未經審視的牌組不值得一玩。",
  "The water is still. Something down there remembers you.": "水面平靜。下面有什麼東西還記得你。",
  "The wind spins the sand into a pillar and walks it straight at you.": "風把沙子捲成一根柱子，徑直朝你走來。",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "風向每回合變化（背後、迎面或無風）。順風的飛行單位先行動；逆風的飛行單位觸發和射擊兩次。",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "世界展開了：能去的每張地圖都在左邊，🧭 會顯示全部。",
  "Their bramble has a passive of its own.": "他們的荊棘叢有自己的被動。",
  "There are three jackals. Now there are six. There were never any.": "有三隻豺。現在有六隻。其實一隻也沒有過。",
@@ -2967,5 +2965,16 @@
  "+{n} Energy each": "每個 +{n} 能量",
  "Use": "使用",
  "An egg! You'll need a nest to hatch it!": "一顆蛋！你需要一個巢才能孵化它！",
- "You got an egg!": "你得到了一顆蛋！"
+ "You got an egg!": "你得到了一顆蛋！",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "攻擊時擲出。下一回合它會飛快地回來，再次擊中同一個目標；擲向荊棘堡的會繼續飛過去，回程時先擊中荊棘堡，再擊中它那一列的單位。從不會打不中飛行單位。別忘了接住它！",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "擋到相鄰友軍（左右兩旁；團戰中還有前後）身前，替它承受瞄準它的普通攻擊。技能和範圍攻擊不會被擋下。嘲諷不同：它讓對面的敵人改為瞄準自己。",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "飛行 – 順風：本回合迅捷（以速度 2 出手；等待中的單位仍要等待）",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "飛行 – 逆風：主動技能（箭、雷擊、狙擊）發動兩次；攻擊和被動技能只一次",
+ "Tailwind: Quick this round (swings at Speed 2)": "順風：本回合迅捷（以速度 2 出手）",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "強風來自 {v1} 方：其飛行單位順風（迅捷），對方的逆風（主動技能兩次）。",
+ "caught the Tailwind: Quick this round 🪁": "乘上了順風：本回合迅捷 🪁",
+ "Tailwind: Quick!": "順風：迅捷！",
+ "Clack!": "咔嚓！",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "每回合風向都會變（順風、逆風、無風）：順風的飛行單位迅捷，逆風的射擊和狙擊發動兩次。",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "每回合都有強風，順風或逆風：順風的飛行單位迅捷，逆風的射擊和狙擊發動兩次。"
 }

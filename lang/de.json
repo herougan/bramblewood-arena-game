@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "Strohpuppe",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "Serie: {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "Trifft die zwei Feinde links und rechts von ihr; fehlt einer, nur den gegenüber.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Starker Wind jede Runde, Rücken oder Gesicht. Rückenwind-Flieger handeln zuerst; Gegenwind-Flieger lösen aus und schießen doppelt.",
  "Stronger allies in your raid rows.": "Stärkere Verbündete in deinen Raid-Reihen.",
  "Structures never catch it.": "Bauwerke fangen es sich nie ein.",
  "Stunned: skips its attack this round.": "Betäubt: setzt in dieser Runde mit dem Angriff aus.",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "Ein ungeprüftes Deck ist es nicht wert, gespielt zu werden.",
  "The water is still. Something down there remembers you.": "Das Wasser liegt still. Etwas dort unten erinnert sich an dich.",
  "The wind spins the sand into a pillar and walks it straight at you.": "Der Wind dreht den Sand zu einer Säule und schickt sie geradewegs auf dich zu.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Der Wind dreht jede Runde (Rücken, Gesicht oder still). Rückenwind-Flieger handeln zuerst; Gegenwind-Flieger lösen aus und schießen doppelt.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "Die Welt öffnet sich: Jede erreichbare Karte steht links, und der 🧭 zeigt sie alle.",
  "Their bramble has a passive of its own.": "Ihre Dornenhecke hat eine eigene Passive.",
  "There are three jackals. Now there are six. There were never any.": "Da sind drei Schakale. Jetzt sind es sechs. Es gab nie welche.",
@@ -2966,5 +2964,16 @@
  "+{n} Energy each": "je +{n} Energie",
  "Use": "Benutzen",
  "An egg! You'll need a nest to hatch it!": "Ein Ei! Du brauchst ein Nest, um es auszubrüten!",
- "You got an egg!": "Du hast ein Ei bekommen!"
+ "You got an egg!": "Du hast ein Ei bekommen!",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "Wirft beim Angriff. In der nächsten Runde fliegt er schnell zurück und trifft dasselbe Ziel erneut; ein Wurf auf das Dornengestrüpp fliegt weiter und trifft auf dem Rückweg das Gestrüpp und dann die Einheit in seiner Bahn. Verfehlt nie fliegende Einheiten. Fang ihn wieder!",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "Stellt sich vor einen angrenzenden Verbündeten (daneben; im Raid davor oder dahinter) und fängt die normalen Angriffe auf ihn ab. Fähigkeiten und Flächentreffer nicht. Spott ist anders: Er zwingt die Gegner gegenüber, ihn anzugreifen.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "Fliegend – Rückenwind: diese Runde Flink (schlägt mit Tempo 2; eine wartende Einheit wartet weiter)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "Fliegend – Gegenwind: seine aktiven Fähigkeiten (Pfeil, Blitze, Scharfschuss) wirken zweimal; sein Angriff und seine Passiven einmal",
+ "Tailwind: Quick this round (swings at Speed 2)": "Rückenwind: diese Runde Flink (schlägt mit Tempo 2)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "Starker Wind von Seite {v1}: Rückenwind für ihre Flieger (Flink), Gegenwind für die der anderen Seite (aktive Fähigkeiten zweimal).",
+ "caught the Tailwind: Quick this round 🪁": "erwischte den Rückenwind: diese Runde Flink 🪁",
+ "Tailwind: Quick!": "Rückenwind: Flink!",
+ "Clack!": "Klack!",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Der Wind dreht jede Runde (Rücken, Gesicht, still): Rückenwind-Flieger sind Flink, Schüsse und Scharfschuss bei Gegenwind zweimal.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Starker Wind jede Runde, Rücken oder Gesicht: Rückenwind-Flieger sind Flink, Schüsse und Scharfschuss bei Gegenwind zweimal."
 }

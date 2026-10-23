@@ -1639,7 +1639,6 @@
  "Straw Training Dummy": "わら訓練人形",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "連勝：{gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "左右の敵2体を打つ。どちらかがいなければ、正面の敵だけ。",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "毎ラウンド強風、追い風か向かい風。追い風の飛行ユニットは先に動き、向かい風なら2回発動して撃つ。",
  "Stronger allies in your raid rows.": "レイドの列の味方が強くなる。",
  "Structures never catch it.": "建造物はかからない。",
  "Stunned: skips its attack this round.": "スタン：このラウンドは攻撃しません。",
@@ -1758,7 +1757,6 @@
  "The unexamined deck is not worth playing.": "吟味されないデッキは、使う価値がない。",
  "The water is still. Something down there remembers you.": "水面は静かです。底の何かがあなたを覚えています。",
  "The wind spins the sand into a pillar and walks it straight at you.": "風が砂を柱のように巻き上げ、まっすぐこちらへ歩かせてくる。",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "風は毎ラウンド変わる（追い風・向かい風・無風）。追い風の飛行ユニットは先に動き、向かい風なら2回発動して撃つ。",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "世界が広がります。行けるマップはすべて左側に、🧭 で全体を見られます。",
  "Their bramble has a passive of its own.": "相手のいばらには独自のパッシブがあります。",
  "There are three jackals. Now there are six. There were never any.": "ジャッカルが三匹。今度は六匹。最初から一匹もいなかった。",
@@ -2967,5 +2965,16 @@
  "+{n} Energy each": "1個につき+{n}エネルギー",
  "Use": "使う",
  "An egg! You'll need a nest to hatch it!": "たまご！ふ化させるには巣が必要です！",
- "You got an egg!": "たまごを手に入れた！"
+ "You got an egg!": "たまごを手に入れた！",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "攻撃時に投げる。次のラウンドに素早く戻り、同じ相手にもう一度当たる。いばらの砦に投げたものはそのまま飛び抜け、戻り道で砦に、続いてその列のユニットに当たる。飛行ユニットには必ず当たる。受け止め損ねないで！",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "隣の味方（左右。レイドでは前後も）の前に割って入り、その味方を狙った通常攻撃を代わりに受ける。スキルや範囲攻撃は受けない。挑発とは違う：挑発は正面の敵に自分を狙わせる。",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "飛行 – 追い風：このラウンドは俊足（速度2で攻撃。待機中のユニットは待ったまま）",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "飛行 – 向かい風：アクティブスキル（矢・ボルト・狙撃）が2回発動。攻撃とパッシブは1回",
+ "Tailwind: Quick this round (swings at Speed 2)": "追い風：このラウンドは俊足（速度2で攻撃）",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "{v1}側から強風：その飛行ユニットは追い風（俊足）、相手側は向かい風（アクティブスキル2回）。",
+ "caught the Tailwind: Quick this round 🪁": "追い風に乗った：このラウンドは俊足 🪁",
+ "Tailwind: Quick!": "追い風：俊足！",
+ "Clack!": "カチン！",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "風は毎ラウンド変わる（追い風・向かい風・無風）：追い風の飛行ユニットは俊足、向かい風の射撃と狙撃は2回。",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "毎ラウンド強風、追い風か向かい風：追い風の飛行ユニットは俊足、向かい風の射撃と狙撃は2回。"
 }

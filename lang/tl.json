@@ -1638,7 +1638,6 @@
  "Straw Training Dummy": "Dayaming Dummy",
  "Streak: {gauntletStreakAfter}/{GAUNTLET_GOAL}": "Sunod-sunod: {gauntletStreakAfter}/{GAUNTLET_GOAL}",
  "Strikes the two enemies to its left and right; if either is missing, just the one in front.": "Tinatamaan ang dalawang kaaway sa kaliwa at kanan nito; kung may kulang, ang nasa harap lang.",
- "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Malakas na hangin bawat round, sa likod o harap. Hanging pabor: unang kumikilos ang lumilipad; salungat: dalawang beses mag-trigger at pumana.",
  "Stronger allies in your raid rows.": "Mas malalakas na kakampi sa mga hanay mo sa raid.",
  "Structures never catch it.": "Hindi kailanman nahahawa ang mga Istruktura.",
  "Stunned: skips its attack this round.": "Natulala: hindi makakaatake ngayong round.",
@@ -1757,7 +1756,6 @@
  "The unexamined deck is not worth playing.": "Ang deck na hindi sinusuri ay hindi sulit laruin.",
  "The water is still. Something down there remembers you.": "Tahimik ang tubig. May isang bagay sa ilalim na nakakaalala sa iyo.",
  "The wind spins the sand into a pillar and walks it straight at you.": "Pinaiikot ng hangin ang buhangin hanggang maging haligi, saka ito pinalalakad nang diretso sa iyo.",
- "The wind turns each round (back, face or calm). Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.": "Nagbabago ang hangin bawat round (likod, harap o kalmado). Hanging pabor: unang kumikilos ang lumilipad; salungat: dalawang beses mag-trigger at pumana.",
  "The world opens up: every map you can reach is on the left, and the 🧭 shows them all.": "Bumubukas ang mundo: nasa kaliwa ang bawat mapang maaabot mo, at ipinapakita ng 🧭 ang lahat.",
  "Their bramble has a passive of its own.": "May sariling passive ang dawag nila.",
  "There are three jackals. Now there are six. There were never any.": "May tatlong asong-gubat. Ngayon, anim na. Wala naman pala kahit isa.",
@@ -2967,5 +2965,16 @@
  "+{n} Energy each": "+{n} Energy bawat isa",
  "Use": "Gamitin",
  "An egg! You'll need a nest to hatch it!": "Isang itlog! Kakailanganin mo ng pugad para mapisa ito!",
- "You got an egg!": "Nakakuha ka ng itlog!"
+ "You got an egg!": "Nakakuha ka ng itlog!",
+ "Throws on attack. Next round it flies back fast and hits the same target again; a throw at the bramble flies on, and on its way back hits the bramble and then the unit in its lane. Never misses Flying units. Don't fail to catch it!": "Ibinabato kapag umaatake. Sa susunod na round, mabilis itong bumabalik at tinatamaan ulit ang parehong target; kapag sa bramble ibinato, lumalampas ito, at pagbalik ay tinatamaan ang bramble at saka ang unit sa linya nito. Hindi kailanman sumasablay sa mga lumilipad. Huwag kalimutang saluhin!",
+ "Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't. Taunt is different: it makes the enemies facing it aim at it.": "Humaharang sa harap ng katabing kakampi (sa tabi nito; sa raid, sa harap o likod) at sinasalo ang mga karaniwang atakeng nakatutok dito. Hindi ang mga kakayahan o atake sa lugar. Iba ang Taunt: pinipilit nito ang mga kalabang nakaharap na ito ang atakehin.",
+ "Flying – Tailwind: Quick this round (swings at Speed 2; a Waiting unit still waits)": "Lumilipad – Tailwind: Mabilis ngayong round (umaatake sa Bilis 2; naghihintay pa rin ang unit na naghihintay)",
+ "Flying – Headwind: its active skills (Arrow, Bolts, Snipe) go off twice; its swing and passives once": "Lumilipad – Headwind: dalawang beses gumagana ang aktibong kakayahan nito (Arrow, Bolts, Snipe); isang beses ang atake at mga passive",
+ "Tailwind: Quick this round (swings at Speed 2)": "Tailwind: Mabilis ngayong round (umaatake sa Bilis 2)",
+ "Strong wind from side {v1}: Tailwind for its Flyers (Quick), Headwind for the other side's (active skills twice).": "Malakas na hangin mula sa panig {v1}: Tailwind sa mga lumilipad nito (Mabilis), Headwind sa kabilang panig (aktibong kakayahan nang dalawang beses).",
+ "caught the Tailwind: Quick this round 🪁": "sinakyan ang Tailwind: Mabilis ngayong round 🪁",
+ "Tailwind: Quick!": "Tailwind: Mabilis!",
+ "Clack!": "Klak!",
+ "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Nag-iiba ang hangin bawat round (likod, harap, kalmado): Mabilis ang may Tailwind, dalawang beses ang tira at Snipe ng may Headwind.",
+ "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.": "Malakas na hangin bawat round, sa likod o harap: Mabilis ang may Tailwind, dalawang beses ang tira at Snipe ng may Headwind."
 }
