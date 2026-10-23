@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package MAP: back where you left off, the floating Ambush, locked map tiles, an admin bramble editor)
+- **Back where you left off (owner 17:01 #1):** a reload or a new session on the same device opens the Conquest pane on the map you last stood on,
+  with the pawn at its fight (no walk from Map 0). A map that is not open, a hidden daily dungeon or a corrupt value falls back to the old rules;
+  MK's `healMapProgress` is kept. Kept in `bramblewood_last_map_v1` (this device; not in the cloud save).
+- **The Ambush floats (17:01 #3):** it has no trail to or from it, is open the moment you see it and stays on the map for good. The fight it
+  stopped (3-2, and so everything after it) is drawn locked, "Blocked by the ambush", until the Ambush is **won** (owner call MAP-1).
+- **The raiders, once (17:01 #5):** "The raiders ran off with N Maple Leaves" and the loss itself happen on the first lost Ambush only (MAP-2).
+- **Tiles that will not open (13:16 #19, #20):** while an NPC conversation is on, a map tile (spots, well, cave, curiosities, courier, wanderer)
+  makes a dull knock and shakes instead of opening (MAP-3). The Quest Board waits for the Notices: a lock on the tile, a dull knock, a shake and
+  a small "Locked for now" label; an NPC reply that would open the Notices does nothing before they are unlocked.
+- **Admin bramble editor (13:16 #16):** in the fight panel the admin's bramble line (❤️ N) is a button that opens a small inline editor: Health
+  (the number the panel and the fight use) and the bramble (its effect shown). Saved as `node.brambleHealth` / `characterId` through
+  `saveNodeField`, like the other skirmish edits; "Back to the rule" clears both. No database change (the existing map-nodes row; nothing in
+  `supabase/proposed/`) (MAP-5).
+- **Tests:** `tests/map-2026-10-24.js` (55 checks), `tests/e2e/map_2026_10_24.py` (390 and 1366, shots in `docs/screens/MAP/`). Texts "Locked for
+  now" and "Blocked by the ambush" in 12 packs (`tools/i18n_2026_10_24_map.py`).
+
 ## 2026-10-24 (package PRO: hidden PRO fights per map)
 - **PRO fights (owner 00:28: "a special hidden skirmish in each map, with the best deck you could make ... Name them as N-PRO-1, -2 -3"):**
   7 fights from OPT2's distinct optima: Map 0 `0-PRO-1..3`, Map 1 `1-PRO-1..2`, Map 2 `2-PRO-1`, Map 3 `3-PRO-1`. Each is a skirmish of

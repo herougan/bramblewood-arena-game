@@ -3060,5 +3060,7 @@
  "{key} is a PRO fight: no rewards.": "{key} adalah pertarungan PRO: tanpa hadiah.",
  "There is no PRO fight called {key}.": "Tidak ada pertarungan PRO bernama {key}.",
  "Finish the fight you are in first.": "Selesaikan dulu pertarunganmu saat ini.",
- "Finish the tutorial first.": "Selesaikan tutorial dulu."
+ "Finish the tutorial first.": "Selesaikan tutorial dulu.",
+ "Locked for now": "Terkunci untuk saat ini",
+ "Blocked by the ambush": "Terhalang penyergapan"
 }

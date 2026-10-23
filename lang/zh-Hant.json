@@ -3059,5 +3059,7 @@
  "{key} is a PRO fight: no rewards.": "{key} 是 PRO 對戰：沒有獎勵。",
  "There is no PRO fight called {key}.": "沒有名為 {key} 的 PRO 對戰。",
  "Finish the fight you are in first.": "請先打完目前的對戰。",
- "Finish the tutorial first.": "請先完成教學。"
+ "Finish the tutorial first.": "請先完成教學。",
+ "Locked for now": "暫時鎖定",
+ "Blocked by the ambush": "被伏擊擋住了"
 }

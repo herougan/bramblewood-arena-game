@@ -3060,5 +3060,7 @@
  "{key} is a PRO fight: no rewards.": "{key} é um combate PRO: sem recompensas.",
  "There is no PRO fight called {key}.": "Não há nenhum combate PRO chamado {key}.",
  "Finish the fight you are in first.": "Termina primeiro o combate em curso.",
- "Finish the tutorial first.": "Termina primeiro o tutorial."
+ "Finish the tutorial first.": "Termina primeiro o tutorial.",
+ "Locked for now": "Bloqueado por agora",
+ "Blocked by the ambush": "Bloqueado pela emboscada"
 }

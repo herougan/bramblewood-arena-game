@@ -3061,5 +3061,7 @@
  "{key} is a PRO fight: no rewards.": "{key}은(는) PRO 전투입니다: 보상 없음.",
  "There is no PRO fight called {key}.": "{key}(이)라는 PRO 전투가 없습니다.",
  "Finish the fight you are in first.": "먼저 진행 중인 전투를 끝내세요.",
- "Finish the tutorial first.": "먼저 튜토리얼을 끝내세요."
+ "Finish the tutorial first.": "먼저 튜토리얼을 끝내세요.",
+ "Locked for now": "지금은 잠겨 있어요",
+ "Blocked by the ambush": "매복에 막혀 있어요"
 }

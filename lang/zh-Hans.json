@@ -3059,5 +3059,7 @@
  "{key} is a PRO fight: no rewards.": "{key} 是 PRO 对战：没有奖励。",
  "There is no PRO fight called {key}.": "没有名为 {key} 的 PRO 对战。",
  "Finish the fight you are in first.": "请先打完当前的对战。",
- "Finish the tutorial first.": "请先完成教程。"
+ "Finish the tutorial first.": "请先完成教程。",
+ "Locked for now": "暂时锁定",
+ "Blocked by the ambush": "被伏击挡住了"
 }

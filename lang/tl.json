@@ -3059,5 +3059,7 @@
  "{key} is a PRO fight: no rewards.": "Ang {key} ay isang PRO na laban: walang gantimpala.",
  "There is no PRO fight called {key}.": "Walang PRO na laban na {key}.",
  "Finish the fight you are in first.": "Tapusin muna ang laban mo ngayon.",
- "Finish the tutorial first.": "Tapusin muna ang tutorial."
+ "Finish the tutorial first.": "Tapusin muna ang tutorial.",
+ "Locked for now": "Naka-lock pa sa ngayon",
+ "Blocked by the ambush": "Hinarangan ng ambush"
 }

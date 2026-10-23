@@ -3061,5 +3061,7 @@
  "{key} is a PRO fight: no rewards.": "{key} ஒரு PRO சண்டை: வெகுமதி இல்லை.",
  "There is no PRO fight called {key}.": "{key} என்ற PRO சண்டை இல்லை.",
  "Finish the fight you are in first.": "முதலில் நடக்கும் சண்டையை முடிக்கவும்.",
- "Finish the tutorial first.": "முதலில் பயிற்சியை முடிக்கவும்."
+ "Finish the tutorial first.": "முதலில் பயிற்சியை முடிக்கவும்.",
+ "Locked for now": "இப்போதைக்குப் பூட்டப்பட்டுள்ளது",
+ "Blocked by the ambush": "பதுங்கித் தாக்குதலால் தடுக்கப்பட்டது"
 }

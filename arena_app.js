@@ -4970,6 +4970,7 @@ const SoundKit = (()=>{
     // "shake red") — a short flat buzz, distinct from every other tone here in that it falls
     // rather than rises, so it reads as a rejection rather than a reward.
     deny(){ tone(220,0.09,'square',0.08); tone(160,0.12,'square',0.07,0.06); },
+    dullTap(){ tone(120,0.1,'triangle',0.09); noise(0.03,0.04); }, // 2026-10-24 (package MAP): a locked map tile, a soft low knock (no buzz, unlike deny)
     // one distinct tone per skill/keyword, so every mechanic reads differently even
     // before its VFX registers — added 2026-09-13 per explicit request ("make sure to
     // add sfx and vfx for all the skills too").
@@ -16695,7 +16696,7 @@ function performDialogueAct(act){
   try{
     if(k === 'tab') switchTab(v);
     else if(k === 'sub'){ playSubTab = v; switchTab('play'); }
-    else if(k === 'quests') openQuestsModal(v || undefined);
+    else if(k === 'quests'){ if(noticeBoardUnlocked()) openQuestsModal(v || undefined); else { try{ SoundKit.dullTap(); }catch(e){} showToast(TX('ui.map-locked-for-now'), 'warn'); } } // 2026-10-24 (package MAP, owner 13:16 #20): not before the Notices are open
     else if(k === 'tavern') openTavern();
     else if(k === 'forge'){ codexSubTab = 'forge'; switchTab('codex'); }
     else if(k === 'codex'){ codexSubTab = v || 'browse'; switchTab('codex'); }
@@ -16959,7 +16960,7 @@ const FEATURE_SPOTS = [
   // Pack B (Tidemire Chests) from Map 8.
   {key:'shop2', icon:'🏮', name:'Ember Peddler', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_shop2', tabs:[], merchant:true, pack:'silver', go:()=> switchTab('shop')},
   // The Quest board (Map 9): from here, some conversations on the road turn into errands (mini-quests) on the Notices.
-  {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], go:()=> openQuestsModal('errands')},
+  {key:'questboard', icon:'📌', name:'Quest Board', mapNumber:8, get map(){ return mapIdAt(8); }, after:null, dialogue:'unlock_questboard', tabs:['errands'], needs:'quests' /* 2026-10-24 (package MAP, owner 13:16 #20): it opens the Notices, so it waits for them */, go:()=> openQuestsModal('errands')},
   {key:'forge', icon:'🔨', name:'The Forge', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_forge', tabs:['forge'], go:()=>{ codexSubTab = 'forge'; switchTab('codex'); }},
   // Map 13: Raid 1, Pack C (Highcrest Cases) and the Wandering Trader (Mystery Boosters, 5 a visit).
   {key:'raid', icon:'🐲', name:'Raid Banner', mapNumber:13, get map(){ return mapIdAt(13); }, after:null, dialogue:'unlock_raid', tabs:['raid'], go:()=>{ playSubTab = 'raid'; switchTab('play'); }},
@@ -17028,6 +17029,7 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
 function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); return !sp || featureUnlocked(sp.key); }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
+  if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
   const first = !featureUnlocked(spot.key);
   if(first) fxHook('mapSpotUnlock', document.querySelector(`[data-spot="${spot.key}"]`), spot.key); // each spot opens in its own way (FX.E, 2026-10-15)
   if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok');
@@ -17075,6 +17077,23 @@ function decorGateNote(map, key, fallback){
 }
 // One tap at a time (2026-10-12, user: "Dont let me spam click the sign"; "The interactibles shouldn't be spammable"):
 // a map tile ignores taps for a moment after one lands.
+// 2026-10-24 (package MAP, owner 13:16 #19: "While NPC dialogue is active, clicking map interactibles plays a dull sound and the object shakes
+// (instead of opening)"; #20: interactibles that open the notice board before it is unlocked are uninteractible: dull sound + shake + a small
+// "Locked for now" label): one helper for both. A tile that is blocked does nothing else; the caller returns when this says true.
+function npcDialogueActive(){ try{ return dialoguesPending.size > 0; }catch(e){ return false; } }
+function noticeBoardUnlocked(){ try{ return featureUnlocked('quests'); }catch(e){ return true; } }
+function lockedTileTap(el, label){
+  if(!el) return;
+  try{ SoundKit.dullTap(); }catch(e){}
+  el.classList.remove('tile-dull-shake'); void el.offsetWidth; el.classList.add('tile-dull-shake'); setTimeout(()=> el.classList.remove('tile-dull-shake'), 420);
+  if(label){ el.querySelectorAll('.map-lock-label').forEach(x=> x.remove()); const l = document.createElement('span'); l.className = 'map-lock-label'; l.textContent = label; l.setAttribute('role', 'status'); el.appendChild(l); setTimeout(()=> l.remove(), 1700); }
+}
+// true = the tile must not open right now (and it has shaken)
+function mapTileBlocked(el, needs){
+  if(needs && needs === 'quests' && !noticeBoardUnlocked()){ lockedTileTap(el, TX('ui.map-locked-for-now')); return true; }
+  if(npcDialogueActive()){ lockedTileTap(el, null); return true; }
+  return false;
+}
 function mapTapGate(el, ms){
   if(!el) return true; const now = Date.now();
   if(el._tapUntil && now < el._tapUntil) return false;
@@ -17113,9 +17132,9 @@ function mapSpotsHTML(map, positions, progress){
     const def = fanned(sp, idx + ':' + !!spAfter, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))});
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
-    const open = featureUnlocked(sp.key);
-    return `<button type="button" class="map-spot ${open?'is-open':'is-new'}" data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
-      <span class="map-spot-ico">${sp.icon}</span>${open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
+    const open = featureUnlocked(sp.key), waits = !!(sp.needs && !featureUnlocked(sp.needs)); // 2026-10-24 (package MAP, owner 13:16 #20): waits for the Notices
+    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+      <span class="map-spot-ico">${sp.icon}</span>${waits ? '<span class="map-spot-lock" aria-hidden="true">🔒</span>' : open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
 }
@@ -17736,6 +17755,10 @@ function skirmishCastle(node){
   let hp = Number(node.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(node.hqHp))) : baseHp;
   const early = baseBrambleHp(node); if(early != null) hp = Math.min(hp, early);
   const ov = shieldOverrideOf(node), rule = brambleHp(ruleShieldOf(node)); hp = brambleHp(hp); // BF5: the bramble and its Shield at BRAMBLE_SCALE
+  // 2026-10-24 (package MAP, owner 13:16 #16: "Admin can edit brambles on click (first plains bramble +1 HP)"): an admin-set Health is the
+  // number the fight shows and plays with, whatever the base bramble, the Map 0 early rule or BRAMBLE_SCALE would give; set from the
+  // fight panel's bramble line (openBrambleEditor), saved as node.brambleHealth the way the other skirmish edits are.
+  { const bo = Math.round(Number(node.brambleHealth)); if(bo > 0) hp = Math.min(999, bo); }
   const layers = (ov ? ov.map(brambleHp) : null) || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
   return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
@@ -17754,9 +17777,42 @@ function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${s
 // The panel's castle line (2026-10-12, user: "The health and armour can use this format 'N <Health Icon> M <Blue Diamond Icon>'
 // (if there are high level shields, only display the shield value of the highest level shield and the corresponding
 // coloured diamond)").
-function castleLineHTML(node){ const sc = skirmishCastle(node), L = sc.layers || [], k = L.length - 1;
+function castleLineHTML(node, adminEdit){ const sc = skirmishCastle(node), L = sc.layers || [], k = L.length - 1;
   const gem = k >= 0 ? `<b class="cl-num">${L[k]}</b><i class="armour-gem" style="--g1:${ARMOUR_LAYER_COLOURS[k][0]}; --g2:${ARMOUR_LAYER_COLOURS[k][1]}" title="${escapeAttr(k > 0 ? `Armour layer ${k+1} (${sc.shield} in all)` : 'Armour')}" aria-label="Armour"></i>` : '';
+  // 2026-10-24 (package MAP, owner 13:16 #16): for an admin the line is a button that opens the inline bramble editor
+  if(adminEdit) return `<button type="button" class="castle-line is-admin-edit" data-bramble-edit="1" title="Admin: edit this bramble's Health and effect" aria-label="Edit this bramble"><b class="cl-num">${sc.hp}</b><span class="cl-heart" aria-hidden="true">❤️</span>${gem}<span class="cl-pencil" aria-hidden="true">✏️</span></button>`;
   return `<span class="castle-line"><b class="cl-num">${sc.hp}</b><span class="cl-heart" title="Bramble Health" aria-label="Health">❤️</span>${gem}</span>`; }
+// The inline bramble editor (2026-10-24, package MAP, owner 13:16 #16): a small card under the panel's bramble line: Health (the number the
+// fight uses) and the bramble's effect (which bramble the enemy defends with). Save goes through saveNodeField, like the other skirmish
+// edits (local at once, published to every player when the admin is a cloud admin). "Back to the rule" drops both edits.
+function brambleEffectText(ch){ try{ const d = document.createElement('div'); d.innerHTML = ch ? characterDescHTML(ch) : ''; return (d.textContent || '').replace(/\s+/g, ' ').trim(); }catch(e){ return ''; } }
+function openBrambleEditor(mapId, nodeKey, host){
+  if(!adminModeEnabled) return null;
+  const found = findConquestNode(mapId, nodeKey); if(!found || !host) return null; const node = found.node;
+  document.querySelectorAll('.cnp-bramble-ed').forEach(x=> x.remove());
+  const sc = skirmishCastle(node), cid = nodeCastleId(node) || '', ids = Object.keys(CHARACTER_DEFS).filter(id=> CHARACTER_DEFS[id]);
+  const ed = document.createElement('div'); ed.className = 'cnp-bramble-ed'; ed.setAttribute('role', 'group'); ed.setAttribute('aria-label', 'Edit bramble');
+  ed.innerHTML = `<label class="cbe-row"><span>Health ❤️</span><input type="number" min="1" max="999" step="1" id="cbeHp" value="${sc.hp}" inputmode="numeric"></label>
+    <label class="cbe-row"><span>Bramble</span><select id="cbeChar"><option value="" ${cid ? '' : 'selected'}>Plain bramble (no effect)</option>${ids.filter(id=> id !== 'castle').map(id=> `<option value="${escapeAttr(id)}" ${id === cid ? 'selected' : ''}>${escapeHtml(CHARACTER_DEFS[id].icon || '')} ${escapeHtml(CHARACTER_DEFS[id].name)}</option>`).join('')}</select></label>
+    <p class="cbe-fx" id="cbeFx" aria-live="polite"></p>
+    <div class="cbe-btns"><button type="button" class="btn small primary" id="cbeSave">Save</button><button type="button" class="btn small ghost" id="cbeReset" title="Drop the edited Health and bramble: the rule gives them again">Back to the rule</button><button type="button" class="btn small ghost" id="cbeCancel">Cancel</button></div>`;
+  host.insertAdjacentElement('afterend', ed);
+  const fx = ed.querySelector('#cbeFx'), pick = ed.querySelector('#cbeChar');
+  const showFx = ()=>{ const ch = pick.value ? CHARACTER_DEFS[pick.value] : null; fx.textContent = ch ? (brambleEffectText(ch) || 'No effect.') : 'No effect.'; };
+  pick.addEventListener('change', showFx); showFx();
+  const done = ()=>{ ed.remove(); if(currentTab === 'play' && !matchState) renderPlay(); };
+  ed.querySelector('#cbeCancel').onclick = ()=> ed.remove();
+  ed.querySelector('#cbeSave').onclick = ()=>{
+    const hp = Math.round(Number(ed.querySelector('#cbeHp').value));
+    if(!(hp >= 1)){ showToast('Health has to be 1 or more.', 'warn'); return; }
+    saveNodeField(mapId, nodeKey, 'brambleHealth', hp);
+    saveNodeField(mapId, nodeKey, 'characterId', pick.value || null);
+    showToast(`🛠️ ${node.name}: bramble ${hp} HP${pick.value ? ' · ' + CHARACTER_DEFS[pick.value].name : ''} saved.`, 'ok'); done();
+  };
+  ed.querySelector('#cbeReset').onclick = ()=>{ saveNodeField(mapId, nodeKey, 'brambleHealth', null); saveNodeField(mapId, nodeKey, 'characterId', null); showToast('↺ Bramble back to the rule.', 'ok'); done(); };
+  setTimeout(()=>{ const i = ed.querySelector('#cbeHp'); if(i){ i.focus(); i.select(); } }, 30);
+  return ed;
+}
 // Granted skills (2026-10-12, user: "skills granted by external parties' keywords will be light blue ... the field effect
 // was to give immolation to the skirmish's leader"): a fight's leaderGrant ({skill: value}) gives its leaders those skills
 // for this match only. Each leader plays as a copy of its card ("<id>~grant") whose `granted` list names the given skills,
@@ -18535,7 +18591,7 @@ const SKIRMISH_CURVE_GAME_MS = 3000, SKIRMISH_CURVE_FIGHT_MS = 12000, SKIRMISH_C
 function skirmishCurveSig(mapId, n, games){
   const ref = referenceDeckFor(mapId, n), lc = typeof liveCards !== 'undefined' ? Object.keys(liveCards).length : 0;
   return JSON.stringify([mapId, n.key, n.deck, n.rules || null, n.battleMode || null, n.hqHp, n.characterId || null, n.castle || null, n.castleLevel != null ? n.castleLevel : null,
-    n.shieldOverride != null ? n.shieldOverride : null, n.kind || null, n.setup || null, skirmishLeadersOf(n, mapId) /* 2026-10-22 (SK) */, n.leaderGrant || null, n.cardLevels || null, n.ai || null, n.floor || null, ref.deckMap, ref.level, games, lc]);
+    n.shieldOverride != null ? n.shieldOverride : null, n.brambleHealth != null ? n.brambleHealth : null /* 2026-10-24 (MAP) */, n.kind || null, n.setup || null, skirmishLeadersOf(n, mapId) /* 2026-10-22 (SK) */, n.leaderGrant || null, n.cardLevels || null, n.ai || null, n.floor || null, ref.deckMap, ref.level, games, lc]);
 }
 function skirmishCurveErrText(e){
   if(e && e.unknownCards) return `Couldn't check this fight: its deck names cards the game doesn't know (${e.unknownCards.join(', ')}). A real fight here would fail too.`;
@@ -21842,10 +21898,22 @@ function applyAmbushNode(){
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
   map.nodes.push({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: st.deck || ambushDeck(foe), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
-    rewardTokens:['factionGrowth'], requires: ambushLinks(map), ambush:true, fixedPos: st.pos || null, faction: foe});
+    rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, fixedPos: st.pos || null, faction: foe});
+}
+// 2026-10-24 (package MAP, owner 17:01 #3: "Those ambush skirmishes should lock the previous path i was going for. But then they also
+// shouldnt be connected by a link but instead float there. The moment they are observed (ambushed), they are permanently accessible. No
+// need for links."): the Ambush floats (requires nothing, so no trail is drawn to or from it and it is open the moment it is seen; the
+// saved ambush state keeps it on the map for good, won or not). The fight it interrupted (3-2, and so everything past it) stays locked,
+// drawn as a locked fight, until the Ambush is won; losing it, or walking away from it, does not open the path.
+function ambushLocksNode(map, node){
+  try{
+    if(!map || !node || node.ambush) return false;
+    const am = ambushMap(); if(!am || am.id !== map.id || skirmishCode(map.id, node.key) !== AMBUSH_AT) return false;
+    return ambushPending();
+  }catch(e){ return false; }
 }
 // 2026-10-17 (user: "Unliked nodes by default are accessible on scratch. The only thing that is like that is the 1st skirmish in a map"):
-// the Ambush hangs off the same trail as the fight it interrupts (3-2's own links), instead of floating unlinked.
+// the Ambush hung off the same trail as the fight it interrupts (3-2's own links). 2026-10-24 (package MAP): it floats again, see ambushLocksNode.
 function ambushLinks(map){ const at = map && map.nodes.find(n=> !n.ambush && skirmishCode(map.id, n.key) === AMBUSH_AT); return at && Array.isArray(at.requires) ? at.requires.slice() : []; }
 // Hidden skirmishes (2026-10-15, user: "You can also add HIDDEN skirmishes (max 5 across Map 1-20). Idk how they will be revealed."):
 // a fight that isn't on the map at all until something reveals it. Each entry: map, the node (flagged hidden:true and secret:true,
@@ -22710,6 +22778,24 @@ function healMapProgress(){
   }catch(e){ return null; }
 }
 setTimeout(()=>{ try{ healMapProgress(); }catch(e){} }, 0); // on load, once the whole script has run
+// 2026-10-24 (package MAP, owner 17:01 #1: "When you join back the game - the conquest map should leave where you left off!"): the map you
+// last stood on (and the fight your pawn stood at) is kept in this browser; the first time the Conquest pane is drawn after a load it opens
+// there instead of on Map 0, and the pawn stands at its fight without a walk. Only a map that is open, real and not hidden is restored;
+// anything else (Tutorial not won yet, a map since locked, a hidden dungeon) falls through to the rules that were already there.
+const LAST_MAP_KEY = 'bramblewood_last_map_v1';
+function loadLastMap(){ try{ const o = JSON.parse(localStorage.getItem(LAST_MAP_KEY) || 'null'); return o && typeof o.map === 'string' ? o : null; }catch(e){ return null; } }
+function rememberLastMap(mapId, nodeKey){ try{ localStorage.setItem(LAST_MAP_KEY, JSON.stringify({map: mapId, node: nodeKey || null})); }catch(e){} }
+var mapResumeTried = false;
+function resumeLastMap(){
+  if(mapResumeTried) return false; mapResumeTried = true;
+  try{
+    if(conquestSelectedMap !== CONQUEST_MAPS[0].id || conquestSelectedNodeKey) return false; // somebody already chose a map this session
+    const last = loadLastMap(); if(!last) return false;
+    const m = CONQUEST_MAPS.find(x=> x.id === last.map); if(!m || (typeof dungeonHiddenFromPlayer === 'function' && dungeonHiddenFromPlayer(m))) return false;
+    if(!isMapUnlocked(m, loadConquestProgress())) return false;
+    conquestSelectedMap = m.id; return true;
+  }catch(e){ return false; }
+}
 function completeConquestNode(node, rank){
   const progress = loadConquestProgress();
   const id = conquestNodeId(node.mapId, node.nodeId);
@@ -22842,6 +22928,7 @@ function worldRevealed(){
     return p.completed.some(id=> !['m1','mq','mf','mtut'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it (2026-10-22, TU: the Tutorial's own fights don't count; T-0 alone used to open the world)
 }
 function isNodeVisible(map, node, index, progress){
+  if(ambushLocksNode(map, node)) return false; // 2026-10-24 (package MAP, owner 17:01 #3): the path the Ambush stopped stays locked until it is won
   if(node.chance > 0 && !adminModeEnabled){ const nid = conquestNodeId(map.id, node.key); if(!progress.completed.includes(nid) && !(progress.found||[]).includes(nid)) return false; }
   if(tutSideNodeGated(map, node)) return false; // 2026-10-17: T-2…T-4 stay locked until their gate fight (tutSideGateFightCode)
   if(!map.sequential) return true;
@@ -23158,8 +23245,8 @@ function wireMapLayoutEditor(map, body){
 }
 function mapNodePositions(map){
   // Hidden skirmishes (2026-10-15) stand where they were placed and don't reshuffle the rest of the trail.
-  const sec = map.nodes.some(n=> n.secret || n.jumper); // so do the jumpers (2026-10-16)
-  const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper)})); let k = 0; return map.nodes.map(n=> (n.secret || n.jumper) ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
+  const sec = map.nodes.some(n=> n.secret || n.jumper || n.ambush); // so do the jumpers (2026-10-16) and the floating Ambush (2026-10-24, package MAP)
+  const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper && !n.ambush)})); let k = 0; return map.nodes.map(n=> (n.secret || n.jumper || n.ambush) ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
   const base = auto.map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return tutSideCentred(map, base);
@@ -23344,8 +23431,12 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
     target = map.nodes[next >= 0 ? next : 0] && map.nodes[next >= 0 ? next : 0].key;
     // 2026-10-23 (package MK): on a map with every fight won, nothing selected keeps the pawn where it stood (was: back to the first fight)
     if(next < 0 && spots[map.id] != null && idxOf(spots[map.id]) >= 0) target = spots[map.id];
+    // 2026-10-24 (package MAP, owner 17:01 #1): the first time the pawn is placed after a load, it stands where it stood (it did walk to
+    // the next unbeaten fight)
+    if(placeMapPawn._lastMap === undefined){ const lm = loadLastMap(), at = lm && lm.map === map.id ? lm.node : spots[map.id]; if(at != null && idxOf(at) >= 0) target = at; }
   }
   const ti = idxOf(target); if(ti < 0 || !positions[ti]) return;
+  rememberLastMap(map.id, target); // 2026-10-24 (package MAP, owner 17:01 #1)
   const live = mapPawnNow(map.id);
   const fi = spots[map.id] != null && idxOf(spots[map.id]) >= 0 ? idxOf(spots[map.id]) : ti;
   const to = positions[ti];
@@ -24846,6 +24937,7 @@ function renderConquestSubTab(body){
   // Outskirts, which show nothing until Tutorial II is won, while T-1 sat on the Tutorial map it couldn't see. The start map now holds
   // for everyone; only the layout editor may look elsewhere. A save whose progress shows Tutorial II won gets its flag back first.
   healTutorial2Flag();
+  try{ if(!matchState) resumeLastMap(); }catch(e){} // 2026-10-24 (package MAP, owner 17:01 #1): back where you left off
   if(!loadTutorial2Done() && !(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit) && conquestSelectedMap !== 'mtut') conquestSelectedMap = 'mtut';
   { const hid = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap); if(hid && dungeonHiddenFromPlayer(hid)) conquestSelectedMap = hid.parent || 'm1'; } // 2026-10-23 (TU2): a hidden daily dungeon left open in a save
   // 2026-10-23 (package MK): a next map that is open but out of reach (world still hidden, a reload since the clearing win, or a save
@@ -25071,8 +25163,9 @@ function renderConquestSubTab(body){
         // unmistakably clear it can't be clicked/fought yet.
         if(!visible){
           // 2026-10-17: a Tutorial-map fight that waits on a later map says which fight opens it
-          const gate = tutSideNodeGated(map, node) ? tutSideGateFightCode(node) : '', gateTxt = gate ? `Defeat ${gate} to unlock this` : '';
-          return `<div class="map-node map-node-hidden${node.secret ? ' is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''}${gate ? ' is-gated' : ''}" data-lkey="${node.key}" role="img" aria-label="${escapeAttr(gateTxt || 'Locked skirmish')}" style="${style}" title="${escapeAttr(gateTxt || 'Locked — clear the previous skirmish on this trail first')}">
+          const ambLock = ambushLocksNode(map, node); // 2026-10-24 (package MAP, owner 17:01 #3)
+          const gate = ambLock ? AMBUSH_AT : tutSideNodeGated(map, node) ? tutSideGateFightCode(node) : '', gateTxt = ambLock ? TX('ui.map-ambush-blocks') : gate ? `Defeat ${gate} to unlock this` : '';
+          return `<div class="map-node map-node-hidden${ambLock ? ' is-ambush-locked' : ''}${node.secret ? ' is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''}${gate ? ' is-gated' : ''}" data-lkey="${node.key}" role="img" aria-label="${escapeAttr(gateTxt || 'Locked skirmish')}" style="${style}" title="${escapeAttr(gateTxt || 'Locked — clear the previous skirmish on this trail first')}">
             <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>${gate ? `<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span><span class="map-node-gate" aria-hidden="true">${escapeHtml(gateTxt)}</span>` : ''}
           </div>`;
         }
@@ -25082,7 +25175,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
@@ -25200,16 +25293,18 @@ function renderConquestSubTab(body){
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
-  { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
-  mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
+  { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(w)) return; visitOldWell(w); }); }
+  mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(b)) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
-  mainEl.querySelectorAll('[data-curio]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitCuriosity(b.dataset.curio, b); }));
-  { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitSmallCave(c); }); }
+  mainEl.querySelectorAll('[data-curio]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(b)) return; visitCuriosity(b.dataset.curio, b); }));
+  { const c = mainEl.querySelector('#mapCave'); if(c) c.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(c)) return; visitSmallCave(c); }); }
   { const x = mainEl.querySelector('#mapSubExit'); if(x) x.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return;
       if(map.id === 'mtut'){ healTutorial2Flag(); if(!loadTutorialDone()) saveTutorialDone(); if(!loadTutorial2Done()) saveTutorial2Done(); } // 2026-10-23 (TU2): the full map's flags come with the exit (they ride the next progress push; a forced push here re-drew the Tutorial map over the walk out)
       leaveSubMap(map, body); }); }
-  { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitWanderer(w); }); }
+  { const w = mainEl.querySelector('#mapWanderer'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(w)) return; visitWanderer(w); }); }
+  // 2026-10-24 (package MAP, owner 17:01 #3): the fight the Ambush stopped stays locked; a tap says so
+  mainEl.querySelectorAll('.map-node.is-ambush-locked').forEach(el=> el.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(el, 900)) return; lockedTileTap(el, null); showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); }));
   mainEl.querySelectorAll('[data-submap]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; enterSubMap(b.dataset.submap, b, body); }));
   if(conquestSubZoom === 'grow'){ conquestSubZoom = null;
     // 2026-10-14: a daylight side map starts small in the middle of its map panel and zooms in until it fills it (leaving one
@@ -25324,7 +25419,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -25354,6 +25449,7 @@ function renderConquestSubTab(body){
     // ⚡ menu (openSweepMenu) has done all three since it replaced them.
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
+    { const bb = panelEl.querySelector('[data-bramble-edit]'); if(bb) bb.addEventListener('click', e=>{ e.stopPropagation(); openBrambleEditor(map.id, selectedNode.key, bb.closest('.cnp-kind') || bb); }); } // 2026-10-24 (package MAP, owner 13:16 #16)
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
     { const ac = document.getElementById('cnpAdminClear'); if(ac) ac.addEventListener('click', ()=>{ adminCompleteNodes(map.id, [selectedNode.key]); renderConquestSubTab(body); }); }
     // (2026-10-18: #cnpAdminClearMap's handler went; "clear the whole map" is the map layout bar's mlClearMap.)
@@ -39238,8 +39334,10 @@ async function resolveRoundCore(opts){
     if(m.mode==='conquest' && m.winner!==1 && m.towerEnergyPaid > 0 && !m.towerRefunded && !m.rewardDuplicate){ m.towerRefunded = m.towerEnergyPaid; // 2026-10-21 (ED): one refund a match
       try{ const st = settleEnergy(); st.current += m.towerEnergyPaid; saveEnergyState(st); refreshEnergyHud(); }catch(e){} }
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
+    // 2026-10-24 (package MAP, owner 17:01 #5: "This should only happen the first time"): the raiders run off with Leaves once, ever; a
+    // later lost Ambush costs nothing and says nothing (the flag is the dialogue-flag store, which rides the cloud save).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
-      if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
+      if(fn && fn.node && fn.node.ambush && !loadDialogueFlags()['raiders_ran_off']){ setDialogueFlag('raiders_ran_off', true); const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
         if(n > 0){ myCurrencies.gold = have - n; saveCurrencies(); } m.raidersTook = {n, want}; } }catch(e){} }
     // A cleared Babel Spire floor fought again (2026-10-18, package Z): no reward of any kind; a better rank is still kept.
     if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && m.towerReplay){

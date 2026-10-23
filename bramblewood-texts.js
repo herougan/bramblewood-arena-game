@@ -2067,6 +2067,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pg-lock-main": "{map} opens once you clear {prev}. Still to win: {codes}.",
   "ui.pg-lock-later": "{map} is not open yet.",
   "ui.pg-lock-back": "Back to {map}",
+  "ui.map-locked-for-now": "Locked for now",
+  "ui.map-ambush-blocks": "Blocked by the ambush",
   "ui.eb-kit-src": "Found on the road: {pct}% a Conquest win for each ⚡ it used, up to {n} a day.",
   "ui.eb-kit-left": "{n} left today",
   "ui.eb-kit-done": "done for today",

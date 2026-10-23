@@ -10866,6 +10866,30 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 .map-pawn.map-foe .mp-body{filter:drop-shadow(0 0 6px rgba(255,60,40,.8)) drop-shadow(0 2px 2px rgba(0,0,0,.45));}
 .map-pawn.map-foe.foe-humming .mp-body{filter:drop-shadow(0 0 6px rgba(58,120,200,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.45));}
 @media (prefers-reduced-motion: reduce){ .map-node.ambush-pop{animation:none;} }
+/* 2026-10-24 (package MAP, owner 17:01 #3): the Ambush floats: no trail to it, a slow bob, and the fight it stopped (3-2) is a locked node until it is won */
+.map-node.is-ambush.is-floating{animation:ambushFloat 3.4s ease-in-out infinite;}
+.map-node.is-ambush.is-floating.ambush-pop{animation:ambushPop .9s cubic-bezier(.3,1.6,.5,1) both;}
+@keyframes ambushFloat{0%,100%{translate:0 0;} 50%{translate:0 -5px;}}
+@media (prefers-reduced-motion: reduce){ .map-node.is-ambush.is-floating{animation:none;} }
+.map-node-hidden.is-ambush-locked{pointer-events:auto; cursor:not-allowed;}
+/* 2026-10-24 (package MAP, owner 13:16 #19, #20): a map tile that will not open: a dull side-to-side shake, no red (that is the "rejected action" look), and a small label */
+.tile-dull-shake{animation:tileDullShake 400ms ease;}
+@keyframes tileDullShake{0%,100%{translate:0 0;} 15%{translate:-5px 0;} 35%{translate:5px 0;} 55%{translate:-3px 0;} 75%{translate:3px 0;}}
+@media (prefers-reduced-motion: reduce){ .tile-dull-shake{animation:none; outline:2px solid rgba(255,235,190,.7);} }
+.map-lock-label{position:absolute; left:50%; top:calc(100% + 4px); transform:translateX(-50%); z-index:12; width:max-content; max-width:130px; padding:2px 8px; border-radius:999px; background:rgba(30,22,12,.9); color:#ffe9b8; font:700 11px/1.25 'Baloo 2',system-ui,sans-serif; text-align:center; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,.35); animation:lockLabelIn .18s ease-out both;}
+@keyframes lockLabelIn{from{opacity:0; transform:translateX(-50%) translateY(-3px);} to{opacity:1; transform:translateX(-50%);}}
+.map-spot.is-waiting{filter:grayscale(.7) brightness(.8); cursor:not-allowed;}
+.map-spot .map-spot-lock{position:absolute; top:-6px; right:-6px; font-size:12px; line-height:1; filter:none;}
+/* 2026-10-24 (package MAP, owner 13:16 #16): the admin's bramble line is a button, and its small editor card */
+.castle-line.is-admin-edit{background:transparent; border:1px dashed rgba(255,235,190,.55); border-radius:8px; padding:1px 6px; cursor:pointer; font:inherit; color:inherit;}
+.castle-line.is-admin-edit:hover,.castle-line.is-admin-edit:focus-visible{border-style:solid; background:rgba(255,255,255,.12);}
+.castle-line .cl-pencil{font-size:11px; opacity:.8; margin-left:2px;}
+.cnp-bramble-ed{display:flex; flex-direction:column; gap:6px; margin:6px 0 2px; padding:8px 10px; border-radius:10px; background:rgba(20,14,8,.78); border:1px solid rgba(255,235,190,.35); color:#fff3d6; font-size:13px; width:100%; max-width:340px; box-sizing:border-box;}
+.cnp-bramble-ed .cbe-row{display:flex; align-items:center; gap:8px; justify-content:space-between; flex-wrap:wrap;} .cnp-bramble-ed .cbe-row span{font-weight:700;}
+.cnp-bramble-ed input,.cnp-bramble-ed select{min-width:0; max-width:100%; padding:3px 6px; border-radius:6px; border:1px solid rgba(255,235,190,.4); background:#fff8e8; color:#2a1c0c; font:inherit; font-size:16px; box-sizing:border-box;}
+.cnp-bramble-ed select{flex:1 1 150px; width:0; min-width:150px;}
+.cnp-bramble-ed input{width:80px;} .cnp-bramble-ed .cbe-fx{margin:0; font-size:12px; opacity:.85;}
+.cnp-bramble-ed .cbe-btns{display:flex; flex-wrap:wrap; gap:6px;}
 .fuse-badge{position:absolute; top:-9px; right:-6px; z-index:7; padding:1px 6px; border-radius:999px; background:#c62f22; color:#fff; font:800 12px/1.3 'Baloo 2', system-ui, sans-serif; box-shadow:0 0 0 2px #fff3d6, 0 2px 6px rgba(0,0,0,.4);}
 .fuse-badge.is-last{animation:fuseLast .5s ease-in-out infinite alternate;}
 @keyframes fuseLast{from{transform:scale(1); box-shadow:0 0 0 2px #fff3d6, 0 0 6px rgba(255,80,40,.6);} to{transform:scale(1.15); box-shadow:0 0 0 2px #fff3d6, 0 0 16px rgba(255,80,40,1);}}

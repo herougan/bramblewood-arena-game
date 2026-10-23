@@ -3059,5 +3059,7 @@
  "{key} is a PRO fight: no rewards.": "{key} はPROバトルです：報酬はありません。",
  "There is no PRO fight called {key}.": "{key} というPROバトルはありません。",
  "Finish the fight you are in first.": "まず今のバトルを終えてください。",
- "Finish the tutorial first.": "まずチュートリアルを終えてください。"
+ "Finish the tutorial first.": "まずチュートリアルを終えてください。",
+ "Locked for now": "今はまだロック中",
+ "Blocked by the ambush": "待ち伏せに阻まれている"
 }

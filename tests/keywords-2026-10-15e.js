@@ -156,7 +156,8 @@ ok(!/title:'An environment card: a rule of this battlefield'/.test(src) && !/Env
 // ---- 12. the surprise challenge
 ok(/function ambushTheftCap\(\)\{ let n = 0; try\{ n = Math\.max\(0, furthestMapReached\(\)\); \}catch\(e\)\{\} return Math\.min\(100, 15 \+ 5\*n\); \}/.test(src), '12. the cap: 15 on Map 0, +5 a map, at most 100');
 { const cap = n=> Math.min(100, 15 + 5*n); ok(cap(0) === 15 && cap(3) === 30 && cap(17) === 100 && cap(40) === 100, '12. (15, 30 on Map 3, 100 from Map 17)'); }
-ok(/fn\.node\.ambush\)\{ const want = ambushTheftRoll\(\), have = Math\.max\(0, Math\.floor\(myCurrencies\.gold \|\| 0\)\), n = Math\.min\(have, want\);/.test(src) && /raidersTookHTML\(m\)/.test(src), '12. losing an ambush takes Maple Leaves (never more than you have) and the defeat card says so');
+// 2026-10-24 (package MAP, owner 17:01 #5: "This should only happen the first time"): the theft is behind the 'raiders_ran_off' flag now, set by the first one
+ok(/fn\.node\.ambush && !loadDialogueFlags\(\)\['raiders_ran_off'\]\)\{ setDialogueFlag\('raiders_ran_off', true\); const want = ambushTheftRoll\(\), have = Math\.max\(0, Math\.floor\(myCurrencies\.gold \|\| 0\)\), n = Math\.min\(have, want\);/.test(src) && /raidersTookHTML\(m\)/.test(src), '12. losing an ambush takes Maple Leaves (never more than you have) and the defeat card says so');
 ok(/const pop = showAmbushPop\(hb\);/.test(src) && /startConquestMatch\(map\.id, 'ambush'\)/.test(src), '12. the quick "Ambush!" sub-window, then straight into the fight');
 // ---- the engine notes
 ok(/Zeitgeber format \(2026-10-15/.test(eng) && /function useExposed\(/.test(eng), 'engine: the dated notes and helpers are there');
