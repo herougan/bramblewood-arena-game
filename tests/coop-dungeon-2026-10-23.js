@@ -195,6 +195,9 @@ function sameEverywhere(r, label){
       ok(heir.isHost && heir.room.hostId === heir.me.peerId, 'migration: C (next in seat order) became the host');
       ok(other.room.hostId === heir.me.peerId && !other.isHost, 'migration: the other player follows the new host');
       ok(heir.room.seats.A.connected === false, 'migration: the old host\'s seat is marked away (the CPU plays it)');
+      // 2026-10-24 (package EN5): EN5's re-fit moved these seeded decks' cards, and the party now wins floor 0 by round 8, while the host is
+      // away; the new host then opens the next floor (as a host does) and must resolve its rounds
+      if(heir.floorPaused && heir.view.over === 'won' && heir.view.floorIdx < heir.view.floorCount - 1){ heir.nextFloor(); await settle(hubM, 6); }
       const k = heir.history.length; await elapse(clockM, hubM, 3000);
       ok(heir.history.length > k, `migration: the new host resolves the next rounds (${k} -> ${heir.history.length})`);
       const last = heir.history[heir.history.length - 1], theirs = other.history.find(x=> last && x.floor === last.floor && x.round === last.round);

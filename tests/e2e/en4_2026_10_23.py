@@ -113,7 +113,8 @@ async def run(b, url, w):
     # ---- the card editor's skill list, the Codex notes, the log
     ed = await pg.evaluate("""(()=>({keys: ['hemorrhage', 'greaterPoison', 'shoreUp'].filter(k=> PASSIVE_DEFS.some(d=> d.key === k && d.label && d.codexNote)), gp: SKILL_TEXT.greaterPoison(2), su: SKILL_TEXT.shoreUp(),
       tick: (en4LogText({type:'greaterPoisonTick', defId:'bee-knight', dmg:4}, id=> (getCardDefs()[id]||{}).name) || {}).text}))()""")
-    ok(len(ed['keys']) == 3 and '2' in (ed['gp'] or '') and 'Shield 1' in (ed['su'] or '') and 'Greater Poison' in (ed['tick'] or ''), f'the editor lists the three skills with Codex notes; texts and log ({ed})')
+    # 2026-10-24 (package EN5): Greater Poison is called Deadly Poison
+    ok(len(ed['keys']) == 3 and '2' in (ed['gp'] or '') and 'Shield 1' in (ed['su'] or '') and 'Deadly Poison' in (ed['tick'] or ''), f'the editor lists the three skills with Codex notes; texts and log ({ed})')
     ok(not pg._errs, f'no page errors {pg._errs[:2]}')
     await pg.close()
 

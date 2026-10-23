@@ -1,0 +1,40 @@
+{
+ "_about": "tools/en5_state_uptime_2026_10_24.js: the share of unit-rounds (a unit on the front row at a round's start, side 1) where the side holds 3+ Lumber, 2+ Stone, 1+ Metal, or has its bramble at a third of its Health or less. \"any\": 20 random live band cards a side; \"stone\" / \"metal\": 4 of side 1's 20 are cards that make that resource.",
+ "generated": "2026-10-24",
+ "seed": 1,
+ "band": 714,
+ "stoneMakers": [
+  "petrified-tree"
+ ],
+ "metalMakers": [
+  "ore-smelter-mole"
+ ],
+ "any": {
+  "games": 2000,
+  "unitRounds": 89459,
+  "meanRounds": 12.51,
+  "lumber3": 0.009,
+  "stone2": 0,
+  "metal1": 0.009,
+  "lastStand": 0.099
+ },
+ "stone": {
+  "games": 2000,
+  "unitRounds": 79569,
+  "meanRounds": 12.5,
+  "lumber3": 0.017,
+  "stone2": 0.005,
+  "metal1": 0.01,
+  "lastStand": 0.121
+ },
+ "metal": {
+  "games": 2000,
+  "unitRounds": 81397,
+  "meanRounds": 12.35,
+  "lumber3": 0.004,
+  "stone2": 0,
+  "metal1": 0.834,
+  "lastStand": 0.107
+ },
+ "seconds": 114
+}

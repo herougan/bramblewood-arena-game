@@ -68,7 +68,7 @@ const HALF_MISS = ['evasive', 'swift', 'flying', 'shadow'];
 // 2026-10-22 (BF8; owner: "Tide: Just the flat charge is enough. Dont do the minor bonus."): Tide is out of LIGHT; plain Tide costs its
 // flat price only. Tide {…} braces stay CONTEXT_MULT (0.4) × their contents (owner: "I think it should be 0.4x").
 const LIGHT = ['flying', 'diurnal', 'nocturnal', 'crepuscular', 'sunshy', 'nightblind'];
-const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */, 'liegeGrant', 'rageGrant' /* 2026-10-23 (EN): Liege's and Rage's braces */];
+const PARAMS = ['crepuscularHp', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'defianceN', 'diurnalGrant', 'diurnalHp', 'espritHp', 'fullMoonGrant', 'loyalGrant', 'nocturnalGrant', 'nocturnalHp', 'swarmN', 'swimmerGrant', 'tideGrant', 'weakness', 'arrowCount', 'hunterVs', 'archerStyle' /* 2026-10-21 (BF5 merge of BX): Archer's look, not an ability */, 'stemGrant' /* 2026-10-21 (EV): a Stem's braces */, 'kinglyGrant' /* 2026-10-21 (TR): King's braces */, 'liegeGrant', 'rageGrant' /* 2026-10-23 (EN): Liege's and Rage's braces */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* 2026-10-24 (EN5): the state skills' braces */];
 // Context skills (2026-10-21, package CX2; owner 17:42: "Regarding context-skills like Diurnal - {} or Tide - {} etc. The costing is wrong.
 // Tide - {} should be 0.5x the skills contained within ... Since Tide is not guaranteed, I think the coefficient should be reduced to 0.4x
 // instead."): a skill whose braces hold other skills costs CONTEXT_MULT × the S of everything in its braces, across all its phases (Tide:
@@ -97,7 +97,9 @@ const CONTEXT = {
   liegeGrant: v=> [obj(v)], // Liege – {…} (2026-10-23, package EN): its braces while a King is on its side, at CONTEXT_MULT_BY.liegeGrant (0.3)
   rageGrant: v=> [obj(v)], // Rage – {…} (2026-10-23, package EN): its braces while its Rage is on, at CONTEXT_MULT_BY.rageGrant (0.4), on top of Rage's own price
   bloomWhen: v=> obj(v && v.grant) ? [Object.assign({attack: +(v.atk || 0), health: +(v.hp || 0)}, v.grant)] : null, // only Bloom's braces form; the plain +2/+2 keeps its measured worth
-  bloomCopy: v=> { const p = bloomOdds(v); return [{attack: p, health: p}]; } // Bloom – {conditions} (BL, 2026-10-23): the copy's +1/+1, x the odds (see bloomOdds)
+  bloomCopy: v=> { const p = bloomChainOdds(v); return [{attack: p, health: p}]; }, // Bloom – {conditions} (BL, 2026-10-23): the copy's +1/+1, x the odds (see bloomOdds); EN5: x the chain (bloomChainOdds)
+  // State skills (EN5, 2026-10-24): their braces while the side's state holds, at CONTEXT_MULT_BY's uptime (the plain flag is priced in skill-costs.json)
+  timberedGrant: v=> [obj(v)], bedrockGrant: v=> [obj(v)], forgedGrant: v=> [obj(v)], lastStandGrant: v=> [obj(v)]
 };
 // Bloom – {conditions} (2026-10-23, package BL; owner 11:23: "Bloom - {Conditions}. Let's just define bloom as +1/+1, then make a copy of
 // this card"; 19:30: "I think bloom only gives the new one +1/+1, not itself."): once, when its conditions hold at a round's start, a copy of the
@@ -114,12 +116,28 @@ function bloomOdds(v){ if(!obj(v)) return 0; const w = (Array.isArray(v.when) ? 
   if(!w.length) return 0; const o = w.map(k=> BLOOM_ODDS[k] != null ? BLOOM_ODDS[k] : BLOOM_ODDS_OTHER);
   const hit = v.mode === 'or' ? 1 - o.reduce((a, x)=> a * (1 - x), 1) : o.reduce((a, x)=> a * x, 1);
   return r2(hit * BLOOM_LIVE * Math.pow(BLOOM_LUMBER, Math.max(0, Math.round(+v.lumber || 0)))); }
-function bloomBodyMult(effects){ const e = effects || {}; return e.bloomCopy ? 1 + bloomOdds(e.bloomCopy) : 1; }
+// EN5 (2026-10-24, owner 03:12: "the copy can bloom"): each copy blooms once too, when the conditions still hold for it and a cell beside
+// it is free (left / right, or the next row on a raid or Group Dungeon board). The expected number of copies is p × (1 + q + q²): the
+// copy's copy and one more generation (the board is full by then), q = BLOOM_CHAIN_Q, the share of copies that live to a round where the
+// conditions still hold with a free cell beside them (a formula estimate: the conditions usually still hold the next round, about 0.85 x
+// BLOOM_LIVE, but a free cell is likelier missing for the second copy, x 0.6).
+const BLOOM_CHAIN_Q = 0.43;
+function bloomChainOdds(v){ const p = bloomOdds(v), q = BLOOM_CHAIN_Q; return r2(p * (1 + q + q * q)); }
+function bloomBodyMult(effects){ const e = effects || {}; return e.bloomCopy ? 1 + bloomChainOdds(e.bloomCopy) : 1; } // EN5: the chain's copies (was 1 + p)
 // Context skills with their own multiplier (2026-10-23, package EN). Liege – {…}: 0.3 (owner TR-4: "Liege is worth 0.3x {...}").
 // Rage – {…}: 0.4, by logic: Rage is on for the lower half of the unit's Health (0.5), and a unit can
 // fall from above half in one blow (x 0.8). Rage itself keeps its own price beside it (rage is not in CONTEXT_FLAG: the braces add to it).
-const CONTEXT_MULT_BY = {liegeGrant: 0.3, rageGrant: 0.4, bloomCopy: 1 /* BL (2026-10-23): the odds are already in its braces */};
-const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */, liege: 'liegeGrant' /* EN (2026-10-23): a plain Liege is Liege – {Assault 2}, priced in skill-costs.json */};
+// State skills (EN5, 2026-10-24, owner 03:12; priced by the owner's 4-round rule x the state's typical uptime, call EN5-4): the share of a
+// unit's rounds its side holds the state. tools/en5_state_uptime_2026_10_24.js (docs/balance/en5-state-uptime-2026-10-24.json, 2000 CPU
+// fights of random live decks) read: 3+ Lumber 0.9% (the CPU spends Lumber as it comes), 2+ Stone 0.5% even with 4 Stone makers (one card
+// makes Stone), 1+ Metal 0.9% (83% with 4 Metal makers: nothing spends Metal), the bramble at a third or less 10%. A card with the skill is
+// played to hold its state, so the uptimes are judged from those: Timbered 0.25 (a player who keeps 3 Lumber back from the 4th round),
+// Bedrock 0.2 (Stone is scarce: Quarry and stone pitches), Forged 0.5 (half of 83%: the deck may hold no maker), Last Stand 0.2 (10%,
+// and the rounds it is on decide fights: tools/skill_test_robust.js read plain Last Stand at 0.62, x 3 points = 0.2; Timbered read 0.38
+// there, where the CPU spends its Lumber; docs/balance/en5-breach-states-2026-10-24.md).
+const EN5_UPTIME = {timberedGrant: 0.25, bedrockGrant: 0.2, forgedGrant: 0.5, lastStandGrant: 0.2};
+const CONTEXT_MULT_BY = Object.assign({liegeGrant: 0.3, rageGrant: 0.4, bloomCopy: 1 /* BL (2026-10-23): the odds are already in its braces */}, EN5_UPTIME);
+const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'nocturnalGrant', crepuscular: 'crepuscularGrant', fullMoon: 'fullMoonGrant', stem: 'stemGrant', chrysalis: 'stemGrant' /* EV (2026-10-21): the braces carry a Stem's or Chrysalis's cost */, king: 'kinglyGrant' /* TR (2026-10-21) */, liege: 'liegeGrant' /* EN (2026-10-23): a plain Liege is Liege – {Assault 2}, priced in skill-costs.json */, timbered: 'timberedGrant', bedrock: 'bedrockGrant', forged: 'forgedGrant', lastStand: 'lastStandGrant' /* EN5 (2026-10-24): the plain ones are priced in skill-costs.json */};
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
@@ -222,7 +240,14 @@ const MISS_MULT_BY = {flying: 1.39, evasive: 1.37, shadow: 1.1}; // owner 01:57:
 // have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
 function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }
 function missMultFor(k, cfg){ const t = (cfg && cfg.missMultBy) || MISS_MULT_BY; return t[k] != null ? +t[k] : num(cfg, 'missMult'); }
-function missMultOf(effects, cfg){ const e = effects || {}; let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= missMultFor(k, cfg); }); return x; }
+// Canopy Cover (EN5, 2026-10-24, owner FLY-1: "ground units hiding under the cover of trees/canopy for 50% evasion"): Evasive's dodge while
+// the field has trees over it, so a half-miss multiplier conditioned on the field: 1 + (Evasive's multiplier − 1) × CANOPY_UPTIME, the share
+// of a Canopy Cover card's fights under the trees. 40 of the conquest maps' 267 fights (15%) are on a forest-biome map, High Canopy or the
+// Undergrowth (the 50-floor climbs left out); a forest creature is mostly played on the maps it is won on, so CANOPY_UPTIME is 0.4 (call
+// EN5-3). Not with Evasive (one roll): Evasive's own multiplier then. Not on a Flying card (it is not a ground unit, except when grounded).
+const CANOPY_UPTIME = 0.4;
+function canopyMultOf(e, cfg){ if(!e || !e.canopyCover || e.evasive || e.flying) return 1; return 1 + (missMultFor('evasive', cfg) - 1) * CANOPY_UPTIME; }
+function missMultOf(effects, cfg){ const e = effects || {}; let x = 1; ((cfg && cfg.halfMiss) || HALF_MISS).forEach(k=>{ if(e[k]) x *= missMultFor(k, cfg); }); return x * canopyMultOf(e, cfg); } // + Canopy Cover (EN5)
 // BF7 (2026-10-22, owner: "things that must be less than N have a x0.7 multiplier!"): f, fragileUse (0.7) for a Fragile card, else 1.
 // BF8 (2026-10-22, owner: "Purblind will be 0.7x"): a Purblind card (blind itself) takes the same f; Fragile and Purblind together multiply.
 function fragileUseOf(effects, cfg){ const e = effects || {}, f = num(cfg, 'fragileUse'); let x = 1; if(e.fragile) x *= f; if(e.purblind) x *= f; return x; }
@@ -269,5 +294,5 @@ function forgeCurve(d, from, top, cfg){
   }
   return {base, from, top, m, rows};
 }
-return {BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

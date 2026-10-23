@@ -46,8 +46,9 @@ const bloomPass = (e, P)=>{ const ev = []; e.bloomCopyPass(P, so, {}, ev); retur
   ok(C && C.wait === 1, `1. the copy arrives with the printed Wait (${C && C.wait})`);
   ok(C && Math.abs(C.slot - A.slot) === 1, `1. in a free slot right beside it (${C && C.slot})`);
   ok(A.poison === 2 && A.bleed === 1, '1. the unit keeps its own counters');
-  ok(!bloomPass(e, P).length, '1. once per unit: no second bloom, and the copy never blooms');
-  ok(C && C.bloomCopy && C.bloomOf === A.uid, '1. the copy is marked as a copy of the unit (bloomCopyPass skips it)'); }
+  // 2026-10-24 (package EN5, owner BL-1 03:12: "the copy can bloom"): the unit blooms once; its copy blooms once too (was: never)
+  { const ev2 = bloomPass(e, P); ok(!ev2.some(x=> x.type === 'bloom' && x.uid === A.uid) && ev2.some(x=> x.type === 'bloom' && C && x.uid === C.uid), `1. once per unit: no second bloom of the unit; the copy blooms once (EN5) (${ev2.filter(x=> x.type === 'bloom').map(x=> x.uid).join(',')})`); }
+  ok(C && C.bloomCopy && C.bloomOf === A.uid, '1. the copy is marked as a copy of the unit'); }
 
 // ---- 2. Sunny is day with no Rain / Fog; Night is not sunny; Wet needs rain, the Tide in or a wet map
 { const {e, P} = mk({phase:'night', wet:true}); e.roundStart(P, 1, so, {}, []); put(e, P, 1, 'bl-alga', 0); ok(!bloomPass(e, P).length, '2. at night: not Sunny, no bloom'); }
@@ -91,11 +92,12 @@ const bloomPass = (e, P)=>{ const ev = []; e.bloomCopyPass(P, so, {}, ev); retur
 
 // ---- 9. the price: bloomOdds, S = 6p, cap 1's stats x (1 + p), the forge bank
 ok(BB.bloomOdds({when:['wet','sunny']}) === 0.27 && BB.bloomOdds({when:['wet','kill']}) === 0.17 && BB.bloomOdds({when:['wet','sunny'], lumber:1}) === 0.23 && BB.bloomOdds({when:['tide','night']}) === 0.24, '9. the odds: Wet & Sunny 0.27, Wet & Kill 0.17, + 1 Lumber 0.23, Tide & Night 0.24');
-{ const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(cx && cx.S === 0.81, `9. S = 3p (the copy's +1/+1) (${cx && cx.S})`);
-  const a = BB.capScores(2, 10, 0.81, {bloomCopy:{when:['wet','sunny']}}, null), b = BB.capScores(2, 10, 0.81, {}, null);
-  ok(a.x1 === Math.round(((4 + 10) * 1.27 + 0.81) * 100) / 100 && a.x2 === b.x2 && b.x1 === 14.81, `9. cap 1's stat terms x 1.27, cap 2 unchanged (${a.x1}, ${a.x2} / ${b.x2})`); }
+// 2026-10-24 (package EN5, owner BL-1: the copy can bloom): priced with the chain, p x (1 + q + q²) (bramblewood-budget.js bloomChainOdds): 0.27 -> 0.44
+{ const pc = BB.bloomChainOdds({when:['wet','sunny']}), S = Math.round(3 * pc * 100) / 100; const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(pc === 0.44 && cx && cx.S === S, `9. S = 3 x the chain's odds (the copies' +1/+1) (${cx && cx.S}; chain ${pc})`);
+  const a = BB.capScores(2, 10, S, {bloomCopy:{when:['wet','sunny']}}, null), b = BB.capScores(2, 10, S, {}, null);
+  ok(a.x1 === Math.round(((4 + 10) * (1 + pc) + S) * 100) / 100 && a.x2 === b.x2 && b.x1 === Math.round((14 + S) * 100) / 100, `9. cap 1's stat terms x ${1 + pc}, cap 2 unchanged (${a.x1}, ${a.x2} / ${b.x2})`); }
 { const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
-  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === 0.81 && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S})`);
+  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === Math.round(3 * BB.bloomChainOdds({when:['wet','sunny']}) * 100) / 100 && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S}; EN5: with the chain)`);
   const sk = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).skills.find(s=> s.id === 'bloomCopy'); ok(sk && /bloomOdds/.test(sk.note), '9. canonical/skill-costs.json notes where Bloom is priced'); }
 
 // ---- 10. the cards
@@ -112,7 +114,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   const SC = require(path.join(ROOT, 'tools', 'card_retune_2026_10_19.js')).SC, T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
   const bp = T.budget(pa, {level: 1}); ok(bp.ok && bp.x1 / bp.N <= 1 && bp.x1 / bp.N > 0.85, `10. Pond Algae ${pa.attack}/${pa.health} fits the budget (${Math.round(bp.x1 / bp.N * 100)}% of N)`);
   const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bl-held-2026-10-23.json'), 'utf8')).held;
-  ok(held.length === 3 && held.every(h=> { const c = by(h.id); return c && `${c.attack}/${c.health}` === h.at && /held at its stats for review \(call BL-5\)/.test(c.creatorNote || ''); }), '10. the re-fit\'s three down-moves are held at their stats (BL-5)');
+  // 2026-10-24 (package EN5, owner BL-5 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)"): the three held cards are re-fitted now, at most 1% over N
+  ok(held.length === 3 && held.every(h=> { const c = by(h.id), b = c && T.budget(c, {level: 1}); return c && `${c.attack}/${c.health}` !== h.at && b.x1 <= b.N * 1.01 + 1e-9 && /2026-10-24 EN5 re-fit/.test(c.creatorNote || ''); }), '10. the three cards BL held are re-fitted by EN5 (at most 1% over N)');
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));
   ok(fl.length >= 47 && fl.includes('abbey-goose') && fl.includes('puddle-changeling'), `10. the flagged list was merged, not overwritten (${fl.length})`); }
 

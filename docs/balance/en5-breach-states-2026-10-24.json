@@ -1,0 +1,2251 @@
+{
+ "_about": "tools/skill_test_robust.js: the robust skill test (docs/workflows/balance.md, package ST 2026-10-22)",
+ "modes": [
+  "mono"
+ ],
+ "generated": "2026-10-23",
+ "setup": {
+  "games": 3000,
+  "curveGames": 3000,
+  "foeRatio": 0.8,
+  "seed": 1,
+  "level": 1,
+  "quick": false,
+  "unitShape": {
+   "attack": 3,
+   "health": 10
+  },
+  "foeShape": {
+   "attack": 4,
+   "health": 11
+  },
+  "bramble": 35,
+  "deck": 20,
+  "mix": {
+   "band": 714,
+   "profiles": [
+    {
+     "rarity": "ancient",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "common",
+     "wait": 0,
+     "cost": 0,
+     "w": 95
+    },
+    {
+     "rarity": "common",
+     "wait": 0,
+     "cost": 1,
+     "w": 24
+    },
+    {
+     "rarity": "common",
+     "wait": 0,
+     "cost": 2,
+     "w": 3
+    },
+    {
+     "rarity": "common",
+     "wait": 1,
+     "cost": 0,
+     "w": 46
+    },
+    {
+     "rarity": "common",
+     "wait": 1,
+     "cost": 1,
+     "w": 40
+    },
+    {
+     "rarity": "common",
+     "wait": 1,
+     "cost": 2,
+     "w": 10
+    },
+    {
+     "rarity": "common",
+     "wait": 1,
+     "cost": 3,
+     "w": 2
+    },
+    {
+     "rarity": "common",
+     "wait": 2,
+     "cost": 0,
+     "w": 1
+    },
+    {
+     "rarity": "common",
+     "wait": 2,
+     "cost": 1,
+     "w": 10
+    },
+    {
+     "rarity": "common",
+     "wait": 2,
+     "cost": 2,
+     "w": 20
+    },
+    {
+     "rarity": "common",
+     "wait": 2,
+     "cost": 3,
+     "w": 5
+    },
+    {
+     "rarity": "common",
+     "wait": 3,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "common",
+     "wait": 3,
+     "cost": 2,
+     "w": 18
+    },
+    {
+     "rarity": "common",
+     "wait": 3,
+     "cost": 3,
+     "w": 17
+    },
+    {
+     "rarity": "divine",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 0,
+     "cost": 0,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 1,
+     "cost": 2,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 2,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 2,
+     "cost": 2,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 2,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "epic",
+     "wait": 3,
+     "cost": 1,
+     "w": 4
+    },
+    {
+     "rarity": "epic",
+     "wait": 3,
+     "cost": 2,
+     "w": 2
+    },
+    {
+     "rarity": "epic",
+     "wait": 3,
+     "cost": 3,
+     "w": 4
+    },
+    {
+     "rarity": "heroic",
+     "wait": 1,
+     "cost": 1,
+     "w": 2
+    },
+    {
+     "rarity": "heroic",
+     "wait": 2,
+     "cost": 1,
+     "w": 6
+    },
+    {
+     "rarity": "heroic",
+     "wait": 2,
+     "cost": 2,
+     "w": 2
+    },
+    {
+     "rarity": "heroic",
+     "wait": 2,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "heroic",
+     "wait": 3,
+     "cost": 1,
+     "w": 2
+    },
+    {
+     "rarity": "heroic",
+     "wait": 3,
+     "cost": 2,
+     "w": 1
+    },
+    {
+     "rarity": "legendary",
+     "wait": 1,
+     "cost": 0,
+     "w": 1
+    },
+    {
+     "rarity": "legendary",
+     "wait": 3,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "legendary",
+     "wait": 3,
+     "cost": 3,
+     "w": 5
+    },
+    {
+     "rarity": "mythic",
+     "wait": 3,
+     "cost": 3,
+     "w": 2
+    },
+    {
+     "rarity": "rare",
+     "wait": 0,
+     "cost": 0,
+     "w": 10
+    },
+    {
+     "rarity": "rare",
+     "wait": 0,
+     "cost": 1,
+     "w": 14
+    },
+    {
+     "rarity": "rare",
+     "wait": 0,
+     "cost": 2,
+     "w": 1
+    },
+    {
+     "rarity": "rare",
+     "wait": 1,
+     "cost": 0,
+     "w": 18
+    },
+    {
+     "rarity": "rare",
+     "wait": 1,
+     "cost": 1,
+     "w": 59
+    },
+    {
+     "rarity": "rare",
+     "wait": 1,
+     "cost": 2,
+     "w": 3
+    },
+    {
+     "rarity": "rare",
+     "wait": 2,
+     "cost": 0,
+     "w": 1
+    },
+    {
+     "rarity": "rare",
+     "wait": 2,
+     "cost": 1,
+     "w": 28
+    },
+    {
+     "rarity": "rare",
+     "wait": 2,
+     "cost": 2,
+     "w": 7
+    },
+    {
+     "rarity": "rare",
+     "wait": 3,
+     "cost": 0,
+     "w": 2
+    },
+    {
+     "rarity": "rare",
+     "wait": 3,
+     "cost": 1,
+     "w": 7
+    },
+    {
+     "rarity": "rare",
+     "wait": 3,
+     "cost": 2,
+     "w": 2
+    },
+    {
+     "rarity": "rare",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "starter",
+     "wait": 0,
+     "cost": 0,
+     "w": 26
+    },
+    {
+     "rarity": "starter",
+     "wait": 1,
+     "cost": 0,
+     "w": 6
+    },
+    {
+     "rarity": "superrare",
+     "wait": 1,
+     "cost": 1,
+     "w": 4
+    },
+    {
+     "rarity": "superrare",
+     "wait": 2,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "superrare",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 0,
+     "cost": 0,
+     "w": 26
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 0,
+     "cost": 1,
+     "w": 6
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 1,
+     "cost": 0,
+     "w": 27
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 1,
+     "cost": 1,
+     "w": 87
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 1,
+     "cost": 2,
+     "w": 2
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 2,
+     "cost": 0,
+     "w": 2
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 2,
+     "cost": 1,
+     "w": 15
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 2,
+     "cost": 2,
+     "w": 4
+    },
+    {
+     "rarity": "uncommon",
+     "wait": 3,
+     "cost": 1,
+     "w": 2
+    },
+    {
+     "rarity": "unique",
+     "wait": 0,
+     "cost": 0,
+     "w": 1
+    },
+    {
+     "rarity": "unique",
+     "wait": 1,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "unique",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 0,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 1,
+     "cost": 1,
+     "w": 4
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 2,
+     "cost": 1,
+     "w": 9
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 2,
+     "cost": 2,
+     "w": 1
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 3,
+     "cost": 1,
+     "w": 1
+    },
+    {
+     "rarity": "veryrare",
+     "wait": 3,
+     "cost": 3,
+     "w": 1
+    }
+   ],
+   "skillCounts": {
+    "1": 446,
+    "2": 145,
+    "3": 12
+   }
+  },
+  "fieldConfig": {
+   "absentPhase": "off",
+   "p": {
+    "common": 0.2,
+    "uncommon": 0.02,
+    "rare": 0.002
+   },
+   "forceNonCommon": 0.2,
+   "forceWeight": {
+    "uncommon": 3,
+    "rare": 1
+   }
+  },
+  "fields": {
+   "daynight": "common",
+   "tide": "common",
+   "dark": "uncommon",
+   "rain": "uncommon",
+   "fog": "uncommon",
+   "wet": "uncommon",
+   "wind": "uncommon",
+   "scorching": "uncommon",
+   "eruption": "uncommon",
+   "swampFever": "uncommon",
+   "highTide": "uncommon",
+   "sandstorm": "uncommon",
+   "canopy": "uncommon",
+   "firstBlood": "uncommon",
+   "arrowSlits": "uncommon",
+   "lavaSpout": "rare",
+   "crushingDepths": "rare",
+   "mirage": "rare",
+   "hail": "rare",
+   "freezing": "rare",
+   "frigid": "rare",
+   "moon": "rare",
+   "landslide": "rare",
+   "ashRain": "rare",
+   "ashy": "rare",
+   "sulphurFumes": "rare",
+   "sporeCloud": "rare",
+   "tangledRoots": "rare",
+   "thunderstorm": "rare",
+   "tallGrass": "rare",
+   "slippery": "rare",
+   "volcano": "rare",
+   "tideSpout": "rare",
+   "rookRow": "rare",
+   "bishopPath": "rare",
+   "consternation": "rare",
+   "glassStorm": "rare",
+   "quietContemplation": "rare",
+   "leylines": "rare",
+   "haunted": "rare",
+   "psychicDampener": "rare",
+   "awash": "rare",
+   "cloudy": "rare",
+   "lumber": "rare",
+   "doubleTime": "rare"
+  },
+  "meanVanillaUnit": {
+   "attack": 2.85,
+   "health": 13.78
+  },
+  "vanillaPts": 19.52,
+  "vanillaQ": 19.52
+ },
+ "vanillaWr": 0.426,
+ "vanillaByField": {
+  "none": {
+   "wr": 0.412,
+   "n": 1125
+  },
+  "no-daynight": {
+   "wr": 0.421,
+   "n": 2400
+  },
+  "daynight": {
+   "wr": 0.443,
+   "n": 600
+  },
+  "daynight:night": {
+   "wr": 0.471,
+   "n": 51
+  },
+  "tide": {
+   "wr": 0.405,
+   "n": 589
+  },
+  "any-noncommon": {
+   "wr": 0.444,
+   "n": 1224
+  },
+  "any-rare": {
+   "wr": 0.46,
+   "n": 384
+  },
+  "dark": {
+   "wr": 0.467,
+   "n": 92
+  },
+  "rain": {
+   "wr": 0.089,
+   "n": 90
+  },
+  "fog": {
+   "wr": 0.326,
+   "n": 89
+  },
+  "wet": {
+   "wr": 0.368,
+   "n": 95
+  },
+  "wind": {
+   "wr": 0.473,
+   "n": 91
+  },
+  "scorching": {
+   "wr": 0.733,
+   "n": 73
+  },
+  "eruption": {
+   "wr": 0.532,
+   "n": 78
+  },
+  "swampFever": {
+   "wr": 0.635,
+   "n": 85
+  },
+  "highTide": {
+   "wr": 0.364,
+   "n": 92
+  },
+  "sandstorm": {
+   "wr": 0.33,
+   "n": 91
+  },
+  "canopy": {
+   "wr": 0.494,
+   "n": 83
+  },
+  "firstBlood": {
+   "wr": 0.447,
+   "n": 85
+  },
+  "arrowSlits": {
+   "wr": 0.552,
+   "n": 67
+  },
+  "lavaSpout": {
+   "wr": 0.5,
+   "n": 16
+  },
+  "crushingDepths": {
+   "wr": 0.571,
+   "n": 21
+  },
+  "mirage": {
+   "wr": 0.6,
+   "n": 15
+  },
+  "hail": {
+   "wr": 0.727,
+   "n": 11
+  },
+  "freezing": {
+   "wr": 0.364,
+   "n": 11
+  },
+  "frigid": {
+   "wr": 0.545,
+   "n": 11
+  },
+  "moon": {
+   "wr": 0.357,
+   "n": 14
+  },
+  "landslide": {
+   "wr": 0.667,
+   "n": 18
+  },
+  "ashRain": {
+   "wr": 0.5,
+   "n": 8
+  },
+  "ashy": {
+   "wr": 0.231,
+   "n": 13
+  },
+  "sulphurFumes": {
+   "wr": 0,
+   "n": 11
+  },
+  "sporeCloud": {
+   "wr": 0.357,
+   "n": 14
+  },
+  "tangledRoots": {
+   "wr": 0.571,
+   "n": 14
+  },
+  "thunderstorm": {
+   "wr": 0.471,
+   "n": 17
+  },
+  "tallGrass": {
+   "wr": 0.4,
+   "n": 10
+  },
+  "slippery": {
+   "wr": 0.368,
+   "n": 19
+  },
+  "volcano": {
+   "wr": 0.875,
+   "n": 8
+  },
+  "tideSpout": {
+   "wr": 0.556,
+   "n": 18
+  },
+  "rookRow": {
+   "wr": 0.438,
+   "n": 16
+  },
+  "bishopPath": {
+   "wr": 0.467,
+   "n": 15
+  },
+  "consternation": {
+   "wr": 0.143,
+   "n": 7
+  },
+  "glassStorm": {
+   "wr": 0.654,
+   "n": 13
+  },
+  "quietContemplation": {
+   "wr": 0.286,
+   "n": 14
+  },
+  "leylines": {
+   "wr": 0.438,
+   "n": 16
+  },
+  "haunted": {
+   "wr": 0.6,
+   "n": 15
+  },
+  "psychicDampener": {
+   "wr": 0.455,
+   "n": 11
+  },
+  "awash": {
+   "wr": 0.273,
+   "n": 11
+  },
+  "cloudy": {
+   "wr": 0.429,
+   "n": 7
+  },
+  "lumber": {
+   "wr": 0.5,
+   "n": 14
+  },
+  "doubleTime": {
+   "wr": 0.444,
+   "n": 18
+  }
+ },
+ "curves": {
+  "h": [
+   {
+    "d": -10,
+    "wr": 0.003
+   },
+   {
+    "d": -7,
+    "wr": 0.011
+   },
+   {
+    "d": -3,
+    "wr": 0.117
+   },
+   {
+    "d": 0,
+    "wr": 0.426
+   },
+   {
+    "d": 2,
+    "wr": 0.622
+   },
+   {
+    "d": 3,
+    "wr": 0.712
+   },
+   {
+    "d": 5,
+    "wr": 0.831
+   },
+   {
+    "d": 7,
+    "wr": 0.892
+   },
+   {
+    "d": 10,
+    "wr": 0.937
+   },
+   {
+    "d": 14,
+    "wr": 0.963
+   },
+   {
+    "d": 21,
+    "wr": 0.976
+   },
+   {
+    "d": 28,
+    "wr": 0.98
+   },
+   {
+    "d": 41,
+    "wr": 0.98
+   },
+   {
+    "d": 55,
+    "wr": 0.981
+   },
+   {
+    "d": 69,
+    "wr": 0.982
+   }
+  ],
+  "a": [
+   {
+    "d": -3,
+    "wr": 0
+   },
+   {
+    "d": -1,
+    "wr": 0.021
+   },
+   {
+    "d": 0,
+    "wr": 0.426
+   },
+   {
+    "d": 1,
+    "wr": 0.848
+   },
+   {
+    "d": 2,
+    "wr": 0.951
+   },
+   {
+    "d": 3,
+    "wr": 0.972
+   },
+   {
+    "d": 4,
+    "wr": 0.985
+   },
+   {
+    "d": 6,
+    "wr": 0.993
+   },
+   {
+    "d": 9,
+    "wr": 0.997
+   },
+   {
+    "d": 11,
+    "wr": 0.998
+   }
+  ]
+ },
+ "rows": [
+  {
+   "key": "vanilla",
+   "label": "vanilla",
+   "kind": "vanilla",
+   "n": 3000,
+   "wr": 0.426,
+   "se": 0.009,
+   "delta": 0,
+   "net": 0,
+   "netSE": 0.07,
+   "clamp": null,
+   "paid": 0,
+   "worth": 0,
+   "Stable": 0,
+   "unitPts": 19.52,
+   "squeezed": 0.708,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.412,
+     "vanillaWr": 0.412,
+     "net": 0,
+     "netSE": 0.11,
+     "worth": 0,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.421,
+     "vanillaWr": 0.421,
+     "net": 0,
+     "netSE": 0.07,
+     "worth": 0,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.443,
+     "vanillaWr": 0.443,
+     "net": 0,
+     "netSE": 0.15,
+     "worth": 0,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.471,
+     "vanillaWr": 0.471,
+     "net": 0,
+     "netSE": 0.52,
+     "worth": 0,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.405,
+     "vanillaWr": 0.405,
+     "net": 0,
+     "netSE": 0.15,
+     "worth": 0,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.444,
+     "vanillaWr": 0.444,
+     "net": 0,
+     "netSE": 0.11,
+     "worth": 0,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.46,
+     "vanillaWr": 0.46,
+     "net": 0,
+     "netSE": 0.2,
+     "worth": 0,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.467,
+     "vanillaWr": 0.467,
+     "net": 0,
+     "netSE": 0.44,
+     "worth": 0,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.089,
+     "vanillaWr": 0.089,
+     "net": 0,
+     "netSE": 0.8,
+     "worth": 0,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.326,
+     "vanillaWr": 0.326,
+     "net": 0,
+     "netSE": 0.51,
+     "worth": 0,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.368,
+     "vanillaWr": 0.368,
+     "net": 0,
+     "netSE": 0.37,
+     "worth": 0,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.473,
+     "vanillaWr": 0.473,
+     "net": 0,
+     "netSE": 0.42,
+     "worth": 0,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.733,
+     "vanillaWr": 0.733,
+     "net": 0,
+     "netSE": 0.54,
+     "worth": 0,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.532,
+     "vanillaWr": 0.532,
+     "net": 0,
+     "netSE": 0.37,
+     "worth": 0,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.635,
+     "vanillaWr": 0.635,
+     "net": 0,
+     "netSE": 0.41,
+     "worth": 0,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.364,
+     "vanillaWr": 0.364,
+     "net": 0,
+     "netSE": 0.35,
+     "worth": 0,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.33,
+     "vanillaWr": 0.33,
+     "net": 0,
+     "netSE": 0.53,
+     "worth": 0,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.494,
+     "vanillaWr": 0.494,
+     "net": 0,
+     "netSE": 0.44,
+     "worth": 0,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.447,
+     "vanillaWr": 0.447,
+     "net": 0,
+     "netSE": 0.45,
+     "worth": 0,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.552,
+     "vanillaWr": 0.552,
+     "net": 0,
+     "netSE": 0.51,
+     "worth": 0,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"breach\":1}",
+   "label": "breach 1",
+   "kind": "mono",
+   "ids": [
+    "breach"
+   ],
+   "value": 1,
+   "n": 3000,
+   "wr": 0.411,
+   "se": 0.009,
+   "delta": -0.015,
+   "net": -0.11,
+   "netSE": 0.07,
+   "clamp": null,
+   "paid": 1.93,
+   "worth": 1.82,
+   "Stable": 1,
+   "unitPts": 17.59,
+   "squeezed": 0.331,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.396,
+     "vanillaWr": 0.412,
+     "net": -0.12,
+     "netSE": 0.11,
+     "worth": 1.81,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.409,
+     "vanillaWr": 0.421,
+     "net": -0.09,
+     "netSE": 0.07,
+     "worth": 1.84,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.422,
+     "vanillaWr": 0.443,
+     "net": -0.15,
+     "netSE": 0.14,
+     "worth": 1.78,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.431,
+     "vanillaWr": 0.471,
+     "net": -0.24,
+     "netSE": 0.46,
+     "worth": 1.69,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.422,
+     "vanillaWr": 0.405,
+     "net": 0.12,
+     "netSE": 0.14,
+     "worth": 2.05,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.416,
+     "vanillaWr": 0.444,
+     "net": -0.2,
+     "netSE": 0.1,
+     "worth": 1.73,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.406,
+     "vanillaWr": 0.46,
+     "net": -0.36,
+     "netSE": 0.17,
+     "worth": 1.57,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.473,
+     "vanillaWr": 0.467,
+     "net": 0.05,
+     "netSE": 0.45,
+     "worth": 1.98,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.311,
+     "vanillaWr": 0.089,
+     "net": 3.03,
+     "netSE": 0.53,
+     "worth": 4.96,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.461,
+     "vanillaWr": 0.326,
+     "net": 1.12,
+     "netSE": 0.44,
+     "worth": 3.05,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.442,
+     "vanillaWr": 0.368,
+     "net": 0.5,
+     "netSE": 0.35,
+     "worth": 2.43,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.385,
+     "vanillaWr": 0.473,
+     "net": -0.59,
+     "netSE": 0.34,
+     "worth": 1.34,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.479,
+     "vanillaWr": 0.733,
+     "net": -1.02,
+     "netSE": 0.24,
+     "worth": 0.91,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.462,
+     "vanillaWr": 0.532,
+     "net": -0.44,
+     "netSE": 0.35,
+     "worth": 1.49,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.388,
+     "vanillaWr": 0.635,
+     "net": -1.23,
+     "netSE": 0.26,
+     "worth": 0.7,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.272,
+     "vanillaWr": 0.364,
+     "net": -0.67,
+     "netSE": 0.34,
+     "worth": 1.26,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.429,
+     "vanillaWr": 0.33,
+     "net": 0.93,
+     "netSE": 0.48,
+     "worth": 2.86,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.47,
+     "vanillaWr": 0.494,
+     "net": -0.14,
+     "netSE": 0.39,
+     "worth": 1.79,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.365,
+     "vanillaWr": 0.447,
+     "net": -0.56,
+     "netSE": 0.35,
+     "worth": 1.37,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.478,
+     "vanillaWr": 0.552,
+     "net": -0.46,
+     "netSE": 0.38,
+     "worth": 1.47,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"breach\":2}",
+   "label": "breach 2",
+   "kind": "mono",
+   "ids": [
+    "breach"
+   ],
+   "value": 2,
+   "n": 3000,
+   "wr": 0.537,
+   "se": 0.009,
+   "delta": 0.111,
+   "net": 0.83,
+   "netSE": 0.07,
+   "clamp": null,
+   "paid": 2.93,
+   "worth": 3.76,
+   "Stable": 2,
+   "unitPts": 16.59,
+   "squeezed": 0.17,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.535,
+     "vanillaWr": 0.412,
+     "net": 0.85,
+     "netSE": 0.1,
+     "worth": 3.78,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.535,
+     "vanillaWr": 0.421,
+     "net": 0.84,
+     "netSE": 0.07,
+     "worth": 3.77,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.543,
+     "vanillaWr": 0.443,
+     "net": 0.79,
+     "netSE": 0.16,
+     "worth": 3.72,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.49,
+     "vanillaWr": 0.471,
+     "net": 0.17,
+     "netSE": 0.55,
+     "worth": 3.1,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.531,
+     "vanillaWr": 0.405,
+     "net": 0.86,
+     "netSE": 0.14,
+     "worth": 3.79,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.528,
+     "vanillaWr": 0.444,
+     "net": 0.76,
+     "netSE": 0.13,
+     "worth": 3.69,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.552,
+     "vanillaWr": 0.46,
+     "net": 0.83,
+     "netSE": 0.23,
+     "worth": 3.76,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.652,
+     "vanillaWr": 0.467,
+     "net": 1.87,
+     "netSE": 0.55,
+     "worth": 4.8,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.633,
+     "vanillaWr": 0.089,
+     "net": 7.1,
+     "netSE": 0.91,
+     "worth": 10.03,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.494,
+     "vanillaWr": 0.326,
+     "net": 1.4,
+     "netSE": 0.45,
+     "worth": 4.33,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.505,
+     "vanillaWr": 0.368,
+     "net": 0.93,
+     "netSE": 0.35,
+     "worth": 3.86,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.571,
+     "vanillaWr": 0.473,
+     "net": 0.92,
+     "netSE": 0.48,
+     "worth": 3.85,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.466,
+     "vanillaWr": 0.733,
+     "net": -1.08,
+     "netSE": 0.24,
+     "worth": 1.85,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.487,
+     "vanillaWr": 0.532,
+     "net": -0.28,
+     "netSE": 0.36,
+     "worth": 2.65,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.459,
+     "vanillaWr": 0.635,
+     "net": -0.88,
+     "netSE": 0.27,
+     "worth": 2.05,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.391,
+     "vanillaWr": 0.364,
+     "net": 0.18,
+     "netSE": 0.34,
+     "worth": 3.11,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.538,
+     "vanillaWr": 0.33,
+     "net": 1.83,
+     "netSE": 0.4,
+     "worth": 4.76,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.566,
+     "vanillaWr": 0.494,
+     "net": 0.72,
+     "netSE": 0.54,
+     "worth": 3.65,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.482,
+     "vanillaWr": 0.447,
+     "net": 0.35,
+     "netSE": 0.51,
+     "worth": 3.28,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.552,
+     "vanillaWr": 0.552,
+     "net": 0,
+     "netSE": 0.51,
+     "worth": 2.93,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"puncture\":1}",
+   "label": "puncture 1",
+   "kind": "mono",
+   "ids": [
+    "puncture"
+   ],
+   "value": 1,
+   "n": 3000,
+   "wr": 0.456,
+   "se": 0.009,
+   "delta": 0.03,
+   "net": 0.23,
+   "netSE": 0.07,
+   "clamp": null,
+   "paid": 1.63,
+   "worth": 1.86,
+   "Stable": 0.7,
+   "unitPts": 17.89,
+   "squeezed": 0.374,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.453,
+     "vanillaWr": 0.412,
+     "net": 0.29,
+     "netSE": 0.1,
+     "worth": 1.92,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.463,
+     "vanillaWr": 0.421,
+     "net": 0.31,
+     "netSE": 0.07,
+     "worth": 1.94,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.427,
+     "vanillaWr": 0.443,
+     "net": -0.12,
+     "netSE": 0.15,
+     "worth": 1.51,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.471,
+     "vanillaWr": 0.471,
+     "net": 0,
+     "netSE": 0.52,
+     "worth": 1.63,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.472,
+     "vanillaWr": 0.405,
+     "net": 0.46,
+     "netSE": 0.14,
+     "worth": 2.09,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.467,
+     "vanillaWr": 0.444,
+     "net": 0.21,
+     "netSE": 0.13,
+     "worth": 1.84,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.474,
+     "vanillaWr": 0.46,
+     "net": 0.13,
+     "netSE": 0.22,
+     "worth": 1.76,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.533,
+     "vanillaWr": 0.467,
+     "net": 0.63,
+     "netSE": 0.5,
+     "worth": 2.26,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.4,
+     "vanillaWr": 0.089,
+     "net": 3.93,
+     "netSE": 0.56,
+     "worth": 5.56,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.438,
+     "vanillaWr": 0.326,
+     "net": 0.93,
+     "netSE": 0.44,
+     "worth": 2.56,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.421,
+     "vanillaWr": 0.368,
+     "net": 0.36,
+     "netSE": 0.35,
+     "worth": 1.99,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.582,
+     "vanillaWr": 0.473,
+     "net": 1.03,
+     "netSE": 0.48,
+     "worth": 2.66,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.575,
+     "vanillaWr": 0.733,
+     "net": -0.63,
+     "netSE": 0.23,
+     "worth": 1,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.5,
+     "vanillaWr": 0.532,
+     "net": -0.2,
+     "netSE": 0.36,
+     "worth": 1.43,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.506,
+     "vanillaWr": 0.635,
+     "net": -0.64,
+     "netSE": 0.27,
+     "worth": 0.99,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.337,
+     "vanillaWr": 0.364,
+     "net": -0.2,
+     "netSE": 0.35,
+     "worth": 1.43,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.407,
+     "vanillaWr": 0.33,
+     "net": 0.72,
+     "netSE": 0.48,
+     "worth": 2.35,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.53,
+     "vanillaWr": 0.494,
+     "net": 0.36,
+     "netSE": 0.51,
+     "worth": 1.99,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.435,
+     "vanillaWr": 0.447,
+     "net": -0.08,
+     "netSE": 0.43,
+     "worth": 1.55,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.552,
+     "vanillaWr": 0.552,
+     "net": 0,
+     "netSE": 0.51,
+     "worth": 1.63,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"puncture\":2}",
+   "label": "puncture 2",
+   "kind": "mono",
+   "ids": [
+    "puncture"
+   ],
+   "value": 2,
+   "n": 3000,
+   "wr": 0.614,
+   "se": 0.009,
+   "delta": 0.188,
+   "net": 1.4,
+   "netSE": 0.07,
+   "clamp": null,
+   "paid": 2.33,
+   "worth": 3.73,
+   "Stable": 1.4,
+   "unitPts": 17.19,
+   "squeezed": 0.151,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.592,
+     "vanillaWr": 0.412,
+     "net": 1.24,
+     "netSE": 0.1,
+     "worth": 3.57,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.611,
+     "vanillaWr": 0.421,
+     "net": 1.4,
+     "netSE": 0.07,
+     "worth": 3.73,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.623,
+     "vanillaWr": 0.443,
+     "net": 1.42,
+     "netSE": 0.16,
+     "worth": 3.75,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.627,
+     "vanillaWr": 0.471,
+     "net": 1.39,
+     "netSE": 0.67,
+     "worth": 3.72,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.64,
+     "vanillaWr": 0.405,
+     "net": 1.61,
+     "netSE": 0.14,
+     "worth": 3.94,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.622,
+     "vanillaWr": 0.444,
+     "net": 1.59,
+     "netSE": 0.11,
+     "worth": 3.92,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.628,
+     "vanillaWr": 0.46,
+     "net": 1.49,
+     "netSE": 0.19,
+     "worth": 3.82,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.696,
+     "vanillaWr": 0.467,
+     "net": 2.34,
+     "netSE": 0.5,
+     "worth": 4.67,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.744,
+     "vanillaWr": 0.089,
+     "net": 9.61,
+     "netSE": 1.34,
+     "worth": 11.94,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.584,
+     "vanillaWr": 0.326,
+     "net": 2.17,
+     "netSE": 0.53,
+     "worth": 4.5,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.621,
+     "vanillaWr": 0.368,
+     "net": 1.63,
+     "netSE": 0.24,
+     "worth": 3.96,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.593,
+     "vanillaWr": 0.473,
+     "net": 1.13,
+     "netSE": 0.47,
+     "worth": 3.46,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.603,
+     "vanillaWr": 0.733,
+     "net": -0.52,
+     "netSE": 0.23,
+     "worth": 1.81,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.615,
+     "vanillaWr": 0.532,
+     "net": 0.59,
+     "netSE": 0.39,
+     "worth": 2.92,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.635,
+     "vanillaWr": 0.635,
+     "net": 0,
+     "netSE": 0.41,
+     "worth": 2.33,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.565,
+     "vanillaWr": 0.364,
+     "net": 1.33,
+     "netSE": 0.34,
+     "worth": 3.66,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.659,
+     "vanillaWr": 0.33,
+     "net": 2.82,
+     "netSE": 0.42,
+     "worth": 5.15,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.639,
+     "vanillaWr": 0.494,
+     "net": 1.42,
+     "netSE": 0.47,
+     "worth": 3.75,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.612,
+     "vanillaWr": 0.447,
+     "net": 1.67,
+     "netSE": 0.56,
+     "worth": 4,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.552,
+     "vanillaWr": 0.552,
+     "net": 0,
+     "netSE": 0.51,
+     "worth": 2.33,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"timbered\":true}",
+   "label": "timbered",
+   "kind": "mono",
+   "ids": [
+    "timbered"
+   ],
+   "value": true,
+   "n": 3000,
+   "wr": 0.214,
+   "se": 0.007,
+   "delta": -0.212,
+   "net": -1.55,
+   "netSE": 0.05,
+   "clamp": null,
+   "paid": 1.93,
+   "worth": 0.38,
+   "Stable": 1,
+   "unitPts": 17.59,
+   "squeezed": 0.331,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.202,
+     "vanillaWr": 0.412,
+     "net": -1.57,
+     "netSE": 0.09,
+     "worth": 0.36,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.21,
+     "vanillaWr": 0.421,
+     "net": -1.56,
+     "netSE": 0.06,
+     "worth": 0.37,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.229,
+     "vanillaWr": 0.443,
+     "net": -1.53,
+     "netSE": 0.12,
+     "worth": 0.4,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.176,
+     "vanillaWr": 0.471,
+     "net": -1.78,
+     "netSE": 0.32,
+     "worth": 0.15,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.223,
+     "vanillaWr": 0.405,
+     "net": -1.49,
+     "netSE": 0.14,
+     "worth": 0.44,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.226,
+     "vanillaWr": 0.444,
+     "net": -1.53,
+     "netSE": 0.08,
+     "worth": 0.4,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.224,
+     "vanillaWr": 0.46,
+     "net": -1.6,
+     "netSE": 0.14,
+     "worth": 0.33,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.245,
+     "vanillaWr": 0.467,
+     "net": -1.64,
+     "netSE": 0.33,
+     "worth": 0.29,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.089,
+     "vanillaWr": 0.089,
+     "net": 0,
+     "netSE": 0.8,
+     "worth": 1.93,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.202,
+     "vanillaWr": 0.326,
+     "net": -1.52,
+     "netSE": 0.52,
+     "worth": 0.41,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.211,
+     "vanillaWr": 0.368,
+     "net": -1.31,
+     "netSE": 0.35,
+     "worth": 0.62,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.22,
+     "vanillaWr": 0.473,
+     "net": -1.7,
+     "netSE": 0.29,
+     "worth": 0.23,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.329,
+     "vanillaWr": 0.733,
+     "net": -1.63,
+     "netSE": 0.22,
+     "worth": 0.3,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.218,
+     "vanillaWr": 0.532,
+     "net": -1.94,
+     "netSE": 0.29,
+     "worth": -0.01,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.282,
+     "vanillaWr": 0.635,
+     "net": -1.76,
+     "netSE": 0.24,
+     "worth": 0.17,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.076,
+     "vanillaWr": 0.364,
+     "net": -2.1,
+     "netSE": 0.2,
+     "worth": -0.17,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.275,
+     "vanillaWr": 0.33,
+     "net": -0.66,
+     "netSE": 0.56,
+     "worth": 1.27,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.253,
+     "vanillaWr": 0.494,
+     "net": -1.44,
+     "netSE": 0.28,
+     "worth": 0.49,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.212,
+     "vanillaWr": 0.447,
+     "net": -1.59,
+     "netSE": 0.3,
+     "worth": 0.34,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.358,
+     "vanillaWr": 0.552,
+     "net": -1.19,
+     "netSE": 0.36,
+     "worth": 0.74,
+     "clamp": null
+    }
+   }
+  },
+  {
+   "key": "mono:{\"lastStand\":true}",
+   "label": "lastStand",
+   "kind": "mono",
+   "ids": [
+    "lastStand"
+   ],
+   "value": true,
+   "n": 3000,
+   "wr": 0.247,
+   "se": 0.008,
+   "delta": -0.179,
+   "net": -1.31,
+   "netSE": 0.06,
+   "clamp": null,
+   "paid": 1.93,
+   "worth": 0.62,
+   "Stable": 1,
+   "unitPts": 17.59,
+   "squeezed": 0.331,
+   "byField": {
+    "none": {
+     "n": 1125,
+     "wr": 0.234,
+     "vanillaWr": 0.412,
+     "net": -1.33,
+     "netSE": 0.09,
+     "worth": 0.6,
+     "clamp": null
+    },
+    "no-daynight": {
+     "n": 2400,
+     "wr": 0.242,
+     "vanillaWr": 0.421,
+     "net": -1.32,
+     "netSE": 0.06,
+     "worth": 0.61,
+     "clamp": null
+    },
+    "daynight": {
+     "n": 600,
+     "wr": 0.266,
+     "vanillaWr": 0.443,
+     "net": -1.27,
+     "netSE": 0.13,
+     "worth": 0.66,
+     "clamp": null
+    },
+    "daynight:night": {
+     "n": 51,
+     "wr": 0.176,
+     "vanillaWr": 0.471,
+     "net": -1.78,
+     "netSE": 0.32,
+     "worth": 0.15,
+     "clamp": null
+    },
+    "tide": {
+     "n": 589,
+     "wr": 0.245,
+     "vanillaWr": 0.405,
+     "net": -1.31,
+     "netSE": 0.15,
+     "worth": 0.62,
+     "clamp": null
+    },
+    "any-noncommon": {
+     "n": 1224,
+     "wr": 0.261,
+     "vanillaWr": 0.444,
+     "net": -1.29,
+     "netSE": 0.09,
+     "worth": 0.64,
+     "clamp": null
+    },
+    "any-rare": {
+     "n": 384,
+     "wr": 0.259,
+     "vanillaWr": 0.46,
+     "net": -1.36,
+     "netSE": 0.15,
+     "worth": 0.57,
+     "clamp": null
+    },
+    "dark": {
+     "n": 92,
+     "wr": 0.266,
+     "vanillaWr": 0.467,
+     "net": -1.48,
+     "netSE": 0.34,
+     "worth": 0.45,
+     "clamp": null
+    },
+    "rain": {
+     "n": 90,
+     "wr": 0.1,
+     "vanillaWr": 0.089,
+     "net": 0.16,
+     "netSE": 0.71,
+     "worth": 2.09,
+     "clamp": null
+    },
+    "fog": {
+     "n": 89,
+     "wr": 0.236,
+     "vanillaWr": 0.326,
+     "net": -1.1,
+     "netSE": 0.55,
+     "worth": 0.83,
+     "clamp": null
+    },
+    "wet": {
+     "n": 95,
+     "wr": 0.284,
+     "vanillaWr": 0.368,
+     "net": -0.7,
+     "netSE": 0.38,
+     "worth": 1.23,
+     "clamp": null
+    },
+    "wind": {
+     "n": 91,
+     "wr": 0.242,
+     "vanillaWr": 0.473,
+     "net": -1.55,
+     "netSE": 0.3,
+     "worth": 0.38,
+     "clamp": null
+    },
+    "scorching": {
+     "n": 73,
+     "wr": 0.384,
+     "vanillaWr": 0.733,
+     "net": -1.41,
+     "netSE": 0.23,
+     "worth": 0.52,
+     "clamp": null
+    },
+    "eruption": {
+     "n": 78,
+     "wr": 0.269,
+     "vanillaWr": 0.532,
+     "net": -1.63,
+     "netSE": 0.31,
+     "worth": 0.3,
+     "clamp": null
+    },
+    "swampFever": {
+     "n": 85,
+     "wr": 0.318,
+     "vanillaWr": 0.635,
+     "net": -1.58,
+     "netSE": 0.25,
+     "worth": 0.35,
+     "clamp": null
+    },
+    "highTide": {
+     "n": 92,
+     "wr": 0.109,
+     "vanillaWr": 0.364,
+     "net": -1.87,
+     "netSE": 0.24,
+     "worth": 0.06,
+     "clamp": null
+    },
+    "sandstorm": {
+     "n": 91,
+     "wr": 0.297,
+     "vanillaWr": 0.33,
+     "net": -0.4,
+     "netSE": 0.56,
+     "worth": 1.53,
+     "clamp": null
+    },
+    "canopy": {
+     "n": 83,
+     "wr": 0.277,
+     "vanillaWr": 0.494,
+     "net": -1.29,
+     "netSE": 0.29,
+     "worth": 0.64,
+     "clamp": null
+    },
+    "firstBlood": {
+     "n": 85,
+     "wr": 0.235,
+     "vanillaWr": 0.447,
+     "net": -1.43,
+     "netSE": 0.31,
+     "worth": 0.5,
+     "clamp": null
+    },
+    "arrowSlits": {
+     "n": 67,
+     "wr": 0.373,
+     "vanillaWr": 0.552,
+     "net": -1.1,
+     "netSE": 0.36,
+     "worth": 0.83,
+     "clamp": null
+    }
+   }
+  }
+ ],
+ "games": 90000,
+ "ms": 388338
+}

@@ -1050,7 +1050,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
         { const [wa, wh] = eqSituational(c, pid, players); a += wa; h += wh; } // Weapon Master's +1/+1 on equipped units (EQ, 2026-10-19)
-        { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
+        { const was5 = c._en5On || ''; const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
+          // EN5 (2026-10-24): a state skill turning on or off says so (statusFx 'stateSkill' {name, on}), before the stat change's own event
+          if((c._en5On || '') !== was5 && recordEvents && events){ const now = (c._en5On || '').split(',').filter(Boolean), old = was5.split(',').filter(Boolean);
+            now.filter(k=> !old.includes(k)).concat(old.filter(k=> !now.includes(k))).forEach(k=> events.push({type:'statusFx', kind:'stateSkill', name:k, on: now.includes(k), side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c._condBase || c.defId, targetUid:c.uid, targetDefId:c._condBase || c.defId})); }
           const key = grant ? JSON.stringify(grant) : '';
           if((c._condKey||'') !== key){ if(c._condBase){ c.defId = c._condBase; c._condBase = null; } if(key){ c._condBase = c.defId; deriveDef(c, grant); } c._condKey = key; } }
         if(a === pa && h === ph0) return;
@@ -2222,6 +2225,40 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function en4Hemorrhage(attDef, t){ const e = (attDef && attDef.effects) || {}; if(!e.hemorrhage || !t || !(t.hp > 0) || isGhost(t) || !(t.bleed > 0)) return 0; const was = t.bleed; t.bleed = was * 2; return was; }
   function en4HemorrhageEv(att, t, was, side, tSide, events){ if(was > 0 && recordEvents && events) events.push({type:'statusFx', kind:'hemorrhage', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, from:was, total:t.bleed|0}); }
+  // ==== EN5 (2026-10-24, owner 02:59 / 03:12 notes) ====
+  //   Hemorrhage N (owner EN4-1: "It adds 0 bleed by default (N=0)"): the doubling is unchanged; N more Bleed lands after it, beside the
+  //     card's own Bleed. Plain Hemorrhage (true) is N 0. numN reads true as 1, so it has its own reader.
+  function en5HemoN(attDef){ const v = attDef && attDef.effects && attDef.effects.hemorrhage; return v === true ? 0 : Math.max(0, Number(v) || 0); }
+  //   Breach N (owner 02:59 #6: "does N damage to opposing bramble when it hits the enemy (onHit)"; name approved): every melee swing of
+  //     its that lands on a unit (the same moment as On Hit: whatever the hit did to its target) also deals N to the enemy bramble, through
+  //     damageHQ (Rampart and Bramble Armor see it like any unit-dealt hit). Event 'breachHQ' {dmg}. (Puncture is the old twin of this rule;
+  //     call EN5-1 asks whether to merge them.)
+  function en5Breach(players, att, attDef, enemyId, mySide, tSide, events){ const n = Math.max(0, Number(attDef && attDef.effects && attDef.effects.breach) || 0);
+    if(!(n > 0) || !players[enemyId] || !(players[enemyId].hq && players[enemyId].hq.hp > 0)) return 0;
+    const d = damageHQ(players[enemyId], n);
+    if(d > 0 && recordEvents && events) events.push({type:'breachHQ', side:mySide, attDefId:att.defId, attUid:att.uid, targetSide:tSide, dmg:d, n});
+    return d; }
+  //   Canopy Cover (owner 03:12 FLY-1: "ground units hiding under the cover of trees/canopy for 50% evasion"): a ground unit (no Flying now:
+  //     a grounded or ash-grounded flyer counts) dodges 1 in 2 of the single-target swings, shots and skills aimed at it, as Evasive does
+  //     (one roll; an Evasive unit gets no second), while the field has trees over it: the map is a forest (rules.woods, set for every fight
+  //     on a forest-biome map, Old Woods terrain or not), or the fight names the Old Woods terrain (rules.terrain.biome 'forest'), High
+  //     Canopy (rules.canopy) or the Undergrowth (rules.undergrowth). Miss reason 'canopyCover'.
+  function en5Woods(){ return !!(rules.woods || rules.canopy || rules.undergrowth || (rules.terrain && rules.terrain.biome === 'forest')); }
+  function en5CanopyCover(c){ if(!c || !en5Woods()) return false; const e = effectsOf(c); return !!e.canopyCover && (!e.flying || ashyNow()); }
+  //   State skills (owner 03:12: "New state-like skills like Tide: ____ - {}, as in, {} activates if ____ is met ... One if wood=3+, one if
+  //     stone=2+, one if metal=1+. Help me define the default as well."; 03:12b: "When your bramble health is low - {} is gained. By default,
+  //     the unit gains +1/+1."): while the side's state holds, the braces (effects.<k>Grant), or the default when a card prints the plain
+  //     skill. Read in condStatsOf like Liege, so they turn on and off at every stat sync (a play, a pitch, a round's start, after combat).
+  //     Lumber, Stone and Metal are the side's own counts in the fight (pl.lumber / pl.stone / pl.metal: pitching, Quarry, Smelter,
+  //     gain triggers; spent by Lumber / Stone / Metal costs). The bramble's Health is pl.hq.
+  const EN5_STATES = {
+    timbered:  {grant:'timberedGrant',  dflt:{health: 2}, on: pl=> (pl.lumber||0) >= 3},                        // Timbered – {…}: 3+ Lumber
+    bedrock:   {grant:'bedrockGrant',   dflt:{armor: 1},  on: pl=> (pl.stone||0) >= 2},                         // Bedrock – {…}: 2+ Stone
+    forged:    {grant:'forgedGrant',    dflt:{attack: 1}, on: pl=> (pl.metal||0) >= 1},                         // Forged – {…}: 1+ Metal
+    lastStand: {grant:'lastStandGrant', dflt:{attack: 1, health: 1}, on: pl=> !!(pl.hq && pl.hq.maxHp > 0 && pl.hq.hp > 0 && pl.hq.hp * 3 <= pl.hq.maxHp)} // Last Stand – {…}: the bramble at or below a third
+  };
+  function en5StateGrant(k, e){ const s = EN5_STATES[k], g = e && e[s.grant]; return g && typeof g === 'object' && Object.keys(g).length ? g : s.dflt; }
+  function en5StatesOn(e, pl){ const out = []; if(!e || !pl) return out; Object.keys(EN5_STATES).forEach(k=>{ if((e[k] || e[EN5_STATES[k].grant]) && EN5_STATES[k].on(pl)) out.push(k); }); return out; }
   // Toxin (planned, 2026-10-14, user: "Toxin: More dangerous poison - not yet defined."): not built; no behaviour yet.
   // Psychic N (2026-10-14, user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."): each landed hit also
   // deals N psychic damage straight to Health: Armor, a unit Shield, Shell's temporary Health and a Ghost's immunity don't stop it.
@@ -2276,8 +2313,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
+  const IRR_NOT_SKILLS = new Set(['archerStyle' /* BX 2026-10-21: a look */, 'resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'crepuscularGrant', 'rainrunnerGrant' /* CX2 */, 'kinglyGrant' /* TR */, 'timberedGrant', 'bedrockGrant', 'forgedGrant', 'lastStandGrant' /* EN5 (2026-10-24) */, 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp', 'crepuscularGrant'], rainrunner:['rainrunnerGrant'] /* CX2 */, king:['kinglyGrant'] /* TR */, esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN'], timbered:['timberedGrant'], bedrock:['bedrockGrant'], forged:['forgedGrant'], lastStand:['lastStandGrant'] /* EN5 */};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -2381,6 +2418,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         grant[k] = (typeof v === 'number' && (typeof base === 'number' || base === true)) ? (base === true ? 1 : base) + v : v; }); } }
     // Liege – {…} (2026-10-23, package EN, owner TR-4): while a King of its side is on the battlefield, its braces (Assault 2 by default).
     if((e.liege || e.liegeGrant) && kingOnSide(pl, c)) addGrant(liegeOf(e));
+    // EN5 (2026-10-24): Timbered / Bedrock / Forged / Last Stand – {…}, while their side's state holds (EN5_STATES); c._en5On lists the ones on
+    { const on = en5StatesOn(e, pl); on.forEach(k=> addGrant(en5StateGrant(k, e))); c._en5On = on.length ? on.join(',') : ''; }
     // Rage – {…} (2026-10-23, package EN, owner TR-6: "Rage - {...} means the typical effects of Rage, PLUS {...}"): while its Rage is on,
     // the braces too (effects.rageGrant, beside effects.rage). Its Rage is read without the braces' own Health (c._rageOn), so a +Health in
     // them does not switch the Rage off again; isRaging reads the same flag.
@@ -2445,7 +2484,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // the new one +1/+1, not itself."; the unit itself stays as it is): the same card with its Attack and its Health without the day / night /
   // pack bonus (so every stat change made without counters comes along), plus 1/+1, minus
   // the damage it has taken, and none of its counters or statuses (Poison, Bleed, Shield, Exposed ...). The copy arrives like a played
-  // card (its printed Wait), never blooms itself (c.bloomCopy, owner call BL-1) and leaves no card in the graveyard when it dies.
+  // card (its printed Wait), blooms once itself when its conditions hold (EN5, 2026-10-24, owner: "the copy can bloom"; it never could before, BL-1) and leaves no card in the graveyard when it dies.
   // No free slot beside it (owner call BL-2): it does not bloom yet; it tries again next round. (The old Bloom N heal, effects.bloom,
   // and Bloom (conditions), effects.bloomWhen, are retired names: the engine still runs them for an old custom card.)
   const BLOOM_UNIT_CONDS = ['kill'];
@@ -2457,18 +2496,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return !pl || (pl.lumber||0) >= bloomCopyLumber(bc); }
   // The slot the copy grows into: a free one right beside it (a coin flip on the fight's rnd when both are), on a packed row its flank,
   // in a raid's middle / back row the free slot beside it in that row. null: nothing free beside it.
+  // EN5 (2026-10-24, owner 03:12: "the copy can bloom. yes it will try to create adjacent to it ... I think bloom can also bloom
+  // upward/downward!"): on a board with more rows (a raid, the Group Dungeon: pl.reserve) the free cell straight in front of it or behind
+  // it (same column, the next row) counts as beside it too; one free neighbour is picked at random (rnd), left, right, up or down alike.
   function bloomSlotOf(pl, c){
     if(!slotMode) return {lane: flankOrShorter(pl, findCardSide(pl, c.uid) || 'left')};
-    const r = reserveRowOf(pl, c);
-    if(r){ const sl = rowFreeSlotNear(pl, r, c.slot, false); return sl !== null && Math.abs(sl - c.slot) === 1 ? {row: r, slot: sl} : null; }
-    syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot)), free = sl=> !used.has(sl) && inSlotCols(sl) && !eqRubbleBlocks(pl, sl);
-    const a = free(c.slot - 1), b = free(c.slot + 1); if(!a && !b) return null;
-    return {slot: a && b ? (rnd() < .5 ? c.slot - 1 : c.slot + 1) : a ? c.slot - 1 : c.slot + 1}; }
+    const rows = (pl.reserve && pl.reserve.length) || 0, r = reserveRowOf(pl, c), opts = [];
+    syncSlots(pl); const used = new Set(allBoardCards(pl).map(x=> x.slot));
+    const freeFront = sl=> !used.has(sl) && inSlotCols(sl) && !eqRubbleBlocks(pl, sl);
+    const freeRow = (row, sl)=>{ const rw = pl.reserve && pl.reserve[row - 1]; return !!rw && !rw[sl] && inSlotCols(sl); };
+    const add = (row, sl)=>{ if(row === 0 ? freeFront(sl) : freeRow(row, sl)) opts.push(row ? {row, slot: sl} : {slot: sl}); };
+    add(r, c.slot - 1); add(r, c.slot + 1);
+    if(rows){ if(r > 0) add(r - 1, c.slot); if(r < rows) add(r + 1, c.slot); }
+    if(!opts.length) return null;
+    return opts.length === 1 ? opts[0] : opts[Math.floor(rnd() * opts.length) % opts.length]; }
   function bloomCopyPass(players, sideOf, stats, events){
     let any = false;
     [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=>{
       upkeepUnitsOf(pl).slice().forEach(c=>{
-        if(!c || c.gap || !(c.hp > 0) || c.bloomed || c.bloomCopy || c.cageOf || c.stunned) return;
+        if(!c || c.gap || !(c.hp > 0) || c.bloomed || c.cageOf || c.stunned) return; // EN5 (2026-10-24, owner BL-1: "the copy can bloom"): a copy blooms too, once (c.bloomed)
         const bc = effectsOf(c).bloomCopy; if(!bloomCopyOn(bc, c, pl)) return;
         const where = bloomSlotOf(pl, c); if(!where) return; // BL-2: no room beside it yet
         const L = bloomCopyLumber(bc); if(L) pl.lumber = Math.max(0, (pl.lumber||0) - L);
@@ -3221,6 +3267,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-16 (user: "Evade to non-swimmers for me to test."): a Tide unit in the tide dodges a non-Tide unit's shot like Evasive
     // (one roll: a card that is Evasive already doesn't get a second one).
     if(L('tide') && attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
+    // Canopy Cover (EN5, 2026-10-24): under the trees a ground unit dodges a shot or a skill like Evasive (one roll; not on top of Evasive)
+    if(!dfx.evasive && dfx.canopyCover && L('canopyCover') && en5CanopyCover(card)){ lastMissReason = 'canopyCover'; return rnd() >= 0.5; }
     return L('evasive') ? evasiveGate(card) : true;
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
@@ -3244,7 +3292,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // + Tide evade (2026-10-16, user: "Evade to non-swimmers for me to test."): the test rule makes a Tide unit in the tide Evasive
     // against a non-Tide attacker (tideEvades); off unless switched on.
     // + High Canopy / Undergrowth (2026-10-16): Swift (and Quick) units are Evasive among the branches.
-    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd))) && !ad.fencing && rnd() < 0.5){ lastMissReason = canopySwift(dd) && !dd.evasive ? 'canopy' : 'evasive'; return false; } // + Prey (2026-10-16)
+    // + Canopy Cover (EN5, 2026-10-24): a ground unit under the trees (en5CanopyCover), in the same one roll
+    const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard);
+    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < 0.5){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; return false; } // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
     if(dd.flying && L('flying') && !webbed && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
@@ -4896,7 +4946,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const SK1_DEF = Object.assign({sentry:2, formation:1, formationMax:2, isolationRange:2, isolationTable:[4, 3, 2, 1, 0], expose:2, exploit:2,
     exploitBonus:1, punish:2, siege:2, spoils:2, venomPulse:1}, (opts && opts.sk1) || {});
   const SK1_PUNISH_ON = !!((opts && opts.flags && opts.flags.punish) || rules.punishSkill);
-  const SK1_HIDING = new Set(['invisible', 'evasive', 'prey', 'tide', 'canopy', 'smoke', 'shadow', 'stealth', 'camouflage', 'hidden']);
+  const SK1_HIDING = new Set(['invisible', 'evasive', 'prey', 'tide', 'canopy', 'canopyCover' /* EN5 (2026-10-24) */, 'smoke', 'shadow', 'stealth', 'camouflage', 'hidden']);
   const sk1N = (src, k)=> numN((src && src.effects ? src.effects : effectsOf(src))[k], SK1_DEF[k]);
   const sk1Ev = (events, ev)=>{ if(recordEvents && events) events.push(ev); };
   // Anchor: one more reason stuckFast says no.
@@ -9196,7 +9246,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               { const pre = c2.poison|0; const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ aStat.poisonApplied += addPoison(c2, pz); }
                 en4GreaterPoison(a.att, attDef, c2, pre, (r3.dmg > 0 || r3.elementalAmount > 0), mySide, sideOf(a.enemyId), events); } // + Rabid (2026-10-14); + Venom Master (2026-10-17); + Greater Poison (EN4, 2026-10-23)
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
-              { const hw = en4Hemorrhage(attDef, c2); /* EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has first */ const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl + venomBoost(a.attId); } en4HemorrhageEv(a.att, c2, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
+              { const hw = en4Hemorrhage(attDef, c2); /* EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has first */ const bl = (Number(attDef.effects.bleed)||0) + en5HemoN(attDef) /* EN5: Hemorrhage N */ + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl + venomBoost(a.attId); } en4HemorrhageEv(a.att, c2, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
               if(attDef.effects.web && c2.hp > 0) webUnit(a.att, c2, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
               if(attDef.effects.brittle && c2.hp > 0) brittleUnit(a.att, c2, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
               if(!nullF) ichorSplash(players, sideOf, a.enemyId, c2, a.att, stats, events, killCredit); // Ichor (2026-10-14)
@@ -9280,6 +9330,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const pierceDmg = damageHQ(players[a.enemyId], punctureN);
           if(pierceDmg>0 && recordEvents && events) events.push({type:'pierceHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg:pierceDmg});
         }
+        en5Breach(players, a.att, attDef, a.enemyId, mySide, sideOf(a.enemyId), events); // Breach N (EN5, 2026-10-24): N to the enemy bramble on every landed hit
         // Chained (Devilry, 2026-09-17, per explicit request: "the simplest of which is getting
         // hit by any damage >1"): checked on every landed melee hit, same "breaks on ANY
         // damage taken" convention Sleep already uses, just gated to a configurable threshold.
@@ -9326,7 +9377,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
         { const hw = en4Hemorrhage(attDef, defCard); // EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has, before this hit's own Bleed
-          const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
+          const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + en5HemoN(attDef) /* EN5 (2026-10-24): Hemorrhage N's own Bleed, after the doubling */ + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
           if(bl > 0 && defCard.hp>0 && !isGhost(defCard)) defCard.bleed = (defCard.bleed||0) + bl + venomBoost(a.attId);
           en4HemorrhageEv(a.att, defCard, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
         // (Bloodlust's 2026-10-15 rule, +N Attack for drawing blood, became the leap on a kill on 2026-10-17: see bloodlustLeap.)
@@ -9662,7 +9713,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

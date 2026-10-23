@@ -1333,7 +1333,7 @@
    "changeling": 3
   },
   "base": 27,
-  "nonPlayer": 17,
+  "nonPlayer": 16,
   "belowBase": 0
  },
  "units": [
@@ -2665,7 +2665,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 4,
-    "health": 7,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -3162,7 +3162,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 2,
-    "health": 21,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -3776,14 +3776,14 @@
    "animalGroup": "lizard",
    "subtype": null,
    "faction": "beasts",
-   "size": "medium",
+   "size": "large",
    "stage": 4,
    "firstMap": 18,
    "body": {
     "cost": 3,
     "wait": 4,
     "attack": 1,
-    "health": 25,
+    "health": 26,
     "dmg": "physical",
     "resist": [
      "heat",
@@ -4005,8 +4005,8 @@
    "body": {
     "cost": 1,
     "wait": 2,
-    "attack": 5,
-    "health": 12,
+    "attack": 4,
+    "health": 10,
     "dmg": "physical",
     "resist": []
    },
@@ -4018,6 +4018,10 @@
     [
      "nocturnal",
      null
+    ],
+    [
+     "breach",
+     2
     ]
    ],
    "types": [
@@ -4825,7 +4829,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 3,
-    "health": 16,
+    "health": 15,
     "dmg": "physical",
     "resist": []
    },
@@ -4833,6 +4837,10 @@
     [
      "siege",
      2
+    ],
+    [
+     "breach",
+     1
     ]
    ],
    "types": [
@@ -5142,13 +5150,17 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 9,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
      "keenEye",
+     null
+    ],
+    [
+     "canopyCover",
      null
     ]
    ],
@@ -5574,7 +5586,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 3,
-    "health": 13,
+    "health": 12,
     "dmg": "physical",
     "resist": []
    },
@@ -5582,6 +5594,10 @@
     [
      "onReadyGold",
      1
+    ],
+    [
+     "timbered",
+     null
     ]
    ],
    "types": [
@@ -5681,7 +5697,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -5833,7 +5849,7 @@
     "cost": 3,
     "wait": 3,
     "attack": 1,
-    "health": 22,
+    "health": 23,
     "dmg": "physical",
     "resist": [
      "poison"
@@ -8687,7 +8703,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 1,
-    "health": 12,
+    "health": 13,
     "dmg": "physical",
     "resist": []
    },
@@ -10922,7 +10938,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 1,
-    "health": 13,
+    "health": 12,
     "dmg": "heat",
     "resist": []
    },
@@ -12065,6 +12081,10 @@
    "skills": [
     [
      "guardian",
+     null
+    ],
+    [
+     "lastStand",
      null
     ]
    ],
@@ -13370,14 +13390,14 @@
    "animalGroup": "cat",
    "subtype": null,
    "faction": "beasts",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 3,
    "body": {
     "cost": 2,
     "wait": 1,
     "attack": 1,
-    "health": 14,
+    "health": 13,
     "dmg": "physical",
     "resist": []
    },
@@ -14147,7 +14167,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 12,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -16111,6 +16131,10 @@
     [
      "keenSense",
      null
+    ],
+    [
+     "bedrock",
+     null
     ]
    ],
    "types": [
@@ -16501,14 +16525,14 @@
    "animalGroup": "dragon",
    "subtype": "mythic",
    "faction": "great-beasts",
-   "size": "medium",
+   "size": "large",
    "stage": 4,
    "firstMap": null,
    "body": {
     "cost": 4,
     "wait": 5,
     "attack": 3,
-    "health": 21,
+    "health": 22,
     "dmg": "poison",
     "resist": [
      "poison"
@@ -24188,7 +24212,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 4,
+    "health": 3,
     "dmg": "physical",
     "resist": []
    },
@@ -24605,7 +24629,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 14,
+    "health": 13,
     "dmg": "physical",
     "resist": []
    },
@@ -24759,7 +24783,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 9,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -25837,7 +25861,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 4,
-    "health": 22,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -26995,14 +27019,14 @@
    "animalGroup": "frog",
    "subtype": "fungus",
    "faction": "wild",
-   "size": "small",
+   "size": "tiny",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 10,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -29341,14 +29365,14 @@
    "animalGroup": "frog",
    "subtype": null,
    "faction": "wild",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 12,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -33576,7 +33600,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 9,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -33621,14 +33645,14 @@
    "animalGroup": "snake",
    "subtype": null,
    "faction": "beasts",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 1,
    "body": {
     "cost": 1,
     "wait": 2,
     "attack": 2,
-    "health": 12,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -35428,7 +35452,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -36026,14 +36050,14 @@
    "animalGroup": "fish",
    "subtype": null,
    "faction": "beasts",
-   "size": "medium",
+   "size": "small",
    "stage": 1,
    "firstMap": 5,
    "body": {
     "cost": 1,
     "wait": 2,
-    "attack": 6,
-    "health": 6,
+    "attack": 5,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -36202,7 +36226,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -37196,7 +37220,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -37683,8 +37707,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 3,
+    "attack": 4,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -40114,7 +40138,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 9,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -40750,8 +40774,8 @@
    "body": {
     "cost": 2,
     "wait": 1,
-    "attack": 3,
-    "health": 12,
+    "attack": 4,
+    "health": 10,
     "dmg": "physical",
     "resist": []
    },
@@ -40778,13 +40802,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1,
-     "health": 1.5
+     "attack": 1.33,
+     "health": 1.43
     },
     "N": 22.91,
     "N2": 116.64,
     "x1": 18,
-    "x2": 36,
+    "x2": 40,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -40870,7 +40894,7 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1.25,
-     "health": 1.44
+     "health": 1.63
     },
     "N": 29.15,
     "N2": 188.83,
@@ -41441,6 +41465,10 @@
     "baseSkills": [
      [
       "keenSense",
+      null
+     ],
+     [
+      "bedrock",
       null
      ]
     ],
@@ -45372,8 +45400,8 @@
    "body": {
     "cost": 3,
     "wait": 3,
-    "attack": 2,
-    "health": 23,
+    "attack": 3,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -45399,13 +45427,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1,
-     "health": 1.1
+     "attack": 1.5,
+     "health": 1.5
     },
     "N": 33.76,
     "N2": 253.28,
     "x1": 27,
-    "x2": 46,
+    "x2": 63,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -45413,10 +45441,10 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 4,
+     "cost": 3,
      "wait": 3,
-     "attack": 2,
-     "health": 24
+     "attack": 3,
+     "health": 21
     },
     "baseSkills": [
      [
@@ -46873,7 +46901,7 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.31
+     "health": 1.42
     },
     "N": 23.99,
     "N2": 127.89,
@@ -46963,7 +46991,7 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.11
+     "health": 1.43
     },
     "N": 17.65,
     "N2": 69.23,
@@ -46978,12 +47006,16 @@
      },
      "cost": 1,
      "wait": 0,
-     "attack": 2,
-     "health": 10
+     "attack": 3,
+     "health": 8
     },
     "baseSkills": [
      [
       "keenEye",
+      null
+     ],
+     [
+      "canopyCover",
       null
      ]
     ],
@@ -47315,8 +47347,8 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 2,
-     "health": 2.33
+     "attack": 1.5,
+     "health": 1.75
     },
     "N": 23.99,
     "N2": 127.89,
@@ -47331,8 +47363,8 @@
      },
      "cost": 2,
      "wait": 1,
-     "attack": 4,
-     "health": 5
+     "attack": 6,
+     "health": 6
     },
     "baseSkills": [
      [
@@ -47465,14 +47497,14 @@
    "animalGroup": "frog",
    "subtype": null,
    "faction": "wild",
-   "size": "large",
+   "size": "medium",
    "stage": 2,
    "firstMap": 9,
    "body": {
     "cost": 2,
     "wait": 1,
-    "attack": 3,
-    "health": 12,
+    "attack": 4,
+    "health": 10,
     "dmg": "physical",
     "resist": []
    },
@@ -47499,13 +47531,13 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1,
-     "health": 1
+     "attack": 1.33,
+     "health": 1.67
     },
     "N": 22.91,
     "N2": 116.64,
     "x1": 18,
-    "x2": 36,
+    "x2": 40,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -47513,10 +47545,10 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 3,
+     "cost": 2,
      "wait": 1,
-     "attack": 3,
-     "health": 14
+     "attack": 4,
+     "health": 9
     },
     "baseSkills": [
      [
@@ -49494,7 +49526,7 @@
    "animalGroup": "fish",
    "subtype": null,
    "faction": "beasts",
-   "size": "large",
+   "size": "medium",
    "stage": 2,
    "firstMap": 6,
    "body": {
@@ -49528,8 +49560,8 @@
     "wait": 0,
     "rarityStep": 1,
     "eff": {
-     "attack": 1.17,
-     "health": 1.17
+     "attack": 1.4,
+     "health": 1.4
     },
     "N": 26.99,
     "N2": 161.88,
@@ -49545,7 +49577,7 @@
      "cost": 2,
      "wait": 2,
      "attack": 6,
-     "health": 9
+     "health": 8
     },
     "baseSkills": [
      [
@@ -51365,8 +51397,8 @@
    "body": {
     "cost": 2,
     "wait": 2,
-    "attack": 5,
-    "health": 12,
+    "attack": 4,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -51393,12 +51425,12 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1
+     "health": 1.4
     },
     "N": 28.07,
     "N2": 175.09,
     "x1": 22,
-    "x2": 60,
+    "x2": 56,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -51406,10 +51438,10 @@
       "attack": 1.4,
       "health": 1.5
      },
-     "cost": 3,
+     "cost": 2,
      "wait": 2,
      "attack": 5,
-     "health": 14
+     "health": 11
     },
     "baseSkills": [
      [
@@ -51419,6 +51451,10 @@
      [
       "nocturnal",
       null
+     ],
+     [
+      "breach",
+      2
      ]
     ],
     "map": "m24",
@@ -52398,7 +52434,8 @@
    "audience": "non-player",
    "raid": "goliath",
    "parts": [
-    "left"
+    "left",
+    "right"
    ],
    "of": "kraken-spawnling",
    "animal": "octopus",
@@ -52423,40 +52460,6 @@
    "art": {
     "ownArt": false,
     "uses": "art/cards/kraken-spawnling.png"
-   }
-  },
-  {
-   "id": "vampire-squid~boss",
-   "name": "Vampyre Matriarch",
-   "kind": "raid-boss-unit",
-   "audience": "non-player",
-   "raid": "goliath",
-   "parts": [
-    "right"
-   ],
-   "of": "vampire-squid",
-   "animal": "vampire squid",
-   "subtype": null,
-   "statsFrom": "multipliers",
-   "mult": {
-    "attack": "+1",
-    "health": "×(1.5 + 1.5·r), r = the part's Health still standing",
-    "rarity": "epic",
-    "fresh": "bossHpBonusMax Health on a fresh raid (RaidM.bossHpBonus)"
-   },
-   "bossHpBonusMax": 55,
-   "body": {
-    "cost": 2,
-    "wait": 2,
-    "attack": 5,
-    "health": {
-     "fresh": 55,
-     "nearlyDown": 21
-    }
-   },
-   "art": {
-    "ownArt": false,
-    "uses": "art/cards/vampire-squid.png"
    }
   },
   {

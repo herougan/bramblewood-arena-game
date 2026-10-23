@@ -949,7 +949,7 @@ The rules as built (engine: `bloomCopyPass`, `bloomCond`, `applyPoisonTicks`):
   itself is unchanged) (a coin flip when both are free; on a packed row its flank; in a
   raid's middle / back row, beside it in that row). The copy is the same card with the unit's Attack and its Health without the day /
   night / pack bonus (every stat change made without counters comes along), plus 1/+1, minus the damage the unit has taken, and none
-  of its counters or statuses. It arrives with its printed Wait, can't bloom itself, and leaves no card in the graveyard when it dies.
+  of its counters or statuses. It arrives with its printed Wait, can't bloom itself (until EN5: a copy blooms once too, see above), and leaves no card in the graveyard when it dies.
   No free slot beside it: no bloom yet; it tries again next round. Stunned or caged: no bloom that round.
   Conditions: Bloom's (Tide, Ebb, Night, Day, Twilight, Wind, Wet, Dark, Heat, Frost, Full Moon, Rain), **Sunny** (day or Twilight,
   with no Rain, Fog or darkness) and **Killed an enemy** (`kill`: this unit has killed an enemy unit this fight; marked as its On Kill
@@ -1002,6 +1002,41 @@ The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShar
 | 🚧 Rampart | `en3RampartVfx(ev)` (`arena_app.js`) | As the blow lands, a gold streak runs from the bramble to the Rampart unit; the unit flinches, its share floats on it with 🚧 | `rampart` |
 | 🌿🛡️ Bramble Armor | `en3BrambleArmorVfx(ev)` (`arena_app.js`) | A small 🛡️ pops on the bramble with a ring and an armour ting; "🛡️ −1" floats | `brambleArmor` |
 | ☠ Poison's stack | the `poisonTick` replay (`arena_app.js`) | The damage floats first; the badge drops and the grey ☠−1 falls about half a second later | `poisonTick` |
+
+## 2026-10-24 additions (package EN5): Deadly Poison, Breach, Canopy Cover, the state skills, Hemorrhage N, Bloom's chain
+
+The rules as built (engine: the EN5 block, `en5HemoN`, `en5Breach`, `en5Woods`, `en5CanopyCover`, `EN5_STATES` read in `condStatsOf`,
+`bloomSlotOf`; owner 02:59 and 03:12).
+
+- **Deadly Poison 💀** (was Greater Poison; owner 02:59 #3): the name players see in every pack, the Codex and the log. The key stays
+  `effects.greaterPoison` (the status `card.gpoison`), so saved cards read as before. The rule is EN4's (below).
+- **Breach 🧱 N** (`effects.breach`, N 1 by default; owner 02:59 #6, name EN5-1; price 1.9 a point): every melee swing of its that lands on a
+  unit (the On Hit moment, whatever the hit did) also deals N to the enemy bramble through `damageHQ` (Rampart and Bramble Armor see it). A
+  dodged swing, or a swing at the bramble itself, gives none. Event `breachHQ {dmg, n}`. Puncture is the same rule under an older name and
+  price (call EN5-2).
+- **Canopy Cover 🌳** (`effects.canopyCover`; owner FLY-1): a ground unit (no Flying now; a grounded or ash-grounded flyer counts) dodges 1 in 2
+  of the single-target swings, shots and skills aimed at it, one roll like Evasive (never a second roll on top of Evasive), while the field
+  has trees over it: rules.woods (every fight on a forest-biome map, set by `fightRules`, the first skirmish too), the Old Woods terrain
+  (rules.terrain.biome 'forest'), High Canopy (rules.canopy) or the Undergrowth (rules.undergrowth). A hiding dodge: Exposed and True Strike
+  see through it. Miss reason `canopyCover`. Priced as a half-miss skill conditioned on the field: Evasive's 1.37 x uptime 0.4 on the stats.
+- **Timbered 🪵 / Bedrock 🪨 / Forged 🔩 / Last Stand 🏳️ – {…}** (owner 03:12 / 03:12b): state skills like Tide: while the side's state holds,
+  the braces (`effects.<k>Grant`), or the default when the card prints the plain skill: Timbered (you hold 3+ Lumber) +0/+2; Bedrock (2+
+  Stone) Armor 1; Forged (1+ Metal) +1/+0; Last Stand (your bramble at a third of its Health or less) +1/+1. Lumber, Stone and Metal are the
+  side's counts in the fight (`pl.lumber`, `pl.stone`, `pl.metal`). They turn on and off at each stat sync (a play, a pitch, a round's
+  start, after combat); event `statusFx` `stateSkill {name, on}`. Priced: the default x uptime (0.25 / 0.2 / 0.5 / 0.2), the braces x the same.
+- **Hemorrhage N** (owner EN4-1: "It adds 0 bleed by default (N=0)"): the doubling is unchanged; N more Bleed lands after it, beside the card's
+  own Bleed. Plain Hemorrhage (true) is N 0. Price 2 + Bleed N.
+- **Bloom** (owner BL-1 / BL-2, 03:12): the copy can bloom too, once (each unit once: `c.bloomed`), so a chain can grow. Beside it: left or
+  right in its row, and on a board with more rows (a raid, the Group Dungeon) the cell in front of it or behind it; one free neighbour at
+  random. Priced with the chain: p x (1 + q + q²), q 0.43 (`bloomChainOdds`).
+- **Bleed / Poison prices** (owner BP-1): S(N) = 3.6 x N^0.6 and 3.0 x N^0.7 (fitted to the robust skill test's worth at N 1-3).
+
+| Look | Function | What you see | Event |
+|---|---|---|---|
+| 🧱 Breach | `en5BreachVfx(ev)` (`arena_app.js`) | A 🧱 chip spins from the unit to the enemy bramble, which knocks back; the number on the bramble's bar; its Health drops | `breachHQ` |
+| 🌳 Canopy Cover | `en5CanopyVfx(ev)` | Leaves spray off the unit with a green pulse, over the usual dodge and its "Evaded!" | `evaded` reason `canopyCover` |
+| ✨ A state skill | `en5StateVfx(ev)` | On: its icon pops on the card in a ring, "🪵 Timbered" floats, a lit gold pip stays on the card while it holds; off: the pip goes | `statusFx` `stateSkill` |
+| 👤 People | `gdPeopleHTML` | The Group Dungeon card: 👤👤 and two lighter, "2 to 4 players"; the lobby: a lit 👤 per player, 🤖 per CPU ally, a dim one per free seat, "N / M" | (page) |
 
 ## 2026-10-23 additions (package EN4): no Guardian for a Guardian, Hemorrhage, Greater Poison, Shore Up
 

@@ -2,6 +2,41 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package EN5: Deadly Poison, Breach, Canopy Cover, state skills, Bleed / Poison by measurement, Bloom chains, tutorials first, people in the Group Dungeon)
+- **Deadly Poison (owner 02:59 #3):** Greater Poison is called Deadly Poison everywhere players read it (skill, status, tips, log, Pulse's texts, 12 packs);
+  the key stays `greaterPoison`.
+- **Breach 🧱 N (02:59 #6, name EN5-1):** every landed melee hit on a unit also deals N to the enemy bramble (a dodged swing gives none); a brick
+  chip flies to the bramble, which knocks back. Priced 1.9 a point (the robust test: Breach 1 / 2 worth 1.82 / 3.76). On the Beetle Battering-Ram
+  (Breach 2, 5/12 -> 4/10) and the Badger Sapper (Breach 1, 3/16 -> 3/15). Puncture is the same rule (call EN5-2).
+- **Canopy Cover 🌳 (FLY-1):** a ground unit dodges 1 in 2 single-target attacks under the trees: any fight on a forest-biome map (`rules.woods`, set
+  for every fight there), the Old Woods terrain, High Canopy or the Undergrowth (40 of 267 conquest fights). One roll like Evasive; leaves spray off
+  it. Priced as Evasive x uptime 0.4 on the stats (call EN5-3). On the Fawn Scout (Map 13, 2/9 -> 2/7).
+- **State skills (03:12 / 03:12b):** 🪵 **Timbered – {…}** while you hold 3+ Lumber (default +0/+2), 🪨 **Bedrock** 2+ Stone (Armor 1), 🔩 **Forged** 1+
+  Metal (+1/+0), 🏳️ **Last Stand** while your bramble is at a third of its Health or less (+1/+1). Stone and Metal are the fight's own counts. They
+  turn on and off with the state: a ring and a float as one turns on, a lit gold pip while it holds. Priced default x uptime (0.5 / 0.3 / 1.0 /
+  0.6; braces x the same uptime; call EN5-4). Cards: Lodge Engineer (Timbered), Quarry Mole (Bedrock), Badger Trench Digger (Last Stand).
+  In the card editor (plain = the default braces, a bare name), the skill lists and the Codex.
+- **Bleed / Poison re-priced from simulation (BP-1, call EN5-5):** `tools/skill_test_robust.js --mono --multi`, N 1-4, units at a trial price so the
+  decks stay off the floor (`--table`, new): worth with companions Bleed 3.5 / 6.2 / 6.6 / 6.3, Poison 2.9 / 5.7 / 5.9 / 5.4. Priced S(N) = 3.6 x
+  N^0.6 and 3.0 x N^0.7 (new `pow` on an 'n' skill in `tools/skill_costs.js`): Bleed 3.6 / 5.5 / 7.0, Poison 3.0 / 4.9 / 6.5 (were 2.6 a point).
+  EN4's "about 2 for Bleed 2" was a floor reading (those decks lost 97%).
+- **Hemorrhage N (EN4-1):** N 0 by default (plain Hemorrhage adds no Bleed of its own); Hemorrhage N adds N after the doubling; priced 2 + Bleed N.
+- **Bloom (BL-1, BL-2, 03:12):** the copy can bloom too (once per unit), and on a raid or Group Dungeon board it may grow in front or behind as well
+  as left or right. Priced with the chain (p x (1 + q + q²), q 0.43). BL's held cards re-fitted, at most 1% over N (owner: "err on slightly
+  overbudget"): Fungal Colossus 2/21 -> 2/14, Puffball Bombardier 1/10 -> 1/5, Lotus Frog 3/12 -> 3/6, Pond Algae 1/9 -> 1/7.
+- **Re-fit (call EN5-6; `tools/en5_cards_2026_10_24.js`, `docs/balance/en5-refit-2026-10-24.json`):** 28 cards moved, 5 up, 23 down, none cut by a
+  quarter or more (none held); Alley Cat and Poison Dart Frog have no legal line (already flagged).
+- **Tutorials first (MAP-3):** a tutorial lesson (the coach tips and their spotlight, and the lesson scripts) never counts as an NPC conversation
+  for blocking map tiles, and while a lesson is on screen no tile is held back.
+- **Group Dungeon (AR3-6):** 👤 people: 👤👤 + two lighter and "2 to 4 players" on the dungeon card; in the lobby a lit 👤 per player, 🤖 per CPU
+  ally, a dim one per free seat and "N / M".
+- **tests/e2e/snaps.py** crashed on HEAD ("Cannot set properties of null (setting 'speedMult')"): the fresh profile's deck held cards it did not own,
+  so the fight never started. The script owns its deck now; it then reports snaps at 1366 (phones clean), each one looked at an EN2
+  Guardian step-in moving 13-48 px in a frame (call EN5-7).
+- Tools and data: `tools/en5_skill_costs_2026_10_24.py`, `tools/en5_cards_2026_10_24.js`, `tools/en5_state_uptime_2026_10_24.js`,
+  `tools/i18n_2026_10_24_en5.py`; `docs/balance/en5-bleed-poison-2026-10-24.*`, `en5-breach-states-2026-10-24.*`, `en5-state-uptime-2026-10-24.json`.
+  Tests `tests/en5-2026-10-24.js`, `tests/e2e/en5_2026_10_24.py` (shots `docs/screens/EN5/`); `bl` and `en4` follow the new rules.
+
 ## 2026-10-24 release 10-24a (batch: DC3, HUB2, EN2, BL, HUB3, EN3, OPT, RW5, OPT2, EN4, PRO, MAP)
 - Rules: Windy (Headwind skills twice, Tailwind = Quick), Boomerang (Speed 0, return path, throws on a miss), Guardian (steps in, no chain), Swarm by Type, live stats; Bleed/Poison order; Rampart, Bramble Armor, Hemorrhage, Greater Poison, Shore Up, Pulse; Bloom rebuilt; CPU lanes. New cards placed in Maps 1-18.
 - Rewards: packs by map range, faction pool and pattern, end-of-map packs, Collector packs, speed unlocks, admin resource buttons, guild shop.

@@ -82,8 +82,9 @@ ok(/try\{ healMapProgress/.test(src) && /function healMapProgress\(/.test(src), 
   const calls = []; const el = {classList:{remove(){}, add(c){ calls.push('cls:' + c); }}, offsetWidth: 1, querySelectorAll: ()=> [], appendChild(l){ calls.push('label:' + l.textContent); }};
   const fakeDoc = {createElement: ()=> ({set className(v){}, set textContent(v){ this._t = v; }, get textContent(){ return this._t; }, setAttribute(){}, remove(){}})};
   const mk = (dlg, board)=> new Function('dialoguesPending', 'featureUnlocked', 'SoundKit', 'document', 'TX', 'setTimeout',
-    fnSrc('npcDialogueActive') + '\n' + fnSrc('noticeBoardUnlocked') + '\n' + lt + '\n' + blocked + '\nreturn {mapTileBlocked, lockedTileTap};')(
-    {size: dlg}, k=> k === 'quests' ? board : true, {dullTap(){ calls.push('dull'); }}, fakeDoc, k=> k === 'ui.map-locked-for-now' ? 'Locked for now' : k, ()=> 0);
+    // 2026-10-24 (package EN5, MAP-3): npcDialogueActive skips tutorial lessons (EN5_LESSON_DIALOGUE, tutorialLessonOn) and walks the Set
+    'const EN5_LESSON_DIALOGUE = /^(lesson_|tut_|pitch_lesson|pitch_spent|training_wheels)/; function tutorialLessonOn(){ return false; }\n' + fnSrc('npcDialogueActive') + '\n' + fnSrc('noticeBoardUnlocked') + '\n' + lt + '\n' + blocked + '\nreturn {mapTileBlocked, lockedTileTap};')(
+    new Set(dlg ? ['well_m1'] : []), k=> k === 'quests' ? board : true, {dullTap(){ calls.push('dull'); }}, fakeDoc, k=> k === 'ui.map-locked-for-now' ? 'Locked for now' : k, ()=> 0);
   calls.length = 0; ok(mk(0, true).mapTileBlocked(el) === false && !calls.length, '19. no NPC talking: a tile opens');
   calls.length = 0; ok(mk(1, true).mapTileBlocked(el) === true && calls.includes('dull') && calls.includes('cls:tile-dull-shake') && !calls.some(c=> c.startsWith('label:')), '19. an NPC talking: dull sound, shake, no label');
   calls.length = 0; ok(mk(0, false).mapTileBlocked(el, 'quests') === true && calls.includes('label:Locked for now') && calls.includes('dull'), '20. the Notices not open: dull sound, shake and "Locked for now"');

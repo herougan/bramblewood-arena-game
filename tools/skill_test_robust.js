@@ -27,7 +27,7 @@
 //              every setup plays the same seeds, profiles, roundings and fields).
 //
 //   node tools/skill_test_robust.js --mono|--duo|--multi [--games 10000] [--seed 1] [--jobs 2] [--skills quick,armor=1/2] [--curve-games N]
-//        [--level 1] [--foe-ratio 0.8] [--quick] [--out docs/balance/skill-test-robust-<modes>-<date>.json] [--no-out]
+//        [--level 1] [--foe-ratio 0.8] [--quick] [--out docs/balance/skill-test-robust-<modes>-<date>.json] [--no-out] [--table f.json]
 //   node tools/skill_test_robust.js --census      the field-effect use on the conquest maps (classes for FIELD_CONFIG), written to docs/balance
 //   --quick   a smoke size: 300 games a setup, 120 a curve point, a short curve grid; --skills defaults to quick,armor,nocturnal
 'use strict';
@@ -247,7 +247,9 @@ function main(){
   const quick = has('quick');
   const G = Math.max(2, Math.round(Number(opt('games', quick ? 300 : 10000)) || 10000)), CG = Math.max(2, Math.round(Number(opt('curve-games', quick ? 120 : G)) || G));
   const JOBS = Math.max(1, Math.round(Number(opt('jobs', 1)) || 1)); SEED = Math.round(Number(opt('seed', 1)) || 1); LEVEL = Math.max(0, Math.round(Number(opt('level', 1)))); { const fr = opt('foe-ratio', null); if(fr != null && Number(fr) > 0) FOE_RATIO = Number(fr); }
-  const table = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), defs = Object.assign({}, H.loadCardDefs()), cs = SW.census(defs), mix = liveMix();
+  // --table f.json (2026-10-24, package EN5): price the units from another cost table (e.g. a skill at a trial price, so its deck is not
+  // pinned at the floor and the worth reads inside the curves); the default is canonical/skill-costs.json
+  const table = JSON.parse(fs.readFileSync(opt('table', null) ? path.resolve(opt('table', null)) : path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), defs = Object.assign({}, H.loadCardDefs()), cs = SW.census(defs), mix = liveMix();
   const entry = id=> (table.skills || []).find(e=> e.id === id) || {id, scale:'half'};
   const typical = e=> SW.TYPICAL[e.id] != null ? SW.TYPICAL[e.id] : (()=>{ const t = SW.typicalOf(cs, e.id); return t != null ? t : e.scale === 'n' ? (e.payDefault || 2) : true; })();
   const parseVal = s=> s === 'true' ? true : /^-?\d+(\.\d+)?$/.test(s) ? Number(s) : s;

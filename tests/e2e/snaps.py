@@ -39,7 +39,14 @@ async def main(mp, node, vw, vh, speed, n):
     pg=await b.new_page(viewport={'width':vw,'height':vh}); errs=[]; pg.on('pageerror',lambda e: errs.append(str(e)))
     await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
     await pg.goto('file://'+__import__('os').path.abspath(__import__('os').path.join(__import__('os').path.dirname(__file__),'..','..','index.html'))+''); await pg.wait_for_timeout(1300)
-    await pg.evaluate(f"(()=>{{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('play'); startConquestMatch('{mp}','{node}'); matchState.speedMult={speed}; return 1}})()")
+    # 2026-10-24 (package EN5): "Cannot set properties of null (setting 'speedMult')" (on HEAD too): the fresh profile's deck holds cards it
+    # does not own (PG's copy check, deckSizeOkOrWarn: "Your deck has 3 Dolphin Knight, but you own 0."), so startConquestMatch refused to
+    # start and matchState stayed null. The script now owns its deck and has the Energy, as the other e2e scripts do (tests/e2e/en4_*.py
+    # OWN), and says why when a fight still does not start instead of crashing on matchState.
+    st = await pg.evaluate(f"""(()=>{{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{{ for(let i=0;i<n;i++) unlockCardForPlayer(id,'test'); }});
+      saveEnergyState({{current:60, lastRegenAt:Date.now()}}); switchTab('play'); const r = startConquestMatch('{mp}','{node}');
+      if(!matchState) return 'no match (' + r + '): ' + ((document.querySelector('.toast')||{{}}).textContent||''); matchState.speedMult={speed}; return 'ok'; }})()""")
+    if st != 'ok': print(f'{node} {vw}x{vh} x{speed} ERR {st}'); await b.close(); return
     await pg.wait_for_timeout(600)
     await pg.evaluate(WATCH)
     for i in range(n):

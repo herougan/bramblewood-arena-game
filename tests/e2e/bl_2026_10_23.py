@@ -73,7 +73,8 @@ async def run(b, url, w):
     await pg.wait_for_timeout(1400)
     after = await pg.evaluate(f"""(()=>{{ const el = boardCardEl({res['copy']['uid'] if res['copy'] else 0}), s = boardCardEl({u['1:0']}); return {{petals: document.querySelectorAll('.bloom-petal').length, chipSpent: !!(el && el.querySelector('.ab-bloomcopy.is-spent')), srcSpent: !!(s && s.querySelector('.ab-bloomcopy.is-spent'))}}; }})()""")
     await shot(pg, 'bloom-copy-settled', w)
-    ok(after['petals'] == 0 and after['chipSpent'] and after['srcSpent'], f'Bloom: the look is over; both chips are greyed (bloomed / a copy) ({after})')
+    # 2026-10-24 (package EN5, owner BL-1: "the copy can bloom"): only the unit that bloomed greys its chip; the copy's stays lit (was: both grey)
+    ok(after['petals'] == 0 and not after['chipSpent'] and after['srcSpent'], f'Bloom: the look is over; the bloomed unit\'s chip is greyed, the copy\'s stays lit (it can bloom too) ({after})')
     # ---- Bleed fades: one grey drop from the pip to the ground
     u = await pg.evaluate(BOARD + "([['bee-knight', 0, 12, {bleed:2}]], [['bee-knight', 0]])")
     pip = await pg.evaluate(f"""(()=>{{ const el = boardCardEl({u['1:0']}), p = el && el.querySelector('.abadge.bleed'); if(!p) return null; const r = p.getBoundingClientRect(), c = el.getBoundingClientRect(); return {{top: r.top, left: r.left, bottom: c.bottom, text: p.textContent}}; }})()""")

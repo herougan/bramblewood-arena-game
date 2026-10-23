@@ -46,8 +46,12 @@
     function skillCost(id, v){
       const e = SK[id]; if(!e) return null;
       const n = numOf(v), val = +e.value || 0;
-      if(e.scale === 'n') return val * Math.max(1, v === true && e.payDefault ? e.payDefault : n);
+      // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
+      // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
+      if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }
       if(e.scale === 'half') return val * (1 + (n > 1 ? Math.floor(n / 2) : 0));
+      // EN5 (2026-10-24): `plus` names a skill its number buys on top (Hemorrhage N: the doubling's fixed price + Bleed N's)
+      if(e.plus && v !== true && n > 0){ const x = skillCost(e.plus, n); return val + (x || 0); }
       return val;
     }
     // One action's value for a trigger entry t (or a shorthand's number). Returns {value, missing}.
@@ -109,6 +113,7 @@
     // The budget rules for a card as printed: {N, S, x1, x2, N2, ok, wellUnder, m, parts, missing}; opts.N stands in for N (v3 checks).
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
+      if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
       const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2

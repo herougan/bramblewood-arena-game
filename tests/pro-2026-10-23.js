@@ -45,6 +45,9 @@ Object.keys(data.maps).forEach(mid=>{
       if(i > 1) ok(e.h2h.elo <= ent.pro[i - 1].h2h.elo, `1. ${e.id}: ordered by Elo`); }
   });
   const f = P.averageField(gm, map);
+  // 2026-10-24 (package EN5): fightRules marks every fight on a forest map rules.woods (Canopy Cover); the PRO file predates it, and a PRO
+  // fight goes through fightRules as it starts, so it is under the trees anyway: compared without it (refreshed with the next pro_skirmishes --apply)
+  if(f.rules && !(ent.field.rules || {}).woods) delete f.rules.woods;
   ok(JSON.stringify(f.rules) === JSON.stringify(ent.field.rules) && JSON.stringify(f.terrain) === JSON.stringify(ent.field.terrain), `1. ${mid}: the field is still the map's average (${ent.field.summary})`);
 });
 // the average itself: Map 3's fights (3-1 no terrain, 3-2..3-4 tier I, 3-5..3-7 tier II) tie I / II, so the boss's (the ender, 3-7) tier II wins

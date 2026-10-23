@@ -102,7 +102,9 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 // ---- #6 / #9 prices, the re-fit, the new skills' prices and the card --------------------------------------------------------
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')), sk = id=> sc.skills.find(r=> r.id === id), ac = id=> sc.actions.find(r=> r.id === id);
   const want = {poison:2.6, bleed:2.6, gash:1.6, venomous:3.1, poisonBolt:3.1, poisonGas:3.1, rabid:5.1, proliferate:6.1, venomMaster:5.1, perforate:3.6};
-  ok(Object.keys(want).every(k=> sk(k) && sk(k).value === want[k] && sk(k).prevValueEN3 != null), 'the Bleed / Poison family up a tenth: ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
+  // 2026-10-24 (package EN5, owner BP-1): Bleed and Poison are priced by the measured power curve now (3.6 x N^0.6, 3.0 x N^0.7); EN3's 2.6 is their prevValueEN5
+  want.poison = 3; want.bleed = 3.6;
+  ok(Object.keys(want).every(k=> sk(k) && sk(k).value === want[k] && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   ok(sk('toxin').value === 5 && sk('detonate').value === -0.5, 'Toxin (never wears off) and Detonate are left');
   ok(sk('bulwark').value === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 9 (was 6)');
@@ -110,8 +112,10 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en3-refit-2026-10-23.json'), 'utf8'));
   ok(rf.raised.length === 3 && rf.held.length === 13 && rf.flagged.includes('poison-dart-frog'), `the re-fit file: ${rf.raised.length} raised, ${rf.held.length} held, flagged ${rf.flagged}`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
-  ok(rf.held.every(h=> `${c(h.id).attack}/${c(h.id).health}` === h.from), 'the held cards keep their stats');
-  ok(rf.raised.every(h=> `${c(h.id).attack}/${c(h.id).health}` === h.to), 'the raised cards have their new line');
+  // 2026-10-24 (package EN5): a card EN5's re-fit moved (Bleed / Poison by the measured curve) has EN5's line now
+  const en5 = h=> /2026-10-24 EN5 re-fit/.test(c(h.id).creatorNote || '');
+  ok(rf.held.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.from), 'the held cards keep their stats (or EN5 re-fitted them)');
+  ok(rf.raised.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.to), 'the raised cards have their new line (or EN5\'s)');
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/human-pass-1-flagged-2026-10-21.json'), 'utf8')); ok(fl.length >= 10 && fl.includes('poison-dart-frog'), 'the flagged list was merged, not overwritten');
   const rb = c('riverworks-bastion'); ok(rb.effects.rampart === true && rb.attack === 0 && rb.health === 30, 'Riverworks Bastion: Rampart, 0/30');
   // the owner 20:44 ("implement them in new cards"): two new cards each, awaiting their source (EN3-8), inside the budget
@@ -147,7 +151,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN3\)/.test(cat) && /rampartShare/.test(cat) && /bleedFadeAtEnd/.test(cat), 'docs/effects-catalogue.md: EN3');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.decisions || dec.items || dec).map ? (dec.decisions || dec.items || dec).map(d=> d.id) : [];
   ok(['EN3-1', 'EN3-2', 'EN3-3', 'EN3-4', 'EN3-5', 'EN3-6', 'EN3-7', 'EN3-8'].every(i=> ids.includes(i)), 'decisions EN3-1 .. EN3-8');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 20000)), 'CHANGELOG: EN3 near the top'); } // 2026-10-23 (EN4): later packages' entries sit above it (was the first 6000 characters)
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 40000)), 'CHANGELOG: EN3 near the top'); } // 2026-10-24 (EN5): 40000 (more entries above it) // 2026-10-23 (EN4): later packages' entries sit above it (was the first 6000 characters)
 
 console.log(`en3-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

@@ -152,7 +152,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8')).maps, obtain = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps;
   const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')); if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const T = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC.make(sc);
-  const MOVED = {'lodge-engineer': ['mp', 1, 6, '3/13'], 'mallard-marauder': ['mg', 2, 7, '2/5'], 'ember-tetra': ['m2', 1, 4, '2/6']};
+  const MOVED = {'lodge-engineer': ['mp', 1, 6, '3/12' /* 2026-10-24 (package EN5): Timbered, re-fitted 3/13 -> 3/12 */], 'mallard-marauder': ['mg', 2, 7, '2/5'], 'ember-tetra': ['m2', 1, 4, '2/6']};
   Object.entries(MOVED).forEach(([id, [map, tier, n, line]])=>{ const x = c(id), b = T.budget(x, {level: 1}); const top = map === 'm2' ? pools.m2.cards : pools.mb.submaps[map] || [];
     ok(x.source && x.source.kind === 'pack' && x.source.map === map && x.source.tier === tier && obtain[id] === n && `${x.attack}/${x.health}` === line && b.ok && b.x1 <= b.N && top.includes(id),
       `${id}: Pack ${tier} @ ${map} (Map ${n}), ${x.attack}/${x.health} inside that budget (${b.x1} <= ${b.N})`); });
@@ -186,7 +186,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN4\)/.test(cat) && /en4GreaterPoison/.test(cat) && /Reverted by EN4/.test(cat), 'docs/effects-catalogue.md: EN4');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN4-1', 'EN4-2', 'EN4-3', 'EN4-4', 'EN4-5'].every(i=> ids.includes(i)), 'decisions EN4-1 .. EN4-5');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 6000)), 'CHANGELOG: EN4 at the top'); }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 30000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-24 (package EN5): later entries sit above it
 
 console.log(`en4-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

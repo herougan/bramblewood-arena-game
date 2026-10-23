@@ -1,0 +1,312 @@
+{
+ "about": "EN5 re-fit (2026-10-24): Bleed 3.6 x N^0.6 and Poison 3.0 x N^0.7 (were 2.6 x N), Bloom priced with its chain (the copy can bloom), Hemorrhage N, the six cards' new skills. Ups and downs applied; a cut of more than 25% of 2A+H held at its stats (call EN5-6); Bloom cards up to 1% over N (owner 03:12); no-legal-line cards merged into human-pass-1-flagged-2026-10-21.json.",
+ "moved": [
+  "caustic-scorpion",
+  "alley-cat",
+  "trapdoor-spider",
+  "monarch-wingblade",
+  "fungal-colossus",
+  "komodo-warlord",
+  "beetle-battering-ram",
+  "badger-sapper",
+  "raven-harbinger",
+  "fawn-scout",
+  "lodge-engineer",
+  "grass-viper",
+  "adder-ambusher",
+  "venomlord-serpent",
+  "poison-dart-croaker",
+  "sand-widow",
+  "poison-dart-frog",
+  "ice-crevasse-wolf",
+  "bog-leech",
+  "obsidian-scorpion",
+  "gangrenous-leech",
+  "wound-reaver",
+  "glacier-wolf-pack",
+  "badger-trench-digger",
+  "rootworm-colony",
+  "frost-thistle-lynx",
+  "bogfire-newt",
+  "bee-sentry",
+  "quarry-mole",
+  "test-skill-poison",
+  "test-skill-bleed",
+  "test-skill-bloom",
+  "green-dragon",
+  "ironmaw-warwolf",
+  "wolfsbane-alpha",
+  "heron-hag",
+  "irradiated-glow-wyrm",
+  "hummingbird-needler",
+  "vampire-squid",
+  "cave-centipede",
+  "old-snapjaw",
+  "moon-jelly",
+  "lions-mane-jelly",
+  "glimmer-spider",
+  "puffball-bombardier",
+  "lotus-frog",
+  "gallery-orb-weaver",
+  "cottonmouth-matriarch",
+  "razorbill",
+  "alligator-gar",
+  "mosquito-cloud",
+  "fire-ant-raft",
+  "cave-pseudoscorpion",
+  "whip-spider",
+  "yellow-bellied-sea-snake",
+  "crown-of-thorns-star",
+  "thorn-shrike",
+  "pond-algae",
+  "cane-toad",
+  "inland-taipan"
+ ],
+ "notBand": [
+  "test-skill-poison",
+  "test-skill-bleed",
+  "test-skill-bloom",
+  "cane-toad",
+  "inland-taipan"
+ ],
+ "alreadyFit": [
+  "caustic-scorpion",
+  "monarch-wingblade",
+  "raven-harbinger",
+  "adder-ambusher",
+  "poison-dart-croaker",
+  "sand-widow",
+  "bog-leech",
+  "obsidian-scorpion",
+  "gangrenous-leech",
+  "glacier-wolf-pack",
+  "badger-trench-digger",
+  "rootworm-colony",
+  "bee-sentry",
+  "quarry-mole",
+  "ironmaw-warwolf",
+  "wolfsbane-alpha",
+  "heron-hag",
+  "irradiated-glow-wyrm",
+  "moon-jelly",
+  "lions-mane-jelly",
+  "glimmer-spider",
+  "mosquito-cloud",
+  "cave-pseudoscorpion",
+  "crown-of-thorns-star",
+  "thorn-shrike"
+ ],
+ "up": [
+  {
+   "id": "komodo-warlord",
+   "from": "1/25",
+   "to": "1/26",
+   "S": "11 -> 9.67",
+   "use": 99
+  },
+  {
+   "id": "venomlord-serpent",
+   "from": "1/22",
+   "to": "1/23",
+   "S": "7.8 -> 6.47",
+   "use": 99
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "from": "1/12",
+   "to": "1/13",
+   "S": "5.2 -> 5.46",
+   "use": 96
+  },
+  {
+   "id": "green-dragon",
+   "from": "3/21",
+   "to": "3/22",
+   "S": "12.8 -> 11.47",
+   "use": 99
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "from": "3/3",
+   "to": "4/4",
+   "S": "9.3 -> 7.97",
+   "use": 99
+  }
+ ],
+ "down": [
+  {
+   "id": "trapdoor-spider",
+   "from": "4/7",
+   "to": "4/6",
+   "S": "2.6 -> 3",
+   "use": 97
+  },
+  {
+   "id": "fungal-colossus",
+   "from": "2/21",
+   "to": "2/14",
+   "S": "4.11 -> 4.11",
+   "use": 100,
+   "bloom": true
+  },
+  {
+   "id": "beetle-battering-ram",
+   "from": "5/12",
+   "to": "4/10",
+   "S": "5 -> 6.8",
+   "use": 98,
+   "newSkill": "breach"
+  },
+  {
+   "id": "badger-sapper",
+   "from": "3/16",
+   "to": "3/15",
+   "S": "3 -> 3.9",
+   "use": 100,
+   "newSkill": "breach"
+  },
+  {
+   "id": "fawn-scout",
+   "from": "2/9",
+   "to": "2/7",
+   "S": "2.5 -> 1.5",
+   "use": 95,
+   "newSkill": "canopyCover"
+  },
+  {
+   "id": "lodge-engineer",
+   "from": "3/13",
+   "to": "3/12",
+   "S": "7.24 -> 6.74",
+   "use": 98,
+   "newSkill": "timbered"
+  },
+  {
+   "id": "grass-viper",
+   "from": "1/8",
+   "to": "1/7",
+   "S": "2.6 -> 3",
+   "use": 92
+  },
+  {
+   "id": "wound-reaver",
+   "from": "1/13",
+   "to": "1/12",
+   "S": "5.2 -> 5.46",
+   "use": 96
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "from": "1/14",
+   "to": "1/13",
+   "S": "5.2 -> 5.46",
+   "use": 96
+  },
+  {
+   "id": "bogfire-newt",
+   "from": "1/12",
+   "to": "1/11",
+   "S": "2.1 -> 2.5",
+   "use": 94
+  },
+  {
+   "id": "hummingbird-needler",
+   "from": "1/4",
+   "to": "1/3",
+   "S": "3.6 -> 4.6",
+   "use": 93
+  },
+  {
+   "id": "vampire-squid",
+   "from": "4/14",
+   "to": "4/13",
+   "S": "5.2 -> 5.46",
+   "use": 98
+  },
+  {
+   "id": "cave-centipede",
+   "from": "2/9",
+   "to": "2/8",
+   "S": "2.6 -> 3",
+   "use": 96
+  },
+  {
+   "id": "old-snapjaw",
+   "from": "4/22",
+   "to": "4/21",
+   "S": "4.1 -> 5.1",
+   "use": 98
+  },
+  {
+   "id": "puffball-bombardier",
+   "from": "1/10",
+   "to": "1/5",
+   "S": "6.41 -> 6.81",
+   "use": 96,
+   "bloom": true
+  },
+  {
+   "id": "lotus-frog",
+   "from": "3/12",
+   "to": "3/6",
+   "S": "1.17 -> 1.17",
+   "use": 95,
+   "bloom": true
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "from": "4/9",
+   "to": "4/8",
+   "S": "2.94 -> 3.34",
+   "use": 97
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "from": "2/12",
+   "to": "2/11",
+   "S": "7.7 -> 8.1",
+   "use": 98
+  },
+  {
+   "id": "razorbill",
+   "from": "2/6",
+   "to": "2/5",
+   "S": "2.6 -> 3.6",
+   "use": 93
+  },
+  {
+   "id": "alligator-gar",
+   "from": "6/6",
+   "to": "5/5",
+   "S": "5.6 -> 6.6",
+   "use": 92
+  },
+  {
+   "id": "fire-ant-raft",
+   "from": "2/8",
+   "to": "2/7",
+   "S": "6.6 -> 7",
+   "use": 97
+  },
+  {
+   "id": "whip-spider",
+   "from": "3/8",
+   "to": "3/7",
+   "S": "4.6 -> 5.6",
+   "use": 98
+  },
+  {
+   "id": "pond-algae",
+   "from": "1/9",
+   "to": "1/7",
+   "S": "1.32 -> 1.32",
+   "use": 94,
+   "bloom": true
+  }
+ ],
+ "held": [],
+ "flagged": [
+  "alley-cat",
+  "poison-dart-frog"
+ ]
+}

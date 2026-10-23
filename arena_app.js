@@ -1714,6 +1714,26 @@ PASSIVE_DEFS.push({key:'hemorrhage', category:'passive', label:TX('ui.skn-hemorr
   {key:'greaterPoison', category:'passive', label:TX('ui.skn-greater-poison'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-greater-poison', {n: numOr(v, 1)}), codexNote:TX('ui.sk-greater-poison-codex')},
   {key:'shoreUp', category:'passive', label:TX('ui.skn-shore-up'), kind:'boolean', desc:()=> TX('ui.sk-shore-up'), codexNote:TX('ui.sk-shore-up-codex')});
 Object.assign(SKILL_ICON, {hemorrhage:'🩸²', greaterPoison:'💀', shoreUp:'🛡️↔️'});
+// ==== Package EN5 (2026-10-24, owner 02:59 / 03:12 notes; rules in bramblewood-engine.js, the EN5 block):
+//   Breach N        every hit it lands also deals N to the enemy bramble (owner 02:59 #6; name approved);
+//   Canopy Cover    a ground unit under the trees (a forest map, Old Woods, High Canopy, Undergrowth) dodges 1 in 2 single-target attacks (FLY-1);
+//   Timbered / Bedrock / Forged / Last Stand – {…}: state skills like Tide (owner 03:12), their braces while you hold 3+ Lumber / 2+ Stone /
+//                   1+ Metal / while your bramble is at a third of its Health or less; plain (the default braces) +0/+2, Armor 1, +1/+0, +1/+1;
+//   Hemorrhage N    the doubling, then N Bleed of its own (owner EN4-1: "It adds 0 bleed by default (N=0)"): plain Hemorrhage is N 0.
+// Priced in canonical/skill-costs.json and bramblewood-budget.js (CONTEXT_MULT_BY, the canopy multiplier). Board, log: the EN5 block by en4Vfx.
+const EN5_STATE_DEFAULT_APP = {timbered:{health: 2}, bedrock:{armor: 1}, forged:{attack: 1}, lastStand:{attack: 1, health: 1}};
+const EN5_STATE_KEYS = {timbered:{tx:'timbered', ico:'🪵'}, bedrock:{tx:'bedrock', ico:'🪨'}, forged:{tx:'forged', ico:'🔩'}, lastStand:{tx:'last-stand', ico:'🏳️'}};
+function en5StateOfApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : EN5_STATE_DEFAULT_APP[k]; }
+sk1Patch(PASSIVE_DEFS, 'hemorrhage', {kind:'number', min:0, defaultValue:0, desc:v=> numOr(v, 0) > 0 ? TX('ui.sk-hemorrhage-n', {n: numOr(v, 0)}) : TX('ui.sk-hemorrhage'),
+  get:e=> e.hemorrhage ? (Number(e.hemorrhage) > 0 && e.hemorrhage !== true ? Number(e.hemorrhage) : true) : undefined /* plain: true, so its card line shows; the editor reads it as 0 */, apply:(e, v)=>{ const n = Math.max(0, Math.round(Number(v) || 0)); e.hemorrhage = n > 0 ? n : true; }});
+PASSIVE_DEFS.push({key:'breach', category:'passive', label:TX('ui.skn-breach'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-breach', {n: numOr(v, 1)}), codexNote:TX('ui.sk-breach-codex')},
+  {key:'canopyCover', category:'passive', label:TX('ui.skn-canopy-cover'), kind:'boolean', desc:()=> TX('ui.sk-canopy-cover'), codexNote:TX('ui.sk-canopy-cover-codex')});
+Object.keys(EN5_STATE_KEYS).forEach(k=>{ const t = EN5_STATE_KEYS[k].tx;
+  sk1Patch(PASSIVE_DEFS, k, {category:'passive', label:TX('ui.skn-' + t), kind:'boolean', desc:(v, n, e)=> TX('ui.sk-' + t, {skills: grantText(en5StateOfApp(k, e))}), codexNote:TX('ui.sk-' + t + '-codex'),
+    get:e=> (e[k] && !(e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object')) ? true : undefined});
+  sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN5_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
+    get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
+Object.assign(SKILL_ICON, {breach:'🧱', canopyCover:'🌳', timbered:'🪵', timberedGrant:'🪵', bedrock:'🪨', bedrockGrant:'🪨', forged:'🔩', forgedGrant:'🔩', lastStand:'🏳️', lastStandGrant:'🏳️'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -3105,9 +3125,10 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span>${legendaryTagHTML(p)} — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
-    if(p.key==='bloomCopy'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // Bloom – {…} (BL, 2026-10-23): spent once it bloomed; a copy can't bloom
-      const tag = lc && lc.bloomCopy ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-is-copy'))}</b>` : lc && lc.bloomed ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-bloomed'))}</b>` : '';
-      const line = `${ic('bloomCopy')}${escapeHtml(bloomCopyLabel(e.bloomCopy))} — ${skillText(p, v, e)}`; lines.push(lc && (lc.bloomCopy || lc.bloomed) ? `<span class="sk-used">${line}</span>${tag}` : line); return; }
+    if(p.key==='bloomCopy'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // Bloom – {…} (BL, 2026-10-23): spent once it bloomed (EN5: a copy can bloom too)
+      // EN5 (2026-10-24, owner: "the copy can bloom"): a copy's line is spent only once it has bloomed too; the "copy" tag stays as a note
+      const tag = (lc && lc.bloomCopy ? ` <b class="sk-used-tag bl-copy-tag">${escapeHtml(TX('ui.bl-is-copy'))}</b>` : '') + (lc && lc.bloomed ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-bloomed'))}</b>` : '');
+      const line = `${ic('bloomCopy')}${escapeHtml(bloomCopyLabel(e.bloomCopy))} — ${skillText(p, v, e)}`; lines.push(lc && lc.bloomed ? `<span class="sk-used">${line}</span>${tag}` : line + tag); return; }
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
@@ -6049,10 +6070,13 @@ function sk1StatusBadges(c, badges){
 // three skills' card lines.
 { const pz = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'poison');
   LIVE_STATUS_ROWS.splice(pz + 1, 0, ['gpoison', 'greaterPoison', TX('ui.stn-greater-poison'), n=> TX('ui.ls-greater-poison', {n, d: n}), true]); } // owner 23:45: 1 a stack, never wears off
-STATUS_KEYWORDS.push({k:'greaterPoison', re:/\b(greater poison(?:ed)?)\b/gi, cs:true, name:TX('ui.stn-greater-poison'), c:'#9b4dd6', text:TX('ui.st-greater-poison')});
+STATUS_KEYWORDS.push({k:'greaterPoison', re:/\b((?:deadly|greater) poison(?:ed)?)\b/gi /* EN5 (2026-10-24): it is called Deadly Poison */, cs:true, name:TX('ui.stn-greater-poison'), c:'#9b4dd6', text:TX('ui.st-greater-poison')});
+// EN5 (2026-10-24): a lit pip per state skill that is on (🪵 Timbered, 🪨 Bedrock, 🔩 Forged, 🏳️ Last Stand), from the engine's c._en5On
+function en5StatusBadges(c, badges){ const on = String((c && (c.en5On != null ? c.en5On : c._en5On)) || '').split(',').filter(k=> EN5_STATE_KEYS[k]);
+  on.forEach(k=> badges.push(`<span class="abadge en5-state" data-en5="${k}" title="${escapeAttr(TX('ui.en5-state-on-tip', {skill: TX('ui.skn-' + EN5_STATE_KEYS[k].tx)}))}">${EN5_STATE_KEYS[k].ico}</span>`)); }
 function en4StatusBadges(c, badges){ if(c && c.gpoison > 0) badges.push(`<span class="abadge gpoison" title="${escapeAttr(TX('ui.en4-gp-tip', {n: c.gpoison, d: c.gpoison}))}">💀${c.gpoison}</span>`); }
 Object.assign(SKILL_TEXT, {
-  hemorrhage: ()=> TX('ui.sk-hemorrhage'),
+  hemorrhage: v=> (v !== true && Number(v) > 0) ? TX('ui.sk-hemorrhage-n', {n: Number(v)}) : TX('ui.sk-hemorrhage'), // + Hemorrhage N (EN5, 2026-10-24)
   greaterPoison: v=> TX('ui.sk-greater-poison', {n: numOr(v, 1)}),
   shoreUp: ()=> TX('ui.sk-shore-up'),
 });
@@ -8417,7 +8441,7 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy){ const lv = bopts && bopts.live, spent = !!(lv && (lv.bloomed || lv.bloomCopy)); out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomCopy){ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
@@ -10606,7 +10630,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
     : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
   let valueHtml = '';
-  if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${row.value||1}">`;
+  if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${(row.value === true || row.value == null || row.value === '') ? (s.defaultValue != null ? s.defaultValue : 1) : row.value}">`; // EN5 (2026-10-24): a plain skill (true) shows its default (Hemorrhage 0); was row.value||1
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
   // Zeitgeber advanced forms (2026-10-15): the braces are a skill list, typed or picked ("+ skill" appends one); Tide has two facets.
   else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
@@ -17082,7 +17106,13 @@ function decorGateNote(map, key, fallback){
 // 2026-10-24 (package MAP, owner 13:16 #19: "While NPC dialogue is active, clicking map interactibles plays a dull sound and the object shakes
 // (instead of opening)"; #20: interactibles that open the notice board before it is unlocked are uninteractible: dull sound + shake + a small
 // "Locked for now" label): one helper for both. A tile that is blocked does nothing else; the caller returns when this says true.
-function npcDialogueActive(){ try{ return dialoguesPending.size > 0; }catch(e){ return false; } }
+// 2026-10-24 (package EN5, owner MAP-3: "tutorials have priority. And they dont even use the dialogue anyway, they use a different parallel
+// form"): a tutorial lesson (the coach tips and their spotlight: showCoachTip / tutorialLock, and the lesson scripts that teach a rule:
+// lesson_*, tut_*, pitch_lesson_*, training_wheels_off) never counts as an NPC conversation, and while a lesson is on screen no map tile is
+// held back by an NPC conversation either: the tile the lesson points at always opens. Only a real NPC conversation that is playing counts.
+const EN5_LESSON_DIALOGUE = /^(lesson_|tut_|pitch_lesson|pitch_spent|training_wheels)/;
+function tutorialLessonOn(){ try{ return !!(coachOpen || tutorialLock || coachShield); }catch(e){ return false; } }
+function npcDialogueActive(){ try{ if(tutorialLessonOn()) return false; for(const id of dialoguesPending){ if(!EN5_LESSON_DIALOGUE.test(String(id))) return true; } return false; }catch(e){ return false; } }
 function noticeBoardUnlocked(){ try{ return featureUnlocked('quests'); }catch(e){ return true; } }
 function lockedTileTap(el, label){
   if(!el) return;
@@ -17973,6 +18003,9 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   // Scorched Ground (rules.eruption without volcano odds) and Scorching stay off. A fight's own eruption number is kept.
   if(r.wildfire && node){ if(!(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) &&!(node.rules && Number(node.rules.eruption) > 0)) delete r.eruption; if(r.field === 'heatwave'){ delete r.field; delete r.heatLevel; } }
   if(r.terrain == null && node && mid){ const t = terrainFor(mid, node); if(t) r.terrain = t; }
+  // 2026-10-24 (package EN5, owner 03:12 FLY-1): every fight on a forest-biome map is under the trees (rules.woods; the engine's en5Woods,
+  // read by Canopy Cover), the first skirmish too (it has no Old Woods terrain yet).
+  if(r.woods == null && mid){ try{ const mp = CONQUEST_MAPS.find(m=> m.id === mid), b = MAP_BIOME_OF[mid] || (mp && mp.parent && MAP_BIOME_OF[mp.parent]); if(b === 'forest') r.woods = true; }catch(e){} }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
 // Do effects for each biome, highlighting that biome's strength. It starts with nothing at first, then from the 2nd skirmish
@@ -23894,6 +23927,17 @@ function gdNameOf(d){ return d ? (d.nameKey ? TX(d.nameKey) : (d.name || d.id ||
 function gdSeatName(seat, info){ const v = GD.s && GD.s.view, x = info || (v && v.seats[seat]); if(!x) return TX('ui.ar3-seat-empty'); return x.cpu ? TX('ui.ar3-cpu-name', {seat}) : (x.name || TX('ui.ar3-you')); }
 function gdFloorName(idx){ const f = CoopM.DUNGEONS.hollow.floors[idx]; return f ? TX(f.nameKey) : ''; }
 function gdCost(){ return CoopM ? CoopM.ENERGY_COST : 5; }
+// 2026-10-24 (package EN5, owner AR3-6: "2-4 players. The dungeon has people symbols to tell you how many"): a row of 👤, one per seat.
+// On the dungeon card: 2 solid and 2 lighter (a room holds 2, or 4); in the lobby: a lit 👤 per player in, 🤖 per CPU ally, a dim one per
+// free seat, then "N / M". aria-label in words.
+function gdPeopleHTML(opt){ opt = opt || {}; let icons = '', label;
+  if(opt.range){ icons = [0, 1, 2, 3].map(i=> `<i class="gd-p ${i < 2 ? 'is-on' : 'is-opt'}">👤</i>`).join(''); label = TX('ui.en5-gd-players-range', {min: 2, max: 4}); }
+  else { const size = opt.size || 2, humans = opt.humans || 0, cpu = opt.cpu || 0;
+    for(let i = 0; i < size; i++) icons += i < humans ? '<i class="gd-p is-on">👤</i>' : i < humans + cpu ? '<i class="gd-p is-cpu">🤖</i>' : '<i class="gd-p is-free">👤</i>';
+    label = TX('ui.en5-gd-players-in', {n: humans + cpu, size}); }
+  return `<span class="gd-people" role="img" aria-label="${escapeAttr(label)}" title="${escapeAttr(label)}">${icons}<small>${escapeHtml(opt.range ? label : `${(opt.humans || 0) + (opt.cpu || 0)} / ${opt.size || 2}`)}</small></span>`; }
+function gdRoomCounts(){ const S = GD.s, r = S && S.room; if(!r || !r.seats) return null; const size = r.size || 2, seats = CoopM.seatsFor(size);
+  let humans = 0, cpu = 0; seats.forEach(k=>{ const x = r.seats[k]; if(x){ if(x.cpu) cpu++; else humans++; } }); return {size, humans, cpu}; }
 function groupDungeonCardHTML(){
   if(!CoopM) return '';
   const dg = CoopM.DUNGEONS.hollow, signed = !!(sbClient && isSignedIn());
@@ -23901,7 +23945,8 @@ function groupDungeonCardHTML(){
   return `<div class="dg-card dg-group"><div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group', false)}<span class="wd-ico">👥</span></div>
     <div class="dg-body"><b class="dg-name">${escapeHtml(TX('ui.ar-group-name'))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}</b>
       <p class="dg-sub">${escapeHtml(TX('ui.ar3-group-sub'))}</p>
-      <p class="dg-sub gd-facts">${escapeHtml(TX('ui.ar3-group-facts', {floors: dg.floors.length, energy: gdCost()}))}</p>${inv}
+      <p class="dg-sub gd-facts">${escapeHtml(TX('ui.ar3-group-facts', {floors: dg.floors.length, energy: gdCost()}))}</p>
+      <p class="dg-sub gd-people-line">${(()=>{ const c = gdRoomCounts(); return c ? gdPeopleHTML(c) : gdPeopleHTML({range: true}); })()}</p>${inv}
       ${GD.s ? `<div class="dg-acts"><button type="button" class="btn primary" data-gd-open="show">👥 ${escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))}</button></div>` : `<div class="dg-acts gd-acts">
         <button type="button" class="btn primary" data-gd-open="create">👥 ${escapeHtml(TX('ui.ar3-create'))}</button>
         <button type="button" class="btn" data-gd-open="solo">🤖 ${escapeHtml(TX('ui.ar3-solo'))}</button>
@@ -24062,6 +24107,7 @@ function gdLobbyHTML(){
     <div class="gd-lobby">
       ${GD.kind === 'solo' ? '' : `<div class="gd-code-row"><span>${escapeHtml(TX('ui.ar3-code-label'))}</span><b class="gd-code" id="gdCode">${escapeHtml(GD.code)}</b><button type="button" class="btn small" data-gd-act="copy">📋 ${escapeHtml(TX('ui.ar3-copy'))}</button></div>`}
       <p class="gd-note">${escapeHtml(kindNote)}</p>
+      <p class="gd-people-line" id="gdPeople">${gdPeopleHTML(gdRoomCounts() || {size})}</p>
       <div class="gd-seats-grid" aria-label="${escapeAttr(TX('ui.ar3-seats'))}">
         <div class="gd-enemy-strip">${dg.icon} ${escapeHtml(TX(dg.nameKey))}</div>
         ${['A', 'B', 'C', 'D'].map(seatTile).join('')}
@@ -34244,7 +34290,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -38929,7 +38975,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
       });
     });
   });
@@ -42384,6 +42430,7 @@ function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const w5 = en5LogText(ev, nm); if(w5) return w5; } // EN5 (2026-10-24): Breach, Canopy Cover, the state skills
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
@@ -44481,7 +44528,7 @@ function labSkillFx(ev){
       break; }
     // 2026-10-15 (user: "it starts delayed - right now, it looks like it's dodging in advance"): the sidestep starts a beat before
     // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
-    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift' || ev.reason === 'canopy' /* + High Canopy's dodge (2026-10-16) */) && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift' || ev.reason === 'canopy' /* + High Canopy's dodge (2026-10-16) */ || ev.reason === 'canopyCover' /* + Canopy Cover (EN5, 2026-10-24) */) && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
       const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
       setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } }
       // 2026-10-17 (user: "Quick effect should always play, even if the unit misses."): the Quick dash at the unit that dodged it
@@ -44919,6 +44966,7 @@ function ninthPassVfx(ev){
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
   try{ en4StatusBadges(c, badges); }catch(e){} // Greater Poison (2026-10-23, package EN4)
+  try{ en5StatusBadges(c, badges); }catch(e){} // the state skills on (2026-10-24, package EN5)
   try{ sk3StatusBadges(c, badges); }catch(e){} // Silenced, Stymied, Exhausted, Petrified N, Grounded, Stench (2026-10-19, package SK3)
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
   try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
@@ -45806,6 +45854,59 @@ function en4Vfx(ev){
   if(ev.type === 'greaterPoisonTick') en4GreaterPoisonTickVfx(ev);
   if(ev.type === 'shoreUp') en4ShoreUpVfx(ev);
 }
+// ---- EN5 (2026-10-24, owner 02:59 / 03:12): Breach's chip into the bramble, Canopy Cover's leafy dodge, a state skill turning on or off.
+// Looks and the replay's mirror only; the engine decides (bramblewood-engine.js en5Breach / en5CanopyCover / EN5_STATES).
+function en5StateName(k){ const s = EN5_STATE_KEYS[k]; return s ? TX('ui.skn-' + s.tx) : k; }
+function en5LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'breachHQ'){ const mine = ev.targetSide === 'B'; return {cls:'', text:TX(mine ? 'ui.en5-log-breach-foe' : 'ui.en5-log-breach-you', {att: nm(ev.attDefId), d: ev.dmg})}; }
+  if(ev.type === 'evaded' && ev.reason === 'canopyCover') return {cls:'', text:TX('ui.en5-log-canopy', {name: nm(ev.targetDefId), att: nm(ev.attDefId)})};
+  if(ev.type === 'statusFx' && ev.kind === 'stateSkill') return {cls: ev.on ? 'gold' : '', text:TX(ev.on ? 'ui.en5-log-state-on' : 'ui.en5-log-state-off', {name: nm(ev.targetDefId), skill: en5StateName(ev.name)})};
+  return null;
+}
+// Breach: a small 🧱 chip flies from the unit to the enemy bramble and knocks a chunk off it, then the number on the bramble's bar.
+function en5BreachVfx(ev){
+  const m = matchState, side = ev.targetSide;
+  setTimeout(()=>{ if(matchState !== m) return; const hq = hqTileEl(side);
+    try{ SoundKit.pierceTone && SoundKit.pierceTone(); }catch(e){}
+    if(hq){ try{ flashHqDamage(hq); hq.classList.remove('en5-breach-hit'); void hq.offsetWidth; hq.classList.add('en5-breach-hit'); setTimeout(()=> hq.classList.remove('en5-breach-hit'), 600); }catch(e){} }
+    { const at = hqRibbonFloatAnchor(side) || hq; if(at) try{ dnFloat(at, ev.dmg, {addCls:'hq-big en5-breach-num', fit:false}); }catch(e){} }
+    try{ displayHqDamage(m, side, ev.dmg); }catch(e){}
+    const src = boardCardEl(ev.attUid);
+    if(src && hq && hasGsap() && !reducedMotion() && fxAtLeast('low')){ const a = en2Ctr(src), b = en2Ctr(hq), chip = en2Layer('🧱', 'en5-breach-chip');
+      gsap.set(chip, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.5, opacity:0});
+      gsap.timeline({onComplete:()=>{ chip.remove(); try{ en2Ring(b.x, b.y, 70); }catch(e){} }})
+        .to(chip, {opacity:1, scale:1, duration:.08})
+        .to(chip, {x:b.x, y:b.y, rotation:200, duration:.32, ease:'power2.in'})
+        .to(chip, {scale:1.4, opacity:0, duration:.14}); }
+  }, en4ImpactMs());
+}
+// Canopy Cover: the unit ducks under a spray of leaves (🍃) and the swing passes over it (the usual dodge and its "Evaded!" play too).
+function en5CanopyVfx(ev){
+  setTimeout(()=>{ const el = boardCardEl(ev.targetUid); if(!el) return; try{ tintPulse(el, 'en5-canopy-pulse'); }catch(e){} /* the dodge's own "Evaded!" float says the miss */
+    if(!hasGsap() || reducedMotion() || !fxAtLeast('low')) return; const c = en2Ctr(el);
+    for(let i = 0; i < 5; i++){ const lf = en2Layer(i % 2 ? '🍃' : '🌿', 'en5-canopy-leaf'), ang = -150 + i * 30, r = c.w * .55;
+      gsap.set(lf, {x:c.x + Math.cos(ang * Math.PI / 180) * r * .3, y:c.y - c.h * .35, xPercent:-50, yPercent:-50, scale:.5, opacity:0, rotation:ang});
+      gsap.timeline({delay:i * .03, onComplete:()=> lf.remove()}).to(lf, {opacity:1, scale:1, duration:.08})
+        .to(lf, {x:c.x + Math.cos(ang * Math.PI / 180) * r, y:c.y + Math.sin(ang * Math.PI / 180) * r * .5 + c.h * .2, rotation:ang + 90, duration:.5, ease:'sine.out'}).to(lf, {opacity:0, duration:.2}); } }, en4ImpactMs());
+}
+// A state skill on: a ring of its colour around the card, its pip lights, "🪵 Timbered" floats up; off: the pip greys out and goes.
+function en5StateVfx(ev){
+  const m = matchState, rc = m.replayCards && m.replayCards[ev.targetUid];
+  if(rc){ const on = String(rc.en5On || '').split(',').filter(Boolean).filter(k=> k !== ev.name); if(ev.on) on.push(ev.name); rc.en5On = on.join(','); }
+  const el = boardCardEl(ev.targetUid); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}
+  if(!el) return; const s = EN5_STATE_KEYS[ev.name] || {ico:'✨'};
+  try{ floatText(el, `${s.ico} ${en5StateName(ev.name)}`, ev.on ? 'buff' : 'faded'); }catch(e){}
+  if(ev.on){ try{ tintPulse(el, 'en5-state-pulse'); }catch(e){} try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const c = en2Ctr(el), ic = en2Layer(s.ico, 'en5-state-ico'); gsap.set(ic, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+      gsap.timeline({onComplete:()=> ic.remove()}).to(ic, {opacity:1, scale:1.5, duration:.2, ease:'back.out(2)'}).to(ic, {y:c.y - c.h * .45, scale:.8, opacity:0, duration:.5, delay:.15}); try{ en2Ring(c.x, c.y, c.w * 1.2); }catch(e){} } }
+}
+function en5Vfx(ev){
+  if(!ev || !matchState) return;
+  if(ev.type === 'breachHQ') en5BreachVfx(ev);
+  if(ev.type === 'evaded' && ev.reason === 'canopyCover') en5CanopyVfx(ev);
+  if(ev.type === 'statusFx' && ev.kind === 'stateSkill') en5StateVfx(ev);
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
@@ -45813,6 +45914,7 @@ function renderVfxForEvent(ev){
   try{ en2Vfx(ev); }catch(e){} // EN2 (2026-10-23)
   try{ en3Vfx(ev); }catch(e){} // EN3 (2026-10-23)
   try{ en4Vfx(ev); }catch(e){} // EN4 (2026-10-23)
+  try{ en5Vfx(ev); }catch(e){} // EN5 (2026-10-24)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}

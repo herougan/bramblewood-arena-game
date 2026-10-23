@@ -10552,6 +10552,25 @@
 .sfx.en4-hemo-drop{font-size:20px; line-height:1; text-shadow:0 1px 1px rgba(0,0,0,.35);}
 .sfx.en4-gp-skull{font-size:30px; line-height:1; filter:drop-shadow(0 0 6px rgba(160,80,230,.9));}
 .sfx.en4-shore-shield{font-size:22px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45)) drop-shadow(0 0 5px rgba(120,190,255,.7));}
+/* EN5 (2026-10-24): Breach's brick chip and the bramble's knock, Canopy Cover's leaves, a state skill's pip and ring, the Group Dungeon's
+   people row. */
+.sfx.en5-breach-chip{font-size:22px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5)) drop-shadow(0 0 4px rgba(255,150,80,.6));}
+.en5-breach-hit{animation:en5BreachKnock 520ms ease;}
+@keyframes en5BreachKnock{0%,100%{transform:none;} 18%{transform:translateY(3px) scale(.985);} 40%{transform:translateY(-1px);} 60%{transform:translateY(1px);}}
+.sfx.en5-canopy-leaf{font-size:18px; line-height:1; filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));}
+.en5-canopy-pulse{animation:en5CanopyPulse 560ms ease;}
+@keyframes en5CanopyPulse{0%,100%{box-shadow:0 0 0 0 rgba(60,150,70,0);} 30%{box-shadow:0 0 0 3px rgba(80,170,90,.85), 0 0 16px 5px rgba(40,120,50,.45);}}
+.sfx.en5-state-ico{font-size:30px; line-height:1; filter:drop-shadow(0 0 6px rgba(255,220,120,.9));}
+.en5-state-pulse{animation:en5StatePulse 640ms ease;}
+@keyframes en5StatePulse{0%,100%{box-shadow:0 0 0 0 rgba(240,190,70,0);} 30%{box-shadow:0 0 0 3px rgba(245,200,80,.95), 0 0 18px 6px rgba(230,170,50,.5);}}
+.abadge.en5-state{background:color-mix(in srgb, #e0a83a 28%, var(--surface-2)); box-shadow:0 0 5px rgba(240,190,70,.75);}
+.gd-people-line{margin:4px 0;}
+.gd-people{display:inline-flex; align-items:center; gap:2px; font-size:15px; line-height:1;}
+.gd-people .gd-p{font-style:normal;}
+.gd-people .gd-p.is-opt{opacity:.45;}
+.gd-people .gd-p.is-free{opacity:.28; filter:grayscale(1);}
+.gd-people small{margin-left:6px; font-size:12px; color:var(--text-muted, #8a8f98); font-weight:600;}
+#gdPeople .gd-p.is-on, #gdPeople .gd-p.is-cpu{filter:drop-shadow(0 0 2px rgba(255,255,255,.6));} /* the lobby is dark: a light rim on the lit ones */
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}
