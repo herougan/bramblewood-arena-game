@@ -246,7 +246,7 @@ TRIGGER_KEYS.push('onAction'); ALWAYS_ON_HOOKS.add('onAction');
 const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild','positionBeam','duplicate','devourGrave','buffAll','stench','silence','stymie','exhaust','petrify','vulnerable','barrage','smokeScreen','magnet']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17), Position Beam (2026-10-19, package EE)
 ACTION_KEYS.push('forgeWeapon', 'disarm'); // Package SK2b (2026-10-19 / owner Oct 21): a smith lays a weapon; Disarm takes one
-ACTION_KEYS.push('exploit', 'poisonTick'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N
+ACTION_KEYS.push('exploit', 'poisonTick', 'pulse'); // Package SK1 (2026-10-19): Exploit N tokens, Poison Tick N; + Pulse N (EN4, 2026-10-23: Poison Tick is retired, it reads as Pulse)
 ACTION_KEYS.push('arrow'); // Package BX (2026-10-21): Arrow N as an action (the Arrow skill's shot: the enemy facing it, else the nearest, else the bramble)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -657,7 +657,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isFrenzied(c){
     const d = c && CARD_DEFS[c.defId]; if(!d || !d.effects || !d.effects.frenzy) return false;
     return (c.poison>0 || c.bleed>0 || c.decay>0 || c.scar>0 || c.exposed>0 || c.exploit>0 /* SK1 */ || c.corrode>0 || c.frozen>0 || c.asleep>0 || c.paralyzed>0 ||
-      c.blind>0 || c.tipsy>0 || c.confused>0 || c.shocked>0 || c.staggered>0 || !!c.stunned || c.bound>0 || c.toxin>0 || c.webbed>0); // + Bound, Toxin (2026-10-16); + Webbed (2026-10-17)
+      c.blind>0 || c.tipsy>0 || c.confused>0 || c.shocked>0 || c.staggered>0 || !!c.stunned || c.bound>0 || c.toxin>0 || c.webbed>0 || c.gpoison>0); /* + Greater Poison (EN4, 2026-10-23) */ // + Bound, Toxin (2026-10-16); + Webbed (2026-10-17)
   }
   // Wildpath perks on arrival (2026-10-13): Bark Skin, Hedge Wall, Old Growth, Sharpened Briars, Light Feet. Only the side
   // that carries pl.perks gets them, so the enemy's copies of the same cards are untouched.
@@ -712,7 +712,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects && def.effects.chained){ board.chained = true; }
     if(chargeOf(def) && !(board.wait > 0)) board.chargeLeft = chargeOf(def).n; // Charge N (2026-10-14): Ready on arrival, so the clock starts now
     // W2 (2026-10-16): Bound (Tangleweed / Strangle), Toxin, and the arrival shields Invincible N / Invisible N (see the W2 block).
-    board.bound = 0; board._boundJustSet = false; board.boundDmg = 0; board.toxin = 0;
+    board.bound = 0; board._boundJustSet = false; board.boundDmg = 0; board.toxin = 0; board.gpoison = 0; /* EN4 (2026-10-23): Greater Poison */
     if(def.effects && def.effects.invincible) board.invincible = w2N(def, 'invincible');
     if(def.effects && def.effects.invisible) board.invisible = w2N(def, 'invisible');
     // Injured N (2026-10-21, package BF6; owner: "comes in with damage already on it (can be healed). This counts as −N × 0.99."): it
@@ -2196,6 +2196,32 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && ((Array.isArray(d.archetypes) && d.archetypes.includes('Structure')) || d.type === 'Structure' || d.cardType === 'structure')); }
   function poisonProof(c){ return !c || isStructureCard(c) || resistFactor(c.defId, 'poison') === 0; }
   function addPoison(c, n){ if(!(n > 0) || poisonProof(c)) return 0; c.poison = (c.poison||0) + n; return n; }
+  // ==== EN4 (2026-10-23, owner 22:23 #7: "Do we have the skills that do extra damage to bleeding units, or even 2x their bleed. Then for
+  // poison - trigger their poison once. Then a passive new skill Greater Poison - when units are hit with Greater Poison - all existing poison
+  // is converted to greater poison. Greater poison only hits for 1 poison by default. Usually they have both GP and Poison."). Already there:
+  // Hunter (Bleeding) and Venom Pulse (a Poison Tick on hit). New here:
+  //   Hemorrhage (effects.hemorrhage, true; name: call EN4-1): its swing that lands on a Bleeding unit doubles the Bleed the unit already
+  //     has, then its own Bleed (if any) adds as usual. Ghosts don't bleed. Event statusFx 'hemorrhage' {from, total} after the hit's Bleed.
+  //   Greater Poison N (effects.greaterPoison, N 1 by default): its swing that gets through (as Poison: damage dealt or converted) turns all
+  //     the Poison the unit already had into Greater Poison and adds N Greater Poison; the swing's own Poison (if any) then lands as plain
+  //     Poison, to be converted by the next hit. Owner 23:45 ("Greater Poison tokens are not removed on every poison tick"): a Greater Poison
+  //     stack never wears down; each round's tick deals 1 a stack (GP_PER_STACK; the first build, 2 a stack and -1 a round, is gone; call
+  //     EN4-2). Poison-proof units and Structures take none. Cure takes Poison first, then Greater Poison. Pulse ticks both. Hunter (Poisoned)
+  //     counts both.
+  //     Event statusFx 'greaterPoison' {converted, amount, total, poison} after the hit's Poison; the round's tick is 'greaterPoisonTick'.
+  //   Shore Up (effects.shoreUp, true; the owner's option B of call EN3-7): when it is hit and lives (any hit that fires On Attacked:
+  //     a swing, a shot, a damage or status skill), each ally beside it in its row gets Shield 1. Works while Waiting (a passive).
+  //     Event 'shoreUp' {uid, targets} before the Shields' own unitShield events. See en4ShoreUp (runCustomTriggers' On Attacked).
+  const GP_PER_STACK = 1; // EN4 (owner 23:45): 1 a stack, and the stack stays
+  function en4GreaterPoison(att, attDef, t, prePoison, landed, side, tSide, events){
+    const e = (attDef && attDef.effects) || {}; if(!e.greaterPoison || !landed || !t || !(t.hp > 0) || poisonProof(t)) return 0;
+    const n = numN(e.greaterPoison, 1), conv = Math.max(0, Math.min(prePoison|0, t.poison|0));
+    t.poison = (t.poison|0) - conv; t.gpoison = (t.gpoison|0) + conv + n;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'greaterPoison', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, converted:conv, amount:n, total:t.gpoison, poison:t.poison|0});
+    return conv + n;
+  }
+  function en4Hemorrhage(attDef, t){ const e = (attDef && attDef.effects) || {}; if(!e.hemorrhage || !t || !(t.hp > 0) || isGhost(t) || !(t.bleed > 0)) return 0; const was = t.bleed; t.bleed = was * 2; return was; }
+  function en4HemorrhageEv(att, t, was, side, tSide, events){ if(was > 0 && recordEvents && events) events.push({type:'statusFx', kind:'hemorrhage', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, from:was, total:t.bleed|0}); }
   // Toxin (planned, 2026-10-14, user: "Toxin: More dangerous poison - not yet defined."): not built; no behaviour yet.
   // Psychic N (2026-10-14, user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."): each landed hit also
   // deals N psychic damage straight to Health: Armor, a unit Shield, Shell's temporary Health and a Ghost's immunity don't stop it.
@@ -3131,18 +3157,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Archer, Snipe), Bolts, shots, damage skills, status skills and areas all reach the unit they were aimed at. Skills have their
   // own interceptor now: Spellward (spellwardFor, called from shieldCall).
   function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
-  // EN3 (2026-10-23, owner 19:27 #8: "Guardian doesn't intercept a guardian's intercept."): one hop more. When a Guardian steps in, a
-  // Guardian adjacent to THAT Guardian (not the first one, not the unit first aimed at) steps in for it, and takes the swing. At most one
-  // extra hop (call EN3-3: one hop reads plainly on the board; a full chain would always run the blow to the end of a Guardian line).
-  // Several at a hop: one at random, as before. lastGuardHop names the first Guardian when the blow hopped (the hit event's guardChain).
-  let lastGuardHop = null;
+  // EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop (a Guardian beside the
+  // Guardian that stepped in took the swing in its place, call EN3-3) is reverted. One Guardian steps in, and it takes the swing; no other
+  // Guardian covers it. (A Guardian aimed at directly can still be covered by a Guardian beside it: it wasn't intercepting.) Several at
+  // once: one at random, as before. The hit no longer carries guardChain.
   function redirectToGuardian(enemyPl, card){
-    lastGuardHop = null;
     if(!enemyPl || !card) return card;
-    const pick = (around, skip)=>{ const gs = adjacentOf(enemyPl, around).filter(n=> !skip.includes(n) && isLiveGuardian(n)); return !gs.length ? null : gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)]; };
-    const g1 = pick(card, [card]); if(!g1) return card;
-    const g2 = pick(g1, [card, g1]); if(!g2) return g1;
-    lastGuardHop = g1.uid; return g2;
+    const gs = adjacentOf(enemyPl, card).filter(n=> n !== card && isLiveGuardian(n)); if(!gs.length) return card;
+    return gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)];
   }
   // Spellward (2026-10-22, package GD2, owner GD-3: "We have ward for dodging skills right? There can be a similar skill - but for
   // shielding allies from skills."): a single-target enemy skill aimed at a unit adjacent to a Spellward unit hits the Spellward
@@ -4319,7 +4341,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiEvoluteBase(pl, defId){
     const d = CARD_DEFS[defId] || {}, own = (d.health | 0), wait = (d.wait | 0); let best = null, bestV = -Infinity;
     evoBasesFor(pl, defId).forEach(c=>{
-      const doom = (c.poison | 0) + (c.bleed | 0) + (c.toxin | 0) + (c.chilli > 0 ? 1 : 0) + (c.bound > 0 ? (c.boundDmg | 0) : 0);
+      const doom = (c.poison | 0) + GP_PER_STACK * (c.gpoison | 0) /* EN4 */ + (c.bleed | 0) + (c.toxin | 0) + (c.chilli > 0 ? 1 : 0) + (c.bound > 0 ? (c.boundDmg | 0) : 0);
       const hp = (c.hp | 0) + own + (isStemDef(evoBaseDef(c)) ? 2 : 0);
       if(hp - doom <= 1) return; // the stack would die to its own statuses: a waste
       const v = 2 * Math.max(0, c.atk | 0) + Math.max(0, c.hp | 0) - doom * 1.5 + (c.evoStack ? c.evoStack.length : 0) + (isStemDef(evoBaseDef(c)) ? 2 : 0) - (!(c.wait > 0) ? wait * 0.75 : 0) - Math.max(0, c.wait | 0) * 0.75; // + EV-4 (EN, 2026-10-23): a waiting base's remaining Wait is added
@@ -4906,7 +4928,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.sentry) out.push({on:'onEnemyEnter', do:'damage', who:'enemy', sub:'subject', amount:N('sentry'), keyword:'sentry'});
     if(e.expose) out.push({on:'onHit', do:'expose', who:'enemy', sub:'subject', amount:N('expose'), keyword:'expose'});
     if(e.exploit) out.push({on:'onHit', do:'exploit', who:'enemy', sub:'subject', amount:N('exploit'), keyword:'exploit'});
-    if(e.venomPulse) out.push({on:'onHit', do:'poisonTick', who:'enemy', sub:'subject', amount:N('venomPulse'), keyword:'venomPulse'});
+    if(e.venomPulse) out.push({on:'onHit', do:'pulse', who:'enemy', sub:'subject', amount:N('venomPulse'), keyword:'venomPulse'}); // Pulse N (EN4, 2026-10-23: was Venom Pulse = Poison Tick)
     if(e.spoils) out.push({on:'onKillCreature', do:'buff', who:'self', amount2:N('spoils'), keyword:'spoils'});
     sk1TrigMemo.set(e, {src:list, key, out}); return out;
   }
@@ -4919,14 +4941,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const was = sk1OnHitNow; sk1OnHitNow = true;
     try{ runCustomTriggers(players, sideOf, attPid, att, CARD_DEFS[att.defId], 'onHit', stats, events, {subjectCard:t}); } finally{ sk1OnHitNow = was; }
   }
-  // The Poison Tick action: the target's Poison deals its whole current stack n times now, and the stack doesn't wear down.
+  // The Pulse action (EN4, 2026-10-23, owner 23:45: "Venom maybe can just be called pulse ... why not pulse affects both bleeding and poison
+  // units alike! No need for Poison Tick, cause you can just do Pulse N, default 1."): the target's Poison (and Greater Poison) deals its whole
+  // current stack, and its Bleed deals its whole stack, n times now; no stack wears down. Was the Poison Tick action (Poison only, SK1): the
+  // retired 'poisonTick' action reads as Pulse, so an old custom card keeps working. A Structure has no Poison; a Ghost bleeds only what
+  // Ichor gave it (ghostBleedClamp).
   function sk1PoisonPulse(att, t, n, side, tSide, stats, events){
-    if(!t || !(t.hp > 0) || !(t.poison > 0) || isStructureCard(t)) return 0; let total = 0;
-    for(let i = 0; i < n && t.hp > 0 && t.poison > 0; i++){
-      const hp0 = t.hp, dmg = damageCardFlat(t, t.poison, 'poison'); total += dmg;
-      if(hp0 > 0 && t.hp <= 0 && att) noteKiller(t, att.uid, att.defId);
-      if(att) ensureStat(stats, side, att.defId).dealt += dmg; ensureStat(stats, tSide, t.defId).taken += dmg;
-      sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, mods:dnModsFor(t.uid) /* DN2 */, decay:false, pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
+    if(t) ghostBleedClamp(t);
+    const has = ()=> t.hp > 0 && (((t.poison > 0 || t.gpoison > 0) && !isStructureCard(t)) || t.bleed > 0);
+    if(!t || !has()) return 0; let total = 0;
+    const note = (hp0, dmg)=>{ total += dmg; if(hp0 > 0 && t.hp <= 0 && att) noteKiller(t, att.uid, att.defId); if(att) ensureStat(stats, side, att.defId).dealt += dmg; ensureStat(stats, tSide, t.defId).taken += dmg; };
+    for(let i = 0; i < n && has(); i++){
+      if((t.poison > 0 || t.gpoison > 0) && !isStructureCard(t)){ const hp0 = t.hp, dmg = damageCardFlat(t, (t.poison|0) + GP_PER_STACK * (t.gpoison|0), 'poison'); note(hp0, dmg);
+        sk1Ev(events, {type:'poisonTick', side:tSide, defId:t.defId, uid:t.uid, dmg, mods:dnModsFor(t.uid) /* DN2 */, decay:false, pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
+      if(t.hp > 0 && t.bleed > 0){ const hp0 = t.hp, dmg = damageCardFlat(t, t.bleed, 'bleed'); note(hp0, dmg);
+        sk1Ev(events, {type:'bleedTick', side:tSide, defId:t.defId, uid:t.uid, dmg, cause:'pulse', decay:false, mods:dnModsFor(t.uid), pulse:true, attUid: att ? att.uid : null, attDefId: att ? att.defId : null}); }
+    }
     return total;
   }
   // On Enemy Enters (Facing): watchScan calls this for each watcher a of the unit x that came into its watch.
@@ -5093,7 +5123,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // SK3_DEF.cullAtk / cullHp), the new default; a card that stores no hunterVs reads Weak now (Fen Mink keeps its Poisoned explicitly).
   const GI_HUNTER_VS = ['weak', 'poison', 'bleed', 'wet', 'exposed'];
   function hunterVsOf(e){ const v = e && e.hunterVs; return GI_HUNTER_VS.includes(v) ? v : 'weak'; }
-  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : t.poison > 0; }
+  function hunterMarked(t, vs){ if(!t || t.kind === 'hq') return false; return vs === 'weak' ? sk3Weak(t) : vs === 'bleed' ? t.bleed > 0 : vs === 'wet' ? wetCountOf(t) > 0 : vs === 'exposed' ? t.exposed > 0 : (t.poison > 0 || t.gpoison > 0); } // + Greater Poison (EN4, 2026-10-23)
   function giHitBonus(attDef, t, dmgType){
     const e = (attDef && attDef.effects) || {}; if(!t || t.kind === 'hq' || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType)) return 0; let b = 0;
     if(e.hunter && hunterMarked(t, hunterVsOf(e))) b += numN(e.hunter, 1);
@@ -6346,7 +6376,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // trigLayer+1, and anything they set off nests one deeper. At TRIGGER_LAYER_CAP no further nested trigger fires (logged as
   // {type:'triggerCapped'}, no text). Siblings at one layer each open and close their own layer, so they are never limited.
   let trigLayer = 0;
+  // Shore Up (EN4, 2026-10-23, owner 19:27 #4 option B, approved 22:23): when it is hit and lives, the allies beside it in its row (left and
+  // right; not in front or behind) get Shield 1 each. It rides on every On Attacked call (a swing, a shot, a damage or status skill on it), so
+  // one hit is one brace. A passive: it braces while Waiting too; not from a cage.
+  function en4ShoreUp(players, sideOf, boardCard, events){
+    if(!boardCard || boardCard.gap || !(boardCard.hp > 0) || boardCard.cageOf || !effectsOf(boardCard).shoreUp) return;
+    const pid = ownerPidOfCard(boardCard), pl = players && players[pid]; if(!pl) return;
+    const order = rowOrderOf(pl, boardCard), i = order.indexOf(boardCard); if(i < 0) return;
+    const nb = [order[i - 1], order[i + 1]].filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf); if(!nb.length) return;
+    if(recordEvents && events) events.push({type:'shoreUp', side:sideOf(pid), uid:boardCard.uid, defId:boardCard.defId, targets:nb.map(c=> c.uid)});
+    nb.forEach(c=> grantShield(pid, boardCard, c, 1, sideOf, events));
+  }
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
+    if(hook === 'onAttacked') en4ShoreUp(players, sideOf, boardCard, events); // EN4 (2026-10-23): Shore Up
     const trigs = trigsOf(def); if(!trigs.length) return; // 2026-10-19 (package GI): + the Kin Rally / Pack Howl keywords' own triggers
     if(trigLayer >= TRIGGER_LAYER_CAP){
       if(recordEvents && events && trigs.some(t=> t.on === hook)) events.push({type:'triggerCapped', side:sideOf(playerId), defId:boardCard ? boardCard.defId : null, uid:boardCard ? boardCard.uid : null, hook, layer:trigLayer + 1});
@@ -6621,6 +6663,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, xn, stats, events, mySide, 'exploit', c=>{ c.exploit = (c.exploit||0) + xn; });
           break;
         }
+        case 'pulse': // EN4 (2026-10-23, owner 23:45): Pulse N; the retired Poison Tick reads as it
         case 'poisonTick': {
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent'), pn = numN(t.amount, SK1_DEF.venomPulse);
           const tpid = who==='enemy' ? otherId(playerId) : playerId;
@@ -7312,6 +7355,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // fade moved to the round's end (bleedFadeAtEnd, from endOfRoundUpkeep). Here the round only notes who starts it Bleeding.
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c && !c.gap && c.hp > 0 && c.bleed > 0) c._bleedFrom = combatNo; }));
     [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c.poison>0 && isStructureCard(c)) c.poison = 0; /* Structures are immune (2026-10-15) */ if(c.poison>0) poisoned.push({pl,card:c}); }));
+    // Greater Poison (EN4, 2026-10-23): GP_PER_STACK a stack, after the unit's plain Poison; it never wears down (owner 23:45)
+    const greater = []; [p1,p2].filter(inUpkeep).forEach(pl=> upkeepUnitsOf(pl).forEach(c=>{ if(c && c.gpoison>0 && isStructureCard(c)) c.gpoison = 0; if(c && !c.gap && c.gpoison>0) greater.push({pl,card:c}); }));
     // Curses tick alongside poison: every unit standing on a cursed cell takes the cell's total.
     const cursed = [];
     if(Object.keys(curses).length) [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const k = cellKeyOf(players, pl.id, c); if(k && curses[k] > 0) cursed.push({pl, card:c, n:curses[k]}); })));
@@ -7327,8 +7372,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'toxinTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, stack:c.toxin, mods:dnModsFor(c.uid)}); } // + mods (DN2)
         if(c.hp > 0 && c.bound > 0 && c.boundDmg > 0){ const dmg = damageCardFlat(c, c.boundDmg, 'strangle'); w2Hurt = true; ensureStat(stats, sideOf(pl.id), c.defId).taken += dmg;
           if(recordEvents && events) events.push({type:'strangleTick', side:sideOf(pl.id), defId:c.defId, uid:c.uid, dmg, mods:dnModsFor(c.uid)}); } })); // + mods (DN2)
-      if(w2Hurt && !poisoned.length && !cursed.length){ removeDeadCards(players, sideOf, {}, stats, events); return; } }
-    if(!poisoned.length && !cursed.length){ if(hot.length) removeDeadCards(players, sideOf, {}, stats, events); return; }
+      if(w2Hurt && !poisoned.length && !cursed.length && !greater.length){ removeDeadCards(players, sideOf, {}, stats, events); return; } }
+    if(!poisoned.length && !cursed.length && !greater.length){ if(hot.length) removeDeadCards(players, sideOf, {}, stats, events); return; }
     for(const {pl,card} of poisoned){
       if(card.hp<=0) continue;
       const dmg = damageCardFlat(card, card.poison, 'poison');
@@ -7336,6 +7381,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const decay = !statusDecayHeld() && card.poison > 0; // 2026-10-10: each tick wears the stack down by 1 (see bleedTick)
       if(decay) card.poison -= 1;
       if(recordEvents && events) events.push({type:'poisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, decay, mods:dnModsFor(card.uid)}); // + mods (DN2)
+    }
+    for(const {pl,card} of greater){ // EN4 (2026-10-23): Greater Poison, 1 a stack; owner 23:45: its stack is not removed on a tick
+      if(card.hp<=0) continue;
+      const stack = card.gpoison, dmg = damageCardFlat(card, GP_PER_STACK * stack, 'poison');
+      ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
+      const decay = false;
+      if(recordEvents && events) events.push({type:'greaterPoisonTick', side:sideOf(pl.id), defId:card.defId, uid:card.uid, dmg, stack, decay, mods:dnModsFor(card.uid)});
     }
     for(const {pl,card,n} of cursed){
       if(card.hp<=0) continue;
@@ -7430,9 +7482,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
         // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
-          const sick = upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && (o.poison||0) > 0).sort((a,b)=> (b.poison||0) - (a.poison||0));
-          if(sick.length){ const t = sick[0]; const p0 = Math.min(w2N(def, 'cure'), t.poison||0); t.poison -= p0;
-            if(p0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0, poison:p0, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
+          // EN4 (2026-10-23): Greater Poison counts too (the most poisoned: Poison + Greater Poison); Cure takes Poison first, then Greater Poison.
+          const sick = upkeepUnitsOf(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.gpoison||0)) > 0).sort((a,b)=> ((b.poison||0) + (b.gpoison||0)) - ((a.poison||0) + (a.gpoison||0)));
+          if(sick.length){ const t = sick[0], cn = w2N(def, 'cure'); const p0 = Math.min(cn, t.poison||0); t.poison -= p0; const g0 = Math.min(cn - p0, t.gpoison||0); if(g0 > 0) t.gpoison -= g0;
+            if(p0 + g0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0 + g0, poison:p0, gpoison:g0 || undefined, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
         }
         // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.
         if(c.hp>0 && def.effects && def.effects.satiety && c.hp >= c.maxHp){
@@ -7892,7 +7945,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Shedding N (2026-10-13, user: "the idea of molting or shedding - getting stronger as time progresses"): every N rounds on the
       // field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose fall away with the old skin.
       { const shN = Number(((CARD_DEFS[c.defId]||{}).effects||{}).shedding === true ? 3 : ((CARD_DEFS[c.defId]||{}).effects||{}).shedding) || 0;
-        if(shN > 0 && c.hp > 0){ c.shedAge = (c.shedAge||0) + 1; if(c.shedAge % shN === 0){ c.atk += 1; c.baseAtk = (c.baseAtk||0) + 1; c.maxHp += 1; c.hp += 1; c.poison = 0; c.bleed = 0; c.corrode = 0; c.scar = 0; c.exposed = 0; c.exploit = 0; /* + Exploit (2026-10-19, SK1) */
+        if(shN > 0 && c.hp > 0){ c.shedAge = (c.shedAge||0) + 1; if(c.shedAge % shN === 0){ c.atk += 1; c.baseAtk = (c.baseAtk||0) + 1; c.maxHp += 1; c.hp += 1; c.poison = 0; c.gpoison = 0; /* EN4 */ c.bleed = 0; c.corrode = 0; c.scar = 0; c.exposed = 0; c.exploit = 0; /* + Exploit (2026-10-19, SK1) */
           if(recordEvents && events) events.push({type:'statusFx', kind:'shed', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:1}); } } }
       // Molting N (D72, 2026-10-13, user: "Shedding and molting is about getting stronger"): the shell-growers' version. Crabs have it.
       // 2026-10-16 (user: "Molting N - Every 2 turns, gain +1 wait. But +N/+N."): every 2 rounds on the field it molts: +N/+N for good,
@@ -8154,7 +8207,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       delete killCredit[card.uid];
       card.revivedOnce = true; card.hasRemovalCounter = true;
       card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
-      card.poison = 0; card.decay = 0; card.exposed = 0; card.exploit = 0; /* SK1 */ card.scar = 0; card.stunned = false;
+      card.poison = 0; card.gpoison = 0; /* EN4 */ card.decay = 0; card.exposed = 0; card.exploit = 0; /* SK1 */ card.scar = 0; card.stunned = false;
       card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0; card.brittle = 0; /* 2026-10-19 (GI) */
       card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
       if(slotMode && Number.isInteger(rv.slot)) card.slot = rv.slot;
@@ -9129,20 +9182,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
                 return;
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
-              const c2GuardianRedirect = c2.uid !== c2raw.uid; const c2Hop = lastGuardHop; // EN3: the Guardian it hopped through
+              const c2GuardianRedirect = c2.uid !== c2raw.uid; // EN4 (2026-10-23): no Guardian hop (EN3's c2Hop is gone)
               const r3 = damageCard(c2, rowHalf(strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol)), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
               aStat.dealt += r3.dmg; if(rowSwing) rowStrikeTally += r3.dmg; // reserveVolley's total (2026-10-19, RR)
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
-              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, guardChain: c2Hop != null ? [c2Hop] : undefined /* EN3 */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
+              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, mods:dnModsFor(c2.uid), dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, guardedUid: c2GuardianRedirect ? c2raw.uid : undefined /* EN2 (2026-10-23): who it stepped in for */, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
               const nullF = isNullifier(a.att); // Nullify (2026-10-14)
               if(!nullF) applySpite(players, sideOf, a.enemyId, c2, a.att, r3.dmg, stats, events, killCredit);
-              { const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ aStat.poisonApplied += addPoison(c2, pz); } } // + Rabid (2026-10-14); + Venom Master (2026-10-17)
+              { const pre = c2.poison|0; const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && c2.hp>0 && (r3.dmg > 0 || r3.elementalAmount > 0)){ aStat.poisonApplied += addPoison(c2, pz); }
+                en4GreaterPoison(a.att, attDef, c2, pre, (r3.dmg > 0 || r3.elementalAmount > 0), mySide, sideOf(a.enemyId), events); } // + Rabid (2026-10-14); + Venom Master (2026-10-17); + Greater Poison (EN4, 2026-10-23)
               if(attDef.effects.decay && c2.hp>0){ c2.decay = (c2.decay||0) + attDef.effects.decay; }
-              { const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl + venomBoost(a.attId); } } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
+              { const hw = en4Hemorrhage(attDef, c2); /* EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has first */ const bl = (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0); if(bl > 0 && c2.hp>0 && !isGhost(c2)){ c2.bleed = (c2.bleed||0) + bl + venomBoost(a.attId); } en4HemorrhageEv(a.att, c2, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
               if(attDef.effects.web && c2.hp > 0) webUnit(a.att, c2, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
               if(attDef.effects.brittle && c2.hp > 0) brittleUnit(a.att, c2, numN(attDef.effects.brittle, 1), mySide, sideOf(a.enemyId), events); // Brittle N (2026-10-19, package GI)
               if(!nullF) ichorSplash(players, sideOf, a.enemyId, c2, a.att, stats, events, killCredit); // Ichor (2026-10-14)
@@ -9199,7 +9253,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
         // target's position), so protection redirects damage without warping geometry.
         const defCard = redirectToGuardian(players[a.enemyId], target.card);
-        const guardianRedirect = defCard.uid !== target.card.uid; const guardHop = lastGuardHop; // EN3 (2026-10-23): the first Guardian, when a second one took it from it
+        const guardianRedirect = defCard.uid !== target.card.uid; // EN4 (2026-10-23): one Guardian, no hop (EN3's guardHop is gone)
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
         const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
@@ -9210,7 +9264,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, guardChain: guardHop != null ? [guardHop] : undefined /* EN3: the Guardian it hopped through (the board walks both) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
+        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -9255,9 +9309,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Reflect bounces shots now, see reflectShotOf.)
         // 2026-10-12 (user: "If a poison-ing unit hits an enemy and deals no combat damage (e.g. too much armour), it does not
         // deal poison"): only a hit that got through (or converted into poison stacks) leaves poison.
-        { const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && defCard.hp>0 && (dmg > 0 || elementalAmount > 0)){ // + Rabid's 2 (2026-10-14); + Venom Master (2026-10-17)
+        { const pre = defCard.poison|0; const pz0 = poisonOn(attDef), pz = pz0 > 0 ? pz0 + venomBoost(a.attId) : 0; if(pz && defCard.hp>0 && (dmg > 0 || elementalAmount > 0)){ // + Rabid's 2 (2026-10-14); + Venom Master (2026-10-17)
           aStat.poisonApplied += addPoison(defCard, pz); // Structures are immune to poison (2026-10-15)
-        } }
+        }
+          en4GreaterPoison(a.att, attDef, defCard, pre, (dmg > 0 || elementalAmount > 0), mySide, sideOf(a.enemyId), events); } // EN4 (2026-10-23): Greater Poison converts the Poison it had before this hit
         if(attDef.effects && attDef.effects.desecrate) curseCell(players, a.enemyId, defCard, Number(attDef.effects.desecrate), events); // Desecrate N: curse the cell the target stands on
         // Decay (passive, 2026-09-29): mirrors Poison's on-hit stacking exactly, but as its own
         // separate stack (card.decay, ticked by applyDecayTicks) — see that function's comment
@@ -9270,8 +9325,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'daunt', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:Number(attDef.effects.daunt)});
         }
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
-        { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
-          if(bl > 0 && defCard.hp>0 && !isGhost(defCard)) defCard.bleed = (defCard.bleed||0) + bl + venomBoost(a.attId); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
+        { const hw = en4Hemorrhage(attDef, defCard); // EN4 (2026-10-23): Hemorrhage doubles the Bleed it already has, before this hit's own Bleed
+          const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
+          if(bl > 0 && defCard.hp>0 && !isGhost(defCard)) defCard.bleed = (defCard.bleed||0) + bl + venomBoost(a.attId);
+          en4HemorrhageEv(a.att, defCard, hw, mySide, sideOf(a.enemyId), events); } // Ghosts don't bleed (2026-10-14); + Venom Master (2026-10-17)
         // (Bloodlust's 2026-10-15 rule, +N Attack for drawing blood, became the leap on a kill on 2026-10-17: see bloodlustLeap.)
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;

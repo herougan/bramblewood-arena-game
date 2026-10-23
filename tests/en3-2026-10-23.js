@@ -71,14 +71,8 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 { const {e, P} = mk(); spawn(e, P, 1, 'x-boom'); spawn(e, P, 2, 'x-wall'); const ev = round(e, P);
   ok(!ev.some(x=> x.type === 'boomerangThrow'), 'a landed throw has no extra event (its hit plays the throw)'); }
 
-// ---- #8 Guardian guarding a Guardian (one hop) -------------------------------------------------------------------------------
-{ const {e, P} = mk(); spawn(e, P, 1, 'x-hit2'); const T = spawn(e, P, 2, 'x-wall'), G1 = spawn(e, P, 2, 'x-guard'), G2 = spawn(e, P, 2, 'x-guard');
-  const ev = round(e, P), h = ev.find(x=> x.type === 'hit' && x.guardianRedirect);
-  ok(h && h.targetUid === G2.uid && h.guardedUid === T.uid && Array.isArray(h.guardChain) && h.guardChain[0] === G1.uid, `the second Guardian takes it (target ${h && h.targetUid}, G1 ${G1.uid}, G2 ${G2.uid}, chain ${h && JSON.stringify(h.guardChain)})`);
-  ok(G1.hp === 100 && G2.hp === 98 && T.hp === 500, 'only the second Guardian is hurt'); }
-{ const {e, P} = mk(); spawn(e, P, 1, 'x-hit2'); const T = spawn(e, P, 2, 'x-wall'), G1 = spawn(e, P, 2, 'x-guard'), G2 = spawn(e, P, 2, 'x-guard'), G3 = spawn(e, P, 2, 'x-guard');
-  const h = round(e, P).find(x=> x.type === 'hit' && x.guardianRedirect);
-  ok(h && h.targetUid === G2.uid && G3.hp === 100, 'one hop only: a third Guardian beside the second does not take it'); }
+// ---- #8 Guardian guarding a Guardian: REVERTED 2026-10-23 by package EN4 (owner 22:23 #9: "Guardian shouldn't intercept an intercepting
+// guardian."). One Guardian steps in, no hop, no guardChain; tests/en4-2026-10-23.js checks the rule. Kept here: one Guardian, as before.
 { const {e, P} = mk(); spawn(e, P, 1, 'x-hit2'); const T = spawn(e, P, 2, 'x-wall'), G1 = spawn(e, P, 2, 'x-guard');
   const h = round(e, P).find(x=> x.type === 'hit' && x.guardianRedirect); ok(h && h.targetUid === G1.uid && h.guardChain == null, 'one Guardian: as before, no chain'); }
 
@@ -133,14 +127,14 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 
 // ---- The app, texts, docs ---------------------------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
-  ['function en3PatchGuardPull', 'function en3GuardChain', 'function en3BoomMissThrow', 'function en3RampartVfx', 'function en3BrambleArmorVfx', 'try{ en3Vfx(ev); }catch(e){}',
+  ['function en3PatchGuardPull', /* 'function en3GuardChain': removed by EN4 (2026-10-23, owner 22:23 #9) */ 'function en3BoomMissThrow', 'function en3RampartVfx', 'function en3BrambleArmorVfx', 'try{ en3Vfx(ev); }catch(e){}',
    "{key:'rampart', category:'passive'", "{key:'brambleArmor', category:'passive'", "rampart:'🚧'", "case 'rampart':", "case 'brambleArmor':", "case 'boomerangThrow':",
-   'en3GuardChain(ev)', 'EN3_STACK_DROP_MS()'].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
+   /* 'en3GuardChain(ev)': EN4 */ 'EN3_STACK_DROP_MS()'].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
   // #5 on the board: the poison tick shows its damage and drops the stack a beat later
   const p0 = app.indexOf('poisonBubbleBurstVfx(ev.uid);'), pt = app.slice(p0, app.indexOf("if(ev.type==='bleedTick'){", p0));
   ok(/if\(rc\) rc\.hp = Math\.max\(0, rc\.hp - ev\.dmg\);\s*updateCardHpDisplay\(ev\.uid\);\s*if\(ev\.decay\)\{ const u = ev\.uid; setTimeout/.test(pt), 'poisonTick: Health first, the stack drop later');
   // #19: the guard line is gone (the swapped guardPull draws no path)
-  const gp = app.slice(app.indexOf('function en3PatchGuardPull'), app.indexOf('function en3GuardChain')); ok(!/<path|svg/i.test(gp), 'the guard pull draws no line');
+  const gp = app.slice(app.indexOf('function en3PatchGuardPull'), app.indexOf('function en3BoomMissThrow')); // EN4 (2026-10-23): en3GuardChain is gone, so up to the next function ok(!/<path|svg/i.test(gp), 'the guard pull draws no line');
   const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
   ['ui.skn-rampart', 'ui.sk-rampart', 'ui.sk-rampart-codex', 'ui.skn-bramble-armor', 'ui.sk-bramble-armor', 'ui.sk-bramble-armor-codex', 'ui.en3-log-rampart', 'ui.en3-log-bramble-armor', 'ui.en3-log-boom-miss', 'ui.en3-float-guard-hop', 'ui.en3-float-boom-miss'].forEach(k=> ok(TXm.TEXT[k], 'TX ' + k));
   ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']), 'the Bleed text: −1 at the round\'s end');
@@ -153,7 +147,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN3\)/.test(cat) && /rampartShare/.test(cat) && /bleedFadeAtEnd/.test(cat), 'docs/effects-catalogue.md: EN3');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.decisions || dec.items || dec).map ? (dec.decisions || dec.items || dec).map(d=> d.id) : [];
   ok(['EN3-1', 'EN3-2', 'EN3-3', 'EN3-4', 'EN3-5', 'EN3-6', 'EN3-7', 'EN3-8'].every(i=> ids.includes(i)), 'decisions EN3-1 .. EN3-8');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 6000)), 'CHANGELOG: EN3 at the top'); }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 20000)), 'CHANGELOG: EN3 near the top'); } // 2026-10-23 (EN4): later packages' entries sit above it (was the first 6000 characters)
 
 console.log(`en3-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

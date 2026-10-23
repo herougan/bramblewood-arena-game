@@ -1023,7 +1023,7 @@ const PASSIVE_DEFS = [
   // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
-  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian next to it steps in for it in turn. Taunt is different: it makes the enemies facing it aim at it.`} /* EN3 (2026-10-23, owner 19:27 #2 / #8): not the bramble (call EN3-1); a Guardian guarding a Guardian (one hop, call EN3-3) */ /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
+  {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Steps in front of an adjacent ally (beside it; in a raid, in front or behind) and takes the plain attacks aimed at it. Skills and area hits don't, and it never guards the bramble. A Guardian that steps in isn't covered by another Guardian. Taunt is different: it makes the enemies facing it aim at it.`} /* EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop reverted */ /* EN3 (2026-10-23, owner 19:27 #2): not the bramble (call EN3-1) */ /* EN2 (2026-10-23, owner 13:16 #22): it moves in to take the hit; its reach vs Taunt's */ /* 2026-10-22 (package GD2, owner GD-3): swings only, no skills */ /* 2026-10-22 (package GD, owner N22-12): the four cardinal neighbours; area hits aren't redirected */,
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
@@ -1660,6 +1660,7 @@ function CHAIN_BREAK_OPTIONS(){
 // reworked ones (Sentry N, Expose N, Siege N, Cure, Healing; Demolisher folded into Siege) are patched in place, and the new triggers
 // and actions join the trigger builder. Every string is a TX key. (Statuses, short lines, log and looks: the second SK1 block below.)
 // Owner 21:56 ("feel free to use triggers and actions"): Sentry, Expose, Exploit, Venom Pulse and Spoils are trigger × action shorthands.
+// EN4 (2026-10-23, owner 23:45): Venom Pulse is called Pulse (key venomPulse kept, so saved cards read as before) and ticks Bleed too.
 const SK1_DEFAULTS = {sentry:2, formation:1, expose:2, exploit:2, punish:2, siege:2, spoils:2, venomPulse:1}; // = the engine's SK1_DEF
 function sk1Patch(list, key, patch){ const p = list.find(x=> x.key === key); if(p) Object.assign(p, patch); else list.push(Object.assign({key}, patch)); }
 sk1Patch(PASSIVE_DEFS, 'sentry', {category:'passive', label:TX('ui.skn-sentry'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-sentry', {n: numOr(v, 2)}), codexNote:TX('ui.sk-sentry-codex'), get:e=> e.sentry ? numOr(e.sentry, 2) : undefined});
@@ -1685,7 +1686,8 @@ TRIGGER_DEFS.push(
 );
 ACTION_DEFS.push(
   {key:'exploit', label:TX('ui.act-exploit'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-exploit-desc')},
-  {key:'poisonTick', label:TX('ui.act-poison-tick'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-poison-tick-desc')},
+  {key:'poisonTick', hidden:true, retired:true /* EN4 (2026-10-23, owner 23:45: "No need for Poison Tick, cause you can just do Pulse N"): reads as Pulse; en4MigrateCard moves a card off it */, label:TX('ui.act-poison-tick'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-poison-tick-desc')},
+  {key:'pulse', label:TX('ui.act-pulse'), fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:TX('ui.act-pulse-desc')}, // EN4 (2026-10-23, owner 23:45): Poison and Bleed tick N times
 );
 sk1Patch(ACTION_DEFS, 'expose', {desc:TX('ui.act-expose-desc')});
 sk1Patch(ACTION_DEFS, 'heal', {desc:TX('ui.act-heal-desc')});
@@ -1704,6 +1706,14 @@ Object.assign(SKILL_ICON, {spellward:'🪬'});
 PASSIVE_DEFS.push({key:'rampart', category:'passive', label:TX('ui.skn-rampart'), kind:'boolean', desc:()=> TX('ui.sk-rampart'), codexNote:TX('ui.sk-rampart-codex')},
   {key:'brambleArmor', category:'passive', label:TX('ui.skn-bramble-armor'), kind:'boolean', desc:()=> TX('ui.sk-bramble-armor'), codexNote:TX('ui.sk-bramble-armor-codex')});
 Object.assign(SKILL_ICON, {rampart:'🚧', brambleArmor:'🌿🛡️'});
+// ==== Package EN4 (2026-10-23, owner 22:23 #7: "Do we have the skills that do extra damage to bleeding units, or even 2x their bleed ...
+// Then a passive new skill Greater Poison ..."; owner 19:27 #4 Shore Up, option B approved 22:23): Hemorrhage 🩸² (name: call EN4-1),
+// Greater Poison 💀 (how it ticks: call EN4-2) and Shore Up 🛡️↔️. Rules: bramblewood-engine.js en4Hemorrhage / en4GreaterPoison / en4ShoreUp.
+// Priced in canonical/skill-costs.json (tools/en4_skill_costs_2026_10_23.py). Board, log and badges: the EN4 block below (en4Vfx).
+PASSIVE_DEFS.push({key:'hemorrhage', category:'passive', label:TX('ui.skn-hemorrhage'), kind:'boolean', desc:()=> TX('ui.sk-hemorrhage'), codexNote:TX('ui.sk-hemorrhage-codex')},
+  {key:'greaterPoison', category:'passive', label:TX('ui.skn-greater-poison'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-greater-poison', {n: numOr(v, 1)}), codexNote:TX('ui.sk-greater-poison-codex')},
+  {key:'shoreUp', category:'passive', label:TX('ui.skn-shore-up'), kind:'boolean', desc:()=> TX('ui.sk-shore-up'), codexNote:TX('ui.sk-shore-up-codex')});
+Object.assign(SKILL_ICON, {hemorrhage:'🩸²', greaterPoison:'💀', shoreUp:'🛡️↔️'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -1781,7 +1791,21 @@ function sk1MigrateSiege(c){
 //   GD2-1 (owner: "Spellward."): effects.spellshield -> effects.spellward;
 //   TR-6 (owner: "remove Enraged ... Rage - {...} means the typical effects of Rage, PLUS {...}"): a transform {name:'enraged', gain} ->
 //   Rage plus effects.rageGrant = gain (no gain: plain Rage).
+// EN4 (2026-10-23, owner 23:45: "No need for Poison Tick, cause you can just do Pulse N, default 1."): a card with the retired Poison Tick
+// action moves to Pulse with the same N: an On Hit trigger aimed at the unit it hit becomes the Pulse N keyword, any other becomes the Pulse
+// action (the engine reads an unmoved one as Pulse too).
+function en4MigrateCard(c){
+  const e = c && c.effects, ts = e && Array.isArray(e.triggers) ? e.triggers : null; if(!ts || !ts.some(t=> t && t.do === 'poisonTick')) return c;
+  const ne = Object.assign({}, e), keep = [];
+  ts.forEach(t=>{ if(!t || t.do !== 'poisonTick'){ keep.push(t); return; }
+    const n = Math.max(1, Number(t.amount) || 1);
+    if(t.on === 'onHit' && (t.who || 'enemy') === 'enemy' && t.sub === 'subject' && !t.keyword && ne.venomPulse == null) ne.venomPulse = n;
+    else keep.push(Object.assign({}, t, {do:'pulse'})); });
+  ne.triggers = keep; if(!keep.length) delete ne.triggers;
+  return Object.assign({}, c, {effects: ne});
+}
 function enMigrateCard(c){
+  c = typeof en4MigrateCard === 'function' ? en4MigrateCard(c) : c; // EN4 (2026-10-23)
   const e = c && c.effects; if(!e || !(e.spellshield != null || (e.transform && typeof e.transform === 'object' && e.transform.name === 'enraged'))) return c;
   const ne = Object.assign({}, e);
   if(ne.spellshield != null){ if(ne.spellshield && ne.spellward == null) ne.spellward = ne.spellshield; delete ne.spellshield; }
@@ -6020,6 +6044,17 @@ function sk1StatusBadges(c, badges){
   else if(a < 0) badges.push(`<span class="abadge isolation" title="${escapeAttr(TX('ui.aura-isolation-tip', {n: -a}))}">🏝️${a}</span>`);
 }
 // ==== end of Package SK1 (statuses and board) ======================================================================================
+// Package EN4 (2026-10-23): the Greater Poison status (its line under the unit's skills, its glossary colour, its violet 💀 badge) and the
+// three skills' card lines.
+{ const pz = LIVE_STATUS_ROWS.findIndex(r=> r[0] === 'poison');
+  LIVE_STATUS_ROWS.splice(pz + 1, 0, ['gpoison', 'greaterPoison', TX('ui.stn-greater-poison'), n=> TX('ui.ls-greater-poison', {n, d: n}), true]); } // owner 23:45: 1 a stack, never wears off
+STATUS_KEYWORDS.push({k:'greaterPoison', re:/\b(greater poison(?:ed)?)\b/gi, cs:true, name:TX('ui.stn-greater-poison'), c:'#9b4dd6', text:TX('ui.st-greater-poison')});
+function en4StatusBadges(c, badges){ if(c && c.gpoison > 0) badges.push(`<span class="abadge gpoison" title="${escapeAttr(TX('ui.en4-gp-tip', {n: c.gpoison, d: c.gpoison}))}">💀${c.gpoison}</span>`); }
+Object.assign(SKILL_TEXT, {
+  hemorrhage: ()=> TX('ui.sk-hemorrhage'),
+  greaterPoison: v=> TX('ui.sk-greater-poison', {n: numOr(v, 1)}),
+  shoreUp: ()=> TX('ui.sk-shore-up'),
+});
 // Package SK3 (2026-10-19): the new statuses under a unit's skills, as their chips name them.
 LIVE_STATUS_ROWS.push(['silenced', 'silenced', TX('ui.stn3-silenced'), ()=> TX('ui.st3-silenced'), false], ['stymied', 'stymied', TX('ui.stn3-stymied'), ()=> TX('ui.st3-stymied'), false],
   ['exhaust', 'exhausted', TX('ui.stn3-exhausted'), ()=> TX('ui.st3-exhausted'), true], ['grounded', 'grounded', TX('ui.stn3-grounded'), ()=> TX('ui.st3-grounded'), false],
@@ -8843,7 +8878,7 @@ function referenceHTML(){
     <div class="ref-card"><span class="kind">Weakness</span><b>Weakness</b><p>Takes DOUBLE damage from anything matching an entry in this box — the mirror of Resistance, same matching rules. Putting the same match-key in both boxes multiplies out to a net 1x (self-cancelling).</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Triggers — the "On" half of a custom trigger</h3><div class="ref-grid">${TRIGGER_DEFS.map(t=>`<div class="ref-card"><span class="kind">Trigger</span><b>${t.label}</b><p>Fires ${t.desc}.</p></div>`).join('')}</div></div>
-  <div class="panel"><h3 class="ref-heading">Actions — the "Do" half of a custom trigger</h3><div class="ref-grid">${ACTION_DEFS.map(a=>`<div class="ref-card"><span class="kind">Action</span><b>${a.label}</b><p>${a.desc}</p></div>`).join('')}</div></div>
+  <div class="panel"><h3 class="ref-heading">Actions — the "Do" half of a custom trigger</h3><div class="ref-grid">${ACTION_DEFS.filter(a=> !a.retired).map(a=>`<div class="ref-card"><span class="kind">Action</span><b>${a.label}</b><p>${a.desc}</p></div>`).join('')}</div></div>
   <div class="panel"><h3 class="ref-heading">New zones &amp; resources</h3><div class="ref-grid">
     <div class="ref-card"><span class="kind">Zone</span><b>🌫 Removal Zone</b><p>Cards here can't be drawn again. Each card sent here gives its owner 1 Echo 🕯️; a Remember card here returns to the board once you have enough Echoes.</p></div>
     <div class="ref-card"><span class="kind">Resource</span><b>🕊️ Grace</b><p>A second currency. On Spawn/Ready → Gain Grace generates it; Grace Cost spends it.</p></div>
@@ -10676,7 +10711,7 @@ function triggerRowHTML(t,i){
     ${filterHtml}
     ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Triggers like this are off while the card is still Waiting. Tick to let this one fire while it Waits too."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
-    <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
+    <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].filter(x=> !x.retired || x.key === t.do /* EN4 (2026-10-23): retired actions only on a card that still has one */).sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
     <button class="btn small danger rm" data-rm="${i}" aria-label="Remove this trigger" title="Remove this trigger">✕</button>
   </div>
@@ -21132,7 +21167,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-monitor":1,"mangrove-mudskipper":1,"minnow-skitter":4,"mudpuppy":5,"reef-shark":4,"archerfish":1}, rules:{"tide":true}, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
       { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"mangrove-mudskipper":5,"minnow-skitter":4,"archerfish":1,"banded-sea-krait":1,"sunbittern-strider":1}, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
-      { key:"9-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-monitor":2,"mangrove-mudskipper":3,"minnow-skitter":3,"reef-shark":3,"mangrove-kingfisher":1}, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
+      { key:"9-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Kingfisher Dive", icon:"🐦", deck:{"mangrove-monitor":2,"mangrove-mudskipper":3,"minnow-skitter":3,"reef-shark":2,"banded-sea-krait":1,"mangrove-kingfisher":1} /* 2026-10-23 (EN4, RW5-7): one Reef Shark for the Banded Sea Krait, its first-clear reward now (the Kingfisher is 9-6's) */, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
       { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", shieldOverride:4, deck:{"mangrove-mudskipper":4,"mudpuppy":4,"reef-shark":5,"archerfish":1,"banded-sea-krait":2,"mangrove-manatee":1}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
       { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", rules:{tangledRoots:true}, deck:{"mangrove-monitor":4,"reef-shark":4,"archerfish":3,"banded-sea-krait":3,"sunbittern-strider":2,"mangrove-manatee":1} /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", rules:{tangledRoots:true}, deck:{"mangrove-mudskipper":4,"reef-shark":4,"archerfish":3,"sunbittern-strider":2,"mangrove-kingfisher":1,"mangrove-manatee":1} /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
@@ -30396,7 +30431,7 @@ function fxlEntries(){
   Registry.skills().filter(sd=> !sd.retired).forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', iconHTML: SKILL_ICON_HTML[sd.key] || '', name: sd.label || sd.key, key: sd.key, sd}));
   TRIGGER_DEFS.forEach(t=> out.push({id:'on:' + t.key, group:'on', icon:'🎬', name:t.label, key:t.key, desc:t.desc}));
   out.push({id:'on:onDeathKiller', group:'on', icon:'🎬', name:'On Death → the killer', key:'onDeathKiller', desc:'An On Death action aimed at the unit whose hit killed it (Who: Killer). Nothing happens if it died some other way.'}); // 2026-10-14
-  ACTION_DEFS.forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
+  ACTION_DEFS.filter(a=> !a.retired).forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
   FXL_FIELDS.forEach(f=> out.push({id:'field:' + f.key, group:'field', icon:f.icon, name:f.name, key:f.key, field:f}));
   if(fxLib) fxLib.entries = out;
   return out;
@@ -34012,7 +34047,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -37684,6 +37719,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-corroded', c.corrode>0);
   el.classList.toggle('is-staggered', c.staggered>0);
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
+  el.classList.toggle('is-gpoisoned', c.gpoison>0); // EN4 (2026-10-23)
   const badges = [];
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
@@ -38644,7 +38680,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
       });
     });
   });
@@ -42043,6 +42079,7 @@ function logText(ev){
   if(ev.type === 'evolve') return {cls:'gold', text:TX('ui.log-evolve', {name: nm(ev.defId), base: nm(ev.fromDefId), atk: ev.atk, hp: ev.hp})}; // Package EV (2026-10-21) // package SK1 skills (2026-10-19)
   { const k2 = sk2LogText(ev, nm); if(k2) return k2.text ? k2 : null; } // Package SK2 (2026-10-19): economy and structure skills
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
+  { const w = en4LogText(ev, nm); if(w) return w; } // EN4 (2026-10-23): Hemorrhage, Greater Poison, Shore Up
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
   { const f2 = field2LogText(ev, nm); if(f2) return f2; } // field effects 2 (2026-10-16)
@@ -44557,6 +44594,7 @@ function ninthPassVfx(ev){
 // badges, battle-log lines and looks (SkillFX.* in bramblewood-skillfx.js), the trap / burning-ground marks on empty slots, and the
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
+  try{ en4StatusBadges(c, badges); }catch(e){} // Greater Poison (2026-10-23, package EN4)
   try{ sk3StatusBadges(c, badges); }catch(e){} // Silenced, Stymied, Exhausted, Petrified N, Grounded, Stench (2026-10-19, package SK3)
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
   try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
@@ -45326,7 +45364,7 @@ function en2Vfx(ev){
   // 17:34 #22: the swing's live Attack (Swarm, Tide, Rage ... as the engine used it) on the attacker's plate at the moment it swings
   if((ev.type === 'hit' || ev.type === 'hitHQ') && ev.liveAtk != null && ev.attUid != null && !ev.ranged){ const el = boardCardEl(ev.attUid), d = defs[ev.attDefId] || {};
     const a = el && el.querySelector('.stats .atk'); if(a && !(Number(d.attack) <= 0 && ev.liveAtk <= 0)) a.innerHTML = atkLabelHTML(ev.liveAtk, d.attack, d); }
-  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null){ if(!(Array.isArray(ev.guardChain) && ev.guardChain.length && en3GuardChain(ev))) en2GuardStepIn(ev); } // + EN3: a Guardian guarding the Guardian
+  if(ev.type === 'hit' && ev.guardianRedirect && ev.guardedUid != null) en2GuardStepIn(ev); // EN4 (2026-10-23, owner 22:23 #9): one Guardian steps in, no chain (EN3's en3GuardChain is gone)
   if(ev.type === 'boomerangReturn' && ev.thrownBy == null){ if(matchState) matchState.boomerangBack = null; en2BoomOrphanFlight(ev); }
   if(ev.type === 'play' && !ev.reserve && ev.uid != null && ((defs[ev.defId] || {}).fx || {}).play === 'crabClack'){ const u = ev.uid; setTimeout(()=> en2CrabClack(boardCardEl(u)), 620); }
   if(ev.type === 'hit' && !ev.ranged && ((defs[ev.attDefId] || {}).fx || {}).attack === 'crabClaw'){ const am = animMs(); en2CrabClawHit(boardCardEl(ev.attUid), boardCardEl(ev.targetUid), am.windup + am.impactPad); }
@@ -45343,15 +45381,8 @@ function en3PatchGuardPull(){ try{ if(!(window.FX && FX.A && FX.A.guardPull) || 
     gsap.set(sh, {x:b.x - b.w*.9, y:fy, xPercent:-50, yPercent:-50, opacity:0, rotation:-30});
     gsap.timeline({onComplete:()=> sh.remove()}).to(sh, {x:b.x, opacity:1, rotation:0, duration:.22, ease:'back.out(1.8)'}).add(()=> en2Ring(b.x, fy, 64)).to(sh, {opacity:0, y:'+=6', duration:.3, delay:.35});
     return new Promise(r=> setTimeout(r, 900)); }; }catch(e){} }
-// #8: a Guardian guarding the Guardian that stepped in (the hit's guardChain): the first one steps in front of the unit aimed at, the
-// second steps in front of the first and takes the blow (en2GuardStepIn twice: the first with no damage, so it slides home).
-function en3GuardChain(ev){
-  const g1 = ev.guardChain[0]; if(g1 == null) return false;
-  en2GuardStepIn({targetUid: g1, guardedUid: ev.guardedUid, attUid: ev.attUid, dmg: 0});
-  en2GuardStepIn(Object.assign({}, ev, {guardedUid: g1}));
-  const e1 = boardCardEl(g1); if(e1) setTimeout(()=>{ try{ floatText(e1, TX('ui.en3-float-guard-hop'), 'buff'); }catch(e){} }, Math.max(0, animMs().windup - 80));
-  return true;
-}
+// (#8's en3GuardChain, a Guardian guarding the Guardian that stepped in, was removed by EN4 on 2026-10-23: owner 22:23 #9, "Guardian shouldn't
+// intercept an intercepting guardian.")
 // #7: a Boomerang that misses (Blind, the dark, a dodge) still throws: the 'boomerangThrow' {miss} after the miss. It flies just past
 // the unit (or bramble) it aimed at, at a point beside it (a stand-in tile, so nothing is knocked), and on off the field as any throw does;
 // next round's return is the usual one (it retraces this line by the thrower's key).
@@ -45393,12 +45424,71 @@ function en3Vfx(ev){
   if(ev.type === 'rampart') en3RampartVfx(ev);
   if(ev.type === 'brambleArmor') en3BrambleArmorVfx(ev);
 }
+// ---- EN4 (2026-10-23, owner 22:23 #7; 19:27 #4 option B): Hemorrhage's doubling, Greater Poison's conversion and tick, Shore Up's shield hop.
+// Looks and the replay's mirror only; the engine decides (bramblewood-engine.js en4Hemorrhage / en4GreaterPoison / en4ShoreUp).
+function en4LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'statusFx' && ev.kind === 'hemorrhage') return {cls:'bleed', text:TX('ui.en4-log-hemorrhage', {att: nm(ev.attDefId), name: nm(ev.targetDefId), from: ev.from||0, n: ev.total||0})};
+  if(ev.type === 'statusFx' && ev.kind === 'greaterPoison') return {cls:'poison', text: ev.converted > 0 ? TX('ui.en4-log-greater-poison-conv', {att: nm(ev.attDefId), name: nm(ev.targetDefId), c: ev.converted, n: ev.total||0}) : TX('ui.en4-log-greater-poison', {att: nm(ev.attDefId), name: nm(ev.targetDefId), a: ev.amount||1, n: ev.total||0})};
+  if(ev.type === 'greaterPoisonTick') return {cls:'poison', text:TX('ui.en4-log-gp-tick', {name: nm(ev.defId), d: dnLogNum(ev.dmg, ev)})};
+  if(ev.type === 'shoreUp') return {cls:'', text:TX('ui.en4-log-shore-up', {name: nm(ev.defId)})};
+  return null;
+}
+// The moment the blow lands on screen (the hit's own impact), for the statuses it leaves.
+function en4ImpactMs(){ const am = animMs(); return am.windup + am.impactPad; }
+// Hemorrhage: the Bleed badge pulses red twice and a pair of drops splits off the card ("🩸×2").
+function en4HemorrhageVfx(ev){
+  const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.bleed = ev.total|0;
+  setTimeout(()=>{ const el = boardCardEl(ev.targetUid); if(!el) return; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}
+    try{ floatText(el, TX('ui.en4-float-hemorrhage'), 'bleed'); tintPulse(el, 'en4-hemo-pulse'); SoundKit.bleedApply && SoundKit.bleedApply(); }catch(e){}
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const c = en2Ctr(el);
+      [-1, 1].forEach(dir=>{ const d = en2Layer('🩸', 'en4-hemo-drop'); gsap.set(d, {x:c.x, y:c.y - c.h*.1, xPercent:-50, yPercent:-50, scale:.6, opacity:0});
+        gsap.timeline({onComplete:()=> d.remove()}).to(d, {opacity:1, scale:1, duration:.1}).to(d, {x:c.x + dir * c.w * .32, y:c.y + c.h * .18, rotation:dir * 25, duration:.36, ease:'power2.out'}).to(d, {opacity:0, y:'+=10', duration:.24}); }); } }, en4ImpactMs());
+}
+// Greater Poison: the unit's Poison badge turns violet (☠ -> 💀) with a violet pulse.
+function en4GreaterPoisonVfx(ev){
+  const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc){ rc.gpoison = ev.total|0; rc.poison = ev.poison|0; }
+  setTimeout(()=>{ const el = boardCardEl(ev.targetUid); if(!el) return; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){}
+    try{ floatText(el, ev.converted > 0 ? TX('ui.en4-float-gp-conv', {n: ev.converted}) : TX('ui.en4-float-gp', {n: ev.amount||1}), 'poison'); tintPulse(el, 'en4-gp-pulse'); SoundKit.poisonApply && SoundKit.poisonApply(); }catch(e){}
+    if(hasGsap() && !reducedMotion() && fxAtLeast('low')){ const c = en2Ctr(el), sk = en2Layer('💀', 'en4-gp-skull'); gsap.set(sk, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.3, opacity:0});
+      gsap.timeline({onComplete:()=> sk.remove()}).to(sk, {scale:1.2, opacity:1, duration:.16, ease:'back.out(2.2)'}).to(sk, {scale:1, duration:.1}).to(sk, {opacity:0, y:'-=14', duration:.34, delay:.2}); } }, en4ImpactMs());
+}
+// Its tick: like Poison's, in violet; the stack stays (owner 23:45), so no drop (an old replay's decay still drops it).
+function en4GreaterPoisonTickVfx(ev){
+  const m = matchState, rc = m.replayCards && m.replayCards[ev.uid]; if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0)); m.lastHurtBy = m.lastHurtBy || {}; m.lastHurtBy[ev.uid] = 'poison';
+  const el = boardCardEl(ev.uid); try{ SoundKit.bubble(); }catch(e){}
+  if(el){ try{ shakeEl(el); tintPulse(el, 'en4-gp-pulse'); dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} }
+  try{ updateCardHpDisplay(ev.uid); }catch(e){}
+  if(ev.decay){ const u = ev.uid; setTimeout(()=>{ const rc2 = m.replayCards && m.replayCards[u]; if(rc2) rc2.gpoison = Math.max(0, (rc2.gpoison||0) - 1); const e2 = boardCardEl(u);
+    if(e2) try{ floatText(e2, '💀−1', 'faded'); }catch(e){} try{ updateCardStatusDisplay(u); }catch(e){} }, EN3_STACK_DROP_MS()); }
+}
+// Shore Up: a small shield hops from the unit to each ally beside it (their Shield 1 lands with the unitShield events that follow).
+function en4ShoreUpVfx(ev){
+  setTimeout(()=>{ const src = boardCardEl(ev.uid); if(!src) return; try{ floatText(src, TX('ui.en4-float-shore-up'), 'buff'); }catch(e){}
+    if(!hasGsap() || reducedMotion() || !fxAtLeast('low')) return; const a = en2Ctr(src);
+    (ev.targets || []).forEach((u, i)=>{ const t = boardCardEl(u); if(!t) return; const b = en2Ctr(t), sh = en2Layer('🛡️', 'en4-shore-shield');
+      gsap.set(sh, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.5, opacity:0});
+      const mid = {x:(a.x + b.x) / 2, y:Math.min(a.y, b.y) - Math.max(26, a.h * .3)};
+      gsap.timeline({delay: i * .06, onComplete:()=>{ sh.remove(); try{ en2Ring(b.x, b.y, 54); }catch(e){} }})
+        .to(sh, {opacity:1, scale:.9, duration:.08})
+        .to(sh, {keyframes:[{x:mid.x, y:mid.y, duration:.17, ease:'power1.out'}, {x:b.x, y:b.y, duration:.17, ease:'power1.in'}]})
+        .to(sh, {scale:1.15, duration:.06}).to(sh, {opacity:0, scale:.8, duration:.16}); }); }, en4ImpactMs());
+}
+function en4Vfx(ev){
+  if(!ev || !matchState) return;
+  if(ev.type === 'statusFx' && ev.kind === 'hemorrhage') en4HemorrhageVfx(ev);
+  if(ev.type === 'statusFx' && ev.kind === 'greaterPoison') en4GreaterPoisonVfx(ev);
+  if(ev.type === 'statusFx' && ev.kind === 'cure' && ev.gpoison > 0){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.gpoison = Math.max(0, (rc.gpoison||0) - ev.gpoison); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} }
+  if(ev.type === 'greaterPoisonTick') en4GreaterPoisonTickVfx(ev);
+  if(ev.type === 'shoreUp') en4ShoreUpVfx(ev);
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
   try{ en2Vfx(ev); }catch(e){} // EN2 (2026-10-23)
   try{ en3Vfx(ev); }catch(e){} // EN3 (2026-10-23)
+  try{ en4Vfx(ev); }catch(e){} // EN4 (2026-10-23)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}

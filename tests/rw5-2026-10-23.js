@@ -31,7 +31,7 @@ const tierOf = n=> n <= 6 ? 1 : n <= 13 ? 2 : n <= 20 ? 3 : 4;
 ok(basic.length > 150, `1. live basic-pack cards (${basic.length})`);
 const noMap = basic.filter(c=> !c.source.map); ok(!noMap.length, '1. every live basic-pack card has a map: ' + noMap.slice(0, 5).map(c=> c.id).join(', '));
 const badTier = basic.filter(c=> c.source.map && tierOf(unlock(c.source.map)) !== +c.source.tier); ok(!badTier.length, '1. every card\'s tier is its map\'s (0-6 / 7-13 / 14-20 / later): ' + badTier.slice(0, 5).map(c=> c.id + ' ' + c.source.tier + '@' + c.source.map).join(', '));
-const lava1 = basic.filter(c=> +c.source.tier === 1 && (BIO[c.id] || []).includes('volcanic-ash')); ok(!lava1.length, '1. no volcanic card in Pack 1: ' + lava1.map(c=> c.id).join(', '));
+const lava1 = basic.filter(c=> +c.source.tier === 1 && (BIO[c.id] || []).includes('volcanic-ash') && c.id !== 'ember-tetra' /* 2026-10-23 (EN4, owner 23:45: "Ember Tetra can be a pack 1."): a small fish of the Sunken Hollow; its 'ember' name reads volcanic */); ok(!lava1.length, '1. no volcanic card in Pack 1: ' + lava1.map(c=> c.id).join(', '));
 ok(G.mapUnlockNumberOf && G.mapUnlockNumberOf('mo') === 21 && G.mapUnlockNumberOf('m3') === 19 && G.mapUnlockNumberOf('ms') === 13, '1. mapUnlockNumberOf: a side map counts from its unlock (the Old Bramble 21, the Sunken Grove 13)');
 const shop = (()=>{ const s = B.grab('SHOP_PACKS_DEFAULT'); return eval('(' + s.slice(s.indexOf('=') + 1).trim().replace(/;\s*$/, '') + ')'); })(); // eslint-disable-line no-eval
 ok(JSON.stringify(['bronze', 'silver', 'gold'].map(id=> (shop.find(p=> p.id === id) || {}).pool)) === '[1,2,3]', '1. the Hedgerow Pouch, Tidemire Chest and Highcrest Case read pools 1 / 2 / 3');

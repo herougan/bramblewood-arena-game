@@ -980,7 +980,8 @@ The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShar
   miss's own event; a landed throw has no extra event (its hit plays the throw).
 - **A Guardian for a Guardian** (#8): when a Guardian steps in, a Guardian adjacent to it (not the unit first aimed at) steps in for it
   and takes the swing; one hop at most (call EN3-3). The hit names the unit first aimed at (`guardedUid`) and the Guardian it hopped
-  through (`guardChain: [uid]`). **No guard line** (#19): the dashed line from the attacker to the Guardian (`FX.A.guardPull`) is gone; the
+  through (`guardChain: [uid]`). *(Reverted by EN4, below: owner 22:23 #9, "Guardian shouldn't intercept an intercepting guardian." One
+  Guardian steps in; no `guardChain`.)* **No guard line** (#19): the dashed line from the attacker to the Guardian (`FX.A.guardPull`) is gone; the
   shield still pops in on the side the blow comes from (`en3PatchGuardPull` swaps it once in `arena_app.js`).
 - **Guardian and the bramble** (#2): Guardian never guards the bramble (as before; now said in its text; call EN3-1).
 - **Rampart 🚧** (`effects.rampart`, #3; price 0.5): every hit on its own bramble that reaches `damageHQ` (a unit's swing, shot, skill,
@@ -997,8 +998,48 @@ The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShar
 | Look | Function | What you see | Event |
 |---|---|---|---|
 | 🪃 Thrown on a miss | `en3BoomMissThrow(ev)` (`arena_app.js`) | The boomerang curves out from the thrower to a point just beside its target (a stand-in tile, so nothing is knocked), flies on off the field; "🪃 Thrown!" floats on the thrower | `boomerangThrow` (`miss`) |
-| 🦺 Guardian for a Guardian | `en3GuardChain(ev)` (`arena_app.js`) | The first Guardian slides in front of the ally, the second in front of the first ("🦺 Covered!") and takes the blow; both slide home (`en2GuardStepIn` twice) | `hit` with `guardChain` |
 | 🛡 Guard, no line | `FX.A.guardPull` (swapped by `en3PatchGuardPull`) | Only the shield pops in on the side the blow comes from, with a ring; no dashed line | `hit` with `guardianRedirect` |
 | 🚧 Rampart | `en3RampartVfx(ev)` (`arena_app.js`) | As the blow lands, a gold streak runs from the bramble to the Rampart unit; the unit flinches, its share floats on it with 🚧 | `rampart` |
 | 🌿🛡️ Bramble Armor | `en3BrambleArmorVfx(ev)` (`arena_app.js`) | A small 🛡️ pops on the bramble with a ring and an armour ting; "🛡️ −1" floats | `brambleArmor` |
 | ☠ Poison's stack | the `poisonTick` replay (`arena_app.js`) | The damage floats first; the badge drops and the grey ☠−1 falls about half a second later | `poisonTick` |
+
+## 2026-10-23 additions (package EN4): no Guardian for a Guardian, Hemorrhage, Greater Poison, Shore Up
+
+The rules as built (engine: `redirectToGuardian`, `en4Hemorrhage`, `en4GreaterPoison`, `GP_PER_STACK`, `applyPoisonTicks`, `en4ShoreUp`; owner
+22:23 #7, #9 and 19:27 #4 option B; follow-ups 23:45). Already in the game and not duplicated: Hunter (Bleeding) = +N damage to a Bleeding unit;
+Venom Pulse, now **Pulse** (below).
+
+- **Guardian** (#9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop is reverted. When a plain swing is aimed at a unit,
+  one adjacent Guardian (at random if several) steps in and takes it; no other Guardian covers that Guardian. A Guardian aimed at directly can
+  still be covered by a Guardian beside it (it wasn't intercepting). Kept from EN3: no guard line, never the bramble. The hit has no `guardChain`.
+- **Hemorrhage 🩸²** (`effects.hemorrhage`, true; name: call EN4-1; price 2): its swing that lands on a Bleeding unit doubles the Bleed the unit
+  already has; then its own Bleed (if any) adds as usual. A target with no Bleed gets nothing from it. Ghosts don't bleed. Swings and their
+  prongs only (as the Bleed passive). Event `statusFx` `hemorrhage {from, total}` after the hit's Bleed.
+- **Greater Poison 💀 N** (`effects.greaterPoison`, N 1 by default; price 2.5, scale half): its swing that gets through (damage dealt or
+  converted, as Poison) turns ALL the Poison the target had before the hit into Greater Poison and adds N; the swing's own Poison then lands
+  as plain Poison, for the next hit to turn. The status (`card.gpoison`): each round's tick deals `GP_PER_STACK` (1) a stack and the stack
+  never wears down (owner 23:45: "Greater Poison tokens are not removed on every poison tick"; plain Poison still loses 1). It ticks after the
+  unit's plain Poison. Cure takes Poison first, then Greater Poison; Pulse ticks both; Hunter (Poisoned) counts it; Shed and a Revive clear it;
+  Structures and poison-immune units take none. Events: `statusFx` `greaterPoison {converted, amount, total, poison}` after the hit's Poison;
+  `greaterPoisonTick {dmg, stack, decay: false}` at the round's start.
+- **Pulse 💉 N** (owner 23:45: "Venom maybe can just be called pulse ... why not pulse affects both bleeding and poison units alike! No need
+  for Poison Tick, cause you can just do Pulse N, default 1."): was Venom Pulse (the key stays `effects.venomPulse`, so saved cards read as
+  before). Its landed swing makes the target's Poison (and Greater Poison) AND its Bleed tick N more times at once, each tick the whole stack;
+  no stack wears down. The trigger action is **Pulse** (`do: 'pulse'`, the same); the **Poison Tick** action is retired (hidden in the editor,
+  `retired: true`): the engine reads it as Pulse, and `en4MigrateCard` moves a saved card off it (an On Hit one aimed at the unit hit becomes
+  Pulse N, any other the Pulse action, same N). Events: `poisonTick {pulse: true}` and `bleedTick {pulse: true, cause: 'pulse'}`. Price: the
+  Pulse action 1.3 a tick, so Pulse 1 = On Hit 2.1 x 1.3 = 2.7 (Venom Pulse was 2.1). No card carries it.
+- **Shore Up 🛡️↔️** (`effects.shoreUp`, true; option B of call EN3-7; price 1.5): when it is hit and lives (any hit that fires On Attacked: a
+  swing, a shot, a damage or status skill), each live ally beside it in its row (left and right, not in front or behind) gets Shield 1
+  (`grantShield`). One hit, one brace. A passive: it braces while Waiting; not from a cage. Event `shoreUp {uid, targets}`, then each
+  Shield's `statusFx` `unitShield`.
+- Cards (call EN4-4 for the placements): Great Skua (Hemorrhage, Map 3), Bloodscent Shark (Hemorrhage, Map 10), Cane Toad (Poison 1 + Greater
+  Poison 1, Map 6), Inland Taipan (Poison 2 + Greater Poison 1, Map 18), Oyster Bank (Shore Up, 0 Attack, Map 2), Musk Ox Matriarch (Shore Up +
+  Armor 1, Map 17).
+
+| Look | Function | What you see | Event |
+|---|---|---|---|
+| 🩸² Hemorrhage | `en4HemorrhageVfx(ev)` (`arena_app.js`) | As the blow lands, the card pulses red twice, two 🩸 drops split off it, "🩸×2" floats and the Bleed pip shows the doubled stack | `statusFx` `hemorrhage` |
+| 💀 Greater Poison | `en4GreaterPoisonVfx(ev)` | A violet 💀 pops on the card with a violet pulse; "☠→💀 N" (what it turned) or "💀 +N" floats; the green ☠ pip drops what turned and a violet 💀 pip shows the Greater Poison | `statusFx` `greaterPoison` |
+| 💀 Its tick | `en4GreaterPoisonTickVfx(ev)` | Like Poison's: a shake, a violet pulse, the poison number; the 💀 pip stays (an old replay's `decay` still drops it) | `greaterPoisonTick` |
+| 🛡️ Shore Up | `en4ShoreUpVfx(ev)` | "🛡️ Shore Up" on the unit hit; a small 🛡️ hops in an arc from it to each ally beside it and lands with a ring; their Shield shows | `shoreUp` |
