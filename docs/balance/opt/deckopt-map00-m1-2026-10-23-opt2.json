@@ -1,0 +1,2982 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.0.0 (2026-10-23, OPT2)",
+ "generated": "2026-10-23T15:29:02.995Z",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "level": 1,
+ "settings": {
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0.3,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25",
+ "pools": {
+  "phase1": 67,
+  "mapCards": [
+   "ant-scout",
+   "ash-cloud-condor",
+   "badger-berserker",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "beetle-grunt",
+   "burrow-rabbit",
+   "caustic-scorpion",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "cobalt-talon-fledgling",
+   "cottontail",
+   "crossed-eyes",
+   "duck-paddler",
+   "duckling",
+   "dynamite-packrat",
+   "eagle-sharpshooter",
+   "earthworm",
+   "elder-willow",
+   "ent",
+   "farm-dog",
+   "feral-tomcat",
+   "forager-ant",
+   "fox-kit",
+   "garden-snail",
+   "glacier-wolf-pack",
+   "golden-eagle-diver",
+   "gull-thief",
+   "honey-bee",
+   "house-cat",
+   "meadow-rabbit",
+   "otter-kit",
+   "otter-paddler",
+   "pond-duck",
+   "pond-trout",
+   "river-carp",
+   "rockslide-ram",
+   "scree-goat",
+   "silver-minnow",
+   "terrier-pup",
+   "thornwood-palisade",
+   "toucan-courier",
+   "trash-panda-trickster",
+   "tunnel-ant",
+   "worker-ant"
+  ],
+  "owned": [
+   "acorn-chipmunk",
+   "cobalt-talon-skirmisher",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "dominion-nestguard",
+   "ember-tetra-3caj",
+   "fleetfootd",
+   "gold-throated-acolyte",
+   "greyplume-fledgling",
+   "guppy",
+   "harvest-mouse",
+   "meadow-frog",
+   "meerkat-wayfarer",
+   "mosswing-laborer",
+   "otter-centurion",
+   "otter-guard",
+   "riverwing-envoy",
+   "sheep",
+   "sunthroat-courier",
+   "violet-vane-fletcher",
+   "voidfeather-scout"
+  ],
+  "phase2": 92,
+  "wholeSpectrum": 353
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "meadow-forest",
+   "kinBiomes": [
+    "long-grass",
+    "maze-briar",
+    "redwood"
+   ],
+   "terrainTypes": [
+    "Field",
+    "Flora",
+    "Village"
+   ],
+   "mapTypes": [
+    "Ants 2",
+    "Bee 3",
+    "Bird 5",
+    "Canid 2",
+    "Cat 2",
+    "Chipmunk 2",
+    "Dog 2",
+    "Duck 3",
+    "Fish 2",
+    "Insect 6",
+    "Lagomorph 2",
+    "Rabbit 2",
+    "Rodent 2",
+    "Village 2"
+   ],
+   "mapMechanics": [
+    "armor 2",
+    "swarm 2"
+   ],
+   "field": [
+    "misty",
+    "phase:off"
+   ],
+   "coreCards": 24
+  },
+  "minScore": 3,
+  "minScoreAsked": 3,
+  "qualified": 54,
+  "cut": 29,
+  "list": [
+   {
+    "id": "fire-ant-raft",
+    "name": "Fire Ant Raft",
+    "rarity": "uncommon",
+    "obtainMap": 5,
+    "score": 6,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "type Ants (2 map cards)",
+     "animal group ant (like Ant Scout)",
+     "swarm skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "mountain-hare",
+    "name": "Mountain Hare",
+    "rarity": "common",
+    "obtainMap": 11,
+    "score": 6,
+    "reasons": [
+     "biome meadow-forest",
+     "type Lagomorph (2 map cards)",
+     "type Rabbit (2 map cards)",
+     "animal group rabbit (like Cottontail)",
+     "evasion (field misty)"
+    ]
+   },
+   {
+    "id": "pigeon-peon",
+    "name": "Pigeon Peon",
+    "rarity": "common",
+    "obtainMap": 12,
+    "score": 6,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Village",
+     "type Bird (5 map cards)",
+     "type Village (2 map cards)",
+     "animal group pigeon (like Crossed-Eyes)"
+    ]
+   },
+   {
+    "id": "swamp-rabbit",
+    "name": "Swamp Rabbit",
+    "rarity": "common",
+    "obtainMap": 13,
+    "score": 6,
+    "reasons": [
+     "biome meadow-forest",
+     "type Lagomorph (2 map cards)",
+     "type Rabbit (2 map cards)",
+     "animal group rabbit (like Cottontail)",
+     "evasion (field misty)"
+    ]
+   },
+   {
+    "id": "hawthorn-shieldbug",
+    "name": "Hawthorn Shieldbug",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Field",
+     "type Insect (6 map cards)",
+     "armor skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "leafcutter-gardener",
+    "name": "Leafcutter Gardener",
+    "rarity": "common",
+    "obtainMap": 7,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "type Ants (2 map cards)",
+     "animal group ant (like Ant Scout)"
+    ]
+   },
+   {
+    "id": "balloon-archer",
+    "name": "Balloon Archer",
+    "rarity": "uncommon",
+    "obtainMap": 11,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Village",
+     "type Rodent (2 map cards)",
+     "type Village (2 map cards)"
+    ]
+   },
+   {
+    "id": "seed-cache-squirrel",
+    "name": "Seed-cache Squirrel",
+    "rarity": "common",
+    "obtainMap": 11,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "type Chipmunk (2 map cards)",
+     "type Rodent (2 map cards)",
+     "animal group squirrel (like Chipmunk Forager)"
+    ]
+   },
+   {
+    "id": "swift-fox",
+    "name": "Swift Fox",
+    "rarity": "common",
+    "obtainMap": 11,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Field",
+     "type Canid (2 map cards)",
+     "animal group fox (like Fox Kit)"
+    ]
+   },
+   {
+    "id": "stag-beetle",
+    "name": "Stag Beetle",
+    "rarity": "rare",
+    "obtainMap": 12,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "animal group beetle (like Beetle Grunt)",
+     "armor skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "border-collie",
+    "name": "Border Collie",
+    "rarity": "uncommon",
+    "obtainMap": 15,
+    "score": 5,
+    "reasons": [
+     "kin biome long-grass",
+     "terrain type Village",
+     "type Canid (2 map cards)",
+     "type Dog (2 map cards)",
+     "animal group dog (like Farm Dog)"
+    ]
+   },
+   {
+    "id": "pika-hoarder",
+    "name": "Pika Hoarder",
+    "rarity": "common",
+    "obtainMap": 21,
+    "score": 5,
+    "reasons": [
+     "biome meadow-forest",
+     "type Lagomorph (2 map cards)",
+     "type Rabbit (2 map cards)",
+     "animal group rabbit (like Cottontail)"
+    ]
+   },
+   {
+    "id": "water-vole",
+    "name": "Water Vole",
+    "rarity": "common",
+    "obtainMap": 4,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Rodent (2 map cards)",
+     "evasion (field misty)"
+    ]
+   },
+   {
+    "id": "anvil-thrush",
+    "name": "Anvil Thrush",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Field",
+     "type Bird (5 map cards)"
+    ]
+   },
+   {
+    "id": "buzzed-chipmunk",
+    "name": "Buzzed Chipmunk",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "terrain type Village",
+     "type Chipmunk (2 map cards)",
+     "type Rodent (2 map cards)",
+     "animal group squirrel (like Chipmunk Forager)"
+    ]
+   },
+   {
+    "id": "fungus-gnat-cloud",
+    "name": "Fungus Gnat Cloud",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "swarm skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "pill-bug",
+    "name": "Pill Bug",
+    "rarity": "uncommon",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "armor skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "robin-redbreast",
+    "name": "Robin Redbreast",
+    "rarity": "uncommon",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Field",
+     "type Bird (5 map cards)"
+    ]
+   },
+   {
+    "id": "shellwright-apprentice",
+    "name": "Shellwright Apprentice",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "terrain type Village",
+     "type Village (2 map cards)",
+     "animal group otter (like Otter Kit)",
+     "armor skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "springtail-hopper",
+    "name": "Springtail Hopper",
+    "rarity": "common",
+    "obtainMap": 5,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "evasion (field misty)"
+    ]
+   },
+   {
+    "id": "bombardier-beetle",
+    "name": "Bombardier Beetle",
+    "rarity": "uncommon",
+    "obtainMap": 7,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Insect (6 map cards)",
+     "animal group beetle (like Beetle Grunt)"
+    ]
+   },
+   {
+    "id": "nightjar-drifter",
+    "name": "Nightjar Drifter",
+    "rarity": "common",
+    "obtainMap": 7,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "terrain type Field",
+     "type Bird (5 map cards)"
+    ]
+   },
+   {
+    "id": "millipede-hauler",
+    "name": "Millipede Hauler",
+    "rarity": "uncommon",
+    "obtainMap": 8,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "armor skills (2 map cards)",
+     "swarm skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "dhole-runner",
+    "name": "Dhole Runner",
+    "rarity": "common",
+    "obtainMap": 11,
+    "score": 4,
+    "reasons": [
+     "biome meadow-forest",
+     "type Canid (2 map cards)",
+     "swarm skills (2 map cards)"
+    ]
+   },
+   {
+    "id": "cunning-vixen",
+    "name": "Cunning Vixen",
+    "rarity": "uncommon",
+    "obtainMap": 12,
+    "score": 4,
+    "reasons": [
+     "kin biome maze-briar",
+     "type Canid (2 map cards)",
+     "animal group fox (like Fox Kit)",
+     "evasion (field misty)"
+    ]
+   }
+  ],
+  "excluded": [
+   {
+    "reason": "a later boss / map-ender fight's reward",
+    "n": 20,
+    "e": [
+     "alligator-gar",
+     "blue-ringed-octopus",
+     "caldera-snow-leopard",
+     "colossal-squid",
+     "dhole-matriarch",
+     "dust-devil-kestrel"
+    ]
+   },
+   {
+    "reason": "a later fight's leader",
+    "n": 6,
+    "e": [
+     "ashbone-ghoul",
+     "chamois-leaper",
+     "great-barracuda",
+     "magnate-duck",
+     "mayfly-dancer",
+     "war-elephant"
+    ]
+   },
+   {
+    "reason": "a later fight's showcased card",
+    "n": 3,
+    "e": [
+     "field-vole",
+     "gilded-swan-knight",
+     "stalactite-golem"
+    ]
+   },
+   {
+    "reason": "met only in later boss fights",
+    "n": 4,
+    "e": [
+     "grass-snake",
+     "hedgehog-herbalist",
+     "ladybird-guard",
+     "lantern-spark-fly"
+    ]
+   },
+   {
+    "reason": "not in the progression plan (not obtainable)",
+    "n": 374,
+    "e": [
+     "abbey-goose",
+     "acacia-giraffe",
+     "adder-ambusher",
+     "alpha-howler",
+     "alpine-avalanche",
+     "ancient-sloth-titan"
+    ]
+   },
+   {
+    "reason": "plan bucket materia",
+    "n": 7,
+    "e": [
+     "abyssal-ink",
+     "dragon-scale",
+     "ember-core",
+     "iron-shard",
+     "river-pearl",
+     "strange-materia"
+    ]
+   },
+   {
+    "reason": "plan bucket nest",
+    "n": 7,
+    "e": [
+     "egg-beast",
+     "egg-bird",
+     "egg-bug",
+     "egg-otter",
+     "egg-scaly",
+     "egg-water"
+    ]
+   },
+   {
+    "reason": "plan bucket raid",
+    "n": 7,
+    "e": [
+     "abyss-lantern-squid",
+     "fathom-leviathan",
+     "glass-octopus",
+     "goliath-broodmother",
+     "goliath-tentacle",
+     "inkcloud-squid"
+    ]
+   },
+   {
+    "reason": "plan bucket smith",
+    "n": 1,
+    "e": [
+     "lava-waders"
+    ]
+   },
+   {
+    "reason": "plan bucket unsorted",
+    "n": 42,
+    "e": [
+     "anvilwhisker-otter",
+     "ashmantle-fiend",
+     "aye-aye-prowler",
+     "caldera-wyrm",
+     "chained-binturong",
+     "chapel-tortoise"
+    ]
+   }
+  ],
+  "belowScore": 177
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-1",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs 0-1 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|fight:0-2",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs 0-2 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|fight:0-3",
+   "kind": "mirror",
+   "node": "0-3",
+   "label": "vs 0-3 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T1"
+  },
+  {
+   "key": "mirror|fight:0-4",
+   "kind": "mirror",
+   "node": "0-4",
+   "label": "vs 0-4 skirmish's deck",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs reference starter deck under 0-1's field",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+   "weight": 0.125,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-1",
+   "kind": "road",
+   "node": "0-1",
+   "label": "0-1 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-2",
+   "kind": "road",
+   "node": "0-2",
+   "label": "0-2 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off"
+  },
+  {
+   "key": "road|0-3",
+   "kind": "road",
+   "node": "0-3",
+   "label": "0-3 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T1"
+  },
+  {
+   "key": "road|0-4",
+   "kind": "road",
+   "node": "0-4",
+   "label": "0-4 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)"
+  },
+  {
+   "key": "neutral|fight:0-1",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs 0-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-2",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs 0-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-3",
+   "kind": "mirror",
+   "node": "0-3",
+   "label": "vs 0-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:0-4",
+   "kind": "mirror",
+   "node": "0-4",
+   "label": "vs 0-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "0-1",
+   "label": "vs reference starter deck under 0-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "0-2",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 3648,
+  "seconds": 99.9,
+  "gamesPerSecond": 36.5,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 12400,
+   "gens": 4,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:1,farm-dog:1,feral-tomcat:4,fox-kit:4,meadow-frog:1,otter-centurion:1,otter-guard:1",
+     "f": 0.953,
+     "gens": 2,
+     "games": 6120,
+     "top": [
+      "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:1,farm-dog:1,feral-tomcat:4,fox-kit:4,meadow-frog:1,otter-centurion:1,otter-guard:1",
+      "beetle-grunt:5,duck-paddler:4,ent:2,feral-tomcat:5,fox-kit:1,honey-bee:2,otter-guard:1",
+      "badger-berserker:1,beetle-grunt:2,chipmunk-forager:1,chipmunk-skirmisher:1,duck-paddler:2,duckling:1,earthworm:1,ent:1,farm-dog:1,fox-kit:1,greyplume-fledgling:1,honey-bee:1,otter-centurion:1,pond-duck:1,scree-goat:1,sunthroat-courier:2,voidfeather-scout:1",
+      "beetle-grunt:4,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:4,fox-kit:4,otter-kit:2"
+     ]
+    },
+    {
+     "best": "acorn-chipmunk:2,badger-berserker:3,beetle-grunt:1,caustic-scorpion:1,crimson-wing-duelist-cadet:1,ember-tetra-3caj:1,feral-tomcat:2,fox-kit:1,meadow-frog:2,mosswing-laborer:1,otter-guard:1,toucan-courier:2,voidfeather-scout:1,worker-ant:1",
+     "f": 0.785,
+     "gens": 2,
+     "games": 6280,
+     "top": [
+      "acorn-chipmunk:2,badger-berserker:3,beetle-grunt:1,caustic-scorpion:1,crimson-wing-duelist-cadet:1,ember-tetra-3caj:1,feral-tomcat:2,fox-kit:1,meadow-frog:2,mosswing-laborer:1,otter-guard:1,toucan-courier:2,voidfeather-scout:1,worker-ant:1",
+      "badger-berserker:2,beetle-grunt:1,burrow-rabbit:1,crimson-wing-duelist-cadet:1,dynamite-packrat:1,eagle-sharpshooter:2,ember-tetra-3caj:1,ent:1,feral-tomcat:2,fox-kit:1,garden-snail:1,gull-thief:1,meadow-frog:1,meerkat-wayfarer:1,otter-guard:1,sheep:1,toucan-courier:1",
+      "badger-berserker:2,beetle-grunt:1,burrow-rabbit:1,cottontail:1,crimson-wing-duelist-cadet:1,eagle-sharpshooter:2,ent:1,feral-tomcat:2,fox-kit:1,garden-snail:1,gull-thief:1,meadow-frog:1,meerkat-wayfarer:1,otter-centurion:1,otter-guard:1,sheep:1,toucan-courier:1",
+      "ant-scout:1,crimson-wing-recruit:2,duckling:2,ember-tetra-3caj:1,glacier-wolf-pack:1,golden-eagle-diver:1,meadow-frog:1,otter-centurion:1,otter-guard:1,pond-trout:2,riverwing-envoy:1,thornwood-palisade:1,toucan-courier:3,voidfeather-scout:2"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "beetle-grunt": 5,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 1,
+    "farm-dog": 1,
+    "feral-tomcat": 4,
+    "fox-kit": 4,
+    "meadow-frog": 1,
+    "otter-centurion": 1,
+    "otter-guard": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.94,
+   "ci": [
+    0.921,
+    0.96
+   ],
+   "mirror": 0.93,
+   "road": 0.973,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.797,
+     "lo": 0.683,
+     "hi": 0.877,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "road|0-1",
+     "label": "0-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "road|0-2",
+     "label": "0-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "road|0-3",
+     "label": "0-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "road|0-4",
+     "label": "0-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-1",
+     "label": "vs 0-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-2",
+     "label": "vs 0-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-3",
+     "label": "vs 0-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-4",
+     "label": "vs 0-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.632,
+     "hi": 0.84,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 0-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 5880,
+   "gens": 3,
+   "restarts": 1,
+   "runs": [
+    {
+     "best": "beetle-grunt:5,bombardier-beetle:3,cobalt-talon-fledgling:2,duck-paddler:1,feral-tomcat:4,fox-kit:4,otter-centurion:1",
+     "f": 0.975,
+     "gens": 3,
+     "games": 5880,
+     "top": [
+      "beetle-grunt:5,bombardier-beetle:3,cobalt-talon-fledgling:2,duck-paddler:1,feral-tomcat:4,fox-kit:4,otter-centurion:1",
+      "beetle-grunt:5,bombardier-beetle:3,cobalt-talon-fledgling:2,duck-paddler:1,feral-tomcat:4,fox-kit:4,violet-vane-fletcher:1",
+      "badger-berserker:1,beetle-grunt:5,bombardier-beetle:1,cobalt-talon-fledgling:1,duck-paddler:2,fox-kit:4,fungus-gnat-cloud:1,house-cat:1,meadow-frog:1,millipede-hauler:1,otter-centurion:1,swamp-rabbit:1",
+      "beetle-grunt:5,duck-paddler:4,ent:2,feral-tomcat:5,fox-kit:1,honey-bee:2,otter-guard:1"
+     ]
+    }
+   ]
+  },
+  "screenBaseline": 0.953,
+  "screened": 25,
+  "topSwaps": [
+   {
+    "card": "bombardier-beetle",
+    "name": "Bombardier Beetle",
+    "rarity": "uncommon",
+    "obtainMap": 7,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.975,
+    "delta": 0.021,
+    "n": 32
+   },
+   {
+    "card": "buzzed-chipmunk",
+    "name": "Buzzed Chipmunk",
+    "rarity": "common",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.936,
+    "delta": -0.018,
+    "n": 32
+   },
+   {
+    "card": "balloon-archer",
+    "name": "Balloon Archer",
+    "rarity": "uncommon",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.934,
+    "delta": -0.02,
+    "n": 32
+   },
+   {
+    "card": "leafcutter-gardener",
+    "name": "Leafcutter Gardener",
+    "rarity": "common",
+    "obtainMap": 7,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.93,
+    "delta": -0.023,
+    "n": 8
+   },
+   {
+    "card": "mountain-hare",
+    "name": "Mountain Hare",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.906,
+    "delta": -0.047,
+    "n": 8
+   },
+   {
+    "card": "fungus-gnat-cloud",
+    "name": "Fungus Gnat Cloud",
+    "rarity": "common",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.898,
+    "delta": -0.055,
+    "n": 8
+   },
+   {
+    "card": "seed-cache-squirrel",
+    "name": "Seed-cache Squirrel",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.891,
+    "delta": -0.062,
+    "n": 8
+   },
+   {
+    "card": "swift-fox",
+    "name": "Swift Fox",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.875,
+    "delta": -0.078,
+    "n": 4
+   },
+   {
+    "card": "cunning-vixen",
+    "name": "Cunning Vixen",
+    "rarity": "uncommon",
+    "obtainMap": 12,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 4
+   },
+   {
+    "card": "fire-ant-raft",
+    "name": "Fire Ant Raft",
+    "rarity": "uncommon",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 4
+   },
+   {
+    "card": "hawthorn-shieldbug",
+    "name": "Hawthorn Shieldbug",
+    "rarity": "common",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 4
+   },
+   {
+    "card": "millipede-hauler",
+    "name": "Millipede Hauler",
+    "rarity": "uncommon",
+    "obtainMap": 8,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 4
+   },
+   {
+    "card": "pigeon-peon",
+    "name": "Pigeon Peon",
+    "rarity": "common",
+    "obtainMap": 12,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.875,
+    "delta": -0.078,
+    "n": 2
+   },
+   {
+    "card": "dhole-runner",
+    "name": "Dhole Runner",
+    "rarity": "common",
+    "obtainMap": 11,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 2
+   },
+   {
+    "card": "pill-bug",
+    "name": "Pill Bug",
+    "rarity": "uncommon",
+    "obtainMap": 5,
+    "copies": 3,
+    "out": [
+     "meadow-frog",
+     "otter-guard",
+     "farm-dog"
+    ],
+    "score": 0.844,
+    "delta": -0.109,
+    "n": 2
+   }
+  ],
+  "best": {
+   "name": "optimum (map cards + candidates)",
+   "deck": {
+    "beetle-grunt": 5,
+    "bombardier-beetle": 3,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 1,
+    "feral-tomcat": 4,
+    "fox-kit": 4,
+    "otter-centurion": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.969,
+   "ci": [
+    0.954,
+    0.983
+   ],
+   "mirror": 0.961,
+   "road": 0.992,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "road|0-1",
+     "label": "0-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "road|0-2",
+     "label": "0-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "road|0-3",
+     "label": "0-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "road|0-4",
+     "label": "0-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-1",
+     "label": "vs 0-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-2",
+     "label": "vs 0-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-3",
+     "label": "vs 0-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:0-4",
+     "label": "vs 0-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 0-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    }
+   ]
+  },
+  "gainOverPhase1": 0.029
+ },
+ "optimum": "phase2",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "beetle-grunt": 5,
+    "bombardier-beetle": 3,
+    "cobalt-talon-fledgling": 2,
+    "duck-paddler": 1,
+    "feral-tomcat": 4,
+    "fox-kit": 4,
+    "otter-centurion": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.969,
+   "ci": [
+    0.954,
+    0.983
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "badger-berserker": 1,
+    "beetle-grunt": 5,
+    "bombardier-beetle": 1,
+    "cobalt-talon-fledgling": 1,
+    "duck-paddler": 2,
+    "fox-kit": 4,
+    "fungus-gnat-cloud": 1,
+    "house-cat": 1,
+    "meadow-frog": 1,
+    "millipede-hauler": 1,
+    "otter-centurion": 1,
+    "swamp-rabbit": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fungus-gnat-cloud",
+     "name": "Fungus Gnat Cloud",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "swamp-rabbit",
+     "name": "Swamp Rabbit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    }
+   ],
+   "score": 0.943,
+   "ci": [
+    0.924,
+    0.962
+   ],
+   "copiesApartFromOptimum": 7
+  },
+  {
+   "i": 2,
+   "deck": {
+    "beetle-grunt": 5,
+    "duck-paddler": 4,
+    "ent": 2,
+    "feral-tomcat": 5,
+    "fox-kit": 1,
+    "honey-bee": 2,
+    "otter-guard": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.901,
+   "ci": [
+    0.877,
+    0.925
+   ],
+   "copiesApartFromOptimum": 9
+  },
+  {
+   "i": 3,
+   "deck": {
+    "badger-berserker": 1,
+    "beetle-grunt": 2,
+    "chipmunk-forager": 1,
+    "chipmunk-skirmisher": 1,
+    "duck-paddler": 2,
+    "duckling": 1,
+    "earthworm": 1,
+    "ent": 1,
+    "farm-dog": 1,
+    "fox-kit": 1,
+    "greyplume-fledgling": 1,
+    "honey-bee": 1,
+    "otter-centurion": 1,
+    "pond-duck": 1,
+    "scree-goat": 1,
+    "sunthroat-courier": 2,
+    "voidfeather-scout": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sunthroat-courier",
+     "name": "Sunthroat Courier",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "badger-berserker",
+     "name": "Badger Berserker",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-forager",
+     "name": "Chipmunk Forager",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "farm-dog",
+     "name": "Farm Dog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "greyplume-fledgling",
+     "name": "Greyplume Fledgling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "honey-bee",
+     "name": "Honey Bee",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "pond-duck",
+     "name": "Pond Duck",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "scree-goat",
+     "name": "Scree Goat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "voidfeather-scout",
+     "name": "Voidfeather Scout",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.866,
+   "ci": [
+    0.839,
+    0.894
+   ],
+   "copiesApartFromOptimum": 15
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.484,
+    "elo": -11,
+    "n": 64
+   },
+   {
+    "p": 0.578,
+    "elo": 55,
+    "n": 64
+   },
+   {
+    "p": 0.75,
+    "elo": 191,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.516,
+    "elo": 11,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.578,
+    "elo": 55,
+    "n": 64
+   },
+   {
+    "p": 0.781,
+    "elo": 221,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.422,
+    "elo": -55,
+    "n": 64
+   },
+   {
+    "p": 0.422,
+    "elo": -55,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.641,
+    "elo": 100,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.25,
+    "elo": -191,
+    "n": 64
+   },
+   {
+    "p": 0.219,
+    "elo": -221,
+    "n": 64
+   },
+   {
+    "p": 0.359,
+    "elo": -100,
+    "n": 64
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 11,
+ "ladder": [
+  {
+   "target": 600,
+   "key": "balloon-archer:1,beetle-grunt:2,bombardier-beetle:1,caustic-scorpion:2,cobalt-talon-skirmisher:1,dominion-nestguard:1,eagle-sharpshooter:1,earthworm:1,feral-tomcat:2,fox-kit:1,glacier-wolf-pack:2,millipede-hauler:1,rockslide-ram:1,scree-goat:1,stag-beetle:1,worker-ant:1",
+   "deck": {
+    "beetle-grunt": 2,
+    "bombardier-beetle": 1,
+    "feral-tomcat": 2,
+    "fox-kit": 1,
+    "caustic-scorpion": 2,
+    "scree-goat": 1,
+    "earthworm": 1,
+    "glacier-wolf-pack": 2,
+    "rockslide-ram": 1,
+    "dominion-nestguard": 1,
+    "worker-ant": 1,
+    "millipede-hauler": 1,
+    "stag-beetle": 1,
+    "balloon-archer": 1,
+    "eagle-sharpshooter": 1,
+    "cobalt-talon-skirmisher": 1
+   },
+   "eloGap": 597,
+   "eloCI": [
+    430,
+    763
+   ],
+   "optimumH2H": 0.969,
+   "n": 128,
+   "sharedWithOptimum": 6,
+   "hit": true,
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "name": "Glacier Wolf Pack",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-skirmisher",
+     "name": "Cobalt Talon Skirmisher",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "dominion-nestguard",
+     "name": "Dominion Nestguard",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "eagle-sharpshooter",
+     "name": "Eagle Sharpshooter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "scree-goat",
+     "name": "Scree Goat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "stag-beetle",
+     "name": "Stag Beetle",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ]
+  },
+  {
+   "target": 450,
+   "key": "ash-cloud-condor:1,balloon-archer:1,beetle-grunt:3,bombardier-beetle:1,caustic-scorpion:2,cobalt-talon-fledgling:1,duck-paddler:1,feral-tomcat:1,fox-kit:2,glacier-wolf-pack:1,gold-throated-acolyte:1,golden-eagle-diver:1,millipede-hauler:2,otter-centurion:1,seed-cache-squirrel:1",
+   "deck": {
+    "beetle-grunt": 3,
+    "bombardier-beetle": 1,
+    "cobalt-talon-fledgling": 1,
+    "duck-paddler": 1,
+    "feral-tomcat": 1,
+    "fox-kit": 2,
+    "otter-centurion": 1,
+    "millipede-hauler": 2,
+    "ash-cloud-condor": 1,
+    "caustic-scorpion": 2,
+    "gold-throated-acolyte": 1,
+    "glacier-wolf-pack": 1,
+    "balloon-archer": 1,
+    "golden-eagle-diver": 1,
+    "seed-cache-squirrel": 1
+   },
+   "eloGap": 470,
+   "eloCI": [
+    349,
+    592
+   ],
+   "optimumH2H": 0.938,
+   "n": 128,
+   "sharedWithOptimum": 10,
+   "hit": true,
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "millipede-hauler",
+     "name": "Millipede Hauler",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "glacier-wolf-pack",
+     "name": "Glacier Wolf Pack",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "gold-throated-acolyte",
+     "name": "Gold-throated Acolyte",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    }
+   ]
+  },
+  {
+   "target": 300,
+   "key": "balloon-archer:1,beetle-grunt:2,bombardier-beetle:2,cobalt-talon-fledgling:2,crossed-eyes:1,dominion-nestguard:1,ember-tetra-3caj:1,ent:1,feral-tomcat:4,fox-kit:1,gold-throated-acolyte:2,gull-thief:1,stag-beetle:1",
+   "deck": {
+    "beetle-grunt": 2,
+    "bombardier-beetle": 2,
+    "cobalt-talon-fledgling": 2,
+    "feral-tomcat": 4,
+    "fox-kit": 1,
+    "balloon-archer": 1,
+    "stag-beetle": 1,
+    "ember-tetra-3caj": 1,
+    "gull-thief": 1,
+    "ent": 1,
+    "crossed-eyes": 1,
+    "gold-throated-acolyte": 2,
+    "dominion-nestguard": 1
+   },
+   "eloGap": 283,
+   "eloCI": [
+    202,
+    363
+   ],
+   "optimumH2H": 0.836,
+   "n": 128,
+   "sharedWithOptimum": 11,
+   "hit": true,
+   "cards": [
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "gold-throated-acolyte",
+     "name": "Gold-throated Acolyte",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "balloon-archer",
+     "name": "Balloon Archer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "crossed-eyes",
+     "name": "Crossed-Eyes",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "dominion-nestguard",
+     "name": "Dominion Nestguard",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ember-tetra-3caj",
+     "name": "Ember Tetra",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ent",
+     "name": "Ent",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-kit",
+     "name": "Fox Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "stag-beetle",
+     "name": "Stag Beetle",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    }
+   ]
+  },
+  {
+   "target": 150,
+   "key": "acorn-chipmunk:1,beetle-grunt:4,bombardier-beetle:3,buzzed-chipmunk:1,caustic-scorpion:1,cobalt-talon-fledgling:2,cobalt-talon-skirmisher:1,crimson-wing-duelist-cadet:1,feral-tomcat:4,otter-centurion:1,terrier-pup:1",
+   "deck": {
+    "beetle-grunt": 4,
+    "bombardier-beetle": 3,
+    "cobalt-talon-fledgling": 2,
+    "feral-tomcat": 4,
+    "otter-centurion": 1,
+    "cobalt-talon-skirmisher": 1,
+    "terrier-pup": 1,
+    "buzzed-chipmunk": 1,
+    "acorn-chipmunk": 1,
+    "caustic-scorpion": 1,
+    "crimson-wing-duelist-cadet": 1
+   },
+   "eloGap": 131,
+   "eloCI": [
+    67,
+    195
+   ],
+   "optimumH2H": 0.68,
+   "n": 128,
+   "sharedWithOptimum": 14,
+   "hit": true,
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "cobalt-talon-fledgling",
+     "name": "Cobalt Fledgling",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "acorn-chipmunk",
+     "name": "Acorn Chipmunk",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "buzzed-chipmunk",
+     "name": "Buzzed Chipmunk",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": false,
+     "outOfMap": true
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cobalt-talon-skirmisher",
+     "name": "Cobalt Talon Skirmisher",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-duelist-cadet",
+     "name": "Crimson Wing Duelist Cadet",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ]
+  }
+ ],
+ "road": [
+  {
+   "node": "0-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 1,
+   "ci": [
+    0.943,
+    1
+   ],
+   "n": 64
+  },
+  {
+   "node": "0-2",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.984,
+   "ci": [
+    0.917,
+    0.997
+   ],
+   "n": 64
+  },
+  {
+   "node": "0-3",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 1,
+   "ci": [
+    0.943,
+    1
+   ],
+   "n": 64
+  },
+  {
+   "node": "0-4",
+   "kind": "skirmish",
+   "target": 0.45,
+   "optimum": 0.984,
+   "ci": [
+    0.917,
+    0.997
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:0-1",
+   "node": "0-1",
+   "rules": "misty, phase off",
+   "withField": 1,
+   "noField": 0.969,
+   "delta": 0.031,
+   "ci": [
+    -0.011,
+    0.074
+   ]
+  },
+  {
+   "opponent": "fight:0-2",
+   "node": "0-2",
+   "rules": "misty, phase off",
+   "withField": 0.953,
+   "noField": 0.969,
+   "delta": -0.016,
+   "ci": [
+    -0.083,
+    0.051
+   ]
+  },
+  {
+   "opponent": "fight:0-3",
+   "node": "0-3",
+   "rules": "misty, phase off, terrain Open Meadow T1",
+   "withField": 0.938,
+   "noField": 0.938,
+   "delta": 0,
+   "ci": [
+    -0.084,
+    0.084
+   ]
+  },
+  {
+   "opponent": "fight:0-4",
+   "node": "0-4",
+   "rules": "misty, phase off, terrain Open Meadow T2 (Healing 1)",
+   "withField": 0.938,
+   "noField": 0.891,
+   "delta": 0.047,
+   "ci": [
+    -0.05,
+    0.144
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "0-1",
+   "rules": "misty, phase off",
+   "withField": 1,
+   "noField": 0.953,
+   "delta": 0.047,
+   "ci": [
+    -0.005,
+    0.099
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "0-2",
+   "rules": "misty, phase off",
+   "withField": 0.938,
+   "noField": 0.984,
+   "delta": -0.047,
+   "ci": [
+    -0.114,
+    0.02
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:0-1",
+   "label": "0-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-1",
+   "target": 0.9,
+   "h2h": 1,
+   "h2hCI": [
+    0.943,
+    1
+   ],
+   "elo": 842,
+   "eloCI": [
+    489,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.471,
+   "optimumSame": 0.964,
+   "pointsBelow": 49.3,
+   "pointsCI": 5.4
+  },
+  {
+   "opponent": "fight:0-2",
+   "label": "0-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-2",
+   "target": 0.75,
+   "h2h": 0.953,
+   "h2hCI": [
+    0.871,
+    0.984
+   ],
+   "elo": 523,
+   "eloCI": [
+    332,
+    715
+   ],
+   "n": 64,
+   "asPlayer": 0.464,
+   "optimumSame": 0.971,
+   "pointsBelow": 50.7,
+   "pointsCI": 5.8
+  },
+  {
+   "opponent": "fight:0-3",
+   "label": "0-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-3",
+   "target": 0.6,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.85,
+    0.975
+   ],
+   "elo": 470,
+   "eloCI": [
+    301,
+    640
+   ],
+   "n": 64,
+   "asPlayer": 0.583,
+   "optimumSame": 0.973,
+   "pointsBelow": 39.1,
+   "pointsCI": 5.2
+  },
+  {
+   "opponent": "fight:0-4",
+   "label": "0-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "0-4",
+   "target": 0.45,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.85,
+    0.975
+   ],
+   "elo": 470,
+   "eloCI": [
+    301,
+    640
+   ],
+   "n": 64,
+   "asPlayer": 0.908,
+   "optimumSame": 0.973,
+   "pointsBelow": 6.5,
+   "pointsCI": 3.8
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 0-1's field",
+   "kind": "reference",
+   "node": "0-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.943,
+    1
+   ],
+   "elo": 842,
+   "eloCI": [
+    489,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.513,
+   "optimumSame": 0.964,
+   "pointsBelow": 45.1,
+   "pointsCI": 5.5
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 0-2's field",
+   "kind": "reference",
+   "node": "0-2",
+   "target": null,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.85,
+    0.975
+   ],
+   "elo": 470,
+   "eloCI": [
+    301,
+    640
+   ],
+   "n": 64,
+   "asPlayer": 0.565,
+   "optimumSame": 0.973,
+   "pointsBelow": 40.8,
+   "pointsCI": 5.7
+  }
+ ]
+}

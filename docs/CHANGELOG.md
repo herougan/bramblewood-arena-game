@@ -11,6 +11,18 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Data:** the 8 Hummingbird cards that came "from the start" are in the faction pool; `ember-tetra-3caj` is `ember-tetra` (its live row skipped; `supabase/proposed/20261023_rw5_clear_ember_tetra.sql` on "apply it"; its source is call RW5-4). HUB3's mistakes list re-checks itself and ticks what RW5 fixed.
 - **Collector packs (#14)** (were "Advanced"); Refine steps cost 10% more (call RW5-6). **2× (#18)** opens with Map 0 cleared, the next fight says "2× unlocked!", and your speed is kept from fight to fight; 3×/4×/5× stay at Maps 20/40/60. **Admin (#10):** every resource to 99,999 or 0. **Guilds (#16):** the Rename Ticket shows in the Shop only for a guild owner, and the guild page has a 🛒 Guild shop; the Raid Ticket costs 400 Maple Leaves + 5 Gold Leaves (call RW5-5). **Packs (#13):** the bundle summary names its free level-ups (five on the line, all in the tooltip).
 - Tests: `tests/rw5-2026-10-23.js`, `tests/e2e/rw5_2026_10_23.py` (shots in `docs/screens/RW5/`); `tests/card-pass-2026-10-19.js` reads a re-tiered pack source as kept (dated note). Texts in 12 packs (`tools/i18n_2026_10_23_rw5.py`).
+## 2026-10-23 (package OPT2: the deck optimizer, logic first, at Level 1, with a difficulty ladder)
+- **Tools only; nothing in the game changed.** `tools/opt/deckopt.js` 2.0 (owner 22:23, OPT-1..3).
+- **Phase 2 is a logic-filtered list of 5-25 related cards a map** (OPT-1/2), each printed with its reasons; the rules are a small
+  config, `tools/opt/phase2-rules.json` (biome / kin biome, terrain types, shared unit types and animal groups, shared skill families
+  such as ranged skills on an arrow map, skill families the field rewards; never a later map's leaders, showcased, boss-only or boss /
+  ender reward cards, strange cards, challenge cards or Map 40+ cards). `--candidates-only` prints the lists with no games.
+- **The optimum at Level 1 first** (`--level 1` default), then a **difficulty ladder** (OPT-3): legal decks from the same pool at Elo
+  gaps 600 / 450 / 300 / 150 below the optimum, sharing 6-18 of its 20 copies, measured head to head under the map's fields.
+- **Several local maxima, reported**: GA restarts and niching, a new discrete coordinate descent (`--method descent`), the distinct
+  optima (6+ copies apart) with their head-to-head; `--compare` runs both searches at equal game budgets on independent eval seeds.
+- Game budgets (`--budget`) instead of generation counts, so runs reproduce exactly; per-stage checkpoints with `--resume` / `--redo`.
+- Results for Maps 0-3: `docs/balance/opt/opt2-summary-2026-10-23.md`. Tests: `tests/opt2-2026-10-23.js`, `tests/opt-2026-10-23.js`.
 
 ## 2026-10-23 (package SKD: design restrictions in the skirmish tuning guide)
 - **The hub's Design tab now lists the rules we set ourselves** (owner 21:07). `docs/skirmish-tuning-guide.md` has a new section near the top, "Design restrictions we set ourselves": 11 groups (deck shape, leaders, rarity by map, enemy levels, brambles, field effects, rewards, theme, road structure, win-rate bands, CPU), each rule with its decision id or owner note and, where code enforces it, the constant. A last list names where dated docs and code disagree. No code or card changed.

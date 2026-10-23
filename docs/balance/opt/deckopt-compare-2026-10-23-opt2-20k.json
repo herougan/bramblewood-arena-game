@@ -1,0 +1,437 @@
+{
+ "tool": "tools/opt/deckopt.js --compare",
+ "version": "2.0.0 (2026-10-23, OPT2)",
+ "generated": "2026-10-23T15:57:23.612Z",
+ "seed": "bramble",
+ "maps": [
+  {
+   "map": {
+    "id": "m1",
+    "num": 0,
+    "name": "Bramblewood Outskirts"
+   },
+   "level": 1,
+   "budget": 20000,
+   "evalGames": 32,
+   "pool": 67,
+   "methods": {
+    "ga": {
+     "games": 20440,
+     "seconds": 370.8,
+     "gens": 8,
+     "restarts": 2,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "beetle-grunt:4,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:4,fox-kit:4,otter-kit:2",
+       "searchScore": 0.85,
+       "score": 0.854,
+       "se": 0.02
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:1,farm-dog:1,feral-tomcat:4,fox-kit:4,meadow-frog:1,otter-centurion:1,otter-guard:1",
+       "searchScore": 0.953,
+       "score": 0.936,
+       "se": 0.014
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "beetle-grunt:4,burrow-rabbit:1,duckling:1,ember-tetra-3caj:1,ent:1,feral-tomcat:1,fox-kit:4,garden-snail:1,harvest-mouse:1,otter-centurion:2,otter-guard:1,sunthroat-courier:1,toucan-courier:1",
+       "searchScore": 0.955,
+       "score": 0.904,
+       "se": 0.017
+      }
+     ],
+     "distinctOptima": 5,
+     "distinctScores": [
+      0.955,
+      0.953,
+      0.943,
+      0.887,
+      0.879
+     ]
+    },
+    "descent": {
+     "games": 20260,
+     "seconds": 400.5,
+     "restarts": 2,
+     "steps": 32,
+     "moves": 18,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "beetle-grunt:4,caustic-scorpion:1,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,thornwood-palisade:1,tunnel-ant:1",
+       "searchScore": 0.883,
+       "score": 0.918,
+       "se": 0.016
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "beetle-grunt:4,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,honey-bee:1,thornwood-palisade:1,tunnel-ant:1",
+       "searchScore": 0.926,
+       "score": 0.924,
+       "se": 0.016
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "beetle-grunt:4,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,honey-bee:1,thornwood-palisade:1,tunnel-ant:1",
+       "searchScore": 0.926,
+       "score": 0.924,
+       "se": 0.016
+      }
+     ],
+     "distinctOptima": 2,
+     "distinctScores": [
+      0.926,
+      0.918
+     ],
+     "localOptima": [
+      {
+       "score": 0.926,
+       "moves": 5,
+       "local": true
+      },
+      {
+       "score": 0.918,
+       "moves": 13,
+       "local": false
+      }
+     ]
+    }
+   },
+   "h2h": {
+    "gaVsDescent": 0.539,
+    "elo": 27,
+    "n": 128
+   },
+   "distance": 11
+  },
+  {
+   "map": {
+    "id": "mf",
+    "num": 1,
+    "name": "Thistlewood"
+   },
+   "level": 1,
+   "budget": 20000,
+   "evalGames": 32,
+   "pool": 66,
+   "methods": {
+    "ga": {
+     "games": 21762,
+     "seconds": 221,
+     "gens": 6,
+     "restarts": 2,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "bee-forager:4,crimson-wing-duelist-cadet:1,duck-paddler:1,ember-tetra-3caj:4,fleetfootd:1,honey-bee:1,ladybird-guard:1,meadow-frog:1,otter-guard:1,violet-vane-fletcher:1,voidfeather-scout:4",
+       "searchScore": 0.725,
+       "score": 0.744,
+       "se": 0.022
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "bee-forager:4,crimson-wing-duelist-cadet:1,ember-tetra-3caj:4,honey-bee:1,house-cat:1,ladybird-guard:1,meadow-frog:1,otter-guard:2,violet-vane-fletcher:1,voidfeather-scout:4",
+       "searchScore": 0.862,
+       "score": 0.826,
+       "se": 0.019
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "crimson-wing-duelist-cadet:2,duck-paddler:1,dynamite-packrat:2,ember-tetra-3caj:3,honey-bee:1,house-cat:1,meadow-frog:1,otter-guard:3,silver-minnow:1,violet-vane-fletcher:1,voidfeather-scout:4",
+       "searchScore": 0.912,
+       "score": 0.883,
+       "se": 0.016
+      }
+     ],
+     "distinctOptima": 5,
+     "distinctScores": [
+      0.912,
+      0.912,
+      0.908,
+      0.904,
+      0.862
+     ]
+    },
+    "descent": {
+     "games": 20124,
+     "seconds": 165.8,
+     "restarts": 1,
+     "steps": 24,
+     "moves": 13,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "bee-forager:4,duck-paddler:1,ember-tetra-3caj:4,fleetfootd:1,harvest-mouse:1,ladybird-guard:1,meadow-frog:1,otter-guard:2,violet-vane-fletcher:1,voidfeather-scout:4",
+       "searchScore": 0.886,
+       "score": 0.832,
+       "se": 0.019
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "ant-scout:1,bee-forager:3,compost-grub:1,ember-tetra-3caj:4,harvest-mouse:1,ladybird-guard:1,meadow-frog:1,otter-guard:3,violet-vane-fletcher:1,voidfeather-scout:4",
+       "searchScore": 0.921,
+       "score": 0.903,
+       "se": 0.015
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "ant-scout:1,bee-forager:3,compost-grub:1,dormouse:1,ember-tetra-3caj:4,greyplume-fledgling:1,harvest-mouse:1,otter-centurion:1,otter-guard:4,voidfeather-scout:3",
+       "searchScore": 0.953,
+       "score": 0.944,
+       "se": 0.012
+      }
+     ],
+     "distinctOptima": 1,
+     "distinctScores": [
+      0.953
+     ],
+     "localOptima": [
+      {
+       "score": 0.953,
+       "moves": 13,
+       "local": false
+      }
+     ]
+    }
+   },
+   "h2h": {
+    "gaVsDescent": 0.494,
+    "elo": -4,
+    "n": 160
+   },
+   "distance": 11
+  },
+  {
+   "map": {
+    "id": "mb",
+    "num": 2,
+    "name": "Pebble Beach"
+   },
+   "level": 1,
+   "budget": 20000,
+   "evalGames": 32,
+   "pool": 83,
+   "methods": {
+    "ga": {
+     "games": 22386,
+     "seconds": 159.2,
+     "gens": 6,
+     "restarts": 2,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "bee-forager:4,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,minnow-skitter:1,mudpuppy:1,otter-centurion:2,silver-minnow:1,voidfeather-scout:4,water-shrew:1",
+       "searchScore": 0.862,
+       "score": 0.848,
+       "se": 0.017
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "cobalt-talon-fledgling:2,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,mayfly-dancer:1,meadow-rabbit:1,mudpuppy:1,otter-centurion:2,pelican-diver:1,pike-lancer:1,trash-panda-trickster:1,voidfeather-scout:4",
+       "searchScore": 0.926,
+       "score": 0.926,
+       "se": 0.012
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "cobalt-talon-fledgling:2,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,mayfly-dancer:1,meadow-rabbit:1,mudpuppy:1,otter-centurion:2,pelican-diver:1,pike-lancer:1,trash-panda-trickster:1,voidfeather-scout:4",
+       "searchScore": 0.926,
+       "score": 0.926,
+       "se": 0.012
+      }
+     ],
+     "distinctOptima": 5,
+     "distinctScores": [
+      0.926,
+      0.919,
+      0.914,
+      0.856,
+      0.856
+     ]
+    },
+    "descent": {
+     "games": 20280,
+     "seconds": 185.9,
+     "restarts": 2,
+     "steps": 24,
+     "moves": 15,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "bee-forager:3,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,grey-seal-bull:1,minnow-skitter:1,otter-centurion:2,sheep:1,silver-minnow:1,voidfeather-scout:4,water-shrew:1",
+       "searchScore": 0.929,
+       "score": 0.874,
+       "se": 0.016
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "bee-forager:3,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,grey-seal-bull:1,minnow-skitter:1,otter-centurion:2,sheep:1,silver-minnow:1,voidfeather-scout:4,water-shrew:1",
+       "searchScore": 0.929,
+       "score": 0.874,
+       "se": 0.016
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "bee-forager:3,conch-herald:1,ember-tetra-3caj:4,garden-snail:1,grey-seal-bull:1,minnow-skitter:1,otter-centurion:2,sheep:1,silver-minnow:1,voidfeather-scout:4,water-shrew:1",
+       "searchScore": 0.929,
+       "score": 0.874,
+       "se": 0.016
+      }
+     ],
+     "distinctOptima": 1,
+     "distinctScores": [
+      0.929
+     ],
+     "localOptima": [
+      {
+       "score": 0.929,
+       "moves": 2,
+       "local": true
+      },
+      {
+       "score": 0.791,
+       "moves": 13,
+       "local": false
+      }
+     ]
+    }
+   },
+   "h2h": {
+    "gaVsDescent": 0.519,
+    "elo": 13,
+    "n": 160
+   },
+   "distance": 8
+  },
+  {
+   "map": {
+    "id": "mc",
+    "num": 3,
+    "name": "Gannet Cliffs"
+   },
+   "level": 1,
+   "budget": 20000,
+   "evalGames": 32,
+   "pool": 64,
+   "methods": {
+    "ga": {
+     "games": 22752,
+     "seconds": 128.2,
+     "gens": 5,
+     "restarts": 2,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "ant-scout:1,bee-knight:1,burrow-rabbit:1,cobalt-talon-skirmisher:1,cottontail:1,crossed-eyes:1,duck-paddler:1,dynamite-packrat:1,ember-tetra-3caj:1,fulmar-spitter:1,greyplume-fledgling:1,honey-bee:1,meadow-frog:1,otter-guard:1,peak-condor:1,pincushion-urchin:1,river-carp:2,silver-minnow:1,voidfeather-scout:1",
+       "searchScore": 0.802,
+       "score": 0.759,
+       "se": 0.017
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "burrow-rabbit:1,cobalt-talon-skirmisher:4,greyplume-fledgling:1,meadow-frog:5,otter-centurion:3,otter-guard:2,peregrine-stooper:2,voidfeather-scout:1,worker-ant:1",
+       "searchScore": 0.869,
+       "score": 0.863,
+       "se": 0.014
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "chipmunk-forager:1,cobalt-talon-skirmisher:4,meadow-frog:4,otter-centurion:3,otter-guard:2,pincushion-urchin:2,river-carp:2,voidfeather-scout:2",
+       "searchScore": 0.884,
+       "score": 0.897,
+       "se": 0.012
+      }
+     ],
+     "distinctOptima": 5,
+     "distinctScores": [
+      0.884,
+      0.869,
+      0.856,
+      0.847,
+      0.844
+     ]
+    },
+    "descent": {
+     "games": 20384,
+     "seconds": 138.8,
+     "restarts": 2,
+     "steps": 19,
+     "moves": 11,
+     "curve": [
+      {
+       "share": 0.25,
+       "games": 5000,
+       "deck": "ant-scout:1,bee-knight:1,burrow-rabbit:1,cobalt-talon-skirmisher:1,cottontail:1,crossed-eyes:1,duck-paddler:1,dynamite-packrat:1,ember-tetra-3caj:1,fulmar-spitter:1,greyplume-fledgling:1,honey-bee:1,meadow-frog:1,otter-guard:1,peak-condor:1,pincushion-urchin:1,river-carp:2,silver-minnow:1,voidfeather-scout:1",
+       "searchScore": 0.82,
+       "score": 0.759,
+       "se": 0.017
+      },
+      {
+       "share": 0.5,
+       "games": 10000,
+       "deck": "ant-scout:1,bee-knight:1,burrow-rabbit:1,cobalt-talon-skirmisher:1,cottontail:1,crossed-eyes:1,duck-paddler:1,dynamite-packrat:1,ember-tetra-3caj:1,fulmar-spitter:1,greyplume-fledgling:1,honey-bee:1,meadow-frog:1,otter-guard:1,peak-condor:1,pincushion-urchin:1,river-carp:2,silver-minnow:1,voidfeather-scout:1",
+       "searchScore": 0.82,
+       "score": 0.759,
+       "se": 0.017
+      },
+      {
+       "share": 1,
+       "games": 20000,
+       "deck": "chipmunk-forager:1,crimson-wing-recruit:1,duck-paddler:1,duckling:1,dynamite-packrat:1,field-vole:1,grey-seal-bull:1,harvest-mouse:1,house-cat:1,otter-centurion:1,otter-guard:2,otter-kit:2,pincushion-urchin:1,razorbill:1,silver-minnow:1,tunnel-ant:1,voidfeather-scout:1,worker-ant:1",
+       "searchScore": 0.885,
+       "score": 0.856,
+       "se": 0.014
+      }
+     ],
+     "distinctOptima": 2,
+     "distinctScores": [
+      0.885,
+      0.82
+     ],
+     "localOptima": [
+      {
+       "score": 0.82,
+       "moves": 0,
+       "local": true
+      },
+      {
+       "score": 0.885,
+       "moves": 11,
+       "local": true
+      }
+     ]
+    }
+   },
+   "h2h": {
+    "gaVsDescent": 0.558,
+    "elo": 41,
+    "n": 224
+   },
+   "distance": 14
+  }
+ ]
+}
