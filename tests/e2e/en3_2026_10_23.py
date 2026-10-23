@@ -4,7 +4,7 @@
     python3 tests/e2e/en3_2026_10_23.py            # checks + shots
     python3 tests/e2e/en3_2026_10_23.py --widths 1366
 
-Covers (owner 19:27): a Boomerang thrown on a miss (#7), a Guardian stepping in for a Guardian with no guard line (#8, #19), Rampart's
+Covers (owner 19:27): a Boomerang thrown on a miss (#7), a Guardian stepping in with no guard line (#19; #8's chain reverted by EN4), Rampart's
 streak and share (#3), Bramble Armor's ting on the bramble (#3), the two skills in the card editor's list, and a Poison tick's stack dropping
 after its damage (#5). Build first. Exits 1 on a failed check.
 """
@@ -70,21 +70,22 @@ async def run(b, url, w):
       const near = (p, r, pad)=> p[0] > r.left - pad && p[0] < r.right + pad && p[1] > r.top - pad && p[1] < r.bottom + pad;
       return {n: pts.length, fromThrower: pts.slice(0, 4).some(p=> near(p, a, 40)), nearTarget: pts.some(p=> near(p, t, 90)), left: document.querySelectorAll('.sfx-boomerang').length}; })()""")
     ok(bm['n'] > 5 and bm['fromThrower'] and bm['nearTarget'], f'#7 a missed swing still throws: the boomerang flies from the thrower past its target ({bm})')
-    # ---- #8 / #19 Guardian for a Guardian, no line
+    # ---- #8 / #19 Guardian for a Guardian, no line. EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting
+    # guardian."): the chain is reverted, so the event names the first Guardian and only it steps in; the second stays put. The shot is
+    # tests/e2e/en4_2026_10_23.py's guardian-no-chain now (none taken here).
     u = await pg.evaluate(BOARD + f"([['soldier-ant', 0]], [['bee-knight', 0], ['{guard}', -1], ['{guard}', -2]])")
     # the old guard line: FX.A.guardPull's dashed path (stroke-dasharray "8 6") in an fxa-svg layer; watched every 25 ms through the blow
     await pg.evaluate("""(()=>{ window.__lines = 0; window.__mo = setInterval(()=>{ if(document.querySelector('svg.fxa-svg path[stroke-dasharray="8 6"]')) window.__lines++; }, 25); })()""")
-    await pg.evaluate(f"""(()=>{{ renderVfxForEvent({{type:'hit', side:'A', attUid:{u['1:0']}, attDefId:'soldier-ant', targetSide:'B', targetUid:{u['2:-2']}, targetDefId:'{guard}', guardedUid:{u['2:0']}, guardChain:[{u['2:-1']}], guardianRedirect:true, dmg:2, dmgType:'physical', mods:[]}}); }})()""")
+    await pg.evaluate(f"""(()=>{{ renderVfxForEvent({{type:'hit', side:'A', attUid:{u['1:0']}, attDefId:'soldier-ant', targetSide:'B', targetUid:{u['2:-1']}, targetDefId:'{guard}', guardedUid:{u['2:0']}, guardianRedirect:true, dmg:2, dmgType:'physical', mods:[]}}); }})()""")
     await pg.wait_for_timeout(max(60, am - 10))
     await pg.evaluate("(()=>{ gsap.globalTimeline.pause(); })()")
     g1 = await pg.evaluate(TR + f"({u['2:-1']})"); g2 = await pg.evaluate(TR + f"({u['2:-2']})")
-    await shot(pg, 'guardian-for-a-guardian', w)
     await pg.evaluate("(()=>{ gsap.globalTimeline.resume(); })()")
-    ok(g1 and g2 and g1['tr'].strip() not in ('', '0px 0px') and g2['tr'].strip() not in ('', '0px 0px'), f'#8 both Guardians step in (first {g1}, second {g2})')
+    ok(g1 and g2 and g1['tr'].strip() not in ('', '0px 0px') and g2['tr'].strip() == '', f'#8 (EN4) one Guardian steps in, the one beside it does not (first {g1}, second {g2})')
     await pg.wait_for_timeout(1300)
     ln = await pg.evaluate("(()=>{ clearInterval(window.__mo); return {lines: window.__lines, patched: !!(window.FX && FX.A && FX.A.__en3)}; })()")
     ok(ln['lines'] == 0 and ln['patched'], f'#19 no guard line drawn ({ln})')
-    g3 = await pg.evaluate(TR + f"({u['2:-2']})"); ok(g3 and g3['tr'].strip() == '', f'#8 the second Guardian slides home ({g3})')
+    g3 = await pg.evaluate(TR + f"({u['2:-1']})"); ok(g3 and g3['tr'].strip() == '', f'#8 the Guardian slides home ({g3})')
     # ---- #3 Rampart and Bramble Armor
     u = await pg.evaluate(BOARD + f"([['soldier-ant', 0]], [['{ramp}', 1, 30]])")
     await pg.evaluate(f"""(()=>{{ renderVfxForEvent({{type:'rampart', side:'B', uid:{u['2:1']}, defId:'{ramp}', dmg:3, share:3, bramble:2}});

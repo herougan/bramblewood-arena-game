@@ -10506,6 +10506,18 @@
 @keyframes en3RampartPulse{0%{box-shadow:0 0 0 0 rgba(255,205,90,0);} 20%{box-shadow:0 0 0 4px rgba(255,205,90,.9), 0 0 18px 6px rgba(255,190,70,.55);} 100%{box-shadow:0 0 0 0 rgba(255,205,90,0);}}
 .sfx.en3-guard-shield, .sfx.en3-bramble-ting{font-size:28px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));}
 .sfx.en3-bramble-ting{font-size:34px;}
+/* EN4 (2026-10-23): Greater Poison's violet badge and pulse (Poison is green, Toxin purple-green), Hemorrhage's red double pulse and drops,
+   Shore Up's small shield that hops to each ally beside it. */
+.abadge.gpoison{background:color-mix(in srgb, #9b4dd6 30%, var(--surface-2)); color:#b26cf0; font-weight:800;}
+.board-card .card-tile .status-chips > .abadge.gpoison{--sc-ring:#9b4dd6; color:#e4c8ff;}
+.board-card.is-gpoisoned .card-tile{box-shadow:0 0 0 2px rgba(155,77,214,.55), 0 0 12px 2px rgba(155,77,214,.35);}
+.en4-gp-pulse{animation:en4GpPulse 520ms ease;}
+@keyframes en4GpPulse{0%{box-shadow:0 0 0 0 rgba(155,77,214,0);} 25%{box-shadow:0 0 0 4px rgba(170,90,235,.9), 0 0 20px 6px rgba(140,60,210,.55);} 100%{box-shadow:0 0 0 0 rgba(155,77,214,0);}}
+.en4-hemo-pulse{animation:en4HemoPulse 560ms ease;}
+@keyframes en4HemoPulse{0%,100%{box-shadow:0 0 0 0 rgba(208,52,74,0);} 20%{box-shadow:0 0 0 3px rgba(208,52,74,.85), 0 0 14px 4px rgba(208,52,74,.45);} 40%{box-shadow:0 0 0 0 rgba(208,52,74,.1);} 62%{box-shadow:0 0 0 4px rgba(230,60,80,.95), 0 0 20px 6px rgba(208,52,74,.55);}}
+.sfx.en4-hemo-drop{font-size:20px; line-height:1; text-shadow:0 1px 1px rgba(0,0,0,.35);}
+.sfx.en4-gp-skull{font-size:30px; line-height:1; filter:drop-shadow(0 0 6px rgba(160,80,230,.9));}
+.sfx.en4-shore-shield{font-size:22px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45)) drop-shadow(0 0 5px rgba(120,190,255,.7));}
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}

@@ -72,7 +72,7 @@ const FIELDS_OF = {fieldBreaker:['thunder', 'spore', 'roots', 'heat']};
 const TYPICAL = {hunter:2, executioner:2, brittle:2, proliferate:1, prayerWard:1, fieldBreaker:2, detonate:true,
   // 2026-10-21 (BF6): skills no live card prints yet, at the engine's own default (SK3_DEF, EQ) or the owner's example (Injured)
   injured:2, vulnerable:2, banner:1, rally:1, herald:2, shieldwall:1, broodkeeper:1, amplifier:1, pry:1, hazardIce:1, hazardRubble:1, spotter:true};
-const SKILL_ENABLER = {hunter:{poison:2}, detonate:{poison:2}, proliferate:{poison:2}, brittle:{shatter:2}, prayerWard:{prayer:1}};
+const SKILL_ENABLER = {hunter:{poison:2}, detonate:{poison:2}, proliferate:{poison:2}, brittle:{shatter:2}, prayerWard:{prayer:1}, hemorrhage:{bleed:2}, greaterPoison:{poison:2} /* EN4 (2026-10-23): the two payoffs need a stack to work on */};
 const HUNTER_VS = [['bleed', {bleed:2}, 'plain'], ['exposed', {expose:1}, 'plain'], ['wet', {}, 'rain']];
 // Skills that are a parameter of another (measured as the difference: parent + parameter − parent, on b2 in the parent's field).
 const PARAM_OF = {crepuscularHp:'crepuscular', defianceN:'defiance', diurnalGrant:'diurnal', diurnalHp:'diurnal', espritHp:'esprit', fullMoonGrant:'fullMoon', loyalGrant:'loyal',

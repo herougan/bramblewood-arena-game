@@ -78,7 +78,7 @@ const POOLS = {
   m4:  {cards: ['blind-cave-fish', 'cave-olm', 'star-nosed-mole', 'sulfur-cinder-moth', 'stalactite-golem', 'nightshade-moth', 'vampire-bat', 'whip-spider', 'giant-cave-huntsman', 'echo-screecher', 'quarry-mole'],
         rewards: {'star-nosed-mole': '8-2', 'giant-cave-huntsman': '8-7', 'echo-screecher': '8-8', 'quarry-mole': '8-1'}}, // + RW3 (RP3): the Quarry Mole, 8-1
   mk:  {cards: ['mangrove-mudskipper', 'minnow-skitter', 'mudpuppy', 'mangrove-monitor', 'reef-shark', 'archerfish', 'sunbittern-strider', 'banded-sea-krait', 'mangrove-kingfisher', 'mangrove-manatee'],
-        rewards: {'mangrove-kingfisher': '9-3', 'banded-sea-krait': '9-5', 'mangrove-manatee': '9-7'}},
+        rewards: {'mangrove-kingfisher': '9-6', 'banded-sea-krait': '9-3', 'mangrove-manatee': '9-7'} /* 2026-10-23 (EN4, RW5-7): the Rare Kingfisher is an elite's reward (was 9-3: normal-skirmish Rares from Map 10); the Uncommon Krait takes 9-3 (was 9-5) so Map 9 keeps a skirmish-exclusive card (RW3) */},
   m7:  {cards: ['clownfish-scout', 'parrotfish', 'kraken-spawnling', 'coral-reef-shark', 'riptide-eel', 'electric-ray', 'lions-mane-jelly', 'swordfish-spearman', 'great-barracuda', 'colossal-squid'],
         rewards: {'electric-ray': '10-2', 'great-barracuda': '10-6', 'colossal-squid': '10-9'}, special: {'orca-vanguard': ['10-9']}},
   m10: {cards: ['alpine-marmot', 'chipmunk-hoarder', 'eyrie-warden', 'mountain-hare', 'mountain-goat-climber', 'apollo-butterfly', 'balloon-archer', 'chamois-leaper', 'eagle-owl-quartermaster', 'ibex-rockcaller'],

@@ -68,7 +68,7 @@
   "fox-warchief": 13,
   "beaver-builder": 6,
   "dam-wall": 5,
-  "lodge-engineer": 24,
+  "lodge-engineer": 6,
   "riverworks-bastion": 2,
   "grass-viper": 5,
   "adder-ambusher": 6,
@@ -92,7 +92,7 @@
   "buck-brawler": 12,
   "ancient-sloth-titan": 20,
   "pond-paddler": 5,
-  "mallard-marauder": 24,
+  "mallard-marauder": 7,
   "glacial-ape-king": 17,
   "sand-widow": 18,
   "orca-vanguard": 10,
@@ -595,6 +595,7 @@
   "woodland-caribou": 16,
   "musk-ox-calf": 17,
   "swordbill-challenger": 5,
+  "ember-tetra": 4,
   "coffer-mimic": 8,
   "lava-waders": 11,
   "ironclaw-fiddler": 9,
@@ -602,6 +603,12 @@
   "dam-keeper-beaver": 4,
   "moat-snapper": 5,
   "briarback-hedgehog": 1,
-  "barkplate-beetle": 7
+  "barkplate-beetle": 7,
+  "great-skua": 3,
+  "bloodscent-shark": 10,
+  "cane-toad": 6,
+  "inland-taipan": 18,
+  "oyster-bank": 2,
+  "musk-ox-matriarch": 17
  }
 }

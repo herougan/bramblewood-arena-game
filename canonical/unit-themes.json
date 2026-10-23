@@ -601,6 +601,7 @@
    "boar",
    "butterfly",
    "camel",
+   "cane toad",
    "cat",
    "caterpillar",
    "catfish",
@@ -630,6 +631,7 @@
    "giraffe",
    "gnat",
    "goat",
+   "great skua",
    "gull",
    "hagfish",
    "hawk",
@@ -668,6 +670,7 @@
    "otter",
    "owl",
    "ox",
+   "oyster",
    "panda",
    "pangolin",
    "parrot",
@@ -707,6 +710,7 @@
    "squirrel",
    "starfish",
    "swift",
+   "taipan",
    "tardigrade",
    "termite",
    "tern",
@@ -1083,16 +1087,16 @@
   }
  ],
  "counts": {
-  "units": 746,
-  "live": 742,
+  "units": 752,
+  "live": 748,
   "pool": 4,
-  "proposed": 131,
+  "proposed": 133,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 466,
+   "type": 471,
    "home map": 112,
-   "fallback": 66,
+   "fallback": 67,
    "name": 23,
    "fights": 53,
    "manual": 8,
@@ -1101,41 +1105,41 @@
   "biome": {
    "river": 77,
    "meadow-forest": 134,
-   "reef-ocean": 48,
-   "desert-glass": 24,
-   "tundra-ice": 33,
+   "reef-ocean": 49,
+   "desert-glass": 25,
+   "tundra-ice": 34,
    "village-keep": 40,
    "taiga": 16,
    "jungle": 25,
    "volcanic-ash": 62,
    "fungal": 7,
    "caves": 54,
-   "coast": 24,
+   "coast": 26,
    "mountain-sky": 44,
    "mangrove": 12,
    "maze-briar": 11,
    "long-grass": 11,
-   "swamp": 57,
+   "swamp": 58,
    "redwood": 7,
    "savanna": 23,
    "cliffs": 31,
    "pale-desert": 1
   },
   "family": {
-   "mammal": 290,
+   "mammal": 291,
    "plant": 12,
    "insect": 73,
    "arachnid": 15,
-   "bird": 129,
+   "bird": 130,
    "worm": 11,
    "fungus": 2,
    "spirit-undead": 19,
    "construct": 15,
    "elemental": 3,
-   "fish": 41,
-   "reptile": 40,
-   "mollusc": 21,
-   "amphibian": 26,
+   "fish": 42,
+   "reptile": 41,
+   "mollusc": 22,
+   "amphibian": 27,
    "sea-invertebrate": 8,
    "crustacean": 15,
    "dragon": 11,
@@ -1145,9 +1149,9 @@
   },
   "faction": {
    "otters": 29,
-   "wild": 355,
+   "wild": 359,
    "hives": 20,
-   "beasts": 129,
+   "beasts": 131,
    "dogs-cats": 12,
    "spirits": 25,
    "supporting-folk": 69,
@@ -1186,7 +1190,7 @@
    "seahorse": 1,
    "swift": 4,
    "fish": 24,
-   "shark": 6,
+   "shark": 7,
    "porcupine": 4,
    "raccoon": 7,
    "badger": 10,
@@ -1217,7 +1221,7 @@
    "giraffe": 1,
    "hyena": 3,
    "termite": 1,
-   "ox": 5,
+   "ox": 6,
    "elephant": 5,
    "eel": 4,
    "coral": 1,
@@ -1305,7 +1309,11 @@
    "insect": 1,
    "panda": 1,
    "algae": 1,
-   "bark beetle": 1
+   "bark beetle": 1,
+   "great skua": 1,
+   "cane toad": 1,
+   "taipan": 1,
+   "oyster": 1
   },
   "subtype": {
    "plant": 13,
@@ -3693,7 +3701,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mk": 20,
+     "mk": 19,
      "muc": 12
     }
    },
@@ -5566,7 +5574,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 3,
-    "health": 14,
+    "health": 13,
     "dmg": "physical",
     "resist": []
    },
@@ -6902,7 +6910,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -37377,7 +37385,7 @@
      "mk"
     ],
     "fights": {
-     "mk": 6,
+     "mk": 7,
      "muc": 9
     }
    },
@@ -39941,13 +39949,13 @@
    "subtype": null,
    "faction": "wild",
    "size": "small",
-   "stage": null,
-   "firstMap": null,
+   "stage": 1,
+   "firstMap": 1,
    "body": {
     "cost": 0,
     "wait": 1,
-    "attack": 3,
-    "health": 7,
+    "attack": 2,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -39969,7 +39977,7 @@
     "home": [],
     "fights": {}
    },
-   "source": null,
+   "source": "pack",
    "why": {
     "biome": "name",
     "family": "species Fish",
@@ -40326,6 +40334,308 @@
    "why": {
     "biome": "type Forest",
     "family": "species Insect",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "great-skua",
+   "name": "Great Skua",
+   "icon": "🐦",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "coast"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "great skua",
+   "animalGroup": "great skua",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 1,
+   "firstMap": 1,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "flying",
+     null
+    ],
+    [
+     "hemorrhage",
+     null
+    ]
+   ],
+   "types": [
+    "Coastal",
+    "Bird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Coastal",
+    "family": "species Bird",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "bloodscent-shark",
+   "name": "Bloodscent Shark",
+   "icon": "🦈",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "reef-ocean"
+   ],
+   "family": "fish",
+   "sub": "Fish",
+   "animal": "shark",
+   "animalGroup": "shark",
+   "subtype": null,
+   "faction": "beasts",
+   "size": "medium",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 5,
+    "health": 13,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "hemorrhage",
+     null
+    ]
+   ],
+   "types": [
+    "Coral Reef",
+    "Fish"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Coral Reef",
+    "family": "species Fish",
+    "faction": "hunter type / name"
+   }
+  },
+  {
+   "id": "cane-toad",
+   "name": "Cane Toad",
+   "icon": "🐸",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "swamp"
+   ],
+   "family": "amphibian",
+   "sub": "Amphibian",
+   "animal": "cane toad",
+   "animalGroup": "cane toad",
+   "subtype": null,
+   "faction": "wild",
+   "size": "medium",
+   "stage": 1,
+   "firstMap": 1,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 2,
+    "health": 15,
+    "dmg": "poison",
+    "resist": [
+     "poison"
+    ]
+   },
+   "skills": [
+    [
+     "poison",
+     1
+    ],
+    [
+     "greaterPoison",
+     1
+    ]
+   ],
+   "types": [
+    "Frog",
+    "Amphibian"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "usual ground of Frog",
+    "family": "species Amphibian",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "inland-taipan",
+   "name": "Inland Taipan",
+   "icon": "🐍",
+   "status": "live",
+   "rarity": "rare",
+   "biomes": [
+    "desert-glass"
+   ],
+   "family": "reptile",
+   "sub": "Reptile",
+   "animal": "taipan",
+   "animalGroup": "taipan",
+   "subtype": null,
+   "faction": "beasts",
+   "size": "medium",
+   "stage": 1,
+   "firstMap": 3,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 4,
+    "health": 11,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "poison",
+     2
+    ],
+    [
+     "greaterPoison",
+     1
+    ]
+   ],
+   "types": [
+    "Snake",
+    "Desert",
+    "Reptile"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Desert",
+    "family": "species Reptile",
+    "faction": "hunter type / name"
+   }
+  },
+  {
+   "id": "oyster-bank",
+   "name": "Oyster Bank",
+   "icon": "🦪",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "coast"
+   ],
+   "family": "mollusc",
+   "sub": "Mollusc",
+   "animal": "oyster",
+   "animalGroup": "oyster",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 1,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 0,
+    "health": 15,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "shoreUp",
+     null
+    ]
+   ],
+   "types": [
+    "Coastal",
+    "Mollusc"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Coastal",
+    "family": "species Mollusc",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "musk-ox-matriarch",
+   "name": "Musk Ox Matriarch",
+   "icon": "🐂",
+   "status": "live",
+   "rarity": "uncommon",
+   "biomes": [
+    "tundra-ice"
+   ],
+   "family": "mammal",
+   "sub": "Bovine",
+   "animal": "musk ox",
+   "animalGroup": "ox",
+   "subtype": null,
+   "faction": "wild",
+   "size": "medium",
+   "stage": 1,
+   "firstMap": 3,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 3,
+    "health": 16,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "shoreUp",
+     null
+    ],
+    [
+     "armor",
+     1
+    ]
+   ],
+   "types": [
+    "Tundra",
+    "Bovine"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Tundra",
+    "family": "species Bovine",
     "faction": "default"
    }
   },
@@ -42156,6 +42466,92 @@
    }
   },
   {
+   "id": "elder-oyster-bank",
+   "name": "Wolfsbane Oyster Bank",
+   "internalName": "Elder Oyster Bank",
+   "nameProposal": true,
+   "icon": "🦪",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "coast",
+    "tundra-ice"
+   ],
+   "family": "mollusc",
+   "sub": "Mollusc",
+   "animal": "oyster",
+   "animalGroup": "oyster",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 3,
+   "firstMap": 17,
+   "body": {
+    "cost": 2,
+    "wait": 2,
+    "attack": 0,
+    "health": 21,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Coastal",
+    "Mollusc"
+   ],
+   "maps": {
+    "home": [
+     "m6"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "elder",
+    "of": "oyster-bank",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 1,
+    "rarityStep": 2,
+    "eff": {
+     "attack": null,
+     "health": 1.4
+    },
+    "N": 26.99,
+    "N2": 161.88,
+    "x1": 21,
+    "x2": 0,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.8,
+      "health": 2
+     },
+     "cost": 2,
+     "wait": 2,
+     "attack": 1,
+     "health": 19
+    },
+    "baseSkills": [
+     [
+      "shoreUp",
+      null
+     ]
+    ],
+    "map": "m6",
+    "mapName": "Wolfsbane Tundra",
+    "mapNo": 17
+   },
+   "why": {
+    "biome": "Oyster Bank's ground, later on Wolfsbane Tundra (Map 17)",
+    "family": "from Oyster Bank",
+    "faction": "from Oyster Bank"
+   }
+  },
+  {
    "id": "dire-pincushion-urchin",
    "name": "Needlebed Urchin",
    "internalName": "Dire Pincushion Urchin",
@@ -42779,9 +43175,100 @@
    }
   },
   {
-   "id": "dire-frillneck-duelist",
+   "id": "dire-inland-taipan",
+   "name": "Pale Inland Taipan",
+   "internalName": "Dire Inland Taipan",
+   "nameProposal": true,
+   "icon": "🐍",
+   "status": "proposed",
+   "rarity": "veryrare",
+   "biomes": [
+    "desert-glass",
+    "pale-desert"
+   ],
+   "family": "reptile",
+   "sub": "Reptile",
+   "animal": "taipan",
+   "animalGroup": "taipan",
+   "subtype": null,
+   "faction": "beasts",
+   "size": "large",
+   "stage": 4,
+   "firstMap": 18,
+   "body": {
+    "cost": 3,
+    "wait": 2,
+    "attack": 5,
+    "health": 15,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Snake",
+    "Desert",
+    "Reptile"
+   ],
+   "maps": {
+    "home": [
+     "mpd"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "inland-taipan",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1.25,
+     "health": 1.36
+    },
+    "N": 31.32,
+    "N2": 217.99,
+    "x1": 25,
+    "x2": 75,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 3,
+     "wait": 2,
+     "attack": 6,
+     "health": 13
+    },
+    "baseSkills": [
+     [
+      "poison",
+      2
+     ],
+     [
+      "greaterPoison",
+      1
+     ]
+    ],
+    "map": "mpd",
+    "mapName": "The Pale Desert",
+    "mapNo": 18
+   },
+   "why": {
+    "biome": "Inland Taipan's ground, later on The Pale Desert (Map 18)",
+    "family": "from Inland Taipan",
+    "faction": "from Inland Taipan"
+   }
+  },
+  {
+   "id": "elder-frillneck-duelist",
    "name": "Pale Frillneck Duelist",
-   "internalName": "Dire Frillneck Duelist",
+   "internalName": "Elder Frillneck Duelist",
    "nameProposal": true,
    "icon": "🦎",
    "status": "proposed",
@@ -42796,14 +43283,14 @@
    "animalGroup": "lizard",
    "subtype": null,
    "faction": "wild",
-   "size": "large",
+   "size": "huge",
    "stage": 4,
    "firstMap": 18,
    "body": {
     "cost": 3,
-    "wait": 1,
+    "wait": 2,
     "attack": 2,
-    "health": 17,
+    "health": 21,
     "dmg": "physical",
     "resist": []
    },
@@ -42821,33 +43308,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "dire",
+    "tier": "elder",
     "of": "frillneck-duelist",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
+    "wait": 1,
+    "rarityStep": 2,
     "eff": {
      "attack": 1,
-     "health": 1.21
+     "health": 1.5
     },
-    "N": 27.25,
-    "N2": 165.01,
-    "x1": 21,
-    "x2": 34,
+    "N": 31.32,
+    "N2": 217.99,
+    "x1": 25,
+    "x2": 42,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.4,
-      "health": 1.5
+      "attack": 1.8,
+      "health": 2
      },
      "cost": 3,
-     "wait": 1,
-     "attack": 2,
-     "health": 16
+     "wait": 2,
+     "attack": 4,
+     "health": 17
     },
     "baseSkills": [
      [
@@ -42867,93 +43354,6 @@
     "biome": "Frillneck Duelist's ground, later on The Pale Desert (Map 18)",
     "family": "from Frillneck Duelist",
     "faction": "from Frillneck Duelist"
-   }
-  },
-  {
-   "id": "elder-horned-lizard",
-   "name": "Pale Horned Lizard",
-   "internalName": "Elder Horned Lizard",
-   "nameProposal": true,
-   "icon": "🦎",
-   "status": "proposed",
-   "rarity": "veryrare",
-   "biomes": [
-    "desert-glass",
-    "pale-desert"
-   ],
-   "family": "reptile",
-   "sub": "Reptile",
-   "animal": "horned lizard",
-   "animalGroup": "lizard",
-   "subtype": null,
-   "faction": "wild",
-   "size": "huge",
-   "stage": 4,
-   "firstMap": 18,
-   "body": {
-    "cost": 2,
-    "wait": 2,
-    "attack": 6,
-    "health": 10,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Reptile",
-    "Desert",
-    "Reptile"
-   ],
-   "maps": {
-    "home": [
-     "mpd"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "elder",
-    "of": "horned-lizard",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
-    "eff": {
-     "attack": 1.2,
-     "health": 1.43
-    },
-    "N": 28.07,
-    "N2": 175.09,
-    "x1": 22,
-    "x2": 60,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.8,
-      "health": 2
-     },
-     "cost": 2,
-     "wait": 2,
-     "attack": 5,
-     "health": 11
-    },
-    "baseSkills": [
-     [
-      "blind",
-      "chance 50, duration 2"
-     ]
-    ],
-    "map": "mpd",
-    "mapName": "The Pale Desert",
-    "mapNo": 18
-   },
-   "why": {
-    "biome": "Horned Lizard's ground, later on The Pale Desert (Map 18)",
-    "family": "from Horned Lizard",
-    "faction": "from Horned Lizard"
    }
   },
   {
@@ -50904,7 +51304,7 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1.5,
-     "health": 1.67
+     "health": 2
     },
     "N": 20.48,
     "N2": 93.21,
@@ -50920,7 +51320,7 @@
      "cost": 2,
      "wait": 0,
      "attack": 3,
-     "health": 9
+     "health": 8
     },
     "baseSkills": [
      [
@@ -51540,6 +51940,95 @@
     "biome": "Sulfur Vent Crab's ground, later on The Sundered Peak (Map 20)",
     "family": "from Sulfur Vent Crab",
     "faction": "from Sulfur Vent Crab"
+   }
+  },
+  {
+   "id": "dire-ember-tetra",
+   "name": "Sundered Ember Tetra",
+   "internalName": "Dire Ember Tetra",
+   "nameProposal": true,
+   "icon": "♨️",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "volcanic-ash"
+   ],
+   "family": "fish",
+   "sub": "Fish",
+   "animal": null,
+   "animalGroup": null,
+   "subtype": null,
+   "faction": "wild",
+   "size": "medium",
+   "stage": 4,
+   "firstMap": 20,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 10,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Misc",
+    "Fish"
+   ],
+   "maps": {
+    "home": [
+     "m11"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "ember-tetra",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1.5,
+     "health": 1.67
+    },
+    "N": 20.09,
+    "N2": 89.69,
+    "x1": 16,
+    "x2": 30,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 1,
+     "wait": 1,
+     "attack": 3,
+     "health": 9
+    },
+    "baseSkills": [
+     [
+      "tide",
+      null
+     ],
+     [
+      "tideGrant",
+      "ebb {\"armor\":2}, flood {\"fireArrow\":4}"
+     ]
+    ],
+    "map": "m11",
+    "mapName": "The Sundered Peak",
+    "mapNo": 20
+   },
+   "why": {
+    "biome": "Ember Tetra's ground, later on The Sundered Peak (Map 20)",
+    "family": "from Ember Tetra",
+    "faction": "from Ember Tetra"
    }
   },
   {

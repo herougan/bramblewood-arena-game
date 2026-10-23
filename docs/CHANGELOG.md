@@ -2,6 +2,43 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package EN4: no Guardian for a Guardian, Hemorrhage, Greater Poison, Shore Up, Pulse, six new cards, RW5's held cards)
+- **Guardian (22:23 #9: "Guardian shouldn't intercept an intercepting guardian."):** EN3's one hop is reverted. One Guardian steps in for the
+  ally and takes the swing; the Guardian beside it doesn't cover it. Kept from EN3: no guard line, never the bramble. The hit has no
+  `guardChain`; the board's `en3GuardChain` is gone; Guardian's text says so (12 packs). Call EN4-5 (a Guardian aimed at directly is still
+  covered, as before EN3).
+- **Bleed / Poison payoffs (22:23 #7; already there: Hunter (Bleeding), Venom Pulse):** 🩸² **Hemorrhage**: its landed swing doubles the Bleed
+  the target already has, then its own Bleed adds (name and order: call EN4-1); the card pulses red twice and two drops split off.
+  💀 **Greater Poison N** (1 by default): its swing that gets through turns ALL the target's Poison into Greater Poison and adds N; its own
+  Poison then lands plain for the next hit to turn. A Greater Poison stack deals 1 a round and never wears down (owner 23:45, EN4-2 done).
+  Cure takes Poison first, then Greater Poison; Pulse ticks both; Hunter (Poisoned) counts it; Shed and Revive clear it. A violet 💀 pip
+  beside the green ☠, its own line under the unit, its own tick.
+- **Pulse (owner 23:45):** Venom Pulse is called 💉 **Pulse N** (default 1) and makes the target's Poison AND Bleed tick N more times at once.
+  The Poison Tick action is retired (hidden; it reads as Pulse; a saved card on it migrates to Pulse with the same N; no card in cards.json
+  had it). Priced: the Pulse action 1.3 a tick, Pulse 1 = 2.7 (was 2.1); no card carries it, nothing re-fits.
+- **Shore Up (19:27 #4, option B):** 🛡️↔️ when it is hit and lives (a swing, a shot or a skill), the allies beside it in its row get Shield 1;
+  a small shield hops to each. Braces while Waiting.
+- **Prices (call EN4-3):** Hemorrhage 2, Greater Poison 2.5 (scale half), Shore Up 2.2, Pulse 1.3 a tick, by the owner's 4-round rule; `tools/skill_test_robust.js
+  --mono --multi` (3000 games a setup, `docs/balance/en4-skill-test-2026-10-23.md`) read Shore Up 2.68 / 2.26 and can't price the two payoffs
+  (their Bleed 2 / Poison 2 enabler decks lose nearly every game; side finding: Bleed 2 and Poison 2 read about 2 against their 5.2 there).
+  `tools/skill_worth.js` gives the two payoffs their enabler.
+- **Six new cards (call EN4-4), pack cards placed lightly in Maps 2-18:** 🦪 Oyster Bank (common, 0/15, Shore Up) Map 2; 🐦 Great Skua (common,
+  2/6, Flying, Hemorrhage) Map 3; 🐸 Cane Toad (uncommon, 2/15, Poison 1, Greater Poison 1) Map 6; 🦈 Bloodscent Shark (uncommon, 5/13,
+  Hemorrhage) Map 10; 🐂 Musk Ox Matriarch (uncommon, 3/16, Shore Up, Armor 1) Map 17; 🐍 Inland Taipan (rare, 4/11, Poison 2, Greater Poison
+  1) Map 18. Fitted by formula with their map's term (`tools/en4_new_cards_2026_10_23.js`), emoji placeholders, NightCafe prompts in
+  `docs/art/new-cards-2026-10-23-en4.md`; `card-obtain-maps.json` and `unit-themes.json` regenerated.
+- **RW5's calls (owner 23:45; `tools/en4_rw5_followups_2026_10_23.js`):** RW5-3: Lodge Engineer to Lilypad Reach (opens at Map 6, Pack 1;
+  3/14 -> 3/13), Mallard Marauder to Smugglers' Grotto (Map 7, Pack 2; 2/6 -> 2/5); the other eight kept (theme already right; Mudpuppy is
+  9-4's first-clear pack card, so it stays a Kelp Mangroves card). RW5-7: the Mangrove Kingfisher (Rare) is 9-6's elite reward, not 9-3's
+  skirmish reward; the Banded Sea Krait (Uncommon) moves from 9-5 to 9-3 (one Reef Shark in 9-3's deck for it) so Map 9 keeps a
+  skirmish-exclusive card (`tools/map_divvy_2026_10_22.js` POOLS too). RW5-4: the Ember Tetra is a Pack 1 card of the Sunken Hollow (Map 4), 3/7 -> 2/6.
+- In the card editor, the skill lists, the Codex (notes) and the log; texts in 12 packs (`tools/i18n_2026_10_23_en4.py`). Card matrix: the
+  Guardian revert moves duels with two Guardians side by side (diffs, not failures; accept with `--update` at the release).
+- Files: engine `redirectToGuardian`, `en4GreaterPoison`, `en4Hemorrhage`, `GP_PER_STACK`, the Greater Poison tick in `applyPoisonTicks`,
+  `en4ShoreUp` (runCustomTriggers' On Attacked), Cure, Poison Tick, Hunter; `arena_app.js` EN4 blocks (`en4Vfx`, `en4LogText`,
+  `en4StatusBadges`); styles in `arena_template.html`; TX `ui.skn-hemorrhage` ... `ui.en4-float-shore-up`; `tools/en4_skill_costs_2026_10_23.py`;
+  tests `tests/en4-2026-10-23.js`, `tests/e2e/en4_2026_10_23.py` (shots `docs/screens/EN4/`); `tests/en3-2026-10-23.js` and its e2e follow the
+  revert (dated notes). Decisions EN4-1 .. EN4-5.
 ## 2026-10-23 (package RW5: packs by map, the standard faction rewards, Level 0, Collector packs, 2× from Map 0, admin resources, the guild shop)
 - **Each pack has its own cards, by map (#15, PP-1 default 0-6 / 7-13 / 14-20).** The Hedgerow Pouch sells only cards first found on Maps 0-6, the Tidemire Chest 7-13, the Highcrest Case 14-20 (a side map counts from the map that unlocks it; tier 4 after Map 20 is in no pack yet). No volcanic card is in the Hedgerow Pouch any more. `tools/rw5_pack_tiers_2026_10_23.js` set every basic-pack card's tier and map: the 39 cards with no map and no pool got one by theme, 31 more took the map of the pool that holds them, 18 whose map disagreed with the pools were re-pointed (10 held: 6 where re-pointing would put them over budget, 4 that are a map's first-clear pack card; call RW5-3), and 92 joined their map's pool. The base track, drops, raid claims and bundles read every tier (gated by your map). The Codex names each pack's section; the Shop says which maps each pack covers.
 - **Faction rewards (#10, #11, PP-2 default).** The faction pool holds both sides, the shared cards and 1 copy of each Base card; a card's copies = the most a deck may hold. Set rewards (the tutorial, map milestones, every 8th first clear, achievements) follow C, C, C, U, C, C, U, C, U, R with the R skipped before Map 14, climbing a rarity once you hold 2 of each of your side's cards (1 of the other side's; call RW5-2); random rewards (the 🎁 token, faction packs) keep the gates. The tutorial pays faction rewards ×3, then ×3 again (C, C, C / U, C, C), instead of the fixed Otter / Hummingbird cards. Pacing as built (median of 20 seeds, `docs/balance/rw5-faction-pacing-2026-10-23.json`): otters first Rare Map 14, last standard Uncommon Map 15; hummingbirds 14 / 16; no Very Rare by Map 15.

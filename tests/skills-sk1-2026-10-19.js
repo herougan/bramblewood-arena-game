@@ -196,8 +196,8 @@ const fx = (ev, kind)=> ev.filter(x=> x.type === 'statusFx' && x.kind === kind);
 // ---- 12. Triggers × actions (owner 21:56): the keyword shorthands, and the new triggers / actions on a hand-made card
 const eng = R('bramblewood-engine.js');
 ok(E.TRIGGER_KEYS ? ['onEnemyEnter', 'onHit', 'onKillCreature'].every(k=> E.TRIGGER_KEYS.includes(k)) : /TRIGGER_KEYS\.push\('onEnemyEnter', 'onHit', 'onKillCreature'\)/.test(eng), 'new triggers: On Enemy Enters (Facing), On Hit, On Kill (Creature)');
-ok(/ACTION_KEYS\.push\('exploit', 'poisonTick'\)/.test(eng), 'new actions: Exploit, Poison Tick');
-ok(/do:'damage', who:'enemy', sub:'subject', amount:N\('sentry'\)/.test(eng) && /on:'onHit', do:'expose'/.test(eng) && /on:'onHit', do:'exploit'/.test(eng) && /on:'onHit', do:'poisonTick'/.test(eng) && /on:'onKillCreature', do:'buff', who:'self', amount2:N\('spoils'\)/.test(eng), 'Sentry / Expose / Exploit / Venom Pulse / Spoils are trigger × action shorthands');
+ok(/ACTION_KEYS\.push\('exploit', 'poisonTick'(, 'pulse')?\)/.test(eng), 'new actions: Exploit, Poison Tick'); // 2026-10-23 (EN4, owner 23:45): + Pulse; Poison Tick is kept for old cards and reads as Pulse
+ok(/do:'damage', who:'enemy', sub:'subject', amount:N\('sentry'\)/.test(eng) && /on:'onHit', do:'expose'/.test(eng) && /on:'onHit', do:'exploit'/.test(eng) && /on:'onHit', do:'(poisonTick|pulse)'/.test(eng) /* 2026-10-23 (EN4, owner 23:45): Venom Pulse is Pulse, On Hit x Pulse */ && /on:'onKillCreature', do:'buff', who:'self', amount2:N\('spoils'\)/.test(eng), 'Sentry / Expose / Exploit / Venom Pulse / Spoils are trigger × action shorthands');
 { const d2 = Object.assign({}, defs, {'sk-hand': U('sk-hand', {triggers:[{on:'onHit', do:'poisonTick', who:'enemy', sub:'subject', amount:1}, {on:'onKillCreature', do:'buff', who:'self', amount:1}]}, {attack:30})});
   const e = E.makeSimEngine(d2, E.mulberry32(3), {recordEvents:true, battleMode:'open'}), P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
   e.debugSpawnCard(P, so, 1, 'sk-hand', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'sk-weak', 'left', {}, []); const h = all(P[1])[0];
@@ -214,7 +214,7 @@ ok(appSrc.indexOf('// ==== end of Package SK1 (registry)') < appSrc.indexOf('con
 ['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'(passive|evergreen)', (hidden:true, reserved:true, )?label:TX\\('ui\\.skn-`).test(blockA), `${k}: in PASSIVE_DEFS with a TX name`));
 ['sentry', 'expose', 'siege', 'demolisher', 'cure', 'healing'].forEach(k=> ok(blockA.includes(`sk1Patch(PASSIVE_DEFS, '${k}'`), `${k}: patched in place (TX text)`));
 ['onEnemyEnter', 'onHit', 'onKillCreature'].forEach(k=> ok(blockA.includes(`{key:'${k}', label:TX(`), `trigger ${k} in TRIGGER_DEFS`));
-['exploit', 'poisonTick'].forEach(k=> ok(blockA.includes(`{key:'${k}', label:TX(`), `action ${k} in ACTION_DEFS`));
+['exploit', 'poisonTick'].forEach(k=> ok(blockA.includes(`{key:'${k}', label:TX(`) || blockA.includes(`{key:'${k}', hidden:true, retired:true`), `action ${k} in ACTION_DEFS`)); // 2026-10-23 (EN4, owner 23:45): Poison Tick is retired (hidden), Pulse replaces it
 ['heal', 'cleanse', 'expose'].forEach(k=> ok(blockA.includes(`sk1Patch(ACTION_DEFS, '${k}'`), `the ${k} action's text is rewritten`));
 ['sentry', 'expose', 'exploit', 'siege', 'formation', 'isolation', 'anchor', 'spoils', 'venomPulse', 'punish', 'cure', 'healing'].forEach(k=> ok(new RegExp(`\\n  ${k}: [^\\n]*TX\\('ui\\.sk-`).test(blockB), `${k}: a terse SKILL_TEXT line (TX)`));
 ['formation', 'isolation', 'anchor', 'exploit', 'spoils', 'venomPulse', 'punish'].forEach(k=> ok(new RegExp(`\\b${k}:'[^']+'`).test(blockA), `${k}: an icon`));
