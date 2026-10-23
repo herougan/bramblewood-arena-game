@@ -2826,5 +2826,6 @@
  "Health if played now: {n} (printed {printed})": "இப்போது ஆடினால் உயிர்: {n} (அச்சிடப்பட்டது {printed})",
  "Auto-win": "தானியங்கி வெற்றி",
  "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "உன் ஒரே டெக் இடம் நிறைந்துள்ளது. முகாமில் அல்லது விடுதியில் இன்னொன்றைத் திற.",
- "Swap": "மாற்று"
+ "Swap": "மாற்று",
+ "Leaders: {a} and {b}": "தலைவர்கள்: {a} மற்றும் {b}"
 }

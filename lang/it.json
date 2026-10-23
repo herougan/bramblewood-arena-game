@@ -2825,5 +2825,6 @@
  "Health if played now: {n} (printed {printed})": "Salute se giocata ora: {n} (stampato {printed})",
  "Auto-win": "Vittoria automatica",
  "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "Il tuo unico slot dei mazzi è occupato. Aprine un altro all'Accampamento o alla Taverna.",
- "Swap": "Scambia"
+ "Swap": "Scambia",
+ "Leaders: {a} and {b}": "Capi: {a} e {b}"
 }

@@ -1257,6 +1257,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.nv-vs-row-middle": "Middle row",
   "ui.nv-vs-row-back": "Back row",
   "ui.nv-vs-ally-leader": "👑 Leader: {name}",
+  "ui.lead-vs-leaders": "👑 Leaders: {a} and {b}",
   "ui.nv-vs-ally-bramble": "🏰 {name}",
   "ui.nv-vs-raid-boss": "Raid boss",
   "ui.nv-vs-boss": "Boss",

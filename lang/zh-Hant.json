@@ -2824,5 +2824,6 @@
  "Attack if played now: {n} (printed {printed})": "現在打出時的攻擊：{n}（卡面 {printed}）",
  "Health if played now: {n} (printed {printed})": "現在打出時的生命：{n}（卡面 {printed}）",
  "Auto-win": "自動獲勝",
- "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "你唯一的牌組欄位已佔用。去營地或酒館再開一個。"
+ "Your one deck slot holds a deck. Open another in the Camp or the Tavern.": "你唯一的牌組欄位已佔用。去營地或酒館再開一個。",
+ "Leaders: {a} and {b}": "首領：{a} 和 {b}"
 }

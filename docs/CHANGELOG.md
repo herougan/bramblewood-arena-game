@@ -2,6 +2,27 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package LEAD: a leader for every elite and boss, two for a paired boss, BR and win rates kept)
+- Owner 01:03 #12. Calls LEAD-1..LEAD-5.
+- **Before:** every skirmish from Map 2 already had a leader (SK, the showcase card; 134 of 149, all 81 past Map 10). Of 113 elite-and-above fights on Maps 0-24
+  only the Caldera Wyrm (20-B-4) had one. **Now all 113 do** (112 new: 76 elites, 16 mini-bosses, 16 bosses, 2 raid bosses, 1 world boss, 1 dungeon; 80 on main maps,
+  32 on side maps; 41 on Maps 0-10, 71 on Maps 11-24). The rule: an elite or above leads with its showcase card on every map (`LEADER_KINDS` in `skirmishLeadersOf`).
+  The showcase is set to the fight's boss unit on 19 fights (the Glacial Ape-King, the Cave Warlord, the Yeti, the Sand Widow, the Orca Vanguard ...). Left out: the
+  Tutorial's T-4, the hidden daily dungeons, the Tower. Skirmishes keep SK's rule.
+- **Paired bosses:** no twin- or two-headed boss exists in the data (the Two-Headed Calf is in no enemy deck). Two named pairs get 2 leaders: 24-8 the Magnate Duck +
+  Iron Warden, 23-8 Marshal Tuskwell + War Elephant (`node.leaders`). The engine already held several reserve leaders; the VS opener names both and the map
+  panel shows both cards.
+- **Shown:** an elite's or a boss's leader is named on the VS opener (`leadersShownFor`); a skirmish's stays unshown (SK).
+- **BR kept:** 110 of 112 changed fights within 5% of their BR with no leader (mean +1.1%). 20-R +10% (an all-Common deck, BR 20 -> 22) and 20-A-3 -5.3% (36 against 38) are
+  named exceptions. Levers: the leader's own copy leaves the deck, single copy edits under PG's ladder (16 decks also trimmed to it), `enemyLevel` on 57 fights, the enemy
+  bramble on 23. On 11 fights another deck card leads, where the boss unit moved the win rate more than 8 points (owner: "they can use any card as leader").
+- **Win rates (DF ant deck):** each fight's pick was played 400 games against the old fight: 95 of 112 within 3 points, 102 within 5, mean -0.4. Re-measured at 1000
+  games on 14 fights: mean -0.2, mean |change| 2.2, largest 3-7 -6.8 and 7-5 -5.7. `tools/lead_2026_10_23.js` (plan, tune, alt, apply, check, report),
+  `docs/balance/lead-2026-10-23.json` and `-tune.jsonl`.
+- **Found:** Boss surge (+2/+4, out at once) needed a leader, so it now fires on the bosses. A leader that costs 3+ Lumber rarely comes out, because the CPU doesn't
+  save for one. In 60 games the 23-8 pair, the Magnate Duck and 22-8's leader never came out (call LEAD-4).
+- Texts: 1 TX key in the 12 packs (`tools/i18n_2026_10_23_lead.py`). Tests: `tests/lead-2026-10-23.js` (675 checks), `tests/e2e/lead_2026_10_23.py` (shots at 390 / 1366).
+
 ## 2026-10-23 (package UI4: swaps that cross over, several swaps at once, deck slots, the hand's blue numbers, no redraw under the results)
 - Owner notes 01:03 #1 #2 #3 #5 #7, 01:09 #2, 01:57 #6 #7 #8 #11, and EB's panel-level note. Owner calls UI4-1..UI4-3.
 - **Swap (01:03 #1):** pressing Swap sends the offered card over the top to your deck's side (left) and your card under it to the right
