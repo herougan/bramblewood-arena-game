@@ -6643,6 +6643,35 @@
   .board-card.immolate-pulse .card-tile{animation:immolatePulse .9s ease-out;}
   @keyframes immolatePulse{0%{box-shadow:0 0 0 0 rgba(255,120,30,0);} 40%{box-shadow:0 0 0 10px rgba(255,120,30,.55);} 100%{box-shadow:0 0 0 22px rgba(255,120,30,0);}}
   @media (prefers-reduced-motion: reduce){ .battlefield.erupt-rumble, .board-card.erupt-hit .card-tile, .board-card.immolate-pulse .card-tile{animation:none;} }
+  /* 2026-10-23 (package FX4, owner on FX3-1: "It looks like the ground boils beneath the units chosen."): Scorched Ground's boil under one
+     card (groundBoilVfx): a glowing lava pool opens at the card's foot, six bubbles rise and pop, a heat haze lifts, all in 1.25 s. */
+  .ground-boil{position:absolute; left:-10%; right:-10%; bottom:-12%; height:38%; pointer-events:none;}
+  .ground-boil .gb-pool{position:absolute; left:4%; right:4%; bottom:0; height:62%; border-radius:50%;
+    background:radial-gradient(ellipse 50% 50% at 50% 55%, #fff1a8 0 12%, #ffb02e 30%, #e2470f 58%, rgba(120,20,5,.65) 78%, transparent 100%);
+    box-shadow:0 0 18px 6px rgba(255,110,20,.55); transform-origin:50% 60%; animation:gbPool 1.25s ease-out both;}
+  .ground-boil .gb-bub{position:absolute; bottom:22%; left:calc(14% + var(--k) * 13%); width:11%; aspect-ratio:1; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #fff6c4, #ffb02e 45%, #d8400d 80%); box-shadow:0 0 6px rgba(255,150,40,.8);
+    opacity:0; animation:gbBub .62s ease-out calc(.12s + var(--k) * .11s) both;}
+  .ground-boil .gb-bub:nth-child(odd){width:8%; bottom:28%;}
+  .ground-boil .gb-haze{position:absolute; left:16%; right:16%; bottom:30%; height:150%; border-radius:50% 50% 0 0;
+    background:linear-gradient(0deg, rgba(255,140,50,.38), rgba(255,200,120,.12) 55%, transparent); filter:blur(3px); opacity:0;
+    transform-origin:50% 100%; animation:gbHaze 1.2s ease-out .15s both;}
+  @keyframes gbPool{0%{transform:scale(.2, .1); opacity:0;} 22%{transform:scale(1.06, .95); opacity:1;} 70%{transform:scale(1, 1); opacity:.95;} 100%{transform:scale(.9, .7); opacity:0;}}
+  @keyframes gbBub{0%{transform:translateY(0) scale(.3); opacity:0;} 35%{opacity:1;} 80%{transform:translateY(-120%) scale(1); opacity:1;} 100%{transform:translateY(-150%) scale(1.5); opacity:0;}}
+  @keyframes gbHaze{0%{transform:scaleY(.2); opacity:0;} 40%{opacity:1;} 100%{transform:scaleY(1) translateY(-10%); opacity:0;}}
+  /* 2026-10-23 (package FX4, owner on FX3-2: "When the field effect is active, it aligns straight, then shines abit, before moving back when
+     the effect is about to complete."): an Environment card whose effect fires (envCardsFire) leaves the fan's tilt, lifts, a light sweeps
+     across it (.env-shine), and it eases back into the fan (.is-firing-out). Reduced motion: a still gold glow. */
+  .card-tile.env-card.is-firing{z-index:30 !important; transform:translateY(-10px) rotate(0deg) scale(1.08) !important;
+    transition:transform .3s cubic-bezier(.2,1.35,.4,1), box-shadow .3s ease !important;
+    box-shadow:0 0 0 1.5px #ffe9a0 inset, 0 0 0 3px #3e5f2c, 0 0 0 4.5px #ffd75e, 0 0 20px 6px rgba(255,214,110,.7), 0 6px 14px rgba(0,0,0,.45) !important;}
+  .card-tile.env-card.is-firing-out{transition:transform .32s ease-in, box-shadow .32s ease !important;}
+  @media (max-width:699px){ .card-tile.env-card.is-firing{transform:translateY(-2px) rotate(0deg) scale(1.06) !important;} } /* the phone's header sits at the top edge */
+  .card-tile.env-card .env-shine{position:absolute; inset:0; border-radius:10px; overflow:hidden; pointer-events:none; z-index:7;}
+  .card-tile.env-card .env-shine::after{content:''; position:absolute; top:-20%; bottom:-20%; left:-60%; width:45%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,240,.85), transparent); transform:skewX(-16deg); animation:envShine .75s .18s ease-out both;}
+  @keyframes envShine{from{left:-60%;} to{left:130%;}}
+  @media (prefers-reduced-motion: reduce){ .ground-boil{display:none;} .card-tile.env-card.is-firing{transform:none !important; transition:none !important;} .card-tile.env-card .env-shine{display:none;} }
   /* The volcano's hazards (2026-10-14): a petrified unit is grey stone for the round; a lava tide glows the flooded column. */
   .board-card.is-petrified .card-tile{filter:grayscale(1) brightness(.82) contrast(1.15); transition:filter .4s ease;}
   .board-card.is-petrified .card-tile::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:4;
@@ -11967,6 +11996,12 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
     .ds2-actions .btn{flex:1; min-height:42px;}
     .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
   }
+  /* 2026-10-23 (package FX4, owner on UI4-3): the faction pack's swap is one row again (.ds4, the one-card window's columns); 0.8 s after a
+     Swap, "Swap Again" pops in beside Done */
+  .ds2-actions.is-again .btn{animation:ds4AgainIn .32s cubic-bezier(.3,1.5,.5,1) both;}
+  .ds2-actions.is-again .ds4-again{box-shadow:0 0 0 3px rgba(233,185,73,.55), 0 4px 12px rgba(0,0,0,.25);}
+  @keyframes ds4AgainIn{from{opacity:0; transform:scale(.7);} to{opacity:1; transform:none;}}
+  @media (prefers-reduced-motion: reduce){ .ds2-actions.is-again .btn{animation:none;} }
   /* 2026-10-23 (package UI4, owner 01:03 #3): the several-swap window (a faction pack's cards), rows inside the same .ds2 window */
   .ds3{width:min(520px, 100%);}
   .ds3-head{display:grid; grid-template-columns:1fr 26px 1fr 64px; gap:8px; margin:0 0 6px;}

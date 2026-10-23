@@ -136,12 +136,12 @@ const lone = (rules, seed)=>{ const m = mk(seed || 7, rules); m.e.debugSpawnCard
 { const {e, P} = lone({lavaTideChance:0, petrifyChance:0, eruptionChance:0, eruption:5}); let n = 0;
   for(let r = 2; r < 12; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); n += ev.filter(x=> x.type==='fieldTick').length; }
   ok(n === 0 && all(P[1])[0].hp === 500, `every hazard at 0%: nothing ever happens, even with rules.eruption set (${n})`); }
-{ const {e} = mk(7, {volcano:'verylow'}); const c = e.volcanoChances(2); ok(c.lavaTide === 1 && c.petrify === 2 && c.eruption === 3, 'Very low is 1/2/3');
-  const h = mk(7, {volcano:'high'}).e.volcanoChances(9); ok(h.lavaTide === 60 && h.petrify === 65 && h.eruption === 70, 'High is 60/65/70');
-  const ev2 = mk(7, {volcano:'even'}).e; ok(ev2.volcanoChances(2).lavaTide === 45 && ev2.volcanoChances(5).eruption === 61, `'even' climbs 2 a round after round 2 (${ev2.volcanoChances(5).eruption})`);
-  const mo = mk(7, {volcano:'medium', petrifyChance:90}).e.volcanoChances(3); ok(mo.lavaTide === 20 && mo.petrify === 90, 'a per-hazard chance overrides the level');
+{ const {e} = mk(7, {volcano:'verylow'}); const c = e.volcanoChances(2); ok(c.lavaTide === 0.5 && c.petrify === 2 && c.eruption === 3, 'Very low is 1/2/3 (Lava Tide x0.5 since FX4, 2026-10-23: 0.5)');
+  const h = mk(7, {volcano:'high'}).e.volcanoChances(9); ok(h.lavaTide === 30 && h.petrify === 65 && h.eruption === 70, 'High is 60/65/70 (Lava Tide x0.5 since FX4: 30)');
+  const ev2 = mk(7, {volcano:'even'}).e; ok(ev2.volcanoChances(2).lavaTide === 22.5 && ev2.volcanoChances(5).eruption === 61, `'even' climbs 2 a round after round 2 (${ev2.volcanoChances(5).eruption})`);
+  const mo = mk(7, {volcano:'medium', petrifyChance:90}).e.volcanoChances(3); ok(mo.lavaTide === 10 && mo.petrify === 90, 'a per-hazard chance overrides the level (Lava Tide x0.5 since FX4)');
   ok(mk(7, {eruption:2}).e.volcanoChances(3) === null, 'no volcano level: no odds');
-  const lo = lone({volcano:'low'}); lo.e.roundStart(lo.P, 2, so, {}, []); const f = lo.e.forecast(); ok(f.volcano && f.volcano.lavaTide === 10 && f.eruption == null, 'the forecast carries the odds'); }
+  const lo = lone({volcano:'low'}); lo.e.roundStart(lo.P, 2, so, {}, []); const f = lo.e.forecast(); ok(f.volcano && f.volcano.lavaTide === 5 && f.eruption == null, 'the forecast carries the odds (Lava Tide x0.5 since FX4)'); }
 { // a 'high' volcano is random but seeded: the same seed gives the same fight, and something does happen over ten rounds
   const run = ()=>{ const {e, P} = lone({volcano:'high'}, 11); const out = []; for(let r = 2; r < 12; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); ev.filter(x=> x.type==='fieldTick').forEach(x=> out.push(r + x.field)); } return out.join(','); };
   const a = run(); ok(a && a === run(), `a high volcano is deterministic (${a.slice(0, 60)})`); }

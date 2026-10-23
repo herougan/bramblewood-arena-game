@@ -43,3 +43,15 @@ A living treasure chest crouched in a mossy cave, old weathered oak planks bound
 ```
 
 Names offered: **Coffer Mimic** (used), Strongbox Lurker, Briar Chest.
+
+## Package FX4 (2026-10-23: Lava Waders)
+
+#### Lava Waders (`lava-waders`, equipment), placeholder 👢
+
+The owner (2026-10-23, 11:11, on FX3-3): "let's create a fire resistant boots equipment like lava waders that gives units Fire Resistance". A pair of thigh-high wading boots made for walking through lava, standing on a cooled basalt ledge beside a glowing lava flow: dark scaly salamander hide, thick soles of black pitch, brass buckles, a faint orange heat shimmer round the soles. One bright accent: the lava's orange glow reflected on the wet-looking hide. Wording notes: an item, not a creature; no "spiked" or "studded"; the buckles are plain.
+
+```
+A pair of tall thigh-high wading boots made of dark scaly salamander hide with thick black pitch soles and plain brass buckles, standing upright on a cooled black basalt ledge, a slow glowing orange lava flow beside them, faint heat shimmer and small embers rising around the soles, warm orange light reflecting on the glossy hide, volcanic rocks and drifting ash in the background, detailed pixel art, full background
+```
+
+Names offered: **Lava Waders** (used, the owner's), Cinderstride Boots, Salamander Waders.

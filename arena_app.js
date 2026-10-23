@@ -2973,7 +2973,7 @@ function describeEffects(def, liveCard, opt){
   }
   if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
-  if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
+  if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const rs = eqResistText(k, v); if(rs) return '🔥 ' + rs; /* FX4 (2026-10-23) */ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
   { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
@@ -17186,7 +17186,7 @@ function subMapExitHTML(map, positions){
   const tip = tut ? TX('map.tu2-exit-tip', {n: mapNumberOf(parent.id) ?? 0, name: parent.name}) : 'Way out — back to ' + parent.name;
   return `<svg class="map-spot-links map-exit-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line ${key ? `data-a="${escapeAttr(key)}" data-b="~exit"` : ''} x1="${base.x}" y1="${base.y}" x2="${p.x}" y2="${p.y}"/></svg>
     <button type="button" class="map-cave map-subexit ${isCaveSubMap(map) ? 'is-cave' : 'is-open'}" id="mapSubExit" data-lkey="~exit" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      ${isCaveSubMap(map) ? `<span class="mse-rays" aria-hidden="true"></span><span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth mse-mouth" aria-hidden="true"></span><span class="mse-lamp" aria-hidden="true"></span>` : `<span class="mse-home" aria-hidden="true">${parent.icon || '🗺️'}</span>`}<span class="msc-name">${tut ? '↑ ' + escapeHtml(TX('map.tu2-exit', {n: mapNumberOf(parent.id) ?? 0})) : '↑ Way out'}</span></button>`;
+      ${isCaveSubMap(map) ? `<span class="mse-rays" aria-hidden="true"></span><span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth mse-mouth" aria-hidden="true"></span><span class="mse-lamp" aria-hidden="true"></span>` : `<span class="mse-home" aria-hidden="true">${parent.icon || '🗺️'}</span>`}<span class="msc-name">${tut ? escapeHtml(TX('map.tu2-exit')) /* 2026-10-23 (package FX4, owner: "Tutorials: \"To Map 0\" should just \"Exit\""): was '↑ To Map 0' */ : '↑ Way out'}</span></button>`;
 }
 // Map curiosities (2026-10-12): small things on each map that start a conversation. At most two per map, counting the
 // Outskirts well and the Hollow's chat cave. The first visit plays it; later visits say a short line. A reply can open a menu.
@@ -17787,6 +17787,9 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
     // 2026-10-17: the glow's uneven Day/Night, and Ashy ground after the volcano's Eruption (where a fight gives the volcano odds).
     if((r.phase === 'cycle' || r.phase === 'nightFirst') && r.phaseDay == null && r.phaseNight == null && !r.phaseLen){ r.phaseDay = VOLCANO_GLOW.day; r.phaseNight = VOLCANO_GLOW.night; }
     if(r.ashyAfterEruption == null) r.ashyAfterEruption = true; }
+  // 2026-10-23 (package FX4, owner FX3-2: one ground fire a fight): where a fight has Wildfire Front (rules.wildfire), the volcano's automatic
+  // Scorched Ground (rules.eruption without volcano odds) and Scorching stay off. A fight's own eruption number is kept.
+  if(r.wildfire && node){ if(!(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) &&!(node.rules && Number(node.rules.eruption) > 0)) delete r.eruption; if(r.field === 'heatwave'){ delete r.field; delete r.heatLevel; } }
   if(r.terrain == null && node && mid){ const t = terrainFor(mid, node); if(t) r.terrain = t; }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
@@ -17948,9 +17951,12 @@ const FIELD_ROWS_AT_START = new Set(['quietContemplation' /* 2026-10-19 (package
 const VOLCANO_LEVELS = {verylow:{label:'Very low', odds:[1,2,3]}, low:{label:'Low', odds:[10,12,14]}, medium:{label:'Medium', odds:[20,22,24]}, even:{label:'1 in 2', odds:[45,50,55]}, high:{label:'High', odds:[60,65,70]}};
 function volcanoBand(p){ p = Number(p)||0; return p <= 5 ? 'Very low' : p <= 15 ? 'Low' : p <= 30 ? 'Medium' : p < 60 ? '1 in 2' : 'High'; }
 function volcanoRulesOn(r){ return !!(r && (VOLCANO_LEVELS[r.volcano] || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null)); }
+// 2026-10-23 (package FX4, owner on FX3-3: "Let Lava Tide be 50%."): Lava Tide's odds are x0.5 at every level (the engine's LAVA_TIDE_FACTOR);
+// a fight's own lavaTideChance is kept as set.
+const LAVA_TIDE_FACTOR = 0.5;
 function volcanoOddsOf(r, round){ if(!volcanoRulesOn(r)) return null; const t = (VOLCANO_LEVELS[r.volcano] || {odds:[0,0,0]}).odds, up = r.volcano === 'even' ? 2 * Math.max(0, (Number(round)||2) - 2) : 0;
-  const pick = (ov, base)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? base + up : 0)));
-  return {lavaTide: pick(r.lavaTideChance, t[0]), petrify: pick(r.petrifyChance, t[1]), eruption: pick(r.eruptionChance, t[2])}; }
+  const pick = (ov, base, f)=> Math.max(0, Math.min(100, (ov != null && ov !== '') ? (Number(ov)||0) : (base ? (base + up) * (f || 1) : 0)));
+  return {lavaTide: pick(r.lavaTideChance, t[0], LAVA_TIDE_FACTOR), petrify: pick(r.petrifyChance, t[1]), eruption: pick(r.eruptionChance, t[2])}; }
 // Scorched Ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed"): the old fixed
 // "Eruptions" (rules.eruption with no volcano odds). The volcano's Eruption hazard keeps its name.
 const SCORCHED_NAME = 'Scorched Ground';
@@ -18016,6 +18022,10 @@ Object.assign(FIELD2, {
   // 2026-10-21 (package FOG, owner: "a fog of war effect"): rules.fogOfWar (+ rules.fogPeek for the advanced peek). INFORMATION ONLY: it hides the
   // far enemy columns from the player's view (fogGet and boardCardHTML); combat, targeting and the CPU never read it. Not offered in raids.
   fogOfWar:     {icon:'🌫️', name:TX('ui.fx-name-fog-of-war'), editor:'fogofwar', short:TX('ui.fx-fog-of-war-short'), text:TX('ui.fx-fog-of-war'), codex:TX('ui.fxx-fog-of-war')},
+  // 2026-10-23 (package FX4, owner on FX3-1: "Still do the line of fire thing ... all take 1 fire damage ... (Find a name for this field
+  // effect)"): rules.wildfire, FX3's line of fire as its own field: from round 2 it crosses both front lines from the left each round, 1 fire
+  // to every unit it passes, one by one (the engine's scorchSweep; scorchSweepVfx plays it). Fights: WILDFIRE_NODES. Name: call FX4-1.
+  wildfire:     {icon:'🔥', name:TX('ui.fx-name-wildfire'), editor:'wildfire', short:TX('ui.fx-wildfire-short'), text:TX('ui.fx-wildfire'), codex:TX('ui.fxx-wildfire')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
@@ -18122,6 +18132,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'statusFx' && ev.kind === 'frostbite') hit = markFieldRow('frostbite');
   else if(ev.type === 'fieldTick' && (ev.field === 'eruption' || ev.field === 'lavaTide' || ev.field === 'petrify')) hit = markFieldRow(ev.field); // + the volcano's hazards (2026-10-14)
   else if(ev.type === 'fieldTick' && ev.field === 'scorched') hit = markFieldRow('eruption'); // Scorched Ground keeps the old row key (2026-10-14)
+  else if(ev.type === 'fieldTick' && (ev.field === 'wildfire' || ev.field === 'wildfireSweep')) hit = markFieldRow('wildfire'); // Wildfire Front (FX4, 2026-10-23)
   else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
   else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
   else if(ev.type === 'darkCast' && ev.on) hit = markFieldRow('dark'); // Cast Darkness (2026-10-18): its card lights up as the dark falls
@@ -21094,7 +21105,7 @@ const CONQUEST_MAPS = [
       { key:"14-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"weaver-bird":5,"dust-hyena":2,"grave-grin-hyena":3,"marula-elephant":3,"pangolin-roller":3,"spitting-cobra":1}, flavor:"The trees carry the warning further than any scout could.", rules:{"firstBlood":1}, requires:["14-2"] },
       { key:"14-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"hoopoe-herald":3,"weaver-bird":1,"dust-hyena":3,"grave-grin-hyena":3,"marula-elephant":4}, hqHp:45, flavor:"Every flock overhead is reporting straight back to the pride.", rules:{"firstBlood":1}, requires:["14-3"] },
       { key:"14-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"hoopoe-herald":4,"weaver-bird":4,"dust-hyena":3,"grave-grin-hyena":3,"pangolin-roller":3,"spitting-cobra":2,"savanna-cheetah":1}, enemyLevel:2.3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:90, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-4"] },
-      { key:"14-6", kind:"elite", name:"Jaguar Run", icon:"🐆", shieldOverride:12, deck:{"hoopoe-herald":5,"springbok-pronker":3,"grave-grin-hyena":3,"marula-elephant":3,"spitting-cobra":2,"savanna-cheetah":1}, enemyLevel:2.3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"The run starts long before the pounce.", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-5"] },
+      { key:"14-6", kind:"elite", name:"Jaguar Run", icon:"🐆", shieldOverride:12, deck:{"hoopoe-herald":5,"springbok-pronker":3,"grave-grin-hyena":3,"marula-elephant":3,"spitting-cobra":2,"savanna-cheetah":1}, enemyLevel:2.3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"The run starts long before the pounce.", rules:{"firstBlood":1,"wildfire":true} /* 2026-10-23 (package FX4): Wildfire Front, a grass fire on the savanna (was Scorching I: one ground fire a fight) */, requires:["14-5"] },
       { key:"14-7", kind:"elite", name:"The Cheetah Matriarch", icon:"🐾", deck:{"hoopoe-herald":4,"dust-hyena":3,"grave-grin-hyena":3,"pangolin-roller":3,"spitting-cobra":2,"savanna-cheetah":1}, shieldOverride:38, enemyLevel:2.3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"Nothing on the Reaches outruns her, so nothing tries twice.", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-6"] },
       { key:"14-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"hoopoe-herald":4,"dust-hyena":2,"marula-elephant":3,"pangolin-roller":3,"spitting-cobra":1,"savanna-cheetah":1}, leaders:["dust-hyena"] /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"Every pack on the grassland answers to one crown.", rules:{firstBlood:2}, requires:["14-7"] },
     ]},
@@ -21164,7 +21175,7 @@ const CONQUEST_MAPS = [
       { key:"20-5", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":4,"pack-mule":4,"ash-cloud-condor":3,"magma-salamander":2,"ossuary-lammergeier":1}, showcase:"cave-warlord" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:74, rules:{"field":"heatwave","heatLevel":3}, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["20-2"] },
       { key:"20-6", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", shieldOverride:53, deck:{"ashbone-ghoul":5,"bear-cub":3,"magma-wraith":3,"ash-cloud-condor":3,"magma-salamander":2,"woodland-brawler":2,"ossuary-lammergeier":1}, enemyLevel:3.25 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"field":"heatwave","heatLevel":3}, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["20-5"] },
       { key:"20-7", kind:"elite", name:"The Blessed Avatar", icon:"😇", shieldOverride:25, deck:{"cave-warlord":4,"cinder-skeleton":4,"magma-wraith":4,"ossuary-lammergeier":1} /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"field":"heatwave","heatLevel":3}, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["20-6"] },
-      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"ashbone-ghoul":4,"bear-cub":3,"ash-cloud-condor":3,"magma-salamander":3,"woodland-brawler":2,"ossuary-lammergeier":1}, enemyLevel:3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"field":"heatwave","heatLevel":3}, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
+      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"ashbone-ghoul":4,"bear-cub":3,"ash-cloud-condor":3,"magma-salamander":3,"woodland-brawler":2,"ossuary-lammergeier":1}, enemyLevel:3 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"wildfire":true} /* 2026-10-23 (package FX4): Wildfire Front (was Scorching III, which FX3 had already turned into Scorched Ground) */, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
       { key:"20-9", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":4,"ashbone-ghoul":4,"pack-mule":4,"bear-cub":3,"ash-cloud-condor":2,"woodland-brawler":1,"ossuary-lammergeier":1}, showcase:"ancient-sloth-titan" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"field":"heatwave","heatLevel":3}, flavor:"It has not hurried in centuries. It has never needed to.", requires:["20-8"] },
       { key:"20-10", kind:"finalboss", rating:400, name:"The Cave Warlord", icon:"👑", deck:{"cave-warlord":3,"pack-mule":2,"bear-cub":3,"magma-salamander":2,"woodland-brawler":2,"ossuary-lammergeier":1}, showcase:"cave-warlord", enemyLevel:3.15 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"field":"heatwave","heatLevel":3}, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["20-9"] },
       { key:"20-R", kind:"raidboss", name:"The Deep Troll King", icon:"👹", deck:{"deep-cave-troll":4,"stalactite-golem":2,"vampire-roost":1}, showcase:"deep-cave-troll" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:150, flavor:"Every tunnel in the dark eventually leads back to him.", requires:["20-10"] },
@@ -24379,66 +24390,86 @@ function multiSwapCandidates(inId, deckLeft, defs){
   return Object.keys(deckLeft).filter(k=> deckLeft[k] > 0 && defs[k] && swapEligibleDef(defs[k]) && swapOutAllowed(k, inId) && (swapClearlyBetter(dIn, defs[k], {anyCost:true}) || swapStrength(dIn) > swapStrength(defs[k])))
     .sort((a, b)=> (swapClearlyBetter(dIn, defs[b]) ? 1 : 0) - (swapClearlyBetter(dIn, defs[a]) ? 1 : 0) || pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
 }
+// 2026-10-23 (package FX4, owner on UI4-3: "No, I think just 1 row, but there's up to 3 cards on the right (like last time). After pressing Swap
+// and 0.8s, you can press \"Swap Again\". The right card shifts to \"selecting\" another card. (The left card that was swapped out is also out of
+// the equation)"): one row in the one-card window's style. Left, the deck cards the picked pack card may replace (up to 3, ‹ › and thumbs);
+// right, up to 3 of the pack's cards that still beat a deck card (thumbs). Swap trades the pair (the cards cross over, "Nice!"); 0.8 s later
+// "Swap Again" appears while a pack card is left that beats a deck card: the right side moves on to the next one, and every deck card swapped
+// out is out of the running (outGone). "Done" (Keep my deck before any swap) closes it. Was (UI4): a ticked row per pack card, "Swap N".
+// Still: the first faction pack's window always shows, later ones count as one of the SWAP_OFFERS_MAX offers; one pack card only: the
+// one-card window.
+const MULTI_SWAP_AGAIN_MS = 800;
 function openMultiDeckSwap(item){
   const defs = getCardDefs();
   if(!swapTutorialDone()) return false;
   const first = !loadDialogueFlags()[MULTI_SWAP_FIRST_FLAG];
   if(!first && swapOffersShown() >= SWAP_OFFERS_MAX) return false;
-  // rows: each pack card with the deck cards it could replace; a deck copy is only offered to one row
-  const deckLeft = Object.assign({}, myDeckCounts), inLeft = {};
-  const rows = [];
-  (item.multi || []).forEach(inId=>{ const d = defs[inId]; if(!d || ((d.cost||0) > 0 && !pitchingUnlocked())) return;
-    const room = deckCopyLimit(inId, defs) - (myDeckCounts[inId]||0) - (inLeft[inId]||0); if(room <= 0) return;
-    const cands = multiSwapCandidates(inId, deckLeft, defs); if(!cands.length) return;
-    rows.push({inId, cands, sel: cands[0], on: true}); deckLeft[cands[0]]--; inLeft[inId] = (inLeft[inId]||0) + 1; });
-  if(!rows.length) return false;
-  if(rows.length === 1){ // one row: the one-card window, first in line
-    if(!dominatedDeckCard(rows[0].inId)) return false;
-    pendingDeckSwap = pendingDeckSwap || []; pendingDeckSwap.unshift({id: rows[0].inId, natural:true}); return false; }
+  const pack = (item.multi || []).slice(), done = new Set(), outGone = new Set();
+  const candsFor = inId=> multiSwapCandidates(inId, myDeckCounts, defs).filter(k=> !outGone.has(k)).slice(0, 3);
+  // the pack cards still on offer (indices into pack): pitchable, room under the copy limit, a deck card to replace; one entry per card
+  const live = ()=>{ const out = [];
+    pack.forEach((inId, i)=>{ if(done.has(i) || out.some(j=> pack[j] === inId)) return; const d = defs[inId];
+      if(!d || ((d.cost||0) > 0 && !pitchingUnlocked())) return;
+      if(deckCopyLimit(inId, defs) - (myDeckCounts[inId]||0) <= 0) return;
+      if(!candsFor(inId).length) return; out.push(i); });
+    return out.slice(0, 3); };
+  let offer = live();
+  if(!offer.length) return false;
+  if(offer.length === 1){ // one card only: the one-card window, first in line
+    if(!dominatedDeckCard(pack[offer[0]])) return false;
+    pendingDeckSwap = pendingDeckSwap || []; pendingDeckSwap.unshift({id: pack[offer[0]], natural:true}); return false; }
   if(first) setDialogueFlag(MULTI_SWAP_FIRST_FLAG, true); else noteSwapOfferShown();
-  const used = except=>{ const u = {}; rows.forEach((r, i)=>{ if(i !== except) u[r.sel] = (u[r.sel]||0) + 1; }); return u; };
-  const free = i=>{ const u = used(i); return rows[i].cands.filter(k=> (myDeckCounts[k]||0) - (u[k]||0) > 0); };
-  const rowHTML = (r, i)=>{ const opts = free(i), many = opts.length > 1, dIn = defs[r.inId], dOut = defs[r.sel];
-    return `<div class="ds3-row ${r.on ? 'is-on' : 'is-off'}" data-row="${i}">
-      <div class="ds3-side is-out">${many ? `<button type="button" class="ds2-nav" data-rnav="${i}" data-dir="-1" aria-label="${escapeAttr(TX('ui.ui4-swap-prev'))}">‹</button>` : ''}<button type="button" class="ds2-old ds3-card" data-rcycle="${i}" aria-label="${escapeAttr(dOut.name)}">${cardTileHTML(dOut, {inPlay:true})}</button>${many ? `<button type="button" class="ds2-nav" data-rnav="${i}" data-dir="1" aria-label="${escapeAttr(TX('ui.ui4-swap-next'))}">›</button>` : ''}</div>
-      <span class="ds3-arrow" aria-hidden="true">⇄</span>
-      <div class="ds3-side is-in"><div class="ds2-new ds3-card">${cardTileHTML(dIn, {inPlay:true})}</div></div>
-      <label class="ds3-tick"><input type="checkbox" data-rtick="${i}" ${r.on ? 'checked' : ''}><span>${escapeHtml(TX('ui.ui4-swap-tick'))}</span></label>
-      <small class="ds3-names"><span>${escapeHtml(dOut.name)}</span><span>${escapeHtml(dIn.name)}</span></small>
-    </div>`; };
-  const nOn = ()=> rows.filter(r=> r.on).length;
+  let inSel = offer[0], outList = candsFor(pack[inSel]), outSel = outList[0], swapped = [];
+  const tile = id=> cardTileHTML(defs[id], {inPlay:true});
+  const colHTML = side=>{ const list = side === 'out' ? outList : offer, sel = side === 'out' ? outSel : inSel, many = list.length > 1, idOf = x=> side === 'out' ? x : pack[x];
+    return `<div class="ds2-col is-${side}" data-col="${side}"><div class="ds2-col-h">${escapeHtml(TX(side === 'out' ? 'ui.ui4-swap-your-deck' : 'ui.ui4-swap-from-pack'))}</div>
+      <div class="ds2-pick">${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="-1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-prev' : 'ui.fx4-swap-prev-pack'))}">‹</button>` : ''}<div class="ds2-${side === 'out' ? 'old' : 'new'}">${tile(idOf(sel))}</div>${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="1" aria-label="${escapeAttr(TX(side === 'out' ? 'ui.ui4-swap-next' : 'ui.fx4-swap-next-pack'))}">›</button>` : ''}</div>
+      ${many ? `<div class="ds2-thumbs">${list.map((x, i)=> `<button type="button" class="ds2-thumb ${x === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(String(x))}" aria-label="${escapeAttr(defs[idOf(x)].name)}" aria-pressed="${x === sel}">${tile(idOf(x))}${i === 0 && side === 'out' ? '<i class="ds2-rec" aria-hidden="true">★</i>' : ''}</button>`).join('')}</div>` : ''}</div>`; };
+  const sayHTML = ()=>{ const dIn = defs[pack[inSel]], dOut = defs[outSel];
+    return `<b>${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-say-again' : 'ui.fx4-swap-say', {n: offer.length}))}</b><br><span>${escapeHtml(TX('ui.fx4-swap-q', {out: dOut.name, in: dIn.name}))} ⚔${dOut.attack||0} ❤${dOut.health||0} → ⚔${dIn.attack||0} ❤${dIn.health||0}</span>`; };
+  const actionsHTML = again=> again
+    ? `<button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX('ui.fx4-swap-done'))}</button><button type="button" class="btn primary big ds4-again" id="dsAgain">🔁 ${escapeHtml(TX('ui.fx4-swap-again'))}</button>`
+    : `<button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX(swapped.length ? 'ui.fx4-swap-done' : 'ui.ui4-swap-keep'))}</button><button type="button" class="btn primary big" id="dsSwap">🔁 ${escapeHtml(TX('ui.ui4-swap-tick'))}</button>`;
   const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'ds2-overlay is-multi';
-  let drawn = 0;
-  const draw = ()=>{
-    const sc = ov.querySelector('.ds3-rows'), top = sc ? sc.scrollTop : 0;
-    ov.innerHTML = `<div class="ds2 ds3" role="dialog" aria-modal="true" aria-label="${escapeAttr(TX('ui.ui4-swap-title'))}">
-      <div class="ds3-head"><span class="ds2-col-h">${escapeHtml(TX('ui.ui4-swap-your-deck'))}</span><span class="ds2-col-h">${escapeHtml(TX('ui.ui4-swap-from-pack'))}</span></div>
-      <div class="ds3-rows">${rows.map(rowHTML).join('')}</div>
-      <p class="ds2-say"><b>${escapeHtml(TX('ui.ui4-swap-say', {n: rows.length}))}</b></p>
-      <div class="ds2-actions"><button type="button" class="btn ghost small" id="dsKeep">${escapeHtml(TX('ui.ui4-swap-keep'))}</button><button type="button" class="btn primary big" id="dsSwap" ${nOn() ? '' : 'disabled'}>🔁 ${escapeHtml(TX('ui.ui4-swap-n', {n: nOn()}))}</button></div></div>`;
-    if(drawn++) ov.querySelector('.ds2').style.animation = 'none';
-    const sc2 = ov.querySelector('.ds3-rows'); if(sc2) sc2.scrollTop = top;
-    ov.querySelector('#dsKeep').onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
-    const sw = ov.querySelector('#dsSwap'); sw.onclick = ()=> doSwap(sw); };
+  let busy = false;
+  const draw = again=>{
+    ov.innerHTML = `<div class="ds2 ds4" role="dialog" aria-modal="true" aria-label="${escapeAttr(TX('ui.ui4-swap-title'))}">
+      <div class="ds2-stage">${colHTML('out')}<span class="ds2-arrows" aria-hidden="true">⇄</span>${colHTML('in')}</div>
+      <p class="ds2-say">${sayHTML()}</p>
+      <div class="ds2-actions">${actionsHTML(false)}</div></div>`;
+    if(again) ov.querySelector('.ds2').style.animation = 'none';
+    wire(); };
+  const redrawCol = side=>{ const col = ov.querySelector(`[data-col="${side}"]`); if(!col) return; col.outerHTML = colHTML(side); const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = sayHTML();
+    const nc = ov.querySelector(`[data-col="${side}"] .ds2-${side === 'out' ? 'old' : 'new'}`); if(nc && hasGsap() && !reducedMotion()) gsap.fromTo(nc, {scale:.9, opacity:.4}, {scale:1, opacity:1, duration:.25, ease:'back.out(2)'}); };
+  const choose = (side, x)=>{ if(busy) return;
+    if(side === 'out'){ if(!outList.includes(x) || x === outSel) return; outSel = x; redrawCol('out'); }
+    else { x = +x; if(!offer.includes(x) || x === inSel) return; inSel = x; outList = candsFor(pack[inSel]); if(!outList.includes(outSel)) outSel = outList[0]; redrawCol('in'); redrawCol('out'); }
+    try{ SoundKit.quick && SoundKit.quick(); }catch(e){} };
   const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, reducedMotion() ? 60 : 240); };
-  const cycle = (i, dir)=>{ if(ov.classList.contains('is-done')) return; const opts = free(i); if(opts.length < 2) return; const r = rows[i]; r.sel = opts[(opts.indexOf(r.sel) + dir + opts.length) % opts.length]; draw(); try{ SoundKit.quick && SoundKit.quick(); }catch(e){} };
-  ov.addEventListener('click', e=>{ const nv = e.target.closest('[data-rnav]'); if(nv){ cycle(+nv.dataset.rnav, +nv.dataset.dir); return; }
-    const cy = e.target.closest('[data-rcycle]'); if(cy) cycle(+cy.dataset.rcycle, 1); });
-  ov.addEventListener('change', e=>{ const t = e.target.closest('[data-rtick]'); if(!t || ov.classList.contains('is-done')) return; rows[+t.dataset.rtick].on = t.checked; draw(); });
-  ov.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); const k = ov.querySelector('#dsKeep'); if(k && !k.disabled) k.click(); } });
-  const doSwap = sw=>{ if(ov.classList.contains('is-done')) return; ov.classList.add('is-done'); sw.disabled = true; ov.querySelector('#dsKeep').disabled = true;
-    const done = [];
-    rows.forEach((r, i)=>{ if(!r.on || !(myDeckCounts[r.sel] > 0) || !swapOutAllowed(r.sel, r.inId)) return;
-      myDeckCounts[r.sel] -= 1; if(myDeckCounts[r.sel] <= 0) delete myDeckCounts[r.sel]; myDeckCounts[r.inId] = (myDeckCounts[r.inId]||0) + 1; done.push(i); });
-    saveMyDeck();
+  const finish = ()=>{ try{ if(swapped.length > 1) showToast(TX('toast.ui4-swapped-n', {n: swapped.length}), 'ok'); else if(swapped.length === 1) showToast(TX('toast.is-in-your-deck-in-place', {name: defs[swapped[0].in].name, name2: defs[swapped[0].out].name}), 'ok'); }catch(e){} close(); };
+  const doSwap = ()=>{ if(busy) return; const tIn = pack[inSel], tOut = outSel;
+    if(!(myDeckCounts[tOut] > 0) || !swapOutAllowed(tOut, tIn)) return; busy = true;
+    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck();
+    done.add(inSel); outGone.add(tOut); swapped.push({in: tIn, out: tOut});
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
-    ov.querySelectorAll('.ds3-row').forEach(el=> el.classList.add(done.includes(+el.dataset.row) ? 'is-swapped' : 'is-skipped'));
-    ds2CrossSwap(ov, done.map(i=>{ const el = ov.querySelector(`.ds3-row[data-row="${i}"]`); return {a: el && el.querySelector('.ds2-old'), b: el && el.querySelector('.ds2-new')}; }));
+    ov.querySelector('.ds2-stage').classList.add('is-swapped'); ds2CrossSwap(ov);
     { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">' + escapeHtml(TX('ui.ui4-swap-nice')) + '</b>'; }
-    const rm = reducedMotion();
-    setTimeout(()=> ov.classList.add('is-happy'), rm ? 0 : 520);
-    setTimeout(()=>{ try{ if(done.length) showToast(TX('toast.ui4-swapped-n', {n: done.length}), 'ok'); }catch(e){} close(); }, rm ? 200 : 1200); };
-  document.body.appendChild(ov); draw();
+    ov.querySelectorAll('.ds2-actions .btn').forEach(b=> b.disabled = true);
+    const rm = reducedMotion(); offer = live();
+    if(!offer.length){ setTimeout(()=> ov.classList.add('is-happy'), rm ? 0 : 420); setTimeout(finish, rm ? 200 : 1000); return; }
+    setTimeout(()=>{ if(!ov.isConnected) return; const a = ov.querySelector('.ds2-actions'); if(!a) return; a.innerHTML = actionsHTML(true); a.classList.add('is-again'); busy = false; wire();
+      try{ ov.querySelector('#dsAgain').focus(); }catch(e){} }, MULTI_SWAP_AGAIN_MS);
+  };
+  const again = ()=>{ if(busy) return; inSel = offer[0]; outList = candsFor(pack[inSel]); outSel = outList[0]; if(!outSel){ finish(); return; } draw(true);
+    const st = ov.querySelector('.ds2-stage'); if(st && hasGsap() && !reducedMotion()) gsap.fromTo(st, {x:24, opacity:.3}, {x:0, opacity:1, duration:.3, ease:'power2.out', clearProps:'transform,opacity'});
+    try{ SoundKit.quick && SoundKit.quick(); }catch(e){} setTimeout(()=>{ try{ ov.querySelector('#dsSwap').focus(); }catch(e){} }, 60); };
+  const wire = ()=>{ const k = ov.querySelector('#dsKeep'); if(k) k.onclick = ()=>{ if(!swapped.length){ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} } if(swapped.length) finish(); else close(); };
+    const sw = ov.querySelector('#dsSwap'); if(sw) sw.onclick = doSwap;
+    const ag = ov.querySelector('#dsAgain'); if(ag) ag.onclick = again; };
+  ov.addEventListener('click', e=>{ const nv = e.target.closest('[data-nav]'); if(nv){ const side = nv.dataset.nav, list = side === 'out' ? outList : offer, cur = side === 'out' ? outSel : inSel; choose(side, list[(list.indexOf(cur) + (+nv.dataset.dir) + list.length) % list.length]); return; }
+    const pk = e.target.closest('[data-pick]'); if(pk) choose(pk.dataset.pick, pk.dataset.id); });
+  ov.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); const k = ov.querySelector('#dsKeep'); if(k && !k.disabled) k.click(); } });
+  document.body.appendChild(ov); draw(false);
   setTimeout(()=>{ try{ ov.querySelector('#dsSwap').focus(); }catch(e){} }, 60);
   return true;
 }
@@ -27252,11 +27283,17 @@ function starterDeckParts(pick){
   // real deck must be actually stronger"): the baby filler (cfg.starterFiller: Honey Bee, Silver Minnow, Sparrow Chick) no longer joins the
   // real deck; it is topped up from cfg.starterTopUp, now the sturdier cards (EB_STARTER_TOP_UP). A saved config whose top-up is the old
   // PG list of trainees (PG_STARTER_TOP_UP) gets EB's list instead.
-  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared].forEach(list=> Object.keys(list).forEach(id=>{ if((list[id]|0) > 0) take(id); }));
-  starterTopUpList(cfg).forEach(take);
+  // 2026-10-23 (package FX4, owner on EB-1: "OKAY, but 1x each weak one should stay in the deck for variety. Remove Sparrow Chick. That's
+  // for Gannet Cliffs onwards."): one copy of each weak Base card of the filler (Honey Bee, Silver Minnow) is kept in the real deck, in its last
+  // (hidden) places, so the deck is still 20 cards; the Sparrow Chick never joins it (a Gannet Cliffs pack card now), whatever a saved config lists.
+  const FILLER_OUT = new Set(['sparrow-chick']);
+  const filler = Object.keys(cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller || {}).filter(id=> ((cfg.starterFiller || STARTER_CFG_DEFAULT.starterFiller)[id]|0) > 0 && !FILLER_OUT.has(id) && defs[id] && !defs[id].token && !(other && defs[id].faction === other));
+  [side || {}, cfg.starterShared || STARTER_CFG_DEFAULT.starterShared].forEach(list=> Object.keys(list).forEach(id=>{ if((list[id]|0) > 0 && !FILLER_OUT.has(id)) take(id); }));
+  const keepWeak = filler.filter(id=> !seen.has(id));
+  starterTopUpList(cfg).forEach(id=>{ if(!keepWeak.includes(id) && !FILLER_OUT.has(id)) take(id); });
   const target = starterDeckTarget(pick);
   const shown = {}, hidden = {}, all = {};
-  ids.slice(0, target).forEach((id, i)=>{ (i < STARTER_SHOWN ? shown : hidden)[id] = 1; all[id] = 1; });
+  ids.slice(0, Math.max(STARTER_SHOWN, target - keepWeak.length)).concat(keepWeak).slice(0, target).forEach((id, i)=>{ (i < STARTER_SHOWN ? shown : hidden)[id] = 1; all[id] = 1; });
   return {shown, hidden, all};
 }
 function tutorialRewardIds(){ const cfg = (typeof tutorialCfg!=='undefined' && tutorialCfg) || STARTER_CFG_DEFAULT; const later = new Set(Object.values(tutorialRewards2Cfg()).flat());
@@ -27552,7 +27589,7 @@ const STARTER_CFG_DEFAULT = {
   starterOtters: {'otter-kit':1, 'otter-centurion':1, 'fleetfootd':1},
   starterHummingbirds: {'crimson-wing-recruit':2, 'mosswing-laborer':1},
   starterBoth: {'otter-centurion':1, 'crimson-wing-recruit':1, 'fleetfootd':1},
-  starterFiller: {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3}, // 1/2 each: the trainees the swaps replace. 2026-10-23 (EB): no longer in the real deck
+  starterFiller: {'honey-bee':1, 'silver-minnow':1}, // 1/2 each: the trainees the swaps replace. 2026-10-23 (EB): no longer in the real deck. 2026-10-23 (FX4, owner on EB-1): one of each is back in it for variety; the Sparrow Chick is out (was {'honey-bee':3, 'silver-minnow':3, 'sparrow-chick':3})
   // 2026-10-23 (package PG): one copy of each card now, so the deck is filled to 20 with further different Base cards, in this order
   // (the sturdier ones first; the tutorial fights' own cards). starterDeckParts skips any already in the lists above.
   // 2026-10-23 (package EB, owner 01:57 note 1): the sturdier cards your real deck keeps after T-2, vanilla, about 2 Attack / 8-10 Health
@@ -30029,6 +30066,7 @@ const FXL_FIELDS = [
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
   {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100}}, // the default 1 (FX2, 2026-10-22; was a 3 here)
   {key:'eruption', icon:'🔥', name:SCORCHED_NAME, text:()=> scorchedGroundText(1), rules:{eruption:1}}, // 1 (FX2, 2026-10-22; was 3)
+  {key:'wildfire', icon:'🔥', name:TX('ui.fx-name-wildfire'), text:()=> TX('ui.fx-wildfire'), rules:{wildfire:true}, steps:['round', 'round']}, // 2026-10-23 (package FX4)
   // (The "Terrain: … II" entries left with home ground, 2026-10-14: a terrain on its own does nothing now.)
   {key:'bossSurge', icon:'💢', name:'Boss surge', text:()=> "Their boss surges when it's cast.", unsupported:'It needs a real boss fight (a boss card cast by the enemy) and can\'t be staged with stand-ins.'},
   {key:'enemyOre', icon:'⛏️', name:'Deep mines', text:()=> 'Their side digs the Stone and Metal it needs.', unsupported:'It only changes the enemy\'s resources, so there is nothing to see on the field.'},
@@ -39202,7 +39240,9 @@ async function resolveRoundCore(opts){
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
+    try{ fieldGapStamp(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): two field numbers on one unit, a small gap apart
     floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
+    try{ envCardsFire(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): the Environment cards of the effects that fired straighten and shine
     // The upkeep (2026-10-16, user: "Don't let me be able to play or pitch cards during upkeep"): the round-start effects (the
     // castles' own actions such as the Herb Refinery's brew, the field's ticks) play out before your turn opens. m.resolving stays
     // set, so play, pitch and Pass wait, the hand dims and a small "Upkeep" chip shows. Always released (finally, and resolveRound's
@@ -39750,7 +39790,7 @@ const FIELD_ART = {
   // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
   // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
   // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
-  fogofwar:{art:'art/fields/misty.png'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
+  fogofwar:{art:'art/fields/misty.png'} /* 2026-10-21 (package FOG): borrows the Mist scene until it has its own */, wildfire:{art:'art/fields/scorching.png'} /* 2026-10-23 (package FX4): borrows Scorching's scene until it has its own */, psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
   dusk:{art:'art/fields/dusk.png'}, restless:{art:'art/fields/restless.png'}, firstblood:{art:'art/fields/firstblood.png'}, doubletime:{art:'art/fields/doubletime.png'}, collapse:{art:'art/fields/collapse.png'},
 };
 function fieldArtKeyOfRow(row, fr){
@@ -41855,7 +41895,7 @@ function logText(ev){
     case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='scorchedSweep' ? {cls:'', text: TX('ui.fx-scorched-sweep-log')} /* FX3 */ : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='wildfireSweep' || ev.field==='scorchedSweep' ? {cls:'', text: TX('ui.fx-wildfire-sweep-log')} /* FX3; FX4: Wildfire Front */ : ev.field==='wildfire' ? {cls:'', text: TX('ui.fx-wildfire-log', {name: nm(ev.defId), n: dnLogNum(ev.dmg, ev)})} /* FX4 */ : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${dnLogNum(ev.dmg, ev)} 🔥 fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${dnLogNum(ev.dmg, ev)}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? dnLogNum(ev.dmg, ev) : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -43693,10 +43733,12 @@ function castleShotMs(ev){
 function upkeepHoldMs(events, m){
   let ms = 0;
   (events || []).forEach(ev=>{ if(!ev || ev.type === 'draw') return;
-    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250 : 650); }); // + an Awash ride plays out (2026-10-17)
+    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250
+      : ev.type === 'fieldTick' && ev.field === 'scorched' ? GROUND_BOIL_MS : ev.type === 'fieldTick' && ev.uid != null ? 900 : 650); }); // + an Awash ride plays out (2026-10-17); 2026-10-23 (package FX4): Scorched Ground's boil plays out, a field hit holds 900 ms (was 650) so its Environment card can light up and settle back (envCardsFire)
   const mult = (m && m.speedMult) || 1;
-  const sweep = (events || []).some(ev=> ev && ev.type === 'fieldTick' && ev.field === 'scorchedSweep') ? scorchSweepMs(m) + Math.round(450 / mult) : 0; // the line of fire (FX3)
-  return ms ? Math.max(sweep, Math.max(120, Math.round(Math.min(1600, ms) / mult))) : 0;
+  const sweep = (events || []).some(ev=> ev && ev.type === 'fieldTick' && (ev.field === 'wildfireSweep' || ev.field === 'scorchedSweep')) ? scorchSweepMs(m) + Math.round(450 / mult) : 0; // the line of fire (FX3; Wildfire Front since FX4)
+  const gap = fieldGapMaxMs(events, m); // FX4 (2026-10-23): the field numbers' small gaps on one unit
+  return ms ? Math.max(sweep, Math.max(120, Math.round(Math.min(1600, ms) / mult)) + gap) : 0;
 }
 // Scorched Ground's line of fire (2026-10-23, package FX3, owner 01:57 note 3: "a line of fire moves from the left side to the right side. As
 // it touches a card, it takes fire damage."): the Effects Lab's Wildfire front (FX.B.wildfire, a flame band) crosses the battlefield, and each
@@ -43709,7 +43751,7 @@ let scorchSweepNow = null; // {t0, ms, left, width} of the band crossing now
 function scorchSweepVfx(ev){
   const m = matchState; if(!m) return;
   const bf = document.getElementById('battlefieldEl'), still = reducedMotion() || !fxAtLeast('low');
-  if(ev.field === 'scorchedSweep'){
+  if(ev.field === 'scorchedSweep' || ev.field === 'wildfireSweep'){
     const r = bf ? bf.getBoundingClientRect() : null; const ms = scorchSweepMs(m);
     scorchSweepNow = r && r.width && !still ? {t0: performance.now(), ms, left: r.left, width: r.width} : null;
     if(scorchSweepNow){ try{ const B = window.FX && window.FX.B; if(B && B.wildfire) B.wildfire(bf, {host: bf, duration: ms / 1000}); }catch(e){} }
@@ -43721,10 +43763,69 @@ function scorchSweepVfx(ev){
     const host = fxHostAt(el || el0, 1900, r);
     try{ dnFloat(host, ev.dmg, {type:'heat', mods: ev.mods, fit:true}); }catch(e){}
     if(el){ try{ const F = window.SkillFX; if(F && F.scorchMark && !still) F.scorchMark(el); }catch(e){} try{ updateCardHpDisplay(ev.uid); }catch(e){} } };
-  if(!sw || !r0){ land(); return; }
+  const gap = Number(ev._fxGap) || 0; // FX4 (2026-10-23): a second field number on the same unit waits its gap
+  if(!sw || !r0){ if(gap) setTimeout(land, gap); else land(); return; }
   const at = Math.max(0, Math.min(1, (r0.left + r0.width / 2 - sw.left) / sw.width)) * sw.ms - (performance.now() - sw.t0);
-  setTimeout(land, Math.max(0, Math.round(at)));
+  setTimeout(land, Math.max(gap, Math.round(at)));
 }
+// FIELD_GAP (2026-10-23, package FX4, owner on FX3-2: "leave a small gap between the field effect damage animations so I can see the two
+// numbers"): the upkeep's field events all play in one go, so two field hits on one unit (a comet and a Lava Tide, say) floated their numbers
+// on top of each other. fieldGapStamp gives each field damage event its place on its unit (ev._fxGap: 0, then FIELD_GAP_MS, 2x ...), and
+// renderVfxForEvent plays a later one that much later (on a detached host, so the turn's redraw keeps it); the upkeep holds for the longest.
+const FIELD_GAP_MS = 250;
+function fieldGapStamp(events, m){
+  const seen = {}, mult = Math.max(1, (m && m.speedMult) || 1);
+  (events || []).forEach(ev=>{ if(!ev || ev.type !== 'fieldTick' || ev.uid == null || /Sweep$/.test(ev.field || '')) return;
+    if(!(Number(ev.dmg) > 0) && !(Number(ev.roll) > 0)) return;
+    const k = String(ev.uid), n = seen[k] || 0; seen[k] = n + 1; ev._fxGap = n ? Math.round(n * FIELD_GAP_MS / mult) : 0; });
+  return events;
+}
+// Scorched Ground, one unit a side (2026-10-23, package FX4, owner on FX3-1: "It looks like the ground boils beneath the units chosen."): a pool
+// of glowing lava opens under the card's foot, bubbles rise and pop, a little heat haze lifts, and the 🔥1 floats as the boil peaks. The engine
+// already burned the unit; this only shows it (on a fixed host over the card, so the upkeep's redraw keeps it). Effects "none" or reduced
+// motion: no pool, the number alone. ev._fxGap: a second field number on the same unit waits its gap (FIELD_GAP).
+const GROUND_BOIL_MS = 1250;
+function groundBoilVfx(ev){
+  const el0 = boardCardEl(ev.uid), r0 = el0 ? el0.getBoundingClientRect() : null; if(!r0) return;
+  const still = reducedMotion() || !fxAtLeast('low');
+  const host = fxHostAt(el0, GROUND_BOIL_MS + 900, r0);
+  if(!still){ const b = document.createElement('div'); b.className = 'ground-boil'; b.setAttribute('aria-hidden', 'true');
+    b.innerHTML = '<i class="gb-pool"></i>' + [0, 1, 2, 3, 4, 5].map(k=> '<i class="gb-bub" style="--k:' + k + '"></i>').join('') + '<i class="gb-haze"></i>';
+    host.appendChild(b); setTimeout(()=> b.remove(), GROUND_BOIL_MS + 200); }
+  try{ SoundKit.fireIgnite ? SoundKit.fireIgnite() : SoundKit.boom && SoundKit.boom(); }catch(e){}
+  setTimeout(()=>{ try{ dnFloat(host, ev.dmg, {type:'heat', mods: ev.mods, fit:true}); }catch(e){}
+    const el = boardCardEl(ev.uid); if(el){ el.classList.add('erupt-hit'); setTimeout(()=> el.classList.remove('erupt-hit'), 700); try{ updateCardHpDisplay(ev.uid); }catch(e){} } }, still ? 0 : 380);
+}
+// The Environment card of an effect that fires (2026-10-23, package FX4, owner on FX3-2: "When the field effect is active, it aligns straight,
+// then shines abit, before moving back when the effect is about to complete."): in the fight's header, the card of each field row that just
+// did something (fieldTickRowKey) leaves the fan's tilt and lifts a little, a light sweeps across it, and it settles back into the fan
+// ENV_FIRE_BACK_MS before the upkeep's effects are done. Reduced motion: a still glow, no movement (CSS).
+const ENV_FIRE_BACK_MS = 260;
+function fieldTickRowKey(ev, r){
+  if(!ev || ev.type !== 'fieldTick') return null; const f = ev.field;
+  if(f === 'scorched') return 'eruption';
+  if(f === 'wildfire' || f === 'wildfireSweep') return 'wildfire';
+  if(f === 'comet' || f === 'cometRain' || f === 'eruptionReset') return 'eruption';
+  if(f === 'eruption' || f === 'lavaTide' || f === 'petrify') return volcanoRulesOn(r) ? f : 'eruption';
+  if(f === 'frozen') return 'frost';
+  if(f === 'leylines') return 'leylines3';
+  if(f === 'ashy') return 'ashyAfter';
+  if(f === 'thunderHit') return 'thunderstorm';
+  return f;
+}
+function envCardsFire(events, m){
+  if(!m || matchState !== m) return; const r = matchFieldRules(m) || {}, keys = new Set();
+  (events || []).forEach(ev=>{ const k = fieldTickRowKey(ev, r); if(k) keys.add(k); });
+  if(!keys.size) return;
+  const hold = Math.max(700, upkeepHoldMs(events, m) || 0), back = Math.max(380, hold - ENV_FIRE_BACK_MS);
+  const cards = [];
+  keys.forEach(k=>{ const c = document.querySelector('#fieldCondCard .env-card[data-fieldhover="cond:' + k + '"]'); if(c) cards.push(c); });
+  if(['heatwave', 'rain', 'frost', 'fog'].some(k=> keys.has(k))){ const w = document.querySelector('.field-weather.env-card'); if(w) cards.push(w); } // the Scorching / Rain / Frigid / Fog card (fieldEffectCardHTML)
+  cards.forEach(c=>{ c.classList.remove('is-firing', 'is-firing-out'); c.querySelectorAll('.env-shine').forEach(x=> x.remove()); void c.offsetWidth; c.classList.add('is-firing');
+    const sh = document.createElement('i'); sh.className = 'env-shine'; sh.setAttribute('aria-hidden', 'true'); c.appendChild(sh);
+    setTimeout(()=>{ c.classList.add('is-firing-out'); c.classList.remove('is-firing'); sh.remove(); setTimeout(()=> c.classList.remove('is-firing-out'), 340); }, back); });
+}
+function fieldGapMaxMs(events){ let g = 0; (events || []).forEach(ev=>{ if(ev && ev._fxGap > g) g = ev._fxGap; }); return g; }
 function showUpkeepChip(){
   hideUpkeepChip();
   const host = document.getElementById('battlefieldEl'); if(!host) return;
@@ -44256,7 +44357,9 @@ const EQ_HZ_TEXT = {ice:h=> TX('ui.eq-hz-ice', {r:h.rounds}), lava:h=> TX('ui.eq
 function eqIsHazardDef(d){ return !!(d && d.cardType === 'spell' && d.hazard); }
 function eqHazardText(d){ const h = d.hazard || {}, k = EQ_HZ_TEXT[h.kind] ? h.kind : 'rubble'; return EQ_HZ_TEXT[k]({rounds: h.rounds || 3, n: h.n || 1}); }
 function eqLiveUnit(m, uid){ if(!m || uid == null) return null; for(const pid of [1,2]){ const pl = m.players && m.players[pid]; if(!pl || !pl.row) continue; const c = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x && x.uid === uid); if(c) return c; } return null; }
-function eqGrantText(grant){ return grant ? Object.entries(grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key === k); return (pd ? pd.label : k) + valSuffix(v); }).join(', ') : ''; }
+function eqGrantText(grant){ return grant ? Object.entries(grant).map(([k, v])=>{ const rs = eqResistText(k, v); if(rs) return rs; const pd = PASSIVE_DEFS.find(p=> p.key === k); return (pd ? pd.label : k) + valSuffix(v); }).join(', ') : ''; }
+// 2026-10-23 (package FX4): a granted Resist list ({resist:['heat']}, Lava Waders) reads "Fire Resistance", not "resist heat"
+function eqResistText(k, v){ if(k !== 'resist' || !Array.isArray(v)) return ''; return v.map(t=> t === 'heat' || t === 'fire' ? TX('ui.fx4-fire-resistance') : TX('ui.fx4-resist-x', {x: t})).join(', '); }
 function eqSlotMarks(pid, sl, c){
   const m = matchState; if(!m || !m.engine || !m.engine.floorAt) return '';
   const defs = getCardDefs(), pl = m.players[pid]; let out = '';
@@ -44881,6 +44984,7 @@ function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
+  if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
   try{ if(typeof FxAutoLower !== 'undefined') FxAutoLower.poke(); }catch(e){} // 2026-10-17: a fight is playing; watch the frame rate (auto-lower effects)
@@ -45734,8 +45838,9 @@ function renderVfxForEvent(ev){
     if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
     else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
     try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
-  if(ev.type==='fieldTick' && (ev.field === 'scorchedSweep' || ev.field === 'scorched')){ try{ scorchSweepVfx(ev); }catch(e){} } // the line of fire (FX3, 2026-10-23)
-  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing', 'scorched', 'scorchedSweep'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
+  if(ev.type==='fieldTick' && (ev.field === 'scorchedSweep' || ev.field === 'wildfireSweep' || ev.field === 'wildfire')){ try{ scorchSweepVfx(ev); }catch(e){} } // the line of fire (FX3, 2026-10-23; Wildfire Front since FX4)
+  if(ev.type==='fieldTick' && ev.field === 'scorched'){ try{ groundBoilVfx(ev); }catch(e){} } // Scorched Ground: the ground boils under the unit (FX4, 2026-10-23)
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing', 'scorched', 'scorchedSweep', 'wildfire', 'wildfireSweep'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : (ev.dmg ? dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.freeze ? 'cold' : 'heat'), mods: ev.mods}) : floatText(el, `🌧️+${ev.heal}`, 'heal')); }catch(e){} /* DN2: <type><number><mark> (fieldGlyph was the source) */ // Immolation's burn is a fire number (2026-10-16)
@@ -47107,6 +47212,9 @@ const SMITH_RECIPES = [
   {out:'sunfeather-plume', needs:{'iron-shard':2, 'river-pearl':1, 'petal-fletcher':1}, cost:{dust:400, gold:500}},
   {out:'siege-hammer', needs:{'iron-shard':3, 'ember-core':1, 'badger-sapper':1}, cost:{dust:600, gold:750}},
   {out:'dragonscale-mail', needs:{'iron-shard':4, 'ember-core':1, 'dragon-scale':1}, cost:{dust:1500, gold:1500}},
+  // 2026-10-23 (package FX4, owner on FX3-3: "let's create a fire resistant boots equipment like lava waders"): the volcano's boots, from a
+  // Sundered Peak (Map 20) card and an Ember Core
+  {out:'lava-waders', needs:{'iron-shard':2, 'ember-core':1, 'basalt-boar':1}, cost:{dust:300, gold:400}},
 ];
 const FUSE_COPIES = 3;
 let smithSel = 0;

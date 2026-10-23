@@ -130,3 +130,10 @@ lightningBoltOf
 drawLightningBolt
 electricChain
 attackingUids
+# FX4 (2026-10-23): Scorched Ground boils under one unit (groundBoilVfx); Wildfire Front, the line of fire (scorchSweepVfx and its timing)
+GROUND_BOIL_MS
+groundBoilVfx
+SCORCH_SWEEP_MS
+scorchSweepMs
+scorchSweepVfx
+fxHostAt

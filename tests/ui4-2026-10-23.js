@@ -98,7 +98,7 @@ ok(/applyHandPreviewStats\(m, me, strip\)/.test(app) && /previewPlayStats/.test(
 // ---- 4. texts
 const T = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT;
 const KEYS = Object.keys(T).filter(k=> /\.ui4-/.test(k));
-ok(KEYS.length >= 25, `4. the UI4 keys are in the TEXT table (${KEYS.length})`);
+ok(KEYS.length >= 23, `4. the UI4 keys are in the TEXT table (${KEYS.length}; 2026-10-23, package FX4: ui4-swap-say and ui4-swap-n went with the ticked rows)`);
 KEYS.forEach(k=> ok(app.includes(`'${k}'`), `4. ${k} is used by the game`));
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
 CODES.forEach(c=>{ const p = Object.assign({}, JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', c + '.json'), 'utf8')), JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'ui', c + '.json'), 'utf8')));

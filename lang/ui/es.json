@@ -5062,5 +5062,6 @@
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "Toda cueva tiene un cofre demasiado pesado para abrirlo. Agárralo y te agarrará a ti.",
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "+{v1} de Ataque por cada aliado que comparta un tipo con ella (p. ej., cada otra Hormiga junto a una Hormiga). Las Estructuras no cuentan.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} de Ataque por cada aliado que comparta un tipo con ella. Las Estructuras no cuentan.",
- "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} de Ataque por cada aliado que sea {v2}. Las Estructuras no cuentan."
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} de Ataque por cada aliado que sea {v2}. Las Estructuras no cuentan.",
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Botas hasta el muslo de piel de salamandra y brea. Métete y conserva los dedos."
 }

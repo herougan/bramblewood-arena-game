@@ -5062,5 +5062,6 @@
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "どの洞窟にも、重くて開かない宝箱がひとつある。つかめば、つかみ返してくる。",
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "タイプを共有する味方1体ごとに攻撃+{v1}（例：アリの隣にいる他のアリそれぞれ）。 建造物は数えない。",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "同じタイプを持つ味方1体ごとに攻撃+{v1}。 建造物は数えない。",
- "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}の味方1体ごとに攻撃+{v1}。 建造物は数えない。"
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "{v2}の味方1体ごとに攻撃+{v1}。 建造物は数えない。",
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "サラマンダーの革と松脂でできた腿まであるブーツ。踏み込んでも、つま先は無事。"
 }

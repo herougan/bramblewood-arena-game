@@ -220,6 +220,7 @@
   "bramblewood-bonebreaker": 20,
   "hedgehog-scout": 12,
   "pill-bug": 5,
+  "sparrow-chick": 3,
   "beetle-grunt": 5,
   "dormouse": 1,
   "tiny-cave-dweller": 4,
@@ -590,6 +591,7 @@
   "woodland-caribou": 16,
   "musk-ox-calf": 5,
   "swordbill-challenger": 5,
-  "coffer-mimic": 8
+  "coffer-mimic": 8,
+  "lava-waders": 11
  }
 }

@@ -5062,5 +5062,6 @@
  "Every cave has one chest too heavy to open. Grab it and it grabs back.": "Jede Höhle hat eine Truhe, die zu schwer zum Öffnen ist. Greif nach ihr, und sie greift zurück.",
  "+{v1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant). Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der einen Typ mit ihr teilt (z. B. jede andere Ameise neben einer Ameise). Bauwerke zählen nicht.",
  "+{v1} Attack for every ally that shares a type with it. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der einen Typ mit ihr teilt. Bauwerke zählen nicht.",
- "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der {v2} ist. Bauwerke zählen nicht."
+ "+{v1} Attack for every ally that is {v2}. Structures don't count.": "+{v1} Angriff für jeden Verbündeten, der {v2} ist. Bauwerke zählen nicht.",
+ "Thigh-high boots of salamander hide and pitch. Wade in, keep your toes.": "Hüfthohe Stiefel aus Salamanderhaut und Pech. Hineinwaten, Zehen behalten."
 }

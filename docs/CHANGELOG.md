@@ -42,6 +42,49 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   or reserve row). New: `bramblewood-coop.js` (rules, room, transports), `tools/coop_sim_2026_10_23.js`, `tools/i18n_2026_10_23_ar3.py`
   (114 TX keys, 12 packs). Tests: `tests/coop-dungeon-2026-10-23.js`, `tests/coop-lobby-2026-10-23.js`, `tests/e2e/coop_dungeon_2026_10_23.py`.
   Screens: `docs/screens/ar3/`.
+## 2026-10-23 (package FX4: one swap row and Swap Again, Scorched Ground boils under one unit, Wildfire Front, one ground fire, field-number gaps, the Environment card that fires, Lava Tide half as often, Lava Waders, Guardian shields, Backstab's new targets, the starting deck's weak cards, Exit)
+- The owner's 11:11 answers on UI4-3, FX3-1, FX3-2, FX3-3, EN-3, EN-5, EB-1 and the Tutorial's way out. New calls FX4-1 .. FX4-4.
+- **Swap (UI4-3):** a faction pack's swap is one row again, in the one-card window's style: your deck card on the left (up to 3, ‹ › and
+  thumbs), up to 3 pack cards on the right. Swap trades the pair (the cards cross over, "Nice!"); 0.8 s later **Swap Again** appears beside
+  Done while a pack card still beats a deck card: the right side moves on to the next one, and a deck card already swapped out is out of the
+  running. Was (UI4): a ticked row per pack card and "Swap N". First faction pack free, later ones one of the 10 offers, as before.
+- **Scorched Ground (FX3-1):** one random unit a side again, 1 fire, every round from round 2 (fire-resistant units and Mountain Climbers
+  never chosen). On screen the ground boils under the chosen card: a lava pool opens at its foot, bubbles rise, a heat haze, then the 🔥1
+  (`groundBoilVfx`). Map 20's elite and boss fights and 22-7 carry it (call FX4-3: 1 or 2).
+- **Wildfire Front (FX3-1, new field effect):** FX3's line of fire on its own (`rules.wildfire`): from round 2, every round, it crosses both
+  front lines left to right and each unit takes 1 fire as the band reaches it, one card after another (`scorchSweepVfx`; events
+  `wildfireSweep` / `wildfire`). Placed on **14-6 Jaguar Run** (Savanna Reaches, was Scorching I) and **20-8 The Iron Cataphract**
+  (Sundered Peak, was Scorching III). In Edit skirmish and the Effects library. Its card borrows Scorching's picture. Calls FX4-1 (the
+  name: Wildfire Front, or Grass Fire / Fire Line) and FX4-2 (how often).
+- **One ground fire (FX3-2):** a fight with Wildfire Front drops the volcano's automatic Scorched Ground and any Scorching (`fightRules`; the
+  engine also skips Scorched Ground where Wildfire Front is on).
+- **Field-number gaps (FX3-2):** two field hits on one unit in one upkeep (a comet and a Lava Tide, say) float 250 ms apart (`FIELD_GAP_MS`,
+  `fieldGapStamp`; faster at 2x / 5x), so both numbers read; the upkeep holds for the last one. A field hit now holds the upkeep 900 ms
+  (was 650), Scorched Ground's boil 1.25 s.
+- **The Environment card that fires (FX3-2):** when a field effect does something at the round's start, its card in the fight's header leaves
+  the fan's tilt, lifts a little, a light sweeps across it, and it eases back into the fan 0.26 s before the upkeep ends (`envCardsFire`,
+  `.is-firing`, `.env-shine`; reduced motion: a still glow).
+- **Lava Tide half as often (FX3-3):** its odds are x0.5 at every level (Very Low 0.5%, Low 5%, Medium 10%, 1 in 2 22.5% rising, High 30%;
+  engine `LAVA_TIDE_FACTOR` and the game's odds words); a fight's own Lava Tide chance is kept as set.
+- **Lava Waders (FX3-3, new equipment):** Uncommon, Lumber 1, +0/+3 and **Fire Resistance** (`equip.grant {resist:['heat']}`: fire hits
+  halved; Scorched Ground, Wildfire Front and Scorching pass the wearer by). Budget by formula, the grant counted as its skills: N 15.88,
+  2A+H+S 4. Made at the **Blacksmith** (2 Iron Shards, 1 Ember Core, 1 Basalt Boar from the Sundered Peak; 300 Dust, 400 Leaves): packs and
+  skirmish rewards never give equipment. Placeholder 👢, NightCafe prompt in `docs/art/new-cards-2026-10-21-briefs.md` (call FX4-4).
+  Engine: a granted Resist / Immune list adds to the unit's own (`deriveDef`); the volcano's ground-fire check reads `effects.resist` too.
+  The card reads "Fire Resistance" (`eqResistText`).
+- **Bulwark Shields (EN-3):** the two shields Bulwark raises have **Guardian** (were skill-less).
+- **Backstab (EN-5):** its +N also lands on a target still **Waiting**, **Shocked** or **Exposed**. Price unchanged (0.6 a point).
+- **Starting deck (EB-1):** one Honey Bee and one Silver Minnow are back in the real deck after T-2 for variety (in its hidden places, still
+  20 cards, one copy each); the **Sparrow Chick** is out (any saved tutorial config too) and is now a **Gannet Cliffs (Map 3)** basic-pack card
+  (`source {pack, map mc}`, `canonical/map-pools.json`, obtain map 3).
+- **Tutorial:** the start map's way out says **Exit** (was "↑ To Map 0").
+- Effects Lab: "Built 10-21/23" tab, group FX4: Scorched Ground's boil and Wildfire Front, played with the game's code (`groundBoilVfx`,
+  `scorchSweepVfx`; `fx-src-extra.txt`); the Smoke & war tab's Wildfire front says where it is used now. The hub is rebuilt at release.
+- Texts: 18 TX keys new or changed, 12 packs, the Lava Waders name and flavour (`tools/i18n_2026_10_23_fx4.py`); `ui.ui4-swap-say` /
+  `-n` and `ui.fx-scorched-sweep-log` retired. Tests: `tests/fx4-2026-10-23.js` (new, 95 checks), `tests/e2e/fx4_2026_10_23.py` (390 /
+  1366); `fx3-2026-10-23`, `keywords-2026-10-14` (Lava Tide x0.5) and `ui4-2026-10-23` (unit and e2e) follow the new rules. Card matrix: 0 failures, golden
+  diffs 8341 against 8247 on batch-1023b before FX4 (Backstab, the Guardian shields, Scorched Ground). Screens: `docs/screens/FX4/`.
+
 ## 2026-10-23 (package MK: the map marker stays put after a win; a cleared Map 0 no longer strands you)
 - **Owner (11:28):** "why does completing a skirmish put my conquest map marker ... move to Map N-1?" The results' Back to map ends the fight inside its own click; that click then reached the map's "click outside the skirmish panel closes it" listener, with the button already gone from the page, so the picked fight was dropped and the pawn walked to the next fight, or to the map's first one (N-1) on a cleared map. A click that began during a fight, or whose target left the page, no longer closes the panel; on a cleared map with nothing picked the pawn keeps its spot.
 - **Owner (11:29):** "i'm stuck in Map 0 in my new account." Map 1 was open but out of reach: until Thistlewood's reward fight opens the world, a map shows no map list and no › edge, every page load starts on Map 0, and PG's step onto the next map happened only in memory on the clearing win. `healMapProgress` (on load and each time the map opens) reads old node-id spellings as the new ones and finds the furthest map open in order; with the world still hidden the road opens there, once for each new furthest map. Nothing is marked open: a map whose fights are not won stays locked.
