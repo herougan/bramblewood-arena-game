@@ -57,7 +57,7 @@ ok(goliath.instanceCap === 250 && R.instanceCap({}) === 250 && R.INSTANCE_CAP_DE
 // ---- C9: the tiers, the quest, the medals, the pay
 { const pr = R.participationRules(goliath);
   ok(pr.damage === 500 && pr.strongDamage === 2000 && pr.leadDamage === 12500 && R.PARTICIPATION_DEFAULTS.damage === 500 && R.PARTICIPATION_DEFAULTS.leadDamage === 12500, 'C9. the tiers: 500 / 2,000 / 12,500 (were 1,000 / 10,000 / 50,000)');
-  ok(/\{id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:'Deal 4,000 Raid damage'\}/.test(src) && /counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:\[2000, 20000, 100000, 500000\]/.test(src), 'C9. the weekly quest (4,000) and the medals (2,000 .. 500,000)');
+  ok(/\{id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX\('ui\.i2-q-raiddmg-n', \{n: '4,000'\}\)\}/.test(src) && /counter:'raidDamage', label:'Raid damage dealt', icon:'🐲', steps:\[2000, 20000, 100000, 500000\]/.test(src), 'C9. the weekly quest (4,000) and the medals (2,000 .. 500,000)');
   ok(/const RAID_ATTEMPT_PAY = \{goldPer: 48, dustPer: 190\};/.test(src) && /contribution\/RAID_ATTEMPT_PAY\.goldPer/.test(src), 'C9. a fight pays about what it did'); }
 
 // ---- saved edits on the old scale

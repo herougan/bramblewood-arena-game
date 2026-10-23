@@ -110,7 +110,7 @@
     function budget(d, opts){
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
-      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2((N / 3) * (N / 3));
+      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A*H + S*|S| <= (N/3)^2 (the helper's productScore)
       // 2026-10-22 (BF7, owner, pass III): the helper's capScores: m on the stat terms only, f x the whole left side for Fragile (0.7)
@@ -137,7 +137,7 @@ if(typeof require !== 'undefined' && typeof module !== 'undefined' && require.ma
   const T = SC.make(JSON.parse(fs.readFileSync(file, 'utf8'))), cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')).filter(SC.measured);
   if(args.includes('--diff')){
     const rows = cards.map(c=>{ const b = T.budget(c), oldS = SC.legacyS(c.effects), r2 = v=> Math.round(v * 100) / 100;
-      let m = 1; ['evasive','swift','flying','shadow'].forEach(h=>{ if((c.effects || {})[h]) m *= (h === 'flying' ? 1.39 : 1.5); }); /* BF10 (2026-10-23): Flying x1.39 */
+      let m = 1; ['evasive','swift','flying','shadow'].forEach(h=>{ if((c.effects || {})[h]) m *= ({flying: 1.39, evasive: 1.37, shadow: 1.1}[h] || 1.5); }); /* BF10 / BF12 (2026-10-23): per-skill half-miss */
       const A = c.attack || 0, H = c.health || 0, oldOk = r2((2*A + H + oldS)*m) < b.N && r2((A*H + oldS)*m) < b.N2;
       return {id:c.id, name:c.name, oldS, S:b.S, d:r2(b.S - oldS), oldOk, ok:b.ok, missing:b.missing, parts:b.parts}; });
     const big = rows.filter(r=> Math.abs(r.d) > 2).sort((a, b)=> b.d - a.d), flip = rows.filter(r=> r.oldOk !== r.ok), miss = [...new Set(rows.flatMap(r=> r.missing))];

@@ -98,7 +98,7 @@ ok(sh('me', '20-A-4') === BS(32) && sh('mx', '20-B-4') === BS(63) && sh('m11', '
 
 // --- 4. where it is shown and used
 ok(/players\[2\]\.hq\.shield = sc\.shield; players\[2\]\.hq\.maxShield = sc\.shield; players\[2\]\.hq\.shieldLayers = sc\.layers;/.test(fn('applySkirmishSetup')), 'the fight build puts the Shield on the enemy bramble');
-{ const d = byKey('me', '20-A-4'), w = H.dungeonWaves(d); ok(w[w.length - 1].shield === BS(32) && w[0].shield === Math.round(BS(32) * 0.25), /* BF: Map 21's 32; BF5: halved */ `the dungeon's castles: first ${w[0].shield}, last ${w[w.length - 1].shield}`); }
+{ const d = byKey('me', '20-A-4'), w = H.dungeonWaves(d); ok(w[w.length - 1].shield === BS(36) && w[0].shield === Math.round(BS(36) * 0.25), /* BF: Map 21's 32; BF5: halved; LEAD (2026-10-23): 36 with its new leader */ `the dungeon's castles: first ${w[0].shield}, last ${w[w.length - 1].shield}`); }
 ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${H.skirmishCastle(byKey('mc', '3-7')).hp} HP · 🔷 ${H.skirmishCastle(byKey('mc', '3-7')).shield} Armour`, 'the VS / tooltip line shows the fight\'s Shield (the rule, or the skirmish pass\'s override)');
 ok(/castleLineText\(node\)/.test(fn('showVersusOpener')), 'the VS screen reads castleLineText');
 // 2026-10-21 (package TT): since package UX (2026-10-19) the tutorial node's tooltip reads its summary node (tutorialSummaryNode)
