@@ -26,8 +26,8 @@ async def main():
             await pg.fill('#heroNameInput', 'Quill'); await pg.click('#heroCreateBtn'); await pg.wait_for_timeout(500)
             if not await pg.evaluate("!!myHero && myHero.name==='Quill' && myHero.people==='tribes'"): bad.append('hero not created')
             # level up to 12: 5 skill slot opens, points to spend
-            await pg.evaluate("heroGainXp(600, 'test'); heroHallRerender(); 1"); await pg.wait_for_timeout(400)
-            L = await pg.evaluate("heroLevelFromXp(myHero.xp).level")
+            await pg.evaluate("heroGainXp(300, 'test', 'battle'); heroGainXp(300, 'test', 'materia'); heroHallRerender(); 1")  # 2026-10-23 (SX): the 3-part bar needs both kinds; await pg.wait_for_timeout(400)
+            L = await pg.evaluate("heroLevelOf(myHero).level")
             if L < 5: bad.append(f'level after XP grant only {L}')
             free0 = await pg.evaluate("heroPointsFree(myHero)")
             await pg.click('[data-hstat="atk"][data-dir="1"]'); await pg.wait_for_timeout(250)

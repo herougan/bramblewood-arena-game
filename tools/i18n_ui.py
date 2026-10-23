@@ -24,6 +24,7 @@ into the built pack by assemble_arena.py (the main pack and lang/cards win on a 
     python3 tools/i18n_ui.py --dump F     # write the harvest (key, kind, where) to F as JSON
     python3 tools/i18n_ui.py --split [N]  # the top N texts split by inline tags (need TX() to translate)
     python3 tools/i18n_ui.py --write      # drop keys from lang/ui/<code>.json that the source no longer has or a pack already has
+                                          # (a numbered key a pack template covers counts as had: "Own 300 cards." / "Own {n} cards.")
 
 Exits 1 when a lang/ui file has a key that isn't in the harvest or a translation that loses a placeholder.
 """
@@ -199,9 +200,10 @@ def base_pack(code):
 
 
 def needed(keys, base):
-    """The harvested keys a pack doesn't cover yet (exactly, or as the same template with other placeholder names)."""
-    shapes = {shape(k) for k in base}
-    return [k for k in keys if k not in base and shape(k) not in shapes]
+    """The harvested keys a pack doesn't cover yet (exactly, as the same template with other placeholder names, or as a template
+    with numbers filled in: "Own 300 cards." is covered by "Own {n} cards.", 2026-10-23 package SX, owner I2)."""
+    shapes, nums = {shape(k) for k in base}, T.NumberTemplates(base)
+    return [k for k in keys if k not in base and shape(k) not in shapes and not nums.match(k)]
 
 
 def placeholder_problems(key, value):
@@ -224,11 +226,11 @@ def coverage(keys=None):
     for code in CODES:
         base, ui = base_pack(code), load('lang/ui/%s.json' % code)
         merged = dict(ui); merged.update(base)
-        shapes = {shape(k) for k in merged}
+        shapes, nums = {shape(k) for k in merged}, T.NumberTemplates(merged)   # + number templates (SX)
         row = {}
         for kd in kinds + ['all']:
             ks = [k for k, v in keys.items() if kd == 'all' or v['kind'] == kd]
-            row[kd] = (sum(1 for k in ks if k in merged or shape(k) in shapes), len(ks))
+            row[kd] = (sum(1 for k in ks if k in merged or shape(k) in shapes or nums.match(k)), len(ks))
         res[code] = row
         for k, v in ui.items():
             if k not in keys: problems.append((code, k, 'not in the source'))
@@ -265,7 +267,8 @@ def main(argv):
             p = os.path.join(ROOT, 'lang', 'ui', code + '.json')
             if not os.path.exists(p): continue
             ui, base = load('lang/ui/%s.json' % code), base_pack(code)
-            keep = {k: v for k, v in ui.items() if k in keys and k not in base}
+            nums = T.NumberTemplates(base)   # a numbered row a main-pack template covers is one row per number: dropped (SX)
+            keep = {k: v for k, v in ui.items() if k in keys and k not in base and not nums.match(k)}
             if len(keep) != len(ui):
                 with open(p, 'w', encoding='utf-8') as fh:
                     json.dump(dict(sorted(keep.items(), key=lambda kv: kv[0].lower())), fh, ensure_ascii=False, indent=1); fh.write('\n')

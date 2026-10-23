@@ -74,8 +74,17 @@ function compileTemplate(key, value){
   src = src.replace(/\u0000(\w+)\u0001/g, (m, kind)=> kind === 'any' && lit < 6 ? '([^]{0,32}?)' : PH_PAT[kind]);
   try{ return {key, value, names, re: new RegExp(src + '$', 'u'), anchor, lit}; }catch(e){ return null; }
 }
-function createTranslator(pack, onMiss){
-  const index = new Map(), cache = new Map();
+// 2026-10-23 (package SX, owner I2 "Template change"): opts.locale (the pack's language) makes the templates number-aware: a count
+// written the English way with a thousands comma or a decimal point ("4,000", "2.5") is filled into the translation the language's
+// own way (Intl.NumberFormat: "4 000", "4.000", "2,5"). Plain counts ("12") are left as they are. Without a locale nothing changes.
+function localNum(v, locale){
+  if(!locale || typeof Intl === 'undefined') return v;
+  const m = /^([+\-−]?)(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+)$/.exec(v); if(!m) return v;
+  const dec = (m[2].split('.')[1] || '').length;
+  try{ return m[1] + new Intl.NumberFormat(locale, {maximumFractionDigits: dec, minimumFractionDigits: dec}).format(Number(m[2].replace(/,/g, ''))); }catch(e){ return v; }
+}
+function createTranslator(pack, onMiss, opts){
+  const index = new Map(), cache = new Map(), locale = opts && opts.locale || null;
   let count = 0;
   for(const key in pack){
     if(key.indexOf('{') < 0 || typeof pack[key] !== 'string') continue;
@@ -116,7 +125,7 @@ function createTranslator(pack, onMiss){
     }
     if(!best) return null;
     const vals = Object.create(null); best.names.forEach((k, i)=>{ vals[k] = bestM[i + 1]; });
-    return best.value.replace(PH, (m, k)=> k in vals ? (phKind(k) === 'plural' ? vals[k] : value(vals[k], deep)) : m).replace(/ {2,}/g, ' ').trim();
+    return best.value.replace(PH, (m, k)=> k in vals ? (phKind(k) === 'plural' ? vals[k] : phKind(k) === 'num' ? localNum(vals[k], locale) /* SX */ : value(vals[k], deep)) : m).replace(/ {2,}/g, ' ').trim();
   }
   return function translate(s){
     if(!s) return null;
@@ -141,7 +150,7 @@ function createTranslator(pack, onMiss){
 
 if(typeof window === 'undefined' || typeof document === 'undefined'){
   const passthrough = (s, v)=> v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s;
-  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough, createTranslator, compileTemplate, phKind};
+  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough, createTranslator, compileTemplate, phKind, localNum};
   return;
 }
 
@@ -201,7 +210,7 @@ function i18(english, vars){
 let tr = null, trPack = null;
 function translateText(s){
   if(!pack || !s) return null;
-  if(trPack !== pack){ trPack = pack; tr = createTranslator(pack, c=> misses.add(c)); }
+  if(trPack !== pack){ trPack = pack; tr = createTranslator(pack, c=> misses.add(c), {locale: lang}); } // + locale: numbers the language's way (SX)
   return tr(s);
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];

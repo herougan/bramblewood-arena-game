@@ -8438,6 +8438,17 @@
   #view-stomp .hero-level b{font-family:'Baloo 2',system-ui,sans-serif; font-size:21px;}
   #view-stomp .hero-xpbar{height:14px; max-width:320px; background:var(--surface-3); box-shadow:inset 0 1px 2px rgba(0,0,0,.25), 0 0 0 1px var(--surface-border);}
   #view-stomp .hero-xpbar span{background:linear-gradient(90deg, var(--gold), #ffd97a); box-shadow:inset 0 1px 0 rgba(255,255,255,.45);}
+  /* 2026-10-23 (package SX, owner H2): the 3-part Hero XP bar. Battle ember, Materia crystal violet, the third part either (Battle's
+     share striped: it fills at 75%). Each part is as wide as its share of the level. */
+  .hero-xp3{flex:1 1 220px; min-width:180px; max-width:340px; display:flex; gap:3px; height:16px;}
+  .hero-xp3 .hx-seg{position:relative; overflow:hidden; border-radius:999px; background:var(--surface-3, rgba(0,0,0,.12)); box-shadow:inset 0 1px 2px rgba(0,0,0,.25), 0 0 0 1px var(--surface-border, rgba(0,0,0,.15)); min-width:0;}
+  .hero-xp3 .hx-fill{position:absolute; top:0; bottom:0; left:0; box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
+  .hero-xp3 .hx-battle .hx-fill{background:linear-gradient(90deg,#d9612e,#ffad66);}
+  .hero-xp3 .hx-materia .hx-fill, .hero-xp3 .hx-either .hx-fm{background:linear-gradient(90deg,#7a5ae6,#c7b5ff);}
+  .hero-xp3 .hx-either .hx-fb{background:repeating-linear-gradient(135deg,#e07a3e 0 5px,#f7a868 5px 9px);}
+  .hero-xp3 .hx-seg i{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:10px; line-height:1; text-shadow:0 1px 1px rgba(0,0,0,.35); pointer-events:none;}
+  .hero-level .hx-wait{flex-basis:100%; font-size:12px; opacity:.75;}
+  .hero-xp-rule{font-size:12.5px; margin-top:2px;}
   #view-stomp .hero-facts span{background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink);}
   #view-stomp .hero-in-deck{color:var(--health); background:var(--p1-soft); border:1px solid var(--surface-border); border-radius:999px; padding:3px 12px; font-size:13px;}
   #view-stomp .hero-howto{color:var(--ink-muted); background:var(--surface-2); border-radius:10px; padding:7px 10px; line-height:1.45;}
@@ -8511,6 +8522,7 @@
     #view-stomp .hero-info h2{font-size:21px; text-align:center;}
     #view-stomp .hero-level, #view-stomp .hero-rarity, #view-stomp .hero-facts, #view-stomp .hero-deck-row{justify-content:center;}
     #view-stomp .hero-xpbar{min-width:0; flex:1 1 140px;}
+    #view-stomp .hero-xp3{min-width:0; flex:1 1 100%; max-width:none;} #view-stomp .hero-level .hx-wait{text-align:center;} /* SX */
     #view-stomp .hero-people{flex-direction:row; flex-wrap:nowrap; align-items:center; text-align:left; padding:10px;}
     #view-stomp .hp-card, #view-stomp .hp-card .card-tile{width:84px !important;} #view-stomp .hp-card .card-tile{height:105px !important;}
     #view-stomp .stomp-create-row{flex-direction:column; align-items:stretch;} #view-stomp .stomp-create-row .hero-name-row{flex:none;}

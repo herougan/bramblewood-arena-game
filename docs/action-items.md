@@ -40,12 +40,12 @@ From the owner's 10-23 00:10 answers (numbers are his list's). Packages: TU2, RW
 | 88 | D21 | EN | Backstab triggers on a target with a status that weakens it in combat, or when the attacker has a skill that strengthens it (blind against evade, for example). |
 | 7 | GD2-5 | EN | Name the shape "adjacent including diagonals" (Dynamite): suggested "Surrounding". |
 | 4 | GD2-1 | EN | Rename Spellshield to Spell Ward. |
-| 95 | — | SX | Damage affected by its target (armor, for one) gets its own sound effect (an armor "ting"); if the source has an sfx, play it and the target-effect sound too. |
-| 11 | DN2-4 | SX | Element colour shift +12 degrees, with poison less blue and a little brighter. |
-| 66 | H2 | SX | Hero XP bar: Battle XP, Materia XP, and a third section that takes either; Battle XP there is 25% less efficient. |
+| 95 | — | SX (built 10-23) | Damage affected by its target (armor, for one) gets its own sound effect (an armor "ting"); if the source has an sfx, play it and the target-effect sound too. |
+| 11 | DN2-4 | SX (built 10-23) | Element colour shift +12 degrees, with poison less blue and a little brighter. |
+| 66 | H2 | SX (built 10-23) | Hero XP bar: Battle XP, Materia XP, and a third section that takes either; Battle XP there is 25% less efficient. |
 | 26 | AR-3 | AR3 | The co-op group dungeon: a big pass, launched as one package. |
 | 48 | RP3 | RW3 (built 10-23) | Quarry Mole moves to 8-1 (its first-clear card; out of Base and off T-1). |
-| 64 | I2 | (unassigned) | Number-aware translation templates (no package named yet). |
+| 64 | I2 | SX (built 10-23) | Number-aware translation templates: numbered data texts are TX templates, the packs hold one row per template, numbers in the language's own format. |
 | 60 | D17 | (owner files) | Music: only 2-3 tracks are usable; better tracks are needed, and they need CC0 files from the owner. |
 | 71 | G2 | (a later hub package) | Move the still-relevant .md files into the master hub (the owner dislikes many disparate files); G2's detail now lives in its decision item. |
 | 8 | GD2-6 | RW3 (built 10-23) | Easter-egg sources: giveaways; a supremely low chance in mystery packs. |

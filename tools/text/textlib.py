@@ -734,3 +734,57 @@ def tx_uses(root=ROOT, with_vars=False):
 
 KEY_AREA = {'toast': 'Toasts', 'dialog': 'Dialogs', 'coach': 'Tutorial / coach', 'tutorial': 'Tutorial / coach', 'results': 'Results',
             'map': 'Conquest map'}  # map.* (2026-10-18, package PD: the Pale Desert's names and flavour)
+
+
+# ------------------------------------------------------------------------------------------------------------------------
+# Number-aware templates (2026-10-23, package SX, owner I2: "Template change"). A text that differs from another only by its
+# numbers ("Own 50 cards." / "Own 100 cards.") is one template, "Own {n} cards.", not one row per number. The page translator
+# already matches pack keys with {placeholders} as templates (bramblewood-i18n.js, I1); these helpers let the Python tools see it
+# too: keyify reuses a TEXT template for a numbered literal, tools/i18n_ui.py counts a numbered text a pack template covers, and
+# tools/text/templatize_numbers.py moves numbered literals to TX templates and folds the packs' numbered rows into one.
+# ------------------------------------------------------------------------------------------------------------------------
+NUMBER_RE = r'[-+−]?\d[\d,]*(?:\.\d+)?'
+_NUM_IN_TEXT = re.compile(r'(?<![\w{.])' + NUMBER_RE.replace('[-+\\u2212]?', '') + r'(?![\w}])')
+
+
+def number_template(text, names=('n', 'n2', 'n3', 'n4')):
+    """('Own 100 cards.') -> ('Own {n} cards.', {'n': '100'}). Numbers glued to letters ('2x', 'T2') stay text."""
+    vals, i = {}, [0]
+
+    def rep(m):
+        if i[0] >= len(names): return m.group(0)
+        k = names[i[0]]; i[0] += 1; vals[k] = m.group(0); return '{%s}' % k
+    return _NUM_IN_TEXT.sub(rep, text), vals
+
+
+def template_regex(tpl, value=NUMBER_RE):
+    """A compiled regex for a text with {placeholders}; each placeholder captures `value` (a number by default)."""
+    out, names, pos = [], [], 0
+    for m in re.finditer(r'\{(\w+)\}', tpl):
+        out.append(re.escape(tpl[pos:m.start()]))
+        if m.group(1) in names: out.append('(?P=%s)' % m.group(1))
+        else: names.append(m.group(1)); out.append('(?P<%s>%s)' % (m.group(1), value))
+        pos = m.end()
+    out.append(re.escape(tpl[pos:]))
+    return re.compile('^' + ''.join(out) + '$')
+
+
+class NumberTemplates:
+    """Index of template texts (keys with {placeholders}); .match(text) -> (template, {name: number}) when the text is one of them
+    with numbers filled in, else None. Only templates with some text of their own (3+ letters) take part."""
+    def __init__(self, templates):
+        self.items = []
+        for t in templates:
+            if not isinstance(t, str) or not re.search(r'\{\w+\}', t): continue
+            if len(re.findall(r'[^\W\d_]', re.sub(r'\{\w+\}', '', t))) < 3: continue
+            try: self.items.append((t, template_regex(t)))
+            except re.error: pass
+        self.by_shape = {}
+        for t, rx in self.items: self.by_shape.setdefault(number_template(re.sub(r'\{\w+\}', '0', t))[0], []).append((t, rx))
+
+    def match(self, text):
+        if not re.search(r'\d', text or ''): return None
+        for t, rx in self.by_shape.get(number_template(text)[0], []):
+            m = rx.match(text)
+            if m: return t, m.groupdict()
+        return None

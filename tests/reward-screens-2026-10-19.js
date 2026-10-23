@@ -49,7 +49,7 @@ ok(/calm = reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fn
   ok(sp.rewards.find(r=> r.id === 'metal').amount === '+6' && sp.rewards[0].amount === '+500', '1. amounts: +6 Metal (base + tier), +500 XP');
   const w = Object.fromEntries(sp.rewards.map(r=> [r.kind + (r.id || ''), r.weight]));
   ok(w.xp === 1 && w.currencygold === 1 && w.currencydust === 2 && w.currencymetal === 3 && w.cardc1 === 2 && w.cardc2 === 5 && w.title === 5, '1. weights: the rarer, the bigger the beat');
-  ok(sp.text.title === TX('results.raid-claim-fell', {name:'The Goliath'}) && sp.text.tier === TX('results.raid-tier-top1') && sp.text.skip === TX('results.tap-to-skip'), '1. the texts are TX');
+  ok(sp.text.title === TX('results.raid-claim-fell', {name:'The Goliath'}) && sp.text.tier === TX('ui.i2-top-n', {n: 1}) /* 2026-10-23 (SX): one 'Top {n}%' template */ && sp.text.skip === TX('results.tap-to-skip'), '1. the texts are TX');
   const comp = ctx.S(def, {key:'g:0', cycle:0, mine:12, reward:{kind:'compensation', tier:'participant', base:{gold:160}, extra:{}}}, {gold:160}, [], 150);
   ok(comp.kind === 'compensation' && comp.text.title === TX('results.raid-claim-held', {name:'The Goliath'}) && comp.text.tier === TX('results.raid-tier-participant') && comp.rewards.length === 2, '1. compensation: its own title, Participant, XP + gold');
 }
@@ -119,7 +119,7 @@ ok(/calm: reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fnS
 
 // ---- 4. texts, packs, the lab
 const KEYS = ['results.raid-claim-kicker', 'results.raid-claim-fell', 'results.raid-claim-held', 'results.raid-claim-sub-kill', 'results.raid-claim-sub-comp', 'results.raid-claim-damage',
-  'results.raid-claim-xp', 'results.raid-claim-card', 'results.raid-claim-title', 'results.raid-claim-collect', 'results.raid-tier-top1', 'results.raid-tier-top10', 'results.raid-tier-top50', 'results.raid-tier-participant',
+  'results.raid-claim-xp', 'results.raid-claim-card', 'results.raid-claim-title', 'results.raid-claim-collect', 'ui.i2-top-n' /* SX: was results.raid-tier-top1/10/50 */, 'results.raid-tier-participant',
   'results.tower-step-up', 'results.tower-step-top', 'results.tower-step-sub', 'results.xp-level', 'results.xp-level-up', 'results.xp-gain', 'results.xp-aria'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`TX('${k}'`), `4. ${k} is a TX key the code uses`));
 const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;

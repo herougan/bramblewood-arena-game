@@ -4,7 +4,8 @@
     python3 tools/text/keyify.py [--dry-run]
 
 Rewrites each chosen literal (or the text run inside an HTML template) as TX('key'[, {vars}]) and adds the English to
-bramblewood-texts.js. Chosen: toasts (showToast), dialogs (bwConfirm / bwChoice / confirm / alert / prompt), coach and
+bramblewood-texts.js. A numbered literal that is a TEXT template with numbers in ("Own 300 cards." for "Own {n} cards.") reuses
+that key with the numbers as values (2026-10-23, package SX, owner I2). Chosen: toasts (showToast), dialogs (bwConfirm / bwChoice / confirm / alert / prompt), coach and
 tutorial tips, and the results screens. Safe to run again: what is already TX() isn't a literal any more. Texts with ${...}
 parts become {name} placeholders; a run that has literal { } in it, an HTML attribute, admin-only text, and the data blocks
 that tools and tests evaluate (CONQUEST_MAPS and friends) are left alone.
@@ -84,6 +85,10 @@ def tx_call(key, run):
     return "TX('%s', {%s})" % (key, ', '.join(pairs)), text
 
 
+def number_call(key, vals):
+    return "TX('%s', {%s})" % (key, ', '.join('%s: %s' % (k, v if re.fullmatch(r'\d+(?:\.\d+)?', v) else "'%s'" % v) for k, v in vals.items()))
+
+
 def one_pass(src, table, dry):
     lits, _ = T.lex(src)
     scopes = T.Scopes(src, T.lex.ranges)
@@ -96,12 +101,18 @@ def one_pass(src, table, dry):
             by_lit.setdefault(id(L), (L, []))[1].append((run, cat))
     edits = []
     text_to_key = {v: k for k, v in table.items()}
+    # 2026-10-23 (package SX, owner I2 "Template change"): a numbered literal that is a TEXT template with numbers in ("Own 300 cards."
+    # against "Own {n} cards.") reuses that key with its numbers as values, so it never becomes one more row per number.
+    num_tpl = T.NumberTemplates(table.values())
     for L, items in by_lit.values():
         quote = src[L.start]
         pieces = []
         for run, cat in sorted(items, key=lambda x: x[0].start):
             base = '%s.%s' % (cat, T.slug(run.text, 6))
             call, value = tx_call(base, run)
+            hit = num_tpl.match(value) if not run.exprs else None
+            if hit and text_to_key.get(hit[0]):
+                pieces.append((run, number_call(text_to_key[hit[0]], hit[1]))); continue
             key = text_to_key.get(value) if text_to_key.get(value, '').startswith(cat + '.') else None
             if key is None:
                 key, k = base, 2
@@ -143,15 +154,17 @@ def main():
     path = os.path.join(T.ROOT, APP)
     src = open(path, encoding='utf-8').read()
     table = T.load_table()
-    n0 = len(table)
+    n0, before = len(table), set(table)
     total = 0
     for _ in range(6):
         src, n = one_pass(src, table, dry)
         total += n
         if not n: break
     used = set(re.findall(r"\bTX\('([^']+)'", src))
-    for k in [k for k in table if k not in used]:
-        del table[k]                     # keys made for a run that a wider edit swallowed
+    # keys made in this run for a run that a wider edit swallowed. Only this run's: keys the game looks up by a built name
+    # ('ui.tf-' + name, 'ui.fog-row-' + k) have no literal TX('...') and must stay (2026-10-23, SX; the AR warning in ui.md)
+    for k in [k for k in table if k not in used and k not in before]:
+        del table[k]
     print('keyify: %d literal edits, %d new keys (%d in the table)' % (total, len(table) - n0, len(table)))
     if not dry:
         open(path, 'w', encoding='utf-8').write(src)

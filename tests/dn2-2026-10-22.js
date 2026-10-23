@@ -36,7 +36,7 @@ const app = R('arena_app.js');
 const grabConst = n=>{ const m = app.match(new RegExp('^const ' + n + ' = [^\\n]*$', 'm')); return m ? m[0] : ''; };
 const grabFn = n=>{ const i = app.indexOf('\nfunction ' + n + '('); if(i < 0) return ''; const j = app.indexOf('\n}', i); const k = app.indexOf('\n', i + 1);
   const line = app.slice(i + 1, k); return /\}\s*(\/\/.*)?$/.test(line) && (line.match(/\{/g) || []).length === (line.match(/\}/g) || []).length ? line : app.slice(i + 1, j + 2); };
-const src = ['DN_CRIT_MARK', 'ATK_ELEM_GLYPH', 'DMG_ICON', 'DMG_NAME', 'DN_MOD_GLYPH', 'DN_REDUCED', 'DN_TICK_GLYPH'].map(grabConst).join('\n')
+const src = ['DN_CRIT_MARK', 'ATK_ELEM_GLYPH', 'DMG_ICON', 'DMG_NAME', 'DN_MOD_GLYPH', 'DN_REDUCED', 'DN_TICK_GLYPH', 'DMG_CRIT_BY_CLASS' /* 2026-10-23 (SX): dnCritShift reads it */].map(grabConst).join('\n')
   + "\nObject.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});\n"
   + (app.match(/^const DMG_CRIT_LIGHTEN = [^\n]*$/m) || [''])[0] + '\n' + (app.match(/^const DMG_CRIT_FIST_ON_ELEMENT = [^\n]*$/m) || [''])[0] + '\n'
   + ['dnModKey', 'dnTypeGlyph', 'dnTypeGlyphAny', 'dmgFloatParts', 'dnHsl', 'dnCritShift', 'dmgLogText', 'dnLogNum', 'dnText'].map(grabFn).join('\n')

@@ -2,6 +2,31 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-23 (package SX: target-modifier sounds, poison's crit colour, the 3-part Hero XP bar, number-aware translations)
+- Owner 10-23 00:10 #95, #11 (DN2-4), #66 (H2), #64 (I2). Calls SX-1..SX-3.
+- **A sound for each damage mark (#95):** every damage number with a mark plays that mark's own SoundKit cue 75 ms after the hit, so the
+  hit / element / skill cue still reads first (`SX_MARK_DELAY`; `dnMarkSoundKey` picks it with the mark drawn, `dnFloat` plays it, panned,
+  one per kind per 45 ms, at the SFX volume). Cues: `markArmor` (a bright plate ting over a soft konk body), `markBlocked` (a longer
+  ring, two strikes), `markShield` (a dull padded thud), `markShell` (a hollow wooden tok), `markSturdy` (a low thunk), `markStone` (a
+  gritty clack), `markResist` (a muffled "fff"; Resist, Rage, Scare), `markFragile` (a dry crack), `markWeak` (a rising sting),
+  `markShocked` (an electric zap), `markImmune` (an airy whiff). The 10-16 konk now plays only in replays without marks (call SX-1).
+- **Poison's crit colour (DN2-4):** `DMG_CRIT_BY_CLASS` beside DN2's knobs: poison (with acid and decay) turns +5 degrees and 16% lighter, a
+  light yellow-green instead of teal; every other element keeps +12 degrees and 10%.
+- **The Hero XP bar has three parts (H2):** Battle XP fills the first, Materia XP the second, either fills the third, Battle XP there at 75%
+  (`HERO_XP_EITHER_BATTLE`). Each part is a third of the level's XP (`heroXpSections`); the level comes from two pools (`heroXpState`), XP
+  past a full part waits for the next level. The Hero Hall draws the three parts (the third split Materia violet / Battle striped), the
+  rule as the tooltip and a line under the bar, each part's numbers on hover. Battles give Battle XP, Materia crafts Materia XP. Old saves
+  keep their level as a base, and the XP into it becomes Battle XP (`heroXpMigrate`; h.xp stays the plain total). Calls SX-2, SX-3.
+- **Number-aware translation templates (I2):** 18 TX templates (`ui.i2-*`) replace 33 numbered literals (achievements, daily and weekly
+  quests, the Lumber rules, the battle-rating colours, the raid's Top N%) and the 3 `results.raid-tier-top*` keys. The 12 packs: 396
+  numbered rows became 216 template rows, every old row still translating to what it said. The page translator writes a template's
+  number the language's way (`localNum`: 4.000 in German, 2,5 in French). Tools: `tools/text/templatize_numbers.py` (does it, `--check`),
+  `textlib.NumberTemplates`, keyify reuses a number template (and drops only keys it made itself, not the built-name keys), and
+  `tools/i18n_ui.py` counts and drops numbered rows a template covers. Left as rows: the loss grades "took 1 / 2 damage or less" (French and
+  Italian need the singular) and the Steam achievement descriptions (not shown in the game).
+- Texts: 6 TX keys for the bar in the 12 packs (`tools/i18n_2026_10_23_sx.py`). Tests: `tests/sx-2026-10-23.js` (752 checks); dn2 and
+  reward-screens follow the renames; `tests/e2e/hero.py` gives both XP kinds. Shots: `docs/screens/sx/`.
+
 ## 2026-10-23 (release: batch 10-23b)
 - Shipped together: EN, FX3, UI4 (entries below), plus the live RW3-9 tutorial-reward clear (owner: "apply it").
 - Release checks: full suite as the 10-23 release, with nv, st and ts-status-chips back to passing; darkness-1013 and skills-sk2b updated to FX3's Scorching II (1) and EN's appended card. e2e ui_smoke 0 failures, flows 0 issues.

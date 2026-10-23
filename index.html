@@ -8485,6 +8485,17 @@
   #view-stomp .hero-level b{font-family:'Baloo 2',system-ui,sans-serif; font-size:21px;}
   #view-stomp .hero-xpbar{height:14px; max-width:320px; background:var(--surface-3); box-shadow:inset 0 1px 2px rgba(0,0,0,.25), 0 0 0 1px var(--surface-border);}
   #view-stomp .hero-xpbar span{background:linear-gradient(90deg, var(--gold), #ffd97a); box-shadow:inset 0 1px 0 rgba(255,255,255,.45);}
+  /* 2026-10-23 (package SX, owner H2): the 3-part Hero XP bar. Battle ember, Materia crystal violet, the third part either (Battle's
+     share striped: it fills at 75%). Each part is as wide as its share of the level. */
+  .hero-xp3{flex:1 1 220px; min-width:180px; max-width:340px; display:flex; gap:3px; height:16px;}
+  .hero-xp3 .hx-seg{position:relative; overflow:hidden; border-radius:999px; background:var(--surface-3, rgba(0,0,0,.12)); box-shadow:inset 0 1px 2px rgba(0,0,0,.25), 0 0 0 1px var(--surface-border, rgba(0,0,0,.15)); min-width:0;}
+  .hero-xp3 .hx-fill{position:absolute; top:0; bottom:0; left:0; box-shadow:inset 0 1px 0 rgba(255,255,255,.4);}
+  .hero-xp3 .hx-battle .hx-fill{background:linear-gradient(90deg,#d9612e,#ffad66);}
+  .hero-xp3 .hx-materia .hx-fill, .hero-xp3 .hx-either .hx-fm{background:linear-gradient(90deg,#7a5ae6,#c7b5ff);}
+  .hero-xp3 .hx-either .hx-fb{background:repeating-linear-gradient(135deg,#e07a3e 0 5px,#f7a868 5px 9px);}
+  .hero-xp3 .hx-seg i{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-style:normal; font-size:10px; line-height:1; text-shadow:0 1px 1px rgba(0,0,0,.35); pointer-events:none;}
+  .hero-level .hx-wait{flex-basis:100%; font-size:12px; opacity:.75;}
+  .hero-xp-rule{font-size:12.5px; margin-top:2px;}
   #view-stomp .hero-facts span{background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink);}
   #view-stomp .hero-in-deck{color:var(--health); background:var(--p1-soft); border:1px solid var(--surface-border); border-radius:999px; padding:3px 12px; font-size:13px;}
   #view-stomp .hero-howto{color:var(--ink-muted); background:var(--surface-2); border-radius:10px; padding:7px 10px; line-height:1.45;}
@@ -8558,6 +8569,7 @@
     #view-stomp .hero-info h2{font-size:21px; text-align:center;}
     #view-stomp .hero-level, #view-stomp .hero-rarity, #view-stomp .hero-facts, #view-stomp .hero-deck-row{justify-content:center;}
     #view-stomp .hero-xpbar{min-width:0; flex:1 1 140px;}
+    #view-stomp .hero-xp3{min-width:0; flex:1 1 100%; max-width:none;} #view-stomp .hero-level .hx-wait{text-align:center;} /* SX */
     #view-stomp .hero-people{flex-direction:row; flex-wrap:nowrap; align-items:center; text-align:left; padding:10px;}
     #view-stomp .hp-card, #view-stomp .hp-card .card-tile{width:84px !important;} #view-stomp .hp-card .card-tile{height:105px !important;}
     #view-stomp .stomp-create-row{flex-direction:column; align-items:stretch;} #view-stomp .stomp-create-row .hero-name-row{flex:none;}
@@ -39809,8 +39821,17 @@ function compileTemplate(key, value){
   src = src.replace(/\u0000(\w+)\u0001/g, (m, kind)=> kind === 'any' && lit < 6 ? '([^]{0,32}?)' : PH_PAT[kind]);
   try{ return {key, value, names, re: new RegExp(src + '$', 'u'), anchor, lit}; }catch(e){ return null; }
 }
-function createTranslator(pack, onMiss){
-  const index = new Map(), cache = new Map();
+// 2026-10-23 (package SX, owner I2 "Template change"): opts.locale (the pack's language) makes the templates number-aware: a count
+// written the English way with a thousands comma or a decimal point ("4,000", "2.5") is filled into the translation the language's
+// own way (Intl.NumberFormat: "4 000", "4.000", "2,5"). Plain counts ("12") are left as they are. Without a locale nothing changes.
+function localNum(v, locale){
+  if(!locale || typeof Intl === 'undefined') return v;
+  const m = /^([+\-−]?)(\d{1,3}(?:,\d{3})+(?:\.\d+)?|\d+\.\d+)$/.exec(v); if(!m) return v;
+  const dec = (m[2].split('.')[1] || '').length;
+  try{ return m[1] + new Intl.NumberFormat(locale, {maximumFractionDigits: dec, minimumFractionDigits: dec}).format(Number(m[2].replace(/,/g, ''))); }catch(e){ return v; }
+}
+function createTranslator(pack, onMiss, opts){
+  const index = new Map(), cache = new Map(), locale = opts && opts.locale || null;
   let count = 0;
   for(const key in pack){
     if(key.indexOf('{') < 0 || typeof pack[key] !== 'string') continue;
@@ -39851,7 +39872,7 @@ function createTranslator(pack, onMiss){
     }
     if(!best) return null;
     const vals = Object.create(null); best.names.forEach((k, i)=>{ vals[k] = bestM[i + 1]; });
-    return best.value.replace(PH, (m, k)=> k in vals ? (phKind(k) === 'plural' ? vals[k] : value(vals[k], deep)) : m).replace(/ {2,}/g, ' ').trim();
+    return best.value.replace(PH, (m, k)=> k in vals ? (phKind(k) === 'plural' ? vals[k] : phKind(k) === 'num' ? localNum(vals[k], locale) /* SX */ : value(vals[k], deep)) : m).replace(/ {2,}/g, ' ').trim();
   }
   return function translate(s){
     if(!s) return null;
@@ -39876,7 +39897,7 @@ function createTranslator(pack, onMiss){
 
 if(typeof window === 'undefined' || typeof document === 'undefined'){
   const passthrough = (s, v)=> v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s;
-  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough, createTranslator, compileTemplate, phKind};
+  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough, createTranslator, compileTemplate, phKind, localNum};
   return;
 }
 
@@ -39913,7 +39934,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=88be0adbbf", "es": "assets/lang/es.js?v=7d41738f9b", "fr": "assets/lang/fr.js?v=d4e5744b44", "id": "assets/lang/id.js?v=220b308d1b", "it": "assets/lang/it.js?v=4547088d77", "ja": "assets/lang/ja.js?v=add41cf4b7", "ko": "assets/lang/ko.js?v=b36b458554", "pt": "assets/lang/pt.js?v=1665846cc1", "ta": "assets/lang/ta.js?v=a8929a6123", "tl": "assets/lang/tl.js?v=81f1eb657a", "zh-Hans": "assets/lang/zh-Hans.js?v=7c70759a03", "zh-Hant": "assets/lang/zh-Hant.js?v=ab66a79cc3"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=d99b0e7478", "es": "assets/lang/es.js?v=3506760a70", "fr": "assets/lang/fr.js?v=e998b4efef", "id": "assets/lang/id.js?v=5d37ce06f8", "it": "assets/lang/it.js?v=9a88745372", "ja": "assets/lang/ja.js?v=6e979c7df2", "ko": "assets/lang/ko.js?v=c4de03bc0b", "pt": "assets/lang/pt.js?v=da669b6709", "ta": "assets/lang/ta.js?v=8cb03b7acd", "tl": "assets/lang/tl.js?v=bfbb40ff9c", "zh-Hans": "assets/lang/zh-Hans.js?v=fe1e971456", "zh-Hant": "assets/lang/zh-Hant.js?v=6b90c0b7ec"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -39936,7 +39957,7 @@ function i18(english, vars){
 let tr = null, trPack = null;
 function translateText(s){
   if(!pack || !s) return null;
-  if(trPack !== pack){ trPack = pack; tr = createTranslator(pack, c=> misses.add(c)); }
+  if(trPack !== pack){ trPack = pack; tr = createTranslator(pack, c=> misses.add(c), {locale: lang}); } // + locale: numbers the language's way (SX)
   return tr(s);
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
@@ -40889,9 +40910,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.raid-claim-card": "Raid card",
   "results.raid-claim-title": "New title",
   "results.raid-claim-collect": "Collect",
-  "results.raid-tier-top1": "Top 1%",
-  "results.raid-tier-top10": "Top 10%",
-  "results.raid-tier-top50": "Top 50%",
   "results.raid-tier-participant": "Participant",
   "results.tower-step-up": "Floor {n} cleared → Floor {next}",
   "results.tower-step-top": "Floor {n} cleared: the top of the Spire!",
@@ -42070,7 +42088,31 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui4-main-deck": "Main deck",
   "ui.ui4-main-deck-sub": "You play with this one",
   "ui.ui4-sim-atk": "Attack if played now: {n} (printed {printed})",
-  "ui.ui4-sim-hp": "Health if played now: {n} (printed {printed})"
+  "ui.ui4-sim-hp": "Health if played now: {n} (printed {printed})",
+  "ui.sx-xp-rule": "Each level's bar has three parts: Battle XP fills the first, Materia XP the second, and either fills the third. Battle XP put into the third part counts {n}% less.",
+  "ui.sx-xp-battle": "Battle XP: {n} / {max}",
+  "ui.sx-xp-materia": "Materia XP: {n} / {max}",
+  "ui.sx-xp-either": "Battle or Materia XP: {n} / {max} (Materia {m}, Battle {b})",
+  "ui.sx-xp-wait-battle": "+{n} Battle XP waiting for the next level",
+  "ui.sx-xp-wait-materia": "+{n} Materia XP waiting for the next level",
+  "ui.i2-ach-win-n": "Win {n} matches.",
+  "ui.i2-ach-streak-n": "Reach a {n}-win streak.",
+  "ui.i2-ach-own-n": "Own {n} cards.",
+  "ui.i2-ach-level-n": "Have {n} different cards at level 1 or higher.",
+  "ui.i2-ach-clear-n": "Clear {n} Conquest fights.",
+  "ui.i2-ach-maps-n": "Fully clear {n} Conquest maps.",
+  "ui.i2-q-energy-n": "Use {n} ⚡ Energy on Conquest fights",
+  "ui.i2-q-tickets-n": "Use {n} 🎟️ PvP tickets",
+  "ui.i2-q-units-n": "Defeat {n} enemy units",
+  "ui.i2-q-wins-n": "Win {n} matches",
+  "ui.i2-q-conquest-n": "Clear {n} Conquest fights",
+  "ui.i2-q-pvp-n": "Win {n} PvP matches",
+  "ui.i2-q-raids-n": "Join {n} Raids",
+  "ui.i2-q-raiddmg-n": "Deal {n} Raid damage",
+  "ui.i2-lumber-every-n": "Both sides gain 1 Lumber every {n} rounds.",
+  "ui.i2-lumber-every-n-fair": "Both sides gain 1 Lumber every {n} rounds, on top of what cards give.",
+  "ui.i2-br-times-n": "Your battle rating is {n}× theirs",
+  "ui.i2-top-n": "Top {n}%"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -46050,7 +46092,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '24821e3bd678', BUILD_CARD_HASH = 'e0a8fe23cf7fa0def375a692897be817031eda403df2d33916ec976cd5d8e8f3';
+const BUILD_ID = '88634d9a0c7e', BUILD_CARD_HASH = 'e0a8fe23cf7fa0def375a692897be817031eda403df2d33916ec976cd5d8e8f3';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -47326,6 +47368,8 @@ const SoundKit = (()=>{
     }
     return true;
   }
+  // 2026-10-23 (package SX): how long a damage-mark cue (markArmor ... markImmune) waits after the hit, so the source's cue reads first.
+  const SX_MARK_DELAY = 0.075;
   return {
     // Back-compat shims — nothing in this codebase calls these anymore (the settings panel
     // talks to get/setSfxVolume directly), kept only in case an external caller still does.
@@ -47576,6 +47620,31 @@ const SoundKit = (()=>{
     // 2026-10-16 (user: "There is a konk sound, to represent the attacker hit 'metal'."): Armor took some of a hit: a hollow metal
     // "konk", a low knock with inharmonic overtones (x2.6, x4.3, like a struck plate) and a tiny tick of grit, quickly damped.
     konk(){ tone(410,0.16,'triangle',0.12); tone(1066,0.11,'sine',0.055,0.004); tone(1763,0.07,'sine',0.03,0.006); tone(205,0.09,'sine',0.05); noise(0.025,0.035); },
+    // 2026-10-23 (package SX, owner #95: "Damage affected by target (like armor) has a unique sound effect. E.g. a armor 'ting' sound.
+    // If there's a source sfx, do that AND the target affect sfx."): one short cue per damage mark (dnFloat picks it with the mark it
+    // draws, dnMarkSoundKey). Each starts SX_MARK_DELAY after the call, so the hit / element / skill cue that played with it reads first.
+    // armour: a bright plate "ting" over a soft konk body (the 10-16 konk is folded in here; armorBadgeGlow only konks for old replays)
+    markArmor(){ const d = SX_MARK_DELAY; tone(2350,0.26,'sine',0.06,d); tone(3713,0.16,'sine',0.028,d+0.002); tone(5170,0.08,'sine',0.014,d+0.004); tone(410,0.08,'triangle',0.05,d); fnoise(0.02,0.03,{type:'highpass', freq:4000, attack:0.001, delay:d}); },
+    // a full block (⛨ on a 0): the ting rings longer and a fifth higher, with a second strike
+    markBlocked(){ const d = SX_MARK_DELAY; tone(3135,0.42,'sine',0.06,d); tone(4700,0.22,'sine',0.025,d+0.003); tone(2350,0.3,'sine',0.035,d+0.07); tone(470,0.07,'triangle',0.05,d); },
+    // Shield / Bulwark soak: a dull padded thud, no ring
+    markShield(){ const d = SX_MARK_DELAY; tone(130,0.14,'sine',0.11,d); tone(195,0.09,'triangle',0.04,d); fnoise(0.09,0.06,{type:'lowpass', freq:500, freqEnd:150, attack:0.002, delay:d}); },
+    // Shell: a hollow wooden "tok", a pitched knock that drops a little
+    markShell(){ const d = SX_MARK_DELAY; sweep(880, 700, 0.07, 'triangle', 0.08, d); tone(1320,0.04,'sine',0.025,d); fnoise(0.03,0.03,{type:'bandpass', freq:1600, q:4, attack:0.001, delay:d}); },
+    // Sturdy: a low, solid "thunk", the hit stopping against something heavy
+    markSturdy(){ const d = SX_MARK_DELAY; tone(98,0.18,'sine',0.11,d); tone(147,0.1,'triangle',0.05,d); fnoise(0.06,0.05,{type:'lowpass', freq:350, attack:0.002, delay:d}); },
+    // Resist (and Rage, Scare, Ghost halves): a muffled "fff", the blow soaked up
+    markResist(){ const d = SX_MARK_DELAY; fnoise(0.16,0.05,{type:'bandpass', freq:700, freqEnd:350, q:1.2, attack:0.015, delay:d}); tone(262,0.12,'sine',0.04,d+0.01); },
+    // Petrified (stone): a gritty stone "clack", two quick grains
+    markStone(){ const d = SX_MARK_DELAY; tone(620,0.035,'square',0.045,d); fnoise(0.07,0.07,{type:'bandpass', freq:2400, q:2, crackle:0.08, attack:0.001, delay:d}); tone(480,0.03,'square',0.03,d+0.045); },
+    // Fragile (🦴): a dry crack, a snap with splinters
+    markFragile(){ const d = SX_MARK_DELAY; fnoise(0.05,0.12,{type:'highpass', freq:2200, crackle:0.15, attack:0.0008, delay:d}); tone(1900,0.025,'square',0.04,d); fnoise(0.08,0.04,{type:'bandpass', freq:3200, q:3, crackle:0.2, attack:0.002, delay:d+0.04}); },
+    // Weakness (💢): a sharp rising sting
+    markWeak(){ const d = SX_MARK_DELAY; sweep(320, 960, 0.1, 'sawtooth', 0.05, d); tone(1280,0.06,'triangle',0.03,d+0.08); },
+    // Shocked (💢 from Shock): an electric zap, a buzzing square that crackles
+    markShocked(){ const d = SX_MARK_DELAY; sweep(1400, 600, 0.09, 'square', 0.04, d); fnoise(0.1,0.05,{type:'highpass', freq:3000, crackle:0.25, attack:0.001, delay:d}); },
+    // Immune (🚫): the hit passes through nothing, a hollow airy "whff" falling away
+    markImmune(){ const d = SX_MARK_DELAY; sweep(900, 450, 0.18, 'sine', 0.05, d); fnoise(0.16,0.035,{type:'highpass', freq:2500, freqEnd:5000, attack:0.02, delay:d}); },
     // 2026-10-12 (11:39 list: "there is a light gadget sound. For forging, forge sounds"): a small mechanical click-whirr, and
     // three hammer strikes on the anvil with a quench hiss after.
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
@@ -54113,18 +54182,18 @@ function currencyShown(k){ return !(k === 'kroon' && KROONI_RETIRED && !(typeof 
 const ACHIEVEMENT_DEFS = [
   // 2026-10-12 (10:23 list: "Upgrade the Achievements page"): every achievement has a group (cat) and a medal tier.
   {id:'first_win', cat:'battle', tier:1, icon:'🥇', title:'First Victory', desc:'Win your first match.', target:1, progress:ctx=>ctx.wins, reward:{gold:20, dust:68}},
-  {id:'wins_10', cat:'battle', tier:2, icon:'⚔️', title:'Seasoned Warrior', desc:'Win 10 matches.', target:10, progress:ctx=>ctx.wins, reward:{gold:60, dust:101}},
-  {id:'wins_50', cat:'battle', tier:3, icon:'🏆', title:'Battle-Hardened', desc:'Win 50 matches.', target:50, progress:ctx=>ctx.wins, reward:{gold:200, dust:270, metal:1}},
-  {id:'streak_5', cat:'battle', tier:2, icon:'🔥', title:'Hot Streak', desc:'Reach a 5-win streak.', target:5, progress:ctx=>ctx.bestWinStreak, reward:{gold:40, dust:101}},
-  {id:'streak_10', cat:'battle', tier:3, icon:'☄️', title:'Unstoppable', desc:'Reach a 10-win streak.', target:10, progress:ctx=>ctx.bestWinStreak, reward:{gold:120, dust:236}},
-  {id:'collector_50', cat:'collection', tier:1, icon:'🗂️', title:'Card Collector', desc:'Own 50 cards.', target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
-  {id:'collector_100', cat:'collection', tier:2, icon:'📚', title:'Bramble Archivist', desc:'Own 100 cards.', target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
-  {id:'collector_200', cat:'collection', tier:3, icon:'🏛️', title:'Complete the Codex', desc:'Own 200 cards.', target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
+  {id:'wins_10', cat:'battle', tier:2, icon:'⚔️', title:'Seasoned Warrior', desc:TX('ui.i2-ach-win-n', {n: 10}), target:10, progress:ctx=>ctx.wins, reward:{gold:60, dust:101}},
+  {id:'wins_50', cat:'battle', tier:3, icon:'🏆', title:'Battle-Hardened', desc:TX('ui.i2-ach-win-n', {n: 50}), target:50, progress:ctx=>ctx.wins, reward:{gold:200, dust:270, metal:1}},
+  {id:'streak_5', cat:'battle', tier:2, icon:'🔥', title:'Hot Streak', desc:TX('ui.i2-ach-streak-n', {n: 5}), target:5, progress:ctx=>ctx.bestWinStreak, reward:{gold:40, dust:101}},
+  {id:'streak_10', cat:'battle', tier:3, icon:'☄️', title:'Unstoppable', desc:TX('ui.i2-ach-streak-n', {n: 10}), target:10, progress:ctx=>ctx.bestWinStreak, reward:{gold:120, dust:236}},
+  {id:'collector_50', cat:'collection', tier:1, icon:'🗂️', title:'Card Collector', desc:TX('ui.i2-ach-own-n', {n: 50}), target:50, progress:ctx=>ctx.ownedCards, reward:{dust:101}},
+  {id:'collector_100', cat:'collection', tier:2, icon:'📚', title:'Bramble Archivist', desc:TX('ui.i2-ach-own-n', {n: 100}), target:100, progress:ctx=>ctx.ownedCards, reward:{gold:40, dust:202}},
+  {id:'collector_200', cat:'collection', tier:3, icon:'🏛️', title:'Complete the Codex', desc:TX('ui.i2-ach-own-n', {n: 200}), target:200, progress:ctx=>ctx.ownedCards, reward:{gold:120, dust:338, metal:1}},
   {id:'leveler_1', cat:'forge', tier:1, icon:'🔨', title:'First Steps in the Forge', desc:'Level up your first card.', target:1, progress:ctx=>ctx.leveledCards>0?1:0, reward:{dust:68}},
-  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:'Have 10 different cards at level 1 or higher.', target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
-  {id:'conquest_5', cat:'road', tier:1, icon:'🗺️', title:'Into the Wilds', desc:'Clear 5 Conquest fights.', target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
+  {id:'leveler_10', cat:'forge', tier:2, icon:'⭐', title:'Forge Regular', desc:TX('ui.i2-ach-level-n', {n: 10}), target:10, progress:ctx=>ctx.leveledCards, reward:{gold:40, dust:202}},
+  {id:'conquest_5', cat:'road', tier:1, icon:'🗺️', title:'Into the Wilds', desc:TX('ui.i2-ach-clear-n', {n: 5}), target:5, progress:ctx=>ctx.clearedNodes, reward:{gold:60, dust:68}},
   {id:'conquest_map', cat:'road', tier:2, icon:'🏕️', title:'Campaign Cleared', desc:'Fully clear a Conquest map.', target:1, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:150, dust:169, metal:1}},
-  {id:'conquest_maps_5', cat:'road', tier:2, icon:'🧭', title:'Five Horizons', desc:'Fully clear 5 Conquest maps.', target:5, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:240, dust:220}},
+  {id:'conquest_maps_5', cat:'road', tier:2, icon:'🧭', title:'Five Horizons', desc:TX('ui.i2-ach-maps-n', {n: 5}), target:5, progress:ctx=>ctx.mapsFullyCleared, reward:{gold:240, dust:220}},
   {id:'conquest_road', cat:'road', tier:3, icon:'🌋', title:'To the Caldera', desc:'Clear the boss of the Sundered Peak, the last map of the road.', target:1, progress:ctx=>ctx.roadDone, reward:{gold:400, dust:338, metal:2}},
   {id:'eye_volcano', cat:'road', tier:3, icon:'👁️', title:'Eye of the Volcano', desc:'Clear Heart of the Mountain, deep in the crater.', target:1, progress:ctx=>ctx.eyeDone, reward:{gold:300, dust:300, metal:1}},
   {id:'raid_unlock_1', cat:'boss', tier:1, icon:'👹', title:'Raid Ready', desc:'Unlock your first Raid Boss.', target:1, progress:ctx=>ctx.raidBossesUnlocked, reward:{gold:30, dust:135}},
@@ -57066,7 +57135,7 @@ function deckHeroBannerHTML(){
         <span><b>${sig.avgCost}</b><small>🪵 avg cost</small></span>
       </div>
       <div class="dt-charts">${deckMiniChartsHTML(d.counts)}</div>
-      ${hero ? `<div class="dt-hero">🦸 <b>${escapeHtml(hero.name)}</b> rides with this deck · Lv ${heroLevelFromXp(hero.xp).level}</div>` : ''}
+      ${hero ? `<div class="dt-hero">🦸 <b>${escapeHtml(hero.name)}</b> rides with this deck · Lv ${heroLevelOf(hero).level}</div>` : ''}
     </div>
   </div>`;
 }
@@ -57608,15 +57677,63 @@ const HERO_PEOPLES = {
   road:   {label:'Road-folk Wanderer', blurb:'Sly and slippery. Poison, bleeding, tricks and a bow.', icon:'🐭', art:'wandering-traveller', archetypes:['Mouse','Traveller'], base:{attack:2, health:7},
     skills:['stealth','poison','bleed','expose','gash','render','arrow','corrode','fester']},
 };
-function loadHero(){ try{ const h = JSON.parse(localStorage.getItem(HERO_KEY)||'null'); if(h && HERO_PEOPLES[h.people]) return Object.assign({xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0}, h); }catch(e){} return null; }
+function loadHero(){ try{ const h = JSON.parse(localStorage.getItem(HERO_KEY)||'null'); if(h && HERO_PEOPLES[h.people]) return heroXpMigrate(Object.assign({xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0}, h)); }catch(e){} return null; }
 let myHero = loadHero();
 function saveHero(){ try{ localStorage.setItem(HERO_KEY, JSON.stringify(myHero)); }catch(e){} try{ soonCheckMilestones(); }catch(e){} }
 // Pacing: Lv 20 ≈ 15 wins, Lv 50 ≈ 110, Lv 100 ≈ 600 (fewer with Materia). Total to 100 ≈ 21.5k XP.
 function heroXpToNext(L){ return Math.round(10 + 1.5*L + 0.04*L*L); }
-function heroLevelFromXp(xp){ let L = 1, left = xp; while(L < HERO_MAX_LEVEL && left >= heroXpToNext(L)){ left -= heroXpToNext(L); L++; } return {level:L, into:left, need: L < HERO_MAX_LEVEL ? heroXpToNext(L) : 0}; }
+function heroLevelFromXp(xp){ let L = 1, left = xp; while(L < HERO_MAX_LEVEL && left >= heroXpToNext(L)){ left -= heroXpToNext(L); L++; } return {level:L, into:left, need: L < HERO_MAX_LEVEL ? heroXpToNext(L) : 0}; } // the old one-pool curve: only heroXpMigrate reads it now (SX)
+// 2026-10-23 (package SX, owner H2: "Battle XP, Materia XP, Battle XP OR Materia XP. But if you use Battle XP for the 3rd section, there
+// is a 25% inefficiency."): a level's bar has three sections. Each level still needs heroXpToNext(L) in all, split in thirds:
+//   1. Battle: only Battle XP fills it;   2. Materia: only Materia XP fills it;
+//   3. Either: Materia XP fills it 1:1, Battle XP at HERO_XP_EITHER_BATTLE (0.75, the 25% inefficiency).
+// The save keeps two pools (h.xpB, h.xpM: Battle and Materia XP earned since level h.lvBase) and the level is worked out from them:
+// a level is gained when Battle covers section 1, Materia section 2, and what is left of them covers section 3 (Materia's overflow
+// first, as it fills 1:1, then Battle's at 75%). XP past a full section waits in its pool for the next level, so none is lost.
+// h.xp stays the plain total of all XP earned (as before), for the save hash and anything that counts it.
+const HERO_XP_EITHER_BATTLE = 0.75;
+function heroXpSections(L){ const need = heroXpToNext(L), a = Math.round(need / 3); return {need, battle: a, materia: a, either: need - 2 * a}; }
+function heroXpState(h){
+  let L = Math.max(1, Math.min(HERO_MAX_LEVEL, (h && h.lvBase) | 0 || 1)), B = Math.max(0, Number(h && h.xpB) || 0), M = Math.max(0, Number(h && h.xpM) || 0);
+  while(L < HERO_MAX_LEVEL){
+    const s = heroXpSections(L);
+    if(B < s.battle || M < s.materia) break;
+    const oB = B - s.battle, oM = M - s.materia, fromM = Math.min(oM, s.either), needB = (s.either - fromM) / HERO_XP_EITHER_BATTLE;
+    if(oB + 1e-9 < needB) break;
+    B = Math.max(0, oB - needB); M = oM - fromM; L++;
+  }
+  if(L >= HERO_MAX_LEVEL) return {level: HERO_MAX_LEVEL, max: true, need: 0, into: 0, sec: null};
+  const s = heroXpSections(L), fB = Math.min(B, s.battle), fM = Math.min(M, s.materia), oB = B - fB, oM = M - fM;
+  const eM = Math.min(oM, s.either), eB = Math.min(s.either - eM, oB * HERO_XP_EITHER_BATTLE);
+  const waitB = Math.max(0, oB - eB / HERO_XP_EITHER_BATTLE), waitM = Math.max(0, oM - eM); // earned, waiting for the next level's sections
+  const into = fB + fM + eM + eB;
+  return {level: L, max: false, need: s.need, into, sec: s, fill: {battle: fB, materia: fM, eitherM: eM, eitherB: eB}, wait: {battle: waitB, materia: waitM}};
+}
+// The bar (SX): three sections side by side, each as wide as its share of the level, each with its own fill. The third shows Materia's
+// part and Battle's part in their own colours. The rule is the bar's tooltip; each section's title gives its numbers.
+function heroXpBarHTML(h){
+  const st = heroXpState(h); if(st.max) return '';
+  const s = st.sec, f = st.fill, pct = (n, of)=> of > 0 ? Math.max(0, Math.min(100, n / of * 100)).toFixed(1) : '0', r = n=> Math.floor(n + 1e-9);
+  const rule = TX('ui.sx-xp-rule', {n: Math.round((1 - HERO_XP_EITHER_BATTLE) * 100)});
+  const seg = (k, w, title, inner)=> `<span class="hx-seg hx-${k}" style="flex:${w} 1 0" title="${escapeAttr(title)}">${inner}</span>`;
+  const bar = seg('battle', s.battle, TX('ui.sx-xp-battle', {n: r(f.battle), max: s.battle}), `<span class="hx-fill" style="width:${pct(f.battle, s.battle)}%"></span><i aria-hidden="true">⚔</i>`)
+    + seg('materia', s.materia, TX('ui.sx-xp-materia', {n: r(f.materia), max: s.materia}), `<span class="hx-fill" style="width:${pct(f.materia, s.materia)}%"></span><i aria-hidden="true">💎</i>`)
+    + seg('either', s.either, TX('ui.sx-xp-either', {n: r(f.eitherM + f.eitherB), max: s.either, m: r(f.eitherM), b: r(f.eitherB)}),
+      `<span class="hx-fill hx-fm" style="width:${pct(f.eitherM, s.either)}%"></span><span class="hx-fill hx-fb" style="left:${pct(f.eitherM, s.either)}%; width:${pct(f.eitherB, s.either)}%"></span><i aria-hidden="true">⚔/💎</i>`);
+  const wait = [st.wait.battle >= 1 ? TX('ui.sx-xp-wait-battle', {n: r(st.wait.battle)}) : '', st.wait.materia >= 1 ? TX('ui.sx-xp-wait-materia', {n: r(st.wait.materia)}) : ''].filter(Boolean);
+  return `<span class="hero-xp3" role="progressbar" aria-valuemin="0" aria-valuemax="${s.need}" aria-valuenow="${r(st.into)}" aria-label="${escapeAttr(rule)}" title="${escapeAttr(rule)}">${bar}</span>`
+    + `<small class="hx-num">${r(st.into)} / ${s.need} XP</small>` + (wait.length ? `<small class="hx-wait">${wait.map(escapeHtml).join(' · ')}</small>` : '');
+}
+function heroLevelOf(h){ const st = heroXpState(h); return {level: st.level, into: Math.floor(st.into), need: st.need}; }
+// Saves from before SX had one pool (h.xp). Its level is kept as the new base (no one loses a level or a stat point), and the XP
+// already into that level goes into the Battle pool (almost all Hero XP so far came from battles). h.xp itself is untouched.
+function heroXpMigrate(h){
+  if(h && h.xpv !== 2){ const old = heroLevelFromXp(Number(h.xp) || 0); h.lvBase = old.level; h.xpB = old.into; h.xpM = 0; h.xpv = 2; }
+  return h;
+}
 function heroPointsForLevel(L){ return (L-1) + 3*Math.floor(L/10); }
 function heroPointsSpent(h){ return h.alloc.atk*HERO_COSTS.atk + h.alloc.hp*HERO_COSTS.hp + h.alloc.speed*HERO_COSTS.speed; }
-function heroPointsFree(h){ return heroPointsForLevel(heroLevelFromXp(h.xp).level) - heroPointsSpent(h); }
+function heroPointsFree(h){ return heroPointsForLevel(heroLevelOf(h).level) - heroPointsSpent(h); }
 function heroSkillValue(L){ return 1 + Math.floor(L/25); }
 function heroSkillDef(key){ return [...PASSIVE_DEFS, ...ACTIVE_PRESETS].find(p=> p.key===key); }
 function heroSkillOffer(h, atLevel){
@@ -57633,7 +57750,7 @@ function heroRarityForLevel(L){ let r = 'common'; HERO_RARITY_STEPS.forEach(([at
 function heroNextRarity(L){ const n = HERO_RARITY_STEPS.find(([at])=> at > L); return n ? {level:n[0], rarity:n[1]} : null; }
 function heroDef(){
   const h = myHero; if(!h) return null;
-  const P = HERO_PEOPLES[h.people], L = heroLevelFromXp(h.xp).level;
+  const P = HERO_PEOPLES[h.people], L = heroLevelOf(h).level;
   const effects = {};
   Object.values(h.picks).forEach(k=>{
     const sd = heroSkillDef(k); if(!sd) return;
@@ -57647,11 +57764,13 @@ function heroDef(){
     rarity: heroRarityForLevel(L), archetypes: P.archetypes.slice(), effects, locked:false,
     flavor: `${P.label} · Level ${L}. Built by your own hand, one battle at a time.`};
 }
-function heroGainXp(n, why){
+// src (SX): 'battle' or 'materia', the pool it fills (see heroXpState); anything else counts as Battle XP.
+function heroGainXp(n, why, src){
   if(!myHero || !(n > 0)) return;
-  const before = heroLevelFromXp(myHero.xp).level;
-  myHero.xp += n; saveHero();
-  const after = heroLevelFromXp(myHero.xp).level;
+  heroXpMigrate(myHero);
+  const before = heroLevelOf(myHero).level;
+  myHero.xp += n; if(src === 'materia') myHero.xpM = (Number(myHero.xpM) || 0) + n; else myHero.xpB = (Number(myHero.xpB) || 0) + n; saveHero();
+  const after = heroLevelOf(myHero).level;
   if(after > before){
     try{ SoundKit.heroLevel(); }catch(e){}
     heroLevelUpPending = after;
@@ -57669,7 +57788,7 @@ function heroAwardBattle(m){
   const played = !!(m.stats && m.stats[statKeyFor('A', HERO_ID)] && m.stats[statKeyFor('A', HERO_ID)].played > 0);
   const won = m.winner === 1;
   myHero.battles = (myHero.battles||0) + 1; if(won) myHero.wins = (myHero.wins||0) + 1;
-  heroGainXp((won ? 30 : 10) + (won && played ? 10 : 0), won ? 'victory' : 'experience');
+  heroGainXp((won ? 30 : 10) + (won && played ? 10 : 0), won ? 'victory' : 'experience', 'battle'); // Battle XP (SX)
 }
 let heroLevelUpPending = 0;
 // A crystal forms over the craft button: it grows out of a ring of sparks, spins once, and drops
@@ -57760,7 +57879,7 @@ function craftMateria(){
   myCurrencies.dust -= MATERIA_DUST_COST; saveCurrencies();
   const k = MATERIA_KINDS[Math.floor(Math.random()*MATERIA_KINDS.length)];
   const st = materiaStore(); st[k.id] = (st[k.id]||0) + 1; saveMateria();
-  if(myHero) heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`);
+  if(myHero) heroGainXp(MATERIA_HERO_XP, `crafted ${k.icon} ${k.name} Materia`, 'materia'); // Materia XP (SX)
   try{ SoundKit.materiaForm(); }catch(e){}
   try{ materiaBurstVfx(k); }catch(e){}
   return k;
@@ -62355,29 +62474,29 @@ const STATS_KEY = 'bramblewood_lifetime_stats_v1';
 const QUEST_TIERS = {
   daily: [
     {reward:{gold:60, dust:8}, quests:[
-      {id:'d1-energy', counter:'energyConquest', goal:40, label:'Use 40 ⚡ Energy on Conquest fights'},
-      {id:'d1-pvp', counter:'pvpTickets', goal:3, label:'Use 3 🎟️ PvP tickets'},
-      {id:'d1-units', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units'}]},
+      {id:'d1-energy', counter:'energyConquest', goal:40, label:TX('ui.i2-q-energy-n', {n: 40})},
+      {id:'d1-pvp', counter:'pvpTickets', goal:3, label:TX('ui.i2-q-tickets-n', {n: 3})},
+      {id:'d1-units', counter:'unitsDefeated', goal:12, label:TX('ui.i2-q-units-n', {n: 12})}]},
     {reward:{gold:30, dust:4}, quests:[
       {id:'d2-raid', counter:'raidsJoined', goal:1, label:'Join a Raid'},
-      {id:'d2-wins', counter:'wins', goal:2, label:'Win 2 matches'},
-      {id:'d2-conquest', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights'}]},
+      {id:'d2-wins', counter:'wins', goal:2, label:TX('ui.i2-q-wins-n', {n: 2})},
+      {id:'d2-conquest', counter:'conquestWins', goal:2, label:TX('ui.i2-q-conquest-n', {n: 2})}]},
     {reward:{gold:15, dust:2}, quests:[
-      {id:'d3-units', counter:'unitsDefeated', goal:30, label:'Defeat 30 enemy units'},
-      {id:'d3-pvp', counter:'pvpWins', goal:2, label:'Win 2 PvP matches'}]},
+      {id:'d3-units', counter:'unitsDefeated', goal:30, label:TX('ui.i2-q-units-n', {n: 30})},
+      {id:'d3-pvp', counter:'pvpWins', goal:2, label:TX('ui.i2-q-pvp-n', {n: 2})}]},
   ],
   weekly: [
     {reward:{gold:340, dust:520, metal:3}, quests:[
-      {id:'w1-energy', counter:'energyConquest', goal:200, label:'Use 200 ⚡ Energy on Conquest fights'},
-      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:'Use 30 🎟️ PvP tickets'},
-      {id:'w1-units', counter:'unitsDefeated', goal:100, label:'Defeat 100 enemy units'}]},
+      {id:'w1-energy', counter:'energyConquest', goal:200, label:TX('ui.i2-q-energy-n', {n: 200})},
+      {id:'w1-pvp', counter:'pvpTickets', goal:30, label:TX('ui.i2-q-tickets-n', {n: 30})},
+      {id:'w1-units', counter:'unitsDefeated', goal:100, label:TX('ui.i2-q-units-n', {n: 100})}]},
     {reward:{gold:225, dust:345, metal:1}, quests:[
-      {id:'w2-raid', counter:'raidsJoined', goal:3, label:'Join 3 Raids'},
-      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:'Deal 4,000 Raid damage'}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
-      {id:'w2-wins', counter:'wins', goal:15, label:'Win 15 matches'}]},
+      {id:'w2-raid', counter:'raidsJoined', goal:3, label:TX('ui.i2-q-raids-n', {n: 3})},
+      {id:'w2-raiddmg', counter:'raidDamage', goal:4000, label:TX('ui.i2-q-raiddmg-n', {n: '4,000'})}, // 2026-10-19 (package RB): 20,000 on the x15 scale; a fight is ~1/5 of what it counted
+      {id:'w2-wins', counter:'wins', goal:15, label:TX('ui.i2-q-wins-n', {n: 15})}]},
     {reward:{gold:110, dust:170}, quests:[
-      {id:'w3-conquest', counter:'conquestWins', goal:10, label:'Clear 10 Conquest fights'},
-      {id:'w3-pvp', counter:'pvpWins', goal:10, label:'Win 10 PvP matches'}]},
+      {id:'w3-conquest', counter:'conquestWins', goal:10, label:TX('ui.i2-q-conquest-n', {n: 10})},
+      {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})}]},
   ],
 };
 // Medal thresholds for lifetime stats: bronze / silver / gold / platinum.
@@ -64833,7 +64952,7 @@ function deckLevelGapClass(enemy, mine){
 }
 function deckLevelGapTip(cls){
   return ({'lv-darkred':'Far above your battle rating (75%+ higher)', 'lv-red':'Well above your battle rating (25%+ higher)', 'lv-orange':'A little above your battle rating (10%+ higher)',
-    'lv-green':'About your battle rating or below', 'lv-ltgreen':'Your battle rating is twice theirs', 'lv-pink':'Your battle rating is 2.5× theirs', 'lv-ltpink':'Your battle rating is 3× theirs'})[cls] || '';
+    'lv-green':'About your battle rating or below', 'lv-ltgreen':'Your battle rating is twice theirs', 'lv-pink':TX('ui.i2-br-times-n', {n: 2.5}), 'lv-ltpink':TX('ui.i2-br-times-n', {n: 3})})[cls] || '';
 }
 function conquestDeckNeed(node){ const r = node && node.revealDeck; return (r && r !== 'win' && rankAtLeast(r, 'B')) ? r : 'B'; }
 // 2026-10-16 (user: "For Map 0-5, don't even need B to see the enemy's deck. Just a lock symbol is enough, no need for a emblem. 6
@@ -67921,7 +68040,7 @@ function claimRaidReward(def, claim){
 const RAID_CLAIM_CUR_WEIGHT = {gold:1, dust:2, metal:3, gems:3, kroon:3};
 const RAID_CLAIM_CARD_WEIGHT = {starter:2, common:2, uncommon:3, rare:3, veryrare:4, superrare:4, epic:4, heroic:5, legendary:5, mythic:5};
 function raidClaimScreenReady(){ return !!(typeof document !== 'undefined' && document.body && window.FX && window.FX.F && typeof window.FX.F.raidClaimScreen === 'function'); }
-function raidClaimTierLabel(t){ return t === 'top1' ? TX('results.raid-tier-top1') : t === 'top10' ? TX('results.raid-tier-top10') : t === 'top50' ? TX('results.raid-tier-top50') : TX('results.raid-tier-participant'); }
+function raidClaimTierLabel(t){ return t === 'top1' ? TX('ui.i2-top-n', {n: 1}) : t === 'top10' ? TX('ui.i2-top-n', {n: 10}) : t === 'top50' ? TX('ui.i2-top-n', {n: 50}) /* I2 template (SX) */ : TX('results.raid-tier-participant'); }
 function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards (2026-10-19, package RC): the raid's trophy shards
   const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
   rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
@@ -68055,7 +68174,7 @@ function raidPanelHTML(){
   try{ ensureGuildSkillsForRaid().then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); }).catch(()=>{}); }catch(e){} // 2026-10-19 (guild skills)
   const daysLeft = Math.max(1, Math.ceil(((st.cycle+1)*RaidM.CYCLE_MS - Date.now()) / (24*3600*1000)));
   const me = myGhostOwnerId(), mine = st.contributors[me] || 0, tier = RaidM.contributionTier(st, me);
-  const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
+  const tierLabel = {top1:TX('ui.i2-top-n', {n: 1}), top10:TX('ui.i2-top-n', {n: 10}), top50:TX('ui.i2-top-n', {n: 50}), participant:'Participant'}[tier] || '';
   const myTries = currentRaidAttempts(def, st.cycle).filter(a=> a.owner === me).length;
   const claims = raidClaimsFor(def);
   // 2026-10-19 (package RO): tickets, this life's participation, your instance, Auto, and each part's own Energy
@@ -68148,7 +68267,7 @@ function raidPanelHTML(){
           <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString(raidLocale())}))}</b><span>${kill || '—'} · ${escapeHtml(TX('ui.rc-rw-participant-what', {n: rcCards, s: rcCards === 1 ? '' : 's', shards: rcShards, icon: raidShardIcon(def)}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct, chance: pr.strongPct}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-leading', {fights: pr.leadFights, damage: pr.leadDamage.toLocaleString(raidLocale())}))}</b><span>${escapeHtml(TX('ui.raid-rw-leading-what', {pct: pr.leadPct}))}</span></li>
-          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)} · ${escapeHtml(t !== 'top50' ? TX('ui.rc-rw-tier-extra', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}) : TX('ui.rc-rw-tier-shards', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}))}</span></li>`).join('')}
+          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:TX('ui.i2-top-n', {n: 1}), top10:TX('ui.i2-top-n', {n: 10}), top50:TX('ui.i2-top-n', {n: 50})})[t]}</b><span>${tierTxt(t)} · ${escapeHtml(t !== 'top50' ? TX('ui.rc-rw-tier-extra', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}) : TX('ui.rc-rw-tier-shards', {shards: (RaidM.RAID_TIER_SHARDS || {})[t] || 0, icon: raidShardIcon(def)}))}</span></li>`).join('')}
           ${raidCardIds(def).length ? `<li><b>${escapeHtml(TX('ui.rc-rw-craft-h'))}</b><span>${escapeHtml(TX('ui.rc-rw-craft', {icon: raidShardIcon(def), name: raidShardName(def)}))}</span></li>` : '' /* 2026-10-19 (package RC, owner 09:53): its own cards are crafted in the Forge */}
           <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
           <li><b>${escapeHtml(TX('ui.raid-rw-respawn-h'))}</b><span>${escapeHtml(TX('ui.raid-rw-respawn', {h: Math.round(RaidM.respawnMs(def) / 3600000)}))}</span></li>
@@ -68259,7 +68378,7 @@ function openRaidEditor(raidId){
     const matches = (!P || q.trim().length < 2) ? [] : Object.keys(defs).filter(id=> !defs[id].test && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 18);
     const rw = draft.rewards;
     // 2026-10-19 (package RO): each tier's extra Gold, Dust and Metal, and its title
-    const tierRow = t=> `<div class="se-wide re-tier"><b>${({top1:'Top 1%',top10:'Top 10%',top50:'Top 50%',participant:'Participant'})[t]}</b>${['gold', 'dust', 'metal'].map(k=> `<label>+${k}<input type="number" min="0" data-tier-n="${t}" data-cur="${k}" value="${(rw.tiers[t]||{})[k]||0}"></label>`).join('')}<label>title<input data-tier-title="${t}" value="${escapeAttr((rw.tiers[t]||{}).title||'')}"></label></div>`;
+    const tierRow = t=> `<div class="se-wide re-tier"><b>${({top1:TX('ui.i2-top-n', {n: 1}),top10:TX('ui.i2-top-n', {n: 10}),top50:TX('ui.i2-top-n', {n: 50}),participant:'Participant'})[t]}</b>${['gold', 'dust', 'metal'].map(k=> `<label>+${k}<input type="number" min="0" data-tier-n="${t}" data-cur="${k}" value="${(rw.tiers[t]||{})[k]||0}"></label>`).join('')}<label>title<input data-tier-title="${t}" value="${escapeAttr((rw.tiers[t]||{}).title||'')}"></label></div>`;
     const pr = RaidM.participationRules(draft);
     const keepScroll = (overlay.querySelector('.se-body') || {}).scrollTop || 0; // 2026-10-19: a redraw keeps your place
     overlay.innerHTML = `<div class="modal skirmish-editor raid-editor" role="dialog" aria-label="Raid editor">
@@ -73878,7 +73997,7 @@ const ARENA_RULESETS = [
   {id:'longnight', icon:'🌙', name:'The Long Night', text:'It is night all match.', rules:{phase:'night'}, secondDraw:1},
   {id:'midsummer', icon:'☀️', name:'Midsummer',     text:'It is day all match.', rules:{phase:'day'}, secondDraw:1},
   {id:'dusk',      icon:'🌆', name:'Dusk Start',    text:'The match starts at night; day comes after round 3.', rules:{phase:'nightFirst'}, secondDraw:1},
-  {id:'timber',    icon:'🪵', name:'Timber Fair',   text:'Both sides gain 1 Lumber every 3 rounds, on top of what cards give.', rules:{phase:'cycle', lumberEvery:3}, secondDraw:1},
+  {id:'timber',    icon:'🪵', name:'Timber Fair',   text:TX('ui.i2-lumber-every-n-fair', {n: 3}), rules:{phase:'cycle', lumberEvery:3}, secondDraw:1},
   {id:'frost',     icon:'❄️', name:'Frost Week',    text:'Frigid all match: each round one random card on each side gets +1 Wait.', rules:{phase:'cycle', field:'frozen'}, secondDraw:1},
   {id:'fogmoor',   icon:'🌫️', name:'Fog on the Moor', text:'Thick Fog all match: attacks miss 1 in 3, except from Flying units.', rules:{phase:'cycle', field:'fog'}, secondDraw:1},
 ];
@@ -73897,8 +74016,8 @@ const FIELD_EFFECTS = [
   {id:'fog',       group:'field', icon:'🌫️', name:'Fog',            weird:2, cost:1, rules:{field:'fog'}, text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
   {id:'rain',      group:'field', icon:'🌧️', name:'Spring Rain',    weird:1, cost:1, rules:{field:'rain'}, text:'Spring Rain: every unit heals 2 at the start of each round.'},
   {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:TX('ui.fx-scorching1')}, // 2026-10-23 (FX3): the real rule
-  {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:'Both sides gain 1 Lumber every 3 rounds.'},
-  {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
+  {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:TX('ui.i2-lumber-every-n', {n: 3})},
+  {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:TX('ui.i2-lumber-every-n', {n: 2})},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:1}, text:TX('ui.fx-scorched')}, // 2026-10-23 (FX3): the line of fire // 1 (was 2; 2026-10-22, package FX2: a hazard every round averages at most 1)
   // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
@@ -85700,6 +85819,10 @@ function dnTypeGlyph(dmgType){
 // and its number takes the type's colours made DMG_CRIT_LIGHTEN lighter (of the lightness range) and turned DMG_CRIT_HUE degrees up the
 // hue wheel. A physical crit keeps 👊 (DN-3). Normal hits keep their colours. The four constants are the only knobs.
 const DMG_CRIT_LIGHTEN = 0.10, DMG_CRIT_HUE = 12, DMG_CRIT_GLYPH_SCALE = 1.4;
+// 2026-10-23 (package SX, owner DN2-4: "Maybe poison turns a little less bluer than it would do, and abit brighter instead."): a damage
+// class can ease the shift. Poison (and acid / decay, which share its colours) turns only +5 degrees (its green stays green, not teal)
+// and is 16% lighter. Every other class keeps DMG_CRIT_HUE / DMG_CRIT_LIGHTEN.
+const DMG_CRIT_BY_CLASS = {poison: {hue: 5, lighten: 0.16}};
 const DMG_CRIT_FIST_ON_ELEMENT = false; // true: an elemental crit also keeps the crit mark (DN_CRIT_MARK, 💥 since GD) before its big glyph (💥❄️14🦴)
 // Damage types that are their own kind of tick (no element): the glyph their number has always led with (DN2, 2026-10-22).
 const DN_TICK_GLYPH = {curse:'🜏', chilli:'🌶️', strangle:'🪢'};
@@ -85725,15 +85848,16 @@ function dnHsl(c){
   if(d){ s = l > .5 ? d / (2 - mx - mn) : d / (mx + mn); h = mx === R ? (G - B) / d + (G < B ? 6 : 0) : mx === G ? (B - R) / d + 2 : (R - G) / d + 4; h *= 60; }
   return {h, s, l};
 }
-function dnCritShift(c){ const x = dnHsl(c); if(!x) return c;
-  const h = ((x.h + DMG_CRIT_HUE) % 360 + 360) % 360, l = Math.min(1, x.l + DMG_CRIT_LIGHTEN);
+function dnCritShift(c, cls){ const x = dnHsl(c); if(!x) return c;
+  const o = (cls && DMG_CRIT_BY_CLASS[cls]) || {}, dh = o.hue != null ? o.hue : DMG_CRIT_HUE, dl = o.lighten != null ? o.lighten : DMG_CRIT_LIGHTEN; // + the class's own (SX)
+  const h = ((x.h + dh) % 360 + 360) % 360, l = Math.min(1, x.l + dl);
   return `hsl(${h.toFixed(1)} ${(x.s * 100).toFixed(1)}% ${(l * 100).toFixed(1)}%)`; }
 function dnCritTint(cls){
   if(!cls) return null; if(cls in dnCritTintCache) return dnCritTintCache[cls];
   let out = null;
   try{ const p = document.createElement('div'); p.className = 'dmg-float ' + cls; p.style.cssText = 'position:fixed; left:-999px; top:-999px; visibility:hidden;';
     document.body.appendChild(p); const cs = getComputedStyle(p), g1 = cs.getPropertyValue('--g1').trim(), g2 = cs.getPropertyValue('--g2').trim(), edge = cs.getPropertyValue('--edge').trim(); p.remove();
-    if(g2) out = {g1: dnCritShift(g1 || g2), g2: dnCritShift(g2), edge, glow: g2}; }catch(e){}
+    if(g2) out = {g1: dnCritShift(g1 || g2, cls), g2: dnCritShift(g2, cls), edge, glow: g2}; /* + cls: its own shift (SX) */ }catch(e){}
   return (dnCritTintCache[cls] = out);
 }
 // Every damage number (DN2, 2026-10-22, owner DN-1 "Yes"): ticks, field damage, bramble hits, Reflect / Thorns, the raid's smacks and
@@ -85745,6 +85869,30 @@ function dnFloat(el, dmg, o){
   const cls = ((o.cls != null && !(p.cls === 'blocked' || /\bcrit\b/.test(p.cls)) ? o.cls : p.cls) + (o.addCls ? ' ' + o.addCls : '')).trim();
   const onCard = !!(el.closest && el.closest('.board-card, .card-tile, .fx-float-host'));
   floatText(el, p.text, cls, {post: p.post, postKey: p.mod, fit: o.fit != null ? !!o.fit : onCard, noIcon: true, critEl: p.critEl, heavy: !cls && (dmg||0) >= 8});
+  if(!o.silent) dnMarkSound(el, dnMarkSoundKey(o.mods, !!o.blocked, dmg)); // 2026-10-23 (package SX): the mark's own cue, after the source's
+}
+// 2026-10-23 (package SX, owner #95): which damage-mark cue a number plays. Same order as the mark it draws (dnModKey: immune, full
+// block, Fragile, Weakness / Shocked, then the reduction that did it), so the sound always matches the glyph after the number. A
+// reduced hit names its cause: Armor (and Bulwark) ting, Shield thuds, Shell toks, Sturdy thunks, stone clacks, Resist / Rage / Scare
+// muffle. null: no mark, no cue.
+const DN_MARK_CUE = {immune:'markImmune', blocked:'markBlocked', fragile:'markFragile', weak:'markWeak', shocked:'markShocked',
+  armor:'markArmor', shield:'markShield', shell:'markShell', sturdy:'markSturdy', stone:'markStone', resist:'markResist', rage:'markResist', scare:'markResist'};
+const DN_MARK_REDUCED_ORDER = ['armor', 'shield', 'shell', 'sturdy', 'stone', 'resist', 'rage', 'scare'];
+function dnMarkSoundKey(mods, blocked, dmg){
+  const m = Array.isArray(mods) ? mods : [], k = dnModKey(m, blocked, dmg);
+  if(!k) return null;
+  if(k === 'blocked') return m.includes('shield') && !m.includes('armor') ? 'shield' : 'blocked';
+  if(k === 'weak') return m.includes('weak') ? 'weak' : 'shocked';
+  if(k === 'reduced') return DN_MARK_REDUCED_ORDER.find(x=> m.includes(x)) || 'armor';
+  return k;
+}
+// one cue per mark kind per 45 ms: a splash that marks six units plays its cue once, not six times on top of each other
+const dnMarkLast = {};
+function dnMarkSound(el, key){
+  const cue = key && DN_MARK_CUE[key]; if(!cue || typeof SoundKit === 'undefined' || !SoundKit[cue]) return;
+  const now = (typeof performance !== 'undefined' ? performance.now() : Date.now());
+  if(dnMarkLast[key] && now - dnMarkLast[key] < 45) return; dnMarkLast[key] = now;
+  try{ SoundKit.at ? SoundKit.at(el, ()=> SoundKit[cue]()) : SoundKit[cue](); }catch(e){}
 }
 // A damage number's text for a stamp or a log (no element): '💥🪄14🦴' (DN2; 💥 since GD)
 function dnText(dmg, type, mods, crit, blocked){ const p = dmgFloatParts(dmg, type, crit, mods, blocked); return p.text.replace(' ', '') + (p.post || ''); }
@@ -85838,8 +85986,10 @@ function armorBadgeGlow(el, ev){
   if(!el || !ev) return;
   const te = ((getCardDefs()[ev.targetDefId] || {}).effects) || {}, rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
   if(ev.armorSoaked !== undefined ? !(ev.armorSoaked > 0 || ev.armorBlocked) : !(Number(te.armor) > 0 || ev.armorBlocked || (rc && rc.shellArmor > 0))) return;
-  try{ SoundKit.at ? SoundKit.at(el, ()=> SoundKit.konk()) : SoundKit.konk(); }catch(e){}
-  const b = [...el.querySelectorAll('.badges .abadge')].find(x=> x.querySelector('.ab-shields') || /🛡/.test(x.textContent)); if(!b) return;
+  // 2026-10-23 (package SX): a hit with the engine's marks (ev.mods) plays its armour ting from dnFloat (markArmor holds the konk's body);
+  // only replays recorded before the marks konk here
+  if(!Array.isArray(ev.mods)) try{ SoundKit.at ? SoundKit.at(el, ()=> SoundKit.konk()) : SoundKit.konk(); }catch(e){}
+  const b =[...el.querySelectorAll('.badges .abadge')].find(x=> x.querySelector('.ab-shields') || /🛡/.test(x.textContent)); if(!b) return;
   b.classList.remove('armor-glow'); void b.offsetWidth; b.classList.add('armor-glow'); setTimeout(()=> b.classList.remove('armor-glow'), 520);
 }
 function statPillPulse(uid, dir, which){
@@ -91343,13 +91493,13 @@ function renderHeroHall(body){
     body.querySelectorAll('[data-people]').forEach(b=> b.addEventListener('click', ()=>{ heroCreatePeople = b.dataset.people; renderHeroHall(body); }));
     document.getElementById('heroCreateBtn').addEventListener('click', ()=>{
       const name = (document.getElementById('heroNameInput').value || '').trim().slice(0, 24) || HERO_PEOPLES[heroCreatePeople].label;
-      myHero = {people: heroCreatePeople, name, xp:0, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0, created: Date.now()};
+      myHero = {people: heroCreatePeople, name, xp:0, xpv:2, lvBase:1, xpB:0, xpM:0 /* SX: the 3-part bar's pools */, alloc:{atk:0,hp:0,speed:0}, picks:{}, materia:{}, battles:0, wins:0, created: Date.now()};
       saveHero(); showToast(TX('toast.joins-your-cause-add-them-to', {name: escapeHtml(name)}), 'ok');
       heroHallRerender();
     });
     return;
   }
-  const h = myHero, P = HERO_PEOPLES[h.people], lv = heroLevelFromXp(h.xp), L = lv.level, d = heroDef();
+  const h = myHero, P = HERO_PEOPLES[h.people], lv = heroLevelOf(h), L = lv.level, d = heroDef();
   const free = heroPointsFree(h), inDeck = (myDeckCounts && myDeckCounts[HERO_ID] > 0);
   // 2026-10-19 (package SG): each stat's value sits in the colour of its badge on the card (⚔ red, ❤ green, ⏳ blue) via data-stat.
   const statRow = (key, label, now, step, note, max)=> `<div class="hero-stat" data-stat="${key}"><span class="hs-label">${label}</span><b class="hs-val">${now}</b>
@@ -91371,11 +91521,12 @@ function renderHeroHall(body){
       <div class="stomp-plinth"><div class="hero-card-big">${cardTileHTML(d, {extraClass:'is-hero-card'})}</div></div>
       <div class="hero-info">
         <h2>🦸 ${escapeHtml(d.name)} <small>${escapeHtml(P.label)}</small></h2>
-        <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? `<span class="hero-xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="${lv.need}" aria-valuenow="${lv.into}"><span style="width:${Math.round(lv.into/lv.need*100)}%"></span></span><small>${lv.into} / ${lv.need} XP</small>` : '<small>Max level</small>'}</div>
+        <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? heroXpBarHTML(h) : '<small>Max level</small>'}</div>
         ${(()=>{ const r = rarityDef(d.rarity), nx = heroNextRarity(L); return `<div class="hero-rarity"><span class="hr-now" style="--hr:${r.color||'#eab308'}">${escapeHtml(_t(r.label))}</span>${nx ? `<small>${escapeHtml(_t('{rarity} at Level {n}', {rarity:_t(rarityDef(nx.rarity).label), n:nx.level}))}</small>` : `<small>${escapeHtml(_t('Top rarity'))}</small>`}</div>`; })()}
         <div class="hero-facts"><span>🪵 Costs ${d.cost}</span><span>⏳ Wait ${d.wait}</span><span>⚔ ${h.battles||0} battles · ${h.wins||0} wins</span></div>
         <div class="hero-deck-row">${inDeck ? '<span class="hero-in-deck">✓ In your active deck</span><button type="button" class="btn small ghost" id="heroDeckBtn">Take out of deck</button>' : '<button type="button" class="btn primary" id="heroDeckBtn">🃏 Add to my deck</button>'}</div>
         <p class="panel-sub hero-howto">XP: win with your Hero in the deck <b>+30</b> (+10 if it took the field), lose or draw <b>+10</b>, craft Materia <b>+${MATERIA_HERO_XP}</b>. Live and online matches don't carry your Hero yet.</p>
+        <p class="panel-sub hero-xp-rule">${escapeHtml(TX('ui.sx-xp-rule', {n: Math.round((1 - HERO_XP_EITHER_BATTLE) * 100)}))}</p>${'' /* 2026-10-23 (package SX): the 3-part bar's rule, also its tooltip */}
       </div>
     </div>
   </section>
