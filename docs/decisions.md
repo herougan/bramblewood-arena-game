@@ -4,6 +4,24 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**PP-1. Pack map ranges: 0-6 / 7-13 / 14-20, or 0-7 / 8-14 / 15-21?** · Decide · Packs · asked 2026-10-23
+- Item 15 (19:27) says Maps 0-6 → Pack 1, 7-13 → Pack 2, 13-20 → Pack 3 (Map 13 twice); the later note says Pack 1 spans 8 maps and Packs 2-3 span 7 each (0-7 / 8-14 / 15-21). HUB3's plan uses item 15 with Map 13 in Pack 2.
+  - 0-6 / 7-13 / 14-20
+  - 0-7 / 8-14 / 15-21
+- **Default:** 0-6 / 7-13 / 14-20
+
+**PP-2. First faction Rare: the pattern's 10th reward (lands on Map 3), or the 10-21 rule 'Rare only from Map 14'?** · Decide · Faction · asked 2026-10-23
+- The standard faction pattern C,C,C,U,C,C,U,C,U,R puts the first Rare at the 10th reward; today 12 faction rewards are handed out by Map 3.
+  - Pattern wins (Rare on Map 3)
+  - Rare only from Map 14 (pattern skips R until then)
+- **Default:** Rare only from Map 14 (pattern skips R until then)
+
+**PP-3. Level 0: only tutorial base and baby cards, or every Base card (raised in the Nest)?** · Decide · Levels · asked 2026-10-23
+- Today Bee Knight, Forager Ant and Sparrow Chick start at 0 without being tutorial base, and since TU2 every new faction copy comes at Level 0. Both contradict the 19:27 rule as written.
+  - Only tutorial base + babies
+  - Every Base card
+- **Default:** Only tutorial base + babies
+
 **FLY-1. Flying maps and the Windy buff (Gannet Cliffs): how should they be toned down? (you're thinking it over)** · Decide · Balance · asked 2026-10-23
 - Owner, 17:01: "Yeah the flying maps are really strong. let me think about them." and "Im abit stuck in Gannet cliffs because its so difficult. I realise the windy buff is reallly strong. let me think". Waiting on the owner. EN2 fixes Headwind (skills twice, not acts twice) and reports Gannet Cliffs win rates before and after.
   - Owner to decide
@@ -14,15 +32,6 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Apply it
   - Not yet
 - **Default:** Not yet
-
-**EQ-1. How should equipment be damaged or removed: durability worn by hits and acid (recommended), or another design?** · Decide · Battle rules · asked 2026-10-23
-- Owner (10-23 11:11): "New: How to deal damage to equipment. (They do not have 'health stats'.) If the opponent has many equipment on the field, they act as perma buffs (albeit activating only 1 turn later). I don't think this rule is fun: 'When an equipped creature dies, the equipment has 50% chance to be destroyed. If defeated by acid damage, the equipment is 100% destroyed'" The rule today (bramblewood-engine.js, eqDrop, package EQ 10-19): the quoted 50% / acid rule is not in the engine or the texts. When the wearer dies, the piece stays in its slot and the next unit played there picks it up (Codex: "it stays when its unit dies"). It goes to the graveyard only if its card has equip.breaks, or if the slot already holds a loose piece. A reviving unit keeps its piece. A loose piece cannot be hit (swings pass it to the bramble). The only answer is Disarm (Glintsnatch Magpie), which steals a piece. So equipment is close to a permanent buff, as you say. Alternatives. (A) Durability: each piece has 2-4 durability pips. It loses 1 each time its wearer takes a hit (or, for weapons, each swing) and breaks at 0. A dropped piece keeps its pips. Pros: no randomness, hitting the wearer is the counterplay, readable. Cons: a new number on every equipment card and in the budget. (B) Corrosion: acid hits and Corrode strip durability (or destroy a loose piece outright), and fire burns wooden pieces. Pros: gives acid its own job and uses existing statuses. Cons: alone it answers equipment only for acid decks. (C) A Sunder family next to Disarm: Sunder N (On Hit: the target's piece loses N durability, or breaks if it has none), Shatter (On Play: break the nearest loose enemy piece), and Demolisher also hits loose pieces. Pros: a deck-building answer. Cons: if few cards carry it, pieces stay permanent buffs. (D) Pieces drop and rust: when the wearer dies, the piece lies loose for 2 rounds, then rusts away unless a unit of its side picks it up; the killer's Disarm or Scavenge can claim it. Pros: keeps the drop-and-pick-up idea, ends permanent buffs. Cons: a timer to show on the board. Recommended: A with B folded in. Durability 3 by default (set per card), -1 each time the wearer is hit, -2 for an acid hit or each Corrode applied; dropped pieces keep their durability. Add C's Sunder to a few cards later.
-  - Durability with acid / Corrode wear (A+B)
-  - Durability only (A)
-  - A Sunder / Shatter skill family (C)
-  - Pieces drop and rust after 2 rounds (D)
-  - Break on the wearer's death (equip.breaks for all)
-- **Default:** Durability with acid / Corrode wear (A+B)
 
 **DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
 - Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
@@ -60,6 +69,41 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Yes, test on 10 cards
   - Not yet
 - **Default:** Yes, test on 10 cards
+
+**BL-1. Bloom's copy: it can't bloom, and it arrives like a played card** · Decide · Battle rules · asked 2026-10-23
+- Your 11:23 and 17:34 #3. Built: Bloom - {conditions} is once per unit: the first round its conditions hold a copy of it grows beside it, and the copy gains +1/+1 (your 19:30: "bloom only gives the new one +1/+1, not itself"; the unit is unchanged). The copy has the unit's Attack and Health with every change made without counters, plus 1/+1, minus its damage; no counters or statuses. The copy is marked as a copy and never blooms itself (else one bloom would chain into a field of copies), arrives with its printed Wait, and leaves no card in the graveyard when it dies (so it can't feed Remember / Grave Call). Say if the copy should bloom too, arrive Ready, or go to the graveyard.
+  - The copy can't bloom; printed Wait; no graveyard card (built)
+  - The copy can bloom once too
+  - The copy arrives Ready (Wait 0)
+- **Default:** The copy can't bloom; printed Wait; no graveyard card (built)
+
+**BL-2. Bloom with no free slot beside it** · Decide · Battle rules · asked 2026-10-23
+- Built: the copy grows only in a free slot right beside the unit (a coin flip when both sides are free; in a raid's middle / back row, beside it in that row). With both neighbours taken it doesn't bloom yet and tries again at the next round's start, so the bloom is never wasted. Alternatives: bloom anyway with no copy (nothing happens then), or put the copy in the nearest free slot of the row (the Spawn rule).
+  - Wait and try again next round (built)
+  - Use up the bloom (no copy)
+  - The nearest free slot in the row
+- **Default:** Wait and try again next round (built)
+
+**BL-3. Where the new Pond Algae is found** · Decide · Cards · asked 2026-10-23
+- No algae card existed, so BL added one for your "For Algae, just 'Wet' & 'Sunny'": Pond Algae, Common Plant (Flora, Pond), Wait 1, Lumber 0, Bloom (Wet & Sunny), 1/9 by the budget (100% of N at Level 1). It waits (awaitingSource) for a place. Proposed: the Lotus Frog's map (m8) basic pack, beside the pond cards; that needs canonical/map-pools.json and canonical/card-obtain-maps.json rows (the Map term then lifts it a little). Art: the emoji for now.
+  - m8's basic pack (with the Lotus Frog)
+  - A wet map's skirmish reward
+  - Hold it (no source yet)
+- **Default:** m8's basic pack (with the Lotus Frog)
+
+**BL-4. Which fungus has which Bloom, and the Puffball's third skill** · Decide · Cards · asked 2026-10-23
+- The game has two fungi. Built: Fungal Colossus gets your first example, Bloom (Wet & Sunny + 1 Lumber) (a big, slow card that pays for its copy); Puffball Bombardier gets "another Fungi", Bloom (Wet & Killed an enemy) (its Arrow gets it kills). The Puffball already has Arrow 1 and Poison 1, so Bloom is a third skill: kept as a thematic exception to the two-skill rule (tests/bf5 lists it). Lotus Frog's old Bloom When (Tide & Night, +2/+2 while they hold) became Bloom (Tide & Night). Sunny is day or Twilight with no Rain, Fog or darkness.
+  - As built (Puffball keeps 3 skills)
+  - Puffball drops Poison (Arrow + Bloom)
+  - Swap: Colossus Wet & Kill, Puffball Wet & Sunny + 1 Lumber
+- **Default:** As built (Puffball keeps 3 skills)
+
+**BL-5. Bloom's price: three cards held over budget** · Decide · Balance · asked 2026-10-23
+- Bloom is priced by the budget (bramblewood-budget.js bloomOdds): p = the odds its conditions ever hold (formula estimates, not measured: Wet 0.4, Sunny 0.8, Kill 0.5, Tide 0.35, Night 0.8; 'and' multiplies) x 0.85 (still alive, a free slot) x 0.85 per Lumber. S = 3p (the copy's +1/+1; your 19:30), and cap 1's stat terms count x (1 + p) (a second body arrives with odds p); cap 2 is unchanged. Wet & Sunny p 0.27 (S 0.81, stats x1.27), Wet & Kill 0.17, Wet & Sunny + 1 Lumber 0.23, Tide & Night 0.24. The re-fit (tools/refit_pass_2026_10_21.js) would cut Fungal Colossus 2/21 -> 2/16, Puffball Bombardier 1/10 -> 1/6 (it was already over before Bloom) and Lotus Frog 3/12 -> 2/10; as with BF11-1 they are held at their stats (docs/balance/bl-held-2026-10-23.json). Nectar Vintner's Healing 1 costs what its Bloom 1 did (4): no change. The odds can be measured later with the robust skill test once it models the copy.
+  - Hold them at their stats (built)
+  - Apply the re-fit
+  - Lower Bloom's odds first, then re-fit
+- **Default:** Hold them at their stats (built)
 
 ## Decided
 
@@ -99,6 +143,52 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Short toast "You got an egg!"
 - **Default:** No toast (built)
 - **Outcome:** Default taken (DC3, 2026-10-23): No toast, as built: finding an egg shows no toast; the results screen's egg chip says "You got an egg!". A short toast is a one-line change if he wants one.
+
+**EN2-1. Boomerang's new price: 3 -> 1.9** · Decide · Balance · asked 2026-10-23
+- Your 13:16 #9: the throw is Speed 0 now (it had a hidden base of 1), so it costs less. Measured with the robust skill test (tools/skill_test_robust.js --mono --skills boomerang, 3,000 games a setup, seed 1): worth 1.71 before, 1.06 after (the return through the bramble is in the after). Built: the price drops by the same share, 3 x 1.06 / 1.71 = 1.9; Bananarang flies the same way and gets the same 1.9. Re-fit (tools/refit_pass_2026_10_21.js): Otter Centurion 3/6 -> 3/7, Howler Monkey 2/4 -> 2/5, Net Thrower 3/9 -> 3/10, Otter Royal Guard 4/9 -> 4/10. No card would go down, so none is held. The measured worth says the skill was already over-priced at 3 (1.71); pricing it at its worth would make it about 0.8.
+  - 1.9 (built: the measured drop)
+  - Price at the measured worth (about 0.8)
+  - Keep 3
+- **Default:** 1.9 (built: the measured drop)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: 1.9 (built: the measured drop)).
+
+**EN2-2. Fighting in the middle: a CPU lane preference (built), or a rule** · Decide · CPU · asked 2026-10-23
+- Your 13:16 #2 / #11. Measured (tests/en2-cpu-side-sim-2026-10-23.js, Maps 0-5 skirmishes, 840 games a level; docs/balance/en2-cpu-side-*.json): the basic and smart CPUs had no left lean (37.7% left, 38.1% right of their units); the smartest leaned left (40.8% / 33.3%) because its ties always went left. Against a player who builds on one edge, the basic CPU already puts 54% of its units on that side. Built (modest): when the CPU has no kill or trade to make, its random slot is weighted to the middle three slots and to slots facing or beside your units; the smartest CPU gets a small middle bonus and breaks ties toward your units, else a coin. Result: the smartest's lean is gone (mean slot -0.18 -> +0.01), contested placements +1.5 to +3 points, the CPU's win rate down about 2 points. A stronger push would have to be a rule both sides feel, e.g. +1 Attack for units in the middle three slots, or the bramble taking half from the outer lanes.
+  - The CPU preference only (built)
+  - Add a middle-lane rule for both sides (+1 Attack in the middle three)
+  - Stronger CPU weights
+- **Default:** The CPU preference only (built)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: The CPU preference only (built)).
+
+**EN2-3. Headwind: which skills go off twice** · Decide · Battle rules · asked 2026-10-23
+- Your 17:01 #15: "skills twice! Like arrow. (not passives though)". Built: a Headwind Flyer's active skills go off twice: the Speed-1 shots (Arrow, Fire / Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire), Snipe, and its On Action skills (Archer). Every other trigger goes once now (On Hit, On Death, On Play, On Round Start, On Attack ...); before, every trigger doubled. Headwind has no cost entry, so nothing was re-priced.
+  - Shots, Snipe and On Action (built)
+  - Also its On Attack triggers
+  - Every trigger too (as before)
+- **Default:** Shots, Snipe and On Action (built)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: Shots, Snipe and On Action (built)).
+
+**EN2-4. Tailwind is Quick: and Quiet Contemplation** · Decide · Battle rules · asked 2026-10-23
+- Your 17:34 #15: "Wind doesnt give flyers fast-forwards! Just quick." Built: a Tailwind Flyer swings at Speed 2 that round (as Quick), no extra turn; a Waiting Flyer still waits. Quiet Contemplation (Map 21's boss field) blocked the old Tailwind as an extra turn; Quick is no extra turn, so it no longer blocks it. The Tailwind spell (a card) still gives its extra turn. Gannet Cliffs before / after: see the EN2 CHANGELOG entry (docs/balance/en2-gannet-*.json).
+  - Quiet Contemplation lets the wind's Quick through (built)
+  - Quiet Contemplation stills it too
+- **Default:** Quiet Contemplation lets the wind's Quick through (built)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: Quiet Contemplation lets the wind's Quick through (built)).
+
+**EN2-5. Where the Ironclaw Fiddler (the big-claw crab) is found** · Decide · Cards · asked 2026-10-23
+- Your 13:16 #17. New card: Ironclaw Fiddler, Rare fiddler crab, Lumber 2, Wait 3, Tide, Bludgeon (its claw: each hit takes 1 Attack and breaks a skill), Armor 1; 7/12 by the budget. On play it sways side to side for 1 s while its one big claw clacks; its attack closes the claw on the target. Proposed: The Kelp Mangroves (Map 9) basic pack, with the Mangrove crabs (Rare opens at Map 5). It waits (awaitingSource) until the map's pool and obtain-map rows are added (canonical/map-pools.json, canonical/card-obtain-maps.json); the Map term then lifts it to 7/13. Pebble Beach (Map 2) is the crab beach, but Rare isn't on the road until Map 5: there it would be an Uncommon (7/11 by the budget). Art: placeholder, NightCafe prompt in docs/art/new-cards-2026-10-21-briefs.md.
+  - The Kelp Mangroves basic pack, Rare
+  - Pebble Beach as an Uncommon (re-priced)
+  - A Kelp Mangroves skirmish reward
+- **Default:** The Kelp Mangroves basic pack, Rare
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: The Kelp Mangroves basic pack, Rare).
+
+**EN2-6. Swarm by Type: does the Type tree count?** · Decide · Battle rules · asked 2026-10-23
+- Your 17:34 #18: "The swarm doesnt look at phyla, only type." Built: Swarm compares the Types a card lists (its archetypes), never its species or animal, so an Insect-species card without the Insect Type no longer counts for an Insect Swarm. The Type tree still counts: a Coral Reef unit counts for an Ocean Swarm (Coral Reef is Ocean). The hand's would-be numbers and the board follow the same rule.
+  - Types and the Types above them (built)
+  - Exactly the same Type only
+- **Default:** Types and the Types above them (built)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: Types and the Types above them (built)).
 
 **MAP2-AP. Armor Piercing first appears on Map 2** · Decide · Content · asked 2026-10-23
 - Owner, 2026-10-23 13:16: "Armor piercing: Which map? Map 2".
@@ -203,6 +293,16 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Trim the biggest (Lone Grey Wolf, Starfall Owl, Pyroclast Wyrm) now
 - **Default:** Hold them, trim skills per card later
 - **Outcome:** Default taken (DC3, 2026-10-23): Hold them, as built: the 23 cards keep their stats; a later balance pass trims a skill per card instead of applying the formula's lower lines.
+
+**EQ-1. How should equipment be damaged or removed: durability worn by hits and acid (recommended), or another design?** · Decide · Battle rules · asked 2026-10-23
+- Owner (10-23 11:11): "New: How to deal damage to equipment. (They do not have 'health stats'.) If the opponent has many equipment on the field, they act as perma buffs (albeit activating only 1 turn later). I don't think this rule is fun: 'When an equipped creature dies, the equipment has 50% chance to be destroyed. If defeated by acid damage, the equipment is 100% destroyed'" The rule today (bramblewood-engine.js, eqDrop, package EQ 10-19): the quoted 50% / acid rule is not in the engine or the texts. When the wearer dies, the piece stays in its slot and the next unit played there picks it up (Codex: "it stays when its unit dies"). It goes to the graveyard only if its card has equip.breaks, or if the slot already holds a loose piece. A reviving unit keeps its piece. A loose piece cannot be hit (swings pass it to the bramble). The only answer is Disarm (Glintsnatch Magpie), which steals a piece. So equipment is close to a permanent buff, as you say. Alternatives. (A) Durability: each piece has 2-4 durability pips. It loses 1 each time its wearer takes a hit (or, for weapons, each swing) and breaks at 0. A dropped piece keeps its pips. Pros: no randomness, hitting the wearer is the counterplay, readable. Cons: a new number on every equipment card and in the budget. (B) Corrosion: acid hits and Corrode strip durability (or destroy a loose piece outright), and fire burns wooden pieces. Pros: gives acid its own job and uses existing statuses. Cons: alone it answers equipment only for acid decks. (C) A Sunder family next to Disarm: Sunder N (On Hit: the target's piece loses N durability, or breaks if it has none), Shatter (On Play: break the nearest loose enemy piece), and Demolisher also hits loose pieces. Pros: a deck-building answer. Cons: if few cards carry it, pieces stay permanent buffs. (D) Pieces drop and rust: when the wearer dies, the piece lies loose for 2 rounds, then rusts away unless a unit of its side picks it up; the killer's Disarm or Scavenge can claim it. Pros: keeps the drop-and-pick-up idea, ends permanent buffs. Cons: a timer to show on the board. Recommended: A with B folded in. Durability 3 by default (set per card), -1 each time the wearer is hit, -2 for an acid hit or each Corrode applied; dropped pieces keep their durability. Add C's Sunder to a few cards later.
+  - Durability with acid / Corrode wear (A+B)
+  - Durability only (A)
+  - A Sunder / Shatter skill family (C)
+  - Pieces drop and rust after 2 rounds (D)
+  - Break on the wearer's death (equip.breaks for all)
+- **Default:** Durability with acid / Corrode wear (A+B)
+- **Outcome:** Owner, 2026-10-23 19:30: "I agree with your EN series" / "Okay to the gameplay ones." As built / as recommended (default: Durability with acid / Corrode wear (A+B)).
 
 **SX-1. The armour konk is folded into the new armour ting** · Decide · Sound · asked 2026-10-23 · decided 2026-10-23
 - Your #95: a target-modifier sound after the source's. Built (SX): every damage mark plays its own short cue 75 ms after the hit (armour ting, full-block ring, Shield thud, Shell tok, Sturdy thunk, stone clack, Resist / Rage / Scare muffle, Fragile crack, Weakness sting, Shock zap, Immune whiff). Armor already had the 10-16 konk ("the attacker hit metal"); two metal sounds on one hit blurred, so the ting carries a soft konk body and the separate konk now plays only in replays recorded before the marks existed.
