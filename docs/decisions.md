@@ -1,31 +1,41 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-23). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-24). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
-**PP-1. Pack map ranges: 0-6 / 7-13 / 14-20, or 0-7 / 8-14 / 15-21?** · Decide · Packs · asked 2026-10-23
-- Item 15 (19:27) says Maps 0-6 → Pack 1, 7-13 → Pack 2, 13-20 → Pack 3 (Map 13 twice); the later note says Pack 1 spans 8 maps and Packs 2-3 span 7 each (0-7 / 8-14 / 15-21). HUB3's plan uses item 15 with Map 13 in Pack 2.
-  - 0-6 / 7-13 / 14-20
-  - 0-7 / 8-14 / 15-21
-- **Default:** 0-6 / 7-13 / 14-20
+**PRO-2. What does beating a PRO fight give?** · Decide · Rewards · asked 2026-10-24
+- Built: nothing. The fight runs like the map's skirmishes (its castle and Shield, the PRO's field, the enemy at Level 1, the Smart CPU the deck was measured with, from Map 2 its showcase card as leader) but costs no Energy and pays no rank, cards, Maple Leaves, XP or quest counts; the results say "3-PRO-1 is a PRO fight: no rewards". A cosmetic option: a small PRO flag on your profile per map beaten (no gameplay value).
+  - Nothing (built)
+  - A cosmetic PRO flag per map
+  - A one-time small reward per PRO fight
+- **Default:** Nothing (built)
 
-**PP-3. Level 0: only tutorial base and baby cards, or every Base card (raised in the Nest)?** · Decide · Levels · asked 2026-10-23
-- Today Bee Knight, Forager Ant and Sparrow Chick start at 0 without being tutorial base, and since TU2 every new faction copy comes at Level 0. Both contradict the 19:27 rule as written.
-  - Only tutorial base + babies
-  - Every Base card
-- **Default:** Only tutorial base + babies
+**PRO-3. Re-run the optimizer for Maps 0-3 on today's cards before the PRO fights ship?** · Decide · Balance tools · asked 2026-10-24
+- The PRO decks come from OPT2's runs of 10-23, before RW5 and EN4 changed cards (the Ember Tetra 3/7 -> 2/6 and renamed from ember-tetra-3caj; the Voidfeather Scout became a Map 5 faction card). They are legal decks on today's cards and were measured head to head on today's engine, but a fresh run (about 20 minutes for the 4 maps on 2 cores) could find stronger ones; tools/opt/pro_skirmishes.js --apply then replaces a PRO-1 only if the new deck beats it (55% over 400 games). Several PRO decks also use cards first obtainable after their map (phase 2's related cards, e.g. Stonedrop Vulture in 3-PRO-1, Map 18): listed per deck as `later` in canonical/pro-skirmishes.json.
+  - Re-run before release
+  - Ship as is, re-run later
+- **Default:** Ship as is, re-run later
 
-**FLY-1. Flying maps and the Windy buff (Gannet Cliffs): how should they be toned down? (you're thinking it over)** · Decide · Balance · asked 2026-10-23
-- Owner, 17:01: "Yeah the flying maps are really strong. let me think about them." and "Im abit stuck in Gannet cliffs because its so difficult. I realise the windy buff is reallly strong. let me think". Waiting on the owner. EN2 fixes Headwind (skills twice, not acts twice) and reports Gannet Cliffs win rates before and after.
-  - Owner to decide
-- **Default:** Owner to decide
+**OPT-4. Deck optimizer's default search: the genetic search (recommended) or one-card-at-a-time descent?** · Decide · Tools · asked 2026-10-24
+- OPT2 compared both on Maps 0-3 at equal budgets: final quality ties within noise; the genetic search wins head-to-head on 6 of 8 runs and finds about 3x more distinct optima; descent climbs faster on small budgets (under ~6,000 games) but stalls. Built: genetic by default, --method descent for quick runs.
+  - Genetic (built)
+  - Descent
+- **Default:** Genetic (built)
 
-**AR3-6. Apply the Group Dungeon SQL for 3-4 player online rooms? (say "apply it")** · Apply · Server · asked 2026-10-23
-- supabase/proposed/20261023_coop_rooms_4p.sql (not applied). Live today, coop_rooms seats a host and ONE guest, so an online Group Dungeon room takes 2 players. The file adds seats for 4 (coop_room_members, RLS on), join_coop_room_v2 (friends of the host only, seats C, D, B; a rejoin keeps its seat), leave_coop_room, promote_coop_host (host migration recorded) and private room channels (only a room's members hear its topic). The game finds it by itself once applied. Checked on a throwaway local Postgres with stand-ins for Supabase's auth and realtime: applied twice, 4 joins, a 5th refused, a non-friend refused, an outsider can't send on the room's topic.
-  - Apply it
-  - Not yet
-- **Default:** Not yet
+**EN4-3. Prices for Hemorrhage, Greater Poison and Shore Up** · Decide · Balance · asked 2026-10-23
+- Priced by your 4-round rule (docs/workflows/balance.md), checked with tools/skill_test_robust.js --mono --multi (3000 games a setup, docs/balance/en4-skill-test-2026-10-23.md). SHORE UP 2.2: a front unit survives 2-3 hits over 4 rounds with about 1.5 allies beside it, so 3-4.5 Shield, about half of it soaking: 1.5-2 Health; measured 2.68 alone, 2.26 with companions; set at 2.2. HEMORRHAGE 2: on a target already Bleeding about half its hits, each doubling adds about the stack (1-3), about +1 Bleed a hit (Bleed 2.6 a stack) = 1.3-2.6, and nothing without Bleed around. GREATER POISON 2.5 (N 1; scale half; 1 a stack, never wears off, owner 23:45): beside Poison 2, the target's ticks over 4 rounds go from 2+3+4 = 9 to 3+5+7 = 15, about 6 more damage = 3 stat points if it lives all 4 rounds, about 2 at a usual 2/3; alone 1+2+3 = 6. PULSE (owner 23:45: Venom Pulse renamed, Poison AND Bleed tick): the Pulse action 1.3 a tick (on a target Poisoned about half its hits, about 2.5 a tick, and Bleeding about a third, about 2: about 1.9 damage a pulse), so Pulse 1 = On Hit 2.1 x 1.3 = 2.7 (Venom Pulse was 2.1); no card carries it, so nothing re-fits. The test can't price these two: they need their enabler (Bleed 2 / Poison 2), and a unit carrying that at the table's 5.2 loses nearly every game in the harness, so their rows sit at the floor. Side finding: in the same harness Bleed 2 and Poison 2 read about 2 stat points against their 5.2 price; listed, not acted on. The six new cards are fitted at these prices.
+  - Keep the prices as set
+  - Price by the measured worth instead
+  - Other
+- **Default:** Keep the prices as set
+
+**EN4-4. Six new cards for the three skills, and where they go** · Decide · Cards · asked 2026-10-23
+- Two cards a skill (Greater Poison on cards with Poison too), priced by the formula with their map's term, placeholder art (the emoji), NightCafe prompts in docs/art/new-cards-2026-10-23-en4.md. Placed lightly where they add a decision (22:23 #10: Maps 0-9 lacked depth): Oyster Bank (common, 0 Attack, Shore Up) Pebble Beach, Map 2, Pack 1: a wall that props up the units beside it. Great Skua (common, Flying, Hemorrhage) Gannet Cliffs, Map 3, Pack 1: pays off the Razorbill's Bleed. Cane Toad (uncommon, Poison 1 + Greater Poison 1) Sable Swampmire, Map 6, Pack 1: the poison swamp's payoff. Bloodscent Shark (uncommon, Hemorrhage) Coral Current, Map 10, Pack 2: beside the Gash squids. Musk Ox Matriarch (uncommon, Shore Up + Armor 1) Wolfsbane Tundra, Map 17, Pack 3. Inland Taipan (rare, Poison 2 + Greater Poison 1) the Pale Desert, Map 18, Pack 3: beside the scorpions. All are pack cards (not skirmish rewards) and appear in their map's enemy pool.
+  - Keep these placements
+  - Move some (say which)
+  - Hold them out of the maps for now
+- **Default:** Keep these placements
 
 **DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
 - Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
@@ -64,42 +74,93 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Not yet
 - **Default:** Yes, test on 10 cards
 
-**BL-1. Bloom's copy: it can't bloom, and it arrives like a played card** · Decide · Battle rules · asked 2026-10-23
-- Your 11:23 and 17:34 #3. Built: Bloom - {conditions} is once per unit: the first round its conditions hold a copy of it grows beside it, and the copy gains +1/+1 (your 19:30: "bloom only gives the new one +1/+1, not itself"; the unit is unchanged). The copy has the unit's Attack and Health with every change made without counters, plus 1/+1, minus its damage; no counters or statuses. The copy is marked as a copy and never blooms itself (else one bloom would chain into a field of copies), arrives with its printed Wait, and leaves no card in the graveyard when it dies (so it can't feed Remember / Grave Call). Say if the copy should bloom too, arrive Ready, or go to the graveyard.
-  - The copy can't bloom; printed Wait; no graveyard card (built)
-  - The copy can bloom once too
-  - The copy arrives Ready (Wait 0)
-- **Default:** The copy can't bloom; printed Wait; no graveyard card (built)
-
-**BL-2. Bloom with no free slot beside it** · Decide · Battle rules · asked 2026-10-23
-- Built: the copy grows only in a free slot right beside the unit (a coin flip when both sides are free; in a raid's middle / back row, beside it in that row). With both neighbours taken it doesn't bloom yet and tries again at the next round's start, so the bloom is never wasted. Alternatives: bloom anyway with no copy (nothing happens then), or put the copy in the nearest free slot of the row (the Spawn rule).
-  - Wait and try again next round (built)
-  - Use up the bloom (no copy)
-  - The nearest free slot in the row
-- **Default:** Wait and try again next round (built)
-
-**BL-3. Where the new Pond Algae is found** · Decide · Cards · asked 2026-10-23
-- No algae card existed, so BL added one for your "For Algae, just 'Wet' & 'Sunny'": Pond Algae, Common Plant (Flora, Pond), Wait 1, Lumber 0, Bloom (Wet & Sunny), 1/9 by the budget (100% of N at Level 1). It waits (awaitingSource) for a place. Proposed: the Lotus Frog's map (m8) basic pack, beside the pond cards; that needs canonical/map-pools.json and canonical/card-obtain-maps.json rows (the Map term then lifts it a little). Art: the emoji for now.
-  - m8's basic pack (with the Lotus Frog)
-  - A wet map's skirmish reward
-  - Hold it (no source yet)
-- **Default:** m8's basic pack (with the Lotus Frog)
-
-**BL-4. Which fungus has which Bloom, and the Puffball's third skill** · Decide · Cards · asked 2026-10-23
-- The game has two fungi. Built: Fungal Colossus gets your first example, Bloom (Wet & Sunny + 1 Lumber) (a big, slow card that pays for its copy); Puffball Bombardier gets "another Fungi", Bloom (Wet & Killed an enemy) (its Arrow gets it kills). The Puffball already has Arrow 1 and Poison 1, so Bloom is a third skill: kept as a thematic exception to the two-skill rule (tests/bf5 lists it). Lotus Frog's old Bloom When (Tide & Night, +2/+2 while they hold) became Bloom (Tide & Night). Sunny is day or Twilight with no Rain, Fog or darkness.
-  - As built (Puffball keeps 3 skills)
-  - Puffball drops Poison (Arrow + Bloom)
-  - Swap: Colossus Wet & Kill, Puffball Wet & Sunny + 1 Lumber
-- **Default:** As built (Puffball keeps 3 skills)
-
-**BL-5. Bloom's price: three cards held over budget** · Decide · Balance · asked 2026-10-23
-- Bloom is priced by the budget (bramblewood-budget.js bloomOdds): p = the odds its conditions ever hold (formula estimates, not measured: Wet 0.4, Sunny 0.8, Kill 0.5, Tide 0.35, Night 0.8; 'and' multiplies) x 0.85 (still alive, a free slot) x 0.85 per Lumber. S = 3p (the copy's +1/+1; your 19:30), and cap 1's stat terms count x (1 + p) (a second body arrives with odds p); cap 2 is unchanged. Wet & Sunny p 0.27 (S 0.81, stats x1.27), Wet & Kill 0.17, Wet & Sunny + 1 Lumber 0.23, Tide & Night 0.24. The re-fit (tools/refit_pass_2026_10_21.js) would cut Fungal Colossus 2/21 -> 2/16, Puffball Bombardier 1/10 -> 1/6 (it was already over before Bloom) and Lotus Frog 3/12 -> 2/10; as with BF11-1 they are held at their stats (docs/balance/bl-held-2026-10-23.json). Nectar Vintner's Healing 1 costs what its Bloom 1 did (4): no change. The odds can be measured later with the robust skill test once it models the copy.
-  - Hold them at their stats (built)
-  - Apply the re-fit
-  - Lower Bloom's odds first, then re-fit
-- **Default:** Hold them at their stats (built)
-
 ## Decided
+
+**BP-1. Bleed and Poison measure at about 1 a point, priced 2.6: re-price, or keep?** · Decide · Balance · asked 2026-10-24
+- EN4's robust skill test (3000 games a setup) measured Bleed 2 and Poison 2 at about 2 stat points each, i.e. ~1 per point, against a price of 2.6 a point (5.2). By the 4-round rule: Poison 2 deals 2 then 1 (it wears down 1 a tick) = 3 damage per application; Bleed similar. Options: re-price to ~1.2-1.5 a point (cards with them gain stats), or keep 2.6 (their stacking on repeated hits is what the test under-measures).
+  - Re-price to ~1.3 a point
+  - Keep 2.6
+- **Default:** Keep 2.6
+- **Outcome:** Owner, 2026-10-24 03:12: "price it according to your simulation. Note that bigger numbers make them stronger" Queued in EN5.
+
+**EN5-1. Name for the new skill: on hit, N damage to the opposing bramble (priced ~1.9)** · Decide · Rules · asked 2026-10-24
+- Owner 02:59: 'A new skill: _____ N - does N damage to opposing bramble when it hits the enemy (onHit). Worth maybe 1.9.' Proposals: Siege N, Breach N, Rampage N, Overrun N. Built as Breach N unless you pick another.
+  - Breach
+  - Siege
+  - Overrun
+  - Rampage
+- **Default:** Breach
+- **Outcome:** Owner, 2026-10-24 03:12: "EN5-1 Okay - ur choice" Breach N.
+
+**MAP-1. The Ambush: what stays locked, and until when** · Decide · Map · asked 2026-10-24
+- Built from 'Those ambush skirmishes should lock the previous path I was going for. But then they also shouldn't be connected by a link but instead float there. The moment they are observed (ambushed), they are permanently accessible': the Ambush has no trail to or from it and floats where the scout shoved you; it is open the moment it is seen and stays on the map for good, won or not. The fight it interrupted (3-2) is drawn as a locked fight ('Blocked by the ambush') and, since everything after it waits on 3-2, so is the rest of that path. It opens when the Ambush is WON. Losing it, leaving it or walking away does not open the path. Alternatives: open the path after you have merely fought the Ambush (a loss counts), or after the Ambush is left once.
+  - Open the path when the Ambush is won (built)
+  - Open it after the Ambush has been fought, win or lose
+  - Open it once you have walked away from the Ambush
+- **Default:** Open the path when the Ambush is won (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "Map-1 okay."
+
+**MAP-2. The raiders: once, or only their message once?** · Decide · Map · asked 2026-10-24
+- Your note on the 'The raiders ran off with N Maple Leaves' line: 'This should only happen the first time.' Built: the raiders take Leaves on the first lost Ambush only, and the line shows then only; a later lost Ambush costs nothing and says nothing (a quiet, hidden loss each time seemed worse than none). If you only meant the message, the loss can stay every time and just the line be hidden after the first. The pop-up's warning ('Lose, and they run off with some of your Maple Leaves') shows only when the Ambush first appears.
+  - Raiders strike once; no line after the first (built)
+  - They keep taking Leaves every loss; only the line shows once
+  - They keep taking Leaves and the line shows every time (as before)
+- **Default:** Raiders strike once; no line after the first (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "Map-2. okay."
+
+**MAP-3. Map tiles while an NPC talks: how long is 'active'?** · Decide · Map · asked 2026-10-24
+- Built: while any NPC conversation is in the dialogue dock (a line on screen, or a question waiting for your reply, which can take up to 45 s at the slowest speed), the map's tiles (Armoury, Nest, Notices and the other spots, the well, the cave, the curiosities, the courier, the wanderer) make a dull knock and shake instead of opening. Side-map doors and exits are not tiles and keep working. If waiting on a reply feels too long to lock the map, the lock can end when the last line has been shown, with a question left open.
+  - Locked for the whole conversation, a waiting question included (built)
+  - Locked only while lines are playing, not while a question waits
+- **Default:** Locked for the whole conversation, a waiting question included (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "tutorials have priority. And they dont even use the dialogue anyway, they use a different parallel form." Tutorial lessons take priority and never count as NPC dialogue for blocking tiles (queued).
+
+**MAP-4. Back where you left off: this device only** · Decide · Map · asked 2026-10-24
+- Built: the map you last stood on and the fight your pawn stood at are kept in this browser (bramblewood_last_map_v1) and the Conquest pane opens there after a reload or a new session on the same device; the pawn stands at its fight with no walk. A map that is not open (or a hidden daily dungeon) is never restored; Map 0 / the Tutorial rules and MK's heal run as before. It does not ride the cloud save, so a second device still starts on Map 0 until you have played the map there. If you want it in the cloud save, say so.
+  - This device only (built)
+  - Also in the cloud save, so every device resumes
+- **Default:** This device only (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "Map-4 okay."
+
+**MAP-5. The admin bramble editor: Health is the number the fight shows** · Decide · Admin · asked 2026-10-24
+- Built from 'Admin can edit brambles on click (first plains bramble +1 HP)': in the fight panel an admin's bramble line is a button that opens a small inline editor with Health (what the panel and the fight use, after the halving; 5 shows as 5) and which bramble the enemy defends with (its effect shown). Save writes node.brambleHealth and characterId through the same skirmish-edit save as the other admin edits (local at once, published to everyone for a cloud admin); 'Back to the rule' clears both. An edited Health replaces the Map 0 base bramble, the hqHp cap and the halving; your own bramble's early-road lead still follows it (EB). It is on the fight panel only, not on the in-fight board. No database change is needed (it uses the existing map-nodes row).
+  - Health is the final number (built)
+  - Health is entered at full size and halved like the rest
+- **Default:** Health is the final number (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "For now, ill assume what u say is okay." (It edits the bramble's Health, not a card's.)
+
+**PRO-1. Reveal PRO fights to players after a map's boss?** · Decide · Skirmishes · asked 2026-10-24
+- Your 00:28: "a special hidden skirmish in each map, with the best deck you could make". Built: each map's PRO fights (0-PRO-1 ... 3-PRO-1, from the deck optimizer's OPT2 runs) are hidden: not on the map, not counted for its progress, no rewards. They open from Admin (PRO fights), from the skirmish editor and from a link (#pro=3-PRO-1; anyone with the link can play it, after the tutorial). Revealing would add a small PRO marker beside a map's boss once the boss is beaten, still with no rewards.
+  - No: they stay hidden (built)
+  - Yes: show them after the map's boss
+  - Yes, but only after a Rank S clear of the boss
+- **Default:** No: they stay hidden (built)
+- **Outcome:** Owner, 2026-10-24 02:59: "It's a fun thought of letting the player fight the PRO. Maybe after Map 40. - bank this for now. Default no." Banked idea: reveal after Map 40.
+
+**EN4-1. The Bleed doubler's name, and when it doubles** · Decide · Skills · asked 2026-10-23
+- Your 22:23 #7: "Do we have the skills that do extra damage to bleeding units, or even 2x their bleed." Hunter (Bleeding) already does the extra damage; the new skill doubles. Built as HEMORRHAGE 🩸²: its swing that lands on a Bleeding unit doubles the Bleed the unit already has, THEN its own Bleed (if any) adds. So it is a payoff for Bleed you already put there (an ally's, or its own from an earlier round); a fresh target gets nothing from it. Doubling after its own Bleed instead would make a lone Bleed 2 card double its own cut every hit (2, 6, 14 ...), which runs away. Names in the existing style (Gash, Perforate, Rupture, Rabid): Hemorrhage, Open Wound, Deepen, Bloodletting.
+  - Hemorrhage, doubles before its own Bleed
+  - Hemorrhage, doubles after its own Bleed
+  - Open Wound
+  - Deepen
+  - Bloodletting
+- **Default:** Hemorrhage, doubles before its own Bleed
+- **Outcome:** Owner, 2026-10-24 03:12: "OKAY, yes. It adds 0 bleed by default (N=0)" Queued in EN5.
+
+**EN4-2. How Greater Poison ticks** · Decide · Skills · asked 2026-10-23
+- Your 22:23 #7: "when units are hit with Greater Poison - all existing poison is converted to greater poison. Greater poison only hits for 1 poison by default. Usually they have both GP and Poison." Built: Greater Poison N (N 1 by default) on the attacker; its swing that gets through turns ALL the Poison the target had before the hit into Greater Poison and adds N; the swing's own Poison then lands as plain Poison, for its next hit to turn. The status: (A, built) each stack deals 2 a round, then the stack loses 1, as Poison does: Poison twice over. Poison 3 deals 3+2+1 = 6; turned, 6+4+2 = 12. (B) its whole stack every round, never wearing off: that is Toxin, which the game already has, so B would make Greater Poison 'Poison that turns into Toxin'. (C) its stack every round, wearing off 1 every 2 rounds. A reads plainest and keeps Toxin its own thing. Cure takes Poison first, then Greater Poison; Poison Tick (Venom Pulse) ticks both; Hunter (Poisoned) counts it. Status pip: a violet 💀 beside the green ☠.
+  - (A) 2 a stack, -1 a round
+  - (B) its stack every round, never wears off (as Toxin)
+  - (C) its stack every round, -1 every 2 rounds
+- **Default:** (A) 2 a stack, -1 a round
+- **Outcome:** Owner, 2026-10-23 23:45: "When something is hit by Greater Poison, Greater Poison tokens are not removed on every poison tick." Built (EN4): 1 damage a stack each round ("Greater poison only hits for 1 poison by default"), the stack never wears down (plain Poison still does); only Cure removes it. Repriced 2.5. The first build (2 a stack, -1 a round) is gone.
+
+**EN4-5. Guardian: is a Guardian aimed at directly still covered by the Guardian beside it?** · Decide · Skills · asked 2026-10-23
+- Your 22:23 #9: "Guardian shouldn't intercept an intercepting guardian." EN3's one hop is reverted: when a Guardian steps in for an ally, no other Guardian steps in for it. Kept as before EN3: a swing aimed straight at a Guardian (not one that stepped in) can still be taken by a Guardian beside it, since that Guardian wasn't intercepting. Say if a Guardian should never be covered at all.
+  - Yes, as before EN3
+  - No, a Guardian is never covered
+- **Default:** Yes, as before EN3
+- **Outcome:** Owner, 2026-10-24 03:12: "Yes, but not if its intercepting someone!" (As built in EN4.)
 
 **OPT-1. Deck optimizer: how much of the search goes to the whole-spectrum phase?** · Decide · Balance tools · asked 2026-10-23
 - Your 20:44 line "i dont want to put only 10% computing power to this 2nd" can mean more than 10% or at most 10%. tools/opt/deckopt.js gives the out-of-map phase 30% of the search time (--cross-share 0.3); any share is one option away. In the first runs (Maps 0-3, 2.5-4 min each) the out-of-map cards added 1-23 points to the optimum's score.
@@ -125,12 +186,26 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 - **Default:** Measure only (no targets)
 - **Outcome:** Owner, 2026-10-23 22:23: "we try to create the optimum (at lvl 1) deck first. then we see how to make a range of weaker decks after that. Idk if its possible to find multiple local maxima. Idk if we should do grid search based discrete descent or just random." Queued, OPT2.
 
+**PP-1. Pack map ranges: 0-6 / 7-13 / 14-20, or 0-7 / 8-14 / 15-21?** · Decide · Packs · asked 2026-10-23
+- Item 15 (19:27) says Maps 0-6 → Pack 1, 7-13 → Pack 2, 13-20 → Pack 3 (Map 13 twice); the later note says Pack 1 spans 8 maps and Packs 2-3 span 7 each (0-7 / 8-14 / 15-21). HUB3's plan uses item 15 with Map 13 in Pack 2.
+  - 0-6 / 7-13 / 14-20
+  - 0-7 / 8-14 / 15-21
+- **Default:** 0-6 / 7-13 / 14-20
+- **Outcome:** Owner, 2026-10-24 03:12: "PP-1: OKAY"
+
 **PP-2. First faction Rare: the pattern's 10th reward (lands on Map 3), or the 10-21 rule 'Rare only from Map 14'?** · Decide · Faction · asked 2026-10-23
 - The standard faction pattern C,C,C,U,C,C,U,C,U,R puts the first Rare at the 10th reward; today 12 faction rewards are handed out by Map 3.
   - Pattern wins (Rare on Map 3)
   - Rare only from Map 14 (pattern skips R until then)
 - **Default:** Rare only from Map 14 (pattern skips R until then)
 - **Outcome:** Owner, 2026-10-23 22:23: "It's okay faction rares start slower. For Map 5, the rare is the boss's leader. Normal skirmish rares only start coming in Map 10 onwards. (gently)" Faction track: no Rare before Map 14 (default kept).
+
+**PP-3. Level 0: only tutorial base and baby cards, or every Base card (raised in the Nest)?** · Decide · Levels · asked 2026-10-23
+- Today Bee Knight, Forager Ant and Sparrow Chick start at 0 without being tutorial base, and since TU2 every new faction copy comes at Level 0. Both contradict the 19:27 rule as written.
+  - Only tutorial base + babies
+  - Every Base card
+- **Default:** Only tutorial base + babies
+- **Outcome:** Owner, 2026-10-24 03:12: "PP-3 OKAY, base cards are lvl 1 i agree."
 
 **EN3-8. Where the four new bramble-guard cards come from** · Decide · Cards · asked 2026-10-23
 - Owner 20:44: "The new skills we mentioned - implement them in new cards." Built (awaitingSource, placeholder emoji art, NightCafe prompts in docs/art/new-cards-2026-10-21-briefs.md, names and flavour in 12 packs), each fitted to the budget at Level 1 with no map term (tools/en3_new_cards_2026_10_23.js): DAM-KEEPER BEAVER (common, Lumber 1, Wait 1, Rampart) 2/11; BRIARBACK HEDGEHOG (common, Lumber 1, Wait 1, Bramble Armor) 2/11; MOAT SNAPPER (uncommon, Lumber 2, Wait 2, Rampart, Armor 1) 4/14; BARKPLATE BEETLE (uncommon, Lumber 2, Wait 2, Bramble Armor, Thorns 1) 4/14. Proposed: the two commons in Pack 1 (Maps 0-6; your note that the bramble is too weak at Map 0 and before makes early bramble guards useful), the two uncommons in Pack 2 (Maps 7-13: the Snapper beside the turtles, the Beetle in the Redwood Deep). Placing them needs canonical/map-pools.json and canonical/card-obtain-maps.json rows (a later package); the Map term then lifts their lines a little. Pricing (owner 20:44: "just logic is sufficient ... the effect of 1 attack or health across 4 rounds"): both skills were also measured (docs/balance/en3-skill-test-2026-10-23.md) and the logic agrees: Bramble Armor's 1 a bramble hit is about 1 Health a round (1.1), Rampart mostly moves damage from the bramble to a unit 1:1 (0.5).
@@ -219,7 +294,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Take them out of the early side map's pool
   - Leave them
 - **Default:** Re-fit them by formula for the early map
-- **Outcome:** Owner, 2026-10-23 23:45: "if there's a reason you want to move them, you can use the new map's budget." Queued in EN4.
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5-3 if there's a reason you want to move them, you can use the new map's budget." EN4 (tools/en4_rw5_followups_2026_10_23.js) moved two where the early side map is the theme-correct home, re-fitted to that map's budget: Lodge Engineer (beaver lodge) to Lilypad Reach (opens at Map 6, Pack 1) 3/14 -> 3/13; Mallard Marauder (duck pirate) to Smugglers' Grotto (opens at Map 7, Pack 2) 2/6 -> 2/5. Kept: Mudpuppy (9-4's first-clear pack card must stay a Kelp Mangroves card, GD5), and, theme already right, Beetle Battering Ram and Siege Rhino (the Goldfeather Siege), Fox Kit (the Redwood Deep), Cinder Gecko and Cinder Hornet (the Rimefire Caldera), Mangrove Mudskipper and Minnow Skitter (the Kelp Mangroves' first-clear pack cards).
 
 **RW5-4. Ember Tetra (was ember-tetra-3caj): where does it come from?** · Decide · Cards · asked 2026-10-23
 - Its id is fixed (ember-tetra; the live row is skipped and supabase/proposed/20261023_rw5_clear_ember_tetra.sql deletes it on "apply it"). It still has no source, so it is a Base card everyone has. As a Pack 3 card of the Ashen Spurn (hot springs) its 3/7 with Tide braces is 0.6 over budget.
@@ -227,7 +302,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - A skirmish reward
   - Keep it Base
 - **Default:** Pack 3 (Ashen Spurn), re-fit to 2/7
-- **Outcome:** Owner, 2026-10-23 23:45: "Ember Tetra can be a pack 1." Queued in EN4.
+- **Outcome:** Owner, 2026-10-23 23:45: "Ember Tetra can be a pack 1." EN4: a Pack 1 card of the Sunken Hollow (Map 4, flooded), in its pool, re-fitted to Map 4's budget 3/7 -> 2/6.
 
 **RW5-5. Raid Ticket price: 400 Maple Leaves + 5 Gold Leaves?** · Decide · Shop · asked 2026-10-23
 - Item 16: "Raid ticket should be alittle more expensive, and cost at least abit of advanced resources." Built: 400 Maple Leaves and 5 Gold Leaves (was 300 Maple Leaves). Gold Leaves are the advanced currency packs also take.
@@ -249,7 +324,7 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Make it the reward of a Map 9 mini-boss
   - Leave it
 - **Default:** Make it the reward of a Map 9 mini-boss
-- **Outcome:** Owner, 2026-10-23 23:45: "if it doesn't fit with our new philosophy, move it." Queued in EN4.
+- **Outcome:** Owner, 2026-10-23 23:45: "RW5-7 if it doesn't fit with our new philosophy, move it." EN4: the Mangrove Kingfisher is the reward of 9-6 (the Drifting Shell, an elite that fields it), no longer of 9-3 (a normal skirmish); the Banded Sea Krait (Uncommon) moves from 9-5 to 9-3 so Map 9 keeps a skirmish-exclusive card (one Reef Shark in 9-3's deck for it); tools/map_divvy_2026_10_22.js POOLS agrees.
 
 **RW5-8. Six new cards placed lightly in Maps 1-9 (22:23 #10)** · Decide · Cards · asked 2026-10-23
 - For the strategic depth you missed in Maps 0-9, the new cards that add a decision are placed in those maps' pack pools (tools/rw5_place_new_cards_2026_10_23.js): Briarback Hedgehog (Bramble Armor) Thistlewood, Map 1, Pack 1; Dam-Keeper Beaver (Rampart) and Pond Algae (the first Bloom card) Sunken Hollow, Map 4, Pack 1; Moat Snapper (Rampart + Armor) Gatorback Swamp, Map 5, Pack 1; Barkplate Beetle (Bramble Armor + Thorns) Morel Hollow, Map 7, Pack 2; Ironclaw Fiddler (Tide + Bludgeon + Armor, Rare) Kelp Mangroves, Map 9, Pack 2. All fit the budget at their map. They are in the packs and the base track, not yet in any enemy deck or first-clear reward.
@@ -258,6 +333,12 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - Also put one in each map's enemy decks
 - **Default:** Keep them
 - **Outcome:** Owner, 2026-10-23 23:45: "RW5- okay."
+
+**FLY-1. Flying maps and the Windy buff (Gannet Cliffs): how should they be toned down? (you're thinking it over)** · Decide · Balance · asked 2026-10-23
+- Owner, 17:01: "Yeah the flying maps are really strong. let me think about them." and "Im abit stuck in Gannet cliffs because its so difficult. I realise the windy buff is reallly strong. let me think". Waiting on the owner. EN2 fixes Headwind (skills twice, not acts twice) and reports Gannet Cliffs win rates before and after.
+  - Owner to decide
+- **Default:** Owner to decide
+- **Outcome:** Owner, 2026-10-24 03:12: "FLY-1: OKAY." (EN2's wind fix stands; new canopy-evasion skill queued in EN5.)
 
 **PR-1. Map 0: a sure card on the first clear only** · Decide · Rewards · asked 2026-10-23 · decided 2026-10-23
 - Your report: 0-1 paid a card on 5 of 5 wins. Cause: the 2026-10-13 rule "every win on Map 0 brings a card" paid a card on every Map 0 win, skipping the drop chance the fight panel shows. Built (PR): the sure card comes with the first clear only; replays roll the panel's drop (3% for 0-1). The other choice keeps a card on every Map 0 win and changes the panel to say so.
@@ -345,6 +426,13 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
 **MAP2-AP. Armor Piercing first appears on Map 2** · Decide · Content · asked 2026-10-23
 - Owner, 2026-10-23 13:16: "Armor piercing: Which map? Map 2".
 - **Outcome:** Map 2
+
+**AR3-6. Apply the Group Dungeon SQL for 3-4 player online rooms? (say "apply it")** · Apply · Server · asked 2026-10-23
+- supabase/proposed/20261023_coop_rooms_4p.sql (not applied). Live today, coop_rooms seats a host and ONE guest, so an online Group Dungeon room takes 2 players. The file adds seats for 4 (coop_room_members, RLS on), join_coop_room_v2 (friends of the host only, seats C, D, B; a rejoin keeps its seat), leave_coop_room, promote_coop_host (host migration recorded) and private room channels (only a room's members hear its topic). The game finds it by itself once applied. Checked on a throwaway local Postgres with stand-ins for Supabase's auth and realtime: applied twice, 4 joins, a 5th refused, a non-friend refused, an outsider can't send on the room's topic.
+  - Apply it
+  - Not yet
+- **Default:** Not yet
+- **Outcome:** Owner, 2026-10-24 03:12: "AR3-6: Apply it. 2-4 players." APPLIED live 2026-10-24 (migration 20261023_coop_rooms_4p). Player-count people symbols queued.
 
 **AR3-1. Group Dungeon rows: 7 columns (3 + shared centre + 3)** · Decide · Dungeons · asked 2026-10-23 · decided 2026-10-23
 - D49 drew 10 cells a row (4 left, 2 shared, 4 right). Built on the raid's board, which is 7 columns: each seat has 3 cells and the centre column is shared by the row's two seats. A 2-seat party (1-2 players) plays columns -3..0 only; the right half is blocked ground on both sides.
@@ -2041,6 +2129,46 @@ _Generated from `decisions.json` (2026-10-23). The hub has a searchable, filtera
   - A flat 25%
 - **Default:** Keep the mastery scale
 - **Outcome:** Claude's call (10-23, owner asked to settle the easy ones): Keep the mastery scale, kept as built (the Nurse keeps the mastery scale).
+
+**BL-1. Bloom's copy: it can't bloom, and it arrives like a played card** · Decide · Battle rules · asked 2026-10-23
+- Your 11:23 and 17:34 #3. Built: Bloom - {conditions} is once per unit: the first round its conditions hold a copy of it grows beside it, and the copy gains +1/+1 (your 19:30: "bloom only gives the new one +1/+1, not itself"; the unit is unchanged). The copy has the unit's Attack and Health with every change made without counters, plus 1/+1, minus its damage; no counters or statuses. The copy is marked as a copy and never blooms itself (else one bloom would chain into a field of copies), arrives with its printed Wait, and leaves no card in the graveyard when it dies (so it can't feed Remember / Grave Call). Say if the copy should bloom too, arrive Ready, or go to the graveyard.
+  - The copy can't bloom; printed Wait; no graveyard card (built)
+  - The copy can bloom once too
+  - The copy arrives Ready (Wait 0)
+- **Default:** The copy can't bloom; printed Wait; no graveyard card (built)
+- **Outcome:** Owner, 2026-10-24 03:12: "the copy can bloom." Queued in EN5.
+
+**BL-2. Bloom with no free slot beside it** · Decide · Battle rules · asked 2026-10-23
+- Built: the copy grows only in a free slot right beside the unit (a coin flip when both sides are free; in a raid's middle / back row, beside it in that row). With both neighbours taken it doesn't bloom yet and tries again at the next round's start, so the bloom is never wasted. Alternatives: bloom anyway with no copy (nothing happens then), or put the copy in the nearest free slot of the row (the Spawn rule).
+  - Wait and try again next round (built)
+  - Use up the bloom (no copy)
+  - The nearest free slot in the row
+- **Default:** Wait and try again next round (built)
+- **Outcome:** Owner, 2026-10-24 03:12: "yes it will try to create adjacent to it." Also up/down on multi-row boards (03:12). Queued in EN5.
+
+**BL-3. Where the new Pond Algae is found** · Decide · Cards · asked 2026-10-23
+- No algae card existed, so BL added one for your "For Algae, just 'Wet' & 'Sunny'": Pond Algae, Common Plant (Flora, Pond), Wait 1, Lumber 0, Bloom (Wet & Sunny), 1/9 by the budget (100% of N at Level 1). It waits (awaitingSource) for a place. Proposed: the Lotus Frog's map (m8) basic pack, beside the pond cards; that needs canonical/map-pools.json and canonical/card-obtain-maps.json rows (the Map term then lifts it a little). Art: the emoji for now.
+  - m8's basic pack (with the Lotus Frog)
+  - A wet map's skirmish reward
+  - Hold it (no source yet)
+- **Default:** m8's basic pack (with the Lotus Frog)
+- **Outcome:** Owner, 2026-10-24 03:12: BL-1 to BL-5 answered together; placement as built (RW5 placed Pond Algae on Map 4).
+
+**BL-4. Which fungus has which Bloom, and the Puffball's third skill** · Decide · Cards · asked 2026-10-23
+- The game has two fungi. Built: Fungal Colossus gets your first example, Bloom (Wet & Sunny + 1 Lumber) (a big, slow card that pays for its copy); Puffball Bombardier gets "another Fungi", Bloom (Wet & Killed an enemy) (its Arrow gets it kills). The Puffball already has Arrow 1 and Poison 1, so Bloom is a third skill: kept as a thematic exception to the two-skill rule (tests/bf5 lists it). Lotus Frog's old Bloom When (Tide & Night, +2/+2 while they hold) became Bloom (Tide & Night). Sunny is day or Twilight with no Rain, Fog or darkness.
+  - As built (Puffball keeps 3 skills)
+  - Puffball drops Poison (Arrow + Bloom)
+  - Swap: Colossus Wet & Kill, Puffball Wet & Sunny + 1 Lumber
+- **Default:** As built (Puffball keeps 3 skills)
+- **Outcome:** Owner, 2026-10-24 03:12: BL-1 to BL-5 answered together; as built.
+
+**BL-5. Bloom's price: three cards held over budget** · Decide · Balance · asked 2026-10-23
+- Bloom is priced by the budget (bramblewood-budget.js bloomOdds): p = the odds its conditions ever hold (formula estimates, not measured: Wet 0.4, Sunny 0.8, Kill 0.5, Tide 0.35, Night 0.8; 'and' multiplies) x 0.85 (still alive, a free slot) x 0.85 per Lumber. S = 3p (the copy's +1/+1; your 19:30), and cap 1's stat terms count x (1 + p) (a second body arrives with odds p); cap 2 is unchanged. Wet & Sunny p 0.27 (S 0.81, stats x1.27), Wet & Kill 0.17, Wet & Sunny + 1 Lumber 0.23, Tide & Night 0.24. The re-fit (tools/refit_pass_2026_10_21.js) would cut Fungal Colossus 2/21 -> 2/16, Puffball Bombardier 1/10 -> 1/6 (it was already over before Bloom) and Lotus Frog 3/12 -> 2/10; as with BF11-1 they are held at their stats (docs/balance/bl-held-2026-10-23.json). Nectar Vintner's Healing 1 costs what its Bloom 1 did (4): no change. The odds can be measured later with the robust skill test once it models the copy.
+  - Hold them at their stats (built)
+  - Apply the re-fit
+  - Lower Bloom's odds first, then re-fit
+- **Default:** Hold them at their stats (built)
+- **Outcome:** Owner, 2026-10-24 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)" Queued in EN5.
 
 ## Stated rules · 2026-10-21
 
