@@ -123,7 +123,7 @@ function codexApi(store, throwing){
 // ---- 7: the tutorial summary
 {
   ok(/sumNode = isTut \? tutorialSummaryNode\(selectedNode\) : selectedNode/.test(src) && /isTut \? '' : skirmishFieldHTML\(map\.id, selectedNode\)/.test(src), '7. a tutorial node is summed up like a skirmish, with no Field panel');
-  ok(/Object\.entries\(sumNode\.deck\|\|\{\}\)/.test(src) && /enemyDeckLevel\(sumNode\)/.test(src) && /castleLineHTML\(sumNode\)/.test(src), '7. its deck strip, BR and Health come from the tutorial\'s own fight');
+  ok(/Object\.entries\(sumNode\.deck\|\|\{\}\)/.test(src) && /enemyDeckLevel\(sumNode\)/.test(src) && /castleLineHTML\(sumNode[,)]/.test(src) /* 2026-10-24 (MAP): + the admin editor flag */, '7. its deck strip, BR and Health come from the tutorial\'s own fight');
   ok(/tutorialDecksFor\(st, loadFactionChoice\(\) \|\| 'both'\)\.rival/.test(fnSrc('tutorialSummaryNode')), '7. the deck is the one startTutorialMatch deals (tutorialDecksFor ... .rival)');
   const i0 = src.indexOf('const CONQUEST_MAPS = ['), j0 = src.indexOf('\n];', i0);
   // eslint-disable-next-line no-eval

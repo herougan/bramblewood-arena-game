@@ -23869,7 +23869,7 @@ document.addEventListener('click', e=>{ const b = e.target && e.target.closest &
 // page: the Dungeons tab card, the room (lobby), the fight board, the floor chests and the boss's pick. How players meet:
 //   live   signed in: a coop_rooms row (live since 10-16, join_coop_room: friends of the host only) and a Supabase Realtime broadcast
 //          channel, the Ranked Live host's transport. The live table seats a host and ONE guest, so an online room takes 2 players;
-//          3-4 online need supabase/proposed/20261023_coop_rooms_4p.sql (waits for "apply it"; the page finds it by itself once applied).
+//          3-4 online use supabase/migrations/20261023_coop_rooms_4p.sql (applied 2026-10-24; the page finds join_coop_room_v2 by itself).
 //   local  not signed in, or "On this device": tabs of this browser over BroadcastChannel (2-4 players on one machine, for testing).
 //   solo   you and CPU allies, no network.
 // Cards fight at Level 1 (Standard, as Ranked Live, D74) so every player's game runs the same fight in step. The fight is drawn on

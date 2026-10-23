@@ -32,7 +32,7 @@ for(const c of ['de','es','fr','id','it','ja','ko','pt','ta','tl','zh-Hans','zh-
 
 // --- 2. the start map
 const sub = fnSrc('renderConquestSubTab');
-ok(/healTutorial2Flag\(\);\s*if\(!loadTutorial2Done\(\) && !\(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit\) && conquestSelectedMap !== 'mtut'\) conquestSelectedMap = 'mtut';/.test(sub),
+ok(/healTutorial2Flag\(\);\s*(?:try\{ if\(!matchState\) resumeLastMap\(\); \}catch\(e\)\{\}[^\n]*\n\s*)?if\(!loadTutorial2Done\(\) && !\(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit\) && conquestSelectedMap !== 'mtut'\) conquestSelectedMap = 'mtut';/.test(sub),
   '2. until Tutorial II is won the map is the Tutorial, Admin Mode or not (only the layout editor looks elsewhere)');
 const wr = fnSrc('worldRevealed');
 ok(/if\(!loadTutorial2Done\(\) && !\(typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit\)\) return false;\s*if\(adminModeEnabled\) return true;/.test(wr), '2. no map list on the start map, admins too');

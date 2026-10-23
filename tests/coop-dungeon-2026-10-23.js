@@ -278,9 +278,9 @@ function sameEverywhere(r, label){
     const lead = s=> String(s).replace(/^[\s\W_]+/u, '');
     const untranslated = [...keys].filter(k=> TX[k] && !/^\{\w+\}$/.test(TX[k])).filter(k=> packs.some(p=> !(TX[k] in p) && !(lead(TX[k]) in p)));
     ok(!untranslated.length, `texts: every AR3 text is in the 12 packs (${untranslated.slice(0, 4).join(', ')})`);
-    const sql = path.join(ROOT, 'supabase', 'proposed', '20261023_coop_rooms_4p.sql');
-    ok(fs.existsSync(sql) && !fs.existsSync(path.join(ROOT, 'supabase', 'migrations', '20261023_coop_rooms_4p.sql')), 'server: the 3-4 player SQL is proposed, not a migration');
-    const q = fs.existsSync(sql) ? read('supabase/proposed/20261023_coop_rooms_4p.sql') : '';
+    const sql = path.join(ROOT, 'supabase', 'migrations', '20261023_coop_rooms_4p.sql'); // 2026-10-24: applied live on the owner's "Apply it"
+    ok(fs.existsSync(sql) && !fs.existsSync(path.join(ROOT, 'supabase', 'proposed', '20261023_coop_rooms_4p.sql')), 'server: the 3-4 player SQL is applied (in migrations), not still proposed; was: proposed, not a migration');
+    const q = fs.existsSync(sql) ? read('supabase/migrations/20261023_coop_rooms_4p.sql') : '';
     ok(/enable row level security/i.test(q) && /security definer/i.test(q) && /friendships/.test(q) && /realtime\.messages/.test(q), 'server: the SQL keeps RLS on, joins through a definer function (friends only) and guards the room channel');
     ok(/function groupDungeonCardHTML/.test(app) && /data-gd-open/.test(app) && !/ui\.ar-group-soon'\)\)\}<\/p><\/div><\/div>`;\s*\}\s*function renderDungeonsSubTab/.test(app), 'page: the Group Dungeon slot is a real entrance (no Coming soon)');
     ok(/function gdPlayerOpen/.test(app) && /gdPlayerOpen\(\)/.test(app.slice(app.indexOf('function dungeonsTabOpen'), app.indexOf('function dungeonsTabOpen') + 400)), 'page: the Dungeons tab opens for players once the group dungeon is open to them');

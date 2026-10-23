@@ -48,7 +48,7 @@ ok(/^const KIT_USES_PER_FIGHT = 2, KIT_FADE_MS = \d+;/.test(lineOf('const KIT_US
 }
 ok(/m\.itemsUsed = kitUsesUsed\(m\) \+ 1;/.test(src) && !/m\.itemUsed\b/.test(src.split('\n').filter(l=> !/^\s*\/\//.test(l)).join('\n')), '1. useItem counts m.itemsUsed (the one-shot m.itemUsed is gone)');
 ok(/if\(kitSpent\(m\)\)\{ m\.kitSpentAt = Date\.now\(\); setTimeout\(/.test(src), '1. the last item starts the fade and a redraw after it');
-ok(/'itemsUsed','towerReplay','towerEnergyPaid','towerRefunded'\]/.test(src), '1/3. resumed fights keep the kit count and the Spire state');
+ok(/'itemsUsed','towerReplay','towerEnergyPaid','towerRefunded'(?:, ?'proFight')?\]/.test(src) /* 2026-10-24 (PRO): + proFight */, '1/3. resumed fights keep the kit count and the Spire state');
 ok(/\.hud-pack\.is-spent\{animation:kitSpentFade/.test(tpl) && /@keyframes kitSpentFade\{/.test(tpl), '1. the fade-out CSS');
 // grantsItem: each main map's own boss from GRANTS_ITEM_FROM_MAP
 { const a = src.indexOf('const GRANTS_ITEM_FROM_MAP'), b = src.indexOf('const CONQUEST_MAPS_BASELINE');
@@ -119,7 +119,7 @@ ok(/\.premium-badge\{/.test(tpl) && /\.dg-sweep\.is-locked/.test(tpl), '2. the b
 // 2026-10-21 (package TT): package ED's one result per match adds !m.rewardDuplicate to the refund and the rewards (below)
 ok(/if\(m\.mode==='conquest' && m\.winner!==1 && m\.towerEnergyPaid > 0 && !m\.towerRefunded && !m\.rewardDuplicate\)\{ m\.towerRefunded = m\.towerEnergyPaid;(?: \/\/[^\n]*)?\s*try\{ const st = settleEnergy\(\); st\.current \+= m\.towerEnergyPaid; saveEnergyState\(st\);/.test(src), '3. a lost, forfeited or drawn new floor refunds its Energy');
 ok(/if\(m\.mode==='conquest' && m\.winner===1 && m\.conquestNode && !m\.adminTest && m\.towerReplay\)\{/.test(src) && /if\(m\.mode==='conquest' && m\.winner===1 && m\.conquestNode && !m\.adminTest && !m\.towerReplay\)\{\n\s*\/\/ Reward payouts/.test(src), '3. a free replay skips every reward (and keeps its rank)');
-ok(/QUEST_COUNTING_MODES\.has\(m\.mode\) && !m\.towerReplay && !m\.rewardDuplicate\)\{/.test(src) && /!m\.adminTest && !m\.towerReplay && !m\.rewardDuplicate\) heroAwardBattle\(m\)/.test(src), '3. no XP, quests or hero XP on a free replay');
+ok(/QUEST_COUNTING_MODES\.has\(m\.mode\) && !m\.towerReplay && !m\.rewardDuplicate(?: && !m\.proFight)?\)\{/ /* 2026-10-24 (PRO) */.test(src) && /!m\.adminTest && !m\.towerReplay && !m\.rewardDuplicate\) heroAwardBattle\(m\)/.test(src), '3. no XP, quests or hero XP on a free replay');
 ok(/if\(m\.towerEnergyPaid > 0\) bumpQuestCounter\('energyConquest', m\.towerEnergyPaid\);/.test(src), '3. a won new floor\'s Energy counts for the notice');
 ok(/TX\('results\.tower-refunded', \{n: m\.towerRefunded\}\)/.test(src) && /TX\('results\.tower-replay'\)/.test(src), '3. the results say "refunded" / "no reward"');
 ok(/\$\{done && node\.tower \? ' is-free-replay' : ''/.test(src) && /<span class="map-node-free">\$\{escapeHtml\(TX\('ui\.tower-free-tag'\)\)\}<\/span>/.test(src), '3. cleared floors on the map: blue-grey with "0 reward · free"');

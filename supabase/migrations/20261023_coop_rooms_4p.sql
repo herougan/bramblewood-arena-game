@@ -1,4 +1,4 @@
--- PROPOSED 2026-10-23 (package AR3, the Group Dungeon). NOT APPLIED. Apply only on the owner's "apply it". Idempotent: safe to run twice.
+-- APPLIED 2026-10-24 on the owner's "Apply it" (03:12: "AR3-6: Apply it. 2-4 players."). Was proposed 2026-10-23 (package AR3, the Group Dungeon). Idempotent: safe to run twice.
 -- Owner (AR-3, 10-23): "This is a big pass. I like this. Can you launch a big pass for this." D49 / D76: 2-4 players, friends-only rooms.
 --
 -- What is live today (supabase/migrations/20261016_coop_rooms.sql, applied 10-16): coop_rooms seats a host and ONE guest (guest_id), and
