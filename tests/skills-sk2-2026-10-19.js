@@ -213,6 +213,8 @@ ok(SCt.shorthands.milling && SCt.shorthands.milling.trigger === 'perTurn' && SCt
 ok(SCt.shorthands.fortification && SCt.shorthands.fortification.trigger === 'onSpawn' && SCt.shorthands.fortification.action === 'spawnCard', 'Fortification = On Spawn × Spawn 1');
 ['harvest', 'scavenge', 'scavengeEvery', 'salvage', 'salvageEvery', 'repair', 'foraging', 'pickpocket', 'sabotage', 'arson'].forEach(id=>{ const e = SCt.skills.find(x=> x.id === id);
   ok(e && typeof e.value === 'number' && e.measuredConf === 'low' && /^estimate SK2/.test(e.measuredHow || ''), `skill-costs: ${id} has an S estimate (measuredHow "estimate SK2", low confidence)`); });
-ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
+// 2026-10-24 (RELFIX): new cards made with an SK2 skill later are not "existing cards": CONTENT2's Redwood Woodpecker (Milling 1) and Badger
+// Stonemason (Quarry 1), owner 13:12 #8 (calls CONTENT2-1 / CONTENT2-2); their creatorNote starts with "2026-10-24 (package CONTENT2)"
+ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && !/^2026-10-24 \(package CONTENT2\)/.test(c.creatorNote || '') && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
 
 console.log(fail ? `skills-sk2-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk2-2026-10-19: all ${n} checks passed`); process.exit(fail ? 1 : 0);

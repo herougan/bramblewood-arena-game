@@ -7,6 +7,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Every other card that waited for a source (72) has one home, proposed or held** (`docs/balance/n221-divvy-2026-10-24.md` / `.json`, `tools/n221_divvy_2026_10_24.js plan|apply|check`): 20 on a proposed map (the rainforest set on 25, the ants on 26, the Evomax sloths on 30, the Grovebearer on 40, the Armory on Goldfeather Keep, held ...), the Thistle Baron as a quest-only special (Map 32), Pack Secrets I (MissingNo., Glowing Gecko), the faction pool (Anvilwhisker Otter, Greyplume Fledgling), the Blacksmith (Crowbar); the Gnawed and Tidefolk wait for CONTENT2-3; spells, Devilry (66) and Ecclesia (77) stay held. Nothing applied but the tree.
 - **Maps 25-40 as a proposal table** (not built): biome, pool of 6-10, two skirmish-base cards, pack tier and caps each; Map 40 is a seed for the owner's one-map-at-a-time process. Pack 4 / 5 / 6 = Maps 21-27 / 28-34 / 35-41 (N221-1). `docs/progression-plan.md` has a Maps 21-40 section.
 - Owner calls N221-1 .. N221-7 in docs/decisions.json (pack tiers, eight cards that would bring a new skill onto Maps 21-40, the tree, pool sizes on 22 / 23, the table, CONTENT2-3's alternative homes, the homes outside the maps). Tests: `tests/n221-2026-10-24.js`.
+## 2026-10-24 (package RELFIX: batch-1023e release failures)
+- **1-3 Burrow Line holds 20 cards again** (EB: Map 1's decks hold 20): BAL3's 8 -> 7 different cards step left 19; Cottontail 2 -> 3
+  (66% -> 68% at 100 games, band 62-78), still 7 different cards.
+- Tests that followed the batch's intended changes: async-raid measures the stage power curve on the generated ghosts (TS2's themed
+  decks are placed by fights; Sunfeather Scout's BAL3 cut left the mixed average 0.004 short); bl / en3 accept BAL3's ten formula-line
+  cards (owner BAL2-5) and the shorter flagged list; skills-sk2 lets CONTENT2's new Redwood Woodpecker (Milling) and Badger Stonemason
+  (Quarry) carry SK2 skills.
 
 ## 2026-10-24 (package CONTENT2: Lumber gatherers per biome, the Stone loop, the Gnawed and the Tidefolk, the beach)
 - **Lumber gatherers in every biome (owner 13:12 #8):** eight new pack cards, one per main biome of Maps 0-20 that had none: Driftwood Crab (Pebble Beach), Gannet Nestweaver (Gannet Cliffs), Nutria Reedcutter (Gatorback Swamp), Redwood Woodpecker (Redwood Deep, Milling 1), Termite Forager (Savanna), Cone-cutter Squirrel (Taiga), Talus Pika (Tundra), Dune Packrat (Glass Dunes), On Ready / On Play +1 to +3 Lumber. Land Tiller, Coral Polyp Colony and Rodent King, gatherers in no pool, joined the Long Grass, Coral Current and the Briar Maze.

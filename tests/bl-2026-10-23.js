@@ -117,7 +117,8 @@ const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.jso
   // 2026-10-24 (package EN5, owner BL-5 03:12: "Balance if overbudget, err on slightly overbudget (14.6>14.5)"): the three held cards are re-fitted now, at most 1% over N
   ok(held.length === 3 && held.every(h=> { const c = by(h.id), b = c && T.budget(c, {level: 1}); return c && `${c.attack}/${c.health}` !== h.at && b.x1 <= b.N * 1.01 + 1e-9 && /2026-10-24 EN5 re-fit/.test(c.creatorNote || ''); }), '10. the three cards BL held are re-fitted by EN5 (at most 1% over N)');
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));
-  ok(fl.length >= 47 && fl.includes('abbey-goose') && fl.includes('puddle-changeling'), `10. the flagged list was merged, not overwritten (${fl.length})`); }
+  // 2026-10-24 (RELFIX): >= 37 (was 47): BAL3 took the ten held cards off the list once they took their formula line (owner BAL2-5 12:02 "Basic logic return", built)
+  ok(fl.length >= 37 && fl.includes('abbey-goose') && fl.includes('puddle-changeling'), `10. the flagged list was merged, not overwritten (${fl.length})`); }
 
 // ---- 11. the app: the Bloom row, the retired rows, the default values
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');

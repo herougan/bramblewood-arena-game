@@ -28,7 +28,12 @@ for(let s=0; s<STAGES; s++){
   check(pool.active >= 10, `stage ${s}: fewer than 10 decks`);
   pool.decks.forEach(g=>{ const e = G.validateDeck(defs, g.deck); check(!e.length, `stage ${s} ghost ${g.id}: ${e[0]}`); });
   check(new Set(pool.decks.map(g=> g.owner)).size === pool.decks.length, `stage ${s}: duplicate ghost owners`);
-  powers.push(pool.decks.reduce((t,g)=> t + G.deckPower(defs, g.deck), 0) / pool.decks.length);
+  // 2026-10-24 (RELFIX): the power curve is the generated decks' (generateGhostDeck by stage). TS2's hand-built themed decks are placed by
+  // fight results, not by power (docs/skirmish-theme-pass-2026-10-21.md), and BAL3 (BAL2-5) cut Sunfeather Scout 1/7 -> 1/4, which left
+  // the mixed stage 2 average 0.004 under stage 1 (5.750 vs 5.754; it was 5.768 vs 5.763 before). The real-fight curve below covers them.
+  const gen = pool.decks.filter(g=> /^seed:/.test(g.id));
+  check(gen.length > 0, `stage ${s}: no generated ghosts to measure`);
+  powers.push(gen.reduce((t,g)=> t + G.deckPower(defs, g.deck), 0) / Math.max(1, gen.length));
 }
 for(let s=1; s<STAGES; s++) check(powers[s] > powers[s-1], `stage ${s} ghosts (power ${powers[s].toFixed(2)}) are not stronger than stage ${s-1} (${powers[s-1].toFixed(2)})`);
 

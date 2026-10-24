@@ -113,7 +113,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(rf.raised.length === 3 && rf.held.length === 13 && rf.flagged.includes('poison-dart-frog'), `the re-fit file: ${rf.raised.length} raised, ${rf.held.length} held, flagged ${rf.flagged}`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
   // 2026-10-24 (package EN5): a card EN5's re-fit moved (Bleed / Poison by the measured curve) has EN5's line now
-  const en5 = h=> /2026-10-24 (EN5|BAL2) re-fit/.test(c(h.id).creatorNote || ''); // + BAL2 (2026-10-24): the DF-1 re-fit (Map term 0.2) moved some too
+  const en5 = h=> /2026-10-24 (EN5|BAL2) re-fit|2026-10-24 BAL3 \(owner BAL2-5/.test(c(h.id).creatorNote || ''); // + BAL2 (2026-10-24): the DF-1 re-fit (Map term 0.2) moved some too // + BAL3 (2026-10-24, RELFIX): owner BAL2-5 put the ten held cards (Alley Cat, Muskrat Lodgekeeper ...) on their formula line
   ok(rf.held.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.from), 'the held cards keep their stats (or EN5 re-fitted them)');
   ok(rf.raised.every(h=> en5(h) || `${c(h.id).attack}/${c(h.id).health}` === h.to), 'the raised cards have their new line (or EN5\'s)');
   const fl = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/human-pass-1-flagged-2026-10-21.json'), 'utf8')); ok(fl.length >= 10 && fl.includes('poison-dart-frog'), 'the flagged list was merged, not overwritten');
