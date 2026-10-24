@@ -4,6 +4,68 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**DF3-1. How hard is a challenge skirmish?** · Decide · Map effects · asked 2026-10-24
+- Your 22:23 #6 put the selfish boons on challenge skirmishes only (built in DF3: 19 of them, 1 every 2 maps from Map 5 and 1 a side map). A challenge skirmish keeps its place on the road but is aimed 10 points under that place's road-curve target (a 78% skirmish slot becomes 68%), with a band of +/- 8. It pays what it paid before (a ⚔️ Challenge pill in the fight panel, nothing more).
+  - Target minus 10, same rewards (built)
+  - Target minus 15 (nearer an elite)
+  - Target minus 10 and a better first-clear reward (your T-3 note: challenges give more)
+  - Their road-curve target as is (the boon replaces part of the deck's strength)
+- **Default:** Target minus 10, same rewards (built)
+
+**DF3-2. A challenge skirmish may go one Enemy level up** · Decide · Levels · asked 2026-10-24
+- Where a challenge deck could not reach its target inside the deck rules, the search could raise the fight's Enemy level by one (the skirmish editor's field, as LEAD set on elites). It used it once: 13-4 Boar Wallow (Lv 3 -> 4). Maps 16-24's challenges stay at 96-100% even so: the reference player is about Lv 8 there against enemies at Lv 3-5 (your DF-1b).
+  - One level up where needed (built: 13-4 only)
+  - No level change on challenges
+  - Up to the pace curve's level on challenges from Map 16 (decide with DF-1b)
+- **Default:** One level up where needed (built: 13-4 only)
+
+**DF3-3. Rising Tide barely matters; keep it, strengthen it or swap it?** · Decide · Map effects · asked 2026-10-24
+- Measured with and without each boon (200 games, docs/balance/df3-boons-2026-10-24.json): Sky Ambush 28 points (8-A-3), Blind Fury 27 (8-5), Hive Chorus 23 (7-A-2), Venom Glands 16.5 (5-3), Snow Veil 8 (17-A-1), Second Burrow 3.5, Ember-born 1-3. Rising Tide is 0 on all three of its fights (9-4, 5-A-2, 10-A-2): the CPU's Tide units are on the board in few rounds. Its engine test shows it working (Quick at Flood).
+  - Keep it (a light boon for the tidal maps)
+  - Strengthen it: Quick and +1 Attack at Flood
+  - Swap those three fights to Venom Glands / Blind Fury
+- **Default:** Strengthen it: Quick and +1 Attack at Flood
+
+**DF3-4. DF-4 leftovers: five Map 11 / 14 fights still under their band** · Decide · Balance · asked 2026-10-24
+- DF-4 retuned Maps 7, 11 and 14 with deck moves only (leaders kept): map means 51.2 -> 67.8 (target 69.2), 42.9 -> 68.4 (71.5), 58.0 -> 66.9 (70.6). Still under their band at 100 games: 11-2 75 (86), 11-4 66 (79), 11-7 59 (68), 14-5 60 (70), 14-6 52 (65). 14-5's next move would give an elite a 9th different card, so it was not taken.
+  - Lower those five fights' Enemy level a quarter to a half step
+  - Another deck pass, allowing an 8th card on elites
+  - Leave them (the map means are within 4 points)
+- **Default:** Lower those five fights' Enemy level a quarter to a half step
+
+**BAL2-1. LEAD's per-fight Enemy levels hold some elites under their map's declared level** · Decide · Levels · asked 2026-10-24
+- The new schedule introduces each level in the hardest fights of its map (Lv 5 at Map 20 in its boss and two elites). 57 elites and bosses carry a skirmish-editor Enemy level that LEAD set on 10-23 to hold the battle rating when a leader was added. BAL2 re-based them on the new schedule keeping their STRENGTH (stats only move at Lv 4, 7 and 10), so 42 moved and some still show a level under the declared one: 20-6 3.25, 20-8 3.0, the Map 20 world boss 3.15, 21-4/21-5, 22-6/22-7 3.2-3.45, 23-8 3.35, 24-8 3.3. Dropping them puts those fights at the declared level (Lv 5 from Map 20), about 20% more stats on the ones under Lv 4, and harder.
+  - Keep the re-based levels (built)
+  - Drop LEAD's Enemy levels from Map 15 on (the declared levels everywhere)
+  - Drop them all
+- **Default:** Keep the re-based levels (built)
+
+**BAL2-2. Rares in side-map skirmishes before Map 10** · Decide · Rarity · asked 2026-10-24
+- Your 22:23 #2 is built for the main road: Map 5's only Rare is its boss's leader; normal skirmishes hold Rares from Map 10 (gently: no Very Rare in one before Map 15). Side maps keep the older steps (Rare from Map 5, Very Rare from 10), so the Smugglers' Grotto (2-B-1, 3 Mallard Marauders), the Mycelium Deep (7-A-1, 7-A-2) and the Glimmer Depths (8-A-3) still field Rares in normal skirmishes. They are come-back-later fights counted a map ahead.
+  - Side maps keep the older steps (built)
+  - The same rule on side maps (re-deck about 6 skirmishes)
+- **Default:** Side maps keep the older steps (built)
+
+**BAL2-3. The road win rates after BAL2 (Maps 0-24): retune pass?** · Decide · Balance · asked 2026-10-24
+- Measured after BAL2 (tools/skirmish_pass.js measure 100 --main, and the same tool on the commit before it; docs/balance/bal2-road-2026-10-24.md): 31 of 179 fights of Maps 0-24 are in their green band (29 before BAL2), 114 too easy, 34 too hard. Most of the gap is from before BAL2. Gannet Cliffs, Gatorback Swamp, the Long Grass, the Glass Dunes and the Goldfeather Siege sit at 94-100%; Pebble Beach, Sunken Hollow, the Morel Hollow and Eyrie Heights are well under target. The Pale Desert is 94-100% on every fight (its reference deck is Map 19's since it counts as Map 19), 18-A-5 retuned to 82.5% (band 65-81%).
+  - A retune pass of Maps 0-24 to the road targets with the honest levers (decks, fields, Shield), as DF-4 / DF-1b
+  - Wait for your play-through (DF-1b)
+- **Default:** Wait for your play-through (DF-1b)
+
+**BAL2-4. Bounty 2 and up measure less than Bounty 1** · Decide · Skills · asked 2026-10-24
+- N22-10's re-measure (docs/balance/skill-test-robust-bounty-2026-10-24.md, randomised Lumber / Wait units, 10,000 games a setup): Bounty 1 worth 3.35 stat points, Bounty 2 2.48, Bounty 3 1.91 (the foe gains N when it dies, which outweighs your bigger gain). Bounty is now 2.5 a point (was 3; Bounty 1 measures 2.56), and four Bounty 1 cards rose a point (Raccoon Bandit 4/8, Trash Panda Trickster 2/4, Pack Mule 1/11, Magnate Duck 2/37). A per-point price can't show the fall, so the one Bounty 2 card, the Beaver Lumberjack (4/4), is over-priced; it is held as it is.
+  - Make the Beaver Lumberjack Bounty 1 and re-fit it
+  - Price Bounty flat (2.5 whatever N)
+  - Keep it as it is
+- **Default:** Make the Beaver Lumberjack Bounty 1 and re-fit it
+
+**BAL2-5. Ten cards the DF-1 re-fit would cut by more than 25%** · Decide · Balance · asked 2026-10-24
+- Held at their stats (owner brief: hold extreme down-moves): Alley Cat 1/8 (line 1/1), Honey Badger Fury 2/9 (1/6), Chipmunk Hoarder 3/8 (2/6), Chipmunk Cavalry 3/3 (2/2), Pyroclast Wyrm 5/17 (3/12), Plague Gnat Cloud 3/3 (2/2), Sunfeather Scout 1/7 (1/4), Lone Grey Wolf 4/15 (2/9), Rock-pool Starfish 2/2 (1/1), Muskrat Lodgekeeper 2/10 (1/5). Most were over before (their map did not move); the Map 5 / Map 2 Pack 1 cards lost their map term (Pack 1 counts as Map 0).
+  - Re-price their skills or re-rank them (one by one)
+  - Cut them to the line
+  - Keep them held
+- **Default:** Re-price their skills or re-rank them (one by one)
+
 **TT-1. Where replayable lessons live** · Decide · Tutorial · asked 2026-10-24
 - There is no help page where lessons can be replayed (the Codex has Browse, Brambles, Skills, Maps and Hall of Fame; the older lessons are one-shot dialogues and coach tips). TT put one small "Triggers lesson" button in the Skill Codex's bar: it clears the lesson, so it plays again in the next fight that shows a trigger chip (a lesson needs a real card to point at). The Skill Codex opens on Map 9, so a player who skips the lesson early cannot replay it until then. A Lessons shelf (Triggers, Pitching, Leaders, Rarity) on a Codex tab or in Settings would reach everyone sooner.
   - Keep the button in the Skill Codex (built)
