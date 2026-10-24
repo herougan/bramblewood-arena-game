@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-25 release 10-25a (batch: PL1, PRO2, EN8, PL2)
+- The CPU pitches cards for resources, guards against lethal hits, and its brambles heal allies; Rampart covers only its own and neighbouring columns. Resource skills (Stonecutter, Prospector, Felling, Salvage, Scavenger, Coppice, Windfall, Driftwood) and Pearls/Shellfish.
+- PRO fights follow the map's rarity and cards, plus BPRO; clicking a PRO node opens a free preview with Fight.
+- Playtest fixes: no bramble remnant, no end-of-game redraw, ☠N poison, Inspiring burst, number bounce, eased bramble bars and hit/mend effects; XP for every skirmish plays on the map; stacked card rewards with an "S reward" ribbon; one-step trigger lesson; simpler Energy panel; opponent resources on Shift; Whisper's Game and the Dungeons tab admin-only; Arena Co-op tab with the Group Dungeon; Fork/Pitchfork/Trident sounds; results music order.
+- Checks: full unit tier, no new failures against 10-24e after four stale tests were updated (en4, z, t, rebuild); ui_smoke 0 failures (after making its auto-battler step use Admin Mode); flows 0 issues; card-matrix golden refreshed (0 failures, 0 diffs).
+
 ## 2026-10-25 (package PL2: the owner's playtest notes 10-24 22:28 and 10-25 00:02: UI, VFX, rewards and audio; 21:54; PL1-1, PL1-3, PRO-UI)
 - **The board:** a fallen bramble leaves nothing behind (BV's mound of earth read as a leftover, 22:28 #1). The round that decides a match no longer
   rebuilds both rows at the end: a cell holding the same unit keeps its element and has its numbers patched, so the cards just played no longer

@@ -216,7 +216,7 @@ async def main():
         # 8: Autobattler fight replay: draft a run, fight once, watch it step by step
         await pg.evaluate("""(()=>{ const d = getCardDefs(); const run = AutoB.newRun(4242, Date.now());
           while(run.phase==='draft'){ const o = AutoB.draftOffers(d, CHARACTER_DEFS, run); AutoB.applyDraftPick(run, o.options[0]); }
-          saveAbRun(run); playSubTab='autobattle'; switchTab('play'); return 1; })()"""); await pg.wait_for_timeout(500)
+          saveAbRun(run); adminModeEnabled = true; playSubTab='autobattle'; switchTab('play'); return 1; })()"""); await pg.wait_for_timeout(500)  # 2026-10-25 (release): PL2 made Whisper's Game admin-only
         await pg.evaluate("document.getElementById('abFightBtn').click(); 1"); await pg.wait_for_timeout(500)
         await pg.evaluate("document.getElementById('abWatchBtn').click(); 1"); await pg.wait_for_timeout(300)
         check(await pg.evaluate("document.querySelectorAll('.fight-replay .rp-card').length > 0"), 'the fight replay should show cards')
