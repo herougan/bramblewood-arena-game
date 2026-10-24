@@ -3380,5 +3380,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "Beim Ausspielen erhält der Gegner gegenüber {n} Einschüchterung: jede ist −1 Angriff und −1 Fähigkeitsschaden.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "Eine Einschüchterung fällt am Ende jeder Runde und jedes Mal, wenn die Einheit zuschlägt oder eine Fähigkeit nutzt. Reinigen entfernt sie.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name} schüchtert {target} ein: {n} Einschüchterung (je −1 Angriff und Fähigkeitsschaden).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Eingeschüchtert {n}: −{n} Angriff und Fähigkeitsschaden; eine fällt jede Runde und bei jeder Aktion"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Eingeschüchtert {n}: −{n} Angriff und Fähigkeitsschaden; eine fällt jede Runde und bei jeder Aktion",
+ "⚡ This chip is a trigger — read the card.": "⚡ Dieses Chip ist ein Auslöser — lies die Karte.",
+ "Co-op": "Koop",
+ "reward": "Belohnung",
+ "{rank} reward": "Belohnung {rank}",
+ "Pack {n}": "Pack {n}"
 }

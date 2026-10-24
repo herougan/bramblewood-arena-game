@@ -3381,5 +3381,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "出したとき、向かいの敵に威圧を{n}与える：1つにつき攻撃−1、スキルダメージ−1。",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "威圧はラウンド終了ごと、そのユニットが攻撃かスキルを使うたびに1つ消える。浄化で取り除ける。",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name}が{target}を威圧：威圧{n}（1つにつき攻撃とスキルダメージ−1）。",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "威圧{n}：攻撃とスキルダメージ−{n}。ラウンドごと・行動ごとに1つ消える"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "威圧{n}：攻撃とスキルダメージ−{n}。ラウンドごと・行動ごとに1つ消える",
+ "⚡ This chip is a trigger — read the card.": "⚡ このチップはトリガー — カードを読んでみよう。",
+ "Co-op": "協力",
+ "reward": "報酬",
+ "{rank} reward": "{rank}報酬",
+ "Pack {n}": "パック{n}"
 }

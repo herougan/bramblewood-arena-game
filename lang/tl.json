@@ -3382,5 +3382,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "Kapag nilaro, ang kaaway sa harap ay may {n} Daunt: bawat isa ay −1 Atake at −1 pinsala ng kakayahan.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "Isang Daunt ang nawawala sa dulo ng bawat round at tuwing umaatake o gumagamit ng kakayahan ang yunit. Inaalis ng Cleanse.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "Tinakot ni {name} si {target}: {n} Daunt (−1 Atake at pinsala ng kakayahan bawat isa).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Daunted {n}: −{n} Atake at pinsala ng kakayahan; may nawawala bawat round at bawat aksyon"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Daunted {n}: −{n} Atake at pinsala ng kakayahan; may nawawala bawat round at bawat aksyon",
+ "⚡ This chip is a trigger — read the card.": "⚡ Ang chip na ito ay isang trigger — basahin ang card.",
+ "Co-op": "Co-op",
+ "reward": "gantimpala",
+ "{rank} reward": "Gantimpalang {rank}",
+ "Pack {n}": "Pack {n}"
 }

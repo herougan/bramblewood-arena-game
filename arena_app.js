@@ -20268,6 +20268,7 @@ function pl1XpOnMapSoon(tries){
 // (PL2_MOMENTS_KEY) and FX.E plays its emblem over the fight the next time that map is really in view (pl2TakeMapMoments), however many
 // fights were won in a row without seeing the map, and in a later session too. Was: a diff of what the map showed last this session.
 const PL2_MOMENTS_KEY = 'bramblewood_pl2_map_moments_v1';
+function pl2StackAttrs(label){ return ' tabindex=0 role=group aria-label="' + escapeAttr(label) + '"'; } // (the results' card stack takes focus: a tap fans it)
 function pl2LoadMoments(){ try{ const v = JSON.parse(localStorage.getItem(PL2_MOMENTS_KEY) || '[]'); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
 function pl2SaveMoments(l){ try{ if(l.length) localStorage.setItem(PL2_MOMENTS_KEY, JSON.stringify(l.slice(-30))); else localStorage.removeItem(PL2_MOMENTS_KEY); }catch(e){} }
 function pl2QueueMapMoment(mapId, key, rank){ if(!mapId || !key) return; const l = pl2LoadMoments().filter(x=> !(x.map === mapId && x.key === key)); l.push({map: mapId, key, rank: rank || null, at: Date.now()}); pl2SaveMoments(l); }
@@ -43029,7 +43030,7 @@ function rewardsPanelHTML(m){
     pl2Mat.forEach(([id, n])=> tiles.push(`<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}${n > 1 ? `<b class="pl2-rw-n">×${n}</b>` : ''}</div>`));
     const stack = tiles.length > 1;
     const body = tiles.map((t, k)=> stack ? `<div class="pl2-sk" style="--i:${k}">${t}</div>` : t).join(''); // a wrapper per card holds its place in the stack (the results' unlock beat tweens the card itself with GSAP)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? ` tabindex="0" role="group" aria-label="${escapeAttr(TX('results.cards-won') + ' ×' + tiles.length)}"` : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? pl2StackAttrs(TX('results.cards-won') + ' ×' + tiles.length) : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.

@@ -3384,5 +3384,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "விளையாடும்போது, எதிரே உள்ள எதிரிக்கு {n} அச்சுறுத்தல்: ஒவ்வொன்றும் −1 தாக்குதல், −1 திறன் சேதம்.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "ஒவ்வொரு சுற்றின் முடிவிலும், அலகு தாக்கும்போதும் திறன் பயன்படுத்தும்போதும் ஒரு அச்சுறுத்தல் விலகும். தூய்மைப்படுத்தல் நீக்கும்.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name} {target}-ஐ அச்சுறுத்துகிறது: {n} அச்சுறுத்தல் (ஒவ்வொன்றும் −1 தாக்குதல், திறன் சேதம்).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "அச்சுறுத்தல் {n}: −{n} தாக்குதல், திறன் சேதம்; ஒவ்வொரு சுற்றும் ஒவ்வொரு செயலிலும் ஒன்று விலகும்"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "அச்சுறுத்தல் {n}: −{n} தாக்குதல், திறன் சேதம்; ஒவ்வொரு சுற்றும் ஒவ்வொரு செயலிலும் ஒன்று விலகும்",
+ "⚡ This chip is a trigger — read the card.": "⚡ இந்த சிப் ஒரு தூண்டி — அட்டையைப் படியுங்கள்.",
+ "Co-op": "கூட்டு",
+ "reward": "பரிசு",
+ "{rank} reward": "{rank} பரிசு",
+ "Pack {n}": "பொதி {n}"
 }

@@ -3383,5 +3383,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "Saat dimainkan, musuh di depannya mendapat {n} Gentar: masing-masing −1 Serangan dan −1 kerusakan skill.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "Satu Gentar hilang di akhir tiap ronde dan setiap kali unit menyerang atau memakai skill. Pembersihan menghapusnya.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name} menggentarkan {target}: {n} Gentar (masing-masing −1 Serangan dan kerusakan skill).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Gentar {n}: −{n} Serangan dan kerusakan skill; satu hilang tiap ronde dan tiap aksi"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Gentar {n}: −{n} Serangan dan kerusakan skill; satu hilang tiap ronde dan tiap aksi",
+ "⚡ This chip is a trigger — read the card.": "⚡ Chip ini adalah pemicu — baca kartunya.",
+ "Co-op": "Ko-op",
+ "reward": "hadiah",
+ "{rank} reward": "Hadiah {rank}",
+ "Pack {n}": "Paket {n}"
 }

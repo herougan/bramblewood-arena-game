@@ -3380,5 +3380,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "Al jugarse, el enemigo de enfrente recibe {n} Intimidación: cada una es −1 Ataque y −1 de daño de habilidad.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "Una Intimidación cae al final de cada ronda y cada vez que la unidad ataca o usa una habilidad. Purificar las quita.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name} intimida a {target}: {n} Intimidación (−1 Ataque y daño de habilidad cada una).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Intimidado {n}: −{n} Ataque y daño de habilidad; cae una cada ronda y en cada acción"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "Intimidado {n}: −{n} Ataque y daño de habilidad; cae una cada ronda y en cada acción",
+ "⚡ This chip is a trigger — read the card.": "⚡ Esta ficha es un disparador — lee la carta.",
+ "Co-op": "Cooperativo",
+ "reward": "recompensa",
+ "{rank} reward": "Recompensa {rank}",
+ "Pack {n}": "Sobre {n}"
 }

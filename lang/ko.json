@@ -3384,5 +3384,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "낼 때 맞은편 적이 위축 {n}을 받습니다: 하나당 공격 −1, 스킬 피해 −1.",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "위축은 라운드가 끝날 때마다, 그리고 유닛이 공격하거나 스킬을 쓸 때마다 하나씩 사라집니다. 정화로 제거됩니다.",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name}이(가) {target}을(를) 위축시킵니다: 위축 {n} (하나당 공격·스킬 피해 −1).",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "위축 {n}: 공격·스킬 피해 −{n}; 라운드와 행동마다 하나씩 사라짐"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "위축 {n}: 공격·스킬 피해 −{n}; 라운드와 행동마다 하나씩 사라짐",
+ "⚡ This chip is a trigger — read the card.": "⚡ 이 칩은 트리거예요 — 카드를 읽어 보세요.",
+ "Co-op": "협동",
+ "reward": "보상",
+ "{rank} reward": "{rank} 보상",
+ "Pack {n}": "팩 {n}"
 }

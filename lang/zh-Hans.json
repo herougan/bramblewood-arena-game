@@ -3381,5 +3381,10 @@
  "When played, the enemy facing it gets {n} Daunt: each is −1 Attack and −1 skill damage.": "打出时，对面的敌人获得 {n} 层威慑：每层 −1 攻击、−1 技能伤害。",
  "A Daunt counter falls off at each round’s end and each time the unit swings or uses a skill. Cleanse takes them off.": "每回合结束时，以及该单位每次攻击或使用技能时，掉 1 层威慑。净化可移除。",
  "{name} daunts {target}: {n} Daunt (−1 Attack and skill damage each).": "{name} 威慑了 {target}：{n} 层威慑（每层 −1 攻击与技能伤害）。",
- "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "威慑 {n}：−{n} 攻击与技能伤害；每回合与每次行动掉 1 层"
+ "Daunted {n}: −{n} Attack and skill damage; one falls off each round and each time it acts": "威慑 {n}：−{n} 攻击与技能伤害；每回合与每次行动掉 1 层",
+ "⚡ This chip is a trigger — read the card.": "⚡ 这个小标记是触发效果 — 读一读卡牌。",
+ "Co-op": "合作",
+ "reward": "奖励",
+ "{rank} reward": "{rank} 奖励",
+ "Pack {n}": "卡包 {n}"
 }
