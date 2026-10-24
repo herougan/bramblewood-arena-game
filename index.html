@@ -2522,6 +2522,18 @@
   /* 2026-10-21 (package UI3, owner 18:52: "things with 0 attack should probably not display their attack anyway!"): no Attack plate on a card whose Attack is 0 (structures); the Health plate stays in its corner. A buff above 0 clears the class (updateCardAtkDisplay). */
   .card-tile .stats .atk.is-atk-zero{display:none !important;}
   .board-card.has-shield .stats .hp{color:#6cc4ff; text-shadow:0 0 6px rgba(70,160,255,.75);}
+  /* 2026-10-24 (package PL1, owner 21:20 #2): lethal Poison (Poison >= Health, pl1PoisonLethal): the Health goes poison green with bubbles
+     rising off its plate, and the poison pool stands higher on the card. A Shield's blue still wins (it soaks the next hit, not the ticks). */
+  .board-card.pl1-lethal:not(.has-shield) .stats .hp{color:#8cff52 !important; text-shadow:0 0 6px rgba(110,255,60,.85), 0 0 2px #1d4a0c !important;}
+  .board-card.pl1-lethal:not(.has-shield) .card-tile .hp{z-index:6; background:rgba(14,46,8,.92) !important; box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(140,255,82,.85), 0 0 8px rgba(110,255,60,.6);}
+  .board-card.pl1-lethal:not(.has-shield) .stats .hp i.sg{filter:hue-rotate(95deg) saturate(1.4) brightness(1.1);}
+  .board-card.pl1-lethal .stats .hp::after{content:''; position:absolute; left:10%; right:10%; bottom:60%; height:150%; pointer-events:none;
+    background:radial-gradient(circle at 20% 80%, rgba(170,255,110,.95) 0 1.6px, transparent 2.2px), radial-gradient(circle at 62% 70%, rgba(140,255,80,.9) 0 2.2px, transparent 2.8px), radial-gradient(circle at 85% 90%, rgba(200,255,150,.9) 0 1.3px, transparent 1.9px);
+    background-size:100% 100%; animation:pl1LethalBub 1.6s ease-in infinite;}
+  .board-card.pl1-lethal .fxd-psn-svg{height:18% !important; transition:height .5s ease-out;}
+  .board-card.pl1-lethal .fxd-st-poison{--psn-wash:48%;}
+  @keyframes pl1LethalBub{0%{transform:translateY(40%); opacity:0;} 25%{opacity:1;} 100%{transform:translateY(-35%); opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.pl1-lethal .stats .hp::after{animation:none; opacity:.8;} }
   .board-card.has-shield .card-tile .hp{box-shadow:0 1px 3px rgba(0,0,0,.55), inset 0 0 0 1px rgba(108,196,255,.6);}
   @keyframes lowHpTremble{0%,78%,100%{translate:0 0;} 81%{translate:-1.5px 0;} 84%{translate:1.5px .5px;} 87%{translate:-1px 0;} 90%{translate:1px 0;} 93%{translate:0 0;}}
   @keyframes idleBreathe{0%,100%{translate:0 0;} 50%{translate:0 -1.5px;}}
@@ -4225,6 +4237,12 @@
   @keyframes fsBob{0%,100%{translate:0 0;} 50%{translate:0 -8px;}}
   .faction-showcase .fs-cards{display:flex; gap:8px;}
   .faction-showcase .fs-cards .card-tile{width:min(9vw, 112px); box-shadow:0 10px 22px rgba(0,0,0,.5);}
+  /* 2026-10-24 (package PL1, P24-1): the example cards turn over to other cards of the faction */
+  .faction-showcase .pl1-fsf{perspective:700px;}
+  .faction-showcase .pl1-fsf-in{position:relative; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+  .faction-showcase .pl1-fsf.is-down .pl1-fsf-in{transform:rotateY(180deg);}
+  .faction-showcase .pl1-fsf-front, .faction-showcase .pl1-fsf-back{backface-visibility:hidden; -webkit-backface-visibility:hidden;}
+  .faction-showcase .pl1-fsf-back{position:absolute; inset:0; transform:rotateY(180deg); border-radius:10px; box-shadow:0 10px 22px rgba(0,0,0,.5);}
   .faction-showcase .fs-flash{position:absolute; inset:0; background:radial-gradient(circle at 50% 50%, rgba(255,240,200,.55), transparent 60%); opacity:0;}
   @media (max-width:820px), (hover:none){ .faction-showcase{display:none;} }
   .faction-choice-row{display:flex; gap:18px; justify-content:center; flex-wrap:wrap; margin:8px 0 18px;}
@@ -10309,6 +10327,11 @@
   @media (prefers-reduced-motion:reduce){ .wl-ascent-beam, .wl-ascent-tower i.is-next{animation:none !important;} }
   /* The XP bar at the top of a Victory card (2026-10-18, package RW follow-up, owner 23:32: "Should the reward screen show the exp bar
      filling up on the top? Then we can remove the toast."; FX.F.xpBarHTML, rewardXpBarHTML): top left, clear of the 👀 / ✕ corner. */
+  /* 2026-10-24 (package PL1, P24-3): a Conquest fight's XP bar, on the map once you are back */
+  .pl1-xp-float{position:fixed; left:50%; top:max(70px, 9vh); z-index:9000; width:min(480px, calc(100vw - 32px)); transform:translateX(-50%); pointer-events:none; animation:pl1XpIn .3s ease-out both; transition:opacity .4s, transform .4s;}
+  .pl1-xp-float .fxf-xp{width:100%; margin:0; box-shadow:0 8px 22px rgba(0,0,0,.45); background:rgba(14,10,4,.82);}
+  .pl1-xp-float.is-out{opacity:0; transform:translate(-50%, -10px);}
+  @keyframes pl1XpIn{from{opacity:0; transform:translate(-50%, -12px);}}
   .winloss-card .wl-xp{display:block; margin:0 0 4px;} .winloss-card .wl-xp .fxf-xp{margin:0; width:min(460px, calc(100% - 92px));}
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
@@ -10739,6 +10762,18 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .shelf-bundle .booster.is-l{rotate:-12deg; translate:-88% 4%;} .shelf-bundle .booster.is-r{rotate:12deg; translate:-12% 4%;}
 .bundle-twine{position:absolute; left:8%; right:8%; top:56%; height:4px; border-radius:2px; background:repeating-linear-gradient(90deg, #9a6a3a 0 4px, #c39a68 4px 7px); box-shadow:0 1px 1px rgba(0,0,0,.3);}
 .bundle-twine::after{content:'🎀'; position:absolute; left:50%; top:50%; translate:-50% -55%; font-size:18px; filter:sepia(.7) saturate(.8);}
+/* 2026-10-24 (package PL1, owner P24-4: "The central band over the booster packs: it isn't clear it's not part of the pack; make it a ribbon
+   hugging the packs; show it only when there is more than 1 pack"): a single pack has no band any more (its name is on the tape under it);
+   a set is tied with one satin ribbon that wraps round the fanned packs (it runs past their edges and folds back), with a bow and the count. */
+.booster .booster-band{display:none;}
+.bundle-twine.pl1-ribbon{left:-8%; right:-8%; top:52%; height:auto; min-height:15px; padding:0; border-radius:0; z-index:4; background:none; box-shadow:none; display:block;}
+.pl1-rib-band{display:flex; align-items:center; justify-content:center; min-height:15px; font-style:normal;
+  background:linear-gradient(180deg, #ef6a6f 0, #d23a44 40%, #a8232f 100%); box-shadow:inset 0 1px 0 rgba(255,220,210,.7), inset 0 -1px 0 rgba(90,0,10,.45);
+  clip-path:polygon(0 0, 100% 0, calc(100% - 6px) 50%, 100% 100%, 0 100%, 6px 50%); filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));}
+.bundle-twine.pl1-ribbon::after{content:'🎀'; top:0; translate:-50% -70%; font-size:20px; filter:none; z-index:1;}
+.pl1-rib-band b{font:800 11px/1 'Baloo 2',system-ui,sans-serif; color:#fff6e6; text-shadow:0 1px 0 rgba(80,0,10,.6); letter-spacing:.04em;}
+.pl1-session-kinds{display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:0 0 8px;}
+.pl1-session-kinds span{padding:2px 10px; border-radius:999px; background:rgba(255,255,255,.1); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); font:700 12px/1.5 'Nunito',system-ui,sans-serif; color:#fff3dc;}
 /* crates */
 .shelf-crate{position:relative; display:block; width:calc(clamp(60px,8vw,78px) * 1.8); height:calc(clamp(60px,8vw,78px) * 1.2);}
 .shelf-crate .booster{position:absolute; bottom:30%; left:50%; translate:-50% 0; --bw:clamp(46px,6vw,60px);}
@@ -13271,6 +13306,11 @@ html[data-fx="none"] .fg-rv-float{animation:none;}
 .skirmish-editor .se-h-row{flex-wrap:wrap;} .skirmish-editor .se-h-row .se-h{flex:1 1 220px;} .skirmish-editor .se-h-row .btn{white-space:nowrap;}
 .mp-tier-h{grid-column:1 / -1; margin:6px 0 0; padding:4px 2px; font-size:15px; border-bottom:1px solid var(--surface-border);} .mp-tier-h small{font-size:12px; color:var(--ink-muted);}
 .dbp-pool.is-pooled .dbp-stack .ps-count{font-size:calc(11px + 1cqw);}
+/* 2026-10-24 (package PL1, owner P24-20, SS#4: "The copy-count pill at the card's bottom right covers the Health. Make it and its pill a bit
+   smaller, and move it further into the bottom-right corner."): smaller type, a slimmer pill and ring, and its centre on the card's corner. */
+.pool-stack .ps-count{right:-11px; bottom:-10px; padding:0 4px; min-width:0; font-size:9.5px; line-height:1.3; box-shadow:0 0 0 1.5px #e9c46a;}
+.dbp-stack .ps-count{font-size:9px;}
+.dbp-pool.is-pooled .dbp-stack .ps-count{font-size:calc(8.5px + .45cqw);}
 .mp-more{grid-column:1 / -1; justify-self:center;} .mp-empty{grid-column:1 / -1; text-align:center;}
 .mp-note{margin:0; padding:6px 10px; border-radius:8px; background:var(--surface-2); border:1px solid var(--surface-border); font-weight:700;}
 .mp-warn{display:flex; flex-wrap:wrap; align-items:center; gap:6px 8px; padding:8px 10px; border-radius:10px; background:rgba(214,138,30,.16); border:1px solid rgba(214,138,30,.6); font-size:13px;} .mp-warn:empty{display:none;}
@@ -37696,6 +37736,39 @@ M.nodeCleared = function(node, opts){
     .to(seal, {scale:1.08, duration:.08, yoyo:true, repeat:1})
     .to(seal, {x:c.w*.36, y:-c.h*.36, scale:.32, opacity:0, duration:.4, ease:'power2.in'}, '+=.42'));
 };
+// 2026-10-24 (package PL1, owner P24-5: "The rank appears on the battlefield then fades (like the red S). Instead: the normal emblem fades in
+// quickly on the skirmish, then jumps and spirals into the bottom right, as if the skirmish detail now opens with that emblem and it came
+// from there."): the rank hex (.rank-hex, as on the results and the fight panel) fades in over the cleared fight, hops, then spirals down
+// into the bottom-right: onto the fight panel's corner emblem when the panel is open (it pulses as it lands), else the fight's own
+// bottom-right corner. Leaves and a gold ring on the landing. Reduced motion: a short fade on the node.
+css('pl1-rank', `.fxe-pl1-rank{z-index:1222; display:grid; place-items:center;}
+.fxe-pl1-rank .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; transform:none !important; margin:0 !important;}
+.rank-hex.pl1-rank-land{animation:pl1RankLand .45s ease-out;}
+@keyframes pl1RankLand{0%{scale:1;} 35%{scale:1.3;} 100%{scale:1;}}`);
+M.nodeRankEmblem = function(node, rank, opts){
+  opts = opts || {}; const g = G(); if(!node || !rank) return Promise.resolve();
+  const c = centre(node), size = 58, o = layer('fxe-pl1-rank', `<span class="rank-hex rank-${rank}"><i></i><b>${rank}</b></span>`);
+  Object.assign(o.style, {left:(c.x - size/2) + 'px', top:(c.y - 32) + 'px', width:size + 'px', height:'64px'});
+  const panelHex = ()=>{ const t = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'); const r = t && t.getBoundingClientRect(); return r && r.width && r.bottom > 0 && r.top < innerHeight ? t : null; };
+  const target = ()=>{ const t = panelHex(); if(t){ const r = t.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, s: r.width / size, el:t}; }
+    return {x:c.x + c.w*.42, y:c.y + c.h*.42, s:.42, el:null}; };
+  if(!g || reduced()){ return new Promise(res=> later(()=>{ o.remove(); res(); }, 700)); }
+  if(/S/.test(rank)) sound('rareRise', false); else sound('woodKnock');
+  return new Promise(res=>{
+    const tl = g.timeline({onComplete:()=>{ o.remove(); res(); }});
+    tl.fromTo(o, {opacity:0, scale:.6}, {opacity:1, scale:1.15, duration:.16, ease:'power2.out'})
+      .to(o, {y:-26, scale:1.2, duration:.2, ease:'power2.out'})
+      .to(o, {y:0, scale:1, duration:.18, ease:'power2.in'})
+      .add(()=>{ const t = target(), sx = c.x, sy = c.y, dx = t.x - sx, dy = t.y - sy, turns = 1.15, R0 = Math.min(80, Math.hypot(dx, dy) * .35 + 30), st = {k:0};
+        g.to(st, {k:1, duration:.85, ease:'power2.in', onUpdate:()=>{ const k = st.k, ang = k*turns*Math.PI*2, rad = R0*(1 - k);
+            const x = dx*k + Math.cos(ang)*rad - rad, y = dy*k + Math.sin(ang)*rad;
+            g.set(o, {x, y, rotation:k*360*turns, scale:1 + (t.s - 1)*k}); },
+          onComplete:()=>{ const e = target(); if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
+            ring(e.x, e.y, '#f1c65a', 70, .5); burst(e.x, e.y, ['🍃','✦','🍂','✧'], {dist:30, dur:.5, size:12}); sound('woodKnock'); tl.resume(); }});
+        tl.pause(); })
+      .to(o, {opacity:0, duration:.2, delay:.05});
+  });
+};
 // B: an ink tick drawn by a quick nib, with a spatter.
 M.nodeCleared_B = function(node, opts){
   opts = opts || {}; const g = G(); if(!node || !g) return Promise.resolve();
@@ -38293,7 +38366,8 @@ async function playReturn(mapId, d, progress){
     if(!cv.isConnected) return;
     hideNew(cv, pend);
     for(const k of d.newDone){ const n = q(cv, k); if(!n) continue; const rank = progress && progress.ranks ? progress.ranks[conquestIdOf(mapId, k)] : null;
-      await M.nodeCleared(n, {rank: rank || '✓'}); if(rank && n.isConnected) M.nodeRank(n, rank); }
+      // 2026-10-24 (package PL1, owner P24-5): a ranked clear shows the normal emblem (M.nodeRankEmblem), not the red wax seal and its chip
+      if(rank && /^[A-Z]+$/.test(rank)) await M.nodeRankEmblem(n, rank); else await M.nodeCleared(n, {rank: rank || '✓'}); }
     for(const k of d.newVis){ const cur = document.getElementById('conquestCanvas'); if(!cur) return; const n = q(cur, k); if(!n){ continue; }
       if(d.chance.has(k)){ await M.chanceNode(n); continue; }
       hideNew(cur, pend.slice(pend.indexOf(k))); // a re-render meanwhile drew them again
@@ -41957,7 +42031,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=11afeef18f", "es": "assets/lang/es.js?v=59ba68d229", "fr": "assets/lang/fr.js?v=556d35f4b8", "id": "assets/lang/id.js?v=078c8b3a6b", "it": "assets/lang/it.js?v=d3e0c3e00f", "ja": "assets/lang/ja.js?v=767149076c", "ko": "assets/lang/ko.js?v=bd9027f905", "pt": "assets/lang/pt.js?v=1a7f0b1de5", "ta": "assets/lang/ta.js?v=2de5a0e21c", "tl": "assets/lang/tl.js?v=aa7531ae06", "zh-Hans": "assets/lang/zh-Hans.js?v=aebadfc0f1", "zh-Hant": "assets/lang/zh-Hant.js?v=a0279b0920"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=7d2606aaf5", "es": "assets/lang/es.js?v=2b4080c3ae", "fr": "assets/lang/fr.js?v=eb782b737e", "id": "assets/lang/id.js?v=ac29b2a163", "it": "assets/lang/it.js?v=f5146e258b", "ja": "assets/lang/ja.js?v=29d0a866b8", "ko": "assets/lang/ko.js?v=8a1c90b379", "pt": "assets/lang/pt.js?v=2cadc5907e", "ta": "assets/lang/ta.js?v=f62d25c38e", "tl": "assets/lang/tl.js?v=5c900efbb2", "zh-Hans": "assets/lang/zh-Hans.js?v=43ad3f74b9", "zh-Hant": "assets/lang/zh-Hant.js?v=d563a375b1"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -44614,7 +44688,36 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.h1-detail-how": "Set or take out gems in the Forge's 💎 Socket tab.",
   "toast.h1-socket-set": "💎 {gem} set in {name} ({fx}).",
   "toast.h1-socket-removed": "💎 {gem} taken out of {name}. It is back with your Materia.",
-  "toast.h1-socket-removed-lost": "💎 {gem} taken out of {name}. It broke."
+  "toast.h1-socket-removed-lost": "💎 {gem} taken out of {name}. It broke.",
+  "ui.pl1-next-pack": "Next pack ({n} left)",
+  "ui.pl1-all-packs": "All {n} packs",
+  "ui.pl1-session-title": "{n} packs opened",
+  "ui.pl1-boon-card": "{have}/{total} {theme}",
+  "ui.pl1-boon-theirs": "Theirs: half their deck {theme}",
+  "ui.pl1-boon-blindFury": "Their units that fight blind (Blind, or blind in the dark) hit for double.",
+  "ui.pl1-boon-hiveChorus": "Their Swarm counts every ally twice.",
+  "ui.pl1-boon-risingTide": "Their Tide units are Quick and have +1 Attack while the tide is in.",
+  "ui.pl1-boon-secondBurrow": "The first time one of their burrowers (rodents, hedgehogs, rabbits, moles, worms, badgers) dies, it goes back to their hand.",
+  "ui.pl1-boon-wildRage": "Their Rage wakes below 3/4 Health, not 1/2.",
+  "ui.pl1-boon-snowVeil": "Their Evasive units dodge 2 in 3, not 1 in 2.",
+  "ui.pl1-boon-sandVeil": "In a Sandstorm, attacks at their Desert units miss 1 in 2, not 1 in 4.",
+  "ui.pl1-boon-restlessDead": "Their Revive brings a unit back at full Health, not 1.",
+  "ui.pl1-boon-emberBorn": "Their Volcanic units are immune to heat: lava, Scorching and fire arrows.",
+  "ui.pl1-boon-siegeTrain": "Their Siege counts double.",
+  "ui.pl1-boon-venomGlands": "Their Poison gives twice the Poison.",
+  "ui.pl1-boon-skyAmbush": "Their Flyers are Quick.",
+  "ui.pl1-boon-theme-blindFury": "Cave",
+  "ui.pl1-boon-theme-hiveChorus": "Insect",
+  "ui.pl1-boon-theme-risingTide": "Tide",
+  "ui.pl1-boon-theme-secondBurrow": "burrowers",
+  "ui.pl1-boon-theme-wildRage": "Rage or Berserk",
+  "ui.pl1-boon-theme-snowVeil": "Tundra, Taiga or Frost",
+  "ui.pl1-boon-theme-sandVeil": "Desert",
+  "ui.pl1-boon-theme-restlessDead": "Undead",
+  "ui.pl1-boon-theme-emberBorn": "Volcanic",
+  "ui.pl1-boon-theme-siegeTrain": "Siege",
+  "ui.pl1-boon-theme-venomGlands": "Reptile",
+  "ui.pl1-boon-theme-skyAmbush": "Flying"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -48880,7 +48983,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5de03dde54dc', BUILD_CARD_HASH = '5ff3f54e4ee4ebfb9688ef2e70a5e46e834b8d4b0e4182b0fb2336450ba2c8ad';
+const BUILD_ID = '338e5e0971c3', BUILD_CARD_HASH = '5ff3f54e4ee4ebfb9688ef2e70a5e46e834b8d4b0e4182b0fb2336450ba2c8ad';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -51671,7 +51774,7 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-10 (user: "During the card detail, it should show Attack = Base + Bonus where the bonus number is blue"):
   // base = the printed Attack (at this card's level); bonus = everything on top (Esprit, Berserk, Rally, Worship...).
   const liveC = liveCard ? (currentCardByUid(liveCard.uid) || liveCard) : null;
-  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0) + (liveC.sk1Atk||0) /* Formation / Isolation (SK1) */) : d.attack;
+  const effAtk = liveC ? ((liveC.atk||0) + (liveC.rallyBonus||0) + (liveC.worshipBonus||0) + (liveC.phaseAtk||0) + (liveC.sk1Atk||0) /* Formation / Isolation (SK1) */ + pl1AuraAtk(liveC) /* PL1 (2026-10-24, P24-12) */) : d.attack;
   const baseAtk = Number(d.attack)||0, atkBonus = effAtk - baseAtk;
   // 2026-10-11 (user): "⚔ 5 (2 + 3)" — total and base in red, the bonus in blue.
   // 2026-10-14 (user: "In the card details tooltip - it shows 5 (6+1 (blue) - 2(green)) for example"): the stat as it stands, then
@@ -58986,11 +59089,19 @@ function maybeRarityLesson(){
   DIALOGUES.lesson_rarity = rarityLessonScript(d);
   try{ playDialogue('lesson_rarity', {force:true}); }catch(e){}
 }
+// 2026-10-24 (package PL1, owner P24-18: "Entering Gannet Cliffs starts a Wandering Trader dialogue; saying OK, it then says you have to
+// progress further to see it."): root cause, the Wandering Traveller's leader lesson (a Heroic card won, e.g. Map 2's boss) offers "Show
+// me." -> the Camp (tab:deck), but a player who never tapped the Camp's map tile has no Camp yet, so switchTab said "That opens up later".
+// The lesson now waits for the same condition the Camp tab uses (tabOpen('deck')), and the wait survives a reload.
+const PL1_LEADER_LESSON_KEY = 'bramblewood_pending_leader_lesson_v1';
+function pl1LeaderLessonWaitSave(id){ try{ if(id) localStorage.setItem(PL1_LEADER_LESSON_KEY, id); else localStorage.removeItem(PL1_LEADER_LESSON_KEY); }catch(e){} }
+setTimeout(()=>{ try{ const id = localStorage.getItem(PL1_LEADER_LESSON_KEY); if(id && !pendingLeaderLesson){ pendingLeaderLesson = id; maybeLeaderLesson(); } }catch(e){} }, 8000);
 function maybeLeaderLesson(){
   if(!pendingLeaderLesson) return;
+  if(!tabOpen('deck')){ pl1LeaderLessonWaitSave(pendingLeaderLesson); setTimeout(maybeLeaderLesson, 5000); return; } // PL1: not before the Camp is open
   if(typeof matchState !== 'undefined' && matchState && !matchState.over){ setTimeout(maybeLeaderLesson, 4000); return; } // never in the middle of a fight
   if(document.querySelector('.winloss-card, .starter-step, .dialogue-box')){ setTimeout(maybeLeaderLesson, 3000); return; }
-  const d = getCardDefs()[pendingLeaderLesson] || {}; pendingLeaderLesson = null;
+  const d = getCardDefs()[pendingLeaderLesson] || {}; pendingLeaderLesson = null; pl1LeaderLessonWaitSave(null);
   // 2026-10-14 (user: "When you do get a heroic card for your first time, the tutorial springs back up again, saying this guy can be
   // your leader. If you have not seen the prior tutorial, it also says ... 'Only heroic rarity cards and above can be leader cards'").
   const sawRule = !!loadDialogueFlags()[LEADER_RULE_FLAG]; setDialogueFlag(LEADER_RULE_FLAG, true);
@@ -64119,7 +64230,7 @@ function fieldConditionRows(r){
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   // A selfish boon (2026-10-24, package DF3): the enemy's own field effect, last so it tops the fan. Its count (on / off, how many of the
   // enemy's cards share the theme) is filled in where the deck is known: matchFieldCondRows (the fight) and skirmishFieldHTML (the panel).
-  if(r.boon && boonDefOf(r.boon)){ const row = add('boon', boonDefOf(r.boon).icon, boonName(r.boon), boonText(r.boon), '', boonName(r.boon)); row.selfish = r.boon; }
+  if(r.boon && boonDefOf(r.boon)){ const row = add('boon', boonDefOf(r.boon).icon, boonName(r.boon), boonShortText(r.boon), '', boonName(r.boon)); row.selfish = r.boon; } // PL1 (2026-10-24): the short words
   return rows;
 }
 // ---- Selfish boons (2026-10-24, package DF3; DF-3, owner 22:23 #6 "only in challenge skirmishes", 01:57 "marked with a redder outline").
@@ -64132,7 +64243,13 @@ function boonCountOf(deck, id){ try{ return boonDefOf(id) ? selfishBoonCount(get
 function boonCountLine(st){ return st ? TX(st.on ? 'ui.df3-on' : 'ui.df3-off', {have: st.have, total: st.total, need: st.need}) : ''; }
 function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? m.engine.boonState(m.players) : null; }catch(e){ return null; } }
 // the row as the deck makes it: the count on the card's face and after its text
-function boonRowWithCount(row, st){ if(!row || !st) return row; const line = boonCountLine(st); row.short = line; row.text = row.text + ' ' + line; row.boonOn = !!st.on; return row; }
+// 2026-10-24 (package PL1, owner 21:20 #1, on the Venom Glands card: "Too much explanation"): the Environment card says only the count and the
+// theme ("11/17 Reptile", ui.pl1-boon-card) and its detail is the effect in one line plus "Theirs: half their deck Reptile" (boonShortText);
+// was the effect, "Theirs only: on while at least half their deck is Reptile." and "On: 11 of 17 enemy cards share the theme". The editor
+// rows keep the long words (boonText, boonCountLine).
+function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
+function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? TX('ui.pl1-boon-card', {have: st.have, total: st.total, theme: boonTheme(row.selfish)}) : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
@@ -65620,14 +65737,42 @@ function rewardXpBarUp(){
   const m = typeof matchState !== 'undefined' ? matchState : null;
   return !!(m && m.winner === 1 && m.xpBefore != null && !m.winModalDismissed && resultsShowXpBar(Object.assign({}, m, {over:true}))); // the results are up, or about to be
 }
+// 2026-10-24 (package PL1, owner P24-3: "Show the XP reward only when leaving the skirmish for the conquest map."): a Conquest fight's results
+// no longer show the XP bar. The XP still counts the moment it is won (and its toasts stay quiet while the results are up); the bar fills
+// on the map once you are back there (pl1XpOnMapShow): after a new map's veil and title banner, before the packs open.
+function pl1XpOnMap(m){ return !!(m && m.mode === 'conquest'); }
+let pl1XpPending = null;
+function pl1NoteXpForMap(m){
+  try{ if(!m || !pl1XpOnMap(m) || m.winner !== 1 || m.xpBefore == null || m.rewardDuplicate || !resultsShowXpBar(Object.assign({}, m, {over:true}))) return;
+    const now = loadXp().xp; if(!(now > m.xpBefore) && !pl1XpPending) return;
+    pl1XpPending = {from: pl1XpPending ? Math.min(pl1XpPending.from, m.xpBefore) : m.xpBefore, at: Date.now()};
+    pl1XpOnMapSoon(); }catch(e){}
+}
+function pl1XpOnMapSoon(tries){
+  tries = tries || 0; if(!pl1XpPending || tries > 400) return;
+  setTimeout(()=>{ try{
+    const cv = document.getElementById('conquestCanvas'), onMap = cv && cv.offsetParent && currentTab === 'play' && !(typeof matchState !== 'undefined' && matchState);
+    const busy = document.querySelector('.map-veil, .fxg-title-stage, .winloss-overlay, #deckSwapOverlay') || mapTitleHold() || (()=>{ const ov = document.getElementById('packOpenOverlay'); return !!(ov && !ov.hidden); })();
+    if(onMap && !busy) pl1XpOnMapShow(); else pl1XpOnMapSoon(tries + 1); }catch(e){ pl1XpPending = null; } }, tries ? 300 : 500);
+}
+function pl1XpOnMapShow(){
+  const p = pl1XpPending; pl1XpPending = null; if(!p || !xpBarReady()) return;
+  const to = loadXp().xp; if(!(to > p.from)) return;
+  const spec = xpBarSpec(p.from, to), at = xpBarSpec(p.from, p.from); at.gainText = spec.gainText;
+  const el = document.createElement('div'); el.className = 'pl1-xp-float'; el.setAttribute('role', 'status'); el.innerHTML = window.FX.F.xpBarHTML(at);
+  document.body.appendChild(el);
+  const bar = el.querySelector('.fxf-xp'), calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
+  const done = ()=>{ setTimeout(()=>{ el.classList.add('is-out'); setTimeout(()=>{ el.remove(); refreshLevelBadge(); }, 400); }, calm ? 1600 : 1100); };
+  Promise.resolve(window.FX.F.xpBarFill(bar, spec, {calm, delay:.25, sound: k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} }})).then(done, done);
+}
 function rewardXpBarHTML(m){
-  if(!resultsShowXpBar(m)) return '';
+  if(!resultsShowXpBar(m) || pl1XpOnMap(m)) return '';
   const shown = m.xpShown != null ? m.xpShown : m.xpBefore, spec = xpBarSpec(m.xpBefore, shown);
   const at = xpBarSpec(shown, shown); at.gainText = spec.gainText; at.gainShown = m.xpShown != null; // drawn where the fill last got to
   return `<div class="wl-xp">${window.FX.F.xpBarHTML(at)}</div>`;
 }
 function syncRewardXpBar(){
-  const m = typeof matchState !== 'undefined' ? matchState : null; if(!resultsShowXpBar(m)) return;
+  const m = typeof matchState !== 'undefined' ? matchState : null; if(!resultsShowXpBar(m) || pl1XpOnMap(m)) return; // PL1: a Conquest fight's XP fills on the map
   const bar = document.querySelector('.winloss-card .wl-xp .fxf-xp'); if(!bar) return;
   const from = m.xpShown != null ? m.xpShown : m.xpBefore, to = loadXp().xp; if(!(to > from) && m.xpShown != null) return;
   const spec = xpBarSpec(from, to); spec.gainText = to > m.xpBefore ? TX('results.xp-gain', {n: Math.round(to - m.xpBefore)}) : '';
@@ -69790,7 +69935,11 @@ const GD_SEAT_LABEL = {A:'ui.ar3-seat-front-left', B:'ui.ar3-seat-front-right', 
 const GD = {s:null, phase:'closed', kind:'local', code:'', sel:null, pitch:null, play:null, note:'', paid:{}, energyPaid:0, picks:null, picked:null, defs:null, defsHash:'',
   invites:[], inviteSub:null, server4p:null, roomId:null, floorEnd:null, endInfo:null, timerIv:null, joinTimer:null, leaveArm:0, hub:null, hoverAt:0, startSeed:0};
 // Open to players once the tutorial is done (and always in Admin Mode); the daily dungeons stay hidden (TU2) whatever this says.
-function gdPlayerOpen(){ try{ return !!CoopM && (dungeonsAdminView() || tutorialFullyDone()); }catch(e){ return false; } }
+// 2026-10-24 (package PL1, owner P24-13: "The Daily Dungeon tab is not available until something unlocks it."): a new player saw a
+// "Daily Dungeons" tab straight after the tutorial, holding only the Group Dungeon. It now opens once Map GD_OPEN_AFTER_MAP's last fight
+// is won (AR3-2's second option, "Only after a map is cleared (say Map 3)"), or with the first daily dungeon (dailyDungeonsOpen).
+const GD_OPEN_AFTER_MAP = 3;
+function gdPlayerOpen(){ try{ return !!CoopM && (dungeonsAdminView() || (tutorialFullyDone() && mapsPassed() >= GD_OPEN_AFTER_MAP)); }catch(e){ return false; } }
 function gdLocalPeerId(){ try{ let id = sessionStorage.getItem(GD_PEER_KEY); if(!id){ id = 'tab-' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem(GD_PEER_KEY, id); } return id; }catch(e){ return 'tab-' + Math.random().toString(36).slice(2, 10); } }
 function gdMyName(){ return (myProfile && myProfile.name) || TX('ui.ar3-you'); }
 function gdCastleHp(){ try{ const ch = brambleChar(CHARACTER_DEFS[myCharacterId] || CHARACTER_DEFS['castle']); return Math.max(1, Number(ch && ch.health) || 20); }catch(e){ return 20; } }
@@ -70686,7 +70835,7 @@ function openMultiDeckSwap(item){
   const finish = ()=>{ try{ if(swapped.length > 1) showToast(TX('toast.ui4-swapped-n', {n: swapped.length}), 'ok'); else if(swapped.length === 1) showToast(TX('toast.is-in-your-deck-in-place', {name: defs[swapped[0].in].name, name2: defs[swapped[0].out].name}), 'ok'); }catch(e){} close(); };
   const doSwap = ()=>{ if(busy) return; const tIn = pack[inSel], tOut = outSel;
     if(!(myDeckCounts[tOut] > 0) || !swapOutAllowed(tOut, tIn)) return; busy = true;
-    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck();
+    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck(); pl1NoteSwappedOut(tOut);
     done.add(inSel); outGone.add(tOut); swapped.push({in: tIn, out: tOut});
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
     ov.querySelector('.ds2-stage').classList.add('is-swapped'); ds2CrossSwap(ov);
@@ -70729,6 +70878,15 @@ let mapTitleHoldUntil = 0, mapTitleHoldSince = 0;
 // A map's title banner is due or on screen (FX.G's .fxg-title-stage): a swap window waits for it, at most ~9 s (2026-10-23, package RW4).
 function mapTitleHold(){ const on = Date.now() < mapTitleHoldUntil || !!document.querySelector('.fxg-title-stage');
   if(!on){ mapTitleHoldSince = 0; return false; } if(!mapTitleHoldSince) mapTitleHoldSince = Date.now(); if(Date.now() - mapTitleHoldSince > 9000){ mapTitleHoldUntil = 0; return false; } return true; }
+// 2026-10-24 (package PL1, owner P24-8, SS#1: "The two recommended cards bottom right are basic cards; why recommended? And they were just taken
+// out."): root cause, the right-hand column ("Not in your deck") offered any card you own outside the deck that beats a deck card, so the
+// Basics an earlier swap had just traded away came straight back as picks. It now leaves out the cards a swap may itself trade away
+// (starter-deck, Starter / Basic, tutorial and baby 1-stat cards, swapOutAllowed's own test) and every card a swap took out of the deck.
+const PL1_SWAPPED_OUT_KEY = 'bramblewood_swapped_out_v1';
+function pl1SwappedOut(){ try{ return new Set(JSON.parse(localStorage.getItem(PL1_SWAPPED_OUT_KEY) || '[]')); }catch(e){ return new Set(); } }
+function pl1NoteSwappedOut(id){ try{ const s0 = pl1SwappedOut(); s0.add(id); localStorage.setItem(PL1_SWAPPED_OUT_KEY, JSON.stringify([...s0].slice(-200))); }catch(e){} }
+function pl1SwapNeverOffer(k, defs){ const d = (defs || getCardDefs())[k]; if(!d) return true;
+  return pl1SwappedOut().has(k) || starterDeckCardIds().has(k) || d.rarity === 'starter' || d.rarity === 'basic' || !!d.basic || !!d.tutorial || (d.attack||0) + (d.health||0) <= 3; }
 function maybeOfferDeckSwap(){
   if(pendingDeckSwap && pendingDeckSwap.length && !(typeof matchState !== 'undefined' && matchState) && mapTitleHold()){ setTimeout(maybeOfferDeckSwap, 400); return; }
   if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending) return;
@@ -70756,7 +70914,7 @@ function maybeOfferDeckSwap(){
   const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
   const pitchOk = k=> !((defs[k].cost||0) > 0 && !pitchingUnlocked());
   const deckIds = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && swapEligibleDef(defs[k]));
-  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k) && swapClearlyBetter(defs[k], defs[o])))
+  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && !pl1SwapNeverOffer(k, defs) && deckIds.some(o=> swapOutAllowed(o, k) && swapClearlyBetter(defs[k], defs[o])))
     .sort((a, b)=> pw(b) - pw(a) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b)).slice(0, 2));
   const outListFor = inId=>{ const o2 = inId === id ? sOpts : null, rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId, o2));
     const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId) && swapClearlyBetter(defs[inId], defs[k], o2)) // 2026-10-19 (package MX): never a stronger deck card.sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
@@ -70795,7 +70953,7 @@ function maybeOfferDeckSwap(){
   const sw = ov.querySelector('#dsSwap'); setTimeout(()=>{ try{ sw.focus(); }catch(e){} }, 60);
   sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true; if(cancel) cancel.disabled = true; ov.classList.add('is-done');
     const tIn = inSel, tOut = outSel, dIn = defs[tIn], dOut = defs[tOut];
-    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck();
+    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck(); pl1NoteSwappedOut(tOut);
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
     ov.querySelector('.ds2-stage').classList.add('is-swapped');
     // 2026-10-23 (package UI4, owner: "Swapping the card should show the card going to the left and your card going to the right."):
@@ -71201,6 +71359,7 @@ function renderConquestSubTab(body){
   // swap screen"): while the map's title banner is due or playing, a waiting swap holds (maybeOfferDeckSwap reads mapTitleHold).
   try{ if(!tutPhase && !conquestLayoutEdit && !tutTitleWait){ let seenT = []; try{ seenT = JSON.parse(sessionStorage.getItem('bw_fxg_map_titles') || '[]'); }catch(e){}
     if(!seenT.includes(map.id)) mapTitleHoldUntil = Date.now() + ((document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300) + 700; } }catch(e){}
+  try{ if(armouryOpen() && pl1HeldPackCount() && !(typeof matchState !== 'undefined' && matchState)) releaseHeldPacks(); }catch(e){} // 2026-10-24 (package PL1, P24-19): packs held from an older save open now (after the banner)
   try{ if(!tutPhase && !conquestLayoutEdit && !tutTitleWait) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:isDailyDungeonMap(map) ? 'Daily dungeon' : map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
   // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
   // little darker and castle-dungeony. with dripping swamp shit"): Murgle Mayhem's theme is now FX.G's 'dungeon' (the ribbon banner in its
@@ -73724,6 +73883,42 @@ const FACTION_SHOWCASE = {
   otters: {title:'Rivergate Otters', blurb:'Shield walls, slick armour and stubborn river pride.', characters:['otter-centurion','otter-riverguard','otter-shieldback'], cards:['otter-kit','otter-paddler','otter-guard'], dir:-1},
   hummingbirds: {title:'Sunfeather Dominion', blurb:'Too fast to hit, too proud to lose.', characters:['crimson-wing-duelist-cadet','cobalt-talon-skirmisher','dominion-nestguard'], cards:['sunthroat-courier','violet-vane-fletcher','mosswing-laborer'], dir:1},
 };
+// 2026-10-24 (package PL1, owner P24-1: "both should show 3 Commons at first, then, like the main screen, slowly flip to other
+// cards of that faction at random"): each side's three example cards start as three of its Commons (Starters fill in when a side
+// has fewer than three Commons with art). Every few seconds one card on one side spins to its back and comes up as another card
+// of that faction, as the opening screen's fan does. A faction card is one with the Otter / Hummingbird archetype.
+const PL1_FACTION_ARCH = {otters:'Otter', hummingbirds:'Hummingbird'};
+function pl1FactionPool(key){
+  const defs = getCardDefs(), arch = PL1_FACTION_ARCH[key];
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; return d && d.art && !d.token && !d.test && !d.hero && (d.archetypes||[]).includes(arch); });
+}
+function pl1FactionStartCards(key){
+  const defs = getCardDefs(), pool = pl1FactionPool(key), f = FACTION_SHOWCASE[key] || {cards:[]};
+  const commons = pool.filter(id=> (defs[id].rarity||'common') === 'common').sort();
+  const starters = pool.filter(id=> defs[id].rarity === 'starter').sort();
+  const out = commons.slice(0, 3);
+  [...starters, ...f.cards].forEach(id=>{ if(out.length < 3 && defs[id] && !out.includes(id)) out.push(id); });
+  return out;
+}
+function pl1FsFlipHTML(d){ return `<div class="pl1-fsf"><div class="pl1-fsf-in"><div class="pl1-fsf-front">${cardTileHTML(d, {inPlay:true})}</div><div class="pl1-fsf-back ${cardBackClass(d)}" aria-hidden="true"></div></div></div>`; }
+function pl1FactionCardCycle(screen, layer){
+  if(reducedMotion()) return;
+  let turn = 0;
+  const t = setInterval(()=>{
+    if(!screen.isConnected || screen.hidden || loadFactionChoice()){ clearInterval(t); return; }
+    const defs = getCardDefs();
+    if(document.hidden) return;
+    const keys = Object.keys(FACTION_SHOWCASE), key = keys[turn++ % keys.length];
+    const panel = layer.querySelector(`[data-fs="${key}"]`); if(!panel) return;
+    const slots = [...panel.querySelectorAll('.pl1-fsf')]; if(!slots.length) return;
+    const shown = slots.map(el=> (el.querySelector('.card-tile')||{getAttribute:()=>null}).getAttribute('data-defid'));
+    const rest = pl1FactionPool(key).filter(id=> !shown.includes(id)); if(!rest.length) return;
+    const el = slots[Math.floor(Math.random()*slots.length)], next = rest[Math.floor(Math.random()*rest.length)]; if(!defs[next]) return;
+    el.classList.add('is-down');
+    setTimeout(()=>{ if(!defs[next]) return; const f = el.querySelector('.pl1-fsf-front'), b = el.querySelector('.pl1-fsf-back'); if(f) f.innerHTML = cardTileHTML(defs[next], {inPlay:true}); if(b) b.className = 'pl1-fsf-back ' + cardBackClass(defs[next]);
+      el.classList.remove('is-down'); if(panel.classList.contains('on')){ try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} } }, 650);
+  }, 2600);
+}
 function wireFactionShowcase(screen){
   if(!screen || screen.dataset.showcaseWired) return;
   screen.dataset.showcaseWired = '1';
@@ -73732,13 +73927,14 @@ function wireFactionShowcase(screen){
   layer.className = 'faction-showcase'; layer.setAttribute('aria-hidden','true');
   layer.innerHTML = Object.entries(FACTION_SHOWCASE).map(([key, f])=>{
     const chars = f.characters.map(id=> defs[id]).filter(d=> d && d.art);
-    const cards = f.cards.map(id=> defs[id]).filter(Boolean);
+    const cards = pl1FactionStartCards(key).map(id=> defs[id]).filter(Boolean); // 2026-10-24 (package PL1, owner P24-1): three Commons first
     return `<div class="fs-panel fs-${f.dir<0?'left':'right'}" data-fs="${key}">
       <div class="fs-title">${escapeHtml(f.title)}</div><div class="fs-blurb">${escapeHtml(f.blurb)}</div>
       <div class="fs-chars">${chars.map((d,i)=> `<img class="fs-char fs-char-${i}" src="${d.art}" alt="" draggable="false">`).join('')}</div>
-      <div class="fs-cards">${cards.map(d=> cardTileHTML(d, {inPlay:true})).join('')}</div></div>`;
+      <div class="fs-cards">${cards.map(d=> pl1FsFlipHTML(d)).join('')}</div></div>`;
   }).join('') + `<div class="fs-flash"></div>`;
   screen.appendChild(layer);
+  pl1FactionCardCycle(screen, layer);
   const inner = screen.querySelector('.faction-inner'), bg = screen.querySelector('.entrance-bg'), bushes = screen.querySelector('.entrance-bushes');
   let current = null;
   const surge = (key)=>{
@@ -73759,7 +73955,7 @@ function wireFactionShowcase(screen){
     const panel = layer.querySelector(`[data-fs="${key}"]`);
     gsap.fromTo(panel, {x: dir*160, opacity: 0}, {x: 0, opacity: 1, duration: .55, ease: 'expo.out'});
     gsap.fromTo(panel.querySelectorAll('.fs-char'), {scale: .5, y: 40, opacity: 0}, {scale: 1, y: 0, opacity: 1, duration: .6, stagger: .08, ease: 'back.out(1.8)'});
-    gsap.fromTo(panel.querySelectorAll('.fs-cards .card-tile'), {y: 60, opacity: 0, rotation: dir*8}, {y: 0, opacity: 1, rotation: 0, duration: .5, stagger: .07, delay: .15, ease: 'power3.out'});
+    gsap.fromTo(panel.querySelectorAll('.fs-cards .pl1-fsf'), {y: 60, opacity: 0, rotation: dir*8}, {y: 0, opacity: 1, rotation: 0, duration: .5, stagger: .07, delay: .15, ease: 'power3.out'});
     // the quake: a short, hard rumble that settles
     // (the whole-screen quake is gone: it repainted everything for half a second on every hover)
     gsap.fromTo(layer.querySelector('.fs-flash'), {opacity: .55}, {opacity: 0, duration: .5, ease: 'power2.out'});
@@ -74413,7 +74609,7 @@ function openDeckTopUpStep(ids, onDone){
     <p class="tr-kicker">🎁 Tutorial reward</p>
     <h2>${ids.length === 1 ? 'One more card!' : ids.length === 2 ? 'Two more cards!' : ids.length + ' more cards!'}</h2>
     <p class="panel-sub">${ids.length === 1 ? 'It joins' : 'They join'} your deck and your collection.</p>
-    <div class="ss-grid tr-grid">${ids.map((id, i)=> `<figure class="tr-item" style="--i:${i}">${tutRewardCardHTML(defs[id], i, 'is-reward')}<figcaption class="tr-name">${escapeHtml(defs[id].name)}</figcaption></figure>`).join('')}</div>
+    <div class="ss-grid tr-grid">${ids.map((id, i)=> `<figure class="tr-item" style="--i:${i}" aria-label="${escapeAttr(defs[id].name)}">${tutRewardCardHTML(defs[id], i, 'is-reward')}</figure>` /* 2026-10-24 (package PL1, owner P24-2): no name under the card; the card shows it */).join('')}</div>
     <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count">${before}/${Math.max(DECK_SIZE, after)}</b></div>
       <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
     <p class="ss-bonus ss-full" hidden>A deck holds ${DECK_SIZE} cards. Yours is full.</p>
@@ -78316,6 +78512,7 @@ function endMatch(opts){
   if(coachOpen && coachOpen.tip && !coachSeen.has(coachOpen.tip.id)) coachPendingId = coachOpen.tip.id;
   hideCoachTip();
   if(!(opts && opts.keepResume)) clearResumeSnapshot();
+  try{ pl1NoteXpForMap(matchState); }catch(e){} // 2026-10-24 (package PL1, P24-3): the fight's XP fills on the map
   if(matchState && matchState.testKit) stopTestKit();
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
   if(matchState && matchState.mode==='liveRanked') leaveLiveMatch(); // sends an abandon notice (if the match wasn't already over) and tears down the Realtime channel either way
@@ -79525,7 +79722,15 @@ function renderMatchUI(){
       conquestSelectedMap = nb.mapId; playSubTab = 'conquest';
       if(!startConquestMatch(nb.mapId, nb.key)){ packHoldForReplay = 0; conquestSelectedNodeKey = nb.key; switchTab('play'); }
     });
-    const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
+    // 2026-10-24 (package PL1, owner 21:20 #4: "5-3: Upon completing - and pressing X - the character token should move the next skirmish on the
+    // conquest map."): root cause, X (Back to the map) left the fight just won selected (package MK keeps the selection so a replay doesn't send
+    // the pawn off), so the pawn stayed on it. A first clear now lets go of it: the panel closes and the pawn walks on to the next fight not yet
+    // won (placeMapPawn's own pick; on a map with every fight won it stays where it stands). A replayed fight keeps MK's behaviour.
+    const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', ()=>{
+      const won = m.mode === 'conquest' && m.winner === 1 && m.fightFirstClear && m.conquestNode && !m.adminTest ? m.conquestNode : null;
+      endMatch();
+      if(won && conquestSelectedNodeKey === won.nodeId && conquestSelectedMap === won.mapId){ conquestSelectedNodeKey = null; try{ if(currentTab === 'play' && playSubTab === 'conquest') renderConquestSubTab(document.getElementById('playSubBody')); }catch(e){} }
+    });
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
     const wlRework = document.getElementById('wlReworkDeckBtn'); if(wlRework) wlRework.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
     const wlToDeck = document.getElementById('wlToDeckBtn'); if(wlToDeck) wlToDeck.addEventListener('click', ()=>{ endMatch(); deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); showToast(TX('toast.your-new-cards-are-in-the'), 'ok'); });
@@ -80307,7 +80512,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -80444,7 +80649,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${pl1AuraAtk(c)}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.exploit||0}:${c.sk1Atk||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}:${c.evoStack ? c.evoStack.length : 0}`; // + the Evolute stack (EV, 2026-10-21)
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -82269,7 +82474,7 @@ function boardCardHTML(c, defs, opts){
   // Status VFX (item #13): poisoned/bled/stunned each get their own tint + overlay icon on the
   // card frame, not just a badge number — see .board-card.is-* in arena_template.html.
   const statusClasses = [
-    c.poison>0 ? 'is-poisoned' : '',
+    c.poison>0 ? 'is-poisoned' : '', pl1PoisonLethal(c) ? 'pl1-lethal' : '', // 2026-10-24 (package PL1, owner 21:20 #2): Poison that will kill it
     c.bleed>0 ? 'is-bled' : '',
     c.stunned ? 'is-stunned' : '',
     c.chained ? 'is-chained' : '', // Chained (Devilry, 2026-09-17) — see maybeBreakChain in the engine
@@ -82315,7 +82520,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-12 (user: "Crabs that benefit from the tide must show their modified attack"; Rage doubles): the board's Attack
   // includes Flow's +1, Inspired, and Rage's doubling.
   const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
-  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) /* Formation / Isolation (SK1) */ + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
+  let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.sk1Atk||0) /* Formation / Isolation (SK1) */ + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12): Kinship, Nature's Force, Lone Wolf / Sociable */ + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   if(raging) effAtk *= 2;
   const atkLabel = atkLabelHTML(effAtk, d.attack, d);
   // 2026-10-08 (user): an attack cut below a quarter of the printed value, or to 0, turns pinkish (not for cards printed at 0 or 1).
@@ -82751,6 +82956,13 @@ function applyHandPreviewStats(m, me, strip){
     });
   }catch(e){}
 }
+function pl1HandPreviewSoon(){ if(pl1HandPreviewSoon._t) return; pl1HandPreviewSoon._t = setTimeout(()=>{ pl1HandPreviewSoon._t = null;
+  try{ const m = matchState; if(!m || m.over) return; const me = m.players[viewerHandPid(m)], strip = document.getElementById('handStrip'); if(!me || !strip) return;
+    const defs = getCardDefs(); // put the printed numbers back first, then the would-be ones on top
+    strip.querySelectorAll('[data-handuid].has-sim').forEach(el=>{ const hc = me.hand.find(h=> h.uid === Number(el.getAttribute('data-handuid'))); const d = hc && defs[hc.defId]; if(!d) return;
+      [['.atk', Math.max(0, (d.attack|0) - (hc.consterned|0))], ['.hp', Math.max(1, (d.health|0) - (hc.consterned|0))]].forEach(([sel, v])=>{ const sp = el.querySelector('.stats ' + sel), n = sp && sp.querySelector('.sim-stat'); if(n){ n.replaceWith(document.createTextNode(String(v))); sp.removeAttribute('title'); } });
+      el.classList.remove('has-sim'); });
+    applyHandPreviewStats(m, me, strip); }catch(e){} }, 0); }
 // HAND_PREVIEW:END
 function renderHand(){
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
@@ -83996,7 +84208,7 @@ function updateCardStatusDisplay(uid){
   const el = boardCardEl(uid); if(!el) return;
   if(el.classList.contains('is-fogged')){ fogScrubCard(el); return; } // 2026-10-21 (package FOG): a fogged unit shows none of its statuses
   const tile = el.querySelector('.card-tile'); if(!tile) return;
-  el.classList.toggle('is-poisoned', c.poison>0);
+  el.classList.toggle('is-poisoned', c.poison>0); el.classList.toggle('pl1-lethal', pl1PoisonLethal(c)); // PL1 (2026-10-24)
   el.classList.toggle('is-bled', c.bleed>0);
   el.classList.toggle('is-stunned', !!c.stunned);
   el.classList.toggle('is-chained', !!c.chained);
@@ -84160,14 +84372,21 @@ function atkPlateCls(d){ const k = atkElementOf(d); return k ? ' atk-' + (k === 
 function updateCardAtkDisplay(uid){
   const el = boardCardEl(uid); const c = currentCardByUid(uid); if(!el || !c) return;
   const a = el.querySelector('.stats .atk'); if(!a) return;
-  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + liveSwarmBonus(c);
+  const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + liveSwarmBonus(c) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
   if(isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchState.engine.getTide()==='flow' && matchHasTide(matchState)) tot += 1;
   if((d.effects||{}).rage && c.maxHp > 0 && c.hp / c.maxHp < 0.5) tot *= 2;
   a.innerHTML = atkLabelHTML(tot, d.attack, d);
   a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0
 }
 const SMOKE_BILLOWS_HTML = '<i class="sb1"></i><i class="sb2"></i><i class="sb3"></i><i class="sb4"></i>'; // the Smoke's billows (2026-10-24, BV)
+// 2026-10-24 (package PL1, owner 21:20 #2: "Poison vfx effect (following Slay the Spire): when the poison = health or higher, the health label
+// turns poison green w/ bubbles and the poison 'level' vfx goes slightly higher on the card."): a unit whose Poison is at least its Health
+// (it dies to the next ticks unless cured) takes .pl1-lethal: the Health number and its heart go poison green with bubbles rising off
+// the plate (arena_template.html), and FX.D's pool (.fxd-st-poison) stands higher on the card. Kept in step wherever the Health or the
+// statuses are redrawn (boardCardHTML, updateCardStatusDisplay, updateCardHpDisplay).
+function pl1PoisonLethal(c){ return !!(c && c.hp > 0 && (c.poison|0) > 0 && (c.poison|0) >= c.hp); }
 function updateCardHpDisplay(uid){
+  try{ const c0 = currentCardByUid(uid), e0 = boardCardEl(uid); if(c0 && e0) e0.classList.toggle('pl1-lethal', pl1PoisonLethal(c0)); }catch(e){} // PL1 (2026-10-24)
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
@@ -84994,7 +85213,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -85225,7 +85444,7 @@ async function resolveRoundCore(opts){
           }
           if(!m.replayCards[u]){
             const liveCard = (m.players[pid].row[lane]||[]).find(c=>c.uid===u);
-            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0, ...replayGuardSnap(liveCard)};
+            if(liveCard) m.replayCards[u] = {slot:liveCard.slot, atk:liveCard.atk, rallyBonus:liveCard.rallyBonus||0, worshipBonus:liveCard.worshipBonus||0, phaseAtk:liveCard.phaseAtk||0, ...pl1AuraSnap(liveCard) /* PL1 */, hp:liveCard.hp, maxHp:liveCard.maxHp, poison:liveCard.poison||0, bleed:liveCard.bleed||0, scar:liveCard.scar||0, stunned:!!liveCard.stunned, defId:liveCard.defId, wait:liveCard.wait||0, chained:!!liveCard.chained, frozen:liveCard.frozen||0, asleep:liveCard.asleep||0, paralyzed:liveCard.paralyzed||0, blind:liveCard.blind||0, tipsy:liveCard.tipsy||0, confused:liveCard.confused||0, shocked:liveCard.shocked||0, corrode:liveCard.corrode||0, staggered:liveCard.staggered||0, ...replayGuardSnap(liveCard)};
           }
         });
         // onDeathSpawn tokens get the plain generic landing-impact flourish (the default for
@@ -91166,12 +91385,23 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 //   the Parasite riding it (its icon and Attack), and on an enemy unit a hidden drop target that shows while you hold a Parasite card.
 // The replay keeps every field per uid (eq2Snap, in the round's snapshot and the replay's card), so the pips and the bar move with each
 // event (eq2Vfx); a break shatters the piece's icon off the card.
+// 2026-10-24 (package PL1, owner P24-12, SS#3: "Honeyjoe Brewer doesn't display the proper number (shows 1/4 on the field)"): root cause, the
+// board's Attack added Rally, Worship, day / night, Formation and Inspired, but not the engine's other live bonuses: Kinship (Honeyjoe is a Bee
+// with Kinship Bee +1/+0, so it lifts itself and swung for 2 while the plate said 1), Nature's Force and Lone Wolf / Sociable (effAtk in
+// bramblewood-engine.js reads c.kinBonus, c.natureBonus, c.packBonus). They are now carried into the replay's cards and added on the plate,
+// the card details and the live Attack refresh.
+function pl1AuraSnap(c){ c = c || {}; return {kinBonus: c.kinBonus || 0, natureBonus: c.natureBonus || 0, packBonus: c.packBonus || 0}; }
+function pl1AuraAtk(c){ return c ? (c.kinBonus || 0) + (c.natureBonus || 0) + (c.packBonus || 0) : 0; }
 function eq2Snap(c){ c = c || {}; const p = c.parasite; return {diveAloft: c.diveAloft != null ? c.diveAloft : null, diveMode: c.diveMode || null /* EN7 (2026-10-24) */, equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
   parasite: p ? {uid: p.uid, defId: p.defId, atk: p.atk || 0, hp: p.hp || 0, maxHp: p.maxHp || 0, wait: p.wait || 0} : null}; }
 function eq2DurMax(defId){ const d = getCardDefs()[defId] || {}; try{ if(typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.equipDurOf) return BramblewoodBudget.equipDurOf(d); }catch(e){} return 3; }
 function eq2PipsHTML(n, max){ let s = ''; for(let i = 0; i < max; i++) s += `<i class="eq2-pip${i < n ? ' on' : ''}"></i>`; return `<span class="eq2-pips" aria-hidden="true">${s}</span>`; }
 function eq2HpParts(c, d){ const base = Math.max(1, c.baseHp != null ? c.baseHp : ((d && d.health) || 1)), hp = Math.max(0, c.hp || 0), max = Math.max(1, c.maxHp || hp);
   const bonus = Math.max(0, max - base), temp = Math.max(0, (c.tempHpR || 0) + (c.tempHp || 0)); return {base, hp, max, bonus, temp, total: max + temp}; }
+// 2026-10-24 (package PL1, owner P24-11, SS#2: "A weird green bar on the Voidfeather Scout's card (over the Attack plate). What is it?"): it is
+// this Health bar (EQ2-3): at night Voidfeather's Nocturnal +1/+1 gives it bonus Health, so the bar showed, green for the Health it had
+// left. It sat at 21% from the cell's foot, which is the middle of the Attack and Health plates (they run 70%-86% of the card's height),
+// so it read as a stripe across the Attack. It now sits just above the plates (31.5%), a little thinner and narrower.
 function eq2HpBarHTML(c, d){
   const p = eq2HpParts(c, d); if(!(p.bonus > 0) && !(p.temp > 0)) return '';
   const pc = x=> (Math.max(0, x) / p.total * 100).toFixed(1) + '%';
@@ -91285,7 +91515,8 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
   .board-card .eq-under.is-worn .eq2-pip.on{background:linear-gradient(180deg,#ffb4a0,#d0452b); box-shadow:0 0 4px rgba(255,90,60,.6);}
   .board-card .eq-under.eq2-wear{animation:eq2Wear .32s ease-out;}
   @keyframes eq2Wear{0%{transform:scale(1);} 40%{transform:scale(1.18) rotate(-4deg);} 100%{transform:scale(1);}}
-  .eq2-hpbar{position:absolute; left:9%; right:9%; bottom:21%; height:5px; border-radius:3px; display:flex; overflow:hidden; background:rgba(0,0,0,.45); box-shadow:0 0 0 1px rgba(0,0,0,.45); pointer-events:auto;}
+  .eq2-hpbar{position:absolute; left:12%; right:12%; bottom:31.5%; height:4px; border-radius:3px; z-index:2; display:flex; overflow:hidden; background:rgba(0,0,0,.45); box-shadow:0 0 0 1px rgba(0,0,0,.45); pointer-events:auto;}
+  @media (max-width:700px){ .eq2-hpbar{bottom:39%; height:3px;} } /* PL1 (2026-10-24, P24-11): the phone card's plates sit higher */
   .eq2-hpbar i{display:block; height:100%; transition:width .3s ease;}
   .eq2-hb-base{background:linear-gradient(180deg,#8fe08a,#3f9d3a);}
   .eq2-hb-bonus{background:linear-gradient(180deg,#ffe58a,#d9a521);}
@@ -93136,6 +93367,10 @@ function renderVfxForEvent(ev){
   if(ev.type==='wash'){ try{ washPushVfx(ev); }catch(e){}
     if(ev.spout && ev.dmg){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} } }
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
+  // 2026-10-24 (package PL1, owner P24-9: "Cards in hand should reflect the current time of day. A Diurnal unit showed +1 though it had just
+  // become night"): the hand's would-be numbers (applyHandPreviewStats) were only worked out when the whole hand was redrawn, which waits for
+  // the upkeep to play out; the day / night turn and a state skill turning on or off now redraw them at once.
+  if(ev.type==='phase' || ev.type==='moon' || (ev.type==='statusFx' && (ev.kind==='stateSkill' || ev.kind==='phaseGrow' || ev.kind==='phaseFade'))) pl1HandPreviewSoon();
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
       if(matchState && ev.windy) matchState._windLastMine = mine;
@@ -96993,7 +97228,7 @@ function boosterHTML(p, cls){
 }
 function shelfGoodsHTML(p, qty){
   if(qty >= 50) return `<span class="shelf-crate" aria-hidden="true">${boosterHTML(p, 'is-peek is-l')}${boosterHTML(p, 'is-peek')}${boosterHTML(p, 'is-peek is-r')}<span class="crate-front"><b>×${qty}</b></span></span>`;
-  if(qty > 1) return `<span class="shelf-bundle" aria-hidden="true">${boosterHTML(p, 'is-fan is-l')}${boosterHTML(p, 'is-fan is-r')}${boosterHTML(p, 'is-fan')}<span class="bundle-twine"></span></span>`;
+  if(qty > 1) return `<span class="shelf-bundle" aria-hidden="true">${boosterHTML(p, 'is-fan is-l')}${boosterHTML(p, 'is-fan is-r')}${boosterHTML(p, 'is-fan')}<span class="bundle-twine pl1-ribbon"><i class="pl1-rib-band"><b>×${qty}</b></i></span></span>`; // 2026-10-24 (package PL1, P24-4): a ribbon round the set
   return boosterHTML(p);
 }
 function shelfStatus(p){
@@ -98219,7 +98454,7 @@ function creditFactionPack(id){
 }
 // The reveal queue: what was credited, shown once no fight is on screen (a pack won in a fight opens when you leave the
 // results), one pack after another; several of the same pack go through the bundle table (Open all).
-const packRevealQueue = []; let packRevealTimer = null;
+const packRevealQueue = []; let packRevealTimer = null; let pl1PackSession = null; // PL1 (2026-10-24): see schedulePackReveals
 // 2026-10-18 (package U, user: "The Swap UI popping up after 0-2 should wait for my pack opening animation first, before popping up once
 // i finished my pack opening. Currently both UI come out at the same time."): a reveal is "in flight" from the moment it leaves the queue
 // (the pack floats up out of the results for ~1 s before the opener exists) until the opener closes. The map's swap check (600 ms after
@@ -98235,6 +98470,11 @@ function packRevealReady(){
   if(typeof matchState !== 'undefined' && matchState) return false;
   if(document.querySelector('.winloss-overlay')) return false;
   if(packHoldForReplay && Date.now() - packHoldForReplay < 6000) return false; // between "Play again" and the next fight (2026-10-17)
+  // 2026-10-24 (package PL1, owner P24-6: "entering Map 1 Thistlewood gave two packs, but after the banner animation the pack animation
+  // never showed; it went straight to the swap window"): root cause, the packs opened the moment the results closed, while the new map's
+  // veil and title banner were still due or playing (mapTitleHold), so the opener sat under / behind the banner, and a tap meant for the
+  // banner landed on the opener. The order is now banner, then packs, then the swap window (which already waits for both).
+  try{ if(document.querySelector('.map-veil, .pl1-xp-float') || mapTitleHold() || (pl1XpPending && Date.now() - pl1XpPending.at < 15000 && !(typeof matchState !== 'undefined' && matchState))) return false; }catch(e){}
   return true;
 }
 // 2026-10-17 (user: "If you win a reward, and you press play again instead, you play again. At the end of playing, you open all the
@@ -98274,9 +98514,12 @@ function schedulePackReveals(){
     packRevealQueue.splice(0).forEach(b=> (b.pack.id === first.pack.id ? same : rest).push(b));
     packRevealQueue.push(...rest);
     packRevealInFlight = true; // 2026-10-18: until this opener closes (see packRevealBusy)
+    // 2026-10-24 (package PL1, P24-19): the sets opened in one sitting, so the last one can show every card of all of them
+    if(!pl1PackSession) pl1PackSession = []; pl1PackSession.push({pack: first.pack, opened: same.map(b=> b.o)});
+    const prior = !rest.length && pl1PackSession.length > 1 ? pl1PackSession.slice(0, -1) : null;
     const open = ()=>{ try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
-      try{ openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, oneByOne:true, moreAfter: rest.length,
-        onClose: ()=>{ packRevealInFlight = false; schedulePackReveals(); if(!packRevealQueue.length) setTimeout(()=>{ try{ maybeOfferDeckSwap(); }catch(e){} }, 400); }}); }
+      try{ openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, oneByOne:true, moreAfter: rest.length, priorOpened: prior,
+        onClose: ()=>{ packRevealInFlight = false; if(!packRevealQueue.length) pl1PackSession = null; schedulePackReveals(); if(!packRevealQueue.length) setTimeout(()=>{ try{ maybeOfferDeckSwap(); }catch(e){} }, 400); }}); }
       catch(e){ packRevealInFlight = false; console.error('[Bramblewood] pack reveal', e); schedulePackReveals(); } };
     floatRewardPackUp(open); };
   packRevealTimer = setTimeout(tick, 80);
@@ -98745,7 +98988,11 @@ function nodeFirstClearPacks(mapId, node){
 // it till I unlock the armoury"): a free pack won before the Armoury (⛺ Camp) is open waits, and is opened the moment the Armoury
 // is. Map 0-2's faction pack is the first pack a new player sees; it comes with the clear that reveals the Armoury.
 const HELD_PACKS_KEY = 'bramblewood_held_packs_v1';
-function armouryOpen(){ try{ return featureUnlocked('deck'); }catch(e){ return true; } }
+// 2026-10-24 (package PL1, owner P24-19: "why didn't they auto-open?" and P24-6): the Camp only counted as open once its map tile had
+// been tapped, so a player who walked past it kept every reward pack held (shown as won on the results, never opened) until a tap
+// released them all at once. It now counts as open as soon as the Camp is there to tap (its fights won, spotAvailable).
+function armouryOpen(){ try{ if(featureUnlocked('deck')) return true; const sp = FEATURE_SPOTS.find(x=> x.key === 'deck'); return !!(sp && spotAvailable(sp, loadConquestProgress())); }catch(e){ return true; } }
+function pl1HeldPackCount(){ try{ return (JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]') || []).length; }catch(e){ return 0; } }
 function holdPackForArmoury(ref){ try{ const a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); a.push(ref); localStorage.setItem(HELD_PACKS_KEY, JSON.stringify(a)); }catch(e){} }
 function releaseHeldPacks(){
   let a = []; try{ a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); localStorage.removeItem(HELD_PACKS_KEY); }catch(e){}
@@ -99110,13 +99357,22 @@ function openPackAnimation(pack, opened, opts){
     const poRecruit = poIds.some(id=> { try{ return nestHasLevel0Copy(id); }catch(e){ return false; } });
     const nestBtn = poRecruit && featureUnlockedSafe('nest') ? `<button type="button" class="po2-glass" id="poNest" title="See them in your Nest">🪺 Nest</button>`
       : `<button type="button" class="po2-glass" id="poNest" title="See them in your Camp">⛺ Camp</button>`;
-    return `<div class="po-actions">${left > 0 ? `<button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poNext">Next pack (${left} left)</button>` : `${nestBtn}<button type="button" class="btn primary" id="poDone">Done</button>`}</div>`;
+    // 2026-10-24 (package PL1, owner P24-19: "the first 3 counted '2 packs left', '1 pack left', then the 3 faction packs restarted at '2 packs
+    // left'"): the count is every pack still to come, this set's and the reward packs queued behind it (opts.moreAfter); the last pack of a
+    // set moves on to the next set. With several kinds of packs, the last pack's summary leads to one page of every card (showSession).
+    const more = Math.max(0, opts.moreAfter|0), prior = (opts.priorOpened || []).length && phase !== 'session';
+    if(left > 0 || more > 0) return `<div class="po-actions"><button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="${left > 0 ? 'poNext' : 'poNextSet'}">${escapeHtml(TX('ui.pl1-next-pack', {n: left + more}))}</button></div>`;
+    if(prior) return `<div class="po-actions"><button type="button" class="po2-glass" id="poDone">Done</button><button type="button" class="btn primary" id="poSession">${escapeHtml(TX('ui.pl1-all-packs', {n: sessionPacks().length}))}</button></div>`;
+    return `<div class="po-actions">${nestBtn}<button type="button" class="btn primary" id="poDone">Done</button></div>`;
   };
+  const sessionPacks = ()=> [].concat(...(opts.priorOpened || []).map(g=> g.opened.map(o=> ({pack: g.pack, o})))).concat(opened.map(o=> ({pack, o})));
   const wireFoot = ()=>{
     const done = overlay.querySelector('#poDone'); if(done) done.onclick = close;
     const nest = overlay.querySelector('#poNest'); if(nest) nest.onclick = ()=>{ const toNest = /Nest/.test(nest.title); close(); if(toNest){ nestTab = 'recruits'; switchTab('nest'); } else switchTab('deck'); }; // 2026-10-23: the button's own target (see footActions)
     const next = overlay.querySelector('#poNext'); if(next) next.onclick = ()=>{ packIdx++; showPack(); };
-    const f = overlay.querySelector('#poNext') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
+    const nextSet = overlay.querySelector('#poNextSet'); if(nextSet) nextSet.onclick = close; // PL1: the next set opens as this one closes (onClose)
+    const ses = overlay.querySelector('#poSession'); if(ses) ses.onclick = ()=>{ clearTimers(); showSession(); };
+    const f = overlay.querySelector('#poNext') || overlay.querySelector('#poNextSet') || overlay.querySelector('#poSession') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
   };
   // Tap any card in a summary to see it large (the Codex card viewer, on top of the opener).
   // 2026-10-17 (user: "When I click on a foil card and they show the big version, it should load the same treatment as the card. If I'm
@@ -99166,6 +99422,26 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
+    </div>`;
+    poClearFlights();
+    wireFoot(); wireView(); wireEdit(); wireTilt();
+    sfx('gold');
+  };
+  // ---- 2026-10-24 (package PL1, P24-19): every card from every pack of this sitting, mixed packs included ----
+  const showSession = ()=>{
+    phase = 'session';
+    const all = sessionPacks(), tally = new Map(); const levels = [];
+    all.forEach(({o})=>{ if(o.leveledId) levels.push(o.leveledId);
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
+    const did = k=> tally.get(k).id;
+    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
+    const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
+    const kinds = [...new Set(all.map(x=> x.pack.icon + ' ' + x.pack.name))];
+    const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
+    overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
+      <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
       <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
