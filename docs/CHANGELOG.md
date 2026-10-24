@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 release 10-24c (batch: BAL2, DF3)
+- Enemy levels on the owner's schedule (a new level first in a map's hardest fights), enemy decks within copy limits, ambush decks 16-20, Rares from Map 10 (Map 5's is the boss leader), Map term 0.2 with a re-fit, base cards stop at Lv 4, own first-clear card 10% on repeats, notice rates, Bounty 2.5; Caldera Wyrm placed; 18-A-5 retuned.
+- Selfish boons (12) on 19 challenge fights with a red Theirs card; Maps 7, 11, 14 retuned toward target.
+- Checks: full unit tier, no new failures against 10-24b (6 old failures fixed); ui_smoke 0 failures; flows 0 issues; card-matrix golden refreshed.
+
 ## 2026-10-24 (package DF3: selfish boons on challenge skirmishes; DF-4 retunes Maps 7, 11 and 14)
 - **Selfish boons (DF-3, narrowed by your 22:23 #6):** a field effect that helps the enemy only, on while at least half the enemy deck as dealt
   shares its theme (so copying the deck gains nothing). Its Environment card has a red frame, a red "Theirs" ribbon and the count ("On: 16 of 16
