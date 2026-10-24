@@ -33573,7 +33573,7 @@ function updateHpRibbon(side, hp){
 // Reduced motion: written at once.
 function pl2RibbonFill(rib, f, side, pct, prevPct){
   const m = matchState; m._ribPct = m._ribPct || {};
-  const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : pct));
+  const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : (isFinite(parseFloat(f.style.width)) ? parseFloat(f.style.width) : pct))); // (the first change: the width the bar was drawn at)
   m._ribPct[side] = pct; f.dataset.pl2pct = pct.toFixed(2);
   const track = f.parentElement;
   if(reducedMotion() || Math.abs(was - pct) < .05 || !f.animate){ f.style.width = pct.toFixed(1) + '%'; return; }
@@ -44249,7 +44249,7 @@ function hqHitBigVfx(el, dmg){
   window.addEventListener('keyup', e=>{ if(e.key === 'Shift') set(false); });
   window.addEventListener('blur', ()=> set(false));
 })();
-const PL2_CHIP_COLOURS =['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
+const PL2_CHIP_COLOURS = ['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
 function pl2BrambleTile(el){ return el && (el.classList.contains('card-tile') ? el : (el.querySelector('.card-tile') || el)); }
 function pl2BrambleChips(tile, opts){
   if(!tile || !tile.isConnected || reducedMotion() || (typeof fxAtLeast === 'function' && !fxAtLeast('med'))) return;

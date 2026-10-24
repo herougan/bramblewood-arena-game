@@ -42293,7 +42293,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2510d7645b", "es": "assets/lang/es.js?v=c615f39cbb", "fr": "assets/lang/fr.js?v=d8729ef127", "id": "assets/lang/id.js?v=f3d9a1616e", "it": "assets/lang/it.js?v=e2c3892d18", "ja": "assets/lang/ja.js?v=a334c4d6fc", "ko": "assets/lang/ko.js?v=ab32f1ae45", "pt": "assets/lang/pt.js?v=dda6ea4b0f", "ta": "assets/lang/ta.js?v=ef33f3d7b9", "tl": "assets/lang/tl.js?v=ea0ffe0182", "zh-Hans": "assets/lang/zh-Hans.js?v=29eed6aea9", "zh-Hant": "assets/lang/zh-Hant.js?v=a1c711e25b"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=706bd41b74", "es": "assets/lang/es.js?v=1bdf770a99", "fr": "assets/lang/fr.js?v=d4fe81c9de", "id": "assets/lang/id.js?v=b3d7c01119", "it": "assets/lang/it.js?v=34769b25d6", "ja": "assets/lang/ja.js?v=ec3cb4253d", "ko": "assets/lang/ko.js?v=97689b7dee", "pt": "assets/lang/pt.js?v=a1d4159cf7", "ta": "assets/lang/ta.js?v=334909e11b", "tl": "assets/lang/tl.js?v=8898c9cb64", "zh-Hans": "assets/lang/zh-Hans.js?v=08a2f968a6", "zh-Hant": "assets/lang/zh-Hant.js?v=d01c71340b"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -49323,7 +49323,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5fd1520ebdfe', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '640e852a85ba', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -66153,6 +66153,7 @@ function pl1XpOnMapSoon(tries){
 // (PL2_MOMENTS_KEY) and FX.E plays its emblem over the fight the next time that map is really in view (pl2TakeMapMoments), however many
 // fights were won in a row without seeing the map, and in a later session too. Was: a diff of what the map showed last this session.
 const PL2_MOMENTS_KEY = 'bramblewood_pl2_map_moments_v1';
+function pl2StackAttrs(label){ return ' tabindex=0 role=group aria-label="' + escapeAttr(label) + '"'; } // (the results' card stack takes focus: a tap fans it)
 function pl2LoadMoments(){ try{ const v = JSON.parse(localStorage.getItem(PL2_MOMENTS_KEY) || '[]'); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
 function pl2SaveMoments(l){ try{ if(l.length) localStorage.setItem(PL2_MOMENTS_KEY, JSON.stringify(l.slice(-30))); else localStorage.removeItem(PL2_MOMENTS_KEY); }catch(e){} }
 function pl2QueueMapMoment(mapId, key, rank){ if(!mapId || !key) return; const l = pl2LoadMoments().filter(x=> !(x.map === mapId && x.key === key)); l.push({map: mapId, key, rank: rank || null, at: Date.now()}); pl2SaveMoments(l); }
@@ -79457,7 +79458,7 @@ function updateHpRibbon(side, hp){
 // Reduced motion: written at once.
 function pl2RibbonFill(rib, f, side, pct, prevPct){
   const m = matchState; m._ribPct = m._ribPct || {};
-  const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : pct));
+  const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : (isFinite(parseFloat(f.style.width)) ? parseFloat(f.style.width) : pct))); // (the first change: the width the bar was drawn at)
   m._ribPct[side] = pct; f.dataset.pl2pct = pct.toFixed(2);
   const track = f.parentElement;
   if(reducedMotion() || Math.abs(was - pct) < .05 || !f.animate){ f.style.width = pct.toFixed(1) + '%'; return; }
@@ -88914,7 +88915,7 @@ function rewardsPanelHTML(m){
     pl2Mat.forEach(([id, n])=> tiles.push(`<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}${n > 1 ? `<b class="pl2-rw-n">×${n}</b>` : ''}</div>`));
     const stack = tiles.length > 1;
     const body = tiles.map((t, k)=> stack ? `<div class="pl2-sk" style="--i:${k}">${t}</div>` : t).join(''); // a wrapper per card holds its place in the stack (the results' unlock beat tweens the card itself with GSAP)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? ` tabindex="0" role="group" aria-label="${escapeAttr(TX('results.cards-won') + ' ×' + tiles.length)}"` : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? pl2StackAttrs(TX('results.cards-won') + ' ×' + tiles.length) : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
@@ -90133,7 +90134,7 @@ function hqHitBigVfx(el, dmg){
   window.addEventListener('keyup', e=>{ if(e.key === 'Shift') set(false); });
   window.addEventListener('blur', ()=> set(false));
 })();
-const PL2_CHIP_COLOURS =['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
+const PL2_CHIP_COLOURS = ['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
 function pl2BrambleTile(el){ return el && (el.classList.contains('card-tile') ? el : (el.querySelector('.card-tile') || el)); }
 function pl2BrambleChips(tile, opts){
   if(!tile || !tile.isConnected || reducedMotion() || (typeof fxAtLeast === 'function' && !fxAtLeast('med'))) return;

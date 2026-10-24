@@ -2,6 +2,43 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-25 (package PL2: the owner's playtest notes 10-24 22:28 and 10-25 00:02: UI, VFX, rewards and audio; 21:54; PL1-1, PL1-3, PRO-UI)
+- **The board:** a fallen bramble leaves nothing behind (BV's mound of earth read as a leftover, 22:28 #1). The round that decides a match no longer
+  rebuilds both rows at the end: a cell holding the same unit keeps its element and has its numbers patched, so the cards just played no longer
+  blink out and back (00:02 #1; not reproduced headless, the rebuild was the one place every card was replaced). A flyer's / floater's Health
+  bar rides in its `.fly-body` (it stayed still while the card swayed, so it crossed the plates: SS#1's "green bars"); an artless card's emoji is
+  drawn whole (the Fire Ant Raft's "ghost art"; it and the Ember Tetra still need art, call PL2-5).
+- **Inspiring (22:28 #4):** one 📯 burst over the inspirer (it pops in, shakes as it grows, fades up with a gold ring and three notes); 0.3 s
+  later each neighbour's Attack goes up, a Waiting one too, and stacks; the swing that spends it brings the plate back. Was a "+1⚔ next swing"
+  float on each ally and no number change until the next turn.
+- **Numbers bounce (22:28 #5):** a changed Attack, or a Health that rises (not damage), shrinks a touch, swaps, springs past its size and
+  settles (`pl2SetStat`; also after a redraw that changed it). **Bramble bars ease (22:28 #7)** in 0.42 s, across redraws too, with a pale
+  chip of the Health lost that drains after; the number counts; a repair glints. **Bramble animations (21:54):** a hit flashes white on the tile
+  and throws bark / stone chips off its top (the fall's palette, more for a bigger hit); a repair draws chips back in with a green rim.
+- **Poison** floats ☠N again (00:02 #4). **The opponent's resource pills** show only while Shift is held, or in their deck's tooltip (00:02 #8).
+- **XP on the map for every fight (22:28 #8, PL1-1):** no won fight's results show the XP bar (Arena, Spire, dungeon floors too); it waits,
+  stored, and fills on the Conquest map after that map's moments. Each Conquest win is queued and its emblem plays over the fight when the map is
+  really in view, however many Next fight wins came first, or after a reload (calls PL2-3).
+- **Card rewards (00:02 #3 #5):** every card reward is a card (egg cards and card-form materia too); two or more are one stack with a count,
+  fanned on hover or tap. The top-rank rare find and a rank-gated drop flash and wear the rank emblem with "reward"; no "Rare find" pill (PL2-4).
+- **Pack card detail (22:28 #9):** where it comes from is a square "📦 Pack 1" pill (its pack's name in the tooltip); the Abilities heading
+  follows the theme (it was dark on dark); the card popover opens over the pack opener on a 1 s hover or a hold (it opened under it).
+- **The trigger lesson** is one step, "This chip is a trigger — read the card." (00:02 #6). **The Energy panel:** the count, the refill line,
+  then free Energy and a 🔋×N Use; the capsules and the Nest line are tooltips (00:02 #7). **Whisper's Game** is Admin Mode only (22:28 #6).
+- **Dungeons (PL1-3):** no Dungeons tab for players (Admin Mode keeps it, PL2-1); the Group Dungeon is the Arena's Co-op tab and a 👥 spot on
+  Map 3 after its last fight (PL2-2).
+- **PRO-UI:** a PRO or BPRO fight (admin map nodes, Admin's list, the skirmish editor, a #pro= link) opens the map's normal fight panel (deck,
+  field, leader, battle rating; no rewards) with a Fight button that starts it free. BPRO is baked into the game (`_pro_for_game`), `N-BPRO-k`
+  keys work, and every list shows both kinds.
+- **Sound (00:02 #9 #10):** Fork, Trident and Pitchfork each have their own tings over the swing (`SoundKit.prongTone`). After a fight the
+  victory sting plays over the fight's theme at 30%; the map's theme starts only when you are back on the map and fades in over 4 s (PL2-6).
+- **i18n-templates:** PL1's word-less "{have}/{total} {theme}" key (no pack could compile it) is gone; the boon card's line is built in place.
+- Texts: 5 TX keys in 12 packs (`tools/i18n_2026_10_25_pl2.py`). Effects Lab: `tools/effects-lab/manifest/pl2.js` (Inspiring, the bounce, the
+  bars, the bramble's hit / repair / fall, the prong sounds). Tests: `tests/pl2-2026-10-25.js` (new, run-all), `tests/e2e/pl2_2026_10_25.py`
+  (new, 390 and 1366, frame sheets in `docs/screens/PL2/`); dated updates to `tests/en7-2026-10-24.js` and its e2e (☠N), `tests/tt-2026-10-24.js`
+  and its e2e (one step), `tests/rw4-2026-10-23.js` and its e2e (the Use button), `tests/pl1-2026-10-24.js` and its e2e (the boon line, the
+  Dungeons tab), `tests/coop-dungeon-2026-10-23.js` (Co-op), `tests/pro-2026-10-23.js` and its e2e (the preview, BPRO). Owner calls PL2-1 .. PL2-6.
+
 ## 2026-10-24 (package EN8: the CPU pitches and guards, Guardian vs Thorns, Armor vs magic, brambles mend allies, Rampart's columns, the resource skills and Pearls; owner 21:20 #4 #7, 21:41 #5, 22:28 #1-#3 #10, P24-7 / 15 / 16 / 17, LUM-1)
 - **The CPU pitches before it plays** (every level; the game, `tools/skirmish_pass.js` and `tools/opt` all use the engine's `aiTakeTurn`): with
   nothing useful to play it pitches its least valuable card (keeping the one nearest to affordable); holding a card it can't afford with 3+
