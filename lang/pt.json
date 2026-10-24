@@ -3181,5 +3181,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name} não encontra unidade e atinge sua sarça: {dmg}.",
  "Guarded": "Protegido",
  "One unit (a Guardian can step in)": "Uma unidade (um Guardião pode se interpor)",
- "Beak Strike": "Bicada"
+ "Beak Strike": "Bicada",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: combate de teste de Admin, sem recompensas. Toque para começar."
 }

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package RW6: results without locked chips, Base cards as cards, PRO fights on the map)
+- **Results:** the lock + card + rank emblem chips for rewards your rank was too low for are gone from the post-fight list (owner 12:02, #1).
+- **Base cards:** a Base card won (Sheep and the rest) is a normal card tile in Cards won, hover shows the card; the "spare copy ... feed it in the Forge" chip is gone (#2).
+- **PRO fights on the map:** with Admin Mode on, each main map with PRO fights shows them as small gold trophy nodes beside its boss, labelled N-PRO-k; a tap starts the fight (free, no rewards, as from Admin's list). Not shown to players (#3).
+- Tests: tests/rw6-2026-10-24.js, tests/e2e/rw6_2026_10_24.py (shots in docs/screens/RW6/).
 ## 2026-10-24 release 10-24c (batch: BAL2, DF3)
 - Enemy levels on the owner's schedule (a new level first in a map's hardest fights), enemy decks within copy limits, ambush decks 16-20, Rares from Map 10 (Map 5's is the boss leader), Map term 0.2 with a re-fit, base cards stop at Lv 4, own first-clear card 10% on repeats, notice rates, Bounty 2.5; Caldera Wyrm placed; 18-A-5 retuned.
 - Selfish boons (12) on 19 challenge fights with a red Theirs card; Maps 7, 11, 14 retuned toward target.

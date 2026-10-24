@@ -7640,6 +7640,12 @@
   .map-courier{position:absolute; transform:translate(-50%,-50%); z-index:6; width:46px; height:46px; padding:0; border:0; background:none; cursor:pointer; animation:courierBob 2.4s ease-in-out infinite;}
   .map-courier .mco-who{font-size:30px; line-height:1; filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));} .map-courier .mco-pack{position:absolute; right:-6px; bottom:-2px; font-size:18px; filter:drop-shadow(0 0 4px rgba(255,230,150,.95));}
   .map-courier .map-spot-new{position:absolute; top:-8px; left:-4px;}
+  /* 2026-10-24 (package RW6, owner 12:02): a PRO fight on the map in Admin Mode: a gold trophy diamond with its N-PRO-k label, apart from the round fight nodes. */
+  .map-pro{position:absolute; transform:translate(-50%,-50%); z-index:6; display:flex; flex-direction:column; align-items:center; gap:1px; padding:0; border:0; background:none; cursor:pointer;}
+  .map-pro .mpr-ico{width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:linear-gradient(160deg,#ffe28a,#c98f1c); box-shadow:0 3px 8px rgba(0,0,0,.45), 0 0 0 2px #fff3c4 inset, 0 0 10px rgba(255,214,90,.55); transform:rotate(45deg); font-size:0; transition:transform .15s ease;}
+  .map-pro .mpr-ico::before{content:"🏆"; font-size:17px; line-height:1; transform:rotate(-45deg); display:block;}
+  .map-pro .mpr-code{font:800 10px/1 'Baloo 2',system-ui,sans-serif; color:#3a2600; background:#ffe9a8; border-radius:8px; padding:2px 5px; box-shadow:0 1px 3px rgba(0,0,0,.4); margin-top:5px; white-space:nowrap;}
+  .map-pro:hover .mpr-ico, .map-pro:focus-visible .mpr-ico{transform:rotate(45deg) scale(1.12);}
   @keyframes courierBob{0%,100%{translate:0 0;} 50%{translate:0 -4px;}} @media (prefers-reduced-motion: reduce){ .map-courier{animation:none;} }
   .map-curio{position:absolute; transform:translate(-50%,-50%); z-index:6; width:38px; height:38px; padding:0; border-radius:50%; border:2px solid rgba(255,240,205,.8); background:radial-gradient(circle at 35% 30%, rgba(255,250,235,.95), rgba(222,206,170,.92)); box-shadow:0 4px 10px rgba(0,0,0,.35); cursor:pointer; display:flex; align-items:center; justify-content:center; transition:transform .15s ease;}
   .map-curio:hover{transform:translate(-50%,-50%) scale(1.1);} .map-curio .mcu-ico{font-size:19px; line-height:1;}
@@ -41732,7 +41738,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=e04ddc7d55", "es": "assets/lang/es.js?v=922c302fc5", "fr": "assets/lang/fr.js?v=186bb4f9d3", "id": "assets/lang/id.js?v=f4ee6869f7", "it": "assets/lang/it.js?v=c449965a1c", "ja": "assets/lang/ja.js?v=73195ede06", "ko": "assets/lang/ko.js?v=9925ea890e", "pt": "assets/lang/pt.js?v=7b31e42dd2", "ta": "assets/lang/ta.js?v=f66b5ec4c1", "tl": "assets/lang/tl.js?v=65a9a921de", "zh-Hans": "assets/lang/zh-Hans.js?v=cd488790e3", "zh-Hant": "assets/lang/zh-Hant.js?v=727cd5a74a"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=e2a899cd95", "es": "assets/lang/es.js?v=eaafc9d334", "fr": "assets/lang/fr.js?v=baa02ad151", "id": "assets/lang/id.js?v=daa8f29a39", "it": "assets/lang/it.js?v=2adc8e3b40", "ja": "assets/lang/ja.js?v=4715381e75", "ko": "assets/lang/ko.js?v=27d9717e85", "pt": "assets/lang/pt.js?v=711a37dcc3", "ta": "assets/lang/ta.js?v=8909cbf2af", "tl": "assets/lang/tl.js?v=58f1cf2725", "zh-Hans": "assets/lang/zh-Hans.js?v=9db3b2b8b9", "zh-Hant": "assets/lang/zh-Hant.js?v=c4bb65cff9"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -41988,6 +41994,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pro-result": "{key} is a PRO fight: no rewards.",
   "ui.pro-unknown": "There is no PRO fight called {key}.",
   "ui.pro-busy": "Finish the fight you are in first.",
+  "ui.rw6-pro-node-tip": "{key}: Admin test fight, no rewards. Tap to start.",
   "ui.pro-tutorial-first": "Finish the tutorial first.",
   "ui.mp-title": "Map cards",
   "ui.mp-btn-tip": "Choose which cards belong to this map and its submaps",
@@ -48406,7 +48413,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e6d6c8ceca2e', BUILD_CARD_HASH = '01bb21a1633e8f5c9dd732fdd29deb6e66d235700c2c99a10a6b12a5cb1d2496';
+const BUILD_ID = 'c78eefd6831c', BUILD_CARD_HASH = '01bb21a1633e8f5c9dd732fdd29deb6e66d235700c2c99a10a6b12a5cb1d2496';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -68161,6 +68168,17 @@ function proFightsAdminHTML(){
     : `<p class="panel-sub">${escapeHtml(TX('ui.pro-none'))}</p>`;
   return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${body}</div>`;
 }
+// 2026-10-24 (package RW6, owner 12:02: "How do I access the Pro matches? If its not ez, make it ez, e.g. on the map once i select admin mode"):
+// with Admin Mode on, a main map with PRO fights shows each as a small gold trophy node beside its boss (label N-PRO-k); a tap starts the fight
+// through the same data-pro-start click handler as Admin's list. Not a .map-node (no progress, no layout, no unlock logic), absent for players.
+function proMapNodesHTML(map, positions){
+  if(!adminModeEnabled || !map || map.sub || map.endless || conquestLayoutEdit) return '';
+  const ent = proMapEntries()[map.id]; if(!ent || !(ent.pro || []).length) return '';
+  const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
+  const dir = base.x > 62 ? -1 : 1, list = ent.pro || [];
+  return list.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
+    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}" aria-label="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}"><span class="mpr-ico" aria-hidden="true">🏆</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
+}
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
   const m = CONQUEST_MAPS.find(x=> x.id === mapId), id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id] || {};
@@ -70390,7 +70408,7 @@ function renderConquestSubTab(body){
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
-      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${map.id==='mn' ? mapCampfireHTML() : ''}${mapCuriositiesHTML(map)}`}${tutPhase ? '' : `${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}`}
+      ${(map.id==='m1' && !loadTutorial2Done()) ? '' : `${map.id==='m1' ? mapWellHTML() : ''}${map.id==='m2' ? mapCaveHTML() : ''}${map.id==='mn' ? mapCampfireHTML() : ''}${mapCuriositiesHTML(map)}`}${tutPhase ? '' : proMapNodesHTML(map, positions)}${tutPhase ? '' : `${freePackCourierHTML(map, positions)}${subMapEntrancesHTML(map, progress)}${subMapExitHTML(map, positions)}${wandererMapHTML(map, positions)}`}
       ${genDecor.map(d=> `<span class="map-decor map-decor-emoji ${d.cls}" style="left:${d.x.toFixed(1)}%; top:${d.y.toFixed(1)}%; font-size:${d.size}px;${d.rot?` transform:translate(-50%,-50%) rotate(${d.rot}deg);`:''}">${d.emoji}</span>`).join('')}
       ${map.nodes.map((node,i)=>{
         const id = conquestNodeId(map.id, node.key);
@@ -87390,12 +87408,13 @@ function rewardsPanelHTML(m){
   const wonIds = m.rewardCardIds || m.conquestCardsEarned || [];
   const eggCards = wonIds.filter(id=> isEggRewardCard(getCardDefs()[id])); // 2026-10-18: eggs go with the egg / baby rewards below
   const cards = wonIds.filter(id=> !eggCards.includes(id));
+  const baseCopyIds = ((m.conquestBaseGrowth && m.conquestBaseGrowth.copies) || []).filter(id=> getCardDefs()[id]); // 2026-10-24 (RW6, owner 12:02: "Base cards - e.g. Sheep - should just be a card reward"): a Base card won is a card tile in Cards won, not a "spare copy" chip
   const firstSeen = new Set(m.discoveredThisMatch || []);
   const castles = rewardCastleDrops(m); // 2026-10-18 (package T): a bramble won is a card here too
-  if(cards.length || castles.length){
+  if(cards.length || castles.length || baseCopyIds.length){
     const defs = getCardDefs();
     const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length + castles.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}${castles.map(rewardCastleCardHTML).join('')}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length + castles.length + baseCopyIds.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}${baseCopyIds.map(id=> `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`).join('')}${castles.map(rewardCastleCardHTML).join('')}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
@@ -87448,7 +87467,7 @@ function rewardsPanelHTML(m){
       acts.push(`<span class="rw-act rw-kit rw-token rw-icon-only" role="img" aria-label="${escapeAttr(nm)}" data-tip="${escapeAttr(nm + ': ' + (t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : TX('results.eb-ticket-tip')))}">${T.icon}</span>`); } });
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
     acts.push(`<span class="rw-act rw-kit rw-icon-only" role="img" aria-label="${escapeAttr(kd.name)}" data-tip="${escapeAttr(kd.name + ': ' + kd.desc) /* 2026-10-23 (package UI4): what the item does; RW4: icon only */}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon}</span>`); }
-  { const lk = lockedCardChipsHTML(m, 'rw-act'); if(lk) acts.push(lk); } // 2026-10-22 (RW): a reward card waiting for a better win, as lock + card + the rank emblem
+  // 2026-10-24 (RW6, owner 12:02: "No showing of ungotten rewards locked behind rank"): the lock + card + rank chips (RW) are gone from the results; the fight panel keeps the rank gate
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(TX('ui.rw4-got-egg'))}</span>`); } // 2026-10-23 (RW4): "You got an egg!", not the egg's kind
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
@@ -87456,7 +87475,7 @@ function rewardsPanelHTML(m){
     acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
-  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
@@ -87574,7 +87593,7 @@ function matchStatsHTML(m){
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="${escapeAttr(TX('results.defeating-a-named-conquest-leader-boss'))}">${TX('results.metal', {v1: rewardCountSpan(m.conquestMetalEarned)})}</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="${escapeAttr(TX('results.food-tokens-buy-sunfeather-packs-in'))}">${TX('results.food', {conquestFoodEarned: m.conquestFoodEarned})}</span>` : ''}
       ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.opened-its-cards-are-already-in'))}">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? (' ' + TX('results.new-subfaction')) : ''}</span>` : ''}
-      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}${lockedCardChipsHTML(m, 'hud-pill') /* 2026-10-22 (RW): the rank as the emblem, never the words (was "🔒 Card at rank B+") */}
+      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}/* 2026-10-24 (RW6, owner: "No showing of ungotten rewards locked behind rank"): no locked-card chips after the fight */
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
   // sets conquestRankEarned (it isn't a Conquest node at all).

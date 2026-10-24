@@ -3178,5 +3178,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name} findet keine Einheit und trifft deine Dornenhecke: {dmg}.",
  "Guarded": "Beschützt",
  "One unit (a Guardian can step in)": "Eine Einheit (ein Wächter kann einspringen)",
- "Beak Strike": "Schnabelhieb"
+ "Beak Strike": "Schnabelhieb",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: Admin-Testkampf, keine Belohnungen. Tippen zum Starten."
 }

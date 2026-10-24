@@ -3180,5 +3180,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "Walang yunit na nakita ang {name} at tinamaan ang bramble mo: {dmg}.",
  "Guarded": "Naprotektahan",
  "One unit (a Guardian can step in)": "Isang yunit (puwedeng pumagitna ang Guardian)",
- "Beak Strike": "Tuka"
+ "Beak Strike": "Tuka",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: pansubok na laban ng Admin, walang gantimpala. I-tap para magsimula."
 }

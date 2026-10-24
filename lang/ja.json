@@ -3179,5 +3179,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name}はユニットを見つけられず、あなたの砦を打った：{dmg}。",
  "Guarded": "守られた",
  "One unit (a Guardian can step in)": "1体（守護者が割って入れる）",
- "Beak Strike": "クチバシ打ち"
+ "Beak Strike": "クチバシ打ち",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}：管理者のテスト戦、報酬なし。タップで開始。"
 }

@@ -130,6 +130,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pro-result": "{key} is a PRO fight: no rewards.",
   "ui.pro-unknown": "There is no PRO fight called {key}.",
   "ui.pro-busy": "Finish the fight you are in first.",
+  "ui.rw6-pro-node-tip": "{key}: Admin test fight, no rewards. Tap to start.",
   "ui.pro-tutorial-first": "Finish the tutorial first.",
   "ui.mp-title": "Map cards",
   "ui.mp-btn-tip": "Choose which cards belong to this map and its submaps",

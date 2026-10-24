@@ -3179,5 +3179,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name}找不到單位，擊中你的荊棘堡：{dmg}。",
  "Guarded": "受到守護",
  "One unit (a Guardian can step in)": "單個單位（守護者可挺身而出）",
- "Beak Strike": "鳥喙擊"
+ "Beak Strike": "鳥喙擊",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}：管理員測試戰鬥，沒有獎勵。點按開始。"
 }

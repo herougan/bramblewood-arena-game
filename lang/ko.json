@@ -3182,5 +3182,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name}이(가) 유닛을 찾지 못해 내 가시덤불을 쳤어요: {dmg}.",
  "Guarded": "보호됨",
  "One unit (a Guardian can step in)": "유닛 하나(수호자가 막아설 수 있음)",
- "Beak Strike": "부리 찍기"
+ "Beak Strike": "부리 찍기",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: 관리자 테스트 전투, 보상 없음. 눌러서 시작해요."
 }

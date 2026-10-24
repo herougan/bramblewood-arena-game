@@ -3179,5 +3179,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name} ne trouve aucune unité et frappe ta ronce : {dmg}.",
  "Guarded": "Protégé",
  "One unit (a Guardian can step in)": "Une unité (un Gardien peut s’interposer)",
- "Beak Strike": "Coup de bec"
+ "Beak Strike": "Coup de bec",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key} : combat de test Admin, sans récompenses. Touche pour lancer."
 }

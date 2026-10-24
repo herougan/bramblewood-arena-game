@@ -3182,5 +3182,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name} எந்த அலகையும் காணாமல் உன் முட்புதரைத் தாக்குகிறது: {dmg}.",
  "Guarded": "காக்கப்பட்டது",
  "One unit (a Guardian can step in)": "ஒரு அலகு (காவலர் இடையில் வரலாம்)",
- "Beak Strike": "அலகு அடி"
+ "Beak Strike": "அலகு அடி",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: நிர்வாகி சோதனைப் போர், பரிசுகள் இல்லை. தொட்டுத் தொடங்கு."
 }

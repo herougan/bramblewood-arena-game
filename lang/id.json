@@ -3181,5 +3181,6 @@
  "{name} finds no unit and hits your bramble for {dmg}.": "{name} tak menemukan unit dan menghantam semakmu: {dmg}.",
  "Guarded": "Terlindungi",
  "One unit (a Guardian can step in)": "Satu unit (Penjaga bisa menghadang)",
- "Beak Strike": "Patukan Paruh"
+ "Beak Strike": "Patukan Paruh",
+ "{key}: Admin test fight, no rewards. Tap to start.": "{key}: pertarungan uji Admin, tanpa hadiah. Ketuk untuk mulai."
 }
