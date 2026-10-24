@@ -4,198 +4,77 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 
 ## Waiting on you
 
-**DF3-1. How hard is a challenge skirmish?** · Decide · Map effects · asked 2026-10-24
-- Your 22:23 #6 put the selfish boons on challenge skirmishes only (built in DF3: 19 of them, 1 every 2 maps from Map 5 and 1 a side map). A challenge skirmish keeps its place on the road but is aimed 10 points under that place's road-curve target (a 78% skirmish slot becomes 68%), with a band of +/- 8. It pays what it paid before (a ⚔️ Challenge pill in the fight panel, nothing more).
-  - Target minus 10, same rewards (built)
-  - Target minus 15 (nearer an elite)
-  - Target minus 10 and a better first-clear reward (your T-3 note: challenges give more)
-  - Their road-curve target as is (the boon replaces part of the deck's strength)
-- **Default:** Target minus 10, same rewards (built)
+**EN7-1. Dive in two turns: what it is safe from while aloft or under** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #3 ("like pokemon"), built: once a fight, at its swing, a diver with an enemy unit in its row rises (a Flyer; a Sprinter leaps the same way) or goes under (a Tide unit without wings) instead of swinging. Until its next swing nothing can find or hit it (swings, shots, bolts, skills aimed at a unit; a Spotter neither) and it can't step in as a Guardian. Its next swing strikes the weakest enemy of its row past Taunt (a Guardian beside the target still steps in) for Attack + N, and it is Exposed that round (no Flying dodge, no Tide evade). Area damage that names no target (a field's hail, a Nova, the tide-spout) and its own Poison / Bleed ticks still reach it, as in the games you described (Earthquake hits Dig in some, not Fly). A diver that can't strike in the next round (frozen, stunned) comes down at that round's end without striking. Keep area damage reaching it, or make it safe from everything?
+  - Area damage still reaches it (built)
+  - Safe from everything while aloft / under
+- **Default:** Area damage still reaches it (built)
 
-**DF3-2. A challenge skirmish may go one Enemy level up** · Decide · Levels · asked 2026-10-24
-- Where a challenge deck could not reach its target inside the deck rules, the search could raise the fight's Enemy level by one (the skirmish editor's field, as LEAD set on elites). It used it once: 13-4 Boar Wallow (Lv 3 -> 4). Maps 16-24's challenges stay at 96-100% even so: the reference player is about Lv 8 there against enemies at Lv 3-5 (your DF-1b).
-  - One level up where needed (built: 13-4 only)
-  - No level change on challenges
-  - Up to the pace curve's level on challenges from Map 16 (decide with DF-1b)
-- **Default:** One level up where needed (built: 13-4 only)
+**EN7-2. Parasite x Bloom with no free enemy beside the host** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #2: a Parasite with Bloom puts its bloom copy (+1/+1, its printed Wait) onto an enemy unit beside its host (left, right, in front, behind) that has no parasite; not a Structure or a cage; several: one at random. A Parasite played as a plain unit hooks its copy onto an enemy facing it or one column beside that. With no such unit, built: it waits and tries again each round (as Bloom waits for a free slot, BL-2). Or: no copy at all that fight?
+  - It waits (built)
+  - No copy that fight
+- **Default:** It waits (built)
 
-**DF3-3. Rising Tide barely matters; keep it, strengthen it or swap it?** · Decide · Map effects · asked 2026-10-24
-- Measured with and without each boon (200 games, docs/balance/df3-boons-2026-10-24.json): Sky Ambush 28 points (8-A-3), Blind Fury 27 (8-5), Hive Chorus 23 (7-A-2), Venom Glands 16.5 (5-3), Snow Veil 8 (17-A-1), Second Burrow 3.5, Ember-born 1-3. Rising Tide is 0 on all three of its fights (9-4, 5-A-2, 10-A-2): the CPU's Tide units are on the board in few rounds. Its engine test shows it working (Quick at Flood).
-  - Keep it (a light boon for the tidal maps)
-  - Strengthen it: Quick and +1 Attack at Flood
-  - Swap those three fights to Venom Glands / Blind Fury
-- **Default:** Strengthen it: Quick and +1 Attack at Flood
+**EN7-3. Poison / Bleed on extra hits, and "– poison" shots** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #5 ("common sense, not too overpowered"), built: a unit's Poison N / Bleed N (with Rabid, Greater Poison, Hemorrhage, Venom Master) ride on every landed hit of its own attack damage: the swing, Frenzy's and Twin Strike's swings, Fork / Trident / Pitchfork prongs and Octolash lashes (these already did), and now Pounce and Ambush (which did not). Cleave's side damage is a spread of the swing (an area, as for Guardian): it carries none. A shot or action (Arrow, Fire Arrow, a Bolt, Missile, Deal damage, Volley, Snipe ...) carries none, unless the card says "– poison" / "– bleed" on it (card text "Arrow 2 – poison"; a box on the Arrow, Missile and Deal damage actions in the card editor, as "– bramble"); it then gives the unit's own N, at least 1. Prices (4-round rule): Pounce / Ambush on a Poison or Bleed card pay 0.33 / 0.3 x the status's price on top (no card has both today); "– poison" on a shot 0.9 x Poison's price at that N (Arrow 2 – poison on a plain unit: +2.7). OK?
+  - OK
+  - Change (say what)
+- **Default:** OK
 
-**DF3-4. DF-4 leftovers: five Map 11 / 14 fights still under their band** · Decide · Balance · asked 2026-10-24
-- DF-4 retuned Maps 7, 11 and 14 with deck moves only (leaders kept): map means 51.2 -> 67.8 (target 69.2), 42.9 -> 68.4 (71.5), 58.0 -> 66.9 (70.6). Still under their band at 100 games: 11-2 75 (86), 11-4 66 (79), 11-7 59 (68), 14-5 60 (70), 14-6 52 (65). 14-5's next move would give an elite a 9th different card, so it was not taken.
-  - Lower those five fights' Enemy level a quarter to a half step
-  - Another deck pass, allowing an 8th card on elites
-  - Leave them (the map means are within 4 points)
-- **Default:** Lower those five fights' Enemy level a quarter to a half step
+**EN7-4. The two Dive cards** · Decide · Cards · asked 2026-10-24
+- Dive is re-priced for the two-turn rule by the 4-round logic: 0.75 + 0.5 N (the lost swing -1.5, a round out of reach +2, the pick +0.5, the exposure -0.25), fitted 1.25 x N^0.5 (Dive 1 1.25, Dive 2 1.77; was 0.75 a point). Given to two cards already placed: Puffin Diver (common, Flying + Tide, Map 3's 3-2 reward): Dive 2, 2/6 -> 2/5 (it goes aloft); Harbor Seal (common, Tide + Evasive, a pack card on the frost coast): Dive 2, 1/10 -> 1/9 (it goes under). No gannet or osprey card exists (The Gannet Queen is a heroic with Pounce 2; Dive would fit her too). Keep these two, add the Gannet Queen, or pick others?
+  - Keep the two
+  - Add the Gannet Queen
+  - Pick others (say which)
+- **Default:** Keep the two
 
-**BAL2-1. LEAD's per-fight Enemy levels hold some elites under their map's declared level** · Decide · Levels · asked 2026-10-24
-- The new schedule introduces each level in the hardest fights of its map (Lv 5 at Map 20 in its boss and two elites). 57 elites and bosses carry a skirmish-editor Enemy level that LEAD set on 10-23 to hold the battle rating when a leader was added. BAL2 re-based them on the new schedule keeping their STRENGTH (stats only move at Lv 4, 7 and 10), so 42 moved and some still show a level under the declared one: 20-6 3.25, 20-8 3.0, the Map 20 world boss 3.15, 21-4/21-5, 22-6/22-7 3.2-3.45, 23-8 3.35, 24-8 3.3. Dropping them puts those fights at the declared level (Lv 5 from Map 20), about 20% more stats on the ones under Lv 4, and harder.
-  - Keep the re-based levels (built)
-  - Drop LEAD's Enemy levels from Map 15 on (the declared levels everywhere)
-  - Drop them all
-- **Default:** Keep the re-based levels (built)
+**EN6-1. Hoard is taken: the hand-count skills are Full Hand N and Lean N** · Decide · Skills · asked 2026-10-24
+- Your 03:17 #1 (all approved at 12:02 #11): +N Attack per card in hand / per empty hand slot, and the foe-counting pair. "Hoard" already names the Lumber skill (+1 Attack per 2 Lumber, on the Magnate Duck), so the built names are Full Hand N, Lean N, Foe's Full Hand N and Foe's Lean N. Keep these names or rename?
+  - Keep Full Hand / Lean
+  - Rename (say the names)
 
-**BAL2-2. Rares in side-map skirmishes before Map 10** · Decide · Rarity · asked 2026-10-24
-- Your 22:23 #2 is built for the main road: Map 5's only Rare is its boss's leader; normal skirmishes hold Rares from Map 10 (gently: no Very Rare in one before Map 15). Side maps keep the older steps (Rare from Map 5, Very Rare from 10), so the Smugglers' Grotto (2-B-1, 3 Mallard Marauders), the Mycelium Deep (7-A-1, 7-A-2) and the Glimmer Depths (8-A-3) still field Rares in normal skirmishes. They are come-back-later fights counted a map ahead.
-  - Side maps keep the older steps (built)
-  - The same rule on side maps (re-deck about 6 skirmishes)
-- **Default:** Side maps keep the older steps (built)
+**EN6-2. The new state skills' prices: default x uptime (the 4-round rule)** · Decide · Balance · asked 2026-10-24
+- Priced by logic, no robust skill test (docs/balance/en6-state-uptime-2026-10-24.json, 1500 CPU fights for the hand; every conquest fight's rules x 6 fights for the field). Plain prices: Plenty +1/+1 x 0.15 = 0.45, Scarcity +1/+0 x 0.79 = 1.58, Foe's Plenty +0/+2 x 0.05 = 0.1, Foe's Scarcity +1/+0 x 0.77 = 1.54, Heat +1/+0 x 0.6 = 1.2, Frost +0/+2 x 0.56 = 1.12, Rain +1/+1 x 0.05 = 0.15, Storm +2/+0 x 0.45 = 1.8, Fog {Evasive} 2.7, Salt Armor 1 x 0.25 = 0.38, Drought +1/+0 x 0.5 = 1.0, Season +1/+1 x 0.25 = 0.75; their braces cost the same uptime x what is in them. The field states take the midpoint of their uptime over all fights and over their home maps (a card made for the volcano plays about half its fights there): Heat 0.21 / 1.0, Frost 0.11 / 1.0, Storm 0.14 / 0.76, Drought 0.26 / 0.75, Salt 0.04 / 0.45, Fog 0.04 / 1.0, Rain 0.017 / 0.08. Full Hand 3.0 a point, Lean 7.5, Foe's Full Hand 2.4, Foe's Lean 7.5 (the hand averages 1.2 cards and 3.8 empty slots as combat starts). Hibernate N 0.95 a point, and its Attack counts only for the rounds it is awake (x 0.53). – bramble x0.9 of the shot or action. OK, or measure some with the robust skill test?
+  - OK
+  - Measure (say which)
 
-**BAL2-3. The road win rates after BAL2 (Maps 0-24): retune pass?** · Decide · Balance · asked 2026-10-24
-- Measured after BAL2 (tools/skirmish_pass.js measure 100 --main, and the same tool on the commit before it; docs/balance/bal2-road-2026-10-24.md): 31 of 179 fights of Maps 0-24 are in their green band (29 before BAL2), 114 too easy, 34 too hard. Most of the gap is from before BAL2. Gannet Cliffs, Gatorback Swamp, the Long Grass, the Glass Dunes and the Goldfeather Siege sit at 94-100%; Pebble Beach, Sunken Hollow, the Morel Hollow and Eyrie Heights are well under target. The Pale Desert is 94-100% on every fight (its reference deck is Map 19's since it counts as Map 19), 18-A-5 retuned to 82.5% (band 65-81%).
-  - A retune pass of Maps 0-24 to the road targets with the honest levers (decks, fields, Shield), as DF-4 / DF-1b
-  - Wait for your play-through (DF-1b)
-- **Default:** Wait for your play-through (DF-1b)
+**EN6-3. Plenty and Foe's Plenty are almost never on against the CPU** · Decide · Skills · asked 2026-10-24
+- As combat starts the CPU holds 0 cards 6% of the time, 1 card 73%, 2 cards 20%, 3+ 1.5% (it plays a card a turn and draws one), and so does a player who plays every turn. So Scarcity (1 or fewer) is on 79% of the time and Plenty (4+) only for a player who holds cards back; Foe's Plenty almost never against the CPU. Built as proposed (4+ / 1 or fewer). Lower Plenty to 3+ (or 2+), or keep?
+  - Keep 4+ / 1 or fewer
+  - Plenty at 3+
+  - Plenty at 2+, Scarcity at 0
 
-**BAL2-4. Bounty 2 and up measure less than Bounty 1** · Decide · Skills · asked 2026-10-24
-- N22-10's re-measure (docs/balance/skill-test-robust-bounty-2026-10-24.md, randomised Lumber / Wait units, 10,000 games a setup): Bounty 1 worth 3.35 stat points, Bounty 2 2.48, Bounty 3 1.91 (the foe gains N when it dies, which outweighs your bigger gain). Bounty is now 2.5 a point (was 3; Bounty 1 measures 2.56), and four Bounty 1 cards rose a point (Raccoon Bandit 4/8, Trash Panda Trickster 2/4, Pack Mule 1/11, Magnate Duck 2/37). A per-point price can't show the fall, so the one Bounty 2 card, the Beaver Lumberjack (4/4), is over-priced; it is held as it is.
-  - Make the Beaver Lumberjack Bounty 1 and re-fit it
-  - Price Bounty flat (2.5 whatever N)
-  - Keep it as it is
-- **Default:** Make the Beaver Lumberjack Bounty 1 and re-fit it
+**EN6-4. Seasons: which maps run the cycle?** · Decide · Map effects · asked 2026-10-24
+- Built as a field option (rules.seasons, in Edit skirmish; off by default and on no map): Spring, Summer, Autumn, Winter, 3 rounds each (a typical 12-round fight sees one year; 4 rounds left Winter at 14%), a log line and a float as the season turns. Summer counts as hot (Heat, not Hibernate), Winter as cold (Frost, Hibernate). Season (X) – {…} is in the editor and the Codex but on no card: with no map running the cycle it would never turn on. Which maps (or fights) get Seasons? Then a card gets Season (Winter) – {…}.
+  - Name the maps
+  - Leave off for now
 
-**BAL2-5. Ten cards the DF-1 re-fit would cut by more than 25%** · Decide · Balance · asked 2026-10-24
-- Held at their stats (owner brief: hold extreme down-moves): Alley Cat 1/8 (line 1/1), Honey Badger Fury 2/9 (1/6), Chipmunk Hoarder 3/8 (2/6), Chipmunk Cavalry 3/3 (2/2), Pyroclast Wyrm 5/17 (3/12), Plague Gnat Cloud 3/3 (2/2), Sunfeather Scout 1/7 (1/4), Lone Grey Wolf 4/15 (2/9), Rock-pool Starfish 2/2 (1/1), Muskrat Lodgekeeper 2/10 (1/5). Most were over before (their map did not move); the Map 5 / Map 2 Pack 1 cards lost their map term (Pack 1 counts as Map 0).
-  - Re-price their skills or re-rank them (one by one)
-  - Cut them to the line
-  - Keep them held
-- **Default:** Re-price their skills or re-rank them (one by one)
+**EN6-5. Full Hand / Lean: no card yet** · Decide · Balance · asked 2026-10-24
+- At 3.0 (Full Hand) and 7.5 (Lean) a point, the commons that fit lose a quarter to a third of their stats (Dormouse 2/8 -> 1/6, Chipmunk Stockpiler 1/9 -> 1/6), so none was given one. Lean 1 is about +3.8 Attack on average. Give them to a rare or higher (say which), make them halve (+N per 2 cards), or leave them in the editor only?
+  - Leave in the editor
+  - Per 2 cards
+  - Give to a card (say which)
 
-**TT-1. Where replayable lessons live** · Decide · Tutorial · asked 2026-10-24
-- There is no help page where lessons can be replayed (the Codex has Browse, Brambles, Skills, Maps and Hall of Fame; the older lessons are one-shot dialogues and coach tips). TT put one small "Triggers lesson" button in the Skill Codex's bar: it clears the lesson, so it plays again in the next fight that shows a trigger chip (a lesson needs a real card to point at). The Skill Codex opens on Map 9, so a player who skips the lesson early cannot replay it until then. A Lessons shelf (Triggers, Pitching, Leaders, Rarity) on a Codex tab or in Settings would reach everyone sooner.
-  - Keep the button in the Skill Codex (built)
-  - A Lessons shelf in Settings, every lesson replayable
-  - A Lessons tab in the Codex, open from the start
-- **Default:** Keep the button in the Skill Codex (built)
+**EN6-6. Beaver Lumberjack: On Ready, 1 Lumber (once) or every round?** · Decide · Cards · asked 2026-10-24
+- Your 12:02 #5: "That lumberjack should have something like On Ready, 1 lumber instead." Built literally: Bounty 2 off, the On Ready trigger (once, when its Wait first runs out) with Gain 1 Lumber, priced 0.9; it stays 4/4 (Bounty 2 was 5.0). The every-round Lumber income (On Ready gold, the Lodge Engineer's "1 Lumber each Ready round", 6.24) would cut it to 2/2. Keep once, or every round?
+  - Once (as built)
+  - Every round (2/2)
 
-**NE-1. Nurse swap: only what you set afterwards, or the time left too?** · Decide · Economy · asked 2026-10-24
-- Owner 13:16 #26: changing the Nurse must not retroactively change an egg's remaining time. In the code an egg's, baby's or training card's hatch time is fixed when it is set in a nest (the Nurse's speed at that moment); a swap only speeds what you set afterwards. A test confirms a swap leaves an egg already warming at its time (tests/ne-2026-10-24.js, tests/e2e/ne_2026_10_24.py), and the Nest now says so under the Nurse. I could not reproduce a retroactive change. The other rule would be: the new Nurse's speed applies to the time still left of everything already growing.
-  - Only what you set afterwards (as built)
-  - The new speed applies to the time left too
-- **Default:** Only what you set afterwards (as built)
+**EN6-7. Bounty keep list: the Chipmunk Stockpiler** · Decide · Cards · asked 2026-10-24
+- Your 12:02 #5: Bounty only where it makes sense. Removed from the Beaver Lumberjack. Kept: Raccoon Bandit, Raccoon Warlord, Trash Panda Trickster (raccoons with their loot), Riverside Peddler (a merchant), Pack Mule (carries goods), The Magnate Duck (treasure), and the Chipmunk Stockpiler (cheeks packed with a stockpile: loot to take). No magpie or mimic has Bounty. Keep the Chipmunk's Bounty?
+  - Keep
+  - Remove (it re-fits up)
 
-**NE-2. Filters reset on every visit: the sort and the view too?** · Decide · UI · asked 2026-10-24
-- Owner 19:27: "reset all filters when i visit the codex ... (Same for the other pages)". Built: entering any page (or a Codex / Play sub-tab) clears every filter (types, animal, phylum, rarity, archetype, skills, the Codex kind row, the Camp pool's kind and level, the Forge's chip and deck scope, the Brambles' filters, the Flea Market's rarity) and the search box. The sort, its direction and the view (album / compressed / full art, group by) are kept, since they are not filters. Say if those should reset too.
-  - Keep the sort and view (as built)
-  - Reset the sort and view too
-- **Default:** Keep the sort and view (as built)
+**EN6-8. Hibernate as built** · Decide · Battle rules · asked 2026-10-24
+- Your 03:17 #4 ("hibernate?"): Hibernate N (plain 2) sleeps while the field is cold (Frigid, Hail, Freezing, the map's frost, Winter) or at night on a cold map (tundra, frostfire): it can't attack, shoot or fire triggers, its Taunt and Guardian are off (it can't step in or draw swings), it still blocks its column and can be hit; a hit does not wake it, its Wait does not tick, and it heals N at each round's start. It wakes when the cold ends. On the Polar Bear (Map 6, the tundra). OK?
+  - OK
+  - Change (say what)
 
-**NE-3. The Camp's copy fan (coordinator's proposal, built)** · Decide · UI · asked 2026-10-24
-- Owner 11:15 asked how to handle copies of different levels and treatments. Built as proposed: one stacked tile per card; a click adds your best copy not in the deck (highest level first); hovering (desktop) or a long press (phone) fans out every copy you own (level, foil / Shiny / alt art), the fan stays open while the pointer is over it, and clicking a fanned copy puts exactly that copy in (the deck remembers it and fights it at its own level); copies already in the deck show greyed with a tick. The separate Shiny / alt-art / finish stacks and the 'Finishes stacked / apart' toggle went. Object if you want something else.
-  - Keep the fan
-  - Change it
-- **Default:** Keep the fan
-
-**EN5-2. Breach and Puncture are the same rule: merge them?** · Decide · Skills · asked 2026-10-24
-- Breach N (built, 1.9 a point) deals N to the enemy bramble on every landed melee hit. Puncture N (on 3 cards, priced 0.7 at scale half: 0.7 / 1.4 / 1.4) already does exactly that. The robust skill test read both the same: Breach 1 / 2 worth 1.82 / 3.76, Puncture 1 / 2 1.86 / 3.73 (docs/balance/en5-breach-states-2026-10-24.md), so Puncture is under-priced today. Options: rename Puncture to Breach (one skill, its 3 cards re-fitted at 1.9 a point), keep both but price Puncture like Breach, or leave Puncture as it is.
-  - Merge: Puncture becomes Breach
-  - Keep both, Puncture priced like Breach
-  - Leave Puncture as it is
-- **Default:** Merge: Puncture becomes Breach
-
-**EN5-3. Canopy Cover: where the trees are, and its price** · Decide · Skills · asked 2026-10-24
-- Built: a ground unit (no Flying; a grounded flyer counts) dodges 1 in 2 single-target attacks, shots and skills, like Evasive (one roll, not on top of Evasive), while the field has trees: any fight on a forest-biome map (Maps 1, 7, 13 and the forest side maps, the first skirmish too), the Old Woods terrain, High Canopy, or the Undergrowth. That is 40 of the 267 conquest fights (15%). Priced as a half-miss skill on the field: Evasive's x1.37 on the stats, times an uptime of 0.4 (a forest card is mostly played on the maps it is won on): x1.15. On the Fawn Scout (Map 13): 2/9 -> 2/7.
-  - As built (uptime 0.4)
-  - Uptime 0.15 (the share of all fights)
-  - Also on jungle / rainforest maps when they come
-- **Default:** As built (uptime 0.4)
-
-**EN5-4. The state skills' prices and cards (Timbered, Bedrock, Forged, Last Stand)** · Decide · Skills · asked 2026-10-24
-- Stone and Metal are real counts in a fight (pitching a Stone card, Quarry, the Petrified Tree's Stone, the Ore-Smelter Mole's Metal; Stone / Metal costs spend them), so the skills read them directly. Measured how often each state holds (docs/balance/en5-state-uptime-2026-10-24.json, 2000 CPU fights of random live decks): 3+ Lumber 0.9% of unit-rounds (the CPU spends Lumber as it comes), 2+ Stone 0.5% even with 4 Stone makers (one card makes Stone), 1+ Metal 83% with 4 Metal makers, 0.9% without, the bramble at a third or less 10%. Priced by your 4-round rule x the uptime a deck built for it would have: Timbered {+0/+2} 2 x 0.25 = 0.5, Bedrock {Armor 1} 1.5 x 0.2 = 0.3, Forged {+1/+0} 2 x 0.5 = 1.0, Last Stand {+1/+1} 3 x 0.2 = 0.6 (the robust test read plain Last Stand 0.62, Timbered 0.38). Their braces cost the same uptime x the braces. Cards: Lodge Engineer (Timbered), Quarry Mole (Bedrock), Badger Trench Digger (Last Stand); no Forged card (the only Metal maker, the Ore-Smelter Mole, already has two skills and would hold Forged nearly always).
-  - As built
-  - Higher uptimes (cheaper to fit: fewer stats lost)
-  - Give Forged to the Ore-Smelter Mole as a third (thematic) skill
-- **Default:** As built
-
-**EN5-5. Bleed and Poison: the measured curve flattens** · Decide · Balance · asked 2026-10-24
-- Your BP-1: "price it according to your simulation. Note that bigger numbers make them stronger". tools/skill_test_robust.js --mono --multi, 3000 games a setup, with the units priced at a trial 1 a point so the decks stay off the floor (EN4's 'about 2' for Bleed 2 / Poison 2 came from decks priced at 5.2 that lost 97% of their games). Worth with companions at N 1 / 2 / 3 / 4: Bleed 3.5 / 6.2 / 6.6 / 6.3, Poison 2.9 / 5.7 / 5.9 / 5.4 (docs/balance/en5-bleed-poison-2026-10-24.md). Bigger numbers are stronger in all up to 3, but each point is worth less: the stack outlives the small units it lands on. Priced S(N) = 3.6 x N^0.6 (Bleed) and 3.0 x N^0.7 (Poison), a power curve through N 1-3: Bleed 3.6 / 5.5 / 7.0, Poison 3.0 / 4.9 / 6.5 (was 2.6 / 5.2 / 7.8 for both). So a Bleed 1 or Poison 1 card costs more than before and a Bleed 3+ card less. The actions (Bleed / Poison in triggers) and the family (Gash, Venomous, Rabid ...) are unchanged.
-  - As built (the measured power curve)
-  - Linear at the measured N 2 (Bleed 3.1, Poison 2.8 a point)
-  - Convex as you expected (re-measure on bigger units first)
-- **Default:** As built (the measured power curve)
-
-**EN5-6. EN5's re-fit: 28 cards moved, none held** · Decide · Balance · asked 2026-10-24
-- tools/en5_cards_2026_10_24.js refit (docs/balance/en5-refit-2026-10-24.json): 5 up (Komodo Warlord 1/26, Venomlord Serpent 1/23, Ice Crevasse Wolf 1/13, Green Dragon 3/22, Yellow-bellied Sea Snake 4/4), 23 down, none cut by more than a quarter (the hold line), so none held. The Bloom cards are balanced as you asked, at most 1% over N: Fungal Colossus 2/21 -> 2/14, Puffball Bombardier 1/10 -> 1/5, Lotus Frog 3/12 -> 3/6, Pond Algae 1/9 -> 1/7 (the copy's chain makes each body count for more). The six new-skill cards: Beetle Battering-Ram 5/12 -> 4/10 (Breach 2), Badger Sapper 3/16 -> 3/15 (Breach 1), Fawn Scout 2/9 -> 2/7 (Canopy Cover), Lodge Engineer 3/13 -> 3/12 (Timbered), Quarry Mole and Badger Trench Digger kept their lines. Alley Cat and Poison Dart Frog have no legal line (already on the flagged list).
-  - Keep the re-fit
-  - Hold the Bloom cuts (Puffball, Lotus Frog lose half)
-  - Revert the down-moves
-- **Default:** Keep the re-fit
-
-**EN5-7. The snap check found a Guardian's step-in jumping 23 px** · Decide · UI · asked 2026-10-24
-- tests/e2e/snaps.py crashed ("Cannot set properties of null (setting 'speedMult')", on HEAD too): a fresh profile's deck holds 3 Dolphin Knights it does not own, so the fight never started (PG's copy check). Fixed in the script (it owns its deck, as the other e2e scripts). Now it runs (random plays, so counts vary): the two phone runs are clean, the two 1366 runs (4-3, 4-5) report snaps, and every one looked at is a Guardian token stepping in (has-guard, en2-guarding) that moves 13-48 px between two frames with nothing animating it. EN2 / EN3's Guardian step-in pose, not EN5. Fix it in the next UI package?
-  - Fix the Guardian step-in's snap next
-  - Leave it
-- **Default:** Fix the Guardian step-in's snap next
-
-**BV-1. The camera no longer leans or turns toward the cards** · Confirm · Battle UI · asked 2026-10-24
-- Your 17:01 #6 ('the battlefield should only move to zoom out or capture cards outside the field of vision'). Built: the jump-and-rubber-band was the snap guard mistaking a camera zoom for a card snap (fixed). On a computer the camera also leaned 40% of the way toward the cards' centre and turned up to 3 degrees toward them whenever cards sat outside the middle five columns (setBoardLean, 2026-10-12); that is gone too: the camera now shifts only as far as it takes to bring a card that would be off screen into view.
-  - Keep it: no lean, no turn (built)
-  - Bring back the 3 degree turn only
-  - Bring back the lean and the turn
-- **Default:** Keep it: no lean, no turn (built)
-
-**BV-2. 13:16 #24: which 'code above the deck'?** · Clarify · Battle UI · asked 2026-10-24
-- No skirmish code (like 4-3) is drawn above a deck during a fight; the code only shows on the VS screen. The one thing above a deck is the enemy's hand count ('3 🃏') over their Deck, which on a phone was cut in half by the top of the screen. Built: on phones it now sits just inside their Deck's top edge, smaller (8.5 px). If you meant something else, a screenshot would pin it.
-  - That was it (built)
-  - Hide the hand count on phones
-  - It was something else (screenshot)
-- **Default:** That was it (built)
-
-**BV-3. 13:16 #23: the Shield symbol that vanished: which card?** · Clarify · Effects · asked 2026-10-24
-- Playing Tide Pool Crab, Conch Crawler and Armadillo Guard (yours and the CPU's, on a Flood map too) keeps the 💠 Shield chip through the play and the round in every test. One real gap was found and fixed: a unit that joins the board mid-round (a token, a summon, a Shield Call shield) got a replay snapshot without its Shield, so the round's next redraw dropped its 💠 chip and blue Health (replayGuardSnap). If you still see it, the card's name (or a screenshot) would let it be reproduced.
-  - Fixed (built)
-  - Still happens with a card I'll name
-- **Default:** Fixed (built)
-
-**BV-4. Day/night change: keep the faint creep from the left?** · Confirm · Effects · asked 2026-10-24
-- Your 19:27 #20 ('the whole transition should be gentle'). Built: the copy of the new light that crept in from the left (your 10-16 request) now crosses in 8.5 s at an even pace and peaks at 10% (it shot across in about a second at 20%); the old tint holds while the new one comes in over it, and everything follows one sine curve over 10 s. It could also go entirely, leaving one even fade.
-  - Keep the faint creep (built)
-  - Remove the creep: one even fade
-- **Default:** Keep the faint creep (built)
-
-**BV-5. 19:27 #20: the 'parallel bars' on some maps** · Clarify · Effects · asked 2026-10-24
-- Two bar effects were made 50% more transparent / replaced: dusk's static shadow bars (FX.B.dusk, .35 -> .175) and the River Rapids current (Sunken Hollow), which was evenly spaced stripes and is now soft random streaks at about a third of the strength. Note: the short paired marks all over the Sunken Hollow board in your screenshot are reeds painted into the map's floor art (assets/maps/m2.png), not an effect; they can be toned down too if you mean those.
-  - Those two were it (built)
-  - Also tone down the reeds in the map art
-- **Default:** Those two were it (built)
-
-**PRO-2. What does beating a PRO fight give?** · Decide · Rewards · asked 2026-10-24
-- Built: nothing. The fight runs like the map's skirmishes (its castle and Shield, the PRO's field, the enemy at Level 1, the Smart CPU the deck was measured with, from Map 2 its showcase card as leader) but costs no Energy and pays no rank, cards, Maple Leaves, XP or quest counts; the results say "3-PRO-1 is a PRO fight: no rewards". A cosmetic option: a small PRO flag on your profile per map beaten (no gameplay value).
-  - Nothing (built)
-  - A cosmetic PRO flag per map
-  - A one-time small reward per PRO fight
-- **Default:** Nothing (built)
-
-**PRO-3. Re-run the optimizer for Maps 0-3 on today's cards before the PRO fights ship?** · Decide · Balance tools · asked 2026-10-24
-- The PRO decks come from OPT2's runs of 10-23, before RW5 and EN4 changed cards (the Ember Tetra 3/7 -> 2/6 and renamed from ember-tetra-3caj; the Voidfeather Scout became a Map 5 faction card). They are legal decks on today's cards and were measured head to head on today's engine, but a fresh run (about 20 minutes for the 4 maps on 2 cores) could find stronger ones; tools/opt/pro_skirmishes.js --apply then replaces a PRO-1 only if the new deck beats it (55% over 400 games). Several PRO decks also use cards first obtainable after their map (phase 2's related cards, e.g. Stonedrop Vulture in 3-PRO-1, Map 18): listed per deck as `later` in canonical/pro-skirmishes.json.
-  - Re-run before release
-  - Ship as is, re-run later
-- **Default:** Ship as is, re-run later
-
-**OPT-4. Deck optimizer's default search: the genetic search (recommended) or one-card-at-a-time descent?** · Decide · Tools · asked 2026-10-24
-- OPT2 compared both on Maps 0-3 at equal budgets: final quality ties within noise; the genetic search wins head-to-head on 6 of 8 runs and finds about 3x more distinct optima; descent climbs faster on small budgets (under ~6,000 games) but stalls. Built: genetic by default, --method descent for quick runs.
-  - Genetic (built)
-  - Descent
-- **Default:** Genetic (built)
-
-**EN4-3. Prices for Hemorrhage, Greater Poison and Shore Up** · Decide · Balance · asked 2026-10-23
-- Priced by your 4-round rule (docs/workflows/balance.md), checked with tools/skill_test_robust.js --mono --multi (3000 games a setup, docs/balance/en4-skill-test-2026-10-23.md). SHORE UP 2.2: a front unit survives 2-3 hits over 4 rounds with about 1.5 allies beside it, so 3-4.5 Shield, about half of it soaking: 1.5-2 Health; measured 2.68 alone, 2.26 with companions; set at 2.2. HEMORRHAGE 2: on a target already Bleeding about half its hits, each doubling adds about the stack (1-3), about +1 Bleed a hit (Bleed 2.6 a stack) = 1.3-2.6, and nothing without Bleed around. GREATER POISON 2.5 (N 1; scale half; 1 a stack, never wears off, owner 23:45): beside Poison 2, the target's ticks over 4 rounds go from 2+3+4 = 9 to 3+5+7 = 15, about 6 more damage = 3 stat points if it lives all 4 rounds, about 2 at a usual 2/3; alone 1+2+3 = 6. PULSE (owner 23:45: Venom Pulse renamed, Poison AND Bleed tick): the Pulse action 1.3 a tick (on a target Poisoned about half its hits, about 2.5 a tick, and Bleeding about a third, about 2: about 1.9 damage a pulse), so Pulse 1 = On Hit 2.1 x 1.3 = 2.7 (Venom Pulse was 2.1); no card carries it, so nothing re-fits. The test can't price these two: they need their enabler (Bleed 2 / Poison 2), and a unit carrying that at the table's 5.2 loses nearly every game in the harness, so their rows sit at the floor. Side finding: in the same harness Bleed 2 and Poison 2 read about 2 stat points against their 5.2 price; listed, not acted on. The six new cards are fitted at these prices.
-  - Keep the prices as set
-  - Price by the measured worth instead
-  - Other
-- **Default:** Keep the prices as set
-
-**EN4-4. Six new cards for the three skills, and where they go** · Decide · Cards · asked 2026-10-23
-- Two cards a skill (Greater Poison on cards with Poison too), priced by the formula with their map's term, placeholder art (the emoji), NightCafe prompts in docs/art/new-cards-2026-10-23-en4.md. Placed lightly where they add a decision (22:23 #10: Maps 0-9 lacked depth): Oyster Bank (common, 0 Attack, Shore Up) Pebble Beach, Map 2, Pack 1: a wall that props up the units beside it. Great Skua (common, Flying, Hemorrhage) Gannet Cliffs, Map 3, Pack 1: pays off the Razorbill's Bleed. Cane Toad (uncommon, Poison 1 + Greater Poison 1) Sable Swampmire, Map 6, Pack 1: the poison swamp's payoff. Bloodscent Shark (uncommon, Hemorrhage) Coral Current, Map 10, Pack 2: beside the Gash squids. Musk Ox Matriarch (uncommon, Shore Up + Armor 1) Wolfsbane Tundra, Map 17, Pack 3. Inland Taipan (rare, Poison 2 + Greater Poison 1) the Pale Desert, Map 18, Pack 3: beside the scorpions. All are pack cards (not skirmish rewards) and appear in their map's enemy pool.
-  - Keep these placements
-  - Move some (say which)
-  - Hold them out of the maps for now
-- **Default:** Keep these placements
+**EN6-9. Salt and Rain are rare on the maps** · Decide · Map effects · asked 2026-10-24
+- Salt (a beach or reef map while the tide is out) holds 4% of all fights' unit-rounds: those maps run the tide only in their boss and elite fights (High Tide). Rain holds 1.7%: Spring Rain is on no map; only the two Thunderstorm fights and Rainmaker cards bring it. Their cards (Horseshoe Crab, Puddle Hopper) are priced for that (0.38, 0.15). Give some beach / reef skirmishes the Tide, and some maps Spring Rain?
+  - Leave
+  - Add the Tide / Rain (say where)
 
 **DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
 - Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
@@ -235,6 +114,192 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 - **Default:** Yes, test on 10 cards
 
 ## Decided
+
+**DF3-1. How hard is a challenge skirmish?** · Decide · Map effects · asked 2026-10-24
+- Your 22:23 #6 put the selfish boons on challenge skirmishes only (built in DF3: 19 of them, 1 every 2 maps from Map 5 and 1 a side map). A challenge skirmish keeps its place on the road but is aimed 10 points under that place's road-curve target (a 78% skirmish slot becomes 68%), with a band of +/- 8. It pays what it paid before (a ⚔️ Challenge pill in the fight panel, nothing more).
+  - Target minus 10, same rewards (built)
+  - Target minus 15 (nearer an elite)
+  - Target minus 10 and a better first-clear reward (your T-3 note: challenges give more)
+  - Their road-curve target as is (the boon replaces part of the deck's strength)
+- **Default:** Target minus 10, same rewards (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "By default yes." Defaults applied (queued where a build is needed).
+
+**DF3-2. A challenge skirmish may go one Enemy level up** · Decide · Levels · asked 2026-10-24
+- Where a challenge deck could not reach its target inside the deck rules, the search could raise the fight's Enemy level by one (the skirmish editor's field, as LEAD set on elites). It used it once: 13-4 Boar Wallow (Lv 3 -> 4). Maps 16-24's challenges stay at 96-100% even so: the reference player is about Lv 8 there against enemies at Lv 3-5 (your DF-1b).
+  - One level up where needed (built: 13-4 only)
+  - No level change on challenges
+  - Up to the pace curve's level on challenges from Map 16 (decide with DF-1b)
+- **Default:** One level up where needed (built: 13-4 only)
+- **Outcome:** Owner, 2026-10-24 12:02: "By default yes." Defaults applied (queued where a build is needed).
+
+**DF3-3. Rising Tide barely matters; keep it, strengthen it or swap it?** · Decide · Map effects · asked 2026-10-24
+- Measured with and without each boon (200 games, docs/balance/df3-boons-2026-10-24.json): Sky Ambush 28 points (8-A-3), Blind Fury 27 (8-5), Hive Chorus 23 (7-A-2), Venom Glands 16.5 (5-3), Snow Veil 8 (17-A-1), Second Burrow 3.5, Ember-born 1-3. Rising Tide is 0 on all three of its fights (9-4, 5-A-2, 10-A-2): the CPU's Tide units are on the board in few rounds. Its engine test shows it working (Quick at Flood).
+  - Keep it (a light boon for the tidal maps)
+  - Strengthen it: Quick and +1 Attack at Flood
+  - Swap those three fights to Venom Glands / Blind Fury
+- **Default:** Strengthen it: Quick and +1 Attack at Flood
+- **Outcome:** Owner, 2026-10-24 12:02: "By default yes." Defaults applied (queued where a build is needed).
+
+**DF3-4. DF-4 leftovers: five Map 11 / 14 fights still under their band** · Decide · Balance · asked 2026-10-24
+- DF-4 retuned Maps 7, 11 and 14 with deck moves only (leaders kept): map means 51.2 -> 67.8 (target 69.2), 42.9 -> 68.4 (71.5), 58.0 -> 66.9 (70.6). Still under their band at 100 games: 11-2 75 (86), 11-4 66 (79), 11-7 59 (68), 14-5 60 (70), 14-6 52 (65). 14-5's next move would give an elite a 9th different card, so it was not taken.
+  - Lower those five fights' Enemy level a quarter to a half step
+  - Another deck pass, allowing an 8th card on elites
+  - Leave them (the map means are within 4 points)
+- **Default:** Lower those five fights' Enemy level a quarter to a half step
+- **Outcome:** Owner, 2026-10-24 12:02: "By default yes." Defaults applied (queued where a build is needed).
+
+**BAL2-1. LEAD's per-fight Enemy levels hold some elites under their map's declared level** · Decide · Levels · asked 2026-10-24
+- The new schedule introduces each level in the hardest fights of its map (Lv 5 at Map 20 in its boss and two elites). 57 elites and bosses carry a skirmish-editor Enemy level that LEAD set on 10-23 to hold the battle rating when a leader was added. BAL2 re-based them on the new schedule keeping their STRENGTH (stats only move at Lv 4, 7 and 10), so 42 moved and some still show a level under the declared one: 20-6 3.25, 20-8 3.0, the Map 20 world boss 3.15, 21-4/21-5, 22-6/22-7 3.2-3.45, 23-8 3.35, 24-8 3.3. Dropping them puts those fights at the declared level (Lv 5 from Map 20), about 20% more stats on the ones under Lv 4, and harder.
+  - Keep the re-based levels (built)
+  - Drop LEAD's Enemy levels from Map 15 on (the declared levels everywhere)
+  - Drop them all
+- **Default:** Keep the re-based levels (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "use our agreed philosophy and schedule, not my balancing." The hand-set LEAD levels give way to the schedule (queued, BAL3).
+
+**BAL2-2. Rares in side-map skirmishes before Map 10** · Decide · Rarity · asked 2026-10-24
+- Your 22:23 #2 is built for the main road: Map 5's only Rare is its boss's leader; normal skirmishes hold Rares from Map 10 (gently: no Very Rare in one before Map 15). Side maps keep the older steps (Rare from Map 5, Very Rare from 10), so the Smugglers' Grotto (2-B-1, 3 Mallard Marauders), the Mycelium Deep (7-A-1, 7-A-2) and the Glimmer Depths (8-A-3) still field Rares in normal skirmishes. They are come-back-later fights counted a map ahead.
+  - Side maps keep the older steps (built)
+  - The same rule on side maps (re-deck about 6 skirmishes)
+- **Default:** Side maps keep the older steps (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "use our agreed philosophy" — side maps follow the Rare-from-Map-10 rule too (queued, BAL3).
+
+**BAL2-3. The road win rates after BAL2 (Maps 0-24): retune pass?** · Decide · Balance · asked 2026-10-24
+- Measured after BAL2 (tools/skirmish_pass.js measure 100 --main, and the same tool on the commit before it; docs/balance/bal2-road-2026-10-24.md): 31 of 179 fights of Maps 0-24 are in their green band (29 before BAL2), 114 too easy, 34 too hard. Most of the gap is from before BAL2. Gannet Cliffs, Gatorback Swamp, the Long Grass, the Glass Dunes and the Goldfeather Siege sit at 94-100%; Pebble Beach, Sunken Hollow, the Morel Hollow and Eyrie Heights are well under target. The Pale Desert is 94-100% on every fight (its reference deck is Map 19's since it counts as Map 19), 18-A-5 retuned to 82.5% (band 65-81%).
+  - A retune pass of Maps 0-24 to the road targets with the honest levers (decks, fields, Shield), as DF-4 / DF-1b
+  - Wait for your play-through (DF-1b)
+- **Default:** Wait for your play-through (DF-1b)
+- **Outcome:** Owner, 2026-10-24 12:02: "BAL Basic logic return ... use our agreed philosophy and schedule, not my balancing." Retune Maps 0-24 and the Pale Desert now by the road curve (queued, BAL3).
+
+**BAL2-4. Bounty 2 and up measure less than Bounty 1** · Decide · Skills · asked 2026-10-24
+- N22-10's re-measure (docs/balance/skill-test-robust-bounty-2026-10-24.md, randomised Lumber / Wait units, 10,000 games a setup): Bounty 1 worth 3.35 stat points, Bounty 2 2.48, Bounty 3 1.91 (the foe gains N when it dies, which outweighs your bigger gain). Bounty is now 2.5 a point (was 3; Bounty 1 measures 2.56), and four Bounty 1 cards rose a point (Raccoon Bandit 4/8, Trash Panda Trickster 2/4, Pack Mule 1/11, Magnate Duck 2/37). A per-point price can't show the fall, so the one Bounty 2 card, the Beaver Lumberjack (4/4), is over-priced; it is held as it is.
+  - Make the Beaver Lumberjack Bounty 1 and re-fit it
+  - Price Bounty flat (2.5 whatever N)
+  - Keep it as it is
+- **Default:** Make the Beaver Lumberjack Bounty 1 and re-fit it
+- **Outcome:** Owner, 2026-10-24 12:02: "Ill take away bounty from creatures that dont make sense such as Beaver. That lumberjack should have something like On Ready, 1 lumber instead." (queued, EN6: Bounty only where thematic).
+
+**BAL2-5. Ten cards the DF-1 re-fit would cut by more than 25%** · Decide · Balance · asked 2026-10-24
+- Held at their stats (owner brief: hold extreme down-moves): Alley Cat 1/8 (line 1/1), Honey Badger Fury 2/9 (1/6), Chipmunk Hoarder 3/8 (2/6), Chipmunk Cavalry 3/3 (2/2), Pyroclast Wyrm 5/17 (3/12), Plague Gnat Cloud 3/3 (2/2), Sunfeather Scout 1/7 (1/4), Lone Grey Wolf 4/15 (2/9), Rock-pool Starfish 2/2 (1/1), Muskrat Lodgekeeper 2/10 (1/5). Most were over before (their map did not move); the Map 5 / Map 2 Pack 1 cards lost their map term (Pack 1 counts as Map 0).
+  - Re-price their skills or re-rank them (one by one)
+  - Cut them to the line
+  - Keep them held
+- **Default:** Re-price their skills or re-rank them (one by one)
+- **Outcome:** Owner, 2026-10-24 12:02: "Basic logic return": the 10 held cards take their formula stats (queued, BAL3).
+
+**TT-1. Where replayable lessons live** · Decide · Tutorial · asked 2026-10-24
+- There is no help page where lessons can be replayed (the Codex has Browse, Brambles, Skills, Maps and Hall of Fame; the older lessons are one-shot dialogues and coach tips). TT put one small "Triggers lesson" button in the Skill Codex's bar: it clears the lesson, so it plays again in the next fight that shows a trigger chip (a lesson needs a real card to point at). The Skill Codex opens on Map 9, so a player who skips the lesson early cannot replay it until then. A Lessons shelf (Triggers, Pitching, Leaders, Rarity) on a Codex tab or in Settings would reach everyone sooner.
+  - Keep the button in the Skill Codex (built)
+  - A Lessons shelf in Settings, every lesson replayable
+  - A Lessons tab in the Codex, open from the start
+- **Default:** Keep the button in the Skill Codex (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "NE OKAY"/"EN OKAY" batch: as built (Skill Codex button).
+
+**NE-1. Nurse swap: only what you set afterwards, or the time left too?** · Decide · Economy · asked 2026-10-24
+- Owner 13:16 #26: changing the Nurse must not retroactively change an egg's remaining time. In the code an egg's, baby's or training card's hatch time is fixed when it is set in a nest (the Nurse's speed at that moment); a swap only speeds what you set afterwards. A test confirms a swap leaves an egg already warming at its time (tests/ne-2026-10-24.js, tests/e2e/ne_2026_10_24.py), and the Nest now says so under the Nurse. I could not reproduce a retroactive change. The other rule would be: the new Nurse's speed applies to the time still left of everything already growing.
+  - Only what you set afterwards (as built)
+  - The new speed applies to the time left too
+- **Default:** Only what you set afterwards (as built)
+- **Outcome:** Owner, 2026-10-24 12:02: "NE OKAY" (as built / default).
+
+**NE-2. Filters reset on every visit: the sort and the view too?** · Decide · UI · asked 2026-10-24
+- Owner 19:27: "reset all filters when i visit the codex ... (Same for the other pages)". Built: entering any page (or a Codex / Play sub-tab) clears every filter (types, animal, phylum, rarity, archetype, skills, the Codex kind row, the Camp pool's kind and level, the Forge's chip and deck scope, the Brambles' filters, the Flea Market's rarity) and the search box. The sort, its direction and the view (album / compressed / full art, group by) are kept, since they are not filters. Say if those should reset too.
+  - Keep the sort and view (as built)
+  - Reset the sort and view too
+- **Default:** Keep the sort and view (as built)
+- **Outcome:** Owner, 2026-10-24 12:02: "NE OKAY" (as built / default).
+
+**NE-3. The Camp's copy fan (coordinator's proposal, built)** · Decide · UI · asked 2026-10-24
+- Owner 11:15 asked how to handle copies of different levels and treatments. Built as proposed: one stacked tile per card; a click adds your best copy not in the deck (highest level first); hovering (desktop) or a long press (phone) fans out every copy you own (level, foil / Shiny / alt art), the fan stays open while the pointer is over it, and clicking a fanned copy puts exactly that copy in (the deck remembers it and fights it at its own level); copies already in the deck show greyed with a tick. The separate Shiny / alt-art / finish stacks and the 'Finishes stacked / apart' toggle went. Object if you want something else.
+  - Keep the fan
+  - Change it
+- **Default:** Keep the fan
+- **Outcome:** Owner, 2026-10-24 12:02: "NE OKAY" (as built / default).
+
+**EN5-2. Breach and Puncture are the same rule: merge them?** · Decide · Skills · asked 2026-10-24
+- Breach N (built, 1.9 a point) deals N to the enemy bramble on every landed melee hit. Puncture N (on 3 cards, priced 0.7 at scale half: 0.7 / 1.4 / 1.4) already does exactly that. The robust skill test read both the same: Breach 1 / 2 worth 1.82 / 3.76, Puncture 1 / 2 1.86 / 3.73 (docs/balance/en5-breach-states-2026-10-24.md), so Puncture is under-priced today. Options: rename Puncture to Breach (one skill, its 3 cards re-fitted at 1.9 a point), keep both but price Puncture like Breach, or leave Puncture as it is.
+  - Merge: Puncture becomes Breach
+  - Keep both, Puncture priced like Breach
+  - Leave Puncture as it is
+- **Default:** Merge: Puncture becomes Breach
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY" (as built / default).
+
+**EN5-3. Canopy Cover: where the trees are, and its price** · Decide · Skills · asked 2026-10-24
+- Built: a ground unit (no Flying; a grounded flyer counts) dodges 1 in 2 single-target attacks, shots and skills, like Evasive (one roll, not on top of Evasive), while the field has trees: any fight on a forest-biome map (Maps 1, 7, 13 and the forest side maps, the first skirmish too), the Old Woods terrain, High Canopy, or the Undergrowth. That is 40 of the 267 conquest fights (15%). Priced as a half-miss skill on the field: Evasive's x1.37 on the stats, times an uptime of 0.4 (a forest card is mostly played on the maps it is won on): x1.15. On the Fawn Scout (Map 13): 2/9 -> 2/7.
+  - As built (uptime 0.4)
+  - Uptime 0.15 (the share of all fights)
+  - Also on jungle / rainforest maps when they come
+- **Default:** As built (uptime 0.4)
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY" (as built / default).
+
+**EN5-4. The state skills' prices and cards (Timbered, Bedrock, Forged, Last Stand)** · Decide · Skills · asked 2026-10-24
+- Stone and Metal are real counts in a fight (pitching a Stone card, Quarry, the Petrified Tree's Stone, the Ore-Smelter Mole's Metal; Stone / Metal costs spend them), so the skills read them directly. Measured how often each state holds (docs/balance/en5-state-uptime-2026-10-24.json, 2000 CPU fights of random live decks): 3+ Lumber 0.9% of unit-rounds (the CPU spends Lumber as it comes), 2+ Stone 0.5% even with 4 Stone makers (one card makes Stone), 1+ Metal 83% with 4 Metal makers, 0.9% without, the bramble at a third or less 10%. Priced by your 4-round rule x the uptime a deck built for it would have: Timbered {+0/+2} 2 x 0.25 = 0.5, Bedrock {Armor 1} 1.5 x 0.2 = 0.3, Forged {+1/+0} 2 x 0.5 = 1.0, Last Stand {+1/+1} 3 x 0.2 = 0.6 (the robust test read plain Last Stand 0.62, Timbered 0.38). Their braces cost the same uptime x the braces. Cards: Lodge Engineer (Timbered), Quarry Mole (Bedrock), Badger Trench Digger (Last Stand); no Forged card (the only Metal maker, the Ore-Smelter Mole, already has two skills and would hold Forged nearly always).
+  - As built
+  - Higher uptimes (cheaper to fit: fewer stats lost)
+  - Give Forged to the Ore-Smelter Mole as a third (thematic) skill
+- **Default:** As built
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY" (as built / default).
+
+**EN5-5. Bleed and Poison: the measured curve flattens** · Decide · Balance · asked 2026-10-24
+- Your BP-1: "price it according to your simulation. Note that bigger numbers make them stronger". tools/skill_test_robust.js --mono --multi, 3000 games a setup, with the units priced at a trial 1 a point so the decks stay off the floor (EN4's 'about 2' for Bleed 2 / Poison 2 came from decks priced at 5.2 that lost 97% of their games). Worth with companions at N 1 / 2 / 3 / 4: Bleed 3.5 / 6.2 / 6.6 / 6.3, Poison 2.9 / 5.7 / 5.9 / 5.4 (docs/balance/en5-bleed-poison-2026-10-24.md). Bigger numbers are stronger in all up to 3, but each point is worth less: the stack outlives the small units it lands on. Priced S(N) = 3.6 x N^0.6 (Bleed) and 3.0 x N^0.7 (Poison), a power curve through N 1-3: Bleed 3.6 / 5.5 / 7.0, Poison 3.0 / 4.9 / 6.5 (was 2.6 / 5.2 / 7.8 for both). So a Bleed 1 or Poison 1 card costs more than before and a Bleed 3+ card less. The actions (Bleed / Poison in triggers) and the family (Gash, Venomous, Rabid ...) are unchanged.
+  - As built (the measured power curve)
+  - Linear at the measured N 2 (Bleed 3.1, Poison 2.8 a point)
+  - Convex as you expected (re-measure on bigger units first)
+- **Default:** As built (the measured power curve)
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY" (as built / default).
+
+**EN5-6. EN5's re-fit: 28 cards moved, none held** · Decide · Balance · asked 2026-10-24
+- tools/en5_cards_2026_10_24.js refit (docs/balance/en5-refit-2026-10-24.json): 5 up (Komodo Warlord 1/26, Venomlord Serpent 1/23, Ice Crevasse Wolf 1/13, Green Dragon 3/22, Yellow-bellied Sea Snake 4/4), 23 down, none cut by more than a quarter (the hold line), so none held. The Bloom cards are balanced as you asked, at most 1% over N: Fungal Colossus 2/21 -> 2/14, Puffball Bombardier 1/10 -> 1/5, Lotus Frog 3/12 -> 3/6, Pond Algae 1/9 -> 1/7 (the copy's chain makes each body count for more). The six new-skill cards: Beetle Battering-Ram 5/12 -> 4/10 (Breach 2), Badger Sapper 3/16 -> 3/15 (Breach 1), Fawn Scout 2/9 -> 2/7 (Canopy Cover), Lodge Engineer 3/13 -> 3/12 (Timbered), Quarry Mole and Badger Trench Digger kept their lines. Alley Cat and Poison Dart Frog have no legal line (already on the flagged list).
+  - Keep the re-fit
+  - Hold the Bloom cuts (Puffball, Lotus Frog lose half)
+  - Revert the down-moves
+- **Default:** Keep the re-fit
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY" (as built / default).
+
+**EN5-7. The snap check found a Guardian's step-in jumping 23 px** · Decide · UI · asked 2026-10-24
+- tests/e2e/snaps.py crashed ("Cannot set properties of null (setting 'speedMult')", on HEAD too): a fresh profile's deck holds 3 Dolphin Knights it does not own, so the fight never started (PG's copy check). Fixed in the script (it owns its deck, as the other e2e scripts). Now it runs (random plays, so counts vary): the two phone runs are clean, the two 1366 runs (4-3, 4-5) report snaps, and every one looked at is a Guardian token stepping in (has-guard, en2-guarding) that moves 13-48 px between two frames with nothing animating it. EN2 / EN3's Guardian step-in pose, not EN5. Fix it in the next UI package?
+  - Fix the Guardian step-in's snap next
+  - Leave it
+- **Default:** Fix the Guardian step-in's snap next
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY".
+
+**EQ2-1. Equipment durability: defaults by rarity, and what it does to the pieces' prices** · Decide · Battle rules · asked 2026-10-24
+- Built (package EQ2, from your EQ-1 'Durability with acid / Corrode wear'): every piece has durability, its card's own number or by rarity: Common and Uncommon 3, Rare to Super Rare 4, Epic and up 5. A hit on the wearer takes 1 (a swing, a shot, a bolt, a raid smack, a floor's burn; a Poison or Bleed tick is not a hit), an acid hit 2, each Corrode applied 2. At 0 it breaks: it leaves play and its stats and skills come off the unit (Health never below 1). A dropped or stolen piece keeps its wear. The 50% / acid-death rule you disliked is not used. Price (4-round rule, bramblewood-budget.js equipLifeMult): a piece lasts about its durability in rounds, so it counts min(durability, 4) / 4 of its stats and grant: x0.75 for the Common and Uncommon pieces, x1 from Rare. All ten pieces were already well under N; durability frees 0.6-2 points on the five Common / Uncommon ones (docs/balance/eq2-equipment-2026-10-24.json). No card was changed.
+  - Keep the defaults and the stats (built)
+  - Keep the defaults, raise the Common / Uncommon pieces into the freed room
+  - Durability 3 for every rarity
+- **Default:** Keep the defaults and the stats (built)
+- **Outcome:** Owner, 2026-10-24 13:12: "EQ: OKAY to all."
+
+**EQ2-2. Dive: the simplest form (once a fight, the weakest unit of the row, no landing move)** · Decide · Battle rules · asked 2026-10-24
+- Built (package EQ2, N21-5; your note: a diving flier is 'exposed', no 50% miss advantage while diving). From docs/ramming-proposal-2026-10-21.md option C, cut to its simplest: Dive N (N 1 by default): once a fight, the unit's swing goes to the weakest enemy unit (least Health, the nearest on a tie) in the row it faces, past any Taunt, for N more damage. A Guardian beside that unit still steps in. It does not move: no landing in the target's column. A diving Flyer is exposed for the rest of that round: attacks at it get no Flying dodge. Only a Flyer, a Tide unit or a Sprinter can have it (diveEligible). Priced 0.75 a point by the 4-round rule (N once = 0.5 N, the pick of the weakest +0.5, the exposure -0.25). No card has it yet.
+  - Keep: no move (built)
+  - Option C in full: it lands beside its target, in that column on your side
+  - Let the player aim the dive (any enemy unit)
+- **Default:** Keep: no move (built)
+- **Outcome:** Owner, 2026-10-24 13:12: "EQ: OKAY to all." Dive to be reworked as a two-turn move (queued, EN7).
+
+**EQ2-3. Temporary Health (Bolster N) and your Crepuscular example: plain Crepuscular is kept** · Decide · Battle rules · asked 2026-10-24
+- Built (package EQ2, N21-7): bonus Health (above the unit's printed Health: a piece, a buff, the night) and temporary Health each have their own colour on a Health bar along the card (green printed, gold bonus, pale blue temporary; the bar shows only while a unit has either). New skill Bolster N (N 2 by default): N temporary Health as each round's fight begins, spent before anything else; what is left is gone when the next round's fight begins (set afresh, never stacked). Priced 2.5 a point. Your example 'Crepuscular gives +1 attack by day and +2 temp HP at night' conflicts with two later calls: CX2 (10-21 17:42, 'Crepuscular: +1 attack in day, +1 attack at night') and your 10-23 17:34 #4 (the plain default is +1/+0). So plain Crepuscular is unchanged; the example is a card-level choice, Crepuscular – {+1/+0}{Bolster 2} (priced 0.4 x (2 + 5) = 2.8), tested but on no card.
+  - Keep plain Crepuscular; the example per card (built)
+  - Make plain Crepuscular = {+1/+0}{Bolster 2}
+- **Default:** Keep plain Crepuscular; the example per card (built)
+- **Outcome:** Owner, 2026-10-24 13:12: "EQ: OKAY to all."
+
+**EQ2-4. Parasite as built, and the Clinging Leech** · Decide · Battle rules · asked 2026-10-24
+- Your 10-21 note (docs/titles-transforms-2026-10-21.md): 'Hooks onto enemy units? Not just leech-attacking from our side. So you place onto an enemy such that their column would be in reach.' The rest was undefined, so package EQ2 proposed and built: a Parasite card may be played onto an enemy unit in your reach (the centre, or a column with or beside one of your units) instead of into your slot (it may still be played as a plain unit). It rides its host: no slot, blocks nothing, can't be hit. It waits its own Wait, then feeds as each round's fight begins: its Attack as a flat hit on the host (no dodge, no Armor, no Guardian), healing itself as much. One Parasite a host, never on a Structure. When the host dies it drops onto your side in that column if the slot is free, else into your graveyard. Priced 1 (the sure hit and the safety against no lane blocked and no bramble damage). The CPU hooks it onto the enemy in reach worth the most. New card: Clinging Leech (Uncommon, 1 Lumber, Wait 1, 4/9 by the budget, placeholder art), awaiting a source.
+  - Keep as built
+  - The Parasite shares its host's hits (it can be killed)
+  - It weakens its host (-Attack) instead of damaging it
+- **Default:** Keep as built
+- **Outcome:** Owner, 2026-10-24 13:12: "EQ: OKAY to all."
+
+**EQ2-5. The Goliath Core's Beak Strike and the two guardian raiders** · Decide · Raids · asked 2026-10-24
+- Built (package EQ2, N22-12 leftovers): a new single-target raid attack (pattern 'single'; the raid editor offers it): the Core's Beak Strike, 3 damage every 2 turns to your unit with the most Attack (any row); a Guardian adjacent to it (left, right, in front, behind) takes it instead; no unit: your bramble. Not telegraphed. Two tanky Guardian raider cards, crafted in the Forge's Raid tab from Goliath shards: Barnacle Bulwark (Rare, 2 Lumber, Wait 2, Guardian + Armor 1, 2/21 by the budget) and Reefback Turtle (Very Rare, 2 Lumber, Wait 2, Guardian + Shell 2, 2/20). Placeholder art.
+  - Keep: 3 every 2 turns, not telegraphed (built)
+  - Telegraph its target a turn ahead, like the smacks
+  - Put it on the arms and tail too
+- **Default:** Keep: 3 every 2 turns, not telegraphed (built)
+- **Outcome:** Owner, 2026-10-24 13:12: "EQ: OKAY to all."
 
 **BP-1. Bleed and Poison measure at about 1 a point, priced 2.6: re-price, or keep?** · Decide · Balance · asked 2026-10-24
 - EN4's robust skill test (3000 games a setup) measured Bleed 2 and Poison 2 at about 2 stat points each, i.e. ~1 per point, against a price of 2.6 a point (5.2). By the 4-round rule: Poison 2 deals 2 then 1 (it wears down 1 a tick) = 3 damage per application; Bleed similar. Options: re-price to ~1.2-1.5 a point (cards with them gain stats), or keep 2.6 (their stacking on repeated hits is what the test under-measures).
@@ -297,6 +362,65 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 - **Default:** No: they stay hidden (built)
 - **Outcome:** Owner, 2026-10-24 02:59: "It's a fun thought of letting the player fight the PRO. Maybe after Map 40. - bank this for now. Default no." Banked idea: reveal after Map 40.
 
+**BV-1. The camera no longer leans or turns toward the cards** · Confirm · Battle UI · asked 2026-10-24
+- Your 17:01 #6 ('the battlefield should only move to zoom out or capture cards outside the field of vision'). Built: the jump-and-rubber-band was the snap guard mistaking a camera zoom for a card snap (fixed). On a computer the camera also leaned 40% of the way toward the cards' centre and turned up to 3 degrees toward them whenever cards sat outside the middle five columns (setBoardLean, 2026-10-12); that is gone too: the camera now shifts only as far as it takes to bring a card that would be off screen into view.
+  - Keep it: no lean, no turn (built)
+  - Bring back the 3 degree turn only
+  - Bring back the lean and the turn
+- **Default:** Keep it: no lean, no turn (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "BV OKAY" (as built / default).
+
+**BV-2. 13:16 #24: which 'code above the deck'?** · Clarify · Battle UI · asked 2026-10-24
+- No skirmish code (like 4-3) is drawn above a deck during a fight; the code only shows on the VS screen. The one thing above a deck is the enemy's hand count ('3 🃏') over their Deck, which on a phone was cut in half by the top of the screen. Built: on phones it now sits just inside their Deck's top edge, smaller (8.5 px). If you meant something else, a screenshot would pin it.
+  - That was it (built)
+  - Hide the hand count on phones
+  - It was something else (screenshot)
+- **Default:** That was it (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "BV OKAY" (as built / default).
+
+**BV-3. 13:16 #23: the Shield symbol that vanished: which card?** · Clarify · Effects · asked 2026-10-24
+- Playing Tide Pool Crab, Conch Crawler and Armadillo Guard (yours and the CPU's, on a Flood map too) keeps the 💠 Shield chip through the play and the round in every test. One real gap was found and fixed: a unit that joins the board mid-round (a token, a summon, a Shield Call shield) got a replay snapshot without its Shield, so the round's next redraw dropped its 💠 chip and blue Health (replayGuardSnap). If you still see it, the card's name (or a screenshot) would let it be reproduced.
+  - Fixed (built)
+  - Still happens with a card I'll name
+- **Default:** Fixed (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "BV OKAY" (as built / default).
+
+**BV-4. Day/night change: keep the faint creep from the left?** · Confirm · Effects · asked 2026-10-24
+- Your 19:27 #20 ('the whole transition should be gentle'). Built: the copy of the new light that crept in from the left (your 10-16 request) now crosses in 8.5 s at an even pace and peaks at 10% (it shot across in about a second at 20%); the old tint holds while the new one comes in over it, and everything follows one sine curve over 10 s. It could also go entirely, leaving one even fade.
+  - Keep the faint creep (built)
+  - Remove the creep: one even fade
+- **Default:** Keep the faint creep (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "BV OKAY" (as built / default).
+
+**BV-5. 19:27 #20: the 'parallel bars' on some maps** · Clarify · Effects · asked 2026-10-24
+- Two bar effects were made 50% more transparent / replaced: dusk's static shadow bars (FX.B.dusk, .35 -> .175) and the River Rapids current (Sunken Hollow), which was evenly spaced stripes and is now soft random streaks at about a third of the strength. Note: the short paired marks all over the Sunken Hollow board in your screenshot are reeds painted into the map's floor art (assets/maps/m2.png), not an effect; they can be toned down too if you mean those.
+  - Those two were it (built)
+  - Also tone down the reeds in the map art
+- **Default:** Those two were it (built)
+- **Outcome:** Owner, 2026-10-24 12:02: "BV OKAY" (as built / default).
+
+**PRO-2. What does beating a PRO fight give?** · Decide · Rewards · asked 2026-10-24
+- Built: nothing. The fight runs like the map's skirmishes (its castle and Shield, the PRO's field, the enemy at Level 1, the Smart CPU the deck was measured with, from Map 2 its showcase card as leader) but costs no Energy and pays no rank, cards, Maple Leaves, XP or quest counts; the results say "3-PRO-1 is a PRO fight: no rewards". A cosmetic option: a small PRO flag on your profile per map beaten (no gameplay value).
+  - Nothing (built)
+  - A cosmetic PRO flag per map
+  - A one-time small reward per PRO fight
+- **Default:** Nothing (built)
+- **Outcome:** Owner, 2026-10-24 12:02: Default (no reward).
+
+**PRO-3. Re-run the optimizer for Maps 0-3 on today's cards before the PRO fights ship?** · Decide · Balance tools · asked 2026-10-24
+- The PRO decks come from OPT2's runs of 10-23, before RW5 and EN4 changed cards (the Ember Tetra 3/7 -> 2/6 and renamed from ember-tetra-3caj; the Voidfeather Scout became a Map 5 faction card). They are legal decks on today's cards and were measured head to head on today's engine, but a fresh run (about 20 minutes for the 4 maps on 2 cores) could find stronger ones; tools/opt/pro_skirmishes.js --apply then replaces a PRO-1 only if the new deck beats it (55% over 400 games). Several PRO decks also use cards first obtainable after their map (phase 2's related cards, e.g. Stonedrop Vulture in 3-PRO-1, Map 18): listed per deck as `later` in canonical/pro-skirmishes.json.
+  - Re-run before release
+  - Ship as is, re-run later
+- **Default:** Ship as is, re-run later
+- **Outcome:** Owner, 2026-10-24 12:02: Default (ship as is, re-run later).
+
+**OPT-4. Deck optimizer's default search: the genetic search (recommended) or one-card-at-a-time descent?** · Decide · Tools · asked 2026-10-24
+- OPT2 compared both on Maps 0-3 at equal budgets: final quality ties within noise; the genetic search wins head-to-head on 6 of 8 runs and finds about 3x more distinct optima; descent climbs faster on small budgets (under ~6,000 games) but stalls. Built: genetic by default, --method descent for quick runs.
+  - Genetic (built)
+  - Descent
+- **Default:** Genetic (built)
+- **Outcome:** Owner, 2026-10-24 12:02: Default (genetic search).
+
 **EN4-1. The Bleed doubler's name, and when it doubles** · Decide · Skills · asked 2026-10-23
 - Your 22:23 #7: "Do we have the skills that do extra damage to bleeding units, or even 2x their bleed." Hunter (Bleeding) already does the extra damage; the new skill doubles. Built as HEMORRHAGE 🩸²: its swing that lands on a Bleeding unit doubles the Bleed the unit already has, THEN its own Bleed (if any) adds. So it is a payoff for Bleed you already put there (an ally's, or its own from an earlier round); a fresh target gets nothing from it. Doubling after its own Bleed instead would make a lone Bleed 2 card double its own cut every hit (2, 6, 14 ...), which runs away. Names in the existing style (Gash, Perforate, Rupture, Rabid): Hemorrhage, Open Wound, Deepen, Bloodletting.
   - Hemorrhage, doubles before its own Bleed
@@ -314,6 +438,22 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
   - (C) its stack every round, -1 every 2 rounds
 - **Default:** (A) 2 a stack, -1 a round
 - **Outcome:** Owner, 2026-10-23 23:45: "When something is hit by Greater Poison, Greater Poison tokens are not removed on every poison tick." Built (EN4): 1 damage a stack each round ("Greater poison only hits for 1 poison by default"), the stack never wears down (plain Poison still does); only Cure removes it. Repriced 2.5. The first build (2 a stack, -1 a round) is gone.
+
+**EN4-3. Prices for Hemorrhage, Greater Poison and Shore Up** · Decide · Balance · asked 2026-10-23
+- Priced by your 4-round rule (docs/workflows/balance.md), checked with tools/skill_test_robust.js --mono --multi (3000 games a setup, docs/balance/en4-skill-test-2026-10-23.md). SHORE UP 2.2: a front unit survives 2-3 hits over 4 rounds with about 1.5 allies beside it, so 3-4.5 Shield, about half of it soaking: 1.5-2 Health; measured 2.68 alone, 2.26 with companions; set at 2.2. HEMORRHAGE 2: on a target already Bleeding about half its hits, each doubling adds about the stack (1-3), about +1 Bleed a hit (Bleed 2.6 a stack) = 1.3-2.6, and nothing without Bleed around. GREATER POISON 2.5 (N 1; scale half; 1 a stack, never wears off, owner 23:45): beside Poison 2, the target's ticks over 4 rounds go from 2+3+4 = 9 to 3+5+7 = 15, about 6 more damage = 3 stat points if it lives all 4 rounds, about 2 at a usual 2/3; alone 1+2+3 = 6. PULSE (owner 23:45: Venom Pulse renamed, Poison AND Bleed tick): the Pulse action 1.3 a tick (on a target Poisoned about half its hits, about 2.5 a tick, and Bleeding about a third, about 2: about 1.9 damage a pulse), so Pulse 1 = On Hit 2.1 x 1.3 = 2.7 (Venom Pulse was 2.1); no card carries it, so nothing re-fits. The test can't price these two: they need their enabler (Bleed 2 / Poison 2), and a unit carrying that at the table's 5.2 loses nearly every game in the harness, so their rows sit at the floor. Side finding: in the same harness Bleed 2 and Poison 2 read about 2 stat points against their 5.2 price; listed, not acted on. The six new cards are fitted at these prices.
+  - Keep the prices as set
+  - Price by the measured worth instead
+  - Other
+- **Default:** Keep the prices as set
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY".
+
+**EN4-4. Six new cards for the three skills, and where they go** · Decide · Cards · asked 2026-10-23
+- Two cards a skill (Greater Poison on cards with Poison too), priced by the formula with their map's term, placeholder art (the emoji), NightCafe prompts in docs/art/new-cards-2026-10-23-en4.md. Placed lightly where they add a decision (22:23 #10: Maps 0-9 lacked depth): Oyster Bank (common, 0 Attack, Shore Up) Pebble Beach, Map 2, Pack 1: a wall that props up the units beside it. Great Skua (common, Flying, Hemorrhage) Gannet Cliffs, Map 3, Pack 1: pays off the Razorbill's Bleed. Cane Toad (uncommon, Poison 1 + Greater Poison 1) Sable Swampmire, Map 6, Pack 1: the poison swamp's payoff. Bloodscent Shark (uncommon, Hemorrhage) Coral Current, Map 10, Pack 2: beside the Gash squids. Musk Ox Matriarch (uncommon, Shore Up + Armor 1) Wolfsbane Tundra, Map 17, Pack 3. Inland Taipan (rare, Poison 2 + Greater Poison 1) the Pale Desert, Map 18, Pack 3: beside the scorpions. All are pack cards (not skirmish rewards) and appear in their map's enemy pool.
+  - Keep these placements
+  - Move some (say which)
+  - Hold them out of the maps for now
+- **Default:** Keep these placements
+- **Outcome:** Owner, 2026-10-24 12:02: "EN OKAY".
 
 **EN4-5. Guardian: is a Guardian aimed at directly still covered by the Guardian beside it?** · Decide · Skills · asked 2026-10-23
 - Your 22:23 #9: "Guardian shouldn't intercept an intercepting guardian." EN3's one hop is reverted: when a Guardian steps in for an ally, no other Guardian steps in for it. Kept as before EN3: a swing aimed straight at a Guardian (not one that stepped in) can still be taken by a Guardian beside it, since that Guardian wasn't intercepting. Say if a Guardian should never be covered at all.
