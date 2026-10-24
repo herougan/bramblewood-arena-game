@@ -184,3 +184,10 @@ Bosses are named characters from the plot where possible: Shieldback, Vesper, Au
 | Rodent King | Fits as a rat road-gang boss | Keep; flavour as "king of the road" |
 
 **Answered:** dogs (and house cats) are neutral friends of both peoples. **Still open:** are the beasts that befriend the Hummingbirds only the big ones (stags, bears, big cats, boars), or any beast?
+
+## First cards of the thin sub-factions (2026-10-24, package CONTENT2)
+
+Built from the table above; all awaiting a source (owner call CONTENT2-3). Their flavour names the people, so the unit themes tag them.
+- **The Gnawed** (the road-folk's dark mirror: the road-folk trade, the Gnawed take): Bog Shrew (Sap), Mire Rat (Pack), Hollow-belly Rat (Devour), Gnawed Matriarch (Pack + Pack Leader). Proposed homes: the Sable Swampmire and the Glass Dunes.
+- **The Tidefolk** (they call the Legion "the dry ones"): Kelpborn Otter (Tide), Conger Eel (Tide + Fork, it lives in a wreck they sank), Selkie Wavebinder (Tide + Wave; "half seal, half song"). Proposed homes: the Kelp Mangroves and Coral Current. The Kelpborn Otter has no Otter type on purpose: it is not the Legion's.
+- **Supporting folk and Stone:** the Badger Stonemason turns timber into stone (Quarry); the Gravel Mole digs gravel for the Hollow Kin. Caves & Alcoves is where Stone is gathered and spent.

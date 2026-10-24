@@ -106,6 +106,7 @@
   "ice-crevasse-wolf": 21,
   "clownfish-scout": 7,
   "coral-reef-shark": 7,
+  "coral-polyp-colony": 7,
   "mountain-goat-climber": 1,
   "golden-eagle-diver": 3,
   "alpine-avalanche": 14,
@@ -202,6 +203,7 @@
   "ironmaw-warwolf": 22,
   "weredog": 5,
   "parish-sergeant": 1,
+  "land-tiller": 14,
   "village-miller": 7,
   "otter-ferryman": 5,
   "otter-netmender": 5,
@@ -540,6 +542,14 @@
   "inland-taipan": 14,
   "musk-ox-matriarch": 14,
   "barnacle-bulwark": 13,
-  "reefback-turtle": 13
+  "reefback-turtle": 13,
+  "redwood-woodpecker": 7,
+  "termite-forager": 14,
+  "cone-cutter-squirrel": 14,
+  "talus-pika": 14,
+  "dune-packrat": 14,
+  "gravel-mole": 7,
+  "badger-stonemason": 7,
+  "pumice-beetle": 14
  }
 }
