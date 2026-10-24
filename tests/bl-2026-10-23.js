@@ -138,7 +138,7 @@ ok(/if\(s\.kind==='twoNumber'\) return Array\.isArray\(s\.defaultValue\) \? s\.d
 ok(/function bleedFadeDropVfx\(uid\)/.test(src) && /if\(ev\.type==='bleedFade'\)\{\s*try\{ bleedFadeDropVfx\(ev\.uid\); \}catch\(e\)\{\}/.test(src), '12. bleedFade drops a grey 🩸 from the pip (before the badge updates)');
 ok(/class(Name)? ?= ?'bleed-drop'/.test(src) && /grayscale\(1\)/.test(src), '12. the drop is greyed out');
 ok(/function bloomCopyVfx\(srcUid, copyUid\)/.test(src) && /ev\.type==='spawn' && ev\.kind==='bloom'\)\{ try\{ bloomCopyVfx\(ev\.nearUid/.test(src) && /ev\.kind !== 'bloom' \/\* BL: its own bloom \*\//.test(src), '12. the copy blooms in (no summon portal)');
-ok(/if\(ev\.type==='bloom'\)\{/.test(src) && /ui\.bl-log/.test(src), '12. the bloom event updates the unit and logs a line');
+ok(/if\(ev\.type==='bloom'( && !ev\.parasite)?\)\{/.test(src) /* 2026-10-24 (package EN7): a Parasite's bloom has its own look (en7Vfx), so the plain handler skips it */ && /ui\.bl-log/.test(src), '12. the bloom event updates the unit and logs a line');
 const tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8'); ok(/\.bloom-ring\{/.test(tpl) && /\.bleed-drop\{/.test(tpl) && /\.ab-bloomcopy\.is-spent\{/.test(tpl), '12. the styles');
 
 // ---- 13. texts and packs

@@ -1164,3 +1164,39 @@ and `bramblewood-budget.js` `EN6_UPTIME`; uptimes measured by `tools/en6_state_u
 | Hibernate: a pale blue 🛌 pip beside the 💤, "🛌 Hibernating" / "Awake" floats, a cold tint; the heal's motes are the plain heal's | `en6StatusBadges`, `en6Vfx` (`.abadge.en6-hib`, `.en6-hib-pulse`) |
 | A – bramble action: a 🏹 flies from the unit into the enemy bramble | `en6Vfx` (`.sfx.en6-bramble-arrow`) |
 | The season turning: a float over the board and a gold log line | `en6Vfx`, `en6LogText` |
+
+## 2026-10-24 additions (package EN7): Dive in two turns, Poison / Bleed on extra hits and – poison / – bleed, Parasite x Bloom
+
+The rules as built (engine: the EN7 blocks in `bramblewood-engine.js`, beside `eq2DivePick` and `en4Hemorrhage`; board: the Package EN7 block
+in `arena_app.js`, the Poison look in `bramblewood-fx-d.js`). **Replaces EQ2's one-swing Dive** (above).
+- **Dive ⤵️ N** (`effects.dive`, N 1; owner 13:12 #3, calls EN7-1, EN7-4): once a fight (`effects.diveUses` N for more), at its swing, with an
+  enemy unit in the row it faces, it rises instead of swinging: a Flyer (and a Sprinter) goes aloft, a Tide unit without wings goes under
+  (`c.diveAloft`, `c.diveMode`). Until its next swing nothing can find or hit it (`isInvisible`, `dodgeCheck`, `combatHitLands`; a Spotter
+  neither) and it can't step in as a Guardian (`isLiveGuardian`); area damage and its own status ticks still reach it. Its next swing strikes
+  the weakest unit of that row (least Health, nearest on a tie; `eq2DivePick`), past any Taunt, for Attack + N; a Guardian beside the target
+  still steps in. That round it is Exposed (`c.diveExposed`): no Flying dodge, no Tide evade (`tideEvades`). A diver that could not strike
+  comes down at the round's end (`diveLand`). Only a Flyer, a Tide unit or a Sprinter dives (`diveEligible`). On Puffin Diver and Harbor Seal.
+- **Poison / Bleed on the unit's own hits** (owner 13:12 #5, call EN7-3; `en7HitStatuses`): Poison N / Bleed N (Rabid, Greater Poison,
+  Hemorrhage, Venom Master, Thornbite) ride on every landed hit of its own attack damage: the swing, Frenzy / Twin Strike swings, Fork /
+  Trident / Pitchfork prongs and Octolash lashes (as before), and now Pounce and the Ambush strike (Cleave's side damage is a spread, an area: none). A shot or action (Arrow, Fire
+  Arrow, a Bolt, Missile, Deal damage, Volley, Snipe ...) carries none unless the card says **– poison** / **– bleed** on it:
+  `effects.arrowPoison` / `arrowBleed` / `fireArrowPoison` / `fireArrowBleed` / `fireBoltPoison` / `fireBoltBleed`, or `t.withPoison` /
+  `t.withBleed` on an Arrow, Missile or Deal damage (one enemy) action. It gives the unit's own N, at least 1. Card text "Arrow 2 – poison".
+- **Parasite x Bloom** (owner 13:12 #2, call EN7-2; `en7ParasiteBloom`): a Parasite's bloom copy (+1/+1, its printed Wait) hooks onto an enemy
+  unit beside its host (left, right, in front, behind; no parasite, not a Structure or a cage; one at random); played as a plain unit, onto
+  an enemy facing it or one column beside that. None: it waits and tries again next round. Events `bloom {parasite}`, `parasiteAttach {bloom}`.
+- Prices (4-round rule, `tools/en7_skill_costs_2026_10_24.py`): Dive 1.25 x N^0.5 (was 0.75 N); – poison / – bleed on a shot 0.9 x the
+  status's price at the unit's N (modifier `tip`); on an action + 0.9 x the Poison / Bleed action's value; Pounce / Ambush on a Poison / Bleed
+  card + 0.33 / 0.3 x that status's price (`bramblewood-budget.js` `EN7_EXTRA_HIT`).
+
+| Look | Where | When |
+|---|---|---|
+| Aloft: the card lifts off its slot and bobs, its shadow left on the board below, a ☁️ tag; "☁️ Aloft" floats, a feather flutter | `en7Vfx` `diveRise`, `.en7-aloft`, `en7DiveMarksHTML` (`.en7-shadow`, `.en7-dive-tag`) | a Flyer's rise, and while aloft |
+| Under: the card sinks and fades under a band of moving water, a 🌊 tag; "🌊 Under" floats, a splash ring | `en7Vfx` `diveRise`, `.en7-under` (`.en7-water`) | a Tide unit's dive, and while under |
+| A swing or shot at it: "☁️ Out of reach" | `en7Vfx` `evaded` (reason `aloft` / `under`) | while aloft / under |
+| The strike: it plunges back (from the water with a splash) and lunges, "⤵️ Dive +N", then "🎯 Exposed" | `en7Strike` (from `eq2Vfx` `dive`) | the strike |
+| A diver that couldn't strike comes down: "🪶 Lands" | `en7Vfx` `diveLand` | a missed strike round |
+| The Guardian that steps in tilts 10° toward the attacker while it takes the hit, then settles as it slides home | `en2GuardStepIn` (`EN7_GUARD_TILT`, the rotate property) | a Guardian intercept |
+| Poison runs out: the pool sinks below the card's foot as it fades (its last bubbles still rise) | `bramblewood-fx-d.js` `psnSink` (`M.poisonSink`) | Poison reaching 0 |
+| Applied Poison / Bleed / Deadly Poison float "🤢N" / "🩸N" / "💀N" (was "🤢 💀 +N", "+N🩸", "💀 +N") | `ui.en7-float-poison`, `ui.en7-float-bleed`, `ui.en4-float-gp` | each application that floats |
+| A Parasite's bloom: a 🪱 flies from the parent's host to the new host, "🌸 +1/+1" there | `en7Vfx` `parasiteAttach {bloom}` | the bloom |

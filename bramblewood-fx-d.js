@@ -543,7 +543,7 @@ const STATUS_CSS = `
      border whose surface FX.D's poison driver (psnStep, below) redraws every frame from layered waves and swells, so it never loops.
      Rare small bubbles (rings and filled dots) leave it at random spots. Was a CSS ooze stripe sliding at a constant speed plus four
      bubbles on fixed loops. */
-  .fxd-st-poison{background:linear-gradient(0deg, rgba(90,200,60,.34), rgba(90,200,60,0) 34%);}
+  .fxd-st-poison{--psn-wash:34%; background:linear-gradient(0deg, rgba(90,200,60,.34), rgba(90,200,60,0) var(--psn-wash));} /* EN7 (2026-10-24): the wash's reach, which shrinks as the pool sinks */
   .fxd-psn-svg{position:absolute; left:0; bottom:0; width:100%; height:14%; overflow:visible; pointer-events:none; filter:drop-shadow(0 0 2px rgba(108,255,58,.65));}
   .fxd-psn-svg .b{fill:rgba(52,140,28,.3);} /* see-through, so the Attack and Health under the pool stay readable */
   .fxd-psn-svg .f{fill:rgba(104,206,56,.34); stroke:rgba(205,255,150,.95); stroke-width:1.1px; vector-effect:non-scaling-stroke; stroke-linejoin:round;}
@@ -725,8 +725,20 @@ function psnLeave(t, b, flurry, uid){
   if(!b) return; const L = b.__psn; if(L) L.gone = true; b.classList.add('fxd-st-leaving');
   if(uid != null) PSN_FADE.set(String(uid), b);
   const g = G(), done = ()=>{ b.remove(); if(L) PSN.delete(L); if(uid != null && PSN_FADE.get(String(uid)) === b) PSN_FADE.delete(String(uid)); };
-  if(!g || psnCalm()){ done(); return; } g.to(b, {opacity:0, duration:.8, ease:'power1.in', onComplete:done});
+  if(!g || psnCalm()){ done(); return; } psnSink(g, b, done);
 }
+// 2026-10-24 (package EN7, owner 13:12 #6: "When poison drops to 0, the poison pool vfx sinks to the bottom of the card as it fades."): the
+// pool's surface drops below the card's south border while it fades (was: a fade in place). The surface (the SVG) slides down by its own
+// height and a little more, the green wash behind it shrinks toward the border (its gradient's reach), and the whole look fades a beat later.
+// M.poisonSink.last = {ms} for tests.
+function psnSink(g, b, done){
+  const svg = b.querySelector('.fxd-psn-svg'), ms = 950;
+  if(svg) g.to(svg, {yPercent:115, duration:ms/1000, ease:'power1.in'});
+  g.to(b, {'--psn-wash':'0%', duration:ms/1000 * .8, ease:'power1.in'});
+  g.to(b, {opacity:0, duration:ms/1000 * .75, delay:ms/1000 * .3, ease:'power1.in', onComplete:done});
+  M.poisonSink.last = {ms, svg:!!svg};
+}
+M.poisonSink = function(el){ const t = tileOf(el), b = t && t.querySelector(':scope > .fxd-st-poison'), g = G(); if(!b || !g) return false; const L = b.__psn; if(L) L.gone = true; b.classList.add('fxd-st-leaving'); psnSink(g, b, ()=>{ b.remove(); if(L) PSN.delete(L); }); return true; };
 function psnCarry(el, uid){ const b = uid != null && PSN_FADE.get(String(uid)); if(!b || b.isConnected) return; const t = tileOf(el); if(!t) return;
   const before = t.querySelector(':scope > .badges-bottom, :scope > .stats'); t.insertBefore(b, before || null); if(b.__psn) PSN.add(b.__psn); }
 // Natural decay (2026-10-18, owner: "When you naturally lose poison counters on the beginning of your turn or otherwise, it doesn't say

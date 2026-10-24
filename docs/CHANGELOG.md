@@ -2,6 +2,33 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package EN7: Dive in two turns, the Guardian's tilt, Poison's pool and floats, Poison / Bleed on extra hits, Parasite x Bloom)
+- **Dive ⤵️ N, in two turns (13:12 #3, "like pokemon"; calls EN7-1, EN7-4):** replaces EQ2's one-swing dive. Turn 1 (its swing, with an enemy
+  unit in its row): a Flyer rises off the board, its shadow left below, a ☁️ tag; a Tide unit sinks under a band of water, a 🌊 tag. Nothing
+  can find or hit it (a Spotter neither; swings at it float "Out of reach"), it doesn't swing and can't step in as a Guardian. Turn 2: it
+  plunges (or bursts out with a splash) onto the weakest enemy of its row, past Taunt (a Guardian beside the target still steps in), for N
+  more, and is Exposed that round (no Flying dodge, no Tide evade). Once a fight. A diver that can't strike comes down ("🪶 Lands"). Price
+  (4-round rule) 1.25 x N^0.5 (was 0.75 N). On **Puffin Diver** (Dive 2, 2/6 -> 2/5, aloft) and **Harbor Seal** (Dive 2, 1/10 -> 1/9, under).
+- **Guardian (#4):** the unit that steps in tilts 10° toward the attacker while it takes the hit, then settles as it slides home.
+- **Poison (#6, #7):** when Poison runs out the green pool sinks below the card's foot as it fades. Applied Poison floats "🤢N" (was
+  "🤢 💀 +1" from Swamp Fever and "☠ +N" elsewhere); Bleed "🩸N" (was "🩸 +N"), Deadly Poison "💀N" (was "💀 +N").
+- **Poison / Bleed on extra hits (#5, call EN7-3):** a unit's Poison N / Bleed N now also ride on its Pounce and its Ambush strike (swings,
+  Frenzy / Twin Strike, Fork / Trident / Pitchfork prongs and Octolash already carried them; Cleave's spread does not). Shots and actions
+  (Arrow, Missile, Bolts, Deal damage ...) carry none unless the card says **– poison** / **– bleed** ("Arrow 2 – poison": the unit's N, at
+  least 1); a box for each on the Arrow, Missile and Deal damage actions in the card editor, and Arrow / Fire Arrow / Fire Bolt – poison /
+  – bleed as skills. Prices: Pounce / Ambush on a Poison / Bleed card + 0.33 / 0.3 x that status's price (no card has both); – poison / –
+  bleed on a shot 0.9 x the status's price at the unit's N; on an action + 0.9 x the Poison / Bleed action's value.
+- **Parasite x Bloom (#2, call EN7-2):** a Parasite's bloom copy (+1/+1) hooks onto an enemy unit beside its host that has no parasite (a 🪱
+  flies over); played as a plain unit, onto an enemy facing it or one column beside. None free: it waits and tries again next round.
+- Housekeeping (#6 of the brief): RW6's note inside the results template (`matchStatsHTML`) moved out of the template string: it printed into
+  the page and `tools/text/keyify.py` keyed it as `results.2026-10-24-rw6-owner-no`. keyify --dry-run: 0 edits, 0 new keys.
+- Engine: the EN7 blocks (`en7DiveRise`, the strike in resolveCombat, `en7HitStatuses`, `en7ShotTip` / `en7TrigTip`, `en7ParasiteBloom`);
+  events `diveRise`, `diveLand`, `dive {strike, mode}`, `evaded {reason: 'aloft' | 'under'}`, `statusFx poison / bleed {via}`, `bloom
+  {parasite}`, `parasiteAttach {bloom}`. Prices `tools/en7_skill_costs_2026_10_24.py`, cards `tools/en7_cards_2026_10_24.py`, the S check
+  `tools/en7_budget_check_2026_10_24.js` (`docs/balance/en7-prices-2026-10-24.json`), texts `tools/i18n_2026_10_24_en7.py`, calls
+  `tools/en7_decisions_2026_10_24.py`. Tests: `tests/en7-2026-10-24.js`, `tests/e2e/en7_2026_10_24.py` (shots `docs/screens/EN7/`);
+  `tests/eq2-2026-10-24.js` follows the two-turn Dive (dated note).
+
 ## 2026-10-24 (package EN6: hand, heat / frost, weather and season states, Full Hand / Lean, Hibernate, – bramble, the Bounty clean-up)
 - **Hand states (03:17 #1):** 🃏 **Plenty – {…}** while you hold 4+ cards (default +1/+1), 🫗 **Scarcity** 1 or none (+1/+0), 🎴 **Foe's Plenty**
   the opponent holds 4+ (+0/+2), 🪹 **Foe's Scarcity** 1 or none (+1/+0). **Full Hand N** / **Lean N** (+N Attack per card in hand / per empty

@@ -72,19 +72,23 @@ const wear = ev=> ev.filter(x=> x.type === 'equipWear');
   ok(rep.rows.length >= 10 && rep.rows.every(r=> r.useAfter <= r.useBefore && r.useAfter <= 100), `docs/balance/eq2-equipment-2026-10-24.json: every piece within its N after durability (${rep.rows.length} pieces)`); }
 
 // ---- 2. Dive -----------------------------------------------------------------------------------------------------------------
+// 2026-10-24 (package EN7, owner 13:12 #3): Dive now takes two turns (round 1 aloft, round 2 the strike); these checks follow it. The
+// two-turn rule's own checks are in tests/en7-2026-10-24.js.
 { const {e, P} = mk(); const A = put(e, P, 1, 'x-dive', 0); put(e, P, 2, 'x-wall', 0); const wk = put(e, P, 2, 'x-weak', 1);
-  let ev = round(e, P); const dv = ev.find(x=> x.type === 'dive'), hit = ev.find(x=> x.type === 'hit' && x.attUid === A.uid);
+  let ev = round(e, P); ok(ev.some(x=> x.type === 'diveRise' && x.uid === A.uid) && !ev.some(x=> x.type === 'hit' && x.attUid === A.uid), 'EN7: round 1 it rises instead of swinging');
+  ev = round(e, P); const dv = ev.find(x=> x.type === 'dive'), hit = ev.find(x=> x.type === 'hit' && x.attUid === A.uid);
   ok(dv && dv.targetUid === wk.uid && dv.bonus === 2 && hit && hit.targetUid === wk.uid && hit.dmg === 5 && hit.dive === 2, `Dive 2: past the unit in front onto the weakest (5 Health) for 3 + 2 (${hit && hit.dmg})`);
-  ev = round(e, P); ok(!ev.some(x=> x.type === 'dive') && ev.some(x=> x.type === 'hit' && x.attUid === A.uid && x.targetDefId === 'x-wall'), 'once a fight: the next swing goes at the unit in front'); }
-{ const {e, P} = mk(); put(e, P, 1, 'x-dive1', 0); put(e, P, 2, 'x-wall', 0); put(e, P, 2, 'x-weak', -1); const ev = round(e, P); const dv = ev.find(x=> x.type === 'dive');
+  ev = round(e, P); ok(!ev.some(x=> x.type === 'dive' || x.type === 'diveRise') && ev.some(x=> x.type === 'hit' && x.attUid === A.uid && x.targetDefId === 'x-wall'), 'once a fight: the next swing goes at the unit in front'); }
+{ const {e, P} = mk(); put(e, P, 1, 'x-dive1', 0); put(e, P, 2, 'x-wall', 0); put(e, P, 2, 'x-weak', -1); round(e, P); const ev = round(e, P); const dv = ev.find(x=> x.type === 'dive');
   ok(dv && dv.bonus === 1, 'plain Dive is Dive 1'); }
-{ const {e, P} = mk(); put(e, P, 1, 'x-dive', 0); const T = put(e, P, 2, 'x-taunt', 0); const wk = put(e, P, 2, 'x-weak', 1); const ev = round(e, P);
+{ const {e, P} = mk(); put(e, P, 1, 'x-dive', 0); const T = put(e, P, 2, 'x-taunt', 0); const wk = put(e, P, 2, 'x-weak', 1); round(e, P); const ev = round(e, P);
   ok(ev.some(x=> x.type === 'dive' && x.targetUid === wk.uid), 'the dive goes past a Taunt unit'); void T; }
-{ const {e, P} = mk(); put(e, P, 1, 'x-dive-ground', 0); put(e, P, 2, 'x-wall', 0); put(e, P, 2, 'x-weak', 1); const ev = round(e, P);
-  ok(!ev.some(x=> x.type === 'dive') && e.diveEligible(defs['x-dive-ground']) === false, 'a unit that can\'t take Dive (not a Flyer, Tide unit or Sprinter) never dives'); }
+{ const {e, P} = mk(); put(e, P, 1, 'x-dive-ground', 0); put(e, P, 2, 'x-wall', 0); put(e, P, 2, 'x-weak', 1); const ev = round(e, P).concat(round(e, P));
+  ok(!ev.some(x=> x.type === 'dive' || x.type === 'diveRise') && e.diveEligible(defs['x-dive-ground']) === false, 'a unit that can\'t take Dive (not a Flyer, Tide unit or Sprinter) never dives'); }
 { let exposedDodges = 0, laterDodges = 0;
   for(let s = 1; s <= 60; s++){ const {e, P} = mk(s); put(e, P, 1, 'x-dive', 0); put(e, P, 2, 'x-hit', 0); put(e, P, 2, 'x-weak', 1);
-    // the diver swings first (side A first) onto the weak unit; the ground unit facing it swings back in the same round
+    round(e, P, 1); // EN7: round 1 it is aloft (nothing to dodge: it can't be hit)
+    // the diver strikes first (side A first) onto the weak unit; the ground unit facing it swings back in the same round
     const r1 = round(e, P, 1); exposedDodges += r1.filter(x=> x.type === 'evaded' && x.reason === 'flying' && x.targetDefId === 'x-dive').length;
     for(let k = 0; k < 3; k++) laterDodges += round(e, P, 1).filter(x=> x.type === 'evaded' && x.reason === 'flying' && x.targetDefId === 'x-dive').length; }
   ok(exposedDodges === 0 && laterDodges > 20, `the diving Flyer is exposed: no Flying dodge in the round it dives (${exposedDodges}), as usual after (${laterDodges} in 3 later rounds x 60)`); }
@@ -154,7 +158,7 @@ const wear = ev=> ev.filter(x=> x.type === 'equipWear');
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), T = SC.make(costs);
   const sk = id=> costs.skills.find(r=> r.id === id);
-  ok(sk('dive') && sk('dive').value === 0.75 && sk('bolster') && sk('bolster').value === 2.5 && sk('bolster').payDefault === 2 && sk('parasite') && sk('parasite').value === 1, 'prices: Dive 0.75 a point, Bolster 2.5 a point (plain = 2), Parasite 1');
+  ok(sk('dive') && sk('dive').value === 1.25 && sk('dive').pow === 0.5 /* EN7 (2026-10-24): Dive in two turns, re-priced (was 0.75 a point) */ && sk('bolster') && sk('bolster').value === 2.5 && sk('bolster').payDefault === 2 && sk('parasite') && sk('parasite').value === 1, 'prices: Dive 1.25 x N^0.5 (EN7), Bolster 2.5 a point (plain = 2), Parasite 1');
   [L, Bb, R].forEach(c=>{ const b = T.budget(c, {level: 1}); ok(b.ok && !(b.missing || []).length, `${c.id} fits its budget at Level 1 (2A+H+S ${b.x1} <= N ${b.N})`); });
   const obt = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'card-obtain-maps.json'), 'utf8')).maps; ok(obt['barnacle-bulwark'] === 13 && obt['reefback-turtle'] === 13, 'the raiders obtain on Map 13 (the Goliath, as its other cards)'); }
 { const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; const strip = s=> String(s).replace(/^[\p{Extended_Pictographic}✀-➿️‍\s]+/u, '');

@@ -1773,6 +1773,17 @@ const EN6_BRAMBLE_APP = {arrowBramble:{base:'arrow', tx:'arrow-bramble'}, fireAr
 const EN6_BRAMBLE_ACTS = ['arrow', 'missile', 'damage'];
 Object.keys(EN6_BRAMBLE_APP).forEach(k=>{ const b = EN6_BRAMBLE_APP[k], pd = PASSIVE_DEFS.find(p=> p.key === b.base);
   PASSIVE_DEFS.push({key:k, category:'evergreen', label:TX('ui.skn-' + b.tx), kind:'boolean', desc:()=> TX('ui.sk-shot-bramble', {skill: pd ? pd.label : b.base}), codexNote:TX('ui.sk-shot-bramble-codex')}); });
+// EN7 (2026-10-24, owner 13:12 #5: "ARROW - does this mean the attack is poison? ... we can do whats more common sense"): a shot carries no
+// Poison / Bleed unless the card says so: "Arrow 2 – poison" (effects.arrowPoison ...), a toggle row beside the shot as EN6's – bramble; on
+// the Arrow, Missile and Deal damage (one opponent) actions a "– poison" / "– bleed" box (t.withPoison / t.withBleed). Rules in
+// bramblewood-engine.js (en7HitStatuses).
+const EN7_TIP_APP = {arrowPoison:{base:'arrow', st:'poison', tx:'arrow-poison'}, arrowBleed:{base:'arrow', st:'bleed', tx:'arrow-bleed'}, fireArrowPoison:{base:'fireArrow', st:'poison', tx:'fire-arrow-poison'},
+  fireArrowBleed:{base:'fireArrow', st:'bleed', tx:'fire-arrow-bleed'}, fireBoltPoison:{base:'fireBolt', st:'poison', tx:'fire-bolt-poison'}, fireBoltBleed:{base:'fireBolt', st:'bleed', tx:'fire-bolt-bleed'}};
+const EN7_TIP_ACTS = ['arrow', 'missile', 'damage'];
+function en7TipsOn(e, base){ return ['poison', 'bleed'].filter(st=> Object.keys(EN7_TIP_APP).some(k=> EN7_TIP_APP[k].base === base && EN7_TIP_APP[k].st === st && e && e[k])); }
+Object.keys(EN7_TIP_APP).forEach(k=>{ const b = EN7_TIP_APP[k], pd = PASSIVE_DEFS.find(p=> p.key === b.base);
+  PASSIVE_DEFS.push({key:k, category:'evergreen', label:TX('ui.skn-' + b.tx), kind:'boolean', desc:()=> TX('ui.sk-shot-' + b.st, {skill: pd ? pd.label : b.base}), codexNote:TX('ui.sk-shot-tip-codex')}); });
+Object.assign(SKILL_ICON, {arrowPoison:'🤢', arrowBleed:'🩸', fireArrowPoison:'🤢', fireArrowBleed:'🩸', fireBoltPoison:'🤢', fireBoltBleed:'🩸'});
 Object.assign(SKILL_ICON, {plenty:'🃏', plentyGrant:'🃏', scarcity:'🫗', scarcityGrant:'🫗', foePlenty:'🎴', foePlentyGrant:'🎴', foeScarcity:'🪹', foeScarcityGrant:'🪹', heat:'🌡️', heatGrant:'🌡️', frost:'❄️', frostGrant:'❄️',
   rain:'☔', rainGrant:'☔', storm:'⛈️', stormGrant:'⛈️', fog:'🌁', fogGrant:'🌁', salt:'🧂', saltGrant:'🧂', drought:'🔆', droughtGrant:'🔆', season:'🍂', seasonGrant:'🍂',
   fullHand:'✋', lean:'🫳', foeFullHand:'🤚', foeLean:'🫴', hibernate:'🛌', arrowBramble:'🏹', fireArrowBramble:'🏹', fireBoltBramble:'🔥'});
@@ -3168,8 +3179,11 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
     if(p.key==='seasonGrant' && e.season) return; // EN6 (2026-10-24): the Season line says its braces
     if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
+    if(EN7_TIP_APP[p.key] && e[EN7_TIP_APP[p.key].base]) return; // EN7: read on the shot's own line ("Arrow 2 – poison")
     if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
-    { const bk = Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === p.key); if(bk && e[bk]){ lines.push(`${ic(p.key)}${p.label}${valSuffix(v)} – ${escapeHtml(TX('ui.en6-bramble'))} — ${escapeHtml(TX('ui.en6-shot-bramble-line', {n: numOr(v, 1)}))}`); return; } } // EN6 (2026-10-24, owner 03:17 #2)
+    { const bk = Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === p.key), tips = en7TipsOn(e, p.key); // EN6 (2026-10-24, owner 03:17 #2); + EN7's – poison / – bleed
+      if((bk && e[bk]) || tips.length){ const br = !!(bk && e[bk]);
+        lines.push(`${ic(p.key)}${p.label}${valSuffix(v)}${br ? ` – ${escapeHtml(TX('ui.en6-bramble'))}` : ''}${tips.map(t=> ` – ${escapeHtml(TX('ui.en7-' + t))}`).join('')} — ${br ? escapeHtml(TX('ui.en6-shot-bramble-line', {n: numOr(v, 1)})) : skillText(p, v, e)}${tips.map(t=> ' ' + escapeHtml(TX('ui.en7-shot-' + t + '-line', {n: Math.max(1, numOr(e[t], 0))}))).join('')}`); return; } }
     if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
     if(p.key==='arrow' && Number(e.arrowCount) > 1){ const nA = Math.min(4, Math.round(Number(e.arrowCount))); for(let k = 0; k < nA; k++) lines.push(`${ic('arrow')}${p.label}${valSuffix(v)} — ${k ? 'A second bow on the same back: another arrow, aimed on its own.' : skillText(p, v, e)}`); return; } // "2x Arrow 2" (2026-10-17)
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
@@ -10941,6 +10955,7 @@ function readTriggerRow(row){
   const defIdEl = row.querySelector('[data-t="defId"]');
   if(defIdEl && defIdEl.value.trim()) t.defId = defIdEl.value.trim();
   { const brEl = row.querySelector('[data-t="bramble"]'); if(brEl && brEl.checked && EN6_BRAMBLE_ACTS.includes(t.do)) t.bramble = true; } // EN6 (2026-10-24): – bramble
+  ['withPoison', 'withBleed'].forEach(f=>{ const x = row.querySelector(`[data-t="${f}"]`); if(x && x.checked && EN7_TIP_ACTS.includes(t.do)) t[f] = true; }); // EN7 (2026-10-24): – poison / – bleed
   const costEl = row.querySelector('[data-t="cost"]'); // Pay: Burn 1 Lumber (2026-10-16)
   if(costEl && costEl.value) t.cost = costEl.value;
   return t;
@@ -11037,6 +11052,7 @@ function triggerPreviewText(t){
     default: doText = aDef.label.toLowerCase();
   }
   if(t.bramble && EN6_BRAMBLE_ACTS.includes(t.do)) doText = t.do === 'arrow' ? TX('ui.en6-trig-arrow-bramble', {n: amt}) : t.do === 'missile' ? TX('ui.en6-trig-missile-bramble', {n: amt}) : TX('ui.en6-trig-damage-bramble', {n: amt, type: dmgType === FILL ? '' : dmgWord(dmgType)}); // EN6 (2026-10-24): "Arrow 2 – bramble"
+  if(['arrow', 'missile', 'damage'].includes(t.do)){ if(t.withPoison) doText = TX('ui.en7-trig-poison', {text: doText}); if(t.withBleed) doText = TX('ui.en7-trig-bleed', {text: doText}); } // EN7 (2026-10-24): "Arrow 2 – poison"
   if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
   try{ doText = sk2TriggerText(t, doText); }catch(e){} // SK2b (2026-10-19): Forge Weapon's line, a price (t.pay)
   return `${trigLabel}, ${doText}.`;
@@ -11113,6 +11129,8 @@ function actionFieldsHTML(t,i){
   }
   // EN6 (2026-10-24, owner 03:17 #2: "Some actions like arrow - can have a subtoggle - bramble"): Arrow, Missile and Deal damage at one opponent
   if(EN6_BRAMBLE_ACTS.includes(t.do) && (t.do !== 'damage' || ((t.who || 'enemy') === 'enemy' && t.sub !== 'all'))) html += `<label class="en6-bramble-tg" title="${escapeAttr(TX('ui.en6-ed-bramble-tip'))}"><input type="checkbox" data-t="bramble" data-i="${i}"${t.bramble ? ' checked' : ''}> ${escapeHtml(TX('ui.en6-ed-bramble'))}</label>`;
+  // EN7 (2026-10-24, owner 13:12 #5): – poison / – bleed on the same three actions (Deal damage: one enemy)
+  if(EN7_TIP_ACTS.includes(t.do) && (t.do !== 'damage' || ((t.who || 'enemy') === 'enemy' && t.sub !== 'all'))) ['withPoison', 'withBleed'].forEach(f=>{ const st = f === 'withPoison' ? 'poison' : 'bleed'; html += `<label class="en6-bramble-tg en7-tip-tg" title="${escapeAttr(TX('ui.en7-ed-' + st + '-tip'))}"><input type="checkbox" data-t="${f}" data-i="${i}"${t[f] ? ' checked' : ''}> ${escapeHtml(TX('ui.en7-' + st + '-dash'))}</label>`; });
   return html;
 }
 function readEditorFormIntoCard(){
@@ -36671,6 +36689,7 @@ function boardCardHTML(c, defs, opts){
     d.crystalOf ? 'is-crystal' : '', // Crystallise (2026-10-16)
     d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
     c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
+    c.diveAloft != null ? (c.diveMode === 'tide' ? 'en7-under' : 'en7-aloft') : '', // EN7 (2026-10-24): Dive's first turn
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     c.crowned ? 'is-crowned' : '', (c.transformed && trTfName(d)) ? ('tf-on tf-' + trTfName(d)) : '', // Package TR (2026-10-21): the Crown's holder; a named Transform's look
     c.shield > 0 ? 'has-shield' : '', // 2026-10-21 (package UI3, owner: "Shield on the card. The health becomes blue to represent the shield"): its Health number is blue while it holds a Shield
@@ -38382,6 +38401,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-staggered', c.staggered>0);
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
   el.classList.toggle('is-gpoisoned', c.gpoison>0); // EN4 (2026-10-23)
+  el.classList.toggle('en7-aloft', c.diveAloft != null && c.diveMode !== 'tide'); el.classList.toggle('en7-under', c.diveAloft != null && c.diveMode === 'tide'); // EN7 (2026-10-24)
   const badges = [];
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
@@ -42585,6 +42605,8 @@ function matchStatsHTML(m){
   // on a real Conquest win (see resolveRound()'s own comment), so this stays empty for
   // Arena/Simulator matches.
   const reward = m.conquestRewardEarned;
+  // 2026-10-24 (RW6, owner: "No showing of ungotten rewards locked behind rank"): no locked-card chips after the fight. (EN7, 2026-10-24: this
+  // note sat inside the template below, where it printed into the page and tools/text/keyify.py read it as a text to key.)
   const rewardsHTML = m.conquestRankEarned ? `<div class="winloss-conquest-rewards">
       <span class="conquest-rank-badge rank-${m.conquestRankEarned}" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}">${TX('results.rank', {conquestRankEarned: m.conquestRankEarned})}</span>
       ${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" title="${escapeAttr(TX('results.first-time-clearing-this-node-a'))}">${TX('results.first-clear-2')}</span>` : ''}
@@ -42594,7 +42616,7 @@ function matchStatsHTML(m){
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="${escapeAttr(TX('results.defeating-a-named-conquest-leader-boss'))}">${TX('results.metal', {v1: rewardCountSpan(m.conquestMetalEarned)})}</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="${escapeAttr(TX('results.food-tokens-buy-sunfeather-packs-in'))}">${TX('results.food', {conquestFoodEarned: m.conquestFoodEarned})}</span>` : ''}
       ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.opened-its-cards-are-already-in'))}">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? (' ' + TX('results.new-subfaction')) : ''}</span>` : ''}
-      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}/* 2026-10-24 (RW6, owner: "No showing of ungotten rewards locked behind rank"): no locked-card chips after the fight */
+      ${(m.conquestCardsEarned||[]).map(id=>{ const cd = getCardDefs()[id]; return cd ? `<span class="hud-pill" title="${escapeAttr(TX('results.new-card-unlocked'))}">🃏 ${escapeHtml(cd.name)}</span>` : ''; }).join('')}
     </div>` : '';
   // Online Raid rewards + rank movement (2026-09-22) — separate block since a raid match never
   // sets conquestRankEarned (it isn't a Conquest node at all).
@@ -42855,6 +42877,7 @@ function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const w7 = en7LogText(ev, nm); if(w7) return w7; } // EN7 (2026-10-24): Dive's two turns
   { const w5 = en5LogText(ev, nm); if(w5) return w5; } // EN5 (2026-10-24): Breach, Canopy Cover, the state skills
   { const w6 = en6LogText(ev, nm); if(w6) return w6; } // EN6 (2026-10-24): Hibernate, the season, – bramble
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
@@ -45534,7 +45557,7 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 //   the Parasite riding it (its icon and Attack), and on an enemy unit a hidden drop target that shows while you hold a Parasite card.
 // The replay keeps every field per uid (eq2Snap, in the round's snapshot and the replay's card), so the pips and the bar move with each
 // event (eq2Vfx); a break shatters the piece's icon off the card.
-function eq2Snap(c){ c = c || {}; const p = c.parasite; return {equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
+function eq2Snap(c){ c = c || {}; const p = c.parasite; return {diveAloft: c.diveAloft != null ? c.diveAloft : null, diveMode: c.diveMode || null /* EN7 (2026-10-24) */, equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
   parasite: p ? {uid: p.uid, defId: p.defId, atk: p.atk || 0, hp: p.hp || 0, maxHp: p.maxHp || 0, wait: p.wait || 0} : null}; }
 function eq2DurMax(defId){ const d = getCardDefs()[defId] || {}; try{ if(typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.equipDurOf) return BramblewoodBudget.equipDurOf(d); }catch(e){} return 3; }
 function eq2PipsHTML(n, max){ let s = ''; for(let i = 0; i < max; i++) s += `<i class="eq2-pip${i < n ? ' on' : ''}"></i>`; return `<span class="eq2-pips" aria-hidden="true">${s}</span>`; }
@@ -45552,6 +45575,7 @@ function eq2MarksHTML(pid, c){
     const tip = (c.equipOn ? TX('ui.eq-equipped', {name: e.name || c.equipment, a: e.attack || 0, h: e.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: e.name || c.equipment})) + ' ' + TX('ui.eq2-dur', {n: dur, max});
     out += `<span class="eq-under${c.equipOn ? '' : ' is-equipping'}${dur <= 1 ? ' is-worn' : ''}" title="${escapeAttr(tip)}">${e.icon || '⚒️'}${eq2PipsHTML(dur, max)}</span>`; }
   out += eq2HpBarHTML(c, d);
+  if(c.diveAloft != null) out += en7DiveMarksHTML(c); // EN7 (2026-10-24): the shadow / the water, and the badge
   if(c.parasite){ const pd = defs[c.parasite.defId] || {};
     out += `<span class="eq2-para" title="${escapeAttr(TX('ui.eq2-para-tip', {name: pd.name || c.parasite.defId, a: c.parasite.atk, h: c.parasite.hp}))}">${pd.icon || '🪱'}<small>${c.parasite.atk}</small></span>`; }
   const m = matchState; if(m && pid != null && pid !== viewerHandPid(m)) out += `<span class="eq2-para-drop" data-parauid="${c.uid}" title="${escapeAttr(TX('ui.eq2-para-target'))}" aria-hidden="true"></span>`;
@@ -45585,7 +45609,7 @@ function eq2Vfx(ev){
       try{ updateCardAtkDisplay(ev.uid); updateCardHpDisplay(ev.uid); }catch(e){} eq2Refresh(ev.uid); return; }
     case 'equipDrop': { const rc = eq2Rc(ev.fromUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; } return; }
     case 'tempSoak': { const rc = eq2Rc(ev.uid); if(rc) rc.tempHpR = ev.left; eq2Refresh(ev.uid); return; }
-    case 'dive': { const el = boardCardEl(ev.attUid); if(el){ el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700); }
+    case 'dive': { const el = boardCardEl(ev.attUid); if(ev.strike){ en7Strike(ev); return; } /* EN7 (2026-10-24): the strike out of the sky / the water */ if(el){ el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700); }
       fl(el, TX('ui.eq2-dive-float', {n: ev.bonus}), 'quick'); snd('featherFlutter'); return; }
     case 'parasiteAttach': { const rc = eq2Rc(ev.targetUid); if(rc) rc.parasite = {uid: ev.uid, defId: ev.defId, atk: ev.atk, hp: ev.hp, maxHp: ev.maxHp, wait: ev.wait};
       eq2Refresh(ev.targetUid); const el = boardCardEl(ev.targetUid); fl(el, (defs[ev.defId] || {}).icon || '🪱', 'debuff'); if(el){ el.classList.remove('eq2-hooked'); void el.offsetWidth; el.classList.add('eq2-hooked'); } snd('drip'); return; }
@@ -45676,6 +45700,72 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
   body.eq2-para-holding .board-card .eq2-para-drop.is-ok.is-over{background:rgba(230,110,170,.35);}`;
   try{ document.head.appendChild(st); }catch(e){} })();
 // ==== end Package EQ2 (board) ==================================================================================================
+// ==== Package EN7 (2026-10-24, owner 13:12): the board side of Dive in two turns and the Parasite's bloom onto an enemy (rules in
+// bramblewood-engine.js, the EN7 blocks). Dive (#3, "like pokemon"): diveRise lifts the card off the board with its shadow left below
+// (a Flyer, .en7-aloft: it bobs, a ☁️ tag) or sinks it under a band of water (a Tide unit, .en7-under: faded, a 🌊 tag); the swing at it
+// that finds nothing floats "Out of reach"; the strike (dive {strike}) drops it back in a plunge (a splash for the water) onto its target,
+// "⤵️ Dive +N" and "🎯 Exposed"; diveLand brings it down without a strike. The state is in the round's snapshot (eq2Snap: diveAloft,
+// diveMode), so a re-render keeps the look. The Parasite's bloom (#2): a 🪱 flies from the parent's host (or from the Parasite) to the
+// new host; parasiteAttach then shows it there.
+function en7DiveMarksHTML(c){
+  const under = c.diveMode === 'tide', tip = TX(under ? 'ui.en7-tip-under' : 'ui.en7-tip-aloft');
+  return under ? `<span class="en7-water" aria-hidden="true"><i></i><i></i></span><span class="en7-dive-tag" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">🌊</span>`
+    : `<span class="en7-shadow" aria-hidden="true"></span><span class="en7-dive-tag" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">☁️</span>`;
+}
+function en7Rc(uid){ const m = matchState; return m && m.replayCards && uid != null ? m.replayCards[uid] : null; }
+function en7SyncEl(uid, aloft, mode){ const el = boardCardEl(uid); if(!el) return null;
+  el.classList.toggle('en7-aloft', !!aloft && mode !== 'tide'); el.classList.toggle('en7-under', !!aloft && mode === 'tide'); try{ eq2Refresh(uid); }catch(e){} return el; }
+function en7Tile(el){ return el ? el.querySelector('.card-tile') : null; } // (a Flyer's tile sits in its .fly-body)
+function en7Anim(t, frames, ms){ if(!t || reducedMotion() || !fxAtLeast('low')) return null; try{ return t.animate(frames, {duration: ms, easing: 'cubic-bezier(.3,.7,.4,1)'}); }catch(e){ return null; } }
+function en7Strike(ev){
+  const rc = en7Rc(ev.attUid), mode = ev.mode || (rc && rc.diveMode) || 'fly'; if(rc) rc.diveAloft = null;
+  const el = en7SyncEl(ev.attUid, false, mode), t = en7Tile(el); if(!el) return;
+  if(mode === 'tide'){ en7Anim(t, [{top:'12px', opacity:.5, transform:'scale(.96)'}, {top:'-10px', opacity:1, transform:'scale(1.06)', offset:.55}, {top:'0px', opacity:1, transform:'none'}], 420);
+    try{ SoundKit.splash && SoundKit.splash(); }catch(e){} if(hasGsap() && fxAtLeast('low') && !reducedMotion()){ const c = en2Ctr(el); en2Ring(c.x, c.y + c.h * .3, c.w * 1.1); } }
+  else { en7Anim(t, [{top:'-18px', transform:'scale(1.05) rotate(-5deg)'}, {top:'6px', transform:'scale(.98) rotate(3deg)', offset:.6}, {top:'0px', transform:'none'}], 380);
+    try{ SoundKit.featherFlutter(); }catch(e){} }
+  el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700);
+  try{ floatText(el, TX('ui.eq2-dive-float', {n: ev.bonus}), 'quick'); }catch(e){}
+  setTimeout(()=>{ try{ const e2 = boardCardEl(ev.attUid); if(e2) floatText(e2, TX('ui.en7-float-exposed'), 'debuff'); }catch(e){} }, 380);
+}
+function en7Vfx(ev){
+  if(!ev || !matchState) return; const fl = (el, t, cls)=>{ if(el) try{ floatText(el, t, cls); }catch(e){} };
+  if(ev.type === 'diveRise'){ const rc = en7Rc(ev.uid); if(rc){ rc.diveAloft = 1; rc.diveMode = ev.mode; }
+    const el = en7SyncEl(ev.uid, true, ev.mode), t = en7Tile(el); if(!el) return;
+    if(ev.mode === 'tide'){ en7Anim(t, [{top:'0px', opacity:1}, {top:'-6px', opacity:1, offset:.3}, {top:'12px', opacity:.5}], 520); try{ SoundKit.splash && SoundKit.splash(); }catch(e){}
+      if(hasGsap() && fxAtLeast('low') && !reducedMotion()){ const c = en2Ctr(el); en2Ring(c.x, c.y + c.h * .3, c.w); } fl(el, TX('ui.en7-float-under'), 'quick'); }
+    else { en7Anim(t, [{top:'0px', transform:'none'}, {top:'4px', transform:'scale(.97)', offset:.2}, {top:'-16px', transform:'none'}], 520); try{ featherBurst(el); SoundKit.featherFlutter(); }catch(e){} fl(el, TX('ui.en7-float-aloft'), 'quick'); }
+    return; }
+  if(ev.type === 'diveLand'){ const rc = en7Rc(ev.uid); if(rc) rc.diveAloft = null; const el = en7SyncEl(ev.uid, false, ev.mode);
+    en7Anim(en7Tile(el), ev.mode === 'tide' ? [{top:'12px', opacity:.5}, {top:'0px', opacity:1}] : [{top:'-16px'}, {top:'0px'}], 360); fl(el, TX('ui.en7-float-land'), 'faded'); return; }
+  if(ev.type === 'evaded' && (ev.reason === 'aloft' || ev.reason === 'under')){ fl(boardCardEl(ev.targetUid), TX('ui.en7-float-miss'), 'quick'); return; }
+  if(ev.type === 'parasiteAttach' && ev.bloom){ const from = boardCardEl(ev.fromUid), to = boardCardEl(ev.targetUid);
+    try{ SoundKit.bloomTone && SoundKit.bloomTone(); }catch(e){}
+    if(from && to && fxAtLeast('low') && !reducedMotion()) try{ spawnProjectile(from, to, (getCardDefs()[ev.defId] || {}).icon || '🪱'); }catch(e){}
+    setTimeout(()=> fl(boardCardEl(ev.targetUid), '🌸 +1/+1', 'buff'), 260); }
+}
+function en7LogText(ev, nm){
+  if(ev.type === 'diveRise') return {cls:'', text: TX(ev.mode === 'tide' ? 'ui.en7-log-under' : 'ui.en7-log-aloft', {unit: nm(ev.defId)})};
+  if(ev.type === 'diveLand') return {cls:'', text: TX('ui.en7-log-land', {unit: nm(ev.defId)})};
+  if(ev.type === 'dive' && ev.strike) return {cls:'', text: ev.targetDefId ? TX('ui.eq2-log-dive', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus}) : TX('ui.en7-log-strike-none', {unit: nm(ev.attDefId), n: ev.bonus})};
+  if(ev.type === 'evaded' && (ev.reason === 'aloft' || ev.reason === 'under')) return {cls:'', text: TX('ui.en7-log-miss', {att: nm(ev.attDefId), unit: nm(ev.targetDefId)})};
+  return null;
+}
+(function en7Styles(){ if(typeof document === 'undefined' || document.getElementById('en7Styles')) return; const st = document.createElement('style'); st.id = 'en7Styles';
+  st.textContent = `.board-card.en7-aloft .card-tile{top:-16px; animation:en7Bob 2.2s ease-in-out infinite; filter:drop-shadow(0 14px 6px rgba(0,0,0,.32));}
+  @keyframes en7Bob{0%,100%{top:-16px;} 50%{top:-21px;}}
+  .board-card .eq2-marks .en7-shadow{position:absolute; left:10%; right:10%; bottom:-9px; height:18px; border-radius:50%; background:radial-gradient(ellipse at center, rgba(0,0,0,.78), rgba(0,0,0,.35) 50%, rgba(0,0,0,0) 72%); animation:en7Shadow 2.2s ease-in-out infinite; z-index:-1;}
+  @keyframes en7Shadow{0%,100%{transform:scale(1); opacity:.85;} 50%{transform:scale(.86); opacity:.6;}}
+  .board-card.en7-under .card-tile{top:12px; opacity:.5; filter:saturate(.55) brightness(.85) hue-rotate(-12deg);}
+  .board-card .eq2-marks .en7-water{position:absolute; left:-3px; right:-3px; bottom:-4px; height:58%; border-radius:0 0 9px 9px; overflow:hidden; background:linear-gradient(180deg, rgba(90,170,220,.18), rgba(30,90,150,.55)); box-shadow:inset 0 2px 0 rgba(200,240,255,.55);}
+  .board-card .eq2-marks .en7-water i{position:absolute; left:-50%; width:200%; height:10px; top:-5px; background:radial-gradient(circle at 10px -2px, transparent 8px, rgba(170,225,255,.75) 9px, transparent 10.5px) 0 0 / 20px 10px repeat-x; animation:en7Wave 2.6s linear infinite;}
+  .board-card .eq2-marks .en7-water i + i{top:3px; opacity:.55; animation-duration:3.8s; animation-direction:reverse;}
+  @keyframes en7Wave{from{transform:translateX(0);} to{transform:translateX(20px);}}
+  .board-card .eq2-marks .en7-dive-tag{position:absolute; left:50%; top:-12px; transform:translateX(-50%); font-size:13px; line-height:18px; padding:0 5px; border-radius:9px; background:rgba(20,40,70,.82); border:1px solid rgba(170,215,255,.7); pointer-events:auto;}
+  .board-card.en7-aloft .eq2-marks .en7-dive-tag{top:-30px;}
+  @media (prefers-reduced-motion: reduce){ .board-card.en7-aloft .card-tile, .board-card .eq2-marks .en7-shadow, .board-card .eq2-marks .en7-water i{animation:none !important;} }`;
+  try{ document.head.appendChild(st); }catch(e){} })();
+// ==== end Package EN7 (board) ==================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
@@ -45723,6 +45813,7 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  if(ev.type === 'bloom' && ev.parasite) return {cls:'poison', text: TX('ui.en7-log-para-bloom', {unit: nm(ev.defId), target: nm(ev.targetDefId)})}; // EN7 (2026-10-24)
   if(ev.type === 'bloom') return {cls:'', text: TX(ev.lumber ? 'ui.bl-log-lumber' : 'ui.bl-log', {name: nm(ev.defId), n: ev.lumber||0})}; // BL (2026-10-23)
   if(ev.type === 'spawn' && ev.kind === 'bloom') return {cls:'', text: ''};
   return null;
@@ -46276,6 +46367,7 @@ function en2BoomOrphanFlight(ev){
 // a Guardian the blow kills stays where it fell, flinches, and its death plays on that spot. Offsets are used (not
 // transform), so the hit's knock and the death's own tweens, which drive transform, play on top of the move. (Not the CSS translate property:
 // GSAP 3.12 resets translate to none whenever it tweens a transform on the same element.) It moves by left / top (position: relative).
+const EN7_GUARD_TILT = 10; // degrees (EN7, 2026-10-24, owner 13:12 #4)
 function en2GuardStepIn(ev){
   const g = boardCardEl(ev.targetUid), w = boardCardEl(ev.guardedUid); if(!g || !w || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
   const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid], dies = !!(rc && (rc.hp - (ev.dmg || 0)) <= 0);
@@ -46288,9 +46380,19 @@ function en2GuardStepIn(ev){
   // 200 ms with a softer ease (sine.inOut), started early enough to arrive as the blow lands; the slide home is the same.
   const pos0 = getComputedStyle(g).position, moveMs = Math.min(300, Math.max(200, hitAt * .6));
   g.classList.add('en2-guarding'); g.style.zIndex = '30'; if(pos0 === 'static') g.style.position = 'relative';
+  // EN7 (2026-10-24, owner 13:12 #4: "The interceptor should angle itself slightly (maybe up 10 degrees, towards the attacker - so it looks more
+  // natural)"): it tilts 10° toward the attacker as it steps in, holds it through the blow and settles back as it slides home. Toward = the side
+  // the attacker is on, seen from where the Guardian came from (from the ward when they line up); its top leans that way when the attacker is
+  // above it, its foot when below. The CSS rotate property by WAAPI (its own property: the knock's and the death's transforms play on top).
+  const tiltRef = ar ? ((ar.left + ar.width/2) - (gr.left + gr.width/2)) : 0, tiltRef2 = ar ? ((ar.left + ar.width/2) - (wr.left + wr.width/2)) : 0;
+  const tiltSide = Math.abs(tiltRef) >= 4 ? Math.sign(tiltRef) : Math.abs(tiltRef2) >= 4 ? Math.sign(tiltRef2) : (dx >= 0 ? 1 : -1);
+  const tiltUp = !ar || (ar.top + ar.height/2) < (gr.top + gr.height/2), tilt = EN7_GUARD_TILT * tiltSide * (tiltUp ? 1 : -1);
+  en2GuardStepIn.lastTilt = tilt; let tiltAnim = null;
+  setTimeout(()=>{ try{ tiltAnim = g.animate([{rotate:'0deg'}, {rotate: tilt + 'deg'}], {duration: moveMs, easing:'ease-out', fill:'forwards'}); }catch(e){} }, Math.max(0, hitAt - moveMs - 30));
+  const untilt = ()=>{ try{ const back = g.animate([{rotate: tilt + 'deg'}, {rotate:'0deg'}], {duration: 340, easing:'ease-in-out'}); if(tiltAnim) tiltAnim.cancel(); back.onfinish = ()=>{ try{ back.cancel(); }catch(e){} }; }catch(e){ if(tiltAnim) try{ tiltAnim.cancel(); }catch(e2){} } };
   setTimeout(()=>{ gsap.to(g, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration:moveMs/1000, ease:'sine.inOut'}); }, Math.max(0, hitAt - moveMs - 30));
   if(dies) setTimeout(()=>{ const t = g.querySelector('.card-tile') || g; try{ t.animate([{translate:'0 0', rotate:'0deg'}, {translate:'-5px 0', rotate:'-4deg'}, {translate:'5px 0', rotate:'4deg'}, {translate:'-3px 0', rotate:'-2deg'}, {translate:'0 0', rotate:'0deg'}], {duration:300, easing:'ease-out'}); }catch(e){} }, hitAt + 20); // the flinch; it dies where it stands
-  else setTimeout(()=>{ gsap.to(g, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
+  else setTimeout(()=>{ untilt(); gsap.to(g, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
 }
 // The Ironclaw Fiddler's looks (owner 13:16 #17: "on-play side-to-side 'clack' animation (1 s), a short claw attack animation"): card fx
 // {play:'crabClack', attack:'crabClaw'} in canonical/cards.json. The clack: the card sways side to side four times over 1 s while its one
@@ -46527,6 +46629,7 @@ function renderVfxForEvent(ev){
   if(ev && ev.type === 'boonFire'){ try{ boonFireVfx(ev); }catch(e){} return; } // a selfish boon at work (DF3, 2026-10-24)
   try{ en5Vfx(ev); }catch(e){} // EN5 (2026-10-24)
   try{ en6Vfx(ev); }catch(e){} // EN6 (2026-10-24)
+  try{ en7Vfx(ev); }catch(e){} // EN7 (2026-10-24)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -46953,7 +47056,7 @@ function renderVfxForEvent(ev){
       else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
-    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, '+'+ev.amount+'☠', 'poison'); if(rc) rc.poison = (rc.poison||0) + ev.amount; }
+    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
     if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
     if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }
@@ -47036,7 +47139,7 @@ function renderVfxForEvent(ev){
     // attacker-tile pattern (own tone, float on the card that just grew, no rc mutation needed
     // since — like Berserk/Momentum — the permanent Attack gain shows up via the normal stat
     // display at the end of the round, not a status badge).
-    else if(ev.kind==='bleed'){ SoundKit.bleedApply(); if(el) floatText(el, '+'+ev.amount+'🩸', 'bleed'); if(rc) rc.bleed = (rc.bleed||0) + ev.amount; }
+    else if(ev.kind==='bleed'){ SoundKit.bleedApply(); if(el) floatText(el, TX('ui.en7-float-bleed', {n: ev.amount}), 'bleed') /* EN7: "🩸N" */; if(rc) rc.bleed = (rc.bleed||0) + ev.amount; }
     else if(ev.kind==='esprit'){ const attEl = boardCardEl(ev.attUid); SoundKit.espritTone(); if(attEl) floatText(attEl, '🤝 +'+(ev.amount||0)+'⚔'+(ev.hp ? ' +'+ev.hp+'❤' : ''), 'gold'); }
     if(ev.kind==='poison' || ev.kind==='stun' || ev.kind==='scar' || ev.kind==='cleanse' || ev.kind==='freeze' || ev.kind==='sleep' || ev.kind==='paralyze' || ev.kind==='stunOnHit' || ev.kind==='blind' || ev.kind==='shock' || ev.kind==='corrode' || ev.kind==='bleed' || ev.kind==='stagger') updateCardStatusDisplay(ev.targetUid);
   }
@@ -47217,7 +47320,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='gash'){
     const el = boardCardEl(ev.targetUid);
     SoundKit.gashTone();
-    if(el) floatText(el, '+'+ev.amount+'🩸', 'bleed');
+    if(el) floatText(el, TX('ui.en7-float-bleed', {n: ev.amount}), 'bleed'); // EN7 (2026-10-24): "🩸N"
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc) rc.bleed = (rc.bleed||0) + ev.amount;
     updateCardStatusDisplay(ev.targetUid);
@@ -47300,7 +47403,7 @@ function renderVfxForEvent(ev){
   }
   // Bloom – {conditions} (2026-10-23, package BL; owner 19:30: "bloom only gives the new one +1/+1, not itself"): the unit is marked bloomed and its
   // copy (the 'spawn' event with kind 'bloom' right after) has the +1/+1: "🌸 +1/+1" floats on the copy.
-  if(ev.type==='bloom'){
+  if(ev.type==='bloom' && !ev.parasite){ // EN7 (2026-10-24): a Parasite's bloom hooks onto an enemy (en7Vfx)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); rc.bloomed = true; }
     try{ SoundKit.bloomTone(); }catch(e){}
@@ -47399,7 +47502,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='fieldTick' && ev.field==='eruptionReset'){ try{ showToast(TX('toast.the-mountain-settles-and-comets-will'), 'warn'); }catch(e){} }
   // New field effects (2026-10-15): Swamp Fever adds a Poison stack; Freezing freezes a unit as it lands.
   if(ev.type==='fieldTick' && (ev.field==='swampFever' || ev.field==='freezing')){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
+    if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, TX('ui.en7-float-poison', {n: 1}), 'poison'); SoundKit.poisonApply(); }catch(e){} } // EN7 (2026-10-24, owner 13:12 #7: "Why are there too emojis and the + sign. Just do the 🤢N"): was "🤢 +1☠"
     else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
     try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
   if(ev.type==='fieldTick' && (ev.field === 'scorchedSweep' || ev.field === 'wildfireSweep' || ev.field === 'wildfire')){ try{ scorchSweepVfx(ev); }catch(e){} } // the line of fire (FX3, 2026-10-23; Wildfire Front since FX4)
@@ -47550,6 +47653,7 @@ function overlayDelegateChanges(){
     if(key==='target') t.target = e.target.value;
     if(key==='defId') t.defId = e.target.value;
     if(key==='bramble'){ if(e.target.checked) t.bramble = true; else delete t.bramble; } // EN6 (2026-10-24)
+    if(key==='withPoison' || key==='withBleed'){ if(e.target.checked) t[key] = true; else delete t[key]; } // EN7 (2026-10-24)
   });
 }
 

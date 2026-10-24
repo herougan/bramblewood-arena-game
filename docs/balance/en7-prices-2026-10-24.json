@@ -1,0 +1,43 @@
+{
+ "generated": "2026-10-24 (package EN7)",
+ "tool": "tools/en7_budget_check_2026_10_24.js",
+ "ref": "HEAD",
+ "rows": [
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "attack": 1,
+   "health": 9,
+   "S0": 3,
+   "S1": 3.27,
+   "ok0": true,
+   "ok1": true,
+   "x1": 19.77,
+   "N": 19.96,
+   "x2": 24.19,
+   "N2": 88.53,
+   "why": [
+    "dive 1.77"
+   ]
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "attack": 2,
+   "health": 5,
+   "S0": 3,
+   "S1": 3.27,
+   "ok0": true,
+   "ok1": true,
+   "x1": 16.77,
+   "N": 17.69,
+   "x2": 25.69,
+   "N2": 69.54,
+   "why": [
+    "dive 1.77"
+   ]
+  }
+ ]
+}

@@ -67,6 +67,11 @@
       if(t.sub === 'all') v *= mod('subAll', 2);
       // EN6 (2026-10-24): – bramble on Arrow, Missile and Deal damage (one opponent): x the table's 'bramble' modifier (bramblewood-budget.js EN6_BRAMBLE_MULT)
       if(t.bramble && (BB.EN6_BRAMBLE_ACTIONS || []).includes(id) && t.sub !== 'all') v *= mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9);
+      // EN7 (2026-10-24): – poison / – bleed on Arrow, Missile and Deal damage (one opponent): + the tip x the Poison (Bleed) action's value at the
+      // card's own N (at least 1) (bramblewood-budget.js EN7_TIP_MULT)
+      if((t.withPoison || t.withBleed) && (BB.EN7_TIP_ACTIONS || []).includes(id) && t.sub !== 'all'){ const ce = (card && card.effects) || {}, tip = mod('tip', BB.EN7_TIP_MULT || 0.9);
+        if(t.withPoison && actEntries.poison) v += tip * (+actEntries.poison[0].value || 0) * Math.max(1, numOf(ce.poison));
+        if(t.withBleed && actEntries.bleed) v += tip * (+actEntries.bleed[0].value || 0) * Math.max(1, numOf(ce.bleed)); }
       return {value:v, missing:null};
     }
     function triggerWeight(t){
@@ -94,9 +99,17 @@
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
         // EN6 (2026-10-24): Arrow / Fire Arrow / Fire Bolt – bramble: (bramble - 1) x the shot's own price (nothing without the shot)
         if(BB.EN6_BRAMBLE_SHOTS && BB.EN6_BRAMBLE_SHOTS[k]){ const base = BB.EN6_BRAMBLE_SHOTS[k], sc = v && effects[base] ? (skillCost(base, effects[base]) || 0) : 0, c = r2((mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9) - 1) * sc); S += c; parts.push(['skill', k, c, 'x' + mod('bramble', 0.9) + ' of ' + base]); return; }
+        // EN7 (2026-10-24): Arrow / Fire Arrow / Fire Bolt – poison / – bleed: tip x the price of Poison (Bleed) at the unit's own N (at least 1),
+        // nothing without the shot; Dive's extra uses (effects.diveUses N): (N - 1) x Dive's price
+        if(BB.EN7_TIP_SHOTS && BB.EN7_TIP_SHOTS[k]){ const [base, st] = BB.EN7_TIP_SHOTS[k], c = v && effects[base] ? r2(mod('tip', BB.EN7_TIP_MULT || 0.9) * (skillCost(st, Math.max(1, numOf(effects[st]))) || 0)) : 0; S += c; parts.push(['skill', k, c, 'x' + mod('tip', 0.9) + ' of ' + st]); return; }
+        if(k === 'diveUses'){ const c = effects.dive ? r2(Math.max(0, numOf(v) - 1) * (skillCost('dive', effects.dive) || 0)) : 0; S += c; parts.push(['skill', k, c, 'extra dives']); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         S += c; parts.push(['skill', k, c, '']);
       });
+      // EN7 (2026-10-24, owner 13:12 #5): Poison / Bleed now ride on Pounce and Ambush too: a share of their price on top (bramblewood-budget.js EN7_EXTRA_HIT)
+      if(BB.EN7_EXTRA_HIT){ Object.keys(BB.EN7_EXTRA_HIT).forEach(x=>{ if(!effects || !effects[x]) return; let st = 0;
+        (BB.EN7_EXTRA_HIT_KEYS || []).forEach(q=>{ if(effects[q]) st += skillCost(q, effects[q]) || 0; });
+        if(st > 0){ const c = r2(BB.EN7_EXTRA_HIT[x] * st); S += c; parts.push(['combo', x + '+status', c, BB.EN7_EXTRA_HIT[x] + ' x ' + r2(st)]); } }); }
       return {S:r2(S), parts, missing};
     }
     const g = (k, d)=> B[k] == null ? d : B[k];

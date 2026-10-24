@@ -21236,7 +21236,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 1,
-    "health": 10,
+    "health": 9,
     "rarity": "common",
     "species": [
       "Pinniped"
@@ -21248,7 +21248,8 @@
     ],
     "effects": {
       "tide": true,
-      "evasive": true
+      "evasive": true,
+      "dive": 2
     },
     "flavor": "Slips off the ice the moment you aim at it, and slides back on looking very pleased.",
     "dmgType": "physical",
@@ -21263,7 +21264,7 @@
       "tier": 3,
       "map": "m6"
     },
-    "creatorNote": "2026-10-16: placed on 17-4 Lynx Ambush (Wolfsbane Tundra), its card reward. 2026-10-17 (balance pass): 3/11 -> 2/11 (win-rate: above its band (35-60%)). 2026-10-19 halve (BF5): was 2/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/4. 2026-10-21 human pass I (owner's hub skill costs): 1/7 -> 1/8. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/8 -> 1/9. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 1/9 -> 1/10."
+    "creatorNote": "2026-10-16: placed on 17-4 Lynx Ambush (Wolfsbane Tundra), its card reward. 2026-10-17 (balance pass): 3/11 -> 2/11 (win-rate: above its band (35-60%)). 2026-10-19 halve (BF5): was 2/11. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/4. 2026-10-21 human pass I (owner's hub skill costs): 1/7 -> 1/8. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/8 -> 1/9. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 1/9 -> 1/10. 2026-10-24 (package EN7, owner 13:12 #3): Dive 2 (it dives in two turns: under, then the strike); 1/9 by the new Dive price."
   },
   {
     "id": "snow-ermine",
@@ -29017,7 +29018,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "rarity": "common",
     "species": [
       "Bird"
@@ -29029,7 +29030,8 @@
     ],
     "effects": {
       "flying": true,
-      "tide": true
+      "tide": true,
+      "dive": 2
     },
     "flavor": "Ten sand eels in its beak, and always room for one more.",
     "dmgType": "physical",
@@ -29039,7 +29041,7 @@
     "test": false,
     "numericId": 1254,
     "uuid": "5164c49e-b2e1-59b3-a65a-71781546537e",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The sea parrot (\ud83e\udd9c) that flies and dives: Flying, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, tide 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9019) as the 3-2 reward: the cliff's sea parrot. 2026-10-19 halve (BF5): was 3/6. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/3. 2026-10-21 human pass I (owner's hub skill costs): 2/5 -> 2/6.",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The sea parrot (\ud83e\udd9c) that flies and dives: Flying, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, tide 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9019) as the 3-2 reward: the cliff's sea parrot. 2026-10-19 halve (BF5): was 3/6. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/3. 2026-10-21 human pass I (owner's hub skill costs): 2/5 -> 2/6. 2026-10-24 (package EN7, owner 13:12 #3): Dive 2 (it dives in two turns: aloft, then the strike); 2/5 by the new Dive price.",
     "source": {
       "kind": "map",
       "id": "mc",
