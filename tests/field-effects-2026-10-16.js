@@ -184,7 +184,7 @@ const F2 = ['tide', 'landslide', 'consternation', 'crushingDepths', 'rookRow', '
   F2.forEach(k=> ok(m && new RegExp('\\n  ' + k + ':\\s*\\{icon:').test('\n' + m[1]), `FIELD2 has ${k}`)); }
 ok(/\.\.\.Object\.keys\(FIELD2\)\.map\(k=>\{ const f = FIELD2\[k\], rules = \{\}; rules\[k\] = true;/.test(src), 'Edit skirmish lists every FIELD2 effect');
 ok(/\{id:'scorching3',group:'field', icon:'🔥', name:'Scorching III', weird:3, cost:1, rules:\{field:'heatwave', heatLevel:3\}/.test(src), 'Scorching III in Edit skirmish');
-ok(/grp\('Hazards and rules', FIELD_EFFECTS\.filter\(f=> !f\.arenaOnly && !\['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'\]\.includes\(f\.group\)\)/.test(src), 'the add list offers every hazard (Swamp Fever and the rest were missing)');
+ok(/grp\('Hazards and rules', FIELD_EFFECTS\.filter\(f=> !f\.arenaOnly && !\['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'(, 'boon')?\]\.includes\(f\.group\)\)/.test(src), 'the add list offers every hazard (Swamp Fever and the rest were missing; 2026-10-24 DF3: the selfish boons in their own group)');
 ok(/Object\.keys\(FIELD2\)\.forEach\(k=>\{ if\(k === 'tide' \|\| !r\[k\]\) return;/.test(src), 'the Environment cards have a row for each');
 ok(/\]\.map\(\(\[k, rules, o\]\)=> Object\.assign\(\{key:k, icon:FIELD2\[k\]\.icon, name:FIELD2\[k\]\.name/.test(src) && F2.every(k=> new RegExp(`\\['${k}', \\{`).test(src)), 'the Effects library has an entry for each');
 ok(/\{key:'scorching3', icon:'🔥', name:'Scorching III'/.test(src), 'Scorching III in the Effects library');

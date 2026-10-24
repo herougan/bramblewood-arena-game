@@ -1757,6 +1757,18 @@
     .card-tile.env-card .env-line{font-size:8px; padding:2px 3px;}
   }
   @media (prefers-reduced-motion: reduce){ .env-stack .env-card{transition:none;} .env-stack.is-landing{animation:none;} }
+  /* 2026-10-24 (package DF3, owner 01:57: "a selfish map effect where it only helps the opposing ... marked with a redder outline"): a selfish
+     boon's Environment card wears a red frame and corners, a red "Theirs" ribbon and a dark red line with its count; while its theme count falls
+     short (off) it is dimmed. */
+  .card-tile.env-card.is-selfish{box-shadow:0 0 0 1.5px #ffb4a3 inset, 0 0 0 3px #6e1a12, 0 0 0 4.5px #e0533f, 0 0 12px rgba(224,83,63,.6), 0 3px 10px rgba(0,0,0,.45) !important;}
+  .card-tile.env-card.is-selfish::before{background:
+      radial-gradient(circle at 0 0, #b8352a 0 7px, transparent 7.5px), radial-gradient(circle at 100% 0, #b8352a 0 7px, transparent 7.5px),
+      radial-gradient(circle at 0 100%, #b8352a 0 7px, transparent 7.5px), radial-gradient(circle at 100% 100%, #b8352a 0 7px, transparent 7.5px);
+    filter:drop-shadow(0 0 1px #ff9f8a);}
+  .card-tile.env-card.is-selfish .env-ribbon{background:linear-gradient(180deg,#c23b2c,#6e1a12); border-color:#ff9f8a; color:#fff1ec;}
+  .card-tile.env-card.is-selfish .env-line{background:rgba(52,10,8,.8); border-color:rgba(224,83,63,.75); -webkit-line-clamp:3;}
+  .card-tile.env-card.is-selfish.is-boon-off{filter:saturate(.4) brightness(.82);}
+  .board-card.boon-touched{box-shadow:0 0 0 2px #e0533f, 0 0 14px rgba(224,83,63,.85) !important; transition:box-shadow .2s ease;}
   .terrain-banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:32; width:min(520px, 86%); padding:12px 18px; border-radius:16px; background:rgba(24,18,12,.86); color:#fff6dc; text-align:center; display:flex; flex-direction:column; gap:4px; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:terrainIn .5s cubic-bezier(.2,1.3,.4,1) both; pointer-events:none;}
   .terrain-banner > b{font-family:'Baloo 2', system-ui, sans-serif; font-size:19px;}
   .terrain-banner span{font-size:13.5px; line-height:1.45;}
@@ -6685,6 +6697,7 @@
     transition:transform .3s cubic-bezier(.2,1.35,.4,1), box-shadow .3s ease !important;
     box-shadow:0 0 0 1.5px #ffe9a0 inset, 0 0 0 3px #3e5f2c, 0 0 0 4.5px #ffd75e, 0 0 20px 6px rgba(255,214,110,.7), 0 6px 14px rgba(0,0,0,.45) !important;}
   .card-tile.env-card.is-firing-out{transition:transform .32s ease-in, box-shadow .32s ease !important;}
+  .card-tile.env-card.is-selfish.is-firing{box-shadow:0 0 0 1.5px #ffd0c4 inset, 0 0 0 3px #6e1a12, 0 0 0 4.5px #ff6a52, 0 0 22px 7px rgba(255,90,60,.75), 0 6px 14px rgba(0,0,0,.45) !important;} /* 2026-10-24 (DF3): a selfish boon shines red, keeping its frame */
   @media (max-width:699px){ .card-tile.env-card.is-firing{transform:translateY(-2px) rotate(0deg) scale(1.06) !important;} } /* the phone's header sits at the top edge */
   .card-tile.env-card .env-shine{position:absolute; inset:0; border-radius:10px; overflow:hidden; pointer-events:none; z-index:7;}
   .card-tile.env-card .env-shine::after{content:''; position:absolute; top:-20%; bottom:-20%; left:-60%; width:45%;
@@ -13233,6 +13246,9 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .conquest-node-panel .cnp-title .cnp-field.cnp-field-pills{display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; list-style:none; background:none; border-radius:0; font-size:12px; min-height:0; overflow:visible;}
 .cnp-fpill{display:inline-flex; align-items:center; gap:5px; padding:1px 9px; border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); font-weight:800; white-space:nowrap; cursor:help; line-height:1.5;}
 .cnp-fpill.is-new{box-shadow:0 0 0 2px #e8b23a;} .cnp-fpill.is-unknown{opacity:.9;}
+/* 2026-10-24 (package DF3): a challenge skirmish's pill, and its selfish boon's pill in red */
+.cnp-fpill.is-challenge{background:linear-gradient(180deg,#c23b2c,#6e1a12); border-color:#ff9f8a; color:#fff1ec;}
+.cnp-fpill.is-selfish{background:rgba(110,26,18,.55); border-color:#e0533f; box-shadow:0 0 0 1px rgba(224,83,63,.35);}
 .cnp-fpill .fcr-q{width:16px; height:16px; font-size:11px;}
 .conquest-node-panel .cnp-title .cnp-kind{margin:0; display:flex; flex-wrap:wrap; align-items:center; gap:4px;}
 .conquest-node-panel .cnp-title .cnp-kind .castle-line{display:inline-flex; align-items:center; gap:4px; padding:1px 9px; border-radius:999px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.14); line-height:1.5;}

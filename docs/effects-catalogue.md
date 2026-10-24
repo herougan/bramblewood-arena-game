@@ -1078,3 +1078,15 @@ Venom Pulse, now **Pulse** (below).
 | 💀 Greater Poison | `en4GreaterPoisonVfx(ev)` | A violet 💀 pops on the card with a violet pulse; "☠→💀 N" (what it turned) or "💀 +N" floats; the green ☠ pip drops what turned and a violet 💀 pip shows the Greater Poison | `statusFx` `greaterPoison` |
 | 💀 Its tick | `en4GreaterPoisonTickVfx(ev)` | Like Poison's: a shake, a violet pulse, the poison number; the 💀 pip stays (an old replay's `decay` still drops it) | `greaterPoisonTick` |
 | 🛡️ Shore Up | `en4ShoreUpVfx(ev)` | "🛡️ Shore Up" on the unit hit; a small 🛡️ hops in an arc from it to each ally beside it and lands with a ring; their Shield shows | `shoreUp` |
+
+## 2026-10-24 additions (package DF3): the selfish boons
+
+A selfish boon is a field effect that helps the enemy only, on while at least half the enemy deck as dealt shares its theme (the rules:
+`SELFISH_BOONS` in `bramblewood-engine.js`; the library and its worth: `docs/balance/df3-boons-2026-10-24.md`).
+
+| Look | Where | When |
+|---|---|---|
+| A red-framed Environment card (red frame and corners, red "Theirs" ribbon, a dark red line with the count "On: 11 of 16 enemy cards share the theme"); dimmed while off | `fieldCondCardHTML` (`.env-card.is-selfish`, `.is-boon-on` / `.is-boon-off`) | every fight with a boon |
+| The card straightens and shines (FX4's `envCardsFire`), the helped unit glows red (`.boon-touched`) and floats the boon's icon and name | `boonFireVfx`, the `boonFire` event (one a unit a round) | Blind Fury's doubled swing, Hive Chorus's doubled Swarm, Wild Rage's early Rage, a Quick swing from Rising Tide or Sky Ambush, Snow / Sand Veil's dodge, Second Burrow's return, Restless Dead's revive, a unit arriving with Siege Train / Venom Glands / Ember-born / Sky Ambush |
+| A "⚔️ Challenge" pill and the boon's red pill in the fight panel | `skirmishFieldHTML` | a challenge skirmish |
+| The log line "Blind Fury helps the enemy: Cave Olm." | `logText` case `boonFire` | as above |

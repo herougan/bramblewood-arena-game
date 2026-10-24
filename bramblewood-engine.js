@@ -147,6 +147,52 @@ const SK2_DEFAULTS = Object.freeze({
   pickpocketN: 1, sabotageN: 1, arsonN: 1,                               // what a plain (true) Pickpocket / Sabotage / Arson takes
   fortifyAtk: 0, fortifyHp: 6, fortifyEvery: 0, fortifyFrom: 'thornwood-palisade', fortifyEffects: {}, // the Palisade 0/6; every K turns (0: on play only); its look
 });
+// ---- Selfish boons (2026-10-24, package DF3; DF-3, owner 10-23 17:34, narrowed by his 22:23 note 6: "Selfish boons - only in challenge
+// skirmishes ... They can be reused in similar biomes again and again or raids. But in general, yea i prefer using strong decks with
+// synergy with the field's effects"; 10-23 01:57: "a selfish map effect where it only helps the opposing ... not too obvious and simple
+// like +stats ... more like blind cards do 2x dmg if most the cards inside are blind - a synergy not available to the player").
+// A fight sets rules.boon to an id below. It helps one side only, the CPU (side B; rules.boonSide 'A' turns it round, for tests), and is
+// ON when at least half the copies of that side's deck as dealt (pl.deckCounts) share its theme (theme.types: counts as one of these Types,
+// TAXONOMY.isA; theme.skills: has one of these skills). It counts that side's own deck only, so a player who copies the deck gains nothing.
+// While it is on, every unit of that side that `who` names is marked as it arrives (c.boon = id) and the hooks below read the mark:
+//   blindFury     a unit that fights blind (Blind, Purblind, or blind in Darkness / by day / at night: sightMiss) hits 2x (its swings)
+//   hiveChorus    Swarm counts every ally twice
+//   risingTide    Quick while the tide is in (Flood or High Tide), a condition grant
+//   secondBurrow  the first time it dies it goes back to its owner's hand (to be played again; once a card)
+//   wildRage      Rage wakes below 3/4 Health (was 1/2)
+//   snowVeil      Evasive dodges 2 in 3 (was 1 in 2)
+//   sandVeil      in a Sandstorm or Glass-storm, attacks at it miss 1 in 2 (was 1 in 4)
+//   restlessDead  Revive brings it back at full Health (was 1)
+//   emberBorn     Immune to heat (lava, Scorching, fire arrows): the field's fire can't touch it
+//   siegeTrain    Siege counts double
+//   venomGlands   its Poison gives twice the Poison
+//   skyAmbush     a Flyer is Quick
+// `double` names the skill numbers doubled on the unit's derived card, `grant` the skills it gains (deriveDef). Texts: TX
+// 'ui.df3-<id>' and 'ui.df3-<id>-name' in bramblewood-texts.js; worth by the owner's 4-round rule and the measured fights in
+// docs/balance/df3-boons-2026-10-24.md; where they are placed: docs/skirmish-tuning-guide.md (field effects).
+const SELFISH_BURROWERS = ['Rodent', 'Hedgehog', 'Rabbit', 'Mole', 'Worm', 'Badger'];
+const SELFISH_BOONS = Object.freeze({
+  blindFury:    {icon:'🦇', theme:{types:['Cave']}, who:'all'},
+  hiveChorus:   {icon:'🐜', theme:{types:['Insect']}, who:{skills:['swarm']}},
+  risingTide:   {icon:'🌊', theme:{skills:['tide']}, who:{skills:['tide']}},
+  secondBurrow: {icon:'🕳️', theme:{types:SELFISH_BURROWERS}, who:'theme'},
+  wildRage:     {icon:'🐗', theme:{skills:['rage', 'berserk']}, who:{skills:['rage']}},
+  snowVeil:     {icon:'🌨️', theme:{types:['Tundra', 'Taiga', 'Frost']}, who:{skills:['evasive']}},
+  sandVeil:     {icon:'🏜️', theme:{types:['Desert']}, who:'theme'},
+  restlessDead: {icon:'💀', theme:{types:['Undead']}, who:{skills:['revive']}},
+  emberBorn:    {icon:'🌋', theme:{types:['Volcanic']}, who:'theme', grant:{immune:['heat']}},
+  siegeTrain:   {icon:'🏰', theme:{skills:['siege']}, who:{skills:['siege']}, double:['siege']},
+  venomGlands:  {icon:'🐍', theme:{types:['Reptile']}, who:{skills:['poison']}, double:['poison']},
+  skyAmbush:    {icon:'🦅', theme:{skills:['flying']}, who:{skills:['flying']}, grant:{quick:true}},
+});
+function selfishBoonThemeOf(def, b){ if(!def || !b) return false; const t = b.theme || {}, e = def.effects || {};
+  return ((t.types || []).length && txIsAny(def, t.types)) || (t.skills || []).some(k=> !!e[k]); }
+function selfishBoonWho(def, b){ if(!def || !b) return false; if(b.who === 'all') return true; if(b.who === 'theme') return selfishBoonThemeOf(def, b);
+  const e = def.effects || {}; return ((b.who && b.who.skills) || []).some(k=> !!e[k]); }
+// The count the Environment card shows ("on: 11 of 16 enemy cards share the theme") and the engine's switch: {id, have, total, need, on}.
+function selfishBoonCount(defs, counts, id){ const b = SELFISH_BOONS[id]; if(!b) return null; let have = 0, total = 0;
+  Object.keys(counts || {}).forEach(k=>{ const n = Math.max(0, Number(counts[k]) || 0); total += n; if(selfishBoonThemeOf(defs && defs[k], b)) have += n; });
+  const need = Math.max(1, Math.ceil(total / 2)); return {id, have, total, need, on: total > 0 && have >= need}; }
 function otherId(id){ return id===1?2:1; }
 function mulberry32(seed){
   return function(){
@@ -604,7 +650,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // a safe number instead of undefined; nothing writes to it anymore. A character's
       // `startGold` effect now seeds starting Lumber instead of starting Gold, same amount.
       id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, gold:0 /* TR (2026-10-21): in-fight Gold again (Tribute, the Crown) */, grace:0, devilry:0, stone:0, metal:0, uranium:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
-      deck:buildDeckIdsFrom(cardCounts, rnd), hand:[], row:{left:[], center:[], right:[]},
+      deck:buildDeckIdsFrom(cardCounts, rnd), deckCounts: Object.assign({}, cardCounts || {}) /* 2026-10-24 (DF3): the deck as dealt, for a selfish boon's count */, hand:[], row:{left:[], center:[], right:[]},
       graveyard:[], exile:[], echoes:0, castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
       playedThisTurn:false, discardUsedThisTurn:false, prayerTokens:0 /* 2026-10-19: the player's own Prayer tokens (offerings) */,
       character: character || null,
@@ -662,6 +708,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Wildpath perks on arrival (2026-10-13): Bark Skin, Hedge Wall, Old Growth, Sharpened Briars, Light Feet. Only the side
   // that carries pl.perks gets them, so the enemy's copies of the same cards are untouched.
   function applyArrivalPerks(pl, c){
+    if(pl && c && rules.boon) boonMark(pl, c); // a selfish boon (2026-10-24, package DF3)
     const k = pl && pl.perks; if(!k || !c) return; const d = CARD_DEFS[c.defId] || {}, e = d.effects || {};
     if(k.floorPct > 0){ const f = 1 + k.floorPct; const a = Math.round((c.atk||0) * f), h = Math.round((c.hp||0) * f); c.baseAtk += a - c.atk; c.atk = a; c.maxHp += h - c.hp; c.hp = h; } // endless dungeon floors (2026-10-13)
     if(k.briars && (c.atk|0) <= 3 && (c.atk|0) > 0){ c.atk += k.briars; c.baseAtk += k.briars; }
@@ -670,6 +717,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(k.lightFeet && e.quick){ k.lightFeet = false; c.wait = 0; }
     if(k.barkSkin){ k.barkSkin = false; deriveDef(c, {armor: (Number(e.armor)||0) + 1}); }
   }
+  // Selfish boons (2026-10-24, package DF3): see SELFISH_BOONS at the top. boonStateOf(pl) is the count on that side's dealt deck (only the
+  // boon's side has one); boonMark marks an arriving unit that `who` names and gives it the boon's doubled numbers / granted skills.
+  function boonId(){ return rules.boon && SELFISH_BOONS[rules.boon] ? rules.boon : null; }
+  function boonPid(){ return rules.boonSide === 'A' ? 1 : 2; }
+  function boonStateOf(pl){ const id = boonId(); if(!id || !pl || pl.id !== boonPid()) return null;
+    if(!pl._boonState) pl._boonState = selfishBoonCount(CARD_DEFS, pl.deckCounts || {}, id); return pl._boonState; }
+  function boonMark(pl, c){ const st = boonStateOf(pl); if(!st || !st.on || !c) return false; const b = SELFISH_BOONS[st.id], d = CARD_DEFS[c.defId];
+    if(!selfishBoonWho(d, b)) return false; c.boon = st.id;
+    const g = Object.assign({}, b.grant || {}); (b.double || []).forEach(k=>{ const v = d.effects && d.effects[k]; if(typeof v === 'number' && v > 0) g[k] = v * 2; });
+    if(Object.keys(g).length) deriveDef(c, g); return true; }
+  // One 'boonFire' event a unit a round (the Environment card shines, the log says so); into the events the hit paths use (shieldEvents).
+  const boonFired = new Set();
+  function boonFire(card, what, evs){ const id = boonId(); evs = evs || shieldEvents; if(!id || !recordEvents || !evs || !card) return;
+    const key = turnNo + ':' + card.uid + ':' + what; if(boonFired.has(key)) return; boonFired.add(key);
+    const pid = boonPid(); evs.push({type:'boonFire', boon:id, what, side: pid === 1 ? 'A' : 'B', uid:card.uid, defId:card.defId}); }
+  // blindFury: a marked unit that fights blind swings for 2x (a hit on a unit and a swing at the bramble alike).
+  function boonSwingFactor(att){ if(!att || att.boon !== 'blindFury') return 1;
+    const blind = (Number(att.blind) || 0) > 0 || sightMiss(att, ownerPidOfCard(att)) > 0; if(!blind) return 1; boonFire(att, 'blind'); return 2; }
+  // The boons a swing shows at work: Hive Chorus's doubled Swarm, Wild Rage's early Rage, Rising Tide's and Sky Ambush's Quick.
+  function boonHitNote(att){ const b = att && att.boon; if(!b) return;
+    if(b === 'hiveChorus' && swarmBonus(att) > 0) boonFire(att, 'swarm');
+    else if(b === 'wildRage' && isRaging(att) && att.maxHp > 0 && att.hp / att.maxHp >= 0.5) boonFire(att, 'rage');
+    else if(b === 'risingTide' && tideRising()) boonFire(att, 'quick');
+    else if(b === 'skyAmbush') boonFire(att, 'quick'); }
   function perksOfSide(side){ const pl = curPlayers && curPlayers[side==='A' ? 1 : 2]; return (pl && pl.perks) || null; }
   function makeBoardCard(defId){
     const def = CARD_DEFS[defId];
@@ -1993,7 +2064,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Insect species no longer count for each other unless both list a shared Type). swarmTypeShares / swarmTypeIsAny below.
     const shares = c=>{ const d = CARD_DEFS[c.defId] || {}; return (!picked && mimic) || !!(d.effects && (d.effects.changeling || d.effects.growth)) || txChangeling(d) || (picked ? swarmTypeIsAny(d, picked) : swarmTypeShares(def, d)); };
     for(const pid of [1,2]){ const pl = curPlayers[pid]; if(!pl) continue; const all = [...pl.row.left, ...pl.row.center, ...pl.row.right];
-      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && !isStructureCard(c) && shares(c)).length * per; } // 2026-10-23 (package EN, owner 01:57 note 10: "Swarm doesn't count structures.")
+      if(all.includes(card)) return all.filter(c=> c!==card && c.hp>0 && !c.cageOf && !isStructureCard(c) && shares(c)).length * per * (card.boon === 'hiveChorus' ? 2 : 1); } // x2: Hive Chorus, a selfish boon (2026-10-24, DF3) // 2026-10-23 (package EN, owner 01:57 note 10: "Swarm doesn't count structures.")
     return 0;
   }
   // EN2 (2026-10-23, owner 17:34 #22: "dynamic changes to stats (and visualisation) are applied immediately. so as you lose or gain ants
@@ -2020,7 +2091,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   function isRaging(card){
     const def = CARD_DEFS[card.defId];
-    return !!(def.effects && def.effects.rage) && card.maxHp>0 && ((card.hp / card.maxHp) < 0.5 || !!card._rageOn); // + Rage – {…}'s flag (EN, 2026-10-23)
+    return !!(def.effects && def.effects.rage) && card.maxHp>0 && ((card.hp / card.maxHp) < (card.boon === 'wildRage' ? 0.75 : 0.5) || !!card._rageOn); // 3/4: Wild Rage, a selfish boon (2026-10-24, DF3) // + Rage – {…}'s flag (EN, 2026-10-23)
   }
   // Backstab's edge (2026-10-23, package EN, owner D21): true when the unit t it strikes is worse at combat right now: Blind, Stunned,
   // Frozen, Asleep, Confused, Tipsy, Staggered, Paralyzed, Bound, Webbed or turned to stone (BACKSTAB_STATUSES), or the attacker has an edge
@@ -2058,7 +2129,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
   // 2026-10-21 (package BX, owner: "Swarm: Doesn't seem to be doing the bonus damage to the bramble. It should do so."): a castle
   // swing left out Swarm (and its mirror, Defiance), which a hit on a unit gets in damageCard; both count at the bramble now.
-  function castleSwingAmt(att, base){ let n = Math.max(0, base + swarmBonus(att) + defianceBonus(att) + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
+  function castleSwingAmt(att, base){ let n = Math.max(0, base + swarmBonus(att) + defianceBonus(att) + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; if(att && att.boon){ n *= boonSwingFactor(att); boonHitNote(att); } /* a selfish boon (2026-10-24, DF3) */ return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
@@ -2448,6 +2519,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // +atk/+hp, gained and lost with the bloom like a Nocturnal bonus. (Kept apart from the old Bloom N heal, effects.bloom.)
     c.inBloom = false;
     if(e.bloomWhen && typeof e.bloomWhen === 'object'){ const b = bloomStateOf(e.bloomWhen); if(b.on){ c.inBloom = true; a += b.atk; h += b.hp; if(b.grant) addGrant(b.grant); } } // + Bloom (…) – {…} (CX2, 2026-10-21)
+    if(c.boon === 'risingTide' && tideRising()) addGrant({quick:true}); // Rising Tide, a selfish boon (2026-10-24, package DF3): Quick while the tide is in
     return [a, h, grant];
   }
   // One Bloom condition, as it stands right now. 'night' and 'day' both hold in Twilight (like Nocturnal and Diurnal); 'wet' is
@@ -2638,6 +2710,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + tideAtk(attCard) + firstBloodBonus(attCard) - chokeOf(attCard); if(sb) amt = Math.max(0, amt + sb); } // − Sulphur Fumes' choke (2026-10-17)
     // (Ebb's old "1 less per hit" is now +1 Armour, in nominalArmor below; 2026-10-12)
     if(attCard && isRaging(attCard) && !quietOn()) amt = amt * 2; // not under Quiet Contemplation (2026-10-19); Rage's half damage taken stays
+    if(attCard && attCard.boon){ amt = amt * boonSwingFactor(attCard); boonHitNote(attCard); } // a selfish boon (2026-10-24, package DF3): Blind Fury's 2x; the others say they are at work
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
     const atkFactor = attackerDamageFactor(attDef);
@@ -3294,7 +3367,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // + High Canopy / Undergrowth (2026-10-16): Swift (and Quick) units are Evasive among the branches.
     // + Canopy Cover (EN5, 2026-10-24): a ground unit under the trees (en5CanopyCover), in the same one roll
     const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard);
-    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < 0.5){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; return false; } // + Prey (2026-10-16)
+    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
     if(dd.flying && L('flying') && !webbed && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
@@ -3308,7 +3381,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
     if(!keenNose && L('fog') && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
     if(ashyNow() && L('ashy') && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
-    if(sandstormOn() && L('sandstorm') && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
+    if(sandstormOn() && L('sandstorm') && !ad.dry && !keenNose && rnd() < (defCard.boon === 'sandVeil' ? 0.5 : 0.25)){ lastMissReason = 'sandstorm'; if(defCard.boon === 'sandVeil') boonFire(defCard, 'dodge'); return false; } // 1 in 2 at a Sand Veil unit (selfish boon, DF3 2026-10-24) // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
     if(!keenNose && dd.shadow && L('shadow') && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
@@ -3944,6 +4017,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function arrivalBoardCard(players, sideOf, playerId, hc, fdef, firstCardEver, events){
     const pl = players[playerId];
     const boardCard = makeBoardCard(hc.defId);
+    if(hc && hc.boonBack) boardCard.boonBack = true; // Second Burrow's once (DF3, 2026-10-24)
     if(firstCardEver && fdef && fdef.effects && fdef.effects.vanguard){ const vn = s17N(fdef, 'vanguard'); // Vanguard N (2026-10-17): +N/+N as the first card
       boardCard.atk += vn; boardCard.baseAtk += vn; boardCard.hp += vn; boardCard.maxHp += vn; boardCard.vanguardUp = vn; }
     // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep. This holds even after playing it."): what the card lost in
@@ -3954,6 +4028,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // to whichever card is the very first one this player plays in the match.
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
     applyArrivalPerks(pl, boardCard);
+    if(boardCard.boon && SELFISH_BOONS[boardCard.boon] && (SELFISH_BOONS[boardCard.boon].grant || SELFISH_BOONS[boardCard.boon].double)) boonFire(boardCard, 'arrive', events); // a selfish boon's gift on arrival (DF3)
     { const foeP = players[otherId(playerId)]; if(foeP && foeP.enemyWaitBonus > 0 && (foeP._logjamLeft == null ? (foeP._logjamLeft = 3) : foeP._logjamLeft) > 0){ foeP._logjamLeft--; boardCard.wait = (boardCard.wait||0) + foeP.enemyWaitBonus; if(recordEvents && events) events.push({type:'statusFx', kind:'logjam', side:sideOf(playerId), targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:foeP.enemyWaitBonus}); } }
     if(pl.flyerAtkBonus && CARD_DEFS[boardCard.defId] && CARD_DEFS[boardCard.defId].effects && CARD_DEFS[boardCard.defId].effects.flying){ boardCard.atk += pl.flyerAtkBonus; boardCard.baseAtk += pl.flyerAtkBonus; }
     if(pl.firstUnitAtkBonus && !pl.firstUnitBonusUsed){
@@ -8261,6 +8336,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0; card.brittle = 0; /* 2026-10-19 (GI) */
       card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
       if(slotMode && Number.isInteger(rv.slot)) card.slot = rv.slot;
+      if(card.boon === 'restlessDead'){ card.hp = Math.max(1, card.maxHp); boonFire(card, 'revive', events); } // Restless Dead, a selfish boon (2026-10-24, DF3): back at full Health
       if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid}); }
     const spawns = [], freed = [], retributions = [], splits = [], relics = [], revives = []; // revives: 2026-10-19 (package RV)
     deadEntries.forEach(({pl, side, card, res})=>{
@@ -8345,6 +8421,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'exile', side:mySide, defId:card.defId, zone:'board'});
       } else if(!card.bloomCopy){ // a Bloom copy leaves no card behind (BL, 2026-10-23)
         pl.graveyard.push(zoneEntry);
+        // Second Burrow, a selfish boon (2026-10-24, package DF3): a marked burrower's first death sends it back to its owner's hand (out of
+        // the graveyard again), to be played anew; once a card (boonBack rides on the hand card and the unit it becomes). Not a token, a
+        // reviving unit, a Nullified one, or into a full hand.
+        if(card.boon === 'secondBurrow' && !card.boonBack && !rv && !nulled && !card.token && !card.cageOf && pl.hand.length < MAX_HAND){
+          const zi = pl.graveyard.lastIndexOf(zoneEntry); if(zi >= 0) pl.graveyard.splice(zi, 1);
+          pl.hand.push({uid:uidCounter++, defId: (CARD_DEFS[zoneEntry.defId] && CARD_DEFS[zoneEntry.defId].derivedFrom) || zoneEntry.defId, boonBack:true}); deathEv.burrowed = true; boonFire(card, 'burrow', events); }
       }
       if(card.evoStack && !rv) evoStackToZone(pl, card, (hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone) ? pl.exile : pl.graveyard); // Package EV (2026-10-21): the whole stack goes with it (a reviving one keeps it)
       if(card.equipment && !rv) eqDrop(pl, card, sideOf, events); // its equipment stays in the slot (EQ, 2026-10-19; was: falls with it, 2026-10-11); a reviving unit keeps it (2026-10-19)
@@ -9712,7 +9794,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { ...EQ_API /* 2026-10-19 (package EQ) */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
+  return { ...EQ_API /* 2026-10-19 (package EQ) */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */ };
 }
 
@@ -9823,4 +9905,5 @@ if(typeof module !== 'undefined' && module.exports){
   module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
 if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {fogOfWarView, fogPeekRoll, FOG_REVEAL_KEYS}); // Package FOG (2026-10-21): the fog of war's pure helpers
-if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS; // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests
+if(typeof module !== 'undefined' && module.exports) module.exports.SK2_DEFAULTS = SK2_DEFAULTS;
+if(typeof module !== 'undefined' && module.exports) Object.assign(module.exports, {SELFISH_BOONS, selfishBoonCount, selfishBoonThemeOf, selfishBoonWho}); // Package DF3 (2026-10-24): the selfish boons // Package SK2 (2026-10-19): the economy / structure skill numbers, for tools and tests

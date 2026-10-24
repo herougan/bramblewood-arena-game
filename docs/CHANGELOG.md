@@ -2,6 +2,29 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package DF3: selfish boons on challenge skirmishes; DF-4 retunes Maps 7, 11 and 14)
+- **Selfish boons (DF-3, narrowed by your 22:23 #6):** a field effect that helps the enemy only, on while at least half the enemy deck as dealt
+  shares its theme (so copying the deck gains nothing). Its Environment card has a red frame, a red "Theirs" ribbon and the count ("On: 16 of 16
+  enemy cards share the theme"); it shines red and the helped unit glows when it acts; the log says "Blind Fury helps the enemy: …".
+  12 boons, each a synergy rather than +stats, reusable in similar biomes and raids (Edit skirmish and the raid editor list them): Blind Fury
+  (Cave: a unit fighting blind hits 2x), Hive Chorus (Insect: Swarm counts allies twice), Rising Tide (Tide: Quick at Flood), Second Burrow
+  (burrowers: the first death goes back to the hand), Wild Rage (Rage at 3/4 Health), Snow Veil (cold: Evasive 2 in 3), Sand Veil (Desert:
+  1 in 2 misses in a Sandstorm), Restless Dead (Undead: Revive at full Health), Ember-born (Volcanic: immune to heat), Siege Train (Siege x2),
+  Venom Glands (Reptile: Poison x2), Sky Ambush (Flying: Quick). Worth by the 4-round rule: `docs/balance/df3-boons-2026-10-24.md`.
+- **Only on challenge skirmishes** (a "⚔️ Challenge" pill in the fight panel), never a normal skirmish, an elite or a boss: 5-3, 8-5, 9-4,
+  12-3, 13-4, 16-3, 18-4, 20-4, 22-5, 23-5 on the main road; 5-A-2, 7-A-2, 8-A-3, 10-A-2, 11-A-1, 17-A-1, 18-A-3, 19-A-3, 20-B-1 on side
+  maps (none on the Eye of the Volcano, elites only, or the Canopy). Each has a deck built on its boon's theme inside the deck rules, its leader
+  kept (`tools/df3_boons_2026_10_24.js`), aimed 10 points under its road-curve slot (call DF3-1); 13-4 is one Enemy level up (DF3-2).
+  Measured with and without the boon (200 games, `docs/balance/df3-boons-2026-10-24.json`): the boon is worth 28 points on 8-A-3, 27 on 8-5,
+  23 on 7-A-2, 16.5 on 5-3, 8 on 17-A-1; Rising Tide 0 (call DF3-3); Maps 16-24's challenges stay at 96-100% (the DF-1b gap).
+- **DF-4:** Maps 7, 11 and 14 retuned with deck moves only (leaders kept, no Shield): map means 51.2 -> 67.8% (target 69.2), 42.9 -> 68.4%
+  (71.5), 58.0 -> 66.9% (70.6). `tools/skirmish_pass.js curve --keep-leaders` (new: keeps a fight's leaders and keeps other fights' reward
+  cards out). Five fights still under their band: call DF3-4.
+- Engine: `rules.boon` (side B; `boonState`), `boonFire` events; no boon, no change (a seeded match plays the same; Maps 7 / 11 / 14
+  measured identical to BAL2 before the retune). Texts in 12 packs (`tools/i18n_2026_10_24_df3.py`). Tests: `tests/df3-2026-10-24.js`, `tests/e2e/df3_2026_10_24.py` (390 and 1366,
+  `docs/screens/DF3/`); `tests/keywords-2026-10-16b.js`, `tests/field-effects-2026-10-16.js` and `tools/lead_2026_10_23.js check` follow the
+  boon group and DF-4's re-decked fights.
+
 ## 2026-10-24 release 10-24b (batch: BV, EN5, NE, TT, PRFIX)
 - Board visuals (wind turn, tide, camera, castle drop, smoke, pack shine, night water, squashed cards, snail shields), Breach, Canopy Cover, Timbered/Bedrock/Forged/Last Stand, Bleed/Poison curve, Bloom chains, Deadly Poison, Group Dungeon people; Nest/Camp/Codex/deck editor; Triggers lesson.
 - Release fixes: tests follow NE and TT (the Triggers lesson pauses a fight until Next/Skip); disk cleanup (old worktrees) ended the browser crashes.

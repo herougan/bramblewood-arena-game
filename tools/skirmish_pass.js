@@ -169,12 +169,19 @@ function themedPool(f){
   const typed = cardsOf(MAPS.filter(mm=> !mm.reserved && !mm.tower && near(mm, 2, 1))).filter(id=> typesOf(id).some(t=> top.has(t)));
   return [...new Set([...own, ...sameBiome, ...typed])]
     .filter(id=> CARD_DEFS_BASELINE[id] && !CARD_DEFS_BASELINE[id].token && G.roadRarityOk(CARD_DEFS_BASELINE[id].rarity, f.mapNo, f.kind)) // the cap counts the map the fight is on
-    .filter(id=> !TH || !TH.offThemeFor(f.map, f.n, id)); // 2026-10-19 (package TH): never a card off the map's theme (tools/thematic_pass_2026_10_19.js THEMES)
+    .filter(id=> !TH || !TH.offThemeFor(f.map, f.n, id)) // 2026-10-19 (package TH): never a card off the map's theme (tools/thematic_pass_2026_10_19.js THEMES)
+    .filter(id=> !KEEP_LEADERS || !otherFightsReward(f, id)); // 2026-10-24 (package DF3, --keep-leaders): never another fight's own reward card (11-1 took 11-A-4's Wound Reaver)
 }
 // 2026-10-19 (package TH, the thematic pass): the map identities, so the tuner's moves stay on theme (the R2 retune had brought in e.g.
 // Badger Berserkers on nine maps and Pelican Divers in every Gannet Cliffs fight)
 let TH = null; try{ TH = require('./thematic_pass_2026_10_19.js'); }catch(e){ console.log('no thematic pass:', e.message); }
 const deckSize = d=> Object.values(d).reduce((a, b)=> a + b, 0);
+// 2026-10-24 (package DF3, DF-4's retune of Maps 7, 11 and 14): --keep-leaders keeps a fight's leaders (skirmishLeadersOf: its showcase or
+// the Auto pick) in its deck, since a fight pays the leader it is led by and the battle rating counts it double (the 10-19 R2 moves took
+// 11-2's own Eagle-Owl Quartermaster out of 11-2), and keeps other fights' reward cards out of the pool.
+const KEEP_LEADERS = argv.includes('--keep-leaders');
+const keptLeader = (f, id)=>{ if(!KEEP_LEADERS) return false; try{ return G.skirmishLeadersOf(f.n, f.map).includes(id); }catch(e){ return false; } };
+const otherFightsReward = (f, id)=>{ const s = (CARD_DEFS_BASELINE[id] || {}).source; return !!(s && s.kind === 'map' && s.node && !(s.id === f.map && s.node === f.key)); };
 // Candidate moves of up to two copies, most promising first. A fight's namesake (Epic and up, or its showcase card) is never taken out.
 // Too easy: the deck's weakest card makes way for a stronger themed one, or the strongest card it has gets more copies, or (under 20
 // cards) a strong themed card is added. Too hard: the strongest card makes way for a weaker one from the map's own fights, or loses
@@ -182,7 +189,7 @@ const deckSize = d=> Object.values(d).reduce((a, b)=> a + b, 0);
 function deckMoves(f, deck, easy){
   const defs = CARD_DEFS_BASELINE, cap = id=> Math.min(4, G.maxCopiesForRarity(defs[id].rarity));
   const ids = Object.keys(deck).filter(id=> defs[id]).sort((a, b)=> strengthOf(b) - strengthOf(a));
-  const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id));
+  const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !keptLeader(f, id) && !KEEP.has(id));
   const pool = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) || deck[id]);
   const moves = [];
   if(easy){
@@ -284,7 +291,7 @@ function curveMoves(f, deck, easy){
     // with birds, 70% with Map 22's goat deck), so the trials get to try the map's other half too
     const fam = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.filter(x=> x.kind !== 'raidboss').flatMap(x=> Object.keys(x.deck||{}))));
     const pool = themedPool(f), ownNew = pool.filter(id=> fam.has(id) && !deck[id] && !RARE_UP.has(defs[id].rarity)).sort((a, b)=> power(b) - power(a)).slice(0, 4);
-    const most = Object.keys(deck).filter(id=> defs[id] && !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id)).sort((a, b)=> deck[b] - deck[a] || strengthOf(b) - strengthOf(a)).slice(0, 2);
+    const most = Object.keys(deck).filter(id=> defs[id] && !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !keptLeader(f, id) && !KEEP.has(id)).sort((a, b)=> deck[b] - deck[a] || strengthOf(b) - strengthOf(a)).slice(0, 2);
     const own = ownNew.flatMap(inn=> most.map(out=> ({type:'swap', out, inn, k: Math.min(2, deck[out], cap(inn))})));
     if(deckSize(deck) >= 20) return base.slice(0, 6).concat(own).filter(mv=> mv.k > 0).slice(0, 14);
     const seen = new Set(base.filter(m=> m.type === 'add').map(m=> m.inn));
@@ -293,7 +300,7 @@ function curveMoves(f, deck, easy){
     const ownAdd = ownNew.map(inn=> ({type:'add', inn, k: Math.min(2, cap(inn), 20 - deckSize(deck))}));
     return base.slice(0, 6).concat(ownAdd, own, extra).filter(mv=> mv.k > 0).slice(0, 16); }
   const ids = Object.keys(deck).filter(id=> defs[id]).sort((a, b)=> strengthOf(b) - strengthOf(a));
-  const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id));
+  const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !keptLeader(f, id) && !KEEP.has(id));
   const ownIds = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.flatMap(x=> Object.keys(x.deck||{}))));
   const pool = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) && ownIds.has(id)).sort((a, b)=> strengthOf(a) - strengthOf(b));
   const moves = [];

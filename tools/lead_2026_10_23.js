@@ -217,6 +217,9 @@ function writeLines(rows, tuned){
 
 // 2026-10-24 (package BAL2): the level LEAD saw for a fight, and the decks BAL2 re-decked (see check)
 const BAL2_DECKS = new Set((()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal2-decks-2026-10-24.json'), 'utf8')).rows.map(r=> r.fight); }catch(e){ return []; } })());
+// 2026-10-24 (package DF3, DF-4): the elites and bosses of Maps 7, 11 and 14 that DF-4 re-decked toward the road curve (their leaders kept,
+// tools/skirmish_pass.js curve --keep-leaders); their BR moved on purpose, reported in docs/balance/df3-df4-fixes*-2026-10-24.jsonl
+const DF4_DECKS = new Set(['df3-df4-fixes-2026-10-24.jsonl', 'df3-df4-fixes2-2026-10-24.jsonl'].flatMap(f=>{ try{ return fs.readFileSync(path.join(ROOT, 'docs/balance', f), 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)).filter(r=> r.deck && r.apply !== false).map(r=> r.key); }catch(e){ return []; } }));
 function leadEraLevel(x){
   const i = B.src.indexOf('{ key:"' + x.key + '"'), line = i < 0 ? '' : B.src.slice(i, B.src.indexOf('\n', i));
   const m = /re-based on the new level schedule, ([0-9.]+) -> [0-9.]+/.exec(line); if(m) return +m[1];
@@ -235,7 +238,7 @@ function check(){
     // 2026-10-24 (package BAL2): the owner's new level schedule (10-23 20:44 / 22:23 #1) raised the levels the BR counts on purpose, so LEAD's
     // "BR within 5%" is checked at the level LEAD saw (its own Enemy level before BAL2's re-base, else the old schedule); a deck BAL2 re-decked
     // (the copy ladder, the Rare rule: docs/balance/bal2-decks-2026-10-24.json) is BAL2's, reported there.
-    if(BAL2_DECKS.has(x.code || x.key)) continue;
+    if(BAL2_DECKS.has(x.code || x.key) || DF4_DECKS.has(x.key)) continue; // + DF-4's re-decked fights (DF3, 2026-10-24)
     const xl = Object.assign({}, x, {enemyLevel: leadEraLevel(x)}); G.NODE_MAP_HINT.set(xl, m.id); const v = G.enemyDeckLevel(xl); if(Math.abs(v / f.before - 1) > TOL + 1e-9 && !BR_EXCEPT[x.key]) say(x.key, 'BR', f.before, '->', v);
     Object.keys(x.deck).forEach(id=>{ if(x.deck[id] > cap(id)) say(x.key, id, 'x' + x.deck[id], 'over the copy ladder', cap(id)); });
   }
