@@ -369,7 +369,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
   ('🎚️', 'budget', 'Budget & stats', 'Edit the budget constants, card Attack / Health and the special monsters; see what flips'),  # 2026-10-19 (package HB)
   ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
-  ('💰', 'ucosts', 'Upgrade & Forge costs', 'Edit what levelling, limit breaks, the Forge tiers, duplicates, prestige and disenchanting cost'),  # 2026-10-23 (package HUB2)
+  ('💰', 'ucosts', 'Upgrade & Forge costs', 'Edit what levelling, limit breaks, the Forge tiers, duplicates, prestige, disenchanting and gem sockets cost'),  # 2026-10-23 (package HUB2); + gem sockets (2026-10-24, package H1)
   ('🗂', 'units', 'Units by theme', 'Every creature by biome, family and faction; pick units per map for the post-balance step'),
   ('📚', 'progress', 'Progression plan', 'Your definitions (base, skirmish base, Packs 1-3, faction pool ...), targets vs today, cards by advancement, mistakes, balancing suggestions'),  # 2026-10-23 (package HUB3)
   ('🧬', 'deckopt', 'Deck optimizer', 'The strongest deck per map, the difficulty ladder and how far each fight deck sits below it (tools/opt/deckopt.js)'),  # 2026-10-24 (owner 23:48)

@@ -120,7 +120,7 @@ ok(MAXC.common === 5 && MAXC.uncommon === 4 && MAXC.rare === 3 && MAXC.veryrare 
 { const nf = fnSrc('finishNurture'), gc = fnSrc('grantCardCopy');
   ok(/a\[i\]\.level = 1/.test(nf) && !/setCopyLevel\(e\.cardId, null, 1\)/.test(nf), 'A. the Nest trains one Level-0 copy to Level 1 (not the whole card)');
   ok(/copy\.level = copyBaseLevelOf\(id\)/.test(gc), 'A. a new copy comes at the card\'s starting level');
-  ok(/\(forgeMode === 'upgrade' \|\| forgeMode === 'refine'\) && copyModelOn\(\)/.test(fnSrc('forgeCopiesWorthASheet')), 'A. the copies window opens in Upgrade and Refine (the modes that work on one copy)'); }
+  ok(/\(forgeMode === 'upgrade' \|\| forgeMode === 'refine'( \|\| forgeMode === 'enchant')?\) && copyModelOn\(\)/.test(fnSrc('forgeCopiesWorthASheet')), 'A. the copies window opens in Upgrade and Refine (the modes that work on one copy; + Socket, 2026-10-24 package H1)'); }
 
 // ======================= B. the cost curve =======================
 { const F = make().F, step = L=> F.levelUpCostRaw(L, 'c');

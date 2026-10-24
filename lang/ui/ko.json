@@ -662,8 +662,6 @@
  "Empty. Add cards below.": "비어 있어요. 아래에서 카드를 추가해요.",
  "Empty. Click cards below to add them.": "비어 있어요. 아래 카드를 클릭해 추가해요.",
  "Enchant crystals": "마법 부여 수정",
- "Enchanted": "마법 부여됨",
- "Enchanted with {v1} {v2}: {v3}. Socketing another crystal replaces it.": "{v1} {v2}의 마법 부여: {v3}. 다른 수정을 박으면 바뀌어요.",
  "End turn ▶": "턴 종료 ▶",
  "Enemies facing it or beside that column must attack it.": "마주하거나 그 열 옆에 있는 적은 반드시 이 유닛을 공격해야 해요.",
  "Enemy (spawn freely)": "적(자유 소환)",

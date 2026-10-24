@@ -3587,14 +3587,13 @@ function buildCardDefs(){
     if(base.levelSkills){ const fx = Object.assign({}, base.effects||{}); Object.keys(base.levelSkills).map(Number).filter(L=> L <= lvl).sort((x, y)=> x - y).forEach(L=> Object.assign(fx, base.levelSkills[L])); out[id].effects = fx; } // level skills (2026-10-13)
   });
   // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
-  if(typeof myCardEnchants !== 'undefined' && myCardEnchants) Object.keys(myCardEnchants).forEach(id=>{
-    const e = ENCHANTS[myCardEnchants[id]], base = out[id];
-    if(!e || !base || id===HERO_ID) return;
-    out[id] = Object.assign({}, base, {
-      attack: base.attack!=null ? base.attack + (e.atk||0) : base.attack,
-      health: base.health!=null ? base.health + (e.hp||0) : base.health,
-      enchant: myCardEnchants[id], fx: e.fx ? Object.assign({}, base.fx||{}, e.fx) : base.fx,
-    });
+  // 2026-10-24 (package H1): the gem sits in one COPY's socket now (myCardSockets); the card's def is its best copy, so it wears that
+  // copy's gem (socketGem; `enchant` kept for older readers). Other copies fight with their own gem (copyDefAt's gem argument).
+  if(typeof myCardSockets !== 'undefined' && myCardSockets) Object.keys(myCardSockets).forEach(id=>{
+    const base = out[id]; if(!base || id===HERO_ID) return;
+    let kind = null; try{ kind = socketGemOfBest(id); }catch(e){ kind = null; }
+    if(!kind || !ENCHANTS[kind] || !cardHasSocket(base)) return;
+    out[id] = Object.assign({}, base, socketGemStats(base, kind));
   });
   // Prestige tiers (2026-09-23, batch #27) — cosmetic-only, stamped as a SEPARATE pass from the
   // stat-affecting leveling pass above so it's unmistakably clear (here and to anyone reading
@@ -8270,6 +8269,14 @@ function archMarkHTML(d, waitShown, live){
   const ww = !waitShown ? 0 : live ? 24 : (Math.min(3, Math.max(1, d.wait|0)) * 11 + 14);
   return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t + ' archetype')}" aria-hidden="true">${icon}</div>`;
 }
+// 2026-10-24 (package H1, owner decision H1): the small gem slot on a Unique-and-above card: filled with the gem its copy wears
+// (the def's socketGem: the best copy's, or a copy's own in copyDefAt), else an empty hollow slot.
+function socketSlotHTML(d){
+  let ok = false; try{ ok = typeof cardHasSocket === 'function' && cardHasSocket(d); }catch(e){ ok = false; } if(!ok) return '';
+  const k = d.socketGem && typeof socketKind === 'function' ? socketKind(d.socketGem) : null;
+  const tip = k ? TX('ui.h1-slot-full', {gem: socketGemName(k.id)}) : TX('ui.h1-slot-empty');
+  return `<div class="h1-slot ${k ? 'is-full mk-' + k.id : 'is-empty'}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img">${k ? `<span>${k.icon}</span>` : ''}</div>`;
+}
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8343,6 +8350,7 @@ function cardTileHTML(d, opts){
     ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}${hand ? '' : artReviewBadgeHTML(d) /* 2026-10-21 (package ED): admins see a rejected art */}
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
+    ${isCastle || hand ? '' : socketSlotHTML(d) /* 2026-10-24 (package H1): the gem socket of a Unique-and-above card */}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Bramble">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
@@ -9427,6 +9435,17 @@ let cardDetailOpenId = null;
 // button riding at the same height as the top of the card instead of a whole header row, and the
 // creator's note / usage stats trimmed down (no section headings, a real sign-in button instead
 // of a paragraph telling you to go find one).
+// 2026-10-24 (package H1): the card detail's socket line: the gems in your copies' sockets (and how many are empty), or the empty socket
+// of a card you don't own yet. Nothing for a card without a socket.
+function cardSocketDetailHTML(defId, d){
+  let ok = false; try{ ok = cardHasSocket(d); }catch(e){} if(!ok) return '';
+  const a = (myCardCopies[defId] || []).filter(c=> c && c.uid); let parts = [];
+  if(a.length){ const n = {}; let empty = 0; a.forEach(c=>{ const g = socketGemOfCopy(defId, c); if(g) n[g] = (n[g] || 0) + 1; else empty++; });
+    parts = Object.keys(n).map(g=>{ const k = socketKind(g); return `<span class="h1-cd-gem mk-${escapeAttr(g)}">${k ? k.icon : '💎'} ${escapeHtml(socketGemName(g))}${a.length > 1 ? ' ×' + n[g] : ''} <small>${escapeHtml(socketGemFx(g))}</small></span>`; });
+    if(empty) parts.push(`<span class="h1-cd-empty">${escapeHtml(a.length > 1 ? TX('ui.h1-detail-empty-n', {n: empty}) : TX('ui.h1-socket-empty'))}</span>`); }
+  else parts.push(`<span class="h1-cd-empty">${escapeHtml(TX('ui.h1-socket-empty'))}</span>`);
+  return `<div class="cd-where cd-socket"><span class="cd-where-k">💎 ${escapeHtml(TX('ui.h1-detail-socket'))}</span> ${parts.join(' ')}<small class="h1-cd-how">${escapeHtml(TX('ui.h1-detail-how'))}</small></div>`;
+}
 function openCardDetail(defId, opts){
   // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
   const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), shownLv = opts && opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : null;
@@ -9478,6 +9497,7 @@ function openCardDetail(defId, opts){
       <h2 class="cd-name sr-only">${escapeHtml(d.name||'')}</h2>
       <div class="cd-chips">${chips}</div>
       ${creatureRankText(d) ? `<div class="cd-where cd-rank"><span class="cd-where-k">Rank</span> ${escapeHtml(creatureRankText(d))}</div>` : ''}
+      ${cardSocketDetailHTML(defId, d) /* 2026-10-24 (package H1): the socket */}
       <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
       ${fromCodex ? neCodexCopiesHTML(defId) : '' /* 2026-10-24 (package NE, owner 17:01 #12) */}
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
@@ -13674,7 +13694,7 @@ function copyLevel(id, c){ if(!c) return 0; const b = copyBaseLevelOf(id); let L
 function copyFoilRank(c){ let r = 0; try{ r = c && c.foil ? copyRefineRank(c) : 0; }catch(e){ r = c && c.foil ? 1 : 0; } return r + (c && c.shiny ? 0.5 : 0); }
 // Levels the player paid for on this copy (inherited ones don't count). (NF; back in RW3)
 function copyPaidLevels(id, c){ return Math.max(0, copyLevel(id, c) - Math.max(copyBaseLevelOf(id), (c && c.free) | 0)); }
-function copyIsPlain(c){ return !(c && (c.foil || c.shiny || c.skin)); }
+function copyIsPlain(c){ return !(c && (c.foil || c.shiny || c.skin)) && !(c && c.uid && typeof socketGemByUid === 'function' && socketGemByUid(c.uid)); } // 2026-10-24 (package H1): a socketed copy is never a spare
 // Strongest first: the highest level, then the finest foil treatment, then the oldest copy (owner, package NF item 4: "Fuse all
 // extras should go into the highest level card first, then if draw, into the highest foil treatment."). [0] is the card's best copy:
 // the one the Forge opens on, the one a deck fights with first and the one the spare copies are fused into.
@@ -13767,6 +13787,15 @@ function deckCopyLevels(id, n){
   for(let k = 0; k < n; k++) out.push(k < o.length ? copyLevel(id, a[o[k]]) : copyBaseLevelOf(id));
   return out;
 }
+// 2026-10-24 (package H1): the same copies as deckCopyLevels, each with its socketed gem: [{L, gem}], the highest level first.
+function deckCopyEntries(id, n){
+  copyModelOn(); copyModelSync(id); const a = myCardCopies[id] || [], o = copyOrder(id), out = [], gemOf = c=>{ try{ return socketGemOfCopy(id, c); }catch(e){ return null; } };
+  let picks = []; try{ picks = typeof deckCopyPicks === 'function' ? deckCopyPicks(id) : []; }catch(e){ picks = []; }
+  if(picks.length){ deckCopyUidsFor(id, n).forEach(u=>{ const c = a.find(x=> x && x.uid === u); out.push(c ? {L: copyLevel(id, c), gem: gemOf(c)} : {L: copyBaseLevelOf(id), gem: null}); }); }
+  else for(let k = 0; k < n && k < o.length; k++) out.push({L: copyLevel(id, a[o[k]]), gem: gemOf(a[o[k]])});
+  while(out.length < n) out.push({L: copyBaseLevelOf(id), gem: null});
+  return out.map((x, i)=> [x, i]).sort((x, y)=> y[0].L - x[0].L || x[1] - y[1]).map(x=> x[0]);
+}
 // A card with no copy on record yet (a Base or starter card, which are unlimited) gets real ones when a deck fights with them or the
 // Forge works on one, so each can be forged on its own. They start at its starting level (the best one rises to myCardLevels).
 function materializeCopies(id, n){
@@ -13776,13 +13805,21 @@ function materializeCopies(id, n){
 }
 // The card as one copy at level L: the card's own def (with its Materia and prestige) with that level's stats and level skills.
 // null when that is the card itself (L is the level its def already has) or it has no stats.
-function copyDefAt(id, L){
+// 2026-10-24 (package H1): gem: that copy's socketed Materia (null: an empty socket; left out: the gem the card's def wears, its best
+// copy's). A copy whose gem differs from the def's is its own def, "<id>~cp<L>g<gem>" ("gx": no gem).
+function copyDefAt(id, L, gem){
   const full = getCardDefs()[id], b = copyBaseDef(id); if(!full || !b || (b.attack == null && b.health == null)) return null;
-  const fullL = Number.isFinite(full.level) ? full.level : cardBaseLevel(b); if(L === fullL) return null;
+  const fullGem = full.socketGem || null, want = gem === undefined ? fullGem : (gem || null), gemDiff = want !== fullGem;
+  const fullL = Number.isFinite(full.level) ? full.level : cardBaseLevel(b); if(L === fullL && !gemDiff) return null;
   const now = statsAtLevel(b, fullL), at = statsAtLevel(b, L);
-  const o = Object.assign({}, full, {id: id + '~cp' + L, derivedFrom: id, copyOf: id, level: L, baseLevel: cardBaseLevel(b), locked: false});
+  const o = Object.assign({}, full, {id: id + '~cp' + L + (gemDiff ? 'g' + (want || 'x') : ''), derivedFrom: id, copyOf: id, level: L, baseLevel: cardBaseLevel(b), locked: false});
   if(full.attack != null && at.attack != null) o.attack = Math.max(0, full.attack - (now.attack || 0) + at.attack);
   if(full.health != null && at.health != null) o.health = Math.max(1, full.health - (now.health || 0) + at.health);
+  if(gemDiff){ const e = fullGem && ENCHANTS[fullGem]; // take the def's gem off, then put this copy's in
+    if(e){ if(o.attack != null) o.attack = Math.max(0, o.attack - (e.atk || 0)); if(o.health != null) o.health = Math.max(1, o.health - (e.hp || 0));
+      if(e.fx && o.fx){ o.fx = Object.assign({}, o.fx); Object.keys(e.fx).forEach(k=> delete o.fx[k]); } }
+    delete o.enchant; delete o.socketGem;
+    if(want && ENCHANTS[want] && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
   if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
   if(b.levelSkills){ const fx = Object.assign({}, b.effects || {}); Object.keys(b.levelSkills).map(Number).filter(k=> k <= L).sort((x, y)=> x - y).forEach(k=> Object.assign(fx, b.levelSkills[k])); o.effects = fx; }
   return o;
@@ -13800,8 +13837,10 @@ function ownedDeckForMatch(counts, engineDefs){
     if(n <= 0 || id === HERO_ID || /[~@]/.test(String(id))){ out[id] = (out[id] || 0) + (counts[id] || 0); return; }
     if(isUnlimitedCard(id)) materializeCopies(id, n);
     if(!(myCardCopies[id] || []).length){ out[id] = (out[id] || 0) + n; return; }
-    const lv = deckCopyLevels(id, n), top = lv[0], best = (myCardCopies[id] || []).length ? copyLevel(id, myCardCopies[id][bestCopyIdx(id)]) : top; // NE: a pick below your best copy fights at its own level
-    lv.forEach(L=>{ const d = L === top && top === best ? null : copyDefAt(id, L);
+    // 2026-10-24 (package H1): each copy also fights with its own socketed gem (a copy whose gem differs from the card's def is its own def)
+    const lv = deckCopyEntries(id, n), top = lv[0].L, bc = myCardCopies[id][bestCopyIdx(id)], best = (myCardCopies[id] || []).length ? copyLevel(id, bc) : top; // NE: a pick below your best copy fights at its own level
+    let bestGem = null; try{ bestGem = socketGemOfCopy(id, bc); }catch(e){}
+    lv.forEach(({L, gem})=>{ const d = L === top && top === best && gem === bestGem ? null : copyDefAt(id, L, gem);
       if(!d){ out[id] = (out[id] || 0) + 1; return; }
       matchDefsOverlay[d.id] = d; if(engineDefs) engineDefs[d.id] = d; out[d.id] = (out[d.id] || 0) + 1; any = true; }); });
   try{ invalidateCardDefs(); }catch(e){}
@@ -15296,23 +15335,119 @@ function materiaStore(){
   return myMateria;
 }
 // Enchanting (2026-10-08, user: "Split refinement, enchantment, and upgrading"): socket one Materia
-// crystal into a card for a small, permanent bonus. One socket per card; a new crystal replaces the
-// old one (the old crystal is used up). Values are a first pass, easy to retune here.
+// crystal into a card for a small, permanent bonus. Values are a first pass, easy to retune here.
 const ENCHANTS = {
   ember: {atk:1, hp:0, label:'+1 ⚔ · its hits scorch', fx:{hit:'burn'}},
   stone: {atk:0, hp:3, label:'+3 ❤'},
   tide:  {atk:0, hp:2, label:'+2 ❤'},
   grove: {atk:1, hp:1, label:'+1 ⚔ +1 ❤'},
 };
+// The old per-card enchantments (2026-10-08 to 2026-10-24): read once by migrateEnchantsToSockets, then emptied.
 var myCardEnchants = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_enchants_v1')||'{}') || {}; }catch(e){ return {}; } })();
 function saveCardEnchants(){ try{ localStorage.setItem('bramblewood_enchants_v1', JSON.stringify(myCardEnchants)); }catch(e){} }
-function enchantCard(id, kind){
-  const st = materiaStore();
-  if(!ENCHANTS[kind] || (st[kind]||0) < 1) return false;
-  st[kind]--; saveMateria();
-  myCardEnchants[id] = kind; saveCardEnchants(); invalidateCardDefs();
-  return true;
+// MATERIA_SOCKET_H1:BEGIN (tests/h1-2026-10-24.js evaluates this block)
+// 2026-10-24 (package H1, owner decision H1: "Maybe all uniques and above are also liable for materia (gem) socketing - but only 1.
+// Costs to apply, costs to remove."): Enchanting becomes socketing.
+//   - Only cards of Unique rank and above (Unique, Legendary, Mythic, Ancient, Divine, Void, Daemonic; a flagged rarity such as
+//     Quest-Unique or Dev-Legendary counts as its rank) have a socket, one per owned COPY, and only creatures (no Materia, equipment
+//     or spell cards).
+//   - A Materia crystal (gem) goes in for the apply cost and comes out for the remove cost: canonical/upgrade-costs.json
+//     "materiaSocket" (per rank, Dust + Maple Leaves; the hub's 💰 Upgrade costs tab edits it). A filled socket is emptied first.
+//   - Removing gives the crystal back (SOCKET_REMOVE_RETURNS; owner call H1-a in docs/decisions.json: the friendlier default).
+//   - What a gem does is ENCHANTS (unchanged): its stats on top of the copy's level. It is a progression bonus outside the card's
+//     printed budget (docs/workflows/balance.md).
+//   - Storage: myCardSockets {defId: {copyUid: kind}} (SOCKETS_KEY), carried in the progress blob with the crystals (PROGRESS_KEYS).
+//     A socket whose copy is not on this device (melted, or a copy known under another uid) moves to the best empty copy, so a gem is
+//     never lost or doubled; a socketed copy is never a spare (copyIsPlain).
+//   - The old per-card enchantment moves once onto the card's best copy; a card without a socket gets its crystal back.
+const SOCKET_RANKS = ['unique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic'];
+const SOCKET_REMOVE_RETURNS = true;
+const SOCKETS_KEY = 'bramblewood_card_sockets_v1', SOCKETS_MIGRATED_KEY = 'bramblewood_card_sockets_migrated_v1';
+var myCardSockets = (()=>{ try{ const o = JSON.parse(localStorage.getItem(SOCKETS_KEY)||'{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } })();
+function saveCardSockets(){ try{ localStorage.setItem(SOCKETS_KEY, JSON.stringify(myCardSockets)); }catch(e){} }
+function reloadCardSockets(){ try{ const o = JSON.parse(localStorage.getItem(SOCKETS_KEY)||'{}'); myCardSockets = o && typeof o === 'object' ? o : {}; }catch(e){ myCardSockets = {}; } }
+function socketRankOf(d){ const r = (d && d.rarity) || 'common'; let rank = r; try{ rank = rarityPartsOf(r).rank || r; }catch(e){} return rank; }
+function cardHasSocket(d){ return !!d && !d.token && !d.hero && !d.cardType /* creatures only: not Materia, equipment or spells */ && !d.field && (d.attack != null || d.health != null) && SOCKET_RANKS.includes(socketRankOf(d)); }
+function socketCost(d, what){ const t = ((typeof UPGRADE_COSTS !== 'undefined' && UPGRADE_COSTS.materiaSocket) || {})[socketRankOf(d)], c = t && t[what];
+  return {dust: c ? Math.max(0, c.dust|0) : 0, gold: c ? Math.max(0, c.gold|0) : 0}; }
+function socketKind(k){ return MATERIA_KINDS.find(x=> x.id === k) || null; }
+// The stats a gem adds to a def (attack / health on top, its fx merged).
+function socketGemStats(base, kind){ const e = ENCHANTS[kind] || {};
+  return {attack: base.attack != null ? base.attack + (e.atk||0) : base.attack, health: base.health != null ? base.health + (e.hp||0) : base.health,
+    enchant: kind, socketGem: kind, fx: e.fx ? Object.assign({}, base.fx||{}, e.fx) : base.fx}; }
+// Moves sockets whose copy is gone onto the best copies with an empty socket (none free: the entry waits for one).
+function socketsNormalize(id){
+  const m = myCardSockets[id]; if(!m) return m; const a = myCardCopies[id] || [], have = new Set(a.map(c=> c && c.uid).filter(Boolean));
+  let changed = false;
+  Object.keys(m).forEach(u=>{ if(!ENCHANTS[m[u]]){ delete m[u]; changed = true; } });
+  const orphans = Object.keys(m).filter(u=> !have.has(u));
+  if(orphans.length && a.length){ const order = copyOrder(id);
+    orphans.forEach(u=>{ const i = order.find(k=> a[k] && a[k].uid && !m[a[k].uid]); if(i == null) return; m[a[i].uid] = m[u]; delete m[u]; changed = true; }); }
+  if(!Object.keys(m).length){ delete myCardSockets[id]; changed = true; }
+  if(changed) saveCardSockets();
+  return myCardSockets[id];
 }
+function copySocketGem(id, uid){ const m = myCardSockets[id]; const k = m && uid ? m[uid] : null; return k && ENCHANTS[k] ? k : null; }
+function socketGemOfCopy(id, c){ return c && c.uid ? copySocketGem(id, c.uid) : null; }
+function socketGemOfBest(id){ socketsNormalize(id); const a = myCardCopies[id] || [], i = bestCopyIdx(id); return i >= 0 ? socketGemOfCopy(id, a[i]) : null; }
+// Any card's copy by its uid (copy uids are unique across cards).
+function socketGemByUid(uid){ if(!uid) return null; for(const id in myCardSockets){ const k = myCardSockets[id] && myCardSockets[id][uid]; if(k && ENCHANTS[k]) return k; } return null; }
+function socketedCopies(id){ socketsNormalize(id); const a = myCardCopies[id] || []; return copyOrder(id).map(i=> a[i]).filter(c=> socketGemOfCopy(id, c)); }
+function socketPay(cost){ if(!canAffordCost(cost)) return false; myCurrencies.dust = (myCurrencies.dust||0) - (cost.dust||0); myCurrencies.gold = (myCurrencies.gold||0) - (cost.gold||0); saveCurrencies(); return true; }
+function socketCopyOf(id, uid){ const a = myCardCopies[id] || []; return uid ? a.find(x=> x && x.uid === uid) || null : (a[bestCopyIdx(id)] || null); }
+// Why a gem can't go in (null: it can). uid: the copy (your best copy when none).
+function socketApplyProblem(id, uid, kind){
+  const d = getCardDefs()[id]; if(!d || !cardHasSocket(d)) return 'no-socket';
+  const c = socketCopyOf(id, uid); if(!c || !c.uid) return 'no-copy';
+  if(!ENCHANTS[kind]) return 'no-gem';
+  socketsNormalize(id); if(copySocketGem(id, c.uid)) return 'full';
+  if((materiaStore()[kind]||0) < 1) return 'no-gem';
+  if(!canAffordCost(socketCost(d, 'apply'))) return 'short';
+  return null;
+}
+function socketApply(id, uid, kind){
+  if(socketApplyProblem(id, uid, kind)) return null;
+  const d = getCardDefs()[id], c = socketCopyOf(id, uid), cost = socketCost(d, 'apply');
+  if(!socketPay(cost)) return null;
+  const st = materiaStore(); st[kind]--; saveMateria();
+  (myCardSockets[id] = myCardSockets[id] || {})[c.uid] = kind; saveCardSockets(); invalidateCardDefs();
+  return {id, uid: c.uid, kind, cost};
+}
+function socketRemoveProblem(id, uid){
+  const d = getCardDefs()[id]; if(!d) return 'no-socket';
+  const c = socketCopyOf(id, uid); if(!c || !c.uid) return 'no-copy';
+  socketsNormalize(id); if(!copySocketGem(id, c.uid)) return 'empty';
+  if(!canAffordCost(socketCost(d, 'remove'))) return 'short';
+  return null;
+}
+function socketRemove(id, uid){
+  if(socketRemoveProblem(id, uid)) return null;
+  const d = getCardDefs()[id], c = socketCopyOf(id, uid), cost = socketCost(d, 'remove'), kind = copySocketGem(id, c.uid);
+  if(!socketPay(cost)) return null;
+  delete myCardSockets[id][c.uid]; if(!Object.keys(myCardSockets[id]).length) delete myCardSockets[id]; saveCardSockets();
+  if(SOCKET_REMOVE_RETURNS){ const st = materiaStore(); st[kind] = (st[kind]||0) + 1; saveMateria(); }
+  invalidateCardDefs();
+  return {id, uid: c.uid, kind, cost, returned: SOCKET_REMOVE_RETURNS};
+}
+// Older name, kept for callers: puts a gem into the copy (the best copy when no uid).
+function enchantCard(id, kind, uid){ return !!socketApply(id, uid || null, kind); }
+// Once per save: the old per-card enchantment goes into the card's best copy; a card without a socket (below Unique, or no copy)
+// gets its crystal back. Nothing is charged.
+function migrateEnchantsToSockets(){
+  let done = false; try{ done = localStorage.getItem(SOCKETS_MIGRATED_KEY) === '1'; }catch(e){}
+  if(done) return 0; let moved = 0;
+  Object.keys(myCardEnchants || {}).forEach(id=>{ const kind = myCardEnchants[id]; if(!ENCHANTS[kind]) return;
+    let d = null; try{ d = (typeof copyBaseDef === 'function' && copyBaseDef(id)) || getCardDefs()[id]; }catch(e){ d = null; }
+    const a = myCardCopies[id] || [], i = a.length ? bestCopyIdx(id) : -1, c = i >= 0 ? a[i] : null;
+    if(d && cardHasSocket(d) && c && c.uid && !copySocketGem(id, c.uid)){ (myCardSockets[id] = myCardSockets[id] || {})[c.uid] = kind; moved++; }
+    else { const st = materiaStore(); st[kind] = (st[kind]||0) + 1; saveMateria(); } });
+  myCardEnchants = {}; saveCardEnchants(); saveCardSockets();
+  try{ localStorage.setItem(SOCKETS_MIGRATED_KEY, '1'); }catch(e){}
+  return moved;
+}
+// MATERIA_SOCKET_H1:END
+// 2026-10-24 (package H1): after the copy model has given every copy its uid (its own 0 ms timer, above), the old enchantments move once
+if(typeof setTimeout === 'function') setTimeout(()=>{ try{ if(copyModelOn() && migrateEnchantsToSockets()) invalidateCardDefs(); }catch(e){} }, 0);
 // Refining (2026-10-08, user: "Refinement is to upgrade the foil treatment. You can never make
 // something Shiny besides getting it in a pack"): raises your best copy one step up the finish
 // ladder. Shiny is never touched here; it only comes from receiving a card (grantCardCopy).
@@ -16468,6 +16603,9 @@ const PROGRESS_MERGE_KEYS = {
 };
 // 2026-10-18 (package C): the Codex's seen cards follow the account, merged as a union like the discoveries.
 PROGRESS_KEYS.push(SEEN_KEY); PROGRESS_MERGE_KEYS[SEEN_KEY] = PROGRESS_MERGE_KEYS['bramblewood_arena_discovered'];
+// 2026-10-24 (package H1): the gem sockets (per copy) and the Materia crystals they come from travel together, so a pulled save never
+// has a gem both in a socket and in the bag (the newer blob wins for both).
+PROGRESS_KEYS.push('bramblewood_card_sockets_v1', 'bramblewood_materia_v1');
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
@@ -16484,6 +16622,7 @@ async function livePullProgress(){
         const merge = PROGRESS_MERGE_KEYS[k]; localStorage.setItem(k, merge ? merge(localStorage.getItem(k), v) : v); }catch(e){} });
       try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
       mySeenCardIds = null; // 2026-10-18 (package C): read the merged seen list back (seenCardIds)
+      try{ reloadCardSockets(); myMateria = JSON.parse(localStorage.getItem('bramblewood_materia_v1')||'null'); invalidateCardDefs(); }catch(e){} // 2026-10-24 (package H1)
       LiveData.progressPushedHash = snapshotHash(progressSnapshot());
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
@@ -27210,7 +27349,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   try{ const lid = opts.leaderId, E = engine; if(lid && defs[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.allyRow = a.row; c.holdRow = true; c.isLeader = true; a.leaderId = id; } }); }catch(e){} // + holdRow (2026-10-19, package RB): its own row, always
-  const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
+  const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+(?:g[a-z]+)?)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
   return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid, rowDecks, weaken, partShare, raidShield};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
@@ -32192,7 +32331,7 @@ function neFanHTML(id){
   const copies = neFanCopies(id), inDeck = new Set(deckCopyUidsFor(id, myDeckCounts[id] | 0)), looks = deckLooksFor(id), n = copies.length + neFanSkins(id).length;
   const tilt = k=> n > 1 ? ((k - (n - 1) / 2) * Math.min(7, 36 / n)).toFixed(1) : 0;
   let k = 0;
-  const items = copies.map(c=>{ const L = copyLevel(id, c); let td = null; try{ td = copyDefAt(id, L); }catch(e){}
+  const items = copies.map(c=>{ const L = copyLevel(id, c); let td = null; try{ td = copyDefAt(id, L, socketGemOfCopy(id, c)); }catch(e){} // + its gem (2026-10-24, package H1)
     const show = Object.assign({}, td || d, {id}), cls = [copyFinishClass(d, c), c.shiny ? 'is-shiny' : ''].filter(Boolean).join(' '), on = inDeck.has(c.uid);
     return `<button type="button" class="ne-fan-card ${on ? 'is-in' : ''}" data-ne-copy="${escapeAttr(c.uid)}" style="--tilt:${tilt(k++)}deg; ${c.shiny ? lookStyle(id, 'shiny') : ''}" aria-pressed="${on}" aria-label="${escapeAttr(d.name + ': ' + TX('ui.nf-copy-level', {n: L}) + ', ' + forgeCopyTreatment(c) + (on ? ', ' + TX('ui.ne-fan-in-deck') : ''))}">
       <span class="ne-fan-tile">${cardTileHTML(show, {inPlay:true, extraClass: cls})}</span><span class="ne-fan-lbl"><b>${escapeHtml(TX('ui.nf-copy-level', {n: L}))}</b><small>${escapeHtml(forgeCopyTreatment(c))}</small></span>${on ? '<i class="ne-fan-tick" aria-hidden="true">✓</i>' : ''}</button>`; });
@@ -48333,7 +48472,7 @@ let forgeSelectedId = null;
 let forgeCopyPick = {id:null, uid:null};
 function forgeUid(id){ if(!id || forgeCopyPick.id !== id || !forgeCopyPick.uid) return null; return (myCardCopies[id]||[]).some(c=> c && c.uid === forgeCopyPick.uid) ? forgeCopyPick.uid : null; }
 // The picked card as the picked copy: its own level's stats (copyDefAt), under the card's own id so the tile looks the same.
-function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]||[]).length) return sel; const L = forgeCopyLevel(id, forgeUid(id)), d = copyDefAt(id, L); return d ? Object.assign({}, d, {id}) : sel; }
+function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]||[]).length) return sel; const uid = forgeUid(id), L = forgeCopyLevel(id, uid); let gem; try{ gem = socketGemOfCopy(id, copyByUid(id, uid)); }catch(e){ gem = undefined; } const d = copyDefAt(id, L, gem); return d ? Object.assign({}, d, {id}) : sel; } // + the copy's gem (2026-10-24, package H1)
 // The copy picker on the anvil (Upgrade and Refine). 2026-10-19 (package UX, owner 21:36: "After selecting a card to forge, there is
 // a sub-window that shows ALL cards of the same name."): the row of one chip per copy (package NF) did not scale (eight Ant Scouts
 // filled two rows; fifty would fill the anvil), so the anvil keeps a one-line summary (how many copies, which one is on the anvil, a
@@ -48344,7 +48483,7 @@ function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]|
 function forgeCopyPickerHTML(id){
   if(!copyModelOn()) return ''; const a = myCardCopies[id] || []; if(a.length < 2) return '';
   const groups = forgeCopyGroups(id), cur = forgeAnvilCopyUid(id), g = groups.find(x=> x.uids.includes(cur)) || groups[0];
-  if(forgeMode !== 'refine' && forgeMode !== 'upgrade') return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
+  if(forgeMode !== 'refine' && forgeMode !== 'upgrade' && forgeMode !== 'enchant') return `<div class="forge-copy-picker ux-fcp" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}">
     <span class="ux-fcp-k"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <b class="ux-fcp-n">×${a.length}</b></span>
     <span class="ux-fcp-cur"><b>${escapeHtml(TX('ui.fg-copies-all-level', {n: g ? g.level : forgeCopyLevel(id, null)}))}</b> <small>${escapeHtml(forgeCopyBreakdown(id))}</small></span>
     <button type="button" class="btn small ux-fcp-open" data-forge-copy-sheet="${escapeAttr(id)}" aria-haspopup="dialog">🃏 ${escapeHtml(TX('ui.ux-copy-change'))}</button></div>`;
@@ -48360,6 +48499,7 @@ function forgeCopyTreatment(c){
   if(c && c.shiny) parts.push('✦ ' + TX('ui.nf-copy-shiny'));
   if(c && c.foil){ let st = null; try{ st = REFINE_LADDER[copyRefineRank(c)] || REFINE_LADDER[1]; }catch(e){} parts.push('✨ ' + _t((st && st.label) || 'Foil')); }
   if(c && c.skin) parts.push('🎨 ' + TX('ui.ux-copy-alt-art'));
+  { let g = null; try{ g = c && c.uid && typeof socketGemByUid === 'function' ? socketGemByUid(c.uid) : null; }catch(e){} const k = g && socketKind(g); if(k) parts.push(k.icon + ' ' + TX('ui.h1-gem-' + k.id)); } // 2026-10-24 (package H1): its socketed gem
   return parts.length ? parts.join(' · ') : TX('ui.nf-copy-plain');
 }
 // Your copies of a card in groups of the same level and treatment, strongest first (copyOrder: the level, then the finish, then
@@ -48370,7 +48510,7 @@ function forgeCopyGroups(id){
   try{ copyModelSync(id); }catch(e){}
   const groups = [], byKey = new Map();
   copyOrder(id).forEach(i=>{ const c = a[i]; if(!c) return; const L = copyLevel(id, c);
-    const key = [L, c.shiny ? 1 : 0, c.foil ? (c.finish || 'auto') : '', c.skin || ''].join('|');
+    const key = [L, c.shiny ? 1 : 0, c.foil ? (c.finish || 'auto') : '', c.skin || '', (()=>{ try{ return socketGemOfCopy(id, c) || ''; }catch(e){ return ''; } })()].join('|'); // + its gem (2026-10-24, package H1)
     let g = byKey.get(key); if(!g){ g = {key, level: L, copy: c, label: forgeCopyTreatment(c), uids: [], pick: c.uid, credit: false}; byKey.set(key, g); groups.push(g); }
     g.uids.push(c.uid); const cr = copyCreditOf(c); if((cr.dust || cr.gold) && !g.credit){ g.credit = true; g.pick = c.uid; } });
   return groups;
@@ -48405,7 +48545,7 @@ function wireForgeCountBadges(root){
 }
 // The copies sheet: every copy you own of the card, one tile per group ("Lv 10 · Plain ×5"), in a scrolling grid. Tapping a group
 // puts its copy on the anvil. Only for Upgrade and Refine (the modes that work on one copy).
-function forgeCopiesWorthASheet(id){ return (forgeMode === 'upgrade' || forgeMode === 'refine') && copyModelOn() && forgeCopyGroups(id).length > 1; } // 2026-10-23 (RW3): Upgrade picks a copy again (per-copy levels)
+function forgeCopiesWorthASheet(id){ return (forgeMode === 'upgrade' || forgeMode === 'refine' || forgeMode === 'enchant') && copyModelOn() && forgeCopyGroups(id).length > 1; } // 2026-10-23 (RW3): Upgrade picks a copy again (per-copy levels)
 function openForgeCopySheet(id){
   const defs = getCardDefs(), d = defs[id], a = myCardCopies[id] || []; if(!d || a.length < 2) return;
   const groups = forgeCopyGroups(id); if(!groups.length) return;
@@ -48413,7 +48553,7 @@ function openForgeCopySheet(id){
   const cur = forgeAnvilCopyUid(id);
   let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(x=> x.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
   const deckUids = new Set(copyOrder(id).slice(0, inDeck).map(i=> a[i] && a[i].uid));
-  const tile = g=>{ let td = null; try{ td = copyDefAt(id, g.level); }catch(e){ td = null; }
+  const tile = g=>{ let td = null; try{ td = copyDefAt(id, g.level, socketGemOfCopy(id, g.copy)); }catch(e){ td = null; } // + its gem (2026-10-24, package H1)
     const show = Object.assign({}, td || d, {id}), cls = [copyFinishClass(d, g.copy), g.copy.shiny ? 'is-shiny' : ''].filter(Boolean).join(' '), on = g.uids.includes(cur);
     return `<button type="button" class="ux-fcs-g ${on ? 'on' : ''}" data-fcs="${escapeAttr(g.key)}" aria-pressed="${on}">
       <span class="ux-fcs-tile">${cardTileHTML(show, {inPlay:true, extraClass: cls})}</span>
@@ -48590,6 +48730,7 @@ function renderForge(){
   const defs = getCardDefs();
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && id!==HERO_ID);
   if(forgeMode==='refine') ids = ids.filter(id=> (myCardCopies[id]||[]).length);
+  if(forgeMode==='enchant') ids = ids.filter(id=> cardHasSocket(defs[id]) && (myCardCopies[id]||[]).length); // 2026-10-24 (package H1): cards with a socket
   if(forgeMode==='fuse') ids = ids.filter(id=> id === forgeSelectedId || fuseSpareCount(id) > 0); // 2026-10-19 (package FG): cards with spare copies (the picked one stays after its last)
   if(forgeSelectedId && !ids.includes(forgeSelectedId)) forgeSelectedId = null;
   const forgeReady = forgeReadyFor;
@@ -48654,7 +48795,7 @@ function renderForge(){
     </div>`;
   const poolEl = document.getElementById('forgePool');
   const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
-  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
+  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
   // 2026-10-19 (package UX): picking a card whose copies differ (levels or finishes) opens the copies sheet over the Forge
   poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; const was = forgeSelectedId; forgeSelectedId = el.getAttribute('data-defid'); renderForge();
     if(forgeSelectedId !== was && forgeCopiesWorthASheet(forgeSelectedId)) openForgeCopySheet(forgeSelectedId); }));
@@ -48709,6 +48850,7 @@ function renderForge(){
   const rfBtn = document.getElementById('forgeRefineBtn');
   if(rfBtn) rfBtn.addEventListener('click', ()=> forgeRefine(rfBtn));
   root.querySelectorAll('[data-enchant]').forEach(b=> b.addEventListener('click', ()=> forgeEnchant(b)));
+  { const sr = document.getElementById('forgeSocketRemoveBtn'); if(sr) sr.addEventListener('click', ()=> forgeSocketRemove(sr)); } // 2026-10-24 (package H1)
   if(forgeMode==='smith') wireBlacksmith(root);
 }
 // ---- The Scale Trail (2026-10-11, user: "There is a hidden substory, of dragon scales. If you challenge the optional
@@ -49165,7 +49307,8 @@ const FORGE_MODES = {
   smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
   // 2026-10-19 (package FG, owner: "Upgrading Brambles should be called Reinforce, with its own background, selection of cards"): forgeReinforceHTML
   castles: {icon:'🏰', get label(){ return TX('ui.fg-reinforce-tab'); }, get blurb(){ return TX('ui.fg-rf-blurb'); }},
-  enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
+  // 2026-10-24 (package H1, owner decision H1): Enchant is now 💎 Socket (one gem socket per copy, Unique rarity and above; costs to apply and remove)
+  enchant: {icon:'💎', get label(){ return TX('ui.h1-socket-tab'); }, get blurb(){ return TX('ui.h1-socket-blurb'); }},
   // 2026-10-18 (package DK, owner 00:08): the Forge's own upgrades (tier, Max Energy, the 🗝️ Key ring) have their own tab
   facility: {icon:'⬆️', get label(){ return TX('ui.upgrades-tab'); }, get blurb(){ return TX('ui.forge-upgrades-blurb'); }},
   // 2026-10-19 (package RC, owner 09:53: "raid cards must be crafted in the Forge. Under a special tab."): forgeRaidHTML
@@ -49175,7 +49318,8 @@ function forgeReadyFor(id){
   if(forgeMode==='smith' || forgeMode==='facility' || forgeMode==='raid') return false; // + the ⬆️ Upgrades tab (2026-10-18, package DK); + the 🐙 Raid tab (2026-10-19, package RC)
   if(forgeMode==='fuse'){ const d = getCardDefs()[id]; return !!d && fuseAllCountFor(id, maxCopiesForRarity(d.rarity)) > 0; } // 2026-10-19 (package FG): it has extras
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
-  if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
+  if(forgeMode==='enchant'){ const d = getCardDefs()[id]; if(!d || !cardHasSocket(d)) return false; socketsNormalize(id); const st = materiaStore(), m = myCardSockets[id] || {}; // 2026-10-24 (package H1): a copy with an empty socket, a gem and the apply cost
+    return (myCardCopies[id]||[]).some(c=> c && c.uid && !m[c.uid]) && MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && canAffordCost(socketCost(d, 'apply')); }
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
 }
 // ---- The Forge's 🐙 Raid tab (2026-10-19, package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards or
@@ -49241,16 +49385,33 @@ function refineAnvilHTML(id, sel){
       <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ <span class="fg-refine-verb">${escapeHtml(TX('ui.fg-refine-name'))}</span> → <span>${escapeHtml(_t(next.label))}</span>${btnCostHTML(next.cost)}</button>
     ` : `<p class="forge-note forge-done">The finest finish there is. 🏆</p>`}`;
 }
+// 2026-10-24 (package H1, owner decision H1): the 💎 Socket tab. Works on one copy (the copy picker / copies sheet): its socket empty
+// (pick a gem; the apply cost in the button) or filled (take it out for the remove cost; the gem comes back). The costs are the card's
+// rank's in canonical/upgrade-costs.json materiaSocket.
+function socketGemName(k){ const m = socketKind(k); return m ? TX('ui.h1-gem-' + m.id) : String(k || ''); }
+function socketGemFx(k){ return ENCHANTS[k] ? TX('ui.h1-gem-fx-' + k) : ''; }
 function enchantAnvilHTML(id, sel){
-  const cur = myCardEnchants[id], st = materiaStore();
+  const st = materiaStore(), base = getCardDefs()[id] || sel;
+  if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div></div>
+    <h3 class="forge-name">${escapeHtml(sel.name)}</h3><p class="forge-note">${escapeHtml(TX('ui.h1-no-socket'))}</p>`;
+  const copy = copyByUid(id, forgeUid(id)), uid = copy && copy.uid, cur = socketGemOfCopy(id, copy);
+  let show = sel; try{ const d = copyDefAt(id, copyLevel(id, copy), cur); if(d) show = Object.assign({}, d, {id}); }catch(e){}
+  const apply = socketCost(base, 'apply'), remove = socketCost(base, 'remove'), k = cur && socketKind(cur);
   return `
     <div class="anvil-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(show, {extraClass:'forge-preview'})}</div>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
-    <p class="forge-note">${cur ? `Enchanted with ${(MATERIA_KINDS.find(k=> k.id===cur)||{}).icon||''} ${escapeHtml((MATERIA_KINDS.find(k=> k.id===cur)||{}).name||cur)}: ${escapeHtml(ENCHANTS[cur] ? ENCHANTS[cur].label : '')}. Socketing another crystal replaces it.` : 'No enchantment yet. Pick a crystal:'}</p>
-    <div class="ench-grid">${MATERIA_KINDS.map(k=> `<button type="button" class="ench-opt ${cur===k.id?'is-on':''}" data-enchant="${k.id}" ${(st[k.id]||0) < 1 || cur===k.id ? 'aria-disabled="true"' : ''}><span class="eo-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${escapeHtml(ENCHANTS[k.id].label)}</small><span class="eo-have">${escapeHtml(_t('you have {n}', {n:st[k.id]||0}))}</span></button>`).join('')}</div>`;
+    ${forgeCopyPickerHTML(id)}
+    <div class="h1-socket-state ${cur ? 'is-full' : 'is-empty'}" data-h1-socket="${cur ? 'full' : 'empty'}">
+      <span class="h1-socket-big ${cur ? 'mk-' + cur : ''}" aria-hidden="true">${k ? `<span>${k.icon}</span>` : ''}</span>
+      <div class="h1-socket-txt">${cur ? `<b>${escapeHtml(TX('ui.h1-socket-filled', {gem: socketGemName(cur)}))}</b><small>${escapeHtml(socketGemFx(cur))}</small>` : `<b>${escapeHtml(TX('ui.h1-socket-empty'))}</b><small>${escapeHtml(TX('ui.h1-socket-pick'))}</small>`}</div>
+    </div>
+    ${cur ? `<button type="button" class="btn forge-act h1-remove" id="forgeSocketRemoveBtn" ${socketRemoveProblem(id, uid) ? 'aria-disabled="true"' : ''} title="${escapeAttr(TX(SOCKET_REMOVE_RETURNS ? 'ui.h1-remove-tip' : 'ui.h1-remove-tip-lost'))}">⛏️ ${escapeHtml(TX('ui.h1-remove'))}${btnCostHTML(remove)}</button>
+      <p class="forge-note">${escapeHtml(TX('ui.h1-socket-full-note'))}</p>` : ''}
+    <div class="ench-grid ${cur ? 'is-locked' : ''}">${MATERIA_KINDS.map(m=> `<button type="button" class="ench-opt ${cur===m.id?'is-on':''}" data-enchant="${m.id}" ${socketApplyProblem(id, uid, m.id) ? 'aria-disabled="true"' : ''}><span class="eo-ico">${m.icon}</span><b>${escapeHtml(socketGemName(m.id))}</b><small>${escapeHtml(socketGemFx(m.id))}</small><span class="eo-have">${escapeHtml(_t('you have {n}', {n:st[m.id]||0}))}</span></button>`).join('')}</div>
+    ${cur ? '' : `<p class="forge-note h1-cost-line">${escapeHtml(TX('ui.h1-cost-apply'))}${btnCostHTML(apply)}</p>`}`;
 }
 async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;
@@ -49269,11 +49430,23 @@ async function forgeRefine(btn){
 }
 function forgeEnchant(btn){
   if(forgeBusy || !forgeSelectedId) return;
-  const kind = btn.dataset.enchant;
-  if(btn.getAttribute('aria-disabled')==='true' || !enchantCard(forgeSelectedId, kind)){ denyShake(btn); return; }
-  try{ SoundKit.materiaForm(); materiaBurstVfx(MATERIA_KINDS.find(k=> k.id===kind)); }catch(e){}
+  const id = forgeSelectedId, kind = btn.dataset.enchant, copy = copyByUid(id, forgeUid(id));
+  const r = btn.getAttribute('aria-disabled')==='true' ? null : socketApply(id, copy && copy.uid, kind);
+  if(!r){ denyShake(btn); return; }
+  if(r.uid) forgeCopyPick = {id, uid: r.uid};
+  try{ SoundKit.materiaForm(); materiaBurstVfx(socketKind(kind)); }catch(e){}
   renderForge();
-  showToast(`💎 ${getCardDefs()[forgeSelectedId].name} enchanted: ${ENCHANTS[kind].label}.`, 'ok');
+  showToast(TX('toast.h1-socket-set', {name: getCardDefs()[id].name, gem: socketGemName(kind), fx: socketGemFx(kind)}), 'ok');
+}
+function forgeSocketRemove(btn){
+  if(forgeBusy || !forgeSelectedId) return;
+  const id = forgeSelectedId, copy = copyByUid(id, forgeUid(id));
+  const r = btn.getAttribute('aria-disabled')==='true' ? null : socketRemove(id, copy && copy.uid);
+  if(!r){ denyShake(btn); return; }
+  if(r.uid) forgeCopyPick = {id, uid: r.uid};
+  try{ SoundKit.materiaForm(); }catch(e){}
+  renderForge();
+  showToast(TX(r.returned ? 'toast.h1-socket-removed' : 'toast.h1-socket-removed-lost', {name: getCardDefs()[id].name, gem: socketGemName(r.kind)}), 'ok');
 }
 let forgeReadyUsed = false; // reset each time the Forge is entered (switchTab)
 function forgeAnvilHTML(id, sel, L, maxed){

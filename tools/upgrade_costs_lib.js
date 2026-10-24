@@ -16,7 +16,9 @@
     ['tiers', 'Forge tiers', 'What it costs to upgrade the Forge itself, and the map that unlocks each tier. Tier 1 is free.'],
     ['prestige', 'Prestige rings', 'Gold, Rainbow and Extended Art finishes for a maxed card.'],
     ['melt', 'Disenchanting', 'Magic Dust a plain spare copy melts into, by rarity (treatments multiply it).'],
-    ['misc', 'Materia and energy', 'The Materia Unit, the bench price, the Maple Leaf price of an energy upgrade.']];
+    ['misc', 'Materia and energy', 'The Materia Unit, the bench price, the Maple Leaf price of an energy upgrade.'],
+    // 2026-10-24 (package H1, owner decision H1): Materia gem sockets on Unique and rarer cards, one per copy
+    ['socket', 'Gem sockets', 'Unique and rarer cards have one Materia gem socket per copy. Dust and Leaves (gold) to set a gem, and to take it out (the gem comes back), by the card\'s rank.']];
   const E = []; // {path, group, label, note, step}
   function build(t){
     E.length = 0;
@@ -33,6 +35,8 @@
     add('materiaUnit.dust', 'misc', 'Materia Unit: Dust', 'a Common\'s whole road to 10, in Dust'); add('materiaUnit.gold', 'misc', 'Materia Unit: Leaves (gold)');
     add('moteDivisor', 'misc', 'Materia Mote = Unit ÷', 'the Level 0 to 1 step');
     add('materiaDustCost', 'misc', 'Materia bench: Dust per crystal'); add('energyUpgradeStep', 'misc', 'Energy upgrade: Leaves × number bought', '150, 300, 450 …');
+    Object.keys(t.materiaSocket || {}).forEach(k=> ['apply', 'remove'].forEach(w=> ['dust', 'gold'].forEach(c=>{ // H1 (2026-10-24)
+      if(t.materiaSocket[k][w] && typeof t.materiaSocket[k][w][c] === 'number') add('materiaSocket.' + k + '.' + w + '.' + c, 'socket', rn(k) + ': ' + (w === 'apply' ? 'set a gem' : 'take it out'), c === 'dust' ? 'Dust' : 'Leaves (gold)', 5); })));
     return E.slice();
   }
   // path -> [container, key]; null when the path does not exist

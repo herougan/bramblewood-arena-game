@@ -7182,6 +7182,28 @@
   .ench-opt .eo-ico{font-size:24px;} .ench-opt small{font-size:12px; color:var(--ink-muted); text-align:center;} .ench-opt .eo-have{font-size:11px; font-weight:800;}
   .ench-opt.is-on{border-color:#e0782a; box-shadow:0 0 0 2px rgba(224,120,42,.35);} .ench-opt[aria-disabled=true]{opacity:.55; cursor:not-allowed;}
   .forge-ench-badge{position:absolute; left:4px; top:4px; z-index:9; font-size:15px; filter:drop-shadow(0 0 4px rgba(255,255,255,.7)); pointer-events:none;}
+  /* 2026-10-24 (package H1, owner decision H1): the gem socket of a Unique-and-above card (one per copy): a small diamond set into the
+     right edge of the frame, hollow when empty, glowing with its gem's colour when filled. The Forge's 💎 Socket tab: the state row. */
+  .card-tile .h1-slot{position:absolute; z-index:4; right:-6px; top:38%; width:clamp(14px, 16cqw, 20px); height:clamp(14px, 16cqw, 20px); transform:rotate(45deg); border-radius:4px;
+    border:2px solid var(--surface); background:radial-gradient(circle at 50% 50%, rgba(0,0,0,.55), rgba(0,0,0,.25)); box-shadow:inset 0 0 0 1.5px rgba(255,214,120,.75), 0 1px 3px rgba(0,0,0,.45);
+    display:flex; align-items:center; justify-content:center; pointer-events:auto;}
+  .card-tile .h1-slot > span{transform:rotate(-45deg); font-size:clamp(8px, 10cqw, 12px); line-height:1;}
+  .card-tile .h1-slot.is-full{background:radial-gradient(circle at 35% 30%, #fff8, var(--gem, #f59e0b) 55%, #0006); box-shadow:inset 0 0 0 1.5px #ffe7a8, 0 0 8px var(--gem, #f59e0b);}
+  .h1-slot.mk-ember, .h1-socket-big.mk-ember, .h1-cd-gem.mk-ember{--gem:#ff6a2a;} .h1-slot.mk-tide, .h1-socket-big.mk-tide, .h1-cd-gem.mk-tide{--gem:#2ea8ff;}
+  .h1-slot.mk-grove, .h1-socket-big.mk-grove, .h1-cd-gem.mk-grove{--gem:#3fbf5a;} .h1-slot.mk-stone, .h1-socket-big.mk-stone, .h1-cd-gem.mk-stone{--gem:#a8a29e;}
+  .board-card .h1-slot, .hand-card .h1-slot{display:none;}
+  .h1-socket-state{display:flex; align-items:center; gap:12px; margin:10px 0 6px; padding:10px 12px; border-radius:12px; border:1px dashed var(--surface-border); background:var(--surface-2);}
+  .h1-socket-state.is-full{border-style:solid; border-color:color-mix(in srgb, #e0782a 55%, var(--surface-border));}
+  .h1-socket-big{flex:none; width:34px; height:34px; transform:rotate(45deg); border-radius:7px; display:flex; align-items:center; justify-content:center; border:2px solid var(--surface);
+    background:radial-gradient(circle, rgba(0,0,0,.5), rgba(0,0,0,.2)); box-shadow:inset 0 0 0 2px rgba(255,214,120,.7);}
+  .h1-socket-big.mk-ember, .h1-socket-big.mk-tide, .h1-socket-big.mk-grove, .h1-socket-big.mk-stone{background:radial-gradient(circle at 35% 30%, #fff8, var(--gem) 55%, #0006); box-shadow:inset 0 0 0 2px #ffe7a8, 0 0 12px var(--gem);}
+  .h1-socket-big{font-size:18px; line-height:1;} .h1-socket-big > span{transform:rotate(-45deg);}
+  .h1-socket-txt{display:flex; flex-direction:column; gap:2px; min-width:0;} .h1-socket-txt small{color:var(--ink-muted);}
+  .ench-grid.is-locked .ench-opt{opacity:.5;}
+  .h1-remove{width:100%; margin:4px 0;}
+  .h1-cost-line{display:flex; flex-wrap:wrap; align-items:center; gap:4px; margin-top:8px;}
+  .cd-socket .h1-cd-gem{display:inline-flex; align-items:center; gap:4px; padding:1px 8px; border-radius:999px; background:color-mix(in srgb, var(--gem, #f59e0b) 22%, var(--surface-2)); border:1px solid color-mix(in srgb, var(--gem, #f59e0b) 55%, transparent);}
+  .cd-socket .h1-cd-gem small{color:var(--ink-muted);} .cd-socket .h1-cd-empty{color:var(--ink-muted); font-style:italic;} .cd-socket .h1-cd-how{display:block; color:var(--ink-muted); font-size:11px; margin-top:2px;}
   /* Lively splash (2026-10-08, bramblewood-splash.js): dancing otters in three depth bands, a camera
      push-in while the crowd parts, then an otter-vs-hummingbird standoff in the gap. */
   .splash-stage{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden;}

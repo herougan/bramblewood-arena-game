@@ -79,7 +79,7 @@ ok(/return neDeckPoolStackHTML\(id, defs\)/.test(fnSrc('renderMyDeckPanels')) &&
 ok(/pointerType !== 'mouse'\) return; if\(neFanState/.test(deckBlock) && /setTimeout\(\(\)=>\{ lp = null; host\._neLP = Date\.now\(\); neFanOpen\(id, host\)/.test(deckBlock) && /neFanLater\(\)/.test(deckBlock), '11:15 the fan opens on hover (desktop) or a long press (phone) and stays while the pointer is over it');
 ok(/class="ne-fan-card \$\{on \? 'is-in' : ''\}"/.test(fnSrc('neFanHTML')) && /deckCopyUidsFor\(id, myDeckCounts\[id\] \| 0\)/.test(fnSrc('neFanHTML')), '11:15 copies in the deck show greyed in the fan');
 ok(/neFanAddCopy = \(id, uid, btn\)=>/.test(src) && /p\.push\(uid\); setDeckCopyPicks/.test(src), '11:15 a fanned copy goes in as exactly that copy');
-ok(/picks\.length\)\{ const uids = deckCopyUidsFor\(id, n\)/.test(fnSrc('deckCopyLevels')) && /top === best \? null : copyDefAt\(id, L\)/.test(fnSrc('ownedDeckForMatch')), '11:15 a picked copy fights at its own level');
+ok(/picks\.length\)\{ const uids = deckCopyUidsFor\(id, n\)/.test(fnSrc('deckCopyLevels')) && /top === best( && gem === bestGem)? \? null : copyDefAt\(id, L(, gem)?\)/.test(fnSrc('ownedDeckForMatch')) /* + the copy's gem (2026-10-24, package H1) */, '11:15 a picked copy fights at its own level');
 ok(/stack\.classList\.toggle\('ne-full', full\)/.test(fnSrc('tentQuickCount')) && /deckLimitChipHTML\(id, used\)/.test(fnSrc('tentQuickCount')), '#17 a +1 / −1 in place keeps the chip (leader counted) and the greyed state');
 ok(/#myDeckPool \.pool-stack\.ne-full \.card-tile\{filter:grayscale/.test(tpl), '#17 a full card is greyed in the pool');
 // ---- #19

@@ -58,6 +58,9 @@ Each main map has 1-4 hidden skirmishes, `<map>-PRO-<k>` (e.g. `3-PRO-1`), with 
 - The field ("the average skirmish of that map"): per field rule (day / night, Mist, Tide, wind, terrain tier, ...) the value most of the map's fights have; a tie goes to the boss's (the map's last fight when it has no boss). From Map 2 a PRO fight leads with its deck's showcase card, as the map's skirmishes do.
 - Each PRO lists `later`: its cards first obtainable after the map (phase 2's related cards can be). Report it; the deck stays.
 
+## Gem sockets are outside the budget (package H1, owner decision H1, 2026-10-24)
+Unique and rarer cards have one Materia gem socket per owned copy (the Forge's 💎 Socket tab). A socketed gem's stats (`ENCHANTS` in `arena_app.js`: Ember +1 Attack, Tide +2 Health, Grove +1/+1, Stone +3 Health) are a progression bonus, like Forge levels: they sit outside the card's printed budget. `bramblewood-budget.js` and the stat checks price the card as printed (no gem), and simulations, the deck optimizer and the PRO fights run without gems. When a gem's effect is retuned, price it with the 4-round rule above and keep it small next to a Forge level; the costs to set and take out a gem are in `canonical/upgrade-costs.json` `materiaSocket` (hub 💰 Upgrade costs tab).
+
 ## Checks
 `node tests/run.js --only 'level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool'`, then the card matrix. Reviewed golden changes are accepted at release.
 

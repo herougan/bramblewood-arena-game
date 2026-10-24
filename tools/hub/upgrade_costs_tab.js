@@ -99,7 +99,7 @@
   function build(){
     if(build.done) return; build.done = true;
     const host = $('ucHost'); if(!host) return;
-    host.innerHTML = `<div class="dec-head"><h2>Upgrade &amp; Forge costs</h2><p>Every cost behind levelling a card, the Forge's own upgrades, limit breaks, duplicates, prestige rings and disenchanting. Edit a number; the totals below recompute. The file the game is built from is <code>canonical/upgrade-costs.json</code>; saved edits are folded into it by Claude (tools/fold_upgrade_costs.js) and ship with the next build.</p></div>
+    host.innerHTML = `<div class="dec-head"><h2>Upgrade &amp; Forge costs</h2><p>Every cost behind levelling a card, the Forge's own upgrades, limit breaks, duplicates, prestige rings, disenchanting and gem sockets. Edit a number; the totals below recompute. The file the game is built from is <code>canonical/upgrade-costs.json</code>; saved edits are folded into it by Claude (tools/fold_upgrade_costs.js) and ship with the next build.</p></div>
       <div class="sc-status" id="ucStatus" role="status"></div>
       <div class="sc-grid"><section class="sc-ed" aria-label="Cost numbers">
         <div class="dec-seg sc-kinds" role="group" aria-label="Group" id="ucGroups">${U.GROUPS.map(([id, title])=> `<button type="button" data-g="${id}" aria-pressed="${id === st.group}">${esc(title)} <b>${ENT.filter(e=> e.group === id).length}</b></button>`).join('')}</div>

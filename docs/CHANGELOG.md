@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package H1: Materia gem sockets, owner decision H1)
+- **The Forge's Enchant tab is now 💎 Socket:** every copy of a Unique or rarer creature has one gem socket (a small diamond on the card's right edge: hollow when empty, glowing in the gem's colour when filled). Setting a Materia gem costs one crystal plus Dust and Maple Leaves; taking it out costs Dust and Maple Leaves and the gem comes back (owner call H1-a). One gem per copy: a filled socket is emptied first. The tab lists only cards with a socket and works on one copy (copy picker, copies sheet).
+- **Gem effects unchanged** (the old Enchant ones: Ember +1 Attack, Tide +2 Health, Grove +1/+1, Stone +3 Health). Each copy fights with its own gem (`<id>~cp<L>g<gem>` copies); the card's own face shows its best copy's gem. A gem is a progression bonus outside the printed budget (docs/workflows/balance.md).
+- **Costs:** `canonical/upgrade-costs.json` `materiaSocket` (apply / remove per rank, placeholders, H1-b), editable in the hub's 💰 Upgrade costs tab (group "Gem sockets", 28 numbers; the fold tool takes them).
+- **Data:** sockets per copy (`bramblewood_card_sockets_v1`, {card: {copy uid: gem}}) ride the progress blob together with the Materia crystals (`bramblewood_materia_v1`, newly synced), read back after a pull. A socket whose copy is gone moves to the best empty copy; a socketed copy is never a spare. The old per-card enchantments move once onto the card's best copy (a card without a socket gets its crystal back).
+- Card detail: a 💎 Socket line (the gems in your copies, how many are empty). Texts in 12 packs. Owner calls H1-a .. H1-c in docs/decisions.json.
+- Tests: tests/h1-2026-10-24.js (134 checks), tests/e2e/h1_2026_10_24.py (390 and 1366; shots in docs/screens/H1/); fg / ne source checks accept the Socket mode and the gem argument.
+
 ## 2026-10-24 release 10-24d (batch: EQ2, RW6, EN6, EN7)
 - Equipment durability, Bolster and the Health bar, Parasite, raid Beak Strike and two Guardian raiders; Dive in two turns (aloft / under, then strike); Guardian tilt; Poison pool sink and 🤢N floats; Poison/Bleed on Pounce/Ambush, "– poison"/"– bleed"; Parasite x Bloom.
 - Hand states (Plenty, Scarcity, Foe's), Full Hand / Lean, Heat, Frost, Rain, Storm, Fog, Salt, Drought, Season (field option), Hibernate, "– bramble"; Bounty only on loot carriers (Beaver Lumberjack: On Ready +1 Lumber).
