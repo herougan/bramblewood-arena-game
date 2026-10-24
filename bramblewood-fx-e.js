@@ -1444,8 +1444,14 @@ async function playReturn(mapId, d, progress){
   const showNew = (cv, k)=>{ trailsTo(cv, k).forEach(l=>{ l.style.opacity = ''; }); const n = q(cv, k); if(n){ n.style.transition = 'opacity .3s ease-out'; n.style.opacity = ''; } };
   whenMapVisible(async cv=>{
     if(!cv.isConnected) return;
+    // 2026-10-25 (package PL2, owner 22:28 #8): the fights won since this map was last really in view (arena_app's queue, pl2TakeMapMoments)
+    // join the ones this session's diff found; each plays its emblem once. window.__pl2MapReturnBusy holds the XP bar until they are done.
+    let queued = []; try{ queued = typeof pl2TakeMapMoments === 'function' ? pl2TakeMapMoments(mapId) : []; }catch(e){}
+    const doneKeys = [...new Set(d.newDone.concat(queued.map(x=> x.key)))].slice(0, 8), qRank = Object.fromEntries(queued.map(x=> [x.key, x.rank]));
+    window.__pl2MapReturnBusy = true;
+    try{
     hideNew(cv, pend);
-    for(const k of d.newDone){ const n = q(cv, k); if(!n) continue; const rank = progress && progress.ranks ? progress.ranks[conquestIdOf(mapId, k)] : null;
+    for(const k of doneKeys){ const n = q(cv, k); if(!n) continue; const rank = (progress && progress.ranks ? progress.ranks[conquestIdOf(mapId, k)] : null) || qRank[k] || null;
       // 2026-10-24 (package PL1, owner P24-5): a ranked clear shows the normal emblem (M.nodeRankEmblem), not the red wax seal and its chip
       if(rank && /^[A-Z]+$/.test(rank)) await M.nodeRankEmblem(n, rank); else await M.nodeCleared(n, {rank: rank || '✓'}); }
     for(const k of d.newVis){ const cur = document.getElementById('conquestCanvas'); if(!cur) return; const n = q(cur, k); if(!n){ continue; }
@@ -1461,6 +1467,7 @@ async function playReturn(mapId, d, progress){
       let name = ''; try{ const m = CONQUEST_MAPS.find(x=> x.id === mapId); name = m ? m.name : ''; }catch(e){}
       await M.mapCleared(cur, {name, critters: mv ? [mv, mv, '🐿️', mv, '🦔', mv] : null}); } }
     if(d.nextOpen){ const cur = document.getElementById('conquestCanvas'), e = cur && cur.querySelector('.world-edge-right'); if(e){ const boss = cur.querySelector(':scope > .map-node.kind-boss, :scope > .map-node.kind-finalboss'); await M.nextMapUnlocked(e, boss); } }
+    } finally { window.__pl2MapReturnBusy = false; }
   });
 }
 function conquestIdOf(mapId, k){ try{ return typeof conquestNodeId === 'function' ? conquestNodeId(mapId, k) : mapId + ':' + k; }catch(e){ return mapId + ':' + k; } }
@@ -1476,11 +1483,14 @@ M.hooks.mapShown = function(host, map, canvas, progress, env){
   if(high && fk && !dark && Date.now() - lastFront > 240000 && Math.random() < .3){ lastFront = Date.now(); later(()=>{ const h = document.getElementById('conquestLayout'); if(h && h.isConnected) M.weatherFront(h, fk, {duration:18}); }, 2500); }
   // coming back: compare with what this map showed last time this session
   const now = snapshot(canvas, map), prev = SEEN[map.id]; SEEN[map.id] = now;
-  if(!prev) return;
-  const d = {newDone:[...now.done].filter(k=> !prev.done.has(k)), newVis:[...now.vis].filter(k=> !prev.vis.has(k) && !now.done.has(k)), chance:new Set([...now.all].filter(k=> !prev.all.has(k))),
+  // 2026-10-25 (package PL2, 22:28 #8): fights won while the map was not in view (queued by arena_app) play here even on a first view this session
+  let pendQ = false; try{ pendQ = typeof pl2HasMapMoments === 'function' && pl2HasMapMoments(map.id); }catch(e){}
+  const none = ()=> ({newDone:[], newVis:[], chance:new Set(), newScales:[], newSubs:[], cleared:false, nextOpen:false});
+  if(!prev){ if(pendQ) playReturn(map.id, none(), progress); return; }
+  let d = {newDone:[...now.done].filter(k=> !prev.done.has(k)), newVis:[...now.vis].filter(k=> !prev.vis.has(k) && !now.done.has(k)), chance:new Set([...now.all].filter(k=> !prev.all.has(k))),
     newScales:[...now.scales].filter(k=> !prev.scales.has(k)), newSubs:[...now.subs].filter(k=> !prev.subs.has(k)), cleared:now.cleared && !prev.cleared, nextOpen:now.nextOpen && !prev.nextOpen};
-  if(d.newDone.length > 4) return; // a big jump (admin unlocks, a restored save): no fanfare
-  if(d.newDone.length || d.newVis.length || d.newScales.length || d.newSubs.length || d.cleared || d.nextOpen) playReturn(map.id, d, progress);
+  if(d.newDone.length > 4){ if(!pendQ) return; d = none(); } // a big jump (admin unlocks, a restored save): no fanfare (but the queued wins still play)
+  if(pendQ || d.newDone.length || d.newVis.length || d.newScales.length || d.newSubs.length || d.cleared || d.nextOpen) playReturn(map.id, d, progress);
 };
 const WORLD_KEY = 'bramblewood_fxe_world_v1';
 M.hooks.mapWorldShown = function(mainEl, env){

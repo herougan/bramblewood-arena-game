@@ -9557,6 +9557,25 @@
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
   #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
+  /* 2026-10-25 (package PL2, owner 00:02 #3 #5): the cards won as one stack (the first in front, the rest behind it, fanned on hover / tap)
+     and a rank-won card's flash and ribbon (the emblem and "reward") */
+  .rw-cards.pl2-stack{display:grid !important; grid-template-areas:'s'; justify-items:center; justify-content:center !important; position:relative; padding:6px calc(8px + var(--n) * 7px) 4px 8px; outline:none; cursor:pointer;}
+  .rw-cards.pl2-stack > .pl2-sk{grid-area:s; position:relative; z-index:calc(30 - var(--i)); transform:translate(calc(var(--i) * 7px), calc(var(--i) * -5px)) rotate(calc(var(--i) * 3deg)); transition:transform .38s cubic-bezier(.3,1.45,.5,1), filter .3s;}
+  .rw-cards.pl2-stack > .pl2-sk:not(:first-child){filter:brightness(.82);}
+  .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{filter:none; transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(22%, 230% / var(--n), 80%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));}
+  .rw-cards.pl2-stack > .pl2-stack-n{grid-area:s; align-self:start; justify-self:end; z-index:40; margin:-6px -10px 0 0; padding:1px 7px; border-radius:999px; background:var(--accent, #c9852b); color:#fff; font:800 13px/18px 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 3px rgba(0,0,0,.4); transition:opacity .2s;}
+  .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-stack-n{opacity:0;}
+  @media (max-width:700px){ .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(14%, 120% / var(--n), 40%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));} }
+  .rw-card .pl2-rw-n{position:absolute; top:4px; right:4px; z-index:6; padding:0 6px; border-radius:9px; background:rgba(20,14,8,.85); color:#ffe9b8; font:800 12px/18px 'Baloo 2',system-ui,sans-serif;}
+  .rw-card.pl2-rank-reward{animation:pl2RrPop .9s cubic-bezier(.3,1.5,.5,1) both;}
+  .rw-card.pl2-rank-reward::after{content:''; position:absolute; inset:-4px; border-radius:10px; pointer-events:none; z-index:8; background:radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.98), rgba(255,236,170,.75) 45%, rgba(255,214,120,0) 75%); animation:pl2RrFlash .9s ease-out both;}
+  @keyframes pl2RrFlash{0%{opacity:0;} 12%{opacity:1;} 30%{opacity:.95;} 100%{opacity:0;}}
+  @keyframes pl2RrPop{0%{scale:.86;} 30%{scale:1.08;} 60%{scale:.98;} 100%{scale:1;}}
+  .pl2-rr{position:absolute; left:50%; bottom:-10px; z-index:9; translate:-50% 0; display:inline-flex; align-items:center; gap:3px; padding:1px 9px 1px 2px; border-radius:999px; white-space:nowrap;
+    background:linear-gradient(180deg, #5a3a12, #2e1c08); color:#ffe6a8; font:800 12px/20px 'Baloo 2',system-ui,sans-serif; box-shadow:0 2px 5px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,214,120,.55); animation:pl2RrIn .5s .55s cubic-bezier(.3,1.6,.5,1) both;}
+  .pl2-rr .rank-hex{position:relative !important; top:auto !important; right:auto !important; width:22px; height:24px; rotate:0deg; margin:-3px 0;} .pl2-rr .rank-hex b{font-size:14px !important;}
+  @keyframes pl2RrIn{from{opacity:0; scale:.4;} to{opacity:1; scale:1;}}
+  @media (prefers-reduced-motion: reduce){ .rw-card.pl2-rank-reward, .rw-card.pl2-rank-reward::after, .pl2-rr{animation:none;} .rw-card.pl2-rank-reward::after{opacity:0;} .rw-cards.pl2-stack > .pl2-sk{transition:none;} }
   .pl2-tip-res{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px;} .pl2-tip-res .hud-pill{font-size:11px; padding:1px 7px;}
   /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
   #dropDiscard{cursor:pointer;}

@@ -20233,23 +20233,41 @@ function rewardXpBarUp(){
 // 2026-10-24 (package PL1, owner P24-3: "Show the XP reward only when leaving the skirmish for the conquest map."): a Conquest fight's results
 // no longer show the XP bar. The XP still counts the moment it is won (and its toasts stay quiet while the results are up); the bar fills
 // on the map once you are back there (pl1XpOnMapShow): after a new map's veil and title banner, before the packs open.
-function pl1XpOnMap(m){ return !!(m && m.mode === 'conquest'); }
-let pl1XpPending = null;
+// 2026-10-25 (package PL2, owner 00:02 PL1-1: "XP is for all skirmishes", and 22:28 #8: "If the player has been conquesting without visiting
+// the map, when he does revisit, all the animations and xp is gotten/played"): every won fight's results leave the XP bar out (Arena, the
+// Spire, a dungeon floor, as a Conquest fight already did); the XP waits, stored (PL2_XP_KEY, so a reload or a long Arena session keeps
+// it), and fills at the top of the Conquest map the next time it is in view, after the map's own moments (the emblems, pl2MapReturnBusy).
+// PL1 waited at most two minutes and only in memory, so XP won in the Arena or over a chain of Next fight never showed.
+const PL2_XP_KEY = 'bramblewood_pl2_xp_pending_v1';
+function pl1XpOnMap(m){ return !!m; }
+let pl1XpPending = (()=>{ try{ const v = JSON.parse(localStorage.getItem(PL2_XP_KEY) || 'null'); return v && v.from != null ? v : null; }catch(e){ return null; } })();
+function pl2SaveXpPending(){ try{ if(pl1XpPending) localStorage.setItem(PL2_XP_KEY, JSON.stringify(pl1XpPending)); else localStorage.removeItem(PL2_XP_KEY); }catch(e){} }
 function pl1NoteXpForMap(m){
   try{ if(!m || !pl1XpOnMap(m) || m.winner !== 1 || m.xpBefore == null || m.rewardDuplicate || !resultsShowXpBar(Object.assign({}, m, {over:true}))) return;
     const now = loadXp().xp; if(!(now > m.xpBefore) && !pl1XpPending) return;
-    pl1XpPending = {from: pl1XpPending ? Math.min(pl1XpPending.from, m.xpBefore) : m.xpBefore, at: Date.now()};
+    pl1XpPending = {from: pl1XpPending ? Math.min(pl1XpPending.from, m.xpBefore) : m.xpBefore, at: Date.now()}; pl2SaveXpPending();
     pl1XpOnMapSoon(); }catch(e){}
 }
 function pl1XpOnMapSoon(tries){
-  tries = tries || 0; if(!pl1XpPending || tries > 400) return;
-  setTimeout(()=>{ try{
-    const cv = document.getElementById('conquestCanvas'), onMap = cv && cv.offsetParent && currentTab === 'play' && !(typeof matchState !== 'undefined' && matchState);
-    const busy = document.querySelector('.map-veil, .fxg-title-stage, .winloss-overlay, #deckSwapOverlay') || mapTitleHold() || (()=>{ const ov = document.getElementById('packOpenOverlay'); return !!(ov && !ov.hidden); })();
-    if(onMap && !busy) pl1XpOnMapShow(); else pl1XpOnMapSoon(tries + 1); }catch(e){ pl1XpPending = null; } }, tries ? 300 : 500);
+  tries = tries || 0; if(!pl1XpPending || tries > 120) return; // (a later map view starts it again: pl2MapViewed)
+  if(!tries){ if(pl1XpOnMapSoon._t) return; } clearTimeout(pl1XpOnMapSoon._t);
+  pl1XpOnMapSoon._t = setTimeout(()=>{ pl1XpOnMapSoon._t = 0; try{
+    const cv = document.getElementById('conquestCanvas'), onMap = cv && cv.offsetParent && currentTab === 'play' && playSubTab === 'conquest' && !(typeof matchState !== 'undefined' && matchState);
+    const busy = document.querySelector('.map-veil, .fxg-title-stage, .winloss-overlay, #deckSwapOverlay') || mapTitleHold() || window.__pl2MapReturnBusy || (()=>{ const ov = document.getElementById('packOpenOverlay'); return !!(ov && !ov.hidden); })();
+    if(onMap && !busy) pl1XpOnMapShow(); else pl1XpOnMapSoon(tries + 1); }catch(e){ pl1XpPending = null; pl2SaveXpPending(); } }, tries ? 300 : 500);
 }
+// The won fights' moments for the map (2026-10-25, PL2, 22:28 #8): each first clear (or better rank) of a Conquest fight is queued
+// (PL2_MOMENTS_KEY) and FX.E plays its emblem over the fight the next time that map is really in view (pl2TakeMapMoments), however many
+// fights were won in a row without seeing the map, and in a later session too. Was: a diff of what the map showed last this session.
+const PL2_MOMENTS_KEY = 'bramblewood_pl2_map_moments_v1';
+function pl2LoadMoments(){ try{ const v = JSON.parse(localStorage.getItem(PL2_MOMENTS_KEY) || '[]'); return Array.isArray(v) ? v : []; }catch(e){ return []; } }
+function pl2SaveMoments(l){ try{ if(l.length) localStorage.setItem(PL2_MOMENTS_KEY, JSON.stringify(l.slice(-30))); else localStorage.removeItem(PL2_MOMENTS_KEY); }catch(e){} }
+function pl2QueueMapMoment(mapId, key, rank){ if(!mapId || !key) return; const l = pl2LoadMoments().filter(x=> !(x.map === mapId && x.key === key)); l.push({map: mapId, key, rank: rank || null, at: Date.now()}); pl2SaveMoments(l); }
+function pl2HasMapMoments(mapId){ return pl2LoadMoments().some(x=> x.map === mapId); }
+function pl2TakeMapMoments(mapId){ const l = pl2LoadMoments(), mine = l.filter(x=> x.map === mapId); if(mine.length) pl2SaveMoments(l.filter(x=> x.map !== mapId)); return mine; }
+function pl2MapViewed(){ try{ if(pl1XpPending) pl1XpOnMapSoon(); }catch(e){} }
 function pl1XpOnMapShow(){
-  const p = pl1XpPending; pl1XpPending = null; if(!p || !xpBarReady()) return;
+  const p = pl1XpPending; pl1XpPending = null; pl2SaveXpPending(); if(!p || !xpBarReady()) return;
   const to = loadXp().xp; if(!(to > p.from)) return;
   const spec = xpBarSpec(p.from, to), at = xpBarSpec(p.from, p.from); at.gainText = spec.gainText;
   const el = document.createElement('div'); el.className = 'pl1-xp-float'; el.setAttribute('role', 'status'); el.innerHTML = window.FX.F.xpBarHTML(at);
@@ -23338,6 +23356,7 @@ function completeConquestNode(node, rank){
   try{ const mains = mainConquestMaps(), here = CONQUEST_MAPS.find(m=> m.id === node.mapId), nx = here && !here.sub ? mains[mains.indexOf(here) + 1] : null;
     if(nx && !progress.completed.includes(id) && !isMapUnlocked(nx, progress)){ const p2 = Object.assign({}, progress, {completed: progress.completed.concat([id])});
       if(isMapUnlocked(nx, p2)) conquestAutoAdvanceTo = nx.id; } }catch(e){}
+  if(!progress.completed.includes(id) || (rank && !rankAtLeast(progress.ranks[id], rank))){ try{ if(!node.adminTest) pl2QueueMapMoment(node.mapId, node.nodeId, rank || progress.ranks[id] || null); }catch(e){} } // PL2 (2026-10-25, #8)
   if(!progress.completed.includes(id)) progress.completed.push(id);
   if(!progress.clearedAt) progress.clearedAt = {}; if(!progress.clearedAt[id]) progress.clearedAt[id] = Date.now(); // first-clear time, for side maps that turn up days later (2026-10-12)
   if(node.kind==='raidboss' && !progress.raidUnlocked.includes(id)) progress.raidUnlocked.push(id);
@@ -25896,6 +25915,7 @@ function renderConquestSubTab(body){
   // slime-and-stone 'dungeon' variant), and a daily dungeon's subtitle says so.
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
+  pl2MapViewed(); // PL2 (2026-10-25): XP won elsewhere fills here
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
@@ -42980,10 +43000,28 @@ function rewardsPanelHTML(m){
   const baseCopyIds = ((m.conquestBaseGrowth && m.conquestBaseGrowth.copies) || []).filter(id=> getCardDefs()[id]); // 2026-10-24 (RW6, owner 12:02: "Base cards - e.g. Sheep - should just be a card reward"): a Base card won is a card tile in Cards won, not a "spare copy" chip
   const firstSeen = new Set(m.discoveredThisMatch || []);
   const castles = rewardCastleDrops(m); // 2026-10-18 (package T): a bramble won is a card here too
-  if(cards.length || castles.length || baseCopyIds.length){
+  // 2026-10-25 (package PL2, owner 00:02 #3: "When getting multiple card rewards - show it as 1 card, with the others as base behind them";
+  // #5: "I noticed Rare Find! 'A top rank win...' in rewards. Do not put rewards like that there. I think, show cards as card (including eggs
+  // and what not), but they flash first maybe, and say S reward or something"): every card reward is a card tile here: the cards won, a Base
+  // copy, a bramble, an egg card (was a chip under Rewards) and card-form materia (was a "💠 N name" pill). A card a rank won (the top-rank
+  // rare find, a rank-gated drop) comes first, flashes as it appears and wears a ribbon: the rank emblem and "reward" (no "Rare find" pill).
+  // Two or more: one card in front and the rest stacked behind it (pl2-stack, a count on the stack); hover or tap fans them out.
+  const pl2Mat = Object.entries(m.conquestMateriaEarned || {}).filter(([id])=> getCardDefs()[id]);
+  if(cards.length || castles.length || baseCopyIds.length || eggCards.length || pl2Mat.length){
     const defs = getCardDefs();
     const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length + castles.length + baseCopyIds.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}${baseCopyIds.map(id=> `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`).join('')}${castles.map(rewardCastleCardHTML).join('')}</div>
+    const rr = m.conquestRankEarned && /^[A-Z]+$/.test(m.conquestRankEarned) ? m.conquestRankEarned : 'S', rankWon = new Set([m.conquestRareFind, m.conquestCardDrop].filter(Boolean));
+    const ribbon = `<span class="pl2-rr" aria-label="${escapeAttr(TX('ui.pl2-rank-reward', {rank: rr}))}"><span class="rank-hex rank-${rr}" aria-hidden="true"><i></i><b>${rr}</b></span><span aria-hidden="true">${escapeHtml(TX('ui.pl2-reward'))}</span></span>`;
+    const tiles = [];
+    cards.slice().sort((x, y)=> (rankWon.has(y) ? 1 : 0) - (rankWon.has(x) ? 1 : 0)).forEach(id=>{ if(!defs[id]) return; const special = rankWon.has(id);
+      tiles.push(`<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
+    baseCopyIds.forEach(id=> tiles.push(`<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`));
+    castles.forEach(c=> tiles.push(rewardCastleCardHTML(c)));
+    eggCards.forEach(id=>{ const d = defs[id]; if(d) tiles.push(`<div class="rw-card pl2-won rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true})}</div>`); });
+    pl2Mat.forEach(([id, n])=> tiles.push(`<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}${n > 1 ? `<b class="pl2-rw-n">×${n}</b>` : ''}</div>`));
+    const stack = tiles.length > 1;
+    const body = tiles.map((t, k)=> stack ? `<div class="pl2-sk" style="--i:${k}">${t}</div>` : t).join(''); // a wrapper per card holds its place in the stack (the results' unlock beat tweens the card itself with GSAP)
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? ` tabindex="0" role="group" aria-label="${escapeAttr(TX('results.cards-won') + ' ×' + tiles.length)}"` : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
@@ -43040,11 +43078,10 @@ function rewardsPanelHTML(m){
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(TX('ui.rw4-got-egg'))}</span>`); } // 2026-10-23 (RW4): "You got an egg!", not the egg's kind
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
-  eggCards.forEach(id=>{ const d = getCardDefs()[id];
-    acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
+  // (egg cards: card tiles in Cards won since 2026-10-25, PL2 #5)
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
-  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
@@ -43160,7 +43197,7 @@ function matchStatsHTML(m){
       ${reward && reward.isFirstClear ? `<span class="conquest-firstclear-badge" title="${escapeAttr(TX('results.first-time-clearing-this-node-a'))}">${TX('results.first-clear-2')}</span>` : ''}
       ${reward && reward.gold>0 ? `<span class="hud-pill forge-cur-gold" title="${reward.isFirstClear?TX('results.first-clear-bonus-2'):TX('results.repeat-clear-payout-2')}">${TX('results.maple-leaves', {mapleLeafIconHTML: mapleLeafIconHTML(), v2: rewardCountSpan(reward.gold)})}</span>` : ''}
       ${reward && reward.dust>0 ? `<span class="hud-pill forge-cur-dust" title="${reward.isFirstClear?TX('results.first-clear-bonus-2'):TX('results.repeat-clear-payout-2')}">${TX('results.dust', {v1: rewardCountSpan(reward.dust)})}</span>` : ''}
-      ${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.a-rare-find-for-an-s'))}">${TX('results.rare-find-2')}</span>` : ''}
+      ${'' /* PL2 (2026-10-25, owner 00:02 #5): no "Rare find!" pill; the card itself is in the cards won */}
       ${m.conquestMetalEarned ? `<span class="hud-pill forge-cur-metal" title="${escapeAttr(TX('results.defeating-a-named-conquest-leader-boss'))}">${TX('results.metal', {v1: rewardCountSpan(m.conquestMetalEarned)})}</span>` : ''}
       ${m.conquestFoodEarned ? `<span class="hud-pill" title="${escapeAttr(TX('results.food-tokens-buy-sunfeather-packs-in'))}">${TX('results.food', {conquestFoodEarned: m.conquestFoodEarned})}</span>` : ''}
       ${m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned] ? `<span class="hud-pill rank-bonus-pill" title="${escapeAttr(TX('results.opened-its-cards-are-already-in'))}">${FACTION_PACKS[m.conquestPackEarned].icon} ${escapeHtml(FACTION_PACKS[m.conquestPackEarned].name)}${m.conquestSubCollected ? (' ' + TX('results.new-subfaction')) : ''}</span>` : ''}
