@@ -29,6 +29,7 @@ async def fresh(b, w=1366, h=860):
     await pg.evaluate("Object.keys(CARD_DEFS_BASELINE).forEach(id=>{ delete CARD_DEFS_BASELINE[id].unattainable; if(liveCards[id]) delete liveCards[id].unattainable; }); try{ invalidateCardDefs(); }catch(e){} 1")
     # Energy refills 1 every 5 minutes now (2026-10-10), so each fresh page tops it up instead of relying on regen.
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); /* 2026-10-23 (PG): owned copies */ myCurrencies.energy=60; saveCurrencies&&saveCurrencies(); saveEnergyState({current:(typeof energyMax==='function' ? energyMax() : 20), lastRegenAt:Date.now()}); refreshEnergyHud(); 1")
+    await pg.evaluate("try{ skipTriggerLesson(); }catch(e){} 1")  # 2026-10-24 (package TT): the Triggers lesson pauses a fight until Next/Skip; these flows play as a player who has seen it
     return pg, errs
 async def nav_ok(pg, label):
     if await pg.evaluate("currentTab")=='home': 
