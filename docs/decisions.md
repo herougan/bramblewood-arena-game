@@ -4,6 +4,104 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**TT-1. Where replayable lessons live** · Decide · Tutorial · asked 2026-10-24
+- There is no help page where lessons can be replayed (the Codex has Browse, Brambles, Skills, Maps and Hall of Fame; the older lessons are one-shot dialogues and coach tips). TT put one small "Triggers lesson" button in the Skill Codex's bar: it clears the lesson, so it plays again in the next fight that shows a trigger chip (a lesson needs a real card to point at). The Skill Codex opens on Map 9, so a player who skips the lesson early cannot replay it until then. A Lessons shelf (Triggers, Pitching, Leaders, Rarity) on a Codex tab or in Settings would reach everyone sooner.
+  - Keep the button in the Skill Codex (built)
+  - A Lessons shelf in Settings, every lesson replayable
+  - A Lessons tab in the Codex, open from the start
+- **Default:** Keep the button in the Skill Codex (built)
+
+**NE-1. Nurse swap: only what you set afterwards, or the time left too?** · Decide · Economy · asked 2026-10-24
+- Owner 13:16 #26: changing the Nurse must not retroactively change an egg's remaining time. In the code an egg's, baby's or training card's hatch time is fixed when it is set in a nest (the Nurse's speed at that moment); a swap only speeds what you set afterwards. A test confirms a swap leaves an egg already warming at its time (tests/ne-2026-10-24.js, tests/e2e/ne_2026_10_24.py), and the Nest now says so under the Nurse. I could not reproduce a retroactive change. The other rule would be: the new Nurse's speed applies to the time still left of everything already growing.
+  - Only what you set afterwards (as built)
+  - The new speed applies to the time left too
+- **Default:** Only what you set afterwards (as built)
+
+**NE-2. Filters reset on every visit: the sort and the view too?** · Decide · UI · asked 2026-10-24
+- Owner 19:27: "reset all filters when i visit the codex ... (Same for the other pages)". Built: entering any page (or a Codex / Play sub-tab) clears every filter (types, animal, phylum, rarity, archetype, skills, the Codex kind row, the Camp pool's kind and level, the Forge's chip and deck scope, the Brambles' filters, the Flea Market's rarity) and the search box. The sort, its direction and the view (album / compressed / full art, group by) are kept, since they are not filters. Say if those should reset too.
+  - Keep the sort and view (as built)
+  - Reset the sort and view too
+- **Default:** Keep the sort and view (as built)
+
+**NE-3. The Camp's copy fan (coordinator's proposal, built)** · Decide · UI · asked 2026-10-24
+- Owner 11:15 asked how to handle copies of different levels and treatments. Built as proposed: one stacked tile per card; a click adds your best copy not in the deck (highest level first); hovering (desktop) or a long press (phone) fans out every copy you own (level, foil / Shiny / alt art), the fan stays open while the pointer is over it, and clicking a fanned copy puts exactly that copy in (the deck remembers it and fights it at its own level); copies already in the deck show greyed with a tick. The separate Shiny / alt-art / finish stacks and the 'Finishes stacked / apart' toggle went. Object if you want something else.
+  - Keep the fan
+  - Change it
+- **Default:** Keep the fan
+
+**EN5-2. Breach and Puncture are the same rule: merge them?** · Decide · Skills · asked 2026-10-24
+- Breach N (built, 1.9 a point) deals N to the enemy bramble on every landed melee hit. Puncture N (on 3 cards, priced 0.7 at scale half: 0.7 / 1.4 / 1.4) already does exactly that. The robust skill test read both the same: Breach 1 / 2 worth 1.82 / 3.76, Puncture 1 / 2 1.86 / 3.73 (docs/balance/en5-breach-states-2026-10-24.md), so Puncture is under-priced today. Options: rename Puncture to Breach (one skill, its 3 cards re-fitted at 1.9 a point), keep both but price Puncture like Breach, or leave Puncture as it is.
+  - Merge: Puncture becomes Breach
+  - Keep both, Puncture priced like Breach
+  - Leave Puncture as it is
+- **Default:** Merge: Puncture becomes Breach
+
+**EN5-3. Canopy Cover: where the trees are, and its price** · Decide · Skills · asked 2026-10-24
+- Built: a ground unit (no Flying; a grounded flyer counts) dodges 1 in 2 single-target attacks, shots and skills, like Evasive (one roll, not on top of Evasive), while the field has trees: any fight on a forest-biome map (Maps 1, 7, 13 and the forest side maps, the first skirmish too), the Old Woods terrain, High Canopy, or the Undergrowth. That is 40 of the 267 conquest fights (15%). Priced as a half-miss skill on the field: Evasive's x1.37 on the stats, times an uptime of 0.4 (a forest card is mostly played on the maps it is won on): x1.15. On the Fawn Scout (Map 13): 2/9 -> 2/7.
+  - As built (uptime 0.4)
+  - Uptime 0.15 (the share of all fights)
+  - Also on jungle / rainforest maps when they come
+- **Default:** As built (uptime 0.4)
+
+**EN5-4. The state skills' prices and cards (Timbered, Bedrock, Forged, Last Stand)** · Decide · Skills · asked 2026-10-24
+- Stone and Metal are real counts in a fight (pitching a Stone card, Quarry, the Petrified Tree's Stone, the Ore-Smelter Mole's Metal; Stone / Metal costs spend them), so the skills read them directly. Measured how often each state holds (docs/balance/en5-state-uptime-2026-10-24.json, 2000 CPU fights of random live decks): 3+ Lumber 0.9% of unit-rounds (the CPU spends Lumber as it comes), 2+ Stone 0.5% even with 4 Stone makers (one card makes Stone), 1+ Metal 83% with 4 Metal makers, 0.9% without, the bramble at a third or less 10%. Priced by your 4-round rule x the uptime a deck built for it would have: Timbered {+0/+2} 2 x 0.25 = 0.5, Bedrock {Armor 1} 1.5 x 0.2 = 0.3, Forged {+1/+0} 2 x 0.5 = 1.0, Last Stand {+1/+1} 3 x 0.2 = 0.6 (the robust test read plain Last Stand 0.62, Timbered 0.38). Their braces cost the same uptime x the braces. Cards: Lodge Engineer (Timbered), Quarry Mole (Bedrock), Badger Trench Digger (Last Stand); no Forged card (the only Metal maker, the Ore-Smelter Mole, already has two skills and would hold Forged nearly always).
+  - As built
+  - Higher uptimes (cheaper to fit: fewer stats lost)
+  - Give Forged to the Ore-Smelter Mole as a third (thematic) skill
+- **Default:** As built
+
+**EN5-5. Bleed and Poison: the measured curve flattens** · Decide · Balance · asked 2026-10-24
+- Your BP-1: "price it according to your simulation. Note that bigger numbers make them stronger". tools/skill_test_robust.js --mono --multi, 3000 games a setup, with the units priced at a trial 1 a point so the decks stay off the floor (EN4's 'about 2' for Bleed 2 / Poison 2 came from decks priced at 5.2 that lost 97% of their games). Worth with companions at N 1 / 2 / 3 / 4: Bleed 3.5 / 6.2 / 6.6 / 6.3, Poison 2.9 / 5.7 / 5.9 / 5.4 (docs/balance/en5-bleed-poison-2026-10-24.md). Bigger numbers are stronger in all up to 3, but each point is worth less: the stack outlives the small units it lands on. Priced S(N) = 3.6 x N^0.6 (Bleed) and 3.0 x N^0.7 (Poison), a power curve through N 1-3: Bleed 3.6 / 5.5 / 7.0, Poison 3.0 / 4.9 / 6.5 (was 2.6 / 5.2 / 7.8 for both). So a Bleed 1 or Poison 1 card costs more than before and a Bleed 3+ card less. The actions (Bleed / Poison in triggers) and the family (Gash, Venomous, Rabid ...) are unchanged.
+  - As built (the measured power curve)
+  - Linear at the measured N 2 (Bleed 3.1, Poison 2.8 a point)
+  - Convex as you expected (re-measure on bigger units first)
+- **Default:** As built (the measured power curve)
+
+**EN5-6. EN5's re-fit: 28 cards moved, none held** · Decide · Balance · asked 2026-10-24
+- tools/en5_cards_2026_10_24.js refit (docs/balance/en5-refit-2026-10-24.json): 5 up (Komodo Warlord 1/26, Venomlord Serpent 1/23, Ice Crevasse Wolf 1/13, Green Dragon 3/22, Yellow-bellied Sea Snake 4/4), 23 down, none cut by more than a quarter (the hold line), so none held. The Bloom cards are balanced as you asked, at most 1% over N: Fungal Colossus 2/21 -> 2/14, Puffball Bombardier 1/10 -> 1/5, Lotus Frog 3/12 -> 3/6, Pond Algae 1/9 -> 1/7 (the copy's chain makes each body count for more). The six new-skill cards: Beetle Battering-Ram 5/12 -> 4/10 (Breach 2), Badger Sapper 3/16 -> 3/15 (Breach 1), Fawn Scout 2/9 -> 2/7 (Canopy Cover), Lodge Engineer 3/13 -> 3/12 (Timbered), Quarry Mole and Badger Trench Digger kept their lines. Alley Cat and Poison Dart Frog have no legal line (already on the flagged list).
+  - Keep the re-fit
+  - Hold the Bloom cuts (Puffball, Lotus Frog lose half)
+  - Revert the down-moves
+- **Default:** Keep the re-fit
+
+**EN5-7. The snap check found a Guardian's step-in jumping 23 px** · Decide · UI · asked 2026-10-24
+- tests/e2e/snaps.py crashed ("Cannot set properties of null (setting 'speedMult')", on HEAD too): a fresh profile's deck holds 3 Dolphin Knights it does not own, so the fight never started (PG's copy check). Fixed in the script (it owns its deck, as the other e2e scripts). Now it runs (random plays, so counts vary): the two phone runs are clean, the two 1366 runs (4-3, 4-5) report snaps, and every one looked at is a Guardian token stepping in (has-guard, en2-guarding) that moves 13-48 px between two frames with nothing animating it. EN2 / EN3's Guardian step-in pose, not EN5. Fix it in the next UI package?
+  - Fix the Guardian step-in's snap next
+  - Leave it
+- **Default:** Fix the Guardian step-in's snap next
+
+**BV-1. The camera no longer leans or turns toward the cards** · Confirm · Battle UI · asked 2026-10-24
+- Your 17:01 #6 ('the battlefield should only move to zoom out or capture cards outside the field of vision'). Built: the jump-and-rubber-band was the snap guard mistaking a camera zoom for a card snap (fixed). On a computer the camera also leaned 40% of the way toward the cards' centre and turned up to 3 degrees toward them whenever cards sat outside the middle five columns (setBoardLean, 2026-10-12); that is gone too: the camera now shifts only as far as it takes to bring a card that would be off screen into view.
+  - Keep it: no lean, no turn (built)
+  - Bring back the 3 degree turn only
+  - Bring back the lean and the turn
+- **Default:** Keep it: no lean, no turn (built)
+
+**BV-2. 13:16 #24: which 'code above the deck'?** · Clarify · Battle UI · asked 2026-10-24
+- No skirmish code (like 4-3) is drawn above a deck during a fight; the code only shows on the VS screen. The one thing above a deck is the enemy's hand count ('3 🃏') over their Deck, which on a phone was cut in half by the top of the screen. Built: on phones it now sits just inside their Deck's top edge, smaller (8.5 px). If you meant something else, a screenshot would pin it.
+  - That was it (built)
+  - Hide the hand count on phones
+  - It was something else (screenshot)
+- **Default:** That was it (built)
+
+**BV-3. 13:16 #23: the Shield symbol that vanished: which card?** · Clarify · Effects · asked 2026-10-24
+- Playing Tide Pool Crab, Conch Crawler and Armadillo Guard (yours and the CPU's, on a Flood map too) keeps the 💠 Shield chip through the play and the round in every test. One real gap was found and fixed: a unit that joins the board mid-round (a token, a summon, a Shield Call shield) got a replay snapshot without its Shield, so the round's next redraw dropped its 💠 chip and blue Health (replayGuardSnap). If you still see it, the card's name (or a screenshot) would let it be reproduced.
+  - Fixed (built)
+  - Still happens with a card I'll name
+- **Default:** Fixed (built)
+
+**BV-4. Day/night change: keep the faint creep from the left?** · Confirm · Effects · asked 2026-10-24
+- Your 19:27 #20 ('the whole transition should be gentle'). Built: the copy of the new light that crept in from the left (your 10-16 request) now crosses in 8.5 s at an even pace and peaks at 10% (it shot across in about a second at 20%); the old tint holds while the new one comes in over it, and everything follows one sine curve over 10 s. It could also go entirely, leaving one even fade.
+  - Keep the faint creep (built)
+  - Remove the creep: one even fade
+- **Default:** Keep the faint creep (built)
+
+**BV-5. 19:27 #20: the 'parallel bars' on some maps** · Clarify · Effects · asked 2026-10-24
+- Two bar effects were made 50% more transparent / replaced: dusk's static shadow bars (FX.B.dusk, .35 -> .175) and the River Rapids current (Sunken Hollow), which was evenly spaced stripes and is now soft random streaks at about a third of the strength. Note: the short paired marks all over the Sunken Hollow board in your screenshot are reeds painted into the map's floor art (assets/maps/m2.png), not an effect; they can be toned down too if you mean those.
+  - Those two were it (built)
+  - Also tone down the reeds in the map art
+- **Default:** Those two were it (built)
+
 **PRO-2. What does beating a PRO fight give?** · Decide · Rewards · asked 2026-10-24
 - Built: nothing. The fight runs like the map's skirmishes (its castle and Shield, the PRO's field, the enemy at Level 1, the Smart CPU the deck was measured with, from Map 2 its showcase card as leader) but costs no Energy and pays no rank, cards, Maple Leaves, XP or quest counts; the results say "3-PRO-1 is a PRO fight: no rewards". A cosmetic option: a small PRO flag on your profile per map beaten (no gameplay value).
   - Nothing (built)
