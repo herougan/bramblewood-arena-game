@@ -151,7 +151,7 @@ function dodges(rules, id, seed){ const {e, P} = mk(rules, seed || 11); put(e, P
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-24 additions \(package EN5\)/.test(cat) && /Deadly Poison/.test(cat), 'docs/effects-catalogue.md: EN5');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN5-1', 'EN5-2', 'EN5-3', 'EN5-4', 'EN5-5', 'EN5-6', 'EN5-7'].every(i=> ids.includes(i)), 'decisions EN5-1 .. EN5-7');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN5/.test(cl.slice(0, 3000)), 'CHANGELOG: EN5 at the top'); }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN5/.test(cl.slice(0, 60000)), 'CHANGELOG: EN5 near the top'); /* 2026-10-24: later packages sit above it */ }
 
 // ---- snaps.py: the speedMult crash ----------------------------------------------------------------------------------------------
 { const py = fs.readFileSync(path.join(ROOT, 'tests/e2e/snaps.py'), 'utf8'); ok(/EN5/.test(py), 'tests/e2e/snaps.py: the speedMult crash fixed (EN5 note)'); }

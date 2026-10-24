@@ -45,8 +45,9 @@ const NEST_UNLOCKS = new Function(block('const NEST_UNLOCKS = [', '\n];') + '\nr
 const nestOff = NEST_UNLOCKS.filter(u=> !charted(u.map)).map(u=> u.map);
 ok(nestOff.includes(25) && nestOff.includes(30), `nests on uncharted maps: ${nestOff.join(', ')}`);
 const nestHTML = fn('nestKeeperHTML');
-ok(/if\(!mapIsCharted\(u\.map\)\) return `[^\n]*\$\{UNCHARTED_LOCK\}/.test(nestHTML), 'an unbuilt nest on an uncharted map shows the uncharted lock, no map number');
-ok(/mapIsCharted\(nx\.map\) \? ` The next one opens on Map \$\{nx\.map\}\.` : ` The next one \$\{UNCHARTED_LOCK\.toLowerCase\(\)\}\.`/.test(nestHTML), 'the nest count line too');
+// 2026-10-24 (package NE, owner 17:01 #10: "Don't say when the nest opens. Just say it's locked for now."): no map number, the uncharted lock replaced by Locked for now
+ok(!/The next one opens on Map/.test(nestHTML) && /nest-locked-now|ne-locked-now|Locked for now|TX\('ui\.ne-/.test(nestHTML), 'an unbuilt nest shows Locked for now, no map number');
+ok(!/opens on Map \$\{nx\.map\}/.test(nestHTML), 'the nest count line too: no map number');
 
 const FORGE_TIERS = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'upgrade-costs.json'), 'utf8')).forgeTiers; // 2026-10-23 (HUB2): the tiers' maps are canonical/upgrade-costs.json
 ok(FORGE_TIERS.filter(t=> t.map && !charted(t.map)).length >= 2, 'Forge tiers 4 and 5 wait on uncharted maps (26, 31)');
