@@ -95,7 +95,7 @@ ok(/else if\(ev\.type==='rebuild'\) base = 560;/.test(fnSrc('delayForEvent')), '
 // The look: the castle bar's running number goes up during the replay (capped), the planks fly, "+N" on the HP bar.
 { const calls = [], timers = [];
   const ctx = {out:{}, matchState:{resolving:true, displayHqHp:{A:40, B:30}, players:{1:{hq:{hp:44, maxHp:44}}, 2:{hq:{hp:30, maxHp:60}}}},
-    SoundKit:{woodKnock(){ calls.push('knock'); }, healTone(){ calls.push('heal'); }}, w2Later:(ms, fn)=> fn(), setTimeout:(fn, ms)=>{ timers.push(ms); fn(); },
+    SoundKit:{woodKnock(){ calls.push('knock'); }, healTone(){ calls.push('heal'); }}, w2Later:(ms, fn)=> fn(), pl2BrambleMendFx:()=>{} /* 2026-10-25 (release): PL2's mend glow */, setTimeout:(fn, ms)=>{ timers.push(ms); fn(); },
     hqTileEl:s=> ({side:s, classList:{contains:()=> true}, animate(){ calls.push('thunk'); }}), boardCardEl:u=> ({uid:u}), reducedMotion:()=> false, fxLevel:()=> 'high',
     floatGlyphs:(a, b, g)=>{ calls.push('glyphs:' + g.join('')); }, updateHqHpDisplay:s=> calls.push('bar:' + s), floatText:(el, t, c)=> calls.push('float:' + t + ':' + c), hqRibbonFloatAnchor:s=> ({anchor:s})};
   vm.runInNewContext(fnSrc('rebuildVfx') + '\nout.f = rebuildVfx;', ctx);

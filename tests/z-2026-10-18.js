@@ -124,7 +124,7 @@ ok(/if\(m\.towerEnergyPaid > 0\) bumpQuestCounter\('energyConquest', m\.towerEne
 ok(/TX\('results\.tower-refunded', \{n: m\.towerRefunded\}\)/.test(src) && /TX\('results\.tower-replay'\)/.test(src), '3. the results say "refunded" / "no reward"');
 ok(/\$\{done && node\.tower \? ' is-free-replay' : ''/.test(src) && /<span class="map-node-free">\$\{escapeHtml\(TX\('ui\.tower-free-tag'\)\)\}<\/span>/.test(src), '3. cleared floors on the map: blue-grey with "0 reward · free"');
 ok(/\.map-node\.done\.is-free-replay\{background-color:#8fa3b8;/.test(tpl) && /\.map-node \.map-node-free\{/.test(tpl), '3. the blue-grey CSS');
-ok(/const energyCost = selectedNode\.virtual \? 0 : fightEnergyCost\(map, selectedNode\)/.test(src) && /const c = fightEnergyCost\(f\.map, f\.node\), short/.test(src), '3. the panel and Play again use the free cost');
+ok(/const energyCost = (?:selectedNode\.virtual|\(selectedNode\.virtual \|\| selectedNode\.pro\)) \? 0 : fightEnergyCost\(map, selectedNode\)/.test(src) && /const c = fightEnergyCost\(f\.map, f\.node\), short/.test(src), '3. the panel and Play again use the free cost'); // 2026-10-25 (release): PL2's PRO preview is free too
 { // the Spire card: rule line, the next floor's refundable cost, and at the summit the free replay line
   const towerSrc = fnSrc('towerCardHTML'); const nodes = Array.from({length:50}, (_, i)=> ({key:'20-TW-' + (i + 1), kind:(i + 1) % 10 ? 'elite' : 'boss'}));
   const card = done=> new Function('CONQUEST_MAPS', 'isMapUnlocked', 'dungeonFloorProgress', 'enemyDeckLevel', 'compassDiamondSVG', 'escapeHtml', 'escapeAttr',
