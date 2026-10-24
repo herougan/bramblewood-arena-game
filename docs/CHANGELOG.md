@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 release 10-24b (batch: BV, EN5, NE, TT, PRFIX)
+- Board visuals (wind turn, tide, camera, castle drop, smoke, pack shine, night water, squashed cards, snail shields), Breach, Canopy Cover, Timbered/Bedrock/Forged/Last Stand, Bleed/Poison curve, Bloom chains, Deadly Poison, Group Dungeon people; Nest/Camp/Codex/deck editor; Triggers lesson.
+- Release fixes: tests follow NE and TT (the Triggers lesson pauses a fight until Next/Skip); disk cleanup (old worktrees) ended the browser crashes.
+- Checks: full unit tier, no new failures against 10-24a after the test updates; ui_smoke 0 failures; flows 0 issues; pr 33/33; card-matrix golden refreshed.
+
 ## 2026-10-24 (package PRFIX: the PR test follows TT's Triggers lesson)
 - **No game change.** `tests/pr-2026-10-23.js` failed 2 checks on batch-1023e (a repeat 0-1 win whose drop roll hits paid nothing; Map 1 not
   open after Map 0). Both were the test's: TT's Triggers lesson pauses the fight on its first trigger chip (as TT intends) and the test never
