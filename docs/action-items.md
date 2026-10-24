@@ -1,5 +1,9 @@
 # Action items
 
+## Where docs live
+
+Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
+
 ## 10-23 20:50: open items after the audit (queued in this order)
 
 An audit of every dated section below sorted built from not built (evidence in git and the CHANGELOG). These are the genuinely open ones, queued after the current list (rewards RW5, map, board visuals, camp/nest/codex, triggers tutorial).

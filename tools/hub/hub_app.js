@@ -98,7 +98,7 @@
   hub.onShow.cards = buildCards;
 
   // ---------- global search ----------
-  const TYPES = {'Card':'🎴', 'Decision':'🗳️', 'Action items':'🎯', 'Changelog':'🗒️', 'Design':'📐', 'Fight':'⚔️', 'Dialogue':'💬', 'Guide':'🧠'};
+  const TYPES = {'Card':'🎴', 'Decision':'🗳️', 'Action items':'🎯', 'Changelog':'🗒️', 'Design':'📐', 'Fight':'⚔️', 'Dialogue':'💬', 'Guide':'🧠', 'Library':'📖', 'History':'🕰️'};
   const ORDER = Object.keys(TYPES);
   const IDX = CARDS.cards.filter(c=> !c.test).map(c=> ({type:'Card', label:c.name, sub:`${rarName(c.r)} · ${c.sk.map(skLabel).join(', ') || 'no skills'}`, hay:c.hay, text:c.where, go:{card:c.id}, c}))
     .concat(SEARCH.map(r=> ({type:r[0], label:r[1], sub:r[2], hay:(r[1] + ' ' + r[2] + ' ' + r[3]).toLowerCase(), text:r[3], go:r[4]})));

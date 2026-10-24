@@ -4,7 +4,7 @@ the Effects Lab and the Visual Library, plus links to every other related page.
     python3 tools/hub/build_hub.py   (run tools/effects-lab/build.py first)
 The artifact limit is 511 files per version, so near-duplicate screenshots are pruned
 (perceptual hash, same area) until the whole hub fits."""
-import json, os, re, shutil, html as H
+import json, os, re, shutil, sys, html as H
 import markdown
 from PIL import Image
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
@@ -210,6 +210,21 @@ guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
   f'<h2>Read before…</h2><table><thead><tr><th>Task</th><th>Doc</th></tr></thead><tbody>{rows}</tbody></table>'
   '<h2>The docs</h2><p class="note">Snapshots of the project docs at build time. The project copy is the source of truth. Pick one in the table above.</p>' + docs_html + '</div>')
 
+# 2026-10-24 (package HUB4, owner G2 / item 71: "Everything within the master hub. Move the other .md files that are still relevant."): the 📖 Library tab
+# (tools/hub/library.py): every docs/**/*.md except docs/balance and docs/art, canonical + reference rendered, dated snapshots in a collapsed History
+# group rendered on demand. Docs that already have a tab (Design sheets, Claude's guide docs, Skills, Action items, Changelog, Decisions, Progression
+# plan) are linked to it, not repeated. The library is inline HTML in index.html: no extra files. (Tab id "doclib": "library" is the Visual Library.)
+sys.path.insert(0, os.path.join(ROOT, 'tools', 'hub'))
+import library as LIBMOD
+_else = {f: ('design', '📐 Design', f'design-{f[:-3]}') for t, f in _dz}
+for t, f, src in GUIDE:
+    if doc_src(f, src) is not None: _else.setdefault(f, ('guide', "🧠 Claude's guide", f'doc-{f[:-3]}'))
+for f in SKILLS: _else['skills/' + f] = ('guide', "🧠 Claude's guide", None)
+LIB_HTML, LIB_COUNTS = LIBMOD.build(ROOT, md_html, anchor, _txt, _else, SEARCH)
+print('library:', LIB_COUNTS)
+LIB_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'library_tab.css'), encoding='utf-8').read()
+LIB_JS = open(os.path.join(ROOT, 'tools', 'hub', 'library_tab.js'), encoding='utf-8').read()
+
 
 # Decisions tab (2026-10-08, user: "the decisions.md should be in the artefact too, with filters and
 # a search bar. Once decided, it moves to DONE. The main decisions tab is for decisions that are YET
@@ -374,6 +389,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('📚', 'progress', 'Progression plan', 'Your definitions (base, skirmish base, Packs 1-3, faction pool ...), targets vs today, cards by advancement, mistakes, balancing suggestions'),  # 2026-10-23 (package HUB3)
   ('🧬', 'deckopt', 'Deck optimizer', 'The strongest deck per map, the difficulty ladder and how far each fight deck sits below it (tools/opt/deckopt.js)'),  # 2026-10-24 (owner 23:48)
   ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
+  ('📖', 'doclib', 'Library', 'Every doc in docs/: canonical and reference docs to read here, dated snapshots under History'),  # 2026-10-24 (package HUB4)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -641,7 +657,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{PP_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{PP_CSS}</style><style>{LIB_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -665,6 +681,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-decisions" aria-controls="p-decisions" data-tab="decisions">🗳️ Decisions</button>
 <button role="tab" id="t-design" aria-controls="p-design" data-tab="design">📐 Design</button>
 <button role="tab" id="t-changelog" aria-controls="p-changelog" data-tab="changelog">🗒️ Changelog</button>
+<button role="tab" id="t-doclib" aria-controls="p-doclib" data-tab="doclib">📖 Library</button>
 <button role="tab" id="t-lab" aria-controls="p-lab" data-tab="lab">✨ Effects Lab</button>
 <button role="tab" id="t-playground" aria-controls="p-playground" data-tab="playground">🧪 VFX Playground</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
@@ -702,6 +719,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
+<section class="panel" id="p-doclib" role="tabpanel" aria-labelledby="t-doclib" hidden>{lazy(LIB_HTML)}</section>
 <section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{lazy(design_html)}</section>
 <section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{lazy(guide)}</section>
 </main>
@@ -768,7 +786,7 @@ function show(id, keepScroll){{
   try{{ localStorage.setItem('hub.tab', id); }}catch(e){{}}
 }}
 hub.show = show; hub.showSub = (id)=> showSub(id);
-function showSub(id){{ const pane = document.getElementById(id); if(!pane) return; const g = pane.dataset.group;
+function showSub(id){{ const pane = document.getElementById(id); if(!pane) return; const g = pane.dataset.group; stamp(pane);
   document.querySelectorAll('.subpane[data-group="'+g+'"]').forEach(p=> p.hidden = p !== pane);
   document.querySelectorAll('.subtabs[data-group="'+g+'"] button').forEach(b=> b.setAttribute('aria-pressed', String(b.dataset.show === id)));
   document.querySelectorAll('a.jump').forEach(a=> a.classList.toggle('is-on', a.getAttribute('href') === '#'+id)); }}
@@ -785,6 +803,7 @@ document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
 <script>const CARDS = {CARDS_JSON};
 const SEARCH = {SEARCH_JSON};
 {HUB_JS}
+{LIB_JS}
 {SC_INLINE}
 {UT_INLINE}
 {PP_INLINE}
