@@ -145,7 +145,7 @@ async def run(b, url, w):
     # #5: a heal bounces, damage does not
     r = await pg.evaluate(E(f"""const m = matchState, rc = m.replayCards[{u['1:-1']}]; const sp = ()=> boardCardEl({u['1:-1']}).querySelector('.stats .hp');
       gsap.globalTimeline.timeScale(.15); rc.hp = 30; rc.maxHp = 34; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 20)); rc.hp = 34; updateCardHpDisplay({u['1:-1']});
-      let up = 1; const t0 = performance.now(); while(performance.now() - t0 < 2500){ const n = sp().querySelector('.pl2-num'); if(n){ const s = +gsap.getProperty(n, 'scale') || 1; if(Math.abs(s - 1) > Math.abs(up - 1)) up = s; } await new Promise(r=> requestAnimationFrame(r)); }
+      let up = 1; const t0 = performance.now(); while(performance.now() - t0 < 2500){{ const n = sp().querySelector('.pl2-num'); if(n){{ const s = +gsap.getProperty(n, 'scale') || 1; if(Math.abs(s - 1) > Math.abs(up - 1)) up = s; }} await new Promise(r=> requestAnimationFrame(r)); }}
       gsap.globalTimeline.timeScale(1); await new Promise(r=> setTimeout(r, 2500)); rc.hp = 30; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 120));
       return {{upScale: up, downWrapped: !!sp().querySelector('.pl2-num'), text: sp().textContent}};"""))
     ok(abs(r['upScale'] - 1) > .03 and not r['downWrapped'] and r['text'].strip().endswith('30'), f'22:28 #5 a Health rise bounces (mid-bounce scale {r["upScale"]:.2f}); damage writes the number plainly {r}')
@@ -225,10 +225,11 @@ async def run(b, url, w):
 
     # ---------------- 00:02 #6: the one-step trigger lesson
     pg = await page(b, url, w, DONE_TIPS)
-    await pg.evaluate("(()=>{ ['tl-what','tl-when','trig-off','trig-on'].forEach(k=> coachSeen.delete(k)); coachSeen.add('castle-shield'); })()")  # (the bramble's Shield tip would come first)
+    await pg.evaluate("(()=>{ ['tl-what','tl-when','trig-off','trig-on'].forEach(k=> coachSeen.delete(k)); ['castle-shield', 'leader', 'wait', 'lumber', 'handLimit'].forEach(k=> coachSeen.add(k)); try{ passiveTipCandidates().forEach(t=> t && !/^tl-/.test(t.id) && coachSeen.add(t.id)); }catch(e){} })()")  # (other first-time tips would come first)
     await pg.evaluate(BOARD + "('m11', '20-7', [['otter-kit', 0, 9]], [['forager-ant', 0, 9]])")
-    # (another first-time tip may come first in maybeShowCoachTip's order: the lesson's own tip is shown directly)
-    await pg.evaluate("(async()=>{ matchState.resolving = false; try{ hideCoachTip(); }catch(e){} const t = triggerLessonTip(matchState); if(t) showCoachTip(t); await new Promise(r=> setTimeout(r, 2200)); })()")
+    # (another first-time tip may come first in maybeShowCoachTip's order: the lesson's own tip is shown directly; BOARD skips the lesson, so its ids are cleared after it)
+    dbg = await pg.evaluate("(async()=>{ matchState.resolving = false; window.maybeShowCoachTip = ()=>{}; try{ hideCoachTip(); }catch(e){} ['tl-what','tl-when','trig-off','trig-on'].forEach(k=> coachSeen.delete(k)); const t = triggerLessonTip(matchState); let a = null; if(t){ a = t.anchor(); showCoachTip(t, a); } const now = !!document.querySelector('.coach-tip'); await new Promise(r=> setTimeout(r, 2200)); return {t: t && t.id, a: !!a, now, over: matchState.over, mode: matchState.mode, admin: !!matchState.adminTest, later: !!document.querySelector('.coach-tip')}; })()")
+    print('  (lesson probe)', dbg)
     r = await pg.evaluate("(()=>{ const t = document.querySelector('.coach-tip'); return t ? {id: coachOpen && coachOpen.tip.id, text: t.querySelector('.coach-text').textContent, btns: [...t.querySelectorAll('button')].map(b=> b.textContent.trim())} : null; })()")
     ok(r and r['id'] == 'tl-what' and 'read the card' in r['text'] and r['btns'] == ['Got it'], f'00:02 #6 one step: "This chip is a trigger — read the card." with Got it {r}')
     await shot(pg, 'trigger-lesson', w)

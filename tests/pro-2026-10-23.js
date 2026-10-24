@@ -199,7 +199,7 @@ async function browser(){
       // ---- the skirmish editor's row
       const ed = await pg.evaluate("(async()=>{ endMatch(); switchTab('play'); openSkirmishEditor('mc', '3-2'); await new Promise(r=> setTimeout(r, 300)); const f = document.querySelector('#skirmishEditorOverlay .pro-editor'); return {shown: !!f, keys: f ? [...f.querySelectorAll('[data-pro-start]')].map(b=> b.dataset.proStart) : []}; })()");
       ok(ed.shown && JSON.stringify(ed.keys) === JSON.stringify(data.maps.mc.pro.concat(data.maps.mc.bpro || []).map(e=> e.id)), '4. the skirmish editor shows its map\'s PRO and BPRO fights ' + JSON.stringify(ed));
-      await pg.click('#skirmishEditorOverlay [data-pro-start="3-PRO-1"]'); await pg.waitForTimeout(900); await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1000); // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
+      await pg.click('#skirmishEditorOverlay [data-pro-start="3-PRO-1"]'); await pg.waitForTimeout(900); if(!(await pg.evaluate('!!matchState'))){ await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1000); } /* (Map 3 not open yet for this player: it starts at once) */ // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
       const fromEd = await pg.evaluate("({pro: matchState && matchState.proFight, overlay: (document.getElementById('skirmishEditorOverlay') || {}).hidden})");
       ok(fromEd.pro === '3-PRO-1' && fromEd.overlay === true, '4. its Fight button closes the editor and starts the fight ' + JSON.stringify(fromEd));
       const unknown = await pg.evaluate("(()=>{ endMatch(); return startProFight('9-PRO-9'); })()");

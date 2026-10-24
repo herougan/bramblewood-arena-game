@@ -23993,7 +23993,7 @@ let conquestSelectedNodeKey = null;
     if((down && down.inMatch) || (e.target && e.target.isConnected === false)) return;
     const panel = document.getElementById('conquestNodePanel'); if(!panel || panel.hidden) return;
     if(down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
-    if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip')) return;
+    if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip, [data-pro-start]')) return; // + a PRO fight's button: it just opened the panel (PL2, 2026-10-25)
     conquestSelectedNodeKey = null;
     try{ renderConquestSubTab(document.getElementById('playSubBody')); }catch(err){}
   });

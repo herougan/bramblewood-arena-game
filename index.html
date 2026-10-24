@@ -49323,7 +49323,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '24a3ea1f57a1', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '192fc94f7f92', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -69878,7 +69878,7 @@ let conquestSelectedNodeKey = null;
     if((down && down.inMatch) || (e.target && e.target.isConnected === false)) return;
     const panel = document.getElementById('conquestNodePanel'); if(!panel || panel.hidden) return;
     if(down && Math.hypot(e.clientX - down.x, e.clientY - down.y) > 6) return;
-    if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip')) return;
+    if(e.target.closest && e.target.closest('#conquestNodePanel, .map-node, #conquestFightFab, .modal-overlay, [role=dialog], .toast, .coach-tip, [data-pro-start]')) return; // + a PRO fight's button: it just opened the panel (PL2, 2026-10-25)
     conquestSelectedNodeKey = null;
     try{ renderConquestSubTab(document.getElementById('playSubBody')); }catch(err){}
   });
