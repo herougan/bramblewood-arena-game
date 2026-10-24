@@ -2471,7 +2471,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eq2-log-strike-bramble": "🦑 {name} finds no unit and hits your bramble for {dmg}.",
   "ui.eq2-guarded": "🦺 Guarded",
   "ui.eq2-pat-single": "One unit (a Guardian can step in)",
-  "ui.en7-float-poison": "🤢{n}",
+  "ui.en7-float-poison": "☠{n}",
   "ui.en7-float-bleed": "🩸{n}",
   "ui.en7-float-aloft": "☁️ Aloft",
   "ui.en7-float-under": "🌊 Under",

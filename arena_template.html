@@ -2126,6 +2126,12 @@
   .hq-hit-flash-big{animation:hqHitFlashBig 560ms ease;}
   @keyframes hqHitFlashBig{0%{box-shadow:0 0 0 0 transparent; transform:scale(1);}20%{box-shadow:0 0 0 9px var(--danger); filter:brightness(1.55) saturate(1.7); transform:scale(1.07);}60%{box-shadow:0 0 0 3px var(--danger); transform:scale(1.02);}100%{box-shadow:0 0 0 0 transparent; filter:none; transform:scale(1);}}
   .hq-hit-burst{left:50%; top:50%; font-size:34px;}
+  /* 2026-10-25 (package PL2, 21:54): the bramble's hit flash, its chips (shared with a repair) and a repair's rim (pl2BrambleHitFx / MendFx) */
+  .pl2-hq-flash{position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; background:radial-gradient(ellipse at 50% 35%, rgba(255,255,255,.95), rgba(255,236,200,.55) 45%, rgba(255,220,170,0) 75%);}
+  .pl2-chip{position:fixed; z-index:1240; pointer-events:none; border-radius:2px 3px 2px 4px; box-shadow:inset -1px -1px 0 rgba(0,0,0,.35), inset 1px 1px 0 rgba(255,236,200,.25);}
+  .card-tile.pl2-hq-mend{animation:pl2HqMend .76s ease-out;}
+  @keyframes pl2HqMend{0%{box-shadow:0 0 0 0 rgba(140,230,120,0);} 30%{box-shadow:0 0 0 4px rgba(140,230,120,.8), 0 0 16px 4px rgba(200,255,170,.55);} 100%{box-shadow:0 0 0 0 rgba(140,230,120,0);}}
+  @media (prefers-reduced-motion: reduce){ .card-tile.pl2-hq-mend{animation:none;} }
   .dmg-float.hq-big{font-size:38px; color:var(--dmg-float-color); z-index:60;} /* 2026-10-03: same look as unit damage numbers (was a smaller 22px red), just a touch bigger */
   /* 2026-09-17, per explicit request ("battlefield card size is too small, needs to be
      bigger"): bumped from 116x132 — fitBattlefieldZoom() (arena_app.js) reads this size back
@@ -6477,6 +6483,12 @@
   .bf-hp-label{font-size:13px; white-space:nowrap; max-width:30%; overflow:hidden; text-overflow:ellipsis;}
   .bf-hp-track{flex:1; height:12px; border-radius:999px; background:rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.25); overflow:hidden;}
   .bf-hp-fill{display:block; height:100%; background:linear-gradient(90deg,#4fbf5a,#8be07a); transition:width .35s ease;}
+  /* 2026-10-25 (package PL2, owner 22:28 #7): the fill eases (pl2RibbonFill) over a pale chip of the Health just lost, which drains after it. */
+  .bf-hp-track{position:relative;} .bf-hp-track > .bf-hp-fill{position:relative; z-index:1;}
+  .bf-hp-track > .pl2-hp-chip{position:absolute; left:0; top:0; bottom:0; width:0; z-index:0; border-radius:inherit; background:linear-gradient(90deg, rgba(255,240,214,.85), rgba(255,214,170,.95)); pointer-events:none;}
+  .bf-hp.pl2-mend .bf-hp-fill{animation:pl2Mend .7s ease-out;}
+  @keyframes pl2Mend{0%{box-shadow:inset 0 0 0 0 rgba(255,255,255,0);} 30%{box-shadow:inset 0 0 8px 2px rgba(220,255,200,.95);} 100%{box-shadow:inset 0 0 0 0 rgba(255,255,255,0);}}
+  @media (prefers-reduced-motion: reduce){ .bf-hp.pl2-mend .bf-hp-fill{animation:none;} }
   .bf-hp-enemy .bf-hp-fill{background:linear-gradient(90deg,#d8553f,#ff8f6e);}
   .bf-hp.is-low .bf-hp-fill{background:linear-gradient(90deg,#c0392b,#ff6b5e);}
   .bf-hp-num{font-size:22px; line-height:1; font-variant-numeric:tabular-nums; min-width:64px; text-align:right;}
@@ -9273,7 +9285,7 @@
      normal, L2 over L1 ..."): the Shield's layers are full-length overlays on the bar's track, each a little see-through (3% to 12%, uneven);
      the fill animation and the break effect come from ribbonShieldSync / ribShieldBreakVfx in arena_app.js. */
   .bf-hp-track{position:relative;}
-  .bf-sh-stack{position:absolute; inset:0; pointer-events:none;}
+  .bf-sh-stack{position:absolute; inset:0; pointer-events:none; z-index:2; /* PL2 (2026-10-25): above the fill, which is position:relative now */}
   .bf-sh{position:absolute; left:0; top:0; bottom:0; width:0; opacity:var(--sh-alpha, .95); background:linear-gradient(180deg, var(--sh-a, #9fd0ff), var(--sh-b, #3d8bea));
     box-shadow:inset -1px 0 0 rgba(255,255,255,.75), inset 0 1px 0 rgba(255,255,255,.4); transition:width .3s ease;}
   .bf-sh-break{position:absolute; top:50%; width:0; height:0; z-index:5; pointer-events:none;}
@@ -9528,6 +9540,11 @@
      currencies."): yours sit on the field's bottom-left, theirs on its top-left. */
   #battlefieldEl > .field-res.enemy{left:12px; right:auto; top:12px; bottom:auto; justify-content:flex-start;}
   @media (max-width:699px){ #battlefieldEl > .field-res.enemy{left:6px; top:8px;} }
+  /* 2026-10-25 (package PL2, owner 00:02 #8): the opponent's pills show only while Shift is held (html.pl2-shift) or in their deck's
+     tooltip; hidden they keep their place (a gain still floats to them). */
+  .field-res.enemy{opacity:0; transition:opacity .16s ease; visibility:hidden;}
+  html.pl2-shift .field-res.enemy{opacity:1; visibility:visible;}
+  .pl2-tip-res{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px;} .pl2-tip-res .hud-pill{font-size:11px; padding:1px 7px;}
   /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
   #dropDiscard{cursor:pointer;}
   .grave-peek-badge{position:absolute; top:-8px; left:50%; transform:translateX(-50%); z-index:3; border:2px solid var(--surface); border-radius:999px; padding:1px 7px;

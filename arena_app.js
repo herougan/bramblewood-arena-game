@@ -5272,6 +5272,15 @@ const SoundKit = (()=>{
     // "one swing, multiple targets"); the on-screen label is what tells them apart.
     swipeTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
     sweepTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
+    // 2026-10-25 (package PL2, owner 00:02 #9: "Fork, pitchfork, and trident should have a slightly different or additional sfx"): the
+    // swing's swoosh (as swipeTone) and then one bright "ting" per tine, close together: the Fork two (a silver pair), the Trident three
+    // (higher, with a shimmer and a low watery swell under it), the Pitchfork four lower, duller tings over a wooden thump (a farm tool).
+    prongTone(kind){
+      tone(500,0.05,'triangle',0.06); tone(340,0.06,'triangle',0.05,0.03);
+      if(kind === 'trident'){ [1480, 1860, 2220].forEach((f, i)=> tone(f, 0.11, 'sine', 0.045, 0.07 + i*0.045)); tone(2960, 0.16, 'sine', 0.018, 0.2); tone(150, 0.22, 'sine', 0.05, 0.06); }
+      else if(kind === 'pitchfork'){ noise(0.035, 0.07); tone(120, 0.08, 'sine', 0.06, 0.05); [880, 990, 1100, 1240].forEach((f, i)=> tone(f, 0.07, 'triangle', 0.04, 0.08 + i*0.035)); }
+      else { [1320, 1760].forEach((f, i)=> tone(f, 0.1, 'sine', 0.05, 0.07 + i*0.05)); }
+    },
     // Irradiation (2026-10-14, user: "Irradiation effect - sizzling sound as stats burn away - dealing irradiation damage sounds like
     // geiger counters going off"). radSizzle: a short hissing, crackling burn as a token eats a point (filtered noise, sweeping
     // down). geiger: an irregular burst of dry clicks as Irradiated N hands out tokens. Both throttled, so a board full of glowing
@@ -5878,10 +5887,18 @@ const MAP_MUSIC = {
   m10:'map_sky', my:'map_sky',
   mr:'map_forest',
 };
+// 2026-10-25 (package PL2, owner 00:02 #10: "The conquest map ost or others shouldnt start playing loudly while completing a skirmish -
+// the reward sound should finish playing first, w a quieter battlefield ost. then when i click out to the conquest map, then the ost
+// fades in."): while a finished fight's screen is still up (the results, or the board looked at after them) the fight's own theme keeps
+// playing, ducked to PL2_RESULTS_DUCK of its level, under the Victory / Defeat sting (which plays at full level); the place's theme
+// (the map's) only starts once you are off the fight, and fades in over PL2_MAP_FADE_IN seconds (was 1.5 s, right as the results came up).
+const PL2_RESULTS_DUCK = 0.3, PL2_MAP_FADE_IN = 4;
+function pl2ResultsPhase(){ try{ const m = typeof matchState !== 'undefined' ? matchState : null, tab = typeof currentTab !== 'undefined' ? currentTab : null;
+  const w = document.getElementById('appWrap'); return !!(m && m.over && tab === 'play' && w && w.classList.contains('in-match') && m.mode !== 'sandbox' && !m.testKit); }catch(e){ return false; } }
 function songbookPlace(){
   const tab = typeof currentTab !== 'undefined' ? currentTab : null;
   const m = typeof matchState !== 'undefined' ? matchState : null;
-  if(m && !m.over && tab === 'play'){ if(m.mode === 'sandbox' || m.testKit) return null; // battle music (2026-10-12)
+  if(m && (!m.over || pl2ResultsPhase()) && tab === 'play'){ if(m.mode === 'sandbox' || m.testKit) return null; // battle music (2026-10-12); + its results (PL2)
     const k = m.conquestNode && typeof baseKind === 'function' ? baseKind(m.conquestNode.kind || '') : '';
     if(m.conquestNode && m.conquestNode.kind === 'worldboss') return 'worldboss';
     if(['boss','finalboss','raidboss'].includes(k) || ['raidOnline','raidOffline'].includes(m.mode) || m.raidBoss) return 'boss';
@@ -5999,10 +6016,12 @@ const Songbook = (()=>{
     if(preview) return preview;
     return songbookPlace();
   }
+  let pl2WasResults = false; // PL2 (2026-10-25, #10): the fight's results were up the last tick
   function start(c, key){
-    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.5); bus.connect(out(c));
+    const fade = pl2WasResults ? PL2_MAP_FADE_IN : 1.5; // PL2: the map's theme after a fight's results fades in slowly
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + fade); bus.connect(out(c));
     master.gain.setTargetAtTime(vol()*LEVEL*((SONGBOOK[key]||{}).gain || 1), c.currentTime, 0.3);
-    st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false};
+    st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false, ducked:false};
   }
   function stop(){
     if(!st) return; const s = st; st = null; const c = C(); if(!c) return;
@@ -6015,6 +6034,9 @@ const Songbook = (()=>{
     if(!key){ if(st) stop(); return; }
     if(st && st.key !== key) stop();
     if(!st) start(c, key);
+    const res = !preview && pl2ResultsPhase(); // PL2 (2026-10-25, #10): the fight's theme ducks under the results
+    if(st && res !== st.ducked){ st.ducked = res; try{ st.bus.gain.cancelScheduledValues(c.currentTime); st.bus.gain.setTargetAtTime(res ? PL2_RESULTS_DUCK : 1, c.currentTime, res ? 0.25 : 1.2); }catch(e){} }
+    pl2WasResults = res || (pl2WasResults && !!st && st.ducked);
     while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
   }
   setInterval(()=>{ try{ tick(); }catch(e){} }, 300);
@@ -33415,7 +33437,7 @@ function hpRibbonHTML(m, side, label){
   const hp = Math.max(0, hq.hp), pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
   return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Bramble')+': '+hp+' of '+hq.maxHp+' health' + (hq.shield > 0 ? ' · ' + TX('ui.ui3-rib-shield', {n: hq.shield}) : ''))}">
     <span class="bf-hp-label">🏰 ${escapeHtml(label||'Bramble')}</span>
-    <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span>${ribShieldStackHTML(hq)}</span>
+    <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"${pl2RibbonFromAttr(m, side, pct)}></span>${ribShieldStackHTML(hq)}</span>
     <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
 // The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
@@ -33461,13 +33483,61 @@ function updateHpRibbon(side, hp){
   const el = document.querySelector(`[data-hpribbon="${side}"]`); if(!el) return;
   const hq = m.players[side==='A'?1:2].hq; hp = Math.max(0, hp);
   const pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
-  const f = el.querySelector('.bf-hp-fill'); if(f) f.style.width = pct.toFixed(1)+'%';
-  const n = el.querySelector('.bf-hp-num'); if(n) n.innerHTML = `${hp}<small>/${hq.maxHp}</small>`;
+  m._ribbonHp = m._ribbonHp || {}; const prevHp = m._ribbonHp[side]; m._ribbonHp[side] = hp;
+  const f = el.querySelector('.bf-hp-fill'); if(f) pl2RibbonFill(el, f, side, pct, prevHp != null && hq.maxHp > 0 ? Math.max(0, Math.min(100, prevHp/hq.maxHp*100)) : null);
+  const n = el.querySelector('.bf-hp-num'); if(n) pl2RibbonNum(n, side, prevHp, hp, hq.maxHp);
   el.classList.toggle('is-low', pct<=30);
   // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): the hit flash restarted (with a
   // forced page layout) on every HUD redraw, both castles, even with no damage; it now replays only when the castle lost Health.
-  m._ribbonHp = m._ribbonHp || {}; const prevHp = m._ribbonHp[side]; m._ribbonHp[side] = hp;
   if(prevHp != null && hp < prevHp){ el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit'); }
+  if(prevHp != null && hp > prevHp){ el.classList.remove('pl2-mend'); void el.offsetWidth; el.classList.add('pl2-mend'); setTimeout(()=> el.classList.remove('pl2-mend'), 700); } // PL2: a repair glints
+}
+// 2026-10-25 (package PL2, owner 22:28 #7: "As the battleground's bramble HP/LP bars change, they ease towards the new value (quickly)."):
+// the battlefield's bramble bars used to jump: the fill's CSS transition only ran when the same element was updated, and the HUD redraws
+// that rebuild the ribbon (most of them) put the new width straight in. Now the last width per side is kept (data-pl2pct on the fill,
+// matchState._ribPct across rebuilds): a fresh fill starts at the old width and eases to the new one in 0.42 s (fast out, soft landing).
+// Damage leaves a pale chip of the lost Health that holds a beat (0.14 s) and then drains after the fill (0.5 s), so a hit reads as a bite
+// taken out of the bar; a repair eases up with a short green glint. The number counts to its new value over the same 0.42 s.
+// Reduced motion: written at once.
+function pl2RibbonFill(rib, f, side, pct, prevPct){
+  const m = matchState; m._ribPct = m._ribPct || {};
+  const was = f.dataset.pl2pct != null ? Number(f.dataset.pl2pct) : (m._ribPct[side] != null ? m._ribPct[side] : (prevPct != null ? prevPct : pct));
+  m._ribPct[side] = pct; f.dataset.pl2pct = pct.toFixed(2);
+  const track = f.parentElement;
+  if(reducedMotion() || Math.abs(was - pct) < .05 || !f.animate){ f.style.width = pct.toFixed(1) + '%'; return; }
+  f.style.transition = 'none'; f.style.width = pct.toFixed(1) + '%';
+  try{ f.getAnimations().forEach(a=> a.cancel()); }catch(e){}
+  f.animate([{width: was.toFixed(2) + '%'}, {width: pct.toFixed(2) + '%'}], {duration: 420, easing: 'cubic-bezier(.22,.8,.3,1)'});
+  if(pct < was && track){
+    let chip = track.querySelector(':scope > .pl2-hp-chip');
+    if(!chip){ chip = document.createElement('span'); chip.className = 'pl2-hp-chip'; chip.setAttribute('aria-hidden', 'true'); track.insertBefore(chip, track.firstChild); }
+    const from = chip.getAnimations().length ? Math.max(was, parseFloat(getComputedStyle(chip).width) / Math.max(1, track.clientWidth) * 100) : was;
+    chip.getAnimations().forEach(a=> a.cancel());
+    chip.animate([{width: from.toFixed(2) + '%', opacity: 1}, {width: from.toFixed(2) + '%', opacity: 1, offset: .22}, {width: pct.toFixed(2) + '%', opacity: .85}], {duration: 640, easing: 'cubic-bezier(.45,0,.3,1)', fill: 'forwards'});
+  }
+}
+// a rebuilt ribbon (hpRibbonHTML) remembers where its bar stood; the next frame eases it from there (and counts its number)
+function pl2RibbonFromAttr(m, side, pct){
+  const was = m && m._ribPct ? m._ribPct[side] : null; if(was == null || Math.abs(was - pct) < .05) return '';
+  if(!m._ribSweep){ m._ribSweep = true; requestAnimationFrame(()=>{ m._ribSweep = false; if(matchState !== m) return;
+    document.querySelectorAll('.bf-hp-fill[data-pl2from]').forEach(f=>{ const rib = f.closest('[data-hpribbon]'), sd = rib && rib.getAttribute('data-hpribbon'); if(!sd) return;
+      const from = Number(f.getAttribute('data-pl2from')); f.removeAttribute('data-pl2from');
+      const hq = m.players[sd === 'A' ? 1 : 2].hq, hp = m.resolving && m.displayHqHp && m.displayHqHp[sd] != null ? m.displayHqHp[sd] : Math.max(0, hq.hp);
+      const to = hq.maxHp > 0 ? Math.max(0, Math.min(100, hp / hq.maxHp * 100)) : 0; f.dataset.pl2pct = from.toFixed(2);
+      pl2RibbonFill(rib, f, sd, to, from); const n = rib.querySelector('.bf-hp-num'); if(n) pl2RibbonNum(n, sd, null, Math.max(0, hp), hq.maxHp); }); }); }
+  return ` data-pl2from="${was.toFixed(2)}"`;
+}
+function pl2RibbonNum(n, side, prevHp, hp, max){
+  const m = matchState; m._ribNum = m._ribNum || {}; const st = m._ribNum[side] = m._ribNum[side] || {shown: null, raf: 0};
+  const from = st.shown != null ? st.shown : (prevHp != null ? prevHp : hp);
+  const put = v=>{ n.innerHTML = `${v}<small>/${max}</small>`; };
+  cancelAnimationFrame(st.raf);
+  if(reducedMotion() || from === hp){ st.shown = hp; put(hp); return; }
+  const t0 = performance.now();
+  const step = now=>{ const k = Math.min(1, (now - t0) / 420), e = 1 - Math.pow(1 - k, 3), v = Math.round(from + (hp - from) * e);
+    if(!n.isConnected){ const n2 = document.querySelector(`[data-hpribbon="${side}"] .bf-hp-num`); if(n2) n = n2; }
+    st.shown = v; put(v); if(k < 1) st.raf = requestAnimationFrame(step); };
+  put(from); st.raf = requestAnimationFrame(step);
 }
 // Who faces whom (2026-10-03, explicit: "Your position is either in integers or in half integers,
 // comparing your integer index, you can see who you are facing"). Same rule as the engine's
@@ -34005,9 +34075,11 @@ function renderMatchUI(){
       if(!w.el) return;
       // 2026-10-12 (user: "on hover over opponent's deck - you see their resource count"): their hand size and what they have to
       // spend, alongside the cards left.
-      const res = ()=>{ const pl = w.player, bits = [`✋ ${pl.hand.length} in hand`, `🪵 ${pl.lumber||0} Lumber`];
-        if(pl.stone) bits.push(`🪨 ${pl.stone} Stone`); if(pl.elementalEnergy) bits.push(`🔮 ${pl.elementalEnergy} Energy`); if(pl.darkness) bits.push(`★ ${pl.darkness} Darkness`);
-        return `<div class="ctt-kind">${bits.join(' · ')}</div>`; };
+      // 2026-10-25 (package PL2, owner 00:02 #8: "The opponent's resource symbols should only appear when holding shift or in the opposing
+      // deck's hover tooltip"): the field no longer shows their pills (only while Shift is held, pl2ShiftWatch); this tooltip shows the
+      // same pills (Lumber, Stone, Metal, Pearls ...) under their hand count.
+      const res = ()=>{ const pl = w.player, pills = sideResourcePillsHTML(m, pl, false);
+        return `<div class="ctt-kind">✋ ${pl.hand.length} in hand</div>` + (pills ? `<div class="ctt-kind pl2-tip-res">${pills.replace(/ id="[^"]*"/g, '')}</div>` : `<div class="ctt-kind">🪵 0</div>`); };
       const countLine = ()=> `<div class="ctt-title">${escapeHtml(w.label)} Deck</div><div class="ctt-kind">🃏 ${w.player.deck.length}/${deckTotals[w.pid]} cards left</div>` + (w.pid !== mine ? res() : '');
       const isMine = w.pid===mine;
       const tier1 = isMine ? ()=> countLine() + `<div class="dht-hint">Hold Shift for the breakdown</div>` : countLine;
@@ -42523,7 +42595,7 @@ function forkSwingVfx(ev){
   const lean = ev.aim === 'left' ? -8 : ev.aim === 'right' ? 8 : 0;
   try{ animateAttacker(ev.attUid, isMine, {leanX: lean, toCastle: lines.some(l=> l.castle) && !lines.some(l=> l.targetUid != null)}); }catch(e){}
   const am = animMs(), label = ev.kind === 'pitchfork' ? `🔱 Pitchfork${ev.aim === 'left' ? ' ⇠' : ev.aim === 'right' ? ' ⇢' : ''}` : ev.kind === 'trident' ? '🔱 Trident!' : '⇔ Fork!';
-  setTimeout(()=>{ try{ SoundKit.swipeTone(); if(attEl && attEl.isConnected) floatText(attEl, label, 'quick'); }catch(e){} }, Math.max(0, am.windup - 60));
+  setTimeout(()=>{ try{ SoundKit.prongTone ? SoundKit.prongTone(ev.kind) : SoundKit.swipeTone(); /* PL2 (2026-10-25, owner 00:02 #9): its own tings per weapon */ if(attEl && attEl.isConnected) floatText(attEl, label, 'quick'); }catch(e){} }, Math.max(0, am.windup - 60));
   const F = window.SkillFX; if(!attEl || !F || !F.forkSwing || reducedMotion() || !fxAtLeast('low')) return;
   // where each line lands: a struck card's centre, else its column on the enemy row (the board's columns line up across the divider)
   const A = attEl.getBoundingClientRect(), ax = A.left + A.width/2, ay = A.top + A.height/2;
@@ -44070,7 +44142,57 @@ function hqHitBigVfx(el, dmg){
   burst.textContent = '💥';
   el.appendChild(burst);
   setTimeout(()=> burst.remove(), 560);
+  pl2BrambleHitFx(el, tier); // PL2 (2026-10-25, 21:54): an impact flash and chips off the bramble
   if(tier >= 3) playEarthquake(tier);
+}
+// 2026-10-25 (package PL2, owner 21:54: "bramble animation should be improved as well."): one family of looks for a bramble being hit,
+// mended and destroyed. The fall (FX.C.castleSink) throws bark-and-stone pebbles and dust from its foot; a hit now throws a few of the
+// same chips off the top of the tile (more for a bigger hit, the tier of hqHitBigVfx) under a white impact flash that fades in 0.22 s;
+// a repair (rebuildVfx, a mending skill) pulls a few chips back in onto the tile, with a warm green rim and a little settle. The chips are
+// page-level spans with one Web Animation each (no filter, nothing per frame in script). Low effects or reduced motion: none of it.
+// 2026-10-25 (package PL2, owner 00:02 #8): Shift held shows the opponent's resource pills on the field (html.pl2-shift); they are
+// otherwise hidden (kept in place, transparent, so a gain's float still flies to them) and shown in the enemy deck's tooltip.
+(function pl2ShiftWatch(){
+  if(typeof window === 'undefined' || !window.addEventListener) return;
+  const set = on=>{ try{ document.documentElement.classList.toggle('pl2-shift', !!on); }catch(e){} };
+  window.addEventListener('keydown', e=>{ if(e.key === 'Shift') set(true); });
+  window.addEventListener('keyup', e=>{ if(e.key === 'Shift') set(false); });
+  window.addEventListener('blur', ()=> set(false));
+})();
+const PL2_CHIP_COLOURS =['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
+function pl2BrambleTile(el){ return el && (el.classList.contains('card-tile') ? el : (el.querySelector('.card-tile') || el)); }
+function pl2BrambleChips(tile, opts){
+  if(!tile || !tile.isConnected || reducedMotion() || (typeof fxAtLeast === 'function' && !fxAtLeast('med'))) return;
+  const r = tile.getBoundingClientRect(); if(!r.width) return; opts = opts || {};
+  const n = opts.n || 5, inward = opts.dir === 'in';
+  for(let i = 0; i < n; i++){
+    const c = document.createElement('span'); c.className = 'pl2-chip'; c.setAttribute('aria-hidden', 'true');
+    const s = 4 + Math.random() * 5; c.style.width = s.toFixed(1) + 'px'; c.style.height = (s * .75).toFixed(1) + 'px';
+    c.style.background = PL2_CHIP_COLOURS[i % PL2_CHIP_COLOURS.length];
+    const x0 = r.left + r.width * (.2 + .6 * Math.random()), y0 = r.top + r.height * (inward ? .55 : .18);
+    const ang = (-90 + (Math.random() * 2 - 1) * 70) * Math.PI / 180, d = (inward ? 34 : 28) + Math.random() * 30;
+    const dx = Math.cos(ang) * d, dy = Math.sin(ang) * d, rot = (Math.random() * 2 - 1) * 300;
+    c.style.left = x0.toFixed(1) + 'px'; c.style.top = y0.toFixed(1) + 'px'; document.body.appendChild(c);
+    const far = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) rotate(${rot.toFixed(0)}deg)`, fall = `translate(${(dx * 1.25).toFixed(1)}px, ${(dy + 38).toFixed(1)}px) rotate(${(rot * 1.4).toFixed(0)}deg)`;
+    const kf = inward ? [{transform: far, opacity: 0}, {transform: far, opacity: 1, offset: .2}, {transform: 'translate(0,0) rotate(0deg)', opacity: 1, offset: .85}, {transform: 'translate(0,2px) rotate(0deg)', opacity: 0}]
+      : [{transform: 'translate(0,0) rotate(0deg)', opacity: 1}, {transform: far, opacity: 1, offset: .45}, {transform: fall, opacity: 0}];
+    const a = c.animate ? c.animate(kf, {duration: (inward ? 560 : 520) + Math.random() * 160, delay: i * 25, easing: inward ? 'cubic-bezier(.4,0,.6,1)' : 'cubic-bezier(.2,.7,.5,1)', fill: 'both'}) : null;
+    if(a) a.onfinish = ()=> c.remove(); else setTimeout(()=> c.remove(), 700);
+  }
+}
+function pl2BrambleHitFx(el, tier){
+  const tile = pl2BrambleTile(el); if(!tile || reducedMotion()) return;
+  if(typeof fxAtLeast !== 'function' || fxAtLeast('low')){
+    const f = document.createElement('span'); f.className = 'pl2-hq-flash'; f.setAttribute('aria-hidden', 'true'); tile.appendChild(f);
+    const a = f.animate ? f.animate([{opacity: .85}, {opacity: 0}], {duration: 220 + 40 * (tier || 1), easing: 'ease-out', fill: 'forwards'}) : null;
+    if(a) a.onfinish = ()=> f.remove(); else setTimeout(()=> f.remove(), 300);
+  }
+  pl2BrambleChips(tile, {n: 2 + 2 * Math.min(4, tier || 1), dir: 'out'});
+}
+function pl2BrambleMendFx(el){
+  const tile = pl2BrambleTile(el); if(!tile || reducedMotion()) return;
+  pl2BrambleChips(tile, {n: 5, dir: 'in'});
+  tile.classList.remove('pl2-hq-mend'); void tile.offsetWidth; tile.classList.add('pl2-hq-mend'); setTimeout(()=> tile.classList.remove('pl2-hq-mend'), 760);
 }
 // "No" feedback (2026-09-17, per explicit request: "when trying to summon a card without
 // sufficient resources, it shakes red" / "when trying to discard a card that doesn't give
@@ -46562,7 +46684,8 @@ function rebuildVfx(ev){
       try{ updateHqHpDisplay(side); }catch(e){}
       try{ floatText(hqRibbonFloatAnchor(side) || castle, '🔨 +' + amt, 'heal hq-big'); }catch(e){}
       const c2 = hqTileEl(side), tile = c2 && (c2.classList.contains('card-tile') ? c2 : (c2.querySelector('.card-tile') || c2));
-      if(tile && !calm && tile.animate) try{ tile.animate([{transform:'scale(1)'}, {transform:'scale(1.045) translateY(-2px)', offset:.35}, {transform:'scale(1)'}], {duration:320, easing:'ease-out'}); }catch(e){}
+      if(tile && !calm && tile.animate) try{ tile.animate([{transform:'scale(1)'}, {transform:'scale(1.045) translateY(-2px)', offset:.35}, {transform:'scale(.99) translateY(1px)', offset:.7}, {transform:'scale(1)'}], {duration:380, easing:'ease-out'}); }catch(e){}
+      if(tile && !calm) pl2BrambleMendFx(tile); // PL2 (2026-10-25, 21:54): chips drawn back in, a green rim
       snd('woodKnock'); snd('healTone');
     }, calm ? 0 : 760);
   });
@@ -47535,7 +47658,7 @@ function renderVfxForEvent(ev){
       else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
-    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
+    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠"; PL2 (2026-10-25, owner 00:02 #4): "☠N" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
     if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
     if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }

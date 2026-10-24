@@ -122,7 +122,7 @@ async def run(b, url, w):
     await shot(pg, 'poison-float', w)
     pf = [f for f in fl if 'poison' in f['cls']]
     print('     poison float:', pf)
-    ok(pf and pf[0]['n'] == 1 and ('🤢' in pf[0]['ico'] or '1f922' in pf[0]['ico'].lower()) and pf[0]['txt'].replace('🤢', '').strip() == '2' and '+' not in pf[0]['txt'], f'the applied-Poison float is "🤢2": one icon, no plus ({pf[:2]})')
+    ok(pf and pf[0]['n'] == 1 and ('☠' in pf[0]['ico'] or '2620' in pf[0]['ico'].lower()) and pf[0]['txt'].replace('☠', '').replace('\ufe0f', '').strip() == '2'  # 2026-10-25 (PL2, owner 00:02 #4): ☠N, was 🤢N and '+' not in pf[0]['txt'], f'the applied-Poison float is "🤢2": one icon, no plus ({pf[:2]})')
     await pg.evaluate(f"(()=>{{ const el = document.querySelector('.board-card[data-uid=\"{K}\"]'); FX.D.statusLook(el, 'poison', true, 2, {{fresh:true}}); }})()")
     await pg.wait_for_timeout(900)
     await shot(pg, 'poison-pool', w)

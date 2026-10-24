@@ -146,7 +146,7 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
   ["ev.type === 'diveRise'", "ev.type === 'diveLand'", 'en7-aloft', 'en7-under', 'function en7Vfx', "TX('ui.en7-float-poison'", "TX('ui.en7-float-bleed'", 'en2GuardStepIn.lastTilt', 'EN7_TIP_APP', "['withPoison', 'withBleed'].forEach(f=>{ const x = row.querySelector", 'diveAloft: c.diveAloft'].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
   ok(!app.includes("floatText(el, '🤢 +1☠'") && !app.includes("floatText(el, '+'+ev.amount+'☠', 'poison')"), 'the applied-Poison floats are "🤢N" (no 🤢 💀 +N)');
   ok(fxd.includes('psnSink') && fxd.includes('M.poisonSink'), 'bramblewood-fx-d.js: the pool sinks as it fades (psnSink)');
-  const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; ok(TXT['ui.en7-float-poison'] === '🤢{n}' && !/\+/.test(TXT['ui.en7-float-bleed']), 'the floats: "🤢{n}", Bleed without a plus');
+  const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; ok(TXT['ui.en7-float-poison'] === '☠{n}' /* 2026-10-25 (PL2, owner 00:02 #4): ☠N, was 🤢N */ && !/\+/.test(TXT['ui.en7-float-bleed']), 'the floats: "☠{n}", Bleed without a plus');
   const html = fs.existsSync(path.join(ROOT, 'index.html')) ? fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8') : ''; ok(html.includes('function en7Vfx') && html.includes('en7DiveRise'), 'the build carries the package (index.html)'); }
 { const out = cp.execFileSync('python3', [path.join(ROOT, 'tools', 'text', 'keyify.py'), '--dry-run'], {cwd: ROOT, encoding: 'utf8'});
   ok(/0 literal edits, 0 new keys/.test(out), `keyify finds nothing to key (the RW6 note is out of the results template): ${out.trim()}`);
