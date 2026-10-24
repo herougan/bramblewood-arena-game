@@ -5301,6 +5301,10 @@
   .energy-panel .ep-admin-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
   .energy-panel .ep-admin-row .w-60{width:60px;}
   .energy-panel small{opacity:.8; font-size:12px;}
+  /* 2026-10-25 (package PL2, owner 00:02 #7): the count, the refill line, then the free Energy and the 🔋×N Use side by side */
+  .energy-panel .ep-count{font-size:20px; line-height:1.1; cursor:help;}
+  .energy-panel .ep-row{display:flex; gap:8px; align-items:stretch;} .energy-panel .ep-row > .btn{flex:1 1 auto; white-space:nowrap;}
+  .energy-panel .ep-cap-btn{flex:0 0 auto !important; display:inline-flex; align-items:center; gap:4px;}
   .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); background:var(--gold); margin-left:auto;}
   .conquest-rank-badge.rank-C{background:#c8845a;}
   .conquest-rank-badge.rank-D{background:#9c8a78;} .conquest-rank-badge.rank-E{background:#857a70;} /* 2026-10-11 */
@@ -9587,6 +9591,18 @@
      currencies."): yours sit on the field's bottom-left, theirs on its top-left. */
   #battlefieldEl > .field-res.enemy{left:12px; right:auto; top:12px; bottom:auto; justify-content:flex-start;}
   @media (max-width:699px){ #battlefieldEl > .field-res.enemy{left:6px; top:8px;} }
+  /* 2026-10-25 (package PL2, owner 00:02 #8): the opponent's pills show only while Shift is held (html.pl2-shift) or in their deck's
+     tooltip; hidden they keep their place (a gain still floats to them). */
+  .field-res.enemy{opacity:0; transition:opacity .16s ease; visibility:hidden;}
+  html.pl2-shift .field-res.enemy{opacity:1; visibility:visible;}
+  /* 2026-10-25 (package PL2, PL1-3): the Arena's Modes | Co-op tabs, the Co-op pane, and the map spot's Group Dungeon card */
+  .pl2-arena-tabs{display:flex; gap:6px; margin:4px 0 8px;} .pl2-arena-tabs .tab-btn{flex:0 0 auto;}
+  .pl2-coop-panel{padding:10px;}
+  .pl2-coop-pop{position:fixed; inset:0; z-index:9500; display:flex; align-items:center; justify-content:center; padding:16px;}
+  .pl2-coop-back{position:absolute; inset:0; background:rgba(10,8,4,.55);}
+  .pl2-coop-box{position:relative; width:min(560px, 100%); max-height:90vh; overflow:auto; padding:14px; animation:coachIn .22s ease-out;}
+  .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
+  .pl2-tip-res{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px;} .pl2-tip-res .hud-pill{font-size:11px; padding:1px 7px;}
   /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
   #dropDiscard{cursor:pointer;}
   .grave-peek-badge{position:absolute; top:-8px; left:50%; transform:translateX(-50%); z-index:3; border:2px solid var(--surface); border-radius:999px; padding:1px 7px;
@@ -42238,7 +42254,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=397ccf808b", "es": "assets/lang/es.js?v=3103ce2ecb", "fr": "assets/lang/fr.js?v=88c4f38f54", "id": "assets/lang/id.js?v=2fad9d7ccc", "it": "assets/lang/it.js?v=184c522283", "ja": "assets/lang/ja.js?v=ab025672ee", "ko": "assets/lang/ko.js?v=c6264ca807", "pt": "assets/lang/pt.js?v=84c02d5c0e", "ta": "assets/lang/ta.js?v=019eb663af", "tl": "assets/lang/tl.js?v=82999337ff", "zh-Hans": "assets/lang/zh-Hans.js?v=7251923b08", "zh-Hant": "assets/lang/zh-Hant.js?v=54797a4944"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2510d7645b", "es": "assets/lang/es.js?v=c615f39cbb", "fr": "assets/lang/fr.js?v=d8729ef127", "id": "assets/lang/id.js?v=f3d9a1616e", "it": "assets/lang/it.js?v=e2c3892d18", "ja": "assets/lang/ja.js?v=a334c4d6fc", "ko": "assets/lang/ko.js?v=ab32f1ae45", "pt": "assets/lang/pt.js?v=dda6ea4b0f", "ta": "assets/lang/ta.js?v=ef33f3d7b9", "tl": "assets/lang/tl.js?v=ea0ffe0182", "zh-Hans": "assets/lang/zh-Hans.js?v=29eed6aea9", "zh-Hant": "assets/lang/zh-Hant.js?v=a1c711e25b"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -43124,6 +43140,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.you-can-hold-5-cards-extra": "✋ You can hold 5 cards. Extra cards turn into 🪵 Lumber.",
   "coach.this-badge-is-a-trigger-an": "⚡ This badge is a trigger: an effect the card fires by itself. Greyed out means it is off for now: triggers that fire every round or when hit stay off while the card is Waiting (⏳), Stunned, Frozen or Asleep.",
   "coach.lit-up-means-ready-once-its": "⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.",
+  "ui.pl2-coop": "Co-op",
+  "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
   "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
   "coach.tl-when": "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.",
   "ui.tl-replay": "🎓 Triggers lesson",
@@ -44835,7 +44853,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.eq2-log-strike-bramble": "🦑 {name} finds no unit and hits your bramble for {dmg}.",
   "ui.eq2-guarded": "🦺 Guarded",
   "ui.eq2-pat-single": "One unit (a Guardian can step in)",
-  "ui.en7-float-poison": "🤢{n}",
+  "ui.en7-float-poison": "☠{n}",
   "ui.en7-float-bleed": "🩸{n}",
   "ui.en7-float-aloft": "☁️ Aloft",
   "ui.en7-float-under": "🌊 Under",
@@ -44947,7 +44965,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pl1-next-pack": "Next pack ({n} left)",
   "ui.pl1-all-packs": "All {n} packs",
   "ui.pl1-session-title": "{n} packs opened",
-  "ui.pl1-boon-card": "{have}/{total} {theme}",
   "ui.pl1-boon-theirs": "Theirs: half their deck {theme}",
   "ui.pl1-boon-blindFury": "Their units that fight blind (Blind, or blind in the dark) hit for double.",
   "ui.pl1-boon-hiveChorus": "Their Swarm counts every ally twice.",
@@ -49264,7 +49281,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'f48e53c64364', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = 'b014add70310', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -51098,6 +51115,15 @@ const SoundKit = (()=>{
     // "one swing, multiple targets"); the on-screen label is what tells them apart.
     swipeTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
     sweepTone(){ tone(500,0.05,'triangle',0.07); tone(340,0.06,'triangle',0.06,0.03); },
+    // 2026-10-25 (package PL2, owner 00:02 #9: "Fork, pitchfork, and trident should have a slightly different or additional sfx"): the
+    // swing's swoosh (as swipeTone) and then one bright "ting" per tine, close together: the Fork two (a silver pair), the Trident three
+    // (higher, with a shimmer and a low watery swell under it), the Pitchfork four lower, duller tings over a wooden thump (a farm tool).
+    prongTone(kind){
+      tone(500,0.05,'triangle',0.06); tone(340,0.06,'triangle',0.05,0.03);
+      if(kind === 'trident'){ [1480, 1860, 2220].forEach((f, i)=> tone(f, 0.11, 'sine', 0.045, 0.07 + i*0.045)); tone(2960, 0.16, 'sine', 0.018, 0.2); tone(150, 0.22, 'sine', 0.05, 0.06); }
+      else if(kind === 'pitchfork'){ noise(0.035, 0.07); tone(120, 0.08, 'sine', 0.06, 0.05); [880, 990, 1100, 1240].forEach((f, i)=> tone(f, 0.07, 'triangle', 0.04, 0.08 + i*0.035)); }
+      else { [1320, 1760].forEach((f, i)=> tone(f, 0.1, 'sine', 0.05, 0.07 + i*0.05)); }
+    },
     // Irradiation (2026-10-14, user: "Irradiation effect - sizzling sound as stats burn away - dealing irradiation damage sounds like
     // geiger counters going off"). radSizzle: a short hissing, crackling burn as a token eats a point (filtered noise, sweeping
     // down). geiger: an irregular burst of dry clicks as Irradiated N hands out tokens. Both throttled, so a board full of glowing
@@ -51704,10 +51730,18 @@ const MAP_MUSIC = {
   m10:'map_sky', my:'map_sky',
   mr:'map_forest',
 };
+// 2026-10-25 (package PL2, owner 00:02 #10: "The conquest map ost or others shouldnt start playing loudly while completing a skirmish -
+// the reward sound should finish playing first, w a quieter battlefield ost. then when i click out to the conquest map, then the ost
+// fades in."): while a finished fight's screen is still up (the results, or the board looked at after them) the fight's own theme keeps
+// playing, ducked to PL2_RESULTS_DUCK of its level, under the Victory / Defeat sting (which plays at full level); the place's theme
+// (the map's) only starts once you are off the fight, and fades in over PL2_MAP_FADE_IN seconds (was 1.5 s, right as the results came up).
+const PL2_RESULTS_DUCK = 0.3, PL2_MAP_FADE_IN = 4;
+function pl2ResultsPhase(){ try{ const m = typeof matchState !== 'undefined' ? matchState : null, tab = typeof currentTab !== 'undefined' ? currentTab : null;
+  const w = document.getElementById('appWrap'); return !!(m && m.over && tab === 'play' && w && w.classList.contains('in-match') && m.mode !== 'sandbox' && !m.testKit); }catch(e){ return false; } }
 function songbookPlace(){
   const tab = typeof currentTab !== 'undefined' ? currentTab : null;
   const m = typeof matchState !== 'undefined' ? matchState : null;
-  if(m && !m.over && tab === 'play'){ if(m.mode === 'sandbox' || m.testKit) return null; // battle music (2026-10-12)
+  if(m && (!m.over || pl2ResultsPhase()) && tab === 'play'){ if(m.mode === 'sandbox' || m.testKit) return null; // battle music (2026-10-12); + its results (PL2)
     const k = m.conquestNode && typeof baseKind === 'function' ? baseKind(m.conquestNode.kind || '') : '';
     if(m.conquestNode && m.conquestNode.kind === 'worldboss') return 'worldboss';
     if(['boss','finalboss','raidboss'].includes(k) || ['raidOnline','raidOffline'].includes(m.mode) || m.raidBoss) return 'boss';
@@ -51825,10 +51859,12 @@ const Songbook = (()=>{
     if(preview) return preview;
     return songbookPlace();
   }
+  let pl2WasResults = false; // PL2 (2026-10-25, #10): the fight's results were up the last tick
   function start(c, key){
-    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + 1.5); bus.connect(out(c));
+    const fade = pl2WasResults ? PL2_MAP_FADE_IN : 1.5; // PL2: the map's theme after a fight's results fades in slowly
+    const bus = c.createGain(); bus.gain.setValueAtTime(0.0001, c.currentTime); bus.gain.exponentialRampToValueAtTime(1, c.currentTime + fade); bus.connect(out(c));
     master.gain.setTargetAtTime(vol()*LEVEL*((SONGBOOK[key]||{}).gain || 1), c.currentTime, 0.3);
-    st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false};
+    st = {key, bus, bar:0, next: c.currentTime + 0.6, rested:false, ducked:false};
   }
   function stop(){
     if(!st) return; const s = st; st = null; const c = C(); if(!c) return;
@@ -51841,6 +51877,9 @@ const Songbook = (()=>{
     if(!key){ if(st) stop(); return; }
     if(st && st.key !== key) stop();
     if(!st) start(c, key);
+    const res = !preview && pl2ResultsPhase(); // PL2 (2026-10-25, #10): the fight's theme ducks under the results
+    if(st && res !== st.ducked){ st.ducked = res; try{ st.bus.gain.cancelScheduledValues(c.currentTime); st.bus.gain.setTargetAtTime(res ? PL2_RESULTS_DUCK : 1, c.currentTime, res ? 0.25 : 1.2); }catch(e){} }
+    pl2WasResults = res || (pl2WasResults && !!st && st.ducked);
     while(st && st.next < c.currentTime + 0.8) st.next = scheduleBar(c, Math.max(st.next, c.currentTime + 0.05));
   }
   setInterval(()=>{ try{ tick(); }catch(e){} }, 300);
@@ -58817,9 +58856,12 @@ function openEnergyPanel(anchor){
   closeEnergyPanel();
   const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin) || (typeof adminAllowed==='function' && adminAllowed()), claimed = freeEnergyClaimedToday();
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
-  pop.innerHTML = `<b>⚡ ${s.current}/${energyMax()} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small><small class="ep-grow">${escapeHtml(energyNextStepText())}</small>
-    <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
-    ${energyCapsules() ? `<div class="ep-cap"><span class="ep-cap-l"><i aria-hidden="true">🔋</i><span><b>${escapeHtml(TX('ui.rw4-capsules', {n: energyCapsules()}))}</b><small>${escapeHtml(TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}))}</small></span></span><button type="button" class="btn primary small" id="epCapsule">${escapeHtml(TX('ui.rw4-use'))}</button></div>` : ''}
+  // 2026-10-25 (package PL2, owner 00:02 #7, SS#3: "Simplify this UI. Like, don't need to say 'Energy capsules' unless in a hover
+  // tooltip."): the count (what the Nest does to the maximum is its tooltip), the refill line, and one row: the free Energy and a
+  // 🔋×N Use button whose tooltip names the capsules and what each gives. Was: a Nest line, the free button, then a capsule card.
+  const capN = energyCapsules(), capTip = capN ? TX('ui.rw4-capsules', {n: capN}) + ' · ' + TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}) : '';
+  pop.innerHTML = `<b class="ep-count" title="${escapeAttr(energyNextStepText())}">⚡ ${s.current}/${energyMax()}</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
+    <div class="ep-row"><button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>${capN ? `<button type="button" class="btn small ep-cap-btn" id="epCapsule" title="${escapeAttr(capTip)}" aria-label="${escapeAttr(capTip + ' · ' + TX('ui.rw4-use'))}"><span aria-hidden="true">🔋×${capN}</span> ${escapeHtml(TX('ui.rw4-use'))}</button>` : ''}</div>
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
@@ -58841,7 +58883,7 @@ function openEnergyPanel(anchor){
     else if(k === 'tick'){ st.current += 1; st.lastRegenAt = Date.now(); }
     else st.current = Math.max(0, st.current + (Number(k)||0));
     saveEnergyState(st); refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){}
-    const head = pop.querySelector('b'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()} Energy`; const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
+    const head = pop.querySelector('.ep-count'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()}`; /* PL2 (2026-10-25) */ const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
   });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
 }
@@ -63171,7 +63213,8 @@ const FEATURE_SPOTS = [
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
-  {key:'autobattle', icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'coop', icon:'👥', get name(){ return TX('ui.ar-group-name'); }, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
+  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
   {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
@@ -63247,7 +63290,9 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
   const past = (pr.completed||[]).some(id=> { const mid = String(id).split(':')[0]; const n = mapNumberOf(mid); return n != null && n >= 2; });
   if(loadTutorialDone() && (past || (sp && spotAvailable(sp, pr) && (pr.completed||[]).some(id=> String(id).startsWith(sp.map + ':'))))) u.unlocked.backpack = true; }catch(e){} saveUnlocks(u); }
 // Is a tab/sub-tab/feature name open? Anything no spot owns is always open.
-function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); return !sp || featureUnlocked(sp.key); }
+function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); if(sp && pl2SpotHidden(sp)) return false; return !sp || featureUnlocked(sp.key); }
+// 2026-10-25 (package PL2, owner 22:28 #6): a spot marked adminOnly (Whisper's Game) is neither on the map nor a tab for anyone but Admin Mode.
+function pl2SpotHidden(sp){ return !!(sp && sp.adminOnly && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
@@ -63258,7 +63303,7 @@ function activateSpot(spot){
     const script = DIALOGUES[spot.dialogue];
     // A first visit whose conversation offers to take you there (a reply with an act) lets that reply do it (2026-10-12).
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
-    playDialogue(spot.dialogue, {once:true, expand:true}); }
+    if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
@@ -63344,7 +63389,7 @@ function mapSpotsHTML(map, positions, progress){
   // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
   const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
     const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
-  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
     const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
@@ -63352,7 +63397,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -64540,7 +64585,7 @@ function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? 
 // rows keep the long words (boonText, boonCountLine).
 function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
 function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
-function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? TX('ui.pl1-boon-card', {have: st.have, total: st.total, theme: boonTheme(row.selfish)}) : boonCountLine(st); row.boonOn = !!st.on; return row; }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? `${st.have}/${st.total} ${boonTheme(row.selfish)}` /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
@@ -67370,7 +67415,7 @@ function renderArenaSubTabInner(body, title){
           <span class="ar3-today-when" title="${escapeAttr(TX('ui.ar-rules-tip'))}">⏳ ${escapeHtml(TX('ui.ar-new-in', {h: hrsLeft}))}${tomorrow ? ` <span class="ar3-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">→ ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''}</span></div>
         <div class="ar3-fields">${arenaFieldShowcaseHTML(rs)}</div>
       </section>
-      <section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}">
+      ${pl2ArenaTabsHTML() /* PL2 (2026-10-25, PL1-3): Modes | Co-op */}<section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}"${pl2CoopPaneOn() ? ' hidden' : ''}>
         <div class="ar3-modes-head"><h3>${escapeHtml(TX('ui.ar-modes'))}</h3>
           <div class="arena-format ar3-format" role="radiogroup" aria-label="Deck format" title="${escapeAttr(std ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass & Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.')}">
             <button type="button" class="tk-speed-btn ${std?'':'is-on'}" role="radio" aria-checked="${!std}" data-arena-format="collection">📚 Collection</button>
@@ -67392,6 +67437,7 @@ function renderArenaSubTabInner(body, title){
   { const ab = $('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
   body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); renderArenaSubTab(body); }));
   { const sb = $('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
+  body.querySelectorAll('[data-pl2-arena]').forEach(b=> b.addEventListener('click', ()=>{ pl2ArenaPane = b.dataset.pl2Arena; renderArenaSubTab(body); })); // PL2 (2026-10-25)
   $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
   $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
@@ -69166,8 +69212,10 @@ function findConquestNode(mapId, nodeKey){
 // admin test: no rank, cards, XP or quest counts; a resumed one stays one). Reached from Admin (🏆 PRO fights), the skirmish editor (its
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
-const PRO_SKIRMISHES = {"updated": "2026-10-24", "rule": {"games": 400, "replaceAt": 0.55, "band": 100, "max": 4, "distinct": 6, "level": 1, "ai": 1, "seed": "pro", "modes": {"pro": "map-true", "bpro": "bpro"}, "rarityCap": "map"}, "maps": {"m1": {"map": 0, "name": "Bramblewood Outskirts", "field": {"rules": {"misty": true, "phase": "off"}, "terrain": null, "summary": "misty, phase off", "boss": "0-4"}, "pro": [{"id": "0-PRO-1", "name": "0-PRO-1", "level": 1, "leaders": [], "deck": {"acorn-chipmunk": 1, "beetle-grunt": 5, "cottontail": 1, "duck-paddler": 4, "fox-kit": 5, "otter-kit": 2, "otter-paddler": 1, "pond-duck": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-maptrue.json", "optimum": 0, "score": 0.895, "ci": [0.871, 0.918], "generated": "2026-10-24T13:38:26.917Z"}, "h2h": null}]}, "mf": {"map": 1, "name": "Thistlewood", "field": {"rules": {"phase": "cycle", "woods": true}, "terrain": {"biome": "forest", "tier": 1}, "summary": "phase cycle, woods, terrain Old Woods T1", "boss": "1-5"}, "pro": [{"id": "1-PRO-1", "name": "1-PRO-1", "level": 1, "leaders": [], "deck": {"bramble-sprout": 5, "dormouse": 4, "field-mouse": 4, "field-vole": 4, "meadow-frog": 2, "otter-guard": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-maptrue.json", "optimum": 0, "score": 0.881, "ci": [0.859, 0.904], "generated": "2026-10-24T13:40:16.502Z"}, "h2h": null}]}, "mb": {"map": 2, "name": "Pebble Beach", "field": {"rules": {"phase": "cycle", "tide": true, "wet": true}, "terrain": {"biome": "beach", "tier": 1}, "summary": "phase cycle, tide, wet, terrain Tideline T1", "boss": "2-5"}, "pro": [{"id": "2-PRO-1", "name": "2-PRO-1", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"bee-sentry": 1, "beetle-grunt": 1, "cottontail": 1, "cricket-drummer": 1, "crimson-wing-recruit": 1, "crossed-eyes": 1, "driftwood-crab": 1, "ember-tetra": 1, "forager-ant": 1, "grey-seal-bull": 1, "house-cat": 1, "meadow-frog": 3, "meerkat-wayfarer": 1, "otter-guard": 2, "otter-paddler": 1, "rock-pool-starfish": 1, "sheep": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 0, "score": 0.81, "ci": [0.784, 0.837], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": null}, {"id": "2-PRO-2", "name": "2-PRO-2", "level": 1, "leaders": ["otter-guard"], "deck": {"cricket-drummer": 2, "crossed-eyes": 1, "duckling": 1, "earthworm": 1, "ember-tetra": 1, "hedgerow-shrew": 1, "house-cat": 3, "meadow-rabbit": 1, "otter-guard": 1, "otter-kit": 1, "river-carp": 1, "robin-redbreast": 1, "silver-minnow": 2, "terrier-pup": 1, "worker-ant": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 1, "score": 0.801, "ci": [0.775, 0.828], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": {"p": 0.538, "n": 400, "elo": 26, "ci": [0.489, 0.586]}}, {"id": "2-PRO-3", "name": "2-PRO-3", "level": 1, "leaders": ["otter-guard"], "deck": {"beetle-grunt": 2, "burrow-rabbit": 2, "conch-herald": 1, "driftwood-crab": 1, "duckling": 1, "feral-tomcat": 1, "field-vole": 1, "house-cat": 1, "meadow-frog": 1, "meadow-rabbit": 1, "meerkat-wayfarer": 1, "open-ocean-hermit-crab": 2, "otter-guard": 1, "pincushion-urchin": 1, "riverwing-envoy": 2, "robin-redbreast": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 2, "score": 0.773, "ci": [0.745, 0.801], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": {"p": 0.368, "n": 400, "elo": -94, "ci": [0.322, 0.416]}}]}, "mc": {"map": 3, "name": "Gannet Cliffs", "field": {"rules": {"phase": "cycle", "wind": "windy"}, "terrain": {"biome": "alpine", "tier": 2}, "summary": "phase cycle, wind windy, terrain High Crags T2 (Siege 1)", "boss": "3-7"}, "pro": [{"id": "3-PRO-1", "name": "3-PRO-1", "level": 1, "leaders": ["otter-guard"], "deck": {"beetle-grunt": 1, "burrow-rabbit": 1, "conch-crawler": 1, "cottontail": 1, "duck-paddler": 1, "fiddler-crab-swarm": 1, "field-mouse": 2, "golden-eagle-diver": 1, "hedgerow-shrew": 1, "house-cat": 1, "mosswing-laborer": 1, "otter-guard": 1, "otter-kit": 1, "otter-paddler": 1, "paper-wasp": 1, "peak-condor": 1, "peregrine-stooper": 1, "slow-worm": 1, "tide-pool-crab": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 0, "score": 0.72, "ci": [0.695, 0.746], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": null}, {"id": "3-PRO-2", "name": "3-PRO-2", "level": 1, "leaders": ["otter-guard"], "deck": {"bee-forager": 1, "compost-grub": 1, "conch-crawler": 1, "dormouse": 2, "duck-paddler": 1, "duckling": 1, "ember-tetra": 1, "feral-tomcat": 1, "gannet-nestweaver": 1, "hawk-arrowkeeper": 1, "meadow-frog": 2, "open-ocean-hermit-crab": 1, "otter-guard": 1, "otter-paddler": 1, "peak-condor": 1, "razorbill": 1, "riverwing-envoy": 1, "slow-worm": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 3, "score": 0.652, "ci": [0.625, 0.68], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.425, "n": 400, "elo": -53, "ci": [0.377, 0.474]}}, {"id": "3-PRO-3", "name": "3-PRO-3", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"acorn-chipmunk": 2, "badger-lumberjack": 1, "beetle-grunt": 1, "crossed-eyes": 1, "dormouse": 1, "farm-dog": 1, "golden-eagle-diver": 1, "grey-seal-bull": 1, "honey-bee": 1, "otter-kit": 2, "otter-paddler": 1, "puffin-diver": 1, "razorbill": 1, "silver-minnow": 1, "sparrow-chick": 1, "tidepool-trapper-crab": 1, "woodcock-lookout": 1, "worker-ant": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 1, "score": 0.658, "ci": [0.631, 0.685], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.373, "n": 400, "elo": -91, "ci": [0.327, 0.421]}}, {"id": "3-PRO-4", "name": "3-PRO-4", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"ant-scout": 1, "bee-knight": 1, "briarback-hedgehog": 1, "cricket-drummer": 1, "crimson-wing-recruit": 1, "dormouse": 1, "duck-paddler": 1, "earthworm": 1, "fulmar-spitter": 1, "golden-eagle-diver": 1, "grey-seal-bull": 2, "kittiwake-flock": 1, "meadow-rabbit": 1, "otter-kit": 1, "pincushion-urchin": 1, "pond-duck": 1, "pond-trout": 2, "woodcock-lookout": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 2, "score": 0.678, "ci": [0.652, 0.704], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.373, "n": 400, "elo": -91, "ci": [0.327, 0.421]}}]}}};
-const PRO_KEY_RE = /^\d+-PRO-\d+$/;
+const PRO_SKIRMISHES = {"updated": "2026-10-24", "rule": {"games": 400, "replaceAt": 0.55, "band": 100, "max": 4, "distinct": 6, "level": 1, "ai": 1, "seed": "pro", "modes": {"pro": "map-true", "bpro": "bpro"}, "rarityCap": "map"}, "maps": {"m1": {"map": 0, "name": "Bramblewood Outskirts", "field": {"rules": {"misty": true, "phase": "off"}, "terrain": null, "summary": "misty, phase off", "boss": "0-4"}, "pro": [{"id": "0-PRO-1", "name": "0-PRO-1", "level": 1, "leaders": [], "deck": {"acorn-chipmunk": 1, "beetle-grunt": 5, "cottontail": 1, "duck-paddler": 4, "fox-kit": 5, "otter-kit": 2, "otter-paddler": 1, "pond-duck": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-maptrue.json", "optimum": 0, "score": 0.895, "ci": [0.871, 0.918], "generated": "2026-10-24T13:38:26.917Z"}, "h2h": null}], "bpro": [{"id": "0-BPRO-1", "name": "0-BPRO-1", "level": 1, "leaders": [], "deck": {"beetle-grunt": 5, "cobalt-talon-fledgling": 2, "duck-paddler": 4, "feral-tomcat": 3, "fox-kit": 4, "otter-kit": 1, "paper-wasp": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json", "optimum": 0, "score": 0.871, "ci": [0.845, 0.897], "generated": "2026-10-24T13:49:34.815Z"}, "h2h": null}, {"id": "0-BPRO-2", "name": "0-BPRO-2", "level": 1, "leaders": [], "deck": {"bee-forager": 3, "beetle-grunt": 2, "duck-paddler": 1, "fox-kit": 5, "honey-bee": 1, "house-cat": 5, "meadow-rabbit": 1, "pond-duck": 1, "terrier-pup": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json", "optimum": 1, "score": 0.835, "ci": [0.807, 0.863], "generated": "2026-10-24T13:49:34.815Z"}, "h2h": {"p": 0.538, "n": 400, "elo": 26, "ci": [0.489, 0.586]}}, {"id": "0-BPRO-3", "name": "0-BPRO-3", "level": 1, "leaders": [], "deck": {"beetle-grunt": 4, "chipmunk-forager": 1, "chipmunk-skirmisher": 3, "cobalt-talon-fledgling": 1, "crossed-eyes": 1, "fox-kit": 4, "garden-snail": 2, "meadow-rabbit": 1, "otter-kit": 1, "pond-duck": 1, "river-carp": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json", "optimum": 2, "score": 0.833, "ci": [0.804, 0.862], "generated": "2026-10-24T13:49:34.815Z"}, "h2h": {"p": 0.453, "n": 400, "elo": -33, "ci": [0.404, 0.501]}}, {"id": "0-BPRO-4", "name": "0-BPRO-4", "level": 1, "leaders": [], "deck": {"ant-scout": 1, "beetle-grunt": 3, "duckling": 3, "feral-tomcat": 2, "fox-kit": 2, "house-cat": 3, "meadow-rabbit": 1, "otter-kit": 1, "pond-duck": 1, "river-carp": 2, "terrier-pup": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json", "optimum": 3, "score": 0.815, "ci": [0.786, 0.844], "generated": "2026-10-24T13:49:34.815Z"}, "h2h": {"p": 0.453, "n": 400, "elo": -33, "ci": [0.404, 0.501]}}]}, "mf": {"map": 1, "name": "Thistlewood", "field": {"rules": {"phase": "cycle", "woods": true}, "terrain": {"biome": "forest", "tier": 1}, "summary": "phase cycle, woods, terrain Old Woods T1", "boss": "1-5"}, "pro": [{"id": "1-PRO-1", "name": "1-PRO-1", "level": 1, "leaders": [], "deck": {"bramble-sprout": 5, "dormouse": 4, "field-mouse": 4, "field-vole": 4, "meadow-frog": 2, "otter-guard": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-maptrue.json", "optimum": 0, "score": 0.881, "ci": [0.859, 0.904], "generated": "2026-10-24T13:40:16.502Z"}, "h2h": null}], "bpro": [{"id": "1-BPRO-1", "name": "1-BPRO-1", "level": 1, "leaders": [], "deck": {"bramble-sprout": 5, "cricket-drummer": 5, "dormouse": 5, "field-mouse": 1, "slow-worm": 4}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json", "optimum": 0, "score": 0.804, "ci": [0.777, 0.83], "generated": "2026-10-24T13:52:15.240Z"}, "h2h": null}, {"id": "1-BPRO-2", "name": "1-BPRO-2", "level": 1, "leaders": [], "deck": {"bramble-sprout": 1, "briarback-hedgehog": 1, "cottontail": 1, "cricket-drummer": 3, "dormouse": 5, "field-mouse": 4, "meadow-rabbit": 2, "robin-redbreast": 1, "slow-worm": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json", "optimum": 2, "score": 0.75, "ci": [0.72, 0.779], "generated": "2026-10-24T13:52:15.240Z"}, "h2h": {"p": 0.45, "n": 400, "elo": -35, "ci": [0.402, 0.499]}}, {"id": "1-BPRO-3", "name": "1-BPRO-3", "level": 1, "leaders": [], "deck": {"bramble-sprout": 4, "briarback-hedgehog": 2, "cottontail": 3, "cricket-drummer": 1, "dormouse": 4, "hedgerow-shrew": 1, "meadow-frog": 3, "meadow-rabbit": 1, "woodcock-lookout": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json", "optimum": 3, "score": 0.687, "ci": [0.656, 0.718], "generated": "2026-10-24T13:52:15.240Z"}, "h2h": {"p": 0.435, "n": 400, "elo": -45, "ci": [0.387, 0.484]}}, {"id": "1-BPRO-4", "name": "1-BPRO-4", "level": 1, "leaders": [], "deck": {"bramble-sprout": 5, "cottontail": 2, "dormouse": 3, "field-mouse": 5, "field-vole": 2, "meadow-frog": 3}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json", "optimum": 1, "score": 0.765, "ci": [0.737, 0.794], "generated": "2026-10-24T13:52:15.240Z"}, "h2h": {"p": 0.375, "n": 400, "elo": -89, "ci": [0.329, 0.423]}}]}, "mb": {"map": 2, "name": "Pebble Beach", "field": {"rules": {"phase": "cycle", "tide": true, "wet": true}, "terrain": {"biome": "beach", "tier": 1}, "summary": "phase cycle, tide, wet, terrain Tideline T1", "boss": "2-5"}, "pro": [{"id": "2-PRO-1", "name": "2-PRO-1", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"bee-sentry": 1, "beetle-grunt": 1, "cottontail": 1, "cricket-drummer": 1, "crimson-wing-recruit": 1, "crossed-eyes": 1, "driftwood-crab": 1, "ember-tetra": 1, "forager-ant": 1, "grey-seal-bull": 1, "house-cat": 1, "meadow-frog": 3, "meerkat-wayfarer": 1, "otter-guard": 2, "otter-paddler": 1, "rock-pool-starfish": 1, "sheep": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 0, "score": 0.81, "ci": [0.784, 0.837], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": null}, {"id": "2-PRO-2", "name": "2-PRO-2", "level": 1, "leaders": ["otter-guard"], "deck": {"cricket-drummer": 2, "crossed-eyes": 1, "duckling": 1, "earthworm": 1, "ember-tetra": 1, "hedgerow-shrew": 1, "house-cat": 3, "meadow-rabbit": 1, "otter-guard": 1, "otter-kit": 1, "river-carp": 1, "robin-redbreast": 1, "silver-minnow": 2, "terrier-pup": 1, "worker-ant": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 1, "score": 0.801, "ci": [0.775, 0.828], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": {"p": 0.538, "n": 400, "elo": 26, "ci": [0.489, 0.586]}}, {"id": "2-PRO-3", "name": "2-PRO-3", "level": 1, "leaders": ["otter-guard"], "deck": {"beetle-grunt": 2, "burrow-rabbit": 2, "conch-herald": 1, "driftwood-crab": 1, "duckling": 1, "feral-tomcat": 1, "field-vole": 1, "house-cat": 1, "meadow-frog": 1, "meadow-rabbit": 1, "meerkat-wayfarer": 1, "open-ocean-hermit-crab": 2, "otter-guard": 1, "pincushion-urchin": 1, "riverwing-envoy": 2, "robin-redbreast": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json", "optimum": 2, "score": 0.773, "ci": [0.745, 0.801], "generated": "2026-10-24T13:44:12.526Z"}, "h2h": {"p": 0.368, "n": 400, "elo": -94, "ci": [0.322, 0.416]}}], "bpro": [{"id": "2-BPRO-1", "name": "2-BPRO-1", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"conch-herald": 1, "driftwood-crab": 4, "fiddler-crab-swarm": 3, "grey-seal-bull": 2, "gull-thief": 1, "open-ocean-hermit-crab": 2, "oystercatcher": 1, "pincushion-urchin": 1, "rock-pool-starfish": 2, "sea-turtle-elder": 1, "tide-pool-crab": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json", "optimum": 0, "score": 0.699, "ci": [0.669, 0.729], "generated": "2026-10-24T13:55:33.904Z"}, "h2h": null}, {"id": "2-BPRO-2", "name": "2-BPRO-2", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"conch-crawler": 4, "driftwood-crab": 4, "fiddler-crab-swarm": 1, "grey-seal-bull": 1, "open-ocean-hermit-crab": 1, "oyster-bank": 1, "oystercatcher": 1, "pincushion-urchin": 4, "rock-pool-starfish": 1, "sea-turtle-elder": 1, "tidepool-trapper-crab": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json", "optimum": 2, "score": 0.677, "ci": [0.647, 0.706], "generated": "2026-10-24T13:55:33.904Z"}, "h2h": {"p": 0.57, "n": 400, "elo": 49, "ci": [0.521, 0.618]}}, {"id": "2-BPRO-3", "name": "2-BPRO-3", "level": 1, "leaders": ["driftwood-crab"], "deck": {"conch-crawler": 2, "driftwood-crab": 3, "fiddler-crab-swarm": 1, "open-ocean-hermit-crab": 3, "oyster-bank": 1, "oystercatcher": 2, "pincushion-urchin": 4, "rock-pool-starfish": 2, "tide-pool-crab": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json", "optimum": 3, "score": 0.678, "ci": [0.648, 0.708], "generated": "2026-10-24T13:55:33.904Z"}, "h2h": {"p": 0.565, "n": 400, "elo": 45, "ci": [0.516, 0.613]}}, {"id": "2-BPRO-4", "name": "2-BPRO-4", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"conch-crawler": 1, "driftwood-crab": 5, "fiddler-crab-swarm": 1, "grey-seal-bull": 4, "gull-thief": 1, "oystercatcher": 4, "pincushion-urchin": 1, "tide-pool-crab": 2, "tidepool-trapper-crab": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json", "optimum": 1, "score": 0.69, "ci": [0.661, 0.718], "generated": "2026-10-24T13:55:33.904Z"}, "h2h": {"p": 0.555, "n": 400, "elo": 38, "ci": [0.506, 0.603]}}]}, "mc": {"map": 3, "name": "Gannet Cliffs", "field": {"rules": {"phase": "cycle", "wind": "windy"}, "terrain": {"biome": "alpine", "tier": 2}, "summary": "phase cycle, wind windy, terrain High Crags T2 (Siege 1)", "boss": "3-7"}, "pro": [{"id": "3-PRO-1", "name": "3-PRO-1", "level": 1, "leaders": ["otter-guard"], "deck": {"beetle-grunt": 1, "burrow-rabbit": 1, "conch-crawler": 1, "cottontail": 1, "duck-paddler": 1, "fiddler-crab-swarm": 1, "field-mouse": 2, "golden-eagle-diver": 1, "hedgerow-shrew": 1, "house-cat": 1, "mosswing-laborer": 1, "otter-guard": 1, "otter-kit": 1, "otter-paddler": 1, "paper-wasp": 1, "peak-condor": 1, "peregrine-stooper": 1, "slow-worm": 1, "tide-pool-crab": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 0, "score": 0.72, "ci": [0.695, 0.746], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": null}, {"id": "3-PRO-2", "name": "3-PRO-2", "level": 1, "leaders": ["otter-guard"], "deck": {"bee-forager": 1, "compost-grub": 1, "conch-crawler": 1, "dormouse": 2, "duck-paddler": 1, "duckling": 1, "ember-tetra": 1, "feral-tomcat": 1, "gannet-nestweaver": 1, "hawk-arrowkeeper": 1, "meadow-frog": 2, "open-ocean-hermit-crab": 1, "otter-guard": 1, "otter-paddler": 1, "peak-condor": 1, "razorbill": 1, "riverwing-envoy": 1, "slow-worm": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 3, "score": 0.652, "ci": [0.625, 0.68], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.425, "n": 400, "elo": -53, "ci": [0.377, 0.474]}}, {"id": "3-PRO-3", "name": "3-PRO-3", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"acorn-chipmunk": 2, "badger-lumberjack": 1, "beetle-grunt": 1, "crossed-eyes": 1, "dormouse": 1, "farm-dog": 1, "golden-eagle-diver": 1, "grey-seal-bull": 1, "honey-bee": 1, "otter-kit": 2, "otter-paddler": 1, "puffin-diver": 1, "razorbill": 1, "silver-minnow": 1, "sparrow-chick": 1, "tidepool-trapper-crab": 1, "woodcock-lookout": 1, "worker-ant": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 1, "score": 0.658, "ci": [0.631, 0.685], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.373, "n": 400, "elo": -91, "ci": [0.327, 0.421]}}, {"id": "3-PRO-4", "name": "3-PRO-4", "level": 1, "leaders": ["grey-seal-bull"], "deck": {"ant-scout": 1, "bee-knight": 1, "briarback-hedgehog": 1, "cricket-drummer": 1, "crimson-wing-recruit": 1, "dormouse": 1, "duck-paddler": 1, "earthworm": 1, "fulmar-spitter": 1, "golden-eagle-diver": 1, "grey-seal-bull": 2, "kittiwake-flock": 1, "meadow-rabbit": 1, "otter-kit": 1, "pincushion-urchin": 1, "pond-duck": 1, "pond-trout": 2, "woodcock-lookout": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json", "optimum": 2, "score": 0.678, "ci": [0.652, 0.704], "generated": "2026-10-24T13:47:57.333Z"}, "h2h": {"p": 0.373, "n": 400, "elo": -91, "ci": [0.327, 0.421]}}], "bpro": [{"id": "3-BPRO-1", "name": "3-BPRO-1", "level": 1, "leaders": ["fulmar-spitter"], "deck": {"fulmar-spitter": 1, "gannet-nestweaver": 4, "golden-eagle-diver": 1, "great-skua": 2, "kittiwake-flock": 4, "mountain-goat-climber": 1, "peak-condor": 2, "razorbill": 2, "red-billed-chough": 2, "sparrow-chick": 1}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json", "optimum": 0, "score": 0.618, "ci": [0.59, 0.646], "generated": "2026-10-24T13:58:34.134Z"}, "h2h": null}, {"id": "3-BPRO-2", "name": "3-BPRO-2", "level": 1, "leaders": ["peregrine-stooper"], "deck": {"gannet-nestweaver": 2, "golden-eagle-diver": 2, "great-skua": 2, "kittiwake-flock": 5, "mountain-goat-climber": 1, "peregrine-stooper": 1, "puffin-diver": 2, "razorbill": 2, "red-billed-chough": 1, "sparrow-chick": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json", "optimum": 1, "score": 0.595, "ci": [0.567, 0.623], "generated": "2026-10-24T13:58:34.134Z"}, "h2h": {"p": 0.505, "n": 400, "elo": 3, "ci": [0.456, 0.554]}}, {"id": "3-BPRO-3", "name": "3-BPRO-3", "level": 1, "leaders": ["peregrine-stooper"], "deck": {"fulmar-spitter": 2, "gannet-nestweaver": 4, "golden-eagle-diver": 1, "kittiwake-flock": 2, "mountain-goat-climber": 3, "peak-condor": 1, "peregrine-stooper": 1, "puffin-diver": 2, "red-billed-chough": 2, "sparrow-chick": 2}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json", "optimum": 2, "score": 0.584, "ci": [0.555, 0.612], "generated": "2026-10-24T13:58:34.134Z"}, "h2h": {"p": 0.48, "n": 400, "elo": -14, "ci": [0.431, 0.529]}}, {"id": "3-BPRO-4", "name": "3-BPRO-4", "level": 1, "leaders": ["mountain-goat-climber"], "deck": {"gannet-nestweaver": 5, "kittiwake-flock": 5, "mountain-goat-climber": 4, "peak-condor": 1, "sparrow-chick": 5}, "later": [], "source": {"file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json", "optimum": 3, "score": 0.545, "ci": [0.516, 0.574], "generated": "2026-10-24T13:58:34.134Z"}, "h2h": {"p": 0.418, "n": 400, "elo": -58, "ci": [0.37, 0.466]}}]}}};
+const PRO_KEY_RE = /^\d+-B?PRO-\d+$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k)
+// both kinds of a map's entry, PRO first (2026-10-25, PL2)
+function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
 const PRO_NODE_CACHE = new Map();
 function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
 function proNodeOf(mapId, e, ent){
@@ -69182,11 +69230,25 @@ function proNodeOf(mapId, e, ent){
   PRO_NODE_CACHE.set(ck, n); return n;
 }
 function proFightsOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); const id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id];
-  return ent ? (ent.pro || []).map(e=> proNodeOf(id, e, ent)) : []; }
+  return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
-  for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = (ent.pro || []).find(x=> x.id === key);
+  for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
     if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
   return null;
+}
+// 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
+// trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
+// strip, field, leader and battle rating, and a Fight button that starts it (startProFight: free, pays nothing). It used to start at once.
+function pl2ProNodeOn(map, key){ if(!map || !PRO_KEY_RE.test(key || '')) return null; const f = findProFight(key); return f && f.map.id === map.id ? f.node : null; }
+function pl2ProPreview(key){
+  const f = findProFight(key); if(!f){ showToast(TX('ui.pro-unknown', {key: String(key || '')}), 'warn'); return false; }
+  if(matchState && !matchState.over){ showToast(TX('ui.pro-busy'), 'warn'); return false; }
+  if(!adminModeEnabled && !isMapUnlocked(f.map, loadConquestProgress())) return startProFight(key); // a player's #pro= link to a map not open yet: no panel to show there, it starts as before
+  if(matchState && matchState.over) endMatch();
+  { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
+  conquestWorldView = false; conquestSelectedMap = f.map.id; conquestSelectedNodeKey = f.node.key; playSubTab = 'conquest';
+  if(currentTab === 'play') renderPlay(); else switchTab('play');
+  return true;
 }
 function proLinkFor(key){ try{ return location.origin + location.pathname + '#pro=' + encodeURIComponent(key); }catch(e){ return '#pro=' + key; } }
 function startProFight(key){
@@ -69206,7 +69268,7 @@ function proDeepLinkGo(){
   const key = proDeepLinkKey(); if(!key) return false;
   try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
   if(!loadTutorialDone()){ showToast(TX('ui.pro-tutorial-first'), 'warn'); return false; }
-  return startProFight(key);
+  return pl2ProPreview(key); // PL2 (2026-10-25): the link opens the fight's panel too
 }
 try{ if(typeof window !== 'undefined'){ window.addEventListener('load', ()=> setTimeout(proDeepLinkGo, 1500)); window.addEventListener('hashchange', ()=> proDeepLinkGo()); } }catch(e){}
 function proDeckLineHTML(deck){ const defs = getCardDefs();
@@ -69228,7 +69290,7 @@ function proRowHTML(mapId, e, node, opts){
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
   const body = ids.length ? ids.map(id=>{ const ent = ents[id], map = CONQUEST_MAPS.find(m=> m.id === id); if(!map) return ''; const nodes = proFightsOf(id);
-    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
+    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
     : `<p class="panel-sub">${escapeHtml(TX('ui.pro-none'))}</p>`;
   return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${body}</div>`;
 }
@@ -69237,21 +69299,21 @@ function proFightsAdminHTML(){
 // through the same data-pro-start click handler as Admin's list. Not a .map-node (no progress, no layout, no unlock logic), absent for players.
 function proMapNodesHTML(map, positions){
   if(!adminModeEnabled || !map || map.sub || map.endless || conquestLayoutEdit) return '';
-  const ent = proMapEntries()[map.id]; if(!ent || !(ent.pro || []).length) return '';
+  const ent = proMapEntries()[map.id]; if(!ent || !proEntriesOf(ent).length) return '';
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
-  const dir = base.x > 62 ? -1 : 1, list = ent.pro || [];
+  const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
   return list.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
     return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}" aria-label="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}"><span class="mpr-ico" aria-hidden="true">🏆</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
 }
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
   const m = CONQUEST_MAPS.find(x=> x.id === mapId), id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id] || {};
-  return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
+  return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
 }
 try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{
   const b = ev.target && ev.target.closest && ev.target.closest('[data-pro-start],[data-pro-copy]'); if(!b) return;
   ev.preventDefault();
-  if(b.dataset.proStart){ startProFight(b.dataset.proStart); return; }
+  if(b.dataset.proStart){ pl2ProPreview(b.dataset.proStart); return; } // PL2 (2026-10-25, PRO-UI): the fight's panel first, its Fight button starts it
   const url = proLinkFor(b.dataset.proCopy);
   try{ navigator.clipboard.writeText(url).then(()=> showToast(TX('ui.pro-link-copied'), 'ok'), ()=> showToast(url, 'ok')); }catch(err){ showToast(url, 'ok'); }
 }); }catch(e){}
@@ -70175,7 +70237,27 @@ function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); r
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
-function dungeonsTabOpen(){ try{ return dailyDungeonsOpen() || gdPlayerOpen(); }catch(e){ return false; } }
+// 2026-10-25 (package PL2, owner 00:02 PL1-3: "Dungeons Tab is not needed for a while - i plan to move all the dungeons much later on ... [the
+// co-op dungeon] It'll be just a dungeon on the map, and itl appear in arena, under coop tab."): the Dungeons tab is gone for players; it
+// stays in Admin Mode (and Dev Mode) for the daily dungeons' testing. The Group Dungeon is the Arena's Co-op pane (pl2ArenaTabsHTML) and a
+// 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
+function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
+let pl2ArenaPane = 'modes';
+function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
+function pl2ArenaTabsHTML(){
+  let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
+  const on = pl2CoopPaneOn(), b = (k, ico, label, sel)=> `<button type="button" class="tab-btn ${sel ? 'active' : ''}" role="tab" aria-selected="${sel}" data-pl2-arena="${k}"><span class="tab-emoji" aria-hidden="true">${ico}</span> ${escapeHtml(label)}</button>`;
+  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '⚔️', TX('ui.ar-modes'), !on)}${b('coop', '👥', TX('ui.pl2-coop'), on)}</div>`
+    + (on ? `<section class="ar3-panel pl2-coop-panel dungeons-panel" aria-label="${escapeAttr(TX('ui.pl2-coop'))}"><div class="dg-list">${groupDungeonCardHTML()}</div></section>` : '');
+}
+// the map's 👥 spot opens the Group Dungeon's card over the map (its buttons are the same delegated [data-gd-open] ones)
+function pl2OpenCoopPop(){
+  document.querySelectorAll('.pl2-coop-pop').forEach(x=> x.remove());
+  const w = document.createElement('div'); w.className = 'pl2-coop-pop'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', TX('ui.ar-group-name'));
+  w.innerHTML = `<div class="pl2-coop-back" data-pl2-coop-close></div><div class="panel dungeons-panel pl2-coop-box"><button type="button" class="pl2-coop-x" data-pl2-coop-close aria-label="✕">✕</button><div class="dg-list">${groupDungeonCardHTML()}</div></div>`;
+  document.body.appendChild(w);
+  w.addEventListener('click', e=>{ if(e.target.closest('[data-pl2-coop-close]') || e.target.closest('[data-gd-open]')) setTimeout(()=> w.remove(), 0); });
+}
 // The 🗝️ key beside Home and Arena (2026-10-16, user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top
 // right hand corner of Conquest Map UI. (same throughout)"): a small round button with today's ticket count, in the Play screens'
 // top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
@@ -71404,7 +71486,7 @@ function renderConquestSubTab(body){
   const layoutEl = document.getElementById('conquestLayout');
   if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
-  if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless)){ // admins may open a locked dungeon or the Tower (2026-10-16)
+  if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless) && !(adminModeEnabled && pl2ProNodeOn(map, conquestSelectedNodeKey))){ // admins may open a locked dungeon or the Tower (2026-10-16); or a map to look at its PRO fight (PL2, 2026-10-25)
     // 2026-10-23 (package PG, owner item 13): no way should land you here any more (signposts check first), but if one does, the notice
     // says what opens this map and takes you back to the furthest map you can play. Was a dead end ("clear the previous map's ... first").
     const backTo = mainConquestMaps().filter(m=> isMapUnlocked(m, progress)).pop() || CONQUEST_MAPS[0];
@@ -71733,7 +71815,7 @@ function renderConquestSubTab(body){
         if(nr.bottom > pr.top - 12) main.scrollBy({top: nr.bottom - (pr.top - 24), behavior: reducedMotion() ? 'auto' : 'smooth'}); }), 20);
     });
   });
-  const selectedNode = conquestSelectedNodeKey ? map.nodes.find(n=>n.key===conquestSelectedNodeKey) : null;
+  const selectedNode = conquestSelectedNodeKey ? (map.nodes.find(n=>n.key===conquestSelectedNodeKey) || pl2ProNodeOn(map, conquestSelectedNodeKey)) : null; // + a PRO / BPRO fight (PL2, 2026-10-25)
   const panelEl = document.getElementById('conquestNodePanel');
   const fabEl = document.getElementById('conquestFightFab');
   if(selectedNode){
@@ -71766,7 +71848,7 @@ function renderConquestSubTab(body){
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
-    const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+    const energyCost = (selectedNode.virtual || selectedNode.pro) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
     panelEl.hidden = false;
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
@@ -71808,7 +71890,7 @@ function renderConquestSubTab(body){
     panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef, {shownLevel: +b.dataset.shownLevel}))); // 2026-10-21 (package ED): at the enemy's level
     panelEl.querySelectorAll('[data-ed-edit]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); edOpenCardEditor(b.dataset.edEdit, null, ()=>{ if(currentTab === 'play' && !matchState) renderPlay(); }); })); // 2026-10-21 (package ED, #14)
     const fb = document.getElementById('cnpFightBtn');
-    if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
+    if(fb) fb.addEventListener('click', ()=> selectedNode.pro ? startProFight(selectedNode.key) : startConquestMatch(map.id, selectedNode.key)); // PL2 (2026-10-25): a PRO fight starts free and unpaid
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); if(so.dataset.locked) return dungeonSweepLocked(so); openSweepMenu(so, map, selectedNode, energyCost, body, isDailyDungeonMap(map) ? {noIdle:true} : undefined); }); } // 2026-10-18 (package Z): a locked dungeon Sweep says why
     // 2026-10-18 (WP4): the panel's own sweep count, Sweep button and idle checkbox (#cnpSweepN/#cnpSweepBtn/#cnpIdleSweep) went; the
     // ⚡ menu (openSweepMenu) has done all three since it replaced them.
@@ -79879,9 +79961,11 @@ function renderMatchUI(){
       if(!w.el) return;
       // 2026-10-12 (user: "on hover over opponent's deck - you see their resource count"): their hand size and what they have to
       // spend, alongside the cards left.
-      const res = ()=>{ const pl = w.player, bits = [`✋ ${pl.hand.length} in hand`, `🪵 ${pl.lumber||0} Lumber`];
-        if(pl.stone) bits.push(`🪨 ${pl.stone} Stone`); if(pl.elementalEnergy) bits.push(`🔮 ${pl.elementalEnergy} Energy`); if(pl.darkness) bits.push(`★ ${pl.darkness} Darkness`);
-        return `<div class="ctt-kind">${bits.join(' · ')}</div>`; };
+      // 2026-10-25 (package PL2, owner 00:02 #8: "The opponent's resource symbols should only appear when holding shift or in the opposing
+      // deck's hover tooltip"): the field no longer shows their pills (only while Shift is held, pl2ShiftWatch); this tooltip shows the
+      // same pills (Lumber, Stone, Metal, Pearls ...) under their hand count.
+      const res = ()=>{ const pl = w.player, pills = sideResourcePillsHTML(m, pl, false);
+        return `<div class="ctt-kind">✋ ${pl.hand.length} in hand</div>` + (pills ? `<div class="ctt-kind pl2-tip-res">${pills.replace(/ id="[^"]*"/g, '')}</div>` : `<div class="ctt-kind">🪵 0</div>`); };
       const countLine = ()=> `<div class="ctt-title">${escapeHtml(w.label)} Deck</div><div class="ctt-kind">🃏 ${w.player.deck.length}/${deckTotals[w.pid]} cards left</div>` + (w.pid !== mine ? res() : '');
       const isMine = w.pid===mine;
       const tier1 = isMine ? ()=> countLine() + `<div class="dht-hint">Hold Shift for the breakdown</div>` : countLine;
@@ -87441,7 +87525,7 @@ async function showFightSign(){
 const COACH_SEEN_KEY = 'bramblewood_coach_seen';
 let coachSeen = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(COACH_SEEN_KEY)||'[]')); }catch(e){ return new Set(); } })();
 function markCoachSeen(id){ try{ if(matchState && /^(g-|pl-|leader|wait)/.test(id)) matchState._lastGuidedRound = matchState.round; }catch(e){} if(id === 'g-hand') setTimeout(()=> document.querySelectorAll('#handStrip .card-tile.tut-hl-cand').forEach(el=> el.classList.add('tut-highlight')), 0); { const i = GUIDED_STEPS.findIndex(st=> st.id===id); if(i >= 0 && matchState && matchState.mode==='tutorial' && !matchState.adminTest){ const tp = loadTutorialProgress(); if((tp.stepIndex||0) < i+1) noteTutorialProgress({level:2, step:id, stepIndex:i+1}); } }
-  coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
+  coachSeen.add(id); if(id === 'tl-what') ['tl-when', 'trig-off', 'trig-on'].forEach(k=> coachSeen.add(k)); /* PL2 (2026-10-25, #6): the one-step trigger lesson */ try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
 function coachHandEl(pred){
   const m = matchState; if(!m) return null;
   const me = m.players[1]; const defs = getCardDefs();
@@ -87561,8 +87645,7 @@ function passiveTipCandidates(){
   out.push({id:'handLimit', text:TX('coach.you-can-hold-5-cards-extra'), anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
   // Triggers (2026-10-12, user: "Tutorials should teach about triggers - when they enable, when they disable, and their
   // visual indicators"): the ⚡ badges on the card's bottom edge, taught the first time each state shows up on the field.
-  out.push({id:'trig-off', text:TX('coach.this-badge-is-a-trigger-an'), anchor:()=> document.querySelector('#battlefieldEl .board-card .ab-trig.is-off')});
-  out.push({id:'trig-on', text:TX('coach.lit-up-means-ready-once-its'), anchor:()=> coachSeen.has('trig-off') ? document.querySelector('#battlefieldEl .board-card .ab-trig:not(.is-off)') : null});
+  // (trig-off / trig-on: retired 2026-10-25, package PL2, owner 00:02 #6: the trigger lesson is one step, TRIGGER_LESSON)
   // every skill/effect, the first time a card carrying it is on the field. Natural Leader gets no tip (2026-10-12, user:
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
@@ -87660,9 +87743,11 @@ function triggerLessonChip(m){
     for(const c of [...r.left, ...r.center, ...r.right]){ if(!(c.hp > 0)) continue; const el = boardCardEl(c.uid), chip = el && el.querySelector('.ab-trig:not(.is-spent)'); if(chip) return (m._tlChip = chip); } }
   return null;
 }
+// 2026-10-25 (package PL2, owner 00:02 #6, SS#2: "Simplify the trigger tutorial(s). Also don't explain every trigger - just say read the
+// card."): one short step on the chip with a Got it ("This chip is a trigger — read the card."); the list of the moments (tl-when) and the
+// two passive tips after it (trig-off, trig-on) are gone. Their ids are marked seen with it, so an older save never shows them.
 const TRIGGER_LESSON = [
-  {id:'tl-what', gate:true, pause:true, next:true, skip:true, text:TX('coach.tl-what'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
-  {id:'tl-when', gate:true, pause:true, skip:true, text:TX('coach.tl-when'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+  {id:'tl-what', gate:true, pause:true, text:TX('coach.pl2-trigger'), anchor:()=> matchState ? triggerLessonChip(matchState) : null, alsoSeen:['tl-when', 'trig-off', 'trig-on']},
 ];
 function triggerLessonTip(m){
   if(!m || m.over || m.mode === 'tutorial' || m.mode === 'sandbox' || m.adminTest || m.fxLib) return null;
@@ -88397,7 +88482,7 @@ function forkSwingVfx(ev){
   const lean = ev.aim === 'left' ? -8 : ev.aim === 'right' ? 8 : 0;
   try{ animateAttacker(ev.attUid, isMine, {leanX: lean, toCastle: lines.some(l=> l.castle) && !lines.some(l=> l.targetUid != null)}); }catch(e){}
   const am = animMs(), label = ev.kind === 'pitchfork' ? `🔱 Pitchfork${ev.aim === 'left' ? ' ⇠' : ev.aim === 'right' ? ' ⇢' : ''}` : ev.kind === 'trident' ? '🔱 Trident!' : '⇔ Fork!';
-  setTimeout(()=>{ try{ SoundKit.swipeTone(); if(attEl && attEl.isConnected) floatText(attEl, label, 'quick'); }catch(e){} }, Math.max(0, am.windup - 60));
+  setTimeout(()=>{ try{ SoundKit.prongTone ? SoundKit.prongTone(ev.kind) : SoundKit.swipeTone(); /* PL2 (2026-10-25, owner 00:02 #9): its own tings per weapon */ if(attEl && attEl.isConnected) floatText(attEl, label, 'quick'); }catch(e){} }, Math.max(0, am.windup - 60));
   const F = window.SkillFX; if(!attEl || !F || !F.forkSwing || reducedMotion() || !fxAtLeast('low')) return;
   // where each line lands: a struck card's centre, else its column on the enemy row (the board's columns line up across the divider)
   const A = attEl.getBoundingClientRect(), ax = A.left + A.width/2, ay = A.top + A.height/2;
@@ -89952,7 +90037,16 @@ function hqHitBigVfx(el, dmg){
 // same chips off the top of the tile (more for a bigger hit, the tier of hqHitBigVfx) under a white impact flash that fades in 0.22 s;
 // a repair (rebuildVfx, a mending skill) pulls a few chips back in onto the tile, with a warm green rim and a little settle. The chips are
 // page-level spans with one Web Animation each (no filter, nothing per frame in script). Low effects or reduced motion: none of it.
-const PL2_CHIP_COLOURS = ['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
+// 2026-10-25 (package PL2, owner 00:02 #8): Shift held shows the opponent's resource pills on the field (html.pl2-shift); they are
+// otherwise hidden (kept in place, transparent, so a gain's float still flies to them) and shown in the enemy deck's tooltip.
+(function pl2ShiftWatch(){
+  if(typeof window === 'undefined' || !window.addEventListener) return;
+  const set = on=>{ try{ document.documentElement.classList.toggle('pl2-shift', !!on); }catch(e){} };
+  window.addEventListener('keydown', e=>{ if(e.key === 'Shift') set(true); });
+  window.addEventListener('keyup', e=>{ if(e.key === 'Shift') set(false); });
+  window.addEventListener('blur', ()=> set(false));
+})();
+const PL2_CHIP_COLOURS =['#6b5a44', '#8a7556', '#4e4234', '#a08a62'];
 function pl2BrambleTile(el){ return el && (el.classList.contains('card-tile') ? el : (el.querySelector('.card-tile') || el)); }
 function pl2BrambleChips(tile, opts){
   if(!tile || !tile.isConnected || reducedMotion() || (typeof fxAtLeast === 'function' && !fxAtLeast('med'))) return;
@@ -93451,7 +93545,7 @@ function renderVfxForEvent(ev){
       else if(ON_SELF[ev.kind]) maybeEmote(ev.attUid, ON_SELF[ev.kind]); }
     const el = boardCardEl(ev.targetUid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
-    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
+    if(ev.kind==='poison'){ SoundKit.poisonApply(); if(el) floatText(el, TX('ui.en7-float-poison', {n: ev.amount}), 'poison') /* EN7 (2026-10-24, owner 13:12 #7): "🤢N", was "+N☠"; PL2 (2026-10-25, owner 00:02 #4): "☠N" */; if(rc) rc.poison = (rc.poison||0) + ev.amount; }
     // 2026-10-14 (fourth pass): a freeze counter melts (the snowflakes fade with the last one), Nullify, Sacrifice.
     if(ev.kind==='thaw'){ if(rc) rc.frozen = Math.max(0, ev.left|0); if(el && !ev.left) floatText(el, '❄ Thawed', 'heal'); updateCardStatusDisplay(ev.targetUid); }
     if(ev.kind==='nullify'){ try{ SoundKit.stunTone(); }catch(e){} if(el){ floatText(el, '🚫 Nullified', 'debuff'); el.classList.remove('nullify-flash'); void el.offsetWidth; el.classList.add('nullify-flash'); setTimeout(()=> el.classList.remove('nullify-flash'), 700); } }

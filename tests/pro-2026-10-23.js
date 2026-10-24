@@ -127,7 +127,8 @@ Object.keys(data.maps).forEach(mid=>{
 // ---- 3. wiring
 const app = rd('arena_app.js'), asm = rd('assemble_arena.py');
 ok((app.match(/__PRO_SKIRMISHES__/g) || []).length === 1 && /__PRO_SKIRMISHES__/.test(asm) && /canonical\/pro-skirmishes\.json/.test(asm), '3. the build bakes canonical/pro-skirmishes.json in (one placeholder)');
-ok(fs.existsSync(path.join(ROOT, 'index.html')) && /"0-PRO-1"/.test(rd('index.html')), '3. the built page has the PRO fights');
+ok(fs.existsSync(path.join(ROOT, 'index.html')) && /"0-PRO-1"/.test(rd('index.html')) && /"0-BPRO-1"/.test(rd('index.html')), '3. the built page has the PRO and BPRO fights (BPRO: 2026-10-25, PL2)');
+ok(/const PRO_KEY_RE = \/\^\\d\+-B\?PRO-\\d\+\$\//.test(app) && /function proEntriesOf\(ent\)\{ return ent \? \(ent\.pro \|\| \[\]\)\.concat\(ent\.bpro \|\| \[\]\)/.test(app) && /out\[mid\]\["bpro"\]/.test(asm), '3. N-BPRO-k keys, both kinds listed, the build bakes bpro (2026-10-25, PL2)');
 { const TXT = require(path.join(ROOT, 'bramblewood-texts.js')), keys = ['ui.pro-title', 'ui.pro-admin-sub', 'ui.pro-fight', 'ui.pro-copy-link', 'ui.pro-link-copied', 'ui.pro-score', 'ui.pro-vs1', 'ui.pro-leader', 'ui.pro-editor', 'ui.pro-result', 'ui.pro-unknown', 'ui.pro-busy', 'ui.pro-tutorial-first', 'ui.pro-map', 'ui.pro-none'];
   const T = TXT.TEXT || (TXT.BramblewoodTexts && TXT.BramblewoodTexts.TEXT) || null, src = rd('bramblewood-texts.js');
   keys.forEach(k=>{ const m = new RegExp('"' + k.replace(/[.-]/g, '\\$&') + '": "([^"]+)"').exec(src); ok(!!m, '3. text ' + k);
@@ -160,6 +161,10 @@ async function browser(){
   try{
     // ---- the deep link
     { const [ctx, pg] = await open('#pro=3-PRO-1');
+      // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
+      const pv = await pg.evaluate("({sel: conquestSelectedNodeKey, map: conquestSelectedMap, panel: !!document.querySelector('#conquestNodePanel:not([hidden]) #cnpFightBtn'), ms: !!matchState})");
+      ok(pv.sel === '3-PRO-1' && pv.map === 'mc' && pv.panel && !pv.ms, '4. #pro=3-PRO-1 opens its fight panel first (PL2) ' + JSON.stringify(pv));
+      await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1500);
       const r = await pg.evaluate("({ms: !!matchState, pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest), map: matchState && matchState.conquestNode && matchState.conquestNode.mapId, hash: location.hash, energy: currentEnergy(), err: window.__setupErr || null, lead: matchState && (matchState.players[2].reserveLeaders || []).slice(), ai: matchState && matchState.aiLevel})");
       ok(r.ms && r.pro === '3-PRO-1' && r.admin && r.map === 'mc', '4. #pro=3-PRO-1 starts that PRO fight of Map 3 ' + JSON.stringify(r));
       ok(r.hash === '' && r.energy === 40, '4. the link is cleared and the fight used no Energy ' + JSON.stringify({hash: r.hash, energy: r.energy}));
@@ -172,10 +177,10 @@ async function browser(){
       ok(!road.inNodes && !road.onMap.length && road.found && !road.other, '4. no map lists a PRO fight and none is drawn on the map; findConquestNode finds it on its own map only ' + JSON.stringify(road));
       // ---- the admin list
       const adm = await pg.evaluate("(async()=>{ switchTab('admin'); renderAdmin(); await new Promise(r=> setTimeout(r, 300)); const p = document.getElementById('adminProFights'); return {shown: !!p, rows: p ? [...p.querySelectorAll('.pro-row')].map(r=> r.dataset.proKey) : [], fights: p ? p.querySelectorAll('[data-pro-start]').length : 0, links: p ? p.querySelectorAll('[data-pro-copy]').length : 0}; })()");
-      const all = [].concat(...Object.values(data.maps).map(m=> m.pro.map(e=> e.id)));
+      const all = [].concat(...Object.values(data.maps).map(m=> m.pro.concat(m.bpro || []).map(e=> e.id))); // + BPRO (2026-10-25, PL2)
       ok(adm.shown && JSON.stringify(adm.rows) === JSON.stringify(all) && adm.fights === all.length && adm.links === all.length, '4. Admin lists every PRO fight with Fight and Copy link ' + JSON.stringify(adm));
       const before = await pg.evaluate("JSON.stringify({p: loadConquestProgress(), cur: myCurrencies, xp: (typeof loadXp === 'function' ? loadXp() : null), cards: (typeof myUnlockedCardIds !== 'undefined' ? [...myUnlockedCardIds].length : null), energy: currentEnergy()})");
-      await pg.click('#adminProFights [data-pro-start="0-PRO-1"]'); await pg.waitForTimeout(1200);
+      await pg.click('#adminProFights [data-pro-start="0-PRO-1"]'); await pg.waitForTimeout(900); await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1200); // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
       const st = await pg.evaluate("({pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest), tab: currentTab, energy: currentEnergy()})");
       ok(st.pro === '0-PRO-1' && st.admin && st.tab === 'play' && st.energy === 40, '4. Admin\'s Fight starts 0-PRO-1, free ' + JSON.stringify(st));
       // ---- a won PRO fight pays nothing
@@ -192,8 +197,8 @@ async function browser(){
       ok(again.pro === '0-PRO-1' && again.admin && !again.over && again.energy === 40, '4. Play again is the same free PRO fight ' + JSON.stringify(again));
       // ---- the skirmish editor's row
       const ed = await pg.evaluate("(async()=>{ endMatch(); switchTab('play'); openSkirmishEditor('mc', '3-2'); await new Promise(r=> setTimeout(r, 300)); const f = document.querySelector('#skirmishEditorOverlay .pro-editor'); return {shown: !!f, keys: f ? [...f.querySelectorAll('[data-pro-start]')].map(b=> b.dataset.proStart) : []}; })()");
-      ok(ed.shown && JSON.stringify(ed.keys) === JSON.stringify(data.maps.mc.pro.map(e=> e.id)), '4. the skirmish editor shows its map\'s PRO fights ' + JSON.stringify(ed));
-      await pg.click('#skirmishEditorOverlay [data-pro-start="3-PRO-1"]'); await pg.waitForTimeout(1000);
+      ok(ed.shown && JSON.stringify(ed.keys) === JSON.stringify(data.maps.mc.pro.concat(data.maps.mc.bpro || []).map(e=> e.id)), '4. the skirmish editor shows its map\'s PRO and BPRO fights ' + JSON.stringify(ed));
+      await pg.click('#skirmishEditorOverlay [data-pro-start="3-PRO-1"]'); await pg.waitForTimeout(900); await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1000); // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
       const fromEd = await pg.evaluate("({pro: matchState && matchState.proFight, overlay: (document.getElementById('skirmishEditorOverlay') || {}).hidden})");
       ok(fromEd.pro === '3-PRO-1' && fromEd.overlay === true, '4. its Fight button closes the editor and starts the fight ' + JSON.stringify(fromEd));
       const unknown = await pg.evaluate("(()=>{ endMatch(); return startProFight('9-PRO-9'); })()");

@@ -9555,6 +9555,8 @@
   .pl2-coop-back{position:absolute; inset:0; background:rgba(10,8,4,.55);}
   .pl2-coop-box{position:relative; width:min(560px, 100%); max-height:90vh; overflow:auto; padding:14px; animation:coachIn .22s ease-out;}
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
+  /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
+  #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
   .pl2-tip-res{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px;} .pl2-tip-res .hud-pill{font-size:11px; padding:1px 7px;}
   /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
   #dropDiscard{cursor:pointer;}

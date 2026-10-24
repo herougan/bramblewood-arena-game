@@ -23370,7 +23370,9 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+-PRO-\d+$/;
+const PRO_KEY_RE = /^\d+-B?PRO-\d+$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k)
+// both kinds of a map's entry, PRO first (2026-10-25, PL2)
+function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
 const PRO_NODE_CACHE = new Map();
 function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
 function proNodeOf(mapId, e, ent){
@@ -23385,11 +23387,25 @@ function proNodeOf(mapId, e, ent){
   PRO_NODE_CACHE.set(ck, n); return n;
 }
 function proFightsOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); const id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id];
-  return ent ? (ent.pro || []).map(e=> proNodeOf(id, e, ent)) : []; }
+  return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
-  for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = (ent.pro || []).find(x=> x.id === key);
+  for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
     if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
   return null;
+}
+// 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
+// trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
+// strip, field, leader and battle rating, and a Fight button that starts it (startProFight: free, pays nothing). It used to start at once.
+function pl2ProNodeOn(map, key){ if(!map || !PRO_KEY_RE.test(key || '')) return null; const f = findProFight(key); return f && f.map.id === map.id ? f.node : null; }
+function pl2ProPreview(key){
+  const f = findProFight(key); if(!f){ showToast(TX('ui.pro-unknown', {key: String(key || '')}), 'warn'); return false; }
+  if(matchState && !matchState.over){ showToast(TX('ui.pro-busy'), 'warn'); return false; }
+  if(!adminModeEnabled && !isMapUnlocked(f.map, loadConquestProgress())) return startProFight(key); // a player's #pro= link to a map not open yet: no panel to show there, it starts as before
+  if(matchState && matchState.over) endMatch();
+  { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
+  conquestWorldView = false; conquestSelectedMap = f.map.id; conquestSelectedNodeKey = f.node.key; playSubTab = 'conquest';
+  if(currentTab === 'play') renderPlay(); else switchTab('play');
+  return true;
 }
 function proLinkFor(key){ try{ return location.origin + location.pathname + '#pro=' + encodeURIComponent(key); }catch(e){ return '#pro=' + key; } }
 function startProFight(key){
@@ -23409,7 +23425,7 @@ function proDeepLinkGo(){
   const key = proDeepLinkKey(); if(!key) return false;
   try{ history.replaceState(null, '', location.pathname + location.search); }catch(e){}
   if(!loadTutorialDone()){ showToast(TX('ui.pro-tutorial-first'), 'warn'); return false; }
-  return startProFight(key);
+  return pl2ProPreview(key); // PL2 (2026-10-25): the link opens the fight's panel too
 }
 try{ if(typeof window !== 'undefined'){ window.addEventListener('load', ()=> setTimeout(proDeepLinkGo, 1500)); window.addEventListener('hashchange', ()=> proDeepLinkGo()); } }catch(e){}
 function proDeckLineHTML(deck){ const defs = getCardDefs();
@@ -23431,7 +23447,7 @@ function proRowHTML(mapId, e, node, opts){
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
   const body = ids.length ? ids.map(id=>{ const ent = ents[id], map = CONQUEST_MAPS.find(m=> m.id === id); if(!map) return ''; const nodes = proFightsOf(id);
-    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
+    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
     : `<p class="panel-sub">${escapeHtml(TX('ui.pro-none'))}</p>`;
   return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${body}</div>`;
 }
@@ -23440,21 +23456,21 @@ function proFightsAdminHTML(){
 // through the same data-pro-start click handler as Admin's list. Not a .map-node (no progress, no layout, no unlock logic), absent for players.
 function proMapNodesHTML(map, positions){
   if(!adminModeEnabled || !map || map.sub || map.endless || conquestLayoutEdit) return '';
-  const ent = proMapEntries()[map.id]; if(!ent || !(ent.pro || []).length) return '';
+  const ent = proMapEntries()[map.id]; if(!ent || !proEntriesOf(ent).length) return '';
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
-  const dir = base.x > 62 ? -1 : 1, list = ent.pro || [];
+  const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
   return list.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
     return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}" aria-label="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}"><span class="mpr-ico" aria-hidden="true">🏆</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
 }
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
   const m = CONQUEST_MAPS.find(x=> x.id === mapId), id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id] || {};
-  return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${(ent.pro || []).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
+  return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
 }
 try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{
   const b = ev.target && ev.target.closest && ev.target.closest('[data-pro-start],[data-pro-copy]'); if(!b) return;
   ev.preventDefault();
-  if(b.dataset.proStart){ startProFight(b.dataset.proStart); return; }
+  if(b.dataset.proStart){ pl2ProPreview(b.dataset.proStart); return; } // PL2 (2026-10-25, PRO-UI): the fight's panel first, its Fight button starts it
   const url = proLinkFor(b.dataset.proCopy);
   try{ navigator.clipboard.writeText(url).then(()=> showToast(TX('ui.pro-link-copied'), 'ok'), ()=> showToast(url, 'ok')); }catch(err){ showToast(url, 'ok'); }
 }); }catch(e){}
@@ -25627,7 +25643,7 @@ function renderConquestSubTab(body){
   const layoutEl = document.getElementById('conquestLayout');
   if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
-  if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless)){ // admins may open a locked dungeon or the Tower (2026-10-16)
+  if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless) && !(adminModeEnabled && pl2ProNodeOn(map, conquestSelectedNodeKey))){ // admins may open a locked dungeon or the Tower (2026-10-16); or a map to look at its PRO fight (PL2, 2026-10-25)
     // 2026-10-23 (package PG, owner item 13): no way should land you here any more (signposts check first), but if one does, the notice
     // says what opens this map and takes you back to the furthest map you can play. Was a dead end ("clear the previous map's ... first").
     const backTo = mainConquestMaps().filter(m=> isMapUnlocked(m, progress)).pop() || CONQUEST_MAPS[0];
@@ -25956,7 +25972,7 @@ function renderConquestSubTab(body){
         if(nr.bottom > pr.top - 12) main.scrollBy({top: nr.bottom - (pr.top - 24), behavior: reducedMotion() ? 'auto' : 'smooth'}); }), 20);
     });
   });
-  const selectedNode = conquestSelectedNodeKey ? map.nodes.find(n=>n.key===conquestSelectedNodeKey) : null;
+  const selectedNode = conquestSelectedNodeKey ? (map.nodes.find(n=>n.key===conquestSelectedNodeKey) || pl2ProNodeOn(map, conquestSelectedNodeKey)) : null; // + a PRO / BPRO fight (PL2, 2026-10-25)
   const panelEl = document.getElementById('conquestNodePanel');
   const fabEl = document.getElementById('conquestFightFab');
   if(selectedNode){
@@ -25989,9 +26005,9 @@ function renderConquestSubTab(body){
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
-    const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+    const energyCost = (selectedNode.virtual || selectedNode.pro) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
-    panelEl.hidden = false;
+    panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
     document.body.classList.add('cq-node-focus');
@@ -26031,7 +26047,7 @@ function renderConquestSubTab(body){
     panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef, {shownLevel: +b.dataset.shownLevel}))); // 2026-10-21 (package ED): at the enemy's level
     panelEl.querySelectorAll('[data-ed-edit]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); edOpenCardEditor(b.dataset.edEdit, null, ()=>{ if(currentTab === 'play' && !matchState) renderPlay(); }); })); // 2026-10-21 (package ED, #14)
     const fb = document.getElementById('cnpFightBtn');
-    if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
+    if(fb) fb.addEventListener('click', ()=> selectedNode.pro ? startProFight(selectedNode.key) : startConquestMatch(map.id, selectedNode.key)); // PL2 (2026-10-25): a PRO fight starts free and unpaid
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); if(so.dataset.locked) return dungeonSweepLocked(so); openSweepMenu(so, map, selectedNode, energyCost, body, isDailyDungeonMap(map) ? {noIdle:true} : undefined); }); } // 2026-10-18 (package Z): a locked dungeon Sweep says why
     // 2026-10-18 (WP4): the panel's own sweep count, Sweep button and idle checkbox (#cnpSweepN/#cnpSweepBtn/#cnpIdleSweep) went; the
     // ⚡ menu (openSweepMenu) has done all three since it replaced them.

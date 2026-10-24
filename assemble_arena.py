@@ -372,6 +372,9 @@ def _pro_for_game(d):
         out[mid] = {"map": m.get("map"), "name": m.get("name"), "field": {k: f.get(k) for k in ("rules", "terrain", "summary", "boss")},
                     "pro": [dict({k: e.get(k) for k in keep}, source={k: (e.get("source") or {}).get(k) for k in ("file", "optimum", "score", "ci", "generated")},
                                  h2h=(None if not e.get("h2h") else {k: e["h2h"].get(k) for k in ("p", "n", "elo", "ci")})) for e in (m.get("pro") or [])]}
+        # 2026-10-25 (package PL2, PRO-UI): the BPRO decks (N-BPRO-k, the map's own pool; PRO2) are baked the same way, so the game shows them too
+        out[mid]["bpro"] = [dict({k: e.get(k) for k in keep}, source={k: (e.get("source") or {}).get(k) for k in ("file", "optimum", "score", "ci", "generated")},
+                                 h2h=(None if not e.get("h2h") else {k: e["h2h"].get(k) for k in ("p", "n", "elo", "ci")})) for e in (m.get("bpro") or [])]
     return {"updated": d.get("updated"), "rule": d.get("rule"), "maps": out}
 _pro_file = SCRATCH + "canonical/pro-skirmishes.json"
 app_src = sub_once(app_src, "__PRO_SKIRMISHES__", json.dumps(_pro_for_game(json.load(open(_pro_file, encoding="utf-8"))) if os.path.exists(_pro_file) else {"maps": {}}, ensure_ascii=False))
