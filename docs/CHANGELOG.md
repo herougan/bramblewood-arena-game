@@ -2,6 +2,36 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package EN6: hand, heat / frost, weather and season states, Full Hand / Lean, Hibernate, – bramble, the Bounty clean-up)
+- **Hand states (03:17 #1):** 🃏 **Plenty – {…}** while you hold 4+ cards (default +1/+1), 🫗 **Scarcity** 1 or none (+1/+0), 🎴 **Foe's Plenty**
+  the opponent holds 4+ (+0/+2), 🪹 **Foe's Scarcity** 1 or none (+1/+0). **Full Hand N** / **Lean N** (+N Attack per card in hand / per empty
+  slot) and the Foe's pair ("Hoard" was taken: call EN6-1). EN5's pattern: braces or the default, a lit gold pip while on, a float and a log line.
+- **Heat / Frost (03:17 #3):** 🌡️ **Heat – {…}** while the field is hot (Scorching, the volcano / forge / frostfire / desert maps, the volcano's
+  fires, Summer; +1/+0), ❄️ **Frost – {…}** while it is cold (Frigid, Hail, Freezing, the map's frost, tundra and frostfire, Winter; +0/+2).
+  Heat and cold resistance are unchanged beside them. New map flags `hotMap` / `coldMap` / `saltMap` / `weatherMap` (`fightRules`, by biome).
+- **Weather (03:17 #4):** ☔ **Rain** (Spring Rain or a Thunderstorm; +1/+1), ⛈️ **Storm** (a Thunderstorm or a strong-wind round; +2/+0),
+  🌁 **Fog** (Thick Fog or the Mist; Evasive), 🧂 **Salt** (a beach or reef map while the tide is out (Ebb); Armor 1), 🔆 **Drought** (3 rounds in
+  a row without rain on a dry map with weather; +1/+0), 🍂 **Season (X) – {…}** (+1/+1) with the new **Seasons** field option (Edit skirmish;
+  off by default, on no map yet: Spring, Summer, Autumn, Winter, 3 rounds each; Summer is hot, Winter cold; call EN6-4).
+- **Hibernate N 🛌 (03:17 #4):** in a cold field, or at night on a cold map, the unit sleeps (no attack, Taunt / Guardian off, a hit does not wake
+  it, its Wait waits), heals N (plain 2) each round, and wakes when the cold ends. A pale blue 🛌 pip and floats (call EN6-8).
+- **– bramble (03:17 #2):** Arrow / Fire Arrow / Fire Bolt – bramble (card text "Arrow 2 – bramble") shoot the enemy bramble instead of a unit;
+  in the card editor a "– bramble" box on the Arrow, Missile and Deal damage (one opponent) actions; a 🏹 flies into the bramble.
+- **Prices (4-round rule x measured uptime, call EN6-2):** `tools/en6_state_uptime_2026_10_24.js` (`docs/balance/en6-state-uptime-2026-10-24.json`):
+  plain Plenty 0.45, Scarcity 1.58, Foe's Plenty 0.1, Foe's Scarcity 1.54, Heat 1.2, Frost 1.12, Rain 0.15, Storm 1.8, Fog 2.7, Salt 0.38,
+  Drought 1.0, Season 0.75 (braces: the same uptime x their S); Full Hand 3.0 / Lean 7.5 / Foe's Full Hand 2.4 / Foe's Lean 7.5 a point; Hibernate
+  0.95 a point with its Attack counted x0.53; – bramble x0.9 (the `bramble` modifier). The CPU holds 1 card 73% of the time as combat starts, so
+  Plenty is rare against it (call EN6-3).
+- **Cards (thematic, all already placed):** Polar Bear (Hibernate, Map 6), Snow Ermine (Frost), Cinder Stoker (Heat), Dromedary (Drought), Fulmar
+  Spitter (Storm), Horseshoe Crab (Salt), Puddle Hopper (Rain), Ent (Fog), Seed-cache Squirrel (Plenty), Ravenous Wolverine (Scarcity), Gull Thief
+  (Foe's Plenty), Stoat Cutthroat (Foe's Scarcity), Balloon Archer (Arrow – bramble); re-fit (`docs/balance/en6-refit-2026-10-24.json`): 3 up,
+  7 down, none held. No Season, Full Hand or Lean card (calls EN6-4, EN6-5).
+- **Bounty (12:02 #5):** off the Beaver Lumberjack, which gets On Ready: gain 1 Lumber (stays 4/4; call EN6-6). Kept on the loot carriers: the
+  raccoons and Trash Panda, Riverside Peddler, Pack Mule, The Magnate Duck, Chipmunk Stockpiler (call EN6-7).
+- Engine: the EN6 block (`EN6_STATES` beside EN5's in `condStatsOf`, `en6HandAtk`, `en6HibernateSync`, `en6RoundStart`); events `season`,
+  `statusFx hibernate`, `heal {cause:'hibernate'}`, `brambleShot`. card-matrix golden diffs expected from the 15 re-fitted / changed cards.
+  Texts in the 12 packs (`tools/i18n_2026_10_24_en6.py`). Tests: `tests/en6-2026-10-24.js`, `tests/e2e/en6_2026_10_24.py` (shots `docs/screens/EN6/`).
+
 ## 2026-10-24 (package RW6: results without locked chips, Base cards as cards, PRO fights on the map)
 - **Results:** the lock + card + rank emblem chips for rewards your rank was too low for are gone from the post-fight list (owner 12:02, #1).
 - **Base cards:** a Base card won (Sheep and the rest) is a normal card tile in Cards won, hover shows the card; the "spare copy ... feed it in the Forge" chip is gone (#2).

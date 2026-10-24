@@ -87,7 +87,7 @@ const refit = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal
 ok(refit.moves.length > 100 && refit.held.every(h=> h.cut > 25), `4. the re-fit is on record (${refit.moves.length} moves, ${refit.held.length} held over 25%)`);
 const flagged = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8')));
 ok(refit.held.every(h=> flagged.has(h.id)) && refit.noLine.every(id=> flagged.has(id)), '4. the held and no-line cards are merged into the flagged list');
-refit.moves.slice(0, 40).filter(mv=> !/N22-10: Bounty/.test((D[mv.id] || {}).creatorNote || "")).forEach(mv=>{ const [A, H] = mv.to.split('/').map(Number); ok(D[mv.id] && (D[mv.id].attack || 0) === A && D[mv.id].health === H, `4. ${mv.id} carries its re-fit ${mv.to}`); });
+refit.moves.slice(0, 40).filter(mv=> !/N22-10: Bounty|2026-10-24 EN6 re-fit/.test((D[mv.id] || {}).creatorNote || "")).forEach(/* 2026-10-24 (package EN6): a card EN6 re-fitted after taking a new skill carries EN6's line */mv=>{ const [A, H] = mv.to.split('/').map(Number); ok(D[mv.id] && (D[mv.id].attack || 0) === A && D[mv.id].health === H, `4. ${mv.id} carries its re-fit ${mv.to}`); });
 
 // ---- 5. DF-2
 const UC = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'upgrade-costs.json'), 'utf8'));
