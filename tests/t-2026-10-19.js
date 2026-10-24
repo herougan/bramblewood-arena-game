@@ -128,7 +128,7 @@ ok(/"ui\.swap-teach-lumber": "It costs 🪵 Lumber: pitch a card you don't need 
 const rp = fnSrc('rewardsPanelHTML'), rc = fnSrc('rewardCastleCardHTML');
 ok(!inCode(src, /conquestCastleSpare/), 'no more m.conquestCastleSpare text');
 ok(!/fuse-it-in-the-forge-castles/.test(src) && !/fuse-it-in-the-forge-castles/.test(texts), 'the old Forge tooltip is gone');
-ok(/const castles = rewardCastleDrops\(m\);/.test(rp) && /if\(cards\.length \|\| castles\.length\)/.test(rp) && /\$\{castles\.map\(rewardCastleCardHTML\)\.join\(''\)\}/.test(rp), 'brambles join the cards won');
+ok(/const castles = rewardCastleDrops\(m\);/.test(rp) && /if\(cards\.length \|\| castles\.length(?: \|\| baseCopyIds\.length)?\)/.test(rp) /* 2026-10-24 (RW6): + Base cards as card tiles */ && /\$\{castles\.map\(rewardCastleCardHTML\)\.join\(''\)\}/.test(rp), 'brambles join the cards won');
 ok(!/rw-act rw-castle/.test(rp), 'no bramble chip in the Rewards block');
 ok(/m\.conquestCastleDrops = \(m\.conquestCastleDrops\|\|\[\]\)\.concat\(\[\{id:cd\.id, kind:cd\.kind === 'new' \? 'new' : 'spare'\}\]\)/.test(src), 'a dropped bramble is recorded as {id, kind}');
 ok(/m\.conquestCastleDrops = \(m\.conquestCastleDrops\|\|\[\]\)\.concat\(cs\.map\(ch=> \(\{id:ch\.id, kind:'spare'\}\)\)\)/.test(src), 'a boss\'s spare bramble too');
