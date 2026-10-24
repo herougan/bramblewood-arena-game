@@ -4,6 +4,33 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-24 21:14: owner playtest notes (from another computer; not started)
+
+Logged only, for the main session to triage and build. Screenshots: `docs/screens/owner-2026-10-24/` (SS#1 `ss1-swap-recommended.png`, SS#2 `ss2-green-bar.png`, SS#3 `ss3-honeyjoe-number.png`, SS#4 `ss4-deck-count-pill.png`).
+
+| ID | Area | Note (owner's words, lightly trimmed) |
+|---|---|---|
+| P24-1 | Tutorial / faction pick | Otters vs Hummingbirds: both should show 3 Commons at first, then, like the main screen, slowly flip to other cards of that faction at random. |
+| P24-2 | Tutorial rewards | Tut2 rewards (3 faction cards): don't write the name under the cards. |
+| P24-3 | Results / map | Show the XP reward only when leaving the skirmish for the conquest map. |
+| P24-4 | Packs UI | The central band over the booster packs: (a) it isn't clear it's not part of the pack; make it a ribbon hugging the packs; (b) show it only when there is more than 1 pack. |
+| P24-5 | Results VFX | The rank appears on the battlefield then fades (like the red S). Instead: the normal emblem fades in quickly on the skirmish, then jumps and spirals into the bottom right, as if the skirmish detail now opens with that emblem and it came from there. |
+| P24-6 | Bug: packs | Fresh game: entering Map 1 Thistlewood gave two packs, but after the banner animation the pack animation never showed; it went straight to the swap window. Same going from Map 1's last skirmish to Map 2. |
+| P24-7 | AI | From Map 1 on, the CPU must not ignore an incoming lethal attack on its bramble when it can summon a blocker (unless it has something better to do). It could easily have blocked the Nectar Sipper and didn't. |
+| P24-8 | Bug: swap window (SS#1) | The two recommended cards bottom right are basic cards; why recommended? And they were just taken out. |
+| P24-9 | Bug: Diurnal/Nocturnal in hand | Cards in hand should reflect the current time of day. A Diurnal unit showed +1 though it had just become night; playing it confirmed night. |
+| P24-10 | Bramble (half block) | The one that blocks the bramble by half: the owner's other computer will comment. Wait for that. |
+| P24-11 | Bug: battlefield (SS#2) | A weird green bar on the Voidfeather Scout's card (over the Attack plate). What is it? |
+| P24-12 | Bug: card number (SS#3) | Honeyjoe Brewer doesn't display the proper number (shows 1/4 on the field). |
+| P24-13 | Arena | The Daily Dungeon tab is not available until something unlocks it. |
+| P24-14 | VFX | Too many visual effects during a game. The owner will describe it concisely later. |
+| P24-15 | Engine | Guardians must not intercept Thorns. |
+| P24-16 | Engine | Elemental damage is still lowered by Armor. Rule: magic damage ignores Armor; normal damage ignores magic armor. |
+| P24-17 | Engine / text | Some brambles "heal themselves" each turn; it read as "Heal 1 random ally 1" (that should be the default meaning). Brambles and structures cannot be healed, only repaired. |
+| P24-18 | Bug: dialogue | Entering Gannet Cliffs starts a Wandering Trader dialogue; saying OK, it then says you have to progress further to see it. |
+| P24-19 | Bug: packs | Opening 6 accumulated packs (rewards that hadn't auto-opened): the first 3 counted "2 packs left", "1 pack left", then the 3 faction packs restarted at "2 packs left". With 6 different packs there was no summary page of all cards gotten. Also: why didn't they auto-open? |
+| P24-20 | Deck editor (SS#4) | The copy-count pill at the card's bottom right covers the Health. Make it and its pill a bit smaller, and move it further into the bottom-right corner. |
+
 ## 10-23 20:50: open items after the audit (queued in this order)
 
 An audit of every dated section below sorted built from not built (evidence in git and the CHANGELOG). These are the genuinely open ones, queued after the current list (rewards RW5, map, board visuals, camp/nest/codex, triggers tutorial).
