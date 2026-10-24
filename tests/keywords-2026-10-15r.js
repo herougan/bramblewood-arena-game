@@ -93,7 +93,10 @@ ok(!cards.some(c=> 'worthy' in (c.effects||{})), '26. no card carries Worthy');
 // Beaver Lumberjack keeps its folded Worthy 2 (Bounty 2), Elder Willow and Field Mouse lost theirs.
 { const KEEP = ['trash-panda-trickster','raccoon-bandit','raccoon-warlord','magnate-duck','chipmunk-stockpiler','pack-mule','riverside-peddler','beaver-lumberjack'];
   const has = cards.filter(x=> !x.test && 'bounty' in (x.effects || {})).map(x=> x.id).sort();
-  ok(cards.find(x=> x.id === 'beaver-lumberjack').effects.bounty === 2 && has.every(id=> KEEP.includes(id)), `26. Bounty only on the 8 loot carriers; Beaver Lumberjack's is 2 (${has.join(', ')})`); }
+  // 2026-10-24 (package EN6, owner 12:02 #5: "I'll take away bounty from creatures that dont make sense such as Beaver"): the Beaver Lumberjack
+  // lost its Bounty (On Ready: gain 1 Lumber instead); the 7 loot carriers keep theirs.
+  const bv = cards.find(x=> x.id === 'beaver-lumberjack').effects;
+  ok(!bv.bounty && (bv.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain') && has.every(id=> KEEP.includes(id) && id !== 'beaver-lumberjack'), `26. Bounty only on the 7 loot carriers; the Beaver Lumberjack's is gone (${has.join(', ')})`); }
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true,/.test(src), '26. Worthy is out of the editor and the lists');
 
 // ---- 43. every extra hit rolls its own miss

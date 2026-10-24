@@ -1,0 +1,72 @@
+{
+ "_about": "tools/en6_state_uptime_2026_10_24.js: the share of unit-rounds (side 1's units on the board as combat starts) where each EN6 state holds. hand: random live band decks, CPU vs CPU. field: every conquest fight's rules (+ EN6's map flags), 6 fights each; \"all\" over every fight, \"home\" over the fights where the state ever holds. season: rules.seasons on (3 rounds a season).",
+ "generated": "2026-10-24",
+ "seed": 1,
+ "band": 714,
+ "hand": {
+  "games": 1500,
+  "unitRounds": 68342,
+  "plenty": 0.002,
+  "scarcity": 0.786,
+  "foePlenty": 0.001,
+  "foeScarcity": 0.765,
+  "hist": [
+   0.061,
+   0.725,
+   0.199,
+   0.013,
+   0.002,
+   0
+  ],
+  "meanHand": 1.169,
+  "meanEmpty": 3.831,
+  "meanFoeHand": 1.198,
+  "meanFoeEmpty": 3.802
+ },
+ "field": {
+  "fights": 263,
+  "perFight": 6,
+  "all": {
+   "heat": 0.207,
+   "frost": 0.111,
+   "rain": 0.017,
+   "storm": 0.144,
+   "fog": 0.038,
+   "salt": 0.042,
+   "drought": 0.259,
+   "hibernate": 0.082
+  },
+  "home": {
+   "heat": 1,
+   "frost": 1,
+   "rain": 0.079,
+   "storm": 0.757,
+   "fog": 1,
+   "salt": 0.452,
+   "drought": 0.745,
+   "hibernate": 0.859
+  },
+  "homeFights": {
+   "heat": 58,
+   "frost": 27,
+   "rain": 60,
+   "storm": 50,
+   "fog": 11,
+   "salt": 24,
+   "drought": 94,
+   "hibernate": 23
+  },
+  "maps": 40
+ },
+ "season": {
+  "games": 500,
+  "spring": 0.216,
+  "summer": 0.246,
+  "autumn": 0.29,
+  "winter": 0.249,
+  "heat": 0.246,
+  "frost": 0.249,
+  "hibernate": 0.249
+ },
+ "seconds": 77
+}

@@ -1120,3 +1120,47 @@ The rules as built (engine: the Package EQ2 block in `bramblewood-engine.js`, `E
 | Held Parasite: the enemy units in reach get a pink dashed drop target | `eq2SyncHolding` (`body.eq2-para-holding`, `.eq2-para-drop.is-ok`) | holding a Parasite card |
 | The host flashes pink as it is hooked; a 🪱 badge with the Parasite's Attack on its right edge; the badge throbs as it feeds, the damage number on the host | `eq2Vfx` `parasiteAttach`, `parasiteDrain` | a hook-on, each feed |
 | A 🦑 flies from the boss's bramble to the struck unit; "🦺" on the Guardian and "🦺 Guarded" on the unit it covered; the damage number | `eq2Vfx` `raidStrike` | the Beak Strike |
+
+## 2026-10-24 additions (package EN6): the hand, heat and frost, the weather and the seasons, Full Hand / Lean, Hibernate, – bramble
+
+The rules as built (engine: the EN6 block, `EN6_STATES` and `en6StatesOn` read in `condStatsOf` beside EN5's, `en6HandAtk`,
+`en6HibernateSync`, `en6RoundStart`; owner 03:17, all approved 12:02 #11). Prices: `canonical/skill-costs.json` (`tools/en6_skill_costs_2026_10_24.py`)
+and `bramblewood-budget.js` `EN6_UPTIME`; uptimes measured by `tools/en6_state_uptime_2026_10_24.js` (`docs/balance/en6-state-uptime-2026-10-24.json`).
+
+- **State skills – {…}** (EN5's pattern: the braces `effects.<k>Grant` while the state holds, the default when the card prints the plain name;
+  they share EN5's `stateSkill` event, the lit gold pip and the float; turned on and off at every stat sync):
+  - **Plenty 🃏** you hold 4+ cards (default +1/+1) · **Scarcity 🫗** you hold 1 or none (+1/+0) · **Foe's Plenty 🎴** the opponent holds 4+
+    (+0/+2) · **Foe's Scarcity 🪹** the opponent holds 1 or none (+1/+0). The hand is read as it stands (combat starts after the plays).
+  - **Heat 🌡️** the field is hot (+1/+0): Scorching (field `heatwave`), a hot map (`rules.hotMap`: the ash, forge, frostfire and pale-desert
+    biomes, set by `fightRules`), the volcano's fires (`rules.eruption`, `volcano`, `wildfire`, `lavaSpout`, `ashRain`), Summer.
+  - **Frost ❄️** the field is cold (+0/+2): Frigid (field `frozen`), Hail, Freezing, the map's frost (`rules.frostbite` / `frostWait` /
+    `frostCount`), a cold map (`rules.coldMap`: tundra and frostfire), Winter. Both sit beside heat / cold resistance, which is unchanged.
+  - **Rain ☔** Spring Rain (field `rain`: the map or a Rain card, a Rainmaker) or a Thunderstorm (+1/+1) · **Storm ⛈️** a Thunderstorm or a
+    strong-wind round (`isWindy`: Windy, Gale, a Sandstorm's wind) (+2/+0) · **Fog 🌁** Thick Fog (field `fog`) or the Mist (`rules.misty`)
+    ({Evasive}).
+  - **Salt 🧂** a salt-water map (`rules.saltMap`: beach and reef) while the tide is out (`getTide() === 'ebb'`) (Armor 1). No tide, no salt;
+    Perma-tide never ebbs.
+  - **Drought 🔆** after 3 rounds in a row without rain (`en6DryRun`, counted at each round's start) on a dry fight with weather
+    (`rules.weatherMap`: savanna and pale desert; or wind, a Thunderstorm, Mist, Hail, Seasons, or rain earlier in the fight); never on a wet
+    map, Perma-tide, dark or the depths (+1/+0).
+  - **Season (X) – {…}** `effects.season` names the season (spring / summer / autumn / winter; Winter when unset), `seasonGrant` its braces
+    (+1/+1): on in that season of the **Seasons** field option (`rules.seasons`: true = 3 rounds a season, a number = that many;
+    `rules.seasonStart`, Spring by default). Summer counts as hot and Winter as cold. Event `season {season, round}` as it turns. On no map yet.
+- **Full Hand N ✋ / Lean N 🫳** (and **Foe's Full Hand / Foe's Lean**): +N Attack per card in the hand / per empty slot below the hand limit
+  (MAX_HAND 5), yours or the opponent's, on the same situational bonus as day and night.
+- **Hibernate N 🛌** (plain 2): while `en6HibernateCond()` (a cold field: Frigid, Hail, Freezing, the map's frost, Winter; or night / twilight
+  on a cold map) the unit hibernates (`c.hibernating`): its Asleep is held on (no swing, shot or trigger; its Wait does not tick), a hit does
+  not wake it, its Taunt and Guardian are off; at each round's start it heals N (a `heal` event, cause `hibernate`). It wakes as the
+  condition ends (`statusFx hibernate {on}`). Priced 0.95 a point, and its Attack counts x (1 - 0.47) in the budget.
+- **– bramble** (owner 03:17 #2): `effects.arrowBramble` / `fireArrowBramble` / `fireBoltBramble` aim that skill's shot at the enemy bramble
+  every round (card text "Arrow 2 – bramble"); a trigger's `t.bramble` does it for the Arrow and Missile actions and for Deal damage at one
+  opponent (the trigger editor's "– bramble" box). The arrows are `arrow` events at the bramble (no target unit); Missile and Deal damage
+  add a `brambleShot` event (its 🏹 look and log line). Through `fireDamageAction`'s bramble path: Rampart and Bramble Armor
+  still cut it. Priced x0.9 of the shot or action (the modifier `bramble`).
+
+| Look | Where |
+|---|---|
+| A state skill on: EN5's ring, its icon float and the lit gold pip (🃏 🫗 🎴 🪹 🌡️ ❄️ ☔ ⛈️ 🌁 🧂 🔆 🍂) | `EN6_STATE_KEYS` joins `EN5_STATE_KEYS` (`en5StateVfx`, `en5StatusBadges`) |
+| Hibernate: a pale blue 🛌 pip beside the 💤, "🛌 Hibernating" / "Awake" floats, a cold tint; the heal's motes are the plain heal's | `en6StatusBadges`, `en6Vfx` (`.abadge.en6-hib`, `.en6-hib-pulse`) |
+| A – bramble action: a 🏹 flies from the unit into the enemy bramble | `en6Vfx` (`.sfx.en6-bramble-arrow`) |
+| The season turning: a float over the board and a gold log line | `en6Vfx`, `en6LogText` |

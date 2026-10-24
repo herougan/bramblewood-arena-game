@@ -1,0 +1,112 @@
+{
+ "about": "EN6 re-fit (2026-10-24): the cards that took an EN6 skill (and Beaver Lumberjack: Bounty 2 -> On Ready +1 Lumber), fitted to the largest line in both caps with the same A:H shape (tools/en6_cards_2026_10_24.js). A cut of more than 25% of 2A+H is held at its stats (call EN6-5).",
+ "moved": [
+  "ent",
+  "puddle-hopper",
+  "gull-thief",
+  "ravenous-wolverine",
+  "beaver-lumberjack",
+  "stoat-cutthroat",
+  "cinder-stoker",
+  "balloon-archer",
+  "snow-ermine",
+  "seed-cache-squirrel",
+  "dromedary",
+  "fulmar-spitter",
+  "horseshoe-crab",
+  "polar-bear"
+ ],
+ "notBand": [],
+ "alreadyFit": [
+  "gull-thief",
+  "beaver-lumberjack",
+  "fulmar-spitter",
+  "polar-bear"
+ ],
+ "up": [
+  {
+   "id": "puddle-hopper",
+   "from": "1/8",
+   "to": "1/9",
+   "S": "2.5 -> 1.65",
+   "use": 98,
+   "newSkill": "rain"
+  },
+  {
+   "id": "balloon-archer",
+   "from": "2/7",
+   "to": "2/8",
+   "S": "5.4 -> 5.4",
+   "use": 100,
+   "newSkill": "arrowBramble"
+  },
+  {
+   "id": "horseshoe-crab",
+   "from": "2/10",
+   "to": "2/11",
+   "S": "4 -> 3.38",
+   "use": 99,
+   "newSkill": "salt"
+  }
+ ],
+ "down": [
+  {
+   "id": "ent",
+   "from": "2/26",
+   "to": "2/22",
+   "S": "1 -> 2.7",
+   "use": 97,
+   "newSkill": "fog"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "from": "4/4",
+   "to": "3/3",
+   "S": "6.67 -> 7.25",
+   "use": 87,
+   "newSkill": "scarcity"
+  },
+  {
+   "id": "stoat-cutthroat",
+   "from": "3/14",
+   "to": "3/12",
+   "S": "2.8 -> 3.34",
+   "use": 96,
+   "newSkill": "foeScarcity"
+  },
+  {
+   "id": "cinder-stoker",
+   "from": "1/13",
+   "to": "1/11",
+   "S": "1 -> 1.2",
+   "use": 99,
+   "newSkill": "heat"
+  },
+  {
+   "id": "snow-ermine",
+   "from": "2/5",
+   "to": "2/4",
+   "S": "1 -> 1.12",
+   "use": 92,
+   "newSkill": "frost"
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "from": "2/8",
+   "to": "2/7",
+   "S": "4 -> 3.45",
+   "use": 95,
+   "newSkill": "plenty"
+  },
+  {
+   "id": "dromedary",
+   "from": "2/16",
+   "to": "2/15",
+   "S": "5 -> 5",
+   "use": 97,
+   "newSkill": "drought"
+  }
+ ],
+ "held": [],
+ "flagged": []
+}

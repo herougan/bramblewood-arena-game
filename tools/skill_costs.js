@@ -65,6 +65,8 @@
         v += (+a.value || 0) * x; });
       if(t.who && t.who !== 'self' && t.sub !== 'all' && (t.targets | 0) > 1) v *= Math.min(8, t.targets | 0);
       if(t.sub === 'all') v *= mod('subAll', 2);
+      // EN6 (2026-10-24): – bramble on Arrow, Missile and Deal damage (one opponent): x the table's 'bramble' modifier (bramblewood-budget.js EN6_BRAMBLE_MULT)
+      if(t.bramble && (BB.EN6_BRAMBLE_ACTIONS || []).includes(id) && t.sub !== 'all') v *= mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9);
       return {value:v, missing:null};
     }
     function triggerWeight(t){
@@ -90,6 +92,8 @@
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }
         if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
+        // EN6 (2026-10-24): Arrow / Fire Arrow / Fire Bolt – bramble: (bramble - 1) x the shot's own price (nothing without the shot)
+        if(BB.EN6_BRAMBLE_SHOTS && BB.EN6_BRAMBLE_SHOTS[k]){ const base = BB.EN6_BRAMBLE_SHOTS[k], sc = v && effects[base] ? (skillCost(base, effects[base]) || 0) : 0, c = r2((mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9) - 1) * sc); S += c; parts.push(['skill', k, c, 'x' + mod('bramble', 0.9) + ' of ' + base]); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); const f = opts && opts.fallback ? opts.fallback(k, v) : null; c = typeof f === 'number' ? f : 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); } // CX5: the caller's fallback
         S += c; parts.push(['skill', k, c, '']);
       });
@@ -115,7 +119,8 @@
       const e = d.effects || {}, N = opts && opts.N != null ? opts.N : budgetN(d, opts && opts.level), s = cardS(e, d); let m = 1; HALF.forEach(h=>{ if(e[h]) m *= g('missMult', 1.5); });
       if(BB.canopyMultOf) m *= BB.canopyMultOf(e, B); // Canopy Cover (EN5, 2026-10-24): Evasive's multiplier x its uptime under the trees
       // 2026-10-21 (package BX): an Archer never swings (Archer N: its arrow instead), so its Attack is not part of its strength
-      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
+      // EN6 (2026-10-24): a Hibernate unit's Attack counts only for the rounds it is awake (bramblewood-budget.js EN6_HIBERNATE_UPTIME)
+      const A = (e.archer && !(Number(e.archer) < 0)) ? 0 : (d.attack || 0) * (e.hibernate && BB.EN6_HIBERNATE_UPTIME ? 1 - BB.EN6_HIBERNATE_UPTIME : 1), H = d.health || 0, N2 = r2(BB.cap2Limit ? BB.cap2Limit(N, B) : (N / 3) * (N / 3) * 2); /* BF11 (2026-10-23): 2×(N/3)² */
       // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): both rules inclusive, 2A+H+S <= N and A*H+S <= (N/3)^2
       // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): cap 2 is A*H + S*|S| <= (N/3)^2 (the helper's productScore)
       // 2026-10-22 (BF7, owner, pass III): the helper's capScores: m on the stat terms only, f x the whole left side for Fragile (0.7)

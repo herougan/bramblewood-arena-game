@@ -1734,6 +1734,48 @@ Object.keys(EN5_STATE_KEYS).forEach(k=>{ const t = EN5_STATE_KEYS[k].tx;
   sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN5_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
 Object.assign(SKILL_ICON, {breach:'🧱', canopyCover:'🌳', timbered:'🪵', timberedGrant:'🪵', bedrock:'🪨', bedrockGrant:'🪨', forged:'🔩', forgedGrant:'🔩', lastStand:'🏳️', lastStandGrant:'🏳️'});
+
+// ==== Package EN6 (2026-10-24, owner 03:17: "1. Based on number of cards in hand ... 2. Actions: Some actions like arrow - can have a subtoggle -
+// bramble ... 3. Temperature based ... 4. What about 'salty'? ... like RAIN - {}, what else? ... hibernate?"; 12:02 #11 "03:17 - all"). Rules in
+// bramblewood-engine.js (the EN6 block); priced in canonical/skill-costs.json and bramblewood-budget.js (EN6_UPTIME):
+//   Plenty / Scarcity / Foe's Plenty / Foe's Scarcity – {…}   you (the opponent) hold 4+ cards / 1 or fewer
+//   Heat / Frost / Rain / Storm / Fog / Salt / Drought – {…}  the field's temperature and weather; Season (X) – {…} in that season of the cycle
+//   Full Hand N / Lean N (and the Foe's)                       +N Attack per card in hand / per empty slot
+//   Hibernate N                                                asleep in the cold, healing N a round
+//   Arrow / Fire Arrow / Fire Bolt – bramble                   the shot aims at the enemy bramble (the trigger editor's box does it for actions)
+// The state skills share EN5's machinery: their keys join EN5_STATE_KEYS (the lit pip, the float, the log line) and EN5_STATE_DEFAULT_APP.
+const EN6_SEASONS_APP = ['spring', 'summer', 'autumn', 'winter'];
+const EN6_SEASON_ICO = {spring:'🌱', summer:'☀️', autumn:'🍂', winter:'⛄'};
+function en6SeasonOfApp(e){ const v = e && e.season, k = typeof v === 'string' ? v.toLowerCase() : 'winter'; return EN6_SEASONS_APP.includes(k) ? k : 'winter'; }
+function en6SeasonName(k){ return TX('ui.en6-season-' + (EN6_SEASONS_APP.includes(k) ? k : 'winter')); }
+const EN6_STATE_DEFAULT_APP = {plenty:{attack: 1, health: 1}, scarcity:{attack: 1}, foePlenty:{health: 2}, foeScarcity:{attack: 1}, heat:{attack: 1}, frost:{health: 2}, rain:{attack: 1, health: 1}, storm:{attack: 2}, fog:{evasive: true}, salt:{armor: 1}, drought:{attack: 1}, season:{attack: 1, health: 1}};
+const EN6_STATE_KEYS = {plenty:{tx:'plenty', ico:'🃏'}, scarcity:{tx:'scarcity', ico:'🫗'}, foePlenty:{tx:'foe-plenty', ico:'🎴'}, foeScarcity:{tx:'foe-scarcity', ico:'🪹'}, heat:{tx:'heat', ico:'🌡️'}, frost:{tx:'frost', ico:'❄️'},
+  rain:{tx:'rain', ico:'☔'}, storm:{tx:'storm', ico:'⛈️'}, fog:{tx:'fog', ico:'🌁'}, salt:{tx:'salt', ico:'🧂'}, drought:{tx:'drought', ico:'🔆'}, season:{tx:'season', ico:'🍂'}};
+Object.assign(EN5_STATE_DEFAULT_APP, EN6_STATE_DEFAULT_APP); Object.assign(EN5_STATE_KEYS, EN6_STATE_KEYS);
+Object.keys(EN6_STATE_KEYS).filter(k=> k !== 'season').forEach(k=>{ const t = EN6_STATE_KEYS[k].tx;
+  sk1Patch(PASSIVE_DEFS, k, {category:'passive', label:TX('ui.skn-' + t), kind:'boolean', desc:(v, n, e)=> TX('ui.sk-' + t, {skills: grantText(en5StateOfApp(k, e))}), codexNote:TX('ui.sk-' + t + '-codex'),
+    get:e=> (e[k] && !(e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object')) ? true : undefined});
+  sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN6_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
+    get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
+// Season (X) – {…}: the season is the skill's value (a pick in the editor); its braces are seasonGrant (the default +1/+1)
+sk1Patch(PASSIVE_DEFS, 'season', {category:'passive', label:TX('ui.skn-season'), kind:'select', selectOptions:()=> EN6_SEASONS_APP.map(k=> ({value:k, label:`${EN6_SEASON_ICO[k]} ${en6SeasonName(k)}`})),
+  desc:(v, n, e)=> TX('ui.sk-season', {season: en6SeasonName(typeof v === 'string' && EN6_SEASONS_APP.includes(v) ? v : en6SeasonOfApp(e)), skills: grantText(en5StateOfApp('season', e))}), codexNote:TX('ui.sk-season-codex'),
+  get:e=> e.season ? en6SeasonOfApp(e) : undefined, apply:(e, v)=>{ e.season = EN6_SEASONS_APP.includes(String(v)) ? String(v) : 'winter'; }});
+sk1Patch(PASSIVE_DEFS, 'seasonGrant', {category:'passive', label:TX('ui.skn-season'), kind:'grant', placeholder:grantToText(EN6_STATE_DEFAULT_APP.season), desc:(v, n, e)=> TX('ui.sk-season', {season: en6SeasonName(en6SeasonOfApp(e)), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-season-codex'),
+  get:e=> e.seasonGrant && typeof e.seasonGrant === 'object' ? grantToText(e.seasonGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.seasonGrant = g; if(!e.season) e.season = 'winter'; } }});
+PASSIVE_DEFS.push({key:'fullHand', category:'passive', label:TX('ui.skn-full-hand'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-full-hand', {n: numOr(v, 1)}), codexNote:TX('ui.sk-full-hand-codex')},
+  {key:'lean', category:'passive', label:TX('ui.skn-lean'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-lean', {n: numOr(v, 1)}), codexNote:TX('ui.sk-lean-codex')},
+  {key:'foeFullHand', category:'passive', label:TX('ui.skn-foe-full-hand'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-foe-full-hand', {n: numOr(v, 1)}), codexNote:TX('ui.sk-foe-hand-codex')},
+  {key:'foeLean', category:'passive', label:TX('ui.skn-foe-lean'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-foe-lean', {n: numOr(v, 1)}), codexNote:TX('ui.sk-foe-hand-codex')},
+  {key:'hibernate', category:'passive', label:TX('ui.skn-hibernate'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-hibernate', {n: numOr(v, 2)}), codexNote:TX('ui.sk-hibernate-codex')});
+// – bramble on the skill shots: a toggle row beside the shot (its own line folds into the shot's: "Arrow 2 – bramble")
+const EN6_BRAMBLE_APP = {arrowBramble:{base:'arrow', tx:'arrow-bramble'}, fireArrowBramble:{base:'fireArrow', tx:'fire-arrow-bramble'}, fireBoltBramble:{base:'fireBolt', tx:'fire-bolt-bramble'}};
+const EN6_BRAMBLE_ACTS = ['arrow', 'missile', 'damage'];
+Object.keys(EN6_BRAMBLE_APP).forEach(k=>{ const b = EN6_BRAMBLE_APP[k], pd = PASSIVE_DEFS.find(p=> p.key === b.base);
+  PASSIVE_DEFS.push({key:k, category:'evergreen', label:TX('ui.skn-' + b.tx), kind:'boolean', desc:()=> TX('ui.sk-shot-bramble', {skill: pd ? pd.label : b.base}), codexNote:TX('ui.sk-shot-bramble-codex')}); });
+Object.assign(SKILL_ICON, {plenty:'🃏', plentyGrant:'🃏', scarcity:'🫗', scarcityGrant:'🫗', foePlenty:'🎴', foePlentyGrant:'🎴', foeScarcity:'🪹', foeScarcityGrant:'🪹', heat:'🌡️', heatGrant:'🌡️', frost:'❄️', frostGrant:'❄️',
+  rain:'☔', rainGrant:'☔', storm:'⛈️', stormGrant:'⛈️', fog:'🌁', fogGrant:'🌁', salt:'🧂', saltGrant:'🧂', drought:'🔆', droughtGrant:'🔆', season:'🍂', seasonGrant:'🍂',
+  fullHand:'✋', lean:'🫳', foeFullHand:'🤚', foeLean:'🫴', hibernate:'🛌', arrowBramble:'🏹', fireArrowBramble:'🏹', fireBoltBramble:'🔥'});
 // ==== Package EQ2 (2026-10-24; rules in bramblewood-engine.js, the Package EQ2 block; priced in canonical/skill-costs.json):
 //   Dive N      (owner N21-5) once a fight its swing dives on the weakest enemy unit of the row it faces for N more; a diving Flyer is exposed
 //               (no dodge) for the rest of that round. Only a Flyer, a Tide unit or a Sprinter can take it;
@@ -3124,6 +3166,10 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='transform'){ const tf = e.transform, lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null;
       lines.push(`${ic('transform')}<span class="cx-head">${escapeHtml(transformHead(tf))}</span> — ${escapeHtml(TX('ui.sk-transform-short'))}${lc && lc.transformed ? ` <span class="atk-bonus">${escapeHtml(TX('ui.tf-done'))}</span>` : ''}`); return; }
     if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
+    if(p.key==='seasonGrant' && e.season) return; // EN6 (2026-10-24): the Season line says its braces
+    if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
+    if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
+    { const bk = Object.keys(EN6_BRAMBLE_APP).find(k=> EN6_BRAMBLE_APP[k].base === p.key); if(bk && e[bk]){ lines.push(`${ic(p.key)}${p.label}${valSuffix(v)} – ${escapeHtml(TX('ui.en6-bramble'))} — ${escapeHtml(TX('ui.en6-shot-bramble-line', {n: numOr(v, 1)}))}`); return; } } // EN6 (2026-10-24, owner 03:17 #2)
     if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
     if(p.key==='arrow' && Number(e.arrowCount) > 1){ const nA = Math.min(4, Math.round(Number(e.arrowCount))); for(let k = 0; k < nA; k++) lines.push(`${ic('arrow')}${p.label}${valSuffix(v)} — ${k ? 'A second bow on the same back: another arrow, aimed on its own.' : skillText(p, v, e)}`); return; } // "2x Arrow 2" (2026-10-17)
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
@@ -10894,6 +10940,7 @@ function readTriggerRow(row){
   if(targetsEl && Number(targetsEl.value) > 1 && t.who !== 'self' && t.sub !== 'all') t.targets = Math.min(8, Math.floor(Number(targetsEl.value)));
   const defIdEl = row.querySelector('[data-t="defId"]');
   if(defIdEl && defIdEl.value.trim()) t.defId = defIdEl.value.trim();
+  { const brEl = row.querySelector('[data-t="bramble"]'); if(brEl && brEl.checked && EN6_BRAMBLE_ACTS.includes(t.do)) t.bramble = true; } // EN6 (2026-10-24): – bramble
   const costEl = row.querySelector('[data-t="cost"]'); // Pay: Burn 1 Lumber (2026-10-16)
   if(costEl && costEl.value) t.cost = costEl.value;
   return t;
@@ -10989,6 +11036,7 @@ function triggerPreviewText(t){
     case 'rebuild': doText = `restore ${amt} Health to your bramble`; break; // 2026-10-17
     default: doText = aDef.label.toLowerCase();
   }
+  if(t.bramble && EN6_BRAMBLE_ACTS.includes(t.do)) doText = t.do === 'arrow' ? TX('ui.en6-trig-arrow-bramble', {n: amt}) : t.do === 'missile' ? TX('ui.en6-trig-missile-bramble', {n: amt}) : TX('ui.en6-trig-damage-bramble', {n: amt, type: dmgType === FILL ? '' : dmgWord(dmgType)}); // EN6 (2026-10-24): "Arrow 2 – bramble"
   if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
   try{ doText = sk2TriggerText(t, doText); }catch(e){} // SK2b (2026-10-19): Forge Weapon's line, a price (t.pay)
   return `${trigLabel}, ${doText}.`;
@@ -11063,6 +11111,8 @@ function actionFieldsHTML(t,i){
     const opts = Object.keys(defs).map(id=>({id, name:defs[id].name||id})).sort((a,b)=>a.name.localeCompare(b.name));
     html += `<select data-t="defId" data-i="${i}"><option value="">— pick a card —</option>${opts.map(o=>`<option value="${o.id}" ${t.defId===o.id?'selected':''}>${escapeAttr(o.name)}</option>`).join('')}</select>`;
   }
+  // EN6 (2026-10-24, owner 03:17 #2: "Some actions like arrow - can have a subtoggle - bramble"): Arrow, Missile and Deal damage at one opponent
+  if(EN6_BRAMBLE_ACTS.includes(t.do) && (t.do !== 'damage' || ((t.who || 'enemy') === 'enemy' && t.sub !== 'all'))) html += `<label class="en6-bramble-tg" title="${escapeAttr(TX('ui.en6-ed-bramble-tip'))}"><input type="checkbox" data-t="bramble" data-i="${i}"${t.bramble ? ' checked' : ''}> ${escapeHtml(TX('ui.en6-ed-bramble'))}</label>`;
   return html;
 }
 function readEditorFormIntoCard(){
@@ -18095,6 +18145,14 @@ const PERMATIDE_MAPS = new Set([]);
 const RAPIDS_MAPS = new Set(['m2']); // Sunken Hollow: River Rapids (Perma-tide under its field-effect name)
 // Wet ground (2026-10-14, for Bloom's "Wet"): the beach, river and sea maps (biomes beach, water and reef).
 function wetMap(mid){ const b = MAP_BIOME_OF[mid] || (()=>{ const m = CONQUEST_MAPS.find(x=> x.id === mid); return m && m.parent ? MAP_BIOME_OF[m.parent] : null; })(); return b === 'beach' || b === 'water' || b === 'reef'; }
+// 2026-10-24 (package EN6, owner 03:17 #3 / #4): the map flags the EN6 state skills read (the engine's en6Hot / en6Cold / en6Salt / en6Drought):
+// hot (Heat {…}): the volcano, forge, frostfire and pale-desert maps; cold (Frost {…}, Hibernate at night): tundra and frostfire; salt water
+// (Salt {…}, while the tide is out): beach and reef; weather on a dry land (Drought {…}): savanna and pale desert. Each is a plain rules flag
+// (hotMap, coldMap, saltMap, weatherMap) that a fight's own rules may set or clear; nothing else reads them.
+const EN6_HOT_BIOMES = new Set(['ash', 'forge', 'frostfire', 'paledesert']);
+const EN6_COLD_BIOMES = new Set(['tundra', 'frostfire']);
+const EN6_SALT_BIOMES = new Set(['beach', 'reef']);
+const EN6_WEATHER_BIOMES = new Set(['savanna', 'paledesert']);
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = mapDayNight(mid); // the map's own day and night (2026-10-14; Zeitgebers retired)
   if(r.misty == null && MISTY_MAPS.has(mid) && node) r.misty = true; // Map 0 is misty (2026-10-15, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist'")
@@ -18132,6 +18190,9 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   // 2026-10-24 (package EN5, owner 03:12 FLY-1): every fight on a forest-biome map is under the trees (rules.woods; the engine's en5Woods,
   // read by Canopy Cover), the first skirmish too (it has no Old Woods terrain yet).
   if(r.woods == null && mid){ try{ const mp = CONQUEST_MAPS.find(m=> m.id === mid), b = MAP_BIOME_OF[mid] || (mp && mp.parent && MAP_BIOME_OF[mp.parent]); if(b === 'forest') r.woods = true; }catch(e){} }
+  if(mid){ try{ const mp = CONQUEST_MAPS.find(m=> m.id === mid), b = MAP_BIOME_OF[mid] || (mp && mp.parent && MAP_BIOME_OF[mp.parent]); // EN6 (2026-10-24): the state skills' map flags
+    if(r.hotMap == null && EN6_HOT_BIOMES.has(b)) r.hotMap = true; if(r.coldMap == null && EN6_COLD_BIOMES.has(b)) r.coldMap = true;
+    if(r.saltMap == null && EN6_SALT_BIOMES.has(b)) r.saltMap = true; if(r.weatherMap == null && EN6_WEATHER_BIOMES.has(b)) r.weatherMap = true; }catch(e){} }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
 // Do effects for each biome, highlighting that biome's strength. It starts with nothing at first, then from the 2nd skirmish
@@ -18367,6 +18428,9 @@ Object.assign(FIELD2, {
   // effect)"): rules.wildfire, FX3's line of fire as its own field: from round 2 it crosses both front lines from the left each round, 1 fire
   // to every unit it passes, one by one (the engine's scorchSweep; scorchSweepVfx plays it). Fights: WILDFIRE_NODES. Name: call FX4-1.
   wildfire:     {icon:'🔥', name:TX('ui.fx-name-wildfire'), editor:'wildfire', short:TX('ui.fx-wildfire-short'), text:TX('ui.fx-wildfire'), codex:TX('ui.fxx-wildfire')},
+  // 2026-10-24 (package EN6, owner 03:17 #4): rules.seasons, a slow cycle of the four seasons (3 rounds each; a number on the flag sets the length),
+  // off by default and on no map yet. Season (X) – {…} reads it; Summer counts as hot and Winter as cold (the engine's en6Season).
+  seasons:      {icon:'🍂', name:TX('ui.fx-name-seasons'), editor:'seasons', short:TX('ui.fx-seasons-short'), text:TX('ui.fx-seasons', {n: 3}), codex:TX('ui.fxx-seasons')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
@@ -34616,7 +34680,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -39301,7 +39365,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -42792,6 +42856,7 @@ function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w5 = en5LogText(ev, nm); if(w5) return w5; } // EN5 (2026-10-24): Breach, Canopy Cover, the state skills
+  { const w6 = en6LogText(ev, nm); if(w6) return w6; } // EN6 (2026-10-24): Hibernate, the season, – bramble
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
   { const q = eq2LogText(ev, nm); if(q) return q; } // package EQ2 (2026-10-24): breaks, Dive, Parasite, the Beak Strike
@@ -45338,6 +45403,7 @@ function ninthPassVfx(ev){
 function w2StatusBadges(c, badges){
   try{ en4StatusBadges(c, badges); }catch(e){} // Greater Poison (2026-10-23, package EN4)
   try{ en5StatusBadges(c, badges); }catch(e){} // the state skills on (2026-10-24, package EN5)
+  try{ en6StatusBadges(c, badges); }catch(e){} // Hibernate asleep (2026-10-24, package EN6)
   try{ sk3StatusBadges(c, badges); }catch(e){} // Silenced, Stymied, Exhausted, Petrified N, Grounded, Stench (2026-10-19, package SK3)
   try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
   try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
@@ -46429,6 +46495,28 @@ function en5Vfx(ev){
   if(ev.type === 'evaded' && ev.reason === 'canopyCover') en5CanopyVfx(ev);
   if(ev.type === 'statusFx' && ev.kind === 'stateSkill') en5StateVfx(ev);
 }
+// ---- EN6 (2026-10-24, owner 03:17 / 12:02 #11): Hibernate's sleep (the 🛌 pip, its float, the heal's motes come from the plain heal), the season
+// turning (a log line and a float over the board), a – bramble action's arrow into the enemy bramble. The state skills' pips and floats are EN5's.
+function en6StatusBadges(c, badges){ if(!c || !c.hibernating) return; badges.push(`<span class="abadge en6-hib" title="${escapeAttr(TX('ui.en6-hib-tip'))}">🛌</span>`); }
+function en6LogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'statusFx' && ev.kind === 'hibernate') return {cls:'', text:TX(ev.on ? 'ui.en6-log-hib-on' : 'ui.en6-log-hib-off', {name: nm(ev.targetDefId)})};
+  if(ev.type === 'heal' && ev.cause === 'hibernate') return {cls:'heal', text:TX('ui.en6-log-hib-heal', {name: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'season') return {cls:'gold', text:TX('ui.en6-log-season', {season: en6SeasonName(ev.season)})};
+  if(ev.type === 'brambleShot') return {cls:'', text:TX(ev.targetSide === 'B' ? 'ui.en6-log-bramble-foe' : 'ui.en6-log-bramble-you', {name: nm(ev.defId), d: ev.amount})};
+  return null;
+}
+function en6Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  if(ev.type === 'statusFx' && ev.kind === 'hibernate'){ const rc = m.replayCards && m.replayCards[ev.targetUid]; if(rc){ rc.hibernating = !!ev.on; rc.asleep = ev.on ? Math.max(1, rc.asleep || 0) : 0; }
+    try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} const el = boardCardEl(ev.targetUid); if(!el) return;
+    try{ floatText(el, ev.on ? `🛌 ${TX('ui.en6-float-hib')}` : TX('ui.en6-float-wake'), ev.on ? 'buff' : 'faded'); }catch(e){}
+    if(ev.on){ try{ tintPulse(el, 'en6-hib-pulse'); }catch(e){} } else el.classList.remove('en6-hib-pulse'); }
+  if(ev.type === 'season'){ const bf = document.getElementById('battlefieldEl') || document.body; try{ floatText(bf, `${EN6_SEASON_ICO[ev.season] || '🍂'} ${en6SeasonName(ev.season)}`, 'buff', {big: true}); }catch(e){} }
+  if(ev.type === 'brambleShot'){ setTimeout(()=>{ if(matchState !== m) return; const src = boardCardEl(ev.uid), hq = hqTileEl(ev.targetSide); if(!src || !hq || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+    const a = en2Ctr(src), b = en2Ctr(hq), ar = en2Layer('🏹', 'en6-bramble-arrow'); gsap.set(ar, {x:a.x, y:a.y, xPercent:-50, yPercent:-50, scale:.7, opacity:0, rotation:Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI + 45});
+    gsap.timeline({onComplete:()=>{ ar.remove(); try{ en2Ring(b.x, b.y, 60); }catch(e){} }}).to(ar, {opacity:1, duration:.06}).to(ar, {x:b.x, y:b.y, duration:.3, ease:'power1.in'}).to(ar, {opacity:0, scale:1.2, duration:.1}); }, 60); }
+}
 function renderVfxForEvent(ev){
   if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
@@ -46438,6 +46526,7 @@ function renderVfxForEvent(ev){
   try{ en4Vfx(ev); }catch(e){} // EN4 (2026-10-23)
   if(ev && ev.type === 'boonFire'){ try{ boonFireVfx(ev); }catch(e){} return; } // a selfish boon at work (DF3, 2026-10-24)
   try{ en5Vfx(ev); }catch(e){} // EN5 (2026-10-24)
+  try{ en6Vfx(ev); }catch(e){} // EN6 (2026-10-24)
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -47460,6 +47549,7 @@ function overlayDelegateChanges(){
     if(key==='dmgType') t.dmgType = e.target.value;
     if(key==='target') t.target = e.target.value;
     if(key==='defId') t.defId = e.target.value;
+    if(key==='bramble'){ if(e.target.checked) t.bramble = true; else delete t.bramble; } // EN6 (2026-10-24)
   });
 }
 

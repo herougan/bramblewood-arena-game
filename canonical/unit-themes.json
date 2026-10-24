@@ -1400,18 +1400,23 @@
    "animalGroup": "owl",
    "subtype": "plant",
    "faction": "wild",
-   "size": "large",
+   "size": "medium",
    "stage": 3,
    "firstMap": 17,
    "body": {
     "cost": 0,
     "wait": 3,
     "attack": 2,
-    "health": 26,
+    "health": 22,
     "dmg": "physical",
     "resist": []
    },
-   "skills": [],
+   "skills": [
+    [
+     "fog",
+     null
+    ]
+   ],
    "types": [
     "Flora",
     "Elemental"
@@ -6473,13 +6478,17 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 8,
+    "health": 9,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
      "tide",
+     null
+    ],
+    [
+     "rain",
      null
     ]
    ],
@@ -10467,6 +10476,10 @@
     [
      "flying",
      null
+    ],
+    [
+     "foePlenty",
+     null
     ]
    ],
    "types": [
@@ -11159,8 +11172,8 @@
    "body": {
     "cost": 1,
     "wait": 0,
-    "attack": 4,
-    "health": 4,
+    "attack": 3,
+    "health": 3,
     "dmg": "physical",
     "resist": []
    },
@@ -11168,6 +11181,10 @@
     [
      "trigger",
      "onAttack→buff 2"
+    ],
+    [
+     "scarcity",
+     null
     ]
    ],
    "types": [
@@ -17367,8 +17384,8 @@
    },
    "skills": [
     [
-     "bounty",
-     2
+     "trigger",
+     "onReady→gain 1"
     ]
    ],
    "types": [
@@ -19410,7 +19427,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 14,
+    "health": 12,
     "dmg": "physical",
     "resist": []
    },
@@ -19418,6 +19435,10 @@
     [
      "backstab",
      3
+    ],
+    [
+     "foeScarcity",
+     null
     ]
    ],
    "types": [
@@ -21625,11 +21646,16 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 13,
+    "health": 11,
     "dmg": "heat",
     "resist": []
    },
-   "skills": [],
+   "skills": [
+    [
+     "heat",
+     null
+    ]
+   ],
    "types": [
     "Volcanic",
     "Amphibian"
@@ -25478,7 +25504,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 2,
-    "health": 7,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -25490,6 +25516,10 @@
     [
      "arrow",
      2
+    ],
+    [
+     "arrowBramble",
+     null
     ]
    ],
    "types": [
@@ -26321,13 +26351,17 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
      "evasive",
+     null
+    ],
+    [
+     "frost",
      null
     ]
    ],
@@ -29301,7 +29335,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -29309,6 +29343,10 @@
     [
      "sprout",
      1
+    ],
+    [
+     "plenty",
+     null
     ]
    ],
    "types": [
@@ -32462,7 +32500,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 2,
-    "health": 16,
+    "health": 15,
     "dmg": "physical",
     "resist": [
      "heat"
@@ -32471,6 +32509,10 @@
    "skills": [
     [
      "dry",
+     null
+    ],
+    [
+     "drought",
      null
     ]
    ],
@@ -35668,6 +35710,10 @@
     [
      "thorns",
      2
+    ],
+    [
+     "storm",
+     null
     ]
    ],
    "types": [
@@ -37583,7 +37629,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 10,
+    "health": 11,
     "dmg": "physical",
     "resist": []
    },
@@ -37591,6 +37637,10 @@
     [
      "armor",
      2
+    ],
+    [
+     "salt",
+     null
     ]
    ],
    "types": [
@@ -38773,6 +38823,10 @@
     [
      "ambush",
      4
+    ],
+    [
+     "hibernate",
+     null
     ]
    ],
    "types": [
@@ -42223,6 +42277,10 @@
      [
       "flying",
       null
+     ],
+     [
+      "foePlenty",
+      null
      ]
     ],
     "map": "m6",
@@ -43371,7 +43429,7 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1,
-     "health": 1.38
+     "health": 1.47
     },
     "N": 32.68,
     "N2": 237.33,
@@ -43392,6 +43450,10 @@
     "baseSkills": [
      [
       "dry",
+      null
+     ],
+     [
+      "drought",
       null
      ]
     ],
@@ -49400,7 +49462,7 @@
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.25
+     "health": 1.11
     },
     "N": 15.48,
     "N2": 53.25,
@@ -49421,6 +49483,10 @@
     "baseSkills": [
      [
       "tide",
+      null
+     ],
+     [
+      "rain",
       null
      ]
     ],
@@ -51337,8 +51403,8 @@
    "body": {
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 10,
+    "attack": 4,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },
@@ -51365,13 +51431,13 @@
     "wait": 1,
     "rarityStep": 2,
     "eff": {
-     "attack": 1.5,
+     "attack": 2,
      "health": 2
     },
     "N": 20.09,
     "N2": 89.69,
     "x1": 16,
-    "x2": 30,
+    "x2": 32,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -51387,6 +51453,10 @@
     "baseSkills": [
      [
       "evasive",
+      null
+     ],
+     [
+      "frost",
       null
      ]
     ],
@@ -51936,10 +52006,10 @@
    "stage": 4,
    "firstMap": 20,
    "body": {
-    "cost": 3,
+    "cost": 2,
     "wait": 0,
     "attack": 1,
-    "health": 15,
+    "health": 12,
     "dmg": "heat",
     "resist": []
    },
@@ -51961,17 +52031,17 @@
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
-    "lumber": 3,
+    "lumber": 2,
     "wait": 0,
     "rarityStep": 1,
     "eff": {
      "attack": 1,
-     "health": 1.15
+     "health": 1.09
     },
-    "N": 21.56,
-    "N2": 103.3,
-    "x1": 17,
-    "x2": 15,
+    "N": 18.3,
+    "N2": 74.42,
+    "x1": 14,
+    "x2": 12,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
@@ -51984,7 +52054,12 @@
      "attack": 1,
      "health": 15
     },
-    "baseSkills": [],
+    "baseSkills": [
+     [
+      "heat",
+      null
+     ]
+    ],
     "map": "m11",
     "mapName": "The Sundered Peak",
     "mapNo": 20
