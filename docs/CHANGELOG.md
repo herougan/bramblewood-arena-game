@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 release 10-24e (batch: BAL3, H1, CONTENT2, N221, RELFIX, HUB4)
+- Balance by the agreed rules: every fight on the level schedule, side-map Rares from Map 10, 130 decks retuned (48 -> 80 of 179 fights in band), the 10 held cards on their formula, Rising Tide = Quick +1 Attack.
+- Materia socket (Unique and above, one gem; apply/remove costs in the hub). Lumber gatherers per biome, the Stone loop, the beach, cuter early maps, Gnawed/Tidefolk cards (awaiting), Gilded Roadwarden. Maps 21-40 plan; the Petrified Tree on Map 22. 1-3 back to 20 cards.
+- Hub: the Library tab (all docs in one place).
+- Checks: full unit tier, no new failures against 10-24d (autobattle passes alone); ui_smoke 0 failures; flows 0 issues; card-matrix golden refreshed.
+
 ## 2026-10-24 (package HUB4: the master hub's 📖 Library tab, owner G2 / item 71)
 - **Every doc is read in the hub:** a new 📖 Library tab (`tools/hub/library.py`) lists all of `docs/**/*.md` (not the raw `docs/balance` outputs or the `docs/art` prompt files): canonical docs (code map, style guideline, art prompts, lore bible, effects catalogue, tuning guide, the six workflows) and still-relevant reference docs are rendered in full with their path and last-changed date (git); the dated snapshots sit in a collapsed History group (title and one line each, opened on demand). Docs that already have a tab (Action items, Changelog, Decisions, Progression plan, the Design sheets, Claude's guide) link to it instead of repeating. The hub search covers all of it (new Library and History result types). The files stay on disk; no extra hub files. Test: `tests/hub4-2026-10-24.js`. A short "Where docs live" note is at the top of `docs/action-items.md`.
 
