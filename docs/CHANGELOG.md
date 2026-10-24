@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package RELFIX: batch-1023e release failures)
+- **1-3 Burrow Line holds 20 cards again** (EB: Map 1's decks hold 20): BAL3's 8 -> 7 different cards step left 19; Cottontail 2 -> 3
+  (66% -> 68% at 100 games, band 62-78), still 7 different cards.
+- Tests that followed the batch's intended changes: async-raid measures the stage power curve on the generated ghosts (TS2's themed
+  decks are placed by fights; Sunfeather Scout's BAL3 cut left the mixed average 0.004 short); bl / en3 accept BAL3's ten formula-line
+  cards (owner BAL2-5) and the shorter flagged list; skills-sk2 lets CONTENT2's new Redwood Woodpecker (Milling) and Badger Stonemason
+  (Quarry) carry SK2 skills.
+
 ## 2026-10-24 (package CONTENT2: Lumber gatherers per biome, the Stone loop, the Gnawed and the Tidefolk, the beach)
 - **Lumber gatherers in every biome (owner 13:12 #8):** eight new pack cards, one per main biome of Maps 0-20 that had none: Driftwood Crab (Pebble Beach), Gannet Nestweaver (Gannet Cliffs), Nutria Reedcutter (Gatorback Swamp), Redwood Woodpecker (Redwood Deep, Milling 1), Termite Forager (Savanna), Cone-cutter Squirrel (Taiga), Talus Pika (Tundra), Dune Packrat (Glass Dunes), On Ready / On Play +1 to +3 Lumber. Land Tiller, Coral Polyp Colony and Rodent King, gatherers in no pool, joined the Long Grass, Coral Current and the Briar Maze.
 - **The Stone loop:** Badger Stonemason (Caves & Alcoves, the engine's Quarry 1: each turn 1 Lumber -> 1 Stone), Gravel Mole (On Ready +1 Stone) and Pumice Beetle (Ashen Spurn, On Play +2 Stone). No engine change. Owner call CONTENT2-2 (Quarry's 1 : 1 or a 2 -> 1 converter).
