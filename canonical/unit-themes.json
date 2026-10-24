@@ -39746,8 +39746,8 @@
    "subtype": "plant",
    "faction": "wild",
    "size": "large",
-   "stage": null,
-   "firstMap": null,
+   "stage": 1,
+   "firstMap": 4,
    "body": {
     "cost": 5,
     "wait": 3,
@@ -39770,7 +39770,7 @@
     "home": [],
     "fights": {}
    },
-   "source": null,
+   "source": "pack",
    "structure": true,
    "why": {
     "biome": "type Flora",

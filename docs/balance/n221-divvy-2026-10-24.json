@@ -1,0 +1,1300 @@
+{
+ "about": "Package N221 (2026-10-24, owner N22-1): the Maps 21-40 divvy. homes: every card that waited for a source and its one home (kind pool = applied onto a map that exists; map = a proposed map; quest, secrets (Pack Secrets I), faction, smith, decision (an open owner call), hold (Devilry 66, Ecclesia 77, spells)). maps: the proposed Maps 25-40 (pool = held + carry + unsorted + new ideas; base = the skirmish-base cards). existing: Maps 21-24 after the pass. packTiers: the owner call N221-1. Made by node tools/n221_divvy_2026_10_24.js plan.",
+ "packTiers": [
+  {
+   "tier": 1,
+   "maps": [
+    0,
+    6
+   ],
+   "live": true
+  },
+  {
+   "tier": 2,
+   "maps": [
+    7,
+    13
+   ],
+   "live": true
+  },
+  {
+   "tier": 3,
+   "maps": [
+    14,
+    20
+   ],
+   "live": true
+  },
+  {
+   "tier": 4,
+   "maps": [
+    21,
+    27
+   ],
+   "live": true
+  },
+  {
+   "tier": 5,
+   "maps": [
+    28,
+    34
+   ],
+   "live": false
+  },
+  {
+   "tier": 6,
+   "maps": [
+    35,
+    41
+   ],
+   "live": false
+  }
+ ],
+ "counts": {
+  "pool": 1,
+  "map": 20,
+  "quest": 1,
+  "secrets": 2,
+  "faction": 2,
+  "smith": 1,
+  "decision": 7,
+  "hold spells": 8,
+  "hold 66": 16,
+  "hold 77": 15
+ },
+ "homes": {
+  "petrified-tree": {
+   "name": "Petrified Tree",
+   "rarity": "rare",
+   "kind": "pool",
+   "map": "m22",
+   "role": "pack",
+   "why": "petrified forests form under volcanic ash: the Caldera's Stone maker beside its fire and ice",
+   "packTier": 4,
+   "mapNo": 22
+  },
+  "toucan-courier": {
+   "name": "Toucan Courier",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack"
+  },
+  "poison-dart-frog": {
+   "name": "Poison Dart Frog",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack"
+  },
+  "strangler-vine": {
+   "name": "Strangler Vine",
+   "rarity": "rare",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "skirmish-base"
+  },
+  "war-drum-mandrill": {
+   "name": "War-Drum Mandrill",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "durian"
+  },
+  "old-growth-tortoise": {
+   "name": "Old-Growth Tortoise",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack"
+  },
+  "aye-aye-prowler": {
+   "name": "Aye-aye Prowler",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "sunshy"
+  },
+  "velvet-worm": {
+   "name": "Velvet Worm",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "ichor"
+  },
+  "slow-loris": {
+   "name": "Slow Loris",
+   "rarity": "common",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "feeble"
+  },
+  "chilli-parrot": {
+   "name": "Chilli Parrot",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "chilli"
+  },
+  "leaf-chameleon": {
+   "name": "Leaf Chameleon",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 25,
+   "packTier": 4,
+   "role": "skirmish-base"
+  },
+  "ant-hill": {
+   "name": "Ant Hill",
+   "rarity": "common",
+   "kind": "map",
+   "map": 26,
+   "packTier": 4,
+   "role": "pack"
+  },
+  "swarm-matriarch": {
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "kind": "map",
+   "map": 26,
+   "packTier": 4,
+   "role": "skirmish-base"
+  },
+  "clinging-leech": {
+   "name": "Clinging Leech",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 27,
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "parasite"
+  },
+  "oilbird": {
+   "name": "Oilbird",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 29,
+   "packTier": 5,
+   "role": "skirmish-base"
+  },
+  "slowpoke-sentinel": {
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "kind": "map",
+   "map": 30,
+   "packTier": 5,
+   "role": "pack"
+  },
+  "canopy-sloth-guardian": {
+   "name": "Canopy Sloth Guardian",
+   "rarity": "common",
+   "kind": "map",
+   "map": 30,
+   "packTier": 5,
+   "role": "skirmish-base"
+  },
+  "hanging-loafer": {
+   "name": "Hanging Loafer",
+   "rarity": "common",
+   "kind": "map",
+   "map": 30,
+   "packTier": 5,
+   "role": "pack"
+  },
+  "glintsnatch-magpie": {
+   "name": "Glintsnatch Magpie",
+   "rarity": "uncommon",
+   "kind": "map",
+   "map": 32,
+   "packTier": 5,
+   "role": "pack",
+   "newSkill": "disarm"
+  },
+  "thistle-baron": {
+   "name": "The Thistle Baron",
+   "rarity": "heroic",
+   "kind": "quest",
+   "map": 32,
+   "why": "RP5 held it for Map 21+ (the map recs: an \"advanced\" Thistle Baron); the Baron's return, a quest on the Thornwold"
+  },
+  "grovebearer-dragon-turtle": {
+   "name": "Grovebearer Dragon-Turtle",
+   "rarity": "legendary",
+   "kind": "map",
+   "map": 40,
+   "packTier": 6,
+   "role": "skirmish-base"
+  },
+  "armory": {
+   "name": "Armory",
+   "rarity": "rare",
+   "kind": "map",
+   "map": 24,
+   "existing": true,
+   "held": true,
+   "why": "Goldfeather Keep's armory (arrows +1, equipped allies +1/+1); not applied: Weapon Master is a skill no earlier card teaches (N221-2)",
+   "packTier": 4,
+   "role": "pack",
+   "newSkill": "weaponMaster"
+  },
+  "missingno": {
+   "name": "MissingNo.",
+   "rarity": "unique",
+   "kind": "secrets",
+   "why": "esoteric: MissingNo. is a hidden glitch; the Glowing Gecko is Irradiated, like the Mystery Booster's Irradiated Axolotl and Glow Wyrm (the map recs' Map 33 \"Irradiated\" would bring Irradiated as a new skill)"
+  },
+  "glowing-gecko": {
+   "name": "Glowing Gecko",
+   "rarity": "uncommon",
+   "kind": "secrets",
+   "why": "esoteric: MissingNo. is a hidden glitch; the Glowing Gecko is Irradiated, like the Mystery Booster's Irradiated Axolotl and Glow Wyrm (the map recs' Map 33 \"Irradiated\" would bring Irradiated as a new skill)"
+  },
+  "anvilwhisker-otter": {
+   "name": "Anvilwhisker Otter",
+   "rarity": "uncommon",
+   "kind": "faction",
+   "side": "otters",
+   "why": "an Otter (the Legion's smith): faction cards come from the faction pool (progression plan); needs a Stone engine, which Maps 8 / 19 / 22 now give"
+  },
+  "greyplume-fledgling": {
+   "name": "Greyplume Fledgling",
+   "rarity": "starter",
+   "kind": "faction",
+   "side": "tribes",
+   "why": "a Hummingbird starter (\"hasn't chosen her plumage colour\"); RW5 left it for the owner: the Hummingbird side of the faction pool, or Base"
+  },
+  "crowbar": {
+   "name": "Crowbar",
+   "rarity": "rare",
+   "kind": "smith",
+   "why": "equipment (+2/+0, Pry 1): the Blacksmith is its natural home (its creator note); a siege tool, so its art can lean on the Goldfeather Siege"
+  },
+  "bog-shrew": {
+   "name": "Bog Shrew",
+   "rarity": "common",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "mire-rat": {
+   "name": "Mire Rat",
+   "rarity": "common",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "hollow-belly-rat": {
+   "name": "Hollow-belly Rat",
+   "rarity": "uncommon",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "gnawed-matriarch": {
+   "name": "Gnawed Matriarch",
+   "rarity": "rare",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "kelpborn-otter": {
+   "name": "Kelpborn Otter",
+   "rarity": "common",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "conger-eel": {
+   "name": "Conger Eel",
+   "rarity": "uncommon",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "selkie-wavebinder": {
+   "name": "Selkie Wavebinder",
+   "rarity": "rare",
+   "kind": "decision",
+   "id": "CONTENT2-3",
+   "why": "open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the \"other sources\" option (N221-6)"
+  },
+  "frost-slick": {
+   "name": "Frost Slick",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 22 (Rimefire Caldera)"
+  },
+  "magma-vent": {
+   "name": "Magma Vent",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 22 (Rimefire Caldera)"
+  },
+  "bog-seep": {
+   "name": "Bog Seep",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 27 (Carrion Moors)"
+  },
+  "miasma": {
+   "name": "Miasma",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 27 (Carrion Moors)"
+  },
+  "rockfall": {
+   "name": "Rockfall",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 21 (Quiet Summit)"
+  },
+  "grave-call": {
+   "name": "Grave Call",
+   "rarity": "epic",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 27 (Carrion Moors, its boss)"
+  },
+  "smoke-screen": {
+   "name": "Smoke Screen",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 23 (Goldfeather Siege)"
+  },
+  "magnet": {
+   "name": "Magnet",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": "spells",
+   "why": "SPELLS_SHELVED: no spell is obtainable until spells come back",
+   "thematicHome": "Map 24 (Goldfeather Keep, the most metal)"
+  },
+  "cinder-imp": {
+   "name": "Cinder Imp",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "ash-imp": {
+   "name": "Ash Imp",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "pit-glutton": {
+   "name": "Pit Glutton",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "brimstone-hound": {
+   "name": "Brimstone Hound",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "blackmass-acolyte": {
+   "name": "Blackmass Acolyte",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "dread-bell": {
+   "name": "Dread Bell",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "tithe-collector": {
+   "name": "Tithe Collector",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "lurking-dread": {
+   "name": "Lurking Dread",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "puppeteer-imp": {
+   "name": "Puppeteer Imp",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "the-sixfold": {
+   "name": "The Sixfold",
+   "rarity": "epic",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "fruit-bat-familiar": {
+   "name": "Fruit-bat Familiar",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "hellbender": {
+   "name": "Hellbender",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "flagellant-vulture": {
+   "name": "Flagellant Vulture",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "vampire-finch": {
+   "name": "Vampire Finch",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "ashmantle-fiend": {
+   "name": "Ashmantle Fiend",
+   "rarity": "unique",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "chained-binturong": {
+   "name": "Chained Binturong",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 66,
+   "why": "Devilry (owner 10-21: found on Map 66; RP5 keeps the Basalt Foundry's devils held)"
+  },
+  "shrine-acolyte": {
+   "name": "Shrine Acolyte",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "shrine-high-priest": {
+   "name": "Shrine High Priest",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "blessed-avatar": {
+   "name": "Blessed Avatar",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "shrine-bell-ringer": {
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "chapel-tortoise": {
+   "name": "Chapel Tortoise",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "chapel-sparrow": {
+   "name": "Chapel Sparrow",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "candle-moth": {
+   "name": "Candle Moth",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "hymn-wren": {
+   "name": "Hymn Wren",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "abbey-goose": {
+   "name": "Abbey Goose",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "golden-magpie": {
+   "name": "Golden Magpie",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "friar-badger": {
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "storm-heron": {
+   "name": "Storm Heron",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "vigil-owl": {
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "cathedral-eagle": {
+   "name": "Cathedral Eagle",
+   "rarity": "legendary",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  },
+  "glowworm-cluster": {
+   "name": "Glowworm Cluster",
+   "rarity": "common",
+   "kind": "hold",
+   "until": 77,
+   "why": "Ecclesia (owner 10-21: found on Map 77; DV5 holds the Cathedral Eagle for 77)"
+  }
+ },
+ "existing": {
+  "m21": {
+   "map": 21,
+   "name": "The Quiet Summit",
+   "pool": 9,
+   "newCards": 5,
+   "dv3Wants": 2,
+   "rewards": [
+    {
+     "id": "snow-owl-sentinel",
+     "rarity": "superrare",
+     "fight": "21-6"
+    },
+    {
+     "id": "pika-hoarder",
+     "rarity": "common",
+     "fight": "21-1"
+    }
+   ],
+   "added": [],
+   "sideMaps": [
+    "mi",
+    "mo"
+   ]
+  },
+  "m22": {
+   "map": 22,
+   "name": "The Rimefire Caldera",
+   "pool": 13,
+   "newCards": 13,
+   "dv3Wants": 3,
+   "rewards": [
+    {
+     "id": "ur-elk",
+     "rarity": "veryrare",
+     "fight": "22-6"
+    },
+    {
+     "id": "rimefire-salamander",
+     "rarity": "rare",
+     "fight": "22-2"
+    },
+    {
+     "id": "caldera-snow-leopard",
+     "rarity": "superrare",
+     "fight": "22-8"
+    }
+   ],
+   "added": [
+    "petrified-tree"
+   ],
+   "sideMaps": []
+  },
+  "m23": {
+   "map": 23,
+   "name": "The Goldfeather Siege",
+   "pool": 12,
+   "newCards": 9,
+   "dv3Wants": 2,
+   "rewards": [
+    {
+     "id": "war-elephant",
+     "rarity": "superrare",
+     "fight": "23-8"
+    },
+    {
+     "id": "testudo-tortoise",
+     "rarity": "rare",
+     "fight": "23-2"
+    }
+   ],
+   "added": [],
+   "sideMaps": [
+    "m9"
+   ]
+  },
+  "m24": {
+   "map": 24,
+   "name": "Goldfeather Keep",
+   "pool": 10,
+   "newCards": 10,
+   "dv3Wants": 3,
+   "rewards": [
+    {
+     "id": "iron-warden",
+     "rarity": "epic",
+     "fight": "24-6"
+    },
+    {
+     "id": "battlement-heron",
+     "rarity": "rare",
+     "fight": "24-5"
+    },
+    {
+     "id": "gilded-swan-knight",
+     "rarity": "superrare",
+     "fight": "24-8"
+    }
+   ],
+   "added": [],
+   "sideMaps": []
+  }
+ },
+ "maps": {
+  "25": {
+   "name": "The Rainforest Floor",
+   "biome": "jungle",
+   "idea": "The rainforest main map the Canopy (14-A) points at; the Canopy's held animals live here (RP5).",
+   "held": [
+    "toucan-courier",
+    "poison-dart-frog",
+    "strangler-vine",
+    "war-drum-mandrill",
+    "old-growth-tortoise",
+    "aye-aye-prowler",
+    "velvet-worm",
+    "slow-loris",
+    "chilli-parrot",
+    "leaf-chameleon"
+   ],
+   "carry": [],
+   "unsorted": [],
+   "ideas": [],
+   "base": [
+    "strangler-vine",
+    "leaf-chameleon"
+   ],
+   "features": [
+    "Nest 6",
+    "Strange Materia x2 from the boss",
+    "Heroic revealed on the main road (bosses field it)"
+   ],
+   "packTier": 4,
+   "poolSize": 10,
+   "caps": {
+    "skirmish": "superrare",
+    "elite": "epic",
+    "boss": "heroic"
+   }
+  },
+  "26": {
+   "name": "The Ant Empire",
+   "biome": "caves and burrows",
+   "idea": "A colony the size of a county; the hives' own territory (lore bible: \"We\", never \"I\").",
+   "held": [
+    "ant-hill",
+    "swarm-matriarch"
+   ],
+   "carry": [
+    "ant-warrior",
+    "leafcutter-gardener",
+    "termite-mound",
+    "fire-ant-raft"
+   ],
+   "unsorted": [
+    "gloom-gibbon"
+   ],
+   "ideas": [
+    "Army Ant Column (a stronger Worker Ant, Pack + Rage)",
+    "Meganeura (extinct giant dragonfly, Flying + Quick)",
+    "Arthropleura (extinct giant millipede, Armor + Sweep)"
+   ],
+   "base": [
+    "swarm-matriarch",
+    "Army Ant Column"
+   ],
+   "features": [
+    "Dragonfire Forge (tier 4, Lv 9)",
+    "faction Epic gate (70 received)"
+   ],
+   "packTier": 4,
+   "poolSize": 10,
+   "caps": {
+    "skirmish": "superrare",
+    "elite": "epic",
+    "boss": "heroic"
+   }
+  },
+  "27": {
+   "name": "The Carrion Moors",
+   "biome": "moor and bog",
+   "idea": "Bogs and bones; whatever dies here is eaten. The Gnawed's second home if CONTENT2-3 goes \"other sources\".",
+   "held": [
+    "clinging-leech"
+   ],
+   "carry": [
+    "skull-vulture",
+    "carrion-beetle",
+    "rot-swollen-carcass",
+    "grave-grin-hyena"
+   ],
+   "unsorted": [
+    "hagfish-silencer",
+    "geode-scorpion"
+   ],
+   "ideas": [
+    "Cave Hyena (extinct, a stronger Dust Hyena, Executioner + Pack)",
+    "Haast's Eagle (extinct giant eagle, Flying + Pounce)",
+    "Bog Body Heron (a stronger Mire Witch-Heron, Poison + Nocturnal)"
+   ],
+   "base": [
+    "Cave Hyena",
+    "Haast's Eagle"
+   ],
+   "features": [
+    "deck slot 6"
+   ],
+   "packTier": 4,
+   "poolSize": 10,
+   "caps": {
+    "skirmish": "superrare",
+    "elite": "epic",
+    "boss": "heroic"
+   }
+  },
+  "28": {
+   "name": "Stormcoast",
+   "biome": "coast in a gale",
+   "idea": "Cliffs in a gale; seals and seabirds. The Tidefolk's second home if CONTENT2-3 goes \"other sources\". Pack 5 starts.",
+   "held": [],
+   "carry": [
+    "grey-seal-bull",
+    "puffin-diver",
+    "fulmar-spitter",
+    "harbor-seal",
+    "voltaic-eel"
+   ],
+   "unsorted": [
+    "leopard-seal"
+   ],
+   "ideas": [
+    "Great Auk (extinct flightless seabird, Tide + Armor)",
+    "Steller's Sea Cow (extinct, a stronger Mangrove Manatee, Tide + Regeneration)",
+    "Storm Petrel Flock (Flying + Quick)",
+    "Thunder-ray (a stronger Electric Ray, Chain Lightning + Tide)"
+   ],
+   "base": [
+    "Thunder-ray",
+    "Great Auk"
+   ],
+   "features": [],
+   "packTier": 5,
+   "poolSize": 10,
+   "caps": {
+    "skirmish": "superrare",
+    "elite": "epic",
+    "boss": "heroic"
+   }
+  },
+  "29": {
+   "name": "The Echo Caverns",
+   "biome": "deep caves",
+   "idea": "Below Caves & Alcoves, where only sound finds the walls (Sonar, the Hollow Kin).",
+   "held": [
+    "oilbird"
+   ],
+   "carry": [
+    "echo-screecher",
+    "vampire-bat",
+    "cave-olm",
+    "blind-cave-fish",
+    "giant-cave-huntsman"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Cave Bear Matron (extinct cave bear, Guardian + Regeneration)",
+    "Dire Bat Colony (a stronger Vampire Bat, Flying + Swarm)",
+    "Olm Elder (a stronger Cave Olm, Regeneration + Darksight)"
+   ],
+   "base": [
+    "oilbird",
+    "Cave Bear Matron"
+   ],
+   "features": [],
+   "packTier": 5,
+   "poolSize": 9,
+   "caps": {
+    "skirmish": "superrare",
+    "elite": "epic",
+    "boss": "heroic"
+   }
+  },
+  "30": {
+   "name": "The Old Growth",
+   "biome": "ancient forest",
+   "idea": "Trees older than the war; Evomax opens here (owner: Evomax from Map 30): the sloth line climbs its trunks.",
+   "held": [
+    "slowpoke-sentinel",
+    "canopy-sloth-guardian",
+    "hanging-loafer"
+   ],
+   "carry": [
+    "elder-willow",
+    "grizzly-vanguard",
+    "ancient-sloth-titan"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Megatherium (extinct giant ground sloth: the sloth line's Omega, docs/evolute-design-2026-10-21.md)",
+    "Giant Beaver (extinct, the eras list; Lumberjack + Armor)"
+   ],
+   "base": [
+    "canopy-sloth-guardian",
+    "Megatherium"
+   ],
+   "features": [
+    "Evomax opens",
+    "Nest 7",
+    "Strange Materia x3 from the boss",
+    "faction Heroic gate",
+    "Unique revealed",
+    "enemy Lv 6 introduced"
+   ],
+   "packTier": 5,
+   "poolSize": 8,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "31": {
+   "name": "The Hollow Farmsteads",
+   "biome": "farm country",
+   "idea": "The Long Grass grown old: wild cattle and wild horses. Side map: the Cabbage Patch, the owner's Killer Veggies (\"people think it's just a farm\").",
+   "held": [],
+   "carry": [
+    "land-tiller",
+    "border-collie",
+    "warhorse-charger",
+    "bison-bulldozer",
+    "great-horned-owl"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Aurochs (extinct wild cattle, a stronger Bison Bulldozer)",
+    "Tarpan (extinct wild horse, a stronger Stable Colt)",
+    "side map: Turnip Brawler, Pumpkin Knight, Snapjaw Flytrap (the Flora note, Maps 20+)"
+   ],
+   "base": [
+    "Aurochs",
+    "Tarpan"
+   ],
+   "features": [
+    "Heartfire Forge (tier 5, Lv 10)",
+    "the Flea Market"
+   ],
+   "packTier": 5,
+   "poolSize": 7,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "32": {
+   "name": "The Thornwold",
+   "biome": "heath and briar",
+   "idea": "Thistlewood and the Briar Maze grown wild: the Greenhood Band robs its toll roads, and the Thistle Baron comes back.",
+   "held": [
+    "glintsnatch-magpie"
+   ],
+   "carry": [
+    "thorn-shrike",
+    "quillguard",
+    "cunning-vixen",
+    "hedgehog-scout",
+    "rodent-king"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Deinogalerix (extinct giant hedgehog, Thorns + Armor)",
+    "Greenhood Outlaw Fox (a stronger Cunning Vixen, Evasive + Bounty)"
+   ],
+   "base": [
+    "Deinogalerix",
+    "Greenhood Outlaw Fox"
+   ],
+   "quest": [
+    "thistle-baron"
+   ],
+   "features": [],
+   "packTier": 5,
+   "poolSize": 8,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "33": {
+   "name": "The Mammoth Steppe",
+   "biome": "cold steppe",
+   "idea": "Open frozen grass between the taiga and the ice; the ice-age herds.",
+   "held": [],
+   "carry": [
+    "permafrost-mammoth",
+    "boreal-elk",
+    "woodland-caribou",
+    "glacier-wolf-pack"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Woolly Rhino (extinct, a stronger Siege Rhino for the cold, Armor + Siege)",
+    "Cave Lion (extinct, a stronger Pride Queen, Pack Leader + Pounce)",
+    "Steppe Bison (extinct, Pack + Rage)",
+    "Irish Elk (extinct Megaloceros, Sweep + Mountain Climber)"
+   ],
+   "base": [
+    "Woolly Rhino",
+    "Cave Lion"
+   ],
+   "features": [
+    "deck slot 7"
+   ],
+   "packTier": 5,
+   "poolSize": 8,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "34": {
+   "name": "The Tar Pits",
+   "biome": "tar seeps",
+   "idea": "Black pools that keep what they catch: the predators that came for the trapped. Pack 5 ends.",
+   "held": [],
+   "carry": [
+    "lone-grey-wolf",
+    "bramblewood-lynx"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Sabre-tooth Stalker (extinct, a stronger Bramblewood Lynx, Pounce + Bleed)",
+    "Dire Wolf Pack (extinct, Pack + Rage)",
+    "Ground Sloth Wallower (extinct Paramylodon, Guardian + Armor)",
+    "Teratorn (extinct giant vulture, Flying + Executioner)"
+   ],
+   "base": [
+    "Sabre-tooth Stalker",
+    "Dire Wolf Pack"
+   ],
+   "features": [],
+   "packTier": 5,
+   "poolSize": 6,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "35": {
+   "name": "The Drowned Reef",
+   "biome": "deep sea",
+   "idea": "Past Coral Current, where the old things swim. Pack 6 starts.",
+   "held": [],
+   "carry": [
+    "colossal-squid",
+    "whale-shark",
+    "orca-vanguard",
+    "reef-shark"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Elder Shark (a megalodon look-alike, a stronger Coral Reef Shark)",
+    "Serpent Whale (a basilosaurus look-alike, Tide + Pierce)",
+    "Dunkleosteus (extinct armoured fish, Armor + Crab Claws)",
+    "Ammonite Drifter (extinct, Tide + Armor)"
+   ],
+   "base": [
+    "Dunkleosteus",
+    "Elder Shark"
+   ],
+   "features": [],
+   "packTier": 6,
+   "poolSize": 8,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "36": {
+   "name": "The Black Bayou",
+   "biome": "deep swamp",
+   "idea": "Gatorback Swamp grown huge and dark; the Gnawed's rats run its stilt villages.",
+   "held": [],
+   "carry": [
+    "anaconda-coil",
+    "alligator-gar",
+    "crocodile-ambusher",
+    "swamp-alligator",
+    "mire-witch-heron"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Titanoboa (extinct giant snake, Ambush + Poison)",
+    "Terror Croc (a deinosuchus look-alike, Ambush + Armor)"
+   ],
+   "base": [
+    "Titanoboa",
+    "Terror Croc"
+   ],
+   "features": [],
+   "packTier": 6,
+   "poolSize": 7,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "37": {
+   "name": "The Lost Isle",
+   "biome": "island",
+   "idea": "An island where birds grew big and nothing hunted them, until now.",
+   "held": [],
+   "carry": [
+    "elder-tortoise",
+    "sea-turtle-elder",
+    "lyrebird-mimic"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Moa Guard (extinct, a stronger Goose Sentry, a Guardian body)",
+    "Dodo Steward (extinct, a heavy bird with Bounty)",
+    "Elephant Bird (extinct, Armor + Sweep)",
+    "Giant Weta (Armor + Pounce)"
+   ],
+   "base": [
+    "Moa Guard",
+    "Elephant Bird"
+   ],
+   "features": [],
+   "packTier": 6,
+   "poolSize": 7,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "38": {
+   "name": "The Fossil Badlands",
+   "biome": "canyon and badlands",
+   "idea": "Bones in the cliffs; the road's last look at today's world before the dinosaurs (Map 40+).",
+   "held": [],
+   "carry": [
+    "komodo-warlord",
+    "sand-widow",
+    "caustic-scorpion"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Terror Bird (extinct phorusrhacid, Pounce + Speed)",
+    "Glyptodont (extinct cart-sized armadillo, Armor + Shield Call)",
+    "Megalania (extinct giant monitor, Poison + Rage)"
+   ],
+   "base": [
+    "Terror Bird",
+    "Glyptodont"
+   ],
+   "features": [],
+   "packTier": 6,
+   "poolSize": 6,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "39": {
+   "name": "The Last Savanna",
+   "biome": "savanna",
+   "idea": "Savanna Reaches grown ancient: the giants the hyenas follow.",
+   "held": [],
+   "carry": [
+    "marula-elephant",
+    "savanna-cheetah",
+    "springbok-pronker",
+    "spitting-cobra",
+    "rabid-jackal"
+   ],
+   "unsorted": [],
+   "ideas": [
+    "Deinotherium (extinct tusked elephant, Siege + Armor)",
+    "Sivatherium (extinct giraffe kin, Sweep + Speed)",
+    "Chalicotherium (extinct clawed browser, Rage + Armor)"
+   ],
+   "base": [
+    "Deinotherium",
+    "Sivatherium"
+   ],
+   "features": [],
+   "packTier": 6,
+   "poolSize": 8,
+   "caps": {
+    "skirmish": "epic",
+    "elite": "heroic",
+    "boss": "unique"
+   }
+  },
+  "40": {
+   "name": "The Grove of the Dragon-Turtle",
+   "biome": "old grove (owner-led)",
+   "idea": "The boundary: N22-1 builds Maps 40+ one at a time with the owner (idea, work it through, owner confirms, concrete, art). Seed only: the Grovebearer Dragon-Turtle held here (DV5), Legendary revealed, the first world boss of the every-10-maps run, the dinosaur era.",
+   "held": [
+    "grovebearer-dragon-turtle"
+   ],
+   "carry": [],
+   "unsorted": [],
+   "ideas": [],
+   "base": [
+    "grovebearer-dragon-turtle"
+   ],
+   "ownerLed": true,
+   "features": [
+    "Legendary revealed",
+    "a world boss every 10 maps from 40 (docs/progression-2026-10-12.md)",
+    "dungeon slot 3",
+    "enemy Lv 7 introduced"
+   ],
+   "packTier": 6,
+   "poolSize": null,
+   "caps": {
+    "skirmish": "heroic",
+    "elite": "unique",
+    "boss": "legendary"
+   }
+  }
+ },
+ "newSkillFlags": [
+  {
+   "id": "war-drum-mandrill",
+   "map": 25,
+   "skills": [
+    "durian"
+   ]
+  },
+  {
+   "id": "aye-aye-prowler",
+   "map": 25,
+   "skills": [
+    "sunshy"
+   ]
+  },
+  {
+   "id": "velvet-worm",
+   "map": 25,
+   "skills": [
+    "ichor"
+   ]
+  },
+  {
+   "id": "slow-loris",
+   "map": 25,
+   "skills": [
+    "feeble"
+   ]
+  },
+  {
+   "id": "chilli-parrot",
+   "map": 25,
+   "skills": [
+    "chilli"
+   ]
+  },
+  {
+   "id": "clinging-leech",
+   "map": 27,
+   "skills": [
+    "parasite"
+   ]
+  },
+  {
+   "id": "glintsnatch-magpie",
+   "map": 32,
+   "skills": [
+    "disarm"
+   ]
+  }
+ ]
+}

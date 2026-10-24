@@ -144,7 +144,7 @@
    "special": []
   },
   "m22": {
-   "cards": ["cinder-gecko", "cinder-hornet", "gorge-wyrm", "permafrost-mammoth", "ice-petrel", "rimefire-salamander", "badger-berserker", "fumarole-ibex", "ur-elk", "caldera-snow-leopard", "weathervane-swift", "ashwing-ptarmigan"],
+   "cards": ["cinder-gecko", "cinder-hornet", "gorge-wyrm", "permafrost-mammoth", "ice-petrel", "rimefire-salamander", "badger-berserker", "fumarole-ibex", "ur-elk", "caldera-snow-leopard", "weathervane-swift", "ashwing-ptarmigan", "petrified-tree"],
    "submaps": {
     "mlb": ["badger-sapper", "basalt-boar", "grindstone-boar", "honey-badger-fury", "magma-titan", "ore-smelter-mole"]
    },

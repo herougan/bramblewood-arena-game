@@ -31917,8 +31917,12 @@
     "test": false,
     "numericId": 9072,
     "uuid": "057c5daa-232e-55a2-aea9-12e4060ea4ef",
-    "creatorNote": "2026-10-19 (package SK2, owner 21:56: \"Petrified Tree: generates stones instead, but super expensive.\"): Milling's Stone cousin, built from the trigger layer (On Turn Start x Gain 1 Stone, every turn while Ready). No source yet. Budget v5 at Level 1, Rare, Wait 3, Lumber 5: N = 78.12; S = 3 (On Turn Start 3 x Gain 1); 2A+H+S = 48 < 78.12 (61%) and A*H+S = 3 < (N/3)^2 = 678.08. Expensive on purpose: Lumber 5 and Wait 3 for a 0-Attack wall whose only pay-off is 1 Stone a turn. 2026-10-19 halve (BF5): was 0/45. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 0/21.",
-    "awaitingSource": true
+    "creatorNote": "2026-10-19 (package SK2, owner 21:56: \"Petrified Tree: generates stones instead, but super expensive.\"): Milling's Stone cousin, built from the trigger layer (On Turn Start x Gain 1 Stone, every turn while Ready). No source yet. Budget v5 at Level 1, Rare, Wait 3, Lumber 5: N = 78.12; S = 3 (On Turn Start 3 x Gain 1); 2A+H+S = 48 < 78.12 (61%) and A*H+S = 3 < (N/3)^2 = 678.08. Expensive on purpose: Lumber 5 and Wait 3 for a 0-Attack wall whose only pay-off is 1 Stone a turn. 2026-10-19 halve (BF5): was 0/45. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 0/21. 2026-10-24 (package N221, owner N22-1, the Maps 21-40 divvy): a Pack 4 card of The Rimefire Caldera (Map 22): petrified forests form under volcanic ash: the Caldera's Stone maker beside its fire and ice (owner call N221-3).",
+    "source": {
+      "kind": "pack",
+      "tier": 4,
+      "map": "m22"
+    }
   },
   {
     "id": "crowbar",
