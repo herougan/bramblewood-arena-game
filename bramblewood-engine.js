@@ -649,14 +649,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // itself is kept as a field (always 0) purely so any stray external read of pl.acorns finds
       // a safe number instead of undefined; nothing writes to it anymore. A character's
       // `startGold` effect now seeds starting Lumber instead of starting Gold, same amount.
-      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, gold:0 /* TR (2026-10-21): in-fight Gold again (Tribute, the Crown) */, grace:0, devilry:0, stone:0, metal:0, uranium:0, lumber:(chEffects.startGold||0), elementalEnergy:0,
+      id, hq:{hp:hqHp, maxHp:hqHp}, acorns:0, gold:0 /* TR (2026-10-21): in-fight Gold again (Tribute, the Crown) */, grace:0, devilry:0, stone:0, metal:0, uranium:0, pearls:0 /* EN8 (2026-10-24): Pearls, paid as Lumber or Stone */, lumber:(chEffects.startGold||0), elementalEnergy:0,
       deck:buildDeckIdsFrom(cardCounts, rnd), deckCounts: Object.assign({}, cardCounts || {}) /* 2026-10-24 (DF3): the deck as dealt, for a selfish boon's count */, hand:[], row:{left:[], center:[], right:[]},
       graveyard:[], exile:[], echoes:0, castle:null, // castle: a boardCard-like fixture, set via setCastle(); not yet wired into targeting/combat (see game-design.md)
       playedThisTurn:false, discardUsedThisTurn:false, prayerTokens:0 /* 2026-10-19: the player's own Prayer tokens (offerings) */,
       character: character || null,
       firstUnitAtkBonus: (chEffects.firstUnitAtkBonus||0), firstUnitBonusUsed:false,
       // Castle passives added 2026-10-10 (map castles): unitHpBonus (+N Health on every unit you play), flyerAtkBonus
-      // (+N Attack on every Flying unit you play), castleRegen (the castle heals N at each round start).
+      // (+N Attack on every Flying unit you play), castleRegen (EN8, 2026-10-24: heals one random wounded ally unit N at each round start; a bramble is never healed).
       unitHpBonus: (chEffects.unitHpBonus||0), flyerAtkBonus: (chEffects.flyerAtkBonus||0), castleRegen: (chEffects.castleRegen||0),
       // Castle passives added 2026-10-12 (user: "Where are our diversity of castles like logjam, trojan, ballistae, clam farms,
       // thorn-cage, herb refinery, Hidden Nest"): enemyWaitBonus (the enemy's first 3 units arrive N Wait later), castleBolt (a bolt at a
@@ -1391,8 +1391,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(k.sapMending && (round - 1) % 3 === 0) heal(1);
       if(k.heartwood && pl._hqHitTurn !== turnNo - 1) heal(1);
       if(k.everbloom && (round - 1) % 5 === 0){ pl.lumber = (pl.lumber||0) + 1; if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, perk:true}); draw(pl, 1, sideOf(pid), stats, events); } });
-    if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return; const h = Math.min(pl.castleRegen, pl.hq.maxHp - pl.hq.hp); if(h > 0){ pl.hq.hp += h; if(recordEvents && events) events.push({type:'castleRegen', side:sideOf(pid), amount:h}); } });
+    // EN8 (2026-10-24, P24-17: "Some brambles 'heal themselves' each turn; it read as 'Heal 1 random ally 1' (that should be the default
+    // meaning). Brambles and structures cannot be healed, only repaired."): a bramble's healing passive (castleRegen N) heals ONE random
+    // wounded ally unit N at each round start (never a Structure, never the bramble). With no wounded unit it does nothing. Rebuild / Repair
+    // are what put Health back on a bramble or a Structure.
+    if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !(pl.castleRegen > 0) || pl.hq.hp <= 0) return;
+      const hurt = upkeepUnitsOf(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && c.hp < c.maxHp && !isStructureCard(c) && !(c.wither > 0)); if(!hurt.length) return;
+      const t = hurt.length === 1 ? hurt[0] : hurt[Math.floor(rnd() * hurt.length)], h = applyHeal(t, pl.castleRegen, sideOf(pid), events);
+      if(h > 0 && recordEvents && events) events.push({type:'heal', cause:'brambleMend', side:sideOf(pid), castle:true, targetSide:sideOf(pid), targetUid:t.uid, targetDefId:t.defId, amount:h}); });
     if(round > 1) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || pl.hq.hp <= 0) return; castleRoundActions(players, pid, round, sideOf, stats, events); });
+    en8RoundStart(players, sideOf, round, events); // EN8 (2026-10-24): Coppice, Driftwood, Windfall
     if(round > 1){ const blasts = []; // Dynamite fuses burn down at the start of each round (see fireDynamite)
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; upkeepUnitsOf(pl).forEach(c=>{ if(c.fuse > 0 && c.hp > 0){ /* + a raid's middle / back rows (2026-10-19, RR) */ c.fuse -= 1; if(recordEvents && events) events.push({type:'fuse', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.fuse}); if(c.fuse === 0) blasts.push([pid, c]); } }); });
       blasts.forEach(([pid, c])=>{ if(c.hp > 0) fireDynamite(players, sideOf, pid, c, stats, events); });
@@ -1985,7 +1993,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[pid]; if(!canEquip(pl, handUid, targetUid)) return false;
     const idx = pl.hand.findIndex(h=> h.uid===handUid); const [h] = pl.hand.splice(idx, 1);
     const tgt = allLive(pl).find(c=> c.uid===targetUid);
-    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
+    pl.lumber -= costOfCard(h.defId); pearlSettle(pl); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1; // + Pearls (EN8)
     eqMeet(players, sideOf, pid, tgt, h.defId, events, 'onto'); // EQ (2026-10-19): equipping for a round, then +stats and skills
     ensureStat(stats, sideOf(pid), h.defId).played++;
     return true;
@@ -2798,6 +2806,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // -> target rage reduction -> target armor (flat, floors at 0, last so
   // Armor is genuinely the last line of defense). Returns {dmg, armorBlocked}.
   function perksOfCard(card){ if(!card || !curPlayers) return null; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && pl.perks && ['left','center','right'].some(l=> (pl.row[l]||[]).includes(card))) return pl.perks; } return null; }
+  // EN8 (2026-10-24, P24-16): Magic Armor N, the magic and elemental half of Armor (see computeHitDamage).
+  function magicArmorOf(c){ const v = effectsOf(c).magicArmor; return v === true ? 1 : Math.max(0, Number(v)||0); }
   function computeHitDamage(attCard, rawAmount, dmgType, targetCard){
     let amt = rawAmount;
     if(attCard && targetCard && targetCard.hp > 0 && targetCard.hp < targetCard.maxHp / 2){ const k = perksOfCard(attCard); if(k && k.weakSpots) amt += k.weakSpots; } // Wildpath "Weak Spots"
@@ -2892,7 +2902,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const ae = (attDef && attDef.effects) || {};
     const pierceN = (ae.pierce === true || ae.rend || ae.supreme) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
     const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard); /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
-    const armor = Math.max(0, nominalArmor - pierceN);
+    // EN8 (2026-10-24, P24-16: "magic damage ignores Armor; normal damage ignores magic armor"): Armor (and everything nominalArmor sums:
+    // Shell, the tide's, Prayer Ward, Shieldwall) takes only from physical damage. Magic and every element (fire / heat, frost / cold, shock,
+    // poison, acid, water, decay, dark, holy ...) go past it. Magic Armor N (effects.magicArmor) is the other half: N off each magic or
+    // elemental hit (a swing here, a shot or skill in damageCardFlat), never off a physical one. Pierce N cuts Armor only.
+    const physicalHit = !dmgType || dmgType === 'physical';
+    const armor = physicalHit ? Math.max(0, nominalArmor - pierceN) : 0;
     const rend = pierceN > 0;
     // Rend (VFX/SFX coverage audit, 2026-09-21): rendBypass is a pure display flag for the front
     // end — "this hit ignored real Armor" — mirroring armorBlocked below. It never changes damage
@@ -2912,6 +2927,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     } else {
       amt = Math.max(0, amt);
     }
+    { const ma = magicArmorOf(targetCard); if(ma > 0 && !physicalHit && dmgType !== 'true' && !supremeAtt && amt > 0){ const before = amt; amt = Math.max(0, amt - ma); armorSoaked += before - amt; // EN8 (P24-16): Magic Armor
+        if(roundDmg(amt) === 0 && roundDmg(before) > 0) armorBlocked = true; mods.push('magicArmor'); } }
     // Elemental dmgType conversion (2026-09-29, explicit design: "the elements can be both
     // passives and attack damage type"): once the final post-mitigation damage number is known,
     // an attacker whose OWN dmgType is Poison or Decay converts it into that element's signature
@@ -2998,6 +3015,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(o.noteHit) noteHit(card, dmg, o.dmgType);
     const hp0 = card.hp;
     card.hp = Math.max(0, card.hp - dmg);
+    if(dmg > 0) card._dmgTurn = turnNo; // EN8 (2026-10-24): Coppice reads the last round it took damage
     if(o.suddenDeath && o.suddenDeath(dmg)) card.hp = 0;
     if(o.killerUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, o.killerUid, o.killerDefId); // who:'killer' (2026-10-14)
     if(o.wake && dmg > 0 && card.asleep > 0 && !card.hibernating /* EN6: Hibernate wakes with the cold, not a hit */){ if(o.wokeBy !== undefined) card._wokeBy = o.wokeBy ? Object.assign({uid: o.wokeBy.uid, n: card.asleep, t: o.wokeBy.t}) : null; card.asleep = 0; noteWoke(card); }
@@ -3029,6 +3047,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const EXPOSE_TICKS = new Set(['poison', 'bleed', 'decay', 'curse', 'chilli', 'recoil', 'strangle']); // + Strangle's squeeze (2026-10-16) // status ticks don't use up Exposed (2026-10-15)
   function damageCardFlat(card, amount, dmgType, attDefId, attUid){
     const giB = attDefId ? giHitBonus(CARD_DEFS[attDefId], card, dmgType) : 0; // Hunter N / Executioner N (2026-10-19, package GI): read before Exposed is used up
+    if(attUid != null && !EXPOSE_TICKS.has(dmgType) && curPlayers){ const ac = [1,2].map(p=> curPlayers[p] && allBoardCards(curPlayers[p]).find(x=> x && x.uid === attUid)).find(Boolean); if(ac && ac.dauntN > 0) amount = Math.max(0, amount - ac.dauntN); } // EN8 (2026-10-25): its Daunt counters cut its skill damage
     if(!EXPOSE_TICKS.has(dmgType)) amount += sk1ExploitUse(card); // 2026-10-19 (package SK1): Exploit tokens (was Expose's crit) // (no ×2 under Quiet Contemplation, 2026-10-19) // Exposed: ranged/flat hits too, one counter used up (a Poison/Bleed tick isn't a hit); 2026-10-16 (user: "that hit is guaranteed a crit"): a crit (double), not +1
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
@@ -3058,6 +3077,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     { const hv = spiritHalves(card, dmgType, !!attDef); if(hv){ dmg = halveTimes(dmg, hv); mods.push('resist'); } } // Ghost / Supreme / Shade (2026-10-14)
     if(dmg > 0 && atheistHalves(card, dmgType, attDef)){ dmg = dmg / 2; mods.push('resist'); } // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
     if(card.shocked>0){ dmg = dmg * 1.5; mods.push('shocked'); } // Shock applies to ranged/flat hits too
+    { const ma = magicArmorOf(card); if(ma > 0 && dmg > 0 && dmgType && dmgType !== 'physical' && dmgType !== 'true' && !EXPOSE_TICKS.has(dmgType) && !crush){ dmg = Math.max(0, dmg - ma); mods.push('magicArmor'); } } // EN8 (P24-16): Magic Armor N off a magic / elemental shot or skill (not a status tick)
     if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Cower 'shell': arrows and bolts too, not statuses
     if(card.petrified && !crush){ const d0 = dmg; dmg = dmg * sk3StoneFactor(card, attDef); if(dmg < d0) mods.push('stone'); else if(dmg > d0) mods.push('weak'); } // Petrification (2026-10-14); Shatter doubles it (2026-10-19, SK3)
     if(card.invincible > 0){ if(roundDmg(dmg) > 0) mods.push('immune'); dmg = 0; } // Invincible N (2026-10-16): statuses, arrows and bolts too
@@ -3119,9 +3139,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function rampartShare(pl, amount){
     if(!(amount > 0) || !pl) return amount;
     if(currentAttacker && effectsOf(currentAttacker).supreme) return amount;
-    const rs = rowsUnitsOf(pl).filter(isRampartUnit); if(!rs.length) return amount;
-    const ac = currentAttacker && Number.isInteger(currentAttacker.slot) ? currentAttacker.slot : null;
-    let r = rs[0]; if(ac != null) rs.forEach(c=>{ if(Number.isInteger(c.slot) && Math.abs(c.slot - ac) < Math.abs((Number.isInteger(r.slot) ? r.slot : 99) - ac)) r = c; });
+    // EN8 (2026-10-24, owner 21:41 #5: "Rampart - blocks 1/2 bramble dmg. Might be unfair if it just flat blocks everything!. Maybe only blocks
+    // attacks from 'surrounding enemies (L/C/R)'"): a Rampart unit covers only a hit whose attacker stands in its own column or the column on
+    // either side (|attacker's slot - its slot| <= 1). A hit with no attacker in a column (a field tick, a gravity board, a castle's own
+    // throw) is not covered. Of the Rampart units in reach, the nearest; a tie, the one listed first.
+    const ac = currentAttacker && Number.isInteger(currentAttacker.slot) ? currentAttacker.slot : null; if(ac == null) return amount;
+    const rs = rowsUnitsOf(pl).filter(c=> isRampartUnit(c) && Number.isInteger(c.slot) && Math.abs(c.slot - ac) <= 1); if(!rs.length) return amount;
+    let r = rs[0]; rs.forEach(c=>{ if(Math.abs(c.slot - ac) < Math.abs(r.slot - ac)) r = c; });
     const share = Math.ceil(amount / 2), dmg = applyDamage(r, share, {wake: true}).dmg; // its Shield / Shell soak first, as on any damage
     if(recordEvents && shieldEvents) shieldEvents.push({type:'rampart', side: shieldSideOf ? shieldSideOf(pl.id) : undefined, uid:r.uid, defId:r.defId, dmg, share, bramble: amount - share, mods:dnModsFor(r.uid)});
     return amount - share;
@@ -3430,8 +3454,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Guardian that stepped in took the swing in its place, call EN3-3) is reverted. One Guardian steps in, and it takes the swing; no other
   // Guardian covers it. (A Guardian aimed at directly can still be covered by a Guardian beside it: it wasn't intercepting.) Several at
   // once: one at random, as before. The hit no longer carries guardChain.
+  // EN8 (2026-10-24, P24-15: "Guardians must not intercept Thorns."): a swing at a unit with Thorns (printed, or Durian's) is never taken
+  // over by a Guardian: the Thorns unit takes it and its Thorns answer. Thorns damage itself (the answer to the attacker) was never a
+  // swing, so no Guardian beside the attacker steps in for it either (it goes through applyDamage straight to the attacker).
+  function hasThornsNow(c){ return !!c && ((Number(effectsOf(c).thorns)||0) > 0 || (c.thornsBonus||0) > 0); }
   function redirectToGuardian(enemyPl, card){
     if(!enemyPl || !card) return card;
+    if(hasThornsNow(card)) return card; // EN8 (P24-15)
     const gs = adjacentOf(enemyPl, card).filter(n=> n !== card && isLiveGuardian(n)); if(!gs.length) return card;
     return gs.length === 1 ? gs[0] : gs[Math.floor(rnd()*gs.length)];
   }
@@ -3609,7 +3638,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Daunt N (2026-10-12, user: "New passive. ____ N: On Hit, reduce its attack by N until end of next turn. If this happens
   // multiple times, his attack is reduced by N multiple times"): each landed hit leaves a {n, until} mark on the target; the
   // marks add up, and each lifts at the end of the round after the one it landed in.
-  function dauntOf(card){ const d = card && card.daunts; if(!d || !d.length) return 0; let t = 0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; }
+  function dauntOf(card){ const c0 = Math.max(0, (card && card.dauntN)||0); const d = card && card.daunts; if(!d || !d.length) return c0; let t = c0; for(const x of d) if(x.until >= combatNo) t += x.n; return t; } // + Render's Daunt counters (EN8, 2026-10-25)
+  function en8DauntUse(card, events, sideOf, pid, why){ if(!card || !(card.dauntN > 0)) return; card.dauntN -= 1; if(recordEvents && events) events.push({type:'statusFx', kind:'dauntFade', side:sideOf ? sideOf(pid) : undefined, targetUid:card.uid, targetDefId:card.defId, left:card.dauntN, why}); }
   function effAtk(card){
     const base = Math.max(0, (card.atk||0) + (card.rallyBonus||0) + (card.worshipBonus||0) + (card.natureBonus||0) + (card.packBonus||0) + (card.kinBonus||0) + (card.sk1Atk||0) /* Formation / Isolation (SK1) */ + hoardBonus(card) - (card.corrode||0) - dauntOf(card) - sk3StenchOf(card)); // + Hoard N (2026-10-17); - Stench (2026-10-19, package SK3)
     // Stagger (2026-09-24): applied as a final multiplier on top of Corrode, same relationship
@@ -3636,6 +3666,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let healWork = 0;
   function applyHeal(card, amount, side, events){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
+    if(isStructureCard(card)) return 0; // EN8 (2026-10-24, P24-17): a Structure is never healed, only repaired (Repair N, sk2Repair)
     if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
     { const hp = pidOfLive(card); if(hp) n += auraN(curPlayers[hp], 'herbalist'); } // Herbalist N (2026-10-17): every heal on your units heals N more
     // 2026-10-19 (package SK1, owner 21:36: "heal only heals now"): no Bleed stanch any more; Bleed comes off with Cleanse.
@@ -4138,11 +4169,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Tailwind (2026-10-12, user: "Tailwind should do the same for Flyers"): Hasten, and every Flyer of yours also gets one
     // Fast Forward turn at the start of the next combat.
     if(sp.do === 'tailwind') mine.forEach(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; if(e.flying && quietStills(c, sideOf(pid), events, 'tailwind')) return; /* Quiet Contemplation (2026-10-19): Hasten only */ if(e.flying){ c.ffCounters = (c.ffCounters||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'tailwind', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } });
-    else if(sp.do === 'mend') mine.forEach(c=>{ const h = Math.min(n, c.maxHp - c.hp); if(h > 0){ c.hp += h; hit.push({uid:c.uid, amount:h}); } });
+    else if(sp.do === 'mend') mine.forEach(c=>{ if(isStructureCard(c)) return; /* EN8 (P24-17): not a Structure */ const h = Math.min(n, c.maxHp - c.hp); if(h > 0){ c.hp += h; hit.push({uid:c.uid, amount:h}); } });
     else if(sp.do === 'sap') foes.forEach(c=>{ const a = Math.min(n, c.atk); if(a > 0){ c.atk -= a; c.baseAtk = Math.max(0, (c.baseAtk||0) - a); hit.push({uid:c.uid, amount:a}); } });
     if(recordEvents && events) events.push({type:'spell', side:sideOf(pid), defId:def.id, action:sp.do, amount:n, targets:hit});
   }
-  function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); }
+  function payOreCosts(pl, defId){ const od = CARD_DEFS[defId] || {}; pl.stone = (pl.stone||0) - (od.stoneCost||0); pl.metal = (pl.metal||0) - (od.metalCost||0); pl.uranium = (pl.uranium||0) - (od.uraniumCost||0); pearlSettle(pl); } // + Pearls make up a Lumber / Stone shortfall (EN8)
   function canPlay(pl, defId, excludeUid, discount, prayerBonus){
     { const ct = CARD_DEFS[defId] && CARD_DEFS[defId].cardType; if(ct === 'materia') return false; // 2026-10-11: materia is a crafting material
       if(ct === 'equipment' && !eqHasTarget(pl)) return false; if(isHazardDef(CARD_DEFS[defId]) && !slotMode) return false; } // EQ (2026-10-19): equipment and hazards are played (a unit or a slot to go to)
@@ -4154,8 +4185,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const isField = CARD_DEFS[defId] && CARD_DEFS[defId].field;
     const isDark = CARD_DEFS[defId] && CARD_DEFS[defId].darkSummon;
     if(isDark ? (pl.darkUsed||0) >= darkPerTurn(pl) : isField ? pl.fieldTurn === turnNo : pl.playedThisTurn) return false;
-    if(cost > pl.lumber) return false; // 2026-09-22: card cost is now paid in Lumber, not Gold
-    { const od = CARD_DEFS[defId] || {}; if((od.stoneCost||0) > (pl.stone||0) || (od.metalCost||0) > (pl.metal||0) || (od.uraniumCost||0) > (pl.uranium||0)) return false; } // Stone, Metal, Uranium (2026-10-12)
+    // 2026-09-22: card cost is paid in Lumber, not Gold. Stone, Metal, Uranium (2026-10-12). EN8 (2026-10-24): Pearls fill in for Lumber or Stone.
+    { const od = CARD_DEFS[defId] || {}; if(pearlGap(pl, defId, cost) > Math.max(0, pl.pearls||0) || (od.metalCost||0) > (pl.metal||0) || (od.uraniumCost||0) > (pl.uranium||0)) return false; }
     if(pCost > pl.grace) return false;
     if(dCost > pl.devilry) return false;
     if(!canAffordExile(pl, exCost, excludeUid)) return false;
@@ -4253,7 +4284,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(fdef && fdef.field && FIELDS[fdef.field.id]){ pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
       // A field card never takes a slot: it pays its cost, sets the field and goes to the Graveyard.
       pl.hand.splice(idx,1);
-      pl.lumber -= costOfCard(hc.defId);
+      pl.lumber -= costOfCard(hc.defId); pearlSettle(pl); // + Pearls (EN8)
       pl.fieldTurn = turnNo;
       pl.graveyard.push({defId: hc.defId});
       setField(fdef.field.id, fdef.field.rounds || 3, sideOf(playerId));
@@ -4266,7 +4297,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Playing these cards takes your turn as usual"): pay, take the turn's play, resolve, go to the Graveyard.
     if(fdef && fdef.cardType === 'spell'){ pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
       pl.hand.splice(idx,1);
-      pl.lumber -= costOfCard(hc.defId); markPlayed(pl);
+      pl.lumber -= costOfCard(hc.defId); pearlSettle(pl); markPlayed(pl); // + Pearls (EN8)
       pl.graveyard.push({defId: hc.defId});
       ensureStat(stats, sideOf(playerId), hc.defId).played++;
       castSpell(players, sideOf, playerId, fdef, stats, events);
@@ -4936,7 +4967,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(unit) return eqCarrier(unit) ? equip(players, sideOf, pid, unit.uid, handUid, stats, events) : false;
     if(!Number.isInteger(sl) || !eqFreeSlots(pl).includes(sl)) return false;
     pl.hand.splice(pl.hand.findIndex(x=> x.uid === handUid), 1);
-    pl.lumber -= costOfCard(h.defId); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1;
+    pl.lumber -= costOfCard(h.defId); pearlSettle(pl); markPlayed(pl); pl.cardsPlayedEver = (pl.cardsPlayedEver || 0) + 1; // + Pearls (EN8)
     eqSlotsOf(pl)[sl] = {defId: h.defId};
     ensureStat(stats, sideOf(pid), h.defId).played++;
     if(recordEvents && events) events.push({type:'equipLaid', side:sideOf(pid), pid, slot:sl, equipDefId:h.defId});
@@ -5426,6 +5457,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!c) return 0; let left = n == null ? Infinity : n, removed = 0;
     for(const k of SK1_CLEANSE){ if(left <= 0) break; if(!(c[k] > 0)) continue; const d = Math.min(left, c[k]); c[k] -= d; left -= d; removed += d; }
     if(left > 0 && c.daunts && c.daunts.length){ const d = Math.min(left, c.daunts.length); c.daunts.splice(0, d); left -= d; removed += d; }
+    if(left > 0 && c.dauntN > 0){ const d = Math.min(left, c.dauntN); c.dauntN -= d; left -= d; removed += d; } // EN8 (2026-10-25): Render's Daunt counters, one a point
     return removed;
   }
   // ==== end of Package SK1 ===========================================================================================================
@@ -5580,15 +5612,73 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function trigsOf(def){
     const e = def && def.effects; if(!e) return []; const base = Array.isArray(e.triggers) ? e.triggers : [];
     const s3 = sk3Sig(e); // Package SK3 (2026-10-19): Spawner, Harbinger, Corpsefeeder, Warcry, Stench, Silence / Stymie / Exhaust / Petrify
-    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return bxTrigs(e, sk1Trigs(e, base)); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
-    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return bxTrigs(e, sk1Trigs(e, m.list));
+    if(!e.kinRally && !e.packHowl && !e.milling && !e.quarry && !e.smelter && !e.disarm && !s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, base)), def); // + Milling, Quarry, Smelter (2026-10-19, package SK2 / SK2b); + the SK1 keyword shorthands; + Archer (BX, 2026-10-21)
+    const m = giTrigMemo.get(e); if(m && m.base === base && m.kr === e.kinRally && m.ph === e.packHowl && m.ml === e.milling && m.qu === e.quarry && m.sm === e.smelter && m.dz === e.disarm && m.s3 === s3) return en8Trigs(e, bxTrigs(e, sk1Trigs(e, m.list)), def);
     const list = base.slice(); if(s3) sk3Trigs(e, list);
     if(e.kinRally){ const n = numN(e.kinRally, 1); list.push({on:'onAllyPlayed', do:'buff', who:'ally', sub:'subject', amount:n, amount2:n, filterKin:true, keyword:'kinRally'}); }
     if(e.packHowl) list.push({on:'onAllyPlayed', do:'bleed', who:'enemy', sub:'subjectFacing', amount:numN(e.packHowl, 1), filterArchetype:'Wolf', keyword:'packHowl'});
     if(e.milling) list.push({on:'perTurn', do:'gain', resource:'lumber', amount:numN(e.milling, SK2.millingN), keyword:'milling'}); // Milling N (2026-10-19, package SK2): On Turn Start × Gain N Lumber
     sk2EconomyTrigs(e, list); // Quarry N, Smelter N (2026-10-19, SK2b): On Turn Start × Gain, with a price (t.pay)
-    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return bxTrigs(e, sk1Trigs(e, list));
+    giTrigMemo.set(e, {base, kr:e.kinRally, ph:e.packHowl, ml:e.milling, qu:e.quarry, sm:e.smelter, dz:e.disarm, s3, list}); return en8Trigs(e, bxTrigs(e, sk1Trigs(e, list)), def);
   }
+  // ==== EN8 (2026-10-24, owner 22:28 #2: "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall,
+  // driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood."; decision LUM-1). The resource
+  // skills, every number N defaulting to 1 (EN8_DEF); prices by the owner's 4-round rule in canonical/skill-costs.json.
+  //   Stonecutter N   every 2nd turn while Ready: +N Stone (On Turn Start x Gain, t.every 2; Heavy Metal adds to it)
+  //   Prospector N    On Kill: +N Metal (Heavy Metal adds to it)
+  //   Felling N       On Kill: +N Lumber (Lumberjack adds to it)
+  //   Pearl Bed N     On Ready: +N Pearl (the Shellfish). A Pearl pays 1 Lumber or 1 Stone: when a card's Lumber or Stone can't be met,
+  //                   Pearls fill in (canPlay / pearlSettle). The CPU counts them (aiResourceGap).
+  //   Salvage N       when another of your Structures dies: +2N Lumber (en8DeathFeed; always on, Waiting too)
+  //   Scavenge N      when another of your units dies: +N Lumber (en8DeathFeed; tokens count; always on)
+  //   Coppice N       a round it took no damage: +N Lumber at the next round's start (from its second round on the field)
+  //   Driftwood N     at the start of an Ebb round on a beach map (rules.beachMap): +N Lumber
+  //   Windfall        a field rule (rules.windfall): at the start of a round after a Storm round (en6Storm: a Thunderstorm or a strong-wind
+  //                   round), both sides +1 Lumber
+  // (Salvage and Scavenge were package SK2's point counters, on no card: Scavenge N, M = M points within reach -> 1 Lumber; Salvage the
+  // same for Structures -> Stone. LUM-1 gave both names the plain rules above; SK2_SCAV is retired.)
+  const EN8_DEF = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1};
+  let en8TrigMemo = null;
+  function en8Trigs(e, list, def){
+    if(!e || !(e.stonecutter || e.prospector || e.felling || e.pearlBed)) return list;
+    const waits = !!(def && Number(def.wait) > 0); // Pearl Bed: a Wait 0 card is Ready as it lands (the engine fires no On Ready for it), so it pays On Play
+    if(!en8TrigMemo) en8TrigMemo = new WeakMap(); const key = [e.stonecutter, e.prospector, e.felling, e.pearlBed, waits].join('|'), m = en8TrigMemo.get(e);
+    if(m && m.src === list && m.key === key) return m.out;
+    const out = list.slice(), N = (k, d)=> numN(e[k], d);
+    if(e.stonecutter) out.push({on:'perTurn', do:'gain', resource:'stone', amount:N('stonecutter', EN8_DEF.stonecutterN), every:EN8_DEF.stonecutterEvery, keyword:'stonecutter'});
+    if(e.prospector) out.push({on:'onKill', do:'gain', resource:'metal', amount:N('prospector', EN8_DEF.prospectorN), keyword:'prospector'});
+    if(e.felling) out.push({on:'onKill', do:'gain', resource:'lumber', amount:N('felling', EN8_DEF.fellingN), keyword:'felling'});
+    if(e.pearlBed) out.push({on: waits ? 'onReady' : 'onSpawn', do:'gain', resource:'pearl', amount:N('pearlBed', EN8_DEF.pearlBedN), keyword:'pearlBed'});
+    en8TrigMemo.set(e, {src:list, key, out}); return out;
+  }
+  // Pearls (EN8): after a payment took Lumber or Stone below 0 (canPlay let it through because Pearls cover the gap), Pearls make it good.
+  function pearlSettle(pl){
+    if(!pl) return; const owe = Math.max(0, -(pl.lumber||0)) + Math.max(0, -(pl.stone||0)); if(!(owe > 0)) return;
+    pl.pearls = Math.max(0, (pl.pearls||0) - owe); if((pl.lumber||0) < 0) pl.lumber = 0; if((pl.stone||0) < 0) pl.stone = 0;
+    pl.pearlsSpent = (pl.pearlsSpent||0) + owe;
+  }
+  function pearlGap(pl, defId, lumberCost){ const od = CARD_DEFS[defId] || {}; return Math.max(0, lumberCost - (pl.lumber||0)) + Math.max(0, (od.stoneCost||0) - (pl.stone||0)); }
+  // Salvage / Scavenge: called for every death (from carrionFeed, where SK2's feed was).
+  function en8DeathFeed(players, sideOf, dead, pid, events){
+    const pl = players && players[pid]; if(!dead || !pl || dead.cageOf) return; const struct = isStructureCard(dead);
+    rowsUnitsOf(pl).forEach(c=>{ if(!c || c === dead || c.gap || !(c.hp > 0) || c.cageOf) return; const e = effectsOf(c);
+      if(e.scavenge){ const got = addLumber(pl, numN(e.scavenge, EN8_DEF.scavengeN)); if(got > 0 && recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:c.defId, uid:c.uid, amount:got, cause:'scavenge'}); }
+      if(e.salvage && struct){ const got = addLumber(pl, numN(e.salvage, EN8_DEF.salvageN) * EN8_DEF.salvageMult); if(got > 0 && recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:c.defId, uid:c.uid, amount:got, cause:'salvage'}); } });
+  }
+  // Coppice, Driftwood, Windfall: at a round's start (roundStart, after the turn counter moved on).
+  function en8RoundStart(players, sideOf, round, events){
+    if(!(round > 1)) return;
+    const ebbBeach = !!rules.beachMap && getTide() === 'ebb';
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      rowsUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || c.cageOf) return; const e = effectsOf(c);
+        if(e.coppice){ if(c._coppiceArmed && c._dmgTurn !== turnNo - 1){ const got = addLumber(pl, numN(e.coppice, EN8_DEF.coppiceN)); if(got > 0 && recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:c.defId, uid:c.uid, amount:got, cause:'coppice'}); }
+          c._coppiceArmed = true; }
+        if(e.driftwood && ebbBeach){ const got = addLumber(pl, numN(e.driftwood, EN8_DEF.driftwoodN)); if(got > 0 && recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:c.defId, uid:c.uid, amount:got, cause:'driftwood'}); } }); });
+    if(rules.windfall && en8StormLast){ [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; const got = addLumber(pl, EN8_DEF.windfallLumber);
+      if(got > 0 && recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:got, cause:'windfall', field:true}); }); }
+    en8StormLast = en6Storm();
+  }
+  let en8StormLast = false;
   // ==== Package SK3 (2026-10-19, owner 21:56 / 21:59 / 22:08): skills batch 3. Owner principle: "if you can and it makes sense, feel
   // free to use triggers and actions. if they dont suffice, add the required trigger or action." So most of these are keywords that
   // expand into ordinary triggers (sk3Trigs, read by trigsOf: Waiting, the layer cap, Confused, Exhaust all apply), over the new actions
@@ -6776,9 +6866,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid});
       return;
     }
-    const before = opp.card.atk;
-    opp.card.atk = Math.max(0, opp.card.atk - eff.amount);
-    if(recordEvents && events) events.push({type:'render', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:before-opp.card.atk});
+    // EN8 (2026-10-25, owner 00:02 #2: "Render gives daunt counters instead - which disappear 1 by 1 per turn. I think taking an action or using a
+    // skill lowers the daunt counters. Daunt counters also reduce your skill damage."): Render N puts N Daunt counters on the enemy facing it
+    // (card.dauntN; was: it lost N Attack for good). Each counter is -1 Attack (dauntOf) and -1 on each of its skill hits (damageCardFlat);
+    // one falls off at each round's end, and one each time it swings or uses a skill (en8DauntUse).
+    const n = Math.max(0, Number(eff.amount)||0); opp.card.dauntN = (opp.card.dauntN||0) + n;
+    if(recordEvents && events) events.push({type:'render', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:n, daunt:true, total:opp.card.dauntN});
     if(opp.card.hp>0){
       bleedTick(sideOf, otherId(ownerId), opp.card, stats, events, 'defend');
       runCustomTriggers(players, sideOf, otherId(ownerId), opp.card, CARD_DEFS[opp.card.defId], 'onAttacked', stats, events);
@@ -6809,7 +6902,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return;
     }
     trigLayer++; const subj0 = trigSubject; trigSubject = extra ? (extra.spawnedCard || extra.diedCard || extra.healedCard || extra.healerCard || extra.readyCard || extra.movedCard || extra.subjectCard || null) : null; // sub:'subject' (2026-10-19, GI); + subjectCard (SK1's new triggers)
-    try{ runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra); } finally{ trigLayer--; trigSubject = subj0; }
+    const acted0 = boardCard ? boardCard._en8Acted : false; if(boardCard) boardCard._en8Acted = false;
+    try{ runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra); } finally{ trigLayer--; trigSubject = subj0;
+      if(boardCard){ if(boardCard._en8Acted && hook !== 'onAction' && hook !== 'onAttack') en8DauntUse(boardCard, events, sideOf, playerId, 'skill'); boardCard._en8Acted = acted0; } } // EN8 (2026-10-25): using a skill takes a Daunt counter off (its swing's own hooks are the action's)
   }
   function runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     const trigs = trigsOf(def); if(!trigs.length) return;
@@ -6834,6 +6929,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // earlier per-trigger flag) is now simply the default.
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
+      if(hook==='perTurn' && Number(t.every) > 1 && boardCard){ const ek = 'every:' + (t.keyword || i); boardCard._every = boardCard._every || {}; boardCard._every[ek] = (boardCard._every[ek]||0) + 1; if(boardCard._every[ek] % Math.round(Number(t.every)) !== 0) return; } // EN8 (2026-10-24): t.every K, every K-th Ready turn (Stonecutter: 2)
       if(t.keyword !== 'archer' /* its turn already rolled Confused's coin (BX, 2026-10-21) */ && confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
       if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
       // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
@@ -6871,7 +6967,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const healNoop = ()=>{ if(!healLike || healWork !== work0) return;
         if(recordEvents && events){ const k = events.lastIndexOf(tfEv); if(k >= 0) events.splice(k, 1); }
         if(t.once && boardCard && boardCard.firedOnce) delete boardCard.firedOnce[onceKey]; };
-      const runAction = t=>{ switch(t.do){
+      const runAction = t=>{ if(boardCard) boardCard._en8Acted = true; /* EN8: a skill used (Daunt) */ switch(t.do){
         case 'gainGold': addLumber(pl, t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
         case 'gainGrace': pl.grace += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).graceGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
         case 'gainDevilry': pl.devilry += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).devilryGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
@@ -6884,6 +6980,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(t.resource==='grace'){ pl.grace += amt; ensureStat(stats,mySide,boardCard.defId).graceGenerated += amt; if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else if(t.resource==='metal' || t.resource==='uranium'){ const got = t.resource==='metal' ? addOre(pl, 'metal', amt) : (pl.uranium = (pl.uranium||0) + amt, amt); if(recordEvents&&events) events.push({type:t.resource, side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got}); }
           else if(t.resource==='stone'){ addOre(pl, 'stone', amt); if(recordEvents&&events) events.push({type:'stone', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
+          else if(t.resource==='pearl'){ pl.pearls = (pl.pearls||0) + amt; if(recordEvents&&events) events.push({type:'pearl', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // EN8 (2026-10-24): Pearl Bed
           else if(t.resource==='devilry'){ pl.devilry += amt; ensureStat(stats,mySide,boardCard.defId).devilryGenerated += amt; if(recordEvents&&events) events.push({type:'devilry', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); }
           else { addLumber(pl, amt); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:amt}); } // default: lumber
           break;
@@ -7578,7 +7675,61 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Saving reach (2026-10-09): 2 turns. Saving further (or refusing smaller costly cards while saving)
   // cost the CPU more tempo than the big card won back under today's discard-only Lumber (decision B4).
-  const SAVE_REACH = 2;
+  const SAVE_REACH = 2; // (EN8, 2026-10-24: no longer read; the pitch rule below aiUsefulNow replaced it)
+  // EN8 (2026-10-24): what the CPU's pitch rule reads (see "EN8" in aiTakeTurnOnce).
+  // A spell's worth right now (the scoring's own sums): > 0 means it would do something.
+  function aiSpellGainNow(players, aiId, d){
+    const sp = (d && d.spell) || {}, n = Number(sp.amount)||0, mine = allLive(players[aiId]), foes = aiFoes(allLive(players[otherId(aiId)]));
+    return (sp.do==='hasten' || sp.do==='tailwind') ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3 + (sp.do==='tailwind' ? mine.filter(c=> ((CARD_DEFS[c.defId]||{}).effects||{}).flying).length * 4 : 0)
+      : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
+      : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
+  }
+  // A hand card the CPU can usefully play this turn: payable and allowed (canPlay), and not a card that would do nothing (a spell with
+  // nothing to do, an evolute with no base worth it) or that is not the turn's play (a field card, a Dark Summon).
+  function aiUsefulNow(players, aiId, hc){
+    const ai = players[aiId], d = CARD_DEFS[hc.defId]; if(!d || !canPlay(ai, hc.defId, hc.uid)) return false;
+    if(d.field || d.darkSummon) return false;
+    if(d.cardType === 'spell' && !isHazardDef(d)) return aiSpellGainNow(players, aiId, d) > 0;
+    if(isEvoluteDef(hc.defId)) return !!aiEvoluteBase(ai, hc.defId);
+    return true;
+  }
+  // How much Lumber / Stone / Metal the card still needs (Pearls fill in for Lumber or Stone: pearlCover), 0 when it is payable.
+  function aiResourceGap(pl, defId){
+    const d = CARD_DEFS[defId] || {}, lum = Math.max(0, costOfCard(defId) - (pl.lumber||0)), st = Math.max(0, (d.stoneCost||0) - (pl.stone||0)), me = Math.max(0, (d.metalCost||0) - (pl.metal||0));
+    return Math.max(0, lum + st - Math.max(0, pl.pearls||0)) + me;
+  }
+  // EN8 (2026-10-24, P24-7): the lethal guard. What your units would swing into its bramble this round (each Ready unit that can swing,
+  // with nothing of the CPU's in its column; a Confused one counts half), against the bramble's Health and Shield. When that is lethal and
+  // the CPU can't win this round itself (its open-column swings plus the best unit it could add reach your bramble's Health and Shield),
+  // it plays the unit that stops the most of it, into the slot facing the attacker it stops (a legal slot; the tie: the sturdier unit).
+  // It stops what it can even when one blocker is not enough. Returns {hc, slot, before, after} or null.
+  function aiIncomingOnBramble(players, aiId, extra){
+    const ai = players[aiId], foe = players[otherId(aiId)]; let t = 0;
+    aiFoes(allLive(foe)).forEach(c=>{ if(!Number.isInteger(c.slot) || c.cageOf) return; const odds = aiSwingOdds(c); if(!(odds > 0)) return;
+      if(frontCardAt(ai, c.slot) || (extra != null && extra === c.slot)) return; t += Math.max(0, c.atk||0) * odds; });
+    return t;
+  }
+  function aiLethalBlock(players, aiId, playable){
+    if(!slotMode) return null; const ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe || !ai.hq || !foe.hq) return null;
+    const hpLeft = Math.max(0, ai.hq.hp||0) + Math.max(0, ai.hq.shield||0), incoming = aiIncomingOnBramble(players, aiId, null);
+    if(!(incoming >= hpLeft) || !(hpLeft > 0)) return null;
+    const units = (playable||[]).filter(hc=>{ const d = CARD_DEFS[hc.defId]; return d && !d.cardType && !d.field && !d.darkSummon && !isEvoluteDef(hc.defId) && canPlay(ai, hc.defId, hc.uid); });
+    if(!units.length) return null;
+    const legal = legalSlots(ai);
+    { // its own win comes first: the open columns' swings, plus the strongest Ready unit it could add in an open legal slot
+      const mine = allLive(ai).filter(c=> aiCanSwing(c) && Number.isInteger(c.slot) && !aiFront(foe, c.slot)).reduce((t, c)=> t + Math.max(0, c.atk||0), 0);
+      const openLegal = legal.some(sl=> !aiFront(foe, sl));
+      const add = openLegal ? Math.max(0, ...units.map(hc=>{ const d = CARD_DEFS[hc.defId]; return Number(d.wait) > 0 ? 0 : Number(d.attack)||0; })) : 0;
+      if(mine + add >= Math.max(1, (foe.hq.hp||0) + (foe.hq.shield||0))) return null; }
+    let best = null;
+    legal.forEach(sl=>{ const a = aiFront(foe, sl); if(!a || frontCardAt(ai, sl)) return; const odds = aiSwingOdds(a); if(!(odds > 0)) return;
+      const after = aiIncomingOnBramble(players, aiId, sl);
+      units.forEach(hc=>{ const d = CARD_DEFS[hc.defId], key = [incoming - after, Number(d.health)||0, -Math.abs(sl)];
+        if(!best || key[0] > best.key[0] || (key[0] === best.key[0] && (key[1] > best.key[1] || (key[1] === best.key[1] && key[2] > best.key[2])))) best = {hc, slot: sl, before: incoming, after, key}; }); });
+    return best && best.key[0] > 0 ? best : null;
+  }
+  // Held back only by what it costs (not by a used play, a missing base, a materia card ...).
+  function aiShortOfResources(pl, defId){ const d = CARD_DEFS[defId] || {}; if(d.cardType === 'materia' || d.field) return false; return aiResourceGap(pl, defId) > 0; }
   // FOG1 (2026-10-23, package EN, owner: "Both sides"): with rules.fogOfWar on an open / slot board the CPU plays through the same fog the
   // player does. Each CPU turn it works out which of your units it cannot see (fogOfWarView from its side: reach is a column of its own
   // units or one beside it, plus the slots it may play in; its Darksight, Keen Eye and Illuminate units reveal for good, ai._fogSeen), and
@@ -7640,14 +7791,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       else if(!d.cardType){ u -= aiSightMissAt(hc.defId, aiId, null) * 3; if(getTide() !== null && isTideDef(d)) u += 1.5; if(e.flying && (windMode() || rules.landslide)) u += 1; }
       return u; };
     const pitchPick = list=> aiSmartest() ? list.reduce((a, b)=> useOf(b) < useOf(a) ? b : a) : list.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
-    if(!ai.discardUsedThisTurn && ai.hand.length > 1){
-      const saving = ai.hand.filter(hc=> !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field) && costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + SAVE_REACH); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
-      if(saving.length){
-        const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0 && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
-        if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
-          const worst = pitchPick(pitchable);
-          aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
-        }
+    // EN8 (2026-10-24, owner 22:28 #1 / #3 and 21:20 #4: "If it cant play anything, it should pitch for lumber by default" / "the CPU should
+    // be aggressively pitching! ... It should always pitch if it has a high lumber cost card in hand"): the pitch comes BEFORE the play, so
+    // the Lumber it gives can pay for a card this very turn, and it is no longer only a zero-cost card that may go. Every CPU level, the sims
+    // (tools/skirmish_pass.js, tools/opt) and the game share it (aiTakeTurn). The rule, once a turn:
+    //   - nothing useful to play this turn (aiUsefulNow: affordable, and not a spell with nothing to do, an evolute with no base, a field
+    //     card the smart CPU holds back): pitch the least valuable card, keeping the card nearest to affordable (the one the Lumber is for);
+    //   - holding a card it can't afford yet (short only of Lumber / Stone / Metal, Pearls counted) with 3+ cards in hand: pitch the least
+    //     valuable card that is neither that card nor the best card it can play now, then play as usual.
+    // (Was, 2026-10-09: pitch first only a zero-cost card, and only for a card within SAVE_REACH; else pitch after the play, so the Lumber
+    // waited a turn. A deck with few zero-cost cards then sat for turns: the owner's 5-3 with 4 of 20.)
+    if(!ai.discardUsedThisTurn && ai.hand.length && !((ai.skipTurns||0) > 0)){
+      const useful = ai.hand.filter(hc=> aiUsefulNow(players, aiId, hc));
+      const short = ai.hand.filter(hc=> !useful.includes(hc) && aiShortOfResources(ai, hc.defId));
+      const need = hc=> aiResourceGap(ai, hc.defId);
+      const target = short.length ? short.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
+      if(!useful.length){
+        const pool = ai.hand.length > 1 ? ai.hand.filter(hc=> hc !== target) : []; // a lone card: the fallback below pitches it, as before
+        if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events);
+      } else if(target && ai.hand.length >= 3){
+        const bestNow = useful.reduce((a, b)=> cardValue(b.defId) > cardValue(a.defId) ? b : a);
+        const pool = ai.hand.filter(hc=> hc !== target && hc !== bestNow);
+        if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events);
       }
     }
     // Devilry (2026-10-10): cast a Beware card from exile, or feed a Devourer, before the normal play.
@@ -7672,6 +7837,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(darkPick){ let side = rnd() < 0.5 ? 'left' : 'right';
           if(aiSmartest()){ const aim = aiChooseSlot(players, aiId, darkPick.defId); if(aim != null) side = aim; } // 2026-10-18: the smartest CPU aims it too
           placeCard(players, sideOf, aiId, darkPick.uid, side, stats, events); } } }
+    // EN8 (2026-10-24, P24-7: "From Map 1 on, the CPU must not ignore an incoming lethal attack on its bramble when it can summon a blocker
+    // (unless it has something better to do)"): rules.aiGuardLethal (fightRules sets it on Conquest fights from Map 1). Every CPU level.
+    if(!ai.playedThisTurn && aiAim && rules && rules.aiGuardLethal){ const g = aiLethalBlock(players, aiId, playable);
+      if(g) placeCard(players, sideOf, aiId, g.hc.uid, g.slot, stats, events); }
     const hadPlay = playable.length && !ai.playedThisTurn;
     if(hadPlay){
       // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
@@ -7731,7 +7900,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Equipment (2026-10-11): with the turn's play still free, strap a carried item onto its strongest unit.
     if(!ai.playedThisTurn){ const eq = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].cardType === 'equipment');
       if(eq){ const tgt = allLive(ai).filter(c=> canEquip(ai, eq.uid, c.uid)).sort((a, b)=> (b.atk + b.hp) - (a.atk + a.hp))[0]; if(tgt) equip(players, sideOf, aiId, tgt.uid, eq.uid, stats, events); } }
-    if(hadPlay){ /* played (or held a useless spell) above */
+    // EN8 (2026-10-24): "held a useless spell" or a placement that failed no longer passes the turn: no card down and no pitch yet, it pitches.
+    if(ai.playedThisTurn || (hadPlay && ai.discardUsedThisTurn)){ /* played (or pitched and held) above */
     } else if(!ai.discardUsedThisTurn && ai.hand.length){
       // Nothing it can play (2026-10-12, user: "sometimes, the CPU doesn't play anything - I assume its because their hand is
       // overcosted. Are they able to pitch for resources?"): it pitches for Lumber, but no longer a random card. It keeps the
@@ -8126,8 +8296,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Scavenge / Salvage (from carrionFeed, for every death): the scavengers within 1 of the dead unit gain their points. Salvage counts only
   // a Structure's death and its points become Stone (addOre: Heavy Metal adds to it).
-  const SK2_SCAV = [{k:'scavenge', fld:'sk2Scavenge', N:'scavengeN', M:'scavengeEvery', pay:'scavengeLumber', range:'scavengeRange', res:'lumber', fx:'sk2Scavenge'},
-    {k:'salvage', fld:'sk2Salvage', N:'salvageN', M:'salvageEvery', pay:'salvageStone', range:'salvageRange', res:'stone', fx:'sk2Salvage', structuresOnly:true}];
+  // EN8 (2026-10-24, LUM-1): SK2's point-counting Scavenge / Salvage are retired (on no card); the names now carry EN8's plain rules
+  // (en8DeathFeed). The feed below is kept, with nothing in it, for a fight's custom rule that may add a counter again.
+  const SK2_SCAV = [];
   function sk2ScavengeFeed(players, sideOf, dead, events){
     if(!dead || !players) return; let dp = null; const deadStruct = isStructureCard(dead);
     for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
@@ -8379,6 +8550,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.shocked>0){ if(c._shockedJustSet) c._shockedJustSet=false; else c.shocked -= 1; }
       if(c.corrode>0){ if(c._corrodeJustSet) c._corrodeJustSet=false; else c.corrode -= 1; }
       if(c.daunts && c.daunts.length) c.daunts = c.daunts.filter(x=> x.until > combatNo);
+      if(c.dauntN > 0) c.dauntN -= 1; // EN8 (2026-10-25): a Daunt counter falls off each round
       if(c.staggered>0){ if(c._staggeredJustSet) c._staggeredJustSet=false; else c.staggered -= 1; }
       // Bugfix (2026-09-19, found via a status-effect audit): Stun had no "_justSet" guard, unlike
       // every sibling status above it -- it was set mid-combat (via rollStatusOnHit's stunOnHit,
@@ -8670,6 +8842,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push(deathEv);
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       carrionFeed(players, sideOf, card, events); // Carrion N (2026-10-17): the scavengers on the field eat
+      en8DeathFeed(players, sideOf, card, pl.id, events); // EN8 (2026-10-24): Scavenge N / Salvage N
       sk1KillCreature(players, sideOf, card, stats, events); // On Kill (Creature) / Spoils N (2026-10-19, package SK1)
       sk3AnyDeath(players, sideOf, card, stats, events); // On Any Death (2026-10-19, package SK3): Harbinger
       if(credit){
@@ -9374,6 +9547,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
       // finds/lands on a target.
       bleedTick(sideOf, a.attId, a.att, stats, events, 'attack');
+      en8DauntUse(a.att, events, sideOf, a.attId, 'act'); // EN8 (2026-10-25): its action takes a Daunt counter off (this swing already counted it)
       // Bug fix (2026-09-16, reported as "units get hit by nothing" / "the unit is dying but
       // still attacking"): bleedTick just above can itself kill the attacker (bleeding out
       // from the act of attacking), but the code used to keep going regardless and still
@@ -10104,7 +10278,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

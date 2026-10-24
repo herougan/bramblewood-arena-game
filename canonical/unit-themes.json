@@ -1090,16 +1090,16 @@
   }
  ],
  "counts": {
-  "units": 773,
-  "live": 769,
+  "units": 781,
+  "live": 777,
   "pool": 4,
-  "proposed": 135,
+  "proposed": 136,
   "manual": 23,
   "existingVariants": 39,
   "biomeFrom": {
-   "type": 489,
+   "type": 496,
    "home map": 113,
-   "fallback": 64,
+   "fallback": 65,
    "name": 25,
    "fights": 56,
    "manual": 8,
@@ -1107,7 +1107,7 @@
   },
   "biome": {
    "river": 77,
-   "meadow-forest": 133,
+   "meadow-forest": 137,
    "reef-ocean": 54,
    "desert-glass": 27,
    "tundra-ice": 35,
@@ -1117,9 +1117,9 @@
    "volcanic-ash": 63,
    "pale-desert": 2,
    "fungal": 7,
-   "caves": 56,
-   "coast": 27,
-   "mountain-sky": 44,
+   "caves": 57,
+   "coast": 29,
+   "mountain-sky": 45,
    "mangrove": 12,
    "maze-briar": 11,
    "long-grass": 11,
@@ -1129,11 +1129,11 @@
    "cliffs": 32
   },
   "family": {
-   "mammal": 303,
-   "plant": 12,
+   "mammal": 306,
+   "plant": 13,
    "insect": 75,
    "arachnid": 15,
-   "bird": 132,
+   "bird": 134,
    "worm": 12,
    "fungus": 2,
    "spirit-undead": 19,
@@ -1141,10 +1141,10 @@
    "elemental": 3,
    "fish": 43,
    "reptile": 42,
-   "mollusc": 22,
+   "mollusc": 23,
    "amphibian": 27,
    "sea-invertebrate": 8,
-   "crustacean": 17,
+   "crustacean": 18,
    "dragon": 11,
    "fiend": 9,
    "changeling": 3,
@@ -1152,15 +1152,15 @@
   },
   "faction": {
    "otters": 29,
-   "wild": 366,
+   "wild": 372,
    "hives": 21,
    "beasts": 131,
    "dogs-cats": 12,
    "spirits": 25,
-   "supporting-folk": 73,
+   "supporting-folk": 74,
    "road-folk": 18,
    "ecclesia": 14,
-   "hollow-kin": 13,
+   "hollow-kin": 14,
    "great-beasts": 12,
    "tidefolk": 5,
    "hummingbirds": 27,
@@ -1199,17 +1199,17 @@
    "raccoon": 7,
    "badger": 11,
    "crocodile": 5,
-   "crow": 11,
+   "crow": 12,
    "wolf": 15,
    "boar": 9,
    "turtle": 16,
-   "squirrel": 9,
+   "squirrel": 10,
    "eagle": 6,
    "octopus": 7,
    "nautilus": 1,
    "deer": 10,
    "fox": 17,
-   "beaver": 8,
+   "beaver": 9,
    "snake": 12,
    "bat": 16,
    "mouse": 11,
@@ -1233,7 +1233,7 @@
    "sheep": 2,
    "vulture": 7,
    "leech": 4,
-   "crab": 9,
+   "crab": 10,
    "dragon": 9,
    "pangolin": 3,
    "gull": 2,
@@ -1250,8 +1250,8 @@
    "bird": 2,
    "moth": 8,
    "hummingbird": 27,
-   "mole": 6,
-   "snail": 4,
+   "mole": 7,
+   "snail": 5,
    "woodlouse": 2,
    "pigeon": 3,
    "armadillo": 2,
@@ -1269,7 +1269,7 @@
    "nightjar": 2,
    "primate": 2,
    "hoopoe": 1,
-   "wader": 4,
+   "wader": 5,
    "antelope": 3,
    "roadrunner": 1,
    "hagfish": 1,
@@ -1324,7 +1324,7 @@
   },
   "subtype": {
    "plant": 13,
-   "structure": 15,
+   "structure": 16,
    "fungus": 2,
    "elemental": 11,
    "construct": 7,
@@ -15385,7 +15385,7 @@
     "home": [],
     "fights": {
      "m1": 6,
-     "mf": 13,
+     "mf": 14,
      "mq": 1
     }
    },
@@ -29403,14 +29403,14 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
    "skills": [
     [
-     "growth",
-     null
+     "trigger",
+     "onReady→gain 1"
     ]
    ],
    "types": [
@@ -38048,6 +38048,10 @@
     [
      "tide",
      null
+    ],
+    [
+     "pearlBed",
+     1
     ]
    ],
    "types": [
@@ -40715,7 +40719,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 0,
-    "health": 14,
+    "health": 13,
     "dmg": "physical",
     "resist": []
    },
@@ -40723,6 +40727,10 @@
     [
      "shoreUp",
      null
+    ],
+    [
+     "pearlBed",
+     1
     ]
    ],
    "types": [
@@ -41835,6 +41843,393 @@
     "biome": "type Ocean; type Coastal",
     "family": "species Pinniped",
     "faction": "eel / seal of the Current or the Mangroves"
+   }
+  },
+  {
+   "id": "marmot-stonecutter",
+   "name": "Marmot Stonecutter",
+   "icon": "🐿️",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "mountain-sky"
+   ],
+   "family": "mammal",
+   "sub": "Rodent",
+   "animal": "marmot",
+   "animalGroup": "squirrel",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 12,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "stonecutter",
+     1
+    ]
+   ],
+   "types": [
+    "Mountain",
+    "Rodent"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Mountain",
+    "family": "species Rodent",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "prospector-mole",
+   "name": "Prospector Mole",
+   "icon": "⛏️",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "caves"
+   ],
+   "family": "mammal",
+   "sub": "Mammal",
+   "animal": "mole",
+   "animalGroup": "mole",
+   "subtype": null,
+   "faction": "hollow-kin",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 9,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "prospector",
+     1
+    ]
+   ],
+   "types": [
+    "Cave",
+    "Mole",
+    "Mammal"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Cave",
+    "family": "species Mammal",
+    "faction": "Cave + mole / bat / salamander"
+   }
+  },
+  {
+   "id": "beaver-feller",
+   "name": "Beaver Feller",
+   "icon": "🦫",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "meadow-forest",
+    "river"
+   ],
+   "family": "mammal",
+   "sub": "Rodent",
+   "animal": "beaver",
+   "animalGroup": "beaver",
+   "subtype": null,
+   "faction": "supporting-folk",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 10,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "felling",
+     1
+    ]
+   ],
+   "types": [
+    "Forest",
+    "Beaver",
+    "Rodent"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Forest; type Beaver",
+    "family": "species Rodent",
+    "faction": "craft folk type"
+   }
+  },
+  {
+   "id": "salvager-hermit-crab",
+   "name": "Salvager Hermit Crab",
+   "icon": "🦀",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "coast"
+   ],
+   "family": "crustacean",
+   "sub": "Crustacean",
+   "animal": "hermit crab",
+   "animalGroup": "crab",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 13,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "salvage",
+     1
+    ]
+   ],
+   "types": [
+    "Coastal",
+    "Crustacean",
+    "Crustacean"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Coastal",
+    "family": "species Crustacean",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow",
+   "icon": "🐦‍⬛",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "crow",
+   "animalGroup": "crow",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 5,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "scavenge",
+     1
+    ],
+    [
+     "flying",
+     null
+    ]
+   ],
+   "types": [
+    "Bird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "usual ground of Bird",
+    "family": "species Bird",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "hazel-coppice",
+   "name": "Hazel Coppice",
+   "icon": "🌳",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "plant",
+   "sub": "Plant",
+   "animal": null,
+   "animalGroup": null,
+   "subtype": "structure",
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 2,
+   "body": {
+    "cost": 1,
+    "wait": 0,
+    "attack": 0,
+    "health": 14,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "coppice",
+     1
+    ]
+   ],
+   "types": [
+    "Structure",
+    "Forest",
+    "Plant"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "structure": true,
+   "why": {
+    "biome": "type Forest",
+    "family": "species Plant",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "beachcomber-sanderling",
+   "name": "Beachcomber Sanderling",
+   "icon": "🐦",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "coast"
+   ],
+   "family": "bird",
+   "sub": "Bird",
+   "animal": "sanderling",
+   "animalGroup": "wader",
+   "subtype": null,
+   "faction": "wild",
+   "size": "small",
+   "stage": 1,
+   "firstMap": 1,
+   "body": {
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 7,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "driftwood",
+     1
+    ]
+   ],
+   "types": [
+    "Coastal",
+    "Bird",
+    "Bird"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Coastal",
+    "family": "species Bird",
+    "faction": "default"
+   }
+  },
+  {
+   "id": "moonshell-snail",
+   "name": "Moonshell Snail",
+   "icon": "🐌",
+   "status": "live",
+   "rarity": "common",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "mollusc",
+   "sub": "Mollusc",
+   "animal": "snail",
+   "animalGroup": "snail",
+   "subtype": null,
+   "faction": "wild",
+   "size": "medium",
+   "stage": 1,
+   "firstMap": 3,
+   "body": {
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 15,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [
+    [
+     "magicArmor",
+     1
+    ]
+   ],
+   "types": [
+    "Field",
+    "Mollusc"
+   ],
+   "maps": {
+    "home": [],
+    "fights": {}
+   },
+   "source": "pack",
+   "why": {
+    "biome": "type Field",
+    "family": "species Mollusc",
+    "faction": "default"
    }
   },
   {
@@ -43732,7 +44127,7 @@
     "rarityStep": 2,
     "eff": {
      "attack": null,
-     "health": 1.5
+     "health": 1.62
     },
     "N": 26.99,
     "N2": 161.88,
@@ -43754,6 +44149,10 @@
      [
       "shoreUp",
       null
+     ],
+     [
+      "pearlBed",
+      1
      ]
     ],
     "map": "m6",
@@ -46818,7 +47217,7 @@
     "rarityStep": 2,
     "eff": {
      "attack": 1,
-     "health": 1.5
+     "health": 1.71
     },
     "N": 20.09,
     "N2": 89.69,
@@ -46833,13 +47232,13 @@
      },
      "cost": 1,
      "wait": 1,
-     "attack": 3,
-     "health": 9
+     "attack": 4,
+     "health": 8
     },
     "baseSkills": [
      [
-      "growth",
-      null
+      "trigger",
+      "onReady→gain 1"
      ]
     ],
     "map": "mo",
@@ -47027,9 +47426,9 @@
    }
   },
   {
-   "id": "dire-leopard-slug",
-   "name": "Oldwood Leopard Slug",
-   "internalName": "Dire Leopard Slug",
+   "id": "dire-moonshell-snail",
+   "name": "Old Moonshell Snail",
+   "internalName": "Dire Moonshell Snail",
    "nameProposal": true,
    "icon": "🐌",
    "status": "proposed",
@@ -47039,18 +47438,103 @@
    ],
    "family": "mollusc",
    "sub": "Mollusc",
+   "animal": "snail",
+   "animalGroup": "snail",
+   "subtype": null,
+   "faction": "wild",
+   "size": "large",
+   "stage": 3,
+   "firstMap": 17,
+   "body": {
+    "cost": 2,
+    "wait": 1,
+    "attack": 1,
+    "health": 15,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Field",
+    "Mollusc"
+   ],
+   "maps": {
+    "home": [
+     "mo"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "dire",
+    "of": "moonshell-snail",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 2,
+    "wait": 0,
+    "rarityStep": 1,
+    "eff": {
+     "attack": 1,
+     "health": 1
+    },
+    "N": 21.83,
+    "N2": 105.9,
+    "x1": 17,
+    "x2": 15,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.4,
+      "health": 1.5
+     },
+     "cost": 3,
+     "wait": 1,
+     "attack": 1,
+     "health": 18
+    },
+    "baseSkills": [
+     [
+      "magicArmor",
+      1
+     ]
+    ],
+    "map": "mo",
+    "mapName": "The Old Bramble",
+    "mapNo": 17
+   },
+   "why": {
+    "biome": "Moonshell Snail's ground, later on The Old Bramble (Map 17)",
+    "family": "from Moonshell Snail",
+    "faction": "from Moonshell Snail"
+   }
+  },
+  {
+   "id": "elder-leopard-slug",
+   "name": "Old Leopard Slug",
+   "internalName": "Elder Leopard Slug",
+   "nameProposal": true,
+   "icon": "🐌",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "meadow-forest"
+   ],
+   "family": "mollusc",
+   "sub": "Mollusc",
    "animal": "leopard slug",
    "animalGroup": "slug",
    "subtype": null,
    "faction": "wild",
-   "size": "medium",
+   "size": "large",
    "stage": 3,
    "firstMap": 17,
    "body": {
     "cost": 1,
-    "wait": 1,
+    "wait": 2,
     "attack": 1,
-    "health": 13,
+    "health": 17,
     "dmg": "physical",
     "resist": []
    },
@@ -47068,33 +47552,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "dire",
+    "tier": "elder",
     "of": "leopard-slug",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
+    "wait": 1,
+    "rarityStep": 2,
     "eff": {
      "attack": 1,
-     "health": 1.3
+     "health": 1.7
     },
-    "N": 19.01,
-    "N2": 80.31,
-    "x1": 15,
-    "x2": 13,
+    "N": 24.16,
+    "N2": 129.71,
+    "x1": 19,
+    "x2": 17,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.4,
-      "health": 1.5
+      "attack": 1.8,
+      "health": 2
      },
      "cost": 1,
-     "wait": 1,
-     "attack": 1,
-     "health": 13
+     "wait": 2,
+     "attack": 2,
+     "health": 15
     },
     "baseSkills": [
      [

@@ -579,7 +579,7 @@ try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); docu
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
 // (species Crustacean or Crab, or "Crab" in its name) Fork shows a crab claw 🦞; everywhere else it stays ⇔.
 function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Crab)$/i.test(s)) || /crab/i.test(d.name||'')); }
-function skillIconFor(k, d){ if(k === 'transform'){ const tf = d && d.effects && d.effects.transform; if(tf && TRANSFORM_ICON[tf.name]) return TRANSFORM_ICON[tf.name]; } // a named Transform's own icon (TR, 2026-10-21)
+function skillIconFor(k, d){ if(d && Array.isArray(d.mysterySkills) && d.mysterySkills.includes(k)) return '❓'; /* EN8 (2026-10-24): a skill still hidden */ if(k === 'transform'){ const tf = d && d.effects && d.effects.transform; if(tf && TRANSFORM_ICON[tf.name]) return TRANSFORM_ICON[tf.name]; } // a named Transform's own icon (TR, 2026-10-21)
   return (k === 'fork' && isCrabDef(d)) ? '🦞' : (SKILL_ICON[k] || ''); }
 // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): its name on the card, e.g.
 // "Bloom (Tide & Night): +2/+2", and the text form the skill editor reads and writes ("Tide & Night +2/+2", "Wind or Wet").
@@ -1425,7 +1425,7 @@ const ACTIVE_PRESETS = [
   // to an equivalent effects.triggers entry (see canonical/cards.json migration, same date); the
   // engine still honors effects.missile for backward compatibility but nothing in the editor can
   // produce it anymore.
-  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=>`When played, the enemy facing it loses ${v} Attack.`}, // 2026-10-16 skill audit: plain words
+  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=> TX('ui.en8-render', {n: v}), codexNote:TX('ui.en8-render-codex')}, // 2026-10-16 skill audit: plain words; EN8 (2026-10-25, owner 00:02 #2): Daunt counters
   // Renamed 2026-09-21 per explicit request ("Rename Revive (Once) to Revivificated") — the
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
@@ -1827,6 +1827,31 @@ sk1Patch(PASSIVE_DEFS, 'stemGrant', {category:'passive', label:TX('ui.skn-stem')
   get:e=> e.stemGrant && typeof e.stemGrant === 'object' ? grantToText(e.stemGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.stemGrant = g; if(!e.chrysalis) e.stem = true; } }});
 sk1Patch(PASSIVE_DEFS, 'chrysalis', {category:'passive', label:TX('ui.skn-chrysalis'), kind:'boolean', desc:(v, n, e)=> e && e.stemGrant && typeof e.stemGrant === 'object' ? TX('ui.sk-chrysalis-grant', {skills: grantText(e.stemGrant) || TX('ui.cx-nothing')}) : TX('ui.sk-chrysalis')});
 Object.assign(SKILL_ICON, {evolute:'🧬', evoluteAlpha:'🧬α', evoluteOmega:'🧬Ω', stem:'🌱', stemGrant:'🌱', chrysalis:'🐛'});
+// ==== Package EN8 (2026-10-24, owner 21:20 #7: "Stem and archetypal skills should be only on creatures of that archetype. since evomax is
+// only in play in 20-40, don't introduce stem first"): Stem, its braces and Chrysalis join Evolute / Alpha / Omega behind the Evomax gate
+// (mechLineGate 'evolution'), so the editor offers them on Evomax cards only. Cards: tests/en8-2026-10-24.js checks no other card carries them
+// before Map 20 (a card's mysterySkills show as "?" instead: the Cocoon, call EN8-4).
+sk1Patch(PASSIVE_DEFS, 'stem', {mechLineGate:'evolution'}); sk1Patch(PASSIVE_DEFS, 'stemGrant', {mechLineGate:'evolution'}); sk1Patch(PASSIVE_DEFS, 'chrysalis', {mechLineGate:'evolution'});
+// EN8 (2026-10-24, owner 22:28 #2, LUM-1): the resource skills (rules: the EN8 block in bramblewood-engine.js; prices: canonical/skill-costs.json,
+// the owner's 4-round rule). Each number defaults to 1. Scavenge and Salvage keep SK2's names with LUM-1's plain rules (no points).
+const EN8_UI = {stonecutterN:1, stonecutterEvery:2, prospectorN:1, fellingN:1, pearlBedN:1, salvageN:1, salvageMult:2, scavengeN:1, coppiceN:1, driftwoodN:1, windfallLumber:1}; // the engine's EN8_DEF
+PASSIVE_DEFS.push(
+  {key:'stonecutter', category:'passive', label:TX('ui.skn-stonecutter'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-stonecutter', {n: numOr(v, 1), k: EN8_UI.stonecutterEvery}), codexNote:TX('ui.en8-stonecutter-codex')},
+  {key:'prospector', category:'passive', label:TX('ui.skn-prospector'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-prospector', {n: numOr(v, 1)}), codexNote:TX('ui.en8-prospector-codex')},
+  {key:'felling', category:'passive', label:TX('ui.skn-felling'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-felling', {n: numOr(v, 1)}), codexNote:TX('ui.en8-felling-codex')},
+  {key:'pearlBed', category:'passive', label:TX('ui.skn-pearl-bed'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-pearl-bed', {n: numOr(v, 1)}), codexNote:TX('ui.en8-pearl-bed-codex')},
+  {key:'coppice', category:'passive', label:TX('ui.skn-coppice'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-coppice', {n: numOr(v, 1)}), codexNote:TX('ui.en8-coppice-codex')},
+  {key:'driftwood', category:'passive', label:TX('ui.skn-driftwood'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-driftwood', {n: numOr(v, 1)}), codexNote:TX('ui.en8-driftwood-codex')},
+  {key:'magicArmor', category:'passive', label:TX('ui.skn-magic-armor'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-magic-armor', {n: numOr(v, 1)}), codexNote:TX('ui.en8-magic-armor-codex')});
+sk1Patch(PASSIVE_DEFS, 'scavenge', {kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-scavenge', {n: numOr(v, 1)}), codexNote:TX('ui.en8-scavenge-codex'), get:e=> e.scavenge ? numOr(e.scavenge, 1) : undefined});
+sk1Patch(PASSIVE_DEFS, 'salvage', {kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.en8-salvage', {n: numOr(v, 1) * EN8_UI.salvageMult}), codexNote:TX('ui.en8-salvage-codex'), get:e=> e.salvage ? numOr(e.salvage, 1) : undefined});
+// P24-16 (Armor is physical only) and P24-15 (a Guardian never steps in for a Thorns unit): the two lines say so
+sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.en8-armor', {n: v})});
+sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.en8-guardian')});
+Object.assign(SKILL_ICON, {stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
+// A card's mysterySkills (EN8, owner 21:20 #7: "one of the fodder skills can be a ? for now"): those skills read "?" on the card and in its
+// detail until their era (the Cocoon's Chrysalis: the Evomax maps). The rules still hold them (no evolute exists before Map 20).
+function en8Mystery(def, k){ return !!(def && Array.isArray(def.mysterySkills) && def.mysterySkills.includes(k)); }
 // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): King (the first King in play takes the Crown and, while it
 // holds it, has Kingly – {…}: Tribute 1, Armor 2 unless its card names other braces, kinglyGrant), Tribute N (N Gold each turn while Ready),
 // Usurper's theft of the Crown and King Slayer against Royalty, Kings and the crowned unit. The rules: bramblewood-engine.js, Package TR.
@@ -3169,6 +3194,7 @@ function describeEffects(def, liveCard, opt){
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
   PASSIVE_DEFS.forEach(p=>{ const nL0 = lines.length; ((p)=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
+    if(en8Mystery(def, p.key)){ lines.push(`❓ ? — ${escapeHtml(TX('ui.en8-mystery'))}`); return; } // EN8 (2026-10-24): a skill still hidden (owner 21:20 #7)
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
     if(p.key==='stemGrant' && e.chrysalis) return; // EV (2026-10-21): the Chrysalis line already says what its braces hand over
@@ -6304,7 +6330,7 @@ function cardActionLogHTML(uid){
       lines.push(`<li>Gash → +${ev.amount} bleed 🩸</li>`);
     } else if(ev.type==='render'){
       if(ev.attUid!==uid) continue;
-      lines.push(`<li>Render → -${ev.amount} atk 📉</li>`);
+      lines.push(`<li>Render → -${ev.amount} atk 📉</li>`); // (EN8, 2026-10-25: now Daunt counters, each -1 Attack; the sim's line kept)
     } else if(ev.type==='pierceHQ'){
       if(ev.attUid!==uid) continue;
       lines.push(`<li>Pierce → ${ev.dmg}</li>`);
@@ -14740,7 +14766,7 @@ function characterDescHTML(ch){
   if(e.firstUnitAtkBonus) bits.push(`1st unit played: +${e.firstUnitAtkBonus} ⚔`);
   if(e.unitHpBonus) bits.push(`Every unit played: +${e.unitHpBonus} ❤`);
   if(e.flyerAtkBonus) bits.push(`Flying units played: +${e.flyerAtkBonus} ⚔`);
-  if(e.castleRegen) bits.push(`Heals ${e.castleRegen} ❤ each round`);
+  if(e.castleRegen) bits.push(TX('ui.en8-castle-regen', {n: e.castleRegen})); // EN8 (2026-10-24, P24-17): a random wounded ally, never the bramble
   if(e.enemyWaitBonus) bits.push(`The enemy's first 3 units arrive with +${e.enemyWaitBonus} ⏳ Wait`);
   if(e.castleBolt) bits.push(`Each round a ballista bolt hits a random enemy unit for ${e.castleBolt}`);
   if(e.castleLumberEvery) bits.push(`+1 🪵 every ${e.castleLumberEvery} rounds`);
@@ -18360,6 +18386,13 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   if(mid){ try{ const mp = CONQUEST_MAPS.find(m=> m.id === mid), b = MAP_BIOME_OF[mid] || (mp && mp.parent && MAP_BIOME_OF[mp.parent]); // EN6 (2026-10-24): the state skills' map flags
     if(r.hotMap == null && EN6_HOT_BIOMES.has(b)) r.hotMap = true; if(r.coldMap == null && EN6_COLD_BIOMES.has(b)) r.coldMap = true;
     if(r.saltMap == null && EN6_SALT_BIOMES.has(b)) r.saltMap = true; if(r.weatherMap == null && EN6_WEATHER_BIOMES.has(b)) r.weatherMap = true; }catch(e){} }
+  // EN8 (2026-10-24): Driftwood N gathers at Ebb on a beach map (rules.beachMap)
+  if(r.beachMap == null && mid){ try{ const mp = CONQUEST_MAPS.find(m=> m.id === mid), b = MAP_BIOME_OF[mid] || (mp && mp.parent && MAP_BIOME_OF[mp.parent]); if(b === 'beach') r.beachMap = true; }catch(e){} }
+  // EN8 (2026-10-24, P24-7): from Map 1 on, the CPU guards its bramble against a lethal swing it can block (the engine's aiLethalBlock).
+  if(r.aiGuardLethal == null && mid && node){ try{ const no = mapNumberOf(mid); if(no != null && no >= 1) r.aiGuardLethal = true; }catch(e){} }
+  // EN8 (2026-10-24, LUM-1): Windfall on the high, windy maps up to Map 20 (both sides +1 Lumber after a Storm round: a Thunderstorm or a
+  // strong-wind round). A fight's own rules may set or clear it.
+  if(r.windfall == null && mid && node && WINDY_MAPS[mid]){ try{ const no = mapNumberOf(mid); if(no != null && no <= 20) r.windfall = true; }catch(e){} }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
 // Do effects for each biome, highlighting that biome's strength. It starts with nothing at first, then from the 2nd skirmish
@@ -18597,6 +18630,9 @@ Object.assign(FIELD2, {
   wildfire:     {icon:'🔥', name:TX('ui.fx-name-wildfire'), editor:'wildfire', short:TX('ui.fx-wildfire-short'), text:TX('ui.fx-wildfire'), codex:TX('ui.fxx-wildfire')},
   // 2026-10-24 (package EN6, owner 03:17 #4): rules.seasons, a slow cycle of the four seasons (3 rounds each; a number on the flag sets the length),
   // off by default and on no map yet. Season (X) – {…} reads it; Summer counts as hot and Winter as cold (the engine's en6Season).
+  // 2026-10-24 (package EN8, LUM-1): rules.windfall, after a Storm round (a Thunderstorm or a strong-wind round) both sides gain 1 Lumber (the
+  // engine's en8RoundStart). On the windy maps up to Map 20 (fightRules).
+  windfall:     {icon:'🍃', name:TX('ui.fx-name-windfall'), editor:'windfall', short:TX('ui.fx-windfall-short'), text:TX('ui.fx-windfall'), codex:TX('ui.fxx-windfall')},
   seasons:      {icon:'🍂', name:TX('ui.fx-name-seasons'), editor:'seasons', short:TX('ui.fx-seasons-short'), text:TX('ui.fx-seasons', {n: 3}), codex:TX('ui.fxx-seasons')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
@@ -34941,7 +34977,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -36976,6 +37012,7 @@ function boardCardHTML(c, defs, opts){
   if(c.shocked>0) badges.push(`<span class="abadge shock">🌩${c.shocked}</span>`);
   if(c.corrode>0) badges.push(`<span class="abadge corrode">🧪${c.corrode}</span>`); w2StatusBadges(c, badges); // Bound, Toxin, Invisible, Invincible (2026-10-16)
   { const dn = (c.daunts||[]).reduce((t, x)=> t + (x.n||0), 0); if(dn > 0) badges.push(`<span class="abadge daunt" title="Daunted: −${dn} Attack until the end of next round">😨${dn}</span>`); }
+  if(c.dauntN > 0) badges.push(`<span class="abadge daunt en8-daunt" title="${escapeAttr(TX('ui.en8-daunt-badge', {n: c.dauntN}))}">😨${c.dauntN}</span>`); // EN8 (2026-10-25): Render's Daunt counters
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   // Task #202 (2026-09-18, "make sure all the relevant icons - skills, passives, functional
   // numbers like gold given on death and attack/defence are clearly listed on the card"): board
@@ -37324,11 +37361,12 @@ function unplayableReason(pl, d){
   if(pl.playedThisTurn) return 'Already played this turn';
   // 2026-10-12 (user: "When not enough lumber, say need [M-N] more lumber"): only the shortfall.
   const need = [], short = (want, have, glyph, word)=>{ if((want||0) > (have||0)) need.push(`${want - (have||0)} more ${word || glyph}`); };
-  short(d.cost, pl.lumber, '🪵', 'Lumber');
+  { const pr = Math.max(0, pl.pearls||0), gl = Math.max(0, (d.cost||0) - (pl.lumber||0)), gs = Math.max(0, (d.stoneCost||0) - (pl.stone||0)); // EN8 (2026-10-24): Pearls fill in for Lumber or Stone
+    if(pr > 0 && gl + gs > 0){ if(gl + gs > pr) need.push(TX('ui.en8-need-pearls', {n: gl + gs - pr})); }
+    else { short(d.cost, pl.lumber, '🪵', 'Lumber'); short(d.stoneCost, pl.stone, '🪨', 'Stone'); } }
   short(d.graceCost, pl.grace, '🕊️', 'Grace');
   try{ const pr = matchState.engine.prayerOf(pl); if((d.prayerReq||0) > pr) need.push(`${d.prayerReq - pr} more 🙏 Prayer`); }catch(e){}
   short(d.devilryCost, pl.devilry, '★', 'Darkness ★');
-  short(d.stoneCost, pl.stone, '🪨', 'Stone');
   short(d.metalCost, pl.metal, '🔩', 'Metal');
   short(d.uraniumCost, pl.uranium, '☢️', 'Uranium');
   if(need.length) return `Need ${need.join(' + ')}`;
@@ -38335,6 +38373,7 @@ function sideResourcePillsHTML(m, p, mine){
   if((p.stone||0) > 0) out.push(pill('stone', 'hudStonePill', RESOURCE_TOOLTIP.stone, `${iconHTML('stone', '🪨')} ${p.stone}`));
   if((p.gold||0) > 0) out.push(pill('gold', 'hudGoldPill', TX('ui.gold-tip'), `🪙 ${p.gold}`)); // Package TR (2026-10-21): in-fight Gold (Tribute, the Crown's fade)
   if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
+  if((p.pearls||0) > 0) out.push(pill('pearl', 'hudPearlPill', TX('ui.en8-pearl-tip'), `⚪ ${p.pearls}`)); // EN8 (2026-10-24): Pearls, paid as Lumber or Stone
   if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `${iconHTML('uranium', '☢️')} ${p.uranium}`));
   if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `${iconHTML('grace', '🕊️')} ${p.grace}`));
   if(deckHasEcclesia(m, p)){ const rate = m.engine.prayerRateOf ? m.engine.prayerRateOf(p) : 0; // 2026-10-19 (package E): + the tokens it gains a turn, and 📿 the player's own (offerings)
@@ -39642,7 +39681,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -43136,6 +43175,7 @@ function logText(ev){
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w7 = en7LogText(ev, nm); if(w7) return w7; } // EN7 (2026-10-24): Dive's two turns
   { const w5 = en5LogText(ev, nm); if(w5) return w5; } // EN5 (2026-10-24): Breach, Canopy Cover, the state skills
+  { const w8 = en8LogText(ev, nm); if(w8) return w8; } // EN8 (2026-10-24): the resource skills, Pearls, Windfall, the bramble's mend
   { const w6 = en6LogText(ev, nm); if(w6) return w6; } // EN6 (2026-10-24): Hibernate, the season, – bramble
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
@@ -43263,7 +43303,7 @@ function logText(ev){
     case 'fullMoonRise': return {cls:'', text:'🌕 The full moon rises.'}; // 2026-10-15
     case 'sap': return {cls:'heal', text:`${nm(ev.attDefId)} drained ${ev.amount} HP from the hit. 🩹`};
     case 'exile': return {cls:'exile', text:`${nm(ev.defId)} was exiled from ${ev.zone}. 🌫`};
-    case 'render': return {cls:'', text:`${nm(ev.attDefId)} lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}. 📉`};
+    case 'render': return ev.daunt ? {cls:'', text:'😨 ' + TX('ui.en8-log-render', {name: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount})} /* EN8 (2026-10-25): Daunt counters */ : {cls:'', text:`${nm(ev.attDefId)} lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}. 📉`};
     case 'evaded': return {cls:'', text: ev.reason === 'smoke' ? `${nm(ev.attDefId)} swings into the smoke and misses ${nm(ev.targetDefId)}! 🌫️` : `${nm(ev.targetDefId)} evaded ${nm(ev.attDefId)}'s attack! 🌀`};
     case 'statusFx': {
       // castle passives (2026-10-12) read as the castle doing it
@@ -46868,6 +46908,16 @@ function en5Vfx(ev){
 }
 // ---- EN6 (2026-10-24, owner 03:17 / 12:02 #11): Hibernate's sleep (the 🛌 pip, its float, the heal's motes come from the plain heal), the season
 // turning (a log line and a float over the board), a – bramble action's arrow into the enemy bramble. The state skills' pips and floats are EN5's.
+// ---- EN8 (2026-10-24): the log lines of the resource skills (Scavenge, Salvage, Coppice, Driftwood, Felling, Prospector, Stonecutter, Pearl Bed),
+// Windfall and a bramble mending an ally (P24-17). Pearls: their own pill (hudPearlPill) and float.
+function en8LogText(ev, nm){
+  if(!ev) return null; const who = s=> s === 'A' ? TX('ui.en8-you') : TX('ui.en8-foe');
+  if(ev.type === 'lumber' && ev.cause === 'windfall') return {cls:'gold', text:'🍃 ' + TX('ui.en8-log-windfall', {n: ev.amount, side: who(ev.side)})};
+  if(ev.type === 'lumber' && ['scavenge', 'salvage', 'coppice', 'driftwood'].includes(ev.cause)) return {cls:'gold', text:TX('ui.en8-log-' + ev.cause, {name: nm(ev.defId), n: ev.amount})};
+  if(ev.type === 'pearl') return {cls:'gold', text:TX('ui.en8-log-pearl', {name: nm(ev.defId), n: ev.amount})};
+  if(ev.type === 'heal' && ev.cause === 'brambleMend') return {cls:'heal', text:TX('ui.en8-log-mend', {name: nm(ev.targetDefId), n: ev.amount, side: who(ev.side)})};
+  return null;
+}
 function en6StatusBadges(c, badges){ if(!c || !c.hibernating) return; badges.push(`<span class="abadge en6-hib" title="${escapeAttr(TX('ui.en6-hib-tip'))}">🛌</span>`); }
 function en6LogText(ev, nm){
   if(!ev) return null;
@@ -47173,8 +47223,10 @@ function renderVfxForEvent(ev){
     animateAttacker(ev.attUid, isMine);
     const oppEl = boardCardEl(ev.targetUid);
     SoundKit.curse();
-    setTimeout(()=> floatText(oppEl, '-'+ev.amount+'⚔', 'debuff'), animMs().windup+60);
+    { const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc && ev.daunt) rc.dauntN = ev.total != null ? ev.total : (rc.dauntN||0) + ev.amount; } // EN8 (2026-10-25): Daunt counters
+    setTimeout(()=> floatText(oppEl, ev.daunt ? '😨 '+ev.amount : '-'+ev.amount+'⚔', 'debuff'), animMs().windup+60);
   }
+  if(ev.type==='statusFx' && ev.kind==='dauntFade'){ const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.dauntN = ev.left; } // EN8 (2026-10-25)
   // Rally (2026-09-22, VFX coverage pass, explicit report: "I like the effects you put behind the
   // cards. Any other effects we can try?"): previously completely silent — the engine now pushes
   // a one-shot 'rally' event the instant a Rally-bearing card enters play (see its onSpawn push in
@@ -47724,7 +47776,7 @@ function renderVfxForEvent(ev){
   // Float-class lookup by pillId (2026-09-18: extended from a 3-way gold/grace/devilry ternary
   // to a real map now that gainStone/gainLumber/refine can also fire through this same dispatcher
   // — see ACTION_DEFS/runCustomTriggers).
-  const RESOURCE_FLOAT_CLASS = {hudGracePill:'grace', hudDevilryPill:'devilry', hudStonePill:'stone', hudLumberPill:'lumber', hudElementalEnergyPill:'elementalenergy'};
+  const RESOURCE_FLOAT_CLASS = {hudPearlPill:'pearl' /* EN8 */, hudGracePill:'grace', hudDevilryPill:'devilry', hudStonePill:'stone', hudLumberPill:'lumber', hudElementalEnergyPill:'elementalenergy'};
   function floatResourceGain(ev, glyph, pillId, sound){
     sound();
     const flavorCls = RESOURCE_FLOAT_CLASS[pillId] || 'lumber';
@@ -47752,6 +47804,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='stone') floatResourceGain(ev, '🪨', 'hudStonePill', SoundKit.gold);
   if(ev.type==='lumber') floatResourceGain(ev, '🪵', 'hudLumberPill', SoundKit.gold);
   if(ev.type==='metal') floatResourceGain(ev, '🔩', 'hudMetalPill', SoundKit.gold);
+  if(ev.type==='pearl') floatResourceGain(ev, '⚪', 'hudPearlPill', SoundKit.gold); // EN8 (2026-10-24)
   if(ev.type==='uranium') floatResourceGain(ev, '☢️', 'hudUraniumPill', SoundKit.gold);
   // Friction (2026-10-12): a grinding spark on the ally beside the attacker, and its Health drops in the replay too.
   if(ev.type==='friction'){ const el = boardCardEl(ev.targetUid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];

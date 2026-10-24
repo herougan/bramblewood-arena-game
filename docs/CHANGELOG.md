@@ -2,6 +2,36 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package EN8: the CPU pitches and guards, Guardian vs Thorns, Armor vs magic, brambles mend allies, Rampart's columns, the resource skills and Pearls; owner 21:20 #4 #7, 21:41 #5, 22:28 #1-#3 #10, P24-7 / 15 / 16 / 17, LUM-1)
+- **The CPU pitches before it plays** (every level; the game, `tools/skirmish_pass.js` and `tools/opt` all use the engine's `aiTakeTurn`): with
+  nothing useful to play it pitches its least valuable card (keeping the one nearest to affordable); holding a card it can't afford with 3+
+  in hand it pitches a spare card and still plays; a held useless spell no longer passes the turn. The owner's 5-3-like deck (4 zero-cost
+  of 20): first play round 2.59 -> 1.54 (Basic, Smart and Smartest alike); Maps 0-20, every fight: 1.19 -> 1.01.
+- **The lethal guard (P24-7):** from Map 1 (`rules.aiGuardLethal`), when your swings into open columns would finish its bramble and it can't
+  win that round itself, the CPU plays the unit that blocks the most into the attacker's column.
+- **Guardian vs Thorns (P24-15):** a Guardian never steps in for a Thorns unit; its Thorns answer. **Armor vs magic (P24-16):** Armor stops
+  only physical hits; magic and elemental hits go past it; new **Magic Armor N** 🔮 stops only those. **Brambles (P24-17):** a bramble's healing
+  heals a random wounded ally unit (never itself or a Structure); Structures are only repaired. **Rampart (21:41 #5):** covers only hits from
+  its column and the ones beside it (price 0.5 -> 0.25).
+- **Resource skills (LUM-1, default 1, 4-round prices):** Stonecutter N (every 2nd Ready turn +N Stone, 1.8), Prospector N (On Kill +N Metal,
+  1.2), Felling N (On Kill +N Lumber, 0.8), Pearl Bed N (On Ready +N Pearl, 0.9), Coppice N (+N Lumber after a round undamaged, 1.1),
+  Driftwood N (+N Lumber at Ebb on the beach, 0.75), Scavenge N (an ally dies: +N Lumber, 1.5) and Salvage N (a Structure of yours dies: +2N
+  Lumber, 0.75) take SK2's two unused names; the Windfall field (after a Storm round both sides +1 Lumber) on the windy maps up to 20.
+  **Pearls** ⚪ pay a Lumber or Stone shortfall (their own pill and float). Editor, Codex lines and texts in 12 packs.
+- **Cards:** Beachcomber Sanderling (Map 2), Beaver Feller (7), Prospector Mole (8), Salvager Hermit Crab (10), Marmot Stonecutter (11),
+  Carrion Crow (12), Hazel Coppice (13), Moonshell Snail (15), pack cards on the formula line (prompts `docs/art/en8-2026-10-24-briefs.md`);
+  Pearl Bed on the Oyster Bank and the Giant Clam; the Leafcutter Gardener's Growth -> On Ready +1 Lumber (22:28 #10). **Stem (21:20 #7)** is
+  an Evomax skill: Fodder came off the 20 baby-like cards first obtainable before Map 20 and the Speckled Egg; the Cocoon's Chrysalis reads "?".
+- **Render gives Daunt counters (owner 00:02 #2):** Render N puts N Daunt counters on the enemy facing it: each is -1 Attack and -1 skill
+  damage; one falls off each round, each swing and each skill it uses (was: N Attack lost for good). Price 0.8 a point; Raven Hexcaller and
+  Mire-witch Heron re-fitted (fit unchanged). The 😨N badge, float, log line; texts in 12 packs.
+- **Difficulty moved:** the new-player win rate over every Map 0-20 fight fell 76.0% -> 64.4% (pitch ~5.5, the bramble mend ~3.7, guard ~0.6;
+  `docs/balance/en8-cpu-pitch-*.json`, `tools/en8_cpu_pitch_2026_10_24.js`); not retuned here (call EN8-10).
+- Tests: `tests/en8-2026-10-24.js` (new, run-all), `tests/e2e/en8_2026_10_24.py` (390 and 1366, `docs/screens/EN8/`); `tests/skills-sk2-2026-10-19.js`
+  (the new Scavenge / Salvage), `tests/skills-sk2b-2026-10-19.js` (8 cards appended), `tests/pro-2026-10-23.js` (EN8's field flags; 2-BPRO-3's
+  showcase is the Driftwood Crab now), `tests/en-2026-10-23.js` (Fodder only from Map 20), `tests/en3-2026-10-23.js` (Rampart 0.25), `tests/n221-2026-10-24.js`
+  (its entry is no longer in the first 6000 characters). Owner calls EN8-1 .. EN8-11; LUM-1 done.
+
 ## 2026-10-24 (package PRO2: PRO fights by the map's rarity and cards, plus BPRO; owner 21:20 #9-#11)
 - **PRO fights follow the map's rarity and cards.** The old 0-PRO-3 held 2 Ents (a Rare reward of the Old Bramble, Map 0's side map that opens after Map 21). Most other old PROs held a Rare Otter Centurion or cards first obtainable 5-40 maps later. The optimizer's classic pool took every submap's list as the map's cards and owned cards at any rarity. New `deckopt --mode map-true` (now the default) uses the map's own cards plus what a player holds by then: plan-owned cards, earlier maps' cards and submaps already open. Every card must be within the map's rarity cap (the rarest any of its fights may hold: Map 0 Common, Maps 1-3 Uncommon), and an outside card must be first obtainable by this map. All 9 old Map 0-3 PROs broke the rule: they were dropped to `replaced` with their reasons.
 - **BPRO (Basic Pro):** `N-BPRO-k` decks use only the map's own pool (MAP + SPECIAL + its fight decks), within the cap (`deckopt --bpro`, no phase 2). `pro_skirmishes.js` handles both kinds (`--kind pro|bpro|both`) with the same replace rule. BPRO is stored under the map's `bpro` and is not baked into the game yet; the PRO preview package wires it in.

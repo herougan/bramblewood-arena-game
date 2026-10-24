@@ -1,0 +1,26 @@
+{
+ "tag": "after-53like-cpu0",
+ "games": 200,
+ "maps": [
+  0,
+  20
+ ],
+ "low": null,
+ "fights": 1,
+ "meanFirstPlay": 1.03,
+ "meanIdleOf6": 0,
+ "meanWin": 99.5,
+ "rows": [
+  {
+   "fight": "mw:5-3",
+   "map": 5,
+   "kind": "skirmish",
+   "cpu": 0,
+   "zero": 4,
+   "deck": 20,
+   "firstPlay": 1.03,
+   "idleOf6": 0,
+   "win": 99.5
+  }
+ ]
+}

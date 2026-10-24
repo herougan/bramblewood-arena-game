@@ -128,7 +128,8 @@ ok(!byId.get('rodent-king').effects.bounty && !byId.get('glacial-ape-king').effe
 ok(byId.get('magnate-duck').health > 1, `TR-4: the Magnate Duck is not at its 1/1 floor (${byId.get('magnate-duck').attack}/${byId.get('magnate-duck').health})`);
 ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform && c.effects.transform.name === 'enraged'))), 'no card keeps Spellshield or Enraged');
 { const babies = cards.filter(c=> c.levelSkills && c.levelSkills['1'] && c.levelSkills['1'].stem);
-  ok(babies.length >= 20 && babies.every(c=> !(c.effects || {}).stem && c.mechanicLine !== 'evolution'), `EV-6: ${babies.length} baby-like cards gain Stem (Fodder) at Level 1, none has it at Level 0`); }
+  // 2026-10-24 (package EN8, owner 21:20 #7: "don't introduce stem first"): Fodder stays only on the babies first obtainable on Map 20+ (3)
+  ok(babies.length >= 3 && babies.every(c=> !(c.effects || {}).stem && c.mechanicLine !== 'evolution'), `EV-6: ${babies.length} baby-like cards gain Stem (Fodder) at Level 1, none has it at Level 0`); }
 { const m = byId.get('coffer-mimic');
   ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
