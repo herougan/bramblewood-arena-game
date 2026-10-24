@@ -56,19 +56,11 @@ const sk2Ev = (ev, kind)=> ev.filter(x=> x.type === 'sk2' && x.kind === kind);
 { const {e, P} = mk(1, {harvestLumber:3}); const h = put(e, P, 1, 'k2-harvest', 0); e.debugAttack(P, so, h.uid, {}, []); ok(P[1].lumber === 3, `opts.sk2.harvestLumber 3: a harvest pays 3 (${P[1].lumber})`); }
 { const {e, P} = mk(1); const h = put(e, P, 1, 'k2-harvest2', 0); e.debugAttack(P, so, h.uid, {}, []); ok(P[1].lumber === 2, 'Harvest 2: a harvest pays 2'); }
 
-// ---- 2. Scavenge N, M: deaths within 1 (diagonals, the row across), points, every M -> 1 Lumber
-{ const {e, P} = mk(); const S = put(e, P, 1, 'k2-scav', 0);
-  const diag = put(e, P, 2, 'k2-wall', 1), side = put(e, P, 1, 'k2-wall', -1), far = put(e, P, 2, 'k2-wall', 2), farAlly = put(e, P, 1, 'k2-wall', 2), front = put(e, P, 2, 'k2-wall', 0);
-  const ev = []; e.debugDamage(P, so, far.uid, 9999, {}, ev); e.debugDamage(P, so, farAlly.uid, 9999, {}, ev);
-  ok((S.sk2Scavenge||0) === 0, `deaths 2 columns away don't count (${S.sk2Scavenge||0})`);
-  e.debugDamage(P, so, diag.uid, 9999, {}, ev); ok(S.sk2Scavenge === 1, `a death across the board, diagonally, gives 1 point (${S.sk2Scavenge})`);
-  e.debugDamage(P, so, side.uid, 9999, {}, ev); ok(S.sk2Scavenge === 2 && P[1].lumber === 0, `an ally beside it: 2 points, no Lumber yet (${S.sk2Scavenge}, ${P[1].lumber})`);
-  e.debugDamage(P, so, front.uid, 9999, {}, ev); ok(S.sk2Scavenge === 0 && P[1].lumber === 1, `the 3rd point becomes 1 Lumber (${S.sk2Scavenge} points, ${P[1].lumber} Lumber)`);
-  const fx = ev.filter(x=> x.type === 'statusFx' && x.kind === 'sk2Scavenge'); ok(fx.length === 3 && fx[2].total === 0 && fx[2].lumber === 1 && fx[0].total === 1, 'a statusFx per point gain, with the total (the chip) and the Lumber'); }
-{ const {e, P} = mk(); const S = put(e, P, 1, 'k2-scav2', 0); const a = put(e, P, 2, 'k2-wall', 0), b = put(e, P, 2, 'k2-wall', -1);
-  e.debugDamage(P, so, a.uid, 9999, {}, []); e.debugDamage(P, so, b.uid, 9999, {}, []); ok(P[1].lumber === 1 && S.sk2Scavenge === 0, 'Scavenge 1, every 2: two deaths make 1 Lumber'); }
-{ const {e, P} = mk(1, {scavengeN:2, scavengeEvery:2}); const S = put(e, P, 1, 'k2-scav', 0); S.sk2Scavenge = 0; const d = defs['k2-scav']; d.effects.scavenge = true;
-  const a = put(e, P, 2, 'k2-wall', 0); e.debugDamage(P, so, a.uid, 9999, {}, []); ok(P[1].lumber === 1, 'opts.sk2 scavengeN 2 / scavengeEvery 2: Scavenge (no number) uses the parameters'); d.effects.scavenge = 1; }
+// ---- 2. Scavenge N (2026-10-24, package EN8 / LUM-1: SK2's point counter is retired; tests/en8-2026-10-24.js has the full rule): another of
+// your units dying gives N Lumber; an enemy's death, or its own, gives nothing
+{ const {e, P} = mk(); const S = put(e, P, 1, 'k2-scav', 0); const foe = put(e, P, 2, 'k2-wall', 1), ally = put(e, P, 1, 'k2-wall', -1);
+  e.debugDamage(P, so, foe.uid, 9999, {}, []); ok(P[1].lumber === 0, `an enemy's death gives nothing (${P[1].lumber})`);
+  e.debugDamage(P, so, ally.uid, 9999, {}, []); ok(P[1].lumber === 1, `an ally's death gives 1 Lumber (${P[1].lumber})`); void S; }
 { const {e, P} = mk(); const S = put(e, P, 1, 'k2-scav', 0); e.debugDamage(P, so, S.uid, 9999, {}, []); ok(P[1].lumber === 0, 'its own death is not scavenged'); }
 
 // ---- 3. Repair N: the most damaged allied structure within 1, else the bramble at half
@@ -107,13 +99,11 @@ const sk2Ev = (ev, kind)=> ev.filter(x=> x.type === 'sk2' && x.kind === kind);
   ok(P[1].lumber === 3, `opts.sk2.millingN 3: Milling with no number mills 3 (${P[1].lumber})`); }
 ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.milling, SK2\.millingN\), keyword:'milling'\}\)/.test(R('bramblewood-engine.js')), 'Milling is expressed in the trigger layer (trigsOf: perTurn × gain)');
 
-// ---- 5b. Salvage N, M (owner 21:56): Scavenge for Structures, paid in Stone; Petrified Tree: perTurn × Gain Stone
-{ const {e, P} = mk(); const S = put(e, P, 1, 'k2-salv', 0); const s1 = put(e, P, 2, 'k2-struct', 1), s2 = put(e, P, 1, 'k2-struct', -1), s3 = put(e, P, 2, 'k2-struct', 0), u = put(e, P, 2, 'k2-wall', -1), far = put(e, P, 1, 'k2-struct', 3);
-  e.debugDamage(P, so, u.uid, 9999, {}, []); e.debugDamage(P, so, far.uid, 9999, {}, []); ok(!(S.sk2Salvage > 0), `a plain unit's death, or a far structure's, gives nothing (${S.sk2Salvage||0})`);
-  e.debugDamage(P, so, s1.uid, 9999, {}, []); e.debugDamage(P, so, s2.uid, 9999, {}, []); ok(S.sk2Salvage === 2 && !(P[1].stone > 0), `two nearby structures: 2 points (${S.sk2Salvage})`);
-  const ev = []; e.debugDamage(P, so, s3.uid, 9999, {}, ev); ok(S.sk2Salvage === 0 && P[1].stone === 1 && P[1].lumber === 0, `the 3rd becomes 1 Stone (${P[1].stone} Stone, ${P[1].lumber} Lumber)`);
-  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'sk2Salvage' && x.gain === 1 && x.res === 'stone'), 'a statusFx sk2Salvage with the Stone'); }
-{ const {e, P} = mk(1, {salvageEvery:1, salvageStone:2}); put(e, P, 1, 'k2-salv', 0); const s1 = put(e, P, 2, 'k2-struct', 0); e.debugDamage(P, so, s1.uid, 9999, {}, []); ok(P[1].stone === 2, 'opts.sk2 salvageEvery / salvageStone'); }
+// ---- 5b. Salvage N (2026-10-24, package EN8 / LUM-1: was SK2's Structure point counter paid in Stone): another of your Structures dying
+// gives 2N Lumber; a plain unit's or an enemy Structure's death gives nothing. Petrified Tree: perTurn × Gain Stone
+{ const {e, P} = mk(); put(e, P, 1, 'k2-salv', 0); const u = put(e, P, 1, 'k2-wall', -1), foeS = put(e, P, 2, 'k2-struct', 0), s1 = put(e, P, 1, 'k2-struct', 1);
+  e.debugDamage(P, so, u.uid, 9999, {}, []); e.debugDamage(P, so, foeS.uid, 9999, {}, []); ok(P[1].lumber === 0, `a plain ally's or an enemy Structure's death gives nothing (${P[1].lumber})`);
+  e.debugDamage(P, so, s1.uid, 9999, {}, []); ok(P[1].lumber === 2 && !(P[1].stone > 0), `one of its Structures: 2 Lumber (${P[1].lumber})`); }
 { const cards = JSON.parse(R('canonical/cards.json')), pt = cards.find(c=> c.id === 'petrified-tree'); // 2026-10-19 (EQ merge): later packages' cards follow it at the end
   ok(pt && pt.id === 'petrified-tree' && (pt.archetypes||[]).includes('Structure') && (!pt.source || pt.source.tier === 4 || /m22|Rimefire/.test(JSON.stringify(pt.source))) && pt.attack === 0, 'Petrified Tree: in cards.json, a Structure (no source yet, or Pack 4 on Map 22 since N221 2026-10-24)');
   const t = (pt.effects.triggers||[])[0]; ok(t && t.on === 'perTurn' && t.do === 'gain' && t.resource === 'stone' && t.amount === 1, 'its Stone is the trigger layer: On Turn Start × Gain 1 Stone');
@@ -212,9 +202,9 @@ const SCt = JSON.parse(R('canonical/skill-costs.json')), SCm = require('../tools
 ok(SCt.shorthands.milling && SCt.shorthands.milling.trigger === 'perTurn' && SCt.shorthands.milling.action === 'gain' && SCm.cardS({milling:2}).S === 6, `Milling N = On Turn Start × Gain × N (${SCm.cardS({milling:2}).S} at N 2)`);
 ok(SCt.shorthands.fortification && SCt.shorthands.fortification.trigger === 'onSpawn' && SCt.shorthands.fortification.action === 'spawnCard', 'Fortification = On Spawn × Spawn 1');
 ['harvest', 'scavenge', 'scavengeEvery', 'salvage', 'salvageEvery', 'repair', 'foraging', 'pickpocket', 'sabotage', 'arson'].forEach(id=>{ const e = SCt.skills.find(x=> x.id === id);
-  ok(e && typeof e.value === 'number' && e.measuredConf === 'low' && /^estimate SK2/.test(e.measuredHow || ''), `skill-costs: ${id} has an S estimate (measuredHow "estimate SK2", low confidence)`); });
+  ok(e && typeof e.value === 'number' && e.measuredConf === 'low' && /^estimate (SK2|EN8)/.test(e.measuredHow || '') /* 2026-10-24 (EN8): Scavenge / Salvage re-priced by the 4-round rule */, `skill-costs: ${id} has an S estimate (measuredHow "estimate SK2", low confidence)`); });
 // 2026-10-24 (RELFIX): new cards made with an SK2 skill later are not "existing cards": CONTENT2's Redwood Woodpecker (Milling 1) and Badger
 // Stonemason (Quarry 1), owner 13:12 #8 (calls CONTENT2-1 / CONTENT2-2); their creatorNote starts with "2026-10-24 (package CONTENT2)"
-ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && !/^2026-10-24 \(package CONTENT2\)/.test(c.creatorNote || '') && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
+ok(!JSON.parse(R('canonical/cards.json')).some(c=> !['petrified-tree', 'glintsnatch-magpie'].includes(c.id) && !/^2026-10-24 \(package CONTENT2\)/.test(c.creatorNote || '') && !/2026-10-24 \(package EN8\)/.test(c.creatorNote || '') /* EN8 (2026-10-24): its Scavenge / Salvage cards */ && c.effects && SK2_KEYS.some(k=> c.effects[k] != null)), 'no existing card was given an SK2 skill');
 
 console.log(fail ? `skills-sk2-2026-10-19: ${fail} of ${n} checks FAILED` : `skills-sk2-2026-10-19: all ${n} checks passed`); process.exit(fail ? 1 : 0);

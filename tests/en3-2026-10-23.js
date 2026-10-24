@@ -108,7 +108,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   ok(sk('toxin').value === 5 && sk('detonate').value === -0.5, 'Toxin (never wears off) and Detonate are left');
   ok(sk('bulwark').value === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 9 (was 6)');
-  ok(sk('rampart') && sk('rampart').value === 0.5 && sk('brambleArmor') && sk('brambleArmor').value === 1.1, 'Rampart 0.5, Bramble Armor 1.1 (measured)');
+  ok(sk('rampart') && sk('rampart').value === 0.25 /* 2026-10-24 (EN8, owner 21:41 #5): its columns only, 0.5 -> 0.25 */ && sk('brambleArmor') && sk('brambleArmor').value === 1.1, 'Rampart 0.25 (EN8), Bramble Armor 1.1 (measured)');
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en3-refit-2026-10-23.json'), 'utf8'));
   ok(rf.raised.length === 3 && rf.held.length === 13 && rf.flagged.includes('poison-dart-frog'), `the re-fit file: ${rf.raised.length} raised, ${rf.held.length} held, flagged ${rf.flagged}`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
@@ -127,7 +127,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(Object.keys(NEWC).every(id=> art.includes('`' + id + '`')) && (art.match(/full background/g) || []).length >= 4 && !/spiked|studded|monitor|sword|spear|blade|axe/i.test(art), 'their NightCafe prompts (a background each, none of the banned words)');
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const SC = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC, T = SC.make(sc);
-  const b = T.budget(rb, {level: 1}); ok(b.ok && b.S === 0.5, `Riverworks Bastion inside the budget (2A+H+S ${b.x1} <= N ${b.N})`); }
+  const b = T.budget(rb, {level: 1}); ok(b.ok && b.S === 0.25 /* EN8: Rampart 0.25 */, `Riverworks Bastion inside the budget (2A+H+S ${b.x1} <= N ${b.N})`); }
 
 // ---- The app, texts, docs ---------------------------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');

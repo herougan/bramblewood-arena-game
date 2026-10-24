@@ -1,0 +1,26 @@
+{
+ "tag": "before-53hard-cpu1",
+ "games": 200,
+ "maps": [
+  0,
+  20
+ ],
+ "low": null,
+ "fights": 1,
+ "meanFirstPlay": 2.59,
+ "meanIdleOf6": 0,
+ "meanWin": 100,
+ "rows": [
+  {
+   "fight": "mw:5-3",
+   "map": 5,
+   "kind": "skirmish",
+   "cpu": 1,
+   "zero": 4,
+   "deck": 20,
+   "firstPlay": 2.59,
+   "idleOf6": 0,
+   "win": 100
+  }
+ ]
+}

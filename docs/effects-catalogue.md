@@ -1200,3 +1200,57 @@ in `arena_app.js`, the Poison look in `bramblewood-fx-d.js`). **Replaces EQ2's o
 | Poison runs out: the pool sinks below the card's foot as it fades (its last bubbles still rise) | `bramblewood-fx-d.js` `psnSink` (`M.poisonSink`) | Poison reaching 0 |
 | Applied Poison / Bleed / Deadly Poison float "🤢N" / "🩸N" / "💀N" (was "🤢 💀 +N", "+N🩸", "💀 +N") | `ui.en7-float-poison`, `ui.en7-float-bleed`, `ui.en4-float-gp` | each application that floats |
 | A Parasite's bloom: a 🪱 flies from the parent's host to the new host, "🌸 +1/+1" there | `en7Vfx` `parasiteAttach {bloom}` | the bloom |
+
+## 2026-10-24 additions (package EN8): the CPU's pitch and guard, Guardian vs Thorns, Armor vs magic, brambles mend allies, Rampart's columns, the resource skills and Pearls
+
+The rules as built (engine: the EN8 block after `trigsOf`, `aiUsefulNow` / `aiLethalBlock` beside `aiTakeTurn`, `computeHitDamage`,
+`damageCardFlat`, `redirectToGuardian`, `rampartShare`, `roundStart`; owner 21:20 #4 #7, 21:41 #5, 22:28 #1-#3 #10, P24-7 / 15 / 16 / 17, LUM-1):
+- **The CPU's pitch** (every level, the game and the sims alike: `aiTakeTurn`): the pitch now comes before the play, once a turn. Nothing
+  useful to play (`aiUsefulNow`: payable, and not a spell with nothing to do, an evolute with no base, a field card or a Dark Summon) -> it
+  pitches its least valuable card, keeping the one nearest to affordable. Holding a card it can't afford (short only of Lumber / Stone / Metal,
+  Pearls counted: `aiResourceGap`) with 3+ cards in hand -> it pitches a spare card (not that card, not the best card it can play) and still
+  plays. A turn with no card down and no pitch yet ends in a pitch (a held useless spell no longer passes the turn).
+- **The lethal guard** (P24-7; `rules.aiGuardLethal`, set by `fightRules` on Conquest fights from Map 1): when your Ready units' swings into
+  open columns (`aiIncomingOnBramble`) would take its bramble's Health and Shield, and it can't win this round itself, the CPU plays the unit
+  that stops the most of it into the attacker's column (a legal slot; ties: the sturdier unit). It blocks what it can even when it is not enough.
+- **Guardian vs Thorns** (P24-15): a Guardian never steps in for a unit with Thorns (printed or Durian's): the Thorns unit takes the swing
+  and its Thorns answer. Thorns damage is never redirected.
+- **Armor vs magic** (P24-16): Armor (and all it sums: Shell, the tide's, Prayer Ward, Shieldwall) stops only physical hits; magic and every
+  element (fire / heat, frost / cold, shock, poison, acid, water, decay ...) go past it. **Magic Armor N** 🔮 (`effects.magicArmor`; price
+  0.4 a point) is the other half: N off each magic or elemental swing, shot or skill, never a physical one and never a status tick. Supreme
+  crushes it. The hit's `mods` carry `magicArmor`.
+- **Brambles mend allies** (P24-17): a bramble's healing passive (`castleRegen N`) heals one random wounded ally unit N at each round start
+  (never a Structure, never the bramble); event `heal {cause: 'brambleMend', castle: true}`. `applyHeal` and the Mend spell never heal a
+  Structure: Repair N and Rebuild put Health back on Structures and brambles.
+- **Rampart's columns** (21:41 #5): a Rampart unit covers only a hit whose attacker stands in its column or the one on either side
+  (|slot difference| <= 1); a hit with no attacker in a column isn't covered. Price 0.5 -> 0.25.
+- **The resource skills** (LUM-1, default 1 each; prices by the 4-round rule, `tools/en8_skill_costs_2026_10_24.py`):
+
+| Skill | Key | Rule | Price |
+|---|---|---|---|
+| ⛏️ Stonecutter N | `stonecutter` | every 2nd Ready turn: +N Stone (On Turn Start x Gain with `t.every 2`) | 1.8 / N |
+| 🪙 Prospector N | `prospector` | On Kill: +N Metal | 1.2 / N |
+| 🪓 Felling N | `felling` | On Kill: +N Lumber | 0.8 / N |
+| 🦪 Pearl Bed N | `pearlBed` | On Ready (a Wait 0 card: On Play): +N Pearl | 0.9 / N |
+| 🌳 Coppice N | `coppice` | a round it took no damage: +N Lumber at the next round's start (from its 2nd round) | 1.1 / N |
+| 🪵 Driftwood N | `driftwood` | at an Ebb round's start on a beach map (`rules.beachMap`): +N Lumber | 0.75 / N |
+| 🦝 Scavenge N | `scavenge` | another of your units dies: +N Lumber (always on) | 1.5 / N |
+| 🏚️ Salvage N | `salvage` | another of your Structures dies: +2N Lumber (always on) | 0.75 / N |
+| 🍃 Windfall (field) | `rules.windfall` | after a Storm round (a Thunderstorm or a strong-wind round), both sides +1 Lumber; on the windy maps up to Map 20 | - |
+
+  (Scavenge and Salvage were SK2's point counters, on no card; their names now carry LUM-1's plain rules.)
+- **Pearls** ⚪ (`pl.pearls`): Shellfish grow them (Pearl Bed). When a card's Lumber or Stone can't be met, Pearls make up the rest
+  (`canPlay` counts them, `pearlSettle` pays them after the Lumber / Stone). The CPU counts them too. Event `pearl {amount}`.
+- **Render N → Daunt counters** (owner 00:02 #2, 2026-10-25; `fireRender`, `en8DauntUse`): Render N now puts N Daunt counters on the enemy
+  facing it (`card.dauntN`; was: it lost N Attack for good). Each counter is -1 Attack (`dauntOf`, with Daunt N's on-hit marks) and -1 on
+  each of its skill hits (`damageCardFlat`). One falls off at each round's end, one each time it swings (its action) and one each time it
+  uses a skill (a trigger that ran an action; its On Action / On Attack hooks are the swing's). Cleanse takes them, one a point. Price 0.8 a point (was half-scale 2). Event `render {daunt: true, amount, total}`, `statusFx dauntFade {left, why}`; the 😨N
+  badge, "😨 N" float and log line.
+- **"?" skills** (21:20 #7): a card's `mysterySkills` read "❓ ?" on its face and in its detail (the Cocoon's Chrysalis until the Evomax maps).
+
+| Look | Where | When |
+|---|---|---|
+| ⚪ N pill beside the Lumber / Stone pills; "+N ⚪" floats to it | `sideResourcePillsHTML` (`hudPearlPill`), `floatResourceGain` | Pearls held / a `pearl` event |
+| "+N 🪵" from the unit to the Lumber pill (the usual Lumber float), a log line per cause | `en8LogText` (`ui.en8-log-*`) | Scavenge, Salvage, Coppice, Driftwood, Windfall |
+| The heal's motes and number on the ally the bramble mends | the plain `heal` look | `heal {cause: 'brambleMend'}` |
+| A gold streak to the Rampart unit (EN3's look) | `en3RampartVfx` | only a hit from its reach now |
