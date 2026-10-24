@@ -55,7 +55,7 @@ ok(/data-zoom-tip="\$\{escapeAttr\(TX\('ui\.rw4-tip-leaves-t'\)/.test(app) && /d
 ok(/class="cnp-rw-item \$\{done\?'is-got':''\}"/.test(app) && /T\.item \? `<span class="cnp-rw-item/.test(app), '7/14. an item in the first-clear box is a bare icon, not a card');
 ok(!/class="cnp-rw-card cnp-rw-token[^`]*rank-hex/.test(app) && !/cnp-rw-item[^`]*rank-hex/.test(app), '14. no rank emblem on items');
 ok((app.match(/rw-icon-only/g) || []).length >= 3, '14. the results show items as icons');
-ok(/class="ep-cap"/.test(app) && /id="epCapsule">\$\{escapeHtml\(TX\('ui\.rw4-use'\)\)\}</.test(app), '7. the Energy panel shows the capsule count and a Use button');
+ok(/id="epCapsule" title="\$\{escapeAttr\(capTip\)\}"/.test(app) && /🔋×\$\{capN\}<\/span> \$\{escapeHtml\(TX\('ui\.rw4-use'\)\)\}/.test(app), '7. the Energy panel shows the capsule count and a Use button (2026-10-25, PL2: one 🔋×N Use button, the count in its tooltip)');
 
 // ---- 8. eggs
 { const g = app.match(/function grantEgg\(kind, from\)\{[\s\S]*?\n\}\n/); ok(g && !/showToast/.test(g[0]), '8. no egg toast'); }

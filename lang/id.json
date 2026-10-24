@@ -3313,7 +3313,6 @@
  "Next pack ({n} left)": "Paket berikutnya (sisa {n})",
  "All {n} packs": "Semua {n} paket",
  "{n} packs opened": "{n} paket dibuka",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "Milik mereka: setengah dek mereka {theme}",
  "Cave": "Gua",
  "Insect": "Serangga",

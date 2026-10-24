@@ -3314,7 +3314,6 @@
  "Next pack ({n} left)": "다음 팩 ({n}개 남음)",
  "All {n} packs": "{n}팩 전부",
  "{n} packs opened": "{n}팩 개봉",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "상대 전용: 덱의 절반이 {theme}",
  "Cave": "동굴",
  "Insect": "곤충",

@@ -3310,7 +3310,6 @@
  "Next pack ({n} left)": "Siguiente sobre (quedan {n})",
  "All {n} packs": "Los {n} sobres",
  "{n} packs opened": "{n} sobres abiertos",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "Suyo: la mitad de su mazo {theme}",
  "Cave": "Cueva",
  "Insect": "Insecto",

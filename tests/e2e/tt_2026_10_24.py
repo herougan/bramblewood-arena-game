@@ -49,7 +49,7 @@ async def run(b, url, w):
     await pg.evaluate(E(FIGHT.replace('ENEMY', "'forager-ant'") + " maybeShowCoachTip(); await new Promise(r=> setTimeout(r, 500));"))
     t = await pg.evaluate(TIP)
     ok(t and t['id'] == 'tl-what' and 'trigger' in t['text'] and t['spot'], f'the first trigger card on the field starts step 1 with a spotlight ({t and t["id"]})')
-    ok(t and t['btns'] == ['Skip', 'Next ▶'], f'step 1 offers Skip and Next ({t and t["btns"]})')
+    ok(t and t['btns'] == ['Got it'] and 'read the card' in t['text'], f'2026-10-25 (PL2, owner 00:02 #6): one step, "read the card", Got it ({t and t["btns"]})')
     r = await pg.evaluate("""(()=>{ const chip = coachOpen.tip.anchor(), s = document.querySelector('.coach-spotlight').getBoundingClientRect(), c = chip.getBoundingClientRect();
       return {onChip: s.left <= c.left + 1 && s.right >= c.right - 1 && s.top <= c.top + 1 && s.bottom >= c.bottom - 1, chipIsTrig: chip.classList.contains('ab-trig'), small: s.width < 120 && s.height < 120}; })()""")
     ok(r['onChip'] and r['chipIsTrig'] and r['small'], f'the spotlight sits on the trigger chip ({r})')
@@ -60,13 +60,8 @@ async def run(b, url, w):
     ok(r['on'] and not r['held'], f'MAP-3: while the lesson is up no map tile is held back ({r})')
     await shot(pg, 'step1', w)
     await pg.click('.coach-tip .coach-ok'); await pg.wait_for_timeout(900)
-    t = await pg.evaluate(TIP)
-    ok(t and t['id'] == 'tl-when' and 'On Death' in t['text'] and 'On Spawn' in t['text'], f'Next leads to step 2, the list of moments ({t and t["id"]})')
-    ok(t and t['btns'] == ['Skip', 'Got it'], f'step 2 offers Skip and Got it ({t and t["btns"]})')
-    await shot(pg, 'step2', w)
-    await pg.click('.coach-tip .coach-skip-lesson'); await pg.wait_for_timeout(900)
-    r = await pg.evaluate("(()=>({ tip: !!document.querySelector('.coach-tip'), seen: ['tl-what','tl-when','trig-off','trig-on'].every(i=> coachSeen.has(i)), stored: JSON.parse(localStorage.getItem('bramblewood_coach_seen')).includes('tl-when') }))()")
-    ok(not r['tip'] and r['seen'] and r['stored'], f'Skip closes it and ends the lesson and the passive trigger tips ({r})')
+    r = await pg.evaluate("(()=>({ tip: !!(coachOpen && /^tl-/.test(coachOpen.tip.id)), seen: ['tl-what','tl-when','trig-off','trig-on'].every(i=> coachSeen.has(i)), stored: JSON.parse(localStorage.getItem('bramblewood_coach_seen')).includes('tl-when') }))()")
+    ok(not r['tip'] and r['seen'] and r['stored'], f'Got it ends the lesson; the retired steps are marked seen ({r})')
     await pg.evaluate("maybeShowCoachTip()"); await pg.wait_for_timeout(500)
     r = await pg.evaluate("(()=>{ const t = document.querySelector('.coach-tip'); return !t || !/trigger/i.test(t.textContent) || !coachOpen || !/^tl-/.test(coachOpen.tip.id); })()")
     ok(r, 'in the same fight it does not come back')
@@ -80,13 +75,6 @@ async def run(b, url, w):
     r = await pg2.evaluate("(()=> !(coachOpen && /^tl-/.test(coachOpen.tip.id)))()")
     ok(r, 'a seen lesson does not show in a new fight')
     await pg2.close()
-    # Got it ends step 2 without Skip; both steps remembered
-    pg = await page(b, url, w)
-    await pg.evaluate(E(FIGHT.replace('ENEMY', "'worker-ant'") + " maybeShowCoachTip(); await new Promise(r=> setTimeout(r, 500));"))
-    await pg.click('.coach-tip .coach-ok'); await pg.wait_for_timeout(900); await pg.click('.coach-tip .coach-ok'); await pg.wait_for_timeout(700)
-    r = await pg.evaluate("(()=>({ both: coachSeen.has('tl-what') && coachSeen.has('tl-when'), open: !!(coachOpen && /^tl-/.test(coachOpen.tip.id)) }))()")
-    ok(r['both'] and not r['open'], f'Next then Got it finishes the lesson ({r})')
-    await pg.close()
     # a trigger card in the hand finds the chip there first
     pg = await page(b, url, w)
     r = await pg.evaluate(E("""switchTab('play'); startConquestMatch('m11', '20-7'); await new Promise(r=> setTimeout(r, 2600));

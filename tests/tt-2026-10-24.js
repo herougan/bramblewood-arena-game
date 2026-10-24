@@ -26,9 +26,11 @@ const packs = Object.fromEntries(CODES.map(c=> [c, Object.assign({}, JSON.parse(
 
 // --- 1. the steps
 const lessonSrc = (src.match(/const TRIGGER_LESSON = \[[\s\S]*?\n\];/) || [''])[0];
-ok(/id:'tl-what'[^\n]*gate:true[^\n]*pause:true[^\n]*next:true[^\n]*skip:true/.test(lessonSrc), '1. step 1 (tl-what): a spotlighted gate that pauses, leads on (Next) and can be skipped');
-ok(/id:'tl-when'[^\n]*gate:true[^\n]*pause:true[^\n]*skip:true/.test(lessonSrc) && !/id:'tl-when'[^\n]*next:true/.test(lessonSrc), '1. step 2 (tl-when): the last step reads "Got it", can be skipped');
-ok((lessonSrc.match(/\{id:/g) || []).length === 2, '1. exactly two steps');
+// 2026-10-25 (package PL2, owner 00:02 #6): the lesson is ONE step now ("This chip is a trigger — read the card.", Got it); tl-when and
+// the passive trig-off / trig-on tips are retired (marked seen with tl-what).
+ok(/id:'tl-what'[^\n]*gate:true[^\n]*pause:true[^\n]*coach\.pl2-trigger/.test(lessonSrc) && !/id:'tl-what'[^\n]*next:true/.test(lessonSrc), '1. one step (tl-what): a spotlighted gate that pauses and reads "Got it"');
+ok((lessonSrc.match(/\{id:/g) || []).length === 1, '1. exactly one step');
+ok(/if\(id === 'tl-what'\) \['tl-when', 'trig-off', 'trig-on'\]/.test(src) && !/id:'trig-off'/.test(src), '1. the retired steps are marked seen with it and are no longer offered');
 const show = fnSrc('showCoachTip');
 ok(/tip\.block \|\| tip\.next \? 'Next/.test(show) && /if\(tip\.skip\)/.test(show) && /skipTriggerLesson\(\)/.test(show), '1. showCoachTip draws Next for a step that leads on and a Skip button that ends the lesson');
 ok(!/tip\.skip[\s\S]{0,400}tutorialLock = /.test(show), '1. a lesson step never locks the fight (no tutorialLock)');
@@ -40,12 +42,11 @@ const iG = maybe.indexOf('guidedStepActive'), iP = maybe.indexOf('pitchLessonTip
 ok(iG > 0 && iG < iP && iP < iT && iT < iK && iK < iC, '2. order: guided steps, Pitching lesson, Triggers lesson, the peek gate, then the passive tips');
 {
   let seen = new Set(), chip = null;
-  const mk = ()=> new Function('coachSeen', 'triggerLessonChip', 'TRIGGER_LESSON', fnSrc('triggerLessonTip') + '\nreturn triggerLessonTip;')(seen, ()=> chip, [{id:'tl-what'}, {id:'tl-when'}]);
+  const mk = ()=> new Function('coachSeen', 'triggerLessonChip', 'TRIGGER_LESSON', fnSrc('triggerLessonTip') + '\nreturn triggerLessonTip;')(seen, ()=> chip, [{id:'tl-what'}]);
   const f = mk(), m = (o)=> Object.assign({over:false, mode:'conquest'}, o || {});
   chip = null; ok(f(m()) === null, '2. no trigger chip in the hand or on the board: no lesson');
   chip = {}; ok(f(m()) && f(m()).id === 'tl-what', '2. the first trigger chip starts step 1');
-  seen.add('tl-what'); ok(f(m()).id === 'tl-when', '2. after step 1 comes step 2');
-  seen.add('tl-when'); ok(f(m()) === null, '2. never repeated once both are seen');
+  seen.add('tl-what'); seen.add('tl-when'); ok(f(m()) === null, '2. never repeated once seen (2026-10-25, PL2: one step)');
   seen.clear();
   ok(['tutorial', 'sandbox'].every(md=> f(m({mode: md})) === null), '2. not in the Tutorial or Sandbox');
   ok(f(m({adminTest: true})) === null && f(m({fxLib: true})) === null && f(m({over: true})) === null, '2. not in admin tests, the Effects library or after the fight');
@@ -57,10 +58,10 @@ ok(/#handStrip \[data-handuid\] \.ab-trig/.test(chipSrc) && /for\(const p of \[2
 // --- 3. skip and replay
 {
   const seen = new Set(), marked = [];
-  const skip = new Function('TRIGGER_LESSON', 'markCoachSeen', fnSrc('skipTriggerLesson') + '\nreturn skipTriggerLesson;')([{id:'tl-what'}, {id:'tl-when'}], id=> { marked.push(id); seen.add(id); });
+  const skip = new Function('TRIGGER_LESSON', 'markCoachSeen', fnSrc('skipTriggerLesson') + '\nreturn skipTriggerLesson;')([{id:'tl-what'}], id=> { marked.push(id); seen.add(id); });
   skip(); ok(['tl-what', 'tl-when', 'trig-off', 'trig-on'].every(i=> seen.has(i)), '3. Skip ends the lesson and the two passive trigger tips');
   const cs = new Set(['tl-what', 'tl-when', 'trig-off', 'trig-on', 'wait']); const store = {};
-  const rep = new Function('TRIGGER_LESSON', 'coachSeen', 'COACH_SEEN_KEY', 'localStorage', fnSrc('replayTriggerLesson') + '\nreturn replayTriggerLesson;')([{id:'tl-what'}, {id:'tl-when'}], cs, 'k', {setItem: (k, v)=> { store[k] = v; }});
+  const rep = new Function('TRIGGER_LESSON', 'coachSeen', 'COACH_SEEN_KEY', 'localStorage', fnSrc('replayTriggerLesson') + '\nreturn replayTriggerLesson;')([{id:'tl-what'}], cs, 'k', {setItem: (k, v)=> { store[k] = v; }});
   rep(); ok(!cs.has('tl-what') && !cs.has('tl-when') && !cs.has('trig-off') && !cs.has('trig-on') && cs.has('wait') && JSON.parse(store.k).includes('wait'), '3. replay clears only the trigger tips and saves');
 }
 

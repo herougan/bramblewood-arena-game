@@ -30,7 +30,6 @@ T = {
                           'அடுத்த பொதி (இன்னும் {n})', 'Paket berikutnya (sisa {n})', '下一包（还剩 {n} 包）', '下一包（還剩 {n} 包）', '次のパック（残り{n}）', '다음 팩 ({n}개 남음)'],
  'All {n} packs': ['Les {n} packs', 'Alle {n} Packs', 'Los {n} sobres', 'Tutte le {n} bustine', 'Os {n} pacotes', 'Lahat ng {n} pack', 'எல்லா {n} பொதிகளும்', 'Semua {n} paket', '全部 {n} 包', '全部 {n} 包', '{n}パックすべて', '{n}팩 전부'],
  '{n} packs opened': ['{n} packs ouverts', '{n} Packs geöffnet', '{n} sobres abiertos', '{n} bustine aperte', '{n} pacotes abertos', '{n} pack ang nabuksan', '{n} பொதிகள் திறக்கப்பட்டன', '{n} paket dibuka', '已开 {n} 包', '已開 {n} 包', '{n}パック開封', '{n}팩 개봉'],
- '{have}/{total} {theme}': ['{have}/{total} {theme}'] * 12,
  'Theirs: half their deck {theme}': ['Pour eux : la moitié de leur deck {theme}', 'Nur sie: die Hälfte ihres Decks {theme}', 'Suyo: la mitad de su mazo {theme}', 'Loro: metà del loro mazzo {theme}', 'Deles: metade do baralho {theme}',
                                      'Kanila: kalahati ng deck nila ay {theme}', 'அவர்களுடையது: அடுக்கில் பாதி {theme}', 'Milik mereka: setengah dek mereka {theme}', '对方专属：牌组一半是{theme}', '對方專屬：牌組一半是{theme}', '相手専用：デッキの半分が{theme}', '상대 전용: 덱의 절반이 {theme}'],
 }

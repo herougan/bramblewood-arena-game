@@ -5254,6 +5254,10 @@
   .energy-panel .ep-admin-row{display:flex; flex-wrap:wrap; gap:6px; align-items:center;}
   .energy-panel .ep-admin-row .w-60{width:60px;}
   .energy-panel small{opacity:.8; font-size:12px;}
+  /* 2026-10-25 (package PL2, owner 00:02 #7): the count, the refill line, then the free Energy and the 🔋×N Use side by side */
+  .energy-panel .ep-count{font-size:20px; line-height:1.1; cursor:help;}
+  .energy-panel .ep-row{display:flex; gap:8px; align-items:stretch;} .energy-panel .ep-row > .btn{flex:1 1 auto; white-space:nowrap;}
+  .energy-panel .ep-cap-btn{flex:0 0 auto !important; display:inline-flex; align-items:center; gap:4px;}
   .conquest-rank-badge{display:inline-flex; align-items:center; justify-content:center; font-family:'Baloo 2'; font-weight:800; font-size:12px; padding:3px 9px; border-radius:999px; color:var(--gold-ink); background:var(--gold); margin-left:auto;}
   .conquest-rank-badge.rank-C{background:#c8845a;}
   .conquest-rank-badge.rank-D{background:#9c8a78;} .conquest-rank-badge.rank-E{background:#857a70;} /* 2026-10-11 */
@@ -9544,6 +9548,13 @@
      tooltip; hidden they keep their place (a gain still floats to them). */
   .field-res.enemy{opacity:0; transition:opacity .16s ease; visibility:hidden;}
   html.pl2-shift .field-res.enemy{opacity:1; visibility:visible;}
+  /* 2026-10-25 (package PL2, PL1-3): the Arena's Modes | Co-op tabs, the Co-op pane, and the map spot's Group Dungeon card */
+  .pl2-arena-tabs{display:flex; gap:6px; margin:4px 0 8px;} .pl2-arena-tabs .tab-btn{flex:0 0 auto;}
+  .pl2-coop-panel{padding:10px;}
+  .pl2-coop-pop{position:fixed; inset:0; z-index:9500; display:flex; align-items:center; justify-content:center; padding:16px;}
+  .pl2-coop-back{position:absolute; inset:0; background:rgba(10,8,4,.55);}
+  .pl2-coop-box{position:relative; width:min(560px, 100%); max-height:90vh; overflow:auto; padding:14px; animation:coachIn .22s ease-out;}
+  .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   .pl2-tip-res{display:flex; flex-wrap:wrap; gap:4px; margin-top:3px;} .pl2-tip-res .hud-pill{font-size:11px; padding:1px 7px;}
   /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
   #dropDiscard{cursor:pointer;}

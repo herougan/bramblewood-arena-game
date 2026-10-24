@@ -286,7 +286,8 @@ function sameEverywhere(r, label){
     const q = fs.existsSync(sql) ? read('supabase/migrations/20261023_coop_rooms_4p.sql') : '';
     ok(/enable row level security/i.test(q) && /security definer/i.test(q) && /friendships/.test(q) && /realtime\.messages/.test(q), 'server: the SQL keeps RLS on, joins through a definer function (friends only) and guards the room channel');
     ok(/function groupDungeonCardHTML/.test(app) && /data-gd-open/.test(app) && !/ui\.ar-group-soon'\)\)\}<\/p><\/div><\/div>`;\s*\}\s*function renderDungeonsSubTab/.test(app), 'page: the Group Dungeon slot is a real entrance (no Coming soon)');
-    ok(/function gdPlayerOpen/.test(app) && /gdPlayerOpen\(\)/.test(app.slice(app.indexOf('function dungeonsTabOpen'), app.indexOf('function dungeonsTabOpen') + 400)), 'page: the Dungeons tab opens for players once the group dungeon is open to them');
+    // 2026-10-25 (package PL2, PL1-3): the Dungeons tab is Admin Mode's only; players reach the Group Dungeon in the Arena's Co-op pane and on the map's 👥 spot
+    ok(/function gdPlayerOpen/.test(app) && /function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\);/.test(app) && /function pl2ArenaTabsHTML\(\)\{\s*let open = false; try\{ open = gdPlayerOpen\(\);/.test(app) && /\{key:'coop', icon:'👥'/.test(app), 'page: the Group Dungeon opens for players in the Arena (Co-op) and on the map once its gate is met (PL2)');
   }
 
   console.log(`coop-dungeon: ${pass} passed, ${fails.length} failed`);

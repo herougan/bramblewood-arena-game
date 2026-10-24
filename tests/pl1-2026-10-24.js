@@ -61,7 +61,7 @@ ok(/\.pool-stack \.ps-count\{right:-11px; bottom:-10px; padding:0 4px; min-width
 const IDS = ['blindFury', 'hiveChorus', 'risingTide', 'secondBurrow', 'wildRage', 'snowVeil', 'sandVeil', 'restlessDead', 'emberBorn', 'siegeTrain', 'venomGlands', 'skyAmbush'];
 for(const id of IDS){ const eff = T.TX('ui.pl1-boon-' + id), full = T.TX('ui.df3-' + id);
   ok(full.startsWith(eff + ' Theirs only:'), `#1 ${id}: the short effect is the DF3 sentence without its "Theirs only" part`); }
-ok(T.TX('ui.pl1-boon-card', {have:11, total:17, theme:T.TX('ui.pl1-boon-theme-venomGlands')}) === '11/17 Reptile', '#1 the card says "11/17 Reptile"');
+ok(T.TX('ui.pl1-boon-theme-venomGlands') === 'Reptile' && /`\$\{st\.have\}\/\$\{st\.total\} \$\{boonTheme\(row\.selfish\)\}`/.test(app), '#1 the card says "11/17 Reptile" (2026-10-25, PL2: built in place, no TX key)');
 ok(T.TX('ui.pl1-boon-venomGlands') + ' ' + T.TX('ui.pl1-boon-theirs', {theme:'Reptile'}) === 'Their Poison gives twice the Poison. Theirs: half their deck Reptile', '#1 the detail: the effect and "Theirs: half their deck Reptile"');
 ok(/function boonShortText\(/.test(app) && /boonShortText\(r\.boon\)/.test(app), '#1 the field rows use the short words');
 // 21:20 #2
@@ -71,7 +71,7 @@ ok(/\.board-card\.pl1-lethal:not\(\.has-shield\) \.stats \.hp\{color:#8cff52/.te
 // 21:20 #4
 ok(/m\.fightFirstClear && m\.conquestNode/.test(app) && /conquestSelectedNodeKey = null; try\{ if\(currentTab === 'play'/.test(app), '#4 X after a first clear lets go of the fight so the pawn walks on');
 // texts
-const KEYS = ['ui.pl1-next-pack', 'ui.pl1-all-packs', 'ui.pl1-session-title', 'ui.pl1-boon-card', 'ui.pl1-boon-theirs'].concat(IDS.map(id=> 'ui.pl1-boon-' + id), IDS.map(id=> 'ui.pl1-boon-theme-' + id));
+const KEYS = ['ui.pl1-next-pack', 'ui.pl1-all-packs', 'ui.pl1-session-title', 'ui.pl1-boon-theirs'].concat(IDS.map(id=> 'ui.pl1-boon-' + id), IDS.map(id=> 'ui.pl1-boon-theme-' + id));
 for(const k of KEYS){ const en = T.TEXT[k]; ok(!!en, `texts: ${k} is a TX text`); if(en) CODES.forEach((c, i)=> ok(!!packs[i][en], `texts: ${c} translates "${en.slice(0, 40)}"`)); }
 ok(!/\/\*|\/\/ /.test(TXT.slice(TXT.indexOf('"ui.pl1-next-pack"'), TXT.indexOf('/*TEXT-TABLE-END*/'))), 'texts: no comments inside the TEXT table');
 

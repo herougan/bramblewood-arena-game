@@ -13013,9 +13013,12 @@ function openEnergyPanel(anchor){
   closeEnergyPanel();
   const s = settleEnergy(), isAdmin = adminModeEnabled || (typeof cloudCardAdmin!=='undefined' && cloudCardAdmin) || (typeof adminAllowed==='function' && adminAllowed()), claimed = freeEnergyClaimedToday();
   const pop = document.createElement('div'); pop.className = 'energy-panel'; pop.id = 'energyPanel'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Energy');
-  pop.innerHTML = `<b>⚡ ${s.current}/${energyMax()} Energy</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small><small class="ep-grow">${escapeHtml(energyNextStepText())}</small>
-    <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
-    ${energyCapsules() ? `<div class="ep-cap"><span class="ep-cap-l"><i aria-hidden="true">🔋</i><span><b>${escapeHtml(TX('ui.rw4-capsules', {n: energyCapsules()}))}</b><small>${escapeHtml(TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}))}</small></span></span><button type="button" class="btn primary small" id="epCapsule">${escapeHtml(TX('ui.rw4-use'))}</button></div>` : ''}
+  // 2026-10-25 (package PL2, owner 00:02 #7, SS#3: "Simplify this UI. Like, don't need to say 'Energy capsules' unless in a hover
+  // tooltip."): the count (what the Nest does to the maximum is its tooltip), the refill line, and one row: the free Energy and a
+  // 🔋×N Use button whose tooltip names the capsules and what each gives. Was: a Nest line, the free button, then a capsule card.
+  const capN = energyCapsules(), capTip = capN ? TX('ui.rw4-capsules', {n: capN}) + ' · ' + TX('ui.rw4-capsule-each', {n: ENERGY_CAPSULE_AMOUNT}) : '';
+  pop.innerHTML = `<b class="ep-count" title="${escapeAttr(energyNextStepText())}">⚡ ${s.current}/${energyMax()}</b><small>Refills 1 every ${Math.round(ENERGY_REGEN_MS/60000)} minutes. Fights cost 1–5.</small>
+    <div class="ep-row"><button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>${capN ? `<button type="button" class="btn small ep-cap-btn" id="epCapsule" title="${escapeAttr(capTip)}" aria-label="${escapeAttr(capTip + ' · ' + TX('ui.rw4-use'))}"><span aria-hidden="true">🔋×${capN}</span> ${escapeHtml(TX('ui.rw4-use'))}</button>` : ''}</div>
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
@@ -13037,7 +13040,7 @@ function openEnergyPanel(anchor){
     else if(k === 'tick'){ st.current += 1; st.lastRegenAt = Date.now(); }
     else st.current = Math.max(0, st.current + (Number(k)||0));
     saveEnergyState(st); refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){}
-    const head = pop.querySelector('b'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()} Energy`; const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
+    const head = pop.querySelector('.ep-count'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()}`; /* PL2 (2026-10-25) */ const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
   });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
 }
@@ -17367,7 +17370,8 @@ const FEATURE_SPOTS = [
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
-  {key:'autobattle', icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'coop', icon:'👥', get name(){ return TX('ui.ar-group-name'); }, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
+  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
   {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
@@ -17443,7 +17447,9 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
   const past = (pr.completed||[]).some(id=> { const mid = String(id).split(':')[0]; const n = mapNumberOf(mid); return n != null && n >= 2; });
   if(loadTutorialDone() && (past || (sp && spotAvailable(sp, pr) && (pr.completed||[]).some(id=> String(id).startsWith(sp.map + ':'))))) u.unlocked.backpack = true; }catch(e){} saveUnlocks(u); }
 // Is a tab/sub-tab/feature name open? Anything no spot owns is always open.
-function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); return !sp || featureUnlocked(sp.key); }
+function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); if(sp && pl2SpotHidden(sp)) return false; return !sp || featureUnlocked(sp.key); }
+// 2026-10-25 (package PL2, owner 22:28 #6): a spot marked adminOnly (Whisper's Game) is neither on the map nor a tab for anyone but Admin Mode.
+function pl2SpotHidden(sp){ return !!(sp && sp.adminOnly && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
@@ -17454,7 +17460,7 @@ function activateSpot(spot){
     const script = DIALOGUES[spot.dialogue];
     // A first visit whose conversation offers to take you there (a reply with an act) lets that reply do it (2026-10-12).
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
-    playDialogue(spot.dialogue, {once:true, expand:true}); }
+    if(spot.dialogue) playDialogue(spot.dialogue, {once:true, expand:true}); } // (PL2: the Group Dungeon spot has no conversation)
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
@@ -17540,7 +17546,7 @@ function mapSpotsHTML(map, positions, progress){
   // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
   const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
     const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
-  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
     const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
@@ -17548,7 +17554,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -18736,7 +18742,7 @@ function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? 
 // rows keep the long words (boonText, boonCountLine).
 function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
 function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
-function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? TX('ui.pl1-boon-card', {have: st.have, total: st.total, theme: boonTheme(row.selfish)}) : boonCountLine(st); row.boonOn = !!st.on; return row; }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? `${st.have}/${st.total} ${boonTheme(row.selfish)}` /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
@@ -21566,7 +21572,7 @@ function renderArenaSubTabInner(body, title){
           <span class="ar3-today-when" title="${escapeAttr(TX('ui.ar-rules-tip'))}">⏳ ${escapeHtml(TX('ui.ar-new-in', {h: hrsLeft}))}${tomorrow ? ` <span class="ar3-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">→ ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''}</span></div>
         <div class="ar3-fields">${arenaFieldShowcaseHTML(rs)}</div>
       </section>
-      <section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}">
+      ${pl2ArenaTabsHTML() /* PL2 (2026-10-25, PL1-3): Modes | Co-op */}<section class="ar3-panel ar3-modes-panel" aria-label="${escapeAttr(TX('ui.ar-modes'))}"${pl2CoopPaneOn() ? ' hidden' : ''}>
         <div class="ar3-modes-head"><h3>${escapeHtml(TX('ui.ar-modes'))}</h3>
           <div class="arena-format ar3-format" role="radiogroup" aria-label="Deck format" title="${escapeAttr(std ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass & Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.')}">
             <button type="button" class="tk-speed-btn ${std?'':'is-on'}" role="radio" aria-checked="${!std}" data-arena-format="collection">📚 Collection</button>
@@ -21588,6 +21594,7 @@ function renderArenaSubTabInner(body, title){
   { const ab = $('arenaAchvBtn'); if(ab) ab.addEventListener('click', ()=>{ exitConquestImmersive && exitConquestImmersive(); switchTab('achievements'); }); }
   body.querySelectorAll('[data-arena-format]').forEach(b=> b.addEventListener('click', ()=>{ setStandardFormat(b.dataset.arenaFormat==='standard'); renderArenaSubTab(body); }));
   { const sb = $('stdDeckBtn'); if(sb) sb.addEventListener('click', ()=> openStandardDeckBuilder(()=> renderArenaSubTab(body))); }
+  body.querySelectorAll('[data-pl2-arena]').forEach(b=> b.addEventListener('click', ()=>{ pl2ArenaPane = b.dataset.pl2Arena; renderArenaSubTab(body); })); // PL2 (2026-10-25)
   $('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   { const abBtn = $('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); }); }
   $('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
@@ -24371,7 +24378,27 @@ function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); r
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
-function dungeonsTabOpen(){ try{ return dailyDungeonsOpen() || gdPlayerOpen(); }catch(e){ return false; } }
+// 2026-10-25 (package PL2, owner 00:02 PL1-3: "Dungeons Tab is not needed for a while - i plan to move all the dungeons much later on ... [the
+// co-op dungeon] It'll be just a dungeon on the map, and itl appear in arena, under coop tab."): the Dungeons tab is gone for players; it
+// stays in Admin Mode (and Dev Mode) for the daily dungeons' testing. The Group Dungeon is the Arena's Co-op pane (pl2ArenaTabsHTML) and a
+// 👥 spot on Map GD_OPEN_AFTER_MAP after its last fight (FEATURE_SPOTS 'coop', pl2OpenCoopPop). Was: dailyDungeonsOpen() || gdPlayerOpen().
+function dungeonsTabOpen(){ try{ return dungeonsAdminView(); }catch(e){ return false; } }
+let pl2ArenaPane = 'modes';
+function pl2CoopPaneOn(){ try{ return pl2ArenaPane === 'coop' && gdPlayerOpen(); }catch(e){ return false; } }
+function pl2ArenaTabsHTML(){
+  let open = false; try{ open = gdPlayerOpen(); }catch(e){} if(!open) return '';
+  const on = pl2CoopPaneOn(), b = (k, ico, label, sel)=> `<button type="button" class="tab-btn ${sel ? 'active' : ''}" role="tab" aria-selected="${sel}" data-pl2-arena="${k}"><span class="tab-emoji" aria-hidden="true">${ico}</span> ${escapeHtml(label)}</button>`;
+  return `<div class="pl2-arena-tabs" role="tablist">${b('modes', '⚔️', TX('ui.ar-modes'), !on)}${b('coop', '👥', TX('ui.pl2-coop'), on)}</div>`
+    + (on ? `<section class="ar3-panel pl2-coop-panel dungeons-panel" aria-label="${escapeAttr(TX('ui.pl2-coop'))}"><div class="dg-list">${groupDungeonCardHTML()}</div></section>` : '');
+}
+// the map's 👥 spot opens the Group Dungeon's card over the map (its buttons are the same delegated [data-gd-open] ones)
+function pl2OpenCoopPop(){
+  document.querySelectorAll('.pl2-coop-pop').forEach(x=> x.remove());
+  const w = document.createElement('div'); w.className = 'pl2-coop-pop'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', TX('ui.ar-group-name'));
+  w.innerHTML = `<div class="pl2-coop-back" data-pl2-coop-close></div><div class="panel dungeons-panel pl2-coop-box"><button type="button" class="pl2-coop-x" data-pl2-coop-close aria-label="✕">✕</button><div class="dg-list">${groupDungeonCardHTML()}</div></div>`;
+  document.body.appendChild(w);
+  w.addEventListener('click', e=>{ if(e.target.closest('[data-pl2-coop-close]') || e.target.closest('[data-gd-open]')) setTimeout(()=> w.remove(), 0); });
+}
 // The 🗝️ key beside Home and Arena (2026-10-16, user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top
 // right hand corner of Conquest Map UI. (same throughout)"): a small round button with today's ticket count, in the Play screens'
 // top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
@@ -41639,7 +41666,7 @@ async function showFightSign(){
 const COACH_SEEN_KEY = 'bramblewood_coach_seen';
 let coachSeen = (()=>{ try{ return new Set(JSON.parse(localStorage.getItem(COACH_SEEN_KEY)||'[]')); }catch(e){ return new Set(); } })();
 function markCoachSeen(id){ try{ if(matchState && /^(g-|pl-|leader|wait)/.test(id)) matchState._lastGuidedRound = matchState.round; }catch(e){} if(id === 'g-hand') setTimeout(()=> document.querySelectorAll('#handStrip .card-tile.tut-hl-cand').forEach(el=> el.classList.add('tut-highlight')), 0); { const i = GUIDED_STEPS.findIndex(st=> st.id===id); if(i >= 0 && matchState && matchState.mode==='tutorial' && !matchState.adminTest){ const tp = loadTutorialProgress(); if((tp.stepIndex||0) < i+1) noteTutorialProgress({level:2, step:id, stepIndex:i+1}); } }
-  coachSeen.add(id); try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
+  coachSeen.add(id); if(id === 'tl-what') ['tl-when', 'trig-off', 'trig-on'].forEach(k=> coachSeen.add(k)); /* PL2 (2026-10-25, #6): the one-step trigger lesson */ try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){} }
 function coachHandEl(pred){
   const m = matchState; if(!m) return null;
   const me = m.players[1]; const defs = getCardDefs();
@@ -41759,8 +41786,7 @@ function passiveTipCandidates(){
   out.push({id:'handLimit', text:TX('coach.you-can-hold-5-cards-extra'), anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
   // Triggers (2026-10-12, user: "Tutorials should teach about triggers - when they enable, when they disable, and their
   // visual indicators"): the ⚡ badges on the card's bottom edge, taught the first time each state shows up on the field.
-  out.push({id:'trig-off', text:TX('coach.this-badge-is-a-trigger-an'), anchor:()=> document.querySelector('#battlefieldEl .board-card .ab-trig.is-off')});
-  out.push({id:'trig-on', text:TX('coach.lit-up-means-ready-once-its'), anchor:()=> coachSeen.has('trig-off') ? document.querySelector('#battlefieldEl .board-card .ab-trig:not(.is-off)') : null});
+  // (trig-off / trig-on: retired 2026-10-25, package PL2, owner 00:02 #6: the trigger lesson is one step, TRIGGER_LESSON)
   // every skill/effect, the first time a card carrying it is on the field. Natural Leader gets no tip (2026-10-12, user:
   // "Natural Leader does not need a tutorial. this just might confuse the player").
   // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
@@ -41858,9 +41884,11 @@ function triggerLessonChip(m){
     for(const c of [...r.left, ...r.center, ...r.right]){ if(!(c.hp > 0)) continue; const el = boardCardEl(c.uid), chip = el && el.querySelector('.ab-trig:not(.is-spent)'); if(chip) return (m._tlChip = chip); } }
   return null;
 }
+// 2026-10-25 (package PL2, owner 00:02 #6, SS#2: "Simplify the trigger tutorial(s). Also don't explain every trigger - just say read the
+// card."): one short step on the chip with a Got it ("This chip is a trigger — read the card."); the list of the moments (tl-when) and the
+// two passive tips after it (trig-off, trig-on) are gone. Their ids are marked seen with it, so an older save never shows them.
 const TRIGGER_LESSON = [
-  {id:'tl-what', gate:true, pause:true, next:true, skip:true, text:TX('coach.tl-what'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
-  {id:'tl-when', gate:true, pause:true, skip:true, text:TX('coach.tl-when'), anchor:()=> matchState ? triggerLessonChip(matchState) : null},
+  {id:'tl-what', gate:true, pause:true, text:TX('coach.pl2-trigger'), anchor:()=> matchState ? triggerLessonChip(matchState) : null, alsoSeen:['tl-when', 'trig-off', 'trig-on']},
 ];
 function triggerLessonTip(m){
   if(!m || m.over || m.mode === 'tutorial' || m.mode === 'sandbox' || m.adminTest || m.fxLib) return null;

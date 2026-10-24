@@ -129,9 +129,9 @@ async def run(b, url, w):
     # 7. the Energy panel; 8. no egg toast
     pg = await fresh(b, url, w)
     r = await pg.evaluate("""(async()=>{ addEnergyCapsules(2); const e0 = settleEnergy().current; openEnergyPanel(document.getElementById('energyPill') || document.body);
-      const cap = document.querySelector('#energyPanel .ep-cap'); const txt = cap ? cap.textContent : '';
-      return {txt, btn: !!document.getElementById('epCapsule'), btnText: (document.getElementById('epCapsule') || {}).textContent, e0}; })()""")
-    ok('Energy capsules: 2' in r['txt'] and r['btn'] and r['btnText'].strip() == 'Use', f'7. the Energy panel shows the count and a Use button {r}')
+      const cap = document.getElementById('epCapsule'); const txt = cap ? cap.title : '';  // 2026-10-25 (PL2, owner 00:02 #7): the capsules are a 🔋×N Use button, named in its tooltip
+      return {txt, btn: !!cap, btnText: cap ? cap.textContent : '', e0}; })()""")
+    ok('Energy capsules: 2' in r['txt'] and r['btn'] and '×2' in r['btnText'] and r['btnText'].strip().endswith('Use'), f'7. the Energy panel shows the count and a Use button {r}')
     await shot(pg, 'energy', w)
     await pg.click('#epCapsule'); await pg.wait_for_timeout(300)
     r2 = await pg.evaluate("({caps: energyCapsules(), e: settleEnergy().current})")

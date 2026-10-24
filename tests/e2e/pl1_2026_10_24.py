@@ -144,8 +144,8 @@ async def run(b, url, w):
       return {before, saved, after: window.__dl.slice(), left: localStorage.getItem('bramblewood_pending_leader_lesson_v1')}; })()""")
     ok(not r['before'] and r['saved'] == 'old-shell' and 'lesson_leaders' in r['after'] and r['left'] is None, f'P24-18 the leader lesson waits for the Camp, then plays {r}')
     # P24-13: the Dungeons tab
-    r = await pg.evaluate("""(()=>{ saveTutorial2Done(); saveTutorialDone(); ['factionScreen','tutorialDeckPickerScreen','splashScreen'].forEach(id=>{ const e = document.getElementById(id); if(e) e.hidden = true; }); adminModeEnabled = false; devModeEnabled = false; const a = dungeonsTabOpen(); clearMaps(3, false); const b2 = dungeonsTabOpen(); return {early: a, afterMap3: b2}; })()""")
-    ok(r['early'] is False and r['afterMap3'] is True, f'P24-13 the Dungeons tab waits for Map 3 {r}')
+    r = await pg.evaluate("""(()=>{ saveTutorial2Done(); saveTutorialDone(); ['factionScreen','tutorialDeckPickerScreen','splashScreen'].forEach(id=>{ const e = document.getElementById(id); if(e) e.hidden = true; }); adminModeEnabled = false; devModeEnabled = false; const a = gdPlayerOpen(); clearMaps(3, false); const b2 = gdPlayerOpen(); return {early: a, afterMap3: b2, tab: dungeonsTabOpen()}; })()""")
+    ok(r['early'] is False and r['afterMap3'] is True and r['tab'] is False, f'P24-13 the Group Dungeon waits for Map 3; the Dungeons tab stays hidden (2026-10-25, PL2 / PL1-3) {r}')
     await close(pg)
 
     # P24-4: a set on the shop counter wears a ribbon, a single pack no band

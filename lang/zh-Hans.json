@@ -3311,7 +3311,6 @@
  "Next pack ({n} left)": "下一包（还剩 {n} 包）",
  "All {n} packs": "全部 {n} 包",
  "{n} packs opened": "已开 {n} 包",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "对方专属：牌组一半是{theme}",
  "Cave": "洞穴",
  "Insect": "昆虫",

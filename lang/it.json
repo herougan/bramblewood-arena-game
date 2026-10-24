@@ -3313,7 +3313,6 @@
  "Next pack ({n} left)": "Prossima bustina (ne restano {n})",
  "All {n} packs": "Tutte le {n} bustine",
  "{n} packs opened": "{n} bustine aperte",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "Loro: metà del loro mazzo {theme}",
  "Cave": "Grotta",
  "Insect": "Insetto",

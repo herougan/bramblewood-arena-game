@@ -3310,7 +3310,6 @@
  "Next pack ({n} left)": "Nächstes Pack (noch {n})",
  "All {n} packs": "Alle {n} Packs",
  "{n} packs opened": "{n} Packs geöffnet",
- "{have}/{total} {theme}": "{have}/{total} {theme}",
  "Theirs: half their deck {theme}": "Nur sie: die Hälfte ihres Decks {theme}",
  "Cave": "Höhle",
  "Insect": "Insekt",
