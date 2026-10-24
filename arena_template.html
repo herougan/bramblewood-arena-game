@@ -13406,6 +13406,14 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .ci-detail .cd-chips{display:flex; flex-wrap:wrap; gap:5px; margin:0 0 8px;}
 .ci-detail-stats{display:flex; gap:10px; margin:0 0 8px; font-weight:700;} .ci-detail-stats b{font:800 18px 'Baloo 2',system-ui,sans-serif;}
 .ci-detail h3{font:800 14px 'Baloo 2',system-ui,sans-serif; margin:6px 0 4px;} .ci-detail .flavor{margin-top:8px;} .ci-detail .cd-where{margin-top:8px; font-size:12.5px;}
+/* 2026-10-25 (package PL2, owner 22:28 #9, SS#2): the heading inside the dark abilities box reads light; where the card comes from is a square
+   pill ("📦 Pack 1"); the shared card popover opens over the pack opener too (it sat under the overlay: 2100 vs 9500), on 1 s hover / a hold */
+.ci-detail .cd-abilities h3{color:var(--ink);} /* the box takes the theme's surface; its heading the theme's ink (it inherited the parchment's fixed dark brown) */
+.ci-detail .pl2-where{margin-top:10px;}
+.pl2-where-pill{display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:6px; background:#ead7ad; color:#3a2814; border:1.5px solid #a77d45;
+  font:800 13.5px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 4px rgba(60,35,10,.25);}
+.pl2-where-pill.is-text{font:700 12.5px/1.3 Nunito,system-ui,sans-serif;}
+body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (min-width:761px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
   .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}

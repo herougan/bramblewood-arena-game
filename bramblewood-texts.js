@@ -762,6 +762,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.lit-up-means-ready-once-its": "⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.",
   "ui.pl2-reward": "reward",
   "ui.pl2-rank-reward": "{rank} reward",
+  "ui.pl2-pack-n": "Pack {n}",
   "ui.pl2-coop": "Co-op",
   "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
   "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",

@@ -9612,6 +9612,7 @@
   .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{filter:none; transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(22%, 230% / var(--n), 80%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));}
   .rw-cards.pl2-stack > .pl2-stack-n{grid-area:s; align-self:start; justify-self:end; z-index:40; margin:-6px -10px 0 0; padding:1px 7px; border-radius:999px; background:var(--accent, #c9852b); color:#fff; font:800 13px/18px 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 3px rgba(0,0,0,.4); transition:opacity .2s;}
   .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-stack-n{opacity:0;}
+  @media (max-width:700px){ .rw-cards.pl2-stack:is(:hover, :focus, :focus-within) > .pl2-sk{transform:translateX(calc((var(--i) - (var(--n) - 1) / 2) * clamp(14%, 120% / var(--n), 40%))) rotate(calc((var(--i) - (var(--n) - 1) / 2) * 4deg));} }
   .rw-card .pl2-rw-n{position:absolute; top:4px; right:4px; z-index:6; padding:0 6px; border-radius:9px; background:rgba(20,14,8,.85); color:#ffe9b8; font:800 12px/18px 'Baloo 2',system-ui,sans-serif;}
   .rw-card.pl2-rank-reward{animation:pl2RrPop .9s cubic-bezier(.3,1.5,.5,1) both;}
   .rw-card.pl2-rank-reward::after{content:''; position:absolute; inset:-4px; border-radius:10px; pointer-events:none; z-index:8; background:radial-gradient(ellipse at 50% 45%, rgba(255,255,255,.98), rgba(255,236,170,.75) 45%, rgba(255,214,120,0) 75%); animation:pl2RrFlash .9s ease-out both;}
@@ -13452,6 +13453,14 @@ body.ne-shift .ne-shift-hint kbd, .ne-shift-hint.is-on kbd{color:var(--ink);}
 .ci-detail .cd-chips{display:flex; flex-wrap:wrap; gap:5px; margin:0 0 8px;}
 .ci-detail-stats{display:flex; gap:10px; margin:0 0 8px; font-weight:700;} .ci-detail-stats b{font:800 18px 'Baloo 2',system-ui,sans-serif;}
 .ci-detail h3{font:800 14px 'Baloo 2',system-ui,sans-serif; margin:6px 0 4px;} .ci-detail .flavor{margin-top:8px;} .ci-detail .cd-where{margin-top:8px; font-size:12.5px;}
+/* 2026-10-25 (package PL2, owner 22:28 #9, SS#2): the heading inside the dark abilities box reads light; where the card comes from is a square
+   pill ("📦 Pack 1"); the shared card popover opens over the pack opener too (it sat under the overlay: 2100 vs 9500), on 1 s hover / a hold */
+.ci-detail .cd-abilities h3{color:var(--ink);} /* the box takes the theme's surface; its heading the theme's ink (it inherited the parchment's fixed dark brown) */
+.ci-detail .pl2-where{margin-top:10px;}
+.pl2-where-pill{display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:6px; background:#ead7ad; color:#3a2814; border:1.5px solid #a77d45;
+  font:800 13.5px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 0 rgba(255,255,255,.6) inset, 0 2px 4px rgba(60,35,10,.25);}
+.pl2-where-pill.is-text{font:700 12.5px/1.3 Nunito,system-ui,sans-serif;}
+body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (min-width:761px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
   .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}
@@ -43172,6 +43181,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "coach.lit-up-means-ready-once-its": "⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.",
   "ui.pl2-reward": "reward",
   "ui.pl2-rank-reward": "{rank} reward",
+  "ui.pl2-pack-n": "Pack {n}",
   "ui.pl2-coop": "Co-op",
   "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
   "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
@@ -49313,7 +49323,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b3378ccc933d', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '5fd1520ebdfe', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -55525,11 +55535,19 @@ function neInspectDetailHTML(d){
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity || 'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species || []).slice(0, 2).map(sp=> `<span class="cd-chip cd-species">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`)).join('');
   let where = ''; try{ where = cardWhereToGetText(d); }catch(e){}
+  // 2026-10-25 (package PL2, owner 22:28 #9: "Card detail: where to get it changes to -> a square pill that says 'Pack 1' etc."; SS#2: the
+  // "Abilities" heading and "Where to get it" were dark on dark): where it comes from is one square pill, "📦 Pack 1" for a pack card (the
+  // pack's shop name, Hedgerow Pouch, in its tooltip; docs/progression-plan.md calls them Pack 1 / 2 / 3), else the source's own line; no
+  // "Where to get it" label. The pill and the heading take colours that read on the detail's parchment and on the dark abilities box.
+  let wherePill = ''; try{ const src = cardSourceOf(d), tier = Number(src && src.tier) || 0;
+    if(src && src.kind === 'pack' && d.faction !== 'base' && tier >= 1 && tier <= 6){ const nm = typeof packTierName === 'function' ? packTierName(tier) : '';
+      wherePill = `<span class="pl2-where-pill" title="${escapeAttr(nm || where)}">📦 ${escapeHtml(TX('ui.pl2-pack-n', {n: tier}))}</span>`; }
+    else if(where) wherePill = `<span class="pl2-where-pill is-text">${escapeHtml(where)}</span>`; }catch(e){}
   return `<aside class="ci-detail" aria-label="${escapeAttr(d.name || '')}">
     <div class="cd-chips">${chips}</div>
     <div class="cd-abilities"><h3>Abilities</h3>${lines.length ? abilityListHTML(lines) : '<p class="panel-sub">No special abilities — a plain stat card.</p>'}</div>
     ${d.flavor ? `<div class="flavor">${d.flavor}</div>` : ''}
-    ${where ? `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(where)}</div>` : ''}
+    ${wherePill ? `<div class="pl2-where" aria-label="${escapeAttr(where)}">${wherePill}</div>` : ''}
   </aside>`;
 }
 // The fly-in: the big card starts where the tapped card was (its size and place) and grows into place, the detail column slides in after it.

@@ -9650,11 +9650,19 @@ function neInspectDetailHTML(d){
   const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity || 'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
     .concat((d.species || []).slice(0, 2).map(sp=> `<span class="cd-chip cd-species">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`)).join('');
   let where = ''; try{ where = cardWhereToGetText(d); }catch(e){}
+  // 2026-10-25 (package PL2, owner 22:28 #9: "Card detail: where to get it changes to -> a square pill that says 'Pack 1' etc."; SS#2: the
+  // "Abilities" heading and "Where to get it" were dark on dark): where it comes from is one square pill, "📦 Pack 1" for a pack card (the
+  // pack's shop name, Hedgerow Pouch, in its tooltip; docs/progression-plan.md calls them Pack 1 / 2 / 3), else the source's own line; no
+  // "Where to get it" label. The pill and the heading take colours that read on the detail's parchment and on the dark abilities box.
+  let wherePill = ''; try{ const src = cardSourceOf(d), tier = Number(src && src.tier) || 0;
+    if(src && src.kind === 'pack' && d.faction !== 'base' && tier >= 1 && tier <= 6){ const nm = typeof packTierName === 'function' ? packTierName(tier) : '';
+      wherePill = `<span class="pl2-where-pill" title="${escapeAttr(nm || where)}">📦 ${escapeHtml(TX('ui.pl2-pack-n', {n: tier}))}</span>`; }
+    else if(where) wherePill = `<span class="pl2-where-pill is-text">${escapeHtml(where)}</span>`; }catch(e){}
   return `<aside class="ci-detail" aria-label="${escapeAttr(d.name || '')}">
     <div class="cd-chips">${chips}</div>
     <div class="cd-abilities"><h3>Abilities</h3>${lines.length ? abilityListHTML(lines) : '<p class="panel-sub">No special abilities — a plain stat card.</p>'}</div>
     ${d.flavor ? `<div class="flavor">${d.flavor}</div>` : ''}
-    ${where ? `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(where)}</div>` : ''}
+    ${wherePill ? `<div class="pl2-where" aria-label="${escapeAttr(where)}">${wherePill}</div>` : ''}
   </aside>`;
 }
 // The fly-in: the big card starts where the tapped card was (its size and place) and grows into place, the detail column slides in after it.
