@@ -48,7 +48,7 @@ const sbx = {getCardDefs: ()=> defs, RARITY_DEFS, RANK_ORDER: ['E','D','C','B','
   unlockCardForPlayer: id=>{ granted.push(id); return true; }, Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, Array, Set, JSON, out: {}};
 vm.createContext(sbx);
 vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'),
-  constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), constSrc('SKIRMISH_OWN_DROP_MULT'), constSrc('SKIRMISH_OWN_DROP_BY_RARITY'), constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'),
+  constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), constSrc('SKIRMISH_OWN_DROP_MULT'), constSrc('SKIRMISH_OWN_DROP_BY_RARITY'), constSrc('SKIRMISH_OWN_REPEAT_DROP') /* BAL2 */, constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'),
   ...['rarityAtLeastRare', 'nodeIsEliteForRank', 'cardRewardIsChallenge', 'cardRewardRankFor', 'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll',
     'rollSkirmishCardDrop', 'fightDropEnergy', 'dropShieldBonus', 'fightCardDropChance', 'ticketedDungeonDropChance', 'isTicketedDungeonFight', 'skirmishOwnDropShare', 'skirmishOwnDropIds',
     'nodeCardDropChance', 'skirmishOwnDropOdds', 'rollCardDrop'].map(fnSrc)].join('\n') +
@@ -63,13 +63,13 @@ for(const kind of Object.keys(WANT)){
   console.log(`  ${kind.padEnd(9)} ${N} wins: ${pct(got / N)} dropped a card (want ${WANT[kind] * 100}%)`);
   ok(Math.abs(got / N - WANT[kind]) < 0.006, `19. ${kind}: ${pct(got / N)} of ${N} wins`);
 }
-{ // a reward-card skirmish: 1% on its first clear, 3% (3x) on repeats, the card at its rarity's share (Common 60%)
+{ // a reward-card skirmish: 1% on its first clear; 2026-10-24 (package BAL2, DF-2): on repeats its own card 10% (any rarity), else the pack card at 1%
   const node = {key: 'own', kind: 'skirmish', deck: {}};
-  ok(F.nodeCardDropChance('m15', node) === 0.01 && F.nodeCardDropChance('m15', node, {repeat: true}) === 0.03, '19. a reward-card skirmish: 1% first clear, 3% on repeats');
+  ok(F.nodeCardDropChance('m15', node) === 0.01 && F.nodeCardDropChance('m15', node, {repeat: true}) === 0.109, '19. a reward-card skirmish: 1% first clear, 10.9% on repeats (BAL2)');
   rnd = seeded(77); let any = 0, own = 0; for(let i = 0; i < N; i++){ const id = F.rollCardDrop(node, 'm15', {rank: 'S', firstClear: false}); if(id){ any++; if(id === 'terrier-pup') own++; } }
-  console.log(`  repeat wins of a skirmish paying a Common, ${N} rolls: ${pct(any / N)} (want 3%), the card itself ${pct(own / N)} (want 1.80%)`);
-  ok(Math.abs(any / N - 0.03) < 0.005 && Math.abs(own / N - 0.018) < 0.004, '19. the repeat roll: 3%, then the card at 60%');
-  const o = F.skirmishOwnDropOdds('m15', node); ok(o && Math.abs(o.own[0].p - 0.018) < 1e-9 && Math.abs(o.pack - 0.012) < 1e-9, '19. the panel shows 1.8% + 🃏 1.2%'); }
+  console.log(`  repeat wins of a skirmish paying a Common, ${N} rolls: ${pct(any / N)} (want 10.9%), the card itself ${pct(own / N)} (want 10%)`);
+  ok(Math.abs(any / N - 0.109) < 0.01 && Math.abs(own / N - 0.10) < 0.009, '19. the repeat roll (BAL2): the card itself 10%, else a pack card at 1%');
+  const o = F.skirmishOwnDropOdds('m15', node); ok(o && Math.abs(o.own[0].p - 0.10) < 1e-9 && Math.abs(o.pack - 0.009) < 1e-9, '19. the panel shows 10% + 🃏 0.9%'); }
 { // the ticketed (daily) dungeons keep their higher rate
   dailyDungeon = true;
   ok(F.nodeCardDropChance('dg', {key: 'f1', kind: 'skirmish'}) === 0.07 && F.nodeCardDropChance('dg', {key: 'f10', kind: 'miniboss'}) === 0.14, '19. a daily-dungeon floor keeps 7%, a mini-boss floor 14%');
@@ -82,7 +82,8 @@ ok(/DROP_CHANCE_CAP/.test(fnSrc('ticketedDungeonDropChance')) && !/DROP_CHANCE_C
 // ======================= 44. Raid Ticket notices =======================
 { const W = vm.runInNewContext('(' + constSrc('QUEST_RANK_WEIGHT').replace(/^\nconst QUEST_RANK_WEIGHT = /, '').replace(/;.*$/, '') + ')');
   const T = vm.runInNewContext('(' + constSrc('QUEST_RAID_TICKET_CHANCE').replace(/^\nconst QUEST_RAID_TICKET_CHANCE = /, '').replace(/;.*$/, '') + ')');
-  ok(T.S === 0.4 && T.SS === 0.4 && T.SSS === 0.4, `44. a notice's Raid Ticket: S 40%, SS 40%, SSS 40% (${JSON.stringify(T)})`);
+  // 2026-10-24 (package BAL2, RW3-2): the SS / SSS notices themselves are rarer (SS 0.5%), so their ticket cut does not stack: SS 60%, SSS 100%, S 40%
+  ok(T.S === 0.4 && T.SS === 0.6 && T.SSS === 1, `44. a notice's Raid Ticket: S 40%, SS 60%, SSS 100% (${JSON.stringify(T)})`);
   const ranks = Object.keys(W), tot = ranks.reduce((t, k)=> t + W[k], 0);
   const roll = r=>{ let x = r() * tot; for(const k of ranks){ x -= W[k]; if(x <= 0) return k; } return ranks[ranks.length - 1]; };
   const r = seeded(44); let s = 0, high = 0;
@@ -91,8 +92,8 @@ ok(/DROP_CHANCE_CAP/.test(fnSrc('ticketedDungeonDropChance')) && !/DROP_CHANCE_C
   console.log(`  notices, ${N} simulated weeks of 6 a day: S tickets ${perWeekS.toFixed(3)} a week (want 0.5-0.7), SS + SSS tickets ${perMonthHigh.toFixed(3)} a month (want 0.5-1: once every 1-2 months)`);
   ok(perWeekS >= 0.5 && perWeekS <= 0.7, `44. S notices bring 0.5-0.7 Raid Tickets a week (${perWeekS.toFixed(3)})`);
   ok(perMonthHigh >= 0.5 && perMonthHigh <= 1, `44. SS and SSS notices together bring one every 1-2 months (${perMonthHigh.toFixed(3)} a month)`);
-  const exact = 42 * W.S / 100 * T.S, exactHigh = 6 * 30.44 * (W.SS + W.SSS) / 100 * T.SS;
-  ok(Math.abs(exact - 0.588) < 0.001 && Math.abs(exactHigh - 0.7306) < 0.001, `44. the math: 42 x 3.5% x 40% = ${exact.toFixed(3)} a week; 182.6 x 1.0% x 40% = ${exactHigh.toFixed(3)} a month`); }
+  const exact = 42 * W.S / 100 * T.S, exactHigh = 6 * 30.44 * (W.SS / 100 * T.SS + W.SSS / 100 * T.SSS);
+  ok(Math.abs(exact - 0.588) < 0.001 && Math.abs(exactHigh - 0.9132) < 0.001, `44. the math: 42 x 3.5% x 40% = ${exact.toFixed(3)} a week; 182.6 x (0.5% x 60% + 0.2% x 100%) = ${exactHigh.toFixed(3)} a month`); }
 
 // ======================= 69. pack foils =======================
 { const block = src.slice(src.indexOf('const SHOP_PACKS_DEFAULT = ['), src.indexOf('];', src.indexOf('const SHOP_PACKS_DEFAULT = [')) + 2);

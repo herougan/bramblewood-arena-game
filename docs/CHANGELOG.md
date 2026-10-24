@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package BAL2: the balance pass)
+- **Enemy levels by the owner's map (10-23 20:44 / 22:23 #1):** Lv 5 at Map 20, 7 at 40, 8 at 60, 9 at 80, 10 at 100 (with Lv 2 / 3 / 4 / 6 at Maps
+  5 / 10 / 15 / 30 between them), the mega boss Lv 11. A level arrives in its map's hardest fights first (the boss, mini-bosses and elites; also the
+  last skirmish or two when the level before waited 10 maps or more) and spreads to every fight a few maps on. Maps 0-1 and 2-4 stay as the owner
+  set them. `roadEnemyScheduleLevel`, `roadFightHardness`. LEAD's 57 per-fight Enemy levels were re-based keeping their strength (owner call BAL2-1).
+- **Enemy decks follow the copy limits** (22:23 #4): the 6 road decks and the Long Burrow's floors that held too many copies are fitted (an excess copy
+  goes to a card of the same deck); the ambush deck holds 16-20 cards (#5).
+- **Rares (22:23 #2):** Map 5's only Rare is its boss's leader (the Alligator Gar left 5-4, 5-5, 5-6); no normal skirmish holds a Rare before Map 10
+  (6-4, 7-3, 8-4, 8-5, 8-6, 9-3, 9-4 re-decked with the map's Uncommons, 2 copies of the new leader), nor a Very Rare before Map 15 (10-5, 13-4).
+  `roadSkirmishCap` (main road; side maps keep the older steps, BAL2-2). Battle ratings: `docs/balance/bal2-decks-2026-10-24.json`.
+- **DF-1:** the budget's Map term is 0.2 a map again; a card's map is the first main-line map it can be had on (a reward there, or out of the pack
+  that map pays: Pack 1 Map 0, Pack 2 Map 7, Pack 3 Map 14). `canonical/card-obtain-maps.json` regenerated; 254 cards on their line rose to the new
+  one, 36 over the new budget went down, 10 big cuts held (BAL2-5). `tools/bal2_refit_2026_10_24.js`, `docs/balance/bal2-refit-2026-10-24.json`.
+- **DF-2:** Base cards stop at Lv 4 and pay the full Forge cost (the Forge says so; no limit break or Prestige for them); a skirmish's own first-clear
+  card drops 10% of its repeat wins, any rarity. The grind to each Forge tier is in `docs/progression-plan.md`.
+- **RW3-2:** SS notices about once a month and SSS every 2-3 months for a full-clearing player (SS 0.8% -> 0.5%); the SS / SSS tickets go back to 60% /
+  100% so the two cuts don't stack.
+- **N22-10:** Bounty re-measured on randomised Lumber / Wait units: 2.5 a point (was 3); four Bounty cards rose a point; Bounty 2+ measures less than
+  Bounty 1 (BAL2-4).
+- **T21-2:** the Caldera Wyrm is now the 20-B-4 leader you get for clearing it (4/7 at Level 1, its 29 lost Health on that bramble); 18-A-5 Vulture
+  Road retuned 96% -> 82.5% (the whole Pale Desert sits at 94-100%, BAL2-3).
+- **T21-4:** `tests/card-pass-2026-10-19.js` and `tests/shield-call.js` test today's rules and pass; the notes above `cardRewardRankFor` say the rule
+  of today (S cap, SS for challenge cards); `rarityIntroMap` reads the main-line reveal (Epic 22, Heroic 25). Stale checks in level-curve, side-maps,
+  gd, gd2, rw3 and forge-curve updated with dated notes.
+- **The road (Maps 0-24):** 31 of 179 fights green (29 before BAL2): `docs/balance/bal2-road-2026-10-24.md`. New test `tests/bal2-2026-10-24.js`.
+
 ## 2026-10-24 (package TT: the Triggers lesson)
 - **A tutorial for triggers (owner 13:16 #4):** the first time a card with a trigger is in your hand or on the field (the enemy's too), play pauses
   on a spotlight over its trigger chip (⚡ → what it does). Step 1: what a trigger is (left says when, right says what; rest the pointer on it to

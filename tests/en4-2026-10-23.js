@@ -136,9 +136,10 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const NEWC = {'great-skua': ['hemorrhage', 'mc', 1, 3], 'bloodscent-shark': ['hemorrhage', 'm7', 2, 10], 'cane-toad': ['greaterPoison', 'm8', 1, 6], 'inland-taipan': ['greaterPoison', 'md', 3, 18],
     'oyster-bank': ['shoreUp', 'mb', 1, 2], 'musk-ox-matriarch': ['shoreUp', 'm6', 3, 17]};
   if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
+  const df1 = (tier, mapN, rarity)=> Math.max(Math.min({1: 0, 2: 7, 3: 14}[tier], mapN), ({uncommon: 1, rare: 5, veryrare: 10, superrare: 20})[rarity] || 0); // 2026-10-24 (package BAL2, DF-1): a pack card's map is the first main-line map it can be had on (its pack: Pack 1 Map 0, 2 Map 7, 3 Map 14, or its pool map if earlier), not its pool map
   const SC = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC, T = SC.make(sc);
   Object.entries(NEWC).forEach(([id, [k, map, tier, mapN]])=>{ const x = c(id); const b = x && T.budget(x, {level: 1});
-    ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && pools[map].cards.includes(id) && obtain[id] === mapN,
+    ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && pools[map].cards.includes(id) && (obtain[id] || 0) === df1(tier, mapN, x.rarity),
       `new card ${id}: ${k}, Pack ${tier} @ ${map} (Map ${mapN}), in its pool (${x && JSON.stringify(x.source)}, obtain ${obtain[id]})`);
     ok(x && b && b.ok && b.x1 <= b.N, `${id} inside the budget (${x && x.attack}/${x && x.health}, 2A+H+S ${b && b.x1} <= N ${b && b.N})`);
     ok(x && x.uuid && x.numericId, `${id} has its uuid and numericId`); });
@@ -152,9 +153,12 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8')).maps, obtain = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps;
   const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')); if(!process.argv.includes('--world=half')) process.argv.push('--world=half');
   const T = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC.make(sc);
+  const df1 = (tier, mapN, rarity)=> Math.max(Math.min({1: 0, 2: 7, 3: 14}[tier], mapN), ({uncommon: 1, rare: 5, veryrare: 10, superrare: 20})[rarity] || 0); // 2026-10-24 (package BAL2, DF-1): a pack card's map is the first main-line map it can be had on (its pack: Pack 1 Map 0, 2 Map 7, 3 Map 14, or its pool map if earlier), not its pool map
+  // BAL2 (DF-1): their stats are the BAL2 re-fit's line where it moved them (the map term changed)
+  const bal2 = x=> /2026-10-24 BAL2 re-fit/.test(x.creatorNote || '');
   const MOVED = {'lodge-engineer': ['mp', 1, 6, '3/12' /* 2026-10-24 (package EN5): Timbered, re-fitted 3/13 -> 3/12 */], 'mallard-marauder': ['mg', 2, 7, '2/5'], 'ember-tetra': ['m2', 1, 4, '2/6']};
   Object.entries(MOVED).forEach(([id, [map, tier, n, line]])=>{ const x = c(id), b = T.budget(x, {level: 1}); const top = map === 'm2' ? pools.m2.cards : pools.mb.submaps[map] || [];
-    ok(x.source && x.source.kind === 'pack' && x.source.map === map && x.source.tier === tier && obtain[id] === n && `${x.attack}/${x.health}` === line && b.ok && b.x1 <= b.N && top.includes(id),
+    ok(x.source && x.source.kind === 'pack' && x.source.map === map && x.source.tier === tier && (obtain[id] || 0) === df1(tier, n, x.rarity) && (`${x.attack}/${x.health}` === line || bal2(x)) && b.ok && b.x1 <= b.N && top.includes(id),
       `${id}: Pack ${tier} @ ${map} (Map ${n}), ${x.attack}/${x.health} inside that budget (${b.x1} <= ${b.N})`); });
   ['mudpuppy', 'beetle-battering-ram', 'siege-rhino', 'fox-kit', 'cinder-gecko', 'cinder-hornet', 'mangrove-mudskipper', 'minnow-skitter'].forEach(id=> ok(!/package EN4/.test(c(id).creatorNote || ''), `${id}: kept where RW5 had it`));
   const k = c('mangrove-kingfisher'); ok(k.rarity === 'rare' && k.source.kind === 'map' && k.source.node === '9-6', `the Mangrove Kingfisher is 9-6's (elite) reward, not 9-3's (${JSON.stringify(k.source)})`);
@@ -186,7 +190,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN4\)/.test(cat) && /en4GreaterPoison/.test(cat) && /Reverted by EN4/.test(cat), 'docs/effects-catalogue.md: EN4');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN4-1', 'EN4-2', 'EN4-3', 'EN4-4', 'EN4-5'].every(i=> ids.includes(i)), 'decisions EN4-1 .. EN4-5');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 30000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-24 (package EN5): later entries sit above it
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 60000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-24 (BAL2): 60000 // 2026-10-24 (package EN5): later entries sit above it
 
 console.log(`en4-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

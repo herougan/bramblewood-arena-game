@@ -215,6 +215,15 @@ function writeLines(rows, tuned){
   fs.writeFileSync(APP, s); return n;
 }
 
+// 2026-10-24 (package BAL2): the level LEAD saw for a fight, and the decks BAL2 re-decked (see check)
+const BAL2_DECKS = new Set((()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal2-decks-2026-10-24.json'), 'utf8')).rows.map(r=> r.fight); }catch(e){ return []; } })());
+function leadEraLevel(x){
+  const i = B.src.indexOf('{ key:"' + x.key + '"'), line = i < 0 ? '' : B.src.slice(i, B.src.indexOf('\n', i));
+  const m = /re-based on the new level schedule, ([0-9.]+) -> [0-9.]+/.exec(line); if(m) return +m[1];
+  if(x.enemyLevel != null && x.enemyLevel !== '') return x.enemyLevel;
+  if(/raidboss|megaraid/.test(x.kind || '')) return undefined; // a raid boss: the road never levelled it
+  return require('./bal2_2026_10_24.js').oldSchedule(x);
+}
 function check(){
   const saved = loadSaved(), by = {}; saved.fights.forEach(f=>{ by[f.mapId + ':' + f.key] = f; });
   let bad = 0, n = 0; const say = (...a)=>{ bad++; console.log('FAIL', ...a); };
@@ -223,7 +232,11 @@ function check(){
     if(PAIRS[x.key] && L.length !== 2) say(x.key, 'paired boss without 2 leaders');
     const f = by[m.id + ':' + x.key]; if(!f){ say(x.key, 'not in the saved plan'); continue; }
     if(f.kept) continue;
-    const v = G.enemyDeckLevel(x); if(Math.abs(v / f.before - 1) > TOL + 1e-9 && !BR_EXCEPT[x.key]) say(x.key, 'BR', f.before, '->', v);
+    // 2026-10-24 (package BAL2): the owner's new level schedule (10-23 20:44 / 22:23 #1) raised the levels the BR counts on purpose, so LEAD's
+    // "BR within 5%" is checked at the level LEAD saw (its own Enemy level before BAL2's re-base, else the old schedule); a deck BAL2 re-decked
+    // (the copy ladder, the Rare rule: docs/balance/bal2-decks-2026-10-24.json) is BAL2's, reported there.
+    if(BAL2_DECKS.has(x.code || x.key)) continue;
+    const xl = Object.assign({}, x, {enemyLevel: leadEraLevel(x)}); G.NODE_MAP_HINT.set(xl, m.id); const v = G.enemyDeckLevel(xl); if(Math.abs(v / f.before - 1) > TOL + 1e-9 && !BR_EXCEPT[x.key]) say(x.key, 'BR', f.before, '->', v);
     Object.keys(x.deck).forEach(id=>{ if(x.deck[id] > cap(id)) say(x.key, id, 'x' + x.deck[id], 'over the copy ladder', cap(id)); });
   }
   console.log(bad ? bad + ' failures' : `ok: ${n} fights (elite and above, Maps 0-24) lead; BR within ${TOL * 100}% (except ${Object.keys(BR_EXCEPT).join(', ')}); copy ladder`);

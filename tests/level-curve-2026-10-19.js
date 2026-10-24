@@ -35,10 +35,12 @@ const fightAt = (mapNo, kind)=>{ const m = mains[mapNo]; const n0 = m.nodes.find
     if(L < last - 1e-9) mono = false; last = L; if(no >= 2 /* 2026-10-23 (EB): Maps 0-1 follow EARLY_ENEMY_LEVEL */ && !near(L, Math.round(G.roadEnemyScheduleLevel(no) * 100) / 100, 0.001)) line = false; }
   ok(mono, '1. the enemy\'s level only rises along the road');
   ok(line && !G.ROAD_LEVEL_CURVE.enemyKeepsPace, '1. the enemy\'s level is the owner\'s schedule (BF3; enemyKeepsPace off)');
+  // 2026-10-24 (package BAL2, owner 10-23 20:44 / 22:23 #1): each level is introduced on its map in the hardest fights first (roadFightHardness),
+  // then spreads; a fight's place counts, a boss no longer counts two maps on. Was: Lv 1 -> 2 on Maps 5-9, Lv 2 at Map 10, +0.2 a map (Lv 4 at Map 20).
   ok(G.roadEnemyLevelExact(fightAt(0, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(1, 'skirmish')) === 0 && G.roadEnemyLevelExact(fightAt(2, 'skirmish')) === 1 && G.roadEnemyLevelExact(fightAt(4, 'skirmish')) === 1
-    && near(G.roadEnemyLevelExact(fightAt(7, 'skirmish')), 1.5, 0.01) && near(G.roadEnemyLevelExact(fightAt(9, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(10, 'skirmish')), 2, 0.01) && near(G.roadEnemyLevelExact(fightAt(20, 'skirmish')), 4, 0.01),
-    '1. the enemy: Lv 0 on Map 0 and from Lv 0 on Map 1 (EB, 2026-10-23), Lv 1 on Maps 2-4, Lv 1 -> 2 on Maps 5-9, Lv 2 at Map 10, then +0.2 a map (Lv 4 at Map 20)');
-  ok(G.roadEnemyLevelExact(fightAt(14, 'boss')) > G.roadEnemyLevelExact(fightAt(14, 'skirmish')) && G.roadEnemyLevelExact(fightAt(14, 'elite')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a boss fights two maps further on; an elite on its map\'s line');
+    && G.roadEnemyLevelExact(fightAt(7, 'skirmish')) === 1 && G.roadEnemyLevelExact(fightAt(9, 'skirmish')) === 2 && G.roadEnemyLevelExact(fightAt(10, 'skirmish')) === 2 && G.roadEnemyLevelExact(fightAt(20, 'skirmish')) === 4 && G.roadEnemyLevelExact(fightAt(20, 'boss')) === 5,
+    '1. the enemy: Lv 0 on Map 0 and from Lv 0 on Map 1 (EB), Lv 1 on Maps 2-4, Lv 2 from Map 5 (hardest fights first, every fight by Map 9), Lv 2 on Map 10\'s first skirmish, Lv 4 on Map 20\'s and Lv 5 in its boss (BAL2)');
+  ok(G.roadEnemyLevelExact(fightAt(15, 'boss')) === 4 && G.roadEnemyLevelExact(fightAt(15, 'elite')) === 4 && G.roadEnemyLevelExact(fightAt(15, 'skirmish')) === 3 && G.roadEnemyLevelExact(fightAt(14, 'boss')) === G.roadEnemyLevelExact(fightAt(14, 'skirmish')), '1. a new level comes in the boss and the elites first (Map 15: Lv 4 there, Lv 3 in the first skirmish; Map 14 all Lv 3) (BAL2)');
   const w = G.CONQUEST_MAPS.find(m=> m.id === 'm11').nodes.find(x=> x.kind === 'worldboss'); G.NODE_MAP_HINT.set(w, 'm11');
   ok(w && G.roadMapOfFight(w) === 20 + G.ROAD_LEVEL_CURVE.bossMaps && G.roadEnemyLevelExact(w) > 1, '1. the Map 20 world boss is levelled like a boss, two maps on (it fought at its printed level before)');
   // 2026-10-19 (BF): levelForGain inverts the BF curve's mean gain (FORGE_MEAN_GAIN); every level is a stat step now

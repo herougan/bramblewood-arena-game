@@ -1,0 +1,2124 @@
+{
+ "_about": "Package BAL2 (2026-10-24): the DF-1 re-fit (node tools/bal2_refit_2026_10_24.js). up: on its old line, the new Map term gave room; down: over the new budget; held: the cut would be over 25% of 2A+H, kept at its stats; noLine: no legal line at all, kept (flagged).",
+ "moves": [
+  {
+   "id": "ent",
+   "from": "2/22",
+   "to": "2/26",
+   "why": "room",
+   "map": "0 -> 21"
+  },
+  {
+   "id": "dolphin-knight",
+   "from": "4/7",
+   "to": "4/8",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "caustic-scorpion",
+   "from": "1/16",
+   "to": "1/18",
+   "why": "room",
+   "map": "18 -> 18"
+  },
+  {
+   "id": "yeti",
+   "from": "5/28",
+   "to": "5/29",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "scraper-of-skies",
+   "from": "0/27",
+   "to": "0/28",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "otter-scout",
+   "from": "1/12",
+   "to": "1/13",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "otter-shieldback",
+   "from": "4/15",
+   "to": "4/16",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "owl-fletcher",
+   "from": "1/6",
+   "to": "1/7",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "great-horned-owl",
+   "from": "2/14",
+   "to": "2/15",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "war-hound",
+   "from": "3/14",
+   "to": "3/15",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "armored-mastiff",
+   "from": "5/21",
+   "to": "5/22",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "silverback-brawler",
+   "from": "1/20",
+   "to": "1/21",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "trapdoor-spider",
+   "from": "4/6",
+   "to": "4/7",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "from": "4/15",
+   "to": "4/16",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "gorge-wyrm",
+   "from": "2/25",
+   "to": "2/26",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "monarch-wingblade",
+   "from": "3/5",
+   "to": "3/6",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "tide-spirit",
+   "from": "5/5",
+   "to": "6/6",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "minnow-skitter",
+   "from": "1/8",
+   "to": "1/9",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "pike-lancer",
+   "from": "4/7",
+   "to": "4/8",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "quillguard",
+   "from": "2/21",
+   "to": "2/22",
+   "why": "room",
+   "map": "12 -> 12"
+  },
+  {
+   "id": "komodo-warlord",
+   "from": "1/26",
+   "to": "1/27",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "raccoon-bandit",
+   "from": "4/6",
+   "to": "4/7",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "badger-berserker",
+   "from": "4/14",
+   "to": "4/16",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "beetle-battering-ram",
+   "from": "4/10",
+   "to": "4/11",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "wolf-pack-runner",
+   "from": "4/13",
+   "to": "4/15",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "snapper-hatchling",
+   "from": "1/8",
+   "to": "1/7",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "snapstick-turtle",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "4 -> 4"
+  },
+  {
+   "id": "chipmunk-stockpiler",
+   "from": "1/7",
+   "to": "1/9",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "bear-cub",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "woodland-brawler",
+   "from": "4/15",
+   "to": "4/17",
+   "why": "room",
+   "map": "20 -> 20"
+  },
+  {
+   "id": "cave-warlord",
+   "from": "6/28",
+   "to": "6/29",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "fawn-scout",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "elderhorn-monarch",
+   "from": "2/28",
+   "to": "2/30",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "dam-wall",
+   "from": "0/22",
+   "to": "0/21",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "riverworks-bastion",
+   "from": "0/30",
+   "to": "0/31",
+   "why": "room",
+   "map": "2 -> 6"
+  },
+  {
+   "id": "grass-viper",
+   "from": "1/7",
+   "to": "1/8",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "adder-ambusher",
+   "from": "2/10",
+   "to": "2/11",
+   "why": "room",
+   "map": "6 -> 6"
+  },
+  {
+   "id": "constrictor-coil",
+   "from": "4/17",
+   "to": "4/16",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "venomlord-serpent",
+   "from": "1/23",
+   "to": "1/22",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "cave-flitter",
+   "from": "2/2",
+   "to": "3/3",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "echo-screecher",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "8 -> 8"
+  },
+  {
+   "id": "stable-colt",
+   "from": "2/10",
+   "to": "2/12",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "squires-mount",
+   "from": "4/13",
+   "to": "4/15",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "warhorse-charger",
+   "from": "4/18",
+   "to": "4/19",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "cataphract-destrier",
+   "from": "3/27",
+   "to": "3/28",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "lucky-hopper",
+   "from": "1/14",
+   "to": "1/17",
+   "why": "room",
+   "map": "1 -> 12"
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "from": "2/33",
+   "to": "2/28",
+   "why": "over",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "mallard-marauder",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "glacial-ape-king",
+   "from": "6/39",
+   "to": "6/40",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "sand-widow",
+   "from": "2/16",
+   "to": "2/17",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "quill-volley",
+   "from": "1/12",
+   "to": "1/14",
+   "why": "room",
+   "map": "19 -> 19"
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "from": "3/15",
+   "to": "3/16",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "from": "1/9",
+   "to": "1/8",
+   "why": "over",
+   "map": "3 -> 0"
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "from": "3/12",
+   "to": "3/13",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "jaguar-stalker",
+   "from": "1/13",
+   "to": "1/15",
+   "why": "room",
+   "map": "14 -> 18"
+  },
+  {
+   "id": "acacia-giraffe",
+   "from": "2/12",
+   "to": "2/11",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "dust-hyena",
+   "from": "2/8",
+   "to": "2/9",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "termite-mound",
+   "from": "0/14",
+   "to": "0/15",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "from": "2/18",
+   "to": "2/20",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "from": "7/7",
+   "to": "8/8",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "from": "1/13",
+   "to": "1/16",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "clownfish-scout",
+   "from": "1/8",
+   "to": "1/9",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "rockslide-ram",
+   "from": "5/5",
+   "to": "6/6",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "swamp-alligator",
+   "from": "2/17",
+   "to": "2/16",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "cypress-root-lurker",
+   "from": "4/12",
+   "to": "4/11",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "stalactite-golem",
+   "from": "1/20",
+   "to": "1/21",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "deep-cave-troll",
+   "from": "4/12",
+   "to": "4/13",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "magma-salamander",
+   "from": "3/11",
+   "to": "3/12",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "taiga-lynx",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "16 -> 16"
+  },
+  {
+   "id": "pinecone-sapper",
+   "from": "0/12",
+   "to": "0/13",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "snowshoe-hare",
+   "from": "1/6",
+   "to": "1/7",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "timber-wolf-pack",
+   "from": "3/12",
+   "to": "3/11",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "pelican-diver",
+   "from": "2/8",
+   "to": "2/9",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "mangrove-mudskipper",
+   "from": "1/8",
+   "to": "1/9",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "mangrove-monitor",
+   "from": "3/12",
+   "to": "3/13",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "wound-reaver",
+   "from": "1/12",
+   "to": "1/14",
+   "why": "room",
+   "map": "11 -> 15"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "from": "3/3",
+   "to": "4/4",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "trickster-fox",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "shimmerwing-stag",
+   "from": "2/12",
+   "to": "2/13",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "humpback-elder",
+   "from": "2/19",
+   "to": "2/18",
+   "why": "over",
+   "map": "4 -> 0"
+  },
+  {
+   "id": "sandstorm-roc",
+   "from": "4/13",
+   "to": "4/14",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "frost-hare-sprinter",
+   "from": "2/4",
+   "to": "2/5",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "glacier-wolf-pack",
+   "from": "1/14",
+   "to": "1/15",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "from": "4/8",
+   "to": "4/9",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "badger-trench-digger",
+   "from": "4/16",
+   "to": "4/18",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "duckling-squadron",
+   "from": "1/7",
+   "to": "1/9",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "shepherds-bark",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "ember-jackal",
+   "from": "3/11",
+   "to": "3/12",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "magma-titan",
+   "from": "2/16",
+   "to": "2/17",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "from": "2/9",
+   "to": "2/10",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "coral-current-eel",
+   "from": "3/8",
+   "to": "3/9",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "from": "1/13",
+   "to": "1/15",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "glacier-yak",
+   "from": "1/15",
+   "to": "1/17",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "from": "3/12",
+   "to": "3/11",
+   "why": "over",
+   "map": "6 -> 0"
+  },
+  {
+   "id": "grave-grin-hyena",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "glasswing-moth",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "frostmoon-howler",
+   "from": "2/12",
+   "to": "2/13",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "weathervane-swift",
+   "from": "3/15",
+   "to": "3/17",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "from": "2/4",
+   "to": "2/5",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "sunthroat-courier",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "dominion-nestguard",
+   "from": "3/3",
+   "to": "4/4",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "river-warden",
+   "from": "4/12",
+   "to": "4/13",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "quarry-mole",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "8 -> 8"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "from": "5/12",
+   "to": "5/13",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "hedgehog-scout",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "12 -> 12"
+  },
+  {
+   "id": "marsh-wisp",
+   "from": "2/9",
+   "to": "2/8",
+   "why": "over",
+   "map": "6 -> 0"
+  },
+  {
+   "id": "bog-revenant",
+   "from": "3/11",
+   "to": "3/12",
+   "why": "room",
+   "map": "6 -> 5"
+  },
+  {
+   "id": "the-unremembered",
+   "from": "3/11",
+   "to": "3/12",
+   "why": "room",
+   "map": "6 -> 5"
+  },
+  {
+   "id": "weredog",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "night-watchman",
+   "from": "1/5",
+   "to": "1/4",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "otter-ferryman",
+   "from": "3/7",
+   "to": "3/8",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "shieldbearer-hound",
+   "from": "5/14",
+   "to": "5/15",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "stoat-cutthroat",
+   "from": "3/12",
+   "to": "3/14",
+   "why": "room",
+   "map": "15 -> 15"
+  },
+  {
+   "id": "two-headed-calf",
+   "from": "3/10",
+   "to": "3/11",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "upside-down-bat",
+   "from": "2/4",
+   "to": "2/5",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "teatime-toad",
+   "from": "3/3",
+   "to": "4/4",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "wrong-way-salmon",
+   "from": "1/10",
+   "to": "1/11",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "inside-out-hedgehog",
+   "from": "1/10",
+   "to": "1/11",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "talon-archer",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "15 -> 15"
+  },
+  {
+   "id": "sergeant-bramblefox",
+   "from": "3/11",
+   "to": "3/13",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "yeti-chieftain",
+   "from": "4/20",
+   "to": "4/22",
+   "why": "room",
+   "map": "19 -> 19"
+  },
+  {
+   "id": "pride-queen",
+   "from": "2/15",
+   "to": "2/17",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "from": "1/20",
+   "to": "1/22",
+   "why": "room",
+   "map": "17 -> 17"
+  },
+  {
+   "id": "reef-admiral",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "10 -> 10"
+  },
+  {
+   "id": "shell-cracker",
+   "from": "2/8",
+   "to": "2/9",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "riverstone-slinger",
+   "from": "4/8",
+   "to": "4/9",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "net-thrower",
+   "from": "3/10",
+   "to": "3/11",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "optio-of-the-ford",
+   "from": "4/11",
+   "to": "4/12",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "petal-fletcher",
+   "from": "1/1",
+   "to": "2/2",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "lantern-bearer",
+   "from": "2/6",
+   "to": "2/7",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "sunspire-choirmother",
+   "from": "3/6",
+   "to": "3/5",
+   "why": "over",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "ferry-toll-frog",
+   "from": "2/6",
+   "to": "2/7",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "riverside-peddler",
+   "from": "1/6",
+   "to": "1/7",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "ford-kingfisher",
+   "from": "0/7",
+   "to": "0/8",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "truce-heron",
+   "from": "2/10",
+   "to": "2/11",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "old-willow-of-the-ford",
+   "from": "2/24",
+   "to": "2/21",
+   "why": "over",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "hedge-changeling",
+   "from": "2/9",
+   "to": "2/10",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "glass-changeling",
+   "from": "3/7",
+   "to": "3/8",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "cinder-stoker",
+   "from": "1/12",
+   "to": "1/13",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "pack-mule",
+   "from": "1/8",
+   "to": "1/10",
+   "why": "room",
+   "map": "20 -> 20"
+  },
+  {
+   "id": "malachite-golem",
+   "from": "2/20",
+   "to": "2/21",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "irradiated-axolotl",
+   "from": "4/10",
+   "to": "4/11",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "from": "1/17",
+   "to": "1/18",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "irradiated-couatl",
+   "from": "4/16",
+   "to": "4/17",
+   "why": "room",
+   "map": "21 -> 22"
+  },
+  {
+   "id": "quarry-troll",
+   "from": "3/14",
+   "to": "3/15",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "iron-warden",
+   "from": "0/32",
+   "to": "0/35",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "from": "3/12",
+   "to": "3/11",
+   "why": "over",
+   "map": "5 -> 1"
+  },
+  {
+   "id": "rainmaker-frog",
+   "from": "3/11",
+   "to": "3/10",
+   "why": "over",
+   "map": "5 -> 1"
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "from": "3/12",
+   "to": "3/11",
+   "why": "over",
+   "map": "5 -> 1"
+  },
+  {
+   "id": "the-contradiction",
+   "from": "2/19",
+   "to": "2/16",
+   "why": "over",
+   "map": "20 -> 20"
+  },
+  {
+   "id": "ashbone-ghoul",
+   "from": "3/8",
+   "to": "3/9",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "cinder-skeleton",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "magma-wraith",
+   "from": "1/9",
+   "to": "1/8",
+   "why": "over",
+   "map": "20 -> 20"
+  },
+  {
+   "id": "pall-wraith",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "ember-revenant",
+   "from": "4/13",
+   "to": "4/15",
+   "why": "room",
+   "map": "19 -> 23"
+  },
+  {
+   "id": "marching-elephant",
+   "from": "2/24",
+   "to": "2/26",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "siege-rhino",
+   "from": "5/16",
+   "to": "5/17",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "stonedrop-vulture",
+   "from": "10/10",
+   "to": "11/11",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "ur-elk",
+   "from": "5/15",
+   "to": "5/16",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "subterraneaner",
+   "from": "4/7",
+   "to": "4/8",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "otter-flag-bearer",
+   "from": "2/8",
+   "to": "2/9",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "triumvirate",
+   "from": "4/17",
+   "to": "4/19",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "inkcloud-squid",
+   "from": "1/7",
+   "to": "1/8",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "abyss-lantern-squid",
+   "from": "3/14",
+   "to": "3/16",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "glass-octopus",
+   "from": "4/12",
+   "to": "4/13",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "vampire-squid",
+   "from": "4/13",
+   "to": "4/14",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "goliath-broodmother",
+   "from": "4/22",
+   "to": "4/24",
+   "why": "room",
+   "map": "13 -> 13"
+  },
+  {
+   "id": "cave-centipede",
+   "from": "2/8",
+   "to": "2/9",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "thorny-devil",
+   "from": "1/18",
+   "to": "1/20",
+   "why": "room",
+   "map": "18 -> 18"
+  },
+  {
+   "id": "fennec-fox",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "from": "3/15",
+   "to": "3/14",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "scree-goat",
+   "from": "4/11",
+   "to": "4/12",
+   "why": "room",
+   "map": "19 -> 14"
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "from": "2/9",
+   "to": "2/10",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "bombardier-beetle",
+   "from": "4/11",
+   "to": "4/12",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "frillneck-duelist",
+   "from": "2/14",
+   "to": "2/15",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "monitor-rambler",
+   "from": "2/16",
+   "to": "2/17",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "bramble-hoglet",
+   "from": "1/8",
+   "to": "1/9",
+   "why": "room",
+   "map": "12 -> 12"
+  },
+  {
+   "id": "old-snapjaw",
+   "from": "4/21",
+   "to": "4/22",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "alpine-marmot",
+   "from": "3/8",
+   "to": "3/9",
+   "why": "room",
+   "map": "11 -> 11"
+  },
+  {
+   "id": "meerkat-burrower",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "harbor-seal",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "snow-ermine",
+   "from": "2/4",
+   "to": "2/5",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "cinder-gecko",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "glimmer-spider",
+   "from": "3/10",
+   "to": "3/11",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "rabid-jackal",
+   "from": "2/2",
+   "to": "3/3",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "vampire-bat",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "otter-angler",
+   "from": "1/10",
+   "to": "1/11",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "ironback-gorilla",
+   "from": "6/19",
+   "to": "6/20",
+   "why": "room",
+   "map": "5 -> 5"
+  },
+  {
+   "id": "colossal-squid",
+   "from": "4/22",
+   "to": "4/23",
+   "why": "room",
+   "map": "10 -> 10"
+  },
+  {
+   "id": "lantern-spark-fly",
+   "from": "2/6",
+   "to": "2/7",
+   "why": "room",
+   "map": "8 -> 16"
+  },
+  {
+   "id": "baby-bat",
+   "from": "2/5",
+   "to": "2/6",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "jay-pilferer",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "12 -> 7"
+  },
+  {
+   "id": "border-collie",
+   "from": "3/13",
+   "to": "3/15",
+   "why": "room",
+   "map": "15 -> 15"
+  },
+  {
+   "id": "mongoose-duelist",
+   "from": "3/13",
+   "to": "3/14",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "dhole-runner",
+   "from": "3/12",
+   "to": "3/13",
+   "why": "room",
+   "map": "16 -> 14"
+  },
+  {
+   "id": "dhole-matriarch",
+   "from": "4/20",
+   "to": "4/22",
+   "why": "room",
+   "map": "16 -> 16"
+  },
+  {
+   "id": "hoopoe-herald",
+   "from": "2/12",
+   "to": "2/13",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "sunbittern-strider",
+   "from": "4/10",
+   "to": "4/11",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "kinkajou-lurker",
+   "from": "4/9",
+   "to": "5/10",
+   "why": "room",
+   "map": "14 -> 18"
+  },
+  {
+   "id": "moon-jerboa",
+   "from": "3/3",
+   "to": "4/4",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "werebadger",
+   "from": "4/16",
+   "to": "4/18",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "marula-elephant",
+   "from": "4/21",
+   "to": "4/22",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "star-nosed-mole",
+   "from": "5/5",
+   "to": "6/6",
+   "why": "room",
+   "map": "8 -> 8"
+  },
+  {
+   "id": "pika-hoarder",
+   "from": "3/13",
+   "to": "3/15",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "tarantula-hawk",
+   "from": "4/11",
+   "to": "4/12",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "from": "2/13",
+   "to": "2/14",
+   "why": "room",
+   "map": "10 -> 11"
+  },
+  {
+   "id": "pronghorn-racer",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "roadrunner-courier",
+   "from": "3/6",
+   "to": "3/7",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "box-turtle",
+   "from": "2/8",
+   "to": "2/7",
+   "why": "over",
+   "map": "4 -> 0"
+  },
+  {
+   "id": "glasswing-butterfly",
+   "from": "4/12",
+   "to": "4/13",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "from": "2/7",
+   "to": "2/8",
+   "why": "room",
+   "map": "12 -> 7"
+  },
+  {
+   "id": "planarian-splitter",
+   "from": "3/11",
+   "to": "3/12",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "electric-ray",
+   "from": "4/8",
+   "to": "4/9",
+   "why": "room",
+   "map": "10 -> 10"
+  },
+  {
+   "id": "hercules-beetle",
+   "from": "2/15",
+   "to": "2/17",
+   "why": "room",
+   "map": "14 -> 18"
+  },
+  {
+   "id": "mayfly-dancer",
+   "from": "2/7",
+   "to": "2/6",
+   "why": "over",
+   "map": "6 -> 0"
+  },
+  {
+   "id": "pangolin-roller",
+   "from": "3/3",
+   "to": "4/4",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "sawfish",
+   "from": "4/9",
+   "to": "4/10",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "mantis-shrimp",
+   "from": "4/12",
+   "to": "4/13",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "echidna-quillshot",
+   "from": "4/15",
+   "to": "4/16",
+   "why": "room",
+   "map": "19 -> 19"
+  },
+  {
+   "id": "spitting-spider",
+   "from": "4/5",
+   "to": "4/6",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "ice-petrel",
+   "from": "3/8",
+   "to": "3/9",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "from": "6/11",
+   "to": "6/12",
+   "why": "room",
+   "map": "18 -> 18"
+  },
+  {
+   "id": "ibex-rockcaller",
+   "from": "3/15",
+   "to": "3/16",
+   "why": "room",
+   "map": "11 -> 11"
+  },
+  {
+   "id": "armadillo-guard",
+   "from": "3/7",
+   "to": "3/8",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "piranha-shoal",
+   "from": "3/9",
+   "to": "3/10",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "lamprey",
+   "from": "3/7",
+   "to": "3/6",
+   "why": "over",
+   "map": "6 -> 0"
+  },
+  {
+   "id": "bison-bulldozer",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "15 -> 14"
+  },
+  {
+   "id": "weaver-bird",
+   "from": "4/5",
+   "to": "4/6",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "anaconda-coil",
+   "from": "5/11",
+   "to": "5/12",
+   "why": "room",
+   "map": "6 -> 5"
+  },
+  {
+   "id": "fire-salamander",
+   "from": "4/10",
+   "to": "4/11",
+   "why": "room",
+   "map": "19 -> 19"
+  },
+  {
+   "id": "fire-hawk",
+   "from": "4/16",
+   "to": "4/17",
+   "why": "room",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "antlion-pit",
+   "from": "3/11",
+   "to": "3/13",
+   "why": "room",
+   "map": "18 -> 18"
+  },
+  {
+   "id": "springbok-pronker",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "snow-leopard",
+   "from": "2/14",
+   "to": "2/16",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "lovebird",
+   "from": "2/11",
+   "to": "2/12",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "horned-lizard",
+   "from": "5/7",
+   "to": "5/8",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "dromedary",
+   "from": "2/15",
+   "to": "2/16",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "marula-monkey",
+   "from": "3/7",
+   "to": "3/8",
+   "why": "room",
+   "map": "14 -> 14"
+  },
+  {
+   "id": "rimefire-salamander",
+   "from": "3/9",
+   "to": "3/10",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "fumarole-ibex",
+   "from": "1/13",
+   "to": "1/12",
+   "why": "over",
+   "map": "20 -> 14"
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "from": "3/6",
+   "to": "3/7",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "from": "3/13",
+   "to": "3/15",
+   "why": "room",
+   "map": "22 -> 22"
+  },
+  {
+   "id": "howdah-archers",
+   "from": "3/9",
+   "to": "3/10",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "testudo-tortoise",
+   "from": "5/12",
+   "to": "5/13",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "trebuchet-crew",
+   "from": "0/24",
+   "to": "0/26",
+   "why": "room",
+   "map": "23 -> 23"
+  },
+  {
+   "id": "goose-sentry",
+   "from": "3/9",
+   "to": "3/10",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "mallard-halberdier",
+   "from": "5/9",
+   "to": "5/10",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "tax-collector-teal",
+   "from": "1/5",
+   "to": "1/6",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "battlement-heron",
+   "from": "1/14",
+   "to": "1/13",
+   "why": "over",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "gilded-swan-knight",
+   "from": "1/19",
+   "to": "1/21",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "magnate-duck",
+   "from": "2/34",
+   "to": "2/36",
+   "why": "room",
+   "map": "24 -> 24"
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "from": "4/8",
+   "to": "4/9",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "from": "3/13",
+   "to": "3/15",
+   "why": "room",
+   "map": "5 -> 13"
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "11 -> 11"
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "from": "3/7",
+   "to": "3/8",
+   "why": "room",
+   "map": "20 -> 20"
+  },
+  {
+   "id": "walrus-icebreaker",
+   "from": "4/16",
+   "to": "4/17",
+   "why": "room",
+   "map": "17 -> 17"
+  },
+  {
+   "id": "sea-cucumber",
+   "from": "4/4",
+   "to": "5/5",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "grotto-lobster",
+   "from": "3/15",
+   "to": "3/16",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "sandfish",
+   "from": "3/10",
+   "to": "3/11",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "pale-oryx",
+   "from": "2/10",
+   "to": "2/11",
+   "why": "room",
+   "map": "18 -> 14"
+  },
+  {
+   "id": "quicksand-queen",
+   "from": "2/17",
+   "to": "2/19",
+   "why": "room",
+   "map": "18 -> 19"
+  },
+  {
+   "id": "river-mink",
+   "from": "3/11",
+   "to": "3/10",
+   "why": "over",
+   "map": "4 -> 1"
+  },
+  {
+   "id": "grass-snake",
+   "from": "2/10",
+   "to": "2/9",
+   "why": "over",
+   "map": "5 -> 1"
+  },
+  {
+   "id": "stag-beetle",
+   "from": "2/14",
+   "to": "2/15",
+   "why": "room",
+   "map": "12 -> 7"
+  },
+  {
+   "id": "field-vole",
+   "from": "1/7",
+   "to": "1/6",
+   "why": "over",
+   "map": "1 -> 0"
+  },
+  {
+   "id": "limpet-clinger",
+   "from": "1/1",
+   "to": "2/2",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "kittiwake-flock",
+   "from": "1/4",
+   "to": "1/3",
+   "why": "over",
+   "map": "3 -> 0"
+  },
+  {
+   "id": "peregrine-stooper",
+   "from": "1/7",
+   "to": "1/8",
+   "why": "room",
+   "map": "3 -> 3"
+  },
+  {
+   "id": "diving-bell-spider",
+   "from": "4/9",
+   "to": "4/8",
+   "why": "over",
+   "map": "4 -> 1"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "from": "1/13",
+   "to": "1/12",
+   "why": "over",
+   "map": "5 -> 1"
+  },
+  {
+   "id": "booming-bittern",
+   "from": "1/11",
+   "to": "1/12",
+   "why": "room",
+   "map": "6 -> 6"
+  },
+  {
+   "id": "raft-spider",
+   "from": "3/10",
+   "to": "3/9",
+   "why": "over",
+   "map": "5 -> 0"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "from": "3/9",
+   "to": "3/10",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "truffle-piglet",
+   "from": "3/11",
+   "to": "2/9",
+   "why": "over",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "ghost-crayfish",
+   "from": "1/16",
+   "to": "1/17",
+   "why": "room",
+   "map": "8 -> 7"
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "from": "3/14",
+   "to": "3/15",
+   "why": "room",
+   "map": "8 -> 8"
+  },
+  {
+   "id": "proboscis-monkey",
+   "from": "2/10",
+   "to": "2/11",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "sea-hare",
+   "from": "2/9",
+   "to": "2/10",
+   "why": "room",
+   "map": "9 -> 7"
+  },
+  {
+   "id": "mangrove-manatee",
+   "from": "6/6",
+   "to": "7/7",
+   "why": "room",
+   "map": "9 -> 9"
+  },
+  {
+   "id": "whale-shark",
+   "from": "1/20",
+   "to": "1/21",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "chamois-leaper",
+   "from": "1/9",
+   "to": "1/10",
+   "why": "room",
+   "map": "11 -> 11"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "from": "2/12",
+   "to": "2/13",
+   "why": "room",
+   "map": "7 -> 7"
+  },
+  {
+   "id": "polar-bear",
+   "from": "2/15",
+   "to": "2/17",
+   "why": "room",
+   "map": "17 -> 17"
+  },
+  {
+   "id": "beluga",
+   "from": "1/15",
+   "to": "1/16",
+   "why": "room",
+   "map": "17 -> 14"
+  },
+  {
+   "id": "krill-swarm",
+   "from": "1/7",
+   "to": "1/9",
+   "why": "room",
+   "map": "21 -> 21"
+  },
+  {
+   "id": "greenland-shark",
+   "from": "1/21",
+   "to": "1/24",
+   "why": "room",
+   "map": "17 -> 21"
+  },
+  {
+   "id": "bloodscent-shark",
+   "from": "5/13",
+   "to": "5/14",
+   "why": "room",
+   "map": "10 -> 7"
+  },
+  {
+   "id": "oyster-bank",
+   "from": "0/15",
+   "to": "0/14",
+   "why": "over",
+   "map": "2 -> 0"
+  },
+  {
+   "id": "musk-ox-matriarch",
+   "from": "3/16",
+   "to": "3/17",
+   "why": "room",
+   "map": "17 -> 14"
+  }
+ ],
+ "held": [
+  {
+   "id": "alley-cat",
+   "stats": "1/8",
+   "line": "1/1",
+   "cut": 70,
+   "map": "5 -> 5"
+  },
+  {
+   "id": "honey-badger-fury",
+   "stats": "2/9",
+   "line": "1/6",
+   "cut": 38,
+   "map": "5 -> 0"
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "stats": "3/8",
+   "line": "2/6",
+   "cut": 29,
+   "map": "11 -> 7"
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "stats": "3/3",
+   "line": "2/2",
+   "cut": 33,
+   "map": "5 -> 0"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "stats": "5/17",
+   "line": "3/12",
+   "cut": 33,
+   "map": "20 -> 14"
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "stats": "3/3",
+   "line": "2/2",
+   "cut": 33,
+   "map": "5 -> 0"
+  },
+  {
+   "id": "sunfeather-scout",
+   "stats": "1/7",
+   "line": "1/4",
+   "cut": 33,
+   "map": "5 -> 5"
+  },
+  {
+   "id": "lone-grey-wolf",
+   "stats": "4/15",
+   "line": "2/9",
+   "cut": 43,
+   "map": "17 -> 17"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "stats": "2/2",
+   "line": "1/1",
+   "cut": 50,
+   "map": "2 -> 0"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "stats": "2/10",
+   "line": "1/5",
+   "cut": 50,
+   "map": "4 -> 4"
+  }
+ ],
+ "noLine": [
+  "ant-warrior",
+  "coral-polyp-colony",
+  "dune-jackal",
+  "voltaic-eel",
+  "land-tiller",
+  "marshal-of-rivergate",
+  "puddle-changeling",
+  "conch-crawler",
+  "moonlit-hare",
+  "lunar-howler",
+  "ember-centipede",
+  "vampire-bat-nurse",
+  "spitting-cobra",
+  "war-elephant",
+  "fathom-leviathan"
+ ]
+}
