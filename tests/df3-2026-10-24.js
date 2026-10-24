@@ -143,7 +143,10 @@ for(const {m, n, no, b} of challenge){ const code = n.code || n.key;
   const st = E.selfishBoonCount(D, n.deck, b); ok(st && st.on, `3. ${code}: its deck turns ${b} on (${st && st.have}/${st && st.total})`);
   const ids = Object.keys(n.deck); ok(ids.length >= 5 && ids.length <= 7, `3. ${code}: 5-7 different cards (${ids.length})`);
   ids.forEach(id=> ok(n.deck[id] <= G.maxCopiesForRarity(D[id].rarity), `3. ${code}: ${id} inside the copy ladder`));
-  ids.forEach(id=> ok(G.roadRarityOk(D[id].rarity, no, 'skirmish', m.id), `3. ${code}: ${id} (${D[id].rarity}) inside the road's rarity cap`));
+  // 2026-10-24 (package BAL3, BAL2-2): a side map follows the main steps now, at the main map that unlocks it (as tests/road-rarity-2026-10-16.js
+  // counts it): 8-A-3 is a Map 16 fight; was the parent's number under the older side-map steps
+  const capNo = m.sub ? G.mapUnlockNumberOf(m.id) : no;
+  ids.forEach(id=> ok(G.roadRarityOk(D[id].rarity, capNo, 'skirmish', m.id), `3. ${code}: ${id} (${D[id].rarity}) inside the road's rarity cap`));
   ok(G.skirmishLeadersOf(n, m.id).every(id=> n.deck[id]), `3. ${code}: it leads with a card of its deck`); }
 const mainCh = challenge.filter(c=> !c.m.sub), byPair = {};
 mainCh.forEach(c=>{ const k = Math.floor((c.no - 5) / 2); byPair[k] = (byPair[k] || 0) + 1; });

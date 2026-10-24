@@ -3291,5 +3291,6 @@
  "{text} – poison: it also gives this unit's Poison (at least 1) where it lands": "{text} – 독: 맞은 곳에 이 유닛의 독도 줍니다(최소 1)",
  "{text} – bleed: it also gives this unit's Bleed (at least 1) where it lands": "{text} – 출혈: 맞은 곳에 이 유닛의 출혈도 줍니다(최소 1)",
  "Only a Flyer, a Tide unit or a Sprinter can have it. Turn 1: a Flyer goes aloft, a Tide unit goes under the water; nothing can find or hit it, not even a Spotter, and it can't step in as a Guardian. Turn 2: it strikes the unit with the least Health in its row (the nearest one on a tie), past any Taunt; a Guardian beside that unit still steps in. That round it is exposed: no Flying dodge, no Tide evade. With no enemy unit in its row it doesn't rise.": "비행, 물결 유닛 또는 질주자만 가질 수 있습니다. 1턴: 비행 유닛은 공중으로, 물결 유닛은 물속으로 들어가며, 관측병조차 찾거나 맞힐 수 없고 수호자로 나설 수도 없습니다. 2턴: 도발을 무시하고 자기 줄에서 체력이 가장 낮은 유닛(같으면 가장 가까운 유닛)을 칩니다. 그 유닛 옆의 수호자는 여전히 나섭니다. 그 라운드에는 노출됩니다: 비행 회피도 물결 회피도 없습니다. 자기 줄에 적 유닛이 없으면 올라가지 않습니다.",
- "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "전투당 한 번: 한 턴 동안 닿지 않는 곳에 있다가, 자기 줄에서 가장 약한 적을 {n} 더 강하게 칩니다."
+ "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "전투당 한 번: 한 턴 동안 닿지 않는 곳에 있다가, 자기 줄에서 가장 약한 적을 {n} 더 강하게 칩니다.",
+ "Their Tide units are Quick and have +1 Attack while the tide is in. Theirs only: on while at least half their deck has Tide.": "물이 들어와 있는 동안 적의 물결 유닛은 신속해지고 공격 +1을 얻어요. 상대 전용: 덱의 절반 이상이 물결을 가진 동안 켜져요."
 }

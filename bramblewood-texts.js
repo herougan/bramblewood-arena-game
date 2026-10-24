@@ -2414,7 +2414,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.df3-hiveChorus-name": "Hive Chorus",
   "ui.df3-hiveChorus": "Their Swarm counts every ally twice. Theirs only: on while at least half their deck is Insect.",
   "ui.df3-risingTide-name": "Rising Tide",
-  "ui.df3-risingTide": "Their Tide units are Quick while the tide is in. Theirs only: on while at least half their deck has Tide.",
+  "ui.df3-risingTide": "Their Tide units are Quick and have +1 Attack while the tide is in. Theirs only: on while at least half their deck has Tide.",
   "ui.df3-secondBurrow-name": "Second Burrow",
   "ui.df3-secondBurrow": "The first time one of their burrowers (rodents, hedgehogs, rabbits, moles, worms, badgers) dies, it goes back to their hand. Theirs only: on while at least half their deck are burrowers.",
   "ui.df3-wildRage-name": "Wild Rage",

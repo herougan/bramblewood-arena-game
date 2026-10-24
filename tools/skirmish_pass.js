@@ -170,7 +170,8 @@ function themedPool(f){
   return [...new Set([...own, ...sameBiome, ...typed])]
     .filter(id=> CARD_DEFS_BASELINE[id] && !CARD_DEFS_BASELINE[id].token && G.roadRarityOk(CARD_DEFS_BASELINE[id].rarity, f.mapNo, f.kind)) // the cap counts the map the fight is on
     .filter(id=> !TH || !TH.offThemeFor(f.map, f.n, id)) // 2026-10-19 (package TH): never a card off the map's theme (tools/thematic_pass_2026_10_19.js THEMES)
-    .filter(id=> !KEEP_LEADERS || !otherFightsReward(f, id)); // 2026-10-24 (package DF3, --keep-leaders): never another fight's own reward card (11-1 took 11-A-4's Wound Reaver)
+    .filter(id=> !KEEP_LEADERS || !otherFightsReward(f, id)) // 2026-10-24 (package DF3, --keep-leaders): never another fight's own reward card (11-1 took 11-A-4's Wound Reaver)
+    .filter(id=> !POOL_ONLY || mapPoolOf(f).has(id) || (f.n.deck || {})[id]); // 2026-10-24 (package BAL3, --pool): the map's own pool
 }
 // 2026-10-19 (package TH, the thematic pass): the map identities, so the tuner's moves stay on theme (the R2 retune had brought in e.g.
 // Badger Berserkers on nine maps and Pelican Divers in every Gannet Cliffs fight)
@@ -211,8 +212,24 @@ function deckMoves(f, deck, easy){
 }
 // Maps 21-40: a quarter or more of a skirmish deck is Rare or better (tests/road-rarity-2026-10-16.js)
 const rareStep = id=> ['common','uncommon','starter','quest'].indexOf(CARD_DEFS_BASELINE[id].rarity || 'common') < 0;
-function rareQuarterOk(f, deck){ if(f.mapNo < 21 || f.mapNo > 40 || f.kind !== 'skirmish' || f.endless) return true;
-  const tot = deckSize(deck), r = Object.entries(deck).reduce((a, [id, k])=> a + (rareStep(id) ? k : 0), 0); return tot > 0 && r / tot >= 0.25; }
+function rareQuarterOk(f, deck, was){ if(f.mapNo < 21 || f.mapNo > 40 || f.kind !== 'skirmish' || f.endless) return true;
+  const share = d=>{ const tot = deckSize(d), r = Object.entries(d).reduce((a, [id, k])=> a + (rareStep(id) ? k : 0), 0); return tot > 0 ? r / tot : 0; };
+  // 2026-10-24 (package BAL3): a deck already under a quarter may move if its Rare share does not fall (was: no move at all, so 21-1 .. 24-3
+  // could not be tuned)
+  return share(deck) >= 0.25 || (was != null && share(deck) >= share(was) - 1e-9); }
+// 2026-10-24 (package BAL3, BAL2-3: "deck moves within each map's pool / theme / copy limits / 5-7 distinct cards"):
+//   --pool      a card coming in is from the fight's map pool (canonical/map-pools.json: the main map's MAP + SPECIAL tiers, a submap fight's
+//               own SUBMAP tier too), or already in the deck;
+//   --distinct  a skirmish keeps 5-6 different cards (7 only where it already has 7: "a 7 is rare, and only with a clear leader"); an elite or
+//               boss at most max(8, its count) and at least min(5, its count) (SK, SK-3; elites are not covered by the 5-7 rule).
+const POOL_ONLY = argv.includes('--pool'), DISTINCT = argv.includes('--distinct');
+const MAP_POOLS = (()=>{ try{ return JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps || {}; }catch(e){ return {}; } })();
+const NORM_POOL = (()=>{ try{ return require('./lib_map_pools.js').normalizeEntry; }catch(e){ return x=> x; } })();
+function mapPoolOf(f){ if(f._pool) return f._pool; const main = f.m.sub ? f.m.parent : f.m.id, e = NORM_POOL(MAP_POOLS[main] || {});
+  return (f._pool = new Set([...(e.cards || []), ...(f.m.sub ? ((e.submaps || {})[f.m.id] || []) : []), ...(e.special || [])])); }
+function distinctOk(f, deck, was){ if(!DISTINCT) return true; const n = Object.keys(deck).length, n0 = Object.keys(was).length;
+  if(f.kind === 'skirmish') return n >= Math.min(5, n0) && n <= (n0 >= 7 ? n0 : 6); // a deck over 7 may only shrink
+  return n >= Math.min(5, n0) && n <= Math.max(8, n0); }
 function applyMove(deck, mv){
   const d = Object.assign({}, deck), k = mv.k || 1;
   if(mv.out){ d[mv.out] -= k; if(d[mv.out] <= 0) delete d[mv.out]; }
@@ -272,7 +289,12 @@ function tune(f, before, top){
 // target and its green band are the game's own (arena_app.js roadCurveTarget / skirmishTargetBand, the win-rate panel's colours): 90%
 // for a map's first fight down to 60% before its boss, elites on the line, a mini-boss that isn't the map's last fight 50%, the
 // boss fight 40% (green 30-49%; Map 0's 45%), green ±8 points.
-const bandOf = (f, win)=>{ const b = G.skirmishTargetBand(f.map, f.n), pc = x=> Math.round(x * 1000) / 10;
+// 2026-10-24 (package BAL3): a challenge skirmish (node.challenge, DF3) aims at its road-curve target minus CHALLENGE_DROP, band +/- 8 (owner
+// call DF3-1, "By default yes"), as tools/df3_boons_2026_10_24.js does; the game's skirmishTargetBand gives the plain curve.
+const CHALLENGE_DROP = 0.10;
+const fightBand = f=>{ const b = G.skirmishTargetBand(f.map, f.n); if(!f.n.challenge || !b.curve) return b; const t = b.t - CHALLENGE_DROP;
+  return Object.assign({}, b, {t, lo: t - 0.08 /* ROAD_CURVE_TOL */, hi: t + 0.08, role: 'challenge', curveT: b.t}); };
+const bandOf = (f, win)=>{ const b = fightBand(f), pc = x=> Math.round(x * 1000) / 10;
   return {target: pc(b.t), lo: pc(b.lo), hi: pc(b.hi), role: b.role, curve: !!b.curve, pos: b.pos || null, of: b.of || null,
     green: win == null ? null : win > b.hi * 100 + 1e-9 ? 'easy' : win < b.lo * 100 - 1e-9 ? 'hard' : 'green'}; };
 // One fight toward its curve target: CPU deck moves first (each of up to 2 copies, inside the map's theme and the road's rarity cap,
@@ -332,10 +354,20 @@ function curveTune(f, band, steps){
   const deckRound = (maxSteps, coarse)=>{
     for(let step = 0; step < maxSteps && (coarse ? off(cur.win) > 6 : !good(cur.win)); step++){
       const easy = cur.win > want; let best = null;
-      for(const mv of curveMoves(f, node.deck, easy)){
+      for(let mv of curveMoves(f, node.deck, easy)){
         if(f.code === '18-A-9' && mv.inn === 'quicksand-queen') continue; // 2026-10-19 (BF3): one Queen leads her own fight (tests/pale-desert-2026-10-19.js 3)
         if(mv.inn && TH && TH.offThemeFor(f.map, f.n, mv.inn)) continue; // 2026-10-19 (TH): "more copies" of a capped card (Gannet Cliffs' Pelican Divers) too
-        const nd = applyMove(node.deck, mv); if(!rareQuarterOk(f, nd) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
+        if(POOL_ONLY && mv.inn && !node.deck[mv.inn] && !mapPoolOf(f).has(mv.inn)) continue; // BAL3 --pool
+        let nd = applyMove(node.deck, mv);
+        // BAL3 --distinct: a part swap that would add a different card becomes a whole swap (every copy of the card going out; the card coming
+        // in takes as many as its copy cap allows)
+        if(DISTINCT && mv.type === 'swap' && nd[mv.out] && !distinctOk(f, nd, f.n.deck)){ const have = node.deck[mv.out], capIn = Math.min(4, G.maxCopiesForRarity(CARD_DEFS_BASELINE[mv.inn].rarity));
+          const k = Math.min(have, capIn - (node.deck[mv.inn] || 0)); if(k <= 0) continue; mv = Object.assign({}, mv, {k: have, whole: true, kIn: k});
+          nd = Object.assign({}, node.deck); delete nd[mv.out]; nd[mv.inn] = (nd[mv.inn] || 0) + k; }
+        if(!rareQuarterOk(f, nd, node.deck) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
+        if(!distinctOk(f, nd, f.n.deck)) continue; // BAL3 --distinct (against the fight's deck as it was)
+        if(f.n.rules && f.n.rules.boon && E.selfishBoonCount && !E.selfishBoonCount(CARD_DEFS_BASELINE, nd, f.n.rules.boon).on) continue; // BAL3: a challenge deck keeps its selfish boon on (DF3)
+        if(Object.entries(nd).some(([id, k])=> k > G.maxCopiesForRarity(CARD_DEFS_BASELINE[id].rarity))) continue; // the copy ladder (BAL2)
         const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
         if(!best || P(r, easy) < P(best.r, easy)) best = {mv, nn, r};
         if(good(best.r.win)) break;
@@ -382,7 +414,13 @@ const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.inc
 const OUTDIR = path.join(ROOT, 'docs', 'balance');
 const readJsonl = file=>{ try{ return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
 const rowOf = (f, extra)=>{ const {m, n, ...row} = f; return Object.assign(row, extra); };
-if(CMD === 'list'){
+if(CMD === 'moves'){ // 2026-10-24 (package BAL3): the curve's candidate moves for --only fights, and why a move is refused (a debugging aid)
+  all.forEach(f=>{ for(const easy of [true, false]){ const mv = curveMoves(f, f.n.deck, easy); console.log(f.code, easy ? 'too easy' : 'too hard', 'themed pool', themedPool(f).length, 'moves', mv.length);
+    mv.forEach(m=>{ const nd = applyMove(f.n.deck, m), why = [];
+      if(POOL_ONLY && m.inn && !f.n.deck[m.inn] && !mapPoolOf(f).has(m.inn)) why.push('pool'); if(!distinctOk(f, nd, f.n.deck)) why.push('distinct');
+      if(m.inn && TH && TH.offThemeFor(f.map, f.n, m.inn)) why.push('theme'); if(deckSize(nd) < Math.min(12, deckSize(f.n.deck))) why.push('size');
+      console.log('   ', JSON.stringify(m), why.join(',') || 'ok'); }); } });
+} else if(CMD === 'list'){
   all.forEach(f=>{ const sd = stageDeck(f); console.log(`${f.code.padEnd(9)} ${f.map.padEnd(4)} ${f.kind.padEnd(9)} deck ${stageOf(f).padEnd(8)} Lv ${sd.level} cpu ${G.cpuAiLevelForNode(f.map, f.n)}  ${f.name}`); });
   console.log(all.length, 'fights'); console.log('road deck at Map 1:', JSON.stringify(stageDeck(all.find(f=> f.mapNo === 1)).deck));
 } else if(CMD === 'decks'){
@@ -441,11 +479,12 @@ if(CMD === 'list'){
   // `apply --fixes=road-curve-fixes` writes the fixes into arena_app.js.
   const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'r2-before')}.jsonl`));
   const OUT = path.join(OUTDIR, opt('fixes', 'road-curve-fixes') + '.jsonl'), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
-  const todo = all.filter(f=>{ const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return (bd.curve || argv.includes('--any')) && bd.green !== 'green' && !f.endless; }) // --any (2026-10-19, LV): the fights off the curve too, toward their older targets
+  const ALLF = argv.includes('--all'); // 2026-10-24 (package BAL3): every fight on the curve, measured at its start on the tune seeds (no --from file)
+  const todo = all.filter(f=>{ if(ALLF) return !f.endless && (fightBand(f).curve || argv.includes('--any')); const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return (bd.curve || argv.includes('--any')) && bd.green !== 'green' && !f.endless; }) // --any (2026-10-19, LV): the fights off the curve too, toward their older targets
     .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights off the road curve to tune', todo.length);
-  for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key), t = Date.now(), band = G.skirmishTargetBand(f.map, f.n), fx = curveTune(f, band, +opt('steps', 6));
-    fs.appendFileSync(OUT, JSON.stringify(Object.assign(rowOf(f, {}), {before: b.win, target: band.t * 100, lo: band.lo * 100, hi: band.hi * 100, role: band.role, ms: Date.now() - t}, fx)) + '\n');
+  for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key) || {win: null}, t = Date.now(), band = fightBand(f), fx = curveTune(f, band, +opt('steps', 6));
+    fs.appendFileSync(OUT, JSON.stringify(Object.assign(rowOf(f, {}), {before: b.win == null ? fx.trail[0].win : b.win, target: band.t * 100, lo: band.lo * 100, hi: band.hi * 100, role: band.role, ms: Date.now() - t}, fx)) + '\n');
     console.log(f.code, b.win, '-> target', Math.round(band.t * 100), ':', fx.after.win, fx.good ? 'green' : 'OFF', JSON.stringify(fx.moves), fx.shieldOverride, fx.hqHp); }
 } else if(CMD === 'snapshot'){
   // node tools/skirmish_pass.js snapshot --out=road-curve-nodes-after (2026-10-19, R2): every fight's CPU deck, overrides and bramble as

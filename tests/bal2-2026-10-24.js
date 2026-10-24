@@ -47,8 +47,9 @@ ok(!past.length, '1. no main fight before Map 20 fights above Lv 4: ' + past.joi
   // a final boss counted at Map 100 limit-breaks: read the rule off the source (no Map 100 yet)
   ok(/no >= ROAD_LEVEL_CURVE\.enemySchedule\.intro\[10\]/.test(src) && S.megaBoss === 11, '1. the mega boss (a final or world boss from Map 100) limit-breaks to Lv 11'); void mega; void m; }
 const leadLeft = (src.match(/enemyLevel:[0-9.]+ \/\* 2026-10-23 \(LEAD\)[^*]*\*\//g) || []);
-ok(leadLeft.length === 57, `1. the 57 LEAD Enemy levels are all still there (${leadLeft.length})`);
-ok((src.match(/2026-10-24 \(BAL2\): re-based on the new level schedule/g) || []).length >= 40, '1. LEAD\'s Enemy levels re-based on the new schedule (strength kept)');
+// 2026-10-24 (package BAL3, owner BAL2-1 12:02): LEAD's Enemy levels are dropped (the schedule decides); was: all 57 kept and re-based by BAL2
+ok(leadLeft.length === 0, `1. no LEAD Enemy level is left (BAL3, BAL2-1) (${leadLeft.length})`);
+ok((src.match(/LEAD's Enemy level [0-9.]+ dropped, the level schedule decides/g) || []).length === 57, '1. the 57 LEAD Enemy levels dropped by BAL3, each with its note');
 
 // ---- 2. copies and the ambush
 const over = [];

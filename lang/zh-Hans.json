@@ -3288,5 +3288,6 @@
  "{text} – poison: it also gives this unit's Poison (at least 1) where it lands": "{text} – 毒：命中时也施加此单位的中毒（至少 1）",
  "{text} – bleed: it also gives this unit's Bleed (at least 1) where it lands": "{text} – 流血：命中时也施加此单位的流血（至少 1）",
  "Only a Flyer, a Tide unit or a Sprinter can have it. Turn 1: a Flyer goes aloft, a Tide unit goes under the water; nothing can find or hit it, not even a Spotter, and it can't step in as a Guardian. Turn 2: it strikes the unit with the least Health in its row (the nearest one on a tie), past any Taunt; a Guardian beside that unit still steps in. That round it is exposed: no Flying dodge, no Tide evade. With no enemy unit in its row it doesn't rise.": "只有飞行单位、潮汐单位或疾跑者能拥有。第 1 回合：飞行单位升空，潮汐单位潜入水下；什么都找不到也打不中它，瞭望者也不行，它也不能作为守护者挺身而出。第 2 回合：它越过任何嘲讽，攻击它所在一行生命最低的单位（相同时取最近的）；该单位旁边的守护者仍会挺身而出。那一轮它暴露：没有飞行闪避，也没有潮汐闪避。它所在一行没有敌方单位时不会升起。",
- "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "每场战斗一次：一回合够不着，然后以多 {n} 的伤害攻击它所在一行最弱的敌人。"
+ "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "每场战斗一次：一回合够不着，然后以多 {n} 的伤害攻击它所在一行最弱的敌人。",
+ "Their Tide units are Quick and have +1 Attack while the tide is in. Theirs only: on while at least half their deck has Tide.": "涨潮时，他们的潮汐单位获得敏捷和+1攻击。仅限对方：只要他们的牌组至少一半有潮汐就生效。"
 }

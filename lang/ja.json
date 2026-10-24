@@ -3288,5 +3288,6 @@
  "{text} – poison: it also gives this unit's Poison (at least 1) where it lands": "{text} – 毒：当たった所にこのユニットの毒も与える（最低1）",
  "{text} – bleed: it also gives this unit's Bleed (at least 1) where it lands": "{text} – 出血：当たった所にこのユニットの出血も与える（最低1）",
  "Only a Flyer, a Tide unit or a Sprinter can have it. Turn 1: a Flyer goes aloft, a Tide unit goes under the water; nothing can find or hit it, not even a Spotter, and it can't step in as a Guardian. Turn 2: it strikes the unit with the least Health in its row (the nearest one on a tie), past any Taunt; a Guardian beside that unit still steps in. That round it is exposed: no Flying dodge, no Tide evade. With no enemy unit in its row it doesn't rise.": "飛行、潮、スプリンターのユニットだけが持てる。1ターン目：飛行ユニットは上空へ、潮のユニットは水中へ。見張りでさえ見つけることも当てることもできず、守護者として割って入ることもできない。2ターン目：挑発を越えて、自分の列で最も体力の低いユニット（同じなら最も近いもの）を攻撃する。そのユニットの隣の守護者はそれでも割って入る。そのラウンドは無防備：飛行の回避も潮の回避もない。自分の列に敵ユニットがいなければ上がらない。",
- "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "1戦闘に1回：1ターン届かない所にいて、次に自分の列で最も弱い敵を{n}多く攻撃する。"
+ "Once a fight: a turn out of reach, then strikes the weakest enemy in its row for {n} more.": "1戦闘に1回：1ターン届かない所にいて、次に自分の列で最も弱い敵を{n}多く攻撃する。",
+ "Their Tide units are Quick and have +1 Attack while the tide is in. Theirs only: on while at least half their deck has Tide.": "潮が満ちている間、敵の潮ユニットは素早く、攻撃+1。相手専用：デッキの半分以上が潮を持つ間だけ有効。"
 }

@@ -2032,78 +2032,7 @@
    "map": "17 -> 14"
   }
  ],
- "held": [
-  {
-   "id": "alley-cat",
-   "stats": "1/8",
-   "line": "1/1",
-   "cut": 70,
-   "map": "5 -> 5"
-  },
-  {
-   "id": "honey-badger-fury",
-   "stats": "2/9",
-   "line": "1/6",
-   "cut": 38,
-   "map": "5 -> 0"
-  },
-  {
-   "id": "chipmunk-hoarder",
-   "stats": "3/8",
-   "line": "2/6",
-   "cut": 29,
-   "map": "11 -> 7"
-  },
-  {
-   "id": "chipmunk-cavalry",
-   "stats": "3/3",
-   "line": "2/2",
-   "cut": 33,
-   "map": "5 -> 0"
-  },
-  {
-   "id": "pyroclast-wyrm",
-   "stats": "5/17",
-   "line": "3/12",
-   "cut": 33,
-   "map": "20 -> 14"
-  },
-  {
-   "id": "plague-gnat-cloud",
-   "stats": "3/3",
-   "line": "2/2",
-   "cut": 33,
-   "map": "5 -> 0"
-  },
-  {
-   "id": "sunfeather-scout",
-   "stats": "1/7",
-   "line": "1/4",
-   "cut": 33,
-   "map": "5 -> 5"
-  },
-  {
-   "id": "lone-grey-wolf",
-   "stats": "4/15",
-   "line": "2/9",
-   "cut": 43,
-   "map": "17 -> 17"
-  },
-  {
-   "id": "rock-pool-starfish",
-   "stats": "2/2",
-   "line": "1/1",
-   "cut": 50,
-   "map": "2 -> 0"
-  },
-  {
-   "id": "muskrat-lodgekeeper",
-   "stats": "2/10",
-   "line": "1/5",
-   "cut": 50,
-   "map": "4 -> 4"
-  }
- ],
+ "held": [],
  "noLine": [
   "ant-warrior",
   "coral-polyp-colony",
@@ -2120,5 +2049,82 @@
   "spitting-cobra",
   "war-elephant",
   "fathom-leviathan"
- ]
+ ],
+ "heldResolved": {
+  "date": "2026-10-24",
+  "by": "BAL3 (owner BAL2-5: \"Basic logic return\")",
+  "note": "the 10 held cards took their formula line (tools/refit_pass_2026_10_21.js); removed from held",
+  "cards": [
+   {
+    "id": "alley-cat",
+    "stats": "1/8",
+    "line": "1/1",
+    "cut": 70,
+    "map": "5 -> 5"
+   },
+   {
+    "id": "honey-badger-fury",
+    "stats": "2/9",
+    "line": "1/6",
+    "cut": 38,
+    "map": "5 -> 0"
+   },
+   {
+    "id": "chipmunk-hoarder",
+    "stats": "3/8",
+    "line": "2/6",
+    "cut": 29,
+    "map": "11 -> 7"
+   },
+   {
+    "id": "chipmunk-cavalry",
+    "stats": "3/3",
+    "line": "2/2",
+    "cut": 33,
+    "map": "5 -> 0"
+   },
+   {
+    "id": "pyroclast-wyrm",
+    "stats": "5/17",
+    "line": "3/12",
+    "cut": 33,
+    "map": "20 -> 14"
+   },
+   {
+    "id": "plague-gnat-cloud",
+    "stats": "3/3",
+    "line": "2/2",
+    "cut": 33,
+    "map": "5 -> 0"
+   },
+   {
+    "id": "sunfeather-scout",
+    "stats": "1/7",
+    "line": "1/4",
+    "cut": 33,
+    "map": "5 -> 5"
+   },
+   {
+    "id": "lone-grey-wolf",
+    "stats": "4/15",
+    "line": "2/9",
+    "cut": 43,
+    "map": "17 -> 17"
+   },
+   {
+    "id": "rock-pool-starfish",
+    "stats": "2/2",
+    "line": "1/1",
+    "cut": 50,
+    "map": "2 -> 0"
+   },
+   {
+    "id": "muskrat-lodgekeeper",
+    "stats": "2/10",
+    "line": "1/5",
+    "cut": 50,
+    "map": "4 -> 4"
+   }
+  ]
+ }
 }
