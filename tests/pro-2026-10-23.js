@@ -128,7 +128,9 @@ Object.keys(data.maps).forEach(mid=>{
 const app = rd('arena_app.js'), asm = rd('assemble_arena.py');
 ok((app.match(/__PRO_SKIRMISHES__/g) || []).length === 1 && /__PRO_SKIRMISHES__/.test(asm) && /canonical\/pro-skirmishes\.json/.test(asm), '3. the build bakes canonical/pro-skirmishes.json in (one placeholder)');
 ok(fs.existsSync(path.join(ROOT, 'index.html')) && /"0-PRO-1"/.test(rd('index.html')) && /"0-BPRO-1"/.test(rd('index.html')), '3. the built page has the PRO and BPRO fights (BPRO: 2026-10-25, PL2)');
-ok(/const PRO_KEY_RE = \/\^\\d\+-B\?PRO-\\d\+\$\//.test(app) && /function proEntriesOf\(ent\)\{ return ent \? \(ent\.pro \|\| \[\]\)\.concat\(ent\.bpro \|\| \[\]\)/.test(app) && /out\[mid\]\["bpro"\]/.test(asm), '3. N-BPRO-k keys, both kinds listed, the build bakes bpro (2026-10-25, PL2)');
+// 2026-10-25 (PRO3): the key also takes a side map's own PRO fights (N-L-PRO-k, e.g. 2-B-PRO-1)
+{ const re = new RegExp(app.match(/const PRO_KEY_RE = \/(.*?)\/;/)[1]); ok(re.test('3-PRO-1') && re.test('12-BPRO-4') && re.test('2-B-PRO-1') && re.test('20-A-BPRO-2') && !re.test('2-BB-PRO-1') && !re.test('PRO-1'), '3. PRO keys: N-PRO-k, N-BPRO-k and a side map\'s N-L-PRO-k (PRO3)'); }
+ok(/function proEntriesOf\(ent\)\{ return ent \? \(ent\.pro \|\| \[\]\)\.concat\(ent\.bpro \|\| \[\]\)/.test(app) && /out\[mid\]\["bpro"\]/.test(asm), '3. N-BPRO-k keys, both kinds listed, the build bakes bpro (2026-10-25, PL2)');
 { const TXT = require(path.join(ROOT, 'bramblewood-texts.js')), keys = ['ui.pro-title', 'ui.pro-admin-sub', 'ui.pro-fight', 'ui.pro-copy-link', 'ui.pro-link-copied', 'ui.pro-score', 'ui.pro-vs1', 'ui.pro-leader', 'ui.pro-editor', 'ui.pro-result', 'ui.pro-unknown', 'ui.pro-busy', 'ui.pro-tutorial-first', 'ui.pro-map', 'ui.pro-none'];
   const T = TXT.TEXT || (TXT.BramblewoodTexts && TXT.BramblewoodTexts.TEXT) || null, src = rd('bramblewood-texts.js');
   keys.forEach(k=>{ const m = new RegExp('"' + k.replace(/[.-]/g, '\\$&') + '": "([^"]+)"').exec(src); ok(!!m, '3. text ' + k);

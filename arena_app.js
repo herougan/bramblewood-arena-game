@@ -23398,7 +23398,7 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+-B?PRO-\d+$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k)
+const PRO_KEY_RE = /^\d+(?:-[A-Z])?-B?PRO-\d+$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
 // both kinds of a map's entry, PRO first (2026-10-25, PL2)
 function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
 const PRO_NODE_CACHE = new Map();
@@ -23414,7 +23414,10 @@ function proNodeOf(mapId, e, ent){
   else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none
   PRO_NODE_CACHE.set(ck, n); return n;
 }
-function proFightsOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); const id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id];
+// 2026-10-25 (package PRO3, owner 10-24 22:28 #11: "PRO not done for Map 1-20 yet and its submaps"): a side map with its own entry shows its own
+// PRO fights (N-L-PRO-k); one without shows its parent's, as before (proEntryIdOf)
+function proEntryIdOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); return m && m.sub && !proMapEntries()[mapId] ? m.parent : mapId; }
+function proFightsOf(mapId){ const id = proEntryIdOf(mapId), ent = proMapEntries()[id];
   return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
   for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
@@ -23483,7 +23486,7 @@ function proFightsAdminHTML(){
 // with Admin Mode on, a main map with PRO fights shows each as a small gold trophy node beside its boss (label N-PRO-k); a tap starts the fight
 // through the same data-pro-start click handler as Admin's list. Not a .map-node (no progress, no layout, no unlock logic), absent for players.
 function proMapNodesHTML(map, positions){
-  if(!adminModeEnabled || !map || map.sub || map.endless || conquestLayoutEdit) return '';
+  if(!adminModeEnabled || !map || (map.sub && !proMapEntries()[map.id]) || map.endless || conquestLayoutEdit) return ''; // PRO3: a side map with its own PRO fights too
   const ent = proMapEntries()[map.id]; if(!ent || !proEntriesOf(ent).length) return '';
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
@@ -23492,7 +23495,7 @@ function proMapNodesHTML(map, positions){
 }
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
-  const m = CONQUEST_MAPS.find(x=> x.id === mapId), id = m && m.sub ? m.parent : mapId, ent = proMapEntries()[id] || {};
+  const id = proEntryIdOf(mapId), ent = proMapEntries()[id] || {}; // PRO3: a side map's own entry first
   return `<fieldset class="se-wide pro-editor"><legend>🏆 ${escapeHtml(TX('ui.pro-editor'))}</legend>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i], {compact: true})).join('')}</fieldset>`;
 }
 try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{

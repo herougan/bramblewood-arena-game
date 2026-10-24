@@ -40,7 +40,11 @@
 'use strict';
 const path = require('path'), fs = require('fs');
 const O = require('./deckopt.js');
-const VERSION = '1.1.0 (2026-10-24, PRO2)';
+const VERSION = '1.2.0 (2026-10-25, PRO3)';
+// 2026-10-25 (package PRO3, owner 10-24 22:28 #11: "PRO not done for Map 1-20 yet and its submaps"): side maps too. A side map with optimizer
+// runs (deckopt --side, its own pool: mapTruePools) gets its own entry under its id, its fights named after its fight codes: N-L-PRO-k /
+// N-L-BPRO-k (Smugglers' Grotto, whose fights are 2-B-1.., gets 2-B-PRO-1). --maps still takes main map numbers and covers their side maps.
+// The field is the side map's own average fight; faction cards break the map rule (deckopt PRO3: left out of PRO pools).
 // 2026-10-24 (PRO2): the two kinds: the optimizer mode each reads, its id label and its list in the map's entry
 const KINDS = { pro: { mode: 'map-true', label: 'PRO', list: 'pro' }, bpro: { mode: 'bpro', label: 'BPRO', list: 'bpro' } };
 const DEFAULTS = { kind: 'both', rarityCap: 'map', apply: false, maps: null, files: null, games: 400, replaceAt: 0.55, band: 100, max: 4, distinct: 6, level: 1, ai: 1, seed: 'pro', out: null, root: null, quiet: false, json: false };
@@ -77,6 +81,8 @@ const HELP = `pro_skirmishes ${VERSION}: the hidden N-PRO-k and N-BPRO-k fights 
 // ---------------------------------------------------------------- small helpers
 const r3 = v => v == null || !isFinite(v) ? null : Math.round(v * 1000) / 1000;
 const mapNoOf = (gm, map) => gm.G.mapNumberOf(map.id);
+// a fight id's prefix: the map number, or a side map's fight-code stem (its first fight's key less the number: 2-B-1 -> 2-B)
+function proPrefix(gm, map) { if (!map.sub) return String(mapNoOf(gm, map)); const f = O.fightsOf(map)[0]; const m = f && /^(\d+-[A-Z])-\d+$/.exec(f.key); return m ? m[1] : String(mapNoOf(gm, map)); }
 function globToRe(g) { return new RegExp('^' + g.split('*').map(s => s.replace(/[.+?^${}()|[\]\\]/g, '\\$&')).join('.*') + '$'); }
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else if (/^\d+$/.test(p)) out.add(+p); else throw new Error('--maps takes numbers: ' + p); }); return out; }
 function renamedIds(gm) { try { return new Function(gm.B.grab('CARD_ID_RENAMED') + '\nreturn CARD_ID_RENAMED;')(); } catch (e) { return {}; } }
@@ -205,7 +211,7 @@ function candidatesOf(gm, runs, mapId, ren, mode) {
 
 // ---------------------------------------------------------------- main
 function emptyFile() { return { about: ABOUT, version: 2, updated: null, tool: null, rule: null, maps: {} }; }
-const ABOUT = 'Hidden PRO fights per main map (package PRO, owner 2026-10-24 00:28; PRO2 21:20). N-PRO-k: the best decks of the deck optimizer\'s map-true runs (the map\'s own cards + what a player holds by then, within the map\'s rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map\'s own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.';
+const ABOUT = 'Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer\'s map-true runs (the map\'s own cards + what a player holds by then, within the map\'s rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map\'s own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.';
 async function main(argv) {
   const o = parseArgs(argv); if (o.help) { console.log(HELP); return null; }
   const root = path.resolve(o.root || path.join(__dirname, '..', '..')), outFile = path.resolve(root, o.out || path.join('canonical', 'pro-skirmishes.json'));
@@ -213,14 +219,14 @@ async function main(argv) {
   const gm = O.loadGame(root), ren = renamedIds(gm), runs = readRuns(root, o), want = mapRange(o.maps);
   const file = fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : emptyFile();
   const mapIds = [...new Set(runs.map(r => r.j.map.id).concat(Object.keys(file.maps || {})))];
-  const maps = mapIds.map(id => gm.G.CONQUEST_MAPS.find(m => m.id === id)).filter(m => m && !m.sub).filter(m => !want || want.has(mapNoOf(gm, m))).sort((a, b) => mapNoOf(gm, a) - mapNoOf(gm, b));
+  const maps = mapIds.map(id => gm.G.CONQUEST_MAPS.find(m => m.id === id)).filter(m => m && !m.reserved && !m.endless && m.id !== 'mtut').filter(m => !want || want.has(mapNoOf(gm, m))).sort((a, b) => mapNoOf(gm, a) - mapNoOf(gm, b) || (a.sub ? 1 : 0) - (b.sub ? 1 : 0) || (a.id < b.id ? -1 : 1)); // PRO3: side maps after their main map
   log(`pro_skirmishes ${VERSION}: ${maps.length} map(s), ${runs.length} optimizer output(s), ${o.games} games a pairing, ${o.apply ? 'APPLY' : 'dry run'}`);
   const plan = [], next = JSON.parse(JSON.stringify(file)); next.maps = next.maps || {}; next.about = ABOUT; next.version = 2;
   const kinds = o.kind === 'both' ? ['pro', 'bpro'] : [o.kind];
   for (const map of maps) {
     const no = mapNoOf(gm, map), field = averageField(gm, map); if (!field) continue;
     const old = file.maps[map.id] || {}, today = new Date().toISOString().slice(0, 10);
-    const entry = { map: no, name: map.name, field: Object.assign({}, field, { summary: fieldSummary(gm, field) }), pro: old.pro || [], bpro: old.bpro || [],
+    const entry = { map: no, side: map.sub ? map.parent : undefined, name: map.name, field: Object.assign({}, field, { summary: fieldSummary(gm, field) }), pro: old.pro || [], bpro: old.bpro || [],
       replaced: (old.replaced || []).slice(), skipped: (old.skipped || []).filter(x => !kinds.includes(x.kind || 'pro')), notes: (old.notes || []).filter(x => !kinds.some(k => x.startsWith(KINDS[k].label + ': '))) };
     log(`Map ${no} ${map.name} (${map.id}): field ${entry.field.summary || '(none)'}${field.ties.length ? ' [' + field.ties.join('; ') + ']' : ''}; rarity cap ${O.mapRarityCap(gm, map, o.rarityCap)}`);
     for (const kind of kinds) {
@@ -235,8 +241,8 @@ async function main(argv) {
         if (p.length) skipped.push({ kind, source: c.source.file + ' #' + c.source.optimum, problems: p }); else cands.push(c); });
       const measure = makeH2H(gm, map, field, o);
       const d = decide(cur, cands, measure, o);
-      const list = d.pro.map((x, i) => { const id = `${no}-${K.label}-${i + 1}`;
-        return { id, name: id, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, no) }; });
+      const list = d.pro.map((x, i) => { const id = `${proPrefix(gm, map)}-${K.label}-${i + 1}`; // PRO3: a side map's N-L-
+        return { id, name: id, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, map.sub && gm.G.mapUnlockNumberOf ? gm.G.mapUnlockNumberOf(map.id) : no) }; });
       const before = prev.map(e => O.deckKey(renameDeck(e.deck, ren))).join(' / '), after = list.map(e => O.deckKey(e.deck)).join(' / ');
       entry[K.list] = list;
       d.replaced.forEach(r => entry.replaced.push({ kind, deck: r.deck, source: r.source, lostTo: r.by, h2h: r.h2h, on: today }));
@@ -252,10 +258,10 @@ async function main(argv) {
   next.rule = { games: o.games, replaceAt: o.replaceAt, band: o.band, max: o.max, distinct: o.distinct, level: o.level, ai: o.ai, seed: o.seed,
     modes: { pro: KINDS.pro.mode, bpro: KINDS.bpro.mode }, rarityCap: o.rarityCap }; // 2026-10-24 (PRO2): the kinds' optimizer modes and the map rule's cap
   if (o.json) console.log(JSON.stringify(plan, null, 1));
-  if (o.apply) { const order = Object.keys(next.maps).sort((a, b) => next.maps[a].map - next.maps[b].map), maps2 = {}; order.forEach(k => { maps2[k] = next.maps[k]; }); next.maps = maps2;
+  if (o.apply) { const order = Object.keys(next.maps).sort((a, b) => next.maps[a].map - next.maps[b].map || (next.maps[a].side ? 1 : 0) - (next.maps[b].side ? 1 : 0) || (a < b ? -1 : 1)), maps2 = {}; order.forEach(k => { maps2[k] = next.maps[k]; }); next.maps = maps2;
     fs.mkdirSync(path.dirname(outFile), { recursive: true }); fs.writeFileSync(outFile, JSON.stringify(next, null, 1) + '\n'); log('-> ' + path.relative(root, outFile) + ' (rebuild the game to bake it in)'); }
   else log('dry run: nothing written (--apply writes ' + path.relative(root, outFile) + ')');
   return { plan, file: next };
 }
-module.exports = { VERSION, KINDS, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
+module.exports = { VERSION, KINDS, proPrefix, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

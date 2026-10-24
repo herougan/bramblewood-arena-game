@@ -62,7 +62,7 @@
 const path = require('path'), fs = require('fs'), os = require('os');
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 let SEA = false; try { SEA = require('node:sea').isSea(); } catch (e) { /* Node without SEA */ }
-const VERSION = '2.1.0 (2026-10-24, PRO2)';
+const VERSION = '2.2.0 (2026-10-25, PRO3)';
 
 // ---------------------------------------------------------------- small helpers
 function mulberry(state) { // a serialisable PRNG: {s} is its whole state
@@ -140,12 +140,28 @@ function poolsFor(gm, map, opt) {
 //     Phase 2's candidates obey the same rule.
 //   bpro: the map's own cards only (MAP + SPECIAL + its fight decks), within the cap. No outside card: no owned cards, no submaps, no phase 2.
 // rule(id) says why a card may not be in such a deck (null = it may): the PRO tools and tests check decks with it (mapRuleProblems).
+// 2026-10-25 (package PRO3, owner 10-24 22:28 #3 / #11: "we'll do a new PRO pass per map. Don't include the faction cards into this." and
+// "PRO not done for Map 1-20 yet and its submaps."):
+//   - faction cards are left out of map-true and BPRO pools by default (opt.faction true / --faction keeps them). A faction card is what the
+//     game deals from the faction packs: a pack card of tier 11 (arena_app.js factionCardsOfMine / factionPoolCardIds), the HUB3 plan's
+//     factionOtter / factionHummingbird buckets. The Base and tutorial cards that carry `faction: "base"` / "hummingbirds" in cards.json
+//     (the Otter Kit, the Mosswing ...) are starting cards, not faction cards, and stay.
+//   - a side map runs as its own map: its own cards are its parent's MAP tier, its own SUBMAP list, the SPECIAL tier and its fight decks
+//     (what a side-map fight draws from); what a player holds by then is counted at the map it opens on (mapUnlockNumberOf: the Old
+//     Bramble, Map 0's side map, opens after Map 21), and the rarity cap is its own fights' (roadRarityCap with the side map's id).
+function isFactionCard(gm, id) {
+  const d = gm.D[id]; if (!d) return false; const s = d.source || {};
+  if (s.kind === 'pack' && (parseInt(s.tier, 10) || 1) === 11) return true;
+  const c = planOf(gm, id); return !!(c && /^faction/.test(c.bucket || ''));
+}
 function mapTruePools(gm, map, opt, mode) {
-  const G = gm.G, mapNo = G.mapNumberOf(map.id), e = gm.pools[map.id] || { cards: [], submaps: {}, special: [] };
+  const G = gm.G, side = !!map.sub, mapNo = side ? (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(map.id) : G.mapNumberOf(map.id)) : G.mapNumberOf(map.id);
+  const pe = gm.pools[side ? map.parent : map.id] || { cards: [], submaps: {}, special: [] }, subOwn = side ? (pe.submaps || {})[map.id] : null;
+  const e = side ? { cards: (pe.cards || []).concat(Array.isArray(subOwn) ? subOwn : (subOwn && subOwn.cards) || []), special: pe.special || [], submaps: {} } : pe;
   const cap = mapRarityCap(gm, map, opt.rarityCap), capStep = G.roadRarityStep(cap), capOk = id => G.roadRarityStep(gm.D[id].rarity) <= capStep;
-  const ok = id => deckable(gm, id);
+  const noFaction = !(opt && opt.faction), ok = id => deckable(gm, id);
   const own = uniq((e.cards || []).concat(e.special || [], ...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort(), ownSet = new Set(own);
-  const subsOpen = G.CONQUEST_MAPS.filter(m => m.sub && m.parent === map.id && !m.reserved && (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(m.id) : mapNo) <= mapNo).map(m => m.id);
+  const subsOpen = side ? [] : G.CONQUEST_MAPS.filter(m => m.sub && m.parent === map.id && !m.reserved && (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(m.id) : mapNo) <= mapNo).map(m => m.id);
   const subCards = uniq([].concat(...subsOpen.map(id => { const l = (e.submaps || {})[id]; return Array.isArray(l) ? l : (l && l.cards) || []; }))).filter(ok);
   // owned by then: the plan's (Base from the start, the rest after their advancement map), and the MAP tier of every earlier main map (its
   // pack cards and rewards; HUB3's plan predates some of them, e.g. the Tomcat, Fox Kit and Beetle Grunt of Map 0), each obtainable by now
@@ -154,6 +170,7 @@ function mapTruePools(gm, map, opt, mode) {
   const rule = id => {
     const d = gm.D[id]; if (!d || !ok(id)) return 'cannot be in a deck';
     if (!capOk(id)) return `${d.rarity} is over the map's rarity cap (${cap})`;
+    if (noFaction && isFactionCard(gm, id)) return 'a faction card (PRO3: left out of PRO pools; --faction keeps them)';
     if (ownSet.has(id)) return null;
     if (mode === 'bpro') return 'not in the map\'s own pool (BPRO)';
     if (!planOf(gm, id) && earlier[id] == null) return 'not obtainable (not in the progression plan or an earlier map\'s cards)';
@@ -545,7 +562,7 @@ const idxOf = (entries, j) => entries.map((e, i) => i).filter(i => entries[i].oj
 
 // ---------------------------------------------------------------- one map
 function parseArgs(argv) {
-  const o = { mode: 'map-true', rarityCap: 'map', maps: null, minutes: null, budget: null, workers: Math.max(1, Math.min(os.cpus().length, 8)), seed: 'bramble', crossShare: 0.3, roadWeight: 0.25, ai: 1, owned: 'plan', crossPool: 'rules', submaps: true,
+  const o = { mode: 'map-true', rarityCap: 'map', maps: null, minutes: null, budget: null, workers: Math.max(1, Math.min(os.cpus().length, 8)), seed: 'bramble', crossShare: 0.3, roadWeight: 0.25, ai: 1, owned: 'plan', crossPool: 'rules', submaps: true, faction: false, side: false,
     method: 'ga', restarts: 2, nicheRadius: 5, nicheCap: 2, neighbours: 10, patience: 3, dgmax: 16,
     pop: 16, children: 32, g0: 2, gmax: 32, top: 3, screenCopies: 3, screenMax: null, finalGames: 0, finalMax: 200, finalShare: 0.2, level: 1, beeTank: false,
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
@@ -557,6 +574,7 @@ function parseArgs(argv) {
     switch (k) {
       case '--map': case '--maps': o.maps = take(); break;
       case '--mode': o.mode = take(); break; case '--map-true': o.mode = 'map-true'; break; case '--bpro': o.mode = 'bpro'; break; case '--classic': o.mode = 'classic'; break; case '--rarity-cap': o.rarityCap = take(); break;
+      case '--faction': o.faction = true; break; case '--no-faction': o.faction = false; break; case '--side': o.side = true; break;
       case '--minutes': o.minutes = +take(); break; case '--budget': o.budget = +take(); break; case '--workers': case '-j': o.workers = +take(); break; case '--seed': o.seed = take(); break;
       case '--cross-share': o.crossShare = +take(); break; case '--road-weight': o.roadWeight = +take(); break; case '--ai': o.ai = +take(); break;
       case '--owned': o.owned = take(); break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
@@ -587,6 +605,8 @@ const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramb
   --mode map-true|bpro|classic   the card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
                       all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own pool only (MAP + SPECIAL +
                       its fight decks), within the cap, no phase 2; classic (--classic) = the OPT2 pool (every submap, owned cards at any rarity)
+  --no-faction | --faction       map-true / bpro leave faction cards out (default, package PRO3: a tier-11 faction-pack card) or keep them
+  --side              with --maps: each listed main map's side maps too (not the tutorial, endless dungeons or reserved maps), right after it
   --rarity-cap map|skirmish|R    map-true / bpro cap: the highest of the map's fights (default), a plain skirmish's, or a rarity
   --budget G          search games per map (exact and reproducible)             --minutes M   or: search time per map, turned into games (default 5)
   --workers N         worker threads (default: cores, max 8; 0 = inline)        --seed S       seed (default "bramble")
@@ -609,10 +629,13 @@ const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramb
   --bee-tank          give your side the engine's Bee Tank fallback, as the game's reference harness does (off)
   --tag T             file tag (default: today's date)                          --quiet  --no-summary  --version`;
 
-function mapList(gm, spec) {
+function mapList(gm, spec, side) {
   if (!spec) throw new Error('--map is required');
   const out = []; String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.push(String(i)); } else out.push(p); });
-  return out.map(x => resolveMap(gm, x));
+  const maps = out.map(x => resolveMap(gm, x));
+  if (!side) return maps;
+  // 2026-10-25 (PRO3): --side adds each main map's side maps (a side map's fights as their own map; mapTruePools)
+  return [].concat(...maps.map(m => [m].concat(m.sub ? [] : gm.G.CONQUEST_MAPS.filter(s => s.sub && s.parent === m.id && !s.reserved && !s.endless && !s.tower && s.id !== 'mtut' && fightsOf(s).length))));
 }
 function saveJSON(file, obj) { fs.mkdirSync(path.dirname(file), { recursive: true }); const tmp = file + '.tmp'; fs.writeFileSync(tmp, JSON.stringify(obj)); fs.renameSync(tmp, file); }
 const KEY_RE = /^[^,:]+:\d+(,[^,:]+:\d+)+$/;
@@ -625,7 +648,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank };
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
-  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
+  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
   if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {}, rngAt: {} };
   // --redo ladder (or any stage): run that stage again from the generator state it started with (as a fresh run would)
@@ -734,10 +757,10 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const reportRoad = fights.map(n => { const i = entries.findIndex(e => e.key === 'road|' + n.key); if (i < 0) return null; const st1 = stats.get(optK), p = st1.s[i] / st1.n[i], ci = wilson(p, st1.n[i]); const t = G.roadCurveTarget(map.id, n);
     return { node: n.key, kind: n.kind || 'skirmish', target: t ? t.t : null, optimum: r3(p), ci: [r3(ci[0]), r3(ci[1])], n: st1.n[i] }; }).filter(Boolean);
   const searchOut = s => s && ({ method: s.method, games: s.games, gens: s.gens, restarts: s.restarts, steps: s.steps, moves: s.moves, runs: s.runs, localOptima: s.optima ? s.optima.map(x => ({ score: x.f, moves: x.moves, local: x.local })) : undefined, skipped: s.skipped });
-  const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: pools.mapNo, name: map.name },
-    level, settings: { mode: o.mode, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
+  const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: G.mapNumberOf(map.id), name: map.name, side: map.sub ? map.parent : undefined, opensOn: map.sub ? pools.mapNo : undefined },
+    level, settings: { mode: o.mode, faction: !!o.faction, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
       crossShare: o.crossShare, roadWeight: o.roadWeight, ai: o.ai, owned: o.owned, crossPool: o.crossPool, submaps: o.submaps, pop: o.pop, children: o.children, g0: o.g0, gmax: o.gmax, screenCopies: o.screenCopies, beeTank: o.beeTank, minutes: o.minutes, workers: o.workers },
-    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : ''),
+    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : ''),
     pools: { mode: pools.mode, cap: pools.cap || null, subsOpen: pools.subsOpen, phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length, excluded: pools.excluded },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),
@@ -857,7 +880,7 @@ function candidatesMd(c) {
 function summaryMd(reports, tag) {
   const L = [`# Deck optimizer results (${tag})`, '', 'Generated by `tools/opt/deckopt.js` (packages OPT, OPT2). Your level: ' + uniq(reports.map(r => r.level)).join(', ') + '. Fair mirror: both sides at your level, your bramble, CPU skill 1, seats swapped; "road" = the fight as the game builds it. Score = 0.75 mirror + 0.25 road unless the settings say otherwise. Elo gap = 400 log10(p / (1 - p)) of the optimum\'s head-to-head score against that deck (+200 = the optimum wins 76%, +400 = 91%, +600 = 97%). "Owned" = a Base card, or a card obtainable before this map (HUB3 progression plan). "Candidate" = a phase-2 card (tools/opt/phase2-rules.json).', ''];
   reports.forEach(r => {
-    L.push(`## Map ${r.map.num}: ${r.map.name} (\`${r.map.id}\`), your level ${r.level}`, '');
+    L.push(`## Map ${r.map.num}: ${r.map.name} (\`${r.map.id}\`${r.map.side ? `, side map of \`${r.map.side}\`, opens on Map ${r.map.opensOn}` : ''}), your level ${r.level}`, '');
     const s1 = r.phase1.search, s2 = r.phase2.search;
     L.push(`- Throughput: ${r.throughput.games} games in ${r.throughput.seconds} s = **${r.throughput.gamesPerSecond} games/s** (${r.throughput.workers} workers${r.throughput.sessions > 1 ? ', ' + r.throughput.sessions + ' sessions (resumed)' : ''}). Search: ${s1.method}, budget ${r.settings.budget} games (${s1.games} map cards${s1.gens != null ? ', ' + s1.gens + ' generations' : ''}${s1.restarts ? ', ' + s1.restarts + ' restarts' : ''}; ${s2.games} with the candidates). Reproduce: \`${r.reproduce}\``);
     L.push(`- Pool: ${r.pools.phase1} cards (${r.pools.mapCards.length} map cards + ${r.pools.owned.length} owned by then); phase 2 ${r.pools.phase2} (+${r.candidates.list.length} candidates).`);
@@ -908,7 +931,7 @@ async function main(argv) {
   if (!fs.existsSync(path.join(root, 'arena_app.js'))) throw new Error('no game at ' + root + ' (run from the repo checkout or pass --root)');
   const tag = o.tag || new Date().toISOString().slice(0, 10), outDir = path.resolve(o.out || path.join(root, 'docs', 'balance', 'opt'));
   const log = o.quiet ? () => {} : s => console.log(s);
-  const gm = loadGame(root), maps = mapList(gm, o.maps), rules = loadRules(root, o.rules), reports = [];
+  const gm = loadGame(root), maps = mapList(gm, o.maps, o.side), rules = loadRules(root, o.rules), reports = [];
   if (o.candidatesOnly) { // the phase-2 lists, no games
     maps.forEach(m => { const p = poolsFor(gm, m, o), c = candidatesFor(gm, m, p, rules); reports.push({ map: { id: m.id, num: p.mapNo, name: m.name }, candidates: c });
       console.log(`Map ${p.mapNo} ${m.name} (${m.id}): ${c.list.length} candidates (score >= ${c.minScore})`); c.list.forEach(r => console.log(`  ${r.score}  ${r.name} (${r.rarity}, Map ${r.obtainMap})  ${r.reasons.join('; ')}`)); });

@@ -181,7 +181,12 @@ const deckSize = d=> Object.values(d).reduce((a, b)=> a + b, 0);
 // the Auto pick) in its deck, since a fight pays the leader it is led by and the battle rating counts it double (the 10-19 R2 moves took
 // 11-2's own Eagle-Owl Quartermaster out of 11-2), and keeps other fights' reward cards out of the pool.
 const KEEP_LEADERS = argv.includes('--keep-leaders');
-const keptLeader = (f, id)=>{ if(!KEEP_LEADERS) return false; try{ return G.skirmishLeadersOf(f.n, f.map).includes(id); }catch(e){ return false; } };
+// 2026-10-25 (package PRO3, EN8-10's road check: "the smallest change first: swap a card or drop a copy ... Keep first-clear cards and deck
+// sizes"): --keep-first keeps a fight's own first-clear cards (nodeFirstClearCardIds, e.g. 8-1's Quarry Mole, RP3) in its deck, and
+// --keep-size takes only moves that leave the deck's card count as it was (swaps; no add, no remove).
+const KEEP_FIRST = argv.includes('--keep-first'), KEEP_SIZE = argv.includes('--keep-size');
+const firstClearOf = f=>{ if(f._first) return f._first; let ids = []; try{ ids = (G.nodeFirstClearCardIds || G.nodeRewardCardIds)(f.map, f.key) || []; }catch(e){} return (f._first = new Set(ids)); };
+const keptLeader = (f, id)=>{ if(KEEP_FIRST && firstClearOf(f).has(id)) return true; if(!KEEP_LEADERS) return false; try{ return G.skirmishLeadersOf(f.n, f.map).includes(id); }catch(e){ return false; } };
 const otherFightsReward = (f, id)=>{ const s = (CARD_DEFS_BASELINE[id] || {}).source; return !!(s && s.kind === 'map' && s.node && !(s.id === f.map && s.node === f.key)); };
 // Candidate moves of up to two copies, most promising first. A fight's namesake (Epic and up, or its showcase card) is never taken out.
 // Too easy: the deck's weakest card makes way for a stronger themed one, or the strongest card it has gets more copies, or (under 20
@@ -365,6 +370,7 @@ function curveTune(f, band, steps){
           const k = Math.min(have, capIn - (node.deck[mv.inn] || 0)); if(k <= 0) continue; mv = Object.assign({}, mv, {k: have, whole: true, kIn: k});
           nd = Object.assign({}, node.deck); delete nd[mv.out]; nd[mv.inn] = (nd[mv.inn] || 0) + k; }
         if(!rareQuarterOk(f, nd, node.deck) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
+        if(KEEP_SIZE && deckSize(nd) !== deckSize(node.deck)) continue; // PRO3 --keep-size
         if(!distinctOk(f, nd, f.n.deck)) continue; // BAL3 --distinct (against the fight's deck as it was)
         if(f.n.rules && f.n.rules.boon && E.selfishBoonCount && !E.selfishBoonCount(CARD_DEFS_BASELINE, nd, f.n.rules.boon).on) continue; // BAL3: a challenge deck keeps its selfish boon on (DF3)
         if(Object.entries(nd).some(([id, k])=> k > G.maxCopiesForRarity(CARD_DEFS_BASELINE[id].rarity))) continue; // the copy ladder (BAL2)
@@ -410,7 +416,9 @@ function curveTune(f, band, steps){
 // ---- commands
 // --main (2026-10-19, R2): the main maps' fights only (Maps 0-24, no side map, no endless floor, no come-back-later fight)
 const MAIN_ONLY = argv.includes('--main');
-const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code)).filter(f=> !MAIN_ONLY || (!f.side && !f.endless));
+// --maxmap=N (2026-10-25, PRO3): only the fights of Maps 0..N and their side maps
+const MAXMAP = opt('maxmap', null) != null ? +opt('maxmap') : null;
+const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code)).filter(f=> !MAIN_ONLY || (!f.side && !f.endless)).filter(f=> MAXMAP == null || f.mapNo <= MAXMAP);
 const OUTDIR = path.join(ROOT, 'docs', 'balance');
 const readJsonl = file=>{ try{ return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
 const rowOf = (f, extra)=>{ const {m, n, ...row} = f; return Object.assign(row, extra); };
