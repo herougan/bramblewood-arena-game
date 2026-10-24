@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 release 10-24d (batch: EQ2, RW6, EN6, EN7)
+- Equipment durability, Bolster and the Health bar, Parasite, raid Beak Strike and two Guardian raiders; Dive in two turns (aloft / under, then strike); Guardian tilt; Poison pool sink and 🤢N floats; Poison/Bleed on Pounce/Ambush, "– poison"/"– bleed"; Parasite x Bloom.
+- Hand states (Plenty, Scarcity, Foe's), Full Hand / Lean, Heat, Frost, Rain, Storm, Fog, Salt, Drought, Season (field option), Hibernate, "– bramble"; Bounty only on loot carriers (Beaver Lumberjack: On Ready +1 Lumber).
+- Results: no rank-locked chips, Base cards as card tiles; PRO fights as map nodes in Admin Mode.
+- Checks: full unit tier, no new failures against 10-24c (t test updated for RW6; autobattle passes alone); ui_smoke 0 failures; flows 0 issues; card-matrix golden refreshed.
+
 ## 2026-10-24 (package EN7: Dive in two turns, the Guardian's tilt, Poison's pool and floats, Poison / Bleed on extra hits, Parasite x Bloom)
 - **Dive ⤵️ N, in two turns (13:12 #3, "like pokemon"; calls EN7-1, EN7-4):** replaces EQ2's one-swing dive. Turn 1 (its swing, with an enemy
   unit in its row): a Flyer rises off the board, its shadow left below, a ☁️ tag; a Tide unit sinks under a band of water, a 🌊 tag. Nothing
