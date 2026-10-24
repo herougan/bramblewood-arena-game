@@ -747,7 +747,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const board = {uid:uidCounter++, defId, hp:def.health, maxHp:def.health, atk:def.attack, baseAtk:def.attack, wait:def.wait, fuse: Number(def.effects && def.effects.dynamite) || 0, poison:0, decay:0, bleed:0, exposed:0, exploit:0, scar:0, firedOnce:{},
       ffCounters: Math.max(0, Number(def.effects && def.effects.fastForward) || 0), // Fast Forward N (2026-10-12), see fastForwardPass
       reloadRemaining:0, _reloadJustSet:false, stunned:false, _stunnedJustSet:false, shellArmor:0, shellSkip:false, shellNext:0, tempHp:0, shellUntil:null, inspired:0, _frenziedThisRound:false,
-      critUsed:0, rallyBonus:0,
+      critUsed:0, rallyBonus:0, tempHpR:0, baseHp:def.health, // EQ2 (2026-10-24): the round's temporary Health (Bolster); its printed Health (the bonus Health bar)
       // Elemental status effects (2026-09-16), one per non-physical DMG_TYPE — see
       // rollStatusOnHit/gatherAttackers/endOfRoundUpkeep for the full lifecycle of each:
       frozen:0, _frozenJustSet:false,       // cold — flat skip-this-round, ticks down every upkeep
@@ -2155,7 +2155,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusFx', kind:'shellUp', side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), attUid:card.uid, attDefId:card.defId, targetUid:card.uid, targetDefId:card.defId, amount:n}); }
     return true;
   }
-  function spendTempHp(card, dmg){ if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; dmg -= s2; }
+  function spendTempHp(card, dmg){
+    if(card.tempHpR > 0 && dmg > 0){ const s1 = Math.min(card.tempHpR, dmg); card.tempHpR -= s1; dmg -= s1; // EQ2 (2026-10-24): the round's temporary Health (Bolster N) goes first
+      if(recordEvents && shieldEvents) shieldEvents.push({type:'tempSoak', uid:card.uid, defId:card.defId, soaked:s1, left:card.tempHpR}); }
+    if(card.tempHp > 0 && dmg > 0){ const s2 = Math.min(card.tempHp, dmg); card.tempHp -= s2; dmg -= s2; }
     // Shield (2026-10-14, user: "Not the same as armour, just temp HP"): soaks what Shell's temporary Health didn't, and never heals back.
     if(card.shield > 0 && dmg > 0){ const s3 = Math.min(card.shield, dmg); card.shield -= s3; dmg -= s3;
       if(recordEvents && shieldEvents) shieldEvents.push({type:'shieldSoak', uid:card.uid, defId:card.defId, soaked:s3, left:card.shield}); }
@@ -2874,6 +2877,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       killerUid: attCard ? attCard.uid : null, killerDefId: attCard ? attCard.defId : null,
       wake: true, wokeBy: attCard ? {uid: attCard.uid, t: turnNo} : null, // Asleep (2026-09-16): breaks the instant real damage lands (2026-10-18: _wokeBy, so that same hit's own Sleep stacks on the tokens it had)
       shell: !nul, nul});
+    if(card.equipment && amount > 0) eq2Wear(card, dmgType === 'acid' ? EQ2_DEF.acidWear : EQ2_DEF.hitWear, dmgType === 'acid' ? 'acid' : 'hit'); // EQ2 (2026-10-24): every hit on the wearer wears its piece
     return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit, mods};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
@@ -2916,8 +2920,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const tick = EXPOSE_TICKS.has(dmgType);
     // sudden death: any hit that lands kills, and from 2026-10-15 a hit soaked to 0 too; status ticks still need to hurt
     const sd = suddenDeath ? (d=> d>0 || (amount > 0 && factor !== 0 && !tick)) : null;
-    return applyDamage(card, dmg, {dmgType, crush, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
+    const out = applyDamage(card, dmg, {dmgType, crush, mods, noteHit: true, punishBy: tick ? undefined : attUid, suddenDeath: sd,
       killerUid: attUid, killerDefId: attDefId, wake: true /* Asleep breaks on any flat/ranged damage too */, shell: true /* Shell triggers on arrows and every other hit too (2026-10-12) */}).dmg;
+    if(card.equipment && !tick && amount > 0) eq2Wear(card, dmgType === 'acid' ? EQ2_DEF.acidWear : EQ2_DEF.hitWear, dmgType === 'acid' ? 'acid' : 'hit'); // EQ2 (2026-10-24): a shot, bolt or smack wears it too (a status tick does not)
+    return out;
   }
   // Bulwark (2026-09-17): sums every live Bulwark stack on the DEFENDING side's own board —
   // "while this card is on the board, your Castle takes N less damage from every hit." Read
@@ -3370,7 +3376,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
-    if(dd.flying && L('flying') && !webbed && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && L('flying') && !webbed && defCard.diveExposed !== combatNo /* EQ2 (2026-10-24, owner N21-5): diving, it is exposed */ && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
     if(L('slippery') && slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
@@ -4089,6 +4095,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       evoBase = ontoUid != null ? (allLive(pl).find(c=> c.uid === ontoUid) || null) : (typeof side === 'number' ? frontCardAt(pl, side) : null);
       if(!evoBase || (popts && popts.reserve) || !evoLegalBase(pl, hc.defId, evoBase)) return false;
     }
+    // Package EQ2 (2026-10-24): a Parasite goes onto an enemy unit in your reach (popts.parasiteOn: its uid; parasiteTargets)
+    let paraHost = null;
+    if(popts && popts.parasiteOn != null){ if(!isParasiteDef(CARD_DEFS[hc.defId]) || popts.reserve || evoBase) return false;
+      paraHost = parasiteTargets(players, playerId).find(c=> c.uid === popts.parasiteOn) || null; if(!paraHost) return false; }
     // popts.freeSlot (2026-10-23, package AR3): a numeric side is taken as-is when that cell is free (freeCellOk), beside a unit or not
     const freeFront = !!(popts && popts.freeSlot && !popts.reserve && !evoBase && typeof side === 'number' && freeCellOk(pl, 0, side));
     const targetSlot = slotMode && !evoBase ? (freeFront ? side : resolvePlacementSlot(pl, side)) : null;
@@ -4118,7 +4128,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     const resRow = (popts && popts.reserve) ? (popts.reserve|0) : 0;
     if(resRow){ if(!pl.reserve || typeof side !== 'number' || !(legalReserveSlots(pl, resRow).includes(side) || (popts.freeSlot && freeCellOk(pl, resRow, side)))) return false; } // + freeSlot (2026-10-23, AR3)
-    else if(slotMode && targetSlot===null && !evoBase) return false; // + an evolute needs no free slot (EV, 2026-10-21)
+    else if(slotMode && targetSlot===null && !evoBase && !paraHost) return false; // + an evolute needs no free slot (EV, 2026-10-21); a Parasite neither (EQ2)
     if(offerUid != null){ // the prayer offering: the chosen hand card goes to the Removal Zone first
       const oi = pl.hand.findIndex(h=> h.uid===offerUid), off = pl.hand.splice(oi, 1)[0];
       pl.exile.push({defId: off.defId}); pl.echoes = (pl.echoes||0) + 1; pl.prayerOfferTurn = turnNo;
@@ -4137,6 +4147,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
     const boardCard = arrivalBoardCard(players, sideOf, playerId, hc, fdef, firstCardEver, events); // 2026-10-23 (package UI4): shared with previewPlayStats
     if(evoBase) return evoluteMerge(players, sideOf, playerId, boardCard, evoBase, stats, events); // Package EV (2026-10-21): onto its base, as one stack
+    if(paraHost) return eq2Attach(players, sideOf, playerId, boardCard, paraHost, stats, events); // Package EQ2 (2026-10-24): it hooks onto the enemy
     // Center slot (2026-09-16, per explicit request: "the first card should be placed on
     // the centre, not the L or R"): whenever the center is empty — the very first card
     // played, or any later card played after the centered card has died — it always lands
@@ -4762,9 +4773,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'equipReady', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId:eq.id, attack:a, health:hp, grant: grant || null});
   }
   // a unit and a piece meet (played onto it, or the unit came onto a lone piece): it starts equipping
-  function eqMeet(players, sideOf, pid, c, equipDefId, events, how){
+  function eqMeet(players, sideOf, pid, c, equipDefId, events, how, dur){
     c.equipment = equipDefId; c.equipOn = false; c.equipping = equipTurnsOf(CARD_DEFS[equipDefId]);
-    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId, slot:c.slot, pending: c.equipping > 0, turns:c.equipping, how: how || 'onto',
+    c.equipDur = dur != null && Number(dur) > 0 ? Math.min(eqDurMaxOf(equipDefId), Math.round(Number(dur))) : eqDurMaxOf(equipDefId); // EQ2 (2026-10-24): a used piece keeps its wear
+    if(recordEvents && events) events.push({type:'equip', side:sideOf(pid), uid:c.uid, defId:c.defId, equipDefId, slot:c.slot, pending: c.equipping > 0, turns:c.equipping, how: how || 'onto', dur:c.equipDur, durMax:eqDurMaxOf(equipDefId),
       attack:(CARD_DEFS[equipDefId] || {}).attack || 0, health:(CARD_DEFS[equipDefId] || {}).health || 0, grant:((CARD_DEFS[equipDefId] || {}).equip || {}).grant || null});
     if(!(c.equipping > 0)) eqApply(players, sideOf, pid, c, events);
   }
@@ -4787,9 +4799,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // its unit died: the piece stays in the slot (or goes with it, equip.breaks)
   function eqDrop(pl, card, sideOf, events){
     if(!card || !card.equipment) return;
-    const eqId = card.equipment, d = CARD_DEFS[eqId] || {}; card.equipment = null; card.equipOn = false; card.equipping = 0;
+    const eqId = card.equipment, d = CARD_DEFS[eqId] || {}, dur = card.equipDur; card.equipment = null; card.equipOn = false; card.equipping = 0; card.equipDur = null;
+    if(dur != null && !(dur > 0)){ pl.graveyard.push({defId:eqId}); if(recordEvents && events) events.push({type:'equipBreak', side:sideOf(pl.id), uid:card.uid, defId:card.defId, equipDefId:eqId, why:'worn', dropped:true}); return; } // EQ2 (2026-10-24): worn to 0 by the blow that felled its unit
     if(!slotMode || !Number.isInteger(card.slot) || (d.equip && d.equip.breaks) || loneEquipAt(pl, card.slot)){ pl.graveyard.push({defId:eqId}); return; }
-    eqSlotsOf(pl)[card.slot] = {defId:eqId};
+    eqSlotsOf(pl)[card.slot] = {defId:eqId, dur: dur != null ? dur : eqDurMaxOf(eqId)}; // EQ2: a dropped piece keeps its durability
     if(recordEvents && events) events.push({type:'equipDrop', side:sideOf(pl.id), pid:pl.id, slot:card.slot, equipDefId:eqId, fromUid:card.uid, fromDefId:card.defId});
   }
   // The shared "a unit entered a slot" scan (2026-10-19, package EQ; open boards). Each caller keeps its own memory key on the unit, so
@@ -4828,7 +4841,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       for(const en of list){ const c = en.card, pl = players[en.pid]; if(!(c.hp > 0) || c.slot !== en.to) continue;
         runCustomTriggers(players, sideOf, en.pid, c, CARD_DEFS[c.defId], 'onEnterSlot', stats || {}, events, {movedCard: c, enteredSlot: en.to, fresh: en.fresh}); // On Enter Slot (EQ): played, spawned or moved in
         const lone = loneEquipAt(pl, en.to);
-        if(lone && eqCarrier(c)){ delete pl.eqSlots[en.to]; eqMeet(players, sideOf, en.pid, c, lone.defId, events, 'pickup'); }
+        if(lone && eqCarrier(c)){ delete pl.eqSlots[en.to]; eqMeet(players, sideOf, en.pid, c, lone.defId, events, 'pickup', lone.dur); } // + its durability (EQ2)
         const f = floorAt(en.pid, en.to); if(!f) continue;
         floorTrigs(players, sideOf, en.pid, f, c, 'onEnterSlot', stats, events);
         if(f.kind === 'ice' && c.hp > 0 && !floorImmune(c, f) && !stuckFast(c) && !c.cageOf){
@@ -4916,8 +4929,111 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return {pid:foeId, slot:open[0], score: 2.5};
   }
   function aiHazardWorth(players, aiId, defId){ const p = aiHazardPick(players, aiId, defId); return p ? p.score : -99; }
-  const EQ_API = {getFloors, floorAt, equipSlotsFor, placeEquipment, hazardTargets, placeHazard, hazardOf, slotEntries, floorScan, eqArrowBonus, aiHazardPick, EQ_DEF, loneEquipAt};
+  const EQ_API = {getFloors, floorAt, equipSlotsFor, placeEquipment, hazardTargets, placeHazard, hazardOf, slotEntries, floorScan, eqArrowBonus, aiHazardPick, EQ_DEF, loneEquipAt,
+    get EQ2_DEF(){ return EQ2_DEF; }, eqDurMaxOf, eq2Wear, parasiteTargets, parasiteReach, isParasiteDef, eq2ParasitePick, eq2DivePick /* 2026-10-24 (package EQ2) */};
   // ==== end Package EQ ==========================================================================================================
+  // ==== Package EQ2 (2026-10-24): equipment durability, Dive, Bolster (temporary Health), Parasite ==============================
+  // Durability (owner EQ-1, 10-23 19:30, "Durability with acid / Corrode wear (A+B)"; he dislikes "50% destroyed on the wearer's death,
+  // 100% if killed by acid", which is not used): every equipment piece has durability, equip.durability on its card, else by rarity
+  // (EQ2_DEF.durByRarity: Common / Uncommon 3, Rare to Super Rare 4, Epic and up 5). A unit's piece loses EQ2_DEF.hitWear (1) each time
+  // the wearer takes a hit (a swing, a shot, a bolt, a raid smack, a floor's burn; a status tick is no hit), EQ2_DEF.acidWear (2) for an
+  // acid hit, and EQ2_DEF.corrodeWear (2) each time Corrode is applied to the wearer. At 0 it breaks: it leaves play (the graveyard), and
+  // its Attack, Health (never below 1) and granted skills come off at once (sk2Unequip). A piece that lies loose keeps its durability, and so
+  // does a stolen one (Disarm); a piece worn to 0 by the blow that fells its unit breaks instead of dropping. c.equipDur on the unit,
+  // {defId, dur} in pl.eqSlots. Events: equipWear {dur, max, n, why: 'hit' | 'acid' | 'corrode'}, equipBreak {why}.
+  const EQ2_DEF = {durByRarity:{common:3, uncommon:3, quest:3, rare:4, veryrare:4, superrare:4, epic:5, heroic:5, unique:5, questunique:5, legendary:5, mythic:5},
+    durDefault:5, hitWear:1, acidWear:2, corrodeWear:2, dive:1, bolster:2};
+  function eqDurMaxOf(defId){ const d = CARD_DEFS[defId] || {}, v = d.equip && d.equip.durability;
+    if(v != null && Number(v) > 0) return Math.max(1, Math.round(Number(v))); return EQ2_DEF.durByRarity[d.rarity || 'common'] || EQ2_DEF.durDefault; }
+  function eq2Wear(card, n, why){
+    if(!card || !card.equipment || !(n > 0)) return;
+    const max = eqDurMaxOf(card.equipment); if(card.equipDur == null) card.equipDur = max;
+    card.equipDur = Math.max(0, card.equipDur - n);
+    const pid = ownerPidOfCard(card), side = shieldSideOf ? shieldSideOf(pid) : (pid === 1 ? 'A' : 'B');
+    if(recordEvents && shieldEvents) shieldEvents.push({type:'equipWear', side, uid:card.uid, defId:card.defId, equipDefId:card.equipment, dur:card.equipDur, max, n, why});
+    if(card.equipDur <= 0 && card.hp > 0){ const pl = curPlayers && curPlayers[pid], eqId = sk2Unequip(card); card.equipDur = null; if(!eqId) return;
+      if(pl && pl.graveyard) pl.graveyard.push({defId:eqId});
+      if(recordEvents && shieldEvents) shieldEvents.push({type:'equipBreak', side, uid:card.uid, defId:card.defId, equipDefId:eqId, why, atk:card.atk, hp:card.hp, maxHp:card.maxHp}); }
+  }
+  // Bolster N (owner N21-7: "Bonus HP and temp HP ... each in its own bar colour"): as each round's fight begins the unit gets N temporary
+  // Health (c.tempHpR, default 2), spent before its Health (and before Shell's temporary Health and a Shield); whatever is left is gone
+  // when the next round's fight begins (it is set afresh, never stacked). It reads the unit's live skills, so Crepuscular – {+1/+0}{Bolster 2}
+  // (the owner's example: +1 Attack by day, +2 temporary Health at night) works through the braces. Events: statusFx 'bolster' {amount},
+  // and tempSoak {soaked, left} as it is spent (spendTempHp).
+  function eq2Bolster(players, sideOf, events){
+    [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl) return;
+      upkeepUnitsOf(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0)) return; const e = effectsOf(c), n = e.bolster && !c.cageOf ? numN(e.bolster, EQ2_DEF.bolster) : 0;
+        if(!(n > 0)){ c.tempHpR = 0; return; }
+        c.tempHpR = n; if(recordEvents && events) events.push({type:'statusFx', kind:'bolster', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:n}); }); });
+  }
+  // Dive N (owner N21-5 and docs/ramming-proposal-2026-10-21.md option C, the simplest form; call EQ2-2): the target of a Dive swing, the
+  // weakest unit (lowest Health) of the enemy row it faces, the nearest column on a tie. {kind:'card', card, col} or null.
+  function eq2DivePick(liveEnemyCols, col0){
+    let best = null;
+    Object.keys(liveEnemyCols || {}).forEach(k=>{ const en = liveEnemyCols[k], c = en && en.kind === 'card' ? en.card : null; if(!c || !(c.hp > 0) || c.gap || isInvisible(c)) return;
+      const col = Number(k), d = Math.abs(col - (Number(col0) || 0));
+      if(!best || c.hp < best.c.hp || (c.hp === best.c.hp && (d < best.d || (d === best.d && col < best.col)))) best = {en, c, col, d}; });
+    if(!best) return null; best.en.col = best.col; return best.en;
+  }
+  // Parasite (owner, 10-21, docs/titles-transforms-2026-10-21.md: "Hooks onto enemy units? Not just leech-attacking from our side. So you
+  // place onto an enemy such that their column would be in reach. (In reach is defined as the columns you could have placed your units on
+  // anyway, cause you had a creature nearby.)"; the rest is call EQ2-4): a unit with effects.parasite may be played onto an enemy unit
+  // (front row) in your reach (parasiteReach: the centre, and every column with a unit of yours or beside one) instead of into a slot of
+  // yours (it may still be played as a plain unit). It hooks on: it takes no slot, blocks nothing and can't be hit or targeted (it rides on
+  // its host, host.parasite). It waits its own Wait; then, as each round's fight begins, it feeds: its Attack in damage to its host (no
+  // dodge, no Guardian, no Armor: a flat hit), and it heals itself as much. One parasite a host; not on a Structure or a cage. When its host
+  // dies it drops onto your side in that column, a unit again with what it has, if the slot is free; else it goes to your graveyard. (A host
+  // that leaves play another way takes it along.) Events: parasiteAttach, parasiteDrain {dmg, healed}, parasiteDrop {placed}.
+  function isParasiteDef(d){ return !!(d && d.effects && d.effects.parasite && !d.cardType && !d.field); }
+  function parasiteReach(pl){ const s = new Set([0]); if(!pl) return s;
+    allLive(pl).forEach(c=>{ if(c.cageOf || !Number.isInteger(c.slot)) return; s.add(c.slot - 1); s.add(c.slot); s.add(c.slot + 1); }); return s; }
+  function parasiteHostOk(c){ return !!(c && !c.gap && c.hp > 0 && !c.parasite && !c.cageOf && c.defId !== '__cage' && !isStructureCard(c)); }
+  function parasiteTargets(players, pid){
+    if(!slotMode || !players) return []; const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !foe) return [];
+    syncSlots(pl); syncSlots(foe); const reach = parasiteReach(pl);
+    return allLive(foe).filter(c=> parasiteHostOk(c) && Number.isInteger(c.slot) && reach.has(c.slot)).sort((a, b)=> a.slot - b.slot);
+  }
+  function eq2Attach(players, sideOf, pid, nc, host, stats, events){
+    nc.parasiteOf = host.uid; nc.parasitePid = pid; nc.slot = host.slot; host.parasite = nc;
+    ensureStat(stats, sideOf(pid), nc.defId).played++;
+    if(recordEvents && events) events.push({type:'parasiteAttach', side:sideOf(pid), uid:nc.uid, defId:nc.defId, atk:nc.atk, hp:nc.hp, maxHp:nc.maxHp, wait:nc.wait || 0,
+      targetSide:sideOf(otherId(pid)), targetUid:host.uid, targetDefId:host.defId, slot:host.slot});
+    return true;
+  }
+  function eq2ParasiteTick(players, sideOf, stats, events){
+    let hurt = false;
+    [1,2].forEach(hpid=>{ const hpl = players && players[hpid]; if(!hpl) return;
+      allLive(hpl).forEach(host=>{ const p = host.parasite; if(!p || !(host.hp > 0)) return;
+        if((p.wait || 0) > 0){ p.wait -= 1; return; }
+        const n = Math.max(0, p.atk || 0); if(!(n > 0)) return;
+        const pid = otherId(hpid), dmg = damageCardFlat(host, n, 'physical', p.defId, p.uid), healed = Math.max(0, Math.min((p.maxHp || 0) - (p.hp || 0), dmg)); p.hp += healed;
+        ensureStat(stats || {}, sideOf(pid), p.defId).dealt += dmg; ensureStat(stats || {}, sideOf(hpid), host.defId).taken += dmg;
+        if(recordEvents && events) events.push({type:'parasiteDrain', side:sideOf(pid), uid:p.uid, defId:p.defId, targetSide:sideOf(hpid), targetUid:host.uid, targetDefId:host.defId, dmg, healed, hp:p.hp, mods:dnModsFor(host.uid)});
+        if(!(host.hp > 0)) hurt = true; }); });
+    if(hurt) removeDeadCards(players, sideOf, {}, stats || {}, events);
+    return !!(players && ((players[1] && players[1].hq.hp <= 0) || (players[2] && players[2].hq.hp <= 0)));
+  }
+  const eq2DropQ = [];
+  function eq2Drops(players, sideOf, stats, events){
+    const q = eq2DropQ.splice(0, eq2DropQ.length);
+    q.forEach(({nc, slot, hostUid})=>{ const pid = nc.parasitePid, pl = players && players[pid]; if(!pl) return;
+      nc.parasiteOf = null; nc._eqAt = null;
+      const free = slotMode && Number.isInteger(slot) && inSlotCols(slot) && !allBoardCards(pl).some(c=> c && !c.gap && c.hp > 0 && c.slot === slot);
+      if(free && nc.hp > 0){ const lane = putInSlot(pl, nc, slot); relayoutRow(pl);
+        if(recordEvents && events){ events.push({type:'parasiteDrop', side:sideOf(pid), uid:nc.uid, defId:nc.defId, slot, placed:true, hostUid, atk:nc.atk, hp:nc.hp, maxHp:nc.maxHp});
+          events.push({type:'spawn', side:sideOf(pid), defId:nc.defId, count:1, cause:'parasite', uids:[nc.uid], lane, slot}); } }
+      else { if(!nc.token) pl.graveyard.push({defId:nc.defId}); if(recordEvents && events) events.push({type:'parasiteDrop', side:sideOf(pid), uid:nc.uid, defId:nc.defId, slot, placed:false, hostUid}); } });
+  }
+  // The CPU: a Parasite goes onto the enemy unit in reach worth the most (its Attack, then its Health), when one is in reach.
+  function eq2ParasitePick(players, aiId, defId){
+    const d = CARD_DEFS[defId]; if(!isParasiteDef(d) || !((d.attack || 0) > 0)) return null;
+    return parasiteTargets(players, aiId).sort((a, b)=> (effAtk(b) + b.hp * 0.3) - (effAtk(a) + a.hp * 0.3) || a.slot - b.slot)[0] || null;
+  }
+  function eq2AiParasite(players, sideOf, aiId, hc, stats, events){
+    const host = hc && eq2ParasitePick(players, aiId, hc.defId); if(!host) return false;
+    return placeCard(players, sideOf, aiId, hc.uid, host.slot, stats, events, {parasiteOn: host.uid});
+  }
+  // ==== end Package EQ2 ===========================================================================================================
   // Ambush N (2026-10-16, user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of
   // the Crit)"): when the enemy plays a card into the slot facing an Ambush unit (opposingCardOf: the unit in its column on open
   // boards, the matching lane on row boards), the ambusher strikes it for N as it arrives (N = 3 for an old Ambush saved as true).
@@ -6333,7 +6449,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyShotStatus(kind, n, c, src, side, tSide, events, aStat){
     if(!c || !(c.hp > 0)) return;
     const fx = (k, amount)=>{ if(recordEvents && events) events.push({type:'statusFx', kind:k, side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount}); };
-    if(kind === 'corrode'){ c.corrode = (c.corrode||0) + 1; c._corrodeJustSet = true; fx('corrode', 1); }
+    if(kind === 'corrode'){ c.corrode = (c.corrode||0) + 1; c._corrodeJustSet = true; fx('corrode', 1); if(c.equipment) eq2Wear(c, EQ2_DEF.corrodeWear, 'corrode'); } // + EQ2: Corrode eats the piece
     else if(kind === 'poison'){ if(poisonProof(c)) return; c.poison = (c.poison||0) + n; /* Structures too (2026-10-15) */ if(aStat) aStat.poisonApplied = (aStat.poisonApplied||0) + n; fx('poison', n); }
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
@@ -7431,6 +7547,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       else if(best[1] > -50 && isHazardDef(CARD_DEFS[best[0].defId])) placeHazard(players, sideOf, aiId, best[0].uid, null, null, stats, events); // EQ: aiHazardPick's slot
       else if(best[1] > -50 && isEvoluteDef(best[0].defId)){ const pick = aiEvoluteBase(ai, best[0].defId); // Package EV (2026-10-21): onto its best legal base
         if(pick) placeCard(players, sideOf, aiId, best[0].uid, Number.isInteger(pick.card.slot) ? pick.card.slot : 'left', stats, events, {onto: pick.card.uid}); }
+      else if(best[1] > -50 && eq2AiParasite(players, sideOf, aiId, best[0], stats, events)){ /* EQ2 (2026-10-24): hooked onto an enemy */ }
       else if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
         { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
@@ -7965,13 +8082,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const foeId = otherId(pid), foe = players[foeId];
       if(t.lone){ if(!slotMode || !foe || !foe.eqSlots) return true; const s0 = Number.isInteger(src.slot) ? src.slot : 0;
         const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x]).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b)[0];
-        if(sl == null) return true; const got = foe.eqSlots[sl].defId; delete foe.eqSlots[sl];
+        if(sl == null) return true; const got = foe.eqSlots[sl].defId, gotDur = foe.eqSlots[sl].dur; delete foe.eqSlots[sl];
         if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), slot:sl, equipDefId:got, lone:true});
-        eqMeet(players, sideOf, pid, src, got, events, 'disarm'); return true; }
+        eqMeet(players, sideOf, pid, src, got, events, 'disarm', gotDur); return true; }
       const v = trigSubject; if(!v || !v.equipment || v === src) return true;
-      const was = v.equipOn, got = sk2Unequip(v);
+      const was = v.equipOn, vDur = v.equipDur, got = sk2Unequip(v); v.equipDur = null;
       if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), targetUid:v.uid, targetDefId:v.defId, equipDefId:got, wasOn:was, atk:v.atk, hp:v.hp, maxHp:v.maxHp});
-      eqMeet(players, sideOf, pid, src, got, events, 'disarm'); return true; }
+      eqMeet(players, sideOf, pid, src, got, events, 'disarm', vDur); return true; } // + the piece's durability (EQ2, 2026-10-24)
     return false;
   }
   // ==== [SK2 END] ====
@@ -8274,6 +8391,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
     noteDarkCast(players, sideOf, events); // Cast Darkness (2026-10-18): the last caster just fell, so the dark it cast lifts
     if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
+    if(eq2DropQ.length) eq2Drops(players, sideOf, stats, events); // EQ2 (2026-10-24): the parasites of the fallen drop onto their own side
     crownSweep(players, sideOf, events); // TR (2026-10-21): a holder gone without a death drops the Crown
     if(!trDirty && rageGrantFlips(players)) trDirty = true; // Rage – {…} (EN, 2026-10-23): a unit's Rage came on (or off) during the round: its braces follow at once
     if(trDirty){ trDirty = false; try{ syncPhaseStats(players, sideOf, events); }catch(e){} } // Kingly moved, or a duel was won (Championed)
@@ -8429,6 +8547,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           pl.hand.push({uid:uidCounter++, defId: (CARD_DEFS[zoneEntry.defId] && CARD_DEFS[zoneEntry.defId].derivedFrom) || zoneEntry.defId, boonBack:true}); deathEv.burrowed = true; boonFire(card, 'burrow', events); }
       }
       if(card.evoStack && !rv) evoStackToZone(pl, card, (hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone) ? pl.exile : pl.graveyard); // Package EV (2026-10-21): the whole stack goes with it (a reviving one keeps it)
+      if(card.parasite && !rv){ eq2DropQ.push({nc: card.parasite, slot: card.slot, hostUid: card.uid}); card.parasite = null; } // EQ2 (2026-10-24): its parasite lets go
       if(card.equipment && !rv) eqDrop(pl, card, sideOf, events); // its equipment stays in the slot (EQ, 2026-10-19; was: falls with it, 2026-10-11); a reviving unit keeps it (2026-10-19)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       // Nova N and Crystallise N (2026-10-16): a burst of magic at every enemy unit; a 0/N crystal left in its slot.
@@ -8724,7 +8843,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(hasBoom()){ // faster than the quickest Fast Forward unit: before it (see boomerangReturnPass)
         let ffMax = 0; for(const pid of [1,2]){ const pl = players[pid]; if(pl) upkeepUnitsOf(pl).forEach(c=>{ if(c && c.hp > 0 && (c.ffCounters||0) > ffMax) ffMax = c.ffCounters; }); }
         if(boomerangReturnPass(players, sideOf, stats, events, firstAttackerSide, ffMax)) return true; }
-      curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; } }
+      curPlayers = players; if(events){ shieldEvents = events; shieldSideOf = sideOf; }
+      eq2Bolster(players, sideOf, events); // EQ2 (2026-10-24): this round's temporary Health (last round's is gone)
+      if(eq2ParasiteTick(players, sideOf, stats, events)) return true; } // EQ2: the parasites feed on their hosts
     // Swimmer and Tailwind (2026-10-12, user: "Tide should power up swimmers with +1 speed (attack faster, like Fast
     // Forward). Tailwind should do the same for Flyers"): on a Flow round every Swimmer, and under a Tailwind every Flyer,
     // gets one Fast Forward turn before the round's main order.
@@ -9163,6 +9284,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(tt && !(target.kind === 'card' && target.card && target.card.uid === tt.card.uid)){ target = tt; tauntDrew = tt;
           if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); }
       }
+      // EQ2 (2026-10-24, owner N21-5: a diving flier is "exposed"): Dive N, once a fight, its swing dives on the weakest enemy unit of the
+      // row it faces (lowest Health; ties: the nearest column) for Attack + N, Taunt or not (eq2DivePick). It is Exposed for the rest of
+      // the round: a Flyer's 1-in-2 dodge doesn't roll (combatHitLands). A unit that can't take Dive (diveEligible) never dives.
+      let diveBonus = 0;
+      if(target && !rowSwing && !octoAtk && attDef.effects && attDef.effects.dive && !attDef.effects.stealth && !a.att.dived && diveEligible(a.att)){
+        const dv = eq2DivePick(liveEnemyCols, liveSelf.col);
+        if(dv){ target = dv; tauntDrew = null; a.att.dived = true; a.att.diveExposed = combatNo; diveBonus = numN(attDef.effects.dive, EQ2_DEF.dive);
+          if(recordEvents && events) events.push({type:'dive', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, targetSide:sideOf(a.enemyId), targetUid:dv.card.uid, targetDefId:dv.card.defId, bonus:diveBonus, col:dv.col}); } }
       // Fork / Trident / Pitchfork (2026-10-15, user: "Decision, we can make the first 3 more similar - attack the nearest 2/3/4
       // enemies within 1/1/2 range."): one rule for all three (PRONG_SPECS). It hits the N nearest enemy units no more than R
       // columns away (measured from where it stands, as prongLanes does; ties at random), full Attack each. The first is its
@@ -9389,14 +9518,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
         const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col); // + a middle / back-row swing, on the row it aims at (2026-10-19, RR)
-        const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
+        const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus + diveBonus /* Dive N (EQ2) */) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
         const swingAmt = rowHalf(bloodlustHalves(a.att, defCard) ? swingAmt0 / 2 : swingAmt0); // Bloodlust (2026-10-17): half on Structures; a row swing: half (2026-10-19, TS); exact (2026-10-22, FX2)
         const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
         if(rowSwing) rowStrikeTally += dmg; // reserveVolley's total (2026-10-19, TS)
-        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined})));
+        if(recordEvents && events) events.push(rowEv(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, mods:dnModsFor(defCard.uid), dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, guardedUid: guardianRedirect ? target.card.uid : undefined /* EN2 (2026-10-23): who the Guardian stepped in for (the board walks it there) */, liveAtk: shownAtk, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined, dive: diveBonus ? diveBonus : undefined})));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -9477,6 +9606,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           defCard.corrode = (defCard.corrode||0) + attDef.effects.corrode;
           defCard._corrodeJustSet = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'corrode', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.corrode});
+          if(defCard.equipment) eq2Wear(defCard, EQ2_DEF.corrodeWear, 'corrode'); // EQ2 (2026-10-24): each Corrode applied takes 2 durability
         }
         // Expose N (2026-10-15 rework, user: "It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
         // don't miss."): a landed attack leaves the target Exposed for its next N hits (+1 damage each, can't be missed).

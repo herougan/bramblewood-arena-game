@@ -2,6 +2,34 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package EQ2: equipment durability, Dive, Bolster and the Health bar, Parasite, the Beak Strike and two guardian raiders)
+- **Equipment durability (EQ-1, call EQ2-1):** every piece has durability, its card's own (`equip.durability`) or by rarity: Common and
+  Uncommon 3, Rare to Super Rare 4, Epic and up 5. A hit on the wearer takes 1 (swing, shot, bolt, raid smack, a floor's burn; a status tick
+  is no hit), an acid hit 2, each Corrode applied 2. At 0 the piece breaks and leaves play; its Attack, Health (never below 1) and skills come
+  off. A dropped or stolen piece keeps its wear; one worn out by the killing blow breaks instead of dropping. The carried piece now sits on
+  the card's left edge with a column of pips (the last one red); a break shatters it off with "💥 Broken!". An equipment card's details say
+  its durability. Price: `bramblewood-budget.js` `equipLifeMult` (min(durability, 4) / 4; x0.75 Common / Uncommon); no card changed
+  (`docs/balance/eq2-equipment-2026-10-24.json`, `tools/eq2_equipment_2026_10_24.js`).
+- **Dive ⤵️ N (N21-5, call EQ2-2):** once a fight, the swing dives on the weakest enemy unit of the row it faces (past any Taunt) for N more;
+  a diving Flyer is exposed (no Flying dodge) for the rest of that round. Only a Flyer, a Tide unit or a Sprinter dives. No move (the
+  simplest form of the ramming proposal's option C). The card swoops; the log says so. Priced 0.75 a point; on no card yet.
+- **Bolster 🫧 N and the Health bar (N21-7, call EQ2-3):** N temporary Health (default 2) as each round's fight begins, spent first, gone
+  at the next round's start. A unit with bonus or temporary Health shows a bar above its numbers: printed Health green, bonus Health gold,
+  temporary Health pale blue. Priced 2.5 a point. Plain Crepuscular is unchanged (CX2 and the 10-23 #4 default are later than the example);
+  Crepuscular – {+1/+0}{Bolster 2} works per card.
+- **Parasite 🪱 (the 10-21 note, call EQ2-4):** played onto an enemy unit in your reach (held, those units light up pink), it rides its host
+  (no slot, can't be hit), waits its Wait, then feeds each round (its Attack as a flat hit, healing as much); it drops onto your side when
+  the host dies (if the slot is free). The CPU uses it. New card **Clinging Leech** (Uncommon, 4/9, awaiting a source). Priced 1.
+- **Raids (N22-12, call EQ2-5):** a single-target raid attack (`pattern: 'single'`, in the raid editor): the Goliath Core's **Beak Strike**,
+  3 to your unit with the most Attack every 2 turns; a Guardian beside it (left, right, in front, behind) takes it. Two tanky Guardian raiders
+  in the Forge's Raid tab: **Barnacle Bulwark** (Rare, Guardian + Armor 1, 2/21) and **Reefback Turtle** (Very Rare, Guardian + Shell 2, 2/20).
+- Engine: the Package EQ2 block (`EQ2_DEF`, `eqDurMaxOf`, `eq2Wear`, `eq2Bolster`, `eq2DivePick`, `parasiteTargets`, `eq2ParasiteTick`,
+  `eq2Drops`); new events `equipWear`, `equipBreak`, `tempSoak`, `dive`, `parasiteAttach`, `parasiteDrain`, `parasiteDrop`, `raidStrike`.
+  card-matrix golden diffs (new cards reshuffle the sampled duels; the new events in the histograms): 0 failures, to accept at release.
+- Texts in the 12 packs (`tools/i18n_2026_10_24_eq2.py`); skill prices `tools/eq2_skill_costs_2026_10_24.py`; cards
+  `tools/eq2_cards_2026_10_24.py` + `tools/eq2_cards_fit_2026_10_24.js`; `canonical/unit-themes.json` regenerated. Tests:
+  `tests/eq2-2026-10-24.js`, `tests/e2e/eq2_2026_10_24.py` (shots in `docs/screens/EQ2/`).
+
 ## 2026-10-24 (package DF3: selfish boons on challenge skirmishes; DF-4 retunes Maps 7, 11 and 14)
 - **Selfish boons (DF-3, narrowed by your 22:23 #6):** a field effect that helps the enemy only, on while at least half the enemy deck as dealt
   shares its theme (so copying the deck gains nothing). Its Environment card has a red frame, a red "Theirs" ribbon and the count ("On: 16 of 16

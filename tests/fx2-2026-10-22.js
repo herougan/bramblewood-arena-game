@@ -82,7 +82,8 @@ const hitOn = (att, tgt, setup)=>{ const {e, P} = mk(); const t = put(e, P, 2, t
   ok(['left', 'right'].every(id=> pt(id).length === 1 && pt(id)[0].pattern === 'column' && pt(id)[0].dmg === 1 && pt(id)[0].dmgMin == null), '6. the Tentacles\' smack (row or column, AOE): 1');
   ok(pt('tail').length === 1 && pt('tail')[0].pattern === 'frontRow' && pt('tail')[0].dmg === 2, '6. the Tail Sweep (front row, AOE): 2');
   ok(pt('core')[0].dmgMin === 1 && pt('core')[0].dmg === 2, '6. the Core\'s smack keeps 1–2');
-  ok(raid.parts.every(p=> (p.trench.attacks || []).every(a=> !['single', 'unit'].includes(a.pattern))), '6. no single-target boss attack in the pre-core fights (the owner: "there isn\'t")');
+  // 2026-10-24 (package EQ2, owner N22-12): the Core now has the single-target Beak Strike (tests/eq2-2026-10-24.js); the check keeps to the pre-core fights it names
+  ok(raid.parts.filter(p=> p.id !== 'core').every(p=> (p.trench.attacks || []).every(a=> !['single', 'unit'].includes(a.pattern))), '6. no single-target boss attack in the pre-core fights (the owner: "there isn\'t")');
   ok(raid.parts.every(p=> (p.trench.attacks || []).every(a=> a.trenchDmg == null)) && raid.parts.find(p=> p.id === 'core').trench.castleHp === 300, '6. the classic trench uses the same numbers; its Core bramble is 300'); }
 
 console.log(fail ? `fx2-2026-10-22: ${fail} of ${checks} failed` : `fx2-2026-10-22: all ${checks} passed`);

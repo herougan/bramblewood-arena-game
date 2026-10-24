@@ -149,6 +149,13 @@
               "dmgMin": 1,
               "dmg": 2,
               "every": 3
+            },
+            {
+              "id": "beak",
+              "name": "Beak Strike",
+              "pattern": "single",
+              "dmg": 3,
+              "every": 2
             }
           ],
           "entities": [
