@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package BAL3: the road by the agreed rules, LEAD's levels gone, side-map Rares, the ten held cards, Rising Tide +1 Attack)
+- **The road retuned by the rules only (owner BAL2-3, 12:02 "use our agreed philosophy and schedule"):** 130 enemy decks of Maps 0-24 and the
+  Pale Desert moved inside their map's pool and theme, the copy ladder and 5-7 different cards, leaders kept, no new Shield. Fights on their
+  road-curve band: 48 -> 80 of 179 (the Pale Desert 0 -> 4 of 9), 100 games a fight (docs/balance/bal3-road-table-2026-10-24.md). Maps 3,
+  5, 13, 18 and 23 stay too easy, Sunken Hollow's first two too hard: BAL3-2.
+- **No hand-set Enemy levels (BAL2-1):** LEAD's 57 per-fight levels are gone; every fight plays at the level schedule. The DF3 challenges keep
+  their one level up.
+- **Side maps follow the road's Rare rule (BAL2-2):** no Rare in a normal skirmish before Map 10, no Very Rare before 15. 2-B-1 fields Grey
+  Seal Bulls for its Mallard Marauders, 7-A-1 a Bombardier Beetle for its Swarm Matriarch, 7-A-2 a Hawthorn Shieldbug for its Wolf Spider
+  Mother; 1-3 Burrow Line has 7 different cards (was 8).
+- **Ten cards on their formula line (BAL2-5):** Alley Cat 1/1, Honey Badger Fury 1/6, Chipmunk Hoarder 2/6, Chipmunk Cavalry 2/2, Pyroclast
+  Wyrm 3/12, Plague Gnat Cloud 2/2, Sunfeather Scout 1/4, Lone Grey Wolf 2/9, Rock-pool Starfish 1/1, Muskrat Lodgekeeper 1/5 (BAL3-3).
+- **Rising Tide (DF3-3):** their Tide units are Quick and have +1 Attack while the tide is in (12 packs). 5-A-2 and 10-A-2 have no tide, so
+  it never fires there: BAL3-1.
+- Tools: `tools/skirmish_pass.js curve --all --pool --distinct` (and `moves`, a challenge's target minus 10), `tools/bal3_2026_10_24.js`;
+  PRO fights re-run (dry): no stronger deck, nothing applied. `tests/bal3-2026-10-24.js`.
+
 ## 2026-10-24 (package EN7: Dive in two turns, the Guardian's tilt, Poison's pool and floats, Poison / Bleed on extra hits, Parasite x Bloom)
 - **Dive ⤵️ N, in two turns (13:12 #3, "like pokemon"; calls EN7-1, EN7-4):** replaces EQ2's one-swing dive. Turn 1 (its swing, with an enemy
   unit in its row): a Flyer rises off the board, its shadow left below, a ☁️ tag; a Tide unit sinks under a band of water, a 🌊 tag. Nothing

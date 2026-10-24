@@ -1,0 +1,8 @@
+{
+ "_about": "Package BAL3 (2026-10-24, owner DF3-3): Rising Tide is Quick and +1 Attack while the tide is in. Its three fights re-measured with the boon on and switched off (the reference deck, 200 games, seeds 9100 + 37g), after the BAL3 road retune: node tools/df3_boons_2026_10_24.js measure 200 --only=9-4,5-A-2,10-A-2. 'withTide' is a what-if (rules.tide added, not built): 5-A-2 and 10-A-2 have no tide in their field, so the boon can never fire there.",
+ "rows": [
+  {"code": "9-4", "field": "tide", "withBoon": 81, "withoutBoon": 84, "boonPoints": 3},
+  {"code": "5-A-2", "field": "no tide", "withBoon": 99, "withoutBoon": 99, "boonPoints": 0, "withTide": {"withBoon": 79.5, "withoutBoon": 94, "boonPoints": 14.5}},
+  {"code": "10-A-2", "field": "no tide (Crushing Depths)", "withBoon": 84.5, "withoutBoon": 84.5, "boonPoints": 0, "withTide": {"withBoon": 77.5, "withoutBoon": 81.5, "boonPoints": 4}}
+ ]
+}

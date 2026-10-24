@@ -157,7 +157,7 @@ const SK2_DEFAULTS = Object.freeze({
 // While it is on, every unit of that side that `who` names is marked as it arrives (c.boon = id) and the hooks below read the mark:
 //   blindFury     a unit that fights blind (Blind, Purblind, or blind in Darkness / by day / at night: sightMiss) hits 2x (its swings)
 //   hiveChorus    Swarm counts every ally twice
-//   risingTide    Quick while the tide is in (Flood or High Tide), a condition grant
+//   risingTide    Quick and +1 Attack while the tide is in (Flood or High Tide), a condition grant (+1 Attack: BAL3, DF3-3)
 //   secondBurrow  the first time it dies it goes back to its owner's hand (to be played again; once a card)
 //   wildRage      Rage wakes below 3/4 Health (was 1/2)
 //   snowVeil      Evasive dodges 2 in 3 (was 1 in 2)
@@ -2632,7 +2632,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // +atk/+hp, gained and lost with the bloom like a Nocturnal bonus. (Kept apart from the old Bloom N heal, effects.bloom.)
     c.inBloom = false;
     if(e.bloomWhen && typeof e.bloomWhen === 'object'){ const b = bloomStateOf(e.bloomWhen); if(b.on){ c.inBloom = true; a += b.atk; h += b.hp; if(b.grant) addGrant(b.grant); } } // + Bloom (…) – {…} (CX2, 2026-10-21)
-    if(c.boon === 'risingTide' && tideRising()) addGrant({quick:true}); // Rising Tide, a selfish boon (2026-10-24, package DF3): Quick while the tide is in
+    // Rising Tide, a selfish boon (2026-10-24, package DF3): Quick while the tide is in; 2026-10-24 (package BAL3, owner DF3-3 12:02 "By default
+    // yes": it measured 0 points on all three of its fights) +1 Attack too
+    if(c.boon === 'risingTide' && tideRising()){ addGrant({quick:true}); a += 1; }
     return [a, h, grant];
   }
   // One Bloom condition, as it stands right now. 'night' and 'day' both hold in Twilight (like Nocturnal and Diurnal); 'wet' is
