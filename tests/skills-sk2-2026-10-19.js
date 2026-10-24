@@ -115,7 +115,7 @@ ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.mi
   ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'sk2Salvage' && x.gain === 1 && x.res === 'stone'), 'a statusFx sk2Salvage with the Stone'); }
 { const {e, P} = mk(1, {salvageEvery:1, salvageStone:2}); put(e, P, 1, 'k2-salv', 0); const s1 = put(e, P, 2, 'k2-struct', 0); e.debugDamage(P, so, s1.uid, 9999, {}, []); ok(P[1].stone === 2, 'opts.sk2 salvageEvery / salvageStone'); }
 { const cards = JSON.parse(R('canonical/cards.json')), pt = cards.find(c=> c.id === 'petrified-tree'); // 2026-10-19 (EQ merge): later packages' cards follow it at the end
-  ok(pt && pt.id === 'petrified-tree' && (pt.archetypes||[]).includes('Structure') && !pt.source && pt.attack === 0, 'Petrified Tree: in cards.json, a Structure, no source yet');
+  ok(pt && pt.id === 'petrified-tree' && (pt.archetypes||[]).includes('Structure') && (!pt.source || pt.source.tier === 4 || /m22|Rimefire/.test(JSON.stringify(pt.source))) && pt.attack === 0, 'Petrified Tree: in cards.json, a Structure (no source yet, or Pack 4 on Map 22 since N221 2026-10-24)');
   const t = (pt.effects.triggers||[])[0]; ok(t && t.on === 'perTurn' && t.do === 'gain' && t.resource === 'stone' && t.amount === 1, 'its Stone is the trigger layer: On Turn Start × Gain 1 Stone');
   const d2 = Object.assign({}, defs, {'petrified-tree': Object.assign({effects:{}}, pt)}); const e = E.makeSimEngine(d2, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1, {}), 2:e.newPlayer(2, {})};
   const T = put(e, P, 1, 'petrified-tree', 0); T.wait = 0; round(e, P); round(e, P); ok(P[1].stone === 2 && P[1].lumber === 0, `a Ready Petrified Tree: 1 Stone a turn (${P[1].stone})`);
