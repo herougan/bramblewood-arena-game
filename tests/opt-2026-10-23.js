@@ -43,7 +43,9 @@ ok(Math.abs(en.reduce((a, e) => a + e.weight, 0) - 1) < 1e-9 && en.filter(e => e
 
 // ---- the same run inline and over workers, and its output
 // 2026-10-23 (OPT2): --gens1 / --gens2 gave way to --budget (search games per map); a small ladder and head-to-head keep it short
-const common = ['--map', '0', '--budget', '300', '--final-games', '2', '--pop', '3', '--children', '3', '--gmax', '2', '--screen-max', '3', '--restarts', '1', '--h2h-games', '2', '--ladder', '300', '--ladder-games', '2', '--ladder-walks', '1', '--quiet'];
+// 2026-10-24 (package PRO2): the CLI's default pool is now map-true (Map 0: Common cards a player holds, no phase-2 candidates), so this
+// run asks for the classic OPT2 pool its checks describe (phase 2's 5-25 candidates); the modes have their own checks in tests/opt2-2026-10-23.js
+const common = ['--mode', 'classic', '--map', '0', '--budget', '300', '--final-games', '2', '--pop', '3', '--children', '3', '--gmax', '2', '--screen-max', '3', '--restarts', '1', '--h2h-games', '2', '--ladder', '300', '--ladder-games', '2', '--ladder-walks', '1', '--quiet'];
 const run = (dir, extra) => cp.execFileSync(process.execPath, [OPT].concat(common, ['--out', path.join(OUT, dir), '--ckpt-dir', path.join(OUT, 'ck-' + dir)], extra || []), { cwd: ROOT, encoding: 'utf8' });
 run('w0', ['--workers', '0']); run('w2', ['--workers', '2']);
 const file = d => { const f = fs.readdirSync(path.join(OUT, d)).find(x => /^deckopt-map00-m1-.*\.json$/.test(x)); return f && JSON.parse(fs.readFileSync(path.join(OUT, d, f), 'utf8')); };

@@ -2,6 +2,8 @@
 // 2026-10-24 (package PRO, owner 00:28: "Can you add a special hidden skirmish in each map, with the best deck you could make (replacing it
 // when you find something better?). It has the field effects of the average skirmish of that map. If there are multiple high elo, form
 // multiple. Name them as N-PRO-1, -2 -3 etc."): the hidden PRO fights.
+//   (2026-10-24, package PRO2: N-PRO-k from map-true runs and N-BPRO-k from bpro runs, both within the map's rarity cap; section 2 also
+//   checks the map rule drops an old deck that breaks it)
 //   1. data: canonical/pro-skirmishes.json covers Maps 0-3; ids N-PRO-k in order, 1-4 a map; every deck legal on today's cards (20 cards,
 //      copy caps, top-rank caps with the leader); Level 1; leaders only from Map 2 (the deck's showcase); the field is still the map's
 //      average (recomputed); PRO-2.. within the Elo band over >= the rule's games, kept apart; each deck is an optimum of its source run;
@@ -22,28 +24,42 @@ const rd = rel=> fs.readFileSync(path.join(ROOT, rel), 'utf8');
 // ---- 1. data
 const FILE = 'canonical/pro-skirmishes.json', data = JSON.parse(rd(FILE));
 const gm = O.loadGame(ROOT), G = gm.G, ren = P.renamedIds(gm);
+// 2026-10-24 (package PRO2, owner 21:20 #9-#11): two kinds per map, N-PRO-k (the optimizer's map-true runs) and N-BPRO-k (its bpro runs,
+// under `bpro`): both within the map's rarity cap (no Ent / Alley Cat / Otter Centurion on Map 0), PRO cards obtainable by the map, BPRO
+// cards all from the map's own pool (MAP + SPECIAL + its fight decks); each deck from a run of its own mode
 ok(['m1', 'mf', 'mb', 'mc'].every(id=> data.maps[id] && data.maps[id].pro.length >= 1), '1. Maps 0-3 each have a PRO fight');
+ok(['m1', 'mf', 'mb', 'mc'].every(id=> data.maps[id] && (data.maps[id].bpro || []).length >= 1), '1. Maps 0-3 each have a BPRO fight');
 const rule = data.rule || {};
 ok(rule.games >= 400 && rule.replaceAt === 0.55 && rule.band === 100 && rule.max === 4 && rule.level === 1, '1. the rule recorded: 400 games, 55%, 100 Elo, 4 a map, Level 1 ' + JSON.stringify(rule));
+ok(rule.modes && rule.modes.pro === 'map-true' && rule.modes.bpro === 'bpro' && rule.rarityCap === 'map', '1. the kinds\' modes and the map rule\'s cap recorded ' + JSON.stringify({modes: rule.modes, cap: rule.rarityCap}));
+const KINDS = [['pro', 'PRO', 'map-true'], ['bpro', 'BPRO', 'bpro']];
 Object.keys(data.maps).forEach(mid=>{
   const ent = data.maps[mid], map = G.CONQUEST_MAPS.find(m=> m.id === mid), no = G.mapNumberOf(mid);
   ok(map && !map.sub && ent.map === no, `1. ${mid} is main map ${no}`);
-  ok(ent.pro.length >= 1 && ent.pro.length <= 4, `1. ${mid}: 1-4 PRO fights (${ent.pro.length})`);
-  ent.pro.forEach((e, i)=>{
-    ok(e.id === `${no}-PRO-${i + 1}` && e.name === e.id, `1. ${mid}: id ${e.id} is ${no}-PRO-${i + 1}`);
+  const cap = O.mapRarityCap(gm, map), pool = gm.pools[mid] || {}, own = new Set((pool.cards || []).concat(pool.special || [], ...O.fightsOf(map).map(n=> Object.keys(n.deck))));
+  KINDS.forEach(([list, label, mode])=>{ const L = ent[list] || [];
+  ok(L.length >= 1 && L.length <= 4, `1. ${mid}: 1-4 ${label} fights (${L.length})`);
+  L.forEach((e, i)=>{
+    ok(e.id === `${no}-${label}-${i + 1}` && e.name === e.id, `1. ${mid}: id ${e.id} is ${no}-${label}-${i + 1}`);
     ok(e.level === 1, `1. ${e.id}: Level 1`);
     const lead = no >= G.SKIRMISH_LEADER_FROM_MAP ? [G.nodeShowcaseId({deck: e.deck})] : [];
     ok(JSON.stringify(e.leaders) === JSON.stringify(lead), `1. ${e.id}: leaders ${JSON.stringify(e.leaders)} (the map rule: ${JSON.stringify(lead)})`);
     const probs = P.deckProblems(gm, e.deck, e.leaders);
     ok(!probs.length, `1. ${e.id}: a legal deck on today's cards (${probs.join('; ')})`);
+    const over = Object.keys(e.deck).filter(id=> G.roadRarityStep(gm.D[id].rarity) > G.roadRarityStep(cap));
+    ok(!over.length, `1. ${e.id}: no card over Map ${no}'s rarity cap ${cap} (${over.join(', ')})`);
+    if(list === 'bpro') ok(Object.keys(e.deck).every(id=> own.has(id)), `1. ${e.id}: every card from Map ${no}'s own pool (${Object.keys(e.deck).filter(id=> !own.has(id)).join(', ')})`);
+    const mr = O.mapRuleProblems(gm, map, e.deck, mode);
+    ok(!mr.length, `1. ${e.id}: the ${mode} map rule (${mr.join('; ')})`);
+    ok(e.source && e.source.mode === mode, `1. ${e.id}: from a ${mode} run (${e.source && e.source.mode})`);
     ok(e.source && fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its source run exists (${e.source && e.source.file})`);
     if(e.source && fs.existsSync(path.join(ROOT, e.source.file))){ const run = JSON.parse(rd(e.source.file)), op = (run.optima || []).find(x=> x.i === e.source.optimum);
-      ok(op && O.deckKey(P.renameDeck(op.deck, ren)) === O.deckKey(e.deck) && op.score === e.source.score, `1. ${e.id}: the deck is optimum #${e.source.optimum} of its run`); }
-    if(i === 0) ok(e.h2h == null, `1. ${e.id}: PRO-1 has no head-to-head of its own`);
-    else { ok(e.h2h && e.h2h.n >= rule.games && e.h2h.elo >= -rule.band && e.h2h.vs === O.deckKey(ent.pro[0].deck), `1. ${e.id}: within ${rule.band} Elo of PRO-1 over >= ${rule.games} games (${e.h2h && e.h2h.elo}, n ${e.h2h && e.h2h.n})`);
-      ok(ent.pro.slice(0, i).every(x=> O.dist(x.deck, e.deck) >= rule.distinct), `1. ${e.id}: at least ${rule.distinct} copies from the PROs above it`);
-      if(i > 1) ok(e.h2h.elo <= ent.pro[i - 1].h2h.elo, `1. ${e.id}: ordered by Elo`); }
-  });
+      ok(op && O.deckKey(P.renameDeck(op.deck, ren)) === O.deckKey(e.deck) && op.score === e.source.score && (run.settings || {}).mode === mode, `1. ${e.id}: the deck is optimum #${e.source.optimum} of its ${mode} run`); }
+    if(i === 0) ok(e.h2h == null, `1. ${e.id}: ${label}-1 has no head-to-head of its own`);
+    else { ok(e.h2h && e.h2h.n >= rule.games && e.h2h.elo >= -rule.band && e.h2h.vs === O.deckKey(L[0].deck), `1. ${e.id}: within ${rule.band} Elo of ${label}-1 over >= ${rule.games} games (${e.h2h && e.h2h.elo}, n ${e.h2h && e.h2h.n})`);
+      ok(L.slice(0, i).every(x=> O.dist(x.deck, e.deck) >= rule.distinct), `1. ${e.id}: at least ${rule.distinct} copies from the ${label}s above it`);
+      if(i > 1) ok(e.h2h.elo <= L[i - 1].h2h.elo, `1. ${e.id}: ordered by Elo`); }
+  }); });
   const f = P.averageField(gm, map);
   // 2026-10-24 (package EN5): fightRules marks every fight on a forest map rules.woods (Canopy Cover); the PRO file predates it, and a PRO
   // fight goes through fightRules as it starts, so it is under the trees anyway: compared without it (refreshed with the next pro_skirmishes --apply)
@@ -87,13 +103,22 @@ Object.keys(data.maps).forEach(mid=>{
 // the real tool: a dry run writes nothing; --apply --out writes the file's shape; a pairing is seeded
 { const before = rd(FILE), tmp = path.join(os.tmpdir(), 'pro-test-' + process.pid + '.json');
   const out = cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--games', '4'], {cwd: ROOT, encoding: 'utf8'});
-  ok(/dry run: nothing written/.test(out) && /0-PRO-1/.test(out) && rd(FILE) === before, '2. a dry run prints the plan and writes nothing');
+  ok(/dry run: nothing written/.test(out) && /0-PRO-1/.test(out) && /0-BPRO-1/.test(out) && rd(FILE) === before, '2. a dry run prints the plan (PRO and BPRO) and writes nothing');
   cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--games', '4', '--apply', '--out', tmp, '--quiet'], {cwd: ROOT, encoding: 'utf8'});
   const t = JSON.parse(fs.readFileSync(tmp, 'utf8')); fs.rmSync(tmp, {force: true});
   ok(t.maps.m1 && t.maps.m1.pro[0].id === '0-PRO-1' && t.maps.m1.field && t.rule.games === 4 && rd(FILE) === before, '2. --apply --out writes that file only');
+  ok(t.maps.m1.bpro && t.maps.m1.bpro[0] && t.maps.m1.bpro[0].id === '0-BPRO-1', '2. --apply --out writes the BPRO list too (PRO2)');
+  // 2026-10-24 (PRO2): an old PRO that breaks the map rule (the OPT2-era 0-PRO-3 with 2 Ents) is dropped to `replaced` with its reason
+  { const old = JSON.parse(before), tmp2 = path.join(os.tmpdir(), 'pro-test-old-' + process.pid + '.json');
+    old.maps.m1.pro = [{id: '0-PRO-1', name: '0-PRO-1', level: 1, leaders: [], deck: {'beetle-grunt': 5, 'duck-paddler': 4, ent: 2, 'feral-tomcat': 5, 'fox-kit': 1, 'honey-bee': 2, 'otter-guard': 1}, source: {file: 'old'}, h2h: null, later: []}];
+    fs.writeFileSync(tmp2, JSON.stringify(old));
+    cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--maps', '0', '--kind', 'pro', '--games', '4', '--apply', '--out', tmp2, '--quiet'], {cwd: ROOT, encoding: 'utf8'});
+    const t2 = JSON.parse(fs.readFileSync(tmp2, 'utf8')); fs.rmSync(tmp2, {force: true});
+    const dr = (t2.maps.m1.replaced || []).find(x=> x.kind === 'pro' && x.dropped && x.deck.ent);
+    ok(dr && dr.dropped.some(x=> /^ent: rare is over the map's rarity cap \(common\)/.test(x)) && dr.dropped.some(x=> /^otter-guard: /.test(x)) && !t2.maps.m1.pro.some(e=> e.deck.ent) && t2.maps.m1.pro.length >= 1, '2. an old PRO with Ents is dropped by the map rule (reasons kept) and the map refilled from the map-true runs ' + JSON.stringify(dr && dr.dropped)); }
   ok(/--apply/.test(cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--help'], {encoding: 'utf8'})), '2. --help');
   const map = G.CONQUEST_MAPS.find(m=> m.id === 'mc'), f = P.averageField(gm, map), opts = Object.assign(P.parseArgs([]), {games: 6});
-  const e = data.maps.mc.pro[0], other = JSON.parse(rd(e.source.file)).optima[1].deck;
+  const e = data.maps.mc.pro[0], runOpt = JSON.parse(rd(e.source.file)).optima, other = (runOpt[1] || runOpt[0]).deck; // 2026-10-24 (PRO2): a short run may end with one optimum
   const m1 = P.makeH2H(gm, map, f, opts)(P.renameDeck(other, ren), e.deck), m2 = P.makeH2H(gm, map, f, opts)(P.renameDeck(other, ren), e.deck);
   ok(m1.n === 6 && JSON.stringify(m1) === JSON.stringify(m2), '2. a head-to-head pairing gives the same result twice (seeded) ' + JSON.stringify(m1)); }
 

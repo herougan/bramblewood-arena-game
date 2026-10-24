@@ -26,16 +26,30 @@
 //     renumbered by Elo, so a link to "3-PRO-2" can name another deck after a run.
 // The game reads the file at build time (assemble_arena.py bakes it in as PRO_SKIRMISHES); the fights stay hidden (Admin, the skirmish
 // editor, #pro=<id>). Routine: docs/workflows/balance.md "PRO fights".
+//
+// 2026-10-24 (package PRO2, owner 21:20 #9-#11: "Why is a treant in map 0 pro for example! ... Can we run the PRO ones but with respect to
+// the rarity and cards of that map. ALSO, have a BPRO (Basic Pro) - only using cards from that MAP without using cards from outside"):
+//   - two kinds (--kind pro|bpro|both, default both). N-PRO-k: the optimizer's map-true runs only (deckopt --mode map-true: the map's own
+//     cards + what a player holds by then, within the map's rarity cap, nothing first obtainable later). N-BPRO-k: its bpro runs only (the
+//     map's own pool, MAP + SPECIAL + its fight decks, within the cap). A run's mode is its settings.mode (runs before PRO2 are "classic"
+//     and are never candidates).
+//   - legality adds the map rule (deckopt mapRuleProblems): a candidate that breaks it is skipped, and a PRO / BPRO already in the file
+//     that breaks it is dropped to `replaced` (with the reason) before the rule runs, so the map is filled again from the new runs. That is
+//     how the OPT2-era PROs (Ents, the Otter Centurion, Bombardier Beetles on Map 0) gave way.
+//   - the same replace rule, band, cap of 4 and distinct radius for both kinds; BPRO lives under the map's `bpro`, its ids N-BPRO-k.
 'use strict';
 const path = require('path'), fs = require('fs');
 const O = require('./deckopt.js');
-const VERSION = '1.0.0 (2026-10-24, PRO)';
-const DEFAULTS = { apply: false, maps: null, files: null, games: 400, replaceAt: 0.55, band: 100, max: 4, distinct: 6, level: 1, ai: 1, seed: 'pro', out: null, root: null, quiet: false, json: false };
+const VERSION = '1.1.0 (2026-10-24, PRO2)';
+// 2026-10-24 (PRO2): the two kinds: the optimizer mode each reads, its id label and its list in the map's entry
+const KINDS = { pro: { mode: 'map-true', label: 'PRO', list: 'pro' }, bpro: { mode: 'bpro', label: 'BPRO', list: 'bpro' } };
+const DEFAULTS = { kind: 'both', rarityCap: 'map', apply: false, maps: null, files: null, games: 400, replaceAt: 0.55, band: 100, max: 4, distinct: 6, level: 1, ai: 1, seed: 'pro', out: null, root: null, quiet: false, json: false };
 
 function parseArgs(argv) {
   const o = Object.assign({}, DEFAULTS), a = argv.slice(), take = () => a.shift();
   while (a.length) { const k = take();
     switch (k) {
+      case '--kind': o.kind = take(); break; case '--rarity-cap': o.rarityCap = take(); break;
       case '--apply': o.apply = true; break; case '--dry-run': o.apply = false; break;
       case '--map': case '--maps': o.maps = take(); break; case '--files': o.files = take(); break;
       case '--games': o.games = +take(); break; case '--replace-at': o.replaceAt = +take(); break; case '--band': o.band = +take(); break;
@@ -46,10 +60,13 @@ function parseArgs(argv) {
       default: throw new Error('unknown option ' + k + ' (--help lists them)');
     } }
   if (o.games % 2) o.games++; // seats swap every game: even counts
+  if (!['pro', 'bpro', 'both'].includes(o.kind)) throw new Error('--kind pro|bpro|both');
   return o;
 }
-const HELP = `pro_skirmishes ${VERSION}: the hidden N-PRO-k fights (canonical/pro-skirmishes.json) from the deck optimizer's distinct optima.
+const HELP = `pro_skirmishes ${VERSION}: the hidden N-PRO-k and N-BPRO-k fights (canonical/pro-skirmishes.json) from the deck optimizer's distinct optima.
   (dry run by default)  --apply        write canonical/pro-skirmishes.json
+  --kind pro|bpro|both  N-PRO-k from the map-true runs, N-BPRO-k from the bpro runs (default both)
+  --rarity-cap map|skirmish|R          the map rule's cap (default map: the highest of the map's fights; deckopt --rarity-cap)
   --maps 0-3 | 0,2      main map numbers (default: every map with an optimizer output)
   --files GLOB          optimizer outputs to read (default docs/balance/opt/deckopt-map*.json that have distinct optima)
   --games N             head-to-head games a pairing (default 400)        --replace-at P   PRO-1's challenger needs p >= P (default 0.55)
@@ -175,18 +192,20 @@ function readRuns(root, o) {
     return j && Array.isArray(j.optima) && j.optima.length && j.map ? { file: path.relative(root, file), j } : null; }).filter(Boolean)
     .sort((a, b) => String(b.j.generated).localeCompare(String(a.j.generated))); // newest first
 }
-function candidatesOf(gm, runs, mapId, ren) {
+const runModeOf = r => (r.j.settings && r.j.settings.mode) || 'classic'; // runs before PRO2 have no mode: the classic pool
+function candidatesOf(gm, runs, mapId, ren, mode) {
   const out = [];
-  runs.filter(r => r.j.map.id === mapId).forEach(r => r.j.optima.forEach(op => {
+  runs.filter(r => r.j.map.id === mapId && (mode == null || runModeOf(r) === mode)).forEach(r => r.j.optima.forEach(op => {
     const deck = renameDeck(op.deck, ren), h = r.j.optimaH2H && r.j.optimaH2H[0] && r.j.optimaH2H[0][op.i];
-    out.push({ deck, source: { file: r.file, optimum: op.i, generated: r.j.generated, version: r.j.version, reproduce: r.j.reproduce, score: op.score, ci: op.ci,
+    out.push({ deck, source: { file: r.file, mode: runModeOf(r), optimum: op.i, generated: r.j.generated, version: r.j.version, reproduce: r.j.reproduce, score: op.score, ci: op.ci,
       runElo: op.i === 0 ? 0 : h ? -h.elo : null, renamed: Object.keys(op.deck).filter(id => ren[id]).map(id => id + ' -> ' + ren[id]) } });
   }));
   return out;
 }
 
 // ---------------------------------------------------------------- main
-function emptyFile() { return { about: 'Hidden PRO fights per main map (package PRO, owner 2026-10-24 00:28). Written by tools/opt/pro_skirmishes.js --apply from the deck optimizer\'s distinct optima; baked into the game by assemble_arena.py. Not on the road, no progress, no rewards.', version: 1, updated: null, tool: null, rule: null, maps: {} }; }
+function emptyFile() { return { about: ABOUT, version: 2, updated: null, tool: null, rule: null, maps: {} }; }
+const ABOUT = 'Hidden PRO fights per main map (package PRO, owner 2026-10-24 00:28; PRO2 21:20). N-PRO-k: the best decks of the deck optimizer\'s map-true runs (the map\'s own cards + what a player holds by then, within the map\'s rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map\'s own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.';
 async function main(argv) {
   const o = parseArgs(argv); if (o.help) { console.log(HELP); return null; }
   const root = path.resolve(o.root || path.join(__dirname, '..', '..')), outFile = path.resolve(root, o.out || path.join('canonical', 'pro-skirmishes.json'));
@@ -196,35 +215,47 @@ async function main(argv) {
   const mapIds = [...new Set(runs.map(r => r.j.map.id).concat(Object.keys(file.maps || {})))];
   const maps = mapIds.map(id => gm.G.CONQUEST_MAPS.find(m => m.id === id)).filter(m => m && !m.sub).filter(m => !want || want.has(mapNoOf(gm, m))).sort((a, b) => mapNoOf(gm, a) - mapNoOf(gm, b));
   log(`pro_skirmishes ${VERSION}: ${maps.length} map(s), ${runs.length} optimizer output(s), ${o.games} games a pairing, ${o.apply ? 'APPLY' : 'dry run'}`);
-  const plan = [], next = JSON.parse(JSON.stringify(file)); next.maps = next.maps || {};
+  const plan = [], next = JSON.parse(JSON.stringify(file)); next.maps = next.maps || {}; next.about = ABOUT; next.version = 2;
+  const kinds = o.kind === 'both' ? ['pro', 'bpro'] : [o.kind];
   for (const map of maps) {
     const no = mapNoOf(gm, map), field = averageField(gm, map); if (!field) continue;
-    const prev = (file.maps[map.id] && file.maps[map.id].pro) || [];
-    const cur = prev.map(e => ({ deck: renameDeck(e.deck, ren), source: e.source, h2h: e.h2h }));
-    const cands = [], skipped = [];
-    candidatesOf(gm, runs, map.id, ren).forEach(c => { const p = deckProblems(gm, c.deck, leadersFor(gm, map, c.deck)); if (p.length) skipped.push({ source: c.source.file + ' #' + c.source.optimum, problems: p }); else cands.push(c); });
-    const t0 = Date.now(), measure = makeH2H(gm, map, field, o);
-    const d = decide(cur, cands, measure, o);
-    const pro = d.pro.map((x, i) => { const id = `${no}-PRO-${i + 1}`;
-      return { id, name: id, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, no) }; });
-    const before = prev.map(e => O.deckKey(renameDeck(e.deck, ren))).join(' / '), after = pro.map(e => O.deckKey(e.deck)).join(' / ');
-    const entry = { map: no, name: map.name, field: Object.assign({}, field, { summary: fieldSummary(gm, field) }), pro,
-      replaced: ((file.maps[map.id] || {}).replaced || []).concat(d.replaced.map(r => ({ deck: r.deck, source: r.source, lostTo: r.by, h2h: r.h2h, on: new Date().toISOString().slice(0, 10) }))),
-      skipped, notes: d.notes };
+    const old = file.maps[map.id] || {}, today = new Date().toISOString().slice(0, 10);
+    const entry = { map: no, name: map.name, field: Object.assign({}, field, { summary: fieldSummary(gm, field) }), pro: old.pro || [], bpro: old.bpro || [],
+      replaced: (old.replaced || []).slice(), skipped: (old.skipped || []).filter(x => !kinds.includes(x.kind || 'pro')), notes: (old.notes || []).filter(x => !kinds.some(k => x.startsWith(KINDS[k].label + ': '))) };
+    log(`Map ${no} ${map.name} (${map.id}): field ${entry.field.summary || '(none)'}${field.ties.length ? ' [' + field.ties.join('; ') + ']' : ''}; rarity cap ${O.mapRarityCap(gm, map, o.rarityCap)}`);
+    for (const kind of kinds) {
+      const K = KINDS[kind], t0 = Date.now(), prev = old[K.list] || [], note = s => entry.notes.push(K.label + ': ' + s);
+      // the map rule first (PRO2): a deck in the file that breaks it is dropped, so the map is filled again from the new runs
+      const cur = [];
+      prev.forEach(e => { const deck = renameDeck(e.deck, ren), probs = O.mapRuleProblems(gm, map, deck, K.mode, o.rarityCap).concat(deckProblems(gm, deck, leadersFor(gm, map, deck)));
+        if (probs.length) { entry.replaced.push({ kind, id: e.id, deck, source: e.source, dropped: probs, on: today }); note(`${e.id} dropped: ${probs.join('; ')}`); log(`  · ${K.label}: ${e.id} dropped (the map rule): ${probs.join('; ')}`); }
+        else cur.push({ deck, source: e.source, h2h: e.h2h }); });
+      const cands = [], skipped = [];
+      candidatesOf(gm, runs, map.id, ren, K.mode).forEach(c => { const p = deckProblems(gm, c.deck, leadersFor(gm, map, c.deck)).concat(O.mapRuleProblems(gm, map, c.deck, K.mode, o.rarityCap));
+        if (p.length) skipped.push({ kind, source: c.source.file + ' #' + c.source.optimum, problems: p }); else cands.push(c); });
+      const measure = makeH2H(gm, map, field, o);
+      const d = decide(cur, cands, measure, o);
+      const list = d.pro.map((x, i) => { const id = `${no}-${K.label}-${i + 1}`;
+        return { id, name: id, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, no) }; });
+      const before = prev.map(e => O.deckKey(renameDeck(e.deck, ren))).join(' / '), after = list.map(e => O.deckKey(e.deck)).join(' / ');
+      entry[K.list] = list;
+      d.replaced.forEach(r => entry.replaced.push({ kind, deck: r.deck, source: r.source, lostTo: r.by, h2h: r.h2h, on: today }));
+      entry.skipped = entry.skipped.concat(skipped); d.notes.forEach(note);
+      plan.push({ map: map.id, no, kind, changed: before !== after, seconds: Math.round((Date.now() - t0) / 100) / 10, entry });
+      list.forEach(e => log(`  ${e.id}: gauntlet ${e.source.score} [${(e.source.ci || []).join(', ')}] (${e.source.file} #${e.source.optimum})${e.h2h ? `, vs ${K.label}-1 ${e.h2h.p} over ${e.h2h.n} = ${e.h2h.elo >= 0 ? '+' : ''}${e.h2h.elo} Elo` : ''}${e.leaders.length ? ', leader ' + e.leaders.join(', ') : ''}${e.later.length ? '; first obtainable later: ' + e.later.map(x => x.id + ' (Map ' + x.first + ')').join(', ') : ''}`));
+      d.notes.forEach(n => log(`  · ${K.label}: ${n}`)); skipped.forEach(x => log(`  · ${K.label} skipped ${x.source}: ${x.problems.join('; ')}`));
+      log(`  ${K.label}: ${before === after ? 'no change' : prev.length ? 'CHANGED' : 'new'} (${plan[plan.length - 1].seconds} s)`);
+    }
     next.maps[map.id] = entry;
-    plan.push({ map: map.id, no, changed: before !== after, seconds: Math.round((Date.now() - t0) / 100) / 10, entry });
-    log(`Map ${no} ${map.name} (${map.id}): field ${entry.field.summary || '(none)'}${field.ties.length ? ' [' + field.ties.join('; ') + ']' : ''}`);
-    pro.forEach(e => log(`  ${e.id}: gauntlet ${e.source.score} [${(e.source.ci || []).join(', ')}] (${e.source.file} #${e.source.optimum})${e.h2h ? `, vs PRO-1 ${e.h2h.p} over ${e.h2h.n} = ${e.h2h.elo >= 0 ? '+' : ''}${e.h2h.elo} Elo` : ''}${e.leaders.length ? ', leader ' + e.leaders.join(', ') : ''}${e.later.length ? '; first obtainable later: ' + e.later.map(x => x.id + ' (Map ' + x.first + ')').join(', ') : ''}`));
-    d.notes.forEach(n => log('  · ' + n)); skipped.forEach(s => log(`  · skipped ${s.source}: ${s.problems.join('; ')}`));
-    log(`  ${before === after ? 'no change' : prev.length ? 'CHANGED' : 'new'} (${plan[plan.length - 1].seconds} s)`);
   }
   next.updated = new Date().toISOString().slice(0, 10); next.tool = 'tools/opt/pro_skirmishes.js ' + VERSION;
-  next.rule = { games: o.games, replaceAt: o.replaceAt, band: o.band, max: o.max, distinct: o.distinct, level: o.level, ai: o.ai, seed: o.seed };
+  next.rule = { games: o.games, replaceAt: o.replaceAt, band: o.band, max: o.max, distinct: o.distinct, level: o.level, ai: o.ai, seed: o.seed,
+    modes: { pro: KINDS.pro.mode, bpro: KINDS.bpro.mode }, rarityCap: o.rarityCap }; // 2026-10-24 (PRO2): the kinds' optimizer modes and the map rule's cap
   if (o.json) console.log(JSON.stringify(plan, null, 1));
   if (o.apply) { const order = Object.keys(next.maps).sort((a, b) => next.maps[a].map - next.maps[b].map), maps2 = {}; order.forEach(k => { maps2[k] = next.maps[k]; }); next.maps = maps2;
     fs.mkdirSync(path.dirname(outFile), { recursive: true }); fs.writeFileSync(outFile, JSON.stringify(next, null, 1) + '\n'); log('-> ' + path.relative(root, outFile) + ' (rebuild the game to bake it in)'); }
   else log('dry run: nothing written (--apply writes ' + path.relative(root, outFile) + ')');
   return { plan, file: next };
 }
-module.exports = { VERSION, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
+module.exports = { VERSION, KINDS, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

@@ -1,8 +1,8 @@
 {
- "about": "Hidden PRO fights per main map (package PRO, owner 2026-10-24 00:28). Written by tools/opt/pro_skirmishes.js --apply from the deck optimizer's distinct optima; baked into the game by assemble_arena.py. Not on the road, no progress, no rewards.",
- "version": 1,
- "updated": "2026-10-23",
- "tool": "tools/opt/pro_skirmishes.js 1.0.0 (2026-10-24, PRO)",
+ "about": "Hidden PRO fights per main map (package PRO, owner 2026-10-24 00:28; PRO2 21:20). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
+ "version": 2,
+ "updated": "2026-10-24",
+ "tool": "tools/opt/pro_skirmishes.js 1.1.0 (2026-10-24, PRO2)",
  "rule": {
   "games": 400,
   "replaceAt": 0.55,
@@ -11,7 +11,12 @@
   "distinct": 6,
   "level": 1,
   "ai": 1,
-  "seed": "pro"
+  "seed": "pro",
+  "modes": {
+   "pro": "map-true",
+   "bpro": "bpro"
+  },
+  "rarityCap": "map"
  },
  "maps": {
   "m1": {
@@ -40,6 +45,218 @@
      "level": 1,
      "leaders": [],
      "deck": {
+      "acorn-chipmunk": 1,
+      "beetle-grunt": 5,
+      "cottontail": 1,
+      "duck-paddler": 4,
+      "fox-kit": 5,
+      "otter-kit": 2,
+      "otter-paddler": 1,
+      "pond-duck": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T13:38:26.917Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.895,
+      "ci": [
+       0.871,
+       0.918
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "0-BPRO-1",
+     "name": "0-BPRO-1",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "beetle-grunt": 5,
+      "cobalt-talon-fledgling": 2,
+      "duck-paddler": 4,
+      "feral-tomcat": 3,
+      "fox-kit": 4,
+      "otter-kit": 1,
+      "paper-wasp": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-24T13:49:34.815Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.871,
+      "ci": [
+       0.845,
+       0.897
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "0-BPRO-2",
+     "name": "0-BPRO-2",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bee-forager": 3,
+      "beetle-grunt": 2,
+      "duck-paddler": 1,
+      "fox-kit": 5,
+      "honey-bee": 1,
+      "house-cat": 5,
+      "meadow-rabbit": 1,
+      "pond-duck": 1,
+      "terrier-pup": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-24T13:49:34.815Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.835,
+      "ci": [
+       0.807,
+       0.863
+      ],
+      "runElo": -33,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,otter-kit:1,paper-wasp:1",
+      "p": 0.538,
+      "n": 400,
+      "ci": [
+       0.489,
+       0.586
+      ],
+      "elo": 26,
+      "eloCI": [
+       -8,
+       60
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "0-BPRO-3",
+     "name": "0-BPRO-3",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "beetle-grunt": 4,
+      "chipmunk-forager": 1,
+      "chipmunk-skirmisher": 3,
+      "cobalt-talon-fledgling": 1,
+      "crossed-eyes": 1,
+      "fox-kit": 4,
+      "garden-snail": 2,
+      "meadow-rabbit": 1,
+      "otter-kit": 1,
+      "pond-duck": 1,
+      "river-carp": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-24T13:49:34.815Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.833,
+      "ci": [
+       0.804,
+       0.862
+      ],
+      "runElo": -22,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,otter-kit:1,paper-wasp:1",
+      "p": 0.453,
+      "n": 400,
+      "ci": [
+       0.404,
+       0.501
+      ],
+      "elo": -33,
+      "eloCI": [
+       -67,
+       1
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "0-BPRO-4",
+     "name": "0-BPRO-4",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "ant-scout": 1,
+      "beetle-grunt": 3,
+      "duckling": 3,
+      "feral-tomcat": 2,
+      "fox-kit": 2,
+      "house-cat": 3,
+      "meadow-rabbit": 1,
+      "otter-kit": 1,
+      "pond-duck": 1,
+      "river-carp": 2,
+      "terrier-pup": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map00-m1-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-24T13:49:34.815Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.815,
+      "ci": [
+       0.786,
+       0.844
+      ],
+      "runElo": -11,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:5,cobalt-talon-fledgling:2,duck-paddler:4,feral-tomcat:3,fox-kit:4,otter-kit:1,paper-wasp:1",
+      "p": 0.453,
+      "n": 400,
+      "ci": [
+       0.404,
+       0.501
+      ],
+      "elo": -33,
+      "eloCI": [
+       -67,
+       1
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "0-PRO-1",
+     "deck": {
       "beetle-grunt": 5,
       "bombardier-beetle": 3,
       "cobalt-talon-fledgling": 2,
@@ -62,19 +279,15 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": [
-      {
-       "id": "bombardier-beetle",
-       "first": 7
-      }
-     ]
+     "dropped": [
+      "bombardier-beetle: uncommon is over the map's rarity cap (common)",
+      "otter-centurion: rare is over the map's rarity cap (common)"
+     ],
+     "on": "2026-10-24"
     },
     {
+     "kind": "pro",
      "id": "0-PRO-2",
-     "name": "0-PRO-2",
-     "level": 1,
-     "leaders": [],
      "deck": {
       "badger-berserker": 1,
       "beetle-grunt": 5,
@@ -103,44 +316,19 @@
       "runElo": 11,
       "renamed": []
      },
-     "h2h": {
-      "vs": "beetle-grunt:5,bombardier-beetle:3,cobalt-talon-fledgling:2,duck-paddler:1,feral-tomcat:4,fox-kit:4,otter-centurion:1",
-      "p": 0.493,
-      "n": 400,
-      "ci": [
-       0.444,
-       0.541
-      ],
-      "elo": -5,
-      "eloCI": [
-       -39,
-       29
-      ]
-     },
-     "later": [
-      {
-       "id": "bombardier-beetle",
-       "first": 7
-      },
-      {
-       "id": "fungus-gnat-cloud",
-       "first": 7
-      },
-      {
-       "id": "millipede-hauler",
-       "first": 8
-      },
-      {
-       "id": "swamp-rabbit",
-       "first": 13
-      }
-     ]
+     "dropped": [
+      "badger-berserker: rare is over the map's rarity cap (common)",
+      "bombardier-beetle: uncommon is over the map's rarity cap (common)",
+      "fungus-gnat-cloud: first obtainable on Map 7",
+      "millipede-hauler: uncommon is over the map's rarity cap (common)",
+      "otter-centurion: rare is over the map's rarity cap (common)",
+      "swamp-rabbit: first obtainable on Map 13"
+     ],
+     "on": "2026-10-24"
     },
     {
+     "kind": "pro",
      "id": "0-PRO-3",
-     "name": "0-PRO-3",
-     "level": 1,
-     "leaders": [],
      "deck": {
       "beetle-grunt": 5,
       "duck-paddler": 4,
@@ -164,28 +352,23 @@
       "runElo": -55,
       "renamed": []
      },
-     "h2h": {
-      "vs": "beetle-grunt:5,bombardier-beetle:3,cobalt-talon-fledgling:2,duck-paddler:1,feral-tomcat:4,fox-kit:4,otter-centurion:1",
-      "p": 0.378,
-      "n": 400,
-      "ci": [
-       0.331,
-       0.426
-      ],
-      "elo": -87,
-      "eloCI": [
-       -122,
-       -52
-      ]
-     },
-     "later": []
+     "dropped": [
+      "ent: rare is over the map's rarity cap (common)",
+      "otter-guard: uncommon is over the map's rarity cap (common)"
+     ],
+     "on": "2026-10-24"
     }
    ],
-   "replaced": [],
    "skipped": [],
    "notes": [
     "PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
-    "left out (-173 Elo below the band): badger-berserker:1,beetle-grunt:2,chipmunk-forager:1,chipmun..."
+    "left out (-173 Elo below the band): badger-berserker:1,beetle-grunt:2,chipmunk-forager:1,chipmun...",
+    "PRO: 0-PRO-1 dropped: bombardier-beetle: uncommon is over the map's rarity cap (common); otter-centurion: rare is over the map's rarity cap (common)",
+    "PRO: 0-PRO-2 dropped: badger-berserker: rare is over the map's rarity cap (common); bombardier-beetle: uncommon is over the map's rarity cap (common); fungus-gnat-cloud: first obtainable on Map 7; millipede-hauler: uncommon is over the map's rarity cap (common); otter-centurion: rare is over the map's rarity cap (common); swamp-rabbit: first obtainable on Map 13",
+    "PRO: 0-PRO-3 dropped: ent: rare is over the map's rarity cap (common); otter-guard: uncommon is over the map's rarity cap (common)",
+    "PRO: first fill: PRO-1 is the newest run's optimum",
+    "PRO: left out (-131 Elo below the band): beetle-grunt:4,cobalt-talon-fledgling:2,duck-paddler:4,feral...",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
   "mf": {
@@ -193,7 +376,8 @@
    "name": "Thistlewood",
    "field": {
     "rules": {
-     "phase": "cycle"
+     "phase": "cycle",
+     "woods": true
     },
     "terrain": {
      "biome": "forest",
@@ -208,7 +392,7 @@
     ],
     "boss": "1-5",
     "ties": [],
-    "summary": "phase cycle, terrain Old Woods T1"
+    "summary": "phase cycle, woods, terrain Old Woods T1"
    },
    "pro": [
     {
@@ -216,6 +400,207 @@
      "name": "1-PRO-1",
      "level": 1,
      "leaders": [],
+     "deck": {
+      "bramble-sprout": 5,
+      "dormouse": 4,
+      "field-mouse": 4,
+      "field-vole": 4,
+      "meadow-frog": 2,
+      "otter-guard": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T13:40:16.502Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.881,
+      "ci": [
+       0.859,
+       0.904
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "1-BPRO-1",
+     "name": "1-BPRO-1",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramble-sprout": 5,
+      "cricket-drummer": 5,
+      "dormouse": 5,
+      "field-mouse": 1,
+      "slow-worm": 4
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-24T13:52:15.240Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.804,
+      "ci": [
+       0.777,
+       0.83
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "1-BPRO-2",
+     "name": "1-BPRO-2",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramble-sprout": 1,
+      "briarback-hedgehog": 1,
+      "cottontail": 1,
+      "cricket-drummer": 3,
+      "dormouse": 5,
+      "field-mouse": 4,
+      "meadow-rabbit": 2,
+      "robin-redbreast": 1,
+      "slow-worm": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-24T13:52:15.240Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.75,
+      "ci": [
+       0.72,
+       0.779
+      ],
+      "runElo": -70,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bramble-sprout:5,cricket-drummer:5,dormouse:5,field-mouse:1,slow-worm:4",
+      "p": 0.45,
+      "n": 400,
+      "ci": [
+       0.402,
+       0.499
+      ],
+      "elo": -35,
+      "eloCI": [
+       -69,
+       -1
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "1-BPRO-3",
+     "name": "1-BPRO-3",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramble-sprout": 4,
+      "briarback-hedgehog": 2,
+      "cottontail": 3,
+      "cricket-drummer": 1,
+      "dormouse": 4,
+      "hedgerow-shrew": 1,
+      "meadow-frog": 3,
+      "meadow-rabbit": 1,
+      "woodcock-lookout": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-24T13:52:15.240Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.687,
+      "ci": [
+       0.656,
+       0.718
+      ],
+      "runElo": -44,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bramble-sprout:5,cricket-drummer:5,dormouse:5,field-mouse:1,slow-worm:4",
+      "p": 0.435,
+      "n": 400,
+      "ci": [
+       0.387,
+       0.484
+      ],
+      "elo": -45,
+      "eloCI": [
+       -80,
+       -11
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "1-BPRO-4",
+     "name": "1-BPRO-4",
+     "level": 1,
+     "leaders": [],
+     "deck": {
+      "bramble-sprout": 5,
+      "cottontail": 2,
+      "dormouse": 3,
+      "field-mouse": 5,
+      "field-vole": 2,
+      "meadow-frog": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map01-mf-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-24T13:52:15.240Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.765,
+      "ci": [
+       0.737,
+       0.794
+      ],
+      "runElo": -108,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bramble-sprout:5,cricket-drummer:5,dormouse:5,field-mouse:1,slow-worm:4",
+      "p": 0.375,
+      "n": 400,
+      "ci": [
+       0.329,
+       0.423
+      ],
+      "elo": -89,
+      "eloCI": [
+       -124,
+       -54
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "1-PRO-1",
      "deck": {
       "chipmunk-forager": 1,
       "cobalt-talon-fledgling": 1,
@@ -243,27 +628,17 @@
        "ember-tetra-3caj -> ember-tetra"
       ]
      },
-     "h2h": null,
-     "later": [
-      {
-       "id": "dynamite-packrat",
-       "first": 8
-      },
-      {
-       "id": "lemming-swarm",
-       "first": 21
-      },
-      {
-       "id": "pika-hoarder",
-       "first": 21
-      }
-     ]
+     "dropped": [
+      "dynamite-packrat: first obtainable on Map 8",
+      "lemming-swarm: first obtainable on Map 21",
+      "pika-hoarder: first obtainable on Map 21",
+      "village-miller: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-24"
     },
     {
+     "kind": "pro",
      "id": "1-PRO-2",
-     "name": "1-PRO-2",
-     "level": 1,
-     "leaders": [],
      "deck": {
       "burrow-rabbit": 1,
       "chipmunk-forager": 1,
@@ -293,38 +668,23 @@
        "ember-tetra-3caj -> ember-tetra"
       ]
      },
-     "h2h": {
-      "vs": "chipmunk-forager:1,cobalt-talon-fledgling:1,dynamite-packrat:2,ember-tetra:1,house-cat:5,lemming-swarm:1,otter-guard:3,pika-hoarder:4,village-miller:2",
-      "p": 0.435,
-      "n": 400,
-      "ci": [
-       0.387,
-       0.484
-      ],
-      "elo": -45,
-      "eloCI": [
-       -80,
-       -11
-      ]
-     },
-     "later": [
-      {
-       "id": "lemming-swarm",
-       "first": 21
-      },
-      {
-       "id": "scree-goat",
-       "first": 19
-      }
-     ]
+     "dropped": [
+      "lemming-swarm: first obtainable on Map 21",
+      "scree-goat: first obtainable on Map 19",
+      "village-miller: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-24"
     }
    ],
-   "replaced": [],
    "skipped": [],
    "notes": [
     "PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
     "left out (-135 Elo below the band): acorn-chipmunk:1,bee-forager:1,burrow-rabbit:1,crossed-eyes:...",
-    "left out (-141 Elo below the band): chipmunk-forager:1,dynamite-packrat:1,ember-tetra:4,fleetfoo..."
+    "left out (-141 Elo below the band): chipmunk-forager:1,dynamite-packrat:1,ember-tetra:4,fleetfoo...",
+    "PRO: 1-PRO-1 dropped: dynamite-packrat: first obtainable on Map 8; lemming-swarm: first obtainable on Map 21; pika-hoarder: first obtainable on Map 21; village-miller: not obtainable (not in the progression plan or an earlier map's cards)",
+    "PRO: 1-PRO-2 dropped: lemming-swarm: first obtainable on Map 21; scree-goat: first obtainable on Map 19; village-miller: not obtainable (not in the progression plan or an earlier map's cards)",
+    "PRO: first fill: PRO-1 is the newest run's optimum",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
   "mb": {
@@ -357,8 +717,350 @@
      "name": "2-PRO-1",
      "level": 1,
      "leaders": [
-      "grotto-lobster"
+      "grey-seal-bull"
      ],
+     "deck": {
+      "bee-sentry": 1,
+      "beetle-grunt": 1,
+      "cottontail": 1,
+      "cricket-drummer": 1,
+      "crimson-wing-recruit": 1,
+      "crossed-eyes": 1,
+      "driftwood-crab": 1,
+      "ember-tetra": 1,
+      "forager-ant": 1,
+      "grey-seal-bull": 1,
+      "house-cat": 1,
+      "meadow-frog": 3,
+      "meerkat-wayfarer": 1,
+      "otter-guard": 2,
+      "otter-paddler": 1,
+      "rock-pool-starfish": 1,
+      "sheep": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T13:44:12.526Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.81,
+      "ci": [
+       0.784,
+       0.837
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "2-PRO-2",
+     "name": "2-PRO-2",
+     "level": 1,
+     "leaders": [
+      "otter-guard"
+     ],
+     "deck": {
+      "cricket-drummer": 2,
+      "crossed-eyes": 1,
+      "duckling": 1,
+      "earthworm": 1,
+      "ember-tetra": 1,
+      "hedgerow-shrew": 1,
+      "house-cat": 3,
+      "meadow-rabbit": 1,
+      "otter-guard": 1,
+      "otter-kit": 1,
+      "river-carp": 1,
+      "robin-redbreast": 1,
+      "silver-minnow": 2,
+      "terrier-pup": 1,
+      "worker-ant": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-24T13:44:12.526Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.801,
+      "ci": [
+       0.775,
+       0.828
+      ],
+      "runElo": 35,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bee-sentry:1,beetle-grunt:1,cottontail:1,cricket-drummer:1,crimson-wing-recruit:1,crossed-eyes:1,driftwood-crab:1,ember-tetra:1,forager-ant:1,grey-seal-bull:1,house-cat:1,meadow-frog:3,meerkat-wayfarer:1,otter-guard:2,otter-paddler:1,rock-pool-starfish:1,sheep:1",
+      "p": 0.538,
+      "n": 400,
+      "ci": [
+       0.489,
+       0.586
+      ],
+      "elo": 26,
+      "eloCI": [
+       -8,
+       60
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "2-PRO-3",
+     "name": "2-PRO-3",
+     "level": 1,
+     "leaders": [
+      "otter-guard"
+     ],
+     "deck": {
+      "beetle-grunt": 2,
+      "burrow-rabbit": 2,
+      "conch-herald": 1,
+      "driftwood-crab": 1,
+      "duckling": 1,
+      "feral-tomcat": 1,
+      "field-vole": 1,
+      "house-cat": 1,
+      "meadow-frog": 1,
+      "meadow-rabbit": 1,
+      "meerkat-wayfarer": 1,
+      "open-ocean-hermit-crab": 2,
+      "otter-guard": 1,
+      "pincushion-urchin": 1,
+      "riverwing-envoy": 2,
+      "robin-redbreast": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 2,
+      "generated": "2026-10-24T13:44:12.526Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.773,
+      "ci": [
+       0.745,
+       0.801
+      ],
+      "runElo": -9,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bee-sentry:1,beetle-grunt:1,cottontail:1,cricket-drummer:1,crimson-wing-recruit:1,crossed-eyes:1,driftwood-crab:1,ember-tetra:1,forager-ant:1,grey-seal-bull:1,house-cat:1,meadow-frog:3,meerkat-wayfarer:1,otter-guard:2,otter-paddler:1,rock-pool-starfish:1,sheep:1",
+      "p": 0.368,
+      "n": 400,
+      "ci": [
+       0.322,
+       0.416
+      ],
+      "elo": -94,
+      "eloCI": [
+       -130,
+       -59
+      ]
+     },
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "2-BPRO-1",
+     "name": "2-BPRO-1",
+     "level": 1,
+     "leaders": [
+      "grey-seal-bull"
+     ],
+     "deck": {
+      "conch-herald": 1,
+      "driftwood-crab": 4,
+      "fiddler-crab-swarm": 3,
+      "grey-seal-bull": 2,
+      "gull-thief": 1,
+      "open-ocean-hermit-crab": 2,
+      "oystercatcher": 1,
+      "pincushion-urchin": 1,
+      "rock-pool-starfish": 2,
+      "sea-turtle-elder": 1,
+      "tide-pool-crab": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-24T13:55:33.904Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.699,
+      "ci": [
+       0.669,
+       0.729
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "2-BPRO-2",
+     "name": "2-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "grey-seal-bull"
+     ],
+     "deck": {
+      "conch-crawler": 4,
+      "driftwood-crab": 4,
+      "fiddler-crab-swarm": 1,
+      "grey-seal-bull": 1,
+      "open-ocean-hermit-crab": 1,
+      "oyster-bank": 1,
+      "oystercatcher": 1,
+      "pincushion-urchin": 4,
+      "rock-pool-starfish": 1,
+      "sea-turtle-elder": 1,
+      "tidepool-trapper-crab": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-24T13:55:33.904Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.677,
+      "ci": [
+       0.647,
+       0.706
+      ],
+      "runElo": 9,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "conch-herald:1,driftwood-crab:4,fiddler-crab-swarm:3,grey-seal-bull:2,gull-thief:1,open-ocean-hermit-crab:2,oystercatcher:1,pincushion-urchin:1,rock-pool-starfish:2,sea-turtle-elder:1,tide-pool-crab:2",
+      "p": 0.57,
+      "n": 400,
+      "ci": [
+       0.521,
+       0.618
+      ],
+      "elo": 49,
+      "eloCI": [
+       15,
+       83
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "2-BPRO-3",
+     "name": "2-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "oyster-bank"
+     ],
+     "deck": {
+      "conch-crawler": 2,
+      "driftwood-crab": 3,
+      "fiddler-crab-swarm": 1,
+      "open-ocean-hermit-crab": 3,
+      "oyster-bank": 1,
+      "oystercatcher": 2,
+      "pincushion-urchin": 4,
+      "rock-pool-starfish": 2,
+      "tide-pool-crab": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-24T13:55:33.904Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.678,
+      "ci": [
+       0.648,
+       0.708
+      ],
+      "runElo": -17,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "conch-herald:1,driftwood-crab:4,fiddler-crab-swarm:3,grey-seal-bull:2,gull-thief:1,open-ocean-hermit-crab:2,oystercatcher:1,pincushion-urchin:1,rock-pool-starfish:2,sea-turtle-elder:1,tide-pool-crab:2",
+      "p": 0.565,
+      "n": 400,
+      "ci": [
+       0.516,
+       0.613
+      ],
+      "elo": 45,
+      "eloCI": [
+       11,
+       80
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "2-BPRO-4",
+     "name": "2-BPRO-4",
+     "level": 1,
+     "leaders": [
+      "grey-seal-bull"
+     ],
+     "deck": {
+      "conch-crawler": 1,
+      "driftwood-crab": 5,
+      "fiddler-crab-swarm": 1,
+      "grey-seal-bull": 4,
+      "gull-thief": 1,
+      "oystercatcher": 4,
+      "pincushion-urchin": 1,
+      "tide-pool-crab": 2,
+      "tidepool-trapper-crab": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-24T13:55:33.904Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.69,
+      "ci": [
+       0.661,
+       0.718
+      ],
+      "runElo": 35,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "conch-herald:1,driftwood-crab:4,fiddler-crab-swarm:3,grey-seal-bull:2,gull-thief:1,open-ocean-hermit-crab:2,oystercatcher:1,pincushion-urchin:1,rock-pool-starfish:2,sea-turtle-elder:1,tide-pool-crab:2",
+      "p": 0.555,
+      "n": 400,
+      "ci": [
+       0.506,
+       0.603
+      ],
+      "elo": 38,
+      "eloCI": [
+       4,
+       73
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "2-PRO-1",
      "deck": {
       "cobalt-talon-fledgling": 2,
       "conch-herald": 1,
@@ -388,29 +1090,26 @@
        "ember-tetra-3caj -> ember-tetra"
       ]
      },
-     "h2h": null,
-     "later": [
-      {
-       "id": "grotto-lobster",
-       "first": 8
-      },
-      {
-       "id": "mudpuppy",
-       "first": 9
-      },
-      {
-       "id": "voidfeather-scout",
-       "first": 5
-      }
-     ]
+     "dropped": [
+      "grotto-lobster: rare is over the map's rarity cap (uncommon)",
+      "mudpuppy: first obtainable on Map 7",
+      "otter-centurion: rare is over the map's rarity cap (uncommon)",
+      "pike-lancer: rare is over the map's rarity cap (uncommon)",
+      "sulfur-vent-crab: not obtainable (not in the progression plan or an earlier map's cards)",
+      "trash-panda-trickster: not obtainable (not in the progression plan or an earlier map's cards)",
+      "voidfeather-scout: first obtainable on Map 5"
+     ],
+     "on": "2026-10-24"
     }
    ],
-   "replaced": [],
    "skipped": [],
    "notes": [
     "PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
     "left out (-156 Elo below the band): bee-forager:1,bee-knight:1,conch-herald:1,crimson-wing-dueli...",
-    "left out (-279 Elo below the band): bee-forager:5,conch-herald:1,ember-tetra:4,garden-snail:1,mi..."
+    "left out (-279 Elo below the band): bee-forager:5,conch-herald:1,ember-tetra:4,garden-snail:1,mi...",
+    "PRO: 2-PRO-1 dropped: grotto-lobster: rare is over the map's rarity cap (uncommon); mudpuppy: first obtainable on Map 7; otter-centurion: rare is over the map's rarity cap (uncommon); pike-lancer: rare is over the map's rarity cap (uncommon); sulfur-vent-crab: not obtainable (not in the progression plan or an earlier map's cards); trash-panda-trickster: not obtainable (not in the progression plan or an earlier map's cards); voidfeather-scout: first obtainable on Map 5",
+    "PRO: first fill: PRO-1 is the newest run's optimum",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
   "mc": {
@@ -446,8 +1145,410 @@
      "name": "3-PRO-1",
      "level": 1,
      "leaders": [
-      "otter-centurion"
+      "otter-guard"
      ],
+     "deck": {
+      "beetle-grunt": 1,
+      "burrow-rabbit": 1,
+      "conch-crawler": 1,
+      "cottontail": 1,
+      "duck-paddler": 1,
+      "fiddler-crab-swarm": 1,
+      "field-mouse": 2,
+      "golden-eagle-diver": 1,
+      "hedgerow-shrew": 1,
+      "house-cat": 1,
+      "mosswing-laborer": 1,
+      "otter-guard": 1,
+      "otter-kit": 1,
+      "otter-paddler": 1,
+      "paper-wasp": 1,
+      "peak-condor": 1,
+      "peregrine-stooper": 1,
+      "slow-worm": 1,
+      "tide-pool-crab": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T13:47:57.333Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.72,
+      "ci": [
+       0.695,
+       0.746
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "3-PRO-2",
+     "name": "3-PRO-2",
+     "level": 1,
+     "leaders": [
+      "otter-guard"
+     ],
+     "deck": {
+      "bee-forager": 1,
+      "compost-grub": 1,
+      "conch-crawler": 1,
+      "dormouse": 2,
+      "duck-paddler": 1,
+      "duckling": 1,
+      "ember-tetra": 1,
+      "feral-tomcat": 1,
+      "gannet-nestweaver": 1,
+      "hawk-arrowkeeper": 1,
+      "meadow-frog": 2,
+      "open-ocean-hermit-crab": 1,
+      "otter-guard": 1,
+      "otter-paddler": 1,
+      "peak-condor": 1,
+      "razorbill": 1,
+      "riverwing-envoy": 1,
+      "slow-worm": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 3,
+      "generated": "2026-10-24T13:47:57.333Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.652,
+      "ci": [
+       0.625,
+       0.68
+      ],
+      "runElo": -37,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:1,burrow-rabbit:1,conch-crawler:1,cottontail:1,duck-paddler:1,fiddler-crab-swarm:1,field-mouse:2,golden-eagle-diver:1,hedgerow-shrew:1,house-cat:1,mosswing-laborer:1,otter-guard:1,otter-kit:1,otter-paddler:1,paper-wasp:1,peak-condor:1,peregrine-stooper:1,slow-worm:1,tide-pool-crab:1",
+      "p": 0.425,
+      "n": 400,
+      "ci": [
+       0.377,
+       0.474
+      ],
+      "elo": -53,
+      "eloCI": [
+       -87,
+       -18
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "3-PRO-3",
+     "name": "3-PRO-3",
+     "level": 1,
+     "leaders": [
+      "grey-seal-bull"
+     ],
+     "deck": {
+      "acorn-chipmunk": 2,
+      "badger-lumberjack": 1,
+      "beetle-grunt": 1,
+      "crossed-eyes": 1,
+      "dormouse": 1,
+      "farm-dog": 1,
+      "golden-eagle-diver": 1,
+      "grey-seal-bull": 1,
+      "honey-bee": 1,
+      "otter-kit": 2,
+      "otter-paddler": 1,
+      "puffin-diver": 1,
+      "razorbill": 1,
+      "silver-minnow": 1,
+      "sparrow-chick": 1,
+      "tidepool-trapper-crab": 1,
+      "woodcock-lookout": 1,
+      "worker-ant": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-24T13:47:57.333Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.658,
+      "ci": [
+       0.631,
+       0.685
+      ],
+      "runElo": -109,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:1,burrow-rabbit:1,conch-crawler:1,cottontail:1,duck-paddler:1,fiddler-crab-swarm:1,field-mouse:2,golden-eagle-diver:1,hedgerow-shrew:1,house-cat:1,mosswing-laborer:1,otter-guard:1,otter-kit:1,otter-paddler:1,paper-wasp:1,peak-condor:1,peregrine-stooper:1,slow-worm:1,tide-pool-crab:1",
+      "p": 0.373,
+      "n": 400,
+      "ci": [
+       0.327,
+       0.421
+      ],
+      "elo": -91,
+      "eloCI": [
+       -126,
+       -55
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "3-PRO-4",
+     "name": "3-PRO-4",
+     "level": 1,
+     "leaders": [
+      "grey-seal-bull"
+     ],
+     "deck": {
+      "ant-scout": 1,
+      "bee-knight": 1,
+      "briarback-hedgehog": 1,
+      "cricket-drummer": 1,
+      "crimson-wing-recruit": 1,
+      "dormouse": 1,
+      "duck-paddler": 1,
+      "earthworm": 1,
+      "fulmar-spitter": 1,
+      "golden-eagle-diver": 1,
+      "grey-seal-bull": 2,
+      "kittiwake-flock": 1,
+      "meadow-rabbit": 1,
+      "otter-kit": 1,
+      "pincushion-urchin": 1,
+      "pond-duck": 1,
+      "pond-trout": 2,
+      "woodcock-lookout": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 2,
+      "generated": "2026-10-24T13:47:57.333Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.678,
+      "ci": [
+       0.652,
+       0.704
+      ],
+      "runElo": -89,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "beetle-grunt:1,burrow-rabbit:1,conch-crawler:1,cottontail:1,duck-paddler:1,fiddler-crab-swarm:1,field-mouse:2,golden-eagle-diver:1,hedgerow-shrew:1,house-cat:1,mosswing-laborer:1,otter-guard:1,otter-kit:1,otter-paddler:1,paper-wasp:1,peak-condor:1,peregrine-stooper:1,slow-worm:1,tide-pool-crab:1",
+      "p": 0.373,
+      "n": 400,
+      "ci": [
+       0.327,
+       0.421
+      ],
+      "elo": -91,
+      "eloCI": [
+       -126,
+       -55
+      ]
+     },
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "3-BPRO-1",
+     "name": "3-BPRO-1",
+     "level": 1,
+     "leaders": [
+      "fulmar-spitter"
+     ],
+     "deck": {
+      "fulmar-spitter": 1,
+      "gannet-nestweaver": 4,
+      "golden-eagle-diver": 1,
+      "great-skua": 2,
+      "kittiwake-flock": 4,
+      "mountain-goat-climber": 1,
+      "peak-condor": 2,
+      "razorbill": 2,
+      "red-billed-chough": 2,
+      "sparrow-chick": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-24T13:58:34.134Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.618,
+      "ci": [
+       0.59,
+       0.646
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "3-BPRO-2",
+     "name": "3-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "peregrine-stooper"
+     ],
+     "deck": {
+      "gannet-nestweaver": 2,
+      "golden-eagle-diver": 2,
+      "great-skua": 2,
+      "kittiwake-flock": 5,
+      "mountain-goat-climber": 1,
+      "peregrine-stooper": 1,
+      "puffin-diver": 2,
+      "razorbill": 2,
+      "red-billed-chough": 1,
+      "sparrow-chick": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-24T13:58:34.134Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.595,
+      "ci": [
+       0.567,
+       0.623
+      ],
+      "runElo": 12,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "fulmar-spitter:1,gannet-nestweaver:4,golden-eagle-diver:1,great-skua:2,kittiwake-flock:4,mountain-goat-climber:1,peak-condor:2,razorbill:2,red-billed-chough:2,sparrow-chick:1",
+      "p": 0.505,
+      "n": 400,
+      "ci": [
+       0.456,
+       0.554
+      ],
+      "elo": 3,
+      "eloCI": [
+       -31,
+       37
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "3-BPRO-3",
+     "name": "3-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "peregrine-stooper"
+     ],
+     "deck": {
+      "fulmar-spitter": 2,
+      "gannet-nestweaver": 4,
+      "golden-eagle-diver": 1,
+      "kittiwake-flock": 2,
+      "mountain-goat-climber": 3,
+      "peak-condor": 1,
+      "peregrine-stooper": 1,
+      "puffin-diver": 2,
+      "red-billed-chough": 2,
+      "sparrow-chick": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-24T13:58:34.134Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.584,
+      "ci": [
+       0.555,
+       0.612
+      ],
+      "runElo": -19,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "fulmar-spitter:1,gannet-nestweaver:4,golden-eagle-diver:1,great-skua:2,kittiwake-flock:4,mountain-goat-climber:1,peak-condor:2,razorbill:2,red-billed-chough:2,sparrow-chick:1",
+      "p": 0.48,
+      "n": 400,
+      "ci": [
+       0.431,
+       0.529
+      ],
+      "elo": -14,
+      "eloCI": [
+       -48,
+       20
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "3-BPRO-4",
+     "name": "3-BPRO-4",
+     "level": 1,
+     "leaders": [
+      "mountain-goat-climber"
+     ],
+     "deck": {
+      "gannet-nestweaver": 5,
+      "kittiwake-flock": 5,
+      "mountain-goat-climber": 4,
+      "peak-condor": 1,
+      "sparrow-chick": 5
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map03-mc-2026-10-24-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-24T13:58:34.134Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --mode bpro",
+      "score": 0.545,
+      "ci": [
+       0.516,
+       0.574
+      ],
+      "runElo": -69,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "fulmar-spitter:1,gannet-nestweaver:4,golden-eagle-diver:1,great-skua:2,kittiwake-flock:4,mountain-goat-climber:1,peak-condor:2,razorbill:2,red-billed-chough:2,sparrow-chick:1",
+      "p": 0.418,
+      "n": 400,
+      "ci": [
+       0.37,
+       0.466
+      ],
+      "elo": -58,
+      "eloCI": [
+       -92,
+       -23
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "3-PRO-1",
      "deck": {
       "acorn-chipmunk": 1,
       "ant-scout": 1,
@@ -479,26 +1580,23 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": [
-      {
-       "id": "crimson-wing-duelist-cadet",
-       "first": 5
-      },
-      {
-       "id": "stonedrop-vulture",
-       "first": 18
-      }
-     ]
+     "dropped": [
+      "crimson-wing-duelist-cadet: first obtainable on Map 40",
+      "otter-centurion: rare is over the map's rarity cap (uncommon)",
+      "stonedrop-vulture: first obtainable on Map 19"
+     ],
+     "on": "2026-10-24"
     }
    ],
-   "replaced": [],
    "skipped": [],
    "notes": [
     "PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
     "left out (-104 Elo below the band): duck-paddler:2,eagle-owl-quartermaster:3,ember-tetra:2,grey-...",
     "left out (-184 Elo below the band): ant-scout:1,bee-knight:1,crimson-wing-duelist-cadet:1,forage...",
-    "left out (-217 Elo below the band): chipmunk-forager:1,duckling:1,ember-tetra:1,gold-throated-ac..."
+    "left out (-217 Elo below the band): chipmunk-forager:1,duckling:1,ember-tetra:1,gold-throated-ac...",
+    "PRO: 3-PRO-1 dropped: crimson-wing-duelist-cadet: first obtainable on Map 40; otter-centurion: rare is over the map's rarity cap (uncommon); stonedrop-vulture: first obtainable on Map 19",
+    "PRO: first fill: PRO-1 is the newest run's optimum",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   }
  }
