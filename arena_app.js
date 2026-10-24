@@ -41940,9 +41940,9 @@ function triggerLessonTip(m){
   const next = TRIGGER_LESSON.find(t=> !coachSeen.has(t.id)); if(!next) return null;
   return triggerLessonChip(m) ? next : null;
 }
-function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('trig-off'); markCoachSeen('trig-on'); }
+function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('tl-when'); markCoachSeen('trig-off'); markCoachSeen('trig-on'); } // (tl-when: PL2's retired step)
 function replayTriggerLesson(){
-  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
+  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('tl-when'); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
   try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
 }
 function peekGateTip(m){

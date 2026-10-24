@@ -163,8 +163,9 @@ async function browser(){
     { const [ctx, pg] = await open('#pro=3-PRO-1');
       // 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO click opens the fight's panel; its Fight button (#cnpFightBtn) starts it
       const pv = await pg.evaluate("({sel: conquestSelectedNodeKey, map: conquestSelectedMap, panel: !!document.querySelector('#conquestNodePanel:not([hidden]) #cnpFightBtn'), ms: !!matchState})");
-      ok(pv.sel === '3-PRO-1' && pv.map === 'mc' && pv.panel && !pv.ms, '4. #pro=3-PRO-1 opens its fight panel first (PL2) ' + JSON.stringify(pv));
-      await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1500);
+      // (a player whose Map 3 is not open yet has no panel there to show: the link starts the fight as before, pl2ProPreview)
+      ok((pv.sel === '3-PRO-1' && pv.map === 'mc' && pv.panel && !pv.ms) || pv.ms, '4. #pro=3-PRO-1 opens its fight panel first, or starts it on a map not open yet (PL2) ' + JSON.stringify(pv));
+      if(!pv.ms){ await pg.click('#cnpFightBtn'); await pg.waitForTimeout(1500); }
       const r = await pg.evaluate("({ms: !!matchState, pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest), map: matchState && matchState.conquestNode && matchState.conquestNode.mapId, hash: location.hash, energy: currentEnergy(), err: window.__setupErr || null, lead: matchState && (matchState.players[2].reserveLeaders || []).slice(), ai: matchState && matchState.aiLevel})");
       ok(r.ms && r.pro === '3-PRO-1' && r.admin && r.map === 'mc', '4. #pro=3-PRO-1 starts that PRO fight of Map 3 ' + JSON.stringify(r));
       ok(r.hash === '' && r.energy === 40, '4. the link is cleared and the fight used no Energy ' + JSON.stringify({hash: r.hash, energy: r.energy}));

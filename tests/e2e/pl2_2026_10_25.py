@@ -144,8 +144,8 @@ async def run(b, url, w):
     ok(r['left'].strip().endswith('3') and r['waiting'].strip().endswith('3') and r['self'].strip().endswith('2'), f'22:28 #4 both neighbours (the Waiting one too) show +1 Attack, the inspirer not {r}')
     # #5: a heal bounces, damage does not
     r = await pg.evaluate(E(f"""const m = matchState, rc = m.replayCards[{u['1:-1']}]; const sp = ()=> boardCardEl({u['1:-1']}).querySelector('.stats .hp');
-      gsap.globalTimeline.timeScale(.15); rc.hp = 30; rc.maxHp = 34; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 20)); rc.hp = 34; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 900));
-      const up = sp().querySelector('.pl2-num') ? +getComputedStyle(sp().querySelector('.pl2-num')).transform.split('(')[1].split(',')[0] : 1;
+      gsap.globalTimeline.timeScale(.15); rc.hp = 30; rc.maxHp = 34; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 20)); rc.hp = 34; updateCardHpDisplay({u['1:-1']});
+      let up = 1; const t0 = performance.now(); while(performance.now() - t0 < 2500){ const n = sp().querySelector('.pl2-num'); if(n){ const s = +gsap.getProperty(n, 'scale') || 1; if(Math.abs(s - 1) > Math.abs(up - 1)) up = s; } await new Promise(r=> requestAnimationFrame(r)); }
       gsap.globalTimeline.timeScale(1); await new Promise(r=> setTimeout(r, 2500)); rc.hp = 30; updateCardHpDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 120));
       return {{upScale: up, downWrapped: !!sp().querySelector('.pl2-num'), text: sp().textContent}};"""))
     ok(abs(r['upScale'] - 1) > .03 and not r['downWrapped'] and r['text'].strip().endswith('30'), f'22:28 #5 a Health rise bounces (mid-bounce scale {r["upScale"]:.2f}); damage writes the number plainly {r}')
@@ -225,7 +225,7 @@ async def run(b, url, w):
 
     # ---------------- 00:02 #6: the one-step trigger lesson
     pg = await page(b, url, w, DONE_TIPS)
-    await pg.evaluate("(()=>{ ['tl-what','tl-when','trig-off','trig-on'].forEach(k=> coachSeen.delete(k)); })()")
+    await pg.evaluate("(()=>{ ['tl-what','tl-when','trig-off','trig-on'].forEach(k=> coachSeen.delete(k)); coachSeen.add('castle-shield'); })()")  # (the bramble's Shield tip would come first)
     await pg.evaluate(BOARD + "('m11', '20-7', [['otter-kit', 0, 9]], [['forager-ant', 0, 9]])")
     # (another first-time tip may come first in maybeShowCoachTip's order: the lesson's own tip is shown directly)
     await pg.evaluate("(async()=>{ matchState.resolving = false; try{ hideCoachTip(); }catch(e){} const t = triggerLessonTip(matchState); if(t) showCoachTip(t); await new Promise(r=> setTimeout(r, 2200)); })()")

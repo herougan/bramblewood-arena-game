@@ -210,7 +210,8 @@ async function browser(){
       return pg.evaluate("(()=>{ const c = document.querySelector('.winloss-card'); const a = c && c.querySelector('.wl-ascent'); const xb = c && c.querySelector('.wl-xp .fxf-xp'); return c ? {cls: c.className, embers: c.querySelectorAll('.wl-embers i').length, kind: matchState && matchState.conquestNode && matchState.conquestNode.kind, bg: getComputedStyle(c).backgroundImage.slice(0, 80), ascent: a ? a.textContent : '', replay: !!(matchState && matchState.towerReplay), xp: xb ? {gain: xb.querySelector('[data-xp-gain]').textContent, top: xb.getBoundingClientRect().top - c.getBoundingClientRect().top < 60} : null, xpToasts: [...document.querySelectorAll('.toast')].map(t=> t.textContent).filter(t=> /XP|Level \\d/.test(t))} : null; })()"); };
     const boss = await win('boss');
     ok(boss && /\bis-glory\b/.test(boss.cls) && /\bis-boss\b/.test(boss.cls) && boss.embers === 14 && /154, 31, 39/.test(boss.bg), `B4. a boss win: the crimson card with its embers (${JSON.stringify(boss)})`);
-    ok(boss && boss.xp && /^\+\d+ XP$/.test(boss.xp.gain) && boss.xp.top && !boss.xpToasts.length, `B6. the boss Victory card has the XP bar with this fight's XP, and no XP toast (${JSON.stringify(boss && {xp: boss.xp, t: boss.xpToasts})})`);
+    // 2026-10-25 (package PL2, owner 00:02 PL1-1 "XP is for all skirmishes"): no won fight's results draw the XP bar; it fills on the Conquest map
+    ok(boss && !boss.xp && !boss.xpToasts.length, `B6. the boss Victory card has no XP bar (the XP fills on the map) and no XP toast (${JSON.stringify(boss && {xp: boss.xp, t: boss.xpToasts})})`);
     const elite = await win('elite');
     ok(elite && /\bis-glory\b/.test(elite.cls) && !/\bis-boss\b/.test(elite.cls) && elite.embers === 0, `B4. an elite win keeps the gold card (${JSON.stringify(elite)})`);
     const fl1 = await win('', true);

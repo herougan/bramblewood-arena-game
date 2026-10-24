@@ -49323,7 +49323,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '640e852a85ba', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '24a3ea1f57a1', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -87825,9 +87825,9 @@ function triggerLessonTip(m){
   const next = TRIGGER_LESSON.find(t=> !coachSeen.has(t.id)); if(!next) return null;
   return triggerLessonChip(m) ? next : null;
 }
-function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('trig-off'); markCoachSeen('trig-on'); }
+function skipTriggerLesson(){ TRIGGER_LESSON.forEach(t=> markCoachSeen(t.id)); markCoachSeen('tl-when'); markCoachSeen('trig-off'); markCoachSeen('trig-on'); } // (tl-when: PL2's retired step)
 function replayTriggerLesson(){
-  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
+  TRIGGER_LESSON.forEach(t=> coachSeen.delete(t.id)); coachSeen.delete('tl-when'); coachSeen.delete('trig-off'); coachSeen.delete('trig-on');
   try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); }catch(e){}
 }
 function peekGateTip(m){
