@@ -1,0 +1,198 @@
+{
+ "_about": "Package EQ2 (2026-10-24): equipment budgets before and after durability (tools/eq2_equipment_2026_10_24.js; bramblewood-budget.js equipLifeMult). No card changed: owner call EQ2-1.",
+ "rows": [
+  {
+   "id": "bark-buckler",
+   "rarity": "common",
+   "cost": 0,
+   "attack": 0,
+   "health": 3,
+   "grant": {
+    "armor": 1
+   },
+   "durability": 3,
+   "lifeMult": 0.75,
+   "N": 13.71,
+   "S": 1.5,
+   "x1Before": 4.5,
+   "x1After": 3.38,
+   "useBefore": 32.82,
+   "useAfter": 24.65,
+   "roomFreed": 1.12
+  },
+  {
+   "id": "netmender-harpoon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "attack": 1,
+   "health": 0,
+   "grant": {
+    "reach": true
+   },
+   "durability": 3,
+   "lifeMult": 0.75,
+   "N": 17.02,
+   "S": 0.5,
+   "x1Before": 2.5,
+   "x1After": 1.88,
+   "useBefore": 14.69,
+   "useAfter": 11.05,
+   "roomFreed": 0.62
+  },
+  {
+   "id": "quill-spear",
+   "rarity": "uncommon",
+   "cost": 1,
+   "attack": 2,
+   "health": 0,
+   "grant": {
+    "pierce": 1
+   },
+   "durability": 3,
+   "lifeMult": 0.75,
+   "N": 17.02,
+   "S": 1,
+   "x1Before": 5,
+   "x1After": 3.75,
+   "useBefore": 29.38,
+   "useAfter": 22.03,
+   "roomFreed": 1.25
+  },
+  {
+   "id": "sunfeather-plume",
+   "rarity": "rare",
+   "cost": 1,
+   "attack": 1,
+   "health": 1,
+   "grant": {
+    "flying": true
+   },
+   "durability": 4,
+   "lifeMult": 1,
+   "N": 18.41,
+   "S": 0,
+   "x1Before": 4.5,
+   "x1After": 4.5,
+   "useBefore": 24.44,
+   "useAfter": 24.44,
+   "roomFreed": 0
+  },
+  {
+   "id": "siege-hammer",
+   "rarity": "rare",
+   "cost": 2,
+   "attack": 1,
+   "health": 0,
+   "grant": {
+    "siege": 3
+   },
+   "durability": 4,
+   "lifeMult": 1,
+   "N": 20.74,
+   "S": 2,
+   "x1Before": 4,
+   "x1After": 4,
+   "useBefore": 19.29,
+   "useAfter": 19.29,
+   "roomFreed": 0
+  },
+  {
+   "id": "dragonscale-mail",
+   "rarity": "legendary",
+   "cost": 2,
+   "attack": 0,
+   "health": 11,
+   "grant": {
+    "armor": 2
+   },
+   "durability": 5,
+   "lifeMult": 1,
+   "N": 26.94,
+   "S": 3,
+   "x1Before": 14,
+   "x1After": 14,
+   "useBefore": 51.97,
+   "useAfter": 51.97,
+   "roomFreed": 0
+  },
+  {
+   "id": "bramble-gauntlet",
+   "rarity": "uncommon",
+   "cost": 1,
+   "attack": 1,
+   "health": 1,
+   "grant": {
+    "spiteful": 2
+   },
+   "durability": 3,
+   "lifeMult": 0.75,
+   "N": 14.95,
+   "S": 5,
+   "x1Before": 8,
+   "x1After": 6,
+   "useBefore": 53.51,
+   "useAfter": 40.13,
+   "roomFreed": 2
+  },
+  {
+   "id": "terraumbra",
+   "rarity": "unique",
+   "cost": 2,
+   "attack": 1,
+   "health": 1,
+   "grant": {
+    "shedding": 2,
+    "sweep": 2
+   },
+   "durability": 5,
+   "lifeMult": 1,
+   "N": 23.63,
+   "S": 13.8,
+   "x1Before": 16.8,
+   "x1After": 16.8,
+   "useBefore": 71.1,
+   "useAfter": 71.1,
+   "roomFreed": 0
+  },
+  {
+   "id": "crowbar",
+   "rarity": "rare",
+   "cost": 1,
+   "attack": 1,
+   "health": 0,
+   "grant": {
+    "pry": 1
+   },
+   "durability": 4,
+   "lifeMult": 1,
+   "N": 15.78,
+   "S": 0.5,
+   "x1Before": 2.5,
+   "x1After": 2.5,
+   "useBefore": 15.84,
+   "useAfter": 15.84,
+   "roomFreed": 0
+  },
+  {
+   "id": "lava-waders",
+   "rarity": "uncommon",
+   "cost": 1,
+   "attack": 0,
+   "health": 3,
+   "grant": {
+    "resist": [
+     "heat"
+    ]
+   },
+   "durability": 3,
+   "lifeMult": 0.75,
+   "N": 17.02,
+   "S": 1,
+   "x1Before": 4,
+   "x1After": 3,
+   "useBefore": 23.5,
+   "useAfter": 17.63,
+   "roomFreed": 1
+  }
+ ]
+}

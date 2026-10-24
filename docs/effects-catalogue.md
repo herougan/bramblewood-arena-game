@@ -1090,3 +1090,33 @@ A selfish boon is a field effect that helps the enemy only, on while at least ha
 | The card straightens and shines (FX4's `envCardsFire`), the helped unit glows red (`.boon-touched`) and floats the boon's icon and name | `boonFireVfx`, the `boonFire` event (one a unit a round) | Blind Fury's doubled swing, Hive Chorus's doubled Swarm, Wild Rage's early Rage, a Quick swing from Rising Tide or Sky Ambush, Snow / Sand Veil's dodge, Second Burrow's return, Restless Dead's revive, a unit arriving with Siege Train / Venom Glands / Ember-born / Sky Ambush |
 | A "⚔️ Challenge" pill and the boon's red pill in the fight panel | `skirmishFieldHTML` | a challenge skirmish |
 | The log line "Blind Fury helps the enemy: Cave Olm." | `logText` case `boonFire` | as above |
+
+## 2026-10-24 additions (package EQ2): durability, Dive, Bolster and the Health bar, Parasite, the Beak Strike
+
+The rules as built (engine: the Package EQ2 block in `bramblewood-engine.js`, `EQ2_DEF`; board: the Package EQ2 block in `arena_app.js`).
+- **Durability** (owner EQ-1): every equipment piece has durability (`equip.durability`, else by rarity: Common / Uncommon 3, Rare to Super
+  Rare 4, Epic and up 5). A hit on the wearer takes 1 (a swing, shot, bolt, raid smack or floor burn; a status tick is no hit), an acid
+  hit 2, each Corrode applied 2. At 0 the piece breaks: it leaves play (the graveyard) and its Attack, Health (never below 1) and granted
+  skills come off. A loose or stolen piece keeps its wear; one worn out by the blow that fells its unit breaks instead of dropping.
+- **Dive ⤵️ N** (`effects.dive`, N 1; owner N21-5, call EQ2-2): once a fight its swing dives on the weakest unit (least Health, nearest on a
+  tie) of the row it faces, past any Taunt, for N more; a Guardian beside the target still steps in. A diving Flyer is exposed: no Flying
+  dodge against it for the rest of that round. Only a Flyer, a Tide unit or a Sprinter dives (`diveEligible`).
+- **Bolster 🫧 N** (`effects.bolster`, N 2; owner N21-7): N temporary Health as each round's fight begins (`c.tempHpR`), spent before Shell's
+  temporary Health, a Shield and Health; what is left is gone when the next round's fight begins (set afresh, never stacked).
+- **Parasite 🪱** (`effects.parasite`; call EQ2-4): may be played onto an enemy unit in reach (`parasiteTargets`); it rides its host
+  (`host.parasite`), can't be hit, waits its Wait, then feeds as each round's fight begins (its Attack as a flat hit, healing as much); when
+  the host dies it drops onto your side in that column if the slot is free, else into your graveyard.
+- **Beak Strike** (the Goliath Core's `pattern: 'single'` attack; owner N22-12): 3 to your unit with the most Attack every 2 turns; a
+  Guardian adjacent to it (left, right, in front, behind) takes it instead.
+
+| Look | Where | When |
+|---|---|---|
+| The carried piece's icon on the card's left edge with a column of durability pips (lit = left; the last one red) | `eq2MarksHTML` (`.eq-under`, `.eq2-pip`) | a unit carrying a piece; a loose piece shows its pips too |
+| The pip column pops on a hit; an acid or Corrode wear floats "🧪 −2🛡️" | `eq2Vfx` `equipWear` | each wear |
+| The piece shatters off the card (its icon spins away with five shards), "💥 Broken!" floats, a lock-break sound; the stats drop | `eq2Shatter`, `eq2Vfx` `equipBreak` | a break |
+| The Health bar along the foot of the art: printed Health green, bonus Health gold, temporary Health pale blue | `eq2HpBarHTML` (`.eq2-hpbar`) | a unit with bonus or temporary Health |
+| "🫧 +2" floats as Bolster comes up; the pale blue end shrinks as it soaks | `eq2Vfx` `statusFx` `bolster`, `tempSoak` | each round |
+| The diver rises and swoops (`.eq2-diving`), "⤵️ Dive +2" floats, a feather flutter | `eq2Vfx` `dive` | a dive |
+| Held Parasite: the enemy units in reach get a pink dashed drop target | `eq2SyncHolding` (`body.eq2-para-holding`, `.eq2-para-drop.is-ok`) | holding a Parasite card |
+| The host flashes pink as it is hooked; a 🪱 badge with the Parasite's Attack on its right edge; the badge throbs as it feeds, the damage number on the host | `eq2Vfx` `parasiteAttach`, `parasiteDrain` | a hook-on, each feed |
+| A 🦑 flies from the boss's bramble to the struck unit; "🦺" on the Guardian and "🦺 Guarded" on the unit it covered; the damage number | `eq2Vfx` `raidStrike` | the Beak Strike |

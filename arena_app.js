@@ -1734,6 +1734,15 @@ Object.keys(EN5_STATE_KEYS).forEach(k=>{ const t = EN5_STATE_KEYS[k].tx;
   sk1Patch(PASSIVE_DEFS, k + 'Grant', {category:'passive', label:TX('ui.skn-' + t), kind:'grant', placeholder:grantToText(EN5_STATE_DEFAULT_APP[k]), desc:v=> TX('ui.sk-' + t, {skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-' + t + '-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; e[k] = true; } }}); });
 Object.assign(SKILL_ICON, {breach:'🧱', canopyCover:'🌳', timbered:'🪵', timberedGrant:'🪵', bedrock:'🪨', bedrockGrant:'🪨', forged:'🔩', forgedGrant:'🔩', lastStand:'🏳️', lastStandGrant:'🏳️'});
+// ==== Package EQ2 (2026-10-24; rules in bramblewood-engine.js, the Package EQ2 block; priced in canonical/skill-costs.json):
+//   Dive N      (owner N21-5) once a fight its swing dives on the weakest enemy unit of the row it faces for N more; a diving Flyer is exposed
+//               (no dodge) for the rest of that round. Only a Flyer, a Tide unit or a Sprinter can take it;
+//   Bolster N   (owner N21-7) N temporary Health as each round's fight begins (the pale blue end of the Health bar), gone next round;
+//   Parasite    (the owner's 10-21 note) may be played onto an enemy unit in reach, feeds on it each round, drops onto your side when it dies.
+PASSIVE_DEFS.push({key:'dive', category:'passive', label:TX('ui.skn-dive'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-dive', {n: numOr(v, 1)}), codexNote:TX('ui.sk-dive-codex')},
+  {key:'bolster', category:'passive', label:TX('ui.skn-bolster'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-bolster', {n: numOr(v, 2)}), codexNote:TX('ui.sk-bolster-codex')},
+  {key:'parasite', category:'passive', label:TX('ui.skn-parasite'), kind:'boolean', desc:()=> TX('ui.sk-parasite'), codexNote:TX('ui.sk-parasite-codex')});
+Object.assign(SKILL_ICON, {dive:'⤵️', bolster:'🫧', parasite:'🪱'});
 // ==== Package BX (2026-10-21): Archer N (owner: "Cannot attack, instead Arrow N every action"), the On Action trigger and the Arrow
 // action it is built from (the engine's bxTrigs: Archer N = On Action × Arrow N), and the per-card look effects.archerStyle ('drop':
 // the card flies to the target, drops a stone and flies back, bxDropStone below). The drop look is a select on the card's skills.
@@ -3079,7 +3088,7 @@ function describeEffects(def, liveCard, opt){
   if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const rs = eqResistText(k, v); if(rs) return '🔥 ' + rs; /* FX4 (2026-10-23) */ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); lines.push(TX('ui.eq2-dur-line', {n: eq2DurMax(def.id)})); } // 2026-10-18 (package D): two short lines; + its durability (EQ2, 2026-10-24)
   { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
@@ -16209,7 +16218,7 @@ async function replayLiveIntent(intent){
   if(activePlayerId(m) !== intent.fromSeat){ broadcastLiveState(); return; } // stale/out-of-turn intent (e.g. a race with a state broadcast already in flight) — drop it silently rather than risk misattributing an action
   m.liveReplaying = true;
   try{
-    if(intent.type==='playCard') await playCardByUid(intent.uid, intent.side, intent.dropPoint, intent.onto != null ? {onto: intent.onto} : undefined); // + an evolute's base (EV, 2026-10-21)
+    if(intent.type==='playCard') await playCardByUid(intent.uid, intent.side, intent.dropPoint, intent.onto != null ? {onto: intent.onto} : intent.parasiteOn != null ? {parasiteOn: intent.parasiteOn} : undefined); // + an evolute's base (EV, 2026-10-21); a Parasite's host (EQ2, 2026-10-24)
     else if(intent.type==='discardCard') await discardCardByUid(intent.uid);
     else if(intent.type==='skipTurn') await skipTurn();
     else if(intent.type==='summonLeader') await attemptSummonLeader(intent.preferredLane);
@@ -26556,7 +26565,7 @@ function openRaidEditor(raidId){
           <label>Boss units dodge %<input data-pt="illusory" type="number" min="0" max="90" value="${Math.round((rl.illusory||0)*100)}"></label>
           <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Bramble shielded while entities stand</label>
         </div>
-        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}" aria-label="Remove this special attack" title="Remove this special attack">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
+        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option><option value="single" ${a.pattern==='single'?'selected':''}>${escapeHtml(TX('ui.eq2-pat-single'))}</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}" aria-label="Remove this special attack" title="Remove this special attack">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
         <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}" aria-label="Remove this entity" title="Remove this entity">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
@@ -27249,7 +27258,7 @@ function raidBrambleOf(def, partId){
 // Each of the bramble's attacks as one line (TX, so the page translator takes the whole line): when it fires and what it does.
 function raidBrambleAbilityLines(attacks){
   return (attacks || []).map(a=>{ const v = {name: a.name || (a.pattern === 'frontRow' ? 'Tail Sweep' : 'Tentacle Smack'), every: Math.max(1, a.every || 1), dmg: raidAtkDmgText(a)}; // "1–2" (2026-10-22, FX)
-    return a.pattern === 'column' ? TX('ui.u3-smack-desc', {name: v.name, every: v.every, dmg: v.dmg}) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', {name: v.name, every: v.every, dmg: v.dmg}) : ''; }).filter(Boolean);
+    return a.pattern === 'column' ? TX('ui.u3-smack-desc', {name: v.name, every: v.every, dmg: v.dmg}) : a.pattern === 'frontRow' ? TX('ui.u3-sweep-desc', {name: v.name, every: v.every, dmg: v.dmg}) : a.pattern === 'single' ? TX('ui.eq2-strike-desc', {name: v.name, every: v.every, dmg: v.dmg}) /* EQ2 (2026-10-24) */ : ''; }).filter(Boolean);
 }
 function raidBrambleAbsHTML(lines, notes){
   return lines.length ? `<ul class="u3-bramble-abs">${lines.map((t, i)=> `<li>${/^Tail/.test(t) ? '🌊' : '🦑'} ${escapeHtml(t)}${notes && notes[i] ? ` <small>(${escapeHtml(notes[i])})</small>` : ''}</li>`).join('')}</ul>` : '';
@@ -27483,6 +27492,18 @@ function raidSpecials(m, events){
       if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - dmg);
       (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
       events.push(ev);
+    } else if(a.pattern === 'single'){
+      // 2026-10-24 (package EQ2, owner N22-12: "the enemy's single targets can actually hit the guardians instead if they were aiming for an
+      // adjacent unit (front/back or left/right)"): a single-target attack (the Goliath Core's Beak Strike) aims at your unit with the most
+      // Attack (any row; a tie: seeded, raidSmackRoll salt 4), and a Guardian adjacent to it (left, right, in front, behind: the engine's
+      // redirectToGuardian, one at random when several) takes it instead. No unit: your bramble. Not telegraphed.
+      const units = [0, 1, 2].flatMap(r=> raidRowUnits(pl, E, r)), dmg = a.dmg || 0, name = a.name || 'Strike';
+      if(!units.length){ pl.hq.hp = Math.max(0, pl.hq.hp - dmg); events.push({type:'raidStrike', name, dmg, uid:null}); return; }
+      const atkOf = c=> (c.atk || 0) + (c.phaseAtk || 0), top = Math.max(...units.map(atkOf)), best = units.filter(c=> atkOf(c) === top);
+      const aim = best[Math.min(best.length - 1, Math.floor(raidSmackRoll(m, round, i, 4) * best.length))], tgt = (E.redirectToGuardian ? E.redirectToGuardian(pl, aim) : aim) || aim;
+      const d = E.damageCardFlat(tgt, dmg, 'physical', null);
+      events.push({type:'raidStrike', name, dmg:d, uid:tgt.uid, defId:tgt.defId, aimUid:aim.uid, aimDefId:aim.defId, guard: tgt !== aim, mods: E.hitModsFor ? E.hitModsFor(tgt.uid) : undefined});
+      (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
     } else if(a.pattern === 'frontRow'){
       const hit = E.allBoardCards(pl).filter(c=> c.hp > 0), struck = hit.map(c=>{ const d = E.damageCardFlat(c, a.dmg||0, 'physical', null); return {uid: c.uid, dmg: d, mods: E.hitModsFor ? E.hitModsFor(c.uid) : undefined}; }); // + struck (DN2)
       events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true, struck});
@@ -34584,7 +34605,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -37338,7 +37359,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
       // entrance animation anyway — the peer's play only ever reaches the host as a state cut,
       // per the module header's limitation #3). The host's own playCardByUid falls back to its
       // normal no-drop-point origin handling when this is absent.
-      sendLiveIntent(Object.assign({type:'playCard', fromSeat:m.liveMySeat, uid, side}, popts && popts.onto != null ? {onto: popts.onto} : {})); // + an evolute's base (EV, 2026-10-21)
+      sendLiveIntent(Object.assign({type:'playCard', fromSeat:m.liveMySeat, uid, side}, popts && popts.onto != null ? {onto: popts.onto} : {}, popts && popts.parasiteOn != null ? {parasiteOn: popts.parasiteOn} : {})); // + an evolute's base (EV, 2026-10-21); a Parasite's host (EQ2)
       return;
     }
     if(!m.liveReplaying && activePlayerId(m)!==m.liveMySeat) return; // host acting out of its own turn
@@ -37383,7 +37404,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
-  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null || popts.onto!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}, popts.onto!=null ? {onto: popts.onto} : {}) : undefined); // + a hazard's row (EQ, 2026-10-19); + an evolute's base (EV, 2026-10-21)
+  const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve || popts.hazardPid!=null || popts.onto!=null || popts.parasiteOn!=null)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}, popts.hazardPid!=null ? {hazardPid: popts.hazardPid} : {}, popts.onto!=null ? {onto: popts.onto} : {}, popts.parasiteOn!=null ? {parasiteOn: popts.parasiteOn} : {}) : undefined); // + a Parasite's host (EQ2, 2026-10-24) // + a hazard's row (EQ, 2026-10-19); + an evolute's base (EV, 2026-10-21)
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
     // sufficient resources, it shakes red") — placeCard's own canPlay() gate covers cost
@@ -39269,7 +39290,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -42761,6 +42782,7 @@ function logText(ev){
   { const w5 = en5LogText(ev, nm); if(w5) return w5; } // EN5 (2026-10-24): Breach, Canopy Cover, the state skills
   { const g3 = sk3LogText(ev, nm); if(g3) return g3; } // package SK3 skills (2026-10-19)
   { const q = eqLogText(ev, nm); if(q) return q; } // package EQ: equipment on the slots, slot hazards (2026-10-19)
+  { const q = eq2LogText(ev, nm); if(q) return q; } // package EQ2 (2026-10-24): breaks, Dive, Parasite, the Beak Strike
   { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
   { const k = sk1LogText(ev, nm); if(k) return k; }
   if(ev.type === 'mimic') return {cls:'', text:TX('ui.log-mimic', {name: nm(ev.fromDefId || ev.defId), ally: nm(ev.allyDefId), atk: ev.atk, hp: ev.maxHp})}; // Package MT (2026-10-21)
@@ -45346,11 +45368,8 @@ function eqSlotMarks(pid, sl, c){
   const f = m.engine.floorAt(pid, sl);
   if(f) out += `<span class="eq-floor eq-floor-${f.kind}" title="${escapeAttr((EQ_FLOOR_TIP[f.kind] || EQ_FLOOR_TIP.rubble)(f))}">${EQ_FLOOR_ICON[f.kind] || '⚠️'}<small>${f.rounds}</small></span>`;
   const lone = m.engine.loneEquipAt ? m.engine.loneEquipAt(pl, sl) : null;
-  if(lone){ const d = defs[lone.defId] || {}; out += `<span class="eq-lone" title="${escapeAttr(TX('ui.eq-lone-tip', {name: d.name || lone.defId}))}">${d.icon || '⚒️'}</span>`; }
-  const u = c ? eqLiveUnit(m, c.uid) : null;
-  if(u && u.equipment){ const d = defs[u.equipment] || {};
-    const tip = u.equipOn ? TX('ui.eq-equipped', {name: d.name || u.equipment, a: d.attack || 0, h: d.health || 0, grant: eqGrantText((d.equip || {}).grant) ? ', ' + eqGrantText((d.equip || {}).grant) : ''}) : TX('ui.eq-equipping', {name: d.name || u.equipment});
-    out += `<span class="eq-under${u.equipOn ? '' : ' is-equipping'}" title="${escapeAttr(tip)}">${d.icon || '⚒️'}</span>`; }
+  if(lone){ const d = defs[lone.defId] || {}, mx = eq2DurMax(lone.defId), du = lone.dur != null ? lone.dur : mx; out += `<span class="eq-lone" title="${escapeAttr(TX('ui.eq-lone-tip', {name: d.name || lone.defId}) + ' ' + TX('ui.eq2-dur', {n: du, max: mx}))}">${d.icon || '⚒️'}${eq2PipsHTML(du, mx)}</span>`; } // + its durability (EQ2, 2026-10-24)
+  if(c) out += eq2MarksHTML(pid, c); // 2026-10-24 (package EQ2): the carried piece with its durability pips, the Health bar, the Parasite (was the piece alone, read off the live unit)
   out += `<span class="eq-hz-drop" data-hzcell="${pid}:${sl}" aria-hidden="true"></span>`;
   return out;
 }
@@ -45429,6 +45448,156 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
   body.eq-hz-holding .board-card .eq-hz-drop.is-over{background:rgba(255,205,100,.35);}`;
   try{ document.head.appendChild(st); }catch(e){} })();
 // ==== end Package EQ (board) ===================================================================================================
+// ==== Package EQ2 (2026-10-24): the board side of equipment durability, the Health bar (bonus and temporary Health), Dive, Parasite and the
+// Goliath's Beak Strike (rules in bramblewood-engine.js, the Package EQ2 block). eq2MarksHTML draws, inside each unit's cell (eqSlotMarks):
+//   the piece it carries under it (pulsing while it is equipping) with one pip per point of durability (lit = left; EQ-1);
+//   the Health bar along its foot while it has bonus or temporary Health (owner N21-7: "each in its own bar colour"): its printed Health
+//     green, bonus Health (above the printed Health: a piece, a buff, the night) gold, temporary Health (Bolster, Shell) pale blue;
+//   the Parasite riding it (its icon and Attack), and on an enemy unit a hidden drop target that shows while you hold a Parasite card.
+// The replay keeps every field per uid (eq2Snap, in the round's snapshot and the replay's card), so the pips and the bar move with each
+// event (eq2Vfx); a break shatters the piece's icon off the card.
+function eq2Snap(c){ c = c || {}; const p = c.parasite; return {equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
+  parasite: p ? {uid: p.uid, defId: p.defId, atk: p.atk || 0, hp: p.hp || 0, maxHp: p.maxHp || 0, wait: p.wait || 0} : null}; }
+function eq2DurMax(defId){ const d = getCardDefs()[defId] || {}; try{ if(typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.equipDurOf) return BramblewoodBudget.equipDurOf(d); }catch(e){} return 3; }
+function eq2PipsHTML(n, max){ let s = ''; for(let i = 0; i < max; i++) s += `<i class="eq2-pip${i < n ? ' on' : ''}"></i>`; return `<span class="eq2-pips" aria-hidden="true">${s}</span>`; }
+function eq2HpParts(c, d){ const base = Math.max(1, c.baseHp != null ? c.baseHp : ((d && d.health) || 1)), hp = Math.max(0, c.hp || 0), max = Math.max(1, c.maxHp || hp);
+  const bonus = Math.max(0, max - base), temp = Math.max(0, (c.tempHpR || 0) + (c.tempHp || 0)); return {base, hp, max, bonus, temp, total: max + temp}; }
+function eq2HpBarHTML(c, d){
+  const p = eq2HpParts(c, d); if(!(p.bonus > 0) && !(p.temp > 0)) return '';
+  const pc = x=> (Math.max(0, x) / p.total * 100).toFixed(1) + '%';
+  const tip = [TX('ui.eq2-hp-line', {hp: p.hp, max: p.max}), p.bonus > 0 ? TX('ui.eq2-hp-bonus', {n: p.bonus}) : '', p.temp > 0 ? TX('ui.eq2-hp-temp', {n: p.temp}) : ''].filter(Boolean).join(' · ');
+  return `<span class="eq2-hpbar" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><i class="eq2-hb-base" style="width:${pc(Math.min(p.hp, p.base))}"></i><i class="eq2-hb-bonus" style="width:${pc(p.hp - p.base)}"></i><i class="eq2-hb-temp" style="width:${pc(p.temp)}"></i></span>`;
+}
+function eq2MarksHTML(pid, c){
+  if(!c || c.uid == null) return ''; const defs = getCardDefs(), d = defs[c.defId] || {}; let out = '';
+  if(c.equipment){ const e = defs[c.equipment] || {}, max = eq2DurMax(c.equipment), dur = c.equipDur != null ? c.equipDur : max, g = eqGrantText((e.equip || {}).grant);
+    const tip = (c.equipOn ? TX('ui.eq-equipped', {name: e.name || c.equipment, a: e.attack || 0, h: e.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: e.name || c.equipment})) + ' ' + TX('ui.eq2-dur', {n: dur, max});
+    out += `<span class="eq-under${c.equipOn ? '' : ' is-equipping'}${dur <= 1 ? ' is-worn' : ''}" title="${escapeAttr(tip)}">${e.icon || '⚒️'}${eq2PipsHTML(dur, max)}</span>`; }
+  out += eq2HpBarHTML(c, d);
+  if(c.parasite){ const pd = defs[c.parasite.defId] || {};
+    out += `<span class="eq2-para" title="${escapeAttr(TX('ui.eq2-para-tip', {name: pd.name || c.parasite.defId, a: c.parasite.atk, h: c.parasite.hp}))}">${pd.icon || '🪱'}<small>${c.parasite.atk}</small></span>`; }
+  const m = matchState; if(m && pid != null && pid !== viewerHandPid(m)) out += `<span class="eq2-para-drop" data-parauid="${c.uid}" title="${escapeAttr(TX('ui.eq2-para-target'))}" aria-hidden="true"></span>`;
+  return `<span class="eq2-marks" data-eq2pid="${pid}">${out}</span>`;
+}
+// redraw one unit's marks in place (the replay's copy when the round is playing back, else the live unit)
+function eq2Refresh(uid){
+  const m = matchState; if(!m || uid == null) return; const el = boardCardEl(uid); const old = el && el.querySelector(':scope > .eq2-marks'); if(!old) return;
+  const rc = m.replayCards && m.replayCards[uid], src = rc || eqLiveUnit(m, uid); if(!src) return;
+  const pid = Number(old.getAttribute('data-eq2pid'));
+  try{ old.outerHTML = eq2MarksHTML(pid, Object.assign({}, src, {uid, defId: src.defId})); }catch(e){}
+}
+function eq2Rc(uid){ const m = matchState; return m && m.replayCards && uid != null ? m.replayCards[uid] : null; }
+function eq2Shatter(el, icon){
+  if(!el || (typeof fxAtLeast === 'function' && !fxAtLeast('low'))) return;
+  const s = document.createElement('span'); s.className = 'eq2-shatter'; s.setAttribute('aria-hidden', 'true');
+  s.innerHTML = `<b>${icon || '⚒️'}</b>` + [0, 1, 2, 3, 4].map(i=> `<i style="--a:${i * 72 + 20}deg"></i>`).join('');
+  el.appendChild(s); setTimeout(()=> s.remove(), 900);
+}
+function eq2Vfx(ev){
+  if(!ev || !matchState) return; const fl = (el, t, cls)=>{ if(el) try{ floatText(el, t, cls); }catch(e){} }, snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const defs = getCardDefs();
+  switch(ev.type){
+    case 'equip': { const rc = eq2Rc(ev.uid); if(rc){ rc.equipment = ev.equipDefId; rc.equipOn = !ev.pending; rc.equipDur = ev.dur != null ? ev.dur : null; } eq2Refresh(ev.uid); return; }
+    case 'equipReady': { const rc = eq2Rc(ev.uid); if(rc) rc.equipOn = true; eq2Refresh(ev.uid); return; }
+    case 'equipWear': { const rc = eq2Rc(ev.uid); if(rc) rc.equipDur = ev.dur; eq2Refresh(ev.uid);
+      const el = boardCardEl(ev.uid), u = el && el.querySelector('.eq-under'); if(u){ u.classList.remove('eq2-wear'); void u.offsetWidth; u.classList.add('eq2-wear'); }
+      if(ev.why !== 'hit') fl(el, `🧪 −${ev.n}${(defs[ev.equipDefId] || {}).icon || '⚒️'}`, 'debuff'); return; }
+    case 'equipBreak': { const rc = eq2Rc(ev.uid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; if(ev.atk != null) rc.atk = ev.atk; if(ev.hp != null) rc.hp = ev.hp; if(ev.maxHp != null) rc.maxHp = ev.maxHp; }
+      const el = boardCardEl(ev.uid); eq2Shatter(el, (defs[ev.equipDefId] || {}).icon); fl(el, TX('ui.eq2-break'), 'debuff'); snd('lockBreak');
+      try{ updateCardAtkDisplay(ev.uid); updateCardHpDisplay(ev.uid); }catch(e){} eq2Refresh(ev.uid); return; }
+    case 'equipDrop': { const rc = eq2Rc(ev.fromUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; } return; }
+    case 'tempSoak': { const rc = eq2Rc(ev.uid); if(rc) rc.tempHpR = ev.left; eq2Refresh(ev.uid); return; }
+    case 'dive': { const el = boardCardEl(ev.attUid); if(el){ el.classList.remove('eq2-diving'); void el.offsetWidth; el.classList.add('eq2-diving'); setTimeout(()=> el.classList.remove('eq2-diving'), 700); }
+      fl(el, TX('ui.eq2-dive-float', {n: ev.bonus}), 'quick'); snd('featherFlutter'); return; }
+    case 'parasiteAttach': { const rc = eq2Rc(ev.targetUid); if(rc) rc.parasite = {uid: ev.uid, defId: ev.defId, atk: ev.atk, hp: ev.hp, maxHp: ev.maxHp, wait: ev.wait};
+      eq2Refresh(ev.targetUid); const el = boardCardEl(ev.targetUid); fl(el, (defs[ev.defId] || {}).icon || '🪱', 'debuff'); if(el){ el.classList.remove('eq2-hooked'); void el.offsetWidth; el.classList.add('eq2-hooked'); } snd('drip'); return; }
+    case 'parasiteDrain': { const rc = eq2Rc(ev.targetUid); if(rc){ rc.hp = Math.max(0, (rc.hp || 0) - (ev.dmg || 0)); if(rc.parasite) rc.parasite.hp = ev.hp; }
+      const el = boardCardEl(ev.targetUid); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} if(el && ev.dmg > 0) try{ dnFloat(el, ev.dmg, {type: 'physical', mods: ev.mods}); }catch(e){}
+      const p = el && el.querySelector('.eq2-para'); if(p){ p.classList.remove('eq2-feed'); void p.offsetWidth; p.classList.add('eq2-feed'); } eq2Refresh(ev.targetUid); return; }
+    case 'parasiteDrop': { const rc = eq2Rc(ev.hostUid); if(rc) rc.parasite = null; return; }
+    case 'raidStrike': { const el = ev.uid != null ? boardCardEl(ev.uid) : hqTileEl('A'), from = hqTileEl('B');
+      if(from && el && fxAtLeast('low')) try{ spawnProjectile(from, el, '🦑'); }catch(e){}
+      if(ev.guard){ fl(el, '🦺', 'buff'); const a = boardCardEl(ev.aimUid); fl(a, TX('ui.eq2-guarded'), 'quick'); }
+      if(el && ev.uid != null && ev.dmg > 0) try{ dnFloat(el, ev.dmg, {type: 'physical', mods: ev.mods}); }catch(e){} snd('konk'); return; }
+  }
+  if(ev.type === 'statusFx' && ev.kind === 'bolster'){ const rc = eq2Rc(ev.targetUid), was = rc ? rc.tempHpR || 0 : 0; if(rc) rc.tempHpR = ev.amount; eq2Refresh(ev.targetUid);
+    if(!was) fl(boardCardEl(ev.targetUid), `🫧 +${ev.amount}`, 'buff'); }
+}
+function eq2LogText(ev, nm){
+  switch(ev.type){
+    case 'equipBreak': return {cls: '', text: TX('ui.eq2-log-break', {unit: nm(ev.defId), item: nm(ev.equipDefId)})};
+    case 'equipWear': return ev.why === 'hit' ? null : {cls: '', text: TX('ui.eq2-log-wear-acid', {unit: nm(ev.defId), item: nm(ev.equipDefId), n: ev.dur})};
+    case 'dive': return {cls: '', text: TX('ui.eq2-log-dive', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus})};
+    case 'parasiteAttach': return {cls: 'poison', text: TX('ui.eq2-log-attach', {unit: nm(ev.defId), target: nm(ev.targetDefId)})};
+    case 'parasiteDrain': return {cls: 'poison', text: TX('ui.eq2-log-drain', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg})};
+    case 'parasiteDrop': return {cls: '', text: ev.placed ? TX('ui.eq2-log-drop', {unit: nm(ev.defId)}) : TX('ui.eq2-log-drop-lost', {unit: nm(ev.defId)})};
+    case 'raidStrike': return {cls: '', text: ev.uid == null ? TX('ui.eq2-log-strike-bramble', {name: ev.name, dmg: ev.dmg}) : ev.guard ? TX('ui.eq2-log-strike-guard', {guard: nm(ev.defId), unit: nm(ev.aimDefId), name: ev.name, dmg: ev.dmg}) : TX('ui.eq2-log-strike', {name: ev.name, unit: nm(ev.defId), dmg: ev.dmg})};
+  }
+  return null;
+}
+// Holding a Parasite card (pressed, dragged or tapped to arm): the enemy units in your reach light up as drop targets (the engine's
+// parasiteTargets); drop or tap one to hook it on. Your own slots stay targets too (a Parasite can also be played as a plain unit).
+function eq2HeldParasiteUid(){
+  const m = matchState; if(!m || m.over || m.resolving || !m.engine || !m.engine.isParasiteDef) return null; const pl = m.players && m.players[viewerHandPid(m)]; if(!pl) return null; const defs = getCardDefs();
+  const pick = uid=>{ const hc = uid != null && pl.hand.find(h=> h.uid === uid); return hc && m.engine.isParasiteDef(defs[hc.defId]) ? hc.uid : null; };
+  const el = document.querySelector('#handStrip .card-tile.dragging') || (typeof bwPressedCard !== 'undefined' && bwPressedCard && bwPressedCard.isConnected ? bwPressedCard : null);
+  const fromEl = el ? pick(Number(el.getAttribute('data-handuid'))) : null; return fromEl != null ? fromEl : pick(m.selectedUid);
+}
+let eq2HoldQueued = false;
+function eq2SyncHolding(){ if(eq2HoldQueued) return; eq2HoldQueued = true; requestAnimationFrame(()=>{ eq2HoldQueued = false; const uid = eq2HeldParasiteUid(), on = uid != null;
+  document.body.classList.toggle('eq2-para-holding', on);
+  if(on){ const m = matchState, ok = new Set((m.engine.parasiteTargets(m.players, viewerHandPid(m)) || []).map(c=> String(c.uid)));
+    document.querySelectorAll('.eq2-para-drop').forEach(x=> x.classList.toggle('is-ok', ok.has(String(x.getAttribute('data-parauid'))))); } }); }
+['dragstart','dragend','drop','click','pointerdown','pointerup','pointercancel','touchend','keyup'].forEach(t=> document.addEventListener(t, eq2SyncHolding, true));
+function eq2PlayParasiteOn(uid, cell, dropPoint){
+  const m = matchState; if(!m || uid == null || !cell) return false; const host = Number(cell.getAttribute('data-parauid'));
+  const tgt = (m.engine.parasiteTargets(m.players, viewerHandPid(m)) || []).find(c=> c.uid === host);
+  if(!tgt){ showToast(TX('toast.eq2-para-no'), 'warn'); return true; }
+  playCardByUid(uid, tgt.slot, dropPoint, {parasiteOn: host}); return true;
+}
+document.addEventListener('dragover', e=>{ const t = e.target && e.target.closest && e.target.closest('.eq2-para-drop.is-ok'); if(t && document.body.classList.contains('eq2-para-holding')){ e.preventDefault(); e.stopPropagation(); t.classList.add('is-over'); } }, true);
+document.addEventListener('dragleave', e=>{ const t = e.target && e.target.closest && e.target.closest('.eq2-para-drop'); if(t) t.classList.remove('is-over'); }, true);
+document.addEventListener('drop', e=>{ const t = e.target && e.target.closest && e.target.closest('.eq2-para-drop'); if(!t || !document.body.classList.contains('eq2-para-holding')) return;
+  const uid = Number(e.dataTransfer && e.dataTransfer.getData('text/plain')); const m = matchState, pl = m && m.players[viewerHandPid(m)], hc = pl && pl.hand.find(h=> h.uid === uid);
+  if(!hc || !m.engine.isParasiteDef(getCardDefs()[hc.defId])) return;
+  e.preventDefault(); e.stopImmediatePropagation(); t.classList.remove('is-over'); eq2PlayParasiteOn(uid, t, {x: e.clientX, y: e.clientY}); }, true);
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('.eq2-para-drop'); if(!t || !document.body.classList.contains('eq2-para-holding')) return;
+  const uid = eq2HeldParasiteUid(); if(uid == null) return; e.preventDefault(); e.stopImmediatePropagation(); eq2PlayParasiteOn(uid, t); }, true);
+(function eq2Styles(){ if(typeof document === 'undefined' || document.getElementById('eq2Styles')) return; const st = document.createElement('style'); st.id = 'eq2Styles';
+  st.textContent = `.board-card > .eq2-marks{position:absolute; inset:0; pointer-events:none; visibility:visible; z-index:4;}
+  .board-card .eq2-marks .eq-under{display:inline-flex; align-items:center; gap:2px; pointer-events:auto; left:-7px; right:auto; top:30%; bottom:auto; transform:none; padding:1px 3px; flex-direction:column; line-height:14px;}
+  .board-card .eq2-marks .eq-under .eq2-pips{flex-direction:column-reverse; margin:1px 0 0;}
+  .board-card .eq2-marks .eq-under .eq2-pip{width:7px; height:4px;}
+  .eq2-pips{display:inline-flex; gap:1.5px; margin-left:2px;}
+  .eq2-pip{width:4px; height:7px; border-radius:1.5px; background:rgba(255,255,255,.18); box-shadow:inset 0 0 0 1px rgba(255,214,140,.35);}
+  .eq2-pip.on{background:linear-gradient(180deg,#ffe2a0,#d99a2b); box-shadow:0 0 3px rgba(255,190,80,.55);}
+  .board-card .eq-under.is-worn .eq2-pip.on{background:linear-gradient(180deg,#ffb4a0,#d0452b); box-shadow:0 0 4px rgba(255,90,60,.6);}
+  .board-card .eq-under.eq2-wear{animation:eq2Wear .32s ease-out;}
+  @keyframes eq2Wear{0%{transform:scale(1);} 40%{transform:scale(1.18) rotate(-4deg);} 100%{transform:scale(1);}}
+  .eq2-hpbar{position:absolute; left:9%; right:9%; bottom:21%; height:5px; border-radius:3px; display:flex; overflow:hidden; background:rgba(0,0,0,.45); box-shadow:0 0 0 1px rgba(0,0,0,.45); pointer-events:auto;}
+  .eq2-hpbar i{display:block; height:100%; transition:width .3s ease;}
+  .eq2-hb-base{background:linear-gradient(180deg,#8fe08a,#3f9d3a);}
+  .eq2-hb-bonus{background:linear-gradient(180deg,#ffe58a,#d9a521);}
+  .eq2-hb-temp{background:linear-gradient(180deg,#e6fbff,#8fd6f0); opacity:.95;}
+  .eq2-para{position:absolute; right:-7px; top:30%; display:inline-flex; align-items:center; gap:1px; font-size:13px; line-height:16px; padding:0 3px; border-radius:8px; background:rgba(60,20,40,.88); border:1px solid rgba(220,120,160,.7); color:#ffd6e6; pointer-events:auto; transform-origin:right center;}
+  .eq2-para small{font-size:10px; font-weight:700;}
+  .eq2-para.eq2-feed{animation:eq2Feed .5s ease-in-out;}
+  @keyframes eq2Feed{0%,100%{transform:scale(1);} 45%{transform:scale(1.25) translateX(2px);}}
+  .board-card.eq2-hooked{animation:eq2Hook .45s ease-out;}
+  @keyframes eq2Hook{0%{filter:none;} 30%{filter:drop-shadow(0 0 6px rgba(230,90,140,.9));} 100%{filter:none;}}
+  .board-card.eq2-diving .card-tile{animation:eq2Dive .7s cubic-bezier(.5,-0.4,.6,1.2);}
+  @keyframes eq2Dive{0%{transform:none;} 35%{transform:translateY(-18px) scale(1.06) rotate(-6deg);} 70%{transform:translateY(6px) scale(.98) rotate(4deg);} 100%{transform:none;}}
+  .eq2-shatter{position:absolute; left:2px; top:38%; width:0; height:0; pointer-events:none; z-index:9;}
+  .eq2-shatter b{position:absolute; left:-9px; top:-12px; font-size:16px; animation:eq2ShatterB .8s ease-out forwards;}
+  .eq2-shatter i{position:absolute; left:-2px; top:-4px; width:5px; height:5px; border-radius:1px; background:linear-gradient(135deg,#ffe2a0,#a86b1a); transform:rotate(var(--a)) translateX(0); animation:eq2Shard .8s ease-out forwards;}
+  @keyframes eq2ShatterB{0%{transform:scale(1); opacity:1;} 30%{transform:scale(1.35) rotate(-10deg); opacity:1;} 100%{transform:scale(.6) translateY(14px) rotate(25deg); opacity:0;}}
+  @keyframes eq2Shard{0%{transform:rotate(var(--a)) translateX(0); opacity:1;} 100%{transform:rotate(var(--a)) translateX(26px) translateY(10px); opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.eq2-diving .card-tile, .eq2-para.eq2-feed, .board-card .eq-under.eq2-wear, .eq2-shatter{animation:none !important;} .eq2-shatter i{display:none;} }
+  .board-card .eq2-para-drop{display:none;}
+  body.eq2-para-holding .board-card .eq2-para-drop.is-ok{display:block; position:absolute; inset:0; z-index:8; border:2px dashed rgba(230,110,170,.95); border-radius:8px; background:rgba(230,110,170,.12); cursor:copy; pointer-events:auto;}
+  body.eq2-para-holding .board-card .eq2-para-drop.is-ok.is-over{background:rgba(230,110,170,.35);}`;
+  try{ document.head.appendChild(st); }catch(e){} })();
+// ==== end Package EQ2 (board) ==================================================================================================
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
@@ -46273,6 +46442,7 @@ function renderVfxForEvent(ev){
   try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
   try{ sk1Vfx(ev); }catch(e){} // package SK1 skills (2026-10-19)
   try{ eqVfx(ev); }catch(e){} // package EQ (2026-10-19)
+  try{ eq2Vfx(ev); }catch(e){} // package EQ2 (2026-10-24)
   try{ sk2Vfx(ev); }catch(e){} // Package SK2 (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)

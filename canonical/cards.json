@@ -32926,5 +32926,108 @@
       "map": "m6"
     },
     "creatorNote": "2026-10-23 (package EN4, owner 22:23 #7 / 19:27 #4 B: a card for the new skill): shoreUp + armor. Priced with the budget (tools/skill_costs.js budget, Level 1, map term Map 17): S 3.7, N 26.42, 2A+H+S 25.7: 3/16. Placed (owner 22:23 #10, call EN4-4) in Pack 3, m6: Shore Up + Armor beside the Tundra Musk Ox: Wolfsbane Tundra (Map 17). Art: placeholder (the emoji); NightCafe prompt in docs/art/new-cards-2026-10-23-en4.md. 2026-10-24 BAL2 re-fit (DF-1: Map term 0.2 a map, first main-line map): 3/16 -> 3/17."
+  },
+  {
+    "id": "clinging-leech",
+    "name": "Clinging Leech",
+    "icon": "\ud83e\udeb1",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "uncommon",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Swamp",
+      "Leech"
+    ],
+    "species": [
+      "Annelid"
+    ],
+    "animal": "leech",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "parasite": true
+    },
+    "flavor": "It never picks a fight. It picks a host, and it holds on until the host gives up.",
+    "awaitingSource": true,
+    "creatorNote": "2026-10-24 (package EQ2) (the owner's 10-21 Parasite note: \"Hooks onto enemy units? Not just leech-attacking from our side. So you place onto an enemy such that their column would be in reach.\"): the first Parasite card. Played onto an enemy unit in reach it feeds on it each round (its Attack, healing itself as much) and drops onto your side when its host dies; played into a slot it is a plain unit. Stats by the budget (fit below). Art: placeholder (the emoji). Awaiting a source (call EQ2-4). Fit: 2/4 -> 4/9 (99.4% of N 18.1).",
+    "numericId": 9137,
+    "uuid": "7bdc2196-28e7-5a9e-827d-742301846ea3"
+  },
+  {
+    "id": "barnacle-bulwark",
+    "name": "Barnacle Bulwark",
+    "icon": "\ud83e\udd80",
+    "cost": 2,
+    "wait": 2,
+    "attack": 2,
+    "health": 21,
+    "rarity": "rare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Crustacean",
+      "Ocean"
+    ],
+    "species": [
+      "Crustacean"
+    ],
+    "animal": "crab",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "guardian": true,
+      "armor": 1
+    },
+    "flavor": "Every shell that ever washed up on the reef is glued to its back. The kraken's beak has tried most of them.",
+    "source": {
+      "kind": "raid",
+      "id": "goliath"
+    },
+    "raid": "goliath",
+    "creatorNote": "2026-10-24 (package EQ2) (owner N22-12: \"Future raids, you probably want tanky guardians\"): a tanky Guardian for the raiders, crafted in the Forge's Raid tab from Goliath trophy shards. On the raid board a Guardian covers the ally to its left, right, in front and behind, and takes the Goliath's new single-target Beak Strike for them. Stats by the budget (fit below). Art: placeholder (the emoji). Fit: 1/8 -> 2/21 (97.1% of N 28.38).",
+    "numericId": 9138,
+    "uuid": "15149189-8fdb-5c84-9fa7-74f82df669a8"
+  },
+  {
+    "id": "reefback-turtle",
+    "name": "Reefback Turtle",
+    "icon": "\ud83d\udc22",
+    "cost": 2,
+    "wait": 2,
+    "attack": 2,
+    "health": 20,
+    "rarity": "veryrare",
+    "locked": true,
+    "test": false,
+    "archetypes": [
+      "Turtle",
+      "Ocean"
+    ],
+    "species": [
+      "Reptile"
+    ],
+    "animal": "sea turtle",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "effects": {
+      "guardian": true,
+      "shell": 2
+    },
+    "flavor": "Coral has grown on its shell for a hundred years. The little fish hide behind it, and so do the otters.",
+    "source": {
+      "kind": "raid",
+      "id": "goliath"
+    },
+    "raid": "goliath",
+    "creatorNote": "2026-10-24 (package EQ2) (owner N22-12): a second tanky Guardian raider (Goliath, Forge Raid tab): Shell 2 pulls in after the first hit, so it soaks the Beak Strike it steps in for. Stats by the budget (fit below). Art: placeholder (the emoji). Fit: 1/9 -> 2/20 (98.8% of N 29.42).",
+    "numericId": 9139,
+    "uuid": "d32cd05e-1ed1-5904-b080-27ab75caf551"
   }
 ]
