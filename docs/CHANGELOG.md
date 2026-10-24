@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-24 (package PRFIX: the PR test follows TT's Triggers lesson)
+- **No game change.** `tests/pr-2026-10-23.js` failed 2 checks on batch-1023e (a repeat 0-1 win whose drop roll hits paid nothing; Map 1 not
+  open after Map 0). Both were the test's: TT's Triggers lesson pauses the fight on its first trigger chip (as TT intends) and the test never
+  pressed Next, so a fight whose hand drew a trigger card never reached its rewards. The test now marks the lesson seen (`skipTriggerLesson`).
+  The drop on a repeat win and Map 1 opening after Map 0 both work.
+
 ## 2026-10-24 (package TT: the Triggers lesson)
 - **A tutorial for triggers (owner 13:16 #4):** the first time a card with a trigger is in your hand or on the field (the enemy's too), play pauses
   on a spotlight over its trigger chip (⚡ → what it does). Step 1: what a trigger is (left says when, right says what; rest the pointer on it to
