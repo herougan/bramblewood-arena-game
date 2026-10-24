@@ -35,7 +35,10 @@ async function browser(){
     const pg = await ctx.newPage(); pg.on('pageerror', e=> errs.push(String(e)));
     await pg.addInitScript(INIT);
     await pg.goto(URL, {waitUntil:'domcontentloaded', timeout:90000}); await pg.waitForTimeout(2500);
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); claimTutorialWin('otters'); window.deckSizeOkOrWarn = ()=> true; 1"); return [ctx, pg]; };
+    // 2026-10-24 (package PRFIX): TT's Triggers lesson (CHANGELOG "package TT": "play pauses on a spotlight over its trigger chip") pauses the
+    // fight (waitForBlockingCoach) the first time a trigger card is in hand or on the board, and nobody here presses Next, so a win whose
+    // deck drew one never reached its rewards (the drop paid nothing; 0-2..0-4 never recorded, Map 1 stayed shut). Seen, as for a player who had it.
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); claimTutorialWin('otters'); skipTriggerLesson(); window.deckSizeOkOrWarn = ()=> true; 1"); return [ctx, pg]; };
   // one real win of a fight (the last blow through resolveRound), the results dismissed; rnd: Math.random held there while the rewards are paid
   const win = async (pg, mapId, key, rnd)=>{
     ok(await pg.evaluate(`startConquestMatch('${mapId}', '${key}', {skipEnergyCost:true, noAmbush:true})`), `${mapId}:${key} starts`);
