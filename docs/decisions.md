@@ -4,6 +4,135 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**N221-1. Pack tiers after Map 20: Pack 4 Maps 21-27, Pack 5 28-34, Pack 6 35-41** · Decide · Progression · asked 2026-10-24
+- Derived from your Pack 1-3 pattern of about 7 maps each (PP-1: 0-6 / 7-13 / 14-20). Tier 4 already exists in the data (every pack card of Maps 21-24 and the Ice Hollow / Old Bramble side maps carries it; no shop pack sells it yet, so those cards come from the card drop and the base track). Tiers 5 and 6 are written into the proposal only; Pack 6 runs past Map 40, where you build one map at a time. docs/balance/n221-divvy-2026-10-24.md.
+  - Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
+  - Other ranges (say which)
+  - Packs 4-6 as 21-30 / 31-40 / 41-50
+- **Default:** Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
+
+**N221-2. Eight held cards would bring a new skill onto Maps 21-40** · Decide · Cards · asked 2026-10-24
+- Your 10-21 rule: Maps 21-40 teach no new skill. These cards carry a skill no card a player can get on Maps 0-20 has: the Rainforest Floor (Map 25) War-Drum Mandrill (Durian), Aye-aye Prowler (Sun-shy), Velvet Worm (Ichor), Slow Loris (Feeble), Chilli Parrot (Chilli); Clinging Leech (Parasite, proposed the Carrion Moors, Map 27); Glintsnatch Magpie (Disarm, the Thornwold, Map 32); Armory (Weapon Master, Goldfeather Keep, Map 24: not applied for this reason). The five rainforest cards were held for Map 25 by your RP5 (later and more specific), so the default keeps them there; the other three wait in the proposal. Alternatives: Maps 0-20 homes (the Leech to the Mire off Map 6, the Magpie to the Briar Maze, Map 12, the Armory with the Forge, Map 11), Pack Secrets I, or Map 40+ where new skills come again.
+  - Place all eight as proposed (each one card, met on that map's enemies first)
+  - Rainforest five on Map 25; the Leech, Magpie and Armory to Maps 0-20 homes
+  - None on 21-40: they wait for Map 40+ or Pack Secrets I
+- **Default:** Place all eight as proposed (each one card, met on that map's enemies first)
+
+**N221-3. The Petrified Tree is a Pack 4 card of the Rimefire Caldera (built)** · Decide · Cards · asked 2026-10-24
+- The only waiting card that fits a map that exists without a new skill or an era hold. Petrified forests form under volcanic ash, and the Caldera is the volcano of Maps 21-24; a Stone maker (Gain 1 Stone a turn) beside its fire and ice. Applied: source pack tier 4, map m22, in the Caldera's pool (12 -> 13); its obtain map is 22 (canonical/card-obtain-maps.json), which leaves it under its budget (0/37: 2A+H+S 40 is 98% of N at Map 0, 89% of N 45.17 at Map 22; not re-fitted). Not a skirmish reward: the Caldera already has 10+ new cards and its three exclusives. The other choice was the Quiet Summit (pool 9 -> 10), where it would be the 6th new card and DV3 would ask for a third skirmish exclusive (a deck change).
+  - Keep it on the Rimefire Caldera (built)
+  - Move it to the Quiet Summit (and add a third Summit exclusive)
+  - Hold it again
+- **Default:** Keep it on the Rimefire Caldera (built)
+
+**N221-4. The Rimefire Caldera (13) and the Goldfeather Siege (12) are over the 6-10 pool guide** · Decide · Maps · asked 2026-10-24
+- They grew in earlier packages (the Weathervane Swift and Ashwing Ptarmigan on 22, the Marching Elephant and Werebadger on 23) and now the Petrified Tree. Trimming them would move those cards to maps that don't exist yet (proposed: the Swift to Stormcoast 28, the Ptarmigan to the Mammoth Steppe 33, the Marching Elephant to the Last Savanna 39, the Werebadger to the Thornwold 32), so they could not be had until then. Most Maps 0-20 pools are over 10 too since RW5.
+  - Keep them (nothing moved)
+  - Trim as proposed (those cards wait for their maps)
+  - Trim only the ones that fight nowhere (Swift, Ptarmigan)
+- **Default:** Keep them (nothing moved)
+
+**N221-5. Maps 25-40: the proposal table** · Decide · Maps · asked 2026-10-24
+- Sixteen map ideas, each with a pool of 6-10 (held cards, a few carried from earlier maps, unsorted enemy-only cards, new ideas from the eras rule), two skirmish-base cards, its pack tier and the road's caps: 25 the Rainforest Floor, 26 the Ant Empire, 27 the Carrion Moors, 28 Stormcoast, 29 the Echo Caverns, 30 the Old Growth (Evomax opens), 31 the Hollow Farmsteads (side map: the Cabbage Patch, your Killer Veggies), 32 the Thornwold (the Greenhood Band; the Thistle Baron returns), 33 the Mammoth Steppe, 34 the Tar Pits, 35 the Drowned Reef, 36 the Black Bayou, 37 the Lost Isle, 38 the Fossil Badlands, 39 the Last Savanna, 40 the Grove of the Dragon-Turtle (a seed only: from 40 you build one map at a time). Nothing is built; each map is made concrete only after your yes. docs/balance/n221-divvy-2026-10-24.md.
+  - Use it as the working plan; build in order after a yes per map
+  - Change some maps (say which)
+  - Start over from your own list
+- **Default:** Use it as the working plan; build in order after a yes per map
+
+**N221-6. If CONTENT2-3 goes "other sources": the Gnawed to the Carrion Moors, the Tidefolk to Stormcoast** · Decide · Cards · asked 2026-10-24
+- CONTENT2-3 is open (default: the Sable Swampmire, Glass Dunes, Kelp Mangroves and Coral Current, Maps 6-18). This pass did not place the seven. If you prefer later homes: the Gnawed (Bog Shrew, Mire Rat, Hollow-belly Rat, Gnawed Matriarch as a skirmish-base card) in the Carrion Moors (27, a moor of bones; the Black Bayou 36 is the second choice) and the Tidefolk (Kelpborn Otter, Conger Eel, Selkie Wavebinder as a skirmish-base card) on Stormcoast (28, seals in a gale). Note: the Hollow-belly Rat's Devour is Devilry's keyword and not taught on Maps 0-20.
+  - Follow CONTENT2-3's answer (no change here)
+  - The Carrion Moors and Stormcoast, as above
+- **Default:** Follow CONTENT2-3's answer (no change here)
+
+**N221-7. Homes outside the maps: Pack Secrets I, the faction pool, the Blacksmith, a quest** · Decide · Cards · asked 2026-10-24
+- Not applied (each needs game code or a pool that isn't built). Pack Secrets I (empty today, progression plan item 12): MissingNo. (a hidden glitch) and the Glowing Gecko (Irradiated, like the Mystery Booster's Irradiated Axolotl and Glow Wyrm; the map recommendations' Map 33 would bring Irradiated as a new skill). The faction pool: the Anvilwhisker Otter (Otter side; it needs a Stone engine) and the Greyplume Fledgling (Hummingbird side, or Base). The Blacksmith: the Crowbar (equipment). A quest-only special: the Thistle Baron's return on the Thornwold (Map 32; RP5 held it for Map 21+). The eight spells stay held while spells are shelved (thematic homes listed in the doc); the Devilry (16) and Ecclesia (15) cards stay held for Maps 66 / 77.
+  - As proposed
+  - Change some (say which)
+- **Default:** As proposed
+
+**CONTENT2-1. Lumber gatherers per biome: placements and strengths** · Decide · Cards · asked 2026-10-24
+- Your 13:12 #8 ("every biome should have its own lumber gatherers"), built: one per main biome of Maps 0-20 that had none in its pools, each a pack card of that map, priced by the formula. Driftwood Crab (Pebble Beach, Map 2, Common 2/9, On Ready +1 Lumber), Gannet Nestweaver (Gannet Cliffs, Map 3, Common 1/7, Flying, On Play +1), Nutria Reedcutter (Gatorback Swamp, Map 5, Common 2/12, Wait 2, On Ready +2), Redwood Woodpecker (Redwood Deep, Map 13, Uncommon 2/12, Milling 1: +1 every turn while Ready), Termite Forager (Savanna Reaches, Map 14, Common 2/6, Swarm, On Ready +1), Cone-cutter Squirrel (Pinewood Taiga, Map 16, Common 3/9, On Play +2), Talus Pika (Wolfsbane Tundra, Map 17, Common 2/9, On Ready +1), Dune Packrat (Glass Dunes, Map 18, Uncommon 2/14, On Ready +3). Three existing gatherers that sat in no pool joined their map: Land Tiller (Long Grass, Map 15), Coral Polyp Colony (Coral Current, Map 10), Rodent King (Briar Maze, Map 12). Still without one: the Kelp Mangroves (Map 9) and the caves and volcano maps, which get the Stone cards instead (CONTENT2-2). Map pools grow by 1-2; the Pinewood Taiga and Ashen Spurn go from 10 to 11 (the divvy's 6-10 guide). The Driftwood Crab fights in 2-3 (Hermit Row), the Gannet Nestweaver in 3-1 and 3-3.
+  - Keep them (built)
+  - Move or cut some (say which)
+  - Fewer: only the owner's four (crab, gannet, woodpecker, termite)
+- **Default:** Keep them (built)
+
+**CONTENT2-2. The Stone loop: Quarry (1 Lumber -> 1 Stone a turn) or a 2 -> 1 converter?** · Decide · Economy · asked 2026-10-24
+- Your 13:12 #8 ("the stone making loop (lumber -> stone or just stone+)"), built with the engine's existing Quarry skill (SK2b, 2026-10-19), so no engine change: the Badger Stonemason (Caves & Alcoves, Map 8, Uncommon 1/15, Quarry 1: each turn while Ready, pay 1 Lumber, gain 1 Stone; can't pay, nothing happens) beside two Stone gatherers, the Gravel Mole (Map 8, Common 1/12, On Ready +1 Stone) and the Pumice Beetle (Ashen Spurn, Map 19, Uncommon 3/12, On Play +2 Stone). Caves & Alcoves is the Stone map: its Quarry Mole (Bedrock: Armor while you hold 2+ Stone) and Dynamite Packrat (costs 1 Stone) are there to spend it. Stone counts 2 points to Lumber's 1 in the game's resource worth, so Quarry's 1 : 1 is a profit, which is why a card with it pays 2.5 budget points. The alternative you sketched, "at round end spend 2 Lumber -> 1 Stone", is a new skill (a small engine change) and a loss in points; worth it only if Stone should be scarce.
+  - Quarry 1 : 1, as built
+  - A 2 Lumber -> 1 Stone round-end converter (new skill)
+  - Just Stone+ (gatherers only, no converter)
+- **Default:** Quarry 1 : 1, as built
+
+**CONTENT2-3. The Gnawed and the Tidefolk: seven new cards, where they come from** · Decide · Cards · asked 2026-10-24
+- The lore bible's thin sub-factions (the Gnawed had no cards, the Tidefolk 3), built from its lines (Gnawed: rats and shrews, the Sable Swampmire and the Glass Dunes, Devour / Sap / Pack; Tidefolk: otters who never came ashore, eels, seals, Coral Current and the Kelp Mangroves, Tide / Wave / Fork), priced by the formula, placeholder art (the emoji; prompts in docs/art/content2-2026-10-24-briefs.md), awaiting a source. Proposed: Bog Shrew (Common 3/4, Sap) and Mire Rat (Common 3/8, Pack 2) in the Sable Swampmire's Pack 1 pool (Map 6); Hollow-belly Rat (Uncommon 2/10, Devour +2/+2) in the Glass Dunes' Pack 3 pool (Map 18); Gnawed Matriarch (Rare 4/15, Pack 2 + Pack Leader) a Glass Dunes skirmish reward; Kelpborn Otter (Common 2/5, Tide) in the Kelp Mangroves' Pack 2 pool (Map 9); Conger Eel (Uncommon 3/6, Tide + Fork) in Coral Current's Pack 2 pool (Map 10); Selkie Wavebinder (Rare 3/13, Tide + Wave) a Coral Current skirmish reward or the faction pool's shared side. Note: Pack and Pack Leader are priced 0 by measurement (skill-costs.json), so the two Pack cards carry full stats.
+  - Place them as proposed
+  - Other sources (say which)
+  - Hold them for the sub-faction packs
+- **Default:** Place them as proposed
+
+**CONTENT2-4. Unlocks on uncharted maps: keep them there or pull them onto Maps 21-24?** · Decide · Progression · asked 2026-10-24
+- The map pools stop at Map 24. These unlocks sit on maps that don't exist yet and show "Unlocks beyond the charted maps": Forge tier 4 (Dragonfire, Lv 9, Legendary tempering) at Map 26 and tier 5 (Heartfire, Lv 10, Ancient) at Map 31, with the Lv 9 / 10 gates; Strange Materia x2 from Map 25's boss and x3 from Map 30's; Nests 6 and 7 at Maps 25 and 30; dungeon slot 3 at Map 40 (and, same kind, deck slots 6 / 7 at Maps 27 / 33, the Flea Market at 31, the 4x / 5x speeds at 40 / 60). Not moved, because each sits on a rule of yours: a nest every 5 maps (10-16); each Forge tier on the map its old level gate used, its Strange Materia from the boss of the map before; and Lv 9 / 10 on Maps 22 / 24 would let a grinding player sit 4-5 levels over BAL2's enemy schedule (Lv 5 at Map 20, Lv 6 at Map 30), while the Legendary / Ancient tempering they open has no road card before Map 40. Dungeon slot 3 has no dungeon to open. N22-1 (queued) charts Maps 21-40, and they open where they are. If you want them reachable now, the proposal: Forge tier 4 and Lv 9 at Map 22 (the Rimefire Caldera: dragonfire), Strange Materia x2 from Map 21's ender; tier 5 and Lv 10 at Map 24 (Goldfeather Keep, the last charted map), x3 from Map 23's ender (Marshal Tuskwell); Nests 6 / 7 at Maps 22 / 24; dungeon slot 3 stays until a third dungeon exists.
+  - Keep them where they are (nothing moved)
+  - Move them as proposed (Maps 21-24)
+  - Move only the nests and Strange Materia
+- **Default:** Keep them where they are (nothing moved)
+
+**CONTENT2-5. Earthworm, the starter fish, Meadow Frog and the Traveller lost their skills in a fold, not on purpose** · Decide · Cards · asked 2026-10-24
+- The 10-16 list ("Earthworm has lost its Regen; Silver Minnow, Pond Trout and River Carp need Tide; Meadow Frog should be Rainrunner; the Wandering Traveller lost its Lumber trigger"). Git: the skills were there until 2026-10-15 (Earthworm Regen 1; the three fish and Meadow Frog Swimmer, the old Tide; the Traveller On Play draw 1 and a once-only On Ready +1 Lumber). The 10-15 fold of your 60 published card edits (005f3ce8) brought them in empty, as that era's editor saved them; a branch that still had them was merged over by the fold (13fab486), and no later package restored them or recorded a reason (CHANGELOG has none). Meadow Frog never had Rainrunner (the skill came later). Nothing changed here. Today they are vanilla starters / Map 1 cards, which matches the plain-rewards rule for Maps 0-1 (PLAIN_REWARDS_UPTO_MAP) but not the 10-16 list.
+  - Keep them vanilla
+  - Restore the 10-16 list (re-fit by the formula)
+  - Restore some (say which)
+- **Default:** Keep them vanilla
+
+**CONTENT2-6. Sunken Hollow's fight names still promise whales and a kraken** · Decide · Maps · asked 2026-10-24
+- N21-2 (cute Maps 0-5): the theme pass took the Kraken Spawnling, Humpback and every whale out of Maps 1-4, so Map 4's decks are turtles, voles, muskrats and an old sturgeon, but its fights are still called Reef Skirmishers, Cetacean Pod ("They surface in formation") and The Kraken's Maw. Proposal (not built; the names are translated texts): 4-3 Cetacean Pod -> Turtle Pod, 4-4 The Kraken's Maw -> The Snapping Deep. The boss, The Drowned Colossus ("Every spawnling in the Hollow answers to one, much older, shape"), already fits its Old Sturgeon.
+  - Rename as proposed
+  - Other names (say which)
+  - Keep the names
+- **Default:** Rename as proposed
+
+**H1-a. Taking a gem out of a socket: does the gem come back?** · Decide · Forge · asked 2026-10-24
+- Your H1 ("Maybe all uniques and above are also liable for materia (gem) socketing - but only 1. Costs to apply, costs to remove."), built as the Forge's 💎 Socket tab (it replaces Enchant): every copy of a Unique or rarer creature has one gem socket. Setting a Materia gem costs Dust + Maple Leaves and one crystal; taking it out costs Dust + Maple Leaves. Built: the gem comes back to your Materia when you take it out (the friendlier default; one switch, SOCKET_REMOVE_RETURNS, to make it break instead). Keep it, or should taking it out destroy the gem?
+  - The gem comes back (built)
+  - The gem breaks when taken out
+- **Default:** The gem comes back (built)
+
+**H1-b. Gem socket prices (placeholders)** · Decide · Forge · asked 2026-10-24
+- Placeholder prices per rank, in canonical/upgrade-costs.json materiaSocket and the hub's 💰 Upgrade costs tab (group Gem sockets): set a gem / take it out, Dust · Maple Leaves: Unique 150 · 300 / 100 · 200; Legendary 250 · 500 / 150 · 300; Mythic 400 · 800 / 250 · 500; Ancient 600 · 1,200 / 350 · 700; Divine 900 · 1,800 / 500 · 1,000; Void 1,200 · 2,400 / 700 · 1,400; Daemonic 1,600 · 3,200 / 900 · 1,800 (a crystal itself is 125 Dust at the bench). Edit them in the hub tab, or say the rule you want (for example a share of the card's level road).
+  - Keep the placeholders
+  - Edit in the hub tab
+  - Another rule (say which)
+- **Default:** Keep the placeholders
+
+**H1-c. Which cards have a socket, and Heroes** · Decide · Forge · asked 2026-10-24
+- Built: creatures only (Materia, equipment and spell cards have none), of rank Unique and above; a flagged rarity counts as its rank (Quest-Unique as Unique, Dev-Legendary and Event-Legendary as Legendary, Dev-Ancient as Ancient). Your Hero card has no socket yet (the 10-06 Hero socketing plan is separate). The gem effects are the old Enchant ones, unchanged: Ember +1 Attack (its hits scorch), Tide +2 Health, Grove +1/+1, Stone +3 Health; a gem is a progression bonus outside the card's printed budget. OK, or should Heroes (or equipment) get a socket too?
+  - OK
+  - Heroes get a socket too
+  - Change (say what)
+- **Default:** OK
+
+**BAL3-1. Rising Tide can't fire on 5-A-2 and 10-A-2: no tide there** · Decide · Map effects · asked 2026-10-24
+- DF3-3 built (Quick and +1 Attack while the tide is in). Re-measured, 200 games with the boon on and off (docs/balance/bal3-rising-tide-2026-10-24.json): 9-4 Kelp Curtains 3 points (81% vs 84%); 5-A-2 Gator Hollow and 10-A-2 The Drowned Deck 0, because neither fight has a tide in its field (the Sunken Grove's Swamp Fever, the Sunken Depths' Crushing Depths), so the boon never turns on. A what-if with the Tide added: 5-A-2 79.5% (94% without the boon: 14.5 points), 10-A-2 77.5% (81.5%: 4 points). Their challenge targets are about 65% and 70%.
+  - Add the Tide to both fights
+  - Swap their boons (Venom Glands on 5-A-2, Blind Fury on 10-A-2)
+  - Leave them
+- **Default:** Add the Tide to both fights
+
+**BAL3-2. The fights deck moves can't reach (87 too easy, 12 too hard of 179)** · Decide · Balance · asked 2026-10-24
+- BAL3 retuned Maps 0-24 and the Pale Desert by the agreed rules only (deck moves inside each map's pool and theme, the copy ladder, 5-7 different cards, leaders kept, enemy level by the schedule, no new Shield): green 48 -> 80 of 179 (docs/balance/bal3-road-2026-10-24.json, -table-....md), the Pale Desert 0 -> 4 of 9. What is left is outside the levers: Gannet Cliffs (Map 3), Gatorback Swamp (5), the Redwood Deep (13), the Glass Dunes (18, every fight 100%), the Goldfeather Siege (23) and five Pale Desert fights stay at 90-100% because no card of their pool makes the deck harder; Sunken Hollow's 4-1 / 4-2 stay at about 20% (target 80-90) because the reference deck there walls on its turtles. The schedule's whole levels can't fine-tune a fight either (DF3-4's five fights were done by decks: 11-4 67 -> 76% green; 11-2 75, 11-7 57, 14-5 60, 14-6 52 still under).
+  - Wait for your play-through (DF-1b)
+  - Let those fights take themed cards from one map ahead (outside the map's pool)
+  - Allow a Shield over the rule on those fights only
+- **Default:** Wait for your play-through (DF-1b)
+
+**BAL3-3. Alley Cat and Rock-pool Starfish are 1/1 on their formula line** · Decide · Cards · asked 2026-10-24
+- BAL2-5 built: the ten held cards took their formula line (tools/refit_pass_2026_10_21.js). Two land on 1/1 with a third of their budget unused, because their skills cost more than any bigger line of their shape allows: Alley Cat (Rare, Bleed 1 + Twin Strike, 1/8 -> 1/1, 67% of N) and Rock-pool Starfish (Common, Regen 2 + Tide, 2/2 -> 1/1, 66%). The others: Honey Badger Fury 1/6, Chipmunk Hoarder 2/6, Chipmunk Cavalry 2/2, Pyroclast Wyrm 3/12, Plague Gnat Cloud 2/2, Sunfeather Scout 1/4, Lone Grey Wolf 2/9, Muskrat Lodgekeeper 1/5.
+  - Keep the formula lines (built)
+  - Trim a skill on those two so they fit a bigger line (Alley Cat without Twin Strike, the Starfish Regen 1)
+- **Default:** Keep the formula lines (built)
+
 **EN7-1. Dive in two turns: what it is safe from while aloft or under** · Decide · Battle rules · asked 2026-10-24
 - Your 13:12 #3 ("like pokemon"), built: once a fight, at its swing, a diver with an enemy unit in its row rises (a Flyer; a Sprinter leaps the same way) or goes under (a Tide unit without wings) instead of swinging. Until its next swing nothing can find or hit it (swings, shots, bolts, skills aimed at a unit; a Spotter neither) and it can't step in as a Guardian. Its next swing strikes the weakest enemy of its row past Taunt (a Guardian beside the target still steps in) for Attack + N, and it is Exposed that round (no Flying dodge, no Tide evade). Area damage that names no target (a field's hail, a Nova, the tide-spout) and its own Poison / Bleed ticks still reach it, as in the games you described (Earthquake hits Dig in some, not Fly). A diver that can't strike in the next round (frozen, stunned) comes down at that round's end without striking. Keep area damage reaching it, or make it safe from everything?
   - Area damage still reaches it (built)
