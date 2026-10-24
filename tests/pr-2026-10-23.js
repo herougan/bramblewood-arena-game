@@ -74,7 +74,7 @@ async function browser(){
       await fiveTimes(pg, 'B local');
       const hit = await win(pg, 'm1', '0-1', 0.0001); // every roll hits: the drop still pays on a repeat
       ok(!hit.first && hit.cards.length === 1 && hit.drop === hit.cards[0], `B local: a repeat win whose drop roll hits pays the drop (${JSON.stringify(hit.cards)})`);
-      ok(await pg.evaluate("Math.abs(nodeCardDropChance('m1', CONQUEST_MAPS.find(m=> m.id === 'm1').nodes.find(n=> n.key === '0-1'), {repeat:true}) - 0.03) < 1e-9"), 'B local: 0-1 repeat drop chance is 3% (what the panel adds up)');
+      ok(await pg.evaluate("Math.abs(nodeCardDropChance('m1', CONQUEST_MAPS.find(m=> m.id === 'm1').nodes.find(n=> n.key === '0-1'), {repeat:true}) - 0.109) < 1e-9"), 'B local: 0-1 repeat drop chance is 10.9% (what the panel adds up; BAL2 DF-2: its own card 10%, else the 1% pack card)');
       await ctx.close(); }
     // ===== 3. a stale cloud row like the owner's newer account
     { const [ctx, pg] = await open();

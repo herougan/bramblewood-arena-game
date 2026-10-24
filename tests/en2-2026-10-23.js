@@ -64,7 +64,8 @@ const spawn = (e, P, pid, id, side)=>{ e.debugSpawnCard(P, so, pid, id, side || 
   const txt = fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8');
   ok(/"id":"boomerang","scale":"half","value":1\.9/.test(txt) && /"id":"bananarang","scale":"half","value":1\.9/.test(txt), 'Boomerang and Bananarang cost 1.9 (were 3)');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
-  ok(c('otter-centurion').health === 7 && c('howler-monkey').health === 5 && c('net-thrower').health === 10 && c('otter-royal-guard').health === 10, 'the four Boomerang cards re-fit up a point of Health'); }
+  const bal2 = id=> /2026-10-24 BAL2 re-fit/.test(c(id).creatorNote || ''); // 2026-10-24 (BAL2): or the DF-1 re-fit moved it on
+  ok((c('otter-centurion').health === 7 || bal2('otter-centurion')) && (c('howler-monkey').health === 5 || bal2('howler-monkey')) && (c('net-thrower').health === 10 || bal2('net-thrower')) && (c('otter-royal-guard').health === 10 || bal2('otter-royal-guard')), 'the four Boomerang cards re-fit up a point of Health (or BAL2 moved them on)'); }
 
 // ---- The CPU's lanes ------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(); spawn(e, P, 2, 'x-wallr'); spawn(e, P, 2, 'x-wallr', 'right'); spawn(e, P, 2, 'x-wallr', 'right'); // foe at 0, 1, 2

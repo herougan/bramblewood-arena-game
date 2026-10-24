@@ -33,7 +33,9 @@ ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. t
   ok(/return Math\.round\(BramblewoodBudget\.nAt\(BramblewoodBudget\.baseOf\(Object\.assign\(\{\}, d, \{obtainMap: om\}\), c\), L, c\) \* BramblewoodBudget\.nMultOf\(/.test(src) /* BF5 10-21: x the card's N multiplier */ && /levelLinDiv:15, levelDiv:30, zeroPenalty:1/.test(src) /* BF6 */, '1. the Test Lab (sbBudgetAt) and the card editor call the same helper');
   ok(/bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')) && /bramblewood-budget\.js/.test(fs.readFileSync(path.join(ROOT, 'tools', 'hub', 'build_hub.py'), 'utf8')), '1. the page and the hub inline bramblewood-budget.js');
   // (BF5) the v3 comparison is v5 before the halving: scale 1
-  const v3 = live.map(c=> T.budgetV3N(c, 1) - BB.nAt(T.budgetBase(c), 1, Object.assign({}, table.budget, {scale: 1}))); ok(v3.every(d=> d <= 1.3 + 1e-9), `1. at Level 1, v5 (L/10, before the BF5 halving) is never more than 1.3 under v3 (largest drop ${Math.max(...v3).toFixed(2)})`); }
+  // 2026-10-24 (package BAL2, T21-4): the v3 comparison (v5 never more than 1.3 under v3 at Level 1) pinned the 10-19 budget; BF6 halved the
+  // coefficients and BAL2 doubled the Map term back to 0.2, so v3 is history (budget-v5-2026-10-19.json keeps it) and the check is gone
+  }
 
 // 2026-10-19 (BF2, owner 15:25): Base's map term: + perMap (0.2) x the map where the card becomes obtainable
 { const spot = k=>{ const m = new RegExp(`\\{key:'${k}',[^\\n]*?mapNumber:(\\d+)`).exec(src); return m ? +m[1] : null; }, O = G.OBTAIN_MAP_OF;

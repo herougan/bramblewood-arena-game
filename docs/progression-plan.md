@@ -149,3 +149,21 @@ Today the road hands out 12 faction cards by Map 3, 26 by Map 7, 45 by Map 15 an
 - The target pool works with the "1-2× of each" copies. To pass Uncommon by Map 17, the last Uncommon (65th reward today) has to come by about the 47th (the count at Map 16): take about 18 Common and Uncommon copies out (for example the other side's Commons and Uncommons), or add about 18 hand-outs by Map 16. Very Rare then lands near Map 18, still after 15.
 - Under any reading, the pattern's first Rare is the 10th reward, which lands on Map 3. The Oct 21 rule says "the rare should only come in Map 14+". Decide which one wins: either the pattern's first block runs to about 40 rewards before the R, or the Rare gate goes.
 <!-- SUGGESTIONS:END -->
+
+## The grind to each gate (BAL2, DF-2)
+
+Owner, 2026-10-23 17:34 on DF-2: "DF-2 OKAY. But of course, don't look down on the grind they have to do to level up their cards to that tier's gate." Built by BAL2 (2026-10-24): Base cards (the ones you own from the start) stop at Lv 4 and pay the full Forge cost (x1, was x0.5); a skirmish's own first-clear card drops 10% a repeat win (was 3% x its rarity share). Levels gate by map (the Forge tiers and the Lv 5 / 9 / 10 / 11 gates at Maps 16 / 26 / 31 / 50), and the gate is only where the grind starts.
+
+What a deck pays to reach each tier's cap (from `canonical/upgrade-costs.json`; `node tools/bal2_grind_2026_10_24.js`). Copies level one at a time, so a 20-copy deck pays twenty times; Leaves cost two thirds of the Dust; map-reward cards pay x0.5, pack cards x1, Base cards x1 and stop at Lv 4. Income is the daily notices, about 3,450 Dust a week at six a day (first clears add more on the maps you are on).
+
+| Forge tier (opens) | Cap | One Common copy: map card / Base card / pack card (Dust) | A 20-copy road deck (12 C, 6 U, 2 R): map cards / pack cards (Dust) | The same Base deck (20 Commons, Lv 4 at most) | Tier upgrade | Weeks of notices (map deck, from the last cap) |
+|---|---|---|---|---|---|---|
+| Village Forge (Map 11) | Lv 3 | 40 / 79 / 79 | 1270 / 2528 | 1580 | - | 0.4 |
+| Iron Forge (Map 13) | Lv 4 | 27 / 53 / 53 | 854 / 1696 | 1060 | 300 Dust, 600 Leaves | 0.3 |
+| Ember Forge (Map 16) | Lv 8 | 167 / - (stops at 4) / 333 | 5334 / 10656 | - (stops at 4) | 800 Dust, 1500 Leaves | 1.8 |
+| Dragonfire Forge (Map 26) | Lv 9 | 67 / - (stops at 4) / 133 | 2134 / 4256 | - (stops at 4) | 1500 Dust, 3000 Leaves | 1.1 |
+| Heartfire Forge (Map 31) | Lv 10 | 73 / - (stops at 4) / 146 | 2336 / 4672 | - (stops at 4) | 2500 Dust, 5000 Leaves | 1.4 |
+
+In all, Lv 1 -> 10: one Common map card 372 Dust, a pack card 744; the 20-copy map deck 11904 Dust (3.5 weeks of notices), the pack deck 23808. A Base deck to Lv 4: 2640 Dust (was 1320 at x0.5).
+
+The copies come first. A 4-copy set of a map card takes its first clear plus three drops: at 10% a repeat that is about 30 repeat wins (30 Energy for a skirmish), so a map's two or three exclusive cards at 4 copies each cost about 60-90 repeats, which is why the 4-copy decks form by about Maps 10-15 and not at once (the DF-2 model). A pack card's copies come from packs instead. The Base deck stays the cheap deck it was until Lv 4 (2,640 Dust for 20 copies, about 0.8 weeks of notices) and then stops, while the road's own cards keep growing to Lv 8 at the Ember Forge for about 5,300 Dust more (1.8 weeks).

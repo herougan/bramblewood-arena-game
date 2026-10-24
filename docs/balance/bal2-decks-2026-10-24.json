@@ -1,0 +1,167 @@
+{
+ "_about": "Package BAL2 (2026-10-24): enemy decks fitted to the copy ladder (item 2) and the Rare rule (item 3: Map 5 only its boss's leader; normal skirmishes Rare from Map 10, no Very Rare before 15). BR = enemyDeckLevel (the leader counted).",
+ "rows": [
+  {
+   "fight": "22-5",
+   "map": "m22",
+   "kind": "skirmish",
+   "copies": "17 -> 17",
+   "br": "146 -> 146",
+   "leader": "ur-elk -> ur-elk",
+   "why": "Cinder Hornet (Common) 7 -> 5; Cinder Gecko 2 -> 4"
+  },
+  {
+   "fight": "7-A-2",
+   "map": "mz",
+   "kind": "skirmish",
+   "copies": "18 -> 18",
+   "br": "52 -> 48",
+   "leader": "wolf-spider-mother -> wolf-spider-mother",
+   "why": "Wolf Spider Mother (Rare) 4 -> 3; Dung Beetle 3 -> 4"
+  },
+  {
+   "fight": "20-B-4",
+   "map": "mx",
+   "kind": "worldboss",
+   "copies": "14 -> 14",
+   "br": "249 -> 217",
+   "leader": "caldera-wyrm -> caldera-wyrm",
+   "why": "Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3"
+  },
+  {
+   "fight": "8-A-3",
+   "map": "mn",
+   "kind": "skirmish",
+   "copies": "16 -> 16",
+   "br": "126 -> 119",
+   "leader": "echo-screecher -> echo-screecher",
+   "why": "Swarm Matriarch (Rare) 4 -> 3; Sulfur Cinder Moth 2 -> 3"
+  },
+  {
+   "fight": "17-A-1",
+   "map": "mi",
+   "kind": "skirmish",
+   "copies": "16 -> 16",
+   "br": "72 -> 64",
+   "leader": "glacial-ape-king -> glacial-ape-king",
+   "why": "Arctic Fox Raider (Rare) 4 -> 3; Snow Ermine 2 -> 3"
+  },
+  {
+   "fight": "17-A-3",
+   "map": "mi",
+   "kind": "skirmish",
+   "copies": "20 -> 20",
+   "br": "126 -> 114",
+   "leader": "lone-grey-wolf -> lone-grey-wolf",
+   "why": "Lone Grey Wolf (Very Rare) 3 -> 2; Harp Seal Pup 3 -> 4"
+  },
+  {
+   "fight": "5-4",
+   "map": "mw",
+   "kind": "skirmish",
+   "copies": "18 -> 18",
+   "br": "33 -> 31",
+   "leader": "venomlord-serpent -> venomlord-serpent",
+   "why": "Map 5: the Alligator Gar (Rare) is the boss's leader only; a Moat Snapper (Uncommon turtle) instead"
+  },
+  {
+   "fight": "5-5",
+   "map": "mw",
+   "kind": "elite",
+   "copies": "14 -> 14",
+   "br": "41 -> 29",
+   "leader": "alligator-gar -> crocodile-ambusher",
+   "why": "Map 5: Alligator Gar out (the boss's leader only); 2 Crocodile Ambushers (one leads the slide) for it and a Caiman Hatchling"
+  },
+  {
+   "fight": "5-6",
+   "map": "mw",
+   "kind": "elite",
+   "copies": "17 -> 17",
+   "br": "44 -> 38",
+   "leader": "alligator-gar -> moat-snapper",
+   "why": "Map 5: Alligator Gar out; 2 Moat Snappers (one leads the bog) for it and a Snapper Hatchling"
+  },
+  {
+   "fight": "6-4",
+   "map": "m8",
+   "kind": "skirmish",
+   "copies": "13 -> 13",
+   "br": "56 -> 45",
+   "leader": "adder-ambusher -> cane-toad",
+   "why": "Map 6 skirmish: no Rare before Map 10; Adder Ambusher -> 2 Cane Toads (one leads, for a Marsh Wisp), Raven Scout -> Booming Bittern"
+  },
+  {
+   "fight": "7-3",
+   "map": "mu",
+   "kind": "skirmish",
+   "copies": "15 -> 15",
+   "br": "49 -> 42",
+   "leader": "wolf-spider-mother -> bombardier-beetle",
+   "why": "Map 7 skirmish: Wolf Spider Mother -> 2 Bombardier Beetles (one leads, for a Leafcutter Gardener)"
+  },
+  {
+   "fight": "8-4",
+   "map": "m4",
+   "kind": "skirmish",
+   "copies": "12 -> 12",
+   "br": "67 -> 48",
+   "leader": "giant-cave-huntsman -> subterraneaner",
+   "why": "Map 8 skirmish: Echo Screecher x2 -> Vampire Bat +1 and a Baby Bat; Giant Cave Huntsman -> 2 Subterraneaners (one leads, for a Blind Cave Fish)"
+  },
+  {
+   "fight": "8-5",
+   "map": "m4",
+   "kind": "skirmish",
+   "copies": "16 -> 16",
+   "br": "54 -> 44",
+   "leader": "giant-cave-huntsman -> ghost-crayfish",
+   "why": "Map 8 skirmish: Echo Screecher -> Vampire Bat +1; Giant Cave Huntsman -> 2 Ghost Crayfish (one leads, for a Sulfur Cinder Moth)"
+  },
+  {
+   "fight": "8-6",
+   "map": "m4",
+   "kind": "skirmish",
+   "copies": "16 -> 16",
+   "br": "54 -> 44",
+   "leader": "giant-cave-huntsman -> millipede-hauler",
+   "why": "Map 8 skirmish: Echo Screecher -> Vampire Bat +1; Giant Cave Huntsman -> 2 Millipede Haulers (one leads, for a Stalactite Golem)"
+  },
+  {
+   "fight": "9-3",
+   "map": "mk",
+   "kind": "skirmish",
+   "copies": "12 -> 12",
+   "br": "45 -> 38",
+   "leader": "mangrove-kingfisher -> sunbittern-strider",
+   "why": "Map 9 skirmish: Mangrove Kingfisher (Rare, 9-6's reward) -> 2 Sunbittern Striders (diving birds, one leads, for a Minnow Skitter)"
+  },
+  {
+   "fight": "9-4",
+   "map": "mk",
+   "kind": "skirmish",
+   "copies": "17 -> 17",
+   "br": "45 -> 38",
+   "leader": "mangrove-manatee -> archerfish",
+   "why": "Map 9 skirmish: Mangrove Manatee -> Mudflat Godwit (Tide); the Archerfish leads"
+  },
+  {
+   "fight": "10-5",
+   "map": "m7",
+   "kind": "skirmish",
+   "copies": "12 -> 12",
+   "br": "66 -> 53",
+   "leader": "colossal-squid -> swordfish-spearman",
+   "why": "Map 10 skirmish: Colossal Squid (Very Rare) -> 2 Bloodscent Sharks (for a Kraken Spawnling); the Swordfish Spearman (Rare) leads"
+  },
+  {
+   "fight": "13-4",
+   "map": "mr",
+   "kind": "skirmish",
+   "copies": "18 -> 18",
+   "br": "83 -> 72",
+   "leader": "shimmerwing-stag -> bramblewood-lynx",
+   "why": "Map 13 skirmish: Shimmerwing Stag (Very Rare) -> 2 Woodpecker Sappers (for a Fox Kit); the Bramblewood Lynx (Rare) leads"
+  }
+ ]
+}

@@ -51,7 +51,9 @@
 // perLumber 2, perLumber2 0.2, perRitual 0.5, perMap 0.1), the Level term L/15, Level 0 Base − 1, and no scale on the whole N (scale 1;
 // kept as a parameter). N(L) = (Base + L/15) × (1 + L/30). A Common Wait 0 Lumber 0 Map 0: BF5 10 / 10.9 / 14.67 at Lv 0 / 1 / 10,
 // now 10 / 11.44 / 15.56 (before its multiplier). Rarity weighs twice what it did under BF5 (a Legendary +4.5 over BF5). BF5's multipliers stay.
-const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.1, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7};
+// 2026-10-24 (package BAL2, DF-1, owner 10-23 17:34: "Map MUST absolutely contribute at 0.2* per Map ... 20*0.2=4, a reasonable bonus"): perMap 0.2 (was
+// 0.1 since BF6 halved the coefficients); a Map 20 card gets +4 N. The card's map is the first main-line map it can be obtained on (arena_app.js cardObtainMap).
+const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7};
 // N multipliers by what a card can do (2026-10-21, BF5; owner): plainBonus (N x 1.05) for a card with no abilities at all; lightBonus
 // (x 1.02) for a card whose only abilities are the light ones (LIGHT: Flying, Tide, and the time-of-day ones, Diurnal / Nocturnal /
 // Crepuscular, Sunshy / Nightblind). An ability is an effects key that is not a parameter of another skill (PARAMS: swarmN, espritHp, ...),

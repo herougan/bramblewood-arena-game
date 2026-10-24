@@ -7,6 +7,9 @@ const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
 const base = H.loadCardDefs();
 ok(base['summoned-shield'] && base['shieldbearer-hound'], 'the shield token and the Shieldbearer Hound exist');
+// 2026-10-24 (package BAL2, T21-4): no live card prints Shield Call any more (the Shieldbearer Hound is Armor 1 since BF5's two-skill cut), so the
+// test gives the hound the skill itself and tests the engine's rule as it is today; the token is the live 0/5 Guardian shield.
+base['shieldbearer-hound'] = Object.assign({}, base['shieldbearer-hound'], {effects: Object.assign({}, base['shieldbearer-hound'].effects, {shieldCall: true})});
 function run(mode, houndLevel){
   const defs = Object.assign({}, base, {
     'sc-zap':   {id:'sc-zap', name:'Zap', attack:0, health:5, wait:9, cost:0, effects:{triggers:[{on:'onSpawn', do:'damage', amount:3, dmgType:'physical', who:'enemy', sub:'furthest'}]}},

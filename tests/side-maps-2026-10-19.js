@@ -42,7 +42,9 @@ ok(!bad1.length, '1. every side-map fight counts at least a map past its parent:
 ok(!bad2.length, '2. its enemy level and Shield are at least the parent map\'s (the Shield more, where the rule gives one): ' + bad2.slice(0, 6).join('; '));
 ok(!bad3.length, '3. its road-curve targets sit a map\'s step under a main map\'s at the same place: ' + bad3.slice(0, 6).join('; '));
 { const pd = G.CONQUEST_MAPS.find(m=> m.id === 'mpd'), f = pd.nodes.find(x=> x.kind === 'skirmish'); G.NODE_MAP_HINT.set(f, 'mpd');
-  ok(G.fightMapNumber(f) === 19 && G.nodeMapNumber(f) === 18 && G.ruleShieldOf(f) === 19 && G.referenceDeckFor('mpd', f).deckMap === 18, '1. the Pale Desert (18-A): its fights count as Map 19 for the enemy and the Shield, your deck is still Map 18\'s'); }
+  // 2026-10-24 (BAL2): since PG-4 / DV7 the Pale Desert opens after Map 19 (entry.afterMapCleared m3) and counts as Map 19 (shieldMap 19), so your
+  // reference deck is Map 19's too (was: Map 19 for the enemy, Map 18's deck)
+  ok(G.fightMapNumber(f) === 19 && G.nodeMapNumber(f) === 19 && G.ruleShieldOf(f) === 19 && G.referenceDeckFor('mpd', f).deckMap === 19, '1. the Pale Desert (18-A): opens after Map 19 and counts as Map 19 for the enemy, the Shield and your deck'); }
 { const ob = G.CONQUEST_MAPS.find(m=> m.id === 'mo'), f = ob.nodes.find(x=> x.deck); G.NODE_MAP_HINT.set(f, 'mo');
   ok(G.fightMapNumber(f) === 17, '1. a come-back-later side map already past it keeps its own number (the Old Bramble: Map 17)'); }
 

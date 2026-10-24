@@ -2327,7 +2327,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ne-slot-empty": "Empty deck slot",
   "ui.ne-slot-tap": "Tap to build a deck here",
   "ui.ne-cx-copies": "Your copies ({n})",
-  "ui.ne-cx-tap-level": "Tap a copy to see its level"
+  "ui.ne-cx-tap-level": "Tap a copy to see its level",
+  "ui.bal2-base-cap": "🌰 Base cards stop at Lv 4. Your road cards keep growing past it."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

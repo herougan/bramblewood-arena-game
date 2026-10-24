@@ -13,6 +13,13 @@
 //   4. rarity caps: every card reward (leaders aside, as the road-rarity test does) and every card a fight fields is inside the road's
 //      cap, rarity moves included;
 //   5. the docs: docs/card-pass-2026-10-19.md and its .xlsx, and a CHANGELOG entry.
+// 2026-10-24 (package BAL2, T21-4: "fix stale tests card-pass-2026-10-19 (pins v3 budget) ... so they test today's rules"): checks 1, 3 and 4
+// pinned the 10-19 state (budget v3 under the pre-application costs, the pass's planned sources, the road caps by parent map). Later packages
+// moved all three on purpose (BF5-BF11 re-fits, DV / RW5 sources, side maps counting from the map that unlocks them), so they now check the
+// rule of today: 1. today's budget (tools/skill_costs.js, canonical/skill-costs.json) at Level 1 and the start level, but for the owner-call
+// list and the cards held on record (docs/balance/human-pass-1-flagged-2026-10-21.json, the post-balance queue); 3. every live card has a
+// source (the plan's own sources are history: they only need to still be obtainable or awaiting the owner's placement); 4. the road caps as
+// the game reads them (a side map at the main map that unlocks it, its own reveal; the Tutorial's lesson fights are not road fights).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -36,16 +43,19 @@ const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dra
 // 2026-10-19 (package TC): the owner applied the measured skill worth (canonical/skill-costs.json, appliedAt / prevValue); the cards it
 // puts over budget are queued for the post-balance step (docs/balance/post-balance-queue.json, owner 08:49: no refit now).
 const QUEUE = new Set(readJSON('docs/balance/post-balance-queue.json').cards.map(c=> c.id));
-const over = live.filter(c=> !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !P.SC.budget(c).ok).map(c=> `${c.id} ${c.attack}/${c.health}`);
-ok(!over.length, '1. budget v3 passes for every live card but the Dragons / Caldera Wyrm and the post-balance queue: ' + over.slice(0, 8).join('; '));
+const HELD = new Set(readJSON('docs/balance/human-pass-1-flagged-2026-10-21.json')); // BAL2: the cards held at their stats on record (no legal line, or a cut held for the owner)
+const SCN = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(JSON.parse(read('canonical/skill-costs.json'))), lvOf = require(path.join(ROOT, 'tools', 'skill_costs.js')).levelOf;
+const band = c=> c.attack != null && c.health != null && (c.attack || c.health) && !c.easterEgg && !['materia', 'spell', 'equipment'].includes(c.cardType) && !c.hatchInto && !c.worldBoss && !c.awaitingSource;
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));
 const PREV = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(SCT);
-['raven-harbinger', 'bone-diviner', 'magnate-duck'].forEach(id=> ok(PREV.budget(defs[id]).ok && (P.SC.budget(defs[id]).ok || QUEUE.has(id)), `1. ${id} (newly over on 10-19) fits under prevValue, and fits now or is queued`));
+// (BAL2: the 10-19 "newly over" trio and "every card fits under the pre-application costs" checks pinned budget v3 and the 10-19 skill costs; the
+// cards have been re-fitted to every budget since, so check 1 above is today's version of both)
 // 2026-10-19 (BF2): the pass was made under budget v3's N; v5's is a little lower at Level 1 for some cards (Colony, Great Gate are queued)
 const RETUNED = c=> /2026-10-19 retune \(v5 L\/10\)/.test(c.creatorNote || ''); // BF3: the full card retune came after the pass
-const fitsPrev = live.filter(c=> !OVER_OK.has(c.id) && !RETUNED(c) && !PREV.budget(c, {N: PREV.budgetV3N(c)}).ok).map(c=> c.id);
-ok(!fitsPrev.length, '1. under the pre-application costs every live card but the owner-call list fits (the pass as made): ' + fitsPrev.slice(0, 8).join(', '));
+void PREV; void RETUNED;
 
 // ---- 2. the bands
 const ST = Object.entries(PLAN.stats || {});
@@ -78,9 +88,13 @@ const obtainable = c=>{ const s = G.cardSourceOf(c); if(['pack', 'base', 'raid',
   if(s.kind !== 'map' || !s.node) return false; const m = MAPS.find(x=> x.id === s.id); return !!(m && (m.nodes || []).some(x=> x.key === s.node)); };
 const none = live.filter(c=> c.cardType !== 'materia' && !c.easterEgg && !c.awaitingSource && !obtainable(c) && !P.SOURCELESS[c.id]).map(c=> c.id);   // 2026-10-19 (EE): Easter eggs are ungettable on purpose; new cards flagged awaitingSource (SK2/EQ/SK3, owner places them later)
 ok(!none.length, '3. every live card has a source or is on the allowed sourceless list: ' + none.slice(0, 10).join(', '));
-Object.keys(P.SOURCELESS).forEach(id=> ok(defs[id] && !obtainable(defs[id]) && P.SOURCELESS[id].length > 10, `3. ${id} stays sourceless, with its reason`));
+// BAL2 (2026-10-24): a card the pass left sourceless either still is (with its reason) or has been given a source since (the Magnate Duck and the
+// Snow Leopard by DV / RW5, the Caldera Wyrm by BAL2: the 20-B-4 leader paid on its clear)
+Object.keys(P.SOURCELESS).forEach(id=> ok(defs[id] && (obtainable(defs[id]) || P.SOURCELESS[id].length > 10), `3. ${id} stays sourceless with its reason, or has a source now`));
 const srcPlain = src=>{ if(!src || !src.challenge) return src; const o = Object.assign({}, src); delete o.challenge; return o; }; // 2026-10-22 (RW2): a challenge flag on the source is not a move
-(PLAN.sources || []).forEach(s=> ok(defs[s.id] && (JSON.stringify(srcPlain(defs[s.id].source)) === JSON.stringify(s.source) || JSON.stringify(rw5Pack(srcPlain(defs[s.id].source))) === JSON.stringify(rw5Pack(s.source)) /* RW5 */ || rpMoved(defs[s.id])) && /package CB/.test(defs[s.id].creatorNote || ''), `3. ${s.id}: sourced as planned (${s.where}), or moved on by package RP`));
+// BAL2: the plan's sources are history (DV, RW3, RW5 and EN4 moved many on purpose); a card the pass sourced must still be obtainable, or wait
+// on the owner's placement, or have left the game as a pool card
+void srcPlain; void rpMoved; (PLAN.sources || []).forEach(s=> ok(!defs[s.id] || defs[s.id].pool || defs[s.id].awaitingSource || obtainable(defs[s.id]) || P.SOURCELESS[s.id], `3. ${s.id}: sourced by the pass, still obtainable (${JSON.stringify(defs[s.id] && defs[s.id].source)})`));
 const per = {}; live.forEach(c=>{ const s = c.source; if(s && s.kind === 'map' && s.node && c.cardType !== 'equipment') per[s.id + ':' + s.node] = (per[s.id + ':' + s.node] || 0) + 1; });
 const crowd = Object.entries(per).filter(([k, v])=> v > 3 && (PLAN.sources || []).some(s=> s.source.kind === 'map' && s.source.id + ':' + s.source.node === k));
 ok(!crowd.length, '3. no fight the pass gave a card to gives more than 3: ' + crowd.map(([k, v])=> k + ' ' + v).join(', '));
@@ -94,9 +108,12 @@ const RAWMAPS = eval(asrc.slice(i0 + 'const CONQUEST_MAPS = '.length, j0 + 2));
 const mains = RAWMAPS.filter(m=> !m.sub && !m.reserved), numOf = m=> mains.indexOf(m.sub ? RAWMAPS.find(x=> x.id === m.parent) : m);
 const isLeader = d=> (d.archetypes || []).includes('Leader') || !!(d.effects && d.effects.leader);
 const capBad = [];
-live.forEach(c=>{ const s = c.source; if(!s || s.kind !== 'map' || !s.node || isLeader(c)) return; const m = RAWMAPS.find(x=> x.id === s.id), node = m && m.nodes.find(x=> x.key === s.node);
-  if(node && !G.roadRarityOk(c.rarity, numOf(m), node.kind)) capBad.push(`${c.id} (${c.rarity}) reward of ${s.node}`); });
-RAWMAPS.forEach(m=>{ if(m.reserved) return; (m.nodes || []).forEach(x=> Object.keys(x.deck || {}).forEach(id=>{ const d = defs[id]; if(d && !G.roadRarityOk(d.rarity, numOf(m), x.kind)) capBad.push(`${x.key} fields ${id} (${d.rarity})`); })); });
+// BAL2 (2026-10-24): a side map counts at the main map that unlocks it (G.mapUnlockNumberOf, as cardObtainMap and the gates do) with its own
+// reveal (the map id goes to roadRarityOk); the Tutorial map's lesson fights and the endless / tower maps are not road fights
+const numAt = m=> m.sub ? G.mapUnlockNumberOf(m.id) : numOf(m), roadMap = m=> m && !m.reserved && m.id !== 'mtut' && !m.endless && !m.tower;
+void numOf; live.forEach(c=>{ const s = c.source; if(!s || s.kind !== 'map' || !s.node || isLeader(c)) return; const m = RAWMAPS.find(x=> x.id === s.id), node = m && m.nodes.find(x=> x.key === s.node);
+  if(node && roadMap(m) && !G.roadRarityOk(c.rarity, numAt(m), node.kind, m.id)) capBad.push(`${c.id} (${c.rarity}) reward of ${s.node}`); });
+RAWMAPS.forEach(m=>{ if(!roadMap(m)) return; (m.nodes || []).forEach(x=> Object.keys(x.deck || {}).forEach(id=>{ const d = defs[id]; if(d && !(x.leaders || []).includes(id) && !G.roadRarityOk(d.rarity, numAt(m), x.kind, m.id)) capBad.push(`${x.key} fields ${id} (${d.rarity})`); })); });
 ok(!capBad.length, '4. rewards and fights inside the road\'s rarity caps: ' + capBad.slice(0, 8).join('; '));
 
 // ---- 5. the docs

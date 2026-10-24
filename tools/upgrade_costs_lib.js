@@ -23,7 +23,7 @@
     const add = (path, group, label, note, step)=> E.push({path, group, label, note: note || '', step: step || 1});
     (t.forgeStepDust || []).forEach((v, L)=>{ if(L >= 1) add('forgeStepDust.' + L, 'road', 'Level ' + L + ' to ' + (L + 1), 'Dust on a Common'); });
     Object.keys(t.levelCostMult || {}).forEach(k=> add('levelCostMult.' + k, 'rarity', rn(k), '×', 0.5));
-    add('modifiers.hero', 'mods', 'Hero card', '×', 0.25); add('modifiers.event', 'mods', 'Event card', '×', 0.25); add('modifiers.questBase', 'mods', 'Quest and Base card', '×', 0.25);
+    add('modifiers.hero', 'mods', 'Hero card', '×', 0.25); add('modifiers.event', 'mods', 'Event card', '×', 0.25); add('modifiers.questBase', 'mods', 'Quest and map-reward card', '×', 0.25); add('modifiers.base', 'mods', 'Base card (stops at Lv 4; BAL2 2026-10-24)', '×', 0.25);
     add('limitBreakCostMult', 'limit', 'Limit break cost', '× the road to 10', 0.5);
     Object.keys(t.limitBreakDups || {}).forEach(k=> add('limitBreakDups.' + k, 'limit', rn(k), 'lifetime duplicates'));
     Object.keys(t.duplicateDivisor || {}).forEach(k=> add('duplicateDivisor.' + k, 'dups', rn(k), '÷', 0.25));

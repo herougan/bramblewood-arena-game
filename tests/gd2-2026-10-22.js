@@ -125,17 +125,18 @@ ok(/\{key:'spellward', category:'passive'/.test(app) && /spellward:'/.test(app),
     Math: Object.assign(Object.create(Math), {random: ()=> rnd()}), Object, String, Number, Array, Set, JSON, out: {}};
   vm.createContext(sbx);
   vm.runInContext([constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), constSrc('DROP_PER_ENERGY_RW3'), constSrc('DROP_SHIELD_BONUS'), /* RW3 */
-    constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'), constSrc('SKIRMISH_OWN_DROP_MULT'), constSrc('SKIRMISH_OWN_DROP_BY_RARITY'), tblSrc,
+    constSrc('CARD_RANK_STEP_MAPS'), constSrc('CARD_RANK_CAP'), constSrc('SKIRMISH_OWN_DROP_MULT'), constSrc('SKIRMISH_OWN_DROP_BY_RARITY'), constSrc('SKIRMISH_OWN_REPEAT_DROP') /* BAL2 */, tblSrc,
     ...['nodeFirstPackCardIds', 'nodeFirstClearCardIds', 'rarityAtLeastRare', 'nodeIsEliteForRank', 'cardRewardIsChallenge', 'cardRewardRankFor', 'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll',
       'rollSkirmishCardDrop', 'fightDropEnergy', 'dropShieldBonus', 'ticketedDungeonDropChance', 'isTicketedDungeonFight', 'fightCardDropChance', 'skirmishOwnDropShare', 'skirmishOwnDropIds', 'nodeCardDropChance', 'skirmishOwnDropOdds', 'rollCardDrop'].map(fnSrc)].join('\n') +
     '\nout.f = {nodeCardDropChance, rollCardDrop, skirmishOwnDropShare, nodeFirstClearCardIds};', sbx);
   const F = sbx.out.f, node = {key: nk0, kind: 'skirmish', deck: {}};
   ok(JSON.stringify(F.nodeFirstClearCardIds(mid0, nk0)) === JSON.stringify([pc]), `GD-5: ${k0} pays ${pc} on its first clear`);
-  ok(F.nodeCardDropChance(mid0, node) === 0.01 && F.nodeCardDropChance(mid0, node, {repeat: true}) === 0.03, 'GD-5: a pack-card skirmish rolls 1% on its first clear, 3% on repeats (like an exclusive one; RW3 numbers)');
+  // 2026-10-24 (package BAL2, DF-2): its own card 10% a repeat (any rarity), else the pack card at 1%
+  ok(F.nodeCardDropChance(mid0, node) === 0.01 && F.nodeCardDropChance(mid0, node, {repeat: true}) === 0.109, 'GD-5: a pack-card skirmish rolls 1% on its first clear, 10.9% on repeats (like an exclusive one; BAL2 numbers)');
   const N = 20000, share = F.skirmishOwnDropShare(byId[pc].rarity); let any = 0, own = 0; rnd = seeded(91);
   for(let i = 0; i < N; i++){ const id = F.rollCardDrop(node, mid0, {rank: 'S', firstClear: false}); if(id){ any++; if(id === pc) own++; } }
-  console.log(`  ${k0} (${pc}, ${byId[pc].rarity}) repeat wins, ${N} rolls: any card ${(any / N * 100).toFixed(2)}% (want 3%), the reward card ${(own / N * 100).toFixed(2)}% (want ${(3 * share).toFixed(2)}%)`);
-  ok(Math.abs(any / N - .03) < .005 && Math.abs(own / N - .03 * share) < .004, 'GD-6: one 3% roll, then the reward card at its rarity share, else a pack card (no second roll)'); }
+  void share; console.log(`  ${k0} (${pc}, ${byId[pc].rarity}) repeat wins, ${N} rolls: any card ${(any / N * 100).toFixed(2)}% (want 10.9%), the reward card ${(own / N * 100).toFixed(2)}% (want 10%)`);
+  ok(Math.abs(any / N - .109) < .008 && Math.abs(own / N - .10) < .007, 'GD-6 (BAL2): the reward card 10% of repeats, any rarity, else the pack card at 1%'); }
 
 console.log(`gd2-2026-10-22: ${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
