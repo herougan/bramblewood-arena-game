@@ -1,8 +1,129 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-24). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-25). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
+
+**PL2-1. The Dungeons tab: gone for players, kept in Admin Mode** · Decide · Dungeons · asked 2026-10-25
+- Your PL1-3 answer ("Dungeons Tab is not needed for a while"), built: players never see the Dungeons tab (nor the 🗝️ key, which already needed a daily dungeon). Admin Mode (and Dev Mode) still show it, so the daily dungeons and the Spire stay testable. The Group Dungeon is the Arena's new Co-op tab and a 👥 spot on Map 3 after its last fight (the same gate as before: Map 3 won). Hide it in Admin Mode too?
+  - Kept in Admin Mode (built)
+  - Gone for everyone until the dungeons move
+- **Default:** Kept in Admin Mode (built)
+
+**PL2-2. Where the Group Dungeon sits on the map** · Decide · Map · asked 2026-10-25
+- Your PL1-3 answer: "It'll be just a dungeon on the map". Built: a 👥 spot on Map 3 (Gannet Cliffs side of the road, beside its last fight), found once that fight is won; tapping it opens the Group Dungeon's card (Create, Solo with CPU allies, Join by code). An admin can drag it like any spot. The Arena only opens on Map 11, so the map spot is how a player reaches it before that. Another map, or a cave-looking node instead of a spot?
+  - Map 3 spot (built)
+  - Another map (say which)
+  - A dungeon node with its own look
+- **Default:** Map 3 spot (built)
+
+**PL2-3. XP won outside the Conquest map waits for the map** · Decide · Results · asked 2026-10-25
+- Your 00:02 "XP is for all skirmishes", built: no won fight's results show the XP bar any more (Arena, Spire, dungeon floors as well as Conquest). The XP counts at once (a level-up included); the bar fills at the top of the Conquest map the next time it is in view, after that map's own moments (each fight won since you last saw it plays its emblem, even over a chain of Next fight wins or a reload). A long Arena session therefore shows its XP only when you next open the map. Also fill it on the Arena screen when you go back there?
+  - Only on the Conquest map (built)
+  - Also on the Arena screen
+- **Default:** Only on the Conquest map (built)
+
+**PL2-4. Which card rewards flash with the rank ribbon** · Decide · Results · asked 2026-10-25
+- Your 00:02 #5, built: every card reward is a card (eggs as cards, card-form materia with ×N); two or more are one stack with a count, fanned on hover or tap. Two kinds count as won by the rank and flash with a ribbon (the rank emblem and "reward"): the top-rank rare find (once per map) and a card drop the rank unlocked. First-clear rewards and Base copies are plain. The ribbon shows the rank the fight was won at. Add first-clear cards to the flashing ones?
+  - Rare find and rank-gated drops (built)
+  - Also first-clear cards
+- **Default:** Rare find and rank-gated drops (built)
+
+**PL2-5. Fire Ant Raft and Ember Tetra have no art** · Decide · Art · asked 2026-10-25
+- The "ghost art" in your 00:02 SS#1 was the Fire Ant Raft's placeholder: a card with no art shows its emoji, and it was drawn at 55%. It is drawn whole now, but the Fluent set's ant is a pale violet shape, so the card still looks unfinished. Both it (Map 5, Pack 1) and the Ember Tetra (Pack 3) need art. Queue both for the next art batch?
+  - Queue both (art workflow)
+  - Leave the placeholders
+- **Default:** Queue both (art workflow)
+
+**PL2-6. How quiet the fight's music is under the results** · Decide · Audio · asked 2026-10-25
+- Your 00:02 #10, built: while a fight's results (or the board looked at after them) are up, the fight's theme carries on at 30% under the Victory / Defeat sting, which plays at full level; the map's theme starts only once you are back on the map and fades in over 4 s (it used to start at once, 1.5 s, as the results came up). Quieter or louder under the results, faster or slower fade-in?
+  - 30% and 4 s (built)
+  - Say the numbers
+- **Default:** 30% and 4 s (built)
+
+**EN8-11. Render's Daunt counters: what takes one off** · Decide · Battle rules · asked 2026-10-25
+- Owner 00:02 #2, built: Render N puts N Daunt counters on the enemy facing it (-1 Attack and -1 skill damage each). One falls off at each round's end, one when it swings (its action), and one each time it uses a skill (any trigger that runs an action; a swing's own On Action / On Attack are part of the swing). Cleanse takes them, one a point. Priced 0.8 a point (4-round rule; was 2 for N Attack lost for good). The older Daunt N skill (on hit: -N Attack until the end of next round) is unchanged and adds to the same -Attack. Should a passive skill (an aura, a heal at upkeep) also take a counter off, or only actions and triggered skills?
+  - Swings and triggered skills only (built)
+  - Also every passive that fires
+- **Default:** Swings and triggered skills only (built)
+
+**EN8-10. The CPU is stronger on Maps 0-20: retune the road after EN8?** · Decide · Balance · asked 2026-10-24
+- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve).
+  - Retune in the next balance pass (proposed)
+  - Keep the CPU this strong
+  - Soften: Basic CPU keeps the old pitch
+- **Default:** Retune in the next balance pass (proposed)
+
+**EN8-9. The new resource cards and their homes** · Decide · Cards · asked 2026-10-24
+- One card per new skill, pack cards in their biome's map (no faction cards), stats on the formula line: Beachcomber Sanderling (Driftwood 1, 1/7, Pebble Beach, Map 2), Beaver Feller (Felling 1, 2/10, the Morel Hollow, Map 7), Prospector Mole (Prospector 1, 3/9, Caves & Alcoves, Map 8), Salvager Hermit Crab (Salvage 1, 1/13, Coral Current, Map 10), Marmot Stonecutter (Stonecutter 1, 1/12, Eyrie Heights, Map 11), Carrion Crow (Flying, Scavenge 1, 2/5, the Briar Maze, Map 12), Hazel Coppice (Structure, Coppice 1, 0/14, the Redwood Deep, Map 13), Moonshell Snail (Magic Armor 1, 1/15, the Long Grass, Map 15). The Leafcutter Gardener's Growth (it did nothing) became On Ready: +1 Lumber (22:28 #10), 2/7. Art prompts: docs/art/en8-2026-10-24-briefs.md.
+  - Keep
+  - Move or rename some (say which)
+- **Default:** Keep
+
+**EN8-8. The CPU's lethal guard at every level** · Decide · AI · asked 2026-10-24
+- P24-7, built: from Map 1 on (Map 0 keeps the old play), when your Ready units would swing into open columns for its bramble's Health and Shield and it can't win that round itself, the CPU plays the unit that blocks the most of it into the attacker's column (Basic, Smart and Smartest alike). And the pitch (22:28 #1 / #3): every level pitches before it plays: nothing useful -> its least valuable card; an unaffordable card in hand with 3+ cards -> a spare card. Measured on the 5-3-like deck (4 zero-cost of 20, docs/balance/en8-cpu-pitch-*.json): first play round 2.59 -> 1.54. Keep the guard at Basic too, or Smart and up only?
+  - Every level (built)
+  - Smart and Smartest only
+- **Default:** Every level (built)
+
+**EN8-7. Where Windfall blows** · Decide · Maps · asked 2026-10-24
+- LUM-1 Windfall, built as a field rule: after a Storm round (a Thunderstorm, or a strong-wind round on a windy map), both sides gain 1 Lumber at the next round's start. Placed on every fight of the windy maps up to Map 20 (Gannet Cliffs, Eyrie Heights, the Glass Dunes, Ashen Spurn, the Sundered Peak and their side maps); it is shown with the map's other field effects and can be set per fight in Edit skirmish. Keep it there, or only on chosen fights?
+  - The windy maps up to 20 (built)
+  - Only chosen fights (name them)
+- **Default:** The windy maps up to 20 (built)
+
+**EN8-6. Pearls: when Pearl Bed pays, and the Shellfish type** · Decide · Content · asked 2026-10-24
+- 22:28 #2, built: Pearl Bed N gives N Pearls when the card becomes Ready (a Wait 0 card: as it lands). A Pearl pays 1 Lumber or 1 Stone, only when you are short (Lumber and Stone first). Price 0.9 a point. On the Oyster Bank (Map 2, Pearl Bed 1 + Shore Up) and the Giant Clam (Map 10, Pearl Bed 1 + Shell 2), both already placed and re-fitted (0/14 -> 0/13; 5/5 kept). "Shellfish" is not a type yet: they count as Molluscs (a Shellfish node needs the taxonomy file, outside this package). Alternatives: Pearl Bed on hit, or every few turns.
+  - On Ready, once (built)
+  - On hit
+  - Every 3rd Ready turn
+- **Default:** On Ready, once (built)
+
+**EN8-5. Scavenge and Salvage: SK2's point counters replaced by LUM-1's plain rules** · Decide · Content · asked 2026-10-24
+- SK2 (10-19) already had Scavenge N, M (points from deaths within 1 column, M points -> 1 Lumber) and Salvage N, M (the same for Structures -> Stone), on no card. LUM-1's Scavenger and Salvage are simpler, so the two names now carry them: Scavenge N: another of your units dies -> +N Lumber; Salvage N: another of your Structures dies -> +2N Lumber. Both always on (Waiting too). Prices 1.5 and 0.75 a point. One card each: Carrion Crow (Map 12), Salvager Hermit Crab (Map 10).
+  - Keep the plain rules (built)
+  - Bring back the point counters
+- **Default:** Keep the plain rules (built)
+
+**EN8-4. Fodder before Map 20, and the one "?" skill** · Decide · Cards · asked 2026-10-24
+- 21:20 #7, built: Stem, its braces and Chrysalis are Evomax skills (the editor offers them on Evomax cards only, like Evolute / Alpha / Omega). Fodder (EV-6's Stem from Level 1) came off the 20 baby-like cards first obtainable before Map 20 (Otter Kit, Duckling, Fox Kit, Caiman Hatchling, Bear Cub ...) and the Speckled Egg lost its Stem; the three babies first obtainable on Map 20+ (Fire Drake Hatchling, Harp Seal Pup, Duckling Squadron) keep it, as EV-6 said. "One of the fodder skills can be a ? for now": the Cocoon's Chrysalis reads "❓ ?" ("Something stirs inside. Its skill wakes on the Evomax maps") on its face and in its detail; the rule is still there (no evolute exists before Map 20). Which card(s) should carry the "?"?
+  - The Cocoon's Chrysalis (built)
+  - Every baby-like card shows a "?" Fodder slot
+  - None: just remove
+- **Default:** The Cocoon's Chrysalis (built)
+
+**EN8-3. A bramble's healing heals an ally; the Wildpath perks that mend the bramble** · Decide · Battle rules · asked 2026-10-24
+- P24-17, built: a bramble's healing passive (the maps' castleRegen N: 8 brambles) now heals ONE random wounded ally unit N each round, never a Structure and never the bramble ("Heal 1 random ally 1" as the default meaning). Heals never touch a Structure; Repair N and Rebuild are what restore Structures and brambles. Left as they were: the Wildpath perks Sap Mending and Heartwood, which put 1 Health back on your own bramble (they read as repairs). Keep the perks, or turn them into ally heals too?
+  - Keep the perks as repairs (built)
+  - Make them heal an ally too
+- **Default:** Keep the perks as repairs (built)
+
+**EN8-2. Armor is physical only; Magic Armor N is the other half** · Decide · Battle rules · asked 2026-10-24
+- P24-16, built: Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) takes only from physical hits; magic and every element (fire / heat, frost, shock, poison, acid, water, decay) go past it. "Magic armor" did not exist as a skill (Supreme halves non-magic, Resist halves one element, Spellward redirects skills), so a new skill, Magic Armor N: N off each magic or elemental swing, shot or skill, never a physical one, never a status tick; Supreme crushes it. Priced 0.4 a point (Armor 1.5 x about a quarter of the hits being magic or elemental). One card: the Moonshell Snail (Map 15). Keep the name and price?
+  - Keep (built)
+  - Another name (say it)
+  - Another price
+- **Default:** Keep (built)
+
+**EN8-1. Guardian vs Thorns: which way round** · Decide · Battle rules · asked 2026-10-24
+- P24-15 ("Guardians must not intercept Thorns"), built: a Guardian never steps in for an ally that has Thorns (printed, or a Durian's): the swing lands on the Thorns unit and its Thorns answer the attacker. (Thorns damage itself was never redirected: it goes straight to the attacker, and no Guardian beside the attacker takes it.) The other reading: the Guardian still steps in, and the guarded unit's Thorns answer anyway.
+  - No Guardian for a Thorns unit (built)
+  - The Guardian steps in, the Thorns still answer
+- **Default:** No Guardian for a Thorns unit (built)
+
+**PRO2-1. PRO / BPRO rarity cap: the map's rarest fight, or a plain skirmish?** · Decide · Skirmishes · asked 2026-10-24
+- Your 21:20 #11: "run the PRO ones but with respect to the rarity and cards of that map". Built: a PRO or BPRO deck may hold the rarest card any of the map's fights may hold. On the main road that is the elite's step: Map 0 Common, Maps 1-3 Uncommon. Map 1's skirmishes are Common, and only its elite (1-5) is Uncommon. A PRO fight is a skirmish, so the stricter reading is a plain skirmish's cap: Common on Maps 0-1, Uncommon from Map 2. That changes only Map 1 among Maps 0-3. Switch: --rarity-cap skirmish on both tools, then re-run.
+  - The map's rarest fight (built)
+  - A plain skirmish's cap
+  - One step above the map's rarest fight (PRO is meant to be hard)
+- **Default:** The map's rarest fight (built)
+
+**PRO2-2. Alley Cat's home: the Gatorback Swamp (Map 5), or Clovermead?** · Decide · Progression · asked 2026-10-24
+- Your 21:20 #10: "Why is alley cat in map 0's list of cards too!?" RW5 (10-23) gave this map-less Rare a home by theme, the village edge of Map 0, and Map 0's fights are Common only. No other map 0-40 lists a card over its fights' cap. Built: it moved to the Gatorback Swamp (Map 5, the swamp's trading post, like the Buzzed Chipmunk). Map 5 reveals Rare and its boss may hold one. It stays a Pack 1 card (Maps 0-6) and first obtainable on Map 5, so its 1/1 budget line is unchanged. The better fit by theme is Clovermead, Thistlewood's village side map (house cat, farm dog, miller), but that opens at Map 12. It would make the Alley Cat a Pack 2 card and re-price it for Map 12.
+  - Gatorback Swamp, Pack 1 (built)
+  - Clovermead (village side map), Pack 2, re-priced
+  - Another Maps 5-6 home
+- **Default:** Gatorback Swamp, Pack 1 (built)
 
 **N221-1. Pack tiers after Map 20: Pack 4 Maps 21-27, Pack 5 28-34, Pack 6 35-41** · Decide · Progression · asked 2026-10-24
 - Derived from your Pack 1-3 pattern of about 7 maps each (PP-1: 0-6 / 7-13 / 14-20). Tier 4 already exists in the data (every pack card of Maps 21-24 and the Ice Hollow / Old Bramble side maps carries it; no shop pack sells it yet, so those cards come from the card drop and the base track). Tiers 5 and 6 are written into the proposal only; Pack 6 runs past Map 40, where you build one map at a time. docs/balance/n221-divvy-2026-10-24.md.
@@ -243,6 +364,60 @@ _Generated from `decisions.json` (2026-10-24). The hub has a searchable, filtera
 - **Default:** Yes, test on 10 cards
 
 ## Decided
+
+**LUM-1. Stone/Metal versions of the lumber gatherers, and other ways to make Lumber: which to build?** · Decide · Content · asked 2026-10-24 · decided 2026-10-24
+- Owner 21:41: 'Lumberjack - what are the stone and metal variants - simple 2x might be too strong. But what other ways to generate lumber?' Proposal: Stone and Metal are scarcer, so their gatherers are slower, not stronger: Stonecutter 'On Ready: +1 Stone every 2nd round'; Prospector 'On Kill: +1 Metal'; Smelter converts 2 Stone -> 1 Metal at round end. Other Lumber sources: Felling (On Kill: +1 Lumber), Salvage (when one of your Structures dies: +2 Lumber), Windfall field (after a Storm round, both sides +1 Lumber), Scavenger (when an ally dies: +1 Lumber), Coppice (a tree Structure that gives +1 Lumber each round while undamaged), Driftwood tide (at Ebb, +1 Lumber on beach maps).
+  - Build all
+  - Pick some
+  - Not yet
+- **Default:** Pick some
+- **Outcome:** Owner (22:28 #2): "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall, driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood." Build all (not the proposal's Smelter, which SK2b already has). Built in package EN8 (calls EN8-5 .. EN8-7, EN8-9).
+
+**PL1-1. Where the XP of a Conquest fight shows (P24-3)** · Decide · Results · asked 2026-10-24
+- Your note: "Show the XP reward only when leaving the skirmish for the conquest map." Built: a Conquest fight's results no longer draw the XP bar; the XP still counts when the fight is won (no toast while the results are up), and the bar fills at the top of the map once you are back (after a new map's veil and title, before the packs). Other fights (Arena, raids, the Spire's own results) keep the bar on their results.
+  - As built (Conquest: on the map; others: on the results)
+  - On the map for every fight that returns to the map, no bar on any results
+  - Keep the bar on the results too
+- **Default:** As built (Conquest: on the map; others: on the results)
+- **Outcome:** Owner, 2026-10-25 00:02: "XP is for all skirmishes." XP on the map for every skirmish type (queued, PL2).
+
+**PL1-2. The band on booster packs (P24-4)** · Decide · Packs · asked 2026-10-24
+- Your note: "make it a ribbon hugging the packs; show it only when there is more than 1 pack." Built: a single pack has no name band anywhere it is drawn (the shop shelf, the counter, the results, the map rewards; its name is on the tape or the line under it). A set (x2 and up on the shelf or the counter) is tied with one red satin ribbon round the fanned packs, with a bow and the count (x5). Was: a name band across every pack and a thin twine on sets.
+  - As built
+  - Keep the name band on single packs, ribbon on sets
+- **Default:** As built
+- **Outcome:** Owner, 2026-10-25 00:02: "OKAY"
+
+**PL1-3. When the Dungeons tab opens (P24-13; changes AR3-2)** · Decide · Dungeons · asked 2026-10-24
+- Your note: "The Daily Dungeon tab is not available until something unlocks it." AR3-2 opened the tab for every player past the tutorial (it held only the Group Dungeon). Built: AR3-2's second option, the tab opens once Map 3's last fight is won (GD_OPEN_AFTER_MAP = 3), or with the first daily dungeon; Admin Mode sees it as before.
+  - After Map 3 (built)
+  - After another map (say which)
+  - Only with the first daily dungeon
+- **Default:** After Map 3 (built)
+- **Outcome:** Owner, 2026-10-25 00:02: "Dungeons Tab is not needed for a while - i plan to move all the dungeons much later on. ... [the co-op dungeon] It'll be just a dungeon on the map, and it'll appear in arena, under coop tab." Hide the Dungeons tab; the Group Dungeon as a map dungeon + Arena Co-op tab (queued, PL2).
+
+**PL1-4. Reward packs before the Camp tile is tapped (P24-19, P24-6)** · Decide · Packs · asked 2026-10-24
+- Why your 6 packs didn't open: since 2026-10-15 a reward pack won before the Armoury (the Camp) is open waits, and the Camp only counted as open once its map tile was tapped. Walking past the tile held every pack (the results still showed them) until a tap released them all at once. Built: the Camp counts as open as soon as it is there to tap (its Map 0 fights won); packs held in older saves open the next time a map is shown. The Camp tile still has its own first-visit moment.
+  - As built
+  - Open the Camp by itself once it is available (no tile tap)
+- **Default:** As built
+- **Outcome:** Owner, 2026-10-25 00:02: "OKAY"
+
+**PL1-5. The pawn after X on the results (21:20 #4)** · Decide · Map · asked 2026-10-24
+- Built: after a first clear, X (Back to the map) lets go of the fight: its panel closes and the pawn walks on to the next fight not yet won on that map. After a replay of a fight already won, the fight stays picked and the pawn stays on it (package MK's fix for the pawn jumping to the map's first fight). The Fight again / Next fight buttons are unchanged.
+  - As built
+  - Also after a replay
+  - Open the next fight's panel too
+- **Default:** As built
+- **Outcome:** Owner, 2026-10-25 00:02: "OKAY"
+
+**PL1-6. The faction pick's cards (P24-1)** · Decide · Tutorial · asked 2026-10-24
+- Built: each side's three example cards (the panel that slides in when you hover Otters or Hummingbirds) start as three Commons of that faction (a card with the Otter / Hummingbird archetype) and, every few seconds, one card on one side turns over to another card of that faction at random, as the opening screen's fan does. Phones never show these panels (unchanged, they need hover). Both panels turn over all the time; only the hovered one is seen.
+  - As built (on hover)
+  - Show both sides' cards at all times on desktop
+  - Show them on phones too (under the buttons)
+- **Default:** As built (on hover)
+- **Outcome:** Owner, 2026-10-25 00:02: "OKAY"
 
 **DF3-1. How hard is a challenge skirmish?** · Decide · Map effects · asked 2026-10-24
 - Your 22:23 #6 put the selfish boons on challenge skirmishes only (built in DF3: 19 of them, 1 every 2 maps from Map 5 and 1 a side map). A challenge skirmish keeps its place on the road but is aimed 10 points under that place's road-curve target (a 78% skirmish slot becomes 68%), with a band of +/- 8. It pays what it paid before (a ⚔️ Challenge pill in the fight panel, nothing more).
