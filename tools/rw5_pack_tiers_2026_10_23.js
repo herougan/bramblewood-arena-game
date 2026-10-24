@@ -45,6 +45,8 @@ const tierOf = n=> n == null ? null : ((TIERS.find(([, a, b])=> n >= a && n <= b
 // does not swell past its ~30 (the 19:27 targets).
 const NOMAP = {
   m1: ['alley-cat', 'paper-wasp'],                                                                        // village edge of the Outskirts
+  // 2026-10-24 (package PRO2, owner 21:20 #10): the Alley Cat is a Rare and Map 0's fights are Common only: it now lives in the Gatorback
+  // Swamp (mw, Map 5, the swamp's trading post; still Pack 1, first obtainable on Map 5 as before). It has a map now, so a re-run leaves it.
   mf: ['hedgerow-shrew', 'robin-redbreast', 'woodcock-lookout', 'slow-worm'],                              // Thistlewood's hedges
   mb: ['rock-pool-starfish', 'oystercatcher'],                                                            // Pebble Beach
   m2: ['signal-crayfish', 'diving-bell-spider'],                                                          // Sunken Hollow (river)

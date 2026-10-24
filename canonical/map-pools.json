@@ -2,7 +2,7 @@
  "_about": "Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's own cards, one list each) and \"special\" (the cards added through a skirmish deck editor's + Load any card; one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from cards + that submap + special. Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.",
  "maps": {
   "m1": {
-   "cards": ["duckling", "honey-bee", "pond-duck", "crossed-eyes", "garden-snail", "silver-minnow", "ant-scout", "bee-sentry", "river-carp", "bee-forager", "forager-ant", "duck-paddler", "house-cat", "cottontail", "feral-tomcat", "meadow-rabbit", "chipmunk-forager", "chipmunk-skirmisher", "fox-kit", "otter-kit", "beetle-grunt", "cobalt-talon-fledgling", "terrier-pup", "farm-dog", "alley-cat", "paper-wasp"],
+   "cards": ["duckling", "honey-bee", "pond-duck", "crossed-eyes", "garden-snail", "silver-minnow", "ant-scout", "bee-sentry", "river-carp", "bee-forager", "forager-ant", "duck-paddler", "house-cat", "cottontail", "feral-tomcat", "meadow-rabbit", "chipmunk-forager", "chipmunk-skirmisher", "fox-kit", "otter-kit", "beetle-grunt", "cobalt-talon-fledgling", "terrier-pup", "farm-dog", "paper-wasp"],
    "submaps": {
     "mtut": ["ash-cloud-condor", "badger-berserker", "bee-knight", "burrow-rabbit", "caustic-scorpion", "dynamite-packrat", "eagle-sharpshooter", "earthworm", "golden-eagle-diver", "gull-thief", "otter-paddler", "pond-trout", "rockslide-ram", "scree-goat", "thornwood-palisade", "toucan-courier", "trash-panda-trickster", "worker-ant"],
     "mo": ["ent", "burrow-rabbit", "elder-willow", "glacier-wolf-pack", "otter-paddler", "pond-trout", "thornwood-palisade", "trash-panda-trickster", "tunnel-ant"]
@@ -35,7 +35,7 @@
    "special": []
   },
   "mw": {
-   "cards": ["snapper-hatchling", "constrictor-coil", "venomlord-serpent", "crocodile-ambusher", "swamp-alligator", "caiman-hatchling", "grass-viper", "grass-snake", "fen-mink", "alligator-gar", "plague-gnat-cloud", "buzzed-chipmunk", "fire-ant-raft", "anhinga-spearbird", "marsh-harrier", "raft-spider", "moat-snapper", "nutria-reedcutter"],
+   "cards": ["snapper-hatchling", "constrictor-coil", "venomlord-serpent", "crocodile-ambusher", "swamp-alligator", "caiman-hatchling", "grass-viper", "grass-snake", "fen-mink", "alligator-gar", "plague-gnat-cloud", "buzzed-chipmunk", "fire-ant-raft", "anhinga-spearbird", "marsh-harrier", "raft-spider", "moat-snapper", "nutria-reedcutter", "alley-cat"],
    "submaps": {
     "ms": ["hedgehog-herbalist", "baby-horned-capybara", "bog-behemoth", "bog-leech", "echo-keeper", "mangrove-mudskipper", "mosquito-cloud", "puddle-hopper", "swamp-rabbit"]
    },

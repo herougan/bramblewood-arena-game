@@ -944,7 +944,7 @@
     "source": {
       "kind": "pack",
       "tier": 1,
-      "map": "m1"
+      "map": "mw"
     },
     "dmgType": "physical",
     "effects": {
@@ -995,7 +995,7 @@
     "archetypes": [
       "Cat"
     ],
-    "creatorNote": "2026-10-17 (balance pass): 3/4 -> 2/2 (win-rate: above its band (52-75%): Twin Strike doubles every point of Attack). 2026-10-19 retune (server override folded): was 3/4 rare (live server version of 2026-10-11; well under: 2A+H+S 55% -> 67% of N 24.9). 2026-10-19 halve (BF5): was 4/5. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/2. 2026-10-24 BAL3 (owner BAL2-5 12:02 \"Basic logic return\"): the held card takes its formula line: 1/8 -> 1/1.",
+    "creatorNote": "2026-10-17 (balance pass): 3/4 -> 2/2 (win-rate: above its band (52-75%): Twin Strike doubles every point of Attack). 2026-10-19 retune (server override folded): was 3/4 rare (live server version of 2026-10-11; well under: 2A+H+S 55% -> 67% of N 24.9). 2026-10-19 halve (BF5): was 4/5. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 1/2. 2026-10-24 BAL3 (owner BAL2-5 12:02 \"Basic logic return\"): the held card takes its formula line: 1/8 -> 1/1. 2026-10-24 PRO2 (owner 21:20 #10: \"Why is alley cat in map 0's list of cards too!?\"): RW5 gave this map-less Rare a home by theme in the Bramblewood Outskirts (Map 0), whose fights are Common only, so it sat in Map 0's card list (and the optimizer's Map 0 pool) where no fight may hold it. Moved to the Gatorback Swamp (Map 5: Rare revealed, its boss may hold one; the swamp's trading post, like the Buzzed Chipmunk). Still a Pack 1 card (Maps 0-6) and first obtainable on Map 5 as before, so its budget line is unchanged.",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",

@@ -62,7 +62,7 @@
 const path = require('path'), fs = require('fs'), os = require('os');
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 let SEA = false; try { SEA = require('node:sea').isSea(); } catch (e) { /* Node without SEA */ }
-const VERSION = '2.0.0 (2026-10-23, OPT2)';
+const VERSION = '2.1.0 (2026-10-24, PRO2)';
 
 // ---------------------------------------------------------------- small helpers
 function mulberry(state) { // a serialisable PRNG: {s} is its whole state
@@ -103,7 +103,24 @@ function deckable(gm, id) { const d = gm.D[id]; return !!d && !d.token && !d.tes
 const capOf = (gm, id) => gm.G.maxCopiesForRarity(gm.D[id].rarity);
 function canAdd(gm, deck, id) { if ((deck[id] || 0) >= capOf(gm, id)) return false; try { return !gm.Budget.deckRankBlock(deck, id, gm.D, []); } catch (e) { return true; } }
 const OWNED_ALWAYS = new Set(['tutorialBase', 'base']), OWNED_SKIP = new Set(['unsorted', 'raid', 'materia', 'smith', 'nest', 'pack-nomap']);
+// 2026-10-24 (package PRO2, owner 21:20 #9-#11: "Why is a treant in map 0 pro for example! ... Can we run the PRO ones but with respect to the
+// rarity and cards of that map. ALSO, have a BPRO (Basic Pro) - only using cards from that MAP without using cards from outside"): the map's
+// rarity cap and the first map a player can hold a card, for the map-true and BPRO modes (--mode). The cap: the highest a fight of the map
+// may hold (arena_app.js roadRarityCap over the map's fights: Map 0 Common, Maps 1-3 Uncommon, the elites' one step; --rarity-cap skirmish
+// = a plain skirmish's cap, or a rarity by name). docs/skirmish-tuning-guide.md section 3.
+function mapRarityCap(gm, map, which) {
+  const G = gm.G, no = G.mapNumberOf(map.id); which = which || 'map';
+  if (which !== 'map' && which !== 'skirmish') return which;
+  if (which === 'skirmish') return G.roadRarityCap(no, 'skirmish', map.id) || 'common';
+  return fightsOf(map).map(n => G.roadRarityCap(no, n.kind, map.id)).filter(Boolean).reduce((a, b) => G.roadRarityStep(b) > G.roadRarityStep(a) ? b : a, 'common');
+}
+// the first map a player can hold a card: the HUB3 plan's advancement map (obtainMapOf) or the game's cardObtainMap
+// (canonical/card-obtain-maps.json: a pack card waits for its rarity's reveal, e.g. the Alley Cat Map 5), whichever is later
+function obtainOf(gm, id) { const a = obtainMapOf(gm, id), b = gm.obtain[id]; return Math.max(a == null ? 0 : a, b == null ? 0 : b); }
+const MODES = ['classic', 'map-true', 'bpro'];
 function poolsFor(gm, map, opt) {
+  const mode = (opt && opt.mode) || 'classic';
+  if (mode !== 'classic') return mapTruePools(gm, map, opt, mode);
   const mapNo = gm.G.mapNumberOf(map.id), e = gm.pools[map.id] || { cards: [], submaps: {} };
   let mapCards = (e.cards || []).slice(); if (opt.submaps !== false) Object.values(e.submaps || {}).forEach(l => { mapCards = mapCards.concat(Array.isArray(l) ? l : (l.cards || [])); });
   fightsOf(map).forEach(n => { mapCards = mapCards.concat(Object.keys(n.deck)); }); // the map's own fight decks are its cards
@@ -113,7 +130,54 @@ function poolsFor(gm, map, opt) {
   const all = uniq(p1.concat(spectrum)).filter(id => deckable(gm, id)).sort();
   // 2026-10-23 (OPT2): the map's core cards (its MAP tier and its fight decks, not the submaps) are what "related to the map" means
   const core = uniq((e.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => deckable(gm, id)).sort();
-  return { mapNo, mapCards: uniq(mapCards).filter(id => deckable(gm, id)).sort(), owned: uniq(owned).filter(id => deckable(gm, id) && !mapCards.includes(id)).sort(), p1, all, core };
+  return { mapNo, mode, mapCards: uniq(mapCards).filter(id => deckable(gm, id)).sort(), owned: uniq(owned).filter(id => deckable(gm, id) && !mapCards.includes(id)).sort(), p1, all, core };
+}
+// 2026-10-24 (package PRO2): the classic pool (above) took every submap's list as the map's own cards and every owned card at any rarity. So
+// 0-PRO-3 held 2 Ents (the "treant": a Rare, the Old Bramble's 0-B-4 reward; the Old Bramble is Map 0's side map but opens after Map 21) and
+// 0-PRO-1 the Otter Centurion (a Rare tutorial-base card) on Map 0, whose fights are Common only.
+//   map-true: the map's own cards (its MAP tier, its SPECIAL tier and its fight decks) within the map's rarity cap, plus what a player can
+//     hold by then (the plan's owned-by-then cards and the cards of the submaps already open) within the cap and first obtainable by this map.
+//     Phase 2's candidates obey the same rule.
+//   bpro: the map's own cards only (MAP + SPECIAL + its fight decks), within the cap. No outside card: no owned cards, no submaps, no phase 2.
+// rule(id) says why a card may not be in such a deck (null = it may): the PRO tools and tests check decks with it (mapRuleProblems).
+function mapTruePools(gm, map, opt, mode) {
+  const G = gm.G, mapNo = G.mapNumberOf(map.id), e = gm.pools[map.id] || { cards: [], submaps: {}, special: [] };
+  const cap = mapRarityCap(gm, map, opt.rarityCap), capStep = G.roadRarityStep(cap), capOk = id => G.roadRarityStep(gm.D[id].rarity) <= capStep;
+  const ok = id => deckable(gm, id);
+  const own = uniq((e.cards || []).concat(e.special || [], ...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort(), ownSet = new Set(own);
+  const subsOpen = G.CONQUEST_MAPS.filter(m => m.sub && m.parent === map.id && !m.reserved && (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(m.id) : mapNo) <= mapNo).map(m => m.id);
+  const subCards = uniq([].concat(...subsOpen.map(id => { const l = (e.submaps || {})[id]; return Array.isArray(l) ? l : (l && l.cards) || []; }))).filter(ok);
+  // owned by then: the plan's (Base from the start, the rest after their advancement map), and the MAP tier of every earlier main map (its
+  // pack cards and rewards; HUB3's plan predates some of them, e.g. the Tomcat, Fox Kit and Beetle Grunt of Map 0), each obtainable by now
+  const earlier = {}; G.CONQUEST_MAPS.filter(m => !m.sub && !m.reserved && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) < mapNo).forEach(m => ((gm.pools[m.id] || {}).cards || []).forEach(id => { const n = G.mapNumberOf(m.id); if (earlier[id] == null || n < earlier[id]) earlier[id] = n; }));
+  const ownedPlan = uniq(gm.plan.cards.filter(c => OWNED_ALWAYS.has(c.bucket) || (c.adv != null && c.adv < mapNo && !OWNED_SKIP.has(c.bucket))).map(c => c.id).concat(Object.keys(earlier))).filter(ok);
+  const rule = id => {
+    const d = gm.D[id]; if (!d || !ok(id)) return 'cannot be in a deck';
+    if (!capOk(id)) return `${d.rarity} is over the map's rarity cap (${cap})`;
+    if (ownSet.has(id)) return null;
+    if (mode === 'bpro') return 'not in the map\'s own pool (BPRO)';
+    if (!planOf(gm, id) && earlier[id] == null) return 'not obtainable (not in the progression plan or an earlier map\'s cards)';
+    const at = Math.max(obtainOf(gm, id), earlier[id] != null && !planOf(gm, id) ? earlier[id] : 0); if (at > mapNo) return `first obtainable on Map ${at}`;
+    return null;
+  };
+  const allowed = ids => ids.filter(id => !rule(id));
+  const ownOk = allowed(own), extraSub = mode === 'bpro' ? [] : allowed(subCards).filter(id => !ownSet.has(id)), extraOwned = mode === 'bpro' ? [] : allowed(ownedPlan).filter(id => !ownSet.has(id) && !extraSub.includes(id));
+  const p1 = uniq(ownOk.concat(extraSub, extraOwned)).sort();
+  const spectrum = mode === 'bpro' ? p1 : allowed(uniq(gm.plan.cards.filter(c => c.bucket !== 'unsorted').map(c => c.id).concat(p1)));
+  // what the classic pool had and this one leaves out, by reason (the report's "excluded")
+  const excluded = {}, allSub = uniq([].concat(...Object.values(e.submaps || {}).map(l => Array.isArray(l) ? l : (l && l.cards) || []))).filter(ok);
+  uniq(own.concat(allSub, ownedPlan)).forEach(id => {
+    if (p1.includes(id)) return;
+    let why = rule(id); if (!why) why = mode === 'bpro' ? 'not in the map\'s own pool (BPRO)' : 'only in a submap not open by this map';
+    why = why.replace(/^\w+ is over/, 'over').replace(/on Map \d+$/, 'after this map');
+    (excluded[why] = excluded[why] || []).push(id); });
+  const core = uniq((e.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort();
+  return { mapNo, mode, cap, rule, subsOpen, mapCards: uniq(ownOk.concat(extraSub)).sort(), owned: extraOwned.sort(), p1, all: uniq(spectrum).sort(), core,
+    excluded: Object.keys(excluded).sort().map(k => ({ reason: k, n: excluded[k].length, ids: excluded[k].sort() })) };
+}
+// the problems of a deck under a mode's map rule (no problems = every card may be in that map's PRO / BPRO deck)
+function mapRuleProblems(gm, map, deck, mode, rarityCap) {
+  const p = mapTruePools(gm, map, { rarityCap }, mode); return Object.keys(deck).filter(id => deck[id] > 0).sort().map(id => { const w = p.rule(id); return w ? id + ': ' + w : null; }).filter(Boolean);
 }
 // a legal 20-card deck from any counts: copies within the rarity's cap and the top-rank caps, cards within `pool`
 function repair(gm, deck, pool, rng, credit, size) {
@@ -356,6 +420,8 @@ function candidatesFor(gm, map, pools, rules) {
   const F = mapFacts(gm, map, pools, rules), W = rules.weights, X = rules.exclude, inP1 = new Set(pools.p1), rows = [], excluded = {};
   const spectrum = uniq(gm.plan.cards.map(c => c.id).concat(Object.keys(gm.D))).filter(id => deckable(gm, id) && !inP1.has(id)).sort();
   spectrum.forEach(id => {
+    // 2026-10-24 (package PRO2): map-true / BPRO: the map's rarity cap and first-obtainable rule first (pools.rule)
+    const mr = pools.rule ? pools.rule(id) : null; if (mr) { const k = 'map rule: ' + mr.replace(/^\w+ is over/, 'over').replace(/on Map \d+$/, 'after this map'); (excluded[k] = excluded[k] || []).push(id); return; }
     const ex = exclusionOf(gm, id, F, X); if (ex) { (excluded[ex] = excluded[ex] || []).push(id); return; }
     const d = gm.D[id], u = unitOf(gm, id), bio = (u && u.biomes) || [], ty = typesOf(gm, id), fam = familiesOf(rules, d), why = []; let score = 0;
     const add = (w, s) => { if (w) { score += w; why.push(s); } };
@@ -479,7 +545,7 @@ const idxOf = (entries, j) => entries.map((e, i) => i).filter(i => entries[i].oj
 
 // ---------------------------------------------------------------- one map
 function parseArgs(argv) {
-  const o = { maps: null, minutes: null, budget: null, workers: Math.max(1, Math.min(os.cpus().length, 8)), seed: 'bramble', crossShare: 0.3, roadWeight: 0.25, ai: 1, owned: 'plan', crossPool: 'rules', submaps: true,
+  const o = { mode: 'map-true', rarityCap: 'map', maps: null, minutes: null, budget: null, workers: Math.max(1, Math.min(os.cpus().length, 8)), seed: 'bramble', crossShare: 0.3, roadWeight: 0.25, ai: 1, owned: 'plan', crossPool: 'rules', submaps: true,
     method: 'ga', restarts: 2, nicheRadius: 5, nicheCap: 2, neighbours: 10, patience: 3, dgmax: 16,
     pop: 16, children: 32, g0: 2, gmax: 32, top: 3, screenCopies: 3, screenMax: null, finalGames: 0, finalMax: 200, finalShare: 0.2, level: 1, beeTank: false,
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
@@ -490,6 +556,7 @@ function parseArgs(argv) {
   while (a.length) { const k = take();
     switch (k) {
       case '--map': case '--maps': o.maps = take(); break;
+      case '--mode': o.mode = take(); break; case '--map-true': o.mode = 'map-true'; break; case '--bpro': o.mode = 'bpro'; break; case '--classic': o.mode = 'classic'; break; case '--rarity-cap': o.rarityCap = take(); break;
       case '--minutes': o.minutes = +take(); break; case '--budget': o.budget = +take(); break; case '--workers': case '-j': o.workers = +take(); break; case '--seed': o.seed = take(); break;
       case '--cross-share': o.crossShare = +take(); break; case '--road-weight': o.roadWeight = +take(); break; case '--ai': o.ai = +take(); break;
       case '--owned': o.owned = take(); break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
@@ -510,11 +577,17 @@ function parseArgs(argv) {
     } }
   if (o.g0 % 2) o.g0++; // mirror games swap seats: even counts
   if (!['ga', 'descent'].includes(o.method)) throw new Error('--method ga|descent');
+  if (!MODES.includes(o.mode)) throw new Error('--mode ' + MODES.join('|'));
+  if (o.mode === 'bpro') o.crossShare = 0; // 2026-10-24 (PRO2): BPRO has no outside cards, so no phase 2: the whole budget searches the map's own pool
   if (o.budget == null && o.minutes == null) o.minutes = 5;
   return o;
 }
 const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramblewood engine (no Claude, no tokens).
   --map N | --maps 0-3 | --maps 0,2,mc    map number(s) or id(s)
+  --mode map-true|bpro|classic   the card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
+                      all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own pool only (MAP + SPECIAL +
+                      its fight decks), within the cap, no phase 2; classic (--classic) = the OPT2 pool (every submap, owned cards at any rarity)
+  --rarity-cap map|skirmish|R    map-true / bpro cap: the highest of the map's fights (default), a plain skirmish's, or a rarity
   --budget G          search games per map (exact and reproducible)             --minutes M   or: search time per map, turned into games (default 5)
   --workers N         worker threads (default: cores, max 8; 0 = inline)        --seed S       seed (default "bramble")
   --level L | ref     your card level (default 1; ref = the game's reference level)
@@ -552,7 +625,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank };
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
-  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
+  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
   if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {}, rngAt: {} };
   // --redo ladder (or any stage): run that stage again from the generator state it started with (as a fresh run would)
@@ -574,7 +647,10 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     await ensure(ev, stats, probe, o.g0, main); const gps = (ev.games - g) / Math.max(0.001, (Date.now() - t) / 1000);
     return { games: Math.max(2000, Math.round(o.minutes * 60 * (1 - o.finalShare) * gps)), from: 'minutes', gps: r1(gps) };
   });
-  const B1 = Math.round(budget.games * (1 - o.crossShare)), B2 = budget.games - B1;
+  // 2026-10-24 (package PRO2): no phase-2 candidates (BPRO; map-true, whose pool already holds every card a player can have by then): the
+  // whole budget goes to phase 1
+  const noP2 = !p2pool.some(id => !pools.p1.includes(id));
+  const B1 = noP2 ? budget.games : Math.round(budget.games * (1 - o.crossShare)), B2 = budget.games - B1;
   // ---- phase 1: the map's cards
   const s1 = await stage('p1', async () => {
     const credit = S.credit, seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2);
@@ -659,10 +735,10 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     return { node: n.key, kind: n.kind || 'skirmish', target: t ? t.t : null, optimum: r3(p), ci: [r3(ci[0]), r3(ci[1])], n: st1.n[i] }; }).filter(Boolean);
   const searchOut = s => s && ({ method: s.method, games: s.games, gens: s.gens, restarts: s.restarts, steps: s.steps, moves: s.moves, runs: s.runs, localOptima: s.optima ? s.optima.map(x => ({ score: x.f, moves: x.moves, local: x.local })) : undefined, skipped: s.skipped });
   const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: pools.mapNo, name: map.name },
-    level, settings: { seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
+    level, settings: { mode: o.mode, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
       crossShare: o.crossShare, roadWeight: o.roadWeight, ai: o.ai, owned: o.owned, crossPool: o.crossPool, submaps: o.submaps, pop: o.pop, children: o.children, g0: o.g0, gmax: o.gmax, screenCopies: o.screenCopies, beeTank: o.beeTank, minutes: o.minutes, workers: o.workers },
-    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : ''),
-    pools: { phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length },
+    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : ''),
+    pools: { mode: pools.mode, cap: pools.cap || null, subsOpen: pools.subsOpen, phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length, excluded: pools.excluded },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),
     throughput: { games: played, seconds: r1(wallS), gamesPerSecond: r1(played / wallS), workers: o.workers, sessions: S.tp.sessions },
@@ -784,7 +860,10 @@ function summaryMd(reports, tag) {
     L.push(`## Map ${r.map.num}: ${r.map.name} (\`${r.map.id}\`), your level ${r.level}`, '');
     const s1 = r.phase1.search, s2 = r.phase2.search;
     L.push(`- Throughput: ${r.throughput.games} games in ${r.throughput.seconds} s = **${r.throughput.gamesPerSecond} games/s** (${r.throughput.workers} workers${r.throughput.sessions > 1 ? ', ' + r.throughput.sessions + ' sessions (resumed)' : ''}). Search: ${s1.method}, budget ${r.settings.budget} games (${s1.games} map cards${s1.gens != null ? ', ' + s1.gens + ' generations' : ''}${s1.restarts ? ', ' + s1.restarts + ' restarts' : ''}; ${s2.games} with the candidates). Reproduce: \`${r.reproduce}\``);
-    L.push(`- Pool: ${r.pools.phase1} cards (${r.pools.mapCards.length} map cards + ${r.pools.owned.length} owned by then); phase 2 ${r.pools.phase2} (+${r.candidates.list.length} candidates).`, '');
+    L.push(`- Pool: ${r.pools.phase1} cards (${r.pools.mapCards.length} map cards + ${r.pools.owned.length} owned by then); phase 2 ${r.pools.phase2} (+${r.candidates.list.length} candidates).`);
+    // 2026-10-24 (package PRO2): the mode, the map's rarity cap and what the map rule left out
+    const md = (r.settings && r.settings.mode) || 'classic';
+    L.push(`- Mode: **${md}**${r.pools.cap ? `, rarity cap **${r.pools.cap}** (${r.settings.rarityCap === 'map' ? "the highest of the map's fights" : r.settings.rarityCap})` : ' (the OPT2 pool: every submap, owned cards at any rarity)'}${r.pools.subsOpen ? `; submaps open by then: ${r.pools.subsOpen.join(', ') || 'none'}` : ''}.${(r.pools.excluded || []).length ? ' Left out: ' + r.pools.excluded.map(x => x.reason + ' ' + x.n + ' (' + x.ids.slice(0, 6).join(', ') + (x.n > 6 ? ', ...' : '') + ')').join('; ') + '.' : ''}`, '');
     candidatesMd(r.candidates).forEach(x => L.push(x));
     L.push(`- **Optimum (map cards)**: score ${pct(r.phase1.best.score)} [${pct(r.phase1.best.ci[0])}, ${pct(r.phase1.best.ci[1])}], mirror ${pct(r.phase1.best.mirror)}, road ${pct(r.phase1.best.road)}: ${deckLine(r.phase1.best)}`);
     if (r.phase2.best) L.push(`- **Optimum (map cards + candidates)**: score ${pct(r.phase2.best.score)} (${r.phase2.gainOverPhase1 >= 0 ? '+' : ''}${Math.round(r.phase2.gainOverPhase1 * 1000) / 10} pts): ${deckLine(r.phase2.best)}`);
@@ -855,5 +934,6 @@ async function main(argv) {
   return reports;
 }
 // 2026-10-24 (package PRO): + mineFor and playOne, for tools/opt/pro_skirmishes.js's head-to-head under a PRO fight's field
-if (typeof module !== 'undefined') module.exports = { mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
+// 2026-10-24 (package PRO2): + mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES
+if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
 if (isMainThread && (require.main === module || SEA)) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });
