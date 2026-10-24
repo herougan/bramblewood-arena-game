@@ -1,0 +1,11 @@
+/* 2026-10-24 (package HUB4): the 📖 Library tab */
+.lib h2 small, .lib summary small{font-weight:600; opacity:.65; font-size:.7em; margin-left:6px;}
+.lib-list{list-style:none; padding:0; margin:8px 0 18px;}
+.lib-row{display:grid; gap:2px; padding:8px 4px; border-top:1px solid rgba(127,127,127,.2);}
+.lib-row[hidden]{display:none;}
+.lib-t a{margin-left:8px; font-size:13px; white-space:nowrap;}
+.lib-m{font-size:12px; opacity:.7; overflow-wrap:anywhere;}
+.lib-s{font-size:13px;}
+.lib-hist summary{cursor:pointer; font-weight:800; font-size:1.15em; padding:6px 0;}
+.lib-back{font-size:13px; opacity:.85; margin:0 0 10px;}
+#libQ{width:min(420px, 100%); padding:8px 10px; font:inherit;}
