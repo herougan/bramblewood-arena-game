@@ -8,6 +8,28 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - New decks (budget 6000 games a map; 82-168 games/s on 2 workers): Maps 0-3 have 1 / 1 / 3 / 4 PRO and 4 / 4 / 4 / 4 BPRO. Outputs: `docs/balance/opt/deckopt-*-2026-10-24-{maptrue,bpro}.*`.
 - **Alley Cat moved out of Map 0's card list.** RW5 had homed this map-less Rare there; Map 0's fights are Common only. It now lives in the Gatorback Swamp (Map 5), still Pack 1 and first obtainable on Map 5, so its stats are unchanged (owner call PRO2-2). No other map 0-40 lists a card over its fights' cap.
 - Tests: `tests/pro-2026-10-23.js` checks both kinds: no card over the map's cap, BPRO cards all from the map's own pool, each deck from a run of its own mode, and an old deck that breaks the rule is dropped. `tests/opt2-2026-10-23.js` checks the modes' pools, the caps and the Alley Cat. `tests/opt-2026-10-23.js` runs `--mode classic`. Owner calls PRO2-1 (the cap) and PRO2-2 (the Alley Cat's home).
+## 2026-10-24 (package PL1: the owner's 10-24 playtest, UI and bugs: P24-1..6, 8, 9, 11..13, 18..20 and 21:20 #1 #2 #4)
+- **Packs after a map (P24-6, P24-19):** the order is the map's veil and title banner, then the packs, then the swap window (the packs used to
+  open under the banner). The pack count runs across every pack waiting ("Next pack (5 left)" goes on into the next kind of pack), and with
+  more than one kind the last pack leads to one page of every card ("All 6 packs"). Reward packs no longer wait for a tap on the Camp's map
+  tile: the Camp counts as open once it is there (call PL1-4); packs held in older saves open on the next map shown.
+- **XP (P24-3):** a Conquest fight's results have no XP bar; it fills at the top of the map when you are back (call PL1-1).
+- **Map (21:20 #4, P24-5, P24-18):** X after a first clear lets go of the fight and the pawn walks on to the next one (a replay keeps MK's
+  behaviour; call PL1-5). A cleared fight shows the normal rank emblem: it fades in on the fight, hops and spirals into the bottom right (the
+  fight panel's corner emblem when it is open), no red seal or floating chip. The Wandering Traveller's leader lesson ("Show me" -> Camp)
+  waits until the Camp is open (it used to end in "That opens up later").
+- **Fights (P24-9, P24-11, P24-12, 21:20 #2):** the hand's would-be numbers redraw on the day / night turn and state-skill changes. The bonus
+  Health bar (EQ2) sits above the Attack and Health plates (it ran across them: Voidfeather's night +1/+1). The Attack plate counts Kinship,
+  Nature's Force and Lone Wolf / Sociable (Honeyjoe Brewer showed 1 and hit for 2). Lethal Poison (Poison >= Health): the Health turns poison
+  green with bubbles and the pool stands higher.
+- **Words (21:20 #1):** a selfish boon's Environment card says "11/17 Reptile"; its detail is the effect and "Theirs: half their deck Reptile".
+- **Screens (P24-1, P24-2, P24-4, P24-8, P24-13, P24-20):** the faction pick's example cards start as three Commons and turn over to other
+  faction cards (call PL1-6); no names under Tut2's reward cards; no name band on a single pack, a red ribbon with the count round a set (call
+  PL1-2); the swap window's right column never offers Basic / Starter / baby cards or a card a swap took out; the Dungeons tab opens after
+  Map 3 or with the first daily dungeon (call PL1-3, changes AR3-2); the deck's copy pill is smaller and out in the card's corner.
+- Texts: 29 TX keys (`ui.pl1-*`) in 12 packs (`tools/i18n_2026_10_24_pl1.py`; the boons' one-line effects are each pack's DF3 sentence cut
+  before its "Theirs only" part). Tests: `tests/pl1-2026-10-24.js` (new, in run-all), `tests/e2e/pl1_2026_10_24.py` (new, 390 and 1366);
+  `tests/mk-2026-10-23.js` and `tests/e2e/df3_2026_10_24.py` follow #4 and #1. Shots: `docs/screens/PL1/`.
 
 ## 2026-10-24 release 10-24e (batch: BAL3, H1, CONTENT2, N221, RELFIX, HUB4)
 - Balance by the agreed rules: every fight on the level schedule, side-map Rares from Map 10, 130 decks retuned (48 -> 80 of 179 fights in band), the 10 held cards on their formula, Rising Tide = Quick +1 Attack.

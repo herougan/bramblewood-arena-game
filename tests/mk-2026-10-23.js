@@ -96,8 +96,14 @@ async function browser(){
       ok(await winToResults(pg), `B@${w} Map ${N}: won, the results are up`);
       await pg.click('#wlQuitBtn'); await pg.waitForTimeout(1800);
       const after = await state(pg);
-      ok(after.sel === s.map && after.shown === s.map && after.node === s.key && after.pawn === s.key,
-        `B@${w} Map ${N}${full ? ' (cleared)' : ''}: back on the map, the same map, the fight still picked, the pawn on it (before ${JSON.stringify(before)}, after ${JSON.stringify(after)})`);
+      // 2026-10-24 (package PL1, owner 21:20 #4: "Upon completing - and pressing X - the character token should move the next skirmish"): a
+      // first clear lets go of the fight and the pawn walks on to the next fight not yet won on the same map; a replayed (cleared) fight keeps
+      // MK's behaviour (still picked, the pawn on it). Never another map, never the map's first fight.
+      if(full) ok(after.sel === s.map && after.shown === s.map && after.node === s.key && after.pawn === s.key,
+        `B@${w} Map ${N} (cleared): back on the map, the same map, the fight still picked, the pawn on it (before ${JSON.stringify(before)}, after ${JSON.stringify(after)})`);
+      else { const nextUnwon = await pg.evaluate(`(()=>{ const m = CONQUEST_MAPS.find(x=> x.id === '${s.map}'), p = loadConquestProgress(); const n = m.nodes.find(nd=> nd.kind !== 'tutorial' && !p.completed.includes(conquestNodeId(m.id, nd.key))); return n ? n.key : null; })()`);
+        ok(after.sel === s.map && after.shown === s.map && after.node === null && after.pawn === nextUnwon && after.pawn !== s.key,
+          `B@${w} Map ${N}: back on the map after a first clear, the same map, the pawn walks on to the next fight not yet won (${nextUnwon}) (before ${JSON.stringify(before)}, after ${JSON.stringify(after)})`); }
       if(N === 2) await pg.screenshot({path: path.join(SHOTS, `after-win-${w}.png`)});
       if(full && w === 1366){ // nothing picked on a cleared map: the pawn stays where it stood
         await pg.evaluate("conquestSelectedNodeKey = null; renderConquestSubTab(document.getElementById('playSubBody')); 1"); await pg.waitForTimeout(400);

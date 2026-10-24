@@ -5,7 +5,7 @@ red-framed, its ribbon says Theirs and its line the count ("On: 16 of 16 enemy c
 when the boon helps an enemy unit (a blind Cave unit in the Darkness hitting for double), the card shines (is-firing), the unit glows and
 the log says "Blind Fury helps the enemy"; a normal skirmish of the same map has no boon card; no page errors.
     python3 tests/e2e/df3_2026_10_24.py [--widths 390 1366]   (build first)"""
-import asyncio, os, sys, functools, http.server, socketserver, threading
+import asyncio, os, re, sys, functools, http.server, socketserver, threading
 from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, 'docs', 'screens', 'DF3'); os.makedirs(OUT, exist_ok=True)
@@ -44,7 +44,7 @@ async def run(b, url, w):
       const html = skirmishFieldHTML('{MAP}', n), d = document.createElement('div'); d.innerHTML = html;
       return {{challenge: !!n.challenge, boon: n.rules && n.rules.boon, pill: !!d.querySelector('.cnp-fpill.is-challenge'), selfish: (d.querySelector('.cnp-fpill.is-selfish') || {{}}).title || ''}};"""))
     ok(r['challenge'] and r['boon'] == 'blindFury', f'{KEY} is a challenge skirmish with Blind Fury ({r["boon"]})')
-    ok(r['pill'] and 'On: ' in r['selfish'] and 'Cave' in r['selfish'], f'the panel shows the Challenge pill and the boon pill with its count ({r["selfish"][:90]})')
+    ok(r['pill'] and 'Theirs: half their deck Cave' in r['selfish'], f'the panel shows the Challenge pill and the boon pill with its short words ({r["selfish"][:90]})')  # 2026-10-24 (PL1, 21:20 #1): was "On: N of M ... share the theme"
     await pg.evaluate(E(f"""try{{ openConquestMap && openConquestMap('{MAP}'); }}catch(e){{}} try{{ selectConquestNode && selectConquestNode('{MAP}', '{KEY}'); }}catch(e){{}} await new Promise(r=> setTimeout(r, 600));"""))
     # the fight
     await pg.evaluate(E(f"""startConquestMatch('{MAP}', '{KEY}'); await new Promise(r=> setTimeout(r, 2600)); try{{ skipTriggerLesson(); }}catch(e){{}}"""))
@@ -52,7 +52,7 @@ async def run(b, url, w):
       return {ribbon: c.querySelector('.env-ribbon').textContent.trim(), line: c.querySelector('.env-line').textContent.trim(), on: c.classList.contains('is-boon-on'), shadow: cs.boxShadow, label: c.getAttribute('aria-label') || ''}; })()""")
     ok(r is not None, 'the fight shows the boon as an Environment card')
     ok(r and r['ribbon'] == 'Theirs' and r['on'], f'its ribbon says Theirs and it is on ({r and r["ribbon"]})')
-    ok(r and r['line'].startswith('On: ') and 'of' in r['line'], f'its line gives the count ({r and r["line"]})')
+    ok(r and bool(re.match(r'^\d+/\d+ Cave$', r['line'])), f'its line gives the count and the theme, e.g. "11/17 Cave" ({r and r["line"]})')  # PL1 (2026-10-24, 21:20 #1)
     ok(r and ('224, 83, 63' in r['shadow'] or '110, 26, 18' in r['shadow']), 'its frame is red')
     ok(r and 'Blind Fury' in r['label'] and 'hit for double' in r['label'], 'its words say what it does (aria-label / hover)')
     await shot(pg, 'boon-card', w)

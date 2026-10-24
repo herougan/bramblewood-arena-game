@@ -816,6 +816,39 @@ M.nodeCleared = function(node, opts){
     .to(seal, {scale:1.08, duration:.08, yoyo:true, repeat:1})
     .to(seal, {x:c.w*.36, y:-c.h*.36, scale:.32, opacity:0, duration:.4, ease:'power2.in'}, '+=.42'));
 };
+// 2026-10-24 (package PL1, owner P24-5: "The rank appears on the battlefield then fades (like the red S). Instead: the normal emblem fades in
+// quickly on the skirmish, then jumps and spirals into the bottom right, as if the skirmish detail now opens with that emblem and it came
+// from there."): the rank hex (.rank-hex, as on the results and the fight panel) fades in over the cleared fight, hops, then spirals down
+// into the bottom-right: onto the fight panel's corner emblem when the panel is open (it pulses as it lands), else the fight's own
+// bottom-right corner. Leaves and a gold ring on the landing. Reduced motion: a short fade on the node.
+css('pl1-rank', `.fxe-pl1-rank{z-index:1222; display:grid; place-items:center;}
+.fxe-pl1-rank .rank-hex{position:relative !important; top:auto !important; right:auto !important; left:auto !important; transform:none !important; margin:0 !important;}
+.rank-hex.pl1-rank-land{animation:pl1RankLand .45s ease-out;}
+@keyframes pl1RankLand{0%{scale:1;} 35%{scale:1.3;} 100%{scale:1;}}`);
+M.nodeRankEmblem = function(node, rank, opts){
+  opts = opts || {}; const g = G(); if(!node || !rank) return Promise.resolve();
+  const c = centre(node), size = 58, o = layer('fxe-pl1-rank', `<span class="rank-hex rank-${rank}"><i></i><b>${rank}</b></span>`);
+  Object.assign(o.style, {left:(c.x - size/2) + 'px', top:(c.y - 32) + 'px', width:size + 'px', height:'64px'});
+  const panelHex = ()=>{ const t = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'); const r = t && t.getBoundingClientRect(); return r && r.width && r.bottom > 0 && r.top < innerHeight ? t : null; };
+  const target = ()=>{ const t = panelHex(); if(t){ const r = t.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, s: r.width / size, el:t}; }
+    return {x:c.x + c.w*.42, y:c.y + c.h*.42, s:.42, el:null}; };
+  if(!g || reduced()){ return new Promise(res=> later(()=>{ o.remove(); res(); }, 700)); }
+  if(/S/.test(rank)) sound('rareRise', false); else sound('woodKnock');
+  return new Promise(res=>{
+    const tl = g.timeline({onComplete:()=>{ o.remove(); res(); }});
+    tl.fromTo(o, {opacity:0, scale:.6}, {opacity:1, scale:1.15, duration:.16, ease:'power2.out'})
+      .to(o, {y:-26, scale:1.2, duration:.2, ease:'power2.out'})
+      .to(o, {y:0, scale:1, duration:.18, ease:'power2.in'})
+      .add(()=>{ const t = target(), sx = c.x, sy = c.y, dx = t.x - sx, dy = t.y - sy, turns = 1.15, R0 = Math.min(80, Math.hypot(dx, dy) * .35 + 30), st = {k:0};
+        g.to(st, {k:1, duration:.85, ease:'power2.in', onUpdate:()=>{ const k = st.k, ang = k*turns*Math.PI*2, rad = R0*(1 - k);
+            const x = dx*k + Math.cos(ang)*rad - rad, y = dy*k + Math.sin(ang)*rad;
+            g.set(o, {x, y, rotation:k*360*turns, scale:1 + (t.s - 1)*k}); },
+          onComplete:()=>{ const e = target(); if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
+            ring(e.x, e.y, '#f1c65a', 70, .5); burst(e.x, e.y, ['🍃','✦','🍂','✧'], {dist:30, dur:.5, size:12}); sound('woodKnock'); tl.resume(); }});
+        tl.pause(); })
+      .to(o, {opacity:0, duration:.2, delay:.05});
+  });
+};
 // B: an ink tick drawn by a quick nib, with a spatter.
 M.nodeCleared_B = function(node, opts){
   opts = opts || {}; const g = G(); if(!node || !g) return Promise.resolve();
@@ -1413,7 +1446,8 @@ async function playReturn(mapId, d, progress){
     if(!cv.isConnected) return;
     hideNew(cv, pend);
     for(const k of d.newDone){ const n = q(cv, k); if(!n) continue; const rank = progress && progress.ranks ? progress.ranks[conquestIdOf(mapId, k)] : null;
-      await M.nodeCleared(n, {rank: rank || '✓'}); if(rank && n.isConnected) M.nodeRank(n, rank); }
+      // 2026-10-24 (package PL1, owner P24-5): a ranked clear shows the normal emblem (M.nodeRankEmblem), not the red wax seal and its chip
+      if(rank && /^[A-Z]+$/.test(rank)) await M.nodeRankEmblem(n, rank); else await M.nodeCleared(n, {rank: rank || '✓'}); }
     for(const k of d.newVis){ const cur = document.getElementById('conquestCanvas'); if(!cur) return; const n = q(cur, k); if(!n){ continue; }
       if(d.chance.has(k)){ await M.chanceNode(n); continue; }
       hideNew(cur, pend.slice(pend.indexOf(k))); // a re-render meanwhile drew them again
