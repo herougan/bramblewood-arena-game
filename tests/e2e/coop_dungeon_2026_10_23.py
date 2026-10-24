@@ -24,7 +24,9 @@ EXE = os.environ.get('BW_CHROMIUM', '/opt/pw-browsers/chromium_headless_shell-11
 SHOTS = os.environ.get('BW_SHOTS', '1') != '0'
 OUT = os.path.join(ROOT, 'docs', 'screens', 'ar3')
 INIT = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStorage.setItem('bramblewood_arena_faction','otters'); sessionStorage.setItem('bramblewood_seen_splash','1');"
-        "localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
+        "localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));"
+        # 2026-10-24 (package PL1, P24-13): the Dungeons tab opens after Map 3 (GD_OPEN_AFTER_MAP), so the player has won Maps 0-3
+        "window.addEventListener('load', ()=>{ try{ const p = loadConquestProgress(); mainConquestMaps().slice(0, 4).forEach(m=> m.nodes.forEach(n=>{ const id = conquestNodeId(m.id, n.key); if(!p.completed.includes(id)) p.completed.push(id); })); saveConquestProgress(p); }catch(e){} });")
 failures = []
 
 def check(cond, msg):
