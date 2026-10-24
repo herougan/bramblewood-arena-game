@@ -35361,8 +35361,13 @@ function renderBoard(opts){
   // Only the row(s) flagged by needEnemy/needMine above actually get rebuilt — an untouched
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
   const emojiRows = h=>{ try{ return EmojiStyle.htmlBlock(h); }catch(e){ return h; } }; // 2026-10-17: emoji as pictures in the string (see EmojiStyle.htmlBlock)
-  if(needEnemy && rowEnemy) rowEnemy.innerHTML = emojiRows(rowHTML(m.players[2], p2Rows));
-  if(needMine && rowMine) rowMine.innerHTML = emojiRows(rowHTML(m.players[1], p1Rows));
+  // 2026-10-25 (package PL2, owner 00:02 #1): once the match is decided the rows are reconciled cell by cell, not rebuilt (pl2ReconcileRow)
+  const pl2End = !!(slotView && (m.ending || m.over));
+  const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
+  if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
+  if(needMine && rowMine){ const h = emojiRows(rowHTML(m.players[1], p1Rows)); if(!(pl2End && pl2ReconcileRow(rowMine, h))) rowMine.innerHTML = h; }
+  if(needEnemy || needMine){ if(needEnemy) pl2SeatHpBars(rowEnemy); if(needMine) pl2SeatHpBars(rowMine); } // PL2 (2026-10-25): a flyer's Health bar rides in its .fly-body
+  if(!m.over && !m.ending) pl2BounceAfterRedraw(pl2Snap, [needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5)
   if(needEnemy || needMine) fxHook('boardRowsBuilt', document.getElementById('battlefieldEl')); // batch D (2026-10-15, docs/effects-lab-contract.md): status looks back on rebuilt rows
   // Reserve rows (2026-10-12, raids as a full game): the same columns as the front rows, so a reserve sits right behind its unit.
   if(reserveRowsOf(m)){
@@ -35383,7 +35388,7 @@ function renderBoard(opts){
         else if(legal.has(sl)) html += `<div class="board-card slot-target reserve-target" data-slot="${sl}" data-reserve="${r}" title="Play here, ${r === 1 ? 'in the middle row' : 'in the back row'}: it steps up when the unit in front falls"><span class="slot-plus" aria-hidden="true">+</span></div>`;
         else html += '<div class="board-card empty-slot" aria-hidden="true"></div>';
       }
-      el.innerHTML = html;
+      el.innerHTML = html; pl2SeatHpBars(el); // PL2 (2026-10-25)
     });
   }
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
@@ -38843,8 +38848,115 @@ function updateCardAtkDisplay(uid){
   const d = getCardDefs()[c.defId] || {}; let tot = (c.atk||0) + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + liveSwarmBonus(c) + pl1AuraAtk(c) /* PL1 (2026-10-24, P24-12) */;
   if(isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchState.engine.getTide()==='flow' && matchHasTide(matchState)) tot += 1;
   if((d.effects||{}).rage && c.maxHp > 0 && c.hp / c.maxHp < 0.5) tot *= 2;
-  a.innerHTML = atkLabelHTML(tot, d.attack, d);
+  pl2SetStat(a, atkLabelHTML(tot, d.attack, d), {any:true}); // PL2 (2026-10-25, owner 22:28 #5): a changed Attack bounces
   a.classList.toggle('is-atk-zero', (Number(d.attack)||0) <= 0 && tot <= 0); // 2026-10-21 (package UI3): back when a buff lifts it above 0
+}
+// 2026-10-25 (package PL2, owner 22:28 #5: "When numbers update (except damage), I feel they should bounce as feedback. Like as 3 becomes
+// 4, the 3 becomes a bit smaller, then 4 appears instantaneously, then its size recovers beyond and continues bounces on the spot for a
+// bit."): pl2SetStat(plate, html, opts) writes a unit's Attack or Health plate. When the number on it changes it plays that beat on the
+// number alone (not the ⚔ / ❤ glyph): the old number shrinks to 78% (80 ms), the new one is swapped in at that size and springs past
+// its size (1.38) and bounces on the spot, settling in about 0.6 s (GSAP, the transform of one inline-block span: no layout, no filter).
+// Which changes bounce: the Attack, any change (a buff, Inspiring, a Daunt counter, Bludgeon); the Health, only a rise (a heal, a +Health
+// buff, Bolster): a fall is damage, which has its own number and shake. opts.any: an Attack plate; opts.quiet: just write it.
+// Reduced motion, effects off, or no GSAP: the number is simply written.
+const PL2_BOUNCE = new WeakMap();
+function pl2StatNum(el){ const m = /(-?\d+)\s*$/.exec((el && el.textContent || '').trim()); return m ? Number(m[1]) : null; }
+function pl2WrapNum(el){
+  // the number is the plate's last text (after the <i class="sg"> glyph), or the .atk-buffed span when the Attack is buffed
+  const sp = el.querySelector('.atk-buffed'); if(sp){ sp.classList.add('pl2-num'); return sp; }
+  const tn = [...el.childNodes].reverse().find(n=> n.nodeType === 3 && /\d/.test(n.nodeValue)); if(!tn) return null;
+  const s = document.createElement('span'); s.className = 'pl2-num'; s.textContent = tn.nodeValue; el.replaceChild(s, tn); return s;
+}
+function pl2SetStat(el, html, opts){
+  if(!el) return; opts = opts || {};
+  const before = pl2StatNum(el), prev = PL2_BOUNCE.get(el);
+  if(prev){ try{ prev.kill(); }catch(e){} PL2_BOUNCE.delete(el); }
+  const write = ()=>{ el.innerHTML = html; };
+  const tmp = document.createElement('span'); tmp.innerHTML = html; const after = pl2StatNum(tmp);
+  const bounce = !opts.quiet && before != null && after != null && after !== before && (opts.any || after > before)
+    && hasGsap() && !reducedMotion() && (typeof fxAtLeast !== 'function' || fxAtLeast('low')) && el.isConnected;
+  if(!bounce){ write(); return; }
+  const old = pl2WrapNum(el); if(!old){ write(); return; }
+  const g = gsap, tl = g.timeline({onComplete: ()=> PL2_BOUNCE.delete(el)});
+  PL2_BOUNCE.set(el, tl);
+  tl.to(old, {scale:.78, duration:.08, ease:'power2.in', transformOrigin:'50% 60%'});
+  tl.add(()=>{ write(); const nu = pl2WrapNum(el); if(!nu){ tl.kill(); PL2_BOUNCE.delete(el); return; }
+    el.classList.remove('pl2-bump'); void el.offsetWidth; el.classList.add('pl2-bump'); setTimeout(()=> el.classList.remove('pl2-bump'), 650);
+    g.timeline().set(nu, {scale:.78, transformOrigin:'50% 60%'})
+      .to(nu, {scale:1.38, duration:.11, ease:'power2.out'})
+      .to(nu, {scale:.9, duration:.11, ease:'sine.inOut'})
+      .to(nu, {scale:1.12, duration:.1, ease:'sine.inOut'})
+      .to(nu, {scale:.97, duration:.1, ease:'sine.inOut'})
+      .to(nu, {scale:1, duration:.12, ease:'sine.out', clearProps:'transform'}); });
+}
+// 2026-10-25 (package PL2, owner 22:28 #4: "The inspiration vfx is not happening anymore. It should be a short burst of that emoji above
+// the card (shaking animatedly than growing bigger than fading), 0.3s after the vfx comes out, the adjacent allies numbers update. Yes,
+// even for waiting units! which should work, it'll just slowly stack."): the 'inspired' events of one swing (one per ally the engine
+// inspired, a Waiting ally included: its bonus waits for its first swing, so it stacks round on round) share one burst over the
+// inspirer: the 📯 pops in, shakes as it grows, and fades up and away, a gold ring and three notes thrown off it (pl2InspireBurst, about
+// 0.7 s, GSAP on its own clock so the fight speed scales it). PL2_INSPIRE_LAG (0.3 s) after the horn appears each ally's replay copy
+// takes the bonus and its Attack plate bounces to the new number (pl2SetStat). Before, each ally got a "📯 +1⚔ next swing" float and an
+// aura, and the Attack plates only changed at the next turn's redraw. The swing that spends it (the engine zeroes it) brings the plate
+// back down (pl2InspireSpent, from the hit's replay).
+const PL2_INSPIRE_LAG = 0.3, PL2_INSPIRE_BURSTS = new Map();
+function pl2InspireFx(ev, rc){
+  const m = matchState; if(!ev) return;
+  const key = String(ev.attUid), now = performance.now(); let b = PL2_INSPIRE_BURSTS.get(key);
+  const scale = (hasGsap() && gsap.globalTimeline.timeScale()) || 1;
+  if(!b || now - b.t0 > 900 / scale){ b = {t0: now}; PL2_INSPIRE_BURSTS.set(key, b);
+    try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){}
+    pl2InspireBurst(boardCardEl(ev.attUid)); }
+  const apply = ()=>{ if(matchState !== m) return; const r = (m && m.replayCards && m.replayCards[ev.targetUid]) || rc; if(r) r.inspired = (r.inspired||0) + (ev.amount||0);
+    try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} };
+  const wait = Math.max(0, PL2_INSPIRE_LAG - (now - b.t0) / 1000 * scale);
+  if(wait > 0.01 && hasGsap()) gsap.delayedCall(wait, apply); else apply();
+}
+function pl2InspireSpent(ev){
+  try{ const m = matchState, rc = m && m.replayCards && m.replayCards[ev.attUid]; if(!rc || !(rc.inspired > 0)) return;
+    rc.inspired = 0; updateCardAtkDisplay(ev.attUid); }catch(e){}
+}
+function pl2InspireBurst(card, opts){
+  opts = opts || {};
+  const tile = card && (card.querySelector('.card-tile') || card); if(!tile || !tile.isConnected) return null;
+  if(typeof fxAtLeast === 'function' && !fxAtLeast('low') && !opts.force) return null;
+  const host = document.createElement('div'); host.className = 'pl2-insp'; host.setAttribute('aria-hidden', 'true');
+  host.innerHTML = '<i class="pl2-insp-ring"></i><b class="pl2-insp-horn">📯</b><i class="pl2-insp-note">♪</i><i class="pl2-insp-note">♫</i><i class="pl2-insp-note">♪</i>';
+  document.body.appendChild(host);
+  const place = ()=>{ if(!tile.isConnected) return; const r = tile.getBoundingClientRect(); host.style.transform = `translate(${(r.left + r.width/2).toFixed(1)}px, ${(r.top - Math.min(30, r.height*.2)).toFixed(1)}px)`; };
+  place();
+  const horn = host.querySelector('.pl2-insp-horn'), ring = host.querySelector('.pl2-insp-ring'), notes = [...host.querySelectorAll('.pl2-insp-note')];
+  if(!hasGsap() || reducedMotion()){ host.classList.add('is-still'); setTimeout(()=> host.remove(), 650); return host; }
+  const g = gsap, tl = g.timeline({onUpdate: place, onComplete: ()=> host.remove()});
+  // the pop in, then the shake while it grows, then it rises and fades
+  tl.fromTo(horn, {scale:.3, opacity:0, rotation:-8, y:4}, {scale:1, opacity:1, rotation:0, y:0, duration:.09, ease:'back.out(3)'}, 0);
+  tl.to(horn, {keyframes:[{rotation:-17, duration:.06}, {rotation:15, duration:.07}, {rotation:-12, duration:.07}, {rotation:9, duration:.07}, {rotation:-5, duration:.06}, {rotation:0, duration:.05}]}, .09);
+  tl.to(horn, {scale:1.95, y:-10, duration:.38, ease:'sine.inOut'}, .09);
+  tl.to(horn, {scale:2.25, y:-24, opacity:0, duration:.22, ease:'power1.in'}, .47);
+  tl.fromTo(ring, {scale:.25, opacity:.9}, {scale:1.7, opacity:0, duration:.5, ease:'power2.out'}, .06);
+  notes.forEach((n, i)=>{ const a = (-150 + i*60) * Math.PI / 180, d = 30 + i*5;
+    tl.fromTo(n, {x:0, y:0, opacity:0, scale:.5, rotation:0}, {x:Math.cos(a)*d, y:Math.sin(a)*d - 6, opacity:1, scale:1, rotation:(i - 1)*25, duration:.26, ease:'power2.out'}, .12 + i*.03);
+    tl.to(n, {y:'-=12', opacity:0, duration:.26, ease:'power1.in'}, .38 + i*.03); });
+  return host;
+}
+// Snapshot of the plates on screen (uid -> Attack / Health shown), taken before a board redraw; pl2BounceAfterRedraw bounces the ones a
+// redraw changed (a buff that only shows on the next render), with the same rule as pl2SetStat.
+function pl2StatSnap(rows){
+  const out = new Map();
+  try{ rows.forEach(row=>{ if(!row) return; row.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const a = el.querySelector('.stats .atk'), h = el.querySelector('.stats .hp');
+    out.set(el.getAttribute('data-uid'), {atk: pl2StatNum(a), hp: pl2StatNum(h)}); }); }); }catch(e){}
+  return out;
+}
+function pl2BounceAfterRedraw(snap, rows){
+  if(!snap || !snap.size) return;
+  try{ rows.forEach(row=>{ if(!row) return; row.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const s = snap.get(el.getAttribute('data-uid')); if(!s) return;
+    if(el.matches('.is-entering, .falling, .ghost-preview')) return;
+    [['.stats .atk', s.atk, true], ['.stats .hp', s.hp, false]].forEach(([sel, was, any])=>{ const p = el.querySelector(sel); if(!p || was == null) return;
+      const now = pl2StatNum(p); if(now == null || now === was || (!any && now < was)) return;
+      const html = p.innerHTML; const t = document.createElement('span'); t.innerHTML = html;
+      // show the old number for a moment, then let pl2SetStat run the beat to the new one
+      const tn = [...p.childNodes].reverse().find(n=> n.nodeType === 3 && /\d/.test(n.nodeValue)); const sp = p.querySelector('.atk-buffed');
+      if(sp) sp.textContent = String(was); else if(tn) tn.nodeValue = String(was); else return;
+      pl2SetStat(p, html, {any}); }); }); }); }catch(e){}
 }
 const SMOKE_BILLOWS_HTML = '<i class="sb1"></i><i class="sb2"></i><i class="sb3"></i><i class="sb4"></i>'; // the Smoke's billows (2026-10-24, BV)
 // 2026-10-24 (package PL1, owner 21:20 #2: "Poison vfx effect (following Slay the Spire): when the poison = health or higher, the health label
@@ -38858,7 +38970,7 @@ function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
-  if(hpSpan) hpSpan.innerHTML = '<i class="sg">❤</i>'+Math.max(0,c.hp);
+  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+Math.max(0,c.hp)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
   el.classList.toggle('is-low-hp', isLowHp(c));
   el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3)
 }
@@ -39547,6 +39659,29 @@ function settleStrayBoardCards(waited){
 // 2026-10-12 (user: "when the game ends, all cards spawned that round just disappear... don't do that"): once the match is
 // decided nothing animates a new card in any more (no Flip, no entrance), so a card that arrived this round could be left at
 // its invisible starting frame. Every live card is put back at rest, fully visible.
+// 2026-10-25 (package PL2, owner 00:02 #1: "On game end, there's a redraw I think. Creatures just played disappear then reappear again."):
+// the round that decides the match ends with one more renderBoard (m.ending). Its signature always differs from the replay's last frame
+// (the "+" targets go, the live numbers replace the replay's), so both rows were thrown away and rebuilt: every card, the ones that had
+// just landed included, was a new element for a frame (its art decoded again, its hover / float / glow animations started over), the
+// "redraw". Now, once the match is decided, a row whose cells are the same is kept: a cell holding the same unit keeps its element and
+// has its numbers, statuses and Health bar patched in place; only cells that changed (a unit that fell, a token that arrived) are swapped.
+// Returns false (the caller rebuilds the row as before) when the column count changed.
+function pl2ReconcileRow(row, html){
+  try{
+    const tmp = document.createElement('div'); tmp.innerHTML = html;
+    const fresh = [...tmp.children], old = [...row.children];
+    if(!old.length || fresh.length !== old.length) return false;
+    const kept = [];
+    fresh.forEach((nu, i)=>{
+      const od = old[i], ou = od.getAttribute('data-uid'), nuU = nu.getAttribute('data-uid');
+      if(ou && nuU && ou === nuU && !od.matches('.falling, .burning, .is-scattering')){ kept.push(ou); return; }
+      if(!ou && !nuU && od.outerHTML === nu.outerHTML) return;
+      row.replaceChild(nu, od);
+    });
+    kept.forEach(u=>{ try{ updateCardHpDisplay(u); updateCardAtkDisplay(u); updateCardStatusDisplay(u); eq2Refresh(u); }catch(e){} });
+    return true;
+  }catch(e){ return false; }
+}
 function revealBoardCardsAtEnd(){
   const m = matchState; if(!m) return;
   const alive = new Set(); [1,2].forEach(pid=> ['left','center','right'].forEach(sd=> (m.players[pid].row[sd]||[]).forEach(c=>{ if(c.hp > 0) alive.add(String(c.uid)); })));
@@ -42448,6 +42583,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
   else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
   else if(ev.type==='rebuild') base = 560; // Rebuild (2026-10-17): the planks are in the air; the bar fills as they land
+  else if(ev.type==='statusFx' && ev.kind==='inspired') base = (prevKind!=null && vfxKindOf(ev)===prevKind) ? 60 : 380; // PL2 (2026-10-25, #4): the horn, and its allies' Attack going up 0.3 s in
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
   // feedback -- "Sometimes, there is a small 0.2-0.3s pause between anims. Why? I want the
   // anims to be smooth" -- that gap was exactly this bucket's same-kind/diff-kind pause on
@@ -45683,7 +45819,7 @@ function eighthPassVfx(ev){
     else if(k === 'tailwind' && t) F.gust(t, {dir: ev.side === 'A' ? 1 : -1});
     else if(k === 'swimmer' && t) F.splash(t);
     else if((k === 'esprit' || k === 'grit') && self && skillFxOnce(k + ev.attUid)) F.espritAura(self);
-    else if(k === 'inspired' && t) F.espritAura(t);
+    // (inspired: PL2's own burst over the inspirer, pl2InspireFx; the aura on each ally is gone, 2026-10-25)
     else if(k === 'berserk' && self) F.rageFlare(self);
   }
 }
@@ -45895,7 +46031,26 @@ function eq2Refresh(uid){
   const rc = m.replayCards && m.replayCards[uid], src = rc || eqLiveUnit(m, uid); if(!src) return;
   const pid = Number(old.getAttribute('data-eq2pid'));
   try{ old.outerHTML = eq2MarksHTML(pid, Object.assign({}, src, {uid, defId: src.defId})); }catch(e){}
+  pl2SeatHpBar(el); // PL2 (2026-10-25)
 }
+// 2026-10-25 (package PL2, owner 00:02 SS#1: "odd green bars" over the Voidfeather Scouts): the bonus Health bar (EQ2) is drawn in the
+// card's .eq2-marks, a sibling of the .fly-body that a Flyer (and a floating Tide unit) hovers and sways in. The card bobbed up and down
+// 10 px while its bar stayed put, so on one beat the bar sat above the plates and on the next it ran across them (the middle Scout of
+// SS#1, whose sway is out of step with its neighbours'). On a flyer or a floater the bar now moves into the .fly-body (the same box as the
+// card, position:relative), so it rides with the card; the bar already there keeps its element, so its width still eases.
+function pl2SeatHpBar(el){
+  try{
+    if(!el || !el.matches('.board-card.is-flying, .board-card.is-floating')) return;
+    const body = el.querySelector(':scope > .fly-body'); if(!body) return;
+    const nu = el.querySelector(':scope > .eq2-marks > .eq2-hpbar'), cur = body.querySelector(':scope > .eq2-hpbar');
+    if(!nu){ if(cur) cur.remove(); return; }
+    if(cur && cur.children.length === nu.children.length){
+      [...nu.children].forEach((ch, i)=>{ cur.children[i].style.width = ch.style.width; });
+      cur.title = nu.title; cur.setAttribute('aria-label', nu.getAttribute('aria-label') || ''); nu.remove(); return; }
+    if(cur) cur.remove(); body.appendChild(nu);
+  }catch(e){}
+}
+function pl2SeatHpBars(root){ try{ (root || document).querySelectorAll('.board-card.is-flying, .board-card.is-floating').forEach(pl2SeatHpBar); }catch(e){} }
 function eq2Rc(uid){ const m = matchState; return m && m.replayCards && uid != null ? m.replayCards[uid] : null; }
 function eq2Shatter(el, icon){
   if(!el || (typeof fxAtLeast === 'function' && !fxAtLeast('low'))) return;
@@ -46949,6 +47104,9 @@ function renderVfxForEvent(ev){
   try{ en5Vfx(ev); }catch(e){} // EN5 (2026-10-24)
   try{ en6Vfx(ev); }catch(e){} // EN6 (2026-10-24)
   try{ en7Vfx(ev); }catch(e){} // EN7 (2026-10-24)
+  if(ev && (ev.type === 'hit' || ev.type === 'hitHQ' || ev.type === 'evaded' || ev.type === 'blindMiss') && ev.attUid != null && !ev.ranged){ // PL2 (2026-10-25, #4): an Inspired bonus is spent by this swing
+    const m0 = matchState, rc0 = m0 && m0.replayCards && m0.replayCards[ev.attUid];
+    if(rc0 && rc0.inspired > 0){ if(hasGsap()) gsap.delayedCall(.32, ()=>{ if(matchState === m0) pl2InspireSpent(ev); }); else pl2InspireSpent(ev); } }
   if(ev && ev.type === 'fieldTick' && ev._fxGap > 0 && !ev._fxGapDone && ev.field !== 'wildfire'){ ev._fxGapDone = true; setTimeout(()=>{ floatDetachDepth++; try{ renderVfxForEvent(ev); }catch(e){} finally { floatDetachDepth--; } }, ev._fxGap); return; } // 2026-10-23 (package FX4, FIELD_GAP): a later field number on the same unit plays after its gap (the line of fire times its own)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
@@ -47397,7 +47555,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
     else if(ev.kind==='chilliBurn'){ if(el) dnFloat(el, ev.amount, {type:'chilli', mods: ev.mods}); } /* DN2 */
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
-    else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
+    else if(ev.kind==='inspired'){ pl2InspireFx(ev, rc); } // PL2 (2026-10-25, owner 22:28 #4): the horn bursts over the inspirer; 0.3 s later its allies' Attack goes up (was a "📯 +1⚔ next swing" float on each ally)
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
