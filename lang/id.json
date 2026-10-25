@@ -3311,7 +3311,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "{gem} dilepas dari {name}. Kembali ke Materia-mu.",
  "{gem} taken out of {name}. It broke.": "{gem} dilepas dari {name}. Permatanya pecah.",
  "Next pack ({n} left)": "Paket berikutnya (sisa {n})",
- "All {n} packs": "Semua {n} paket",
  "{n} packs opened": "{n} paket dibuka",
  "Theirs: half their deck {theme}": "Milik mereka: setengah dek mereka {theme}",
  "Cave": "Gua",
@@ -3399,5 +3398,9 @@
  "Reference deck vs this map's PRO decks": "Dek referensi melawan dek PRO peta ini",
  "REF": "REF",
  "You are playing {name}, not your deck.": "Kamu memakai {name}, bukan dekmu.",
- "Played with {name}: no rewards.": "Dimainkan dengan {name}: tanpa hadiah."
+ "Played with {name}: no rewards.": "Dimainkan dengan {name}: tanpa hadiah.",
+ "View all": "Lihat semua",
+ "Overall raid rank": "Peringkat raid keseluruhan",
+ "Rescued a {type} baby": "Bayi {type} diselamatkan",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Hampir selesai: buka tautan di email yang baru kami kirim. Tautan itu membawamu kembali ke sini dalam keadaan masuk, dan progres serta dek di perangkat ini pindah ke akun barumu."
 }

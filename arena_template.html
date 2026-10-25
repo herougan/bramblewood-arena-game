@@ -4972,7 +4972,7 @@
   .map-trail-svg polyline, .map-trail-svg line{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
   .map-trail-svg path{fill:none; stroke:rgba(255,255,255,.45); stroke-width:.6; stroke-dasharray:2.2,1.6; stroke-linecap:round;}
   .conquest-layout.has-map-art .map-trail-svg path{stroke:rgba(255,248,225,.85); stroke-width:.75; filter:drop-shadow(0 0 1.2px rgba(0,0,0,.75));}
-  .map-trail-svg .is-any{stroke-dasharray:.6,1.4; opacity:.8;} /* 'any one of these' links are dotted */
+  .map-trail-svg .is-all{stroke-dasharray:.6,1.4; opacity:.8;} /* 2026-10-25 (package FIX3, F1): links open on any won fight; an 'all of these' fight's links are dotted */
   /* Locked links (2026-10-12): dark when both ends are locked; fading toward the locked end otherwise. */
   .map-trail-svg .trl-on{stop-color:rgba(255,255,255,.45);} .map-trail-svg .trl-off{stop-color:rgba(20,14,8,.35);}
   .conquest-layout.has-map-art .map-trail-svg .trl-on{stop-color:rgba(255,248,225,.85);}
@@ -12222,6 +12222,11 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .np-card.is-picked{box-shadow:0 0 0 3px var(--accent-strong); border-color:var(--accent-strong);}
   .np-confirm{position:sticky; bottom:-1px; display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:8px; padding:10px 12px; margin:4px 0 0; background:var(--surface-2); border:1px solid var(--surface-border); border-radius:12px; box-shadow:0 -6px 16px rgba(0,0,0,.18); z-index:2;}
   .np-confirm[hidden]{display:none;}
+  /* 2026-10-25 (package FIX3, G14, owner: "Train Younglings: the sticky train bar half overlaps the cards"): the younglings scroll in their own
+     box and the Train bar is its own band under it, never on top of a card (it was sticky over the list, and a card's stat chips showed through) */
+  .nest-picker [data-np-pane="young"] .np-grid{max-height:min(50vh, 520px); overflow-y:auto; overscroll-behavior:contain; margin-bottom:0; padding:2px 2px 6px;}
+  .nest-picker [data-np-pane="young"] .np-confirm{position:static; margin-top:10px; background:var(--surface); box-shadow:0 2px 10px rgba(0,0,0,.18);}
+  .nest-picker .np-card{isolation:isolate;}
   .np-conf-name{margin-right:auto; font-weight:800;} .np-conf-name small{font-weight:600; opacity:.75;}
   .np-need-toast{position:fixed; left:50%; top:50%; z-index:100050; padding:10px 18px; border-radius:999px; background:rgba(30,20,12,.94); color:#fff3dc; font:800 15px/1.2 'Baloo 2',system-ui,sans-serif; box-shadow:0 8px 24px rgba(0,0,0,.45); pointer-events:none; white-space:nowrap; animation:npNeed 2s ease forwards;}
   @keyframes npNeed{0%{opacity:0; transform:translate(-50%,-40%) scale(.96);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1);} 70%{opacity:1; transform:translate(-50%,-50%);} 100%{opacity:0; transform:translate(-50%,-62%);}}
@@ -12724,7 +12729,7 @@ button.ar3-mode:hover{border-color:var(--accent); transform:translateY(-2px);}
 .r3-chip.rk-chip .raid-total-rank{align-self:flex-start; margin:3px 0 0; font-size:13px;}
 .r3-tickets.is-over b{color:#2f8fd8; text-shadow:0 0 6px rgba(120,200,255,.6);}
 .raid-results .raid-total-rank{font-size:14px; padding:4px 12px;}
-.fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
+.fxf-rcs-total{display:inline-flex; align-items:center;} .fxf-rcs-total{flex-direction:column; gap:2px;} .fix3-rcs-total-lbl{font-size:11px; letter-spacing:.06em; text-transform:uppercase; opacity:.8;} /* 2026-10-25 (package FIX3, G21): the overall raid rank, captioned */ .fxf-rcs-total .raid-total-rank{font-size:16px; padding:5px 14px; margin:0;}
 .rk-tk-ico{position:relative; display:inline-block; line-height:1;} .rk-tk-ico i{position:absolute; right:-.38em; bottom:-.28em; font-size:.55em; font-style:normal;}
 .inv-sec .rk-inv-use{margin-top:10px;} .raid-hub .rk-use-row{margin:6px 0;}
 /* 2026-10-23 (package TU2, owner RK1: "call it like Bonus Raid Ticket and it has a different outline"): the A-rank ticket wears a gold
@@ -13417,6 +13422,11 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (min-width:761px){
   .card-inspect.ci-split{display:grid; grid-template-columns:auto minmax(280px, 400px); grid-template-areas:"stage detail" "bar detail"; column-gap:40px; row-gap:14px; align-content:center; justify-content:center; align-items:center;}
   .card-inspect.ci-split .ci-stage{grid-area:stage;} .card-inspect.ci-split .ci-bar{grid-area:bar; justify-self:center;} .card-inspect.ci-split .ci-detail{grid-area:detail;}
+  /* 2026-10-25 (package FIX3, G17, owner: "After x10 packs, a card's detail opened far left with its text far right"): in Admin Mode the bar under
+     the card holds every finish (~20 buttons on one line), and that line set the card column's width (968 px at 1440): the card sat centred in
+     it, far left, and the details far right. The bar no longer sizes the column (inline-size containment); it takes the card's width and wraps. */
+  .card-inspect.ci-split .ci-bar{contain:inline-size; justify-self:stretch; min-width:0;}
+  .card-inspect.ci-split .ci-bar .ci-finishes{flex-wrap:wrap; justify-content:center;}
 }
 /* #21: Home is an icon; the Conquest map leads the places bar */
 .topbar .home-nav-btn.ne-home-icon{width:38px; height:38px; padding:0 !important; justify-content:center; gap:0; border-radius:50%;} .home-nav-btn.ne-home-icon .tab-emoji{font-size:18px; margin:0; line-height:1;}

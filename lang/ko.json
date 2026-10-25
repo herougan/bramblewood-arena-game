@@ -3312,7 +3312,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "{name}에서 {gem}을(를) 뺐어요. 마테리아로 돌아갔어요.",
  "{gem} taken out of {name}. It broke.": "{name}에서 {gem}을(를) 뺐어요. 깨졌어요.",
  "Next pack ({n} left)": "다음 팩 ({n}개 남음)",
- "All {n} packs": "{n}팩 전부",
  "{n} packs opened": "{n}팩 개봉",
  "Theirs: half their deck {theme}": "상대 전용: 덱의 절반이 {theme}",
  "Cave": "동굴",
@@ -3400,5 +3399,9 @@
  "Reference deck vs this map's PRO decks": "기준 덱 대 이 맵의 PRO 덱",
  "REF": "REF",
  "You are playing {name}, not your deck.": "내 덱이 아니라 {name}(으)로 플레이 중입니다.",
- "Played with {name}: no rewards.": "{name}(으)로 플레이: 보상 없음."
+ "Played with {name}: no rewards.": "{name}(으)로 플레이: 보상 없음.",
+ "View all": "모두 보기",
+ "Overall raid rank": "레이드 종합 등급",
+ "Rescued a {type} baby": "{type} 아기를 구출",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "거의 다 됐어요: 방금 보낸 이메일의 링크를 여세요. 로그인된 상태로 여기로 돌아오며, 이 기기의 진행 상황과 덱이 새 계정으로 옮겨집니다."
 }

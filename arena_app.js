@@ -12004,8 +12004,12 @@ async function applySessionIdentity(user){
     // "your local progress gets replaced" behavior — see cloudSignIn's call sites in the UI.
     myRating = Number(existingProfile.rating) || myRating;
     saveRatingLocal();
-    if(isSignedIn()) await cloudPullState();
+    // 2026-10-25 (package FIX3, G7): the first sign-in of an account created on this device (its sign-up waited for the email) sends this
+    // device's progress up instead of loading the account's empty rows over it
+    if(isSignedIn() && fix3SignupPending(user.id)){ try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){} }
+    else if(isSignedIn()) await cloudPullState();
   }
+  if(isSignedIn() && fix3SignupPending(user.id)){ fix3SetSignupPending(null); try{ livePushProgress(true); }catch(e){} }
   livePullProgress();
   liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
   // First sign-in (2026-10-13, user: "When signing in for the first time, put the 'enter name' thing front and centre"): a real
@@ -12072,7 +12076,7 @@ async function initCloudSync(){
     sbClient.auth.onAuthStateChange((event, session)=>{
       if(!initSettled) return;
       if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
-        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); });
+        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); fix3AfterSignIn(); });
       } else if(event==='SIGNED_OUT'){
         resetCloudIdentity(); refreshAuthGateUI();
       }
@@ -12107,7 +12111,7 @@ async function initCloudSync(){
   } finally {
     if(oauthReturning || oauthError){
       try{ history.replaceState(null, '', location.pathname); }catch(e){}
-      if(isSignedIn()) showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok');
+      if(isSignedIn()){ showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok'); fix3AfterSignIn(); }
       else showToast(TX('toast.google-sign-in-didn-t-complete', {v1: oauthError ? ': '+oauthError : ''}), 'error');
     }
   }
@@ -12502,21 +12506,35 @@ function cloudPushRating(){
 //   - No anonymous session exists (cloudAnonUnavailable — the dashboard toggle is still off):
 //     falls back to a genuinely fresh signUp(), then seeds that brand-new account from local
 //     state exactly the way applySessionIdentity already does for any other brand-new account.
+// 2026-10-25 (package FIX3, G7, owner: "Sign-up worked but the screen didn't return to play"; his second account "signed up but never saved
+// anything to the server"): the live auth table shows that account unconfirmed, never signed in, with no profile row. Email sign-up needs a
+// confirmed email, so signUp() returned the user with NO session; this then took the user as signed in anyway (isSignedIn() true), and every
+// push that followed was refused without a word. Now: no session = nothing applied, the sign-up is remembered on this device
+// (FIX3_SIGNUP_PENDING_KEY), the confirmation link leads back to the game (emailRedirectTo), and the first real sign-in of that account sends
+// this device's progress and decks up instead of loading the empty account over them.
+const FIX3_SIGNUP_PENDING_KEY = 'bramblewood_signup_pending_v1', FIX3_AUTH_RETURN_KEY = 'bramblewood_auth_return_v1';
+// the pending sign-up is the new account's id: only that account, signing in here, gets this device's progress (never another account)
+function fix3SignupPending(uid){ try{ const v = localStorage.getItem(FIX3_SIGNUP_PENDING_KEY); return !!v && !!uid && v === String(uid); }catch(e){ return false; } }
+function fix3SetSignupPending(uid){ try{ if(uid) localStorage.setItem(FIX3_SIGNUP_PENDING_KEY, String(uid)); else localStorage.removeItem(FIX3_SIGNUP_PENDING_KEY); }catch(e){} }
+function fix3AuthRedirectUrl(){ try{ return location.href.split('#')[0].split('?')[0]; }catch(e){ return undefined; } }
 async function cloudLinkEmail(email, password){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
   let data, error;
   if(cloudUserId && cloudIsAnonymous){
-    ({ data, error } = await sbClient.auth.updateUser({ email, password }));
+    ({ data, error } = await sbClient.auth.updateUser({ email, password }, { emailRedirectTo: fix3AuthRedirectUrl() }));
   } else {
-    ({ data, error } = await sbClient.auth.signUp({ email, password }));
+    ({ data, error } = await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: fix3AuthRedirectUrl() } }));
   }
   if(error) throw error;
+  if(data && data.user && !data.session && !(cloudUserId && cloudIsAnonymous)){ fix3SetSignupPending(data.user.id); fix3RememberAuthReturn(); return data; } // FIX3 (G7): waits for the email
   cloudIsAnonymous = false;
   if(data && data.user) await applySessionIdentity(data.user);
   // The account/session itself is already real and saved at this point — a hiccup pushing local
   // state up (a network blip, or any of these four throwing) must never turn into "your account
   // wasn't created," which is what an uncaught rejection here would otherwise report to the UI.
   try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true), cloudPushRating()]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){} // 2026-10-25 (package FIX3, G7): the map progress goes up too
+  fix3SetSignupPending(null);
   cloudReady = true;
   setCloudPill(true, 'Cloud sync active');
   return data;
@@ -12543,9 +12561,29 @@ async function cloudSignIn(email, password){
 // comment) since this can never complete against a local file:// copy of the build.
 async function cloudSignInWithGoogle(){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  fix3RememberAuthReturn(); // 2026-10-25 (package FIX3, G7): back to this screen after Google
   const { error } = await sbClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
   if(error) throw error;
   // No return value on purpose — the page is about to navigate away to Google.
+}
+
+// 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
+// email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
+let fix3AuthReturn = null;
+function fix3AuthSpot(){ const from = (typeof currentTab !== 'undefined' && currentTab !== 'profile') ? currentTab : (fix3AuthReturn && fix3AuthReturn.tab) || null;
+  return from ? {tab: from, sub: typeof playSubTab !== 'undefined' ? playSubTab : null, map: typeof conquestSelectedMap !== 'undefined' ? conquestSelectedMap : null} : null; }
+function fix3RememberAuthReturn(){ try{ const sp = fix3AuthSpot(); if(sp) sessionStorage.setItem(FIX3_AUTH_RETURN_KEY, JSON.stringify(sp)); }catch(e){} }
+let fix3AfterSignInBusy = false;
+async function fix3AfterSignIn(stay){
+  if(!isSignedIn() || fix3AfterSignInBusy) return; fix3AfterSignInBusy = true;
+  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){}
+  fix3AfterSignInBusy = false;
+  let sp = null; try{ sp = JSON.parse(sessionStorage.getItem(FIX3_AUTH_RETURN_KEY) || 'null'); sessionStorage.removeItem(FIX3_AUTH_RETURN_KEY); }catch(e){}
+  if(!sp && !stay && typeof currentTab !== 'undefined' && currentTab === 'profile' && fix3AuthReturn) sp = fix3AuthReturn;
+  fix3AuthReturn = null;
+  if(stay || !sp || !sp.tab || (typeof matchState !== 'undefined' && matchState && !matchState.over)) return;
+  try{ if(sp.tab === 'play'){ if(sp.sub) playSubTab = sp.sub; if(sp.map && CONQUEST_MAPS.some(m=> m.id === sp.map)) conquestSelectedMap = sp.map; } switchTab(sp.tab); }catch(e){}
 }
 
 /* ============================================================
@@ -12616,7 +12654,7 @@ function wireAuthForm(prefix, onSuccess){
       // Supabase hides "email taken" on sign-up (anti-enumeration) by returning a user with no
       // identities — that's the "this email already belongs to an account" case (often a Google one).
       if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){ showMsg(authErrorText({message:'already registered'}), true); return; }
-      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg('Almost there — check your inbox to confirm your email, then Login.', false); return; }
+      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg(TX('ui.fix3-confirm-email'), false); return; } // FIX3 (G7): the link brings you back here, signed in
       onSuccess('create');
     }catch(err){ showMsg(authErrorText(err,'create'), true); }
     finally{ busy(false); }
@@ -12666,7 +12704,7 @@ function wireAuthGateModal(){
     const fn = authGatePendingAction; authGatePendingAction = null;
     closeAuthGateModal();
     if(fn) fn();
-    refreshAuthGateUI();
+    refreshAuthGateUI(); fix3AfterSignIn(true); // FIX3 (G7): synced; the modal sat over the screen you were on
   });
 }
 // Called after any successful sign-in (modal or Profile tab) so every currently-rendered gated
@@ -17531,6 +17569,16 @@ function mapTileBlocked(el, needs){
   if(npcDialogueActive()){ lockedTileTap(el, null); return true; }
   return false;
 }
+// 2026-10-25 (package FIX3, G1, owner: "Noone wants to wait for the dialogue ... if I click again, I should go into the page. Even while the
+// dialogue is talking."): a second tap on an open feature spot (Camp, Codex, Forge ...) within 20 s of the first opens it at once, past the
+// tap gate, the NPC-is-talking shake and a first visit's "take me there" reply. The conversation carries on in its dock.
+const FIX3_AGAIN_MS = 20000;
+function fix3SpotAgain(b){
+  const now = Date.now(), again = !!(b._fix3At && now - b._fix3At < FIX3_AGAIN_MS); b._fix3At = now;
+  if(!again) return false;
+  const sp = FEATURE_SPOTS.find(x=> x.key === b.dataset.spot); if(!sp || !featureUnlocked(sp.key) || (sp.needs && !featureUnlocked(sp.needs))) return false;
+  b._fix3At = 0; try{ sp.go(); }catch(e){ return false; } return true;
+}
 function mapTapGate(el, ms){
   if(!el) return true; const now = Date.now();
   if(el._tapUntil && now < el._tapUntil) return false;
@@ -17799,9 +17847,16 @@ function mapCuriositiesHTML(map){
     const gated = !decorRevealed(map.id, '~cur:' + c.key, gate(c));
     return `<button type="button" class="map-curio ${seen ? '' : 'is-new'} ${gated ? 'is-gated' : ''}" data-curio="${c.key}" data-lkey="~cur:${c.key}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(c.name + decorGateNote(map, '~cur:' + c.key, gate(c)))}" aria-label="${escapeAttr(c.name)}"><span class="mcu-ico" aria-hidden="true">${c.icon}</span>${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`; }).join('');
 }
+// 2026-10-25 (package FIX3, G20, owner: "After Map 10, the submap on Map 0 should give a tooltip on click, not dialogue"): once Map 10 is
+// cleared, Map 0's talking spots (the signpost, the old well) answer a tap with a short tip (their name), never a conversation, seen or not.
+// The signpost's talk is about finding Map 1; by then it only slows a player down.
+function fix3MapZeroQuiet(mapId){ try{ return mapId === 'm1' && mapsPassed() >= 10; }catch(e){ return false; } }
+function fix3QuietTip(el, icon, name, flag){ try{ if(flag) setDialogueFlag(flag, true); }catch(e){} if(el) el.classList.remove('is-new'); try{ fadeNewBang(el); }catch(e){}
+  showSpeechBubble(el, `${icon || ''} ${name || ''}`.trim(), 'fix3-quiet-tip', {hold: 2.2}); }
 function visitCuriosity(key, el){
   const c = MAP_CURIOSITIES.find(x=> x.key === key); if(!c) return;
   if(!mapTapGate(el, 2600)) return;
+  if(fix3MapZeroQuiet(c.map)){ try{ fxHook('curioBubble', el); }catch(e){} fix3QuietTip(el, c.icon, c.name, 'seen:' + c.dialogue); return; } // FIX3 (G20)
   if(loadDialogueFlags()['seen:' + c.dialogue]) try{ fxHook('curioBubble', el); }catch(e){} // 2026-10-15 batch F
   if(loadDialogueFlags()['seen:' + c.dialogue]){ showSpeechBubble(el, `${c.icon} ${CURIO_AFTER[Math.floor(Math.random()*CURIO_AFTER.length)]}`); return; }
   fadeNewBang(el);
@@ -17952,6 +18007,7 @@ function visitSmallCave(el){
 }
 function visitOldWell(el){
   if(!mapTapGate(el, 2600)) return;
+  if(fix3MapZeroQuiet('m1')){ fix3QuietTip(el, '🪣', TX('ui.fix3-old-well'), 'seen:well_m1'); return; } // FIX3 (G20): after Map 10, a tip
   if(loadDialogueFlags()['seen:well_m1']){
     try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
     if(el){ el.classList.remove('is-rippling'); void el.offsetWidth; el.classList.add('is-rippling'); }
@@ -20031,7 +20087,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'After a Rank B clear (default)')}${['A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
         <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
-        <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
+        <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', nodeNeedsAllLinks(draft) ? 'all' : '', 'any one of these is cleared')}${opt('all', nodeNeedsAllLinks(draft) ? 'all' : '', 'all of these are cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
       ${draft.kind === 'tutorial' ? tutorialNodeDecksHTML(draft) : ''}
@@ -20096,7 +20152,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       { const lv = {}; overlay.querySelectorAll('[data-cardlv]').forEach(inp=>{ const x = inp.value; if(x !== '' && isFinite(Number(x)) && draft.deck && draft.deck[inp.dataset.cardlv]) lv[inp.dataset.cardlv] = Math.max(0, Math.min(11, Math.round(Number(x)))); });
         if(overlay.querySelector('[data-cardlv]')){ if(Object.keys(lv).length) draft.cardLevels = lv; else delete draft.cardLevels; } }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
-      if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
+      delete draft.requiresAny; if(v('seReqMode') === 'all' && draft.requires.length > 1) draft.requiresAll = true; else delete draft.requiresAll; // 2026-10-25 (package FIX3, F1): "any" is the default now
       if(document.getElementById('seRw_first_gold')){
         const r = {}; ['first','repeat'].forEach(k=> ['gold','dust'].forEach(c=>{ const v = document.getElementById(`seRw_${k}_${c}`).value; if(v !== '' && Number(v) >= 0){ r[k] = r[k] || {}; r[k][c] = Math.round(Number(v)); } }));
         if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
@@ -20192,7 +20248,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel','tutHp'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED) // + tutHp (2026-10-23, TU2: a blank Bramble Health used to snap back to the map's 9 / 11)
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','requiresAll','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel','tutHp'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED) // + tutHp (2026-10-23, TU2: a blank Bramble Health used to snap back to the map's 9 / 11)
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -21259,7 +21315,7 @@ function abFight(body, run){
   const hpBefore = run.hp;
   AutoB.afterFight(run, res, opp.name);
   run.history[run.history.length-1].oppOwner = opp.owner;
-  if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); }
+  if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); } else awardXp(1); // 2026-10-25 (package FIX3, F4): a loss or draw gives 1 XP
   { const st = loadLifetimeStats(); if((st.abBestWins||0) < run.wins){ st.abBestWins = run.wins; try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){} } }
   bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
   { const st = res.stats, evs = res.events; cardStatsLater(()=> addCardStats(tallyCardStats('A', st, [evs]))); } // 2026-10-17 (card stats)
@@ -23411,7 +23467,7 @@ function completeConquestNode(node, rank){
   // hidden until, after a win anywhere on its map with its own `requires` met, a roll finds it. Found ones stay found.
   try{ const map = CONQUEST_MAPS.find(m=> m.id===node.mapId); if(map){ progress.found = progress.found || [];
     map.nodes.filter(n=> n.chance > 0 && !progress.found.includes(conquestNodeId(map.id, n.key))).forEach(n=>{
-      const ok = (n.requires||[]).every(k=> progress.completed.includes(conquestNodeId(map.id, k)));
+      const rq = n.requires||[], ok = !rq.length || rq[nodeNeedsAllLinks(n) ? 'every' : 'some'](k=> progress.completed.includes(conquestNodeId(map.id, k))); // 2026-10-25 (package FIX3, F1): any won link, as isNodeVisible
       if(ok && Math.random() < n.chance) progress.found.push(conquestNodeId(map.id, n.key)); }); } }catch(e){}
   saveConquestProgress(progress);
   steamCheckProgress(); // 2026-10-18 (package C): Steam achievements for map clears and Babel Spire floors
@@ -23580,7 +23636,11 @@ function proMapNodesHTML(map, positions){
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
   const xk = xrefKeyOf(map.id), all = list.map(e=> ({id: e.id, ico: '🏆', tip: TX('ui.rw6-pro-node-tip', {key: e.id})})).concat(xk ? [{id: xk, ico: '🎯', tip: TX('ui.pref-xref-node-tip', {key: xk})}] : []); // PREF (2026-10-25): + the map's X-REF node
-  return all.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
+  // 2026-10-25 (package FIX3, found by e2e/rw6 at 390): with the BPRO and X-REF nodes a map has up to 9 of them; in one line they ran past the
+  // map's edge and piled up on the clamp. They wrap onto a second line (and a third) when the first is full, inside 8-92% of the map.
+  const room = dir > 0 ? 92 - (base.x + 9) : (base.x - 9) - 8, perRow = Math.max(3, Math.floor(Math.max(0, room) / 8) + 1), up = base.y > 70 ? -1 : 1;
+  return all.map((e, i)=>{ const col = i % perRow, row = Math.floor(i / perRow);
+    const x = Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
     return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
 }
 function proEditorRowHTML(mapId){
@@ -23611,6 +23671,7 @@ function worldRevealed(){
     const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
     return p.completed.some(id=> !['m1','mq','mf','mtut'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it (2026-10-22, TU: the Tutorial's own fights don't count; T-0 alone used to open the world)
 }
+function nodeNeedsAllLinks(node){ return !!(node && node.requiresAll && !node.requiresAny); } // 2026-10-25 (package FIX3, F1): links open on any one won fight unless the fight asks for all
 function isNodeVisible(map, node, index, progress){
   if(ambushLocksNode(map, node)) return false; // 2026-10-24 (package MAP, owner 17:01 #3): the path the Ambush stopped stays locked until it is won
   if(node.chance > 0 && !adminModeEnabled){ const nid = conquestNodeId(map.id, node.key); if(!progress.completed.includes(nid) && !(progress.found||[]).includes(nid)) return false; }
@@ -23624,7 +23685,10 @@ function isNodeVisible(map, node, index, progress){
   // else gated on the immediately-preceding array entry.
   if(Array.isArray(node.requires)){
     if(node.requires.length===0) return true;
-    return node.requires[node.requiresAny ? 'some' : 'every'](reqKey => { // requiresAny (2026-10-08): any one of them is enough
+    // 2026-10-25 (package FIX3, F1, owner #9: "If two skirmishes are linked from one skirmish, winning that skirmish should unlock 2, not 1"):
+    // a link is an unlock. A fight opens once ANY fight linked to it is won; `requiresAll` (the skirmish editor's "all of these") is the
+    // opt-in for a fight that waits on every link. Was 'every' by default, so 6-6 (linked from 6-3 and 6-5 on the live edits) stayed shut.
+    return node.requires[nodeNeedsAllLinks(node) ? 'every' : 'some'](reqKey => {
       // A `requires` entry pointing at a virtual tutorial marker node (0-1/0-2 on Map 1) is
       // treated as always-satisfied rather than read off progress.completed — those nodes are
       // never actually fought/completed through normal play (they just visually represent the
@@ -25119,11 +25183,19 @@ function renderConquestWorld(mainEl, body, progress){
   if(here) requestAnimationFrame(()=>{ const sc = mainEl.scrollHeight > mainEl.clientHeight ? mainEl : null; const top = here.offsetTop - 160; if(sc) sc.scrollTop = Math.max(0, top); else here.scrollIntoView({block:'center'}); });
   fxHook('mapWorldShown', mainEl); // fog peels off a newly reachable map (FX.E, 2026-10-15)
 }
+// 2026-10-25 (package FIX3, F2, owner #36: "If you rapidly go between maps while its still loading ... the skirmishes and controls do load,
+// but then cancel out"): a load token. Each pan takes a new token; only the newest pan's swap runs, a pan back to the map still on screen
+// cancels the one in flight (it used to be ignored, so the earlier map was drawn), and the fade-out never stacks on a fresh map. The map's
+// own timers (the first-visit zoom and drop, the Spire scroll, the art zoom) check conquestMapLoadToken, so a map you already left can't
+// touch the one you are on.
+let conquestPanToken = 0, conquestPanTarget = null, conquestMapLoadToken = 0;
 function conquestPanTo(mapId, body, progress){
   const target = CONQUEST_MAPS.find(m=> m.id===mapId);
   if(!target || !isMapUnlocked(target, progress || loadConquestProgress())) return;
-  if(mapId===conquestSelectedMap){ const c = document.getElementById('conquestMain'); if(c) c.scrollTo({top:0, behavior:'smooth'}); return; }
+  if(mapId===conquestSelectedMap && !conquestPanTarget){ const c = document.getElementById('conquestMain'); if(c) c.scrollTo({top:0, behavior:'smooth'}); return; }
+  if(mapId===conquestPanTarget) return; // already on its way
   abandonMapLayoutEdit();
+  const tok = ++conquestPanToken; conquestPanTarget = mapId;
   const from = CONQUEST_MAPS.findIndex(m=> m.id===conquestSelectedMap), to = CONQUEST_MAPS.indexOf(target);
   const dir = to > from ? 'right' : 'left';
   const mainEl = document.getElementById('conquestMain');
@@ -25135,9 +25207,11 @@ function conquestPanTo(mapId, body, progress){
   // the old 16% slide-and-blur (up to 2.6 s) uncovered whatever was behind the map. Now: a quick dip
   // through a dark veil (110 ms out, 170 ms in) with a small nudge in the travel direction.
   const outMs = 110;
-  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:170}; renderConquestSubTab(body); };
+  const go = ()=>{ if(tok !== conquestPanToken) return; conquestPanTarget = null; // FIX3 (F2): a newer pan won
+    conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:170}; renderConquestSubTab(body); };
   if(mainEl && !reduce && mainEl.animate){
     const sx = dir==='right' ? -18 : 18;
+    try{ mainEl.getAnimations().forEach(a=> a.cancel()); }catch(e){} // FIX3 (F2): no stacked fades
     mainEl.animate([{transform:'none', opacity:1}, {transform:`translateX(${sx}px)`, opacity:0}], {duration:outMs, easing:'ease-in', fill:'forwards'});
     setTimeout(go, outMs);
   } else go();
@@ -25696,6 +25770,7 @@ function renderConquestSubTab(body){
   const prevMain = body.querySelector('.conquest-main');
   const keepScroll = prevMain ? prevMain.scrollTop : null, keepPage = window.scrollY;
   const sameMapRerender = !!(prevMain && prevMain.dataset.mapId && prevMain.dataset.mapId === conquestSelectedMap); // 2026-10-17: a click on this map, not a new visit
+  const loadTok = ++conquestMapLoadToken, loadAlive = ()=> loadTok === conquestMapLoadToken; // 2026-10-25 (package FIX3, F2): this draw's timers stop once another draw starts
   setTimeout(()=>{ const nm = body.querySelector('.conquest-main'); if(nm && keepScroll != null) nm.scrollTop = keepScroll; if(Math.abs(window.scrollY - keepPage) > 2) window.scrollTo(0, keepPage); }, 0);
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
@@ -25808,7 +25883,7 @@ function renderConquestSubTab(body){
       // like a chain through the skirmish in the middle.
       const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
       const blocked = positions.some((P, k)=>{ if(k===i || k===j) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
-      let cls = n.requiresAny && reqs.length > 1 ? 'is-any' : '';
+      let cls = nodeNeedsAllLinks(n) && reqs.length > 1 ? 'is-all' : ''; // 2026-10-25 (package FIX3, F1): links open on any won fight; the rare "all of these" fight's links are the dotted ones
       // Locked links (2026-10-12, user: "When the 'link' between skirmishes has not been unlocked ... the link should be
       // darkened as well. If 1 node is unlocked but the other isn't, the link fades a bit as it goes towards the locked
       // node"): both ends locked = dark; one end open = a gradient from lit (open end) to dark (locked end).
@@ -25911,7 +25986,7 @@ function renderConquestSubTab(body){
   // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
   if(map.endless && !sameMapRerender){ // start the long climb at your next floor
     // 2026-10-18: a floor picked from the Spire's summit card (already selected) is the one to scroll to, not the top floor
-    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv || !loadAlive()) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
       if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
         if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
@@ -25928,9 +26003,9 @@ function renderConquestSubTab(body){
       nodes.sort((a, b)=> dist(a) - dist(b)).forEach((el, i)=>{ el.style.setProperty('--drop-i', i); el.classList.add('map-drop-wait'); });
       // 2026-10-13 (user: "Add the dropping of skirmishes from the skies ... when we see it for the first time, after the map reveal
       // screen is done"): the zoom-out and the drop wait for the map's name card to lift, then the skirmishes fall from above.
-      const begin = ()=>{ setTimeout(()=>{ cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 250);
+      const begin = ()=>{ if(!loadAlive()) return; setTimeout(()=>{ if(!loadAlive()) return; cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 250);
         setTimeout(()=>{ nodes.forEach(el=>{ el.classList.remove('map-drop-wait'); el.classList.add('map-drop'); }); setTimeout(()=> nodes.forEach(el=> el.classList.remove('map-drop')), reducedMotion() ? 0 : 900 + nodes.length * 90); }, reducedMotion() ? 0 : 1500); };
-      let tries = 0; const waitVeil = ()=>{ const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
+      let tries = 0; const waitVeil = ()=>{ if(!loadAlive()) return; const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
       setTimeout(waitVeil, 150); } }
   if(map.id === 'mtut' && !conquestLayoutEdit) tutMapOpenSlide(map, positions); // 2026-10-18: T-0 / T-1 slide from the middle to their spots, once
   const tooltipEl = document.getElementById('conquestTooltip');
@@ -26020,7 +26095,7 @@ function renderConquestSubTab(body){
   pl2MapViewed(); // PL2 (2026-10-25): XP won elsewhere fills here
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(fix3SpotAgain(b)) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(w)) return; visitOldWell(w); }); }
   mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(b)) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
@@ -26683,7 +26758,9 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
   return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards, rank: rk,
-    totalRankHTML: raidTotalRankBadgeHTML(claim.mine || 0), // 2026-10-21 (package RK): the total raid rank, beside the standing
+    // 2026-10-25 (package FIX3, G21, owner: "Overall raid rank missing on the raid reward screen"): it showed only from rank F up, unlabelled.
+    // Now always, under its own caption ("No raid rank yet" below F).
+    totalRankHTML: `<small class="fix3-rcs-total-lbl">${escapeHtml(TX('ui.fix3-overall-raid-rank'))}</small>${raidTotalRankBadgeHTML(claim.mine || 0, {none: true})}`,
 
     text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
       sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.leading ? ' · ' + TX('results.raid-leading') : rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19); + the Leading participant (RV2)
@@ -28153,7 +28230,9 @@ function settleRaidPartAfterMatch(m){
   // button (adminAutoWin empties the boss's bramble on turn 1), and it was scored as a real overwhelm: 10,000 raid damage saved, pushed to
   // the shared raid and paid. An admin win now shows its results but is not recorded, pushed or paid (m.raidAdminTest).
   if(m.adminWin){ m.raidAdminTest = true; m.raidDamageDealt = RaidM.contributionFor(def, dealt, overwhelmed, (def.parts||[]).find(p=> p.id===m.raidPart), m.raidRank); m.raidOverwhelmed = overwhelmed;
-    try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; } return; }
+    try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; }
+    try{ m.raidTotalAfter = Math.round((currentRaidStateFor(def).contributors || {})[myGhostOwnerId()] || 0); }catch(e){} // 2026-10-25 (package FIX3, G21): an admin test shows the overall raid rank too (unchanged by the test)
+    return; }
   const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
   // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win).
@@ -35607,6 +35686,13 @@ function renderBoard(opts){
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
   const emojiRows = h=>{ try{ return EmojiStyle.htmlBlock(h); }catch(e){ return h; } }; // 2026-10-17: emoji as pictures in the string (see EmojiStyle.htmlBlock)
   // 2026-10-25 (package PL2, owner 00:02 #1): once the match is decided the rows are reconciled cell by cell, not rebuilt (pl2ReconcileRow)
+  // 2026-10-25 (package FIX3, F5, owner #17: "... at the end of the round - no it's just tokens"): a token that a spawn put on the board during
+  // the round's replay (outside a full render) was never marked seen, so the round-end render took it for a new card and played its entrance
+  // again from opacity 0 (seen headless: a Growth Sprout / Brood token gone for 290-600 ms at the end of round 1, every run). A card that is
+  // on screen (the card itself at full opacity) right before the rows are rebuilt has been seen: it keeps its place, no second entrance.
+  if(needEnemy || needMine){ try{ const seen = [];
+    [needEnemy ? rowEnemy : null, needMine ? rowMine : null].forEach(r=>{ if(r) r.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const u = el.getAttribute('data-uid'); if(!knownBoardUids.has(u)) seen.push([u, el]); }); });
+    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); }catch(e){} } // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
   const pl2End = !!(slotView && (m.ending || m.over));
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
@@ -37419,12 +37505,14 @@ function clipLightsToBoard(bf){
   const pools = bf.querySelectorAll('.board-card .unit-light, .board-card .fxb-pool'); if(!pools.length) return;
   const B = bf.getBoundingClientRect(); if(!B.width) return;
   const rad = parseFloat(getComputedStyle(bf).borderTopLeftRadius) || 0;
-  pools.forEach(p=>{
-    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return;
+  // 2026-10-25 (package FIX3, F3): every pool is measured first, then every clip is written (it read, wrote, read ... before: a layout per pool)
+  const plan = [...pools].map(p=>{
+    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return null;
     const sx = R.width / w, sy = R.height / h;
     const t = Math.max(0, (B.top - R.top) / sy), l = Math.max(0, (B.left - R.left) / sx), b = Math.max(0, (R.bottom - B.bottom) / sy), r = Math.max(0, (R.right - B.right) / sx);
-    const v = (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : '';
-    if(p.style.clipPath !== v) p.style.clipPath = v; });
+    return [p, (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : ''];
+  });
+  plan.forEach(x=>{ if(x && x[0].style.clipPath !== x[1]) x[0].style.clipPath = x[1]; });
 }
 if(typeof window !== 'undefined') setInterval(()=>{ try{ if(document.hidden) return; const bf = document.getElementById('battlefieldEl');
   if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }catch(e){} }, 250);
@@ -38414,6 +38502,7 @@ async function adminAutoWin(){
 // 30) (behind the scenes tracked) ... If you S and you progressed pass Map 50, you may Auto-Sweep. Don't even need to play, and
 // it acts as if its completed. Past Map 70, you may Idle-Sweep"): the ladder, by the furthest map whose boss you have beaten.
 const AUTO_TIERS = {auto:20, sweep:30, autoSweep:50, idleSweep:70};
+const FIX3_PVP_AUTO_MAP = 25; // 2026-10-25 (package FIX3, G22): PvP auto-play opens once Map 25 is cleared
 function mapsPassed(){ try{ const prog = loadConquestProgress(); let hi = -1; mainConquestMaps().forEach((m, i)=>{ const k = mapRewardNodeKey(m); if(k && (prog.completed||[]).includes(conquestNodeId(m.id, k))) hi = i; }); return hi; }catch(e){ return -1; } }
 function autoTier(t){ return adminModeEnabled || mapsPassed() >= AUTO_TIERS[t]; }
 const AUTO_S_KEY = 'bramblewood_auto_s_v1'; // fights you have won on Auto at rank S or better (Sweep needs one)
@@ -38423,6 +38512,9 @@ function nodeBestRankS(mapId, nodeKey){ try{ return rankAtLeast(loadConquestProg
 function autoplayAllowed(m){
   // 2026-10-19 (package RO, owner 21:49: "Completing a raid lets you auto it in the future"): the full raid, once you have completed it
   if(m && m.mode === 'raidOffline' && m.raidFull && m.raidDef && !m.testKit) return !!(adminModeEnabled || raidAutoOpen(m.raidDef));
+  // 2026-10-25 (package FIX3, G22, owner: "Let me admin auto-play PVP (And if you're past Map 25 as well)"): the PvP ghost fights, for Admin
+  // Mode and for a player who has cleared Map 25. Live two-player matches never (a person sits across the table).
+  if(m && m.mode === 'pvp' && !m.testKit) return !!(adminModeEnabled || mapsPassed() >= FIX3_PVP_AUTO_MAP);
   if(!m || m.mode !== 'conquest' || !m.conquestNode || m.testKit) return false;
   if(adminModeEnabled) return true;
   return nodeBestRankS(m.conquestNode.mapId, m.conquestNode.nodeId) && autoTier('auto');
@@ -39400,9 +39492,12 @@ function leafPuff(el, glyphsIn){
   if(!el || !hasGsap()) return;
   const r = el.getBoundingClientRect();
   const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
+  // 2026-10-25 (package FIX3, F3): the twelve leaves go in first and are read once together (fix3GsapPrime), then moved; each used to
+  // force its own style pass between the last one's write and its own read
+  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); document.body.appendChild(p); ps.push(p); }
+  fix3GsapPrime(ps);
   for(let i = 0; i < 12; i++){
-    const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
-    document.body.appendChild(p);
+    const p = ps[i];
     const x = r.left + r.width*(0.2 + Math.random()*0.6), y = r.top + r.height*(0.55 + Math.random()*0.35);
     gsap.set(p, {x, y, opacity:1, scale:.6 + Math.random()*.5, rotation:Math.random()*360});
     gsap.to(p, {x:`+=${(Math.random()*2 - 1)*60}`, y:`-=${20 + Math.random()*40}`, rotation:`+=${Math.random()*240 - 120}`, duration:.5 + Math.random()*.3, ease:'power2.out'});
@@ -40487,6 +40582,9 @@ async function resolveRoundCore(opts){
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
       if(m.mode==='pvp') bumpQuestCounter('pvpWins', 1);
     }
+    // 2026-10-25 (package FIX3, F4, owner #1: "you still get an xp under a loss. (+1 at least)"): a lost or drawn fight gives 1 XP, on the same
+    // terms as a win's 3 (not a free Spire replay, a fight already paid out, a PRO fight or an admin test)
+    if(m.winner!==1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate && !m.proFight && !m.adminTest) awardXp(1);
     // Match History / Replay (#254) — same eligibility as recordMatchResult just above (a real
     // personal result, not hot-seat/Conquest/Sandbox/tutorial), but ALSO gated on being signed
     // in (see logMatchHistory's own comment) — unlike the local win/loss ledger, this persists
@@ -41020,7 +41118,7 @@ function tutBgZoom(z, animate, clear){
   const lay = document.getElementById('conquestLayout'), cv = document.getElementById('conquestCanvas'); if(!lay || !cv) return;
   if(clear){ lay.style.backgroundSize = ''; lay.style.backgroundPosition = ''; lay.style.transition = ''; return; }
   const m = /url\(["']?([^"')]+)["']?\)/.exec(getComputedStyle(lay).backgroundImage || ''); if(!m) return;
-  const img = new Image(); img.onload = ()=>{
+  const img = new Image(); img.onload = ()=>{ if(!lay.isConnected || !cv.isConnected) return; // 2026-10-25 (package FIX3, F2): the map was left before its art loaded
     const L = lay.getBoundingClientRect(), C = cv.getBoundingClientRect(), W = L.width, H = L.height, sc = Math.max(W / img.naturalWidth, H / img.naturalHeight);
     const iw = img.naturalWidth * sc, ih = img.naturalHeight * sc, ox = (W - iw)/2, oy = (H - ih)/2;
     const tx = parseFloat(cv.style.getPropertyValue('--tut-x')) || 50, ty = parseFloat(cv.style.getPropertyValue('--tut-y')) || 50;
@@ -41028,7 +41126,7 @@ function tutBgZoom(z, animate, clear){
     const nx = px - (px - ox) * z, ny = py - (py - oy) * z;
     lay.style.transition = animate && !reducedMotion() ? 'background-size 1.8s cubic-bezier(.45,0,.2,1), background-position 1.8s cubic-bezier(.45,0,.2,1)' : 'none';
     lay.style.backgroundSize = `auto, auto, ${iw*z}px ${ih*z}px, auto`; lay.style.backgroundPosition = `center, center, ${nx}px ${ny}px, center`;
-    if(animate && z === 1) setTimeout(()=> tutBgZoom(1, false, true), 2000);
+    if(animate && z === 1) setTimeout(()=>{ if(lay.isConnected) tutBgZoom(1, false, true); }, 2000);
   };
   img.src = m[1];
 }
@@ -43191,7 +43289,7 @@ function rewardsPanelHTML(m){
   // (egg cards: card tiles in Cards won since 2026-10-25, PL2 #5)
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
-  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? (()=>{ const bi = babyRewardInfo(m.conquestBabyEarned); return `<span class="hud-pill rw-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr(bi.name)}))}">${escapeHtml(bi.icon)} ${escapeHtml(TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}))}</span>`; })() /* 2026-10-25 (package FIX3, G13): the toast's icon and type */ : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
@@ -43898,8 +43996,8 @@ function renderLogLine(ev){
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
   // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
-  battleLogSync(log);
-  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
+  // 2026-10-25 (package FIX3, F3): read once per frame with the pin (fix3PinLogSoon), not before every line
+  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); fix3PinLogSoon(log); return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
   const row = document.createElement('div');
@@ -43909,7 +44007,18 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  pinBattleLog(log);
+  fix3PinLogSoon(log);
+}
+// 2026-10-25 (package FIX3, F3 + G26, owner: "as swamp fever applies poison, the screen lags for 0.2s" and "a few sharp lag periods"): a
+// headless profile of a whole fight (tools/perf/fight_profile_2026_10_25.py) put the battle log first: every line read the box (battleLogSync:
+// scrollTop, clientHeight) and wrote it (pinBattleLog: scrollTop = scrollHeight), each read forcing a full style and layout pass right
+// after the effects of the line before had changed the page, ~190 times a fight, in bursts at round end. A burst of lines now reads and
+// pins once, at the next frame (the same reader rules: scrolled up stays put, back at the bottom follows again).
+let fix3LogPinRaf = 0, fix3LogPinEl = null;
+function fix3PinLogSoon(log){
+  fix3LogPinEl = log; if(fix3LogPinRaf) return;
+  const run = ()=>{ fix3LogPinRaf = 0; const lg = fix3LogPinEl; fix3LogPinEl = null; if(!lg || !lg.isConnected) return; battleLogSync(lg); pinBattleLog(lg); };
+  fix3LogPinRaf = (typeof requestAnimationFrame === 'function' && !(typeof document !== 'undefined' && document.hidden)) ? requestAnimationFrame(run) : setTimeout(run, 0);
 }
 // Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
 // newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
@@ -44509,6 +44618,18 @@ function cometFall(ev, k, host, r){
 }
 // opts (2026-10-22, package DN): {post: the target's damage mark drawn after the number, heavy: a big physical hit, fit: keep the number
 // no wider than the unit card, noIcon: no automatic class icon}. Only flashDmg passes it; every other number is unchanged.
+// 2026-10-25 (package FIX3, F3 + G26): GSAP reads an element's computed transform the first time it moves it (gsap.set / a tween). A
+// number, a bubble or a leaf appended and then set at once forced a style pass each, after the last one's write: the poison round
+// end (one tick per poisoned unit, each with its number and 4-6 bubbles) did that dozens of times in one frame. fix3GsapBatch queues the
+// start of each such animation to the end of the current task; the queue then reads every element once (gsap.getProperty primes the
+// cache, no writes in between: one style pass for the lot) and only then starts them. fix3GsapPrime does the same for a list in hand.
+const fix3GsapQueue = [];
+function fix3GsapPrime(els){ try{ els.forEach(e=>{ if(e && e.isConnected) gsap.getProperty(e, 'x'); }); }catch(e){} }
+function fix3GsapBatch(el, start){
+  fix3GsapQueue.push([el, start]); if(fix3GsapQueue.length > 1) return;
+  const flush = ()=>{ const q = fix3GsapQueue.splice(0); fix3GsapPrime(q.map(x=> x[0])); q.forEach(([e, fn])=>{ try{ if(e.isConnected) fn(e); }catch(err){} }); };
+  if(typeof queueMicrotask === 'function') queueMicrotask(flush); else Promise.resolve().then(flush);
+}
 function floatText(el, text, cls, opts){
   if(!el) return;
   if(floatDetachDepth > 0 && el.closest && el.closest('.board-card[data-uid]')){ const uid = el.closest('.board-card[data-uid]').dataset.uid; // upkeep numbers outlive the re-render (2026-10-14)
@@ -44571,13 +44692,29 @@ function floatText(el, text, cls, opts){
     // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
     const b = f.querySelector('.df-burst');
+    // 2026-10-25 (package FIX3, F3 + G26): the same motion on the Web Animations API, which never reads the page's styles (GSAP's first move
+    // of a new element reads its computed transform, a full style pass per number, in a row at every round end). Same timing and path.
+    if(f.animate){ f.style.position = 'absolute'; f.style.left = barShift ? `calc(50% + ${barShift}px)` : '50%'; f.style.top = `calc(${top0}% + ${dy0.toFixed(1)}px)`; f.style.opacity = '0';
+      const T = (x, y, sc)=> `translate(-50%, 0) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${sc})`, t = travel;
+      const a = f.animate([
+        {offset:0, opacity:0, transform:T(0, 0, .5), easing:'cubic-bezier(.17,.84,.44,1)'},
+        {offset:.103, opacity:1, transform:T(dx*.3, -8*t, big), easing:'cubic-bezier(.2,.9,.3,1.35)'},
+        {offset:.25, opacity:1, transform:T(dx*.62, -22*t, .93)},
+        {offset:.402, opacity:1, transform:T(dx*.775, -31*t, 1)},
+        {offset:.655, opacity:1, transform:T(dx*.97, -40.6*t, 1), easing:'cubic-bezier(.55,.085,.68,.53)'},
+        {offset:1, opacity:0, transform:T(dx, -54*t, 1)}], {duration:870, fill:'forwards'});
+      a.onfinish = ()=> f.remove(); a.oncancel = ()=> f.remove();
+      if(b) b.animate([{transform:'scale(.3) rotate(0deg)', opacity:1, easing:'cubic-bezier(.17,.84,.44,1)'}, {offset:.29, transform:'scale(1.25) rotate(25deg)', opacity:1, easing:'cubic-bezier(.55,.085,.68,.53)'}, {transform:'scale(.9) rotate(40deg)', opacity:0}], {duration:310, fill:'forwards'});
+      return; }
+    fix3GsapBatch(f, ()=>{
     gsap.set(f, {position:'absolute', left: barShift ? `calc(50% + ${barShift}px)` : '50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
       .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
       .to(f, {y:-42*travel, x:dx, duration:.6, ease:'power1.out'}, '<')
       .to(f, {opacity:0, y:-54*travel, duration:.3, ease:'power1.in'}, '>-0.12');
-    if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    if(b){ fix3GsapPrime([b]); gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    });
   } else {
     f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
     if(barShift) f.style.marginLeft = barShift + 'px';
@@ -44642,12 +44779,19 @@ function poisonBubbleBurstVfx(uid){
     b.style.left = startX + '%';
     b.style.fontSize = size + 'px';
     el.appendChild(b);
-    if(hasGsap()){
+    if(b.animate){ // 2026-10-25 (package FIX3, F3): the Web Animations API (no style reads); the bubbles of a round end used to force a style pass each
+      b.style.top = '70%'; const d = Math.round(delay*1000), a = b.animate([
+        {offset:0, opacity:0, transform:'translate(0, 0) scale(.5)', easing:'ease-out'},
+        {offset:.22, opacity:.9, transform:`translate(${(dx*.04).toFixed(1)}px, ${(-rise*.4).toFixed(1)}px) scale(1)`, easing:'ease-out'},
+        {offset:.72, opacity:.7, transform:`translate(${dx.toFixed(1)}px, ${(-rise).toFixed(1)}px) scale(1)`, easing:'ease-in'},
+        {offset:1, opacity:0, transform:`translate(${dx.toFixed(1)}px, ${(-rise*1.25).toFixed(1)}px) scale(1)`}], {duration:1000, delay:d, fill:'both'});
+      a.onfinish = ()=> b.remove(); a.oncancel = ()=> b.remove();
+    } else if(hasGsap()){ b.style.opacity = '0'; fix3GsapBatch(b, ()=>{ // 2026-10-25 (package FIX3, F3): started with the batch (one style pass for every bubble of the round end)
       gsap.set(b, {top:'70%', x:0, y:0, opacity:0, scale:.5});
       gsap.timeline({delay, onComplete:()=> b.remove()})
         .to(b, {opacity:.9, scale:1, y:-rise*0.4, duration:.22, ease:'power1.out'})
         .to(b, {opacity:.7, y:-rise, x:dx, duration:.5, ease:'power1.out'}, '<0.02')
-        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08');
+        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08'); });
     } else {
       b.style.top = '70%';
       b.style.opacity = '.85';
@@ -45703,6 +45847,17 @@ function quickStrikeCastle(attEl, targetSide){
 }
 function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; { const q = quickImpactMs(ev); if(q != null) return q; } if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
+// FIX3 (F5): the spawn portal plays its rune, motes and pop on an empty stand-in laid over the landed token (same box), so the token's own
+// tile is never dimmed; the stand-in goes once the portal is done
+function fix3StandIn(t){ try{ const r = t.getBoundingClientRect(); if(!r.width) return null; const p = document.createElement('div'); p.className = 'fix3-portal-standin'; p.setAttribute('aria-hidden', 'true');
+  p.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:1;`; document.body.appendChild(p);
+  setTimeout(()=> p.remove(), 1600); return p; }catch(e){ return null; } }
+function fix3PortalOver(F, t){ const p = fix3StandIn(t); if(p) F.summonPortal(p); }
+// The Growth Sprout's pop (FX.C.sproutPop, 120 ms after the sprout has landed) had the same blink: its tile went back to 0 and grew in again.
+// Its soil, seed and leaves now play over the landed sprout on the same stand-in.
+function fix3WrapSproutPop(){ try{ const C = window.FX && FX.C; if(!C || !C.sproutPop || C._fix3Sprout) return !!(C && C._fix3Sprout); const o = C.sproutPop;
+  C.sproutPop = function(el, opts){ const p = el && el.isConnected ? fix3StandIn(el) : null; return o.call(this, p || el, opts); }; C._fix3Sprout = true; return true; }catch(e){ return false; } }
+if(typeof window !== 'undefined'){ let n = 0; const tryWrap = ()=>{ if(!fix3WrapSproutPop() && n++ < 40) setTimeout(tryWrap, 500); }; setTimeout(tryWrap, 0); }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
   const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
@@ -46103,7 +46258,13 @@ function eighthPassVfx(ev){
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
-    at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+    // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
+    // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
+    // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
+    // token on a stand-in (fix3PortalOver), and each token gets it once a match (a re-sent spawn doesn't play it again).
+    const m5 = matchState, popped = m5 ? (m5._fix3Popped || (m5._fix3Popped = new Set())) : new Set(), fresh = uids.filter(u=> !popped.has(u));
+    fresh.forEach(u=> popped.add(u));
+    at(140, ()=> fresh.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) fix3PortalOver(F, t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
     if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
@@ -52759,9 +52920,12 @@ function openNestPicker(slot, tab){
       conf.innerHTML = `<span class="np-conf-name">🌱 ${escapeHtml(defs[id].name)} <small>to Level 1 in ${NURTURE_HOURS}h</small></span><button type="button" class="btn ghost small" data-np-cancel>Cancel</button><button type="button" class="btn primary" data-np-train="${escapeAttr(id)}">🌱 Train${btnCostHTML(nurtureCostFor(id))}</button>`;
       conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
 }
-function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
+// 2026-10-25 (package FIX3, G13, owner: "a ladybug in the toast, a duckling on the reward screen"): the toast showed the baby's type icon
+// (🐞 Bug) while the results pill said "🐣 Rescued a baby". Both now read the one source, babyRewardInfo(type): the type, its icon, its name.
+function babyRewardInfo(type){ const t = NEST_TYPES[type] ? type : 'woodland', d = NEST_TYPES[t]; return {type: t, icon: d.icon, name: d.name}; }
+function rescueBaby(type, from){ const n = nestState(); const t = babyRewardInfo(type).type; const now = Date.now();
   n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + Math.round(BABY_GROW_HOURS*3600e3*nurseTimeFactor()), from: from||''}); saveNestState(n); // mastery speeds it (2026-10-15)
-  try{ showToast(TX('toast.you-rescued-a-little-baby-it', {v1: NEST_TYPES[t].icon, v2: NEST_TYPES[t].name.toLowerCase()}), 'ok'); }catch(e){} }
+  try{ const bi = babyRewardInfo(t); showToast(TX('toast.you-rescued-a-little-baby-it', {v1: bi.icon, v2: bi.name.toLowerCase()}), 'ok'); }catch(e){} }
 function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EGG_KINDS[e.kind]||EGG_KINDS.woodland).type); }
 // Hatching (2026-10-12, user: "Hatching should have a small animation, with clues to their rarity, then showing the card in
 // closeup! its an important facet!"): the egg rocks three times, harder each time; the glow leaking through its cracks tells
@@ -55322,7 +55486,7 @@ function renderProfile(){
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? '✅ Active, your progress is backed up' : (cloudReady ? 'Playing as a guest.' : 'Connecting…'));
   wireAuthForm('profile', mode=>{
     showToast(mode==='create' ? TX('toast.account-created-everything-you-ve-done') : TX('toast.logged-in-this-device-now-has'), 'ok');
-    renderProfile(); refreshAuthGateUI();
+    renderProfile(); refreshAuthGateUI(); fix3AfterSignIn(); // FIX3 (G7): back to where you were, synced
   });
   const pwForm = document.getElementById('addPasswordForm');
   if(pwForm) pwForm.addEventListener('submit', async e=>{
@@ -56017,6 +56181,7 @@ function switchTab(tab){
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
+  if(tab === 'profile' && currentTabBeforeSwitch && currentTabBeforeSwitch !== 'profile' && !isSignedIn()) fix3AuthReturn = {tab: currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null)}; // FIX3 (G7)
   // 2026-10-15 (user: "Forge is not a submenu of Codex" + "I pressed codex and it went to Forge"): the Forge is its own page that
   // happens to be drawn in the Codex view, so leaving it forgets it; the next plain visit to the Codex opens Browse.
   let leftForge = false;

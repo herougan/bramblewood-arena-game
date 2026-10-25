@@ -3309,7 +3309,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "{gem} retirée de {name}. Elle est de retour dans votre Materia.",
  "{gem} taken out of {name}. It broke.": "{gem} retirée de {name}. Elle s’est brisée.",
  "Next pack ({n} left)": "Pack suivant ({n} restants)",
- "All {n} packs": "Les {n} packs",
  "{n} packs opened": "{n} packs ouverts",
  "Theirs: half their deck {theme}": "Pour eux : la moitié de leur deck {theme}",
  "Cave": "Caverne",
@@ -3397,5 +3396,9 @@
  "Reference deck vs this map's PRO decks": "Deck de référence contre les decks PRO de cette carte",
  "REF": "REF",
  "You are playing {name}, not your deck.": "Vous jouez {name}, pas votre deck.",
- "Played with {name}: no rewards.": "Joué avec {name} : pas de récompense."
+ "Played with {name}: no rewards.": "Joué avec {name} : pas de récompense.",
+ "View all": "Tout voir",
+ "Overall raid rank": "Rang de raid global",
+ "Rescued a {type} baby": "Bébé {type} sauvé",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Presque fini : ouvrez le lien de l'e-mail que nous venons d'envoyer. Il vous ramène ici connecté, et la progression et les decks de cet appareil passent sur votre nouveau compte."
 }
