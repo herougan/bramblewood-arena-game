@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 release 10-26a (batch: PREF, DOCS1 + HUB5, PROP1, FIX3)
+- Admin: X-REF fights on every PRO map and a "Play with the map's reference deck" switch (map reference or Reference-2, the owner's Ant Deck); the PRO-ease report (docs/balance/pro-ease-2026-10-25.md).
+- Fixes: a fight opens when any linked fight is won (6-3 -> 6-6; 34 joins); map switching keeps the last map asked; round-end lag (worst frame 3.5 s -> 0.8 s in the test machine's 5-1 profile); token blinks; 1 XP on a loss; sign-up saves (unconfirmed email sign-ups are no longer treated as signed in); "View all"; a second click skips dialogue; baby icon; Train bar; x10 card detail; raid rank on the reward screen; Map 0 tooltips after Map 10; PvP auto-play for Admin and past Map 25.
+- Hub: Card table (with the pack-art candidates), Curves, the Difficulty road check. Docs: project-state.md, evaluation-protocol.md, proposals-2026-10-26.md.
+- Checks: full unit tier against 10-24e's list: new failures autobattle (speed; fails on this 2-core machine), nv-2026-10-19 (fails the same way on 10-25b here) and mk-2026-10-23 (passes alone, 38/38); six stale tests updated. ui_smoke 0 failures and flows 0 issues on a quiet machine (ui_smoke failed at varying steps three times while agents ran); card-matrix 0 failures, 0 golden diffs.
+
 ## 2026-10-26 (package PROP1: four design proposals; docs and a measurement tool only, no game code)
 - **`docs/proposals-2026-10-26.md`**, the owner's 10-25 23:58 asks:
   1. **Equipment hardiness:** Lives (Hardy N, default 1) on top of EQ2's durability. A break takes a life. New skills Sunder (On Hit, 50%) and Dismantle (On Play, 50%); Pulverise breaks a life outright.
