@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 (package PROP1: four design proposals; docs and a measurement tool only, no game code)
+- **`docs/proposals-2026-10-26.md`**, the owner's 10-25 23:58 asks:
+  1. **Equipment hardiness:** Lives (Hardy N, default 1) on top of EQ2's durability. A break takes a life. New skills Sunder (On Hit, 50%) and Dismantle (On Play, 50%); Pulverise breaks a life outright.
+  2. **The Moon Trail:** a monthly, gameplay-locked battle pass built on the daily notices, daily and weekly tiers and weekly Trail challenges. It has 30 tiers, a free lane with 6 packs a month and a placeholder premium lane. Level packs move to every 5th level.
+  3. **Three Fester reworks** around Parasites: Gorge, Brood-mother and Spreading.
+  4. **Six threshold skills** at +2/+2: Requiem, Dirge, Carnage, Muster, Beset and Throng, priced by measured uptime.
+- **`tools/prop1_threshold_uptime_2026_10_26.js`** (EN6's uptime method, 1,500 CPU fights) writes `docs/balance/prop1-threshold-uptime-2026-10-26.json`: shares of unit-rounds by deaths this fight and by units on each side. A unit lives 4.4 rounds on average.
+- Decisions PROP1-1 .. PROP1-4 (YET) in `docs/decisions.json`.
+
 ## 2026-10-25 (package DOCS1 + HUB5: project state, evaluation protocol, Card table, Curves, road check; docs and the hub only, no game code)
 - **`docs/project-state.md`** (D1): the settled rules (combat and damage types, keywords, resources, progression and rewards, maps and road, CPU, cards and budget), each a short line with its decision id and the canonical file; rules decided 10-25 17:53 and not built are marked "decided, not built yet (action item ...)". **`docs/evaluation-protocol.md`** (D2): PRO / BPRO rules, the reference decks (map reference, Reference-2, Reference-3 pending), the difficulty metrics with the owner's DF-1b tolerance, the testing procedure. Both are rows in CLAUDE.md's source-of-truth table and in the hub's Library.
 - **Hub, 🗃️ Card table** (H2): all 879 cards of `canonical/cards.json`, 100 a page, sortable by any column, filters for text, rarity, pack tier, first-obtain map, faction, type and skill. Its **Packs** view (G11) shows each pack's name, tier and price with the rare-and-higher cards that have art as thumbnails (show only, nothing stored).
