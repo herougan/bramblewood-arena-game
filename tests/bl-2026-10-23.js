@@ -155,7 +155,7 @@ ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']) && /At the
 const cat = fs.readFileSync(path.join(ROOT, 'docs', 'effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package BL\)/.test(cat) && /bleedFadeDropVfx/.test(cat) && /bloomCopyVfx/.test(cat), '14. the effects catalogue');
 const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')); const list = Array.isArray(dec) ? dec : (dec.decisions || dec.items || []);
 ok(['BL-1', 'BL-2', 'BL-3', 'BL-4', 'BL-5'].every(id=> list.some(d=> d.id === id)), '14. the owner calls BL-1..BL-5 in docs/decisions.json');
-ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 80000)), '14. a CHANGELOG entry at the top'); // 2026-10-23 (RW5): later packages' entries sit above it (was the first 6000 characters); 2026-10-24: 80000 (more packages above)
+ok(/BL \(2026-10-23\)|package BL/.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 160000)), '14. a CHANGELOG entry at the top'); // 2026-10-23 (RW5): later packages' entries sit above it (was the first 6000 characters); 2026-10-24: 80000 (more packages above); 2026-10-25 (release): 160000 (PL2, PRO3 above)
 
 console.log(fail ? `bl-2026-10-23: ${fail} of ${n} FAILED` : `bl-2026-10-23: all ${n} passed`);
 process.exit(fail ? 1 : 0);
