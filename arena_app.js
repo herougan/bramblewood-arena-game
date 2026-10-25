@@ -52262,12 +52262,16 @@ const SHOP_PACKS_DEFAULT = [
   // 2026-10-23 (package RW3, owner on C1: "Pack foil chances - evaluate also. Should be rare."): a card comes out foil 1% (Hedgerow Pouch),
   // 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster); faction packs 1%. Was 4 / 8 / 12 (+ one foil guaranteed in every Highcrest
   // Case, about 1.3 foils a Case) / 10 / 4%. The guarantee is off. An Advanced pack's first five cards keep 10x (10 / 15 / 20%).
-  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1 /* RW5: Pack 1 (Maps 0-6) */, foilChance:0.01, foilGuaranteed:false},
-  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:120, gems:10}, cards:5, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:2 /* RW5: Pack 2 (Maps 7-13) */, foilChance:0.015, foilGuaranteed:false},
+  // 2026-10-26 (package RES3, G15, owner: "all packs should only give 3 cards, (collectors giving 5). Recost them"): every pack gives 3 cards at the
+  // same price per card as before (old cost / old cards x 3, rounded): the Tidemire Chest 5 -> 3 cards, 120 + 10 -> 72 + 6; the Highcrest Case
+  // 8 -> 3, 250 + 30 -> 94 + 11; the Hedgerow Pouch and the Mystery Booster were 3 already. collectorCost: the Collector pack (5 cards, was 10)
+  // at its old price per card (12x the old pack price over 10 cards, x 5). The old -> new table is decision RES3-2 in docs/decisions.json.
+  {id:'bronze', packNo:1, name:'Hedgerow Pouch', icon:'🌿', cost:{gold:50, gems:0}, collectorCost:{gold:300, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0.04, pool:1 /* RW5: Pack 1 (Maps 0-6) */, foilChance:0.01, foilGuaranteed:false},
+  {id:'silver', packNo:2, name:'Tidemire Chest', icon:'🐚', cost:{gold:72, gems:6}, collectorCost:{gold:720, gems:60}, cards:3, newGuaranteed:true, dust:0, metal:1, levelChance:0.4, unlockChance:0.10, pool:2 /* RW5: Pack 2 (Maps 7-13) */, foilChance:0.015, foilGuaranteed:false},
   // Mystery Booster (2026-10-10, user: "Mystery booster with strange cards"): its own pool (tier 99) of oddities that
   // don't come out of any other pack.
   {id:'mystery', name:'Mystery Booster', icon:'❓', cost:{gold:80, gems:0}, cards:3, newGuaranteed:false, dust:0, metal:0, levelChance:0.2, unlockChance:0, pool:99, foilChance:0.02, foilGuaranteed:false},
-  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:250, gems:30}, cards:8, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:3 /* RW5: Pack 3 (Maps 14-20) */, foilChance:0.02, foilGuaranteed:false}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
+  {id:'gold', packNo:3, name:'Highcrest Case', icon:'🏔️', cost:{gold:94, gems:11}, collectorCost:{gold:1500, gems:180}, cards:3, newGuaranteed:true, dust:0, metal:0, kroon:3, levelChance:0.8, unlockChance:0.20, pool:3 /* RW5: Pack 3 (Maps 14-20) */, foilChance:0.02, foilGuaranteed:false}, // comingSoon dropped 2026-10-12: sold by the Gilded Caravan (Map 13)
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
@@ -52336,10 +52340,14 @@ function getShopPacks(){
 // pack also has 5 bonus cards"). Once you reach the map 25 past where a pack first goes on sale, an Advanced version sits
 // beside it: 5 cards at ten times the foil chance, plus 5 bonus cards at the usual odds, for 12× the price.
 const PACK_SALE_MAP = {bronze:5, silver:8, gold:13};
+const RES3_COLLECTOR_CARDS = 5; // RES3 (2026-10-26, G15): a Collector pack's cards
 function advancedPackOf(p){
   const n = p.cards||3, foil = Math.min(0.9, (+p.foilChance||0.02) * 10);
-  return Object.assign({}, p, {id: p.id + '-adv', baseId: p.id, advanced:true, name: TX('ui.rw5-collector-pack', {name: p.name}) /* 2026-10-23 (package RW5, owner 19:27 item 14: "The advanced packs will be called collector packs"); was 'Advanced ' + name */, cards: 10, mainCards: 5, mainFoilChance: foil,
-    cost: {gold: Math.round((p.cost.gold||0) * 12), gems: Math.round((p.cost.gems||0) * 12)}, newGuaranteed: p.newGuaranteed, comingSoon:false});
+  // 2026-10-26 (package RES3, G15): a Collector pack gives 5 cards (was 5 at 10x the foil chance + 5 bonus cards), all 5 at 10x the foil chance;
+  // its price is the pack's collectorCost (the old price per card x 5), or 6x a pack's price for a pack without one (an admin-made pack).
+  const cc = p.collectorCost || {gold: Math.round((p.cost.gold||0) * 6), gems: Math.round((p.cost.gems||0) * 6)};
+  return Object.assign({}, p, {id: p.id + '-adv', baseId: p.id, advanced:true, name: TX('ui.rw5-collector-pack', {name: p.name}) /* 2026-10-23 (package RW5, owner 19:27 item 14: "The advanced packs will be called collector packs"); was 'Advanced ' + name */, cards: RES3_COLLECTOR_CARDS, mainCards: RES3_COLLECTOR_CARDS, mainFoilChance: foil,
+    cost: {gold: cc.gold || 0, gems: cc.gems || 0}, newGuaranteed: p.newGuaranteed, comingSoon:false});
 }
 function advancedPacksOpen(){ const reach = playerMapReach(); return getShopPacks().filter(p=> PACK_SALE_MAP[p.id] && (adminModeEnabled || reach >= PACK_SALE_MAP[p.id] + 25)); }
 function shopPacksAll(){ const base = getShopPacks(); return base.concat(advancedPacksOpen().map(advancedPackOf)); }
@@ -52448,7 +52456,7 @@ function shelfPrice(p, qty){ return qty > 1 ? packSetCost(p, qty) : {gold:p.cost
 function shelfPriceHTML(c){ return [c.gold ? `${mapleLeafIconHTML()}${c.gold}` : '', c.gems ? `🍂${c.gems}` : ''].filter(Boolean).join(' '); }
 function shelfDetailHTML(p, qty){
   const st = shelfStatus(p), c = shelfPrice(p, qty), poolN = packCardPool(null, p.pool||1).length;
-  const what = p.advanced ? `🃏 <b>5 cards</b> at 10× the foil chance, <b>+5 bonus cards</b>` : `🃏 <b>${p.cards||3} cards</b> each${'' /* 2026-10-23 (RW3, DV4): no new-card guarantee any more */}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon && currencyShown('kroon') /* 2026-10-23 (TU2) */ ? ` · 👑 ${p.kroon} Krooni` : ''}`;
+  const what = p.advanced ? `🃏 <b>${p.cards || RES3_COLLECTOR_CARDS} cards</b> at 10× the foil chance` /* RES3 (2026-10-26, G15): no bonus cards */ : `🃏 <b>${p.cards||3} cards</b> each${'' /* 2026-10-23 (RW3, DV4): no new-card guarantee any more */}${p.metal ? ` · 🔩 ${p.metal} Metal` : ''}${p.kroon && currencyShown('kroon') /* 2026-10-23 (TU2) */ ? ` · 👑 ${p.kroon} Krooni` : ''}`;
   const from = (p.pool||1)===99 ? `Strange cards that come out of no other pack (${poolN}).` : `From Pack ${p.pool||1} (${poolN} cards).`;
   return `<b class="sd-name">${escapeHtml(p.name)}${qty > 1 ? ` ×${qty}` : ''}</b>
     <span class="sd-line">${what}</span><span class="sd-line">${from}${p.foilChance ? ` ${fmtDropPct(+p.foilChance)} foil per card.` : ''}</span>
@@ -54631,7 +54639,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -54651,7 +54659,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
     overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
       <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();

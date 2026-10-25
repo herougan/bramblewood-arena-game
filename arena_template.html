@@ -13521,6 +13521,17 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 #myDeckList.is-stacks{gap:18px 16px;}
 #myDeckList .deck-stack{width:clamp(72px, 7.4vw, 104px);}
 #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(clamp(112px, 11vw, 150px), 1fr)); gap:12px; max-height:min(74vh, 900px); padding-bottom:16px;}
+/* G15 (owner: "x10+ packs view too small"): the open-all table's packs grow with the screen (86px before) */
+#packOpenOverlay .po2-table{--tp:clamp(86px, min(10.5vw, 17vh), 150px); gap:clamp(14px, 1.6vw, 24px) !important; width:min(94vw, calc(var(--per, 5) * var(--tp) + (var(--per, 5) - 1) * clamp(14px, 1.6vw, 24px) + 48px)) !important;}
+#packOpenOverlay .po2-tpack{flex:0 0 var(--tp); width:var(--tp);}
+#packOpenOverlay .po2-tpack-label .po2-tpack-ico{font-size:calc(var(--tp) * .24);}
+/* G16 (owner: "Too many cards past the screen: stack same cards; then y-scroll"): in the packs' summary, copies of one card show as a small
+   stack (one to three card edges behind, up and right) with their ×N, and the grid scrolls once it is taller than the screen allows */
+.po2-sum-grid .po2-sum-card.res3-pile{margin:calc(var(--c) * 5px) calc(var(--c) * 6px) 0 0;}
+.po2-sum-grid .po2-sum-card.res3-pile > .card-tile{box-shadow:6px -5px 0 -1px #3a2914, 6px -5px 0 0 rgba(243,211,140,.55), 0 4px 10px rgba(0,0,0,.45);}
+.po2-sum-grid .po2-sum-card.res3-pile[style*="--c:2"] > .card-tile, .po2-sum-grid .po2-sum-card.res3-pile[style*="--c:3"] > .card-tile{box-shadow:6px -5px 0 -1px #3a2914, 6px -5px 0 0 rgba(243,211,140,.55), 12px -10px 0 -1px #2e2010, 12px -10px 0 0 rgba(243,211,140,.4), 0 4px 10px rgba(0,0,0,.45);}
+.po2-sum-grid .po2-sum-card.res3-pile[style*="--c:3"] > .card-tile{box-shadow:6px -5px 0 -1px #3a2914, 6px -5px 0 0 rgba(243,211,140,.55), 12px -10px 0 -1px #2e2010, 12px -10px 0 0 rgba(243,211,140,.4), 18px -15px 0 -1px #241808, 18px -15px 0 0 rgba(243,211,140,.3), 0 4px 10px rgba(0,0,0,.45);}
+.po2-all .po2-sum-grid.is-dense{max-height:min(62vh, 640px); overflow-y:auto; overscroll-behavior:contain; padding:16px 22px 10px 6px; scrollbar-width:thin;}
 /* G10 (owner: "Not full screen on a MacBook Air the board could be larger"): a desktop window (html.is-desk-centre, not full screen) grows the
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
 @media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
