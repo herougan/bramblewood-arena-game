@@ -13556,6 +13556,19 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .cnp-rw .cnp-rw-pack.is-got .booster, .cnp-rw .cnp-rw-item.is-got > .res3-gv, .cnp-rw .cnp-rw-cur.is-got > .res3-gv{filter:grayscale(1) brightness(.72) !important;}
 .cnp-rw .cnp-rw-pack.is-got, .cnp-rw .cnp-rw-item.is-got{opacity:1; filter:none !important;}
 .cnp-rw .cnp-rw-cur.is-got > .res3-gv{opacity:.8;}
+/* G5: the preview's field pills use the board pills' cream tooltip; "New!" pops over a field effect never shown before, then fades */
+.cnp-fpill{position:relative;} .cnp-fpill .tp-tip{display:none;} .cnp-fpill:focus-visible{outline:2px solid #ffd77a; outline-offset:2px;}
+.bf-pill{position:relative;}
+.res3-fnew{position:absolute; right:-10px; top:-12px; z-index:6; padding:0 6px; border-radius:7px; pointer-events:none; white-space:nowrap; font:900 10.5px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.02em;
+  background:linear-gradient(180deg, #ffe27a, #e8a21c); color:#4a2a00; box-shadow:0 1px 3px rgba(0,0,0,.45), 0 0 10px rgba(255,210,90,.7); rotate:6deg; opacity:0; animation:res3FNew 2.8s ease-out both;}
+@keyframes res3FNew{0%{opacity:0; transform:scale(.2) translateY(6px);} 12%{opacity:1; transform:scale(1.25);} 22%{transform:scale(1);} 72%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-8px) scale(.9);}}
+@media (prefers-reduced-motion: reduce){ .res3-fnew{animation:res3FNewCalm 2.8s linear both;} @keyframes res3FNewCalm{0%, 80%{opacity:1;} 100%{opacity:0;}} }
+/* G12 (owner: "Deck editor: preview cards bigger; the mini-codex under them much bigger"): the deck's cards (#myDeckList) up from 66px, the
+   card pool under them (#myDeckPool) from a 90px grid to 150px, and taller before it scrolls */
+#myDeckList.is-stacks{gap:18px 16px;}
+#myDeckList .deck-stack{width:clamp(72px, 7.4vw, 104px);}
+#myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(clamp(112px, 11vw, 150px), 1fr)); gap:12px; max-height:min(74vh, 900px); padding-bottom:16px;}
+@media (max-width:640px){ #myDeckList .deck-stack{width:clamp(64px, 19vw, 80px);} #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:8px;} }
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
 /* RES3:END */
@@ -49408,7 +49421,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '0f7ccb19cc9f', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '61b6224ccb43', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -64812,14 +64825,33 @@ function matchFieldRulesBase(m){ try{ return m && m.conquestNode ? fightRules(m.
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); rows.forEach(row=>{ if(row.selfish) boonRowWithCount(row, boonCountOf(node.deck, row.selfish)); }); // DF3 (2026-10-24): a selfish boon's count
-  const chal = node.challenge ? `<li class="cnp-fpill is-challenge" title="${escapeAttr(TX('ui.df3-challenge-tip'))}"><span>${escapeHtml(TX('ui.df3-challenge'))}</span><span class="sr-only">: ${escapeHtml(TX('ui.df3-challenge-tip'))}</span></li>` : '';
+  const chal = node.challenge ? `<li class="cnp-fpill is-challenge" tabindex="0" aria-expanded="false"><span>${escapeHtml(TX('ui.df3-challenge'))}</span><span class="sr-only">: ${escapeHtml(TX('ui.df3-challenge-tip'))}</span><span class="tp-tip" role="tooltip">${pillTipHTML(TX('ui.df3-challenge'), [TX('ui.df3-challenge-tip')])}</span></li>` : ''; // RES3 (2026-10-26, G5): the cream tooltip
   if(!rows.length && !chal) return '';
   // 2026-10-24 (package NE, owner 11:26: "Put the field effect (if presented) in the top row, under the BR to save vertical space. Make
   // consistent the margining, pill or no pill, and where the text line starts"): one row of pills under the BR in the panel's head, no
   // "Field" heading; each pill is the condition's icon and name, its text in the tooltip (and for screen readers); one not seen yet keeps its ?.
   return `<ul class="cnp-field cnp-field-pills" role="note" aria-label="Field">${chal}${rows.map(row=>{ const hid = fieldRowHidden(row.key), st = hid ? 'unknown' : fieldRowState(row.key);
     const tip = hid ? fieldRowQTip(row) : (row.tip ? row.tip + ' ' : '') + (row.text || '');
-    return `<li class="cnp-fpill ${hid ? 'is-unknown' : ''} ${st === 'new' ? 'is-new' : ''}${row.selfish ? ' is-selfish' : ''}" title="${escapeAttr(tip)}"><span>${row.icon} ${escapeHtml(row.name)}</span>${hid ? '<b class="fcr-q" aria-hidden="true">?</b>' : ''}<span class="sr-only">: ${escapeHtml(tip)}</span></li>`; }).join('')}</ul>`;
+    // 2026-10-26 (package RES3, G5, owner: "field pills in the preview have no tooltip; animate a 'New!' over a new field effect"): the pill's words
+    // show in the board pills' cream tooltip (BfPillTip: hover, focus, or a tap pins it); the first time a field effect is ever shown, a "New!"
+    // pops over it and fades (res3FieldNewHTML).
+    return `<li class="cnp-fpill ${hid ? 'is-unknown' : ''} ${st === 'new' ? 'is-new' : ''}${row.selfish ? ' is-selfish' : ''}" tabindex="0" aria-expanded="false"><span>${row.icon} ${escapeHtml(row.name)}</span>${hid ? '<b class="fcr-q" aria-hidden="true">?</b>' : ''}${res3FieldNewHTML(row.key)}<span class="sr-only">: ${escapeHtml(tip)}</span><span class="tp-tip" role="tooltip">${pillTipHTML(row.name, [tip])}</span></li>`; }).join('')}</ul>`;
+}
+// 2026-10-26 (package RES3, G5): "New!" over a field effect the player has never been shown, on the fight preview's pills and the board's. The
+// first time a key is drawn it is stamped (RES3_FIELD_NEW_KEY); for RES3_FIELD_NEW_MS after that the badge keeps playing (re-renders in
+// that window resume its animation), then never again. A field effect that already happened in a fight before this shipped (fieldRowsSeen,
+// or the board pill's row alias) counts as seen. The badge pops in, holds, and fades (.res3-fnew).
+const RES3_FIELD_NEW_KEY = 'bramblewood_res3_field_new_v1', RES3_FIELD_NEW_MS = 2800;
+function res3FieldNewStore(){ try{ const o = JSON.parse(localStorage.getItem(RES3_FIELD_NEW_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } }
+function res3FieldNewHTML(key, alias){
+  if(!key) return ''; const o = res3FieldNewStore(), now = Date.now();
+  if(o[key] == null){
+    let before = false; try{ const seen = fieldRowsSeen(); before = seen[alias || key] != null && !(matchState && !matchState.over && seen[alias || key] === fightSerial()); }catch(e){}
+    o[key] = before ? 0 : now; try{ localStorage.setItem(RES3_FIELD_NEW_KEY, JSON.stringify(o)); }catch(e){}
+    if(before) return '';
+  }
+  const age = now - (o[key] || 0); if(!(o[key] > 0) || age >= RES3_FIELD_NEW_MS) return '';
+  return `<b class="res3-fnew" aria-hidden="true" style="animation-delay:-${Math.max(0, age)}ms">${escapeHtml(TX('results.new'))}</b>`;
 }
 function noteFieldEvent(ev){
   const m = matchState; if(!m || !ev) return;
@@ -87260,8 +87292,8 @@ function syncNightVeil(m, phase){
 // code) and the field rows (fieldConditionRows), not new text.
 // 2026-10-14 (user: "they should write as little as possible, revealing more on hover. So e.g. <Night Emoji> 2/3 is sufficient, no need to write 'Night'. Again, too much explanation."):
 // a pill shows its emoji and, at most, a short count (🌙 2/3); the name and the rest are in the tooltip header and the aria-label.
-function bfPillHTML(cls, ico, name, small, tipHTML, aria){
-  return `<button type="button" class="phase-pill bf-pill ${cls}" aria-expanded="false" aria-label="${escapeAttr(aria || name)}"><span aria-hidden="true">${ico}</span>${small ? `<small>${escapeHtml(small)}</small>` : ''}<span class="tp-tip" role="tooltip">${tipHTML}</span></button>`;
+function bfPillHTML(cls, ico, name, small, tipHTML, aria, newKey, newAlias){
+  return `<button type="button" class="phase-pill bf-pill ${cls}" aria-expanded="false" aria-label="${escapeAttr(aria || name)}"><span aria-hidden="true">${ico}</span>${small ? `<small>${escapeHtml(small)}</small>` : ''}${newKey ? res3FieldNewHTML(newKey, newAlias) /* RES3 (2026-10-26, G5) */ : ''}<span class="tp-tip" role="tooltip">${tipHTML}</span></button>`;
 }
 function pillTipHTML(head, lines){ return `<b class="pt-h">${escapeHtml(head)}</b>${(lines||[]).filter(Boolean).map(t=> `<span class="pt-l">${keywordizeHTML(escapeHtml(t))}</span>`).join('')}`; }
 // What each phase does, in the engine's own terms (sightMiss: night 1 in 4 without Darksight/Nocturnal/Moonborn or a Lantern,
@@ -87365,7 +87397,7 @@ function tidePillHTML(m){
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
   const te = tideEvadeLive(m);
-  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '<span class="sym-stack">🌊<i>🌊</i></span>' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
+  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '<span class="sym-stack">🌊<i>🌊</i></span>' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''), 'bf:tide', 'tide');
 }
 const TIDE_EVADE_TIP = 'Tide evade (test): Tide units are Evasive against attacks from units without Tide.';
 function tideEvadeLive(m){ try{ return !!(m && m.engine && m.engine.tideEvadeOn && m.engine.tideEvadeOn()); }catch(e){ return false; } }
@@ -87375,14 +87407,14 @@ function windPillHTML(m){
   const w = m && m._windNow; if(!w || m.over) return '';
   if(!w.windy) return bfPillHTML('wind-pill is-calm', '<span class="wind-ico">💨</span>', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.']), 'Wind: calm');
   const head = w.mine ? 'Wind at your back' : 'Wind in your face';
-  return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? 'Your Flyers act first; theirs trigger twice.' : 'Their Flyers act first; yours trigger twice.']), 'Wind ' + (w.mine ? 'at your back' : 'in your face'));
+  return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? 'Your Flyers act first; theirs trigger twice.' : 'Their Flyers act first; yours trigger twice.']), 'Wind ' + (w.mine ? 'at your back' : 'in your face'), 'bf:wind', 'wind');
 }
 // The Mist (2026-10-15): Map 0's mist is a pill whose hover says only "?"; a misty map further on says what it does (its Environment
 // card says the same).
 function mistPillHTML(m){
   const fr = matchFieldRules(m) || {}; if(!fr.misty || !m || m.over) return '';
   const lines = matchFieldUnrevealed(m) ? null : mistLines(m);
-  return bfPillHTML('mist-pill', '🌫️', 'Mist', 'Mist', lines ? pillTipHTML('Mist', lines) : '<b class="pt-h">?</b>', lines ? 'Mist: ' + lines.join(' ') : 'Mist');
+  return bfPillHTML('mist-pill', '🌫️', 'Mist', 'Mist', lines ? pillTipHTML('Mist', lines) : '<b class="pt-h">?</b>', lines ? 'Mist: ' + lines.join(' ') : 'Mist', 'bf:mist', 'misty');
 }
 function mistLines(m){ return [MISTY_TEXT].concat(mistHidesMoon(m) ? [MISTY_MOON_TEXT] : []); }
 function mistHidesMoon(m){ try{ return !!(m && matchHasMoonCards(m)); }catch(e){ return false; } }
@@ -87402,7 +87434,7 @@ function phasePillHTML(m){
   const phIco = moon ? moon[0] : phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️';
   const lines = [cycling ? (si && si.uneven ? VOLCANO_GLOW_TEXT(si.day, si.night) : `Night and Day alternate every ${PL} days.`) : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : [])
     .concat(phase === 'day' && cycling ? ['Draw +1 on Day.'] : []); // 2026-10-16 (user: "Day's tooltip should say, draw +1 on Day.")
-  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${phaseRounds}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${phaseRounds}` : phName) + (moon ? ', ' + moon[1] : ''));
+  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${phaseRounds}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${phaseRounds}` : phName) + (moon ? ', ' + moon[1] : ''), phase === 'day' ? null : 'bf:' + phase, phase);
 }
 function bfPillsHTML(m){
   if(!m || !m.engine) return '';
@@ -87418,7 +87450,7 @@ function suddenDeathPillHTML(m){
   const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND && !(m.mode==='raidOnline' || m.mode==='raidOffline') ? 2 : 1;
   const lines = [_t('Any hit on a unit kills it, even one Armor would stop.')].concat(st >= 2 ? [_t('Any damage to a bramble destroys it.')] : [`From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a bramble destroys it.`]);
   const name = st >= 2 ? _t('Sudden death II') : _t('Sudden death');
-  return bfPillHTML('sd-pill sd-' + st, st >= 2 ? '☠️☠️' : '☠️', name, '', pillTipHTML(name, lines), name);
+  return bfPillHTML('sd-pill sd-' + st, st >= 2 ? '☠️☠️' : '☠️', name, '', pillTipHTML(name, lines), name, 'bf:sd' + st);
 }
 function refreshBfPills(m){ const el = document.getElementById('bfPills'); if(!el || !m) return; const t = document.createElement('div'); t.innerHTML = bfPillsHTML(m); const n = t.firstElementChild; if(n) el.innerHTML = n.innerHTML; }
 // The pill's tooltip floats over everything (the board clips what pokes out of it): one #bfPillTip on the page, placed under the
@@ -87432,15 +87464,15 @@ const BfPillTip = (()=>{
     const w = tip.offsetWidth, h = tip.offsetHeight; let y = r.bottom + 8; if(y + h > vh - 8 && r.top - 8 - h > 8) y = r.top - 8 - h;
     tip.style.left = Math.max(8, Math.min(r.left, vw - w - 8)) + 'px'; tip.style.top = Math.max(8, y) + 'px'; };
   const hide = ()=>{ if(tip) tip.hidden = true; src = null; };
-  document.addEventListener('pointerover', e=>{ if(e.pointerType === 'touch') return; const p = e.target.closest && e.target.closest('.bf-pill');
+  document.addEventListener('pointerover', e=>{ if(e.pointerType === 'touch') return; const p = e.target.closest && e.target.closest('.bf-pill, .cnp-fpill' /* + the preview's field pills (RES3, 2026-10-26, G5) */);
     if(p){ if(p !== src) show(p); } else if(src && !(src.isConnected && src.classList.contains('open'))) hide(); }, {passive:true});
-  document.addEventListener('focusin', e=>{ const p = e.target.closest && e.target.closest('.bf-pill'); if(p) show(p); });
+  document.addEventListener('focusin', e=>{ const p = e.target.closest && e.target.closest('.bf-pill, .cnp-fpill'); if(p) show(p); });
   document.addEventListener('focusout', ()=>{ if(src && !src.classList.contains('open')) hide(); });
   window.addEventListener('scroll', ()=>{ if(src) hide(); }, {passive:true, capture:true});
   setInterval(()=>{ if(src && !src.isConnected) hide(); }, 500);
   return {show, hide};
 })();
-document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('.bf-pill'); document.querySelectorAll('.bf-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); if(on) BfPillTip.show(p); else BfPillTip.hide(); } else BfPillTip.hide(); });
+document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('.bf-pill, .cnp-fpill'); document.querySelectorAll('.bf-pill.open, .cnp-fpill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); if(on) BfPillTip.show(p); else BfPillTip.hide(); } else BfPillTip.hide(); });
 // Field cards on the opponent's side (2026-10-14, user: "The open meadow and effects like this should look like a card on the opposite
 // side of the field."): the terrain and every lasting field rule (darkness, wind, mist, perma-tide, the volcano…) are one card-shaped
 // tile beside the enemy's Deck, the same card face as a Field card; hover (or hold on a phone) shows all its rows. A weather field

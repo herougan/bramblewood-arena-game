@@ -13509,6 +13509,19 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .cnp-rw .cnp-rw-pack.is-got .booster, .cnp-rw .cnp-rw-item.is-got > .res3-gv, .cnp-rw .cnp-rw-cur.is-got > .res3-gv{filter:grayscale(1) brightness(.72) !important;}
 .cnp-rw .cnp-rw-pack.is-got, .cnp-rw .cnp-rw-item.is-got{opacity:1; filter:none !important;}
 .cnp-rw .cnp-rw-cur.is-got > .res3-gv{opacity:.8;}
+/* G5: the preview's field pills use the board pills' cream tooltip; "New!" pops over a field effect never shown before, then fades */
+.cnp-fpill{position:relative;} .cnp-fpill .tp-tip{display:none;} .cnp-fpill:focus-visible{outline:2px solid #ffd77a; outline-offset:2px;}
+.bf-pill{position:relative;}
+.res3-fnew{position:absolute; right:-10px; top:-12px; z-index:6; padding:0 6px; border-radius:7px; pointer-events:none; white-space:nowrap; font:900 10.5px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.02em;
+  background:linear-gradient(180deg, #ffe27a, #e8a21c); color:#4a2a00; box-shadow:0 1px 3px rgba(0,0,0,.45), 0 0 10px rgba(255,210,90,.7); rotate:6deg; opacity:0; animation:res3FNew 2.8s ease-out both;}
+@keyframes res3FNew{0%{opacity:0; transform:scale(.2) translateY(6px);} 12%{opacity:1; transform:scale(1.25);} 22%{transform:scale(1);} 72%{opacity:1; transform:none;} 100%{opacity:0; transform:translateY(-8px) scale(.9);}}
+@media (prefers-reduced-motion: reduce){ .res3-fnew{animation:res3FNewCalm 2.8s linear both;} @keyframes res3FNewCalm{0%, 80%{opacity:1;} 100%{opacity:0;}} }
+/* G12 (owner: "Deck editor: preview cards bigger; the mini-codex under them much bigger"): the deck's cards (#myDeckList) up from 66px, the
+   card pool under them (#myDeckPool) from a 90px grid to 150px, and taller before it scrolls */
+#myDeckList.is-stacks{gap:18px 16px;}
+#myDeckList .deck-stack{width:clamp(72px, 7.4vw, 104px);}
+#myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(clamp(112px, 11vw, 150px), 1fr)); gap:12px; max-height:min(74vh, 900px); padding-bottom:16px;}
+@media (max-width:640px){ #myDeckList .deck-stack{width:clamp(64px, 19vw, 80px);} #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:8px;} }
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
 /* RES3:END */
