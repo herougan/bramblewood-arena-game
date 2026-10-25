@@ -17,7 +17,7 @@ ok(!/lockedCardChipsHTML\(m, '/.test(app), '1. nothing calls lockedCardChipsHTML
 ok(!/rw-locked-card/.test(app.replace(/function lockedCardChipsHTML[\s\S]*?\n\}\n/, '')), '1. no locked-card chip is built outside the retired helper');
 // ---- 2
 ok(/const baseCopyIds = \(\(m\.conquestBaseGrowth && m\.conquestBaseGrowth\.copies\) \|\| \[\]\)/.test(app), '2. Base copies are read from conquestBaseGrowth.copies');
-ok(/baseCopyIds\.forEach\(id=> tiles\.push\(`<div class="rw-card is-unlock rw-base-copy"[^`]*cardTileHTML\(defs\[id\], \{inPlay:true\}\)/.test(app), '2. each is a card tile in Cards won (2026-10-25, PL2: one of the stack\'s tiles)');
+ok(/baseCopyIds\.forEach\(id=> (?:tiles\.push\(|add\(id, defs\[id\], )`<div class="rw-card is-unlock rw-base-copy"[^`]*cardTileHTML\(defs\[id\], \{inPlay:true\}\)/.test(app), '2. each is a card tile in Cards won (2026-10-25, PL2: one of the stack\'s tiles; 2026-10-26, RES3: grouped by card)');
 ok(!/results\.a-spare-copy-of-a-base/.test(app), '2. the "spare copy ... feed it in the Forge" chip is gone from the results');
 // ---- 3
 ok(/function proMapNodesHTML\(map, positions\)\{\n  if\(!adminModeEnabled /.test(app), '3. the nodes are drawn only in Admin Mode');

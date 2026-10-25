@@ -73,7 +73,7 @@ async def run(b, url, w):
         seenInCol: !!(col && col.querySelector('.res3-fan-seen')), banner: (document.querySelector('.res3-map-banner .res3-mb-fights')||{}).textContent, fightsListed: document.querySelectorAll('.rw-seen .rw-node').length,
         nests: document.querySelectorAll('.res3-nest-card').length, baby: (document.querySelector('.res3-nest-card.is-baby')||{dataset:{}}).dataset.babyType,
         kib: (document.querySelector('.rw-kibble')||{dataset:{}}).dataset.tip, ribbonTopRight: !!(a && c && a.top < c.top + c.height * .3 && a.right > c.left + c.width * .6)};"""))
-    ok(r['groups'] == 6 and r['stack'] == ['×3'], f"R1. six groups, the three Otter Kits one stack ×3 {r['groups']} {r['stack']}")
+    ok(r['groups'] == 5 and r['stack'] == ['×3'], f"R1. five groups, the three Otter Kits one stack ×3 {r['groups']} {r['stack']}")
     ok(r['seenInCol'], 'R2. New cards seen sit in the cards column, in the same fan')
     ok(r['nests'] == 3 and r['baby'] == 'bug', f"R3. the egg card, the egg found and the bug baby are cards {r['nests']} {r['baby']}")
     ok(r['kib'] == 'For nurturing cards in the Nest', f"R3. Kibble's tip {r['kib']}")
@@ -116,7 +116,7 @@ async def run(b, url, w):
     r = await pg.evaluate(E("""myCurrencies.gold = 99999; myCurrencies.gems = 9999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze'); const opened = [];
       for(let i = 0; i < 12; i++){ const o = purchasePackOnce(p, true); if(o) opened.push(o); }
       openPackAnimation(p, opened, {bundle: 12}); await new Promise(r=> setTimeout(r, 1500)); """ + FINISH + """ await new Promise(r=> setTimeout(r, 300));
-      const t = document.querySelector('.po2-tpack'); return {tp: t ? t.getBoundingClientRect().width : 0, cards: getShopPacks().map(x=> x.cards), coll: advancedPackOf(getShopPacks()[0]).cards};"""))
+      const t = document.querySelector('.po2-tpack'); return {tp: t ? t.offsetWidth : 0, cards: getShopPacks().map(x=> x.cards), coll: advancedPackOf(getShopPacks()[0]).cards};"""))
     ok(r['tp'] >= (80 if w < 700 else 120) and r['cards'] == [3, 3, 3, 3] and r['coll'] == 5, f"G15. the x10 table's packs {r['tp']:.0f}px (was 86); every pack 3 cards, Collector 5 {r['cards']} {r['coll']}")
     await shot(pg, 'pack-table', w)
     r = await pg.evaluate(E("""const b = document.querySelector('#poOpenAll'); if(b) b.click(); await new Promise(r=> setTimeout(r, 2500)); """ + FINISH + """ await new Promise(r=> setTimeout(r, 600));
@@ -152,9 +152,14 @@ async def run(b, url, w):
       const bar = !!document.querySelector('.winloss-card .wl-xp'); endMatch(); await new Promise(r=> setTimeout(r, 300));
       return {bar, stored: !!localStorage.getItem('bramblewood_pl2_xp_pending_v1')};"""))
     ok(r['bar'] and not r['stored'], f"R8. an Arena win fills its XP bar on its own results {r}")
-    r = await pg.evaluate(E(WIN + """ endMatch(); switchTab('home'); let seen = 0; for(let i = 0; i < 40 && !seen; i++){ await new Promise(r=> setTimeout(r, 250)); seen = document.querySelectorAll('.pl1-xp-float').length; }
-      return {seen, tab: currentTab};"""))
-    ok(r['seen'] >= 1 and r['tab'] == 'home', f"R8. a Conquest win's XP plays on Home, the first screen after it {r}")
+    await close(pg); pg = await page(b, url, w)
+    r = await pg.evaluate(E(WIN + """ const started = !!matchState; endMatch(); const stored = !!localStorage.getItem('bramblewood_pl2_xp_pending_v1'); switchTab('home'); let seen = 0;
+      const busy = new Set();
+      for(let i = 0; i < 60 && !seen; i++){ await new Promise(r=> setTimeout(r, 250));
+        document.querySelectorAll('#deckSwapOverlay, .map-veil').forEach(x=>{ busy.add(x.id || x.className); x.remove(); }); { const ov = document.getElementById('packOpenOverlay'); if(ov && !ov.hidden){ busy.add('packs'); ov.hidden = true; } } // (the swap window or a pack opener holds the XP back, by design)
+        seen = document.querySelectorAll('.pl1-xp-float').length || (!localStorage.getItem('bramblewood_pl2_xp_pending_v1') && !pl1XpPending ? -1 : 0); }
+      return {started, stored, seen, tab: currentTab, busy: [...busy]};"""))
+    ok(r['started'] and r['stored'] and r['seen'] != 0 and r['tab'] == 'home', f"R8. a Conquest win's XP waits, then plays on Home, the first screen after it (seen: 1 = the bar caught on screen, -1 = played and spent between looks) {r}")
     await close(pg)
 
     if w >= 700:
@@ -169,21 +174,22 @@ async def run(b, url, w):
         await close(pg)
         # R6: the emblem's flight (frames)
         pg = await page(b, url, w)
-        await pg.evaluate("(()=>{ conquestWorldView = false; conquestSelectedMap = 'm1'; playSubTab = 'conquest'; switchTab('play'); })()"); await pg.wait_for_timeout(1500)
-        await pg.evaluate("(()=>{ gsap.globalTimeline.timeScale(.25); const n = document.querySelector('.map-node'); window.__fly = res3RankEmblemFlight(n, 'S'); })()")
+        # (on Home; software rendering draws a frame or two a second here, so the flight is stepped: the global timeline is paused and set
+        # to each moment in turn, a screenshot each)
+        await pg.evaluate("(()=>{ switchTab('home'); })()"); await pg.wait_for_timeout(1200)
+        await pg.evaluate("(()=>{ window.__t0 = gsap.globalTimeline.time(); gsap.globalTimeline.pause(); window.__fly = res3RankEmblemFlight(null, 'S'); })()")
         from PIL import Image
-        frames = []
-        for i in range(6):
-            await pg.wait_for_timeout(900)
-            f = os.path.join(OUT, f'res3-emblem-f{i}-{w}.png'); await pg.screenshot(path=f, animations='allow'); frames.append(f)
-            pos = await pg.evaluate("(()=>{ const o = document.querySelector('.res3-rank-fly'); if(!o) return null; const r = o.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top)]; })()")
+        frames, first, last = [], None, None
+        for i, t in enumerate([0.12, 0.45, 0.75, 1.05, 1.35, 1.58]):
+            pos = await pg.evaluate(f"(()=>{{ gsap.globalTimeline.time(window.__t0 + {t}); const o = document.querySelector('.res3-rank-fly'); if(!o) return null; const r = o.getBoundingClientRect(); return [Math.round(r.left), Math.round(r.top)]; }})()")
+            f = os.path.join(OUT, f'res3-emblem-f{i}-{w}.png'); await pg.screenshot(path=f, animations='disabled'); frames.append(f)
             if i == 0: first = pos
             if pos: last = pos
         ims = [Image.open(f).resize((w // 3, 860 // 3)) for f in frames]; sheet = Image.new('RGB', (w // 3 * 3, 860 // 3 * 2))
         for i, im in enumerate(ims): sheet.paste(im, ((i % 3) * (w // 3), (i // 3) * (860 // 3)))
         sf = os.path.join(OUT, f'res3-emblem-sheet-{w}.png'); sheet.save(sf); shots.append(sf)
         ok(first and first[0] < w * .5 and last and last[0] > w * .6 and last[1] > 860 * .55, f"R6. the emblem starts on the left and ends bottom right {first} -> {last}")
-        await pg.evaluate("gsap.globalTimeline.timeScale(1)")
+        # (the global timeline stays paused; the page is closed)
         await close(pg)
         # B3: Map 16's spot
         pg = await page(b, url, w)
