@@ -94,7 +94,7 @@ refit.moves.slice(0, 40).filter(mv=> !/N22-10: Bounty|2026-10-24 EN6 re-fit/.tes
 const UC = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'upgrade-costs.json'), 'utf8'));
 ok(UC.modifiers.base === 1 && UC.modifiers.questBase === 0.5, '5. Base cards pay the full Forge cost (x1); quest and map cards keep x0.5');
 ok(evalConst('BASE_CARD_LEVEL_CAP') === 4 && /if\(\(currentLevel\|\|0\) >= playerLevelCap\(defId\)\) return false;/.test(src), '5. Base cards stop at Lv 4 (canAffordLevelUp)');
-ok(/isBaseLevelCapped\(b\) && level > BASE_CARD_LEVEL_CAP/.test(B.grab('referencePlayerDeck')), '5. the reference player\'s Base cards stop at Lv 4 too');
+ok(/isBaseLevelCapped\(b\) && level > BASE_CARD_LEVEL_CAP/.test(B.grab('refPartsDeck')) && /return refPartsDeck\(levelMixDeck\(deck, level\), base, overlay\)/.test(B.grab('referencePlayerDeck')), '5. the reference player\'s Base cards stop at Lv 4 too'); // 2026-10-25 (package PREF): referencePlayerDeck builds through refPartsDeck
 ok(evalConst('SKIRMISH_OWN_REPEAT_DROP') === 0.10, '5. a skirmish\'s own first-clear card drops 10% a repeat win');
 ok(/rng\(\) < SKIRMISH_OWN_REPEAT_DROP/.test(B.grab('rollCardDrop')) && !/skirmishOwnDropShare/.test(B.grab('rollCardDrop')), '5. any rarity: the rarity share no longer cuts it');
 ok(fs.readFileSync(path.join(ROOT, 'docs', 'progression-plan.md'), 'utf8').includes('## The grind to each gate (BAL2, DF-2)'), '5. the grind to each gate is in docs/progression-plan.md');

@@ -3387,5 +3387,16 @@
  "Co-op": "Co-op",
  "reward": "gantimpala",
  "{rank} reward": "Gantimpalang {rank}",
- "Pack {n}": "Pack {n}"
+ "Pack {n}": "Pack {n}",
+ "Map reference": "Sanggunian ng mapa",
+ "Play with the map's reference deck": "Maglaro gamit ang reference deck ng mapa",
+ "Reference:": "Sanggunian:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Naka-on: bawat laban sa Conquest (daan, PRO, BPRO, X-REF) ay magbibigay sa iyo ng napiling reference deck sa mga level ng mapang iyon sa halip na iyong deck. Libre, walang gantimpala. Nakatago sa device na ito.",
+ "Against:": "Laban sa:",
+ "You play:": "Gamit mo:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: ang reference deck laban sa mga PRO deck ng mapang ito",
+ "Reference deck vs this map's PRO decks": "Reference deck laban sa mga PRO deck ng mapang ito",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Gamit mo ang {name}, hindi ang iyong deck.",
+ "Played with {name}: no rewards.": "Nilaro gamit ang {name}: walang gantimpala."
 }

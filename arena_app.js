@@ -13112,7 +13112,7 @@ function formatEnergyCountdown(ms){
 // 2026-10-10 (user: "Play Again always plays the same skirmish again. It is greyed out if you don't have enough Energy.
 // (Fight and Fight again too)"): every fight-starting button carries its cost; refreshEnergyHud re-checks them as Energy refills.
 function playAgainEnergyAttrs(m){
-  if(!m || m.mode !== 'conquest' || !m.conquestNode || m.proFight) return ''; // 2026-10-24 (package PRO): a PRO fight costs no Energy
+  if(!m || m.mode !== 'conquest' || !m.conquestNode || m.proFight || (m.refDeck && refPlayActive())) return ''; // PREF (2026-10-25): a reference-set fight again is free while the switch is on // 2026-10-24 (package PRO): a PRO fight costs no Energy
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
   if(!m.adminTest && isDailyDungeonMap(f.map) && dungeonTicketsLeft() <= 0) return `data-energy-cost="${c}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}"`; // 2026-10-18 (package DK)
@@ -19016,9 +19016,11 @@ function referenceDeckFor(mapId, node){
 function referenceBaseDefs(){ const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards); if(typeof liveDeletes !== 'undefined' && liveDeletes) Object.keys(liveDeletes).forEach(id=>{ delete out[id]; }); return out; }
 // Your cards at `level`: "<id>@p<level>" copies at that level's stats (and level skills), where the level is above the card's own base.
 // 2026-10-19 (LV): a fractional level is a per-copy mix of its two stat steps (levelMix), as a player's copies are levelled one at a time.
-function referencePlayerDeck(deck, level, base, overlay){
+function referencePlayerDeck(deck, level, base, overlay){ return refPartsDeck(levelMixDeck(deck, level), base, overlay); }
+// 2026-10-25 (package PREF): the copies as [id, n, level] parts, so a reference set with a level per copy (Reference-2) builds the same way
+function refPartsDeck(parts, base, overlay){
   const out = {};
-  levelMixDeck(deck, level).forEach(([id, k, level])=>{ const b = base[id]; if(b && isBaseLevelCapped(b) && level > BASE_CARD_LEVEL_CAP) level = BASE_CARD_LEVEL_CAP; // 2026-10-24 (BAL2, DF-2): your Base cards stop at Lv 4
+  (parts || []).forEach(([id, k, level])=>{ const b = base[id]; if(b && isBaseLevelCapped(b) && level > BASE_CARD_LEVEL_CAP) level = BASE_CARD_LEVEL_CAP; // 2026-10-24 (BAL2, DF-2): your Base cards stop at Lv 4
     if(!b || cardBaseLevel(b) >= level || (b.attack == null && b.health == null)){ out[id] = (out[id] || 0) + k; return; } // an unknown id stays as it is: the setup reports it
     const did = id + '@p' + level;
     if(!overlay[did]){ const st = statsAtLevel(b, level), o = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level, baseLevel: cardBaseLevel(b), locked: false});
@@ -19034,14 +19036,15 @@ function referenceFightSetup(mapId, node, opts){
   opts = opts || {};
   if(node && !mapOfNode(node) && mapId) NODE_MAP_HINT.set(node, mapId); // an editor draft or a tool's trial copy
   const ref = referenceDeckFor(mapId, node);
-  if(opts.deck){ ref.stage = 'trial'; ref.deck = opts.deck; } if(opts.level != null) ref.level = opts.level;
+  if(opts.refSet && opts.refSet !== 'map' && !opts.deck){ const rs = refSetFor(opts.refSet, mapId, node); if(rs){ ref.stage = 'ref:' + rs.set; ref.deck = rs.deck; ref.parts = rs.parts; ref.level = rs.level; ref.leader = rs.leader; } } // 2026-10-25 (package PREF): Reference-2 and later sets, a level per copy
+  if(opts.deck){ ref.stage = 'trial'; ref.deck = opts.deck; } if(opts.level != null){ ref.level = opts.level; delete ref.parts; }
   const savedOverlay = matchDefsOverlay, savedGrant = matchLeaderGrantMap;
   try{
     matchDefsOverlay = {};
     const enemyDeck = levelledEnemyDeck(node, node.deck || {}), grantMap = prepareLeaderGrants(node);
     matchLeaderGrantMap = grantMap;
     const setup = {2: {hq: {}}}; applySkirmishSetup(setup, node); // the bramble's Shield layers and the CPU's leaders, as the game sets them
-    const overlay = matchDefsOverlay, base = referenceBaseDefs(), mine = referencePlayerDeck(ref.deck, ref.level, base, overlay);
+    const overlay = matchDefsOverlay, base = referenceBaseDefs(), mine = ref.parts ? refPartsDeck(ref.parts, base, overlay) : referencePlayerDeck(ref.deck, ref.level, base, overlay); // PREF: per-copy levels
     const defs = Object.assign(base, overlay);
     const missing = [...new Set(Object.keys(enemyDeck).concat(Object.keys(mine)).filter(id=> !defs[id]))];
     if(missing.length){ const e = new Error('unknown cards: ' + missing.join(', ')); e.unknownCards = missing; throw e; }
@@ -19076,6 +19079,39 @@ function simulateReferenceFight(mapId, node, games, opts){
   for(let g = 0; g < games; g++){ const r = playReferenceGame(ctx, g); if(r.win){ wins++; winRounds += r.rounds; lost += 1 - r.hpLeft; } else { if(r.loss) losses++; lost += 1; } }
   return {wins, losses, draws: games - wins - losses, n: games, win: wins / Math.max(1, games), avgRounds: wins ? winRounds / wins : null, hpLost: lost / Math.max(1, games),
     stage: ctx.ref.stage, deckMap: ctx.ref.deckMap, level: ctx.ref.level, deck: ctx.ref.deck, cpu: ctx.cpu, hp: ctx.sc.hp, shield: ctx.sc.shield, overridden: ctx.sc.overridden};
+}
+// 2026-10-25 (package PREF, owner 10-25 17:53: "Can I toggle on a mode to use that map's reference deck as well - to override my deck."; 22:36
+// REF-2: "all Level 0 at Map 0, +1 level to 5 random cards per map"): the reference sets a fight can hand you instead of your deck. 'map' is the
+// map's reference deck above (referenceDeckFor, the one the road measure plays, at referencePlayerLevel). The others are files in
+// docs/balance/ref/*.json with an id, baked in here by `node tools/opt/ref_decks.js --apply` (a new file = a new choice: Reference-3 is one file
+// away). A set's level is a Forge level gained over each copy's own starting level; from schedule.fromMap every map gives schedule.perMap
+// different copies +1, picked by seededRng(hashStr(seed + ':map' + N)) among the copies below their cap (Base Lv 4, else the top level).
+const REF_DECK_SETS = /*REF-DECK-SETS-START*/{"ref2":{"id":"ref2","label":"Reference-2","file":"docs/balance/ref/ref2-owner-main-deck-2026-10-25.json","leader":"old-willow-of-the-ford","counts":{"ant-scout":5,"soldier-ant":5,"tunnel-ant":3,"fire-ant-raft":3,"quicksand-queen":2,"ant-warrior":1,"leafcutter-gardener":1},"schedule":{"fromMap":1,"perMap":5,"seed":"ref2"}}}/*REF-DECK-SETS-END*/;
+function refSetIds(){ return ['map'].concat(Object.keys(REF_DECK_SETS || {})); }
+// the copies of a set at map N: [{id, bump}] in a fixed order (the counts' order, copy by copy); the Forge levels each copy has gained
+function refSetCopyLevels(set, mapNo, base){
+  base = base || referenceBaseDefs();
+  const copies = []; Object.keys(set.counts || {}).forEach(id=>{ for(let i = 0; i < (set.counts[id] | 0); i++) copies.push({id, bump: 0}); });
+  const sc = set.schedule || {}, from = sc.fromMap != null ? sc.fromMap : 1, per = sc.perMap != null ? sc.perMap : 5, n = Math.max(0, Math.floor(Number(mapNo) || 0));
+  const capOf = id=>{ const b = base[id]; if(!b) return 0; return Math.max(0, (isBaseLevelCapped(b) ? BASE_CARD_LEVEL_CAP : cardMaxLevel(b)) - cardBaseLevel(b)); };
+  for(let m = from; m <= n; m++){
+    const rnd = seededRng(hashStr(String(sc.seed || set.id) + ':map' + m)), open = copies.map((c, i)=> i).filter(i=> copies[i].bump < capOf(copies[i].id));
+    let k = 0; for(; k < per && open.length; k++){ const j = Math.floor(rnd() * open.length); copies[open[j]].bump++; open.splice(j, 1); }
+    // fewer copies below their cap than perMap: the rest of the map's levels go to copies that still have room, so the total stays perMap x maps until the whole deck is capped
+    for(; k < per; k++){ const room = copies.map((c, i)=> i).filter(i=> copies[i].bump < capOf(copies[i].id)); if(!room.length) break; copies[room[Math.floor(rnd() * room.length)]].bump++; }
+  }
+  return copies;
+}
+// The set for a fight: its deck (counts), the copies as [id, n, level] parts (refPartsDeck), the mean level gained, the leader and its label.
+function refSetFor(setId, mapId, node){
+  const r = referenceDeckFor(mapId, node);
+  if(!setId || setId === 'map') return {set: 'map', label: 'Map reference', mapNo: r.mapNo, deck: r.deck, parts: levelMixDeck(r.deck, r.level), level: r.level, leader: null};
+  const set = (REF_DECK_SETS || {})[setId]; if(!set) return null;
+  const base = referenceBaseDefs(), copies = refSetCopyLevels(set, r.mapNo, base), by = new Map();
+  copies.forEach(c=>{ const L = cardBaseLevel(base[c.id]) + c.bump, k = c.id + '|' + L; by.set(k, (by.get(k) || 0) + 1); });
+  const parts = [...by.entries()].map(([k, n])=>{ const i = k.lastIndexOf('|'); return [k.slice(0, i), n, +k.slice(i + 1)]; });
+  const gained = copies.reduce((t, c)=> t + c.bump, 0);
+  return {set: setId, label: set.label || setId, mapNo: r.mapNo, deck: Object.assign({}, set.counts), parts, level: copies.length ? Math.round(gained / copies.length * 100) / 100 : 0, gained, leader: set.leader || null};
 }
 // The map's difficulty curve in the editor: one chip per fight with the new-player win rate last
 // measured this session (grey until checked), coloured against that fight's target.
@@ -21459,7 +21495,7 @@ function saveAndExitAsyncMatch(){ if(matchResultPending(matchState)){ showToast(
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['matchUid' /* 2026-10-21 (package ED): which match the save is */, 'aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded', 'proFight']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z); + a PRO fight's key (2026-10-24, PRO: a resumed one still pays nothing)
+const RESUME_FIELDS = ['matchUid' /* 2026-10-21 (package ED): which match the save is */, 'aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded', 'proFight', 'refDeck' /* 2026-10-25 (package PREF) */]; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z); + a PRO fight's key (2026-10-24, PRO: a resumed one still pays nothing)
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -21489,7 +21525,7 @@ function resumeAbandonedMatchNow(){
     const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode: snap.battleMode || 'open', rules: (snap.arenaRuleset && snap.arenaRuleset.rules) || (snap.conquestNode && fightRules(snap.conquestNode.mapId, (findConquestNode(snap.conquestNode.mapId, snap.conquestNode.nodeId)||{node:{}}).node)) || undefined});
     matchState = Object.assign({engine, sideOf:id=> id===1?'A':'B', over:false, winner:0, log:snap.log||[], resolving:false, active:1, turnDone:{1:false,2:false}, awaitingPass:false, speedMult:1}, snap);
     delete matchState.savedAt;
-    if(matchState.proFight) matchState.adminTest = true; // 2026-10-24 (package PRO): a PRO fight resumed is still unpaid
+    if(matchState.proFight || matchState.refDeck) matchState.adminTest = true; // 2026-10-24 (package PRO): a PRO fight resumed is still unpaid; PREF: a reference-set fight too
     lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
     switchTab('play');
     showToast(TX('toast.picking-up-your-unfinished-match-where'));
@@ -23398,7 +23434,8 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+(?:-[A-Z])?-B?PRO-\d+$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
+const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF)$/; // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
+const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
 // both kinds of a map's entry, PRO first (2026-10-25, PL2)
 function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
 const PRO_NODE_CACHE = new Map();
@@ -23420,10 +23457,60 @@ function proEntryIdOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); 
 function proFightsOf(mapId){ const id = proEntryIdOf(mapId), ent = proMapEntries()[id];
   return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
+  if(XREF_KEY_RE.test(key || '')) return findXrefFight(key); // 2026-10-25 (package PREF)
   for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
     if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
   return null;
 }
+// 2026-10-25 (package PREF, owner #32: "let me fight the reference deck as X-REF where X is the map number"; 17:53: "Can I toggle on a mode to use
+// that map's reference deck as well - to override my deck."). Two things:
+//   - the switch (Admin Mode, and the PRO fights panel): "Play with the map's reference deck". On, any Conquest fight (road, PRO, BPRO, X-REF)
+//     deals you the chosen reference set (refSetFor: the map's reference deck at its scheduled level, or Reference-2 ...) instead of your deck,
+//     with the set's leader (none for the map's). Such a fight is free and pays nothing (adminTest), and its top bar shows a REF tag. Off by
+//     default, kept on this device (REF_PLAY_KEY), only while Admin Mode is on.
+//   - X-REF: each map with PRO fights gets one more hidden fight, "<X>-REF" (a side map: its own fight-code shape, 2-B-REF), beside its PRO
+//     nodes: you always play the chosen reference set, against one of the map's PRO / BPRO decks picked in its panel (XREF_VS_KEY, PRO-1 by
+//     default), under that PRO's field. Like PRO: admin-visible, the same free preview, no rewards or Energy.
+const REF_PLAY_KEY = 'bramblewood_ref_play_v1', XREF_VS_KEY = 'bramblewood_xref_vs_v1';
+function refPlayPrefs(){ let o = null; try{ o = JSON.parse(localStorage.getItem(REF_PLAY_KEY) || 'null'); }catch(e){} o = o || {}; return {on: !!o.on, set: refSetIds().includes(o.set) ? o.set : 'map'}; }
+function saveRefPlayPrefs(p){ try{ localStorage.setItem(REF_PLAY_KEY, JSON.stringify({on: !!p.on, set: p.set || 'map'})); }catch(e){} }
+function refPlayActive(){ return !!adminModeEnabled && refPlayPrefs().on; }
+function refSetLabelTX(id){ return !id || id === 'map' ? TX('ui.pref-set-map') : ((REF_DECK_SETS[id] || {}).label || id); }
+function xrefKeyOf(entId){ const e = proEntriesOf(proMapEntries()[entId])[0]; return e ? e.id.replace(/-B?PRO-\d+$/, '') + '-REF' : null; }
+function xrefVsFor(entId){ const list = proEntriesOf(proMapEntries()[entId]); let v = null; try{ v = (JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {})[entId]; }catch(e){}
+  return list.some(e=> e.id === v) ? v : ((list[0] || {}).id || null); }
+function setXrefVs(entId, proId){ let o = {}; try{ o = JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {}; }catch(e){} o[entId] = proId; try{ localStorage.setItem(XREF_VS_KEY, JSON.stringify(o)); }catch(e){} }
+function findXrefFight(key){
+  for(const id of Object.keys(proMapEntries())){ if(xrefKeyOf(id) !== key) continue;
+    const ent = proMapEntries()[id], vs = xrefVsFor(id), e = proEntriesOf(ent).find(x=> x.id === vs), map = CONQUEST_MAPS.find(m=> m.id === id); if(!e || !map) return null;
+    const ck = id + ':REF:' + e.id; let n = PRO_NODE_CACHE.get(ck);
+    if(!n){ const pn = proNodeOf(id, e, ent); n = Object.assign({}, pn, {key, name: key + ' vs ' + e.id, icon: '🎯', xref: true, xrefVs: e.id, rules: Object.assign({}, pn.rules), deck: Object.assign({}, pn.deck), leaders: (pn.leaders || []).slice()});
+      NODE_MAP_HINT.set(n, id); PRO_NODE_CACHE.set(ck, n); }
+    return {map, node: n, entry: e, xref: true}; }
+  return null;
+}
+// the switch and the set picker (one block, used in Admin Mode and the PRO fights panel; data-* so both copies work)
+function refPlayToggleHTML(){
+  const p = refPlayPrefs(), ids = refSetIds();
+  return `<div class="pref-toggle" style="display:flex; flex-wrap:wrap; gap:6px 12px; align-items:center; margin:6px 0;"><label class="admin-toggle-label"><input type="checkbox" data-pref-on ${p.on ? 'checked' : ''}> 🎯 ${escapeHtml(TX('ui.pref-toggle'))}</label>
+    <label class="panel-sub">${escapeHtml(TX('ui.pref-set'))} <select data-pref-set>${ids.map(id=> `<option value="${escapeAttr(id)}" ${id === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(id))}</option>`).join('')}</select></label></div>
+    <p class="panel-sub">${escapeHtml(TX('ui.pref-toggle-sub'))}</p>`;
+}
+// the X-REF panel's extra row: which PRO / BPRO deck you face, and which reference set you play
+function xrefPanelHTML(map, node){
+  const id = proEntryIdOf(map.id), list = proEntriesOf(proMapEntries()[id]), p = refPlayPrefs();
+  let rs = null; try{ rs = refSetFor(p.set, map.id, node); }catch(e){}
+  return `<div class="pref-xref" style="margin:6px 0;"><div class="panel-sub">${escapeHtml(TX('ui.pref-xref-vs'))}</div><div style="display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 6px;">${list.map(e=> `<button type="button" class="btn small ${e.id === node.xrefVs ? 'primary' : 'ghost'}" data-xref-vs="${escapeAttr(e.id)}" data-xref-map="${escapeAttr(id)}" aria-pressed="${e.id === node.xrefVs}">${escapeHtml(e.id)}</button>`).join('')}</div>
+    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-pref-set>${refSetIds().map(sid=> `<option value="${escapeAttr(sid)}" ${sid === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
+    ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
+}
+try{ if(typeof document !== 'undefined'){
+  document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
+    if(t.matches('[data-pref-on]')){ const p = refPlayPrefs(); p.on = !!t.checked; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-on]').forEach(x=>{ x.checked = p.on; }); return; }
+    if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); if(currentTab === 'play' && !matchState && XREF_KEY_RE.test(conquestSelectedNodeKey || '')) renderPlay(); } });
+  document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-xref-vs]'); if(!b) return; ev.preventDefault(); ev.stopPropagation();
+    setXrefVs(b.dataset.xrefMap, b.dataset.xrefVs); if(currentTab === 'play' && !matchState) renderPlay(); });
+} }catch(e){}
 // 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
 // trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
 // strip, field, leader and battle rating, and a Fight button that starts it (startProFight: free, pays nothing). It used to start at once.
@@ -23445,7 +23532,7 @@ function startProFight(key){
   if(matchState && matchState.over) endMatch();
   { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
   playSubTab = 'conquest'; switchTab('play');
-  const ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true});
+  const ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.xref ? refPlayPrefs().set : undefined}); // PREF: X-REF always deals the chosen reference set
   if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; }
   return ok;
 }
@@ -23478,9 +23565,11 @@ function proRowHTML(mapId, e, node, opts){
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
   const body = ids.length ? ids.map(id=>{ const ent = ents[id], map = CONQUEST_MAPS.find(m=> m.id === id); if(!map) return ''; const nodes = proFightsOf(id);
-    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}</div>`; }).join('')
+    const xk = xrefKeyOf(id); // PREF (2026-10-25): the map's X-REF fight, last
+    const xrow = xk ? `<div class="pro-row" data-pro-key="${escapeAttr(xk)}"><div class="pro-row-head"><b class="pro-id">🎯 ${escapeHtml(xk)}</b><span class="pro-stat">${escapeHtml(TX('ui.pref-xref-row'))}</span><span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(xk)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button></span></div></div>` : '';
+    return `<div class="pro-map"><div class="pro-map-head"><b>${escapeHtml(TX('ui.pro-map', {n: ent.map, name: map.name}))}</b>${nodes[0] ? proFieldHTML(id, nodes[0]) : ''}</div>${proEntriesOf(ent).map((e, i)=> proRowHTML(id, e, nodes[i])).join('')}${xrow}</div>`; }).join('')
     : `<p class="panel-sub">${escapeHtml(TX('ui.pro-none'))}</p>`;
-  return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${body}</div>`;
+  return `<div class="panel admin-subpanel pro-admin" id="adminProFights"><h3>🏆 ${escapeHtml(TX('ui.pro-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.pro-admin-sub'))}</p>${adminModeEnabled ? refPlayToggleHTML() : '' /* PREF */}${body}</div>`;
 }
 // 2026-10-24 (package RW6, owner 12:02: "How do I access the Pro matches? If its not ez, make it ez, e.g. on the map once i select admin mode"):
 // with Admin Mode on, a main map with PRO fights shows each as a small gold trophy node beside its boss (label N-PRO-k); a tap starts the fight
@@ -23490,8 +23579,9 @@ function proMapNodesHTML(map, positions){
   const ent = proMapEntries()[map.id]; if(!ent || !proEntriesOf(ent).length) return '';
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
-  return list.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
-    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}" aria-label="${escapeAttr(TX('ui.rw6-pro-node-tip', {key: e.id}))}"><span class="mpr-ico" aria-hidden="true">🏆</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
+  const xk = xrefKeyOf(map.id), all = list.map(e=> ({id: e.id, ico: '🏆', tip: TX('ui.rw6-pro-node-tip', {key: e.id})})).concat(xk ? [{id: xk, ico: '🎯', tip: TX('ui.pref-xref-node-tip', {key: xk})}] : []); // PREF (2026-10-25): + the map's X-REF node
+  return all.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
+    return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
 }
 function proEditorRowHTML(mapId){
   const nodes = proFightsOf(mapId); if(!nodes.length) return '';
@@ -26062,6 +26152,7 @@ function renderConquestSubTab(body){
       </div>
       ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
       ${newSkillRibbonHTML(selectedNode)}
+      ${selectedNode.xref ? xrefPanelHTML(map, selectedNode) : '' /* 2026-10-25 (package PREF): X-REF's opponent and your reference set */}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
@@ -29753,7 +29844,11 @@ function startConquestMatch(mapId, nodeKey, opts){
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
     if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
-  if(!deckSizeOkOrWarn()) return false;
+  // 2026-10-25 (package PREF): a reference set instead of your deck (X-REF always; any fight while Admin's switch is on): free, pays nothing
+  const refPlaySet = (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
+  let refPlay = null; if(refPlaySet){ try{ refPlay = refSetFor(refPlaySet, mapId, node); }catch(e){ refPlay = null; } }
+  if(refPlay && !(opts && opts.skipEnergyCost)) opts = Object.assign({}, opts, {skipEnergyCost: true});
+  if(!refPlay && !deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Daily dungeons (2026-10-15; 2026-10-16: a key per floor, given back on a win): a floor needs a 🗝️ Dungeon key (see DAILY_DUNGEONS).
@@ -29792,7 +29887,8 @@ function startConquestMatch(mapId, nodeKey, opts){
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
-  const myOwnedDeck = ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
+  const myOwnedDeck = refPlay ? refPartsDeck(refPlay.parts, referenceBaseDefs(), matchDefsOverlay) : ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch); PREF: or the reference set's copies
+  if(refPlay) invalidateCardDefs();
   const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
@@ -29800,7 +29896,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myOwnedDeck, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
-    myGlad = pickGladiatorLeader(myDeckCounts, matchLeaderId());
+    myGlad = refPlay ? pickGladiatorLeader(refPlay.deck, refPlay.leader) : pickGladiatorLeader(myDeckCounts, matchLeaderId()); // PREF
     const myGladDef = myGlad && getCardDefs()[myGlad.defId];
     enemyGlad = pickGladiatorLeader(node.deck, null, myGladDef ? gladiatorPower(myGladDef) : null);
     if(myGlad && myGlad.fromDeck) myDeck = minusOne(myDeck, myGlad.defId);
@@ -29833,8 +29929,9 @@ function startConquestMatch(mapId, nodeKey, opts){
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
     // matches too — it's part of "your loadout" same as the deck and Bramble. In Gladiator the
     // leader is already on the field from turn one, so there's nothing left to summon.
-    leaderDefId: battleMode==='gladiator' ? null : matchLeaderId(),
+    leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
+  if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level}; } // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
     players[2].hq.maxHp = waves[0].hp; players[2].hq.hp = waves[0].hp; players[2].hq.shield = waves[0].shield || 0; players[2].hq.maxShield = players[2].hq.shield; }
   renderPlay();
@@ -32013,6 +32110,7 @@ function renderAdmin(){
       <h3>Admin Mode</h3>
       <p class="panel-sub">Unlocks content-editing power: card editing (below — moved here from the Codex, see #363/#364), plus the Shop's pack-odds Roll Table editor further down. <b>This is a temporary stopgap</b> — a plain local toggle, no real server auth — until a proper server-side admin app exists.</p>
       <label class="admin-toggle-label"><input type="checkbox" id="adminModeChk" ${adminModeEnabled?'checked':''}> 🛠️ Admin Mode ${adminModeEnabled?'(ON)':'(OFF)'}</label>
+      ${adminModeEnabled ? refPlayToggleHTML() : '' /* 2026-10-25 (package PREF): play with the map's reference deck */}
       <div class="admin-unlock-row"><span class="panel-sub">Map features: ${FEATURE_SPOTS.filter(sp=> featureUnlocked(sp.key)).length}/${FEATURE_SPOTS.length} unlocked</span>
         <button type="button" class="btn small" id="adminUnlockAllBtn">🔓 Unlock all features</button>
         <button type="button" class="btn small ghost" id="adminRelockBtn" title="Lock every map feature again and forget the onboarding dialogue, to replay it">↺ Replay onboarding</button></div>
@@ -33981,7 +34079,7 @@ function renderMatchUI(){
       ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
       <div class="top-right-stack">
       <div class="top-row-controls">
-        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>
+        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>${m.refDeck ? `<span class="hud-ref-tag" style="font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:1px 6px; border-radius:6px; border:1.5px solid currentColor; color:var(--gold, #b8860b); white-space:nowrap; align-self:center;" title="${escapeAttr(TX('ui.pref-ref-tag-tip', {name: m.refDeck.label || ''}))}">${escapeHtml(TX('ui.pref-ref-tag'))}</span>` : '' /* 2026-10-25 (package PREF): playing a reference set */}
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}" aria-label="Playback speed">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
@@ -34087,7 +34185,7 @@ function renderMatchUI(){
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
-        ${m.proFight ? `<p class="wl-pro-note">🏆 ${escapeHtml(TX('ui.pro-result', {key: m.proFight}))}</p>` : '' /* 2026-10-24 (package PRO) */}${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
+        ${m.proFight ? `<p class="wl-pro-note">🏆 ${escapeHtml(TX('ui.pro-result', {key: m.proFight}))}</p>` : m.refDeck ? `<p class="wl-pro-note">🎯 ${escapeHtml(TX('ui.pref-result', {name: m.refDeck.label || ''}))}</p>` : '' /* 2026-10-24 (package PRO); 2026-10-25 (PREF): a reference-set fight */}${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
         ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) /* 2026-10-18 (package DK): the key was used at the start either way */}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">

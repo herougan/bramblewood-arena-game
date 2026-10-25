@@ -3385,5 +3385,16 @@
  "Co-op": "Koop",
  "reward": "Belohnung",
  "{rank} reward": "Belohnung {rank}",
- "Pack {n}": "Pack {n}"
+ "Pack {n}": "Pack {n}",
+ "Map reference": "Kartenreferenz",
+ "Play with the map's reference deck": "Mit dem Referenzdeck der Karte spielen",
+ "Reference:": "Referenz:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "An: Jeder Eroberungskampf (Weg, PRO, BPRO, X-REF) gibt dir statt deines Decks das gewählte Referenzdeck auf den Stufen dieser Karte. Kostenlos, ohne Belohnung. Bleibt auf diesem Gerät gespeichert.",
+ "Against:": "Gegen:",
+ "You play:": "Du spielst:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: das Referenzdeck gegen die PRO-Decks dieser Karte",
+ "Reference deck vs this map's PRO decks": "Referenzdeck gegen die PRO-Decks dieser Karte",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Du spielst {name}, nicht dein Deck.",
+ "Played with {name}: no rewards.": "Mit {name} gespielt: keine Belohnung."
 }

@@ -50,7 +50,7 @@ async def run(b, url, w):
       const over = [...(p ? p.querySelectorAll('*') : [])].filter(e=> e.getBoundingClientRect().right > window.innerWidth + 1).length;
       return {shown: !!p, rows: p ? [...p.querySelectorAll('.pro-row')].map(x=> x.dataset.proKey) : [], over, docW: document.documentElement.scrollWidth, vw: window.innerWidth}; })()""")
     want = [e['id'] for m in DATA['maps'].values() for e in m['pro'] + m.get('bpro', [])]  # + BPRO (2026-10-25, PL2)
-    ok(r['shown'] and r['rows'] == want, f"Admin lists the PRO fights {r['rows']}")
+    ok(r['shown'] and [k for k in r['rows'] if not k.endswith('-REF')] == want, f"Admin lists the PRO fights {r['rows']}")  # 2026-10-25 (package PREF): + each map's X-REF row, checked in tests/e2e/pref_2026_10_25.py
     ok(r['over'] == 0 and r['docW'] <= r['vw'] + 1, f"Admin's PRO list fits the width (overflowing elements {r['over']}, page {r['docW']} / {r['vw']})")
     await shot(pg, 'admin-list', w)
     # a PRO fight starting from it

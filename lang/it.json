@@ -3388,5 +3388,16 @@
  "Co-op": "Cooperativa",
  "reward": "ricompensa",
  "{rank} reward": "Ricompensa {rank}",
- "Pack {n}": "Bustina {n}"
+ "Pack {n}": "Bustina {n}",
+ "Map reference": "Riferimento della mappa",
+ "Play with the map's reference deck": "Gioca con il mazzo di riferimento della mappa",
+ "Reference:": "Riferimento:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Attivo: ogni scontro di Conquista (percorso, PRO, BPRO, X-REF) ti dà il mazzo di riferimento scelto ai livelli di quella mappa al posto del tuo mazzo. Gratis, senza ricompense. Salvato su questo dispositivo.",
+ "Against:": "Contro:",
+ "You play:": "Giochi con:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: il mazzo di riferimento contro i mazzi PRO di questa mappa",
+ "Reference deck vs this map's PRO decks": "Mazzo di riferimento contro i mazzi PRO di questa mappa",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Stai giocando {name}, non il tuo mazzo.",
+ "Played with {name}: no rewards.": "Giocato con {name}: nessuna ricompensa."
 }

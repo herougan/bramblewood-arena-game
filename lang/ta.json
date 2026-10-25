@@ -3389,5 +3389,16 @@
  "Co-op": "கூட்டு",
  "reward": "பரிசு",
  "{rank} reward": "{rank} பரிசு",
- "Pack {n}": "பொதி {n}"
+ "Pack {n}": "பொதி {n}",
+ "Map reference": "வரைபட மேற்கோள்",
+ "Play with the map's reference deck": "வரைபடத்தின் மேற்கோள் அடுக்குடன் விளையாடு",
+ "Reference:": "மேற்கோள்:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "இயக்கத்தில்: ஒவ்வொரு வெற்றிப் போரிலும் (பாதை, PRO, BPRO, X-REF) உங்கள் அடுக்குக்குப் பதிலாக தேர்ந்த மேற்கோள் அடுக்கு அந்த வரைபடத்தின் நிலைகளில் வழங்கப்படும். இலவசம், பரிசு இல்லை. இந்தச் சாதனத்தில் சேமிக்கப்படும்.",
+ "Against:": "எதிராக:",
+ "You play:": "நீங்கள் விளையாடுவது:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: இந்த வரைபடத்தின் PRO அடுக்குகளுக்கு எதிராக மேற்கோள் அடுக்கு",
+ "Reference deck vs this map's PRO decks": "இந்த வரைபடத்தின் PRO அடுக்குகளுக்கு எதிராக மேற்கோள் அடுக்கு",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "நீங்கள் உங்கள் அடுக்கு அல்ல, {name} உடன் விளையாடுகிறீர்கள்.",
+ "Played with {name}: no rewards.": "{name} உடன் விளையாடப்பட்டது: பரிசு இல்லை."
 }

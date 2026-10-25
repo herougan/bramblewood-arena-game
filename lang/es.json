@@ -3385,5 +3385,16 @@
  "Co-op": "Cooperativo",
  "reward": "recompensa",
  "{rank} reward": "Recompensa {rank}",
- "Pack {n}": "Sobre {n}"
+ "Pack {n}": "Sobre {n}",
+ "Map reference": "Referencia del mapa",
+ "Play with the map's reference deck": "Jugar con el mazo de referencia del mapa",
+ "Reference:": "Referencia:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Activado: cada combate de Conquista (camino, PRO, BPRO, X-REF) te da el mazo de referencia elegido a los niveles de ese mapa en lugar de tu mazo. Gratis, sin recompensas. Se guarda en este dispositivo.",
+ "Against:": "Contra:",
+ "You play:": "Juegas con:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: el mazo de referencia contra los mazos PRO de este mapa",
+ "Reference deck vs this map's PRO decks": "Mazo de referencia contra los mazos PRO de este mapa",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Juegas con {name}, no con tu mazo.",
+ "Played with {name}: no rewards.": "Jugado con {name}: sin recompensas."
 }
