@@ -4,242 +4,50 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**OWN-Q1. Bound: what may a bound unit still do?** · Decide · Engine · asked 2026-10-25
+- Owner #24: "Bound: Abit too unfair. Maybe it allows them to use non-moving actions and skills and even attack you back w/ half damage, but intercept, arrow, dive etc are not allowed. If they are flying, it removes their evasive effect. Idk this still sounds too strong" Proposal: a bound unit can't move or reposition (no Intercept, Guardian, Dive, Pounce, Charge), loses Flying's evasion, and still swings at half damage; Arrow and other ranged actions stay allowed (they don't move).
+  - As proposed (ranged actions allowed)
+  - Also no Arrow / shots
+  - Your version (say it)
+- **Default:** As proposed (ranged actions allowed)
+
+**OWN-Q2. Equipment: how is it destroyed?** · Decide · Engine · asked 2026-10-25
+- Owner #21: "Im not sure how to destroy equipment though. maybe thematically it represents a factory or equipment ... so that's why when its lost in the field (unit dies), the next unit can pick up the next one." Proposal: equipment can't be destroyed, only stolen (unless Tamper-proof) or dropped when its unit dies, after which the next unit to reach it picks it up after its Equip Time. Acid / Corrode (EQ-1 durability) wears a copy out.
+  - As proposed
+  - Also a Shatter skill that destroys one
+  - Say it
+- **Default:** As proposed
+
+**OWN-Q3. A battle pass, and the packs given for levels** · Decide · Economy · asked 2026-10-25
+- Owner #51: "What would a battlepass look like? Should we take back the abundant packs we give in levelling? 25 levels = 25 packs - but it seems very hard to reach level 25 actually." With #3 (packs from Level 5 alternate faction / Pack 1, later Pack 2; singles for Levels 1-5) and #52 (gentler exponential, stronger linear XP part). A proposal doc comes first (OWN-B4).
+  - Write the proposal first (recommended)
+  - Not yet
+- **Default:** Write the proposal first (recommended)
+
+**OWN-Q4. Fester: what is wrong with it?** · Decide · Engine · asked 2026-10-25
+- Owner 17:53: "Fester - not a good effect." Fester today: see docs/effects-catalogue.md. Rework it, rename it, or remove it from its cards?
+  - Rework (say how)
+  - Remove from cards
+  - Claude proposes a rework
+- **Default:** Rework (say how)
+
+**OWN-Q5. Pulverise: what does it do?** · Decide · Engine · asked 2026-10-25
+- Owner #11: "New skill: Pulverise - for now not sure what ill do." Held until the owner has an idea; Claude can propose (e.g. deals damage that ignores Shield and breaks Armor for the fight).
+  - Hold
+  - Claude proposes
+- **Default:** Hold
+
 **PRO3-1. Side-map PRO decks may hold cards a player gets later** · Decide · Balance · asked 2026-10-25
 - PRO3 gave every side map of Maps 0-20 its own PRO / BPRO fights (N-L-PRO-k, e.g. 2-B-PRO-1). A side map's own pool is its parent's MAP tier + its SUBMAP list + SPECIAL + its fight decks, and some side-map fight decks hold cards first obtainable later (the Mudpuppy, Map 9, in Lilypad Reach 2-A and the Mycelium Deep 7-A; the Abyss Lantern Squid, Map 13, in the Sunken Depths 10-A; the Cinder Gecko, Map 22, in the Pale Desert and the volcano side maps; the Siege Rhino, Map 23, in the Canopy). By the PRO rule these decks stay and list the card under `later`. Keep them, or drop cards first obtainable after the side map opens from side-map pools too?
   - Keep: a side map's own fight cards are its pool (proposed)
   - Drop later cards from side-map PRO pools
 - **Default:** Keep: a side map's own fight cards are its pool (proposed)
 
-**PL2-1. The Dungeons tab: gone for players, kept in Admin Mode** · Decide · Dungeons · asked 2026-10-25
-- Your PL1-3 answer ("Dungeons Tab is not needed for a while"), built: players never see the Dungeons tab (nor the 🗝️ key, which already needed a daily dungeon). Admin Mode (and Dev Mode) still show it, so the daily dungeons and the Spire stay testable. The Group Dungeon is the Arena's new Co-op tab and a 👥 spot on Map 3 after its last fight (the same gate as before: Map 3 won). Hide it in Admin Mode too?
-  - Kept in Admin Mode (built)
-  - Gone for everyone until the dungeons move
-- **Default:** Kept in Admin Mode (built)
-
-**PL2-2. Where the Group Dungeon sits on the map** · Decide · Map · asked 2026-10-25
-- Your PL1-3 answer: "It'll be just a dungeon on the map". Built: a 👥 spot on Map 3 (Gannet Cliffs side of the road, beside its last fight), found once that fight is won; tapping it opens the Group Dungeon's card (Create, Solo with CPU allies, Join by code). An admin can drag it like any spot. The Arena only opens on Map 11, so the map spot is how a player reaches it before that. Another map, or a cave-looking node instead of a spot?
-  - Map 3 spot (built)
-  - Another map (say which)
-  - A dungeon node with its own look
-- **Default:** Map 3 spot (built)
-
-**PL2-3. XP won outside the Conquest map waits for the map** · Decide · Results · asked 2026-10-25
-- Your 00:02 "XP is for all skirmishes", built: no won fight's results show the XP bar any more (Arena, Spire, dungeon floors as well as Conquest). The XP counts at once (a level-up included); the bar fills at the top of the Conquest map the next time it is in view, after that map's own moments (each fight won since you last saw it plays its emblem, even over a chain of Next fight wins or a reload). A long Arena session therefore shows its XP only when you next open the map. Also fill it on the Arena screen when you go back there?
-  - Only on the Conquest map (built)
-  - Also on the Arena screen
-- **Default:** Only on the Conquest map (built)
-
-**PL2-4. Which card rewards flash with the rank ribbon** · Decide · Results · asked 2026-10-25
-- Your 00:02 #5, built: every card reward is a card (eggs as cards, card-form materia with ×N); two or more are one stack with a count, fanned on hover or tap. Two kinds count as won by the rank and flash with a ribbon (the rank emblem and "reward"): the top-rank rare find (once per map) and a card drop the rank unlocked. First-clear rewards and Base copies are plain. The ribbon shows the rank the fight was won at. Add first-clear cards to the flashing ones?
-  - Rare find and rank-gated drops (built)
-  - Also first-clear cards
-- **Default:** Rare find and rank-gated drops (built)
-
-**PL2-5. Fire Ant Raft and Ember Tetra have no art** · Decide · Art · asked 2026-10-25
-- The "ghost art" in your 00:02 SS#1 was the Fire Ant Raft's placeholder: a card with no art shows its emoji, and it was drawn at 55%. It is drawn whole now, but the Fluent set's ant is a pale violet shape, so the card still looks unfinished. Both it (Map 5, Pack 1) and the Ember Tetra (Pack 3) need art. Queue both for the next art batch?
-  - Queue both (art workflow)
-  - Leave the placeholders
-- **Default:** Queue both (art workflow)
-
-**PL2-6. How quiet the fight's music is under the results** · Decide · Audio · asked 2026-10-25
-- Your 00:02 #10, built: while a fight's results (or the board looked at after them) are up, the fight's theme carries on at 30% under the Victory / Defeat sting, which plays at full level; the map's theme starts only once you are back on the map and fades in over 4 s (it used to start at once, 1.5 s, as the results came up). Quieter or louder under the results, faster or slower fade-in?
-  - 30% and 4 s (built)
-  - Say the numbers
-- **Default:** 30% and 4 s (built)
-
-**EN8-11. Render's Daunt counters: what takes one off** · Decide · Battle rules · asked 2026-10-25
-- Owner 00:02 #2, built: Render N puts N Daunt counters on the enemy facing it (-1 Attack and -1 skill damage each). One falls off at each round's end, one when it swings (its action), and one each time it uses a skill (any trigger that runs an action; a swing's own On Action / On Attack are part of the swing). Cleanse takes them, one a point. Priced 0.8 a point (4-round rule; was 2 for N Attack lost for good). The older Daunt N skill (on hit: -N Attack until the end of next round) is unchanged and adds to the same -Attack. Should a passive skill (an aura, a heal at upkeep) also take a counter off, or only actions and triggered skills?
-  - Swings and triggered skills only (built)
-  - Also every passive that fires
-- **Default:** Swings and triggered skills only (built)
-
 **EN8-10. The CPU is stronger on Maps 0-20: retune the road after EN8?** · Decide · Balance · asked 2026-10-24
-- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve). PRO3 (2026-10-25) did that pass by the agreed schedule (roadCurveTarget, green = target +/- 8): every fight of Maps 0-20 and their side maps measured (tools/skirmish_pass.js measure, 40 games, 241 fights), then CPU deck swaps only (a card of the map's pool for another, the leader, first-clear card and deck size kept, no Shield or Health change). On the curve: green 68 -> 117, too easy 77 -> 56, too hard 81 -> 53; main-map mean 64.0% -> 67.2% (131 decks changed). Most of the 53 still too hard are decks already made of their map's weakest cards (Map 2, Map 4, Map 11 and Map 20's elites, 2-5, 7-6, 11-7, 20-6, 20-8): a swap cannot reach the target there. Your call: accept as is, or allow the next lever for those (drop copies so a deck shrinks, a lower enemy level or bramble, or a stronger reference deck). Data: docs/balance/pro3-road-check-2026-10-25.md (before / after per fight).
-  - Accept PRO3's swaps; leave the rest (proposed)
-  - Also use the next lever on the fights still too hard
-  - Keep the CPU this strong
-  - Soften: Basic CPU keeps the old pitch
+- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve). PRO3 (2026-10-25) did that pass by the agreed schedule (roadCurveTarget, green = target +/- 8): every fight of Maps 0-20 and their side maps measured (tools/skirmish_pass.js measure, 40 games, 241 fights), then CPU deck swaps only (a card of the map's pool for another, the leader, first-clear card and deck size kept, no Shield or Health change). On the curve: green 68 -> 117, too easy 77 -> 56, too hard 81 -> 53; main-map mean 64.0% -> 67.2% (131 decks changed). Most of the 53 still too hard are decks already made of their map's weakest cards (Map 2, Map 4, Map 11 and Map 20's elites, 2-5, 7-6, 11-7, 20-6, 20-8): a swap cannot reach the target there. Your call: accept as is, or allow the next lever for those (drop copies so a deck shrinks, a lower enemy level or bramble, or a stronger reference deck). Data: docs/balance/pro3-road-check-2026-10-25.md (before / after per fight). Owner, 2026-10-25 17:53 (#27, #32): "Master hub difficulty page will flag them out with high difficulty. PRO is not to change any existing skirmishes - they are for me to evaluate the cards in that map. ... (it might be because of the reference deck. let me fight the reference deck as X-REF where X is the map number." Open part: PRO3 retuned 131 road decks by the agreed curve (card swaps only). Keep those swaps, or revert them and only flag the hard fights in the hub?
+  - Keep PRO3's 131 swaps; flag what is still hard
+  - Revert the swaps; only flag in the hub
 - **Default:** Accept PRO3's swaps; leave the rest (proposed)
-
-**EN8-9. The new resource cards and their homes** · Decide · Cards · asked 2026-10-24
-- One card per new skill, pack cards in their biome's map (no faction cards), stats on the formula line: Beachcomber Sanderling (Driftwood 1, 1/7, Pebble Beach, Map 2), Beaver Feller (Felling 1, 2/10, the Morel Hollow, Map 7), Prospector Mole (Prospector 1, 3/9, Caves & Alcoves, Map 8), Salvager Hermit Crab (Salvage 1, 1/13, Coral Current, Map 10), Marmot Stonecutter (Stonecutter 1, 1/12, Eyrie Heights, Map 11), Carrion Crow (Flying, Scavenge 1, 2/5, the Briar Maze, Map 12), Hazel Coppice (Structure, Coppice 1, 0/14, the Redwood Deep, Map 13), Moonshell Snail (Magic Armor 1, 1/15, the Long Grass, Map 15). The Leafcutter Gardener's Growth (it did nothing) became On Ready: +1 Lumber (22:28 #10), 2/7. Art prompts: docs/art/en8-2026-10-24-briefs.md.
-  - Keep
-  - Move or rename some (say which)
-- **Default:** Keep
-
-**EN8-8. The CPU's lethal guard at every level** · Decide · AI · asked 2026-10-24
-- P24-7, built: from Map 1 on (Map 0 keeps the old play), when your Ready units would swing into open columns for its bramble's Health and Shield and it can't win that round itself, the CPU plays the unit that blocks the most of it into the attacker's column (Basic, Smart and Smartest alike). And the pitch (22:28 #1 / #3): every level pitches before it plays: nothing useful -> its least valuable card; an unaffordable card in hand with 3+ cards -> a spare card. Measured on the 5-3-like deck (4 zero-cost of 20, docs/balance/en8-cpu-pitch-*.json): first play round 2.59 -> 1.54. Keep the guard at Basic too, or Smart and up only?
-  - Every level (built)
-  - Smart and Smartest only
-- **Default:** Every level (built)
-
-**EN8-7. Where Windfall blows** · Decide · Maps · asked 2026-10-24
-- LUM-1 Windfall, built as a field rule: after a Storm round (a Thunderstorm, or a strong-wind round on a windy map), both sides gain 1 Lumber at the next round's start. Placed on every fight of the windy maps up to Map 20 (Gannet Cliffs, Eyrie Heights, the Glass Dunes, Ashen Spurn, the Sundered Peak and their side maps); it is shown with the map's other field effects and can be set per fight in Edit skirmish. Keep it there, or only on chosen fights?
-  - The windy maps up to 20 (built)
-  - Only chosen fights (name them)
-- **Default:** The windy maps up to 20 (built)
-
-**EN8-6. Pearls: when Pearl Bed pays, and the Shellfish type** · Decide · Content · asked 2026-10-24
-- 22:28 #2, built: Pearl Bed N gives N Pearls when the card becomes Ready (a Wait 0 card: as it lands). A Pearl pays 1 Lumber or 1 Stone, only when you are short (Lumber and Stone first). Price 0.9 a point. On the Oyster Bank (Map 2, Pearl Bed 1 + Shore Up) and the Giant Clam (Map 10, Pearl Bed 1 + Shell 2), both already placed and re-fitted (0/14 -> 0/13; 5/5 kept). "Shellfish" is not a type yet: they count as Molluscs (a Shellfish node needs the taxonomy file, outside this package). Alternatives: Pearl Bed on hit, or every few turns.
-  - On Ready, once (built)
-  - On hit
-  - Every 3rd Ready turn
-- **Default:** On Ready, once (built)
-
-**EN8-5. Scavenge and Salvage: SK2's point counters replaced by LUM-1's plain rules** · Decide · Content · asked 2026-10-24
-- SK2 (10-19) already had Scavenge N, M (points from deaths within 1 column, M points -> 1 Lumber) and Salvage N, M (the same for Structures -> Stone), on no card. LUM-1's Scavenger and Salvage are simpler, so the two names now carry them: Scavenge N: another of your units dies -> +N Lumber; Salvage N: another of your Structures dies -> +2N Lumber. Both always on (Waiting too). Prices 1.5 and 0.75 a point. One card each: Carrion Crow (Map 12), Salvager Hermit Crab (Map 10).
-  - Keep the plain rules (built)
-  - Bring back the point counters
-- **Default:** Keep the plain rules (built)
-
-**EN8-4. Fodder before Map 20, and the one "?" skill** · Decide · Cards · asked 2026-10-24
-- 21:20 #7, built: Stem, its braces and Chrysalis are Evomax skills (the editor offers them on Evomax cards only, like Evolute / Alpha / Omega). Fodder (EV-6's Stem from Level 1) came off the 20 baby-like cards first obtainable before Map 20 (Otter Kit, Duckling, Fox Kit, Caiman Hatchling, Bear Cub ...) and the Speckled Egg lost its Stem; the three babies first obtainable on Map 20+ (Fire Drake Hatchling, Harp Seal Pup, Duckling Squadron) keep it, as EV-6 said. "One of the fodder skills can be a ? for now": the Cocoon's Chrysalis reads "❓ ?" ("Something stirs inside. Its skill wakes on the Evomax maps") on its face and in its detail; the rule is still there (no evolute exists before Map 20). Which card(s) should carry the "?"?
-  - The Cocoon's Chrysalis (built)
-  - Every baby-like card shows a "?" Fodder slot
-  - None: just remove
-- **Default:** The Cocoon's Chrysalis (built)
-
-**EN8-3. A bramble's healing heals an ally; the Wildpath perks that mend the bramble** · Decide · Battle rules · asked 2026-10-24
-- P24-17, built: a bramble's healing passive (the maps' castleRegen N: 8 brambles) now heals ONE random wounded ally unit N each round, never a Structure and never the bramble ("Heal 1 random ally 1" as the default meaning). Heals never touch a Structure; Repair N and Rebuild are what restore Structures and brambles. Left as they were: the Wildpath perks Sap Mending and Heartwood, which put 1 Health back on your own bramble (they read as repairs). Keep the perks, or turn them into ally heals too?
-  - Keep the perks as repairs (built)
-  - Make them heal an ally too
-- **Default:** Keep the perks as repairs (built)
-
-**EN8-2. Armor is physical only; Magic Armor N is the other half** · Decide · Battle rules · asked 2026-10-24
-- P24-16, built: Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) takes only from physical hits; magic and every element (fire / heat, frost, shock, poison, acid, water, decay) go past it. "Magic armor" did not exist as a skill (Supreme halves non-magic, Resist halves one element, Spellward redirects skills), so a new skill, Magic Armor N: N off each magic or elemental swing, shot or skill, never a physical one, never a status tick; Supreme crushes it. Priced 0.4 a point (Armor 1.5 x about a quarter of the hits being magic or elemental). One card: the Moonshell Snail (Map 15). Keep the name and price?
-  - Keep (built)
-  - Another name (say it)
-  - Another price
-- **Default:** Keep (built)
-
-**EN8-1. Guardian vs Thorns: which way round** · Decide · Battle rules · asked 2026-10-24
-- P24-15 ("Guardians must not intercept Thorns"), built: a Guardian never steps in for an ally that has Thorns (printed, or a Durian's): the swing lands on the Thorns unit and its Thorns answer the attacker. (Thorns damage itself was never redirected: it goes straight to the attacker, and no Guardian beside the attacker takes it.) The other reading: the Guardian still steps in, and the guarded unit's Thorns answer anyway.
-  - No Guardian for a Thorns unit (built)
-  - The Guardian steps in, the Thorns still answer
-- **Default:** No Guardian for a Thorns unit (built)
-
-**PRO2-1. PRO / BPRO rarity cap: the map's rarest fight, or a plain skirmish?** · Decide · Skirmishes · asked 2026-10-24
-- Your 21:20 #11: "run the PRO ones but with respect to the rarity and cards of that map". Built: a PRO or BPRO deck may hold the rarest card any of the map's fights may hold. On the main road that is the elite's step: Map 0 Common, Maps 1-3 Uncommon. Map 1's skirmishes are Common, and only its elite (1-5) is Uncommon. A PRO fight is a skirmish, so the stricter reading is a plain skirmish's cap: Common on Maps 0-1, Uncommon from Map 2. That changes only Map 1 among Maps 0-3. Switch: --rarity-cap skirmish on both tools, then re-run.
-  - The map's rarest fight (built)
-  - A plain skirmish's cap
-  - One step above the map's rarest fight (PRO is meant to be hard)
-- **Default:** The map's rarest fight (built)
-
-**PRO2-2. Alley Cat's home: the Gatorback Swamp (Map 5), or Clovermead?** · Decide · Progression · asked 2026-10-24
-- Your 21:20 #10: "Why is alley cat in map 0's list of cards too!?" RW5 (10-23) gave this map-less Rare a home by theme, the village edge of Map 0, and Map 0's fights are Common only. No other map 0-40 lists a card over its fights' cap. Built: it moved to the Gatorback Swamp (Map 5, the swamp's trading post, like the Buzzed Chipmunk). Map 5 reveals Rare and its boss may hold one. It stays a Pack 1 card (Maps 0-6) and first obtainable on Map 5, so its 1/1 budget line is unchanged. The better fit by theme is Clovermead, Thistlewood's village side map (house cat, farm dog, miller), but that opens at Map 12. It would make the Alley Cat a Pack 2 card and re-price it for Map 12.
-  - Gatorback Swamp, Pack 1 (built)
-  - Clovermead (village side map), Pack 2, re-priced
-  - Another Maps 5-6 home
-- **Default:** Gatorback Swamp, Pack 1 (built)
-
-**N221-1. Pack tiers after Map 20: Pack 4 Maps 21-27, Pack 5 28-34, Pack 6 35-41** · Decide · Progression · asked 2026-10-24
-- Derived from your Pack 1-3 pattern of about 7 maps each (PP-1: 0-6 / 7-13 / 14-20). Tier 4 already exists in the data (every pack card of Maps 21-24 and the Ice Hollow / Old Bramble side maps carries it; no shop pack sells it yet, so those cards come from the card drop and the base track). Tiers 5 and 6 are written into the proposal only; Pack 6 runs past Map 40, where you build one map at a time. docs/balance/n221-divvy-2026-10-24.md.
-  - Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
-  - Other ranges (say which)
-  - Packs 4-6 as 21-30 / 31-40 / 41-50
-- **Default:** Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
-
-**N221-2. Eight held cards would bring a new skill onto Maps 21-40** · Decide · Cards · asked 2026-10-24
-- Your 10-21 rule: Maps 21-40 teach no new skill. These cards carry a skill no card a player can get on Maps 0-20 has: the Rainforest Floor (Map 25) War-Drum Mandrill (Durian), Aye-aye Prowler (Sun-shy), Velvet Worm (Ichor), Slow Loris (Feeble), Chilli Parrot (Chilli); Clinging Leech (Parasite, proposed the Carrion Moors, Map 27); Glintsnatch Magpie (Disarm, the Thornwold, Map 32); Armory (Weapon Master, Goldfeather Keep, Map 24: not applied for this reason). The five rainforest cards were held for Map 25 by your RP5 (later and more specific), so the default keeps them there; the other three wait in the proposal. Alternatives: Maps 0-20 homes (the Leech to the Mire off Map 6, the Magpie to the Briar Maze, Map 12, the Armory with the Forge, Map 11), Pack Secrets I, or Map 40+ where new skills come again.
-  - Place all eight as proposed (each one card, met on that map's enemies first)
-  - Rainforest five on Map 25; the Leech, Magpie and Armory to Maps 0-20 homes
-  - None on 21-40: they wait for Map 40+ or Pack Secrets I
-- **Default:** Place all eight as proposed (each one card, met on that map's enemies first)
-
-**N221-3. The Petrified Tree is a Pack 4 card of the Rimefire Caldera (built)** · Decide · Cards · asked 2026-10-24
-- The only waiting card that fits a map that exists without a new skill or an era hold. Petrified forests form under volcanic ash, and the Caldera is the volcano of Maps 21-24; a Stone maker (Gain 1 Stone a turn) beside its fire and ice. Applied: source pack tier 4, map m22, in the Caldera's pool (12 -> 13); its obtain map is 22 (canonical/card-obtain-maps.json), which leaves it under its budget (0/37: 2A+H+S 40 is 98% of N at Map 0, 89% of N 45.17 at Map 22; not re-fitted). Not a skirmish reward: the Caldera already has 10+ new cards and its three exclusives. The other choice was the Quiet Summit (pool 9 -> 10), where it would be the 6th new card and DV3 would ask for a third skirmish exclusive (a deck change).
-  - Keep it on the Rimefire Caldera (built)
-  - Move it to the Quiet Summit (and add a third Summit exclusive)
-  - Hold it again
-- **Default:** Keep it on the Rimefire Caldera (built)
-
-**N221-4. The Rimefire Caldera (13) and the Goldfeather Siege (12) are over the 6-10 pool guide** · Decide · Maps · asked 2026-10-24
-- They grew in earlier packages (the Weathervane Swift and Ashwing Ptarmigan on 22, the Marching Elephant and Werebadger on 23) and now the Petrified Tree. Trimming them would move those cards to maps that don't exist yet (proposed: the Swift to Stormcoast 28, the Ptarmigan to the Mammoth Steppe 33, the Marching Elephant to the Last Savanna 39, the Werebadger to the Thornwold 32), so they could not be had until then. Most Maps 0-20 pools are over 10 too since RW5.
-  - Keep them (nothing moved)
-  - Trim as proposed (those cards wait for their maps)
-  - Trim only the ones that fight nowhere (Swift, Ptarmigan)
-- **Default:** Keep them (nothing moved)
-
-**N221-5. Maps 25-40: the proposal table** · Decide · Maps · asked 2026-10-24
-- Sixteen map ideas, each with a pool of 6-10 (held cards, a few carried from earlier maps, unsorted enemy-only cards, new ideas from the eras rule), two skirmish-base cards, its pack tier and the road's caps: 25 the Rainforest Floor, 26 the Ant Empire, 27 the Carrion Moors, 28 Stormcoast, 29 the Echo Caverns, 30 the Old Growth (Evomax opens), 31 the Hollow Farmsteads (side map: the Cabbage Patch, your Killer Veggies), 32 the Thornwold (the Greenhood Band; the Thistle Baron returns), 33 the Mammoth Steppe, 34 the Tar Pits, 35 the Drowned Reef, 36 the Black Bayou, 37 the Lost Isle, 38 the Fossil Badlands, 39 the Last Savanna, 40 the Grove of the Dragon-Turtle (a seed only: from 40 you build one map at a time). Nothing is built; each map is made concrete only after your yes. docs/balance/n221-divvy-2026-10-24.md.
-  - Use it as the working plan; build in order after a yes per map
-  - Change some maps (say which)
-  - Start over from your own list
-- **Default:** Use it as the working plan; build in order after a yes per map
-
-**N221-6. If CONTENT2-3 goes "other sources": the Gnawed to the Carrion Moors, the Tidefolk to Stormcoast** · Decide · Cards · asked 2026-10-24
-- CONTENT2-3 is open (default: the Sable Swampmire, Glass Dunes, Kelp Mangroves and Coral Current, Maps 6-18). This pass did not place the seven. If you prefer later homes: the Gnawed (Bog Shrew, Mire Rat, Hollow-belly Rat, Gnawed Matriarch as a skirmish-base card) in the Carrion Moors (27, a moor of bones; the Black Bayou 36 is the second choice) and the Tidefolk (Kelpborn Otter, Conger Eel, Selkie Wavebinder as a skirmish-base card) on Stormcoast (28, seals in a gale). Note: the Hollow-belly Rat's Devour is Devilry's keyword and not taught on Maps 0-20.
-  - Follow CONTENT2-3's answer (no change here)
-  - The Carrion Moors and Stormcoast, as above
-- **Default:** Follow CONTENT2-3's answer (no change here)
-
-**N221-7. Homes outside the maps: Pack Secrets I, the faction pool, the Blacksmith, a quest** · Decide · Cards · asked 2026-10-24
-- Not applied (each needs game code or a pool that isn't built). Pack Secrets I (empty today, progression plan item 12): MissingNo. (a hidden glitch) and the Glowing Gecko (Irradiated, like the Mystery Booster's Irradiated Axolotl and Glow Wyrm; the map recommendations' Map 33 would bring Irradiated as a new skill). The faction pool: the Anvilwhisker Otter (Otter side; it needs a Stone engine) and the Greyplume Fledgling (Hummingbird side, or Base). The Blacksmith: the Crowbar (equipment). A quest-only special: the Thistle Baron's return on the Thornwold (Map 32; RP5 held it for Map 21+). The eight spells stay held while spells are shelved (thematic homes listed in the doc); the Devilry (16) and Ecclesia (15) cards stay held for Maps 66 / 77.
-  - As proposed
-  - Change some (say which)
-- **Default:** As proposed
-
-**CONTENT2-1. Lumber gatherers per biome: placements and strengths** · Decide · Cards · asked 2026-10-24
-- Your 13:12 #8 ("every biome should have its own lumber gatherers"), built: one per main biome of Maps 0-20 that had none in its pools, each a pack card of that map, priced by the formula. Driftwood Crab (Pebble Beach, Map 2, Common 2/9, On Ready +1 Lumber), Gannet Nestweaver (Gannet Cliffs, Map 3, Common 1/7, Flying, On Play +1), Nutria Reedcutter (Gatorback Swamp, Map 5, Common 2/12, Wait 2, On Ready +2), Redwood Woodpecker (Redwood Deep, Map 13, Uncommon 2/12, Milling 1: +1 every turn while Ready), Termite Forager (Savanna Reaches, Map 14, Common 2/6, Swarm, On Ready +1), Cone-cutter Squirrel (Pinewood Taiga, Map 16, Common 3/9, On Play +2), Talus Pika (Wolfsbane Tundra, Map 17, Common 2/9, On Ready +1), Dune Packrat (Glass Dunes, Map 18, Uncommon 2/14, On Ready +3). Three existing gatherers that sat in no pool joined their map: Land Tiller (Long Grass, Map 15), Coral Polyp Colony (Coral Current, Map 10), Rodent King (Briar Maze, Map 12). Still without one: the Kelp Mangroves (Map 9) and the caves and volcano maps, which get the Stone cards instead (CONTENT2-2). Map pools grow by 1-2; the Pinewood Taiga and Ashen Spurn go from 10 to 11 (the divvy's 6-10 guide). The Driftwood Crab fights in 2-3 (Hermit Row), the Gannet Nestweaver in 3-1 and 3-3.
-  - Keep them (built)
-  - Move or cut some (say which)
-  - Fewer: only the owner's four (crab, gannet, woodpecker, termite)
-- **Default:** Keep them (built)
-
-**CONTENT2-2. The Stone loop: Quarry (1 Lumber -> 1 Stone a turn) or a 2 -> 1 converter?** · Decide · Economy · asked 2026-10-24
-- Your 13:12 #8 ("the stone making loop (lumber -> stone or just stone+)"), built with the engine's existing Quarry skill (SK2b, 2026-10-19), so no engine change: the Badger Stonemason (Caves & Alcoves, Map 8, Uncommon 1/15, Quarry 1: each turn while Ready, pay 1 Lumber, gain 1 Stone; can't pay, nothing happens) beside two Stone gatherers, the Gravel Mole (Map 8, Common 1/12, On Ready +1 Stone) and the Pumice Beetle (Ashen Spurn, Map 19, Uncommon 3/12, On Play +2 Stone). Caves & Alcoves is the Stone map: its Quarry Mole (Bedrock: Armor while you hold 2+ Stone) and Dynamite Packrat (costs 1 Stone) are there to spend it. Stone counts 2 points to Lumber's 1 in the game's resource worth, so Quarry's 1 : 1 is a profit, which is why a card with it pays 2.5 budget points. The alternative you sketched, "at round end spend 2 Lumber -> 1 Stone", is a new skill (a small engine change) and a loss in points; worth it only if Stone should be scarce.
-  - Quarry 1 : 1, as built
-  - A 2 Lumber -> 1 Stone round-end converter (new skill)
-  - Just Stone+ (gatherers only, no converter)
-- **Default:** Quarry 1 : 1, as built
-
-**CONTENT2-3. The Gnawed and the Tidefolk: seven new cards, where they come from** · Decide · Cards · asked 2026-10-24
-- The lore bible's thin sub-factions (the Gnawed had no cards, the Tidefolk 3), built from its lines (Gnawed: rats and shrews, the Sable Swampmire and the Glass Dunes, Devour / Sap / Pack; Tidefolk: otters who never came ashore, eels, seals, Coral Current and the Kelp Mangroves, Tide / Wave / Fork), priced by the formula, placeholder art (the emoji; prompts in docs/art/content2-2026-10-24-briefs.md), awaiting a source. Proposed: Bog Shrew (Common 3/4, Sap) and Mire Rat (Common 3/8, Pack 2) in the Sable Swampmire's Pack 1 pool (Map 6); Hollow-belly Rat (Uncommon 2/10, Devour +2/+2) in the Glass Dunes' Pack 3 pool (Map 18); Gnawed Matriarch (Rare 4/15, Pack 2 + Pack Leader) a Glass Dunes skirmish reward; Kelpborn Otter (Common 2/5, Tide) in the Kelp Mangroves' Pack 2 pool (Map 9); Conger Eel (Uncommon 3/6, Tide + Fork) in Coral Current's Pack 2 pool (Map 10); Selkie Wavebinder (Rare 3/13, Tide + Wave) a Coral Current skirmish reward or the faction pool's shared side. Note: Pack and Pack Leader are priced 0 by measurement (skill-costs.json), so the two Pack cards carry full stats.
-  - Place them as proposed
-  - Other sources (say which)
-  - Hold them for the sub-faction packs
-- **Default:** Place them as proposed
-
-**CONTENT2-4. Unlocks on uncharted maps: keep them there or pull them onto Maps 21-24?** · Decide · Progression · asked 2026-10-24
-- The map pools stop at Map 24. These unlocks sit on maps that don't exist yet and show "Unlocks beyond the charted maps": Forge tier 4 (Dragonfire, Lv 9, Legendary tempering) at Map 26 and tier 5 (Heartfire, Lv 10, Ancient) at Map 31, with the Lv 9 / 10 gates; Strange Materia x2 from Map 25's boss and x3 from Map 30's; Nests 6 and 7 at Maps 25 and 30; dungeon slot 3 at Map 40 (and, same kind, deck slots 6 / 7 at Maps 27 / 33, the Flea Market at 31, the 4x / 5x speeds at 40 / 60). Not moved, because each sits on a rule of yours: a nest every 5 maps (10-16); each Forge tier on the map its old level gate used, its Strange Materia from the boss of the map before; and Lv 9 / 10 on Maps 22 / 24 would let a grinding player sit 4-5 levels over BAL2's enemy schedule (Lv 5 at Map 20, Lv 6 at Map 30), while the Legendary / Ancient tempering they open has no road card before Map 40. Dungeon slot 3 has no dungeon to open. N22-1 (queued) charts Maps 21-40, and they open where they are. If you want them reachable now, the proposal: Forge tier 4 and Lv 9 at Map 22 (the Rimefire Caldera: dragonfire), Strange Materia x2 from Map 21's ender; tier 5 and Lv 10 at Map 24 (Goldfeather Keep, the last charted map), x3 from Map 23's ender (Marshal Tuskwell); Nests 6 / 7 at Maps 22 / 24; dungeon slot 3 stays until a third dungeon exists.
-  - Keep them where they are (nothing moved)
-  - Move them as proposed (Maps 21-24)
-  - Move only the nests and Strange Materia
-- **Default:** Keep them where they are (nothing moved)
-
-**CONTENT2-5. Earthworm, the starter fish, Meadow Frog and the Traveller lost their skills in a fold, not on purpose** · Decide · Cards · asked 2026-10-24
-- The 10-16 list ("Earthworm has lost its Regen; Silver Minnow, Pond Trout and River Carp need Tide; Meadow Frog should be Rainrunner; the Wandering Traveller lost its Lumber trigger"). Git: the skills were there until 2026-10-15 (Earthworm Regen 1; the three fish and Meadow Frog Swimmer, the old Tide; the Traveller On Play draw 1 and a once-only On Ready +1 Lumber). The 10-15 fold of your 60 published card edits (005f3ce8) brought them in empty, as that era's editor saved them; a branch that still had them was merged over by the fold (13fab486), and no later package restored them or recorded a reason (CHANGELOG has none). Meadow Frog never had Rainrunner (the skill came later). Nothing changed here. Today they are vanilla starters / Map 1 cards, which matches the plain-rewards rule for Maps 0-1 (PLAIN_REWARDS_UPTO_MAP) but not the 10-16 list.
-  - Keep them vanilla
-  - Restore the 10-16 list (re-fit by the formula)
-  - Restore some (say which)
-- **Default:** Keep them vanilla
-
-**CONTENT2-6. Sunken Hollow's fight names still promise whales and a kraken** · Decide · Maps · asked 2026-10-24
-- N21-2 (cute Maps 0-5): the theme pass took the Kraken Spawnling, Humpback and every whale out of Maps 1-4, so Map 4's decks are turtles, voles, muskrats and an old sturgeon, but its fights are still called Reef Skirmishers, Cetacean Pod ("They surface in formation") and The Kraken's Maw. Proposal (not built; the names are translated texts): 4-3 Cetacean Pod -> Turtle Pod, 4-4 The Kraken's Maw -> The Snapping Deep. The boss, The Drowned Colossus ("Every spawnling in the Hollow answers to one, much older, shape"), already fits its Old Sturgeon.
-  - Rename as proposed
-  - Other names (say which)
-  - Keep the names
-- **Default:** Rename as proposed
-
-**H1-a. Taking a gem out of a socket: does the gem come back?** · Decide · Forge · asked 2026-10-24
-- Your H1 ("Maybe all uniques and above are also liable for materia (gem) socketing - but only 1. Costs to apply, costs to remove."), built as the Forge's 💎 Socket tab (it replaces Enchant): every copy of a Unique or rarer creature has one gem socket. Setting a Materia gem costs Dust + Maple Leaves and one crystal; taking it out costs Dust + Maple Leaves. Built: the gem comes back to your Materia when you take it out (the friendlier default; one switch, SOCKET_REMOVE_RETURNS, to make it break instead). Keep it, or should taking it out destroy the gem?
-  - The gem comes back (built)
-  - The gem breaks when taken out
-- **Default:** The gem comes back (built)
-
-**H1-b. Gem socket prices (placeholders)** · Decide · Forge · asked 2026-10-24
-- Placeholder prices per rank, in canonical/upgrade-costs.json materiaSocket and the hub's 💰 Upgrade costs tab (group Gem sockets): set a gem / take it out, Dust · Maple Leaves: Unique 150 · 300 / 100 · 200; Legendary 250 · 500 / 150 · 300; Mythic 400 · 800 / 250 · 500; Ancient 600 · 1,200 / 350 · 700; Divine 900 · 1,800 / 500 · 1,000; Void 1,200 · 2,400 / 700 · 1,400; Daemonic 1,600 · 3,200 / 900 · 1,800 (a crystal itself is 125 Dust at the bench). Edit them in the hub tab, or say the rule you want (for example a share of the card's level road).
-  - Keep the placeholders
-  - Edit in the hub tab
-  - Another rule (say which)
-- **Default:** Keep the placeholders
-
-**H1-c. Which cards have a socket, and Heroes** · Decide · Forge · asked 2026-10-24
-- Built: creatures only (Materia, equipment and spell cards have none), of rank Unique and above; a flagged rarity counts as its rank (Quest-Unique as Unique, Dev-Legendary and Event-Legendary as Legendary, Dev-Ancient as Ancient). Your Hero card has no socket yet (the 10-06 Hero socketing plan is separate). The gem effects are the old Enchant ones, unchanged: Ember +1 Attack (its hits scorch), Tide +2 Health, Grove +1/+1, Stone +3 Health; a gem is a progression bonus outside the card's printed budget. OK, or should Heroes (or equipment) get a socket too?
-  - OK
-  - Heroes get a socket too
-  - Change (say what)
-- **Default:** OK
 
 **BAL3-1. Rising Tide can't fire on 5-A-2 and 10-A-2: no tide there** · Decide · Map effects · asked 2026-10-24
 - DF3-3 built (Quick and +1 Attack while the tide is in). Re-measured, 200 games with the boon on and off (docs/balance/bal3-rising-tide-2026-10-24.json): 9-4 Kelp Curtains 3 points (81% vs 84%); 5-A-2 Gator Hollow and 10-A-2 The Drowned Deck 0, because neither fight has a tide in its field (the Sunken Grove's Swamp Fever, the Sunken Depths' Crushing Depths), so the boon never turns on. A what-if with the Tide added: 5-A-2 79.5% (94% without the boon: 14.5 points), 10-A-2 77.5% (81.5%: 4 points). Their challenge targets are about 65% and 70%.
@@ -247,109 +55,6 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
   - Swap their boons (Venom Glands on 5-A-2, Blind Fury on 10-A-2)
   - Leave them
 - **Default:** Add the Tide to both fights
-
-**BAL3-2. The fights deck moves can't reach (87 too easy, 12 too hard of 179)** · Decide · Balance · asked 2026-10-24
-- BAL3 retuned Maps 0-24 and the Pale Desert by the agreed rules only (deck moves inside each map's pool and theme, the copy ladder, 5-7 different cards, leaders kept, enemy level by the schedule, no new Shield): green 48 -> 80 of 179 (docs/balance/bal3-road-2026-10-24.json, -table-....md), the Pale Desert 0 -> 4 of 9. What is left is outside the levers: Gannet Cliffs (Map 3), Gatorback Swamp (5), the Redwood Deep (13), the Glass Dunes (18, every fight 100%), the Goldfeather Siege (23) and five Pale Desert fights stay at 90-100% because no card of their pool makes the deck harder; Sunken Hollow's 4-1 / 4-2 stay at about 20% (target 80-90) because the reference deck there walls on its turtles. The schedule's whole levels can't fine-tune a fight either (DF3-4's five fights were done by decks: 11-4 67 -> 76% green; 11-2 75, 11-7 57, 14-5 60, 14-6 52 still under).
-  - Wait for your play-through (DF-1b)
-  - Let those fights take themed cards from one map ahead (outside the map's pool)
-  - Allow a Shield over the rule on those fights only
-- **Default:** Wait for your play-through (DF-1b)
-
-**BAL3-3. Alley Cat and Rock-pool Starfish are 1/1 on their formula line** · Decide · Cards · asked 2026-10-24
-- BAL2-5 built: the ten held cards took their formula line (tools/refit_pass_2026_10_21.js). Two land on 1/1 with a third of their budget unused, because their skills cost more than any bigger line of their shape allows: Alley Cat (Rare, Bleed 1 + Twin Strike, 1/8 -> 1/1, 67% of N) and Rock-pool Starfish (Common, Regen 2 + Tide, 2/2 -> 1/1, 66%). The others: Honey Badger Fury 1/6, Chipmunk Hoarder 2/6, Chipmunk Cavalry 2/2, Pyroclast Wyrm 3/12, Plague Gnat Cloud 2/2, Sunfeather Scout 1/4, Lone Grey Wolf 2/9, Muskrat Lodgekeeper 1/5.
-  - Keep the formula lines (built)
-  - Trim a skill on those two so they fit a bigger line (Alley Cat without Twin Strike, the Starfish Regen 1)
-- **Default:** Keep the formula lines (built)
-
-**EN7-1. Dive in two turns: what it is safe from while aloft or under** · Decide · Battle rules · asked 2026-10-24
-- Your 13:12 #3 ("like pokemon"), built: once a fight, at its swing, a diver with an enemy unit in its row rises (a Flyer; a Sprinter leaps the same way) or goes under (a Tide unit without wings) instead of swinging. Until its next swing nothing can find or hit it (swings, shots, bolts, skills aimed at a unit; a Spotter neither) and it can't step in as a Guardian. Its next swing strikes the weakest enemy of its row past Taunt (a Guardian beside the target still steps in) for Attack + N, and it is Exposed that round (no Flying dodge, no Tide evade). Area damage that names no target (a field's hail, a Nova, the tide-spout) and its own Poison / Bleed ticks still reach it, as in the games you described (Earthquake hits Dig in some, not Fly). A diver that can't strike in the next round (frozen, stunned) comes down at that round's end without striking. Keep area damage reaching it, or make it safe from everything?
-  - Area damage still reaches it (built)
-  - Safe from everything while aloft / under
-- **Default:** Area damage still reaches it (built)
-
-**EN7-2. Parasite x Bloom with no free enemy beside the host** · Decide · Battle rules · asked 2026-10-24
-- Your 13:12 #2: a Parasite with Bloom puts its bloom copy (+1/+1, its printed Wait) onto an enemy unit beside its host (left, right, in front, behind) that has no parasite; not a Structure or a cage; several: one at random. A Parasite played as a plain unit hooks its copy onto an enemy facing it or one column beside that. With no such unit, built: it waits and tries again each round (as Bloom waits for a free slot, BL-2). Or: no copy at all that fight?
-  - It waits (built)
-  - No copy that fight
-- **Default:** It waits (built)
-
-**EN7-3. Poison / Bleed on extra hits, and "– poison" shots** · Decide · Battle rules · asked 2026-10-24
-- Your 13:12 #5 ("common sense, not too overpowered"), built: a unit's Poison N / Bleed N (with Rabid, Greater Poison, Hemorrhage, Venom Master) ride on every landed hit of its own attack damage: the swing, Frenzy's and Twin Strike's swings, Fork / Trident / Pitchfork prongs and Octolash lashes (these already did), and now Pounce and Ambush (which did not). Cleave's side damage is a spread of the swing (an area, as for Guardian): it carries none. A shot or action (Arrow, Fire Arrow, a Bolt, Missile, Deal damage, Volley, Snipe ...) carries none, unless the card says "– poison" / "– bleed" on it (card text "Arrow 2 – poison"; a box on the Arrow, Missile and Deal damage actions in the card editor, as "– bramble"); it then gives the unit's own N, at least 1. Prices (4-round rule): Pounce / Ambush on a Poison or Bleed card pay 0.33 / 0.3 x the status's price on top (no card has both today); "– poison" on a shot 0.9 x Poison's price at that N (Arrow 2 – poison on a plain unit: +2.7). OK?
-  - OK
-  - Change (say what)
-- **Default:** OK
-
-**EN7-4. The two Dive cards** · Decide · Cards · asked 2026-10-24
-- Dive is re-priced for the two-turn rule by the 4-round logic: 0.75 + 0.5 N (the lost swing -1.5, a round out of reach +2, the pick +0.5, the exposure -0.25), fitted 1.25 x N^0.5 (Dive 1 1.25, Dive 2 1.77; was 0.75 a point). Given to two cards already placed: Puffin Diver (common, Flying + Tide, Map 3's 3-2 reward): Dive 2, 2/6 -> 2/5 (it goes aloft); Harbor Seal (common, Tide + Evasive, a pack card on the frost coast): Dive 2, 1/10 -> 1/9 (it goes under). No gannet or osprey card exists (The Gannet Queen is a heroic with Pounce 2; Dive would fit her too). Keep these two, add the Gannet Queen, or pick others?
-  - Keep the two
-  - Add the Gannet Queen
-  - Pick others (say which)
-- **Default:** Keep the two
-
-**EN6-1. Hoard is taken: the hand-count skills are Full Hand N and Lean N** · Decide · Skills · asked 2026-10-24
-- Your 03:17 #1 (all approved at 12:02 #11): +N Attack per card in hand / per empty hand slot, and the foe-counting pair. "Hoard" already names the Lumber skill (+1 Attack per 2 Lumber, on the Magnate Duck), so the built names are Full Hand N, Lean N, Foe's Full Hand N and Foe's Lean N. Keep these names or rename?
-  - Keep Full Hand / Lean
-  - Rename (say the names)
-
-**EN6-2. The new state skills' prices: default x uptime (the 4-round rule)** · Decide · Balance · asked 2026-10-24
-- Priced by logic, no robust skill test (docs/balance/en6-state-uptime-2026-10-24.json, 1500 CPU fights for the hand; every conquest fight's rules x 6 fights for the field). Plain prices: Plenty +1/+1 x 0.15 = 0.45, Scarcity +1/+0 x 0.79 = 1.58, Foe's Plenty +0/+2 x 0.05 = 0.1, Foe's Scarcity +1/+0 x 0.77 = 1.54, Heat +1/+0 x 0.6 = 1.2, Frost +0/+2 x 0.56 = 1.12, Rain +1/+1 x 0.05 = 0.15, Storm +2/+0 x 0.45 = 1.8, Fog {Evasive} 2.7, Salt Armor 1 x 0.25 = 0.38, Drought +1/+0 x 0.5 = 1.0, Season +1/+1 x 0.25 = 0.75; their braces cost the same uptime x what is in them. The field states take the midpoint of their uptime over all fights and over their home maps (a card made for the volcano plays about half its fights there): Heat 0.21 / 1.0, Frost 0.11 / 1.0, Storm 0.14 / 0.76, Drought 0.26 / 0.75, Salt 0.04 / 0.45, Fog 0.04 / 1.0, Rain 0.017 / 0.08. Full Hand 3.0 a point, Lean 7.5, Foe's Full Hand 2.4, Foe's Lean 7.5 (the hand averages 1.2 cards and 3.8 empty slots as combat starts). Hibernate N 0.95 a point, and its Attack counts only for the rounds it is awake (x 0.53). – bramble x0.9 of the shot or action. OK, or measure some with the robust skill test?
-  - OK
-  - Measure (say which)
-
-**EN6-3. Plenty and Foe's Plenty are almost never on against the CPU** · Decide · Skills · asked 2026-10-24
-- As combat starts the CPU holds 0 cards 6% of the time, 1 card 73%, 2 cards 20%, 3+ 1.5% (it plays a card a turn and draws one), and so does a player who plays every turn. So Scarcity (1 or fewer) is on 79% of the time and Plenty (4+) only for a player who holds cards back; Foe's Plenty almost never against the CPU. Built as proposed (4+ / 1 or fewer). Lower Plenty to 3+ (or 2+), or keep?
-  - Keep 4+ / 1 or fewer
-  - Plenty at 3+
-  - Plenty at 2+, Scarcity at 0
-
-**EN6-4. Seasons: which maps run the cycle?** · Decide · Map effects · asked 2026-10-24
-- Built as a field option (rules.seasons, in Edit skirmish; off by default and on no map): Spring, Summer, Autumn, Winter, 3 rounds each (a typical 12-round fight sees one year; 4 rounds left Winter at 14%), a log line and a float as the season turns. Summer counts as hot (Heat, not Hibernate), Winter as cold (Frost, Hibernate). Season (X) – {…} is in the editor and the Codex but on no card: with no map running the cycle it would never turn on. Which maps (or fights) get Seasons? Then a card gets Season (Winter) – {…}.
-  - Name the maps
-  - Leave off for now
-
-**EN6-5. Full Hand / Lean: no card yet** · Decide · Balance · asked 2026-10-24
-- At 3.0 (Full Hand) and 7.5 (Lean) a point, the commons that fit lose a quarter to a third of their stats (Dormouse 2/8 -> 1/6, Chipmunk Stockpiler 1/9 -> 1/6), so none was given one. Lean 1 is about +3.8 Attack on average. Give them to a rare or higher (say which), make them halve (+N per 2 cards), or leave them in the editor only?
-  - Leave in the editor
-  - Per 2 cards
-  - Give to a card (say which)
-
-**EN6-6. Beaver Lumberjack: On Ready, 1 Lumber (once) or every round?** · Decide · Cards · asked 2026-10-24
-- Your 12:02 #5: "That lumberjack should have something like On Ready, 1 lumber instead." Built literally: Bounty 2 off, the On Ready trigger (once, when its Wait first runs out) with Gain 1 Lumber, priced 0.9; it stays 4/4 (Bounty 2 was 5.0). The every-round Lumber income (On Ready gold, the Lodge Engineer's "1 Lumber each Ready round", 6.24) would cut it to 2/2. Keep once, or every round?
-  - Once (as built)
-  - Every round (2/2)
-
-**EN6-7. Bounty keep list: the Chipmunk Stockpiler** · Decide · Cards · asked 2026-10-24
-- Your 12:02 #5: Bounty only where it makes sense. Removed from the Beaver Lumberjack. Kept: Raccoon Bandit, Raccoon Warlord, Trash Panda Trickster (raccoons with their loot), Riverside Peddler (a merchant), Pack Mule (carries goods), The Magnate Duck (treasure), and the Chipmunk Stockpiler (cheeks packed with a stockpile: loot to take). No magpie or mimic has Bounty. Keep the Chipmunk's Bounty?
-  - Keep
-  - Remove (it re-fits up)
-
-**EN6-8. Hibernate as built** · Decide · Battle rules · asked 2026-10-24
-- Your 03:17 #4 ("hibernate?"): Hibernate N (plain 2) sleeps while the field is cold (Frigid, Hail, Freezing, the map's frost, Winter) or at night on a cold map (tundra, frostfire): it can't attack, shoot or fire triggers, its Taunt and Guardian are off (it can't step in or draw swings), it still blocks its column and can be hit; a hit does not wake it, its Wait does not tick, and it heals N at each round's start. It wakes when the cold ends. On the Polar Bear (Map 6, the tundra). OK?
-  - OK
-  - Change (say what)
-
-**EN6-9. Salt and Rain are rare on the maps** · Decide · Map effects · asked 2026-10-24
-- Salt (a beach or reef map while the tide is out) holds 4% of all fights' unit-rounds: those maps run the tide only in their boss and elite fights (High Tide). Rain holds 1.7%: Spring Rain is on no map; only the two Thunderstorm fights and Rainmaker cards bring it. Their cards (Horseshoe Crab, Puddle Hopper) are priced for that (0.38, 0.15). Give some beach / reef skirmishes the Tide, and some maps Spring Rain?
-  - Leave
-  - Add the Tide / Rain (say where)
-
-**DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
-- Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
-  - The pace enemy curve plus drifting road targets (recommended)
-  - The pace enemy curve only
-  - No level change: DF-2, DF-3 and per-fight retunes are enough
-  - Leave it
-- **Default:** The pace enemy curve plus drifting road targets (recommended)
-
-**C1. Which cards get the six new finishes (Hex, Etched, Ice, Gold leaf, Reverse, Prism)? (you said later)** · Decide · Cards · asked 2026-10-08
-- Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige? Owner (10-23 00:10): "- later. Pack foil chances - evaluate also. Should be rare." Stays open for later; the pack foil chances are to be evaluated in package RW3 and kept rare. Built (RW3, the pack-foil part): a card comes out foil 1% (Hedgerow Pouch), 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster), faction packs 1%; was 4 / 8 / 12 / 10 / 4%, and every Highcrest Case had one foil guaranteed (about 1.3 foils a Case; now 0.16). An Advanced pack's first five cards keep 10x (10 / 15 / 20%). Call RW3-4.
-- **Default:** Later (pack foils are already rare, RW3-4)
-
-**G2. Siding with Otters or Hummingbirds: approve the proposal as written, or answer its questions (a)-(f) first?** · Decide · Lore · asked 2026-10-08
-- (Rewritten 10-23 at the owner's request, all inside this item; the older siding-proposal-2026-10-08.md is source material, to move into the hub later.) What it is: the player is a traveller both peoples want on their side: the Otters (Rivergate Legion) and the Hummingbirds (Sunfeather Tribes). A hidden Standing number from -100 (Otters) to +100 (Hummingbirds) moves with the player's choices, and the band it sits in decides which rewards, titles, shops and story branches open. Where it lives today: the side picked in the tutorial is stored as `bramblewood_arena_faction` (saveFactionChoice / loadFactionChoice, arena_app.js) and today only sets the starter deck, the voice in warnings and the faction pack; cards carry `faction` (14 Hummingbird cards, 27 base) and `source.side` ('tribes', 'shared'); the faction reward track (noteFactionReceived) counts faction-pack pulls. Dialogue choices already exist (playDialogue with onDone replies, for example the Old Well in visitOldWell). Nothing reads a Standing yet. What siding changes for the player: (1) Reward cards: some skirmishes offer two reward cards, one per side; the player gets the one matching their band, Neutral gets a third (road-folk, dog or cat card). (2) Side shops: a Legion Quartermaster and a Tribe Trader on later maps, different stock. (3) Titles and character looks (Legion Outrider, Friend of the Tribes, Wanderer of Both Banks). (4) Materia leaning: Otter crafting nudges Shield/Formation, Hummingbird crafting Flight/Bond. (5) Story: dialogue warms or cools by band; from Map 6 a key skirmish plays differently by band; a Neutral track keeps the peace through a series of tests, hardest, with unique rewards. (6) It never locks a people's cards away: off-side cards stay in packs and the Market, only the story rewards differ; and nobody is punished for the tutorial pick. What moves Standing: dialogue choices +/-2 to 8 (no number shown on the button), first clears of one people's skirmishes +/-1 (fighting Otters drifts you to the Hummingbirds and the reverse), side quests +/-5 to 15 (a few per map, often exclusive), neutral acts (helping dogs, cats, road-folk, the Traveller) pull toward 0. Drift is slow: 2-3 maps of consistent choices to a friend band, most of the campaign to be Sworn. Five bands: Sworn Otter (<= -60), Otter friend (-59 to -20), Neutral (-19 to 19), Sunfeather friend (20 to 59), Sworn Sunfeather (>= 60); a two-coloured banner on Profile and the Conquest map shows the band. Build in four steps: (1) the Standing store (saved with the account), the banner and hidden weights on dialogue choices, Old Well first; (2) two-sided reward cards on 3-4 skirmishes of Maps 1-3, picked in the skirmish editor; (3) two side quests per map for Maps 1-3; (4) side shops from Map 4, titles, the Map 6 fork. Open questions for you: (a) start at +/-10 from the tutorial pick, or everyone at 0? (b) is the meter shown as a number or only as the band name? (c) is Neutral a full third path with its own ending, or only a resting place? (d) should the two-sided rewards and the side quests wait until the factions are symmetric (RP4), so neither side is the stronger pick? (e) how does siding interact with the Hummingbird gate (the faction pack) and the 0-2 faction pack? (f) can the player reset Standing, or does drift back by effort only? Options stay: Approve as written, Change parts, Not yet. Waiting for your pass over (a)-(f).
-  - Approve as written
-  - Change parts
-  - Not yet
 
 **S3. Leaked-password protection needs Supabase Pro: upgrade to turn it on, or skip it?** · Do · Security · asked 2026-10-08
 - Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
@@ -372,6 +77,122 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 
 ## Decided
 
+**PL2-1. The Dungeons tab: gone for players, kept in Admin Mode** · Decide · Dungeons · asked 2026-10-25
+- Your PL1-3 answer ("Dungeons Tab is not needed for a while"), built: players never see the Dungeons tab (nor the 🗝️ key, which already needed a daily dungeon). Admin Mode (and Dev Mode) still show it, so the daily dungeons and the Spire stay testable. The Group Dungeon is the Arena's new Co-op tab and a 👥 spot on Map 3 after its last fight (the same gate as before: Map 3 won). Hide it in Admin Mode too?
+  - Kept in Admin Mode (built)
+  - Gone for everyone until the dungeons move
+- **Default:** Kept in Admin Mode (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Hide the dungeons as im thining where to place them unless admin." Kept: players never see them; Admin Mode does.
+
+**PL2-2. Where the Group Dungeon sits on the map** · Decide · Map · asked 2026-10-25
+- Your PL1-3 answer: "It'll be just a dungeon on the map". Built: a 👥 spot on Map 3 (Gannet Cliffs side of the road, beside its last fight), found once that fight is won; tapping it opens the Group Dungeon's card (Create, Solo with CPU allies, Join by code). An admin can drag it like any spot. The Arena only opens on Map 11, so the map spot is how a player reaches it before that. Another map, or a cave-looking node instead of a spot?
+  - Map 3 spot (built)
+  - Another map (say which)
+  - A dungeon node with its own look
+- **Default:** Map 3 spot (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "The multiplayer dungeon should definitely be much further ahead." and #10: "the group dungeon should be pushed later ahead, to Map 16 maybe", named after its own theme (a duo heist, castle crashers). Queued: OWN-B3.
+
+**PL2-3. XP won outside the Conquest map waits for the map** · Decide · Results · asked 2026-10-25
+- Your 00:02 "XP is for all skirmishes", built: no won fight's results show the XP bar any more (Arena, Spire, dungeon floors as well as Conquest). The XP counts at once (a level-up included); the bar fills at the top of the Conquest map the next time it is in view, after that map's own moments (each fight won since you last saw it plays its emblem, even over a chain of Next fight wins or a reload). A long Arena session therefore shows its XP only when you next open the map. Also fill it on the Arena screen when you go back there?
+  - Only on the Conquest map (built)
+  - Also on the Arena screen
+- **Default:** Only on the Conquest map (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Arena is different. I guess it shows immediately (its rewards only). The other rewards show the moment you exit a fight, regardless of which screen you go to, e.g. you refresh the page and go into the home page." Queued: OWN-R8.
+
+**PL2-4. Which card rewards flash with the rank ribbon** · Decide · Results · asked 2026-10-25
+- Your 00:02 #5, built: every card reward is a card (eggs as cards, card-form materia with ×N); two or more are one stack with a count, fanned on hover or tap. Two kinds count as won by the rank and flash with a ribbon (the rank emblem and "reward"): the top-rank rare find (once per map) and a card drop the rank unlocked. First-clear rewards and Base copies are plain. The ribbon shows the rank the fight was won at. Add first-clear cards to the flashing ones?
+  - Rare find and rank-gated drops (built)
+  - Also first-clear cards
+- **Default:** Rare find and rank-gated drops (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "The ribbon should be on the top right." Kept which rewards flash; the ribbon moves to the card's top right. Queued: OWN-R7.
+
+**PL2-5. Fire Ant Raft and Ember Tetra have no art** · Decide · Art · asked 2026-10-25
+- The "ghost art" in your 00:02 SS#1 was the Fire Ant Raft's placeholder: a card with no art shows its emoji, and it was drawn at 55%. It is drawn whole now, but the Fluent set's ant is a pale violet shape, so the card still looks unfinished. Both it (Map 5, Pack 1) and the Ember Tetra (Pack 3) need art. Queue both for the next art batch?
+  - Queue both (art workflow)
+  - Leave the placeholders
+- **Default:** Queue both (art workflow)
+- **Outcome:** Owner, 2026-10-25 17:53: "No comment on the art for now, queue for art next time." Queued for the next art batch.
+
+**PL2-6. How quiet the fight's music is under the results** · Decide · Audio · asked 2026-10-25
+- Your 00:02 #10, built: while a fight's results (or the board looked at after them) are up, the fight's theme carries on at 30% under the Victory / Defeat sting, which plays at full level; the map's theme starts only once you are back on the map and fades in over 4 s (it used to start at once, 1.5 s, as the results came up). Quieter or louder under the results, faster or slower fade-in?
+  - 30% and 4 s (built)
+  - Say the numbers
+- **Default:** 30% and 4 s (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Yes to music. the numbers are okay." 30% and 4 s kept.
+
+**EN8-11. Render's Daunt counters: what takes one off** · Decide · Battle rules · asked 2026-10-25
+- Owner 00:02 #2, built: Render N puts N Daunt counters on the enemy facing it (-1 Attack and -1 skill damage each). One falls off at each round's end, one when it swings (its action), and one each time it uses a skill (any trigger that runs an action; a swing's own On Action / On Attack are part of the swing). Cleanse takes them, one a point. Priced 0.8 a point (4-round rule; was 2 for N Attack lost for good). The older Daunt N skill (on hit: -N Attack until the end of next round) is unchanged and adds to the same -Attack. Should a passive skill (an aura, a heal at upkeep) also take a counter off, or only actions and triggered skills?
+  - Swings and triggered skills only (built)
+  - Also every passive that fires
+- **Default:** Swings and triggered skills only (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "No only falls off when it does a damage action like attacking or arrow." A Daunt counter falls off only when the unit does a damage action (a swing, an Arrow, a bolt...); not at round end, not on other skills. Queued: OWN-E5.
+
+**EN8-9. The new resource cards and their homes** · Decide · Cards · asked 2026-10-24
+- One card per new skill, pack cards in their biome's map (no faction cards), stats on the formula line: Beachcomber Sanderling (Driftwood 1, 1/7, Pebble Beach, Map 2), Beaver Feller (Felling 1, 2/10, the Morel Hollow, Map 7), Prospector Mole (Prospector 1, 3/9, Caves & Alcoves, Map 8), Salvager Hermit Crab (Salvage 1, 1/13, Coral Current, Map 10), Marmot Stonecutter (Stonecutter 1, 1/12, Eyrie Heights, Map 11), Carrion Crow (Flying, Scavenge 1, 2/5, the Briar Maze, Map 12), Hazel Coppice (Structure, Coppice 1, 0/14, the Redwood Deep, Map 13), Moonshell Snail (Magic Armor 1, 1/15, the Long Grass, Map 15). The Leafcutter Gardener's Growth (it did nothing) became On Ready: +1 Lumber (22:28 #10), 2/7. Art prompts: docs/art/en8-2026-10-24-briefs.md.
+  - Keep
+  - Move or rename some (say which)
+- **Default:** Keep
+- **Outcome:** Owner, 2026-10-25 17:53: "EN8-9 Great!" Kept.
+
+**EN8-8. The CPU's lethal guard at every level** · Decide · AI · asked 2026-10-24
+- P24-7, built: from Map 1 on (Map 0 keeps the old play), when your Ready units would swing into open columns for its bramble's Health and Shield and it can't win that round itself, the CPU plays the unit that blocks the most of it into the attacker's column (Basic, Smart and Smartest alike). And the pitch (22:28 #1 / #3): every level pitches before it plays: nothing useful -> its least valuable card; an unaffordable card in hand with 3+ cards -> a spare card. Measured on the 5-3-like deck (4 zero-cost of 20, docs/balance/en8-cpu-pitch-*.json): first play round 2.59 -> 1.54. Keep the guard at Basic too, or Smart and up only?
+  - Every level (built)
+  - Smart and Smartest only
+- **Default:** Every level (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Guardian and Rampart only works when the unit is ready." Plus intercept animations and the CPU's per-turn resource plan (OWN-E9, OWN-A2). The guard stays at every level.
+
+**EN8-7. Where Windfall blows** · Decide · Maps · asked 2026-10-24
+- LUM-1 Windfall, built as a field rule: after a Storm round (a Thunderstorm, or a strong-wind round on a windy map), both sides gain 1 Lumber at the next round's start. Placed on every fight of the windy maps up to Map 20 (Gannet Cliffs, Eyrie Heights, the Glass Dunes, Ashen Spurn, the Sundered Peak and their side maps); it is shown with the map's other field effects and can be set per fight in Edit skirmish. Keep it there, or only on chosen fights?
+  - The windy maps up to 20 (built)
+  - Only chosen fights (name them)
+- **Default:** The windy maps up to 20 (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "I like your STORM field effect. and a creatures that could use it - either those empowered by wind or empowered by electricity. IN a sandstorm, they would also similarly be empowered, but blind. Your choice on where to put windfall" Windfall stays on the windy maps; storm creatures and a Sandstorm field queued (OWN-C4).
+
+**EN8-6. Pearls: when Pearl Bed pays, and the Shellfish type** · Decide · Content · asked 2026-10-24
+- 22:28 #2, built: Pearl Bed N gives N Pearls when the card becomes Ready (a Wait 0 card: as it lands). A Pearl pays 1 Lumber or 1 Stone, only when you are short (Lumber and Stone first). Price 0.9 a point. On the Oyster Bank (Map 2, Pearl Bed 1 + Shore Up) and the Giant Clam (Map 10, Pearl Bed 1 + Shell 2), both already placed and re-fitted (0/14 -> 0/13; 5/5 kept). "Shellfish" is not a type yet: they count as Molluscs (a Shellfish node needs the taxonomy file, outside this package). Alternatives: Pearl Bed on hit, or every few turns.
+  - On Ready, once (built)
+  - On hit
+  - Every 3rd Ready turn
+- **Default:** On Ready, once (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "EN8-6 OKAY" On Ready, once.
+
+**EN8-5. Scavenge and Salvage: SK2's point counters replaced by LUM-1's plain rules** · Decide · Content · asked 2026-10-24
+- SK2 (10-19) already had Scavenge N, M (points from deaths within 1 column, M points -> 1 Lumber) and Salvage N, M (the same for Structures -> Stone), on no card. LUM-1's Scavenger and Salvage are simpler, so the two names now carry them: Scavenge N: another of your units dies -> +N Lumber; Salvage N: another of your Structures dies -> +2N Lumber. Both always on (Waiting too). Prices 1.5 and 0.75 a point. One card each: Carrion Crow (Map 12), Salvager Hermit Crab (Map 10).
+  - Keep the plain rules (built)
+  - Bring back the point counters
+- **Default:** Keep the plain rules (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "OKAY Plain rules are easier."
+
+**EN8-4. Fodder before Map 20, and the one "?" skill** · Decide · Cards · asked 2026-10-24
+- 21:20 #7, built: Stem, its braces and Chrysalis are Evomax skills (the editor offers them on Evomax cards only, like Evolute / Alpha / Omega). Fodder (EV-6's Stem from Level 1) came off the 20 baby-like cards first obtainable before Map 20 (Otter Kit, Duckling, Fox Kit, Caiman Hatchling, Bear Cub ...) and the Speckled Egg lost its Stem; the three babies first obtainable on Map 20+ (Fire Drake Hatchling, Harp Seal Pup, Duckling Squadron) keep it, as EV-6 said. "One of the fodder skills can be a ? for now": the Cocoon's Chrysalis reads "❓ ?" ("Something stirs inside. Its skill wakes on the Evomax maps") on its face and in its detail; the rule is still there (no evolute exists before Map 20). Which card(s) should carry the "?"?
+  - The Cocoon's Chrysalis (built)
+  - Every baby-like card shows a "?" Fodder slot
+  - None: just remove
+- **Default:** The Cocoon's Chrysalis (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Fodder, stem, chrysalis should all say ?. Then at maybe 5 maps before 20, you can see the name, but not the effect. so Chrysalis - ?" Queued: OWN-E10.
+
+**EN8-3. A bramble's healing heals an ally; the Wildpath perks that mend the bramble** · Decide · Battle rules · asked 2026-10-24
+- P24-17, built: a bramble's healing passive (the maps' castleRegen N: 8 brambles) now heals ONE random wounded ally unit N each round, never a Structure and never the bramble ("Heal 1 random ally 1" as the default meaning). Heals never touch a Structure; Repair N and Rebuild are what restore Structures and brambles. Left as they were: the Wildpath perks Sap Mending and Heartwood, which put 1 Health back on your own bramble (they read as repairs). Keep the perks, or turn them into ally heals too?
+  - Keep the perks as repairs (built)
+  - Make them heal an ally too
+- **Default:** Keep the perks as repairs (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "OKAY but to be specific, it MUST say \"Repair Bramble\"" Perks kept as repairs; their text reads "Repair Bramble". Queued: OWN-E11.
+
+**EN8-2. Armor is physical only; Magic Armor N is the other half** · Decide · Battle rules · asked 2026-10-24
+- P24-16, built: Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) takes only from physical hits; magic and every element (fire / heat, frost, shock, poison, acid, water, decay) go past it. "Magic armor" did not exist as a skill (Supreme halves non-magic, Resist halves one element, Spellward redirects skills), so a new skill, Magic Armor N: N off each magic or elemental swing, shot or skill, never a physical one, never a status tick; Supreme crushes it. Priced 0.4 a point (Armor 1.5 x about a quarter of the hits being magic or elemental). One card: the Moonshell Snail (Map 15). Keep the name and price?
+  - Keep (built)
+  - Another name (say it)
+  - Another price
+- **Default:** Keep (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "All 'bolts' count as magic right now. Phyiscal elemental attacks need to be retroactively renamed. Elemental damage type counts as physical. ... So magic will be its own thing for now, in a way its own element, in an arcane way" Changes the built rule: elements are physical (Armor applies), only magic passes Armor; Magic Armor stops magic only. Queued: OWN-E3.
+
+**EN8-1. Guardian vs Thorns: which way round** · Decide · Battle rules · asked 2026-10-24
+- P24-15 ("Guardians must not intercept Thorns"), built: a Guardian never steps in for an ally that has Thorns (printed, or a Durian's): the swing lands on the Thorns unit and its Thorns answer the attacker. (Thorns damage itself was never redirected: it goes straight to the attacker, and no Guardian beside the attacker takes it.) The other reading: the Guardian still steps in, and the guarded unit's Thorns answer anyway.
+  - No Guardian for a Thorns unit (built)
+  - The Guardian steps in, the Thorns still answer
+- **Default:** No Guardian for a Thorns unit (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Yes thorns and similar can't be redirected - it doesnt make sense. Counter-attack CAN be redirected however." Kept; Counter-attack becomes redirectable (OWN-E4).
+
 **LUM-1. Stone/Metal versions of the lumber gatherers, and other ways to make Lumber: which to build?** · Decide · Content · asked 2026-10-24 · decided 2026-10-24
 - Owner 21:41: 'Lumberjack - what are the stone and metal variants - simple 2x might be too strong. But what other ways to generate lumber?' Proposal: Stone and Metal are scarcer, so their gatherers are slower, not stronger: Stonecutter 'On Ready: +1 Stone every 2nd round'; Prospector 'On Kill: +1 Metal'; Smelter converts 2 Stone -> 1 Metal at round end. Other Lumber sources: Felling (On Kill: +1 Lumber), Salvage (when one of your Structures dies: +2 Lumber), Windfall field (after a Storm round, both sides +1 Lumber), Scavenger (when an ally dies: +1 Lumber), Coppice (a tree Structure that gives +1 Lumber each round while undamaged), Driftwood tide (at Ebb, +1 Lumber on beach maps).
   - Build all
@@ -379,6 +200,22 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
   - Not yet
 - **Default:** Pick some
 - **Outcome:** Owner (22:28 #2): "We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall, driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood." Build all (not the proposal's Smelter, which SK2b already has). Built in package EN8 (calls EN8-5 .. EN8-7, EN8-9).
+
+**PRO2-1. PRO / BPRO rarity cap: the map's rarest fight, or a plain skirmish?** · Decide · Skirmishes · asked 2026-10-24
+- Your 21:20 #11: "run the PRO ones but with respect to the rarity and cards of that map". Built: a PRO or BPRO deck may hold the rarest card any of the map's fights may hold. On the main road that is the elite's step: Map 0 Common, Maps 1-3 Uncommon. Map 1's skirmishes are Common, and only its elite (1-5) is Uncommon. A PRO fight is a skirmish, so the stricter reading is a plain skirmish's cap: Common on Maps 0-1, Uncommon from Map 2. That changes only Map 1 among Maps 0-3. Switch: --rarity-cap skirmish on both tools, then re-run.
+  - The map's rarest fight (built)
+  - A plain skirmish's cap
+  - One step above the map's rarest fight (PRO is meant to be hard)
+- **Default:** The map's rarest fight (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "PRO: OKAY. your decision. If it's over-rare'd then move it off." The map's rarest fight, as built.
+
+**PRO2-2. Alley Cat's home: the Gatorback Swamp (Map 5), or Clovermead?** · Decide · Progression · asked 2026-10-24
+- Your 21:20 #10: "Why is alley cat in map 0's list of cards too!?" RW5 (10-23) gave this map-less Rare a home by theme, the village edge of Map 0, and Map 0's fights are Common only. No other map 0-40 lists a card over its fights' cap. Built: it moved to the Gatorback Swamp (Map 5, the swamp's trading post, like the Buzzed Chipmunk). Map 5 reveals Rare and its boss may hold one. It stays a Pack 1 card (Maps 0-6) and first obtainable on Map 5, so its 1/1 budget line is unchanged. The better fit by theme is Clovermead, Thistlewood's village side map (house cat, farm dog, miller), but that opens at Map 12. It would make the Alley Cat a Pack 2 card and re-price it for Map 12.
+  - Gatorback Swamp, Pack 1 (built)
+  - Clovermead (village side map), Pack 2, re-priced
+  - Another Maps 5-6 home
+- **Default:** Gatorback Swamp, Pack 1 (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "you did, so k." Alley Cat stays on the Gatorback Swamp.
 
 **PL1-1. Where the XP of a Conquest fight shows (P24-3)** · Decide · Results · asked 2026-10-24
 - Your note: "Show the XP reward only when leaving the skirmish for the conquest map." Built: a Conquest fight's results no longer draw the XP bar; the XP still counts when the fight is won (no toast while the results are up), and the bar fills at the top of the map once you are back (after a new map's veil and title, before the packs). Other fights (Arena, raids, the Spire's own results) keep the bar on their results.
@@ -425,6 +262,231 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
   - Show them on phones too (under the buttons)
 - **Default:** As built (on hover)
 - **Outcome:** Owner, 2026-10-25 00:02: "OKAY"
+
+**N221-1. Pack tiers after Map 20: Pack 4 Maps 21-27, Pack 5 28-34, Pack 6 35-41** · Decide · Progression · asked 2026-10-24
+- Derived from your Pack 1-3 pattern of about 7 maps each (PP-1: 0-6 / 7-13 / 14-20). Tier 4 already exists in the data (every pack card of Maps 21-24 and the Ice Hollow / Old Bramble side maps carries it; no shop pack sells it yet, so those cards come from the card drop and the base track). Tiers 5 and 6 are written into the proposal only; Pack 6 runs past Map 40, where you build one map at a time. docs/balance/n221-divvy-2026-10-24.md.
+  - Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
+  - Other ranges (say which)
+  - Packs 4-6 as 21-30 / 31-40 / 41-50
+- **Default:** Pack 4 21-27, Pack 5 28-34, Pack 6 35-41 (proposed)
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-2. Eight held cards would bring a new skill onto Maps 21-40** · Decide · Cards · asked 2026-10-24
+- Your 10-21 rule: Maps 21-40 teach no new skill. These cards carry a skill no card a player can get on Maps 0-20 has: the Rainforest Floor (Map 25) War-Drum Mandrill (Durian), Aye-aye Prowler (Sun-shy), Velvet Worm (Ichor), Slow Loris (Feeble), Chilli Parrot (Chilli); Clinging Leech (Parasite, proposed the Carrion Moors, Map 27); Glintsnatch Magpie (Disarm, the Thornwold, Map 32); Armory (Weapon Master, Goldfeather Keep, Map 24: not applied for this reason). The five rainforest cards were held for Map 25 by your RP5 (later and more specific), so the default keeps them there; the other three wait in the proposal. Alternatives: Maps 0-20 homes (the Leech to the Mire off Map 6, the Magpie to the Briar Maze, Map 12, the Armory with the Forge, Map 11), Pack Secrets I, or Map 40+ where new skills come again.
+  - Place all eight as proposed (each one card, met on that map's enemies first)
+  - Rainforest five on Map 25; the Leech, Magpie and Armory to Maps 0-20 homes
+  - None on 21-40: they wait for Map 40+ or Pack Secrets I
+- **Default:** Place all eight as proposed (each one card, met on that map's enemies first)
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-3. The Petrified Tree is a Pack 4 card of the Rimefire Caldera (built)** · Decide · Cards · asked 2026-10-24
+- The only waiting card that fits a map that exists without a new skill or an era hold. Petrified forests form under volcanic ash, and the Caldera is the volcano of Maps 21-24; a Stone maker (Gain 1 Stone a turn) beside its fire and ice. Applied: source pack tier 4, map m22, in the Caldera's pool (12 -> 13); its obtain map is 22 (canonical/card-obtain-maps.json), which leaves it under its budget (0/37: 2A+H+S 40 is 98% of N at Map 0, 89% of N 45.17 at Map 22; not re-fitted). Not a skirmish reward: the Caldera already has 10+ new cards and its three exclusives. The other choice was the Quiet Summit (pool 9 -> 10), where it would be the 6th new card and DV3 would ask for a third skirmish exclusive (a deck change).
+  - Keep it on the Rimefire Caldera (built)
+  - Move it to the Quiet Summit (and add a third Summit exclusive)
+  - Hold it again
+- **Default:** Keep it on the Rimefire Caldera (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-4. The Rimefire Caldera (13) and the Goldfeather Siege (12) are over the 6-10 pool guide** · Decide · Maps · asked 2026-10-24
+- They grew in earlier packages (the Weathervane Swift and Ashwing Ptarmigan on 22, the Marching Elephant and Werebadger on 23) and now the Petrified Tree. Trimming them would move those cards to maps that don't exist yet (proposed: the Swift to Stormcoast 28, the Ptarmigan to the Mammoth Steppe 33, the Marching Elephant to the Last Savanna 39, the Werebadger to the Thornwold 32), so they could not be had until then. Most Maps 0-20 pools are over 10 too since RW5.
+  - Keep them (nothing moved)
+  - Trim as proposed (those cards wait for their maps)
+  - Trim only the ones that fight nowhere (Swift, Ptarmigan)
+- **Default:** Keep them (nothing moved)
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-5. Maps 25-40: the proposal table** · Decide · Maps · asked 2026-10-24
+- Sixteen map ideas, each with a pool of 6-10 (held cards, a few carried from earlier maps, unsorted enemy-only cards, new ideas from the eras rule), two skirmish-base cards, its pack tier and the road's caps: 25 the Rainforest Floor, 26 the Ant Empire, 27 the Carrion Moors, 28 Stormcoast, 29 the Echo Caverns, 30 the Old Growth (Evomax opens), 31 the Hollow Farmsteads (side map: the Cabbage Patch, your Killer Veggies), 32 the Thornwold (the Greenhood Band; the Thistle Baron returns), 33 the Mammoth Steppe, 34 the Tar Pits, 35 the Drowned Reef, 36 the Black Bayou, 37 the Lost Isle, 38 the Fossil Badlands, 39 the Last Savanna, 40 the Grove of the Dragon-Turtle (a seed only: from 40 you build one map at a time). Nothing is built; each map is made concrete only after your yes. docs/balance/n221-divvy-2026-10-24.md.
+  - Use it as the working plan; build in order after a yes per map
+  - Change some maps (say which)
+  - Start over from your own list
+- **Default:** Use it as the working plan; build in order after a yes per map
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-6. If CONTENT2-3 goes "other sources": the Gnawed to the Carrion Moors, the Tidefolk to Stormcoast** · Decide · Cards · asked 2026-10-24
+- CONTENT2-3 is open (default: the Sable Swampmire, Glass Dunes, Kelp Mangroves and Coral Current, Maps 6-18). This pass did not place the seven. If you prefer later homes: the Gnawed (Bog Shrew, Mire Rat, Hollow-belly Rat, Gnawed Matriarch as a skirmish-base card) in the Carrion Moors (27, a moor of bones; the Black Bayou 36 is the second choice) and the Tidefolk (Kelpborn Otter, Conger Eel, Selkie Wavebinder as a skirmish-base card) on Stormcoast (28, seals in a gale). Note: the Hollow-belly Rat's Devour is Devilry's keyword and not taught on Maps 0-20.
+  - Follow CONTENT2-3's answer (no change here)
+  - The Carrion Moors and Stormcoast, as above
+- **Default:** Follow CONTENT2-3's answer (no change here)
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**N221-7. Homes outside the maps: Pack Secrets I, the faction pool, the Blacksmith, a quest** · Decide · Cards · asked 2026-10-24
+- Not applied (each needs game code or a pool that isn't built). Pack Secrets I (empty today, progression plan item 12): MissingNo. (a hidden glitch) and the Glowing Gecko (Irradiated, like the Mystery Booster's Irradiated Axolotl and Glow Wyrm; the map recommendations' Map 33 would bring Irradiated as a new skill). The faction pool: the Anvilwhisker Otter (Otter side; it needs a Stone engine) and the Greyplume Fledgling (Hummingbird side, or Base). The Blacksmith: the Crowbar (equipment). A quest-only special: the Thistle Baron's return on the Thornwold (Map 32; RP5 held it for Map 21+). The eight spells stay held while spells are shelved (thematic homes listed in the doc); the Devilry (16) and Ecclesia (15) cards stay held for Maps 66 / 77.
+  - As proposed
+  - Change some (say which)
+- **Default:** As proposed
+- **Outcome:** Owner, 2026-10-25 17:53: "N221-1: OKAY ALL Dont need to purposely place cards we cant place right now. we can leave them be." The proposed defaults; cards with no home yet stay held.
+
+**CONTENT2-1. Lumber gatherers per biome: placements and strengths** · Decide · Cards · asked 2026-10-24
+- Your 13:12 #8 ("every biome should have its own lumber gatherers"), built: one per main biome of Maps 0-20 that had none in its pools, each a pack card of that map, priced by the formula. Driftwood Crab (Pebble Beach, Map 2, Common 2/9, On Ready +1 Lumber), Gannet Nestweaver (Gannet Cliffs, Map 3, Common 1/7, Flying, On Play +1), Nutria Reedcutter (Gatorback Swamp, Map 5, Common 2/12, Wait 2, On Ready +2), Redwood Woodpecker (Redwood Deep, Map 13, Uncommon 2/12, Milling 1: +1 every turn while Ready), Termite Forager (Savanna Reaches, Map 14, Common 2/6, Swarm, On Ready +1), Cone-cutter Squirrel (Pinewood Taiga, Map 16, Common 3/9, On Play +2), Talus Pika (Wolfsbane Tundra, Map 17, Common 2/9, On Ready +1), Dune Packrat (Glass Dunes, Map 18, Uncommon 2/14, On Ready +3). Three existing gatherers that sat in no pool joined their map: Land Tiller (Long Grass, Map 15), Coral Polyp Colony (Coral Current, Map 10), Rodent King (Briar Maze, Map 12). Still without one: the Kelp Mangroves (Map 9) and the caves and volcano maps, which get the Stone cards instead (CONTENT2-2). Map pools grow by 1-2; the Pinewood Taiga and Ashen Spurn go from 10 to 11 (the divvy's 6-10 guide). The Driftwood Crab fights in 2-3 (Hermit Row), the Gannet Nestweaver in 3-1 and 3-3.
+  - Keep them (built)
+  - Move or cut some (say which)
+  - Fewer: only the owner's four (crab, gannet, woodpecker, termite)
+- **Default:** Keep them (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**CONTENT2-2. The Stone loop: Quarry (1 Lumber -> 1 Stone a turn) or a 2 -> 1 converter?** · Decide · Economy · asked 2026-10-24
+- Your 13:12 #8 ("the stone making loop (lumber -> stone or just stone+)"), built with the engine's existing Quarry skill (SK2b, 2026-10-19), so no engine change: the Badger Stonemason (Caves & Alcoves, Map 8, Uncommon 1/15, Quarry 1: each turn while Ready, pay 1 Lumber, gain 1 Stone; can't pay, nothing happens) beside two Stone gatherers, the Gravel Mole (Map 8, Common 1/12, On Ready +1 Stone) and the Pumice Beetle (Ashen Spurn, Map 19, Uncommon 3/12, On Play +2 Stone). Caves & Alcoves is the Stone map: its Quarry Mole (Bedrock: Armor while you hold 2+ Stone) and Dynamite Packrat (costs 1 Stone) are there to spend it. Stone counts 2 points to Lumber's 1 in the game's resource worth, so Quarry's 1 : 1 is a profit, which is why a card with it pays 2.5 budget points. The alternative you sketched, "at round end spend 2 Lumber -> 1 Stone", is a new skill (a small engine change) and a loss in points; worth it only if Stone should be scarce.
+  - Quarry 1 : 1, as built
+  - A 2 Lumber -> 1 Stone round-end converter (new skill)
+  - Just Stone+ (gatherers only, no converter)
+- **Default:** Quarry 1 : 1, as built
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**CONTENT2-3. The Gnawed and the Tidefolk: seven new cards, where they come from** · Decide · Cards · asked 2026-10-24
+- The lore bible's thin sub-factions (the Gnawed had no cards, the Tidefolk 3), built from its lines (Gnawed: rats and shrews, the Sable Swampmire and the Glass Dunes, Devour / Sap / Pack; Tidefolk: otters who never came ashore, eels, seals, Coral Current and the Kelp Mangroves, Tide / Wave / Fork), priced by the formula, placeholder art (the emoji; prompts in docs/art/content2-2026-10-24-briefs.md), awaiting a source. Proposed: Bog Shrew (Common 3/4, Sap) and Mire Rat (Common 3/8, Pack 2) in the Sable Swampmire's Pack 1 pool (Map 6); Hollow-belly Rat (Uncommon 2/10, Devour +2/+2) in the Glass Dunes' Pack 3 pool (Map 18); Gnawed Matriarch (Rare 4/15, Pack 2 + Pack Leader) a Glass Dunes skirmish reward; Kelpborn Otter (Common 2/5, Tide) in the Kelp Mangroves' Pack 2 pool (Map 9); Conger Eel (Uncommon 3/6, Tide + Fork) in Coral Current's Pack 2 pool (Map 10); Selkie Wavebinder (Rare 3/13, Tide + Wave) a Coral Current skirmish reward or the faction pool's shared side. Note: Pack and Pack Leader are priced 0 by measurement (skill-costs.json), so the two Pack cards carry full stats.
+  - Place them as proposed
+  - Other sources (say which)
+  - Hold them for the sub-faction packs
+- **Default:** Place them as proposed
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**CONTENT2-4. Unlocks on uncharted maps: keep them there or pull them onto Maps 21-24?** · Decide · Progression · asked 2026-10-24
+- The map pools stop at Map 24. These unlocks sit on maps that don't exist yet and show "Unlocks beyond the charted maps": Forge tier 4 (Dragonfire, Lv 9, Legendary tempering) at Map 26 and tier 5 (Heartfire, Lv 10, Ancient) at Map 31, with the Lv 9 / 10 gates; Strange Materia x2 from Map 25's boss and x3 from Map 30's; Nests 6 and 7 at Maps 25 and 30; dungeon slot 3 at Map 40 (and, same kind, deck slots 6 / 7 at Maps 27 / 33, the Flea Market at 31, the 4x / 5x speeds at 40 / 60). Not moved, because each sits on a rule of yours: a nest every 5 maps (10-16); each Forge tier on the map its old level gate used, its Strange Materia from the boss of the map before; and Lv 9 / 10 on Maps 22 / 24 would let a grinding player sit 4-5 levels over BAL2's enemy schedule (Lv 5 at Map 20, Lv 6 at Map 30), while the Legendary / Ancient tempering they open has no road card before Map 40. Dungeon slot 3 has no dungeon to open. N22-1 (queued) charts Maps 21-40, and they open where they are. If you want them reachable now, the proposal: Forge tier 4 and Lv 9 at Map 22 (the Rimefire Caldera: dragonfire), Strange Materia x2 from Map 21's ender; tier 5 and Lv 10 at Map 24 (Goldfeather Keep, the last charted map), x3 from Map 23's ender (Marshal Tuskwell); Nests 6 / 7 at Maps 22 / 24; dungeon slot 3 stays until a third dungeon exists.
+  - Keep them where they are (nothing moved)
+  - Move them as proposed (Maps 21-24)
+  - Move only the nests and Strange Materia
+- **Default:** Keep them where they are (nothing moved)
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**CONTENT2-5. Earthworm, the starter fish, Meadow Frog and the Traveller lost their skills in a fold, not on purpose** · Decide · Cards · asked 2026-10-24
+- The 10-16 list ("Earthworm has lost its Regen; Silver Minnow, Pond Trout and River Carp need Tide; Meadow Frog should be Rainrunner; the Wandering Traveller lost its Lumber trigger"). Git: the skills were there until 2026-10-15 (Earthworm Regen 1; the three fish and Meadow Frog Swimmer, the old Tide; the Traveller On Play draw 1 and a once-only On Ready +1 Lumber). The 10-15 fold of your 60 published card edits (005f3ce8) brought them in empty, as that era's editor saved them; a branch that still had them was merged over by the fold (13fab486), and no later package restored them or recorded a reason (CHANGELOG has none). Meadow Frog never had Rainrunner (the skill came later). Nothing changed here. Today they are vanilla starters / Map 1 cards, which matches the plain-rewards rule for Maps 0-1 (PLAIN_REWARDS_UPTO_MAP) but not the 10-16 list.
+  - Keep them vanilla
+  - Restore the 10-16 list (re-fit by the formula)
+  - Restore some (say which)
+- **Default:** Keep them vanilla
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**CONTENT2-6. Sunken Hollow's fight names still promise whales and a kraken** · Decide · Maps · asked 2026-10-24
+- N21-2 (cute Maps 0-5): the theme pass took the Kraken Spawnling, Humpback and every whale out of Maps 1-4, so Map 4's decks are turtles, voles, muskrats and an old sturgeon, but its fights are still called Reef Skirmishers, Cetacean Pod ("They surface in formation") and The Kraken's Maw. Proposal (not built; the names are translated texts): 4-3 Cetacean Pod -> Turtle Pod, 4-4 The Kraken's Maw -> The Snapping Deep. The boss, The Drowned Colossus ("Every spawnling in the Hollow answers to one, much older, shape"), already fits its Old Sturgeon.
+  - Rename as proposed
+  - Other names (say which)
+  - Keep the names
+- **Default:** Rename as proposed
+- **Outcome:** Owner, 2026-10-25 17:53: "CONTENT2: Yes, but we can reuse lumber gatherers. ... since lumber is such a key mechanic - more lumber mechanics, more draw card mechanics. Same for the rest. OKAY." The proposals and built defaults stand; more lumber and draw mechanics queued (OWN-C6).
+
+**H1-a. Taking a gem out of a socket: does the gem come back?** · Decide · Forge · asked 2026-10-24
+- Your H1 ("Maybe all uniques and above are also liable for materia (gem) socketing - but only 1. Costs to apply, costs to remove."), built as the Forge's 💎 Socket tab (it replaces Enchant): every copy of a Unique or rarer creature has one gem socket. Setting a Materia gem costs Dust + Maple Leaves and one crystal; taking it out costs Dust + Maple Leaves. Built: the gem comes back to your Materia when you take it out (the friendlier default; one switch, SOCKET_REMOVE_RETURNS, to make it break instead). Keep it, or should taking it out destroy the gem?
+  - The gem comes back (built)
+  - The gem breaks when taken out
+- **Default:** The gem comes back (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "H1 - just do assumptions for now. Yes gem comes back after taking it out." Plus GEM fusion and a Socket N skill (OWN-E14).
+
+**H1-b. Gem socket prices (placeholders)** · Decide · Forge · asked 2026-10-24
+- Placeholder prices per rank, in canonical/upgrade-costs.json materiaSocket and the hub's 💰 Upgrade costs tab (group Gem sockets): set a gem / take it out, Dust · Maple Leaves: Unique 150 · 300 / 100 · 200; Legendary 250 · 500 / 150 · 300; Mythic 400 · 800 / 250 · 500; Ancient 600 · 1,200 / 350 · 700; Divine 900 · 1,800 / 500 · 1,000; Void 1,200 · 2,400 / 700 · 1,400; Daemonic 1,600 · 3,200 / 900 · 1,800 (a crystal itself is 125 Dust at the bench). Edit them in the hub tab, or say the rule you want (for example a share of the card's level road).
+  - Keep the placeholders
+  - Edit in the hub tab
+  - Another rule (say which)
+- **Default:** Keep the placeholders
+- **Outcome:** Owner, 2026-10-25 17:53: "just do assumptions for now." Placeholders kept.
+
+**H1-c. Which cards have a socket, and Heroes** · Decide · Forge · asked 2026-10-24
+- Built: creatures only (Materia, equipment and spell cards have none), of rank Unique and above; a flagged rarity counts as its rank (Quest-Unique as Unique, Dev-Legendary and Event-Legendary as Legendary, Dev-Ancient as Ancient). Your Hero card has no socket yet (the 10-06 Hero socketing plan is separate). The gem effects are the old Enchant ones, unchanged: Ember +1 Attack (its hits scorch), Tide +2 Health, Grove +1/+1, Stone +3 Health; a gem is a progression bonus outside the card's printed budget. OK, or should Heroes (or equipment) get a socket too?
+  - OK
+  - Heroes get a socket too
+  - Change (say what)
+- **Default:** OK
+- **Outcome:** Owner, 2026-10-25 17:53: "just do assumptions for now." As built.
+
+**BAL3-2. The fights deck moves can't reach (87 too easy, 12 too hard of 179)** · Decide · Balance · asked 2026-10-24
+- BAL3 retuned Maps 0-24 and the Pale Desert by the agreed rules only (deck moves inside each map's pool and theme, the copy ladder, 5-7 different cards, leaders kept, enemy level by the schedule, no new Shield): green 48 -> 80 of 179 (docs/balance/bal3-road-2026-10-24.json, -table-....md), the Pale Desert 0 -> 4 of 9. What is left is outside the levers: Gannet Cliffs (Map 3), Gatorback Swamp (5), the Redwood Deep (13), the Glass Dunes (18, every fight 100%), the Goldfeather Siege (23) and five Pale Desert fights stay at 90-100% because no card of their pool makes the deck harder; Sunken Hollow's 4-1 / 4-2 stay at about 20% (target 80-90) because the reference deck there walls on its turtles. The schedule's whole levels can't fine-tune a fight either (DF3-4's five fights were done by decks: 11-4 67 -> 76% green; 11-2 75, 11-7 57, 14-5 60, 14-6 52 still under).
+  - Wait for your play-through (DF-1b)
+  - Let those fights take themed cards from one map ahead (outside the map's pool)
+  - Allow a Shield over the rule on those fights only
+- **Default:** Wait for your play-through (DF-1b)
+- **Outcome:** Owner, 2026-10-25 17:53: "Noted ill try." Waits for the owner's play-through.
+
+**BAL3-3. Alley Cat and Rock-pool Starfish are 1/1 on their formula line** · Decide · Cards · asked 2026-10-24
+- BAL2-5 built: the ten held cards took their formula line (tools/refit_pass_2026_10_21.js). Two land on 1/1 with a third of their budget unused, because their skills cost more than any bigger line of their shape allows: Alley Cat (Rare, Bleed 1 + Twin Strike, 1/8 -> 1/1, 67% of N) and Rock-pool Starfish (Common, Regen 2 + Tide, 2/2 -> 1/1, 66%). The others: Honey Badger Fury 1/6, Chipmunk Hoarder 2/6, Chipmunk Cavalry 2/2, Pyroclast Wyrm 3/12, Plague Gnat Cloud 2/2, Sunfeather Scout 1/4, Lone Grey Wolf 2/9, Muskrat Lodgekeeper 1/5.
+  - Keep the formula lines (built)
+  - Trim a skill on those two so they fit a bigger line (Alley Cat without Twin Strike, the Starfish Regen 1)
+- **Default:** Keep the formula lines (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Noted." Formula lines kept.
+
+**EN7-1. Dive in two turns: what it is safe from while aloft or under** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #3 ("like pokemon"), built: once a fight, at its swing, a diver with an enemy unit in its row rises (a Flyer; a Sprinter leaps the same way) or goes under (a Tide unit without wings) instead of swinging. Until its next swing nothing can find or hit it (swings, shots, bolts, skills aimed at a unit; a Spotter neither) and it can't step in as a Guardian. Its next swing strikes the weakest enemy of its row past Taunt (a Guardian beside the target still steps in) for Attack + N, and it is Exposed that round (no Flying dodge, no Tide evade). Area damage that names no target (a field's hail, a Nova, the tide-spout) and its own Poison / Bleed ticks still reach it, as in the games you described (Earthquake hits Dig in some, not Fly). A diver that can't strike in the next round (frozen, stunned) comes down at that round's end without striking. Keep area damage reaching it, or make it safe from everything?
+  - Area damage still reaches it (built)
+  - Safe from everything while aloft / under
+- **Default:** Area damage still reaches it (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "don't build this first." Kept as built (area damage still reaches a diver); no further work now.
+
+**EN7-2. Parasite x Bloom with no free enemy beside the host** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #2: a Parasite with Bloom puts its bloom copy (+1/+1, its printed Wait) onto an enemy unit beside its host (left, right, in front, behind) that has no parasite; not a Structure or a cage; several: one at random. A Parasite played as a plain unit hooks its copy onto an enemy facing it or one column beside that. With no such unit, built: it waits and tries again each round (as Bloom waits for a free slot, BL-2). Or: no copy at all that fight?
+  - It waits (built)
+  - No copy that fight
+- **Default:** It waits (built)
+- **Outcome:** Owner, 2026-10-25 17:53: "Then it fails - it gets the +1/+1 instead. it visible tries to do the meiosis animation of splitting but turns slightly reddish then fails, getting the bonus instead. Bloom can only start 'testing' when the unit is ready." Queued: OWN-E6.
+
+**EN7-3. Poison / Bleed on extra hits, and "– poison" shots** · Decide · Battle rules · asked 2026-10-24
+- Your 13:12 #5 ("common sense, not too overpowered"), built: a unit's Poison N / Bleed N (with Rabid, Greater Poison, Hemorrhage, Venom Master) ride on every landed hit of its own attack damage: the swing, Frenzy's and Twin Strike's swings, Fork / Trident / Pitchfork prongs and Octolash lashes (these already did), and now Pounce and Ambush (which did not). Cleave's side damage is a spread of the swing (an area, as for Guardian): it carries none. A shot or action (Arrow, Fire Arrow, a Bolt, Missile, Deal damage, Volley, Snipe ...) carries none, unless the card says "– poison" / "– bleed" on it (card text "Arrow 2 – poison"; a box on the Arrow, Missile and Deal damage actions in the card editor, as "– bramble"); it then gives the unit's own N, at least 1. Prices (4-round rule): Pounce / Ambush on a Poison or Bleed card pay 0.33 / 0.3 x the status's price on top (no card has both today); "– poison" on a shot 0.9 x Poison's price at that N (Arrow 2 – poison on a plain unit: +2.7). OK?
+  - OK
+  - Change (say what)
+- **Default:** OK
+- **Outcome:** Owner, 2026-10-25 17:53: "Cleave and related DOES spread the status. I think arrow is okay. price = your decision." Queued: OWN-E7.
+
+**EN7-4. The two Dive cards** · Decide · Cards · asked 2026-10-24
+- Dive is re-priced for the two-turn rule by the 4-round logic: 0.75 + 0.5 N (the lost swing -1.5, a round out of reach +2, the pick +0.5, the exposure -0.25), fitted 1.25 x N^0.5 (Dive 1 1.25, Dive 2 1.77; was 0.75 a point). Given to two cards already placed: Puffin Diver (common, Flying + Tide, Map 3's 3-2 reward): Dive 2, 2/6 -> 2/5 (it goes aloft); Harbor Seal (common, Tide + Evasive, a pack card on the frost coast): Dive 2, 1/10 -> 1/9 (it goes under). No gannet or osprey card exists (The Gannet Queen is a heroic with Pounce 2; Dive would fit her too). Keep these two, add the Gannet Queen, or pick others?
+  - Keep the two
+  - Add the Gannet Queen
+  - Pick others (say which)
+- **Default:** Keep the two
+- **Outcome:** Owner, 2026-10-25 17:53: "Same as the other dive question. I think 'quick' creatures can dive as well - temporarily removing their quick." Queued: OWN-E8.
+
+**EN6-1. Hoard is taken: the hand-count skills are Full Hand N and Lean N** · Decide · Skills · asked 2026-10-24
+- Your 03:17 #1 (all approved at 12:02 #11): +N Attack per card in hand / per empty hand slot, and the foe-counting pair. "Hoard" already names the Lumber skill (+1 Attack per 2 Lumber, on the Magnate Duck), so the built names are Full Hand N, Lean N, Foe's Full Hand N and Foe's Lean N. Keep these names or rename?
+  - Keep Full Hand / Lean
+  - Rename (say the names)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-1 OKAY"
+
+**EN6-2. The new state skills' prices: default x uptime (the 4-round rule)** · Decide · Balance · asked 2026-10-24
+- Priced by logic, no robust skill test (docs/balance/en6-state-uptime-2026-10-24.json, 1500 CPU fights for the hand; every conquest fight's rules x 6 fights for the field). Plain prices: Plenty +1/+1 x 0.15 = 0.45, Scarcity +1/+0 x 0.79 = 1.58, Foe's Plenty +0/+2 x 0.05 = 0.1, Foe's Scarcity +1/+0 x 0.77 = 1.54, Heat +1/+0 x 0.6 = 1.2, Frost +0/+2 x 0.56 = 1.12, Rain +1/+1 x 0.05 = 0.15, Storm +2/+0 x 0.45 = 1.8, Fog {Evasive} 2.7, Salt Armor 1 x 0.25 = 0.38, Drought +1/+0 x 0.5 = 1.0, Season +1/+1 x 0.25 = 0.75; their braces cost the same uptime x what is in them. The field states take the midpoint of their uptime over all fights and over their home maps (a card made for the volcano plays about half its fights there): Heat 0.21 / 1.0, Frost 0.11 / 1.0, Storm 0.14 / 0.76, Drought 0.26 / 0.75, Salt 0.04 / 0.45, Fog 0.04 / 1.0, Rain 0.017 / 0.08. Full Hand 3.0 a point, Lean 7.5, Foe's Full Hand 2.4, Foe's Lean 7.5 (the hand averages 1.2 cards and 3.8 empty slots as combat starts). Hibernate N 0.95 a point, and its Attack counts only for the rounds it is awake (x 0.53). – bramble x0.9 of the shot or action. OK, or measure some with the robust skill test?
+  - OK
+  - Measure (say which)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-2: OKAY"
+
+**EN6-3. Plenty and Foe's Plenty are almost never on against the CPU** · Decide · Skills · asked 2026-10-24
+- As combat starts the CPU holds 0 cards 6% of the time, 1 card 73%, 2 cards 20%, 3+ 1.5% (it plays a card a turn and draws one), and so does a player who plays every turn. So Scarcity (1 or fewer) is on 79% of the time and Plenty (4+) only for a player who holds cards back; Foe's Plenty almost never against the CPU. Built as proposed (4+ / 1 or fewer). Lower Plenty to 3+ (or 2+), or keep?
+  - Keep 4+ / 1 or fewer
+  - Plenty at 3+
+  - Plenty at 2+, Scarcity at 0
+- **Outcome:** Owner, 2026-10-25 17:53: "if the deck has low lumber cost cards, they shouldn't be rapidly pitching. Maybe in the CPU's mind they should care about having a certain lumber amount they aspire to as they start the game (e.g. 2.1 or 1.1 etc)" Plenty kept at 4+; the CPU reserve goes into OWN-A2.
+
+**EN6-4. Seasons: which maps run the cycle?** · Decide · Map effects · asked 2026-10-24
+- Built as a field option (rules.seasons, in Edit skirmish; off by default and on no map): Spring, Summer, Autumn, Winter, 3 rounds each (a typical 12-round fight sees one year; 4 rounds left Winter at 14%), a log line and a float as the season turns. Summer counts as hot (Heat, not Hibernate), Winter as cold (Frost, Hibernate). Season (X) – {…} is in the editor and the Codex but on no card: with no map running the cycle it would never turn on. Which maps (or fights) get Seasons? Then a card gets Season (Winter) – {…}.
+  - Name the maps
+  - Leave off for now
+- **Outcome:** Owner, 2026-10-25 17:53: "Seasons should be 6 turns each. (since there are day/night)" Queued: OWN-E12.
+
+**EN6-5. Full Hand / Lean: no card yet** · Decide · Balance · asked 2026-10-24
+- At 3.0 (Full Hand) and 7.5 (Lean) a point, the commons that fit lose a quarter to a third of their stats (Dormouse 2/8 -> 1/6, Chipmunk Stockpiler 1/9 -> 1/6), so none was given one. Lean 1 is about +3.8 Attack on average. Give them to a rare or higher (say which), make them halve (+N per 2 cards), or leave them in the editor only?
+  - Leave in the editor
+  - Per 2 cards
+  - Give to a card (say which)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-5 OKAY" Left in the editor.
+
+**EN6-6. Beaver Lumberjack: On Ready, 1 Lumber (once) or every round?** · Decide · Cards · asked 2026-10-24
+- Your 12:02 #5: "That lumberjack should have something like On Ready, 1 lumber instead." Built literally: Bounty 2 off, the On Ready trigger (once, when its Wait first runs out) with Gain 1 Lumber, priced 0.9; it stays 4/4 (Bounty 2 was 5.0). The every-round Lumber income (On Ready gold, the Lodge Engineer's "1 Lumber each Ready round", 6.24) would cut it to 2/2. Keep once, or every round?
+  - Once (as built)
+  - Every round (2/2)
+- **Outcome:** Owner, 2026-10-25 17:53: "On ready. I feel like on ready is a classic. We need a named skill for this" Once, as built; a named skill for "On Ready: gain 1 Lumber" queued (OWN-E13).
+
+**EN6-7. Bounty keep list: the Chipmunk Stockpiler** · Decide · Cards · asked 2026-10-24
+- Your 12:02 #5: Bounty only where it makes sense. Removed from the Beaver Lumberjack. Kept: Raccoon Bandit, Raccoon Warlord, Trash Panda Trickster (raccoons with their loot), Riverside Peddler (a merchant), Pack Mule (carries goods), The Magnate Duck (treasure), and the Chipmunk Stockpiler (cheeks packed with a stockpile: loot to take). No magpie or mimic has Bounty. Keep the Chipmunk's Bounty?
+  - Keep
+  - Remove (it re-fits up)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-7 OKAY" Kept.
+
+**EN6-8. Hibernate as built** · Decide · Battle rules · asked 2026-10-24
+- Your 03:17 #4 ("hibernate?"): Hibernate N (plain 2) sleeps while the field is cold (Frigid, Hail, Freezing, the map's frost, Winter) or at night on a cold map (tundra, frostfire): it can't attack, shoot or fire triggers, its Taunt and Guardian are off (it can't step in or draw swings), it still blocks its column and can be hit; a hit does not wake it, its Wait does not tick, and it heals N at each round's start. It wakes when the cold ends. On the Polar Bear (Map 6, the tundra). OK?
+  - OK
+  - Change (say what)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-8 OKY" Kept.
+
+**EN6-9. Salt and Rain are rare on the maps** · Decide · Map effects · asked 2026-10-24
+- Salt (a beach or reef map while the tide is out) holds 4% of all fights' unit-rounds: those maps run the tide only in their boss and elite fights (High Tide). Rain holds 1.7%: Spring Rain is on no map; only the two Thunderstorm fights and Rainmaker cards bring it. Their cards (Horseshoe Crab, Puddle Hopper) are priced for that (0.38, 0.15). Give some beach / reef skirmishes the Tide, and some maps Spring Rain?
+  - Leave
+  - Add the Tide / Rain (say where)
+- **Outcome:** Owner, 2026-10-25 17:53: "6-9 OKAY. maybe the lotus petal map can have eternal rain." Queued: OWN-C5.
 
 **DF3-1. How hard is a challenge skirmish?** · Decide · Map effects · asked 2026-10-24
 - Your 22:23 #6 put the selfish boons on challenge skirmishes only (built in DF3: 19 of them, 1 every 2 maps from Map 5 and 1 a side map). A challenge skirmish keeps its place on the road but is aimed 10 points under that place's road-curve target (a 78% skirmish slot becomes 68%), with a band of +/- 8. It pays what it paid before (a ⚔️ Challenge pill in the fight panel, nothing more).
@@ -1386,6 +1448,15 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 - **Default:** The pace enemy curve, plus DF-3's selfish effects, plus road targets that drift down across maps (each map's first skirmish 90% on Map 1 to about 80% on Map 24), retuned against the ant and collected decks
 - **Outcome:** Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point. Map MUST absolutely contribute at 0.2* per Map. In the backend, I think you define Map as the reward source. But for Pack rewards - what source do you select? If its a Pack reward, select the first Map it appears (along the main line, not submaps). 20*0.2=4, a reasonable bonus. This may be enough to balance stronger maps and also make them appealing." Two rules for the stat budget: (1) the Map term is 0.2 per map (bramblewood-budget.js has perMap 0.1 since BF6 halved the coefficients, so it goes back to 0.2: a Map 20 card gets +4 N); (2) a pack card's map is the first main-line map it appears on, never a submap (today cardObtainMap uses the map where its pack goes on sale). New work: a balance package sets perMap 0.2, changes the pack rule in cardObtainMap, regenerates canonical/card-obtain-maps.json and re-fits the cards (docs/action-items.md, 10-23 17:34). Which climb fix goes in (the pace curve or another option) waits for his own play-through: DF-1b.
 
+**DF-1b. When your new account reaches Maps 16-24: does the road still get easier, and which climb fix goes in?** · Decide · Balance · asked 2026-10-23
+- Split from DF-1 (DC3). Owner (10-23 17:34): "Ill evaluate this when my new account progresses to that point." Measured (docs/balance/df-2026-10-23.json): the ant deck wins 64-74% of skirmishes on Maps 0-15 but 88-96% on Maps 16-24, because the player's level climbs 1 -> 8 between Maps 10 and 16 while the enemy's climbs 2 -> 3.2. DF-2 (Base cards stop at Lv 4) and DF-3 (selfish boons from Map 5) are approved and change the curve; DF-1's Map rule (0.2 per map, pack cards from their first main-line map) is recorded on DF-1. Left for his play-through: whether the enemy's levels also follow a 'pace' curve (0.5-2.5 levels under your Forge cap), with road targets that drift down across maps (first skirmish 90% on Map 1 to about 80% on Map 24).
+  - The pace enemy curve plus drifting road targets (recommended)
+  - The pace enemy curve only
+  - No level change: DF-2, DF-3 and per-fight retunes are enough
+  - Leave it
+- **Default:** The pace enemy curve plus drifting road targets (recommended)
+- **Outcome:** Owner, 2026-10-25 17:53: "road should ROUGHLY always get harder. we can't always achieve this. at the most, we hope to be roughly AS difficult as the previous map while teaching something. I would say, as long the error bars are about +-5% for 1 sigma, that's actually ideal. +10% is acceptable. +15% is less liked, but okay. +-20% is starting to be unacceptable" Recorded as the road tolerance in docs/evaluation-protocol.md.
+
 **DF-2. Levels gate by map, not by resources; Base decks never need replacing** · Decide · Balance · asked 2026-10-23 · decided 2026-10-23
 - Model in docs/balance/df-2026-10-23.json: every deck reaches the Forge cap on the map that opens it (Lv 3 at Map 11, Lv 8 at Map 16), light or binge player alike, so levels gate by map, not by resources. What holds decks back is duplicates outside Base (about 56 repeat fights for one more copy of a common), so the strongest deck is a cheap Base synergy deck that never needs replacing. Recommended: Base cards stop at Lv 4 and pay full Forge cost; a fight's own first-clear card drops 10% a repeat, so 4-copy decks form by about Maps 10-15.
   - Base cards stop at Lv 4 and pay full Forge cost (x1); a fight's own first-clear card drops 10% a repeat (was 3% x its rarity share), so 4-copy decks form by about Map 10-15
@@ -2208,11 +2279,23 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 **E3. Shiny look** · Decide · Cards · asked 2026-10-08 · decided 2026-10-08
 - **Outcome:** Hue shift, not a foil: the art is recoloured by a fixed per-card hue (90–270°), soft white glow, twinkling ✦. Prism stays a foil treatment.
 
+**C1. Which cards get the six new finishes (Hex, Etched, Ice, Gold leaf, Reverse, Prism)? (you said later)** · Decide · Cards · asked 2026-10-08
+- Hex, Etched, Ice, Gold leaf, Reverse and Prism are built (Effects Lab → Card treatment centre). Who gets them: rarities, events, pack tiers, prestige? Owner (10-23 00:10): "- later. Pack foil chances - evaluate also. Should be rare." Stays open for later; the pack foil chances are to be evaluated in package RW3 and kept rare. Built (RW3, the pack-foil part): a card comes out foil 1% (Hedgerow Pouch), 1.5% (Tidemire Chest), 2% (Highcrest Case, Mystery Booster), faction packs 1%; was 4 / 8 / 12 / 10 / 4%, and every Highcrest Case had one foil guaranteed (about 1.3 foils a Case; now 0.16). An Advanced pack's first five cards keep 10x (10 / 15 / 20%). Call RW3-4.
+- **Default:** Later (pack foils are already rare, RW3-4)
+- **Outcome:** Owner, 2026-10-25 17:53: "C1 seems ok already..."
+
 **G1. Combo counter** · Decide · Battle · asked 2026-10-07 · decided 2026-10-23
 - A counter for chains of triggered abilities in one round, with escalating sound/visuals.
   - Build it
   - Skip
 - **Outcome:** Owner (10-23 00:10): "No." Skip the combo counter.
+
+**G2. Siding with Otters or Hummingbirds: approve the proposal as written, or answer its questions (a)-(f) first?** · Decide · Lore · asked 2026-10-08
+- (Rewritten 10-23 at the owner's request, all inside this item; the older siding-proposal-2026-10-08.md is source material, to move into the hub later.) What it is: the player is a traveller both peoples want on their side: the Otters (Rivergate Legion) and the Hummingbirds (Sunfeather Tribes). A hidden Standing number from -100 (Otters) to +100 (Hummingbirds) moves with the player's choices, and the band it sits in decides which rewards, titles, shops and story branches open. Where it lives today: the side picked in the tutorial is stored as `bramblewood_arena_faction` (saveFactionChoice / loadFactionChoice, arena_app.js) and today only sets the starter deck, the voice in warnings and the faction pack; cards carry `faction` (14 Hummingbird cards, 27 base) and `source.side` ('tribes', 'shared'); the faction reward track (noteFactionReceived) counts faction-pack pulls. Dialogue choices already exist (playDialogue with onDone replies, for example the Old Well in visitOldWell). Nothing reads a Standing yet. What siding changes for the player: (1) Reward cards: some skirmishes offer two reward cards, one per side; the player gets the one matching their band, Neutral gets a third (road-folk, dog or cat card). (2) Side shops: a Legion Quartermaster and a Tribe Trader on later maps, different stock. (3) Titles and character looks (Legion Outrider, Friend of the Tribes, Wanderer of Both Banks). (4) Materia leaning: Otter crafting nudges Shield/Formation, Hummingbird crafting Flight/Bond. (5) Story: dialogue warms or cools by band; from Map 6 a key skirmish plays differently by band; a Neutral track keeps the peace through a series of tests, hardest, with unique rewards. (6) It never locks a people's cards away: off-side cards stay in packs and the Market, only the story rewards differ; and nobody is punished for the tutorial pick. What moves Standing: dialogue choices +/-2 to 8 (no number shown on the button), first clears of one people's skirmishes +/-1 (fighting Otters drifts you to the Hummingbirds and the reverse), side quests +/-5 to 15 (a few per map, often exclusive), neutral acts (helping dogs, cats, road-folk, the Traveller) pull toward 0. Drift is slow: 2-3 maps of consistent choices to a friend band, most of the campaign to be Sworn. Five bands: Sworn Otter (<= -60), Otter friend (-59 to -20), Neutral (-19 to 19), Sunfeather friend (20 to 59), Sworn Sunfeather (>= 60); a two-coloured banner on Profile and the Conquest map shows the band. Build in four steps: (1) the Standing store (saved with the account), the banner and hidden weights on dialogue choices, Old Well first; (2) two-sided reward cards on 3-4 skirmishes of Maps 1-3, picked in the skirmish editor; (3) two side quests per map for Maps 1-3; (4) side shops from Map 4, titles, the Map 6 fork. Open questions for you: (a) start at +/-10 from the tutorial pick, or everyone at 0? (b) is the meter shown as a number or only as the band name? (c) is Neutral a full third path with its own ending, or only a resting place? (d) should the two-sided rewards and the side quests wait until the factions are symmetric (RP4), so neither side is the stronger pick? (e) how does siding interact with the Hummingbird gate (the faction pack) and the 0-2 faction pack? (f) can the player reset Standing, or does drift back by effort only? Options stay: Approve as written, Change parts, Not yet. Waiting for your pass over (a)-(f).
+  - Approve as written
+  - Change parts
+  - Not yet
+- **Outcome:** Owner, 2026-10-25 17:53: "G2: OKAY" Approved as written.
 
 **T1. Catch-up mechanics** · Discuss · Design · asked 2026-10-03 · decided 2026-10-23
 - Rested XP, a weekly comeback quest tier, cheaper early Conquest once you've cleared further, a gentler curve.

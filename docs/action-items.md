@@ -4,6 +4,149 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-25 17:53: the owner's notes, sorted (nothing started; decisions first)
+
+The owner's 52 notes of 10-25 16:42-17:53 plus his 17:53 message (reference-deck toggle, Fester, Detonate N). His words are in each row (trimmed); decisions he answered are recorded in `docs/decisions.json` with his quote. Status: **Ready** = answered and specified, can be built; **Ask** = waits on the decision named; **Note** = recorded, no work.
+
+### Ready to fire (answered decisions, in build order)
+
+| Order | Package | Items | Touches |
+|---|---|---|---|
+| 1 | PREF (small, first: lets the owner test PRO now) | P1 | arena_app.js map/fight setup, texts |
+| 2 | DOCS1 + HUB5 (parallel with 1: docs and hub only) | D1, D2, H1, H2, H3 | docs/, tools/hub/ |
+| 3 | FIX3 | F1-F6 | arena_app.js, texts |
+| 4 | RES3 (rewards and results) | R1-R3, R5-R9, B1, B3 | arena_app.js, texts, CSS |
+| 5 | ENG9 (rules) | E1-E13 | engine, texts, cards.json, budget |
+| 6 | AI3 + VIS3 | A1, A2, V1-V5 | engine AI, skillfx, CSS |
+| 7 | CONTENT3 | C1-C6, E14-E18 | cards.json, maps |
+| 8 | BAL4 | P2, P3 | budget, tools/opt |
+
+### F. Bugs and small fixes
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| F1 | Ready | #9 "If two skirmishes are linked from one skirmish, winning that skirmish should unlock 2, not 1 ... lines leading from the skirmish i just won - but they are not accessible. 6-3 to 6-6" | A win opens every fight it links to; audit every map for links drawn to fights that never open (6-3 -> 6-6 first). Test over all maps. |
+| F2 | Ready | #36 "If you rapidly go between maps while its still loading ... the skirmishes and controls do load, but then cancel out." | A map switch cancels the previous load (a load token); the last map asked for always ends up drawn. |
+| F3 | Ready | #5 "As end round anims are done, e.g. as swamp fever applies poison, the screen lags for 0.2s." | Profile the round-end status pass; batch the DOM writes so no frame takes over 50 ms. |
+| F4 | Ready | #1 "you still get an xp under a loss. (+1 at least)" | A lost or drawn fight gives at least 1 XP (no XP on a free replay, as now). |
+| F5 | Note | #17 "cards played disappear then appear again at the end of the round - no it's just tokens" | Check that only tokens redraw; fix if a token flickers. |
+| F6 | Ready | #13 "at the end, 'All packs' should just say 'View all'" | Text change, 12 packs. |
+
+### R. Rewards and results screens
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| R1 | Ready | #6 "I like the fanning out of cards, but ... separate them more, as they are different cards. If they contain some cards with duplicates, they stack slightly." | Cards Won: different cards fan apart with clear gaps; copies of one card stack with a small offset and ×N. |
+| R2 | Ready | #7 "the new cards seen can follow the same format as (6) and occupy the same column" | New cards seen use R1's layout, in the same column under Cards Won. |
+| R3 | Ready | #8 "Getting a baby/egg should be more triumphant (it's rare) ... at least differently coloured. Kibble: 'For nuturing cards in the nest'. Should we make them egg cards ... I think so" | An egg or baby is a card (like card-form materia) with its own colour and a reveal moment; Kibble's tooltip "For nurturing cards in the Nest". |
+| R4 | Ask (after the explanation in chat) | #8 "Explain to me the 3 grades ... I think make them all cards is a good start at standardising." | Explained in chat 10-25; the build follows his answer. |
+| R5 | Ready | #12 "Unlocking a new Map should encompass its skirmishes ... Maps should have slightly bigger backgrounds or banner ... every single skirmish and map unlock looked the same." | A new map is one larger banner (its art, name, "N fights"); fight unlocks inside it aren't listed one by one. |
+| R6 | Ready | #23 "the emblem ... spirals from the left, then lands on the bottom right of the webpage, like it went into you" | The rank emblem's path: in from the left, spiral, land bottom right (the player). |
+| R7 | Ready | PL2-4 "The ribbon should be on the top right." | The rank-reward ribbon sits on the card's top right. |
+| R8 | Ready | PL2-3 "Arena ... shows immediately (its rewards only). The other rewards show the moment you exit a fight, regardless of which screen you go to" | Pending rewards and XP play on the first screen after a fight (map, home, after a reload); the Arena shows its own at once. |
+| R9 | Ready | #19 "in the profile, shows your level in the 25% part of the bar, and the upcoming levels and their rewards on the right." | Profile level bar: current level at the left quarter, the next levels and their rewards to the right. |
+
+### B. Progression and economy
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| B1 | Ready | #3 "level 5 onwards reward packs, like faction, then pack 1, faction then pack 1, eventually pack 2 ... (singles for lvl 1-5) Starting at level 0, reaching lvl after the tutorials" | The level reward track: Level 0 at the start, Level 1 after the tutorials; Levels 1-5 give single cards; from Level 5 packs alternate faction / Pack 1, later Pack 2. Shown in R9. |
+| B2 | Ready (with H3) | #52 "it was so ez to reach level 15. But 15-25 was a drag ... make the exponential part extremely gentle, and instead strengthen the linear part." | Re-fit the XP curve (gentler exponent, larger linear term); show before/after in H3 first. |
+| B3 | Ready | PL2-2 / #10 "the group dungeon should be renamed to the theme of THAT group dungeon ... pushed later ahead, to Map 16 maybe"; PL2-1 dungeons hidden unless Admin | The Group Dungeon spot moves to Map 16; each group dungeon carries its own themed name. Dungeons stay admin-only. |
+| B4 | Ask OWN-Q3 | #51 battle pass; take back level packs? | A proposal doc first. |
+
+### E. Engine, rules and skills
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| E1 | Ready | #20 "Undead (passive) vs Revive (action) - revive is to revive a random card from your graveyard (as a real card, not a token.) Undead - revives itself on death but as a token." | Split the two: Revive (action) returns a random graveyard card as a real card; Undead (passive) brings itself back once as a token. Re-price both. |
+| E2 | Ready | #40 "Poison Barbs - same as Thorns but it deals poison instead. Next elemental poison/bleed and other attack types replaced by status-types dont deal damage anymore and just deal everything in counters, not both." | New Poison Barbs N. Status-type attacks (poison / bleed shots and similar) deal only counters, no damage. Re-price. |
+| E3 | Ready | EN8-2 "All 'bolts' count as magic ... Elemental damage type counts as physical ... magic will be its own thing" | Elements are physical (Armor applies); magic (bolts) passes Armor; Magic Armor stops magic only. Rename physical elemental attacks that are called bolts. Re-price Armor / Magic Armor. |
+| E4 | Ready | EN8-1 "Counter-attack CAN be redirected however." | A Guardian may step in for a counter-attack; Thorns still can't be redirected. |
+| E5 | Ready | EN8-11 "only falls off when it does a damage action like attacking or arrow." | Daunt counters fall off one per damage action, not at round end or on other skills. Re-price. |
+| E6 | Ready | EN7-2 "it visible tries to do the meiosis animation of splitting but turns slightly reddish then fails, getting the bonus instead. Bloom can only start 'testing' when the unit is ready." | Bloom with no free slot fails: a split that turns reddish, then +1/+1 on the unit. Bloom checks only once the unit is Ready. |
+| E7 | Ready | EN7-3 "Cleave and related DOES spread the status. I think arrow is okay. price = your decision." | Cleave's side hits carry Poison / Bleed; price by the 4-round rule. |
+| E8 | Ready | EN7-4 "'quick' creatures can dive as well - temporarily removing their quick." | A Quick unit can Dive; it loses Quick while aloft or under. |
+| E9 | Ready | EN8-8 / #33 "Guardian and Rampart only works when the unit is ready." | Guardian and Rampart work only while the unit is Ready. Animations in V4. |
+| E10 | Ready | EN8-4 "Fodder, stem, chrysalis should all say ?. Then at maybe 5 maps before 20, you can see the name, but not the effect." | Those skills read "?" before Map 15, then the name with "?" for the effect until Map 20. |
+| E11 | Ready | EN8-3 "it MUST say 'Repair Bramble'" | The Wildpath perks' and brambles' text says "Repair Bramble". |
+| E12 | Ready | EN6-4 "Seasons should be 6 turns each." | Seasons 6 rounds each (was 3). |
+| E13 | Ready | EN6-6 "On ready ... We need a named skill for this" | A named keyword for "On Ready: gain 1 Lumber" (proposal: Forager); used on the Beaver Lumberjack. |
+| E14 | Ready | H1 "GEM fusion feature. Cards with Socket N (default 1) (super rare skill) can accept N additional socket(s)." | Socket N skill (very rare) and gem fusion at the Forge (gems combine). |
+| E15 | Ready | #21 "a top right hand symbol for 'equip time' ... like a sword and shield moving around each other. Default 1 ... 0, 2, 3 ... Some of them have tamper-proof" | Equip Time N on equipment (default 1): turns a unit needs to equip it; a top-right badge. Tamper-proof: can't be stolen. Destroying: OWN-Q2. |
+| E16 | Ready | #22 "Platform: new type of card, for now, identical to structure ... Mother Carrier - for hummingbirds, Heroic ... Hummingbirds fly out from this carrier with full loads, + arrow-master ... boosts arrow damage" | A Platform card type (Structure rules for now); Mother Carrier (Heroic, Hummingbird Platform): launches hummingbirds with full loads; Arrow Master boosts arrow damage. |
+| E17 | Ready | #25 "4 legged golem - following animal family ... stuns all units on play (except the one just played by the enemy), high health and reasonable attack because of its high wait, but has high recoil" | A control card: On Play stun all units except the enemy's last-played one; high Health, high Wait, recoil on itself. |
+| E18 | Ready | 17:53 "Detonate N - trigger poison N times (lowering the poison count by 1 each time). its animated in a row" | Detonate N: the target's Poison ticks N times at once, each tick removing a counter, animated one after another. |
+| E19 | Ask OWN-Q1 | #24 Bound is too strong | Rework after the answer. |
+| E20 | Ask OWN-Q4 | 17:53 "Fester - not a good effect." | Rework or remove after the answer. |
+| E21 | Ask OWN-Q5 | #11 Pulverise | Held. |
+| E22 | Note | #46, #48 name bank: Prismatic, Resonate / Resonators, Lattice, Vessel, Modular, Core, Matrix, Chassis (Scrappers like Platforms); Stotting, Pivot, Leap (can hit Flying), Ram ("high damage + recoil, stampede damage inbuilt") | Names kept for future skills. |
+
+### A. CPU
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| A1 | Ready | #26 "Does the AI consider triggering bloom? ... Play card A, B, C or just pitch and then for each decision - where. Then which is the best decision" | The CPU scores each option per turn (each playable card in each slot, or pitch), Bloom chances included, and takes the best. Measure the win-rate change. |
+| A2 | Ready | #33 / EN6-3 "If it knows it needs an avg of 2.0 lumber to play their deck, they need to try to maintain at least 2.0-1.0 = 1.0 lumber ... If the value of a card in their hand is really high, they will prioritise gathering resources ... per turn basis"; "if the deck has low lumber cost cards, they shouldn't be rapidly pitching" | The CPU knows its deck's average cost, keeps a reserve of (average - 1), pitches only to reach it or to afford a high-value card in hand. |
+
+### V. Board visuals
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| V1 | Ready | #4 "Trap N's slot ... small light red gradients falling into the centre from the edges, several of them, in a circle." | The trap slot's idle effect. |
+| V2 | Ready | #15 "The copy created by fungal colossus should have a token background." | Bloom copies get the token background. |
+| V3 | Ready | #16 "Healthbar on units - ... No need. Shields will just be blue numbers on the card. The shield HP vfx when hit should look more rectangular over the card" | Remove the unit HP bars; Shield shows as a blue number; the shield hit effect is a rectangle over the card. |
+| V4 | Ready | #33 "When rampart intercepts, the rampart-er moves abit towards their own rampart, and vibrates with a expanding aura on block, then moving back. Same like guardian - if it dies on that hit, it doesnt come back" | Intercept animations for Rampart and Guardian; a unit that dies blocking dies where it blocked. |
+| V5 | Ready | #14 "I only just realised 5-8 is a boss skirmish ... make that more apparent and scary. And also make elites slightly more 'apparent'" | Boss nodes and their fight intro look like bosses (bigger, darker, a skull frame, a sting); elites get a smaller mark. |
+
+### P. PRO, reference decks and balance
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| P1 | Ready, first | #32 "let me fight the reference deck as X-REF where X is the map number"; 17:53 "Can I toggle on a mode to use that map's reference deck as well - to override my deck." | An X-REF fight on each map (the map's reference deck vs the map's PRO decks), and an admin toggle "Play with the map's reference deck" that replaces your deck in any fight. |
+| P2 | Ready | #49 "it doesnt assign the best stats and skills together in one card package ... armor is undercosted imo, and maybe it should be squared costing, 5 armor is alot more expensive than 1 armor" | Armor priced as N² (re-fit the cards it changes); the balancing tool tries stat / skill packages together. |
+| P3 | Note | 17:53 "the pro decks are strong. Some maps' pros are super easy. Like Map 2" | Check Map 2's PRO run (pool ceiling) with P1; report. |
+| P4 | Note | DF-1b tolerance (±5% ideal, ±10% acceptable, ±15% okay, ±20% unacceptable) | Recorded in D2. |
+| P5 | Ask EN8-10 | Keep or revert PRO3's 131 road swaps | After the answer. |
+| P6 | Ask PRO3-1 | Later cards in side-map PRO pools | After H2. |
+
+### C. Content and maps
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| C1 | Ready | #18 "When encountering swamp, first two skirmishes give something that cures units." | Map 5's first two fights reward a Cure card. |
+| C2 | Ready | #18 "beginner otter faction cards gain 1 or 2 additional anti-air cards to deal with Gannet Cliffs." | 1-2 Otter faction cards with anti-air before Map 3. |
+| C3 | Ready | #18 "what is used in real life to hunt small birds? ... Glue traps and clap nets, corral trap, mist net, birdlime" | Anti-air tools as cards or skills (Mist Net, Clap Net, Birdlime), Otter side. |
+| C4 | Ready | EN8-7 "STORM field effect ... creatures empowered by wind or empowered by electricity. IN a sandstorm, they would also similarly be empowered, but blind." | Storm-empowered cards and a Sandstorm field (empowers them, blinds everyone). |
+| C5 | Ready | EN6-9 "maybe the lotus petal map can have eternal rain." | The lotus map gets constant Rain. |
+| C6 | Ready | CONTENT2 "more lumber mechanics, more draw card mechanics. Same for the rest." | More Lumber and draw skills and cards (reusing gatherers is fine). |
+
+### H. Master hub
+
+| ID | Status | Note (owner) | What to build |
+|---|---|---|---|
+| H1 | Ready | #27 / #32 "In the skirmish difficulty in the master hub, colour the strength"; "will flag them out with high difficulty" | The difficulty page colours each fight by its gap to the target and flags the too-hard ones. |
+| H2 | Ready | #28 "Have a card table in the master hub (max 100 cards per page, w sort and filter options." | A card table tab: 100 a page, sort and filter by every field (map, rarity, pack, skills, stats, first map). |
+| H3 | Ready | #52 "What's the exp curve like? Can I see it in master hub? all the crafting and resource and lvl curves?" | A Curves tab: XP per level, crafting, resource and forge curves, with B2's proposal beside the current one. |
+
+### D. Canonical docs (the owner's 17:53 note)
+
+| ID | Status | What to build |
+|---|---|---|
+| D1 | Ready | `docs/project-state.md`: the settled mechanics, damage rules, progression principles and invariants, each with its decision id. |
+| D2 | Ready | `docs/evaluation-protocol.md`: PRO mission rules, reference decks, difficulty metrics (the road curve and DF-1b's tolerance), the testing procedure. `docs/action-items.md` stays the backlog (this file). |
+
+### X. Outside the game
+
+| ID | Status | Note | What to do |
+|---|---|---|---|
+| X1 | Waiting on the owner | #30 API keys | The keys are in the owner's keys folder; calls to `generativelanguage.googleapis.com` and `api.openai.com` are refused by the network allowlist (here and on the Mac). The owner adds both hosts to the environment's allowed domains; then one test call. |
+| X2 | Queued | PL2-5 art | Fire Ant Raft and Ember Tetra in the next art batch. |
+
+### Still open (answers needed)
+
+OWN-Q1 Bound, OWN-Q2 destroying equipment, OWN-Q3 battle pass, OWN-Q4 Fester, OWN-Q5 Pulverise, EN8-10 (keep or revert the road swaps), PRO3-1 (after H2), BAL3-1 (Rising Tide on 5-A-2 / 10-A-2), R4 (all grades as cards). Money and accounts (S3, A1, A2) stay parked.
+
 ## 10-24 21:14: owner playtest notes (from another computer; not started)
 
 Logged only, for the main session to triage and build. Screenshots: `docs/screens/owner-2026-10-24/` (SS#1 `ss1-swap-recommended.png`, SS#2 `ss2-green-bar.png`, SS#3 `ss3-honeyjoe-number.png`, SS#4 `ss4-deck-count-pill.png`).
