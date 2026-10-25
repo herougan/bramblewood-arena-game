@@ -18,7 +18,7 @@ CHROME = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_sh
 SKIP = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1');"
         "localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
 OWN = ("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');});"
-       "saveEnergyState({current:60, lastRegenAt:Date.now()}); try{ refreshEnergyHud(); }catch(e){} try{ skipTriggerLesson(); }catch(e){} window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{};")
+       "saveEnergyState({current:60, lastRegenAt:Date.now()}); try{ refreshEnergyHud(); }catch(e){} try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{};")  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
 fails = []; shots = []
 def ok(cond, msg):
     print(('  ok  ' if cond else '  FAIL ') + msg)
@@ -42,7 +42,7 @@ async def shot(pg, name, w):
     f = os.path.join(OUT, f'en7-{name}-{w}.png'); await pg.screenshot(path=f, animations='allow'); shots.append(f); return f
 
 # a fight whose board is exactly the given units (as tests/e2e/en6_2026_10_24.py); the CPU is kept from acting
-BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} switchTab('play'); startConquestMatch('m11', '20-7'); await new Promise(r=> setTimeout(r, 2600));
+BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} switchTab('play'); startConquestMatch('m11', '20-7'); await new Promise(r=> setTimeout(r, 2600));
   const m = matchState, e = m.engine; m.resolving = true; const uids = {};
   [1, 2].forEach(pid=>{ const pl = m.players[pid]; pl.row.left = []; pl.row.center = []; pl.row.right = []; });
   const put = (pid, list)=> list.forEach(([id, slot, hp])=>{ const c = e.makeBoardCard(id); c.wait = 0; c.hp = c.maxHp = hp || 9; c.slot = slot;
@@ -122,7 +122,7 @@ async def run(b, url, w):
     await shot(pg, 'poison-float', w)
     pf = [f for f in fl if 'poison' in f['cls']]
     print('     poison float:', pf)
-    ok(pf and pf[0]['n'] == 1 and ('☠' in pf[0]['ico'] or '2620' in pf[0]['ico'].lower()) and pf[0]['txt'].replace('☠', '').replace('\ufe0f', '').strip() == '2'  # 2026-10-25 (PL2, owner 00:02 #4): ☠N, was 🤢N and '+' not in pf[0]['txt'], f'the applied-Poison float is "🤢2": one icon, no plus ({pf[:2]})')
+    ok(pf and pf[0]['n'] == 1 and ('☠' in pf[0]['ico'] or '2620' in pf[0]['ico'].lower()) and pf[0]['txt'].replace('☠', '').replace('\ufe0f', '').strip() == '2' and '+' not in pf[0]['txt'], f'the applied-Poison float is "☠2": one icon, no plus ({pf[:2]})')  # 2026-10-25 (PL2, owner 00:02 #4): ☠N, was 🤢N; 2026-10-26: the comment had split the expression
     await pg.evaluate(f"(()=>{{ const el = document.querySelector('.board-card[data-uid=\"{K}\"]'); FX.D.statusLook(el, 'poison', true, 2, {{fresh:true}}); }})()")
     await pg.wait_for_timeout(900)
     await shot(pg, 'poison-pool', w)

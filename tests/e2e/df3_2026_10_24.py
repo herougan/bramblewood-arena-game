@@ -29,7 +29,7 @@ async def page(b, url, w):
     pg = await b.new_page(viewport={'width': w, 'height': 844 if w < 700 else 860}, has_touch=(w < 700)); pg._errs = []
     pg.on('pageerror', lambda e: pg._errs.append(str(e)))
     await pg.add_init_script(SKIP); await pg.goto(url); await pg.wait_for_timeout(1300)
-    await pg.evaluate("(()=>{ try{ skipTriggerLesson(); }catch(e){} FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');});"
+    await pg.evaluate("(()=>{ try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');});"  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
                       "saveEnergyState({current:60, lastRegenAt:Date.now()}); try{ refreshEnergyHud(); }catch(e){} })()")
     return pg
 async def shot(pg, name, w):

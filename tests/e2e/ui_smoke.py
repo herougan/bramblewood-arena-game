@@ -41,7 +41,7 @@ async def new_page(b, w, h):
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(1500)
     await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');}); 1")  # 2026-10-23 (PG): a deck fights only with copies it owns
-    await pg.evaluate("try{ skipTriggerLesson(); }catch(e){} 1")  # 2026-10-24 (package TT): the Triggers lesson pauses a fight until Next/Skip; these flows play as a player who has seen it
+    await pg.evaluate("try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} 1")  # 2026-10-24 (package TT): the Triggers lesson pauses a fight until Next/Skip; these flows play as a player who has seen it
     return pg, errs
 
 async def main():

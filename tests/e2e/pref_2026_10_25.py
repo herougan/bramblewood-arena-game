@@ -18,7 +18,7 @@ SKIP = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); localStora
         "localStorage.setItem('bramblewood_conquest_progress_v1', JSON.stringify({completed:['mtut:tutorial','mtut:tutorial2'], raidUnlocked:[], ranks:{}}));"
         "localStorage.setItem('bramblewood_admin_mode_v1','1');"
         "window.addEventListener('load', ()=>{ try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); claimTutorialWin('otters'); window.adminAllowed = ()=> true; setAdminMode(true);"
-        " saveEnergyState({current:40, lastRegenAt:Date.now()}); try{ skipTriggerLesson(); }catch(e){} window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{}; }catch(e){ window.__setupErr = String(e); } });")
+        " saveEnergyState({current:40, lastRegenAt:Date.now()}); try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{}; }catch(e){ window.__setupErr = String(e); } });")  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
 DATA = json.load(open(os.path.join(ROOT, 'canonical', 'pro-skirmishes.json'), encoding='utf-8'))
 REF2 = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'ref', 'ref2-owner-main-deck-2026-10-25.json'), encoding='utf-8'))
 fails = []; shots = []
@@ -37,7 +37,7 @@ async def fresh(b, url, w):
     errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg._errs = errs
     await pg.add_init_script(SKIP)
     await pg.goto(url); await pg.wait_for_timeout(3200)
-    await pg.evaluate("(()=>{ const h = document.getElementById('toastHost'); if(h) h.innerHTML = ''; try{ skipTriggerLesson(); }catch(e){} })()")
+    await pg.evaluate("(()=>{ const h = document.getElementById('toastHost'); if(h) h.innerHTML = ''; try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} })()")
     return pg
 
 async def shot(pg, name, w):

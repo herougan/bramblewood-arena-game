@@ -16,7 +16,7 @@ OUT = os.path.join(ROOT, 'docs', 'screens', 'EQ2'); os.makedirs(OUT, exist_ok=Tr
 CHROME = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
 SKIP = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1');"
         "localStorage.setItem('bramblewood_coach_seen', JSON.stringify(['wait','lumber','leader','handLimit','g-peek','skill-flying']));")
-OWN = ("try{ skipTriggerLesson(); }catch(e){} FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');});"
+OWN = ("try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); Object.entries(myDeckCounts).forEach(([id,n])=>{for(let i=0;i<n;i++) unlockCardForPlayer(id,'test');});"  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
        "saveEnergyState({current:60, lastRegenAt:Date.now()}); try{ refreshEnergyHud(); }catch(e){} myCurrencies.energy = 60; window.showCoachTip = ()=>{}; window.maybeShowCoachTip = ()=>{};")
 fails = []; shots = []
 def ok(cond, msg):
@@ -41,7 +41,7 @@ async def shot(pg, name, w):
     f = os.path.join(OUT, f'eq2-{name}-{w}.png'); await pg.screenshot(path=f, animations='allow'); shots.append(f); return f
 
 # a fight whose board is exactly the given units [id, slot, hp, extra fields]; the CPU is kept from acting (m.resolving) until a step needs play
-BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; switchTab('play'); startConquestMatch('m11', '20-7'); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){}
+BOARD = """(async(mine, theirs)=>{ adminModeEnabled = true; switchTab('play'); startConquestMatch('m11', '20-7'); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){}
   document.querySelectorAll('.coach-bubble, .coach-tip, .npc-bubble, .coach-callout').forEach(e=> e.remove());
   const m = matchState, e = m.engine; m.resolving = true; const uids = {};
   [1, 2].forEach(pid=>{ const pl = m.players[pid]; pl.row.left = []; pl.row.center = []; pl.row.right = []; });

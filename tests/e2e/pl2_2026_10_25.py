@@ -74,7 +74,7 @@ async def frames(pg, name, w, times, clip=None, pad=24, cols=4, scale=.6):
 
 E = lambda body: "(async()=>{ " + body + " })()"
 # a fight whose board is exactly the given units; the CPU waits until a step calls it (as tests/e2e/en8_2026_10_24.py)
-BOARD = """(async(map, node, mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} switchTab('play'); startConquestMatch(map, node, {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600));
+BOARD = """(async(map, node, mine, theirs)=>{ adminModeEnabled = true; try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){} switchTab('play'); startConquestMatch(map, node, {skipEnergyCost:true, noOpener:true}); await new Promise(r=> setTimeout(r, 2600));  # 2026-10-26 (release): RES3's level-reward packs would open over these flows; the test player has had them
   const m = matchState, e = m.engine; const uids = {};
   [1, 2].forEach(pid=>{ const pl = m.players[pid]; pl.row.left = []; pl.row.center = []; pl.row.right = []; pl.hand = []; });
   const put = (pid, list)=> list.forEach(([id, slot, hp, wait])=>{ const c = e.makeBoardCard(id); c.wait = wait || 0; if(hp){ c.hp = c.maxHp = hp; } c.slot = slot;
@@ -164,7 +164,7 @@ async def run(b, url, w):
     # ---------------- 22:28 #8 + PL1-1: an Arena win's XP waits for the map; the map's queued emblems
     pg = await page(b, url, w)
     r = await pg.evaluate(E("""try{ FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); }catch(e){}
-      const x0 = loadXp().xp; startMatch('ai'); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){}
+      const x0 = loadXp().xp; startMatch('ai'); await new Promise(r=> setTimeout(r, 2600)); try{ skipTriggerLesson(); }catch(e){} try{ localStorage.setItem('bramblewood_res3_level_track_v1', JSON.stringify({granted: 999})); }catch(e){}
       const M = matchState; M.players[2].hq.shield = 0; M.players[2].hq.hp = 0; M.forcedWinner = 1; await resolveRound({manual:true, run:()=> true}); await new Promise(r=> setTimeout(r, 3600));
       const bar = !!document.querySelector('.winloss-card .wl-xp'); endMatch(); await new Promise(r=> setTimeout(r, 300));
       const stored = JSON.parse(localStorage.getItem('bramblewood_pl2_xp_pending_v1') || 'null');
