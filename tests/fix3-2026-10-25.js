@@ -81,6 +81,11 @@ function literal(decl){ const a = src.indexOf('\n' + decl); let i = src.indexOf(
   ok(/const plan = \[\.\.\.pools\]\.map\(/.test(fnSrc('clipLightsToBoard')) && /plan\.forEach\(x=>\{ if\(x && x\[0\]\.style\.clipPath !== x\[1\]\)/.test(fnSrc('clipLightsToBoard')), 'F3. light pools: measured first, written after');
   ok(fs.existsSync(path.join(ROOT, 'tools', 'perf', 'fight_profile_2026_10_25.py')), 'F3. the whole-fight profiler is kept (tools/perf/fight_profile_2026_10_25.py)'); }
 
+// ---------------- F5: a token pops once, at once ----------------
+{ ok(/const now = fresh\.filter\(u=> el\(u\)\), later = fresh\.filter\(u=> !el\(u\)\);\n    now\.forEach\(u=>\{ const t = el\(u\); if\(t\) F\.summonPortal\(t\); \}\);/.test(src) && /m5\._fixPopped|m5\._fix3Popped/.test(src), 'F5. a token already drawn pops at once (no full-opacity frame before the 30% pop), once a match'); }
+// PRO nodes wrap (found by e2e/rw6 at 390 once it could run)
+{ const f = fnSrc('proMapNodesHTML'); ok(/perRow = Math\.max\(3, /.test(f) && /const col = i % perRow, row = Math\.floor\(i \/ perRow\);/.test(f), 'Admin\'s PRO nodes wrap onto more lines inside the map'); }
+
 // ---------------- F4: a loss or draw gives 1 XP ----------------
 { ok(/if\(m\.winner!==1 && QUEST_COUNTING_MODES\.has\(m\.mode\) && !m\.towerReplay && !m\.rewardDuplicate && !m\.proFight && !m\.adminTest\) awardXp\(1\);/.test(src), 'F4. a lost or drawn fight gives 1 XP, never on a free replay, a paid-out fight, a PRO fight or an admin test');
   ok(/if\(res\.winner===1\)\{ bumpQuestCounter\('wins', 1\); awardXp\(3\); \} else awardXp\(1\);/.test(fnSrc('abFight')), 'F4. the auto-battler too'); }

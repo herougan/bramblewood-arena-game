@@ -23636,7 +23636,11 @@ function proMapNodesHTML(map, positions){
   const key = mapRewardNodeKey(map), ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const dir = base.x > 62 ? -1 : 1, list = proEntriesOf(ent); // PL2: + the BPRO nodes
   const xk = xrefKeyOf(map.id), all = list.map(e=> ({id: e.id, ico: '🏆', tip: TX('ui.rw6-pro-node-tip', {key: e.id})})).concat(xk ? [{id: xk, ico: '🎯', tip: TX('ui.pref-xref-node-tip', {key: xk})}] : []); // PREF (2026-10-25): + the map's X-REF node
-  return all.map((e, i)=>{ const x = Math.max(6, Math.min(94, base.x + dir * (9 + i * 8))), y = Math.max(8, Math.min(90, base.y + (base.y > 70 ? -11 : 11)));
+  // 2026-10-25 (package FIX3, found by e2e/rw6 at 390): with the BPRO and X-REF nodes a map has up to 9 of them; in one line they ran past the
+  // map's edge and piled up on the clamp. They wrap onto a second line (and a third) when the first is full, inside 8-92% of the map.
+  const room = dir > 0 ? 92 - (base.x + 9) : (base.x - 9) - 8, perRow = Math.max(3, Math.floor(Math.max(0, room) / 8) + 1), up = base.y > 70 ? -1 : 1;
+  return all.map((e, i)=>{ const col = i % perRow, row = Math.floor(i / perRow);
+    const x = Math.max(8, Math.min(92, base.x + dir * (9 + col * 8))), y = Math.max(8, Math.min(90, base.y + up * (11 + row * 10)));
     return `<button type="button" class="map-pro" data-pro-start="${escapeAttr(e.id)}" data-lkey="~pro:${escapeAttr(e.id)}" style="left:${x}%; top:${y}%;" title="${escapeAttr(e.tip)}" aria-label="${escapeAttr(e.tip)}"><span class="mpr-ico" aria-hidden="true">${e.ico}</span><span class="mpr-code" aria-hidden="true">${escapeHtml(e.id)}</span></button>`; }).join('');
 }
 function proEditorRowHTML(mapId){
