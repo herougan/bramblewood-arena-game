@@ -4,6 +4,42 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-25 22:36: the owner's playtest notes (fired: "You can begin the large action item series")
+
+Screenshots: the sleeping House Cat (G4), the Fork tooltip (G2), the 3-BPRO-2 board at laptop size (G10), the Grindstone Boar detail (G9). Package = where it is built.
+
+| ID | Package | Note (owner, trimmed) | What to build |
+|---|---|---|---|
+| G1 | FIX3 | "Noone wants to wait for the dialogue ... if I click again, I should go into the page. Even while the dialogue is talking." | A second click on a map feature (Codex and the rest) opens it at once, dialogue or not. |
+| G2 | ENG9 | Fork "Attacks 2 adjacent enemies at once. Only if there is no enemy in front (L/C/R) does it hit the castle ... It cannot attack L/-/R. 'Fork - Attacks strike up to 2 opposing enemies in front of this unit'" | Fork hits two adjacent enemies among L/C/R (L+C or C+R, never L+R); the castle only when none of the three is there. Text as quoted; Pitchfork / Trident checked the same way. |
+| G3 | CONTENT3 | "Hollow Oath Keeper doesn't belong in Map 7." | Move it by theme. |
+| G4 | ENG9 | House Cat attacked while asleep; Decay didn't raise its Attack (or the Dung Beetle didn't apply it). "Decay is really strong btw - ... upped by ~12% in cost" | Sleeping units never swing; check Decay is applied and counted; Decay +12% cost. |
+| G5 | RES3 + CONTENT3 | Spore Cloud seen; "7-5 is so difficult, I love it - except, there's no card awarded before that that's immune to Sleeping"; field pills in the preview have no tooltip; animate a "New!" over a new field effect | Tooltips on every field pill; a fading "New!" over unseen field effects; a Sleep-immune card awarded before 7-5. |
+| G6 | RES3 | First-clear reward: filled or greyed before it's won? "Choose one for me" | Claude's choice: not yet won = full colour (the prize); already won = greyed with a ✓. Cards and items alike. |
+| G7 | FIX3 | Sign-up worked but the screen didn't return to play | After sign-in / sign-up the game returns to where you were and syncs. |
+| G8 | VIS3 | Context pips: the turtle pip a few pixels right and up | Centre every context pip's glyph. |
+| G9 | ENG9 | "There's no Funghi type (Phoenix Mushroom) ... 2 stone OR 1 wood: do the 2stone/1lumber otherwise lay them side by side ... Is Flora or Funghi a phylla? For bloom, have more example text" | Add Fungi; answer the taxonomy question (proposal: Fungi its own kingdom beside Flora); alternative costs written "2 Stone / 1 Lumber", joint costs side by side with no gap; Bloom's help lists examples (Wet & Sunny, Kill 1 ...). |
+| G10 | RES3 | Not full screen on a MacBook Air the board could be larger | Scale the game up to the window when not full screen. |
+| G11 | HUB5 | "For each pack ... show the pack and the various cards that can represent the pack's packaging art" | A Packs section: each pack, its art candidates, to accept or reject. |
+| G12 | RES3 | Deck editor: preview cards bigger; the mini-codex under them much bigger | Size up both. |
+| G13 | FIX3 | Baby reward: a ladybug in the toast, a duckling on the reward screen | One source for the baby's type and icon. |
+| G14 | FIX3 | Train Younglings: the sticky train bar half overlaps the cards | The bar sits over the cards cleanly (own band, no overlap). |
+| G15 | RES3 + BAL4 | "all packs should only give 3 cards, (collectors giving 5). Recost them"; x10+ packs view too small | Packs give 3 (Collector's 5), prices re-costed; the x10 opening view larger. |
+| G16 | RES3 | Too many cards past the screen: stack same cards; then y-scroll | Pack summary and rewards stack copies, then scroll. |
+| G17 | FIX3 | After x10 packs, a card's detail opened far left with its text far right | Fix the detail layout from the pack summary. |
+| G18 | RES3 | "Forge tabs should all be invisible until that feature is earned at some map (your choice). Reinforce is visible but locked with '?'" | Each Forge tab appears at its map; Reinforce shows locked "?". |
+| G19 | ENG9 | Chained Binturong: 4 damage to unlock with 4 Health; hit for 4 and it stayed chained; no lock icon needed; "Being chained should grant a larger budget - multiplicatively" | Fix the unchain count; drop the lock glyph; Chained prices as a multiplier on the budget. |
+| G20 | FIX3 | After Map 10, the submap on Map 0 should give a tooltip on click, not dialogue | Tooltip instead of dialogue. |
+| G21 | FIX3 | Overall raid rank missing on the raid reward screen | Show it there. |
+| G22 | HUB5 / admin | "Let me admin auto-play PVP (And if you're past Map 25 as well). Are the fights scaled to my BR btw?" | Admin auto-play in PvP (and for players past Map 25); answer the BR question in the report. |
+| G23 | ENG9 | Salamander Pyromancer: On Ready should fire at upkeep; once used, remove Fireball | One-shot skills fire at upkeep and leave the card once spent. |
+| G24 | ENG9 | "Charge is similar." | Same for Charge. |
+| G25 | ENG9 | "Tangleweed is too strong ... maybe it could be 50% to act - in general, means all triggers, active skills like arrow, and attacking" | Tangled: 50% to act (swings, actions, triggers). Re-price. |
+| G26 | FIX3 | "there's a few sharp lag periods during the gameplay" | Profile a full fight (with F3); fix the long frames. |
+| REF-2 | PREF | Reference-2: the owner's main deck (the Ant Deck, `docs/balance/ref/ref2-owner-main-deck-2026-10-25.json`), all Level 0 at Map 0, +1 level to 5 random cards per map (105 at Map 20) | A reference deck for the evaluation and X-REF; report which BPRO decks are too easy ("I like the BPRO decks. I wonder which are too 'ez'?"). |
+| REF-3 | waiting | Reference-3: the second account's main deck, rares and above swapped for House Cats, 1 rare back a map from Map 4 | That account has nothing on the server yet (G7). Built once the owner signs in and saves it, or sends the list. |
+| OVR | note | `card_overrides` holds 144 rows on the live database | Fold them into `canonical/cards.json` with the fold tools (CLAUDE.md), then clear (needs "apply it" for the clear). |
+
 ## 10-25 17:53: the owner's notes, sorted (nothing started; decisions first)
 
 The owner's 52 notes of 10-25 16:42-17:53 plus his 17:53 message (reference-deck toggle, Fester, Detonate N). His words are in each row (trimmed); decisions he answered are recorded in `docs/decisions.json` with his quote. Status: **Ready** = answered and specified, can be built; **Ask** = waits on the decision named; **Note** = recorded, no work.

@@ -1,0 +1,3 @@
+{"note": "Reference-2 (owner 10-25 22:36): the owner's main account's main deck (the Ant Deck, read from Supabase player_decks 2026-10-25). Map 0 at Level 0 for every card; each map after, 5 random cards +1 level (Map 20: 105 levels in all).",
+ "leader": "old-willow-of-the-ford",
+ "counts": {"ant-scout":5,"soldier-ant":5,"tunnel-ant":3,"fire-ant-raft":3,"quicksand-queen":2,"ant-warrior":1,"leafcutter-gardener":1}}
