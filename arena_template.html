@@ -13503,6 +13503,14 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .res3-map-banner .res3-mb-fights{font:700 12.5px/1.2 'Nunito',system-ui,sans-serif; opacity:.95; text-shadow:0 1px 2px rgba(0,0,0,.8);}
 @keyframes res3MapIn{from{opacity:0; transform:translateY(10px) scale(.94);} to{opacity:1; transform:none;}}
 @media (prefers-reduced-motion: reduce){ .res3-map-banner{animation:none;} }
+/* G6: a first-clear reward already won is greyed with a ✓ (cards, items, packs and currencies alike); one not yet won keeps its colours */
+.cnp-rw :is(.cnp-rw-card, .cnp-rw-item, .cnp-rw-cur){position:relative;}
+.conquest-node-panel .cnp-rw .cnp-rw-card.is-got .card-tile, .conquest-node-panel .cnp-rw .cnp-rw-card.is-got .cnp-rw-back, .cnp-rw .cnp-rw-card.is-got .card-tile, .cnp-rw .cnp-rw-card.is-got .cnp-rw-back,
+.cnp-rw .cnp-rw-pack.is-got .booster, .cnp-rw .cnp-rw-item.is-got > .res3-gv, .cnp-rw .cnp-rw-cur.is-got > .res3-gv{filter:grayscale(1) brightness(.72) !important;}
+.cnp-rw .cnp-rw-pack.is-got, .cnp-rw .cnp-rw-item.is-got{opacity:1; filter:none !important;}
+.cnp-rw .cnp-rw-cur.is-got > .res3-gv{opacity:.8;}
+.cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
+  background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
 /* RES3:END */
 </style>
 

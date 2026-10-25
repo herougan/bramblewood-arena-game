@@ -23301,6 +23301,9 @@ function newSkillRibbonHTML(node){
     return `<span class="nsr-skill" title="${escapeAttr(d)}">${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${escapeHtml(sd.label)}</span>`; });
   return `<div class="new-skill-ribbon" aria-label="${escapeAttr(_t('New skills in this fight'))}"><b>✨ ${escapeHtml(_t('New skill'))}${keys.size > 1 ? 's' : ''}</b>${list.join('')}${keys.size > 4 ? `<small>+${keys.size - 4}</small>` : ''}</div>`;
 }
+// 2026-10-26 (package RES3, G6, owner: "First-clear reward: filled or greyed before it's won? Choose one for me"): not yet won = full colour (it's the
+// prize); already won = greyed with a ✓, cards, items, packs and currencies alike (the Energy capsule was greyed while a won card wasn't).
+function res3GotMark(){ return '<i class="res3-got" aria-hidden="true">✓</i>'; }
 function cnpRewardStripHTML(mapId, node, done, rank){
   // 2026-10-08 (user: "the S rank is blocking the rewards. Since the focus is just on what you won the
   // first time, just show resources won (stacked), and cards won. Then on the most-right of it, the
@@ -23320,8 +23323,8 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // just its icon, no card frame and no rank emblem; hovering or focusing it says what it is. A card token keeps its card back, with a tip too.
   const tokenChips = ((node && node.rewardTokens) || []).map(t=>{ const T = REWARD_TOKENS[t]; if(!T) return '';
     const lbl = _t(T.label), line = t === 'energyCapsule' ? TX('results.eb-capsule-tip', {n: ENERGY_CAPSULE_AMOUNT}) : t === 'raidTicket' ? TX('results.eb-ticket-tip') : T.item ? '' : TX('ui.rw4-tip-card-token'), tip = lbl + (line ? '|' + line : '');
-    return T.item ? `<span class="cnp-rw-item ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl + (line ? ': ' + line : ''))}">${T.icon}</span>`
-      : `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl)}"><span class="cnp-rw-back">${T.icon}</span></span>`; }).join('');
+    return T.item ? `<span class="cnp-rw-item ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl + (line ? ': ' + line : ''))}"><span class="res3-gv">${T.icon}</span>${done ? res3GotMark() : ''}</span>`
+      : `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(tip)}" aria-label="${escapeAttr(lbl)}"><span class="cnp-rw-back">${T.icon}</span>${done ? res3GotMark() : ''}</span>`; }).join('');
   // 2026-10-22 (package RW, owner N22-4): the rank is per card (cardRewardRankFor), so a fight paying a Common and a Rare shows a different
   // emblem on each; a card already yours (the ledger, per card) is greyed with no emblem. The emblem is the hex, never the words.
   const nid0 = conquestNodeId(mapId, node.key), gotOf = id=> !!done && (isTutNode || cardRewardIsGot(nid0, id));
@@ -23335,18 +23338,19 @@ function cnpRewardStripHTML(mapId, node, done, rank){
     const chalMark = chal ? `<span class="cnp-rw-chal" aria-hidden="true">${escapeHtml(TX('ui.rw2-challenge'))}</span>` : '';
     const needLbl = (chal ? ', ' + TX('ui.rw2-challenge-card') : '') + (needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '');
     return isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}</span>`; }).join('');
+    ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
+    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
   const cur = [];
-  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" tabindex="0" aria-label="${pay.gold} Maple Leaves" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-leaves-t') + '|' + TX('ui.rw4-tip-leaves', {n: pay.gold}))}">${mapleLeafIconHTML()} ${pay.gold}</span>`);
-  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" tabindex="0" aria-label="${pay.dust} Magic Dust" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-dust-t') + '|' + TX('ui.rw4-tip-dust', {n: pay.dust}))}">✨ ${pay.dust}</span>`);
+  // 2026-10-26 (package RES3, G6): the currencies follow the same rule (greyed with a check once the first clear is won)
+  if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur ${done?'is-got':''}" tabindex="0" aria-label="${pay.gold} Maple Leaves" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-leaves-t') + '|' + TX('ui.rw4-tip-leaves', {n: pay.gold}))}"><span class="res3-gv">${mapleLeafIconHTML()} ${pay.gold}</span>${done ? res3GotMark() : ''}</span>`);
+  if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur ${done?'is-got':''}" tabindex="0" aria-label="${pay.dust} Magic Dust" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-dust-t') + '|' + TX('ui.rw4-tip-dust', {n: pay.dust}))}"><span class="res3-gv">✨ ${pay.dust}</span>${done ? res3GotMark() : ''}</span>`);
   { const gl = dungeonGoldLeavesPreview(mapId, node); if(gl) cur.push(`<span class="cnp-rw-cur cnp-rw-gems" aria-label="${escapeAttr(gl.label)}" data-zoom-tip="${escapeAttr('Gold Leaves|' + gl.label)}" tabindex="0">🍂 ${gl.n}</span>`); } // 2026-10-16: daily dungeon Gold Leaves
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   // 2026-10-15 (user: "0-2 will give a faction pack. (This has to be clearly seen in the first clear rewards section of the skirmish
   // review btw)"): a pack the first clear gives shows as a small pack with its name.
   // 2026-10-16 (user: "Don't say "rivergate pack" in the first clear rewards preview. Just show a pack, then on hover, it says that and
   // that it contains "Faction rewards!""): just the pack; hovering or focusing it opens a small card with its name and what's inside.
-  const packChips = nodeFirstClearPacks(mapId, node).map(rewardPackInfo).filter(Boolean).map(pi=> `<span class="cnp-rw-card cnp-rw-pack is-bare ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(pi.name + '|' + (pi.kind === 'faction' ? 'Faction rewards!' : pi.cards + ' cards'))}" aria-label="${escapeAttr(pi.name + (pi.kind === 'faction' ? ': Faction rewards!' : '') + (done ? ', already won' : ''))}">${rewardPackBoosterHTML(pi)}</span>`).join('');
+  const packChips = nodeFirstClearPacks(mapId, node).map(rewardPackInfo).filter(Boolean).map(pi=> `<span class="cnp-rw-card cnp-rw-pack is-bare ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(pi.name + '|' + (pi.kind === 'faction' ? 'Faction rewards!' : pi.cards + ' cards'))}" aria-label="${escapeAttr(pi.name + (pi.kind === 'faction' ? ': Faction rewards!' : '') + (done ? ', already won' : ''))}">${rewardPackBoosterHTML(pi)}${done ? res3GotMark() : ''}</span>`).join('');
   const cardsAll = packChips + cards + tokenChips;
   if(!cardsAll && !cur.length && !rankHTML) return '';
   // 2026-10-14 (user: "Move the first time rewards section to the right. Decrease the height of the first reward section. The
