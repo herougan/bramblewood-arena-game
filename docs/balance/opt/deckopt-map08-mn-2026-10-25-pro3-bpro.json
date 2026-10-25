@@ -1,0 +1,1869 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.2.0 (2026-10-25, PRO3)",
+ "generated": "2026-10-25T02:25:22.444Z",
+ "map": {
+  "id": "mn",
+  "num": 8,
+  "name": "The Glimmer Depths",
+  "side": "m4",
+  "opensOn": 16
+ },
+ "level": 1,
+ "settings": {
+  "mode": "bpro",
+  "faction": false,
+  "rarityCap": "map",
+  "cap": "rare",
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mn --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+ "pools": {
+  "mode": "bpro",
+  "cap": "rare",
+  "subsOpen": [],
+  "phase1": 39,
+  "mapCards": [
+   "baby-bat",
+   "badger-stonemason",
+   "barrow-leech-bat",
+   "beetle-grunt",
+   "blind-cave-fish",
+   "cave-bat-swarm",
+   "cave-centipede",
+   "cave-cricket",
+   "cave-flitter",
+   "cave-olm",
+   "cave-pseudoscorpion",
+   "cave-swiftlet",
+   "coffer-mimic",
+   "dynamite-packrat",
+   "echo-screecher",
+   "gallery-orb-weaver",
+   "ghost-crayfish",
+   "giant-cave-huntsman",
+   "glimmer-spider",
+   "glowworm-cluster",
+   "gravel-mole",
+   "grotto-lobster",
+   "guano-beetle",
+   "lantern-spark-fly",
+   "millipede-hauler",
+   "monarch-wingblade",
+   "nightshade-moth",
+   "oilbird",
+   "prospector-mole",
+   "quarry-mole",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "subterraneaner",
+   "sulfur-cinder-moth",
+   "swarm-matriarch",
+   "tunnel-ant",
+   "vampire-bat",
+   "vampire-bat-nurse",
+   "whip-spider"
+  ],
+  "owned": [],
+  "phase2": 39,
+  "wholeSpectrum": 39,
+  "excluded": [
+   {
+    "reason": "not in the map's own pool (BPRO)",
+    "n": 275,
+    "ids": [
+     "acorn-chipmunk",
+     "adder-ambusher",
+     "alley-cat",
+     "alligator-gar",
+     "alpine-marmot",
+     "alpine-salamander",
+     "alpine-swift",
+     "amber-cicada",
+     "anaconda-coil",
+     "anhinga-spearbird",
+     "ant-scout",
+     "ant-warrior",
+     "anvil-thrush",
+     "apollo-butterfly",
+     "archerfish",
+     "baby-horned-capybara",
+     "badger-lumberjack",
+     "balloon-archer",
+     "banded-sea-krait",
+     "barkplate-beetle",
+     "beachcomber-sanderling",
+     "beaver-feller",
+     "bee-forager",
+     "bee-knight",
+     "bee-sentry",
+     "berserker-boar",
+     "bison-bulldozer",
+     "bloodscent-shark",
+     "blue-ringed-octopus",
+     "bogfire-newt",
+     "bombardier-beetle",
+     "booming-bittern",
+     "border-collie",
+     "box-turtle",
+     "bramble-hoglet",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "briarback-hedgehog",
+     "burrow-rabbit",
+     "buzzed-chipmunk",
+     "caiman-hatchling",
+     "camouflage-frog",
+     "cane-toad",
+     "carrion-beetle",
+     "carrion-crow",
+     "cataphract-destrier",
+     "chamois-leaper",
+     "chipmunk-forager",
+     "chipmunk-hoarder",
+     "chipmunk-skirmisher",
+     "cleaner-wrasse",
+     "clover-butterfly",
+     "clownfish-scout",
+     "cobalt-talon-fledgling",
+     "compost-grub",
+     "conch-crawler",
+     "conch-herald",
+     "cone-snail",
+     "constrictor-coil",
+     "coral-polyp-colony",
+     "coral-reef-shark",
+     "cottonmouth-matriarch",
+     "cottontail",
+     "cricket-drummer",
+     "crimson-wing-recruit",
+     "crocodile-ambusher",
+     "crossed-eyes",
+     "crown-of-thorns-star",
+     "cunning-vixen",
+     "dam-keeper-beaver",
+     "diving-bell-spider",
+     "dormouse",
+     "driftwood-crab",
+     "duck-paddler",
+     "duckling",
+     "dung-beetle",
+     "dust-hyena",
+     "eagle-owl-quartermaster",
+     "earthworm",
+     "electric-catfish",
+     "electric-ray",
+     "elephant-nose-fish",
+     "ember-tetra",
+     "eyrie-warden",
+     "farm-dog",
+     "fawn-scout",
+     "fen-mink",
+     "feral-tomcat",
+     "fiddler-crab-swarm",
+     "field-crow",
+     "field-mouse",
+     "field-vole",
+     "fire-ant-raft",
+     "fishing-cat",
+     "fleetfootd",
+     "forager-ant",
+     "fox-kit",
+     "fox-sharpshot",
+     "fulmar-spitter",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "gannet-nestweaver",
+     "garden-snail",
+     "garden-tiger-moth",
+     "gatling-hog",
+     "giant-clam",
+     "giant-water-bug",
+     "golden-eagle-diver",
+     "grass-snake",
+     "grass-viper",
+     "grave-grin-hyena",
+     "great-barracuda",
+     "great-crested-grebe",
+     "great-skua",
+     "greater-siren",
+     "grey-seal-bull",
+     "greyplume-fledgling",
+     "grizzly-vanguard",
+     "gull-thief",
+     "guppy",
+     "harvest-mouse",
+     "hawk-arrowkeeper",
+     "hawthorn-shieldbug",
+     "hazel-coppice",
+     "hedge-weasel",
+     "hedgehog-herbalist",
+     "hedgehog-scout",
+     "hedgerow-shrew",
+     "hollow-oath-keeper",
+     "honey-bee",
+     "hoopoe-herald",
+     "horseshoe-crab",
+     "house-cat",
+     "ironclaw-fiddler",
+     "jay-pilferer",
+     "kittiwake-flock",
+     "kraken-spawnling",
+     "ladybird-guard",
+     "lamprey",
+     "land-tiller",
+     "leafcutter-gardener",
+     "leopard-slug",
+     "limpet-clinger",
+     "lionfish",
+     "lions-mane-jelly",
+     "lotus-frog",
+     "lovebird",
+     "lyrebird-mimic",
+     "mangrove-kingfisher",
+     "mangrove-manatee",
+     "mangrove-monitor",
+     "mangrove-mudskipper",
+     "mantis-shrimp",
+     "margay",
+     "marmot-stonecutter",
+     "marsh-harrier",
+     "marsh-wisp",
+     "marula-elephant",
+     "marula-monkey",
+     "mayfly-dancer",
+     "meadow-frog",
+     "meadow-rabbit",
+     "meerkat-burrower",
+     "meerkat-wayfarer",
+     "minnow-skitter",
+     "mire-witch-heron",
+     "moat-snapper",
+     "mongoose-duelist",
+     "monitor-rambler",
+     "moonshell-snail",
+     "mosquito-cloud",
+     "mosswing-laborer",
+     "mountain-goat-climber",
+     "mountain-hare",
+     "mouse-sapper",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muntjac-barker",
+     "muskrat-lodgekeeper",
+     "newt-doctor",
+     "nightjar-drifter",
+     "nutria-reedcutter",
+     "old-sturgeon",
+     "open-ocean-hermit-crab",
+     "otter-centurion",
+     "otter-guard",
+     "otter-kit",
+     "otter-paddler",
+     "owl-nightwatch",
+     "oyster-bank",
+     "oystercatcher",
+     "pangolin-roller",
+     "paper-wasp",
+     "parrotfish",
+     "peak-condor",
+     "peregrine-stooper",
+     "pigeon-peon",
+     "pill-bug",
+     "pincushion-urchin",
+     "pine-marten",
+     "piranha-shoal",
+     "plague-gnat-cloud",
+     "planarian-splitter",
+     "platypus-spur",
+     "poison-dart-croaker",
+     "pond-algae",
+     "pond-duck",
+     "pond-trout",
+     "proboscis-monkey",
+     "pronghorn-racer",
+     "puffin-diver",
+     "pyrenean-desman",
+     "quillguard",
+     "raccoon-bandit",
+     "raft-spider",
+     "raven-scout",
+     "razorbill",
+     "red-backed-salamander",
+     "red-billed-chough",
+     "redwood-woodpecker",
+     "reef-shark",
+     "riptide-eel",
+     "river-carp",
+     "river-mink",
+     "riverwing-envoy",
+     "robin-redbreast",
+     "rock-pool-starfish",
+     "rodent-king",
+     "salvager-hermit-crab",
+     "sawfish",
+     "sea-cucumber",
+     "sea-hare",
+     "sea-turtle-elder",
+     "seed-cache-squirrel",
+     "shallows-fry",
+     "sheep",
+     "shepherds-bark",
+     "signal-crayfish",
+     "silver-minnow",
+     "skunk-gasser",
+     "slow-worm",
+     "snapper-hatchling",
+     "snapstick-turtle",
+     "sparrow-chick",
+     "spitting-cobra",
+     "springbok-pronker",
+     "springtail-hopper",
+     "stable-colt",
+     "stag-beetle",
+     "stag-knight",
+     "stoat-cutthroat",
+     "stone-turtle-warden",
+     "sunbittern-strider",
+     "swamp-alligator",
+     "swamp-rabbit",
+     "swift-fox",
+     "swordfish-spearman",
+     "tasmanian-devil",
+     "termite-forager",
+     "terrier-pup",
+     "thorn-shrike",
+     "tide-pool-crab",
+     "tidepool-trapper-crab",
+     "truffle-piglet",
+     "venomlord-serpent",
+     "warhorse-charger",
+     "water-shrew",
+     "water-vole",
+     "weaver-bird",
+     "whale-shark",
+     "wolf-spider-mother",
+     "woodcock-lookout",
+     "woodpecker-sapper",
+     "worker-ant",
+     "yellow-bellied-sea-snake"
+    ]
+   },
+   {
+    "reason": "over the map's rarity cap (rare)",
+    "n": 7,
+    "ids": [
+     "colossal-squid",
+     "ibex-rockcaller",
+     "old-snapjaw",
+     "savanna-cheetah",
+     "shimmerwing-stag",
+     "talon-archer",
+     "the-gannet-queen"
+    ]
+   }
+  ]
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "caves",
+   "kinBiomes": [
+    "coast",
+    "fungal",
+    "volcanic-ash"
+   ],
+   "terrainTypes": [
+    "Cave"
+   ],
+   "mapTypes": [
+    "Arachnid 5",
+    "Bat 7",
+    "Bird 2",
+    "Cave 31",
+    "Crustacean 2",
+    "Insect 10",
+    "Mole 4",
+    "Myriapod 2",
+    "Rodent 3",
+    "Swamp 2"
+   ],
+   "mapMechanics": [
+    "armor 5",
+    "evasion 4",
+    "heal 3",
+    "poison 5",
+    "siege 2",
+    "swarm 4"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "phase:off"
+   ],
+   "coreCards": 39
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 43,
+    "e": [
+     "cobalt-talon-skirmisher",
+     "crimson-wing-duelist-cadet",
+     "daily-post",
+     "dawn-bellringer",
+     "dominion-nestguard",
+     "ferry-toll-frog"
+    ]
+   },
+   {
+    "reason": "map rule: not in the map's own pool (BPRO)",
+    "n": 642,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "acorn-chipmunk",
+     "adder-ambusher"
+    ]
+   },
+   {
+    "reason": "map rule: over the map's rarity cap (rare)",
+    "n": 80,
+    "e": [
+     "ashmantle-fiend",
+     "black-dragon",
+     "blue-dragon",
+     "bucketknee-wolf",
+     "caldera-snow-leopard",
+     "caldera-wyrm"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:8-A-1",
+   "kind": "mirror",
+   "node": "8-A-1",
+   "label": "vs 8-A-1 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off"
+  },
+  {
+   "key": "mirror|fight:8-A-2",
+   "kind": "mirror",
+   "node": "8-A-2",
+   "label": "vs 8-A-2 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "mirror|fight:8-A-3",
+   "kind": "mirror",
+   "node": "8-A-3",
+   "label": "vs 8-A-3 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon skyAmbush, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "mirror|fight:8-A-4",
+   "kind": "mirror",
+   "node": "8-A-4",
+   "label": "vs 8-A-4 boss's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "8-A-1",
+   "label": "vs reference starter deck under 8-A-1's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off"
+  },
+  {
+   "key": "mirror|ref:road16",
+   "kind": "mirror",
+   "node": "8-A-2",
+   "label": "vs reference deck (Map 16) under 8-A-2's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "8-A-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon skyAmbush, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "road|8-A-1",
+   "kind": "road",
+   "node": "8-A-1",
+   "label": "8-A-1 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off"
+  },
+  {
+   "key": "road|8-A-2",
+   "kind": "road",
+   "node": "8-A-2",
+   "label": "8-A-2 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "road|8-A-3",
+   "kind": "road",
+   "node": "8-A-3",
+   "label": "8-A-3 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon skyAmbush, phase off, terrain Deep Dark T1"
+  },
+  {
+   "key": "road|8-A-4",
+   "kind": "road",
+   "node": "8-A-4",
+   "label": "8-A-4 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "neutral|fight:8-A-1",
+   "kind": "mirror",
+   "node": "8-A-1",
+   "label": "vs 8-A-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:8-A-2",
+   "kind": "mirror",
+   "node": "8-A-2",
+   "label": "vs 8-A-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:8-A-3",
+   "kind": "mirror",
+   "node": "8-A-3",
+   "label": "vs 8-A-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:8-A-4",
+   "kind": "mirror",
+   "node": "8-A-4",
+   "label": "vs 8-A-4 boss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "8-A-1",
+   "label": "vs reference starter deck under 8-A-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road16",
+   "kind": "mirror",
+   "node": "8-A-2",
+   "label": "vs reference deck (Map 16) under 8-A-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "8-A-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 20830,
+  "seconds": 154.1,
+  "gamesPerSecond": 135.2,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 16126,
+   "gens": 5,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "baby-bat:1,beetle-grunt:3,cave-swiftlet:2,giant-cave-huntsman:2,grotto-lobster:3,lantern-spark-fly:2,star-nosed-mole:1,sulfur-cinder-moth:1,tunnel-ant:2,vampire-bat:3",
+     "f": 0.648,
+     "gens": 3,
+     "games": 9174,
+     "top": [
+      "baby-bat:1,beetle-grunt:3,cave-swiftlet:2,giant-cave-huntsman:2,grotto-lobster:3,lantern-spark-fly:2,star-nosed-mole:1,sulfur-cinder-moth:1,tunnel-ant:2,vampire-bat:3",
+      "baby-bat:1,cave-swiftlet:2,echo-screecher:1,gallery-orb-weaver:1,giant-cave-huntsman:1,glowworm-cluster:2,grotto-lobster:2,lantern-spark-fly:2,star-nosed-mole:1,subterraneaner:1,swarm-matriarch:3,vampire-bat:3",
+      "baby-bat:1,beetle-grunt:3,cave-cricket:1,coffer-mimic:1,dynamite-packrat:1,echo-screecher:3,giant-cave-huntsman:2,glowworm-cluster:1,grotto-lobster:2,tunnel-ant:2,vampire-bat:3",
+      "baby-bat:2,barrow-leech-bat:1,beetle-grunt:1,cave-centipede:1,cave-flitter:1,cave-swiftlet:2,echo-screecher:3,glimmer-spider:1,grotto-lobster:1,lantern-spark-fly:1,prospector-mole:2,swarm-matriarch:1,vampire-bat:3"
+     ]
+    },
+    {
+     "best": "baby-bat:1,barrow-leech-bat:1,beetle-grunt:3,cave-centipede:2,cave-flitter:2,echo-screecher:2,gallery-orb-weaver:1,giant-cave-huntsman:1,glimmer-spider:3,grotto-lobster:1,prospector-mole:1,swarm-matriarch:1,vampire-bat:1",
+     "f": 0.609,
+     "gens": 2,
+     "games": 6952,
+     "top": [
+      "baby-bat:1,barrow-leech-bat:1,beetle-grunt:3,cave-centipede:2,cave-flitter:2,echo-screecher:2,gallery-orb-weaver:1,giant-cave-huntsman:1,glimmer-spider:3,grotto-lobster:1,prospector-mole:1,swarm-matriarch:1,vampire-bat:1",
+      "barrow-leech-bat:1,beetle-grunt:3,cave-centipede:2,coffer-mimic:1,dynamite-packrat:2,giant-cave-huntsman:1,glimmer-spider:2,gravel-mole:1,grotto-lobster:1,guano-beetle:1,prospector-mole:1,star-nosed-mole:1,swarm-matriarch:2,vampire-bat-nurse:1",
+      "baby-bat:1,barrow-leech-bat:3,beetle-grunt:4,cave-centipede:1,dynamite-packrat:2,giant-cave-huntsman:1,glimmer-spider:1,guano-beetle:1,lantern-spark-fly:1,millipede-hauler:1,prospector-mole:1,star-nosed-mole:1,swarm-matriarch:1,vampire-bat:1",
+      "barrow-leech-bat:1,beetle-grunt:3,cave-centipede:2,cave-cricket:1,cave-olm:1,cave-swiftlet:2,coffer-mimic:1,ghost-crayfish:1,giant-cave-huntsman:1,glimmer-spider:2,gravel-mole:2,monarch-wingblade:1,prospector-mole:1,vampire-bat-nurse:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "baby-bat": 1,
+    "beetle-grunt": 3,
+    "cave-swiftlet": 2,
+    "giant-cave-huntsman": 2,
+    "grotto-lobster": 3,
+    "lantern-spark-fly": 2,
+    "star-nosed-mole": 1,
+    "sulfur-cinder-moth": 1,
+    "tunnel-ant": 2,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "baby-bat",
+     "name": "Baby Bat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.636,
+   "ci": [
+    0.612,
+    0.661
+   ],
+   "mirror": 0.746,
+   "road": 0.309,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.391,
+     "lo": 0.281,
+     "hi": 0.513,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.156,
+     "lo": 0.087,
+     "hi": 0.264,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "road|8-A-1",
+     "label": "8-A-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.422,
+     "lo": 0.309,
+     "hi": 0.544,
+     "n": 64
+    },
+    {
+     "entry": "road|8-A-2",
+     "label": "8-A-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.688,
+     "lo": 0.566,
+     "hi": 0.788,
+     "n": 64
+    },
+    {
+     "entry": "road|8-A-3",
+     "label": "8-A-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.125,
+     "lo": 0.065,
+     "hi": 0.228,
+     "n": 64
+    },
+    {
+     "entry": "road|8-A-4",
+     "label": "8-A-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0,
+     "lo": 0,
+     "hi": 0.057,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:8-A-1",
+     "label": "vs 8-A-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:8-A-2",
+     "label": "vs 8-A-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:8-A-3",
+     "label": "vs 8-A-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:8-A-4",
+     "label": "vs 8-A-4 boss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.484,
+     "lo": 0.366,
+     "hi": 0.604,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 8-A-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road16",
+     "label": "vs reference deck (Map 16) under 8-A-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.188,
+     "lo": 0.111,
+     "hi": 0.3,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 8-A-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.648,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "baby-bat": 1,
+    "beetle-grunt": 3,
+    "cave-swiftlet": 2,
+    "giant-cave-huntsman": 2,
+    "grotto-lobster": 3,
+    "lantern-spark-fly": 2,
+    "star-nosed-mole": 1,
+    "sulfur-cinder-moth": 1,
+    "tunnel-ant": 2,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "baby-bat",
+     "name": "Baby Bat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sulfur-cinder-moth",
+     "name": "Sulfur Cinder Moth",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.636,
+   "ci": [
+    0.612,
+    0.661
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "baby-bat": 1,
+    "cave-swiftlet": 2,
+    "echo-screecher": 1,
+    "gallery-orb-weaver": 1,
+    "giant-cave-huntsman": 1,
+    "glowworm-cluster": 2,
+    "grotto-lobster": 2,
+    "lantern-spark-fly": 2,
+    "star-nosed-mole": 1,
+    "subterraneaner": 1,
+    "swarm-matriarch": 3,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "swarm-matriarch",
+     "name": "Swarm Matriarch",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-swiftlet",
+     "name": "Cave Swiftlet",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "glowworm-cluster",
+     "name": "Glowworm Cluster",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lantern-spark-fly",
+     "name": "Lantern Spark Fly",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "baby-bat",
+     "name": "Baby Bat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "subterraneaner",
+     "name": "Subterraneaner",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.605,
+   "ci": [
+    0.578,
+    0.632
+   ],
+   "copiesApartFromOptimum": 8
+  },
+  {
+   "i": 2,
+   "deck": {
+    "baby-bat": 1,
+    "beetle-grunt": 3,
+    "cave-cricket": 1,
+    "coffer-mimic": 1,
+    "dynamite-packrat": 1,
+    "echo-screecher": 3,
+    "giant-cave-huntsman": 2,
+    "glowworm-cluster": 1,
+    "grotto-lobster": 2,
+    "tunnel-ant": 2,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "baby-bat",
+     "name": "Baby Bat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-cricket",
+     "name": "Cave Cricket",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "coffer-mimic",
+     "name": "Coffer Mimic",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "dynamite-packrat",
+     "name": "Dynamite Packrat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "glowworm-cluster",
+     "name": "Glowworm Cluster",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.613,
+   "ci": [
+    0.587,
+    0.638
+   ],
+   "copiesApartFromOptimum": 7
+  },
+  {
+   "i": 3,
+   "deck": {
+    "baby-bat": 1,
+    "barrow-leech-bat": 1,
+    "beetle-grunt": 3,
+    "cave-centipede": 2,
+    "cave-flitter": 2,
+    "echo-screecher": 2,
+    "gallery-orb-weaver": 1,
+    "giant-cave-huntsman": 1,
+    "glimmer-spider": 3,
+    "grotto-lobster": 1,
+    "prospector-mole": 1,
+    "swarm-matriarch": 1,
+    "vampire-bat": 1
+   },
+   "cards": [
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "glimmer-spider",
+     "name": "Glimmer Spider",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-centipede",
+     "name": "Cave Centipede",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-flitter",
+     "name": "Cave Flitter",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "baby-bat",
+     "name": "Baby Bat",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "barrow-leech-bat",
+     "name": "Barrow Leech",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grotto-lobster",
+     "name": "Grotto Lobster",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "prospector-mole",
+     "name": "Prospector Mole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "swarm-matriarch",
+     "name": "Swarm Matriarch",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.6,
+   "ci": [
+    0.574,
+    0.625
+   ],
+   "copiesApartFromOptimum": 13
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.469,
+    "elo": -22,
+    "n": 64
+   },
+   {
+    "p": 0.578,
+    "elo": 55,
+    "n": 64
+   },
+   {
+    "p": 0.609,
+    "elo": 77,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.531,
+    "elo": 22,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.609,
+    "elo": 77,
+    "n": 64
+   },
+   {
+    "p": 0.578,
+    "elo": 55,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.422,
+    "elo": -55,
+    "n": 64
+   },
+   {
+    "p": 0.391,
+    "elo": -77,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.344,
+    "elo": -112,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.391,
+    "elo": -77,
+    "n": 64
+   },
+   {
+    "p": 0.422,
+    "elo": -55,
+    "n": 64
+   },
+   {
+    "p": 0.656,
+    "elo": 112,
+    "n": 64
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 8,
+ "ladder": null,
+ "road": [
+  {
+   "node": "8-A-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.422,
+   "ci": [
+    0.309,
+    0.544
+   ],
+   "n": 64
+  },
+  {
+   "node": "8-A-2",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.688,
+   "ci": [
+    0.566,
+    0.788
+   ],
+   "n": 64
+  },
+  {
+   "node": "8-A-3",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.125,
+   "ci": [
+    0.065,
+    0.228
+   ],
+   "n": 64
+  },
+  {
+   "node": "8-A-4",
+   "kind": "boss",
+   "target": 0.4,
+   "optimum": 0,
+   "ci": [
+    0,
+    0.057
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:8-A-1",
+   "node": "8-A-1",
+   "rules": "aiGuardLethal, phase off",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:8-A-2",
+   "node": "8-A-2",
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T1",
+   "withField": 0.906,
+   "noField": 0.984,
+   "delta": -0.078,
+   "ci": [
+    -0.156,
+    -0.001
+   ]
+  },
+  {
+   "opponent": "fight:8-A-3",
+   "node": "8-A-3",
+   "rules": "aiGuardLethal, boon skyAmbush, phase off, terrain Deep Dark T1",
+   "withField": 0.906,
+   "noField": 0.938,
+   "delta": -0.031,
+   "ci": [
+    -0.124,
+    0.062
+   ]
+  },
+  {
+   "opponent": "fight:8-A-4",
+   "node": "8-A-4",
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.391,
+   "noField": 0.484,
+   "delta": -0.094,
+   "ci": [
+    -0.265,
+    0.077
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "8-A-1",
+   "rules": "aiGuardLethal, phase off",
+   "withField": 0.984,
+   "noField": 0.953,
+   "delta": 0.031,
+   "ci": [
+    -0.029,
+    0.091
+   ]
+  },
+  {
+   "opponent": "ref:road16",
+   "node": "8-A-2",
+   "rules": "aiGuardLethal, phase off, terrain Deep Dark T1",
+   "withField": 0.156,
+   "noField": 0.188,
+   "delta": -0.031,
+   "ci": [
+    -0.162,
+    0.099
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "8-A-3",
+   "rules": "aiGuardLethal, boon skyAmbush, phase off, terrain Deep Dark T1",
+   "withField": 0.875,
+   "noField": 0.922,
+   "delta": -0.047,
+   "ci": [
+    -0.151,
+    0.057
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:8-A-1",
+   "label": "8-A-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "8-A-1",
+   "target": 0.9,
+   "h2h": 1,
+   "h2hCI": [
+    0.943,
+    1
+   ],
+   "elo": 842,
+   "eloCI": [
+    489,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.13,
+   "optimumSame": 0.593,
+   "pointsBelow": 46.3,
+   "pointsCI": 4.4
+  },
+  {
+   "opponent": "fight:8-A-2",
+   "label": "8-A-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "8-A-2",
+   "target": 0.75,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.81,
+    0.956
+   ],
+   "elo": 394,
+   "eloCI": [
+    252,
+    536
+   ],
+   "n": 64,
+   "asPlayer": 0.306,
+   "optimumSame": 0.604,
+   "pointsBelow": 29.8,
+   "pointsCI": 4.7
+  },
+  {
+   "opponent": "fight:8-A-3",
+   "label": "8-A-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "8-A-3",
+   "target": 0.6,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.81,
+    0.956
+   ],
+   "elo": 394,
+   "eloCI": [
+    252,
+    536
+   ],
+   "n": 64,
+   "asPlayer": 0.395,
+   "optimumSame": 0.604,
+   "pointsBelow": 20.9,
+   "pointsCI": 4.6
+  },
+  {
+   "opponent": "fight:8-A-4",
+   "label": "8-A-4 boss's deck",
+   "kind": "boss",
+   "node": "8-A-4",
+   "target": 0.4,
+   "h2h": 0.391,
+   "h2hCI": [
+    0.281,
+    0.513
+   ],
+   "elo": -77,
+   "eloCI": [
+    -164,
+    9
+   ],
+   "n": 64,
+   "asPlayer": 0.654,
+   "optimumSame": 0.666,
+   "pointsBelow": 1.1,
+   "pointsCI": 4
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 8-A-1's field",
+   "kind": "reference",
+   "node": "8-A-1",
+   "target": null,
+   "h2h": 0.984,
+   "h2hCI": [
+    0.917,
+    0.997
+   ],
+   "elo": 720,
+   "eloCI": [
+    417,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.226,
+   "optimumSame": 0.595,
+   "pointsBelow": 36.9,
+   "pointsCI": 4.5
+  },
+  {
+   "opponent": "ref:road16",
+   "label": "reference deck (Map 16) under 8-A-2's field",
+   "kind": "reference",
+   "node": "8-A-2",
+   "target": null,
+   "h2h": 0.156,
+   "h2hCI": [
+    0.087,
+    0.264
+   ],
+   "elo": -293,
+   "eloCI": [
+    -408,
+    -178
+   ],
+   "n": 64,
+   "asPlayer": 0.876,
+   "optimumSame": 0.694,
+   "pointsBelow": -18.2,
+   "pointsCI": 3.8
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 8-A-3's field",
+   "kind": "reference",
+   "node": "8-A-3",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.772,
+    0.935
+   ],
+   "elo": 338,
+   "eloCI": [
+    212,
+    464
+   ],
+   "n": 64,
+   "asPlayer": 0.282,
+   "optimumSame": 0.608,
+   "pointsBelow": 32.6,
+   "pointsCI": 4.9
+  }
+ ]
+}

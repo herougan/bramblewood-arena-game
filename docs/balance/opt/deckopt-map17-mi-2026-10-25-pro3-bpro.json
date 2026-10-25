@@ -1,0 +1,1897 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.2.0 (2026-10-25, PRO3)",
+ "generated": "2026-10-25T02:37:26.761Z",
+ "map": {
+  "id": "mi",
+  "num": 17,
+  "name": "The Ice Hollow",
+  "side": "m6",
+  "opensOn": 21
+ },
+ "level": 1,
+ "settings": {
+  "mode": "bpro",
+  "faction": false,
+  "rarityCap": "map",
+  "cap": "veryrare",
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+ "pools": {
+  "mode": "bpro",
+  "cap": "veryrare",
+  "subsOpen": [],
+  "phase1": 25,
+  "mapCards": [
+   "alpha-howler",
+   "arctic-fox-raider",
+   "arctic-tern",
+   "beluga",
+   "boreal-elk",
+   "frost-hare-sprinter",
+   "frostmoon-howler",
+   "glacial-ape-king",
+   "greenland-shark",
+   "harbor-seal",
+   "harp-seal-pup",
+   "ice-crevasse-wolf",
+   "krill-swarm",
+   "lemming-swarm",
+   "lone-grey-wolf",
+   "musk-ox-calf",
+   "musk-ox-matriarch",
+   "polar-bear",
+   "ravenous-wolverine",
+   "ringed-seal",
+   "snow-bunting-archer",
+   "snow-ermine",
+   "spitting-spider",
+   "talus-pika",
+   "walrus-icebreaker"
+  ],
+  "owned": [],
+  "phase2": 25,
+  "wholeSpectrum": 25,
+  "excluded": [
+   {
+    "reason": "not in the map's own pool (BPRO)",
+    "n": 376,
+    "ids": [
+     "acorn-chipmunk",
+     "adder-ambusher",
+     "alley-cat",
+     "alligator-gar",
+     "alpine-marmot",
+     "alpine-salamander",
+     "alpine-swift",
+     "amber-cicada",
+     "anaconda-coil",
+     "anhinga-spearbird",
+     "ant-scout",
+     "ant-warrior",
+     "antlion-pit",
+     "anvil-thrush",
+     "apollo-butterfly",
+     "archerfish",
+     "armadillo-guard",
+     "ash-cloud-condor",
+     "ash-moth",
+     "ashbone-ghoul",
+     "baby-bat",
+     "baby-horned-capybara",
+     "badger-lumberjack",
+     "badger-stonemason",
+     "balloon-archer",
+     "banded-sea-krait",
+     "barkplate-beetle",
+     "beachcomber-sanderling",
+     "bear-cub",
+     "beaver-feller",
+     "bee-forager",
+     "bee-knight",
+     "bee-sentry",
+     "beetle-grunt",
+     "berserker-boar",
+     "bison-bulldozer",
+     "blind-cave-fish",
+     "bloodscent-shark",
+     "blue-ringed-octopus",
+     "bogfire-newt",
+     "bombardier-beetle",
+     "booming-bittern",
+     "border-collie",
+     "box-turtle",
+     "bramble-hoglet",
+     "bramble-sprout",
+     "bramblewood-lynx",
+     "briarback-hedgehog",
+     "burrow-rabbit",
+     "buzzed-chipmunk",
+     "caiman-hatchling",
+     "camouflage-frog",
+     "cane-toad",
+     "carrion-beetle",
+     "carrion-crow",
+     "cataphract-destrier",
+     "caustic-scorpion",
+     "cave-centipede",
+     "cave-cricket",
+     "cave-olm",
+     "cave-pseudoscorpion",
+     "cave-swiftlet",
+     "cave-warlord",
+     "chamois-leaper",
+     "chipmunk-forager",
+     "chipmunk-hoarder",
+     "chipmunk-skirmisher",
+     "cinder-gecko",
+     "cinder-skeleton",
+     "cinder-stoker",
+     "cleaner-wrasse",
+     "clover-butterfly",
+     "clownfish-scout",
+     "cobalt-talon-fledgling",
+     "coffer-mimic",
+     "colossal-squid",
+     "compost-grub",
+     "conch-crawler",
+     "conch-herald",
+     "cone-cutter-squirrel",
+     "cone-snail",
+     "constrictor-coil",
+     "coral-polyp-colony",
+     "coral-reef-shark",
+     "cottonmouth-matriarch",
+     "cottontail",
+     "cricket-drummer",
+     "crimson-wing-recruit",
+     "crocodile-ambusher",
+     "crossed-eyes",
+     "crown-of-thorns-star",
+     "cunning-vixen",
+     "dam-keeper-beaver",
+     "dhole-matriarch",
+     "dhole-runner",
+     "diving-bell-spider",
+     "dormouse",
+     "driftwood-crab",
+     "dromedary",
+     "duck-paddler",
+     "duckling",
+     "dune-packrat",
+     "dung-beetle",
+     "dust-devil-kestrel",
+     "dust-hyena",
+     "dynamite-packrat",
+     "eagle-owl-quartermaster",
+     "earthworm",
+     "echidna-quillshot",
+     "echo-screecher",
+     "electric-catfish",
+     "electric-ray",
+     "elephant-nose-fish",
+     "ember-centipede",
+     "ember-tetra",
+     "eyrie-warden",
+     "farm-dog",
+     "fawn-scout",
+     "fen-mink",
+     "fennec-fox",
+     "feral-tomcat",
+     "fiddler-crab-swarm",
+     "field-crow",
+     "field-mouse",
+     "field-vole",
+     "fire-ant-raft",
+     "fire-hawk",
+     "fire-salamander",
+     "firefly-swarm",
+     "fishing-cat",
+     "fleetfootd",
+     "forager-ant",
+     "fox-kit",
+     "fox-sharpshot",
+     "frillneck-duelist",
+     "fulmar-spitter",
+     "fumarole-ibex",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "gallery-orb-weaver",
+     "gannet-nestweaver",
+     "garden-snail",
+     "garden-tiger-moth",
+     "gatling-hog",
+     "ghost-crayfish",
+     "giant-cave-huntsman",
+     "giant-clam",
+     "giant-water-bug",
+     "glacier-wolf-pack",
+     "glasswing-butterfly",
+     "glasswing-moth",
+     "glimmer-spider",
+     "golden-eagle-diver",
+     "grass-snake",
+     "grass-viper",
+     "grave-grin-hyena",
+     "gravel-mole",
+     "great-barracuda",
+     "great-crested-grebe",
+     "great-skua",
+     "greater-siren",
+     "grey-seal-bull",
+     "greyplume-fledgling",
+     "grizzly-vanguard",
+     "grotto-lobster",
+     "guano-beetle",
+     "gull-thief",
+     "guppy",
+     "harvest-mouse",
+     "hawk-arrowkeeper",
+     "hawthorn-shieldbug",
+     "hazel-coppice",
+     "hedge-weasel",
+     "hedgehog-herbalist",
+     "hedgehog-scout",
+     "hedgerow-shrew",
+     "hercules-beetle",
+     "hollow-oath-keeper",
+     "honey-bee",
+     "hoopoe-herald",
+     "horned-lizard",
+     "horseshoe-crab",
+     "house-cat",
+     "ibex-rockcaller",
+     "inland-taipan",
+     "ironclaw-fiddler",
+     "jay-pilferer",
+     "kinkajou-lurker",
+     "kittiwake-flock",
+     "komodo-warlord",
+     "kraken-spawnling",
+     "ladybird-guard",
+     "lamprey",
+     "land-tiller",
+     "lantern-spark-fly",
+     "leafcutter-gardener",
+     "leopard-slug",
+     "limpet-clinger",
+     "lionfish",
+     "lions-mane-jelly",
+     "lotus-frog",
+     "lovebird",
+     "lyrebird-mimic",
+     "magma-salamander",
+     "magma-titan",
+     "magma-wraith",
+     "mangrove-kingfisher",
+     "mangrove-manatee",
+     "mangrove-monitor",
+     "mangrove-mudskipper",
+     "mantis-shrimp",
+     "margay",
+     "marmot-stonecutter",
+     "marsh-harrier",
+     "marsh-wisp",
+     "marula-elephant",
+     "marula-monkey",
+     "mayfly-dancer",
+     "meadow-frog",
+     "meadow-rabbit",
+     "meerkat-burrower",
+     "meerkat-sentry",
+     "meerkat-wayfarer",
+     "millipede-hauler",
+     "minnow-skitter",
+     "mire-witch-heron",
+     "moat-snapper",
+     "mongoose-duelist",
+     "monitor-rambler",
+     "moon-jerboa",
+     "moonshell-snail",
+     "mosquito-cloud",
+     "mosswing-laborer",
+     "mountain-goat-climber",
+     "mountain-hare",
+     "mouse-sapper",
+     "mudflat-godwit",
+     "mudpuppy",
+     "muntjac-barker",
+     "muskrat-lodgekeeper",
+     "newt-doctor",
+     "nightjar-drifter",
+     "nightshade-moth",
+     "nutria-reedcutter",
+     "obsidian-lich",
+     "obsidian-scorpion",
+     "old-sturgeon",
+     "open-ocean-hermit-crab",
+     "otter-centurion",
+     "otter-guard",
+     "otter-kit",
+     "otter-paddler",
+     "owl-nightwatch",
+     "oyster-bank",
+     "oystercatcher",
+     "pack-mule",
+     "pale-oryx",
+     "pall-wraith",
+     "pangolin-roller",
+     "paper-wasp",
+     "parrotfish",
+     "peak-condor",
+     "peregrine-stooper",
+     "phoenix-fledgling",
+     "pigeon-peon",
+     "pill-bug",
+     "pincushion-urchin",
+     "pine-marten",
+     "piranha-shoal",
+     "plague-gnat-cloud",
+     "planarian-splitter",
+     "platypus-spur",
+     "poison-dart-croaker",
+     "pond-algae",
+     "pond-duck",
+     "pond-trout",
+     "porcupine-roller",
+     "proboscis-monkey",
+     "pronghorn-racer",
+     "prospector-mole",
+     "puffin-diver",
+     "pumice-beetle",
+     "pyrenean-desman",
+     "quarry-mole",
+     "quicksand-queen",
+     "quill-volley",
+     "quillguard",
+     "rabid-jackal",
+     "raccoon-bandit",
+     "raft-spider",
+     "raven-scout",
+     "razorbill",
+     "red-backed-salamander",
+     "red-billed-chough",
+     "redwood-woodpecker",
+     "reef-shark",
+     "riptide-eel",
+     "river-carp",
+     "river-mink",
+     "riverwing-envoy",
+     "roadrunner-courier",
+     "robin-redbreast",
+     "rock-pool-starfish",
+     "rodent-king",
+     "salvager-hermit-crab",
+     "sandfish",
+     "savanna-cheetah",
+     "sawfish",
+     "scree-goat",
+     "sea-cucumber",
+     "sea-hare",
+     "sea-turtle-elder",
+     "seed-cache-squirrel",
+     "shallows-fry",
+     "sheep",
+     "shepherds-bark",
+     "shimmerwing-stag",
+     "siege-rhino",
+     "signal-crayfish",
+     "silver-minnow",
+     "skull-vulture",
+     "skunk-gasser",
+     "slow-worm",
+     "snapper-hatchling",
+     "snapstick-turtle",
+     "snowshoe-hare",
+     "sparrow-chick",
+     "spitting-cobra",
+     "springbok-pronker",
+     "springtail-hopper",
+     "stable-colt",
+     "stag-beetle",
+     "stag-knight",
+     "stalactite-golem",
+     "star-nosed-mole",
+     "stoat-cutthroat",
+     "stone-turtle-warden",
+     "stonedrop-vulture",
+     "subterraneaner",
+     "sulfur-cinder-moth",
+     "sunbittern-strider",
+     "swamp-alligator",
+     "swamp-rabbit",
+     "swift-fox",
+     "swordfish-spearman",
+     "taiga-lynx",
+     "talon-archer",
+     "tarantula-hawk",
+     "tasmanian-devil",
+     "termite-forager",
+     "terrier-pup",
+     "thorn-shrike",
+     "thorny-devil",
+     "tide-pool-crab",
+     "tidepool-trapper-crab",
+     "trickster-fox",
+     "truffle-piglet",
+     "tunnel-ant",
+     "vampire-bat",
+     "vampire-bat-nurse",
+     "venomlord-serpent",
+     "warhorse-charger",
+     "water-shrew",
+     "water-vole",
+     "weaver-bird",
+     "whale-shark",
+     "whip-spider",
+     "wolf-pack-runner",
+     "wolf-spider-mother",
+     "woodcock-lookout",
+     "woodland-brawler",
+     "woodland-caribou",
+     "woodpecker-sapper",
+     "worker-ant",
+     "yellow-bellied-sea-snake",
+     "yeti"
+    ]
+   },
+   {
+    "reason": "over the map's rarity cap (veryrare)",
+    "n": 4,
+    "ids": [
+     "old-snapjaw",
+     "ossuary-lammergeier",
+     "the-contradiction",
+     "the-gannet-queen"
+    ]
+   }
+  ]
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "tundra-ice",
+   "kinBiomes": [
+    "taiga",
+    "volcanic-ash"
+   ],
+   "terrainTypes": [
+    "Frost",
+    "Tundra"
+   ],
+   "mapTypes": [
+    "Bird 2",
+    "Bovine 2",
+    "Canid 5",
+    "Coastal 3",
+    "Frost 7",
+    "Lagomorph 2",
+    "Mustelid 2",
+    "Ocean 3",
+    "Pinniped 4",
+    "Taiga 2",
+    "Tundra 20",
+    "Wolf 3"
+   ],
+   "mapMechanics": [
+    "armor 3",
+    "cleave 2",
+    "cold 3",
+    "evasion 6",
+    "ranged 2",
+    "swarm 3",
+    "tide 5"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "phase:off",
+    "slippery"
+   ],
+   "coreCards": 25
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 45,
+    "e": [
+     "cobalt-talon-skirmisher",
+     "crimson-wing-duelist-cadet",
+     "daily-post",
+     "dawn-bellringer",
+     "dominion-nestguard",
+     "ferry-toll-frog"
+    ]
+   },
+   {
+    "reason": "map rule: not in the map's own pool (BPRO)",
+    "n": 675,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "acorn-chipmunk",
+     "adder-ambusher"
+    ]
+   },
+   {
+    "reason": "map rule: over the map's rarity cap (veryrare)",
+    "n": 59,
+    "e": [
+     "ashmantle-fiend",
+     "black-dragon",
+     "blue-dragon",
+     "caldera-snow-leopard",
+     "caldera-wyrm",
+     "cathedral-eagle"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:17-A-1",
+   "kind": "mirror",
+   "node": "17-A-1",
+   "label": "vs 17-A-1 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase off"
+  },
+  {
+   "key": "mirror|fight:17-A-2",
+   "kind": "mirror",
+   "node": "17-A-2",
+   "label": "vs 17-A-2 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|fight:17-A-3",
+   "kind": "mirror",
+   "node": "17-A-3",
+   "label": "vs 17-A-3 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|fight:17-A-4",
+   "kind": "mirror",
+   "node": "17-A-4",
+   "label": "vs 17-A-4 boss's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "17-A-1",
+   "label": "vs reference starter deck under 17-A-1's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase off"
+  },
+  {
+   "key": "mirror|ref:road21",
+   "kind": "mirror",
+   "node": "17-A-2",
+   "label": "vs reference deck (Map 21) under 17-A-2's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "17-A-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|17-A-1",
+   "kind": "road",
+   "node": "17-A-1",
+   "label": "17-A-1 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase off"
+  },
+  {
+   "key": "road|17-A-2",
+   "kind": "road",
+   "node": "17-A-2",
+   "label": "17-A-2 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|17-A-3",
+   "kind": "road",
+   "node": "17-A-3",
+   "label": "17-A-3 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|17-A-4",
+   "kind": "road",
+   "node": "17-A-4",
+   "label": "17-A-4 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "neutral|fight:17-A-1",
+   "kind": "mirror",
+   "node": "17-A-1",
+   "label": "vs 17-A-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:17-A-2",
+   "kind": "mirror",
+   "node": "17-A-2",
+   "label": "vs 17-A-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:17-A-3",
+   "kind": "mirror",
+   "node": "17-A-3",
+   "label": "vs 17-A-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:17-A-4",
+   "kind": "mirror",
+   "node": "17-A-4",
+   "label": "vs 17-A-4 boss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "17-A-1",
+   "label": "vs reference starter deck under 17-A-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road21",
+   "kind": "mirror",
+   "node": "17-A-2",
+   "label": "vs reference deck (Map 21) under 17-A-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "17-A-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 22282,
+  "seconds": 166.6,
+  "gamesPerSecond": 133.7,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 17622,
+   "gens": 6,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "arctic-tern:1,frost-hare-sprinter:1,frostmoon-howler:3,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:5,lone-grey-wolf:1,musk-ox-calf:2",
+     "f": 0.867,
+     "gens": 3,
+     "games": 9328,
+     "top": [
+      "arctic-tern:1,frost-hare-sprinter:1,frostmoon-howler:3,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:5,lone-grey-wolf:1,musk-ox-calf:2",
+      "arctic-fox-raider:1,arctic-tern:1,frost-hare-sprinter:1,frostmoon-howler:3,harbor-seal:1,krill-swarm:5,lemming-swarm:5,lone-grey-wolf:1,musk-ox-calf:2",
+      "frostmoon-howler:3,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:3,musk-ox-calf:1,ringed-seal:1,talus-pika:3,walrus-icebreaker:2",
+      "arctic-fox-raider:1,frost-hare-sprinter:2,frostmoon-howler:1,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:3,musk-ox-calf:1,ravenous-wolverine:1,snow-bunting-archer:1,spitting-spider:1,talus-pika:1,walrus-icebreaker:1"
+     ]
+    },
+    {
+     "best": "alpha-howler:1,frost-hare-sprinter:3,frostmoon-howler:1,ice-crevasse-wolf:1,krill-swarm:3,lemming-swarm:4,polar-bear:1,snow-bunting-archer:2,snow-ermine:2,talus-pika:2",
+     "f": 0.8,
+     "gens": 3,
+     "games": 8294,
+     "top": [
+      "alpha-howler:1,frost-hare-sprinter:3,frostmoon-howler:1,ice-crevasse-wolf:1,krill-swarm:3,lemming-swarm:4,polar-bear:1,snow-bunting-archer:2,snow-ermine:2,talus-pika:2",
+      "alpha-howler:1,arctic-tern:1,frost-hare-sprinter:2,frostmoon-howler:1,ice-crevasse-wolf:1,krill-swarm:3,lemming-swarm:4,polar-bear:2,snow-bunting-archer:2,snow-ermine:2,talus-pika:1",
+      "alpha-howler:2,frost-hare-sprinter:2,frostmoon-howler:3,harp-seal-pup:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:3,snow-ermine:2,talus-pika:1",
+      "boreal-elk:2,krill-swarm:5,lemming-swarm:3,snow-ermine:5,talus-pika:5"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "arctic-tern": 1,
+    "frost-hare-sprinter": 1,
+    "frostmoon-howler": 3,
+    "harbor-seal": 1,
+    "ice-crevasse-wolf": 1,
+    "krill-swarm": 5,
+    "lemming-swarm": 5,
+    "lone-grey-wolf": 1,
+    "musk-ox-calf": 2
+   },
+   "cards": [
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frostmoon-howler",
+     "name": "Frostmoon Howler",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "musk-ox-calf",
+     "name": "Musk Ox Calf",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.873,
+   "ci": [
+    0.851,
+    0.895
+   ],
+   "mirror": 0.929,
+   "road": 0.707,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "road|17-A-1",
+     "label": "17-A-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.813,
+     "lo": 0.7,
+     "hi": 0.889,
+     "n": 64
+    },
+    {
+     "entry": "road|17-A-2",
+     "label": "17-A-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.781,
+     "lo": 0.666,
+     "hi": 0.865,
+     "n": 64
+    },
+    {
+     "entry": "road|17-A-3",
+     "label": "17-A-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.828,
+     "lo": 0.718,
+     "hi": 0.901,
+     "n": 64
+    },
+    {
+     "entry": "road|17-A-4",
+     "label": "17-A-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.406,
+     "lo": 0.295,
+     "hi": 0.529,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:17-A-1",
+     "label": "vs 17-A-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:17-A-2",
+     "label": "vs 17-A-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:17-A-3",
+     "label": "vs 17-A-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:17-A-4",
+     "label": "vs 17-A-4 boss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.797,
+     "lo": 0.683,
+     "hi": 0.877,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 17-A-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road21",
+     "label": "vs reference deck (Map 21) under 17-A-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 17-A-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.867,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "arctic-tern": 1,
+    "frost-hare-sprinter": 1,
+    "frostmoon-howler": 3,
+    "harbor-seal": 1,
+    "ice-crevasse-wolf": 1,
+    "krill-swarm": 5,
+    "lemming-swarm": 5,
+    "lone-grey-wolf": 1,
+    "musk-ox-calf": 2
+   },
+   "cards": [
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frostmoon-howler",
+     "name": "Frostmoon Howler",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "musk-ox-calf",
+     "name": "Musk Ox Calf",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "arctic-tern",
+     "name": "Arctic Tern",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lone-grey-wolf",
+     "name": "Lone Grey Wolf",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.873,
+   "ci": [
+    0.851,
+    0.895
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "frostmoon-howler": 3,
+    "harbor-seal": 1,
+    "ice-crevasse-wolf": 1,
+    "krill-swarm": 5,
+    "lemming-swarm": 3,
+    "musk-ox-calf": 1,
+    "ringed-seal": 1,
+    "talus-pika": 3,
+    "walrus-icebreaker": 2
+   },
+   "cards": [
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frostmoon-howler",
+     "name": "Frostmoon Howler",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 2,
+     "rarity": "veryrare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "musk-ox-calf",
+     "name": "Musk Ox Calf",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ringed-seal",
+     "name": "Ringed Seal",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.84,
+   "ci": [
+    0.816,
+    0.864
+   ],
+   "copiesApartFromOptimum": 6
+  },
+  {
+   "i": 2,
+   "deck": {
+    "arctic-fox-raider": 1,
+    "frost-hare-sprinter": 2,
+    "frostmoon-howler": 1,
+    "harbor-seal": 1,
+    "ice-crevasse-wolf": 1,
+    "krill-swarm": 5,
+    "lemming-swarm": 3,
+    "musk-ox-calf": 1,
+    "ravenous-wolverine": 1,
+    "snow-bunting-archer": 1,
+    "spitting-spider": 1,
+    "talus-pika": 1,
+    "walrus-icebreaker": 1
+   },
+   "cards": [
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "arctic-fox-raider",
+     "name": "Arctic Fox Raider",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frostmoon-howler",
+     "name": "Frostmoon Howler",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "harbor-seal",
+     "name": "Harbor Seal",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "musk-ox-calf",
+     "name": "Musk Ox Calf",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ravenous-wolverine",
+     "name": "Ravenous Wolverine",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "spitting-spider",
+     "name": "Spitting Spider",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "walrus-icebreaker",
+     "name": "Walrus Icebreaker",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.817,
+   "ci": [
+    0.792,
+    0.842
+   ],
+   "copiesApartFromOptimum": 7
+  },
+  {
+   "i": 3,
+   "deck": {
+    "alpha-howler": 1,
+    "frost-hare-sprinter": 3,
+    "frostmoon-howler": 1,
+    "ice-crevasse-wolf": 1,
+    "krill-swarm": 3,
+    "lemming-swarm": 4,
+    "polar-bear": 1,
+    "snow-bunting-archer": 2,
+    "snow-ermine": 2,
+    "talus-pika": 2
+   },
+   "cards": [
+    {
+     "id": "lemming-swarm",
+     "name": "Lemming Swarm",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "krill-swarm",
+     "name": "Krill Swarm",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "snow-bunting-archer",
+     "name": "Snow Bunting Archer",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "snow-ermine",
+     "name": "Snow Ermine",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "alpha-howler",
+     "name": "Alpha Howler",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "frostmoon-howler",
+     "name": "Frostmoon Howler",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "ice-crevasse-wolf",
+     "name": "Ice-Crevasse Wolf",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "polar-bear",
+     "name": "Polar Bear",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.81,
+   "ci": [
+    0.784,
+    0.836
+   ],
+   "copiesApartFromOptimum": 10
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.688,
+    "elo": 137,
+    "n": 64
+   },
+   {
+    "p": 0.531,
+    "elo": 22,
+    "n": 64
+   },
+   {
+    "p": 0.547,
+    "elo": 33,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.313,
+    "elo": -137,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.594,
+    "elo": 66,
+    "n": 64
+   },
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.469,
+    "elo": -22,
+    "n": 64
+   },
+   {
+    "p": 0.406,
+    "elo": -66,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.453,
+    "elo": -33,
+    "n": 64
+   },
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 64
+   },
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 64
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 8,
+ "ladder": null,
+ "road": [
+  {
+   "node": "17-A-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.813,
+   "ci": [
+    0.7,
+    0.889
+   ],
+   "n": 64
+  },
+  {
+   "node": "17-A-2",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.781,
+   "ci": [
+    0.666,
+    0.865
+   ],
+   "n": 64
+  },
+  {
+   "node": "17-A-3",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.828,
+   "ci": [
+    0.718,
+    0.901
+   ],
+   "n": 64
+  },
+  {
+   "node": "17-A-4",
+   "kind": "boss",
+   "target": 0.4,
+   "optimum": 0.406,
+   "ci": [
+    0.295,
+    0.529
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:17-A-1",
+   "node": "17-A-1",
+   "rules": "aiGuardLethal, boon snowVeil, phase off",
+   "withField": 0.922,
+   "noField": 0.984,
+   "delta": -0.062,
+   "ci": [
+    -0.135,
+    0.01
+   ]
+  },
+  {
+   "opponent": "fight:17-A-2",
+   "node": "17-A-2",
+   "rules": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1",
+   "withField": 0.969,
+   "noField": 0.922,
+   "delta": 0.047,
+   "ci": [
+    -0.031,
+    0.125
+   ]
+  },
+  {
+   "opponent": "fight:17-A-3",
+   "node": "17-A-3",
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T1",
+   "withField": 0.859,
+   "noField": 0.875,
+   "delta": -0.016,
+   "ci": [
+    -0.133,
+    0.102
+   ]
+  },
+  {
+   "opponent": "fight:17-A-4",
+   "node": "17-A-4",
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T2 (Frostbite 1)",
+   "withField": 0.875,
+   "noField": 0.797,
+   "delta": 0.078,
+   "ci": [
+    -0.049,
+    0.206
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "17-A-1",
+   "rules": "aiGuardLethal, boon snowVeil, phase off",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "ref:road21",
+   "node": "17-A-2",
+   "rules": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1",
+   "withField": 0.891,
+   "noField": 0.922,
+   "delta": -0.031,
+   "ci": [
+    -0.132,
+    0.07
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "17-A-3",
+   "rules": "aiGuardLethal, phase off, terrain Frozen Waste T1",
+   "withField": 0.984,
+   "noField": 1,
+   "delta": -0.016,
+   "ci": [
+    -0.046,
+    0.015
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:17-A-1",
+   "label": "17-A-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "17-A-1",
+   "target": 0.9,
+   "h2h": 0.922,
+   "h2hCI": [
+    0.83,
+    0.966
+   ],
+   "elo": 429,
+   "eloCI": [
+    275,
+    582
+   ],
+   "n": 64,
+   "asPlayer": 0.29,
+   "optimumSame": 0.867,
+   "pointsBelow": 57.8,
+   "pointsCI": 5
+  },
+  {
+   "opponent": "fight:17-A-2",
+   "label": "17-A-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "17-A-2",
+   "target": 0.75,
+   "h2h": 0.969,
+   "h2hCI": [
+    0.893,
+    0.991
+   ],
+   "elo": 597,
+   "eloCI": [
+    369,
+    824
+   ],
+   "n": 64,
+   "asPlayer": 0.468,
+   "optimumSame": 0.862,
+   "pointsBelow": 39.4,
+   "pointsCI": 5.3
+  },
+  {
+   "opponent": "fight:17-A-3",
+   "label": "17-A-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "17-A-3",
+   "target": 0.6,
+   "h2h": 0.859,
+   "h2hCI": [
+    0.754,
+    0.924
+   ],
+   "elo": 314,
+   "eloCI": [
+    194,
+    434
+   ],
+   "n": 64,
+   "asPlayer": 0.345,
+   "optimumSame": 0.875,
+   "pointsBelow": 53,
+   "pointsCI": 5.4
+  },
+  {
+   "opponent": "fight:17-A-4",
+   "label": "17-A-4 boss's deck",
+   "kind": "boss",
+   "node": "17-A-4",
+   "target": 0.4,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.772,
+    0.935
+   ],
+   "elo": 338,
+   "eloCI": [
+    212,
+    464
+   ],
+   "n": 64,
+   "asPlayer": 0.631,
+   "optimumSame": 0.873,
+   "pointsBelow": 24.2,
+   "pointsCI": 5.2
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 17-A-1's field",
+   "kind": "reference",
+   "node": "17-A-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.943,
+    1
+   ],
+   "elo": 842,
+   "eloCI": [
+    489,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.189,
+   "optimumSame": 0.858,
+   "pointsBelow": 66.9,
+   "pointsCI": 4.9
+  },
+  {
+   "opponent": "ref:road21",
+   "label": "reference deck (Map 21) under 17-A-2's field",
+   "kind": "reference",
+   "node": "17-A-2",
+   "target": null,
+   "h2h": 0.891,
+   "h2hCI": [
+    0.791,
+    0.946
+   ],
+   "elo": 364,
+   "eloCI": [
+    231,
+    497
+   ],
+   "n": 64,
+   "asPlayer": 0.607,
+   "optimumSame": 0.871,
+   "pointsBelow": 26.4,
+   "pointsCI": 5.4
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 17-A-3's field",
+   "kind": "reference",
+   "node": "17-A-3",
+   "target": null,
+   "h2h": 0.984,
+   "h2hCI": [
+    0.917,
+    0.997
+   ],
+   "elo": 720,
+   "eloCI": [
+    417,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.397,
+   "optimumSame": 0.86,
+   "pointsBelow": 46.3,
+   "pointsCI": 5.2
+  }
+ ]
+}
