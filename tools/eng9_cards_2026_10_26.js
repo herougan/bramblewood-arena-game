@@ -69,5 +69,7 @@ if(process.argv.includes('apply')){
   fs.writeFileSync(CARDS, JSON.stringify(cards, null, 2).replace(/[\u007f-￿]/g, ch=> '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'eng9-refit-2026-10-26.json'), JSON.stringify({about: `ENG9 re-fit (${NOTE}): prices from tools/eng9_skill_costs_2026_10_26.py and bramblewood-budget.js (Chained x N, Cleave's statuses). Raises applied; drops held at their stats for the owner (as BF11-1 / EN3-6); no-legal-line cards listed.`,
     edits, moved: moved.map(c=> c.id), notBand: skipped, offLine, raised: raises.map(({c, A, H, ...r})=> r), held, same, flagged}, null, 1) + '\n');
+  const FP = path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'); let prev = []; try{ prev = JSON.parse(fs.readFileSync(FP, 'utf8')); }catch(e){}
+  fs.writeFileSync(FP, JSON.stringify([...new Set(prev.concat(held.map(h=> h.id), flagged))], null, 1) + '\n'); // the held drops join the cards held on record (as EN3)
   console.log('applied');
 }

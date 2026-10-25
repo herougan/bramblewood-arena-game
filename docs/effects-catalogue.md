@@ -1254,3 +1254,31 @@ The rules as built (engine: the EN8 block after `trigsOf`, `aiUsefulNow` / `aiLe
 | "+N 🪵" from the unit to the Lumber pill (the usual Lumber float), a log line per cause | `en8LogText` (`ui.en8-log-*`) | Scavenge, Salvage, Coppice, Driftwood, Windfall |
 | The heal's motes and number on the ally the bramble mends | the plain `heal` look | `heal {cause: 'brambleMend'}` |
 | A gold streak to the Rampart unit (EN3's look) | `en3RampartVfx` | only a hit from its reach now |
+
+## 2026-10-26 additions (package ENG9): Undead and Revive, Poison Barbs, status-only shots, Armor vs magic, Ready blockers, Bound and Tangled, Fork's lines, one-shot skills
+
+The rules as built (engine: `isMagicDmg` in `computeHitDamage` / `damageCardFlat`, `reviveFromGrave`, the Undead branch of `removeDeadCardsPass`, `en7StatusOnly`, `blockerReady`, `tangleUnit`, `bloomFail`, `spendOnReady`, `chargeTick`, the Fork block of `resolveCombatInner`; budget: `chainedMult`; owner 10-25 17:53 / 22:36, OWN-Q1):
+- **Undead** (`effects.undead`, the old self-Revive): a true death, then back once at 1 Health as a token (`card.undeadToken`); its next death leaves no card in the graveyard or the Removal Zone. Event `revive {undead, token}`.
+- **Revive N** (`effects.revive` N = On Play: Revive N; the trigger action `revive {count}`): N random creature cards from the owner's graveyard come back beside the source as real cards. Events `spawn {kind:'revive'}`, `reviveGrave`.
+- **Poison Barbs N** (`effects.poisonBarbs`): every swing it takes gives the attacker N Poison (no damage); never redirected, and a Guardian doesn't step in for it. Event `statusFx poison {via:'barbs'}`.
+- **Status-only shots:** a "– poison / – bleed" Arrow, Fire Arrow, Ember Spit, Missile or Deal damage (one unit) deals 0 damage at a unit and gives its N as counters (both when it says both); at a bramble it deals its N.
+- **Armor** stops every hit but magic (magic, dark, holy) and true damage, on swings as before; **Magic Armor** stops magic only, on swings and shots. The five elemental spits are named Ember / Acid / Venom / Frost / Spark Spit (keys `fireBolt` ... unchanged).
+- **Guardian** (and **Rampart**) step in only while Ready and not Bound (`blockerReady`); a Guardian now takes a counter-attack too (the hit carries `guardianRedirect` / `guardedUid`).
+- **Daunt counters** (Render) fall off only on a damage action: a swing, a shot round (`fireShotsOf`), a trigger that dealt damage (`_dauntDmg`). No round-end fade.
+- **Bloom:** tests only while Ready; with no free slot (a Parasite: no host) it fails: +1/+1 on the unit, no Lumber. Event `bloom {failed:true, atk:1, hp:1}`; the board plays `SkillFX.bloomFail` (two ghost copies pull apart, blush red, fall back; the card swells).
+- **Cleave** side hits that get through carry the unit's Poison / Bleed (`en7HitStatuses`, via `cleave`).
+- **Dive** is open to Quick units; a unit aloft or under has no Quick (`swingSpeedOf`). A Bound unit can't dive.
+- **Bound** (Strangle): swings and counters at half (`computeHitDamage`, mod `bound`), shots and damage actions at half (`fireDamageAction`), no Guardian / Rampart / Dive / Charge countdown, no Flying dodge. It no longer skips the swing.
+- **Tangled** (Tangleweed N, `c.tangled` rounds): the Confused coin for every swing, shot, action and trigger (`confusedFumbles`; event `confusedWhiff {tangled}`); event `statusFx tangled`.
+- **Fork:** two adjacent lines of L / C / R (C + a side; never L + R; interlocked ranks: the two it stands between); the bramble only when L, C and R are empty. **Trident / Pitchfork:** the bramble only when none of their lines holds a unit; with the middle empty a side line is the swing proper.
+- **Sleep and the swing order:** a unit found Ready earlier in the round that is asleep, stunned, frozen, chained or petrified when its turn comes loses the swing (`pickNextAttacker`).
+- **Chained:** the damage it takes adds up (`card.chainDmg`); the chain breaks at N. Priced as N x (1 + 0.25 a held round), skill price 0. No ⛓ glyph on the board.
+- **One-shot On Ready:** a front-row unit Ready at an upkeep without its Wait running out there (Wait 0, Hasten) gets its On Ready then, once (`c.readyDone`). Rocket, Fireball, Meteor, Chilli, Converge, Stockpile, On Ready damage / Missile / Render, an On Ready Pearl Bed and On Ready triggers leave the unit's card once fired (`spendOnReady`, event `skillSpent {keys}`). **Charge** goes off once and leaves the card.
+- **Stockpile N** (`effects.stockpile`): On Ready, +N Lumber, once. **Seasons:** 6 rounds each, from round 1.
+
+| Effect | Function | Look | Event |
+|---|---|---|---|
+| 🥀 Bloom fails | `SkillFX.bloomFail(el, {onDone})` (`bramblewood-skillfx.js`) | Two ghost copies slide apart, turn reddish, stall and fall back; the card swells; "🥀 +1/+1" | `bloom {failed}` |
+| 🌿 Tangled | the Bound vine (`SkillFX.vineBind`) | "🌿 Tangled" float | `statusFx tangled` |
+| 🪦 Revive | the spawn's own entrance | log line | `reviveGrave` |
+

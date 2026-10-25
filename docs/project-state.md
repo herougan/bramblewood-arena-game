@@ -17,25 +17,24 @@ Source for all of it: `bramblewood-engine.js` (the engine decides); player wordi
 
 ### Damage types
 - **Kinds of damage:** physical, magic, true, the elements (fire / heat, frost, shock, poison, acid, water, decay and the rest) and status ticks (Poison, Bleed). The engine's damage function holds the order of steps. [EN8-2, built form; `bramblewood-engine.js`]
-- **Armor, as built today:** Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) takes only from physical hits; magic and every element go past it. Magic Armor N takes N off a magic or elemental swing, shot or skill, never a physical one and never a status tick. Pierce N cuts Armor only. [EN8-2; engine]
-- **Armor, as decided (owner 10-25 17:53): elements count as physical, so Armor applies to them; only magic passes Armor; Magic Armor stops magic only.** Every "bolt" is magic; a physical elemental attack called a bolt is renamed. Armor and Magic Armor are re-priced. **Decided, not built yet (action item E3).** [EN8-2]
+- **Armor (owner 10-25 17:53): elements count as physical, so Armor applies to them; only magic (and dark / holy) passes Armor; Magic Armor stops magic only; true damage passes both.** Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) works on swings (a swing, a prong, a counter), as before; shots and damage skills are not reduced by it (call ENG9-6). Every "bolt" is magic; the physical elemental spits read Ember / Acid / Venom / Frost / Spark Spit (call ENG9-3). Pierce N cuts Armor only. **Built (ENG9, 2026-10-26).** [EN8-2; engine `isMagicDmg`]
 - **Exact numbers inside, one rounding at the end.** A hit is rounded once, half up, when it lands on the board; nothing rounds while it passes between functions. A half of 1 is 1, so Resist, Ghost, Atheist and the Psychic Dampener never stop a 1. [FX2, FX2-3; engine `roundDmg`]
-- **Status-type attacks deal only counters, not damage as well** (a poison or bleed shot adds its counters and no hit). New Poison Barbs N (Thorns that poison). **Decided, not built yet (action item E2).** [owner note #40, 10-25 17:53; no decision id]
+- **Status-type attacks deal only counters, not damage as well:** a "– poison / – bleed" shot or action at a unit gives its N as counters and no damage (at a bramble it deals its N). Poison Barbs N: Thorns that poison. **Built (ENG9, 2026-10-26).** [owner note #40, 10-25 17:53; no decision id]
 - **Bleed fades at the round's end, after it bleeds.** [EN3-2]
 - **Greater Poison deals 1 per stack each round and the stack never wears down;** only Cure removes it (plain Poison still wears down). [EN4-2]
-- **Daunt (Weakness) counters fall off one per damage action** (a swing, an Arrow, a bolt), not at round end or on other skills. **Decided, not built yet (action item E5).** [EN8-11]
+- **Daunt (Weakness) counters fall off one per damage action** (a swing, an Arrow, a damage skill), not at round end or on other skills. **Built (ENG9, 2026-10-26).** [EN8-11]
 - **Cure removes Poison only; Heal restores Health only; Cleanse (Renewal) removes the physical debuffs.** [rules 10-21 SK1]
 - **A heal with nothing to heal does not happen:** no animation, no heal trigger, a once-only heal trigger is not spent. Bleed counts as something to heal (it stanches). [rules 10-19, 00:07]
 - **Field damage per tick:** every hazard 1 a unit a round; a single-target hazard 2; a rare one up to 3. The volcano is gentler by design (Lava Tide at 50%; one ground fire a fight; after an Eruption it drops to Very Low and climbs one level a round). [FX1, FX3-1, FX3-2, FX3-3, FX2-1, EN-7, FX4-1..FX4-3; the maps' field rules in `arena_app.js`]
 - **A unit at 0 Health is dead and leaves the board when its action ends.** [PG-5]
 
 ### Blocking and redirecting
-- **Guardian redirects plain swings only.** Not skills, not Arrow, not area damage, not Cleave's side hits. [GD-3, GD2-2]
+- **Guardian redirects plain swings (and, since ENG9, counter-attacks) only.** Not skills, not Arrow, not area damage, not Cleave's side hits. [GD-3, GD2-2]
 - **Which Guardian steps in:** one of the adjacent Guardians, at random (the fight's seeded RNG). Adjacent means in front, behind, left, right; front and behind matter only on raid and multi-player boards. [GD-1, GD-2]
 - **No chains.** A Guardian never intercepts for an intercepting Guardian. A Guardian aimed at directly is still covered by the Guardian beside it, unless it is itself intercepting. Guardian does not protect the bramble. [EN3-3, EN4-5, EN3-1]
 - **Thorns and similar reflected damage cannot be redirected.** [EN8-1]
-- **A counter-attack can be redirected by a Guardian. Decided, not built yet (action item E4).** [EN8-1]
-- **Guardian and Rampart work only while the unit is Ready.** Intercept animations: the blocker steps toward its own Rampart, shakes with an expanding aura, and a unit that dies blocking dies where it blocked. **Decided, not built yet (action items E9, V4).** [EN8-8; owner #33]
+- **A counter-attack can be redirected by a Guardian.** **Built (ENG9, 2026-10-26).** [EN8-1]
+- **Guardian and Rampart work only while the unit is Ready** (not Waiting, Stunned, Frozen, Asleep, Petrified, Chained or Bound): **Built (ENG9, 2026-10-26).** Intercept animations: the blocker steps toward its own Rampart, shakes with an expanding aura, and a unit that dies blocking dies where it blocked. **Decided, not built yet (action item V4).** [EN8-8; owner #33]
 - **Spellward (one word) shields allies from skills;** Ward is the dodge. [GD2-1, GD-3]
 - **Bulwark's shields give Guardian ("vanguard" meant Guardian);** Bulwark N is priced 6 a point. [EN-3, EN-2]
 - **Bramble Armor: 1 at most with several units.** Rampart and Bramble Armor are the bramble skills' names. [EN3-5, EN3-4]
@@ -62,24 +61,26 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Expose strips hiding, Exploit adds damage; Siege N replaces Demolisher; Isolation is a drawback; Punish stays behind a flag (Map 40+).** [rules 10-19 SK1]
 - **Hunter N has one status picker** (Poisoned default, Bleeding, Wet, Exposed); Hunter and Executioner add to hits and shots, never to ticks or a bramble. [rules 10-19 GI]
 - **Bloom:** the copy can bloom; it tries to create the new unit adjacent, and up or down on multi-row boards. [BL-1, BL-2]
-- **Bloom with no free slot fails:** the split animation turns slightly reddish, then the unit gets +1/+1 instead; Bloom starts "testing" only when the unit is Ready. **Decided, not built yet (action item E6).** [EN7-2]
-- **Cleave's side hits spread Poison and Bleed;** price by the 4-round rule. **Decided, not built yet (action item E7).** [EN7-3]
-- **Dive stays as built (area damage still reaches a diver); a Quick creature can Dive and loses Quick while aloft or under.** The Quick part: **decided, not built yet (action item E8).** [EN7-1, EN7-4]
-- **Undead (passive) brings the unit back once as a token; Revive (action) returns a random graveyard card as a real card.** The split: **decided, not built yet (action item E1).** [owner note #20, 10-25 17:53; no decision id]
-- **Poison Barbs N: Thorns that deal poison.** **Decided, not built yet (action item E2).** [owner note #40]
+- **Bloom with no free slot fails:** the split animation turns slightly reddish, then the unit gets +1/+1 instead (no Lumber paid); Bloom starts "testing" only when the unit is Ready. **Built (ENG9, 2026-10-26).** [EN7-2]
+- **Cleave's side hits spread Poison and Bleed;** priced by the 4-round rule (0.6 of the status's price on top). **Built (ENG9, 2026-10-26).** [EN7-3]
+- **Dive stays as built (area damage still reaches a diver); a Quick creature can Dive and loses Quick while aloft or under.** The Quick part: **Built (ENG9, 2026-10-26).** [EN7-1, EN7-4]
+- **Undead (passive) brings the unit back once as a token; Revive N (action; the keyword is On Play: Revive N) returns random graveyard creature cards as real cards.** **Built (ENG9, 2026-10-26).** Revive is on no card yet (call ENG9-1). [owner note #20, 10-25 17:53; no decision id]
+- **Poison Barbs N: Thorns that deal poison** (never redirected; a Guardian doesn't step in for it). **Built (ENG9, 2026-10-26).** [owner note #40]
 - **Detonate N: the target's Poison ticks N times at once, each tick removing a counter, animated in a row.** **Decided, not built yet (action item E18).** [owner 17:53 message; no decision id]
 - **Hoard is taken; the hand-count skills are Full Hand N and Lean N.** Plenty stays at 4+ cards. [EN6-1, EN6-3, EN6-5]
 - **Backstab also triggers on a target that is Waiting, Shocked or Exposed.** [EN-5, D21]
 - **Swarm counts other allies only; Swarm by Type counts the Type tree.** [UI4-2, EN2-6]
 - **Headwind doubles Shots, Snipe and On Action; Tailwind is Quick.** [EN2-3, EN2-4]
 - **Nocturnal "at night only" counts Twilight as night.** [CX1]
-- **Seasons run 6 rounds each (the engine runs 3 today).** **Decided, not built yet (action item E12).** [EN6-4]
-- **Skills that read "?":** Fodder, Stem and Chrysalis read "?" before Map 15, then show the name with "?" for the effect until Map 20. **Decided, not built yet (action item E10).** [EN8-4]
-- **Wildpath perks and brambles that mend say "Repair Bramble."** **Decided, not built yet (action item E11).** [EN8-3]
-- **A named keyword for "On Ready: gain 1 Lumber"** (proposal: Forager), used on the Beaver Lumberjack. **Decided, not built yet (action item E13).** [EN6-6]
+- **Seasons run 6 rounds each.** **Built (ENG9, 2026-10-26).** [EN6-4]
+- **Skills that read "?":** Stem (Fodder was its name on the babies) and Chrysalis read "?" before Map 15, then show the name with "?" for the effect until Map 20 (`SKILL_REVEAL_MAP` nameFrom). **Built (ENG9, 2026-10-26).** [EN8-4]
+- **Wildpath perks and brambles that mend say "Repair Bramble."** **Built (ENG9, 2026-10-26).** [EN8-3]
+- **A named keyword for "On Ready: gain N Lumber": Stockpile N** (Forager is too close to Foraging; call ENG9-2), on the Beaver Lumberjack. **Built (ENG9, 2026-10-26).** [EN6-6]
 - **Gem sockets: taking a gem out gives it back;** gem fusion and a very rare Socket N skill. The fusion and Socket N: **decided, not built yet (action item E14).** [H1-a, H1; gem effects sit outside the budget, `docs/workflows/balance.md`]
 - **Equip Time N (default 1) with a top-right badge; Tamper-proof equipment cannot be stolen; a Platform card type (Structure rules for now).** **Decided, not built yet (action items E15, E16).** [owner notes #21, #22; destroying equipment waits on OWN-Q2]
-- **Held back for the owner's answer:** Bound (OWN-Q1), Fester (OWN-Q4), Pulverise (OWN-Q5). No rule yet.
+- **Bound (OWN-Q1):** a Bound unit can't move (no Intercept, Guardian, Rampart, Dive, Charge) and loses Flying's dodge; its swings, arrows and ranged actions deal half damage. Only Strangle binds now (Tangleweed lays Tangled). **Built (ENG9, 2026-10-26).**
+- **Pulverise (OWN-Q5):** ignores Armor, breaks Armor / Magic Armor and equipment it hits, double damage to Structures. **Decided, not built yet (CONTENT3).**
+- **Held back for the owner's answer:** Fester (OWN-Q4). No rule yet.
 
 ## 3. Resources
 
@@ -169,15 +170,15 @@ Canonical: `canonical/cards.json` (stats, skills, art) and `bramblewood-budget.j
 ## Stated, not built (owner playtest notes, 10-25 22:36)
 
 Not decisions yet: they are the owner's words, turned into action items G1-G26. They become rules when shipped.
-- **Fork** hits two adjacent enemies among L/C/R (never L+R); the castle only when none of the three is there (G2).
-- **Sleeping units never swing;** Decay is applied and counted, Decay costs about 12% more (G4).
-- **Tangled: 50% to act** (swings, actions, triggers); re-price (G25).
-- **One-shot skills (On Ready, Charge) fire at upkeep and leave the card once spent** (G23, G24).
-- **Chained prices as a multiplier on the budget;** no lock glyph (G19).
+- **Fork** hits two adjacent enemies among L/C/R (never L+R); the castle only when none of the three is there; Trident and Pitchfork hit the castle only when none of their lines holds an enemy (G2). **Built (ENG9, 2026-10-26).**
+- **Sleeping units never swing** (put to sleep, stunned, frozen or chained before its turn, a unit loses that round's swing); Decay is applied and counted, Decay costs 12% more (G4). **Built (ENG9, 2026-10-26).**
+- **Tangled: 50% to act** (swings, shots, actions, triggers; the Confused coin), laid by Tangleweed; re-priced 1.4 (G25). **Built (ENG9, 2026-10-26).**
+- **One-shot skills (On Ready, Charge) fire at upkeep and leave the card once spent;** a unit Ready at Wait 0 gets its On Ready at its first upkeep; Charge goes off once (G23, G24; calls ENG9-4, ENG9-7). **Built (ENG9, 2026-10-26).**
+- **Chained prices as a multiplier on the budget** (x(1 + 0.25 a held round), `chainedMult`); it breaks once its damage adds up to N; no lock glyph (G19; call ENG9-8). **Built (ENG9, 2026-10-26).**
 - **All packs give 3 cards (Collector's 5); re-cost them** (G15).
 - **Forge tabs appear when their feature is earned at a map; Reinforce shows locked "?"** (G18).
 - **First-clear reward not yet won shows full colour; already won is greyed with a tick** (G6).
-- **Fungi become a type beside Flora;** alternative costs read "2 Stone / 1 Lumber" (G9).
+- **Fungi are a type and a Codex kingdom beside Flora** (Fungal Colossus, Puffball Bombardier); a joint cost sits side by side with no gap, "/" kept for an alternative cost (none yet) (G9; call ENG9-5). **Built (ENG9, 2026-10-26).**
 
 ## Where sources disagree
 
