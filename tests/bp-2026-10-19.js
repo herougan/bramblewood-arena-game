@@ -98,7 +98,8 @@ ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.
   ok(/hqRibbonFloatAnchor\(ev\.targetSide\) \|\| el/.test(pb), '... and so does Puncture\'s'); }
 
 // ---- 5. the battle log
-{ const rl = fnSrc('renderLogLine'); ok(/battleLogSync\(log\);/.test(rl) && /pinBattleLog\(log\);\n\}$/.test(rl) && !/userScrolled/.test(rl), 'new lines follow the bottom while the log is pinned');
+// 2026-10-25 (package FIX3, F3): a burst of lines reads and pins once a frame (fix3PinLogSoon runs battleLogSync, then pinBattleLog)
+{ const rl = fnSrc('renderLogLine'), soon = fnSrc('fix3PinLogSoon'); ok(/fix3PinLogSoon\(log\);\n\}$/.test(rl) && /battleLogSync\(lg\); pinBattleLog\(lg\);/.test(soon) && !/userScrolled/.test(rl), 'new lines follow the bottom while the log is pinned');
   const ti = src.indexOf("if(panel) panel.classList.toggle('collapsed', !battleLogOpen);"), pi = src.indexOf('if(battleLogOpen) pinBattleLog(null, true);');
   ok(ti > 0 && pi > ti && pi - ti < 600, 'opening the log pins it AFTER the panel is shown (it used to scroll while display:none)');
   ok(/\{ const pin0 = battleLogPinned; m\.log\.forEach\(renderLogLine\); battleLogPinned = pin0; \}[^\n]*\n  try\{ if\(!m\._logPinInit\)\{ m\._logPinInit = true; battleLogPinned = true; \} wireBattleLogScroll\(\);/.test(src), 'a full render keeps the place (and a new match starts pinned)');

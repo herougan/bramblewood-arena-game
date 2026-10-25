@@ -37494,12 +37494,14 @@ function clipLightsToBoard(bf){
   const pools = bf.querySelectorAll('.board-card .unit-light, .board-card .fxb-pool'); if(!pools.length) return;
   const B = bf.getBoundingClientRect(); if(!B.width) return;
   const rad = parseFloat(getComputedStyle(bf).borderTopLeftRadius) || 0;
-  pools.forEach(p=>{
-    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return;
+  // 2026-10-25 (package FIX3, F3): every pool is measured first, then every clip is written (it read, wrote, read ... before: a layout per pool)
+  const plan = [...pools].map(p=>{
+    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return null;
     const sx = R.width / w, sy = R.height / h;
     const t = Math.max(0, (B.top - R.top) / sy), l = Math.max(0, (B.left - R.left) / sx), b = Math.max(0, (R.bottom - B.bottom) / sy), r = Math.max(0, (R.right - B.right) / sx);
-    const v = (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : '';
-    if(p.style.clipPath !== v) p.style.clipPath = v; });
+    return [p, (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : ''];
+  });
+  plan.forEach(x=>{ if(x && x[0].style.clipPath !== x[1]) x[0].style.clipPath = x[1]; });
 }
 if(typeof window !== 'undefined') setInterval(()=>{ try{ if(document.hidden) return; const bf = document.getElementById('battlefieldEl');
   if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }catch(e){} }, 250);
@@ -39479,9 +39481,12 @@ function leafPuff(el, glyphsIn){
   if(!el || !hasGsap()) return;
   const r = el.getBoundingClientRect();
   const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
+  // 2026-10-25 (package FIX3, F3): the twelve leaves go in first and are read once together (fix3GsapPrime), then moved; each used to
+  // force its own style pass between the last one's write and its own read
+  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); document.body.appendChild(p); ps.push(p); }
+  fix3GsapPrime(ps);
   for(let i = 0; i < 12; i++){
-    const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
-    document.body.appendChild(p);
+    const p = ps[i];
     const x = r.left + r.width*(0.2 + Math.random()*0.6), y = r.top + r.height*(0.55 + Math.random()*0.35);
     gsap.set(p, {x, y, opacity:1, scale:.6 + Math.random()*.5, rotation:Math.random()*360});
     gsap.to(p, {x:`+=${(Math.random()*2 - 1)*60}`, y:`-=${20 + Math.random()*40}`, rotation:`+=${Math.random()*240 - 120}`, duration:.5 + Math.random()*.3, ease:'power2.out'});
@@ -43980,8 +43985,8 @@ function renderLogLine(ev){
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
   // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
-  battleLogSync(log);
-  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
+  // 2026-10-25 (package FIX3, F3): read once per frame with the pin (fix3PinLogSoon), not before every line
+  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); fix3PinLogSoon(log); return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
   const row = document.createElement('div');
@@ -43991,7 +43996,18 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  pinBattleLog(log);
+  fix3PinLogSoon(log);
+}
+// 2026-10-25 (package FIX3, F3 + G26, owner: "as swamp fever applies poison, the screen lags for 0.2s" and "a few sharp lag periods"): a
+// headless profile of a whole fight (tools/perf/fight_profile_2026_10_25.py) put the battle log first: every line read the box (battleLogSync:
+// scrollTop, clientHeight) and wrote it (pinBattleLog: scrollTop = scrollHeight), each read forcing a full style and layout pass right
+// after the effects of the line before had changed the page, ~190 times a fight, in bursts at round end. A burst of lines now reads and
+// pins once, at the next frame (the same reader rules: scrolled up stays put, back at the bottom follows again).
+let fix3LogPinRaf = 0, fix3LogPinEl = null;
+function fix3PinLogSoon(log){
+  fix3LogPinEl = log; if(fix3LogPinRaf) return;
+  const run = ()=>{ fix3LogPinRaf = 0; const lg = fix3LogPinEl; fix3LogPinEl = null; if(!lg || !lg.isConnected) return; battleLogSync(lg); pinBattleLog(lg); };
+  fix3LogPinRaf = (typeof requestAnimationFrame === 'function' && !(typeof document !== 'undefined' && document.hidden)) ? requestAnimationFrame(run) : setTimeout(run, 0);
 }
 // Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
 // newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
@@ -44591,6 +44607,18 @@ function cometFall(ev, k, host, r){
 }
 // opts (2026-10-22, package DN): {post: the target's damage mark drawn after the number, heavy: a big physical hit, fit: keep the number
 // no wider than the unit card, noIcon: no automatic class icon}. Only flashDmg passes it; every other number is unchanged.
+// 2026-10-25 (package FIX3, F3 + G26): GSAP reads an element's computed transform the first time it moves it (gsap.set / a tween). A
+// number, a bubble or a leaf appended and then set at once forced a style pass each, after the last one's write: the poison round
+// end (one tick per poisoned unit, each with its number and 4-6 bubbles) did that dozens of times in one frame. fix3GsapBatch queues the
+// start of each such animation to the end of the current task; the queue then reads every element once (gsap.getProperty primes the
+// cache, no writes in between: one style pass for the lot) and only then starts them. fix3GsapPrime does the same for a list in hand.
+const fix3GsapQueue = [];
+function fix3GsapPrime(els){ try{ els.forEach(e=>{ if(e && e.isConnected) gsap.getProperty(e, 'x'); }); }catch(e){} }
+function fix3GsapBatch(el, start){
+  fix3GsapQueue.push([el, start]); if(fix3GsapQueue.length > 1) return;
+  const flush = ()=>{ const q = fix3GsapQueue.splice(0); fix3GsapPrime(q.map(x=> x[0])); q.forEach(([e, fn])=>{ try{ if(e.isConnected) fn(e); }catch(err){} }); };
+  if(typeof queueMicrotask === 'function') queueMicrotask(flush); else Promise.resolve().then(flush);
+}
 function floatText(el, text, cls, opts){
   if(!el) return;
   if(floatDetachDepth > 0 && el.closest && el.closest('.board-card[data-uid]')){ const uid = el.closest('.board-card[data-uid]').dataset.uid; // upkeep numbers outlive the re-render (2026-10-14)
@@ -44653,13 +44681,29 @@ function floatText(el, text, cls, opts){
     // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
     const b = f.querySelector('.df-burst');
+    // 2026-10-25 (package FIX3, F3 + G26): the same motion on the Web Animations API, which never reads the page's styles (GSAP's first move
+    // of a new element reads its computed transform, a full style pass per number, in a row at every round end). Same timing and path.
+    if(f.animate){ f.style.position = 'absolute'; f.style.left = barShift ? `calc(50% + ${barShift}px)` : '50%'; f.style.top = `calc(${top0}% + ${dy0.toFixed(1)}px)`; f.style.opacity = '0';
+      const T = (x, y, sc)=> `translate(-50%, 0) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${sc})`, t = travel;
+      const a = f.animate([
+        {offset:0, opacity:0, transform:T(0, 0, .5), easing:'cubic-bezier(.17,.84,.44,1)'},
+        {offset:.103, opacity:1, transform:T(dx*.3, -8*t, big), easing:'cubic-bezier(.2,.9,.3,1.35)'},
+        {offset:.25, opacity:1, transform:T(dx*.62, -22*t, .93)},
+        {offset:.402, opacity:1, transform:T(dx*.775, -31*t, 1)},
+        {offset:.655, opacity:1, transform:T(dx*.97, -40.6*t, 1), easing:'cubic-bezier(.55,.085,.68,.53)'},
+        {offset:1, opacity:0, transform:T(dx, -54*t, 1)}], {duration:870, fill:'forwards'});
+      a.onfinish = ()=> f.remove(); a.oncancel = ()=> f.remove();
+      if(b) b.animate([{transform:'scale(.3) rotate(0deg)', opacity:1, easing:'cubic-bezier(.17,.84,.44,1)'}, {offset:.29, transform:'scale(1.25) rotate(25deg)', opacity:1, easing:'cubic-bezier(.55,.085,.68,.53)'}, {transform:'scale(.9) rotate(40deg)', opacity:0}], {duration:310, fill:'forwards'});
+      return; }
+    fix3GsapBatch(f, ()=>{
     gsap.set(f, {position:'absolute', left: barShift ? `calc(50% + ${barShift}px)` : '50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
       .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
       .to(f, {y:-42*travel, x:dx, duration:.6, ease:'power1.out'}, '<')
       .to(f, {opacity:0, y:-54*travel, duration:.3, ease:'power1.in'}, '>-0.12');
-    if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    if(b){ fix3GsapPrime([b]); gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    });
   } else {
     f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
     if(barShift) f.style.marginLeft = barShift + 'px';
@@ -44724,12 +44768,19 @@ function poisonBubbleBurstVfx(uid){
     b.style.left = startX + '%';
     b.style.fontSize = size + 'px';
     el.appendChild(b);
-    if(hasGsap()){
+    if(b.animate){ // 2026-10-25 (package FIX3, F3): the Web Animations API (no style reads); the bubbles of a round end used to force a style pass each
+      b.style.top = '70%'; const d = Math.round(delay*1000), a = b.animate([
+        {offset:0, opacity:0, transform:'translate(0, 0) scale(.5)', easing:'ease-out'},
+        {offset:.22, opacity:.9, transform:`translate(${(dx*.04).toFixed(1)}px, ${(-rise*.4).toFixed(1)}px) scale(1)`, easing:'ease-out'},
+        {offset:.72, opacity:.7, transform:`translate(${dx.toFixed(1)}px, ${(-rise).toFixed(1)}px) scale(1)`, easing:'ease-in'},
+        {offset:1, opacity:0, transform:`translate(${dx.toFixed(1)}px, ${(-rise*1.25).toFixed(1)}px) scale(1)`}], {duration:1000, delay:d, fill:'both'});
+      a.onfinish = ()=> b.remove(); a.oncancel = ()=> b.remove();
+    } else if(hasGsap()){ b.style.opacity = '0'; fix3GsapBatch(b, ()=>{ // 2026-10-25 (package FIX3, F3): started with the batch (one style pass for every bubble of the round end)
       gsap.set(b, {top:'70%', x:0, y:0, opacity:0, scale:.5});
       gsap.timeline({delay, onComplete:()=> b.remove()})
         .to(b, {opacity:.9, scale:1, y:-rise*0.4, duration:.22, ease:'power1.out'})
         .to(b, {opacity:.7, y:-rise, x:dx, duration:.5, ease:'power1.out'}, '<0.02')
-        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08');
+        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08'); });
     } else {
       b.style.top = '70%';
       b.style.opacity = '.85';

@@ -42303,7 +42303,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=bb57eea88c", "es": "assets/lang/es.js?v=b6499966f1", "fr": "assets/lang/fr.js?v=ace0fea662", "id": "assets/lang/id.js?v=7f5e1e4110", "it": "assets/lang/it.js?v=c72aaf5db9", "ja": "assets/lang/ja.js?v=b469812bf9", "ko": "assets/lang/ko.js?v=93f15d1268", "pt": "assets/lang/pt.js?v=4ed6da8038", "ta": "assets/lang/ta.js?v=2eeb4ee9a9", "tl": "assets/lang/tl.js?v=33f84db856", "zh-Hans": "assets/lang/zh-Hans.js?v=ea8ec72fa6", "zh-Hant": "assets/lang/zh-Hant.js?v=1721e68498"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=64d8d83553", "es": "assets/lang/es.js?v=595e98bf54", "fr": "assets/lang/fr.js?v=3eb22f8d65", "id": "assets/lang/id.js?v=bed7e8fe3a", "it": "assets/lang/it.js?v=9800d75f1c", "ja": "assets/lang/ja.js?v=dc09846f59", "ko": "assets/lang/ko.js?v=ec68f32db9", "pt": "assets/lang/pt.js?v=55a59c0bb2", "ta": "assets/lang/ta.js?v=64dc269769", "tl": "assets/lang/tl.js?v=8d115cace6", "zh-Hans": "assets/lang/zh-Hans.js?v=b1e5815488", "zh-Hant": "assets/lang/zh-Hant.js?v=f1a294dcca"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -42782,6 +42782,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raid-total-rank-label": "Raid rank",
   "ui.fix3-overall-raid-rank": "Overall raid rank",
   "ui.fix3-old-well": "An old well",
+  "ui.fix3-confirm-email": "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.",
   "ui.raid-total-rank-none": "No raid rank yet",
   "ui.raid-total-rank-tip": "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.",
   "ui.raid-total-rank-next": "{n} more for rank {nextRank}.",
@@ -49348,7 +49349,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '873cdc1dfe15', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = 'c4de82e96045', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57914,8 +57915,12 @@ async function applySessionIdentity(user){
     // "your local progress gets replaced" behavior — see cloudSignIn's call sites in the UI.
     myRating = Number(existingProfile.rating) || myRating;
     saveRatingLocal();
-    if(isSignedIn()) await cloudPullState();
+    // 2026-10-25 (package FIX3, G7): the first sign-in of an account created on this device (its sign-up waited for the email) sends this
+    // device's progress up instead of loading the account's empty rows over it
+    if(isSignedIn() && fix3SignupPending(user.id)){ try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){} }
+    else if(isSignedIn()) await cloudPullState();
   }
+  if(isSignedIn() && fix3SignupPending(user.id)){ fix3SetSignupPending(null); try{ livePushProgress(true); }catch(e){} }
   livePullProgress();
   liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
   // First sign-in (2026-10-13, user: "When signing in for the first time, put the 'enter name' thing front and centre"): a real
@@ -57982,7 +57987,7 @@ async function initCloudSync(){
     sbClient.auth.onAuthStateChange((event, session)=>{
       if(!initSettled) return;
       if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
-        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); });
+        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); fix3AfterSignIn(); });
       } else if(event==='SIGNED_OUT'){
         resetCloudIdentity(); refreshAuthGateUI();
       }
@@ -58017,7 +58022,7 @@ async function initCloudSync(){
   } finally {
     if(oauthReturning || oauthError){
       try{ history.replaceState(null, '', location.pathname); }catch(e){}
-      if(isSignedIn()) showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok');
+      if(isSignedIn()){ showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok'); fix3AfterSignIn(); }
       else showToast(TX('toast.google-sign-in-didn-t-complete', {v1: oauthError ? ': '+oauthError : ''}), 'error');
     }
   }
@@ -58412,21 +58417,35 @@ function cloudPushRating(){
 //   - No anonymous session exists (cloudAnonUnavailable — the dashboard toggle is still off):
 //     falls back to a genuinely fresh signUp(), then seeds that brand-new account from local
 //     state exactly the way applySessionIdentity already does for any other brand-new account.
+// 2026-10-25 (package FIX3, G7, owner: "Sign-up worked but the screen didn't return to play"; his second account "signed up but never saved
+// anything to the server"): the live auth table shows that account unconfirmed, never signed in, with no profile row. Email sign-up needs a
+// confirmed email, so signUp() returned the user with NO session; this then took the user as signed in anyway (isSignedIn() true), and every
+// push that followed was refused without a word. Now: no session = nothing applied, the sign-up is remembered on this device
+// (FIX3_SIGNUP_PENDING_KEY), the confirmation link leads back to the game (emailRedirectTo), and the first real sign-in of that account sends
+// this device's progress and decks up instead of loading the empty account over them.
+const FIX3_SIGNUP_PENDING_KEY = 'bramblewood_signup_pending_v1', FIX3_AUTH_RETURN_KEY = 'bramblewood_auth_return_v1';
+// the pending sign-up is the new account's id: only that account, signing in here, gets this device's progress (never another account)
+function fix3SignupPending(uid){ try{ const v = localStorage.getItem(FIX3_SIGNUP_PENDING_KEY); return !!v && !!uid && v === String(uid); }catch(e){ return false; } }
+function fix3SetSignupPending(uid){ try{ if(uid) localStorage.setItem(FIX3_SIGNUP_PENDING_KEY, String(uid)); else localStorage.removeItem(FIX3_SIGNUP_PENDING_KEY); }catch(e){} }
+function fix3AuthRedirectUrl(){ try{ return location.href.split('#')[0].split('?')[0]; }catch(e){ return undefined; } }
 async function cloudLinkEmail(email, password){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
   let data, error;
   if(cloudUserId && cloudIsAnonymous){
-    ({ data, error } = await sbClient.auth.updateUser({ email, password }));
+    ({ data, error } = await sbClient.auth.updateUser({ email, password }, { emailRedirectTo: fix3AuthRedirectUrl() }));
   } else {
-    ({ data, error } = await sbClient.auth.signUp({ email, password }));
+    ({ data, error } = await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: fix3AuthRedirectUrl() } }));
   }
   if(error) throw error;
+  if(data && data.user && !data.session && !(cloudUserId && cloudIsAnonymous)){ fix3SetSignupPending(data.user.id); fix3RememberAuthReturn(); return data; } // FIX3 (G7): waits for the email
   cloudIsAnonymous = false;
   if(data && data.user) await applySessionIdentity(data.user);
   // The account/session itself is already real and saved at this point — a hiccup pushing local
   // state up (a network blip, or any of these four throwing) must never turn into "your account
   // wasn't created," which is what an uncaught rejection here would otherwise report to the UI.
   try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true), cloudPushRating()]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){} // 2026-10-25 (package FIX3, G7): the map progress goes up too
+  fix3SetSignupPending(null);
   cloudReady = true;
   setCloudPill(true, 'Cloud sync active');
   return data;
@@ -58453,9 +58472,29 @@ async function cloudSignIn(email, password){
 // comment) since this can never complete against a local file:// copy of the build.
 async function cloudSignInWithGoogle(){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  fix3RememberAuthReturn(); // 2026-10-25 (package FIX3, G7): back to this screen after Google
   const { error } = await sbClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
   if(error) throw error;
   // No return value on purpose — the page is about to navigate away to Google.
+}
+
+// 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
+// email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
+let fix3AuthReturn = null;
+function fix3AuthSpot(){ const from = (typeof currentTab !== 'undefined' && currentTab !== 'profile') ? currentTab : (fix3AuthReturn && fix3AuthReturn.tab) || null;
+  return from ? {tab: from, sub: typeof playSubTab !== 'undefined' ? playSubTab : null, map: typeof conquestSelectedMap !== 'undefined' ? conquestSelectedMap : null} : null; }
+function fix3RememberAuthReturn(){ try{ const sp = fix3AuthSpot(); if(sp) sessionStorage.setItem(FIX3_AUTH_RETURN_KEY, JSON.stringify(sp)); }catch(e){} }
+let fix3AfterSignInBusy = false;
+async function fix3AfterSignIn(stay){
+  if(!isSignedIn() || fix3AfterSignInBusy) return; fix3AfterSignInBusy = true;
+  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){}
+  fix3AfterSignInBusy = false;
+  let sp = null; try{ sp = JSON.parse(sessionStorage.getItem(FIX3_AUTH_RETURN_KEY) || 'null'); sessionStorage.removeItem(FIX3_AUTH_RETURN_KEY); }catch(e){}
+  if(!sp && !stay && typeof currentTab !== 'undefined' && currentTab === 'profile' && fix3AuthReturn) sp = fix3AuthReturn;
+  fix3AuthReturn = null;
+  if(stay || !sp || !sp.tab || (typeof matchState !== 'undefined' && matchState && !matchState.over)) return;
+  try{ if(sp.tab === 'play'){ if(sp.sub) playSubTab = sp.sub; if(sp.map && CONQUEST_MAPS.some(m=> m.id === sp.map)) conquestSelectedMap = sp.map; } switchTab(sp.tab); }catch(e){}
 }
 
 /* ============================================================
@@ -58526,7 +58565,7 @@ function wireAuthForm(prefix, onSuccess){
       // Supabase hides "email taken" on sign-up (anti-enumeration) by returning a user with no
       // identities — that's the "this email already belongs to an account" case (often a Google one).
       if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){ showMsg(authErrorText({message:'already registered'}), true); return; }
-      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg('Almost there — check your inbox to confirm your email, then Login.', false); return; }
+      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg(TX('ui.fix3-confirm-email'), false); return; } // FIX3 (G7): the link brings you back here, signed in
       onSuccess('create');
     }catch(err){ showMsg(authErrorText(err,'create'), true); }
     finally{ busy(false); }
@@ -58576,7 +58615,7 @@ function wireAuthGateModal(){
     const fn = authGatePendingAction; authGatePendingAction = null;
     closeAuthGateModal();
     if(fn) fn();
-    refreshAuthGateUI();
+    refreshAuthGateUI(); fix3AfterSignIn(true); // FIX3 (G7): synced; the modal sat over the screen you were on
   });
 }
 // Called after any successful sign-in (modal or Profile tab) so every currently-rendered gated
@@ -83366,12 +83405,14 @@ function clipLightsToBoard(bf){
   const pools = bf.querySelectorAll('.board-card .unit-light, .board-card .fxb-pool'); if(!pools.length) return;
   const B = bf.getBoundingClientRect(); if(!B.width) return;
   const rad = parseFloat(getComputedStyle(bf).borderTopLeftRadius) || 0;
-  pools.forEach(p=>{
-    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return;
+  // 2026-10-25 (package FIX3, F3): every pool is measured first, then every clip is written (it read, wrote, read ... before: a layout per pool)
+  const plan = [...pools].map(p=>{
+    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return null;
     const sx = R.width / w, sy = R.height / h;
     const t = Math.max(0, (B.top - R.top) / sy), l = Math.max(0, (B.left - R.left) / sx), b = Math.max(0, (R.bottom - B.bottom) / sy), r = Math.max(0, (R.right - B.right) / sx);
-    const v = (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : '';
-    if(p.style.clipPath !== v) p.style.clipPath = v; });
+    return [p, (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : ''];
+  });
+  plan.forEach(x=>{ if(x && x[0].style.clipPath !== x[1]) x[0].style.clipPath = x[1]; });
 }
 if(typeof window !== 'undefined') setInterval(()=>{ try{ if(document.hidden) return; const bf = document.getElementById('battlefieldEl');
   if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }catch(e){} }, 250);
@@ -84361,6 +84402,7 @@ async function adminAutoWin(){
 // 30) (behind the scenes tracked) ... If you S and you progressed pass Map 50, you may Auto-Sweep. Don't even need to play, and
 // it acts as if its completed. Past Map 70, you may Idle-Sweep"): the ladder, by the furthest map whose boss you have beaten.
 const AUTO_TIERS = {auto:20, sweep:30, autoSweep:50, idleSweep:70};
+const FIX3_PVP_AUTO_MAP = 25; // 2026-10-25 (package FIX3, G22): PvP auto-play opens once Map 25 is cleared
 function mapsPassed(){ try{ const prog = loadConquestProgress(); let hi = -1; mainConquestMaps().forEach((m, i)=>{ const k = mapRewardNodeKey(m); if(k && (prog.completed||[]).includes(conquestNodeId(m.id, k))) hi = i; }); return hi; }catch(e){ return -1; } }
 function autoTier(t){ return adminModeEnabled || mapsPassed() >= AUTO_TIERS[t]; }
 const AUTO_S_KEY = 'bramblewood_auto_s_v1'; // fights you have won on Auto at rank S or better (Sweep needs one)
@@ -84370,6 +84412,9 @@ function nodeBestRankS(mapId, nodeKey){ try{ return rankAtLeast(loadConquestProg
 function autoplayAllowed(m){
   // 2026-10-19 (package RO, owner 21:49: "Completing a raid lets you auto it in the future"): the full raid, once you have completed it
   if(m && m.mode === 'raidOffline' && m.raidFull && m.raidDef && !m.testKit) return !!(adminModeEnabled || raidAutoOpen(m.raidDef));
+  // 2026-10-25 (package FIX3, G22, owner: "Let me admin auto-play PVP (And if you're past Map 25 as well)"): the PvP ghost fights, for Admin
+  // Mode and for a player who has cleared Map 25. Live two-player matches never (a person sits across the table).
+  if(m && m.mode === 'pvp' && !m.testKit) return !!(adminModeEnabled || mapsPassed() >= FIX3_PVP_AUTO_MAP);
   if(!m || m.mode !== 'conquest' || !m.conquestNode || m.testKit) return false;
   if(adminModeEnabled) return true;
   return nodeBestRankS(m.conquestNode.mapId, m.conquestNode.nodeId) && autoTier('auto');
@@ -85347,9 +85392,12 @@ function leafPuff(el, glyphsIn){
   if(!el || !hasGsap()) return;
   const r = el.getBoundingClientRect();
   const glyphs = glyphsIn || ['🍂','🍃','🍂','·','·','🍁'];
+  // 2026-10-25 (package FIX3, F3): the twelve leaves go in first and are read once together (fix3GsapPrime), then moved; each used to
+  // force its own style pass between the last one's write and its own read
+  const ps = []; for(let i = 0; i < 12; i++){ const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true'); document.body.appendChild(p); ps.push(p); }
+  fix3GsapPrime(ps);
   for(let i = 0; i < 12; i++){
-    const p = document.createElement('span'); p.className = 'leaf-puff'; p.textContent = glyphs[i % glyphs.length]; p.setAttribute('aria-hidden','true');
-    document.body.appendChild(p);
+    const p = ps[i];
     const x = r.left + r.width*(0.2 + Math.random()*0.6), y = r.top + r.height*(0.55 + Math.random()*0.35);
     gsap.set(p, {x, y, opacity:1, scale:.6 + Math.random()*.5, rotation:Math.random()*360});
     gsap.to(p, {x:`+=${(Math.random()*2 - 1)*60}`, y:`-=${20 + Math.random()*40}`, rotation:`+=${Math.random()*240 - 120}`, duration:.5 + Math.random()*.3, ease:'power2.out'});
@@ -89848,8 +89896,8 @@ function renderLogLine(ev){
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
   // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
-  battleLogSync(log);
-  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
+  // 2026-10-25 (package FIX3, F3): read once per frame with the pin (fix3PinLogSoon), not before every line
+  if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); fix3PinLogSoon(log); return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
   const row = document.createElement('div');
@@ -89859,7 +89907,18 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  pinBattleLog(log);
+  fix3PinLogSoon(log);
+}
+// 2026-10-25 (package FIX3, F3 + G26, owner: "as swamp fever applies poison, the screen lags for 0.2s" and "a few sharp lag periods"): a
+// headless profile of a whole fight (tools/perf/fight_profile_2026_10_25.py) put the battle log first: every line read the box (battleLogSync:
+// scrollTop, clientHeight) and wrote it (pinBattleLog: scrollTop = scrollHeight), each read forcing a full style and layout pass right
+// after the effects of the line before had changed the page, ~190 times a fight, in bursts at round end. A burst of lines now reads and
+// pins once, at the next frame (the same reader rules: scrolled up stays put, back at the bottom follows again).
+let fix3LogPinRaf = 0, fix3LogPinEl = null;
+function fix3PinLogSoon(log){
+  fix3LogPinEl = log; if(fix3LogPinRaf) return;
+  const run = ()=>{ fix3LogPinRaf = 0; const lg = fix3LogPinEl; fix3LogPinEl = null; if(!lg || !lg.isConnected) return; battleLogSync(lg); pinBattleLog(lg); };
+  fix3LogPinRaf = (typeof requestAnimationFrame === 'function' && !(typeof document !== 'undefined' && document.hidden)) ? requestAnimationFrame(run) : setTimeout(run, 0);
 }
 // Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
 // newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
@@ -90459,6 +90518,18 @@ function cometFall(ev, k, host, r){
 }
 // opts (2026-10-22, package DN): {post: the target's damage mark drawn after the number, heavy: a big physical hit, fit: keep the number
 // no wider than the unit card, noIcon: no automatic class icon}. Only flashDmg passes it; every other number is unchanged.
+// 2026-10-25 (package FIX3, F3 + G26): GSAP reads an element's computed transform the first time it moves it (gsap.set / a tween). A
+// number, a bubble or a leaf appended and then set at once forced a style pass each, after the last one's write: the poison round
+// end (one tick per poisoned unit, each with its number and 4-6 bubbles) did that dozens of times in one frame. fix3GsapBatch queues the
+// start of each such animation to the end of the current task; the queue then reads every element once (gsap.getProperty primes the
+// cache, no writes in between: one style pass for the lot) and only then starts them. fix3GsapPrime does the same for a list in hand.
+const fix3GsapQueue = [];
+function fix3GsapPrime(els){ try{ els.forEach(e=>{ if(e && e.isConnected) gsap.getProperty(e, 'x'); }); }catch(e){} }
+function fix3GsapBatch(el, start){
+  fix3GsapQueue.push([el, start]); if(fix3GsapQueue.length > 1) return;
+  const flush = ()=>{ const q = fix3GsapQueue.splice(0); fix3GsapPrime(q.map(x=> x[0])); q.forEach(([e, fn])=>{ try{ if(e.isConnected) fn(e); }catch(err){} }); };
+  if(typeof queueMicrotask === 'function') queueMicrotask(flush); else Promise.resolve().then(flush);
+}
 function floatText(el, text, cls, opts){
   if(!el) return;
   if(floatDetachDepth > 0 && el.closest && el.closest('.board-card[data-uid]')){ const uid = el.closest('.board-card[data-uid]').dataset.uid; // upkeep numbers outlive the re-render (2026-10-14)
@@ -90521,13 +90592,29 @@ function floatText(el, text, cls, opts){
     // 2026-10-08: burst out big, recoil back to size together with the burst, then rise and fade.
     f.style.animation = 'none';
     const b = f.querySelector('.df-burst');
+    // 2026-10-25 (package FIX3, F3 + G26): the same motion on the Web Animations API, which never reads the page's styles (GSAP's first move
+    // of a new element reads its computed transform, a full style pass per number, in a row at every round end). Same timing and path.
+    if(f.animate){ f.style.position = 'absolute'; f.style.left = barShift ? `calc(50% + ${barShift}px)` : '50%'; f.style.top = `calc(${top0}% + ${dy0.toFixed(1)}px)`; f.style.opacity = '0';
+      const T = (x, y, sc)=> `translate(-50%, 0) translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) scale(${sc})`, t = travel;
+      const a = f.animate([
+        {offset:0, opacity:0, transform:T(0, 0, .5), easing:'cubic-bezier(.17,.84,.44,1)'},
+        {offset:.103, opacity:1, transform:T(dx*.3, -8*t, big), easing:'cubic-bezier(.2,.9,.3,1.35)'},
+        {offset:.25, opacity:1, transform:T(dx*.62, -22*t, .93)},
+        {offset:.402, opacity:1, transform:T(dx*.775, -31*t, 1)},
+        {offset:.655, opacity:1, transform:T(dx*.97, -40.6*t, 1), easing:'cubic-bezier(.55,.085,.68,.53)'},
+        {offset:1, opacity:0, transform:T(dx, -54*t, 1)}], {duration:870, fill:'forwards'});
+      a.onfinish = ()=> f.remove(); a.oncancel = ()=> f.remove();
+      if(b) b.animate([{transform:'scale(.3) rotate(0deg)', opacity:1, easing:'cubic-bezier(.17,.84,.44,1)'}, {offset:.29, transform:'scale(1.25) rotate(25deg)', opacity:1, easing:'cubic-bezier(.55,.085,.68,.53)'}, {transform:'scale(.9) rotate(40deg)', opacity:0}], {duration:310, fill:'forwards'});
+      return; }
+    fix3GsapBatch(f, ()=>{
     gsap.set(f, {position:'absolute', left: barShift ? `calc(50% + ${barShift}px)` : '50%', top:`calc(${top0}% + ${dy0.toFixed(1)}px)`, xPercent:-50, x:0, y:0, opacity:0, scale:.5});
     gsap.timeline({onComplete:()=> f.remove()})
       .to(f, {opacity:1, scale:big, y:-8*travel, x:dx*0.3, duration:.09, ease:'power3.out'})
       .to(f, {scale:1, duration:.26, ease:'back.out(3)'})
       .to(f, {y:-42*travel, x:dx, duration:.6, ease:'power1.out'}, '<')
       .to(f, {opacity:0, y:-54*travel, duration:.3, ease:'power1.in'}, '>-0.12');
-    if(b){ b.style.animation = 'none'; gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    if(b){ fix3GsapPrime([b]); gsap.timeline().fromTo(b, {scale:.3, rotation:0, opacity:1}, {scale:1.25, rotation:25, duration:.09, ease:'power3.out'}).to(b, {scale:.9, rotation:40, opacity:0, duration:.22, ease:'power2.in'}); }
+    });
   } else {
     f.style.top = enemyRow ? (top0 + dy0*0.5)+'%' : (-6+dy0)+'px'; // no-GSAP fallback: CSS bounce from here
     if(barShift) f.style.marginLeft = barShift + 'px';
@@ -90592,12 +90679,19 @@ function poisonBubbleBurstVfx(uid){
     b.style.left = startX + '%';
     b.style.fontSize = size + 'px';
     el.appendChild(b);
-    if(hasGsap()){
+    if(b.animate){ // 2026-10-25 (package FIX3, F3): the Web Animations API (no style reads); the bubbles of a round end used to force a style pass each
+      b.style.top = '70%'; const d = Math.round(delay*1000), a = b.animate([
+        {offset:0, opacity:0, transform:'translate(0, 0) scale(.5)', easing:'ease-out'},
+        {offset:.22, opacity:.9, transform:`translate(${(dx*.04).toFixed(1)}px, ${(-rise*.4).toFixed(1)}px) scale(1)`, easing:'ease-out'},
+        {offset:.72, opacity:.7, transform:`translate(${dx.toFixed(1)}px, ${(-rise).toFixed(1)}px) scale(1)`, easing:'ease-in'},
+        {offset:1, opacity:0, transform:`translate(${dx.toFixed(1)}px, ${(-rise*1.25).toFixed(1)}px) scale(1)`}], {duration:1000, delay:d, fill:'both'});
+      a.onfinish = ()=> b.remove(); a.oncancel = ()=> b.remove();
+    } else if(hasGsap()){ b.style.opacity = '0'; fix3GsapBatch(b, ()=>{ // 2026-10-25 (package FIX3, F3): started with the batch (one style pass for every bubble of the round end)
       gsap.set(b, {top:'70%', x:0, y:0, opacity:0, scale:.5});
       gsap.timeline({delay, onComplete:()=> b.remove()})
         .to(b, {opacity:.9, scale:1, y:-rise*0.4, duration:.22, ease:'power1.out'})
         .to(b, {opacity:.7, y:-rise, x:dx, duration:.5, ease:'power1.out'}, '<0.02')
-        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08');
+        .to(b, {opacity:0, y:-rise*1.25, duration:.28, ease:'power1.in'}, '>-0.08'); });
     } else {
       b.style.top = '70%';
       b.style.opacity = '.85';
@@ -101275,7 +101369,7 @@ function renderProfile(){
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? '✅ Active, your progress is backed up' : (cloudReady ? 'Playing as a guest.' : 'Connecting…'));
   wireAuthForm('profile', mode=>{
     showToast(mode==='create' ? TX('toast.account-created-everything-you-ve-done') : TX('toast.logged-in-this-device-now-has'), 'ok');
-    renderProfile(); refreshAuthGateUI();
+    renderProfile(); refreshAuthGateUI(); fix3AfterSignIn(); // FIX3 (G7): back to where you were, synced
   });
   const pwForm = document.getElementById('addPasswordForm');
   if(pwForm) pwForm.addEventListener('submit', async e=>{
@@ -101970,6 +102064,7 @@ function switchTab(tab){
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
+  if(tab === 'profile' && currentTabBeforeSwitch && currentTabBeforeSwitch !== 'profile' && !isSignedIn()) fix3AuthReturn = {tab: currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null)}; // FIX3 (G7)
   // 2026-10-15 (user: "Forge is not a submenu of Codex" + "I pressed codex and it went to Forge"): the Forge is its own page that
   // happens to be drawn in the Codex view, so leaving it forgets it; the next plain visit to the Codex opens Browse.
   let leftForge = false;
