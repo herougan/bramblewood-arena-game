@@ -82,7 +82,9 @@ function literal(decl){ const a = src.indexOf('\n' + decl); let i = src.indexOf(
   ok(fs.existsSync(path.join(ROOT, 'tools', 'perf', 'fight_profile_2026_10_25.py')), 'F3. the whole-fight profiler is kept (tools/perf/fight_profile_2026_10_25.py)'); }
 
 // ---------------- F5: a token pops once, at once ----------------
-{ ok(/const now = fresh\.filter\(u=> el\(u\)\), later = fresh\.filter\(u=> !el\(u\)\);\n    now\.forEach\(u=>\{ const t = el\(u\); if\(t\) F\.summonPortal\(t\); \}\);/.test(src) && /m5\._fixPopped|m5\._fix3Popped/.test(src), 'F5. a token already drawn pops at once (no full-opacity frame before the 30% pop), once a match'); }
+{ ok(/if\(t\) fix3PortalOver\(F, t\);/.test(src) && /m5\._fix3Popped/.test(src) && /F\.summonPortal\(p\);/.test(fnSrc('fix3PortalOver')), 'F5. the spawn portal plays on a stand-in over the landed token (its tile is never dimmed), once a match');
+  const rb = fnSrc('renderBoard'); ok(/if\(!knownBoardUids\.has\(u\)\) seen\.push\(\[u, el\]\)/.test(rb) && rb.indexOf('knownBoardUids.add(u)') < rb.indexOf('const newBoardEls'), 'F5. a card already on screen before the rows are rebuilt is seen: no second entrance at round end');
+  ok(/C\.sproutPop = function\(el, opts\)\{ const p = el && el\.isConnected \? fix3StandIn\(el\) : null; return o\.call\(this, p \|\| el, opts\); \}/.test(fnSrc('fix3WrapSproutPop')), 'F5. the Growth Sprout\'s pop plays over the landed sprout too'); }
 // PRO nodes wrap (found by e2e/rw6 at 390 once it could run)
 { const f = fnSrc('proMapNodesHTML'); ok(/perRow = Math\.max\(3, /.test(f) && /const col = i % perRow, row = Math\.floor\(i \/ perRow\);/.test(f), 'Admin\'s PRO nodes wrap onto more lines inside the map'); }
 

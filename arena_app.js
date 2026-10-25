@@ -35686,6 +35686,13 @@ function renderBoard(opts){
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
   const emojiRows = h=>{ try{ return EmojiStyle.htmlBlock(h); }catch(e){ return h; } }; // 2026-10-17: emoji as pictures in the string (see EmojiStyle.htmlBlock)
   // 2026-10-25 (package PL2, owner 00:02 #1): once the match is decided the rows are reconciled cell by cell, not rebuilt (pl2ReconcileRow)
+  // 2026-10-25 (package FIX3, F5, owner #17: "... at the end of the round - no it's just tokens"): a token that a spawn put on the board during
+  // the round's replay (outside a full render) was never marked seen, so the round-end render took it for a new card and played its entrance
+  // again from opacity 0 (seen headless: a Growth Sprout / Brood token gone for 290-600 ms at the end of round 1, every run). A card that is
+  // on screen (the card itself at full opacity) right before the rows are rebuilt has been seen: it keeps its place, no second entrance.
+  if(needEnemy || needMine){ try{ const seen = [];
+    [needEnemy ? rowEnemy : null, needMine ? rowMine : null].forEach(r=>{ if(r) r.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const u = el.getAttribute('data-uid'); if(!knownBoardUids.has(u)) seen.push([u, el]); }); });
+    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); }catch(e){} } // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
   const pl2End = !!(slotView && (m.ending || m.over));
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
@@ -45840,6 +45847,17 @@ function quickStrikeCastle(attEl, targetSide){
 }
 function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; { const q = quickImpactMs(ev); if(q != null) return q; } if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
+// FIX3 (F5): the spawn portal plays its rune, motes and pop on an empty stand-in laid over the landed token (same box), so the token's own
+// tile is never dimmed; the stand-in goes once the portal is done
+function fix3StandIn(t){ try{ const r = t.getBoundingClientRect(); if(!r.width) return null; const p = document.createElement('div'); p.className = 'fix3-portal-standin'; p.setAttribute('aria-hidden', 'true');
+  p.style.cssText = `position:fixed; left:${r.left}px; top:${r.top}px; width:${r.width}px; height:${r.height}px; pointer-events:none; z-index:1;`; document.body.appendChild(p);
+  setTimeout(()=> p.remove(), 1600); return p; }catch(e){ return null; } }
+function fix3PortalOver(F, t){ const p = fix3StandIn(t); if(p) F.summonPortal(p); }
+// The Growth Sprout's pop (FX.C.sproutPop, 120 ms after the sprout has landed) had the same blink: its tile went back to 0 and grew in again.
+// Its soil, seed and leaves now play over the landed sprout on the same stand-in.
+function fix3WrapSproutPop(){ try{ const C = window.FX && FX.C; if(!C || !C.sproutPop || C._fix3Sprout) return !!(C && C._fix3Sprout); const o = C.sproutPop;
+  C.sproutPop = function(el, opts){ const p = el && el.isConnected ? fix3StandIn(el) : null; return o.call(this, p || el, opts); }; C._fix3Sprout = true; return true; }catch(e){ return false; } }
+if(typeof window !== 'undefined'){ let n = 0; const tryWrap = ()=>{ if(!fix3WrapSproutPop() && n++ < 40) setTimeout(tryWrap, 500); }; setTimeout(tryWrap, 0); }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
   const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
@@ -46241,14 +46259,12 @@ function eighthPassVfx(ev){
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
-    // portal pops the new token's tile in from 30% opacity, and it ran 140 ms (+60 per token) after the spawn, when the token was already
-    // drawn at full opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). A token already
-    // on the board pops at once (it appears popping in); one not drawn yet keeps the old wait. Each token pops once a match.
+    // portal pops the new token's tile from 30% opacity, 140 ms (+60 per token) after the spawn, when the token has already landed at full
+    // opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). The portal now plays over the
+    // token on a stand-in (fix3PortalOver), and each token gets it once a match (a re-sent spawn doesn't play it again).
     const m5 = matchState, popped = m5 ? (m5._fix3Popped || (m5._fix3Popped = new Set())) : new Set(), fresh = uids.filter(u=> !popped.has(u));
     fresh.forEach(u=> popped.add(u));
-    const now = fresh.filter(u=> el(u)), later = fresh.filter(u=> !el(u));
-    now.forEach(u=>{ const t = el(u); if(t) F.summonPortal(t); });
-    if(later.length) at(140, ()=> later.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+    at(140, ()=> fresh.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) fix3PortalOver(F, t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
     if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
