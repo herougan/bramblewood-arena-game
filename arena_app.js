@@ -17416,7 +17416,7 @@ const FEATURE_SPOTS = [
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
-  {key:'coop', icon:'👥', get name(){ return TX('ui.ar-group-name'); }, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
+  {key:'coop', icon:'👥', get name(){ return gdThemedName(); } /* RES3 (2026-10-26, B3): its own themed name */, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
   {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
@@ -24618,7 +24618,7 @@ function pl2ArenaTabsHTML(){
 // the map's 👥 spot opens the Group Dungeon's card over the map (its buttons are the same delegated [data-gd-open] ones)
 function pl2OpenCoopPop(){
   document.querySelectorAll('.pl2-coop-pop').forEach(x=> x.remove());
-  const w = document.createElement('div'); w.className = 'pl2-coop-pop'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', TX('ui.ar-group-name'));
+  const w = document.createElement('div'); w.className = 'pl2-coop-pop'; w.setAttribute('role', 'dialog'); w.setAttribute('aria-label', gdThemedName());
   w.innerHTML = `<div class="pl2-coop-back" data-pl2-coop-close></div><div class="panel dungeons-panel pl2-coop-box"><button type="button" class="pl2-coop-x" data-pl2-coop-close aria-label="✕">✕</button><div class="dg-list">${groupDungeonCardHTML()}</div></div>`;
   document.body.appendChild(w);
   w.addEventListener('click', e=>{ if(e.target.closest('[data-pl2-coop-close]') || e.target.closest('[data-gd-open]')) setTimeout(()=> w.remove(), 0); });
@@ -24676,7 +24676,13 @@ const GD = {s:null, phase:'closed', kind:'local', code:'', sel:null, pitch:null,
 // 2026-10-24 (package PL1, owner P24-13: "The Daily Dungeon tab is not available until something unlocks it."): a new player saw a
 // "Daily Dungeons" tab straight after the tutorial, holding only the Group Dungeon. It now opens once Map GD_OPEN_AFTER_MAP's last fight
 // is won (AR3-2's second option, "Only after a map is cleared (say Map 3)"), or with the first daily dungeon (dailyDungeonsOpen).
-const GD_OPEN_AFTER_MAP = 3;
+// 2026-10-26 (package RES3, B3, owner PL2-2 / #10: "the group dungeon should be renamed to the theme of THAT group dungeon ... pushed later
+// ahead, to Map 16 maybe"): the Group Dungeon's map spot (and the Arena's Co-op pane) open after Map 16 (was Map 3), and each group dungeon goes
+// by its own themed name (GD_THEMED_NAME: the Hollow Warren is "The Warren Heist", a crew sneaking in for the Matriarch's hoard). A new group
+// dungeon adds its line here. The daily dungeons stay Admin-only (dungeonsTabOpen).
+const GD_OPEN_AFTER_MAP = 16;
+const GD_THEMED_NAME = {hollow: 'ui.res3-gd-hollow'};
+function gdThemedName(id){ const k = GD_THEMED_NAME[id || 'hollow']; return k ? TX(k) : TX('ui.ar-group-name'); }
 function gdPlayerOpen(){ try{ return !!CoopM && (dungeonsAdminView() || (tutorialFullyDone() && mapsPassed() >= GD_OPEN_AFTER_MAP)); }catch(e){ return false; } }
 function gdLocalPeerId(){ try{ let id = sessionStorage.getItem(GD_PEER_KEY); if(!id){ id = 'tab-' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem(GD_PEER_KEY, id); } return id; }catch(e){ return 'tab-' + Math.random().toString(36).slice(2, 10); } }
 function gdMyName(){ return (myProfile && myProfile.name) || TX('ui.ar3-you'); }
@@ -24703,7 +24709,7 @@ function groupDungeonCardHTML(){
   const dg = CoopM.DUNGEONS.hollow, signed = !!(sbClient && isSignedIn());
   const inv = (GD.invites || []).slice(0, 3).map(i=> `<p class="dg-sub gd-invite-line">✉️ ${escapeHtml(TX('ui.ar3-invited', {name: i.name || 'Player'}))} <button type="button" class="btn small primary" data-gd-open="join" data-code="${escapeAttr(i.code)}">${escapeHtml(TX('ui.ar3-join'))}</button></p>`).join('');
   return `<div class="dg-card dg-group"><div class="dg-diamond map-theme-marena">${compassDiamondSVG('dg-group', false)}<span class="wd-ico">👥</span></div>
-    <div class="dg-body"><b class="dg-name">${escapeHtml(TX('ui.ar-group-name'))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}</b>
+    <div class="dg-body"><b class="dg-name">${dg.icon} ${escapeHtml(gdThemedName(dg.id))}</b><small class="res3-gd-where">${escapeHtml(TX(dg.nameKey))}</small>
       <p class="dg-sub">${escapeHtml(TX('ui.ar3-group-sub'))}</p>
       <p class="dg-sub gd-facts">${escapeHtml(TX('ui.ar3-group-facts', {floors: dg.floors.length, energy: gdCost()}))}</p>
       <p class="dg-sub gd-people-line">${(()=>{ const c = gdRoomCounts(); return c ? gdPeopleHTML(c) : gdPeopleHTML({range: true}); })()}</p>${inv}
@@ -24846,7 +24852,7 @@ function gdHeadHTML(title, sub){
   return `<header class="gd-head"><div class="gd-title"><b>${title}</b>${sub ? `<small>${sub}</small>` : ''}</div>
     <button type="button" class="btn small gd-leave ${GD.leaveArm > Date.now() ? 'is-armed' : ''}" data-gd-act="leave">${escapeHtml(GD.leaveArm > Date.now() ? TX('ui.ar3-leave-sure') : TX('ui.ar3-leave'))}</button></header>`;
 }
-function gdConnectingHTML(){ return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))}`, escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))) + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-connecting'))}</p>`; }
+function gdConnectingHTML(){ return gdHeadHTML(`👥 ${escapeHtml(gdThemedName())}`, escapeHtml(TX('ui.ar3-room-title', {code: GD.code}))) + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-connecting'))}</p>`; }
 function gdLobbyHTML(){
   const S = GD.s, r = S.room || {seats: {}}, me = S.me.peerId, host = S.isHost, mySeat = S.mySeat(), size = r.size || 2, dg = CoopM.DUNGEONS.hollow;
   const seatTile = seat=>{
@@ -24863,7 +24869,7 @@ function gdLobbyHTML(){
   const waiting = host && !S.canStart();
   const friends = GD.kind === 'live' && host ? gdFriendsHTML() : '';
   const kindNote = TX(GD.kind === 'live' ? (GD.server4p ? 'ui.ar3-kind-live' : 'ui.ar3-kind-live-2') : GD.kind === 'solo' ? 'ui.ar3-kind-solo' : 'ui.ar3-kind-local');
-  return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}`, gdKindLine()) + `
+  return gdHeadHTML(`👥 ${escapeHtml(gdThemedName(dg.id))} · ${dg.icon} ${escapeHtml(TX(dg.nameKey))}`, gdKindLine()) + `
     <div class="gd-lobby">
       ${GD.kind === 'solo' ? '' : `<div class="gd-code-row"><span>${escapeHtml(TX('ui.ar3-code-label'))}</span><b class="gd-code" id="gdCode">${escapeHtml(GD.code)}</b><button type="button" class="btn small" data-gd-act="copy">📋 ${escapeHtml(TX('ui.ar3-copy'))}</button></div>`}
       <p class="gd-note">${escapeHtml(kindNote)}</p>
@@ -24925,7 +24931,7 @@ function gdBarHTML(cls, icon, label, hp, max){ const pct = max ? Math.max(0, Mat
   return `<div class="gd-bar ${cls}"><span class="gd-bar-lbl">${icon} ${escapeHtml(label)}</span><span class="gd-bar-track"><i style="width:${pct}%"></i></span><b>${Math.max(0, Math.round(hp))}/${max}</b></div>`; }
 function gdFightHTML(){
   const S = GD.s, v = S.view, seat = S.mySeat();
-  if(!v) return gdHeadHTML(`👥 ${escapeHtml(TX('ui.ar-group-name'))}`, '') + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-mirror'))}</p>`;
+  if(!v) return gdHeadHTML(`👥 ${escapeHtml(gdThemedName())}`, '') + `<p class="gd-wait">${escapeHtml(TX('ui.ar3-mirror'))}</p>`;
   const dg = CoopM.DUNGEONS.hollow, f = dg.floors[v.floorIdx] || {}, cols = v.cols.slice();
   [].concat(v.board.party, v.board.dungeon).forEach(u=>{ if(Number.isInteger(u.slot) && !cols.includes(u.slot)) cols.push(u.slot); }); cols.sort((a, b)=> a - b);
   const legal = new Set(gdLegalCells().map(c=> c.row + ':' + c.slot)), locked = !!(seat && S.locked[seat]);

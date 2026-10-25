@@ -2265,6 +2265,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.i2-br-times-n": "Your battle rating is {n}× theirs",
   "ui.i2-top-n": "Top {n}%",
   "ui.ar3-dungeon-name": "The Hollow Warren",
+  "ui.res3-gd-hollow": "The Warren Heist",
   "ui.ar3-floor-roost": "The Bat Roost",
   "ui.ar3-floor-galleries": "The Mole Galleries",
   "ui.ar3-floor-pools": "The Salamander Pools",

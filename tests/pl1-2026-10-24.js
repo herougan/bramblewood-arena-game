@@ -49,7 +49,8 @@ ok(/\.eq2-hpbar\{position:absolute; left:12%; right:12%; bottom:31\.5%/.test(app
 ok(/function pl1AuraAtk\(/.test(app) && (app.match(/pl1AuraAtk\(/g) || []).length >= 5 && (app.match(/pl1AuraSnap\(/g) || []).length >= 4, 'P24-12 Kinship / Nature\'s Force / Lone Wolf reach the plate, the details, the refresh and the replay');
 { const f = new Function(fnSrc('pl1AuraAtk') + '; return pl1AuraAtk;')(); ok(f({kinBonus:1}) === 1 && f({kinBonus:1, natureBonus:2, packBonus:1}) === 4 && f(null) === 0, 'P24-12 pl1AuraAtk adds the three'); }
 // P24-13
-ok(/const GD_OPEN_AFTER_MAP = 3;/.test(app) && /tutorialFullyDone\(\) && mapsPassed\(\) >= GD_OPEN_AFTER_MAP/.test(app), 'P24-13 the Dungeons tab opens after Map 3 (or a daily dungeon)');
+// 2026-10-26 (package RES3, B3): the Group Dungeon moved to Map 16 (was 3)
+ok(/const GD_OPEN_AFTER_MAP = 16;/.test(app) && /tutorialFullyDone\(\) && mapsPassed\(\) >= GD_OPEN_AFTER_MAP/.test(app), 'P24-13 the Group Dungeon opens after Map 16 (RES3 B3; was Map 3)');
 // P24-18
 ok(/if\(!tabOpen\('deck'\)\)\{ pl1LeaderLessonWaitSave/.test(fnSrc('maybeLeaderLesson')), 'P24-18 the leader lesson waits for the Camp');
 // P24-19
