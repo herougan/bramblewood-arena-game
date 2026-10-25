@@ -1,3 +1,6 @@
 {"note": "Reference-2 (owner 10-25 22:36): the owner's main account's main deck (the Ant Deck, read from Supabase player_decks 2026-10-25). Map 0 at Level 0 for every card; each map after, 5 random cards +1 level (Map 20: 105 levels in all).",
+ "id": "ref2",
+ "label": "Reference-2",
  "leader": "old-willow-of-the-ford",
- "counts": {"ant-scout":5,"soldier-ant":5,"tunnel-ant":3,"fire-ant-raft":3,"quicksand-queen":2,"ant-warrior":1,"leafcutter-gardener":1}}
+ "counts": {"ant-scout":5,"soldier-ant":5,"tunnel-ant":3,"fire-ant-raft":3,"quicksand-queen":2,"ant-warrior":1,"leafcutter-gardener":1},
+ "schedule": {"about": "Package PREF (2026-10-25): a level here is a Forge level gained over the copy's own starting level (Level 0 = unlevelled). From fromMap on, each map gives perMap different copies +1 level, picked by a generator seeded with seed + the map number among the copies still below their cap (a Base card stops at Lv 4, the others at their top level), so Map N always gives the same deck. tools/opt/ref_decks.js bakes this file into arena_app.js (REF_DECK_SETS).", "fromMap": 1, "perMap": 5, "seed": "ref2"}}

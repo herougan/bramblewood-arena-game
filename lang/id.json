@@ -3388,5 +3388,16 @@
  "Co-op": "Ko-op",
  "reward": "hadiah",
  "{rank} reward": "Hadiah {rank}",
- "Pack {n}": "Paket {n}"
+ "Pack {n}": "Paket {n}",
+ "Map reference": "Referensi peta",
+ "Play with the map's reference deck": "Main dengan dek referensi peta",
+ "Reference:": "Referensi:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Aktif: setiap pertarungan Penaklukan (jalan, PRO, BPRO, X-REF) memberimu dek referensi pilihan pada level peta itu, bukan dekmu. Gratis, tanpa hadiah. Disimpan di perangkat ini.",
+ "Against:": "Melawan:",
+ "You play:": "Kamu memakai:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: dek referensi melawan dek PRO peta ini",
+ "Reference deck vs this map's PRO decks": "Dek referensi melawan dek PRO peta ini",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Kamu memakai {name}, bukan dekmu.",
+ "Played with {name}: no rewards.": "Dimainkan dengan {name}: tanpa hadiah."
 }

@@ -3386,5 +3386,16 @@
  "Co-op": "協力",
  "reward": "報酬",
  "{rank} reward": "{rank}報酬",
- "Pack {n}": "パック{n}"
+ "Pack {n}": "パック{n}",
+ "Map reference": "マップの基準",
+ "Play with the map's reference deck": "マップの基準デッキで遊ぶ",
+ "Reference:": "基準：",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "オン：すべての征服バトル（道、PRO、BPRO、X-REF）で、自分のデッキの代わりに選んだ基準デッキをそのマップのレベルで使います。無料・報酬なし。この端末に保存されます。",
+ "Against:": "相手：",
+ "You play:": "使うデッキ：",
+ "{key}: the reference deck against this map's PRO decks": "{key}：基準デッキ対このマップのPROデッキ",
+ "Reference deck vs this map's PRO decks": "基準デッキ対このマップのPROデッキ",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "自分のデッキではなく{name}で遊んでいます。",
+ "Played with {name}: no rewards.": "{name}でプレイ：報酬なし。"
 }

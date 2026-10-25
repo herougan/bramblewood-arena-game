@@ -3389,5 +3389,16 @@
  "Co-op": "협동",
  "reward": "보상",
  "{rank} reward": "{rank} 보상",
- "Pack {n}": "팩 {n}"
+ "Pack {n}": "팩 {n}",
+ "Map reference": "맵 기준",
+ "Play with the map's reference deck": "맵의 기준 덱으로 플레이",
+ "Reference:": "기준:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "켜짐: 모든 정복 전투(길, PRO, BPRO, X-REF)에서 내 덱 대신 선택한 기준 덱을 그 맵의 레벨로 사용합니다. 무료, 보상 없음. 이 기기에 저장됩니다.",
+ "Against:": "상대:",
+ "You play:": "사용 덱:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: 기준 덱 대 이 맵의 PRO 덱",
+ "Reference deck vs this map's PRO decks": "기준 덱 대 이 맵의 PRO 덱",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "내 덱이 아니라 {name}(으)로 플레이 중입니다.",
+ "Played with {name}: no rewards.": "{name}(으)로 플레이: 보상 없음."
 }

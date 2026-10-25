@@ -3386,5 +3386,16 @@
  "Co-op": "合作",
  "reward": "獎勵",
  "{rank} reward": "{rank} 獎勵",
- "Pack {n}": "卡包 {n}"
+ "Pack {n}": "卡包 {n}",
+ "Map reference": "地圖參考",
+ "Play with the map's reference deck": "使用地圖的參考牌組",
+ "Reference:": "參考：",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "開啟：每場征服戰鬥（道路、PRO、BPRO、X-REF）都會用所選參考牌組（按該地圖的等級）代替你的牌組。免費，無獎勵。儲存在此裝置上。",
+ "Against:": "對手：",
+ "You play:": "你使用：",
+ "{key}: the reference deck against this map's PRO decks": "{key}：參考牌組對陣本地圖的 PRO 牌組",
+ "Reference deck vs this map's PRO decks": "參考牌組對陣本地圖的 PRO 牌組",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "你正在使用 {name}，而不是你的牌組。",
+ "Played with {name}: no rewards.": "使用 {name} 進行：無獎勵。"
 }

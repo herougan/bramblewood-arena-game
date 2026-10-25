@@ -3388,5 +3388,16 @@
  "Co-op": "Cooperativo",
  "reward": "recompensa",
  "{rank} reward": "Recompensa {rank}",
- "Pack {n}": "Pacote {n}"
+ "Pack {n}": "Pacote {n}",
+ "Map reference": "Referência do mapa",
+ "Play with the map's reference deck": "Jogar com o baralho de referência do mapa",
+ "Reference:": "Referência:",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Ligado: cada combate de Conquista (caminho, PRO, BPRO, X-REF) dá-lhe o baralho de referência escolhido nos níveis desse mapa em vez do seu baralho. Grátis, sem recompensas. Guardado neste dispositivo.",
+ "Against:": "Contra:",
+ "You play:": "Você joga com:",
+ "{key}: the reference deck against this map's PRO decks": "{key}: o baralho de referência contra os baralhos PRO deste mapa",
+ "Reference deck vs this map's PRO decks": "Baralho de referência contra os baralhos PRO deste mapa",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Você está jogando com {name}, não com o seu baralho.",
+ "Played with {name}: no rewards.": "Jogado com {name}: sem recompensas."
 }

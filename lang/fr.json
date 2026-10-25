@@ -3386,5 +3386,16 @@
  "Co-op": "Coop",
  "reward": "récompense",
  "{rank} reward": "Récompense {rank}",
- "Pack {n}": "Pack {n}"
+ "Pack {n}": "Pack {n}",
+ "Map reference": "Référence de la carte",
+ "Play with the map's reference deck": "Jouer avec le deck de référence de la carte",
+ "Reference:": "Référence :",
+ "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.": "Activé : chaque combat de Conquête (route, PRO, BPRO, X-REF) vous donne le deck de référence choisi aux niveaux de cette carte au lieu de votre deck. Gratuit, sans récompense. Conservé sur cet appareil.",
+ "Against:": "Contre :",
+ "You play:": "Vous jouez :",
+ "{key}: the reference deck against this map's PRO decks": "{key} : le deck de référence contre les decks PRO de cette carte",
+ "Reference deck vs this map's PRO decks": "Deck de référence contre les decks PRO de cette carte",
+ "REF": "REF",
+ "You are playing {name}, not your deck.": "Vous jouez {name}, pas votre deck.",
+ "Played with {name}: no rewards.": "Joué avec {name} : pas de récompense."
 }

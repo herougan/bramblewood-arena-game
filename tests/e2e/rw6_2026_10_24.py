@@ -78,7 +78,7 @@ async def run(b, url, w):
         await pg.wait_for_selector('#conquestCanvas .map-node', timeout=15000); await pg.wait_for_timeout(500)
         n0 = await pg.evaluate("document.querySelectorAll('#conquestCanvas .map-pro').length")
         ok(n0 == 0, f'3. {mid}: map drawn, no PRO nodes for a player ({n0})')
-    mid = 'mc'; want = [e['id'] for e in DATA['maps'][mid]['pro']]
+    mid = 'mc'; want = [e['id'] for e in DATA['maps'][mid]['pro'] + DATA['maps'][mid].get('bpro', [])] + ['3-REF']  # 2026-10-25 (package PREF): + the BPRO nodes (PL2) and the map's X-REF node
     await pg.evaluate("(m)=>{ localStorage.setItem('bramblewood_admin_mode_v1','1'); window.adminAllowed = ()=> true; setAdminMode(true); conquestWorldView = false; conquestSelectedMap = m; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); }", mid)
     await pg.wait_for_selector('#conquestCanvas .map-node', timeout=15000); await pg.wait_for_timeout(800)
     r = await pg.evaluate("""(()=>{ const cv = document.getElementById('conquestCanvas'); const ns = cv ? [...cv.querySelectorAll('.map-pro')] : [];

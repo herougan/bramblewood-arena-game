@@ -27,7 +27,7 @@
 //   node tools/skirmish_pass.js decks [--from=1] [--to=24] [--keep]   (--keep, 2026-10-19 CB: the map's current deck is a candidate too)
 //        builds the Road decks for those maps (each starts from the one before) and
 //        writes them into arena_app.js (WINRATE_REF_DECKS) and docs/balance/skirmish-pass-decks.json (the report); rebuild index.html after
-//   node tools/skirmish_pass.js measure [games=40] [shard nshards] [--tag=before] [--only=a,b] [--seed=K]
+//   node tools/skirmish_pass.js measure [games=40] [shard nshards] [--tag=before] [--only=a,b] [--seed=K] [--ref=ref2]   (PREF: a reference set)
 //        appends one JSON line per fight to docs/balance/skirmish-pass-<tag>.jsonl (resumable; delete a fight's line to re-measure
 //        it). Seeds 9100 + 37g, or K + 37g with --seed (the pass's "fresh seeds" check used 5100).
 //   node tools/skirmish_pass.js tune [games=40] [--from=before] [--only=a,b] [--seed=7300] [--fixes=skirmish-pass-fixes] [shard nshards]
@@ -57,12 +57,17 @@ const opt = (k, d)=>{ const a = argv.find(x=> x.startsWith('--' + k + '=')); ret
 const ONLY = opt('only', '').split(',').filter(Boolean);
 const LO = 0.12, HI = 0.92; // the pass's band: not always losable, not auto-winnable
 const KEEP_CURRENT = argv.includes('--keep'); // decks: the map's current deck is a candidate (2026-10-19, package CB)
-const TUNE_SEED = +opt('seed', 7300); // tune's trials play other seeds than measure's (9100), so a fix isn't fitted to the seeds it is reported on
+const TUNE_SEED = +opt('seed', 7300);
+// tune's trials play other seeds than measure's (9100), so a fix isn't fitted to the seeds it is reported on
 
 // ---- the game's own functions, read out of arena_app.js by tools/lib_bramble.js (2026-10-19, W2: this file had its own copy of the
 // reader; one copy now, and it carries the map win-rate panel's reference player, so this tool and the panel play the same fight)
 const B = require('./lib_bramble.js'), G = B.G, CARD_DEFS_BASELINE = B.CARD_DEFS_BASELINE, CHARACTER_DEFS = B.CHARACTER_DEFS;
 const MAPS = G.CONQUEST_MAPS;
+// 2026-10-25 (package PREF, REF-2): --ref=<set> plays a reference set from docs/balance/ref/ (baked into arena_app.js REF_DECK_SETS by
+// tools/opt/ref_decks.js) instead of the map's reference deck: `measure 40 --ref=ref2 --tag=ref2`. 'map' (the default) is the usual deck.
+const REF_SET = (()=>{ const v = opt('ref', null) || (argv.includes('--ref') ? argv[argv.indexOf('--ref') + 1] : null); if(!v || v === 'map') return null;
+  if(!G.REF_DECK_SETS[v]) throw new Error('--ref: no reference set ' + v + ' (known: ' + G.refSetIds().join(', ') + ')'); return v; })();
 
 // ---- the fights
 const mains = MAPS.filter(m=> !m.sub);
@@ -138,7 +143,7 @@ function buildRoadDeck(mapNo, fightsOfMap, seed, prev){
 // as the skirmish editor's win-rate panel; it also gives the fight its leader grants, which this tool's copy had commented out)
 function measure(f, node, games, seed0, deckOverride){
   node = node || f.n; G.NODE_MAP_HINT.set(node, f.map);
-  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null});
+  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null, refSet: REF_SET}); // PREF: --ref=ref2 plays that reference set
   return {win: Math.round(r.wins / games * 1000) / 10, loss: Math.round(r.losses / games * 1000) / 10, rounds: r.avgRounds == null ? null : Math.round(r.avgRounds * 10) / 10,
     hpLost: Math.round(r.hpLost * 1000) / 10, cpu: r.cpu, stage: r.stage === 'road' ? 'road ' + r.deckMap : r.stage, level: r.level, hp: r.hp, shield: r.shield, overridden: r.overridden};
 }
