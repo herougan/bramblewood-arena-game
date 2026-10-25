@@ -79,9 +79,9 @@ const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
 { const {e, P} = mk(); const W = put(e, P, 2, 'kd-wall', 0); const C = put(e, P, 1, 'kd-charge', 0);
   ok(C.chargeLeft === 2, `Ready on arrival: the charge clock starts at 2 (${C.chargeLeft})`);
   e.resolveCombat(P, so, {}, [], 1); ok(C.chargeLeft === 1 && W.hp === 500, `upkeep: 2 -> 1 (${C.chargeLeft})`);
-  const ev = []; e.resolveCombat(P, so, {}, ev, 1); ok(W.hp === 496 && C.chargeLeft === 2, `at 0 the effect happens (4 damage) and the clock winds back to 2 (${W.hp}, ${C.chargeLeft})`);
+  const ev = []; e.resolveCombat(P, so, {}, ev, 1); ok(W.hp === 496 && C.chargeLeft == null && !e.effectsOf(C).charge, `at 0 the effect happens (4 damage), once: Charge leaves the card (2026-10-26, ENG9 / G24; was: the clock winds back to 2) (${W.hp}, ${C.chargeLeft})`);
   ok(ev.some(x=> x.type==='charge' && x.fired), 'a charge event marks the firing');
-  e.resolveCombat(P, so, {}, [], 1); e.resolveCombat(P, so, {}, [], 1); ok(W.hp === 492, 'it repeats every 2 rounds'); }
+  e.resolveCombat(P, so, {}, [], 1); e.resolveCombat(P, so, {}, [], 1); ok(W.hp === 496, 'it does not go off again (ENG9: once)'); }
 { const {e, P} = mk(); const W = put(e, P, 2, 'kd-wall', 0); const C = put(e, P, 1, 'kd-chargeW', 0);
   ok(C.chargeLeft == null, 'Waiting: no charge clock yet');
   e.resolveCombat(P, so, {}, [], 1); ok(C.chargeLeft == null && C.wait === 1, 'still Waiting');

@@ -38,7 +38,7 @@ const defs = Object.assign({}, base, {
   'pa-swim': U('pa-swim', {swimmer:true}, {attack:1, health:3}), 'pa-land': U('pa-land', {}, {attack:1, health:3}),
   'pa-hitter': U('pa-hitter', {}, {attack:4, health:6}),
   // Revive (2026-10-18 revert) and the CPU levels (2026-10-18, package D)
-  'pa-phoenix': U('pa-phoenix', {revive:true}, {attack:0, health:2}),
+  'pa-phoenix': U('pa-phoenix', {undead:true} /* 2026-10-26 (ENG9, owner #20): the self-return is Undead now (Revive is the graveyard action) */, {attack:0, health:2}),
   'pa-brute': U('pa-brute', {}, {attack:9, health:10}), 'pa-tough': U('pa-tough', {}, {attack:2, health:10}),
   'pa-glass': U('pa-glass', {}, {attack:3, health:4}), 'pa-ogre': U('pa-ogre', {}, {attack:30, health:30}),
   'pa-a': U('pa-a', {}, {attack:2, health:2}), 'pa-b': U('pa-b', {}, {attack:0, health:1, cost:1}),

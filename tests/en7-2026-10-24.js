@@ -19,7 +19,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-dive': U('x-dive', {flying:true, dive:2}, {attack:3, health:50}), 'x-dive-t': U('x-dive-t', {tide:true, dive:1}, {attack:3, health:50}),
   'x-dive-2x': U('x-dive-2x', {flying:true, dive:1, diveUses:2}, {attack:3, health:50}), 'x-dive-g': U('x-dive-g', {flying:true, dive:1, guardian:true}, {attack:3, health:50}),
   'x-hit': U('x-hit', {}, {attack:2, health:500}), 'x-wall': U('x-wall', {}, {attack:0, health:500, wait:9}), 'x-weak': U('x-weak', {}, {attack:0, health:5, wait:9}),
-  'x-taunt': U('x-taunt', {taunt:true}, {attack:0, health:40, wait:9}), 'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:9}),
+  'x-taunt': U('x-taunt', {taunt:true}, {attack:0, health:40, wait:9}), 'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:0 /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */}),
   'x-arrow': U('x-arrow', {arrow:2}, {attack:0, health:500}), 'x-spot': U('x-spot', {spotter:true, arrow:2}, {attack:0, health:500}),
   'x-pounce-p': U('x-pounce-p', {pounce:2, poison:2}, {attack:1, health:20, wait:1}), 'x-pounce-b': U('x-pounce-b', {pounce:2, bleed:1}, {attack:1, health:20, wait:1}),
   'x-pounce': U('x-pounce', {pounce:2}, {attack:1, health:20, wait:1}), 'x-amb-p': U('x-amb-p', {ambush:2, poison:1}, {attack:0, health:200, wait:9}),
@@ -92,17 +92,17 @@ const hitsOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid
 { const {e, P} = mk(); const T = put(e, P, 2, 'x-foe', 0); e.placeCard(P, so, 1, give(P, 1, 'x-pounce'), 0, {}, []); ok(!(T.poison > 0) && !(T.bleed > 0), 'a Pounce with no Poison / Bleed gives none'); }
 { const {e, P} = mk(); put(e, P, 1, 'x-amb-p', 0); const ev = []; e.placeCard(P, so, 2, give(P, 2, 'x-foe'), 0, {}, ev); const T = all(P[2]).find(c=> c.defId === 'x-foe');
   ok(ev.some(x=> x.type === 'ambush') && T && T.poison === 1, `Ambush carries Poison 1 (${T && T.poison})`); }
-{ const {e, P} = mk(); put(e, P, 1, 'x-fork-p', 0); const a = put(e, P, 2, 'x-foe', -1), b = put(e, P, 2, 'x-foe', 1); round(e, P);
+{ const {e, P} = mk(); put(e, P, 1, 'x-fork-p', 0); const a = put(e, P, 2, 'x-foe', -1), b = put(e, P, 2, 'x-foe', 0); round(e, P); // 2026-10-26 (ENG9, G2): Fork's lines are C and a side now (was L and R)
   ok(a.poison >= 1 && b.poison >= 1, `Fork's two lines both carry Poison (as before: ${a.poison}, ${b.poison})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-arrow-p', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(!(T.poison > 0) && T.hp < 300, 'a plain Arrow carries no Poison, even on a Poison unit'); }
 { const {e, P} = mk(); put(e, P, 1, 'x-mis', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(!(T.poison > 0), 'a plain Missile carries no Poison'); }
 { const {e, P} = mk(); put(e, P, 1, 'x-arrow-tp', 0); const T = put(e, P, 2, 'x-foe', 0); const ev = round(e, P);
-  ok(T.poison === 1 && ev.some(x=> x.type === 'statusFx' && x.kind === 'poison' && x.via === 'shot'), `Arrow 2 – poison with no Poison skill: 1 (${T.poison})`); }
-{ const {e, P} = mk(); put(e, P, 1, 'x-arrow-tp3', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(T.poison === 3, `Arrow 2 – poison on a Poison 3 unit: 3 (${T.poison})`); }
+  ok(T.poison === 2 && T.hp === 300 && ev.some(x=> x.type === 'statusFx' && x.kind === 'poison' && x.via === 'shot'), `Arrow 2 – poison with no Poison skill: 2 counters, no damage (2026-10-26, ENG9 #40: status-only) (${T.poison}, ${T.hp})`); }
+{ const {e, P} = mk(); put(e, P, 1, 'x-arrow-tp3', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(T.poison === 2, `Arrow 2 – poison on a Poison 3 unit: the shot's 2 (ENG9: its N in counters) (${T.poison})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-arrow-tb', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(T.bleed === 1, `Arrow 1 – bleed: 1 (${T.bleed})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-act-p', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); ok(T.poison === 1, `the Arrow action – poison: 1 (${T.poison})`); }
-{ let got = 0; for(let s = 1; s <= 6; s++){ const {e, P} = mk(s); put(e, P, 1, 'x-mis-b', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); if(T.bleed === 2) got++; }
-  ok(got >= 1, `the Missile action – bleed on a Bleed 2 unit: 2 when it hits a unit (${got} of 6 seeds; it may hit the bramble)`); }
+{ let got = 0; for(let s = 1; s <= 6; s++){ const {e, P} = mk(s); put(e, P, 1, 'x-mis-b', 0); const T = put(e, P, 2, 'x-foe', 0); round(e, P); if(T.bleed === 1 && T.hp === 300) got++; }
+  ok(got >= 1, `the Missile action 1 – bleed: 1 Bleed and no damage when it hits a unit (ENG9: status-only) (${got} of 6 seeds; it may hit the bramble)`); }
 
 // ---- 3. Parasite x Bloom -----------------------------------------------------------------------------------------------------
 { const {e, P} = mk(1, {rules:{phase:'day'}}); put(e, P, 1, 'x-hit', 0); const host = put(e, P, 2, 'x-foe', 0), L = put(e, P, 2, 'x-foe', -1), far = put(e, P, 2, 'x-foe', 3);

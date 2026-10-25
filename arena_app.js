@@ -2782,7 +2782,7 @@ const SKILL_TEXT = {
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
-  fork: ()=> TX('ui.sk-fork'), // 2026-10-17; 2026-10-18 (package D): terse
+  fork: ()=> TX('ui.eng9-fork'), // 2026-10-17; 2026-10-18 (package D): terse; 2026-10-26 (ENG9, owner G2): "Strikes up to 2 adjacent enemies in front of this unit"
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
   pack: v=> TX('ui.sk-pack'), // 2026-10-16 skill audit: plain words, no "N = …"; 2026-10-18 (package D): terse, the example is in the Codex
@@ -48560,7 +48560,7 @@ function renderVfxForEvent(ev){
     dnFloat(el, ev.dmg, {type:'decay', mods: ev.mods, cls:'bleed-tick'}); if(ev.atk) setTimeout(()=>{ try{ floatText(el, '−'+ev.atk+'⚔', 'debuff'); }catch(e){} }, 220); /* DN2 */
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(rc.atk!=null) rc.atk = Math.max(0, rc.atk - ev.atk); }
-    updateCardHpDisplay(ev.uid);
+    updateCardHpDisplay(ev.uid); try{ updateCardAtkDisplay(ev.uid); }catch(e){} // ENG9 (2026-10-26, owner G4: "Decay didn't [lower] its Attack"): the Attack badge shows Decay's loss at once (it waited for the next full render)
   }
   if(ev.type==='revive'){
     SoundKit.buffUp(); const el = boardCardEl(ev.uid);

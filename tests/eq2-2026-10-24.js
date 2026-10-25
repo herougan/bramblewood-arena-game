@@ -30,7 +30,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-crep': U('x-crep', {crepuscular:true, crepuscularGrant:{day:{attack:1}, night:{bolster:2}}}, {attack:1, health:30, wait:9}),
   'x-par': U('x-par', {parasite:true}, {attack:2, health:4, wait:0}), 'x-par-w': U('x-par-w', {parasite:true}, {attack:2, health:4, wait:1}),
   'x-struct': U('x-struct', {}, {attack:0, health:50, wait:9, archetypes:['Structure']}),
-  'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:9}),
+  'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:0 /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(seed, opts){ const e = E.makeSimEngine(defs, E.mulberry32(seed || 5), Object.assign({recordEvents:true, battleMode:'open', rules:{}}, opts || {}));

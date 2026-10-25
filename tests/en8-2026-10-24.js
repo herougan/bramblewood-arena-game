@@ -22,10 +22,10 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-spell0': {id:'x-spell0', name:'x-spell0', cardType:'spell', cost:0, attack:0, health:0, wait:0, spell:{do:'mend', amount:2}, effects:{}},
   'x-hit': U('x-hit', {}, {attack:10, health:500}), 'x-hit3': U('x-hit3', {}, {attack:3, health:500}), 'x-wall': U('x-wall', {}, {attack:0, health:500, wait:9}),
   'x-weak': U('x-weak', {}, {attack:0, health:5, wait:9}), 'x-blk': U('x-blk', {}, {attack:0, health:20, cost:0}), 'x-big': U('x-big', {}, {attack:30, health:20, cost:0}),
-  'x-thorn': U('x-thorn', {thorns:3}, {attack:0, health:200, wait:9}), 'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:9}),
+  'x-thorn': U('x-thorn', {thorns:3}, {attack:0, health:200, wait:9}), 'x-guard': U('x-guard', {guardian:true}, {attack:0, health:500, wait:0 /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */}),
   'x-arm': U('x-arm', {armor:2}, {attack:0, health:200, wait:9}), 'x-marm': U('x-marm', {magicArmor:2}, {attack:0, health:200, wait:9}),
   'x-fire': U('x-fire', {}, {attack:5, health:500, dmgType:'heat'}), 'x-mag': U('x-mag', {magic:true}, {attack:5, health:500}), 'x-phys': U('x-phys', {}, {attack:5, health:500}),
-  'x-ramp': U('x-ramp', {rampart:true}, {attack:0, health:500, wait:9}), 'x-struct': U('x-struct', {}, {attack:0, health:50, wait:9, archetypes:['Structure']}),
+  'x-ramp': U('x-ramp', {rampart:true}, {attack:0, health:500, wait:0 /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */}), 'x-struct': U('x-struct', {}, {attack:0, health:50, wait:9, archetypes:['Structure']}),
   'x-sc': U('x-sc', {stonecutter:1}, {attack:0, health:500, wait:0}), 'x-pro': U('x-pro', {prospector:1}, {attack:9, health:500}), 'x-fel': U('x-fel', {felling:2}, {attack:9, health:500}),
   'x-pearl': U('x-pearl', {pearlBed:2}, {attack:0, health:50, wait:1}), 'x-pearl0': U('x-pearl0', {pearlBed:1}, {attack:0, health:50, wait:0}),
   'x-scav': U('x-scav', {scavenge:1}, {attack:0, health:500, wait:3}), 'x-salv': U('x-salv', {salvage:1}, {attack:0, health:500, wait:3}),
@@ -94,12 +94,12 @@ for(const lv of [0, 1, 2]){
 // ---- 4. P24-16 Armor and Magic Armor --------------------------------------------------------------------------------------------
 { const dmgOn = (att, def)=>{ const {e, P} = mk(41); const D = put(e, P, 2, def, 0); put(e, P, 1, att, 0); const ev = round(e, P, 1); const h = ev.find(x=> x.type === 'hit' && x.targetUid === D.uid); return h ? h.dmg : null; };
   ok(dmgOn('x-phys', 'x-arm') === 3, `Armor 2 takes 2 off a physical 5 (${dmgOn('x-phys', 'x-arm')})`);
-  ok(dmgOn('x-fire', 'x-arm') === 5, `a fire swing goes past Armor (${dmgOn('x-fire', 'x-arm')})`);
+  ok(dmgOn('x-fire', 'x-arm') === 3, `a fire swing is stopped by Armor now (2026-10-26, ENG9 / EN8-2: the elements are physical) (${dmgOn('x-fire', 'x-arm')})`);
   ok(dmgOn('x-mag', 'x-arm') === 5, `a magic swing goes past Armor (${dmgOn('x-mag', 'x-arm')})`);
   ok(dmgOn('x-phys', 'x-marm') === 5, `Magic Armor 2 does nothing to a physical 5 (${dmgOn('x-phys', 'x-marm')})`);
-  ok(dmgOn('x-fire', 'x-marm') === 3 && dmgOn('x-mag', 'x-marm') === 3, `Magic Armor 2 takes 2 off a fire or magic 5 (${dmgOn('x-fire', 'x-marm')}, ${dmgOn('x-mag', 'x-marm')})`);
-  const {e, P} = mk(42); const M = put(e, P, 2, 'x-marm', 0); const d1 = e.damageCardFlat(M, 4, 'heat'), d2 = e.damageCardFlat(M, 4, 'physical'), d3 = e.damageCardFlat(M, 4, 'poison');
-  ok(d1 === 2 && d2 === 4 && d3 === 4, `a shot: Magic Armor off a fire shot (${d1}), not a physical one (${d2}), not a status tick (${d3})`); }
+  ok(dmgOn('x-fire', 'x-marm') === 5 && dmgOn('x-mag', 'x-marm') === 3, `Magic Armor 2 takes 2 off a magic 5, nothing off a fire one (ENG9: magic only) (${dmgOn('x-fire', 'x-marm')}, ${dmgOn('x-mag', 'x-marm')})`);
+  const {e, P} = mk(42); const M = put(e, P, 2, 'x-marm', 0); const d1 = e.damageCardFlat(M, 4, 'magic'), d2 = e.damageCardFlat(M, 4, 'physical'), d3 = e.damageCardFlat(M, 4, 'poison'), d4 = e.damageCardFlat(M, 4, 'heat');
+  ok(d1 === 2 && d2 === 4 && d3 === 4 && d4 === 4, `a shot: Magic Armor off a magic shot (${d1}), not a physical one (${d2}), not a status tick (${d3}), not a fire one (ENG9) (${d4})`); }
 
 // ---- 5. P24-17 brambles mend allies, never themselves; Structures aren't healed -----------------------------------------------
 { const {e, P} = mk(51); P[2] = e.newPlayer(2, {}, {id:'st-hq', health:60, effects:{castleRegen:2}}); const W = put(e, P, 2, 'x-wall', 0); const S = put(e, P, 2, 'x-struct', 1);
@@ -148,7 +148,7 @@ for(const lv of [0, 1, 2]){
   const W = P[1].row.center[0]; const h0 = W.hp; const evr = round(e, P, 2); const shot = evr.find(x=> x.type === 'hit' && x.attUid === T.uid && x.ranged), sw = evr.find(x=> x.type === 'hit' && x.attUid === T.uid && !x.ranged);
   ok(shot && shot.dmg === 1, `its skill (4 damage) with 3 Daunt hits for 1 (${shot && shot.dmg})`);
   ok(sw && sw.dmg === 3, `then its swing (Attack 5) with 2 Daunt left hits for 3 (${sw && sw.dmg})`);
-  ok(T.dauntN === 0, `one counter for its swing, one for its skill, one at the round's end: ${T.dauntN} left`);
+  ok(T.dauntN === 1, `one counter for its swing, one for its damage skill, none at the round's end (2026-10-26, ENG9 / EN8-11): ${T.dauntN} left`);
   void h0; }
 { const {e, P} = mk(92); const T = put(e, P, 2, 'x-wall', 0); const W = put(e, P, 1, 'x-wall', 0); round(e, P, 1); T.dauntN = 2; const ev = [];
   T.uid; const d = e.damageCardFlat(W, 5, 'physical', 'x-shooter', T.uid); ok(d === 3, `its skill damage is 2 less with 2 Daunt (${d})`); }
@@ -156,7 +156,7 @@ for(const lv of [0, 1, 2]){
 // ---- 8. data -------------------------------------------------------------------------------------------------------------------
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')), by = Object.fromEntries(sc.skills.map(s=> [s.id, s]));
   ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'magicArmor', 'scavenge', 'salvage'].forEach(k=> ok(by[k] && by[k].value > 0 && /EN8/.test(by[k].note || ''), `${k} is priced (4-round rule, EN8 note)`));
-  ok(by.rampart && by.rampart.value === 0.25, `Rampart re-priced for its columns (${by.rampart && by.rampart.value})`); }
+  ok(by.rampart && by.rampart.value === 0.22 /* 2026-10-26 (ENG9): Ready only, 0.25 -> 0.22 */, `Rampart re-priced for its columns (${by.rampart && by.rampart.value})`); }
 { const TX = require(path.join(ROOT, 'bramblewood-texts.js')); const T = TX.TEXT || TX.TEXTS || TX;
   const keys = ['ui.en8-stonecutter', 'ui.en8-prospector', 'ui.en8-felling', 'ui.en8-pearl-bed', 'ui.en8-coppice', 'ui.en8-driftwood', 'ui.en8-magic-armor', 'ui.en8-scavenge', 'ui.en8-salvage', 'ui.en8-armor', 'ui.en8-guardian', 'ui.en8-mystery', 'ui.en8-castle-regen', 'ui.fx-windfall', 'ui.en8-pearl-tip', 'ui.sk-rampart', 'ui.en8-render', 'ui.en8-render-codex', 'ui.en8-log-render', 'ui.en8-daunt-badge'];
   const src = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8'), en = k=>{ const m = new RegExp('"' + k.replace(/\./g, '\\.') + '": "((?:[^"\\\\]|\\\\.)*)"').exec(src); return m ? JSON.parse('"' + m[1] + '"') : null; };

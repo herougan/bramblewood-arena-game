@@ -94,7 +94,7 @@ function dodges(rules, id, seed){ const {e, P} = mk(rules, seed || 11); put(e, P
   const ev = []; e.bloomCopyPass(P, so, {}, ev); const b = ev.find(x=> x.type === 'bloom'), rw = P[1].reserve && P[1].reserve[0];
   ok(b && b.row === 1 && rw && rw[0] && rw[0].bloomCopy, `both sides taken on a two-row board: the copy grows behind it (row ${b && b.row}, slot ${b && b.slot})`); }
 { const {e, P} = mk({phase:'day'}); e.roundStart(P, 1, so, {}, []); const A = put(e, P, 1, 'x-bloom', 0); put(e, P, 1, 'x-wall', -1); put(e, P, 1, 'x-wall', 1);
-  const ev = []; e.bloomCopyPass(P, so, {}, ev); ok(!ev.some(x=> x.type === 'bloom') && !A.bloomed, 'one row, both sides taken: it waits (BL-2 unchanged)'); }
+  const ev = []; e.bloomCopyPass(P, so, {}, ev); const f = ev.find(x=> x.type === 'bloom'); ok(f && f.failed && A.bloomed && !all(P[1]).some(x=> x.bloomCopy), 'one row, both sides taken: the split fails, +1/+1 on the unit (2026-10-26, ENG9 / EN7-2; was BL-2: it waits)'); }
 { const src = fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8'); ok(!/c\.bloomed \|\| c\.bloomCopy \|\| c\.cageOf/.test(src), 'bloomCopyPass no longer skips a copy'); }
 { const p = BB.bloomOdds({when:['wet', 'sunny']}), q = BB.BLOOM_CHAIN_Q, pc = BB.bloomChainOdds({when:['wet', 'sunny']});
   ok(Math.abs(pc - Math.round(p * (1 + q + q * q) * 100) / 100) < 1e-9 && BB.bloomBodyMult({bloomCopy:{when:['wet', 'sunny']}}) === 1 + pc, `Bloom's chain priced: p ${p} -> ${pc} (q ${q})`); }

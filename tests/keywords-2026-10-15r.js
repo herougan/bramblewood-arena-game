@@ -96,7 +96,7 @@ ok(!cards.some(c=> 'worthy' in (c.effects||{})), '26. no card carries Worthy');
   // 2026-10-24 (package EN6, owner 12:02 #5: "I'll take away bounty from creatures that dont make sense such as Beaver"): the Beaver Lumberjack
   // lost its Bounty (On Ready: gain 1 Lumber instead); the 7 loot carriers keep theirs.
   const bv = cards.find(x=> x.id === 'beaver-lumberjack').effects;
-  ok(!bv.bounty && (bv.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain') && has.every(id=> KEEP.includes(id) && id !== 'beaver-lumberjack'), `26. Bounty only on the 7 loot carriers; the Beaver Lumberjack's is gone (${has.join(', ')})`); }
+  ok(!bv.bounty && ((bv.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain') || bv.stockpile === 1 /* 2026-10-26 (ENG9): Stockpile 1 */) && has.every(id=> KEEP.includes(id) && id !== 'beaver-lumberjack'), `26. Bounty only on the 7 loot carriers; the Beaver Lumberjack's is gone (${has.join(', ')})`); }
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true,/.test(src), '26. Worthy is out of the editor and the lists');
 
 // ---- 43. every extra hit rolls its own miss

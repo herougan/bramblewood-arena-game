@@ -3456,5 +3456,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "À sa première mort, il revient comme jeton avec 1 PV, sans statut. Un jeton ne laisse aucune carte.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "Quand il est joué : Réanimation {n} : autant de cartes créature au hasard reviennent de votre cimetière à côté de lui, comme vraies cartes.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "il ne peut pas bouger (Gardien, Rempart, Plongeon, Charge) ni esquiver en volant ; ses coups infligent la moitié.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ses coups Empêtrent la cible ({n} tours) : une fois sur deux, ses attaques, tirs, compétences et déclencheurs échouent."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ses coups Empêtrent la cible ({n} tours) : une fois sur deux, ses attaques, tirs, compétences et déclencheurs échouent.",
+ "{name} comes back from the graveyard.": "{name} revient du cimetière.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t} est empoisonné par les barbes de {a} (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a} empêtre {t} (Empêtré {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} tente de fleurir, mais il n'y a pas de place : il gagne +1/+1 à la place."
 }

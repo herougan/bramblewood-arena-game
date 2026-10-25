@@ -309,6 +309,12 @@ for i, code in enumerate(CODES):
         assert len(row) == len(CODES) and ph(en) == ph(row[i]), (code, en)
         if en in pack: continue  # an older, reviewed row wins
         pack[en] = row[i]
+    # a log line that opens with an emoji is also looked up without it (the log adds its own icon): the same row, emoji dropped
+    for en, row in T.items():
+        m = re.match(r'^(\S+) (.*)$', en)
+        if m and not re.search(r'\w', m.group(1)):
+            t = row[i]; t2 = t[len(m.group(1)) + 1:] if t.startswith(m.group(1) + ' ') else t
+            if m.group(2) not in pack: pack[m.group(2)] = t2
     for en in OLDER: assert en in pack, (code, en)
     dump(path, pack)
 print('wrote', len(CODES), 'packs:', len(T), 'texts each')

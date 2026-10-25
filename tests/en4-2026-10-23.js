@@ -16,7 +16,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'x-hit':   {id:'x-hit', name:'Hitter', attack:1, health:100, wait:0, cost:0, effects:{}},
   'x-hit2':  {id:'x-hit2', name:'Hitter2', attack:2, health:100, wait:0, cost:0, effects:{}},
   'x-wall':  {id:'x-wall', name:'Wall', attack:0, health:500, wait:9, cost:0, effects:{}},
-  'x-guard': {id:'x-guard', name:'Guard', attack:0, health:100, wait:9, cost:0, effects:{guardian:true}},
+  'x-guard': {id:'x-guard', name:'Guard', attack:0, health:100, wait:0, cost:0, effects:{guardian:true}}, /* 2026-10-26 (ENG9, owner EN8-8): a Guardian / Rampart blocks only while Ready, so Wait 0 (0 Attack: it never swings) */
   'x-hem':   {id:'x-hem', name:'Hem', attack:1, health:100, wait:0, cost:0, effects:{hemorrhage:true}},
   'x-hemb':  {id:'x-hemb', name:'HemB', attack:1, health:100, wait:0, cost:0, effects:{hemorrhage:true, bleed:2}},
   'x-bleed2':{id:'x-bleed2', name:'Bleed2', attack:1, health:100, wait:0, cost:0, effects:{bleed:2}},

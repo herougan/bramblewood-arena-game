@@ -233,22 +233,6 @@
    "use": 88
   },
   {
-   "id": "stag-beetle",
-   "from": "2/15",
-   "to": "2/14",
-   "S": "5.4 -> 5.47",
-   "nMult": 1,
-   "use": 96
-  },
-  {
-   "id": "horseshoe-crab",
-   "from": "2/11",
-   "to": "2/10",
-   "S": "3.38 -> 3.52",
-   "nMult": 1,
-   "use": 95
-  },
-  {
    "id": "hawthorn-shieldbug",
    "from": "2/13",
    "to": "2/12",
@@ -691,5 +675,6 @@
    "use": 94
   }
  ],
- "flagged": []
+ "flagged": [],
+ "armorNote": "Armor was set to 1.56 after this run (was 1.57 in it): at 1.56 the Stag Beetle (2/15) and the Horseshoe Crab (2/11) fit as they are and are no longer held; the Caldera Wyrm fits too."
 }

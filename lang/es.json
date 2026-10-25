@@ -3455,5 +3455,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "La primera vez que muere, vuelve como ficha con 1 de Vida y sin estados. Una ficha no deja carta.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "Al jugarse: Revivir {n}: esa cantidad de cartas de criatura al azar vuelven de tu cementerio a su lado, como cartas reales.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "no puede moverse (Guardián, Muralla, Picado, Carga) ni esquivar volando; sus golpes hacen la mitad.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Sus golpes Enredan al objetivo ({n} rondas): la mitad de las veces fallan sus ataques, disparos, habilidades y activadores."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Sus golpes Enredan al objetivo ({n} rondas): la mitad de las veces fallan sus ataques, disparos, habilidades y activadores.",
+ "{name} comes back from the graveyard.": "{name} vuelve del cementerio.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t} es envenenado por las púas de {a} (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a} enreda a {t} (Enredado {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} intenta florecer, pero no hay sitio: gana +1/+1 en su lugar."
 }

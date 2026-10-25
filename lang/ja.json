@@ -3456,5 +3456,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "初めて倒れたとき、体力1・状態なしのトークンとして戻る。トークンはカードを残さない。",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "プレイ時：蘇生{n}：その数だけランダムなクリーチャーカードが本物のカードとして墓地からその隣に戻る。",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "動けない（ガーディアン・城壁・ダイブ・チャージ）、飛行で回避もできない。攻撃のダメージは半分。",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "その攻撃は対象を絡め取る（{n}ラウンド）：半分の確率で、攻撃・射撃・スキル・誘発が失敗する。"
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "その攻撃は対象を絡め取る（{n}ラウンド）：半分の確率で、攻撃・射撃・スキル・誘発が失敗する。",
+ "{name} comes back from the graveyard.": "{name}が墓地から戻ってきた。",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t}は{a}の毒トゲで毒を受けた（+{n}）。",
+ "{a} tangles {t} (Tangled {n}).": "{a}が{t}を絡め取った（絡まり{n}）。",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name}は咲こうとしたが場所がない：代わりに+1/+1を得た。"
 }

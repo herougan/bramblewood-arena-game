@@ -31,9 +31,9 @@ const hurt = ws=> ws.filter(c=> c.hp < c.maxHp);
 // 1/2"): see tests/fork-family-2026-10-17.js for the full rule; the cases below are updated to it.
 { const {e, P} = mk(); const ws = [-1, 0, 1].map(s=> put(e, P, 2, 'kc-wall', s)); const F = put(e, P, 1, 'kc-fork', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, F.uid, {}, []); const h = hurt(ws);
-  ok(h.length === 2 && ws[0].hp === 497 && ws[1].hp === 500 && ws[2].hp === 497 && P[2].hq.hp === hq, `Fork: L and R, never C with a side, never the castle (${ws.map(c=> c.hp)})`); }
+  ok(h.length === 2 && ws[1].hp === 497 && ((ws[0].hp === 497) !== (ws[2].hp === 497)) && P[2].hq.hp === hq, `Fork: C and one side, never L + R, never the castle (2026-10-26, ENG9 / G2; was L and R) (${ws.map(c=> c.hp)})`); }
 { const {e, P} = mk(); const ws = [-1, 1].map(s=> put(e, P, 2, 'kc-wall', s)); const F = put(e, P, 1, 'kc-fork', 0); const hq = P[2].hq.hp;
-  e.debugAttack(P, so, F.uid, {}, []); ok(hurt(ws).length === 2 && P[2].hq.hp === hq, `Fork with nothing in front: both units beside it (${ws.map(c=> c.hp)})`); }
+  e.debugAttack(P, so, F.uid, {}, []); ok(hurt(ws).length === 1 && P[2].hq.hp === hq, `Fork with nothing in front: one of the units beside it (never L + R; ENG9 / G2), not the castle (${ws.map(c=> c.hp)})`); }
 { const {e, P} = mk(); const far = put(e, P, 2, 'kc-wall', 3); const F = put(e, P, 1, 'kc-fork', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, F.uid, {}, []); ok(far.hp === 500 && P[2].hq.hp === hq - 3, 'Fork with no unit in range: it attacks straight ahead (the castle)'); }
 { const {e, P} = mk(); const ws = [-2, -1, 0, 1, 2].map(s=> put(e, P, 2, 'kc-wall', s)); const T = put(e, P, 1, 'kc-tri', 0);
@@ -43,8 +43,8 @@ const hurt = ws=> ws.filter(c=> c.hp < c.maxHp);
   e.debugAttack(P, so, T.uid, {}, []); const h = hurt(ws);
   ok(h.length === 4 && h.every(c=> Math.abs(c.slot) <= 2) && ws[3].hp < 500 && h.every(c=> c.hp === 498), `Pitchfork: 4 lines within 2 columns, C among them, half each, 1.5 lands as 2 (FX2) (${ws.map(c=> c.slot + ':' + c.hp)})`); }
 { let hitW = 0, bad = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(s); const w = put(e, P, 2, 'kc-wall', 2); const T = put(e, P, 1, 'kc-pitch', 0); const hq = P[2].hq.hp;
-    e.debugAttack(P, so, T.uid, {}, []); if(w.hp === 498) hitW++; else if(w.hp !== 500) bad++; if(P[2].hq.hp !== hq - 2) bad++; } // half of 3: 1.5 lands as 2 (FX2)
-  ok(!bad && hitW > 4 && hitW < 26, `Pitchfork: nothing in front, its C prong hits the castle for half; a unit 2 columns out is struck when it aims that way (${hitW}/30, ${bad} bad)`); }
+    e.debugAttack(P, so, T.uid, {}, []); if(w.hp === 498){ hitW++; if(P[2].hq.hp !== hq) bad++; } else if(w.hp !== 500) bad++; else if(P[2].hq.hp !== hq - 2) bad++; } // half of 3: 1.5 lands as 2 (FX2); 2026-10-26 (ENG9, G2): the castle only when no line holds a unit
+  ok(!bad && hitW > 4 && hitW < 26, `Pitchfork: nothing in front; a unit 2 columns out is struck when it aims that way (then no castle), else its C prong hits the castle for half (${hitW}/30, ${bad} bad)`); }
 { const {e, P} = mk(); const w = put(e, P, 2, 'kc-wall', 2); const T = put(e, P, 1, 'kc-tri', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, T.uid, {}, []); ok(w.hp === 500 && P[2].hq.hp === hq - 3, 'Trident: a unit 2 columns away is out of range, so it swings at the castle'); }
 { let one = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(s); const ws = [-1, 0, 1].map(x=> put(e, P, 2, 'kc-wall', x)); const F = put(e, P, 1, 'kc-fork', 0); F.blind = 5;

@@ -3457,5 +3457,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "Sa unang pagkamatay nito, bumabalik ito bilang token na may 1 Health at walang status. Walang naiiwang card ang token.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "Kapag nilaro: Muling Pagkabuhay {n}: ganoong dami ng random na creature card ang bumabalik mula sa iyong libingan sa tabi nito, bilang tunay na card.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "hindi ito makagalaw (Guardian, Rampart, Dive, Charge) o makaiwas bilang Flyer; kalahati lang ang pinsala ng mga tama nito.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ang mga tama nito ay nagpapa-Tangle sa target ({n} round): kalahati ng beses, nabibigo ang mga atake, tira, skill at trigger nito."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Ang mga tama nito ay nagpapa-Tangle sa target ({n} round): kalahati ng beses, nabibigo ang mga atake, tira, skill at trigger nito.",
+ "{name} comes back from the graveyard.": "Bumalik si {name} mula sa libingan.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "Nalason si {t} ng mga tinik ni {a} (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "Pinulupot ni {a} si {t} (Nakapulupot {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "Sinubukang mamukadkad ni {name}, pero walang puwang: +1/+1 na lang ang nakuha nito."
 }

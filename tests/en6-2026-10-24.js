@@ -76,12 +76,12 @@ function stateOn(rules, id, k, rounds){ const {e, P} = mk(rules); const c = put(
   ok(dr({}) === '00000' && dr({weatherMap:true, wet:true}) === '00000', 'no Drought without weather, or on a wet map');
   ok(dr({weatherMap:true, field:'rain'}) === '00000', 'no Drought while it rains'); }
 // ---- seasons ------------------------------------------------------------------------------------------------------------------------
-{ const {e, P} = mk({seasons:true}); const w = put(e, P, 1, 'x-winter'), s = put(e, P, 1, 'x-summerg', 1); const seq = [], evs = [];
+{ const {e, P} = mk({seasons:3} /* 2026-10-26 (ENG9, EN6-4): a plain cycle is 6 rounds now; 3 checks the turning in 12 rounds */); const w = put(e, P, 1, 'x-winter'), s = put(e, P, 1, 'x-summerg', 1); const seq = [], evs = [];
   for(let r = 2; r <= 13; r++){ const ev = []; e.roundStart(P, r, so, {}, ev); sync(e, P); seq.push(e.en6Season()[0] + (String(w._en5On).includes('season') ? 'W' : '') + (String(s._en5On).includes('season') ? 'S' : '')); ev.filter(x=> x.type === 'season').forEach(x=> evs.push(x.season)); }
-  ok(seq.join(' ') === 'sp sp sS sS sS a a a wW wW wW sp'.replace(/sp/g, 's'), `the cycle, 3 rounds a season; Season(Winter) on in Winter, Season(Summer) in Summer (${seq.join(' ')})`);
-  ok(evs.join(',') === 'summer,autumn,winter,spring', `a 'season' event as it turns (${evs.join(',')})`);
+  ok(seq.join(' ') === 's s s sS sS sS a a a wW wW wW', `the cycle, 3 rounds a season from round 1 (ENG9: the first season is no longer a round short); Season(Winter) on in Winter, Season(Summer) in Summer (${seq.join(' ')})`);
+  ok(evs.join(',') === 'summer,autumn,winter', `a 'season' event as it turns (${evs.join(',')})`);
   ok((e.effectsOf(s).armor|0) === 0, 'Season(Summer) – {Armor 3} off out of season');
-  const m2 = mk({seasons:true}); for(let r = 2; r <= 5; r++) m2.e.roundStart(m2.P, r, so, {}, []); ok(m2.e.en6Season() === 'summer' && m2.e.en6Hot() && !m2.e.en6Cold(), 'Summer is hot');
+  const m2 = mk({seasons:3}); for(let r = 2; r <= 5; r++) m2.e.roundStart(m2.P, r, so, {}, []); ok(m2.e.en6Season() === 'summer' && m2.e.en6Hot() && !m2.e.en6Cold(), 'Summer is hot');
   const m3 = mk({seasons:2, seasonStart:'winter'}); ok(m3.e.en6Season() === 'winter' && m3.e.en6Cold() && m3.e.en6HibernateCond(), 'a fight can start in Winter (rules.seasonStart): cold, and Hibernate sleeps');
   ok(mk({}).e.en6Season() === null && !stateOn({}, 'x-winter', 'season').on, 'no cycle (the default): no season, Season skills off'); }
 // ---- Hibernate -----------------------------------------------------------------------------------------------------------------------
@@ -131,7 +131,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
     'seed-cache-squirrel':'plenty', 'ravenous-wolverine':'scarcity', 'gull-thief':'foePlenty', 'stoat-cutthroat':'foeScarcity', 'balloon-archer':'arrowBramble'};
   Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && x.effects && x.effects[k] && b && b.ok, `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
     ok(x && BB.skillCountOf(x.effects) <= 2, `${id}: two skills at most (${x && BB.skillCountOf(x.effects)})`); });
-  const bv = c('beaver-lumberjack'); ok(bv && !bv.effects.bounty && (bv.effects.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain' && t.resource === 'lumber' && t.amount === 1), 'Beaver Lumberjack: no Bounty; On Ready: gain 1 Lumber (owner 12:02 #5)');
+  const bv = c('beaver-lumberjack'); ok(bv && !bv.effects.bounty && ((bv.effects.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain' && t.resource === 'lumber' && t.amount === 1) || bv.effects.stockpile === 1 /* 2026-10-26 (ENG9, EN6-6): the named keyword Stockpile 1 */), 'Beaver Lumberjack: no Bounty; On Ready: gain 1 Lumber (owner 12:02 #5)');
   const keep = ['raccoon-bandit', 'raccoon-warlord', 'trash-panda-trickster', 'riverside-peddler', 'pack-mule', 'magnate-duck', 'chipmunk-stockpiler'];
   const withB = cards.filter(x=> x.effects && x.effects.bounty).map(x=> x.id).sort(); ok(JSON.stringify(withB) === JSON.stringify(keep.slice().sort()), `Bounty only on the loot carriers (${withB.join(', ')})`);
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en6-refit-2026-10-24.json'), 'utf8')); ok(Array.isArray(rf.up) && Array.isArray(rf.down) && rf.held.length === 0, `the re-fit is filed (${rf.up.length} up, ${rf.down.length} down, none held)`); }

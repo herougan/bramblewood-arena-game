@@ -69,7 +69,7 @@ ok(gc && gc.effects && gc.effects.charge && (gc.effects.charge.do || {}).do === 
 if(gc){
   const res = H.runBoard({defs, seed:9, rounds:6, noSuddenDeath:true, hqHp:{A:500, B:500}, A:[{id:'galactic-condor', side:'center', wait:0}], B:[{id:'pb-wall', side:'center', hp:500}]});
   const beams = res.events.filter(x=> x.type==='positionBeam');
-  ok(beams.length >= 2 && beams.every(b=> b.lane === 'centre'), `the Condor's beam fires on its charge, repeatedly, from the centre (fired ${beams.length} times in 6 rounds)`);
+  ok(beams.length === 1 && beams.every(b=> b.lane === 'centre'), `the Condor's beam fires on its charge, once (2026-10-26, ENG9 / G24: Charge is a one-shot; was repeatedly), from the centre (fired ${beams.length} times in 6 rounds)`);
 }
 console.log(`position-beam: ${fail} failure(s)`);
 process.exit(fail ? 1 : 0);

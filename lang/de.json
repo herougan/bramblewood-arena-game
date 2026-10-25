@@ -3455,5 +3455,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "Beim ersten Tod kehrt es als Spielmarke mit 1 Leben und ohne Zustände zurück. Eine Spielmarke hinterlässt keine Karte.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "Beim Ausspielen: Wiederbeleben {n}: so viele zufällige Kreaturenkarten kehren aus deinem Friedhof als echte Karten neben ihm zurück.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "es kann sich nicht bewegen (Wächter, Wall, Sturzflug, Aufladen) und nicht als Flieger ausweichen; seine Treffer richten die Hälfte an.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Seine Treffer verstricken das Ziel ({n} Runden): in der Hälfte der Fälle schlagen seine Angriffe, Schüsse, Fähigkeiten und Auslöser fehl."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Seine Treffer verstricken das Ziel ({n} Runden): in der Hälfte der Fälle schlagen seine Angriffe, Schüsse, Fähigkeiten und Auslöser fehl.",
+ "{name} comes back from the graveyard.": "{name} kehrt aus dem Friedhof zurück.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t} wird von den Stacheln von {a} vergiftet (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a} verstrickt {t} (Verstrickt {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} versucht zu blühen, aber es ist kein Platz: es erhält stattdessen +1/+1."
 }

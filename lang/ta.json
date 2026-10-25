@@ -3459,5 +3459,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "முதல் முறை இறக்கும்போது, 1 உயிர்ப்புள்ளியுடன் நிலைகள் இன்றி டோக்கனாகத் திரும்பும். டோக்கன் அட்டையை விடாது.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "விளையாடப்படும்போது: உயிர்த்தெழுதல் {n}: அத்தனை சீரற்ற உயிரின அட்டைகள் உங்கள் கல்லறையிலிருந்து உண்மையான அட்டைகளாக அதன் அருகில் திரும்பும்.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "அது நகர முடியாது (காவலர், அரண், பாய்ச்சல், சார்ஜ்), பறந்து தவிர்க்கவும் முடியாது; அதன் அடிகள் பாதி சேதம்.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "இதன் அடிகள் இலக்கைச் சிக்க வைக்கும் ({n} சுற்றுகள்): பாதி நேரம், அதன் தாக்குதல்கள், எய்தல்கள், திறன்கள், தூண்டல்கள் தோல்வியடையும்."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "இதன் அடிகள் இலக்கைச் சிக்க வைக்கும் ({n} சுற்றுகள்): பாதி நேரம், அதன் தாக்குதல்கள், எய்தல்கள், திறன்கள், தூண்டல்கள் தோல்வியடையும்.",
+ "{name} comes back from the graveyard.": "{name} கல்லறையிலிருந்து திரும்புகிறது.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{a}-இன் முட்களால் {t} நஞ்சூட்டப்பட்டது (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a} {t}-ஐச் சிக்க வைக்கிறது (சிக்கியது {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} பூக்க முயல்கிறது, ஆனால் இடமில்லை: பதிலாக +1/+1 பெறுகிறது."
 }

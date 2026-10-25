@@ -3458,5 +3458,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "Saat pertama kali mati, ia kembali sebagai token dengan 1 Nyawa tanpa status. Token tidak meninggalkan kartu.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "Saat dimainkan: Bangkitkan {n}: kartu makhluk acak sebanyak itu kembali dari kuburanmu ke sampingnya, sebagai kartu asli.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "tidak bisa bergerak (Penjaga, Benteng, Menukik, Isi Daya) dan tidak bisa menghindar sebagai penerbang; serangannya separuh kerusakan.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Serangannya Menjerat target ({n} ronde): separuh waktu, serangan, tembakan, skill, dan pemicunya gagal."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "Serangannya Menjerat target ({n} ronde): separuh waktu, serangan, tembakan, skill, dan pemicunya gagal.",
+ "{name} comes back from the graveyard.": "{name} kembali dari kuburan.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t} teracuni duri {a} (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a} menjerat {t} (Terjerat {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} mencoba mekar, tetapi tidak ada tempat: ia mendapat +1/+1 sebagai gantinya."
 }

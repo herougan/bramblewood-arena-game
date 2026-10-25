@@ -3459,5 +3459,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "처음 죽으면 체력 1, 상태 없음의 토큰으로 돌아옵니다. 토큰은 카드를 남기지 않습니다.",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "낼 때: 부활 {n}: 그만큼의 무작위 생물 카드가 진짜 카드로 내 무덤에서 그 옆에 돌아옵니다.",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "움직일 수 없고(수호, 성벽, 다이브, 충전) 비행 회피도 못 합니다. 공격 피해가 절반입니다.",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "이 유닛의 공격은 대상을 휘감습니다({n}라운드): 절반 확률로 공격, 사격, 스킬, 발동이 실패합니다."
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "이 유닛의 공격은 대상을 휘감습니다({n}라운드): 절반 확률로 공격, 사격, 스킬, 발동이 실패합니다.",
+ "{name} comes back from the graveyard.": "{name}이(가) 무덤에서 돌아옵니다.",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t}이(가) {a}의 독가시에 중독됩니다 (+{n}).",
+ "{a} tangles {t} (Tangled {n}).": "{a}이(가) {t}을(를) 휘감습니다 (휘감김 {n}).",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name}이(가) 피어나려 했지만 자리가 없습니다: 대신 +1/+1을 얻습니다."
 }

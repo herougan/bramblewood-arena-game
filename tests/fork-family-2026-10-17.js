@@ -38,21 +38,23 @@ function swing(id, slots, seed, foeId){
 const same = (a, b)=> JSON.stringify(a) === JSON.stringify(b);
 
 // ---- Fork: L and R, or just C, never C with a side
-{ const r = swing('ff-fork', [-1, 0, 1]); ok(same(r.d, {'-1':4, '0':0, '1':4}) && r.castle === 0, `Fork, all three filled: L and R at full, C untouched (${JSON.stringify(r.d)})`); }
-{ const r = swing('ff-fork', [-1, 1]); ok(same(r.d, {'-1':4, '1':4}) && r.castle === 0, `Fork, nobody in front: L and R (${JSON.stringify(r.d)})`); }
-{ const r = swing('ff-fork', [0, 1]); ok(same(r.d, {'0':4, '1':0}) && r.castle === 0, `Fork, C and one side: only C (${JSON.stringify(r.d)})`);
-  const fs2 = r.ev.find(x=> x.type === 'forkSwing'); ok(fs2 && fs2.prong === 'right' && fs2.lines.length === 1 && fs2.lines[0].off === 0, 'Fork striking C alone: its right prong takes it, the left one goes into the empty column'); }
-{ const r = swing('ff-fork', [-1, 0]); const fs2 = r.ev.find(x=> x.type === 'forkSwing'); ok(r.d['0'] === 4 && r.d['-1'] === 0 && fs2 && fs2.prong === 'left', 'Fork, C and its left: only C, with the left prong (the right one into the empty column)'); }
+{ let lc = 0, cr = 0; for(let s = 1; s <= 30; s++){ const r = swing('ff-fork', [-1, 0, 1], s); if(r.castle) continue; if(same(r.d, {'-1':4, '0':4, '1':0})) lc++; else if(same(r.d, {'-1':0, '0':4, '1':4})) cr++; } /* 2026-10-26 (ENG9, owner G2): two ADJACENT lines (C + a side, never L + R), the castle only with L, C and R empty */
+  ok(lc + cr === 30 && lc > 5 && cr > 5, `Fork, all three filled: C and one side at full, L + C or C + R at random, never L + R (${lc}/${cr})`); }
+{ const r = swing('ff-fork', [-1, 1]); ok((same(r.d, {'-1':4, '1':0}) || same(r.d, {'-1':0, '1':4})) && r.castle === 0, `Fork, nobody in front: one of L and R, not both, not the castle (${JSON.stringify(r.d)})`); }
+{ const r = swing('ff-fork', [0, 1]); ok(same(r.d, {'0':4, '1':4}) && r.castle === 0, `Fork, C and one side: both (ENG9) (${JSON.stringify(r.d)})`);
+  const fs2 = r.ev.find(x=> x.type === 'forkSwing'); ok(fs2 && fs2.lines.length === 2 && fs2.lines[0].off === 0 && fs2.lines[0].main, 'Fork striking C and R: two lines, C the swing proper'); }
+{ const r = swing('ff-fork', [-1, 0]); ok(r.d['0'] === 4 && r.d['-1'] === 4, 'Fork, C and its left: both (ENG9)'); }
 { let L = 0, R = 0; for(let s = 1; s <= 40; s++){ const r = swing('ff-fork', [0], s); const fs2 = r.ev.find(x=> x.type === 'forkSwing'); if(fs2.prong === 'left') L++; else if(fs2.prong === 'right') R++; }
   ok(L > 8 && R > 8 && L + R === 40, `Fork, C alone with both sides empty: either prong, at random (${L}/${R})`); }
 { const r = swing('ff-fork', [-1]); ok(same(r.d, {'-1':4}) && r.castle === 0, 'Fork, one unit beside it and nobody in front: that one'); }
 { const r = swing('ff-fork', [2]); ok(r.d['2'] === 0 && r.castle === 4, 'Fork, nobody in its three columns: the castle, full'); }
-{ const r = swing('ff-swipe', [-1, 0, 1]); ok(same(r.d, {'-1':4, '0':0, '1':4}), 'an old swipe:true is still Fork'); }
-{ const r = swing('ff-fork', [-1, 0], 7, {'-1':'ff-taunt'}); ok(r.d['-1'] === 4 && r.d['0'] === 0, `Fork: a Taunt unit beside it that draws the swing is struck, not C (${JSON.stringify(r.d)})`); }
+{ const r = swing('ff-swipe', [-1, 0, 1]); ok(r.d['0'] === 4 && (r.d['-1'] === 4) !== (r.d['1'] === 4), 'an old swipe:true is still Fork'); }
+{ const r = swing('ff-fork', [-1, 0, 1], 7, {'-1':'ff-taunt'}); ok(r.d['-1'] === 4 && r.d['0'] === 4 && r.d['1'] === 0, `Fork: a Taunt unit beside it that draws the swing is one of its lines (with C), the far side spared (${JSON.stringify(r.d)})`); }
 
 // ---- Trident: always forward, C full, L / R half
 { const r = swing('ff-tri', [-2, -1, 0, 1, 2]); ok(same(r.d, {'-2':0, '-1':2, '0':4, '1':2, '2':0}) && r.castle === 0, `Trident: C 4, L and R 2 (${JSON.stringify(r.d)})`); }
-{ const r = swing('ff-tri', [-1, 1]); ok(same(r.d, {'-1':2, '1':2}) && r.castle === 4, `Trident, nobody in front: its middle prong hits the castle at full, the sides half (${JSON.stringify(r.d)}, castle ${r.castle})`); }
+{ const r = swing('ff-tri', [-1, 1]); ok(same(r.d, {'-1':2, '1':2}) && r.castle === 0, `Trident, nobody in front but units beside it: the sides half, no castle (ENG9 / G2) (${JSON.stringify(r.d)}, castle ${r.castle})`); }
+{ const r = swing('ff-tri', [3]); ok(r.castle === 4, 'Trident, nobody in its three columns: the middle prong hits the castle at full'); }
 { const r = swing('ff-tri1', [-1, 0, 1]); ok(same(r.d, {'-1':1, '0':1, '1':1}), 'Trident with 1 Attack: half rounds down but is at least 1'); }
 { const r = swing('ff-tri', [2]); ok(r.d['2'] === 0 && r.castle === 4, 'Trident never reaches two columns out'); }
 
@@ -64,8 +66,8 @@ const same = (a, b)=> JSON.stringify(a) === JSON.stringify(b);
     if(!same(r.d, want) || r.castle !== 0 || !same(fs2.lines.map(l=> l.off), fs2.aim === 'left' ? [-2, -1, 0, 1] : [-1, 0, 1, 2]) || !fs2.lines.every(l=> l.half)) bad++; }
   ok(!bad, `Pitchfork: LL/L/C/R aimed left, L/C/R/RR aimed right, half on every prong (${bad} bad of 40)`); ok(left > 8 && right > 8, `Pitchfork: aims left and right at random (${left}/${right})`); }
 { const r = swing('ff-pitch5', [0]); ok(r.d['0'] === 3, 'Pitchfork with 5 Attack: 3 a prong (half, 2.5, lands as 3: FX2, 2026-10-22)'); }
-{ let ok2 = 0; for(let s = 1; s <= 20; s++){ const r = swing('ff-pitch', [-1, 1], s); if(r.castle === 2 && r.d['-1'] === 2 && r.d['1'] === 2) ok2++; }
-  ok(ok2 === 20, `Pitchfork, nobody in front: the middle prong hits the castle for half, the sides half (${ok2}/20)`); }
+{ let ok2 = 0; for(let s = 1; s <= 20; s++){ const r = swing('ff-pitch', [-1, 1], s); if(r.castle === 0 && r.d['-1'] === 2 && r.d['1'] === 2) ok2++; }
+  ok(ok2 === 20, `Pitchfork, nobody in front but units beside it: the sides half, no castle (ENG9 / G2) (${ok2}/20)`); }
 
 // ---- one attack: one swing event, the onAttack side effects once, the lines' events tagged with the swing
 { const r = swing('ff-forkR', [-1, 0, 1]); ok(r.A.hp === 499, `Fork striking two units: Recoil once (${r.A.hp})`);
@@ -88,10 +90,10 @@ const same = (a, b)=> JSON.stringify(a) === JSON.stringify(b);
 
 // ---- texts and the budget
 const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
-ok(/fork: \(\)=> TX\('ui\.sk-fork'\)/.test(src) && /two enemies to its left and right; if either is missing, just the one in front/.test(TEXT_D['ui.sk-fork']) && /Full Attack on each prong/.test(TEXT_D['ui.skx-fork']), 'Fork card line (2026-10-18, package D: terse; full Attack in the Codex)');
+ok(/fork: \(\)=> TX\('ui\.eng9-fork'\)/.test(src) && TEXT_D['ui.eng9-fork'] === 'Strikes up to 2 adjacent enemies in front of this unit', 'Fork card line (2026-10-26, ENG9: the owner\'s G2 text)');
 ok(/trident: \(\)=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right\.`/.test(src), 'Trident card line');
 ok(/pitchfork: \(\)=> `One four-pronged swing, aimed left or right at random: half Attack on each of 4 neighbouring columns\.`/.test(src), 'Pitchfork card line');
-ok(/\{key:'trident'[^\n]*half \(rounded down, at least 1\)/.test(src) && /\{key:'pitchfork'[^\n]*half its Attack/.test(src) && /\{key:'fork'[^\n]*never the one in front and a side together/.test(src), 'the editor texts');
+ok(/\{key:'trident'[^\n]*half \(rounded down, at least 1\)/.test(src) && /\{key:'pitchfork'[^\n]*half its Attack/.test(src) && /sk1Patch\(PASSIVE_DEFS, 'fork', \{desc:\(\)=> TX\('ui\.eng9-fork'\)/.test(src), 'the editor texts (Fork: ENG9)');
 ok(/arrows:'v', crabClaws:0[,}]/.test(src), 'the stat budget: Crab Claws costs 0');
 ok(/function forkSwingVfx\(ev\)/.test(src) && /function groupForkLines\(events\)/.test(src), 'the replay plays one swing (forkSwingVfx, groupForkLines)');
 ok(/function forkSwing\(attacker, points, o\)/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8')), 'SkillFX.forkSwing draws every prong at once');

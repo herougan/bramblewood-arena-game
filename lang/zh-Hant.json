@@ -3456,5 +3456,9 @@
  "When it first dies, it returns as a token with 1 Health, no statuses. A token leaves no card.": "第一次死亡時，以 1 點生命、無狀態的衍生物復活。衍生物不留下卡牌。",
  "When played: Revive {n}: that many random creature cards return from your graveyard beside it, as real cards.": "打出時：復甦 {n}：從你的墓地隨機讓等量的生物卡以真卡形式回到它旁邊。",
  "it can't move (Guardian, Rampart, Dive, Charge) nor dodge as a Flyer; its hits deal half.": "無法移動（守護、壁壘、俯衝、蓄能），也不能以飛行閃避；它的命中只造成一半傷害。",
- "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "它的命中會纏繞目標（{n} 回合）：目標的攻擊、射擊、技能和觸發有一半機率失敗。"
+ "Its hits Tangle the target ({n} rounds): half the time, its attacks, shots, skills and triggers fail.": "它的命中會纏繞目標（{n} 回合）：目標的攻擊、射擊、技能和觸發有一半機率失敗。",
+ "{name} comes back from the graveyard.": "{name} 從墓地歸來。",
+ "{t} is poisoned by {a}'s barbs (+{n}).": "{t} 被 {a} 的毒刺毒害（+{n}）。",
+ "{a} tangles {t} (Tangled {n}).": "{a} 纏住了 {t}（纏繞 {n}）。",
+ "{name} tries to bloom, but there is no room: it gains +1/+1 instead.": "{name} 試圖綻放，但沒有空位：改為獲得 +1/+1。"
 }
