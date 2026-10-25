@@ -38686,6 +38686,7 @@ document.addEventListener('fullscreenchange', ()=>{ document.documentElement.cla
 // the match is pushed down by --fs-shift so the battlefield's middle sits on the screen's middle, as far as that keeps your
 // hand on screen. When the match is taller than the screen, it scrolls the field to the centre instead.
 let _fsCentreRaf = 0;
+const RES3_FIT_MAX = 1.45; // RES3 (2026-10-26, G10): how far a desktop window may grow the match's cards
 function centreFieldInFs(){
   if(_fsCentreRaf) return;
   _fsCentreRaf = requestAnimationFrame(()=>{
@@ -38697,13 +38698,23 @@ function centreFieldInFs(){
     // as well!"): a desktop window (wide, with a mouse) gets the same shift outside full screen; phones and tablets keep their layout.
     const desk = !fs && window.innerWidth >= 900 && !!(window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches);
     document.documentElement.classList.toggle('is-desk-centre', desk && !!bf && wrap.classList.contains('in-match'));
-    if(!(fs || desk) || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); return; }
+    if(!(fs || desk) || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); wrap.style.removeProperty('--res3-fit'); return; }
+    if(!desk) wrap.style.removeProperty('--res3-fit');
     const pad = parseFloat(wrap.style.getPropertyValue('--fs-shift')) || 0;
     const vh = window.innerHeight;
     const wr = wrap.getBoundingClientRect(), r = bf.getBoundingClientRect();
     const centre = (r.top - wr.top) - pad + r.height / 2;      // field middle, measured from the top of the match with no shift
     let bottom = 0; for(const ch of wrap.children){ const cr = ch.getBoundingClientRect(); if(cr.height > 0) bottom = Math.max(bottom, cr.bottom); }
     const contentH = (bottom - wr.top) - pad;                     // the match's own height (#appWrap itself is min-height 100vh)
+    // 2026-10-26 (package RES3, G10, owner: "Not full screen on a MacBook Air the board could be larger"): in a desktop window (not full screen)
+    // the match grows into the window: --res3-fit scales the cards' height rule (arena_template.html, RES3 block; capped by the width and at
+    // RES3_FIT_MAX) until the match fills the window's height. Each pass moves the scale by target / height (the height grows a little less
+    // than the cards, so it settles from either side) and asks for one more pass until the change is under 1.5%.
+    if(desk && window.innerWidth >= 1200){
+      const s0 = parseFloat(wrap.style.getPropertyValue('--res3-fit')) || 1, s1 = Math.max(1, Math.min(RES3_FIT_MAX, s0 * (vh - 28) / Math.max(1, contentH)));
+      if(Math.abs(s1 - s0) > 0.015 && (centreFieldInFs._fitN = (centreFieldInFs._fitN || 0) + 1) < 12){ wrap.style.setProperty('--res3-fit', s1.toFixed(3)); requestAnimationFrame(()=> centreFieldInFs()); return; }
+      centreFieldInFs._fitN = 0;
+    }
     const spare = Math.max(0, vh - contentH);
     const want = Math.round(Math.min(spare, Math.max(0, vh / 2 - centre)));
     if(Math.abs(want - pad) > 1) wrap.style.setProperty('--fs-shift', want + 'px');
@@ -38711,7 +38722,7 @@ function centreFieldInFs(){
   });
 }
 document.addEventListener('fullscreenchange', ()=> setTimeout(centreFieldInFs, 120));
-window.addEventListener('resize', ()=> centreFieldInFs());
+window.addEventListener('resize', ()=>{ centreFieldInFs._fitN = 0; centreFieldInFs(); }); // RES3 (2026-10-26, G10): a resize fits the match again
 async function skipTurn(){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;

@@ -13521,6 +13521,10 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 #myDeckList.is-stacks{gap:18px 16px;}
 #myDeckList .deck-stack{width:clamp(72px, 7.4vw, 104px);}
 #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(clamp(112px, 11vw, 150px), 1fr)); gap:12px; max-height:min(74vh, 900px); padding-bottom:16px;}
+/* G10 (owner: "Not full screen on a MacBook Air the board could be larger"): a desktop window (html.is-desk-centre, not full screen) grows the
+   match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
+@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
+@media (min-width:1700px) and (min-height:950px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 250px) / 4.55), 240px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
 @media (max-width:640px){ #myDeckList .deck-stack{width:clamp(64px, 19vw, 80px);} #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:8px;} }
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
