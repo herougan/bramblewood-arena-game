@@ -13532,6 +13532,8 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .po2-sum-grid .po2-sum-card.res3-pile[style*="--c:2"] > .card-tile, .po2-sum-grid .po2-sum-card.res3-pile[style*="--c:3"] > .card-tile{box-shadow:6px -5px 0 -1px #3a2914, 6px -5px 0 0 rgba(243,211,140,.55), 12px -10px 0 -1px #2e2010, 12px -10px 0 0 rgba(243,211,140,.4), 0 4px 10px rgba(0,0,0,.45);}
 .po2-sum-grid .po2-sum-card.res3-pile[style*="--c:3"] > .card-tile{box-shadow:6px -5px 0 -1px #3a2914, 6px -5px 0 0 rgba(243,211,140,.55), 12px -10px 0 -1px #2e2010, 12px -10px 0 0 rgba(243,211,140,.4), 18px -15px 0 -1px #241808, 18px -15px 0 0 rgba(243,211,140,.3), 0 4px 10px rgba(0,0,0,.45);}
 .po2-all .po2-sum-grid.is-dense{max-height:min(62vh, 640px); overflow-y:auto; overscroll-behavior:contain; padding:16px 22px 10px 6px; scrollbar-width:thin;}
+/* G18: a Forge tab not earned yet (only Reinforce is drawn) is a locked "?" */
+.forge-mode.res3-forge-locked{opacity:.6; cursor:not-allowed; filter:grayscale(.7);} .forge-mode.res3-forge-locked b{font-weight:900;}
 /* G10 (owner: "Not full screen on a MacBook Air the board could be larger"): a desktop window (html.is-desk-centre, not full screen) grows the
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
 @media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }

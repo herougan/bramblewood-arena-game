@@ -49637,6 +49637,7 @@ function renderForge(){
   // Cobble's hello, the first time the Forge is actually on screen (2026-10-14).
   setTimeout(()=>{ const r = document.getElementById('view-forge'); if(r && r.offsetParent !== null && !loadDialogueFlags()['seen:forge_cobble_intro']) playDialogue('forge_cobble_intro', {once:true}); }, 700);
   const defs = getCardDefs();
+  if(!res3ForgeTabOpen(forgeMode)) forgeMode = 'upgrade'; // RES3 (2026-10-26, G18): a tab not earned yet opens the Upgrade tab instead
   let ids = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && id!==HERO_ID);
   if(forgeMode==='refine') ids = ids.filter(id=> (myCardCopies[id]||[]).length);
   if(forgeMode==='enchant') ids = ids.filter(id=> cardHasSocket(defs[id]) && (myCardCopies[id]||[]).length); // 2026-10-24 (package H1): cards with a socket
@@ -49674,7 +49675,7 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
-    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}${k === 'raid' && forgeRaidAnyReady() ? ' has-ready' : '' /* 2026-10-19 (package RC) */}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).filter(k=> res3ForgeTabShown(k)).map(k=> !res3ForgeTabOpen(k) ? res3ForgeLockedTabHTML(k) : `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}${k === 'raid' && forgeRaidAnyReady() ? ' has-ready' : '' /* 2026-10-19 (package RC) */}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
     ${forgeMode === 'facility' ? `<div class="facility-upgrades" id="forgeUpgradesTab">${forgeUpgradeHTML() + staminaPanelHTML('forge') + dungeonKeyRingHTML()}</div>` : '' /* 2026-10-18 (package DK, owner 00:08): the Forge's upgrades live in its ⬆️ Upgrades tab (were above the tabs) */}
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
@@ -50206,6 +50207,19 @@ function rollMateriaDrops(node, isFirstClear, rank){
   Object.entries(out).forEach(([id, n])=>{ for(let i = 0; i < n; i++) unlockCardForPlayer(id, 'materia'); });
   return out;
 }
+// 2026-10-26 (package RES3, G18, owner: "Forge tabs should all be invisible until that feature is earned at some map (your choice). Reinforce is
+// visible but locked with '?'"): the map number each Forge tab arrives with (the Forge itself opens on Map 11). A tab shows once that map is
+// reached (playerMapReach); before that it is not drawn, except Reinforce, which shows as a locked "🏰 ?". Admin and Dev Mode see every tab.
+// The maps are an owner call (decision RES3-3 in docs/decisions.json); change them here.
+const RES3_FORGE_TAB_MAP = {upgrade:11, fuse:11, facility:12, smith:13, raid:13, refine:15, castles:17, enchant:20};
+const RES3_FORGE_TAB_TEASED = new Set(['castles']);
+function res3ForgeTabOpen(k){
+  if((typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled)) return true;
+  const need = RES3_FORGE_TAB_MAP[k]; if(need == null) return true;
+  let reach = 999; try{ reach = playerMapReach(); }catch(e){} return reach >= need;
+}
+function res3ForgeTabShown(k){ return res3ForgeTabOpen(k) || RES3_FORGE_TAB_TEASED.has(k); }
+function res3ForgeLockedTabHTML(k){ const m = FORGE_MODES[k] || {}; return `<button type="button" role="tab" class="forge-mode res3-forge-locked" aria-disabled="true" aria-selected="false" aria-label="${escapeAttr(TX('ui.res3-forge-locked'))}" title="${escapeAttr(TX('ui.res3-forge-locked'))}">${m.icon || ''} <b aria-hidden="true">?</b> <span aria-hidden="true">🔒</span></button>`; }
 const FORGE_MODES = {
   upgrade: {icon:'🔨', label:'Upgrade', blurb:'Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a mark of mastery; stats stay the same.'},
   // 2026-10-19 (package FG, owner: "Fuse in the forge should be its own screen."): fuseAnvilHTML
