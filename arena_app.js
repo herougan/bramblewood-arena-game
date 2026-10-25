@@ -17531,6 +17531,16 @@ function mapTileBlocked(el, needs){
   if(npcDialogueActive()){ lockedTileTap(el, null); return true; }
   return false;
 }
+// 2026-10-25 (package FIX3, G1, owner: "Noone wants to wait for the dialogue ... if I click again, I should go into the page. Even while the
+// dialogue is talking."): a second tap on an open feature spot (Camp, Codex, Forge ...) within 20 s of the first opens it at once, past the
+// tap gate, the NPC-is-talking shake and a first visit's "take me there" reply. The conversation carries on in its dock.
+const FIX3_AGAIN_MS = 20000;
+function fix3SpotAgain(b){
+  const now = Date.now(), again = !!(b._fix3At && now - b._fix3At < FIX3_AGAIN_MS); b._fix3At = now;
+  if(!again) return false;
+  const sp = FEATURE_SPOTS.find(x=> x.key === b.dataset.spot); if(!sp || !featureUnlocked(sp.key) || (sp.needs && !featureUnlocked(sp.needs))) return false;
+  b._fix3At = 0; try{ sp.go(); }catch(e){ return false; } return true;
+}
 function mapTapGate(el, ms){
   if(!el) return true; const now = Date.now();
   if(el._tapUntil && now < el._tapUntil) return false;
@@ -17799,9 +17809,16 @@ function mapCuriositiesHTML(map){
     const gated = !decorRevealed(map.id, '~cur:' + c.key, gate(c));
     return `<button type="button" class="map-curio ${seen ? '' : 'is-new'} ${gated ? 'is-gated' : ''}" data-curio="${c.key}" data-lkey="~cur:${c.key}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(c.name + decorGateNote(map, '~cur:' + c.key, gate(c)))}" aria-label="${escapeAttr(c.name)}"><span class="mcu-ico" aria-hidden="true">${c.icon}</span>${seen ? '' : '<span class="map-spot-new">!</span>'}</button>`; }).join('');
 }
+// 2026-10-25 (package FIX3, G20, owner: "After Map 10, the submap on Map 0 should give a tooltip on click, not dialogue"): once Map 10 is
+// cleared, Map 0's talking spots (the signpost, the old well) answer a tap with a short tip (their name), never a conversation, seen or not.
+// The signpost's talk is about finding Map 1; by then it only slows a player down.
+function fix3MapZeroQuiet(mapId){ try{ return mapId === 'm1' && mapsPassed() >= 10; }catch(e){ return false; } }
+function fix3QuietTip(el, icon, name, flag){ try{ if(flag) setDialogueFlag(flag, true); }catch(e){} if(el) el.classList.remove('is-new'); try{ fadeNewBang(el); }catch(e){}
+  showSpeechBubble(el, `${icon || ''} ${name || ''}`.trim(), 'fix3-quiet-tip', {hold: 2.2}); }
 function visitCuriosity(key, el){
   const c = MAP_CURIOSITIES.find(x=> x.key === key); if(!c) return;
   if(!mapTapGate(el, 2600)) return;
+  if(fix3MapZeroQuiet(c.map)){ try{ fxHook('curioBubble', el); }catch(e){} fix3QuietTip(el, c.icon, c.name, 'seen:' + c.dialogue); return; } // FIX3 (G20)
   if(loadDialogueFlags()['seen:' + c.dialogue]) try{ fxHook('curioBubble', el); }catch(e){} // 2026-10-15 batch F
   if(loadDialogueFlags()['seen:' + c.dialogue]){ showSpeechBubble(el, `${c.icon} ${CURIO_AFTER[Math.floor(Math.random()*CURIO_AFTER.length)]}`); return; }
   fadeNewBang(el);
@@ -17952,6 +17969,7 @@ function visitSmallCave(el){
 }
 function visitOldWell(el){
   if(!mapTapGate(el, 2600)) return;
+  if(fix3MapZeroQuiet('m1')){ fix3QuietTip(el, '🪣', TX('ui.fix3-old-well'), 'seen:well_m1'); return; } // FIX3 (G20): after Map 10, a tip
   if(loadDialogueFlags()['seen:well_m1']){
     try{ SoundKit.drip && SoundKit.drip(); }catch(e){}
     if(el){ el.classList.remove('is-rippling'); void el.offsetWidth; el.classList.add('is-rippling'); }
@@ -21259,7 +21277,7 @@ function abFight(body, run){
   const hpBefore = run.hp;
   AutoB.afterFight(run, res, opp.name);
   run.history[run.history.length-1].oppOwner = opp.owner;
-  if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); }
+  if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); } else awardXp(1); // 2026-10-25 (package FIX3, F4): a loss or draw gives 1 XP
   { const st = loadLifetimeStats(); if((st.abBestWins||0) < run.wins){ st.abBestWins = run.wins; try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){} } }
   bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
   { const st = res.stats, evs = res.events; cardStatsLater(()=> addCardStats(tallyCardStats('A', st, [evs]))); } // 2026-10-17 (card stats)
@@ -26035,7 +26053,7 @@ function renderConquestSubTab(body){
   pl2MapViewed(); // PL2 (2026-10-25): XP won elsewhere fills here
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
-  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
+  mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(fix3SpotAgain(b)) return; if(!mapTapGate(b, 1200)) return; if(mapTileBlocked(b, b.dataset.needs)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(w)) return; visitOldWell(w); }); }
   mainEl.querySelectorAll('[data-courier]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; if(mapTileBlocked(b)) return; const pack = getShopPacks().find(p=> p.id === b.dataset.courier) || {};
     showSpeechBubble(b, `🐭 Delivery! One ${pack.name || 'pack'}, with the compliments of the road.`); setTimeout(()=>{ if(openFreePack(b.dataset.courier)) b.remove(); }, 900); }));
@@ -26698,7 +26716,9 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp, shards){ // + shards
   const kill = rw.kind === 'kill';
   const rk = claim.rank && claim.rank.rank ? {letter: claim.rank.rank, emblem: !!claim.rank.won, label: TX('results.raid-rank', {rank: claim.rank.rank}), tip: claim.rank.won ? TX('results.raid-rank-won-tip') : TX('results.raid-rank-tip')} : null; // your best rank in this life (2026-10-19, RV2)
   return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards, rank: rk,
-    totalRankHTML: raidTotalRankBadgeHTML(claim.mine || 0), // 2026-10-21 (package RK): the total raid rank, beside the standing
+    // 2026-10-25 (package FIX3, G21, owner: "Overall raid rank missing on the raid reward screen"): it showed only from rank F up, unlabelled.
+    // Now always, under its own caption ("No raid rank yet" below F).
+    totalRankHTML: `<small class="fix3-rcs-total-lbl">${escapeHtml(TX('ui.fix3-overall-raid-rank'))}</small>${raidTotalRankBadgeHTML(claim.mine || 0, {none: true})}`,
 
     text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
       sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.leading ? ' · ' + TX('results.raid-leading') : rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19); + the Leading participant (RV2)
@@ -28168,7 +28188,9 @@ function settleRaidPartAfterMatch(m){
   // button (adminAutoWin empties the boss's bramble on turn 1), and it was scored as a real overwhelm: 10,000 raid damage saved, pushed to
   // the shared raid and paid. An admin win now shows its results but is not recorded, pushed or paid (m.raidAdminTest).
   if(m.adminWin){ m.raidAdminTest = true; m.raidDamageDealt = RaidM.contributionFor(def, dealt, overwhelmed, (def.parts||[]).find(p=> p.id===m.raidPart), m.raidRank); m.raidOverwhelmed = overwhelmed;
-    try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; } return; }
+    try{ m.raidRemainingAfter = Math.round((currentRaidStateFor(def).byId[m.raidPart]||{remaining:0}).remaining); }catch(e){ m.raidRemainingAfter = 0; }
+    try{ m.raidTotalAfter = Math.round((currentRaidStateFor(def).contributors || {})[myGhostOwnerId()] || 0); }catch(e){} // 2026-10-25 (package FIX3, G21): an admin test shows the overall raid rank too (unchanged by the test)
+    return; }
   const r = recordRaidAttempt(def, m.raidPart, m.raidCycle, dealt, overwhelmed, m.raidRank);
   m.raidRewardEarned = {gold:r.gold, dust:r.dust}; m.raidInk = r.ink; m.raidBelow = r.below; m.raidMinDamage = r.minDamage;
   // 2026-10-19 (package RC): a pack card; the raid's own only at RAID_CARD_DROP_CHANCE (was a card of the boss's deck every win).
@@ -40502,6 +40524,9 @@ async function resolveRoundCore(opts){
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
       if(m.mode==='pvp') bumpQuestCounter('pvpWins', 1);
     }
+    // 2026-10-25 (package FIX3, F4, owner #1: "you still get an xp under a loss. (+1 at least)"): a lost or drawn fight gives 1 XP, on the same
+    // terms as a win's 3 (not a free Spire replay, a fight already paid out, a PRO fight or an admin test)
+    if(m.winner!==1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay && !m.rewardDuplicate && !m.proFight && !m.adminTest) awardXp(1);
     // Match History / Replay (#254) — same eligibility as recordMatchResult just above (a real
     // personal result, not hot-seat/Conquest/Sandbox/tutorial), but ALSO gated on being signed
     // in (see logMatchHistory's own comment) — unlike the local win/loss ledger, this persists
@@ -43206,7 +43231,7 @@ function rewardsPanelHTML(m){
   // (egg cards: card tiles in Cards won since 2026-10-25, PL2 #5)
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
-  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? (()=>{ const bi = babyRewardInfo(m.conquestBabyEarned); return `<span class="hud-pill rw-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr(bi.name)}))}">${escapeHtml(bi.icon)} ${escapeHtml(TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}))}</span>`; })() /* 2026-10-25 (package FIX3, G13): the toast's icon and type */ : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
@@ -52774,9 +52799,12 @@ function openNestPicker(slot, tab){
       conf.innerHTML = `<span class="np-conf-name">🌱 ${escapeHtml(defs[id].name)} <small>to Level 1 in ${NURTURE_HOURS}h</small></span><button type="button" class="btn ghost small" data-np-cancel>Cancel</button><button type="button" class="btn primary" data-np-train="${escapeAttr(id)}">🌱 Train${btnCostHTML(nurtureCostFor(id))}</button>`;
       conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
 }
-function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
+// 2026-10-25 (package FIX3, G13, owner: "a ladybug in the toast, a duckling on the reward screen"): the toast showed the baby's type icon
+// (🐞 Bug) while the results pill said "🐣 Rescued a baby". Both now read the one source, babyRewardInfo(type): the type, its icon, its name.
+function babyRewardInfo(type){ const t = NEST_TYPES[type] ? type : 'woodland', d = NEST_TYPES[t]; return {type: t, icon: d.icon, name: d.name}; }
+function rescueBaby(type, from){ const n = nestState(); const t = babyRewardInfo(type).type; const now = Date.now();
   n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + Math.round(BABY_GROW_HOURS*3600e3*nurseTimeFactor()), from: from||''}); saveNestState(n); // mastery speeds it (2026-10-15)
-  try{ showToast(TX('toast.you-rescued-a-little-baby-it', {v1: NEST_TYPES[t].icon, v2: NEST_TYPES[t].name.toLowerCase()}), 'ok'); }catch(e){} }
+  try{ const bi = babyRewardInfo(t); showToast(TX('toast.you-rescued-a-little-baby-it', {v1: bi.icon, v2: bi.name.toLowerCase()}), 'ok'); }catch(e){} }
 function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EGG_KINDS[e.kind]||EGG_KINDS.woodland).type); }
 // Hatching (2026-10-12, user: "Hatching should have a small animation, with clues to their rarity, then showing the card in
 // closeup! its an important facet!"): the egg rocks three times, harder each time; the glow leaking through its cracks tells
