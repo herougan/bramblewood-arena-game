@@ -1430,7 +1430,7 @@ const ACTIVE_PRESETS = [
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
   // 2026-10-16 skill audit (user: "so the skills are as simply named ... as possible"): Revivificated → Revive (label only).
-  {key:'revive', category:'passive', label:'Revive', kind:'none', build:()=>({revive:true}), desc:()=> TX('ui.skill-revive')}, // 2026-10-19 (package RV, owner 00:19): a true death, then it comes back
+  {key:'undead', category:'passive', label:TX('ui.eng9-undead-name'), kind:'none', build:()=>({undead:true}), desc:()=> TX('ui.eng9-undead')}, // 2026-10-19 (package RV, owner 00:19): a true death, then it comes back; ENG9 (2026-10-26, owner #20): it is Undead now (back once, as a token), and Revive N is the graveyard action
 ];
 const TRIGGER_DEFS = [
   {key:'onSpawn', label:'On Spawn', desc:'the moment this card is played'},
@@ -1805,6 +1805,7 @@ sk1Patch(PASSIVE_DEFS, 'archerStyle', {category:'passive', label:TX('ui.skn-arch
   get:e=> e.archerStyle ? (e.archerStyle === 'drop' ? 'drop' : 'bow') : undefined, apply:(e, v)=>{ if(v === 'drop') e.archerStyle = 'drop'; else delete e.archerStyle; }});
 TRIGGER_DEFS.push({key:'onAction', label:TX('ui.trg-on-action'), desc:TX('ui.trg-on-action-desc')});
 ACTION_DEFS.push({key:'arrow', label:TX('ui.act-arrow'), fields:['amount'], desc:TX('ui.act-arrow-desc')});
+ACTION_DEFS.push({key:'revive', label:TX('ui.eng9-revive-name'), fields:['count'], desc:TX('ui.eng9-act-revive-desc')}); // ENG9 (2026-10-26, owner #20): Revive, the graveyard action
 Object.assign(SKILL_ICON, {archer:'🏹'});
 // ==== Package BF6 (2026-10-21): Injured N (owner: "comes in with damage already on it (can be healed). This counts as −N × 0.99."). The
 // rule is in bramblewood-engine.js (makeBoardCard); its S is −0.99 a point in canonical/skill-costs.json (a drawback: more room for stats).
@@ -1851,7 +1852,34 @@ sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.en8-guardian')});
 Object.assign(SKILL_ICON, {stonecutter:'⛏️', prospector:'🪙', felling:'🪓', pearlBed:'🦪', coppice:'🌳', driftwood:'🪵', magicArmor:'🔮'});
 // A card's mysterySkills (EN8, owner 21:20 #7: "one of the fodder skills can be a ? for now"): those skills read "?" on the card and in its
 // detail until their era (the Cocoon's Chrysalis: the Evomax maps). The rules still hold them (no evolute exists before Map 20).
-function en8Mystery(def, k){ return !!(def && Array.isArray(def.mysterySkills) && def.mysterySkills.includes(k)); }
+function en8Mystery(def, k){ return !!(def && Array.isArray(def.mysterySkills) && def.mysterySkills.includes(k)) && (!SKILL_REVEAL_MAP[k] || skillHiddenNow(k)); } // ENG9 (2026-10-26): a gated skill (SKILL_REVEAL_MAP) follows its gate
+// ==== Package ENG9 (2026-10-26, the owner's 10-25 17:53 / 22:36 notes and OWN-Q1; rules in bramblewood-engine.js, prices in
+// canonical/skill-costs.json): the skills' lines.
+//   Undead (was Revive)  the self-return, back once as a token          Revive N  On Play: N random graveyard creature cards back as real cards
+//   Poison Barbs N       Thorns that poison                             Stockpile N  On Ready: +N Lumber, once (the Beaver Lumberjack)
+//   Tangleweed N         lays Tangled (1 in 2 to act), not Bound        Strangle N   its Bind is OWN-Q1's Bound (half damage, no moving)
+//   Fork / Trident / Pitchfork (G2), Armor / Magic Armor (E3), Render's counters (E5), Guardian / Rampart Ready only (E9), Dive for Quick
+//   units (E8), Bloom's examples and its failed split (E6, G9), Charge once (G24), the physical "Bolts" renamed Spits (E3, call ENG9-3).
+PASSIVE_DEFS.push(
+  {key:'revive', category:'evergreen', label:TX('ui.eng9-revive-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng9-revive', {n: numOr(v, 1)}), get:e=> e.revive ? numOr(e.revive, 1) : undefined},
+  {key:'poisonBarbs', category:'passive', label:TX('ui.eng9-poison-barbs-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng9-poison-barbs', {n: numOr(v, 1)})},
+  {key:'stockpile', category:'passive', label:TX('ui.eng9-stockpile-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng9-stockpile', {n: numOr(v, 1)})});
+sk1Patch(PASSIVE_DEFS, 'tangle', {desc:v=> TX('ui.eng9-tangle', {n: numOr(v, 1)})});
+sk1Patch(PASSIVE_DEFS, 'strangle', {desc:v=> TX('ui.eng9-strangle', {n: numOr(v, 2)})});
+sk1Patch(PASSIVE_DEFS, 'fork', {desc:()=> TX('ui.eng9-fork'), codexNote:TX('ui.eng9-fork-codex')});
+sk1Patch(PASSIVE_DEFS, 'trident', {desc:()=> TX('ui.eng9-trident')});
+sk1Patch(PASSIVE_DEFS, 'pitchfork', {desc:()=> TX('ui.eng9-pitchfork')});
+sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.eng9-armor', {n: v})});
+sk1Patch(PASSIVE_DEFS, 'magicArmor', {desc:v=> TX('ui.eng9-magic-armor', {n: numOr(v, 1)}), codexNote:TX('ui.eng9-magic-armor-codex')});
+sk1Patch(PASSIVE_DEFS, 'render', {codexNote:TX('ui.eng9-render-codex')});
+sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.eng9-guardian')});
+sk1Patch(PASSIVE_DEFS, 'rampart', {codexNote:TX('ui.sk-rampart-codex') + ' ' + TX('ui.eng9-ready-only')});
+sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
+sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
+sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
+[['fireBolt', 'ui.eng9-skn-fire-spit'], ['acidBolt', 'ui.eng9-skn-acid-spit'], ['poisonBolt', 'ui.eng9-skn-venom-spit'], ['iceBolt', 'ui.eng9-skn-frost-spit'], ['shockBolt', 'ui.eng9-skn-spark-spit']].forEach(([k, t])=> sk1Patch(PASSIVE_DEFS, k, {label:TX(t)}));
+{ const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.eng9-charge', {n: cp.n})}`; }; } }
+Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵', stockpile:'🪵'});
 // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): King (the first King in play takes the Crown and, while it
 // holds it, has Kingly – {…}: Tribute 1, Armor 2 unless its card names other braces, kinglyGrant), Tribute N (N Gold each turn while Ready),
 // Usurper's theft of the Crown and King Slayer against Royalty, Kings and the crowned unit. The rules: bramblewood-engine.js, Package TR.
@@ -2021,7 +2049,7 @@ const SKILL_DEFS = [
   {
     key:'chained', category:'passive', label:'Chained', kind:'selectNumber',
     selectOptions: CHAIN_BREAK_OPTIONS,
-    desc:()=>'Can\'t attack until its chain breaks: when one hit deals it more than N damage, or when the opponent plays a card (pick the condition).', // 2026-10-16 skill audit: no engine jargon
+    desc:(v)=>{ const [on, n] = Array.isArray(v) ? v : ['damage', 'N']; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : TX('ui.eng9-chained', {n}); }, // 2026-10-16 skill audit: no engine jargon; ENG9 (2026-10-26, G19): the damage adds up to N
     get:e=> e.chained ? [e.chained.breakOn||'damage', e.chained.amount||1] : undefined,
     apply:(e,vals)=>{
       const breakOn = (Array.isArray(vals) && vals[0]) || 'damage';
@@ -2037,7 +2065,7 @@ const SKILL_DEFS = [
     key:p.key, category:p.category, label:p.label, kind:p.kind==='number'?'number':'boolean', desc:p.desc,
     get:e=>{
       if(p.key==='render') return e.render ? e.render.amount : undefined;
-      if(p.key==='revive') return e.revive ? true : undefined;
+      if(p.key==='undead') return e.undead ? true : undefined; // ENG9 (2026-10-26): was Revive
     },
     apply:(e,v)=>{ Object.assign(e, p.build(v)); },
   })),
@@ -2170,6 +2198,7 @@ const TAG_SUGGESTIONS = [
   'Deep Sea','Forest','Mountain','Desert','Arctic','Plains','Swamp','Cave','Sky','Ruins','River',
 ];
 const ARCHETYPE_ICON = __ARCHETYPE_ICON__;
+if(!ARCHETYPE_ICON.Fungi) ARCHETYPE_ICON.Fungi = '🍄'; // ENG9 (2026-10-26, owner G9: "There's no Funghi type"): Fungi, a kingdom beside Flora
 // Resist/Weakness dropdown split (2026-09-27, per explicit request: "Split the dropdown into
 // two, one for passives & elements, then one for types" — the single flat alphabetized list
 // below used to union THREE unrelated categories (damage types, ARCHETYPE_ICON Type Tags, and
@@ -2619,7 +2648,7 @@ const SKILL_COUNTERS = {
   poison: ['cure'], // 2026-10-18: heals no longer remove Poison; Cure does
   bleed: ['regen', 'bloom', 'healing'],
   guardian: ['stealth'],
-  revive: ['exileAns'],
+  undead: ['exileAns'], // ENG9 (2026-10-26): was revive
 };
 const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 // Status keywords (2026-10-11, user: "In effects that deal bleed, poison or any status effect - don't explain the effect
@@ -2643,7 +2672,8 @@ const STATUS_KEYWORDS = [
   // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
   // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
   {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:TX('ui.st-exposed')}, // 2026-10-16: counters
-  {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
+  {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:TX('ui.eng9-bound-text')}, // ENG9 (2026-10-26, OWN-Q1): half damage, no moving
+  {k:'tangled', re:/\b(tangled?|tangles)\b/gi, cs:true, name:TX('ui.eng9-tangled-name'), c:'#6d9a3a', text:TX('ui.eng9-tangled-text')}, // ENG9 (2026-10-26, G25)
   {k:'webbed', re:/\b(web(?:bed|s)?)\b/gi, cs:true, name:'Webbed', c:'#8f8aa8', text:'stuck in a web: it can’t dodge, and it can’t move or be moved.'}, // 2026-10-17 (Web N)
   {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
   {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
@@ -2939,7 +2969,7 @@ function procSkillText(verb){ return v=>{ const c = Array.isArray(v) ? Number(v[
 // Sleep N stacks up to N+1 (2026-10-18, package D; owner: "never exceeds the applied sleep + 1"): its line says so, tersely.
 function sleepSkillText(v){ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, s = d === 1 ? '' : 's';
   return !c ? procSkillText('put the target to Sleep')(v) : c >= 100 ? TX('ui.sk-sleep-sure', {n: d, s, m: d + 1}) : TX('ui.sk-sleep-chance', {c, n: d, s, m: d + 1}); }
-const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'revive'];
+const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'undead' /* ENG9: was revive */];
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
   defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
@@ -2970,9 +3000,9 @@ Object.assign(SKILL_TEXT, {
   freeze: procSkillText('Freeze the target'), sleep: sleepSkillText, paralyze: procSkillText('Paralyze the target'),
   blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
   shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
-  chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
+  chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : TX('ui.eng9-chained', {n: Number(n)||1}); }, chainedOld: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
   render: v=> `When played, the enemy facing it loses ${numOr(v, 1)} Attack.`,
-  revive: ()=> TX('ui.skill-revive'), // 2026-10-19 (package RV)
+  undead: ()=> TX('ui.eng9-undead'), // 2026-10-19 (package RV); ENG9 (2026-10-26): Undead (was Revive)
   onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
 });
 // 2026-10-17 skills (user's notes, 20:19): the short card lines.
@@ -3085,6 +3115,11 @@ const SKILL_REVEAL_MAP = {
   nocturnal:   {from:1, parts:['nocturnalHp', 'nocturnalGrant']},
   crepuscular: {from:1, parts:['crepuscularHp', 'crepuscularGrant']}, // + its braces (CX2, 2026-10-21)
   tide:        {from:2, parts:['tideGrant']}, // Map 2+ (the Meadow Frog's Tide on Map 1 is a "?")
+  // ENG9 (2026-10-26, owner EN8-4: "Fodder, stem, chrysalis should all say ?. Then at maybe 5 maps before 20, you can see the name, but not the
+  // effect. so Chrysalis - ?"): nameFrom = the map from which the name shows with "?" for its effect (skillNameOnlyNow); from = fully revealed.
+  // (Fodder was the name of the babies' Stem, EN-6 / EV-6: one skill, stem.)
+  stem:        {from:20, nameFrom:15, parts:['stemGrant']},
+  chrysalis:   {from:20, nameFrom:15},
 };
 const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, r.from])); // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
@@ -3118,11 +3153,15 @@ function hiddenSkillSet(){
   const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
   Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; }
     if(tut && SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].tutorials) return; // 2026-10-21 (package TX): the tutorial shows it, unremembered
+    if(SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].nameFrom != null && far >= SKILL_REVEAL_MAP[k].nameFrom) return; // ENG9: its name shows now (skillNameOnlyNow)
     set.add(k); });
   if(grew) skillRevealSave(st);
   skillRevealMemo = {at: now, set, tut}; return set;
 }
 function skillHiddenNow(key){ return hiddenSkillSet().has(key); }
+// ENG9 (2026-10-26, EN8-4): between a gated skill's nameFrom and its from map, its name shows with "?" for its effect.
+function skillNameOnlyNow(key){ const r = SKILL_REVEAL_MAP[key]; if(!r || r.nameFrom == null) return false; if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
+  try{ if(skillRevealState().keys.includes(key)) return false; const far = furthestMapReached(); return far >= r.nameFrom && far < r.from; }catch(e){ return false; } }
 const skillValOn = v=> v != null && v !== false && v !== 0 && v !== '';
 function hiddenSkillsOf(d){ const e = d && d.effects; if(!e) return []; const h = hiddenSkillSet(); if(!h.size) return [];
   return [...h].filter(k=> skillValOn(e[k]) || (SKILL_REVEAL_PARTS[k]||[]).some(x=> skillValOn(e[x]))); }
@@ -3194,6 +3233,7 @@ function describeEffects(def, liveCard, opt){
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
   PASSIVE_DEFS.forEach(p=>{ const nL0 = lines.length; ((p)=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
+    if(skillNameOnlyNow(p.key)){ lines.push(`${ic(p.key)}${p.label} — ? <small>${escapeHtml(TX('ui.eng9-mystery-effect'))}</small>`); return; } // ENG9 (2026-10-26, EN8-4): the name, "?" for the effect
     if(en8Mystery(def, p.key)){ lines.push(`❓ ? — ${escapeHtml(TX('ui.en8-mystery'))}`); return; } // EN8 (2026-10-24): a skill still hidden (owner 21:20 #7)
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if((p.key==='loyalGrant' && e.loyal) || (p.key==='usurperGrant' && e.usurper)) return; // CX2: the stat line already says "and {skills}"
@@ -3250,7 +3290,7 @@ function describeEffects(def, liveCard, opt){
   SKILL_DEFS_ONLY_LINES.forEach(k=>{ const sd = SKILL_DEFS.find(s=> s.key === k); if(!sd || !SKILL_TEXT[k]) return; let v; try{ v = sd.get(e); }catch(_){ v = undefined; } if(v === undefined || v === false) return;
     // 2026-10-17 (user: "...the revive skill text is redded out"): a unit in play that has already come back shows its Revive line
     // struck through in red, marked "used".
-    if(k === 'revive' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.revivedOnce){ lines.push(`<span class="sk-used" title="Already used: it came back once">${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}</span> <b class="sk-used-tag">used</b>`); return; } }
+    if(k === 'undead' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.revivedOnce){ lines.push(`<span class="sk-used" title="Already used: it came back once">${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}</span> <b class="sk-used-tag">used</b>`); return; } }
     lines.push(`${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
@@ -6126,6 +6166,7 @@ const LIVE_STATUS_ROWS = [
   ['paralyzed', 'paralyze', 'Paralyzed', ()=> STATUS_KEYWORDS.find(k=> k.k === 'paralyze').text, false],
   ['stunned', 'stun', 'Stunned', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stun').text, false],
   ['bound', 'bound', 'Bound', ()=> STATUS_KEYWORDS.find(k=> k.k === 'bound').text, false],
+  ['tangled', 'tangled', TX('ui.eng9-tangled-name'), ()=> TX('ui.eng9-tangled-text'), false], // ENG9 (2026-10-26, G25)
   ['webbed', 'webbed', 'Webbed', ()=> STATUS_KEYWORDS.find(k=> k.k === 'webbed').text, false], // Web N (2026-10-17)
   ['blind', 'blind', 'Blind', ()=> STATUS_KEYWORDS.find(k=> k.k === 'blind').text, false],
   ['tipsy', 'tipsy', 'Tipsy', ()=> STATUS_KEYWORDS.find(k=> k.k === 'tipsy').text, false],
@@ -8401,7 +8442,7 @@ function cardTileHTML(d, opts){
     ${isCastle || hand ? '' : socketSlotHTML(d) /* 2026-10-24 (package H1): the gem socket of a Unique-and-above card */}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Bramble">${opts.sideLabel}</div>`:'')
-      : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
+      : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('') /* ENG9 (2026-10-26, owner G9: "do the 2stone/1lumber otherwise lay them side by side"): a joint cost sits side by side with no gap; "/" is kept for an alternative cost (none yet) */}</div>`:''}
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
@@ -8555,8 +8596,8 @@ function abilityBadges(d, bopts){
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
   // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
   // struck through in red once it has been used (the unit came back).
-  if(e.revive){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })());
-    out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${used ? 'Revive: used, it already came back once' : 'Revive: comes back once'}">${iconHTML('revive', '↺')}<b>Revive</b></span>` : `<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`); }
+  if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
+    out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`); }
   { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
     if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
     if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
@@ -18725,7 +18766,7 @@ Object.assign(FIELD2, {
   // 2026-10-24 (package EN8, LUM-1): rules.windfall, after a Storm round (a Thunderstorm or a strong-wind round) both sides gain 1 Lumber (the
   // engine's en8RoundStart). On the windy maps up to Map 20 (fightRules).
   windfall:     {icon:'🍃', name:TX('ui.fx-name-windfall'), editor:'windfall', short:TX('ui.fx-windfall-short'), text:TX('ui.fx-windfall'), codex:TX('ui.fxx-windfall')},
-  seasons:      {icon:'🍂', name:TX('ui.fx-name-seasons'), editor:'seasons', short:TX('ui.fx-seasons-short'), text:TX('ui.fx-seasons', {n: 3}), codex:TX('ui.fxx-seasons')},
+  seasons:      {icon:'🍂', name:TX('ui.fx-name-seasons'), editor:'seasons', short:TX('ui.fx-seasons-short'), text:TX('ui.fx-seasons', {n: 6} /* ENG9 (2026-10-26, owner EN6-4): 6 rounds a season */), codex:TX('ui.fxx-seasons')},
 });
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
@@ -37450,7 +37491,7 @@ function boardCardHTML(c, defs, opts){
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
   const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
-      ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
+      ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
       ${c.asleep>0?`<div class="status-overlay sleep-overlay">💤</div>`:''}
       ${c.paralyzed>0?`<div class="status-overlay paralyze-overlay">⚡</div>`:''}
@@ -37464,7 +37505,7 @@ function boardCardHTML(c, defs, opts){
   // Guardian plates and Revivification wings (2026-10-11, user: "Guardianship is a strong effect. There should be a guard
   // effect around it, maybe metal like barricade/armor/sheets extending from the left and right. Revivification needs to
   // have angel wings effect on the card (after it enters the battlefield)"). The wings fold away once the revive is spent.
-  const guards = !!((d.effects||{}).guardian) && !fog, winged = !!((d.effects||{}).revive) && !c.revivedOnce && !fog;
+  const guards = !!((d.effects||{}).guardian) && !fog, winged = !!((d.effects||{}).undead) && !c.revivedOnce && !fog; /* ENG9: Undead (was Revive) */
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
   // Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
   // brighter ... maybe immolation is one?"): a faint warm pool under a leader, a brighter one under a Light Aura unit (Illuminate or
@@ -39159,12 +39200,7 @@ function updateCardStatusDisplay(uid){
   // itself gets its own distinct removal flourish via playChainBreakFlourish() instead of the
   // overlay just vanishing here, so this only ever ADDS the overlay, never removes it (removal
   // is playChainBreakFlourish's job, called from the 'chainBreak' event handler).
-  if(c.chained && !tile.querySelector('.chain-overlay')){
-    const chainEl = document.createElement('div');
-    chainEl.className = 'status-overlay chain-overlay';
-    chainEl.textContent = '⛓';
-    tile.insertBefore(chainEl, tile.firstChild);
-  }
+  // ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph is added any more; the is-chained tint stays.
   // Blind/Shock (2026-09-17 batch): same on/off overlay-icon pattern as Frozen/Asleep/
   // Paralyzed above — Corrode gets no overlay, same treatment as Scar (tint + badge only,
   // since it's a passive stat drain rather than something gating the card's own turn).
@@ -39200,7 +39236,7 @@ function updateCardStatusDisplay(uid){
 // element that's already there, then remove it" approach for the Wait ring's final beat.
 function playChainBreakFlourish(uid){
   const el = boardCardEl(uid); if(!el) return;
-  const chainEl = el.querySelector('.chain-overlay'); if(!chainEl) return;
+  const chainEl = el.querySelector('.chain-overlay'); if(!chainEl){ el.classList.remove('is-chained'); return; } // ENG9: no glyph, just the tint
   chainEl.classList.add('chain-breaking');
   setTimeout(()=>{ chainEl.remove(); el.classList.remove('is-chained'); }, 520);
 }
@@ -46891,7 +46927,10 @@ function field2LogText(ev, nm){
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
   if(ev.type === 'bloom' && ev.parasite) return {cls:'poison', text: TX('ui.en7-log-para-bloom', {unit: nm(ev.defId), target: nm(ev.targetDefId)})}; // EN7 (2026-10-24)
+  if(ev.type === 'bloom' && ev.failed) return {cls:'', text: TX('ui.eng9-bloom-fail-log', {name: nm(ev.defId)})}; // ENG9 (2026-10-26, EN7-2)
   if(ev.type === 'bloom') return {cls:'', text: TX(ev.lumber ? 'ui.bl-log-lumber' : 'ui.bl-log', {name: nm(ev.defId), n: ev.lumber||0})}; // BL (2026-10-23)
+  if(ev.type === 'reviveGrave') return {cls:'gold', text: TX('ui.eng9-log-revive-grave', {name: nm(ev.defId)})}; // ENG9 (2026-10-26): Revive N
+  if(ev.type === 'skillSpent') return {cls:'', text: TX('ui.eng9-log-spent', {name: nm(ev.defId)})}; // ENG9 (2026-10-26, G23 / G24)
   if(ev.type === 'spawn' && ev.kind === 'bloom') return {cls:'', text: ''};
   return null;
 }
@@ -47085,6 +47124,8 @@ function w2LogText(ev, nm){
       case 'weaken': return {cls:'', text:`${a} weakens ${t}: −${ev.amount} Attack for good 💔`};
       case 'wilting': return {cls:'', text:`${t} wilts: −${ev.amount} Attack 🥀`};
       case 'bulldoze': return {cls:'', text:`${a} bulldozes ${t} back (+${ev.amount} Wait) 🚜`};
+      case 'tangled': return {cls:'', text: TX('ui.eng9-log-tangled', {a, t, n: ev.amount||1})}; // ENG9 (2026-10-26, G25)
+      case 'poison': if(ev.via === 'barbs') return {cls:'poison', text: TX('ui.eng9-log-barbs', {a, t, n: ev.amount||0})}; break; // ENG9 (2026-10-26): Poison Barbs
       case 'bound': return {cls:'', text: ev.strangle ? `${a} wraps ${t} up: Bound, and squeezed for ${ev.strangle} next round 🪢` : `${a} tangles ${t}: Bound for ${ev.amount} round${ev.amount === 1 ? '' : 's'} 🪢`};
       case 'cure': return {cls:'heal', text:`${a} cures ${t}${ev.poison ? ` (−${ev.poison} ☠` : ' ('}${ev.bleed ? `${ev.poison ? ', ' : ''}−${ev.bleed} 🩸` : ''}) 💊`};
       case 'taunted': return {cls:'', text:`${a} taunts ${t}: it has to attack the ${(getCardDefs()[ev.attDefId] || {}).name || 'taunter'} 📢`};
@@ -47125,6 +47166,7 @@ function w2SkillVfx(ev){
       case 'weaken': snd('corrodeTone'); fl(el, `💔 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx('low')) F.weakenDrain(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
       case 'wilting': fl(el, `🥀 −${ev.amount}⚔`, 'debuff'); if(rc && rc.atk != null) rc.atk = Math.max(0, rc.atk - (ev.amount||0)); if(el && fx()) F.wilt(el); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} break;
       case 'bulldoze': snd('swipeTone'); fl(el, `🚜 ⏪ +${ev.amount} Wait`, 'debuff wait-push'); if(rc) rc.wait = (rc.wait||0) + (ev.amount||0); if(el && fx('low')) F.bulldozeShove(el, {fromAbove: ev.targetSide === 'B'}); try{ updateCardWaitDisplay(ev.targetUid, rc ? rc.wait : (ev.amount||1)); }catch(e){} break;
+      case 'tangled': snd('curse'); fl(el, '🌿 ' + TX('ui.eng9-tangled-name'), 'debuff'); if(rc) rc.tangled = Math.max(rc.tangled||0, ev.amount||1); if(el && fx()) F.vineBind(el, {}); break; // ENG9 (2026-10-26, G25)
       case 'bound': snd('curse'); fl(el, ev.strangle ? '🪢 Strangled' : '🪢 Bound', 'debuff'); if(rc) rc.bound = Math.max(rc.bound||0, ev.amount||1); if(el && fx()) F.vineBind(el, {strangle: !!ev.strangle}); refresh(ev.targetUid); break;
       case 'cure': snd('cleanseTone'); fl(el, `💊 Cured ${ev.amount}`, 'heal'); if(rc){ rc.poison = Math.max(0, (rc.poison||0) - (ev.poison||0)); rc.bleed = Math.max(0, (rc.bleed||0) - (ev.bleed||0)); } if(el && fx()) F.cure(el); refresh(ev.targetUid); break;
       case 'taunted': { const t = boardCardEl(ev.attUid), a = boardCardEl(ev.targetUid); fl(t, '📢 Taunt!', 'quick'); if(t && fx()) F.tauntCall(t, a); break; }
@@ -48496,7 +48538,13 @@ function renderVfxForEvent(ev){
   }
   // Bloom – {conditions} (2026-10-23, package BL; owner 19:30: "bloom only gives the new one +1/+1, not itself"): the unit is marked bloomed and its
   // copy (the 'spawn' event with kind 'bloom' right after) has the +1/+1: "🌸 +1/+1" floats on the copy.
-  if(ev.type==='bloom' && !ev.parasite){ // EN7 (2026-10-24): a Parasite's bloom hooks onto an enemy (en7Vfx)
+  if(ev.type==='bloom' && ev.failed){ // ENG9 (2026-10-26, owner EN7-2): no room: the split turns reddish and fails, then +1/+1 on the unit
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); rc.bloomed = true; }
+    const el = boardCardEl(ev.uid); const done = ()=>{ try{ if(el) floatText(el, `🥀 +${ev.atk||1}/+${ev.hp||1}`, 'buff'); updateCardHpDisplay(ev.uid); updateCardAtkDisplay(ev.uid); }catch(e){} };
+    try{ if(el && window.SkillFX && SkillFX.bloomFail) SkillFX.bloomFail(el, {onDone: done}); else done(); }catch(e){ done(); }
+  }
+  if(ev.type==='bloom' && !ev.parasite && !ev.failed){ // EN7 (2026-10-24): a Parasite's bloom hooks onto an enemy (en7Vfx)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); rc.bloomed = true; }
     try{ SoundKit.bloomTone(); }catch(e){}
@@ -51592,11 +51640,11 @@ const WILDPATH_TREES = [
   {id:'root', name:'The Root', icon:'🌳', tint:'#9fd07a', blurb:'Bramble Health, Armour, the long game.', nodes:[
     {id:'r1', x:150, y:395, icon:'🏰', name:'Deep Foundations', desc:'Bramble starts with +2 Health per rank.', ranks:3},
     {id:'r2', x:105, y:320, icon:'🛡', name:'Bark Skin', desc:'First unit each fight: Armor 1.', req:['r1']},
-    {id:'r3', x:190, y:300, icon:'💚', name:'Sap Mending', desc:'Bramble heals 1 every third round.', req:['r1']},
+    {id:'r3', x:190, y:300, icon:'💚', name:'Sap Mending', desc:TX('ui.eng9-perk-sap-mending') /* ENG9 (2026-10-26, owner EN8-3: "it MUST say Repair Bramble") */, req:['r1']},
     {id:'r4', x:80, y:230, icon:'🧱', name:'Hedge Wall', desc:'Guardians: +2 Health per rank.', req:['r2'], ranks:2},
     {id:'r5', x:175, y:205, icon:'🌲', name:'Old Growth', desc:'Wait 2+ units get +1/+2.', req:['r3', 'r2']},
     {id:'r6', x:140, y:120, icon:'⛰️', name:'Unmoving', desc:'First hit on your bramble deals 0.', req:['r5']},
-    {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:'Bramble +1 Health each round it isn’t hit.', req:['r6', 'r4'], capstone:true},
+    {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:TX('ui.eng9-perk-heartwood') /* ENG9 (2026-10-26, EN8-3) */, req:['r6', 'r4'], capstone:true},
   ]},
   {id:'thorn', name:'The Thorn', icon:'🌹', tint:'#f07a6a', blurb:'Attack, Quick, finishing blows.', nodes:[
     {id:'t1', x:150, y:395, icon:'⚔', name:'Sharpened Briars', desc:'+1 Attack to units with 3 or less.', ranks:2},

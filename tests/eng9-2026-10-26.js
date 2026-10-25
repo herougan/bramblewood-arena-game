@@ -178,7 +178,7 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
   ['cinder-skeleton', 'ember-revenant', 'grass-snake', 'slow-worm', 'sea-turtle-elder'].forEach(id=> ok(cid[id] && cid[id].effects.undead, `E1 ${id} has Undead`));
   ok(cid['beaver-lumberjack'] && cid['beaver-lumberjack'].effects.stockpile === 1 && !(cid['beaver-lumberjack'].effects.triggers || []).length, 'E13 the Beaver Lumberjack has Stockpile 1');
   const tx = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
-  ['ui.eng9-undead', 'ui.eng9-revive', 'ui.eng9-poison-barbs', 'ui.eng9-stockpile', 'ui.eng9-fork', 'ui.eng9-tangled'].forEach(k=> ok(tx.includes('"' + k + '"'), `text ${k}`));
+  ['ui.eng9-undead', 'ui.eng9-revive', 'ui.eng9-poison-barbs', 'ui.eng9-stockpile', 'ui.eng9-fork', 'ui.eng9-tangled-name', 'ui.eng9-tangle'].forEach(k=> ok(tx.includes('"' + k + '"'), `text ${k}`));
   const langs = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];
   const en = /"ui\.eng9-[a-z0-9-]+": "((?:[^"\\]|\\.)*)"/g; const texts = []; let m; while((m = en.exec(tx))) texts.push(JSON.parse('"' + m[1] + '"'));
   langs.forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')); const miss = texts.filter(t=> !(t in pack)); ok(!miss.length, `${code}: every ENG9 text translated (${miss.length} missing: ${miss.slice(0, 2).join(' | ')})`); });

@@ -2112,4 +2112,25 @@ function tideSway(cards, o){
       {y:0, rotation:0, x:0, duration:.5/spd, ease:'sine.inOut'}], delay, clearProps:'transform'}); });
 }
 Object.assign(root.SkillFX, {waveRide, waveBob, tideSway});
+// 2026-10-26 (package ENG9, owner on EN7-2: "it visibly tries to do the meiosis animation of splitting but turns slightly reddish then fails,
+// getting the bonus instead"): a Bloom with no free slot beside it. Two ghost copies of the card start to pull apart sideways, blush red, stall
+// and fall back into the card; the card gives a small swell (the +1/+1). o.speed scales it; o.onDone after the fall-back.
+function bloomFail(el, o){
+  o = o || {}; const g = G(), t = tileOf(el); if(!t){ later(o.onDone, 0); return; }
+  if(!g || reduce()){ later(o.onDone, 0); return; }
+  const spd = Math.max(.6, Math.min(3, o.speed || 1)), c = centre(t), r = c.r, ghosts = [];
+  [-1, 1].forEach(dir=>{ const w = layer('sfx-bloomfail'); const k = t.cloneNode(true);
+    Object.assign(w.style, {position:'fixed', left: r.left + 'px', top: r.top + 'px', width: r.width + 'px', height: r.height + 'px', pointerEvents:'none', zIndex:60, opacity:0});
+    Object.assign(k.style, {width:'100%', height:'100%', margin:0, transform:'none'}); w.appendChild(k); ghosts.push({w, dir}); });
+  const out = r.width * .32;
+  ghosts.forEach(({w, dir})=>{
+    g.timeline({onComplete:()=> w.remove()})
+      .to(w, {opacity:.75, x:dir * out * .55, duration:.32/spd, ease:'power2.out'}, 0)
+      .to(w, {filter:'sepia(1) saturate(4) hue-rotate(-38deg) brightness(.95)', duration:.22/spd, ease:'none'}, .14/spd)
+      .to(w, {x:dir * out * .62, rotation:dir * 2, duration:.18/spd, ease:'sine.inOut', yoyo:true, repeat:1}, .32/spd)
+      .to(w, {x:0, rotation:0, opacity:0, duration:.26/spd, ease:'power2.in'}, .68/spd); });
+  later(()=>{ g.fromTo(t, {scale:1}, {scale:1.08, duration:.16/spd, yoyo:true, repeat:1, ease:'sine.out', clearProps:'transform'}); }, 900/spd);
+  later(o.onDone, 960/spd);
+}
+Object.assign(root.SkillFX, {bloomFail});
 })(typeof window !== 'undefined' ? window : globalThis);
