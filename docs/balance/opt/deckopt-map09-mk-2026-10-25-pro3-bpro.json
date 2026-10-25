@@ -1,0 +1,1571 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.2.0 (2026-10-25, PRO3)",
+ "generated": "2026-10-25T00:25:52.721Z",
+ "map": {
+  "id": "mk",
+  "num": 9,
+  "name": "The Kelp Mangroves"
+ },
+ "level": 1,
+ "settings": {
+  "mode": "bpro",
+  "faction": false,
+  "rarityCap": "map",
+  "cap": "rare",
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+ "pools": {
+  "mode": "bpro",
+  "cap": "rare",
+  "subsOpen": [],
+  "phase1": 22,
+  "mapCards": [
+   "archerfish",
+   "banded-sea-krait",
+   "beachcomber-sanderling",
+   "electric-catfish",
+   "elephant-nose-fish",
+   "fishing-cat",
+   "horseshoe-crab",
+   "ironclaw-fiddler",
+   "limpet-clinger",
+   "mangrove-kingfisher",
+   "mangrove-manatee",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "minnow-skitter",
+   "mudflat-godwit",
+   "mudpuppy",
+   "oyster-bank",
+   "piranha-shoal",
+   "proboscis-monkey",
+   "reef-shark",
+   "sea-hare",
+   "sunbittern-strider"
+  ],
+  "owned": [],
+  "phase2": 22,
+  "wholeSpectrum": 22,
+  "excluded": [
+   {
+    "reason": "not in the map's own pool (BPRO)",
+    "n": 179,
+    "ids": [
+     "acorn-chipmunk",
+     "adder-ambusher",
+     "alley-cat",
+     "alligator-gar",
+     "anaconda-coil",
+     "anhinga-spearbird",
+     "ant-scout",
+     "ant-warrior",
+     "baby-bat",
+     "badger-lumberjack",
+     "badger-stonemason",
+     "barkplate-beetle",
+     "beaver-feller",
+     "bee-forager",
+     "bee-knight",
+     "bee-sentry",
+     "beetle-grunt",
+     "blind-cave-fish",
+     "bogfire-newt",
+     "bombardier-beetle",
+     "booming-bittern",
+     "box-turtle",
+     "bramble-sprout",
+     "briarback-hedgehog",
+     "burrow-rabbit",
+     "buzzed-chipmunk",
+     "caiman-hatchling",
+     "camouflage-frog",
+     "cane-toad",
+     "carrion-beetle",
+     "cave-centipede",
+     "cave-olm",
+     "cave-pseudoscorpion",
+     "chipmunk-forager",
+     "chipmunk-skirmisher",
+     "cobalt-talon-fledgling",
+     "coffer-mimic",
+     "compost-grub",
+     "conch-crawler",
+     "conch-herald",
+     "constrictor-coil",
+     "cottonmouth-matriarch",
+     "cottontail",
+     "cricket-drummer",
+     "crimson-wing-recruit",
+     "crocodile-ambusher",
+     "crossed-eyes",
+     "dam-keeper-beaver",
+     "diving-bell-spider",
+     "dormouse",
+     "driftwood-crab",
+     "duck-paddler",
+     "duckling",
+     "dung-beetle",
+     "dynamite-packrat",
+     "earthworm",
+     "echo-screecher",
+     "ember-tetra",
+     "farm-dog",
+     "fen-mink",
+     "feral-tomcat",
+     "fiddler-crab-swarm",
+     "field-mouse",
+     "field-vole",
+     "fire-ant-raft",
+     "fleetfootd",
+     "forager-ant",
+     "fox-kit",
+     "fulmar-spitter",
+     "fungal-colossus",
+     "fungus-gnat-cloud",
+     "gallery-orb-weaver",
+     "gannet-nestweaver",
+     "garden-snail",
+     "ghost-crayfish",
+     "giant-cave-huntsman",
+     "giant-water-bug",
+     "golden-eagle-diver",
+     "grass-snake",
+     "grass-viper",
+     "gravel-mole",
+     "great-crested-grebe",
+     "great-skua",
+     "greater-siren",
+     "grey-seal-bull",
+     "greyplume-fledgling",
+     "grotto-lobster",
+     "guano-beetle",
+     "gull-thief",
+     "guppy",
+     "harvest-mouse",
+     "hawk-arrowkeeper",
+     "hawthorn-shieldbug",
+     "hedgerow-shrew",
+     "hollow-oath-keeper",
+     "honey-bee",
+     "house-cat",
+     "kittiwake-flock",
+     "lamprey",
+     "leafcutter-gardener",
+     "lotus-frog",
+     "marsh-harrier",
+     "marsh-wisp",
+     "mayfly-dancer",
+     "meadow-frog",
+     "meadow-rabbit",
+     "meerkat-wayfarer",
+     "millipede-hauler",
+     "mire-witch-heron",
+     "moat-snapper",
+     "mosswing-laborer",
+     "mountain-goat-climber",
+     "muskrat-lodgekeeper",
+     "newt-doctor",
+     "nightjar-drifter",
+     "nightshade-moth",
+     "nutria-reedcutter",
+     "old-sturgeon",
+     "open-ocean-hermit-crab",
+     "otter-centurion",
+     "otter-guard",
+     "otter-kit",
+     "otter-paddler",
+     "owl-nightwatch",
+     "oystercatcher",
+     "paper-wasp",
+     "peak-condor",
+     "peregrine-stooper",
+     "pincushion-urchin",
+     "pine-marten",
+     "plague-gnat-cloud",
+     "planarian-splitter",
+     "platypus-spur",
+     "poison-dart-croaker",
+     "pond-algae",
+     "pond-duck",
+     "pond-trout",
+     "prospector-mole",
+     "puffin-diver",
+     "pyrenean-desman",
+     "quarry-mole",
+     "raft-spider",
+     "raven-scout",
+     "razorbill",
+     "red-billed-chough",
+     "river-carp",
+     "river-mink",
+     "riverwing-envoy",
+     "robin-redbreast",
+     "rock-pool-starfish",
+     "sea-turtle-elder",
+     "shallows-fry",
+     "sheep",
+     "signal-crayfish",
+     "silver-minnow",
+     "slow-worm",
+     "snapper-hatchling",
+     "snapstick-turtle",
+     "sparrow-chick",
+     "stalactite-golem",
+     "star-nosed-mole",
+     "stone-turtle-warden",
+     "subterraneaner",
+     "sulfur-cinder-moth",
+     "swamp-alligator",
+     "terrier-pup",
+     "tide-pool-crab",
+     "tidepool-trapper-crab",
+     "truffle-piglet",
+     "tunnel-ant",
+     "vampire-bat",
+     "vampire-bat-nurse",
+     "venomlord-serpent",
+     "water-shrew",
+     "water-vole",
+     "whip-spider",
+     "wolf-spider-mother",
+     "woodcock-lookout",
+     "worker-ant"
+    ]
+   },
+   {
+    "reason": "over the map's rarity cap (rare)",
+    "n": 2,
+    "ids": [
+     "old-snapjaw",
+     "the-gannet-queen"
+    ]
+   }
+  ]
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "mangrove",
+   "kinBiomes": [
+    "coast",
+    "reef-ocean",
+    "river",
+    "swamp"
+   ],
+   "terrainTypes": [
+    "Coral Reef",
+    "Ocean"
+   ],
+   "mapTypes": [
+    "Bird 4",
+    "Coastal 4",
+    "Fish 7",
+    "Mangrove 11",
+    "Mollusc 3",
+    "Ocean 4",
+    "Reptile 2",
+    "River 4"
+   ],
+   "mapMechanics": [
+    "armor 3",
+    "evasion 2",
+    "guard 2",
+    "heal 2",
+    "ranged 2",
+    "tide 8"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "highTide",
+    "phase:cycle",
+    "tangledRoots",
+    "tide",
+    "wet"
+   ],
+   "coreCards": 22
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 43,
+    "e": [
+     "cobalt-talon-skirmisher",
+     "crimson-wing-duelist-cadet",
+     "daily-post",
+     "dawn-bellringer",
+     "dominion-nestguard",
+     "ferry-toll-frog"
+    ]
+   },
+   {
+    "reason": "map rule: not in the map's own pool (BPRO)",
+    "n": 659,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "acorn-chipmunk",
+     "adder-ambusher"
+    ]
+   },
+   {
+    "reason": "map rule: over the map's rarity cap (rare)",
+    "n": 80,
+    "e": [
+     "ashmantle-fiend",
+     "black-dragon",
+     "blue-dragon",
+     "bucketknee-wolf",
+     "caldera-snow-leopard",
+     "caldera-wyrm"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:9-1",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs 9-1 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-2",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs 9-2 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-3",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs 9-3 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-4",
+   "kind": "mirror",
+   "node": "9-4",
+   "label": "vs 9-4 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:9-5",
+   "kind": "mirror",
+   "node": "9-5",
+   "label": "vs 9-5 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|fight:9-6",
+   "kind": "mirror",
+   "node": "9-6",
+   "label": "vs 9-6 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|fight:9-7",
+   "kind": "mirror",
+   "node": "9-7",
+   "label": "vs 9-7 miniboss's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs reference starter deck under 9-1's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|ref:road9",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs reference deck (Map 9) under 9-2's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-1",
+   "kind": "road",
+   "node": "9-1",
+   "label": "9-1 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, tide, wet"
+  },
+  {
+   "key": "road|9-2",
+   "kind": "road",
+   "node": "9-2",
+   "label": "9-2 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-3",
+   "kind": "road",
+   "node": "9-3",
+   "label": "9-3 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-4",
+   "kind": "road",
+   "node": "9-4",
+   "label": "9-4 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, terrain Coral Shelf T1, tide, wet"
+  },
+  {
+   "key": "road|9-5",
+   "kind": "road",
+   "node": "9-5",
+   "label": "9-5 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "road|9-6",
+   "kind": "road",
+   "node": "9-6",
+   "label": "9-6 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "road|9-7",
+   "kind": "road",
+   "node": "9-7",
+   "label": "9-7 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet"
+  },
+  {
+   "key": "neutral|fight:9-1",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs 9-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-2",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs 9-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-3",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs 9-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-4",
+   "kind": "mirror",
+   "node": "9-4",
+   "label": "vs 9-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-5",
+   "kind": "mirror",
+   "node": "9-5",
+   "label": "vs 9-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-6",
+   "kind": "mirror",
+   "node": "9-6",
+   "label": "vs 9-6 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:9-7",
+   "kind": "mirror",
+   "node": "9-7",
+   "label": "vs 9-7 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "9-1",
+   "label": "vs reference starter deck under 9-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road9",
+   "kind": "mirror",
+   "node": "9-2",
+   "label": "vs reference deck (Map 9) under 9-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "9-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 23692,
+  "seconds": 211,
+  "gamesPerSecond": 112.3,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 17068,
+   "gens": 3,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "archerfish:4,electric-catfish:1,mangrove-kingfisher:1,mangrove-mudskipper:4,minnow-skitter:1,mudflat-godwit:2,mudpuppy:5,reef-shark:1,sunbittern-strider:1",
+     "f": 0.682,
+     "gens": 2,
+     "games": 10098,
+     "top": [
+      "archerfish:4,electric-catfish:1,mangrove-kingfisher:1,mangrove-mudskipper:4,minnow-skitter:1,mudflat-godwit:2,mudpuppy:5,reef-shark:1,sunbittern-strider:1",
+      "archerfish:4,fishing-cat:1,mangrove-monitor:1,mangrove-mudskipper:4,minnow-skitter:2,mudflat-godwit:1,mudpuppy:5,reef-shark:1,sunbittern-strider:1",
+      "archerfish:4,beachcomber-sanderling:1,mangrove-kingfisher:2,mangrove-manatee:2,mangrove-monitor:2,mangrove-mudskipper:4,minnow-skitter:3,sunbittern-strider:2",
+      "archerfish:4,banded-sea-krait:4,fishing-cat:1,mangrove-kingfisher:1,mangrove-manatee:1,mangrove-monitor:2,mangrove-mudskipper:2,reef-shark:3,sunbittern-strider:2"
+     ]
+    },
+    {
+     "best": "archerfish:2,banded-sea-krait:1,electric-catfish:3,fishing-cat:1,ironclaw-fiddler:1,limpet-clinger:1,mangrove-mudskipper:3,mudflat-godwit:1,mudpuppy:2,piranha-shoal:1,reef-shark:1,sea-hare:1,sunbittern-strider:2",
+     "f": 0.576,
+     "gens": 1,
+     "games": 6970,
+     "top": [
+      "archerfish:2,banded-sea-krait:1,electric-catfish:3,fishing-cat:1,ironclaw-fiddler:1,limpet-clinger:1,mangrove-mudskipper:3,mudflat-godwit:1,mudpuppy:2,piranha-shoal:1,reef-shark:1,sea-hare:1,sunbittern-strider:2",
+      "archerfish:2,banded-sea-krait:2,electric-catfish:3,elephant-nose-fish:1,ironclaw-fiddler:1,mangrove-kingfisher:2,mangrove-mudskipper:1,mudflat-godwit:1,mudpuppy:2,oyster-bank:1,piranha-shoal:1,reef-shark:2,sunbittern-strider:1",
+      "archerfish:3,banded-sea-krait:1,electric-catfish:1,ironclaw-fiddler:1,limpet-clinger:1,mangrove-kingfisher:3,mudpuppy:1,oyster-bank:1,piranha-shoal:1,reef-shark:2,sea-hare:4,sunbittern-strider:1",
+      "archerfish:2,banded-sea-krait:1,electric-catfish:1,ironclaw-fiddler:1,limpet-clinger:1,mangrove-kingfisher:3,minnow-skitter:1,mudpuppy:1,oyster-bank:1,piranha-shoal:1,reef-shark:2,sea-hare:4,sunbittern-strider:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "archerfish": 4,
+    "electric-catfish": 1,
+    "mangrove-kingfisher": 1,
+    "mangrove-mudskipper": 4,
+    "minnow-skitter": 1,
+    "mudflat-godwit": 2,
+    "mudpuppy": 5,
+    "reef-shark": 1,
+    "sunbittern-strider": 1
+   },
+   "cards": [
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "electric-catfish",
+     "name": "Electric Catfish",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-kingfisher",
+     "name": "Mangrove Kingfisher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "minnow-skitter",
+     "name": "Minnow Skitter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "reef-shark",
+     "name": "Reef Shark",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.662,
+   "ci": [
+    0.637,
+    0.688
+   ],
+   "mirror": 0.702,
+   "road": 0.545,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:9-1",
+     "label": "vs 9-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.781,
+     "lo": 0.666,
+     "hi": 0.865,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-2",
+     "label": "vs 9-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.813,
+     "lo": 0.7,
+     "hi": 0.889,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-3",
+     "label": "vs 9-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-4",
+     "label": "vs 9-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.391,
+     "lo": 0.281,
+     "hi": 0.513,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-5",
+     "label": "vs 9-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.734,
+     "lo": 0.615,
+     "hi": 0.827,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-6",
+     "label": "vs 9-6 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.563,
+     "lo": 0.441,
+     "hi": 0.677,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:9-7",
+     "label": "vs 9-7 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.688,
+     "lo": 0.566,
+     "hi": 0.788,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 9-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.266,
+     "lo": 0.173,
+     "hi": 0.385,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "road|9-1",
+     "label": "9-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.599,
+     "hi": 0.814,
+     "n": 64
+    },
+    {
+     "entry": "road|9-2",
+     "label": "9-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.641,
+     "lo": 0.518,
+     "hi": 0.747,
+     "n": 64
+    },
+    {
+     "entry": "road|9-3",
+     "label": "9-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.797,
+     "lo": 0.683,
+     "hi": 0.877,
+     "n": 64
+    },
+    {
+     "entry": "road|9-4",
+     "label": "9-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.156,
+     "lo": 0.087,
+     "hi": 0.264,
+     "n": 64
+    },
+    {
+     "entry": "road|9-5",
+     "label": "9-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.516,
+     "lo": 0.396,
+     "hi": 0.634,
+     "n": 64
+    },
+    {
+     "entry": "road|9-6",
+     "label": "9-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.469,
+     "lo": 0.352,
+     "hi": 0.589,
+     "n": 64
+    },
+    {
+     "entry": "road|9-7",
+     "label": "9-7 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.516,
+     "lo": 0.396,
+     "hi": 0.634,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-1",
+     "label": "vs 9-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.641,
+     "lo": 0.518,
+     "hi": 0.747,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-2",
+     "label": "vs 9-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.625,
+     "lo": 0.503,
+     "hi": 0.733,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-3",
+     "label": "vs 9-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.656,
+     "lo": 0.534,
+     "hi": 0.761,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-4",
+     "label": "vs 9-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.563,
+     "lo": 0.441,
+     "hi": 0.677,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-5",
+     "label": "vs 9-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.391,
+     "lo": 0.281,
+     "hi": 0.513,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-6",
+     "label": "vs 9-6 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.469,
+     "lo": 0.352,
+     "hi": 0.589,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:9-7",
+     "label": "vs 9-7 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.656,
+     "lo": 0.534,
+     "hi": 0.761,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 9-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road9",
+     "label": "vs reference deck (Map 9) under 9-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.234,
+     "lo": 0.147,
+     "hi": 0.351,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 9-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.682,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "archerfish": 4,
+    "electric-catfish": 1,
+    "mangrove-kingfisher": 1,
+    "mangrove-mudskipper": 4,
+    "minnow-skitter": 1,
+    "mudflat-godwit": 2,
+    "mudpuppy": 5,
+    "reef-shark": 1,
+    "sunbittern-strider": 1
+   },
+   "cards": [
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "archerfish",
+     "name": "Archerfish",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-mudskipper",
+     "name": "Mangrove Mudskipper",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mudflat-godwit",
+     "name": "Mudflat Godwit",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "electric-catfish",
+     "name": "Electric Catfish",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mangrove-kingfisher",
+     "name": "Mangrove Kingfisher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "minnow-skitter",
+     "name": "Minnow Skitter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "reef-shark",
+     "name": "Reef Shark",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sunbittern-strider",
+     "name": "Sunbittern Strider",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.662,
+   "ci": [
+    0.637,
+    0.688
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 8,
+ "ladder": null,
+ "road": [
+  {
+   "node": "9-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.719,
+   "ci": [
+    0.599,
+    0.814
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-2",
+   "kind": "skirmish",
+   "target": 0.84,
+   "optimum": 0.641,
+   "ci": [
+    0.518,
+    0.747
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-3",
+   "kind": "skirmish",
+   "target": 0.78,
+   "optimum": 0.797,
+   "ci": [
+    0.683,
+    0.877
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-4",
+   "kind": "skirmish",
+   "target": 0.72,
+   "optimum": 0.156,
+   "ci": [
+    0.087,
+    0.264
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-5",
+   "kind": "elite",
+   "target": 0.66,
+   "optimum": 0.516,
+   "ci": [
+    0.396,
+    0.634
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-6",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.469,
+   "ci": [
+    0.352,
+    0.589
+   ],
+   "n": 64
+  },
+  {
+   "node": "9-7",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.516,
+   "ci": [
+    0.396,
+    0.634
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:9-1",
+   "node": "9-1",
+   "rules": "aiGuardLethal, phase cycle, tide, wet",
+   "withField": 0.781,
+   "noField": 0.641,
+   "delta": 0.141,
+   "ci": [
+    -0.015,
+    0.296
+   ]
+  },
+  {
+   "opponent": "fight:9-2",
+   "node": "9-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.813,
+   "noField": 0.625,
+   "delta": 0.188,
+   "ci": [
+    0.035,
+    0.34
+   ]
+  },
+  {
+   "opponent": "fight:9-3",
+   "node": "9-3",
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.859,
+   "noField": 0.656,
+   "delta": 0.203,
+   "ci": [
+    0.059,
+    0.347
+   ]
+  },
+  {
+   "opponent": "fight:9-4",
+   "node": "9-4",
+   "rules": "aiGuardLethal, boon risingTide, phase cycle, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.391,
+   "noField": 0.563,
+   "delta": -0.172,
+   "ci": [
+    -0.342,
+    -0.001
+   ]
+  },
+  {
+   "opponent": "fight:9-5",
+   "node": "9-5",
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 0.734,
+   "noField": 0.391,
+   "delta": 0.344,
+   "ci": [
+    0.183,
+    0.505
+   ]
+  },
+  {
+   "opponent": "fight:9-6",
+   "node": "9-6",
+   "rules": "aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 0.563,
+   "noField": 0.469,
+   "delta": 0.094,
+   "ci": [
+    -0.079,
+    0.266
+   ]
+  },
+  {
+   "opponent": "fight:9-7",
+   "node": "9-7",
+   "rules": "aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet",
+   "withField": 0.688,
+   "noField": 0.656,
+   "delta": 0.031,
+   "ci": [
+    -0.131,
+    0.194
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "9-1",
+   "rules": "aiGuardLethal, phase cycle, tide, wet",
+   "withField": 1,
+   "noField": 0.859,
+   "delta": 0.141,
+   "ci": [
+    0.055,
+    0.226
+   ]
+  },
+  {
+   "opponent": "ref:road9",
+   "node": "9-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.266,
+   "noField": 0.234,
+   "delta": 0.031,
+   "ci": [
+    -0.119,
+    0.181
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "9-3",
+   "rules": "aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet",
+   "withField": 0.922,
+   "noField": 0.875,
+   "delta": 0.047,
+   "ci": [
+    -0.057,
+    0.151
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:9-1",
+   "label": "9-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-1",
+   "target": 0.9,
+   "h2h": 0.781,
+   "h2hCI": [
+    0.666,
+    0.865
+   ],
+   "elo": 221,
+   "eloCI": [
+    120,
+    323
+   ],
+   "n": 64,
+   "asPlayer": 0.393,
+   "optimumSame": 0.653,
+   "pointsBelow": 25.9,
+   "pointsCI": 4.4
+  },
+  {
+   "opponent": "fight:9-2",
+   "label": "9-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-2",
+   "target": 0.84,
+   "h2h": 0.813,
+   "h2hCI": [
+    0.7,
+    0.889
+   ],
+   "elo": 255,
+   "eloCI": [
+    147,
+    362
+   ],
+   "n": 64,
+   "asPlayer": 0.468,
+   "optimumSame": 0.65,
+   "pointsBelow": 18.2,
+   "pointsCI": 4.8
+  },
+  {
+   "opponent": "fight:9-3",
+   "label": "9-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-3",
+   "target": 0.78,
+   "h2h": 0.859,
+   "h2hCI": [
+    0.754,
+    0.924
+   ],
+   "elo": 314,
+   "eloCI": [
+    194,
+    434
+   ],
+   "n": 64,
+   "asPlayer": 0.367,
+   "optimumSame": 0.646,
+   "pointsBelow": 27.9,
+   "pointsCI": 4.8
+  },
+  {
+   "opponent": "fight:9-4",
+   "label": "9-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "9-4",
+   "target": 0.72,
+   "h2h": 0.391,
+   "h2hCI": [
+    0.281,
+    0.513
+   ],
+   "elo": -77,
+   "eloCI": [
+    -164,
+    9
+   ],
+   "n": 64,
+   "asPlayer": 0.729,
+   "optimumSame": 0.684,
+   "pointsBelow": -4.4,
+   "pointsCI": 4.4
+  },
+  {
+   "opponent": "fight:9-5",
+   "label": "9-5 elite's deck",
+   "kind": "elite",
+   "node": "9-5",
+   "target": 0.66,
+   "h2h": 0.734,
+   "h2hCI": [
+    0.615,
+    0.827
+   ],
+   "elo": 177,
+   "eloCI": [
+    81,
+    272
+   ],
+   "n": 64,
+   "asPlayer": 0.471,
+   "optimumSame": 0.656,
+   "pointsBelow": 18.6,
+   "pointsCI": 5
+  },
+  {
+   "opponent": "fight:9-6",
+   "label": "9-6 elite's deck",
+   "kind": "elite",
+   "node": "9-6",
+   "target": 0.6,
+   "h2h": 0.563,
+   "h2hCI": [
+    0.441,
+    0.677
+   ],
+   "elo": 44,
+   "eloCI": [
+    -41,
+    129
+   ],
+   "n": 64,
+   "asPlayer": 0.49,
+   "optimumSame": 0.67,
+   "pointsBelow": 18,
+   "pointsCI": 4.9
+  },
+  {
+   "opponent": "fight:9-7",
+   "label": "9-7 miniboss's deck",
+   "kind": "miniboss",
+   "node": "9-7",
+   "target": 0.4,
+   "h2h": 0.688,
+   "h2hCI": [
+    0.566,
+    0.788
+   ],
+   "elo": 137,
+   "eloCI": [
+    46,
+    228
+   ],
+   "n": 64,
+   "asPlayer": 0.525,
+   "optimumSame": 0.66,
+   "pointsBelow": 13.5,
+   "pointsCI": 4.7
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 9-1's field",
+   "kind": "reference",
+   "node": "9-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.943,
+    1
+   ],
+   "elo": 842,
+   "eloCI": [
+    489,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.07,
+   "optimumSame": 0.635,
+   "pointsBelow": 56.5,
+   "pointsCI": 3.6
+  },
+  {
+   "opponent": "ref:road9",
+   "label": "reference deck (Map 9) under 9-2's field",
+   "kind": "reference",
+   "node": "9-2",
+   "target": null,
+   "h2h": 0.266,
+   "h2hCI": [
+    0.173,
+    0.385
+   ],
+   "elo": -177,
+   "eloCI": [
+    -272,
+    -81
+   ],
+   "n": 64,
+   "asPlayer": 0.782,
+   "optimumSame": 0.694,
+   "pointsBelow": -8.8,
+   "pointsCI": 4.2
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 9-3's field",
+   "kind": "reference",
+   "node": "9-3",
+   "target": null,
+   "h2h": 0.922,
+   "h2hCI": [
+    0.83,
+    0.966
+   ],
+   "elo": 429,
+   "eloCI": [
+    275,
+    582
+   ],
+   "n": 64,
+   "asPlayer": 0.223,
+   "optimumSame": 0.641,
+   "pointsBelow": 41.9,
+   "pointsCI": 4.6
+  }
+ ]
+}
