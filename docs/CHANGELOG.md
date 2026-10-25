@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-25 (package PRO3: PRO pass for Maps 0-20 and their side maps, road check after EN8)
+- **PRO and BPRO fights for every map 0-20 and 15 side maps** (owner 10-24 22:28 #3 / #11), from new optimizer runs against the current engine (the CPU pitches and guards): `tools/opt/deckopt.js --maps 0-20 --side --budget 16000 --ladder none` in both modes; outputs `docs/balance/opt/*-2026-10-25-pro3-{maptrue,bpro}.json` and their summaries. Faction cards (faction-pack cards, `source` pack tier 11) are left out of PRO pools by default (`--no-faction` / `--faction`). A side map gets its own fights, named after its fight codes (`2-B-PRO-1`); the game shows a side map's own PRO fights on it (`proEntryIdOf`, `PRO_KEY_RE`). Not done: the tutorial and the endless dungeons (Murgle Mayhem, the Undercroft).
+- **EN8's resource cards on more maps:** Oyster Bank (Gannet Cliffs, Kelp Mangroves, Smugglers' Grotto), Beachcomber Sanderling (Gannet Cliffs, Kelp Mangroves), Giant Clam and Salvager Hermit Crab (the Sunken Depths), Prospector Mole (the Glimmer Depths), Marmot Stonecutter (the Aerie Vault, the Sundered Peak), Beaver Feller (the Redwood Deep), Carrion Crow (the Long Grass, the Canopy, the Pale Desert). Only maps at or after each card's first map, so no card's first obtainable map moved (`tools/opt/pro3_map_lists_2026_10_25.js`).
+- **Road check (EN8-10):** every fight of Maps 0-20 and their side maps measured against the road curve, then CPU deck swaps only (leader, first-clear card and deck size kept): green 68 -> 117 of 226, main-map new-player mean 64.0% -> 67.2%, 131 decks changed (`docs/balance/pro3-road-check-2026-10-25.md`). `tools/skirmish_pass.js` gained `--keep-first`, `--keep-size` and `--maxmap`.
+
 ## 2026-10-25 release 10-25a (batch: PL1, PRO2, EN8, PL2)
 - The CPU pitches cards for resources, guards against lethal hits, and its brambles heal allies; Rampart covers only its own and neighbouring columns. Resource skills (Stonecutter, Prospector, Felling, Salvage, Scavenger, Coppice, Windfall, Driftwood) and Pearls/Shellfish.
 - PRO fights follow the map's rarity and cards, plus BPRO; clicking a PRO node opens a free preview with Fight.

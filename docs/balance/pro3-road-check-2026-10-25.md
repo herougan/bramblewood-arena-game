@@ -21,6 +21,8 @@ EN8-10's measure (tools/en8_cpu_pitch_2026_10_24.js, a wider fight list incl. ev
 
 Decks changed: 131 of 158 fights tuned (the rest found no swap that helped by 2+ points). Measured at 40 games a fight a result is about ±15 points (95%), so a fight a few points outside its band may be noise.
 
+Hand fix after the tune: Hermit Row (2-3) keeps one Driftwood Crab (CONTENT2 put it there; `tests/content2-2026-10-24.js`), Conch Crawler 4 -> 3; its after row is that deck (45%).
+
 ## Fights still outside their band (after)
 
 Most are too hard where a swap cannot reach the target: the decks are already the weakest cards of their map, and the CPU's new pitch is what carries them (Map 2, Map 4, Map 11 and Map 20's elites). They need a lever this pass did not use (dropping copies to shrink a deck, a lower enemy level or bramble, or the reference deck); see EN8-10.
@@ -37,7 +39,7 @@ Most are too hard where a swap cannot reach the target: the decks are already th
 | 1-A-5 (mq) | boss | 30-49 (40) | 85% | 85% easy | 2 |
 | 2-1 (mb) | skirmish | 82-98 (90) | 70% | 70% hard | 0 |
 | 2-2 (mb) | skirmish | 72-88 (80) | 65% | 70% hard | 2 |
-| 2-3 (mb) | skirmish | 62-78 (70) | 17.5% | 57.5% hard | 3 |
+| 2-3 (mb) | skirmish | 62-78 (70) | 17.5% | 45% hard | 3 |
 | 2-4 (mb) | skirmish | 52-68 (60) | 35% | 35% hard | 0 |
 | 2-5 (mb) | elite | 30-49 (40) | 10% | 7.5% hard | 1 |
 | 2-A-1 (mp) | skirmish | 82-98 (90) | 60% | 60% hard | 0 |
@@ -154,7 +156,7 @@ Most are too hard where a swap cannot reach the target: the decks are already th
 | 1-A-5 (mq) | boss | 40 | 85% | 85% | easy | acorn-chipmunk→house-cat ×2; cottontail→house-cat ×1 |
 | 2-1 (mb) | skirmish | 90 | 70% | 70% | hard | none found |
 | 2-2 (mb) | skirmish | 80 | 65% | 70% | hard | pincushion-urchin→conch-crawler ×4; open-ocean-hermit-crab→pincushion-urchin ×3 |
-| 2-3 (mb) | skirmish | 70 | 17.5% | 57.5% | hard | driftwood-crab→conch-crawler ×3; conch-herald→conch-crawler ×1; open-ocean-hermit-crab→pincushion-urchin ×2 |
+| 2-3 (mb) | skirmish | 70 | 17.5% | 45% | hard | driftwood-crab→conch-crawler ×3; conch-herald→conch-crawler ×1; open-ocean-hermit-crab→pincushion-urchin ×2 |
 | 2-4 (mb) | skirmish | 60 | 35% | 35% | hard | none found |
 | 2-5 (mb) | elite | 40 | 10% | 7.5% | hard | sea-turtle-elder→conch-crawler ×2 |
 | 2-A-1 (mp) | skirmish | 90 | 60% | 60% | hard | none found |

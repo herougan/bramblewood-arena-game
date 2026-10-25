@@ -35,12 +35,15 @@ ok(rule.modes && rule.modes.pro === 'map-true' && rule.modes.bpro === 'bpro' && 
 const KINDS = [['pro', 'PRO', 'map-true'], ['bpro', 'BPRO', 'bpro']];
 Object.keys(data.maps).forEach(mid=>{
   const ent = data.maps[mid], map = G.CONQUEST_MAPS.find(m=> m.id === mid), no = G.mapNumberOf(mid);
-  ok(map && !map.sub && ent.map === no, `1. ${mid} is main map ${no}`);
-  const cap = O.mapRarityCap(gm, map), pool = gm.pools[mid] || {}, own = new Set((pool.cards || []).concat(pool.special || [], ...O.fightsOf(map).map(n=> Object.keys(n.deck))));
+  // 2026-10-25 (PRO3): a side map has its own entry too (ent.side = its parent, ids N-L-PRO-k from its fight codes, its own pool = the parent's
+  // MAP tier + its SUBMAP list + SPECIAL + its fight decks)
+  ok(map && ent.map === no && (map.sub ? ent.side === map.parent : !ent.side), `1. ${mid} is ${map && map.sub ? 'a side map of' : 'main map'} ${no}`);
+  const pk = map.sub ? map.parent : mid, sub = map.sub ? ((gm.pools[pk] || {}).submaps || {})[mid] || [] : [], prefix = P.proPrefix(gm, map);
+  const cap = O.mapRarityCap(gm, map), pool = gm.pools[pk] || {}, own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n=> Object.keys(n.deck))));
   KINDS.forEach(([list, label, mode])=>{ const L = ent[list] || [];
   ok(L.length >= 1 && L.length <= 4, `1. ${mid}: 1-4 ${label} fights (${L.length})`);
   L.forEach((e, i)=>{
-    ok(e.id === `${no}-${label}-${i + 1}` && e.name === e.id, `1. ${mid}: id ${e.id} is ${no}-${label}-${i + 1}`);
+    ok(e.id === `${prefix}-${label}-${i + 1}` && e.name === e.id, `1. ${mid}: id ${e.id} is ${prefix}-${label}-${i + 1}`);
     ok(e.level === 1, `1. ${e.id}: Level 1`);
     const lead = no >= G.SKIRMISH_LEADER_FROM_MAP ? [G.nodeShowcaseId({deck: e.deck})] : [];
     ok(JSON.stringify(e.leaders) === JSON.stringify(lead), `1. ${e.id}: leaders ${JSON.stringify(e.leaders)} (the map rule: ${JSON.stringify(lead)})`);
