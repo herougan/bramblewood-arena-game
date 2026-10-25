@@ -17,6 +17,8 @@ CANONICAL = {  # file -> what it is the source of truth for (CLAUDE.md table)
     'lore-bible.md': 'Lore and names',
     'effects-catalogue.md': 'Describes the keywords; the engine decides',
     'skirmish-tuning-guide.md': 'How to tune a skirmish',
+    'project-state.md': 'The settled rules, each with its decision id',  # 2026-10-25 (package DOCS1, D1)
+    'evaluation-protocol.md': 'PRO rules, reference decks, difficulty tolerance, testing procedure',  # 2026-10-25 (package DOCS1, D2)
     'workflows/art.md': 'Workflow: art generation and visual review', 'workflows/balance.md': 'Workflow: balance analysis and simulations',
     'workflows/card-data.md': 'Workflow: card data and content', 'workflows/engine.md': 'Workflow: engine and backend',
     'workflows/release.md': 'Workflow: testing, debugging, releases', 'workflows/ui.md': 'Workflow: UI and frontend',

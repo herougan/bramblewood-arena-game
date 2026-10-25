@@ -1,5 +1,13 @@
 <section class="panel" id="p-curve" role="tabpanel" aria-labelledby="t-curve" hidden><div class="crv">
 <div class="dec-head"><h2>Difficulty curve</h2><p id="crvLead">Three reference decks play every fight on the road. Read left to right: it should climb.</p></div>
+<section class="rc" id="rcSec" aria-label="Road check">
+<h3 class="crv-h">Road check: how far is each fight from its target?</h3>
+<div class="rc-alert" id="rcAlert" role="alert"></div>
+<div class="rc-legend" id="rcLegend"></div>
+<div class="dec-bar"><input type="search" id="rcQ" placeholder="Search fights or maps…" aria-label="Search the road check"><div class="dec-seg" role="group" aria-label="Show" id="rcSeg"><button data-f="" aria-pressed="true">All</button><button data-f="hard" aria-pressed="false">Too hard</button><button data-f="easy" aria-pressed="false">Too easy</button><button data-f="ok" aria-pressed="false">Within 10 points</button></div></div>
+<div class="bal-wrap"><table class="bal-t rc-t"><thead><tr><th data-k="code">Fight</th><th data-k="mapNo">Map</th><th data-k="kind">Kind</th><th data-k="target">Target</th><th data-k="before">Before</th><th data-k="win">After</th><th data-k="gap">Gap</th><th data-k="st">Status</th></tr></thead><tbody id="rcRows"></tbody></table></div>
+<p class="crv-note" id="rcNote"></p>
+</section>
 <div class="crv-key" id="crvKey"></div>
 <figure class="crv-fig"><div class="crv-scroll"><svg id="crvSvg" role="img" aria-label="Difficulty index of every fight in road order"></svg></div>
 <figcaption id="crvCap"></figcaption></figure>
@@ -38,6 +46,26 @@
 svg .ax{stroke:var(--line);} svg .axt{fill:var(--ink-muted); font-size:11px;} svg .mapt{fill:var(--ink-muted); font-size:10.5px;}
 svg .trend{fill:none; stroke:var(--ink); stroke-width:2.2;}
 svg .mapband{fill:var(--surface-2); opacity:.55;}
+/* 2026-10-25 (package HUB5, H1): the road check. Five gap bands (DF-1b: +-5 ideal, 10 acceptable, 15 less liked, 20 unacceptable); each also prints an arrow and words, so colour is never the only signal. */
+.rc{display:flex; flex-direction:column; gap:10px; --g1:#2f8a4a; --g2:#7aa83a; --g3:#c98a1b; --g4:#d9631f; --g5:#c2332a;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) .rc{--g1:#7fd38f; --g2:#b5d86a; --g3:#ffd15c; --g4:#ffa65c; --g5:#ff7a70;} }
+:root[data-theme="dark"] .rc{--g1:#7fd38f; --g2:#b5d86a; --g3:#ffd15c; --g4:#ffa65c; --g5:#ff7a70;}
+.rc-alert{background:var(--surface); border:1px solid var(--line); border-left:6px solid var(--g5); border-radius:10px; padding:10px 14px; font-size:14.5px;}
+.rc-alert h4{margin:0 0 4px; font-size:16px;}
+.rc-alert ol{margin:6px 0 4px; padding-left:0; list-style:none; display:flex; flex-wrap:wrap; gap:5px 6px;}
+.rc-alert li{border:1px solid var(--line); border-radius:999px; padding:1px 10px; font-size:13px; background:var(--surface-2);}
+.rc-alert li b{font-weight:800;}
+.rc-legend{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:13px; color:var(--ink-muted);}
+.rc-legend span{display:inline-flex; align-items:center; gap:6px;}
+.rc-legend i{display:inline-block; width:14px; height:14px; border-radius:4px;}
+.rc-t td.num{text-align:right; font-variant-numeric:tabular-nums;}
+.rc-t td.g{font-weight:800; text-align:right; white-space:nowrap; border-left:6px solid transparent;}
+.rc-t .b1{border-left-color:var(--g1);} .rc-t .b2{border-left-color:var(--g2);} .rc-t .b3{border-left-color:var(--g3);} .rc-t .b4{border-left-color:var(--g4);} .rc-t .b5{border-left-color:var(--g5);}
+.rc-t td.g.b1{background:color-mix(in srgb, var(--g1) 18%, transparent);} .rc-t td.g.b2{background:color-mix(in srgb, var(--g2) 22%, transparent);}
+.rc-t td.g.b3{background:color-mix(in srgb, var(--g3) 24%, transparent);} .rc-t td.g.b4{background:color-mix(in srgb, var(--g4) 26%, transparent);} .rc-t td.g.b5{background:color-mix(in srgb, var(--g5) 28%, transparent);}
+.rc-t td{white-space:nowrap;}
+.rc-t th{cursor:pointer;}
+@media (max-width:600px){ .rc-alert li{font-size:12.5px;} }
 </style>
 <script>
 (function(){
@@ -105,6 +133,40 @@ function rows(){
 document.getElementById('crvQ').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); rows(); });
 document.getElementById('crvSeg').addEventListener('click', e=>{ const b = e.target.closest('[data-k]'); if(!b) return; kind = b.dataset.k; document.querySelectorAll('#crvSeg button').forEach(x=> x.setAttribute('aria-pressed', String(x===b))); rows(); });
 document.querySelector('.crv-t thead').addEventListener('click', e=>{ const th = e.target.closest('[data-k]'); if(!th) return; const k = th.dataset.k; if(sortK===k) dir *= -1; else { sortK = k; dir = ['index','xl','xr','hp'].includes(k) ? -1 : 1; } rows(); });
+rows();
+})();
+</script>
+<script>
+// 2026-10-25 (package HUB5, owner 10-25 17:53 H1): the road check. PRO3 measured every fight (docs/balance/skirmish-pass-pro3-*.jsonl); each fight is coloured by its
+// gap to its road target using the owner's DF-1b tolerance (docs/evaluation-protocol.md section 3). Win rate under the target = harder than the road wants.
+(function(){
+const R = __ROAD__;
+const el = id=> document.getElementById(id);
+if(!R || !R.fights || !R.fights.length){ el('rcSec').hidden = true; return; }
+const esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const band = g=> { const a = Math.abs(g); return a <= 5 ? 1 : a <= 10 ? 2 : a <= 15 ? 3 : a <= 20 ? 4 : 5; };
+const BN = {1: 'within 5 points: ideal', 2: '5 to 10: acceptable', 3: '10 to 15: less liked, but okay', 4: '15 to 20: starting to be unacceptable', 5: 'over 20: unacceptable'};
+const F = R.fights.map(f=> { const gap = f.win - f.target; const st = f.green === 'hard' ? 'Too hard' : f.green === 'easy' ? 'Too easy' : 'On target';
+  return Object.assign({gap, b: band(gap), st, ok: !f.curve ? 'off' : (Math.abs(gap) <= 10 ? 'ok' : '')}, f); });
+const hard = F.filter(f=> f.curve && f.green === 'hard').sort((a, b)=> a.gap - b.gap);
+const fmt = g=> (g > 0 ? '▲ +' : g < 0 ? '▼ ' : '') + g.toFixed(0);
+el('rcAlert').innerHTML = `<h4>${hard.length} fights are harder than the road wants (flagged too hard)</h4>`
+  + `<div>Each is on the curve and its win rate sits under its target band after PRO3's retune (${R.games} games each, so one fight is about ±15 points at 95%). Hardest first; the number is the gap in points (▼ = the player wins less than the target). Whether to ease them is the open decision <b>EN8-10</b>.</div>`
+  + `<ol>${hard.map(f=> `<li><b>${esc(f.code)}</b> ${esc(f.name)} · Map ${esc(f.mapNo)}${f.side ? ' (side)' : ''} · ${esc(f.win)}% vs ${esc(f.target)}% <b>${fmt(f.gap)}</b></li>`).join('')}</ol>`
+  + `<div>Full list: <code>docs/balance/pro3-road-check-2026-10-25.md</code>.</div>`;
+el('rcLegend').innerHTML = [1, 2, 3, 4, 5].map(b=> `<span><i style="background:var(--g${b})"></i>${BN[b]}</span>`).join('') + '<span>▼ under the target (too hard) · ▲ over it (too easy)</span>';
+let q = '', flt = '', sortK = 'gap', dir = 1;
+function rows(){
+  let L = F.filter(f=> (!q || (f.code + ' ' + f.name + ' ' + f.mapName + ' ' + f.kind).toLowerCase().includes(q)) && (!flt || (flt === 'hard' ? f.green === 'hard' : flt === 'easy' ? f.green === 'easy' : Math.abs(f.gap) <= 10)));
+  const key = f=> sortK === 'st' ? f.st : f[sortK];
+  L = L.slice().sort((a, b)=> { const x = key(a), y = key(b); return (typeof x === 'string' ? x.localeCompare(y) : (x == null ? -1e9 : x) - (y == null ? -1e9 : y)) * dir; });
+  el('rcRows').innerHTML = L.map(f=> `<tr><td><b>${esc(f.code)}</b> ${esc(f.name)}${f.curve ? '' : ' <small>(off the curve)</small>'}</td><td>${esc(f.mapNo)}${f.side ? ' side' : ''}</td><td>${esc(f.kind)}</td><td class="num">${esc(f.target)}% <small>(${esc(f.lo)}-${esc(f.hi)})</small></td><td class="num">${f.before == null ? '–' : esc(f.before) + '%'}</td><td class="num">${esc(f.win)}%</td><td class="g b${f.b}" title="${BN[f.b]}">${fmt(f.gap)}</td><td>${esc(f.st)}</td></tr>`).join('')
+    || '<tr><td colspan="8" class="dec-empty">No fight matches.</td></tr>';
+  el('rcNote').textContent = `${L.length} of ${F.length} fights. Source: ${R.source}. Targets come from the road curve in arena_app.js (first skirmish 90% falling to 60%, mini-boss 50%, boss 40%, side maps lower).`;
+}
+el('rcQ').addEventListener('input', e=>{ q = e.target.value.trim().toLowerCase(); rows(); });
+el('rcSeg').addEventListener('click', e=>{ const b = e.target.closest('[data-f]'); if(!b) return; flt = b.dataset.f; document.querySelectorAll('#rcSeg button').forEach(x=> x.setAttribute('aria-pressed', String(x === b))); rows(); });
+document.querySelector('.rc-t thead').addEventListener('click', e=>{ const th = e.target.closest('[data-k]'); if(!th) return; const k = th.dataset.k; if(sortK === k) dir *= -1; else { sortK = k; dir = 1; } rows(); });
 rows();
 })();
 </script>

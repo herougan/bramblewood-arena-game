@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-25 (package DOCS1 + HUB5: project state, evaluation protocol, Card table, Curves, road check; docs and the hub only, no game code)
+- **`docs/project-state.md`** (D1): the settled rules (combat and damage types, keywords, resources, progression and rewards, maps and road, CPU, cards and budget), each a short line with its decision id and the canonical file; rules decided 10-25 17:53 and not built are marked "decided, not built yet (action item ...)". **`docs/evaluation-protocol.md`** (D2): PRO / BPRO rules, the reference decks (map reference, Reference-2, Reference-3 pending), the difficulty metrics with the owner's DF-1b tolerance, the testing procedure. Both are rows in CLAUDE.md's source-of-truth table and in the hub's Library.
+- **Hub, 🗃️ Card table** (H2): all 879 cards of `canonical/cards.json`, 100 a page, sortable by any column, filters for text, rarity, pack tier, first-obtain map, faction, type and skill. Its **Packs** view (G11) shows each pack's name, tier and price with the rare-and-higher cards that have art as thumbnails (show only, nothing stored).
+- **Hub, 📊 Curves** (H3): XP per level and in total read from the game's own `xpToNext` (Levels 15-25 marked, with a try-a-curve overlay that is not saved), Forge and crafting costs from `canonical/upgrade-costs.json`, Energy and resource curves; values on hover.
+- **Hub, 📈 Difficulty** (H1): a road check at the top lists the 53 on-curve fights PRO3 left too hard (EN8-10 still open) and colours all 241 measured fights by their gap to the road target with the DF-1b bands.
+- The Cards tab's thumbnails now come from `canonical/cards.json` (the old `docs/balance/hub-cards.json` export had stale stats).
+
 ## 2026-10-25 release 10-25b (batch: PRO3)
 - PRO and BPRO fights for Maps 0-20 and 15 side maps (87 PRO, 100 BPRO decks), optimized against the pitching CPU, no faction cards; side-map PRO fights use the side map's codes (e.g. 2-B-PRO-1).
 - EN8 resource cards on 14 more map lists (Oyster Bank, Beachcomber Sanderling, Giant Clam, Salvager Hermit Crab, Prospector Mole, Marmot Stonecutter, Beaver Feller, Carrion Crow).

@@ -120,7 +120,8 @@ for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:8000
 # tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
 _curve_path = os.path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json')
 _curve_json = open(_curve_path, encoding='utf-8').read() if os.path.exists(_curve_path) else 'null'
-curve_panel = open(os.path.join(ROOT, 'tools', 'hub', 'curve_tab.html'), encoding='utf-8').read().replace('__CURVE__', json.dumps(json.loads(_curve_json), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))
+sys.path.insert(0, os.path.join(ROOT, 'tools', 'hub'))
+curve_panel = open(os.path.join(ROOT, 'tools', 'hub', 'curve_tab.html'), encoding='utf-8').read().replace('__CURVE__', json.dumps(json.loads(_curve_json), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')).replace('__ROAD__', json.dumps(__import__('hub5_data').road(ROOT), ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/'))  # 2026-10-25 (package HUB5, H1): the road check
 
 # 4) Claude's guide: standing instructions, skills, and the docs to read before a task.
 RULES = [
@@ -330,7 +331,10 @@ CANON = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json'), encoding='
 _canon_art = {c['id']: c.get('art') for c in CANON}
 _assets = {os.path.splitext(f)[0]: f for f in os.listdir(os.path.join(ROOT, 'assets', 'cards'))}
 THUMB = 96
-_thumb_ids = [c['id'] for c in HC['cards'] if not c.get('egg') and (c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image'))]  # 2026-10-19 (package EE): no thumbnail for a masked Easter egg
+# 2026-10-25 (package HUB5, H2 / G11): the sheet is built from canonical/cards.json, not from hub-cards.json (which is a game export and lags the file),
+# so the Card table and the Packs section have a thumbnail for every card that has art.
+_egg_ids = {c['id'] for c in CANON if c.get('easterEgg')} | {c['id'] for c in HC['cards'] if c.get('egg')}
+_thumb_ids = [c['id'] for c in CANON if c['id'] not in _egg_ids and (c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image'))]  # 2026-10-19 (package EE): no thumbnail for a masked Easter egg
 if _thumb_ids:
     import base64, io
     cols = math.ceil(math.sqrt(len(_thumb_ids)))
@@ -390,6 +394,8 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧬', 'deckopt', 'Deck optimizer', 'The strongest deck per map, the difficulty ladder and how far each fight deck sits below it (tools/opt/deckopt.js)'),  # 2026-10-24 (owner 23:48)
   ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
   ('📖', 'doclib', 'Library', 'Every doc in docs/: canonical and reference docs to read here, dated snapshots under History'),  # 2026-10-24 (package HUB4)
+  ('🗃️', 'ctable', 'Card table', 'Every card in one sortable, filterable table (100 a page), plus the packs and the art that could wear them'),  # 2026-10-25 (package HUB5, H2 / G11)
+  ('📊', 'curves', 'Curves', 'XP per level (Levels 15-25 marked), Forge and crafting costs, Energy and resource curves'),  # 2026-10-25 (package HUB5, H3)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -555,6 +561,20 @@ _ch_path = os.path.join(ROOT, 'docs', 'chips-inventory.json')
 _ch = json.load(open(_ch_path, encoding='utf-8')) if os.path.exists(_ch_path) else None
 CH_INLINE = (f'const CH_DATA = {_js(_ch)};\n' + open(os.path.join(ROOT, 'tools', 'hub', 'chips_tab.js'), encoding='utf-8').read()) if _ch else ''
 CH_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'chips_tab.css'), encoding='utf-8').read()
+# 2026-10-25 (package HUB5; owner 10-25 17:53 H1 / H2 / H3, 22:36 G11): the 🗃️ Card table (+ Packs view), the 📊 Curves tab and the road check on 📈 Difficulty.
+# Their data is computed by tools/hub/hub5_data.py from canonical/cards.json, canonical/upgrade-costs.json, arena_app.js (the game's own XP / energy code, copied as
+# text and run by the page, never edited) and the PRO3 road-check files. Read only.
+sys.path.insert(0, os.path.join(ROOT, 'tools', 'hub'))
+import hub5_data as H5
+_hubdir = lambda n: open(os.path.join(ROOT, 'tools', 'hub', n), encoding='utf-8').read()
+_ct = H5.card_table(ROOT, CANON, _tix)
+CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\n' + _hubdir('cardtable_tab.js'))
+CT_CSS = _hubdir('cardtable_tab.css')
+_cv = H5.curves(ROOT); _cvc = _cv['code']
+CV_INLINE = (f"const CV_DATA = {_js({'upgrade': _cv['upgrade'], 'resources': _cv['resources'], 'rarityLabel': H5.RARITY_LABEL})};\n"
+             f"const CV_GAME = (function(){{\n{_cvc['xpToNext']}\nconst ENERGY_MAX_BASE = {_cvc['energyBase']};\nconst ENERGY_REGEN_MS = {_cvc['regenMs']};\n{_cvc['staminaPlaces']}\n{_cvc['mapEnergyBase']}\n{_cvc['levelGate']}\n"
+             "return {xpToNext, STAMINA_PLACES, staminaOrder: ['nest', 'forge', 'tavern'], energyBase: ENERGY_MAX_BASE, regenMs: ENERGY_REGEN_MS, mapEnergyBase, levelGateMap};\n})();\n" + _hubdir('curves_tab.js'))
+CV_CSS = _hubdir('curves_tab.css')
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -657,7 +677,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{PP_CSS}</style><style>{LIB_CSS}</style></head><body>
+</style><style>{HUB_CSS}</style><style>{UT_CSS}</style><style>{HB_CSS}</style><style>{CH_CSS}</style><style>{CT_CSS}</style><style>{CV_CSS}</style><style>{PP_CSS}</style><style>{LIB_CSS}</style></head><body>
 <header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
 <div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
 <button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
@@ -675,6 +695,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-deckopt" aria-controls="p-deckopt" data-tab="deckopt">🧬 Deck optimizer</button>
 <button role="tab" id="t-resources" aria-controls="p-resources" data-tab="resources">🪙 Resources</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
+<button role="tab" id="t-ctable" aria-controls="p-ctable" data-tab="ctable">🗃️ Card table</button>
+<button role="tab" id="t-curves" aria-controls="p-curves" data-tab="curves">📊 Curves</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
@@ -716,6 +738,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-deckopt" role="tabpanel" aria-labelledby="t-deckopt" hidden>{lazy(deckopt_html)}</section>
 <section class="panel" id="p-resources" role="tabpanel" aria-labelledby="t-resources" hidden><div class="bal rs" id="rsHost"><p class="dec-empty">{'Loading the resources…' if _rs else 'Run node tools/resources_week_2026_10_23.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
+<section class="panel" id="p-ctable" role="tabpanel" aria-labelledby="t-ctable" hidden><div class="bal ct" id="ctHost"><p class="dec-empty">Loading the card table…</p></div></section>
+<section class="panel" id="p-curves" role="tabpanel" aria-labelledby="t-curves" hidden><div class="bal cv" id="cvHost"><p class="dec-empty">Loading the curves…</p></div></section>
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
@@ -811,6 +835,8 @@ const SEARCH = {SEARCH_JSON};
 {UC_INLINE}
 {HB_INLINE}
 {CH_INLINE}
+{CT_INLINE}
+{CV_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)

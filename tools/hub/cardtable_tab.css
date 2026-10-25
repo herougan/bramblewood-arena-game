@@ -1,0 +1,61 @@
+/* cardtable_tab.css — the 🗃️ Card table tab (tools/hub/cardtable_tab.js), inlined by tools/hub/build_hub.py after chips_tab.css.
+   2026-10-25 (package HUB5, H2 / G11). Colours come from the theme tokens on :root, so light and dark both work; the rarity hues have a light and a dark set. */
+:root{--rc-none:#8a8170; --rc-starter:#8a8170; --rc-common:#7a7568; --rc-uncommon:#3f8a4a; --rc-rare:#2f6fb8; --rc-veryrare:#5b4fc4; --rc-superrare:#9a45b8; --rc-epic:#c23a74; --rc-heroic:#c76a1f; --rc-unique:#a37a00; --rc-legendary:#b8860b; --rc-mythic:#b3261e; --rc-ancient:#7a4a2a; --rc-divine:#3a8a8a; --rc-void:#444; --rc-daemonic:#6a1a1a;}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--rc-none:#a89f8a; --rc-starter:#a89f8a; --rc-common:#aaa28f; --rc-uncommon:#7fd38f; --rc-rare:#7fb6ff; --rc-veryrare:#a99bff; --rc-superrare:#d79bef; --rc-epic:#ff7aa8; --rc-heroic:#ffa65c; --rc-unique:#e8bf5c; --rc-legendary:#ffd15c; --rc-mythic:#ff7a70; --rc-ancient:#d9a27a; --rc-divine:#7fe0e0; --rc-void:#b5b5b5; --rc-daemonic:#ff9a9a;} }
+:root[data-theme="dark"]{--rc-none:#a89f8a; --rc-starter:#a89f8a; --rc-common:#aaa28f; --rc-uncommon:#7fd38f; --rc-rare:#7fb6ff; --rc-veryrare:#a99bff; --rc-superrare:#d79bef; --rc-epic:#ff7aa8; --rc-heroic:#ffa65c; --rc-unique:#e8bf5c; --rc-legendary:#ffd15c; --rc-mythic:#ff7a70; --rc-ancient:#d9a27a; --rc-divine:#7fe0e0; --rc-void:#b5b5b5; --rc-daemonic:#ff9a9a;}
+.ct{max-width:1320px;}
+.ct .dec-head p{max-width:110ch;}
+.ct-viewbar{margin:0 0 8px;}
+.ct-filters{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 6px;}
+.ct-filters[hidden]{display:none;}
+.ct-filters input[type=search]{flex:1 1 240px; min-width:0; font:15px Nunito,system-ui,sans-serif; padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink);}
+.ct-filters select{font:600 14px Nunito,system-ui,sans-serif; padding:7px 8px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); max-width:100%; min-width:0;}
+.ct-chk{display:flex; align-items:center; gap:6px; font:700 13.5px Nunito,system-ui,sans-serif; color:var(--ink-muted); cursor:pointer;}
+.ct-chk input{width:17px; height:17px; accent-color:var(--accent);}
+.ct-clear{font:700 13px Nunito,system-ui,sans-serif; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface-2); color:var(--ink); cursor:pointer;}
+.ct-filters :focus-visible, .ct-pager button:focus-visible, .ct-t th:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.ct-count{margin:8px 2px 6px; font-size:13.5px; color:var(--ink-muted);}
+.ct-pager{display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:6px 0; font-size:14px; color:var(--ink-muted);}
+.ct-pager button{font:700 13px Nunito,system-ui,sans-serif; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer;}
+.ct-pager button:disabled{opacity:.4; cursor:default;}
+.ct-wrap{max-height:none;}
+.ct-t th{position:sticky; top:0; z-index:2;}
+.ct-t td{white-space:normal; vertical-align:top;}
+.ct-t td.ct-nm{white-space:nowrap; display:flex; gap:8px; align-items:center; min-width:210px; background:var(--surface);}
+.ct-t th:first-child, .ct-t td.ct-nm{position:sticky; left:0; z-index:1;}
+.ct-t th:first-child{z-index:3;}
+.ct-nm span{display:flex; flex-direction:column; gap:1px; min-width:0;}
+.ct-nm small{color:var(--ink-muted); font-size:11.5px; font-weight:600;}
+.ct-tag{display:inline-block; align-self:flex-start; padding:0 6px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); margin-top:1px;}
+.ct-th{display:inline-block; flex:0 0 auto; border-radius:6px; background-color:var(--surface-2); background-repeat:no-repeat;}
+.ct-noart{border:1px dashed var(--line); background-image:none !important;}
+.ct-big{border-radius:10px; border:1px solid var(--line);}
+.ct-r{display:inline-block; padding:1px 8px; border-radius:999px; border:1px solid var(--line); border-left:5px solid var(--rc-none); font:700 12.5px Nunito,system-ui,sans-serif; white-space:nowrap;}
+.ct-r.r-starter{border-left-color:var(--rc-starter);} .ct-r.r-common{border-left-color:var(--rc-common);} .ct-r.r-uncommon{border-left-color:var(--rc-uncommon);} .ct-r.r-rare{border-left-color:var(--rc-rare);}
+.ct-r.r-veryrare{border-left-color:var(--rc-veryrare);} .ct-r.r-superrare{border-left-color:var(--rc-superrare);} .ct-r.r-epic{border-left-color:var(--rc-epic);} .ct-r.r-heroic{border-left-color:var(--rc-heroic);}
+.ct-r.r-unique{border-left-color:var(--rc-unique);} .ct-r.r-legendary{border-left-color:var(--rc-legendary);} .ct-r.r-mythic{border-left-color:var(--rc-mythic);} .ct-r.r-ancient{border-left-color:var(--rc-ancient);}
+.ct-r.r-divine{border-left-color:var(--rc-divine);} .ct-r.r-void{border-left-color:var(--rc-void);} .ct-r.r-daemonic{border-left-color:var(--rc-daemonic);}
+.ct-n{text-align:right; font-variant-numeric:tabular-nums;}
+.ct-cs{white-space:nowrap;}
+.ct-skc{min-width:200px; max-width:340px;}
+.ct-sk{display:flex; flex-wrap:wrap; gap:3px;}
+.ct-sk i{font-style:normal; font-size:12px; padding:0 6px; border-radius:6px; background:var(--surface-2); border:1px solid var(--line);}
+.ct-src{min-width:150px;}
+.ct-dim{color:var(--ink-muted);}
+.ct-badge{display:inline-block; font:800 10.5px Nunito,system-ui,sans-serif; text-transform:uppercase; letter-spacing:.04em; padding:0 6px; border-radius:999px; background:var(--accent); color:var(--accent-ink);}
+.ct-packs-note p{max-width:110ch; margin:4px 0 10px; color:var(--ink-muted);}
+.ct-pack{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:12px 14px; margin:0 0 12px;}
+.ct-pack header{display:flex; gap:12px; align-items:center; margin:0 0 10px;}
+.ct-pack h3{margin:0; font:800 18px 'Baloo 2',system-ui,sans-serif;}
+.ct-pack header p{margin:2px 0 0; font-size:13.5px; color:var(--ink-muted);}
+.ct-pic{font-size:34px; line-height:1;}
+.ct-cands{display:flex; flex-wrap:wrap; gap:10px;}
+.ct-cand{margin:0; width:104px; display:flex; flex-direction:column; gap:4px;}
+.ct-cand.used .ct-th{outline:2px solid var(--accent); outline-offset:1px;}
+.ct-cand figcaption{display:flex; flex-direction:column; gap:1px; font-size:12.5px; line-height:1.2;}
+.ct-cand figcaption small{color:var(--ink-muted); font-size:11.5px;}
+@media (max-width:600px){
+  .ct-filters select{flex:1 1 44%;}
+  .ct-t td.ct-nm{min-width:170px;}
+  .ct-cand{width:calc(33.3% - 7px);} .ct-cand .ct-big{width:100% !important; height:auto !important; aspect-ratio:1;}
+}
