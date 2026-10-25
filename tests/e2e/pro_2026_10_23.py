@@ -45,7 +45,9 @@ async def run(b, url, w):
     print(f'-- width {w}')
     pg = await fresh(b, url, w)
     # Admin's list
-    r = await pg.evaluate("""(async()=>{ switchTab('admin'); renderAdmin(); await new Promise(r=> setTimeout(r, 500)); const p = document.getElementById('adminProFights');
+    # 2026-10-25 (package FIX3): the list is Admin's, so the test runs as an admin. Without it, a click on a fight whose map a player hasn't opened starts it
+    # at once (PL2's fallback for a player's #pro= link), which is what failed "the PRO click opens its fight panel" here.
+    r = await pg.evaluate("""(async()=>{ adminModeEnabled = true; switchTab('admin'); renderAdmin(); await new Promise(r=> setTimeout(r, 500)); const p = document.getElementById('adminProFights');
       if(p) p.scrollIntoView({block:'start'}); window.scrollBy(0, -8); await new Promise(r=> setTimeout(r, 300));
       const over = [...(p ? p.querySelectorAll('*') : [])].filter(e=> e.getBoundingClientRect().right > window.innerWidth + 1).length;
       return {shown: !!p, rows: p ? [...p.querySelectorAll('.pro-row')].map(x=> x.dataset.proKey) : [], over, docW: document.documentElement.scrollWidth, vw: window.innerWidth}; })()""")

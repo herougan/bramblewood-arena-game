@@ -20031,7 +20031,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Deck reveal<select id="seReveal">${opt('', draft.revealDeck, 'After a Rank B clear (default)')}${['A','S'].map(r=> opt(r, draft.revealDeck, `After a Rank ${r} clear`)).join('')}</select></label>
         <label>Pre-fight dialogue<select id="seDialogue">${opt('', draft.dialogue, 'None')}${Object.keys(DIALOGUES).map(k=> opt(k, draft.dialogue, k)).join('')}</select></label>
         <label class="se-wide">Flavour<input id="seFlavor" value="${escapeAttr(draft.flavor||'')}"></label>
-        <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', draft.requiresAny ? '1' : '', 'all of these are cleared')}${opt('1', draft.requiresAny ? '1' : '', 'any one of these is cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
+        <div class="se-wide se-req"><div class="se-req-head"><b>🔗 Unlocked after</b><select id="seReqMode" aria-label="How many of these must be cleared">${opt('', nodeNeedsAllLinks(draft) ? 'all' : '', 'any one of these is cleared')}${opt('all', nodeNeedsAllLinks(draft) ? 'all' : '', 'all of these are cleared')}</select><small>Nothing ticked = open as soon as the map opens. You can also link skirmishes on the map: 🔗 Edit links.</small></div>
           <div class="se-req-list">${others.map(n=> `<label class="se-chk"><input type="checkbox" data-req="${escapeAttr(n.key)}" ${(draft.requires||[]).includes(n.key)?'checked':''}> ${escapeHtml(n.icon||'')} ${escapeHtml(n.name||n.key)} <small>${escapeHtml(n.key)}</small></label>`).join('')}</div></div>
       </div>
       ${draft.kind === 'tutorial' ? tutorialNodeDecksHTML(draft) : ''}
@@ -20096,7 +20096,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       { const lv = {}; overlay.querySelectorAll('[data-cardlv]').forEach(inp=>{ const x = inp.value; if(x !== '' && isFinite(Number(x)) && draft.deck && draft.deck[inp.dataset.cardlv]) lv[inp.dataset.cardlv] = Math.max(0, Math.min(11, Math.round(Number(x)))); });
         if(overlay.querySelector('[data-cardlv]')){ if(Object.keys(lv).length) draft.cardLevels = lv; else delete draft.cardLevels; } }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
-      if(v('seReqMode') === '1' && draft.requires.length > 1) draft.requiresAny = true; else delete draft.requiresAny;
+      delete draft.requiresAny; if(v('seReqMode') === 'all' && draft.requires.length > 1) draft.requiresAll = true; else delete draft.requiresAll; // 2026-10-25 (package FIX3, F1): "any" is the default now
       if(document.getElementById('seRw_first_gold')){
         const r = {}; ['first','repeat'].forEach(k=> ['gold','dust'].forEach(c=>{ const v = document.getElementById(`seRw_${k}_${c}`).value; if(v !== '' && Number(v) >= 0){ r[k] = r[k] || {}; r[k][c] = Math.round(Number(v)); } }));
         if(Object.keys(r).length) draft.rewards = r; else delete draft.rewards;
@@ -20192,7 +20192,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel','tutHp'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED) // + tutHp (2026-10-23, TU2: a blank Bramble Health used to snap back to the map's 9 / 11)
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','requiresAll','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai','enemyLevel','tutHp'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; }); // + enemyLevel (2026-10-21, package ED) // + tutHp (2026-10-23, TU2: a blank Bramble Health used to snap back to the map's 9 / 11)
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -23411,7 +23411,7 @@ function completeConquestNode(node, rank){
   // hidden until, after a win anywhere on its map with its own `requires` met, a roll finds it. Found ones stay found.
   try{ const map = CONQUEST_MAPS.find(m=> m.id===node.mapId); if(map){ progress.found = progress.found || [];
     map.nodes.filter(n=> n.chance > 0 && !progress.found.includes(conquestNodeId(map.id, n.key))).forEach(n=>{
-      const ok = (n.requires||[]).every(k=> progress.completed.includes(conquestNodeId(map.id, k)));
+      const rq = n.requires||[], ok = !rq.length || rq[nodeNeedsAllLinks(n) ? 'every' : 'some'](k=> progress.completed.includes(conquestNodeId(map.id, k))); // 2026-10-25 (package FIX3, F1): any won link, as isNodeVisible
       if(ok && Math.random() < n.chance) progress.found.push(conquestNodeId(map.id, n.key)); }); } }catch(e){}
   saveConquestProgress(progress);
   steamCheckProgress(); // 2026-10-18 (package C): Steam achievements for map clears and Babel Spire floors
@@ -23611,6 +23611,7 @@ function worldRevealed(){
     const key = mapRewardNodeKey(mf); if(key && p.completed.includes(conquestNodeId('mf', key))) return true;
     return p.completed.some(id=> !['m1','mq','mf','mtut'].includes(String(id).split(':')[0])); }catch(e){ return true; } // a save already past Map 2 sees it (2026-10-22, TU: the Tutorial's own fights don't count; T-0 alone used to open the world)
 }
+function nodeNeedsAllLinks(node){ return !!(node && node.requiresAll && !node.requiresAny); } // 2026-10-25 (package FIX3, F1): links open on any one won fight unless the fight asks for all
 function isNodeVisible(map, node, index, progress){
   if(ambushLocksNode(map, node)) return false; // 2026-10-24 (package MAP, owner 17:01 #3): the path the Ambush stopped stays locked until it is won
   if(node.chance > 0 && !adminModeEnabled){ const nid = conquestNodeId(map.id, node.key); if(!progress.completed.includes(nid) && !(progress.found||[]).includes(nid)) return false; }
@@ -23624,7 +23625,10 @@ function isNodeVisible(map, node, index, progress){
   // else gated on the immediately-preceding array entry.
   if(Array.isArray(node.requires)){
     if(node.requires.length===0) return true;
-    return node.requires[node.requiresAny ? 'some' : 'every'](reqKey => { // requiresAny (2026-10-08): any one of them is enough
+    // 2026-10-25 (package FIX3, F1, owner #9: "If two skirmishes are linked from one skirmish, winning that skirmish should unlock 2, not 1"):
+    // a link is an unlock. A fight opens once ANY fight linked to it is won; `requiresAll` (the skirmish editor's "all of these") is the
+    // opt-in for a fight that waits on every link. Was 'every' by default, so 6-6 (linked from 6-3 and 6-5 on the live edits) stayed shut.
+    return node.requires[nodeNeedsAllLinks(node) ? 'every' : 'some'](reqKey => {
       // A `requires` entry pointing at a virtual tutorial marker node (0-1/0-2 on Map 1) is
       // treated as always-satisfied rather than read off progress.completed — those nodes are
       // never actually fought/completed through normal play (they just visually represent the
@@ -25119,11 +25123,19 @@ function renderConquestWorld(mainEl, body, progress){
   if(here) requestAnimationFrame(()=>{ const sc = mainEl.scrollHeight > mainEl.clientHeight ? mainEl : null; const top = here.offsetTop - 160; if(sc) sc.scrollTop = Math.max(0, top); else here.scrollIntoView({block:'center'}); });
   fxHook('mapWorldShown', mainEl); // fog peels off a newly reachable map (FX.E, 2026-10-15)
 }
+// 2026-10-25 (package FIX3, F2, owner #36: "If you rapidly go between maps while its still loading ... the skirmishes and controls do load,
+// but then cancel out"): a load token. Each pan takes a new token; only the newest pan's swap runs, a pan back to the map still on screen
+// cancels the one in flight (it used to be ignored, so the earlier map was drawn), and the fade-out never stacks on a fresh map. The map's
+// own timers (the first-visit zoom and drop, the Spire scroll, the art zoom) check conquestMapLoadToken, so a map you already left can't
+// touch the one you are on.
+let conquestPanToken = 0, conquestPanTarget = null, conquestMapLoadToken = 0;
 function conquestPanTo(mapId, body, progress){
   const target = CONQUEST_MAPS.find(m=> m.id===mapId);
   if(!target || !isMapUnlocked(target, progress || loadConquestProgress())) return;
-  if(mapId===conquestSelectedMap){ const c = document.getElementById('conquestMain'); if(c) c.scrollTo({top:0, behavior:'smooth'}); return; }
+  if(mapId===conquestSelectedMap && !conquestPanTarget){ const c = document.getElementById('conquestMain'); if(c) c.scrollTo({top:0, behavior:'smooth'}); return; }
+  if(mapId===conquestPanTarget) return; // already on its way
   abandonMapLayoutEdit();
+  const tok = ++conquestPanToken; conquestPanTarget = mapId;
   const from = CONQUEST_MAPS.findIndex(m=> m.id===conquestSelectedMap), to = CONQUEST_MAPS.indexOf(target);
   const dir = to > from ? 'right' : 'left';
   const mainEl = document.getElementById('conquestMain');
@@ -25135,9 +25147,11 @@ function conquestPanTo(mapId, body, progress){
   // the old 16% slide-and-blur (up to 2.6 s) uncovered whatever was behind the map. Now: a quick dip
   // through a dark veil (110 ms out, 170 ms in) with a small nudge in the travel direction.
   const outMs = 110;
-  const go = ()=>{ conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:170}; renderConquestSubTab(body); };
+  const go = ()=>{ if(tok !== conquestPanToken) return; conquestPanTarget = null; // FIX3 (F2): a newer pan won
+    conquestSelectedMap = mapId; conquestSelectedNodeKey = null; conquestPanDir = null; conquestPanAnim = reduce ? null : {dir, ms:170}; renderConquestSubTab(body); };
   if(mainEl && !reduce && mainEl.animate){
     const sx = dir==='right' ? -18 : 18;
+    try{ mainEl.getAnimations().forEach(a=> a.cancel()); }catch(e){} // FIX3 (F2): no stacked fades
     mainEl.animate([{transform:'none', opacity:1}, {transform:`translateX(${sx}px)`, opacity:0}], {duration:outMs, easing:'ease-in', fill:'forwards'});
     setTimeout(go, outMs);
   } else go();
@@ -25696,6 +25710,7 @@ function renderConquestSubTab(body){
   const prevMain = body.querySelector('.conquest-main');
   const keepScroll = prevMain ? prevMain.scrollTop : null, keepPage = window.scrollY;
   const sameMapRerender = !!(prevMain && prevMain.dataset.mapId && prevMain.dataset.mapId === conquestSelectedMap); // 2026-10-17: a click on this map, not a new visit
+  const loadTok = ++conquestMapLoadToken, loadAlive = ()=> loadTok === conquestMapLoadToken; // 2026-10-25 (package FIX3, F2): this draw's timers stop once another draw starts
   setTimeout(()=>{ const nm = body.querySelector('.conquest-main'); if(nm && keepScroll != null) nm.scrollTop = keepScroll; if(Math.abs(window.scrollY - keepPage) > 2) window.scrollTo(0, keepPage); }, 0);
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
@@ -25808,7 +25823,7 @@ function renderConquestSubTab(body){
       // like a chain through the skirmish in the middle.
       const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
       const blocked = positions.some((P, k)=>{ if(k===i || k===j) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
-      let cls = n.requiresAny && reqs.length > 1 ? 'is-any' : '';
+      let cls = nodeNeedsAllLinks(n) && reqs.length > 1 ? 'is-all' : ''; // 2026-10-25 (package FIX3, F1): links open on any won fight; the rare "all of these" fight's links are the dotted ones
       // Locked links (2026-10-12, user: "When the 'link' between skirmishes has not been unlocked ... the link should be
       // darkened as well. If 1 node is unlocked but the other isn't, the link fades a bit as it goes towards the locked
       // node"): both ends locked = dark; one end open = a gradient from lit (open end) to dark (locked end).
@@ -25911,7 +25926,7 @@ function renderConquestSubTab(body){
   // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
   if(map.endless && !sameMapRerender){ // start the long climb at your next floor
     // 2026-10-18: a floor picked from the Spire's summit card (already selected) is the one to scroll to, not the top floor
-    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv || !loadAlive()) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
       if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
         if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
@@ -25928,9 +25943,9 @@ function renderConquestSubTab(body){
       nodes.sort((a, b)=> dist(a) - dist(b)).forEach((el, i)=>{ el.style.setProperty('--drop-i', i); el.classList.add('map-drop-wait'); });
       // 2026-10-13 (user: "Add the dropping of skirmishes from the skies ... when we see it for the first time, after the map reveal
       // screen is done"): the zoom-out and the drop wait for the map's name card to lift, then the skirmishes fall from above.
-      const begin = ()=>{ setTimeout(()=>{ cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 250);
+      const begin = ()=>{ if(!loadAlive()) return; setTimeout(()=>{ if(!loadAlive()) return; cv.classList.add('tut-zoom-out'); cv.classList.remove('tut-zoom'); tutBgZoom(1, true); }, reducedMotion() ? 0 : 250);
         setTimeout(()=>{ nodes.forEach(el=>{ el.classList.remove('map-drop-wait'); el.classList.add('map-drop'); }); setTimeout(()=> nodes.forEach(el=> el.classList.remove('map-drop')), reducedMotion() ? 0 : 900 + nodes.length * 90); }, reducedMotion() ? 0 : 1500); };
-      let tries = 0; const waitVeil = ()=>{ const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
+      let tries = 0; const waitVeil = ()=>{ if(!loadAlive()) return; const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
       setTimeout(waitVeil, 150); } }
   if(map.id === 'mtut' && !conquestLayoutEdit) tutMapOpenSlide(map, positions); // 2026-10-18: T-0 / T-1 slide from the middle to their spots, once
   const tooltipEl = document.getElementById('conquestTooltip');
@@ -41020,7 +41035,7 @@ function tutBgZoom(z, animate, clear){
   const lay = document.getElementById('conquestLayout'), cv = document.getElementById('conquestCanvas'); if(!lay || !cv) return;
   if(clear){ lay.style.backgroundSize = ''; lay.style.backgroundPosition = ''; lay.style.transition = ''; return; }
   const m = /url\(["']?([^"')]+)["']?\)/.exec(getComputedStyle(lay).backgroundImage || ''); if(!m) return;
-  const img = new Image(); img.onload = ()=>{
+  const img = new Image(); img.onload = ()=>{ if(!lay.isConnected || !cv.isConnected) return; // 2026-10-25 (package FIX3, F2): the map was left before its art loaded
     const L = lay.getBoundingClientRect(), C = cv.getBoundingClientRect(), W = L.width, H = L.height, sc = Math.max(W / img.naturalWidth, H / img.naturalHeight);
     const iw = img.naturalWidth * sc, ih = img.naturalHeight * sc, ox = (W - iw)/2, oy = (H - ih)/2;
     const tx = parseFloat(cv.style.getPropertyValue('--tut-x')) || 50, ty = parseFloat(cv.style.getPropertyValue('--tut-y')) || 50;
@@ -41028,7 +41043,7 @@ function tutBgZoom(z, animate, clear){
     const nx = px - (px - ox) * z, ny = py - (py - oy) * z;
     lay.style.transition = animate && !reducedMotion() ? 'background-size 1.8s cubic-bezier(.45,0,.2,1), background-position 1.8s cubic-bezier(.45,0,.2,1)' : 'none';
     lay.style.backgroundSize = `auto, auto, ${iw*z}px ${ih*z}px, auto`; lay.style.backgroundPosition = `center, center, ${nx}px ${ny}px, center`;
-    if(animate && z === 1) setTimeout(()=> tutBgZoom(1, false, true), 2000);
+    if(animate && z === 1) setTimeout(()=>{ if(lay.isConnected) tutBgZoom(1, false, true); }, 2000);
   };
   img.src = m[1];
 }

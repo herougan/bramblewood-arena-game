@@ -75,11 +75,13 @@ async def run(b, url, w):
     for mid in DATA['maps']:
         want = [e['id'] for e in DATA['maps'][mid]['pro']]
         await pg.evaluate("(m)=>{ setAdminMode(false); conquestWorldView = false; conquestSelectedMap = m; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); }", mid)
-        await pg.wait_for_selector('#conquestCanvas .map-node', timeout=15000); await pg.wait_for_timeout(500)
-        n0 = await pg.evaluate("document.querySelectorAll('#conquestCanvas .map-pro').length")
-        ok(n0 == 0, f'3. {mid}: map drawn, no PRO nodes for a player ({n0})')
+        # 2026-10-25 (package FIX3): a map the player hasn't opened shows its lock notice, not the map (package PG, 10-23). The list has grown past
+        # Map 0 (PRO3's side maps and the later maps), so this waited forever on the second map. Locked: the notice; open: the map's nodes.
+        await pg.wait_for_selector('#conquestCanvas .map-node, .pg-locked-map', timeout=15000); await pg.wait_for_timeout(500)
+        n0 = await pg.evaluate("document.querySelectorAll('.map-pro').length")
+        ok(n0 == 0, f'3. {mid}: map or its lock notice drawn, no PRO nodes for a player ({n0})')
     mid = 'mc'; want = [e['id'] for e in DATA['maps'][mid]['pro'] + DATA['maps'][mid].get('bpro', [])] + ['3-REF']  # 2026-10-25 (package PREF): + the BPRO nodes (PL2) and the map's X-REF node
-    await pg.evaluate("(m)=>{ localStorage.setItem('bramblewood_admin_mode_v1','1'); window.adminAllowed = ()=> true; setAdminMode(true); conquestWorldView = false; conquestSelectedMap = m; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); }", mid)
+    await pg.evaluate("(m)=>{ localStorage.setItem('bramblewood_admin_mode_v1','1'); window.adminAllowed = ()=> true; setAdminMode(true); conquestWorldView = false; conquestSelectedMap = m; conquestSelectedNodeKey = '3-PRO-1'; playSubTab = 'conquest'; switchTab('play'); }", mid)  # 2026-10-25 (package FIX3): an admin sees a locked map with one of its PRO fights picked (PL2)
     await pg.wait_for_selector('#conquestCanvas .map-node', timeout=15000); await pg.wait_for_timeout(800)
     r = await pg.evaluate("""(()=>{ const cv = document.getElementById('conquestCanvas'); const ns = cv ? [...cv.querySelectorAll('.map-pro')] : [];
       const cr = cv ? cv.getBoundingClientRect() : null;
@@ -92,18 +94,21 @@ async def run(b, url, w):
     await pg.wait_for_timeout(7000)
     await pg.evaluate("(()=>{ const n = document.querySelector('#conquestCanvas .map-pro'); if(n) n.scrollIntoView({block:'center', inline:'center'}); })()")
     await shot(pg, 'map-admin', w)
-    await pg.evaluate("setAdminMode(false)"); await pg.wait_for_selector('#conquestCanvas .map-node', timeout=15000); await pg.wait_for_timeout(900)
-    n0 = await pg.evaluate("document.querySelectorAll('#conquestCanvas .map-pro').length")
+    await pg.evaluate("setAdminMode(false)"); await pg.wait_for_selector('#conquestCanvas .map-node, .pg-locked-map', timeout=15000); await pg.wait_for_timeout(900)  # 2026-10-25 (package FIX3): Map 3 is locked for this player
+    n0 = await pg.evaluate("document.querySelectorAll('.map-pro').length")
     ok(n0 == 0, f'3. admin off again: the nodes are gone ({n0})')
     await shot(pg, 'map-player', w)
     # a tap starts the fight
-    await pg.evaluate("(m)=>{ window.adminAllowed = ()=> true; setAdminMode(true); conquestSelectedMap = m; switchTab('play'); }", mid)
+    await pg.evaluate("(m)=>{ window.adminAllowed = ()=> true; setAdminMode(true); conquestSelectedMap = m; conquestSelectedNodeKey = '3-PRO-1'; switchTab('play'); }", mid)
     await pg.wait_for_selector('#conquestCanvas .map-pro', timeout=15000); await pg.wait_for_timeout(800)
     await pg.evaluate("(()=>{ const n = document.querySelector('#conquestCanvas .map-pro'); n.scrollIntoView({block:'center', inline:'center'}); })()")
-    await pg.click('#conquestCanvas .map-pro')
+    await pg.evaluate("document.querySelector('#conquestCanvas .map-pro').click()")  # 2026-10-25 (package FIX3): a script click; the open panel's scrim covers the node
+    await pg.wait_for_timeout(900)
+    # 2026-10-25 (package FIX3): since PL2 (10-25) the tap opens the fight's panel; its Fight button starts it
+    await pg.click('#cnpFightBtn')
     await pg.wait_for_timeout(1500)
     r = await pg.evaluate("({pro: matchState && matchState.proFight, admin: !!(matchState && matchState.adminTest)})")
-    ok(r['pro'] == want[0] and r['admin'], f"3. a tap on the node starts {want[0]} {r}")
+    ok(r['pro'] == want[0] and r['admin'], f"3. a tap on the node, then Fight, starts {want[0]} {r}")
     ok(not pg._errs, f'no page errors {pg._errs[:3]}')
     await pg.close()
 
