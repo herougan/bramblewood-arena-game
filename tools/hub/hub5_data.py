@@ -49,12 +49,12 @@ def _labels(root):
 
 
 def shop_packs(root):
-    """The basic packs, read out of SHOP_PACKS_DEFAULT in arena_app.js."""
+    """The basic packs, read out of SHOP_PACKS_DEFAULT in arena_app.js. 2026-10-26: RES3 added collectorCost before cards."""
     src = _read(root, 'arena_app.js')
     a = src.index('const SHOP_PACKS_DEFAULT = [')
     block = src[a:src.index('\n];', a)]
     out = []
-    for m in re.finditer(r"\{id:'(\w+)',(?: packNo:(\d+),)? name:'([^']+)', icon:'([^']+)', cost:\{gold:(\d+), gems:(\d+)\}, cards:(\d+)[^\n]*?pool:(\d+)", block):
+    for m in re.finditer(r"\{id:'(\w+)',(?: packNo:(\d+),)? name:'([^']+)', icon:'([^']+)', cost:\{gold:(\d+), gems:(\d+)\},(?: collectorCost:\{[^}]*\},)? cards:(\d+)[^\n]*?pool:(\d+)", block):
         out.append({'id': m.group(1), 'packNo': int(m.group(2)) if m.group(2) else None, 'name': m.group(3), 'icon': m.group(4),
                     'gold': int(m.group(5)), 'gems': int(m.group(6)), 'cards': int(m.group(7)), 'pool': int(m.group(8))})
     if len(out) < 4:

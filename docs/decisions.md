@@ -4,6 +4,97 @@ _Generated from `decisions.json` (2026-10-26). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**ENG9-1. Revive N (the graveyard action): which cards get it?** · Decide · Cards · asked 2026-10-26
+- E1 (your #20): the old self-Revive is Undead now (it comes back once, as a token: its next death leaves no card behind), on the five cards that had it: Sea Turtle Elder, Cinder Skeleton, Ember Revenant, Grass Snake, Slow-worm (Undead 4.3, was 4.5; Grass Snake 2/9 -> 2/10). Revive N is the action: On Play, N random creature cards from your graveyard come back beside it as real cards (6.3 a card; the trigger editor has a Revive action at 6 a card). No real card carries Revive yet (only the test card).
+  - Leave it on no card for now
+  - Give it to a graveyard theme card (name it)
+  - A Map 20+ Undead card with Revive 1
+- **Default:** Leave it on no card for now
+
+**ENG9-2. The name of "On Ready: gain N Lumber": Stockpile?** · Decide · Rules · asked 2026-10-26
+- E13 (EN6-6): "Forager" is too close to Foraging (the Berry gatherer that heals an ally), so the keyword is built as Stockpile N (On Ready, once: +N Lumber; 0.9 a point, the trigger's own price, so the Beaver Lumberjack stays 4/4 with Stockpile 1).
+  - Stockpile (as built)
+  - Forager anyway
+  - Another name (say it)
+- **Default:** Stockpile (as built)
+
+**ENG9-3. The physical "bolts" renamed: Ember / Acid / Venom / Frost / Spark Spit?** · Decide · Rules · asked 2026-10-26
+- E3 (EN8-2): every "bolt" is magic, and the elements count as physical, so the five elemental spits that were called Bolts are renamed on the cards and in the Codex: Fire Bolt -> Ember Spit (Firefly Swarm, Habanero Drakon), Acid Bolt -> Acid Spit (Archerfish), Poison Bolt -> Venom Spit (Spitting Spider), Ice Bolt -> Frost Spit (Ice Petrel), Shock Bolt -> Spark Spit (Electric Catfish). The engine keys stay (fireBolt ...), so saves and decks are untouched. "Fire Spit" was avoided beside Spitfire. No magic bolt exists yet.
+  - Keep these names
+  - Other names (say them)
+- **Default:** Keep these names
+
+**ENG9-4. Charge: once a fight, or recharging?** · Decide · Rules · asked 2026-10-26
+- G24 ("Charge is similar" to the one-shot On Ready skills): built as a one-shot: the clock starts when the unit is Ready, counts down each upkeep, and at 0 the effect goes off once and Charge leaves the card (was: the clock started again). Priced 1.2 (was 3). Electric Ray 4/9 -> 4/10; the Galactic Condor (Epic, not a band card) keeps its stats. If you meant only the timing (and the clock keeps cycling), say so and it goes back to 3.
+  - Once (as built)
+  - Recharging, as before
+- **Default:** Once (as built)
+
+**ENG9-5. Fungi: a kingdom beside Flora, and which card is the Phoenix Mushroom?** · Decide · Cards · asked 2026-10-26
+- G9: Fungi is a type of its own, beside Flora (not under it, so a Flora skill or the Old Woods' Flora list doesn't count a mushroom), with 🍄. In the Codex the two non-animal kingdoms are side by side: species Plant -> Flora 🌿, species Fungi -> Fungi 🍄 (Flora was an archetype only, never a phylum). The Fungal Colossus (Flora / Elemental) and the Puffball Bombardier (Flora + Cave / Elemental) are Fungi now. No card is named Phoenix Mushroom; which one did you see?
+  - As built; the Phoenix Mushroom is (name it)
+  - Fungi under Flora instead
+  - Keep the Colossus / Puffball in Flora too
+- **Default:** As built; the Phoenix Mushroom is (name it)
+
+**ENG9-6. Armor and shots: should Armor stop arrows and spits too?** · Decide · Battle rules · asked 2026-10-26
+- E3 built: Armor stops every hit that is not magic (physical and the elements); magic passes it; Magic Armor stops magic only. As before, Armor works on swings (a swing, a prong, a counter); shots and damage skills (Arrow, the Spits, Missile, Fireball ...) have never been reduced by Armor. Magic Armor does reduce magic shots. Armor is priced 1.56 a point (+4% for the elemental swings it now stops), Magic Armor 0.1 (magic is rare).
+  - Swings only (as now)
+  - Armor also stops physical and elemental shots
+- **Default:** Swings only (as now)
+
+**ENG9-7. On Ready for a unit that comes in at Wait 0** · Decide · Battle rules · asked 2026-10-26
+- G23: a unit that is Ready without its Wait running out at an upkeep (it came in at Wait 0, or a skill took its Wait to 0) now gets its On Ready at the next upkeep, once. Before, it never fired: the Leafcutter Gardener, Termite Forager and Talus Pika (Wait 0, On Ready: +1 Lumber) never paid. Their price always counted it. Pearl Bed at Wait 0 still pays as it lands.
+  - Keep (as built)
+  - Wait 0 units fire On Ready as they land instead
+- **Default:** Keep (as built)
+
+**ENG9-8. Chained as a budget multiplier: 1 + 0.25 a held round** · Decide · Balance · asked 2026-10-26
+- G19: "Being chained should grant a larger budget - multiplicatively". Chained 'damage N' holds a unit about N/3 rounds (it takes about 3 a round in the line), each held round x0.25: Chained 1 x1.08, 4 x1.33, 9 x1.75, 12+ x2; 'opponent plays a card' x1.1. Its skill price is 0 (was -3). The chain breaks once the damage it has taken adds up to N (one hit of exactly N is enough; was more than N in one hit). Chained Binturong 4/9 -> 4/10.
+  - As built
+  - Larger (say the factor)
+  - Smaller
+- **Default:** As built
+
+**ENG9-9. Two cards the re-fit would lower: hold or cut?** · Decide · Balance · asked 2026-10-26
+- Armor's new price (1.56, was 1.5) moves cards on the old formula line. Held at their stats (as BF11-1 / EN3-6): Tide Pool Crab 1/4 (formula 1/3), Hawthorn Shieldbug 2/13 (2/12). Raised: Electric Ray 4/9 -> 4/10, Weaver Bird 4/6 -> 4/7, Chained Binturong 4/9 -> 4/10, Grass Snake 2/9 -> 2/10. Data: docs/balance/eng9-refit-2026-10-26.json.
+  - Hold (as built)
+  - Cut them to the formula
+- **Default:** Hold (as built)
+
+**ENG9-10. Tangleweed lays Tangled, Strangle lays Bound** · Confirm · Battle rules · asked 2026-10-26
+- G25 and OWN-Q1 together: Tangleweed N now lays Tangled for N rounds (each swing, shot, action and trigger fails 1 in 2: the same coin as Confused), priced 1.4 (was 2): Weaver Bird 4/6 -> 4/7, Quicksand Queen kept. Bound now comes only from Strangle: the unit still swings and shoots at half damage, can't move (no Guardian, Rampart, Dive or Charge) and loses Flying's dodge; Strangle 0.8 (was 1). Pounce happens as a unit lands, so a Bound unit never has one to lose.
+  - As built
+  - Tangleweed lays Bound too (both)
+- **Default:** As built
+
+**RES3-1. The level reward track as built (B1): who gets what at which level** · Confirm · Economy · asked 2026-10-26
+- Your #3: "level 5 onwards reward packs, like faction, then pack 1, faction then pack 1, eventually pack 2 ... (singles for lvl 1-5)". Built as one table (RES3_LEVEL_TRACK in arena_app.js): Levels 1-5 one card each (Pack 1's pool, a card you don't have first); Level 5 also the first faction pack; then Pack 1 (a 3-card Hedgerow Pouch) and a faction pack alternate (6 Pack 1, 7 faction, 8 Pack 1 ...); from Level 15 Pack 2 (a Tidemire Chest) takes Pack 1's place. Rewards earned before the Armoury opens wait with the held packs. A save from before this starts the track at its current level (no back pay). Open: PROP1-2 (the Moon Trail) proposes a level pack only every 5th level; the rows change in one place. Also to settle: Pack 2 from Level 15, and no back pay.
+  - As built
+  - Pack 2 from another level (say it)
+  - Back-pay levels already reached
+  - Wait for PROP1-2 and thin the packs then
+- **Default:** As built
+
+**RES3-2. Packs re-costed for 3 cards (Collector 5), same price per card (G15)** · Confirm · Economy · asked 2026-10-26
+- Your 22:36 G15: "all packs should only give 3 cards, (collectors giving 5). Recost them". Same value per card as before, rounded. Hedgerow Pouch 3 cards 50 Maple Leaves -> unchanged. Tidemire Chest 5 cards 120 + 10 Gold Leaves -> 3 cards 72 + 6. Highcrest Case 8 cards 250 + 30 -> 3 cards 94 + 11. Mystery Booster 3 cards 80 -> unchanged. Collector packs (were 10 cards: 5 at 10x foil + 5 bonus, at 12x the pack's price): now 5 cards, all at 10x foil, at the old price per card: Hedgerow 600 -> 300; Tidemire 1440 + 120 -> 720 + 60; Highcrest 3000 + 360 -> 1500 + 180. No live pack table (__cfg:shop-packs) overrides these (checked read-only 2026-10-26). BAL4 may re-tune.
+  - As built
+  - Round to friendlier numbers (say them)
+  - Keep Collector packs at 10 cards
+- **Default:** As built
+
+**RES3-3. Which map earns each Forge tab (G18)** · Confirm · UI · asked 2026-10-26
+- Your 22:36 G18: "Forge tabs should all be invisible until that feature is earned at some map (your choice). Reinforce is visible but locked with '?'". Chosen (RES3_FORGE_TAB_MAP): Upgrade and Fuse with the Forge (Map 11), Upgrades Map 12, Blacksmith and Raid Map 13 (the Raid Banner's map), Finish (Refine) Map 15, Reinforce Map 17 (shown from Map 11 as a locked "?"), Socket Map 20 (Unique cards and up). Earned = that map reached. Admin and Dev Mode see all.
+  - As built
+  - Other maps (say them)
+- **Default:** As built
+
+**RES3-4. The Group Dungeon's themed name, and the emblem's landing** · Confirm · UI · asked 2026-10-26
+- B3: the Hollow Warren's Group Dungeon is now "The Warren Heist" on its Map 16 spot and its cards (each group dungeon gets its own line in GD_THEMED_NAME). R6: the rank emblem now lands in the page's bottom-right corner, as you asked; it no longer lands on the open fight panel's corner emblem (PL1's version).
+  - As built
+  - Another name (say it)
+- **Default:** As built
+
 **PROP1-1. Equipment hardiness: Lives on top of durability (Hardy N), and the anti-equipment skills Sunder and Dismantle** · Decide · Engine · asked 2026-10-26
 - Your 23:58 on OWN-Q2: "Equipment can be destroyed through specific anti-equipment skill. But only at 50% chance ... maybe with armor 'lives' default 1, some have 2-3." Proposal (docs/proposals-2026-10-26.md section 1): durability stays as the wear counter (hit 1, acid 2, Corrode 2; EQ2). New: Lives N (keyword Hardy N, default 1 = today's rule). A break takes one life: durability reaching 0 (then it refills) or a break skill succeeding; at 0 lives the piece is destroyed. Dragonscale Mail Hardy 2; Hardy 3 for a few named Legendary+ metal pieces. Sunder (On Hit: 50% to break the target's piece, 1.0), Dismantle (On Play: 50% to break the facing enemy's piece or a loose one, 0.5), Pulverise breaks a life for sure (+0.5 in its price). Tamper-proof blocks stealing only. A dropped piece keeps lives and wear; the next unit picks it up after Equip Time. Price: equipLifeMult = min(D x L, 4) / 4 + 0.35 for a 2nd life + 0.2 for a 3rd. Shown as gold rings above the durability pips and a gem badge on the card. Also to settle: does Pulverise break for sure or roll 50%?
   - A. Lives on top of durability (recommended)
