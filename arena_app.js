@@ -12004,8 +12004,12 @@ async function applySessionIdentity(user){
     // "your local progress gets replaced" behavior — see cloudSignIn's call sites in the UI.
     myRating = Number(existingProfile.rating) || myRating;
     saveRatingLocal();
-    if(isSignedIn()) await cloudPullState();
+    // 2026-10-25 (package FIX3, G7): the first sign-in of an account created on this device (its sign-up waited for the email) sends this
+    // device's progress up instead of loading the account's empty rows over it
+    if(isSignedIn() && fix3SignupPending(user.id)){ try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){} }
+    else if(isSignedIn()) await cloudPullState();
   }
+  if(isSignedIn() && fix3SignupPending(user.id)){ fix3SetSignupPending(null); try{ livePushProgress(true); }catch(e){} }
   livePullProgress();
   liveRefreshGhosts('pvp'); liveRefreshGhosts('autobattle');
   // First sign-in (2026-10-13, user: "When signing in for the first time, put the 'enter name' thing front and centre"): a real
@@ -12072,7 +12076,7 @@ async function initCloudSync(){
     sbClient.auth.onAuthStateChange((event, session)=>{
       if(!initSettled) return;
       if(event==='SIGNED_IN' && session && session.user && !session.user.is_anonymous && session.user.id!==cloudUserId){
-        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); });
+        applySessionIdentity(session.user).then(()=>{ cloudReady = true; setCloudPill(true, 'Cloud sync active'); refreshAuthGateUI(); refreshCloudCardAdmin(); socialInit(); fix3AfterSignIn(); });
       } else if(event==='SIGNED_OUT'){
         resetCloudIdentity(); refreshAuthGateUI();
       }
@@ -12107,7 +12111,7 @@ async function initCloudSync(){
   } finally {
     if(oauthReturning || oauthError){
       try{ history.replaceState(null, '', location.pathname); }catch(e){}
-      if(isSignedIn()) showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok');
+      if(isSignedIn()){ showToast(TX('toast.signed-in-as-your-progress-now', {v1: cloudUserLabel || cloudUserEmail || 'your Google account'}), 'ok'); fix3AfterSignIn(); }
       else showToast(TX('toast.google-sign-in-didn-t-complete', {v1: oauthError ? ': '+oauthError : ''}), 'error');
     }
   }
@@ -12502,21 +12506,35 @@ function cloudPushRating(){
 //   - No anonymous session exists (cloudAnonUnavailable — the dashboard toggle is still off):
 //     falls back to a genuinely fresh signUp(), then seeds that brand-new account from local
 //     state exactly the way applySessionIdentity already does for any other brand-new account.
+// 2026-10-25 (package FIX3, G7, owner: "Sign-up worked but the screen didn't return to play"; his second account "signed up but never saved
+// anything to the server"): the live auth table shows that account unconfirmed, never signed in, with no profile row. Email sign-up needs a
+// confirmed email, so signUp() returned the user with NO session; this then took the user as signed in anyway (isSignedIn() true), and every
+// push that followed was refused without a word. Now: no session = nothing applied, the sign-up is remembered on this device
+// (FIX3_SIGNUP_PENDING_KEY), the confirmation link leads back to the game (emailRedirectTo), and the first real sign-in of that account sends
+// this device's progress and decks up instead of loading the empty account over them.
+const FIX3_SIGNUP_PENDING_KEY = 'bramblewood_signup_pending_v1', FIX3_AUTH_RETURN_KEY = 'bramblewood_auth_return_v1';
+// the pending sign-up is the new account's id: only that account, signing in here, gets this device's progress (never another account)
+function fix3SignupPending(uid){ try{ const v = localStorage.getItem(FIX3_SIGNUP_PENDING_KEY); return !!v && !!uid && v === String(uid); }catch(e){ return false; } }
+function fix3SetSignupPending(uid){ try{ if(uid) localStorage.setItem(FIX3_SIGNUP_PENDING_KEY, String(uid)); else localStorage.removeItem(FIX3_SIGNUP_PENDING_KEY); }catch(e){} }
+function fix3AuthRedirectUrl(){ try{ return location.href.split('#')[0].split('?')[0]; }catch(e){ return undefined; } }
 async function cloudLinkEmail(email, password){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
   let data, error;
   if(cloudUserId && cloudIsAnonymous){
-    ({ data, error } = await sbClient.auth.updateUser({ email, password }));
+    ({ data, error } = await sbClient.auth.updateUser({ email, password }, { emailRedirectTo: fix3AuthRedirectUrl() }));
   } else {
-    ({ data, error } = await sbClient.auth.signUp({ email, password }));
+    ({ data, error } = await sbClient.auth.signUp({ email, password, options: { emailRedirectTo: fix3AuthRedirectUrl() } }));
   }
   if(error) throw error;
+  if(data && data.user && !data.session && !(cloudUserId && cloudIsAnonymous)){ fix3SetSignupPending(data.user.id); fix3RememberAuthReturn(); return data; } // FIX3 (G7): waits for the email
   cloudIsAnonymous = false;
   if(data && data.user) await applySessionIdentity(data.user);
   // The account/session itself is already real and saved at this point — a hiccup pushing local
   // state up (a network blip, or any of these four throwing) must never turn into "your account
   // wasn't created," which is what an uncaught rejection here would otherwise report to the UI.
   try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true), cloudPushRating()]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){} // 2026-10-25 (package FIX3, G7): the map progress goes up too
+  fix3SetSignupPending(null);
   cloudReady = true;
   setCloudPill(true, 'Cloud sync active');
   return data;
@@ -12543,9 +12561,29 @@ async function cloudSignIn(email, password){
 // comment) since this can never complete against a local file:// copy of the build.
 async function cloudSignInWithGoogle(){
   if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  fix3RememberAuthReturn(); // 2026-10-25 (package FIX3, G7): back to this screen after Google
   const { error } = await sbClient.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.href.split('#')[0] } });
   if(error) throw error;
   // No return value on purpose — the page is about to navigate away to Google.
+}
+
+// 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
+// email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
+let fix3AuthReturn = null;
+function fix3AuthSpot(){ const from = (typeof currentTab !== 'undefined' && currentTab !== 'profile') ? currentTab : (fix3AuthReturn && fix3AuthReturn.tab) || null;
+  return from ? {tab: from, sub: typeof playSubTab !== 'undefined' ? playSubTab : null, map: typeof conquestSelectedMap !== 'undefined' ? conquestSelectedMap : null} : null; }
+function fix3RememberAuthReturn(){ try{ const sp = fix3AuthSpot(); if(sp) sessionStorage.setItem(FIX3_AUTH_RETURN_KEY, JSON.stringify(sp)); }catch(e){} }
+let fix3AfterSignInBusy = false;
+async function fix3AfterSignIn(stay){
+  if(!isSignedIn() || fix3AfterSignInBusy) return; fix3AfterSignInBusy = true;
+  try{ await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks(true)]); }catch(e){}
+  try{ livePushProgress(true); }catch(e){}
+  fix3AfterSignInBusy = false;
+  let sp = null; try{ sp = JSON.parse(sessionStorage.getItem(FIX3_AUTH_RETURN_KEY) || 'null'); sessionStorage.removeItem(FIX3_AUTH_RETURN_KEY); }catch(e){}
+  if(!sp && !stay && typeof currentTab !== 'undefined' && currentTab === 'profile' && fix3AuthReturn) sp = fix3AuthReturn;
+  fix3AuthReturn = null;
+  if(stay || !sp || !sp.tab || (typeof matchState !== 'undefined' && matchState && !matchState.over)) return;
+  try{ if(sp.tab === 'play'){ if(sp.sub) playSubTab = sp.sub; if(sp.map && CONQUEST_MAPS.some(m=> m.id === sp.map)) conquestSelectedMap = sp.map; } switchTab(sp.tab); }catch(e){}
 }
 
 /* ============================================================
@@ -12616,7 +12654,7 @@ function wireAuthForm(prefix, onSuccess){
       // Supabase hides "email taken" on sign-up (anti-enumeration) by returning a user with no
       // identities — that's the "this email already belongs to an account" case (often a Google one).
       if(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){ showMsg(authErrorText({message:'already registered'}), true); return; }
-      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg('Almost there — check your inbox to confirm your email, then Login.', false); return; }
+      if(data && !data.session && data.user && !data.user.email_confirmed_at){ showMsg(TX('ui.fix3-confirm-email'), false); return; } // FIX3 (G7): the link brings you back here, signed in
       onSuccess('create');
     }catch(err){ showMsg(authErrorText(err,'create'), true); }
     finally{ busy(false); }
@@ -12666,7 +12704,7 @@ function wireAuthGateModal(){
     const fn = authGatePendingAction; authGatePendingAction = null;
     closeAuthGateModal();
     if(fn) fn();
-    refreshAuthGateUI();
+    refreshAuthGateUI(); fix3AfterSignIn(true); // FIX3 (G7): synced; the modal sat over the screen you were on
   });
 }
 // Called after any successful sign-in (modal or Profile tab) so every currently-rendered gated
@@ -38451,6 +38489,7 @@ async function adminAutoWin(){
 // 30) (behind the scenes tracked) ... If you S and you progressed pass Map 50, you may Auto-Sweep. Don't even need to play, and
 // it acts as if its completed. Past Map 70, you may Idle-Sweep"): the ladder, by the furthest map whose boss you have beaten.
 const AUTO_TIERS = {auto:20, sweep:30, autoSweep:50, idleSweep:70};
+const FIX3_PVP_AUTO_MAP = 25; // 2026-10-25 (package FIX3, G22): PvP auto-play opens once Map 25 is cleared
 function mapsPassed(){ try{ const prog = loadConquestProgress(); let hi = -1; mainConquestMaps().forEach((m, i)=>{ const k = mapRewardNodeKey(m); if(k && (prog.completed||[]).includes(conquestNodeId(m.id, k))) hi = i; }); return hi; }catch(e){ return -1; } }
 function autoTier(t){ return adminModeEnabled || mapsPassed() >= AUTO_TIERS[t]; }
 const AUTO_S_KEY = 'bramblewood_auto_s_v1'; // fights you have won on Auto at rank S or better (Sweep needs one)
@@ -38460,6 +38499,9 @@ function nodeBestRankS(mapId, nodeKey){ try{ return rankAtLeast(loadConquestProg
 function autoplayAllowed(m){
   // 2026-10-19 (package RO, owner 21:49: "Completing a raid lets you auto it in the future"): the full raid, once you have completed it
   if(m && m.mode === 'raidOffline' && m.raidFull && m.raidDef && !m.testKit) return !!(adminModeEnabled || raidAutoOpen(m.raidDef));
+  // 2026-10-25 (package FIX3, G22, owner: "Let me admin auto-play PVP (And if you're past Map 25 as well)"): the PvP ghost fights, for Admin
+  // Mode and for a player who has cleared Map 25. Live two-player matches never (a person sits across the table).
+  if(m && m.mode === 'pvp' && !m.testKit) return !!(adminModeEnabled || mapsPassed() >= FIX3_PVP_AUTO_MAP);
   if(!m || m.mode !== 'conquest' || !m.conquestNode || m.testKit) return false;
   if(adminModeEnabled) return true;
   return nodeBestRankS(m.conquestNode.mapId, m.conquestNode.nodeId) && autoTier('auto');
@@ -55365,7 +55407,7 @@ function renderProfile(){
   if(statusLine) statusLine.textContent = !sbClient ? 'Cloud sync unavailable right now.' : (isSignedIn() ? '✅ Active, your progress is backed up' : (cloudReady ? 'Playing as a guest.' : 'Connecting…'));
   wireAuthForm('profile', mode=>{
     showToast(mode==='create' ? TX('toast.account-created-everything-you-ve-done') : TX('toast.logged-in-this-device-now-has'), 'ok');
-    renderProfile(); refreshAuthGateUI();
+    renderProfile(); refreshAuthGateUI(); fix3AfterSignIn(); // FIX3 (G7): back to where you were, synced
   });
   const pwForm = document.getElementById('addPasswordForm');
   if(pwForm) pwForm.addEventListener('submit', async e=>{
@@ -56060,6 +56102,7 @@ function switchTab(tab){
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
+  if(tab === 'profile' && currentTabBeforeSwitch && currentTabBeforeSwitch !== 'profile' && !isSignedIn()) fix3AuthReturn = {tab: currentTabBeforeSwitch, sub: (typeof playSubTab!=='undefined' ? playSubTab : null), map: (typeof conquestSelectedMap!=='undefined' ? conquestSelectedMap : null)}; // FIX3 (G7)
   // 2026-10-15 (user: "Forge is not a submenu of Codex" + "I pressed codex and it went to Forge"): the Forge is its own page that
   // happens to be drawn in the Codex view, so leaving it forgets it; the next plain visit to the Codex opens Browse.
   let leftForge = false;

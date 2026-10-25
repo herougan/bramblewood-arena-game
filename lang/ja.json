@@ -3309,7 +3309,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "{name}から{gem}を外しました。マテリアに戻りました。",
  "{gem} taken out of {name}. It broke.": "{name}から{gem}を外しました。砕けました。",
  "Next pack ({n} left)": "次のパック（残り{n}）",
- "All {n} packs": "{n}パックすべて",
  "{n} packs opened": "{n}パック開封",
  "Theirs: half their deck {theme}": "相手専用：デッキの半分が{theme}",
  "Cave": "洞窟",
@@ -3397,5 +3396,9 @@
  "Reference deck vs this map's PRO decks": "基準デッキ対このマップのPROデッキ",
  "REF": "REF",
  "You are playing {name}, not your deck.": "自分のデッキではなく{name}で遊んでいます。",
- "Played with {name}: no rewards.": "{name}でプレイ：報酬なし。"
+ "Played with {name}: no rewards.": "{name}でプレイ：報酬なし。",
+ "View all": "すべて見る",
+ "Overall raid rank": "レイド総合ランク",
+ "Rescued a {type} baby": "{type}の赤ちゃんを救出",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "あと少し：今送ったメールのリンクを開いてください。サインインした状態でここに戻り、この端末の進行状況とデッキが新しいアカウントに移ります。"
 }

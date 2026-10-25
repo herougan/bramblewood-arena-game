@@ -3309,7 +3309,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "已從 {name} 取出 {gem}，它回到了你的魔晶中。",
  "{gem} taken out of {name}. It broke.": "已從 {name} 取出 {gem}，它碎了。",
  "Next pack ({n} left)": "下一包（還剩 {n} 包）",
- "All {n} packs": "全部 {n} 包",
  "{n} packs opened": "已開 {n} 包",
  "Theirs: half their deck {theme}": "對方專屬：牌組一半是{theme}",
  "Cave": "洞穴",
@@ -3397,5 +3396,9 @@
  "Reference deck vs this map's PRO decks": "參考牌組對陣本地圖的 PRO 牌組",
  "REF": "REF",
  "You are playing {name}, not your deck.": "你正在使用 {name}，而不是你的牌組。",
- "Played with {name}: no rewards.": "使用 {name} 進行：無獎勵。"
+ "Played with {name}: no rewards.": "使用 {name} 進行：無獎勵。",
+ "View all": "查看全部",
+ "Overall raid rank": "團戰總評級",
+ "Rescued a {type} baby": "救下了一隻{type}幼崽",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "就快好了：打開我們剛寄出的郵件中的連結。它會帶你登入後回到這裡，此裝置上的進度和牌組會轉到你的新帳號。"
 }

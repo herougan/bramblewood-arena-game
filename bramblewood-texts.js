@@ -353,6 +353,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.raid-total-rank-label": "Raid rank",
   "ui.fix3-overall-raid-rank": "Overall raid rank",
   "ui.fix3-old-well": "An old well",
+  "ui.fix3-confirm-email": "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.",
   "ui.raid-total-rank-none": "No raid rank yet",
   "ui.raid-total-rank-tip": "Your raid rank comes from all the raid damage you have dealt in this raid: {n} so far. {next} When the raid falls, rank A or better pays a free Raid Ticket.",
   "ui.raid-total-rank-next": "{n} more for rank {nextRank}.",

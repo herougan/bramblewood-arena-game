@@ -3310,7 +3310,6 @@
  "{gem} taken out of {name}. It is back with your Materia.": "Inalis ang {gem} sa {name}. Nasa Materia mo na ulit.",
  "{gem} taken out of {name}. It broke.": "Inalis ang {gem} sa {name}. Nabasag ito.",
  "Next pack ({n} left)": "Susunod na pack ({n} pa)",
- "All {n} packs": "Lahat ng {n} pack",
  "{n} packs opened": "{n} pack ang nabuksan",
  "Theirs: half their deck {theme}": "Kanila: kalahati ng deck nila ay {theme}",
  "Cave": "Kuweba",
@@ -3398,5 +3397,9 @@
  "Reference deck vs this map's PRO decks": "Reference deck laban sa mga PRO deck ng mapang ito",
  "REF": "REF",
  "You are playing {name}, not your deck.": "Gamit mo ang {name}, hindi ang iyong deck.",
- "Played with {name}: no rewards.": "Nilaro gamit ang {name}: walang gantimpala."
+ "Played with {name}: no rewards.": "Nilaro gamit ang {name}: walang gantimpala.",
+ "View all": "Tingnan lahat",
+ "Overall raid rank": "Kabuuang ranggo sa raid",
+ "Rescued a {type} baby": "Nailigtas ang isang {type} na sanggol",
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Malapit na: buksan ang link sa email na kapapadala namin. Ibabalik ka nito rito na naka-sign in, at mapupunta sa bago mong account ang progreso at mga deck ng device na ito."
 }
