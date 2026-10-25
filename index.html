@@ -42303,7 +42303,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=64d8d83553", "es": "assets/lang/es.js?v=595e98bf54", "fr": "assets/lang/fr.js?v=3eb22f8d65", "id": "assets/lang/id.js?v=bed7e8fe3a", "it": "assets/lang/it.js?v=9800d75f1c", "ja": "assets/lang/ja.js?v=dc09846f59", "ko": "assets/lang/ko.js?v=ec68f32db9", "pt": "assets/lang/pt.js?v=55a59c0bb2", "ta": "assets/lang/ta.js?v=64dc269769", "tl": "assets/lang/tl.js?v=8d115cace6", "zh-Hans": "assets/lang/zh-Hans.js?v=b1e5815488", "zh-Hant": "assets/lang/zh-Hant.js?v=f1a294dcca"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=5d8081c1d2", "es": "assets/lang/es.js?v=1d680454c6", "fr": "assets/lang/fr.js?v=da5ddc519f", "id": "assets/lang/id.js?v=c2bf8f1c92", "it": "assets/lang/it.js?v=2cea347cfd", "ja": "assets/lang/ja.js?v=45c5d9c604", "ko": "assets/lang/ko.js?v=a6829af7c3", "pt": "assets/lang/pt.js?v=abd57cb9fc", "ta": "assets/lang/ta.js?v=8b97a36e3e", "tl": "assets/lang/tl.js?v=6eb35a511a", "zh-Hans": "assets/lang/zh-Hans.js?v=12c5cd6756", "zh-Hant": "assets/lang/zh-Hant.js?v=e88c0d15db"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -49349,7 +49349,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c4de82e96045', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '93b4bc9595f8', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -92147,7 +92147,15 @@ function eighthPassVfx(ev){
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
-    at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+    // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
+    // portal pops the new token's tile in from 30% opacity, and it ran 140 ms (+60 per token) after the spawn, when the token was already
+    // drawn at full opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). A token already
+    // on the board pops at once (it appears popping in); one not drawn yet keeps the old wait. Each token pops once a match.
+    const m5 = matchState, popped = m5 ? (m5._fix3Popped || (m5._fix3Popped = new Set())) : new Set(), fresh = uids.filter(u=> !popped.has(u));
+    fresh.forEach(u=> popped.add(u));
+    const now = fresh.filter(u=> el(u)), later = fresh.filter(u=> !el(u));
+    now.forEach(u=>{ const t = el(u); if(t) F.summonPortal(t); });
+    if(later.length) at(140, ()=> later.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
     if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }

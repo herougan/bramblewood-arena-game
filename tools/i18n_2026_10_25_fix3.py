@@ -44,4 +44,14 @@ for i, code in enumerate(CODES):
         pack[en] = row[i]
     for en in STALE: pack.pop(en, None)
     dump(path, pack)
+# G7: the old sign-up note was a literal in arena_app.js (lang/ui); it is the TX text above now
+UI_STALE = ['Almost there — check your inbox to confirm your email, then Login.']
+code_src = open(os.path.join(ROOT, 'arena_app.js'), encoding='utf-8').read()
+for en in UI_STALE: assert en not in code_src, en
+for code in CODES:
+    path = os.path.join(ROOT, 'lang', 'ui', code + '.json')
+    if not os.path.exists(path): continue
+    pack = json.load(open(path, encoding='utf-8')); n0 = len(pack)
+    for en in UI_STALE: pack.pop(en, None)
+    if len(pack) != n0: dump(path, pack)
 print('wrote', len(CODES), 'packs:', len(T), 'texts each')

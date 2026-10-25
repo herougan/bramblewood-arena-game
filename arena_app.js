@@ -46236,7 +46236,15 @@ function eighthPassVfx(ev){
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
   if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && ev.kind !== 'bloom' /* BL: its own bloom */ && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
-    at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+    // 2026-10-25 (package FIX3, F5, owner #17: "cards played disappear then appear again at the end of the round - no it's just tokens"): the
+    // portal pops the new token's tile in from 30% opacity, and it ran 140 ms (+60 per token) after the spawn, when the token was already
+    // drawn at full opacity: it showed, dropped to 30% and faded back in (seen headless: a 145-170 ms dip on a Brood token). A token already
+    // on the board pops at once (it appears popping in); one not drawn yet keeps the old wait. Each token pops once a match.
+    const m5 = matchState, popped = m5 ? (m5._fix3Popped || (m5._fix3Popped = new Set())) : new Set(), fresh = uids.filter(u=> !popped.has(u));
+    fresh.forEach(u=> popped.add(u));
+    const now = fresh.filter(u=> el(u)), later = fresh.filter(u=> !el(u));
+    now.forEach(u=>{ const t = el(u); if(t) F.summonPortal(t); });
+    if(later.length) at(140, ()=> later.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
     if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
