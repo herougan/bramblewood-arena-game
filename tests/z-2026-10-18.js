@@ -48,7 +48,7 @@ ok(/^const KIT_USES_PER_FIGHT = 2, KIT_FADE_MS = \d+;/.test(lineOf('const KIT_US
 }
 ok(/m\.itemsUsed = kitUsesUsed\(m\) \+ 1;/.test(src) && !/m\.itemUsed\b/.test(src.split('\n').filter(l=> !/^\s*\/\//.test(l)).join('\n')), '1. useItem counts m.itemsUsed (the one-shot m.itemUsed is gone)');
 ok(/if\(kitSpent\(m\)\)\{ m\.kitSpentAt = Date\.now\(\); setTimeout\(/.test(src), '1. the last item starts the fade and a redraw after it');
-ok(/'itemsUsed','towerReplay','towerEnergyPaid','towerRefunded'(?:, ?'proFight')?\]/.test(src) /* 2026-10-24 (PRO): + proFight */, '1/3. resumed fights keep the kit count and the Spire state');
+ok(/'itemsUsed','towerReplay','towerEnergyPaid','towerRefunded'(?:, ?'proFight')?(?:, ?'refDeck')?(?: \/\*[^*]*\*\/)?\]/.test(src) /* 2026-10-24 (PRO): + proFight; 2026-10-26: + PREF's refDeck */, '1/3. resumed fights keep the kit count and the Spire state');
 ok(/\.hud-pack\.is-spent\{animation:kitSpentFade/.test(tpl) && /@keyframes kitSpentFade\{/.test(tpl), '1. the fade-out CSS');
 // grantsItem: each main map's own boss from GRANTS_ITEM_FROM_MAP
 { const a = src.indexOf('const GRANTS_ITEM_FROM_MAP'), b = src.indexOf('const CONQUEST_MAPS_BASELINE');

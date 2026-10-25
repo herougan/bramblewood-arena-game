@@ -89,7 +89,7 @@ for(const code of CODES){
 
 // ---- 5. the owner calls, the uncharted unlocks
 const dec = J('docs/decisions.json').items;
-['CONTENT2-1', 'CONTENT2-2', 'CONTENT2-3', 'CONTENT2-4', 'CONTENT2-5', 'CONTENT2-6'].forEach(id=> ok(dec.some(x=> x.id === id && x.status === 'YET'), `owner call ${id}`));
+['CONTENT2-1', 'CONTENT2-2', 'CONTENT2-3', 'CONTENT2-4', 'CONTENT2-5', 'CONTENT2-6'].forEach(id=> ok(dec.some(x=> x.id === id && (x.status === 'YET' || x.status === 'DONE')), `owner call ${id}`)); // 2026-10-26 (release): the owner answered them 10-25 17:53
 ok(/^const STRANGE_MATERIA_DROPS = \{12:1, 15:1, 25:2, 30:3\};$/m.test(src) && /\{map:25, cost:\{gold:2800, dust:600\}\},\n\s*\{map:30, cost:\{gold:4000, dust:900\}\},/.test(src), 'the uncharted unlocks stay where they are (CONTENT2-4 default)');
 ok(R('docs/art/content2-2026-10-24-briefs.md').split('full background').length - 1 >= 18 && !/\b(no clothes|spiked|studded|monitor|sperm|corpse|sword|spear|blade|dagger|axe)\b/i.test(R('docs/art/content2-2026-10-24-briefs.md')), 'art prompts: one per card, a background each, no banned words');
 

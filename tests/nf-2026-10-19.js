@@ -178,7 +178,7 @@ function makeCopies(o){
   ok(/copyLevel\(e\.cardId, c\) === 0/.test(fnSrc('finishNurture')), '3. the Nest trains one Level-0 copy');
   const sites = (src.match(/ownedDeckForMatch\(myDeckCounts/g) || []).length;
   ok(sites >= 6, `3. every fight that uses your collection deck builds it from your copies (${sites} places: Conquest, Arena / AI / Gauntlet / PvP, raids)`);
-  ok(/myOwnedDeck = ownedDeckForMatch\(myDeckCounts\)/.test(fnSrc('startConquestMatch')) && /let myDeck = myOwnedDeck/.test(fnSrc('startConquestMatch')), '3. Conquest fights with your copies (the CPU keeps its own "@lv" cards)');
+  ok(/myOwnedDeck = (?:refPlay \? refPartsDeck\(.*?\) : )?ownedDeckForMatch\(myDeckCounts\)/.test(fnSrc('startConquestMatch')) /* 2026-10-26 (release): PREF's reference deck first */ && /let myDeck = myOwnedDeck/.test(fnSrc('startConquestMatch')), '3. Conquest fights with your copies (the CPU keeps its own "@lv" cards)');
   ok(/standardDeck \? myDeckCounts : ownedDeckForMatch/.test(fnSrc('startMatchInner')), '3. Standard (every card Lv 1) keeps its plain deck');
   ok(/cp\\d\+/.test(fnSrc('buildRaidFullFight')), '3. the full raid keeps your copies on its board overlay');
   ok(/!defs\[id\]\.derivedFrom/.test(fnSrc('getDraftableIds')), '3. a fight-only copy never shows in a card pool');

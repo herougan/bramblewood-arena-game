@@ -151,7 +151,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN3\)/.test(cat) && /rampartShare/.test(cat) && /bleedFadeAtEnd/.test(cat), 'docs/effects-catalogue.md: EN3');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.decisions || dec.items || dec).map ? (dec.decisions || dec.items || dec).map(d=> d.id) : [];
   ok(['EN3-1', 'EN3-2', 'EN3-3', 'EN3-4', 'EN3-5', 'EN3-6', 'EN3-7', 'EN3-8'].every(i=> ids.includes(i)), 'decisions EN3-1 .. EN3-8');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 80000)), 'CHANGELOG: EN3 near the top'); } // 2026-10-24 (BAL2): 80000 // 2026-10-24 (EN5): 40000 (more entries above it) // 2026-10-23 (EN4): later packages' entries sit above it (was the first 6000 characters)
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN3/.test(cl.slice(0, 200000)), 'CHANGELOG: EN3 near the top'); } // 2026-10-26 (release): 200000 // 2026-10-24 (BAL2): 80000 // 2026-10-24 (EN5): 40000 (more entries above it) // 2026-10-23 (EN4): later packages' entries sit above it (was the first 6000 characters)
 
 console.log(`en3-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);
