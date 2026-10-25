@@ -1,0 +1,182 @@
+{
+ "_about": "tools/prop1_threshold_uptime_2026_10_26.js: the share of unit-rounds (side 1's units on the board as combat starts) where each threshold holds; index i of each list = the share with i or more. Random live band decks, CPU vs CPU (aiLevel 1, open board, day/night cycle). dead = units that died this fight so far, both sides; ownDead / foeDead by side (seen from side 1); own / foe / field = live units now. life = rounds a side-1 unit stayed on the board.",
+ "generated": "2026-10-26",
+ "seed": 1,
+ "band": 714,
+ "games": 1500,
+ "unitRounds": 75214,
+ "meanRounds": 12.232,
+ "atLeast": {
+  "dead": [
+   1,
+   0.811,
+   0.71,
+   0.613,
+   0.521,
+   0.433,
+   0.357,
+   0.289,
+   0.228,
+   0.185,
+   0.143,
+   0.107,
+   0.08
+  ],
+  "ownDead": [
+   1,
+   0.692,
+   0.508,
+   0.363,
+   0.25,
+   0.165,
+   0.1,
+   0.061,
+   0.032,
+   0.018,
+   0.009,
+   0.005,
+   0.002
+  ],
+  "foeDead": [
+   1,
+   0.735,
+   0.57,
+   0.408,
+   0.29,
+   0.187,
+   0.121,
+   0.069,
+   0.038,
+   0.02,
+   0.01,
+   0.005,
+   0.003
+  ],
+  "own": [
+   1,
+   1,
+   0.978,
+   0.914,
+   0.786,
+   0.596,
+   0.388,
+   0.201,
+   0.082,
+   0.026,
+   0.009,
+   0.002,
+   0
+  ],
+  "foe": [
+   1,
+   0.999,
+   0.973,
+   0.889,
+   0.72,
+   0.505,
+   0.304,
+   0.147,
+   0.059,
+   0.02,
+   0.006,
+   0.002,
+   0.001
+  ],
+  "field": [
+   1,
+   1,
+   1,
+   0.981,
+   0.977,
+   0.939,
+   0.911,
+   0.845,
+   0.765,
+   0.661,
+   0.54,
+   0.401,
+   0.263
+  ]
+ },
+ "life": {
+  "mean": 4.365,
+  "units": 7483,
+  "hist": [
+   0,
+   0.115,
+   0.178,
+   0.165,
+   0.142,
+   0.112,
+   0.088,
+   0.064,
+   0.047,
+   0.037,
+   0.021,
+   0.014,
+   0.017
+  ]
+ },
+ "byRound": {
+  "1": {
+   "share": 0.02,
+   "meanDead": 0,
+   "meanField": 2.042
+  },
+  "2": {
+   "share": 0.039,
+   "meanDead": 0.005,
+   "meanField": 3.974
+  },
+  "3": {
+   "share": 0.055,
+   "meanDead": 0.096,
+   "meanField": 5.617
+  },
+  "4": {
+   "share": 0.066,
+   "meanDead": 0.383,
+   "meanField": 6.863
+  },
+  "5": {
+   "share": 0.075,
+   "meanDead": 0.995,
+   "meanField": 7.663
+  },
+  "6": {
+   "share": 0.08,
+   "meanDead": 1.75,
+   "meanField": 8.325
+  },
+  "7": {
+   "share": 0.092,
+   "meanDead": 2.671,
+   "meanField": 9.391
+  },
+  "8": {
+   "share": 0.098,
+   "meanDead": 3.583,
+   "meanField": 10.284
+  },
+  "9": {
+   "share": 0.099,
+   "meanDead": 4.63,
+   "meanField": 10.848
+  },
+  "10": {
+   "share": 0.09,
+   "meanDead": 5.801,
+   "meanField": 11.197
+  },
+  "11": {
+   "share": 0.077,
+   "meanDead": 7.071,
+   "meanField": 11.384
+  },
+  "12": {
+   "share": 0.061,
+   "meanDead": 8.396,
+   "meanField": 11.563
+  }
+ }
+}
