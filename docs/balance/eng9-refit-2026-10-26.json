@@ -1,0 +1,695 @@
+{
+ "about": "ENG9 re-fit (2026-10-26 (package ENG9)): prices from tools/eng9_skill_costs_2026_10_26.py and bramblewood-budget.js (Chained x N, Cleave's statuses). Raises applied; drops held at their stats for the owner (as BF11-1 / EN3-6); no-legal-line cards listed.",
+ "edits": [
+  "sea-turtle-elder: Revive -> Undead",
+  "cinder-skeleton: Revive -> Undead",
+  "ember-revenant: Revive -> Undead",
+  "grass-snake: Revive -> Undead",
+  "slow-worm: Revive -> Undead",
+  "test-skill-revive: Revive 1 (the action)",
+  "beaver-lumberjack: On Ready +1 Lumber -> Stockpile 1",
+  "fungal-colossus: Flora (Elemental) -> Fungi (Fungi)",
+  "puffball-bombardier: Flora/Cave (Elemental) -> Fungi/Cave (Fungi)"
+ ],
+ "moved": [
+  "riverworks-bastion",
+  "stone-turtle-warden",
+  "raven-hexcaller",
+  "termite-mound",
+  "sea-turtle-elder",
+  "swamp-alligator",
+  "mire-witch-heron",
+  "cypress-root-lurker",
+  "obsidian-scorpion",
+  "tide-pool-crab",
+  "barnacle-fortress",
+  "open-ocean-hermit-crab",
+  "quillback-elder",
+  "badger-trench-digger",
+  "slowpoke-sentinel",
+  "canopy-sloth-guardian",
+  "otter-riverguard",
+  "shepherds-bark",
+  "dune-jackal-scout",
+  "test-kitchen-sink",
+  "test-skill-armor",
+  "test-skill-guardian",
+  "test-skill-chained",
+  "test-skill-render",
+  "test-skill-revive",
+  "garden-snail",
+  "pill-bug",
+  "beetle-grunt",
+  "tiny-cave-dweller",
+  "ironmaw-warwolf",
+  "otter-netmender",
+  "summoned-shield",
+  "shieldbearer-hound",
+  "snail-mail",
+  "old-shell",
+  "optio-of-the-ford",
+  "marshal-of-rivergate",
+  "truce-heron",
+  "thornwood-palisade",
+  "sworn-shieldbearer",
+  "caldera-wyrm",
+  "cinder-skeleton",
+  "obsidian-lich",
+  "ember-revenant",
+  "marching-elephant",
+  "dung-beetle",
+  "otter-royal-guard",
+  "millipede-hauler",
+  "rivergate-tribune",
+  "monitor-rambler",
+  "old-snapjaw",
+  "alpine-marmot",
+  "mudflat-godwit",
+  "electric-ray",
+  "weaver-bird",
+  "anaconda-coil",
+  "chained-binturong",
+  "rimeheart-colossus",
+  "war-elephant",
+  "testudo-tortoise",
+  "marshal-tuskwell",
+  "great-gate",
+  "gilded-swan-knight",
+  "magnate-duck",
+  "grovebearer-dragon-turtle",
+  "quicksand-queen",
+  "signal-crayfish",
+  "grass-snake",
+  "ladybird-guard",
+  "stag-beetle",
+  "slow-worm",
+  "grey-seal-bull",
+  "old-sturgeon",
+  "alligator-gar",
+  "ghost-crayfish",
+  "horseshoe-crab",
+  "mangrove-manatee",
+  "whale-shark",
+  "hawthorn-shieldbug",
+  "greenland-shark",
+  "musk-ox-calf",
+  "exo-podas",
+  "galactic-condor",
+  "bucketknee-wolf",
+  "swordbill-challenger",
+  "ember-tetra",
+  "ironclaw-fiddler",
+  "dam-keeper-beaver",
+  "moat-snapper",
+  "musk-ox-matriarch",
+  "barnacle-bulwark",
+  "reefback-turtle",
+  "moonshell-snail"
+ ],
+ "notBand": [
+  "test-kitchen-sink",
+  "test-skill-armor",
+  "test-skill-guardian",
+  "test-skill-chained",
+  "test-skill-render",
+  "test-skill-revive",
+  "summoned-shield",
+  "caldera-wyrm",
+  "exo-podas",
+  "galactic-condor",
+  "bucketknee-wolf",
+  "ember-tetra",
+  "ironclaw-fiddler",
+  "dam-keeper-beaver",
+  "moat-snapper",
+  "musk-ox-matriarch",
+  "barnacle-bulwark",
+  "reefback-turtle",
+  "moonshell-snail"
+ ],
+ "offLine": [
+  {
+   "id": "riverworks-bastion",
+   "at": "0/31",
+   "oldLine": "0/32"
+  },
+  {
+   "id": "barnacle-fortress",
+   "at": "0/6",
+   "oldLine": "0/11"
+  },
+  {
+   "id": "pill-bug",
+   "at": "1/9",
+   "oldLine": "1/10"
+  },
+  {
+   "id": "snail-mail",
+   "at": "0/1",
+   "oldLine": "0/6"
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "at": "1/1",
+   "oldLine": "none"
+  },
+  {
+   "id": "ember-revenant",
+   "at": "4/15",
+   "oldLine": "4/16"
+  },
+  {
+   "id": "alpine-marmot",
+   "at": "3/9",
+   "oldLine": "3/10"
+  },
+  {
+   "id": "war-elephant",
+   "at": "0/28",
+   "oldLine": "none"
+  },
+  {
+   "id": "testudo-tortoise",
+   "at": "5/13",
+   "oldLine": "5/14"
+  },
+  {
+   "id": "ladybird-guard",
+   "at": "1/8",
+   "oldLine": "1/9"
+  },
+  {
+   "id": "slow-worm",
+   "at": "1/7",
+   "oldLine": "1/8"
+  },
+  {
+   "id": "musk-ox-calf",
+   "at": "3/10",
+   "oldLine": "3/12"
+  }
+ ],
+ "raised": [
+  {
+   "id": "electric-ray",
+   "from": "4/9",
+   "to": "4/10",
+   "S": "3 -> 1.2",
+   "nMult": 1,
+   "use": 95
+  },
+  {
+   "id": "weaver-bird",
+   "from": "4/6",
+   "to": "4/7",
+   "S": "2 -> 1.4",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "chained-binturong",
+   "from": "4/9",
+   "to": "4/10",
+   "S": "-3 -> 0",
+   "nMult": 1.33,
+   "use": 92
+  },
+  {
+   "id": "grass-snake",
+   "from": "2/9",
+   "to": "2/10",
+   "S": "4.5 -> 4.3",
+   "nMult": 1,
+   "use": 100
+  }
+ ],
+ "held": [
+  {
+   "id": "tide-pool-crab",
+   "from": "1/4",
+   "to": "1/3",
+   "S": "5 -> 5.07",
+   "nMult": 1,
+   "use": 88
+  },
+  {
+   "id": "stag-beetle",
+   "from": "2/15",
+   "to": "2/14",
+   "S": "5.4 -> 5.47",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "horseshoe-crab",
+   "from": "2/11",
+   "to": "2/10",
+   "S": "3.38 -> 3.52",
+   "nMult": 1,
+   "use": 95
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "from": "2/13",
+   "to": "2/12",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 95
+  }
+ ],
+ "same": [
+  {
+   "id": "stone-turtle-warden",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "7.5 -> 7.78",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "raven-hexcaller",
+   "from": "2/2",
+   "to": "2/2",
+   "S": "3.8 -> 4.1",
+   "nMult": 1,
+   "use": 77
+  },
+  {
+   "id": "termite-mound",
+   "from": "0/15",
+   "to": "0/15",
+   "S": "4.5 -> 4.71",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "sea-turtle-elder",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "12 -> 12.08",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "swamp-alligator",
+   "from": "2/16",
+   "to": "2/16",
+   "S": "3 -> 3.14",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "mire-witch-heron",
+   "from": "1/8",
+   "to": "1/8",
+   "S": "0.8 -> 1.1",
+   "nMult": 1,
+   "use": 94
+  },
+  {
+   "id": "cypress-root-lurker",
+   "from": "4/11",
+   "to": "4/11",
+   "S": "1.06 -> 1",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "obsidian-scorpion",
+   "from": "4/4",
+   "to": "4/4",
+   "S": "7.87 -> 8.01",
+   "nMult": 1,
+   "use": 88
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "from": "2/2",
+   "to": "2/2",
+   "S": "3.1 -> 3.17",
+   "nMult": 1,
+   "use": 80
+  },
+  {
+   "id": "quillback-elder",
+   "from": "6/6",
+   "to": "6/6",
+   "S": "4.5 -> 4.71",
+   "nMult": 1,
+   "use": 91
+  },
+  {
+   "id": "badger-trench-digger",
+   "from": "4/18",
+   "to": "4/18",
+   "S": "1.66 -> 1.6",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "from": "3/3",
+   "to": "3/3",
+   "S": "3.6 -> 3.77",
+   "nMult": 1,
+   "use": 86
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "from": "2/15",
+   "to": "2/15",
+   "S": "4.06 -> 4",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "otter-riverguard",
+   "from": "1/15",
+   "to": "1/15",
+   "S": "3 -> 3.14",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "shepherds-bark",
+   "from": "2/14",
+   "to": "2/14",
+   "S": "1.06 -> 1",
+   "nMult": 1,
+   "use": 95
+  },
+  {
+   "id": "dune-jackal-scout",
+   "from": "3/3",
+   "to": "3/3",
+   "S": "5.5 -> 5.57",
+   "nMult": 1,
+   "use": 88
+  },
+  {
+   "id": "garden-snail",
+   "from": "0/7",
+   "to": "0/7",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 82
+  },
+  {
+   "id": "beetle-grunt",
+   "from": "3/7",
+   "to": "3/7",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "from": "2/7",
+   "to": "2/7",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 95
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "from": "7/7",
+   "to": "7/7",
+   "S": "12.46 -> 12.6",
+   "nMult": 1,
+   "use": 92
+  },
+  {
+   "id": "otter-netmender",
+   "from": "1/8",
+   "to": "1/8",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 93
+  },
+  {
+   "id": "shieldbearer-hound",
+   "from": "5/15",
+   "to": "5/15",
+   "S": "1.5 -> 1.57",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "old-shell",
+   "from": "2/23",
+   "to": "2/23",
+   "S": "4.5 -> 4.71",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "optio-of-the-ford",
+   "from": "4/12",
+   "to": "4/12",
+   "S": "1.06 -> 1",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "truce-heron",
+   "from": "2/11",
+   "to": "2/11",
+   "S": "1.06 -> 1",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "thornwood-palisade",
+   "from": "0/16",
+   "to": "0/16",
+   "S": "7 -> 6.9",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "from": "3/11",
+   "to": "3/11",
+   "S": "0.6 -> 0.63",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "cinder-skeleton",
+   "from": "1/10",
+   "to": "1/10",
+   "S": "4.5 -> 4.3",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "obsidian-lich",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "8.2 -> 8.34",
+   "nMult": 1,
+   "use": 90
+  },
+  {
+   "id": "marching-elephant",
+   "from": "2/26",
+   "to": "2/26",
+   "S": "1.78 -> 1.85",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "dung-beetle",
+   "from": "2/7",
+   "to": "2/7",
+   "S": "1 -> 1.12",
+   "nMult": 1,
+   "use": 94
+  },
+  {
+   "id": "otter-royal-guard",
+   "from": "4/10",
+   "to": "4/10",
+   "S": "3.4 -> 3.47",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "millipede-hauler",
+   "from": "1/16",
+   "to": "1/16",
+   "S": "4.5 -> 4.57",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "rivergate-tribune",
+   "from": "4/19",
+   "to": "4/19",
+   "S": "6 -> 6.14",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "monitor-rambler",
+   "from": "2/17",
+   "to": "2/17",
+   "S": "3 -> 3.14",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "old-snapjaw",
+   "from": "4/22",
+   "to": "4/22",
+   "S": "5.1 -> 5.17",
+   "nMult": 1,
+   "use": 100
+  },
+  {
+   "id": "mudflat-godwit",
+   "from": "2/11",
+   "to": "2/11",
+   "S": "3.6 -> 3.66",
+   "nMult": 1,
+   "use": 95
+  },
+  {
+   "id": "anaconda-coil",
+   "from": "5/12",
+   "to": "5/12",
+   "S": "2 -> 1.6",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "rimeheart-colossus",
+   "from": "3/20",
+   "to": "3/20",
+   "S": "9.3 -> 9.44",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "marshal-tuskwell",
+   "from": "1/29",
+   "to": "1/29",
+   "S": "12.98 -> 13.19",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "great-gate",
+   "from": "0/15",
+   "to": "0/15",
+   "S": "1.06 -> 1",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "gilded-swan-knight",
+   "from": "1/21",
+   "to": "1/21",
+   "S": "6.5 -> 6.64",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "magnate-duck",
+   "from": "2/37",
+   "to": "2/37",
+   "S": "8.4 -> 8.47",
+   "nMult": 1,
+   "use": 100
+  },
+  {
+   "id": "grovebearer-dragon-turtle",
+   "from": "6/6",
+   "to": "6/6",
+   "S": "24.36 -> 24.3",
+   "nMult": 1,
+   "use": 79
+  },
+  {
+   "id": "quicksand-queen",
+   "from": "2/19",
+   "to": "2/19",
+   "S": "4.8 -> 4.2",
+   "nMult": 1,
+   "use": 97
+  },
+  {
+   "id": "signal-crayfish",
+   "from": "2/11",
+   "to": "2/11",
+   "S": "1.6 -> 1.67",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "grey-seal-bull",
+   "from": "4/11",
+   "to": "4/11",
+   "S": "2.56 -> 2.5",
+   "nMult": 1,
+   "use": 96
+  },
+  {
+   "id": "old-sturgeon",
+   "from": "1/20",
+   "to": "1/20",
+   "S": "4.5 -> 4.64",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "alligator-gar",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "6.6 -> 6.67",
+   "nMult": 1,
+   "use": 90
+  },
+  {
+   "id": "ghost-crayfish",
+   "from": "1/17",
+   "to": "1/17",
+   "S": "4.1 -> 4.17",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "mangrove-manatee",
+   "from": "7/7",
+   "to": "7/7",
+   "S": "7.76 -> 7.7",
+   "nMult": 1,
+   "use": 98
+  },
+  {
+   "id": "whale-shark",
+   "from": "1/21",
+   "to": "1/21",
+   "S": "5.5 -> 5.57",
+   "nMult": 1,
+   "use": 99
+  },
+  {
+   "id": "greenland-shark",
+   "from": "1/24",
+   "to": "1/24",
+   "S": "5.6 -> 5.67",
+   "nMult": 1,
+   "use": 100
+  },
+  {
+   "id": "swordbill-challenger",
+   "from": "1/6",
+   "to": "1/6",
+   "S": "5 -> 4.9",
+   "nMult": 1,
+   "use": 94
+  }
+ ],
+ "flagged": []
+}
