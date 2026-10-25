@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-25 release 10-25b (batch: PRO3)
+- PRO and BPRO fights for Maps 0-20 and 15 side maps (87 PRO, 100 BPRO decks), optimized against the pitching CPU, no faction cards; side-map PRO fights use the side map's codes (e.g. 2-B-PRO-1).
+- EN8 resource cards on 14 more map lists (Oyster Bank, Beachcomber Sanderling, Giant Clam, Salvager Hermit Crab, Prospector Mole, Marmot Stonecutter, Beaver Feller, Carrion Crow).
+- Road retuned toward the agreed curve after EN8 (131 enemy decks, card swaps only): fights in band 68 -> 117 of 241; main-map new-player mean 64.0% -> 67.2%.
+- Checks: full unit tier, no new failures against 10-24e after bl's CHANGELOG window was widened (autobattle failed on speed under load and passes alone); ui_smoke 0 failures; flows 0 issues; card-matrix 0 failures, 0 golden diffs.
+
 ## 2026-10-25 (package PRO3: PRO pass for Maps 0-20 and their side maps, road check after EN8)
 - **PRO and BPRO fights for every map 0-20 and 15 side maps** (owner 10-24 22:28 #3 / #11), from new optimizer runs against the current engine (the CPU pitches and guards): `tools/opt/deckopt.js --maps 0-20 --side --budget 16000 --ladder none` in both modes; outputs `docs/balance/opt/*-2026-10-25-pro3-{maptrue,bpro}.json` and their summaries. Faction cards (faction-pack cards, `source` pack tier 11) are left out of PRO pools by default (`--no-faction` / `--faction`). A side map gets its own fights, named after its fight codes (`2-B-PRO-1`); the game shows a side map's own PRO fights on it (`proEntryIdOf`, `PRO_KEY_RE`). Not done: the tutorial and the endless dungeons (Murgle Mayhem, the Undercroft).
 - **EN8's resource cards on more maps:** Oyster Bank (Gannet Cliffs, Kelp Mangroves, Smugglers' Grotto), Beachcomber Sanderling (Gannet Cliffs, Kelp Mangroves), Giant Clam and Salvager Hermit Crab (the Sunken Depths), Prospector Mole (the Glimmer Depths), Marmot Stonecutter (the Aerie Vault, the Sundered Peak), Beaver Feller (the Redwood Deep), Carrion Crow (the Long Grass, the Canopy, the Pale Desert). Only maps at or after each card's first map, so no card's first obtainable map moved (`tools/opt/pro3_map_lists_2026_10_25.js`).
