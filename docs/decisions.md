@@ -1,60 +1,114 @@
 # Bramblewood Arena — Decisions
 
-_Generated from `decisions.json` (2026-10-25). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
+_Generated from `decisions.json` (2026-10-26). The hub has a searchable, filterable version: YET (waiting on you) and DONE._
 
 ## Waiting on you
 
-**OWN-Q1. Bound: what may a bound unit still do?** · Decide · Engine · asked 2026-10-25
-- Owner #24: "Bound: Abit too unfair. Maybe it allows them to use non-moving actions and skills and even attack you back w/ half damage, but intercept, arrow, dive etc are not allowed. If they are flying, it removes their evasive effect. Idk this still sounds too strong" Proposal: a bound unit can't move or reposition (no Intercept, Guardian, Dive, Pounce, Charge), loses Flying's evasion, and still swings at half damage; Arrow and other ranged actions stay allowed (they don't move).
-  - As proposed (ranged actions allowed)
-  - Also no Arrow / shots
-  - Your version (say it)
-- **Default:** As proposed (ranged actions allowed)
+**PROP1-1. Equipment hardiness: Lives on top of durability (Hardy N), and the anti-equipment skills Sunder and Dismantle** · Decide · Engine · asked 2026-10-26
+- Your 23:58 on OWN-Q2: "Equipment can be destroyed through specific anti-equipment skill. But only at 50% chance ... maybe with armor 'lives' default 1, some have 2-3." Proposal (docs/proposals-2026-10-26.md section 1): durability stays as the wear counter (hit 1, acid 2, Corrode 2; EQ2). New: Lives N (keyword Hardy N, default 1 = today's rule). A break takes one life: durability reaching 0 (then it refills) or a break skill succeeding; at 0 lives the piece is destroyed. Dragonscale Mail Hardy 2; Hardy 3 for a few named Legendary+ metal pieces. Sunder (On Hit: 50% to break the target's piece, 1.0), Dismantle (On Play: 50% to break the facing enemy's piece or a loose one, 0.5), Pulverise breaks a life for sure (+0.5 in its price). Tamper-proof blocks stealing only. A dropped piece keeps lives and wear; the next unit picks it up after Equip Time. Price: equipLifeMult = min(D x L, 4) / 4 + 0.35 for a 2nd life + 0.2 for a 3rd. Shown as gold rings above the durability pips and a gem badge on the card. Also to settle: does Pulverise break for sure or roll 50%?
+  - A. Lives on top of durability (recommended)
+  - B. Lives replace durability (only break skills, acid and Corrode take lives, 50% each)
+  - C. Hardy as a quality: immune to break skills, half wear; no lives
+  - Say it
+- **Default:** A. Lives on top of durability (recommended)
+
+**PROP1-2. The Moon Trail (monthly battle pass) and the packs given for levels** · Decide · Economy · asked 2026-10-26
+- Your 23:58 on OWN-Q3: "Battlepass is not level locked but gameplay locked. Doing what actions daily or weekly builds up to it. Resets every month." With #51 (25 levels = 25 packs) and B1 / B2. Proposal (docs/proposals-2026-10-26.md section 2): Pawprints from daily notices (10 for D-B, 20 A, 40-100 S-SSS), daily tiers (20/10/10), the first win a day (10), weekly tiers (100/60/40) and three weekly Trail challenges (50 each, from a pool of existing counters plus 4 new ones). 30 tiers at 150 each, reset on the 1st (reached tiers are paid at the reset). Free lane: 6 packs a month (current pack tier x3, faction x2, a Tidemire Chest at 30), Maple Leaves, Dust, 2 Energy capsules, a Raid Ticket, kit items, a monthly title. Premium lane is a locked placeholder (money undecided). Levels: singles at 2-5 and the first pack at 5 as in B1, then a pack only every 5th level (10/15/20/25); the other levels give 100 Maple Leaves + 50 Dust. A full player reaches tier 30 by about day 25, a regular player tier 17. An input for B2's curve: 330 + 30(L-1) + 10(1.06^(L-1) - 1) (Levels 15-25: 9,048 XP instead of 12,765).
+  - A. Moon Trail with packs; level packs every 5 levels (recommended)
+  - B. Moon Trail without packs; B1's pack every level stays
+  - C. No level packs after Level 5; packs from the trail and map ends only
+  - Not yet
+- **Default:** A. Moon Trail with packs; level packs every 5 levels (recommended)
+
+**PROP1-3. Fester rework: Gorge (a Parasite feeds twice), Brood-mother, or Spreading** · Decide · Engine · asked 2026-10-26
+- Your 23:58 on OWN-Q4: "just do extra damage = poison seems very lame and already kinda done with detonate. I like the name though. Maybe it makes parasites act twice or something." Today Fester adds the unit's own Poison to its swing (Gangrenous Leech; priced 0, measured -0.04). Proposal (docs/proposals-2026-10-26.md section 3), poison taken out, the Gangrenous Leech becomes a Parasite: F1 Gorge: as a Parasite it feeds twice a round (round start and round end); 1.6 x Attack, or 0.8 x Attack with a half-strength second feed (recommended). F2 Brood-mother: while it is on the field your Parasites feed twice; about 2.2 fixed until a Parasite deck exists. F3 Spreading: when its host dies it hooks onto an enemy beside the host instead of dropping; 0.5 x Attack. Lingering and Rupture unchanged.
+  - F1 Gorge, half-strength second feed (recommended)
+  - F1 Gorge, full second feed
+  - F2 Brood-mother (aura)
+  - F3 Spreading
+  - Say it
+- **Default:** F1 Gorge, half-strength second feed (recommended)
+
+**PROP1-4. Threshold skills: Requiem, Dirge, Carnage, Muster, Beset, Throng (+2/+2 by default)** · Decide · Engine · asked 2026-10-26
+- Your 23:58: "Propose new skill(s) that depends on threshold of dead units or number of units on field. E.g. Default is +2/+2." Proposal (docs/proposals-2026-10-26.md section 4), state skills Name N - {...}, plain {+2/+2}, priced 6 points x uptime. Uptime measured (tools/prop1_threshold_uptime_2026_10_26.js, 1,500 CPU fights, docs/balance/prop1-threshold-uptime-2026-10-26.json; a unit lives 4.4 rounds on average), +0.1 where your deck can push the count: Requiem 5 (5+ units died this fight, either side; 0.43, 3.2), Dirge 3 (3+ of yours died; 0.36, 2.8), Carnage 3 (3+ enemies died; 0.41, 2.4), Muster 6 (your side has 6+ units; 0.39, 2.9), Beset 6 (the enemy has 6+; 0.30, 1.8), Throng 10 (10+ units on the field; 0.54, 3.8). Homes: the undead and the Ash maps (Requiem), mourners and token decks (Dirge), hyenas and vultures (Carnage), wolf packs and ants (Muster), lone hunters on 17-A-4 (Beset), swarms in the caves and reefs (Throng). Maps 21-40 add no new skills, so they arrive on Maps 0-20 cards or past Map 40.
+  - A. All six at these thresholds (recommended)
+  - B. Requiem, Muster and Throng only
+  - C. A scaling form (+1 Attack per K deaths / units, capped) instead of thresholds
+  - Say it
+- **Default:** A. All six at these thresholds (recommended)
+
+**FIX3-1. Links open on any won fight: are some of the 34 two-branch joins meant to wait for both branches?** · Decide · Maps · asked 2026-10-25
+- F1 (your #9: "winning that skirmish should unlock 2, not 1"): a fight now opens as soon as ANY fight linked to it is won. Before, a fight with two links waited for both: on your live map edits 6-6 is linked from 6-5 and 6-3 (card_overrides __cfg:map-nodes:m8), so winning 6-3 drew a line to 6-6 that stayed shut. The road has 34 such joins (for example 1-4 after 1-2 and 1-3, 3-7 after 3-5 and 3-6, 11-8 after 11-5/6/7, 20-10, 24-8): each now opens from either branch, so a player may skip one branch. The skirmish editor keeps the old rule as an opt-in ("Unlocked after: all of these are cleared"), and those links draw dotted. Every map is checked by tests/fix3-2026-10-25.js (each link opens its fight; every fight can be reached).
+  - Any link opens it (as built)
+  - Mark some joins "all of these" (name them)
+  - Back to all links for joins, only fan-outs open on one
+- **Default:** Any link opens it (as built)
+
+**FIX3-2. G20: which Map 0 click should give a tooltip after Map 10?** · Decide · Maps · asked 2026-10-25
+- Built from your note "After Map 10, the submap on Map 0 should give a tooltip on click, not dialogue": on Map 0 the two things that still start a conversation, the signpost (its talk points you to Map 1) and the old well, now show a short tip with their name once Map 10 is cleared, seen or not. Map 0's side-map entrances (the Tutorial, the Old Bramble) never talked; they open their map or show their lock tip. If you meant something else (a side map's own NPC, or the Tutorial map), say which.
+  - The signpost and the well (as built)
+  - Something else (name it)
+- **Default:** The signpost and the well (as built)
+
+**FIX3-3. Email sign-up: allow the game's address as a redirect in Supabase Auth?** · Decide · Accounts · asked 2026-10-25
+- G7: your second account signed up with email but is unconfirmed and never signed in (no profile, no rows), so nothing could be saved. Email sign-up needs the confirmation link first. The game now says so, keeps the sign-up's progress on the device, and asks Supabase to send the link back to the game (emailRedirectTo = the page's address); the first sign-in of that account sends this device's progress and decks up. Supabase only honours that address if it is the Site URL or in Authentication > URL Configuration > Redirect URLs (https://bramblewood-arena.vercel.app). This is a dashboard setting, not SQL; nothing was changed on the server. The other option is turning off "Confirm email" (accounts would work at once, with no check that the address is real).
+  - Add the game's URL to Redirect URLs (keep Confirm email)
+  - Turn off Confirm email
+  - Leave as is
+- **Default:** Add the game's URL to Redirect URLs (keep Confirm email)
+
+**FIX3-4. Should a PvP stranger's deck be levelled to your battle rating?** · Decide · PvP · asked 2026-10-25
+- Your G22 question, from the code: PvP is not scaled to your BR. The opponent is a recorded deck (a player's or a seeded stranger) from your Elo tier (6 tiers on the rating curve, widening one tier at a time until at least 6 candidates), drawn at random with a 60% pull toward decks whose battle rating is near yours (weight 0.4 + 0.6 x e^(-|BR difference| / max(8, your BR / 4))). Its cards fight as recorded; nothing is levelled up or down, and the win moves your rating by Elo (K 24). Options: keep it, or level the stranger's cards so its BR matches yours (a fairer fight, but a strong deck no longer reads as strong), or match on BR first and Elo second.
+  - As now (Elo tier, BR pull)
+  - Level the stranger to your BR
+  - Match on BR first, Elo second
+- **Default:** As now (Elo tier, BR pull)
+
+**PREF-1. Reference-2's levels: 100 at Map 20 (as built) or your 105? And is Level 0 unlevelled or a Level 0 hatchling?** · Decide · Balance · asked 2026-10-25
+- REF-2 (your 22:36): "all Level 0 at Map 0, +1 level to 5 random cards per map (105 at Map 20)". Built as written: Map 0 unlevelled, then +5 levels a map, so Map 20 has 100 (5 x 20). 105 would need Map 0 to get its 5 too (or a sixth level somewhere). A level here is a Forge level gained over each copy's own starting level, so at Map 0 every card has its printed stats. In the game, Level 0 below a card's starting Level 1 means a hatchling at about 85% of its stats; read literally, Map 0 would play all 20 copies at 85% (every card in the deck starts at Level 1). Your Base cards stop at Lv 4, so the deck caps at 102 levels from Map 21. The levels are seeded per map (docs/balance/ref/ref2-owner-main-deck-2026-10-25.json, schedule).
+  - 100 at Map 20, unlevelled at Map 0 (as built)
+  - 105: Map 0 gets its 5 levels too
+  - Level 0 = hatchling at Map 0
+- **Default:** 100 at Map 20, unlevelled at Map 0 (as built)
+
+**PREF-2. A road fight played with the reference deck: free and unpaid, or the normal fight?** · Decide · Balance · asked 2026-10-25
+- P1's switch (Admin Mode: "Play with the map's reference deck") replaces your deck in any Conquest fight. Built: such a fight costs no Energy and pays nothing (no rank, cards, XP or progress, like a PRO fight), so testing the road with a deck you don't own never moves your save. The fight's top bar shows REF and the results say "no rewards". The alternative is to pay Energy and count the win like any other fight.
+  - Free and unpaid (as built)
+  - Normal fight: Energy, rewards and progress
+- **Default:** Free and unpaid (as built)
+
+**PREF-3. Side maps that open late: should their PRO / BPRO fights level with the map they open on?** · Decide · Balance · asked 2026-10-25
+- P3 (docs/balance/pro-ease-2026-10-25.md): the easiest PRO fights are side maps' BPROs. A side map counts as the map it opens on (the Old Bramble = Map 17, Clovermead 12, the Sunken Grove 13, Smugglers' Grotto 7, the Pale Desert 19), so both references arrive levelled for that map, but its PRO decks are Level 1 under its own early rarity cap. 0-B-BPRO-1/2, 1-A-BPRO-1, 2-B-BPRO-1..4 and 5-A-BPRO-1..4 are won 84-100% by both references. Nothing was changed ("PRO is not to change any existing skirmishes"). Options: leave them, or give a side map's PRO fights the enemy level the road uses for the map it opens on (a PRO rule change, not a deck change), or re-run the optimizer for them at that map's level.
+  - Leave them (as now)
+  - PRO level = the road's enemy level of the map it opens on
+  - Re-run the optimizer at that map's level
+- **Default:** Leave them (as now)
 
 **OWN-Q2. Equipment: how is it destroyed?** · Decide · Engine · asked 2026-10-25
-- Owner #21: "Im not sure how to destroy equipment though. maybe thematically it represents a factory or equipment ... so that's why when its lost in the field (unit dies), the next unit can pick up the next one." Proposal: equipment can't be destroyed, only stolen (unless Tamper-proof) or dropped when its unit dies, after which the next unit to reach it picks it up after its Equip Time. Acid / Corrode (EQ-1 durability) wears a copy out.
+- Owner #21: "Im not sure how to destroy equipment though. maybe thematically it represents a factory or equipment ... so that's why when its lost in the field (unit dies), the next unit can pick up the next one." Proposal: equipment can't be destroyed, only stolen (unless Tamper-proof) or dropped when its unit dies, after which the next unit to reach it picks it up after its Equip Time. Acid / Corrode (EQ-1 durability) wears a copy out. Owner, 2026-10-25 23:58: "Equipment can be destroyed through specific anti-equipment skill. But only at 50% chance ... how do i make stronger equipment represent hardiness? Like mythril armor shouldn't break easily - maybe with armor 'lives' default 1, some have 2-3 ... Your write a deeper proposal first." A proposal doc first (docs/proposals-2026-10-26.md); note EQ2 durability already exists (5 by default, hits wear 1, acid 2).
   - As proposed
   - Also a Shatter skill that destroys one
   - Say it
 - **Default:** As proposed
 
 **OWN-Q3. A battle pass, and the packs given for levels** · Decide · Economy · asked 2026-10-25
-- Owner #51: "What would a battlepass look like? Should we take back the abundant packs we give in levelling? 25 levels = 25 packs - but it seems very hard to reach level 25 actually." With #3 (packs from Level 5 alternate faction / Pack 1, later Pack 2; singles for Levels 1-5) and #52 (gentler exponential, stronger linear XP part). A proposal doc comes first (OWN-B4).
+- Owner #51: "What would a battlepass look like? Should we take back the abundant packs we give in levelling? 25 levels = 25 packs - but it seems very hard to reach level 25 actually." With #3 (packs from Level 5 alternate faction / Pack 1, later Pack 2; singles for Levels 1-5) and #52 (gentler exponential, stronger linear XP part). A proposal doc comes first (OWN-B4). Owner, 2026-10-25 23:58: "Battlepass is not level locked but gameplay locked. Doing what actions daily or weekly builds up to it. Resets every month." A proposal doc first.
   - Write the proposal first (recommended)
   - Not yet
 - **Default:** Write the proposal first (recommended)
 
 **OWN-Q4. Fester: what is wrong with it?** · Decide · Engine · asked 2026-10-25
-- Owner 17:53: "Fester - not a good effect." Fester today: see docs/effects-catalogue.md. Rework it, rename it, or remove it from its cards?
+- Owner 17:53: "Fester - not a good effect." Fester today: see docs/effects-catalogue.md. Rework it, rename it, or remove it from its cards? Owner, 2026-10-25 23:58: "Fester - just do extra damage = poison seems very lame and already kinda done with detonate. I like the name though. Maybe it makes parasites act twice or something." A rework proposal first.
   - Rework (say how)
   - Remove from cards
   - Claude proposes a rework
 - **Default:** Rework (say how)
 
-**OWN-Q5. Pulverise: what does it do?** · Decide · Engine · asked 2026-10-25
-- Owner #11: "New skill: Pulverise - for now not sure what ill do." Held until the owner has an idea; Claude can propose (e.g. deals damage that ignores Shield and breaks Armor for the fight).
-  - Hold
-  - Claude proposes
-- **Default:** Hold
-
-**PRO3-1. Side-map PRO decks may hold cards a player gets later** · Decide · Balance · asked 2026-10-25
-- PRO3 gave every side map of Maps 0-20 its own PRO / BPRO fights (N-L-PRO-k, e.g. 2-B-PRO-1). A side map's own pool is its parent's MAP tier + its SUBMAP list + SPECIAL + its fight decks, and some side-map fight decks hold cards first obtainable later (the Mudpuppy, Map 9, in Lilypad Reach 2-A and the Mycelium Deep 7-A; the Abyss Lantern Squid, Map 13, in the Sunken Depths 10-A; the Cinder Gecko, Map 22, in the Pale Desert and the volcano side maps; the Siege Rhino, Map 23, in the Canopy). By the PRO rule these decks stay and list the card under `later`. Keep them, or drop cards first obtainable after the side map opens from side-map pools too?
-  - Keep: a side map's own fight cards are its pool (proposed)
-  - Drop later cards from side-map PRO pools
-- **Default:** Keep: a side map's own fight cards are its pool (proposed)
-
 **EN8-10. The CPU is stronger on Maps 0-20: retune the road after EN8?** · Decide · Balance · asked 2026-10-24
-- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve). PRO3 (2026-10-25) did that pass by the agreed schedule (roadCurveTarget, green = target +/- 8): every fight of Maps 0-20 and their side maps measured (tools/skirmish_pass.js measure, 40 games, 241 fights), then CPU deck swaps only (a card of the map's pool for another, the leader, first-clear card and deck size kept, no Shield or Health change). On the curve: green 68 -> 117, too easy 77 -> 56, too hard 81 -> 53; main-map mean 64.0% -> 67.2% (131 decks changed). Most of the 53 still too hard are decks already made of their map's weakest cards (Map 2, Map 4, Map 11 and Map 20's elites, 2-5, 7-6, 11-7, 20-6, 20-8): a swap cannot reach the target there. Your call: accept as is, or allow the next lever for those (drop copies so a deck shrinks, a lower enemy level or bramble, or a stronger reference deck). Data: docs/balance/pro3-road-check-2026-10-25.md (before / after per fight). Owner, 2026-10-25 17:53 (#27, #32): "Master hub difficulty page will flag them out with high difficulty. PRO is not to change any existing skirmishes - they are for me to evaluate the cards in that map. ... (it might be because of the reference deck. let me fight the reference deck as X-REF where X is the map number." Open part: PRO3 retuned 131 road decks by the agreed curve (card swaps only). Keep those swaps, or revert them and only flag the hard fights in the hub?
+- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve). PRO3 (2026-10-25) did that pass by the agreed schedule (roadCurveTarget, green = target +/- 8): every fight of Maps 0-20 and their side maps measured (tools/skirmish_pass.js measure, 40 games, 241 fights), then CPU deck swaps only (a card of the map's pool for another, the leader, first-clear card and deck size kept, no Shield or Health change). On the curve: green 68 -> 117, too easy 77 -> 56, too hard 81 -> 53; main-map mean 64.0% -> 67.2% (131 decks changed). Most of the 53 still too hard are decks already made of their map's weakest cards (Map 2, Map 4, Map 11 and Map 20's elites, 2-5, 7-6, 11-7, 20-6, 20-8): a swap cannot reach the target there. Your call: accept as is, or allow the next lever for those (drop copies so a deck shrinks, a lower enemy level or bramble, or a stronger reference deck). Data: docs/balance/pro3-road-check-2026-10-25.md (before / after per fight). Owner, 2026-10-25 17:53 (#27, #32): "Master hub difficulty page will flag them out with high difficulty. PRO is not to change any existing skirmishes - they are for me to evaluate the cards in that map. ... (it might be because of the reference deck. let me fight the reference deck as X-REF where X is the map number." Open part: PRO3 retuned 131 road decks by the agreed curve (card swaps only). Keep those swaps, or revert them and only flag the hard fights in the hub? Owner, 2026-10-25 23:58: "Don't retune yet. We'll see the performance against ref decks". Open: revert PRO3's 131 swaps now, or leave the road as it is and re-measure?
   - Keep PRO3's 131 swaps; flag what is still hard
   - Revert the swaps; only flag in the hub
 - **Default:** Accept PRO3's swaps; leave the rest (proposed)
-
-**BAL3-1. Rising Tide can't fire on 5-A-2 and 10-A-2: no tide there** · Decide · Map effects · asked 2026-10-24
-- DF3-3 built (Quick and +1 Attack while the tide is in). Re-measured, 200 games with the boon on and off (docs/balance/bal3-rising-tide-2026-10-24.json): 9-4 Kelp Curtains 3 points (81% vs 84%); 5-A-2 Gator Hollow and 10-A-2 The Drowned Deck 0, because neither fight has a tide in its field (the Sunken Grove's Swamp Fever, the Sunken Depths' Crushing Depths), so the boon never turns on. A what-if with the Tide added: 5-A-2 79.5% (94% without the boon: 14.5 points), 10-A-2 77.5% (81.5%: 4 points). Their challenge targets are about 65% and 70%.
-  - Add the Tide to both fights
-  - Swap their boons (Venom Glands on 5-A-2, Blind Fury on 10-A-2)
-  - Leave them
-- **Default:** Add the Tide to both fights
 
 **S3. Leaked-password protection needs Supabase Pro: upgrade to turn it on, or skip it?** · Do · Security · asked 2026-10-08
 - Supabase dashboard → Auth → Passwords → leaked password protection. Free, one click, needs your login. Owner (10-23 00:10): "Needs you to use my chrome." Needs a Chrome session with the owner. 10-23 06:59 (Chrome session): the dashboard toggle "Prevent use of leaked passwords" is "Only available on Pro plan and above"; the org is on the Free plan, so it was not turned on (nothing is bought). Free alternative on the same panel: password requirements (e.g. letters + digits) and a longer minimum length; not changed without the owner's word.
@@ -76,6 +130,28 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 - **Default:** Yes, test on 10 cards
 
 ## Decided
+
+**OWN-Q1. Bound: what may a bound unit still do?** · Decide · Engine · asked 2026-10-25
+- Owner #24: "Bound: Abit too unfair. Maybe it allows them to use non-moving actions and skills and even attack you back w/ half damage, but intercept, arrow, dive etc are not allowed. If they are flying, it removes their evasive effect. Idk this still sounds too strong" Proposal: a bound unit can't move or reposition (no Intercept, Guardian, Dive, Pounce, Charge), loses Flying's evasion, and still swings at half damage; Arrow and other ranged actions stay allowed (they don't move).
+  - As proposed (ranged actions allowed)
+  - Also no Arrow / shots
+  - Your version (say it)
+- **Default:** As proposed (ranged actions allowed)
+- **Outcome:** Owner, 2026-10-25 23:58: "Arrow and ranged actions also do half damage i think." Bound: no moving (no Intercept, Guardian, Dive, Pounce, Charge), no Flying evasion; swings AND arrows / ranged actions at half damage. Queued with ENG9 (E19).
+
+**OWN-Q5. Pulverise: what does it do?** · Decide · Engine · asked 2026-10-25
+- Owner #11: "New skill: Pulverise - for now not sure what ill do." Held until the owner has an idea; Claude can propose (e.g. deals damage that ignores Shield and breaks Armor for the fight).
+  - Hold
+  - Claude proposes
+- **Default:** Hold
+- **Outcome:** Owner, 2026-10-25 23:58: "Pulverise can break armor & magic armor and break equipment I think, and 2x damage to structures. Also, unit with Pulverise ignores armor." Build: Pulverise ignores Armor, breaks Armor / Magic Armor and equipment it hits, double damage to Structures. Queued with CONTENT3; priced by the 4-round rule.
+
+**PRO3-1. Side-map PRO decks may hold cards a player gets later** · Decide · Balance · asked 2026-10-25
+- PRO3 gave every side map of Maps 0-20 its own PRO / BPRO fights (N-L-PRO-k, e.g. 2-B-PRO-1). A side map's own pool is its parent's MAP tier + its SUBMAP list + SPECIAL + its fight decks, and some side-map fight decks hold cards first obtainable later (the Mudpuppy, Map 9, in Lilypad Reach 2-A and the Mycelium Deep 7-A; the Abyss Lantern Squid, Map 13, in the Sunken Depths 10-A; the Cinder Gecko, Map 22, in the Pale Desert and the volcano side maps; the Siege Rhino, Map 23, in the Canopy). By the PRO rule these decks stay and list the card under `later`. Keep them, or drop cards first obtainable after the side map opens from side-map pools too?
+  - Keep: a side map's own fight cards are its pool (proposed)
+  - Drop later cards from side-map PRO pools
+- **Default:** Keep: a side map's own fight cards are its pool (proposed)
+- **Outcome:** Owner, 2026-10-25 23:58: "PRO okay, BPRO no." PRO decks keep a side map's later cards; BPRO pools drop cards first obtainable after the side map opens (re-run BPRO for those side maps).
 
 **PL2-1. The Dungeons tab: gone for players, kept in Admin Mode** · Decide · Dungeons · asked 2026-10-25
 - Your PL1-3 answer ("Dungeons Tab is not needed for a while"), built: players never see the Dungeons tab (nor the 🗝️ key, which already needed a daily dungeon). Admin Mode (and Dev Mode) still show it, so the daily dungeons and the Spire stay testable. The Group Dungeon is the Arena's new Co-op tab and a 👥 spot on Map 3 after its last fight (the same gate as before: Map 3 won). Hide it in Admin Mode too?
@@ -387,6 +463,14 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
   - Change (say what)
 - **Default:** OK
 - **Outcome:** Owner, 2026-10-25 17:53: "just do assumptions for now." As built.
+
+**BAL3-1. Rising Tide can't fire on 5-A-2 and 10-A-2: no tide there** · Decide · Map effects · asked 2026-10-24
+- DF3-3 built (Quick and +1 Attack while the tide is in). Re-measured, 200 games with the boon on and off (docs/balance/bal3-rising-tide-2026-10-24.json): 9-4 Kelp Curtains 3 points (81% vs 84%); 5-A-2 Gator Hollow and 10-A-2 The Drowned Deck 0, because neither fight has a tide in its field (the Sunken Grove's Swamp Fever, the Sunken Depths' Crushing Depths), so the boon never turns on. A what-if with the Tide added: 5-A-2 79.5% (94% without the boon: 14.5 points), 10-A-2 77.5% (81.5%: 4 points). Their challenge targets are about 65% and 70%.
+  - Add the Tide to both fights
+  - Swap their boons (Venom Glands on 5-A-2, Blind Fury on 10-A-2)
+  - Leave them
+- **Default:** Add the Tide to both fights
+- **Outcome:** Owner, 2026-10-25 23:58: "Fix." Add the Tide to 5-A-2 and 10-A-2 so Rising Tide can fire.
 
 **BAL3-2. The fights deck moves can't reach (87 too easy, 12 too hard of 179)** · Decide · Balance · asked 2026-10-24
 - BAL3 retuned Maps 0-24 and the Pale Desert by the agreed rules only (deck moves inside each map's pool and theme, the copy ladder, 5-7 different cards, leaders kept, enemy level by the schedule, no new Shield): green 48 -> 80 of 179 (docs/balance/bal3-road-2026-10-24.json, -table-....md), the Pale Desert 0 -> 4 of 9. What is left is outside the levers: Gannet Cliffs (Map 3), Gatorback Swamp (5), the Redwood Deep (13), the Glass Dunes (18, every fight 100%), the Goldfeather Siege (23) and five Pale Desert fights stay at 90-100% because no card of their pool makes the deck harder; Sunken Hollow's 4-1 / 4-2 stay at about 20% (target 80-90) because the reference deck there walls on its turtles. The schedule's whole levels can't fine-tune a fight either (DF3-4's five fights were done by decks: 11-4 67 -> 76% green; 11-2 75, 11-7 57, 14-5 60, 14-6 52 still under).
