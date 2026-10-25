@@ -3401,5 +3401,18 @@
  "View all": "Tingnan lahat",
  "Overall raid rank": "Kabuuang ranggo sa raid",
  "Rescued a {type} baby": "Nailigtas ang isang {type} na sanggol",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Malapit na: buksan ang link sa email na kapapadala namin. Ibabalik ka nito rito na naka-sign in, at mapupunta sa bago mong account ang progreso at mga deck ng device na ito."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Malapit na: buksan ang link sa email na kapapadala namin. Ibabalik ka nito rito na naka-sign in, at mapupunta sa bago mong account ang progreso at mga deck ng device na ito.",
+ "For nurturing cards in the Nest": "Para sa pag-aalaga ng mga card sa Pugad",
+ "Baby {type}": "Sanggol na {type}",
+ "An egg!": "Isang itlog!",
+ "A baby!": "Isang sanggol!",
+ "New map": "Bagong mapa",
+ "{n} fights": "{n} laban",
+ "A card": "Isang card",
+ "Faction pack": "Pack ng paksyon",
+ "Level {n}: {name}": "Antas {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Antas {n}, {into} sa {need} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "Walang gantimpala",
+ "The Warren Heist": "Ang Nakawan sa Lungga"
 }

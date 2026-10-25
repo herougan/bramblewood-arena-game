@@ -3399,5 +3399,18 @@
  "View all": "Alle ansehen",
  "Overall raid rank": "Gesamter Raid-Rang",
  "Rescued a {type} baby": "Ein {type}-Junges gerettet",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Fast geschafft: Öffne den Link in der E-Mail, die wir gerade geschickt haben. Er bringt dich angemeldet hierher zurück, und Fortschritt und Decks dieses Geräts gehen auf dein neues Konto."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Fast geschafft: Öffne den Link in der E-Mail, die wir gerade geschickt haben. Er bringt dich angemeldet hierher zurück, und Fortschritt und Decks dieses Geräts gehen auf dein neues Konto.",
+ "For nurturing cards in the Nest": "Zum Aufziehen von Karten im Nest",
+ "Baby {type}": "{type}-Junges",
+ "An egg!": "Ein Ei!",
+ "A baby!": "Ein Junges!",
+ "New map": "Neue Karte",
+ "{n} fights": "{n} Kämpfe",
+ "A card": "Eine Karte",
+ "Faction pack": "Fraktionspack",
+ "Level {n}: {name}": "Stufe {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Stufe {n}, {into} von {need} EP",
+ "{into}/{need} XP": "{into}/{need} EP",
+ "No reward": "Keine Belohnung",
+ "The Warren Heist": "Der Bau-Coup"
 }

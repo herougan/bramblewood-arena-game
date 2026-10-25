@@ -3403,5 +3403,18 @@
  "View all": "அனைத்தையும் காண்",
  "Overall raid rank": "மொத்த ரெய்டு தரம்",
  "Rescued a {type} baby": "{type} குட்டி மீட்கப்பட்டது",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "கிட்டத்தட்ட முடிந்தது: நாங்கள் இப்போது அனுப்பிய மின்னஞ்சலில் உள்ள இணைப்பைத் திறக்கவும். அது உங்களை உள்நுழைந்த நிலையில் இங்கே திருப்பி அழைத்து வரும்; இந்தச் சாதனத்தின் முன்னேற்றமும் அடுக்குகளும் உங்கள் புதிய கணக்கிற்குச் செல்லும்."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "கிட்டத்தட்ட முடிந்தது: நாங்கள் இப்போது அனுப்பிய மின்னஞ்சலில் உள்ள இணைப்பைத் திறக்கவும். அது உங்களை உள்நுழைந்த நிலையில் இங்கே திருப்பி அழைத்து வரும்; இந்தச் சாதனத்தின் முன்னேற்றமும் அடுக்குகளும் உங்கள் புதிய கணக்கிற்குச் செல்லும்.",
+ "For nurturing cards in the Nest": "கூட்டில் அட்டைகளை வளர்க்க",
+ "Baby {type}": "{type} குட்டி",
+ "An egg!": "ஒரு முட்டை!",
+ "A baby!": "ஒரு குட்டி!",
+ "New map": "புதிய வரைபடம்",
+ "{n} fights": "{n} சண்டைகள்",
+ "A card": "ஒரு அட்டை",
+ "Faction pack": "பிரிவுப் பொதி",
+ "Level {n}: {name}": "நிலை {n}: {name}",
+ "Level {n}, {into} of {need} XP": "நிலை {n}, {need} இல் {into} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "வெகுமதி இல்லை",
+ "The Warren Heist": "வளை கொள்ளை"
 }

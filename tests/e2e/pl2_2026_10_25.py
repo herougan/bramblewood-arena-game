@@ -171,19 +171,20 @@ async def run(b, url, w):
       const p = loadConquestProgress(); ['0-1', '0-2'].forEach(k=> completeConquestNode({mapId:'m1', nodeId:k, kind:'skirmish'}, 'A'));
       const q = JSON.parse(localStorage.getItem('bramblewood_pl2_map_moments_v1') || '[]').map(x=> x.map + ':' + x.key);
       return {gained: loadXp().xp - x0, bar, stored: !!stored, q};"""))
-    ok(r['gained'] > 0 and not r['bar'] and r['stored'], f'#8 / PL1-1 an Arena win: no XP bar on its results, the XP waits (stored) for the map {r}')
+    # 2026-10-26 (package RES3, R8, owner PL2-3: "Arena ... shows immediately (its rewards only)"): an Arena win fills its XP bar on its own results again
+    ok(r['gained'] > 0 and r['bar'] and not r['stored'], f'#8 (RES3 R8) an Arena win: its XP bar on its own results, nothing left waiting {r}')
     ok('m1:0-1' in r['q'] and 'm1:0-2' in r['q'], f'#8 two fights won without seeing the map are queued {r["q"]}')
     await pg.evaluate("(()=>{ conquestWorldView = false; conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); })()")
     seen = {'emblem': 0, 'xp': 0}
     for i in range(40):
-        s = await pg.evaluate("({e: document.querySelectorAll('.fxe-pl1-rank').length, x: document.querySelectorAll('.pl1-xp-float').length})")
+        s = await pg.evaluate("({e: document.querySelectorAll('.fxe-pl1-rank, .res3-rank-fly').length, x: document.querySelectorAll('.pl1-xp-float').length})")  # RES3 (2026-10-26, R6): the emblem's new flight
         seen['emblem'] = max(seen['emblem'], s['e']); seen['xp'] = max(seen['xp'], s['x'])
         if i == 6 and s['e']: await shot(pg, 'map-emblem-replayed', w)
         if s['x'] and not seen.get('xpshot'): seen['xpshot'] = 1; await pg.wait_for_timeout(600); await shot(pg, 'map-xp-after-arena', w)
-        if seen['emblem'] and seen.get('xpshot'): break
+        if seen['emblem']: break  # RES3 (2026-10-26, R8): the Arena's XP no longer waits for the map
         await pg.wait_for_timeout(250)
     r = await pg.evaluate("({q: localStorage.getItem('bramblewood_pl2_map_moments_v1'), x: localStorage.getItem('bramblewood_pl2_xp_pending_v1')})")
-    ok(seen['emblem'] >= 1 and seen['xp'] >= 1 and not r['q'] and not r['x'], f'#8 back on the map the emblems play, then the XP fills; both queues are spent {seen} {r}')
+    ok(seen['emblem'] >= 1 and not r['q'] and not r['x'], f'#8 back on the map the emblems play; the queues are spent {seen} {r}')
     await close(pg)
 
     # ---------------- 00:02 #3 #5: card rewards as one stack; the rank ribbon; no Rare find pill
@@ -194,13 +195,12 @@ async def run(b, url, w):
       const m = matchState; m.conquestCardsEarned = ['otter-kit', 'voidfeather-scout', 'egg-bug']; m.conquestRareFind = 'voidfeather-scout'; m.conquestRankEarned = 'S';
       const mats = Object.keys(getCardDefs()).filter(id=> /materia/.test(id)).slice(0, 1); m.conquestMateriaEarned = mats.length ? {[mats[0]]: 2} : null;
       renderMatchUI(); await new Promise(r=> setTimeout(r, 1600));
-      const st = document.querySelector('.rw-cards.pl2-stack'), first = st && st.querySelector('.pl2-sk .rw-card');
-      return {stack: !!st, n: st ? st.querySelectorAll('.pl2-sk').length : 0, top: first ? first.className : '', pill: [...document.querySelectorAll('.winloss-card .hud-pill')].some(p=> /Rare find/i.test(p.textContent)), count: (document.querySelector('.pl2-stack-n')||{}).textContent};"""))
-    ok(r['stack'] and r['n'] == 4 and 'pl2-rank-reward' in r['top'] and r['count'] == '×4', f'00:02 #3 #5 four card rewards as one stack, the rank-won card in front with its ribbon {r}')
+      const st = document.querySelector('.rw-cards.res3-fan-won'), first = st && st.querySelector('.res3-g .rw-card');
+      return {stack: !!st, n: st ? st.querySelectorAll('.res3-g').length : 0, top: first ? first.className : '', pill: [...document.querySelectorAll('.winloss-card .hud-pill')].some(p=> /Rare find/i.test(p.textContent)), count: (document.querySelector('.res3-fan-won .res3-n')||{}).textContent};"""))
+    # 2026-10-26 (package RES3, R1): the one stack became groups: different cards apart, copies (the two materia) one stack ×2
+    ok(r['stack'] and r['n'] == 4 and 'pl2-rank-reward' in r['top'] and r['count'] == '×2', f'00:02 #3 #5 (RES3 R1) four rewards as groups, the rank-won card first with its ribbon, copies stacked {r}')
     ok(not r['pill'], '00:02 #5 no "Rare find" pill on the results')
     await shot(pg, 'reward-stack', w, '.rw-panel', 10)
-    await pg.focus('.rw-cards.pl2-stack'); await pg.wait_for_timeout(800)
-    await shot(pg, 'reward-stack-fanned', w, '.rw-unlocks', 40)
     await close(pg)
 
     # ---------------- 22:28 #9: the pack card detail and the popover over the opener

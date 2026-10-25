@@ -3402,5 +3402,18 @@
  "View all": "Vedi tutto",
  "Overall raid rank": "Grado raid complessivo",
  "Rescued a {type} baby": "Cucciolo {type} salvato",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Ci siamo quasi: apri il link nell'email che ti abbiamo appena inviato. Ti riporta qui già connesso, e i progressi e i mazzi di questo dispositivo passano al tuo nuovo account."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Ci siamo quasi: apri il link nell'email che ti abbiamo appena inviato. Ti riporta qui già connesso, e i progressi e i mazzi di questo dispositivo passano al tuo nuovo account.",
+ "For nurturing cards in the Nest": "Per allevare carte nel Nido",
+ "Baby {type}": "Cucciolo {type}",
+ "An egg!": "Un uovo!",
+ "A baby!": "Un cucciolo!",
+ "New map": "Nuova mappa",
+ "{n} fights": "{n} scontri",
+ "A card": "Una carta",
+ "Faction pack": "Busta di fazione",
+ "Level {n}: {name}": "Livello {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Livello {n}, {into} su {need} PE",
+ "{into}/{need} XP": "{into}/{need} PE",
+ "No reward": "Nessuna ricompensa",
+ "The Warren Heist": "Il Colpo della Tana"
 }

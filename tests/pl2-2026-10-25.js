@@ -46,7 +46,7 @@ ok(/\.field-res\.enemy\{opacity:0; transition:opacity \.16s ease; visibility:hid
   'A 00:02 #8: the enemy\'s pills show only while Shift is held; its deck tooltip shows them');
 
 // ---- B. rewards and UI
-ok(/function pl1XpOnMap\(m\)\{ return !!m; \}/.test(app) && /const PL2_XP_KEY = 'bramblewood_pl2_xp_pending_v1'/.test(app) && /pl2MapViewed\(\); \/\/ PL2/.test(app), 'B #8 / PL1-1: every fight\'s XP waits (stored) for the Conquest map');
+ok(/function pl1XpOnMap\(m\)\{ return !!m && !ARENA_FIGHT_MODES\.has\(m\.mode\); \}/.test(app) /* 2026-10-26 (RES3, R8): the Arena's XP fills on its results; the rest waits for the first screen after the fight */ && /const PL2_XP_KEY = 'bramblewood_pl2_xp_pending_v1'/.test(app) && /pl2MapViewed\(\); \/\/ PL2/.test(app), 'B #8 / PL1-1: every fight\'s XP waits (stored) for the Conquest map');
 ok(/window\.__pl2MapReturnBusy/.test(fnSrc('pl1XpOnMapSoon')), 'B #8: the XP waits for the map\'s own moments');
 { // the map-moment queue, run with a stand-in storage
   const store = {}; const localStorage = {getItem: k=> k in store ? store[k] : null, setItem: (k, v)=>{ store[k] = String(v); }, removeItem: k=>{ delete store[k]; }};
@@ -60,9 +60,10 @@ ok(/pl2QueueMapMoment\(node\.mapId, node\.nodeId, rank \|\| progress\.ranks\[id\
 ok(/pl2TakeMapMoments\(mapId\)/.test(fxe) && /if\(!prev\)\{ if\(pendQ\) playReturn\(map\.id, none\(\), progress\); return; \}/.test(fxe) && /finally \{ window\.__pl2MapReturnBusy = false; \}/.test(fxe),
   'B #8: FX.E plays the queued emblems when the map is in view, a first view included');
 { const f = app.slice(app.indexOf('const pl2Mat = '), app.indexOf('// New cards seen, with what opened (2026-10-17)'));
-  ok(/pl2-stack/.test(f) && /pl2-sk/.test(f) && /pl2-stack-n/.test(f) && /\.rw-cards\.pl2-stack:is\(:hover, :focus, :focus-within\) > \.pl2-sk/.test(tpl), 'B 00:02 #3: two or more card rewards are one stack, fanned on hover / tap');
+  // 2026-10-26 (package RES3, R1): the one stack became a fan of groups (different cards apart, copies stacked with ×N): res3FanHTML
+  ok(/res3FanHTML\(tiles, 'won'\)/.test(f) && /\.rw-panel \.res3-fan \.res3-g\.is-stack/.test(tpl), 'B 00:02 #3 (RES3 R1): card rewards are grouped: different cards apart, copies stacked');
   ok(/rankWon = new Set\(\[m\.conquestRareFind, m\.conquestCardDrop\]/.test(f) && /pl2-rank-reward/.test(f) && /class="rank-hex rank-\$\{rr\}"/.test(f) && /@keyframes pl2RrFlash/.test(tpl), 'B 00:02 #5: a rank-won card flashes and wears the emblem + "reward"');
-  ok(/eggCards\.forEach\(id=>\{ const d = defs\[id\]; if\(d\) tiles\.push/.test(f) && /rw-materia-card/.test(f), 'B 00:02 #5: egg cards and card-form materia are cards'); }
+  ok(/eggCards\.forEach\(id=>\{ const d = defs\[id\]; if\(d\) add\(id, d,/.test(f) && /rw-materia-card/.test(f), 'B 00:02 #5: egg cards and card-form materia are cards (RES3, 2026-10-26: added through res3FanHTML\'s list)'); }
 ok(!/TX\('results\.rare-find'\)/.test(app) && !/TX\('results\.rare-find-2'\)/.test(app), 'B 00:02 #5: no "Rare find" pill anywhere');
 { const f = fnSrc('neInspectDetailHTML');
   ok(/pl2-where-pill/.test(f) && /TX\('ui\.pl2-pack-n', \{n: tier\}\)/.test(f) && !/cd-where-k/.test(f), 'B 22:28 #9: the pack card detail\'s "📦 Pack 1" pill (no "Where to get it" label)');

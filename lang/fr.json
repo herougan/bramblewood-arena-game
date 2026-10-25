@@ -3400,5 +3400,18 @@
  "View all": "Tout voir",
  "Overall raid rank": "Rang de raid global",
  "Rescued a {type} baby": "Bébé {type} sauvé",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Presque fini : ouvrez le lien de l'e-mail que nous venons d'envoyer. Il vous ramène ici connecté, et la progression et les decks de cet appareil passent sur votre nouveau compte."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Presque fini : ouvrez le lien de l'e-mail que nous venons d'envoyer. Il vous ramène ici connecté, et la progression et les decks de cet appareil passent sur votre nouveau compte.",
+ "For nurturing cards in the Nest": "Pour élever des cartes au Nid",
+ "Baby {type}": "Bébé {type}",
+ "An egg!": "Un œuf !",
+ "A baby!": "Un bébé !",
+ "New map": "Nouvelle carte",
+ "{n} fights": "{n} combats",
+ "A card": "Une carte",
+ "Faction pack": "Paquet de faction",
+ "Level {n}: {name}": "Niveau {n} : {name}",
+ "Level {n}, {into} of {need} XP": "Niveau {n}, {into} sur {need} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "Pas de récompense",
+ "The Warren Heist": "Le Casse du Terrier"
 }

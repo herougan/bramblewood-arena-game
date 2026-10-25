@@ -3402,5 +3402,18 @@
  "View all": "Ver tudo",
  "Overall raid rank": "Classificação geral da incursão",
  "Rescued a {type} baby": "Filhote {type} resgatado",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Quase lá: abra o link no e-mail que acabámos de enviar. Ele traz-te de volta aqui com sessão iniciada, e o progresso e os baralhos deste dispositivo passam para a tua nova conta."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Quase lá: abra o link no e-mail que acabámos de enviar. Ele traz-te de volta aqui com sessão iniciada, e o progresso e os baralhos deste dispositivo passam para a tua nova conta.",
+ "For nurturing cards in the Nest": "Para criar cartas no Ninho",
+ "Baby {type}": "Filhote {type}",
+ "An egg!": "Um ovo!",
+ "A baby!": "Um filhote!",
+ "New map": "Novo mapa",
+ "{n} fights": "{n} combates",
+ "A card": "Uma carta",
+ "Faction pack": "Pacote de facção",
+ "Level {n}: {name}": "Nível {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Nível {n}, {into} de {need} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "Sem recompensa",
+ "The Warren Heist": "O Golpe da Toca"
 }

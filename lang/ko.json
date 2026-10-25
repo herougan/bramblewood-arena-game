@@ -3403,5 +3403,18 @@
  "View all": "모두 보기",
  "Overall raid rank": "레이드 종합 등급",
  "Rescued a {type} baby": "{type} 아기를 구출",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "거의 다 됐어요: 방금 보낸 이메일의 링크를 여세요. 로그인된 상태로 여기로 돌아오며, 이 기기의 진행 상황과 덱이 새 계정으로 옮겨집니다."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "거의 다 됐어요: 방금 보낸 이메일의 링크를 여세요. 로그인된 상태로 여기로 돌아오며, 이 기기의 진행 상황과 덱이 새 계정으로 옮겨집니다.",
+ "For nurturing cards in the Nest": "둥지에서 카드를 키우는 데 쓰여요",
+ "Baby {type}": "{type} 아기",
+ "An egg!": "알이다!",
+ "A baby!": "아기다!",
+ "New map": "새 지도",
+ "{n} fights": "전투 {n}개",
+ "A card": "카드 1장",
+ "Faction pack": "진영 팩",
+ "Level {n}: {name}": "레벨 {n}: {name}",
+ "Level {n}, {into} of {need} XP": "레벨 {n}, {need} 중 {into} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "보상 없음",
+ "The Warren Heist": "굴 습격 작전"
 }

@@ -3402,5 +3402,18 @@
  "View all": "Lihat semua",
  "Overall raid rank": "Peringkat raid keseluruhan",
  "Rescued a {type} baby": "Bayi {type} diselamatkan",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Hampir selesai: buka tautan di email yang baru kami kirim. Tautan itu membawamu kembali ke sini dalam keadaan masuk, dan progres serta dek di perangkat ini pindah ke akun barumu."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Hampir selesai: buka tautan di email yang baru kami kirim. Tautan itu membawamu kembali ke sini dalam keadaan masuk, dan progres serta dek di perangkat ini pindah ke akun barumu.",
+ "For nurturing cards in the Nest": "Untuk merawat kartu di Sarang",
+ "Baby {type}": "Bayi {type}",
+ "An egg!": "Sebutir telur!",
+ "A baby!": "Seekor bayi!",
+ "New map": "Peta baru",
+ "{n} fights": "{n} pertarungan",
+ "A card": "Satu kartu",
+ "Faction pack": "Paket faksi",
+ "Level {n}: {name}": "Level {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Level {n}, {into} dari {need} XP",
+ "{into}/{need} XP": "{into}/{need} XP",
+ "No reward": "Tanpa hadiah",
+ "The Warren Heist": "Perampokan Liang"
 }

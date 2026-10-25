@@ -30,7 +30,7 @@ ok(/function pl1FactionCardCycle\(/.test(app) && /pl1-fsf-back/.test(tpl) && /\.
 // P24-2
 ok(!/<figcaption class="tr-name">/.test(fnSrc('openDeckTopUpStep')), 'P24-2 no name under the Part 2 reward cards');
 // P24-3
-ok(/function pl1XpOnMap\(m\)\{ return !!m; \}/.test(app) /* 2026-10-25 (PL2, PL1-1): every fight's XP fills on the map */ && /if\(!resultsShowXpBar\(m\) \|\| pl1XpOnMap\(m\)\) return '';/.test(app), 'P24-3 a Conquest fight\'s results draw no XP bar');
+ok(/function pl1XpOnMap\(m\)\{ return !!m && !ARENA_FIGHT_MODES\.has\(m\.mode\); \}/.test(app) /* 2026-10-25 (PL2, PL1-1): every fight's XP fills on the map; 2026-10-26 (RES3, R8): but an Arena fight's on its results */ && /if\(!resultsShowXpBar\(m\) \|\| pl1XpOnMap\(m\)\) return '';/.test(app), 'P24-3 a Conquest fight\'s results draw no XP bar');
 ok(/pl1NoteXpForMap\(matchState\)/.test(fnSrc('endMatch')) && /function pl1XpOnMapShow\(/.test(app) && /\.pl1-xp-float\{/.test(tpl), 'P24-3 leaving the fight fills it on the map');
 // P24-4
 ok(/\.booster \.booster-band\{display:none;\}/.test(tpl) && /bundle-twine pl1-ribbon/.test(app) && /\.bundle-twine\.pl1-ribbon\{/.test(tpl), 'P24-4 no band on one pack; a ribbon round a set');

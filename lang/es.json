@@ -3399,5 +3399,18 @@
  "View all": "Ver todo",
  "Overall raid rank": "Rango de incursión total",
  "Rescued a {type} baby": "Cría de {type} rescatada",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Casi listo: abre el enlace del correo que acabamos de enviar. Te trae de vuelta aquí con la sesión iniciada, y el progreso y los mazos de este dispositivo pasan a tu nueva cuenta."
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "Casi listo: abre el enlace del correo que acabamos de enviar. Te trae de vuelta aquí con la sesión iniciada, y el progreso y los mazos de este dispositivo pasan a tu nueva cuenta.",
+ "For nurturing cards in the Nest": "Para criar cartas en el Nido",
+ "Baby {type}": "Cría de {type}",
+ "An egg!": "¡Un huevo!",
+ "A baby!": "¡Una cría!",
+ "New map": "Nuevo mapa",
+ "{n} fights": "{n} combates",
+ "A card": "Una carta",
+ "Faction pack": "Sobre de facción",
+ "Level {n}: {name}": "Nivel {n}: {name}",
+ "Level {n}, {into} of {need} XP": "Nivel {n}, {into} de {need} PX",
+ "{into}/{need} XP": "{into}/{need} PX",
+ "No reward": "Sin recompensa",
+ "The Warren Heist": "El Golpe de la Madriguera"
 }

@@ -3400,5 +3400,18 @@
  "View all": "查看全部",
  "Overall raid rank": "團戰總評級",
  "Rescued a {type} baby": "救下了一隻{type}幼崽",
- "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "就快好了：打開我們剛寄出的郵件中的連結。它會帶你登入後回到這裡，此裝置上的進度和牌組會轉到你的新帳號。"
+ "Almost there: open the link in the email we just sent. It brings you back here signed in, and this device's progress and decks go to your new account.": "就快好了：打開我們剛寄出的郵件中的連結。它會帶你登入後回到這裡，此裝置上的進度和牌組會轉到你的新帳號。",
+ "For nurturing cards in the Nest": "用於在巢穴中培育卡牌",
+ "Baby {type}": "{type}幼崽",
+ "An egg!": "一顆蛋！",
+ "A baby!": "一隻幼崽！",
+ "New map": "新地圖",
+ "{n} fights": "{n} 場戰鬥",
+ "A card": "一張卡牌",
+ "Faction pack": "陣營卡包",
+ "Level {n}: {name}": "{n} 級：{name}",
+ "Level {n}, {into} of {need} XP": "{n} 級，{into}/{need} 經驗",
+ "{into}/{need} XP": "{into}/{need} 經驗",
+ "No reward": "無獎勵",
+ "The Warren Heist": "兔穴大劫案"
 }
