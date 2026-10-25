@@ -13507,6 +13507,50 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @keyframes neStitch{from{clip-path:inset(0 100% 0 0);} to{clip-path:inset(0 0 0 0);}}
 @media (prefers-reduced-motion: reduce){ .dmp-btn.ne-slot.is-new, .dmp-btn.ne-slot.is-new .ne-slot-stitch{animation:none;} }
 /* NE:END */
+/* RES3:BEGIN (2026-10-26, package RES3: rewards and results). R1 R2 G16: the cards won and the new cards seen as a fan of groups (different
+   cards apart with clear gaps, copies of one card stacked with a small offset and ×N), in one column that scrolls past its height. */
+.rw-panel .rw-cards.res3-fan, .rw-panel.has-split .rw-half-cards .rw-cards.res3-fan{display:flex !important; flex-wrap:wrap !important; justify-content:center !important; align-items:flex-end; gap:16px 22px !important;
+  max-height:min(56vh, 520px); overflow-y:auto; overflow-x:hidden; padding:14px 18px 10px 8px; scrollbar-width:thin; overscroll-behavior:contain;}
+.rw-panel .res3-fan .res3-g{position:relative; flex:0 0 auto;}
+.rw-panel .res3-fan .res3-g.is-stack{padding:calc(var(--c) * 5px) calc(var(--c) * 6px) 0 0;}
+.rw-panel .res3-fan .res3-copy{position:absolute; left:calc(var(--k) * 6px); top:calc((var(--c) - var(--k)) * 5px); z-index:0; filter:brightness(.78); pointer-events:none;}
+.rw-panel .res3-fan .res3-g.is-stack > .rw-card{z-index:2;}
+.rw-panel .res3-fan .res3-n{position:absolute; top:-4px; right:-8px; z-index:12; padding:1px 8px; border-radius:999px; background:var(--accent, #c9852b); color:#fff; font:800 13px/18px 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+.rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile,
+.rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:clamp(78px, 15vh, 132px) !important; height:auto !important; margin:0 !important;}
+.rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile,
+.rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(60px, 10.5vh, 96px) !important; height:auto !important; margin:0 !important;}
+.rw-panel .res3-fan-seen{max-height:min(30vh, 300px); gap:12px 14px !important;}
+.rw-panel.has-split .rw-half-cards.res3-col{gap:10px; justify-content:flex-start;}
+.rw-panel .rw-sec.rw-seen-cards .rw-head{margin-top:2px;}
+.rw-panel .res3-fan .pl2-rr{left:auto; right:-8px; top:-10px; bottom:auto; translate:none;} /* R7 (owner PL2-4: "The ribbon should be on the top right.") */
+.rw-panel .res3-fan .res3-g.is-stack .pl2-rr{top:-14px;}
+@media (max-width:640px){
+  .rw-panel .rw-cards.res3-fan, .rw-panel.has-split .rw-half-cards .rw-cards.res3-fan{gap:12px 14px !important; padding:12px 10px 8px 4px; max-height:44vh;}
+  .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:clamp(66px, 21vw, 96px) !important;}
+  .rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(54px, 16vw, 76px) !important;}
+}
+/* R3: egg and baby cards in the nest's own colours (a warm rose and spring green halo), and the rays of their reveal */
+.rw-card.res3-nest-card{border-radius:10px; box-shadow:0 0 0 3px #f6c6d8, 0 0 0 5px #7fbf6a, 0 0 18px 6px rgba(255,190,220,.55);}
+.rw-card.res3-nest-card .card-tile{background:linear-gradient(165deg, #fff3f8, #e7f6dc) !important;}
+.rw-card.res3-nest-card.is-baby .card-tile > .ico, .rw-card.res3-nest-card.is-baby .card-tile .ico{font-size:2.6em;}
+.res3-nest-rays{position:absolute; left:50%; top:45%; width:220%; aspect-ratio:1; translate:-50% -50%; z-index:-1; pointer-events:none; border-radius:50%; opacity:0;
+  background:repeating-conic-gradient(from 0deg, rgba(255,214,235,.55) 0 9deg, rgba(255,255,255,0) 9deg 22deg); -webkit-mask:radial-gradient(circle, #000 18%, transparent 68%); mask:radial-gradient(circle, #000 18%, transparent 68%);}
+.rw-card.res3-popped .res3-nest-rays{animation:res3Rays 3.2s ease-out both;}
+@keyframes res3Rays{0%{opacity:0; rotate:0deg;} 15%{opacity:1;} 100%{opacity:.35; rotate:80deg;}}
+.rw-splash.res3-nest-splash i{background:radial-gradient(circle, rgba(255,255,255,.98) 0%, rgba(255,200,226,.75) 38%, rgba(160,230,140,0) 72%);}
+.rw-splash.res3-nest-splash b{background:linear-gradient(180deg, #e2588f, #9b2f63); color:#fff;}
+@media (prefers-reduced-motion: reduce){ .rw-card.res3-popped .res3-nest-rays{animation:none; opacity:.3;} }
+/* R5: a new map is one banner: its art, number, name and fights */
+.res3-map-banner{position:relative; display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-end; gap:1px; width:min(100%, 360px); min-height:96px; margin:2px auto 8px; padding:10px 14px;
+  border-radius:12px; overflow:hidden; text-align:left; color:#fff8e6; box-shadow:0 0 0 2px rgba(255,220,150,.75), 0 6px 16px rgba(0,0,0,.45); animation:res3MapIn .7s .35s cubic-bezier(.2,1.3,.4,1) both;
+  background:linear-gradient(180deg, rgba(0,0,0,.05) 20%, rgba(10,6,2,.78) 100%), var(--map-art, none) center / cover no-repeat, radial-gradient(ellipse at 30% 20%, var(--mt-a, #7a9a4a), var(--mt-b, #4a6a2a) 60%, var(--mt-c, #2a3a18));}
+.res3-map-banner .res3-mb-kicker{font:800 11px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#ffe2a0; text-shadow:0 1px 2px rgba(0,0,0,.8);}
+.res3-map-banner .res3-mb-name{font:800 clamp(18px, 2.6vh, 24px)/1.15 'Baloo 2',system-ui,sans-serif; text-shadow:0 2px 3px rgba(0,0,0,.85);}
+.res3-map-banner .res3-mb-fights{font:700 12.5px/1.2 'Nunito',system-ui,sans-serif; opacity:.95; text-shadow:0 1px 2px rgba(0,0,0,.8);}
+@keyframes res3MapIn{from{opacity:0; transform:translateY(10px) scale(.94);} to{opacity:1; transform:none;}}
+@media (prefers-reduced-motion: reduce){ .res3-map-banner{animation:none;} }
+/* RES3:END */
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -43296,6 +43340,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.it-s-safe-in-your-nest": "It's safe in your Nest and will grow into a {v1} card",
   "results.rescued-a-baby": "🐣 Rescued a baby",
   "results.fix3-rescued-baby": "Rescued a {type} baby",
+  "results.res3-kibble-tip": "For nurturing cards in the Nest",
+  "results.res3-baby-name": "Baby {type}",
+  "results.res3-egg-pop": "An egg!",
+  "results.res3-baby-pop": "A baby!",
+  "results.res3-new-map": "New map",
+  "results.res3-map-n": "Map {n}",
+  "results.res3-map-fights": "{n} fights",
   "results.dragon-scale": "🐉 Dragon Scale {index}/{total}",
   "results.materia-for-the-blacksmith-forge": "Materia for the Blacksmith (Forge)",
   "results.a-base-card-in-your-deck": "A Base card in your deck grew from this boss",
@@ -49349,7 +49400,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'de3f428e67e0', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
+const BUILD_ID = '0e20e8320f80', BUILD_CARD_HASH = 'bcd3deba4173868000146a833f2dbbc841b479c7b85696ba5a1c2ddaef3a0fb0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -88923,7 +88974,7 @@ function snapshotUnlocks(){ return {fights: visibleFightKeys(), maps: unlockedMa
 function diffUnlocks(before, after, m){
   const fights = after.fights.filter(k=> !before.fights.includes(k)).map(k=>{ const [mapId, key] = k.split('|'); const r = findConquestNode(mapId, key); return r ? {mapId, key, node:r.node, mapName:r.map ? r.map.name : ''} : null; }).filter(Boolean);
   const acts = [];
-  after.maps.filter(id=> !before.maps.includes(id)).forEach(id=>{ const map = CONQUEST_MAPS.find(x=>x.id===id); if(map) acts.push({icon:map.icon, label:map.name, tip:TX('results.new-conquest-region', {blurb: map.blurb})}); });
+  after.maps.filter(id=> !before.maps.includes(id)).forEach(id=>{ const map = CONQUEST_MAPS.find(x=>x.id===id); if(map) acts.push({icon:map.icon, label:map.name, mapId:map.id /* RES3 (2026-10-26, R5): the results draw a new map as a banner */, tip:TX('results.new-conquest-region', {blurb: map.blurb})}); });
   after.av.filter(id=> !before.av.includes(id)).forEach(id=>{
     const [kind, key] = id.split(':');
     if(kind==='char'){ const c = AVATAR_CHARACTERS.find(x=>x.id===key); if(c) acts.push({icon:c.emoji, label:`${c.name} character`, tip:TX('results.a-new-character-you-can-play')}); }
@@ -89104,6 +89155,32 @@ function lockedCardChipsHTML(m, cls){
   const w = Array.isArray(m.conquestCardsNeedRank) ? m.conquestCardsNeedRank : [];
   return w.filter(x=> x && x.rank).map(x=> `<span class="${cls} rw-locked-card" tabindex="0" data-tip="${escapeAttr(TX('ui.rw-card-waits'))}"><span aria-hidden="true">🔒 🃏</span>${rankEmblemHTML(x.rank, 'rw-mini')}</span>`).join('');
 }
+// ==== Package RES3 (2026-10-26): the results' card fan (R1 R2 G16), egg and baby cards (R3), the new-map banner (R5).
+// res3FanHTML(tiles, kind): tiles [{key, name, html, copy}] grouped by key in first-seen order. A lone card is its tile; copies of one card are
+// one stack: up to three copy faces behind the front tile, each a few pixels up and to the right, and a ×N badge. Groups wrap with clear
+// gaps; the column scrolls once it runs past its max height (.res3-fan in arena_template.html).
+function res3FanHTML(tiles, kind){
+  const order = [], by = new Map();
+  (tiles || []).forEach(t=>{ if(!by.has(t.key)){ by.set(t.key, []); order.push(t.key); } by.get(t.key).push(t); });
+  const groups = order.map(k=>{ const g = by.get(k), n = g.length;
+    if(n === 1) return `<div class="res3-g">${g[0].html}</div>`;
+    const behind = Math.min(n - 1, 3), copy = g[0].copy || '';
+    return `<div class="res3-g is-stack" style="--c:${behind}" role="group" aria-label="${escapeAttr(g[0].name + ' ×' + n)}">${Array.from({length: behind}, (_, i)=> `<div class="res3-copy" style="--k:${behind - i}" aria-hidden="true">${copy}</div>`).join('')}${g[0].html}<b class="res3-n" aria-hidden="true">×${n}</b></div>`; });
+  return `<div class="rw-cards res3-fan res3-fan-${kind}" style="--g:${groups.length}">${groups.join('')}</div>`;
+}
+// An egg found (m.conquestEggDrop, an EGG_KINDS key) shows as its egg card (egg-<kind> in cards.json); null when that card is missing.
+function res3EggCardId(kind){ const id = 'egg-' + (EGG_KINDS[kind] ? kind : 'woodland'); return getCardDefs()[id] ? id : null; }
+// A rescued baby as a card: the type's egg card's frame with the baby's name and icon, both from babyRewardInfo (G13's one source).
+function res3BabyCardDef(type){
+  const bi = babyRewardInfo(type), egg = getCardDefs()[res3EggCardId(bi.type) || ''] || {};
+  return Object.assign({}, egg, {id: 'res3-baby-' + bi.type, name: TX('results.res3-baby-name', {type: bi.name}), icon: bi.icon, art: null, artUrl: null, image: null, effects: {}, rarity: 'rare'});
+}
+// A new map on the results: one banner with its art (the map's --map-art), its number and name, and how many fights it holds.
+function res3MapBannerHTML(mapId, opened){
+  const map = CONQUEST_MAPS.find(x=> x.id === mapId); if(!map) return '';
+  const n = (map.nodes || []).filter(x=> x.kind !== 'tutorial' && x.kind !== 'raidboss' && !x.hidden).length, num = (()=>{ try{ return mapNumberOf(mapId); }catch(e){ return null; } })();
+  return `<div class="res3-map-banner map-theme-${escapeAttr(mapId)}${MAP_ART_IDS.has(mapId) ? ' has-art' : ''}" tabindex="0" data-tip="${escapeAttr(TX('results.new-conquest-region', {blurb: map.blurb || ''}))}"><span class="res3-mb-kicker">${escapeHtml(TX('results.res3-new-map'))}${num != null ? ` · ${escapeHtml(TX('results.res3-map-n', {n: num}))}` : ''}</span><b class="res3-mb-name">${map.icon ? `<span aria-hidden="true">${map.icon}</span> ` : ''}${escapeHtml(map.name)}</b><span class="res3-mb-fights">${escapeHtml(TX('results.res3-map-fights', {n: Math.max(n, opened || 0)}))}</span></div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -89126,35 +89203,53 @@ function rewardsPanelHTML(m){
   // rare find, a rank-gated drop) comes first, flashes as it appears and wears a ribbon: the rank emblem and "reward" (no "Rare find" pill).
   // Two or more: one card in front and the rest stacked behind it (pl2-stack, a count on the stack); hover or tap fans them out.
   const pl2Mat = Object.entries(m.conquestMateriaEarned || {}).filter(([id])=> getCardDefs()[id]);
-  if(cards.length || castles.length || baseCopyIds.length || eggCards.length || pl2Mat.length){
+  // 2026-10-26 (package RES3, R1, owner #6: "I like the fanning out of cards, but ... separate them more, as they are different cards. If they
+  // contain some cards with duplicates, they stack slightly"; G16: "Too many cards past the screen: stack same cards; then y-scroll"): the
+  // cards won are grouped by card (res3FanHTML): different cards stand side by side with clear gaps (wrapping), copies of one card stack with
+  // a small offset and a ×N; past the column's height the column scrolls. Replaces PL2's one stack fanned on hover.
+  // R3 (owner #8: "Getting a baby/egg should be more triumphant (it's rare) ... at least differently coloured ... egg cards"): an egg found
+  // (m.conquestEggDrop, its egg-<kind> card) and a rescued baby (res3BabyCardDef, from babyRewardInfo: G13's one source) are cards here too,
+  // in their own nest colours (.res3-nest-card), with a reveal of their own (rewardCardsReveal: "An egg!" / "A baby!").
+  const res3EggId = m.conquestEggDrop ? res3EggCardId(m.conquestEggDrop) : null, res3Baby = m.conquestBabyEarned ? res3BabyCardDef(m.conquestBabyEarned) : null;
+  if(cards.length || castles.length || baseCopyIds.length || eggCards.length || pl2Mat.length || res3EggId || res3Baby){
     const defs = getCardDefs();
     const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
     const rr = m.conquestRankEarned && /^[A-Z]+$/.test(m.conquestRankEarned) ? m.conquestRankEarned : 'S', rankWon = new Set([m.conquestRareFind, m.conquestCardDrop].filter(Boolean));
     const ribbon = `<span class="pl2-rr" aria-label="${escapeAttr(TX('ui.pl2-rank-reward', {rank: rr}))}"><span class="rank-hex rank-${rr}" aria-hidden="true"><i></i><b>${rr}</b></span><span aria-hidden="true">${escapeHtml(TX('ui.pl2-reward'))}</span></span>`;
-    const tiles = [];
+    const tiles = []; // {key, name, html, copy}: one entry per card won; res3FanHTML groups them by key
+    const add = (key, d, html)=> tiles.push({key, name: d ? d.name : key, html, copy: d ? cardTileHTML(d, {inPlay:true}) : ''});
     cards.slice().sort((x, y)=> (rankWon.has(y) ? 1 : 0) - (rankWon.has(x) ? 1 : 0)).forEach(id=>{ if(!defs[id]) return; const special = rankWon.has(id);
-      tiles.push(`<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
-    baseCopyIds.forEach(id=> tiles.push(`<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`));
-    castles.forEach(c=> tiles.push(rewardCastleCardHTML(c)));
-    eggCards.forEach(id=>{ const d = defs[id]; if(d) tiles.push(`<div class="rw-card pl2-won rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true})}</div>`); });
-    pl2Mat.forEach(([id, n])=> tiles.push(`<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}${n > 1 ? `<b class="pl2-rw-n">×${n}</b>` : ''}</div>`));
-    const stack = tiles.length > 1;
-    const body = tiles.map((t, k)=> stack ? `<div class="pl2-sk" style="--i:${k}">${t}</div>` : t).join(''); // a wrapper per card holds its place in the stack (the results' unlock beat tweens the card itself with GSAP)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards${stack ? ' pl2-stack' : ''}" style="--n:${tiles.length}"${stack ? pl2StackAttrs(TX('results.cards-won') + ' ×' + tiles.length) : ''}>${body}${stack ? `<b class="pl2-stack-n" aria-hidden="true">×${tiles.length}</b>` : ''}</div>
+      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
+    baseCopyIds.forEach(id=> add(id, defs[id], `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`));
+    castles.forEach(c=> add('castle:' + c.id, CHARACTER_DEFS[c.id], rewardCastleCardHTML(c)));
+    eggCards.forEach(id=>{ const d = defs[id]; if(d) add(id, d, `<div class="rw-card pl2-won rw-egg-card res3-nest-card is-egg" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true})}</div>`); });
+    if(res3EggId){ const d = defs[res3EggId]; add('egg:' + m.conquestEggDrop, d, `<div class="rw-card pl2-won res3-nest-card is-egg" data-tip="${escapeAttr(eggNeedsNestNote() || TX('results.it-s-in-your-pack-place'))}">${cardTileHTML(d, {inPlay:true})}</div>`); }
+    if(res3Baby){ const bi = babyRewardInfo(m.conquestBabyEarned); add('baby:' + bi.type, res3Baby, `<div class="rw-card pl2-won res3-nest-card is-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(escapeHtml(bi.icon) + ' ' + TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}) + '. ' + TX('results.it-s-safe-in-your-nest', {v1: bi.name}))}">${cardTileHTML(res3Baby, {inPlay:true})}</div>`); } // G13: babyRewardInfo is the one source of its type and icon
+    pl2Mat.forEach(([id, n])=>{ for(let k = 0; k < Math.max(1, n|0); k++) add(id, defs[id], `<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`); });
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div>${res3FanHTML(tiles, 'won')}
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
+  // 2026-10-26 (package RES3, R2, owner #7: "the new cards seen can follow the same format as (6) and occupy the same column"): the cards seen
+  // are their own block (rw-seen-cards) in the cards' column, under Cards won, in the same fan; what opened stays on the right (rw-seen).
+  // R5 (owner #12: "Unlocking a new Map should encompass its skirmishes ... Maps should have slightly bigger backgrounds or banner"): a new map
+  // is one banner (res3MapBannerHTML: its art, name and "N fights"); the fights that opened on it aren't listed one by one.
   const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !wonIds.includes(id));
-  const openRows = [];
+  const openRows = [], newMaps = [];
   if(m.mode==='tutorial' && m.winner===1){
     const t2 = (m.tutorialStage||1) >= 2; // Tutorial Complete (2026-10-13, user): part 1 unlocks only "Tutorial Part 2", part 2 only "Conquest Map"
     openRows.push(`<span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span>`);
-  } else (m.unlockedActivities||[]).forEach(a=> openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`));
-  const fightRow = (m.unlockedFights||[]).length && m.mode!=='tutorial' ? m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
+  } else (m.unlockedActivities||[]).forEach(a=>{ if(a.mapId){ newMaps.push(a.mapId); return; } openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`); });
+  const mapBanners = newMaps.map(id=> res3MapBannerHTML(id, (m.unlockedFights||[]).filter(f=> f.mapId === id).length)).join('');
+  const fightsShown = (m.unlockedFights||[]).filter(f=> !newMaps.includes(f.mapId));
+  const fightRow = fightsShown.length && m.mode!=='tutorial' ? fightsShown.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
-  if(seen.length || openRows.length || fightRow){
-    const defs = getCardDefs();
-    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look
+  if(seen.length){
+    const defs = getCardDefs(), tiles = seen.filter(id=> defs[id]).map(id=> ({key:id, name:defs[id].name, copy:'', html:`<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>`}));
+    if(tiles.length) secs.push(`<div class="rw-sec rw-seen-cards"><div class="rw-head">${TX('results.new-cards-seen')}</div>${res3FanHTML(tiles, 'seen')}</div>`);
+  }
+  if(openRows.length || fightRow || mapBanners){
+    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${TX('results.unlocked')}</div>${mapBanners}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look
   }
   // Packs won (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it hovers up and goes
   // into the pack opening screen"): the pack itself, glowing, with its name; leaving the screen lifts it into the opener.
@@ -89183,7 +89278,7 @@ function rewardsPanelHTML(m){
   if(bgDust && !cur.some(c=> c[0]==='dust')) cur.push(['dust', 0]);
   // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
   const acts = [];
-  if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
+  if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.res3-kibble-tip')) /* 2026-10-26 (package RES3, owner #8: "Kibble: 'For nuturing cards in the nest'") */}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
   // 2026-10-17: a field-kit item found on the road. 2026-10-23 (package UI4, owner 01:57 #8: "Don't explain so much in SS#2. Just say what
   // the healing draught is."): its tip is the item's own line (ITEM_DEFS desc), no rule about where items come from (that rule changed, EB).
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
@@ -89194,13 +89289,13 @@ function rewardsPanelHTML(m){
   if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
     acts.push(`<span class="rw-act rw-kit rw-icon-only" role="img" aria-label="${escapeAttr(kd.name)}" data-tip="${escapeAttr(kd.name + ': ' + kd.desc) /* 2026-10-23 (package UI4): what the item does; RW4: icon only */}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon}</span>`); }
   // 2026-10-24 (RW6, owner 12:02: "No showing of ungotten rewards locked behind rank"): the lock + card + rank chips (RW) are gone from the results; the fight panel keeps the rank gate
-  if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
+  if(m.conquestEggDrop && !res3EggId){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens (RES3, 2026-10-26: only when its egg card is missing; it is a card in Cards won)
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(TX('ui.rw4-got-egg'))}</span>`); } // 2026-10-23 (RW4): "You got an egg!", not the egg's kind
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
   // (egg cards: card tiles in Cards won since 2026-10-25, PL2 #5)
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
-  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestBabyEarned ? (()=>{ const bi = babyRewardInfo(m.conquestBabyEarned); return `<span class="hud-pill rw-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr(bi.name)}))}">${escapeHtml(bi.icon)} ${escapeHtml(TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}))}</span>`; })() /* 2026-10-25 (package FIX3, G13): the toast's icon and type */ : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${'' /* 2026-10-26 (package RES3, R3): the rescued baby is a card in Cards won (res3BabyCardDef); was the rw-baby pill */}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).filter(([id])=> !getCardDefs()[id] /* PL2: card-form materia is a card tile in Cards won */).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') /* RW6: the copies are card tiles in Cards won */; })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
@@ -89208,10 +89303,11 @@ function rewardsPanelHTML(m){
   if(!secs.length) return '';
   // 2026-10-10 (user: "Centre the cards and rewards in their own halves"): when cards were won, the panel splits
   // into two equal halves, the cards on the left and everything else on the right, each centred.
-  const ui = secs.findIndex(x=> x.startsWith('<div class="rw-sec rw-unlocks"'));
-  if(ui >= 0 && secs.length > 1){
-    const rest = secs.filter((_, i)=> i !== ui); // New cards seen first, then Rewards (2026-10-17)
-    return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards">${secs[ui]}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
+  // 2026-10-26 (package RES3, R2): the cards' column holds Cards won and New cards seen; the other column what opened and the Rewards.
+  const isCardSec = x=> x.startsWith('<div class="rw-sec rw-unlocks"') || x.startsWith('<div class="rw-sec rw-seen-cards"');
+  const cardSecs = secs.filter(isCardSec), rest = secs.filter(x=> !isCardSec(x));
+  if(cardSecs.length && rest.length){
+    return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards res3-col">${cardSecs.join('')}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
   }
   return `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>`;
 }
@@ -89469,9 +89565,9 @@ function baseDustBurst(){
 // at its top-right corner that leaves a "NEW!" tag.
 function rewardCardsReveal(){
   const unlocks = [...document.querySelectorAll('.rw-card.is-unlock')], seen = [...document.querySelectorAll('.rw-card.is-seen')];
-  if(!unlocks.length && !seen.length) return;
+  if(!unlocks.length && !seen.length && !document.querySelector('.rw-card.res3-nest-card')) return; // + RES3's egg / baby cards (2026-10-26)
   const rich = hasGsap() && fxAtLeast('low') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-  if(!rich){ unlocks.forEach(c=>{ c.classList.add('unlocked'); if(c.classList.contains('is-first-seen')) c.classList.add('shown'); }); seen.forEach(c=> c.classList.add('shown')); return; }
+  if(!rich){ unlocks.forEach(c=>{ c.classList.add('unlocked'); if(c.classList.contains('is-first-seen')) c.classList.add('shown'); }); seen.forEach(c=> c.classList.add('shown')); document.querySelectorAll('.rw-card.res3-nest-card').forEach(c=> c.classList.add('res3-popped')); return; }
   const splash = (card, text, cls)=>{
     const sp = document.createElement('span'); sp.className = 'rw-splash ' + cls; sp.innerHTML = `<i></i>${text ? `<b>${text}</b>` : ''}`; card.appendChild(sp);
     gsap.fromTo(sp.querySelector('i'), {scale:.2, opacity:.95}, {scale:2.1, opacity:0, duration:.75, ease:'power2.out'});
@@ -89495,6 +89591,18 @@ function rewardCardsReveal(){
       .add(()=>{ card.classList.add('unlocked'); if(card.classList.contains('is-first-seen')) card.classList.add('shown'); }, .8); // a won card seen for the first time also gets NEW! (2026-10-17)
   });
   t0 += (unlocks.length*0.9 + (unlocks.length ? 0.3 : 0)) * pace;
+  // 2026-10-26 (package RES3, R3, owner #8: "Getting a baby/egg should be more triumphant (it's rare)"): each egg or baby card gets its own
+  // moment after the cards won: it rises out of a soft glow, rays turn behind it (.res3-nest-rays), it bounces, and "An egg!" / "A baby!" pops.
+  const nests = [...document.querySelectorAll('.rw-card.res3-nest-card')];
+  nests.forEach((card, i)=>{
+    const at = t0 + i*1.1*pace, rays = document.createElement('span'); rays.className = 'res3-nest-rays'; rays.setAttribute('aria-hidden', 'true'); card.prepend(rays);
+    gsap.set(card, {scale:.6, opacity:0, y:14});
+    gsap.timeline({delay:at})
+      .to(card, {opacity:1, y:0, scale:1.14, duration:.42, ease:'back.out(2.4)'})
+      .add(()=>{ card.classList.add('res3-popped'); splash(card, card.classList.contains('is-baby') ? TX('results.res3-baby-pop') : TX('results.res3-egg-pop'), 'is-unlock res3-nest-splash'); try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.quick && SoundKit.quick(); }catch(e){} })
+      .to(card, {scale:1, duration:.5, ease:'elastic.out(1, .5)', clearProps:'scale,y'});
+  });
+  t0 += nests.length ? (nests.length*1.1 + 0.2) * pace : 0;
   // The New! cascade runs 35% faster (2026-10-13, user).
   const sp = pace * 0.65;
   seen.forEach((card, i)=>{
