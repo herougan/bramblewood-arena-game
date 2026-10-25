@@ -20358,7 +20358,48 @@ function rewardXpBarUp(){
 // it), and fills at the top of the Conquest map the next time it is in view, after the map's own moments (the emblems, pl2MapReturnBusy).
 // PL1 waited at most two minutes and only in memory, so XP won in the Arena or over a chain of Next fight never showed.
 const PL2_XP_KEY = 'bramblewood_pl2_xp_pending_v1';
-function pl1XpOnMap(m){ return !!m; }
+// 2026-10-26 (package RES3, R8, owner PL2-3: "Arena ... shows immediately (its rewards only). The other rewards show the moment you exit a fight,
+// regardless of which screen you go to"): an Arena fight (ARENA_FIGHT_MODES) fills its XP bar on its own results again; every other won
+// fight's XP waits (PL2_XP_KEY) and plays on the first screen you land on after it: the map, Home, any page, or the page a reload opens
+// (res3XpScreenReady). On the map it still waits for the map's own moments (the emblems, the new map's banner); the packs wait for it.
+function pl1XpOnMap(m){ return !!m && !ARENA_FIGHT_MODES.has(m.mode); }
+// 2026-10-26 (package RES3, R6, owner #23: "the emblem ... spirals from the left, then lands on the bottom right of the webpage, like it went
+// into you"): the rank emblem of a cleared fight (played when its map comes into view, FX.E's queued map moments) flies in from the left edge
+// at the fight's height, spirals on its way across, and lands in the page's bottom-right corner (the player), shrinking into it with a gold
+// ring and a few sparks. It takes FX.E.nodeRankEmblem's place (PL1's hop over the fight and spiral into the fight panel); FX.E calls it by
+// name, so the map's queue runs it unchanged. Reduced motion: a short fade in the corner.
+function res3RankEmblemFlight(node, rank){
+  if(!rank) return Promise.resolve();
+  const g = (typeof gsap !== 'undefined') ? gsap : null, W = window.innerWidth, H = window.innerHeight, size = 58;
+  let ny = H * 0.4; try{ const r = node && node.getBoundingClientRect(); if(r && r.height) ny = Math.max(60, Math.min(H - 120, r.top + r.height / 2)); }catch(e){}
+  const o = document.createElement('div'); o.className = 'res3-rank-fly'; o.setAttribute('aria-hidden', 'true');
+  o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; document.body.appendChild(o);
+  const ex = W - 46, ey = H - 46, sx = -size, sy = ny;
+  const land = ()=>{ const ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = ex + 'px'; ring.style.top = ey + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
+    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} };
+  if(!g || reducedMotion()){ g ? g.set(o, {x:ex - size/2, y:ey - size/2, opacity:0}) : (o.style.transform = `translate(${ex - size/2}px, ${ey - size/2}px)`);
+    return new Promise(res=>{ o.animate ? o.animate([{opacity:0}, {opacity:1}, {opacity:0}], {duration:900}).onfinish = ()=>{ o.remove(); res(); } : setTimeout(()=>{ o.remove(); res(); }, 900); }); }
+  try{ if(/S/.test(rank)) SoundKit.rareRise && SoundKit.rareRise(); }catch(e){}
+  return new Promise(res=>{
+    const st = {k:0}, turns = 1.6, R0 = Math.min(90, Math.max(50, H * .1));
+    g.set(o, {x:sx - size/2, y:sy - size/2, opacity:0, scale:.8});
+    g.timeline({onComplete:()=>{ o.remove(); res(); }})
+      .to(o, {opacity:1, duration:.15})
+      .to(st, {k:1, duration:1.45, ease:'power1.inOut', onUpdate:()=>{ const k = st.k, ang = k * turns * Math.PI * 2, rad = R0 * Math.sin(Math.PI * Math.min(1, k * 1.08));
+          const bx = sx + (ex - sx) * k, by = sy + (ey - sy) * (k * k);
+          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - .55 * k}); }}, '<')
+      .add(land)
+      .to(o, {scale:.2, opacity:0, duration:.22, ease:'power2.in'});
+  });
+}
+function res3InstallRankFlight(){ try{ if(window.FX && window.FX.E && window.FX.E.nodeRankEmblem !== res3RankEmblemFlight) window.FX.E.nodeRankEmblem = res3RankEmblemFlight; }catch(e){} }
+res3InstallRankFlight(); setTimeout(res3InstallRankFlight, 0); setTimeout(res3InstallRankFlight, 1500);
+function res3XpScreenReady(){
+  if(typeof matchState !== 'undefined' && matchState) return false;
+  if(typeof currentTab === 'undefined' || !currentTab || document.visibilityState === 'hidden') return false;
+  if(currentTab === 'play' && playSubTab === 'conquest'){ const cv = document.getElementById('conquestCanvas'); return !!(cv && cv.offsetParent); }
+  return true;
+}
 let pl1XpPending = (()=>{ try{ const v = JSON.parse(localStorage.getItem(PL2_XP_KEY) || 'null'); return v && v.from != null ? v : null; }catch(e){ return null; } })();
 function pl2SaveXpPending(){ try{ if(pl1XpPending) localStorage.setItem(PL2_XP_KEY, JSON.stringify(pl1XpPending)); else localStorage.removeItem(PL2_XP_KEY); }catch(e){} }
 function pl1NoteXpForMap(m){
@@ -20371,7 +20412,7 @@ function pl1XpOnMapSoon(tries){
   tries = tries || 0; if(!pl1XpPending || tries > 120) return; // (a later map view starts it again: pl2MapViewed)
   if(!tries){ if(pl1XpOnMapSoon._t) return; } clearTimeout(pl1XpOnMapSoon._t);
   pl1XpOnMapSoon._t = setTimeout(()=>{ pl1XpOnMapSoon._t = 0; try{
-    const cv = document.getElementById('conquestCanvas'), onMap = cv && cv.offsetParent && currentTab === 'play' && playSubTab === 'conquest' && !(typeof matchState !== 'undefined' && matchState);
+    const onMap = res3XpScreenReady(); // RES3 (2026-10-26, R8): any screen after the fight, not only the map
     const busy = document.querySelector('.map-veil, .fxg-title-stage, .winloss-overlay, #deckSwapOverlay') || mapTitleHold() || window.__pl2MapReturnBusy || (()=>{ const ov = document.getElementById('packOpenOverlay'); return !!(ov && !ov.hidden); })();
     if(onMap && !busy) pl1XpOnMapShow(); else pl1XpOnMapSoon(tries + 1); }catch(e){ pl1XpPending = null; pl2SaveXpPending(); } }, tries ? 300 : 500);
 }
@@ -20386,6 +20427,7 @@ function pl2QueueMapMoment(mapId, key, rank){ if(!mapId || !key) return; const l
 function pl2HasMapMoments(mapId){ return pl2LoadMoments().some(x=> x.map === mapId); }
 function pl2TakeMapMoments(mapId){ const l = pl2LoadMoments(), mine = l.filter(x=> x.map === mapId); if(mine.length) pl2SaveMoments(l.filter(x=> x.map !== mapId)); return mine; }
 function pl2MapViewed(){ try{ if(pl1XpPending) pl1XpOnMapSoon(); }catch(e){} }
+setTimeout(()=>{ try{ if(pl1XpPending) pl1XpOnMapSoon(); }catch(e){} }, 2500); // RES3 (2026-10-26, R8): XP left over from before a reload plays on the first screen
 function pl1XpOnMapShow(){
   const p = pl1XpPending; pl1XpPending = null; pl2SaveXpPending(); if(!p || !xpBarReady()) return;
   const to = loadXp().xp; if(!(to > p.from)) return;
@@ -20453,7 +20495,7 @@ function levelBadgeHTML(){
   return `<div class="player-level" id="playerLevelBadge" title="${L.into} / ${L.need} XP to level ${L.level+1} — XP mostly comes from quests and milestones">
     <span class="pl-num">⭐ Level ${L.level}</span><span class="pl-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><span class="pl-xp">${L.into}/${L.need} XP</span></div>`;
 }
-function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); if(el) el.outerHTML = levelBadgeHTML(); }
+function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); if(el) el.outerHTML = levelBadgeHTML(); try{ res3CheckLevelTrack(); }catch(e){} } // + RES3 (2026-10-26, B1): pays the level track
 // ---- Quests & statistics medals (2026-10-03, explicit: "Limited rewards to stop burnout. Daily
 // quests: Use 40 energy on Skirmishes, Use 3 tickets in PVP, Defeat 12 units. Then the next tier
 // (decreasing rewards): Join a Raid, etc. Weeklies are very rewarding, but also similarly tiered."
@@ -54233,7 +54275,7 @@ function pl1HeldPackCount(){ try{ return (JSON.parse(localStorage.getItem(HELD_P
 function holdPackForArmoury(ref){ try{ const a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); a.push(ref); localStorage.setItem(HELD_PACKS_KEY, JSON.stringify(a)); }catch(e){} }
 function releaseHeldPacks(){
   let a = []; try{ a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); localStorage.removeItem(HELD_PACKS_KEY); }catch(e){}
-  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else if(ref.kind === 'end') grantEndPack(ref.id) /* RW5 */; else grantFreePack(ref.id, 1); }catch(e){} });
+  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else if(ref.kind === 'end') grantEndPack(ref.id) /* RW5 */; else if(ref.kind === 'res3level') res3GrantLevelReward(ref.id, ref.level) /* RES3 (2026-10-26, B1) */; else grantFreePack(ref.id, 1); }catch(e){} });
   return (a || []).length;
 }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
@@ -55424,6 +55466,67 @@ function profileCollectionCardHTML(){
     <span class="pf-go" aria-hidden="true">›</span>
   </button>`;
 }
+// ==== Package RES3 (2026-10-26), B1 and R9: the level reward track and the Profile's level bar.
+// B1 (owner #3: "level 5 onwards reward packs, like faction, then pack 1, faction then pack 1, eventually pack 2 ... (singles for lvl 1-5)
+// Starting at level 0, reaching lvl after the tutorials"): Level 0 until the tutorials are done (playerLevelInfo), Level 1 after them. One
+// row per stretch of levels; `give` is a cycle (one entry per level, repeating from `from`), each entry the rewards for that level:
+//   card = one card (from Pack 1's pool, one you don't have yet first); faction = a faction pack of your side; pack1 / pack2 = a 3-card
+//   Hedgerow Pouch / Tidemire Chest. Levels 1-5 give single cards and Level 5 the first faction pack; then a faction pack and a Pack 1
+//   alternate; from Level 15, Pack 2 takes Pack 1's place. PROP1-2 (the Moon Trail) may thin the level packs: change the rows here.
+const RES3_LEVEL_TRACK = [
+  {from:1, give:[['card']]},
+  {from:5, give:[['card', 'faction']]},
+  {from:6, give:[['pack1'], ['faction']]},
+  {from:15, give:[['pack2'], ['faction']]},
+];
+const RES3_LEVEL_TRACK_KEY = 'bramblewood_res3_level_track_v1';
+const RES3_LEVEL_PACK = {pack1:'bronze', pack2:'silver', card:'bronze'};
+function res3LevelRewardsAt(L){
+  L = L | 0; if(L < 1) return []; let row = null;
+  RES3_LEVEL_TRACK.forEach(r=>{ if(L >= r.from) row = r; });
+  if(!row) return []; const next = RES3_LEVEL_TRACK[RES3_LEVEL_TRACK.indexOf(row) + 1];
+  if(next && L >= next.from) return [];
+  return (row.give[(L - row.from) % row.give.length] || []).slice();
+}
+function res3LevelRewardIcon(k){ return k === 'card' ? '🃏' : k === 'faction' ? ((FACTION_PACKS[myFactionPackIdSafe()] || {}).icon || '🦦') : ((getShopPacks().find(p=> p.id === RES3_LEVEL_PACK[k]) || {}).icon || '📦'); }
+function res3LevelRewardName(k){ if(k === 'card') return TX('ui.res3-lt-card'); if(k === 'faction') return (FACTION_PACKS[myFactionPackIdSafe()] || {}).name || TX('ui.res3-lt-faction');
+  const p = getShopPacks().find(x=> x.id === RES3_LEVEL_PACK[k]); return p ? p.name : k; }
+function myFactionPackIdSafe(){ try{ const f = loadFactionChoice(); return f === 'hummingbirds' ? 'hummingbird' : 'otter'; }catch(e){ return 'otter'; } }
+function res3LevelTrackState(){ try{ const v = JSON.parse(localStorage.getItem(RES3_LEVEL_TRACK_KEY) || 'null'); return v && typeof v.granted === 'number' ? v : null; }catch(e){ return null; } }
+function res3SaveLevelTrack(v){ try{ localStorage.setItem(RES3_LEVEL_TRACK_KEY, JSON.stringify(v)); }catch(e){} }
+// One reward: before the Armoury opens it waits with the other held packs (releaseHeldPacks); a card or a basic pack is a reward pack of
+// that pack's pool (new cards first), a faction pack is your side's.
+function res3GrantLevelReward(k, L){
+  if(!armouryOpen()){ holdPackForArmoury({kind:'res3level', id:k, level:L}); return; }
+  if(k === 'faction'){ grantFactionPack(myFactionPackId(), 1); return; }
+  const base = getShopPacks().find(p=> p.id === RES3_LEVEL_PACK[k]); if(!base) return;
+  const pack = Object.assign({}, base, {cards: k === 'card' ? 1 : 3, metal:0, kroon:0, endReward:true, name: TX('ui.res3-lt-pack-name', {n: L, name: k === 'card' ? TX('ui.res3-lt-card') : base.name})});
+  const o = purchasePackOnce(pack, true, {newFirst: true, gated: true}); if(!o) return;
+  saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  queuePackReveal(pack, o);
+}
+// Pays every level reached since the last check. The first check on a save from before this shipped starts the track at the level it is
+// already at (no back pay); a new player starts at Level 0, so Level 1's card comes with the tutorials.
+function res3CheckLevelTrack(){
+  try{
+    const L = playerLevelInfo().level; let st = res3LevelTrackState();
+    if(!st){ st = {granted: L}; res3SaveLevelTrack(st); return; }
+    if(L <= st.granted) return;
+    const from = st.granted + 1; st.granted = L; res3SaveLevelTrack(st);
+    for(let n = from; n <= L; n++) res3LevelRewardsAt(n).forEach(k=> res3GrantLevelReward(k, n));
+  }catch(e){}
+}
+setTimeout(res3CheckLevelTrack, 1200);
+// R9 (owner #19: "in the profile, shows your level in the 25% part of the bar, and the upcoming levels and their rewards on the right"): one bar
+// across the Profile: the left quarter is your level and its XP, the rest the next levels, each with what it gives.
+function res3LevelTrackHTML(){
+  const L = playerLevelInfo(), pct = L.need ? Math.round(L.into / L.need * 100) : 0, steps = [];
+  for(let n = L.level + 1; steps.length < 6 && n <= L.level + 12; n++){ const g = res3LevelRewardsAt(n); if(g.length || steps.length < 3) steps.push({n, g}); }
+  return `<section class="res3-lt" aria-label="${escapeAttr(TX('ui.res3-lt-aria', {n: L.level, into: L.into, need: L.need}))}">
+    <div class="res3-lt-now"><b class="res3-lt-lv">⭐ ${escapeHtml(TX('ui.res3-lt-level', {n: L.level}))}</b><span class="res3-lt-bar"><span style="width:${pct}%"></span></span><small>${escapeHtml(TX('ui.res3-lt-xp', {into: L.into, need: L.need}))}</small></div>
+    <ol class="res3-lt-next">${steps.map((s, i)=> `<li class="res3-lt-step${i === 0 ? ' is-next' : ''}" tabindex="0" data-tip="${escapeAttr(s.g.length ? s.g.map(res3LevelRewardName).join(' + ') : TX('ui.res3-lt-none'))}"><span class="res3-lt-n">${escapeHtml(TX('ui.res3-lt-level', {n: s.n}))}</span><span class="res3-lt-gift" aria-hidden="true">${s.g.length ? s.g.map(res3LevelRewardIcon).join('') : '·'}</span><span class="sr-only">${escapeHtml(s.g.map(res3LevelRewardName).join(', '))}</span></li>`).join('')}</ol>
+  </section>`;
+}
 function profileHeroHTML(){
   const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
   const name = myProfile ? myProfile.name : 'Guest';
@@ -55436,7 +55539,7 @@ function profileHeroHTML(){
     <div class="pf-who">
       <h2 class="pf-name">${escapeHtml(name)}</h2>
       <div class="pf-status">${isSignedIn() ? '<span class="pf-dot ok"></span>Synced to your account' : '<span class="pf-dot"></span>Guest · saved on this device'}${cloudCardAdmin ? ' · <span class="admin-badge">🛡 Admin</span>' : ''}</div>
-      <div class="pf-level"><b>⭐ Level ${L.level}</b><span class="pf-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><small>${L.into}/${L.need} XP</small></div>
+      ${'' /* RES3 (2026-10-26, R9): the level bar is the full-width track under the hero (res3LevelTrackHTML) */}
     </div>
     <div class="pf-rank" title="${ONLINE_RAID_VISIBLE ? 'From Online Raid and Ranked results' : escapeAttr(TX('ui.rank-from-pvp-ranked'))}">
       <span class="conquest-rank-badge">${rank.label}</span>
@@ -55561,6 +55664,7 @@ function renderProfile(){
   const root = document.getElementById('view-profile');
   root.innerHTML = `<div class="pf">
     ${profileHeroHTML()}
+    ${res3LevelTrackHTML() /* RES3 (2026-10-26, R9, B1) */}
     ${profileTilesHTML()}
     <div class="pf-grid">
       <div class="pf-col">
@@ -56294,6 +56398,7 @@ const PLACES = {
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
   tabSwitchSeq++;
+  setTimeout(()=>{ try{ pl2MapViewed(); }catch(e){} }, 0); // RES3 (2026-10-26, R8): waiting XP plays on whichever screen comes up
   if(tab !== (typeof currentTab!=='undefined' ? currentTab : null)) forgeReadyUsed = false; // the Forge's one-shot "Show the N I can temper" comes back on a new visit
   if(tab !== 'play') try{ caveScreenOff(); }catch(e){}
   if(tab !== 'play' && !matchState) matchReturnSpot = null; // 2026-10-17: left the page, so there's no place to come back to
