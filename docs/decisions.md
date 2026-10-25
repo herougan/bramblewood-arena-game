@@ -4,6 +4,12 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 
 ## Waiting on you
 
+**PRO3-1. Side-map PRO decks may hold cards a player gets later** · Decide · Balance · asked 2026-10-25
+- PRO3 gave every side map of Maps 0-20 its own PRO / BPRO fights (N-L-PRO-k, e.g. 2-B-PRO-1). A side map's own pool is its parent's MAP tier + its SUBMAP list + SPECIAL + its fight decks, and some side-map fight decks hold cards first obtainable later (the Mudpuppy, Map 9, in Lilypad Reach 2-A and the Mycelium Deep 7-A; the Abyss Lantern Squid, Map 13, in the Sunken Depths 10-A; the Cinder Gecko, Map 22, in the Pale Desert and the volcano side maps; the Siege Rhino, Map 23, in the Canopy). By the PRO rule these decks stay and list the card under `later`. Keep them, or drop cards first obtainable after the side map opens from side-map pools too?
+  - Keep: a side map's own fight cards are its pool (proposed)
+  - Drop later cards from side-map PRO pools
+- **Default:** Keep: a side map's own fight cards are its pool (proposed)
+
 **PL2-1. The Dungeons tab: gone for players, kept in Admin Mode** · Decide · Dungeons · asked 2026-10-25
 - Your PL1-3 answer ("Dungeons Tab is not needed for a while"), built: players never see the Dungeons tab (nor the 🗝️ key, which already needed a daily dungeon). Admin Mode (and Dev Mode) still show it, so the daily dungeons and the Spire stay testable. The Group Dungeon is the Arena's new Co-op tab and a 👥 spot on Map 3 after its last fight (the same gate as before: Map 3 won). Hide it in Admin Mode too?
   - Kept in Admin Mode (built)
@@ -48,11 +54,12 @@ _Generated from `decisions.json` (2026-10-25). The hub has a searchable, filtera
 - **Default:** Swings and triggered skills only (built)
 
 **EN8-10. The CPU is stronger on Maps 0-20: retune the road after EN8?** · Decide · Balance · asked 2026-10-24
-- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve).
-  - Retune in the next balance pass (proposed)
+- Measured (tools/en8_cpu_pitch_2026_10_24.js, every fight of Maps 0-20 and their side maps as the game builds it, 40 games each, the reference player at Smart): the new-player win rate fell from 76.0% to 64.4% (docs/balance/en8-cpu-pitch-before-all.json -> -after-all.json). Of the ~12 points: the CPU's new pitch about 5.5 (its first card down: round 1.19 -> 1.01 on average; the owner's 4-of-20 case 2.59 -> 1.54), brambles that heal an ally instead of themselves (castleRegen, P24-17) about 3.7 (probe files -nopitch / -nopitch-regen), the lethal guard about 0.6 (-after-noguard), the rest (Rampart's columns, Guardian vs Thorns, Windfall) about 2. Nothing was retuned here. Proposal: the next BAL / road-curve pass re-measures and re-tunes the outliers (tools/skirmish_pass.js curve). PRO3 (2026-10-25) did that pass by the agreed schedule (roadCurveTarget, green = target +/- 8): every fight of Maps 0-20 and their side maps measured (tools/skirmish_pass.js measure, 40 games, 241 fights), then CPU deck swaps only (a card of the map's pool for another, the leader, first-clear card and deck size kept, no Shield or Health change). On the curve: green 68 -> 117, too easy 77 -> 56, too hard 81 -> 53; main-map mean 64.0% -> 67.2% (131 decks changed). Most of the 53 still too hard are decks already made of their map's weakest cards (Map 2, Map 4, Map 11 and Map 20's elites, 2-5, 7-6, 11-7, 20-6, 20-8): a swap cannot reach the target there. Your call: accept as is, or allow the next lever for those (drop copies so a deck shrinks, a lower enemy level or bramble, or a stronger reference deck). Data: docs/balance/pro3-road-check-2026-10-25.md (before / after per fight).
+  - Accept PRO3's swaps; leave the rest (proposed)
+  - Also use the next lever on the fights still too hard
   - Keep the CPU this strong
   - Soften: Basic CPU keeps the old pitch
-- **Default:** Retune in the next balance pass (proposed)
+- **Default:** Accept PRO3's swaps; leave the rest (proposed)
 
 **EN8-9. The new resource cards and their homes** · Decide · Cards · asked 2026-10-24
 - One card per new skill, pack cards in their biome's map (no faction cards), stats on the formula line: Beachcomber Sanderling (Driftwood 1, 1/7, Pebble Beach, Map 2), Beaver Feller (Felling 1, 2/10, the Morel Hollow, Map 7), Prospector Mole (Prospector 1, 3/9, Caves & Alcoves, Map 8), Salvager Hermit Crab (Salvage 1, 1/13, Coral Current, Map 10), Marmot Stonecutter (Stonecutter 1, 1/12, Eyrie Heights, Map 11), Carrion Crow (Flying, Scavenge 1, 2/5, the Briar Maze, Map 12), Hazel Coppice (Structure, Coppice 1, 0/14, the Redwood Deep, Map 13), Moonshell Snail (Magic Armor 1, 1/15, the Long Grass, Map 15). The Leafcutter Gardener's Growth (it did nothing) became On Ready: +1 Lumber (22:28 #10), 2/7. Art prompts: docs/art/en8-2026-10-24-briefs.md.
