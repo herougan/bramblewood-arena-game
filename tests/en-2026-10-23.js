@@ -118,8 +118,9 @@ ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolu
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');
 { const SC = require('../tools/skill_costs.js'), T = SC.make(costs);
   const s1 = T.cardS({rage:true, rageGrant:{armor:2}}).S, s0 = T.cardS({rage:true}).S;
-  ok(Math.abs((s1 - s0) - 0.4 * 2 * 1.56) < 0.01 /* 2026-10-26 (ENG9): Armor 1.56 a point */, `Rage – {Armor 2} costs Rage + 0.4 x 3.12 (${s0} -> ${s1})`);
-  ok(Math.abs(T.cardS({liege:true, liegeGrant:{armor:2}}).S - 0.94) < 0.01 /* ENG9: Armor 1.56 */, `Liege – {Armor 2} costs 0.3 x 3.12 = 0.94 (${T.cardS({liege:true, liegeGrant:{armor:2}}).S})`); }
+  const a2 = T.skillCost('armor', 2); // 2026-10-26 (ENG10, ENG9-9): Armor is 1.68 x N^1.43 now (Armor 2 4.52), read from the table
+  ok(Math.abs((s1 - s0) - 0.4 * a2) < 0.01 /* 2026-10-26 (ENG9): Armor 1.56 a point; ENG10: the table's Armor 2 */, `Rage – {Armor 2} costs Rage + 0.4 x Armor 2 (${a2}) (${s0} -> ${s1})`);
+  ok(Math.abs(T.cardS({liege:true, liegeGrant:{armor:2}}).S - 0.3 * a2) < 0.01 /* ENG10: the table's Armor 2 */, `Liege – {Armor 2} costs 0.3 x Armor 2 (${T.cardS({liege:true, liegeGrant:{armor:2}}).S})`); }
 
 // ---- cards
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = new Map(cards.map(c=> [c.id, c]));

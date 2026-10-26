@@ -1900,7 +1900,7 @@ sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('u
 PASSIVE_DEFS.push(
   {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
   {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
-const THR_APP = {requiem:{n:5, ico:'🕯️'}, dirge:{n:3, ico:'🥀'}, carnage:{n:3, ico:'🩸'}, muster:{n:6, ico:'🚩'}, beset:{n:6, ico:'🐺'}, throng:{n:10, ico:'🐜'}};
+const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'}}; // icons no other skill uses
 function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
 function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
 Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
@@ -1908,7 +1908,7 @@ Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_
     get:e=> e[k] ? thrNApp(k, e) : undefined, apply:(e, v)=>{ const x = Math.max(1, Math.round(Number(v) || THR_APP[k].n)); e[k] = x; }},
     {key:k + 'Grant', category:'passive', label:TX('ui.skn-e10-' + k), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> TX('ui.sk-e10-' + k, {n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; if(!e[k]) e[k] = THR_APP[k].n; } }}); });
-Object.assign(SKILL_ICON, {sunder:'🪓', dismantle:'🔧'});
+Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons no other skill uses
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
 function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
 // FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
@@ -47226,7 +47226,7 @@ function giVfx(ev){
   if(ev.type === 'fieldTick' && ev.field === 'tangledRoots'){ snd('curse'); return; }
   if(ev.type === 'fieldTick' && ev.field === 'graspingBriars'){ snd('curse'); return; } // ENG10 (2026-10-26)
   if(ev.type === 'statusFx' && ev.kind === 'sunder'){ fl(boardCardEl(ev.targetUid), '🪓', 'debuff'); snd('konk'); return; } // ENG10 (PROP1-1)
-  if(ev.type === 'statusFx' && ev.kind === 'dismantle'){ fl(boardCardEl(ev.attUid), ev.ok ? '🔧✓' : '🔧✗', ev.ok ? 'buff' : 'faded'); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'dismantle'){ fl(boardCardEl(ev.attUid), ev.ok ? '🧰✓' : '🧰✗', ev.ok ? 'buff' : 'faded'); return; }
 }
 // The Brittle badge, and Prayer Ward's 🧿 while its ward is up (it holds Prayer tokens).
 function giStatusBadges(c, badges){

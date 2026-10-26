@@ -1322,6 +1322,6 @@ The rules as built (engine: `damageCardFlat`'s `fo.armor` and `fireDamageAction`
 |---|---|---|---|
 | 💍 Hardy N | `e10HardyBadgeHTML`, the rings in `eq2MarksHTML` | a gold 💍N badge on the equipment card; one gold ring per life above the durability pips | — |
 | 💔 a life lost | `eq2Vfx` (`equipCrack`) | the piece shakes, "💔 −1 life" floats, a lock-break sound | `equipCrack` |
-| 🪓 Sunder / 🔧 Dismantle | `giVfx` | 🪓 on the target / 🔧✓ or 🔧✗ on the dismantler | `statusFx sunder` / `dismantle` |
+| 🪓💥 Sunder / 🔧💥 Dismantle | `giVfx` | 🪓 on the target / 🧰✓ or 🧰✗ on the dismantler | `statusFx sunder` / `dismantle` |
 | 🌹 Grasping Briars | the field row (`FIELD2.graspingBriars`), `giVfx` | the 🌹 row lights, the Tangled float on the caught unit | `fieldTick graspingBriars`, `statusFx tangled` |
-| 🕯️🥀🩸🚩🐺🐜 threshold on | EN5's state chip | the chip lights while it holds | `statusFx stateSkill` |
+| ⚰️🎻🥩🏴🆘🐜🐜 threshold on | EN5's state chip | the chip lights while it holds | `statusFx stateSkill` |

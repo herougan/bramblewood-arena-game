@@ -4424,6 +4424,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ensureStat(stats, sideOf(playerId), hc.defId).played++;
     if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, consterned: boardCard.consterned || undefined}); // + Consternation (2026-10-16)
     if(boardCard.vanguardUp && recordEvents && events) events.push({type:'statusFx', kind:'vanguard', side:sideOf(playerId), attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(playerId), targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:boardCard.vanguardUp}); // Vanguard (2026-10-17)
+    boardCard._readyAtPlay = true; // ENG10 (2026-10-26, ENG9-7): its Wait-0 Ready comes from readyOnArrival below, not from applyOnSpawnEffects
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     // Chained (Devilry, 2026-09-17, per explicit request: "other ways like when opponent unit
@@ -4465,6 +4466,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), defId).played++;
     if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot});
+    boardCard._readyAtPlay = true; // ENG10 (2026-10-26, ENG9-7): its Wait-0 Ready comes from readyOnArrival below, not from applyOnSpawnEffects
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     const opponent = players[otherId(playerId)];
@@ -4849,6 +4851,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     ensureStat(stats, sideOf(playerId), defId).played++;
     if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, leader:true});
     if(boardCard.surged && recordEvents && events) events.push({type:'statusFx', kind:'surge', side:sideOf(playerId), attUid:boardCard.uid, attDefId:defId, targetSide:sideOf(playerId), targetUid:boardCard.uid, targetDefId:defId, atk:rules.bossSurge.atk||0, hp:rules.bossSurge.hp||0});
+    boardCard._readyAtPlay = true; // ENG10 (2026-10-26, ENG9-7): its Wait-0 Ready comes from readyOnArrival below, not from applyOnSpawnEffects
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     const opp = players[otherId(playerId)];
@@ -6762,12 +6765,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(Number(def.effects.brood) > 0 || def.effects.brood === true){ const n = def.effects.brood === true ? 1 : Math.min(6, Number(def.effects.brood)||0), bid = broodDefOf(boardCard.defId);
       for(let k = 0; k < n; k++){ if(!spawnBeside(players, sideOf, playerId, boardCard, bid, stats, events, 'brood')) break; } }
     if(def.effects.moonpull && tideInNow() && recordEvents && events) events.push({type:'tide', tide:getTide(), round:turnNo, moonpull:true, side:mySide, defId:boardCard.defId, uid:boardCard.uid}); // Moonpull (2026-10-14)
-    if(def.effects.rocket && !(boardCard.wait > 0)) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
+    if(def.effects.rocket && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireRocket(players, sideOf, playerId, boardCard, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
     // Shield N, Fireball N and Meteor N (2026-10-14, sixth pass): a Wait-0 unit is Ready on arrival, so its Fireball/Meteor goes then.
     if(def.effects.shield) grantShield(playerId, boardCard, boardCard, numN(def.effects.shield, 1), sideOf, events);
-    if(def.effects.fireball && !(boardCard.wait > 0)) fireFireball(players, sideOf, playerId, boardCard, numN(def.effects.fireball, 15), stats, events);
-    if(def.effects.meteor && !(boardCard.wait > 0)) fireMeteor(players, sideOf, playerId, boardCard, numN(def.effects.meteor, 20), stats, events);
-    if(def.effects.chilli && !(boardCard.wait > 0)) eatChilli(sideOf, playerId, boardCard, numN(def.effects.chilli, 2), events); // Chilli N (2026-10-15): Ready on arrival
+    if(def.effects.fireball && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireFireball(players, sideOf, playerId, boardCard, numN(def.effects.fireball, 15), stats, events);
+    if(def.effects.meteor && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireMeteor(players, sideOf, playerId, boardCard, numN(def.effects.meteor, 20), stats, events);
+    if(def.effects.chilli && !(boardCard.wait > 0) && !boardCard._readyAtPlay) eatChilli(sideOf, playerId, boardCard, numN(def.effects.chilli, 2), events); // Chilli N (2026-10-15): Ready on arrival
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
     // later) it crashes and naps for a round (Stunned 1).
     if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
