@@ -144,3 +144,9 @@ SCORCH_SWEEP_MS
 scorchSweepMs
 scorchSweepVfx
 fxHostAt
+vis3BlockPulse
+vis3RampartStep
+vis3ShieldHTML
+vis3ShieldAmount
+vis3TrapRingHTML
+vis3NodeFrameHTML
