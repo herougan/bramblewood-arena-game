@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 package HUB6 (hub only)
+- Hub, 🧬 Deck optimizer tab: a summary on top with the three reference decks (Map reference with a per-map picker, Reference-2 the Ant Deck, Reference-3 pending), their road and PRO / BPRO win rates with the source file named, a plain "What is Elo?" box with a win-rate / Elo table, and a sortable per-map table. Built by `tools/hub/deckopt_summary.py`. No game code.
+
 ## 2026-10-26 release 10-26c (batch: AI3 + VIS3, CONTENT3)
 - CPU: Smart / Smartest score every card in every slot (Bloom room included); every level keeps a Lumber reserve (deck average cost - 1). Maps 0-20: Basic fights +0.6, Smart fights -1.8 points for a new player; no deck retuned.
 - Visuals: the trap ring, the token look on Bloom / Undead copies, no unit Health bars (Shield is a blue number, a rectangle on hit), Rampart / Guardian block motion, boss and elite nodes with a boss intro and sting, centred pips.

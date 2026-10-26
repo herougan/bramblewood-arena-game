@@ -1,0 +1,37 @@
+/* deckopt_summary.css: the summary at the top of the 🧬 Deck optimizer tab (tools/hub/deckopt_summary.py), package HUB6, 2026-10-26.
+   Colours come from the hub's theme tokens, so light and dark both work. Tables scroll inside .dos-wrap, never the page. */
+.dos{max-width:1320px; margin:0 0 24px;}
+.dos h2{margin:0 0 4px;} .dos h3{margin:0 0 6px;} .dos h4{margin:12px 0 6px; font-size:14px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.05em;}
+.dos code{overflow-wrap:anywhere;}
+.dos-decks{display:grid; grid-template-columns:1fr; gap:14px; margin:12px 0 18px;}
+@media (min-width:980px){.dos-decks{grid-template-columns:repeat(3, minmax(0,1fr));}}
+.dos-deck{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; min-width:0;}
+.dos-hd{display:block;} .dos-hd p{margin:0 0 8px; color:var(--ink-muted); font-size:14px;}
+.dos-pending{border-style:dashed; background:var(--surface-2);}
+.dos-pick{display:block; margin:6px 0; font-weight:700; font-size:14px;}
+.dos-pick select{font:600 14px Nunito,system-ui,sans-serif; padding:5px 8px; border-radius:999px; border:1px solid var(--line); background:var(--bg); color:var(--ink);}
+.dos-meta,.dos-here,.dos-sched,.dos-all{font-size:13.5px; margin:6px 0;}
+.dos-cards{list-style:none; margin:6px 0; padding:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:6px;}
+.dos-cards li{display:flex; align-items:center; gap:8px; min-width:0;}
+.dos-cards span:last-child{display:flex; flex-direction:column; min-width:0; line-height:1.2;}
+.dos-cards b{font-size:13px; overflow-wrap:anywhere;} .dos-cards small{color:var(--ink-muted); font-size:12px; font-weight:700;}
+.dos-th{width:36px; height:36px; display:inline-block; flex:0 0 auto; border-radius:6px; background-color:var(--surface-2); background-repeat:no-repeat;}
+.dos-lead b::after{content:" ★"; color:var(--accent);}
+.dos-tiles{display:grid; grid-template-columns:repeat(auto-fit, minmax(96px,1fr)); gap:6px; margin:6px 0;}
+.dos-tile{background:var(--bg); border:1px solid var(--line); border-radius:10px; padding:6px 8px; display:flex; flex-direction:column; min-width:0;}
+.dos-lab{font-size:11.5px; font-weight:800; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.04em;}
+.dos-val{font:800 22px 'Baloo 2',Nunito,system-ui,sans-serif; font-variant-numeric:tabular-nums;}
+.dos-tile small{font-size:11.5px; color:var(--ink-muted);}
+.dos-src{font-size:12px; color:var(--ink-muted); margin:4px 0 8px;}
+.dos-elo,.dos-maps{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin:0 0 18px;}
+.dos-elo ul{padding-left:20px;} .dos-elo li{margin:6px 0;}
+.dos-eloT{max-width:240px;}
+.dos-note{font-size:13.5px; color:var(--ink-muted);}
+.dos-wrap{overflow-x:auto; max-width:100%;}
+.dos-t th[data-dsk]{cursor:pointer; white-space:normal; vertical-align:bottom; min-width:84px;}
+.dos-t th[data-dsk]:first-child{min-width:170px;}
+.dos-t th[aria-sort=ascending]::after{content:" ▲";} .dos-t th[aria-sort=descending]::after{content:" ▼";}
+.dos-t td{white-space:normal; vertical-align:top;} .dos-t td.num{text-align:right; font-variant-numeric:tabular-nums;}
+.dos-t td small{display:block; color:var(--ink-muted); font-size:11.5px;}
+.dos-t th:focus-visible,.dos-pick select:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}

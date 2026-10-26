@@ -486,7 +486,8 @@ PP_INLINE = (f'const PP_DATA = {_js(_pp)};\nconst PP_DOC = {_js(_pp_doc)};\n' + 
 # summary in docs/balance/opt/ (newest first), so a run on GitHub Actions or locally only needs the files committed and the hub rebuilt.
 _opt_dir = os.path.join(ROOT, 'docs', 'balance', 'opt')
 _opt_files = sorted([f for f in os.listdir(_opt_dir) if f.endswith('.md')], key=lambda f: ('summary' not in f, -os.path.getmtime(os.path.join(_opt_dir, f)))) if os.path.isdir(_opt_dir) else []
-deckopt_html = ('<div class="doc guide"><h1>🧬 Deck optimizer</h1><p class="lede">Results of <code>tools/opt/deckopt.js</code>: no Claude tokens are spent on the games. '
+import deckopt_summary as DOS  # 2026-10-26 (package HUB6, owner 10-26 11:19): the summary panel at the top of the 🧬 Deck optimizer tab
+deckopt_html = ('<div class="doc guide"><h1>🧬 Deck optimizer</h1>' + DOS.summary_html(ROOT, CANON, _tix, cols, max(1, math.ceil(len(_thumb_ids) / cols))) + '<h2>Results</h2><p class="lede">Results of <code>tools/opt/deckopt.js</code>: no Claude tokens are spent on the games. '
   'Run it from GitHub (Actions → Deck optimizer → Run workflow) or locally (<code>node tools/opt/deckopt.js --maps 0-3 --minutes 20</code>), commit the files in '
   '<code>docs/balance/opt/</code>, then ask Claude to rebuild the hub. Raw per-map data: the <code>deckopt-map*.json</code> files there.</p>'
   + (''.join(f'<details{" open" if k == 0 else ""}><summary><b>{H.escape(f)}</b></summary><div class="doc">{md_html(open(os.path.join(_opt_dir, f), encoding="utf-8").read())}</div></details>' for k, f in enumerate(_opt_files)) or '<p>No results yet.</p>')
@@ -569,7 +570,8 @@ import hub5_data as H5
 _hubdir = lambda n: open(os.path.join(ROOT, 'tools', 'hub', n), encoding='utf-8').read()
 _ct = H5.card_table(ROOT, CANON, _tix)
 CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\n' + _hubdir('cardtable_tab.js'))
-CT_CSS = _hubdir('cardtable_tab.css')
+CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css')
+DOS_JS = _hubdir('deckopt_summary.js')
 _cv = H5.curves(ROOT); _cvc = _cv['code']
 CV_INLINE = (f"const CV_DATA = {_js({'upgrade': _cv['upgrade'], 'resources': _cv['resources'], 'rarityLabel': H5.RARITY_LABEL})};\n"
              f"const CV_GAME = (function(){{\n{_cvc['xpToNext']}\nconst ENERGY_MAX_BASE = {_cvc['energyBase']};\nconst ENERGY_REGEN_MS = {_cvc['regenMs']};\n{_cvc['staminaPlaces']}\n{_cvc['mapEnergyBase']}\n{_cvc['levelGate']}\n"
@@ -836,6 +838,7 @@ const SEARCH = {SEARCH_JSON};
 {HB_INLINE}
 {CH_INLINE}
 {CT_INLINE}
+{DOS_JS}
 {CV_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
