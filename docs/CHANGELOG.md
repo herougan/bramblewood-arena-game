@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 release 10-26e (batch: RES4)
+- Trail Mix Trek: the monthly pass (Stickers from notices, the first win, weekly quests and three weekly challenges; 30 tiers, a free lane of 6 packs and resources, premium shown locked); level packs only at 5 / 10 / 15 / 20 / 25. Forge tabs open on Maps 11-34. The first group dungeon is The Tidelock Vault.
+- Owner 10-26 14:14 recorded (TUT-1 his; live rows he edited stay unless re-balanced; ENG10 recommendations).
+- Checks (one final run, owner 14:14): full unit tier against 10-24e's list: new failures only autobattle (speed) and nv-2026-10-19, both failing the same way on 10-25b on this 2-core machine; ui_smoke 3 failures, all the tutorial check (53%, TUT-1, the owner's); flows 0 issues; card-matrix 0 failures, 0 golden diffs.
+
 ## 2026-10-26 (package RES4: PROP1-2 the monthly pass, RES3-3 Forge tabs, RES3-4 the group dungeon's name)
 - **Trail Mix Trek** (PROP1-2, renamed for the owner's "trail mix-y and camper vanny"; call RES4-1 has the other names): a monthly pass on its own page, from a Home note and the map's 🚐. A camper van drives a road of 30 tiers (150 **Stickers** 🏷️ each); the free lane is the proposal's table (6 packs: your pack tier at 5 / 15 / 25, faction at 10 / 20, a Tidemire Chest of 5 at 30; about 900 Maple Leaves and 900 Dust, 2 Energy capsules, a Raid Ticket, kit items, Kibble, Metal, the month's title "Trail Trekker of <month>"); past tier 30 a Trail Chest every 600, 3 a month. The premium lane is a locked "Coming later" placeholder with no price. Stickers: notices D-B 10, A 20, S 40, SS 60, SSS 100; the day's tiers at 3 / 5 / 6 notices claimed (20 / 10 / 10; call RES4-4); first win of the day 10; weekly tiers 100 / 60 / 40; three Trail challenges a week (50 each, seeded by the week) with progress bars. Resets on the 1st, paying tiers reached and not claimed; days left on the page and the note. Four new quest counters: challengeClears, bossWins, forgeLevels, decksWon.
 - **Level track** (PROP1-2): single cards to Level 5, a pack only at 5, 10, 15, 20, 25 (faction at 5 / 15 / 25, your pack tier at 10 / 20; the rhythm continues), 100 Maple Leaves + 50 Dust on the other levels (was a pack a level).
