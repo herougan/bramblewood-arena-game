@@ -130,7 +130,7 @@ async def run(b, url, w):
     r = await pg.evaluate(E("""const p = loadConquestProgress(); mainConquestMaps().slice(0, 11).forEach(m=> m.nodes.forEach(n=>{ const id = conquestNodeId(m.id, n.key); if(!p.completed.includes(id)) p.completed.push(id); })); saveConquestProgress(p);
       codexSubTab = 'forge'; switchTab('codex'); await new Promise(r=> setTimeout(r, 1500));
       return {tabs: [...document.querySelectorAll('.forge-mode')].map(b=> b.textContent.trim()), locked: document.querySelectorAll('.forge-mode.res3-forge-locked').length};"""))
-    ok(len(r['tabs']) == 3 and r['locked'] == 1, f"G18. at Map 11: Upgrade, Fuse and a locked Reinforce '?' {r['tabs']}")
+    ok(len(r['tabs']) == 2 and r['locked'] == 1, f"G18. at Map 11: Upgrade and a locked Reinforce '?' {r['tabs']}")  # 2026-10-26 (RES4, RES3-3): Fuse moved to Map 14
     await shot(pg, 'forge-map11', w, '.forge-modes', 30)
     await close(pg)
     pg = await page(b, url, w)
@@ -195,7 +195,7 @@ async def run(b, url, w):
         pg = await page(b, url, w)
         r = await pg.evaluate(E("""const p = loadConquestProgress(); mainConquestMaps().slice(0, 17).forEach(m=> m.nodes.forEach(n=>{ const id = conquestNodeId(m.id, n.key); if(!p.completed.includes(id)) p.completed.push(id); })); saveConquestProgress(p);
           return {name: FEATURE_SPOTS.find(s=> s.key === 'coop').name, map: FEATURE_SPOTS.find(s=> s.key === 'coop').mapNumber};"""))
-        ok(r['name'] == 'The Warren Heist' and r['map'] == 16, f"B3. the Group Dungeon's spot: {r}")
+        ok(r['name'] == 'The Tidelock Vault' and r['map'] == 16, f"B3. the Group Dungeon's spot: {r}")  # 2026-10-26 (RES4, RES3-4): renamed, aqua-themed (was The Warren Heist)
         await close(pg)
 
 async def main(a):

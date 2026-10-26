@@ -148,6 +148,8 @@
        floor right below (and its two responsive breakpoints further down) is scaled the same
        ~15% alongside it to keep matching, per that rule's own "must move together" note. */
     --match-card-w:119px; --match-card-h:149px;
+    /* 2026-10-26 (package RES4): the Trail Mix Trek's camper van and road */
+    --trail-van:#2f8f86; --trail-van-top:#f6ecd2; --trail-win:#9fd3e6; --trail-tyre:#2a2622; --trail-road:#4a4741; --trail-road-edge:#6f6a5f; --trail-line:#f2c94c; --trail-glow:#f2b84c;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
@@ -165,6 +167,7 @@
       --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
       --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
       --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
+      --trail-van:#3aa79c; --trail-van-top:#e9dcbc; --trail-win:#6fb3cc; --trail-tyre:#151311; --trail-road:#2c2a26; --trail-road-edge:#4a463f; --trail-line:#e0b43c; --trail-glow:#e8a83a;
     }
   }
   :root[data-theme="dark"]{
@@ -182,6 +185,7 @@
     --poison:#8fd66a; --armor:#9db3c7; --rage:#f0685a; --bleed:#e17564; --scar:#b48ce8; --heal:#7fe0ab;
     --devilry-bg:#3a3a3a; --devilry-border:#b8203a; --devilry-ink:#e8e0e0;
     --page-wood:#140d08; --page-wood-2:#2a1c10; --page-mint:#3f6b53;
+    --trail-van:#3aa79c; --trail-van-top:#e9dcbc; --trail-win:#6fb3cc; --trail-tyre:#151311; --trail-road:#2c2a26; --trail-road-edge:#4a463f; --trail-line:#e0b43c; --trail-glow:#e8a83a;
   }
   *{box-sizing:border-box;}
   /* Items #1/#5 (2026-09-19, "doesn't fit all the elements in the screen" in the claude.ai
@@ -9787,6 +9791,83 @@
   #cardPop .fog-pop-rows{list-style:none; margin:6px 0 4px; padding:0; display:grid; gap:2px; font-size:12px;}
   #cardPop .fog-pop-rows li{display:flex; justify-content:space-between; gap:10px; opacity:.9;}
   #cardPop .fog-pop-rows li b{font-weight:700;}
+
+  /* ==== 2026-10-26 (package RES4, PROP1-2): the Trail Mix Trek page. A horizontal road of 30 tiers (the free lane above the asphalt, the locked
+     premium placeholder below), the camper van parked at your Stickers, then this week's challenges and the ways to earn. The road scrolls on its
+     own; the page never scrolls sideways. The lane labels stick to the left edge. */
+  #view-trail{max-width:1180px; margin:0 auto; width:100%;}
+  .tr-page{display:flex; flex-direction:column; gap:12px;}
+  .tr-head{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; padding:14px 16px; border-radius:16px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 6px 18px var(--shadow);}
+  .tr-title{display:flex; align-items:center; gap:10px; flex:1 1 240px; min-width:0;}
+  .tr-title h2{margin:0; font-family:'Baloo 2'; font-size:26px; line-height:1.05; color:var(--ink);}
+  .tr-title small{color:var(--ink-muted); font-size:13px;}
+  .tr-badge{display:grid; place-items:center; width:48px; height:48px; border-radius:14px; font-size:28px; background:color-mix(in srgb, var(--trail-van) 22%, var(--surface-2)); border:2px solid color-mix(in srgb, var(--trail-van) 60%, transparent);}
+  .tr-facts{display:flex; gap:8px; flex-wrap:wrap;}
+  .tr-fact{display:grid; grid-template-columns:auto auto; grid-template-rows:auto auto; column-gap:6px; align-items:center; padding:6px 12px; border-radius:12px; background:var(--surface-2); min-width:92px;}
+  .tr-fact i{grid-row:1 / 3; font-style:normal; font-size:20px;} .tr-fact b{font-family:'Baloo 2'; font-size:19px; line-height:1; color:var(--ink);} .tr-fact small{font-size:11.5px; color:var(--ink-muted);}
+  .tr-claim-all{margin-left:auto;}
+  .tr-road-wrap{overflow-x:auto; overflow-y:hidden; border-radius:16px; background:linear-gradient(180deg, color-mix(in srgb, var(--trail-win) 30%, var(--surface)) 0%, var(--surface) 42%, color-mix(in srgb, var(--page-mint) 30%, var(--surface)) 100%); border:1px solid var(--surface-border); scroll-behavior:smooth; -webkit-overflow-scrolling:touch; overscroll-behavior-x:contain;}
+  .tr-road{--col:76px; --gap:6px; --k:96px; --vw:76px; position:relative; display:grid; grid-template-columns:var(--k) repeat(var(--tiers), var(--col)); grid-template-rows:auto 64px auto; column-gap:var(--gap); row-gap:6px; padding:12px 14px 12px 0; width:max-content;}
+  .tr-lane-k{position:sticky; left:0; z-index:4; display:flex; align-items:center; justify-content:center; text-align:center; padding:4px 6px; font-family:'Baloo 2'; font-size:12.5px; font-weight:700; line-height:1.15; color:var(--ink-muted); background:var(--surface); border-radius:0 10px 10px 0; box-shadow:6px 0 10px -6px var(--shadow);}
+  .tr-k-free{grid-row:1; grid-column:1; color:var(--ink);} .tr-k-prem{grid-row:3; grid-column:1;}
+  .tr-stop{grid-row:1; position:relative; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; height:74px; padding:6px 2px; border-radius:12px; border:2px solid var(--surface-border); background:var(--surface-2); color:var(--ink); cursor:pointer; font:inherit;}
+  .tr-stop.is-big{border-color:color-mix(in srgb, var(--gold) 70%, var(--surface-border)); background:color-mix(in srgb, var(--gold-soft) 70%, var(--surface-2));}
+  .tr-stop-ico{display:flex; gap:1px; font-size:22px; line-height:1;} .tr-stop-ico i{font-style:normal;} .tr-stop-ico .maple-ico, .tr-stop-ico img{width:22px; height:22px;}
+  .tr-stop-n{font-family:'Baloo 2'; font-size:14px; line-height:1;}
+  .tr-stop.is-ahead{opacity:.62;}
+  .tr-stop.is-got{background:var(--surface-3); opacity:.72;} .tr-stop.is-got .tr-stop-ico{filter:grayscale(.7);}
+  .tr-tick{position:absolute; top:3px; right:5px; font-size:12px; font-weight:800; color:var(--health);}
+  .tr-stop.is-ready{border-color:var(--trail-glow); box-shadow:0 0 0 3px color-mix(in srgb, var(--trail-glow) 45%, transparent), 0 4px 12px var(--shadow);}
+  .tr-stop.is-ready::after{content:'🎁'; position:absolute; top:-9px; right:-6px; font-size:15px;}
+  .tr-stop.is-picked{outline:3px solid var(--focus); outline-offset:1px;}
+  .tr-stop:hover{translate:0 -2px;} .tr-stop:focus-visible{outline:3px solid var(--focus); outline-offset:2px;}
+  .tr-asphalt{grid-row:2; grid-column:1 / -1; position:relative; margin-right:-14px; background:var(--trail-road); border-top:4px solid var(--trail-road-edge); border-bottom:4px solid var(--trail-road-edge); border-radius:0 8px 8px 0;}
+  .tr-dash{position:absolute; left:var(--k); right:0; top:50%; height:3px; translate:0 -50%; background:repeating-linear-gradient(90deg, var(--trail-line) 0 18px, transparent 18px 34px); opacity:.85;}
+  .tr-camp{position:absolute; left:calc(var(--k) / 2 - 14px); top:-30px; font-size:24px; z-index:2;}
+  .tr-flag{position:absolute; right:10px; top:50%; translate:0 -50%; font-size:22px;}
+  .tr-mile{grid-row:2; align-self:end; justify-self:center; z-index:1; margin-bottom:-2px; min-width:22px; padding:0 5px; border-radius:6px 6px 0 0; font-family:'Baloo 2'; font-size:11.5px; font-weight:700; line-height:16px; text-align:center; color:var(--trail-line); background:color-mix(in srgb, var(--trail-road) 70%, #000); opacity:.75;}
+  .tr-mile.is-on{color:var(--trail-road); background:var(--trail-line); opacity:1;}
+  .tr-van{position:absolute; z-index:3; top:50%; width:var(--vw); translate:0 -58%; left:calc(var(--k) + var(--gap) + var(--col) / 2 + (var(--at, 0) - 1) * (var(--col) + var(--gap)) - var(--vw) / 2); transition:left 1.5s cubic-bezier(.45,.05,.25,1); filter:drop-shadow(0 4px 3px rgba(0,0,0,.45));}
+  .tr-van-svg{display:block; width:100%; height:auto;}
+  .tr-van .tv-low{fill:var(--trail-van);} .tr-van .tv-top{fill:var(--trail-van-top);} .tr-van .tv-win{fill:var(--trail-win);} .tr-van .tv-stripe{fill:var(--trail-van-top); opacity:.9;}
+  .tr-van .tv-door{fill:none; stroke:var(--trail-van-top); stroke-width:1; opacity:.7;} .tr-van .tv-light{fill:var(--trail-line);} .tr-van .tv-rack{fill:var(--trail-tyre);} .tr-van .tv-bag{fill:var(--lumber);}
+  .tr-van .tv-tyre{fill:var(--trail-tyre);} .tr-van .tv-hub{fill:var(--trail-van-top);} .tr-van .tv-spoke{fill:var(--trail-tyre);}
+  .tr-van .tv-wheel{transform-box:fill-box; transform-origin:center;}
+  .tr-van.is-driving .tv-wheel{animation:trWheel .35s linear infinite;} .tr-van.is-driving{animation:trBob .3s ease-in-out infinite alternate;}
+  @keyframes trWheel{to{transform:rotate(360deg);}} @keyframes trBob{from{margin-top:0;} to{margin-top:-2px;}}
+  .tr-prem-cell{grid-row:3; display:grid; place-items:center; height:44px; border-radius:10px; border:1px dashed var(--surface-border); background:color-mix(in srgb, var(--surface-3) 50%, transparent); opacity:.55; filter:grayscale(.85);}
+  .tr-prem-cell i{font-style:normal; font-size:18px;}
+  .tr-pick-row{min-height:46px;}
+  .tr-pick, .tr-pick-hint, .tr-bonus{display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; margin:0; padding:10px 14px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink);}
+  .tr-pick-hint{color:var(--ink-muted); font-size:13px;}
+  .tr-pick b{font-family:'Baloo 2'; font-size:16px;} .tr-pick-rw{display:flex; flex-wrap:wrap; gap:6px 12px;} .tr-pick-rw i{font-style:normal;} .tr-pick-rw .maple-ico{width:16px; height:16px; vertical-align:-3px;}
+  .tr-pick-state{color:var(--ink-muted); font-size:13px;} .tr-pick-prem{margin-left:auto; color:var(--ink-soft); font-size:12.5px;}
+  .tr-bonus span:first-child{font-size:22px;}
+  .tr-cols{display:grid; grid-template-columns:minmax(0, 1.15fr) minmax(0, 1fr); gap:12px;}
+  .tr-card{padding:12px 16px; border-radius:16px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink);}
+  .tr-card h3{margin:0 0 8px; font-family:'Baloo 2'; font-size:18px; display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px;} .tr-card h3 small{font-family:'Nunito'; font-size:12px; font-weight:600; color:var(--ink-muted);}
+  .tr-card h4{margin:12px 0 4px; font-family:'Baloo 2'; font-size:14px; color:var(--ink-muted);}
+  .tr-ch-list, .tr-ways ul, .tr-log{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:8px;}
+  .tr-ch{display:grid; grid-template-columns:34px minmax(0, 1fr) auto auto; align-items:center; gap:10px; padding:8px 10px; border-radius:12px; background:var(--surface-2);}
+  .tr-ch.is-done{background:color-mix(in srgb, var(--health) 16%, var(--surface-2));}
+  .tr-ch-ico{font-size:22px; text-align:center;} .tr-ch-main{display:flex; flex-direction:column; gap:4px; min-width:0;} .tr-ch-label{font-weight:700; font-size:13.5px;}
+  .tr-bar{display:block; height:7px; border-radius:4px; background:var(--surface-3); overflow:hidden;} .tr-bar span{display:block; height:100%; background:var(--trail-van); border-radius:inherit;}
+  .tr-ch-v{font-family:'Baloo 2'; font-size:15px;} .tr-ch-pts{font-size:12px; color:var(--ink-muted); white-space:nowrap;}
+  .tr-ways li{display:grid; grid-template-columns:24px minmax(0, 1fr) auto; gap:8px; align-items:center; font-size:13px;} .tr-way-k{display:flex; flex-direction:column;} .tr-way-k small{color:var(--ink-muted); font-size:11.5px;}
+  .tr-ways li b{font-size:12.5px; font-weight:700; text-align:right;}
+  .tr-log li{font-size:12.5px; color:var(--ink-muted);} .tr-log b{color:var(--ink);}
+  .tr-titles{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 0;} .tr-titles span{padding:3px 10px; border-radius:999px; background:var(--gold-soft); color:var(--gold-text); font-size:12px; font-weight:700;}
+  .home-note.note-trail{left:-132px; top:516px; rotate:2deg;}
+  #trailNavBtnPlay{position:relative;} #trailNavBtnPlay .home-badge{top:-6px; right:-6px;}
+  @media (max-width:860px){ .home-note.note-trail{position:static; rotate:0deg;} }
+  @media (max-width:640px){
+    .tr-head{padding:12px;} .tr-title h2{font-size:22px;} .tr-facts{width:100%;} .tr-fact{min-width:0; flex:1 1 0; padding:6px 8px; grid-template-columns:auto minmax(0, 1fr);} .tr-fact i{grid-row:1; font-size:17px;} .tr-fact small{grid-column:1 / -1; line-height:1.2;} .tr-claim-all{width:100%;}
+    .tr-ways li{grid-template-columns:24px minmax(0, 1fr);} .tr-ways li b{grid-column:2; text-align:left; color:var(--ink-muted);}
+    .tr-road{--col:58px; --k:62px; --vw:60px; grid-template-rows:auto 54px auto;} .tr-stop{height:62px;} .tr-stop-ico{font-size:18px;} .tr-stop-ico .maple-ico, .tr-stop-ico img{width:18px; height:18px;}
+    .tr-lane-k{font-size:11px;} .tr-prem-cell{height:36px;} .tr-cols{grid-template-columns:1fr;}
+    .tr-ch{grid-template-columns:28px minmax(0, 1fr) auto; } .tr-ch-pts{grid-column:2 / -1; justify-self:end; margin-top:-6px;}
+  }
+  @media (prefers-reduced-motion: reduce){ .tr-van{transition:none;} .tr-van.is-driving, .tr-van.is-driving .tv-wheel{animation:none;} }
 </style>
 </head>
 <body>
@@ -13919,6 +14000,7 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
   <div id="view-achievements" hidden></div>
   <div id="view-paths" hidden></div>
   <div id="view-inventory" hidden></div>
+  <div id="view-trail" hidden></div>
   <div id="view-stomp" hidden></div>
   <div id="view-guild" hidden></div>
   <div id="view-admin" hidden></div>

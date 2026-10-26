@@ -61,8 +61,9 @@ ok(/window\.FX\.E\.nodeRankEmblem = res3RankEmblemFlight/.test(src) && /const ex
   const f = ctx.f, row = L=> f(L).join('+');
   ok(row(0) === '' && [1, 2, 3, 4].every(L=> row(L) === 'card'), 'B1. Level 0: nothing; Levels 1-4: a single card');
   ok(row(5) === 'card+faction', 'B1. Level 5: a single card and the first faction pack');
-  ok(row(6) === 'pack1' && row(7) === 'faction' && row(8) === 'pack1' && row(14) === 'pack1', 'B1. then Pack 1 and a faction pack alternate');
-  ok(row(15) === 'pack2' && row(16) === 'faction' && row(31) === 'pack2', 'B1. from Level 15 Pack 2 takes Pack 1\'s place');
+  // 2026-10-26 (package RES4, PROP1-2 approved): the steady level packs moved to the Trail Mix Trek; a pack only every fifth level now, Maple Leaves
+  // + Dust between (was: Pack 1 and a faction pack alternating, Pack 2 from Level 15). tests/res4-2026-10-26.js checks the new rows in full.
+  ok(row(6) === 'leaves' && row(10) === 'packT' && row(15) === 'faction' && row(20) === 'packT' && row(25) === 'faction', 'B1 (RES4). a pack only at 10 / 15 / 20 / 25, Maple Leaves + Dust between');
   const g = fnSrc('res3CheckLevelTrack');
   ok(/if\(!st\)\{ st = \{granted: L\}; res3SaveLevelTrack\(st\); return; \}/.test(g), 'B1. a save from before starts the track where it is (no back pay)');
   ok(/if\(!armouryOpen\(\)\)\{ holdPackForArmoury\(\{kind:'res3level'/.test(fnSrc('res3GrantLevelReward')) && /ref\.kind === 'res3level'\) res3GrantLevelReward/.test(fnSrc('releaseHeldPacks')), 'B1. before the Armoury, level rewards wait with the held packs');
@@ -70,7 +71,7 @@ ok(/window\.FX\.E\.nodeRankEmblem = res3RankEmblemFlight/.test(src) && /const ex
   ok(/\$\{res3LevelTrackHTML\(\)/.test(fnSrc('renderProfile')) && /\.res3-lt-now\{flex:0 0 25%;/.test(tpl), 'R9. the Profile bar: the level in the left quarter, the next levels and rewards to the right'); }
 
 // ---------------- B3 ----------------
-ok(/const GD_OPEN_AFTER_MAP = 16;/.test(src) && /get name\(\)\{ return gdThemedName\(\); \}/.test(src) && texts.TEXT['ui.res3-gd-hollow'] === 'The Warren Heist', 'B3. the Group Dungeon on Map 16, by its themed name');
+ok(/const GD_OPEN_AFTER_MAP = 16;/.test(src) && /get name\(\)\{ return gdThemedName\(\); \}/.test(src) && texts.TEXT[/GD_THEMED_NAME = \{hollow: '([^']+)'\}/.exec(src)[1]] === 'The Tidelock Vault', 'B3. the Group Dungeon on Map 16, by its themed name'); // 2026-10-26 (RES4, RES3-4): aqua-themed, was The Warren Heist
 ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(src), 'B3. the daily dungeons stay Admin-only');
 
 // ---------------- G5 G6 ----------------
@@ -109,15 +110,17 @@ ok(/#myDeckList \.deck-stack\{width:clamp\(72px, 7\.4vw, 104px\);\}/.test(tpl) &
 { let reach = 11, admin = false;
   const ctx = {playerMapReach: ()=> reach, get adminModeEnabled(){ return admin; }, devModeEnabled: false};
   vm.createContext(ctx); vm.runInContext(constSrc('RES3_FORGE_TAB_MAP') + '\n' + "const RES3_FORGE_TAB_TEASED = new Set(['castles']);" + '\n' + fnSrc('res3ForgeTabOpen') + '\n' + fnSrc('res3ForgeTabShown') + '\nthis.o = res3ForgeTabOpen; this.s = res3ForgeTabShown;', ctx);
-  ok(ctx.o('upgrade') && ctx.o('fuse') && !ctx.s('smith') && !ctx.s('enchant') && !ctx.s('refine'), 'G18. at Map 11 only Upgrade and Fuse; the rest are not drawn');
+  // 2026-10-26 (package RES4, RES3-3): Fuse moved to Map 14, so Map 11 opens Upgrade alone (was Upgrade and Fuse)
+  ok(ctx.o('upgrade') && !ctx.s('fuse') && !ctx.s('smith') && !ctx.s('enchant') && !ctx.s('refine'), 'G18. at Map 11 only Upgrade; the rest are not drawn');
   ok(ctx.s('castles') && !ctx.o('castles'), 'G18. Reinforce shows, locked ("?")');
-  reach = 20; ok(['smith', 'raid', 'refine', 'castles', 'enchant', 'facility'].every(k=> ctx.o(k)), 'G18. by Map 20 every tab is earned');
+  // 2026-10-26 (package RES4, RES3-3: "spread from Map 0 to 40"): the last tab (Socket) now opens on Map 34 (was Map 20)
+  reach = 34; ok(['smith', 'raid', 'refine', 'castles', 'enchant', 'facility'].every(k=> ctx.o(k)), 'G18. by Map 34 every tab is earned');
   reach = 0; admin = true; ok(ctx.o('enchant'), 'G18. Admin sees every tab');
   ok(/filter\(k=> res3ForgeTabShown\(k\)\)\.map\(k=> !res3ForgeTabOpen\(k\) \? res3ForgeLockedTabHTML\(k\)/.test(fnSrc('renderForge')) && /if\(!res3ForgeTabOpen\(forgeMode\)\) forgeMode = 'upgrade';/.test(fnSrc('renderForge')), 'G18. the Forge draws them that way'); }
 
 // ---------------- texts in 12 packs ----------------
 { const keys = Object.keys(texts.TEXT).filter(k=> /\.res3-/.test(k));
-  ok(keys.length >= 16, 'texts: ' + keys.length + ' RES3 keys');
+  ok(keys.length >= 15, 'texts: ' + keys.length + ' RES3 keys'); // 2026-10-26 (RES4): the dungeon's name moved to ui.res4-gd-hollow (was 16)
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));
     const miss = keys.map(k=> texts.TEXT[k]).filter(en=> !(en in pack)); ok(!miss.length, `texts: ${code} has every RES3 text ${miss.slice(0, 3)}`); }); }
 
