@@ -56,14 +56,14 @@ for key, card, why in [('5-1', 'marsh-mallow-hare', 'owner C1, Map 5\'s first tw
     if edit_line(key, lambda l: set_first(l, card, why)): done.append('%s firstCard %s' % (key, card))
 for key in ['7-2', '7-4', '7-5', '7-6']:
     if edit_line(key, lambda l: swap_deck(l, 'hollow-oath-keeper', 'truffle-piglet', 'G3')): done.append('%s deck: Oath-Keeper -> Hawthorn Shieldbug' % key)
-# the copy caps (an Uncommon 4 a deck): what the Truffle Piglet can't take goes to an Owl Nightwatch or a Garden Snail
-for key, (other, k) in {'7-4': ('owl-nightwatch', 2), '7-5': ('owl-nightwatch', 1), '7-6': ('garden-snail', 1)}.items():
+# the copy caps (an Uncommon 4 a deck): what the Truffle Piglet can't take goes to a Leafcutter Gardener, a Dung Beetle or a Garden Snail (Map 7's own, on theme)
+for key, (other, k) in {'7-4': ('leafcutter-gardener', 2), '7-5': ('dung-beetle', 1), '7-6': ('garden-snail', 1)}.items():
     def cap(line, other=other, k=k):
         m = re.search(r'deck:(\{[^}]*\})', line); d = json.loads(m.group(1))
         if d.get('truffle-piglet', 0) <= 4: return line
         d['truffle-piglet'] -= k; d[other] = d.get(other, 0) + k
         line = line[:m.start()] + 'deck:' + json.dumps(d, separators=(',', ':')) + line[m.end():]
-        return re.sub(r'hollow-oath-keeper x(\d) -> truffle-piglet', lambda mm: 'hollow-oath-keeper x%s -> truffle-piglet x%d + %s x%d (the copy caps)' % (mm.group(1), int(mm.group(1)) - k, other, k), line)
+        return re.sub(r'hollow-oath-keeper x(\d) -> truffle-piglet', lambda mm: 'hollow-oath-keeper x%s -> truffle-piglet x%d + %s x%d (the copy caps; on theme)' % (mm.group(1), int(mm.group(1)) - k, other, k), line)
     if edit_line(key, cap): done.append('%s copy caps' % key)
 for key in ['5-A-2', '10-A-2']:
     if edit_line(key, lambda l: set_rules(l, {'tide': True}, 'owner BAL3-1 "Fix.": the Tide, so Rising Tide can turn on')): done.append('%s + tide' % key)

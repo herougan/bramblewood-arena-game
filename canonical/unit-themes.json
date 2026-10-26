@@ -16837,9 +16837,9 @@
     "home": [],
     "fights": {
      "m1": 4,
-     "mu": 10,
+     "mu": 11,
      "mz": 17,
-     "muc": 4
+     "muc": 5
     }
    },
    "source": null,
@@ -23761,9 +23761,9 @@
    "maps": {
     "home": [],
     "fights": {
-     "mu": 5,
+     "mu": 6,
      "mz": 8,
-     "muc": 8
+     "muc": 10
     }
    },
    "source": "pack",
@@ -29392,7 +29392,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mu": 6,
+     "mu": 8,
      "muc": 2
     }
    },
@@ -36911,8 +36911,8 @@
      "mu"
     ],
     "fights": {
-     "mu": 8,
-     "muc": 8
+     "mu": 16,
+     "muc": 12
     }
    },
    "source": "map",
@@ -38606,7 +38606,7 @@
    "faction": "wild",
    "size": "medium",
    "stage": 2,
-   "firstMap": 7,
+   "firstMap": 8,
    "body": {
     "cost": 1,
     "wait": 1,
@@ -38629,9 +38629,7 @@
    "maps": {
     "home": [],
     "fights": {
-     "mu": 12,
-     "mz": 1,
-     "muc": 7
+     "mz": 1
     }
    },
    "source": "pack",
@@ -42827,13 +42825,13 @@
    "subtype": "structure",
    "faction": "hummingbirds",
    "size": "medium",
-   "stage": 2,
-   "firstMap": 11,
+   "stage": null,
+   "firstMap": null,
    "body": {
     "cost": 3,
     "wait": 3,
     "attack": 0,
-    "health": 26,
+    "health": 25,
     "dmg": "physical",
     "resist": []
    },
@@ -42857,7 +42855,7 @@
     "home": [],
     "fights": {}
    },
-   "source": "pack",
+   "source": null,
    "structure": true,
    "why": {
     "biome": "type Hummingbird",
@@ -47705,96 +47703,9 @@
    }
   },
   {
-   "id": "dire-hawthorn-shieldbug",
-   "name": "Old Hawthorn Shieldbug",
-   "internalName": "Dire Hawthorn Shieldbug",
-   "nameProposal": true,
-   "icon": "🪲",
-   "status": "proposed",
-   "rarity": "uncommon",
-   "biomes": [
-    "meadow-forest",
-    "fungal"
-   ],
-   "family": "insect",
-   "sub": "Insect",
-   "animal": "shieldbug",
-   "animalGroup": "shieldbug",
-   "subtype": null,
-   "faction": "wild",
-   "size": "large",
-   "stage": 3,
-   "firstMap": 17,
-   "body": {
-    "cost": 2,
-    "wait": 1,
-    "attack": 2,
-    "health": 13,
-    "dmg": "physical",
-    "resist": []
-   },
-   "skills": [],
-   "types": [
-    "Insect",
-    "Field",
-    "Insect"
-   ],
-   "maps": {
-    "home": [
-     "mo"
-    ],
-    "fights": {}
-   },
-   "source": null,
-   "variant": {
-    "tier": "dire",
-    "of": "hawthorn-shieldbug",
-    "kind": "proposed",
-    "audience": "player",
-    "statsFrom": "N",
-    "lumber": 1,
-    "wait": 0,
-    "rarityStep": 1,
-    "eff": {
-     "attack": 1,
-     "health": 1
-    },
-    "N": 21.83,
-    "N2": 105.9,
-    "x1": 17,
-    "x2": 26,
-    "budgetOk": true,
-    "fit": 0.8,
-    "multDraft": {
-     "mult": {
-      "attack": 1.4,
-      "health": 1.5
-     },
-     "cost": 3,
-     "wait": 1,
-     "attack": 2,
-     "health": 15
-    },
-    "baseSkills": [
-     [
-      "armor",
-      1
-     ]
-    ],
-    "map": "mo",
-    "mapName": "The Old Bramble",
-    "mapNo": 17
-   },
-   "why": {
-    "biome": "Hawthorn Shieldbug's ground, later on The Old Bramble (Map 17)",
-    "family": "from Hawthorn Shieldbug",
-    "faction": "from Hawthorn Shieldbug"
-   }
-  },
-  {
-   "id": "elder-tunnel-ant",
-   "name": "Old Tunnel Ant",
-   "internalName": "Elder Tunnel Ant",
+   "id": "dire-tunnel-ant",
+   "name": "Rootdelve Ant",
+   "internalName": "Dire Tunnel Ant",
    "nameProposal": true,
    "icon": "🐜",
    "status": "proposed",
@@ -47808,14 +47719,14 @@
    "animalGroup": "ant",
    "subtype": null,
    "faction": "hives",
-   "size": "large",
+   "size": "medium",
    "stage": 3,
    "firstMap": 17,
    "body": {
     "cost": 2,
-    "wait": 2,
-    "attack": 3,
-    "health": 16,
+    "wait": 1,
+    "attack": 2,
+    "health": 15,
     "dmg": "physical",
     "resist": []
    },
@@ -47833,33 +47744,33 @@
    },
    "source": null,
    "variant": {
-    "tier": "elder",
+    "tier": "dire",
     "of": "tunnel-ant",
     "kind": "proposed",
     "audience": "player",
     "statsFrom": "N",
     "lumber": 1,
-    "wait": 1,
-    "rarityStep": 2,
+    "wait": 0,
+    "rarityStep": 1,
     "eff": {
-     "attack": 1.5,
-     "health": 1.78
+     "attack": 1,
+     "health": 1.67
     },
-    "N": 28.07,
-    "N2": 175.09,
-    "x1": 22,
-    "x2": 48,
+    "N": 23.99,
+    "N2": 127.89,
+    "x1": 19,
+    "x2": 30,
     "budgetOk": true,
     "fit": 0.8,
     "multDraft": {
      "mult": {
-      "attack": 1.8,
-      "health": 2
+      "attack": 1.4,
+      "health": 1.5
      },
      "cost": 2,
-     "wait": 2,
-     "attack": 4,
-     "health": 14
+     "wait": 1,
+     "attack": 3,
+     "health": 13
     },
     "baseSkills": [
      [
@@ -47883,6 +47794,94 @@
     "biome": "Tunnel Ant's ground, later on The Old Bramble (Map 17)",
     "family": "from Tunnel Ant",
     "faction": "from Tunnel Ant"
+   }
+  },
+  {
+   "id": "elder-leafcutter-gardener",
+   "name": "Old Leafcutter Gardener",
+   "internalName": "Elder Leafcutter Gardener",
+   "nameProposal": true,
+   "icon": "🐜",
+   "status": "proposed",
+   "rarity": "rare",
+   "biomes": [
+    "meadow-forest",
+    "jungle",
+    "fungal"
+   ],
+   "family": "insect",
+   "sub": "Insect",
+   "animal": "leafcutter ant",
+   "animalGroup": "ant",
+   "subtype": null,
+   "faction": "hives",
+   "size": "large",
+   "stage": 3,
+   "firstMap": 17,
+   "body": {
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 12,
+    "dmg": "physical",
+    "resist": []
+   },
+   "skills": [],
+   "types": [
+    "Ants",
+    "Rainforest",
+    "Insect"
+   ],
+   "maps": {
+    "home": [
+     "mo"
+    ],
+    "fights": {}
+   },
+   "source": null,
+   "variant": {
+    "tier": "elder",
+    "of": "leafcutter-gardener",
+    "kind": "proposed",
+    "audience": "player",
+    "statsFrom": "N",
+    "lumber": 1,
+    "wait": 1,
+    "rarityStep": 2,
+    "eff": {
+     "attack": 1,
+     "health": 1.71
+    },
+    "N": 20.09,
+    "N2": 89.69,
+    "x1": 16,
+    "x2": 24,
+    "budgetOk": true,
+    "fit": 0.8,
+    "multDraft": {
+     "mult": {
+      "attack": 1.8,
+      "health": 2
+     },
+     "cost": 1,
+     "wait": 1,
+     "attack": 4,
+     "health": 8
+    },
+    "baseSkills": [
+     [
+      "trigger",
+      "onReady→gain 1"
+     ]
+    ],
+    "map": "mo",
+    "mapName": "The Old Bramble",
+    "mapNo": 17
+   },
+   "why": {
+    "biome": "Leafcutter Gardener's ground, later on The Old Bramble (Map 17)",
+    "family": "from Leafcutter Gardener",
+    "faction": "from Leafcutter Gardener"
    }
   },
   {
