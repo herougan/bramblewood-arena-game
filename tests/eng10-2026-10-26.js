@@ -44,7 +44,7 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
 // ---- ENG9-3 the spits ---------------------------------------------------------------------------------------------------------------
 { const names = {cinder:'Cinder', acid:'Acid', venom:'Venom', ice:'Ice', spark:'Spark'};
   Object.entries(names).forEach(([k, v])=> ok(tx['ui.e10-skn-' + k] === v, `ENG9-3 the ${k} spit reads "${v}" (no "Spit")`));
-  ok(/\['fireBolt', 'ui\.e10-skn-cinder'\]/.test(app) && !/eng9-skn-/.test(app), 'ENG9-3 the five spit labels use the new names');
+  ok(/\['fireBolt', TX\('ui\.e10-skn-cinder'\)\]/.test(app) && !/eng9-skn-/.test(app), 'ENG9-3 the five spit labels use the new names');
   // no clash: none of the five is a skill label, a gem's name or another skill key's name (Ember is the gem, Frost a skill: hence Cinder, Ice)
   const vals = Object.entries(tx).filter(([k])=> !/^ui\.e10-skn-/.test(k)).map(([, v])=> v);
   ['Cinder', 'Venom', 'Ice', 'Spark'].forEach(w=> ok(!vals.includes(w), `ENG9-3 "${w}" is used by no other text (no clash)`));
