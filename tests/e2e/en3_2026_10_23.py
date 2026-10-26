@@ -109,7 +109,7 @@ async def run(b, url, w):
     p2 = await pg.evaluate(f"(()=>({{hp: matchState.replayCards[{u['2:0']}].hp, poison: matchState.replayCards[{u['2:0']}].poison}}))()")
     ok(p1['hp'] == 6 and p1['poison'] == 3 and p2['poison'] == 2, f'#5 Poison: damage now, the stack drops after ({p1} -> {p2})')
     # ---- the card editor's skill list
-    ed = await pg.evaluate("(()=>({ramp: PASSIVE_DEFS.some(d=> d.key === 'rampart' && /Rampart/.test(d.label)), armor: PASSIVE_DEFS.some(d=> d.key === 'brambleArmor' && /Bramble Armor/.test(d.label)), txt: SKILL_TEXT.rampart && SKILL_TEXT.rampart()}))()")
+    ed = await pg.evaluate("(()=>({ramp: PASSIVE_DEFS.some(d=> d.key === 'rampart' && /Rampart/.test(d.label)), armor: PASSIVE_DEFS.some(d=> d.key === 'brambleArmor' && /Fortify/.test(d.label) /* 2026-10-26 (FIN2-a): renamed from Bramble Armor */), txt: SKILL_TEXT.rampart && SKILL_TEXT.rampart()}))()")
     ok(ed['ramp'] and ed['armor'] and 'bramble' in (ed['txt'] or ''), f'the editor lists Rampart and Bramble Armor ({ed})')
     ok(not pg._errs, f'no page errors {pg._errs[:2]}')
     await pg.close()

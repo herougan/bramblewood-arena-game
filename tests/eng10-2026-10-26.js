@@ -83,12 +83,12 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   ok(T.skillCost('armor', 2) > 2 * c1 && T.skillCost('armor', 3) > 3 * c1, 'ENG9-9 ... slightly exponential (each point worth more than the last)');
   const m = JSON.parse(rd('docs/balance/eng10-armor-hits-2026-10-26.json'));
   ok(m.hits > 10000 && m.perN['5'].cancelled > 0.9, `ENG9-9 measured: Armor 5 cancels ${Math.round(m.perN['5'].cancelled * 100)}% of ${m.hits} hits`);
-  ok(cid['tide-pool-crab'].health === 2 && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
+  ok(cid['tide-pool-crab'].health === 3 /* 2026-10-26 (FIN2-c): Shield at 0.8 Health re-fit it 1/2 -> 1/3 */ && cid['hawthorn-shieldbug'].health === 12, 'ENG9-9 the two held cards cut to the line: Tide Pool Crab 1/2, Hawthorn Shieldbug 2/12');
   const refit = JSON.parse(rd('docs/balance/eng10-refit-2026-10-26.json'));
   const held = JSON.parse(rd('docs/balance/human-pass-1-flagged-2026-10-21.json'));
   ok(refit.flagged.every(id=> held.includes(id)) && refit.cut.length > 10, `ENG9-9 every moved card has a line but cards already held over budget (${refit.flagged.join(', ')}; ${refit.cut.length} cut, ${refit.raised.length} raised)`);
   ok(cid['barnacle-fortress'].effects.armor === 3 && cid['stone-turtle-warden'].effects.armor === 3, 'ENG9-9 Armor 5 / 4 on a Common has no legal line: Barnacle Fortress and Stone Turtle Warden at Armor 3 (call ENG10-2)');
-  refit.cut.concat(refit.raised).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && T.budget(c, {level: 1}).ok, `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  refit.cut.concat(refit.raised).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && T.budget(c, {level: 1}).ok, `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);

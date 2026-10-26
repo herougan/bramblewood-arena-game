@@ -2972,7 +2972,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} mekar: salinannya tumbuh di sampingnya, dengan +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} mekar dengan {n} Kayu: salinannya tumbuh di sampingnya, dengan +1/+1.",
  "Rampart": "Benteng",
- "Bramble Armor": "Zirah Semak Duri",
  "Your bramble takes 1 less damage from each hit.": "Semak durimu menerima 1 kerusakan lebih sedikit dari setiap serangan.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Dihitung setelah bagian Benteng. Dua atau lebih tidak dijumlahkan: tetap 1 per serangan. Serangan Agung menghancurkannya.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "terluka sebesar tumpukannya saat menyerang atau memakai kemampuan; lalu −1 tumpukan di akhir ronde.",
@@ -2980,7 +2979,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Berdarah: kartu ini menerima kerusakan setiap kali menyerang atau memakai kemampuan. Di akhir setiap ronde, setelah berdarah, tumpukannya turun 1; Pembersihan menghapusnya.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Menerima serangan biasa yang diarahkan ke sekutu yang bersebelahan (bukan ke semak duri).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} menerima {n} dari serangan ke semak durinya; semak duri menerima {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "Zirah Semak Duri milik {name} mengurangi 1 dari serangan ke semak durinya.",
  "{name} misses, but throws its boomerang anyway.": "{name} meleset, tapi tetap melempar bumerangnya.",
  "Covered!": "Dilindungi!",
  "Thrown!": "Dilempar!",
@@ -3053,7 +3051,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Serangannya menggandakan Pendarahan target, lalu menambah {n} Pendarahan.",
  "Breach": "Terobos",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Setiap serangan yang kena juga memberi {n} kerusakan ke semak duri musuh.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Hanya serangan jarak dekat yang mengenai unit, apa pun akibatnya. Benteng dan Zirah Semak Duri tetap menguranginya.",
  "Canopy Cover": "Naungan Kanopi",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Di bawah pepohonan, unit darat ini menghindari separuh serangan yang diarahkan kepadanya.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Di bawah pepohonan: pertarungan apa pun di peta hutan (Hutan Tua), Kanopi Tinggi, atau Semak Belukar. Darat: tidak Terbang (penerbang yang dijatuhkan dihitung). Satu lemparan, seperti Mengelak, dan tidak ditambah Mengelak. Serangan Pasti dan Terekspos menembusnya.",
@@ -3222,7 +3219,6 @@
  "Fire Arrow – bramble": "Panah Api – semak",
  "Fire Bolt – bramble": "Bola Api – semak",
  "Its {skill} aims at the enemy bramble instead of a unit.": "{skill}-nya membidik semak musuh, bukan unit.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Tambahkan di samping tembakannya. Tembakan tak pernah meleset dari semak; Benteng dan Zirah Semak tetap menguranginya.",
  "bramble": "semak",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Setiap ronde saat Siap, ia menembak semak musuh sebesar {n}.",
  "– bramble": "– semak",
@@ -3601,5 +3597,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "Penjaga Pasang menandai satu kolom, lalu menyerang setiap unitmu di dalamnya sebesar 4.",
  "The tide came back: out of rounds": "Air pasang kembali: ronde habis",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "Dua sampai empat pemain berdampingan melawan Ruang Kunci Pasang. Semua merencanakan bersamaan, lalu semua langkah jatuh bersamaan.",
- "The Tidelock Vault is cleared!": "Ruang Kunci Pasang berhasil ditaklukkan!"
+ "The Tidelock Vault is cleared!": "Ruang Kunci Pasang berhasil ditaklukkan!",
+ "Fortify": "Perkuat",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} memperkuat semak durinya: serangan berkurang 1.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Hanya serangan jarak dekat yang mengenai unit, apa pun akibatnya. Benteng dan Perkuat tetap menguranginya.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Tambahkan di samping tembakannya. Tembakan tak pernah meleset dari semak; Benteng dan Perkuat tetap menguranginya."
 }

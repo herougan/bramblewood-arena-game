@@ -2971,7 +2971,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name}が開花：隣にコピーが生えた（コピーは+1/+1）。",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name}が木材{n}で開花：隣にコピーが生えた（コピーは+1/+1）。",
  "Rampart": "城壁",
- "Bramble Armor": "砦の鎧",
  "Your bramble takes 1 less damage from each hit.": "あなたの砦は攻撃を受けるたびにダメージが1減る。",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "城壁の分担の後に数える。2体以上でも重ならない：1回の攻撃につき1のまま。至高の攻撃は打ち砕く。",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "攻撃やスキル使用のたび重なった数だけ傷つく。その後ラウンド終了時に −1。",
@@ -2979,7 +2978,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 出血：このカードは攻撃やスキル使用のたびにダメージを受ける。各ラウンドの終了時、出血した後に重ねが1減る。浄化で消える。",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "隣接する味方を狙った通常攻撃を引き受ける（砦は対象外）。",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} が砦への攻撃のうち {n} を引き受けた。砦は {b} を受ける。",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "{name} の砦の鎧が、砦への攻撃を1減らした。",
  "{name} misses, but throws its boomerang anyway.": "{name} は外したが、それでもブーメランを投げた。",
  "Covered!": "かばった！",
  "Thrown!": "投げた！",
@@ -3052,7 +3050,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "その攻撃は対象の出血を倍にし、さらに出血{n}を加える。",
  "Breach": "突破",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "攻撃が当たるたび、敵の砦にも{n}ダメージを与える。",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "ユニットに当たった近接攻撃のみ（その攻撃の結果は問わない）。城壁と砦の鎧で減る。",
  "Canopy Cover": "木陰の隠れ身",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "木々の下では、この地上ユニットは自分を狙う単体攻撃の半分を回避する。",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "木々の下：森のマップ（古い森）、高い樹冠、下草での戦い。地上：飛行なし（地上に落とされた飛行ユニットも含む）。回避と同じく判定は1回で、回避と重ならない。必中と無防備は見破る。",
@@ -3220,7 +3217,6 @@
  "Fire Arrow – bramble": "ファイアアロー – イバラ",
  "Fire Bolt – bramble": "ファイアボルト – イバラ",
  "Its {skill} aims at the enemy bramble instead of a unit.": "その{skill}はユニットではなく敵のイバラを狙う。",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "射撃の横に付ける。イバラへの射撃は外れない。城壁とイバラの鎧は引き続き軽減する。",
  "bramble": "イバラ",
  "Every round while Ready it shoots the enemy bramble for {n}.": "準備完了の間、毎ラウンド敵のイバラを{n}撃つ。",
  "– bramble": "– イバラ",
@@ -3599,5 +3595,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "潮の番人が1列を示し、その列にいるあなたのユニットそれぞれに4ダメージを与える。",
  "The tide came back: out of rounds": "潮が戻ってきた：ラウンド切れ",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "2〜4人が肩を並べてタイドロック金庫に挑みます。全員が同時に作戦を立て、すべてのプレイが一斉に決まります。",
- "The Tidelock Vault is cleared!": "タイドロック金庫を制覇した！"
+ "The Tidelock Vault is cleared!": "タイドロック金庫を制覇した！",
+ "Fortify": "補強",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} が砦を補強：この攻撃は1少ない。",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "ユニットに当たった近接攻撃のみ（その攻撃の結果は問わない）。城壁と補強で減る。",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "射撃の横に付ける。イバラへの射撃は外れない。城壁と補強は引き続き軽減する。"
 }

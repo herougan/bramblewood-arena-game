@@ -2970,7 +2970,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} blüht: Eine Kopie wächst daneben, mit +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} blüht für {n} Holz: Eine Kopie wächst daneben, mit +1/+1.",
  "Rampart": "Bollwerkmauer",
- "Bramble Armor": "Dornenrüstung",
  "Your bramble takes 1 less damage from each hit.": "Dein Dorn nimmt durch jeden Treffer 1 Schaden weniger.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Wird nach dem Anteil einer Bollwerkmauer gezählt. Mehrere addieren sich nicht: weiter 1 pro Treffer. Höchst-Treffer zerschmettern sie.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "verliert Leben in Höhe ihrer Stapel, wenn sie angreift oder Fähigkeiten nutzt; dann −1 Stapel am Rundenende.",
@@ -2978,7 +2977,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Blutung: Diese Karte nimmt jedes Mal Schaden, wenn sie angreift oder eine Fähigkeit nutzt. Am Ende jeder Runde, nachdem sie geblutet hat, sinkt der Stapel um 1; Reinigen entfernt sie.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Fängt normale Angriffe auf angrenzende Verbündete ab (nicht auf den Dorn).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} nimmt {n} des Treffers auf seinen Dorn; der Dorn nimmt {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "Die Dornenrüstung von {name} nimmt dem Treffer auf seinen Dorn 1 ab.",
  "{name} misses, but throws its boomerang anyway.": "{name} verfehlt, wirft seinen Bumerang aber trotzdem.",
  "Covered!": "Gedeckt!",
  "Thrown!": "Geworfen!",
@@ -3051,7 +3049,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Seine Treffer verdoppeln die Blutung des Ziels und fügen dann {n} Blutung hinzu.",
  "Breach": "Durchbruch",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Jeder Treffer fügt auch der gegnerischen Dornenburg {n} Schaden zu.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Nur ein Nahkampfschlag, der eine Einheit trifft, egal was er ihr antut. Bollwerkmauer und Dornenrüstung mindern ihn trotzdem.",
  "Canopy Cover": "Blätterdeckung",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Unter den Bäumen weicht diese Bodeneinheit der Hälfte der gezielten Angriffe auf sie aus.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Unter den Bäumen: jeder Kampf auf einer Waldkarte (Alter Wald), im Hohen Blätterdach oder im Unterholz. Boden: nicht Fliegend (ein heruntergeholter Flieger zählt). Ein Wurf, wie Ausweichend, und nicht zusätzlich zu Ausweichend. Sicherer Treffer und Entblößt durchschauen es.",
@@ -3219,7 +3216,6 @@
  "Fire Arrow – bramble": "Feuerpfeil – Dornbusch",
  "Fire Bolt – bramble": "Feuerbolzen – Dornbusch",
  "Its {skill} aims at the enemy bramble instead of a unit.": "Sein {skill} zielt auf den feindlichen Dornbusch statt auf eine Einheit.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Füge es neben dem Schuss hinzu. Der Schuss verfehlt den Dornbusch nie; Wall und Dornenrüstung mindern ihn weiterhin.",
  "bramble": "Dornbusch",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Jede Runde, solange es bereit ist, schießt es für {n} auf den feindlichen Dornbusch.",
  "– bramble": "– Dornbusch",
@@ -3598,5 +3594,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "Der Gezeitenwächter markiert eine Spalte und trifft dann jede deiner Einheiten darin mit 4.",
  "The tide came back: out of rounds": "Die Flut kam zurück: keine Runden mehr",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "Zwei bis vier Spieler Seite an Seite gegen den Gezeitentresor. Alle planen gleichzeitig, dann werden alle Züge zusammen ausgeführt.",
- "The Tidelock Vault is cleared!": "Der Gezeitentresor ist bezwungen!"
+ "The Tidelock Vault is cleared!": "Der Gezeitentresor ist bezwungen!",
+ "Fortify": "Festigen",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} festigt seinen Dorn: der Treffer ist 1 schwächer.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Nur ein Nahkampfschlag, der eine Einheit trifft, egal was er ihr antut. Bollwerkmauer und Festigen mindern ihn trotzdem.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Füge es neben dem Schuss hinzu. Der Schuss verfehlt den Dornbusch nie; Wall und Festigen mindern ihn weiterhin."
 }

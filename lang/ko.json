@@ -2973,7 +2973,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} 개화: 옆에 복제가 +1/+1로 자라납니다.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} 목재 {n}으로 개화: 옆에 복제가 +1/+1로 자라납니다.",
  "Rampart": "성벽",
- "Bramble Armor": "가시덤불 갑옷",
  "Your bramble takes 1 less damage from each hit.": "내 가시덤불은 공격마다 받는 피해가 1 줄어요.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "성벽이 나눠 받은 뒤에 계산해요. 둘 이상이어도 더해지지 않아요: 공격마다 여전히 1. 지고 공격은 이를 부숴요.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "공격하거나 스킬을 쓸 때마다 중첩 수만큼 다친다. 그다음 라운드가 끝날 때 −1.",
@@ -2981,7 +2980,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 출혈: 이 카드는 공격하거나 스킬을 쓸 때마다 피해를 받습니다. 매 라운드가 끝날 때, 피를 흘린 뒤에 중첩이 1 줄어듭니다. 정화로 없앱니다.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "인접한 아군을 노린 일반 공격을 대신 받아요 (가시덤불은 제외).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name}이(가) 가시덤불에 들어온 공격 중 {n}을(를) 받았어요. 가시덤불은 {b}을(를) 받아요.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "{name}의 가시덤불 갑옷이 가시덤불에 들어온 공격을 1 줄였어요.",
  "{name} misses, but throws its boomerang anyway.": "{name}이(가) 빗맞혔지만 그래도 부메랑을 던졌어요.",
  "Covered!": "엄호!",
  "Thrown!": "던졌다!",
@@ -3054,7 +3052,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "공격하면 대상의 출혈을 두 배로 만든 뒤 출혈 {n}을 더해요.",
  "Breach": "돌파",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "공격이 맞을 때마다 적 가시덤불에도 {n} 피해를 줘요.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "유닛에 맞은 근접 공격만 해당돼요(그 공격이 무엇을 했든). 성벽과 가시덤불 갑옷으로 여전히 줄어요.",
  "Canopy Cover": "수관 은신",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "나무 아래에서 이 지상 유닛은 자기를 노린 단일 공격의 절반을 피해요.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "나무 아래: 숲 지도(오래된 숲), 높은 수관, 덤불숲에서의 모든 싸움. 지상: 비행이 없음(땅에 떨어진 비행 유닛도 포함). 회피처럼 한 번만 굴리며 회피와 겹치지 않아요. 필중과 노출은 꿰뚫어 봐요.",
@@ -3223,7 +3220,6 @@
  "Fire Arrow – bramble": "불화살 – 가시덤불",
  "Fire Bolt – bramble": "화염탄 – 가시덤불",
  "Its {skill} aims at the enemy bramble instead of a unit.": "이 카드의 {skill}은(는) 유닛 대신 적 가시덤불을 노립니다.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "사격 옆에 추가하세요. 가시덤불을 향한 사격은 빗나가지 않으며, 성벽과 가시덤불 갑옷은 여전히 줄입니다.",
  "bramble": "가시덤불",
  "Every round while Ready it shoots the enemy bramble for {n}.": "준비된 동안 매 라운드 적 가시덤불을 {n}만큼 쏩니다.",
  "– bramble": "– 가시덤불",
@@ -3602,5 +3598,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "조수지기가 한 열을 표시한 뒤, 그 열에 있는 내 유닛마다 4 피해를 줍니다.",
  "The tide came back: out of rounds": "밀물이 돌아왔다: 라운드 소진",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "2~4명이 나란히 서서 조수 잠금 금고에 맞섭니다. 모두 동시에 계획하고, 모든 플레이가 한꺼번에 적용됩니다.",
- "The Tidelock Vault is cleared!": "조수 잠금 금고를 클리어했다!"
+ "The Tidelock Vault is cleared!": "조수 잠금 금고를 클리어했다!",
+ "Fortify": "보강",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name}이(가) 가시덤불을 보강했어요: 이번 공격은 1 적어요.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "유닛에 맞은 근접 공격만 해당돼요(그 공격이 무엇을 했든). 성벽과 보강으로 여전히 줄어요.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "사격 옆에 추가하세요. 가시덤불을 향한 사격은 빗나가지 않으며, 성벽과 보강은 여전히 줄입니다."
 }

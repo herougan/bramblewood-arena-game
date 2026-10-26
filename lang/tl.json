@@ -2971,7 +2971,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "Namulaklak ang {name}: may kopya nitong tumubo sa tabi, may +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "Namulaklak ang {name} kapalit ng {n} Kahoy: may kopya nitong tumubo sa tabi, may +1/+1.",
  "Rampart": "Pader",
- "Bramble Armor": "Baluti ng Bramble",
  "Your bramble takes 1 less damage from each hit.": "1 mas kaunting pinsala ang natatanggap ng iyong bramble sa bawat tama.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Binibilang pagkatapos ng bahagi ng Pader. Hindi nagdadagdagan ang dalawa o higit pa: 1 pa rin bawat tama. Dinudurog ito ng mga tamang Supreme.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "nasasaktan ayon sa patong nito kapag umaatake o gumagamit ng kakayahan; saka −1 patong sa dulo ng round.",
@@ -2979,7 +2978,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Dumudugo: napipinsala ang card na ito tuwing aatake o gagamit ng kakayahan. Sa dulo ng bawat round, pagkatapos nitong dumugo, bumababa nang 1 ang patong; inaalis ito ng Paglilinis.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Sinasalo ang mga karaniwang atake na nakatutok sa mga katabing kakampi nito (hindi sa bramble).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "Sinalo ni {name} ang {n} ng tama sa bramble nito; {b} ang sa bramble.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "Binawasan ng Baluti ng Bramble ni {name} nang 1 ang tama sa bramble nito.",
  "{name} misses, but throws its boomerang anyway.": "Sumablay si {name}, pero ibinato pa rin ang boomerang nito.",
  "Covered!": "Nasalo!",
  "Thrown!": "Ibinato!",
@@ -3052,7 +3050,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Dinodoble ng mga tama nito ang Pagdurugo ng target, saka nagdaragdag ng {n} Pagdurugo.",
  "Breach": "Butas",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Bawat tamang tama nito ay nagbibigay rin ng {n} pinsala sa kalabang bramble.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Tamang suntok lamang sa isang unit, anuman ang nagawa nito. Binabawasan pa rin ito ng Pader at ng Baluti ng Bramble.",
  "Canopy Cover": "Lilim ng Kanopi",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Sa ilalim ng mga puno, naiilagan ng unit na ito sa lupa ang kalahati ng mga atakeng nakatutok dito.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sa ilalim ng mga puno: anumang laban sa mapang gubat (ang Matandang Gubat), sa Mataas na Kanopi o sa Kasukalan. Sa lupa: hindi Lumilipad (bilang ang lumilipad na ibinaba sa lupa). Isang tira, gaya ng Mailap, at hindi dagdag sa Mailap. Nakikita ito ng Tiyak na Tama at ng Nakalantad.",
@@ -3221,7 +3218,6 @@
  "Fire Arrow – bramble": "Palasong Apoy – bramble",
  "Fire Bolt – bramble": "Tirang Apoy – bramble",
  "Its {skill} aims at the enemy bramble instead of a unit.": "Ang {skill} nito ay nakatutok sa bramble ng kalaban sa halip na sa isang yunit.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Idagdag ito sa tabi ng tira. Hindi kailanman sumasablay ang tira sa bramble; binabawasan pa rin ito ng Pader at Baluting Bramble.",
  "bramble": "bramble",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Bawat round habang Handa, tinitira nito ang bramble ng kalaban ng {n}.",
  "– bramble": "– bramble",
@@ -3600,5 +3596,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "Minamarkahan ng Tagabantay ng Taog ang isang hanay, saka tatamaan ang bawat unit mo roon ng 4.",
  "The tide came back: out of rounds": "Bumalik ang tubig: ubos na ang mga round",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "Dalawa hanggang apat na manlalaro, magkakatabi laban sa Bangan ng Taog. Sabay-sabay na nagpaplano ang lahat, saka sabay-sabay na bumabagsak ang mga laro.",
- "The Tidelock Vault is cleared!": "Nalinis na ang Bangan ng Taog!"
+ "The Tidelock Vault is cleared!": "Nalinis na ang Bangan ng Taog!",
+ "Fortify": "Patibayin",
+ "{name} fortifies its bramble: the hit is 1 less.": "Pinatibay ni {name} ang bramble nito: kulang nang 1 ang tama.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Tamang suntok lamang sa isang unit, anuman ang nagawa nito. Binabawasan pa rin ito ng Pader at ng Patibayin.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Idagdag ito sa tabi ng tira. Hindi kailanman sumasablay ang tira sa bramble; binabawasan pa rin ito ng Pader at Patibayin."
 }

@@ -2972,7 +2972,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} fiorisce: una sua copia cresce accanto, con +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} fiorisce per {n} Legno: una sua copia cresce accanto, con +1/+1.",
  "Rampart": "Bastione",
- "Bramble Armor": "Armatura di rovo",
  "Your bramble takes 1 less damage from each hit.": "Il tuo rovo subisce 1 danno in meno da ogni colpo.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Si conta dopo la parte di un Bastione. Più d'una non si sommano: sempre 1 a colpo. I colpi Supremi la frantumano.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "perde Salute pari ai suoi accumuli quando attacca o usa abilità; poi −1 accumulo a fine turno.",
@@ -2980,7 +2979,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Sanguinamento: questa carta subisce danni ogni volta che attacca o usa un'abilità. Alla fine di ogni turno, dopo aver sanguinato, l'accumulo scende di 1; Purificare lo toglie.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Incassa gli attacchi normali diretti agli alleati adiacenti (non al rovo).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} subisce {n} del colpo al suo rovo; il rovo subisce {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "L'Armatura di rovo di {name} toglie 1 al colpo al suo rovo.",
  "{name} misses, but throws its boomerang anyway.": "{name} manca, ma lancia comunque il suo boomerang.",
  "Covered!": "Coperto!",
  "Thrown!": "Lanciato!",
@@ -3053,7 +3051,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "I suoi colpi raddoppiano il Sanguinamento del bersaglio, poi aggiungono {n} Sanguinamento.",
  "Breach": "Breccia",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Ogni colpo a segno infligge anche {n} danni al rovo nemico.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Solo un colpo in mischia che colpisce un'unità, qualunque cosa le faccia. Bastione e Armatura di rovo lo riducono comunque.",
  "Canopy Cover": "Riparo delle fronde",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Sotto gli alberi, questa unità di terra schiva metà degli attacchi mirati a lei.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sotto gli alberi: ogni scontro su una mappa di bosco (il Bosco antico), l'Alta chioma o il Sottobosco. Di terra: non Volante (un volante abbattuto conta). Un solo tiro, come Elusiva, e non in aggiunta a Elusiva. Colpo sicuro ed Esposta lo vedono.",
@@ -3222,7 +3219,6 @@
  "Fire Arrow – bramble": "Freccia di fuoco – rovo",
  "Fire Bolt – bramble": "Dardo di fuoco – rovo",
  "Its {skill} aims at the enemy bramble instead of a unit.": "Il suo {skill} mira al rovo nemico invece che a un'unità.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Aggiungila accanto al tiro. Il tiro non manca mai il rovo; Bastione e Armatura di rovo lo riducono comunque.",
  "bramble": "rovo",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Ogni round in cui è pronta tira al rovo nemico per {n}.",
  "– bramble": "– rovo",
@@ -3601,5 +3597,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "Il Custode delle Maree segna una colonna, poi colpisce ogni tua unità al suo interno per 4.",
  "The tide came back: out of rounds": "La marea è tornata: round esauriti",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "Da due a quattro giocatori fianco a fianco contro la Cripta delle Maree. Tutti pianificano insieme, poi tutte le mosse arrivano insieme.",
- "The Tidelock Vault is cleared!": "La Cripta delle Maree è conquistata!"
+ "The Tidelock Vault is cleared!": "La Cripta delle Maree è conquistata!",
+ "Fortify": "Rinforzo",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} rinforza il suo rovo: il colpo fa 1 in meno.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Solo un colpo in mischia che colpisce un'unità, qualunque cosa le faccia. Bastione e Rinforzo lo riducono comunque.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Aggiungila accanto al tiro. Il tiro non manca mai il rovo; Bastione e Rinforzo lo riducono comunque."
 }

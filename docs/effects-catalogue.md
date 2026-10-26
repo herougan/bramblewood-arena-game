@@ -990,9 +990,9 @@ The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShar
   nearest the attacker's column; a tie or no attacker, the first listed. Its share is plain damage (`applyDamage`: its Shield and Shell
   soak first; no Armor, Thorns or On Attacked). Supreme crushes it. Event `rampart {uid, dmg, share, bramble}`, pushed inside `damageHQ`,
   so before the hit's own `hitHQ` (which keeps the bramble's part).
-- **Bramble Armor 🌿🛡️** (`effects.brambleArmor`, #3; price 1.1): the bramble's part of each such hit is 1 less, after Rampart; two or
+- **Fortify 🌿🛡️** (was Bramble Armor; renamed 2026-10-26, FIN2-a, owner: "Bramble Armor: Fortify instead."; key `effects.brambleArmor` kept, #3; price 1.1): the bramble's part of each such hit is 1 less, after Rampart; two or
   more still 1 (call EN3-5). Supreme crushes it. Event `brambleArmor {uid, blocked: 1}`.
-- Cards: Rampart on Riverworks Bastion (0/32 -> 0/30) and the new Dam-Keeper Beaver and Moat Snapper; Bramble Armor on the new Briarback Hedgehog
+- Cards: Rampart on Riverworks Bastion (0/32 -> 0/30) and the new Dam-Keeper Beaver and Moat Snapper; Fortify (then Bramble Armor) on the new Briarback Hedgehog
   and Barkplate Beetle (all four awaiting their source, call EN3-8).
 
 | Look | Function | What you see | Event |
@@ -1000,7 +1000,7 @@ The rules as built (engine: `bleedFadeAtEnd`, `redirectToGuardian`, `rampartShar
 | 🪃 Thrown on a miss | `en3BoomMissThrow(ev)` (`arena_app.js`) | The boomerang curves out from the thrower to a point just beside its target (a stand-in tile, so nothing is knocked), flies on off the field; "🪃 Thrown!" floats on the thrower | `boomerangThrow` (`miss`) |
 | 🛡 Guard, no line | `FX.A.guardPull` (swapped by `en3PatchGuardPull`) | Only the shield pops in on the side the blow comes from, with a ring; no dashed line | `hit` with `guardianRedirect` |
 | 🚧 Rampart | `en3RampartVfx(ev)` (`arena_app.js`) | As the blow lands, a gold streak runs from the bramble to the Rampart unit; the unit flinches, its share floats on it with 🚧 | `rampart` |
-| 🌿🛡️ Bramble Armor | `en3BrambleArmorVfx(ev)` (`arena_app.js`) | A small 🛡️ pops on the bramble with a ring and an armour ting; "🛡️ −1" floats | `brambleArmor` |
+| 🌿🛡️ Fortify (was Bramble Armor) | `en3BrambleArmorVfx(ev)` (`arena_app.js`) | A small 🛡️ pops on the bramble with a ring and an armour ting; "🛡️ −1" floats | `brambleArmor` |
 | ☠ Poison's stack | the `poisonTick` replay (`arena_app.js`) | The damage floats first; the badge drops and the grey ☠−1 falls about half a second later | `poisonTick` |
 
 ## 2026-10-24 additions (package EN5): Deadly Poison, Breach, Canopy Cover, the state skills, Hemorrhage N, Bloom's chain

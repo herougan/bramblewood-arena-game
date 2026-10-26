@@ -2970,7 +2970,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} florece: una copia suya crece a su lado, con +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} florece por {n} de Madera: una copia suya crece a su lado, con +1/+1.",
  "Rampart": "Muralla",
- "Bramble Armor": "Armadura de zarza",
  "Your bramble takes 1 less damage from each hit.": "Tu zarza recibe 1 de daño menos de cada golpe.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Se cuenta tras la parte de una Muralla. Varias no se suman: sigue siendo 1 por golpe. Los golpes Supremos la aplastan.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "pierde Salud según sus acumulaciones al atacar o usar habilidades; luego −1 acumulación al final de la ronda.",
@@ -2978,7 +2977,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Sangrado: esta carta recibe daño cada vez que ataca o usa una habilidad. Al final de cada ronda, después de sangrar, la acumulación baja en 1; Limpiar lo quita.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Recibe los ataques normales dirigidos a sus aliados adyacentes (no a la zarza).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} recibe {n} del golpe a su zarza; la zarza recibe {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "La Armadura de zarza de {name} quita 1 al golpe a su zarza.",
  "{name} misses, but throws its boomerang anyway.": "{name} falla, pero lanza su bumerán de todos modos.",
  "Covered!": "¡Cubierto!",
  "Thrown!": "¡Lanzado!",
@@ -3051,7 +3049,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Sus golpes duplican el Sangrado del objetivo y luego añaden {n} de Sangrado.",
  "Breach": "Brecha",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Cada golpe que acierta también hace {n} de daño a la zarza enemiga.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Solo un golpe cuerpo a cuerpo que acierta a una unidad, haga lo que haga. Muralla y Armadura de zarza lo siguen reduciendo.",
  "Canopy Cover": "Refugio del dosel",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Bajo los árboles, esta unidad de tierra esquiva la mitad de los ataques dirigidos a ella.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Bajo los árboles: cualquier combate en un mapa de bosque (el Bosque viejo), el Dosel alto o el Sotobosque. De tierra: sin Volador (un volador derribado cuenta). Una tirada, como Evasiva, y no además de Evasiva. Golpe certero y Expuesta lo atraviesan.",
@@ -3219,7 +3216,6 @@
  "Fire Arrow – bramble": "Flecha de fuego – zarza",
  "Fire Bolt – bramble": "Saeta de fuego – zarza",
  "Its {skill} aims at the enemy bramble instead of a unit.": "Su {skill} apunta a la zarza enemiga en vez de a una unidad.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Añádela junto al disparo. El disparo nunca falla a la zarza; Muralla y Armadura de zarza aún lo reducen.",
  "bramble": "zarza",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Cada ronda que está lista dispara a la zarza enemiga por {n}.",
  "– bramble": "– zarza",
@@ -3598,5 +3594,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "El Guardián de la Marea marca una columna y golpea a cada una de tus unidades en ella por 4.",
  "The tide came back: out of rounds": "La marea volvió: sin rondas",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "De dos a cuatro jugadores codo con codo contra la Cámara de la Marea. Todos planean a la vez y luego todas las jugadas caen juntas.",
- "The Tidelock Vault is cleared!": "¡La Cámara de la Marea está despejada!"
+ "The Tidelock Vault is cleared!": "¡La Cámara de la Marea está despejada!",
+ "Fortify": "Fortalecer",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} fortalece su zarza: el golpe hace 1 menos.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Solo un golpe cuerpo a cuerpo que acierta a una unidad, haga lo que haga. Muralla y Fortalecer lo siguen reduciendo.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Añádela junto al disparo. El disparo nunca falla a la zarza; Muralla y Fortalecer aún lo reducen."
 }

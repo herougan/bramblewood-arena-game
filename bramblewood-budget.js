@@ -53,7 +53,13 @@
 // now 10 / 11.44 / 15.56 (before its multiplier). Rarity weighs twice what it did under BF5 (a Legendary +4.5 over BF5). BF5's multipliers stay.
 // 2026-10-24 (package BAL2, DF-1, owner 10-23 17:34: "Map MUST absolutely contribute at 0.2* per Map ... 20*0.2=4, a reasonable bonus"): perMap 0.2 (was
 // 0.1 since BF6 halved the coefficients); a Map 20 card gets +4 N. The card's map is the first main-line map it can be obtained on (arena_app.js cardObtainMap).
-const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7};
+const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7, shieldPerHealth:0.8 /* FIN2-c (2026-10-26) */};
+// Shield as Health (2026-10-26, package FIN2-c; owner 23:46 #3: "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is
+// heavily undertuned"): a unit's own Shield N (effects.shield: it arrives with N temporary Health that soaks damage first and never comes back)
+// is priced as shieldPerHealth (0.8) x N Health in the stat terms of both caps: cap 1 (2A + H + 0.8·Sh) x m + S, cap 2 A·(H + 0.8·Sh) x m + S·|S|.
+// It was a skill in S at scale 'half' (1 + floor(N/2): Shield 3 cost 2), so cap 2 squared it (S·|S|) and a small shielded card had no room left.
+// Its skill price in canonical/skill-costs.json is 0. Shield given by an action (Give Shield N, Bulwark) keeps its own price.
+function shieldHealthOf(effects, cfg){ const v = effects && effects.shield; if(!v) return 0; const n = v === true ? 1 : Math.max(0, Number(v) || 0); return r2(num(cfg, 'shieldPerHealth') * n); }
 // N multipliers by what a card can do (2026-10-21, BF5; owner): plainBonus (N x 1.05) for a card with no abilities at all; lightBonus
 // (x 1.02) for a card whose only abilities are the light ones (LIGHT: Flying, Tide, and the time-of-day ones, Diurnal / Nocturnal /
 // Crepuscular, Sunshy / Nightblind). An ability is an effects key that is not a parameter of another skill (PARAMS: swarmN, espritHp, ...),
@@ -174,7 +180,7 @@ const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'no
 // S of a context skill: {S, inner} (null when k is not one, or its braces are the plain form). costOf(effects) is the caller's S of a set of
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
-  sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = +rest.health || 0; delete rest.attack; delete rest.health;
+  sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c (2026-10-26): a Shield in braces is 0.8 Health */; delete rest.attack; delete rest.health;
     inner += 2 * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); });
   const m = mult == null ? (CONTEXT_MULT_BY[k] != null ? CONTEXT_MULT_BY[k] : CONTEXT_MULT) : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; } // + CONTEXT_MULT_BY (EN, 2026-10-23)
 // true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
@@ -269,6 +275,7 @@ function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) ==
     miss: `m = ${g('missMult')} per half-miss skill (Evasive, Swift, Shadow; Flying ${MISS_MULT_BY.flying}), on the stats only, not on S` /* BF7; BF10 Flying */,
     fragileText: `Fragile, Purblind: both left sides × ${g('fragileUse')} (more stats for a card that takes double damage or swings blind)` /* BF7 */,
     context: `Context skills ({…}): ${CONTEXT_MULT} × S of the skills in their braces` /* CX2 */,
+    shield: `H counts a unit's own Shield as ${g('shieldPerHealth')} Health a point` /* FIN2-c (2026-10-26) */,
     base: `Base = ${g('base')} + ${t('perRarity', 'Rarity')} + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${t('perRitual', 'Ritual')} + ${g('perMap')}×Map`}; }
 function nOf(d, L, cfg){ return r2(nAt(baseOf(d, cfg), L, cfg) * nMultOf(d && d.effects, cfg)); } // BF5: x the card's N multiplier
 // v3's N, for comparisons only (docs, the BF report): Base + 2×Level.
@@ -300,7 +307,8 @@ function fragileUseOf(effects, cfg){ const e = effects || {}, f = num(cfg, 'frag
 function capScores(A, H, S, effects, cfg, opts){ A = +A || 0; H = +H || 0; S = +S || 0;
   const m = opts && opts.m != null ? +opts.m : missMultOf(effects, cfg), f = opts && opts.f != null ? +opts.f : fragileUseOf(effects, cfg);
   const k = bloomBodyMult(effects); // Bloom (BL, 2026-10-23): a copy of the body with odds p, cap 1's stat terms only
-  return {m, f, k, x1: r2(f * ((2 * A + H) * m * k + S)), x2: r2(f * (A * H * m + S * Math.abs(S)))}; }
+  const sh = opts && opts.sh != null ? +opts.sh || 0 : shieldHealthOf(effects, cfg), He = H + sh; // FIN2-c (2026-10-26): Shield as 0.8 Health; opts.sh for a caller without the effects
+  return {m, f, k, sh, x1: r2(f * ((2 * A + He) * m * k + S)), x2: r2(f * (A * He * m + S * Math.abs(S)))}; }
 function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
 
 // The curve for a card d ({attack, health, rarity, wait, cost, effects}) from its start level `from` (0 or 1) to `top` (11 for the
@@ -311,10 +319,10 @@ function forgeCurve(d, from, top, cfg){
   const base = baseOf(d, cfg), m = missMultOf(d.effects, cfg) * fragileUseOf(d.effects, cfg) /* BF7: m × f, see the top */, A0 = d.attack, H0 = d.health, km = nMultOf(d.effects, cfg), NL = L=> r2(nAt(base, L, cfg) * km); // BF5: x the card's N multiplier
   const rows = {}; rows[from] = {attack: A0, health: H0, points: 0, kind: 'base', N: NL(from)};
   if(A0 == null && H0 == null){ for(let L = from + 1; L <= top; L++) rows[L] = {attack: A0, health: H0, points: 0, kind: levelKind(L), N: NL(L)}; return {base, from, top, m, rows}; }
-  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), room0 = Math.pow(NL(from) / 3, 2) - m * a0 * h0;
+  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), sh = shieldHealthOf(d.effects, cfg) /* FIN2-c (2026-10-26): Shield as 0.8 Health in the A·H room */, room0 = Math.pow(NL(from) / 3, 2) - m * a0 * (h0 + sh);
   let A = a0, H = h0, P = 0, bank = 0;
   for(let L = from + 1; L <= top; L++){
-    const N = NL(L), kind = levelKind(L), room = h=> cap2Limit(N, cfg) - m * h.a * h.h; /* BF11 */
+    const N = NL(L), kind = levelKind(L), room = h=> cap2Limit(N, cfg) - m * h.a * (h.h + sh); /* BF11 */
     bank = r2(bank + (N - NL(L - 1)) / (m * bloomBodyMult(d.effects))); // + Bloom's copy (BL, 2026-10-23): a stat point costs (1 + p) of N
     let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
     // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
@@ -368,8 +376,8 @@ function thrUptime(k, N){ const t = THR_UPTIME[k]; if(!t) return 0; const n = Ma
 // S of a threshold key k in effects (the flag carries the price; its Grant key costs nothing beside it): {S, inner, mult} or null
 function thrS(k, v, effects, costOf){ const e = effects || {}; let key = k;
   if(/Grant$/.test(k) && THR_UPTIME[k.slice(0, -5)]){ key = k.slice(0, -5); if(e[key]) return {S: 0, inner: 0, mult: 0}; } else if(!THR_UPTIME[k]) return null;
-  const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = +rest.health || 0; delete rest.attack; delete rest.health;
+  const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c */; delete rest.attack; delete rest.health;
   const inner = 2 * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key]));
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
-return {EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+return {EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, shieldHealthOf /* FIN2-c (2026-10-26) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

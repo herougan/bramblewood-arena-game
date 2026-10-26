@@ -2972,7 +2972,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} floresce: uma cópia cresce ao lado, com +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} floresce por {n} de Madeira: uma cópia cresce ao lado, com +1/+1.",
  "Rampart": "Muralha",
- "Bramble Armor": "Armadura de silva",
  "Your bramble takes 1 less damage from each hit.": "A tua silva sofre menos 1 de dano em cada golpe.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Conta depois da parte de uma Muralha. Várias não se somam: continua a ser 1 por golpe. Os golpes Supremos esmagam-na.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "perde Vida igual às acumulações ao atacar ou usar habilidades; depois −1 acumulação no fim da ronda.",
@@ -2980,7 +2979,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Sangramento: esta carta sofre dano sempre que ataca ou usa uma habilidade. No fim de cada ronda, depois de sangrar, a acumulação desce 1; Purificar remove-o.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Recebe os ataques normais contra os aliados adjacentes (não contra a silva).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} recebe {n} do golpe na sua silva; a silva recebe {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "A Armadura de silva de {name} tira 1 ao golpe na sua silva.",
  "{name} misses, but throws its boomerang anyway.": "{name} falha, mas lança o bumerangue na mesma.",
  "Covered!": "Coberto!",
  "Thrown!": "Lançado!",
@@ -3053,7 +3051,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Os seus golpes duplicam o Sangramento do alvo e depois somam {n} de Sangramento.",
  "Breach": "Brecha",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Cada golpe que acerta também causa {n} de dano à silva inimiga.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Só um golpe corpo a corpo que acerta uma unidade, faça o que fizer. Muralha e Armadura de silva continuam a reduzi-lo.",
  "Canopy Cover": "Abrigo da copa",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Debaixo das árvores, esta unidade terrestre esquiva metade dos ataques dirigidos a ela.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Debaixo das árvores: qualquer combate num mapa de floresta (o Bosque antigo), a Copa alta ou o Mato rasteiro. Terrestre: sem Voador (um voador derrubado conta). Um só lançamento, como Evasiva, e não além de Evasiva. Golpe certeiro e Exposta veem através dele.",
@@ -3222,7 +3219,6 @@
  "Fire Arrow – bramble": "Flecha de fogo – silvado",
  "Fire Bolt – bramble": "Dardo de fogo – silvado",
  "Its {skill} aims at the enemy bramble instead of a unit.": "O seu {skill} aponta ao silvado inimigo em vez de a uma unidade.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Junta-a ao lado do disparo. O disparo nunca falha o silvado; Muralha e Armadura de silvado ainda o reduzem.",
  "bramble": "silvado",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Em cada ronda em que está pronta, dispara ao silvado inimigo por {n}.",
  "– bramble": "– silvado",
@@ -3601,5 +3597,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "O Guardião da Maré marca uma coluna e golpeia cada uma das suas unidades nela por 4.",
  "The tide came back: out of rounds": "A maré voltou: acabaram as rodadas",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "De dois a quatro jogadores lado a lado contra o Cofre das Marés. Todos planejam ao mesmo tempo e depois todas as jogadas caem juntas.",
- "The Tidelock Vault is cleared!": "O Cofre das Marés foi vencido!"
+ "The Tidelock Vault is cleared!": "O Cofre das Marés foi vencido!",
+ "Fortify": "Reforçar",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} reforça a sua silva: o golpe tira 1 a menos.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Só um golpe corpo a corpo que acerta uma unidade, faça o que fizer. Muralha e Reforçar continuam a reduzi-lo.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Junta-a ao lado do disparo. O disparo nunca falha o silvado; Muralha e Reforçar ainda o reduzem."
 }

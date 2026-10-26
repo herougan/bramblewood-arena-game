@@ -2973,7 +2973,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} மலர்கிறது: அதன் நகல் அருகில் +1/+1 உடன் வளர்கிறது.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} {n} மரம் செலுத்தி மலர்கிறது: அதன் நகல் அருகில் +1/+1 உடன் வளர்கிறது.",
  "Rampart": "அரண்",
- "Bramble Armor": "முட்புதர்க் கவசம்",
  "Your bramble takes 1 less damage from each hit.": "ஒவ்வொரு தாக்குதலிலும் உங்கள் முட்புதர் 1 குறைவான சேதம் அடையும்.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "அரணின் பங்குக்குப் பிறகு கணக்கிடப்படும். இரண்டு அல்லது அதிகம் கூடாது: ஒரு தாக்குதலுக்கு இன்னும் 1. உச்ச தாக்குதல்கள் அதை நொறுக்கும்.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "தாக்கும்போதும் திறன்களைப் பயன்படுத்தும்போதும் அடுக்குகளுக்கு ஏற்பக் காயம்; பிறகு சுற்றின் முடிவில் −1 அடுக்கு.",
@@ -2981,7 +2980,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 இரத்தக்கசிவு: இந்த அட்டை தாக்கும்போதும் திறனைப் பயன்படுத்தும்போதும் சேதம் அடையும். ஒவ்வொரு சுற்றின் முடிவிலும், கசிந்த பிறகு, அடுக்கு 1 குறையும்; தூய்மையாக்கல் நீக்கும்.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "அடுத்துள்ள கூட்டாளிகளை நோக்கிய சாதாரணத் தாக்குதல்களை ஏற்கும் (முட்புதரை நோக்கியவை அல்ல).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} தன் முட்புதர் மீதான தாக்குதலில் {n} ஏற்கிறது; முட்புதர் {b} ஏற்கிறது.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "{name} இன் முட்புதர்க் கவசம் அதன் முட்புதர் மீதான தாக்குதலில் 1 குறைக்கிறது.",
  "{name} misses, but throws its boomerang anyway.": "{name} தவறுகிறது, ஆனாலும் தன் பூமராங்கை எறிகிறது.",
  "Covered!": "காக்கப்பட்டது!",
  "Thrown!": "எறியப்பட்டது!",
@@ -3054,7 +3052,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "அதன் தாக்குகள் இலக்கின் குருதிப்போக்கை இரட்டிக்கும், பின் {n} குருதிப்போக்கைச் சேர்க்கும்.",
  "Breach": "உடைப்பு",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "அது படும் ஒவ்வொரு தாக்கும் எதிரி முட்புதருக்கும் {n} சேதம் தரும்.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "ஓர் அலகின் மீது படும் நேரடித் தாக்கு மட்டுமே, அது என்ன செய்தாலும். அரணும் முட்புதர்க் கவசமும் அதைக் குறைக்கும்.",
  "Canopy Cover": "மரநிழல் மறைவு",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "மரங்களின் கீழ், இந்தத் தரை அலகு தன்னைக் குறிவைக்கும் தாக்குகளில் பாதியைத் தவிர்க்கும்.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "மரங்களின் கீழ்: காட்டு வரைபடத்தில் (பழங்காடு), உயர் மரவிதானத்தில் அல்லது அடர்புதரில் நடக்கும் எந்தச் சண்டையும். தரை: பறக்காதது (தரையிறக்கப்பட்ட பறவையும் அடங்கும்). ஏமாற்றுவது போல் ஒரே வீச்சு, அதன் மேல் கூடுதலாக அல்ல. உறுதித் தாக்கும் வெளிப்பட்டதும் அதைக் கடந்து பார்க்கும்.",
@@ -3223,7 +3220,6 @@
  "Fire Arrow – bramble": "தீ அம்பு – முட்புதர்",
  "Fire Bolt – bramble": "தீ எறி – முட்புதர்",
  "Its {skill} aims at the enemy bramble instead of a unit.": "இதன் {skill} ஒரு அலகுக்குப் பதிலாக எதிரியின் முட்புதரைக் குறிவைக்கும்.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "இதைச் சுடுதலுக்கு அருகில் சேர். சுடுதல் முட்புதரை ஒருபோதும் தவறவிடாது; அரணும் முட்புதர் கவசமும் இன்னும் குறைக்கும்.",
  "bramble": "முட்புதர்",
  "Every round while Ready it shoots the enemy bramble for {n}.": "தயாராக இருக்கும் ஒவ்வொரு சுற்றிலும் இது எதிரியின் முட்புதரை {n} அளவுக்குச் சுடும்.",
  "– bramble": "– முட்புதர்",
@@ -3602,5 +3598,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "அலைக்காவலன் ஒரு நெடுவரிசையைக் குறித்து, அதிலுள்ள உங்கள் ஒவ்வொரு படையையும் 4 சேதத்துடன் தாக்குவான்.",
  "The tide came back: out of rounds": "அலை திரும்பி வந்தது: சுற்றுகள் தீர்ந்தன",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "இரண்டு முதல் நான்கு வீரர்கள் அருகருகே அலைப்பூட்டுக் களஞ்சியத்துக்கு எதிராக. அனைவரும் ஒரே நேரத்தில் திட்டமிடுவார்கள்; பின்னர் எல்லா ஆட்டங்களும் ஒன்றாக இறங்கும்.",
- "The Tidelock Vault is cleared!": "அலைப்பூட்டுக் களஞ்சியம் வெல்லப்பட்டது!"
+ "The Tidelock Vault is cleared!": "அலைப்பூட்டுக் களஞ்சியம் வெல்லப்பட்டது!",
+ "Fortify": "வலுப்படுத்து",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} தன் முட்புதரை வலுப்படுத்துகிறது: தாக்குதல் 1 குறைவு.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "ஓர் அலகின் மீது படும் நேரடித் தாக்கு மட்டுமே, அது என்ன செய்தாலும். அரணும் வலுப்படுத்து திறனும் அதைக் குறைக்கும்.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "இதைச் சுடுதலுக்கு அருகில் சேர். சுடுதல் முட்புதரை ஒருபோதும் தவறவிடாது; அரணும் வலுப்படுத்து திறனும் இன்னும் குறைக்கும்."
 }

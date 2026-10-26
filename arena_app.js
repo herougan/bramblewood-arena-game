@@ -1662,7 +1662,10 @@ function CHAIN_BREAK_OPTIONS(){
 // Owner 21:56 ("feel free to use triggers and actions"): Sentry, Expose, Exploit, Venom Pulse and Spoils are trigger × action shorthands.
 // EN4 (2026-10-23, owner 23:45): Venom Pulse is called Pulse (key venomPulse kept, so saved cards read as before) and ticks Bleed too.
 const SK1_DEFAULTS = {sentry:2, formation:1, expose:2, exploit:2, punish:2, siege:2, spoils:2, venomPulse:1}; // = the engine's SK1_DEF
-function sk1Patch(list, key, patch){ const p = list.find(x=> x.key === key); if(p) Object.assign(p, patch); else list.push(Object.assign({key}, patch)); }
+// FIN2-b (2026-10-26, owner: "The card edit - doesn't work anymore"): a patch for a key the list doesn't have used to push a stub
+// with no label (ENG9's Render note: Render lives in ACTIVE_PRESETS). The stub broke the card editor (its skill picker sorts by label)
+// and hid Render in the Codex. A patch with no label now never adds an entry.
+function sk1Patch(list, key, patch){ const p = list.find(x=> x.key === key); if(p) Object.assign(p, patch); else if(patch && typeof patch.label === 'string') list.push(Object.assign({key}, patch)); else console.warn('sk1Patch: no skill ' + key); }
 sk1Patch(PASSIVE_DEFS, 'sentry', {category:'passive', label:TX('ui.skn-sentry'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-sentry', {n: numOr(v, 2)}), codexNote:TX('ui.sk-sentry-codex'), get:e=> e.sentry ? numOr(e.sentry, 2) : undefined});
 sk1Patch(PASSIVE_DEFS, 'expose', {category:'evergreen', label:TX('ui.skn-expose'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-expose', {n: numOr(v, 2)}), codexNote:TX('ui.sk-expose-codex'), get:e=> e.expose ? numOr(e.expose, 2) : undefined});
 sk1Patch(PASSIVE_DEFS, 'siege', {category:'passive', label:TX('ui.skn-siege'), kind:'number', min:1, defaultValue:2, desc:v=> TX('ui.sk-siege', {n: numOr(v, 2)}), codexNote:TX('ui.sk-siege-codex'), get:e=> (e.siege || e.demolisher) ? Math.max(e.siege ? numOr(e.siege, 2) : 0, e.demolisher ? numOr(e.demolisher, 2) : 0) : undefined});
@@ -1871,7 +1874,7 @@ sk1Patch(PASSIVE_DEFS, 'trident', {desc:()=> TX('ui.eng9-trident')});
 sk1Patch(PASSIVE_DEFS, 'pitchfork', {desc:()=> TX('ui.eng9-pitchfork')});
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.eng9-armor', {n: v})});
 sk1Patch(PASSIVE_DEFS, 'magicArmor', {desc:v=> TX('ui.eng9-magic-armor', {n: numOr(v, 1)}), codexNote:TX('ui.eng9-magic-armor-codex')});
-sk1Patch(PASSIVE_DEFS, 'render', {codexNote:TX('ui.eng9-render-codex')});
+sk1Patch(ACTIVE_PRESETS, 'render', {codexNote:TX('ui.eng9-render-codex')}); // FIN2-b (2026-10-26): Render is an ACTIVE_PRESETS skill (was patched into PASSIVE_DEFS as a label-less stub)
 sk1Patch(PASSIVE_DEFS, 'guardian', {desc:()=> TX('ui.eng9-guardian')});
 sk1Patch(PASSIVE_DEFS, 'rampart', {codexNote:TX('ui.sk-rampart-codex') + ' ' + TX('ui.eng9-ready-only')});
 sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
@@ -2114,7 +2117,7 @@ const SKILL_DEFS = [
   // "Resistance and Weaknesses" area on the card form instead — see the resistPills/
   // weaknessPills rendering in renderEditor() and resistFactor()/weaknessFactor() in the engine.
   ...ACTIVE_PRESETS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind==='number'?'number':'boolean', desc:p.desc,
+    key:p.key, category:p.category, label:p.label, kind:p.kind==='number'?'number':'boolean', desc:p.desc, codexNote:p.codexNote, /* FIN2-b (2026-10-26): Render's Codex note */
     get:e=>{
       if(p.key==='render') return e.render ? e.render.amount : undefined;
       if(p.key==='undead') return e.undead ? true : undefined; // ENG9 (2026-10-26): was Revive
@@ -11094,7 +11097,7 @@ function triggerRowHTML(t,i){
     ${filterHtml}
     ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Triggers like this are off while the card is still Waiting. Tick to let this one fire while it Waits too."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
-    <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].filter(x=> !x.retired || x.key === t.do /* EN4 (2026-10-23): retired actions only on a card that still has one */).sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
+    <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].filter(x=> !x.retired || x.key === t.do /* EN4 (2026-10-23): retired actions only on a card that still has one */).sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}${t.do && !ACTION_DEFS.some(x=> x.key===t.do) ? `<option value="${escapeAttr(t.do)}" selected>${escapeHtml(t.do)}</option>` /* FIN2-b (2026-10-26): an action the list lacks (exileSelf) stays as it is, not the first option */ : ''}</select>
     ${actionFieldsHTML(t,i)}
     <button class="btn small danger rm" data-rm="${i}" aria-label="Remove this trigger" title="Remove this trigger">✕</button>
   </div>
@@ -11446,8 +11449,15 @@ function readEditorFormIntoCard(){
     }
   });
   const triggers = [];
+  // FIN2-b (2026-10-26, owner: "The card edit - doesn't work anymore"): a trigger keeps the fields the row has no control for
+  // (whenReady, once, everyone, pay, a sub the action's picker doesn't offer ...) while its On and Do are unchanged; a plain Save
+  // used to drop them (Scraper of Skies' When Ready, Nest's once, Sea Cucumber's once).
+  const oldTrigs = Array.isArray(c.effects && c.effects.triggers) ? c.effects.triggers : [];
   document.querySelectorAll('#triggerRows .trigger-row').forEach(row=>{
-    triggers.push(readTriggerRow(row));
+    const t = readTriggerRow(row);
+    const doEl = row.querySelector('[data-t="do"]'), o = oldTrigs[Number(doEl && doEl.getAttribute('data-i'))];
+    if(o && o.on === t.on && o.do === t.do) Object.keys(o).forEach(k=>{ if(!(k in t) && !row.querySelector(`[data-t="${k}"]`)) t[k] = o[k]; });
+    triggers.push(t);
   });
   if(triggers.length) newEffects.triggers = triggers;
   // Resistance / Weakness pills (2026-09-16) mutate c.effects.resist/.weakness live on every
@@ -11457,6 +11467,14 @@ function readEditorFormIntoCard(){
   if(c.effects.resist && c.effects.resist.length) newEffects.resist = c.effects.resist.slice();
   if(c.effects.weakness && c.effects.weakness.length) newEffects.weakness = c.effects.weakness.slice();
   if(c.effects.immune && c.effects.immune.length) newEffects.immune = c.effects.immune.slice();
+  // FIN2-b (2026-10-26): an effect no "+ Add Skill" row reads (onReadyGold, scar, grit, devour, beware, weaponMaster ...) has nothing in
+  // the form to edit or remove it, so a Save keeps it as it was (it used to vanish from the card).
+  { const formKeys = new Set(['triggers', 'resist', 'weakness', 'immune', 'bounty', 'bountyStone', 'bountyMetal', 'onReadyDamage']);
+    const params = (typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.PARAMS) || [];
+    Object.keys(c.effects || {}).forEach(k=>{ if(k in newEffects || formKeys.has(k)) return; const v = c.effects[k];
+      if(params.includes(k) && !Object.keys(newEffects).some(b=> b !== k && k.startsWith(b))) return; // a parameter (defianceN, hunterVs ...) only beside its skill
+      const read = SKILL_DEFS.some(s=>{ try{ return (s.get ? s.get({[k]: v}) : ({[k]: v})[s.key]) !== undefined; }catch(e){ return s.key === k; } });
+      if(!read) newEffects[k] = v; }); }
   c.effects = newEffects;
   if(Object.keys(levelFx).length) c.levelSkills = levelFx; else delete c.levelSkills; // skills that arrive at a level (2026-10-13)
   delete c._skillRows; // transient editor-only state — never persisted
@@ -30527,7 +30545,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v6', SB_KEY_V5 = 'bramblewood_stat_budget_v5', SB_KEY_V3 = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2'; // 2026-10-19 (BF2): v5 numbers start fresh; 2026-10-21 (BF6): so do the halved coefficients (v6)
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', shield:0 /* FIN2-c (2026-10-26): priced as 0.8 Health in capScores */, flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */, evolute:3, evoluteAlpha:4, evoluteOmega:5, stem:1.6, chrysalis:1.6 /* 2026-10-21 (package EV): theoretical, canonical/skill-costs.json */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow']; // 2026-10-22 (BF8): Blind (Blinding) is a priced skill now, not a half-miss
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 // 2026-10-21 (package CX5, owner call CX5): the card editor's budget panel and the Test Lab price S from canonical/skill-costs.json (built
@@ -30592,10 +30610,12 @@ function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 const SB_WELL_UNDER = 0.6;
 // 2026-10-22 (package BF7, owner pass III): the left sides come from BramblewoodBudget.capScores: M (the half-miss ×1.5s) on the stat terms only,
 // F (Fragile's fragileUse 0.7, sbFragileUse) on the whole left side: F × ((2A + H) × M + S) ≤ N, F × (A×H × M + S×|S|) ≤ (N/3)².
-function sbCheck(A, D, S, N, M, F){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, null, null, {m: M, f: F}), x1 = sc.x1, x2 = sc.x2, N2 = r2d(BramblewoodBudget.cap2Limit(N, SB_V3_DEFAULTS)) /* BF11 (2026-10-23): 2×(N/3)² */; // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
+function sbCheck(A, D, S, N, M, F, SH){ M = M || 1; F = F || 1; const r2d = v=> Math.round(v * 100) / 100, sc = BramblewoodBudget.capScores(A, D, S, null, null, {m: M, f: F, sh: SH || 0 /* FIN2-c (2026-10-26): the card's Shield as 0.8 Health (sbShieldH) */}), x1 = sc.x1, x2 = sc.x2, N2 = r2d(BramblewoodBudget.cap2Limit(N, SB_V3_DEFAULTS)) /* BF11 (2026-10-23): 2×(N/3)² */; // 2026-10-21 (BF6, owner 15:15: "for the cap-2, it should be AxH+SxS instead"): A×H + S×|S| (a negative skill still frees room)
   const r1 = x1 <= N, r2 = x2 <= N2, ok = r1 && r2; return {r1, r2, x1, x2, N2, ok, wellUnder: ok && x1 <= N * SB_WELL_UNDER}; } // 2026-10-19 (BF3, owner 16:22: "it's fine to be = to budget"): inclusive
 // "Fit" lowers Attack, then Health, until both rules pass.
-function sbFit(d, S, N, M, F){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, M, F).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+// FIN2-c (2026-10-26): a card's own Shield N counts as shieldPerHealth (0.8) x N Health in both caps (BramblewoodBudget.shieldHealthOf)
+function sbShieldH(d){ return BramblewoodBudget.shieldHealthOf ? BramblewoodBudget.shieldHealthOf((d && d.effects) || {}, SB_V3_DEFAULTS) : 0; }
+function sbFit(d, S, N, M, F){ let A = d.attack||0, D = d.health||1; const SH = sbShieldH(d); let guard = 200; while(!sbCheck(A, D, S, N, M, F, SH).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
 function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57'); }
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 // 2026-10-19 (BF2): the formula line, from the numbers in use (the helper's v5 unless the Test Lab changed them), in words through TX
@@ -30621,14 +30641,15 @@ function sbContextLine(d, cfg){ const B = BramblewoodBudget, e = (d && d.effects
     return TX('ui.budget-context-card', {skill: sd ? sd.label : k, k: cx.mult, inner: f1(cx.inner), s: f1(cx.S)}); }).filter(Boolean);
   return `<small style="color:var(--ink-muted); display:block">${escapeHtml(TX('ui.budget-context', {k: B.CONTEXT_MULT}))}${own.length ? ' ' + escapeHtml(own.join(' · ')) : ''}</small>`; }
 function ceBudgetHTML(d){
-  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), c = sbCheck(A, D, S, N, M, F); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
+  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, price = sbPriceS(d, cfg), S = price.S, N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg), SH = sbShieldH(d), c = sbCheck(A, D, S, N, M, F, SH); // CX5 (10-21): S from canonical/skill-costs.json; BF7 (10-22): F
   const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1);
   const W = Number(d.wait)||0, C = Number(d.cost)||0, f1 = v=> Math.round(v * 10) / 10, m = M !== 1 ? ` × ${f1(M)}` : '', mark = ok=> ok ? '✓' : '✗', op = ok=> ok ? '≤' : '&gt;'; // inclusive (BF3, 16:22)
   // 2026-10-22 (BF7, texts by RW): the worked lines show the rule as it is now: f × ((2×A + H) × m + S) and f × (A×H × m + S×|S|). {f} is "0.7 × " for a Fragile
   // card, else empty; {m} is "×1.5" per half-miss skill (on the stats only), else empty. ui.budget-stats / ui.budget-product carry the new wording (was an English fallback here).
   const r2m = v=> Math.round(v * 100) / 100, fp = F !== 1 ? `${r2m(F)} × ` : '', mm = M !== 1 ? `×${r2m(M)}` : '';
-  const statsLine = TX('ui.budget-stats', {f: fp, a: A, h: D, m: mm, s: f1(S), x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)});
-  const productLine = TX('ui.budget-product', {f: fp, a: A, h: D, m: mm, s: f1(S), x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)});
+  const hs = SH ? `(${D} + ${r2m(SH)}💠)` : D; // FIN2-c (2026-10-26): the Shield's Health share
+  const statsLine = TX('ui.budget-stats', {f: fp, a: A, h: hs, m: mm, s: f1(S), x: f1(c.x1), op: op(c.r1), n: f1(N), mark: mark(c.r1)});
+  const productLine = TX('ui.budget-product', {f: fp, a: A, h: hs, m: mm, s: f1(S), x: f1(c.x2), op: op(c.r2), n2: f1(c.N2), mark: mark(c.r2)});
   const miss = (cfg.halfMiss || SB_HALF_MISS).filter(k=> (d.effects || {})[k]).map(k=> (PASSIVE_DEFS.find(x=> x.key === k) || {}).label || k);
   // 2026-10-19 (BF2, owner 14:07: "There should be a Base = ..."): Base and its parts, from the helper, so the numbers add up
   const bc = {}; ['base', 'perRarity', 'perWait', 'perWait2', 'perLumber', 'perLumber2', 'perRitual', 'perMap'].forEach(k=> bc[k] = cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k]);
@@ -30654,7 +30675,7 @@ function ceBudgetRefresh(d){
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
-  const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg) /* BF7 (10-22) */, c = sbCheck(A, D, S, N, M, F); return {id, d, S, miss: pr.missing, lv, N, A, D, M, F, c, fit: c.ok ? null : sbFit(d, S, N, M, F)}; });
+  const rows = ids.map(id=>{ const d = defs[id], pr = sbPriceS(d, cfg) /* CX5 (10-21): canonical/skill-costs.json */, S = pr.S, lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), F = sbFragileUse(d, cfg) /* BF7 (10-22) */, c = sbCheck(A, D, S, N, M, F, sbShieldH(d)) /* FIN2-c */; return {id, d, S, miss: pr.missing, lv, N, A, D, M, F, c, fit: c.ok ? null : sbFit(d, S, N, M, F)}; });
   const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>

@@ -2971,7 +2971,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} fleurit : une copie d'elle pousse à côté, avec +1/+1.",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} fleurit pour {n} Bois : une copie d'elle pousse à côté, avec +1/+1.",
  "Rampart": "Rempart",
- "Bramble Armor": "Armure de ronce",
  "Your bramble takes 1 less damage from each hit.": "Votre ronce subit 1 dégât de moins à chaque coup.",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "Compté après la part d'un Rempart. Plusieurs ne s'additionnent pas : toujours 1 par coup. Les coups Suprêmes la brisent.",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "perd de la Santé selon ses cumuls quand elle attaque ou utilise des compétences ; puis −1 cumul à la fin de la manche.",
@@ -2979,7 +2978,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 Saignement : cette carte subit des dégâts chaque fois qu'elle attaque ou utilise une compétence. À la fin de chaque manche, après avoir saigné, le cumul baisse de 1 ; Purger l'enlève.",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "Encaisse les attaques simples visant ses alliés adjacents (pas la ronce).",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} prend {n} du coup porté à sa ronce ; la ronce prend {b}.",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "L'Armure de ronce de {name} retire 1 au coup porté à sa ronce.",
  "{name} misses, but throws its boomerang anyway.": "{name} rate, mais lance quand même son boomerang.",
  "Covered!": "Couvert !",
  "Thrown!": "Lancé !",
@@ -3052,7 +3050,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "Ses coups doublent le Saignement de la cible, puis ajoutent {n} Saignement.",
  "Breach": "Brèche",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "Chaque coup qui porte inflige aussi {n} dégâts à la ronce ennemie.",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "Seulement un coup de mêlée qui touche une unité, quoi qu'il lui fasse. Rempart et Armure de ronce le réduisent quand même.",
  "Canopy Cover": "Couvert des feuillages",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "Sous les arbres, cette unité au sol esquive la moitié des attaques ciblées sur elle.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sous les arbres : tout combat sur une carte de forêt (le Vieux bois), la Haute canopée ou le Sous-bois. Au sol : sans Vol (un volant cloué au sol compte). Un seul jet, comme Insaisissable, et pas en plus d'Insaisissable. Coup sûr et Exposée le voient.",
@@ -3220,7 +3217,6 @@
  "Fire Arrow – bramble": "Flèche de feu – ronce",
  "Fire Bolt – bramble": "Trait de feu – ronce",
  "Its {skill} aims at the enemy bramble instead of a unit.": "Son {skill} vise la ronce ennemie au lieu d'une unité.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "Ajoutez-la à côté du tir. Le tir ne rate jamais la ronce ; Rempart et Armure de ronce le réduisent toujours.",
  "bramble": "ronce",
  "Every round while Ready it shoots the enemy bramble for {n}.": "Chaque tour où elle est prête, elle tire sur la ronce ennemie pour {n}.",
  "– bramble": "– ronce",
@@ -3599,5 +3595,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "Le Gardien des marées marque une colonne, puis frappe chacune de vos unités qui s’y trouvent pour 4.",
  "The tide came back: out of rounds": "La marée est revenue : plus de manches",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "De deux à quatre joueurs côte à côte contre le Coffre des Marées. Tout le monde prépare son coup en même temps, puis tous les coups tombent ensemble.",
- "The Tidelock Vault is cleared!": "Le Coffre des Marées est vaincu !"
+ "The Tidelock Vault is cleared!": "Le Coffre des Marées est vaincu !",
+ "Fortify": "Fortifier",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} fortifie sa ronce : le coup fait 1 de moins.",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Seulement un coup de mêlée qui touche une unité, quoi qu'il lui fasse. Rempart et Fortifier le réduisent quand même.",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Ajoutez-la à côté du tir. Le tir ne rate jamais la ronce ; Rempart et Fortifier le réduisent toujours."
 }

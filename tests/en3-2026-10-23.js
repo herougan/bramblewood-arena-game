@@ -143,7 +143,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ['ui.skn-rampart', 'ui.sk-rampart', 'ui.sk-rampart-codex', 'ui.skn-bramble-armor', 'ui.sk-bramble-armor', 'ui.sk-bramble-armor-codex', 'ui.en3-log-rampart', 'ui.en3-log-bramble-armor', 'ui.en3-log-boom-miss', 'ui.en3-float-guard-hop', 'ui.en3-float-boom-miss'].forEach(k=> ok(TXm.TEXT[k], 'TX ' + k));
   ok(/then −1 stack at the round's end/.test(TXm.TEXT['ui.st-bleed']), 'the Bleed text: −1 at the round\'s end');
   ok(/never guards the bramble/.test(app) && /\(not the bramble\)/.test(app), 'Guardian says it never guards the bramble');
-  const keys = ['Rampart', 'Bramble Armor', TXm.TEXT['ui.sk-rampart'], TXm.TEXT['ui.sk-bramble-armor'], TXm.TEXT['ui.sk-rampart-codex'], TXm.TEXT['ui.sk-bramble-armor-codex'], TXm.TEXT['ui.en3-log-rampart'].replace(/^\S+ /, ''), TXm.TEXT['ui.st-bleed'], TXm.TEXT['ui.ls-bleed'], TXm.TEXT['coach.bleeding-this-card-takes-damage-every'],
+  const keys = ['Rampart', TXm.TEXT['ui.skn-bramble-armor'] /* 2026-10-26 (FIN2-a): Bramble Armor is called Fortify */, TXm.TEXT['ui.sk-rampart'], TXm.TEXT['ui.sk-bramble-armor'], TXm.TEXT['ui.sk-rampart-codex'], TXm.TEXT['ui.sk-bramble-armor-codex'], TXm.TEXT['ui.en3-log-rampart'].replace(/^\S+ /, ''), TXm.TEXT['ui.st-bleed'], TXm.TEXT['ui.ls-bleed'], TXm.TEXT['coach.bleeding-this-card-takes-damage-every'],
     "Takes the plain attacks aimed at its adjacent allies (not the bramble)."];
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));
     const cn = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'cards', code + '.json'), 'utf8'));

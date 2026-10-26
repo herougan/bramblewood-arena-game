@@ -2971,7 +2971,6 @@
  "{name} blooms: a copy of it grows beside it, with +1/+1.": "{name} 花开了：旁边长出一个复制体，复制体 +1/+1。",
  "{name} blooms for {n} Lumber: a copy of it grows beside it, with +1/+1.": "{name} 支付 {n} 木材花开了：旁边长出一个复制体，复制体 +1/+1。",
  "Rampart": "壁垒",
- "Bramble Armor": "荆棘护甲",
  "Your bramble takes 1 less damage from each hit.": "你的荆棘每次受到攻击时伤害减少 1。",
  "Counted after a Rampart's share. Two or more don't add up: still 1 a hit. Supreme hits crush it.": "在壁垒分担之后计算。两个或更多不叠加：每次仍是 1。至高攻击会将其击碎。",
  "hurts by its stacks as it attacks or uses skills; then −1 stack at the round's end.": "攻击或使用技能时按层数受伤；之后在回合结束时 −1 层。",
@@ -2979,7 +2978,6 @@
  "🩸 Bleeding: this card takes damage every time it attacks or uses a skill. At the end of each round the stack drops by 1, after it has bled; Cleanse removes it.": "🩸 流血：这张卡每次攻击或使用技能都会受伤。每回合结束时，在流过血之后，层数减 1；净化可移除。",
  "Takes the plain attacks aimed at its adjacent allies (not the bramble).": "替相邻的友方承受普通攻击（不包括荆棘）。",
  "{name} takes {n} of the hit on its bramble; the bramble takes {b}.": "{name} 替荆棘承受了 {n} 点；荆棘承受 {b} 点。",
- "{name}'s Bramble Armor takes 1 off the hit on its bramble.": "{name} 的荆棘护甲让对荆棘的这次攻击少了 1 点。",
  "{name} misses, but throws its boomerang anyway.": "{name} 没打中，但还是掷出了回旋镖。",
  "Covered!": "掩护！",
  "Thrown!": "掷出！",
@@ -3052,7 +3050,6 @@
  "Its hits double the Bleed the target already has, then add {n} Bleed.": "它的攻击让目标已有的流血翻倍，再附加 {n} 层流血。",
  "Breach": "破阵",
  "Every hit it lands also deals {n} damage to the enemy bramble.": "它每次命中，也对敌方荆棘造成 {n} 点伤害。",
- "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Bramble Armor still cut it.": "只算命中单位的近战攻击，无论这一击造成了什么。壁垒和荆棘护甲仍会削减它。",
  "Canopy Cover": "林荫掩护",
  "Under the trees, this ground unit dodges half the single-target attacks aimed at it.": "在树下，这个地面单位能闪避一半针对它的单体攻击。",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "树下：森林地图（古林）、高树冠或灌木丛中的任何战斗。地面：没有飞行（被击落的飞行单位也算）。和闪避一样只判定一次，不与闪避叠加。必中和暴露能看穿它。",
@@ -3220,7 +3217,6 @@
  "Fire Arrow – bramble": "火箭 – 荆棘",
  "Fire Bolt – bramble": "火焰弹 – 荆棘",
  "Its {skill} aims at the enemy bramble instead of a unit.": "它的{skill}瞄准敌方荆棘，而不是单位。",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Bramble Armor still cut it.": "把它加在射击旁边。射击从不会错过荆棘；壁垒与荆棘护甲仍会削减它。",
  "bramble": "荆棘",
  "Every round while Ready it shoots the enemy bramble for {n}.": "每回合就绪时，它向敌方荆棘射击，造成 {n}。",
  "– bramble": "– 荆棘",
@@ -3599,5 +3595,9 @@
  "The Tidewarden marks a column, then strikes each of your units in it for 4.": "潮汐守卫会标记一列，然后对该列中你的每个单位造成 4 点伤害。",
  "The tide came back: out of rounds": "潮水回来了：回合用完",
  "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.": "两到四名玩家并肩对抗潮锁宝库。所有人同时计划，然后所有出牌一起生效。",
- "The Tidelock Vault is cleared!": "潮锁宝库已攻克！"
+ "The Tidelock Vault is cleared!": "潮锁宝库已攻克！",
+ "Fortify": "加固",
+ "{name} fortifies its bramble: the hit is 1 less.": "{name} 加固了荆棘：这次攻击少 1 点。",
+ "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "只算命中单位的近战攻击，无论这一击造成了什么。壁垒和加固仍会削减它。",
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "把它加在射击旁边。射击从不会错过荆棘；壁垒与加固仍会削减它。"
 }

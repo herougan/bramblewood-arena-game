@@ -38,7 +38,7 @@ Source for all of it: `bramblewood-engine.js` (the engine decides); player wordi
 - **Guardian and Rampart work only while the unit is Ready** (not Waiting, Stunned, Frozen, Asleep, Petrified, Chained or Bound): **Built (ENG9, 2026-10-26).** Intercept animations: the blocker steps toward its own Rampart, shakes with an expanding aura, and a unit that dies blocking dies where it blocked. **Decided, not built yet (action item V4).** [EN8-8; owner #33]
 - **Spellward (one word) shields allies from skills;** Ward is the dodge. [GD2-1, GD-3]
 - **Bulwark's shields give Guardian ("vanguard" meant Guardian);** Bulwark N is priced 6 a point. [EN-3, EN-2]
-- **Bramble Armor: 1 at most with several units.** Rampart and Bramble Armor are the bramble skills' names. [EN3-5, EN3-4]
+- **Fortify (key `brambleArmor`; was Bramble Armor): 1 at most with several units.** Rampart and Fortify are the bramble skills' names; Fortify is not Fortification (SK2, builds a Palisade). [EN3-5, EN3-4, FIN2-a]
 - **Fog of War is information only,** for both sides: it limits what a side knows, never what a skill can reach. [FOG1, FOG2, EN-8]
 - **The second player gets +1 Shield on its bramble and nothing else,** wherever a second-player bonus existed. [D24]
 
@@ -165,6 +165,7 @@ Source: `bramblewood-engine.js` (the AI) and `bramblewood-autobattle.js`.
 Canonical: `canonical/cards.json` (stats, skills, art) and `bramblewood-budget.js` (N(L), the stat checks). Fold edits into the file with the fold tools; Supabase `card_overrides`, hub edits and the Card Ledger are inputs, not sources.
 - **The budget is v5-halved:** the formula is in `bramblewood-budget.js`, with the Map term 0.2 a map; a card's map is the first main-line map it can be had on, never a submap; faction cards use Map 5 until the faction rewards land. Read the file for coefficients. [B8, B11, DF-1, RP1]
 - **Stat caps:** cap 2 stays A*H + S*|S| <= (N/3)^2; Fragile and similar "must be less" qualities multiply by 0.7; a quality priced by a multiplier costs 0 as a skill. [B14, BF7-1, BF7-2]
+- **A unit's own Shield N counts as 0.8 x N Health** in both caps' stat terms (not as a skill in S); Shield given by an action or Bulwark keeps its own price. [FIN2-c, owner 10-26 23:46]
 - **Price by logic, the 4-round rule:** +1 Attack or +1 Health held over a typical 4-round life is the yardstick; adjust for timing and reliability. Measurement is optional. `docs/workflows/balance.md`. [EN6-2, EN8-5; owner 10-23 20:44]
 - **A card has two skills at most,** except thematic creatures; plain Flying, Tide, Diurnal and Nocturnal do not count. [HB2-1; `docs/workflows/card-data.md`]
 - **Cards the formula cuts are held at their stats until a balance pass trims a skill;** no blanket halving. [BF11-1, EN3-6, B11]
