@@ -60,7 +60,7 @@ function makeBox(store){
   box.copyOrder = id=>{ const a = box.myCardCopies[id] || []; return a.map((c, i)=> i).sort((x, y)=> (a[y].level||0) - (a[x].level||0) || x - y); };
   box.bestCopyIdx = id=>{ const o = box.copyOrder(id); return o.length ? o[0] : -1; };
   vm.createContext(box);
-  vm.runInContext(BLOCK + '\n;this.__h1 = {ENCHANTS, SOCKET_RANKS, SOCKET_REMOVE_RETURNS, SOCKETS_KEY, get myCardSockets(){ return myCardSockets; }, set myCardEnchants(v){ myCardEnchants = v; }, cardHasSocket, socketCost, socketApply, socketRemove, socketApplyProblem, socketRemoveProblem, socketGemOfBest, socketGemOfCopy, copySocketGem, socketGemByUid, socketsNormalize, socketedCopies, migrateEnchantsToSockets, enchantCard, reloadCardSockets, socketGemStats};', box);
+  vm.runInContext(BLOCK + '\n;this.__h1 = {ENCHANTS, gemEnchant, gemValid, socketSlotsOf /* 2026-10-26 (CONTENT3, E14): Socket N and the joined gem key readers */, SOCKET_RANKS, SOCKET_REMOVE_RETURNS, SOCKETS_KEY, get myCardSockets(){ return myCardSockets; }, set myCardEnchants(v){ myCardEnchants = v; }, cardHasSocket, socketCost, socketApply, socketRemove, socketApplyProblem, socketRemoveProblem, socketGemOfBest, socketGemOfCopy, copySocketGem, socketGemByUid, socketsNormalize, socketedCopies, migrateEnchantsToSockets, enchantCard, reloadCardSockets, socketGemStats};', box);
   return box;
 }
 const store = {}, B = makeBox(store), H = B.__h1;
@@ -117,7 +117,7 @@ ok(H.copySocketGem('owl', 'o4') === 'ember' && !('o3' in H.myCardSockets.owl), '
   ok(H2.migrateEnchantsToSockets() === 0 && B2.myMateria.tide === m0.tide + 1, '4. migration runs once'); }
 
 // 5. what the gem does
-{ const box = {ENCHANTS: H.ENCHANTS, cardHasSocket: H.cardHasSocket, socketGemStats: H.socketGemStats, cardBaseLevel: d=> d.baseLevel || 1,
+{ const box = {ENCHANTS: H.ENCHANTS, gemEnchant: H.gemEnchant, gemValid: H.gemValid /* 2026-10-26 (CONTENT3, E14) */, cardHasSocket: H.cardHasSocket, socketGemStats: H.socketGemStats, cardBaseLevel: d=> d.baseLevel || 1,
     statsAtLevel: (b, L)=> ({attack: b.attack + (L - 1), health: b.health + 2 * (L - 1)}), Object, Math};
   const base = {id:'owl', rarity:'unique', attack:4, health:6, baseLevel:1};
   const full = Object.assign({}, base, {level:5}, {attack: 8, health: 14}); // Lv 5: 8 / 14

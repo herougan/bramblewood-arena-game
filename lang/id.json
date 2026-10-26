@@ -3472,7 +3472,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} Terjaga: ia tetap bangun.",
  "{name} is Wakeful: it stays awake.": "{name} Terjaga: ia tetap bangun.",
  "Pulverise": "Hancurkan",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "Pukulannya mengabaikan Zirah dan memberi dua kali kerusakan pada Bangunan. Pukulan yang kena menghancurkan Zirah, Zirah Sihir, dan perlengkapan target.",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "Zirah yang hancur tetap hancur selama pertarungan. Perlengkapan yang hancur masuk kuburan.",
  "🔨 {att} pulverises {name}.": "🔨 {att} menghancurkan {name}.",
  "{att} pulverises {name}.": "{att} menghancurkan {name}.",
@@ -3500,5 +3499,6 @@
  "Tamper-proof: it can't be stolen.": "Anti-curi: tak bisa dicuri.",
  "Blinding Sandstorm": "Badai Pasir Membutakan",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "Setiap unit bertarung Buta (1 dari 2 pukulannya meleset), kecuali unit Kering, Penciuman Tajam, dan Sonar. Kartu Badai diperkuat.",
- "Everyone Blind": "Semua buta"
+ "Everyone Blind": "Semua buta",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "Pukulannya mengabaikan Zirah dan memberi dua kali kerusakan pada Bangunan. Pukulan yang kena menghancurkan Zirah, Zirah Sihir, dan perlengkapan target."
 }

@@ -3469,7 +3469,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} es Insomne: sigue despierto.",
  "{name} is Wakeful: it stays awake.": "{name} es Insomne: sigue despierto.",
  "Pulverise": "Pulverizar",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "Sus golpes ignoran la Armadura y hacen el doble a las Estructuras. Un golpe que acierta rompe la Armadura, la Armadura mágica y el equipo del objetivo.",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "La Armadura rota sigue rota durante el combate. El equipo roto va al cementerio.",
  "🔨 {att} pulverises {name}.": "🔨 {att} pulveriza a {name}.",
  "{att} pulverises {name}.": "{att} pulveriza a {name}.",
@@ -3497,5 +3496,6 @@
  "Tamper-proof: it can't be stolen.": "A prueba de robo: no se puede robar.",
  "Blinding Sandstorm": "Tormenta de arena cegadora",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "Cada unidad lucha Cegada (sus golpes fallan 1 de cada 2), salvo las Secas y las de Olfato agudo o Sonar. Las cartas de Tormenta se potencian.",
- "Everyone Blind": "Todos cegados"
+ "Everyone Blind": "Todos cegados",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "Sus golpes ignoran la Armadura y hacen el doble a las Estructuras. Un golpe que acierta rompe la Armadura, la Armadura mágica y el equipo del objetivo."
 }

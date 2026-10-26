@@ -78,7 +78,7 @@ const NEW = [
   place: ['mh', 2, 'The Briar Maze (Map 12), the hedges: no map pool held a draw card (C6); On Death draw 1']},
  // ---- E16 (owner #22: "Platform: new type of card, for now, identical to structure ... Mother Carrier - for hummingbirds, Heroic ...
  //      Hummingbirds fly out from this carrier with full loads, + arrow-master ... boosts arrow damage")
- {id: 'mother-carrier', name: 'Mother Carrier', icon: '🛳️', cost: 3, wait: 3, attack: 0, health: 30, rarity: 'heroic', archetypes: ['Hummingbird', 'Platform', 'Structure'], species: ['Bird'], animal: 'hummingbird', subtype: 'platform',
+ {id: 'mother-carrier', name: 'Mother Carrier', icon: '🛳️', cost: 3, wait: 3, attack: 0, health: 30, rarity: 'heroic', archetypes: ['Hummingbird', 'Platform', 'Structure'], species: ['Bird'], animal: 'hummingbird', subtype: 'structure',
   effects: {fletcher: 1, triggers: [{on: 'perTurn', do: 'spawnCard', defId: 'laden-hummingbird', count: 1, whenReady: true}]},
   flavor: 'A floating hive of woven reed and sunfeather. Every morning its hatches open and the sky fills with little archers, quivers full.',
   propose: 'the Hummingbird faction pack from Map 25 (Heroic on the road ladder), or a Map 25+ reward (owner call CONTENT3-3)', source: {kind: 'pack', tier: 11, side: 'tribes'}},

@@ -13,7 +13,7 @@ NEW_SKILLS = [
  {"id":"tamperProof","scale":"fixed","value":0.1,"note":TAG + ", owner #21 / E15: Tamper-proof equipment can't be stolen. Only Disarm steals, on 2 cards: 0.1 fixed."},
 ]
 UPD = {
- 'detonate': {"scale":"n","value":0.3,"note":TAG + ", owner 17:53 / E18: Detonate N makes the target's Poison tick N times at once, each tick taking a counter off. The ticks would have come anyway (the same damage, the same counters), so it buys tempo: the damage lands now, before a Cure or the target's next swings, and only on a Poisoned target. About 0.3 a tick. (Was fixed -0.5, measured, for the old cash-in.)","prevValue":-0.5,"prevScale":"fixed"},
+ 'detonate': {"scale":"n","value":0.2,"note":TAG + ", owner 17:53 / E18: Detonate N makes the target's Poison tick N times at once, each tick taking a counter off. The ticks would have come anyway (the same damage, the same counters), so it buys tempo: the damage lands now, before a Cure or the target's next swings, and only on a Poisoned target. About 0.2 a tick (bogfire-newt, its one card, is held at 1/11 for the owner, as BF11-1). (Was fixed -0.5, measured, for the old cash-in.) The 10-19 measurement (-1.16) was of the old cash-in and is dropped with it."},
 }
 def line_of(o): return '  ' + json.dumps(o, ensure_ascii=False, separators=(',', ':'))
 src = open(P, encoding='utf-8').read()
@@ -24,6 +24,7 @@ def patch_line(k, patch):
     o = json.loads(m.group(0).strip().rstrip(','))
     if o.get('note', '').startswith(TAG): return
     o.update(patch)
+    for k in ('measuredS', 'measuredConf', 'measuredSE', 'appliedAt', 'prevValue'): o.pop(k, None)  # the old skill's measurement goes with it
     src = src[:m.start()] + line_of(o) + m.group(1) + src[m.end():]
 for k, patch in UPD.items(): patch_line(k, patch)
 add = [o for o in NEW_SKILLS if o['id'] not in have]

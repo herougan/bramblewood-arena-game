@@ -3470,7 +3470,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name}は不眠：眠らない。",
  "{name} is Wakeful: it stays awake.": "{name}は不眠：眠らない。",
  "Pulverise": "粉砕",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "その攻撃は装甲を無視し、建造物に2倍のダメージ。命中すると対象の装甲・魔法装甲・装備を砕く。",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "砕けた装甲はその戦いの間戻らない。砕けた装備は墓地へ行く。",
  "🔨 {att} pulverises {name}.": "🔨 {att}が{name}を粉砕。",
  "{att} pulverises {name}.": "{att}が{name}を粉砕。",
@@ -3498,5 +3497,6 @@
  "Tamper-proof: it can't be stolen.": "盗難防止：盗まれない。",
  "Blinding Sandstorm": "目くらましの砂嵐",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "全ユニットが盲目で戦う（攻撃が2回に1回外れる）。乾燥・鋭い嗅覚・ソナーのユニットは除く。嵐のカードは強化される。",
- "Everyone Blind": "全員盲目"
+ "Everyone Blind": "全員盲目",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "その攻撃は装甲を無視し、建造物に2倍のダメージ。命中すると対象の装甲・魔法装甲・装備を砕く。"
 }

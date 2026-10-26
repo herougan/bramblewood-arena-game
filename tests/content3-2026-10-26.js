@@ -102,6 +102,25 @@ ok(typeof E.makeSimEngine(defs, E.mulberry32(1), {}).equipTurnsOf !== 'function'
   const a = dm({}), b = dm({sandstorm:true});
   ok(a.length && a.every(x=> x === 1) && b.length && b.every(x=> x === 3), `C4 a Sandstorm is a Storm: a Storm card swings for +2 (${a[0]} -> ${b[0]})`); }
 
+// ---- E14 Socket N and gem fusion (the game's own socket block, as tests/h1-2026-10-24.js runs it) --------------------------------
+{ const vm = require('vm'), src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), a0 = src.indexOf('const ENCHANTS = {'), a1 = src.indexOf('// MATERIA_SOCKET_H1:END');
+  const store = {}, LS = {getItem: k=> (k in store ? store[k] : null), setItem: (k, v)=>{ store[k] = String(v); }, removeItem: k=>{ delete store[k]; }};
+  const box = {localStorage: LS, JSON, Math, Object, Array, Set, Number, String, MATERIA_KINDS: [{id:'ember', icon:'🔥', name:'Ember'}, {id:'tide', icon:'💧', name:'Tide'}, {id:'grove', icon:'🌿', name:'Grove'}, {id:'stone', icon:'🪨', name:'Stone'}],
+    UPGRADE_COSTS: {materiaSocket: {}}, myCurrencies: {dust: 1000, gold: 1000}, saveCurrencies(){}, myMateria: {ember: 3, tide: 1, grove: 0, stone: 0}, saveMateria(){}, invalidateCardDefs(){},
+    rarityPartsOf: r=> ({flag: null, rank: r}), DEFS: {fox: {id:'fox', rarity:'rare', attack:2, health:3, effects:{socket:2}}, owl: {id:'owl', rarity:'unique', attack:4, health:6}, cat: {id:'cat', rarity:'rare', attack:1, health:1}},
+    myCardCopies: {fox: [{uid:'f1', level:1}], owl: [{uid:'o1', level:1}]}};
+  box.materiaStore = ()=> box.myMateria; box.canAffordCost = c=> (box.myCurrencies.dust||0) >= (c.dust||0); box.getCardDefs = ()=> box.DEFS; box.copyBaseDef = id=> box.DEFS[id];
+  box.copyOrder = id=> (box.myCardCopies[id] || []).map((c, i)=> i); box.bestCopyIdx = id=> 0;
+  vm.createContext(box); vm.runInContext(src.slice(a0, a1) + '\n;this.__s = {socketSlotsOf, cardHasSocket, socketApply, socketRemove, socketApplyProblem, copySocketGem, socketGemStats, gemFuse, gemFuseProblem, gemParts};', box);
+  const S = box.__s;
+  ok(S.socketSlotsOf(box.DEFS.fox) === 2 && S.socketSlotsOf(box.DEFS.owl) === 1 && S.socketSlotsOf(box.DEFS.cat) === 0, 'E14 Socket 2 gives a Rare two sockets; a Unique keeps its one; a plain Rare none');
+  ok(S.socketApply('fox', 'f1', 'ember') && S.socketApply('fox', 'f1', 'tide') && S.copySocketGem('fox', 'f1') === 'ember+tide', 'E14 ... two gems go in, one per socket');
+  ok(S.socketApplyProblem('fox', 'f1', 'ember') === 'full', 'E14 ... a third does not');
+  const st = S.socketGemStats({attack:2, health:3}, 'ember+tide'); ok(st.attack === 3 && st.health === 5, `E14 ... both gems count (${st.attack}/${st.health})`);
+  const r = S.socketRemove('fox', 'f1'); ok(r && r.kind === 'tide' && S.copySocketGem('fox', 'f1') === 'ember', 'E14 ... taking out takes the last gem set');
+  ok(S.gemFuseProblem('tide') === 'few', 'E14 fusion needs two gems of one kind');
+  box.myMateria.ember = 2; const f = S.gemFuse('ember'); ok(f && f.into === 'ember2' && box.myMateria.ember === 0 && box.myMateria.ember2 === 1, 'E14 two Embers fuse into one Greater Ember');
+  ok(S.socketApply('owl', 'o1', 'ember2') && S.socketGemStats({attack:4, health:6}, 'ember2').attack === 6, 'E14 a Greater Ember sockets in for +2 Attack'); }
 // ---- the data ---------------------------------------------------------------------------------------------------------------------
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = Object.fromEntries(cards.filter(Boolean).map(c=> [c.id, c]));
 const C3 = require(path.join(ROOT, 'tools', 'content3_2026_10_26.js'));

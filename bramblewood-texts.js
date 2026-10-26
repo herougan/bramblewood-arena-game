@@ -2696,7 +2696,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.c3-wakeful": "It never falls Asleep: no Sleep hit and no Spore Cloud puts it to sleep.",
   "ui.c3-log-wakeful": "👁️ {name} is Wakeful: it stays awake.",
   "ui.c3-pulverise-name": "Pulverise",
-  "ui.c3-pulverise": "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.",
+  "ui.c3-pulverise": "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.",
   "ui.c3-pulverise-codex": "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.",
   "ui.c3-log-pulverise": "🔨 {att} pulverises {name}.",
   "ui.c3-socket-name": "Socket",

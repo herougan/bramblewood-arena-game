@@ -70,7 +70,9 @@ const hitOn = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid)
   ok(hitOn(ev, t.uid) === 2, 'Executioner: 8/30 (above a quarter) gets no bonus'); }
 // ---- 3. Detonate
 { const {e, P} = mk(); put(e, P, 1, 'gi-det'); const t = put(e, P, 2, 'gi-wall'); t.poison = 4; const ev = fight(e, P); // (Poison ticks 4 and drops to 3 first)
-  ok(hitOn(ev, t.uid) === 4 && t.poison === 0, `Detonate: 1 + its 3 Poison, then no Poison (${hitOn(ev, t.uid)}, poison ${t.poison})`);
+  // 2026-10-26 (CONTENT3, E18): Detonate N ticks the Poison N times at once (a counter each) before the hit; Detonate (true) is 1 tick:
+  // the 3 left after the round's tick deal 3 and drop to 2; the hit is its plain 1 (was: 1 + the 3, then no Poison)
+  ok(hitOn(ev, t.uid) === 1 && t.poison === 2, `Detonate 1: one tick of its 3 Poison, a counter off (${hitOn(ev, t.uid)}, poison ${t.poison})`);
   ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'detonate' && x.targetUid === t.uid && x.amount === 3), 'Detonate tells the board (statusFx detonate, amount 3)'); }
 { const {e, P} = mk(); put(e, P, 1, 'gi-det'); const t = put(e, P, 2, 'gi-wall'); const ev = fight(e, P);
   ok(hitOn(ev, t.uid) === 1 && !ev.some(x=> x.kind === 'detonate'), 'Detonate on a clean unit: a plain hit, no event'); }
@@ -158,7 +160,7 @@ ok((eng.match(/aiBonusVs\(d, f\)/g) || []).length >= 4, 'every CPU slot choice (
 // ---- 15. Skill costs (canonical/skill-costs.json: S = trigger weight × action value)
 const SC = require('../tools/skill_costs.js'), table = JSON.parse(R('canonical/skill-costs.json')), T = SC.make(table);
 const sk = id=> table.skills.find(x=> x.id === id);
-[['hunter', 'half', 1], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'fixed', 1], ['proliferate', 'n', 2], ['brittle', 'half', 0.5], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
+[['hunter', 'half', 1], ['hunterVs', 'fixed', 0], ['executioner', 'half', 1], ['detonate', 'n', 0.2 /* 2026-10-26 (CONTENT3, E18): Detonate N, per tick; was fixed 1 */], ['proliferate', 'n', 2], ['brittle', 'half', 0.5], ['prayerWard', 'n', 0.75], ['fieldBreaker', 'half', 1]]
   // 2026-10-19 (package TC): the owner applied the measured worth — an applied entry keeps the GI value as prevValue (value = max(0, measuredS))
   .forEach(([id, sc, v])=> ok(sk(id) && sk(id).scale === sc && (sk(id).value === v || (sk(id).appliedAt && sk(id).prevValue === v && sk(id).value === Math.max(0, sk(id).measuredS))),
     `skill-costs: ${id} ${sc} ${v} (or its applied measured worth: ${sk(id) && sk(id).value})`));
@@ -192,7 +194,8 @@ const RP_HELD = new Set(JSON.parse(R('docs/balance/rewards-pass-2026-10-21.json'
 POOL.forEach(c=>{ const b = T.budget(c), pl = GI_PLACED.find(p=> p.id === c.id), wr = /Measured ([\d.]+)% over (\d+) games/.exec(c.creatorNote || ''), band = GI_BANDS[c.rarity];
   const held = RP_HELD.has(c.id) && !c.source && c.awaitingSource === true;
   ok(!c.pool && pl && mapIds.has(pl.poolMap) && (c.source || held) && c.locked && c.uuid && c.creatorNote, `${c.id}: placed (source ${c.source ? c.source.kind : held ? 'held by RP' : undefined}), its pool map ${pl && pl.poolMap} is a map, a note`);
-  ok(b.ok && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})`);
+  const heldC3 = c.id === 'bogfire-newt' && JSON.parse(R('docs/balance/human-pass-1-flagged-2026-10-21.json')).includes(c.id); // 2026-10-26 (CONTENT3, E18): Detonate N's price; held at its stats for the owner (BF11-1)
+  ok((b.ok || heldC3) && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})${heldC3 ? ' (held)' : ''}`);
   ok(wr && band && +wr[1] >= band[0] && +wr[1] <= band[1], `${c.id}: measured inside its ${c.rarity} band (${wr && wr[1]}%)`);
   ok(!!H.loadCardDefs()[c.id], `${c.id}: live (the harness, like the build, has it)`); });
 ok(new Set(ALL.map(c=> c.numericId)).size === ALL.length, 'numericIds stay unique');
@@ -218,7 +221,8 @@ const TKEYS = Object.keys(TXT).filter(k=> /^ui\.(skn-|sk-(hunter|executioner|det
 const SK3_NOT_GI = k=> /^ui\.(sk-hunter-weak|hunter-vs-weak)$/.test(k) || (/^ui\.skn-/.test(k) && !/^ui\.skn-(hunter|executioner|detonate|proliferate|brittle|kin-rally|pack-howl|prayer-ward|field-breaker)$/.test(k));
 SK3_NOT_GI.test = SK3_NOT_GI;
 ok(TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length === 67, `67 package GI TX keys (${TKEYS.filter(k=> !SK3_NOT_GI.test(k)).length})`);
-TKEYS.forEach(k=> ok(appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
+const RETIRED_C3 = new Set(['ui.log-detonate', 'ui.sk-detonate', 'ui.sk-detonate-codex']); // 2026-10-26 (CONTENT3, E18): the old cash-in's lines; Detonate N reads ui.c3-*
+TKEYS.forEach(k=> ok(RETIRED_C3.has(k) || appSrc.includes(`TX('${k}'`), `${k} is used in arena_app.js`));
 TKEYS.filter(k=> !/codex|^ui\.fxx-|^ui\.stx-/.test(k)).forEach(k=> ok(words(TXT[k]) < 20, `${k} is terse (${words(TXT[k])} words)`));
 // ---- 18. 12 packs: the texts, the pool cards' names and flavour
 const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'];

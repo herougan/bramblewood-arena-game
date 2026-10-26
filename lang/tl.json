@@ -3471,7 +3471,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ Gising si {name}: nananatili itong gising.",
  "{name} is Wakeful: it stays awake.": "Gising si {name}: nananatili itong gising.",
  "Pulverise": "Dumurog",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "Hindi pinapansin ng mga hampas nito ang Armor at doble ang pinsala sa mga Structure. Ang tumamang hampas ay sumisira sa Armor, Magic Armor at kagamitan ng target.",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "Nananatiling sira ang sirang Armor sa buong laban. Napupunta sa libingan ang sirang kagamitan.",
  "🔨 {att} pulverises {name}.": "🔨 Dinurog ni {att} si {name}.",
  "{att} pulverises {name}.": "Dinurog ni {att} si {name}.",
@@ -3499,5 +3498,6 @@
  "Tamper-proof: it can't be stolen.": "Tamper-proof: hindi ito mananakaw.",
  "Blinding Sandstorm": "Nakabubulag na Bagyo ng Buhangin",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "Bulag na lumalaban ang bawat unit (sumasablay ang 1 sa 2 hampas), maliban sa Dry, Keen Sense at Sonar. Lumalakas ang mga Storm card.",
- "Everyone Blind": "Bulag ang lahat"
+ "Everyone Blind": "Bulag ang lahat",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "Hindi pinapansin ng mga hampas nito ang Armor at doble ang pinsala sa mga Structure. Ang tumamang hampas ay sumisira sa Armor, Magic Armor at kagamitan ng target."
 }

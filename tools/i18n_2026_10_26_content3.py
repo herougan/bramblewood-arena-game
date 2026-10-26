@@ -50,7 +50,7 @@ T = {
   "👁️ {name} é Desperto: continua acordado.", "👁️ Gising si {name}: nananatili itong gising.", "👁️ {name} விழிப்புள்ளது: அது விழித்தே இருக்கிறது.", "👁️ {name} Terjaga: ia tetap bangun.",
   "👁️ {name} 警醒：保持清醒。", "👁️ {name} 警醒：保持清醒。", "👁️ {name}は不眠：眠らない。", "👁️ {name}은(는) 불면: 깨어 있습니다."],
  "Pulverise": ["Pulvériser", "Zermalmen", "Pulverizar", "Polverizzare", "Pulverizar", "Dumurog", "தூளாக்கு", "Hancurkan", "粉碎", "粉碎", "粉砕", "분쇄"],
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": [
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": [
   "Ses frappes ignorent l'Armure et infligent le double aux Structures. Une frappe qui touche brise l'Armure, l'Armure magique et l'équipement de la cible.",
   "Seine Schläge ignorieren Rüstung und richten an Bauwerken doppelten Schaden an. Ein Treffer zerbricht Rüstung, Magierüstung und Ausrüstung des Ziels.",
   "Sus golpes ignoran la Armadura y hacen el doble a las Estructuras. Un golpe que acierta rompe la Armadura, la Armadura mágica y el equipo del objetivo.",

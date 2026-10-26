@@ -34381,7 +34381,7 @@
       "Bird"
     ],
     "animal": "hummingbird",
-    "subtype": "platform",
+    "subtype": "structure",
     "effects": {
       "fletcher": 1,
       "triggers": [

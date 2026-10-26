@@ -29,7 +29,8 @@ const PAIRS = plan.pairs;
         ok(L.length >= 1, `${n.key} (${n.kind}) on Map ${no} has a leader`);
         if(PAIRS[n.key]) ok(L.length === 2 && L.join() === PAIRS[n.key].join(), `${n.key}: the paired boss leads with ${PAIRS[n.key].join(' + ')} (got ${L.join(' + ')})`);
         else if(!Array.isArray(n.leaders)) ok(L[0] === G.nodeShowcaseId(n), `${n.key}: the leader is the showcase card`);
-        if(plan.boss[n.key]) ok(L[0] === plan.boss[n.key], `${n.key}: the boss unit ${plan.boss[n.key]} leads (got ${L[0]})`);
+        const bossOf = k=> k === '7-5' && plan.boss[k] === 'hollow-oath-keeper' ? 'hawthorn-shieldbug' : plan.boss[k]; // 2026-10-26 (CONTENT3, G3): the Oath-Keeper left Map 7; 7-5's showcase is the card that took its place
+        if(plan.boss[n.key]) ok(L[0] === bossOf(n.key), `${n.key}: the boss unit ${bossOf(n.key)} leads (got ${L[0]})`);
       } else if(bk === 'skirmish'){ skirmishes++;
         if(no >= 2) ok(L.length === 1 && L[0] === G.nodeShowcaseId(n), `${n.key}: a Map ${no} skirmish leads with its showcase (SK)`);
         else ok(!L.length, `${n.key}: a Map ${no} skirmish has no leader`);

@@ -175,7 +175,7 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
   ok(BB.nMultOf({chained:{breakOn:'damage', amount:4}}) > 1.15, `G19 Chained 4 is an N multiplier (${BB.nMultOf({chained:{breakOn:'damage', amount:4}})})`);
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), cid = {}; cards.forEach(c=> cid[c.id] = c);
   ok(!cards.some(c=> c.effects && c.effects.revive === true), 'E1 no card keeps the old self-Revive (true): those are Undead now');
-  ['cinder-skeleton', 'ember-revenant', 'grass-snake', 'slow-worm', 'sea-turtle-elder'].forEach(id=> ok(cid[id] && cid[id].effects.undead, `E1 ${id} has Undead`));
+  ['cinder-skeleton', 'ember-revenant', 'grass-snake', 'slow-worm'].forEach(id=> ok(cid[id] && cid[id].effects.undead, `E1 ${id} has Undead`)); // 2026-10-26 (CONTENT3, OVR): the Sea Turtle Elder's live edit of 10-24 (folded) took its Revive off: Armor 3 and Tide, 5/10
   ok(cid['beaver-lumberjack'] && cid['beaver-lumberjack'].effects.stockpile === 1 && !(cid['beaver-lumberjack'].effects.triggers || []).length, 'E13 the Beaver Lumberjack has Stockpile 1');
   const tx = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8');
   ['ui.eng9-undead', 'ui.eng9-revive', 'ui.eng9-poison-barbs', 'ui.eng9-stockpile', 'ui.eng9-fork', 'ui.eng9-tangled-name', 'ui.eng9-tangle'].forEach(k=> ok(tx.includes('"' + k + '"'), `text ${k}`));

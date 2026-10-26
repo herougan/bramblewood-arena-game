@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-10-25",
+ "updated": "2026-10-26",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -1301,6 +1301,61 @@
      "name": "2-PRO-3",
      "level": 1,
      "leaders": [
+      "otter-guard"
+     ],
+     "deck": {
+      "cricket-drummer": 2,
+      "crossed-eyes": 1,
+      "duckling": 1,
+      "earthworm": 1,
+      "ember-tetra": 1,
+      "hedgerow-shrew": 1,
+      "house-cat": 3,
+      "meadow-rabbit": 1,
+      "otter-guard": 1,
+      "otter-kit": 1,
+      "river-carp": 1,
+      "robin-redbreast": 1,
+      "silver-minnow": 2,
+      "terrier-pup": 1,
+      "worker-ant": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mb-2026-10-24-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-24T13:44:12.526Z",
+      "version": "2.1.0 (2026-10-24, PRO2)",
+      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 6000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --mode map-true",
+      "score": 0.801,
+      "ci": [
+       0.775,
+       0.828
+      ],
+      "runElo": 35,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "burrow-rabbit:1,cobalt-talon-fledgling:1,conch-herald:1,cottontail:1,driftwood-crab:1,ember-tetra:3,fiddler-crab-swarm:2,grey-seal-bull:1,house-cat:1,meadow-rabbit:2,otter-guard:4,sea-turtle-elder:2",
+      "p": 0.413,
+      "n": 400,
+      "ci": [
+       0.365,
+       0.461
+      ],
+      "elo": -61,
+      "eloCI": [
+       -96,
+       -27
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "2-PRO-4",
+     "name": "2-PRO-4",
+     "level": 1,
+     "leaders": [
       "grey-seal-bull"
      ],
      "deck": {
@@ -1585,17 +1640,13 @@
     "PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
     "left out (-156 Elo below the band): bee-forager:1,bee-knight:1,conch-herald:1,crimson-wing-dueli...",
     "left out (-279 Elo below the band): bee-forager:5,conch-herald:1,ember-tetra:4,garden-snail:1,mi...",
-    "PRO: PRO-1 replaced: the challenger scores 0.71 over 400 games [0.664, 0.752]",
-    "PRO: left out (-127 Elo below the band): conch-crawler:1,conch-herald:1,cricket-drummer:1,driftwood-c...",
-    "PRO: left out (-139 Elo below the band): cricket-drummer:2,crossed-eyes:1,duckling:1,earthworm:1,embe...",
-    "PRO: left out (-166 Elo below the band): bee-sentry:1,beetle-grunt:1,cottontail:1,cricket-drummer:1,c...",
-    "PRO: left out (-285 Elo below the band): beetle-grunt:2,burrow-rabbit:2,conch-herald:1,driftwood-crab...",
-    "BPRO: PRO-1 replaced: the challenger scores 0.763 over 400 games [0.718, 0.802]",
-    "BPRO: left out (-109 Elo below the band): conch-crawler:1,driftwood-crab:5,fiddler-crab-swarm:1,grey-s...",
-    "BPRO: left out (-111 Elo below the band): beachcomber-sanderling:1,conch-crawler:4,conch-herald:2,drif...",
-    "BPRO: left out (-143 Elo below the band): conch-crawler:4,driftwood-crab:4,fiddler-crab-swarm:1,grey-s...",
-    "BPRO: left out (-203 Elo below the band): conch-herald:1,driftwood-crab:4,fiddler-crab-swarm:3,grey-se...",
-    "BPRO: left out (-269 Elo below the band): conch-crawler:2,driftwood-crab:3,fiddler-crab-swarm:1,open-o..."
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: left out (-127 Elo below the band): conch-crawler:4,driftwood-crab:4,fiddler-crab-swarm:1,grey-s...",
+    "BPRO: left out (-135 Elo below the band): beachcomber-sanderling:1,conch-crawler:4,conch-herald:2,drif...",
+    "BPRO: left out (-162 Elo below the band): conch-crawler:1,driftwood-crab:5,fiddler-crab-swarm:1,grey-s...",
+    "BPRO: left out (-215 Elo below the band): conch-herald:1,driftwood-crab:4,fiddler-crab-swarm:3,grey-se...",
+    "BPRO: left out (-285 Elo below the band): conch-crawler:2,driftwood-crab:3,fiddler-crab-swarm:1,open-o..."
    ]
   },
   "mg": {
@@ -1898,8 +1949,8 @@
    "replaced": [],
    "skipped": [],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)"
    ]
   },
   "mp": {
@@ -1909,6 +1960,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "field": "rain",
      "phase": "cycle",
      "tide": true,
      "wet": true
@@ -1930,7 +1982,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"water\",\"tier\":1} / {\"biome\":\"water\",\"tier\":2}), the boss's (2-A-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, tide, wet, terrain Riverbank T2 (Inspiring 1)"
+    "summary": "aiGuardLethal, field rain, phase cycle, tide, wet, terrain Riverbank T2 (Inspiring 1)"
    },
    "pro": [
     {
@@ -1968,6 +2020,51 @@
       "renamed": []
      },
      "h2h": null,
+     "later": []
+    },
+    {
+     "id": "2-A-PRO-2",
+     "name": "2-A-PRO-2",
+     "level": 1,
+     "leaders": [
+      "fire-ant-raft"
+     ],
+     "deck": {
+      "bee-forager": 4,
+      "chipmunk-skirmisher": 4,
+      "fiddler-crab-swarm": 4,
+      "fire-ant-raft": 4,
+      "terrier-pup": 4
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map02-mp-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-25T01:19:07.410Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map mp --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.772,
+      "ci": [
+       0.75,
+       0.795
+      ],
+      "runElo": -137,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "acorn-chipmunk:1,bee-sentry:1,buzzed-chipmunk:1,chipmunk-skirmisher:4,ember-tetra:2,fiddler-crab-swarm:4,fire-ant-raft:4,grey-seal-bull:1,shallows-fry:1,terrier-pup:1",
+      "p": 0.505,
+      "n": 400,
+      "ci": [
+       0.456,
+       0.554
+      ],
+      "elo": 3,
+      "eloCI": [
+       -31,
+       37
+      ]
+     },
      "later": []
     }
    ],
@@ -2190,9 +2287,8 @@
    "replaced": [],
    "skipped": [],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "PRO: left out (-129 Elo below the band): bee-forager:4,chipmunk-skirmisher:4,fiddler-crab-swarm:4,fir...",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)"
    ]
   },
   "mc": {
@@ -5876,64 +5972,6 @@
      "name": "11-PRO-2",
      "level": 1,
      "leaders": [
-      "whale-shark"
-     ],
-     "deck": {
-      "ant-warrior": 1,
-      "camouflage-frog": 2,
-      "cobalt-talon-fledgling": 1,
-      "cottonmouth-matriarch": 1,
-      "eagle-owl-quartermaster": 1,
-      "fungus-gnat-cloud": 1,
-      "guano-beetle": 1,
-      "hollow-oath-keeper": 1,
-      "mountain-hare": 1,
-      "mudpuppy": 1,
-      "otter-kit": 1,
-      "owl-nightwatch": 2,
-      "paper-wasp": 1,
-      "sea-cucumber": 1,
-      "star-nosed-mole": 1,
-      "vampire-bat-nurse": 1,
-      "whale-shark": 1,
-      "wolf-spider-mother": 1
-     },
-     "source": {
-      "file": "docs/balance/opt/deckopt-map11-m10-2026-10-25-pro3-maptrue.json",
-      "mode": "map-true",
-      "optimum": 1,
-      "generated": "2026-10-24T23:08:40.266Z",
-      "version": "2.2.0 (2026-10-25, PRO3)",
-      "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
-      "score": 0.701,
-      "ci": [
-       0.681,
-       0.722
-      ],
-      "runElo": -2,
-      "renamed": []
-     },
-     "h2h": {
-      "vs": "alpine-marmot:4,blind-cave-fish:1,cricket-drummer:1,electric-ray:1,eyrie-warden:3,ibex-rockcaller:1,mountain-goat-climber:2,owl-nightwatch:2,seed-cache-squirrel:5",
-      "p": 0.534,
-      "n": 400,
-      "ci": [
-       0.485,
-       0.582
-      ],
-      "elo": 23,
-      "eloCI": [
-       -11,
-       58
-      ]
-     },
-     "later": []
-    },
-    {
-     "id": "11-PRO-3",
-     "name": "11-PRO-3",
-     "level": 1,
-     "leaders": [
       "swordfish-spearman"
      ],
      "deck": {
@@ -6132,11 +6170,64 @@
      "later": []
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "11-PRO-2",
+     "deck": {
+      "ant-warrior": 1,
+      "camouflage-frog": 2,
+      "cobalt-talon-fledgling": 1,
+      "cottonmouth-matriarch": 1,
+      "eagle-owl-quartermaster": 1,
+      "fungus-gnat-cloud": 1,
+      "guano-beetle": 1,
+      "hollow-oath-keeper": 1,
+      "mountain-hare": 1,
+      "mudpuppy": 1,
+      "otter-kit": 1,
+      "owl-nightwatch": 2,
+      "paper-wasp": 1,
+      "sea-cucumber": 1,
+      "star-nosed-mole": 1,
+      "vampire-bat-nurse": 1,
+      "whale-shark": 1,
+      "wolf-spider-mother": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map11-m10-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-24T23:08:40.266Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.701,
+      "ci": [
+       0.681,
+       0.722
+      ],
+      "runElo": -2,
+      "renamed": []
+     },
+     "dropped": [
+      "hollow-oath-keeper: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-26"
+    }
+   ],
+   "skipped": [
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map11-m10-2026-10-25-pro3-maptrue.json #1",
+     "problems": [
+      "hollow-oath-keeper: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    }
+   ],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: 11-PRO-2 dropped: hollow-oath-keeper: not obtainable (not in the progression plan or an earlier map's cards)",
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)"
    ]
   },
   "mv": {
@@ -6398,8 +6489,8 @@
    "replaced": [],
    "skipped": [],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)"
    ]
   },
   "mh": {

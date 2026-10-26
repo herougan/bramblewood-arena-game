@@ -3470,7 +3470,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name} est Éveillé : il reste éveillé.",
  "{name} is Wakeful: it stays awake.": "{name} est Éveillé : il reste éveillé.",
  "Pulverise": "Pulvériser",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "Ses frappes ignorent l'Armure et infligent le double aux Structures. Une frappe qui touche brise l'Armure, l'Armure magique et l'équipement de la cible.",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "L'Armure brisée le reste pour le combat. Un équipement brisé va au cimetière.",
  "🔨 {att} pulverises {name}.": "🔨 {att} pulvérise {name}.",
  "{att} pulverises {name}.": "{att} pulvérise {name}.",
@@ -3498,5 +3497,6 @@
  "Tamper-proof: it can't be stolen.": "Inviolable : on ne peut pas le voler.",
  "Blinding Sandstorm": "Tempête de sable aveuglante",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "Chaque unité combat Aveuglée (ses frappes ratent 1 fois sur 2), sauf les unités Sèches, à Flair ou à Sonar. Les cartes de Tempête sont renforcées.",
- "Everyone Blind": "Tous aveuglés"
+ "Everyone Blind": "Tous aveuglés",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "Ses frappes ignorent l'Armure et infligent le double aux Structures. Une frappe qui touche brise l'Armure, l'Armure magique et l'équipement de la cible."
 }

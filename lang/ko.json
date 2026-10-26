@@ -3473,7 +3473,6 @@
  "👁️ {name} is Wakeful: it stays awake.": "👁️ {name}은(는) 불면: 깨어 있습니다.",
  "{name} is Wakeful: it stays awake.": "{name}은(는) 불면: 깨어 있습니다.",
  "Pulverise": "분쇄",
- "Its swings ignore Armor and deal double damage to Structures. A swing that lands breaks the target's Armor, Magic Armor and equipment.": "공격이 방어구를 무시하고 구조물에 두 배 피해를 줍니다. 명중하면 대상의 방어구, 마법 방어구, 장비를 부숩니다.",
  "Broken Armor stays broken for the fight. A broken piece of equipment goes to the graveyard.": "부서진 방어구는 전투 내내 부서진 채입니다. 부서진 장비는 묘지로 갑니다.",
  "🔨 {att} pulverises {name}.": "🔨 {att}이(가) {name}을(를) 분쇄합니다.",
  "{att} pulverises {name}.": "{att}이(가) {name}을(를) 분쇄합니다.",
@@ -3501,5 +3500,6 @@
  "Tamper-proof: it can't be stolen.": "도난 방지: 훔칠 수 없습니다.",
  "Blinding Sandstorm": "눈을 멀게 하는 모래폭풍",
  "Every unit fights Blind (its swings miss 1 in 2), except Dry, Keen Sense and Sonar units. Storm cards are empowered.": "모든 유닛이 실명 상태로 싸웁니다(공격이 2번에 1번 빗나감). 건조, 예리한 감각, 음파 유닛은 제외. 폭풍 카드가 강해집니다.",
- "Everyone Blind": "모두 실명"
+ "Everyone Blind": "모두 실명",
+ "Ignores Armor, double damage to Structures. A landed swing breaks the target's Armor, Magic Armor and equipment.": "공격이 방어구를 무시하고 구조물에 두 배 피해를 줍니다. 명중하면 대상의 방어구, 마법 방어구, 장비를 부숩니다."
 }
