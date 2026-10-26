@@ -120,7 +120,8 @@ function add(){
     if(isToken){ delete card.rarity; card.creatorNote = NOTE + 'the Mother Carrier\'s token (E16): Flying, Arrow 1 twice a round (the owner\'s "full loads"). Not obtainable.'; }
     else if(place){ card.source = {kind: 'pack', tier: place[1], map: place[0]}; card.creatorNote = NOTE + `placed in Pack ${place[1]}, ${place[0]}: ${place[2]}. Stats by the budget (fit).`; }
     else if(faction){ card.source = Object.assign({}, faction); card.creatorNote = NOTE + `${why}. Stats by the budget (fit).`; }
-    else { card.source = source; card.awaitingSource = true; card.creatorNote = NOTE + `awaiting a source, proposed: ${propose}. Stats by the budget (fit).`; }
+    else { delete card.source; card.awaitingSource = true; // no source until the owner places it (a faction source would let the faction draws give it now)
+      card.creatorNote = NOTE + `awaiting a source, proposed: ${propose}. Stats by the budget (fit).`; }
     if(prev && prev.creatorNote && /Fit:/.test(prev.creatorNote)) card.creatorNote = prev.creatorNote;
     keep.push(card);
   }

@@ -34370,7 +34370,7 @@
     "cost": 3,
     "wait": 3,
     "attack": 0,
-    "health": 26,
+    "health": 25,
     "rarity": "heroic",
     "archetypes": [
       "Hummingbird",
@@ -34397,13 +34397,8 @@
     "flavor": "A floating hive of woven reed and sunfeather. Every morning its hatches open and the sky fills with little archers, quivers full.",
     "numericId": 9178,
     "uuid": "6da30498-bbf2-5efd-ab24-83b7060730ee",
-    "source": {
-      "kind": "pack",
-      "tier": 11,
-      "side": "tribes"
-    },
     "awaitingSource": true,
-    "creatorNote": "2026-10-26 (package CONTENT3) awaiting a source, proposed: the Hummingbird faction pack from Map 25 (Heroic on the road ladder), or a Map 25+ reward (owner call CONTENT3-3). Fit: the formula line on its 0:30 shape, 0/26 (99% of N 38.35, S 12)."
+    "creatorNote": "2026-10-26 (package CONTENT3) awaiting a source, proposed: the Hummingbird faction pack from Map 25 (Heroic on the road ladder), or a Map 25+ reward (owner call CONTENT3-3). Fit: the formula line on its 0:30 shape, 0/25 (99% of N 37.32, S 12)."
   },
   {
     "locked": true,

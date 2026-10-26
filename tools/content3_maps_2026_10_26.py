@@ -2,8 +2,8 @@
 """Package CONTENT3 (2026-10-26): the map edits in arena_app.js CONQUEST_MAPS (idempotent; each edit leaves a dated note on its line).
   C1   5-1 and 5-2 pay a Cure card on their first clear (node firstCard): the Marsh-mallow Hare, the Sphagnum Vole.
   G5   7-4 pays the Sleepless Shrew (Wakeful) on its first clear, before 7-5's Spore Cloud (it paid the Hollow Oath-Keeper).
-  G3   the Hollow Oath-Keeper leaves the Morel Hollow's decks (7-2, 7-4, 7-5, 7-6): the Hawthorn Shieldbug takes its places (a Map 7 pack
-       card at its cost, 1 Lumber, and its shape, a tough 2/13 with Armor 1).
+  G3   the Hollow Oath-Keeper leaves the Morel Hollow's decks (7-2, 7-4, 7-5, 7-6): the Truffle Piglet takes its places (a Map 7 card at its
+       cost, 1 Lumber; the Hawthorn Shieldbug, tried first, made 7-4 and 7-5 far too hard: 22.5% and 12.5% at 40 games).
   BAL3-1  5-A-2 Gator Hollow and 10-A-2 The Drowned Deck get the Tide (rules.tide), so their Rising Tide boon can turn on.
   C5   Lilypad Reach (the lotus ponds) has constant Rain (rules.field 'rain' on its seven fights).
   C4   18-4 "Sandstorm" blows the blinding Sandstorm (rules.sandstorm 'blind').
@@ -55,14 +55,23 @@ for key, card, why in [('5-1', 'marsh-mallow-hare', 'owner C1, Map 5\'s first tw
                        ('7-4', 'sleepless-shrew', 'owner G5, a Sleep-immune card before 7-5; was the Hollow Oath-Keeper (G3)')]:
     if edit_line(key, lambda l: set_first(l, card, why)): done.append('%s firstCard %s' % (key, card))
 for key in ['7-2', '7-4', '7-5', '7-6']:
-    if edit_line(key, lambda l: swap_deck(l, 'hollow-oath-keeper', 'hawthorn-shieldbug', 'G3')): done.append('%s deck: Oath-Keeper -> Hawthorn Shieldbug' % key)
+    if edit_line(key, lambda l: swap_deck(l, 'hollow-oath-keeper', 'truffle-piglet', 'G3')): done.append('%s deck: Oath-Keeper -> Hawthorn Shieldbug' % key)
+# the copy caps (an Uncommon 4 a deck): what the Truffle Piglet can't take goes to an Owl Nightwatch or a Garden Snail
+for key, (other, k) in {'7-4': ('owl-nightwatch', 2), '7-5': ('owl-nightwatch', 1), '7-6': ('garden-snail', 1)}.items():
+    def cap(line, other=other, k=k):
+        m = re.search(r'deck:(\{[^}]*\})', line); d = json.loads(m.group(1))
+        if d.get('truffle-piglet', 0) <= 4: return line
+        d['truffle-piglet'] -= k; d[other] = d.get(other, 0) + k
+        line = line[:m.start()] + 'deck:' + json.dumps(d, separators=(',', ':')) + line[m.end():]
+        return re.sub(r'hollow-oath-keeper x(\d) -> truffle-piglet', lambda mm: 'hollow-oath-keeper x%s -> truffle-piglet x%d + %s x%d (the copy caps)' % (mm.group(1), int(mm.group(1)) - k, other, k), line)
+    if edit_line(key, cap): done.append('%s copy caps' % key)
 for key in ['5-A-2', '10-A-2']:
     if edit_line(key, lambda l: set_rules(l, {'tide': True}, 'owner BAL3-1 "Fix.": the Tide, so Rising Tide can turn on')): done.append('%s + tide' % key)
 for key in ['2-A-%d' % k for k in range(1, 8)]:
     if edit_line(key, lambda l: set_rules(l, {'field': 'rain'}, 'owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain')): done.append('%s field rain' % key)
 if edit_line('18-4', lambda l: set_rules(l, {'sandstorm': 'blind'}, 'owner C4 / EN8-7: the blinding Sandstorm (every unit Blind, a Storm for Storm cards)')): done.append('18-4 sandstorm blind')
 # 7-5's showcase was the Oath-Keeper (G3): the card that took its place in the deck
-if edit_line('7-5', lambda l: l.replace('showcase:"hollow-oath-keeper"', 'showcase:"hawthorn-shieldbug" /* %s, G3): was the Hollow Oath-Keeper */' % TAG)): done.append('7-5 showcase')
+if edit_line('7-5', lambda l: l.replace('showcase:"hollow-oath-keeper"', 'showcase:"truffle-piglet" /* %s, G3): was the Hollow Oath-Keeper */' % TAG)): done.append('7-5 showcase')
 # the generated first-card table: 7-4's row follows its node (gd5's table is regenerated from the node's firstCard anyway)
 old = "  'mu:7-4': 'hollow-oath-keeper',"
 if old in s: s = s.replace(old, "  'mu:7-4': 'sleepless-shrew', // 2026-10-26 (CONTENT3, G5 / G3): was the Hollow Oath-Keeper"); done.append('SKIRMISH_FIRST_PACK_CARDS mu:7-4')

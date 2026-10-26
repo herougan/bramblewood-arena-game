@@ -66,7 +66,7 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Dive stays as built (area damage still reaches a diver); a Quick creature can Dive and loses Quick while aloft or under.** The Quick part: **Built (ENG9, 2026-10-26).** [EN7-1, EN7-4]
 - **Undead (passive) brings the unit back once as a token; Revive N (action; the keyword is On Play: Revive N) returns random graveyard creature cards as real cards.** **Built (ENG9, 2026-10-26).** Revive is on no card yet (call ENG9-1). [owner note #20, 10-25 17:53; no decision id]
 - **Poison Barbs N: Thorns that deal poison** (never redirected; a Guardian doesn't step in for it). **Built (ENG9, 2026-10-26).** [owner note #40]
-- **Detonate N: the target's Poison ticks N times at once, each tick removing a counter, animated in a row.** **Decided, not built yet (action item E18).** [owner 17:53 message; no decision id]
+- **Detonate N: the target's Poison ticks N times at once, each tick removing a counter, animated in a row.** **Built (CONTENT3, 2026-10-26)**; priced 0.2 a tick. [owner 17:53 message; no decision id]
 - **Hoard is taken; the hand-count skills are Full Hand N and Lean N.** Plenty stays at 4+ cards. [EN6-1, EN6-3, EN6-5]
 - **Backstab also triggers on a target that is Waiting, Shocked or Exposed.** [EN-5, D21]
 - **Swarm counts other allies only; Swarm by Type counts the Type tree.** [UI4-2, EN2-6]
@@ -76,10 +76,12 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Skills that read "?":** Stem (Fodder was its name on the babies) and Chrysalis read "?" before Map 15, then show the name with "?" for the effect until Map 20 (`SKILL_REVEAL_MAP` nameFrom). **Built (ENG9, 2026-10-26).** [EN8-4]
 - **Wildpath perks and brambles that mend say "Repair Bramble."** **Built (ENG9, 2026-10-26).** [EN8-3]
 - **A named keyword for "On Ready: gain N Lumber": Stockpile N** (Forager is too close to Foraging; call ENG9-2), on the Beaver Lumberjack. **Built (ENG9, 2026-10-26).** [EN6-6]
-- **Gem sockets: taking a gem out gives it back;** gem fusion and a very rare Socket N skill. The fusion and Socket N: **decided, not built yet (action item E14).** [H1-a, H1; gem effects sit outside the budget, `docs/workflows/balance.md`]
-- **Equip Time N (default 1) with a top-right badge; Tamper-proof equipment cannot be stolen; a Platform card type (Structure rules for now).** **Decided, not built yet (action items E15, E16).** [owner notes #21, #22; destroying equipment waits on OWN-Q2]
+- **Gem sockets: taking a gem out gives it back;** gem fusion and a very rare Socket N skill. **Built (CONTENT3, 2026-10-26):** Socket N adds N sockets to each copy (priced 0: gems sit outside the budget; on no card yet, call CONTENT3-4); two gems of one kind fuse into a Greater gem (twice the bonus) at the Forge's Socket tab for 30 Dust (a placeholder). [H1-a, H1; gem effects sit outside the budget, `docs/workflows/balance.md`]
+- **Equip Time N (default 1) with a top-right badge; Tamper-proof equipment cannot be stolen; a Platform card type (Structure rules for now).** **Built (CONTENT3, 2026-10-26):** Equip Time is the piece's `equip.turns`; a Platform card carries Structure too; the Mother Carrier (Heroic, awaiting a source) is the first. [owner notes #21, #22; destroying equipment waits on OWN-Q2]
 - **Bound (OWN-Q1):** a Bound unit can't move (no Intercept, Guardian, Rampart, Dive, Charge) and loses Flying's dodge; its swings, arrows and ranged actions deal half damage. Only Strangle binds now (Tangleweed lays Tangled). **Built (ENG9, 2026-10-26).**
-- **Pulverise (OWN-Q5):** ignores Armor, breaks Armor / Magic Armor and equipment it hits, double damage to Structures. **Decided, not built yet (CONTENT3).**
+- **Pulverise (OWN-Q5):** ignores Armor, breaks Armor / Magic Armor and equipment it hits, double damage to Structures. **Built (CONTENT3, 2026-10-26)**, priced 1.6; on no card yet. A break is sure (Hardy lives wait on PROP1-1).
+- **Wakeful (G5): it never falls Asleep** (a Sleep hit, the Spore Cloud). **Built (CONTENT3, 2026-10-26)**, priced 0.5; the Sleepless Shrew, 7-4's first-clear card.
+- **A Sandstorm is a Storm for Storm cards; the blinding Sandstorm (`sandstorm: 'blind'`) makes every unit Blind but Dry / Keen Sense / Sonar ones.** **Built (CONTENT3, 2026-10-26)**; on 18-4. [owner EN8-7 / C4]
 - **Held back for the owner's answer:** Fester (OWN-Q4). No rule yet.
 
 ## 3. Resources
@@ -89,7 +91,7 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Three tiers, each paid with the one below** (Milling gives Lumber, Quarry pays Lumber for Stone, Smelter pays Lumber and Stone for Metal); a trigger can carry a price and fizzles free. [rules 10-19 SK2b]
 - **Lumber gatherers per biome, plus Stonecutter, Prospector, Felling, Scavenge, Salvage, Coppice, Windfall, Driftwood;** all built, default value 1. [LUM-1, EN8-5, CONTENT2-1, CONTENT2-2]
 - **Pearls** (from Pearl Bed, On Ready, once) pay 1 Lumber or 1 Stone, only when you are short. [EN8-6]
-- **More Lumber and draw mechanics are wanted** across the road (queued, OWN-C6). [CONTENT2-4]
+- **More Lumber and draw mechanics are wanted** across the road (OWN-C6). CONTENT3 (2026-10-26) added two Lumber gatherers (Sunken Hollow, Sable Swampmire) and the first two draw cards in any map pool (The Long Grass, The Briar Maze). [CONTENT2-4]
 - **Energy:** items roll 2% per Energy a fight cost, 3 a day, fight drops only; a capsule gives 8 Energy and is a first-clear reward about every three maps. The curve is in the game (`arena_app.js`, `ENERGY_*`, `STAMINA_PLACES`); hub 📈 Curves tab shows it. [EB-4, EB-5]
 - **Krooni are retired for now** (nothing spends them). Many currencies are fine as long as each shows only where it matters. [E9, T4]
 - **Disenchant values and the Forge costs are in `canonical/upgrade-costs.json`** (editable in the hub's 💰 Upgrade costs tab); Base and Quest cards cannot be disenchanted. [E2, E5, RW3-6, UI4-1]

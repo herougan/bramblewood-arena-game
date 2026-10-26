@@ -1282,3 +1282,25 @@ The rules as built (engine: `isMagicDmg` in `computeHitDamage` / `damageCardFlat
 | 🌿 Tangled | the Bound vine (`SkillFX.vineBind`) | "🌿 Tangled" float | `statusFx tangled` |
 | 🪦 Revive | the spawn's own entrance | log line | `reviveGrave` |
 
+
+## 2026-10-26 additions (package CONTENT3): Wakeful, Detonate N, Pulverise, Tamper-proof and Equip Time, the Platform, the golem's stun, the blinding Sandstorm, Socket N and gem fusion
+
+The rules as built (engine: `rollStatusOnHit` and the Spore Cloud pick, `detonateBonus`, `pulveriseHit` and `computeHitDamage`, `eqTamperProof` in the Disarm action, the `stun` action's `everyone`, `sandBlinds` / `en6Storm`; app: the MATERIA_SOCKET_H1 block, `equipTimeBadgeHTML`). The engine decides; this describes.
+- **Wakeful** (`effects.wakeful`): it never falls Asleep: a Sleep hit fizzles on it (event `statusFx wakeful`), the Spore Cloud never picks it.
+- **Detonate N** (`effects.detonate`, true = 1): its hit (or shot) makes the target's Poison tick N times at once, before the hit: each tick deals the stack and takes one counter off, stopping when the Poison runs out. Status damage (no Armor). One event, `statusFx detonate {amount, ticks:[...], left}`; the board floats each tick in turn ("🎆 N", 240 ms apart) and drops the counter badge to `left`.
+- **Pulverise** (`effects.pulverise`): its swings ignore Armor and deal double damage to a Structure (mod `pulverise`); a landed swing breaks the target's Armor and Magic Armor for the fight (`armorLoss`, `magicArmorLoss`) and the equipment it carries (to the graveyard, event `equipBreak {why:'pulverise'}`). Event `statusFx pulverise {broke}`.
+- **Equip Time N** (`equip.turns`, default 1, EQ's existing field): the rounds a unit takes to equip the piece. An equipment card's tile wears a top-right badge: ⚔️ N, the sword slowly circling (still under reduced motion), 🔒 when Tamper-proof. The card editor sets both.
+- **Tamper-proof** (`equip.tamperProof`): Disarm can't take the piece, on a unit (event `sk2 disarmBlocked`) or lying loose (skipped).
+- **Platform** (type): a card that carries `Platform` and `Structure`; every Structure rule applies (no swing at 0 Attack, Pulverise and Siege, poison-proof, no equipment). The Mother Carrier.
+- **The golem's stun** (trigger action `stun {everyone:true}`): every live unit on both sides is stunned, but the source and the enemy's last-played unit (`pl.lastPlayedUid`, set by `placeCard`).
+- **Blinding Sandstorm** (`rules.sandstorm: 'blind'`): every unit swings Blind (1 in 2, `sightMiss`) unless it is Dry, has Keen Sense, Sonar or True Strike; the plain Sandstorm's 1 in 4 at a unit is off. Any Sandstorm is now a Storm for Storm cards (`en6Storm`).
+- **Socket N** (`effects.socket`): N more gem sockets on each copy (a Unique-or-rarer card's one, plus N; a lower card with Socket N gets N). The copy's gems are one joined key ("ember+tide2"); the tile shows one diamond per socket; taking out takes the last gem set.
+- **Gem fusion** (Forge, 💎 Socket tab): two gems of one kind -> one Greater gem of that kind (twice the bonus, the same effect) for `GEM_FUSE_COST` (30 Dust, a placeholder).
+
+| Effect | Function | Look | Event |
+|---|---|---|---|
+| 🎆 Detonate N | `giVfx` (arena_app.js) | each tick's number floats in turn; the Poison badge drops to what is left | `statusFx detonate {ticks}` |
+| 🔨 Pulverise | log line; `equipBreak` shows the piece leaving | — | `statusFx pulverise`, `equipBreak` |
+| 👁️ Wakeful | log line | — | `statusFx wakeful` |
+| ⚔️ Equip Time | `equipTimeBadgeHTML` | top-right badge, circling sword | — |
+| 🌪️ Blinding Sandstorm | the field row (`fieldRowsFor`) | 🌪️ "Everyone Blind" | `evaded` (blind) |
