@@ -26595,7 +26595,7 @@ function floorDef(run, idx){ return dungeonOf(run).floors[idx == null ? run.floo
 // for 2 seats, x2.8 for 4 (D49's 1-4 player steps).
 function healthScale(run){ return HEALTH_SCALE[Math.max(0, Math.min(3, run.seats.length - 1))]; }
 // 2026-10-26 (package FIN1, RES4-3): the boss and floors carry the Tidelock Vault's aqua names (ids unchanged: matriarch, roost, galleries, pools).
-// The fight-only cards of a floor: the Tidewarden (was the Matriarch) (a copy of its base card under her own name, her Health scaled with the party).
+// The fight-only cards of a floor: the Tidewarden (a copy of its base card under her own name, her Health scaled with the party).
 function floorOverlay(run, idx){
   const f = floorDef(run, idx), out = {};
   if(f && f.boss && run.defs[f.boss.base]){ const src = run.defs[f.boss.base], id = f.boss.base + '~gdboss';
@@ -50360,7 +50360,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a34bc48a0724', BUILD_CARD_HASH = 'be4e81a1a64f62fef1f6249eb63d96d7a06ff2ea27b30ae0d417b112081ed341';
+const BUILD_ID = 'dc44831108c7', BUILD_CARD_HASH = 'be4e81a1a64f62fef1f6249eb63d96d7a06ff2ea27b30ae0d417b112081ed341';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
