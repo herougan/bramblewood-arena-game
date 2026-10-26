@@ -1360,8 +1360,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     function litByFoe(){ try{ const foe = curPlayers && curPlayers[otherId(ownerId)]; if(!pl || !foe) return false; const col = columnOfCard(pl, card.uid); if(col == null) return false;
       const f = combatColumnsOf(foe)[col]; return !!(f && f.kind === 'card' && f.card && f.card.hp > 0 && illuminates(CARD_DEFS[f.card.defId])); }catch(err){ return false; } }
     if(ph === 'night' && e.nightblind && !lit() && !litByFoe()) miss = Math.max(miss, 0.5);
+    if(sandBlinds(e)) miss = Math.max(miss, 0.5); // CONTENT3 (2026-10-26): a blinding Sandstorm
     return miss;
   }
+  // The blinding Sandstorm (CONTENT3, 2026-10-26, owner EN8-7 / C4: "IN a sandstorm, they would also similarly be empowered, but blind"):
+  // rules.sandstorm 'blind' is a Sandstorm (its wind, a Storm for Storm-empowered cards) in which every unit fights Blind: its swings miss
+  // 1 in 2 (sightMiss), unless it is Dry (desert-hardy), has Keen Sense or Sonar, or True Strike. It replaces the plain Sandstorm's 1 in 4
+  // at a unit (dodgeCheck). A plain Sandstorm (true) is unchanged, except that it counts as a Storm now.
+  function sandBlinds(e){ return rules.sandstorm === 'blind' && !(e && (e.dry || e.keenSense || e.sonar || e.trueStrike)); }
   function sightBlind(card, ownerId){ return sightMiss(card, ownerId) > 0; }
   function nightDim(card, ownerId){ return sightBlind(card, ownerId); } // old name, kept for callers
   function allLive(pl){ return [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=> c && !c.gap && c.hp > 0); }
@@ -1616,7 +1622,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // A pick that finds no unit on a side skips that side.
     const giPick = (pid, ok)=>{ const cs = liveUnits(players[pid]).filter(ok); return cs.length ? cs[Math.floor(rnd()*cs.length)] : null; };
     if(rules.sporeCloud){ ev({type:'fieldTick', field:'sporeCloud', round});
-      [1,2].forEach(pid=>{ const c = giPick(pid, x=> !poisonProof(x)); if(!c) return; const had = c.asleep||0; c.asleep = Math.max(had, Math.min(had + 1, 2));
+      [1,2].forEach(pid=>{ const c = giPick(pid, x=> !poisonProof(x) && !effectsOf(x).wakeful /* CONTENT3 (2026-10-26, G5): Wakeful */); if(!c) return; const had = c.asleep||0; c.asleep = Math.max(had, Math.min(had + 1, 2));
         ev({type:'statusFx', kind:'sleep', field:'sporeCloud', side:sideOf(pid), attUid:null, attDefId:null, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, left:c.asleep}); }); }
     if(rules.thunderstorm){ const n = fxN(rules.thunderstorm, FIELD_DMG_DEFAULT); /* 2026-10-22 (package FX): 1, was 2 */ ev({type:'fieldTick', field:'thunderstorm', round, amount:n});
       let struck = false; [1,2].forEach(pid=>{ const c = giPick(pid, ()=> true); if(c){ hit(pid, c, n, 'shock', 'thunderHit', {wet: wetCountOf(c) || undefined}); struck = true; } });
@@ -2415,7 +2421,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function en6ColdField(){ const f = field && field.id; return f === 'frozen' || !!rules.hail || !!rules.freezing || !!rules.frostbite || !!rules.frostWait || !!rules.frostCount || en6Season() === 'winter'; }
   function en6Cold(){ return en6ColdField() || !!rules.coldMap; }
   function en6Rain(){ return !!((field && field.id === 'rain') || rules.thunderstorm); }
-  function en6Storm(){ return !!(rules.thunderstorm || isWindy()); }
+  function en6Storm(){ return !!(rules.thunderstorm || isWindy() || sandstormOn()); } // CONTENT3 (2026-10-26, owner EN8-7 / C4: "IN a sandstorm, they would also similarly be empowered"): a Sandstorm is a Storm too
   function en6Fog(){ return !!((field && field.id === 'fog') || rules.misty || rules.fog); }
   function en6Salt(){ return !!rules.saltMap && !permaTide && getTide() === 'ebb'; }
   let en6RainWas = null, en6DryRun = 0, en6RainSeen = false, en6SeasonWas = null;
@@ -2827,7 +2833,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Armor is genuinely the last line of defense). Returns {dmg, armorBlocked}.
   function perksOfCard(card){ if(!card || !curPlayers) return null; for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && pl.perks && ['left','center','right'].some(l=> (pl.row[l]||[]).includes(card))) return pl.perks; } return null; }
   // EN8 (2026-10-24, P24-16): Magic Armor N, the magic and elemental half of Armor (see computeHitDamage).
-  function magicArmorOf(c){ const v = effectsOf(c).magicArmor; return v === true ? 1 : Math.max(0, Number(v)||0); }
+  function magicArmorOf(c){ const v = effectsOf(c).magicArmor; return Math.max(0, (v === true ? 1 : Math.max(0, Number(v)||0)) - ((c && c.magicArmorLoss) || 0)); } // - what a Pulverise broke (CONTENT3, 2026-10-26)
   // ENG9 (2026-10-26, EN8-2 as the owner reshaped it on 10-25): the magic damage types. Magic passes Armor and is what Magic Armor stops;
   // everything else but true damage (physical and the elements) is stopped by Armor. Dark and holy are arcane, so they count as magic.
   const MAGIC_DMG = new Set(['magic', 'dark', 'holy']);
@@ -2914,7 +2920,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // a "vulnerable" debuff, distinct from Rage's self-damage-doubling (that's a stance the card
     // chooses; Shock is inflicted on it). Applied after Resist/Weakness so a resisted hit still
     // gets shocked proportionally, before Armor so Armor still partially mitigates it.
-    if(targetCard.shocked>0){ amt = amt * 1.5; mods.push('shocked'); } // exact (FX2; was rounded up)
+    if(targetCard.shocked>0){ amt = amt * 1.5; mods.push('shocked'); }
+    if(attDef && attDef.effects && attDef.effects.pulverise && isStructureCard(targetCard)){ amt = amt * 2; mods.push('pulverise'); } // CONTENT3 (2026-10-26, OWN-Q5): Pulverise deals double damage to Structures // exact (FX2; was rounded up)
     if(targetCard && isRaging(targetCard)){ amt = amt / 2; mods.push('rage'); } // exact (FX2; was rounded down)
     const tdef = CARD_DEFS[targetCard.defId];
     // Rend (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Pierce"): bypasses Armor
@@ -2925,7 +2932,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // ignores all of it); Perforate N also counts as Pierce N. Armor a Perforate hit stripped (targetCard.armorLoss) is
     // gone for good.
     const ae = (attDef && attDef.effects) || {};
-    const pierceN = (ae.pierce === true || ae.rend || ae.supreme) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
+    const pierceN = (ae.pierce === true || ae.rend || ae.supreme || ae.pulverise /* CONTENT3 (2026-10-26, OWN-Q5): Pulverise ignores Armor */) ? Infinity : /* Pitchfork no longer pierces (2026-10-13 rework) */ (Number(ae.pierce)||0) + (Number(ae.perforate)||0);
     const nominalArmor = Math.max(0, ((tdef.effects && tdef.effects.armor) || 0) - (targetCard.armorLoss || 0)) + (targetCard.shellArmor || 0) + tideArmor(targetCard) + prayerWardOf(targetCard) + sk3ArmorOf(targetCard); /* + Prayer Ward (2026-10-19, package GI); + Shieldwall (2026-10-19, package SK3) */ // Shell: temporary bonus armor active the round after being hit; Tide: +1 on Ebb, +2 on High tide
     // EN8 (2026-10-24, P24-16: "magic damage ignores Armor; normal damage ignores magic armor"): Armor (and everything nominalArmor sums:
     // Shell, the tide's, Prayer Ward, Shieldwall) takes only from physical damage. Magic and every element (fire / heat, frost / cold, shock,
@@ -3593,7 +3600,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
     if(!keenNose && L('fog') && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
     if(ashyNow() && L('ashy') && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
-    if(sandstormOn() && L('sandstorm') && !ad.dry && !keenNose && rnd() < (defCard.boon === 'sandVeil' ? 0.5 : 0.25)){ lastMissReason = 'sandstorm'; if(defCard.boon === 'sandVeil') boonFire(defCard, 'dodge'); return false; } // 1 in 2 at a Sand Veil unit (selfish boon, DF3 2026-10-24) // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
+    if(sandstormOn() && rules.sandstorm !== 'blind' /* CONTENT3: the blinding one blinds the swinger instead (sandBlinds) */ && L('sandstorm') && !ad.dry && !keenNose && rnd() < (defCard.boon === 'sandVeil' ? 0.5 : 0.25)){ lastMissReason = 'sandstorm'; if(defCard.boon === 'sandVeil') boonFire(defCard, 'dodge'); return false; } // 1 in 2 at a Sand Veil unit (selfish boon, DF3 2026-10-24) // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
     if(!keenNose && dd.shadow && L('shadow') && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
@@ -3773,6 +3780,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // never exceeds the applied sleep + 1 ... if it already had 2 from last turn, now it'll be 3, and cap out there."): Sleep N adds N
     // tokens, up to N+1 in all. A unit already deeper asleep (from a bigger Sleep) keeps its tokens: a smaller Sleep never wakes it early.
     // (The Sleep unit's own hit wakes the target first, like any damage; its Sleep then counts the tokens that hit just broke, _wokeBy.)
+    else if(kind==='sleep' && effectsOf(defCard).wakeful){ defCard._wokeBy = null; if(recordEvents && events) events.push({type:'statusFx', kind:'wakeful', side:mySide, attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOfFn(enemyId), targetDefId:defCard.defId, targetUid:defCard.uid}); return; } // CONTENT3 (2026-10-26, owner G5): Wakeful never falls Asleep
     else if(kind==='sleep'){ const wb = defCard._wokeBy, carried = wb && attCard && wb.uid === attCard.uid && wb.t === turnNo ? (wb.n || 0) : 0; defCard._wokeBy = null;
       const had = Math.max(0, defCard.asleep||0, carried); defCard.asleep = Math.max(had, Math.min(had + duration, duration + 1)); defCard._asleepJustSet = true; }
     else if(kind==='paralyze'){ defCard.paralyzed = Math.max(defCard.paralyzed||0, duration); defCard._paralyzedJustSet = true; }
@@ -4357,6 +4365,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(fdef && fdef.darkSummon) pl.darkUsed = (pl.darkUsed||0) + 1; else markPlayed(pl);
     pl.cardsPlayedEver = (pl.cardsPlayedEver||0) + 1;
     const boardCard = arrivalBoardCard(players, sideOf, playerId, hc, fdef, firstCardEver, events); // 2026-10-23 (package UI4): shared with previewPlayStats
+    pl.lastPlayedUid = boardCard.uid; // CONTENT3 (2026-10-26): the unit this side played last (the golem's stun spares the enemy's)
     if(evoBase) return evoluteMerge(players, sideOf, playerId, boardCard, evoBase, stats, events); // Package EV (2026-10-21): onto its base, as one stack
     if(paraHost) return eq2Attach(players, sideOf, playerId, boardCard, paraHost, stats, events); // Package EQ2 (2026-10-24): it hooks onto the enemy
     // Center slot (2026-09-16, per explicit request: "the first card should be placed on
@@ -4966,6 +4975,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const trigs = Array.isArray(h.triggers) ? h.triggers.filter(t=> t && t.on && t.do).map(t=> Object.assign({who:'self'}, t, {amount: eqN(t.amount, n)})) : (EQ_HZ_TRIGS[kind] || []).map(t=> Object.assign({who:'self', amount:n}, t));
     return {kind, n, rounds: Math.max(1, Math.round(eqN(h.rounds, EQ_DEF.hazardRounds)) || 1), target: h.target || (kind === 'rubble' ? 'enemyEmpty' : 'any'), triggers: trigs, flyers: h.flyers != null ? !!h.flyers : kind === 'gas'}; }
   const EQ_HZ_TRIGS = {lava:[{on:'onRoundStart', do:'damage', dmgType:'heat'}], poison:[{on:'onEnterSlot', do:'poison'}, {on:'onRoundStart', do:'poison'}], gas:[{on:'onRoundStart', do:'poison'}]};
+  // Equip Time N (CONTENT3, 2026-10-26, owner #21: "a top right hand symbol for 'equip time' ... Default 1 ... 0, 2, 3"): the rounds a unit
+  // takes to equip the piece is the card's equip.turns (EQ, 2026-10-19; default EQ_DEF.equipTurns 1). Tamper-proof (owner #21: "Some of them
+  // have tamper-proof"): equip.tamperProof, the piece can't be stolen (Disarm leaves it: on a unit and lying loose alike).
+  function eqTamperProof(defId){ const d = CARD_DEFS[defId]; return !!(d && d.equip && d.equip.tamperProof); }
   function equipTurnsOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(eqN(e.turns, EQ_DEF.equipTurns))); }
   function eqSlotsOf(pl){ return pl ? (pl.eqSlots || (pl.eqSlots = {})) : {}; }
   function loneEquipAt(pl, slot){ return (pl && pl.eqSlots && pl.eqSlots[slot]) || null; }
@@ -5111,6 +5124,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function eqArrowBonus(pl){ if(!pl) return 0; let n = 0; allLive(pl).forEach(c=>{ const e = effectsOf(c); if(e.weaponMaster && !c.cageOf) n += eqN(e.weaponMaster, EQ_DEF.weaponMaster); }); return n; }
   function eqSituational(c, pid, players){ if(!c || !c.equipOn || !players || !players[pid]) return [0, 0];
     const wm = allLive(players[pid]).some(x=> effectsOf(x).weaponMaster && !x.cageOf); const k = wm ? EQ_DEF.weaponMasterStats : 0; return [k, k]; }
+  // Pulverise (CONTENT3, 2026-10-26, OWN-Q5, owner 10-25 23:58: "Pulverise can break armor & magic armor and break equipment I think, and
+  // 2x damage to structures. Also, unit with Pulverise ignores armor."): its swings ignore Armor (pierce, computeHitDamage) and deal double to a
+  // Structure; a swing that lands breaks the target's Armor and Magic Armor for the fight (armorLoss / magicArmorLoss: the printed values gone)
+  // and breaks the piece of equipment it carries (equipped or still equipping: its stats and skills come off, the piece goes to the graveyard;
+  // Tamper-proof only stops stealing). Hardy / lives (PROP1-1) are not built: a break is a break.
+  function pulveriseHit(players, attDef, att, defCard, mySide, targetSide, events){
+    const e = (attDef && attDef.effects) || {}; if(!e.pulverise || !defCard || defCard.kind === 'hq') return;
+    const d0 = CARD_DEFS[defCard.defId] || {}, fx = d0.effects || {}, arm = Number(fx.armor) || 0, ma = magicArmorOf(defCard) + (defCard.magicArmorLoss || 0);
+    const broke = [];
+    if(arm - (defCard.armorLoss || 0) > 0){ defCard.armorLoss = arm; broke.push('armor'); }
+    if(ma - (defCard.magicArmorLoss || 0) > 0){ defCard.magicArmorLoss = ma; broke.push('magicArmor'); }
+    if(defCard.equipment){ const pid = ownerPidOfCard(defCard), pl = players && players[pid], eqId = sk2Unequip(defCard); defCard.equipDur = null;
+      if(eqId){ if(pl) pl.graveyard.push({defId:eqId}); broke.push('equipment'); if(recordEvents && events) events.push({type:'equipBreak', side:targetSide, uid:defCard.uid, defId:defCard.defId, equipDefId:eqId, why:'pulverise'}); } }
+    if(broke.length && recordEvents && events) events.push({type:'statusFx', kind:'pulverise', side:mySide, attDefId:att.defId, attUid:att.uid, targetSide, targetDefId:defCard.defId, targetUid:defCard.uid, broke});
+  }
   // Pry N: a landed melee hit strips N Armor for good (the Perforate bookkeeping: armorLoss, up to the printed Armor)
   function eqPryHit(attDef, att, defCard, mySide, targetSide, events){
     const e = (attDef && attDef.effects) || {}; if(!e.pry || !defCard || !(defCard.hp > 0)) return;
@@ -5610,13 +5638,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.hunter && hunterMarked(t, hunterVsOf(e))) b += numN(e.hunter, 1);
     if(e.executioner && sk3ExecLow(t)) b += numN(e.executioner, 1); // 2026-10-19 (package SK3): below 25% (was half)
     return b; }
-  // Detonate: its hit (or shot) deals extra damage equal to the target's Poison, then the Poison is gone (the board is told: 'detonate').
+  // Detonate N (CONTENT3, 2026-10-26, owner 17:53: "Detonate N - trigger poison N times (lowering the poison count by 1 each time). its
+  // animated in a row"): its hit (or shot) makes the target's Poison tick N times at once, before the hit's own damage: each tick deals the
+  // stack (a Poison tick's damage) and takes one counter off, as the round's tick does; it stops when the Poison runs out. The ticks are
+  // status damage (no Armor, not a hit). The board is told once, 'detonate' with ticks [dmg, ...], and plays them one after another.
+  // (Was 2026-10-19, package GI: extra damage equal to the target's Poison, then the Poison gone. Detonate true reads as Detonate 1.)
+  const DETONATE_DEF = 1;
+  function detonateWorth(p, n){ let s = 0; p = Math.max(0, p | 0); for(let i = 0; i < Math.max(1, Math.round(n)) && p > 0; i++, p--) s += p; return s; } // the damage N ticks of a stack p deal
   function detonateBonus(attDef, t, dmgType){
-    const e = (attDef && attDef.effects) || {}; if(!e.detonate || !t || !(t.poison > 0) || EXPOSE_TICKS.has(dmgType)) return 0;
-    const n = t.poison; t.poison = 0;
+    const e = (attDef && attDef.effects) || {}; if(!e.detonate || !t || !(t.poison > 0) || !(t.hp > 0) || EXPOSE_TICKS.has(dmgType) || isStructureCard(t)) return 0;
+    const n = Math.max(1, Math.round(numN(e.detonate, DETONATE_DEF))), ticks = [];
+    for(let i = 0; i < n && t.poison > 0 && t.hp > 0; i++){ const dmg = damageCardFlat(t, t.poison, 'poison'); ticks.push(dmg); t.poison -= 1; }
     if(recordEvents && shieldEvents){ const pid = ownerPidOfCard(t), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), od = shieldSideOf ? shieldSideOf(otherId(pid)) : (pid===1 ? 'B' : 'A');
-      shieldEvents.push({type:'statusFx', kind:'detonate', side:od, attDefId:attDef.id, targetSide:sd, targetUid:t.uid, targetDefId:t.defId, amount:n}); }
-    return n; }
+      shieldEvents.push({type:'statusFx', kind:'detonate', side:od, attDefId:attDef.id, targetSide:sd, targetUid:t.uid, targetDefId:t.defId, amount:ticks.reduce((a, b)=> a + b, 0), ticks, left:t.poison}); }
+    return 0; }
   // Brittle N (a skill): its hits make the target Brittle for N rounds (ticks down like Webbed). See shatterBonus.
   function brittleUnit(att, t, rounds, side, tSide, events){
     if(!t || !(t.hp > 0) || !(rounds > 0) || isStructureCard(t)) return;
@@ -7260,6 +7295,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           break;
         }
         case 'stun': {
+          // CONTENT3 (2026-10-26, owner #25, the four-legged golem: "stuns all units on play (except the one just played by the enemy)"):
+          // t.everyone stuns every live unit on both sides but this one and the enemy's last-played unit (pl.lastPlayedUid).
+          if(t.everyone){ const foeP = players[otherId(playerId)], spare = foeP && foeP.lastPlayedUid;
+            [playerId, otherId(playerId)].forEach(pid=>{ const p2 = players[pid]; if(!p2) return; allLive(p2).forEach(c=>{ if(c === boardCard || c.uid === spare || c.cageOf) return;
+              c.stunned = (c.stunned|0) + (t.count||1); c._stunnedJustSet = true;
+              if(recordEvents && events) events.push({type:'statusFx', kind:'stun', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, everyone:true}); }); });
+            break; }
           const who = t.who || 'enemy', sub = t.sub || (t.target==='all'?'all':t.target==='random'?'random':'adjacent');
           applyTargetedStatus(players, sideOf, playerId, boardCard, who, sub, null, stats, events, mySide, 'stun', c=>{ c.stunned = (c.stunned|0) + (t.count||1); c._stunnedJustSet = true; });
           break;
@@ -7610,7 +7652,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Poisoned foes, Prayer Ward on a Prayer unit, the marked foes a Hunter / Executioner / Detonate card would punish, Field Breaker while
   // the field's hazards hurt it, and the units a Spore Cloud, Thunderstorm or Tangled Roots field leaves alone.
   function aiBonusVs(d, f){ if(!d || !f || !(f.hp > 0)) return 0; const e = d.effects || {};
-    return giHitBonus(d, f, 'physical') + (e.shatter && f.brittle > 0 && !(f.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0) + (e.detonate ? Math.max(0, f.poison || 0) : 0); } // (Shatter on a Brittle unit only: the CPU's old play with Frozen stays as it was)
+    return giHitBonus(d, f, 'physical') + (e.shatter && f.brittle > 0 && !(f.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0) + (e.detonate ? detonateWorth(f.poison || 0, numN(e.detonate, DETONATE_DEF)) : 0); } // (Shatter on a Brittle unit only: the CPU's old play with Frozen stays as it was)
   function aiGiWorth(players, aiId, defId){
     const d = CARD_DEFS[defId] || {}, e = d.effects || {}, ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe || d.cardType || d.field) return 0;
     const mine = liveUnits(ai), foes = aiFoes(liveUnits(foe)) /* FOG1 (EN) */, probe = {defId}, ready = c=> !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0);
@@ -7625,7 +7667,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.prayerWard && prayerNOf(probe) > 0) v += numN(e.prayerWard, 1);
     if(e.hunter){ const vs = hunterVsOf(e); v += foes.filter(c=> hunterMarked(c, vs)).length * numN(e.hunter, 1) * 0.5; }
     if(e.executioner) v += foes.filter(sk3ExecLow /* 2026-10-19 (SK3): below 25% */).length * numN(e.executioner, 1) * 0.5;
-    if(e.detonate) v += foes.reduce((t, c)=> t + Math.max(0, c.poison || 0), 0) * 0.3;
+    if(e.detonate) v += foes.reduce((t, c)=> t + detonateWorth(c.poison || 0, numN(e.detonate, DETONATE_DEF)), 0) * 0.3; // CONTENT3: the N ticks
     if(e.fieldBreaker){ const hz = fieldHazardRules(); v += hz.length && !fieldPaused() ? 1.5 + (mine.length - foes.length) * 0.25 + (rules.arrowSlits && aiId === 1 ? 2 : 0) : -0.5; }
     if(rules.sporeCloud && resistFactor(defId, 'poison') === 0) v += 1;
     if(rules.thunderstorm && resistFactor(defId, 'shock') < 1) v += 1;
@@ -7818,6 +7860,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dk && !e.darksight && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25;
     if(ph === 'day' && e.sunshy) m = Math.max(m, 0.5);
     if(ph === 'night' && e.nightblind && !lit) m = Math.max(m, 0.5);
+    if(sandBlinds(e)) m = Math.max(m, 0.5); // CONTENT3 (2026-10-26): a blinding Sandstorm
     return m;
   }
   // The CPU's pitch (2026-10-18, engine parity): pitchCard, the same rules as the player's, after the 'discard' event the board
@@ -8612,11 +8655,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!eqCarrier(src)){ if(recordEvents && events) events.push({type:'sk2', kind:'disarmFull', side, uid:src.uid, defId:src.defId}); return true; }
       const foeId = otherId(pid), foe = players[foeId];
       if(t.lone){ if(!slotMode || !foe || !foe.eqSlots) return true; const s0 = Number.isInteger(src.slot) ? src.slot : 0;
-        const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x]).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b)[0];
+        const sl = Object.keys(foe.eqSlots).map(Number).filter(x=> foe.eqSlots[x] && !eqTamperProof(foe.eqSlots[x].defId) /* CONTENT3: Tamper-proof */).sort((a, b)=> Math.abs(a - s0) - Math.abs(b - s0) || Math.abs(a) - Math.abs(b) || a - b)[0];
         if(sl == null) return true; const got = foe.eqSlots[sl].defId, gotDur = foe.eqSlots[sl].dur; delete foe.eqSlots[sl];
         if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), slot:sl, equipDefId:got, lone:true});
         eqMeet(players, sideOf, pid, src, got, events, 'disarm', gotDur); return true; }
       const v = trigSubject; if(!v || !v.equipment || v === src) return true;
+      if(eqTamperProof(v.equipment)){ if(recordEvents && events) events.push({type:'sk2', kind:'disarmBlocked', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), targetUid:v.uid, targetDefId:v.defId, equipDefId:v.equipment}); return true; } // CONTENT3 (2026-10-26, E15): Tamper-proof
       const was = v.equipOn, vDur = v.equipDur, got = sk2Unequip(v); v.equipDur = null;
       if(recordEvents && events) events.push({type:'sk2', kind:'disarm', side, uid:src.uid, defId:src.defId, targetSide:sideOf(foeId), targetUid:v.uid, targetDefId:v.defId, equipDefId:got, wasOn:was, atk:v.atk, hp:v.hp, maxHp:v.maxHp});
       eqMeet(players, sideOf, pid, src, got, events, 'disarm', vDur); return true; } // + the piece's durability (EQ2, 2026-10-24)
@@ -10194,6 +10238,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
           if(base - (defCard.armorLoss||0) > 0){ defCard.armorLoss = Math.min(base, (defCard.armorLoss||0) + attDef.effects.perforate); if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.perforate}); } }
         eqPryHit(attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // Pry N (EQ, 2026-10-19): strips N Armor for good
+        pulveriseHit(players, attDef, a.att, defCard, mySide, sideOf(a.enemyId), events); // CONTENT3 (2026-10-26, OWN-Q5)
         // Corrode (status, 2026-09-17): stacks like Poison/Bleed, but saps effective Attack
         // instead of dealing damage — see effAtk/endOfRoundUpkeep for the read/decay sides.
         // Unlike Poison/Bleed (silent on application, only their periodic tick is logged),

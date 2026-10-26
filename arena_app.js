@@ -1321,7 +1321,7 @@ const PASSIVE_DEFS = [
     get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'weak', numOr(e.hunter, 1)] : undefined,
     apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'weak', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'weak') e.hunterVs = vs; } }},
   {key:'executioner', category:'passive', label:TX('ui.skn-executioner'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-executioner', {n: numOr(v, 1)}), codexNote:TX('ui.sk-executioner-codex'), get:e=> e.executioner ? numOr(e.executioner, 1) : undefined},
-  {key:'detonate', category:'passive', label:TX('ui.skn-detonate'), kind:'boolean', desc:()=> TX('ui.sk-detonate'), codexNote:TX('ui.sk-detonate-codex')},
+  {key:'detonate', category:'passive', label:TX('ui.skn-detonate'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.c3-detonate', {n: numOr(v, 1)}), codexNote:TX('ui.c3-detonate-codex'), get:e=> e.detonate ? numOr(e.detonate, 1) : undefined}, // CONTENT3 (2026-10-26, E18): Detonate N
   {key:'proliferate', category:'passive', label:TX('ui.skn-proliferate'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-proliferate-1') : TX('ui.sk-proliferate', {n: numOr(v, 1)}), codexNote:TX('ui.sk-proliferate-codex'), get:e=> e.proliferate ? numOr(e.proliferate, 1) : undefined},
   {key:'brittle', category:'passive', label:TX('ui.skn-brittle'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-brittle-1') : TX('ui.sk-brittle', {n: numOr(v, 1)}), get:e=> e.brittle ? numOr(e.brittle, 1) : undefined},
   {key:'kinRally', category:'passive', label:TX('ui.skn-kin-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-kin-rally', {n: numOr(v, 1)}), codexNote:TX('ui.sk-kin-rally-codex'), get:e=> e.kinRally ? numOr(e.kinRally, 1) : undefined},
@@ -1880,6 +1880,15 @@ sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
 [['fireBolt', 'ui.eng9-skn-fire-spit'], ['acidBolt', 'ui.eng9-skn-acid-spit'], ['poisonBolt', 'ui.eng9-skn-venom-spit'], ['iceBolt', 'ui.eng9-skn-frost-spit'], ['shockBolt', 'ui.eng9-skn-spark-spit']].forEach(([k, t])=> sk1Patch(PASSIVE_DEFS, k, {label:TX(t)}));
 { const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.eng9-charge', {n: cp.n})}`; }; } }
 Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵', stockpile:'🪵'});
+// ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
+//   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
+//   Socket N (E14)    N more gem sockets on each copy (the Forge's Socket tab)                     equipment, double damage to Structures
+//   Detonate N (E18, above), Equip Time and Tamper-proof (E15: the equipment fields, not skills), the Platform type (E16: Structure rules)
+PASSIVE_DEFS.push(
+  {key:'wakeful', category:'passive', label:TX('ui.c3-wakeful-name'), kind:'boolean', desc:()=> TX('ui.c3-wakeful')},
+  {key:'pulverise', category:'passive', label:TX('ui.c3-pulverise-name'), kind:'boolean', desc:()=> TX('ui.c3-pulverise'), codexNote:TX('ui.c3-pulverise-codex')},
+  {key:'socket', category:'passive', label:TX('ui.c3-socket-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.c3-socket', {n: numOr(v, 1)}), get:e=> e.socket ? numOr(e.socket, 1) : undefined});
+Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
 // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): King (the first King in play takes the Crown and, while it
 // holds it, has Kingly – {…}: Tribute 1, Armor 2 unless its card names other braces, kinglyGrant), Tribute N (N Gold each turn while Ready),
 // Usurper's theft of the Crown and King Slayer against Royalty, Kings and the crowned unit. The rules: bramblewood-engine.js, Package TR.
@@ -3024,7 +3033,7 @@ Object.assign(SKILL_TEXT, {
 Object.assign(SKILL_TEXT, {
   hunter: (v, n, e)=> giHunterText(v, e),
   executioner: v=> TX('ui.sk-executioner', {n: numOr(v, 1)}),
-  detonate: ()=> TX('ui.sk-detonate'),
+  detonate: v=> TX('ui.c3-detonate', {n: numOr(v, 1)}), // CONTENT3 (2026-10-26, E18)
   proliferate: v=> numOr(v, 1) === 1 ? TX('ui.sk-proliferate-1') : TX('ui.sk-proliferate', {n: numOr(v, 1)}),
   brittle: v=> numOr(v, 1) === 1 ? TX('ui.sk-brittle-1') : TX('ui.sk-brittle', {n: numOr(v, 1)}),
   kinRally: v=> TX('ui.sk-kin-rally', {n: numOr(v, 1)}),
@@ -3071,6 +3080,7 @@ PASSIVE_DEFS.push(
   {key:'weaponMaster', category:'passive', label:TX('ui.skn-weapon-master'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), codexNote:TX('ui.sk-weapon-master-codex', {n: 1}), get:e=> e.weaponMaster ? numOr(e.weaponMaster, 1) : undefined},
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
+Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -3207,7 +3217,8 @@ function describeEffects(def, liveCard, opt){
   if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(def.hazard ? TX('ui.eq-hz-how') : TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines; a slot hazard says where it goes (EQ, 2026-10-19)
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const rs = eqResistText(k, v); if(rs) return '🔥 ' + rs; /* FX4 (2026-10-23) */ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); lines.push(TX('ui.eq2-dur-line', {n: eq2DurMax(def.id)})); } // 2026-10-18 (package D): two short lines; + its durability (EQ2, 2026-10-24)
+    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); lines.push(TX('ui.eq2-dur-line', {n: eq2DurMax(def.id)}));
+    lines.push('⚔️🛡️ ' + TX('ui.c3-equip-time', {n: equipTimeOf(def)})); if(def.equip && def.equip.tamperProof) lines.push('🔒 ' + TX('ui.c3-tamper')); } // CONTENT3 (2026-10-26, E15): Equip Time N, Tamper-proof // 2026-10-18 (package D): two short lines; + its durability (EQ2, 2026-10-24)
   { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
@@ -3658,7 +3669,7 @@ function buildCardDefs(){
   if(typeof myCardSockets !== 'undefined' && myCardSockets) Object.keys(myCardSockets).forEach(id=>{
     const base = out[id]; if(!base || id===HERO_ID) return;
     let kind = null; try{ kind = socketGemOfBest(id); }catch(e){ kind = null; }
-    if(!kind || !ENCHANTS[kind] || !cardHasSocket(base)) return;
+    if(!kind || !gemValid(kind) || !cardHasSocket(base)) return; // CONTENT3: a joined key too
     out[id] = Object.assign({}, base, socketGemStats(base, kind));
   });
   // Prestige tiers (2026-09-23, batch #27) — cosmetic-only, stamped as a SEPARATE pass from the
@@ -8368,11 +8379,21 @@ function archMarkHTML(d, waitShown, live){
 }
 // 2026-10-24 (package H1, owner decision H1): the small gem slot on a Unique-and-above card: filled with the gem its copy wears
 // (the def's socketGem: the best copy's, or a copy's own in copyDefAt), else an empty hollow slot.
+// CONTENT3 (2026-10-26, E15, owner #21: "a top right hand symbol for 'equip time' ... like a sword and shield moving around each other.
+// Default 1"): an equipment card's tile shows its Equip Time (equip.turns, default 1: the rounds a unit takes to equip it) in a small
+// top-right badge, a crossed sword and shield that slowly circle each other (reduced motion: still). A Tamper-proof piece adds a lock.
+function equipTimeOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(e.turns == null ? 1 : Number(e.turns) || 0)); }
+function equipTimeBadgeHTML(d){ if(!d || d.cardType !== 'equipment') return '';
+  const n = equipTimeOf(d), tip = TX('ui.c3-equip-time', {n}) + (d.equip && d.equip.tamperProof ? ' · ' + TX('ui.c3-tamper') : ''), spin = (()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? '' : 'animation:c3EqSpin 6s linear infinite;';
+  return `<span class="c3-eq-time" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img" style="position:absolute; z-index:5; top:3px; right:3px; display:flex; align-items:center; gap:1px; padding:1px 4px; border-radius:9px; background:#1d1a14d9; color:#ffe7a8; font:700 clamp(8px, 9cqw, 12px)/1.2 system-ui, sans-serif; box-shadow:0 0 0 1px #c9a24a;"><span style="display:inline-block; ${spin}">⚔️</span>${n}${d.equip && d.equip.tamperProof ? '🔒' : ''}</span>`; }
+if(typeof document !== 'undefined' && !document.getElementById('c3EqSpinCss')){ try{ const st = document.createElement('style'); st.id = 'c3EqSpinCss'; st.textContent = '@keyframes c3EqSpin{from{transform:rotate(0)}to{transform:rotate(360deg)}}'; (document.head || document.documentElement).appendChild(st); }catch(e){} }
 function socketSlotHTML(d){
-  let ok = false; try{ ok = typeof cardHasSocket === 'function' && cardHasSocket(d); }catch(e){ ok = false; } if(!ok) return '';
-  const k = d.socketGem && typeof socketKind === 'function' ? socketKind(d.socketGem) : null;
-  const tip = k ? TX('ui.h1-slot-full', {gem: socketGemName(k.id)}) : TX('ui.h1-slot-empty');
-  return `<div class="h1-slot ${k ? 'is-full mk-' + k.id : 'is-empty'}" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img">${k ? `<span>${k.icon}</span>` : ''}</div>`;
+  let n = 0; try{ n = typeof socketSlotsOf === 'function' ? socketSlotsOf(d) : 0; }catch(e){ n = 0; } if(!(n > 0)) return '';
+  // CONTENT3 (2026-10-26, E14): one diamond per socket (Socket N adds them), stacked down the right edge; each shows its gem
+  const gems = d.socketGem && typeof gemParts === 'function' ? gemParts(d.socketGem) : [];
+  return Array.from({length: Math.min(n, 4)}, (_, i)=>{ const k = gems[i] && typeof socketKind === 'function' ? socketKind(gems[i]) : null, base = k ? (k.base || k.id) : '';
+    const tip = k ? TX('ui.h1-slot-full', {gem: socketGemName(k.id)}) : TX('ui.h1-slot-empty');
+    return `<div class="h1-slot ${k ? 'is-full mk-' + base : 'is-empty'}"${i ? ` style="top:calc(38% + ${i * 22}px)"` : ''} title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img">${k ? `<span>${k.icon}</span>` : ''}</div>`; }).join('');
 }
 function cardTileHTML(d, opts){
   opts = opts||{};
@@ -8448,6 +8469,7 @@ function cardTileHTML(d, opts){
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle || hand ? '' : socketSlotHTML(d) /* 2026-10-24 (package H1): the gem socket of a Unique-and-above card */}
+    ${isCastle ? '' : equipTimeBadgeHTML(d) /* CONTENT3 (2026-10-26, E15): an equipment card's Equip Time, top right */}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Bramble">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('') /* ENG9 (2026-10-26, owner G9: "do the 2stone/1lumber otherwise lay them side by side"): a joint cost sits side by side with no gap; "/" is kept for an alternative cost (none yet) */}</div>`:''}
@@ -9975,7 +9997,7 @@ const SKIRMISH_FIRST_PACK_CARDS = {
   'm8:6-4': 'marsh-wisp',
   'mu:7-2': 'dung-beetle',
   'mu:7-3': 'leafcutter-gardener',
-  'mu:7-4': 'hollow-oath-keeper',
+  'mu:7-4': 'sleepless-shrew', // 2026-10-26 (CONTENT3, G5 / G3): was the Hollow Oath-Keeper
   'm4:8-3': 'cave-olm',
   'm4:8-4': 'blind-cave-fish',
   'm4:8-5': 'sulfur-cinder-moth',
@@ -10363,6 +10385,7 @@ function renderEditorInner(){
       <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
+      <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
@@ -10633,7 +10656,7 @@ function renderEditorInner(){
   </div>`;
   document.getElementById('btnCancel').addEventListener('click', closeCardEditor);
   document.getElementById('editorXBtn').addEventListener('click', closeCardEditor);
-  { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; }); }
+  { const fk = document.getElementById('fCardKind'); if(fk) fk.addEventListener('change', ()=>{ document.getElementById('fSpellRow').hidden = fk.value !== 'spell'; document.getElementById('fEquipRow').hidden = fk.value !== 'equipment'; { const r = document.getElementById('fEquipTimeRow'); if(r) r.hidden = fk.value !== 'equipment'; } /* CONTENT3 */ }); }
   const rarityNow = ()=>{ const f = document.querySelector('#editorOverlay [data-rflag]:checked'); return rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); }; // CX2
   const raritySwatch = ()=>{ const [a,b] = rarityStops(rarityNow()); document.getElementById('fRaritySwatch').style.background = `linear-gradient(135deg, ${a}, ${b})`; };
   document.getElementById('fRarity').addEventListener('change', raritySwatch);
@@ -11284,7 +11307,10 @@ function readEditorFormIntoCard(){
   { const fk = document.getElementById('fCardKind'); if(fk){ const kind = fk.value; // 2026-10-11: Unit / Spell / Equipment
       if(kind === 'spell'){ c.cardType = 'spell'; c.spell = {do: document.getElementById('fSpellDo').value, amount: Math.max(0, Number(document.getElementById('fSpellAmt').value)||0)}; delete c.equip; if(!(c.archetypes||[]).includes('Spell')) c.archetypes = ['Spell'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(kind === 'equipment'){ c.cardType = 'equipment'; delete c.spell; const gk = document.getElementById('fEquipGrant').value, pd = PASSIVE_DEFS.find(p=> p.key===gk);
-        c.equip = {grant: gk ? {[gk]: pd && pd.kind==='boolean' ? true : Math.max(0, Number(document.getElementById('fEquipVal').value)||1)} : {}}; if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
+        c.equip = Object.assign({}, c.equip || {}, {grant: gk ? {[gk]: pd && pd.kind==='boolean' ? true : Math.max(0, Number(document.getElementById('fEquipVal').value)||1)} : {}}); // CONTENT3 (2026-10-26): the piece's other fields (durability, breaks ...) are kept
+        { const et = document.getElementById('fEquipTime'), tp = document.getElementById('fEquipTamper'); // CONTENT3 (2026-10-26, E15): Equip Time N (default 1) and Tamper-proof
+          if(et){ const n = Math.max(0, Math.min(5, Math.round(Number(et.value)))); if(Number.isFinite(n) && n !== 1) c.equip.turns = n; else delete c.equip.turns; }
+          if(tp){ if(tp.checked) c.equip.tamperProof = true; else delete c.equip.tamperProof; } } if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(c.cardType === 'spell' || c.cardType === 'equipment'){ delete c.cardType; delete c.spell; delete c.equip; } } }
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
   { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
@@ -13969,11 +13995,11 @@ function copyDefAt(id, L, gem){
   const o = Object.assign({}, full, {id: id + '~cp' + L + (gemDiff ? 'g' + (want || 'x') : ''), derivedFrom: id, copyOf: id, level: L, baseLevel: cardBaseLevel(b), locked: false});
   if(full.attack != null && at.attack != null) o.attack = Math.max(0, full.attack - (now.attack || 0) + at.attack);
   if(full.health != null && at.health != null) o.health = Math.max(1, full.health - (now.health || 0) + at.health);
-  if(gemDiff){ const e = fullGem && ENCHANTS[fullGem]; // take the def's gem off, then put this copy's in
+  if(gemDiff){ const e = fullGem && gemEnchant(fullGem); // take the def's gem off, then put this copy's in (CONTENT3: every gem in it)
     if(e){ if(o.attack != null) o.attack = Math.max(0, o.attack - (e.atk || 0)); if(o.health != null) o.health = Math.max(1, o.health - (e.hp || 0));
       if(e.fx && o.fx){ o.fx = Object.assign({}, o.fx); Object.keys(e.fx).forEach(k=> delete o.fx[k]); } }
     delete o.enchant; delete o.socketGem;
-    if(want && ENCHANTS[want] && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
+    if(want && gemValid(want) && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
   if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
   if(b.levelSkills){ const fx = Object.assign({}, b.effects || {}); Object.keys(b.levelSkills).map(Number).filter(k=> k <= L).sort((x, y)=> x - y).forEach(k=> Object.assign(fx, b.levelSkills[k])); o.effects = fx; }
   return o;
@@ -15495,6 +15521,12 @@ const ENCHANTS = {
   stone: {atk:0, hp:3, label:'+3 ❤'},
   tide:  {atk:0, hp:2, label:'+2 ❤'},
   grove: {atk:1, hp:1, label:'+1 ⚔ +1 ❤'},
+  // CONTENT3 (2026-10-26, E14, owner H1: "GEM fusion feature"): a Greater gem is two gems of one kind fused at the Forge: twice the stats,
+  // the same effect. It is not crafted, only fused (gemFuse), and fuses no further.
+  ember2: {atk:2, hp:0, label:'+2 ⚔ · its hits scorch', fx:{hit:'burn'}},
+  stone2: {atk:0, hp:6, label:'+6 ❤'},
+  tide2:  {atk:0, hp:4, label:'+4 ❤'},
+  grove2: {atk:2, hp:2, label:'+2 ⚔ +2 ❤'},
 };
 // The old per-card enchantments (2026-10-08 to 2026-10-24): read once by migrateEnchantsToSockets, then emptied.
 var myCardEnchants = (()=>{ try{ return JSON.parse(localStorage.getItem('bramblewood_enchants_v1')||'{}') || {}; }catch(e){ return {}; } })();
@@ -15521,19 +15553,35 @@ var myCardSockets = (()=>{ try{ const o = JSON.parse(localStorage.getItem(SOCKET
 function saveCardSockets(){ try{ localStorage.setItem(SOCKETS_KEY, JSON.stringify(myCardSockets)); }catch(e){} }
 function reloadCardSockets(){ try{ const o = JSON.parse(localStorage.getItem(SOCKETS_KEY)||'{}'); myCardSockets = o && typeof o === 'object' ? o : {}; }catch(e){ myCardSockets = {}; } }
 function socketRankOf(d){ const r = (d && d.rarity) || 'common'; let rank = r; try{ rank = rarityPartsOf(r).rank || r; }catch(e){} return rank; }
-function cardHasSocket(d){ return !!d && !d.token && !d.hero && !d.cardType /* creatures only: not Materia, equipment or spells */ && !d.field && (d.attack != null || d.health != null) && SOCKET_RANKS.includes(socketRankOf(d)); }
+function cardHasSocket(d){ return socketSlotsOf(d) > 0; }
+// CONTENT3 (2026-10-26, E14, owner H1: "Cards with Socket N (default 1) (super rare skill) can accept N additional socket(s)"): a copy's
+// sockets are its rank's one (Unique and above) plus the card's Socket N. The gems in a copy are stored as one key, the kinds joined by
+// '+' ("ember+tide2"), so a one-socket copy reads exactly as before; gemParts / gemEnchant read the joined key.
+function socketExtraOf(d){ const v = d && d.effects && d.effects.socket; return v === true ? 1 : Math.max(0, Math.round(Number(v) || 0)); }
+function socketSlotsOf(d){ if(!d || d.token || d.hero || d.cardType /* creatures only: not Materia, equipment or spells */ || d.field || (d.attack == null && d.health == null)) return 0;
+  return (SOCKET_RANKS.includes(socketRankOf(d)) ? 1 : 0) + socketExtraOf(d); }
+function gemParts(k){ return k ? String(k).split('+').filter(x=> x) : []; }
+function gemValid(k){ const p = gemParts(k); return p.length > 0 && p.every(x=> ENCHANTS[x]); }
+function gemEnchant(k){ const p = gemParts(k).filter(x=> ENCHANTS[x]); if(!p.length) return null;
+  const o = {atk:0, hp:0}; p.forEach(x=>{ const e = ENCHANTS[x]; o.atk += e.atk || 0; o.hp += e.hp || 0; if(e.fx) o.fx = Object.assign({}, o.fx || {}, e.fx); }); return o; }
+// Gem fusion (CONTENT3, E14): two gems of one plain kind become one Greater gem of that kind at the Forge (the Socket tab), for GEM_FUSE_COST.
+const GEM_FUSE_COST = {dust: 30, gold: 0};
+function gemFuseProblem(kind){ if(!MATERIA_KINDS.some(m=> m.id === kind)) return 'no-gem'; if((materiaStore()[kind]||0) < 2) return 'few'; if(!canAffordCost(GEM_FUSE_COST)) return 'short'; return null; }
+function gemFuse(kind){ if(gemFuseProblem(kind)) return null; if(!socketPay(GEM_FUSE_COST)) return null;
+  const st = materiaStore(); st[kind] -= 2; st[kind + '2'] = (st[kind + '2'] || 0) + 1; saveMateria(); return {kind, into: kind + '2'}; }
 function socketCost(d, what){ const t = ((typeof UPGRADE_COSTS !== 'undefined' && UPGRADE_COSTS.materiaSocket) || {})[socketRankOf(d)], c = t && t[what];
   return {dust: c ? Math.max(0, c.dust|0) : 0, gold: c ? Math.max(0, c.gold|0) : 0}; }
-function socketKind(k){ return MATERIA_KINDS.find(x=> x.id === k) || null; }
+function socketKind(k){ const m = MATERIA_KINDS.find(x=> x.id === k); if(m) return m; const p = gemParts(k); // + a Greater gem, and a joined key (its first gem) (CONTENT3)
+  if(p.length > 1) return socketKind(p[0]); const b = /^(\w+)2$/.exec(k || ''), bm = b && MATERIA_KINDS.find(x=> x.id === b[1]); return bm ? {id: k, icon: bm.icon, name: bm.name, greater: true, base: bm.id} : null; }
 // The stats a gem adds to a def (attack / health on top, its fx merged).
-function socketGemStats(base, kind){ const e = ENCHANTS[kind] || {};
+function socketGemStats(base, kind){ const e = gemEnchant(kind) || {}; // CONTENT3: every gem in the copy
   return {attack: base.attack != null ? base.attack + (e.atk||0) : base.attack, health: base.health != null ? base.health + (e.hp||0) : base.health,
     enchant: kind, socketGem: kind, fx: e.fx ? Object.assign({}, base.fx||{}, e.fx) : base.fx}; }
 // Moves sockets whose copy is gone onto the best copies with an empty socket (none free: the entry waits for one).
 function socketsNormalize(id){
   const m = myCardSockets[id]; if(!m) return m; const a = myCardCopies[id] || [], have = new Set(a.map(c=> c && c.uid).filter(Boolean));
   let changed = false;
-  Object.keys(m).forEach(u=>{ if(!ENCHANTS[m[u]]){ delete m[u]; changed = true; } });
+  Object.keys(m).forEach(u=>{ if(!gemValid(m[u])){ delete m[u]; changed = true; } });
   const orphans = Object.keys(m).filter(u=> !have.has(u));
   if(orphans.length && a.length){ const order = copyOrder(id);
     orphans.forEach(u=>{ const i = order.find(k=> a[k] && a[k].uid && !m[a[k].uid]); if(i == null) return; m[a[i].uid] = m[u]; delete m[u]; changed = true; }); }
@@ -15541,11 +15589,11 @@ function socketsNormalize(id){
   if(changed) saveCardSockets();
   return myCardSockets[id];
 }
-function copySocketGem(id, uid){ const m = myCardSockets[id]; const k = m && uid ? m[uid] : null; return k && ENCHANTS[k] ? k : null; }
+function copySocketGem(id, uid){ const m = myCardSockets[id]; const k = m && uid ? m[uid] : null; return k && gemValid(k) ? k : null; }
 function socketGemOfCopy(id, c){ return c && c.uid ? copySocketGem(id, c.uid) : null; }
 function socketGemOfBest(id){ socketsNormalize(id); const a = myCardCopies[id] || [], i = bestCopyIdx(id); return i >= 0 ? socketGemOfCopy(id, a[i]) : null; }
 // Any card's copy by its uid (copy uids are unique across cards).
-function socketGemByUid(uid){ if(!uid) return null; for(const id in myCardSockets){ const k = myCardSockets[id] && myCardSockets[id][uid]; if(k && ENCHANTS[k]) return k; } return null; }
+function socketGemByUid(uid){ if(!uid) return null; for(const id in myCardSockets){ const k = myCardSockets[id] && myCardSockets[id][uid]; if(k && gemValid(k)) return k; } return null; }
 function socketedCopies(id){ socketsNormalize(id); const a = myCardCopies[id] || []; return copyOrder(id).map(i=> a[i]).filter(c=> socketGemOfCopy(id, c)); }
 function socketPay(cost){ if(!canAffordCost(cost)) return false; myCurrencies.dust = (myCurrencies.dust||0) - (cost.dust||0); myCurrencies.gold = (myCurrencies.gold||0) - (cost.gold||0); saveCurrencies(); return true; }
 function socketCopyOf(id, uid){ const a = myCardCopies[id] || []; return uid ? a.find(x=> x && x.uid === uid) || null : (a[bestCopyIdx(id)] || null); }
@@ -15554,7 +15602,7 @@ function socketApplyProblem(id, uid, kind){
   const d = getCardDefs()[id]; if(!d || !cardHasSocket(d)) return 'no-socket';
   const c = socketCopyOf(id, uid); if(!c || !c.uid) return 'no-copy';
   if(!ENCHANTS[kind]) return 'no-gem';
-  socketsNormalize(id); if(copySocketGem(id, c.uid)) return 'full';
+  socketsNormalize(id); if(gemParts(copySocketGem(id, c.uid)).length >= socketSlotsOf(d)) return 'full'; // CONTENT3: Socket N
   if((materiaStore()[kind]||0) < 1) return 'no-gem';
   if(!canAffordCost(socketCost(d, 'apply'))) return 'short';
   return null;
@@ -15564,7 +15612,7 @@ function socketApply(id, uid, kind){
   const d = getCardDefs()[id], c = socketCopyOf(id, uid), cost = socketCost(d, 'apply');
   if(!socketPay(cost)) return null;
   const st = materiaStore(); st[kind]--; saveMateria();
-  (myCardSockets[id] = myCardSockets[id] || {})[c.uid] = kind; saveCardSockets(); invalidateCardDefs();
+  (myCardSockets[id] = myCardSockets[id] || {})[c.uid] = gemParts(copySocketGem(id, c.uid)).concat(kind).join('+'); saveCardSockets(); invalidateCardDefs(); // CONTENT3: into the next free socket
   return {id, uid: c.uid, kind, cost};
 }
 function socketRemoveProblem(id, uid){
@@ -15576,9 +15624,9 @@ function socketRemoveProblem(id, uid){
 }
 function socketRemove(id, uid){
   if(socketRemoveProblem(id, uid)) return null;
-  const d = getCardDefs()[id], c = socketCopyOf(id, uid), cost = socketCost(d, 'remove'), kind = copySocketGem(id, c.uid);
+  const d = getCardDefs()[id], c = socketCopyOf(id, uid), cost = socketCost(d, 'remove'), gems = gemParts(copySocketGem(id, c.uid)), kind = gems.pop(); // CONTENT3: the last gem set comes out
   if(!socketPay(cost)) return null;
-  delete myCardSockets[id][c.uid]; if(!Object.keys(myCardSockets[id]).length) delete myCardSockets[id]; saveCardSockets();
+  if(gems.length) myCardSockets[id][c.uid] = gems.join('+'); else delete myCardSockets[id][c.uid]; if(!Object.keys(myCardSockets[id]).length) delete myCardSockets[id]; saveCardSockets();
   if(SOCKET_REMOVE_RETURNS){ const st = materiaStore(); st[kind] = (st[kind]||0) + 1; saveMateria(); }
   invalidateCardDefs();
   return {id, uid: c.uid, kind, cost, returned: SOCKET_REMOVE_RETURNS};
@@ -18809,7 +18857,8 @@ function fieldConditionRows(r){
   // New field effects (2026-10-15)
   if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', TX('ui.fx-swamp-fever', {odds: r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'}), '', 'Units may catch Poison', TX('ui.fxx-swamp-fever')); // 2026-10-18 (package D): terse
   if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
-  if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
+  if(r.sandstorm === 'blind') add('sandstorm', '🌪️', TX('ui.c3-fx-sandstorm-blind-name'), TX('ui.c3-fx-sandstorm-blind'), '', TX('ui.c3-fx-sandstorm-blind-short')); // CONTENT3 (2026-10-26, C4): the blinding Sandstorm
+  else if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
   if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High Tide', 'Periodic High Tides.', '', 'Periodic High Tides');
   if(r.tide && !r.permaTide && !r.highTide){ const f = FIELD2.tide; add('tide', f.icon, f.name, f.text, '', f.short); } // 2026-10-16
@@ -21940,8 +21989,8 @@ const CONQUEST_MAPS = [
   // Gatorback Swamp (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mw", unlockAfter:"m2", name:"Gatorback Swamp", icon:"🐊", blurb:"A warm, green, very much alive swamp — toads, leeches and logs that open their eyes.", sequential:true,
     nodes: [
-      { key:"5-1", kind:"skirmish", name:"Leech Pools", icon:"🪱", deck:{"caiman-hatchling":2,"constrictor-coil":2,"crocodile-ambusher":3,"snapper-hatchling":3,"bog-leech":3} /* 2026-10-24 (CONTENT2, N21-2): the Leech Pools get their leeches, 3 Bog Leeches for 2 Venomlord Serpents (Bog Leech joins the map's Special list; 5-3 already fields it) */, rules:{"swampFever":50}, flavor:"Warm water, and something in it that likes warm blood.", requires:[] },
-      { key:"5-2", kind:"skirmish", name:"Toad Hollow", icon:"🐸", deck:{"caiman-hatchling":1,"constrictor-coil":3,"snapper-hatchling":3,"swamp-alligator":2,"venomlord-serpent":3,"bog-leech":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 90% at 40 tune games, target 84 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, hqHp:134, rules:{"swampFever":50}, flavor:"The toads puff up when you get close. Then they pop.", requires:["5-1"] },
+      { key:"5-1", kind:"skirmish", firstCard:"marsh-mallow-hare" /* 2026-10-26 (CONTENT3): owner C1, Map 5's first two fights pay a Cure card */, name:"Leech Pools", icon:"🪱", deck:{"caiman-hatchling":2,"constrictor-coil":2,"crocodile-ambusher":3,"snapper-hatchling":3,"bog-leech":3} /* 2026-10-24 (CONTENT2, N21-2): the Leech Pools get their leeches, 3 Bog Leeches for 2 Venomlord Serpents (Bog Leech joins the map's Special list; 5-3 already fields it) */, rules:{"swampFever":50}, flavor:"Warm water, and something in it that likes warm blood.", requires:[] },
+      { key:"5-2", kind:"skirmish", firstCard:"sphagnum-vole" /* 2026-10-26 (CONTENT3): owner C1, Map 5's first two fights pay a Cure card */, name:"Toad Hollow", icon:"🐸", deck:{"caiman-hatchling":1,"constrictor-coil":3,"snapper-hatchling":3,"swamp-alligator":2,"venomlord-serpent":3,"bog-leech":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 90% at 40 tune games, target 84 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, hqHp:134, rules:{"swampFever":50}, flavor:"The toads puff up when you get close. Then they pop.", requires:["5-1"] },
       { key:"5-3", kind:"skirmish", challenge:true, name:"Cypress Roots", icon:"🌳", deck:{"constrictor-coil":1,"snapper-hatchling":3,"swamp-alligator":1,"venomlord-serpent":2,"grass-viper":4,"bog-leech":4,"fire-ant-raft":2} /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, hqHp:109, rules:{"boon":"venomGlands","swampFever":50}, flavor:"The roots move when you aren't looking at them.", requires:["5-1"], showcase:"venomlord-serpent" },
       { key:"5-4", kind:"skirmish", name:"Snapping Reeds", icon:"🐢", deck:{"snapper-hatchling":3,"venomlord-serpent":3,"fen-mink":3,"grass-viper":4,"raft-spider":1,"moat-snapper":4} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 97.5% -> 85% at 40 tune games, target 72 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 92% at 50 tune games, target 72 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL2): Map 5: the Alligator Gar (Rare) is the boss's leader only; a Moat Snapper (Uncommon turtle) instead */, rules:{"swampFever":50}, flavor:"Little shells, big bites.", requires:["5-2","5-3"], showcase:"venomlord-serpent" },
       { key:"5-5", kind:"elite", name:"Gator Slide", icon:"🐊", deck:{"caiman-hatchling":4,"constrictor-coil":5,"venomlord-serpent":1,"crocodile-ambusher":2,"bog-leech":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 82.5% at 40 tune games, target 66 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL2): Map 5: Alligator Gar out (the boss's leader only); 2 Crocodile Ambushers (one leads the slide) for it and a Caiman Hatchling */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:135, rules:{"swampFever":50}, flavor:"A muddy bank, worn smooth by something heavy sliding in.", requires:["5-4"] },
@@ -21963,11 +22012,11 @@ const CONQUEST_MAPS = [
   { id:"mu", unlockAfter:"m8", name:"The Morel Hollow", icon:"🍄", blurb:"A damp hollow under the old oaks, where the mushrooms grow taller than the otters.", sequential:true,
     nodes: [
       { key:"7-1", kind:"skirmish", name:"Spore Drift", icon:"🍄", shieldOverride:0, deck:{"compost-grub":3,"dung-beetle":1,"fungal-colossus":3,"truffle-piglet":1,"bee-forager":2,"leafcutter-gardener":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 75% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 84% -> 86% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 68% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, flavor:"Every step kicks up a little cloud of something.", requires:[] },
-      { key:"7-2", kind:"skirmish", name:"Grub Tunnels", icon:"🪱", deck:{"compost-grub":3,"hollow-oath-keeper":3,"owl-nightwatch":2,"planarian-splitter":1,"honey-bee":4,"garden-snail":4} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 74% -> 82% at 50 tune games, target 83 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 48% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, flavor:"The ground here is hollow, and the hollow is busy.", requires:["7-1"] },
+      { key:"7-2", kind:"skirmish", name:"Grub Tunnels", icon:"🪱", deck:{"compost-grub":3,"owl-nightwatch":2,"planarian-splitter":1,"honey-bee":4,"garden-snail":4,"hawthorn-shieldbug":3} /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x3 -> hawthorn-shieldbug */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 74% -> 82% at 50 tune games, target 83 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 48% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, flavor:"The ground here is hollow, and the hollow is busy.", requires:["7-1"] },
       { key:"7-3", kind:"skirmish", name:"Web Hollow", icon:"🕸️", deck:{"leafcutter-gardener":2,"planarian-splitter":2,"bombardier-beetle":2,"garden-snail":4,"honey-bee":3,"fungal-colossus":2} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 70% -> 76% at 50 tune games, target 75 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 4% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */ /* 2026-10-24 (BAL2): Map 7 skirmish: Wolf Spider Mother -> 2 Bombardier Beetles (one leads, for a Leafcutter Gardener) */, flavor:"Mind the silk. Mind the trapdoors under the silk.", requires:["7-1"] },
-      { key:"7-4", kind:"skirmish", name:"Moonlit Gills", icon:"🌙", deck:{"fungal-colossus":3,"hollow-oath-keeper":4,"ant-warrior":2,"planarian-splitter":1,"truffle-piglet":2,"compost-grub":4} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 47.5% -> 65% at 40 tune games, target 68 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 82% -> 68% at 50 tune games, target 68 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"The gills glow faintly after dark. So do the moths.", requires:["7-2","7-3"] },
-      { key:"7-5", kind:"elite", name:"The Oath Ring", icon:"🪨", rules:{sporeCloud:true}, deck:{"compost-grub":4,"dung-beetle":4,"hollow-oath-keeper":2,"ant-warrior":1,"truffle-piglet":3,"bee-forager":2,"garden-snail":2} /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 36% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:4, showcase:"hollow-oath-keeper" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:55, flavor:"A ring of standing stones, and something keeping its promises inside it.", requires:["7-4"] },
-      { key:"7-6", kind:"boss", name:"The Morel Monarch", icon:"👑", rules:{sporeCloud:true}, deck:{"owl-nightwatch":5,"planarian-splitter":2,"truffle-piglet":2,"wolf-spider-mother":1,"leafcutter-gardener":2,"compost-grub":4,"hollow-oath-keeper":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 2.5% -> 45% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 81% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:18 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"It has been growing here since before the oaks. It is not done growing.", requires:["7-5"] },
+      { key:"7-4", kind:"skirmish", firstCard:"sleepless-shrew" /* 2026-10-26 (CONTENT3): owner G5, a Sleep-immune card before 7-5; was the Hollow Oath-Keeper (G3) */, name:"Moonlit Gills", icon:"🌙", deck:{"fungal-colossus":3,"ant-warrior":2,"planarian-splitter":1,"truffle-piglet":2,"compost-grub":4,"hawthorn-shieldbug":4} /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x4 -> hawthorn-shieldbug */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 47.5% -> 65% at 40 tune games, target 68 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 82% -> 68% at 50 tune games, target 68 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"The gills glow faintly after dark. So do the moths.", requires:["7-2","7-3"] },
+      { key:"7-5", kind:"elite", name:"The Oath Ring", icon:"🪨", rules:{sporeCloud:true}, deck:{"compost-grub":4,"dung-beetle":4,"ant-warrior":1,"truffle-piglet":3,"bee-forager":2,"garden-snail":2,"hawthorn-shieldbug":2} /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x2 -> hawthorn-shieldbug */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 36% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:4, showcase:"hawthorn-shieldbug" /* 2026-10-26 (CONTENT3, G3): was the Hollow Oath-Keeper */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:55, flavor:"A ring of standing stones, and something keeping its promises inside it.", requires:["7-4"] },
+      { key:"7-6", kind:"boss", name:"The Morel Monarch", icon:"👑", rules:{sporeCloud:true}, deck:{"owl-nightwatch":5,"planarian-splitter":2,"truffle-piglet":2,"wolf-spider-mother":1,"leafcutter-gardener":2,"compost-grub":4,"hawthorn-shieldbug":3} /* 2026-10-26 (CONTENT3, G3): hollow-oath-keeper x3 -> hawthorn-shieldbug */ /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 2.5% -> 45% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3, DF-4): deck retuned toward the road curve, from 81% (tools/skirmish_pass.js curve --decks-only --keep-leaders) */, shieldOverride:18 /* 2026-10-23 (LEAD): leader, BR and win rate kept */, flavor:"It has been growing here since before the oaks. It is not done growing.", requires:["7-5"] },
     ]},
   { id:"m4", unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
@@ -22092,7 +22141,7 @@ const CONQUEST_MAPS = [
       { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"komodo-warlord":3,"antlion-pit":3,"caustic-scorpion":3,"obsidian-scorpion":2,"dromedary":3,"roadrunner-courier":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 87.5% at 40 tune games, target 84 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, hqHp:184, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"], showcase:"komodo-warlord" },
       { key:"18-3", kind:"skirmish", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Widow's Web", icon:"🕷️", deck:{"komodo-warlord":4,"roadrunner-courier":5,"antlion-pit":2,"caustic-scorpion":2,"dromedary":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
       // 2026-10-18 (owner: "New dromedary card"): one Dromedary walks the storm in 18-4; its card reward is 18-3 Widow's Web.
-      { key:"18-4", kind:"skirmish", challenge:true, name:"Sandstorm", icon:"🌪️", deck:{"sandfish":4,"caustic-scorpion":3,"dromedary":3,"fennec-fox":4,"obsidian-scorpion":1,"dust-devil-kestrel":1,"trapdoor-spider":2} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve (challenge: target minus 10), 96% -> 94% at 50 tune games, target 62 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, hqHp:82, rules:{"boon":"sandVeil","sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
+      { key:"18-4", kind:"skirmish", challenge:true, name:"Sandstorm", icon:"🌪️", deck:{"sandfish":4,"caustic-scorpion":3,"dromedary":3,"fennec-fox":4,"obsidian-scorpion":1,"dust-devil-kestrel":1,"trapdoor-spider":2} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve (challenge: target minus 10), 96% -> 94% at 50 tune games, target 62 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, hqHp:82, rules:{"boon":"sandVeil","sandstorm":"blind"} /* 2026-10-26 (CONTENT3): owner C4 / EN8-7: the blinding Sandstorm (every unit Blind, a Storm for Storm cards) */, flavor:"The storm has wings.", requires:["18-2","18-3"] },
       { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"roadrunner-courier":2,"antlion-pit":3,"dromedary":3,"fennec-fox":3,"obsidian-scorpion":3,"dust-devil-kestrel":2,"sandfish":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 67.5% at 40 tune games, target 66 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"obsidian-scorpion" /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.75 dropped, the level schedule decides */, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
       { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"roadrunner-courier":5,"sandfish":3,"caustic-scorpion":3,"dust-devil-kestrel":1,"fennec-fox":2,"sand-widow":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 75% -> 70% at 40 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 98% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, hqHp:131, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
       { key:"18-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"sand-widow":1,"sandfish":2,"thorny-devil":3,"caustic-scorpion":1,"dust-devil-kestrel":1,"dromedary":2,"roadrunner-courier":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 85% -> 70% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"sand-widow" /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3.75 dropped, the level schedule decides */, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, flavor:"The dunes are her web.", requires:["18-5","18-6"] },
@@ -22225,13 +22274,13 @@ const CONQUEST_MAPS = [
   // mapIdAt(6); tests/maps-2026-10-18.js checks the two agree). Saves that already fought here still keep it open.
   { id:"mp", sub:true, parent:"mb", shieldMap:6, entry:{x:30, y:20, after:"2-1", afterMapCleared:"m8", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
-      { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"great-crested-grebe":2,"guppy":4,"minnow-skitter":1,"sea-turtle-elder":2,"shallows-fry":2,"tidepool-trapper-crab":2}, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
-      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":3,"fiddler-crab-swarm":2,"guppy":3,"mangrove-mudskipper":2,"minnow-skitter":1,"shallows-fry":3}, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
-      { key:"2-A-3", kind:"skirmish", name:"Beaver Dam", icon:"🦫", deck:{"duckling":3,"fiddler-crab-swarm":1,"guppy":5,"mayfly-dancer":1,"pond-duck":2,"river-carp":1,"old-sturgeon":1}, rules:{"tide":true}, flavor:"The dam goes up a little higher every night.", requires:["2-A-1"] },
-      { key:"2-A-4", kind:"skirmish", name:"Pike Shallows", icon:"🐟", deck:{"mayfly-dancer":2,"minnow-skitter":1,"river-carp":1,"ford-kingfisher":3,"shallows-fry":2,"beaver-builder":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 97.5% -> 72.5% at 40 tune games, target 72 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"tide":true}, flavor:"Something long and quick waits in the reeds.", requires:["2-A-2","2-A-3"] },
-      { key:"2-A-5", kind:"elite", name:"Croaker Chorus", icon:"🐸", deck:{"poison-dart-croaker":1,"camouflage-frog":2,"pond-duck":4,"mangrove-mudskipper":1,"duckling":4,"elder-tortoise":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 25% -> 47.5% at 40 tune games, target 66 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"poison-dart-croaker" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"tide":true}, flavor:"Pretty colours. Don't lick anything.", requires:["2-A-4"] },
-      { key:"2-A-6", kind:"elite", name:"The Lodge", icon:"🪵", deck:{"lodge-engineer":2,"beaver-builder":1,"river-carp":2,"water-shrew":2,"guppy":4,"fiddler-crab-swarm":2,"old-sturgeon":4}, showcase:"lodge-engineer" /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 2 dropped, the level schedule decides */, rules:{"tide":true}, flavor:"The biggest lodge on the pond, and the engineers are home.", requires:["2-A-4"] },
-      { key:"2-A-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"pike-lancer":1,"mudpuppy":2,"elder-tortoise":1,"mayfly-dancer":1,"fiddler-crab-swarm":2,"duckling":2,"beaver-builder":2}, leaders:["mayfly-dancer"] /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"tide":true}, flavor:"She built half the pond. She would like it back.", requires:["2-A-5","2-A-6"] },
+      { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"great-crested-grebe":2,"guppy":4,"minnow-skitter":1,"sea-turtle-elder":2,"shallows-fry":2,"tidepool-trapper-crab":2}, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
+      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":3,"fiddler-crab-swarm":2,"guppy":3,"mangrove-mudskipper":2,"minnow-skitter":1,"shallows-fry":3}, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
+      { key:"2-A-3", kind:"skirmish", name:"Beaver Dam", icon:"🦫", deck:{"duckling":3,"fiddler-crab-swarm":1,"guppy":5,"mayfly-dancer":1,"pond-duck":2,"river-carp":1,"old-sturgeon":1}, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"The dam goes up a little higher every night.", requires:["2-A-1"] },
+      { key:"2-A-4", kind:"skirmish", name:"Pike Shallows", icon:"🐟", deck:{"mayfly-dancer":2,"minnow-skitter":1,"river-carp":1,"ford-kingfisher":3,"shallows-fry":2,"beaver-builder":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 97.5% -> 72.5% at 40 tune games, target 72 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"Something long and quick waits in the reeds.", requires:["2-A-2","2-A-3"] },
+      { key:"2-A-5", kind:"elite", name:"Croaker Chorus", icon:"🐸", deck:{"poison-dart-croaker":1,"camouflage-frog":2,"pond-duck":4,"mangrove-mudskipper":1,"duckling":4,"elder-tortoise":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 25% -> 47.5% at 40 tune games, target 66 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, showcase:"poison-dart-croaker" /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"Pretty colours. Don't lick anything.", requires:["2-A-4"] },
+      { key:"2-A-6", kind:"elite", name:"The Lodge", icon:"🪵", deck:{"lodge-engineer":2,"beaver-builder":1,"river-carp":2,"water-shrew":2,"guppy":4,"fiddler-crab-swarm":2,"old-sturgeon":4}, showcase:"lodge-engineer" /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 2 dropped, the level schedule decides */, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"The biggest lodge on the pond, and the engineers are home.", requires:["2-A-4"] },
+      { key:"2-A-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"pike-lancer":1,"mudpuppy":2,"elder-tortoise":1,"mayfly-dancer":1,"fiddler-crab-swarm":2,"duckling":2,"beaver-builder":2}, leaders:["mayfly-dancer"] /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"tide":true,"field":"rain"} /* 2026-10-26 (CONTENT3): owner C5 / EN6-9 "the lotus petal map can have eternal rain": constant Rain */, flavor:"She built half the pond. She would like it back.", requires:["2-A-5","2-A-6"] },
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse m9 in").
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 23 is cleared (afterMapCleared "m23"); its fights count as Map 23 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
@@ -22266,7 +22315,7 @@ const CONQUEST_MAPS = [
   { id:"mj", sub:true, parent:"m7", shieldMap:11, entry:{x:78, y:74, after:"10-9", afterMapCleared:"m10", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
     nodes: [
       { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", shieldOverride:8, deck:{"clownfish-scout":2,"kraken-spawnling":1,"orca-vanguard":2,"parrotfish":2,"silver-minnow":1,"abyss-lantern-squid":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"crushingDepths":true}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
-      { key:"10-A-2", people:"deep", kind:"skirmish", challenge:true, showcase:"coral-reef-shark", name:"The Drowned Deck", icon:"⚓", deck:{"clownfish-scout":1,"parrotfish":1,"silver-minnow":3,"coral-reef-shark":3,"crown-of-thorns-star":2,"nautilus-drifter":2} /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"risingTide","crushingDepths":true}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
+      { key:"10-A-2", people:"deep", kind:"skirmish", challenge:true, showcase:"coral-reef-shark", name:"The Drowned Deck", icon:"⚓", deck:{"clownfish-scout":1,"parrotfish":1,"silver-minnow":3,"coral-reef-shark":3,"crown-of-thorns-star":2,"nautilus-drifter":2} /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"risingTide","crushingDepths":true,"tide":true} /* 2026-10-26 (CONTENT3): owner BAL3-1 "Fix.": the Tide, so Rising Tide can turn on */, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
       { key:"10-A-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", shieldOverride:17, deck:{"clownfish-scout":3,"kraken-spawnling":1,"orca-vanguard":1,"silver-minnow":2,"blue-ringed-octopus":2,"parrotfish":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 70% at 40 tune games, target 70 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rules:{"crushingDepths":true}, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["10-A-2"] },
       { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", shieldOverride:12, deck:{"voltaic-eel":2,"abyss-lantern-squid":1,"riptide-eel":1,"silver-minnow":3,"glass-octopus":3,"mangrove-manatee":2} /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
       { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"kraken-spawnling":1,"coral-reef-shark":2,"orca-vanguard":2,"blue-ringed-octopus":1,"silver-minnow":2,"clownfish-scout":2,"nautilus-drifter":2,"sulfur-vent-crab":2,"parrotfish":2} /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
@@ -22336,7 +22385,7 @@ const CONQUEST_MAPS = [
   { id:"ms", sub:true, parent:"mw", shieldMap:13, entry:{x:70, y:76, after:"5-7", afterMapCleared:"mr", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
     nodes: [
       { key:"5-A-1", kind:"skirmish", name:"Rotting Roots", icon:"🌳", shieldOverride:8, deck:{"echo-keeper":3,"mosquito-cloud":2,"puddle-hopper":2,"snapper-hatchling":3,"grass-viper":1,"baby-horned-capybara":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 100% -> 92.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */, rewards:{"first":{"gold":80,"dust":10}}, requires:[], rules:{"swampFever":25} },
-      { key:"5-A-2", kind:"skirmish", challenge:true, enemyLevel:4, showcase:"bog-behemoth", name:"Gator Hollow", icon:"🌳", deck:{"baby-horned-capybara":2,"mangrove-mudskipper":2,"snapper-hatchling":1,"bog-leech":4,"raft-spider":4,"bog-behemoth":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 95% -> 90% at 40 tune games, target 65 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rewards:{"first":{"gold":100,"dust":13}}, requires:["5-A-1"], rules:{"boon":"risingTide","swampFever":25} },
+      { key:"5-A-2", kind:"skirmish", challenge:true, enemyLevel:4, showcase:"bog-behemoth", name:"Gator Hollow", icon:"🌳", deck:{"baby-horned-capybara":2,"mangrove-mudskipper":2,"snapper-hatchling":1,"bog-leech":4,"raft-spider":4,"bog-behemoth":1} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 95% -> 90% at 40 tune games, target 65 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rewards:{"first":{"gold":100,"dust":13}}, requires:["5-A-1"], rules:{"boon":"risingTide","swampFever":25,"tide":true} /* 2026-10-26 (CONTENT3): owner BAL3-1 "Fix.": the Tide, so Rising Tide can turn on */ },
       { key:"5-A-3", kind:"skirmish", name:"Moss Weir", icon:"🌳", deck:{"constrictor-coil":3,"echo-keeper":3,"puddle-hopper":4,"grass-viper":1,"alligator-gar":1}, hqHp:125, rewards:{"first":{"gold":120,"dust":16}}, requires:["5-A-2"], rules:{"swampFever":25} },
       { key:"5-A-4", kind:"boss", name:"The Grove Warden", icon:"👑", shieldOverride:34, deck:{"bog-leech":2,"hedgehog-herbalist":2,"constrictor-coil":2,"snapper-hatchling":2,"echo-keeper":2,"puddle-hopper":2,"grass-viper":2,"mangrove-mudskipper":2,"baby-horned-capybara":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 97.5% -> 92.5% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, rewards:{"first":{"gold":200,"dust":30}}, requires:["5-A-3"], rules:{"swampFever":25} },
     ]},
@@ -33111,6 +33160,7 @@ const FIELD_EFFECTS = [
   {id:'freezing',  group:'freezing', icon:'🧊', name:'Freezing', weird:2, cost:1, rules:{freezing:true}, text:'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', editorOnly:true},
   {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', editorOnly:true},
   {id:'sandstorm', group:'sandstorm', icon:'🏜️', name:'Sandstorm', weird:2, cost:1, rules:{sandstorm:true}, text:'Attacks at units miss 1 in 4, except from Dry units.', editorOnly:true},
+  {id:'sandstormBlind', group:'sandstorm', icon:'🌪️', name:TX('ui.c3-fx-sandstorm-blind-name'), weird:3, cost:1, rules:{sandstorm:'blind'}, text:TX('ui.c3-fx-sandstorm-blind'), editorOnly:true}, // CONTENT3 (2026-10-26, C4)
   {id:'rapids',    group:'rapids', icon:'🌊', name:'River Rapids', weird:2, cost:1, rules:{permaTide:true, rapids:true}, text:'Always Flood: the Tide is in all match, and nothing can turn it.', editorOnly:true},
   {id:'cloudy',    group:'cloudy', icon:'☁️', name:'Cloudy',       weird:1, cost:1, rules:{cloudy:true}, text:CLOUDY_TEXT, editorOnly:true}, // editorOnly: the daily Arena portents keep their rolls; 2026-10-16 (user: "Cloudy - cloud shadows floating above the battlefield.")
   {id:'misty',     group:'misty', icon:'🌫️', name:'Mist',         weird:1, cost:1, rules:{misty:true}, text:'There is no day/night cycle.', editorOnly:true}, // 2026-10-15 wording // 2026-10-14: no map has it yet
@@ -47083,7 +47133,9 @@ function giLogText(ev, nm){
     return null; }
   if(ev.type === 'statusFx' && ev.field === 'sporeCloud' && ev.kind === 'sleep') return {cls:'', text:TX('ui.log-spore-sleep', {name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.field === 'tangledRoots' && ev.kind === 'webbed') return {cls:'', text:TX('ui.log-roots-grab', {name: nm(ev.targetDefId)})};
-  if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.c3-log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})}; // CONTENT3 (2026-10-26): Detonate N's ticks
+  if(ev.type === 'statusFx' && ev.kind === 'wakeful') return {cls:'', text:TX('ui.c3-log-wakeful', {name: nm(ev.targetDefId)})}; // CONTENT3 (G5)
+  if(ev.type === 'statusFx' && ev.kind === 'pulverise') return {cls:'', text:TX('ui.c3-log-pulverise', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // CONTENT3 (OWN-Q5)
   if(ev.type === 'statusFx' && ev.kind === 'proliferate') return {cls:'', text:TX('ui.log-proliferate', {from: nm(ev.fromDefId), name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.kind === 'brittle') return {cls:'', text:TX('ui.log-brittle', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})};
   if(ev.type === 'fieldBreak') return {cls:'gold', text: ev.rounds === 1 ? TX('ui.log-field-break-1', {name: nm(ev.defId)}) : TX('ui.log-field-break', {name: nm(ev.defId), n: ev.rounds})};
@@ -47096,7 +47148,12 @@ function giVfx(ev){
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
-  if(ev.type === 'statusFx' && ev.kind === 'detonate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = 0; fl(boardCardEl(ev.targetUid), `🎆 +${ev.amount}`, 'poison'); snd('boom'); refresh(ev.targetUid); return; }
+  // CONTENT3 (2026-10-26, E18): Detonate N ticks the Poison N times in a row: each tick's number floats in turn, its counter drops, the Health goes down
+  if(ev.type === 'statusFx' && ev.kind === 'detonate'){ const rc = rcOf(ev.targetUid), u = ev.targetUid, ticks = Array.isArray(ev.ticks) ? ev.ticks : [ev.amount || 0];
+    if(rc){ rc.hp = Math.max(0, (rc.hp || 0) - (ev.amount || 0)); rc.poison = ev.left != null ? ev.left : 0; }
+    try{ updateCardHpDisplay(u); }catch(e){} snd('boom');
+    ticks.forEach((d, i)=> setTimeout(()=>{ fl(boardCardEl(u), `🎆 ${d}`, 'poison'); try{ if(i) SoundKit.bubble(); }catch(e){} }, i * ((()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? 0 : 240)));
+    refresh(u); return; }
   if(ev.type === 'statusFx' && ev.kind === 'proliferate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; fl(boardCardEl(ev.targetUid), '🧫 +1☠', 'poison'); snd('poisonApply'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusFx' && ev.kind === 'brittle'){ const rc = rcOf(ev.targetUid); if(rc) rc.brittle = Math.max(rc.brittle||0, ev.amount||1); fl(boardCardEl(ev.targetUid), TX('ui.float-brittle'), 'debuff'); snd('freezeChime'); refresh(ev.targetUid); return; }
   if(ev.type === 'statusEnd' && ev.status === 'brittle'){ const rc = rcOf(ev.uid); if(rc) rc.brittle = 0; refresh(ev.uid); return; }
@@ -49965,6 +50022,7 @@ function renderForge(){
   const rfBtn = document.getElementById('forgeRefineBtn');
   if(rfBtn) rfBtn.addEventListener('click', ()=> forgeRefine(rfBtn));
   root.querySelectorAll('[data-enchant]').forEach(b=> b.addEventListener('click', ()=> forgeEnchant(b)));
+  root.querySelectorAll('[data-gem-fuse]').forEach(b=> b.addEventListener('click', ()=> forgeGemFuse(b))); // CONTENT3 (2026-10-26, E14)
   { const sr = document.getElementById('forgeSocketRemoveBtn'); if(sr) sr.addEventListener('click', ()=> forgeSocketRemove(sr)); } // 2026-10-24 (package H1)
   if(forgeMode==='smith') wireBlacksmith(root);
 }
@@ -50447,7 +50505,7 @@ function forgeReadyFor(id){
   if(forgeMode==='fuse'){ const d = getCardDefs()[id]; return !!d && fuseAllCountFor(id, maxCopiesForRarity(d.rarity)) > 0; } // 2026-10-19 (package FG): it has extras
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const d = getCardDefs()[id]; if(!d || !cardHasSocket(d)) return false; socketsNormalize(id); const st = materiaStore(), m = myCardSockets[id] || {}; // 2026-10-24 (package H1): a copy with an empty socket, a gem and the apply cost
-    return (myCardCopies[id]||[]).some(c=> c && c.uid && !m[c.uid]) && MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && canAffordCost(socketCost(d, 'apply')); }
+    const cap = socketSlotsOf(d); return (myCardCopies[id]||[]).some(c=> c && c.uid && gemParts(m[c.uid]).length < cap) && socketGemChoices().some(k=> (st[k.id]||0) > 0) && canAffordCost(socketCost(d, 'apply')); } // CONTENT3: a free socket (Socket N), Greater gems too
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
 }
 // ---- The Forge's 🐙 Raid tab (2026-10-19, package RC, owner 09:53: "Raids almost never give raid cards. only maybe pack cards or
@@ -50516,13 +50574,15 @@ function refineAnvilHTML(id, sel){
 // 2026-10-24 (package H1, owner decision H1): the 💎 Socket tab. Works on one copy (the copy picker / copies sheet): its socket empty
 // (pick a gem; the apply cost in the button) or filled (take it out for the remove cost; the gem comes back). The costs are the card's
 // rank's in canonical/upgrade-costs.json materiaSocket.
-function socketGemName(k){ const m = socketKind(k); return m ? TX('ui.h1-gem-' + m.id) : String(k || ''); }
-function socketGemFx(k){ return ENCHANTS[k] ? TX('ui.h1-gem-fx-' + k) : ''; }
+function socketGemName(k){ const p = gemParts(k); if(p.length > 1) return p.map(socketGemName).join(' + '); const m = socketKind(k); return m ? TX('ui.h1-gem-' + m.id) : String(k || ''); }
+function socketGemFx(k){ const p = gemParts(k); if(p.length > 1) return p.map(socketGemFx).join(' · '); return ENCHANTS[k] ? TX('ui.h1-gem-fx-' + k) : ''; }
+// the gems you hold that can go in a socket: the four kinds and any Greater gem (CONTENT3)
+function socketGemChoices(){ const st = materiaStore(); return MATERIA_KINDS.concat(MATERIA_KINDS.map(m=> socketKind(m.id + '2')).filter(k=> k && (st[k.id]||0) > 0)); }
 function enchantAnvilHTML(id, sel){
   const st = materiaStore(), base = getCardDefs()[id] || sel;
   if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div></div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3><p class="forge-note">${escapeHtml(TX('ui.h1-no-socket'))}</p>`;
-  const copy = copyByUid(id, forgeUid(id)), uid = copy && copy.uid, cur = socketGemOfCopy(id, copy);
+  const copy = copyByUid(id, forgeUid(id)), uid = copy && copy.uid, cur = socketGemOfCopy(id, copy), cap = socketSlotsOf(base), gemsIn = gemParts(cur), full = gemsIn.length >= cap; // CONTENT3: Socket N
   let show = sel; try{ const d = copyDefAt(id, copyLevel(id, copy), cur); if(d) show = Object.assign({}, d, {id}); }catch(e){}
   const apply = socketCost(base, 'apply'), remove = socketCost(base, 'remove'), k = cur && socketKind(cur);
   return `
@@ -50532,14 +50592,27 @@ function enchantAnvilHTML(id, sel){
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     ${forgeCopyPickerHTML(id)}
-    <div class="h1-socket-state ${cur ? 'is-full' : 'is-empty'}" data-h1-socket="${cur ? 'full' : 'empty'}">
+    <div class="h1-socket-state ${full ? 'is-full' : 'is-empty'}" data-h1-socket="${full ? 'full' : cur ? 'some' : 'empty'}">
       <span class="h1-socket-big ${cur ? 'mk-' + cur : ''}" aria-hidden="true">${k ? `<span>${k.icon}</span>` : ''}</span>
       <div class="h1-socket-txt">${cur ? `<b>${escapeHtml(TX('ui.h1-socket-filled', {gem: socketGemName(cur)}))}</b><small>${escapeHtml(socketGemFx(cur))}</small>` : `<b>${escapeHtml(TX('ui.h1-socket-empty'))}</b><small>${escapeHtml(TX('ui.h1-socket-pick'))}</small>`}</div>
     </div>
     ${cur ? `<button type="button" class="btn forge-act h1-remove" id="forgeSocketRemoveBtn" ${socketRemoveProblem(id, uid) ? 'aria-disabled="true"' : ''} title="${escapeAttr(TX(SOCKET_REMOVE_RETURNS ? 'ui.h1-remove-tip' : 'ui.h1-remove-tip-lost'))}">⛏️ ${escapeHtml(TX('ui.h1-remove'))}${btnCostHTML(remove)}</button>
-      <p class="forge-note">${escapeHtml(TX('ui.h1-socket-full-note'))}</p>` : ''}
-    <div class="ench-grid ${cur ? 'is-locked' : ''}">${MATERIA_KINDS.map(m=> `<button type="button" class="ench-opt ${cur===m.id?'is-on':''}" data-enchant="${m.id}" ${socketApplyProblem(id, uid, m.id) ? 'aria-disabled="true"' : ''}><span class="eo-ico">${m.icon}</span><b>${escapeHtml(socketGemName(m.id))}</b><small>${escapeHtml(socketGemFx(m.id))}</small><span class="eo-have">${escapeHtml(_t('you have {n}', {n:st[m.id]||0}))}</span></button>`).join('')}</div>
-    ${cur ? '' : `<p class="forge-note h1-cost-line">${escapeHtml(TX('ui.h1-cost-apply'))}${btnCostHTML(apply)}</p>`}`;
+      <p class="forge-note">${escapeHtml(cap > 1 ? TX('ui.c3-socket-n-note', {n: gemsIn.length, cap}) : TX('ui.h1-socket-full-note'))}</p>` : ''}
+    <div class="ench-grid ${full ? 'is-locked' : ''}">${socketGemChoices().map(m=> `<button type="button" class="ench-opt ${gemsIn.includes(m.id)?'is-on':''}" data-enchant="${m.id}" ${socketApplyProblem(id, uid, m.id) ? 'aria-disabled="true"' : ''}><span class="eo-ico">${m.icon}</span><b>${escapeHtml(socketGemName(m.id))}</b><small>${escapeHtml(socketGemFx(m.id))}</small><span class="eo-have">${escapeHtml(_t('you have {n}', {n:st[m.id]||0}))}</span></button>`).join('')}</div>
+    ${full ? '' : `<p class="forge-note h1-cost-line">${escapeHtml(TX('ui.h1-cost-apply'))}${btnCostHTML(apply)}</p>`}
+    ${gemFuseHTML()}`;
+}
+// CONTENT3 (2026-10-26, E14): gem fusion, under the gem choices: two gems of one kind -> one Greater gem of that kind
+function gemFuseHTML(){ const st = materiaStore();
+  return `<div class="c3-fuse"><p class="forge-note"><b>${escapeHtml(TX('ui.c3-fuse-title'))}</b> ${escapeHtml(TX('ui.c3-fuse-how'))}</p><div class="ench-grid">${MATERIA_KINDS.map(m=>{ const into = socketKind(m.id + '2');
+    return `<button type="button" class="ench-opt" data-gem-fuse="${m.id}" ${gemFuseProblem(m.id) ? 'aria-disabled="true"' : ''}><span class="eo-ico">${m.icon}${m.icon}</span><b>${escapeHtml(TX('ui.c3-fuse-into', {gem: socketGemName(into.id)}))}</b><small>${escapeHtml(socketGemFx(into.id))}</small><span class="eo-have">${escapeHtml(TX('ui.c3-fuse-have', {n: st[m.id]||0, g: st[into.id]||0}))}</span></button>`; }).join('')}</div>
+    <p class="forge-note h1-cost-line">${escapeHtml(TX('ui.c3-fuse-cost'))}${btnCostHTML(GEM_FUSE_COST)}</p></div>`; }
+function forgeGemFuse(btn){
+  if(forgeBusy) return; const kind = btn.dataset.gemFuse, r = btn.getAttribute('aria-disabled')==='true' ? null : gemFuse(kind);
+  if(!r){ denyShake(btn); return; }
+  try{ SoundKit.materiaForm(); materiaBurstVfx(socketKind(kind)); }catch(e){}
+  renderForge();
+  showToast(TX('toast.c3-fused', {gem: socketGemName(r.into)}), 'ok');
 }
 async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;

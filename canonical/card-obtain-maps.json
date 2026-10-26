@@ -197,6 +197,7 @@
   "spring-rain": 1,
   "thick-fog": 1,
   "full-moon": 7,
+  "courier-pigeon": 14,
   "echo-keeper": 7,
   "bog-revenant": 5,
   "the-unremembered": 5,
@@ -558,6 +559,15 @@
   "salvager-hermit-crab": 7,
   "carrion-crow": 7,
   "hazel-coppice": 7,
-  "moonshell-snail": 14
+  "moonshell-snail": 14,
+  "sleepless-shrew": 7,
+  "mist-net-otter": 5,
+  "clap-net-trapper": 5,
+  "birdlime-dauber": 5,
+  "gale-swift": 7,
+  "static-fennec": 14,
+  "magpie-collector": 7,
+  "mother-carrier": 5,
+  "granite-ox-golem": 14
  }
 }
