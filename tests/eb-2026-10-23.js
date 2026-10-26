@@ -44,7 +44,7 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
       ok(['river-carp', 'burrow-rabbit', 'farm-dog', 'chipmunk-forager'].every(id=> p.all[id]), `1. ${label}, ${pick}: the sturdier cards are in it (${ids.join(', ')})`);
     }
   }
-  ok(SD.starterTopUp[0] === 'river-carp' && !SD.starterTopUp.slice(0, 7).some(id=> (D[id].attack || 0) + (D[id].health || 0) < 8), '1. the top-up starts with the sturdier cards');
+  ok(SD.starterTopUp[0] === 'river-carp' && !SD.starterTopUp.slice(0, 7).some(id=> (D[id].attack || 0) + (D[id].health || 0) < 7), '1. the top-up starts with the sturdier cards'); // 2026-10-26 (release): 7, the owner's folded Otter Kit is 2/5
   const firstPack = src.slice(src.indexOf('const SKIRMISH_FIRST_PACK_CARDS = {'), src.indexOf('/* GD5-TABLE-END */'));
   SD.starterTopUp.slice(0, 7).forEach(id=> ok(!firstPack.includes(`'${id}'`) && !(D[id].source && D[id].source.kind === 'map'), `1. ${id} is no skirmish's first-clear card`));
 }

@@ -56,8 +56,8 @@
   "quest": 1,
   "secrets": 2,
   "faction": 2,
+  "decision": 9,
   "smith": 1,
-  "decision": 7,
   "hold spells": 8,
   "hold 66": 16,
   "hold 77": 15
@@ -276,6 +276,18 @@
    "kind": "faction",
    "side": "tribes",
    "why": "a Hummingbird starter (\"hasn't chosen her plumage colour\"); RW5 left it for the owner: the Hummingbird side of the faction pool, or Base"
+  },
+  "phoenix-mushrooms": {
+   "name": "Phoenix Mushrooms",
+   "rarity": "epic",
+   "kind": "decision",
+   "why": "the owner's live card (folded 10-26, CONTENT3 OVR); Epic, Fungi, Undead; its source is his call"
+  },
+  "mother-carrier": {
+   "name": "Mother Carrier",
+   "rarity": "heroic",
+   "kind": "decision",
+   "why": "CONTENT3 E16, the Heroic Hummingbird Platform; its source is CONTENT3-3 (owner call)"
   },
   "crowbar": {
    "name": "Crowbar",

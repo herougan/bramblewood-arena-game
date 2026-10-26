@@ -122,6 +122,9 @@ put(['armory'], {kind: 'map', map: 24, existing: true, held: true, why: 'Goldfea
 put(['missingno', 'glowing-gecko'], {kind: 'secrets', why: 'esoteric: MissingNo. is a hidden glitch; the Glowing Gecko is Irradiated, like the Mystery Booster\'s Irradiated Axolotl and Glow Wyrm (the map recs\' Map 33 "Irradiated" would bring Irradiated as a new skill)'});
 put(['anvilwhisker-otter'], {kind: 'faction', side: 'otters', why: 'an Otter (the Legion\'s smith): faction cards come from the faction pool (progression plan); needs a Stone engine, which Maps 8 / 19 / 22 now give'});
 put(['greyplume-fledgling'], {kind: 'faction', side: 'tribes', why: 'a Hummingbird starter ("hasn\'t chosen her plumage colour"); RW5 left it for the owner: the Hummingbird side of the faction pool, or Base'});
+// 2026-10-26 (release 10-26c): two cards that arrived awaiting a source after N221 (CONTENT3's OVR fold and E16); their homes are owner calls.
+put(['phoenix-mushrooms'], {kind: 'decision', why: "the owner's live card (folded 10-26, CONTENT3 OVR); Epic, Fungi, Undead; its source is his call"});
+put(['mother-carrier'], {kind: 'decision', why: 'CONTENT3 E16, the Heroic Hummingbird Platform; its source is CONTENT3-3 (owner call)'});
 put(['crowbar'], {kind: 'smith', why: 'equipment (+2/+0, Pry 1): the Blacksmith is its natural home (its creator note); a siege tool, so its art can lean on the Goldfeather Siege'});
 put(['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch', 'kelpborn-otter', 'conger-eel', 'selkie-wavebinder'], {kind: 'decision', id: 'CONTENT2-3', why: 'open owner call (default: Maps 6 / 9 / 10 / 18); N221 offers the Carrion Moors (27, the Gnawed) and Stormcoast (28, the Tidefolk) as the "other sources" option (N221-6)'});
 put(['frost-slick', 'magma-vent', 'bog-seep', 'miasma', 'rockfall', 'grave-call', 'smoke-screen', 'magnet'], {kind: 'hold', until: 'spells', why: 'SPELLS_SHELVED: no spell is obtainable until spells come back'});
