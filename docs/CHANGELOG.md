@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-27 (package HUB7: Map 0-24 difficulty heatmap)
+- **Hub, 🧬 Deck optimizer summary**: a heatmap at the top, one row per reference deck (map reference, Reference-2, Reference-3 pending), one column per Map 0-24 plus the mean. Each cell is the reference's win rate against that map's strongest optimizer deck (red = hard, green = easy, steps of the DF-1b tolerance widths around 50%). Hover or tap a cell for its games, wins and the optimum's cards. The table scrolls inside its box on phones.
+- New `tools/opt/ref_vs_optimum.js` (measurement only, plays as `pro_ease.js` does). Data: `docs/balance/hub7-ref-vs-optimum-2026-10-27.json` / `.md`, 200 games a pairing. Optimizer re-run on the current engine for Maps 0-15 and 21-24 (tag `2026-10-27-hub7-maptrue`); Maps 16-20 reuse the 10-25 PRO3 optimum. `canonical/pro-skirmishes.json` unchanged.
+
 ## 2026-10-26 release 10-26e (batch: RES4)
 - Trail Mix Trek: the monthly pass (Stickers from notices, the first win, weekly quests and three weekly challenges; 30 tiers, a free lane of 6 packs and resources, premium shown locked); level packs only at 5 / 10 / 15 / 20 / 25. Forge tabs open on Maps 11-34. The first group dungeon is The Tidelock Vault.
 - Owner 10-26 14:14 recorded (TUT-1 his; live rows he edited stay unless re-balanced; ENG10 recommendations).
