@@ -16158,6 +16158,7 @@ function renderPlay(){
           ${'' /* 2026-10-19 (package U4, owner 23:34: "there should be a forge shortcut in the top right corner of the screen, together with
                arena and home. Home of course comes first."): Home, Arena, then the Forge (its own 🔨, as in the page bar's shortcuts), once
                the Forge is open. Same trip as PAGE_SHORTCUTS' Forge: the Codex view on its Forge page (switchTab remembers where you came from). */}${tabOpen('forge') ? `<button class="home-nav-btn" id="forgeNavBtnPlay" type="button" title="${escapeAttr(TX('ui.place-forge'))}" aria-label="${escapeAttr(TX('ui.place-forge'))}"><span class="tab-emoji" aria-hidden="true">🔨</span> ${escapeHtml(TX('ui.u4-forge'))}</button>` : ''}
+          ${res4TrailOpen() ? `<button class="home-nav-btn" id="trailNavBtnPlay" type="button" data-trail-badge title="${escapeAttr(TX('ui.res4-trail-name'))}" aria-label="${escapeAttr(TX('ui.res4-trail-name'))}"><span class="tab-emoji" aria-hidden="true">🚐</span> ${escapeHtml(TX('ui.res4-trail-short'))}</button>` : ''}
           ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
@@ -16206,6 +16207,8 @@ function renderPlay(){
     if(arenaBtn) arenaBtn.addEventListener('click', ()=>{ playSubTab = 'arena'; exitConquestImmersive(); renderPlay(); });
     const forgeBtn = document.getElementById('forgeNavBtnPlay'); // 2026-10-19 (package U4): the cluster's Forge
     if(forgeBtn) forgeBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); codexSubTab = 'forge'; switchTab('codex'); });
+    const trailBtn = document.getElementById('trailNavBtnPlay'); // 2026-10-26 (package RES4): the Trail Mix Trek from the map's corner cluster
+    if(trailBtn){ trailBtn.addEventListener('click', ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('trail'); }); try{ res4TrailRefreshBadges(); }catch(e){} }
     wireSettingsButton('PlaySub');
     refreshEnergyHud(); // paints the new Play-tab Energy pill immediately instead of waiting for its first 1s tick
     // Item #4 (2026-09-18): "The Conquest explanation can be removed. Only when hovering over
@@ -20810,6 +20813,7 @@ function bumpQuestCounter(counter, n){
   refreshQuestBadge(); soonCheckMilestones();
   try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
   try{ const after = questsDoneNow(); let fresh = 0; after.forEach(k=>{ if(!doneBefore.has(k)) fresh++; }); questDoneDrop(fresh); }catch(e){}
+  try{ res4TrailOnCounter(counter, q); }catch(e){} // 2026-10-26 (package RES4, PROP1-2): the day's first win and the week's Trail challenges
 }
 // ---- Daily notices (2026-10-10, user: "You start with 3 quests at midnight, you get 1 top up quest at 6AM, 12[PM], and
 // 6PM" + "Put the rewards on the quest card itself. A harder quest has higher rewards. Tiers = D, C, B, A, S, SS, SSS ...
@@ -20957,6 +20961,7 @@ function claimQuest(kind, id){
     awardXp(rw.xp || 20, 'quest');
     { const n = QUEST_KIT_ITEMS.daily[x.rank] || 0; if(n) grantKitItems(n); }
     try{ const c = QUEST_RAID_TICKET_CHANCE[x.rank] || 0; if(c > 0 && featureUnlockedSafe('raid') && Math.random() < c) grantRaidTicketItems(1); }catch(e){} // 2026-10-21 (package RK)
+    try{ res4TrailOnNotice(x.rank, q.claimedDaily.length); }catch(e){} // 2026-10-26 (package RES4, PROP1-2): Stickers for the notice and the day's notice tiers
     refreshQuestBadge(); return {title: QUEST_SHOWN_RANKS.has(x.rank) ? 'Rank ' + x.rank + ' notice!' : 'Quest complete!', reward: Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')), xp: rw.xp || 20};
   }
   const claimed = kind==='daily' ? q.claimedDaily : q.claimedWeekly;
@@ -20968,7 +20973,8 @@ function claimQuest(kind, id){
   const tierIdx = QUEST_TIERS[kind].indexOf(tier);
   const xp = (kind==='daily' ? [100,60,30] : [400,250,120])[tierIdx] || 20; awardXp(xp, 'quest');
   if(kind === 'weekly' && tier.quests.every(z=> claimed.includes(z.id))){ grantKitItems(QUEST_KIT_ITEMS.weekly[tierIdx] || 0); // a finished weekly tier
-    if(tierIdx < 2) try{ grantBeer(1, 'quest'); }catch(e){} } // 2026-10-15: the first two weekly tiers pour a Beer each (1–3 a week)
+    if(tierIdx < 2) try{ grantBeer(1, 'quest'); }catch(e){} // 2026-10-15: the first two weekly tiers pour a Beer each (1–3 a week)
+    try{ res4TrailOnWeeklyTier(tierIdx); }catch(e){} } // 2026-10-26 (package RES4, PROP1-2): a finished weekly tier's Stickers
   refreshQuestBadge();
   return {title: kind === 'weekly' ? 'Weekly quest complete!' : 'Quest complete!', reward: Object.assign({}, tier.reward), xp};
 }
@@ -24877,7 +24883,9 @@ const GD = {s:null, phase:'closed', kind:'local', code:'', sel:null, pitch:null,
 // by its own themed name (GD_THEMED_NAME: the Hollow Warren is "The Warren Heist", a crew sneaking in for the Matriarch's hoard). A new group
 // dungeon adds its line here. The daily dungeons stay Admin-only (dungeonsTabOpen).
 const GD_OPEN_AFTER_MAP = 16;
-const GD_THEMED_NAME = {hollow: 'ui.res3-gd-hollow'};
+// 2026-10-26 (package RES4, RES3-4, owner 11:19: "Name - a cool first multi-player dungeon? maybe aqua themed."): "The Tidelock Vault", a flooded
+// vault that only opens at low tide, so the crew works against the water (decision RES4-3 has the other two names). Was "The Warren Heist".
+const GD_THEMED_NAME = {hollow: 'ui.res4-gd-hollow'};
 function gdThemedName(id){ const k = GD_THEMED_NAME[id || 'hollow']; return k ? TX(k) : TX('ui.ar-group-name'); }
 function gdPlayerOpen(){ try{ return !!CoopM && (dungeonsAdminView() || (tutorialFullyDone() && mapsPassed() >= GD_OPEN_AFTER_MAP)); }catch(e){ return false; } }
 function gdLocalPeerId(){ try{ let id = sessionStorage.getItem(GD_PEER_KEY); if(!id){ id = 'tab-' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem(GD_PEER_KEY, id); } return id; }catch(e){ return 'tab-' + Math.random().toString(36).slice(2, 10); } }
@@ -40842,6 +40850,12 @@ async function resolveRoundCore(opts){
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
       if(m.mode==='pvp') bumpQuestCounter('pvpWins', 1);
+      // 2026-10-26 (package RES4, PROP1-2): the Trail challenges' new counters: a challenge skirmish cleared, an elite or a boss beaten, and the
+      // different decks that won this week (decksWon, counted once per deck by res4TrailNoteDeckWin)
+      try{ const nd = m.mode==='conquest' && m.conquestNode, bk = nd ? baseKind(nd.kind || 'skirmish') : '';
+        if(nd && nd.challenge) bumpQuestCounter('challengeClears', 1);
+        if(bk === 'elite' || bk === 'boss' || bk === 'finalboss') bumpQuestCounter('bossWins', 1);
+        res4TrailNoteDeckWin(activeDeckId); }catch(e){}
     }
     // 2026-10-25 (package FIX3, F4, owner #1: "you still get an xp under a loss. (+1 at least)"): a lost or drawn fight gives 1 XP, on the same
     // terms as a win's 3 (not a free Spire replay, a fight already paid out, a PRO fight or an admin test)
@@ -50544,7 +50558,14 @@ function rollMateriaDrops(node, isFirstClear, rank){
 // visible but locked with '?'"): the map number each Forge tab arrives with (the Forge itself opens on Map 11). A tab shows once that map is
 // reached (playerMapReach); before that it is not drawn, except Reinforce, which shows as a locked "🏰 ?". Admin and Dev Mode see every tab.
 // The maps are an owner call (decision RES3-3 in docs/decisions.json); change them here.
-const RES3_FORGE_TAB_MAP = {upgrade:11, fuse:11, facility:12, smith:13, raid:13, refine:15, castles:17, enchant:20};
+// 2026-10-26 (package RES4, RES3-3, owner 11:19: "your decision for forge tabs, spread from Map 0 to 40"): re-spread by when each tab becomes
+// useful. Nothing opens before Map 11: the Forge itself opens there (B7: no Forge before Map 11, Maps 0-10 are won by deck building).
+//   Upgrade 11 (with the Forge) · Upgrades 13 (the Iron Forge, the first tier, is for sale from Map 13: canonical/upgrade-costs.json)
+//   Fuse 14 (Pack 3 and the map-end packs start piling up spare copies) · Raid 15 (two maps after the Raid Banner, trophy shards in hand)
+//   Blacksmith 18 (bosses' first clears since Map 11 have paid the Materia it uses) · Finish 24 (foils are 1-2% of cards: a few by then)
+//   Reinforce 28 (Maps 21-40's harder decks; still teased as a locked "?" from Map 11) · Socket 34 (Unique cards reach the road on Map 30).
+// The list is decision RES4-2. Was 11 / 11 / 12 / 13 / 13 / 15 / 17 / 20 (RES3).
+const RES3_FORGE_TAB_MAP = {upgrade:11, facility:13, fuse:14, raid:15, smith:18, refine:24, castles:28, enchant:34};
 const RES3_FORGE_TAB_TEASED = new Set(['castles']);
 function res3ForgeTabOpen(k){
   if((typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled)) return true;
@@ -51271,6 +51292,7 @@ async function forgeTemper(btn){
   if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit, uid);
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
+  try{ bumpQuestCounter('forgeLevels', 1); }catch(e){} // 2026-10-26 (package RES4): a Trail challenge counts copies tempered
   const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the tempering and its LEVEL burst play on
   // the centre stage, then the card flies back to the anvil
@@ -51366,6 +51388,7 @@ function renderHome(){
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
         ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${res4TrailHomeNoteHTML() /* 2026-10-26 (package RES4): the Trail Mix Trek, from the end of the tutorials */}
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
@@ -54575,7 +54598,7 @@ function pl1HeldPackCount(){ try{ return (JSON.parse(localStorage.getItem(HELD_P
 function holdPackForArmoury(ref){ try{ const a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); a.push(ref); localStorage.setItem(HELD_PACKS_KEY, JSON.stringify(a)); }catch(e){} }
 function releaseHeldPacks(){
   let a = []; try{ a = JSON.parse(localStorage.getItem(HELD_PACKS_KEY) || '[]'); localStorage.removeItem(HELD_PACKS_KEY); }catch(e){}
-  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else if(ref.kind === 'end') grantEndPack(ref.id) /* RW5 */; else if(ref.kind === 'res3level') res3GrantLevelReward(ref.id, ref.level) /* RES3 (2026-10-26, B1) */; else grantFreePack(ref.id, 1); }catch(e){} });
+  (a || []).forEach(ref=>{ try{ if(ref.kind === 'faction') grantFactionPack(ref.id === 'mine' ? myFactionPackId() : ref.id, 1); else if(ref.kind === 'end') grantEndPack(ref.id) /* RW5 */; else if(ref.kind === 'res3level') res3GrantLevelReward(ref.id, ref.level) /* RES3 (2026-10-26, B1) */; else if(ref.kind === 'res4trail') res4TrailGrantPack(ref.id) /* RES4 (2026-10-26) */; else grantFreePack(ref.id, 1); }catch(e){} });
   return (a || []).length;
 }
 function grantMapFreePack(mapId, nodeKey, isFirstClear){
@@ -55773,12 +55796,15 @@ function profileCollectionCardHTML(){
 //   card = one card (from Pack 1's pool, one you don't have yet first); faction = a faction pack of your side; pack1 / pack2 = a 3-card
 //   Hedgerow Pouch / Tidemire Chest. Levels 1-5 give single cards and Level 5 the first faction pack; then a faction pack and a Pack 1
 //   alternate; from Level 15, Pack 2 takes Pack 1's place. PROP1-2 (the Moon Trail) may thin the level packs: change the rows here.
+// 2026-10-26 (package RES4, PROP1-2 approved, owner 11:19): the steady packs moved to the Trail Mix Trek (the monthly pass, RES4 block below).
+//   Single cards to Level 5, a pack only every fifth level from 5 (5 and 15 and 25 a faction pack, 10 and 20 a pack of your current pack tier:
+//   packT, res4PackTierId), and 100 Maple Leaves + 50 Dust (leaves) on every other level; past 25 the same five-level rhythm. Was B1's pack a level.
 const RES3_LEVEL_TRACK = [
   {from:1, give:[['card']]},
   {from:5, give:[['card', 'faction']]},
-  {from:6, give:[['pack1'], ['faction']]},
-  {from:15, give:[['pack2'], ['faction']]},
+  {from:6, give:[['leaves'], ['leaves'], ['leaves'], ['leaves'], ['packT'], ['leaves'], ['leaves'], ['leaves'], ['leaves'], ['faction']]},
 ];
+const RES4_LEVEL_LEAVES = {gold:100, dust:50};
 const RES3_LEVEL_TRACK_KEY = 'bramblewood_res3_level_track_v1';
 const RES3_LEVEL_PACK = {pack1:'bronze', pack2:'silver', card:'bronze'};
 function res3LevelRewardsAt(L){
@@ -55788,18 +55814,22 @@ function res3LevelRewardsAt(L){
   if(next && L >= next.from) return [];
   return (row.give[(L - row.from) % row.give.length] || []).slice();
 }
-function res3LevelRewardIcon(k){ return k === 'card' ? '🃏' : k === 'faction' ? ((FACTION_PACKS[myFactionPackIdSafe()] || {}).icon || '🦦') : ((getShopPacks().find(p=> p.id === RES3_LEVEL_PACK[k]) || {}).icon || '📦'); }
+function res3LevelRewardIcon(k){ if(k === 'leaves') return '🍁'; /* RES4 */ return k === 'card' ? '🃏' : k === 'faction' ? ((FACTION_PACKS[myFactionPackIdSafe()] || {}).icon || '🦦') : ((getShopPacks().find(p=> p.id === res4LevelPackId(k)) || {}).icon || '📦'); }
 function res3LevelRewardName(k){ if(k === 'card') return TX('ui.res3-lt-card'); if(k === 'faction') return (FACTION_PACKS[myFactionPackIdSafe()] || {}).name || TX('ui.res3-lt-faction');
-  const p = getShopPacks().find(x=> x.id === RES3_LEVEL_PACK[k]); return p ? p.name : k; }
+  if(k === 'leaves') return TX('ui.res4-lt-leaves', {gold: RES4_LEVEL_LEAVES.gold, dust: RES4_LEVEL_LEAVES.dust}); // RES4 (2026-10-26)
+  const p = getShopPacks().find(x=> x.id === res4LevelPackId(k)); return p ? p.name : k; }
+// RES4 (2026-10-26): packT is the pack of your current pack tier (the furthest map's series, as the map-end packs: res4PackTierId)
+function res4LevelPackId(k){ return k === 'packT' ? res4PackTierId() : RES3_LEVEL_PACK[k]; }
 function myFactionPackIdSafe(){ try{ const f = loadFactionChoice(); return f === 'hummingbirds' ? 'hummingbird' : 'otter'; }catch(e){ return 'otter'; } }
 function res3LevelTrackState(){ try{ const v = JSON.parse(localStorage.getItem(RES3_LEVEL_TRACK_KEY) || 'null'); return v && typeof v.granted === 'number' ? v : null; }catch(e){ return null; } }
 function res3SaveLevelTrack(v){ try{ localStorage.setItem(RES3_LEVEL_TRACK_KEY, JSON.stringify(v)); }catch(e){} }
 // One reward: before the Armoury opens it waits with the other held packs (releaseHeldPacks); a card or a basic pack is a reward pack of
 // that pack's pool (new cards first), a faction pack is your side's.
 function res3GrantLevelReward(k, L){
+  if(k === 'leaves'){ Object.entries(RES4_LEVEL_LEAVES).forEach(([c, v])=> grantCurrency(c, v)); try{ showToast('⭐ ' + TX('ui.res4-lt-leaves-toast', {n: L, gold: RES4_LEVEL_LEAVES.gold, dust: RES4_LEVEL_LEAVES.dust}), 'ok'); }catch(e){} return; } // RES4 (2026-10-26): no pack to hold
   if(!armouryOpen()){ holdPackForArmoury({kind:'res3level', id:k, level:L}); return; }
   if(k === 'faction'){ grantFactionPack(myFactionPackId(), 1); return; }
-  const base = getShopPacks().find(p=> p.id === RES3_LEVEL_PACK[k]); if(!base) return;
+  const base = getShopPacks().find(p=> p.id === res4LevelPackId(k)); if(!base) return; // RES4: packT resolves when it is paid
   const pack = Object.assign({}, base, {cards: k === 'card' ? 1 : 3, metal:0, kroon:0, endReward:true, name: TX('ui.res3-lt-pack-name', {n: L, name: k === 'card' ? TX('ui.res3-lt-card') : base.name})});
   const o = purchasePackOnce(pack, true, {newFirst: true, gated: true}); if(!o) return;
   saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
@@ -55827,6 +55857,260 @@ function res3LevelTrackHTML(){
     <ol class="res3-lt-next">${steps.map((s, i)=> `<li class="res3-lt-step${i === 0 ? ' is-next' : ''}" tabindex="0" data-tip="${escapeAttr(s.g.length ? s.g.map(res3LevelRewardName).join(' + ') : TX('ui.res3-lt-none'))}"><span class="res3-lt-n">${escapeHtml(TX('ui.res3-lt-level', {n: s.n}))}</span><span class="res3-lt-gift" aria-hidden="true">${s.g.length ? s.g.map(res3LevelRewardIcon).join('') : '·'}</span><span class="sr-only">${escapeHtml(s.g.map(res3LevelRewardName).join(', '))}</span></li>`).join('')}</ol>
   </section>`;
 }
+// ==== Package RES4 (2026-10-26), PROP1-2 approved: the Trail Mix Trek, a monthly pass (docs/proposals-2026-10-26.md section 2, built as proposed).
+// Owner 11:19 on the name: "Moon Trail (?) hmm i want something more trail mix-y and camper vanny": the pass is the Trail Mix Trek, a camper van
+// driving a 30-tier road each month, and its points are Stickers 🏷️ (one slapped on the van at every stop). Decision RES4-1 has the other two names.
+//   Gameplay locked, not level locked: open to everyone once the tutorials are done (tutorialGateBlocks), on Home and in the map's corner cluster.
+//   Stickers come from: a daily notice claimed (D-B 10, A 20, S 40, SS 60, SSS 100); the day's notice tiers (3 / 5 / 6 notices claimed that day:
+//   20 / 10 / 10; the old daily quest tiers, QUEST_TIERS.daily, are no longer posted since the notices replaced them, so the day's tiers count
+//   notices; decision RES4-4); the first win of the day (10, any mode bumpQuestCounter('wins') counts); weekly tiers 1-3 finished (100 / 60 / 40);
+//   three Trail challenges a week (50 each, seeded by the week, features you have not opened left out, kept for the week once drawn).
+//   30 tiers at 150 Stickers each; past tier 30 a Trail Chest (a 3-card pack of your tier) every 600 more, 3 a month at most. The road resets on
+//   the 1st at local midnight: tiers reached and not claimed are paid then, and Stickers don't carry over. The premium lane is a locked
+//   placeholder: no payments and no prices (S3 stays parked). The free lane is the proposal's table (TRAIL_FREE).
+// Counters: the existing quest counters plus four new ones, each one bumpQuestCounter call at its source: challengeClears (a challenge skirmish
+// won), bossWins (an elite or boss won), forgeLevels (a copy tempered in the Forge), decksWon (a win with a deck not yet winning this week).
+const RES4_TRAIL_KEY = 'bramblewood_res4_trail_v1';
+const TRAIL_TIER_COST = 150, TRAIL_TIERS = 30, TRAIL_CHEST_EVERY = 600, TRAIL_CHEST_MAX = 3, TRAIL_CH_POINTS = 50, TRAIL_CH_PER_WEEK = 3, TRAIL_FIRST_WIN = 10;
+const TRAIL_NOTICE_PTS = {D:10, C:10, B:10, A:20, S:40, SS:60, SSS:100};
+const TRAIL_DAY_TIERS = [{notices:3, pts:20}, {notices:5, pts:10}, {notices:6, pts:10}];
+const TRAIL_WEEK_TIER_PTS = [100, 60, 40];
+const TRAIL_KIT_FALLBACK_GOLD = 40; // a field-kit item before the traveller's kit opens (Map 12) comes as 40 Maple Leaves
+const TRAIL_CHALLENGES = [
+  {id:'units', counter:'unitsDefeated', goal:150, icon:'⚔️', label:'ui.i2-q-units-n'},
+  {id:'clears', counter:'conquestWins', goal:12, icon:'🗺️', label:'ui.i2-q-conquest-n'},
+  {id:'energy', counter:'energyConquest', goal:250, icon:'⚡', label:'ui.i2-q-energy-n'},
+  {id:'wins', counter:'wins', goal:15, icon:'🏆', label:'ui.i2-q-wins-n'},
+  {id:'raids', counter:'raidsJoined', goal:3, icon:'🐲', label:'ui.i2-q-raids-n', needs:'raid'},
+  {id:'pvp', counter:'pvpWins', goal:8, icon:'🎟️', label:'ui.i2-q-pvp-n', needs:'arena'},
+  {id:'challenge', counter:'challengeClears', goal:2, icon:'🔥', label:'ui.res4-ch-challenge'},
+  {id:'boss', counter:'bossWins', goal:1, icon:'👑', label:'ui.res4-ch-boss'},
+  {id:'forge', counter:'forgeLevels', goal:3, icon:'🔨', label:'ui.res4-ch-forge', needs:'forge'},
+  {id:'decks', counter:'decksWon', goal:3, icon:'🃏', label:'ui.res4-ch-decks'},
+];
+// The free lane, one entry a tier (tier 1 first). pack: a 3-card pack of your current pack tier; faction: your side's faction pack; chest: a
+// Tidemire Chest of 5 cards; kit: field-kit items; capsule: an Energy capsule; ticket: a Raid Ticket; title: the month's title.
+const TRAIL_FREE = [
+  {gold:80}, {dust:100}, {kit:2}, {gold:60}, {pack:1}, {dust:120}, {kibble:20}, {gold:100}, {capsule:1}, {faction:1},
+  {dust:120}, {metal:2}, {gold:100}, {kit:1}, {pack:1}, {dust:150}, {kibble:20}, {gold:120}, {ticket:1}, {faction:1},
+  {dust:150}, {gold:120}, {kit:1}, {metal:2}, {pack:1}, {dust:150}, {gold:150}, {capsule:1}, {dust:110, gold:150}, {chest:1, title:1},
+];
+// The premium lane's shape only (icons, locked, "Coming later"): Gold Leaves, cosmetics and packs as in the proposal. Nothing in it can be had.
+const TRAIL_PREMIUM = ['🍂', '🎴', '📦', '🍂', '✨', '📦', '🍂', '😄', '📦', '🐚', '🍂', '📦', '🖼️', '🍂', '📦', '🎫', '🍂', '📦', '👤', '🐚',
+  '🍂', '📦', '✨', '🍂', '📦', '🏔️', '🍂', '📦', '🍂', '🎴'];
+function res4MonthKey(d){ d = d || new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+function res4MonthName(key){ try{ const [y, m] = String(key).split('-').map(Number); return new Date(y, m - 1, 1).toLocaleString(undefined, {month:'long'}); }catch(e){ return key; } }
+function res4TrailDaysLeft(now){ now = now || new Date(); const next = new Date(now.getFullYear(), now.getMonth() + 1, 1); return Math.max(1, Math.ceil((next - now) / 86400000)); }
+function res4PackTierId(){ let reach = 0; try{ reach = playerMapReach(); }catch(e){} return mapEndPackId(Math.max(0, Math.min(reach, 999))); }
+function res4TrailFresh(month, old){ return {v:1, month, pts:0, claimed:[], chests:0, day:'', dayTiers:[], winDay:'', week:'', weekTiers:[], ch:[], chPaid:[], decks:[], log:[], seen:0, titles:(old && old.titles) || []}; }
+function res4TrailRead(){ try{ const v = JSON.parse(localStorage.getItem(RES4_TRAIL_KEY) || 'null'); return v && v.v === 1 ? v : null; }catch(e){ return null; } }
+function res4TrailSave(st){ try{ localStorage.setItem(RES4_TRAIL_KEY, JSON.stringify(st)); }catch(e){} }
+function res4TrailTier(pts){ return Math.max(0, Math.min(TRAIL_TIERS, Math.floor((pts || 0) / TRAIL_TIER_COST))); }
+function res4TrailChestsReached(pts){ const over = (pts || 0) - TRAIL_TIERS * TRAIL_TIER_COST; return over > 0 ? Math.min(TRAIL_CHEST_MAX, Math.floor(over / TRAIL_CHEST_EVERY)) : 0; }
+// The state for this month (and this day and week). A new month pays the old one's reached tiers first, then starts the road again.
+function res4TrailState(){
+  const month = res4MonthKey(); let st = res4TrailRead();
+  if(!st){ st = res4TrailFresh(month); res4TrailSave(st); }
+  if(st.month !== month){ const old = st; st = res4TrailFresh(month, old); res4TrailSave(st); res4TrailPayLeftovers(old, st); st = res4TrailRead() || st; }
+  const day = localDayKey(), week = weekKey(); let dirty = false;
+  if(st.day !== day){ st.day = day; st.dayTiers = []; dirty = true; }
+  if(st.week !== week){ st.week = week; st.weekTiers = []; st.ch = []; st.chPaid = []; st.decks = []; dirty = true; }
+  if(!st.ch.length){ st.ch = res4TrailDrawChallenges(week); if(st.ch.length) dirty = true; }
+  if(dirty) res4TrailSave(st);
+  return st;
+}
+function res4TrailDrawChallenges(week){
+  const pool = TRAIL_CHALLENGES.filter(c=> !c.needs || featureUnlockedSafe(c.needs)), r = seededRng(hashStr('trail:' + week)), out = [];
+  const left = pool.slice(); while(out.length < TRAIL_CH_PER_WEEK && left.length) out.push(left.splice(Math.floor(r() * left.length), 1)[0].id);
+  return out;
+}
+// The month's end: every tier reached and not claimed, and the Trail Chests earned, are paid now (nothing is lost for not opening the page).
+function res4TrailPayLeftovers(old, st){
+  try{ const reached = res4TrailTier(old.pts), got = new Set(old.claimed || []); let n = 0;
+    for(let t = 1; t <= reached; t++) if(!got.has(t)){ res4TrailGrantTier(t, st, old.month); n++; }
+    for(let c = old.chests || 0; c < res4TrailChestsReached(old.pts); c++){ res4TrailGrantPack('bonus'); n++; }
+    if(n) setTimeout(()=>{ try{ showToast('🚐 ' + TX('ui.res4-tr-leftovers', {n, month: res4MonthName(old.month)}), 'ok'); }catch(e){} }, 1600);
+  }catch(e){}
+}
+function res4TrailEarn(st, n, why, vars){
+  if(!(n > 0)) return; const before = res4TrailTier(st.pts);
+  st.pts += n; st.log = [{n, why, vars: vars || null, t: Date.now()}].concat(st.log || []).slice(0, 8); res4TrailSave(st);
+  const after = res4TrailTier(st.pts);
+  if(after > before) setTimeout(()=>{ try{ showToast('🚐 ' + TX('ui.res4-tr-reached', {n: after}), 'ok'); }catch(e){} }, 900);
+  try{ res4TrailRefreshBadges(); }catch(e){}
+}
+// Hooks (called from claimQuest and bumpQuestCounter; each in a try so a trail error never stops a quest).
+function res4TrailOnNotice(rank, claimedToday){
+  const st = res4TrailState(); res4TrailEarn(st, TRAIL_NOTICE_PTS[rank] || TRAIL_NOTICE_PTS.C, 'ui.res4-why-notice', {rank});
+  TRAIL_DAY_TIERS.forEach((t, i)=>{ if(claimedToday >= t.notices && !st.dayTiers.includes(i)){ st.dayTiers.push(i); res4TrailEarn(st, t.pts, 'ui.res4-why-day', {n: i + 1}); } });
+}
+function res4TrailOnWeeklyTier(idx){
+  const st = res4TrailState(); if(st.weekTiers.includes(idx)) return; st.weekTiers.push(idx); res4TrailEarn(st, TRAIL_WEEK_TIER_PTS[idx] || 0, 'ui.res4-why-week', {n: idx + 1});
+}
+function res4TrailOnCounter(counter, q){
+  const st = res4TrailState();
+  if(counter === 'wins' && st.winDay !== st.day){ st.winDay = st.day; res4TrailEarn(st, TRAIL_FIRST_WIN, 'ui.res4-why-win'); }
+  res4TrailPayChallenges(st, q);
+}
+function res4TrailChallengeProgress(c, q){ q = q || loadQuestState(); return Math.min(c.goal, (q.weekly || {})[c.counter] || 0); }
+function res4TrailPayChallenges(st, q){
+  q = q || loadQuestState();
+  (st.ch || []).forEach(id=>{ const c = TRAIL_CHALLENGES.find(x=> x.id === id); if(!c || st.chPaid.includes(id) || res4TrailChallengeProgress(c, q) < c.goal) return;
+    st.chPaid.push(id); res4TrailEarn(st, TRAIL_CH_POINTS, 'ui.res4-why-ch', {name: res4TrailChallengeLabel(c)}); });
+}
+function res4TrailChallengeLabel(c){ return TX(c.label, {n: c.goal}); }
+// decksWon counts the different decks that won this week: the first win with each deck bumps it once.
+function res4TrailNoteDeckWin(deckId){
+  if(!deckId) return; const st = res4TrailState(); if(st.decks.includes(deckId)) return;
+  st.decks.push(deckId); res4TrailSave(st); bumpQuestCounter('decksWon', 1);
+}
+// ---- Rewards ----
+function res4TrailRewardParts(r){
+  const out = [], cur = k=> (CURRENCY_META[k] || {});
+  ['gold', 'dust', 'kibble', 'metal'].forEach(k=>{ if(r[k]) out.push({k, icon: k === 'gold' ? '🍁' : cur(k).glyph || '', n: r[k], name: r[k] + ' ' + (window.i18 ? i18(cur(k).label || k) : (cur(k).label || k))}); });
+  if(r.kit) out.push({k:'kit', icon:'🧰', n: r.kit, name: TX('ui.res4-rw-kit', {n: r.kit})});
+  if(r.capsule) out.push({k:'capsule', icon:'🔋', n: 0, name: TX('ui.res4-rw-capsule', {n: ENERGY_CAPSULE_AMOUNT})});
+  if(r.ticket) out.push({k:'ticket', icon:'🎫', n: 0, name: TX('ui.res4-rw-ticket')});
+  if(r.pack){ const p = getShopPacks().find(x=> x.id === res4PackTierId()) || {}; out.push({k:'pack', icon: p.icon || '📦', n: 0, name: TX('ui.res4-rw-pack', {name: p.name || ''})}); }
+  if(r.faction){ const f = FACTION_PACKS[myFactionPackIdSafe()] || {}; out.push({k:'faction', icon: f.icon || '🦦', n: 0, name: f.name || TX('ui.res3-lt-faction')}); }
+  if(r.chest){ const p = getShopPacks().find(x=> x.id === 'silver') || {}; out.push({k:'chest', icon: p.icon || '🐚', n: 0, name: TX('ui.res4-rw-chest', {name: p.name || ''})}); }
+  if(r.title) out.push({k:'title', icon:'🏷️', n: 0, name: TX('ui.res4-rw-title')});
+  return out;
+}
+// One tier's free-lane reward. Returns the currencies paid (for the claim's reward rush).
+function res4TrailGrantTier(t, st, month){
+  const r = TRAIL_FREE[t - 1] || {}, cur = {};
+  ['gold', 'dust', 'kibble', 'metal'].forEach(k=>{ if(r[k]){ grantCurrency(k, r[k]); cur[k] = (cur[k] || 0) + r[k]; } });
+  if(r.kit){ const got = featureUnlockedSafe('fieldkit') ? grantKitItems(r.kit) : []; const miss = r.kit - got.length; if(miss > 0){ grantCurrency('gold', miss * TRAIL_KIT_FALLBACK_GOLD); cur.gold = (cur.gold || 0) + miss * TRAIL_KIT_FALLBACK_GOLD; } }
+  if(r.capsule){ addEnergyCapsules(r.capsule); setTimeout(()=>{ try{ showToast(TX('toast.you-found-an-energy-capsule-tap', {ENERGY_CAPSULE_AMOUNT}), 'ok'); }catch(e){} }, 1200); }
+  if(r.ticket) grantRaidTicketItems(r.ticket);
+  if(r.pack) res4TrailGrantPack('tier');
+  if(r.faction) res4TrailGrantPack('faction');
+  if(r.chest) res4TrailGrantPack('chest');
+  if(r.title && st){ const label = TX('ui.res4-title', {month: res4MonthName(month || st.month)}); st.titles = (st.titles || []).filter(x=> x !== label).concat([label]); res4TrailSave(st); }
+  return cur;
+}
+// A pack from the trail: before the Armoury opens it waits with the other held packs (releaseHeldPacks). tier / bonus: a 3-card pack of your
+// current pack tier (bonus is the Trail Chest past tier 30); chest: a Tidemire Chest of 5; faction: your side's faction pack.
+function res4TrailGrantPack(kind){
+  if(!armouryOpen()){ holdPackForArmoury({kind:'res4trail', id: kind}); return; }
+  if(kind === 'faction'){ grantFactionPack(myFactionPackId(), 1); return; }
+  const base = getShopPacks().find(p=> p.id === (kind === 'chest' ? 'silver' : res4PackTierId())); if(!base) return;
+  const name = kind === 'bonus' ? TX('ui.res4-trail-chest') : TX('ui.res4-tr-pack-name', {name: base.name});
+  const pack = Object.assign({}, base, {cards: kind === 'chest' ? 5 : 3, metal:0, kroon:0, endReward:true, name});
+  const o = purchasePackOnce(pack, true, {newFirst: true, gated: true}); if(!o) return;
+  saveCurrencies(); if(o.leveledId) saveCardLevels(); try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
+  queuePackReveal(pack, o);
+}
+function res4TrailClaimable(st){ st = st || res4TrailState(); const reached = res4TrailTier(st.pts); let n = 0; for(let t = 1; t <= reached; t++) if(!st.claimed.includes(t)) n++; return n + Math.max(0, res4TrailChestsReached(st.pts) - (st.chests || 0)); }
+function res4TrailClaim(t){
+  const st = res4TrailState(); if(t > res4TrailTier(st.pts) || st.claimed.includes(t)) return null;
+  st.claimed.push(t); res4TrailSave(st); const cur = res4TrailGrantTier(t, st); try{ res4TrailRefreshBadges(); }catch(e){} return cur;
+}
+function res4TrailClaimChest(){
+  const st = res4TrailState(); if((st.chests || 0) >= res4TrailChestsReached(st.pts)) return false;
+  st.chests = (st.chests || 0) + 1; res4TrailSave(st); res4TrailGrantPack('bonus'); try{ res4TrailRefreshBadges(); }catch(e){} return true;
+}
+function res4TrailClaimAll(){
+  const st = res4TrailState(), out = {}; for(let t = 1; t <= res4TrailTier(st.pts); t++){ if(st.claimed.includes(t)) continue; const c = res4TrailClaim(t) || {}; Object.entries(c).forEach(([k, v])=> out[k] = (out[k] || 0) + v); }
+  while(res4TrailClaimChest()){} return out;
+}
+function res4TrailOpen(){ try{ return loadTutorialDone() || adminModeEnabled || devModeEnabled; }catch(e){ return false; } }
+function res4TrailRefreshBadges(){
+  const n = res4TrailOpen() ? res4TrailClaimable() : 0;
+  document.querySelectorAll('[data-trail-badge]').forEach(el=>{ el.querySelectorAll('.home-badge').forEach(b=> b.remove()); if(n > 0){ const s = document.createElement('span'); s.className = 'home-badge'; s.textContent = n; el.appendChild(s); } });
+}
+// ---- The page ----
+const RES4_VAN_SVG = `<svg class="tr-van-svg" viewBox="0 0 76 46" aria-hidden="true" focusable="false"><path class="tv-bag" d="M27 7c1-4 4-6 7-5 3-1 6 1 7 5z"/><rect class="tv-rack" x="17" y="6" width="36" height="3" rx="1.5"/><rect class="tv-low" x="4" y="9" width="66" height="27" rx="10"/><path class="tv-top" d="M4 23v-4c0-6 4-10 10-10h46c6 0 10 4 10 10v4z"/><rect class="tv-win" x="10" y="13" width="12" height="8" rx="2"/><rect class="tv-win" x="25" y="13" width="12" height="8" rx="2"/><rect class="tv-win" x="40" y="13" width="12" height="8" rx="2"/><path class="tv-win" d="M56 13h5c3 0 6 2 6 6v2H56z"/><rect class="tv-stripe" x="4" y="24" width="66" height="2.6"/><rect class="tv-door" x="40" y="26.6" width="12" height="8" rx="1.5"/><circle class="tv-light" cx="67.5" cy="29" r="1.7"/><g class="tv-wheel"><circle class="tv-tyre" cx="19" cy="37" r="6.5"/><circle class="tv-hub" cx="19" cy="37" r="2.6"/><rect class="tv-spoke" x="18.4" y="31.5" width="1.2" height="11"/></g><g class="tv-wheel"><circle class="tv-tyre" cx="55" cy="37" r="6.5"/><circle class="tv-hub" cx="55" cy="37" r="2.6"/><rect class="tv-spoke" x="54.4" y="31.5" width="1.2" height="11"/></g></svg>`;
+let res4TrailPick = null; // the tier whose card shows under the road (a tap on a stop)
+function res4TrailStopHTML(t, st, reached){
+  const parts = res4TrailRewardParts(TRAIL_FREE[t - 1] || {}), got = st.claimed.includes(t), ready = t <= reached && !got;
+  const label = parts.map(p=> p.name).join(' + '), state = got ? 'is-got' : ready ? 'is-ready' : t <= reached + 1 ? 'is-next' : 'is-ahead';
+  const big = [5, 10, 15, 20, 25, 30].includes(t);
+  return `<button type="button" class="tr-stop ${state}${big ? ' is-big' : ''}${res4TrailPick === t ? ' is-picked' : ''}" data-tr-tier="${t}" style="grid-column:${t + 1}" title="${escapeAttr(TX('ui.res4-tr-tier', {n: t}) + ': ' + label)}" aria-label="${escapeAttr(TX('ui.res4-tr-tier', {n: t}) + ': ' + label + (got ? ' · ' + TX('ui.res4-tr-got') : ready ? ' · ' + TX('ui.res4-tr-claim') : ''))}">
+    <span class="tr-stop-ico" aria-hidden="true">${parts.map(p=> `<i>${p.icon}</i>`).join('')}</span>${parts[0] && parts[0].n ? `<b class="tr-stop-n" aria-hidden="true">${parts[0].n}</b>` : ''}${got ? '<span class="tr-tick" aria-hidden="true">✓</span>' : ''}</button>`;
+}
+function res4TrailPickHTML(st, reached){
+  const t = res4TrailPick; if(!t) return `<p class="tr-pick-hint">${escapeHtml(TX('ui.res4-tr-pick-hint'))}</p>`;
+  const parts = res4TrailRewardParts(TRAIL_FREE[t - 1] || {}), got = st.claimed.includes(t), ready = t <= reached && !got, need = t * TRAIL_TIER_COST - st.pts;
+  return `<div class="tr-pick"><b>${escapeHtml(TX('ui.res4-tr-tier', {n: t}))}</b><span class="tr-pick-rw">${parts.map(p=> `<span><i aria-hidden="true">${p.icon}</i> ${escapeHtml(p.name)}</span>`).join('')}</span>
+    ${got ? `<span class="tr-pick-state">✓ ${escapeHtml(TX('ui.res4-tr-got'))}</span>` : ready ? `<button type="button" class="btn primary small" data-tr-claim="${t}">🎁 ${escapeHtml(TX('ui.res4-tr-claim'))}</button>` : `<span class="tr-pick-state">🏷️ ${escapeHtml(TX('ui.res4-tr-need', {n: need}))}</span>`}
+    <span class="tr-pick-prem">🔒 ${TRAIL_PREMIUM[t - 1] || ''} ${escapeHtml(TX('ui.res4-tr-premium'))}</span></div>`;
+}
+function renderTrailPage(){
+  const root = document.getElementById('view-trail'); if(!root) return;
+  const st = res4TrailState(), q = loadQuestState(); res4TrailPayChallenges(st, q);
+  const reached = res4TrailTier(st.pts), claimable = res4TrailClaimable(st), days = res4TrailDaysLeft();
+  const into = reached >= TRAIL_TIERS ? TRAIL_TIER_COST : st.pts - reached * TRAIL_TIER_COST, chests = res4TrailChestsReached(st.pts);
+  const now = new Date(), weekMs = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay() + 6) % 7))) - now;
+  const wd = Math.floor(weekMs / 86400000), wh = Math.floor((weekMs % 86400000) / 3600000);
+  const milestones = Array.from({length: TRAIL_TIERS}, (_, i)=> `<span class="tr-mile${i + 1 <= reached ? ' is-on' : ''}" style="grid-column:${i + 2}" aria-hidden="true">${i + 1}</span>`).join('');
+  const prem = TRAIL_PREMIUM.map((ic, i)=> `<span class="tr-prem-cell" style="grid-column:${i + 2}" aria-hidden="true"><i>${ic}</i></span>`).join('');
+  const ch = (st.ch || []).map(id=> TRAIL_CHALLENGES.find(c=> c.id === id)).filter(Boolean).map(c=>{ const v = res4TrailChallengeProgress(c, q), done = st.chPaid.includes(c.id);
+    return `<li class="tr-ch${done ? ' is-done' : ''}"><span class="tr-ch-ico" aria-hidden="true">${c.icon}</span><span class="tr-ch-main"><span class="tr-ch-label">${escapeHtml(res4TrailChallengeLabel(c))}</span><span class="tr-bar"><span style="width:${Math.round(v / c.goal * 100)}%"></span></span></span><b class="tr-ch-v">${done ? '✓' : `${v}/${c.goal}`}</b><span class="tr-ch-pts">+${TRAIL_CH_POINTS} 🏷️</span></li>`; }).join('');
+  const claimedToday = (q.claimedDaily || []).length;
+  const ways = [
+    {ico:'📜', k: TX('ui.res4-way-notice'), v: 'D–B 10 · A 20 · S 40 · SS 60 · SSS 100'},
+    {ico:'📌', k: TX('ui.res4-way-day'), v: TRAIL_DAY_TIERS.map((t, i)=> `${st.dayTiers.includes(i) ? '✓ ' : ''}${t.notices}: +${t.pts}`).join(' · '), sub: TX('ui.res4-way-day-sub', {n: claimedToday})},
+    {ico:'🏆', k: TX('ui.res4-way-win'), v: (st.winDay === st.day ? '✓ ' : '') + '+' + TRAIL_FIRST_WIN},
+    {ico:'🗓️', k: TX('ui.res4-way-week'), v: TRAIL_WEEK_TIER_PTS.map((p, i)=> `${st.weekTiers.includes(i) ? '✓ ' : ''}${i + 1}: +${p}`).join(' · ')},
+  ];
+  const log = (st.log || []).slice(0, 5).map(x=> `<li><b>+${x.n}</b> ${escapeHtml(TX(x.why, x.vars || {}))}</li>`).join('');
+  const fromPts = Math.min(st.seen || 0, st.pts), vanAt = p=> Math.min(TRAIL_TIERS + 0.35, p / TRAIL_TIER_COST);
+  root.innerHTML = `<section class="tr-page">
+    <header class="tr-head">
+      <div class="tr-title"><span class="tr-badge" aria-hidden="true">🚐</span><div><h2>${escapeHtml(TX('ui.res4-trail-name'))}</h2><small>${escapeHtml(TX('ui.res4-tr-sub', {month: res4MonthName(st.month)}))}</small></div></div>
+      <div class="tr-facts">
+        <span class="tr-fact"><i aria-hidden="true">🏷️</i><b>${st.pts.toLocaleString()}</b><small>${escapeHtml(TX('ui.res4-stickers'))}</small></span>
+        <span class="tr-fact"><i aria-hidden="true">🛣️</i><b>${reached}/${TRAIL_TIERS}</b><small>${escapeHtml(reached >= TRAIL_TIERS ? TX('ui.res4-tr-done') : TX('ui.res4-tr-next', {n: TRAIL_TIER_COST - into}))}</small></span>
+        <span class="tr-fact"><i aria-hidden="true">⏳</i><b>${days}</b><small>${escapeHtml(TX(days === 1 ? 'ui.res4-day-left' : 'ui.res4-days-left'))}</small></span>
+      </div>
+      ${claimable ? `<button type="button" class="btn primary tr-claim-all" id="trClaimAll">🎁 ${escapeHtml(TX('ui.res4-tr-claim-n', {n: claimable}))}</button>` : ''}
+    </header>
+    <div class="tr-road-wrap" id="trRoadWrap" role="group" aria-label="${escapeAttr(TX('ui.res4-tr-road-aria', {n: reached, total: TRAIL_TIERS}))}">
+      <div class="tr-road" style="--tiers:${TRAIL_TIERS}">
+        <span class="tr-lane-k tr-k-free">${escapeHtml(TX('ui.res4-tr-free'))}</span>
+        ${Array.from({length: TRAIL_TIERS}, (_, i)=> res4TrailStopHTML(i + 1, st, reached)).join('')}
+        <div class="tr-asphalt"><span class="tr-camp" aria-hidden="true">⛺</span><i class="tr-dash" aria-hidden="true"></i><span class="tr-flag" aria-hidden="true">🏁</span>
+          <div class="tr-van" id="trVan" style="--at:${vanAt(fromPts)}" data-to="${vanAt(st.pts)}">${RES4_VAN_SVG}</div></div>
+        ${milestones}
+        <span class="tr-lane-k tr-k-prem">🔒 ${escapeHtml(TX('ui.res4-tr-premium'))}</span>
+        ${prem}
+      </div>
+    </div>
+    <div class="tr-pick-row" id="trPick">${res4TrailPickHTML(st, reached)}</div>
+    ${reached >= TRAIL_TIERS ? `<div class="tr-bonus"><span aria-hidden="true">🎒</span><span>${escapeHtml(TX('ui.res4-tr-bonus', {n: TRAIL_CHEST_EVERY, max: TRAIL_CHEST_MAX, got: chests}))}</span>${chests > (st.chests || 0) ? `<button type="button" class="btn primary small" id="trChest">🎁 ${escapeHtml(TX('ui.res4-trail-chest'))}</button>` : ''}</div>` : ''}
+    <div class="tr-cols">
+      <section class="tr-card tr-week"><h3>${escapeHtml(TX('ui.res4-tr-week'))} <small>${escapeHtml(TX('ui.res4-tr-week-reset', {d: wd, h: wh}))}</small></h3><ul class="tr-ch-list">${ch}</ul></section>
+      <section class="tr-card tr-ways"><h3>${escapeHtml(TX('ui.res4-tr-ways'))}</h3><ul>${ways.map(w=> `<li><span aria-hidden="true">${w.ico}</span><span class="tr-way-k">${escapeHtml(w.k)}${w.sub ? `<small>${escapeHtml(w.sub)}</small>` : ''}</span><b>${escapeHtml(w.v)}</b></li>`).join('')}</ul>
+        ${log ? `<h4>${escapeHtml(TX('ui.res4-tr-recent'))}</h4><ul class="tr-log">${log}</ul>` : ''}
+        ${(st.titles || []).length ? `<p class="tr-titles">${st.titles.map(x=> `<span>🏷️ ${escapeHtml(x)}</span>`).join('')}</p>` : ''}</section>
+    </div>
+  </section>`;
+  // The van drives from where you last saw it to where it is now (once per visit; reduced motion jumps there).
+  const van = document.getElementById('trVan'), wrap = document.getElementById('trRoadWrap');
+  const centre = at=>{ if(!wrap) return; const a = wrap.querySelector('.tr-stop[data-tr-tier="1"]'), b = wrap.querySelector('.tr-stop[data-tr-tier="2"]'); if(!a || !b) return;
+    const step = b.offsetLeft - a.offsetLeft, x = a.offsetLeft + a.offsetWidth / 2 + (at - 1) * step; wrap.scrollLeft = Math.max(0, x - wrap.clientWidth / 2); };
+  if(van){ const to = +van.dataset.to, from = vanAt(fromPts); centre(from);
+    if(to !== from && !reducedMotion()){ requestAnimationFrame(()=> requestAnimationFrame(()=>{ van.classList.add('is-driving'); van.style.setProperty('--at', to); centre(to); setTimeout(()=> van.classList.remove('is-driving'), 1700); })); }
+    else { van.style.setProperty('--at', to); centre(to); } }
+  if(st.seen !== st.pts){ st.seen = st.pts; res4TrailSave(st); }
+  root.querySelectorAll('[data-tr-tier]').forEach(b=> b.onclick = ()=>{ const t = +b.dataset.trTier; const got = st.claimed.includes(t);
+    if(t <= reached && !got){ const r = b.getBoundingClientRect(), cur = res4TrailClaim(t); res4TrailPick = t; renderTrailPage(); if(cur) try{ rewardRush(r, cur); }catch(e){} return; }
+    res4TrailPick = res4TrailPick === t ? null : t; root.querySelectorAll('.tr-stop.is-picked').forEach(x=> x.classList.remove('is-picked')); if(res4TrailPick) b.classList.add('is-picked');
+    document.getElementById('trPick').innerHTML = res4TrailPickHTML(st, reached); wirePick(); });
+  const wirePick = ()=> root.querySelectorAll('[data-tr-claim]').forEach(b=> b.onclick = ()=>{ const r = b.getBoundingClientRect(), cur = res4TrailClaim(+b.dataset.trClaim); renderTrailPage(); if(cur) try{ rewardRush(r, cur); }catch(e){} });
+  wirePick();
+  const all = document.getElementById('trClaimAll'); if(all) all.onclick = ()=>{ const r = all.getBoundingClientRect(), cur = res4TrailClaimAll(); renderTrailPage(); try{ rewardRush(r, cur); }catch(e){} };
+  const chest = document.getElementById('trChest'); if(chest) chest.onclick = ()=>{ if(res4TrailClaimChest()) renderTrailPage(); else denyShake(chest); };
+}
+function res4TrailHomeNoteHTML(){
+  if(!res4TrailOpen()) return '';
+  let st = null; try{ st = res4TrailState(); }catch(e){ return ''; }
+  const n = res4TrailClaimable(st), t = res4TrailTier(st.pts);
+  return `<button type="button" class="home-note note-trail" data-hometab="trail" data-trail-badge title="${escapeAttr(TX('ui.res4-trail-name'))}"><i class="pin" aria-hidden="true">📌</i><b>🚐 ${escapeHtml(TX('ui.res4-trail-name'))}</b><small>${escapeHtml(TX(res4TrailDaysLeft() === 1 ? 'ui.res4-home-sub-1' : 'ui.res4-home-sub', {n: t, d: res4TrailDaysLeft()}))}</small>${n ? `<span class="home-badge">${n}</span>` : ''}</button>`;
+}
+setTimeout(()=>{ try{ if(res4TrailOpen()) res4TrailState(); }catch(e){} }, 1500); // a new month's leftovers are paid soon after start-up
 function profileHeroHTML(){
   const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
   const name = myProfile ? myProfile.name : 'Guest';
@@ -56770,6 +57054,7 @@ function switchTab(tab){
   { const va = document.getElementById('view-achievements'); if(va) va.hidden = tab!=='achievements'; }
   { const vp = document.getElementById('view-paths'); if(vp) vp.hidden = tab!=='paths'; }
   { const vi = document.getElementById('view-inventory'); if(vi) vi.hidden = tab!=='inventory'; }
+  { const vt = document.getElementById('view-trail'); if(vt) vt.hidden = tab!=='trail'; } // 2026-10-26 (package RES4): the Trail Mix Trek
   { const vs = document.getElementById('view-stomp'); if(vs) vs.hidden = tab!=='stomp'; }
   document.getElementById('view-guild').hidden = tab!=='guild';
   { const vf = document.getElementById('view-friends'); if(vf) vf.hidden = tab!=='friends'; }
@@ -56796,6 +57081,7 @@ function switchTab(tab){
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
   if(tab==='inventory') safeRender('Inventory', renderInventory);
+  if(tab==='trail') safeRender('Trail', renderTrailPage); // 2026-10-26 (package RES4)
   // 2026-10-17 (user: "Stomping Grounds default: On load, load the main screen, not the last seen card."): coming in from another page
   // always opens the Stomping Grounds at its front (the top of the page, the Hero Hall), with no card close-up left open over it.
   if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
