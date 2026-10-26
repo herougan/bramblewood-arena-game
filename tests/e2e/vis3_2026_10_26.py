@@ -88,6 +88,16 @@ async def run(b, url, w):
       return {{bloomTok: plain.classList.contains('is-token'), undeadTok: und.classList.contains('is-token'), shieldNum: num ? num.textContent : null, color: num ? getComputedStyle(num).color : null,
         chip: !!document.querySelector('.abadge.unit-shield'), shellNum: sn ? sn.textContent : null, bars: [...document.querySelectorAll('.eq2-hpbar')].filter(b=> b.offsetWidth > 0).length}}; }})()""")
     ok(r['bloomTok'] and r['undeadTok'], f"V2. the Bloom copy and the Undead token wear is-token {r['bloomTok']} {r['undeadTok']}")
+    # 2026-10-26 (package FIN1, VIS3-1): a board token wears a pale wash over its art (the .ico ::after), in the light and in the dark theme; a plain card has none.
+    for theme in ('light', 'dark'):
+        wr = await pg.evaluate(f"""(()=>{{ document.documentElement.setAttribute('data-theme', '{theme}'); const card = uid=> document.querySelector('.board-card[data-uid="' + uid + '"]');
+          const wash = el=> {{ const ico = el && el.querySelector('.card-tile > .ico'); if(!ico) return null; const cs = getComputedStyle(ico, '::after'); return {{content: cs.content, bg: cs.backgroundImage, w: cs.width}}; }};
+          return {{bloom: wash(card({u['1:0']})), undead: wash(card({u['1:1']})), plain: wash(card({u['1:-1']}))}}; }})()""")
+        has = lambda x: bool(x) and x['content'] not in ('none', 'normal') and 'gradient' in x['bg']
+        ok(has(wr['bloom']) and has(wr['undead']) and not has(wr['plain']), f"FIN1 VIS3-1. {theme}: Bloom copy and Undead token have the wash, a plain unit does not {wr}")
+        await pg.wait_for_timeout(200)
+        await shot(pg, 'board-token-wash-' + theme, w, '#battlefieldEl', 4)
+    await pg.evaluate("document.documentElement.removeAttribute('data-theme')")
     ok(r['shieldNum'] == '3' and r['color'] and 'rgb(143, 210, 255)' in r['color'] and not r['chip'], f"V3. Shield 3 is a blue number on the card, no 💠 chip {r}")
     ok(r['shellNum'] == '2' and r['bars'] == 0, f"V3. Shell's temporary Health is the blue number too; no Health bar shows {r['shellNum']} {r['bars']}")
     # the live refresh: the shield drops 3 -> 1, then breaks
@@ -175,7 +185,7 @@ async def main(a):
     if a.keep:
         os.makedirs(KEEP, exist_ok=True)
         for f in shots:
-            if any(k in f for k in ('board-trap-token-shield', 'map5-boss-elite', 'vs-boss-5-7', 'block-aura', 'shield-hit-rect')): shutil.copy(f, KEEP)
+            if any(k in f for k in ('board-trap-token-shield', 'board-token-wash', 'map5-boss-elite', 'vs-boss-5-7', 'block-aura', 'shield-hit-rect')): shutil.copy(f, KEEP)
     print('\n'.join(shots)); print(('FAILED: ' + str(len(fails))) if fails else 'all ok')
     sys.exit(1 if fails else 0)
 

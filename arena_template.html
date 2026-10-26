@@ -1117,6 +1117,15 @@
   .spawnbadge{position:absolute; top:-7px; right:-7px; background:var(--surface); border:2px solid var(--ink-muted); color:var(--ink-muted); font-size:8.5px; font-weight:800; border-radius:8px; padding:1px 5px; z-index:3; white-space:nowrap;}
   .board-card.is-token .card-tile{border-style:dashed; border-color:var(--ink-muted);}
   .board-card.is-token .spawnbadge{top:2px; right:2px; padding:1px 3px; font-size:9px;}
+  /* 2026-10-26 (package FIN1, VIS3-1; owner: tokens on the board get a pale wash over the art, no ribbon): every board token (printed tokens,
+     Bloom copies, Undead units back as tokens) keeps its dashed edge and gets a pale, slightly cool veil over its art so it stands apart from
+     a card. The veil is a light film in the light theme and a soft grey-blue film in the dark theme; the stats and icons sit above it. */
+  .board-card.is-token .card-tile > .ico{position:relative;}
+  .board-card.is-token .card-tile > .ico::after{content:''; position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:inherit;
+    background:linear-gradient(180deg, var(--token-wash-a) 0%, var(--token-wash-b) 100%);}
+  :root{--token-wash-a:rgba(240,244,248,.50); --token-wash-b:rgba(222,230,238,.34);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--token-wash-a:rgba(190,204,222,.30); --token-wash-b:rgba(150,166,188,.22);} }
+  :root[data-theme="dark"]{--token-wash-a:rgba(190,204,222,.30); --token-wash-b:rgba(150,166,188,.22);}
   /* Codex tiers / Hall of Fame / placement (2026-10-02) */
   .cx-section-head{grid-column:1/-1; display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:14px; padding:6px 2px 4px; border-bottom:2px solid var(--surface-border); font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--page-ink);}
   .cx-section-head:first-child{margin-top:0;}
