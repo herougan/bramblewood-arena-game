@@ -99,11 +99,12 @@ function floorDef(run, idx){ return dungeonOf(run).floors[idx == null ? run.floo
 // Party size = the seats on the board, CPU allies included (a solo player with a CPU ally fights with two decks, as a duo does): x1.7
 // for 2 seats, x2.8 for 4 (D49's 1-4 player steps).
 function healthScale(run){ return HEALTH_SCALE[Math.max(0, Math.min(3, run.seats.length - 1))]; }
-// The fight-only cards of a floor: the Matriarch (a copy of its base card under her own name, her Health scaled with the party).
+// 2026-10-26 (package FIN1, RES4-3): the boss and floors carry the Tidelock Vault's aqua names (ids unchanged: matriarch, roost, galleries, pools).
+// The fight-only cards of a floor: the Tidewarden (a copy of its base card under her own name, her Health scaled with the party).
 function floorOverlay(run, idx){
   const f = floorDef(run, idx), out = {};
   if(f && f.boss && run.defs[f.boss.base]){ const src = run.defs[f.boss.base], id = f.boss.base + '~gdboss';
-    out[id] = Object.assign({}, src, {id, nameKey: f.boss.nameKey, name: f.boss.name || 'The Hollow Matriarch', attack: (src.attack || 0) + (f.boss.atkAdd || 0),
+    out[id] = Object.assign({}, src, {id, nameKey: f.boss.nameKey, name: f.boss.name || 'The Tidewarden', attack: (src.attack || 0) + (f.boss.atkAdd || 0),
       health: Math.max(1, Math.round((src.health || 1) * (f.boss.hpMult || 2) * healthScale(run))), cost: 0, wait: 0, rarity: 'epic', gdBoss: true}); }
   return out;
 }

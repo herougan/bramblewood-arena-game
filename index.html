@@ -1117,6 +1117,15 @@
   .spawnbadge{position:absolute; top:-7px; right:-7px; background:var(--surface); border:2px solid var(--ink-muted); color:var(--ink-muted); font-size:8.5px; font-weight:800; border-radius:8px; padding:1px 5px; z-index:3; white-space:nowrap;}
   .board-card.is-token .card-tile{border-style:dashed; border-color:var(--ink-muted);}
   .board-card.is-token .spawnbadge{top:2px; right:2px; padding:1px 3px; font-size:9px;}
+  /* 2026-10-26 (package FIN1, VIS3-1; owner: tokens on the board get a pale wash over the art, no ribbon): every board token (printed tokens,
+     Bloom copies, Undead units back as tokens) keeps its dashed edge and gets a pale, slightly cool veil over its art so it stands apart from
+     a card. The veil is a light film in the light theme and a soft grey-blue film in the dark theme; the stats and icons sit above it. */
+  .board-card.is-token .card-tile > .ico{position:relative;}
+  .board-card.is-token .card-tile > .ico::after{content:''; position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:inherit;
+    background:linear-gradient(180deg, var(--token-wash-a) 0%, var(--token-wash-b) 100%);}
+  :root{--token-wash-a:rgba(240,244,248,.50); --token-wash-b:rgba(222,230,238,.34);}
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){--token-wash-a:rgba(190,204,222,.30); --token-wash-b:rgba(150,166,188,.22);} }
+  :root[data-theme="dark"]{--token-wash-a:rgba(190,204,222,.30); --token-wash-b:rgba(150,166,188,.22);}
   /* Codex tiers / Hall of Fame / placement (2026-10-02) */
   .cx-section-head{grid-column:1/-1; display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin-top:14px; padding:6px 2px 4px; border-bottom:2px solid var(--surface-border); font-family:'Baloo 2'; font-weight:800; font-size:15px; color:var(--page-ink);}
   .cx-section-head:first-child{margin-top:0;}
@@ -26585,11 +26594,12 @@ function floorDef(run, idx){ return dungeonOf(run).floors[idx == null ? run.floo
 // Party size = the seats on the board, CPU allies included (a solo player with a CPU ally fights with two decks, as a duo does): x1.7
 // for 2 seats, x2.8 for 4 (D49's 1-4 player steps).
 function healthScale(run){ return HEALTH_SCALE[Math.max(0, Math.min(3, run.seats.length - 1))]; }
-// The fight-only cards of a floor: the Matriarch (a copy of its base card under her own name, her Health scaled with the party).
+// 2026-10-26 (package FIN1, RES4-3): the boss and floors carry the Tidelock Vault's aqua names (ids unchanged: matriarch, roost, galleries, pools).
+// The fight-only cards of a floor: the Tidewarden (was the Matriarch) (a copy of its base card under her own name, her Health scaled with the party).
 function floorOverlay(run, idx){
   const f = floorDef(run, idx), out = {};
   if(f && f.boss && run.defs[f.boss.base]){ const src = run.defs[f.boss.base], id = f.boss.base + '~gdboss';
-    out[id] = Object.assign({}, src, {id, nameKey: f.boss.nameKey, name: f.boss.name || 'The Hollow Matriarch', attack: (src.attack || 0) + (f.boss.atkAdd || 0),
+    out[id] = Object.assign({}, src, {id, nameKey: f.boss.nameKey, name: f.boss.name || 'The Tidewarden', attack: (src.attack || 0) + (f.boss.atkAdd || 0),
       health: Math.max(1, Math.round((src.health || 1) * (f.boss.hpMult || 2) * healthScale(run))), cost: 0, wait: 0, rarity: 'epic', gdBoss: true}); }
   return out;
 }
@@ -42974,7 +42984,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=ff1eb06699", "es": "assets/lang/es.js?v=fee31583ec", "fr": "assets/lang/fr.js?v=eafdbd40b9", "id": "assets/lang/id.js?v=e3a1cfd62d", "it": "assets/lang/it.js?v=e2d70931e5", "ja": "assets/lang/ja.js?v=19d13ed6be", "ko": "assets/lang/ko.js?v=50eac4f4b6", "pt": "assets/lang/pt.js?v=473d459dd1", "ta": "assets/lang/ta.js?v=b88e3999bf", "tl": "assets/lang/tl.js?v=48aa8dd740", "zh-Hans": "assets/lang/zh-Hans.js?v=8a7cd18b4f", "zh-Hant": "assets/lang/zh-Hant.js?v=e8635279a7"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=91ee6e6e08", "es": "assets/lang/es.js?v=5d0d2bc253", "fr": "assets/lang/fr.js?v=8afe942fff", "id": "assets/lang/id.js?v=db17389cb1", "it": "assets/lang/it.js?v=05a87a135e", "ja": "assets/lang/ja.js?v=006073445f", "ko": "assets/lang/ko.js?v=57c9017613", "pt": "assets/lang/pt.js?v=b0dffd7a40", "ta": "assets/lang/ta.js?v=6ba14749ac", "tl": "assets/lang/tl.js?v=79c4e0473c", "zh-Hans": "assets/lang/zh-Hans.js?v=29ada0e3e1", "zh-Hant": "assets/lang/zh-Hant.js?v=ff93f685d0"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45371,15 +45381,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.i2-lumber-every-n-fair": "Both sides gain 1 Lumber every {n} rounds, on top of what cards give.",
   "ui.i2-br-times-n": "Your battle rating is {n}× theirs",
   "ui.i2-top-n": "Top {n}%",
-  "ui.ar3-dungeon-name": "The Hollow Warren",
+  "ui.ar3-dungeon-name": "The Tidelock Vault",
   "ui.res4-gd-hollow": "The Tidelock Vault",
-  "ui.ar3-floor-roost": "The Bat Roost",
-  "ui.ar3-floor-galleries": "The Mole Galleries",
-  "ui.ar3-floor-pools": "The Salamander Pools",
-  "ui.ar3-floor-matriarch": "The Matriarch's Hall",
-  "ui.ar3-boss-name": "The Hollow Matriarch",
+  "ui.ar3-floor-roost": "The Dripping Roost",
+  "ui.ar3-floor-galleries": "The Sunken Galleries",
+  "ui.ar3-floor-pools": "The Brine Pools",
+  "ui.ar3-floor-matriarch": "The Tidewarden's Hall",
+  "ui.ar3-boss-name": "The Tidewarden",
   "ui.ar3-tab-sub": "Dungeons you climb with friends. Plays are planned together and land together.",
-  "ui.ar3-group-sub": "Two to four players side by side against the Hollow Warren. Everyone plans at the same time, then all the plays land together.",
+  "ui.ar3-group-sub": "Two to four players side by side against the Tidelock Vault. Everyone plans at the same time, then all the plays land together.",
   "ui.ar3-group-facts": "{floors} floors and a boss · 2–4 players · ⚡{energy} each",
   "ui.ar3-create": "Open a room",
   "ui.ar3-solo": "Play with CPU allies",
@@ -45454,7 +45464,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-bumped": "A partner took the shared cell first; your card stayed in hand.",
   "ui.ar3-mech-caveIn": "Cave-ins: every other round from round 3, your row with more units takes 2 damage on each.",
   "ui.ar3-mech-curse": "Cursed pools: on even rounds the centre column can't be played and what stands there takes 2.",
-  "ui.ar3-mech-smack": "The Matriarch marks a column, then strikes each of your units in it for 4.",
+  "ui.ar3-mech-smack": "The Tidewarden marks a column, then strikes each of your units in it for 4.",
   "ui.ar3-cursed-now": "The centre is cursed this round.",
   "ui.ar3-marked-now": "A column is marked: it is struck after this round.",
   "ui.ar3-lumber": "Your Lumber this round",
@@ -45473,7 +45483,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-not-legal": "That play isn't possible any more; pick again.",
   "ui.ar3-cpu-stands-in": "A CPU ally plays for anyone away.",
   "ui.ar3-floor-cleared": "Floor cleared!",
-  "ui.ar3-floor-time": "The warren closed: out of rounds",
+  "ui.ar3-floor-time": "The tide came back: out of rounds",
   "ui.ar3-floor-lost": "The party fell",
   "ui.ar3-chest": "Your chest",
   "ui.ar3-chests-total": "Your chests",
@@ -45482,7 +45492,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-pick-one": "Pick one card to keep",
   "ui.ar3-picked": "{name} joins your collection.",
   "ui.ar3-pick-done-today": "You took today's card already; the chests still paid.",
-  "ui.ar3-run-cleared": "The Hollow Warren is cleared!",
+  "ui.ar3-run-cleared": "The Tidelock Vault is cleared!",
   "ui.ar3-run-over": "The climb is over",
   "ui.ar3-floors-cleared": "Floors cleared: {n}/{total}",
   "ui.ar3-back": "Back to the dungeons",
@@ -50350,7 +50360,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd23f1044daab', BUILD_CARD_HASH = 'be4e81a1a64f62fef1f6249eb63d96d7a06ff2ea27b30ae0d417b112081ed341';
+const BUILD_ID = 'a34bc48a0724', BUILD_CARD_HASH = 'be4e81a1a64f62fef1f6249eb63d96d7a06ff2ea27b30ae0d417b112081ed341';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

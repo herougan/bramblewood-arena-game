@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 (package FIN1: RES4-3 the Tidelock Vault's names, VIS3-1 the token wash)
+- **The Tidelock Vault's floors and boss are aqua too** (RES4-3, ids unchanged): the Bat Roost is **The Dripping Roost**, the Mole Galleries **The Sunken Galleries**, the Salamander Pools **The Brine Pools**, the Matriarch's Hall **The Tidewarden's Hall**, and the Hollow Matriarch **The Tidewarden**. The boss's column warning, the "out of rounds" line ("The tide came back"), the lobby line and the cleared line say the vault too. In all 12 languages (`tools/i18n_2026_10_26_fin1.py`).
+- **Board tokens get a pale wash** (VIS3-1, no ribbon): Bloom copies, Undead units back as tokens and every other token keep the dashed edge and now carry a pale, cool veil over their art (a light film in the light theme, a soft grey-blue one in the dark theme).
+
 ## 2026-10-26 release 10-26e (batch: RES4)
 - Trail Mix Trek: the monthly pass (Stickers from notices, the first win, weekly quests and three weekly challenges; 30 tiers, a free lane of 6 packs and resources, premium shown locked); level packs only at 5 / 10 / 15 / 20 / 25. Forge tabs open on Maps 11-34. The first group dungeon is The Tidelock Vault.
 - Owner 10-26 14:14 recorded (TUT-1 his; live rows he edited stay unless re-balanced; ENG10 recommendations).
