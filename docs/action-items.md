@@ -12,6 +12,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | FIN1-a | FIN1 | RES4-3: aqua names for the Tidelock Vault's floors and boss. |
 | FIN1-b | FIN1 | VIS3-1: a pale wash on tokens on the board. |
 | C7 | later | CONTENT3-5: Hummingbird anti-air counterparts to the Mist-net Otter, Clap-net Trapper and Birdlime Dauber. |
+| FIN2-a | FIN2 | Owner 23:46 #1 "Bramble Armor: Fortify instead." Rename the skill (display name, Codex, texts; keep the engine key). |
+| FIN2-b | FIN2 | Owner 23:46 #2 "The card edit - doesn't work anymore". Find and fix the admin card editor (saving / applying edits). |
+| FIN2-c | FIN2 | Owner 23:46 #3 "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is heavily undertuned (though its a beginner card, so it should be weaker)". Shield at 0.8 x Health in the budget; re-fit the cards it moves (Tide Pool Crab stays a weak beginner card). |
 | OVR-clear | waiting | The live clear of the folded rows (approved 10-26 14:14) needs the owner at the Supabase confirm prompt (timed out twice). |
 
 ## 10-25 22:36: the owner's playtest notes (fired: "You can begin the large action item series")
