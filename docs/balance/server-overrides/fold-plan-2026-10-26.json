@@ -1,0 +1,500 @@
+{
+ "_about": "CONTENT3 / OVR (2026-10-26): the live card_overrides rows with data folded into canonical/cards.json (tools/fold_server_overrides_2026_10_26.js). Field rule: the owner's value unless the file changed that field after his save; effects three-way merged.",
+ "generated": "2026-10-26",
+ "cards": 11,
+ "alreadyFolded": [
+  {
+   "id": "ember-tetra",
+   "rowId": "ember-tetra-3caj",
+   "upd": "2026-10-21T09:31:56.720Z",
+   "folded": "BF7, 2026-10-22"
+  },
+  {
+   "id": "glacial-ape-king",
+   "rowId": "glacial-ape-king",
+   "upd": "2026-10-21T10:35:34.262Z",
+   "folded": "BF7, 2026-10-22"
+  },
+  {
+   "id": "conch-crawler",
+   "rowId": "conch-crawler",
+   "upd": "2026-10-21T10:40:28.301Z",
+   "folded": "BF7, 2026-10-22"
+  },
+  {
+   "id": "tide-pool-crab",
+   "rowId": "tide-pool-crab",
+   "upd": "2026-10-21T10:40:47.515Z",
+   "folded": "BF7, 2026-10-22"
+  },
+  {
+   "id": "ford-kingfisher",
+   "rowId": "ford-kingfisher",
+   "upd": "2026-10-21T10:47:57.720Z",
+   "folded": "BF7, 2026-10-22"
+  }
+ ],
+ "cfg": [
+  {
+   "id": "__cfg:map-nodes:m2",
+   "upd": "2026-10-21T16:01:39.124Z",
+   "folded": false,
+   "why": "owner call OVR-1: the row adds Oxbow (whales and a kraken) after 4-5, makes 4-5 an elite and brings back 10-21 decks for 4-2 / 4-5 that BAL3 and PRO3 retuned"
+  },
+  {
+   "id": "__cfg:tutorial",
+   "upd": "2026-10-22T23:00:12.947Z",
+   "folded": false,
+   "why": "owner call OVR-2: the row (rival Health 12, the part-1 Ducklings and Minnows) undoes TT2's eased part 1"
+  }
+ ],
+ "rows": [
+  {
+   "id": "green-dragon",
+   "rowId": "green-dragon",
+   "name": "Green Dragon",
+   "upd": "2026-10-22T04:00:14.790Z",
+   "server": [
+    4,
+    7
+   ],
+   "fileNow": [
+    3,
+    22
+   ],
+   "now": [
+    3,
+    22
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "flying": true,
+      "poison": 3,
+      "supreme": true
+     },
+     "to": {
+      "flying": true,
+      "supreme": true
+     }
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "attack",
+     "server": 4,
+     "file": 3,
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-22T12:14:00+08:00",
+     "fileCommit": "d7a1d373"
+    },
+    {
+     "field": "health",
+     "server": 7,
+     "file": 22,
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-24T05:44:12+08:00",
+     "fileCommit": "c9d19c72"
+    }
+   ],
+   "kept": [
+    {
+     "field": "resist",
+     "server": [],
+     "file": [
+      "poison"
+     ]
+    }
+   ],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-10-22T12:14:00+08:00",
+     "fileCommit": "d7a1d373",
+     "server": {
+      "flying": true,
+      "supreme": true,
+      "overwhelm": true
+     },
+     "file": {
+      "flying": true,
+      "poison": 3,
+      "supreme": true
+     },
+     "result": {
+      "flying": true,
+      "supreme": true
+     },
+     "ownerChange": [
+      {
+       "key": "bounty",
+       "base": 1,
+       "owner": null
+      },
+      {
+       "key": "poison",
+       "base": 3,
+       "owner": null
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "flying": true,
+    "supreme": true
+   },
+   "rarity": "mythic"
+  },
+  {
+   "id": "soldier-ant",
+   "rowId": "soldier-ant",
+   "name": "Soldier Ant",
+   "upd": "2026-10-22T10:55:28.958Z",
+   "server": [
+    2,
+    8
+   ],
+   "fileNow": [
+    2,
+    5
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "effects",
+     "from": {
+      "swarm": true,
+      "formation": 1
+     },
+     "to": {
+      "swarm": true
+     }
+    }
+   ],
+   "conflicts": [
+    {
+     "field": "health",
+     "server": 8,
+     "file": 5,
+     "kept": "file (changed after the server save)",
+     "fileAt": "2026-10-23T11:19:51+08:00",
+     "fileCommit": "0dd094b0"
+    }
+   ],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "swarm": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "earthworm",
+   "rowId": "earthworm",
+   "name": "Earthworm",
+   "upd": "2026-10-22T15:21:36.764Z",
+   "server": [
+    0,
+    6
+   ],
+   "fileNow": [
+    0,
+    9
+   ],
+   "now": [
+    0,
+    6
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 9,
+     "to": 6
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "starter"
+  },
+  {
+   "id": "silver-minnow",
+   "rowId": "silver-minnow",
+   "name": "Silver Minnow",
+   "upd": "2026-10-22T15:23:39.681Z",
+   "server": [
+    2,
+    4
+   ],
+   "fileNow": [
+    3,
+    4
+   ],
+   "now": [
+    2,
+    4
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 3,
+     "to": 2
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "starter"
+  },
+  {
+   "id": "duckling",
+   "rowId": "duckling",
+   "name": "Duckling",
+   "upd": "2026-10-22T15:23:45.431Z",
+   "server": [
+    1,
+    5
+   ],
+   "fileNow": [
+    3,
+    4
+   ],
+   "now": [
+    1,
+    5
+   ],
+   "changes": [
+    {
+     "field": "attack",
+     "from": 3,
+     "to": 1
+    },
+    {
+     "field": "health",
+     "from": 4,
+     "to": 5
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "starter"
+  },
+  {
+   "id": "harvest-mouse",
+   "rowId": "harvest-mouse",
+   "name": "Harvest Mouse",
+   "upd": "2026-10-22T15:23:56.115Z",
+   "server": [
+    1,
+    6
+   ],
+   "fileNow": [
+    1,
+    7
+   ],
+   "now": [
+    1,
+    6
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 7,
+     "to": 6
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "starter"
+  },
+  {
+   "id": "otter-kit",
+   "rowId": "otter-kit",
+   "name": "Otter Kit",
+   "upd": "2026-10-22T15:24:07.598Z",
+   "server": [
+    2,
+    5
+   ],
+   "fileNow": [
+    2,
+    6
+   ],
+   "now": [
+    2,
+    5
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 6,
+     "to": 5
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "rarity": "starter"
+  },
+  {
+   "id": "meadow-rabbit",
+   "rowId": "meadow-rabbit",
+   "name": "Meadow Rabbit",
+   "upd": "2026-10-22T15:24:29.082Z",
+   "server": [
+    4,
+    2
+   ],
+   "fileNow": [
+    4,
+    2
+   ],
+   "now": [
+    4,
+    2
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {},
+   "rarity": "starter"
+  },
+  {
+   "id": "conch-herald",
+   "rowId": "conch-herald",
+   "name": "Conch Herald",
+   "upd": "2026-10-23T09:07:07.100Z",
+   "server": [
+    1,
+    11
+   ],
+   "fileNow": [
+    1,
+    11
+   ],
+   "now": [
+    1,
+    11
+   ],
+   "changes": [],
+   "conflicts": [],
+   "kept": [],
+   "merged": [],
+   "effects": {
+    "tide": true,
+    "inspiring": 1
+   },
+   "rarity": "uncommon"
+  },
+  {
+   "id": "sea-turtle-elder",
+   "rowId": "sea-turtle-elder",
+   "name": "Sea Turtle Elder",
+   "upd": "2026-10-24T13:16:05.240Z",
+   "server": [
+    5,
+    10
+   ],
+   "fileNow": [
+    5,
+    5
+   ],
+   "now": [
+    5,
+    10
+   ],
+   "changes": [
+    {
+     "field": "health",
+     "from": 5,
+     "to": 10
+    },
+    {
+     "field": "effects",
+     "from": {
+      "armor": 4,
+      "undead": true,
+      "tide": true
+     },
+     "to": {
+      "armor": 3,
+      "tide": true
+     }
+    }
+   ],
+   "conflicts": [],
+   "kept": [],
+   "merged": [
+    {
+     "field": "effects",
+     "fileAt": "2026-10-26T05:31:54+08:00",
+     "fileCommit": "2980165d",
+     "server": {
+      "tide": true,
+      "armor": 3
+     },
+     "file": {
+      "armor": 4,
+      "undead": true,
+      "tide": true
+     },
+     "result": {
+      "armor": 3,
+      "tide": true
+     },
+     "ownerChange": [
+      {
+       "key": "armor",
+       "base": 4,
+       "owner": 3
+      },
+      {
+       "key": "undead",
+       "base": true,
+       "owner": null
+      }
+     ]
+    }
+   ],
+   "effects": {
+    "armor": 3,
+    "tide": true
+   },
+   "rarity": "common"
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "rowId": "phoenix-mushrooms-u248",
+   "name": "Phoenix Mushrooms",
+   "upd": "2026-10-25T14:00:36.711Z",
+   "isNew": true,
+   "server": [
+    1,
+    11
+   ],
+   "effects": {
+    "meiosis": 1,
+    "bloomCopy": {
+     "mode": "and",
+     "when": [
+      "wet",
+      "sunny"
+     ]
+    },
+    "undead": true
+   },
+   "rarity": "epic"
+  }
+ ]
+}

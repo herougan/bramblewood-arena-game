@@ -4409,7 +4409,7 @@ let cloudOverridesSince = '';
 // Renamed card ids (2026-10-23, package RW5, HUB3's junk id): the old id's live card_overrides row is skipped (the card is in cards.json under the
 // new id; supabase/proposed/20261023_rw5_clear_ember_tetra.sql deletes the row on "apply it"), and a save's copies, unlock, levels and decks move
 // to the new id once (migrateRenamedCardIds).
-const CARD_ID_RENAMED = {'ember-tetra-3caj': 'ember-tetra'};
+const CARD_ID_RENAMED = {'ember-tetra-3caj': 'ember-tetra', 'phoenix-mushrooms-u248': 'phoenix-mushrooms' /* 2026-10-26 (CONTENT3, OVR): the owner's live card, folded */};
 async function pollCloudOverrides(){
   if(!sbClient || document.hidden || !cloudOverridesSince) return;
   try{
