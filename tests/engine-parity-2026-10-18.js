@@ -209,7 +209,10 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
     P[2].hand = [{uid:9900 + s, defId:'pa-hitter'}]; e.aiTakeTurn(P, so, 2, {}, []); const h = all(P[2]).find(c=> c.defId === 'pa-hitter');
     if(h && h.slot === -1){ if(level === 1) smartBad++; else smartestBad++; } });
   ok(smartestBad === 0, `smartest: never across from the unit that kills it outright (${smartestBad} of 40)`);
-  ok(smartBad > 0, `smart: its dice still put it there sometimes (${smartBad} of 40), so the levels differ here`); }
+  // 2026-10-26 (package AI3, A1): the smart CPU plans its turn too now (card x slot, on the smartest CPU's slot score, which measured about
+  // 3 points stronger than its old dice on Maps 0-20's elite and boss fights), so it no longer walks into a sure death either; the levels
+  // stay apart on its noise, its field threshold, its pitch pick and its Sacrifice timing (the checks around this one).
+  ok(smartBad <= 2, `smart: the turn planner keeps it out of the killer's column too (${smartBad} of 40; was: its dice put it there sometimes)`); }
 // Smartest slot reads Confuse (2026-10-19, package FZ): a Confused unit's swing fumbles 1 in 2, so of two units that would kill it,
 // the CPU faces the Confused one (either side), and a Confused killer is no sure doom (the engine's aiSwingOdds, the same for both sides)
 { const confRun = confSlot=>{ const {e, P} = mk({level:2}); put(e, P, 2, 'pa-wall', 0); const L = put(e, P, 1, 'pa-brute', -1), R = put(e, P, 1, 'pa-brute', 1);
@@ -221,7 +224,9 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   ok(good === 20, `smartest: focuses the better kill this round (${good} of 20)`); }
 // Smartest pitch: the least useful card, not the weakest (a field card is kept for its moment)
 { const pitchRun = level=>{ const {e, P} = mk({level}); put(e, P, 2, 'pa-wall', 0); P[2].lumber = 1; P[2].playedThisTurn = true;
-    P[2].hand = [{uid:9961, defId:'thick-fog'}, {uid:9962, defId:'pa-a'}, {uid:9963, defId:'pa-b'}];
+    // 2026-10-26 (package AI3, A2): the CPU pitches only when the Lumber is for something (its reserve, a card short of it) or its hand is
+    // full (the draw would burn a card anyway), so the hand is full here: five cards, two strong ones that are never the pitch
+    P[2].hand = [{uid:9961, defId:'thick-fog'}, {uid:9962, defId:'pa-a'}, {uid:9963, defId:'pa-b'}, {uid:9964, defId:'pa-hitter'}, {uid:9965, defId:'pa-tough'}];
     e.aiTakeTurn(P, so, 2, {}, []); return P[2].graveyard.map(g=> g.defId).join(','); };
   ok(pitchRun(1) === 'thick-fog' && pitchRun(2) === 'pa-b', `pitch: smart pitches the weakest (${pitchRun(1)}), smartest keeps the field card and pitches the least useful (${pitchRun(2)})`); }
 // Smartest Sacrifice timing: a strong unit that dies to what faces it this round is given up for the Dark Summon card

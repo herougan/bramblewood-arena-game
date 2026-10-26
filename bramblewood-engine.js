@@ -7645,6 +7645,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //     into a slot like that only when nothing equal is left.
   // An open column (nothing across) is worth its swing at the castle. The field's sight and Tide-evade rules count as for smart.
   function aiChooseSlotSmartest(players, aiId, defId, legal){
+    const foe = players[otherId(aiId)], score = aiSlotScorerSmartest(players, aiId, defId);
+    let best = null;
+    // EN2 (2026-10-23): + the middle lanes' pull (aiLaneBonus); a tie at the same distance from the centre no longer always goes left (aiLaneTie)
+    legal.forEach(sl=>{ const s = score(sl) + aiLaneBonus(sl);
+      if(!best || s > best.s + 1e-9 || (Math.abs(s - best.s) <= 1e-9 && (Math.abs(sl) < Math.abs(best.sl) || (Math.abs(sl) === Math.abs(best.sl) && aiLaneTie(foe, sl, best.sl) === sl)))) best = {sl, s}; });
+    return best ? best.sl : null;
+  }
+  // AI3 (2026-10-26): the smartest CPU's slot score, taken out of aiChooseSlotSmartest unchanged so the turn planner (aiPlanPlay) scores
+  // card x slot with the same numbers. Returns a function slot -> score.
+  function aiSlotScorerSmartest(players, aiId, defId){
     const d = CARD_DEFS[defId] || {}, ai = players[aiId], foe = players[otherId(aiId)];
     const atk = Number(d.attack) || 0, hp = Number(d.health) || 0, ready = !(Number(d.wait) > 0);
     const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null, quick = !!((d.effects||{}).quick);
@@ -7659,12 +7669,85 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(theyHit) s += Math.min(fAtk, 8) * blockW * odds; // the castle hit it stops (a Confused unit's swing half counts, 2026-10-19 FZ)
       if(dies) s += -(2.5 + prayerNOf({defId}) * 2) * odds + 0.5 * (1 - odds); else s += 0.5; // a Prayer unit's tokens die with it (2026-10-19, package E); a Confused killer only 1 in 2 (FZ)
       return s; };
-    let best = null;
-    // EN2 (2026-10-23): + the middle lanes' pull (aiLaneBonus); a tie at the same distance from the centre no longer always goes left (aiLaneTie)
-    legal.forEach(sl=>{ const s = score(sl) + aiLaneBonus(sl);
-      if(!best || s > best.s + 1e-9 || (Math.abs(s - best.s) <= 1e-9 && (Math.abs(sl) < Math.abs(best.sl) || (Math.abs(sl) === Math.abs(best.sl) && aiLaneTie(foe, sl, best.sl) === sl)))) best = {sl, s}; });
-    return best ? best.sl : null;
+    return score;
   }
+  // AI3 (2026-10-26, owner #26: "Does the AI consider triggering bloom? ... Play card A, B, C or just pitch and then for each decision -
+  // where. Then which is the best decision"): the turn planner's pieces (aiPlanPlay, below).
+  // How likely a Bloom's conditions are to hold while the unit lives (AI3): a condition true now 1; 'kill' 0.4; a day / night condition
+  // under a day / night cycle, or a tide condition on a tide map, 0.45 (it comes round); anything else 0.05. 'and' multiplies, 'or' adds
+  // up as odds. Short of the Lumber it costs: x0.6.
+  const AI_BLOOM_W = 0.6; // the copy comes later (and waits its Wait), so it counts at 0.6 of a card in hand
+  function aiBloomOdds(bc, pl){
+    if(!bc || typeof bc !== 'object') return 0; const w = bloomCopyConds(bc); if(!w.length) return 0;
+    const cyc = phaseActive(), tidal = getTide() !== null;
+    const p = k=> k === 'kill' ? 0.4 : bloomCond(k) ? 1 : (cyc && ['night', 'day', 'twilight', 'sunny', 'dark'].includes(k)) || (tidal && ['tide', 'ebb', 'wet'].includes(k)) ? 0.45 : 0.05;
+    const ps = w.map(p); let o = bc.mode === 'or' ? 1 - ps.reduce((t, x)=> t * (1 - x), 1) : ps.reduce((t, x)=> t * x, 1);
+    if(pl && (pl.lumber||0) < bloomCopyLumber(bc)) o *= 0.6;
+    return o;
+  }
+  // What a slot adds through Bloom (AI3): a Bloom card in a slot with a free neighbour gets its copy's worth (+1/+1 on the card) times the
+  // odds; with no room it would fail into +1/+1. A slot that takes the last free neighbour of one of its own unbloomed Bloom units costs
+  // that unit's copy (less the +1/+1 it gets instead).
+  function aiBloomSlotTerm(players, aiId, defId, sl){
+    const ai = players[aiId], d = CARD_DEFS[defId] || {}, occ = occupiedSlots(ai);
+    const free = n=> inSlotCols(n) && !occ.has(n) && n !== sl && !eqRubbleBlocks(ai, n);
+    const copyOf = (a, h)=> (a + 1) + (h + 1) * 0.45 + 1.5;
+    let v = 0; const bc = (d.effects || {}).bloomCopy;
+    if(bc && !isParasiteDef(d)){ const o = aiBloomOdds(bc, ai); if(o > 0) v += o * AI_BLOOM_W * (free(sl - 1) || free(sl + 1) ? copyOf(Number(d.attack)||0, Number(d.health)||0) : 1.45); }
+    allLive(ai).forEach(c=>{ if(!Number.isInteger(c.slot) || c.bloomed || c.cageOf || Math.abs(c.slot - sl) !== 1) return;
+      const cb = effectsOf(c).bloomCopy; if(!cb || isParasiteDef(CARD_DEFS[c.defId])) return;
+      if(free(c.slot + (c.slot - sl))) return; // still room on its other side
+      const o = aiBloomOdds(cb, ai); if(o > 0) v -= o * AI_BLOOM_W * Math.max(0, copyOf(c.atk||0, c.maxHp||0) - 1.45); });
+    return v;
+  }
+  // The open end slots where this unit wins the fight this round (aiChooseSlot's first check, without the dice), or null.
+  function aiWinEnds(players, aiId, defId, legal){
+    const d = CARD_DEFS[defId] || {}, ai = players[aiId], foe = players[otherId(aiId)]; if(!foe.hq) return null;
+    const open = legal.filter(sl=> !aiFront(foe, sl)); if(!open.length) return null;
+    const atk = Number(d.attack) || 0, ready = !(Number(d.wait) > 0);
+    const already = allLive(ai).filter(c=> !(c.wait > 0) && !c.stunned && !aiFront(foe, c.slot)).reduce((t, c)=> t + Math.max(0, c.atk || 0), 0);
+    if((ready ? atk : 0) + already < Math.max(1, (foe.hq.hp || 0) + (foe.hq.shield || 0))) return null;
+    const far = Math.max(...open.map(Math.abs)); return open.filter(sl=> Math.abs(sl) === far);
+  }
+  // AI3 (2026-10-26, A2; owner #33 / EN6-3: "If it knows it needs an avg of 2.0 lumber to play their deck, they need to try to maintain at
+  // least 2.0-1.0 = 1.0 lumber (so they can pitch to play on their next turn). If the value of a card in their hand is really high, they will
+  // prioritise gathering resources to play that card. Decision making should be on a per turn basis." and "if the deck has low lumber cost
+  // cards, they shouldn't be rapidly pitching"): the deck's average Lumber cost (the deck as dealt, deckCounts) and the reserve it keeps,
+  // average - 1 (never below 0).
+  function aiDeckAvgCost(pl){
+    if(pl._aiAvgCost != null) return pl._aiAvgCost;
+    let n = 0, t = 0; const dc = pl.deckCounts || {};
+    Object.keys(dc).forEach(id=>{ const k = Number(dc[id]) || 0; if(!CARD_DEFS[id] || !(k > 0)) return; n += k; t += k * costOfCard(id); });
+    if(!n) (pl.deck || []).concat((pl.hand || []).map(h=> h.defId)).forEach(id=>{ if(CARD_DEFS[id]){ n++; t += costOfCard(id); } });
+    return (pl._aiAvgCost = n ? t / n : 0);
+  }
+  function aiReserveOf(pl){ return Math.max(0, aiDeckAvgCost(pl) - 1); }
+  // AI3 (2026-10-26, A1): the turn planner. scored: [[hc, worth]] (situational, its dice included). Every unit card is tried in every
+  // legal slot (its Pack slot only, when it has one): worth + the slot's one-ply score, aiSlotScorerSmartest (the column after the play: the
+  // kill it makes now, the hit on its bramble it stops, whether it dies there) + aiBloomSlotTerm + AI_PLAN_WIN when it wins the fight this
+  // round. The two levels stay apart: the smartest adds the lane pull and no dice (its card worth has 0.5 of noise), the smart CPU a little
+  // noise per slot (0.4, and 1.5 on its card worth), and the smartest keeps its own pitch pick, field threshold and Sacrifice timing. (A
+  // version where the smart CPU used its old trade check, kill 2 / out-last 1, as the slot score measured about 3 points weaker on Maps
+  // 0-20's elite and boss fights: docs/balance/ai3-2026-10-26.md.) Cards
+  // with no slot: worth + AI_PLAN_NEUTRAL (about an average slot's score, so a spell is weighed against a unit fairly). Ties: the slot
+  // nearest the centre, then aiLaneTie. Returns {hc, sl, s} (sl null: a card with no slot) or null.
+  const AI_PLAN_NEUTRAL = 0.6, AI_PLAN_WIN = 50;
+  function aiPlanPlay(players, aiId, scored){
+    const ai = players[aiId], foe = players[otherId(aiId)], smartest = aiSmartest(); let best = null;
+    const better = (s, sl)=> !best || s > best.s + 1e-9 || (Math.abs(s - best.s) <= 1e-9 && sl != null && best.sl != null && (Math.abs(sl) < Math.abs(best.sl) || (Math.abs(sl) === Math.abs(best.sl) && aiLaneTie(foe, sl, best.sl) === sl)));
+    const legalAll = legalSlots(ai);
+    scored.forEach(([hc, worth])=>{ if(!(worth > -50)) return; const d = CARD_DEFS[hc.defId] || {};
+      const slotted = !d.cardType && !d.field && !isEvoluteDef(hc.defId) && !isParasiteDef(d);
+      if(!slotted || !legalAll.length){ const s = worth + AI_PLAN_NEUTRAL; if(better(s, null)) best = {hc, sl: null, s}; return; }
+      const pk = packPlacementFor(ai, hc.defId), legal = pk != null && legalAll.includes(pk) ? [pk] : legalAll;
+      const score = aiSlotScorerSmartest(players, aiId, hc.defId);
+      const wins = aiWinEnds(players, aiId, hc.defId, legal);
+      legal.forEach(sl=>{ const s = worth + score(sl) + (smartest ? aiLaneBonus(sl) : rnd() * 0.4) + aiBloomSlotTerm(players, aiId, hc.defId, sl) + (wins && wins.includes(sl) ? AI_PLAN_WIN : 0);
+        if(better(s, sl)) best = {hc, sl, s}; }); });
+    return best;
+  }
+  const AI_HIGH_VALUE = 1.5; // a card worth 1.5x the best card it can play now is worth gathering for (A2)
+  const AI_SAVE_REACH = 2;   // ... when this turn's pitch and the next one cover what it still needs
   // The best of your units a Ready unit of this card could kill this round from a slot the CPU may take (its worth), else 0.
   function aiBestKillNow(players, aiId, defId){
     if(!slotMode) return 0; const d = CARD_DEFS[defId] || {}, atk = Number(d.attack) || 0; if(d.cardType || Number(d.wait) > 0 || atk <= 0) return 0;
@@ -7877,16 +7960,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     //     valuable card that is neither that card nor the best card it can play now, then play as usual.
     // (Was, 2026-10-09: pitch first only a zero-cost card, and only for a card within SAVE_REACH; else pitch after the play, so the Lumber
     // waited a turn. A deck with few zero-cost cards then sat for turns: the owner's 5-3 with 4 of 20.)
+    // AI3 (2026-10-26, A2, owner #33 / EN6-3, quoted at aiDeckAvgCost): the EN8 rule above pitched whenever a card was short, so a cheap
+    // deck pitched away cards it never needed the Lumber for. Now, every CPU level, once a turn, it pitches only:
+    //   - to afford a high-value card: a card short only of resources, worth AI_HIGH_VALUE x the best card it can play now (or anything,
+    //     when it can play nothing), and within AI_SAVE_REACH (this pitch and the next cover it). Nothing playable: any short card counts.
+    //     (It does not hold its other plays back for it: a version that played only what kept the card in reach cost the CPU about 1 point
+    //     of win rate on Maps 0-20, docs/balance/ai3-2026-10-26.md, so the gathering is the pitch alone);
+    //   - to keep its reserve: the Lumber left after its best play now would fall below (deck average - 1), with 3+ cards in hand
+    //     (2+ when it plays nothing);
+    //   - nothing to play and a full hand: the draw would burn its top card for the same 1 Lumber, so it picks the card to burn.
+    // The card pitched is still the least valuable one (pitchPick), never the card it gathers for or its best play now.
     if(!ai.discardUsedThisTurn && ai.hand.length && !((ai.skipTurns||0) > 0)){
       const useful = ai.hand.filter(hc=> aiUsefulNow(players, aiId, hc));
       const short = ai.hand.filter(hc=> !useful.includes(hc) && aiShortOfResources(ai, hc.defId));
       const need = hc=> aiResourceGap(ai, hc.defId);
-      const target = short.length ? short.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
-      if(!useful.length){
-        const pool = ai.hand.length > 1 ? ai.hand.filter(hc=> hc !== target) : []; // a lone card: the fallback below pitches it, as before
-        if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events);
-      } else if(target && ai.hand.length >= 3){
-        const bestNow = useful.reduce((a, b)=> cardValue(b.defId) > cardValue(a.defId) ? b : a);
+      const bestNow = useful.length ? useful.reduce((a, b)=> cardValue(b.defId) > cardValue(a.defId) ? b : a) : null;
+      const big = short.filter(hc=> !bestNow ? true : (need(hc) <= AI_SAVE_REACH && cardValue(hc.defId) >= AI_HIGH_VALUE * cardValue(bestNow.defId)));
+      const target = big.length ? big.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
+      const endLumber = (ai.lumber||0) - (bestNow ? costOfCard(bestNow.defId) : 0), reserve = aiReserveOf(ai);
+      const why = target && ai.hand.length >= 2 ? 'gather'
+        : endLumber < reserve && ai.hand.length >= (useful.length ? 3 : 2) ? 'reserve'
+        : !useful.length && ai.hand.length >= MAX_HAND ? 'full' : null;
+      if(why){
         const pool = ai.hand.filter(hc=> hc !== target && hc !== bestNow);
         if(pool.length) aiPitch(players, sideOf, aiId, pitchPick(pool), stats, events);
       }
@@ -7929,6 +8024,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // card in hand it can't reach yet, a Prayer N unit is worth +2.5 per point of the shortfall it covers (+1.5 more for
       // starting the count now); with nothing to pray for, a Prayer unit is worth what its stats are.
       const prayShort = Math.max(0, ...ai.hand.map(hc=> prayerReqOf(hc.defId) - prayerOf(ai)));
+      const planOn = aiSmart() && slotMode; // AI3 (2026-10-26): the turn planner, below
       const situational = id=>{
         const d = CARD_DEFS[id] || {}, e = d.effects || {}; let v = cardValue(id);
         if(prayShort > 0){ const pn = prayerNOf({defId:id}); if(pn > 0) v += Math.min(pn, prayShort) * 2.5 + 1.5; }
@@ -7957,17 +8053,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(isEvoluteDef(id)){ const pick = aiEvoluteBase(ai, id); v = pick ? v + pick.value * 0.6 : -99; } // Package EV (2026-10-21): worth its best base; none worth it: hold it
         // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
         // worth more (the better the victim, the more), and its pick is steadier (less noise).
-        if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
+        if(aiSmartest() && !d.cardType && !planOn){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; } // (the planner's slot score has the kill itself)
         return v + rnd()*(aiSmartest() ? 0.5 : 1.5);
       };
+      // AI3 (2026-10-26, A1, owner #26): the turn planner (the smart and smartest CPUs in the game's own fights). It no longer picks the
+      // card first and then its slot: every playable card in every slot it may take is one option, scored as the card's worth on this board
+      // (situational) plus a cheap one-ply look at the board after the play in that slot (aiPlanSlotScore: the column's kill / block /
+      // survival for the smartest, the trade check for the smart CPU, the Bloom it makes possible or spoils, a win this round), and the
+      // best option is played. A card with no slot (a spell, equipment, a hazard, an evolute, a Parasite) is one option at its worth plus
+      // AI_PLAN_NEUTRAL. The pitch is the other option and is decided before (A2, above), as its Lumber pays for this play. The basic CPU
+      // keeps its card-then-slot pick.
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
-      const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
+      let best = scored.reduce((a, b)=> b[1] > a[1] ? b : a), planSlot = null;
+      if(planOn){ const pick = aiPlanPlay(players, aiId, scored); if(pick){ best = [pick.hc, pick.s]; planSlot = pick.sl; } }
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
       if(best[1] > -50 && isEquipDef(CARD_DEFS[best[0].defId])) aiEquipPlay(players, sideOf, aiId, best[0], stats, events); // EQ (2026-10-19)
       else if(best[1] > -50 && isHazardDef(CARD_DEFS[best[0].defId])) placeHazard(players, sideOf, aiId, best[0].uid, null, null, stats, events); // EQ: aiHazardPick's slot
       else if(best[1] > -50 && isEvoluteDef(best[0].defId)){ const pick = aiEvoluteBase(ai, best[0].defId); // Package EV (2026-10-21): onto its best legal base
         if(pick) placeCard(players, sideOf, aiId, best[0].uid, Number.isInteger(pick.card.slot) ? pick.card.slot : 'left', stats, events, {onto: pick.card.uid}); }
       else if(best[1] > -50 && eq2AiParasite(players, sideOf, aiId, best[0], stats, events)){ /* EQ2 (2026-10-24): hooked onto an enemy */ }
+      else if(best[1] > -50 && planSlot != null) placeCard(players, sideOf, aiId, best[0].uid, planSlot, stats, events); // AI3: the planner's slot
       else if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
         { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
@@ -7978,7 +8083,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(eq){ const tgt = allLive(ai).filter(c=> canEquip(ai, eq.uid, c.uid)).sort((a, b)=> (b.atk + b.hp) - (a.atk + a.hp))[0]; if(tgt) equip(players, sideOf, aiId, tgt.uid, eq.uid, stats, events); } }
     // EN8 (2026-10-24): "held a useless spell" or a placement that failed no longer passes the turn: no card down and no pitch yet, it pitches.
     if(ai.playedThisTurn || (hadPlay && ai.discardUsedThisTurn)){ /* played (or pitched and held) above */
-    } else if(!ai.discardUsedThisTurn && ai.hand.length){
+    } else if(!ai.discardUsedThisTurn && ai.hand.length && (ai.hand.some(hc=> aiShortOfResources(ai, hc.defId)) || (ai.lumber||0) < aiReserveOf(ai) || ai.hand.length >= MAX_HAND)){
+      // AI3 (2026-10-26, A2): only when the Lumber is for something (a card short of resources, the reserve, or a full hand's draw);
+      // a hand held back for other reasons (a spell with nothing to do, an evolute with no base) is kept.
       // Nothing it can play (2026-10-12, user: "sometimes, the CPU doesn't play anything - I assume its because their hand is
       // overcosted. Are they able to pitch for resources?"): it pitches for Lumber, but no longer a random card. It keeps the
       // card nearest to affordable (the one the Lumber is for) and pitches the weakest of the rest.

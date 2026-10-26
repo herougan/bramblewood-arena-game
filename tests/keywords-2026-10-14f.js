@@ -180,7 +180,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
   ok(/unitShield: ev\.attUid/.test(src) && /ev\.kind==='unitShield'/.test(src), 'unitShield: a log line and a VFX handler');
   ok(/\{key:'shield', label:'Shield', fields:\['amount','who','sub','targets'\]/.test(src) && /case 'shield': doText = /.test(src), 'the Shield trigger action is in the editor');
   ['fencing','fireball','meteor','banana','bananarang','durian','shield','electricity','keenSense'].forEach(k=> ok(new RegExp(`\\n  ${k}: \\{`).test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), `${k}: an Effects library setup`));
-  ok(/shield:c\.shield\|\|0, thornsBonus:c\.thornsBonus\|\|0/.test(src) && /abadge unit-shield/.test(src), 'the board shows a unit\'s Shield'); }
+  // 2026-10-26 (package VIS3, V3, owner #16: "Shields will just be blue numbers on the card"): the 💠 chip became the blue number (vis3-shield-num)
+  ok(/shield:c\.shield\|\|0, thornsBonus:c\.thornsBonus\|\|0/.test(src) && /class="vis3-shield-num"/.test(src), 'the board shows a unit\'s Shield (the blue number)'); }
 { const fx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8'); ok(/Object\.assign\(root\.SkillFX, \{fireball, meteor, bananaThrow, munch\}\)/.test(fx), 'SkillFX: fireball, meteor, bananaThrow, munch'); }
 { const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), 'utf8'); ok(/\.ico-fireball\{/.test(css) && /\.ico-durian\{/.test(css) && /\.abadge\.unit-shield\{/.test(css), 'CSS for the drawn icons and the Shield badge'); }
 

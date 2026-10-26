@@ -4995,6 +4995,14 @@ const SoundKit = (()=>{
       sweep(70, 48, 0.14, 'sine', 0.13); fnoise(0.08, 0.05, {type:'lowpass', freq:180, attack:0.004});
       sweep(64, 44, 0.16, 'sine', 0.10, fast ? 0.2 : 0.26);
     },
+    // VIS3 (2026-10-26, V5, owner #14: "make that more apparent and scary"): a boss fight's opener. A low thud and a dark rush of noise
+    // under a dissonant brass-like stab (a minor second over a tritone), with a long low tail.
+    bossSting(){
+      fnoise(0.7, 0.13, {type:'lowpass', freq:520, freqEnd:70, attack:0.004});
+      tone(55, 1.5, 'sine', 0.15, 0);
+      [146.8, 155.6, 207.7].forEach((f, i)=> tone(f, 0.95, 'sawtooth', 0.042, 0.03 + i * 0.012));
+      sweep(330, 196, 0.6, 'triangle', 0.035, 0.08);
+    },
     suddenDeathSting(){
       fnoise(1.1, 0.10, {type:'lowpass', freq:300, freqEnd:90, attack:0.02});
       [233, 220, 175].forEach((f, i)=> tone(f, 0.55, 'sawtooth', 0.05, i*0.18));
@@ -26088,7 +26096,7 @@ function renderConquestSubTab(body){
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
         return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
+          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -30238,6 +30246,17 @@ function bossEntrance(node){
   }
   try{ if(battleWeather && battleWeather.wave){ const b = bf.getBoundingClientRect(), c = castle && castle.getBoundingClientRect(); if(c) battleWeather.wave((c.left + c.width/2 - b.left)/b.width, Math.max(0.05, (c.bottom - b.top)/b.height), [1, 0.7, 0.45], 1, 900); } }catch(e){}
 }
+// 2026-10-26 (package VIS3, V5; owner #14: "I only just realised 5-8 is a boss skirmish ... make that more apparent and scary. And also make
+// elites slightly more 'apparent'"): on the map a boss node (boss, sub-boss) is bigger and dark, in a ring of bone teeth with a skull crest
+// (the skull kind glyph moves from the corner to the crest); an elite node (elite, champion, mini-boss) gets a violet double ring and its star
+// as a small crest. The fight's opener for a boss: a darker red side, a bigger rival face in the same skull frame, "Boss" in red, and a sting
+// (SoundKit.bossSting) as it opens. CSS: the vis3Styles block of arena_template.html. (Raid, world and final bosses keep their gold look.)
+function vis3NodeFrameHTML(node){
+  const b = baseKind(node && node.kind || '');
+  if(b === 'boss') return '<span class="vis3-skull-frame" aria-hidden="true"></span>';
+  if(b === 'elite' && node.kind !== 'dungeon') return '<span class="vis3-elite-frame" aria-hidden="true"></span>';
+  return '';
+}
 function showVersusOpener(map, node, myChar, enemyChar){
   const host = document.getElementById('view-play'); if(!host || !node) return;
   host.querySelectorAll('.vs-opener').forEach(e=> e.remove());
@@ -30256,9 +30275,9 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
-    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
+    <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind${isBoss ? ' vis3-kind-boss' : isElite ? ' vis3-kind-elite' : ''}">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
     <div class="vs-side vs-them">
-      <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}</div>
+      <div class="vs-portrait vs-rival-ico" aria-hidden="true">${escapeHtml(node.icon || (enemyChar && enemyChar.icon) || '⚔️')}${isBoss && !/raid|final|world|mega/.test(node.kind || '') ? '<span class="vis3-skull-frame"></span>' : isElite ? '<span class="vis3-elite-frame"></span>' : ''}</div>
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
@@ -30281,7 +30300,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
   const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node), 360); };
   el.addEventListener('click', close);
   setTimeout(close, hold);
-  try{ if(isBoss){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){}
+  try{ if(isBoss){ if(SoundKit.bossSting) SoundKit.bossSting(); else if(SoundKit.castleCollapse) SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){} // VIS3 (2026-10-26, V5): a boss opens on its sting
   if(!repeat) setTimeout(()=>{ if(!gone) try{ SoundKit.babble(rivalPeople, tauntLine); }catch(e){} }, isBoss ? 700 : 380);
   if(isBoss && hasGsap()){ const bf = document.getElementById('battlefieldEl'); if(bf) gsap.fromTo(bf, {x:-6}, {x:0, duration:.5, ease:'elastic.out(1,0.3)', delay:.35}); }
 }
@@ -35810,6 +35829,7 @@ function renderBoard(opts){
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
   if(needMine && rowMine){ const h = emojiRows(rowHTML(m.players[1], p1Rows)); if(!(pl2End && pl2ReconcileRow(rowMine, h))) rowMine.innerHTML = h; }
   if(needEnemy || needMine){ if(needEnemy) pl2SeatHpBars(rowEnemy); if(needMine) pl2SeatHpBars(rowMine); } // PL2 (2026-10-25): a flyer's Health bar rides in its .fly-body
+  if(needEnemy) vis3CentrePips(rowEnemy); if(needMine) vis3CentrePips(rowMine); // VIS3 (2026-10-26, G8): each pip's glyph centred
   if(!m.over && !m.ending) pl2BounceAfterRedraw(pl2Snap, [needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5)
   if(needEnemy || needMine) fxHook('boardRowsBuilt', document.getElementById('battlefieldEl')); // batch D (2026-10-15, docs/effects-lab-contract.md): status looks back on rebuilt rows
   // Reserve rows (2026-10-12, raids as a full game): the same columns as the front rows, so a reserve sits right behind its unit.
@@ -35831,7 +35851,7 @@ function renderBoard(opts){
         else if(legal.has(sl)) html += `<div class="board-card slot-target reserve-target" data-slot="${sl}" data-reserve="${r}" title="Play here, ${r === 1 ? 'in the middle row' : 'in the back row'}: it steps up when the unit in front falls"><span class="slot-plus" aria-hidden="true">+</span></div>`;
         else html += '<div class="board-card empty-slot" aria-hidden="true"></div>';
       }
-      el.innerHTML = html; pl2SeatHpBars(el); // PL2 (2026-10-25)
+      el.innerHTML = html; pl2SeatHpBars(el); // PL2 (2026-10-25) vis3CentrePips(el); // VIS3 (G8)
     });
   }
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
@@ -37374,6 +37394,19 @@ function nodeTreatmentKind(node){ const k = node ? baseKind(node.kind||'') : '';
 function fightTreatmentKind(pid){ const m = matchState; if(!m || pid!==2 || m.mode!=='conquest' || !m.conquestNode) return ''; return nodeTreatmentKind((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); }
 function fightTreatedDef(d, pid){ return (d && d.art && fightTreatmentKind(pid)==='boss') ? Object.assign({}, d, {artExtended:true}) : d; }
 function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'elite-polish' : ''; }
+// 2026-10-26 (package VIS3, V3; owner #16: "Shields will just be blue numbers on the card"): a unit's Shield (and its temporary Health from
+// Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
+function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
+function vis3ShieldHTML(c){
+  const n = vis3ShieldAmount(c); if(!(n > 0)) return '';
+  return `<span class="vis3-shield-num" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // (the old 💠 chip's words: already in lang/ui)
+}
+function vis3ShieldRefresh(el, c){
+  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num'), html = vis3ShieldHTML(c);
+    if(!html){ if(old) old.remove(); return; }
+    if(old){ if(old.textContent !== String(vis3ShieldAmount(c))){ old.insertAdjacentHTML('afterend', html); old.remove(); const nu = tile.querySelector(':scope > .vis3-shield-num'); if(nu) nu.classList.add('vis3-shield-pop'); } return; }
+    tile.insertAdjacentHTML('beforeend', html); }catch(e){}
+}
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
   { const disg = changelingDisguiseFor(c, defs, opts.pid); if(disg) c = Object.assign({}, c, {defId: disg, disguised: true}); }
@@ -37486,10 +37519,10 @@ function boardCardHTML(c, defs, opts){
   // The bob rides on the same .fly-body wrapper flyers use, so GSAP's lunges and recoils still add up with it.
   const floats = !flies && isTideDefApp(d) && !caged && !fog;
   // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
-  if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
+  // (VIS3, 2026-10-26: the Shield is the blue number on the card now, vis3ShieldHTML; no 💠 chip)
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
+  const overlaysHTML = `      ${vis3ShieldHTML(c) /* VIS3 (2026-10-26): the Shield's blue number */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -37521,7 +37554,9 @@ function boardCardHTML(c, defs, opts){
   const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   const statusClassesShown = fog ? statusClasses.split(' ').filter(k=> /^(is-dancing|is-scattering|is-leader)$/.test(k)).join(' ') : statusClasses; // a fogged unit shows none of its statuses (FOG)
-  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  // 2026-10-26 (package VIS3, V2; owner #15: "The copy created by fungal colossus should have a token background."): a Bloom copy and an
+  // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
+  return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
@@ -39151,6 +39186,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
   el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3): its Health number is blue while the Shield stands
+  vis3ShieldRefresh(el, c); // VIS3 (2026-10-26): the Shield's blue number
   el.classList.toggle('is-corroded', c.corrode>0);
   el.classList.toggle('is-staggered', c.staggered>0);
   el.classList.toggle('is-bound', c.bound>0); el.classList.toggle('is-invisible', c.invisible>0); el.classList.toggle('is-invincible', c.invincible>0); el.classList.toggle('is-toxic', c.toxin>0); // W2 (2026-10-16)
@@ -39174,7 +39210,7 @@ function updateCardStatusDisplay(uid){
   if(c.staggered>0) badges.push(`<span class="abadge stagger">💢${c.staggered}</span>`);
   if(c.irradiation>0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}">☢️${c.irradiation}</span>`); // 2026-10-14
   // Shield (a unit's own temporary Health) and a Durian eater's extra Thorns (2026-10-14).
-  if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
+  // (VIS3, 2026-10-26: the Shield is the blue number on the card now, vis3ShieldHTML; no 💠 chip)
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   // 2026-09-20 fix (badge top/bottom split, see boardCardHTML's own comment): this live-patch
   // path used to target `.badges` directly — which is now the ABILITY row (the card's own
@@ -46522,10 +46558,50 @@ function w2StatusBadges(c, badges){
   try{ const tn = matchState && matchState.engine && matchState.engine.turnNo ? matchState.engine.turnNo() : null; if(c.frightRound != null && c.frightRound === tn) badges.push(`<span class="abadge frightened" title="Frightened: it won't attack this round (Haunted)">👻</span>`); }catch(e){}
   if(c.consterned > 0) badges.push(`<span class="abadge consterned" title="Consternation: it lost ${c.consterned}/${c.consterned} in the hand, for good">😰</span>`);
 }
+// 2026-10-26 (package VIS3, V1; owner #4: "Trap N's slot ... small light red gradients falling into the centre from the edges, several of
+// them, in a circle."): a trapped slot keeps a ring of eight soft light-red drops that slide in from its edge to its centre and fade, one
+// after another round the circle, for as long as the trap is set (CSS .vis3-trap-ring in arena_template.html; still under reduced motion).
+// 2026-10-26 (package VIS3, G8; owner: "Context pips: the turtle pip a few pixels right and up"): an emoji picture's drawing does not always
+// fill its square evenly (the Fluent turtle's drawing sits in the lower part of its cell), so the glyph looked low in its pill.
+// vis3CentrePips measures each pip picture's drawn part once (its opaque pixels' box on a 48 px canvas: its sprite-sheet cell, or its own
+// file when it is not in the sheet; cached per picture) and shifts the picture by the difference
+// (the CSS translate property, in % of the picture), when it is off by 4% or more. Run on the board's rows after each redraw.
+const VIS3_PIP_OFF = new Map(), VIS3_ATLAS = {};
+// the picture an emoji <img> shows: its own src, or (the sprite sheet, EMOJI_ATLAS: src is a blank GIF, the picture its background) its
+// cell of the sheet, read from the computed background (size W/c x 100%, position x / (W - c) x 100%: both in cells)
+function vis3PipSource(img){
+  if(!img.classList.contains('emo')) return (img.complete && img.naturalWidth) ? {key: img.currentSrc || img.src, im: img, sx: 0, sy: 0, sw: img.naturalWidth, sh: img.naturalHeight} : undefined;
+  const cs = getComputedStyle(img), m = /url\("?([^")]+)"?\)/.exec(cs.backgroundImage || ''); if(!m) return null;
+  const url = m[1], key = url + '|' + cs.backgroundPosition + '|' + cs.backgroundSize;
+  let at = VIS3_ATLAS[url]; if(!at){ at = VIS3_ATLAS[url] = new Image(); at.decoding = 'async'; at.src = url; }
+  if(!at.complete || !at.naturalWidth) return {wait: at};
+  const pc = v=> parseFloat(v) / 100, sz = (cs.backgroundSize || '').split(/\s+/).map(pc), ps = (cs.backgroundPosition || '').split(/\s+/).map(pc);
+  if(!(sz[0] > 0) || !(sz[1] > 0)) return null;
+  const cw = at.naturalWidth / sz[0], ch = at.naturalHeight / sz[1];
+  return {key, im: at, sx: (ps[0] || 0) * (sz[0] - 1) * cw, sy: (ps[1] || 0) * (sz[1] - 1) * ch, sw: cw, sh: ch};
+}
+function vis3PipOffset(img){
+  const src = vis3PipSource(img); if(src === undefined) return undefined; if(!src) return null; if(src.wait) return src;
+  if(VIS3_PIP_OFF.has(src.key)) return VIS3_PIP_OFF.get(src.key);
+  let off = null;
+  try{ const N = 48, cv = vis3PipOffset.cv || (vis3PipOffset.cv = document.createElement('canvas')); cv.width = N; cv.height = N;
+    const g = cv.getContext('2d', {willReadFrequently: true}); g.clearRect(0, 0, N, N); g.drawImage(src.im, src.sx, src.sy, src.sw, src.sh, 0, 0, N, N);
+    const d = g.getImageData(0, 0, N, N).data; let x0 = N, y0 = N, x1 = -1, y1 = -1;
+    for(let y = 0; y < N; y++) for(let x = 0; x < N; x++) if(d[(y * N + x) * 4 + 3] > 60){ if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
+    if(x1 >= 0){ const fx = (x0 + x1 + 1) / 2 / N - .5, fy = (y0 + y1 + 1) / 2 / N - .5; off = (Math.abs(fx) >= .04 || Math.abs(fy) >= .04) ? [fx, fy] : null; } }catch(e){ off = null; } // (a picture from another site can't be read: left as it is)
+  VIS3_PIP_OFF.set(src.key, off); return off;
+}
+function vis3CentrePips(root){
+  try{ (root || document).querySelectorAll('.badges .abadge img').forEach(img=>{
+    const apply = ()=>{ const o = vis3PipOffset(img); if(o === undefined) return; if(o && o.wait){ o.wait.addEventListener('load', apply, {once: true}); return; }
+      img.style.translate = o ? `${(-o[0] * 100).toFixed(1)}% ${(-o[1] * 100).toFixed(1)}%` : ''; };
+    if(img.complete) apply(); else img.addEventListener('load', apply, {once: true}); }); }catch(e){}
+}
+function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
 function w2HazardMark(h){
   if(!h) return '';
   const out = [];
-  if(h.trap > 0) out.push(`<span class="w2-hazard-mark trap" title="A trap: the next card played here takes ${h.trap} damage">🪤 ${h.trap}</span>`);
+  if(h.trap > 0) out.push(vis3TrapRingHTML() + `<span class="w2-hazard-mark trap" title="A trap: the next card played here takes ${h.trap} damage">🪤 ${h.trap}</span>`); // + the falling red ring (VIS3, V1)
   if(h.scorch > 0) out.push(`<span class="w2-hazard-mark scorch" title="Burning ground: the next card played here takes ${h.scorch} fire damage">🔥 ${h.scorch}</span>`);
   return out.join('');
 }
@@ -46656,7 +46732,11 @@ function eq2HpParts(c, d){ const base = Math.max(1, c.baseHp != null ? c.baseHp 
 // this Health bar (EQ2-3): at night Voidfeather's Nocturnal +1/+1 gives it bonus Health, so the bar showed, green for the Health it had
 // left. It sat at 21% from the cell's foot, which is the middle of the Attack and Health plates (they run 70%-86% of the card's height),
 // so it read as a stripe across the Attack. It now sits just above the plates (31.5%), a little thinner and narrower.
+// 2026-10-26 (package VIS3, V3; owner #16: "Healthbar on units - ... No need. Shields will just be blue numbers on the card."): no Health bar
+// on units any more; a Shield and temporary Health show as the blue number (vis3ShieldHTML). (eq2HpBarHTML is kept for the replay's callers.)
+const VIS3_UNIT_HPBAR = false;
 function eq2HpBarHTML(c, d){
+  if(!VIS3_UNIT_HPBAR) return '';
   const p = eq2HpParts(c, d); if(!(p.bonus > 0) && !(p.temp > 0)) return '';
   const pc = x=> (Math.max(0, x) / p.total * 100).toFixed(1) + '%';
   const tip = [TX('ui.eq2-hp-line', {hp: p.hp, max: p.max}), p.bonus > 0 ? TX('ui.eq2-hp-bonus', {n: p.bonus}) : '', p.temp > 0 ? TX('ui.eq2-hp-temp', {n: p.temp}) : ''].filter(Boolean).join(' · ');
@@ -47487,6 +47567,32 @@ function en2BoomOrphanFlight(ev){
 // a Guardian the blow kills stays where it fell, flinches, and its death plays on that spot. Offsets are used (not
 // transform), so the hit's knock and the death's own tweens, which drive transform, play on top of the move. (Not the CSS translate property:
 // GSAP 3.12 resets translate to none whenever it tweens a transform on the same element.) It moves by left / top (position: relative).
+// 2026-10-26 (package VIS3, V4; owner #33: "When rampart intercepts, the rampart-er moves abit towards their own rampart, and vibrates with a
+// expanding aura on block, then moving back. Same like guardian - if it dies on that hit, it doesnt come back"):
+//   vis3BlockPulse: the blocker's card shakes (a quick side-to-side on the tile, the CSS translate property by WAAPI, so the knock's and the
+//     death's transforms still play on top) while a card-shaped aura grows out of it and fades;
+//   vis3RampartStep: a beat before the blow lands the Rampart unit slides a little toward its bramble (a third of the way, at most 38 px),
+//     pulses as its share lands, and slides home; a unit the share kills stays there and its death plays on that spot. It moves by left / top
+//     like the Guardian's step-in (en2GuardStepIn, which now pulses too).
+function vis3BlockPulse(el){
+  if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const t = el.querySelector('.card-tile') || el, c = en2Ctr(t);
+  try{ t.animate([{translate:'0 0'}, {translate:'-4px 0'}, {translate:'4px 0'}, {translate:'-3px 0'}, {translate:'3px 0'}, {translate:'-1px 0'}, {translate:'0 0'}], {duration:320, easing:'linear'}); }catch(e){}
+  const a = en2Layer('', 'vis3-block-aura'); gsap.set(a, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:.95, scale:1});
+  gsap.to(a, {scale:1.32, opacity:0, duration:.5, ease:'power2.out', onComplete:()=> a.remove()});
+  try{ SoundKit.markArmor ? SoundKit.markArmor() : SoundKit.clang(); }catch(e){}
+}
+function vis3RampartStep(ev, hitAt, dies){
+  const u = boardCardEl(ev.uid), c = hqTileEl(ev.side); if(!u || !c || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const ur = u.getBoundingClientRect(), cr = c.getBoundingClientRect(), sc = en2Local(u);
+  let dx = (cr.left + cr.width/2) - (ur.left + ur.width/2), dy = (cr.top + cr.height/2) - (ur.top + ur.height/2); const L = Math.hypot(dx, dy) || 1, k = Math.min(38, L / 3) / L;
+  dx *= k; dy *= k;
+  const pos0 = getComputedStyle(u).position, moveMs = Math.min(260, Math.max(160, hitAt * .5));
+  setTimeout(()=>{ u.classList.add('vis3-blocking'); u.style.zIndex = '30'; if(pos0 === 'static') u.style.position = 'relative';
+    gsap.to(u, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration: moveMs/1000, ease:'sine.out'}); }, Math.max(0, hitAt - moveMs - 20));
+  setTimeout(()=> vis3BlockPulse(u), hitAt);
+  if(!dies) setTimeout(()=>{ gsap.to(u, {left:'0px', top:'0px', duration:.32, ease:'sine.inOut', onComplete:()=>{ u.style.left = ''; u.style.top = ''; if(pos0 === 'static') u.style.position = ''; u.style.zIndex = ''; u.classList.remove('vis3-blocking'); }}); }, hitAt + 380);
+}
 const EN7_GUARD_TILT = 10; // degrees (EN7, 2026-10-24, owner 13:12 #4)
 function en2GuardStepIn(ev){
   const g = boardCardEl(ev.targetUid), w = boardCardEl(ev.guardedUid); if(!g || !w || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
@@ -47511,6 +47617,7 @@ function en2GuardStepIn(ev){
   setTimeout(()=>{ try{ tiltAnim = g.animate([{rotate:'0deg'}, {rotate: tilt + 'deg'}], {duration: moveMs, easing:'ease-out', fill:'forwards'}); }catch(e){} }, Math.max(0, hitAt - moveMs - 30));
   const untilt = ()=>{ try{ const back = g.animate([{rotate: tilt + 'deg'}, {rotate:'0deg'}], {duration: 340, easing:'ease-in-out'}); if(tiltAnim) tiltAnim.cancel(); back.onfinish = ()=>{ try{ back.cancel(); }catch(e){} }; }catch(e){ if(tiltAnim) try{ tiltAnim.cancel(); }catch(e2){} } };
   setTimeout(()=>{ gsap.to(g, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration:moveMs/1000, ease:'sine.inOut'}); }, Math.max(0, hitAt - moveMs - 30));
+  setTimeout(()=> vis3BlockPulse(g), hitAt); // VIS3 (2026-10-26, V4): it shakes with an expanding aura as it blocks
   if(dies) setTimeout(()=>{ const t = g.querySelector('.card-tile') || g; try{ t.animate([{translate:'0 0', rotate:'0deg'}, {translate:'-5px 0', rotate:'-4deg'}, {translate:'5px 0', rotate:'4deg'}, {translate:'-3px 0', rotate:'-2deg'}, {translate:'0 0', rotate:'0deg'}], {duration:300, easing:'ease-out'}); }catch(e){} }, hitAt + 20); // the flinch; it dies where it stands
   else setTimeout(()=>{ untilt(); gsap.to(g, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ g.style.left = ''; g.style.top = ''; if(pos0 === 'static') g.style.position = ''; g.style.zIndex = ''; g.classList.remove('en2-guarding'); }}); }, hitAt + 360);
 }
@@ -47584,6 +47691,8 @@ function en3BoomMissThrow(ev){
 // it. Bramble Armor: a small shield ting on the bramble ("🛡️ −1").
 function en3RampartVfx(ev){
   const am = animMs(), at = am.windup + am.impactPad, rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+  const dies = !!(rc && (rc.hp||0) - (ev.dmg||0) <= 0); // VIS3 (2026-10-26, V4): a Rampart unit this share kills stays where it blocked
+  try{ vis3RampartStep(ev, at, dies); }catch(e){}
   if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.dmg||0));
   setTimeout(()=>{ const u = boardCardEl(ev.uid), c = hqTileEl(ev.side); if(!u) return;
     if(c && hasGsap() && !reducedMotion() && fxAtLeast('low')){ const p = en2Ctr(c), q = en2Ctr(u), L = Math.hypot(q.x - p.x, q.y - p.y), ang = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
