@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-26 release 10-26d (batch: HUB6, ENG10)
+- Rules: Armor stops arrows and spits and is priced 1.68 x N^1.43 (21 armoured cards re-fitted, the two held cards cut, the Caldera Wyrm to Armor 1); the spits read Cinder / Acid / Venom / Ice / Spark; Charge recharges, Reload costs more; On Ready fires on the turn a Wait-0 unit is played; Grasping Briars (Tangled) on 12-4 and 12-7; Hardy N with Sunder and Dismantle; Gorge (was Fester); the six threshold skills on their cards; Flora phylum with Tree / Fruit / Flower / Vine / Mushroom; PvP strangers levelled to your BR; late side maps' PRO fights at their opening map's enemy level.
+- Hub: the Deck optimizer summary (three reference decks with their win rates, What is Elo?, the per-map table).
+- Checks: full unit tier against 10-24e's list: new failures autobattle (speed) and nv (both fail on 10-25b on this machine), bal2 (an ENG10 re-fit and the Caldera Wyrm's budget: fixed) and coop-dungeon (the boss's derived def from On Ready at play: test updated); smoke after the fixes as listed below. flows 0 issues. ui_smoke: 3 failures, the tutorial check (53%, owner call TUT-1), unchanged from 10-26c. card-matrix golden refreshed for ENG10 (0 failures).
+
 ## 2026-10-26 package HUB6 (hub only)
 - Hub, 🧬 Deck optimizer tab: a summary on top with the three reference decks (Map reference with a per-map picker, Reference-2 the Ant Deck, Reference-3 pending), their road and PRO / BPRO win rates with the source file named, a plain "What is Elo?" box with a win-rate / Elo table, and a sortable per-map table. Built by `tools/hub/deckopt_summary.py`. No game code.
 ## 2026-10-26 (package ENG10: the owner's 10-26 11:19 answers ENG9-3..10, PROP1-1, PROP1-3, PROP1-4, FIX3-4, PREF-3)

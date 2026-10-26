@@ -251,7 +251,7 @@ function sameEverywhere(r, label){
     C.startFloor(run, 2); C.resolveRound(run, {});
     ok(C.curseOn(run, 2) && !C.planCells(run, 'A').some(c=> c.slot === 0), 'mechanic: on a cursed round the centre is not offered');
     C.startFloor(run, 3);
-    ok(C.viewOf(run).board.dungeon.some(u=> u.defId === C.bossIdOf(run, 3) && u.slot === 0), 'boss: the Matriarch stands in the dungeon\'s front centre');
+    ok(C.viewOf(run).board.dungeon.some(u=> String(u.defId).split('~dv')[0] === C.bossIdOf(run, 3) && u.slot === 0), 'boss: the Matriarch stands in the dungeon\'s front centre'); // 2026-10-26 (release): ENG10's On Ready at play gives the boss a derived def (~dvN) as it spawns
     const big = C.floorOverlay(run, 3)[C.bossIdOf(run, 3)], small = C.floorOverlay(C.createRun({makeSimEngine: H.Engine.makeSimEngine, defs, seed: 5, size: 2, seats: [{seat: 'A', deck: deckFrom(1)}]}), 3)[C.bossIdOf(run, 3)];
     ok(big.health > small.health, `scaling: the boss has more Health against 4 seats (${big.health}) than 2 (${small.health})`);
     ok(C.HEALTH_SCALE.join() === '1,1.7,2.3,2.8', 'scaling: Health x1, x1.7, x2.3, x2.8 by party size (D49)');

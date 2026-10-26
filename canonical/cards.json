@@ -18530,7 +18530,7 @@
     ],
     "worldBoss": true,
     "effects": {
-      "armor": 2,
+      "armor": 1,
       "triggers": [
         {
           "on": "onDeath",
@@ -18569,7 +18569,7 @@
         "*a slow, molten breath*"
       ]
     },
-    "creatorNote": "2026-10-19 halve (BF5): was 6/36. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/18. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/27. 2026-10-24 (package BAL2, T21-2 / RJ option 1, \"give it a source\"): the leader of 20-B-4 The Caldera Wyrm (world boss, Volcano Lair) is paid on clearing that fight (grantClearedBossLeaders, source map mx / 20-B-4), so it is fitted to the budget at Level 1 with its map term (Map 20): 6/36 -> 4/7 (Heroic, S 10: Armor 2, Pounce 5, a 5 heat burst on death; 6/36 was 1.82x its N). The 29 Health it lost went onto the 20-B-4 bramble (hqHp 240 -> 269) so the fight keeps its weight; the Wyrm fights there at the road level (Lv 5).",
+    "creatorNote": "2026-10-19 halve (BF5): was 6/36. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/18. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/27. 2026-10-24 (package BAL2, T21-2 / RJ option 1, \"give it a source\"): the leader of 20-B-4 The Caldera Wyrm (world boss, Volcano Lair) is paid on clearing that fight (grantClearedBossLeaders, source map mx / 20-B-4), so it is fitted to the budget at Level 1 with its map term (Map 20): 6/36 -> 4/7 (Heroic, S 10: Armor 2, Pounce 5, a 5 heat burst on death; 6/36 was 1.82x its N). The 29 Health it lost went onto the 20-B-4 bramble (hqHp 240 -> 269) so the fight keeps its weight; the Wyrm fights there at the road level (Lv 5). 2026-10-26 (release 10-26d): Armor 2 -> 1; ENG10's Armor price (1.68 x N^1.43) put it over the budget at every stat line, as ENG10-2 did for the off-line armor cards.",
     "source": {
       "kind": "map",
       "id": "mx",
