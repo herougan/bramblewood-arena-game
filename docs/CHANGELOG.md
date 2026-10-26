@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-27 release 10-27a (batch: HUB7, FIN1, FIN2)
+- The card editor works again (ENG9's Render note had added an unlabelled skill that crashed the skill picker; a plain Save also no longer drops trigger fields, Marsh Wisp's exile, On Ready Gold and other row-less effects). Render is back in the Codex.
+- Bramble Armor reads Fortify. Shield counts 0.8 Health in the budget: Tide Pool Crab 1/2 -> 1/3, Conch Crawler 1/1 -> 2/2.
+- The Tidelock Vault's floors and boss: The Dripping Roost, The Sunken Galleries, The Brine Pools, The Tidewarden's Hall, The Tidewarden. Tokens on the board get a pale wash.
+- Hub: the Maps 0-24 heatmap (each reference deck against each map's optimum, 200 games a cell; the optimum re-run for every map on this batch).
+- Owner 10-26 23:33: the open decisions filled by Claude (RES4, CONTENT3, AI3, VIS3, FIN2); only S3, A1, A2 wait for the owner.
+- Checks (one final run): full unit tier against 10-24e's list: new failures autobattle (speed) and nv (this 2-core machine) and ts-status-chips-2026-10-19 (its browser part throws on every release back to 10-26a; it was masked by the runner's cache; logged, not from this batch). ui_smoke 3 failures, the tutorial check (TUT-1, the owner's). flows 0 issues. card-matrix 0 failures; 107 golden diffs, all duels of the re-fit Tide Pool Crab / Conch Crawler, accepted.
+
 ## 2026-10-26 (package FIN2: the card editor works again, Bramble Armor is Fortify, Shield at 0.8 Health)
 - **The admin card editor opens and saves again** (FIN2-b, owner: "The card edit - doesn't work anymore"). ENG9 patched Render's Codex note onto the passive list, where Render isn't, so a label-less stub joined the skill list; the editor's skill picker sorts by label and threw on open (every card with a skill row), and the stub also hid Render from the Codex. The note now sits on Render itself and a patch with no label can't add a stub. Server side was fine (RLS and columns unchanged, read-only check). A plain Save also stopped dropping what the form can't show: a trigger's When Ready / once / other fields while its On and Do are unchanged (Scraper of Skies, Nest, Sea Cucumber, Mother Carrier ...), an action the list lacks (Marsh Wisp's exileSelf used to turn into Arrow), and effects with no "+ Add Skill" row (On Ready Gold, Scar, Grit, Devour, Beware ...).
 - **Bramble Armor is called Fortify** (FIN2-a; engine key `brambleArmor` kept): card text, Codex, editor, log ("{name} fortifies its bramble: the hit is 1 less.") and the Breach / bramble-shot notes, in all 12 languages (`tools/i18n_2026_10_26_fin2.py`). Each language's Fortify is a different word from Fortification's (SK2, builds a Palisade).

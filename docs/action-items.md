@@ -16,6 +16,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | FIN2-b | FIN2 | Owner 23:46 #2 "The card edit - doesn't work anymore". Find and fix the admin card editor (saving / applying edits). |
 | FIN2-c | FIN2 | Owner 23:46 #3 "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is heavily undertuned (though its a beginner card, so it should be weaker)". Shield at 0.8 x Health in the budget; re-fit the cards it moves (Tide Pool Crab stays a weak beginner card). |
 | BAL5 | later | FIN2-2: Give Shield N and Bulwark priced from Shield = 0.8 Health (re-fit the cards they move). |
+| TS-1 | later | `tests/ts-status-chips-2026-10-19.js`: its browser part throws (undefined .push) on every release back to 10-26a; find and fix (test or game). |
 | OVR-clear | waiting | The live clear of the folded rows (approved 10-26 14:14) needs the owner at the Supabase confirm prompt (timed out twice). |
 
 ## 10-25 22:36: the owner's playtest notes (fired: "You can begin the large action item series")
