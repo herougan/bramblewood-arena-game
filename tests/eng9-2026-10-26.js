@@ -151,14 +151,17 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
   round(e, P); ok(!c.chained, 'G19 4 of 4 in all: free (the damage adds up; reaching N is enough)'); }
 
 // ---- G23 / G24 -----------------------------------------------------------------------------------------------------------------------
-{ const {e, P} = mk(231 + 1000); put(e, P, 2, 'x-wall', 0); const f = put(e, P, 1, 'x-fb0', 0); const ev = []; e.endOfRoundUpkeep(P, so, {}, ev);
-  ok(ev.some(x=> x.type === 'ready' && x.uid === f.uid), 'G23 a Wait 0 unit gets its On Ready at the upkeep');
-  ok(ev.some(x=> x.type === 'skillSpent' && x.uid === f.uid && x.keys.includes('fireball')), 'G23 ... its Fireball goes off and leaves the card');
+// 2026-10-26 (package ENG10, owner on ENG9-7: "On ready at wait 0 on the turn it comes out!"): a Wait-0 unit's On Ready fires as it is played
+// (debugSpawnCard here), no longer at the next upkeep; the one-shot still leaves the card and never fires twice.
+{ const {e, P} = mk(231 + 1000); put(e, P, 2, 'x-wall', 0); const ev0 = []; e.debugSpawnCard(P, so, 1, 'x-fb0', 'left', {}, ev0); const f = all(P[1]).reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null); const ev = ev0.slice(); e.endOfRoundUpkeep(P, so, {}, ev);
+  ok(ev0.some(x=> x.type === 'ready' && x.uid === f.uid), 'G23 (ENG10) a Wait 0 unit gets its On Ready as it is played');
+  ok(ev0.some(x=> x.type === 'skillSpent' && x.uid === f.uid && x.keys.includes('fireball')), 'G23 ... its Fireball goes off and leaves the card');
   ok(!(E && defs['x-fb0']) || !(e.effectsOfCard ? e.effectsOfCard(f).fireball : 0), 'G23 ... (spent)');
   const ev2 = []; e.endOfRoundUpkeep(P, so, {}, ev2); ok(!ev2.some(x=> x.type === 'ready' && x.uid === f.uid), 'G23 ... and On Ready never fires twice'); }
 { const {e, P} = mk(241 + 1000); put(e, P, 2, 'x-wall', 0); const c = put(e, P, 1, 'x-charge', 0); const ev = [];
   for(let r = 0; r < 4; r++) e.endOfRoundUpkeep(P, so, {}, ev);
-  ok(ev.filter(x=> x.type === 'charge' && x.uid === c.uid && x.fired).length === 1 && ev.some(x=> x.type === 'skillSpent' && x.keys.includes('charge')), 'G24 Charge goes off once, then leaves the card'); }
+  // 2026-10-26 (package ENG10, owner on ENG9-4: "Charge is recharging, like reload."): the clock starts again (Charge 1: every upkeep)
+  ok(ev.filter(x=> x.type === 'charge' && x.uid === c.uid && x.fired).length >= 3 && !ev.some(x=> x.type === 'skillSpent' && x.keys.includes('charge')), 'G24 (ENG10) Charge recharges and stays on the card'); }
 
 // ---- G25 Tangled ---------------------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(251); const t = put(e, P, 2, 'x-hit', 0); put(e, P, 1, 'x-tangler', 0); round(e, P, 1);
@@ -169,7 +172,7 @@ const hits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.targetUid === uid);
 
 // ---- data: prices, cards, texts ------------------------------------------------------------------------------------------------------
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), by = {}; sc.skills.forEach(x=> by[x.id] = x);
-  ['undead', 'revive', 'poisonBarbs', 'stockpile', 'tangle', 'decay', 'armor', 'magicArmor', 'render', 'daunt', 'charge', 'fireball'].forEach(k=> ok(by[k] && /ENG9/.test(by[k].note || ''), `price: ${k} has an ENG9 note`));
+  ['undead', 'revive', 'poisonBarbs', 'stockpile', 'tangle', 'decay', 'magicArmor', 'render', 'daunt', 'fireball'].forEach(k=> ok(by[k] && /ENG9/.test(by[k].note || ''), `price: ${k} has an ENG9 note`)); // 2026-10-26 (ENG10): Armor and Charge re-priced by ENG10 (tests/eng10-2026-10-26.js)
   ok(by.chained && Number(by.chained.value) === 0, 'G19 Chained costs 0 as a skill (it is an N multiplier)');
   const BB = require(path.join(ROOT, 'bramblewood-budget.js'));
   ok(BB.nMultOf({chained:{breakOn:'damage', amount:4}}) > 1.15, `G19 Chained 4 is an N multiplier (${BB.nMultOf({chained:{breakOn:'damage', amount:4}})})`);

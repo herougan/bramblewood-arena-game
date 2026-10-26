@@ -1877,8 +1877,7 @@ sk1Patch(PASSIVE_DEFS, 'rampart', {codexNote:TX('ui.sk-rampart-codex') + ' ' + T
 sk1Patch(PASSIVE_DEFS, 'dive', {codexNote:TX('ui.eng9-dive-codex')});
 sk1Patch(PASSIVE_DEFS, 'bloomCopy', {codexNote:TX('ui.eng9-bloom-codex')});
 sk1Patch(PASSIVE_DEFS, 'season', {codexNote:TX('ui.eng9-season-codex')});
-[['fireBolt', 'ui.eng9-skn-fire-spit'], ['acidBolt', 'ui.eng9-skn-acid-spit'], ['poisonBolt', 'ui.eng9-skn-venom-spit'], ['iceBolt', 'ui.eng9-skn-frost-spit'], ['shockBolt', 'ui.eng9-skn-spark-spit']].forEach(([k, t])=> sk1Patch(PASSIVE_DEFS, k, {label:TX(t)}));
-{ const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.eng9-charge', {n: cp.n})}`; }; } }
+// (the Spit labels and Charge's line: ENG10's block below, 2026-10-26: the element alone, and Charge recharging again)
 Object.assign(SKILL_ICON, {undead:'↺', revive:'🪦', poisonBarbs:'🌵', stockpile:'🪵'});
 // ==== Package CONTENT3 (2026-10-26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json): the new skills' lines.
 //   Wakeful (G5)      never falls Asleep (a Sleep hit, the Spore Cloud)       Pulverise (OWN-Q5)  ignores Armor, breaks Armor / Magic Armor /
@@ -1889,6 +1888,50 @@ PASSIVE_DEFS.push(
   {key:'pulverise', category:'passive', label:TX('ui.c3-pulverise-name'), kind:'boolean', desc:()=> TX('ui.c3-pulverise'), codexNote:TX('ui.c3-pulverise-codex')},
   {key:'socket', category:'passive', label:TX('ui.c3-socket-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.c3-socket', {n: numOr(v, 1)}), get:e=> e.socket ? numOr(e.socket, 1) : undefined});
 Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
+// ==== Package ENG10 (2026-10-26, the owner's 10-26 11:19 answers; rules in bramblewood-engine.js, prices in canonical/skill-costs.json and
+// bramblewood-budget.js): the lines, the card editor's rows and the Codex for
+//   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
+//   Charge recharging (ENG9-4)              Armor stops arrows and spits (ENG9-6)       Sunder / Dismantle and Hardy N (PROP1-1)
+//   Gorge, the old Fester key (PROP1-3)     Requiem / Dirge / Carnage / Muster / Beset / Throng N – {…} (PROP1-4)
+[['fireBolt', TX('ui.e10-skn-cinder')], ['acidBolt', TX('ui.e10-skn-acid')], ['poisonBolt', TX('ui.e10-skn-venom')], ['iceBolt', TX('ui.e10-skn-ice')], ['shockBolt', TX('ui.e10-skn-spark')]].forEach(([k, label])=> sk1Patch(PASSIVE_DEFS, k, {label}));
+{ const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.e10-charge', {n: cp.n})}`; }; } }
+sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
+sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
+PASSIVE_DEFS.push(
+  {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
+  {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
+// each threshold skill's name and line, as literal text keys (tests/game-texts.js reads TX('key') calls)
+const THR_TX = {requiem:{name:()=> TX('ui.skn-e10-requiem'), line:o=> TX('ui.sk-e10-requiem', {n: o.n, skills: o.skills})}, dirge:{name:()=> TX('ui.skn-e10-dirge'), line:o=> TX('ui.sk-e10-dirge', {n: o.n, skills: o.skills})},
+  carnage:{name:()=> TX('ui.skn-e10-carnage'), line:o=> TX('ui.sk-e10-carnage', {n: o.n, skills: o.skills})}, muster:{name:()=> TX('ui.skn-e10-muster'), line:o=> TX('ui.sk-e10-muster', {n: o.n, skills: o.skills})},
+  beset:{name:()=> TX('ui.skn-e10-beset'), line:o=> TX('ui.sk-e10-beset', {n: o.n, skills: o.skills})}, throng:{name:()=> TX('ui.skn-e10-throng'), line:o=> TX('ui.sk-e10-throng', {n: o.n, skills: o.skills})}};
+const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'}}; // icons no other skill uses
+function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
+function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
+Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
+  PASSIVE_DEFS.push({key:k, category:'passive', label:THR_TX[k].name(), kind:'number', min:1, defaultValue:THR_APP[k].n, desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, Object.assign({}, e, {[k]: v})), skills: grantText(thrGrantApp(k, e))}), codexNote:TX('ui.sk-e10-thr-codex'),
+    get:e=> e[k] ? thrNApp(k, e) : undefined, apply:(e, v)=>{ const x = Math.max(1, Math.round(Number(v) || THR_APP[k].n)); e[k] = x; }},
+    {key:k + 'Grant', category:'passive', label:THR_TX[k].name(), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
+    get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; if(!e[k]) e[k] = THR_APP[k].n; } }}); });
+Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons no other skill uses
+// Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
+function eqHardyOf(d){ const e = (d && d.equip) || {}, v = e.hardy != null ? e.hardy : e.lives; return v != null && Number(v) > 0 ? Math.max(1, Math.min(9, Math.round(Number(v)))) : 1; }
+// FIX3-4 (owner 10-26 11:19: "Yes level pvp strangers deck"): a Collection PvP stranger's deck fights at the level that brings its battle rating
+// to yours. Battle rating is linear in the cards' level factor (ratingLevelFactor: 1 + 0.31 a level from Level 1), so the stranger's level is
+// L = 1 + (your BR / its BR at Level 1 - 1) / 0.31, clamped to Level 1-10, kept to two decimals (a fractional level is a per-copy mix of its two
+// stat steps, levelMixDeck, as the road's enemies are). Standard PvP stays at Level 1 for both sides. null: no deck to level.
+function pvpStrangerLevel(ghost, myBR){
+  if(!ghost || !ghost.deck) return null; const at1 = deckLevelFrom(ghost.deck, ()=> 1, ghost.leaders || []); if(!(at1 > 0) || !(myBR > 0)) return null;
+  return Math.max(1, Math.min(10, Math.round((1 + (myBR / at1 - 1) / 0.31) * 100) / 100)); }
+function pvpLevelStranger(ghost, myBR){ const L = pvpStrangerLevel(ghost, myBR); if(L == null) return ghost;
+  let deck = ghost.deck; try{ deck = levelledEnemyDeck({key: 'pvp', leaders: (ghost.leaders || []).slice(), enemyLevel: L, levelCap: 10}, ghost.deck); }catch(e){ deck = ghost.deck; }
+  return Object.assign({}, ghost, {deck, pvpLevel: L, deckAtLevel1: ghost.deck}); }
+// PREF-3 (owner 10-26 11:19: "OKAy to your recos"): a side map that opens later than its parent (mapUnlockNumberOf) fights its own PRO and BPRO
+// decks at the enemy level the road uses on the map it opens on: the mean of roadEnemyLevelExact over that main map's road fights (two decimals),
+// never below the PRO's own Level 1. A main map's PRO fights and a side map that opens with its parent keep Level 1. null: no change.
+function proLateSideLevel(mapId){
+  const m = CONQUEST_MAPS.find(x=> x.id === mapId); if(!m || !m.sub) return null; const own = mapNumberOf(mapId), open = mapUnlockNumberOf(mapId); if(!(open > own)) return null;
+  const main = mainConquestMaps().find(x=> mapNumberOf(x.id) === open); if(!main) return null; const fights = roadCurveFights(main); if(!fights.length) return null;
+  let t = 0; fights.forEach(n=>{ try{ t += roadEnemyLevelExact(n) || 0; }catch(e){} }); return Math.round(t / fights.length * 100) / 100; }
 // Package TR (2026-10-21, owner 18:23; docs/titles-transforms-2026-10-21.md): King (the first King in play takes the Crown and, while it
 // holds it, has Kingly – {…}: Tribute 1, Armor 2 unless its card names other braces, kinglyGrant), Tribute N (N Gold each turn while Ready),
 // Usurper's theft of the Crown and King Slayer against Royalty, Kings and the crowned unit. The rules: bramblewood-engine.js, Package TR.
@@ -2208,6 +2251,8 @@ const TAG_SUGGESTIONS = [
 ];
 const ARCHETYPE_ICON = __ARCHETYPE_ICON__;
 if(!ARCHETYPE_ICON.Fungi) ARCHETYPE_ICON.Fungi = '🍄'; // ENG9 (2026-10-26, owner G9: "There's no Funghi type"): Fungi, a kingdom beside Flora
+// ENG10 (2026-10-26, owner ENG9-5: "flora is the phyla, and trees, fruits, flowers etc are the type"): the Flora types (bramblewood-taxonomy.js: children of Flora)
+Object.entries({Tree:'🌳', Fruit:'🍎', Flower:'🌸', Vine:'🌱', Mushroom:'🍄'}).forEach(([k, v])=>{ if(!ARCHETYPE_ICON[k]) ARCHETYPE_ICON[k] = v; });
 // Resist/Weakness dropdown split (2026-09-27, per explicit request: "Split the dropdown into
 // two, one for passives & elements, then one for types" — the single flat alphabetized list
 // below used to union THREE unrelated categories (damage types, ARCHETYPE_ICON Type Tags, and
@@ -2912,6 +2957,8 @@ const SKILL_TEXT = {
   chilli: v=> TX('ui.sk-chilli', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
+// ENG10 (2026-10-26): Armor's and Gorge's lines are their PASSIVE_DEFS rows' (the ENG10 block above): drop the old short texts here, after SKILL_TEXT exists
+delete SKILL_TEXT.armor; delete SKILL_TEXT.fester;
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
 Object.assign(SKILL_TEXT, {
   tornado: v=> `When it arrives, ${Number(v) > 1 ? v + ' random enemy units are' : 'a random enemy unit is'} flung to another column for 1 damage (2 for flyers).`,
@@ -3218,7 +3265,7 @@ function describeEffects(def, liveCard, opt){
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const rs = eqResistText(k, v); if(rs) return '🔥 ' + rs; /* FX4 (2026-10-23) */ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); lines.push(TX('ui.eq2-dur-line', {n: eq2DurMax(def.id)}));
-    lines.push('⚔️🛡️ ' + TX('ui.c3-equip-time', {n: equipTimeOf(def)})); if(def.equip && def.equip.tamperProof) lines.push('🔒 ' + TX('ui.c3-tamper')); } // CONTENT3 (2026-10-26, E15): Equip Time N, Tamper-proof // 2026-10-18 (package D): two short lines; + its durability (EQ2, 2026-10-24)
+    lines.push('⚔️🛡️ ' + TX('ui.c3-equip-time', {n: equipTimeOf(def)})); if(def.equip && def.equip.tamperProof) lines.push('🔒 ' + TX('ui.c3-tamper')); if(eqHardyOf(def) > 1) lines.push('💍 ' + TX('ui.e10-hardy', {n: eqHardyOf(def)})); } // ENG10 (2026-10-26, PROP1-1): Hardy N // CONTENT3 (2026-10-26, E15): Equip Time N, Tamper-proof // 2026-10-18 (package D): two short lines; + its durability (EQ2, 2026-10-24)
   { const q = eqDetailLine(liveCard); if(q) lines.push(q); } // what a unit on the board carries, or is equipping (EQ, 2026-10-19)
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
   else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
@@ -3257,6 +3304,8 @@ function describeEffects(def, liveCard, opt){
       lines.push(`${ic('transform')}<span class="cx-head">${escapeHtml(transformHead(tf))}</span> — ${escapeHtml(TX('ui.sk-transform-short'))}${lc && lc.transformed ? ` <span class="atk-bonus">${escapeHtml(TX('ui.tf-done'))}</span>` : ''}`); return; }
     if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
     if(p.key==='seasonGrant' && e.season) return; // EN6 (2026-10-24): the Season line says its braces
+    if(/Grant$/.test(p.key) && THR_APP[p.key.slice(0, -5)] && e[p.key.slice(0, -5)]) return; // ENG10 (2026-10-26, PROP1-4): the threshold line says its braces
+    if(THR_APP[p.key]){ const N = thrNApp(p.key, e); lines.push(`${ic(p.key)}${p.label} ${N} – {${escapeHtml(grantText(thrGrantApp(p.key, e)))}} — ${escapeHtml(THR_TX[p.key].line({n: N, skills: grantText(thrGrantApp(p.key, e))}))}`); return; } // ENG10: "Requiem 5 – {+2/+2}"
     if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
     if(EN7_TIP_APP[p.key] && e[EN7_TIP_APP[p.key].base]) return; // EN7: read on the shot's own line ("Arrow 2 – poison")
     if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
@@ -8383,6 +8432,8 @@ function archMarkHTML(d, waitShown, live){
 // Default 1"): an equipment card's tile shows its Equip Time (equip.turns, default 1: the rounds a unit takes to equip it) in a small
 // top-right badge, a crossed sword and shield that slowly circle each other (reduced motion: still). A Tamper-proof piece adds a lock.
 function equipTimeOf(d){ const e = (d && d.equip) || {}; return Math.max(0, Math.round(e.turns == null ? 1 : Number(e.turns) || 0)); }
+function e10HardyBadgeHTML(d){ const n = eqHardyOf(d); if(!d || d.cardType !== 'equipment' || n < 2) return ''; const tip = TX('ui.e10-hardy', {n}); // ENG10 (2026-10-26, PROP1-1)
+  return `<span class="e10-hardy" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img" style="position:absolute; z-index:5; bottom:28%; right:3px; padding:0 4px; border-radius:8px; background:#3a2a07e0; color:#ffd56a; box-shadow:0 0 0 1px #d9a53a; font:700 clamp(8px, 9cqw, 12px)/1.3 system-ui;">💍${n}</span>`; }
 function equipTimeBadgeHTML(d){ if(!d || d.cardType !== 'equipment') return '';
   const n = equipTimeOf(d), tip = TX('ui.c3-equip-time', {n}) + (d.equip && d.equip.tamperProof ? ' · ' + TX('ui.c3-tamper') : ''), spin = (()=>{ try{ return reducedMotion(); }catch(e){ return true; } })() ? '' : 'animation:c3EqSpin 6s linear infinite;';
   return `<span class="c3-eq-time" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img" style="position:absolute; z-index:5; top:3px; right:3px; display:flex; align-items:center; gap:1px; padding:1px 4px; border-radius:9px; background:#1d1a14d9; color:#ffe7a8; font:700 clamp(8px, 9cqw, 12px)/1.2 system-ui, sans-serif; box-shadow:0 0 0 1px #c9a24a;"><span style="display:inline-block; ${spin}">⚔️</span>${n}${d.equip && d.equip.tamperProof ? '🔒' : ''}</span>`; }
@@ -8469,7 +8520,7 @@ function cardTileHTML(d, opts){
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle || hand ? '' : socketSlotHTML(d) /* 2026-10-24 (package H1): the gem socket of a Unique-and-above card */}
-    ${isCastle ? '' : equipTimeBadgeHTML(d) /* CONTENT3 (2026-10-26, E15): an equipment card's Equip Time, top right */}
+    ${isCastle ? '' : equipTimeBadgeHTML(d) /* CONTENT3 (2026-10-26, E15): an equipment card's Equip Time, top right */}${isCastle ? '' : e10HardyBadgeHTML(d) /* ENG10 (2026-10-26, PROP1-1): Hardy N, a gem badge */}
     ${isCastle
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Bramble">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('') /* ENG9 (2026-10-26, owner G9: "do the 2stone/1lumber otherwise lay them side by side"): a joint cost sits side by side with no gap; "/" is kept for an alternative cost (none yet) */}</div>`:''}
@@ -10385,7 +10436,7 @@ function renderEditorInner(){
       <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
-      <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label></span></div>
+      <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label><label style="display:flex; gap:4px; align-items:center;" title="${escapeAttr(TX('ui.e10-hardy-tip'))}">${escapeHtml(TX('ui.e10-hardy-name'))} <input id="fEquipHardy" type="number" min="1" max="9" style="width:52px" value="${eqHardyOf(c)}"></label></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
@@ -11310,7 +11361,8 @@ function readEditorFormIntoCard(){
         c.equip = Object.assign({}, c.equip || {}, {grant: gk ? {[gk]: pd && pd.kind==='boolean' ? true : Math.max(0, Number(document.getElementById('fEquipVal').value)||1)} : {}}); // CONTENT3 (2026-10-26): the piece's other fields (durability, breaks ...) are kept
         { const et = document.getElementById('fEquipTime'), tp = document.getElementById('fEquipTamper'); // CONTENT3 (2026-10-26, E15): Equip Time N (default 1) and Tamper-proof
           if(et){ const n = Math.max(0, Math.min(5, Math.round(Number(et.value)))); if(Number.isFinite(n) && n !== 1) c.equip.turns = n; else delete c.equip.turns; }
-          if(tp){ if(tp.checked) c.equip.tamperProof = true; else delete c.equip.tamperProof; } } if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
+          if(tp){ if(tp.checked) c.equip.tamperProof = true; else delete c.equip.tamperProof; }
+          { const hd = document.getElementById('fEquipHardy'); if(hd){ const n = Math.max(1, Math.min(9, Math.round(Number(hd.value) || 1))); delete c.equip.lives; if(n > 1) c.equip.hardy = n; else delete c.equip.hardy; } } /* ENG10 (2026-10-26, PROP1-1): Hardy N */ } if(!(c.archetypes||[]).includes('Equipment')) c.archetypes = ['Equipment'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(c.cardType === 'spell' || c.cardType === 'equipment'){ delete c.cardType; delete c.spell; delete c.equip; } } }
   { const fa = document.getElementById('fArtStyle'); if(fa){ if(fa.value === 'extended') c.artExtended = true; else delete c.artExtended; } } // 2026-10-10: normal vs extended art
   { const fs = document.getElementById('fSpecies'); if(fs){ const sp = fs.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean).map(x=> Object.keys(SPECIES_PHYLUM).find(k=> k.toLowerCase()===x.toLowerCase()) || x).slice(0, 2);
@@ -18810,6 +18862,9 @@ Object.assign(FIELD2, {
   sporeCloud:   {icon:'🍄', name:TX('ui.fx-name-spore-cloud'), editor:'sporecloud', short:TX('ui.fx-spore-cloud-short'), text:TX('ui.fx-spore-cloud'), codex:TX('ui.fxx-spore-cloud')},
   thunderstorm: {icon:'🌩️', name:TX('ui.fx-name-thunderstorm'), editor:'thunderstorm', short:TX('ui.fx-thunderstorm-short', {n: 1}), text:TX('ui.fx-thunderstorm', {n: 1}) /* 2026-10-22 (package FX): 1, was 2 */, codex:TX('ui.fxx-thunderstorm')},
   tangledRoots: {icon:'🪢', name:TX('ui.fx-name-tangled-roots'), editor:'tangledroots', short:TX('ui.fx-tangled-roots-short'), text:TX('ui.fx-tangled-roots'), codex:TX('ui.fxx-tangled-roots')},
+  // ENG10 (2026-10-26, owner on ENG9-10: "+ field effect that does tangled"): rules.graspingBriars, one random unit a side Tangled each round
+  // (Flyers and Structures are free). On The Briar Maze's 12-4 Thornvine Arch and 12-7 the Briar Queen.
+  graspingBriars: {icon:'🌹', name:TX('ui.e10-fx-briars-name'), editor:'graspingbriars', short:TX('ui.e10-fx-briars-short'), text:TX('ui.e10-fx-briars'), codex:TX('ui.e10-fxx-briars')},
   // 2026-10-21 (package FOG, owner: "a fog of war effect"): rules.fogOfWar (+ rules.fogPeek for the advanced peek). INFORMATION ONLY: it hides the
   // far enemy columns from the player's view (fogGet and boardCardHTML); combat, targeting and the CPU never read it. Not offered in raids.
   fogOfWar:     {icon:'🌫️', name:TX('ui.fx-name-fog-of-war'), editor:'fogofwar', short:TX('ui.fx-fog-of-war-short'), text:TX('ui.fx-fog-of-war'), codex:TX('ui.fxx-fog-of-war')},
@@ -18986,7 +19041,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
   // Field effects 2 (2026-10-16): each row is learned the first time it does something.
-  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].includes(ev.field)) hit = markFieldRow(ev.field); // + package GI (2026-10-19)
+  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots', 'graspingBriars' /* ENG10 */].includes(ev.field)) hit = markFieldRow(ev.field); // + package GI (2026-10-19)
   else if(ev.type === 'fieldTick' && ev.field === 'leylines') hit = markFieldRow('leylines3');
   else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
   else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
@@ -22072,10 +22127,10 @@ const CONQUEST_MAPS = [
       { key:"12-1", kind:"skirmish", name:"Hedge Mice", icon:"🐭", deck:{"bramble-hoglet":3,"field-mouse":3,"hedgehog-scout":3,"mouse-sapper":3,"seed-cache-squirrel":2,"gatling-hog":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 80% -> 87.5% at 40 tune games, target 90 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 100% -> 92% at 50 tune games, target 90 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, flavor:"A whole village lives inside the hedge walls.", requires:[] },
       { key:"12-2", kind:"skirmish", name:"Quill Path", icon:"🦔", deck:{"field-mouse":5,"cunning-vixen":2,"hedge-weasel":1,"lyrebird-mimic":2,"mouse-sapper":4,"seed-cache-squirrel":4} /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 48% -> 88% at 50 tune games, target 84 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"rookRow":true}, flavor:"Walk carefully. Everything here is pointy.", requires:["12-1"] },
       { key:"12-3", kind:"skirmish", challenge:true, showcase:"lyrebird-mimic", rewardTokens:["energyCapsule"] /* 2026-10-23 (EB): a first-clear Energy capsule */, name:"Warren Run", icon:"🐇", deck:{"bramble-hoglet":4,"cunning-vixen":2,"hedge-weasel":1,"lyrebird-mimic":2,"gatling-hog":3,"field-mouse":2} /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"secondBurrow"}, flavor:"The rabbits know every gap in the hedge. You don't.", requires:["12-1"] },
-      { key:"12-4", kind:"skirmish", name:"Thornvine Arch", icon:"🌿", deck:{"hedgehog-scout":5,"hedge-weasel":3,"quillguard":1,"thorn-shrike":1,"gatling-hog":3,"mouse-sapper":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 57.5% -> 72.5% at 40 tune games, target 72 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 86% -> 72% at 50 tune games, target 72 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"bishopPath":true}, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
+      { key:"12-4", kind:"skirmish", rules:{graspingBriars:true} /* 2026-10-26 (ENG10, ENG9-10): Grasping Briars */, name:"Thornvine Arch", icon:"🌿", deck:{"hedgehog-scout":5,"hedge-weasel":3,"quillguard":1,"thorn-shrike":1,"gatling-hog":3,"mouse-sapper":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 57.5% -> 72.5% at 40 tune games, target 72 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 86% -> 72% at 50 tune games, target 72 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, rules:{"bishopPath":true}, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
       { key:"12-5", kind:"elite", name:"Quillback Hold", icon:"🦔", deck:{"hedgehog-scout":4,"cunning-vixen":1,"hedge-weasel":3,"lyrebird-mimic":2,"quillguard":2,"field-mouse":2,"gatling-hog":2} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 77.5% -> 65% at 40 tune games, target 66 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 96% -> 80% at 50 tune games, target 66 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */, shieldOverride:10 /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, flavor:"The oldest porcupines hold the centre of the maze.", requires:["12-4"] },
       { key:"12-6", kind:"elite", name:"Rodent Court", icon:"🐀", deck:{"field-mouse":5,"seed-cache-squirrel":3,"cunning-vixen":3,"quillguard":1,"thorn-shrike":1,"gatling-hog":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 85% -> 62.5% at 40 tune games, target 60 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 92% at 50 tune games, target 60 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-23 (LEAD): leader, BR and win rate kept */, rules:{"mirage":true}, flavor:"Court is in session. You are the accused.", requires:["12-4"] },
-      { key:"12-7", kind:"boss", name:"The Briar Queen", icon:"👑", shieldOverride:31, deck:{"cunning-vixen":1,"hedge-weasel":3,"lyrebird-mimic":3,"quillguard":3,"thorn-shrike":3,"field-mouse":1,"gatling-hog":3,"seed-cache-squirrel":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 90% -> 65% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 86% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, flavor:"She grew the maze herself, one thorn at a time.", requires:["12-5","12-6"] },
+      { key:"12-7", kind:"boss", rules:{graspingBriars:true} /* 2026-10-26 (ENG10, ENG9-10): Grasping Briars */, name:"The Briar Queen", icon:"👑", shieldOverride:31, deck:{"cunning-vixen":1,"hedge-weasel":3,"lyrebird-mimic":3,"quillguard":3,"thorn-shrike":3,"field-mouse":1,"gatling-hog":3,"seed-cache-squirrel":3} /* 2026-10-25 (PRO3, EN8-10 road check): deck retuned toward the road curve after EN8's stronger CPU, swaps only (size, leaders and first-clear cards kept), 90% -> 65% at 40 tune games, target 40 (tools/skirmish_pass.js curve --decks-only --keep-leaders --keep-first --keep-size --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-3): deck retuned toward the road curve, 98% -> 86% at 50 tune games, target 40 (tools/skirmish_pass.js curve --all --decks-only --keep-leaders --pool --distinct) */ /* 2026-10-24 (BAL3, BAL2-1 owner 12:02 "use our agreed philosophy and schedule"): LEAD's Enemy level 3 dropped, the level schedule decides */, flavor:"She grew the maze herself, one thorn at a time.", requires:["12-5","12-6"] },
     ]},
   // The Redwood Deep (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mr", unlockAfter:"mh", name:"The Redwood Deep", icon:"🌲", blurb:"Trees as wide as castles and as old as the hills — bears, stags and boars rule the red shade.", sequential:true,
@@ -23662,7 +23717,8 @@ function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; 
 function proNodeOf(mapId, e, ent){
   const ck = mapId + ':' + e.id; let n = PRO_NODE_CACHE.get(ck); if(n) return n;
   const f = (ent && ent.field) || {}, rules = Object.assign({}, f.rules || {}), ai = CPU_AI_KEYS[((PRO_SKIRMISHES.rule || {}).ai != null ? PRO_SKIRMISHES.rule.ai : 1)] || 'smart';
-  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, deck: Object.assign({}, e.deck || {}), enemyLevel: e.level != null ? e.level : 1,
+  let lv = e.level != null ? e.level : 1; { const late = proLateSideLevel(mapId); if(late != null && late > lv) lv = late; } // ENG10 (2026-10-26, PREF-3): a late side map's PRO level
+  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, deck: Object.assign({}, e.deck || {}), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
   NODE_MAP_HINT.set(n, mapId);
@@ -33347,6 +33403,7 @@ function startMatchInner(mode, opts, standardDeck){
     asyncStage = pvpStageForRating(myRating);
     try{ fxHook('pvpTicketUsed'); }catch(e){} // 2026-10-15 batch F: the ticket tears
     asyncGhost = pickPvpStranger(currentMatchSeed, standardDeck || null).opponent;
+    if(asyncGhost && !standardDeck) asyncGhost = pvpLevelStranger(asyncGhost, mainDeckLevel(myDeckCounts, matchLeaderId())); // ENG10 (2026-10-26, FIX3-4): levelled to your battle rating
     // 2026-10-21 (package AR): Standard PvP (the Arena's 🃏 button), every card at Level 1. Your Standard deck holds cards you may not
     // own, so it isn't recorded as a stranger for Collection PvP. 2026-10-23 (package RW3, AR-1): the two meet different pools; a
     // Standard deck is recorded into the Standard pool.
@@ -46772,7 +46829,7 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest &
 // the card details and the live Attack refresh.
 function pl1AuraSnap(c){ c = c || {}; return {kinBonus: c.kinBonus || 0, natureBonus: c.natureBonus || 0, packBonus: c.packBonus || 0}; }
 function pl1AuraAtk(c){ return c ? (c.kinBonus || 0) + (c.natureBonus || 0) + (c.packBonus || 0) : 0; }
-function eq2Snap(c){ c = c || {}; const p = c.parasite; return {diveAloft: c.diveAloft != null ? c.diveAloft : null, diveMode: c.diveMode || null /* EN7 (2026-10-24) */, equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
+function eq2Snap(c){ c = c || {}; const p = c.parasite; return {diveAloft: c.diveAloft != null ? c.diveAloft : null, diveMode: c.diveMode || null /* EN7 (2026-10-24) */, equipment: c.equipment || null, equipOn: !!c.equipOn, equipDur: c.equipDur != null ? c.equipDur : null, equipLives: c.equipLives != null ? c.equipLives : null /* ENG10 */, tempHpR: c.tempHpR || 0, baseHp: c.baseHp != null ? c.baseHp : null,
   parasite: p ? {uid: p.uid, defId: p.defId, atk: p.atk || 0, hp: p.hp || 0, maxHp: p.maxHp || 0, wait: p.wait || 0} : null}; }
 function eq2DurMax(defId){ const d = getCardDefs()[defId] || {}; try{ if(typeof BramblewoodBudget !== 'undefined' && BramblewoodBudget.equipDurOf) return BramblewoodBudget.equipDurOf(d); }catch(e){} return 3; }
 function eq2PipsHTML(n, max){ let s = ''; for(let i = 0; i < max; i++) s += `<i class="eq2-pip${i < n ? ' on' : ''}"></i>`; return `<span class="eq2-pips" aria-hidden="true">${s}</span>`; }
@@ -46796,7 +46853,9 @@ function eq2MarksHTML(pid, c){
   if(!c || c.uid == null) return ''; const defs = getCardDefs(), d = defs[c.defId] || {}; let out = '';
   if(c.equipment){ const e = defs[c.equipment] || {}, max = eq2DurMax(c.equipment), dur = c.equipDur != null ? c.equipDur : max, g = eqGrantText((e.equip || {}).grant);
     const tip = (c.equipOn ? TX('ui.eq-equipped', {name: e.name || c.equipment, a: e.attack || 0, h: e.health || 0, grant: g ? ', ' + g : ''}) : TX('ui.eq-equipping', {name: e.name || c.equipment})) + ' ' + TX('ui.eq2-dur', {n: dur, max});
-    out += `<span class="eq-under${c.equipOn ? '' : ' is-equipping'}${dur <= 1 ? ' is-worn' : ''}" title="${escapeAttr(tip)}">${e.icon || '⚒️'}${eq2PipsHTML(dur, max)}</span>`; }
+    const lmax = eqHardyOf(e), lv = c.equipLives != null ? c.equipLives : lmax; // ENG10 (2026-10-26, PROP1-1): Hardy's lives, one gold ring each, above the pips (a plain 1-life piece shows none)
+    const rings = lmax > 1 ? `<span class="e10-rings" aria-hidden="true" style="display:block; line-height:1; font-size:7px; color:#ffd56a; letter-spacing:-1px;">${'◯'.repeat(Math.max(0, lv))}</span>` : '';
+    out += `<span class="eq-under${c.equipOn ? '' : ' is-equipping'}${dur <= 1 ? ' is-worn' : ''}" title="${escapeAttr(tip + (lmax > 1 ? ' ' + TX('ui.e10-hardy-left', {n: lv, max: lmax}) : ''))}">${rings}${e.icon || '⚒️'}${eq2PipsHTML(dur, max)}</span>`; }
   out += eq2HpBarHTML(c, d);
   if(c.diveAloft != null) out += en7DiveMarksHTML(c); // EN7 (2026-10-24): the shadow / the water, and the badge
   if(c.parasite){ const pd = defs[c.parasite.defId] || {};
@@ -46846,7 +46905,10 @@ function eq2Vfx(ev){
     case 'equipWear': { const rc = eq2Rc(ev.uid); if(rc) rc.equipDur = ev.dur; eq2Refresh(ev.uid);
       const el = boardCardEl(ev.uid), u = el && el.querySelector('.eq-under'); if(u){ u.classList.remove('eq2-wear'); void u.offsetWidth; u.classList.add('eq2-wear'); }
       if(ev.why !== 'hit') fl(el, `🧪 −${ev.n}${(defs[ev.equipDefId] || {}).icon || '⚒️'}`, 'debuff'); return; }
-    case 'equipBreak': { const rc = eq2Rc(ev.uid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; if(ev.atk != null) rc.atk = ev.atk; if(ev.hp != null) rc.hp = ev.hp; if(ev.maxHp != null) rc.maxHp = ev.maxHp; }
+    case 'equipCrack': { if(ev.uid == null) return; const rc = eq2Rc(ev.uid); if(rc){ rc.equipLives = ev.lives; if(ev.dur != null) rc.equipDur = ev.dur; } // ENG10 (2026-10-26, PROP1-1): a Hardy life lost
+      const el = boardCardEl(ev.uid), u = el && el.querySelector('.eq-under'); if(u){ u.classList.remove('eq2-wear'); void u.offsetWidth; u.classList.add('eq2-wear'); }
+      fl(el, TX('ui.e10-crack-float'), 'debuff'); snd('lockBreak'); eq2Refresh(ev.uid); return; }
+    case 'equipBreak': { const rc = eq2Rc(ev.uid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; rc.equipLives = null; if(ev.atk != null) rc.atk = ev.atk; if(ev.hp != null) rc.hp = ev.hp; if(ev.maxHp != null) rc.maxHp = ev.maxHp; }
       const el = boardCardEl(ev.uid); eq2Shatter(el, (defs[ev.equipDefId] || {}).icon); fl(el, TX('ui.eq2-break'), 'debuff'); snd('lockBreak');
       try{ updateCardAtkDisplay(ev.uid); updateCardHpDisplay(ev.uid); }catch(e){} eq2Refresh(ev.uid); return; }
     case 'equipDrop': { const rc = eq2Rc(ev.fromUid); if(rc){ rc.equipment = null; rc.equipOn = false; rc.equipDur = null; } return; }
@@ -46869,11 +46931,12 @@ function eq2Vfx(ev){
 }
 function eq2LogText(ev, nm){
   switch(ev.type){
-    case 'equipBreak': return {cls: '', text: TX('ui.eq2-log-break', {unit: nm(ev.defId), item: nm(ev.equipDefId)})};
+    case 'equipBreak': return {cls: '', text: ev.loose ? TX('ui.e10-log-break-loose', {item: nm(ev.equipDefId)}) : TX('ui.eq2-log-break', {unit: nm(ev.defId), item: nm(ev.equipDefId)})};
+    case 'equipCrack': return {cls: '', text: ev.loose ? TX('ui.e10-log-crack-loose', {item: nm(ev.equipDefId), n: ev.lives}) : TX('ui.e10-log-crack', {unit: nm(ev.defId), item: nm(ev.equipDefId), n: ev.lives})}; // ENG10 (2026-10-26, PROP1-1)
     case 'equipWear': return ev.why === 'hit' ? null : {cls: '', text: TX('ui.eq2-log-wear-acid', {unit: nm(ev.defId), item: nm(ev.equipDefId), n: ev.dur})};
     case 'dive': return {cls: '', text: TX('ui.eq2-log-dive', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus})};
     case 'parasiteAttach': return {cls: 'poison', text: TX('ui.eq2-log-attach', {unit: nm(ev.defId), target: nm(ev.targetDefId)})};
-    case 'parasiteDrain': return {cls: 'poison', text: TX('ui.eq2-log-drain', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg})};
+    case 'parasiteDrain': return {cls: 'poison', text: ev.gorge ? TX('ui.e10-log-gorge', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg}) : TX('ui.eq2-log-drain', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg})}; // + Gorge's second feed (ENG10)
     case 'parasiteDrop': return {cls: '', text: ev.placed ? TX('ui.eq2-log-drop', {unit: nm(ev.defId)}) : TX('ui.eq2-log-drop-lost', {unit: nm(ev.defId)})};
     case 'raidStrike': return {cls: '', text: ev.uid == null ? TX('ui.eq2-log-strike-bramble', {name: ev.name, dmg: ev.dmg}) : ev.guard ? TX('ui.eq2-log-strike-guard', {guard: nm(ev.defId), unit: nm(ev.aimDefId), name: ev.name, dmg: ev.dmg}) : TX('ui.eq2-log-strike', {name: ev.name, unit: nm(ev.defId), dmg: ev.dmg})};
   }
@@ -47122,7 +47185,7 @@ function field2Vfx(ev){
 // ==== Package GI (2026-10-19): the board's side of the new skills and field effects (rules in bramblewood-engine.js, the Package GI
 // block): battle-log lines, floats, the Brittle and Prayer Ward badges, the field's hit numbers. Every string is a TX key.
 Object.assign(FIELD2_HIT, {thunderHit:['🌩️', 'lightning']});
-['sporeCloud', 'thunderstorm', 'thunderHit', 'tangledRoots'].forEach(k=> FIELD2_OWN_TICKS.add(k));
+['sporeCloud', 'thunderstorm', 'thunderHit', 'tangledRoots', 'graspingBriars' /* ENG10 */].forEach(k=> FIELD2_OWN_TICKS.add(k));
 function giLogText(ev, nm){
   if(!ev) return null;
   if(ev.type === 'fieldTick'){
@@ -47130,9 +47193,13 @@ function giLogText(ev, nm){
     if(ev.field === 'thunderstorm') return {cls:'', text:TX('ui.log-thunderstorm', {n: ev.amount})};
     if(ev.field === 'thunderHit') return {cls:'', text: ev.wet ? TX('ui.log-thunder-hit-wet', {name: nm(ev.defId), dmg: ev.dmg}) : TX('ui.log-thunder-hit', {name: nm(ev.defId), dmg: ev.dmg})};
     if(ev.field === 'tangledRoots') return {cls:'', text:TX('ui.log-tangled-roots')};
+    if(ev.field === 'graspingBriars') return {cls:'', text:TX('ui.e10-log-briars')}; // ENG10 (2026-10-26, ENG9-10)
     return null; }
   if(ev.type === 'statusFx' && ev.field === 'sporeCloud' && ev.kind === 'sleep') return {cls:'', text:TX('ui.log-spore-sleep', {name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.field === 'tangledRoots' && ev.kind === 'webbed') return {cls:'', text:TX('ui.log-roots-grab', {name: nm(ev.targetDefId)})};
+  if(ev.type === 'statusFx' && ev.field === 'graspingBriars' && ev.kind === 'tangled') return {cls:'', text:TX('ui.e10-log-briars-grab', {name: nm(ev.targetDefId)})}; // ENG10 (2026-10-26, ENG9-10)
+  if(ev.type === 'statusFx' && ev.kind === 'sunder') return {cls:'', text:TX('ui.e10-log-sunder', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // ENG10 (PROP1-1)
+  if(ev.type === 'statusFx' && ev.kind === 'dismantle') return {cls:'', text: ev.ok ? TX('ui.e10-log-dismantle', {att: nm(ev.attDefId)}) : TX('ui.e10-log-dismantle-miss', {att: nm(ev.attDefId)})}; // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.c3-log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})}; // CONTENT3 (2026-10-26): Detonate N's ticks
   if(ev.type === 'statusFx' && ev.kind === 'wakeful') return {cls:'', text:TX('ui.c3-log-wakeful', {name: nm(ev.targetDefId)})}; // CONTENT3 (G5)
   if(ev.type === 'statusFx' && ev.kind === 'pulverise') return {cls:'', text:TX('ui.c3-log-pulverise', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // CONTENT3 (OWN-Q5)
@@ -47161,6 +47228,9 @@ function giVfx(ev){
   if(ev.type === 'fieldTick' && ev.field === 'sporeCloud'){ snd('sleepTone'); return; }
   if(ev.type === 'fieldTick' && ev.field === 'thunderstorm'){ snd('boom'); const bf = document.getElementById('battlefieldEl'); if(bf && !reducedMotion() && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } return; }
   if(ev.type === 'fieldTick' && ev.field === 'tangledRoots'){ snd('curse'); return; }
+  if(ev.type === 'fieldTick' && ev.field === 'graspingBriars'){ snd('curse'); return; } // ENG10 (2026-10-26)
+  if(ev.type === 'statusFx' && ev.kind === 'sunder'){ fl(boardCardEl(ev.targetUid), '🪓', 'debuff'); snd('konk'); return; } // ENG10 (PROP1-1)
+  if(ev.type === 'statusFx' && ev.kind === 'dismantle'){ fl(boardCardEl(ev.attUid), ev.ok ? '🧰✓' : '🧰✗', ev.ok ? 'buff' : 'faded'); return; }
 }
 // The Brittle badge, and Prayer Ward's 🧿 while its ward is up (it holds Prayer tokens).
 function giStatusBadges(c, badges){

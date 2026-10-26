@@ -25,6 +25,12 @@
   // (not under it, so a Flora skill or field doesn't count a mushroom, call ENG9-5). Kept outside the generated block (tools/type_taxonomy.py
   // rewrites that block from canonical/animal-tags.json).
   if(!NAMES.fungi) NAMES.fungi = 'Fungi';
+  // ENG10 (2026-10-26, owner on ENG9-5: "Can existing Funghi have a type of mushroom? Then flora is the phyla, and trees, fruits, flowers etc are
+  // the type."): Flora is the kingdom of everything that grows; its types are Tree, Fruit, Flower, Vine and Mushroom (the Fungi cards' type),
+  // children of Flora here, so a card typed Tree (or Mushroom) still counts as Flora for every Flora rule, skill and filter. The species
+  // Plant and Fungi both sit under Flora too, and both show the Flora phylum in the Codex (SPECIES_PHYLUM below; was Fungi beside Flora, ENG9).
+  [['tree', 'Tree'], ['fruit', 'Fruit'], ['flower', 'Flower'], ['vine', 'Vine'], ['mushroom', 'Mushroom']].forEach(([k, n])=>{ if(!NAMES[k]) NAMES[k] = n; if(!PARENTS[k]) PARENTS[k] = ['flora']; });
+  if(!PARENTS.fungi) PARENTS.fungi = ['flora']; if(!PARENTS.plant) PARENTS.plant = ['flora'];
   // Old or misspelt names a saved card may still carry (2026-10-21: species Cnidarian is Cnidaria now; Feline was a Felid).
   const ALIAS = {cnidarian:'cnidaria', feline:'felid', mollusk:'mollusc', ants:'ant'};
   // Species -> phylum (the Codex's phyla; 2026-10-21 owner: "Aquatic Phyla should be broken up. Fish is its own Phyla." + "The octopi
@@ -36,7 +42,7 @@
     Cetacean:'Beast', Pinniped:'Beast', Mammal:'Beast',
     Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Myriapod:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
     Fish:'Fish', Cephalopod:'Cephalopod', Cnidaria:'Cnidaria', Echinoderm:'Echinoderm', Annelid:'Crawler', Mollusc:'Crawler', Elemental:'Elemental',
-    Plant:'Flora', Fungi:'Fungi' /* ENG9 (2026-10-26, G9): the two kingdoms that are not animals: plants (Flora) and Fungi, side by side */};
+    Plant:'Flora', Fungi:'Flora' /* ENG9 (2026-10-26, G9) put Fungi beside Flora; ENG10 (2026-10-26, ENG9-5): Flora is the phylum of both, Mushroom the Fungi's type */};
   const PHYLUM_ICON = {Beast:'🐾', Bird:'🪶', Arthropod:'🐜', Scaled:'🦎', Fish:'🐟', Cephalopod:'🐙', Cnidaria:'🪼', Echinoderm:'⭐', Crawler:'🐌', Elemental:'🔥', Flora:'🌿', Fungi:'🍄' /* ENG9 */};
   // The habitat (geo) types. Aquatic is one (2026-10-21): the parent of Ocean, River and Pond, and the home of the water animals.
   const HABITATS = ['Aquatic', 'River', 'Ocean', 'Pond', 'Coral Reef', 'Coastal', 'Mangrove', 'Swamp', 'Desert', 'Frost', 'Rainforest', 'Savanna', 'Tundra',

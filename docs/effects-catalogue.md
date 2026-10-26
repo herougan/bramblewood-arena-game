@@ -1304,3 +1304,24 @@ The rules as built (engine: `rollStatusOnHit` and the Spore Cloud pick, `detonat
 | 👁️ Wakeful | log line | — | `statusFx wakeful` |
 | ⚔️ Equip Time | `equipTimeBadgeHTML` | top-right badge, circling sword | — |
 | 🌪️ Blinding Sandstorm | the field row (`fieldRowsFor`) | 🌪️ "Everyone Blind" | `evaded` (blind) |
+
+## 2026-10-26 additions (package ENG10): shots meet Armor, Charge recharges, On Ready at Wait 0, Grasping Briars, Hardy / Sunder / Dismantle, Gorge, the threshold skills
+
+The rules as built (engine: `damageCardFlat`'s `fo.armor` and `fireDamageAction`'s `armored`, `chargeTick`, `fireReadyFor` / `readyOnArrival`, the Grasping Briars pick in the GI field block, `eqLivesMaxOf` / `eqBreakLife` / `eqSunderHit` / `eqDismantle`, `eq2ParasiteTick(..., gorge)`, `THR_DEFAULT_N` with `EN6_STATES` and `pl.diedThisFight`; budget: `thrS`, `equipLifeMult`; app: the ENG10 block after CONTENT3's registry rows).
+- **The spits** read by their element alone: Cinder, Acid, Venom, Ice, Spark (keys `fireBolt`, `acidBolt`, `poisonBolt`, `iceBolt`, `shockBolt`). "Ember" is a Materia gem and "Frost" a state skill, so those two took the nearest clean word.
+- **Armor and shots:** an arrow (Arrow, Fire / Ice Arrow, Twin Shot, Volley, Snipe, an Archer's, the Arrow action) or a spit (the five, Spitfire) now loses the target's Armor (with Shell, the tide's, Prayer Ward, Shieldwall; Pierce cuts it), as a swing does. Magic and true damage pass; Missiles, Fireballs and the other damage skills still pass too. Mod `armor` on the `hit`.
+- **Armor's price:** 1.68 x N^1.43 (Armor 5 = 10x Armor 1). `tools/eng10_armor_hits_2026_10_26.js` measured the hits Armor meets (`docs/balance/eng10-armor-hits-2026-10-26.json`).
+- **Charge N – {…}** recharges again: at 0 the effect goes off and the clock winds back to N (ENG9's one-shot is undone).
+- **On Ready at Wait 0:** a unit that lands Ready (played, a leader summoned, a debug spawn; not frozen, front row) gets its On Ready at once (`readyOnArrival`); a unit with Wait still gets it at the upkeep its Wait runs out. Once a unit (`readyDone`).
+- **Grasping Briars** (`rules.graspingBriars`): from round 2, one random unit a side (not a Flyer or a Structure) is Tangled for the round. Event `fieldTick graspingBriars`, then `statusFx tangled {field}`. On 12-4 Thornvine Arch and 12-7 the Briar Queen.
+- **Hardy N** (`equip.hardy`, default 1): a break takes one life; the durability reaching 0 takes a life and refills it; at 0 lives the piece is destroyed. A dropped, picked-up or stolen piece keeps its lives. **Sunder** (On Hit, swings and shots): 50% to take a life. **Dismantle** (On Play): one 50% roll at the facing enemy's piece, else the nearest loose enemy piece. **Pulverise** takes one life for sure. Events `equipCrack {lives, livesMax, why}` (a life lost), `equipBreak` (the last), `statusFx sunder`, `statusFx dismantle {ok}`. Dragonscale Mail has Hardy 2.
+- **Gorge** (the `fester` key; was "Fester: extra damage equal to its own Poison"): a hooked Parasite done waiting feeds a second time as the round ends, at ceil(Attack / 2), healing as much. Event `parasiteDrain {gorge:true}`. The Gangrenous Leech is a Parasite with Gorge.
+- **Threshold skills**, Name N – {…}, plain {+2/+2}: **Requiem** (N units died this fight, both sides; default 5), **Dirge** (yours died; 3), **Carnage** (enemies died; 3), **Muster** (your units, itself included; 6), **Beset** (the enemy's units; 6), **Throng** (units on the field; 10). On and off at every stat sync (a play, a death sweep, a round's start); the state chip and its float are EN5's (`statusFx stateSkill`).
+
+| Effect | Function | Look | Event |
+|---|---|---|---|
+| 💍 Hardy N | `e10HardyBadgeHTML`, the rings in `eq2MarksHTML` | a gold 💍N badge on the equipment card; one gold ring per life above the durability pips | — |
+| 💔 a life lost | `eq2Vfx` (`equipCrack`) | the piece shakes, "💔 −1 life" floats, a lock-break sound | `equipCrack` |
+| 🪓💥 Sunder / 🔧💥 Dismantle | `giVfx` | 🪓 on the target / 🧰✓ or 🧰✗ on the dismantler | `statusFx sunder` / `dismantle` |
+| 🌹 Grasping Briars | the field row (`FIELD2.graspingBriars`), `giVfx` | the 🌹 row lights, the Tangled float on the caught unit | `fieldTick graspingBriars`, `statusFx tangled` |
+| ⚰️🎻🥩🏴🆘🐜🐜 threshold on | EN5's state chip | the chip lights while it holds | `statusFx stateSkill` |

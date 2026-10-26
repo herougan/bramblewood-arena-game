@@ -1,0 +1,507 @@
+{
+ "about": "ENG10 re-fit (2026-10-26 (package ENG10)): prices from tools/eng10_skill_costs_2026_10_26.py and bramblewood-budget.js (thrS). Raises and cuts applied (owner ENG9-9: \"Cut to new armor formula\"); off-line cards listed.",
+ "edits": [
+  "fungal-colossus: Fungi -> Mushroom",
+  "puffball-bombardier: Fungi/Cave -> Mushroom/Cave",
+  "phoenix-mushrooms: Fungi -> Mushroom",
+  "ent: Flora -> Tree",
+  "elder-willow: Flora/Structure -> Tree/Structure",
+  "old-willow-of-the-ford: Flora/River -> Tree/River",
+  "heartwood-treant: Flora -> Tree",
+  "petrified-tree: Flora/Structure -> Tree/Structure",
+  "hazel-coppice: Structure/Forest -> Tree/Structure/Forest",
+  "cypress-root-lurker: Swamp/Flora -> Swamp/Tree",
+  "rafflesia: Rainforest/Flora -> Rainforest/Flower",
+  "strangler-vine: Rainforest/Flora -> Rainforest/Vine",
+  "thornvine-lasher: Flora -> Vine",
+  "bramble-sprout: Flora -> Vine",
+  "dragonscale-mail: Hardy 2",
+  "gangrenous-leech: + Parasite (Gorge)",
+  "stone-turtle-warden: Armor 4 -> 3 (no legal line at Armor 4)",
+  "barnacle-fortress: Armor 5 -> 3 (no legal line at Armor 5)",
+  "carrion-fly-swarm: + throng 10",
+  "wolfsbane-alpha: + dirge 3",
+  "dust-hyena: + carnage 3",
+  "wolf-pack-runner: + muster 6",
+  "ravenous-wolverine: + beset 6 (was scarcity)",
+  "cinder-skeleton: + requiem 5"
+ ],
+ "moved": [
+  "carrion-fly-swarm",
+  "wolf-pack-runner",
+  "stone-turtle-warden",
+  "dust-hyena",
+  "termite-mound",
+  "sea-turtle-elder",
+  "peak-condor",
+  "swamp-alligator",
+  "obsidian-scorpion",
+  "tide-pool-crab",
+  "riptide-eel",
+  "barnacle-fortress",
+  "gangrenous-leech",
+  "ravenous-wolverine",
+  "open-ocean-hermit-crab",
+  "quillback-elder",
+  "slowpoke-sentinel",
+  "otter-riverguard",
+  "dune-jackal-scout",
+  "test-kitchen-sink",
+  "test-skill-armor",
+  "test-skill-reload",
+  "test-skill-fester",
+  "garden-snail",
+  "pill-bug",
+  "beetle-grunt",
+  "tiny-cave-dweller",
+  "ironmaw-warwolf",
+  "otter-netmender",
+  "shieldbearer-hound",
+  "snail-mail",
+  "old-shell",
+  "wolfsbane-alpha",
+  "marshal-of-rivergate",
+  "sworn-shieldbearer",
+  "caldera-wyrm",
+  "cinder-skeleton",
+  "obsidian-lich",
+  "marching-elephant",
+  "otter-royal-guard",
+  "millipede-hauler",
+  "rivergate-tribune",
+  "monitor-rambler",
+  "old-snapjaw",
+  "mudflat-godwit",
+  "electric-ray",
+  "rimeheart-colossus",
+  "war-elephant",
+  "testudo-tortoise",
+  "marshal-tuskwell",
+  "gilded-swan-knight",
+  "magnate-duck",
+  "signal-crayfish",
+  "stag-beetle",
+  "old-sturgeon",
+  "alligator-gar",
+  "ghost-crayfish",
+  "horseshoe-crab",
+  "whale-shark",
+  "hawthorn-shieldbug",
+  "greenland-shark",
+  "musk-ox-calf",
+  "exo-podas",
+  "galactic-condor",
+  "bucketknee-wolf",
+  "ember-tetra",
+  "ironclaw-fiddler",
+  "moat-snapper",
+  "musk-ox-matriarch",
+  "barnacle-bulwark"
+ ],
+ "notBand": [
+  "test-kitchen-sink",
+  "test-skill-armor",
+  "test-skill-reload",
+  "test-skill-fester",
+  "caldera-wyrm",
+  "exo-podas",
+  "galactic-condor",
+  "bucketknee-wolf",
+  "ember-tetra",
+  "ironclaw-fiddler",
+  "moat-snapper",
+  "musk-ox-matriarch",
+  "barnacle-bulwark"
+ ],
+ "offLine": [
+  {
+   "id": "pill-bug",
+   "at": "1/9",
+   "oldLine": "1/10"
+  },
+  {
+   "id": "snail-mail",
+   "at": "0/1",
+   "oldLine": "0/6"
+  },
+  {
+   "id": "musk-ox-calf",
+   "at": "3/10",
+   "oldLine": "3/12"
+  }
+ ],
+ "raised": [
+  {
+   "id": "peak-condor",
+   "from": "4/6",
+   "to": "4/7",
+   "S": "-4 -> -6",
+   "use": 97
+  },
+  {
+   "id": "riptide-eel",
+   "from": "8/5",
+   "to": "9/6",
+   "S": "-2.5 -> -4.5",
+   "use": 100
+  },
+  {
+   "id": "barnacle-fortress",
+   "from": "0/6",
+   "to": "0/10",
+   "S": "7.8 -> 8.08",
+   "use": 98
+  }
+ ],
+ "cut": [
+  {
+   "id": "carrion-fly-swarm",
+   "from": "2/6",
+   "to": "1/4",
+   "S": "2.2 -> 6.04",
+   "use": 82
+  },
+  {
+   "id": "wolf-pack-runner",
+   "from": "4/15",
+   "to": "3/13",
+   "S": "0 -> 2.94",
+   "use": 100
+  },
+  {
+   "id": "stone-turtle-warden",
+   "from": "5/5",
+   "to": "4/4",
+   "S": "7.74 -> 9.58",
+   "use": 91
+  },
+  {
+   "id": "dust-hyena",
+   "from": "2/9",
+   "to": "2/7",
+   "S": "1.4 -> 3.86",
+   "use": 97
+  },
+  {
+   "id": "termite-mound",
+   "from": "0/15",
+   "to": "0/11",
+   "S": "4.68 -> 8.08",
+   "use": 96
+  },
+  {
+   "id": "sea-turtle-elder",
+   "from": "5/10",
+   "to": "4/9",
+   "S": "6.18 -> 9.58",
+   "use": 95
+  },
+  {
+   "id": "swamp-alligator",
+   "from": "2/16",
+   "to": "2/15",
+   "S": "3.12 -> 4.53",
+   "use": 100
+  },
+  {
+   "id": "tide-pool-crab",
+   "from": "1/4",
+   "to": "1/2",
+   "S": "5.06 -> 5.18",
+   "use": 80
+  },
+  {
+   "id": "gangrenous-leech",
+   "from": "4/4",
+   "to": "3/3",
+   "S": "4.87 -> 8.67",
+   "use": 90
+  },
+  {
+   "id": "quillback-elder",
+   "from": "6/6",
+   "to": "5/5",
+   "S": "4.68 -> 8.08",
+   "use": 92
+  },
+  {
+   "id": "otter-riverguard",
+   "from": "1/15",
+   "to": "1/14",
+   "S": "3.12 -> 4.53",
+   "use": 99
+  },
+  {
+   "id": "old-shell",
+   "from": "2/23",
+   "to": "2/19",
+   "S": "4.68 -> 8.08",
+   "use": 97
+  },
+  {
+   "id": "wolfsbane-alpha",
+   "from": "1/22",
+   "to": "1/19",
+   "S": "6.46 -> 9.22",
+   "use": 99
+  },
+  {
+   "id": "cinder-skeleton",
+   "from": "1/10",
+   "to": "1/5",
+   "S": "4.3 -> 7.48",
+   "use": 87
+  },
+  {
+   "id": "rivergate-tribune",
+   "from": "4/19",
+   "to": "4/18",
+   "S": "6.12 -> 7.53",
+   "use": 99
+  },
+  {
+   "id": "monitor-rambler",
+   "from": "2/17",
+   "to": "2/16",
+   "S": "3.12 -> 4.53",
+   "use": 99
+  },
+  {
+   "id": "old-snapjaw",
+   "from": "4/22",
+   "to": "4/21",
+   "S": "5.16 -> 5.28",
+   "use": 97
+  },
+  {
+   "id": "electric-ray",
+   "from": "4/10",
+   "to": "4/9",
+   "S": "1.2 -> 3",
+   "use": 99
+  },
+  {
+   "id": "rimeheart-colossus",
+   "from": "3/20",
+   "to": "3/19",
+   "S": "9.42 -> 10.83",
+   "use": 99
+  },
+  {
+   "id": "testudo-tortoise",
+   "from": "5/13",
+   "to": "4/12",
+   "S": "5.68 -> 9.08",
+   "use": 96
+  },
+  {
+   "id": "marshal-tuskwell",
+   "from": "1/29",
+   "to": "1/26",
+   "S": "13.16 -> 16.56",
+   "use": 100
+  },
+  {
+   "id": "gilded-swan-knight",
+   "from": "1/21",
+   "to": "1/20",
+   "S": "6.62 -> 8.03",
+   "use": 100
+  },
+  {
+   "id": "stag-beetle",
+   "from": "2/15",
+   "to": "2/14",
+   "S": "5.46 -> 5.58",
+   "use": 96
+  },
+  {
+   "id": "old-sturgeon",
+   "from": "1/20",
+   "to": "1/19",
+   "S": "4.62 -> 6.03",
+   "use": 99
+  },
+  {
+   "id": "horseshoe-crab",
+   "from": "2/11",
+   "to": "2/9",
+   "S": "3.5 -> 4.91",
+   "use": 97
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "from": "2/13",
+   "to": "2/12",
+   "S": "1.56 -> 1.68",
+   "use": 96
+  },
+  {
+   "id": "greenland-shark",
+   "from": "1/24",
+   "to": "1/23",
+   "S": "5.66 -> 5.78",
+   "use": 97
+  }
+ ],
+ "same": [
+  {
+   "id": "obsidian-scorpion",
+   "from": "4/4",
+   "to": "4/4",
+   "S": "7.99 -> 9.4",
+   "use": 94
+  },
+  {
+   "id": "ravenous-wolverine",
+   "from": "3/3",
+   "to": "3/3",
+   "S": "7.25 -> 7.47",
+   "use": 88
+  },
+  {
+   "id": "open-ocean-hermit-crab",
+   "from": "2/2",
+   "to": "2/2",
+   "S": "3.16 -> 3.28",
+   "use": 81
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "from": "3/3",
+   "to": "3/3",
+   "S": "3.74 -> 5.2",
+   "use": 96
+  },
+  {
+   "id": "dune-jackal-scout",
+   "from": "3/3",
+   "to": "3/3",
+   "S": "5.56 -> 5.68",
+   "use": 88
+  },
+  {
+   "id": "garden-snail",
+   "from": "0/7",
+   "to": "0/7",
+   "S": "1.56 -> 1.68",
+   "use": 83
+  },
+  {
+   "id": "beetle-grunt",
+   "from": "3/7",
+   "to": "3/7",
+   "S": "1.56 -> 1.68",
+   "use": 99
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "from": "2/7",
+   "to": "2/7",
+   "S": "1.56 -> 1.68",
+   "use": 95
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "from": "7/7",
+   "to": "7/7",
+   "S": "12.58 -> 13.99",
+   "use": 96
+  },
+  {
+   "id": "otter-netmender",
+   "from": "1/8",
+   "to": "1/8",
+   "S": "1.56 -> 1.68",
+   "use": 94
+  },
+  {
+   "id": "shieldbearer-hound",
+   "from": "5/15",
+   "to": "5/15",
+   "S": "1.56 -> 1.68",
+   "use": 100
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "from": "3/11",
+   "to": "3/11",
+   "S": "0.62 -> 0.67",
+   "use": 97
+  },
+  {
+   "id": "obsidian-lich",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "8.32 -> 9.73",
+   "use": 95
+  },
+  {
+   "id": "marching-elephant",
+   "from": "2/26",
+   "to": "2/26",
+   "S": "1.84 -> 1.96",
+   "use": 99
+  },
+  {
+   "id": "otter-royal-guard",
+   "from": "4/10",
+   "to": "4/10",
+   "S": "3.46 -> 3.58",
+   "use": 97
+  },
+  {
+   "id": "millipede-hauler",
+   "from": "1/16",
+   "to": "1/16",
+   "S": "4.56 -> 4.68",
+   "use": 97
+  },
+  {
+   "id": "mudflat-godwit",
+   "from": "2/11",
+   "to": "2/11",
+   "S": "3.65 -> 4.21",
+   "use": 98
+  },
+  {
+   "id": "magnate-duck",
+   "from": "2/37",
+   "to": "2/37",
+   "S": "8.46 -> 8.58",
+   "use": 100
+  },
+  {
+   "id": "signal-crayfish",
+   "from": "2/11",
+   "to": "2/11",
+   "S": "1.66 -> 1.78",
+   "use": 98
+  },
+  {
+   "id": "alligator-gar",
+   "from": "5/5",
+   "to": "5/5",
+   "S": "6.66 -> 6.78",
+   "use": 91
+  },
+  {
+   "id": "ghost-crayfish",
+   "from": "1/17",
+   "to": "1/17",
+   "S": "4.16 -> 4.28",
+   "use": 99
+  },
+  {
+   "id": "whale-shark",
+   "from": "1/21",
+   "to": "1/21",
+   "S": "5.56 -> 5.68",
+   "use": 99
+  }
+ ],
+ "flagged": [
+  "marshal-of-rivergate",
+  "war-elephant"
+ ]
+}

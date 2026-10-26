@@ -128,7 +128,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
 // ---- cards and the Bounty clean-up -------------------------------------------------------------------------------------------------
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);
   const want = {'polar-bear':'hibernate', 'snow-ermine':'frost', 'cinder-stoker':'heat', 'dromedary':'drought', 'fulmar-spitter':'storm', 'horseshoe-crab':'salt', 'puddle-hopper':'rain', 'ent':'fog',
-    'seed-cache-squirrel':'plenty', 'ravenous-wolverine':'scarcity', 'gull-thief':'foePlenty', 'stoat-cutthroat':'foeScarcity', 'balloon-archer':'arrowBramble'};
+    'seed-cache-squirrel':'plenty', /* 2026-10-26 (ENG10, PROP1-4): the Ravenous Wolverine's Scarcity became Beset */ 'gull-thief':'foePlenty', 'stoat-cutthroat':'foeScarcity', 'balloon-archer':'arrowBramble'};
   Object.entries(want).forEach(([id, k])=>{ const x = c(id), b = x && T.budget(x, {level: 1}); ok(x && x.effects && x.effects[k] && b && b.ok, `${id}: ${k}, inside the budget (${x && x.attack}/${x && x.health}, ${b && b.x1} <= ${b && b.N})`);
     ok(x && BB.skillCountOf(x.effects) <= 2, `${id}: two skills at most (${x && BB.skillCountOf(x.effects)})`); });
   const bv = c('beaver-lumberjack'); ok(bv && !bv.effects.bounty && ((bv.effects.triggers || []).some(t=> t.on === 'onReady' && t.do === 'gain' && t.resource === 'lumber' && t.amount === 1) || bv.effects.stockpile === 1 /* 2026-10-26 (ENG9, EN6-6): the named keyword Stockpile 1 */), 'Beaver Lumberjack: no Bounty; On Ready: gain 1 Lumber (owner 12:02 #5)');
@@ -153,7 +153,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-24 additions \(package EN6\)/.test(cat) && /Hibernate N/.test(cat) && /– bramble/.test(cat), 'docs/effects-catalogue.md: EN6');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN6-1', 'EN6-2', 'EN6-3', 'EN6-4', 'EN6-5', 'EN6-6', 'EN6-7', 'EN6-8', 'EN6-9'].every(i=> ids.includes(i)), 'decisions EN6-1 .. EN6-9');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN6/.test(cl.slice(0, 60000)), 'CHANGELOG: EN6 near the top'); }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN6/.test(cl.slice(0, 90000)), 'CHANGELOG: EN6 near the top'); /* 2026-10-26 (ENG10): the CHANGELOG grew; 90,000 characters (was 60,000) */ }
 
 console.log(`en6-2026-10-24: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

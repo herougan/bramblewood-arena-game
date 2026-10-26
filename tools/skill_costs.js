@@ -92,6 +92,9 @@
         if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); S += c.cost; parts.push(['trigger', t.on + ' → ' + t.do, c.cost, c.weight + ' × ' + c.value]); }); return; }
         // Context skills (2026-10-21, package CX2): CONTEXT_MULT (0.4) x the S of the skills in their braces, across all their phases
         // (bramblewood-budget.js contextS); the plain flag beside the braces (tide next to tideGrant ...) costs nothing then.
+        // ENG10 (2026-10-26, PROP1-4): the threshold skills, braces x the measured share at their N (bramblewood-budget.js thrS)
+        { const th = BB.thrS ? BB.thrS(k, v, effects, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null;
+          if(th){ S += th.S; parts.push(['context', k, th.S, th.mult + ' × ' + th.inner]); return; } }
         if(BB.contextFlagCovered && BB.contextFlagCovered(k, effects)){ parts.push(['skill', k, 0, 'its braces carry the cost']); return; }
         { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null; // CX5: inner misses reported
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }
