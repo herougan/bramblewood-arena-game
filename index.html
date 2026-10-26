@@ -48572,20 +48572,24 @@ Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
 //   Charge recharging (ENG9-4)              Armor stops arrows and spits (ENG9-6)       Sunder / Dismantle and Hardy N (PROP1-1)
 //   Gorge, the old Fester key (PROP1-3)     Requiem / Dirge / Carnage / Muster / Beset / Throng N – {…} (PROP1-4)
-[['fireBolt', 'ui.e10-skn-cinder'], ['acidBolt', 'ui.e10-skn-acid'], ['poisonBolt', 'ui.e10-skn-venom'], ['iceBolt', 'ui.e10-skn-ice'], ['shockBolt', 'ui.e10-skn-spark']].forEach(([k, t])=> sk1Patch(PASSIVE_DEFS, k, {label:TX(t)}));
+[['fireBolt', TX('ui.e10-skn-cinder')], ['acidBolt', TX('ui.e10-skn-acid')], ['poisonBolt', TX('ui.e10-skn-venom')], ['iceBolt', TX('ui.e10-skn-ice')], ['shockBolt', TX('ui.e10-skn-spark')]].forEach(([k, label])=> sk1Patch(PASSIVE_DEFS, k, {label}));
 { const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.e10-charge', {n: cp.n})}`; }; } }
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
 sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
 PASSIVE_DEFS.push(
   {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
   {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
+// each threshold skill's name and line, as literal text keys (tests/game-texts.js reads TX('key') calls)
+const THR_TX = {requiem:{name:()=> TX('ui.skn-e10-requiem'), line:o=> TX('ui.sk-e10-requiem', {n: o.n, skills: o.skills})}, dirge:{name:()=> TX('ui.skn-e10-dirge'), line:o=> TX('ui.sk-e10-dirge', {n: o.n, skills: o.skills})},
+  carnage:{name:()=> TX('ui.skn-e10-carnage'), line:o=> TX('ui.sk-e10-carnage', {n: o.n, skills: o.skills})}, muster:{name:()=> TX('ui.skn-e10-muster'), line:o=> TX('ui.sk-e10-muster', {n: o.n, skills: o.skills})},
+  beset:{name:()=> TX('ui.skn-e10-beset'), line:o=> TX('ui.sk-e10-beset', {n: o.n, skills: o.skills})}, throng:{name:()=> TX('ui.skn-e10-throng'), line:o=> TX('ui.sk-e10-throng', {n: o.n, skills: o.skills})}};
 const THR_APP = {requiem:{n:5, ico:'⚰️'}, dirge:{n:3, ico:'🎻'}, carnage:{n:3, ico:'🥩'}, muster:{n:6, ico:'🏴'}, beset:{n:6, ico:'🆘'}, throng:{n:10, ico:'🐜🐜'}}; // icons no other skill uses
 function thrNApp(k, e){ const v = e && e[k]; return (v === true || v == null || !(Number(v) > 0)) ? THR_APP[k].n : Math.round(Number(v)); }
 function thrGrantApp(k, e){ const g = e && e[k + 'Grant']; return g && typeof g === 'object' && Object.keys(g).length ? g : {attack: 2, health: 2}; }
 Object.keys(THR_APP).forEach(k=>{ EN5_STATE_KEYS[k] = {tx: 'e10-' + k, ico: THR_APP[k].ico}; EN5_STATE_DEFAULT_APP[k] = {attack: 2, health: 2}; SKILL_ICON[k] = THR_APP[k].ico; SKILL_ICON[k + 'Grant'] = THR_APP[k].ico;
-  PASSIVE_DEFS.push({key:k, category:'passive', label:TX('ui.skn-e10-' + k), kind:'number', min:1, defaultValue:THR_APP[k].n, desc:(v, n, e)=> TX('ui.sk-e10-' + k, {n: thrNApp(k, Object.assign({}, e, {[k]: v})), skills: grantText(thrGrantApp(k, e))}), codexNote:TX('ui.sk-e10-thr-codex'),
+  PASSIVE_DEFS.push({key:k, category:'passive', label:THR_TX[k].name(), kind:'number', min:1, defaultValue:THR_APP[k].n, desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, Object.assign({}, e, {[k]: v})), skills: grantText(thrGrantApp(k, e))}), codexNote:TX('ui.sk-e10-thr-codex'),
     get:e=> e[k] ? thrNApp(k, e) : undefined, apply:(e, v)=>{ const x = Math.max(1, Math.round(Number(v) || THR_APP[k].n)); e[k] = x; }},
-    {key:k + 'Grant', category:'passive', label:TX('ui.skn-e10-' + k), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> TX('ui.sk-e10-' + k, {n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
+    {key:k + 'Grant', category:'passive', label:THR_TX[k].name(), kind:'grant', placeholder:'+2/+2', desc:(v, n, e)=> THR_TX[k].line({n: thrNApp(k, e), skills: grantText(typeof v === 'string' ? parseGrantText(v) : (v || {})) || TX('ui.cx-nothing')}), codexNote:TX('ui.sk-e10-thr-codex'),
     get:e=> e[k + 'Grant'] && typeof e[k + 'Grant'] === 'object' ? grantToText(e[k + 'Grant']) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e[k + 'Grant'] = g; if(!e[k]) e[k] = THR_APP[k].n; } }}); });
 Object.assign(SKILL_ICON, {sunder:'🪓💥', dismantle:'🔧💥'}); // icons no other skill uses
 // Hardy N on an equipment card (PROP1-1): its lives, equip.hardy (default 1, shown only from 2)
@@ -49980,7 +49984,7 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='crepuscularGrant'){ const g = e.crepuscularGrant || {}; lines.push(`${ic('crepuscular')}Crepuscular — ${escapeHtml(TX('ui.sk-crepuscular-grant', {day: grantText(g.day) || TX('ui.cx-nothing'), night: grantText(g.night) || TX('ui.cx-nothing')}))}`); return; }
     if(p.key==='seasonGrant' && e.season) return; // EN6 (2026-10-24): the Season line says its braces
     if(/Grant$/.test(p.key) && THR_APP[p.key.slice(0, -5)] && e[p.key.slice(0, -5)]) return; // ENG10 (2026-10-26, PROP1-4): the threshold line says its braces
-    if(THR_APP[p.key]){ const N = thrNApp(p.key, e); lines.push(`${ic(p.key)}${p.label} ${N} – {${escapeHtml(grantText(thrGrantApp(p.key, e)))}} — ${escapeHtml(TX('ui.sk-e10-' + p.key, {n: N, skills: grantText(thrGrantApp(p.key, e))}))}`); return; } // ENG10: "Requiem 5 – {+2/+2}"
+    if(THR_APP[p.key]){ const N = thrNApp(p.key, e); lines.push(`${ic(p.key)}${p.label} ${N} – {${escapeHtml(grantText(thrGrantApp(p.key, e)))}} — ${escapeHtml(THR_TX[p.key].line({n: N, skills: grantText(thrGrantApp(p.key, e))}))}`); return; } // ENG10: "Requiem 5 – {+2/+2}"
     if(EN6_BRAMBLE_APP[p.key] && e[EN6_BRAMBLE_APP[p.key].base]) return; // EN6: read on the shot's own line ("Arrow 2 – bramble")
     if(EN7_TIP_APP[p.key] && e[EN7_TIP_APP[p.key].base]) return; // EN7: read on the shot's own line ("Arrow 2 – poison")
     if(p.key==='season'){ lines.push(`${ic('season')}${escapeHtml(TX('ui.skn-season'))} (${EN6_SEASON_ICO[en6SeasonOfApp(e)]} ${escapeHtml(en6SeasonName(en6SeasonOfApp(e)))}) — ${skillText(p, v, e)}`); return; } // EN6
@@ -50213,7 +50217,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '2800d15ec2fd', BUILD_CARD_HASH = '84ab018bb29a6c5da4dc2aa3d8f9fc040127a3f958b56d022d81d02938e0f4a8';
+const BUILD_ID = '65288730d696', BUILD_CARD_HASH = '84ab018bb29a6c5da4dc2aa3d8f9fc040127a3f958b56d022d81d02938e0f4a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -93611,7 +93615,7 @@ function eq2LogText(ev, nm){
     case 'equipWear': return ev.why === 'hit' ? null : {cls: '', text: TX('ui.eq2-log-wear-acid', {unit: nm(ev.defId), item: nm(ev.equipDefId), n: ev.dur})};
     case 'dive': return {cls: '', text: TX('ui.eq2-log-dive', {unit: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.bonus})};
     case 'parasiteAttach': return {cls: 'poison', text: TX('ui.eq2-log-attach', {unit: nm(ev.defId), target: nm(ev.targetDefId)})};
-    case 'parasiteDrain': return {cls: 'poison', text: TX(ev.gorge ? 'ui.e10-log-gorge' : 'ui.eq2-log-drain', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg})}; // + Gorge's second feed (ENG10)
+    case 'parasiteDrain': return {cls: 'poison', text: ev.gorge ? TX('ui.e10-log-gorge', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg}) : TX('ui.eq2-log-drain', {unit: nm(ev.defId), target: nm(ev.targetDefId), n: ev.dmg})}; // + Gorge's second feed (ENG10)
     case 'parasiteDrop': return {cls: '', text: ev.placed ? TX('ui.eq2-log-drop', {unit: nm(ev.defId)}) : TX('ui.eq2-log-drop-lost', {unit: nm(ev.defId)})};
     case 'raidStrike': return {cls: '', text: ev.uid == null ? TX('ui.eq2-log-strike-bramble', {name: ev.name, dmg: ev.dmg}) : ev.guard ? TX('ui.eq2-log-strike-guard', {guard: nm(ev.defId), unit: nm(ev.aimDefId), name: ev.name, dmg: ev.dmg}) : TX('ui.eq2-log-strike', {name: ev.name, unit: nm(ev.defId), dmg: ev.dmg})};
   }
@@ -93874,7 +93878,7 @@ function giLogText(ev, nm){
   if(ev.type === 'statusFx' && ev.field === 'tangledRoots' && ev.kind === 'webbed') return {cls:'', text:TX('ui.log-roots-grab', {name: nm(ev.targetDefId)})};
   if(ev.type === 'statusFx' && ev.field === 'graspingBriars' && ev.kind === 'tangled') return {cls:'', text:TX('ui.e10-log-briars-grab', {name: nm(ev.targetDefId)})}; // ENG10 (2026-10-26, ENG9-10)
   if(ev.type === 'statusFx' && ev.kind === 'sunder') return {cls:'', text:TX('ui.e10-log-sunder', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // ENG10 (PROP1-1)
-  if(ev.type === 'statusFx' && ev.kind === 'dismantle') return {cls:'', text:TX(ev.ok ? 'ui.e10-log-dismantle' : 'ui.e10-log-dismantle-miss', {att: nm(ev.attDefId)})}; // ENG10 (PROP1-1)
+  if(ev.type === 'statusFx' && ev.kind === 'dismantle') return {cls:'', text: ev.ok ? TX('ui.e10-log-dismantle', {att: nm(ev.attDefId)}) : TX('ui.e10-log-dismantle-miss', {att: nm(ev.attDefId)})}; // ENG10 (PROP1-1)
   if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.c3-log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})}; // CONTENT3 (2026-10-26): Detonate N's ticks
   if(ev.type === 'statusFx' && ev.kind === 'wakeful') return {cls:'', text:TX('ui.c3-log-wakeful', {name: nm(ev.targetDefId)})}; // CONTENT3 (G5)
   if(ev.type === 'statusFx' && ev.kind === 'pulverise') return {cls:'', text:TX('ui.c3-log-pulverise', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // CONTENT3 (OWN-Q5)
