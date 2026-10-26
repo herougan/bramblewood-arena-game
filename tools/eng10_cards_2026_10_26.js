@@ -14,7 +14,7 @@
 //          start level, use <= 100% of N; band cards only), but both ways: the owner said "Cut to new armor formula" (ENG9-9), so a card on
 //          the old line whose price moved goes to the new line up or down. A card the edits above touch is re-fit whatever line it sat on,
 //          and the two cards ENG9 held (Tide Pool Crab, Hawthorn Shieldbug) are cut to the line (owner ENG9-9). Cards off the old line that
-//          nothing else touched are listed, not moved.
+//          nothing else touched are listed, not moved, unless the new price puts them over their budget (then they are cut to the line).
 //   node tools/eng10_cards_2026_10_26.js <skill-costs-before.json> <cards-before.json>          dry run
 //   node tools/eng10_cards_2026_10_26.js <skill-costs-before.json> <cards-before.json> apply    writes canonical/cards.json + docs/balance/eng10-refit-2026-10-26.json
 'use strict';
@@ -42,8 +42,9 @@ Object.entries(TYPES).forEach(([id, arch])=>{ const c = byId.get(id); if(!c) ret
   note(c, 'a Parasite now (PROP1-3: Fester reads Gorge, the round-end half-strength feed of a hooked Parasite); its Poison 2 stays on its swings.'); edits.push('gangrenous-leech: + Parasite (Gorge)'); } }
 // The Stone Turtle Warden (Common, Armor 4, Tide): Armor 4 alone (S 12.2, S x |S| 149) is over its cap 2 (124) at any stats, so it can't stay on
 // the new line: Armor 3 (S 8.1 + Tide), then the line (call ENG10-2).
-{ const c = byId.get('stone-turtle-warden'); if(c && c.effects && Number(c.effects.armor) === 4){ c.effects = Object.assign({}, c.effects, {armor: 3}); touched.add(c.id);
-  note(c, 'Armor 4 -> 3 (ENG9-9: Armor 4 alone is over its cap 2 under the new, slightly exponential Armor price; call ENG10-2).'); edits.push('stone-turtle-warden: Armor 4 -> 3 (no legal line at Armor 4)'); } }
+// The Barnacle Fortress (Common 0/6, Armor 5) the same way: Armor 5 alone (16.8) is over its N (18.5) with any Health: Armor 3.
+[['stone-turtle-warden', 4], ['barnacle-fortress', 5]].forEach(([id, was])=>{ const c = byId.get(id); if(c && c.effects && Number(c.effects.armor) === was){ c.effects = Object.assign({}, c.effects, {armor: 3}); touched.add(c.id);
+  note(c, `Armor ${was} -> 3 (ENG9-9: Armor ${was} alone is over its budget under the new, slightly exponential Armor price; call ENG10-2).`); edits.push(`${id}: Armor ${was} -> 3 (no legal line at Armor ${was})`); } });
 const THR = [['carrion-fly-swarm', 'throng'], ['wolfsbane-alpha', 'dirge'], ['dust-hyena', 'carnage'], ['wolf-pack-runner', 'muster'], ['ravenous-wolverine', 'beset', 'scarcity'], ['cinder-skeleton', 'requiem']];
 const THR_WHY = {throng: 'swarms that thrive in a crowd', dirge: 'the pack mother that lost her own', carnage: 'a scavenger that smells blood', muster: 'a pack animal', beset: 'a lone hunter at its best when outnumbered', requiem: 'the undead of the Sundered Peak'};
 THR.forEach(([id, k, swap])=>{ const c = byId.get(id); if(!c || (c.effects || {})[k]) return; const e = Object.assign({}, c.effects || {}); if(swap) delete e[swap]; e[k] = BB.THR_DEFAULT_N[k]; c.effects = e; touched.add(id);
@@ -61,7 +62,8 @@ const raises = [], cuts = [], flagged = [], skipped = [], same = [], offLine = [
 for(const c of moved){
   if(kindOf.get(c.id) !== 'band' || c.easterEgg || c.test){ skipped.push(c.id); continue; }
   const A0 = c.attack || 0, H0 = c.health;
-  if(!touched.has(c.id)){ const was = lineOf(before, beforeCards.get(c.id) || c); if(!was || was.A !== A0 || was.H !== H0){ offLine.push({id: c.id, at: `${A0}/${H0}`, oldLine: was ? `${was.A}/${was.H}` : 'none'}); continue; } }
+  // an off-line card is left where it is, unless the new price puts it over its budget: then it is cut to the line too
+  if(!touched.has(c.id)){ const was = lineOf(before, beforeCards.get(c.id) || c); if((!was || was.A !== A0 || was.H !== H0) && okWith(T, c, A0, H0)){ offLine.push({id: c.id, at: `${A0}/${H0}`, oldLine: was ? `${was.A}/${was.H}` : 'none'}); continue; } }
   const best = lineOf(T, c), s0 = sOld(c), s1 = T.budget(c, {level: 1}).S;
   if(!best){ flagged.push(c.id); continue; }
   const row = {id: c.id, from: `${A0}/${H0}`, to: `${best.A}/${best.H}`, S: `${+s0.toFixed(2)} -> ${+s1.toFixed(2)}`, use: Math.round(best.u * 100)};

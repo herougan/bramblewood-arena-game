@@ -3514,7 +3514,6 @@
  "Sunder": "Spaccare",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Al colpo: 50% di rompere l'equipaggiamento del bersaglio (una vita di Robusto).",
  "Dismantle": "Smantellare",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Quando viene giocato: 50% di rompere l'equipaggiamento del nemico di fronte, o un pezzo nemico a terra (una vita di Robusto).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Una rottura toglie una vita di Robusto; un pezzo senza vite viene distrutto. Polverizzare toglie una vita di sicuro.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Robusto {n}: si rompe {n} volte prima di sparire (ogni rottura toglie una vita e ripristina la durabilità).",
  "Hardy": "Robusto",
@@ -3532,7 +3531,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 I rovi catturano {name}: Impigliato per questo round.",
  "Grasping Briars": "Rovi avvinghianti",
  "Tangled, 1 a side": "Impigliato, 1 per lato",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Dal round 2, ogni round i rovi catturano un'unità a caso per lato: è Impigliata per il round (ogni azione fallisce 1 volta su 2). I volanti sono sopra.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Impigliato: ogni colpo, tiro, azione e innesco fallisce 1 volta su 2. Le Strutture non vengono prese.",
  "Requiem": "Requiem",
  "Dirge": "Lamento",
@@ -3552,5 +3550,7 @@
  "{att} dismantles an enemy piece.": "{att} smantella un pezzo nemico.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} prova a smantellare un pezzo nemico, ma regge.",
  "The briars grasp at the field.": "I rovi afferrano il campo.",
- "Briars catch {name}: it is Tangled this round.": "I rovi catturano {name}: Impigliato per questo round."
+ "Briars catch {name}: it is Tangled this round.": "I rovi catturano {name}: Impigliato per questo round.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Quando viene giocato: 50% di rompere l'equipaggiamento del nemico di fronte, o un pezzo nemico a terra (una vita di Robusto).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Dal round 2, ogni round i rovi Impigliano un'unità a caso per lato. I volanti sono sopra."
 }

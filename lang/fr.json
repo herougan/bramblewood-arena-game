@@ -3512,7 +3512,6 @@
  "Sunder": "Fendre",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Au contact : 50 % de briser l'équipement de la cible (une vie de Robuste).",
  "Dismantle": "Démanteler",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Quand il est joué : 50 % de briser l'équipement de l'ennemi en face, ou une pièce ennemie au sol (une vie de Robuste).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Une casse retire une vie de Robuste ; une pièce sans vie est détruite. Pulvériser retire une vie à coup sûr.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Robuste {n} : elle se brise {n} fois avant de disparaître (chaque casse retire une vie et remplit sa durabilité).",
  "Hardy": "Robuste",
@@ -3530,7 +3529,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 Les ronces attrapent {name} : Empêtré pour la manche.",
  "Grasping Briars": "Ronces agrippantes",
  "Tangled, 1 a side": "Empêtré, 1 par camp",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Dès la manche 2, les ronces attrapent une unité au hasard de chaque camp à chaque manche : elle est Empêtrée pour la manche (chaque action échoue 1 fois sur 2). Les volants passent au-dessus.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Empêtré : chaque frappe, tir, action et déclencheur échoue 1 fois sur 2. Les Structures ne sont pas prises.",
  "Requiem": "Requiem",
  "Dirge": "Lamento",
@@ -3550,5 +3548,7 @@
  "{att} dismantles an enemy piece.": "{att} démantèle une pièce ennemie.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} tente de démanteler une pièce ennemie, mais elle tient.",
  "The briars grasp at the field.": "Les ronces agrippent le terrain.",
- "Briars catch {name}: it is Tangled this round.": "Les ronces attrapent {name} : Empêtré pour la manche."
+ "Briars catch {name}: it is Tangled this round.": "Les ronces attrapent {name} : Empêtré pour la manche.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Quand il est joué : 50 % de briser l'équipement de l'ennemi en face, ou une pièce ennemie au sol (une vie de Robuste).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Dès la manche 2, les ronces Empêtrent une unité au hasard de chaque camp à chaque manche. Les volants passent au-dessus."
 }

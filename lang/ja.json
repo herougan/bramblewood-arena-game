@@ -3512,7 +3512,6 @@
  "Sunder": "断ち割り",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "命中時：50%で対象の装備を壊す（頑丈の命を1つ）。",
  "Dismantle": "分解",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "プレイ時：50%で正面の敵の装備、または落ちている敵の装備を壊す（頑丈の命を1つ）。",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "壊れるたびに頑丈の命が1つ減り、命が尽きた装備は壊滅する。粉砕は確実に命を1つ奪う。",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "頑丈{n}：{n}回壊れるまで残る（壊れるたびに命が1つ減り、耐久が満タンに戻る）。",
  "Hardy": "頑丈",
@@ -3530,7 +3529,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 いばらが{name}を捕らえる：このラウンドは絡まり状態。",
  "Grasping Briars": "つかむいばら",
  "Tangled, 1 a side": "絡まり、各陣営1体",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "2ラウンド目から、毎ラウンドいばらが各陣営のユニット1体をランダムに捕らえる：そのラウンドは絡まり状態（各行動が2回に1回失敗）。飛行ユニットは届かない。",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "絡まり：攻撃・射撃・行動・トリガーがそれぞれ2回に1回失敗する。建造物は捕まらない。",
  "Requiem": "レクイエム",
  "Dirge": "哀歌",
@@ -3550,5 +3548,7 @@
  "{att} dismantles an enemy piece.": "{att}が敵の装備を分解する。",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att}は敵の装備を分解しようとするが、持ちこたえた。",
  "The briars grasp at the field.": "いばらが戦場に絡みつく。",
- "Briars catch {name}: it is Tangled this round.": "いばらが{name}を捕らえる：このラウンドは絡まり状態。"
+ "Briars catch {name}: it is Tangled this round.": "いばらが{name}を捕らえる：このラウンドは絡まり状態。",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "プレイ時：50%で正面の敵の装備、または落ちている敵の装備を壊す（頑丈の命を1つ）。",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "2ラウンド目から、毎ラウンドいばらが各陣営のユニット1体をランダムに絡め取る。飛行ユニットは届かない。"
 }

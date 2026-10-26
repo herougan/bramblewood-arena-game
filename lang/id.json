@@ -3514,7 +3514,6 @@
  "Sunder": "Belah",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Saat Kena: 50% memecahkan perlengkapan target (satu nyawa Tangguh).",
  "Dismantle": "Bongkar",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Saat dimainkan: 50% memecahkan perlengkapan musuh di depannya, atau perlengkapan musuh yang tergeletak (satu nyawa Tangguh).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Setiap pecah mengambil satu nyawa Tangguh; perlengkapan tanpa nyawa hancur. Hancurkan pasti mengambil satu nyawa.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Tangguh {n}: pecah {n} kali sebelum hilang (tiap pecah mengambil satu nyawa dan mengisi ulang ketahanannya).",
  "Hardy": "Tangguh",
@@ -3532,7 +3531,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 Semak berduri menangkap {name}: Terjerat ronde ini.",
  "Grasping Briars": "Semak Pencengkeram",
  "Tangled, 1 a side": "Terjerat, 1 per sisi",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Mulai ronde 2, setiap ronde semak berduri menangkap satu unit acak di tiap sisi: ia Terjerat selama ronde itu (tiap aksi gagal 1 dari 2). Unit terbang ada di atasnya.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Terjerat: tiap pukulan, tembakan, aksi dan pemicu gagal 1 dari 2. Struktur tidak tertangkap.",
  "Requiem": "Rekuiem",
  "Dirge": "Ratapan",
@@ -3552,5 +3550,7 @@
  "{att} dismantles an enemy piece.": "{att} membongkar perlengkapan musuh.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} mencoba membongkar perlengkapan musuh, tapi bertahan.",
  "The briars grasp at the field.": "Semak berduri mencengkeram arena.",
- "Briars catch {name}: it is Tangled this round.": "Semak berduri menangkap {name}: Terjerat ronde ini."
+ "Briars catch {name}: it is Tangled this round.": "Semak berduri menangkap {name}: Terjerat ronde ini.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Saat dimainkan: 50% memecahkan perlengkapan musuh di depannya, atau perlengkapan musuh yang tergeletak (satu nyawa Tangguh).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Mulai ronde 2, setiap ronde semak berduri Menjerat satu unit acak di tiap sisi. Unit terbang ada di atasnya."
 }

@@ -3513,7 +3513,6 @@
  "Sunder": "Biyak",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Kapag Tumama: 50% na masira ang kagamitan ng target (isang buhay ng Hardy).",
  "Dismantle": "Kalasin",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Kapag nilaro: 50% na masira ang kagamitan ng kalabang kaharap nito, o isang nakakalat na piyesa ng kalaban (isang buhay ng Hardy).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Ang bawat pagkasira ay nag-aalis ng isang buhay ng Hardy; nawawasak ang piyesang wala nang buhay. Tiyak na nag-aalis ng buhay ang Pulverise.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Hardy {n}: nasisira ito nang {n} beses bago mawala (bawat sira ay nag-aalis ng buhay at pinupuno ang tibay nito).",
  "Hardy": "Hardy",
@@ -3531,7 +3530,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 Nahuli ng tinikan si {name}: Nabuhol ito ngayong round.",
  "Grasping Briars": "Kumakapit na Tinikan",
  "Tangled, 1 a side": "Nabuhol, 1 bawat panig",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Mula round 2, bawat round ay humuhuli ang tinikan ng isang random na unit sa bawat panig: Nabuhol ito sa round (nabibigo ang bawat aksyon 1 sa 2). Nasa itaas ang mga lumilipad.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Nabuhol: nabibigo ang bawat hampas, tira, aksyon at trigger 1 sa 2. Hindi nahuhuli ang mga Structure.",
  "Requiem": "Requiem",
  "Dirge": "Panaghoy",
@@ -3551,5 +3549,7 @@
  "{att} dismantles an enemy piece.": "Kinakalas ni {att} ang isang piyesa ng kalaban.",
  "{att} tries to dismantle an enemy piece, but it holds.": "Sinubukan ni {att} na kalasin ang piyesa ng kalaban, pero matibay ito.",
  "The briars grasp at the field.": "Kumakapit ang mga tinikan sa larangan.",
- "Briars catch {name}: it is Tangled this round.": "Nahuli ng tinikan si {name}: Nabuhol ito ngayong round."
+ "Briars catch {name}: it is Tangled this round.": "Nahuli ng tinikan si {name}: Nabuhol ito ngayong round.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Kapag nilaro: 50% na masira ang kagamitan ng kaharap na kalaban, o isang nakakalat na piyesa ng kalaban (isang buhay ng Hardy).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Mula round 2, bawat round ay Binubuhol ng tinikan ang isang random na unit sa bawat panig. Nasa itaas ang mga lumilipad."
 }

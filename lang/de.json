@@ -3511,7 +3511,6 @@
  "Sunder": "Zerschlagen",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Bei Treffer: 50 % Chance, die Ausrüstung des Ziels zu brechen (ein Leben von Robust).",
  "Dismantle": "Zerlegen",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Beim Ausspielen: 50 % Chance, die Ausrüstung des gegenüberstehenden Feindes oder ein loses feindliches Stück zu brechen (ein Leben von Robust).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Ein Bruch kostet ein Leben von Robust; ein Stück ohne Leben wird zerstört. Zermalmen nimmt sicher ein Leben.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Robust {n}: es bricht {n}-mal, bevor es weg ist (jeder Bruch kostet ein Leben und füllt seine Haltbarkeit auf).",
  "Hardy": "Robust",
@@ -3529,7 +3528,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 Dornen fangen {name}: verheddert für diese Runde.",
  "Grasping Briars": "Greifende Dornen",
  "Tangled, 1 a side": "Verheddert, 1 je Seite",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Ab Runde 2 fangen Dornen jede Runde eine zufällige Einheit auf jeder Seite: Sie ist für die Runde verheddert (jede Aktion scheitert 1 von 2). Flieger sind darüber.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Verheddert: jeder Schlag, Schuss, jede Aktion und jeder Auslöser scheitert 1 von 2. Strukturen werden nicht gefangen.",
  "Requiem": "Requiem",
  "Dirge": "Klagelied",
@@ -3549,5 +3547,7 @@
  "{att} dismantles an enemy piece.": "{att} zerlegt ein feindliches Stück.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} versucht ein feindliches Stück zu zerlegen, aber es hält.",
  "The briars grasp at the field.": "Die Dornranken greifen über das Feld.",
- "Briars catch {name}: it is Tangled this round.": "Dornen fangen {name}: verheddert für diese Runde."
+ "Briars catch {name}: it is Tangled this round.": "Dornen fangen {name}: verheddert für diese Runde.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Beim Ausspielen: 50 % Chance, die Ausrüstung des Feindes gegenüber oder ein loses feindliches Stück zu brechen (ein Leben von Robust).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Ab Runde 2 verheddern Dornen jede Runde eine zufällige Einheit auf jeder Seite. Flieger sind darüber."
 }

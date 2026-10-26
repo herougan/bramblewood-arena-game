@@ -18,6 +18,7 @@
   "dragonscale-mail: Hardy 2",
   "gangrenous-leech: + Parasite (Gorge)",
   "stone-turtle-warden: Armor 4 -> 3 (no legal line at Armor 4)",
+  "barnacle-fortress: Armor 5 -> 3 (no legal line at Armor 5)",
   "carrion-fly-swarm: + throng 10",
   "wolfsbane-alpha: + dirge 3",
   "dust-hyena: + carnage 3",
@@ -114,16 +115,6 @@
  ],
  "offLine": [
   {
-   "id": "sea-turtle-elder",
-   "at": "5/10",
-   "oldLine": "5/11"
-  },
-  {
-   "id": "barnacle-fortress",
-   "at": "0/6",
-   "oldLine": "0/10"
-  },
-  {
    "id": "pill-bug",
    "at": "1/9",
    "oldLine": "1/10"
@@ -132,21 +123,6 @@
    "id": "snail-mail",
    "at": "0/1",
    "oldLine": "0/6"
-  },
-  {
-   "id": "marshal-of-rivergate",
-   "at": "1/1",
-   "oldLine": "none"
-  },
-  {
-   "id": "war-elephant",
-   "at": "0/28",
-   "oldLine": "none"
-  },
-  {
-   "id": "testudo-tortoise",
-   "at": "5/13",
-   "oldLine": "5/14"
   },
   {
    "id": "musk-ox-calf",
@@ -168,6 +144,13 @@
    "to": "9/6",
    "S": "-2.5 -> -4.5",
    "use": 100
+  },
+  {
+   "id": "barnacle-fortress",
+   "from": "0/6",
+   "to": "0/10",
+   "S": "7.8 -> 8.08",
+   "use": 98
   }
  ],
  "cut": [
@@ -205,6 +188,13 @@
    "to": "0/11",
    "S": "4.68 -> 8.08",
    "use": 96
+  },
+  {
+   "id": "sea-turtle-elder",
+   "from": "5/10",
+   "to": "4/9",
+   "S": "6.18 -> 9.58",
+   "use": 95
   },
   {
    "id": "swamp-alligator",
@@ -296,6 +286,13 @@
    "to": "3/19",
    "S": "9.42 -> 10.83",
    "use": 99
+  },
+  {
+   "id": "testudo-tortoise",
+   "from": "5/13",
+   "to": "4/12",
+   "S": "5.68 -> 9.08",
+   "use": 96
   },
   {
    "id": "marshal-tuskwell",
@@ -503,5 +500,8 @@
    "use": 99
   }
  ],
- "flagged": []
+ "flagged": [
+  "marshal-of-rivergate",
+  "war-elephant"
+ ]
 }

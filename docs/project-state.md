@@ -17,7 +17,8 @@ Source for all of it: `bramblewood-engine.js` (the engine decides); player wordi
 
 ### Damage types
 - **Kinds of damage:** physical, magic, true, the elements (fire / heat, frost, shock, poison, acid, water, decay and the rest) and status ticks (Poison, Bleed). The engine's damage function holds the order of steps. [EN8-2, built form; `bramblewood-engine.js`]
-- **Armor (owner 10-25 17:53): elements count as physical, so Armor applies to them; only magic (and dark / holy) passes Armor; Magic Armor stops magic only; true damage passes both.** Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) works on swings (a swing, a prong, a counter), as before; shots and damage skills are not reduced by it (call ENG9-6). Every "bolt" is magic; the physical elemental spits read Ember / Acid / Venom / Frost / Spark Spit (call ENG9-3). Pierce N cuts Armor only. **Built (ENG9, 2026-10-26).** [EN8-2; engine `isMagicDmg`]
+- **Armor (owner 10-25 17:53): elements count as physical, so Armor applies to them; only magic (and dark / holy) passes Armor; Magic Armor stops magic only; true damage passes both.** Armor (and Shell, the tide's Armor, Prayer Ward, Shieldwall) works on swings (a swing, a prong, a counter) and on arrows and spits (ENG9-6); Missiles, Fireballs and the other damage skills still pass it. Every "bolt" is magic; the physical elemental spits read Cinder / Acid / Venom / Ice / Spark ("Spit" dropped, ENG9-3; Ember is a gem and Frost a skill, so Cinder and Ice). Pierce N cuts Armor only. **Built (ENG9, ENG10, 2026-10-26).** [EN8-2, ENG9-3, ENG9-6; engine `isMagicDmg`, `damageCardFlat` `fo.armor`]
+- **Armor is priced slightly exponentially:** 1.68 x N^1.43, Armor 5 = 10x Armor 1 (owner: "5 armor nullifies most damage - ~>10"); the cards on the old line were re-fit both ways and the two held ones cut. **Built (ENG10, 2026-10-26).** [ENG9-9; `canonical/skill-costs.json`, `docs/balance/eng10-armor-hits-2026-10-26.json`]
 - **Exact numbers inside, one rounding at the end.** A hit is rounded once, half up, when it lands on the board; nothing rounds while it passes between functions. A half of 1 is 1, so Resist, Ghost, Atheist and the Psychic Dampener never stop a 1. [FX2, FX2-3; engine `roundDmg`]
 - **Status-type attacks deal only counters, not damage as well:** a "– poison / – bleed" shot or action at a unit gives its N as counters and no damage (at a bramble it deals its N). Poison Barbs N: Thorns that poison. **Built (ENG9, 2026-10-26).** [owner note #40, 10-25 17:53; no decision id]
 - **Bleed fades at the round's end, after it bleeds.** [EN3-2]
@@ -51,6 +52,7 @@ These are the owner's rules of 10-19, pinned by `tests/trigger-layers-2026-10-19
 - **Freeze:** frozen before its turn, a unit skips this round and thaws at its end; frozen after it acted, it skips its next round. **Confuse:** each trigger, skill and action fails 1 in 2. [rules 10-19, 23:32]
 - **Evolute:** only the top card's death effects fire; the type is shared only with the card it sits on; it waits its own Wait plus the base's remaining Wait. [EV-2, EV-3, EV-4]
 - **Equipment wears down** (durability by rarity, worn by hits and acid). [EQ-1, EQ2-1]
+- **Hardy N: equipment lives on top of durability.** A break (the durability running out, Sunder's or Dismantle's 50%, Pulverise for sure) takes one life; the durability refills; at 0 lives the piece is destroyed. Dragonscale Mail is Hardy 2. **Built (ENG10, 2026-10-26).** [PROP1-1; engine `eqBreakLife`]
 
 ## 2. Keywords
 
@@ -79,10 +81,12 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Gem sockets: taking a gem out gives it back;** gem fusion and a very rare Socket N skill. **Built (CONTENT3, 2026-10-26):** Socket N adds N sockets to each copy (priced 0: gems sit outside the budget; on no card yet, call CONTENT3-4); two gems of one kind fuse into a Greater gem (twice the bonus) at the Forge's Socket tab for 30 Dust (a placeholder). [H1-a, H1; gem effects sit outside the budget, `docs/workflows/balance.md`]
 - **Equip Time N (default 1) with a top-right badge; Tamper-proof equipment cannot be stolen; a Platform card type (Structure rules for now).** **Built (CONTENT3, 2026-10-26):** Equip Time is the piece's `equip.turns`; a Platform card carries Structure too; the Mother Carrier (Heroic, awaiting a source) is the first. [owner notes #21, #22; destroying equipment waits on OWN-Q2]
 - **Bound (OWN-Q1):** a Bound unit can't move (no Intercept, Guardian, Rampart, Dive, Charge) and loses Flying's dodge; its swings, arrows and ranged actions deal half damage. Only Strangle binds now (Tangleweed lays Tangled). **Built (ENG9, 2026-10-26).**
-- **Pulverise (OWN-Q5):** ignores Armor, breaks Armor / Magic Armor and equipment it hits, double damage to Structures. **Built (CONTENT3, 2026-10-26)**, priced 1.6; on no card yet. A break is sure (Hardy lives wait on PROP1-1).
+- **Pulverise (OWN-Q5):** ignores Armor, breaks Armor / Magic Armor and takes one Hardy life of the equipment it hits, double damage to Structures. **Built (CONTENT3, ENG10, 2026-10-26)**, priced 2.1; on no card yet.
+- **Sunder (On Hit) and Dismantle (On Play):** 50% to break one Hardy life. **Built (ENG10, 2026-10-26)**, priced 1.0 and 0.5; on no card yet. [PROP1-1]
+- **Threshold skills, Name N – {…} (plain +2/+2):** Requiem (deaths, both sides, 5), Dirge (yours, 3), Carnage (the enemy's, 3), Muster (your units, 6), Beset (the enemy's units, 6), Throng (the field, 10); priced by measured uptime (`bramblewood-budget.js` thrS). One card each on Maps 0-20. **Built (ENG10, 2026-10-26).** [PROP1-4]
 - **Wakeful (G5): it never falls Asleep** (a Sleep hit, the Spore Cloud). **Built (CONTENT3, 2026-10-26)**, priced 0.5; the Sleepless Shrew, 7-4's first-clear card.
 - **A Sandstorm is a Storm for Storm cards; the blinding Sandstorm (`sandstorm: 'blind'`) makes every unit Blind but Dry / Keen Sense / Sonar ones.** **Built (CONTENT3, 2026-10-26)**; on 18-4. [owner EN8-7 / C4]
-- **Held back for the owner's answer:** Fester (OWN-Q4). No rule yet.
+- **Gorge (the old Fester key):** a hooked Parasite feeds a second time at round end, at half its Attack; the Gangrenous Leech is a Parasite with it. **Built (ENG10, 2026-10-26).** [OWN-Q4, PROP1-3]
 
 ## 3. Resources
 
@@ -139,6 +143,8 @@ Canonical: `canonical/map-pools.json` (card pools), the maps in `arena_app.js`, 
 - **Skirmishes default to Open mode;** Gravity is a special, per skirmish. [G3]
 - **Clearing a map moves you to the next one; map progress is kept on this device only.** [PG-4, MAP-4]
 - **PRO fights** are for the owner to evaluate a map's cards and never change an existing skirmish; they pay nothing and are not shown to players (banked idea: reveal after Map 40). Rules: `docs/evaluation-protocol.md`. [PRO-1, PRO-2, PRO2-1; owner 10-25 17:53 #27]
+- **A side map that opens late fights its own PRO / BPRO decks at the road's enemy level of the map it opens on** (the mean over that map's road fights; Level 1 otherwise). **Built (ENG10, 2026-10-26).** [PREF-3; `proLateSideLevel` in `arena_app.js`]
+- **A PvP stranger's deck (Collection PvP) is levelled to your battle rating:** Level = 1 + (your BR / its BR at Level 1 - 1) / 0.31, clamped 1-10 (a fractional level mixes two stat steps); Standard PvP stays at Level 1. **Built (ENG10, 2026-10-26).** [FIX3-4; `pvpStrangerLevel`]
 - **Tutorial fights are T-1 to T-5;** tutorial brambles keep 9 and 11 Health, and the editor's value becomes the one used. [TU-1, TU2-3]
 - **Raid bosses sit near 20% win rate** and are rebalanced from where players unlock the raid. [RW2-4; tuning guide section 10]
 
@@ -175,12 +181,13 @@ Not decisions yet: they are the owner's words, turned into action items G1-G26. 
 - **Fork** hits two adjacent enemies among L/C/R (never L+R); the castle only when none of the three is there; Trident and Pitchfork hit the castle only when none of their lines holds an enemy (G2). **Built (ENG9, 2026-10-26).**
 - **Sleeping units never swing** (put to sleep, stunned, frozen or chained before its turn, a unit loses that round's swing); Decay is applied and counted, Decay costs 12% more (G4). **Built (ENG9, 2026-10-26).**
 - **Tangled: 50% to act** (swings, shots, actions, triggers; the Confused coin), laid by Tangleweed; re-priced 1.4 (G25). **Built (ENG9, 2026-10-26).**
-- **One-shot skills (On Ready, Charge) fire at upkeep and leave the card once spent;** a unit Ready at Wait 0 gets its On Ready at its first upkeep; Charge goes off once (G23, G24; calls ENG9-4, ENG9-7). **Built (ENG9, 2026-10-26).**
+- **One-shot On Ready skills leave the card once spent;** a unit Ready at Wait 0 gets its On Ready on the turn it is played (owner ENG9-7); **Charge recharges** like Reload, and Reload costs more (-6) (owner ENG9-4) (G23, G24). **Built (ENG9, ENG10, 2026-10-26).**
 - **Chained prices as a multiplier on the budget** (x(1 + 0.25 a held round), `chainedMult`); it breaks once its damage adds up to N; no lock glyph (G19; call ENG9-8). **Built (ENG9, 2026-10-26).**
 - **All packs give 3 cards (Collector's 5); re-cost them** (G15).
 - **Forge tabs appear when their feature is earned at a map; Reinforce shows locked "?"** (G18).
 - **First-clear reward not yet won shows full colour; already won is greyed with a tick** (G6).
-- **Fungi are a type and a Codex kingdom beside Flora** (Fungal Colossus, Puffball Bombardier); a joint cost sits side by side with no gap, "/" kept for an alternative cost (none yet) (G9; call ENG9-5). **Built (ENG9, 2026-10-26).**
+- **Flora is the phylum; Tree, Fruit, Flower, Vine and Mushroom are its types** (the Fungi cards are Mushroom; the types count as Flora everywhere); a joint cost sits side by side with no gap, "/" kept for an alternative cost (none yet) (G9; owner ENG9-5). **Built (ENG9, ENG10, 2026-10-26).**
+- **Grasping Briars, a field rule:** one random unit a side Tangled each round (not Flyers or Structures); on 12-4 and 12-7 (owner ENG9-10). **Built (ENG10, 2026-10-26).**
 
 ## Where sources disagree
 

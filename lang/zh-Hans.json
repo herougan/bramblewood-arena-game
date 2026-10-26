@@ -3512,7 +3512,6 @@
  "Sunder": "劈裂",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "命中时：50% 击破目标的装备（一层坚固）。",
  "Dismantle": "拆解",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "打出时：50% 击破对面敌人的装备，或一件散落的敌方装备（一层坚固）。",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "每次击破移除一层坚固；没有剩余层数的装备被摧毁。粉碎必定移除一层。",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "坚固 {n}：被击破 {n} 次才会消失（每次击破移除一层并补满耐久）。",
  "Hardy": "坚固",
@@ -3530,7 +3529,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 荆棘缠住 {name}：本回合被缠绕。",
  "Grasping Briars": "缠人荆棘",
  "Tangled, 1 a side": "缠绕，每方 1 个",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "从第 2 回合起，荆棘每回合在双方各随机缠住一个单位：该回合被缠绕（每个行动有一半几率失败）。飞行单位不受影响。",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "缠绕：每次挥击、射击、行动和触发有一半几率失败。建筑不会被缠住。",
  "Requiem": "安魂曲",
  "Dirge": "挽歌",
@@ -3550,5 +3548,7 @@
  "{att} dismantles an enemy piece.": "{att} 拆解了一件敌方装备。",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} 试图拆解敌方装备，但它撑住了。",
  "The briars grasp at the field.": "荆棘缠向战场。",
- "Briars catch {name}: it is Tangled this round.": "荆棘缠住 {name}：本回合被缠绕。"
+ "Briars catch {name}: it is Tangled this round.": "荆棘缠住 {name}：本回合被缠绕。",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "打出时：50% 击破对面敌人的装备，或一件散落的敌方装备（一层坚固）。",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "从第 2 回合起，荆棘每回合在双方各随机缠绕一个单位。飞行单位不受影响。"
 }

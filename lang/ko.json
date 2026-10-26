@@ -3515,7 +3515,6 @@
  "Sunder": "쪼개기",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "적중 시: 50% 확률로 대상의 장비를 부숩니다(튼튼함 1).",
  "Dismantle": "해체",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "낼 때: 50% 확률로 마주한 적의 장비나 떨어진 적 장비를 부숩니다(튼튼함 1).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "부서질 때마다 튼튼함이 1 줄고, 남은 것이 없는 장비는 파괴됩니다. 분쇄는 확실히 1을 줄입니다.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "튼튼함 {n}: {n}번 부서져야 사라집니다(부서질 때마다 1을 잃고 내구도가 다시 찹니다).",
  "Hardy": "튼튼함",
@@ -3533,7 +3532,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 가시덤불이 {name}을(를) 붙잡습니다: 이번 라운드 얽힘.",
  "Grasping Briars": "움켜쥐는 가시덤불",
  "Tangled, 1 a side": "얽힘, 진영당 1",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "2라운드부터 매 라운드 가시덤불이 양쪽에서 무작위 유닛 하나씩을 붙잡습니다: 그 라운드 동안 얽힘(모든 행동이 2번에 1번 실패). 비행 유닛은 닿지 않습니다.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "얽힘: 모든 공격, 사격, 행동, 발동이 2번에 1번 실패합니다. 구조물은 붙잡히지 않습니다.",
  "Requiem": "진혼곡",
  "Dirge": "애가",
@@ -3553,5 +3551,7 @@
  "{att} dismantles an enemy piece.": "{att}이(가) 적 장비를 해체합니다.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att}이(가) 적 장비를 해체하려 하지만 버팁니다.",
  "The briars grasp at the field.": "가시덤불이 전장을 움켜쥡니다.",
- "Briars catch {name}: it is Tangled this round.": "가시덤불이 {name}을(를) 붙잡습니다: 이번 라운드 얽힘."
+ "Briars catch {name}: it is Tangled this round.": "가시덤불이 {name}을(를) 붙잡습니다: 이번 라운드 얽힘.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "낼 때: 50% 확률로 마주한 적의 장비나 떨어진 적 장비를 부숩니다(튼튼함 1).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "2라운드부터 매 라운드 가시덤불이 양쪽에서 무작위 유닛 하나씩을 얽어맵니다. 비행 유닛은 닿지 않습니다."
 }

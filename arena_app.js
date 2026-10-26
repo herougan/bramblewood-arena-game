@@ -1895,8 +1895,8 @@ Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
 //   Gorge, the old Fester key (PROP1-3)     Requiem / Dirge / Carnage / Muster / Beset / Throng N – {…} (PROP1-4)
 [['fireBolt', 'ui.e10-skn-cinder'], ['acidBolt', 'ui.e10-skn-acid'], ['poisonBolt', 'ui.e10-skn-venom'], ['iceBolt', 'ui.e10-skn-ice'], ['shockBolt', 'ui.e10-skn-spark']].forEach(([k, t])=> sk1Patch(PASSIVE_DEFS, k, {label:TX(t)}));
 { const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.e10-charge', {n: cp.n})}`; }; } }
-delete SKILL_TEXT.armor; sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
-delete SKILL_TEXT.fester; sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
+sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
+sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
 PASSIVE_DEFS.push(
   {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
   {key:'dismantle', category:'passive', label:TX('ui.e10-dismantle-name'), kind:'boolean', desc:()=> TX('ui.e10-dismantle'), codexNote:TX('ui.e10-hardy-codex')});
@@ -2953,6 +2953,8 @@ const SKILL_TEXT = {
   chilli: v=> TX('ui.sk-chilli', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
+// ENG10 (2026-10-26): Armor's and Gorge's lines are their PASSIVE_DEFS rows' (the ENG10 block above): drop the old short texts here, after SKILL_TEXT exists
+delete SKILL_TEXT.armor; delete SKILL_TEXT.fester;
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
 Object.assign(SKILL_TEXT, {
   tornado: v=> `When it arrives, ${Number(v) > 1 ? v + ' random enemy units are' : 'a random enemy unit is'} flung to another column for 1 damage (2 for flyers).`,

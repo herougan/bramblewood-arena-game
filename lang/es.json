@@ -3511,7 +3511,6 @@
  "Sunder": "Hendir",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Al golpear: 50 % de romper el equipo del objetivo (una vida de Robusto).",
  "Dismantle": "Desmantelar",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Al jugarse: 50 % de romper el equipo del enemigo de enfrente, o una pieza enemiga suelta (una vida de Robusto).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Una rotura quita una vida de Robusto; una pieza sin vidas se destruye. Pulverizar quita una vida seguro.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Robusto {n}: se rompe {n} veces antes de desaparecer (cada rotura quita una vida y rellena su durabilidad).",
  "Hardy": "Robusto",
@@ -3529,7 +3528,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 Las zarzas atrapan a {name}: Enredado esta ronda.",
  "Grasping Briars": "Zarzas aferradoras",
  "Tangled, 1 a side": "Enredado, 1 por bando",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "Desde la ronda 2, las zarzas atrapan una unidad al azar de cada bando cada ronda: queda Enredada esa ronda (cada acción falla 1 de cada 2). Los voladores están por encima.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Enredado: cada golpe, disparo, acción y activador falla 1 de cada 2. Las Estructuras no quedan atrapadas.",
  "Requiem": "Réquiem",
  "Dirge": "Endecha",
@@ -3549,5 +3547,7 @@
  "{att} dismantles an enemy piece.": "{att} desmantela una pieza enemiga.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} intenta desmantelar una pieza enemiga, pero aguanta.",
  "The briars grasp at the field.": "Las zarzas se aferran al campo.",
- "Briars catch {name}: it is Tangled this round.": "Las zarzas atrapan a {name}: Enredado esta ronda."
+ "Briars catch {name}: it is Tangled this round.": "Las zarzas atrapan a {name}: Enredado esta ronda.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Al jugarse: 50 % de romper el equipo del enemigo de enfrente, o una pieza enemiga suelta (una vida de Robusto).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "Desde la ronda 2, las zarzas Enredan una unidad al azar de cada bando cada ronda. Los voladores están por encima."
 }

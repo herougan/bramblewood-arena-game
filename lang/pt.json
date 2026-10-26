@@ -3514,7 +3514,6 @@
  "Sunder": "Fender",
  "On Hit: 50% to break the target's equipment (one Hardy life).": "Ao acertar: 50% de quebrar o equipamento do alvo (uma vida de Robusto).",
  "Dismantle": "Desmontar",
- "When played: 50% to break the equipment of the enemy facing it, or a loose enemy piece (one Hardy life).": "Ao ser jogado: 50% de quebrar o equipamento do inimigo à frente, ou uma peça inimiga solta (uma vida de Robusto).",
  "A break takes one Hardy life; a piece with no life left is destroyed. Pulverise breaks a life for sure.": "Uma quebra tira uma vida de Robusto; uma peça sem vidas é destruída. Pulverizar tira uma vida com certeza.",
  "Hardy {n}: it breaks {n} times before it is gone (each break takes a life and refills its durability).": "Robusto {n}: quebra {n} vezes antes de sumir (cada quebra tira uma vida e repõe a durabilidade).",
  "Hardy": "Robusto",
@@ -3532,7 +3531,6 @@
  "🌹 Briars catch {name}: it is Tangled this round.": "🌹 As sarças prendem {name}: Enredado nesta rodada.",
  "Grasping Briars": "Sarças agarradoras",
  "Tangled, 1 a side": "Enredado, 1 por lado",
- "From round 2, briars catch one random unit on each side every round: it is Tangled for the round (each action fails 1 in 2). Flyers are above them.": "A partir da rodada 2, as sarças prendem uma unidade aleatória de cada lado a cada rodada: fica Enredada na rodada (cada ação falha 1 em 2). Voadores ficam acima.",
  "Tangled: each swing, shot, action and trigger fails 1 in 2. Structures are not caught.": "Enredado: cada golpe, tiro, ação e gatilho falha 1 em 2. Estruturas não são presas.",
  "Requiem": "Réquiem",
  "Dirge": "Lamento",
@@ -3552,5 +3550,7 @@
  "{att} dismantles an enemy piece.": "{att} desmonta uma peça inimiga.",
  "{att} tries to dismantle an enemy piece, but it holds.": "{att} tenta desmontar uma peça inimiga, mas ela aguenta.",
  "The briars grasp at the field.": "As sarças agarram o campo.",
- "Briars catch {name}: it is Tangled this round.": "As sarças prendem {name}: Enredado nesta rodada."
+ "Briars catch {name}: it is Tangled this round.": "As sarças prendem {name}: Enredado nesta rodada.",
+ "When played: 50% to break the facing enemy's equipment, or a loose enemy piece (one Hardy life).": "Ao ser jogado: 50% de quebrar o equipamento do inimigo à frente, ou uma peça inimiga solta (uma vida de Robusto).",
+ "From round 2, briars Tangle one random unit on each side every round. Flyers are above them.": "A partir da rodada 2, as sarças Enredam uma unidade aleatória de cada lado a cada rodada. Voadores ficam acima."
 }
