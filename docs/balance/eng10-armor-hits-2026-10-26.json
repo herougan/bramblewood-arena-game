@@ -1,0 +1,73 @@
+{
+ "_about": "tools/eng10_armor_hits_2026_10_26.js: the landed hits on units (swings, counters, prongs, arrows, spits) before Armor, magic and true left out; random live band decks, CPU vs CPU (aiLevel 1, open board, day / night cycle). perN[N]: cancelled = the share of hits Armor N stops outright (hit <= N); damageShare = E[min(N, hit)] / E[hit]; ehp = 1 / (1 - damageShare).",
+ "generated": "2026-10-26",
+ "seed": 1,
+ "games": 1000,
+ "band": 714,
+ "hits": 51450,
+ "byKind": {
+  "melee": 47263,
+  "ranged": 4187
+ },
+ "meanHit": 2.401,
+ "hist": {
+  "1": 0.272,
+  "2": 0.354,
+  "3": 0.194,
+  "4": 0.12,
+  "5": 0.033,
+  "6": 0.017,
+  "7": 0.004,
+  "8": 0.003,
+  "9": 0,
+  "10": 0.001,
+  "11": 0,
+  "12": 0,
+  "13": 0,
+  "14": 0,
+  "15": 0.001,
+  "20": 0
+ },
+ "perN": {
+  "1": {
+   "cancelled": 0.272,
+   "damageShare": 0.416,
+   "ehp": 1.714
+  },
+  "2": {
+   "cancelled": 0.625,
+   "damageShare": 0.72,
+   "ehp": 3.568
+  },
+  "3": {
+   "cancelled": 0.819,
+   "damageShare": 0.876,
+   "ehp": 8.049
+  },
+  "4": {
+   "cancelled": 0.94,
+   "damageShare": 0.951,
+   "ehp": 20.417
+  },
+  "5": {
+   "cancelled": 0.973,
+   "damageShare": 0.976,
+   "ehp": 41.921
+  },
+  "6": {
+   "cancelled": 0.99,
+   "damageShare": 0.988,
+   "ehp": 50
+  },
+  "7": {
+   "cancelled": 0.993,
+   "damageShare": 0.992,
+   "ehp": 50
+  },
+  "8": {
+   "cancelled": 0.997,
+   "damageShare": 0.995,
+   "ehp": 50
+  }
+ }
+}
