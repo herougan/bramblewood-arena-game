@@ -8,7 +8,8 @@ Every number is read from a file at hub-build time and names that file under it.
   Map reference   arena_app.js WINRATE_REF_DECKS (the deck per map), docs/balance/skirmish-pass-ai3-after-map.jsonl (AI3's "after" fights)
   Reference-2     docs/balance/ref/ref2-owner-main-deck-2026-10-25.json, docs/balance/skirmish-pass-ai3-after-ref2.jsonl
   vs PRO / BPRO   docs/balance/pro-ease-2026-10-25.json
-  per-map optimum docs/balance/opt/deckopt-map*-2026-10-25-pro3-maptrue.json"""
+  per-map optimum docs/balance/opt/deckopt-map*-2026-10-25-pro3-maptrue.json
+  heatmap (HUB7)  docs/balance/hub7-ref-vs-optimum-2026-10-27.json: each reference deck against each Map 0-24 optimum (heatmap_html)"""
 import glob, html as H, json, math, os, re, statistics as st
 
 AI3_MD = 'docs/balance/ai3-2026-10-26.md'
@@ -68,6 +69,76 @@ def _runs(level_by_map):  # {0:0, 1:0, ... 11:3} -> "Lv 0: Maps 0-10; Lv 3: Maps
 
 def _tile(label, value, sub):
     return f'<div class="dos-tile"><span class="dos-lab">{e(label)}</span><b class="dos-val">{value}</b><small>{sub}</small></div>'
+
+
+# 2026-10-27 (package HUB7, owner 10-26 23:33: "a simple graphic of Map 0-24 difficulties: So the reference decks against all the map 0-24 most
+# powerful deck you've constructed. All in 1 table, with heatmap."): one row per reference deck, one column per main map, each cell the reference's
+# win rate against that map's optimum (tools/opt/ref_vs_optimum.js). The colour steps are the owner's tolerance widths (DF-1b: 5 / 10 / 15 / 20
+# points) around an even fight, 50%: red = the reference loses (hard), green = it wins (easy).
+HUB7 = 'docs/balance/hub7-ref-vs-optimum-2026-10-27.json'
+HM_STEPS = [  # (upper bound of the win rate in %, css class, legend label)
+    (30, 'hm0', 'under 30%'), (35, 'hm1', '30-35'), (40, 'hm2', '35-40'), (45, 'hm3', '40-45'), (55, 'hm4', '45-55'),
+    (60, 'hm5', '55-60'), (65, 'hm6', '60-65'), (70, 'hm7', '65-70'), (101, 'hm8', '70% and up')]
+
+
+def _hm_cls(p):
+    for hi, c, _ in HM_STEPS:
+        if p < hi: return c
+    return HM_STEPS[-1][1]
+
+
+def heatmap_html(root, names):
+    fp = os.path.join(root, HUB7)
+    if not os.path.exists(fp):
+        return ''
+    d = _js(root, HUB7)
+    rows = d['rows']
+    maps = sorted({(r['map'], r['mapId'], r['name']) for r in rows})
+    by = {(r['ref'], r['map']): r for r in rows}
+    refs = [('map', 'Map reference'), ('ref2', 'Reference-2'), ('ref3', 'Reference-3')]
+    reused = sorted({r['map'] for r in rows if '2026-10-25' in r['optimum']['tag']})
+
+    def tip(r):
+        o = r['optimum']
+        cards = ', '.join(f'{names.get(c, c)} &times;{n}' for c, n in sorted(o['deck'].items(), key=lambda kv: (-kv[1], names.get(kv[0], kv[0]))))
+        lead = ('; leader ' + e(names.get(o['leaders'][0], o['leaders'][0]))) if o.get('leaders') else ''
+        src = 're-run 2026-10-27 (HUB7)' if '2026-10-27' in o['tag'] else 'reused from 2026-10-25 (PRO3)'
+        return (f'<b>Map {r["map"]}: {e(r["name"])}</b><br>{"Map reference" if r["ref"] == "map" else "Reference-2"} won <b>{r["wins"]} of {r["n"]}</b> '
+                f'({pc(100 * r["win"])}; 95% {round(100 * r["ci"][0])}-{round(100 * r["ci"][1])}%), lost {r["losses"]}, drew {r["draws"]}. '
+                f'Reference at Level {r["level"]:g}.<br><b>Optimum</b> ({src}, gauntlet {pc(100 * o["score"])}{lead}): {cards}')
+
+    head = '<th scope="col" class="hm-rowh">Reference deck</th>' + ''.join(f'<th scope="col" title="{e(nm)}">{n}</th>' for n, _, nm in maps) + '<th scope="col" class="hm-mean">Mean</th>'
+    body = []
+    for ref, label in refs:
+        cells = []
+        vals = []
+        for n, mid, nm in maps:
+            r = by.get((ref, n))
+            if not r:
+                cells.append(f'<td class="hm-na" aria-label="Map {n}: no data">&middot;</td>')
+                continue
+            p = 100 * r['win']; vals.append(p)
+            cells.append(f'<td class="{_hm_cls(p)}" tabindex="0" aria-label="Map {n}, {e(label)}: {round(p)}%" data-tip="{e(tip(r))}">{round(p)}</td>')
+        mean = (f'<td class="hm-mean {_hm_cls(st.mean(vals))}">{round(st.mean(vals))}</td>' if vals else '<td class="hm-mean hm-na">&middot;</td>')
+        sub = ' <small>pending</small>' if ref == 'ref3' else ''
+        body.append(f'<tr{" class=hm-pending" if ref == "ref3" else ""}><th scope="row" class="hm-rowh">{e(label)}{sub}</th>' + ''.join(cells) + mean + '</tr>')
+    legend = ''.join(f'<li><span class="hm-sw {c}"></span>{e(lab)}</li>' for _, c, lab in HM_STEPS)
+    g = d['settings']['games']
+    note_reuse = (f' Maps {", ".join(map(str, reused))} reuse the 2026-10-25 PRO3 optimum (made before CONTENT3, ENG9 and ENG10).' if reused else
+                  ' Every optimum was re-run on 2026-10-27 against the current cards and engine.')
+    return (
+        '<section class="hm" aria-label="Map difficulty: reference decks against each map\'s optimum">'
+        '<h3>Map 0-24 difficulty: the reference decks against each map\'s strongest deck</h3>'
+        '<p class="dos-note">Each cell is the reference deck\'s <b>win rate (%)</b> against the strongest deck the optimizer built for that map, played as a PRO fight. '
+        '<b>Red = hard</b> (the reference loses), <b>green = easy</b>. Hover or tap a cell for its games and the optimum\'s cards.</p>'
+        '<div class="hm-box"><table class="hm-t"><caption class="sr-only">Reference win rate against each map\'s optimum, Maps 0-24</caption><thead><tr>' + head + '</tr></thead><tbody>'
+        + ''.join(body) + '</tbody></table></div>'
+        '<div class="hm-tip" role="tooltip" hidden></div>'
+        f'<ul class="hm-leg" aria-label="Colour scale">{legend}</ul>'
+        '<p class="dos-src">Steps: the owner\'s tolerance widths (DF-1b: 5 / 10 / 15 / 20 points) around an even fight (50%). '
+        f'{g} games a cell (one cell is about &plusmn;{round(98 / math.sqrt(g))} points at 95%). The reference at its scheduled level with no leader; the optimum at the PRO rule (Level 1, CPU Smart, its showcase leader from Map 2, the map\'s average field). '
+        'Optimum: <code>tools/opt/deckopt.js</code> map-true, faction cards out, budget 16,000.' + note_reuse + ' Reference-3 waits for its deck (REF-3). '
+        f'Source: <code>{HUB7}</code> (<code>tools/opt/ref_vs_optimum.js</code>, generated {e(d["generated"][:16].replace("T", " "))} UTC).</p></section>')
 
 
 def summary_html(root, canon, tix, cols, rows):
@@ -183,5 +254,6 @@ def summary_html(root, canon, tix, cols, rows):
 
     return (
         '<section class="dos" aria-label="Deck optimisation summary"><h2>Summary</h2>'
+        + heatmap_html(root, names) +
         '<p class="lede">The three reference decks (the players the balance tools stand in for), how they fare, and what the Elo numbers in the results below mean.</p>'
         '<div class="dos-decks">' + card_map + card_ref2 + card_ref3 + '</div>' + elo_box + tbl + '</section>')

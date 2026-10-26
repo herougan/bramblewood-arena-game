@@ -35,3 +35,26 @@
 .dos-t td small{display:block; color:var(--ink-muted); font-size:11.5px;}
 .dos-t th:focus-visible,.dos-pick select:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
 .sr-only{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
+/* 2026-10-27 (package HUB7): the Map 0-24 difficulty heatmap at the top of the summary. Fixed diverging steps (red = hard, green = easy) that read
+   on both themes; the table scrolls inside .hm-box with the row names pinned, so the page never scrolls sideways. */
+.hm{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin:8px 0 18px; position:relative; min-width:0;}
+.hm h3{margin:0 0 4px;}
+.hm-box{overflow-x:auto; max-width:100%; border:1px solid var(--line); border-radius:10px; -webkit-overflow-scrolling:touch;}
+.doc .hm-t,.hm-t{display:table; overflow:visible; width:max-content; border-collapse:separate; border-spacing:2px; font-variant-numeric:tabular-nums; margin:0;}
+.hm-t th,.hm-t td{text-align:center; font-size:12.5px; padding:0; height:34px; min-width:25px;}
+.hm-t thead th{font-weight:800; color:var(--ink-muted); font-size:12px; height:24px;}
+.hm-t td{font-weight:800; border-radius:5px; cursor:default;}
+.hm-t th.hm-rowh{position:sticky; left:0; z-index:1; background:var(--surface); text-align:left; padding:0 8px 0 4px; min-width:0; white-space:nowrap; font-size:13px;}
+.hm-t th.hm-rowh small{display:block; font-size:11px; color:var(--ink-muted); font-weight:700;}
+.hm-t .hm-mean{padding:0 4px; min-width:38px;} .hm-t td.hm-mean{outline:2px solid var(--line); outline-offset:-2px;}
+.hm-t td.hm-na{background:var(--surface-2); color:var(--ink-muted); font-weight:400;}
+.hm-pending th.hm-rowh{color:var(--ink-muted);}
+.hm-t td[tabindex]:focus-visible,.hm-t td[tabindex]:hover{outline:2px solid var(--ink); outline-offset:-1px;}
+.hm0{background:#a50f15; color:#fff;} .hm1{background:#d7301f; color:#fff;} .hm2{background:#f16d4c; color:#1c0a05;} .hm3{background:#fbb497; color:#1c0a05;}
+.hm4{background:#e9e4d4; color:#1d1b16;} .hm5{background:#c7e9b4; color:#0b1e0c;} .hm6{background:#8fd18a; color:#0b1e0c;} .hm7{background:#2b7f3d; color:#fff;} .hm8{background:#145a29; color:#fff;}
+.hm-leg{list-style:none; display:flex; flex-wrap:wrap; gap:4px 10px; padding:0; margin:10px 0 4px; font-size:12px; font-weight:700; color:var(--ink-muted);}
+.hm-leg li{display:flex; align-items:center; gap:4px;}
+.hm-sw{width:16px; height:14px; border-radius:3px; display:inline-block;}
+.hm-tip{position:absolute; z-index:5; max-width:min(340px, calc(100% - 16px)); background:var(--bg); color:var(--ink); border:1px solid var(--line); border-radius:10px;
+  padding:8px 10px; font-size:12.5px; line-height:1.35; box-shadow:0 6px 20px rgba(0,0,0,.22); pointer-events:none;}
+.hm-tip[hidden]{display:none;}

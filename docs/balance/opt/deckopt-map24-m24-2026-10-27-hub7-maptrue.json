@@ -1,0 +1,2521 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.2.0 (2026-10-25, PRO3)",
+ "generated": "2026-10-26T16:10:22.637Z",
+ "map": {
+  "id": "m24",
+  "num": 24,
+  "name": "Goldfeather Keep"
+ },
+ "level": 1,
+ "settings": {
+  "mode": "map-true",
+  "faction": false,
+  "rarityCap": "map",
+  "cap": "epic",
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0.3,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+ "pools": {
+  "mode": "map-true",
+  "cap": "epic",
+  "subsOpen": [],
+  "phase1": 448,
+  "mapCards": [
+   "battlement-heron",
+   "duckling-squadron",
+   "elderhorn-monarch",
+   "gilded-swan-knight",
+   "goose-sentry",
+   "iron-warden",
+   "lodge-engineer",
+   "magnate-duck",
+   "mallard-halberdier",
+   "mallard-marauder",
+   "tax-collector-teal"
+  ],
+  "owned": [
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alley-cat",
+   "alligator-gar",
+   "alpha-howler",
+   "alpine-marmot",
+   "alpine-salamander",
+   "alpine-swift",
+   "amber-cicada",
+   "anaconda-coil",
+   "anhinga-spearbird",
+   "ant-scout",
+   "ant-warrior",
+   "antlion-pit",
+   "anvil-thrush",
+   "apollo-butterfly",
+   "archerfish",
+   "arctic-tern",
+   "armadillo-guard",
+   "ash-cloud-condor",
+   "ash-moth",
+   "ashbone-ghoul",
+   "ashwing-ptarmigan",
+   "baby-bat",
+   "baby-horned-capybara",
+   "badger-berserker",
+   "badger-lumberjack",
+   "badger-stonemason",
+   "badger-trench-digger",
+   "balloon-archer",
+   "banded-sea-krait",
+   "barkplate-beetle",
+   "beachcomber-sanderling",
+   "bear-cub",
+   "beaver-feller",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "beetle-battering-ram",
+   "beetle-grunt",
+   "beluga",
+   "berserker-boar",
+   "bison-bulldozer",
+   "blind-cave-fish",
+   "bloodscent-shark",
+   "blue-ringed-octopus",
+   "bogfire-newt",
+   "bombardier-beetle",
+   "booming-bittern",
+   "border-collie",
+   "boreal-elk",
+   "box-turtle",
+   "bramble-hoglet",
+   "bramble-sprout",
+   "bramblewood-lynx",
+   "briarback-hedgehog",
+   "burrow-rabbit",
+   "buzzed-chipmunk",
+   "caiman-hatchling",
+   "caldera-snow-leopard",
+   "camouflage-frog",
+   "cane-toad",
+   "carrion-beetle",
+   "carrion-crow",
+   "cataphract-destrier",
+   "caustic-scorpion",
+   "cave-centipede",
+   "cave-cricket",
+   "cave-olm",
+   "cave-pseudoscorpion",
+   "cave-swiftlet",
+   "cave-warlord",
+   "chamois-leaper",
+   "chipmunk-forager",
+   "chipmunk-hoarder",
+   "chipmunk-skirmisher",
+   "cinder-gecko",
+   "cinder-hornet",
+   "cinder-skeleton",
+   "cinder-stoker",
+   "cleaner-wrasse",
+   "clover-butterfly",
+   "clownfish-scout",
+   "cobalt-talon-fledgling",
+   "coffer-mimic",
+   "colossal-squid",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "cone-cutter-squirrel",
+   "cone-snail",
+   "constrictor-coil",
+   "coral-polyp-colony",
+   "coral-reef-shark",
+   "cottonmouth-matriarch",
+   "cottontail",
+   "courier-pigeon",
+   "cricket-drummer",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "crown-of-thorns-star",
+   "cunning-vixen",
+   "dam-keeper-beaver",
+   "dhole-matriarch",
+   "dhole-runner",
+   "diving-bell-spider",
+   "dormouse",
+   "driftwood-crab",
+   "dromedary",
+   "duck-paddler",
+   "duckling",
+   "dune-packrat",
+   "dung-beetle",
+   "dust-devil-kestrel",
+   "dust-hyena",
+   "dynamite-packrat",
+   "eagle-owl-quartermaster",
+   "eagle-sharpshooter",
+   "earthworm",
+   "echidna-quillshot",
+   "echo-screecher",
+   "electric-catfish",
+   "electric-ray",
+   "elephant-nose-fish",
+   "ember-centipede",
+   "ember-revenant",
+   "ember-tetra",
+   "ent",
+   "eyrie-warden",
+   "farm-dog",
+   "fawn-scout",
+   "fen-mink",
+   "fennec-fox",
+   "feral-tomcat",
+   "fiddler-crab-swarm",
+   "field-crow",
+   "field-mouse",
+   "field-vole",
+   "fire-ant-raft",
+   "fire-hawk",
+   "fire-salamander",
+   "firefly-swarm",
+   "fishing-cat",
+   "fleetfootd",
+   "forager-ant",
+   "fox-kit",
+   "fox-sharpshot",
+   "frillneck-duelist",
+   "frost-hare-sprinter",
+   "frostmoon-howler",
+   "fulmar-spitter",
+   "fumarole-ibex",
+   "fungal-colossus",
+   "fungus-gnat-cloud",
+   "gale-swift",
+   "gallery-orb-weaver",
+   "gannet-nestweaver",
+   "garden-snail",
+   "garden-tiger-moth",
+   "gatling-hog",
+   "ghost-crayfish",
+   "giant-cave-huntsman",
+   "giant-clam",
+   "giant-water-bug",
+   "glacial-ape-king",
+   "glacier-wolf-pack",
+   "glacier-yak",
+   "glasswing-butterfly",
+   "glasswing-moth",
+   "glimmer-spider",
+   "golden-eagle-diver",
+   "gorge-wyrm",
+   "granite-ox-golem",
+   "grass-snake",
+   "grass-viper",
+   "grave-grin-hyena",
+   "gravel-mole",
+   "great-barracuda",
+   "great-crested-grebe",
+   "great-skua",
+   "greater-siren",
+   "greenland-shark",
+   "grey-seal-bull",
+   "greyplume-fledgling",
+   "grizzly-vanguard",
+   "grotto-lobster",
+   "guano-beetle",
+   "gull-thief",
+   "guppy",
+   "harbor-seal",
+   "harp-seal-pup",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hawthorn-shieldbug",
+   "hazel-coppice",
+   "hedge-weasel",
+   "hedgehog-herbalist",
+   "hedgehog-scout",
+   "hedgerow-shrew",
+   "hercules-beetle",
+   "hollow-oath-keeper",
+   "honey-bee",
+   "hoopoe-herald",
+   "horned-lizard",
+   "horseshoe-crab",
+   "house-cat",
+   "howdah-archers",
+   "ibex-rockcaller",
+   "ice-petrel",
+   "inland-taipan",
+   "ironclaw-fiddler",
+   "jay-pilferer",
+   "kinkajou-lurker",
+   "kittiwake-flock",
+   "komodo-warlord",
+   "kraken-spawnling",
+   "krill-swarm",
+   "ladybird-guard",
+   "lamprey",
+   "land-tiller",
+   "lantern-spark-fly",
+   "leafcutter-gardener",
+   "lemming-swarm",
+   "leopard-slug",
+   "limpet-clinger",
+   "lionfish",
+   "lions-mane-jelly",
+   "lone-grey-wolf",
+   "lotus-frog",
+   "lovebird",
+   "lyrebird-mimic",
+   "magma-salamander",
+   "magma-titan",
+   "magma-wraith",
+   "magpie-collector",
+   "mangrove-kingfisher",
+   "mangrove-manatee",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "mantis-shrimp",
+   "marching-elephant",
+   "margay",
+   "marmot-stonecutter",
+   "marsh-harrier",
+   "marsh-mallow-hare",
+   "marsh-wisp",
+   "marula-elephant",
+   "marula-monkey",
+   "mayfly-dancer",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-burrower",
+   "meerkat-sentry",
+   "meerkat-wayfarer",
+   "millipede-hauler",
+   "minnow-skitter",
+   "mire-witch-heron",
+   "moat-snapper",
+   "mongoose-duelist",
+   "monitor-rambler",
+   "moon-jerboa",
+   "moonshell-snail",
+   "mosquito-cloud",
+   "mosswing-laborer",
+   "mountain-goat-climber",
+   "mountain-hare",
+   "mouse-sapper",
+   "mudflat-godwit",
+   "mudpuppy",
+   "muntjac-barker",
+   "musk-ox-calf",
+   "musk-ox-matriarch",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "newt-doctor",
+   "nightjar-drifter",
+   "nightshade-moth",
+   "nutria-reedcutter",
+   "obsidian-lich",
+   "obsidian-scorpion",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "ossuary-lammergeier",
+   "otter-centurion",
+   "otter-guard",
+   "otter-kit",
+   "otter-paddler",
+   "owl-nightwatch",
+   "oyster-bank",
+   "oystercatcher",
+   "pack-mule",
+   "pale-oryx",
+   "pall-wraith",
+   "pangolin-roller",
+   "paper-wasp",
+   "parrotfish",
+   "peak-condor",
+   "peat-cutter-vole",
+   "peregrine-stooper",
+   "permafrost-mammoth",
+   "petrified-tree",
+   "phoenix-fledgling",
+   "pigeon-peon",
+   "pika-hoarder",
+   "pill-bug",
+   "pincushion-urchin",
+   "pine-marten",
+   "piranha-shoal",
+   "plague-gnat-cloud",
+   "planarian-splitter",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "polar-bear",
+   "pond-algae",
+   "pond-duck",
+   "pond-trout",
+   "porcupine-roller",
+   "proboscis-monkey",
+   "pronghorn-racer",
+   "prospector-mole",
+   "puffin-diver",
+   "pumice-beetle",
+   "pyrenean-desman",
+   "quarry-mole",
+   "quicksand-queen",
+   "quill-volley",
+   "quillguard",
+   "rabid-jackal",
+   "raccoon-bandit",
+   "raft-spider",
+   "raven-scout",
+   "ravenous-wolverine",
+   "razorbill",
+   "red-backed-salamander",
+   "red-billed-chough",
+   "redwood-woodpecker",
+   "reef-shark",
+   "rimefire-salamander",
+   "ringed-seal",
+   "riptide-eel",
+   "river-carp",
+   "river-mink",
+   "riverwing-envoy",
+   "roadrunner-courier",
+   "robin-redbreast",
+   "rock-pool-starfish",
+   "rodent-king",
+   "salvager-hermit-crab",
+   "sandfish",
+   "savanna-cheetah",
+   "sawfish",
+   "scree-goat",
+   "sea-cucumber",
+   "sea-hare",
+   "sea-turtle-elder",
+   "seed-cache-squirrel",
+   "shallows-fry",
+   "sheep",
+   "shepherds-bark",
+   "shimmerwing-stag",
+   "siege-rhino",
+   "signal-crayfish",
+   "silver-minnow",
+   "skull-vulture",
+   "skunk-gasser",
+   "sleepless-shrew",
+   "slow-worm",
+   "snapper-hatchling",
+   "snapstick-turtle",
+   "snow-bunting-archer",
+   "snow-ermine",
+   "snow-leopard",
+   "snow-owl-sentinel",
+   "snowshoe-hare",
+   "sparrow-chick",
+   "sphagnum-vole",
+   "spitting-cobra",
+   "spitting-spider",
+   "springbok-pronker",
+   "springtail-hopper",
+   "stable-colt",
+   "stag-beetle",
+   "stag-knight",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "static-fennec",
+   "stoat-cutthroat",
+   "stone-turtle-warden",
+   "stonedrop-vulture",
+   "subterraneaner",
+   "sulfur-cinder-moth",
+   "sunbittern-strider",
+   "swamp-alligator",
+   "swamp-rabbit",
+   "swift-fox",
+   "swordfish-spearman",
+   "taiga-lynx",
+   "talon-archer",
+   "talus-pika",
+   "tarantula-hawk",
+   "tasmanian-devil",
+   "termite-forager",
+   "terrier-pup",
+   "testudo-tortoise",
+   "the-contradiction",
+   "thorn-shrike",
+   "thorny-devil",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trebuchet-crew",
+   "trickster-fox",
+   "truffle-piglet",
+   "tunnel-ant",
+   "ur-elk",
+   "vampire-bat",
+   "vampire-bat-nurse",
+   "venomlord-serpent",
+   "walrus-icebreaker",
+   "war-elephant",
+   "warhorse-charger",
+   "water-shrew",
+   "water-vole",
+   "weathervane-swift",
+   "weaver-bird",
+   "werebadger",
+   "whale-shark",
+   "whip-spider",
+   "wolf-pack-runner",
+   "wolf-spider-mother",
+   "woodcock-lookout",
+   "woodland-brawler",
+   "woodland-caribou",
+   "woodpecker-sapper",
+   "worker-ant",
+   "yellow-bellied-sea-snake",
+   "yeti"
+  ],
+  "phase2": 448,
+  "wholeSpectrum": 467,
+  "excluded": [
+   {
+    "reason": "over the map's rarity cap (epic)",
+    "n": 3,
+    "ids": [
+     "old-snapjaw",
+     "the-gannet-queen",
+     "triumvirate"
+    ]
+   }
+  ]
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "village-keep",
+   "kinBiomes": [
+    "long-grass",
+    "savanna"
+   ],
+   "terrainTypes": [],
+   "mapTypes": [
+    "Bird 7",
+    "Duck 6",
+    "Village 4"
+   ],
+   "mapMechanics": [
+    "cleave 2",
+    "economy 3",
+    "ranged 2"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "arrowSlits",
+    "phase:cycle"
+   ],
+   "coreCards": 10
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 50,
+    "e": [
+     "birdlime-dauber",
+     "clap-net-trapper",
+     "cobalt-talon-skirmisher",
+     "crimson-wing-duelist-cadet",
+     "daily-post",
+     "dawn-bellringer"
+    ]
+   },
+   {
+    "reason": "map rule: not obtainable (not in the progression plan or an earlier map's cards)",
+    "n": 230,
+    "e": [
+     "abbey-goose",
+     "acacia-giraffe",
+     "alpine-avalanche",
+     "ancient-sloth-titan",
+     "ant-hill",
+     "antler-skirmisher"
+    ]
+   },
+   {
+    "reason": "map rule: over the map's rarity cap (epic)",
+    "n": 35,
+    "e": [
+     "ashmantle-fiend",
+     "black-dragon",
+     "blue-dragon",
+     "caldera-wyrm",
+     "cathedral-eagle",
+     "dragon-scale"
+    ]
+   },
+   {
+    "reason": "plan bucket materia",
+    "n": 6,
+    "e": [
+     "abyssal-ink",
+     "ember-core",
+     "iron-shard",
+     "river-pearl",
+     "strange-materia",
+     "tempering-stone"
+    ]
+   },
+   {
+    "reason": "plan bucket nest",
+    "n": 7,
+    "e": [
+     "egg-beast",
+     "egg-bird",
+     "egg-bug",
+     "egg-otter",
+     "egg-scaly",
+     "egg-water"
+    ]
+   },
+   {
+    "reason": "plan bucket raid",
+    "n": 5,
+    "e": [
+     "abyss-lantern-squid",
+     "glass-octopus",
+     "goliath-tentacle",
+     "inkcloud-squid",
+     "vampire-squid"
+    ]
+   },
+   {
+    "reason": "plan bucket smith",
+    "n": 1,
+    "e": [
+     "lava-waders"
+    ]
+   },
+   {
+    "reason": "plan bucket unsorted",
+    "n": 36,
+    "e": [
+     "anvilwhisker-otter",
+     "aye-aye-prowler",
+     "chained-binturong",
+     "chapel-tortoise",
+     "chilli-parrot",
+     "corpse-flower-beetle"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:24-1",
+   "kind": "mirror",
+   "node": "24-1",
+   "label": "vs 24-1 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-2",
+   "kind": "mirror",
+   "node": "24-2",
+   "label": "vs 24-2 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-3",
+   "kind": "mirror",
+   "node": "24-3",
+   "label": "vs 24-3 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-4",
+   "kind": "mirror",
+   "node": "24-4",
+   "label": "vs 24-4 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-5",
+   "kind": "mirror",
+   "node": "24-5",
+   "label": "vs 24-5 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-6",
+   "kind": "mirror",
+   "node": "24-6",
+   "label": "vs 24-6 elite's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-7",
+   "kind": "mirror",
+   "node": "24-7",
+   "label": "vs 24-7 elite's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|fight:24-8",
+   "kind": "mirror",
+   "node": "24-8",
+   "label": "vs 24-8 miniboss's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "24-1",
+   "label": "vs reference starter deck under 24-1's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "mirror|ref:road24",
+   "kind": "mirror",
+   "node": "24-2",
+   "label": "vs reference deck (Map 24) under 24-2's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "24-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-1",
+   "kind": "road",
+   "node": "24-1",
+   "label": "24-1 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "road|24-2",
+   "kind": "road",
+   "node": "24-2",
+   "label": "24-2 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-3",
+   "kind": "road",
+   "node": "24-3",
+   "label": "24-3 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-4",
+   "kind": "road",
+   "node": "24-4",
+   "label": "24-4 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-5",
+   "kind": "road",
+   "node": "24-5",
+   "label": "24-5 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "road|24-6",
+   "kind": "road",
+   "node": "24-6",
+   "label": "24-6 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-7",
+   "kind": "road",
+   "node": "24-7",
+   "label": "24-7 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle"
+  },
+  {
+   "key": "road|24-8",
+   "kind": "road",
+   "node": "24-8",
+   "label": "24-8 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, arrowSlits, phase cycle"
+  },
+  {
+   "key": "neutral|fight:24-1",
+   "kind": "mirror",
+   "node": "24-1",
+   "label": "vs 24-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-2",
+   "kind": "mirror",
+   "node": "24-2",
+   "label": "vs 24-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-3",
+   "kind": "mirror",
+   "node": "24-3",
+   "label": "vs 24-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-4",
+   "kind": "mirror",
+   "node": "24-4",
+   "label": "vs 24-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-5",
+   "kind": "mirror",
+   "node": "24-5",
+   "label": "vs 24-5 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-6",
+   "kind": "mirror",
+   "node": "24-6",
+   "label": "vs 24-6 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-7",
+   "kind": "mirror",
+   "node": "24-7",
+   "label": "vs 24-7 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:24-8",
+   "kind": "mirror",
+   "node": "24-8",
+   "label": "vs 24-8 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "24-1",
+   "label": "vs reference starter deck under 24-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road24",
+   "kind": "mirror",
+   "node": "24-2",
+   "label": "vs reference deck (Map 24) under 24-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "24-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 28490,
+  "seconds": 365.2,
+  "gamesPerSecond": 78,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 17974,
+   "gens": 3,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "ant-warrior:1,bear-cub:1,bramblewood-lynx:1,briarback-hedgehog:1,chipmunk-hoarder:1,duckling:1,earthworm:1,hoopoe-herald:5,lamprey:1,magnate-duck:1,marula-monkey:1,meerkat-wayfarer:1,obsidian-lich:1,porcupine-roller:1,rimefire-salamander:1,swift-fox:1",
+     "f": 0.762,
+     "gens": 2,
+     "games": 11286,
+     "top": [
+      "ant-warrior:1,bear-cub:1,bramblewood-lynx:1,briarback-hedgehog:1,chipmunk-hoarder:1,duckling:1,earthworm:1,hoopoe-herald:5,lamprey:1,magnate-duck:1,marula-monkey:1,meerkat-wayfarer:1,obsidian-lich:1,porcupine-roller:1,rimefire-salamander:1,swift-fox:1",
+      "battlement-heron:3,bear-cub:1,bramblewood-lynx:1,chipmunk-hoarder:1,duckling:1,frost-hare-sprinter:1,pika-hoarder:5,star-nosed-mole:5,tax-collector-teal:2",
+      "beetle-grunt:1,hoopoe-herald:5,pika-hoarder:5,star-nosed-mole:5,stonedrop-vulture:4",
+      "ant-warrior:1,hoopoe-herald:5,pika-hoarder:5,star-nosed-mole:5,stonedrop-vulture:4"
+     ]
+    },
+    {
+     "best": "chipmunk-forager:1,cricket-drummer:1,dam-keeper-beaver:1,duckling-squadron:1,electric-ray:1,fox-sharpshot:1,gallery-orb-weaver:2,grass-viper:1,hazel-coppice:1,hedge-weasel:1,hoopoe-herald:2,ibex-rockcaller:1,pika-hoarder:1,slow-worm:1,star-nosed-mole:1,tarantula-hawk:1,termite-forager:1,ur-elk:1",
+     "f": 0.735,
+     "gens": 1,
+     "games": 6688,
+     "top": [
+      "chipmunk-forager:1,cricket-drummer:1,dam-keeper-beaver:1,duckling-squadron:1,electric-ray:1,fox-sharpshot:1,gallery-orb-weaver:2,grass-viper:1,hazel-coppice:1,hedge-weasel:1,hoopoe-herald:2,ibex-rockcaller:1,pika-hoarder:1,slow-worm:1,star-nosed-mole:1,tarantula-hawk:1,termite-forager:1,ur-elk:1",
+      "ant-warrior:1,hoopoe-herald:5,pika-hoarder:5,star-nosed-mole:5,stonedrop-vulture:4",
+      "hoopoe-herald:5,pika-hoarder:5,pond-trout:1,star-nosed-mole:5,stonedrop-vulture:4",
+      "boreal-elk:1,box-turtle:1,cinder-stoker:2,dromedary:1,duckling-squadron:1,earthworm:1,electric-ray:1,elephant-nose-fish:1,grass-viper:1,hazel-coppice:1,hedge-weasel:1,horned-lizard:1,lamprey:1,magpie-collector:1,nightshade-moth:1,open-ocean-hermit-crab:1,siege-rhino:1,termite-forager:1,ur-elk:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "ant-warrior": 1,
+    "bear-cub": 1,
+    "bramblewood-lynx": 1,
+    "briarback-hedgehog": 1,
+    "chipmunk-hoarder": 1,
+    "duckling": 1,
+    "earthworm": 1,
+    "hoopoe-herald": 5,
+    "lamprey": 1,
+    "magnate-duck": 1,
+    "marula-monkey": 1,
+    "meerkat-wayfarer": 1,
+    "obsidian-lich": 1,
+    "porcupine-roller": 1,
+    "rimefire-salamander": 1,
+    "swift-fox": 1
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ant-warrior",
+     "name": "Ant Warrior",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "briarback-hedgehog",
+     "name": "Briarback Hedgehog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "magnate-duck",
+     "name": "The Magnate Duck",
+     "copies": 1,
+     "rarity": "epic",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "marula-monkey",
+     "name": "Marula Monkey",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rimefire-salamander",
+     "name": "Rimefire Salamander",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.768,
+   "ci": [
+    0.747,
+    0.789
+   ],
+   "mirror": 0.857,
+   "road": 0.502,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:24-1",
+     "label": "vs 24-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-2",
+     "label": "vs 24-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-3",
+     "label": "vs 24-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-4",
+     "label": "vs 24-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-5",
+     "label": "vs 24-5 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.797,
+     "lo": 0.683,
+     "hi": 0.877,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-6",
+     "label": "vs 24-6 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-7",
+     "label": "vs 24-7 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:24-8",
+     "label": "vs 24-8 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 24-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road24",
+     "label": "vs reference deck (Map 24) under 24-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.531,
+     "lo": 0.411,
+     "hi": 0.648,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.599,
+     "hi": 0.814,
+     "n": 64
+    },
+    {
+     "entry": "road|24-1",
+     "label": "24-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.381,
+     "hi": 0.619,
+     "n": 64
+    },
+    {
+     "entry": "road|24-2",
+     "label": "24-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.641,
+     "lo": 0.518,
+     "hi": 0.747,
+     "n": 64
+    },
+    {
+     "entry": "road|24-3",
+     "label": "24-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.344,
+     "lo": 0.239,
+     "hi": 0.466,
+     "n": 64
+    },
+    {
+     "entry": "road|24-4",
+     "label": "24-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.381,
+     "hi": 0.619,
+     "n": 64
+    },
+    {
+     "entry": "road|24-5",
+     "label": "24-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.25,
+     "lo": 0.16,
+     "hi": 0.368,
+     "n": 64
+    },
+    {
+     "entry": "road|24-6",
+     "label": "24-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.813,
+     "lo": 0.7,
+     "hi": 0.889,
+     "n": 64
+    },
+    {
+     "entry": "road|24-7",
+     "label": "24-7 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.703,
+     "lo": 0.582,
+     "hi": 0.801,
+     "n": 64
+    },
+    {
+     "entry": "road|24-8",
+     "label": "24-8 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.266,
+     "lo": 0.173,
+     "hi": 0.385,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-1",
+     "label": "vs 24-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-2",
+     "label": "vs 24-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-3",
+     "label": "vs 24-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-4",
+     "label": "vs 24-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-5",
+     "label": "vs 24-5 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.797,
+     "lo": 0.683,
+     "hi": 0.877,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-6",
+     "label": "vs 24-6 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-7",
+     "label": "vs 24-7 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.969,
+     "lo": 0.893,
+     "hi": 0.991,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:24-8",
+     "label": "vs 24-8 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 24-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.85,
+     "hi": 0.975,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road24",
+     "label": "vs reference deck (Map 24) under 24-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.578,
+     "lo": 0.456,
+     "hi": 0.691,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 24-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.734,
+     "lo": 0.615,
+     "hi": 0.827,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.762,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "ant-warrior": 1,
+    "bear-cub": 1,
+    "bramblewood-lynx": 1,
+    "briarback-hedgehog": 1,
+    "chipmunk-hoarder": 1,
+    "duckling": 1,
+    "earthworm": 1,
+    "hoopoe-herald": 5,
+    "lamprey": 1,
+    "magnate-duck": 1,
+    "marula-monkey": 1,
+    "meerkat-wayfarer": 1,
+    "obsidian-lich": 1,
+    "porcupine-roller": 1,
+    "rimefire-salamander": 1,
+    "swift-fox": 1
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ant-warrior",
+     "name": "Ant Warrior",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "briarback-hedgehog",
+     "name": "Briarback Hedgehog",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "earthworm",
+     "name": "Earthworm",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "lamprey",
+     "name": "Lamprey",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "magnate-duck",
+     "name": "The Magnate Duck",
+     "copies": 1,
+     "rarity": "epic",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "marula-monkey",
+     "name": "Marula Monkey",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "obsidian-lich",
+     "name": "Obsidian Lich",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rimefire-salamander",
+     "name": "Rimefire Salamander",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.768,
+   "ci": [
+    0.747,
+    0.789
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "chipmunk-forager": 1,
+    "cricket-drummer": 1,
+    "dam-keeper-beaver": 1,
+    "duckling-squadron": 1,
+    "electric-ray": 1,
+    "fox-sharpshot": 1,
+    "gallery-orb-weaver": 2,
+    "grass-viper": 1,
+    "hazel-coppice": 1,
+    "hedge-weasel": 1,
+    "hoopoe-herald": 2,
+    "ibex-rockcaller": 1,
+    "pika-hoarder": 1,
+    "slow-worm": 1,
+    "star-nosed-mole": 1,
+    "tarantula-hawk": 1,
+    "termite-forager": 1,
+    "ur-elk": 1
+   },
+   "cards": [
+    {
+     "id": "gallery-orb-weaver",
+     "name": "Gallery Orb-Weaver",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-forager",
+     "name": "Chipmunk Forager",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "dam-keeper-beaver",
+     "name": "Dam-Keeper Beaver",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling-squadron",
+     "name": "Duckling Squadron",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-sharpshot",
+     "name": "Fox Sharpshot",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hazel-coppice",
+     "name": "Hazel Coppice",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tarantula-hawk",
+     "name": "Tarantula Hawk",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "termite-forager",
+     "name": "Termite Forager",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "ur-elk",
+     "name": "Ür-Elk",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.748,
+   "ci": [
+    0.726,
+    0.769
+   ],
+   "copiesApartFromOptimum": 18
+  },
+  {
+   "i": 2,
+   "deck": {
+    "battlement-heron": 3,
+    "bear-cub": 1,
+    "bramblewood-lynx": 1,
+    "chipmunk-hoarder": 1,
+    "duckling": 1,
+    "frost-hare-sprinter": 1,
+    "pika-hoarder": 5,
+    "star-nosed-mole": 5,
+    "tax-collector-teal": 2
+   },
+   "cards": [
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "battlement-heron",
+     "name": "Battlement Heron",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tax-collector-teal",
+     "name": "Tax-Collector Teal",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bramblewood-lynx",
+     "name": "Bramblewood Lynx",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "frost-hare-sprinter",
+     "name": "Frost Hare Sprinter",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.715,
+   "ci": [
+    0.692,
+    0.738
+   ],
+   "copiesApartFromOptimum": 16
+  },
+  {
+   "i": 3,
+   "deck": {
+    "beetle-grunt": 1,
+    "hoopoe-herald": 5,
+    "pika-hoarder": 5,
+    "star-nosed-mole": 5,
+    "stonedrop-vulture": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "pika-hoarder",
+     "name": "Pika Hoarder",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "star-nosed-mole",
+     "name": "Star-nosed Mole",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "stonedrop-vulture",
+     "name": "Stonedrop Vulture",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "beetle-grunt",
+     "name": "Beetle Grunt",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.704,
+   "ci": [
+    0.681,
+    0.727
+   ],
+   "copiesApartFromOptimum": 15
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.563,
+    "elo": 44,
+    "n": 128
+   },
+   {
+    "p": 0.617,
+    "elo": 83,
+    "n": 128
+   },
+   {
+    "p": 0.531,
+    "elo": 22,
+    "n": 128
+   }
+  ],
+  [
+   {
+    "p": 0.438,
+    "elo": -44,
+    "n": 128
+   },
+   null,
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 128
+   },
+   {
+    "p": 0.477,
+    "elo": -16,
+    "n": 128
+   }
+  ],
+  [
+   {
+    "p": 0.383,
+    "elo": -83,
+    "n": 128
+   },
+   {
+    "p": 0.5,
+    "elo": 0,
+    "n": 128
+   },
+   null,
+   {
+    "p": 0.477,
+    "elo": -16,
+    "n": 128
+   }
+  ],
+  [
+   {
+    "p": 0.469,
+    "elo": -22,
+    "n": 128
+   },
+   {
+    "p": 0.523,
+    "elo": 16,
+    "n": 128
+   },
+   {
+    "p": 0.523,
+    "elo": 16,
+    "n": 128
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 7,
+ "ladder": null,
+ "road": [
+  {
+   "node": "24-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.5,
+   "ci": [
+    0.381,
+    0.619
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-2",
+   "kind": "skirmish",
+   "target": 0.85,
+   "optimum": 0.641,
+   "ci": [
+    0.518,
+    0.747
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-3",
+   "kind": "skirmish",
+   "target": 0.8,
+   "optimum": 0.344,
+   "ci": [
+    0.239,
+    0.466
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-4",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.5,
+   "ci": [
+    0.381,
+    0.619
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-5",
+   "kind": "skirmish",
+   "target": 0.7,
+   "optimum": 0.25,
+   "ci": [
+    0.16,
+    0.368
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-6",
+   "kind": "elite",
+   "target": 0.65,
+   "optimum": 0.813,
+   "ci": [
+    0.7,
+    0.889
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-7",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.703,
+   "ci": [
+    0.582,
+    0.801
+   ],
+   "n": 64
+  },
+  {
+   "node": "24-8",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.266,
+   "ci": [
+    0.173,
+    0.385
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:24-1",
+   "node": "24-1",
+   "rules": "aiGuardLethal, arrowSlits, phase cycle",
+   "withField": 0.984,
+   "noField": 0.969,
+   "delta": 0.016,
+   "ci": [
+    -0.037,
+    0.068
+   ]
+  },
+  {
+   "opponent": "fight:24-2",
+   "node": "24-2",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.984,
+   "noField": 0.953,
+   "delta": 0.031,
+   "ci": [
+    -0.029,
+    0.091
+   ]
+  },
+  {
+   "opponent": "fight:24-3",
+   "node": "24-3",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.906,
+   "noField": 0.875,
+   "delta": 0.031,
+   "ci": [
+    -0.077,
+    0.139
+   ]
+  },
+  {
+   "opponent": "fight:24-4",
+   "node": "24-4",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.859,
+   "noField": 0.875,
+   "delta": -0.016,
+   "ci": [
+    -0.133,
+    0.102
+   ]
+  },
+  {
+   "opponent": "fight:24-5",
+   "node": "24-5",
+   "rules": "aiGuardLethal, arrowSlits, phase cycle",
+   "withField": 0.797,
+   "noField": 0.797,
+   "delta": 0,
+   "ci": [
+    -0.139,
+    0.139
+   ]
+  },
+  {
+   "opponent": "fight:24-6",
+   "node": "24-6",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.938,
+   "noField": 0.953,
+   "delta": -0.016,
+   "ci": [
+    -0.094,
+    0.063
+   ]
+  },
+  {
+   "opponent": "fight:24-7",
+   "node": "24-7",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.922,
+   "noField": 0.969,
+   "delta": -0.047,
+   "ci": [
+    -0.125,
+    0.031
+   ]
+  },
+  {
+   "opponent": "fight:24-8",
+   "node": "24-8",
+   "rules": "aiGuardLethal, arrowSlits, phase cycle",
+   "withField": 0.859,
+   "noField": 0.859,
+   "delta": 0,
+   "ci": [
+    -0.12,
+    0.12
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "24-1",
+   "rules": "aiGuardLethal, arrowSlits, phase cycle",
+   "withField": 0.922,
+   "noField": 0.938,
+   "delta": -0.016,
+   "ci": [
+    -0.104,
+    0.073
+   ]
+  },
+  {
+   "opponent": "ref:road24",
+   "node": "24-2",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.531,
+   "noField": 0.578,
+   "delta": -0.047,
+   "ci": [
+    -0.219,
+    0.125
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "24-3",
+   "rules": "aiGuardLethal, phase cycle",
+   "withField": 0.719,
+   "noField": 0.734,
+   "delta": -0.016,
+   "ci": [
+    -0.17,
+    0.139
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:24-1",
+   "label": "24-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "24-1",
+   "target": 0.9,
+   "h2h": 0.984,
+   "h2hCI": [
+    0.917,
+    0.997
+   ],
+   "elo": 720,
+   "eloCI": [
+    417,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.091,
+   "optimumSame": 0.752,
+   "pointsBelow": 66.1,
+   "pointsCI": 3.3
+  },
+  {
+   "opponent": "fight:24-2",
+   "label": "24-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "24-2",
+   "target": 0.85,
+   "h2h": 0.984,
+   "h2hCI": [
+    0.917,
+    0.997
+   ],
+   "elo": 720,
+   "eloCI": [
+    417,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.164,
+   "optimumSame": 0.752,
+   "pointsBelow": 58.8,
+   "pointsCI": 3.6
+  },
+  {
+   "opponent": "fight:24-3",
+   "label": "24-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "24-3",
+   "target": 0.8,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.81,
+    0.956
+   ],
+   "elo": 394,
+   "eloCI": [
+    252,
+    536
+   ],
+   "n": 64,
+   "asPlayer": 0.342,
+   "optimumSame": 0.758,
+   "pointsBelow": 41.6,
+   "pointsCI": 4.2
+  },
+  {
+   "opponent": "fight:24-4",
+   "label": "24-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "24-4",
+   "target": 0.75,
+   "h2h": 0.859,
+   "h2hCI": [
+    0.754,
+    0.924
+   ],
+   "elo": 314,
+   "eloCI": [
+    194,
+    434
+   ],
+   "n": 64,
+   "asPlayer": 0.451,
+   "optimumSame": 0.761,
+   "pointsBelow": 31.1,
+   "pointsCI": 4.3
+  },
+  {
+   "opponent": "fight:24-5",
+   "label": "24-5 skirmish's deck",
+   "kind": "skirmish",
+   "node": "24-5",
+   "target": 0.7,
+   "h2h": 0.797,
+   "h2hCI": [
+    0.683,
+    0.877
+   ],
+   "elo": 237,
+   "eloCI": [
+    133,
+    342
+   ],
+   "n": 64,
+   "asPlayer": 0.481,
+   "optimumSame": 0.766,
+   "pointsBelow": 28.5,
+   "pointsCI": 4.1
+  },
+  {
+   "opponent": "fight:24-6",
+   "label": "24-6 elite's deck",
+   "kind": "elite",
+   "node": "24-6",
+   "target": 0.65,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.85,
+    0.975
+   ],
+   "elo": 470,
+   "eloCI": [
+    301,
+    640
+   ],
+   "n": 64,
+   "asPlayer": 0.363,
+   "optimumSame": 0.755,
+   "pointsBelow": 39.2,
+   "pointsCI": 4.1
+  },
+  {
+   "opponent": "fight:24-7",
+   "label": "24-7 elite's deck",
+   "kind": "elite",
+   "node": "24-7",
+   "target": 0.6,
+   "h2h": 0.922,
+   "h2hCI": [
+    0.83,
+    0.966
+   ],
+   "elo": 429,
+   "eloCI": [
+    275,
+    582
+   ],
+   "n": 64,
+   "asPlayer": 0.471,
+   "optimumSame": 0.757,
+   "pointsBelow": 28.6,
+   "pointsCI": 4.1
+  },
+  {
+   "opponent": "fight:24-8",
+   "label": "24-8 miniboss's deck",
+   "kind": "miniboss",
+   "node": "24-8",
+   "target": 0.4,
+   "h2h": 0.859,
+   "h2hCI": [
+    0.754,
+    0.924
+   ],
+   "elo": 314,
+   "eloCI": [
+    194,
+    434
+   ],
+   "n": 64,
+   "asPlayer": 0.599,
+   "optimumSame": 0.761,
+   "pointsBelow": 16.2,
+   "pointsCI": 4
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 24-1's field",
+   "kind": "reference",
+   "node": "24-1",
+   "target": null,
+   "h2h": 0.922,
+   "h2hCI": [
+    0.83,
+    0.966
+   ],
+   "elo": 429,
+   "eloCI": [
+    275,
+    582
+   ],
+   "n": 64,
+   "asPlayer": 0.278,
+   "optimumSame": 0.757,
+   "pointsBelow": 47.9,
+   "pointsCI": 4.3
+  },
+  {
+   "opponent": "ref:road24",
+   "label": "reference deck (Map 24) under 24-2's field",
+   "kind": "reference",
+   "node": "24-2",
+   "target": null,
+   "h2h": 0.531,
+   "h2hCI": [
+    0.411,
+    0.648
+   ],
+   "elo": 22,
+   "eloCI": [
+    -63,
+    106
+   ],
+   "n": 64,
+   "asPlayer": 0.772,
+   "optimumSame": 0.785,
+   "pointsBelow": 1.3,
+   "pointsCI": 3.7
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 24-3's field",
+   "kind": "reference",
+   "node": "24-3",
+   "target": null,
+   "h2h": 0.719,
+   "h2hCI": [
+    0.599,
+    0.814
+   ],
+   "elo": 163,
+   "eloCI": [
+    69,
+    257
+   ],
+   "n": 64,
+   "asPlayer": 0.546,
+   "optimumSame": 0.771,
+   "pointsBelow": 22.6,
+   "pointsCI": 4.2
+  }
+ ]
+}
