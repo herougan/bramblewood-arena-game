@@ -4,6 +4,28 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-27 11:22: the owner's notes (one release when all are done)
+
+| ID | Package | Note (owner, trimmed) | What to build |
+|---|---|---|---|
+| K1 | VIS4 | "Boss skirmish: The white wings should be reduced in size, and maybe closer to the red color. Right now it looks like meat and ribs." | Smaller boss-node wings (VIS3's bone teeth), tinted toward the red glow. |
+| K2 | ENG11 | "Coffee N - Double Actions every N turns. Stunned after." | New skill Coffee N: every N rounds the unit acts twice, then is Stunned for a round. Priced by the 4-round rule. |
+| K3 | idea | "Four Horses of Apocalypse - (Map 50+ strong series of enemies.)" | Logged for Maps 50+. |
+| K4 | VIS4 | "Rampart animation as described not done." | The EN8-8 description: the Rampart unit moves a little toward its own bramble, vibrates with an expanding aura as it blocks, then moves back. Check it plays in a real fight. |
+| K5 | BAL6 | "In the Master hub, also show the general 'contribution' of each card with our myriad testing. For example Owl Nightwatch is TOO strong ... maybe test w 30 hp brambles w random effects" | A card-contribution measure (many random fights, 30-Health brambles, random field effects): each card's win-rate added; a hub tab with the outliers. |
+| K6 | ENG11 | "Why is the vampire bat blind in the cave map(s)?" | A Nocturnal unit is treated as in daylight where a map has no day/night; caves are dark. Fix: caves (and other dark maps) count as night for Nocturnal / Diurnal. |
+| K7 | VIS4 | "The electric zap line effect when the shield is attacked ... doesn't look so nice. Also, if the bar is reduced to 0, it should still animate to 0." | A nicer Shield hit effect; the Shield number / bar animates down to 0. |
+| K8 | VIS4 | "Under this section, let me see the Map's cards." (screenshot: the fight panel) | The fight panel lists the map's cards. |
+| K9 | VIS4 | "Ibex Rockcaller's avalanche animation of one-by-one is too slow. Speed up the wait between anims by 70%." | The gap between the avalanche's hits 70% shorter. |
+| K10 | ENG11 | "Scorching - only in the day. In places without night/day - scorching is perma-on." | Scorching only by day; always on where a map has no day/night. |
+| K11 | answer | "Does undercroft have a undercroft specific field effect?" | No: each Undercroft floor takes another map's field rules (UNDERCROFT_THEMES). |
+| K12 | COOP2 | Tidelock Vault: "It should be a normal game, but like, raid, it has 2-4 players (not selectable depends on the multi-dungeon type.) ... allies can place in allied spots. (Placing a card shows up as you placing your card in your friend's screens. locking that slot. If there's ever a race condition, smaller index player takes priority)" | Rebuild the group dungeon as a normal board fight like a raid: a fixed 2-4 players per dungeon type, each player's slots on one shared board, placements synced and the slot locked, a race won by the lower player index. |
+| K13 | ask | "Trap" (cut off) | Ask the owner. |
+| K14 | BAL7 | "Map-unique cards - limit non map-unique cards to max 1 copy (per), 6 cards max total - after rebalancing cards with the myriad test." | In skirmish decks: cards not unique to the map at most 1 copy each and 6 in all; after K5's re-balance. |
+| K15 | answer | "what is first blood" | A field rule: the first Quick unit to attack each round (either side) hits +2. |
+| K16 | VIS4 | "Tutorial when going over card cap (5/5) then one for higher rarities (3/3)" | A short tip the first time the player hits a card's copy cap (5/5), and again for a rarer card's cap (3/3). |
+| K17 | BAL6 | "Regarding the map reference ... make the best deck we can given the deck unlocks and random 5 common cards unlocked every map (from packs)." | A new map reference: per map, the best deck from the cards a player has by then (rewards, unlocks, starter) plus 5 random Commons a map from packs, seeded. |
+
 ## 10-26 23:33: last items (owner: fill the decisions; heatmap)
 
 | ID | Package | Item |
