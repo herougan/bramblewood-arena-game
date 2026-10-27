@@ -2815,7 +2815,16 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.res4-rw-title": "The month's title",
   "ui.res4-title": "Trail Trekker of {month}",
   "ui.res4-lt-leaves": "{gold} Maple Leaves + {dust} Dust",
-  "ui.res4-lt-leaves-toast": "Level {n}: +{gold} 🍁 Maple Leaves, +{dust} ✨ Dust"
+  "ui.res4-lt-leaves-toast": "Level {n}: +{gold} 🍁 Maple Leaves, +{dust} ✨ Dust",
+  "ui.e11-coffee": "Every {n} turns: acts twice, then Stunned for a round.",
+  "ui.e11-coffee-codex": "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.",
+  "ui.e11-log-coffee": "is wired on coffee: it acts twice this round ☕",
+  "ui.e11-nocturnal-codex": "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.",
+  "ui.e11-diurnal-codex": "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.",
+  "ui.e11-fxx-dark": "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.",
+  "ui.e11-scorching1": "By day (always where there's no night), 2 units a side take 1 fire damage.",
+  "ui.e11-scorching2": "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.",
+  "ui.e11-scorching3": "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

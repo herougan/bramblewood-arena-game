@@ -3599,5 +3599,14 @@
  "Fortify": "加固",
  "{name} fortifies its bramble: the hit is 1 less.": "{name} 加固了荊棘：這次攻擊少 1 點。",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "只算命中單位的近戰攻擊，無論這一擊造成了什麼。壁壘和加固仍會削減它。",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "把它加在射擊旁邊。射擊從不會錯過荊棘；壁壘與加固仍會削減它。"
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "把它加在射擊旁邊。射擊從不會錯過荊棘；壁壘與加固仍會削減它。",
+ "Every {n} turns: acts twice, then Stunned for a round.": "每 {n} 個回合：行動兩次，之後眩暈一輪。",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "回合指它行動的輪次；等待、眩暈、冰凍或睡眠的輪次不計。行動兩次：射擊發動兩次，並多揮擊一次。",
+ "is wired on coffee: it acts twice this round ☕": "喝了咖啡精神大振：本輪行動兩次 ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "在黑暗之地（黑暗、漆黑一片）永遠是夜晚：它在那裡獲得夜晚加成，並能在黑暗中視物。",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "在黑暗之地（黑暗、漆黑一片）永遠是夜晚：它在那裡得不到白天加成。",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "暗盲：沒有暗視或夜行的單位。黑暗之地對夜行與晝行單位視為夜晚。照明單位會照亮己方，以及正對它的敵人。",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷熱，等級 2：每個白天輪（沒有晝夜之處則每輪），雙方各有 3 個隨機單位受到 1 點火焰傷害。耐熱單位不受影響。",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷熱，等級 3：每個白天輪（沒有晝夜之處則每輪），雙方各有 4 個隨機單位受到 1 點火焰傷害。耐熱單位不受影響。",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "白天（沒有夜晚之處則一直），雙方各 2 個單位受到 1 點火焰傷害。"
 }

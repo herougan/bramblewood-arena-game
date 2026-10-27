@@ -3601,5 +3601,14 @@
  "Fortify": "Rinforzo",
  "{name} fortifies its bramble: the hit is 1 less.": "{name} rinforza il suo rovo: il colpo fa 1 in meno.",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Solo un colpo in mischia che colpisce un'unità, qualunque cosa le faccia. Bastione e Rinforzo lo riducono comunque.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Aggiungila accanto al tiro. Il tiro non manca mai il rovo; Bastione e Rinforzo lo riducono comunque."
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Aggiungila accanto al tiro. Il tiro non manca mai il rovo; Bastione e Rinforzo lo riducono comunque.",
+ "Every {n} turns: acts twice, then Stunned for a round.": "Ogni {n} turni: agisce due volte, poi Stordita per un round.",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "Un turno è un round in cui agisce; i round in cui attende o è Stordita, Congelata o addormentata non contano. Agire due volte: i suoi tiri partono due volte e colpisce una volta in più.",
+ "is wired on coffee: it acts twice this round ☕": "è carica di caffè: agisce due volte in questo round ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "Nei luoghi bui (Oscurità, Buio pesto) è sempre notte: lì ha il suo bonus notturno e vede al buio.",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "Nei luoghi bui (Oscurità, Buio pesto) è sempre notte: lì non riceve il bonus diurno.",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Cieca al buio: un’unità senza Scurovisione né Notturna. I luoghi bui contano come notte per le unità Notturne e Diurne. Un’unità con Illuminare rischiara il suo lato e il nemico che ha di fronte.",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Torrido, livello 2: in ogni round di Giorno (ogni round dove non c’è né giorno né notte) 3 unità a caso per lato subiscono 1 danno da fuoco. Le unità resistenti al calore sono risparmiate.",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Torrido, livello 3: in ogni round di Giorno (ogni round dove non c’è né giorno né notte) 4 unità a caso per lato subiscono 1 danno da fuoco. Le unità resistenti al calore sono risparmiate.",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "Di giorno (sempre dove non c’è notte), 2 unità per lato subiscono 1 danno da fuoco."
 }

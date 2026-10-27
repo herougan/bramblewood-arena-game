@@ -1,0 +1,53 @@
+{
+ "_about": "Package ENG11 (2026-10-27, K2): Coffee N re-priced 1.5 / N (was 0.22, scale half) as the new skill. node tools/eng11_coffee_refit_2026_10_27.js. line: on its old line, moved to its new one; over: over the new budget; kept: its stats stay.",
+ "moves": [],
+ "kept": [
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "coffee": 2,
+   "stats": "3/14",
+   "old": {
+    "S": 0.44,
+    "x1": 20.44,
+    "x2": 42.19,
+    "N": 20.94,
+    "N2": 97.44,
+    "ok": true
+   },
+   "now": {
+    "S": 0.75,
+    "x1": 20.75,
+    "x2": 42.56,
+    "N": 20.94,
+    "N2": 97.44,
+    "ok": true
+   },
+   "why": "its line holds, or room below its line already"
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "coffee": 1,
+   "stats": "1/4",
+   "old": {
+    "S": 3.22,
+    "x1": 12.22,
+    "x2": 16.37,
+    "N": 13.5,
+    "N2": 40.5,
+    "ok": true
+   },
+   "now": {
+    "S": 4.5,
+    "x1": 13.5,
+    "x2": 26.25,
+    "N": 13.5,
+    "N2": 40.5,
+    "ok": true
+   },
+   "why": "its line holds, or room below its line already"
+  }
+ ],
+ "noLine": []
+}

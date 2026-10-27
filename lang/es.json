@@ -3598,5 +3598,14 @@
  "Fortify": "Fortalecer",
  "{name} fortifies its bramble: the hit is 1 less.": "{name} fortalece su zarza: el golpe hace 1 menos.",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Solo un golpe cuerpo a cuerpo que acierta a una unidad, haga lo que haga. Muralla y Fortalecer lo siguen reduciendo.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Añádela junto al disparo. El disparo nunca falla a la zarza; Muralla y Fortalecer aún lo reducen."
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Añádela junto al disparo. El disparo nunca falla a la zarza; Muralla y Fortalecer aún lo reducen.",
+ "Every {n} turns: acts twice, then Stunned for a round.": "Cada {n} turnos: actúa dos veces y luego queda Aturdida una ronda.",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "Un turno es una ronda en la que actúa; las rondas en que espera o está Aturdida, Congelada o dormida no cuentan. Actuar dos veces: sus disparos salen dos veces y golpea una vez más.",
+ "is wired on coffee: it acts twice this round ☕": "va cargada de café: actúa dos veces esta ronda ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "En los lugares oscuros (Oscuridad, Negro absoluto) siempre es de noche: allí tiene su bonificación nocturna y ve en la oscuridad.",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "En los lugares oscuros (Oscuridad, Negro absoluto) siempre es de noche: allí no recibe bonificación diurna.",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Ciega en la oscuridad: una unidad sin Visión oscura ni Nocturna. Los lugares oscuros cuentan como noche para las unidades Nocturnas y Diurnas. Una unidad con Iluminar alumbra su lado y al enemigo que tiene enfrente.",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Abrasador, nivel 2: en cada ronda de Día (cada ronda donde no hay día ni noche), 3 unidades al azar de cada bando reciben 1 de daño de fuego. Las resistentes al calor se libran.",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Abrasador, nivel 3: en cada ronda de Día (cada ronda donde no hay día ni noche), 4 unidades al azar de cada bando reciben 1 de daño de fuego. Las resistentes al calor se libran.",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "De día (siempre donde no hay noche), 2 unidades por bando reciben 1 de daño de fuego."
 }

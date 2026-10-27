@@ -888,7 +888,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (the first round of each new day) lets both sides draw a card. Nocturnal cards hit +1 at night, Diurnal by day.
   const FIELDS = {
     frozen:   {name:'Frigid', icon:'❄️', text:'At the start of every round, one random unit on each side gets +1 Wait (more at higher levels). Units weak to cold also take 1 damage.'},
-    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every round, two random units on each side take 1 fire damage (more units at higher levels, still 1 each). Heat-resistant units are spared; units weak to heat take double.'}, // FX3 (2026-10-23)
+    heatwave: {name:'Scorching', icon:'🔥', text:'At the start of every Day round (every round where there is no day or night), two random units on each side take 1 fire damage (more units at higher levels, still 1 each). Heat-resistant units are spared; units weak to heat take double.'}, // FX3 (2026-10-23)
     rain:     {name:'Spring Rain', icon:'🌧️', text:'At the start of every round, every unit heals 2.'},
     fog:      {name:'Thick Fog', icon:'🌫️', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
     // 2026-10-14 (user: "Night/Day ... Not brought up by playing a card"): the Full Moon no longer makes it night. While it is up
@@ -1091,6 +1091,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function twilightOn(players){ if(rules.twilight) return true; if(!players) return false;
     return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...rowsUnitsOf(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); }) /* + the middle / back rows (2026-10-19, RR) */); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || phaseFixed); }
+  // Coffee N (2026-10-27, package ENG11, owner K2: "Coffee N - Double Actions every N turns. Stunned after."; it replaces the 2026-10-13
+  // Coffee, Wait -N on play and a nap N rounds later): every Nth round in which the unit acts (its shots or its swing; a round it waits,
+  // or is Stunned, Frozen or asleep, doesn't count) it acts twice: its shots go twice and it swings once more straight after its swing
+  // (Frenzy's path; one extra swing a round, after any Twin Strike swing). At that round's end the cup wears off and it is Stunned for
+  // the next round. Decided once a round, at its first action. Quiet Contemplation stills the second action, and then no crash.
+  function coffeeN(c){ const v = ((CARD_DEFS[c.defId]||{}).effects||{}).coffee; return !v ? 0 : v === true ? 2 : Math.max(1, Math.round(Number(v)) || 2); }
+  function coffeeRound(c, side, events){
+    const n = c ? coffeeN(c) : 0; if(!n) return false;
+    if(c._coffeeCheck !== combatNo){ c._coffeeCheck = combatNo; c.coffeeTurns = (c.coffeeTurns||0) + 1;
+      if(c.coffeeTurns % n === 0){ c.coffeeNow = combatNo; if(recordEvents && events) events.push({type:'statusFx', kind:'coffee', twice:true, side, attDefId:c.defId, attUid:c.uid, targetSide:side, targetDefId:c.defId, targetUid:c.uid, amount:n}); } }
+    return c.coffeeNow === combatNo;
+  }
+  function coffeeStill(c, side, events){ if(!quietStills(c, side, events, 'coffee')) return false; c.coffeeNow = null; return true; }
+  // ENG11 (2026-10-27, package ENG11, owner K6: "Why is the vampire bat blind in the cave map(s)?"): the caves have no day or night
+  // (MAP_DAYNIGHT 'off'), so a Nocturnal unit there never had its night, and their Darkness made it miss like any unit without
+  // Darksight. Now a dark fight (the fight's own rules.dark: Darkness, Pitch Black or Absolute darkness; a Cast Darkness unit does not
+  // count) is night for Nocturnal, Diurnal and Crepuscular (zeitPhase): Nocturnal units get their night bonus there and Diurnal units
+  // get nothing. The real phase (getPhase: the pill, the dawn draw, the moon, Night-blind, Sun-shy, Scorching) is unchanged.
+  function zeitPhase(){ if(rules.dark) return 'night'; return phaseActive() ? getPhase() : null; }
+  // ENG11 (K6): a Nocturnal unit sees in the dark as Darksight does (sightMiss); a Diurnal one stays dark-blind.
+  function nocturnalE(e){ return !!(e && (e.nocturnal || e.nocturnalHp || (e.nocturnalGrant && typeof e.nocturnalGrant === 'object'))); }
+  // ENG11 (2026-10-27, owner K10: "Scorching - only in the day. In places without night/day - scorching is perma-on."): Scorching burns
+  // by day (Twilight counts as day) and every round where the fight has no day or night; at night it rests.
+  function scorchingOn(){ const ph = phaseActive() ? getPhase() : null; return !ph || ph === 'day' || ph === 'twilight'; }
   function phaseStatsOf(e, ph){
     const pick0 = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
     // Leylines I (2026-10-16, user: "Diurnal default becomes +3/+3 not +1/+1"): the plain bonus (Diurnal with no number) is +3/+3, and a
@@ -1106,7 +1130,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return [0, 0];
   }
   function syncPhaseStats(players, sideOf, events){
-    const ph = phaseActive() ? getPhase() : null;
+    const phReal = phaseActive() ? getPhase() : null, ph = zeitPhase(); // ENG11 (K6): a dark fight is night for the time-givers; the moon reads the real phase
     { const fm = isFullMoon(); if(fm && !fullMoonWas && recordEvents && events && players && anyMoonborn(players)) events.push({type:'fullMoonRise', moonField: !!(field && field.id === 'moon')}); fullMoonWas = fm; }
     [1,2].forEach(pid=>{ const pl = players && players[pid]; if(!pl || !pl.row) return;
       const units = [...pl.row.left, ...pl.row.center, ...pl.row.right];
@@ -1121,7 +1145,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Transform (2026-10-21, package CX2): the first time its condition holds, it changes for the rest of the fight (c.transformed).
         if(e.transform && typeof e.transform === 'object' && !c.transformed && transformOn(e.transform, c, pid, players)){ c.transformed = true; const tf = e.transform, moon = transformConds(tf).includes('fullmoon'), gn = transformGainOf(tf); // + the unit's own conditions and the presets' braces (TR)
           if(recordEvents && events) events.push({type:'statusFx', kind: moon ? 'fullMoon' : 'transform', name: tf.name || null, side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:0, grant: Object.keys(gn).filter(k=> k !== 'attack' && k !== 'health'), atk: Number(gn.attack)||0, hp: Number(gn.health)||0, stem: isMaturedTf(tf) || undefined}); }
-        if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((ph === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
+        if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((phReal === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
@@ -1349,7 +1373,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit
     // facing an Illuminate unit stands in its light too (litByFoe, below), so it doesn't miss for the dark either: Darkness, Pitch Black,
     // Absolute darkness and Night-blind alike. Both sides, the same rule.
-    if(dk && !e.darksight){ miss = (lit() || litByFoe()) ? 0 : dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; }
+    if(dk && !e.darksight && !nocturnalE(e)){ miss = (lit() || litByFoe()) ? 0 : dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; } // ENG11 (K6): Nocturnal sees in the dark
     if(darkOnly) return (e.keenSense || e.sonar) ? 0 : miss;
     // 2026-10-15 (user: "Remove nightblindness causing 1/4 miss. It should only be for dark environments only. It will be an explicit
     // field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): night alone no longer makes anyone miss. Only the
@@ -1489,7 +1513,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const fb = (Number(((CARD_DEFS[c.defId]||{}).effects||{}).frostbite)||0) + (pid === 2 ? (Number(rules.frostbite)||0) : 0);
           if(fb > 0){ c.atk += fb; c.baseAtk += fb; c.hp += fb; c.maxHp += fb; if(recordEvents && events) events.push({type:'statusFx', kind:'frostbite', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:fb}); } } });
       if(iced) removeDeadCards(players, sideOf, {}, stats, events);
-    } else if(f === 'heatwave'){
+    } else if(f === 'heatwave' && scorchingOn()){ // ENG11 (2026-10-27, K10): only by day, or every round where there is no day or night
       // D66 (2026-10-13, user: "Scorch does fire damage to non resistance ... The damage increases, number of targets increases
       // ... For those vulnerable, they take double fire damage"): level L (rules.heatLevel, 1–3): L+1 random units a side take
       // L fire damage. Heat-resistant and Dry units are spared; units weak to heat take double.
@@ -2639,7 +2663,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[pid], foe = players[otherId(pid)]; let a = 0, h = 0, grant = null;
     const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
     const addGrant = g=>{ const [x, y, r] = grantStats(g); a += x; h += y; if(r) grant = Object.assign(grant || {}, r); };
-    { const ph = phaseActive() ? getPhase() : null; // Diurnal – {…} / Nocturnal – {…} (2026-10-15)
+    { const ph = zeitPhase(); // Diurnal – {…} / Nocturnal – {…} (2026-10-15); ENG11 (K6): a dark fight is night
       const lit = ph === 'night' && pl && upkeepUnitsOf(pl).some(u=> u && !u.gap && u.hp > 0 && (effectsOf(u).illuminate || effectsOf(u).lantern)); /* + a raid's middle / back rows (2026-10-19, RR) */ // an Illuminate unit keeps a Diurnal unit's day (2026-10-15)
       if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
       if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant);
@@ -6771,11 +6795,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.fireball && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireFireball(players, sideOf, playerId, boardCard, numN(def.effects.fireball, 15), stats, events);
     if(def.effects.meteor && !(boardCard.wait > 0) && !boardCard._readyAtPlay) fireMeteor(players, sideOf, playerId, boardCard, numN(def.effects.meteor, 20), stats, events);
     if(def.effects.chilli && !(boardCard.wait > 0) && !boardCard._readyAtPlay) eatChilli(sideOf, playerId, boardCard, numN(def.effects.chilli, 2), events); // Chilli N (2026-10-15): Ready on arrival
-    // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
-    // later) it crashes and naps for a round (Stunned 1).
-    if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
-      const before = boardCard.wait || 0; boardCard.wait = Math.max(0, before - n); boardCard.coffeeCrash = n + 1;
-      if(recordEvents && events) events.push({type:'statusFx', kind:'coffee', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount: before - boardCard.wait}); }
+    // Coffee N (2026-10-13): Wait -N on play and a nap N rounds later. Retired 2026-10-27 (package ENG11, owner K2): Coffee N acts twice
+    // every Nth round it acts, then naps (coffeeRound, below; the crash in endOfRoundUpkeep).
     runCustomTriggers(players, sideOf, playerId, boardCard, def, 'onSpawn', stats, events);
   }
   // Earthquake: AOE version of Gash/Missile's "one-shot on-spawn skill" shape — instead of
@@ -6976,6 +6997,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(sr === 0 && hwTwice()) sn = 2; } } } }
         shots.forEach(sh=>{ if(sh.tip && sh.amount > 0 && sh.at !== 'hq'){ sh.n = sh.amount; sh.tip = Object.assign({}, sh.tip, {n: Math.round(sh.amount)}); sh.amount = 0; sh.statusOnly = true; } }); // ENG9 (2026-10-26, #40): a – poison / – bleed shot deals counters, not damage (a unit target; the bramble takes its N)
         if(shots.length && hwTwice()) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice (not under Quiet Contemplation, 2026-10-19)
+        if(shots.length && fx.coffee && c._coffeeShot !== combatNo && coffeeRound(c, sideOf(pid), events)){ c._coffeeShot = combatNo; if(!coffeeStill(c, sideOf(pid), events)) shots.push(...shots.map(x=> Object.assign({}, x))); } // Coffee N (ENG11, K2): its shots twice
         shots.forEach(shot=>{
           if(!(c.hp > 0)) return;
           let target;
@@ -7932,7 +7954,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function aiDarkCastWorth(players, aiId, defId){
     const e = (CARD_DEFS[defId]||{}).effects || {}; if(!e.castDarkness || darkRule(players)) return 0;
     const lose = pid=>{ const pl = players[pid]; if(!pl) return 0; const live = allLive(pl).filter(c=> !c.cageOf); if(live.some(c=> illuminates(CARD_DEFS[c.defId]))) return 0;
-      return live.reduce((t, c)=>{ const ce = effectsOf(c); return t + (ce.darksight || ce.trueStrike ? 0 : Math.max(0, c.atk || 0)); }, 0) * 0.25; };
+      return live.reduce((t, c)=>{ const ce = effectsOf(c); return t + (ce.darksight || ce.trueStrike || nocturnalE(ce) /* ENG11 (K6) */ ? 0 : Math.max(0, c.atk || 0)); }, 0) * 0.25; };
     return lose(otherId(aiId)) - lose(aiId);
   }
   // How often a unit of this card would swing blind at the slot facing f (2026-10-18; sightMiss's rules for a card not on the board
@@ -7942,7 +7964,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const lit = illuminates(CARD_DEFS[defId]) || !!(pl && allLive(pl).some(c=> illuminates(CARD_DEFS[c.defId]))) || !!(f && illuminates(CARD_DEFS[f.defId]));
     const ph = phaseActive() ? getPhase() : null, dk = darkRule(); let m = 0; // + Cast Darkness (2026-10-18)
     if(e.trueStrike) return 0; // True Strike (2026-10-18): it never misses
-    if(dk && !e.darksight && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25;
+    if(dk && !e.darksight && !nocturnalE(e) && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; // + Nocturnal (ENG11, K6)
     if(ph === 'day' && e.sunshy) m = Math.max(m, 0.5);
     if(ph === 'night' && e.nightblind && !lit) m = Math.max(m, 0.5);
     if(sandBlinds(e)) m = Math.max(m, 0.5); // CONTENT3 (2026-10-26): a blinding Sandstorm
@@ -8910,7 +8932,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       { const mN = w2N(c, 'molting');
         if(mN > 0 && c.hp > 0){ c.moltAge = (c.moltAge||0) + 1; if(c.moltAge % 2 === 0){ c.atk += mN; c.baseAtk = (c.baseAtk||0) + mN; c.maxHp += mN; c.hp += mN; c.wait = (c.wait||0) + 1; moltedNow = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'shed', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid, amount:mN, molt:true, wait:1}); } } }
-      if(c.coffeeCrash > 0){ c.coffeeCrash -= 1; if(c.coffeeCrash === 0){ c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); } }
+      // Coffee N (ENG11, K2): the round it acted twice ends, the cup wears off: Stunned for the next round (once a round)
+      if(c.coffeeNow != null && c.coffeeNow === combatNo && c._coffeeCrashed !== combatNo && c.hp > 0){ c._coffeeCrashed = combatNo; c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true;
+        if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); }
+      if(c.coffeeCrash > 0){ c.coffeeCrash -= 1; /* the 2026-10-13 Coffee's timer: only a fight saved before ENG11 still has one */ if(c.coffeeCrash === 0){ c.stunned = (c.stunned|0) + 1; c._stunnedJustSet = true; if(recordEvents && events) events.push({type:'statusFx', kind:'coffeeCrash', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:c.defId, targetUid:c.uid}); } }
       if(c.tipsy>0){ if(c._tipsyJustSet) c._tipsyJustSet=false; else c.tipsy -= 1; }
       if(c.confused>0){ if(c._confusedJustSet) c._confusedJustSet=false; else c.confused -= 1; }
       selfInflict(c); // Drunk / Purblind / Scatterbrained keep their own status on for good
@@ -10594,6 +10619,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:!frenzyNow});
         frenziedAgain = true;
       }
+      // Coffee N (2026-10-27, package ENG11, K2): on its coffee round, one more swing straight after (after a Twin Strike / Frenzy swing).
+      if(!frenziedAgain && attDef.effects && attDef.effects.coffee && a.att.hp>0 && a.att._coffeeSwung !== combatNo && coffeeRound(a.att, mySide, events) && !coffeeStill(a.att, mySide, events)){
+        a.att._coffeeSwung = combatNo;
+        if(recordEvents && events) events.push({type:'frenzy', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, twin:true, coffee:true});
+        frenziedAgain = true;
+      }
       // Live reflow, per-attacker (see reflowAfterKills' comment above): whatever this turn's
       // swing (primary hit, Sweep/Swipe continuations, or Thorns counter-damage) just killed
       // gets cleaned up and collapsed toward the gap right now, before the next attacker in
@@ -10667,7 +10698,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { ...EQ_API /* 2026-10-19 (package EQ) */, endOfRoundUpkeep, applyDecayTicks, swingSpeedOf, isMagicDmg, blockerReady, reviveFromGrave, spendOnReady /* 2026-10-26 (package ENG9): for its test */, boonState: players=> boonStateOf(players && players[boonPid()]) /* 2026-10-24 (package DF3): the selfish boon's count */, redirectToGuardian /* 2026-10-22 (package GD): for its test */, adjacentOf, spellwardFor /* 2026-10-22 (package GD2): for its test; Spellward since 2026-10-23 (EN) */, aiFogFor /* 2026-10-23 (package EN, FOG1): for its test */, hitModsFor: dnModsFor /* 2026-10-22 (package DN2): the last damage marks on a unit, display only (the raid smacks) */, tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */ };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, bloomCopyOn, bloomCopyConds, bloomSlotOf, bloomCopyPass, BLOOM_UNIT_CONDS /* BL (2026-10-23) */, transformOn, transformConds, TRANSFORM_PRESETS /* CX2 */, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, swarmBonusFromAllies /* EN2 (2026-10-23): the replay's live Swarm */, boomCastleLaneUnit, aiLaneWeight, aiLaneTie, aiChooseSlot /* EN2: for its test */, previewPlayStats /* 2026-10-23 (package UI4) */, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, zeitPhase /* ENG11 (K6) */, scorchingOn /* ENG11 (K10) */, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, roundDmg, applyDamage /* 2026-10-22 (package FX2) */, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards, fieldPaused, getFieldBreakUntil: ()=> fieldBreakUntil, hunterVsOf, trigsOf, prayerWardOf, aiGiWorth, aiBonusVs /* 2026-10-19 (package GI) */, SK3_DEF, sk3Sync, sk3Apply, sk3RunAction, sk3ArmorOf, sk3Spotted, sk3StenchOf, sk3Weak, sk3ExecLow, sk3SnapOf, sk3DupDefOf, sk3Trigs: e=> sk3Trigs(e, []) /* 2026-10-19 (package SK3) */, bxIsArcher, diveEligible, isSprinterDef /* 2026-10-21 (package BX) */, en7DiveUses, en7DiveMode /* EN7 (2026-10-24) */, isEvoluteDef, evoStageOf, isStemDef, evoShares, evoLegalBase, evoBasesFor, aiEvoluteBase /* 2026-10-21 (package EV) */, isKingDef, crownHolderOf, crownGoneOf, kinglyOf, resourceWorthOf, addGold, transformGainOf, isMaturedTf, TRANSFORM_GAIN, TRANSFORM_UNIT_CONDS, canStealCrown /* 2026-10-21 (package TR) */, en5Woods, en5CanopyCover, EN5_STATES, en5StatesOn, en5HemoN /* 2026-10-24 (package EN5) */, EN6_STATES, EN6_SEASONS, EN6_BRAMBLE_SHOTS, en6StatesOn, en6Season, en6Hot, en6Cold, en6ColdField, en6Rain, en6Storm, en6Fog, en6Salt, en6Drought, en6WeatherMap, en6HibernateCond, en6HandAtk, en6DryRun: ()=> en6DryRun /* 2026-10-24 (package EN6) */, en7HitStatuses, EN7_TIP_SHOTS, en7ParasiteBloomHosts /* EN7 (2026-10-24) */, EN8_DEF, pearlSettle, pearlGap, aiUsefulNow, aiResourceGap, aiLethalBlock, aiIncomingOnBramble, hasThornsNow, magicArmorOf, redirectToGuardian /* EN8 (2026-10-24) */ };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

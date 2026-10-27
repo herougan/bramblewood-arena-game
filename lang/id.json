@@ -3601,5 +3601,14 @@
  "Fortify": "Perkuat",
  "{name} fortifies its bramble: the hit is 1 less.": "{name} memperkuat semak durinya: serangan berkurang 1.",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "Hanya serangan jarak dekat yang mengenai unit, apa pun akibatnya. Benteng dan Perkuat tetap menguranginya.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Tambahkan di samping tembakannya. Tembakan tak pernah meleset dari semak; Benteng dan Perkuat tetap menguranginya."
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "Tambahkan di samping tembakannya. Tembakan tak pernah meleset dari semak; Benteng dan Perkuat tetap menguranginya.",
+ "Every {n} turns: acts twice, then Stunned for a round.": "Setiap {n} giliran: bertindak dua kali, lalu Pingsan selama satu ronde.",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "Giliran adalah ronde saat ia bertindak; ronde saat ia menunggu, atau Pingsan, Beku, atau tertidur, tidak dihitung. Bertindak dua kali: tembakannya dua kali dan ia menyerang sekali lagi.",
+ "is wired on coffee: it acts twice this round ☕": "kena kafein: bertindak dua kali ronde ini ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "Di tempat gelap (Kegelapan, Gelap Gulita) selalu malam: di sana ia mendapat bonus malamnya dan bisa melihat dalam gelap.",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "Di tempat gelap (Kegelapan, Gelap Gulita) selalu malam: di sana ia tidak mendapat bonus siang.",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Buta-gelap: unit tanpa Penglihatan Gelap atau Nokturnal. Tempat gelap dihitung sebagai malam bagi unit Nokturnal dan Diurnal. Unit Menerangi menerangi sisinya sendiri, dan musuh di hadapannya.",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 2: di setiap ronde Siang (setiap ronde di tempat tanpa siang atau malam) 3 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 3: di setiap ronde Siang (setiap ronde di tempat tanpa siang atau malam) 4 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "Saat siang (selalu di tempat tanpa malam), 2 unit di tiap sisi menerima 1 kerusakan api."
 }

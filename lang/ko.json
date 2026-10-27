@@ -3602,5 +3602,14 @@
  "Fortify": "보강",
  "{name} fortifies its bramble: the hit is 1 less.": "{name}이(가) 가시덤불을 보강했어요: 이번 공격은 1 적어요.",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "유닛에 맞은 근접 공격만 해당돼요(그 공격이 무엇을 했든). 성벽과 보강으로 여전히 줄어요.",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "사격 옆에 추가하세요. 가시덤불을 향한 사격은 빗나가지 않으며, 성벽과 보강은 여전히 줄입니다."
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "사격 옆에 추가하세요. 가시덤불을 향한 사격은 빗나가지 않으며, 성벽과 보강은 여전히 줄입니다.",
+ "Every {n} turns: acts twice, then Stunned for a round.": "{n}턴마다: 두 번 행동한 뒤 한 라운드 기절.",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "턴은 행동한 라운드입니다. 대기 중이거나 기절, 빙결, 수면 중인 라운드는 세지 않습니다. 두 번 행동: 사격이 두 번 나가고 한 번 더 공격합니다.",
+ "is wired on coffee: it acts twice this round ☕": "커피로 각성: 이번 라운드에 두 번 행동 ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "어두운 곳(어둠, 칠흑)에서는 늘 밤입니다: 그곳에서 밤 보너스를 받고 어둠 속에서도 봅니다.",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "어두운 곳(어둠, 칠흑)에서는 늘 밤입니다: 그곳에서는 낮 보너스를 받지 못합니다.",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "어둠에 눈먼: 어둠 시야도 야행성도 없는 유닛. 어두운 곳은 야행성과 주행성 유닛에게 밤으로 칩니다. 조명 유닛은 자기 쪽과 마주한 적을 밝힌다.",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "폭염 레벨 2: 낮 라운드마다(낮과 밤이 없는 곳에서는 매 라운드) 양쪽의 무작위 유닛 3체가 화염 피해 1. 열 저항 유닛은 제외.",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "폭염 레벨 3: 낮 라운드마다(낮과 밤이 없는 곳에서는 매 라운드) 양쪽의 무작위 유닛 4체가 화염 피해 1. 열 저항 유닛은 제외.",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "낮에(밤이 없는 곳에서는 늘) 양쪽 유닛 2체가 화염 피해 1."
 }

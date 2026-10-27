@@ -98,7 +98,8 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(new RegExp(`\\n  ${k}: v=> `).test(src), `${k}: card text`); });
 ok(/\{key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, defaultValue:2,/.test(src), 'Chilli N, editable, default 2');
 ['trident', 'pitchfork', 'crabClaws', 'iceArrow', 'twinShot', 'volley', 'poisonBolt', 'iceBolt', 'chilli'].forEach(k=> ok(new RegExp(`\\n  ${k}: \\{`).test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), `${k}: an Effects library setup`));
-ok(/const ONE_OFF_SKILLS = \['coffee', 'chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'\];/.test(src), '5. the one-offs');
+// 2026-10-27 (package ENG11, K2): Coffee recurs now, so it left the one-offs
+ok(/const ONE_OFF_SKILLS = \['chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'\];/.test(src), '5. the one-offs');
 ok(!/key:'hurricane'/.test(src), '5. (there is no Hurricane skill yet)');
 ok(/oneOff:p\.oneOff,/.test(src) && !/\$\{x\.oneOff \? ' · one-off' : ''\}/.test(src) && /\$\{oneOffTagHTML\(s\)\}\$\{valueHtml\}/.test(src), '5. the skill picker tags one-offs (a tag beside the row, not in the name: 2026-10-16)');
 ok(!/<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{oneOffTagHTML\(p\)\}/.test(src), '5. ...but the Skills codex no longer shows it (2026-10-17, user: "Remove the one-off tag in Codex")');

@@ -20,8 +20,10 @@ const defs = Object.assign({}, H.loadCardDefs(), {
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.assign({recordEvents:true, battleMode:'open'}, opts||{})); return {e, P:{1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
+// 2026-10-27 (package ENG11, owner K2): Coffee is the new skill (acts twice every Nth turn, then Stunned; tests/eng11-2026-10-27.js);
+// it no longer takes Wait off on play or sets the old crash timer.
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-coffee', 'left', {}, []); const c = all(P[1])[0];
-  ok(c.wait === 1, `Coffee 2: Wait 3 → 1 (got ${c.wait})`); ok(c.coffeeCrash === 3, 'crash timer set'); }
+  ok(c.wait === 3, `Coffee 2: no Wait change on play any more (got ${c.wait})`); ok(!c.coffeeCrash, 'no old crash timer'); }
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k-slide', 'left', {}, []); ['left','left','right','right'].forEach(l=> e.debugSpawnCard(P, so, 2, 'k-wall', l, {}, []));
   const sl = all(P[1])[0]; e.debugDamage(P, so, sl.uid, 5, {}, []);
   const hit = all(P[2]).filter(c=> c.hp === 17).length; ok(hit >= 2 && hit <= 3, `Landslide hits the facing enemy and its neighbours (${all(P[2]).map(c=>c.slot+':'+c.hp)})`); }

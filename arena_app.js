@@ -1410,7 +1410,8 @@ PASSIVE_DEFS.push(
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
 // Banana as the other fruit; there is no Hurricane skill yet.
-const ONE_OFF_SKILLS = ['coffee', 'chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'];
+// ENG11 (2026-10-27, K2): Coffee recurs now (acts twice every N turns), so it is no longer one-off.
+const ONE_OFF_SKILLS = ['chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'];
 PASSIVE_DEFS.forEach(p=>{ if(ONE_OFF_SKILLS.includes(p.key)) p.oneOff = true; });
 function oneOffTagHTML(p){ return p && p.oneOff ? `<span class="sk-oneoff" title="A one-off: specific to this animal, not to a map">one-off</span>` : ''; }
 const ACTIVE_PRESETS = [
@@ -1899,6 +1900,10 @@ Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
 [['fireBolt', TX('ui.e10-skn-cinder')], ['acidBolt', TX('ui.e10-skn-acid')], ['poisonBolt', TX('ui.e10-skn-venom')], ['iceBolt', TX('ui.e10-skn-ice')], ['shockBolt', TX('ui.e10-skn-spark')]].forEach(([k, label])=> sk1Patch(PASSIVE_DEFS, k, {label}));
 { const ch = PASSIVE_DEFS.find(x=> x.key === 'charge'); if(ch && ch.desc){ ch.desc = (v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. ${TX('ui.e10-charge', {n: cp.n})}`; }; } }
 sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:TX('ui.e10-armor-codex')});
+// ENG11 (2026-10-27, owner K2 / K6): the new Coffee N (acts twice every Nth round it acts, then Stunned), and the dark places as night.
+sk1Patch(PASSIVE_DEFS, 'coffee', {defaultValue:2, desc:v=> TX('ui.e11-coffee', {n: numOr(v, 2)}), codexNote:TX('ui.e11-coffee-codex')});
+sk1Patch(PASSIVE_DEFS, 'nocturnal', {codexNote:TX('ui.e11-nocturnal-codex')});
+sk1Patch(PASSIVE_DEFS, 'diurnal', {codexNote:TX('ui.e11-diurnal-codex')});
 sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
 PASSIVE_DEFS.push(
   {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
@@ -2655,7 +2660,7 @@ function liveAmountValue(mode, liveCard){
 const CLOUDY_TEXT = 'Cloud shadows drift over the field. By day the clouds halve the Diurnal bonus (rounded down).';
 const FIELD_TEXT = {
   frozen:   {name:'Frigid', text:'At the start of every round, one random card on each side gets +1 Wait.'},
-  heatwave: {name:'Scorching', text:TX('ui.fx-scorching1')}, // 2026-10-23 (FX3): the real rule (was "every unit takes 1"; it is 2 random units a side)
+  heatwave: {name:'Scorching', text:TX('ui.e11-scorching1') /* ENG11 (K10): by day only */}, // 2026-10-23 (FX3): the real rule (was "every unit takes 1"; it is 2 random units a side)
   rain:     {name:'Spring Rain', text:'At the start of every round, every unit heals 2.'},
   fog:      {name:'Thick Fog', text:'Every attack has a 1-in-3 chance to miss (Flying units see over it).'},
   moon:     {name:'Full Moon', text:'It stays night while the moon is up.'},
@@ -3048,7 +3053,7 @@ Object.assign(SKILL_TEXT, {
   rocket: v=> TX('ui.sk-rocket', {n: numOr(v, 1)}), // 2026-10-18 (package D): terse; the Codex says who "strongest" is
   loneWolf: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each empty slot within 2 of it, and +${a}/+${h} more when all 4 are empty.`; },
   sociable: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each ally within 2 slots of it, and +${a}/+${h} more when all 4 are filled.`; },
-  coffee: v=> `When played, Wait −${numOr(v, 1)}. ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} later it naps: Stunned for a round.`,
+  coffee: v=> TX('ui.e11-coffee', {n: numOr(v, 2)}), // ENG11 (2026-10-27, owner K2): acts twice every N rounds, then Stunned
   dry: ()=> `Takes half fire damage, and Scorching days can't touch it.`,
   landslide: v=> `When it dies, deal ${numOr(v, 1)} damage to the enemy facing it and the enemies beside that one (not Flying).`,
   natureForce: v=> `Your Elementals get +${numOr(v, 1)}/+${numOr(v, 1)}.`,
@@ -18904,7 +18909,7 @@ const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
 const TIDESPOUT_TEXT = TX('ui.fx-tide-spout'); // 2026-10-18 (package D): terse
-const FIELD2_SCORCHING3_TEXT = TX('ui.fx-scorching3'); // 2026-10-23 (FX3): 1 each (was 3)
+const FIELD2_SCORCHING3_TEXT = TX('ui.e11-scorching3'); // ENG11 (K10): by day // 2026-10-23 (FX3): 1 each (was 3)
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
@@ -19099,7 +19104,7 @@ const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolut
 // 2026-10-18 (package D; owner: just "Dark-blind creatures miss 1/4 the time."): one plain line, the card's face and its detail alike;
 // who is dark-blind and what Illuminate does is in the Map Codex (DARK_CODEX_TEXT) and the Dark-blind keyword's gloss.
 const DARK_LEVEL_TEXT = {dark:TX('ui.field-dark'), pitch:TX('ui.field-pitch'), absolute:TX('ui.field-absolute')};
-const DARK_CODEX_TEXT = TX('ui.fxx-dark');
+const DARK_CODEX_TEXT = TX('ui.e11-fxx-dark'); // ENG11 (2026-10-27, K6): Nocturnal units see in the dark (was ui.fxx-dark)
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx', 'm22']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart; + the Rimefire Caldera, Map 22 (2026-10-17)
 // 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow
@@ -31531,7 +31536,7 @@ const FXL_FIELDS = [
   {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
   {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
-  {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> TX('ui.fx-scorching2') /* FX3: 1 each (was 2) */, rules:{field:'heatwave', heatLevel:2}},
+  {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> TX('ui.e11-scorching2') /* FX3: 1 each (was 2); ENG11 (K10): by day */, rules:{field:'heatwave', heatLevel:2}},
   // Field effects 2 (2026-10-16): texts in FIELD2; each entry stages what makes its rule visible.
   {key:'scorching3', icon:'🔥', name:'Scorching III', text:()=> FIELD2_SCORCHING3_TEXT, rules:{field:'heatwave', heatLevel:3}},
   ...[
@@ -33230,7 +33235,7 @@ const FIELD_EFFECTS = [
   {id:'frost',     group:'field', icon:'❄️', name:'Frigid',         weird:2, cost:1, rules:{field:'frozen'}, text:'Frigid: each round one random card on each side gets +1 Wait.'},
   {id:'fog',       group:'field', icon:'🌫️', name:'Fog',            weird:2, cost:1, rules:{field:'fog'}, text:'Thick Fog: attacks miss 1 in 3, except from Flying units.'},
   {id:'rain',      group:'field', icon:'🌧️', name:'Spring Rain',    weird:1, cost:1, rules:{field:'rain'}, text:'Spring Rain: every unit heals 2 at the start of each round.'},
-  {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:TX('ui.fx-scorching1')}, // 2026-10-23 (FX3): the real rule
+  {id:'heatwave',  group:'field', icon:'🔥', name:'Scorching',      weird:2, cost:1, rules:{field:'heatwave'}, text:TX('ui.e11-scorching1')}, // ENG11 (K10): by day // 2026-10-23 (FX3): the real rule
   {id:'timber',    group:'lumber', icon:'🪵', name:'Timber Fair',   weird:1, cost:1, rules:{lumberEvery:3}, text:TX('ui.i2-lumber-every-n', {n: 3})},
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:TX('ui.i2-lumber-every-n', {n: 2})},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
@@ -33241,7 +33246,7 @@ const FIELD_EFFECTS = [
   {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:DARK_LEVEL_TEXT.pitch, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D)
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
   // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
-  {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:TX('ui.fx-scorching2') /* FX3: 1 each (was 2) */, editorOnly:true},
+  {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:TX('ui.e11-scorching2') /* FX3: 1 each (was 2); ENG11 (K10): by day */, editorOnly:true},
   {id:'freezing',  group:'freezing', icon:'🧊', name:'Freezing', weird:2, cost:1, rules:{freezing:true}, text:'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', editorOnly:true},
   {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', editorOnly:true},
   {id:'sandstorm', group:'sandstorm', icon:'🏜️', name:'Sandstorm', weird:2, cost:1, rules:{sandstorm:true}, text:'Attacks at units miss 1 in 4, except from Dry units.', editorOnly:true},
@@ -37593,7 +37598,7 @@ function boardCardHTML(c, defs, opts){
     opts.dance ? 'is-dancing' : '', // victory dance (2026-09-16), see rowHTML above
     opts.scatter ? 'is-scattering' : '', // unit scatter on loss/draw (2026-09-17), see rowHTML above
     (matchState && c.uid===matchState.leaderUid) ? 'is-leader' : '',
-    (c.phaseAtk || c.phaseHp) ? ('phase-aura ' + ((matchState && matchState.engine && matchState.engine.getPhase && matchState.engine.getPhase()==='night') ? 'phase-night' : 'phase-day')) : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
+    (c.phaseAtk || c.phaseHp) ? ('phase-aura ' + ((matchState && matchState.engine && ((matchState.engine.zeitPhase ? matchState.engine.zeitPhase() : matchState.engine.getPhase && matchState.engine.getPhase()) === 'night') /* ENG11 (K6): a dark fight is night */) ? 'phase-night' : 'phase-day')) : '', // Leader summon (2026-09-18, Epic A) — the glowing-border treatment reads matchState directly rather than threading a flag through all 3 rowHTML call sites
   ].filter(Boolean).join(' ');
   // Item #14 (Rally): the atk badge shows the LIVE effective attack (base + this round's Rally
   // aura), so the board visibly reflects the buff even though it's never baked into c.atk.
@@ -44194,7 +44199,7 @@ function logText(ev){
           return hid ? `grows stronger (${st}) ❔` : `grows stronger ${ph === 'night' ? 'in the night' : ph === 'twilight' ? 'in the twilight' : 'in the sun'} (${st}) ${ph === 'night' ? '🌙' : ph === 'twilight' ? '🌆' : '☀️'}`; })(),
         phaseFade: `loses that extra strength again`,
         tailwind: ev.quick ? `caught the Tailwind: Quick this round 🪁` : `caught the Tailwind for an extra turn 🪁`, // EN2 (2026-10-23, 17:34 #15): a wind's Tailwind is Quick, not an extra turn (the spell still gives one)
-        coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
+        coffee: ev.twice ? TX('ui.e11-log-coffee') : `downed a coffee (Wait −${ev.amount}) ☕`,
         chilli: `ate a chilli: +${ev.amount}⚔, and its attacks burn now 🌶️🔥`, // Chilli (2026-10-15)
         chilliBurn: `is very hot from its chilli: ${dnLogNum(ev.amount, ev)} damage 🌶️`,
         rocket: `launched a rocket 🚀`,
@@ -48478,7 +48483,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='bludgeon'){ const t = boardCardEl(ev.targetUid); if(t) floatText(t, '🔨 ' + [ev.atkLost ? '−1⚔' : '', ev.broke ? w2BrokeName(ev.broke) + ' broken' : ''].filter(Boolean).join(' · '), 'debuff'); if(ev.atkLost && rc && rc.atk != null){ rc.atk = Math.max(0, rc.atk - ev.atkLost); try{ updateCardAtkDisplay(ev.targetUid); }catch(e){} } } // 2026-10-16: -1 Attack, and any skill
     else if(ev.kind==='shed'){ if(el) floatText(el, ev.molt ? `🦀 +${ev.amount||1}/+${ev.amount||1} · ⏪ +1 Wait` : '🐍 +1/+1', 'heal'); if(ev.molt && rc){ rc.wait = (rc.wait||0) + 1; try{ updateCardWaitDisplay(ev.targetUid, rc.wait); }catch(e){} } } // Molting (2026-10-16): +N/+N and +1 Wait
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
-    else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
+    else if(ev.kind==='coffee'){ if(el) floatText(el, ev.twice ? '☕ ×2' : `☕ −${ev.amount} ⏳`, 'quick'); } // ENG11 (K2): the new Coffee acts twice
     else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
     else if(ev.kind==='chilliBurn'){ if(el) dnFloat(el, ev.amount, {type:'chilli', mods: ev.mods}); } /* DN2 */
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }

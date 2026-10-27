@@ -3599,5 +3599,14 @@
  "Fortify": "補強",
  "{name} fortifies its bramble: the hit is 1 less.": "{name} が砦を補強：この攻撃は1少ない。",
  "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.": "ユニットに当たった近接攻撃のみ（その攻撃の結果は問わない）。城壁と補強で減る。",
- "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "射撃の横に付ける。イバラへの射撃は外れない。城壁と補強は引き続き軽減する。"
+ "Add it beside the shot. The shot never misses the bramble; Rampart and Fortify still cut it.": "射撃の横に付ける。イバラへの射撃は外れない。城壁と補強は引き続き軽減する。",
+ "Every {n} turns: acts twice, then Stunned for a round.": "{n}ターンごと：2回行動し、その後1ラウンドスタン。",
+ "A turn is a round in which it acts; rounds it waits, or is Stunned, Frozen or asleep, don't count. Acting twice: its shots go twice and it swings once more.": "ターンとは行動したラウンドのこと。待機中やスタン・凍結・睡眠中のラウンドは数えない。2回行動：射撃が2回になり、攻撃をもう1回行う。",
+ "is wired on coffee: it acts twice this round ☕": "コーヒーでハイに：このラウンドは2回行動 ☕",
+ "In the dark places (Darkness, Pitch Black) it is always night: it has its night bonus there and sees in the dark.": "暗い場所（闇、真っ暗闇）では常に夜：そこでは夜のボーナスを得て、暗闇でも見える。",
+ "In the dark places (Darkness, Pitch Black) it is always night: it gets no day bonus there.": "暗い場所（闇、真っ暗闇）では常に夜：そこでは昼のボーナスを得ない。",
+ "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "闇で目が見えない：暗視も夜行性も持たないユニット。暗い場所は夜行性・昼行性ユニットにとって夜として扱う。照明ユニットは自陣と、正面の敵を照らす。",
+ "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル2：昼のラウンドごとに（昼夜のない場所では毎ラウンド）両陣営のランダムなユニット3体が火炎ダメージ1。熱耐性のあるユニットは無事。",
+ "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル3：昼のラウンドごとに（昼夜のない場所では毎ラウンド）両陣営のランダムなユニット4体が火炎ダメージ1。熱耐性のあるユニットは無事。",
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "昼（夜のない場所では常に）、両陣営のユニット2体が火炎ダメージ1。"
 }
