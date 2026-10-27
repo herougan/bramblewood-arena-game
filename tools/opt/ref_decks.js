@@ -20,10 +20,18 @@ const START = '/*REF-DECK-SETS-START*/', END = '/*REF-DECK-SETS-END*/';
 
 function readSets(root) {
   const dir = path.join(root || ROOT, 'docs', 'balance', 'ref'), cards = JSON.parse(fs.readFileSync(path.join(root || ROOT, 'canonical', 'cards.json'), 'utf8'));
-  const known = new Set((Array.isArray(cards) ? cards : Object.values(cards)).map(c => c.id)), sets = {}, problems = [];
+  const known = new Set((Array.isArray(cards) ? cards : Object.values(cards)).map(c => c.id)), sets = {}, toolSets = {}, problems = [];
   (fs.existsSync(dir) ? fs.readdirSync(dir) : []).filter(f => f.endsWith('.json')).sort().forEach(f => {
     let j; try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { problems.push(f + ': not JSON'); return; }
     if (!j || !j.id) return;
+    // 2026-10-27 (package BAL6, K17): a per-map set ("decks": {"<map>": counts}, the Pool reference) is played by the tools only (ref_pool.js
+    // deckFor); the game's refSetFor takes one deck a set, so it is checked here but not baked
+    if (j.decks && !j.counts) {
+      if (toolSets[j.id] || sets[j.id]) { problems.push(f + ': id ' + j.id + ' is used twice'); return; }
+      Object.keys(j.decks).forEach(m => { const d = j.decks[m] || {}, n = Object.values(d).reduce((t, k) => t + (k | 0), 0);
+        Object.keys(d).filter(id => !known.has(id)).forEach(id => problems.push(f + ': Map ' + m + ': unknown card ' + id)); if (n !== 20) problems.push(f + ': Map ' + m + ': ' + n + ' cards (a deck is 20)'); });
+      toolSets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, maps: Object.keys(j.decks).length }; return;
+    }
     if (j.id === 'map' || !/^[a-z0-9-]+$/.test(j.id)) { problems.push(f + ': bad id ' + j.id); return; }
     if (sets[j.id]) { problems.push(f + ': id ' + j.id + ' is used twice'); return; }
     const counts = j.counts || {}, n = Object.values(counts).reduce((t, k) => t + (k | 0), 0);
@@ -33,14 +41,15 @@ function readSets(root) {
     const sc = j.schedule || {};
     sets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, leader: j.leader || null, counts, schedule: { fromMap: sc.fromMap != null ? sc.fromMap : 1, perMap: sc.perMap != null ? sc.perMap : 5, seed: sc.seed || j.id } };
   });
-  return { sets, problems };
+  return { sets, toolSets, problems };
 }
 function bakedOf(src) { const i = src.indexOf(START), k = src.indexOf(END); if (i < 0 || k < 0) throw new Error('arena_app.js: no REF-DECK-SETS markers'); return { i, k, text: src.slice(i + START.length, k) }; }
 
 function main(argv) {
   const apply = argv.includes('--apply'), check = argv.includes('--check');
-  const { sets, problems } = readSets(ROOT), src = fs.readFileSync(APP, 'utf8'), b = bakedOf(src), want = JSON.stringify(sets);
+  const { sets, toolSets, problems } = readSets(ROOT), src = fs.readFileSync(APP, 'utf8'), b = bakedOf(src), want = JSON.stringify(sets);
   problems.forEach(p => console.log('problem: ' + p));
+  if (Object.keys(toolSets).length) console.log('per-map sets (tools only, not baked): ' + Object.keys(toolSets).map(id => id + ' (' + toolSets[id].label + ', ' + toolSets[id].maps + ' maps, ' + toolSets[id].file + ')').join(', '));
   console.log('sets: ' + (Object.keys(sets).map(id => id + ' (' + sets[id].label + ', ' + sets[id].file + ')').join(', ') || 'none'));
   const same = b.text === want;
   if (check) { if (!same || problems.length) { console.log(same ? 'problems in the files' : 'arena_app.js is out of date: node tools/opt/ref_decks.js --apply'); process.exit(1); } console.log('up to date'); return; }

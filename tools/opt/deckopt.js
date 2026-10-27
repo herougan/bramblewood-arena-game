@@ -62,7 +62,7 @@
 const path = require('path'), fs = require('fs'), os = require('os');
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 let SEA = false; try { SEA = require('node:sea').isSea(); } catch (e) { /* Node without SEA */ }
-const VERSION = '2.2.0 (2026-10-25, PRO3)';
+const VERSION = '2.3.0 (2026-10-27, BAL6: --mode ref-pool)';
 
 // ---------------------------------------------------------------- small helpers
 function mulberry(state) { // a serialisable PRNG: {s} is its whole state
@@ -117,9 +117,10 @@ function mapRarityCap(gm, map, which) {
 // the first map a player can hold a card: the HUB3 plan's advancement map (obtainMapOf) or the game's cardObtainMap
 // (canonical/card-obtain-maps.json: a pack card waits for its rarity's reveal, e.g. the Alley Cat Map 5), whichever is later
 function obtainOf(gm, id) { const a = obtainMapOf(gm, id), b = gm.obtain[id]; return Math.max(a == null ? 0 : a, b == null ? 0 : b); }
-const MODES = ['classic', 'map-true', 'bpro'];
+const MODES = ['classic', 'map-true', 'bpro', 'ref-pool'];
 function poolsFor(gm, map, opt) {
   const mode = (opt && opt.mode) || 'classic';
+  if (mode === 'ref-pool') return refPoolPools(gm, map, opt);
   if (mode !== 'classic') return mapTruePools(gm, map, opt, mode);
   const mapNo = gm.G.mapNumberOf(map.id), e = gm.pools[map.id] || { cards: [], submaps: {} };
   let mapCards = (e.cards || []).slice(); if (opt.submaps !== false) Object.values(e.submaps || {}).forEach(l => { mapCards = mapCards.concat(Array.isArray(l) ? l : (l.cards || [])); });
@@ -191,6 +192,20 @@ function mapTruePools(gm, map, opt, mode) {
   const core = uniq((e.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort();
   return { mapNo, mode, cap, rule, subsOpen, mapCards: uniq(ownOk.concat(extraSub)).sort(), owned: extraOwned.sort(), p1, all: uniq(spectrum).sort(), core,
     excluded: Object.keys(excluded).sort().map(k => ({ reason: k, n: excluded[k].length, ids: excluded[k].sort() })) };
+}
+// 2026-10-27 (package BAL6, K17, owner 10-27 11:22: "make the best deck we can given the deck unlocks and random 5 common cards unlocked every
+// map (from packs)"): --mode ref-pool searches only the cards a player holds arriving at the map, from --pool-file (default
+// docs/balance/ref/ref-pool-pools.json, built by tools/opt/ref_pool.js pools): starter, earlier maps' first-clear cards, faction rewards and
+// 5 random pack Commons a map. No rarity cap beyond what the pool holds, faction cards in (the player's own), no phase 2.
+function refPoolPools(gm, map, opt) {
+  const G = gm.G, mapNo = G.mapNumberOf(map.id), f = path.resolve(gm.root, (opt && opt.poolFile) || 'docs/balance/ref/ref-pool-pools.json');
+  if (!fs.existsSync(f)) throw new Error('--mode ref-pool: no pool file ' + f + ' (node tools/opt/ref_pool.js pools)');
+  const e = (JSON.parse(fs.readFileSync(f, 'utf8')).maps || {})[mapNo];
+  if (!e || e.mapId !== map.id) throw new Error('--mode ref-pool: the pool file has no entry for Map ' + mapNo + ' (' + map.id + '); side maps are not covered');
+  const p1 = uniq(e.pool).filter(id => deckable(gm, id)).sort(), inP = new Set(p1), pe = gm.pools[map.id] || { cards: [] };
+  const rule = id => inP.has(id) ? null : 'not in the ref-pool pool for this map';
+  const core = uniq((pe.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => deckable(gm, id)).sort();
+  return { mapNo, mode: 'ref-pool', cap: null, rule, subsOpen: [], mapCards: [], owned: p1, p1, all: p1, core, excluded: [], poolFile: path.relative(gm.root, f) };
 }
 // the problems of a deck under a mode's map rule (no problems = every card may be in that map's PRO / BPRO deck)
 function mapRuleProblems(gm, map, deck, mode, rarityCap) {
@@ -568,7 +583,7 @@ function parseArgs(argv) {
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
     ladder: [600, 450, 300, 150], ladderCore: 10, ladderCoreMin: 6, redo: [], ladderGames: 32, ladderWalks: 8, ladderTol: 60,
     compare: false, evalGames: 48, candidatesOnly: false, rules: null,
-    out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
+    poolFile: null, out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
   const a = argv.slice(), take = () => a.shift();
   while (a.length) { const k = take();
     switch (k) {
@@ -577,7 +592,7 @@ function parseArgs(argv) {
       case '--faction': o.faction = true; break; case '--no-faction': o.faction = false; break; case '--side': o.side = true; break;
       case '--minutes': o.minutes = +take(); break; case '--budget': o.budget = +take(); break; case '--workers': case '-j': o.workers = +take(); break; case '--seed': o.seed = take(); break;
       case '--cross-share': o.crossShare = +take(); break; case '--road-weight': o.roadWeight = +take(); break; case '--ai': o.ai = +take(); break;
-      case '--owned': o.owned = take(); break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
+      case '--owned': o.owned = take(); break; case '--pool-file': o.poolFile = take(); break; case '--ref-pool': o.mode = 'ref-pool'; break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
       case '--method': o.method = take(); break; case '--restarts': o.restarts = +take(); break; case '--niche-radius': o.nicheRadius = +take(); break; case '--niche-cap': o.nicheCap = +take(); break;
       case '--neighbours': case '--neighbors': o.neighbours = +take(); break; case '--patience': o.patience = +take(); break; case '--dgmax': o.dgmax = +take(); break;
       case '--pop': o.pop = +take(); break; case '--children': o.children = +take(); break; case '--g0': o.g0 = +take(); break; case '--gmax': o.gmax = +take(); break;
@@ -596,13 +611,15 @@ function parseArgs(argv) {
   if (o.g0 % 2) o.g0++; // mirror games swap seats: even counts
   if (!['ga', 'descent'].includes(o.method)) throw new Error('--method ga|descent');
   if (!MODES.includes(o.mode)) throw new Error('--mode ' + MODES.join('|'));
+  if (o.mode === 'bpro' || o.mode === 'ref-pool') o.crossShare = 0; // BAL6: ref-pool's pool is everything the player has, so no phase 2 either
   if (o.mode === 'bpro') o.crossShare = 0; // 2026-10-24 (PRO2): BPRO has no outside cards, so no phase 2: the whole budget searches the map's own pool
   if (o.budget == null && o.minutes == null) o.minutes = 5;
   return o;
 }
 const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramblewood engine (no Claude, no tokens).
   --map N | --maps 0-3 | --maps 0,2,mc    map number(s) or id(s)
-  --mode map-true|bpro|classic   the card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
+  --mode map-true|bpro|classic|ref-pool   ref-pool (--ref-pool, package BAL6): only the cards a player holds arriving at the map, from
+                      --pool-file (default docs/balance/ref/ref-pool-pools.json; tools/opt/ref_pool.js); main maps only. The card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
                       all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own pool only (MAP + SPECIAL +
                       its fight decks), within the cap, no phase 2; classic (--classic) = the OPT2 pool (every submap, owned cards at any rarity)
   --no-faction | --faction       map-true / bpro leave faction cards out (default, package PRO3: a tier-11 faction-pack card) or keep them
@@ -760,7 +777,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: G.mapNumberOf(map.id), name: map.name, side: map.sub ? map.parent : undefined, opensOn: map.sub ? pools.mapNo : undefined },
     level, settings: { mode: o.mode, faction: !!o.faction, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
       crossShare: o.crossShare, roadWeight: o.roadWeight, ai: o.ai, owned: o.owned, crossPool: o.crossPool, submaps: o.submaps, pop: o.pop, children: o.children, g0: o.g0, gmax: o.gmax, screenCopies: o.screenCopies, beeTank: o.beeTank, minutes: o.minutes, workers: o.workers },
-    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : ''),
+    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : '') + (o.mode === 'ref-pool' && o.poolFile ? ' --pool-file ' + o.poolFile : ''),
     pools: { mode: pools.mode, cap: pools.cap || null, subsOpen: pools.subsOpen, phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length, excluded: pools.excluded },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),

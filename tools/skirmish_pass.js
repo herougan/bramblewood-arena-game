@@ -66,8 +66,12 @@ const B = require('./lib_bramble.js'), G = B.G, CARD_DEFS_BASELINE = B.CARD_DEFS
 const MAPS = G.CONQUEST_MAPS;
 // 2026-10-25 (package PREF, REF-2): --ref=<set> plays a reference set from docs/balance/ref/ (baked into arena_app.js REF_DECK_SETS by
 // tools/opt/ref_decks.js) instead of the map's reference deck: `measure 40 --ref=ref2 --tag=ref2`. 'map' (the default) is the usual deck.
+const RP = require(path.join(ROOT, 'tools', 'opt', 'ref_pool.js')); // BAL6: per-map reference sets
 const REF_SET = (()=>{ const v = opt('ref', null) || (argv.includes('--ref') ? argv[argv.indexOf('--ref') + 1] : null); if(!v || v === 'map') return null;
-  if(!G.REF_DECK_SETS[v]) throw new Error('--ref: no reference set ' + v + ' (known: ' + G.refSetIds().join(', ') + ')'); return v; })();
+  if(!G.REF_DECK_SETS[v] && !RP.toolSetIds(ROOT).includes(v)) throw new Error('--ref: no reference set ' + v + ' (known: ' + G.refSetIds().concat(RP.toolSetIds(ROOT)).join(', ') + ')'); return v; })();
+// 2026-10-27 (package BAL6, K17): a per-map set (docs/balance/ref/ref-pool.json, "decks" by map) is not baked into the game; its map's deck goes
+// in as the trial deck, which plays at the Map reference's level (referencePlayerLevel)
+const REF_TOOL_SET = REF_SET && !G.REF_DECK_SETS[REF_SET] ? RP.loadSet(ROOT, REF_SET) : null;
 
 // ---- the fights
 const mains = MAPS.filter(m=> !m.sub);
@@ -143,7 +147,8 @@ function buildRoadDeck(mapNo, fightsOfMap, seed, prev){
 // as the skirmish editor's win-rate panel; it also gives the fight its leader grants, which this tool's copy had commented out)
 function measure(f, node, games, seed0, deckOverride){
   node = node || f.n; G.NODE_MAP_HINT.set(node, f.map);
-  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null, refSet: REF_SET}); // PREF: --ref=ref2 plays that reference set
+  if(!deckOverride && REF_TOOL_SET) deckOverride = RP.deckFor(REF_TOOL_SET, G.referenceDeckFor(f.map, node).mapNo); // BAL6: a per-map set
+  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null, refSet: REF_TOOL_SET ? null : REF_SET}); // PREF: --ref=ref2 plays that reference set
   return {win: Math.round(r.wins / games * 1000) / 10, loss: Math.round(r.losses / games * 1000) / 10, rounds: r.avgRounds == null ? null : Math.round(r.avgRounds * 10) / 10,
     hpLost: Math.round(r.hpLost * 1000) / 10, cpu: r.cpu, stage: r.stage === 'road' ? 'road ' + r.deckMap : r.stage, level: r.level, hp: r.hp, shield: r.shield, overridden: r.overridden};
 }
