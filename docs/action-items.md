@@ -4,6 +4,18 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-28 22:50: progression reference decks (REF5, after PACK1 and TOOLS1)
+
+Owner: "for each Map, we get the 1) confirmed rewards so far 2) use the resources gained for completing the missions (before this map) once x1.5 and purchase ALL the packs we can. 3) form the most optimised deck we can for the this map. Do (2) a few times and we'll come up with quite a unique series of decks. Same for levelling, we will assume a certain levelling frequency - you choose this based on your calculations and inform me ... assume the extra 0.5x in resources are used for levelling only. ... make this an application as well. So the output is maybe 5 reference decks per map. When playing REF combats, the default option 'Reference (Random)' plays one of the random 5 reference decks."
+
+| ID | Item |
+|---|---|
+| R1 | An economy sim per map: the confirmed rewards of every fight before the map (first clears, skirmish rewards, faction track, level rewards, Trail Mix Trek's free lane at a stated pace), and the resources those fights pay, x1.5. |
+| R2 | 1.0x of the resources buys every pack it can (the packs as PACK1 defines them, opened with the game's own draw, seeded); 0.5x goes to levelling (the Forge's costs) on a stated, reported schedule. |
+| R3 | Optimise a deck from the resulting collection (TOOLS1's T3 / deckopt) for that map's fights. |
+| R4 | Repeat with 5 seeds: 5 reference decks per map, saved as a reference set the tools read (--ref prog). |
+| R5 | In the game's REF fights: a "Reference (Random)" default that deals one of the map's 5 decks; the others selectable. Heatmap row(s) for it. |
+
 ## 10-28 21:40: the owner's balancing plan (in this order)
 
 Owner: "Thematic 1st, winnowing 2nd, balancing each card 3rd, optimise enemy decks 4th, decide rarity 6th, Decide drops 7th."
