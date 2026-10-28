@@ -11,8 +11,9 @@
 //
 // One fight (fight i is a pure function of --seed and i, so any worker count gives the same results):
 //   - two random legal 20-card decks from the fieldable cards (randomDeck: 6-14 different cards, copies within the rarity's copy cap and the
-//     budget's top-rank caps, deckopt.canAdd); fieldable = a deckable card a player can own (source base / pack / map / raid / nest / smith /
-//     secret / quest), not a token, test, hero, Hall of Fame, leader, spell, Materia, equipment or Easter egg;
+//     budget's top-rank caps, deckopt.canAdd); fieldable = every card with stats that can sit in a deck, whatever its source (owner 10-28 09:48:
+//     "Cards like Owl Nightwatch somehow is not included in the testlab testing"; the first run left out the 93 source-"unsorted" cards),
+//     not a token, test, hero, Hall of Fame, leader, spell, Materia, equipment or Easter egg (the stale `unattainable` flag is not read);
 //   - both brambles a plain 30 Health (in-engine Health, no abilities; the road's plain bramble is 30 halved by BRAMBLE_SCALE = 15);
 //   - one field picked at random from the maps' rule pool: every road fight's fightRules (all maps, raids and the tutorial left out), each
 //     fight one entry, so a common field (day / night cycle, Mist, a terrain) comes up as often as the maps use it;
@@ -36,10 +37,11 @@ const ROOT = path.join(__dirname, '..', '..');
 const O = require(path.join(ROOT, 'tools', 'opt', 'deckopt.js'));
 
 const BRAMBLE = 30, LEVEL = 1, AI = 1, DECK = 20;
-const SOURCES = new Set(['base', 'pack', 'map', 'raid', 'nest', 'smith', 'secret', 'quest']);
 const BANDS = { starter: 'starter', common: 'common', uncommon: 'uncommon', rare: 'rare' }; // everything rarer: 'veryrare+'
 const bandOf = r => BANDS[r] || 'veryrare+';
 const BAND_ORDER = ['starter', 'common', 'uncommon', 'rare', 'veryrare+'];
+// 2026-10-28 (owner 09:48): cards the owner has called out, flagged as outliers whatever their rank ("owner"), with his note
+const WATCH = { 'owl-nightwatch': 'Owner 10-28 09:48: "clearly too strong": Nocturnal +4/+0 makes it 5 Attack at night; the editor prices its Nocturnal at 2.5, and canonical/skill-costs.json prices nocturnal at a fixed 1 (scale "fixed") whatever its N, so +4 costs what +1 does.' };
 const fnv = s => { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
 const r4 = v => v == null || !isFinite(v) ? null : Math.round(v * 10000) / 10000;
 
@@ -67,7 +69,7 @@ function fieldable(gm, id) {
   if (d.cardType === 'materia' || d.cardType === 'equipment' || d.cardType === 'spell' || d.equip) return false;
   if ((d.effects || {}).leader || (d.archetypes || []).includes('Leader')) return false;
   if (d.attack == null && d.health == null) return false;
-  return SOURCES.has(G.cardSourceOf(d).kind);
+  return !!G.cardSourceOf(d); // 2026-10-28 (BAL6, owner 09:48): any source; was base / pack / map / raid / nest / smith / secret / quest
 }
 function setupOf(gm) {
   const G = gm.G, cards = Object.keys(gm.D).filter(id => fieldable(gm, id)).sort(), fields = [];
@@ -217,10 +219,11 @@ function analyse(o, gm, S, outcomes, log) {
   const bandRank = {}; BAND_ORDER.forEach(b => ranked.filter(r => r.band === b).forEach((r, k) => { r.bandRank = k + 1; r.bandSize = bands[b].cards; }));
   const byVs = rows2.filter(r => r.decks >= 30).slice().sort((x, y) => y.vsBand - x.vsBand);
   const tooStrong = byVs.slice(0, 20).map(r => r.id), tooWeak = byVs.slice(-20).reverse().map(r => r.id);
-  rows2.forEach(r => { r.flag = tooStrong.includes(r.id) ? 'strong' : tooWeak.includes(r.id) ? 'weak' : null; });
+  rows2.forEach(r => { r.flag = tooStrong.includes(r.id) ? 'strong' : tooWeak.includes(r.id) ? 'weak' : null; if (WATCH[r.id]) r.watch = WATCH[r.id]; });
+  const watch = Object.keys(WATCH).filter(id => rows2.some(r => r.id === id));
   return { fights: N, draws, drawRate: r4(draws / N), seatFirstWin: r4(seatWins / N), seatBeta: r4(beta[nC]), seatSE: r4(se[nC]), sigma: r4(Math.sqrt(sigma2)), splitHalfR: r4(rHalf), reliability: r4(reliability),
     medianSE: r4(rows2.map(r => r.contributionSE).filter(v => v != null).sort((a, b) => a - b)[Math.floor(rows2.length / 2)]),
-    minDecks: Math.min(...rows2.map(r => r.decks)), medianDecks: rows2.map(r => r.decks).sort((a, b) => a - b)[Math.floor(rows2.length / 2)], bands, tooStrong, tooWeak, cards: rows2 };
+    minDecks: Math.min(...rows2.map(r => r.decks)), medianDecks: rows2.map(r => r.decks).sort((a, b) => a - b)[Math.floor(rows2.length / 2)], bands, tooStrong, tooWeak, watch, cards: rows2 };
 }
 
 // ---------------------------------------------------------------- the report
@@ -248,6 +251,7 @@ function md(res, o) {
     ...BAND_ORDER.map(b => { const x = A.bands[b]; return `| ${b} | ${x.cards} | ${pp(x.median)} | ${pp(x.mean)} | ${pp(x.sd)} |`; }), '',
     '## Owl Nightwatch', '',
     owl ? `${owl.name} (${owl.rarity}, ${owl.cost} Lumber, ${owl.attack}/${owl.health}, ${owl.skills.join(', ')}): contribution ${pp(owl.contribution)} ± ${(owl.contributionSE * 196).toFixed(1)} points, rank ${owl.rank} of ${A.cards.filter(r => r.rank).length} overall and ${owl.bandRank} of ${owl.bandSize} in its band (${owl.band}, median ${pp(A.bands[owl.band].median)}); ${pp(owl.vsBand)} over the band median, z = ${owl.z}${owl.flag ? ', flagged too ' + owl.flag : ''}. Raw Δ ${pp(owl.rawDelta)}; per copy ${pp(owl.perCopy)} (mean ${owl.meanCopies.toFixed(1)} copies). Raw Δ by the field's day / night: ${Object.entries(owl.byPhase).map(([k, v]) => k + ' ' + pp(v)).join(', ')}.` : 'Not in the fieldable pool.', '',
+    '## Owner-flagged outliers', '', 'Cards the owner called out, flagged whatever their rank.', '', head, ...(A.watch || []).map(id => line(by[id])), '', ...(A.watch || []).map(id => '- ' + by[id].name + ': ' + by[id].watch), '',
     '## Top 20 too strong for their band', '', head, ...A.tooStrong.map(id => line(by[id])), '',
     '## Top 20 too weak for their band', '', head, ...A.tooWeak.map(id => line(by[id])), '',
     '## Every card', '', 'Sorted by contribution. Cards in fewer than 30 decks are left out of the ranks.', '', head, ...A.cards.filter(r => r.rank).sort((x, y) => x.rank - y.rank).map(line), ''];

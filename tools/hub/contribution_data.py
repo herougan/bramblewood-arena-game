@@ -19,10 +19,10 @@ def contribution(root):
     for r in A['cards']:
         rows.append({'id': r['id'], 'n': r['name'], 'r': r['rarity'], 'b': r['band'], 'k': r.get('rank'), 'br': r.get('bandRank'), 'bs': r.get('bandSize'),
                      'd': r['decks'], 'mc': round(r['meanCopies'], 1), 'rd': r['rawDelta'], 'pc': r['perCopy'], 'pcs': r['perCopySE'], 'c': r['contribution'], 'cs': r['contributionSE'],
-                     'vb': r['vsBand'], 'z': r['z'], 'f': r.get('flag'), 'ph': r.get('byPhase') or {}, 'sk': r['skills'], 'l': r['cost'], 'a': r['attack'], 'h': r['health']})
+                     'vb': r['vsBand'], 'z': r['z'], 'f': r.get('flag'), 'wt': r.get('watch'), 'ph': r.get('byPhase') or {}, 'sk': r['skills'], 'l': r['cost'], 'a': r['attack'], 'h': r['health']})
     s = d['settings']
     return {'file': os.path.relpath(fp, root), 'generated': d['generated'][:10], 'tool': d['tool'], 'reproduce': d.get('reproduce'),
             'fights': A['fights'], 'drawRate': A['drawRate'], 'seatFirstWin': A['seatFirstWin'], 'splitHalfR': A['splitHalfR'], 'reliability': A['reliability'], 'medianSE': A['medianSE'],
             'medianDecks': A['medianDecks'], 'bands': A['bands'], 'bandOrder': ['starter', 'common', 'uncommon', 'rare', 'veryrare+'],
             'settings': {'seed': s['seed'], 'bramble': s['bramble'], 'level': s['level'], 'cards': s['cards'], 'fields': s['fields'], 'deckRule': s['deckRule']},
-            'tooStrong': A['tooStrong'], 'tooWeak': A['tooWeak'], 'rows': rows}
+            'tooStrong': A['tooStrong'], 'tooWeak': A['tooWeak'], 'watch': A.get('watch') or [], 'rows': rows}
