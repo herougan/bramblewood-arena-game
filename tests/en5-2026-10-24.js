@@ -135,7 +135,7 @@ function dodges(rules, id, seed){ const {e, P} = mk(rules, seed || 11); put(e, P
 // ---- the page: registry, looks, people row, texts ------------------------------------------------------------------------------
 { const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
   ["{key:'breach', category:'passive'", "{key:'canopyCover', category:'passive'", "sk1Patch(PASSIVE_DEFS, 'hemorrhage', {kind:'number', min:0, defaultValue:0", 'function en5Vfx', 'function en5BreachVfx', 'function en5CanopyVfx', 'function en5StateVfx',
-   'function en5LogText', 'function en5StatusBadges', 'try{ en5Vfx(ev); }catch(e){}', 'function gdPeopleHTML', "gdPeopleHTML({range: true})", 'id="gdPeople"', "en5On:c._en5On||''", "ev.reason === 'canopyCover'"].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
+   'function en5LogText', 'function en5StatusBadges', 'try{ en5Vfx(ev); }catch(e){}', 'function gdPeopleHTML', "gdPeopleHTML({fixed: true})" /* 2026-10-28 (COOP2): the type's fixed count, was {range: true} (2 to 4) */, 'id="gdPeople"', "en5On:c._en5On||''", "ev.reason === 'canopyCover'"].forEach(s=> ok(app.includes(s), 'arena_app.js: ' + s));
   const tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8'); ['.sfx.en5-breach-chip', '.en5-canopy-pulse', '.abadge.en5-state', '.gd-people'].forEach(s=> ok(tpl.includes(s), 'arena_template.html: ' + s));
   const TXm = require(path.join(ROOT, 'bramblewood-texts.js'));
   ok(TXm.TEXT['ui.skn-greater-poison'] === 'Deadly Poison' && !Object.values(TXm.TEXT).some(v=> /Greater Poison/.test(v)), 'Deadly Poison everywhere a player reads it (the key stays greaterPoison)');

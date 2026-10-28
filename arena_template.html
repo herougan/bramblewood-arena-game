@@ -10804,6 +10804,26 @@
 .gd-people .gd-p.is-free{opacity:.28; filter:grayscale(1);}
 .gd-people small{margin-left:6px; font-size:12px; color:var(--text-muted, #8a8f98); font-weight:600;}
 #gdPeople .gd-p.is-on, #gdPeople .gd-p.is-cpu{filter:drop-shadow(0 0 2px rgba(255,255,255,.6));} /* the lobby is dark: a light rim on the lit ones */
+/* 2026-10-28 (package COOP2): the group dungeon on the normal board. Lobby seats by player index (0 front row, 1 middle row); the coop bar
+   (who is still to play) under the top HUD; my claims waiting in their slots (dimmed, locked); each row names whose it is. */
+.gd-seat.seat-0{--seat:var(--gd-a);} .gd-seat.seat-1{--seat:var(--gd-b);} .gd-seat.seat-2{--seat:var(--gd-c);}
+.coop2-seats{grid-template-columns:1fr;}
+.coop2-how{font-size:12.5px;}
+.coop-bar{position:fixed; right:12px; top:calc(env(safe-area-inset-top, 0px) + 46px); z-index:60; display:flex; flex-direction:column; align-items:flex-end; gap:2px;
+  max-width:min(56vw, 420px); padding:4px 10px; border-radius:14px; background:rgba(20,16,12,.72); color:#f3ead8; font-size:12px; pointer-events:none;
+  -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); box-shadow:0 4px 14px rgba(0,0,0,.25);}
+.coop-bar .coop-chips{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+.coop-chip{display:inline-flex; align-items:center; gap:4px; padding:1px 8px 1px 2px; border-radius:999px; background:rgba(255,255,255,.1); font-weight:700; white-space:nowrap; max-width:46vw; overflow:hidden; text-overflow:ellipsis;}
+.coop-chip i{font-style:normal; font-size:10px; font-weight:800; padding:1px 5px; border-radius:999px; background:rgba(0,0,0,.35);}
+.coop-chip.is-me{box-shadow:0 0 0 1.5px #e8a948 inset;} .coop-chip.is-done{color:#b7eaa0;} .coop-chip.is-away{opacity:.6;}
+.coop-bar .coop-line{font-size:11.5px; opacity:.9; text-align:right;}
+.board-card.coop-pending{position:relative; display:grid; place-items:center; border-radius:12px; border:2px dashed rgba(232,169,72,.8); background:rgba(232,169,72,.12);}
+.board-card.coop-pending .coop-ghost{opacity:.55; filter:saturate(.6); font-size:28px; line-height:1;}
+.board-card.coop-pending .coop-ghost img{max-width:70%; max-height:70%;}
+.board-card.coop-pending .coop-lock{position:absolute; right:4px; top:4px; font-size:12px;}
+#rowMine[data-coop-owner]{position:relative;}
+#rowMine[data-coop-owner]::before{content:attr(data-coop-owner); position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap; pointer-events:none;}
+.gd-rank.rank-hex.rw-mini{width:34px; height:38px; vertical-align:middle;} .gd-rank.rank-hex.rw-mini b{font-size:18px;}
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
 .stat-irr{color:#3fbf4a; font-weight:800;}
