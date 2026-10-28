@@ -127,7 +127,7 @@ const C3 = require(path.join(ROOT, 'tools', 'content3_2026_10_26.js'));
 C3.NEW.forEach(s=> ok(by[s.id], 'data: ' + s.id + ' is in cards.json'));
 { const r = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content3_2026_10_26.js'), 'check'], {encoding: 'utf8'}); ok(r.status === 0, 'data: every new card on budget and placed (content3 check): ' + (r.stdout || '').trim().split('\n').pop()); }
 const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps;
-ok(!pools.mu.cards.includes('hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr' /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one');
+ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one');
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), line = k=>{ const i = app.indexOf('{ key:"' + k + '"'); return i < 0 ? '' : app.slice(i, app.indexOf('\n', i)); };
 ok(['7-2', '7-4', '7-5', '7-6'].every(k=> !/"hollow-oath-keeper"/.test(line(k).replace(/\/\*.*?\*\//g, ''))), 'G3 ... and in no Morel Hollow deck');
 ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"sphagnum-vole"/.test(line('5-2')), 'C1 5-1 and 5-2 pay a Cure card on their first clear');

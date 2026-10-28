@@ -52,9 +52,7 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
 { const plan = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-trim-2026-10-28.js')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-apply-2026-10-28.py')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-plan-2026-10-28-keeppro.json')), '4. the script, the apply step and both plans exist');
   Object.entries(plan.lists).forEach(([k, L])=>{ const live = L.sub ? (pools[L.map].submaps || {})[L.sub] : pools[L.map].cards;
-    // 2026-10-28 (BAL7, CONTENT4-1 decided: cap the lists only, sources kept; tools/bal7_pool_cap_2026_10_28.py): the live list is the plan's
-    // keep, plus the carried cards a PRO / BPRO deck holds and Pack-only cards that would sit in no list
-    ok(live && (L.skipped ? live.length === L.before : L.keep.every(id=> live.includes(id)) && live.length <= L.before), `4. ${k}: the live pool is the plan's capped list (${live && live.length}, keep ${(L.keep || []).length}, before ${L.before})`);
+    ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });
   ok(plan.awaiting.every(a=> by[a.id] && !by[a.id].awaitingSource && by[a.id].source), '4. none of the plan\'s cards was sent to awaiting (nothing applied)');

@@ -355,10 +355,10 @@
     "lodge-engineer (showcase)",
     "riverworks-bastion (reward)",
     "poison-dart-croaker (showcase)",
-    "shallows-fry",
     "beaver-builder",
     "mayfly-dancer",
-    "minnow-skitter"
+    "minnow-skitter",
+    "shallows-fry"
    ],
    "keptOld": [
     "duckling",
@@ -368,9 +368,9 @@
    "addedOld": [],
    "trimmedNew": [
     "elder-tortoise",
-    "great-crested-grebe",
     "mangrove-mudskipper",
     "camouflage-frog",
+    "great-crested-grebe",
     "mudpuppy",
     "water-shrew",
     "ford-kingfisher",
@@ -413,8 +413,8 @@
    "afterNew": 7,
    "afterOld": 1,
    "keptNew": [
-    "leafcutter-gardener (first-clear pack)",
     "truffle-piglet (reward, showcase)",
+    "leafcutter-gardener (first-clear pack)",
     "dung-beetle (first-clear pack)",
     "wolf-spider-mother (reward)",
     "sleepless-shrew (first-clear pack)",
@@ -1396,11 +1396,11 @@
     "armadillo-guard",
     "meerkat-burrower",
     "sandstorm-roc",
-    "horned-lizard",
     "skull-vulture",
     "dune-jackal",
     "meerkat-sentry",
     "carrion-crow",
+    "horned-lizard",
     "moon-jerboa"
    ],
    "trimmedOld": [],
@@ -1568,12 +1568,12 @@
    "afterNew": 7,
    "afterOld": 2,
    "keptNew": [
-    "glacier-yak (first-clear pack, showcase)",
-    "snow-leopard (first-clear pack)",
     "pika-hoarder (reward)",
+    "glacier-yak (first-clear pack, showcase)",
     "snow-owl-sentinel (reward)",
-    "eagle-sharpshooter",
+    "snow-leopard (first-clear pack)",
     "mountain-goat-climber",
+    "eagle-sharpshooter",
     "scree-goat"
    ],
    "keptOld": [
@@ -1742,8 +1742,8 @@
    "afterNew": 7,
    "afterOld": 4,
    "keptNew": [
-    "howdah-archers (first-clear pack)",
     "badger-trench-digger (first-clear pack)",
+    "howdah-archers (first-clear pack)",
     "testudo-tortoise (reward)",
     "war-elephant (reward)",
     "balloon-archer",

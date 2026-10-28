@@ -158,8 +158,8 @@ function check(){
   const {SC, T} = budgetTools(), cs = load(), by = Object.fromEntries(cs.map(c=> [c.id, c])), doc = JSON.parse(fs.readFileSync(POOLS, 'utf8')); let bad = 0;
   for(const spec of NEW){ const c = by[spec.id]; if(!c){ console.log('missing', spec.id); bad++; continue; } if(spec.isToken) continue;
     const r = use(SC, T, c, c.attack, c.health); if(!r.ok){ console.log('over budget', spec.id, Math.round(r.u * 100) + '%'); bad++; }
-    if(spec.place && !(doc.maps[spec.place[0]].cards || []).includes(spec.id) && !(c.source && c.source.map === spec.place[0]) /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map) */){ console.log('not in pool', spec.id); bad++; } }
-  Object.entries(MOVE).forEach(([id, mv])=>{ if((doc.maps[mv.from].cards || []).includes(id) || false /* 2026-10-28 (BAL7, CONTENT4-1): the lists are capped, the source map is what places it */ || (by[id].source || {}).map !== mv.to){ console.log('not moved', id); bad++; } });
+    if(spec.place && !(doc.maps[spec.place[0]].cards || []).includes(spec.id)){ console.log('not in pool', spec.id); bad++; } }
+  Object.entries(MOVE).forEach(([id, mv])=>{ if((doc.maps[mv.from].cards || []).includes(id) || !(doc.maps[mv.to].cards || []).includes(id) || (by[id].source || {}).map !== mv.to){ console.log('not moved', id); bad++; } });
   const n = cs.map(c=> c.numericId).filter(x=> x != null), dup = n.filter((x, i)=> n.indexOf(x) !== i); if(dup.length){ console.log('duplicate numericId', dup.join(',')); bad++; }
   console.log(bad ? `${bad} problem(s)` : `ok: ${NEW.length} new cards on budget, placed or awaiting; the Oath-Keeper moved`); process.exit(bad ? 1 : 0);
 }

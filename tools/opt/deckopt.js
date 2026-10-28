@@ -155,19 +155,10 @@ function isFactionCard(gm, id) {
   if (s.kind === 'pack' && (parseInt(s.tier, 10) || 1) === 11) return true;
   const c = planOf(gm, id); return !!(c && /^faction/.test(c.bucket || ''));
 }
-const _ownPack = new Map();
-function ownPackCards(gm, mapId) { // the basic-pack cards whose source names this map (not the faction packs, tier 11, nor the Mystery Booster, 99)
-  if (_ownPack.has(mapId)) return _ownPack.get(mapId);
-  const out = Object.keys(gm.D).filter(id => { const s = (gm.D[id] || {}).source || {}; const t = parseInt(s.tier, 10) || 1; return s.kind === 'pack' && s.map === mapId && t !== 11 && t !== 99; }).sort();
-  _ownPack.set(mapId, out); return out; }
 function mapTruePools(gm, map, opt, mode) {
   const G = gm.G, side = !!map.sub, mapNo = side ? (G.mapUnlockNumberOf ? G.mapUnlockNumberOf(map.id) : G.mapNumberOf(map.id)) : G.mapNumberOf(map.id);
   const pe = gm.pools[side ? map.parent : map.id] || { cards: [], submaps: {}, special: [] }, subOwn = side ? (pe.submaps || {})[map.id] : null;
-  const e0 = side ? { cards: (pe.cards || []).concat(Array.isArray(subOwn) ? subOwn : (subOwn && subOwn.cards) || []), special: pe.special || [], submaps: {} } : pe;
-  // BAL7 (2026-10-28, CONTENT4-1: "cap the pools only: a trimmed pack card stays in its pack and keeps its map"): a map's own cards are its
-  // lists plus its own basic-pack cards (source pack, map = this map, or the parent for a side map), so a card the cap took off a list is still
-  // the map's own (BPRO) and still held from that map on (map-true)
-  const e = Object.assign({}, e0, { cards: uniq((e0.cards || []).concat(ownPackCards(gm, side ? map.parent : map.id), side ? ownPackCards(gm, map.id) : [])) });
+  const e = side ? { cards: (pe.cards || []).concat(Array.isArray(subOwn) ? subOwn : (subOwn && subOwn.cards) || []), special: pe.special || [], submaps: {} } : pe;
   const cap = mapRarityCap(gm, map, opt.rarityCap), capStep = G.roadRarityStep(cap), capOk = id => G.roadRarityStep(gm.D[id].rarity) <= capStep;
   const noFaction = !(opt && opt.faction), ok = id => deckable(gm, id);
   const own = uniq((e.cards || []).concat(e.special || [], ...fightsOf(map).map(n => Object.keys(n.deck)))).filter(ok).sort(), ownSet = new Set(own);
@@ -175,7 +166,7 @@ function mapTruePools(gm, map, opt, mode) {
   const subCards = uniq([].concat(...subsOpen.map(id => { const l = (e.submaps || {})[id]; return Array.isArray(l) ? l : (l && l.cards) || []; }))).filter(ok);
   // owned by then: the plan's (Base from the start, the rest after their advancement map), and the MAP tier of every earlier main map (its
   // pack cards and rewards; HUB3's plan predates some of them, e.g. the Tomcat, Fox Kit and Beetle Grunt of Map 0), each obtainable by now
-  const earlier = {}; G.CONQUEST_MAPS.filter(m => !m.sub && !m.reserved && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) < mapNo).forEach(m => uniq(((gm.pools[m.id] || {}).cards || []).concat(ownPackCards(gm, m.id))).forEach(id => { const n = G.mapNumberOf(m.id); if (earlier[id] == null || n < earlier[id]) earlier[id] = n; }));
+  const earlier = {}; G.CONQUEST_MAPS.filter(m => !m.sub && !m.reserved && G.mapNumberOf(m.id) != null && G.mapNumberOf(m.id) < mapNo).forEach(m => ((gm.pools[m.id] || {}).cards || []).forEach(id => { const n = G.mapNumberOf(m.id); if (earlier[id] == null || n < earlier[id]) earlier[id] = n; }));
   const ownedPlan = uniq(gm.plan.cards.filter(c => OWNED_ALWAYS.has(c.bucket) || (c.adv != null && c.adv < mapNo && !OWNED_SKIP.has(c.bucket))).map(c => c.id).concat(Object.keys(earlier))).filter(ok);
   const rule = id => {
     const d = gm.D[id]; if (!d || !ok(id)) return 'cannot be in a deck';
@@ -992,5 +983,5 @@ async function main(argv) {
 }
 // 2026-10-24 (package PRO): + mineFor and playOne, for tools/opt/pro_skirmishes.js's head-to-head under a PRO fight's field
 // 2026-10-24 (package PRO2): + mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES
-if (typeof module !== 'undefined') module.exports = { ownPackCards, mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
+if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
 if (isMainThread && (require.main === module || SEA)) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

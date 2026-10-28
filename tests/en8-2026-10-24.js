@@ -166,7 +166,7 @@ for(const lv of [0, 1, 2]){
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   const om = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps, pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8')).maps;
   const C = require(path.join(ROOT, 'tools', 'en8_cards_2026_10_24.js'));
-  C.NEW.forEach(s=>{ const c = by[s.id]; ok(c && !c.faction && c.source && c.source.map === s.place[0] /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, `${s.id}: placed in ${s.place[0]}'s pool, no faction`); });
+  C.NEW.forEach(s=>{ const c = by[s.id]; ok(c && !c.faction && (pools[s.place[0]].cards || []).includes(s.id) && c.source && c.source.map === s.place[0], `${s.id}: placed in ${s.place[0]}'s pool, no faction`); });
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
   skills.forEach(k=> ok(cards.some(c=> c.effects && c.effects[k] && !c.pool && !c.awaitingSource), `a placed card carries ${k}`));
   ok(by['oyster-bank'].effects.pearlBed && by['giant-clam'].effects.pearlBed, 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls');

@@ -73,7 +73,8 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
   if(pool) ok(pool.includes('owl-nightwatch'), `M2 the Owl Nightwatch is in the Card check pool to Map 24 (${pool.length} cards)`); }
 
 // ---- M3: no card with a source carries the stale unattainable flag ------------------------------------------------------------------------
-{ const cards = J('canonical/cards.json'), stale = cards.filter(c=> c.unattainable && c.source && c.source.kind && !c.awaitingSource && !(c.source.kind === 'pack' && !c.source.map && ![11, 99].includes(+c.source.tier))); // a Pack-only card with no map is not placed: it keeps the flag
+{ const cards = J('canonical/cards.json'), listed = new Set(); Object.values(J('canonical/map-pools.json').maps).forEach(e=> e.cards.concat(e.special || [], ...Object.values(e.submaps || {})).forEach(id=> listed.add(id)));
+  const stale = cards.filter(c=> c.unattainable && c.source && c.source.kind && !c.awaitingSource && !(c.source.kind === 'pack' && ![11, 99].includes(+c.source.tier) && !(c.source.map && listed.has(c.id)))); // a basic-pack card with no map or in no map list is not placed: it keeps the flag
   ok(stale.length === 0, `M3 no card with a source is flagged unattainable (${stale.length})`); }
 
 // ---- K14: skirmish decks, non-map-unique cards at most 1 copy each and 6 in all ---------------------------------------------------------
@@ -84,11 +85,9 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
   const lead = plan.rows.filter(r=> r.changed).filter(r=>{ const f = F.find(x=> x.key === r.key); let L = []; try{ L = G.skirmishLeadersOf(f.n, f.map) || []; }catch(e){} return L.some(id=> r.before[id] && !r.after[id]); });
   ok(!lead.length, `K14 no fight lost its leader (${lead.map(r=> r.key).join(' ')})`); }
 
-// ---- CONTENT4-1: capped map lists, no card lost its source ------------------------------------------------------------------------------
-{ const now = J('canonical/cards.json'), base = J('docs/balance/content4-map-pools-plan-2026-10-28.json');
-  ok(!base.awaiting.some(a=>{ const c = now.find(x=> x.id === a.id); return !c || !c.source || c.awaitingSource; }), `CONTENT4-1 none of the ${base.awaiting.length} cards the strict plan would strand lost its source`);
-  const pools = J('canonical/map-pools.json').maps, len = Object.values(pools).reduce((a, e)=> a + e.cards.length + Object.values(e.submaps || {}).reduce((s, l)=> s + l.length, 0), 0);
-  ok(len < base.summary.cardsBefore, `CONTENT4-1 the lists are capped (${base.summary.cardsBefore} -> ${len} entries)`); }
+// ---- CONTENT4-1 is NOT applied (coordinator, 2026-10-28: the owner decides after HUB9's view): the map lists are as CONTENT4 left them ----
+{ const base = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, len = Object.values(pools).reduce((a, e)=> a + e.cards.length + Object.values(e.submaps || {}).reduce((s, l)=> s + l.length, 0), 0);
+  ok(len === base.summary.cardsBefore, `CONTENT4-1 the map lists are not capped (${len} entries, the plan's before ${base.summary.cardsBefore})`); }
 
 console.log(`\nbal7: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

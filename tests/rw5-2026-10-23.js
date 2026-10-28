@@ -43,10 +43,7 @@ ok(!byId['greyplume-fledgling'].source && byId['greyplume-fledgling'].awaitingSo
 ok(byId['ember-tetra'] && !byId['ember-tetra-3caj'] && /'ember-tetra-3caj': 'ember-tetra'/.test(app), '1. ember-tetra-3caj is ember-tetra (the live row skipped: CARD_ID_RENAMED)');
 ok(fs.existsSync(path.join(ROOT, 'supabase/proposed/20261023_rw5_clear_ember_tetra.sql')), '1. the clearing SQL is proposed, not applied');
 const inSomePool = new Set(); Object.values(pools).forEach(e=>{ (e.cards || []).concat(e.special || [], ...Object.values(e.submaps || {})).forEach(id=> inSomePool.add(id)); });
-// 2026-10-28 (BAL7, M3): the stale unattainable flag was cleared from every card with a source, which made some Pack-only cards (no map in
-// their source, in no list) count as live here; they are reported (BAL7's report), not failed: the packs deal them by tier
-const mapless = basic.filter(c=> !inSomePool.has(c.id) && !(c.source && c.source.map)); if(mapless.length) console.log('  (BAL7 M3) Pack-only cards with no map and no list: ' + mapless.map(c=> c.id).join(', '));
-const notInPool = basic.filter(c=> !inSomePool.has(c.id) && (c.source && c.source.map) && false); /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */
+const notInPool = basic.filter(c=> !inSomePool.has(c.id));
 ok(!notInPool.length, '1. every live pack card is in a map pool: ' + notInPool.slice(0, 5).map(c=> c.id + '@' + c.source.map).join(', '));
 const PP = JSON.parse(rd('docs/balance/progression-plan-2026-10-23.json'));
 const fixed = PP.mistakes.filter(m=> m.fixed).length, open = PP.mistakes.filter(m=> !m.fixed).map(m=> m.what.slice(0, 50));

@@ -31,7 +31,7 @@ for(const s of C2.NEW){ const c = by[s.id];
   ok(!c.art, `${s.id}: placeholder art (its emoji ${c.icon})`);
   if(s.place){ const [map, tier] = s.place;
     ok(c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource, `${s.id}: a Pack ${tier} card of ${map}`);
-    ok(pools[map].cards.includes(s.id) || c.source.map === map /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, `${s.id}: in ${map}'s pool`); }
+    ok(pools[map].cards.includes(s.id), `${s.id}: in ${map}'s pool`); }
   else ok(c.awaitingSource && !c.source && /proposed:/.test(c.creatorNote), `${s.id}: awaiting a source, with a proposed one`); }
 const gnawed = ['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch'], tide = ['kelpborn-otter', 'conger-eel', 'selkie-wavebinder'];
 gnawed.forEach(id=> ok(utBy[id] && utBy[id].faction === 'gnawed', `${id} is one of the Gnawed (unit themes: ${utBy[id] && utBy[id].faction})`));
@@ -44,9 +44,9 @@ const pays = (c, res)=>{ const e = c.effects || {}; return (res === 'lumber' && 
 ['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'redwood-woodpecker', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
   .forEach(id=> ok(pays(by[id], 'lumber'), `${id} gathers Lumber`));
 ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> by[id].effects.triggers[0].amount)).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
-Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(by[id].source.map === map && by[id].source.tier === tier /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, `${id}: placed in ${map}'s pool`));
+Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: placed in ${map}'s pool`));
 ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two Stone gatherers');
-ok(by['badger-stonemason'].effects.quarry === 1 && by['badger-stonemason'].source.map === 'm4' && by['gravel-mole'].source.map === 'm4' /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, 'the converter (Quarry 1) and a Stone gatherer on the Stone map (Caves & Alcoves)');
+ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badger-stonemason') && pools.m4.cards.includes('gravel-mole'), 'the converter (Quarry 1) and a Stone gatherer on the Stone map (Caves & Alcoves)');
 { const H = require('./lib/harness.js'), E = H.Engine, defs = H.loadCardDefs();
   const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
   const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(7), {recordEvents: true, battleMode: 'open'}); return {e, P: {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
@@ -60,14 +60,14 @@ ok(by['badger-stonemason'].effects.quarry === 1 && by['badger-stonemason'].sourc
 const src = R('arena_app.js');
 const deckOf = key=>{ const m = src.match(new RegExp(`key:"${key}"[^\\n]*?deck:(\\{[^}]*\\})`)); return m ? JSON.parse(m[1]) : null; };
 const d21 = deckOf('2-1'), d22 = deckOf('2-2'), d23 = deckOf('2-3'), d31 = deckOf('3-1'), d33 = deckOf('3-3'), d51 = deckOf('5-1');
-ok(d21 && d21['rock-pool-starfish'] >= 1 && (pools.mb.cards.includes('rock-pool-starfish') || by['rock-pool-starfish'].source.map === 'mb'), 'N21-1: the Rock Pool Starfish fights in Rock Pool Raiders (2-1) and sits in the beach pool');
+ok(d21 && d21['rock-pool-starfish'] >= 1 && pools.mb.cards.includes('rock-pool-starfish'), 'N21-1: the Rock Pool Starfish fights in Rock Pool Raiders (2-1) and sits in the beach pool');
 ok(d22 && d22.oystercatcher >= 1 && d22['gull-thief'] >= 1, 'Gull Gang (2-2) has its two shore birds');
 ok(d23 && d23['driftwood-crab'] >= 1, 'Hermit Row (2-3) fields the Driftwood Crab');
 ok(d31 && d31['gannet-nestweaver'] && !d31['hawk-arrowkeeper'] && d33 && d33['gannet-nestweaver'] && !d33['hawk-arrowkeeper'], 'N21-2: Gannet Nestweavers for the Hawk Arrowkeepers in 3-1 and 3-3');
 ok(d51 && d51['bog-leech'] >= 1 && !d51['venomlord-serpent'] && pools.mw.special.includes('bog-leech'), 'the Leech Pools (5-1) have leeches; Bog Leech is on Map 5\'s Special list');
 const MAXC = {common: 5, uncommon: 4, rare: 3, veryrare: 2};
 for(const [k, d] of Object.entries({'2-1': d21, '2-2': d22, '2-3': d23, '3-1': d31, '3-3': d33, '5-1': d51})){ if(!d) continue;
-  const ids = Object.keys(d), mapId = {'2': 'mb', '3': 'mc', '5': 'mw'}[k[0]], pool = new Set([...pools[mapId].cards, ...pools[mapId].special, ...cards.filter(x=> x.source && x.source.kind === 'pack' && x.source.map === mapId).map(x=> x.id)]); /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */
+  const ids = Object.keys(d), mapId = {'2': 'mb', '3': 'mc', '5': 'mw'}[k[0]], pool = new Set([...pools[mapId].cards, ...pools[mapId].special]);
   ok(ids.length >= 5 && ids.length <= 7, `${k}: 5-7 different cards (${ids.length})`);
   ok(ids.every(id=> d[id] <= (MAXC[by[id].rarity] || 1)), `${k}: inside the copy ladder`);
   ok(ids.every(id=> ['common', 'uncommon', 'starter'].includes(by[id].rarity)), `${k}: Common / Uncommon only (Maps 2-5 skirmishes)`);

@@ -3,7 +3,7 @@
  "label": "Pool reference",
  "note": "Package BAL6 (K17, owner 10-27 11:22): per map, the deck optimizer's best deck from the cards a player holds arriving there (starter + earlier maps' first-clear cards + faction rewards + 5 random pack Commons a map; docs/balance/ref/ref-pool-pools.json), at the Map reference's level (referencePlayerLevel). A per-map set (\"decks\", not \"counts\"): the tools play it; tools/opt/ref_decks.js does not bake it into the game.",
  "level": "referencePlayerLevel",
- "tag": "2026-10-27-bal6-refpool",
+ "tag": "2026-10-28-bal7-refpool",
  "decks": {
   "0": {
    "bee-forager": 5,
@@ -144,190 +144,155 @@
    "tunnel-ant": 3
   },
   "13": {
-   "booming-bittern": 1,
-   "box-turtle": 1,
-   "burrow-rabbit": 4,
-   "dung-beetle": 4,
-   "otter-flag-bearer": 2,
-   "riverwing-envoy": 4,
-   "soldier-ant": 4
+   "adder-ambusher": 3,
+   "alpine-marmot": 5,
+   "echo-screecher": 1,
+   "golden-eagle-diver": 1,
+   "great-barracuda": 2,
+   "hedgehog-scout": 2,
+   "ibex-rockcaller": 2,
+   "otter-centurion": 3,
+   "pond-duck": 1
   },
   "14": {
-   "alpine-marmot": 1,
-   "bee-forager": 4,
-   "cave-olm": 1,
-   "clownfish-scout": 2,
-   "coral-reef-shark": 1,
-   "crossed-eyes": 1,
-   "dormouse": 1,
-   "dung-beetle": 1,
-   "hedge-weasel": 1,
+   "alpine-marmot": 5,
+   "burrow-rabbit": 1,
+   "cunning-vixen": 1,
+   "eagle-owl-quartermaster": 3,
+   "electric-ray": 1,
+   "hedgehog-scout": 3,
    "ibex-rockcaller": 2,
-   "mangrove-manatee": 1,
-   "otter-ferryman": 1,
-   "raft-spider": 1,
-   "snapper-hatchling": 1,
-   "tunnel-ant": 1
+   "meadow-frog": 1,
+   "otter-centurion": 1,
+   "shimmerwing-stag": 2
   },
   "15": {
-   "crimson-wing-recruit": 5,
-   "dung-beetle": 4,
+   "adder-ambusher": 1,
+   "alpine-marmot": 1,
+   "beaver-builder": 1,
+   "eagle-owl-quartermaster": 3,
    "fawn-scout": 3,
-   "hoopoe-herald": 1,
-   "pike-lancer": 1,
-   "soldier-ant": 1,
-   "star-nosed-mole": 5
+   "fox-warchief": 1,
+   "otter-centurion": 3,
+   "otter-netmender": 1,
+   "river-carp": 1,
+   "savanna-cheetah": 2,
+   "sparrow-chick": 1,
+   "wolf-spider-mother": 2
   },
   "16": {
-   "bee-forager": 1,
-   "box-turtle": 1,
-   "dung-beetle": 5,
-   "fox-warchief": 1,
-   "grave-grin-hyena": 1,
-   "meerkat-wayfarer": 1,
-   "mountain-hare": 1,
+   "alpine-marmot": 3,
+   "chipmunk-hoarder": 1,
+   "electric-ray": 4,
+   "fawn-scout": 3,
+   "ibex-rockcaller": 2,
    "otter-centurion": 3,
-   "quillguard": 1,
-   "rivergate-recruit": 1,
-   "sheep": 1,
-   "soldier-ant": 1,
-   "stoat-cutthroat": 1,
-   "wolf-spider-mother": 1
+   "paper-wasp": 1,
+   "rabbit-kit": 1,
+   "wolf-spider-mother": 2
   },
   "17": {
-   "acorn-chipmunk": 1,
-   "beaver-builder": 1,
-   "berserker-boar": 1,
-   "coral-polyp-colony": 1,
-   "dung-beetle": 5,
-   "eagle-owl-quartermaster": 1,
-   "fox-warchief": 1,
-   "grey-seal-bull": 1,
+   "alpine-marmot": 5,
+   "cottontail": 2,
+   "dung-beetle": 1,
+   "electric-ray": 3,
+   "eyrie-warden": 1,
+   "ibex-rockcaller": 2,
    "otter-centurion": 3,
-   "riverside-peddler": 1,
-   "riverwing-envoy": 1,
-   "soldier-ant": 1,
-   "terrier-pup": 1,
-   "truffle-piglet": 1
+   "prospector-mole": 1,
+   "snapper-hatchling": 1,
+   "taiga-lynx": 1
   },
   "18": {
-   "border-collie": 1,
-   "conch-crawler": 1,
-   "dung-beetle": 1,
-   "echo-screecher": 1,
-   "forager-ant": 1,
-   "grass-viper": 1,
-   "grey-seal-bull": 1,
-   "harbor-seal": 1,
-   "house-cat": 1,
-   "ibex-rockcaller": 1,
-   "kraken-spawnling": 1,
-   "ladybird-guard": 1,
-   "mountain-hare": 1,
-   "mudpuppy": 1,
-   "otter-shieldback": 2,
-   "paper-wasp": 1,
-   "peak-condor": 1,
-   "snow-bunting-archer": 1,
+   "adder-ambusher": 3,
+   "booming-bittern": 2,
+   "conch-herald": 1,
+   "echo-screecher": 3,
+   "electric-ray": 4,
+   "golden-eagle-diver": 1,
+   "ibex-rockcaller": 2,
+   "otter-centurion": 3,
    "spitting-cobra": 1
   },
   "19": {
-   "adder-ambusher": 1,
-   "alligator-gar": 1,
-   "birdlime-dauber": 1,
-   "briarback-hedgehog": 1,
-   "crossed-eyes": 1,
-   "dung-beetle": 1,
-   "frost-thistle-lynx": 1,
-   "giant-clam": 1,
-   "grave-grin-hyena": 1,
-   "hedge-changeling": 1,
-   "honey-badger-fury": 1,
-   "nutria-reedcutter": 1,
-   "obsidian-scorpion": 1,
-   "peregrine-stooper": 1,
-   "taiga-lynx": 1,
-   "tunnel-ant": 1,
-   "venomlord-serpent": 1,
-   "walrus-icebreaker": 2,
-   "weaver-bird": 1
+   "adder-ambusher": 3,
+   "cave-centipede": 2,
+   "colossal-squid": 1,
+   "echo-screecher": 2,
+   "harvest-mouse": 1,
+   "ibex-rockcaller": 2,
+   "otter-centurion": 3,
+   "quillguard": 1,
+   "savanna-cheetah": 1,
+   "shellwright-apprentice": 1,
+   "talon-archer": 2,
+   "walrus-icebreaker": 1
   },
   "20": {
-   "alpine-marmot": 1,
-   "birdlime-dauber": 1,
-   "cinder-stoker": 1,
-   "colossal-squid": 1,
-   "coral-reef-shark": 1,
-   "dung-beetle": 4,
+   "eagle-owl-quartermaster": 1,
+   "echidna-quillshot": 2,
    "fire-salamander": 1,
-   "giant-cave-huntsman": 1,
-   "guppy": 1,
-   "harvest-mouse": 1,
-   "hawk-arrowkeeper": 1,
-   "honey-badger-fury": 1,
-   "ibex-rockcaller": 1,
-   "otter-kit": 1,
-   "signal-crayfish": 2,
-   "stone-turtle-warden": 1
+   "giant-clam": 1,
+   "ibex-rockcaller": 2,
+   "obsidian-scorpion": 3,
+   "otter-centurion": 3,
+   "polar-bear": 1,
+   "raft-spider": 1,
+   "taiga-lynx": 1,
+   "talon-archer": 2,
+   "timber-wolf-pack": 1,
+   "walrus-icebreaker": 1
   },
   "21": {
-   "chipmunk-forager": 1,
-   "coral-polyp-colony": 1,
-   "crocodile-ambusher": 1,
-   "dung-beetle": 2,
-   "glasswing-moth": 1,
-   "hedge-changeling": 1,
-   "hedgehog-scout": 2,
-   "honey-bee": 1,
-   "mangrove-manatee": 1,
-   "muskrat-lodgekeeper": 1,
-   "ossuary-lammergeier": 1,
-   "otter-centurion": 1,
-   "paper-wasp": 1,
-   "peak-condor": 1,
-   "spitting-cobra": 1,
-   "stoat-cutthroat": 1,
+   "acorn-chipmunk": 1,
+   "alpine-marmot": 3,
+   "box-turtle": 1,
+   "briarback-hedgehog": 1,
+   "cave-olm": 1,
+   "dhole-matriarch": 1,
+   "echidna-quillshot": 1,
+   "giant-cave-huntsman": 1,
+   "newt-doctor": 1,
+   "obsidian-scorpion": 2,
+   "otter-centurion": 3,
    "taiga-lynx": 1,
-   "talon-archer": 1
+   "wolf-spider-mother": 3
   },
   "22": {
-   "fawn-scout": 3,
-   "hollow-oath-keeper": 1,
-   "hoopoe-herald": 5,
-   "pika-hoarder": 5,
-   "star-nosed-mole": 5,
-   "tidepool-trapper-crab": 1
+   "alpine-marmot": 3,
+   "echidna-quillshot": 2,
+   "gannet-nestweaver": 2,
+   "ibex-rockcaller": 1,
+   "obsidian-scorpion": 3,
+   "otter-centurion": 3,
+   "paper-wasp": 1,
+   "walrus-icebreaker": 2,
+   "wolf-spider-mother": 3
   },
   "23": {
-   "banded-sea-krait": 1,
-   "cinder-skeleton": 1,
-   "coral-polyp-colony": 1,
-   "cottontail": 2,
-   "dormouse": 1,
-   "dust-devil-kestrel": 1,
-   "gannet-nestweaver": 1,
-   "nutria-reedcutter": 1,
-   "otter-guard": 1,
-   "pike-lancer": 1,
-   "puffin-diver": 1,
-   "savanna-cheetah": 2,
-   "shellwright-apprentice": 1,
-   "spitting-cobra": 2,
-   "stone-turtle-warden": 1,
-   "thorny-devil": 1,
-   "woodland-brawler": 1
+   "alpine-marmot": 4,
+   "chamois-leaper": 1,
+   "fawn-scout": 1,
+   "helmeted-otter": 1,
+   "ibex-rockcaller": 1,
+   "obsidian-scorpion": 2,
+   "otter-centurion": 3,
+   "pond-duck": 1,
+   "savanna-cheetah": 1,
+   "stoat-cutthroat": 1,
+   "weaver-bird": 1,
+   "wolf-spider-mother": 3
   },
   "24": {
-   "bramble-sprout": 1,
-   "fawn-scout": 2,
-   "hollow-oath-keeper": 1,
-   "hoopoe-herald": 2,
+   "burrow-rabbit": 5,
+   "carrion-crow": 1,
+   "fawn-scout": 3,
+   "hedge-changeling": 1,
+   "mouse-sapper": 1,
    "otter-centurion": 3,
-   "pika-hoarder": 5,
-   "snow-ermine": 1,
-   "taiga-lynx": 2,
+   "savanna-cheetah": 2,
    "ur-elk": 2,
-   "war-elephant": 1
+   "walrus-icebreaker": 2
   }
  },
  "runs": {
@@ -475,136 +440,136 @@
    "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
   },
   "13": {
-   "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-bal6-refpool.json",
-   "score": 0.644,
+   "file": "docs/balance/opt/deckopt-map13-mr-2026-10-28-bal7-refpool.json",
+   "score": 0.809,
    "ci": [
-    0.619,
-    0.669
+    0.788,
+    0.83
    ],
    "level": 3,
    "pool": 175,
-   "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "14": {
-   "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-bal6-refpool.json",
-   "score": 0.57,
+   "file": "docs/balance/opt/deckopt-map14-m5-2026-10-28-bal7-refpool.json",
+   "score": 0.791,
    "ci": [
-    0.546,
-    0.595
+    0.772,
+    0.81
    ],
    "level": 3,
    "pool": 183,
-   "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "15": {
-   "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-bal6-refpool.json",
-   "score": 0.63,
+   "file": "docs/balance/opt/deckopt-map15-ml-2026-10-28-bal7-refpool.json",
+   "score": 0.883,
    "ci": [
-    0.603,
-    0.657
+    0.865,
+    0.901
    ],
    "level": 3,
    "pool": 193,
-   "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "16": {
-   "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-bal6-refpool.json",
-   "score": 0.801,
+   "file": "docs/balance/opt/deckopt-map16-mt-2026-10-28-bal7-refpool.json",
+   "score": 0.87,
    "ci": [
-    0.779,
-    0.823
+    0.852,
+    0.888
    ],
    "level": 3.18,
    "pool": 204,
-   "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "17": {
-   "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-bal6-refpool.json",
-   "score": 0.641,
+   "file": "docs/balance/opt/deckopt-map17-m6-2026-10-28-bal7-refpool.json",
+   "score": 0.605,
    "ci": [
-    0.615,
-    0.666
+    0.581,
+    0.628
    ],
    "level": 3.36,
    "pool": 213,
-   "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "18": {
-   "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-bal6-refpool.json",
-   "score": 0.551,
+   "file": "docs/balance/opt/deckopt-map18-md-2026-10-28-bal7-refpool.json",
+   "score": 0.784,
    "ci": [
-    0.523,
-    0.578
+    0.763,
+    0.806
    ],
    "level": 3.54,
    "pool": 223,
-   "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "19": {
-   "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-bal6-refpool.json",
-   "score": 0.622,
+   "file": "docs/balance/opt/deckopt-map19-m3-2026-10-28-bal7-refpool.json",
+   "score": 0.823,
    "ci": [
-    0.597,
-    0.646
+    0.804,
+    0.842
    ],
    "level": 3.72,
    "pool": 233,
-   "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "20": {
-   "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-bal6-refpool.json",
-   "score": 0.705,
+   "file": "docs/balance/opt/deckopt-map20-m11-2026-10-28-bal7-refpool.json",
+   "score": 0.839,
    "ci": [
-    0.684,
-    0.727
+    0.823,
+    0.855
    ],
    "level": 3.9,
    "pool": 240,
-   "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "21": {
-   "file": "docs/balance/opt/deckopt-map21-m21-2026-10-27-bal6-refpool.json",
-   "score": 0.827,
+   "file": "docs/balance/opt/deckopt-map21-m21-2026-10-28-bal7-refpool.json",
+   "score": 0.928,
    "ci": [
-    0.805,
-    0.85
+    0.914,
+    0.942
    ],
    "level": 4.08,
    "pool": 250,
-   "reproduce": "node tools/opt/deckopt.js --map m21 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m21 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "22": {
-   "file": "docs/balance/opt/deckopt-map22-m22-2026-10-27-bal6-refpool.json",
-   "score": 0.521,
+   "file": "docs/balance/opt/deckopt-map22-m22-2026-10-28-bal7-refpool.json",
+   "score": 0.816,
    "ci": [
-    0.494,
-    0.548
+    0.795,
+    0.836
    ],
    "level": 4.26,
    "pool": 258,
-   "reproduce": "node tools/opt/deckopt.js --map m22 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m22 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "23": {
-   "file": "docs/balance/opt/deckopt-map23-m23-2026-10-27-bal6-refpool.json",
-   "score": 0.697,
+   "file": "docs/balance/opt/deckopt-map23-m23-2026-10-28-bal7-refpool.json",
+   "score": 0.798,
    "ci": [
-    0.672,
-    0.722
+    0.777,
+    0.819
    ],
    "level": 4.44,
    "pool": 266,
-   "reproduce": "node tools/opt/deckopt.js --map m23 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m23 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   },
   "24": {
-   "file": "docs/balance/opt/deckopt-map24-m24-2026-10-27-bal6-refpool.json",
-   "score": 0.836,
+   "file": "docs/balance/opt/deckopt-map24-m24-2026-10-28-bal7-refpool.json",
+   "score": 0.855,
    "ci": [
-    0.815,
-    0.856
+    0.837,
+    0.874
    ],
    "level": 4.62,
    "pool": 275,
-   "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool"
+   "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 32000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool --seed-ref"
   }
  }
 }

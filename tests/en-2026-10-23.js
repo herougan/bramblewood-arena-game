@@ -134,7 +134,7 @@ ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform &
 { const m = byId.get('coffer-mimic');
   ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
-  ok(pools.maps.m4.cards.includes('coffer-mimic') || byId.get('coffer-mimic').source.map === 'm4' /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, 'the Coffer Mimic is in Map 8\'s pool (the caves)');
+  ok(pools.maps.m4.cards.includes('coffer-mimic'), 'the Coffer Mimic is in Map 8\'s pool (the caves)');
   ok(cards.filter(c=> c.numericId === m.numericId).length === 1, 'its numericId is unique'); }
 ok(byId.get('terraumbra').mechanicLine === 'evolution' && byId.get('terraumbra').cardType === 'equipment', 'EV-1: the Terraumbra is the Evomax equipment');
 
