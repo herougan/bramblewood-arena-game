@@ -245,7 +245,10 @@ function raidPoolMax(boss){ return (boss.hqHp||200) * RAID.POOL_MULT; }
 // castle HP. Returns the castle damage the raider dealt.
 function simulateRaidFight(Engine, defs, boss, deck, castleHp, seed){
   const rnd = mulberry32(seed);
-  const engine = Engine.makeSimEngine(defs, rnd, {recordEvents:false, suddenDeathCastles:false});
+  // 2026-10-28 (RELFIX2): the engine writes the cards a fight derives (deriveDef's '~dv', Evolve's '~evo') into the card list it is
+  // given; a stand-in fight on the shared list left them there, so the next week's seeded ghosts drew from a different list and the raid
+  // state changed between two reads (async-raid). Each simulated fight gets its own shallow copy.
+  const engine = Engine.makeSimEngine(Object.assign({}, defs), rnd, {recordEvents:false, suddenDeathCastles:false});
   const sideOf = id=> id===1 ? 'A' : 'B';
   const players = {1: engine.newPlayer(1, deck), 2: engine.newPlayer(2, boss.deck, {id:'raid-'+boss.id, name:boss.name, health:castleHp, effects:{}})};
   const stats = {};
