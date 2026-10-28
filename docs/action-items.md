@@ -20,6 +20,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 | Q11 | WORLD1 | "Dinosaur maps (im not sure when, but also definitely 30+)". |
 | Q12 | ENG (proposal) | "Anadromous - ? Suggest something for this skill" (proposal sent 00:1x; becomes ANAD-1 in decisions). |
 | Q13 | done | A2: chance of passing written into the decision. |
+| Q14 | REVIEW1 (UI, after FLAIR1) + THEME3 (data) | 00:13: "in the game, in the map cards gallery, also show what you would have cut. So an additional section: "Cut cards". The main section should show the main card proposal(s). I can then let you know to reject a cut-card or cut one of the chosen cards. Then you can also propose 'maybe's in a 3rd section. These are cards you think would be good, based on the 700 other cards, but did not choose." THEME3 writes the review data (chosen / cut / maybe per map list, each with a one-line reason); REVIEW1 shows the three sections in the 🃏 Map cards overlay. |
 
 ## 10-28 23:35: the owner's notes (with a raid screenshot)
 | # | Package | Note |
