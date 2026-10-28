@@ -1,0 +1,1891 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.3.0 (2026-10-27, BAL6: --mode ref-pool)",
+ "generated": "2026-10-28T02:51:30.239Z",
+ "map": {
+  "id": "mt",
+  "num": 16,
+  "name": "The Pinewood Taiga"
+ },
+ "level": 3.18,
+ "settings": {
+  "mode": "ref-pool",
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "bramble",
+  "budget": 16000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode ref-pool",
+ "pools": {
+  "mode": "ref-pool",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 204,
+  "mapCards": [],
+  "owned": [
+   "acacia-giraffe",
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alligator-gar",
+   "alpine-marmot",
+   "ant-scout",
+   "badger-lumberjack",
+   "banded-sea-krait",
+   "beachcomber-sanderling",
+   "beaver-builder",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "berserker-boar",
+   "birdlime-dauber",
+   "blind-cave-fish",
+   "booming-bittern",
+   "border-collie",
+   "box-turtle",
+   "bramble-hoglet",
+   "bramble-sprout",
+   "briarback-hedgehog",
+   "buck-brawler",
+   "burrow-rabbit",
+   "camouflage-frog",
+   "cataphract-destrier",
+   "cave-centipede",
+   "cave-olm",
+   "chamois-leaper",
+   "chipmunk-cavalry",
+   "chipmunk-forager",
+   "chipmunk-hoarder",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "clownfish-scout",
+   "cobalt-talon-fledgling",
+   "colossal-squid",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "constrictor-coil",
+   "coral-polyp-colony",
+   "coral-reef-shark",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "cunning-vixen",
+   "cypress-root-lurker",
+   "dam-wall",
+   "dormouse",
+   "driftwood-crab",
+   "duck-paddler",
+   "duckling",
+   "dung-beetle",
+   "eagle-owl-quartermaster",
+   "earthworm",
+   "echo-screecher",
+   "elder-tortoise",
+   "electric-ray",
+   "eyrie-warden",
+   "fawn-scout",
+   "fen-mink",
+   "ferry-toll-frog",
+   "fiddler-crab-swarm",
+   "field-mouse",
+   "field-vole",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "fox-kit",
+   "fox-warchief",
+   "garden-snail",
+   "giant-cave-huntsman",
+   "giant-clam",
+   "glacier-wolf-pack",
+   "golden-eagle-diver",
+   "grass-viper",
+   "grave-grin-hyena",
+   "great-barracuda",
+   "great-crested-grebe",
+   "grey-seal-bull",
+   "greyplume-fledgling",
+   "guppy",
+   "hammerhead-shark",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hedge-weasel",
+   "hedgehog-scout",
+   "helmeted-otter",
+   "honey-bee",
+   "hoopoe-herald",
+   "horseshoe-crab",
+   "house-cat",
+   "ibex-rockcaller",
+   "kittiwake-flock",
+   "kraken-spawnling",
+   "ladybird-guard",
+   "leafcutter-gardener",
+   "magma-titan",
+   "mangrove-kingfisher",
+   "mangrove-manatee",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "marsh-gas-toad",
+   "marsh-mallow-hare",
+   "marsh-wisp",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "minnow-skitter",
+   "mire-witch-heron",
+   "mist-net-otter",
+   "mosswing-laborer",
+   "mountain-hare",
+   "mouse-sapper",
+   "mudpuppy",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "narwhal-lancer",
+   "net-thrower",
+   "newt-doctor",
+   "nightshade-moth",
+   "nutria-reedcutter",
+   "old-sturgeon",
+   "otter-angler",
+   "otter-centurion",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-guard",
+   "otter-kit",
+   "otter-netmender",
+   "otter-paddler",
+   "otter-riverguard",
+   "otter-shieldback",
+   "owl-sentinel",
+   "pack-wolf-reaver",
+   "paper-wasp",
+   "parrotfish",
+   "peak-condor",
+   "peregrine-stooper",
+   "phoenix-mushrooms",
+   "pike-lancer",
+   "pincushion-urchin",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "pond-duck",
+   "pond-trout",
+   "pronghorn-racer",
+   "prospector-mole",
+   "puddle-hopper",
+   "puffin-diver",
+   "quarry-mole",
+   "quillguard",
+   "rabbit-kit",
+   "raccoon-warlord",
+   "raft-spider",
+   "reef-manta-glider",
+   "river-carp",
+   "riverbed-diver",
+   "rivergate-drummer",
+   "rivergate-recruit",
+   "riverside-peddler",
+   "riverwing-envoy",
+   "rock-pool-starfish",
+   "rot-swollen-carcass",
+   "savanna-cheetah",
+   "seed-cache-squirrel",
+   "sheep",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "shimmerwing-stag",
+   "signal-crayfish",
+   "silver-minnow",
+   "sleepless-shrew",
+   "snapper-hatchling",
+   "snapstick-turtle",
+   "soldier-ant",
+   "sparrow-chick",
+   "sphagnum-vole",
+   "spitting-cobra",
+   "springbok-pronker",
+   "stag-knight",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "stoat-cutthroat",
+   "stone-turtle-warden",
+   "sulfur-cinder-moth",
+   "swamp-rabbit",
+   "talon-archer",
+   "terrier-pup",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "timber-wolf-pack",
+   "truffle-piglet",
+   "tunnel-ant",
+   "venomlord-serpent",
+   "weaver-bird",
+   "webspire-sentinel",
+   "wolf-spider-mother",
+   "worker-ant"
+  ],
+  "phase2": 204,
+  "wholeSpectrum": 204,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "taiga",
+   "kinBiomes": [
+    "redwood",
+    "tundra-ice"
+   ],
+   "terrainTypes": [
+    "Frost",
+    "Tundra"
+   ],
+   "mapTypes": [
+    "Canid 5",
+    "Cervid 2",
+    "Deer 2",
+    "Forest 2",
+    "Lagomorph 2",
+    "Taiga 6",
+    "Wolf 4"
+   ],
+   "mapMechanics": [
+    "cleave 2",
+    "evasion 3",
+    "swarm 2"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "consternation",
+    "field",
+    "frostCount",
+    "frostResist",
+    "phase:night"
+   ],
+   "coreCards": 11
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in the ref-pool pool for this map",
+    "n": 614,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "alley-cat",
+     "alpha-howler",
+     "alpine-avalanche"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:16-1",
+   "kind": "mirror",
+   "node": "16-1",
+   "label": "vs 16-1 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night"
+  },
+  {
+   "key": "mirror|fight:16-2",
+   "kind": "mirror",
+   "node": "16-2",
+   "label": "vs 16-2 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|fight:16-3",
+   "kind": "mirror",
+   "node": "16-3",
+   "label": "vs 16-3 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|fight:16-4",
+   "kind": "mirror",
+   "node": "16-4",
+   "label": "vs 16-4 skirmish's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|fight:16-5",
+   "kind": "mirror",
+   "node": "16-5",
+   "label": "vs 16-5 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "mirror|fight:16-6",
+   "kind": "mirror",
+   "node": "16-6",
+   "label": "vs 16-6 elite's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, consternation, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "mirror|fight:16-7",
+   "kind": "mirror",
+   "node": "16-7",
+   "label": "vs 16-7 miniboss's deck",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, field frozen, frostCount 1, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "16-1",
+   "label": "vs reference starter deck under 16-1's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night"
+  },
+  {
+   "key": "mirror|ref:road16",
+   "kind": "mirror",
+   "node": "16-2",
+   "label": "vs reference deck (Map 16) under 16-2's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "16-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+   "weight": 0.075,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|16-1",
+   "kind": "road",
+   "node": "16-1",
+   "label": "16-1 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night"
+  },
+  {
+   "key": "road|16-2",
+   "kind": "road",
+   "node": "16-2",
+   "label": "16-2 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|16-3",
+   "kind": "road",
+   "node": "16-3",
+   "label": "16-3 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon snowVeil, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|16-4",
+   "kind": "road",
+   "node": "16-4",
+   "label": "16-4 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1"
+  },
+  {
+   "key": "road|16-5",
+   "kind": "road",
+   "node": "16-5",
+   "label": "16-5 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "road|16-6",
+   "kind": "road",
+   "node": "16-6",
+   "label": "16-6 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, consternation, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "road|16-7",
+   "kind": "road",
+   "node": "16-7",
+   "label": "16-7 as the game builds it",
+   "weight": 0.036,
+   "neutral": false,
+   "rules": "aiGuardLethal, field frozen, frostCount 1, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], phase night, terrain Frozen Waste T2 (Frostbite 1)"
+  },
+  {
+   "key": "neutral|fight:16-1",
+   "kind": "mirror",
+   "node": "16-1",
+   "label": "vs 16-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-2",
+   "kind": "mirror",
+   "node": "16-2",
+   "label": "vs 16-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-3",
+   "kind": "mirror",
+   "node": "16-3",
+   "label": "vs 16-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-4",
+   "kind": "mirror",
+   "node": "16-4",
+   "label": "vs 16-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-5",
+   "kind": "mirror",
+   "node": "16-5",
+   "label": "vs 16-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-6",
+   "kind": "mirror",
+   "node": "16-6",
+   "label": "vs 16-6 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:16-7",
+   "kind": "mirror",
+   "node": "16-7",
+   "label": "vs 16-7 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "16-1",
+   "label": "vs reference starter deck under 16-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road16",
+   "kind": "mirror",
+   "node": "16-2",
+   "label": "vs reference deck (Map 16) under 16-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "16-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 26000,
+  "seconds": 493.1,
+  "gamesPerSecond": 52.7,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 18020,
+   "gens": 3,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "bee-forager:1,box-turtle:1,dung-beetle:5,fox-warchief:1,grave-grin-hyena:1,meerkat-wayfarer:1,mountain-hare:1,otter-centurion:3,quillguard:1,rivergate-recruit:1,sheep:1,soldier-ant:1,stoat-cutthroat:1,wolf-spider-mother:1",
+     "f": 0.814,
+     "gens": 2,
+     "games": 10914,
+     "top": [
+      "bee-forager:1,box-turtle:1,dung-beetle:5,fox-warchief:1,grave-grin-hyena:1,meerkat-wayfarer:1,mountain-hare:1,otter-centurion:3,quillguard:1,rivergate-recruit:1,sheep:1,soldier-ant:1,stoat-cutthroat:1,wolf-spider-mother:1",
+      "bee-forager:1,box-turtle:1,dung-beetle:5,fox-warchief:1,grave-grin-hyena:1,hedgehog-scout:1,meerkat-wayfarer:1,mountain-hare:1,otter-centurion:3,pond-duck:1,quillguard:1,sheep:1,stoat-cutthroat:1,wolf-spider-mother:1",
+      "cave-centipede:1,dung-beetle:4,electric-ray:1,hedge-weasel:1,otter-centurion:3,puddle-hopper:1,quillguard:1,rivergate-drummer:1,sheep:1,soldier-ant:4,truffle-piglet:1,tunnel-ant:1",
+      "duck-paddler:1,dung-beetle:5,meerkat-wayfarer:1,otter-centurion:3,quillguard:1,riverwing-envoy:4,sheep:1,soldier-ant:4"
+     ]
+    },
+    {
+     "best": "alligator-gar:1,chipmunk-forager:1,cottontail:1,cricket-drummer:1,crimson-wing-recruit:1,duckling:1,dung-beetle:1,fawn-scout:1,hedge-weasel:1,kittiwake-flock:1,leafcutter-gardener:1,mangrove-kingfisher:1,meadow-frog:1,meadow-rabbit:1,mire-witch-heron:1,riverwing-envoy:1,sheep:1,stag-knight:1,weaver-bird:1,worker-ant:1",
+     "f": 0.588,
+     "gens": 1,
+     "games": 7106,
+     "top": [
+      "alligator-gar:1,chipmunk-forager:1,cottontail:1,cricket-drummer:1,crimson-wing-recruit:1,duckling:1,dung-beetle:1,fawn-scout:1,hedge-weasel:1,kittiwake-flock:1,leafcutter-gardener:1,mangrove-kingfisher:1,meadow-frog:1,meadow-rabbit:1,mire-witch-heron:1,riverwing-envoy:1,sheep:1,stag-knight:1,weaver-bird:1,worker-ant:1",
+      "beaver-builder:1,cottontail:1,cricket-drummer:1,dung-beetle:1,eagle-owl-quartermaster:1,forager-ant:1,ford-kingfisher:1,kittiwake-flock:1,mangrove-kingfisher:1,mouse-sapper:1,mudpuppy:1,net-thrower:1,owl-sentinel:2,rabbit-kit:1,raccoon-warlord:1,river-carp:1,spitting-cobra:1,terrier-pup:1,weaver-bird:1",
+      "beaver-builder:1,bramble-sprout:1,cunning-vixen:1,dung-beetle:1,elder-tortoise:1,eyrie-warden:1,field-mouse:1,hedge-weasel:1,hedgehog-scout:1,ladybird-guard:2,mangrove-kingfisher:1,meadow-frog:1,meadow-rabbit:1,mudpuppy:2,poison-dart-croaker:1,spitting-cobra:1,tidepool-trapper-crab:1,venomlord-serpent:1",
+      "briarback-hedgehog:1,conch-herald:1,constrictor-coil:1,cottontail:1,cricket-drummer:1,cypress-root-lurker:1,duckling:1,dung-beetle:1,fawn-scout:1,giant-clam:1,hedge-weasel:1,kittiwake-flock:1,mangrove-kingfisher:1,otter-kit:1,riverwing-envoy:1,sheep:1,stag-knight:1,terrier-pup:1,venomlord-serpent:1,weaver-bird:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "bee-forager": 1,
+    "box-turtle": 1,
+    "dung-beetle": 5,
+    "fox-warchief": 1,
+    "grave-grin-hyena": 1,
+    "meerkat-wayfarer": 1,
+    "mountain-hare": 1,
+    "otter-centurion": 3,
+    "quillguard": 1,
+    "rivergate-recruit": 1,
+    "sheep": 1,
+    "soldier-ant": 1,
+    "stoat-cutthroat": 1,
+    "wolf-spider-mother": 1
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-warchief",
+     "name": "Fox Warchief",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rivergate-recruit",
+     "name": "Rivergate Recruit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.801,
+   "ci": [
+    0.779,
+    0.823
+   ],
+   "mirror": 0.825,
+   "road": 0.73,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:16-1",
+     "label": "vs 16-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-2",
+     "label": "vs 16-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.813,
+     "lo": 0.7,
+     "hi": 0.889,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-3",
+     "label": "vs 16-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-4",
+     "label": "vs 16-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.813,
+     "lo": 0.7,
+     "hi": 0.889,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-5",
+     "label": "vs 16-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-6",
+     "label": "vs 16-6 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.703,
+     "lo": 0.582,
+     "hi": 0.801,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:16-7",
+     "label": "vs 16-7 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.922,
+     "lo": 0.83,
+     "hi": 0.966,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 16-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.359,
+     "lo": 0.253,
+     "hi": 0.482,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "road|16-1",
+     "label": "16-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "road|16-2",
+     "label": "16-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.781,
+     "lo": 0.666,
+     "hi": 0.865,
+     "n": 64
+    },
+    {
+     "entry": "road|16-3",
+     "label": "16-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.781,
+     "lo": 0.666,
+     "hi": 0.865,
+     "n": 64
+    },
+    {
+     "entry": "road|16-4",
+     "label": "16-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.632,
+     "hi": 0.84,
+     "n": 64
+    },
+    {
+     "entry": "road|16-5",
+     "label": "16-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.516,
+     "lo": 0.396,
+     "hi": 0.634,
+     "n": 64
+    },
+    {
+     "entry": "road|16-6",
+     "label": "16-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.469,
+     "lo": 0.352,
+     "hi": 0.589,
+     "n": 64
+    },
+    {
+     "entry": "road|16-7",
+     "label": "16-7 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.81,
+     "hi": 0.956,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-1",
+     "label": "vs 16-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-2",
+     "label": "vs 16-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-3",
+     "label": "vs 16-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-4",
+     "label": "vs 16-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-5",
+     "label": "vs 16-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.772,
+     "hi": 0.935,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-6",
+     "label": "vs 16-6 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.859,
+     "lo": 0.754,
+     "hi": 0.924,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:16-7",
+     "label": "vs 16-7 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.984,
+     "lo": 0.917,
+     "hi": 0.997,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 16-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.953,
+     "lo": 0.871,
+     "hi": 0.984,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road16",
+     "label": "vs reference deck (Map 16) under 16-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.25,
+     "lo": 0.16,
+     "hi": 0.368,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 16-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.828,
+     "lo": 0.718,
+     "hi": 0.901,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.814,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "bee-forager": 1,
+    "box-turtle": 1,
+    "dung-beetle": 5,
+    "fox-warchief": 1,
+    "grave-grin-hyena": 1,
+    "meerkat-wayfarer": 1,
+    "mountain-hare": 1,
+    "otter-centurion": 3,
+    "quillguard": 1,
+    "rivergate-recruit": 1,
+    "sheep": 1,
+    "soldier-ant": 1,
+    "stoat-cutthroat": 1,
+    "wolf-spider-mother": 1
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "fox-warchief",
+     "name": "Fox Warchief",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rivergate-recruit",
+     "name": "Rivergate Recruit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.801,
+   "ci": [
+    0.779,
+    0.823
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "cave-centipede": 1,
+    "dung-beetle": 4,
+    "electric-ray": 1,
+    "hedge-weasel": 1,
+    "otter-centurion": 3,
+    "puddle-hopper": 1,
+    "quillguard": 1,
+    "rivergate-drummer": 1,
+    "sheep": 1,
+    "soldier-ant": 4,
+    "truffle-piglet": 1,
+    "tunnel-ant": 1
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cave-centipede",
+     "name": "Cave Centipede",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "puddle-hopper",
+     "name": "Puddle Hopper",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rivergate-drummer",
+     "name": "Rivergate Drummer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "truffle-piglet",
+     "name": "Truffle Piglet",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.775,
+   "ci": [
+    0.751,
+    0.798
+   ],
+   "copiesApartFromOptimum": 10
+  },
+  {
+   "i": 2,
+   "deck": {
+    "duck-paddler": 1,
+    "dung-beetle": 5,
+    "meerkat-wayfarer": 1,
+    "otter-centurion": 3,
+    "quillguard": 1,
+    "riverwing-envoy": 4,
+    "sheep": 1,
+    "soldier-ant": 4
+   },
+   "cards": [
+    {
+     "id": "dung-beetle",
+     "name": "Dung Beetle",
+     "copies": 5,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "riverwing-envoy",
+     "name": "Riverwing Envoy",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "duck-paddler",
+     "name": "Duck Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.753,
+   "ci": [
+    0.729,
+    0.777
+   ],
+   "copiesApartFromOptimum": 8
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.563,
+    "elo": 44,
+    "n": 112
+   },
+   {
+    "p": 0.589,
+    "elo": 63,
+    "n": 112
+   }
+  ],
+  [
+   {
+    "p": 0.437,
+    "elo": -44,
+    "n": 112
+   },
+   null,
+   {
+    "p": 0.563,
+    "elo": 44,
+    "n": 112
+   }
+  ],
+  [
+   {
+    "p": 0.411,
+    "elo": -63,
+    "n": 112
+   },
+   {
+    "p": 0.438,
+    "elo": -44,
+    "n": 112
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 8,
+ "ladder": null,
+ "road": [
+  {
+   "node": "16-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.906,
+   "ci": [
+    0.81,
+    0.956
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-2",
+   "kind": "skirmish",
+   "target": 0.84,
+   "optimum": 0.781,
+   "ci": [
+    0.666,
+    0.865
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-3",
+   "kind": "skirmish",
+   "target": 0.78,
+   "optimum": 0.781,
+   "ci": [
+    0.666,
+    0.865
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-4",
+   "kind": "skirmish",
+   "target": 0.72,
+   "optimum": 0.75,
+   "ci": [
+    0.632,
+    0.84
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-5",
+   "kind": "elite",
+   "target": 0.66,
+   "optimum": 0.516,
+   "ci": [
+    0.396,
+    0.634
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-6",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.469,
+   "ci": [
+    0.352,
+    0.589
+   ],
+   "n": 64
+  },
+  {
+   "node": "16-7",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.906,
+   "ci": [
+    0.81,
+    0.956
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:16-1",
+   "node": "16-1",
+   "rules": "aiGuardLethal, phase night",
+   "withField": 0.891,
+   "noField": 0.875,
+   "delta": 0.016,
+   "ci": [
+    -0.096,
+    0.127
+   ]
+  },
+  {
+   "opponent": "fight:16-2",
+   "node": "16-2",
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1",
+   "withField": 0.813,
+   "noField": 0.891,
+   "delta": -0.078,
+   "ci": [
+    -0.201,
+    0.044
+   ]
+  },
+  {
+   "opponent": "fight:16-3",
+   "node": "16-3",
+   "rules": "aiGuardLethal, boon snowVeil, phase night, terrain Frozen Waste T1",
+   "withField": 0.906,
+   "noField": 0.891,
+   "delta": 0.016,
+   "ci": [
+    -0.089,
+    0.12
+   ]
+  },
+  {
+   "opponent": "fight:16-4",
+   "node": "16-4",
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1",
+   "withField": 0.813,
+   "noField": 0.891,
+   "delta": -0.078,
+   "ci": [
+    -0.201,
+    0.044
+   ]
+  },
+  {
+   "opponent": "fight:16-5",
+   "node": "16-5",
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+   "withField": 0.906,
+   "noField": 0.875,
+   "delta": 0.031,
+   "ci": [
+    -0.077,
+    0.139
+   ]
+  },
+  {
+   "opponent": "fight:16-6",
+   "node": "16-6",
+   "rules": "aiGuardLethal, consternation, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+   "withField": 0.703,
+   "noField": 0.859,
+   "delta": -0.156,
+   "ci": [
+    -0.297,
+    -0.016
+   ]
+  },
+  {
+   "opponent": "fight:16-7",
+   "node": "16-7",
+   "rules": "aiGuardLethal, field frozen, frostCount 1, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], phase night, terrain Frozen Waste T2 (Frostbite 1)",
+   "withField": 0.922,
+   "noField": 0.984,
+   "delta": -0.062,
+   "ci": [
+    -0.135,
+    0.01
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "16-1",
+   "rules": "aiGuardLethal, phase night",
+   "withField": 0.984,
+   "noField": 0.953,
+   "delta": 0.031,
+   "ci": [
+    -0.029,
+    0.091
+   ]
+  },
+  {
+   "opponent": "ref:road16",
+   "node": "16-2",
+   "rules": "aiGuardLethal, phase night, terrain Frozen Waste T1",
+   "withField": 0.359,
+   "noField": 0.25,
+   "delta": 0.109,
+   "ci": [
+    -0.049,
+    0.268
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "16-3",
+   "rules": "aiGuardLethal, boon snowVeil, phase night, terrain Frozen Waste T1",
+   "withField": 0.953,
+   "noField": 0.828,
+   "delta": 0.125,
+   "ci": [
+    0.019,
+    0.231
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:16-1",
+   "label": "16-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "16-1",
+   "target": 0.9,
+   "h2h": 0.891,
+   "h2hCI": [
+    0.791,
+    0.946
+   ],
+   "elo": 364,
+   "eloCI": [
+    231,
+    497
+   ],
+   "n": 64,
+   "asPlayer": 0.388,
+   "optimumSame": 0.794,
+   "pointsBelow": 40.6,
+   "pointsCI": 4.7
+  },
+  {
+   "opponent": "fight:16-2",
+   "label": "16-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "16-2",
+   "target": 0.84,
+   "h2h": 0.813,
+   "h2hCI": [
+    0.7,
+    0.889
+   ],
+   "elo": 255,
+   "eloCI": [
+    147,
+    362
+   ],
+   "n": 64,
+   "asPlayer": 0.492,
+   "optimumSame": 0.8,
+   "pointsBelow": 30.8,
+   "pointsCI": 4.8
+  },
+  {
+   "opponent": "fight:16-3",
+   "label": "16-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "16-3",
+   "target": 0.78,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.81,
+    0.956
+   ],
+   "elo": 394,
+   "eloCI": [
+    252,
+    536
+   ],
+   "n": 64,
+   "asPlayer": 0.42,
+   "optimumSame": 0.793,
+   "pointsBelow": 37.2,
+   "pointsCI": 4.6
+  },
+  {
+   "opponent": "fight:16-4",
+   "label": "16-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "16-4",
+   "target": 0.72,
+   "h2h": 0.813,
+   "h2hCI": [
+    0.7,
+    0.889
+   ],
+   "elo": 255,
+   "eloCI": [
+    147,
+    362
+   ],
+   "n": 64,
+   "asPlayer": 0.486,
+   "optimumSame": 0.8,
+   "pointsBelow": 31.4,
+   "pointsCI": 4.8
+  },
+  {
+   "opponent": "fight:16-5",
+   "label": "16-5 elite's deck",
+   "kind": "elite",
+   "node": "16-5",
+   "target": 0.66,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.81,
+    0.956
+   ],
+   "elo": 394,
+   "eloCI": [
+    252,
+    536
+   ],
+   "n": 64,
+   "asPlayer": 0.302,
+   "optimumSame": 0.793,
+   "pointsBelow": 49.1,
+   "pointsCI": 4.7
+  },
+  {
+   "opponent": "fight:16-6",
+   "label": "16-6 elite's deck",
+   "kind": "elite",
+   "node": "16-6",
+   "target": 0.6,
+   "h2h": 0.703,
+   "h2hCI": [
+    0.582,
+    0.801
+   ],
+   "elo": 150,
+   "eloCI": [
+    58,
+    242
+   ],
+   "n": 64,
+   "asPlayer": 0.318,
+   "optimumSame": 0.809,
+   "pointsBelow": 49.2,
+   "pointsCI": 4.7
+  },
+  {
+   "opponent": "fight:16-7",
+   "label": "16-7 miniboss's deck",
+   "kind": "miniboss",
+   "node": "16-7",
+   "target": 0.4,
+   "h2h": 0.922,
+   "h2hCI": [
+    0.83,
+    0.966
+   ],
+   "elo": 429,
+   "eloCI": [
+    275,
+    582
+   ],
+   "n": 64,
+   "asPlayer": 0.275,
+   "optimumSame": 0.791,
+   "pointsBelow": 51.6,
+   "pointsCI": 4.5
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 16-1's field",
+   "kind": "reference",
+   "node": "16-1",
+   "target": null,
+   "h2h": 0.984,
+   "h2hCI": [
+    0.917,
+    0.997
+   ],
+   "elo": 720,
+   "eloCI": [
+    417,
+    842
+   ],
+   "n": 64,
+   "asPlayer": 0.256,
+   "optimumSame": 0.786,
+   "pointsBelow": 53,
+   "pointsCI": 4.4
+  },
+  {
+   "opponent": "ref:road16",
+   "label": "reference deck (Map 16) under 16-2's field",
+   "kind": "reference",
+   "node": "16-2",
+   "target": null,
+   "h2h": 0.359,
+   "h2hCI": [
+    0.253,
+    0.482
+   ],
+   "elo": -100,
+   "eloCI": [
+    -188,
+    -13
+   ],
+   "n": 64,
+   "asPlayer": 0.873,
+   "optimumSame": 0.837,
+   "pointsBelow": -3.6,
+   "pointsCI": 3.6
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 16-3's field",
+   "kind": "reference",
+   "node": "16-3",
+   "target": null,
+   "h2h": 0.953,
+   "h2hCI": [
+    0.871,
+    0.984
+   ],
+   "elo": 523,
+   "eloCI": [
+    332,
+    715
+   ],
+   "n": 64,
+   "asPlayer": 0.476,
+   "optimumSame": 0.789,
+   "pointsBelow": 31.3,
+   "pointsCI": 4.7
+  }
+ ]
+}
