@@ -91,7 +91,7 @@ ok(/ev\.field==='volleyCastle'\)\) && m\.displayHqHp/.test(src) && /displayHqDam
   ok(mc.name === 'Fortified Nest & Co.' && mc.art === 'art/castles/nest.png' && mc.id === 'fortified-nest' && mc.raidMerged, `the merged castle is yours "& Co." with your art (${mc.name}, ${mc.art})`);
   ok(mc.health === 100 && mc.effects.a === 3 && mc.effects.b === true, 'its Health and passives are still all three added up'); }
 ok(/def\.raidMerged \? ' raid-castles'/.test(src), 'the merged castle keeps the raid-castles tile class');
-ok(/m\.raidFull \? 3 : 0\)/.test(src) && /if\(raid && mm\._raidFrameKey === raidFrameKey\(mm\)\) return;/.test(src), 'the raid board is seven columns from the start and keeps one framing');
+ok(/\(m\.raidFull \|\| m\.coop\) \? 3 : 0\)/.test(src) /* 2026-10-28 (COOP2): the group dungeon's board is seven columns too */ && /if\(raid && mm\._raidFrameKey === raidFrameKey\(mm\)\) return;/.test(src), 'the raid board is seven columns from the start and keeps one framing');
 ok(/const lean = raidCols \? null/.test(src), 'the raid camera doesn\'t lean');
 ok(/\.board-row\.reserve-row > \.board-card\{transform:scale\(\.84\)/.test(tpl), 'back-row cards are 20% larger (.84 of a front card, were .7)');
 ok(/extra time as each round starts/.test(R.describeStage({name:'Enraged', rules:{extraVolley:1}}, {})), 'a stage\'s extra volley reads as extra');
