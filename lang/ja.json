@@ -3614,5 +3614,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "1枚のカードをデッキに入れられるのはここまで：{n}枚。",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "レアなカードほど上限が低い：このカードはデッキに{n}枚まで。",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "ユニットが入ってきた瞬間に攻撃する。ラウンド開始時に入ってきた場合も同じ（落ち着きなし、風、呪文）。睡眠・スタン・凍結・鎖・石化の間は攻撃しない。",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "睡眠・スタン・凍結・石化の間はしない。"
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "睡眠・スタン・凍結・石化の間はしない。",
+ "Danger!": "危険！",
+ "More controls": "その他の操作"
 }

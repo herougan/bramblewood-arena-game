@@ -51,10 +51,12 @@ ok(/syncWindField\(matchState\); syncWindBadges\(\);/.test(src) && !!fnSrc('sync
 // ---- 2. the leader's moment
 { const ctx = {}; vm.createContext(ctx);
   ['LEADER_THRONE_FX_MS', 'LEADER_CALLOUT_BASE_MS', 'LEADER_QUEUE_WAIT'].forEach(k=>{ const l = constLine(k); ok(!!l, k + ' is declared'); if(l) vm.runInContext(l.replace(/^const /, 'var '), ctx); });
-  ok(ctx.LEADER_CALLOUT_BASE_MS === 2400 && ctx.LEADER_CALLOUT_FADE === 0.8 && ctx.LEADER_CALLOUT_MS === Math.round(2400 * 0.8), `the callout runs ×0.8 of 2.4 s (${ctx.LEADER_CALLOUT_MS} ms)`);
+  // 2026-10-28 (package VIS5, L3): the callout is the leader's slam, 1.4 s whole (was x0.8 of 2.4 s = 1.92 s)
+  ok(ctx.LEADER_CALLOUT_BASE_MS === 1400 && ctx.LEADER_CALLOUT_FADE === 1 && ctx.LEADER_CALLOUT_MS === 1400, `the callout (the slam) runs 1.4 s (${ctx.LEADER_CALLOUT_MS} ms)`);
   ok(ctx.LEADER_QUEUE_WAIT === 0.75 && ctx.LEADER_THRONE_WAIT_MS === Math.round(ctx.LEADER_THRONE_FX_MS * 0.75), `the queue waits ×0.75 of the throne moment (${ctx.LEADER_THRONE_WAIT_MS} of ${ctx.LEADER_THRONE_FX_MS} ms)`); }
 ok(!/noteMatchFx\([^\n]*LEADER_THRONE_FX_MS/.test(src) && (src.match(/noteMatchFx\([^\n]*LEADER_THRONE_WAIT_MS/g) || []).length === 3, 'all three leader waits use LEADER_THRONE_WAIT_MS');
-ok(/b\.style\.animationDuration = LEADER_CALLOUT_MS \+ 'ms'; document\.body\.appendChild\(b\); setTimeout\(\(\)=> b\.remove\(\), LEADER_CALLOUT_MS\);/.test(src), 'the callout\'s animation and removal use LEADER_CALLOUT_MS');
+// 2026-10-28 (VIS5, L3): the banner sits in the slam's wrapper, which is what is added to the page and removed
+ok(/b\.style\.animationDuration = LEADER_CALLOUT_MS \+ 'ms'; w\.appendChild\(b\); document\.body\.appendChild\(w\); setTimeout\(\(\)=> w\.remove\(\), LEADER_CALLOUT_MS\);/.test(src), 'the callout\'s animation and removal use LEADER_CALLOUT_MS');
 ok(/\.leader-callout\{position:fixed; z-index:1103; animation-duration:1\.92s;/.test(tpl), 'the callout CSS says 1.92 s');
 
 // ---- 3. night hover lines

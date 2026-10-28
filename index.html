@@ -11588,7 +11588,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .al-sleeve{position:relative; padding:6px 6px 16px; border-radius:8px; background:linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.05) 40%, rgba(255,255,255,.12));
   box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 2px 5px rgba(0,0,0,.18);}
 .al-sleeve::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.16) 42%, rgba(255,255,255,0) 54%);}
-.al-slot{min-height:1px;}
+.al-slot{min-height:1px; aspect-ratio:var(--al-sar, .66); /* 2026-10-28 (VIS5, L12): an empty slot is a sleeve's height, so the book keeps its full height with few cards */}
 #codexGrid.al-host .al-sleeve .cx-tile-wrap{content-visibility:visible; contain-intrinsic-size:none; padding:0; margin:0;}
 #codexGrid.al-host .card-tile{width:100%;}
 #codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
@@ -13699,6 +13699,74 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
 /* RES3:END */
 /* VIS3 (2026-10-26, package VIS3: the owner's 10-25 notes V1, V3, V4, V5 and G8; the code is in arena_app.js under "VIS3") */
+/* VIS5 (2026-10-28, package VIS5: the owner's 10-28 09:48 notes L3, L4, L6, L12; the code is in arena_app.js under "VIS5") */
+/* L3 (owner 10-28 09:48): the leader's slam and the Danger warning. Both are 1.4-1.5 s; Low FX and reduced motion fade (no movement), None keeps the text. */
+.vis5-lead{position:fixed; z-index:1103; height:0; pointer-events:none; --lead-c1:#ffe9a8; --lead-c2:#e8b64a; --lead-glow:255,205,90;}
+.vis5-lead.is-enemy{--lead-c1:#ff9a8a; --lead-c2:#a3162a; --lead-glow:220,40,60;}
+.vis5-lead-band{position:absolute; left:0; right:0; top:-74px; height:148px; transform-origin:50% 50%; opacity:0;
+  background:linear-gradient(90deg, rgba(var(--lead-glow),0), rgba(var(--lead-glow),.55) 22%, rgba(var(--lead-glow),.8) 50%, rgba(var(--lead-glow),.55) 78%, rgba(var(--lead-glow),0));
+  box-shadow:0 0 0 2px rgba(255,255,255,.5) inset, 0 0 40px 6px rgba(var(--lead-glow),.5); mix-blend-mode:screen; animation:vis5LeadBand var(--lead-ms, 1.4s) cubic-bezier(.2,.8,.3,1) both;}
+.vis5-lead-art{position:absolute; left:50%; top:-96px; width:118px; height:148px; margin-left:-59px; transform-origin:50% 60%; opacity:0; border-radius:12px;
+  box-shadow:0 0 0 3px var(--lead-c1), 0 0 0 6px var(--lead-c2), 0 14px 30px rgba(0,0,0,.55), 0 0 34px 8px rgba(var(--lead-glow),.6); background:#1a1208; animation:vis5LeadArt var(--lead-ms, 1.4s) cubic-bezier(.3,.1,.3,1) both;}
+.vis5-lead-art .card-tile{width:118px !important; height:148px !important; font-size:13.4px; margin:0; pointer-events:none;}
+.vis5-lead-emoji{display:grid; place-items:center; width:100%; height:100%; font-size:64px;}
+.vis5-lead-shock{position:absolute; left:50%; top:0; width:150px; height:150px; margin:-75px 0 0 -75px; border-radius:50%; border:5px solid var(--lead-c1); opacity:0; animation:vis5LeadShock .6s ease-out calc(var(--lead-ms, 1.4s) * .15) both;}
+.vis5-lead .leader-callout.enemy-leader-banner{position:absolute; left:50%; top:112px; z-index:2; max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.12;
+  font:800 26px/1.12 'Baloo 2',system-ui,sans-serif; padding:9px 24px; border-radius:6px; transform:translateX(-50%); opacity:0; clip-path:polygon(0 0, 100% 0, calc(100% - 14px) 50%, 100% 100%, 0 100%, 14px 50%);
+  color:#fff3ee; background:linear-gradient(180deg,#7a1424,#3a0712); border:0; box-shadow:none; filter:drop-shadow(0 6px 10px rgba(0,0,0,.55)); animation:vis5LeadBanner var(--lead-ms, 1.4s) cubic-bezier(.2,.9,.3,1) both;}
+.vis5-lead.is-mine .leader-callout.enemy-leader-banner{color:#3a2604; background:linear-gradient(180deg,#fff0bd,#e8b64a);}
+.vis5-lead.is-enemy .leader-callout.enemy-leader-banner{--from:60vw;} .vis5-lead.is-mine .leader-callout.enemy-leader-banner{--from:-60vw;}
+@keyframes vis5LeadBand{0%{opacity:0; transform:scaleY(0);} 9%{opacity:1; transform:scaleY(1.05);} 16%{transform:scaleY(1);} 72%{opacity:.75;} 100%{opacity:0; transform:scaleY(.15);}}
+@keyframes vis5LeadArt{0%{opacity:0; transform:scale(2.8) rotate(-8deg);} 10%{opacity:1;} 17%{opacity:1; transform:scale(.9) rotate(2deg);} 23%{transform:scale(1.05) rotate(-1deg);} 29%{transform:scale(1) rotate(0);} 76%{opacity:1; transform:scale(1);} 100%{opacity:0; transform:scale(.94) translateY(-10px);}}
+@keyframes vis5LeadShock{0%{opacity:.95; transform:scale(.3);} 100%{opacity:0; transform:scale(3.4);}}
+@keyframes vis5LeadBanner{0%,14%{opacity:0; transform:translateX(calc(-50% + var(--from, -60vw)));} 28%{opacity:1; transform:translateX(calc(-50% - 10px));} 36%{transform:translateX(-50%);} 78%{opacity:1;} 100%{opacity:0; transform:translateX(-50%) translateY(-8px);}}
+@keyframes vis5LeadFade{0%{opacity:0;} 14%{opacity:1;} 78%{opacity:1;} 100%{opacity:0;}}
+.vis5-lead.is-calm .vis5-lead-band, .vis5-lead.is-calm .vis5-lead-shock{display:none;}
+.vis5-lead.is-calm .vis5-lead-art, .vis5-lead.is-calm .leader-callout.enemy-leader-banner{animation:vis5LeadFade var(--lead-ms, 1.4s) ease both; transform:translateX(-50%);}
+.vis5-lead.is-calm .vis5-lead-art{transform:none;}
+.vis5-lead.is-bare .vis5-lead-art{display:none;} .vis5-lead.is-bare .leader-callout.enemy-leader-banner{top:0;}
+@media (max-width:560px){ .vis5-lead-art{width:88px; height:110px; margin-left:-44px; top:-74px;} .vis5-lead-art .card-tile{width:88px !important; height:110px !important; font-size:10px;}
+  .vis5-lead .leader-callout.enemy-leader-banner{font-size:19px; padding:7px 18px; top:84px;} .vis5-lead-band{top:-58px; height:116px;} }
+@media (prefers-reduced-motion: reduce){ .vis5-lead-band, .vis5-lead-shock{display:none;} .vis5-lead-art, .vis5-lead .leader-callout.enemy-leader-banner{animation:vis5LeadFade var(--lead-ms, 1.4s) ease both; transform:translateX(-50%);} .vis5-lead-art{transform:none;} }
+/* Danger: the field's edges flare red twice, a red light sweeps across, a hazard-striped plate slams in */
+.danger-warn.vis5-danger{position:absolute; inset:0; left:0; top:0; transform:none; width:auto; height:auto; padding:0; gap:0; display:block; background:none; border:0; border-radius:inherit; box-shadow:none; opacity:1; overflow:hidden; z-index:60; animation:none; pointer-events:none;}
+.vis5-danger .dw-edge{position:absolute; inset:0; border-radius:inherit; box-shadow:inset 0 0 0 0 rgba(255,60,50,0), inset 0 0 0 0 rgba(255,20,20,0); animation:vis5DgEdge 1.5s ease-out both;}
+.vis5-danger .dw-sweep{position:absolute; top:-10%; bottom:-10%; left:-40%; width:36%; transform:skewX(-14deg); background:linear-gradient(90deg, rgba(255,40,30,0), rgba(255,70,55,.6) 55%, rgba(255,200,190,.75) 62%, rgba(255,40,30,0)); mix-blend-mode:screen; animation:vis5DgSweep .62s cubic-bezier(.5,0,.8,.6) .04s both;}
+.vis5-danger .dw-plate{position:absolute; left:50%; top:38%; display:flex; align-items:center; gap:12px; padding:14px 20px; transform:translate(-50%,-50%); max-width:min(94%, 560px); color:#fff3ee; text-align:center; font-weight:800;
+  background:linear-gradient(180deg, rgba(150,16,16,.96), rgba(88,6,10,.96)); border-radius:8px; box-shadow:0 0 0 3px #ffb199, 0 0 28px 6px rgba(255,50,40,.55), 0 12px 30px rgba(0,0,0,.55);
+  border:0; outline:7px solid transparent; animation:vis5DgPlate 1.5s cubic-bezier(.25,.9,.3,1) both;}
+.vis5-danger .dw-plate::before, .vis5-danger .dw-plate::after{content:''; position:absolute; left:0; right:0; height:9px; background:repeating-linear-gradient(-45deg, #ffd23a 0 10px, #1a1208 10px 20px);}
+.vis5-danger .dw-plate::before{top:-9px; border-radius:4px 4px 0 0;} .vis5-danger .dw-plate::after{bottom:-9px; border-radius:0 0 4px 4px;}
+.vis5-danger .dw-sign{font-size:34px; line-height:1; animation:dangerPulse .36s ease-in-out 4 alternate;}
+.vis5-danger .dw-head{display:block; font:900 30px/1 'Baloo 2',system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#ffe27a; text-shadow:0 2px 0 rgba(0,0,0,.45);}
+.vis5-danger .dw-name{display:block; margin-top:3px; font-size:17px; line-height:1.2;}
+.vis5-danger small{display:block; font-weight:600; opacity:.88; font-size:.82em;}
+@keyframes vis5DgEdge{0%{box-shadow:inset 0 0 0 0 rgba(255,60,50,0), inset 0 0 0 0 rgba(255,20,20,0);} 10%,48%{box-shadow:inset 0 0 0 5px rgba(255,80,60,.95), inset 0 0 70px 16px rgba(255,20,20,.55);} 28%,66%{box-shadow:inset 0 0 0 3px rgba(255,80,60,.5), inset 0 0 36px 6px rgba(255,20,20,.25);} 100%{box-shadow:inset 0 0 0 0 rgba(255,60,50,0), inset 0 0 0 0 rgba(255,20,20,0);}}
+@keyframes vis5DgSweep{0%{left:-40%; opacity:1;} 100%{left:112%; opacity:.9;}}
+@keyframes vis5DgPlate{0%{opacity:0; transform:translate(-50%,-50%) scale(1.8);} 9%{opacity:1; transform:translate(-50%,-50%) scale(.95);} 13%{transform:translate(calc(-50% + 5px),-50%) scale(1);} 17%{transform:translate(calc(-50% - 5px),-50%);} 21%{transform:translate(-50%,-50%);} 84%{opacity:1; transform:translate(-50%,-50%);} 100%{opacity:0; transform:translate(-50%,-50%) scale(1.03);}}
+@keyframes vis5DgFade{0%{opacity:0;} 14%{opacity:1;} 82%{opacity:1;} 100%{opacity:0;}}
+.vis5-danger.is-calm .dw-sweep{display:none;} .vis5-danger.is-calm .dw-edge{animation:vis5DgFade 1.5s ease both; box-shadow:inset 0 0 0 4px rgba(255,80,60,.8), inset 0 0 40px 8px rgba(255,20,20,.35);}
+.vis5-danger.is-calm .dw-plate{animation:vis5DgFade 1.5s ease both; transform:translate(-50%,-50%);} .vis5-danger.is-calm .dw-sign{animation:none;}
+@media (max-width:560px){ .vis5-danger .dw-plate{padding:10px 12px; gap:8px;} .vis5-danger .dw-head{font-size:22px;} .vis5-danger .dw-name{font-size:14px;} .vis5-danger .dw-sign{font-size:24px;} }
+@media (prefers-reduced-motion: reduce){ .vis5-danger .dw-sweep{display:none;} .vis5-danger .dw-edge{animation:vis5DgFade 1.5s ease both; box-shadow:inset 0 0 0 4px rgba(255,80,60,.8), inset 0 0 40px 8px rgba(255,20,20,.35);} .vis5-danger .dw-plate{animation:vis5DgFade 1.5s ease both; transform:translate(-50%,-50%);} .vis5-danger .dw-sign{animation:none;} }
+/* L4: the trap springs: three dizzy stars circle the card's head; the calm version (reduced motion, FX None) flashes the card instead */
+.vis5-dizzy{position:fixed; z-index:1100; pointer-events:none; font-style:normal; font-size:18px; line-height:1; transform:translate(-50%,-50%); opacity:0; filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));}
+.vis5-dizzy.is-fire{font-size:15px;}
+.vis5-hz-flash{animation:vis5HzFlash .5s ease-out 1;}
+@keyframes vis5HzFlash{0%{filter:brightness(1.7) saturate(1.4);} 100%{filter:none;}}
+/* L6 (owner 10-28 09:48, Wolfsbane Tundra's squeezed top-right controls): fitTopRowControls' third stage. In .is-menu the speed, log and settings
+   buttons and a ⋯ button stay; full screen, forfeit, auto-play, the admin tools and quit sit in the ⋯ menu. Compact buttons are one size. */
+#view-play .top-row-controls:not(.is-menu) .trc-more-btn{display:none !important;}
+#view-play .top-row-controls.is-menu .trc-more-btn{display:inline-flex; align-items:center; justify-content:center; min-width:34px; padding:0 8px; font-weight:900; letter-spacing:.04em;}
+#view-play .top-row-controls.is-menu .trc-x{display:none !important;}
+#view-play .top-row-controls.is-compact > .btn.small{flex:0 0 auto; height:32px; min-height:32px;}
+.top-right-stack{position:relative;}
+.top-play-row.trc-wrap{flex-wrap:wrap;} .top-play-row.trc-wrap > .top-right-stack{margin-left:auto; flex:none;}
+.trc-pop{position:absolute; right:0; top:calc(100% + 6px); z-index:260; min-width:200px; max-width:min(88vw, 300px); display:flex; flex-direction:column; gap:2px; padding:6px; border-radius:14px; background:var(--surface, #fff); color:inherit; border:1px solid var(--surface-border, rgba(0,0,0,.2)); box-shadow:0 12px 30px rgba(0,0,0,.45);}
+.trc-item{display:flex; align-items:center; gap:10px; min-height:44px; padding:6px 12px; border:0; border-radius:10px; background:transparent; color:inherit; font:700 14px/1.2 inherit; font-family:inherit; text-align:left; cursor:pointer;}
+.trc-item:hover, .trc-item:focus-visible{background:var(--surface-2, rgba(0,0,0,.08)); outline:none;}
+.trc-item.is-on{box-shadow:inset 3px 0 0 var(--gold, #d4a017);}
+.trc-item-ico{width:24px; text-align:center; font-size:17px;}
 /* V1 (owner #4): Trap N's slot. Eight soft light-red drops slide in from the slot's edge to its centre, one after another round the circle. */
 .vis3-trap-ring{position:absolute; inset:0; overflow:hidden; border-radius:14px; pointer-events:none; z-index:5;}
 .vis3-trap-ring i{position:absolute; left:50%; top:50%; width:24%; aspect-ratio:1; margin:-12% 0 0 -12%; border-radius:50%; opacity:0;
@@ -43062,7 +43130,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=88b5812cf1", "es": "assets/lang/es.js?v=5eb6e6ec80", "fr": "assets/lang/fr.js?v=36db7a9c77", "id": "assets/lang/id.js?v=f5e5522534", "it": "assets/lang/it.js?v=fd8bc54e89", "ja": "assets/lang/ja.js?v=4729315e0d", "ko": "assets/lang/ko.js?v=953b17bfd8", "pt": "assets/lang/pt.js?v=79d7e4dc27", "ta": "assets/lang/ta.js?v=d7a0bd960b", "tl": "assets/lang/tl.js?v=12da5efaf5", "zh-Hans": "assets/lang/zh-Hans.js?v=9f4b900d0d", "zh-Hant": "assets/lang/zh-Hant.js?v=28aa94c9d2"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=e4778d7e8f", "es": "assets/lang/es.js?v=0d2c89dad5", "fr": "assets/lang/fr.js?v=3aa126acd7", "id": "assets/lang/id.js?v=e4c62be540", "it": "assets/lang/it.js?v=9fc2de33fc", "ja": "assets/lang/ja.js?v=2d00c85030", "ko": "assets/lang/ko.js?v=7b8d086e35", "pt": "assets/lang/pt.js?v=e08ccf9ec6", "ta": "assets/lang/ta.js?v=a40ad058eb", "tl": "assets/lang/tl.js?v=7711ef906a", "zh-Hans": "assets/lang/zh-Hans.js?v=6f056bcf8c", "zh-Hant": "assets/lang/zh-Hant.js?v=275789550e"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46018,7 +46086,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.vis4-cap-tip": "That's the most a deck can hold of one card: {n} copies.",
   "ui.vis4-cap-tip-rare": "Rarer cards have a lower cap: {n} copies of this one per deck.",
   "ui.e12-ambush-codex": "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.",
-  "ui.e12-banana-codex": "Not while it is Asleep, Stunned, Frozen or turned to stone."
+  "ui.e12-banana-codex": "Not while it is Asleep, Stunned, Frozen or turned to stone.",
+  "ui.vis5-danger": "Danger!",
+  "ui.vis5-more-controls": "More controls"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -50530,7 +50600,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a30e1d576d45', BUILD_CARD_HASH = '890071eee7f1b584fe73449d3d32a7ce5d7bd3369b71e36644d1822a6516932c';
+const BUILD_ID = '3737875e943f', BUILD_CARD_HASH = '890071eee7f1b584fe73449d3d32a7ce5d7bd3369b71e36644d1822a6516932c';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -52054,6 +52124,18 @@ const SoundKit = (()=>{
       tone(55, 1.5, 'sine', 0.15, 0);
       [146.8, 155.6, 207.7].forEach((f, i)=> tone(f, 0.95, 'sawtooth', 0.042, 0.03 + i * 0.012));
       sweep(330, 196, 0.6, 'triangle', 0.035, 0.08);
+    },
+    // 2026-10-28 (package VIS5, L3): the leader's slam: a thud and a short stab (a brass chord for yours, a low growl for theirs), then the usual fanfare / drum follows
+    leaderSlam(enemy){
+      fnoise(0.22, 0.14, {type:'lowpass', freq:700, freqEnd:90, attack:0.002});
+      tone(enemy ? 48 : 62, 0.55, 'sine', 0.17, 0);
+      if(enemy){ [110, 117, 165].forEach((f, i)=> tone(f, 0.5, 'sawtooth', 0.035, 0.02 + i * 0.01)); sweep(220, 98, 0.5, 'triangle', 0.03, 0.05); }
+      else { [392, 523, 659].forEach(f=> tone(f, 0.3, 'sawtooth', 0.035, 0.07)); tone(784, 0.4, 'triangle', 0.03, 0.12); }
+    },
+    // 2026-10-28 (VIS5, L3): the Danger warning: two falling siren pulses over a low thump
+    dangerSting(){
+      tone(78, 0.45, 'sine', 0.13, 0);
+      sweep(940, 620, 0.2, 'square', 0.028, 0.02); sweep(940, 620, 0.2, 'square', 0.028, 0.34);
     },
     suddenDeathSting(){
       fnoise(1.1, 0.10, {type:'lowpass', freq:300, freqEnd:90, attack:0.02});
@@ -54902,6 +54984,11 @@ function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
   codexWireGridClick(gridEl); codexWireSwipe(gridEl);
   albumDraw();
 }
+// 2026-10-28 (package VIS5, L12; owner 10-28 09:48: "Even if the cards shown is few, the codex book should still be at 'max height'."): an album
+// page is always 4 rows tall. The empty slots were 1 px high, so a page with a few cards (a search, a filter, a section's last page) shrank
+// the whole book. An empty slot now has a sleeve's own proportions (--al-sar, width / height, measured from a real sleeve after each draw
+// and kept per layout in codexSleeveAR), so the rows without cards still take a sleeve's height and the book keeps its full height.
+const codexSleeveAR = {};
 function albumPageHTML(p, i, side){
   if(!p) return `<section class="al-page pg-${side} is-blank" aria-hidden="true"></section>`;
   const S = codexAlbumState, sec = p.sec, per = S.L.cols * S.L.rows;
@@ -54912,7 +54999,7 @@ function albumPageHTML(p, i, side){
   const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
   return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
     <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
-    <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
+    <div class="al-grid" style="--al-cols:${S.L.cols}; --al-sar:${codexSleeveAR[S.L.key] || .66}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
   const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
@@ -54926,6 +55013,7 @@ function albumDraw(){
   // count and "Go to section" sit above the album; ‹ « and › » are tabs on its outer edges (no bar below).
   gridEl.innerHTML = codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections)
     + `<div class="al-album pg-book al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}${codexEdgeTabsHTML(codexPage, L.pages, pages.length)}</div>`;
+  try{ const sl = gridEl.querySelector('.al-sleeve'); if(sl){ const q = sl.getBoundingClientRect(); if(q.width > 20 && q.height > 20){ const ar = Math.round(q.width / q.height * 1000) / 1000; if(Math.abs((codexSleeveAR[L.key] || 0) - ar) > .004){ codexSleeveAR[L.key] = ar; gridEl.querySelectorAll('.al-grid').forEach(g=> g.style.setProperty('--al-sar', String(ar))); } } } }catch(e){} // VIS5 (L12): the empty slots' proportions
   gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(b.dataset.turn)));
   { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
   wireCodexGrid(S.groupIds);
@@ -81268,17 +81356,56 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
 // the fight's top-right buttons show their words while they fit; when the row would run past the screen (or into the Environment
 // cards beside it) it goes .is-compact: icons only, the same look a phone has (the words stay in each button's title and aria-label).
 function autoplayBtnInner(on){ return on ? '⏸<span class="trc-lbl"> Auto-play on</span>' : '🤖<span class="trc-lbl"> Auto-play</span>'; }
+// 2026-10-28 (package VIS5, L6; owner 10-28 09:48: "Wolfsbane Tundra top right controls are squeezed to all hell. Is there a better way to
+// present those controls"): three stages, the first that fits wins. 1 words and icons; 2 icons only (.is-compact); 3 .is-menu: the
+// essentials stay (speed, the log, ⚙, ⋯) and the rest (full screen, forfeit, auto-play, the admin tools, quit) move into the ⋯ menu.
+// A fight with a long row of Environment cards (Wolfsbane's 17-5, 17-7, 17-8 have four) squeezed stage 2 to buttons 17 to 22 px tall
+// with the first ones hidden under the cards; now it never shrinks a button. The measure puts the stack at its natural width (flex:none)
+// and asks whether it still sits beside the cards and inside the row. The menu's items click the real buttons (they keep their wiring and
+// ids; in menu mode they are only hidden), so each one's label and state are read from the button when the menu opens.
+const TRC_EXTRA_IDS = ['fsBtn', 'forfeitMatchBtn', 'adminWinBtn', 'adminEditModeBtn', 'autoplayBtn', 'quitMatchBtn'];
+function trcMenuClose(){ try{ document.querySelectorAll('.trc-pop').forEach(x=> x.remove()); const b = document.getElementById('trcMoreBtn'); if(b) b.setAttribute('aria-expanded', 'false'); }catch(e){} }
+function trcMenuOpen(){
+  try{
+    const row = document.querySelector('#view-play .top-row-controls'), btn = document.getElementById('trcMoreBtn'); if(!row || !btn) return;
+    if(document.querySelector('.trc-pop')){ trcMenuClose(); return; }
+    const stack = row.closest('.top-right-stack') || row, pop = document.createElement('div'); pop.className = 'trc-pop'; pop.setAttribute('role', 'menu');
+    TRC_EXTRA_IDS.forEach(id=>{ const real = document.getElementById(id); if(!real) return;
+      const lab = real.getAttribute('aria-label') || real.getAttribute('title') || real.textContent.trim(), icoEl = real.querySelector('.trc-ico'), ico = icoEl ? icoEl.textContent : ({fsBtn:'⤢', forfeitMatchBtn:'🏳️', adminWinBtn:'👑', adminEditModeBtn:'✏️', autoplayBtn: real.classList.contains('is-on') ? '⏸' : '🤖'})[id] || '•';
+      const it = document.createElement('button'); it.type = 'button'; it.className = 'trc-item' + (real.classList.contains('is-on') ? ' is-on' : ''); it.setAttribute('role', 'menuitem');
+      it.innerHTML = `<span class="trc-item-ico" aria-hidden="true">${escapeHtml(ico)}</span><span>${escapeHtml(lab)}</span>`;
+      it.addEventListener('click', ()=>{ trcMenuClose(); real.click(); }); pop.appendChild(it); });
+    stack.appendChild(pop); btn.setAttribute('aria-expanded', 'true');
+    const away = e=>{ if(!pop.isConnected){ document.removeEventListener('pointerdown', away, true); return; } if(!pop.contains(e.target) && e.target !== btn && !btn.contains(e.target)){ trcMenuClose(); document.removeEventListener('pointerdown', away, true); } };
+    setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
+    const esc = e=>{ if(e.key === 'Escape'){ trcMenuClose(); btn.focus(); document.removeEventListener('keydown', esc, true); } }; document.addEventListener('keydown', esc, true);
+    const first = pop.querySelector('.trc-item'); if(first) first.focus();
+  }catch(e){}
+}
 function fitTopRowControls(){
   try{
     const row = document.querySelector('#view-play .top-row-controls'); if(!row) return;
-    const play = row.closest('.top-play-row') || row.parentNode;
-    row.classList.remove('is-compact');
+    const play = row.closest('.top-play-row') || row.parentNode, stack = row.closest('.top-right-stack') || row;
+    trcMenuClose();
+    TRC_EXTRA_IDS.forEach(id=>{ const b = document.getElementById(id); if(b) b.classList.add('trc-x'); });
+    if(!document.getElementById('trcMoreBtn')){ // the ⋯ button sits after ⚙; it only shows in menu mode (CSS)
+      const more = document.createElement('button'); more.type = 'button'; more.className = 'btn small trc-more-btn'; more.id = 'trcMoreBtn'; more.textContent = '⋯';
+      const t = TX('ui.vis5-more-controls'); more.title = t; more.setAttribute('aria-label', t); more.setAttribute('aria-haspopup', 'menu'); more.setAttribute('aria-expanded', 'false');
+      more.addEventListener('click', trcMenuOpen);
+      const sw = row.querySelector('.settings-wrap'); if(sw && sw.nextSibling) row.insertBefore(more, sw.nextSibling); else row.appendChild(more); }
+    row.classList.remove('is-compact', 'is-menu'); play.classList.remove('trc-wrap');
     const vw = document.documentElement.clientWidth || window.innerWidth;
-    const pr = play.getBoundingClientRect(), rr = row.getBoundingClientRect();
-    let prevRight = -Infinity; const stack = row.closest('.top-right-stack') || row;
-    for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(r.width) { prevRight = Math.max(prevRight, r.right); break; } }
-    const over = row.scrollWidth > row.clientWidth + 1 || rr.right > Math.min(vw, pr.right) + 1 || rr.left < prevRight + 4;
-    row.classList.toggle('is-compact', over);
+    // does the stack, at its natural width, sit beside the cards and inside the row? (A stack that wraps onto its own line, as on a phone, only has to fit that line.)
+    const fits = ()=>{
+      const keep = stack.style.flex, kids = [...play.children]; kids.forEach(k=>{ k.dataset.trcFlex = k.style.flex; k.style.flex = 'none'; }); // everything at its natural width: a squeezed castle or deck must not make the row look as if it fits
+      const pr = play.getBoundingClientRect(), sr = stack.getBoundingClientRect(); let prevRight = -Infinity;
+      for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(!r.width) continue; if(r.top < sr.bottom - 2 && r.bottom > sr.top + 2) prevRight = Math.max(prevRight, r.right); break; }
+      const ok = sr.right <= Math.min(vw, pr.right) + 1 && sr.left >= prevRight + 4 && row.scrollWidth <= row.clientWidth + 1;
+      kids.forEach(k=>{ k.style.flex = k.dataset.trcFlex || ''; delete k.dataset.trcFlex; }); stack.style.flex = keep; return ok; };
+    if(fits()) return;
+    row.classList.add('is-compact'); if(fits()) return;
+    if(document.getElementById('appWrap') && document.getElementById('appWrap').classList.contains('mb2-raid')) return; // the raid keeps its own grid of icons
+    row.classList.add('is-menu'); if(!fits()) play.classList.add('trc-wrap'); // even four buttons do not fit beside the cards: they take their own line, as on a phone
   }catch(e){}
 }
 window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
@@ -82639,7 +82766,7 @@ function renderBoard(opts){
     let html = '';
     // Desecrate (2026-10-10): cursed cells show a sigil with their damage per round, occupied or not.
     const curseMap = (()=>{ try{ return m.engine.getCurses ? m.engine.getCurses() : {}; }catch(e){ return {}; } })();
-    const hazardMap = (()=>{ try{ return m.engine.getHazards ? m.engine.getHazards() : {}; }catch(e){ return {}; } })(); // Trap / Slash & Burn (2026-10-16)
+    const hazardMap = vis5HazardMap(m); // Trap / Slash & Burn (2026-10-16); + the ones armed in the replay but already sprung in the engine (VIS5, L4, 2026-10-28)
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
       const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
@@ -82721,7 +82848,7 @@ function renderBoard(opts){
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
     // visible too, so a change in any of them must trigger a rebuild.
-    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(m.engine.getHazards ? m.engine.getHazards() : {}); }catch(e){ return ''; } })(); // + hazards (2026-10-16)
+    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(vis5HazardMap(m)); }catch(e){ return ''; } })(); // + hazards (2026-10-16; VIS5 2026-10-28: with the replay's armed ones)
     const slotSig = slotView ? `K${curseSig}S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
@@ -85232,10 +85359,18 @@ function maybeDangerWarn(defId){
   if(!named){ if(step < 0 || step < st.step) return; if(step === st.step){ st.used += 1; if(st.used >= dangerQuota(st.step)){ st.step = Math.min(DANGER_LADDER.length - 1, st.step + 1); st.used = 0; } saveDangerState(st); } }
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const rl = (RARITY_DEFS.find(r=> r.key === d.rarity) || {}).label || d.rarity;
-  const el = document.createElement('div'); el.className = 'danger-warn'; el.setAttribute('role', 'alert');
-  el.innerHTML = `<span class="dw-sign" aria-hidden="true">⚠️</span><span>${escapeHtml(d.name)} is here!<small>${escapeHtml(rl)} · watch out</small></span>`;
-  bf.appendChild(el); setTimeout(()=> el.remove(), 3000);
-  try{ SoundKit.blindTone && SoundKit.blindTone(); }catch(e){}
+  // 2026-10-28 (package VIS5, L3; owner 10-28 09:48: "'Danger' [is] not... iconic enough."): a red-edged warning. The field's edges flare red and
+  // pulse twice, a siren-red light sweeps across it, and a hazard-striped DANGER plate slams in with the card's name; 1.5 s, under SoundKit.dangerSting.
+  // FX Low / None and reduced motion: the plate fades in and out and the edge holds still. The plate's two lines keep their own text nodes
+  // ("{v1} is here!", "{v1} · watch out") so the page translator still finds them.
+  vis5DangerPlate(bf, d.name, rl);
+}
+function vis5DangerPlate(bf, name, rl){ // the plate itself (the Effects Lab calls it too)
+  bf.querySelectorAll('.danger-warn').forEach(x=> x.remove());
+  const el = document.createElement('div'); el.className = 'danger-warn vis5-danger' + (fxAtLeast('med') && !reducedMotion() ? '' : ' is-calm'); el.setAttribute('role', 'alert');
+  el.innerHTML = `<i class="dw-edge" aria-hidden="true"></i><i class="dw-sweep" aria-hidden="true"></i><div class="dw-plate"><span class="dw-sign" aria-hidden="true">⚠️</span><span class="dw-txt"><b class="dw-head">${escapeHtml(TX('ui.vis5-danger'))}</b><span class="dw-name">${escapeHtml(name)} is here!<small>${escapeHtml(rl)} · watch out</small></span></span><span class="dw-sign" aria-hidden="true">⚠️</span></div>`;
+  bf.appendChild(el); setTimeout(()=> el.remove(), 1500);
+  try{ SoundKit.dangerSting ? SoundKit.dangerSting() : (SoundKit.blindTone && SoundKit.blindTone()); }catch(e){}
 }
 function aiActNow(){
   const m = matchState; if(!m) return;
@@ -86894,10 +87029,29 @@ const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam 
 // shouldn't wait so long, maybe 25% faster"): the "👑 <Leader> joins the fight!" callout runs LEADER_CALLOUT_MS (×0.8 of its old 2.4 s,
 // fade included), and the round's queue now waits LEADER_THRONE_WAIT_MS (×0.75 of the throne moment) before the next animation; the
 // throne moment itself (drop, ring, crown, beam) still plays in full over the top.
-const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
+// 2026-10-28 (package VIS5, L3): the callout is now the leader's slam, 1.4 s whole (was 1.92 s); LEADER_CALLOUT_FADE is 1 now
+const LEADER_CALLOUT_BASE_MS = 1400, LEADER_CALLOUT_FADE = 1, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
 const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
 // When an enemy card's fall from their hand (renderBoard's hand entrance: its first leg is handDur*0.82) touches down, in ms.
 function enemyLeaderLandMs(){ try{ const mult = (matchState && matchState.speedMult) || 1, handDur = Math.max(0.12, entranceCardTweenDur(mult)*0.62); return Math.round(Math.max(.12, handDur*0.82)*1000); }catch(e){ return 380; } }
+// 2026-10-28 (package VIS5, L3): "👑 <Leader> joins the fight!" is a moment: a band of gold (crimson for theirs) opens across the field, the
+// leader's portrait SLAMS down (from 2.8x, a ring rolls out, the field shakes), and the name banner snaps in from its side; 1.4 s
+// (LEADER_CALLOUT_MS), under the stab (SoundKit.leaderSlam). FX Low and reduced motion: the same card, fading in and out, nothing moves;
+// FX None: the name banner alone. The banner keeps its one sentence text node so the page translator still finds "{v1} joins the fight!".
+function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Effects Lab passes its own)
+  try{
+    const bf = host || document.querySelector('.battlefield'); if(!bf) return;
+    document.querySelectorAll('.leader-callout, .vis5-lead').forEach(x=> x.remove());
+    const q = bf.getBoundingClientRect(), full = fxAtLeast('med') && !reducedMotion(), none = !fxAtLeast('low');
+    const w = document.createElement('div'); w.className = 'vis5-lead' + (enemy ? ' is-enemy' : ' is-mine') + (full ? '' : ' is-calm') + (none ? ' is-bare' : ''); w.setAttribute('aria-hidden', 'true');
+    w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
+    let art = ''; try{ art = cardTileHTML(Object.assign({}, def, {icon: def.icon || '👑'}), {inPlay: true}); }catch(e){ art = `<span class="vis5-lead-emoji">${escapeHtml((def && def.icon) || '👑')}</span>`; }
+    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i><div class="vis5-lead-art">${art}</div>`;
+    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
+    if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
+  }catch(e){}
+}
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const landed = !!(opts.fromHand || opts.landed); // 2026-10-24 (BV): it has already arrived (a hand flight, or the enemy's fall in): no second drop
@@ -86907,11 +87061,10 @@ function leaderThroneVfx(uid, opts){
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
   const hp = (rc && rc.maxHp) || def.health || 0, big = hp >= 20 || RARITY_TIER_BANDS.indexOf(def.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('legendary');
-  try{ if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else SoundKit.leaderFanfare(); }catch(e){}
-  // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
-  try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
-    b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
-    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; document.body.appendChild(b); setTimeout(()=> b.remove(), LEADER_CALLOUT_MS); } }catch(e){}
+  // 2026-10-28 (package VIS5, L3; owner 10-28 09:48: "The '... joins the fight' and 'Danger' are not... iconic enough."): the stab first (a thud and a
+  // chord, a growl for theirs), then the fanfare / war drum under it
+  try{ SoundKit.leaderSlam && SoundKit.leaderSlam(enemy); if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else setTimeout(()=>{ try{ SoundKit.leaderFanfare(); }catch(e){} }, 160); }catch(e){}
+  vis5LeaderSlam(def, enemy);
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
@@ -93830,6 +93983,63 @@ function vis3CentrePips(root){
     if(img.complete) apply(); else img.addEventListener('load', apply, {once: true}); }); }catch(e){}
 }
 function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
+// 2026-10-28 (package VIS5, L4; owner 10-28 09:48: "After laying the trap, the trap context pip fades away. There is also no trap triggered
+// animation. ... the card played should jump and be discombobulated abit, and a damage number flies from it."):
+//  - THE PIP. The engine settles a whole turn at once, so by the time a trap's drop plays, the CPU's card has often stepped on it and the
+//    engine's getHazards() no longer lists it: the pip (drawn from that list) was gone at once. The replay now arms the pip itself on
+//    'hazardSet' (m.vis5Hz) and disarms it on 'hazardSprung'; vis5HazardMap() is the engine's list plus those, so the pip stays on the
+//    empty slot (and on the card that has landed on it) until the moment the trap springs. Entries die after 40 s anyway.
+//  - THE SPRING. The card played onto it jumps, lands and reels (a wobble that settles in a dizzy tilt) with three dizzy stars circling
+//    its head, and its damage number flies out big. Reduced motion or FX None: a short flash and the number, no movement.
+function vis5HazardMap(m){
+  let live = {}; try{ live = (m && m.engine && m.engine.getHazards) ? m.engine.getHazards() : {}; }catch(e){}
+  const keep = m && m.vis5Hz; if(!keep) return live;
+  const now = Date.now(), out = Object.assign({}, live);
+  Object.keys(keep).forEach(k=>{ const e = keep[k]; if(!e || now - e.t > 40000){ delete keep[k]; return; } out[k] = Object.assign({}, e.h, out[k] || {}); });
+  return out;
+}
+function vis5HzArm(ev){
+  try{ const m = matchState; if(!m || !ev || !(ev.n > 0)) return; const k = ev.pid + ':s' + ev.slot; m.vis5Hz = m.vis5Hz || {};
+    const e = m.vis5Hz[k] || (m.vis5Hz[k] = {h: {}, t: 0}); e.h[ev.kind] = ev.n; e.t = Date.now();
+    const cell = w2CellEl(ev.pid, ev.slot); // an empty slot already drawn without its pip: put it on now (a later render draws it from the map)
+    if(cell && !cell.querySelector('.w2-hazard-mark.' + ev.kind)){ cell.insertAdjacentHTML('beforeend', w2HazardMark({[ev.kind]: ev.n})); cell.classList.add('w2-hazard'); if(ev.kind === 'scorch') cell.classList.add('w2-scorch'); cell.removeAttribute('aria-hidden'); }
+  }catch(e){}
+}
+function vis5HzDisarm(ev, el){
+  try{ const m = matchState, k = ev.pid + ':s' + ev.slot, e = m && m.vis5Hz && m.vis5Hz[k]; if(e){ delete e.h[ev.kind]; if(!Object.keys(e.h).length) delete m.vis5Hz[k]; }
+    const cell = w2CellEl(ev.pid, ev.slot);
+    [el, cell].forEach(host=>{ if(!host) return; host.querySelectorAll('.w2-hazard-mark.' + ev.kind).forEach(x=> x.remove()); if(ev.kind === 'trap') host.querySelectorAll('.vis3-trap-ring').forEach(x=> x.remove()); });
+  }catch(e){}
+}
+function vis5HzSprung(ev, tries){
+  tries = tries || 0;
+  const el = boardCardEl(ev.uid);
+  if(!el){ if(tries < 14) setTimeout(()=> vis5HzSprung(ev, tries + 1), 150); else vis5HzDisarm(ev, null); return; } // the card is still in flight: wait for it (was: nothing at all)
+  vis5HzDisarm(ev, el);
+  try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} // DN2: through dnFloat
+  try{ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }catch(e){}
+  vis5HzJolt(el, ev.kind);
+}
+function vis5HzJolt(el, kind){
+  const tile = (el.querySelector && el.querySelector('.card-tile')) || el;
+  if(!hasGsap() || reducedMotion() || !fxAtLeast('low')){ // calm: a flash, no movement
+    try{ tile.classList.add('vis5-hz-flash'); setTimeout(()=> tile.classList.remove('vis5-hz-flash'), 520); }catch(e){} return; }
+  gsap.killTweensOf(tile, 'y,rotation,scale');
+  const tl = gsap.timeline({onComplete:()=> gsap.set(tile, {clearProps:'transform'})});
+  tl.to(tile, {y:-38, scale:1.12, rotation:-10, duration:.16, ease:'power2.out'})        // the jump
+    .to(tile, {y:0, scale:1, rotation:8, duration:.24, ease:'bounce.out'})               // lands, rocks over
+    .to(tile, {rotation:-12, duration:.12, ease:'sine.inOut'})                          // the wobble
+    .to(tile, {rotation:9, duration:.12, ease:'sine.inOut'})
+    .to(tile, {rotation:-6, duration:.11, ease:'sine.inOut'})
+    .to(tile, {rotation:3, duration:.1, ease:'sine.inOut'})
+    .to(tile, {rotation:0, duration:.12, ease:'sine.out'});                              // settles
+  if(!fxAtLeast('med')) return;
+  try{ const q = el.getBoundingClientRect(); if(!q.width) return; const stars = [0, 1, 2].map(i=>{ const s = document.createElement('i'); s.className = 'vis5-dizzy' + (kind === 'trap' ? '' : ' is-fire'); s.setAttribute('aria-hidden', 'true'); s.textContent = kind === 'trap' ? '💫' : '🔥'; document.body.appendChild(s); return s; });
+    const cx = q.left + q.width / 2, cy = q.top + q.height * 0.12, o = {a: 0, k: 0};
+    gsap.to(o, {a: Math.PI * 4, k: 1, duration: 1.0, ease:'none', onUpdate:()=>{ stars.forEach((s, i)=>{ const th = o.a + i * 2.094; s.style.left = (cx + Math.cos(th) * q.width * 0.36) + 'px'; s.style.top = (cy + Math.sin(th) * q.height * 0.07) + 'px'; s.style.opacity = String(o.k < .15 ? o.k / .15 : o.k > .75 ? (1 - o.k) / .25 : 1); s.style.zIndex = Math.sin(th) > 0 ? '1105' : '1100'; }); },
+      onComplete:()=> stars.forEach(s=> s.remove())});
+  }catch(e){}
+}
 function w2HazardMark(h){
   if(!h) return '';
   const out = [];
@@ -94510,8 +94720,8 @@ function w2SkillVfx(ev){
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break;
-    case 'hazardSprung': w2Later(560, ()=>{ const el = boardCardEl(ev.uid); if(!el) return; try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} if(fx('low')) F.trapSnap(el, {kind: ev.kind}); /* DN2 */ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }); break;
+    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
+    case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
     case 'absoluteZero': w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); if(fx()) F.absoluteZero(document.getElementById('battlefieldEl'), now); snd('iceShatter'); }); break;

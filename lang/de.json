@@ -3613,5 +3613,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "Mehr passt von einer Karte nicht in ein Deck: {n} Exemplare.",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "Seltenere Karten haben eine niedrigere Grenze: {n} Exemplare von dieser pro Deck.",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "Sie schlägt sofort zu, auch wenn eine Einheit zu Rundenbeginn hereinkommt (Rastlos, der Wind, ein Zauber). Nicht, solange sie schlafend, betäubt, gefroren, angekettet oder zu Stein ist.",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Nicht, solange sie schlafend, betäubt, gefroren oder zu Stein ist."
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Nicht, solange sie schlafend, betäubt, gefroren oder zu Stein ist.",
+ "Danger!": "Gefahr!",
+ "More controls": "Weitere Steuerung"
 }

@@ -3617,5 +3617,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "ஒரு அட்டையில் ஒரு தளம் வைத்திருக்கக்கூடிய அதிகபட்சம் இதுதான்: {n} நகல்கள்.",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "அரிதான அட்டைகளுக்கு வரம்பு குறைவு: ஒரு தளத்தில் இதில் {n} நகல்கள்.",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "ஒரு அலகு உள்ளே வந்தவுடனே தாக்கும், சுற்றின் தொடக்கத்தில் வந்தாலும் கூட (அமைதியற்ற, காற்று, ஒரு மந்திரம்). தூங்கும்போது, மயக்கத்தில், உறைந்திருக்கும்போது, சங்கிலியில் அல்லது கல்லாக மாறியிருக்கும்போது இல்லை.",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "தூங்கும்போது, மயக்கத்தில், உறைந்திருக்கும்போது அல்லது கல்லாக மாறியிருக்கும்போது இல்லை."
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "தூங்கும்போது, மயக்கத்தில், உறைந்திருக்கும்போது அல்லது கல்லாக மாறியிருக்கும்போது இல்லை.",
+ "Danger!": "ஆபத்து!",
+ "More controls": "மேலும் கட்டுப்பாடுகள்"
 }

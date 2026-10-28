@@ -3615,5 +3615,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "Ito na ang pinakamarami sa isang kard na kaya ng deck: {n} kopya.",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "Mas mababa ang limit ng mas bihirang kard: {n} kopya nito bawat deck.",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "Agad itong umaatake, kahit pumasok ang yunit sa simula ng round (Balisa, ang hangin, isang spell). Hindi habang ito ay tulog, Tuliro, Nagyelo, Nakakadena o naging bato.",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Hindi habang ito ay tulog, Tuliro, Nagyelo o naging bato."
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Hindi habang ito ay tulog, Tuliro, Nagyelo o naging bato.",
+ "Danger!": "Panganib!",
+ "More controls": "Higit pang kontrol"
 }

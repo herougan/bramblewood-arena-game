@@ -3614,5 +3614,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "一副卡組中同一張卡最多只能放 {n} 張。",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "越稀有的卡上限越低：這張卡每副卡組最多 {n} 張。",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "單位一進入就立刻出手，即使是在回合開始時進來（躁動、風、法術）。睡眠、眩暈、冰凍、被鎖鏈束縛或石化時不會出手。",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "睡眠、眩暈、冰凍或石化時不會。"
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "睡眠、眩暈、冰凍或石化時不會。",
+ "Danger!": "危險！",
+ "More controls": "更多操作"
 }

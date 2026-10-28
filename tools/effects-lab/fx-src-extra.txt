@@ -155,3 +155,11 @@ vis4ShieldCount
 vis4ShieldRect
 vis4ShieldHit
 vis4ShieldBreak
+# VIS5 (2026-10-28): the leader's slam (L3), the Danger plate (L3), the trap's spring: jolt, stars, pip (L4)
+vis5LeaderSlam
+vis5DangerPlate
+vis5HzJolt
+vis5HazardMap
+vis5HzArm
+vis5HzDisarm
+vis5HzSprung

@@ -3617,5 +3617,7 @@
  "That's the most a deck can hold of one card: {n} copies.": "한 카드는 덱에 이만큼까지만 넣을 수 있습니다: {n}장.",
  "Rarer cards have a lower cap: {n} copies of this one per deck.": "희귀한 카드일수록 한도가 낮습니다: 이 카드는 덱당 {n}장까지.",
  "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "유닛이 들어오는 즉시 공격합니다. 라운드 시작에 들어와도 마찬가지입니다(불안, 바람, 주문). 수면, 기절, 빙결, 사슬, 석화 상태에서는 공격하지 않습니다.",
- "Not while it is Asleep, Stunned, Frozen or turned to stone.": "수면, 기절, 빙결, 석화 상태에서는 하지 않습니다."
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "수면, 기절, 빙결, 석화 상태에서는 하지 않습니다.",
+ "Danger!": "위험!",
+ "More controls": "더 많은 조작"
 }

@@ -5074,6 +5074,18 @@ const SoundKit = (()=>{
       [146.8, 155.6, 207.7].forEach((f, i)=> tone(f, 0.95, 'sawtooth', 0.042, 0.03 + i * 0.012));
       sweep(330, 196, 0.6, 'triangle', 0.035, 0.08);
     },
+    // 2026-10-28 (package VIS5, L3): the leader's slam: a thud and a short stab (a brass chord for yours, a low growl for theirs), then the usual fanfare / drum follows
+    leaderSlam(enemy){
+      fnoise(0.22, 0.14, {type:'lowpass', freq:700, freqEnd:90, attack:0.002});
+      tone(enemy ? 48 : 62, 0.55, 'sine', 0.17, 0);
+      if(enemy){ [110, 117, 165].forEach((f, i)=> tone(f, 0.5, 'sawtooth', 0.035, 0.02 + i * 0.01)); sweep(220, 98, 0.5, 'triangle', 0.03, 0.05); }
+      else { [392, 523, 659].forEach(f=> tone(f, 0.3, 'sawtooth', 0.035, 0.07)); tone(784, 0.4, 'triangle', 0.03, 0.12); }
+    },
+    // 2026-10-28 (VIS5, L3): the Danger warning: two falling siren pulses over a low thump
+    dangerSting(){
+      tone(78, 0.45, 'sine', 0.13, 0);
+      sweep(940, 620, 0.2, 'square', 0.028, 0.02); sweep(940, 620, 0.2, 'square', 0.028, 0.34);
+    },
     suddenDeathSting(){
       fnoise(1.1, 0.10, {type:'lowpass', freq:300, freqEnd:90, attack:0.02});
       [233, 220, 175].forEach((f, i)=> tone(f, 0.55, 'sawtooth', 0.05, i*0.18));
@@ -7921,6 +7933,11 @@ function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
   codexWireGridClick(gridEl); codexWireSwipe(gridEl);
   albumDraw();
 }
+// 2026-10-28 (package VIS5, L12; owner 10-28 09:48: "Even if the cards shown is few, the codex book should still be at 'max height'."): an album
+// page is always 4 rows tall. The empty slots were 1 px high, so a page with a few cards (a search, a filter, a section's last page) shrank
+// the whole book. An empty slot now has a sleeve's own proportions (--al-sar, width / height, measured from a real sleeve after each draw
+// and kept per layout in codexSleeveAR), so the rows without cards still take a sleeve's height and the book keeps its full height.
+const codexSleeveAR = {};
 function albumPageHTML(p, i, side){
   if(!p) return `<section class="al-page pg-${side} is-blank" aria-hidden="true"></section>`;
   const S = codexAlbumState, sec = p.sec, per = S.L.cols * S.L.rows;
@@ -7931,7 +7948,7 @@ function albumPageHTML(p, i, side){
   const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
   return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
     <header class="al-head"><span class="al-sec"${sec.tip ? ' title="' + escapeAttr(sec.tip) + '"' : '' /* 2026-10-19 (package CX): the detail as a tooltip */}>${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
-    <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
+    <div class="al-grid" style="--al-cols:${S.L.cols}; --al-sar:${codexSleeveAR[S.L.key] || .66}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
 }
 function albumDraw(){
   const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
@@ -7945,6 +7962,7 @@ function albumDraw(){
   // count and "Go to section" sit above the album; ‹ « and › » are tabs on its outer edges (no bar below).
   gridEl.innerHTML = codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections)
     + `<div class="al-album pg-book al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}${codexEdgeTabsHTML(codexPage, L.pages, pages.length)}</div>`;
+  try{ const sl = gridEl.querySelector('.al-sleeve'); if(sl){ const q = sl.getBoundingClientRect(); if(q.width > 20 && q.height > 20){ const ar = Math.round(q.width / q.height * 1000) / 1000; if(Math.abs((codexSleeveAR[L.key] || 0) - ar) > .004){ codexSleeveAR[L.key] = ar; gridEl.querySelectorAll('.al-grid').forEach(g=> g.style.setProperty('--al-sar', String(ar))); } } } }catch(e){} // VIS5 (L12): the empty slots' proportions
   gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(b.dataset.turn)));
   { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
   wireCodexGrid(S.groupIds);
@@ -34287,17 +34305,56 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
 // the fight's top-right buttons show their words while they fit; when the row would run past the screen (or into the Environment
 // cards beside it) it goes .is-compact: icons only, the same look a phone has (the words stay in each button's title and aria-label).
 function autoplayBtnInner(on){ return on ? '⏸<span class="trc-lbl"> Auto-play on</span>' : '🤖<span class="trc-lbl"> Auto-play</span>'; }
+// 2026-10-28 (package VIS5, L6; owner 10-28 09:48: "Wolfsbane Tundra top right controls are squeezed to all hell. Is there a better way to
+// present those controls"): three stages, the first that fits wins. 1 words and icons; 2 icons only (.is-compact); 3 .is-menu: the
+// essentials stay (speed, the log, ⚙, ⋯) and the rest (full screen, forfeit, auto-play, the admin tools, quit) move into the ⋯ menu.
+// A fight with a long row of Environment cards (Wolfsbane's 17-5, 17-7, 17-8 have four) squeezed stage 2 to buttons 17 to 22 px tall
+// with the first ones hidden under the cards; now it never shrinks a button. The measure puts the stack at its natural width (flex:none)
+// and asks whether it still sits beside the cards and inside the row. The menu's items click the real buttons (they keep their wiring and
+// ids; in menu mode they are only hidden), so each one's label and state are read from the button when the menu opens.
+const TRC_EXTRA_IDS = ['fsBtn', 'forfeitMatchBtn', 'adminWinBtn', 'adminEditModeBtn', 'autoplayBtn', 'quitMatchBtn'];
+function trcMenuClose(){ try{ document.querySelectorAll('.trc-pop').forEach(x=> x.remove()); const b = document.getElementById('trcMoreBtn'); if(b) b.setAttribute('aria-expanded', 'false'); }catch(e){} }
+function trcMenuOpen(){
+  try{
+    const row = document.querySelector('#view-play .top-row-controls'), btn = document.getElementById('trcMoreBtn'); if(!row || !btn) return;
+    if(document.querySelector('.trc-pop')){ trcMenuClose(); return; }
+    const stack = row.closest('.top-right-stack') || row, pop = document.createElement('div'); pop.className = 'trc-pop'; pop.setAttribute('role', 'menu');
+    TRC_EXTRA_IDS.forEach(id=>{ const real = document.getElementById(id); if(!real) return;
+      const lab = real.getAttribute('aria-label') || real.getAttribute('title') || real.textContent.trim(), icoEl = real.querySelector('.trc-ico'), ico = icoEl ? icoEl.textContent : ({fsBtn:'⤢', forfeitMatchBtn:'🏳️', adminWinBtn:'👑', adminEditModeBtn:'✏️', autoplayBtn: real.classList.contains('is-on') ? '⏸' : '🤖'})[id] || '•';
+      const it = document.createElement('button'); it.type = 'button'; it.className = 'trc-item' + (real.classList.contains('is-on') ? ' is-on' : ''); it.setAttribute('role', 'menuitem');
+      it.innerHTML = `<span class="trc-item-ico" aria-hidden="true">${escapeHtml(ico)}</span><span>${escapeHtml(lab)}</span>`;
+      it.addEventListener('click', ()=>{ trcMenuClose(); real.click(); }); pop.appendChild(it); });
+    stack.appendChild(pop); btn.setAttribute('aria-expanded', 'true');
+    const away = e=>{ if(!pop.isConnected){ document.removeEventListener('pointerdown', away, true); return; } if(!pop.contains(e.target) && e.target !== btn && !btn.contains(e.target)){ trcMenuClose(); document.removeEventListener('pointerdown', away, true); } };
+    setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
+    const esc = e=>{ if(e.key === 'Escape'){ trcMenuClose(); btn.focus(); document.removeEventListener('keydown', esc, true); } }; document.addEventListener('keydown', esc, true);
+    const first = pop.querySelector('.trc-item'); if(first) first.focus();
+  }catch(e){}
+}
 function fitTopRowControls(){
   try{
     const row = document.querySelector('#view-play .top-row-controls'); if(!row) return;
-    const play = row.closest('.top-play-row') || row.parentNode;
-    row.classList.remove('is-compact');
+    const play = row.closest('.top-play-row') || row.parentNode, stack = row.closest('.top-right-stack') || row;
+    trcMenuClose();
+    TRC_EXTRA_IDS.forEach(id=>{ const b = document.getElementById(id); if(b) b.classList.add('trc-x'); });
+    if(!document.getElementById('trcMoreBtn')){ // the ⋯ button sits after ⚙; it only shows in menu mode (CSS)
+      const more = document.createElement('button'); more.type = 'button'; more.className = 'btn small trc-more-btn'; more.id = 'trcMoreBtn'; more.textContent = '⋯';
+      const t = TX('ui.vis5-more-controls'); more.title = t; more.setAttribute('aria-label', t); more.setAttribute('aria-haspopup', 'menu'); more.setAttribute('aria-expanded', 'false');
+      more.addEventListener('click', trcMenuOpen);
+      const sw = row.querySelector('.settings-wrap'); if(sw && sw.nextSibling) row.insertBefore(more, sw.nextSibling); else row.appendChild(more); }
+    row.classList.remove('is-compact', 'is-menu'); play.classList.remove('trc-wrap');
     const vw = document.documentElement.clientWidth || window.innerWidth;
-    const pr = play.getBoundingClientRect(), rr = row.getBoundingClientRect();
-    let prevRight = -Infinity; const stack = row.closest('.top-right-stack') || row;
-    for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(r.width) { prevRight = Math.max(prevRight, r.right); break; } }
-    const over = row.scrollWidth > row.clientWidth + 1 || rr.right > Math.min(vw, pr.right) + 1 || rr.left < prevRight + 4;
-    row.classList.toggle('is-compact', over);
+    // does the stack, at its natural width, sit beside the cards and inside the row? (A stack that wraps onto its own line, as on a phone, only has to fit that line.)
+    const fits = ()=>{
+      const keep = stack.style.flex, kids = [...play.children]; kids.forEach(k=>{ k.dataset.trcFlex = k.style.flex; k.style.flex = 'none'; }); // everything at its natural width: a squeezed castle or deck must not make the row look as if it fits
+      const pr = play.getBoundingClientRect(), sr = stack.getBoundingClientRect(); let prevRight = -Infinity;
+      for(let el = stack.previousElementSibling; el; el = el.previousElementSibling){ const r = el.getBoundingClientRect(); if(!r.width) continue; if(r.top < sr.bottom - 2 && r.bottom > sr.top + 2) prevRight = Math.max(prevRight, r.right); break; }
+      const ok = sr.right <= Math.min(vw, pr.right) + 1 && sr.left >= prevRight + 4 && row.scrollWidth <= row.clientWidth + 1;
+      kids.forEach(k=>{ k.style.flex = k.dataset.trcFlex || ''; delete k.dataset.trcFlex; }); stack.style.flex = keep; return ok; };
+    if(fits()) return;
+    row.classList.add('is-compact'); if(fits()) return;
+    if(document.getElementById('appWrap') && document.getElementById('appWrap').classList.contains('mb2-raid')) return; // the raid keeps its own grid of icons
+    row.classList.add('is-menu'); if(!fits()) play.classList.add('trc-wrap'); // even four buttons do not fit beside the cards: they take their own line, as on a phone
   }catch(e){}
 }
 window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
@@ -35658,7 +35715,7 @@ function renderBoard(opts){
     let html = '';
     // Desecrate (2026-10-10): cursed cells show a sigil with their damage per round, occupied or not.
     const curseMap = (()=>{ try{ return m.engine.getCurses ? m.engine.getCurses() : {}; }catch(e){ return {}; } })();
-    const hazardMap = (()=>{ try{ return m.engine.getHazards ? m.engine.getHazards() : {}; }catch(e){ return {}; } })(); // Trap / Slash & Burn (2026-10-16)
+    const hazardMap = vis5HazardMap(m); // Trap / Slash & Burn (2026-10-16); + the ones armed in the replay but already sprung in the engine (VIS5, L4, 2026-10-28)
     for(let sl=-slotRange; sl<=slotRange; sl++){
       const c = bySlot.get(sl), cur = curseMap[pl.id + ':s' + sl] || 0;
       const mark = (cur ? `<span class="curse-mark" title="Cursed ground: ${cur} damage a round to whoever stands here">🜏 ${cur}</span>` : '') + w2HazardMark(hazardMap[pl.id + ':s' + sl]) + eqSlotMarks(pl.id, sl, c); // + traps and burning ground (2026-10-16); + floors, lone and carried equipment, hazard drop targets (EQ, 2026-10-19)
@@ -35740,7 +35797,7 @@ function renderBoard(opts){
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
     // visible too, so a change in any of them must trigger a rebuild.
-    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(m.engine.getHazards ? m.engine.getHazards() : {}); }catch(e){ return ''; } })(); // + hazards (2026-10-16)
+    const curseSig = (()=>{ try{ return JSON.stringify(m.engine.getCurses ? m.engine.getCurses() : {}) + JSON.stringify(vis5HazardMap(m)); }catch(e){ return ''; } })(); // + hazards (2026-10-16; VIS5 2026-10-28: with the replay's armed ones)
     const slotSig = slotView ? `K${curseSig}S${slotRange}{${[...legalForViewer].join(',')}}(${[...rows.left, ...rows.center, ...rows.right].map(c=>c.uid+'@'+c.slot).join(',')})` : '';
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
@@ -38251,10 +38308,18 @@ function maybeDangerWarn(defId){
   if(!named){ if(step < 0 || step < st.step) return; if(step === st.step){ st.used += 1; if(st.used >= dangerQuota(st.step)){ st.step = Math.min(DANGER_LADDER.length - 1, st.step + 1); st.used = 0; } saveDangerState(st); } }
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const rl = (RARITY_DEFS.find(r=> r.key === d.rarity) || {}).label || d.rarity;
-  const el = document.createElement('div'); el.className = 'danger-warn'; el.setAttribute('role', 'alert');
-  el.innerHTML = `<span class="dw-sign" aria-hidden="true">⚠️</span><span>${escapeHtml(d.name)} is here!<small>${escapeHtml(rl)} · watch out</small></span>`;
-  bf.appendChild(el); setTimeout(()=> el.remove(), 3000);
-  try{ SoundKit.blindTone && SoundKit.blindTone(); }catch(e){}
+  // 2026-10-28 (package VIS5, L3; owner 10-28 09:48: "'Danger' [is] not... iconic enough."): a red-edged warning. The field's edges flare red and
+  // pulse twice, a siren-red light sweeps across it, and a hazard-striped DANGER plate slams in with the card's name; 1.5 s, under SoundKit.dangerSting.
+  // FX Low / None and reduced motion: the plate fades in and out and the edge holds still. The plate's two lines keep their own text nodes
+  // ("{v1} is here!", "{v1} · watch out") so the page translator still finds them.
+  vis5DangerPlate(bf, d.name, rl);
+}
+function vis5DangerPlate(bf, name, rl){ // the plate itself (the Effects Lab calls it too)
+  bf.querySelectorAll('.danger-warn').forEach(x=> x.remove());
+  const el = document.createElement('div'); el.className = 'danger-warn vis5-danger' + (fxAtLeast('med') && !reducedMotion() ? '' : ' is-calm'); el.setAttribute('role', 'alert');
+  el.innerHTML = `<i class="dw-edge" aria-hidden="true"></i><i class="dw-sweep" aria-hidden="true"></i><div class="dw-plate"><span class="dw-sign" aria-hidden="true">⚠️</span><span class="dw-txt"><b class="dw-head">${escapeHtml(TX('ui.vis5-danger'))}</b><span class="dw-name">${escapeHtml(name)} is here!<small>${escapeHtml(rl)} · watch out</small></span></span><span class="dw-sign" aria-hidden="true">⚠️</span></div>`;
+  bf.appendChild(el); setTimeout(()=> el.remove(), 1500);
+  try{ SoundKit.dangerSting ? SoundKit.dangerSting() : (SoundKit.blindTone && SoundKit.blindTone()); }catch(e){}
 }
 function aiActNow(){
   const m = matchState; if(!m) return;
@@ -39913,10 +39978,29 @@ const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam 
 // shouldn't wait so long, maybe 25% faster"): the "👑 <Leader> joins the fight!" callout runs LEADER_CALLOUT_MS (×0.8 of its old 2.4 s,
 // fade included), and the round's queue now waits LEADER_THRONE_WAIT_MS (×0.75 of the throne moment) before the next animation; the
 // throne moment itself (drop, ring, crown, beam) still plays in full over the top.
-const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
+// 2026-10-28 (package VIS5, L3): the callout is now the leader's slam, 1.4 s whole (was 1.92 s); LEADER_CALLOUT_FADE is 1 now
+const LEADER_CALLOUT_BASE_MS = 1400, LEADER_CALLOUT_FADE = 1, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
 const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
 // When an enemy card's fall from their hand (renderBoard's hand entrance: its first leg is handDur*0.82) touches down, in ms.
 function enemyLeaderLandMs(){ try{ const mult = (matchState && matchState.speedMult) || 1, handDur = Math.max(0.12, entranceCardTweenDur(mult)*0.62); return Math.round(Math.max(.12, handDur*0.82)*1000); }catch(e){ return 380; } }
+// 2026-10-28 (package VIS5, L3): "👑 <Leader> joins the fight!" is a moment: a band of gold (crimson for theirs) opens across the field, the
+// leader's portrait SLAMS down (from 2.8x, a ring rolls out, the field shakes), and the name banner snaps in from its side; 1.4 s
+// (LEADER_CALLOUT_MS), under the stab (SoundKit.leaderSlam). FX Low and reduced motion: the same card, fading in and out, nothing moves;
+// FX None: the name banner alone. The banner keeps its one sentence text node so the page translator still finds "{v1} joins the fight!".
+function vis5LeaderSlam(def, enemy, host){ // host: the field's element (the Effects Lab passes its own)
+  try{
+    const bf = host || document.querySelector('.battlefield'); if(!bf) return;
+    document.querySelectorAll('.leader-callout, .vis5-lead').forEach(x=> x.remove());
+    const q = bf.getBoundingClientRect(), full = fxAtLeast('med') && !reducedMotion(), none = !fxAtLeast('low');
+    const w = document.createElement('div'); w.className = 'vis5-lead' + (enemy ? ' is-enemy' : ' is-mine') + (full ? '' : ' is-calm') + (none ? ' is-bare' : ''); w.setAttribute('aria-hidden', 'true');
+    w.style.left = q.left + 'px'; w.style.width = q.width + 'px'; w.style.top = (enemy ? q.top + q.height * 0.27 : q.bottom - q.height * 0.27) + 'px'; w.style.setProperty('--lead-ms', LEADER_CALLOUT_MS + 'ms');
+    let art = ''; try{ art = cardTileHTML(Object.assign({}, def, {icon: def.icon || '👑'}), {inPlay: true}); }catch(e){ art = `<span class="vis5-lead-emoji">${escapeHtml((def && def.icon) || '👑')}</span>`; }
+    w.innerHTML = `<i class="vis5-lead-band"></i><i class="vis5-lead-shock"></i><div class="vis5-lead-art">${art}</div>`;
+    const b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status'); b.setAttribute('aria-hidden', 'false');
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; w.appendChild(b); document.body.appendChild(w); setTimeout(()=> w.remove(), LEADER_CALLOUT_MS);
+    if(full) setTimeout(()=>{ try{ battlefieldShake(enemy ? 0.4 : 0.32); }catch(e){} }, Math.round(LEADER_CALLOUT_MS * 0.17)); // the slam lands at 17%
+  }catch(e){}
+}
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const landed = !!(opts.fromHand || opts.landed); // 2026-10-24 (BV): it has already arrived (a hand flight, or the enemy's fall in): no second drop
@@ -39926,11 +40010,10 @@ function leaderThroneVfx(uid, opts){
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
   const hp = (rc && rc.maxHp) || def.health || 0, big = hp >= 20 || RARITY_TIER_BANDS.indexOf(def.rarity || 'common') >= RARITY_TIER_BANDS.indexOf('legendary');
-  try{ if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else SoundKit.leaderFanfare(); }catch(e){}
-  // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
-  try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
-    b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
-    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; document.body.appendChild(b); setTimeout(()=> b.remove(), LEADER_CALLOUT_MS); } }catch(e){}
+  // 2026-10-28 (package VIS5, L3; owner 10-28 09:48: "The '... joins the fight' and 'Danger' are not... iconic enough."): the stab first (a thud and a
+  // chord, a growl for theirs), then the fanfare / war drum under it
+  try{ SoundKit.leaderSlam && SoundKit.leaderSlam(enemy); if(enemy){ SoundKit.castleCollapse && SoundKit.castleCollapse(); } else setTimeout(()=>{ try{ SoundKit.leaderFanfare(); }catch(e){} }, 160); }catch(e){}
+  vis5LeaderSlam(def, enemy);
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
@@ -46849,6 +46932,63 @@ function vis3CentrePips(root){
     if(img.complete) apply(); else img.addEventListener('load', apply, {once: true}); }); }catch(e){}
 }
 function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
+// 2026-10-28 (package VIS5, L4; owner 10-28 09:48: "After laying the trap, the trap context pip fades away. There is also no trap triggered
+// animation. ... the card played should jump and be discombobulated abit, and a damage number flies from it."):
+//  - THE PIP. The engine settles a whole turn at once, so by the time a trap's drop plays, the CPU's card has often stepped on it and the
+//    engine's getHazards() no longer lists it: the pip (drawn from that list) was gone at once. The replay now arms the pip itself on
+//    'hazardSet' (m.vis5Hz) and disarms it on 'hazardSprung'; vis5HazardMap() is the engine's list plus those, so the pip stays on the
+//    empty slot (and on the card that has landed on it) until the moment the trap springs. Entries die after 40 s anyway.
+//  - THE SPRING. The card played onto it jumps, lands and reels (a wobble that settles in a dizzy tilt) with three dizzy stars circling
+//    its head, and its damage number flies out big. Reduced motion or FX None: a short flash and the number, no movement.
+function vis5HazardMap(m){
+  let live = {}; try{ live = (m && m.engine && m.engine.getHazards) ? m.engine.getHazards() : {}; }catch(e){}
+  const keep = m && m.vis5Hz; if(!keep) return live;
+  const now = Date.now(), out = Object.assign({}, live);
+  Object.keys(keep).forEach(k=>{ const e = keep[k]; if(!e || now - e.t > 40000){ delete keep[k]; return; } out[k] = Object.assign({}, e.h, out[k] || {}); });
+  return out;
+}
+function vis5HzArm(ev){
+  try{ const m = matchState; if(!m || !ev || !(ev.n > 0)) return; const k = ev.pid + ':s' + ev.slot; m.vis5Hz = m.vis5Hz || {};
+    const e = m.vis5Hz[k] || (m.vis5Hz[k] = {h: {}, t: 0}); e.h[ev.kind] = ev.n; e.t = Date.now();
+    const cell = w2CellEl(ev.pid, ev.slot); // an empty slot already drawn without its pip: put it on now (a later render draws it from the map)
+    if(cell && !cell.querySelector('.w2-hazard-mark.' + ev.kind)){ cell.insertAdjacentHTML('beforeend', w2HazardMark({[ev.kind]: ev.n})); cell.classList.add('w2-hazard'); if(ev.kind === 'scorch') cell.classList.add('w2-scorch'); cell.removeAttribute('aria-hidden'); }
+  }catch(e){}
+}
+function vis5HzDisarm(ev, el){
+  try{ const m = matchState, k = ev.pid + ':s' + ev.slot, e = m && m.vis5Hz && m.vis5Hz[k]; if(e){ delete e.h[ev.kind]; if(!Object.keys(e.h).length) delete m.vis5Hz[k]; }
+    const cell = w2CellEl(ev.pid, ev.slot);
+    [el, cell].forEach(host=>{ if(!host) return; host.querySelectorAll('.w2-hazard-mark.' + ev.kind).forEach(x=> x.remove()); if(ev.kind === 'trap') host.querySelectorAll('.vis3-trap-ring').forEach(x=> x.remove()); });
+  }catch(e){}
+}
+function vis5HzSprung(ev, tries){
+  tries = tries || 0;
+  const el = boardCardEl(ev.uid);
+  if(!el){ if(tries < 14) setTimeout(()=> vis5HzSprung(ev, tries + 1), 150); else vis5HzDisarm(ev, null); return; } // the card is still in flight: wait for it (was: nothing at all)
+  vis5HzDisarm(ev, el);
+  try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} // DN2: through dnFloat
+  try{ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }catch(e){}
+  vis5HzJolt(el, ev.kind);
+}
+function vis5HzJolt(el, kind){
+  const tile = (el.querySelector && el.querySelector('.card-tile')) || el;
+  if(!hasGsap() || reducedMotion() || !fxAtLeast('low')){ // calm: a flash, no movement
+    try{ tile.classList.add('vis5-hz-flash'); setTimeout(()=> tile.classList.remove('vis5-hz-flash'), 520); }catch(e){} return; }
+  gsap.killTweensOf(tile, 'y,rotation,scale');
+  const tl = gsap.timeline({onComplete:()=> gsap.set(tile, {clearProps:'transform'})});
+  tl.to(tile, {y:-38, scale:1.12, rotation:-10, duration:.16, ease:'power2.out'})        // the jump
+    .to(tile, {y:0, scale:1, rotation:8, duration:.24, ease:'bounce.out'})               // lands, rocks over
+    .to(tile, {rotation:-12, duration:.12, ease:'sine.inOut'})                          // the wobble
+    .to(tile, {rotation:9, duration:.12, ease:'sine.inOut'})
+    .to(tile, {rotation:-6, duration:.11, ease:'sine.inOut'})
+    .to(tile, {rotation:3, duration:.1, ease:'sine.inOut'})
+    .to(tile, {rotation:0, duration:.12, ease:'sine.out'});                              // settles
+  if(!fxAtLeast('med')) return;
+  try{ const q = el.getBoundingClientRect(); if(!q.width) return; const stars = [0, 1, 2].map(i=>{ const s = document.createElement('i'); s.className = 'vis5-dizzy' + (kind === 'trap' ? '' : ' is-fire'); s.setAttribute('aria-hidden', 'true'); s.textContent = kind === 'trap' ? '💫' : '🔥'; document.body.appendChild(s); return s; });
+    const cx = q.left + q.width / 2, cy = q.top + q.height * 0.12, o = {a: 0, k: 0};
+    gsap.to(o, {a: Math.PI * 4, k: 1, duration: 1.0, ease:'none', onUpdate:()=>{ stars.forEach((s, i)=>{ const th = o.a + i * 2.094; s.style.left = (cx + Math.cos(th) * q.width * 0.36) + 'px'; s.style.top = (cy + Math.sin(th) * q.height * 0.07) + 'px'; s.style.opacity = String(o.k < .15 ? o.k / .15 : o.k > .75 ? (1 - o.k) / .25 : 1); s.style.zIndex = Math.sin(th) > 0 ? '1105' : '1100'; }); },
+      onComplete:()=> stars.forEach(s=> s.remove())});
+  }catch(e){}
+}
 function w2HazardMark(h){
   if(!h) return '';
   const out = [];
@@ -47529,8 +47669,8 @@ function w2SkillVfx(ev){
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break;
-    case 'hazardSprung': w2Later(560, ()=>{ const el = boardCardEl(ev.uid); if(!el) return; try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} if(fx('low')) F.trapSnap(el, {kind: ev.kind}); /* DN2 */ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }); break;
+    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
+    case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
     case 'absoluteZero': w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); if(fx()) F.absoluteZero(document.getElementById('battlefieldEl'), now); snd('iceShatter'); }); break;
