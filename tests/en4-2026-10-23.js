@@ -190,7 +190,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-23 additions \(package EN4\)/.test(cat) && /en4GreaterPoison/.test(cat) && /Reverted by EN4/.test(cat), 'docs/effects-catalogue.md: EN4');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN4-1', 'EN4-2', 'EN4-3', 'EN4-4', 'EN4-5'].every(i=> ids.includes(i)), 'decisions EN4-1 .. EN4-5');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 120000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-25 (release): 120000, PL2's long entry sits above it // 2026-10-24 (BAL2): 60000 // 2026-10-24 (package EN5): later entries sit above it
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN4/.test(cl.slice(0, 250000)), 'CHANGELOG: EN4 near the top'); } // 2026-10-28 (RELFIX2): 250000, the 10-28 batch's entries sit above it // 2026-10-25 (release): 120000, PL2's long entry sits above it // 2026-10-24 (BAL2): 60000 // 2026-10-24 (package EN5): later entries sit above it
 
 console.log(`en4-2026-10-23: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);

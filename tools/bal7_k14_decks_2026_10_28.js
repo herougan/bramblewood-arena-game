@@ -133,7 +133,12 @@ if(require.main !== module){ /* a library */ } else if(CMD === 'plan' || CMD ===
     fs.writeFileSync(APP, s); console.log('applied', n, 'decks to arena_app.js');
   }
 } else if(CMD === 'check'){
-  const bad = fights().map(f=> [f, violations(f, f.n.deck)]).filter(([, v])=> v.length);
+  // 2026-10-28 (RELFIX2): the plan's fresh cards took five skirmishes to 8 different cards and its swaps turned 23-5's Siege Train off;
+  // `check` now also names a skirmish outside 5-7 different cards and a challenge deck whose boon is off (bal3 / df3's road rules)
+  const E = require(path.join(ROOT, 'bramblewood-engine.js'));
+  const more = f=>{ const out = [], ids = Object.keys(f.n.deck); if(f.kind === 'skirmish' && (ids.length < 5 || ids.length > 7)) out.push(`${ids.length} different cards`);
+    const b = f.n.rules && f.n.rules.boon, st = b && E.selfishBoonCount(D, f.n.deck, b); if(st && !st.on) out.push(`boon ${b} off (${st.have}/${st.total})`); return out; };
+  const bad = fights().map(f=> [f, violations(f, f.n.deck).concat(more(f))]).filter(([, v])=> v.length);
   bad.forEach(([f, v])=> console.log(f.key, v.join(', '))); console.log(bad.length + ' fights break K14'); process.exit(bad.length ? 1 : 0);
 }
 module.exports = {uniqueOf, violations, fights};

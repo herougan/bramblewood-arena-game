@@ -44,7 +44,8 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(/\{key:'crabClaws', category:'passive', label:'Crab Claws'/.test(src), 'Crab Claws is back in "+ Add Skill" (2026-10-15, user: "Crab claws can be, attack a random unit L or R")');
   ok(/const gateOk = x => row\.key===x\.key \|\| \(!x\.hidden/.test(src), 'the editor picker leaves hidden skills out');
-  ok(/function skillIconFor\(k, d\)\{ return \(k === 'fork' && isCrabDef\(d\)\) \? '🦞'/.test(src), 'Fork on a crab: the crab claw icon');
+  // 2026-10-28 (RELFIX2): skillIconFor checks a hidden (EN8) skill and Transform first and runs over two lines now; the crab claw is its last return
+  ok(/function skillIconFor\(k, d\)\{[\s\S]{0,1200}?return \(k === 'fork' && isCrabDef\(d\)\) \? '🦞'/.test(src), 'Fork on a crab: the crab claw icon');
   ok(/isCrabDef\(d\) \? `<span class="ab-fork ab-crab"[^`]*>🦞<\/span>` : `<span class="ab-fork"[^`]*>⇔<\/span>`/.test(src), 'the card chip: 🦞 on crabs, ⇔ elsewhere');
   ok(/const ic = k=>\{ const g = skillIconFor\(k, def\)/.test(src), 'the skill lines use the crab claw too');
   // isCrabDef, run on the real cards
@@ -60,8 +61,9 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   ['kg-elem', 'kg-plant', 'kg-flora'].forEach(id=>{ const {T, ev} = hitWith(id); const ps = ev.find(x=> x.type === 'psychic');
     ok(T.hp === 48 && ps && ps.immune && ps.dmg === 0, `${id}: no mind, no psychic damage (${T.hp})`); });
   ok(['ent', 'heartwood-treant', 'fungal-colossus'].every(id=> base[id]), 'the real Elementals/Plants exist');
-  { const {e, P} = mk(5); const L = put(e, P, 2, 'kg-wall', -1), R = put(e, P, 2, 'kg-wall', 1); const A = put(e, P, 1, 'kg-psyF', 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev);
-    ok(L.hp === 47 && R.hp === 47 && ev.filter(x=> x.type === 'psychic').length === 2, `each Fork prong carries it (${L.hp}, ${R.hp})`); }
+  // 2026-10-28 (RELFIX2): G2 (ENG9): a Fork strikes C and one side, never L + R, so the two prongs are C and a side (was L and R only)
+  { const {e, P} = mk(5); const L = put(e, P, 2, 'kg-wall', -1), C = put(e, P, 2, 'kg-wall', 0), R = put(e, P, 2, 'kg-wall', 1); const A = put(e, P, 1, 'kg-psyF', 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev);
+    ok(C.hp === 47 && [L.hp, R.hp].sort().join() === '47,50' && ev.filter(x=> x.type === 'psychic').length === 2, `each Fork prong carries it (${L.hp}, ${C.hp}, ${R.hp})`); }
   { const {e, P} = mk(5); const T = put(e, P, 2, 'kg-wall', 0); T.hp = 4; const A = put(e, P, 1, 'kg-psyK', 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev);
     ok(!all(P[2]).includes(T) && ev.some(x=> x.type === 'death' && x.uid === T.uid), 'psychic damage can kill'); } }
 

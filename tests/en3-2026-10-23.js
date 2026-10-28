@@ -107,7 +107,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   ok(Object.keys(want).every(k=> sk(k) && sk(k).value === want[k] && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   ok(sk('toxin').value === 5 && sk('detonate').value === 0.2, 'Toxin (never wears off) and Detonate are left'); // 2026-10-26 (release): CONTENT3 reworked Detonate N (0.2 a tick)
-  ok(sk('bulwark').value === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 9 (was 6)');
+  ok(sk('bulwark').value === 7.2 && sk('bulwark').prevValueBAL7 === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 7.2 (BAL7: the owner\'s 9 x 0.8; was 6 before EN3)'); // 2026-10-28 (RELFIX2): BAL7 / FIN2-2 counts the shields' Health at 0.8, so the owner's 9 is 7.2 a point (was === 9)
   ok(sk('rampart') && sk('rampart').value === 0.22 /* 2026-10-24 (EN8, owner 21:41 #5): its columns only, 0.5 -> 0.25; 2026-10-26 (ENG9, EN8-8): Ready only, 0.22 */ && sk('brambleArmor') && sk('brambleArmor').value === 1.1, 'Rampart 0.25 (EN8), Bramble Armor 1.1 (measured)');
   const rf = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/en3-refit-2026-10-23.json'), 'utf8'));
   ok(rf.raised.length === 3 && rf.held.length === 13 && rf.flagged.includes('poison-dart-frog'), `the re-fit file: ${rf.raised.length} raised, ${rf.held.length} held, flagged ${rf.flagged}`);

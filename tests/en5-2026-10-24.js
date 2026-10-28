@@ -143,7 +143,7 @@ function dodges(rules, id, seed){ const {e, P} = mk(rules, seed || 11); put(e, P
   const txt = fs.readFileSync(path.join(ROOT, 'bramblewood-texts.js'), 'utf8'); const a = txt.indexOf('const TEXT = '), b = txt.indexOf('/*TEXT-TABLE-END*/') > 0 ? txt.indexOf('/*TEXT-TABLE-END*/') : txt.indexOf('};', a);
   ok(!/\n\s*\/\/|\/\*(?!TEXT-TABLE)/.test(txt.slice(txt.indexOf('{', a) + 1, b)), 'no comments inside the TEXT object');
   const K = Object.keys(TXm.TEXT).filter(k=> /^ui\.(en5-|skn-(breach|canopy-cover|timbered|bedrock|forged|last-stand)|sk-(breach|canopy-cover|timbered|bedrock|forged|last-stand|hemorrhage-n))/.test(k));
-  ok(K.length >= 27, `EN5 TX keys (${K.length})`);
+  ok(K.length >= 26 && TXm.TEXT['ui.en5-gd-players-in'], `EN5 TX keys (${K.length})`); // 2026-10-28 (RELFIX2): 26, COOP2 fixed the group dungeon's party size and dropped ui.en5-gd-players-range (was >= 27)
   const peel = s=> s.replace(/^[^\w{(\[]+\s/, '');
   const rows = K.map(k=> /log-|float-/.test(k) ? peel(TXm.TEXT[k]) : TXm.TEXT[k]).concat(['Deadly Poison', TXm.TEXT['ui.sk-greater-poison'], TXm.TEXT['ui.bl-desc'], TXm.TEXT['ui.bl-codex'], TXm.TEXT['ui.sk-hemorrhage-codex']]);
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const p = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8')), ui = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'ui', code + '.json'), 'utf8'));

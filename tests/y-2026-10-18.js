@@ -102,7 +102,8 @@ ok(/screen\.setAttribute\('data-a11y-skip', ''\); screen\.classList\.add\('fs-zo
   ok(ctx.f({mode:'tutorial'}) === 0 && ctx.f({mode:'arena'}) === 1 && ctx.f({conquestNode:{mapId:'mx', nodeId:'?'}}) === 1, '8. the tutorial is Basic; off the road (or a node gone) Smart'); }
 
 // ---- 8c. the CPU's Sacrifice "about to die": Bleed only counts while the unit is about to act
-ok(/const acts = !\(\(f\.wait\|\|0\) > 0\) && !f\.stunned && !\(f\.frozen > 0\) && !\(f\.asleep > 0\);/.test(eng) && /\(\(f\.poison\|\|0\) \+ \(acts \? \(f\.bleed\|\|0\) : 0\)\) >= hp/.test(eng), '8. Sacrifice: Poison always, Bleed only when it will act');
+// 2026-10-28 (RELFIX2): BAL7 (ENG12-2: a woken unit loses the round) reads asleep through dozing(), which is asleep or woken this round
+ok(/const acts = !\(\(f\.wait\|\|0\) > 0\) && !f\.stunned && !\(f\.frozen > 0\) && !(\(f\.asleep > 0\)|dozing\(f\));/.test(eng) && /function dozing\(c\)\{ return !!c && \(c\.asleep > 0 \|\|/.test(eng) && /\(\(f\.poison\|\|0\) \+ \(acts \? \(f\.bleed\|\|0\) : 0\)\) >= hp/.test(eng), '8. Sacrifice: Poison always, Bleed only when it will act');
 
 console.log(fail ? `y-2026-10-18: ${fail} of ${n} failed` : `y-2026-10-18: all ${n} passed`);
 process.exit(fail ? 1 : 0);

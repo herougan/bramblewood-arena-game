@@ -82,6 +82,9 @@ const noStand = Object.assign({}, goliath, {standIns: {perDayPct: 0}});
     'function liveRaidDefs(){ return DEFS; } function currentRaidPoints(){ return 7; } function msUntilNextRaidPointTick(){ return 5 * 3600000; }',
     'function myGhostOwnerId(){ return "me"; } function raidAutoOpen(d){ return d.id === "hydra"; } function raidBossIconHTML(d, f){ return d.icon || f; }',
     'function raidClaimsFor(){ return []; } function liveRefreshRaidParts(){ return Promise.resolve(false); } function raidNoTicketsText(){ return "none"; }',
+    // 2026-10-28 (RELFIX2): the hub reads held Raid Tickets (RK / TU2) and the admin row (AR); stand-ins: none held, not admin
+    'function raidTicketsHeld(){ return 0; } function raidTicketUseBtnHTML(){ return ""; } const adminModeEnabled = false; function adminRaidTicketsHTML(){ return ""; }',
+    'function raidLocale(){ return "en"; }', B.grab('raidTotalRankBadgeHTML'), // 2026-10-28 (RELFIX2): the hub card shows your total raid rank (RK)
     'function currentRaidStateFor(def){ return Object.assign(RaidM.raidNow(def, ATT[def.id], Date.now(), {cycle: RaidM.cycleOf(Date.now())}), {instance: def.id === "hydra" ? 2 : 1}); }',
     B.grab('raidSpanText'), B.grab('raidRespawnAt'), B.grab('raidRespawnHTML'), B.grab('raidTicketChipHTML'), B.grab('raidParticipationText'), B.grab('raidClaimRowHTML'),
     B.grab('raidHubCardHTML'), B.grab('raidHubHTML'), 'return {raidHubHTML};'].join('\n');

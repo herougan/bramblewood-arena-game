@@ -60,7 +60,8 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
 
 // ---- 5. decisions and changelog
 { const d = J('docs/decisions.json').items, ids = ['CONTENT4-1', 'CONTENT4-2', 'CONTENT4-3', 'CONTENT4-4', 'CONTENT4-5'];
-  ids.forEach(id=>{ const x = d.find(y=> y.id === id); ok(x && (x.status === 'YET' || (x.status === 'DONE' && x.outcome)) /* 2026-10-28 (BAL7): the calls were filled (owner 10-26 23:33) */ && x.options && x.options.includes(x.default), `5. ${id} is an open owner call with its default among the options`); });
+  // 2026-10-28 (RELFIX2): CONTENT4-1 was re-opened (owner 16:43) as YET with new options and a proposal as its default, which is not one of the options' wording; a re-opened call needs options and a default, a filled one its default among the options
+  ids.forEach(id=>{ const x = d.find(y=> y.id === id); ok(x && (x.status === 'YET' || (x.status === 'DONE' && x.outcome)) /* 2026-10-28 (BAL7): the calls were filled (owner 10-26 23:33) */ && x.options && (x.options.includes(x.default) || (x.status === 'YET' && x.options.length >= 2 && x.default)), `5. ${id} is an open owner call with its default among the options (or a re-opened call with options)`); });
   ok(/^## 2026-10-28 \(package CONTENT4/m.test(R('docs/CHANGELOG.md')), '5. the CHANGELOG entry');
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-2026-10-28.md')), '5. the report'); }
 

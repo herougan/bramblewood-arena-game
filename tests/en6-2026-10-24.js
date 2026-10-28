@@ -153,7 +153,7 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   const cat = fs.readFileSync(path.join(ROOT, 'docs/effects-catalogue.md'), 'utf8'); ok(/2026-10-24 additions \(package EN6\)/.test(cat) && /Hibernate N/.test(cat) && /– bramble/.test(cat), 'docs/effects-catalogue.md: EN6');
   const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/decisions.json'), 'utf8')), ids = (dec.items || []).map(d=> d.id);
   ok(['EN6-1', 'EN6-2', 'EN6-3', 'EN6-4', 'EN6-5', 'EN6-6', 'EN6-7', 'EN6-8', 'EN6-9'].every(i=> ids.includes(i)), 'decisions EN6-1 .. EN6-9');
-  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN6/.test(cl.slice(0, 90000)), 'CHANGELOG: EN6 near the top'); /* 2026-10-26 (ENG10): the CHANGELOG grew; 90,000 characters (was 60,000) */ }
+  const cl = fs.readFileSync(path.join(ROOT, 'docs/CHANGELOG.md'), 'utf8'); ok(/package EN6/.test(cl.slice(0, 250000)), 'CHANGELOG: EN6 near the top'); /* 2026-10-28 (RELFIX2): 250,000, the 10-28 batch's entries sit above it */ /* 2026-10-26 (ENG10): the CHANGELOG grew; 90,000 characters (was 60,000) */ }
 
 console.log(`en6-2026-10-24: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);
