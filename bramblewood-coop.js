@@ -370,11 +370,11 @@ function createSession(opts){
   async function pump(){
     if(S.busy || S.closed) return; S.busy = true;
     try{
-      while(S.queue.length && !S.closed){
+      while(S.queue.length && !S.closed && !S.syncing){
         const want = S.log.length ? S.log[S.log.length - 1].seq + 1 : 1, act = S.queue[0];
         if(act.seq < want){ S.queue.shift(); continue; } // already applied (a resend)
         if(act.seq > want){ if(!S.isHost) requestSync('gap'); break; }
-        S.queue.shift(); await applyOne(act); S.log.push(act);
+        S.queue.shift(); if(await applyOne(act) === 'stop') break; S.log.push(act);
       }
     } finally { S.busy = false; }
     if(S.isHost && !S.closed){ if(S.inbox.length && !S.batchTimer) S.batchTimer = clock.setTimeout(flush, 0); maybeRound(); }
@@ -386,7 +386,8 @@ function createSession(opts){
     if(act.kind === 'end'){ S.ended = act.how; if(S.room) S.room.status = 'done'; emit('end', {how: act.how, results: S.results.slice()}); return; }
     const T = S.T; if(!T) return;
     if(act.kind === 'round'){
-      if(act.hash && act.hash !== tableHash(T)){ S.desyncs++; emit('desync', {mine: tableHash(T), host: act.hash}); }
+      // out of step with the host (it should never be): stop, ask for the host's log and rebuild the floor from it (catchUp)
+      if(act.hash && act.hash !== tableHash(T) && !S.isHost){ S.desyncs++; emit('desync', {mine: tableHash(T), host: act.hash}); S.syncing = true; S.syncAsked = 0; requestSync('hash'); return 'stop'; }
       const res = await (opts.apply ? opts.apply(act, T, S) : applyHeadless(T, act));
       if(res && res.over && !T.over) noteRoundEnd(T, res);
       emit('round', {act, res, T});
@@ -470,7 +471,7 @@ function createSession(opts){
       else if(T && a.seq > floorAt.seq && a.kind !== 'end') { const r = applyHeadless(T, a); if(a.kind === 'round' && T.over) S.results[T.floorIdx] = T.over; void r; }
       if(a.kind === 'end'){ S.ended = a.how; }
       S.log.push(a); });
-    S.seq = S.log.length ? S.log[S.log.length - 1].seq : 0; S.pending = {};
+    S.seq = S.log.length ? S.log[S.log.length - 1].seq : 0; S.pending = {}; S.syncing = false;
     emit('caughtUp', {T: S.T, ended: S.ended});
   }
 

@@ -180,6 +180,19 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
     host.close(); guest.close();
   }
 
+  // ---- 5b. out of step: a client whose table drifted stops at the next round's hash and rebuilds the floor from the host's act log
+  {
+    const hub = C.createHub({defer: fn=> setImmediate(fn)}), clock = fakeClock(), gev = [];
+    const host = C.createSession({transport: hub.connect('h'), me: {peerId: 'h', name: 'H', deck: deckFrom(41), castleHp: 15}, host: true, code: 'SYNC01', typeId: 'hollow', deps, clock, seed: 5, autoPlay: 10});
+    const guest = C.createSession({transport: hub.connect('g'), me: {peerId: 'g', name: 'G', deck: deckFrom(42), castleHp: 15}, host: false, code: 'SYNC01', typeId: 'hollow', deps, clock, autoPlay: 10, onEvent: (k)=> gev.push(k)});
+    await settle(hub); guest.setReady(true); await settle(hub); host.start(); await settle(hub); await elapse(hub, clock, 1500);
+    guest.T.players[2].hq.hp -= 3; // drift
+    await elapse(hub, clock, 3000);
+    ok(gev.includes('desync') && gev.includes('caughtUp'), 'desync: the drifted client noticed at the round\'s hash and caught up');
+    ok(C.tableHash(guest.T) === C.tableHash(host.T) && guest.T.round === host.T.round, 'desync: in step again (same table as the host)');
+    host.close(); guest.close();
+  }
+
   // ---- 6. rewards, the raid's arithmetic
   ok(C.rankFor(30, 30, false) === 'SSS' && C.rankFor(30, 30, true) === 'SS' && C.rankFor(28, 30, false) === 'S' && C.rankFor(16, 30) === 'B' && C.rankFor(0, 30) === null, 'rank: the raid\'s fight rank (SSS unhurt no losses, SS unhurt, S 90%+ ... none when the bramble fell)');
   { const a = C.floorPay('hollow', 0, {dealt: 10, won: false, rank: 'B'}), b = C.floorPay('hollow', 0, {dealt: 10, won: true, rank: 'S'});
