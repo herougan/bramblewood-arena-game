@@ -4,6 +4,27 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-28 23:35: the owner's notes (with a raid screenshot)
+| # | Package | Note |
+|---|---|---|
+| O1 | UI1 | "The raids decks are extremely elongated." (the deck pile beside the boss and environment cards is far too tall) |
+| O2 | UI1 | "In mobile, dragging cards sometimes drags the screen instead. How do we protect against this?" (touch-action / pointer capture on draggable cards) |
+| O3 | UI1 | "we don't focus the camera on the middle but instead on the middle of the mass of units." |
+| O4 | UI1 | "There are two, match log and match history. Only keep match log." |
+| O5 | ADMINU1 | "How do I use the bramble admin portal to view users and their levels? Has anyone played our game yet - that's not me?" Answered 23:4x: 4 accounts (2 are the owner's admins; "z" 10-03 and "Rochelle" 10-13 signed in, no fights); guests are not stored. No admin users view exists: ADMINU1 adds one (admin-only read function = proposed SQL, needs "apply it"). |
+| O6 | ART (next art batch) | "Since we have difficulty with ChatGPT and Gemini API keys, you can use my browser to execute. (And nightcafe)" Use the owner's signed-in browser for ChatGPT / Gemini / NightCafe image generation; never sign in, never buy credits. |
+| O7 | THEME3 | "split T1-T2 and T3-T5. We only care about T1-T2 since T3-T5 dont have to be thematic and can house any card for teaching purposes. There will be T6 onwards in the future. And then challenge maps C1-CN (custom deck, custom enemy)" |
+| O8 | UI1 | "Quests page should not show dailies/weeklies. Quests refer to the errands etc. - just rename the errands as just quests. Dailies/weeklies/monthlies are their own thing" |
+| O9 | THEME3 | "In Map 0, you mention "carried" but it's literally the first map. It can only carry cards from T1-T2." |
+| C1 | NEWC1 | New card idea: "Cactus card - and fruiting body". |
+| C2 | (exists) | "Rafflesia": already a card (rafflesia, Pack 1); THEME3 places it. |
+| C3 | later | "Giant Griffin for our Volcano map(s) (maybe in the future)". |
+| L1 | THEME3 | "T1-2: Keep only Bee Knight, Earthworm, Pond Trout, Silver Minnow, Duckling, Cottontail, Crossed-Eyes - the weakest." |
+| L2 | THEME3 | "Map 0, Carry over Crossed-Eyes and Bee Knight and Cottontail (with their skills unlocked - all should be locked in T1/T2 except flying)" |
+| L3 | THEME3 | "Map 0 - choose the remaining. I think there should be 2 bee and 2 ant cards inside. Map 0 can have a slightly bloated list ... (e.g. cap 12, ignoring 3 carried + 7 new maybe)" |
+| L4 | PREVIEW | "Map 1: ... actually can I just view it in game ... This is the first step- choosing which cards fit." The 🃏 Map cards button (PACK1) on the branch preview after APPLY1. |
+| L5 | THEME3 | "After all these comments, make your own cuts/adds as well, as you wish." |
+
 ## 10-28 22:50: progression reference decks (REF5, after PACK1 and TOOLS1)
 
 Owner: "for each Map, we get the 1) confirmed rewards so far 2) use the resources gained for completing the missions (before this map) once x1.5 and purchase ALL the packs we can. 3) form the most optimised deck we can for the this map. Do (2) a few times and we'll come up with quite a unique series of decks. Same for levelling, we will assume a certain levelling frequency - you choose this based on your calculations and inform me ... assume the extra 0.5x in resources are used for levelling only. ... make this an application as well. So the output is maybe 5 reference decks per map. When playing REF combats, the default option 'Reference (Random)' plays one of the random 5 reference decks."
