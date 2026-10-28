@@ -79,6 +79,9 @@ HUB7 = 'docs/balance/hub7-ref-vs-optimum-2026-10-27.json'
 # 2026-10-27 (package BAL6, K17): the heatmap re-measured with the Pool reference (ref-pool: per map the optimizer's best deck from the cards a
 # player holds by then) as a third row; the newer file wins when it exists.
 BAL6 = 'docs/balance/bal6-ref-vs-optimum-2026-10-27.json'
+# 2026-10-28 (package BAL7, M4): re-measured after the Pool reference's Maps 13-24 search was seeded with the Map reference deck (and the Map
+# reference decks rebuilt after M1); the newest file wins.
+BAL7 = 'docs/balance/bal7-ref-vs-optimum-2026-10-28.json'
 REF_LABEL = {'map': 'Map reference', 'ref2': 'Reference-2', 'ref-pool': 'Pool reference', 'ref3': 'Reference-3'}
 HM_STEPS = [  # (upper bound of the win rate in %, css class, legend label)
     (30, 'hm0', 'under 30%'), (35, 'hm1', '30-35'), (40, 'hm2', '35-40'), (45, 'hm3', '40-45'), (55, 'hm4', '45-55'),
@@ -92,7 +95,7 @@ def _hm_cls(p):
 
 
 def heatmap_html(root, names):
-    src_file = BAL6 if os.path.exists(os.path.join(root, BAL6)) else HUB7
+    src_file = next((f for f in (BAL7, BAL6) if os.path.exists(os.path.join(root, f))), HUB7)
     fp = os.path.join(root, src_file)
     if not os.path.exists(fp):
         return ''

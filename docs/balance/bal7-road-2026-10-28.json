@@ -1,0 +1,2697 @@
+{
+ "_about": "BAL7 (2026-10-28): the road before -> after K14 (map reference, 40 games a fight, seeds 9100 + 37g; both with the M1 cards and the old reference decks), M1 alone (the K14 decks with the pre-M1 cards), and the final road (reference decks rebuilt after M1); ENG11-4 cave and Scorching check on the final run (before / after = the K14 pair)",
+ "before": {
+  "fights": 275,
+  "meanWin": 43.4,
+  "curveFights": 256,
+  "green": 38,
+  "tooEasy": 28,
+  "tooHard": 190
+ },
+ "after": {
+  "fights": 275,
+  "meanWin": 43.3,
+  "curveFights": 256,
+  "green": 37,
+  "tooEasy": 33,
+  "tooHard": 186
+ },
+ "afterPreM1": {
+  "fights": 275,
+  "meanWin": 61.5,
+  "curveFights": 256,
+  "green": 79,
+  "tooEasy": 65,
+  "tooHard": 112
+ },
+ "final": {
+  "fights": 275,
+  "meanWin": 61.7,
+  "curveFights": 256,
+  "green": 57,
+  "tooEasy": 83,
+  "tooHard": 116
+ },
+ "changedFights": {
+  "before": {
+   "fights": 126,
+   "meanWin": 47.9,
+   "curveFights": 122,
+   "green": 25,
+   "tooEasy": 13,
+   "tooHard": 84
+  },
+  "after": {
+   "fights": 126,
+   "meanWin": 47.6,
+   "curveFights": 122,
+   "green": 24,
+   "tooEasy": 18,
+   "tooHard": 80
+  }
+ },
+ "moved": [
+  {
+   "key": "7-3",
+   "name": "Web Hollow",
+   "map": "The Morel Hollow",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 17.5,
+   "delta": -50.0,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "2-A-3",
+   "name": "Beaver Dam",
+   "map": "Lilypad Reach",
+   "kind": "skirmish",
+   "before": 97.5,
+   "after": 52.5,
+   "delta": -45.0,
+   "target": 78,
+   "band": [
+    70,
+    86
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "hard",
+   "copiesMoved": 7
+  },
+  {
+   "key": "20-B-3",
+   "name": "The Wyrm's Antechamber",
+   "map": "Volcano Lair",
+   "kind": "skirmish",
+   "before": 100,
+   "after": 60,
+   "delta": -40,
+   "target": 60,
+   "band": [
+    48,
+    72
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "green",
+   "copiesMoved": 4
+  },
+  {
+   "key": "21-2",
+   "name": "Tarn Shore",
+   "map": "The Quiet Summit",
+   "kind": "skirmish",
+   "before": 57.5,
+   "after": 95,
+   "delta": 37.5,
+   "target": 82.5,
+   "band": [
+    74.5,
+    90.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "easy",
+   "copiesMoved": 6
+  },
+  {
+   "key": "12-6",
+   "name": "Rodent Court",
+   "map": "The Briar Maze",
+   "kind": "elite",
+   "before": 47.5,
+   "after": 80,
+   "delta": 32.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "easy",
+   "copiesMoved": 4
+  },
+  {
+   "key": "23-4",
+   "name": "Siege Camp",
+   "map": "The Goldfeather Siege",
+   "kind": "skirmish",
+   "before": 25,
+   "after": 57.5,
+   "delta": 32.5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 8
+  },
+  {
+   "key": "2-A-1",
+   "name": "Lily Hop",
+   "map": "Lilypad Reach",
+   "kind": "skirmish",
+   "before": 75,
+   "after": 42.5,
+   "delta": -32.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "19-A-8",
+   "name": "Titan's Shadow",
+   "map": "Basalt Foundry",
+   "kind": "elite",
+   "before": 30,
+   "after": 60,
+   "delta": 30,
+   "target": 63.8,
+   "band": [
+    55.8,
+    71.8
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 7
+  },
+  {
+   "key": "1-1",
+   "name": "Hedgerow Scouts",
+   "map": "Thistlewood",
+   "kind": "skirmish",
+   "before": 95,
+   "after": 67.5,
+   "delta": -27.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 9
+  },
+  {
+   "key": "7-4",
+   "name": "Moonlit Gills",
+   "map": "The Morel Hollow",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 40,
+   "delta": -27.5,
+   "target": 67.5,
+   "band": [
+    59.5,
+    75.5
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "2-A-2",
+   "name": "Duck Row",
+   "map": "Lilypad Reach",
+   "kind": "skirmish",
+   "before": 70,
+   "after": 42.5,
+   "delta": -27.5,
+   "target": 84,
+   "band": [
+    76,
+    92
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "14-A-2",
+   "name": "Strangler Arch",
+   "map": "The Canopy",
+   "kind": "skirmish",
+   "before": 10,
+   "after": 37.5,
+   "delta": 27.5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "7-2",
+   "name": "Grub Tunnels",
+   "map": "The Morel Hollow",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 42.5,
+   "delta": -25.0,
+   "target": 82.5,
+   "band": [
+    74.5,
+    90.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 8
+  },
+  {
+   "key": "1-A-4",
+   "name": "Harvest Mice",
+   "map": "Clovermead",
+   "kind": "skirmish",
+   "before": 65,
+   "after": 40,
+   "delta": -25,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 6
+  },
+  {
+   "key": "10-A-2",
+   "name": "The Drowned Deck",
+   "map": "The Sunken Depths",
+   "kind": "skirmish",
+   "before": 37.5,
+   "after": 62.5,
+   "delta": 25.0,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "20-B-1",
+   "name": "Cinder Slopes",
+   "map": "Volcano Lair",
+   "kind": "skirmish",
+   "before": 37.5,
+   "after": 15,
+   "delta": -22.5,
+   "target": 85,
+   "band": [
+    73,
+    97
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "18-A-3",
+   "name": "Dust Devils",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 37.5,
+   "after": 60,
+   "delta": 22.5,
+   "target": 71.4,
+   "band": [
+    63.4,
+    79.4
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "5-3",
+   "name": "Cypress Roots",
+   "map": "Gatorback Swamp",
+   "kind": "skirmish",
+   "before": 40,
+   "after": 60,
+   "delta": 20,
+   "target": 68,
+   "band": [
+    60,
+    76
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "21-4",
+   "name": "The Avalanche's Wake",
+   "map": "The Quiet Summit",
+   "kind": "elite",
+   "before": 50,
+   "after": 70,
+   "delta": 20,
+   "target": 67.5,
+   "band": [
+    59.5,
+    75.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 5
+  },
+  {
+   "key": "21-3",
+   "name": "Cloud Ledge",
+   "map": "The Quiet Summit",
+   "kind": "skirmish",
+   "before": 72.5,
+   "after": 92.5,
+   "delta": 20.0,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 7
+  },
+  {
+   "key": "1-A-3",
+   "name": "Puddle Hop",
+   "map": "Clovermead",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 47.5,
+   "delta": -20.0,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "19-A-4",
+   "name": "Vent Skitter",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 70,
+   "after": 90,
+   "delta": 20,
+   "target": 78.8,
+   "band": [
+    70.8,
+    86.8
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "easy",
+   "copiesMoved": 6
+  },
+  {
+   "key": "20-A-5",
+   "name": "Scorched Boars",
+   "map": "Eye of the Volcano",
+   "kind": "elite",
+   "before": 47.5,
+   "after": 27.5,
+   "delta": -20.0,
+   "target": 68,
+   "band": [
+    60,
+    76
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "18-A-4",
+   "name": "Meerkat Warrens",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 27.5,
+   "after": 47.5,
+   "delta": 20.0,
+   "target": 77.1,
+   "band": [
+    69.1,
+    85.1
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "24-5",
+   "name": "The Battlements",
+   "map": "Goldfeather Keep",
+   "kind": "skirmish",
+   "before": 60,
+   "after": 42.5,
+   "delta": -17.5,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "2-A-5",
+   "name": "Croaker Chorus",
+   "map": "Lilypad Reach",
+   "kind": "elite",
+   "before": 92.5,
+   "after": 75,
+   "delta": -17.5,
+   "target": 66,
+   "band": [
+    58,
+    74
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 7
+  },
+  {
+   "key": "19-A-5",
+   "name": "Ashfall Line",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 37.5,
+   "after": 55,
+   "delta": 17.5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "0-B-1",
+   "name": "Thorn Path",
+   "map": "The Old Bramble",
+   "kind": "skirmish",
+   "before": 100,
+   "after": 82.5,
+   "delta": -17.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "green",
+   "copiesMoved": 7
+  },
+  {
+   "key": "0-B-3",
+   "name": "Root Gate",
+   "map": "The Old Bramble",
+   "kind": "skirmish",
+   "before": 60,
+   "after": 77.5,
+   "delta": 17.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 9
+  },
+  {
+   "key": "18-A-9",
+   "name": "The Quicksand Queen",
+   "map": "The Pale Desert",
+   "kind": "boss",
+   "before": 2.5,
+   "after": 20,
+   "delta": 17.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 6
+  },
+  {
+   "key": "1-3",
+   "name": "Burrow Line",
+   "map": "Thistlewood",
+   "kind": "skirmish",
+   "before": 60,
+   "after": 45,
+   "delta": -15,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "5-7",
+   "name": "Old Snapjaw",
+   "map": "Gatorback Swamp",
+   "kind": "boss",
+   "before": 50,
+   "after": 65,
+   "delta": 15,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 3
+  },
+  {
+   "key": "7-6",
+   "name": "The Morel Monarch",
+   "map": "The Morel Hollow",
+   "kind": "miniboss",
+   "before": 20,
+   "after": 5,
+   "delta": -15,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "12-5",
+   "name": "Quillback Hold",
+   "map": "The Briar Maze",
+   "kind": "elite",
+   "before": 72.5,
+   "after": 87.5,
+   "delta": 15.0,
+   "target": 66,
+   "band": [
+    58,
+    74
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 1
+  },
+  {
+   "key": "22-5",
+   "name": "The Geyser Field",
+   "map": "The Rimefire Caldera",
+   "kind": "skirmish",
+   "before": 40,
+   "after": 25,
+   "delta": -15,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "23-7",
+   "name": "The Barbican",
+   "map": "The Goldfeather Siege",
+   "kind": "elite",
+   "before": 42.5,
+   "after": 57.5,
+   "delta": 15.0,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 4
+  },
+  {
+   "key": "19-A-10",
+   "name": "The Phoenix Ember King",
+   "map": "Basalt Foundry",
+   "kind": "boss",
+   "before": 15,
+   "after": 30,
+   "delta": 15,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 5
+  },
+  {
+   "key": "1-2",
+   "name": "Cricket Chorus",
+   "map": "Thistlewood",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 55,
+   "delta": -12.5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 6
+  },
+  {
+   "key": "7-5",
+   "name": "The Oath Ring",
+   "map": "The Morel Hollow",
+   "kind": "elite",
+   "before": 97.5,
+   "after": 85,
+   "delta": -12.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 5
+  },
+  {
+   "key": "11-1",
+   "name": "Goat Trail Runners",
+   "map": "Eyrie Heights",
+   "kind": "skirmish",
+   "before": 85,
+   "after": 97.5,
+   "delta": 12.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 1
+  },
+  {
+   "key": "18-4",
+   "name": "Sandstorm",
+   "map": "The Glass Dunes",
+   "kind": "skirmish",
+   "before": 5,
+   "after": 17.5,
+   "delta": 12.5,
+   "target": 62,
+   "band": [
+    54,
+    70
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "21-6",
+   "name": "The Cathedral Eagle",
+   "map": "The Quiet Summit",
+   "kind": "miniboss",
+   "before": 47.5,
+   "after": 60,
+   "delta": 12.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 7
+  },
+  {
+   "key": "21-5",
+   "name": "Snow Owl Parliament",
+   "map": "The Quiet Summit",
+   "kind": "elite",
+   "before": 40,
+   "after": 52.5,
+   "delta": 12.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 7
+  },
+  {
+   "key": "23-5",
+   "name": "Under the Walls",
+   "map": "The Goldfeather Siege",
+   "kind": "skirmish",
+   "before": 22.5,
+   "after": 35,
+   "delta": 12.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "7-A-1",
+   "name": "Root Cellar",
+   "map": "The Mycelium Deep",
+   "kind": "skirmish",
+   "before": 97.5,
+   "after": 85,
+   "delta": -12.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 8
+  },
+  {
+   "key": "7-A-5",
+   "name": "The Mycelium Mind",
+   "map": "The Mycelium Deep",
+   "kind": "boss",
+   "before": 27.5,
+   "after": 15,
+   "delta": -12.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "14-A-3",
+   "name": "Sloth Boughs",
+   "map": "The Canopy",
+   "kind": "skirmish",
+   "before": 10,
+   "after": 22.5,
+   "delta": 12.5,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "1-5",
+   "name": "The Thistle Baron",
+   "map": "Thistlewood",
+   "kind": "elite",
+   "before": 27.5,
+   "after": 37.5,
+   "delta": 10.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "11-7",
+   "name": "Eyrie Wardens",
+   "map": "Eyrie Heights",
+   "kind": "elite",
+   "before": 32.5,
+   "after": 22.5,
+   "delta": -10.0,
+   "target": 67.5,
+   "band": [
+    59.5,
+    75.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "12-3",
+   "name": "Warren Run",
+   "map": "The Briar Maze",
+   "kind": "skirmish",
+   "before": 72.5,
+   "after": 82.5,
+   "delta": 10.0,
+   "target": 68,
+   "band": [
+    60,
+    76
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 1
+  },
+  {
+   "key": "22-3",
+   "name": "Frozen Lava Flow",
+   "map": "The Rimefire Caldera",
+   "kind": "skirmish",
+   "before": 57.5,
+   "after": 47.5,
+   "delta": -10.0,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "24-4",
+   "name": "The Courtyard Fountain",
+   "map": "Goldfeather Keep",
+   "kind": "skirmish",
+   "before": 77.5,
+   "after": 67.5,
+   "delta": -10.0,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 1
+  },
+  {
+   "key": "2-A-7",
+   "name": "The Lodge Matriarch",
+   "map": "Lilypad Reach",
+   "kind": "boss",
+   "before": 57.5,
+   "after": 47.5,
+   "delta": -10.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "green",
+   "copiesMoved": 2
+  },
+  {
+   "key": "20-A-4",
+   "name": "Heart of the Mountain",
+   "map": "Eye of the Volcano",
+   "kind": "dungeon",
+   "before": 37.5,
+   "after": 27.5,
+   "delta": -10.0,
+   "target": 35.5,
+   "band": [
+    26.2,
+    44.3
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 1
+  },
+  {
+   "key": "8-A-3",
+   "name": "Shard Gallery",
+   "map": "The Glimmer Depths",
+   "kind": "skirmish",
+   "before": 20,
+   "after": 30,
+   "delta": 10,
+   "target": 50,
+   "band": [
+    42,
+    58
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "0-B-4",
+   "name": "The Old Bramble",
+   "map": "The Old Bramble",
+   "kind": "boss",
+   "before": 15,
+   "after": 25,
+   "delta": 10,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "18-A-7",
+   "name": "Oryx Crossing",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 20,
+   "after": 30,
+   "delta": 10,
+   "target": 64.3,
+   "band": [
+    56.3,
+    72.3
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "1-4",
+   "name": "Sapper Hedge",
+   "map": "Thistlewood",
+   "kind": "skirmish",
+   "before": 32.5,
+   "after": 40,
+   "delta": 7.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "11-4",
+   "name": "Ridge Fork",
+   "map": "Eyrie Heights",
+   "kind": "skirmish",
+   "before": 27.5,
+   "after": 20,
+   "delta": -7.5,
+   "target": 78.8,
+   "band": [
+    70.8,
+    86.8
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "11-5",
+   "name": "West Ledge",
+   "map": "Eyrie Heights",
+   "kind": "elite",
+   "before": 15,
+   "after": 7.5,
+   "delta": -7.5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "12-2",
+   "name": "Quill Path",
+   "map": "The Briar Maze",
+   "kind": "skirmish",
+   "before": 50,
+   "after": 57.5,
+   "delta": 7.5,
+   "target": 84,
+   "band": [
+    76,
+    92
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "23-2",
+   "name": "Trench Works",
+   "map": "The Goldfeather Siege",
+   "kind": "skirmish",
+   "before": 42.5,
+   "after": 35,
+   "delta": -7.5,
+   "target": 85,
+   "band": [
+    77,
+    93
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "24-6",
+   "name": "The Gilded Guard",
+   "map": "Goldfeather Keep",
+   "kind": "elite",
+   "before": 82.5,
+   "after": 90,
+   "delta": 7.5,
+   "target": 65,
+   "band": [
+    57,
+    73
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 2
+  },
+  {
+   "key": "2-A-4",
+   "name": "Pike Shallows",
+   "map": "Lilypad Reach",
+   "kind": "skirmish",
+   "before": 95,
+   "after": 87.5,
+   "delta": -7.5,
+   "target": 72,
+   "band": [
+    64,
+    80
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 1
+  },
+  {
+   "key": "19-A-2",
+   "name": "Salamander Vents",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 52.5,
+   "after": 60,
+   "delta": 7.5,
+   "target": 86.3,
+   "band": [
+    78.3,
+    94.3
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "19-A-9",
+   "name": "The Pyroclast Wyrm",
+   "map": "Basalt Foundry",
+   "kind": "elite",
+   "before": 17.5,
+   "after": 25,
+   "delta": 7.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 7
+  },
+  {
+   "key": "10-A-5",
+   "name": "The Ferry's Last Passenger",
+   "map": "The Sunken Depths",
+   "kind": "boss",
+   "before": 20,
+   "after": 27.5,
+   "delta": 7.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "2-B-1",
+   "name": "Drip Tunnel",
+   "map": "Smugglers' Grotto",
+   "kind": "skirmish",
+   "before": 62.5,
+   "after": 55,
+   "delta": -7.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "7-A-3",
+   "name": "Silk Gallery",
+   "map": "The Mycelium Deep",
+   "kind": "elite",
+   "before": 32.5,
+   "after": 25,
+   "delta": -7.5,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 6
+  },
+  {
+   "key": "14-A-5",
+   "name": "The Jaguar's Path",
+   "map": "The Canopy",
+   "kind": "boss",
+   "before": 5,
+   "after": 12.5,
+   "delta": 7.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "20-A-3",
+   "name": "The Lich's Kiln",
+   "map": "Eye of the Volcano",
+   "kind": "elite",
+   "before": 20,
+   "after": 12.5,
+   "delta": -7.5,
+   "target": 74.6,
+   "band": [
+    66.6,
+    82.6
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "20-A-6",
+   "name": "The Vent Crabs",
+   "map": "Eye of the Volcano",
+   "kind": "elite",
+   "before": 22.5,
+   "after": 15,
+   "delta": -7.5,
+   "target": 61.6,
+   "band": [
+    53.6,
+    69.6
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "20-A-7",
+   "name": "Ash Condor Roost",
+   "map": "Eye of the Volcano",
+   "kind": "elite",
+   "before": 32.5,
+   "after": 25,
+   "delta": -7.5,
+   "target": 55.4,
+   "band": [
+    47.4,
+    63.4
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "8-A-1",
+   "name": "Crystal Stair",
+   "map": "The Glimmer Depths",
+   "kind": "skirmish",
+   "before": 70,
+   "after": 62.5,
+   "delta": -7.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "8-A-4",
+   "name": "The Gem Hoarder",
+   "map": "The Glimmer Depths",
+   "kind": "boss",
+   "before": 15,
+   "after": 22.5,
+   "delta": 7.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "17-A-1",
+   "name": "Frost Tunnel",
+   "map": "The Ice Hollow",
+   "kind": "skirmish",
+   "before": 45,
+   "after": 52.5,
+   "delta": 7.5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "18-A-8",
+   "name": "The Dry Well",
+   "map": "The Pale Desert",
+   "kind": "elite",
+   "before": 15,
+   "after": 7.5,
+   "delta": -7.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 7
+  },
+  {
+   "key": "11-3",
+   "name": "Cliffside Herd",
+   "map": "Eyrie Heights",
+   "kind": "skirmish",
+   "before": 10,
+   "after": 15,
+   "delta": 5,
+   "target": 82.5,
+   "band": [
+    74.5,
+    90.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "21-1",
+   "name": "Thaw Path",
+   "map": "The Quiet Summit",
+   "kind": "skirmish",
+   "before": 52.5,
+   "after": 57.5,
+   "delta": 5.0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "23-1",
+   "name": "The Picket Line",
+   "map": "The Goldfeather Siege",
+   "kind": "skirmish",
+   "before": 70,
+   "after": 75,
+   "delta": 5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "24-2",
+   "name": "The Bailey",
+   "map": "Goldfeather Keep",
+   "kind": "skirmish",
+   "before": 97.5,
+   "after": 92.5,
+   "delta": -5.0,
+   "target": 85,
+   "band": [
+    77,
+    93
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "23-3",
+   "name": "Elephant Road",
+   "map": "The Goldfeather Siege",
+   "kind": "skirmish",
+   "before": 35,
+   "after": 30,
+   "delta": -5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 6
+  },
+  {
+   "key": "24-3",
+   "name": "The Counting House",
+   "map": "Goldfeather Keep",
+   "kind": "skirmish",
+   "before": 65,
+   "after": 60,
+   "delta": -5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "19-A-1",
+   "name": "Cinder Swarm",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 67.5,
+   "after": 72.5,
+   "delta": 5.0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "19-A-6",
+   "name": "Furnace Mouth",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 35,
+   "after": 40,
+   "delta": 5,
+   "target": 71.3,
+   "band": [
+    63.3,
+    79.3
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "10-A-4",
+   "name": "The Undertow",
+   "map": "The Sunken Depths",
+   "kind": "elite",
+   "before": 55,
+   "after": 50,
+   "delta": -5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "2-B-2",
+   "name": "Smugglers' Stash",
+   "map": "Smugglers' Grotto",
+   "kind": "elite",
+   "before": 70,
+   "after": 65,
+   "delta": -5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "2-B-3",
+   "name": "The Glowing Pool",
+   "map": "Smugglers' Grotto",
+   "kind": "elite",
+   "before": 87.5,
+   "after": 92.5,
+   "delta": 5.0,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 7
+  },
+  {
+   "key": "2-B-4",
+   "name": "The Grotto Keeper",
+   "map": "Smugglers' Grotto",
+   "kind": "elite",
+   "before": 100,
+   "after": 95,
+   "delta": -5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 9
+  },
+  {
+   "key": "14-A-1",
+   "name": "Dart Frogs",
+   "map": "The Canopy",
+   "kind": "skirmish",
+   "before": 22.5,
+   "after": 17.5,
+   "delta": -5.0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "20-B-2",
+   "name": "Obsidian Run",
+   "map": "Volcano Lair",
+   "kind": "skirmish",
+   "before": 65,
+   "after": 60,
+   "delta": -5,
+   "target": 72.5,
+   "band": [
+    60.5,
+    84.5
+   ],
+   "greenBefore": "green",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "5-A-1",
+   "name": "Rotting Roots",
+   "map": "The Sunken Grove",
+   "kind": "skirmish",
+   "before": 77.5,
+   "after": 82.5,
+   "delta": 5.0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "green",
+   "copiesMoved": 2
+  },
+  {
+   "key": "5-A-4",
+   "name": "The Grove Warden",
+   "map": "The Sunken Grove",
+   "kind": "boss",
+   "before": 42.5,
+   "after": 47.5,
+   "delta": 5.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 2
+  },
+  {
+   "key": "8-A-2",
+   "name": "The Echo Pool",
+   "map": "The Glimmer Depths",
+   "kind": "skirmish",
+   "before": 82.5,
+   "after": 87.5,
+   "delta": 5.0,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "easy",
+   "copiesMoved": 6
+  },
+  {
+   "key": "11-A-1",
+   "name": "Cliff Ledge",
+   "map": "The Aerie Vault",
+   "kind": "skirmish",
+   "before": 20,
+   "after": 15,
+   "delta": -5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "17-A-4",
+   "name": "The Hollow King",
+   "map": "The Ice Hollow",
+   "kind": "boss",
+   "before": 7.5,
+   "after": 2.5,
+   "delta": -5.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "0-B-2",
+   "name": "The Briar Ring",
+   "map": "The Old Bramble",
+   "kind": "skirmish",
+   "before": 45,
+   "after": 50,
+   "delta": 5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "5-6",
+   "name": "Behemoth Bog",
+   "map": "Gatorback Swamp",
+   "kind": "elite",
+   "before": 77.5,
+   "after": 80,
+   "delta": 2.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 3
+  },
+  {
+   "key": "6-4",
+   "name": "Root Snare",
+   "map": "Sable Swampmire",
+   "kind": "skirmish",
+   "before": 77.5,
+   "after": 75,
+   "delta": -2.5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 2
+  },
+  {
+   "key": "11-8",
+   "name": "Summit Approach",
+   "map": "Eyrie Heights",
+   "kind": "elite",
+   "before": 15,
+   "after": 12.5,
+   "delta": -2.5,
+   "target": 63.8,
+   "band": [
+    55.8,
+    71.8
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "12-1",
+   "name": "Hedge Mice",
+   "map": "The Briar Maze",
+   "kind": "skirmish",
+   "before": 72.5,
+   "after": 75,
+   "delta": 2.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "22-4",
+   "name": "Hailstone Ridge",
+   "map": "The Rimefire Caldera",
+   "kind": "skirmish",
+   "before": 57.5,
+   "after": 60,
+   "delta": 2.5,
+   "target": 75,
+   "band": [
+    67,
+    83
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "22-6",
+   "name": "Ashfall Cornice",
+   "map": "The Rimefire Caldera",
+   "kind": "elite",
+   "before": 12.5,
+   "after": 10,
+   "delta": -2.5,
+   "target": 65,
+   "band": [
+    57,
+    73
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "22-7",
+   "name": "The Steam Wall",
+   "map": "The Rimefire Caldera",
+   "kind": "elite",
+   "before": 17.5,
+   "after": 15,
+   "delta": -2.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "1-A-1",
+   "name": "Clover Patch",
+   "map": "Clovermead",
+   "kind": "skirmish",
+   "before": 55,
+   "after": 52.5,
+   "delta": -2.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 1
+  },
+  {
+   "key": "1-A-2",
+   "name": "Bee Lines",
+   "map": "Clovermead",
+   "kind": "skirmish",
+   "before": 45,
+   "after": 47.5,
+   "delta": 2.5,
+   "target": 80,
+   "band": [
+    72,
+    88
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 10
+  },
+  {
+   "key": "1-A-5",
+   "name": "The Old Hare",
+   "map": "Clovermead",
+   "kind": "boss",
+   "before": 47.5,
+   "after": 45,
+   "delta": -2.5,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "2-A-6",
+   "name": "The Lodge",
+   "map": "Lilypad Reach",
+   "kind": "elite",
+   "before": 80,
+   "after": 77.5,
+   "delta": -2.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "easy",
+   "greenAfter": "easy",
+   "copiesMoved": 8
+  },
+  {
+   "key": "19-A-3",
+   "name": "Slag Runners",
+   "map": "Basalt Foundry",
+   "kind": "skirmish",
+   "before": 50,
+   "after": 47.5,
+   "delta": -2.5,
+   "target": 72.5,
+   "band": [
+    64.5,
+    80.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "19-A-7",
+   "name": "Basalt Vanguard",
+   "map": "Basalt Foundry",
+   "kind": "elite",
+   "before": 37.5,
+   "after": 35,
+   "delta": -2.5,
+   "target": 67.5,
+   "band": [
+    59.5,
+    75.5
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 7
+  },
+  {
+   "key": "10-A-3",
+   "name": "Cargo Hold",
+   "map": "The Sunken Depths",
+   "kind": "skirmish",
+   "before": 70,
+   "after": 72.5,
+   "delta": 2.5,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 1
+  },
+  {
+   "key": "7-A-2",
+   "name": "Glowcap Grotto",
+   "map": "The Mycelium Deep",
+   "kind": "skirmish",
+   "before": 50,
+   "after": 52.5,
+   "delta": 2.5,
+   "target": 70,
+   "band": [
+    62,
+    78
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 12
+  },
+  {
+   "key": "7-A-4",
+   "name": "The Rot Heart",
+   "map": "The Mycelium Deep",
+   "kind": "elite",
+   "before": 27.5,
+   "after": 25,
+   "delta": -2.5,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "18-A-2",
+   "name": "Mirage Jackals",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 5,
+   "after": 2.5,
+   "delta": -2.5,
+   "target": 85.7,
+   "band": [
+    77.7,
+    93.7
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 4
+  },
+  {
+   "key": "18-A-1",
+   "name": "Bleached Flats",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 10,
+   "after": 7.5,
+   "delta": -2.5,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "18-A-5",
+   "name": "Vulture Road",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 0,
+   "after": 2.5,
+   "delta": 2.5,
+   "target": 72.9,
+   "band": [
+    64.9,
+    80.9
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 5
+  },
+  {
+   "key": "18-A-6",
+   "name": "The Salt Pan",
+   "map": "The Pale Desert",
+   "kind": "skirmish",
+   "before": 27.5,
+   "after": 30,
+   "delta": 2.5,
+   "target": 68.6,
+   "band": [
+    60.6,
+    76.6
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "6-1",
+   "name": "Leech Bog",
+   "map": "Sable Swampmire",
+   "kind": "skirmish",
+   "before": 80,
+   "after": 80,
+   "delta": 0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "6-2",
+   "name": "Mire Ambush",
+   "map": "Sable Swampmire",
+   "kind": "skirmish",
+   "before": 85,
+   "after": 85,
+   "delta": 0,
+   "target": 85,
+   "band": [
+    77,
+    93
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 2
+  },
+  {
+   "key": "6-7",
+   "name": "Adder Gauntlet",
+   "map": "Sable Swampmire",
+   "kind": "elite",
+   "before": 32.5,
+   "after": 32.5,
+   "delta": 0.0,
+   "target": 60,
+   "band": [
+    52,
+    68
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "7-1",
+   "name": "Spore Drift",
+   "map": "The Morel Hollow",
+   "kind": "skirmish",
+   "before": 97.5,
+   "after": 97.5,
+   "delta": 0.0,
+   "target": 90,
+   "band": [
+    82,
+    98
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "23-6",
+   "name": "The Elephant Line",
+   "map": "The Goldfeather Siege",
+   "kind": "elite",
+   "before": 67.5,
+   "after": 67.5,
+   "delta": 0.0,
+   "target": 65,
+   "band": [
+    57,
+    73
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 3
+  },
+  {
+   "key": "23-8",
+   "name": "Marshal Tuskwell",
+   "map": "The Goldfeather Siege",
+   "kind": "miniboss",
+   "before": 37.5,
+   "after": 37.5,
+   "delta": 0.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "green",
+   "greenAfter": "green",
+   "copiesMoved": 4
+  },
+  {
+   "key": "20-B-4",
+   "name": "The Caldera Wyrm",
+   "map": "Volcano Lair",
+   "kind": "worldboss",
+   "before": 0,
+   "after": 0,
+   "delta": 0,
+   "target": 20,
+   "band": [
+    8,
+    32
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  },
+  {
+   "key": "5-A-2",
+   "name": "Gator Hollow",
+   "map": "The Sunken Grove",
+   "kind": "skirmish",
+   "before": 2.5,
+   "after": 2.5,
+   "delta": 0.0,
+   "target": 65,
+   "band": [
+    57,
+    73
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 2
+  },
+  {
+   "key": "11-A-4",
+   "name": "The Roost Mother",
+   "map": "The Aerie Vault",
+   "kind": "boss",
+   "before": 2.5,
+   "after": 2.5,
+   "delta": 0.0,
+   "target": 40,
+   "band": [
+    30,
+    49
+   ],
+   "greenBefore": "hard",
+   "greenAfter": "hard",
+   "copiesMoved": 3
+  }
+ ],
+ "eng11_4": {
+  "caves": [
+   {
+    "key": "8-1",
+    "name": "Roost Flurry",
+    "map": "Caves & Alcoves",
+    "before": 65,
+    "after": 65,
+    "final": 42.5,
+    "target": 90,
+    "lo": 82,
+    "hi": 98,
+    "green": "hard",
+    "gap": -47.5
+   },
+   {
+    "key": "8-2",
+    "name": "Glowworm Grotto",
+    "map": "Caves & Alcoves",
+    "before": 65,
+    "after": 65,
+    "final": 67.5,
+    "target": 85,
+    "lo": 77,
+    "hi": 93,
+    "green": "hard",
+    "gap": -17.5
+   },
+   {
+    "key": "8-3",
+    "name": "Cinder Vents",
+    "map": "Caves & Alcoves",
+    "before": 32.5,
+    "after": 32.5,
+    "final": 55,
+    "target": 80,
+    "lo": 72,
+    "hi": 88,
+    "green": "hard",
+    "gap": -25
+   },
+   {
+    "key": "8-4",
+    "name": "Echo Chamber",
+    "map": "Caves & Alcoves",
+    "before": 22.5,
+    "after": 22.5,
+    "final": 30,
+    "target": 75,
+    "lo": 67,
+    "hi": 83,
+    "green": "hard",
+    "gap": -45
+   },
+   {
+    "key": "8-5",
+    "name": "Sulfur Vent Path",
+    "map": "Caves & Alcoves",
+    "before": 37.5,
+    "after": 37.5,
+    "final": 17.5,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -42.5
+   },
+   {
+    "key": "8-6",
+    "name": "Glowworm Deep",
+    "map": "Caves & Alcoves",
+    "before": 12.5,
+    "after": 12.5,
+    "final": 20,
+    "target": 65,
+    "lo": 57,
+    "hi": 73,
+    "green": "hard",
+    "gap": -45
+   },
+   {
+    "key": "8-7",
+    "name": "The Roost Above",
+    "map": "Caves & Alcoves",
+    "before": 20,
+    "after": 20,
+    "final": 7.5,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -52.5
+   },
+   {
+    "key": "8-8",
+    "name": "The Stalactite Warden",
+    "map": "Caves & Alcoves",
+    "before": 57.5,
+    "after": 57.5,
+    "final": 62.5,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "easy",
+    "gap": 22.5
+   },
+   {
+    "key": "10-A-1",
+    "name": "Bubble Trail",
+    "map": "The Sunken Depths",
+    "before": 90,
+    "after": 90,
+    "final": 60,
+    "target": 90,
+    "lo": 82,
+    "hi": 98,
+    "green": "hard",
+    "gap": -30
+   },
+   {
+    "key": "10-A-2",
+    "name": "The Drowned Deck",
+    "map": "The Sunken Depths",
+    "before": 37.5,
+    "after": 62.5,
+    "final": 20,
+    "target": 70,
+    "lo": 62,
+    "hi": 78,
+    "green": "hard",
+    "gap": -50
+   },
+   {
+    "key": "10-A-3",
+    "name": "Cargo Hold",
+    "map": "The Sunken Depths",
+    "before": 70,
+    "after": 72.5,
+    "final": 22.5,
+    "target": 70,
+    "lo": 62,
+    "hi": 78,
+    "green": "hard",
+    "gap": -47.5
+   },
+   {
+    "key": "10-A-4",
+    "name": "The Undertow",
+    "map": "The Sunken Depths",
+    "before": 55,
+    "after": 50,
+    "final": 15,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -45
+   },
+   {
+    "key": "10-A-5",
+    "name": "The Ferry's Last Passenger",
+    "map": "The Sunken Depths",
+    "before": 20,
+    "after": 27.5,
+    "final": 0,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "hard",
+    "gap": -40
+   },
+   {
+    "key": "2-B-1",
+    "name": "Drip Tunnel",
+    "map": "Smugglers' Grotto",
+    "before": 62.5,
+    "after": 55,
+    "final": 52.5,
+    "target": 90,
+    "lo": 82,
+    "hi": 98,
+    "green": "hard",
+    "gap": -37.5
+   },
+   {
+    "key": "2-B-2",
+    "name": "Smugglers' Stash",
+    "map": "Smugglers' Grotto",
+    "before": 70,
+    "after": 65,
+    "final": 62.5,
+    "target": 75,
+    "lo": 67,
+    "hi": 83,
+    "green": "hard",
+    "gap": -12.5
+   },
+   {
+    "key": "2-B-3",
+    "name": "The Glowing Pool",
+    "map": "Smugglers' Grotto",
+    "before": 87.5,
+    "after": 92.5,
+    "final": 80,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "easy",
+    "gap": 20
+   },
+   {
+    "key": "2-B-4",
+    "name": "The Grotto Keeper",
+    "map": "Smugglers' Grotto",
+    "before": 100,
+    "after": 95,
+    "final": 87.5,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "easy",
+    "gap": 47.5
+   },
+   {
+    "key": "7-A-2",
+    "name": "Glowcap Grotto",
+    "map": "The Mycelium Deep",
+    "before": 50,
+    "after": 52.5,
+    "final": 32.5,
+    "target": 70,
+    "lo": 62,
+    "hi": 78,
+    "green": "hard",
+    "gap": -37.5
+   },
+   {
+    "key": "7-A-1",
+    "name": "Root Cellar",
+    "map": "The Mycelium Deep",
+    "before": 97.5,
+    "after": 85,
+    "final": 50,
+    "target": 90,
+    "lo": 82,
+    "hi": 98,
+    "green": "hard",
+    "gap": -40
+   },
+   {
+    "key": "7-A-4",
+    "name": "The Rot Heart",
+    "map": "The Mycelium Deep",
+    "before": 27.5,
+    "after": 25,
+    "final": 17.5,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -42.5
+   },
+   {
+    "key": "7-A-3",
+    "name": "Silk Gallery",
+    "map": "The Mycelium Deep",
+    "before": 32.5,
+    "after": 25,
+    "final": 32.5,
+    "target": 70,
+    "lo": 62,
+    "hi": 78,
+    "green": "hard",
+    "gap": -37.5
+   },
+   {
+    "key": "7-A-5",
+    "name": "The Mycelium Mind",
+    "map": "The Mycelium Deep",
+    "before": 27.5,
+    "after": 15,
+    "final": 20,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "hard",
+    "gap": -20
+   }
+  ],
+  "scorching": [
+   {
+    "key": "14-5",
+    "name": "Giraffe Vanguard",
+    "map": "Savanna Reaches",
+    "before": 10,
+    "after": 10,
+    "final": 52.5,
+    "target": 70,
+    "lo": 62,
+    "hi": 78,
+    "green": "hard",
+    "gap": -17.5
+   },
+   {
+    "key": "14-7",
+    "name": "The Cheetah Matriarch",
+    "map": "Savanna Reaches",
+    "before": 2.5,
+    "after": 2.5,
+    "final": 25,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -35
+   },
+   {
+    "key": "18-7",
+    "name": "The Sand Widow Queen",
+    "map": "The Glass Dunes",
+    "before": 2.5,
+    "after": 2.5,
+    "final": 70,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "easy",
+    "gap": 30
+   },
+   {
+    "key": "18-A-2",
+    "name": "Mirage Jackals",
+    "map": "The Pale Desert",
+    "before": 5,
+    "after": 2.5,
+    "final": 40,
+    "target": 85.7,
+    "lo": 77.7,
+    "hi": 93.7,
+    "green": "hard",
+    "gap": -45.7
+   },
+   {
+    "key": "18-A-1",
+    "name": "Bleached Flats",
+    "map": "The Pale Desert",
+    "before": 10,
+    "after": 7.5,
+    "final": 42.5,
+    "target": 90,
+    "lo": 82,
+    "hi": 98,
+    "green": "hard",
+    "gap": -47.5
+   },
+   {
+    "key": "18-A-4",
+    "name": "Meerkat Warrens",
+    "map": "The Pale Desert",
+    "before": 27.5,
+    "after": 47.5,
+    "final": 35,
+    "target": 77.1,
+    "lo": 69.1,
+    "hi": 85.1,
+    "green": "hard",
+    "gap": -42.1
+   },
+   {
+    "key": "18-A-3",
+    "name": "Dust Devils",
+    "map": "The Pale Desert",
+    "before": 37.5,
+    "after": 60,
+    "final": 60,
+    "target": 71.4,
+    "lo": 63.4,
+    "hi": 79.4,
+    "green": "hard",
+    "gap": -11.4
+   },
+   {
+    "key": "18-A-5",
+    "name": "Vulture Road",
+    "map": "The Pale Desert",
+    "before": 0,
+    "after": 2.5,
+    "final": 20,
+    "target": 72.9,
+    "lo": 64.9,
+    "hi": 80.9,
+    "green": "hard",
+    "gap": -52.9
+   },
+   {
+    "key": "18-A-6",
+    "name": "The Salt Pan",
+    "map": "The Pale Desert",
+    "before": 27.5,
+    "after": 30,
+    "final": 65,
+    "target": 68.6,
+    "lo": 60.6,
+    "hi": 76.6,
+    "green": "green",
+    "gap": -3.6
+   },
+   {
+    "key": "18-A-8",
+    "name": "The Dry Well",
+    "map": "The Pale Desert",
+    "before": 15,
+    "after": 7.5,
+    "final": 32.5,
+    "target": 60,
+    "lo": 52,
+    "hi": 68,
+    "green": "hard",
+    "gap": -27.5
+   },
+   {
+    "key": "18-A-7",
+    "name": "Oryx Crossing",
+    "map": "The Pale Desert",
+    "before": 20,
+    "after": 30,
+    "final": 25,
+    "target": 64.3,
+    "lo": 56.3,
+    "hi": 72.3,
+    "green": "hard",
+    "gap": -39.3
+   },
+   {
+    "key": "18-A-9",
+    "name": "The Quicksand Queen",
+    "map": "The Pale Desert",
+    "before": 2.5,
+    "after": 20,
+    "final": 27.5,
+    "target": 40,
+    "lo": 30,
+    "hi": 49,
+    "green": "hard",
+    "gap": -12.5
+   },
+   {
+    "key": "11-UC-1",
+    "name": "Savanna Reaches, floor 1",
+    "map": "The Undercroft",
+    "before": 72.5,
+    "after": 72.5,
+    "final": 52.5,
+    "target": 85,
+    "lo": 73,
+    "hi": 97,
+    "green": "hard",
+    "gap": -32.5
+   },
+   {
+    "key": "11-UC-25",
+    "name": "The Briar Maze, floor 25",
+    "map": "The Undercroft",
+    "before": 45,
+    "after": 57.5,
+    "final": 45,
+    "target": 72.5,
+    "lo": 60.5,
+    "hi": 84.5,
+    "green": "hard",
+    "gap": -27.5
+   },
+   {
+    "key": "11-UC-10",
+    "name": "The Vault Warden, floor 10",
+    "map": "The Undercroft",
+    "before": 60,
+    "after": 60,
+    "final": 12.5,
+    "target": 45,
+    "lo": 33,
+    "hi": 57,
+    "green": "hard",
+    "gap": -32.5
+   },
+   {
+    "key": "11-UC-50",
+    "name": "The Vault Warden, floor 50",
+    "map": "The Undercroft",
+    "before": 75,
+    "after": 75,
+    "final": 57.5,
+    "target": 45,
+    "lo": 33,
+    "hi": 57,
+    "green": "easy",
+    "gap": 12.5
+   }
+  ]
+ }
+}

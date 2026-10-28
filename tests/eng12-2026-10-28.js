@@ -84,7 +84,8 @@ ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 &
   ok(noc && noc[2] === 4.54, `L11 the Owl Nightwatch's Nocturnal 4: 4.24 + the dark-sight 0.3 (${noc && noc[2]})`);
   ok(owl.attack === 1 && owl.health === 6 && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
   const moved = {'great-horned-owl': '2/14', 'raccoon-bandit': '4/7', 'weredog': '2/7', 'night-watchman': '1/3', 'sunspire-choirmother': '3/4', 'vampire-bat': '2/5', 'kinkajou-lurker': '5/9', 'electric-catfish': '2/8'};
-  const bad = Object.keys(moved).filter(id=>{ const c = card(id); return `${c.attack}/${c.health}` !== moved[id] || !T.budget(c).ok; });
+  const m1 = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal7-m1-rebalance-2026-10-28.json'), 'utf8')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
+  const bad = Object.keys(moved).filter(id=> !m1.has(id)).filter(id=>{ const c = card(id); return `${c.attack}/${c.health}` !== moved[id] || !T.budget(c).ok; });
   ok(!bad.length, `L5/L11 the re-fitted cards hold their new lines within both caps (${bad.join(', ') || 'all'})`);
   ok(T.skillCost('nocturnal', 4) === 4.24 && T.skillCost('shock', {chance: 40, duration: 1}) === BB.shockS({chance: 40, duration: 1}, 0), 'L5/L11 skill_costs prices one skill the same way without a card');
   const eel = T.budget(card('voltaic-eel')).parts.find(x=> x[1] === 'shock'), cat = T.budget(card('electric-catfish')).parts.find(x=> x[1] === 'shockBolt');

@@ -1,0 +1,108 @@
+{
+ "_about": "Package BAL7 (2026-10-28, FIN2-2): Give Shield N and Bulwark N priced from Shield = 0.8 Health. node tools/bal7_shield_refit_2026_10_28.js. room: on its old line, the new price gave room; over: over the new budget; kept: its stats stay.",
+ "prices": {
+  "giveShield": [
+   0.35,
+   0.4
+  ],
+  "bulwark": [
+   9,
+   7.2
+  ]
+ },
+ "moves": [
+  {
+   "id": "ancient-sloth-titan",
+   "from": "2/28",
+   "to": "2/31",
+   "why": "room",
+   "use": 98,
+   "old": {
+    "S": 18,
+    "x1": 50,
+    "x2": 380,
+    "N": 50.29,
+    "N2": 562.02,
+    "ok": true
+   },
+   "now": {
+    "S": 14.4,
+    "x1": 46.4,
+    "x2": 263.36,
+    "N": 50.29,
+    "N2": 562.02,
+    "ok": true
+   }
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "from": "1/5",
+   "to": "1/7",
+   "why": "room",
+   "use": 78,
+   "old": {
+    "S": 10.5,
+    "x1": 17.5,
+    "x2": 115.25,
+    "N": 22.8,
+    "N2": 115.52,
+    "ok": true
+   },
+   "now": {
+    "S": 8.7,
+    "x1": 15.7,
+    "x2": 80.69,
+    "N": 22.8,
+    "N2": 115.52,
+    "ok": true
+   }
+  }
+ ],
+ "kept": [
+  {
+   "id": "test-skill-bulwark",
+   "name": "Test: Bulwark",
+   "stats": "3/8",
+   "old": {
+    "S": 18,
+    "x1": 32,
+    "x2": 348,
+    "N": 11.44,
+    "N2": 29.08,
+    "ok": false
+   },
+   "now": {
+    "S": 14.4,
+    "x1": 28.4,
+    "x2": 231.36,
+    "N": 11.44,
+    "N2": 29.08,
+    "ok": false
+   },
+   "why": "not a band card"
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "stats": "1/21",
+   "old": {
+    "S": 3.76,
+    "x1": 26.76,
+    "x2": 35.14,
+    "N": 29.26,
+    "N2": 190.26,
+    "ok": true
+   },
+   "now": {
+    "S": 3.94,
+    "x1": 26.94,
+    "x2": 36.52,
+    "N": 29.26,
+    "N2": 190.26,
+    "ok": true
+   },
+   "why": "room below its line already, or no room gained"
+  }
+ ],
+ "noLine": []
+}

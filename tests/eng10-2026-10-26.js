@@ -88,7 +88,8 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const held = JSON.parse(rd('docs/balance/human-pass-1-flagged-2026-10-21.json'));
   ok(refit.flagged.every(id=> held.includes(id)) && refit.cut.length > 10, `ENG9-9 every moved card has a line but cards already held over budget (${refit.flagged.join(', ')}; ${refit.cut.length} cut, ${refit.raised.length} raised)`);
   ok(cid['barnacle-fortress'].effects.armor === 3 && cid['stone-turtle-warden'].effects.armor === 3, 'ENG9-9 Armor 5 / 4 on a Common has no legal line: Barnacle Fortress and Stone Turtle Warden at Armor 3 (call ENG10-2)');
-  refit.cut.concat(refit.raised).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && T.budget(c, {level: 1}).ok, `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  const m1 = new Set(JSON.parse(rd('docs/balance/bal7-m1-rebalance-2026-10-28.json')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && T.budget(c, {level: 1}).ok, `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);
