@@ -3593,5 +3593,9 @@
  "Not enough Lumber.": "Legname insufficiente.",
  "Your card data differs from the host's. Reload the game and join again.": "I dati delle tue carte sono diversi da quelli dell'host. Ricarica il gioco e rientra.",
  "Bramble damage dealt: {n}": "Danni al rovo: {n}",
- "{name} dropped!": "{name} ottenuto!"
+ "{name} dropped!": "{name} ottenuto!",
+ "🃏 Map cards": "🃏 Carte della mappa",
+ "{name}: the map's cards": "{name}: le carte della mappa",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Tutte le carte delle liste di questa mappa: le sue, quelle di ogni mappa secondaria e quelle speciali. Una carta con il segno di un pacchetto esce anche da quel pacchetto.",
+ "Not obtainable yet: in no map list and no pack": "Non ancora ottenibile: in nessuna lista di mappa né pacchetto"
 }

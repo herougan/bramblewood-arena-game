@@ -61,11 +61,13 @@ const ctx = {defs, getCardDefs: ()=> defs, liveCards: {}, CARD_DEFS_BASELINE: de
   unlockCardForPlayer: id=>{ granted.push(id); return true; }, seenCardIds: ()=> new Set(), Math, Object, Set, JSON, String, Number, Array, out: {},
   // 2026-10-22 (package RW2): every fight rolls the one pack-card drop now (rollCardDrop -> rollSkirmishCardDrop at nodeCardDropChance)
   RARITY_DEFS: ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic'].map(key=> ({key})), mapNumberOf: ()=> 35, nodeFirstClearPacks: ()=> [],
+  // 2026-10-28 (package PACK1): a basic pack's pool comes from the map lists (basicPackTierOf, evaluated over the real map lists in tests/pack1-2026-10-28.js); here every basic-pack card that is not an egg is in Pack 1
+  basicPackTierOf: d=> (d && !d.easterEgg && d.source && d.source.kind === 'pack' && (parseInt(d.source.tier, 10) || 1) <= 10) ? 1 : 0,
   packCardReached: ()=> true}; // packCardPool asks it since the map divvy; this test had no stub, so it stopped at its first packCardPool call (pre-existing; stubbed by RW2)
 vm.createContext(ctx);
 const pieces = [constSrc('EASTER_EGG_IDS'), constSrc('EASTER_EGG_GRANT_SOURCES'), constSrc('UNATTAINABLE_ADMIN_SOURCES'),
   constSrc('ENERGY_COST'), constSrc('SKIRMISH_DROP_CHANCE'), constSrc('SKIRMISH_DROP_RARITY'), constSrc('SKIRMISH_DROP_SHIFT'), constSrc('DROP_CHANCE_PER_ENERGY'), // 2026-10-22 (RW2; was CARD_DROP_CHANCE)
-  ...['isEasterEgg', 'easterEggSeen', 'easterEggMasked', 'easterEggMaskDef', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'packPoolOf', 'packCardPool', 'cardDropRarity', 'rollCardDrop', 'nodeRewardCardIds', 'trackPick', 'raidCardIds',
+  ...['isEasterEgg', 'easterEggSeen', 'easterEggMasked', 'easterEggMaskDef', 'cardSourceOf', 'isBasicPackSource' /* PACK1 */, 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'packPoolOf', 'packCardPool', 'cardDropRarity', 'rollCardDrop', 'nodeRewardCardIds', 'trackPick', 'raidCardIds',
     'dropRankOk', 'skirmishDropApplies', 'skirmishDropRarityRoll', 'skirmishDropPick', 'skirmishDropRoll', 'rollSkirmishCardDrop', 'fightDropEnergy', 'fightCardDropChance', 'nodeCardDropChance'].map(fnSrc)];
 vm.runInContext(pieces.join('\n') + '\nout.f = {isEasterEgg, cardObtainableFrom, isUnattainable, packCardPool, rollCardDrop, nodeRewardCardIds, trackPick, raidCardIds, easterEggMasked, easterEggMaskDef};', ctx);
 const F = ctx.out.f;

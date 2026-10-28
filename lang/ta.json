@@ -3594,5 +3594,9 @@
  "Not enough Lumber.": "போதுமான மரக்கட்டை இல்லை.",
  "Your card data differs from the host's. Reload the game and join again.": "உங்கள் அட்டைத் தரவு விருந்தோம்பியினுடையதிலிருந்து வேறுபடுகிறது. விளையாட்டை மீண்டும் ஏற்றி மீண்டும் சேருங்கள்.",
  "Bramble damage dealt: {n}": "முள்வேலிக்குச் செய்த சேதம்: {n}",
- "{name} dropped!": "{name} கிடைத்தது!"
+ "{name} dropped!": "{name} கிடைத்தது!",
+ "🃏 Map cards": "🃏 வரைபட அட்டைகள்",
+ "{name}: the map's cards": "{name}: வரைபடத்தின் அட்டைகள்",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "இந்த வரைபடத்தின் பட்டியல்களில் உள்ள எல்லா அட்டைகளும்: அதன் சொந்தம், ஒவ்வொரு துணை வரைபடத்தினுடையது, சிறப்பு அட்டைகள். ஒரு பொதியின் குறி உள்ள அட்டை அந்தப் பொதியிலிருந்தும் வரும்.",
+ "Not obtainable yet: in no map list and no pack": "இன்னும் பெற முடியாது: எந்த வரைபடப் பட்டியலிலும் பொதியிலும் இல்லை"
 }

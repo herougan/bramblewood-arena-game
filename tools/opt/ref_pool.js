@@ -45,7 +45,7 @@ function buildPools(root) {
   const rewardsOf = m => uniq([].concat(...(m.nodes || []).filter(n => n.kind !== 'tutorial').map(n => G.nodeRewardCardIds(m.id, n.key).concat(firstPack[m.id + ':' + n.key] || [], n.firstCard ? [].concat(n.firstCard) : [])))).filter(ok);
   const fac = F.simulate({ side: FACTION_SIDE, seed: FACTION_SEED }), facBy = {};
   fac.log.filter(x => x.id).forEach(x => (facBy[x.map] = facBy[x.map] || []).push(x.id));
-  const commonsAt = m => Object.keys(D).filter(id => { const d = D[id], s = G.cardSourceOf(d); if (s.kind !== 'pack' || d.rarity !== 'common' || !ok(id)) return false; const t = parseInt(s.tier, 10) || 1; return PT[t] != null && PT[t] <= m; }).sort();
+  const commonsAt = m => Object.keys(D).filter(id => { const d = D[id], s = G.cardSourceOf(d); if (s.kind !== 'pack' || d.rarity !== 'common' || !ok(id)) return false; const t = G.basicPackTierOf ? G.basicPackTierOf(d) : (parseInt(s.tier, 10) || 1); /* 2026-10-28 (package PACK1): the pack the map lists put it in (0: in no pack), not source.tier */ return t > 0 && PT[t] != null && PT[t] <= m; }).sort();
   const packBy = {};
   for (let m = 0; m < MAX_MAP; m++) { const list = commonsAt(m), rng = O.mulberry(fnv('ref-pool|packs|map' + m)), got = [];
     while (got.length < Math.min(PACKS_PER_MAP, list.length)) { const id = list[Math.floor(rng.next() * list.length)]; if (!got.includes(id)) got.push(id); } packBy[m] = got; }

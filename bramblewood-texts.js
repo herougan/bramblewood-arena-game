@@ -2808,7 +2808,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e12-ambush-codex": "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.",
   "ui.e12-banana-codex": "Not while it is Asleep, Stunned, Frozen or turned to stone.",
   "ui.vis5-danger": "Danger!",
-  "ui.vis5-more-controls": "More controls"
+  "ui.vis5-more-controls": "More controls",
+  "ui.pk1-map-cards-btn": "🃏 Map cards",
+  "ui.pk1-map-cards-title": "{name}: the map's cards",
+  "ui.pk1-map-cards-sub": "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.",
+  "ui.pk1-in-pack": "Pack {n}",
+  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

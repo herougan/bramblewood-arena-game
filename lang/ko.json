@@ -3594,5 +3594,9 @@
  "Not enough Lumber.": "목재가 부족합니다.",
  "Your card data differs from the host's. Reload the game and join again.": "카드 데이터가 호스트와 다릅니다. 게임을 새로 고친 뒤 다시 참가하세요.",
  "Bramble damage dealt: {n}": "덤불에 준 피해: {n}",
- "{name} dropped!": "{name} 획득!"
+ "{name} dropped!": "{name} 획득!",
+ "🃏 Map cards": "🃏 지도 카드",
+ "{name}: the map's cards": "{name}: 지도의 카드",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "이 지도 목록의 모든 카드: 지도 자체, 각 보조 지도, 특별 카드. 팩 표시가 있는 카드는 그 팩에서도 나옵니다.",
+ "Not obtainable yet: in no map list and no pack": "아직 얻을 수 없음: 어떤 지도 목록에도, 어떤 팩에도 없음"
 }

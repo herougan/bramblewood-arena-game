@@ -3590,5 +3590,9 @@
  "Not enough Lumber.": "Nicht genug Holz.",
  "Your card data differs from the host's. Reload the game and join again.": "Deine Kartendaten weichen von denen des Gastgebers ab. Lade das Spiel neu und tritt erneut bei.",
  "Bramble damage dealt: {n}": "Schaden am Dornwall: {n}",
- "{name} dropped!": "{name} erbeutet!"
+ "{name} dropped!": "{name} erbeutet!",
+ "🃏 Map cards": "🃏 Karten der Karte",
+ "{name}: the map's cards": "{name}: die Karten der Karte",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Alle Karten auf den Listen dieser Karte: ihre eigenen, die jeder Nebenkarte und die besonderen. Eine Karte mit Pack-Zeichen kommt auch aus diesem Pack.",
+ "Not obtainable yet: in no map list and no pack": "Noch nicht erhältlich: auf keiner Kartenliste und in keinem Pack"
 }
