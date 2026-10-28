@@ -4,6 +4,23 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-29 00:10: the owner's list notes (from the earlier pass, "removals are 'at least'")
+| # | Package | Note |
+|---|---|---|
+| Q1 | THEME3 | Map 2: remove Oyster Bank, Grey Seal Bull, Fiddler Crab Swarm, Tidepool Trapper Crab. Map 3: remove Oyster Bank, Fulmar Spitter. |
+| Q2 | THEME3 | Map 4 (freshwater lake): keep Pond Algae; remove Old Sturgeon (for now), Signal Crayfish, Stone Turtle Warden. |
+| Q3 | THEME3 | Map 5: remove Buzzed Chipmunk, Alley Cat (move to Lilypad Reach), Sphagnum Vole; Venomlord Serpent to Map 6. |
+| Q4 | THEME3 | Map 6: remove Marsh Wisp, Mire Witch-Heron, Peat-cutter Vole, Lamprey, Lotus Frog, Cottonmouth Matriarch. Lilypad Reach: remove Great Crested Grebe, Shallows Fry. |
+| Q5 | THEME3 + art | Map 7: "Fungal Colossus needs retheme - and it's at least an uncommon." Smugglers' Grotto: remove Sulfur Vent Crab, Shallows Fry, Beaver Builder, Duckling. |
+| Q6 | THEME3 | Map 13: remove Echo Keeper, Swamp Rabbit. Map 14: remove Hoopoe Herald. Map 15: remove Garden Tiger Moth, Moonshell Snail, Anvil Thrush, Courier Pigeon. Map 16: remove Trickster Fox ("not snow themed enough"). Map 18: remove Static Fennec. Pale Desert: remove Armadillo Guard, Meerkat Sentry, Dune Jackal Scout. Map 20: remove Woodland Brawler, Bear Cub. |
+| Q7 | THEME3 | "The Old Bramble: Needs advanced cards, as if it was Map 21." |
+| Q8 | later (dungeons) | "Daily dungeons - have their specific unique cards but mostly carried over - up to 30 carried over cards over the different challenges. Ultimately optimising to become the strongest deck combo with that 30 (from the weakest deck combo), then levelling up." |
+| Q9 | WORLD1 (design) | "The War maps (Siege and Keep were meant to be much further ahead actually, like 30+), spanning at least 3 maps (from battlefront(s) to the keep) and before that, whispers of war." |
+| Q10 | WORLD1 | "20-30 is just advanced versions of what we've faced before. But mostly the jungle/forest/river & pastures themed - in a way, basic+. E.g. Marble golem (an insect again maybe). Malachite golem and the other golem should become insect / elementals." |
+| Q11 | WORLD1 | "Dinosaur maps (im not sure when, but also definitely 30+)". |
+| Q12 | ENG (proposal) | "Anadromous - ? Suggest something for this skill" (proposal sent 00:1x; becomes ANAD-1 in decisions). |
+| Q13 | done | A2: chance of passing written into the decision. |
+
 ## 10-28 23:35: the owner's notes (with a raid screenshot)
 | # | Package | Note |
 |---|---|---|
