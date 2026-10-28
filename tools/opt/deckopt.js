@@ -62,7 +62,7 @@
 const path = require('path'), fs = require('fs'), os = require('os');
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 let SEA = false; try { SEA = require('node:sea').isSea(); } catch (e) { /* Node without SEA */ }
-const VERSION = '2.3.0 (2026-10-27, BAL6: --mode ref-pool)';
+const VERSION = '2.4.0 (2026-10-28, BAL7: --seed-ref)';
 
 // ---------------------------------------------------------------- small helpers
 function mulberry(state) { // a serialisable PRNG: {s} is its whole state
@@ -548,7 +548,7 @@ async function search(X, method, pool, budget, rng, seeds, label, opts) {
   const R = Math.max(1, opts.restarts || 1), runs = []; let spent = 0;
   for (let r = 0; r < R; r++) {
     const credit = r === 0 && opts.credit ? opts.credit : {};
-    const sd = r === 0 ? seeds : seedDecks(X.gm, [], pool, rng, credit, o.pop * 2); // later restarts: random decks only
+    const sd = r === 0 ? seeds : (opts.refSeeds || []).concat(seedDecks(X.gm, [], pool, rng, credit, o.pop * 2)).slice(0, o.pop * 2); // later restarts: random decks only (BAL7 --seed-ref: the Map reference deck and its neighbours first)
     const res = await gaSearch(X, pool, Math.round((budget - spent) / (R - r)), sd, rng, credit, opts.bias, R > 1 ? label + ' r' + (r + 1) : label);
     spent += res.games; res.credit = credit; runs.push(res);
   }
@@ -583,12 +583,13 @@ function parseArgs(argv) {
     distinctRadius: 6, distinctWindow: 0.1, distinctMax: 4, h2hGames: 16,
     ladder: [600, 450, 300, 150], ladderCore: 10, ladderCoreMin: 6, redo: [], ladderGames: 32, ladderWalks: 8, ladderTol: 60,
     compare: false, evalGames: 48, candidatesOnly: false, rules: null,
-    poolFile: null, out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
+    seedRef: false, poolFile: null, out: null, ckptDir: path.join(os.tmpdir(), 'deckopt'), resume: false, root: null, quiet: false, summary: true, tag: null };
   const a = argv.slice(), take = () => a.shift();
   while (a.length) { const k = take();
     switch (k) {
       case '--map': case '--maps': o.maps = take(); break;
       case '--mode': o.mode = take(); break; case '--map-true': o.mode = 'map-true'; break; case '--bpro': o.mode = 'bpro'; break; case '--classic': o.mode = 'classic'; break; case '--rarity-cap': o.rarityCap = take(); break;
+      case '--seed-ref': o.seedRef = true; break; // BAL7 (2026-10-28, M4)
       case '--faction': o.faction = true; break; case '--no-faction': o.faction = false; break; case '--side': o.side = true; break;
       case '--minutes': o.minutes = +take(); break; case '--budget': o.budget = +take(); break; case '--workers': case '-j': o.workers = +take(); break; case '--seed': o.seed = take(); break;
       case '--cross-share': o.crossShare = +take(); break; case '--road-weight': o.roadWeight = +take(); break; case '--ai': o.ai = +take(); break;
@@ -618,6 +619,7 @@ function parseArgs(argv) {
 }
 const HELP = `deckopt ${VERSION}: the strongest deck per map over the real Bramblewood engine (no Claude, no tokens).
   --map N | --maps 0-3 | --maps 0,2,mc    map number(s) or id(s)
+  --seed-ref          (BAL7) every restart starts from the Map reference deck (referenceDeckFor, repaired into the pool) and its neighbours
   --mode map-true|bpro|classic|ref-pool   ref-pool (--ref-pool, package BAL6): only the cards a player holds arriving at the map, from
                       --pool-file (default docs/balance/ref/ref-pool-pools.json; tools/opt/ref_pool.js); main maps only. The card pool (default map-true, package PRO2): map-true = the map's own cards + what a player holds by then,
                       all within the map's rarity cap and first obtainable by this map; bpro (--bpro) = the map's own pool only (MAP + SPECIAL +
@@ -665,7 +667,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank };
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
-  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)])).toString(36) + '.json');
+  const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)].concat(o.seedRef ? ['seed-ref'] : []))).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
   if (!S) S = { rng: fnv(o.seed + '|' + map.id), stages: {}, stats: {}, hstats: {}, credit: {}, rngAt: {} };
   // --redo ladder (or any stage): run that stage again from the generator state it started with (as a fresh run would)
@@ -693,8 +695,14 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const B1 = noP2 ? budget.games : Math.round(budget.games * (1 - o.crossShare)), B2 = budget.games - B1;
   // ---- phase 1: the map's cards
   const s1 = await stage('p1', async () => {
-    const credit = S.credit, seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2);
-    const r = await search(X, o.method, pools.p1, B1, rng, seeds, 'p1', { restarts: o.restarts, credit });
+    const credit = S.credit; let seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2), refSeeds = null;
+    // BAL7 (2026-10-28, M4: "The Pool reference's search does not converge on Maps 13-24 (pools of 175-275): seed it with the Map reference
+    // deck"): --seed-ref puts the Map reference deck (referenceDeckFor, repaired into the pool) and a quarter-population of its 2-4-swap
+    // neighbours at the head of every restart's seeds, so a search over a big pool starts from the deck a player is known to hold.
+    if (o.seedRef) { const rd = repair(gm, G.referenceDeckFor(map.id, fights[0]).deck || {}, pools.p1, rng, credit); refSeeds = [rd];
+      for (let i = 0; refSeeds.length < Math.max(2, Math.round(o.pop / 4)) && i < o.pop * 4; i++) { const d = perturb(gm, rd, pools.p1, rng, 2 + (i % 3)); if (!refSeeds.some(x => deckKey(x) === deckKey(d))) refSeeds.push(d); }
+      seeds = uniqDecks(refSeeds.concat(seeds)).slice(0, o.pop * 2); }
+    const r = await search(X, o.method, pools.p1, B1, rng, seeds, 'p1', { restarts: o.restarts, credit, refSeeds });
     if (r.credit) S.credit = r.credit; delete r.credit; return r; });
   const best1 = s1.best;
   // ---- phase 2a: screen every candidate as a swap into the phase-1 best deck
@@ -775,9 +783,9 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     return { node: n.key, kind: n.kind || 'skirmish', target: t ? t.t : null, optimum: r3(p), ci: [r3(ci[0]), r3(ci[1])], n: st1.n[i] }; }).filter(Boolean);
   const searchOut = s => s && ({ method: s.method, games: s.games, gens: s.gens, restarts: s.restarts, steps: s.steps, moves: s.moves, runs: s.runs, localOptima: s.optima ? s.optima.map(x => ({ score: x.f, moves: x.moves, local: x.local })) : undefined, skipped: s.skipped });
   const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: G.mapNumberOf(map.id), name: map.name, side: map.sub ? map.parent : undefined, opensOn: map.sub ? pools.mapNo : undefined },
-    level, settings: { mode: o.mode, faction: !!o.faction, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
+    level, settings: { mode: o.mode, seedRef: !!o.seedRef, faction: !!o.faction, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
       crossShare: o.crossShare, roadWeight: o.roadWeight, ai: o.ai, owned: o.owned, crossPool: o.crossPool, submaps: o.submaps, pop: o.pop, children: o.children, g0: o.g0, gmax: o.gmax, screenCopies: o.screenCopies, beeTank: o.beeTank, minutes: o.minutes, workers: o.workers },
-    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : '') + (o.mode === 'ref-pool' && o.poolFile ? ' --pool-file ' + o.poolFile : ''),
+    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.seedRef ? ' --seed-ref' : '') + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : '') + (o.mode === 'ref-pool' && o.poolFile ? ' --pool-file ' + o.poolFile : ''),
     pools: { mode: pools.mode, cap: pools.cap || null, subsOpen: pools.subsOpen, phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length, excluded: pools.excluded },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),

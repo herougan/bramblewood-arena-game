@@ -18662,7 +18662,9 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
     // One ground fire a fight (FX3, owner 01:57 note 7: "The burning from scorched ground seems to be hitting twice"): Map 20's six elite and
     // boss fights and 22-7 set Scorching (field heatwave) themselves AND got this automatic Scorched Ground, so two round-start burns played
     // on the same units in the same upkeep with the same 🔥 number. Scorched Ground's line of fire (every front unit, 1) is the one kept.
-    if(Number(r.eruption) > 0 && !(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) && r.field === 'heatwave' && !(node.rules && Number(node.rules.eruption) > 0)){ delete r.field; delete r.heatLevel; r.scorchedOverScorching = true; }
+    if(Number(r.eruption) > 0 && !(r.volcano || r.lavaTideChance != null || r.petrifyChance != null || r.eruptionChance != null) && r.field === 'heatwave' && !(node.rules && Number(node.rules.eruption) > 0)){ delete r.field; delete r.heatLevel; r.scorchedOverScorching = true;
+      // BAL7 (2026-10-28, CONTENT4-4): the map's own field comes back under it (22-7: the Rimefire Caldera's Frigid, which the board code laid there too)
+      try{ const mf = (CONQUEST_MAPS.find(m=> m.id === mid) || {}).mapField; if(mf && mf.field) r.field = mf.field; }catch(e){} }
     if(r.bossSurge == null && /^(finalboss|boss|worldboss)$/.test(k)) r.bossSurge = {atk:2, hp:4};
     if(r.enemyOre == null && k === 'worldboss') r.enemyOre = {stone:1, metal:1, metalEvery:2};
     // 2026-10-17: the glow's uneven Day/Night, and Ashy ground after the volcano's Eruption (where a fight gives the volcano odds).

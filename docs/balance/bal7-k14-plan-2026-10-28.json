@@ -1,0 +1,6382 @@
+{
+ "_about": "Package BAL7 (2026-10-28, owner K14): skirmish decks, non-map-unique cards at most 1 copy each and 6 in all; node tools/bal7_k14_decks_2026_10_28.js plan|apply|check",
+ "summary": {
+  "fights": 256,
+  "changed": 126,
+  "copiesMoved": 490,
+  "stillBreaking": []
+ },
+ "rows": [
+  {
+   "map": "mf",
+   "mapNo": 1,
+   "key": "1-1",
+   "name": "Hedgerow Scouts",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "cricket-drummer": 2,
+    "field-mouse": 2,
+    "field-vole": 3,
+    "harvest-mouse": 4,
+    "meadow-rabbit": 3,
+    "cottontail": 3,
+    "ant-scout": 3
+   },
+   "after": {
+    "cricket-drummer": 5,
+    "field-mouse": 5,
+    "field-vole": 5,
+    "harvest-mouse": 1,
+    "meadow-rabbit": 1,
+    "cottontail": 1,
+    "ant-scout": 1,
+    "woodcock-lookout": 1
+   },
+   "violationsBefore": [
+    "harvest-mouse x4",
+    "meadow-rabbit x3",
+    "cottontail x3",
+    "ant-scout x3",
+    "13 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "harvest-mouse -> field-vole x2",
+    "harvest-mouse -> field-mouse",
+    "meadow-rabbit -> cricket-drummer x2",
+    "cottontail -> cricket-drummer",
+    "cottontail -> field-mouse",
+    "ant-scout -> field-mouse",
+    "ant-scout -> woodcock-lookout"
+   ],
+   "copiesMoved": 9,
+   "stuck": [],
+   "distinct": [
+    7,
+    8
+   ]
+  },
+  {
+   "map": "mf",
+   "mapNo": 1,
+   "key": "1-2",
+   "name": "Cricket Chorus",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "dormouse": 2,
+    "cricket-drummer": 2,
+    "meadow-rabbit": 3,
+    "cottontail": 3,
+    "ant-scout": 3,
+    "field-vole": 3,
+    "bramble-sprout": 4
+   },
+   "after": {
+    "dormouse": 2,
+    "cricket-drummer": 5,
+    "meadow-rabbit": 1,
+    "cottontail": 1,
+    "ant-scout": 1,
+    "field-vole": 5,
+    "bramble-sprout": 5
+   },
+   "violationsBefore": [
+    "meadow-rabbit x3",
+    "cottontail x3",
+    "ant-scout x3",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meadow-rabbit -> bramble-sprout",
+    "meadow-rabbit -> cricket-drummer",
+    "cottontail -> cricket-drummer x2",
+    "ant-scout -> field-vole x2"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mf",
+   "mapNo": 1,
+   "key": "1-3",
+   "name": "Burrow Line",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "bramble-sprout": 2,
+    "field-mouse": 3,
+    "field-vole": 3,
+    "meadow-rabbit": 3,
+    "cottontail": 3,
+    "dormouse": 4,
+    "meadow-frog": 2
+   },
+   "after": {
+    "bramble-sprout": 5,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "meadow-rabbit": 1,
+    "cottontail": 1,
+    "dormouse": 5,
+    "meadow-frog": 1
+   },
+   "violationsBefore": [
+    "meadow-rabbit x3",
+    "cottontail x3",
+    "meadow-frog x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meadow-rabbit -> bramble-sprout x2",
+    "cottontail -> bramble-sprout",
+    "cottontail -> dormouse",
+    "meadow-frog -> field-vole"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mf",
+   "mapNo": 1,
+   "key": "1-4",
+   "name": "Sapper Hedge",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "field-mouse": 4,
+    "dormouse": 3,
+    "field-vole": 4,
+    "meadow-frog": 3,
+    "bramble-sprout": 4,
+    "cottontail": 2
+   },
+   "after": {
+    "field-mouse": 4,
+    "dormouse": 4,
+    "field-vole": 5,
+    "meadow-frog": 1,
+    "bramble-sprout": 5,
+    "cottontail": 1
+   },
+   "violationsBefore": [
+    "meadow-frog x3",
+    "cottontail x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meadow-frog -> field-vole",
+    "meadow-frog -> bramble-sprout",
+    "cottontail -> dormouse"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mf",
+   "mapNo": 1,
+   "key": "1-5",
+   "name": "The Thistle Baron",
+   "kind": "elite",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "bramble-sprout": 4,
+    "compost-grub": 1,
+    "cricket-drummer": 2,
+    "cottontail": 3,
+    "field-mouse": 4,
+    "meadow-rabbit": 2,
+    "badger-lumberjack": 1,
+    "dormouse": 3
+   },
+   "after": {
+    "bramble-sprout": 4,
+    "compost-grub": 4,
+    "cricket-drummer": 2,
+    "cottontail": 1,
+    "field-mouse": 4,
+    "meadow-rabbit": 1,
+    "badger-lumberjack": 1,
+    "dormouse": 3
+   },
+   "violationsBefore": [
+    "cottontail x3",
+    "meadow-rabbit x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cottontail -> compost-grub x2",
+    "meadow-rabbit -> compost-grub"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "key": "2-1",
+   "name": "Rock Pool Raiders",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "key": "2-2",
+   "name": "Gull Gang",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "key": "2-3",
+   "name": "Hermit Row",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "key": "2-4",
+   "name": "Pelican Point",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mb",
+   "mapNo": 2,
+   "key": "2-5",
+   "name": "The Old Shell",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-1",
+   "name": "Goat Ledge",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-2",
+   "name": "Hawk Watch",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-3",
+   "name": "Rockfall",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-4",
+   "name": "Condor Thermals",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-5",
+   "name": "Eagle Stoop",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-6",
+   "name": "Avalanche Pass",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mc",
+   "mapNo": 3,
+   "key": "3-7",
+   "name": "The Gannet Queen",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "key": "4-1",
+   "name": "Reef Skirmishers",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "key": "4-2",
+   "name": "Tidal Ring",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "key": "4-3",
+   "name": "Cetacean Pod",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "key": "4-4",
+   "name": "The Kraken's Maw",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m2",
+   "mapNo": 4,
+   "key": "4-5",
+   "name": "The Drowned Colossus",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-1",
+   "name": "Leech Pools",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-2",
+   "name": "Toad Hollow",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-3",
+   "name": "Cypress Roots",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "constrictor-coil": 1,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 1,
+    "venomlord-serpent": 2,
+    "grass-viper": 4,
+    "bog-leech": 4,
+    "fire-ant-raft": 2
+   },
+   "after": {
+    "constrictor-coil": 1,
+    "snapper-hatchling": 3,
+    "swamp-alligator": 2,
+    "venomlord-serpent": 2,
+    "grass-viper": 4,
+    "bog-leech": 1,
+    "fire-ant-raft": 4
+   },
+   "violationsBefore": [
+    "bog-leech x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bog-leech -> fire-ant-raft x2",
+    "bog-leech -> swamp-alligator"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-4",
+   "name": "Snapping Reeds",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-5",
+   "name": "Gator Slide",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-6",
+   "name": "Behemoth Bog",
+   "kind": "elite",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "constrictor-coil": 5,
+    "snapper-hatchling": 2,
+    "fen-mink": 1,
+    "grass-viper": 1,
+    "moat-snapper": 2,
+    "bog-leech": 4,
+    "raft-spider": 2
+   },
+   "after": {
+    "constrictor-coil": 5,
+    "snapper-hatchling": 2,
+    "fen-mink": 4,
+    "grass-viper": 1,
+    "moat-snapper": 2,
+    "bog-leech": 1,
+    "raft-spider": 2
+   },
+   "violationsBefore": [
+    "bog-leech x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bog-leech -> fen-mink x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mw",
+   "mapNo": 5,
+   "key": "5-7",
+   "name": "Old Snapjaw",
+   "kind": "boss",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "constrictor-coil": 3,
+    "snapper-hatchling": 1,
+    "grass-snake": 3,
+    "grass-viper": 3,
+    "alligator-gar": 3,
+    "raft-spider": 2,
+    "bog-leech": 4
+   },
+   "after": {
+    "constrictor-coil": 3,
+    "snapper-hatchling": 1,
+    "grass-snake": 3,
+    "grass-viper": 3,
+    "alligator-gar": 3,
+    "raft-spider": 5,
+    "bog-leech": 1
+   },
+   "violationsBefore": [
+    "bog-leech x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bog-leech -> raft-spider x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-1",
+   "name": "Leech Bog",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "mire-witch-heron": 3,
+    "poison-dart-croaker": 3,
+    "bogfire-newt": 3
+   },
+   "after": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 1,
+    "marsh-wisp": 3,
+    "mire-witch-heron": 5,
+    "poison-dart-croaker": 3,
+    "bogfire-newt": 3
+   },
+   "violationsBefore": [
+    "constrictor-coil x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "constrictor-coil -> mire-witch-heron x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-2",
+   "name": "Mire Ambush",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "camouflage-frog": 3,
+    "constrictor-coil": 3,
+    "marsh-wisp": 4,
+    "mire-witch-heron": 4,
+    "booming-bittern": 2,
+    "bogfire-newt": 4
+   },
+   "after": {
+    "camouflage-frog": 4,
+    "constrictor-coil": 1,
+    "marsh-wisp": 4,
+    "mire-witch-heron": 5,
+    "booming-bittern": 2,
+    "bogfire-newt": 4
+   },
+   "violationsBefore": [
+    "constrictor-coil x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "constrictor-coil -> mire-witch-heron",
+    "constrictor-coil -> camouflage-frog"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-3",
+   "name": "Toad Chorus",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-4",
+   "name": "Root Snare",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "constrictor-coil": 3,
+    "marsh-wisp": 3,
+    "bogfire-newt": 4,
+    "cane-toad": 2,
+    "booming-bittern": 1
+   },
+   "after": {
+    "constrictor-coil": 1,
+    "marsh-wisp": 3,
+    "bogfire-newt": 4,
+    "cane-toad": 4,
+    "booming-bittern": 1
+   },
+   "violationsBefore": [
+    "constrictor-coil x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "constrictor-coil -> cane-toad x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-5",
+   "name": "Venomlord's Coil",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-6",
+   "name": "Crocodile Run",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-7",
+   "name": "Adder Gauntlet",
+   "kind": "elite",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "constrictor-coil": 4,
+    "marsh-wisp": 1,
+    "bogfire-newt": 1,
+    "adder-ambusher": 1,
+    "raven-scout": 1,
+    "venomlord-serpent": 4
+   },
+   "after": {
+    "constrictor-coil": 1,
+    "marsh-wisp": 1,
+    "bogfire-newt": 1,
+    "adder-ambusher": 3,
+    "raven-scout": 1,
+    "venomlord-serpent": 5
+   },
+   "violationsBefore": [
+    "constrictor-coil x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "constrictor-coil -> adder-ambusher x2",
+    "constrictor-coil -> venomlord-serpent"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m8",
+   "mapNo": 6,
+   "key": "6-8",
+   "name": "The Alligator King",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-1",
+   "name": "Spore Drift",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "compost-grub": 3,
+    "dung-beetle": 1,
+    "fungal-colossus": 3,
+    "truffle-piglet": 1,
+    "bee-forager": 2,
+    "leafcutter-gardener": 2
+   },
+   "after": {
+    "compost-grub": 1,
+    "dung-beetle": 4,
+    "fungal-colossus": 3,
+    "truffle-piglet": 1,
+    "bee-forager": 1,
+    "leafcutter-gardener": 2
+   },
+   "violationsBefore": [
+    "compost-grub x3",
+    "bee-forager x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> dung-beetle x2",
+    "bee-forager -> dung-beetle"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-2",
+   "name": "Grub Tunnels",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "compost-grub": 3,
+    "owl-nightwatch": 2,
+    "planarian-splitter": 1,
+    "honey-bee": 4,
+    "garden-snail": 4,
+    "truffle-piglet": 3
+   },
+   "after": {
+    "compost-grub": 1,
+    "owl-nightwatch": 5,
+    "planarian-splitter": 4,
+    "honey-bee": 1,
+    "garden-snail": 1,
+    "truffle-piglet": 4,
+    "tunnel-wyrm": 1
+   },
+   "violationsBefore": [
+    "compost-grub x3",
+    "honey-bee x4",
+    "garden-snail x4",
+    "11 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> planarian-splitter x2",
+    "honey-bee -> planarian-splitter",
+    "honey-bee -> owl-nightwatch x2",
+    "garden-snail -> owl-nightwatch",
+    "garden-snail -> truffle-piglet",
+    "garden-snail -> tunnel-wyrm"
+   ],
+   "copiesMoved": 8,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-3",
+   "name": "Web Hollow",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "leafcutter-gardener": 2,
+    "planarian-splitter": 2,
+    "bombardier-beetle": 2,
+    "garden-snail": 4,
+    "honey-bee": 3,
+    "fungal-colossus": 2
+   },
+   "after": {
+    "leafcutter-gardener": 3,
+    "planarian-splitter": 4,
+    "bombardier-beetle": 4,
+    "garden-snail": 1,
+    "honey-bee": 1,
+    "fungal-colossus": 2
+   },
+   "violationsBefore": [
+    "garden-snail x4",
+    "honey-bee x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "garden-snail -> planarian-splitter x2",
+    "garden-snail -> bombardier-beetle",
+    "honey-bee -> bombardier-beetle",
+    "honey-bee -> leafcutter-gardener"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-4",
+   "name": "Moonlit Gills",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "fungal-colossus": 3,
+    "ant-warrior": 2,
+    "planarian-splitter": 1,
+    "truffle-piglet": 4,
+    "compost-grub": 4,
+    "leafcutter-gardener": 2
+   },
+   "after": {
+    "fungal-colossus": 3,
+    "ant-warrior": 2,
+    "planarian-splitter": 4,
+    "truffle-piglet": 4,
+    "compost-grub": 1,
+    "leafcutter-gardener": 2
+   },
+   "violationsBefore": [
+    "compost-grub x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> planarian-splitter x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-5",
+   "name": "The Oath Ring",
+   "kind": "elite",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "compost-grub": 4,
+    "dung-beetle": 5,
+    "ant-warrior": 1,
+    "truffle-piglet": 4,
+    "bee-forager": 2,
+    "garden-snail": 2
+   },
+   "after": {
+    "compost-grub": 1,
+    "dung-beetle": 5,
+    "ant-warrior": 4,
+    "truffle-piglet": 4,
+    "bee-forager": 1,
+    "garden-snail": 1,
+    "leafcutter-gardener": 2
+   },
+   "violationsBefore": [
+    "compost-grub x4",
+    "bee-forager x2",
+    "garden-snail x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> ant-warrior x3",
+    "bee-forager -> leafcutter-gardener",
+    "garden-snail -> leafcutter-gardener"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "mu",
+   "mapNo": 7,
+   "key": "7-6",
+   "name": "The Morel Monarch",
+   "kind": "miniboss",
+   "changed": true,
+   "unique": 19,
+   "before": {
+    "owl-nightwatch": 5,
+    "planarian-splitter": 2,
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 1,
+    "leafcutter-gardener": 3,
+    "compost-grub": 4
+   },
+   "after": {
+    "owl-nightwatch": 5,
+    "planarian-splitter": 4,
+    "truffle-piglet": 4,
+    "wolf-spider-mother": 1,
+    "leafcutter-gardener": 4,
+    "compost-grub": 1
+   },
+   "violationsBefore": [
+    "compost-grub x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> planarian-splitter x2",
+    "compost-grub -> leafcutter-gardener"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-1",
+   "name": "Roost Flurry",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-2",
+   "name": "Glowworm Grotto",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-3",
+   "name": "Cinder Vents",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-4",
+   "name": "Echo Chamber",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-5",
+   "name": "Sulfur Vent Path",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-6",
+   "name": "Glowworm Deep",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-7",
+   "name": "The Roost Above",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m4",
+   "mapNo": 8,
+   "key": "8-8",
+   "name": "The Stalactite Warden",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-1",
+   "name": "Mudflat Skippers",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-2",
+   "name": "Monitor Roots",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-3",
+   "name": "Kingfisher Dive",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-4",
+   "name": "Kelp Curtains",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-5",
+   "name": "Moray Den",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-6",
+   "name": "Drifting Shell",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mk",
+   "mapNo": 9,
+   "key": "9-7",
+   "name": "The Kelp Witch",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-1",
+   "name": "Clownfish Shoal",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-2",
+   "name": "Moray Ambush",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-3",
+   "name": "Tide Pool Line",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-4",
+   "name": "Riptide Channel",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-5",
+   "name": "Current Split",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-6",
+   "name": "Reef Shark Pack",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-7",
+   "name": "Eel Nest",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-8",
+   "name": "Sea Turtle Elder's Court",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m7",
+   "mapNo": 10,
+   "key": "10-9",
+   "name": "The Orca Vanguard King",
+   "kind": "boss",
+   "changed": false
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-1",
+   "name": "Goat Trail Runners",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "alpine-marmot": 4,
+    "chipmunk-hoarder": 2,
+    "mountain-hare": 2,
+    "swamp-alligator": 2,
+    "kittiwake-flock": 2
+   },
+   "after": {
+    "alpine-marmot": 5,
+    "chipmunk-hoarder": 2,
+    "mountain-hare": 2,
+    "swamp-alligator": 2,
+    "kittiwake-flock": 1
+   },
+   "violationsBefore": [
+    "kittiwake-flock x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "kittiwake-flock -> alpine-marmot"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-2",
+   "name": "Avalanche Ridge",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-3",
+   "name": "Cliffside Herd",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "alpine-marmot": 4,
+    "eyrie-warden": 4,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1,
+    "seed-cache-squirrel": 2
+   },
+   "after": {
+    "alpine-marmot": 5,
+    "eyrie-warden": 4,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1,
+    "seed-cache-squirrel": 1
+   },
+   "violationsBefore": [
+    "seed-cache-squirrel x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "seed-cache-squirrel -> alpine-marmot"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-4",
+   "name": "Ridge Fork",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "chipmunk-hoarder": 1,
+    "eyrie-warden": 4,
+    "mountain-hare": 2,
+    "eagle-owl-quartermaster": 1,
+    "seed-cache-squirrel": 4
+   },
+   "after": {
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "mountain-hare": 2,
+    "eagle-owl-quartermaster": 1,
+    "seed-cache-squirrel": 1
+   },
+   "violationsBefore": [
+    "seed-cache-squirrel x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "seed-cache-squirrel -> chipmunk-hoarder x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-5",
+   "name": "West Ledge",
+   "kind": "elite",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "alpine-marmot": 4,
+    "eyrie-warden": 3,
+    "mountain-goat-climber": 2,
+    "ibex-rockcaller": 1,
+    "seed-cache-squirrel": 4,
+    "owl-nightwatch": 2
+   },
+   "after": {
+    "alpine-marmot": 5,
+    "eyrie-warden": 5,
+    "mountain-goat-climber": 1,
+    "ibex-rockcaller": 2,
+    "seed-cache-squirrel": 1,
+    "owl-nightwatch": 1,
+    "alpine-swift": 1
+   },
+   "violationsBefore": [
+    "mountain-goat-climber x2",
+    "seed-cache-squirrel x4",
+    "owl-nightwatch x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mountain-goat-climber -> alpine-marmot",
+    "seed-cache-squirrel -> ibex-rockcaller",
+    "seed-cache-squirrel -> eyrie-warden x2",
+    "owl-nightwatch -> alpine-swift"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-6",
+   "name": "East Ledge",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-7",
+   "name": "Eyrie Wardens",
+   "kind": "elite",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "alpine-marmot": 2,
+    "eyrie-warden": 4,
+    "ibex-rockcaller": 1,
+    "mountain-goat-climber": 4,
+    "chipmunk-hoarder": 4
+   },
+   "after": {
+    "alpine-marmot": 5,
+    "eyrie-warden": 4,
+    "ibex-rockcaller": 1,
+    "mountain-goat-climber": 1,
+    "chipmunk-hoarder": 4
+   },
+   "violationsBefore": [
+    "mountain-goat-climber x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mountain-goat-climber -> alpine-marmot x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-8",
+   "name": "Summit Approach",
+   "kind": "elite",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "alpine-marmot": 2,
+    "chipmunk-hoarder": 2,
+    "eyrie-warden": 4,
+    "ibex-rockcaller": 1,
+    "seed-cache-squirrel": 3,
+    "mountain-hare": 2
+   },
+   "after": {
+    "alpine-marmot": 2,
+    "chipmunk-hoarder": 4,
+    "eyrie-warden": 4,
+    "ibex-rockcaller": 1,
+    "seed-cache-squirrel": 1,
+    "mountain-hare": 2
+   },
+   "violationsBefore": [
+    "seed-cache-squirrel x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "seed-cache-squirrel -> chipmunk-hoarder x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-9",
+   "name": "The Condor Sovereign",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m10",
+   "mapNo": 11,
+   "key": "11-10",
+   "name": "The Avalanche Colossus",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-1",
+   "name": "Hedge Mice",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 22,
+   "before": {
+    "bramble-hoglet": 3,
+    "field-mouse": 3,
+    "hedgehog-scout": 3,
+    "mouse-sapper": 3,
+    "seed-cache-squirrel": 2,
+    "gatling-hog": 3
+   },
+   "after": {
+    "bramble-hoglet": 3,
+    "field-mouse": 1,
+    "hedgehog-scout": 3,
+    "mouse-sapper": 3,
+    "seed-cache-squirrel": 4,
+    "gatling-hog": 3
+   },
+   "violationsBefore": [
+    "field-mouse x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "field-mouse -> seed-cache-squirrel x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-2",
+   "name": "Quill Path",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 22,
+   "before": {
+    "field-mouse": 5,
+    "cunning-vixen": 2,
+    "hedge-weasel": 1,
+    "lyrebird-mimic": 2,
+    "mouse-sapper": 4,
+    "seed-cache-squirrel": 4
+   },
+   "after": {
+    "field-mouse": 1,
+    "cunning-vixen": 2,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 2,
+    "mouse-sapper": 5,
+    "seed-cache-squirrel": 5
+   },
+   "violationsBefore": [
+    "field-mouse x5"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "field-mouse -> seed-cache-squirrel",
+    "field-mouse -> mouse-sapper",
+    "field-mouse -> hedge-weasel x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-3",
+   "name": "Warren Run",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 22,
+   "before": {
+    "bramble-hoglet": 4,
+    "cunning-vixen": 2,
+    "hedge-weasel": 1,
+    "lyrebird-mimic": 2,
+    "gatling-hog": 3,
+    "field-mouse": 2
+   },
+   "after": {
+    "bramble-hoglet": 4,
+    "cunning-vixen": 2,
+    "hedge-weasel": 2,
+    "lyrebird-mimic": 2,
+    "gatling-hog": 3,
+    "field-mouse": 1
+   },
+   "violationsBefore": [
+    "field-mouse x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "field-mouse -> hedge-weasel"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-4",
+   "name": "Thornvine Arch",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-5",
+   "name": "Quillback Hold",
+   "kind": "elite",
+   "changed": true,
+   "unique": 22,
+   "before": {
+    "hedgehog-scout": 4,
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 2,
+    "quillguard": 2,
+    "field-mouse": 2,
+    "gatling-hog": 2
+   },
+   "after": {
+    "hedgehog-scout": 4,
+    "cunning-vixen": 1,
+    "hedge-weasel": 3,
+    "lyrebird-mimic": 2,
+    "quillguard": 3,
+    "field-mouse": 1,
+    "gatling-hog": 2
+   },
+   "violationsBefore": [
+    "field-mouse x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "field-mouse -> quillguard"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-6",
+   "name": "Rodent Court",
+   "kind": "elite",
+   "changed": true,
+   "unique": 22,
+   "before": {
+    "field-mouse": 5,
+    "seed-cache-squirrel": 3,
+    "cunning-vixen": 3,
+    "quillguard": 1,
+    "thorn-shrike": 1,
+    "gatling-hog": 3
+   },
+   "after": {
+    "field-mouse": 1,
+    "seed-cache-squirrel": 5,
+    "cunning-vixen": 3,
+    "quillguard": 3,
+    "thorn-shrike": 1,
+    "gatling-hog": 3
+   },
+   "violationsBefore": [
+    "field-mouse x5"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "field-mouse -> seed-cache-squirrel x2",
+    "field-mouse -> quillguard x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mh",
+   "mapNo": 12,
+   "key": "12-7",
+   "name": "The Briar Queen",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-1",
+   "name": "Cub Clearing",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-2",
+   "name": "Fox Run",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-3",
+   "name": "Antler Grove",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-4",
+   "name": "Boar Wallow",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-5",
+   "name": "Badger Setts",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-6",
+   "name": "Grizzly Ridge",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-7",
+   "name": "The King's Den",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mr",
+   "mapNo": 13,
+   "key": "13-8",
+   "name": "The Stag-Lord",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-1",
+   "name": "Zebra Stampede",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-2",
+   "name": "Hyena Chorus",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-3",
+   "name": "Howler Canopy",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-4",
+   "name": "Toucan Watch",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-5",
+   "name": "Giraffe Vanguard",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-6",
+   "name": "Jaguar Run",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-7",
+   "name": "The Cheetah Matriarch",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m5",
+   "mapNo": 14,
+   "key": "14-8",
+   "name": "The Savanna Warlord",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-1",
+   "name": "Colt Meadow",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-2",
+   "name": "Squire Road",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-3",
+   "name": "Stoat Ambush",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-4",
+   "name": "Archer Hill",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-5",
+   "name": "Charge of the Warhorses",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-6",
+   "name": "The Kennels",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "ml",
+   "mapNo": 15,
+   "key": "15-7",
+   "name": "The Horse-Lord",
+   "kind": "boss",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-1",
+   "name": "Snowshoe Tracks",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-2",
+   "name": "Pinecone Drop",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-3",
+   "name": "Elk Crossing",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-4",
+   "name": "Lynx Shadow",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-5",
+   "name": "The Running Pack",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-6",
+   "name": "Reaver's Hollow",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "mt",
+   "mapNo": 16,
+   "key": "16-7",
+   "name": "The Howling Alpha",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-1",
+   "name": "Ice Fang Patrol",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-2",
+   "name": "Frostbitten Pack",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-3",
+   "name": "Snowshoe Line",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-4",
+   "name": "Lynx Ambush",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-5",
+   "name": "Musk Ox Bulwark",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-6",
+   "name": "Glacier Herd",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-7",
+   "name": "Alpha Howler's Den",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m6",
+   "mapNo": 17,
+   "key": "17-8",
+   "name": "The Glacial Ape-King",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-1",
+   "name": "Dune Jackals",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-2",
+   "name": "Scorpion Flats",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-3",
+   "name": "Widow's Web",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-4",
+   "name": "Sandstorm",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "sandfish": 4,
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "fennec-fox": 4,
+    "obsidian-scorpion": 1,
+    "dust-devil-kestrel": 1,
+    "trapdoor-spider": 2
+   },
+   "after": {
+    "sandfish": 4,
+    "caustic-scorpion": 3,
+    "dromedary": 3,
+    "fennec-fox": 4,
+    "obsidian-scorpion": 2,
+    "dust-devil-kestrel": 1,
+    "trapdoor-spider": 1
+   },
+   "violationsBefore": [
+    "trapdoor-spider x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "trapdoor-spider -> obsidian-scorpion"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-5",
+   "name": "Obsidian Nest",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-6",
+   "name": "Komodo Wallow",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "md",
+   "mapNo": 18,
+   "key": "18-7",
+   "name": "The Sand Widow Queen",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-1",
+   "name": "Badger Warband",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-2",
+   "name": "Quill Line",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-3",
+   "name": "Porcupine Bastion",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-4",
+   "name": "Sky Marks",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-5",
+   "name": "Sky Scraper Sentinel",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m3",
+   "mapNo": 19,
+   "key": "19-6",
+   "name": "The Frost Yeti King",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-1",
+   "name": "Silverback Watch",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-2",
+   "name": "Grizzly Frontier",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-3",
+   "name": "Panther Ledge",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-4",
+   "name": "Shrine Steps",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-5",
+   "name": "Cave Warlord's Guard",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-6",
+   "name": "The Constrictor Sovereign",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-7",
+   "name": "The Blessed Avatar",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-8",
+   "name": "The Iron Cataphract",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-9",
+   "name": "The Ancient Sloth Titan",
+   "kind": "boss",
+   "changed": false
+  },
+  {
+   "map": "m11",
+   "mapNo": 20,
+   "key": "20-10",
+   "name": "The Cave Warlord",
+   "kind": "worldboss",
+   "changed": false
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-1",
+   "name": "Thaw Path",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 5,
+    "eagle-sharpshooter": 4,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "scree-goat": 3,
+    "glacier-yak": 2
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "scree-goat": 3,
+    "glacier-yak": 5
+   },
+   "violationsBefore": [
+    "alpine-marmot x5",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> glacier-yak x3",
+    "alpine-marmot -> eagle-sharpshooter"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-2",
+   "name": "Tarn Shore",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 5,
+    "eagle-sharpshooter": 2,
+    "glacier-yak": 3,
+    "pika-hoarder": 5,
+    "scree-goat": 3,
+    "snow-leopard": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "glacier-yak": 5,
+    "pika-hoarder": 5,
+    "scree-goat": 1,
+    "snow-leopard": 2
+   },
+   "violationsBefore": [
+    "alpine-marmot x5",
+    "scree-goat x3",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> snow-leopard",
+    "alpine-marmot -> glacier-yak x2",
+    "alpine-marmot -> eagle-sharpshooter",
+    "scree-goat -> eagle-sharpshooter x2"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-3",
+   "name": "Cloud Ledge",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 4,
+    "glacier-yak": 4,
+    "golden-eagle-diver": 3,
+    "mountain-goat-climber": 3,
+    "snow-leopard": 1,
+    "snow-owl-sentinel": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "glacier-yak": 5,
+    "golden-eagle-diver": 1,
+    "mountain-goat-climber": 1,
+    "snow-leopard": 2,
+    "snow-owl-sentinel": 1,
+    "eagle-sharpshooter": 5
+   },
+   "violationsBefore": [
+    "alpine-marmot x4",
+    "golden-eagle-diver x3",
+    "mountain-goat-climber x3",
+    "10 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> snow-leopard",
+    "alpine-marmot -> glacier-yak",
+    "alpine-marmot -> eagle-sharpshooter",
+    "golden-eagle-diver -> eagle-sharpshooter x2",
+    "mountain-goat-climber -> eagle-sharpshooter x2"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-4",
+   "name": "The Avalanche's Wake",
+   "kind": "elite",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 5,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 2,
+    "snow-owl-sentinel": 1,
+    "glacier-yak": 2
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "snow-owl-sentinel": 1,
+    "glacier-yak": 5,
+    "snow-leopard": 2
+   },
+   "violationsBefore": [
+    "alpine-marmot x5",
+    "mountain-goat-climber x2",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> glacier-yak x3",
+    "alpine-marmot -> snow-leopard",
+    "mountain-goat-climber -> snow-leopard"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-5",
+   "name": "Snow Owl Parliament",
+   "kind": "elite",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 4,
+    "pika-hoarder": 4,
+    "mountain-goat-climber": 3,
+    "scree-goat": 3,
+    "snow-owl-sentinel": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "scree-goat": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 4
+   },
+   "violationsBefore": [
+    "alpine-marmot x4",
+    "mountain-goat-climber x3",
+    "scree-goat x3",
+    "10 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> pika-hoarder",
+    "alpine-marmot -> snow-leopard x2",
+    "mountain-goat-climber -> glacier-yak x2",
+    "scree-goat -> glacier-yak x2"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    5,
+    7
+   ]
+  },
+  {
+   "map": "m21",
+   "mapNo": 21,
+   "key": "21-6",
+   "name": "The Cathedral Eagle",
+   "kind": "miniboss",
+   "changed": true,
+   "unique": 5,
+   "before": {
+    "alpine-marmot": 4,
+    "eagle-sharpshooter": 4,
+    "pika-hoarder": 4,
+    "mountain-goat-climber": 4,
+    "scree-goat": 2,
+    "snow-owl-sentinel": 1
+   },
+   "after": {
+    "alpine-marmot": 1,
+    "eagle-sharpshooter": 5,
+    "pika-hoarder": 5,
+    "mountain-goat-climber": 1,
+    "scree-goat": 1,
+    "snow-owl-sentinel": 1,
+    "snow-leopard": 2,
+    "glacier-yak": 3
+   },
+   "violationsBefore": [
+    "alpine-marmot x4",
+    "mountain-goat-climber x4",
+    "scree-goat x2",
+    "10 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "alpine-marmot -> pika-hoarder",
+    "alpine-marmot -> eagle-sharpshooter",
+    "alpine-marmot -> snow-leopard",
+    "mountain-goat-climber -> snow-leopard",
+    "mountain-goat-climber -> glacier-yak x2",
+    "scree-goat -> glacier-yak"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    6,
+    8
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-1",
+   "name": "Snowmelt Switchbacks",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-2",
+   "name": "Steam Vents",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-3",
+   "name": "Frozen Lava Flow",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "cinder-hornet": 5,
+    "badger-berserker": 2,
+    "fumarole-ibex": 2,
+    "rimefire-salamander": 2,
+    "ur-elk": 1,
+    "cinder-gecko": 4
+   },
+   "after": {
+    "cinder-hornet": 5,
+    "badger-berserker": 2,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 1,
+    "cinder-gecko": 4
+   },
+   "violationsBefore": [
+    "fumarole-ibex x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "fumarole-ibex -> rimefire-salamander"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-4",
+   "name": "Hailstone Ridge",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 2,
+    "ice-petrel": 3,
+    "badger-berserker": 2,
+    "fumarole-ibex": 2,
+    "ur-elk": 2,
+    "permafrost-mammoth": 4
+   },
+   "after": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 3,
+    "ice-petrel": 3,
+    "badger-berserker": 2,
+    "fumarole-ibex": 1,
+    "ur-elk": 2,
+    "permafrost-mammoth": 4
+   },
+   "violationsBefore": [
+    "fumarole-ibex x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "fumarole-ibex -> cinder-hornet"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-5",
+   "name": "The Geyser Field",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 2,
+    "badger-berserker": 1,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 2,
+    "ur-elk": 2
+   },
+   "after": {
+    "cinder-gecko": 5,
+    "cinder-hornet": 3,
+    "badger-berserker": 1,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 2
+   },
+   "violationsBefore": [
+    "fumarole-ibex x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "fumarole-ibex -> rimefire-salamander",
+    "fumarole-ibex -> cinder-hornet"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-6",
+   "name": "Ashfall Cornice",
+   "kind": "elite",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "cinder-gecko": 5,
+    "badger-berserker": 3,
+    "fumarole-ibex": 3,
+    "caldera-snow-leopard": 1,
+    "permafrost-mammoth": 2
+   },
+   "after": {
+    "cinder-gecko": 5,
+    "badger-berserker": 3,
+    "fumarole-ibex": 1,
+    "caldera-snow-leopard": 1,
+    "permafrost-mammoth": 4
+   },
+   "violationsBefore": [
+    "fumarole-ibex x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "fumarole-ibex -> permafrost-mammoth x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-7",
+   "name": "The Steam Wall",
+   "kind": "elite",
+   "changed": true,
+   "unique": 13,
+   "before": {
+    "permafrost-mammoth": 1,
+    "badger-berserker": 3,
+    "fumarole-ibex": 3,
+    "rimefire-salamander": 3,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 4
+   },
+   "after": {
+    "permafrost-mammoth": 2,
+    "badger-berserker": 3,
+    "fumarole-ibex": 1,
+    "rimefire-salamander": 3,
+    "ur-elk": 2,
+    "caldera-snow-leopard": 1,
+    "cinder-gecko": 5
+   },
+   "violationsBefore": [
+    "fumarole-ibex x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "fumarole-ibex -> cinder-gecko",
+    "fumarole-ibex -> permafrost-mammoth"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m22",
+   "mapNo": 22,
+   "key": "22-8",
+   "name": "The Rimeheart Colossus",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-1",
+   "name": "The Picket Line",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "badger-trench-digger": 4,
+    "mouse-sapper": 2,
+    "pack-mule": 3,
+    "balloon-archer": 2,
+    "trebuchet-crew": 1
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "balloon-archer": 1,
+    "trebuchet-crew": 3,
+    "werebadger": 1
+   },
+   "violationsBefore": [
+    "mouse-sapper x2",
+    "pack-mule x3",
+    "balloon-archer x2",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> trebuchet-crew",
+    "pack-mule -> badger-trench-digger",
+    "pack-mule -> trebuchet-crew",
+    "balloon-archer -> werebadger"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    5,
+    6
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-2",
+   "name": "Trench Works",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "badger-trench-digger": 4,
+    "mouse-sapper": 3,
+    "pack-mule": 4,
+    "howdah-archers": 1,
+    "testudo-tortoise": 1,
+    "beetle-battering-ram": 3
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "howdah-archers": 3,
+    "testudo-tortoise": 3,
+    "beetle-battering-ram": 3
+   },
+   "violationsBefore": [
+    "mouse-sapper x3",
+    "pack-mule x4",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> badger-trench-digger",
+    "mouse-sapper -> howdah-archers",
+    "pack-mule -> howdah-archers",
+    "pack-mule -> testudo-tortoise x2"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-3",
+   "name": "Elephant Road",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "mouse-sapper": 4,
+    "balloon-archer": 4,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 1,
+    "siege-rhino": 2,
+    "testudo-tortoise": 2
+   },
+   "after": {
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 3,
+    "testudo-tortoise": 3,
+    "trebuchet-crew": 2
+   },
+   "violationsBefore": [
+    "mouse-sapper x4",
+    "balloon-archer x4",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> howdah-archers x2",
+    "mouse-sapper -> siege-rhino",
+    "balloon-archer -> testudo-tortoise",
+    "balloon-archer -> trebuchet-crew x2"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-4",
+   "name": "Siege Camp",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "mouse-sapper": 5,
+    "pack-mule": 5,
+    "beetle-battering-ram": 2,
+    "siege-rhino": 1,
+    "testudo-tortoise": 2,
+    "howdah-archers": 2
+   },
+   "after": {
+    "mouse-sapper": 1,
+    "pack-mule": 1,
+    "beetle-battering-ram": 3,
+    "siege-rhino": 3,
+    "testudo-tortoise": 3,
+    "howdah-archers": 3,
+    "marching-elephant": 3
+   },
+   "violationsBefore": [
+    "mouse-sapper x5",
+    "pack-mule x5",
+    "10 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> howdah-archers",
+    "mouse-sapper -> siege-rhino x2",
+    "mouse-sapper -> testudo-tortoise",
+    "pack-mule -> beetle-battering-ram",
+    "pack-mule -> marching-elephant x3"
+   ],
+   "copiesMoved": 8,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-5",
+   "name": "Under the Walls",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "badger-trench-digger": 1,
+    "mouse-sapper": 3,
+    "balloon-archer": 3,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 3
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 3
+   },
+   "violationsBefore": [
+    "mouse-sapper x3",
+    "balloon-archer x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> badger-trench-digger x2",
+    "balloon-archer -> badger-trench-digger x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-6",
+   "name": "The Elephant Line",
+   "kind": "elite",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 4,
+    "balloon-archer": 1,
+    "war-elephant": 1,
+    "beetle-battering-ram": 2
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "war-elephant": 1,
+    "beetle-battering-ram": 3,
+    "trebuchet-crew": 2
+   },
+   "violationsBefore": [
+    "mouse-sapper x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> beetle-battering-ram",
+    "mouse-sapper -> trebuchet-crew x2"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    5,
+    6
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-7",
+   "name": "The Barbican",
+   "kind": "elite",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "mouse-sapper": 5,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 1,
+    "trebuchet-crew": 2,
+    "war-elephant": 1,
+    "badger-trench-digger": 2
+   },
+   "after": {
+    "mouse-sapper": 1,
+    "beetle-battering-ram": 3,
+    "howdah-archers": 3,
+    "siege-rhino": 1,
+    "trebuchet-crew": 3,
+    "war-elephant": 1,
+    "badger-trench-digger": 5
+   },
+   "violationsBefore": [
+    "mouse-sapper x5"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> trebuchet-crew",
+    "mouse-sapper -> badger-trench-digger x3"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m23",
+   "mapNo": 23,
+   "key": "23-8",
+   "name": "Marshal Tuskwell",
+   "kind": "miniboss",
+   "changed": true,
+   "unique": 10,
+   "before": {
+    "badger-trench-digger": 3,
+    "mouse-sapper": 3,
+    "balloon-archer": 3,
+    "beetle-battering-ram": 2,
+    "war-elephant": 1,
+    "siege-rhino": 2,
+    "howdah-archers": 2
+   },
+   "after": {
+    "badger-trench-digger": 5,
+    "mouse-sapper": 1,
+    "balloon-archer": 1,
+    "beetle-battering-ram": 2,
+    "war-elephant": 1,
+    "siege-rhino": 3,
+    "howdah-archers": 3
+   },
+   "violationsBefore": [
+    "mouse-sapper x3",
+    "balloon-archer x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mouse-sapper -> badger-trench-digger x2",
+    "balloon-archer -> howdah-archers",
+    "balloon-archer -> siege-rhino"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-1",
+   "name": "Breach the Gate",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-2",
+   "name": "The Bailey",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 9,
+   "before": {
+    "duckling-squadron": 5,
+    "lodge-engineer": 3,
+    "goose-sentry": 1,
+    "mallard-halberdier": 1,
+    "mallard-marauder": 2,
+    "elderhorn-monarch": 4
+   },
+   "after": {
+    "duckling-squadron": 5,
+    "lodge-engineer": 1,
+    "goose-sentry": 3,
+    "mallard-halberdier": 1,
+    "mallard-marauder": 1,
+    "elderhorn-monarch": 5
+   },
+   "violationsBefore": [
+    "lodge-engineer x3",
+    "mallard-marauder x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "lodge-engineer -> elderhorn-monarch",
+    "lodge-engineer -> goose-sentry",
+    "mallard-marauder -> goose-sentry"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-3",
+   "name": "The Counting House",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 9,
+   "before": {
+    "elderhorn-monarch": 4,
+    "lodge-engineer": 2,
+    "tax-collector-teal": 2,
+    "goose-sentry": 1,
+    "mallard-halberdier": 3
+   },
+   "after": {
+    "elderhorn-monarch": 5,
+    "lodge-engineer": 1,
+    "tax-collector-teal": 2,
+    "goose-sentry": 1,
+    "mallard-halberdier": 3
+   },
+   "violationsBefore": [
+    "lodge-engineer x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "lodge-engineer -> elderhorn-monarch"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-4",
+   "name": "The Courtyard Fountain",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 9,
+   "before": {
+    "duckling-squadron": 5,
+    "elderhorn-monarch": 3,
+    "mallard-halberdier": 1,
+    "mallard-marauder": 2,
+    "gilded-swan-knight": 1,
+    "tax-collector-teal": 2
+   },
+   "after": {
+    "duckling-squadron": 5,
+    "elderhorn-monarch": 3,
+    "mallard-halberdier": 2,
+    "mallard-marauder": 1,
+    "gilded-swan-knight": 1,
+    "tax-collector-teal": 2
+   },
+   "violationsBefore": [
+    "mallard-marauder x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mallard-marauder -> mallard-halberdier"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-5",
+   "name": "The Battlements",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 9,
+   "before": {
+    "lodge-engineer": 4,
+    "battlement-heron": 2,
+    "goose-sentry": 2,
+    "mallard-marauder": 2,
+    "mallard-halberdier": 2,
+    "tax-collector-teal": 3
+   },
+   "after": {
+    "lodge-engineer": 1,
+    "battlement-heron": 3,
+    "goose-sentry": 3,
+    "mallard-marauder": 1,
+    "mallard-halberdier": 3,
+    "tax-collector-teal": 4
+   },
+   "violationsBefore": [
+    "lodge-engineer x4",
+    "mallard-marauder x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "lodge-engineer -> battlement-heron",
+    "lodge-engineer -> goose-sentry",
+    "lodge-engineer -> mallard-halberdier",
+    "mallard-marauder -> tax-collector-teal"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-6",
+   "name": "The Gilded Guard",
+   "kind": "elite",
+   "changed": true,
+   "unique": 9,
+   "before": {
+    "duckling-squadron": 3,
+    "tax-collector-teal": 4,
+    "mallard-marauder": 3,
+    "gilded-swan-knight": 1,
+    "iron-warden": 1
+   },
+   "after": {
+    "duckling-squadron": 5,
+    "tax-collector-teal": 4,
+    "mallard-marauder": 1,
+    "gilded-swan-knight": 1,
+    "iron-warden": 1
+   },
+   "violationsBefore": [
+    "mallard-marauder x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mallard-marauder -> duckling-squadron x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-7",
+   "name": "The Treasury",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "m24",
+   "mapNo": 24,
+   "key": "24-8",
+   "name": "The Magnate Duck",
+   "kind": "miniboss",
+   "changed": false
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "key": "1-A-1",
+   "name": "Clover Patch",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "clover-butterfly": 2,
+    "meadow-rabbit": 1,
+    "pigeon-peon": 2,
+    "rabbit-kit": 4,
+    "stag-beetle": 2,
+    "burrow-rabbit": 2
+   },
+   "after": {
+    "clover-butterfly": 2,
+    "meadow-rabbit": 1,
+    "pigeon-peon": 2,
+    "rabbit-kit": 5,
+    "stag-beetle": 2,
+    "burrow-rabbit": 1
+   },
+   "violationsBefore": [
+    "burrow-rabbit x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "burrow-rabbit -> rabbit-kit"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "key": "1-A-2",
+   "name": "Bee Lines",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "bee-sentry": 2,
+    "burrow-rabbit": 5,
+    "field-mouse": 2,
+    "honey-bee": 3,
+    "stag-beetle": 3,
+    "house-cat": 4
+   },
+   "after": {
+    "bee-sentry": 1,
+    "burrow-rabbit": 1,
+    "field-mouse": 5,
+    "honey-bee": 1,
+    "stag-beetle": 3,
+    "house-cat": 1,
+    "rabbit-kit": 5,
+    "village-miller": 2
+   },
+   "violationsBefore": [
+    "bee-sentry x2",
+    "burrow-rabbit x5",
+    "honey-bee x3",
+    "house-cat x4",
+    "14 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bee-sentry -> field-mouse",
+    "burrow-rabbit -> field-mouse x2",
+    "burrow-rabbit -> rabbit-kit x2",
+    "honey-bee -> rabbit-kit x2",
+    "house-cat -> rabbit-kit",
+    "house-cat -> village-miller x2"
+   ],
+   "copiesMoved": 10,
+   "stuck": [],
+   "distinct": [
+    6,
+    8
+   ]
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "key": "1-A-3",
+   "name": "Puddle Hop",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "honey-bee": 2,
+    "house-cat": 2,
+    "jay-pilferer": 1,
+    "village-miller": 2,
+    "harvest-mouse": 3
+   },
+   "after": {
+    "honey-bee": 1,
+    "house-cat": 1,
+    "jay-pilferer": 2,
+    "village-miller": 5,
+    "harvest-mouse": 1
+   },
+   "violationsBefore": [
+    "honey-bee x2",
+    "house-cat x2",
+    "harvest-mouse x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "honey-bee -> village-miller",
+    "house-cat -> village-miller",
+    "harvest-mouse -> village-miller",
+    "harvest-mouse -> jay-pilferer"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "key": "1-A-4",
+   "name": "Harvest Mice",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "burrow-rabbit": 4,
+    "field-mouse": 2,
+    "field-vole": 2,
+    "honey-bee": 1,
+    "house-cat": 4,
+    "village-miller": 3
+   },
+   "after": {
+    "burrow-rabbit": 1,
+    "field-mouse": 3,
+    "field-vole": 5,
+    "honey-bee": 1,
+    "house-cat": 1,
+    "village-miller": 5
+   },
+   "violationsBefore": [
+    "burrow-rabbit x4",
+    "house-cat x4",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "burrow-rabbit -> field-vole x3",
+    "house-cat -> village-miller x2",
+    "house-cat -> field-mouse"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mq",
+   "mapNo": 1,
+   "key": "1-A-5",
+   "name": "The Old Hare",
+   "kind": "boss",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "buck-brawler": 1,
+    "lucky-hopper": 1,
+    "field-mouse": 2,
+    "village-miller": 2,
+    "ladybird-guard": 2,
+    "tunnel-ant": 1,
+    "honey-bee": 2,
+    "field-vole": 2,
+    "rabbit-kit": 1,
+    "house-cat": 3
+   },
+   "after": {
+    "buck-brawler": 1,
+    "lucky-hopper": 1,
+    "field-mouse": 2,
+    "village-miller": 4,
+    "ladybird-guard": 3,
+    "tunnel-ant": 1,
+    "honey-bee": 1,
+    "field-vole": 2,
+    "rabbit-kit": 1,
+    "house-cat": 1
+   },
+   "violationsBefore": [
+    "honey-bee x2",
+    "house-cat x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "honey-bee -> ladybird-guard",
+    "house-cat -> village-miller x2"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    10,
+    10
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-1",
+   "name": "Lily Hop",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "great-crested-grebe": 2,
+    "guppy": 4,
+    "minnow-skitter": 1,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 2,
+    "tidepool-trapper-crab": 2
+   },
+   "after": {
+    "great-crested-grebe": 2,
+    "guppy": 1,
+    "minnow-skitter": 1,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 5,
+    "tidepool-trapper-crab": 2
+   },
+   "violationsBefore": [
+    "guppy x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "guppy -> shallows-fry x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-2",
+   "name": "Duck Row",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "duckling": 3,
+    "fiddler-crab-swarm": 2,
+    "guppy": 3,
+    "mangrove-mudskipper": 2,
+    "minnow-skitter": 1,
+    "shallows-fry": 3
+   },
+   "after": {
+    "duckling": 1,
+    "fiddler-crab-swarm": 4,
+    "guppy": 1,
+    "mangrove-mudskipper": 2,
+    "minnow-skitter": 1,
+    "shallows-fry": 5
+   },
+   "violationsBefore": [
+    "duckling x3",
+    "guppy x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "duckling -> shallows-fry x2",
+    "guppy -> fiddler-crab-swarm x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-3",
+   "name": "Beaver Dam",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "duckling": 3,
+    "fiddler-crab-swarm": 1,
+    "guppy": 5,
+    "mayfly-dancer": 1,
+    "pond-duck": 2,
+    "river-carp": 1,
+    "old-sturgeon": 1
+   },
+   "after": {
+    "duckling": 1,
+    "fiddler-crab-swarm": 5,
+    "guppy": 1,
+    "mayfly-dancer": 1,
+    "pond-duck": 1,
+    "river-carp": 1,
+    "old-sturgeon": 1,
+    "shallows-fry": 3
+   },
+   "violationsBefore": [
+    "duckling x3",
+    "guppy x5",
+    "pond-duck x2",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "duckling -> fiddler-crab-swarm x2",
+    "guppy -> fiddler-crab-swarm x2",
+    "guppy -> shallows-fry x2",
+    "pond-duck -> shallows-fry"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    7,
+    8
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-4",
+   "name": "Pike Shallows",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "mayfly-dancer": 2,
+    "minnow-skitter": 1,
+    "river-carp": 1,
+    "ford-kingfisher": 3,
+    "shallows-fry": 2,
+    "beaver-builder": 3
+   },
+   "after": {
+    "mayfly-dancer": 1,
+    "minnow-skitter": 1,
+    "river-carp": 1,
+    "ford-kingfisher": 3,
+    "shallows-fry": 3,
+    "beaver-builder": 3
+   },
+   "violationsBefore": [
+    "mayfly-dancer x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mayfly-dancer -> shallows-fry"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-5",
+   "name": "Croaker Chorus",
+   "kind": "elite",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "poison-dart-croaker": 1,
+    "camouflage-frog": 2,
+    "pond-duck": 4,
+    "mangrove-mudskipper": 1,
+    "duckling": 4,
+    "elder-tortoise": 1
+   },
+   "after": {
+    "poison-dart-croaker": 5,
+    "camouflage-frog": 1,
+    "pond-duck": 1,
+    "mangrove-mudskipper": 1,
+    "duckling": 1,
+    "elder-tortoise": 1,
+    "great-crested-grebe": 3
+   },
+   "violationsBefore": [
+    "camouflage-frog x2",
+    "pond-duck x4",
+    "duckling x4",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "camouflage-frog -> poison-dart-croaker",
+    "pond-duck -> poison-dart-croaker x3",
+    "duckling -> great-crested-grebe x3"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-6",
+   "name": "The Lodge",
+   "kind": "elite",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "lodge-engineer": 2,
+    "beaver-builder": 1,
+    "river-carp": 2,
+    "water-shrew": 2,
+    "guppy": 4,
+    "fiddler-crab-swarm": 2,
+    "old-sturgeon": 4
+   },
+   "after": {
+    "lodge-engineer": 4,
+    "beaver-builder": 5,
+    "river-carp": 1,
+    "water-shrew": 1,
+    "guppy": 1,
+    "fiddler-crab-swarm": 4,
+    "old-sturgeon": 1
+   },
+   "violationsBefore": [
+    "river-carp x2",
+    "water-shrew x2",
+    "guppy x4",
+    "old-sturgeon x4",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "river-carp -> beaver-builder",
+    "water-shrew -> beaver-builder",
+    "guppy -> beaver-builder x2",
+    "guppy -> lodge-engineer",
+    "old-sturgeon -> lodge-engineer",
+    "old-sturgeon -> fiddler-crab-swarm x2"
+   ],
+   "copiesMoved": 8,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mp",
+   "mapNo": 2,
+   "key": "2-A-7",
+   "name": "The Lodge Matriarch",
+   "kind": "boss",
+   "changed": true,
+   "unique": 23,
+   "before": {
+    "riverworks-bastion": 1,
+    "lodge-engineer": 2,
+    "pike-lancer": 1,
+    "mudpuppy": 2,
+    "elder-tortoise": 1,
+    "mayfly-dancer": 1,
+    "fiddler-crab-swarm": 2,
+    "duckling": 2,
+    "beaver-builder": 2
+   },
+   "after": {
+    "riverworks-bastion": 1,
+    "lodge-engineer": 3,
+    "pike-lancer": 1,
+    "mudpuppy": 1,
+    "elder-tortoise": 1,
+    "mayfly-dancer": 1,
+    "fiddler-crab-swarm": 2,
+    "duckling": 1,
+    "beaver-builder": 3
+   },
+   "violationsBefore": [
+    "mudpuppy x2",
+    "duckling x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mudpuppy -> beaver-builder",
+    "duckling -> lodge-engineer"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    9,
+    9
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-1",
+   "name": "Cinder Swarm",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "beaver-lumberjack": 3,
+    "cinder-imp": 3,
+    "phoenix-fledgling": 3,
+    "chained-binturong": 3,
+    "sulfur-vent-crab": 1,
+    "ember-jackal": 1
+   },
+   "after": {
+    "beaver-lumberjack": 3,
+    "cinder-imp": 1,
+    "phoenix-fledgling": 5,
+    "chained-binturong": 3,
+    "sulfur-vent-crab": 1,
+    "ember-jackal": 1
+   },
+   "violationsBefore": [
+    "cinder-imp x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-imp -> phoenix-fledgling x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-2",
+   "name": "Salamander Vents",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "cinder-gecko": 3,
+    "cinder-imp": 3,
+    "hellbender": 2,
+    "chained-binturong": 4,
+    "magma-salamander": 1,
+    "obsidian-scorpion": 1
+   },
+   "after": {
+    "cinder-gecko": 1,
+    "cinder-imp": 1,
+    "hellbender": 5,
+    "chained-binturong": 4,
+    "magma-salamander": 1,
+    "obsidian-scorpion": 1,
+    "pyroclast-wyrm": 1
+   },
+   "violationsBefore": [
+    "cinder-gecko x3",
+    "cinder-imp x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> hellbender x2",
+    "cinder-imp -> hellbender",
+    "cinder-imp -> pyroclast-wyrm"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-3",
+   "name": "Slag Runners",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "cinder-imp": 5,
+    "cinder-stoker": 1,
+    "hellbender": 3,
+    "pyroclast-wyrm": 4,
+    "tide-spirit": 2
+   },
+   "after": {
+    "cinder-imp": 1,
+    "cinder-stoker": 4,
+    "hellbender": 3,
+    "pyroclast-wyrm": 5,
+    "tide-spirit": 2
+   },
+   "violationsBefore": [
+    "cinder-imp x5"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-imp -> pyroclast-wyrm",
+    "cinder-imp -> cinder-stoker x3"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-4",
+   "name": "Vent Skitter",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "cinder-imp": 5,
+    "phoenix-fledgling": 1,
+    "pyroclast-wyrm": 2,
+    "chained-binturong": 2,
+    "obsidian-scorpion": 1,
+    "tide-spirit": 3
+   },
+   "after": {
+    "cinder-imp": 1,
+    "phoenix-fledgling": 2,
+    "pyroclast-wyrm": 5,
+    "chained-binturong": 4,
+    "obsidian-scorpion": 1,
+    "tide-spirit": 1
+   },
+   "violationsBefore": [
+    "cinder-imp x5",
+    "tide-spirit x3",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-imp -> pyroclast-wyrm x3",
+    "cinder-imp -> phoenix-fledgling",
+    "tide-spirit -> chained-binturong x2"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-5",
+   "name": "Ashfall Line",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "ashbone-ghoul": 3,
+    "cinder-imp": 2,
+    "hellbender": 3,
+    "chained-binturong": 1,
+    "flagellant-vulture": 1,
+    "tide-spirit": 1,
+    "echidna-quillshot": 1
+   },
+   "after": {
+    "ashbone-ghoul": 1,
+    "cinder-imp": 1,
+    "hellbender": 5,
+    "chained-binturong": 1,
+    "flagellant-vulture": 2,
+    "tide-spirit": 1,
+    "echidna-quillshot": 1
+   },
+   "violationsBefore": [
+    "ashbone-ghoul x3",
+    "cinder-imp x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "ashbone-ghoul -> hellbender x2",
+    "cinder-imp -> flagellant-vulture"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-6",
+   "name": "Furnace Mouth",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "cinder-imp": 5,
+    "hellbender": 3,
+    "fruit-bat-familiar": 2,
+    "ember-jackal": 2,
+    "obsidian-scorpion": 1,
+    "quill-volley": 1
+   },
+   "after": {
+    "cinder-imp": 1,
+    "hellbender": 3,
+    "fruit-bat-familiar": 4,
+    "ember-jackal": 2,
+    "obsidian-scorpion": 1,
+    "quill-volley": 3
+   },
+   "violationsBefore": [
+    "cinder-imp x5"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-imp -> fruit-bat-familiar x2",
+    "cinder-imp -> quill-volley x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-7",
+   "name": "Basalt Vanguard",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "basalt-boar": 2,
+    "cinder-stoker": 2,
+    "hercules-beetle": 1,
+    "cinder-imp": 4,
+    "ashbone-ghoul": 2,
+    "hellbender": 2,
+    "ember-jackal": 1,
+    "tide-spirit": 3
+   },
+   "after": {
+    "basalt-boar": 1,
+    "cinder-stoker": 5,
+    "hercules-beetle": 1,
+    "cinder-imp": 1,
+    "ashbone-ghoul": 1,
+    "hellbender": 5,
+    "ember-jackal": 1,
+    "tide-spirit": 1,
+    "granite-ox-golem": 1
+   },
+   "violationsBefore": [
+    "basalt-boar x2",
+    "cinder-imp x4",
+    "ashbone-ghoul x2",
+    "tide-spirit x3",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "basalt-boar -> cinder-stoker",
+    "cinder-imp -> cinder-stoker x2",
+    "cinder-imp -> hellbender",
+    "ashbone-ghoul -> hellbender",
+    "tide-spirit -> hellbender",
+    "tide-spirit -> granite-ox-golem"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    8,
+    9
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-8",
+   "name": "Titan's Shadow",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "sulfur-vent-crab": 2,
+    "obsidian-scorpion": 2,
+    "ash-cloud-condor": 1,
+    "cinder-imp": 4,
+    "ashbone-ghoul": 2,
+    "tide-spirit": 1,
+    "beaver-lumberjack": 1,
+    "quill-volley": 3,
+    "hellbender": 2,
+    "cinder-gecko": 1
+   },
+   "after": {
+    "sulfur-vent-crab": 1,
+    "obsidian-scorpion": 1,
+    "ash-cloud-condor": 1,
+    "cinder-imp": 1,
+    "ashbone-ghoul": 1,
+    "tide-spirit": 1,
+    "beaver-lumberjack": 5,
+    "quill-volley": 3,
+    "hellbender": 4,
+    "cinder-gecko": 1
+   },
+   "violationsBefore": [
+    "sulfur-vent-crab x2",
+    "obsidian-scorpion x2",
+    "cinder-imp x4",
+    "ashbone-ghoul x2",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "sulfur-vent-crab -> hellbender",
+    "obsidian-scorpion -> beaver-lumberjack",
+    "cinder-imp -> beaver-lumberjack x3",
+    "ashbone-ghoul -> hellbender"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    10,
+    10
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-9",
+   "name": "The Pyroclast Wyrm",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "echidna-quillshot": 1,
+    "hellbender": 2,
+    "ashbone-ghoul": 4,
+    "hercules-beetle": 2,
+    "cinder-imp": 4,
+    "quill-volley": 1
+   },
+   "after": {
+    "echidna-quillshot": 2,
+    "hellbender": 5,
+    "ashbone-ghoul": 1,
+    "hercules-beetle": 1,
+    "cinder-imp": 1,
+    "quill-volley": 3,
+    "pyroclast-wyrm": 1
+   },
+   "violationsBefore": [
+    "ashbone-ghoul x4",
+    "hercules-beetle x2",
+    "cinder-imp x4",
+    "10 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "ashbone-ghoul -> hellbender x3",
+    "hercules-beetle -> echidna-quillshot",
+    "cinder-imp -> quill-volley x2",
+    "cinder-imp -> pyroclast-wyrm"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "m9",
+   "mapNo": 19,
+   "key": "19-A-10",
+   "name": "The Phoenix Ember King",
+   "kind": "boss",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "ash-cloud-condor": 2,
+    "ashbone-ghoul": 1,
+    "fire-salamander": 1,
+    "cinder-gecko": 2,
+    "hellbender": 2,
+    "basalt-boar": 2,
+    "cinder-stoker": 2,
+    "ember-jackal": 1,
+    "beaver-lumberjack": 2,
+    "cinder-imp": 2,
+    "tide-spirit": 2
+   },
+   "after": {
+    "ash-cloud-condor": 1,
+    "ashbone-ghoul": 1,
+    "fire-salamander": 4,
+    "cinder-gecko": 1,
+    "hellbender": 2,
+    "basalt-boar": 1,
+    "cinder-stoker": 4,
+    "ember-jackal": 1,
+    "beaver-lumberjack": 2,
+    "cinder-imp": 1,
+    "tide-spirit": 1
+   },
+   "violationsBefore": [
+    "ash-cloud-condor x2",
+    "cinder-gecko x2",
+    "basalt-boar x2",
+    "cinder-imp x2",
+    "tide-spirit x2",
+    "11 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "ash-cloud-condor -> fire-salamander",
+    "cinder-gecko -> cinder-stoker",
+    "basalt-boar -> fire-salamander",
+    "cinder-imp -> fire-salamander",
+    "tide-spirit -> cinder-stoker"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    11,
+    11
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "key": "10-A-1",
+   "name": "Bubble Trail",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "key": "10-A-2",
+   "name": "The Drowned Deck",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "clownfish-scout": 1,
+    "parrotfish": 1,
+    "silver-minnow": 3,
+    "coral-reef-shark": 3,
+    "crown-of-thorns-star": 2,
+    "nautilus-drifter": 2
+   },
+   "after": {
+    "clownfish-scout": 1,
+    "parrotfish": 2,
+    "silver-minnow": 1,
+    "coral-reef-shark": 4,
+    "crown-of-thorns-star": 3,
+    "nautilus-drifter": 1
+   },
+   "violationsBefore": [
+    "silver-minnow x3",
+    "nautilus-drifter x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "silver-minnow -> coral-reef-shark",
+    "silver-minnow -> parrotfish",
+    "nautilus-drifter -> crown-of-thorns-star"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "key": "10-A-3",
+   "name": "Cargo Hold",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "clownfish-scout": 3,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 1,
+    "silver-minnow": 2,
+    "blue-ringed-octopus": 2,
+    "parrotfish": 3
+   },
+   "after": {
+    "clownfish-scout": 3,
+    "kraken-spawnling": 1,
+    "orca-vanguard": 1,
+    "silver-minnow": 1,
+    "blue-ringed-octopus": 2,
+    "parrotfish": 4
+   },
+   "violationsBefore": [
+    "silver-minnow x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "silver-minnow -> parrotfish"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "key": "10-A-4",
+   "name": "The Undertow",
+   "kind": "elite",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "voltaic-eel": 2,
+    "abyss-lantern-squid": 1,
+    "riptide-eel": 1,
+    "silver-minnow": 3,
+    "glass-octopus": 3,
+    "mangrove-manatee": 2
+   },
+   "after": {
+    "voltaic-eel": 1,
+    "abyss-lantern-squid": 1,
+    "riptide-eel": 4,
+    "silver-minnow": 1,
+    "glass-octopus": 3,
+    "mangrove-manatee": 1,
+    "sea-cucumber": 1
+   },
+   "violationsBefore": [
+    "voltaic-eel x2",
+    "silver-minnow x3",
+    "mangrove-manatee x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "voltaic-eel -> riptide-eel",
+    "silver-minnow -> riptide-eel x2",
+    "mangrove-manatee -> sea-cucumber"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "mj",
+   "mapNo": 10,
+   "key": "10-A-5",
+   "name": "The Ferry's Last Passenger",
+   "kind": "boss",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "glass-octopus": 2,
+    "vampire-squid": 2,
+    "kraken-spawnling": 1,
+    "coral-reef-shark": 2,
+    "orca-vanguard": 2,
+    "blue-ringed-octopus": 1,
+    "silver-minnow": 2,
+    "clownfish-scout": 2,
+    "nautilus-drifter": 2,
+    "sulfur-vent-crab": 2,
+    "parrotfish": 2
+   },
+   "after": {
+    "glass-octopus": 1,
+    "vampire-squid": 2,
+    "kraken-spawnling": 1,
+    "coral-reef-shark": 3,
+    "orca-vanguard": 2,
+    "blue-ringed-octopus": 3,
+    "silver-minnow": 1,
+    "clownfish-scout": 2,
+    "nautilus-drifter": 1,
+    "sulfur-vent-crab": 2,
+    "parrotfish": 2
+   },
+   "violationsBefore": [
+    "glass-octopus x2",
+    "silver-minnow x2",
+    "nautilus-drifter x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "glass-octopus -> blue-ringed-octopus",
+    "silver-minnow -> coral-reef-shark",
+    "nautilus-drifter -> blue-ringed-octopus"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    11,
+    11
+   ]
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "key": "2-B-1",
+   "name": "Drip Tunnel",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "blind-cave-fish": 1,
+    "fiddler-crab-swarm": 3,
+    "tide-pool-crab": 2,
+    "trash-panda-trickster": 3,
+    "sulfur-vent-crab": 3,
+    "grey-seal-bull": 3
+   },
+   "after": {
+    "blind-cave-fish": 1,
+    "fiddler-crab-swarm": 3,
+    "tide-pool-crab": 4,
+    "trash-panda-trickster": 3,
+    "sulfur-vent-crab": 1,
+    "grey-seal-bull": 3
+   },
+   "violationsBefore": [
+    "sulfur-vent-crab x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "sulfur-vent-crab -> tide-pool-crab x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "key": "2-B-2",
+   "name": "Smugglers' Stash",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "otter-riverguard": 1,
+    "mallard-marauder": 2,
+    "pelican-diver": 2,
+    "open-ocean-hermit-crab": 2,
+    "blind-cave-fish": 2,
+    "tidepool-trapper-crab": 2,
+    "mayfly-dancer": 4,
+    "trash-panda-trickster": 3
+   },
+   "after": {
+    "otter-riverguard": 1,
+    "mallard-marauder": 2,
+    "pelican-diver": 2,
+    "open-ocean-hermit-crab": 5,
+    "blind-cave-fish": 1,
+    "tidepool-trapper-crab": 2,
+    "mayfly-dancer": 1,
+    "trash-panda-trickster": 4
+   },
+   "violationsBefore": [
+    "blind-cave-fish x2",
+    "mayfly-dancer x4",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "blind-cave-fish -> trash-panda-trickster",
+    "mayfly-dancer -> open-ocean-hermit-crab x3"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "key": "2-B-3",
+   "name": "The Glowing Pool",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "open-ocean-hermit-crab": 2,
+    "sulfur-vent-crab": 4,
+    "mallard-marauder": 2,
+    "pincushion-urchin": 2,
+    "mayfly-dancer": 2,
+    "duckling": 2,
+    "shallows-fry": 2,
+    "blind-cave-fish": 2,
+    "tidepool-trapper-crab": 2
+   },
+   "after": {
+    "open-ocean-hermit-crab": 5,
+    "sulfur-vent-crab": 1,
+    "mallard-marauder": 3,
+    "pincushion-urchin": 4,
+    "mayfly-dancer": 1,
+    "duckling": 1,
+    "shallows-fry": 1,
+    "blind-cave-fish": 1,
+    "tidepool-trapper-crab": 3
+   },
+   "violationsBefore": [
+    "sulfur-vent-crab x4",
+    "mayfly-dancer x2",
+    "duckling x2",
+    "shallows-fry x2",
+    "blind-cave-fish x2",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "sulfur-vent-crab -> open-ocean-hermit-crab x3",
+    "mayfly-dancer -> tidepool-trapper-crab",
+    "duckling -> mallard-marauder",
+    "shallows-fry -> pincushion-urchin",
+    "blind-cave-fish -> pincushion-urchin"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    9,
+    9
+   ]
+  },
+  {
+   "map": "mg",
+   "mapNo": 2,
+   "key": "2-B-4",
+   "name": "The Grotto Keeper",
+   "kind": "elite",
+   "changed": true,
+   "unique": 21,
+   "before": {
+    "octopus-tactician": 1,
+    "otter-riverguard": 5,
+    "sulfur-vent-crab": 3,
+    "open-ocean-hermit-crab": 1,
+    "blind-cave-fish": 2,
+    "beaver-builder": 2,
+    "pelican-diver": 1,
+    "mayfly-dancer": 2
+   },
+   "after": {
+    "octopus-tactician": 3,
+    "otter-riverguard": 1,
+    "sulfur-vent-crab": 1,
+    "open-ocean-hermit-crab": 5,
+    "blind-cave-fish": 1,
+    "beaver-builder": 1,
+    "pelican-diver": 3,
+    "mayfly-dancer": 1,
+    "gull-thief": 1
+   },
+   "violationsBefore": [
+    "otter-riverguard x5",
+    "sulfur-vent-crab x3",
+    "blind-cave-fish x2",
+    "beaver-builder x2",
+    "mayfly-dancer x2",
+    "14 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "otter-riverguard -> octopus-tactician x2",
+    "otter-riverguard -> pelican-diver x2",
+    "sulfur-vent-crab -> open-ocean-hermit-crab x2",
+    "blind-cave-fish -> open-ocean-hermit-crab",
+    "beaver-builder -> open-ocean-hermit-crab",
+    "mayfly-dancer -> gull-thief"
+   ],
+   "copiesMoved": 9,
+   "stuck": [],
+   "distinct": [
+    8,
+    9
+   ]
+  },
+  {
+   "map": "mz",
+   "mapNo": 7,
+   "key": "7-A-1",
+   "name": "Root Cellar",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 20,
+   "before": {
+    "compost-grub": 2,
+    "fungal-colossus": 1,
+    "garden-snail": 5,
+    "worker-ant": 4,
+    "planarian-splitter": 3,
+    "bombardier-beetle": 1
+   },
+   "after": {
+    "compost-grub": 1,
+    "fungal-colossus": 5,
+    "garden-snail": 1,
+    "worker-ant": 1,
+    "planarian-splitter": 4,
+    "bombardier-beetle": 4
+   },
+   "violationsBefore": [
+    "compost-grub x2",
+    "garden-snail x5",
+    "worker-ant x4",
+    "11 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "compost-grub -> planarian-splitter",
+    "garden-snail -> bombardier-beetle x3",
+    "garden-snail -> fungal-colossus",
+    "worker-ant -> fungal-colossus x3"
+   ],
+   "copiesMoved": 8,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mz",
+   "mapNo": 7,
+   "key": "7-A-2",
+   "name": "Glowcap Grotto",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 20,
+   "before": {
+    "honey-bee": 4,
+    "hawthorn-shieldbug": 1,
+    "ant-scout": 4,
+    "bee-forager": 4,
+    "garden-snail": 4
+   },
+   "after": {
+    "honey-bee": 1,
+    "hawthorn-shieldbug": 5,
+    "ant-scout": 1,
+    "bee-forager": 1,
+    "garden-snail": 1,
+    "bombardier-beetle": 4,
+    "dung-beetle": 4
+   },
+   "violationsBefore": [
+    "honey-bee x4",
+    "ant-scout x4",
+    "bee-forager x4",
+    "garden-snail x4",
+    "16 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "honey-bee -> hawthorn-shieldbug x3",
+    "ant-scout -> hawthorn-shieldbug",
+    "ant-scout -> bombardier-beetle x2",
+    "bee-forager -> bombardier-beetle x2",
+    "bee-forager -> dung-beetle",
+    "garden-snail -> dung-beetle x3"
+   ],
+   "copiesMoved": 12,
+   "stuck": [],
+   "distinct": [
+    5,
+    7
+   ]
+  },
+  {
+   "map": "mz",
+   "mapNo": 7,
+   "key": "7-A-3",
+   "name": "Silk Gallery",
+   "kind": "elite",
+   "changed": true,
+   "unique": 20,
+   "before": {
+    "trapdoor-spider": 3,
+    "garden-snail": 4,
+    "beetle-battering-ram": 1,
+    "honey-bee": 4,
+    "bee-forager": 1,
+    "ant-warrior": 2,
+    "dung-beetle": 2
+   },
+   "after": {
+    "trapdoor-spider": 3,
+    "garden-snail": 1,
+    "beetle-battering-ram": 1,
+    "honey-bee": 1,
+    "bee-forager": 1,
+    "ant-warrior": 4,
+    "dung-beetle": 5,
+    "fungus-gnat-cloud": 1
+   },
+   "violationsBefore": [
+    "garden-snail x4",
+    "honey-bee x4",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "garden-snail -> dung-beetle x3",
+    "honey-bee -> ant-warrior x2",
+    "honey-bee -> fungus-gnat-cloud"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    7,
+    8
+   ]
+  },
+  {
+   "map": "mz",
+   "mapNo": 7,
+   "key": "7-A-4",
+   "name": "The Rot Heart",
+   "kind": "elite",
+   "changed": true,
+   "unique": 20,
+   "before": {
+    "gangrenous-leech": 2,
+    "compost-grub": 2,
+    "beetle-battering-ram": 1,
+    "swarm-matriarch": 3,
+    "ant-warrior": 2,
+    "dung-beetle": 2,
+    "tunnel-ant": 2
+   },
+   "after": {
+    "gangrenous-leech": 1,
+    "compost-grub": 1,
+    "beetle-battering-ram": 1,
+    "swarm-matriarch": 1,
+    "ant-warrior": 4,
+    "dung-beetle": 5,
+    "tunnel-ant": 1
+   },
+   "violationsBefore": [
+    "gangrenous-leech x2",
+    "compost-grub x2",
+    "swarm-matriarch x3",
+    "tunnel-ant x2",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "gangrenous-leech -> dung-beetle",
+    "compost-grub -> dung-beetle",
+    "swarm-matriarch -> dung-beetle",
+    "swarm-matriarch -> ant-warrior",
+    "tunnel-ant -> ant-warrior"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mz",
+   "mapNo": 7,
+   "key": "7-A-5",
+   "name": "The Mycelium Mind",
+   "kind": "boss",
+   "changed": true,
+   "unique": 20,
+   "before": {
+    "fungal-colossus": 2,
+    "trapdoor-spider": 1,
+    "dung-beetle": 4,
+    "swarm-matriarch": 1,
+    "tunnel-ant": 1,
+    "ant-warrior": 2,
+    "garden-snail": 4
+   },
+   "after": {
+    "fungal-colossus": 3,
+    "trapdoor-spider": 3,
+    "dung-beetle": 4,
+    "swarm-matriarch": 1,
+    "tunnel-ant": 1,
+    "ant-warrior": 2,
+    "garden-snail": 1
+   },
+   "violationsBefore": [
+    "garden-snail x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "garden-snail -> trapdoor-spider x2",
+    "garden-snail -> fungal-colossus"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "key": "14-A-1",
+   "name": "Dart Frogs",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 31,
+   "before": {
+    "slow-loris": 2,
+    "slowpoke-sentinel": 5,
+    "termite-mound": 5,
+    "toucan-courier": 2,
+    "velvet-worm": 1,
+    "siege-rhino": 1
+   },
+   "after": {
+    "slow-loris": 3,
+    "slowpoke-sentinel": 5,
+    "termite-mound": 5,
+    "toucan-courier": 1,
+    "velvet-worm": 1,
+    "siege-rhino": 1
+   },
+   "violationsBefore": [
+    "toucan-courier x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "toucan-courier -> slow-loris"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "key": "14-A-2",
+   "name": "Strangler Arch",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 31,
+   "before": {
+    "ancient-sloth-titan": 1,
+    "hoopoe-herald": 3,
+    "slowpoke-sentinel": 2,
+    "bramblewood-macaque": 3,
+    "siege-rhino": 3
+   },
+   "after": {
+    "ancient-sloth-titan": 1,
+    "hoopoe-herald": 5,
+    "slowpoke-sentinel": 2,
+    "bramblewood-macaque": 3,
+    "siege-rhino": 1
+   },
+   "violationsBefore": [
+    "siege-rhino x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "siege-rhino -> hoopoe-herald x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    5,
+    5
+   ]
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "key": "14-A-3",
+   "name": "Sloth Boughs",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 31,
+   "before": {
+    "aye-aye-prowler": 2,
+    "slowpoke-sentinel": 2,
+    "termite-mound": 4,
+    "toucan-courier": 2,
+    "howler-monkey": 2,
+    "kinkajou-lurker": 1,
+    "savanna-cheetah": 1
+   },
+   "after": {
+    "aye-aye-prowler": 3,
+    "slowpoke-sentinel": 2,
+    "termite-mound": 4,
+    "toucan-courier": 1,
+    "howler-monkey": 2,
+    "kinkajou-lurker": 1,
+    "savanna-cheetah": 1
+   },
+   "violationsBefore": [
+    "toucan-courier x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "toucan-courier -> aye-aye-prowler"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "key": "14-A-4",
+   "name": "Drum Circle",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "my",
+   "mapNo": 14,
+   "key": "14-A-5",
+   "name": "The Jaguar's Path",
+   "kind": "boss",
+   "changed": true,
+   "unique": 31,
+   "before": {
+    "toucan-courier": 2,
+    "slowpoke-sentinel": 2,
+    "slow-loris": 2,
+    "old-growth-tortoise": 2,
+    "siege-rhino": 3,
+    "grave-grin-hyena": 2,
+    "springbok-pronker": 2,
+    "weaver-bird": 3,
+    "bramblewood-macaque": 2
+   },
+   "after": {
+    "toucan-courier": 1,
+    "slowpoke-sentinel": 2,
+    "slow-loris": 2,
+    "old-growth-tortoise": 2,
+    "siege-rhino": 3,
+    "grave-grin-hyena": 2,
+    "springbok-pronker": 2,
+    "weaver-bird": 4,
+    "bramblewood-macaque": 2
+   },
+   "violationsBefore": [
+    "toucan-courier x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "toucan-courier -> weaver-bird"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    9,
+    9
+   ]
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-1",
+   "name": "The Ash Ossuary",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-2",
+   "name": "The Wraith Vents",
+   "kind": "elite",
+   "changed": false
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-3",
+   "name": "The Lich's Kiln",
+   "kind": "elite",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "cinder-skeleton": 2,
+    "ashbone-ghoul": 2,
+    "blessed-avatar": 1,
+    "cinder-stoker": 2,
+    "cinder-gecko": 2,
+    "magma-salamander": 2
+   },
+   "after": {
+    "cinder-skeleton": 2,
+    "ashbone-ghoul": 4,
+    "blessed-avatar": 1,
+    "cinder-stoker": 1,
+    "cinder-gecko": 1,
+    "magma-salamander": 2
+   },
+   "violationsBefore": [
+    "cinder-stoker x2",
+    "cinder-gecko x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-stoker -> ashbone-ghoul",
+    "cinder-gecko -> ashbone-ghoul"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-4",
+   "name": "Heart of the Mountain",
+   "kind": "dungeon",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "cinder-skeleton": 2,
+    "ashbone-ghoul": 4,
+    "magma-wraith": 2,
+    "cinder-stoker": 2
+   },
+   "after": {
+    "cinder-skeleton": 2,
+    "ashbone-ghoul": 5,
+    "magma-wraith": 2,
+    "cinder-stoker": 1
+   },
+   "violationsBefore": [
+    "cinder-stoker x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-stoker -> ashbone-ghoul"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    4,
+    4
+   ]
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-5",
+   "name": "Scorched Boars",
+   "kind": "elite",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "basalt-boar": 2,
+    "cinder-stoker": 2,
+    "sulfur-vent-crab": 4,
+    "cinder-gecko": 2,
+    "blessed-avatar": 1,
+    "fumarole-ibex": 3,
+    "ashbone-ghoul": 2,
+    "magma-salamander": 3
+   },
+   "after": {
+    "basalt-boar": 4,
+    "cinder-stoker": 1,
+    "sulfur-vent-crab": 1,
+    "cinder-gecko": 1,
+    "blessed-avatar": 1,
+    "fumarole-ibex": 3,
+    "ashbone-ghoul": 5,
+    "magma-salamander": 3
+   },
+   "violationsBefore": [
+    "cinder-stoker x2",
+    "sulfur-vent-crab x4",
+    "cinder-gecko x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-stoker -> ashbone-ghoul",
+    "sulfur-vent-crab -> ashbone-ghoul x2",
+    "sulfur-vent-crab -> basalt-boar",
+    "cinder-gecko -> basalt-boar"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-6",
+   "name": "The Vent Crabs",
+   "kind": "elite",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "obsidian-scorpion": 1,
+    "cinder-stoker": 1,
+    "pack-mule": 2,
+    "ashbone-ghoul": 1,
+    "cinder-gecko": 2,
+    "magma-salamander": 2,
+    "fumarole-ibex": 2
+   },
+   "after": {
+    "obsidian-scorpion": 1,
+    "cinder-stoker": 1,
+    "pack-mule": 2,
+    "ashbone-ghoul": 2,
+    "cinder-gecko": 1,
+    "magma-salamander": 2,
+    "fumarole-ibex": 2
+   },
+   "violationsBefore": [
+    "cinder-gecko x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> ashbone-ghoul"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "me",
+   "mapNo": 20,
+   "key": "20-A-7",
+   "name": "Ash Condor Roost",
+   "kind": "elite",
+   "changed": true,
+   "unique": 26,
+   "before": {
+    "ash-cloud-condor": 1,
+    "sulfur-vent-crab": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 2,
+    "cinder-imp": 4,
+    "silverback-brawler": 2,
+    "gorge-wyrm": 2,
+    "ashbone-ghoul": 2,
+    "bear-cub": 2,
+    "magma-salamander": 2
+   },
+   "after": {
+    "ash-cloud-condor": 3,
+    "sulfur-vent-crab": 1,
+    "cinder-gecko": 1,
+    "cinder-stoker": 1,
+    "cinder-imp": 1,
+    "silverback-brawler": 2,
+    "gorge-wyrm": 2,
+    "ashbone-ghoul": 3,
+    "bear-cub": 2,
+    "magma-salamander": 3
+   },
+   "violationsBefore": [
+    "cinder-stoker x2",
+    "cinder-imp x4",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-stoker -> ashbone-ghoul",
+    "cinder-imp -> ash-cloud-condor x2",
+    "cinder-imp -> magma-salamander"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    10,
+    10
+   ]
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "key": "20-B-1",
+   "name": "Cinder Slopes",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "cinder-gecko": 3,
+    "cinder-hornet": 4,
+    "pack-mule": 3,
+    "ember-jackal": 1,
+    "magma-salamander": 2,
+    "tide-spirit": 3,
+    "fire-drake-hatchling": 1
+   },
+   "after": {
+    "cinder-gecko": 1,
+    "cinder-hornet": 1,
+    "pack-mule": 5,
+    "ember-jackal": 3,
+    "magma-salamander": 3,
+    "tide-spirit": 3,
+    "fire-drake-hatchling": 1
+   },
+   "violationsBefore": [
+    "cinder-gecko x3",
+    "cinder-hornet x4",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> ember-jackal x2",
+    "cinder-hornet -> magma-salamander",
+    "cinder-hornet -> pack-mule x2"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "key": "20-B-2",
+   "name": "Obsidian Run",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "basalt-boar": 3,
+    "cinder-stoker": 2,
+    "ember-centipede": 3,
+    "pack-mule": 3,
+    "obsidian-scorpion": 2,
+    "tide-spirit": 3
+   },
+   "after": {
+    "basalt-boar": 5,
+    "cinder-stoker": 1,
+    "ember-centipede": 3,
+    "pack-mule": 3,
+    "obsidian-scorpion": 1,
+    "tide-spirit": 3
+   },
+   "violationsBefore": [
+    "cinder-stoker x2",
+    "obsidian-scorpion x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-stoker -> basalt-boar",
+    "obsidian-scorpion -> basalt-boar"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "key": "20-B-3",
+   "name": "The Wyrm's Antechamber",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "cinder-imp": 5,
+    "cinder-stoker": 1,
+    "gorge-wyrm": 1,
+    "pack-mule": 3,
+    "silverback-brawler": 5,
+    "magma-salamander": 1
+   },
+   "after": {
+    "cinder-imp": 1,
+    "cinder-stoker": 1,
+    "gorge-wyrm": 1,
+    "pack-mule": 5,
+    "silverback-brawler": 5,
+    "magma-salamander": 3
+   },
+   "violationsBefore": [
+    "cinder-imp x5",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-imp -> magma-salamander x2",
+    "cinder-imp -> pack-mule x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mx",
+   "mapNo": 20,
+   "key": "20-B-4",
+   "name": "The Caldera Wyrm",
+   "kind": "worldboss",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "fire-drake-hatchling": 1,
+    "magma-titan": 2,
+    "pyroclast-wyrm": 2,
+    "magma-salamander": 2,
+    "ember-jackal": 3,
+    "obsidian-scorpion": 2,
+    "cinder-stoker": 2
+   },
+   "after": {
+    "fire-drake-hatchling": 1,
+    "magma-titan": 1,
+    "pyroclast-wyrm": 4,
+    "magma-salamander": 3,
+    "ember-jackal": 3,
+    "obsidian-scorpion": 1,
+    "cinder-stoker": 1
+   },
+   "violationsBefore": [
+    "magma-titan x2",
+    "obsidian-scorpion x2",
+    "cinder-stoker x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "magma-titan -> pyroclast-wyrm",
+    "obsidian-scorpion -> magma-salamander",
+    "cinder-stoker -> pyroclast-wyrm"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "ms",
+   "mapNo": 5,
+   "key": "5-A-1",
+   "name": "Rotting Roots",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 32,
+   "before": {
+    "echo-keeper": 3,
+    "mosquito-cloud": 2,
+    "puddle-hopper": 2,
+    "snapper-hatchling": 3,
+    "grass-viper": 1,
+    "baby-horned-capybara": 3
+   },
+   "after": {
+    "echo-keeper": 3,
+    "mosquito-cloud": 4,
+    "puddle-hopper": 2,
+    "snapper-hatchling": 3,
+    "grass-viper": 1,
+    "baby-horned-capybara": 1
+   },
+   "violationsBefore": [
+    "baby-horned-capybara x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "baby-horned-capybara -> mosquito-cloud x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "ms",
+   "mapNo": 5,
+   "key": "5-A-2",
+   "name": "Gator Hollow",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 32,
+   "before": {
+    "baby-horned-capybara": 2,
+    "mangrove-mudskipper": 2,
+    "snapper-hatchling": 1,
+    "bog-leech": 4,
+    "raft-spider": 4,
+    "bog-behemoth": 1
+   },
+   "after": {
+    "baby-horned-capybara": 1,
+    "mangrove-mudskipper": 1,
+    "snapper-hatchling": 2,
+    "bog-leech": 4,
+    "raft-spider": 5,
+    "bog-behemoth": 1
+   },
+   "violationsBefore": [
+    "baby-horned-capybara x2",
+    "mangrove-mudskipper x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "baby-horned-capybara -> raft-spider",
+    "mangrove-mudskipper -> snapper-hatchling"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "ms",
+   "mapNo": 5,
+   "key": "5-A-3",
+   "name": "Moss Weir",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "ms",
+   "mapNo": 5,
+   "key": "5-A-4",
+   "name": "The Grove Warden",
+   "kind": "boss",
+   "changed": true,
+   "unique": 32,
+   "before": {
+    "bog-leech": 2,
+    "hedgehog-herbalist": 2,
+    "constrictor-coil": 2,
+    "snapper-hatchling": 2,
+    "echo-keeper": 2,
+    "puddle-hopper": 2,
+    "grass-viper": 2,
+    "mangrove-mudskipper": 2,
+    "baby-horned-capybara": 2
+   },
+   "after": {
+    "bog-leech": 4,
+    "hedgehog-herbalist": 2,
+    "constrictor-coil": 2,
+    "snapper-hatchling": 2,
+    "echo-keeper": 2,
+    "puddle-hopper": 2,
+    "grass-viper": 2,
+    "mangrove-mudskipper": 1,
+    "baby-horned-capybara": 1
+   },
+   "violationsBefore": [
+    "mangrove-mudskipper x2",
+    "baby-horned-capybara x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mangrove-mudskipper -> bog-leech",
+    "baby-horned-capybara -> bog-leech"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    9,
+    9
+   ]
+  },
+  {
+   "map": "mn",
+   "mapNo": 8,
+   "key": "8-A-1",
+   "name": "Crystal Stair",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 40,
+   "before": {
+    "bat-swarmling": 3,
+    "blind-cave-fish": 1,
+    "cave-swiftlet": 2,
+    "glowworm-cluster": 4,
+    "sulfur-cinder-moth": 2,
+    "vampire-bat": 2
+   },
+   "after": {
+    "bat-swarmling": 1,
+    "blind-cave-fish": 1,
+    "cave-swiftlet": 2,
+    "glowworm-cluster": 4,
+    "sulfur-cinder-moth": 2,
+    "vampire-bat": 4
+   },
+   "violationsBefore": [
+    "bat-swarmling x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bat-swarmling -> vampire-bat x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mn",
+   "mapNo": 8,
+   "key": "8-A-2",
+   "name": "The Echo Pool",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 40,
+   "before": {
+    "bat-swarmling": 4,
+    "oilbird": 3,
+    "barrow-leech-bat": 3,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 3,
+    "beetle-grunt": 4
+   },
+   "after": {
+    "bat-swarmling": 1,
+    "oilbird": 4,
+    "barrow-leech-bat": 3,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 3,
+    "beetle-grunt": 1,
+    "vampire-bat-nurse": 4,
+    "cave-cricket": 1
+   },
+   "violationsBefore": [
+    "bat-swarmling x4",
+    "beetle-grunt x4",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bat-swarmling -> oilbird",
+    "bat-swarmling -> vampire-bat-nurse x2",
+    "beetle-grunt -> vampire-bat-nurse x2",
+    "beetle-grunt -> cave-cricket"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    6,
+    8
+   ]
+  },
+  {
+   "map": "mn",
+   "mapNo": 8,
+   "key": "8-A-3",
+   "name": "Shard Gallery",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 40,
+   "before": {
+    "bat-swarmling": 4,
+    "sulfur-cinder-moth": 1,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 1,
+    "monarch-wingblade": 3,
+    "swarm-matriarch": 3,
+    "vampire-bat": 4
+   },
+   "after": {
+    "bat-swarmling": 1,
+    "sulfur-cinder-moth": 4,
+    "cave-bat-swarm": 3,
+    "echo-screecher": 3,
+    "monarch-wingblade": 3,
+    "swarm-matriarch": 1,
+    "vampire-bat": 4
+   },
+   "violationsBefore": [
+    "bat-swarmling x4",
+    "swarm-matriarch x3",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "bat-swarmling -> echo-screecher x2",
+    "bat-swarmling -> sulfur-cinder-moth",
+    "swarm-matriarch -> sulfur-cinder-moth x2"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mn",
+   "mapNo": 8,
+   "key": "8-A-4",
+   "name": "The Gem Hoarder",
+   "kind": "boss",
+   "changed": true,
+   "unique": 40,
+   "before": {
+    "beetle-grunt": 1,
+    "cave-bat-swarm": 1,
+    "lantern-spark-fly": 2,
+    "tunnel-ant": 1,
+    "cave-cricket": 1,
+    "swarm-matriarch": 3,
+    "vampire-bat": 2
+   },
+   "after": {
+    "beetle-grunt": 1,
+    "cave-bat-swarm": 1,
+    "lantern-spark-fly": 2,
+    "tunnel-ant": 1,
+    "cave-cricket": 3,
+    "swarm-matriarch": 1,
+    "vampire-bat": 2
+   },
+   "violationsBefore": [
+    "swarm-matriarch x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "swarm-matriarch -> cave-cricket x2"
+   ],
+   "copiesMoved": 2,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mv",
+   "mapNo": 11,
+   "key": "11-A-1",
+   "name": "Cliff Ledge",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 17,
+   "before": {
+    "chipmunk-hoarder": 3,
+    "peak-condor": 4,
+    "rockslide-ram": 4,
+    "wound-reaver": 1,
+    "apollo-butterfly": 2,
+    "eyrie-warden": 3
+   },
+   "after": {
+    "chipmunk-hoarder": 3,
+    "peak-condor": 1,
+    "rockslide-ram": 4,
+    "wound-reaver": 1,
+    "apollo-butterfly": 4,
+    "eyrie-warden": 4
+   },
+   "violationsBefore": [
+    "peak-condor x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "peak-condor -> apollo-butterfly x2",
+    "peak-condor -> eyrie-warden"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mv",
+   "mapNo": 11,
+   "key": "11-A-2",
+   "name": "Feather Drifts",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mv",
+   "mapNo": 11,
+   "key": "11-A-3",
+   "name": "The High Roost",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mv",
+   "mapNo": 11,
+   "key": "11-A-4",
+   "name": "The Roost Mother",
+   "kind": "boss",
+   "changed": true,
+   "unique": 17,
+   "before": {
+    "wound-reaver": 2,
+    "chipmunk-hoarder": 4,
+    "mountain-goat-climber": 4,
+    "eagle-owl-quartermaster": 1,
+    "ibex-rockcaller": 1,
+    "alpine-marmot": 2,
+    "alpine-avalanche": 2
+   },
+   "after": {
+    "wound-reaver": 2,
+    "chipmunk-hoarder": 4,
+    "mountain-goat-climber": 1,
+    "eagle-owl-quartermaster": 1,
+    "ibex-rockcaller": 1,
+    "alpine-marmot": 5,
+    "alpine-avalanche": 2
+   },
+   "violationsBefore": [
+    "mountain-goat-climber x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "mountain-goat-climber -> alpine-marmot x3"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "key": "17-A-1",
+   "name": "Frost Tunnel",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "frost-hare-sprinter": 2,
+    "glacial-ape-king": 4,
+    "krill-swarm": 2,
+    "ringed-seal": 2,
+    "snow-ermine": 3,
+    "arctic-fox-raider": 3
+   },
+   "after": {
+    "frost-hare-sprinter": 1,
+    "glacial-ape-king": 4,
+    "krill-swarm": 2,
+    "ringed-seal": 2,
+    "snow-ermine": 4,
+    "arctic-fox-raider": 3
+   },
+   "violationsBefore": [
+    "frost-hare-sprinter x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "frost-hare-sprinter -> snow-ermine"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "key": "17-A-2",
+   "name": "Glacier Gut",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "key": "17-A-3",
+   "name": "The Rime Hall",
+   "kind": "skirmish",
+   "changed": false
+  },
+  {
+   "map": "mi",
+   "mapNo": 17,
+   "key": "17-A-4",
+   "name": "The Hollow King",
+   "kind": "boss",
+   "changed": true,
+   "unique": 25,
+   "before": {
+    "lone-grey-wolf": 1,
+    "ravenous-wolverine": 2,
+    "harp-seal-pup": 2,
+    "krill-swarm": 3,
+    "lemming-swarm": 2,
+    "snow-ermine": 2,
+    "frost-hare-sprinter": 2,
+    "glacial-ape-king": 2
+   },
+   "after": {
+    "lone-grey-wolf": 1,
+    "ravenous-wolverine": 2,
+    "harp-seal-pup": 3,
+    "krill-swarm": 3,
+    "lemming-swarm": 2,
+    "snow-ermine": 2,
+    "frost-hare-sprinter": 1,
+    "glacial-ape-king": 2
+   },
+   "violationsBefore": [
+    "frost-hare-sprinter x2"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "frost-hare-sprinter -> harp-seal-pup"
+   ],
+   "copiesMoved": 1,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "key": "0-B-1",
+   "name": "Thorn Path",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "ant-scout": 2,
+    "burrow-rabbit": 2,
+    "glacier-wolf-pack": 3,
+    "otter-kit": 2,
+    "pond-duck": 2,
+    "cottontail": 3
+   },
+   "after": {
+    "ant-scout": 5,
+    "burrow-rabbit": 1,
+    "glacier-wolf-pack": 1,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "cottontail": 1,
+    "forager-ant": 4
+   },
+   "violationsBefore": [
+    "burrow-rabbit x2",
+    "glacier-wolf-pack x3",
+    "otter-kit x2",
+    "pond-duck x2",
+    "cottontail x3",
+    "12 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "burrow-rabbit -> ant-scout",
+    "glacier-wolf-pack -> ant-scout x2",
+    "otter-kit -> forager-ant",
+    "pond-duck -> forager-ant",
+    "cottontail -> forager-ant x2"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    6,
+    7
+   ]
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "key": "0-B-2",
+   "name": "The Briar Ring",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "ant-scout": 2,
+    "forager-ant": 3,
+    "meadow-rabbit": 3,
+    "otter-kit": 2,
+    "otter-paddler": 2,
+    "tunnel-ant": 2
+   },
+   "after": {
+    "ant-scout": 5,
+    "forager-ant": 5,
+    "meadow-rabbit": 1,
+    "otter-kit": 1,
+    "otter-paddler": 1,
+    "tunnel-ant": 1
+   },
+   "violationsBefore": [
+    "meadow-rabbit x3",
+    "otter-kit x2",
+    "otter-paddler x2",
+    "tunnel-ant x2",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meadow-rabbit -> forager-ant x2",
+    "otter-kit -> ant-scout",
+    "otter-paddler -> ant-scout",
+    "tunnel-ant -> ant-scout"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "key": "0-B-3",
+   "name": "Root Gate",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "meadow-rabbit": 2,
+    "otter-kit": 5,
+    "pond-duck": 1,
+    "trash-panda-trickster": 2,
+    "thornwood-palisade": 2,
+    "cottontail": 4
+   },
+   "after": {
+    "meadow-rabbit": 1,
+    "otter-kit": 1,
+    "pond-duck": 1,
+    "trash-panda-trickster": 1,
+    "thornwood-palisade": 3,
+    "cottontail": 1,
+    "ant-scout": 5,
+    "forager-ant": 3
+   },
+   "violationsBefore": [
+    "meadow-rabbit x2",
+    "otter-kit x5",
+    "trash-panda-trickster x2",
+    "cottontail x4",
+    "14 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meadow-rabbit -> thornwood-palisade",
+    "otter-kit -> ant-scout x4",
+    "trash-panda-trickster -> ant-scout",
+    "cottontail -> forager-ant x3"
+   ],
+   "copiesMoved": 9,
+   "stuck": [],
+   "distinct": [
+    6,
+    8
+   ]
+  },
+  {
+   "map": "mo",
+   "mapNo": 0,
+   "key": "0-B-4",
+   "name": "The Old Bramble",
+   "kind": "boss",
+   "changed": true,
+   "unique": 12,
+   "before": {
+    "ent": 1,
+    "elder-willow": 1,
+    "tunnel-ant": 3,
+    "ant-scout": 2,
+    "forager-ant": 2,
+    "duckling": 2,
+    "pond-duck": 2,
+    "silver-minnow": 2
+   },
+   "after": {
+    "ent": 2,
+    "elder-willow": 2,
+    "tunnel-ant": 1,
+    "ant-scout": 5,
+    "forager-ant": 2,
+    "duckling": 1,
+    "pond-duck": 1,
+    "silver-minnow": 1
+   },
+   "violationsBefore": [
+    "tunnel-ant x3",
+    "duckling x2",
+    "pond-duck x2",
+    "silver-minnow x2",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "tunnel-ant -> ant-scout x2",
+    "duckling -> elder-willow",
+    "pond-duck -> ent",
+    "silver-minnow -> ant-scout"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-1",
+   "name": "Bleached Flats",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "roadrunner-courier": 3,
+    "sandfish": 4,
+    "caustic-scorpion": 1,
+    "dust-hyena": 1,
+    "trapdoor-spider": 2,
+    "rabid-jackal": 4
+   },
+   "after": {
+    "roadrunner-courier": 5,
+    "sandfish": 5,
+    "caustic-scorpion": 1,
+    "dust-hyena": 1,
+    "trapdoor-spider": 2,
+    "rabid-jackal": 1
+   },
+   "violationsBefore": [
+    "rabid-jackal x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "rabid-jackal -> roadrunner-courier x2",
+    "rabid-jackal -> sandfish"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-2",
+   "name": "Mirage Jackals",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "dune-jackal-scout": 3,
+    "roadrunner-courier": 3,
+    "caustic-scorpion": 1,
+    "rabid-jackal": 2,
+    "trapdoor-spider": 3,
+    "dust-hyena": 4
+   },
+   "after": {
+    "dune-jackal-scout": 5,
+    "roadrunner-courier": 5,
+    "caustic-scorpion": 1,
+    "rabid-jackal": 1,
+    "trapdoor-spider": 3,
+    "dust-hyena": 1
+   },
+   "violationsBefore": [
+    "rabid-jackal x2",
+    "dust-hyena x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "rabid-jackal -> dune-jackal-scout",
+    "dust-hyena -> dune-jackal-scout",
+    "dust-hyena -> roadrunner-courier x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-3",
+   "name": "Dust Devils",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "armadillo-guard": 3,
+    "sandstorm-roc": 3,
+    "caustic-scorpion": 1,
+    "dust-devil-kestrel": 1,
+    "trapdoor-spider": 3,
+    "cinder-gecko": 3,
+    "fennec-fox": 2
+   },
+   "after": {
+    "armadillo-guard": 4,
+    "sandstorm-roc": 3,
+    "caustic-scorpion": 3,
+    "dust-devil-kestrel": 2,
+    "trapdoor-spider": 1,
+    "cinder-gecko": 1,
+    "fennec-fox": 2
+   },
+   "violationsBefore": [
+    "trapdoor-spider x3",
+    "cinder-gecko x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "trapdoor-spider -> caustic-scorpion x2",
+    "cinder-gecko -> dust-devil-kestrel",
+    "cinder-gecko -> armadillo-guard"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-4",
+   "name": "Meerkat Warrens",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "meerkat-burrower": 3,
+    "sand-widow": 3,
+    "caustic-scorpion": 1,
+    "dust-hyena": 3,
+    "fennec-fox": 2,
+    "stonedrop-vulture": 4
+   },
+   "after": {
+    "meerkat-burrower": 1,
+    "sand-widow": 3,
+    "caustic-scorpion": 3,
+    "dust-hyena": 1,
+    "fennec-fox": 4,
+    "stonedrop-vulture": 4
+   },
+   "violationsBefore": [
+    "meerkat-burrower x3",
+    "dust-hyena x3"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "meerkat-burrower -> fennec-fox x2",
+    "dust-hyena -> caustic-scorpion x2"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-5",
+   "name": "Vulture Road",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "cinder-gecko": 2,
+    "roadrunner-courier": 2,
+    "dust-hyena": 4,
+    "skull-vulture": 1,
+    "stonedrop-vulture": 4,
+    "trapdoor-spider": 3,
+    "rabid-jackal": 2
+   },
+   "after": {
+    "cinder-gecko": 1,
+    "roadrunner-courier": 5,
+    "dust-hyena": 1,
+    "skull-vulture": 3,
+    "stonedrop-vulture": 4,
+    "trapdoor-spider": 3,
+    "rabid-jackal": 1
+   },
+   "violationsBefore": [
+    "cinder-gecko x2",
+    "dust-hyena x4",
+    "rabid-jackal x2",
+    "8 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> roadrunner-courier",
+    "dust-hyena -> roadrunner-courier x2",
+    "dust-hyena -> skull-vulture",
+    "rabid-jackal -> skull-vulture"
+   ],
+   "copiesMoved": 5,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-6",
+   "name": "The Salt Pan",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "sand-widow": 2,
+    "sandfish": 4,
+    "caustic-scorpion": 3,
+    "rabid-jackal": 1,
+    "trapdoor-spider": 3,
+    "cinder-gecko": 4
+   },
+   "after": {
+    "sand-widow": 3,
+    "sandfish": 5,
+    "caustic-scorpion": 4,
+    "rabid-jackal": 1,
+    "trapdoor-spider": 3,
+    "cinder-gecko": 1
+   },
+   "violationsBefore": [
+    "cinder-gecko x4"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> sandfish",
+    "cinder-gecko -> caustic-scorpion",
+    "cinder-gecko -> sand-widow"
+   ],
+   "copiesMoved": 3,
+   "stuck": [],
+   "distinct": [
+    6,
+    6
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-7",
+   "name": "Oryx Crossing",
+   "kind": "skirmish",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "dune-jackal-scout": 3,
+    "dromedary": 1,
+    "dust-hyena": 2,
+    "trapdoor-spider": 1,
+    "quicksand-queen": 1,
+    "rabid-jackal": 4,
+    "stonedrop-vulture": 4
+   },
+   "after": {
+    "dune-jackal-scout": 5,
+    "dromedary": 2,
+    "dust-hyena": 1,
+    "trapdoor-spider": 1,
+    "quicksand-queen": 2,
+    "rabid-jackal": 1,
+    "stonedrop-vulture": 4
+   },
+   "violationsBefore": [
+    "dust-hyena x2",
+    "rabid-jackal x4",
+    "7 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "dust-hyena -> dune-jackal-scout",
+    "rabid-jackal -> dune-jackal-scout",
+    "rabid-jackal -> quicksand-queen",
+    "rabid-jackal -> dromedary"
+   ],
+   "copiesMoved": 4,
+   "stuck": [],
+   "distinct": [
+    7,
+    7
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-8",
+   "name": "The Dry Well",
+   "kind": "elite",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "dust-hyena": 4,
+    "pale-oryx": 2,
+    "dust-devil-kestrel": 1,
+    "cinder-gecko": 2,
+    "trapdoor-spider": 3,
+    "rabid-jackal": 2,
+    "stonedrop-vulture": 4
+   },
+   "after": {
+    "dust-hyena": 1,
+    "pale-oryx": 4,
+    "dust-devil-kestrel": 2,
+    "cinder-gecko": 1,
+    "trapdoor-spider": 1,
+    "rabid-jackal": 1,
+    "stonedrop-vulture": 4,
+    "horned-lizard": 4
+   },
+   "violationsBefore": [
+    "dust-hyena x4",
+    "cinder-gecko x2",
+    "trapdoor-spider x3",
+    "rabid-jackal x2",
+    "11 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "dust-hyena -> dust-devil-kestrel",
+    "dust-hyena -> pale-oryx x2",
+    "cinder-gecko -> horned-lizard",
+    "trapdoor-spider -> horned-lizard x2",
+    "rabid-jackal -> horned-lizard"
+   ],
+   "copiesMoved": 7,
+   "stuck": [],
+   "distinct": [
+    7,
+    8
+   ]
+  },
+  {
+   "map": "mpd",
+   "mapNo": 18,
+   "key": "18-A-9",
+   "name": "The Quicksand Queen",
+   "kind": "boss",
+   "changed": true,
+   "unique": 28,
+   "before": {
+    "quicksand-queen": 1,
+    "caustic-scorpion": 2,
+    "pale-oryx": 1,
+    "cinder-gecko": 3,
+    "roadrunner-courier": 2,
+    "rabid-jackal": 4,
+    "trapdoor-spider": 2,
+    "stonedrop-vulture": 4
+   },
+   "after": {
+    "quicksand-queen": 2,
+    "caustic-scorpion": 3,
+    "pale-oryx": 2,
+    "cinder-gecko": 1,
+    "roadrunner-courier": 5,
+    "rabid-jackal": 1,
+    "trapdoor-spider": 1,
+    "stonedrop-vulture": 4
+   },
+   "violationsBefore": [
+    "cinder-gecko x3",
+    "rabid-jackal x4",
+    "trapdoor-spider x2",
+    "9 non-unique copies"
+   ],
+   "violationsAfter": [],
+   "swaps": [
+    "cinder-gecko -> quicksand-queen",
+    "cinder-gecko -> roadrunner-courier",
+    "rabid-jackal -> roadrunner-courier x2",
+    "rabid-jackal -> pale-oryx",
+    "trapdoor-spider -> caustic-scorpion"
+   ],
+   "copiesMoved": 6,
+   "stuck": [],
+   "distinct": [
+    8,
+    8
+   ]
+  }
+ ]
+}

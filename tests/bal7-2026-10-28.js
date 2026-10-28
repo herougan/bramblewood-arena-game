@@ -47,5 +47,34 @@ const hitsBy = (ev, uid)=> ev.filter(x=> (x.type === 'hit' || x.type === 'hitHQ'
 { const src = require('fs').readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8');
   ok(/function dozing\(c\)\{[^\n]*_wokeRound === turnNo/.test(src) && /card\._wokeRound = turnNo/.test(src), 'ENG12-2 the wake marks the round (_wokeRound) and dozing() reads it'); }
 
+// ---- CONTENT4-4: the Tundra family's Frigid is the maps' mapField, so fightRules (and every tool) sees it -----------------------------------
+const fsx = require('fs'), J = f=> JSON.parse(fsx.readFileSync(path.join(ROOT, f), 'utf8'));
+const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUEST_MAPS;
+['mt', 'm6', 'm22'].forEach(id=>{ const m = MAPS.find(x=> x.id === id), fs2 = m.nodes.filter(nd=> nd.deck && !/tutorial|raidboss/.test(nd.kind || ''));
+  ok(m.mapField && m.mapField.field === 'frozen', `CONTENT4-4 ${id} carries mapField field:'frozen'`);
+  const bad = fs2.filter(nd=>{ const own = (nd.rules || {}).field, r = G.fightRules(id, nd); return own != null && !r.scorchedOverScorching ? r.field !== own : r.field !== 'frozen'; }); // 22-7: its Scorching gives way to Scorched Ground (FX3), and the frost comes back, as the board laid it
+  ok(fs2.length > 0 && !bad.length, `CONTENT4-4 ${id}: every fight's fightRules has the frost, or the fight's own field (${fs2.length} fights${bad.length ? ', off: ' + bad.map(x=> x.key).join(' ') : ''})`); });
+{ const n23 = ['mt', 'm6', 'm22'].reduce((a, id)=> a + MAPS.find(x=> x.id === id).nodes.filter(nd=> nd.deck && G.fightRules(id, nd).field === 'frozen').length, 0);
+  ok(n23 === 23, `CONTENT4-4 23 fights play Frigid by their rules (${n23})`); }
+// the game still starts those fights with the frost (the engine takes rules.field as its starting field), and the board's fallback stays
+{ const e = E.makeSimEngine(defs, E.mulberry32(3), {rules: {field: 'frozen'}}); ok(e.getField() && e.getField().id === 'frozen', 'CONTENT4-4 the engine starts a fight with rules.field frozen on'); }
+
+// ---- FIN2-2: Give Shield and Bulwark priced from Shield = 0.8 Health ----------------------------------------------------------------------
+{ const sc = J('canonical/skill-costs.json'), sh = sc.actions.find(a=> a.id === 'shield'), bul = sc.skills.find(s=> s.id === 'bulwark'), hp = sc.actions.find(a=> a.id === 'buff.amount2');
+  ok(Math.abs(sh.value - sc.budget.shieldPerHealth * hp.value) < 1e-9, `FIN2-2 Give Shield a point = 0.8 x +1 Health given (${sh.value} = ${sc.budget.shieldPerHealth} x ${hp.value})`);
+  ok(Math.abs(bul.value - 9 * sc.budget.shieldPerHealth) < 1e-9, `FIN2-2 Bulwark a point = the owner's 9 x 0.8 (${bul.value})`);
+  const rf = J('docs/balance/bal7-shield-refit-2026-10-28.json'), cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
+  rf.moves.forEach(m=> ok(`${by[m.id].attack || 0}/${by[m.id].health}` === m.to, `FIN2-2 re-fit ${m.id} ${m.from} -> ${m.to}`)); }
+
+// ---- M2: the Test Lab's Card check takes the basic-pack cards a player can hold by then -------------------------------------------------
+{ const src = fsx.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), i = src.indexOf('function cardCheckPool(upTo)'), body = src.slice(i, src.indexOf('\n}', i));
+  ok(/src\.kind === 'pack' && Number\(src\.tier\) !== 99\)\{ const n = cardObtainMap\(d\); return n != null && n <= upTo; \}/.test(body), 'M2 cardCheckPool takes pack cards with cardObtainMap <= upTo');
+  const pool = (()=>{ try{ return G.cardCheckPool(24); }catch(e){ return null; } })();
+  if(pool) ok(pool.includes('owl-nightwatch'), `M2 the Owl Nightwatch is in the Card check pool to Map 24 (${pool.length} cards)`); }
+
+// ---- M3: no card with a source carries the stale unattainable flag ------------------------------------------------------------------------
+{ const cards = J('canonical/cards.json'), stale = cards.filter(c=> c.unattainable && c.source && c.source.kind && !c.awaitingSource);
+  ok(stale.length === 0, `M3 no card with a source is flagged unattainable (${stale.length})`); }
+
 console.log(`\nbal7: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);
