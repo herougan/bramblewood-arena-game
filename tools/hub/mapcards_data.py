@@ -14,7 +14,7 @@ import hub5_data as H5
 
 THRESH_MANY = 4          # a card listed on this many lists or more is "on many maps"
 PLAN = os.path.join('docs', 'balance', 'content4-map-pools-plan-2026-10-28.json')
-PROPOSAL = ('docs', 'balance', 'theme1-proposal-2026-10-28.json')   # 2026-10-28 (THEME1): the per-map proposal the tab's Proposal toggle shows
+PROPOSAL = ('docs', 'balance', 'theme2-proposal-2026-10-28.json')   # 2026-10-28 (THEME2, owner 22:47 sizes): the per-map proposal the tab's Proposal toggle shows (THEME1's file kept as history)
 SKIP_SUB = {'muc', 'mm', 'mlb', 'mtut'}   # the endless dungeons and the tutorial keep their lists (the plan's SKIP_SUB)
 OBTAINABLE_KINDS = {'pack', 'map', 'raid', 'nest', 'smith', 'materia', 'secret', 'quest', 'base'}
 STEPS = ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']
@@ -265,11 +265,11 @@ def mapcards(root, canon):
         totals['planAwaiting'] = len(plan.get('awaiting') or [])
         totals['planMoves'] = len(plan.get('moves') or [])
         totals['planObtainableNotListed'] = len(obt_ids - pk_all)
-    # ---- the THEME1 proposal (2026-10-28, owner's plan steps 1-2): per list its unique / carried / cut cards; optional, read only ----
+    # ---- the THEME2 proposal (2026-10-28, owner's plan steps 1-2; THEME1's builder with the 22:47 sizes): per list its unique / carried / cut cards; optional, read only ----
     prop = None
     try:
         P = L(*PROPOSAL)
-        prop = {'built': P.get('built'), 'totals': {k: v for k, v in P['totals'].items() if k not in ('noHomeIds',)}, 'noHome': P['totals'].get('noHomeIds', []),
+        prop = {'built': P.get('built'), 'totals': {k: v for k, v in P['totals'].items() if k not in ('noHomeIds',)},
                 'packs': [{k: v for k, v in p.items()} for p in P['packs']], 'sideClasses': P.get('sideClasses', []), 'rules': P.get('rules', {}), 'lists': {}}
         for e in P['maps']:
             if e.get('skipped'):
@@ -287,7 +287,7 @@ def mapcards(root, canon):
     if prop:
         for e in prop['lists'].values():
             used |= set(r['id'] for r in e.get('u', []) + e.get('c', []))
-        used |= set(prop['noHome']) | set(i for p in prop['packs'] for i in p.get('packOnlyIds', []))
+        used |= set(i for p in prop['packs'] for i in p.get('offListIds', []))   # THEME2: cards on no list, per old pack
     for m in out_lists:
         for ch in m['chips']:
             used |= set(ch['ids'])
