@@ -1,0 +1,3649 @@
+{
+ "about": "Package HUB7: each reference set against each main map's optimum deck (tools/opt/deckopt.js map-true, faction cards out), played as tools/opt/pro_ease.js plays a reference vs a PRO fight. win = the reference's win rate (draws count as not won). Reference-3 is pending (no deck yet).",
+ "tool": "tools/opt/ref_vs_optimum.js 1.0.0 (2026-10-27, HUB7)",
+ "generated": "2026-10-28T04:09:30.799Z",
+ "settings": {
+  "refs": [
+   "map",
+   "ref2",
+   "ref-pool"
+  ],
+  "games": 200,
+  "seed": "hub7",
+  "tags": [
+   "2026-10-27-hub7-maptrue",
+   "2026-10-25-pro3-maptrue"
+  ],
+  "proRule": {
+   "level": 1,
+   "ai": 1
+  },
+  "maps": "0-24"
+ },
+ "pending": [
+  "ref3"
+ ],
+ "rows": [
+  {
+   "map": 0,
+   "mapId": "m1",
+   "name": "Bramblewood Outskirts",
+   "ref": "map",
+   "games": 200,
+   "wins": 83,
+   "losses": 117,
+   "draws": 0,
+   "n": 200,
+   "win": 0.415,
+   "ci": [
+    0.349,
+    0.484
+   ],
+   "stage": "starter",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "misty, phase off",
+    "file": "docs/balance/opt/deckopt-map00-m1-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:13:13.342Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 5,
+     "chipmunk-forager": 1,
+     "cobalt-talon-fledgling": 1,
+     "duck-paddler": 4,
+     "feral-tomcat": 4,
+     "fox-kit": 5
+    },
+    "score": 0.885,
+    "ci": [
+     0.859,
+     0.91
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2257
+  },
+  {
+   "map": 0,
+   "mapId": "m1",
+   "name": "Bramblewood Outskirts",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 191,
+   "losses": 9,
+   "draws": 0,
+   "n": 200,
+   "win": 0.955,
+   "ci": [
+    0.917,
+    0.976
+   ],
+   "stage": "ref:ref2",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "misty, phase off",
+    "file": "docs/balance/opt/deckopt-map00-m1-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:13:13.342Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 5,
+     "chipmunk-forager": 1,
+     "cobalt-talon-fledgling": 1,
+     "duck-paddler": 4,
+     "feral-tomcat": 4,
+     "fox-kit": 5
+    },
+    "score": 0.885,
+    "ci": [
+     0.859,
+     0.91
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1670
+  },
+  {
+   "map": 0,
+   "mapId": "m1",
+   "name": "Bramblewood Outskirts",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 180,
+   "losses": 20,
+   "draws": 0,
+   "n": 200,
+   "win": 0.9,
+   "ci": [
+    0.851,
+    0.934
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "misty, phase off",
+    "file": "docs/balance/opt/deckopt-map00-m1-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:13:13.342Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 5,
+     "chipmunk-forager": 1,
+     "cobalt-talon-fledgling": 1,
+     "duck-paddler": 4,
+     "feral-tomcat": 4,
+     "fox-kit": 5
+    },
+    "score": 0.885,
+    "ci": [
+     0.859,
+     0.91
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1996
+  },
+  {
+   "map": 1,
+   "mapId": "mf",
+   "name": "Thistlewood",
+   "ref": "map",
+   "games": 200,
+   "wins": 1,
+   "losses": 199,
+   "draws": 0,
+   "n": 200,
+   "win": 0.005,
+   "ci": [
+    0.001,
+    0.028
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map01-mf-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:17:12.277Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bramble-sprout": 4,
+     "cottontail": 1,
+     "dormouse": 1,
+     "field-mouse": 4,
+     "field-vole": 4,
+     "meadow-frog": 3,
+     "otter-guard": 3
+    },
+    "score": 0.91,
+    "ci": [
+     0.89,
+     0.931
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2490
+  },
+  {
+   "map": 1,
+   "mapId": "mf",
+   "name": "Thistlewood",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 135,
+   "losses": 65,
+   "draws": 0,
+   "n": 200,
+   "win": 0.675,
+   "ci": [
+    0.607,
+    0.736
+   ],
+   "stage": "ref:ref2",
+   "level": 0.25,
+   "deckMap": 1,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map01-mf-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:17:12.277Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bramble-sprout": 4,
+     "cottontail": 1,
+     "dormouse": 1,
+     "field-mouse": 4,
+     "field-vole": 4,
+     "meadow-frog": 3,
+     "otter-guard": 3
+    },
+    "score": 0.91,
+    "ci": [
+     0.89,
+     0.931
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1747
+  },
+  {
+   "map": 1,
+   "mapId": "mf",
+   "name": "Thistlewood",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 74,
+   "losses": 126,
+   "draws": 0,
+   "n": 200,
+   "win": 0.37,
+   "ci": [
+    0.306,
+    0.439
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map01-mf-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:17:12.277Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bramble-sprout": 4,
+     "cottontail": 1,
+     "dormouse": 1,
+     "field-mouse": 4,
+     "field-vole": 4,
+     "meadow-frog": 3,
+     "otter-guard": 3
+    },
+    "score": 0.91,
+    "ci": [
+     0.89,
+     0.931
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2131
+  },
+  {
+   "map": 2,
+   "mapId": "mb",
+   "name": "Pebble Beach",
+   "ref": "map",
+   "games": 200,
+   "wins": 1,
+   "losses": 199,
+   "draws": 0,
+   "n": 200,
+   "win": 0.005,
+   "ci": [
+    0.001,
+    0.028
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1",
+    "file": "docs/balance/opt/deckopt-map02-mb-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:23:24.241Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 2,
+     "bramble-sprout": 2,
+     "cricket-drummer": 1,
+     "crimson-wing-recruit": 1,
+     "crossed-eyes": 1,
+     "duck-paddler": 1,
+     "ember-tetra": 3,
+     "feral-tomcat": 1,
+     "harvest-mouse": 1,
+     "honey-bee": 1,
+     "otter-guard": 3,
+     "pond-trout": 1,
+     "river-carp": 1,
+     "sheep": 1
+    },
+    "score": 0.904,
+    "ci": [
+     0.886,
+     0.922
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2505
+  },
+  {
+   "map": 2,
+   "mapId": "mb",
+   "name": "Pebble Beach",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 102,
+   "losses": 98,
+   "draws": 0,
+   "n": 200,
+   "win": 0.51,
+   "ci": [
+    0.441,
+    0.578
+   ],
+   "stage": "ref:ref2",
+   "level": 0.5,
+   "deckMap": 2,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1",
+    "file": "docs/balance/opt/deckopt-map02-mb-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:23:24.241Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 2,
+     "bramble-sprout": 2,
+     "cricket-drummer": 1,
+     "crimson-wing-recruit": 1,
+     "crossed-eyes": 1,
+     "duck-paddler": 1,
+     "ember-tetra": 3,
+     "feral-tomcat": 1,
+     "harvest-mouse": 1,
+     "honey-bee": 1,
+     "otter-guard": 3,
+     "pond-trout": 1,
+     "river-carp": 1,
+     "sheep": 1
+    },
+    "score": 0.904,
+    "ci": [
+     0.886,
+     0.922
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2368
+  },
+  {
+   "map": 2,
+   "mapId": "mb",
+   "name": "Pebble Beach",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 63,
+   "losses": 137,
+   "draws": 0,
+   "n": 200,
+   "win": 0.315,
+   "ci": [
+    0.255,
+    0.382
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1",
+    "file": "docs/balance/opt/deckopt-map02-mb-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:23:24.241Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "beetle-grunt": 2,
+     "bramble-sprout": 2,
+     "cricket-drummer": 1,
+     "crimson-wing-recruit": 1,
+     "crossed-eyes": 1,
+     "duck-paddler": 1,
+     "ember-tetra": 3,
+     "feral-tomcat": 1,
+     "harvest-mouse": 1,
+     "honey-bee": 1,
+     "otter-guard": 3,
+     "pond-trout": 1,
+     "river-carp": 1,
+     "sheep": 1
+    },
+    "score": 0.904,
+    "ci": [
+     0.886,
+     0.922
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2383
+  },
+  {
+   "map": 3,
+   "mapId": "mc",
+   "name": "Gannet Cliffs",
+   "ref": "map",
+   "games": 200,
+   "wins": 95,
+   "losses": 105,
+   "draws": 0,
+   "n": 200,
+   "win": 0.475,
+   "ci": [
+    0.407,
+    0.544
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 3,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map03-mc-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:29:27.748Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "fulmar-spitter": 4,
+     "gannet-nestweaver": 1,
+     "golden-eagle-diver": 4,
+     "mountain-goat-climber": 2,
+     "otter-guard": 1,
+     "peak-condor": 3,
+     "puffin-diver": 4,
+     "red-billed-chough": 1
+    },
+    "score": 0.683,
+    "ci": [
+     0.654,
+     0.711
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2706
+  },
+  {
+   "map": 3,
+   "mapId": "mc",
+   "name": "Gannet Cliffs",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 134,
+   "losses": 66,
+   "draws": 0,
+   "n": 200,
+   "win": 0.67,
+   "ci": [
+    0.602,
+    0.731
+   ],
+   "stage": "ref:ref2",
+   "level": 0.75,
+   "deckMap": 3,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map03-mc-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:29:27.748Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "fulmar-spitter": 4,
+     "gannet-nestweaver": 1,
+     "golden-eagle-diver": 4,
+     "mountain-goat-climber": 2,
+     "otter-guard": 1,
+     "peak-condor": 3,
+     "puffin-diver": 4,
+     "red-billed-chough": 1
+    },
+    "score": 0.683,
+    "ci": [
+     0.654,
+     0.711
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2038
+  },
+  {
+   "map": 3,
+   "mapId": "mc",
+   "name": "Gannet Cliffs",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 95,
+   "losses": 105,
+   "draws": 0,
+   "n": 200,
+   "win": 0.475,
+   "ci": [
+    0.407,
+    0.544
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 3,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map03-mc-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:29:27.748Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "fulmar-spitter": 4,
+     "gannet-nestweaver": 1,
+     "golden-eagle-diver": 4,
+     "mountain-goat-climber": 2,
+     "otter-guard": 1,
+     "peak-condor": 3,
+     "puffin-diver": 4,
+     "red-billed-chough": 1
+    },
+    "score": 0.683,
+    "ci": [
+     0.654,
+     0.711
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2330
+  },
+  {
+   "map": 4,
+   "mapId": "m2",
+   "name": "Sunken Hollow",
+   "ref": "map",
+   "games": 200,
+   "wins": 9,
+   "losses": 191,
+   "draws": 0,
+   "n": 200,
+   "win": 0.045,
+   "ci": [
+    0.024,
+    0.083
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, permaTide, phase cycle, rapids, wet, terrain Riverbank T2 (Inspiring 1)",
+    "file": "docs/balance/opt/deckopt-map04-m2-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:36:44.419Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "briarback-hedgehog": 1,
+     "ember-tetra": 2,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "muskrat-reedgatherer": 2,
+     "otter-guard": 1,
+     "oyster-bank": 1,
+     "oystercatcher": 1,
+     "river-mink": 1,
+     "riverwing-envoy": 1,
+     "stone-turtle-warden": 1,
+     "terrier-pup": 3,
+     "worker-ant": 1
+    },
+    "score": 0.882,
+    "ci": [
+     0.862,
+     0.902
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2113
+  },
+  {
+   "map": 4,
+   "mapId": "m2",
+   "name": "Sunken Hollow",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 87,
+   "losses": 113,
+   "draws": 0,
+   "n": 200,
+   "win": 0.435,
+   "ci": [
+    0.368,
+    0.504
+   ],
+   "stage": "ref:ref2",
+   "level": 1,
+   "deckMap": 4,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, permaTide, phase cycle, rapids, wet, terrain Riverbank T2 (Inspiring 1)",
+    "file": "docs/balance/opt/deckopt-map04-m2-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:36:44.419Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "briarback-hedgehog": 1,
+     "ember-tetra": 2,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "muskrat-reedgatherer": 2,
+     "otter-guard": 1,
+     "oyster-bank": 1,
+     "oystercatcher": 1,
+     "river-mink": 1,
+     "riverwing-envoy": 1,
+     "stone-turtle-warden": 1,
+     "terrier-pup": 3,
+     "worker-ant": 1
+    },
+    "score": 0.882,
+    "ci": [
+     0.862,
+     0.902
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1875
+  },
+  {
+   "map": 4,
+   "mapId": "m2",
+   "name": "Sunken Hollow",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 20,
+   "losses": 180,
+   "draws": 0,
+   "n": 200,
+   "win": 0.1,
+   "ci": [
+    0.066,
+    0.149
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-guard"
+    ],
+    "field": "aiGuardLethal, permaTide, phase cycle, rapids, wet, terrain Riverbank T2 (Inspiring 1)",
+    "file": "docs/balance/opt/deckopt-map04-m2-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:36:44.419Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "briarback-hedgehog": 1,
+     "ember-tetra": 2,
+     "farm-dog": 1,
+     "house-cat": 4,
+     "muskrat-reedgatherer": 2,
+     "otter-guard": 1,
+     "oyster-bank": 1,
+     "oystercatcher": 1,
+     "river-mink": 1,
+     "riverwing-envoy": 1,
+     "stone-turtle-warden": 1,
+     "terrier-pup": 3,
+     "worker-ant": 1
+    },
+    "score": 0.882,
+    "ci": [
+     0.862,
+     0.902
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2422
+  },
+  {
+   "map": 5,
+   "mapId": "mw",
+   "name": "Gatorback Swamp",
+   "ref": "map",
+   "games": 200,
+   "wins": 37,
+   "losses": 163,
+   "draws": 0,
+   "n": 200,
+   "win": 0.185,
+   "ci": [
+    0.137,
+    0.245
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "tunnel-ant"
+    ],
+    "field": "aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map05-mw-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:44:41.881Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bee-forager": 4,
+     "cricket-drummer": 4,
+     "river-carp": 1,
+     "signal-crayfish": 2,
+     "terrier-pup": 4,
+     "tunnel-ant": 1,
+     "water-shrew": 4
+    },
+    "score": 0.876,
+    "ci": [
+     0.857,
+     0.895
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3453
+  },
+  {
+   "map": 5,
+   "mapId": "mw",
+   "name": "Gatorback Swamp",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 169,
+   "losses": 31,
+   "draws": 0,
+   "n": 200,
+   "win": 0.845,
+   "ci": [
+    0.788,
+    0.889
+   ],
+   "stage": "ref:ref2",
+   "level": 1.25,
+   "deckMap": 5,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "tunnel-ant"
+    ],
+    "field": "aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map05-mw-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:44:41.881Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bee-forager": 4,
+     "cricket-drummer": 4,
+     "river-carp": 1,
+     "signal-crayfish": 2,
+     "terrier-pup": 4,
+     "tunnel-ant": 1,
+     "water-shrew": 4
+    },
+    "score": 0.876,
+    "ci": [
+     0.857,
+     0.895
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1929
+  },
+  {
+   "map": 5,
+   "mapId": "mw",
+   "name": "Gatorback Swamp",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 88,
+   "losses": 112,
+   "draws": 0,
+   "n": 200,
+   "win": 0.44,
+   "ci": [
+    0.373,
+    0.509
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "tunnel-ant"
+    ],
+    "field": "aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map05-mw-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:44:41.881Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bee-forager": 4,
+     "cricket-drummer": 4,
+     "river-carp": 1,
+     "signal-crayfish": 2,
+     "terrier-pup": 4,
+     "tunnel-ant": 1,
+     "water-shrew": 4
+    },
+    "score": 0.876,
+    "ci": [
+     0.857,
+     0.895
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3027
+  },
+  {
+   "map": 6,
+   "mapId": "m8",
+   "name": "Sable Swampmire",
+   "ref": "map",
+   "games": 200,
+   "wins": 28,
+   "losses": 172,
+   "draws": 0,
+   "n": 200,
+   "win": 0.14,
+   "ci": [
+    0.099,
+    0.195
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map06-m8-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:56:16.359Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "adder-ambusher": 2,
+     "anaconda-coil": 1,
+     "bee-forager": 4,
+     "beetle-grunt": 1,
+     "cricket-drummer": 1,
+     "dormouse": 1,
+     "duck-paddler": 1,
+     "field-mouse": 1,
+     "forager-ant": 1,
+     "grey-seal-bull": 1,
+     "lotus-frog": 1,
+     "mayfly-dancer": 3,
+     "otter-guard": 1,
+     "pond-duck": 1
+    },
+    "score": 0.875,
+    "ci": [
+     0.858,
+     0.892
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3405
+  },
+  {
+   "map": 6,
+   "mapId": "m8",
+   "name": "Sable Swampmire",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 149,
+   "losses": 51,
+   "draws": 0,
+   "n": 200,
+   "win": 0.745,
+   "ci": [
+    0.68,
+    0.8
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map06-m8-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:56:16.359Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "adder-ambusher": 2,
+     "anaconda-coil": 1,
+     "bee-forager": 4,
+     "beetle-grunt": 1,
+     "cricket-drummer": 1,
+     "dormouse": 1,
+     "duck-paddler": 1,
+     "field-mouse": 1,
+     "forager-ant": 1,
+     "grey-seal-bull": 1,
+     "lotus-frog": 1,
+     "mayfly-dancer": 3,
+     "otter-guard": 1,
+     "pond-duck": 1
+    },
+    "score": 0.875,
+    "ci": [
+     0.858,
+     0.892
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1946
+  },
+  {
+   "map": 6,
+   "mapId": "m8",
+   "name": "Sable Swampmire",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 28,
+   "losses": 172,
+   "draws": 0,
+   "n": 200,
+   "win": 0.14,
+   "ci": [
+    0.099,
+    0.195
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1)",
+    "file": "docs/balance/opt/deckopt-map06-m8-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:56:16.359Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "adder-ambusher": 2,
+     "anaconda-coil": 1,
+     "bee-forager": 4,
+     "beetle-grunt": 1,
+     "cricket-drummer": 1,
+     "dormouse": 1,
+     "duck-paddler": 1,
+     "field-mouse": 1,
+     "forager-ant": 1,
+     "grey-seal-bull": 1,
+     "lotus-frog": 1,
+     "mayfly-dancer": 3,
+     "otter-guard": 1,
+     "pond-duck": 1
+    },
+    "score": 0.875,
+    "ci": [
+     0.858,
+     0.892
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2979
+  },
+  {
+   "map": 7,
+   "mapId": "mu",
+   "name": "The Morel Hollow",
+   "ref": "map",
+   "games": 200,
+   "wins": 35,
+   "losses": 165,
+   "draws": 0,
+   "n": 200,
+   "win": 0.175,
+   "ci": [
+    0.129,
+    0.234
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "pine-marten"
+    ],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map07-mu-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:00:35.441Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "badger-lumberjack": 1,
+     "compost-grub": 2,
+     "dung-beetle": 3,
+     "meadow-frog": 1,
+     "moat-snapper": 1,
+     "owl-nightwatch": 5,
+     "pine-marten": 1,
+     "pond-trout": 2,
+     "truffle-piglet": 4
+    },
+    "score": 0.796,
+    "ci": [
+     0.773,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2340
+  },
+  {
+   "map": 7,
+   "mapId": "mu",
+   "name": "The Morel Hollow",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 107,
+   "losses": 93,
+   "draws": 0,
+   "n": 200,
+   "win": 0.535,
+   "ci": [
+    0.466,
+    0.603
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "pine-marten"
+    ],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map07-mu-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:00:35.441Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "badger-lumberjack": 1,
+     "compost-grub": 2,
+     "dung-beetle": 3,
+     "meadow-frog": 1,
+     "moat-snapper": 1,
+     "owl-nightwatch": 5,
+     "pine-marten": 1,
+     "pond-trout": 2,
+     "truffle-piglet": 4
+    },
+    "score": 0.796,
+    "ci": [
+     0.773,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 1962
+  },
+  {
+   "map": 7,
+   "mapId": "mu",
+   "name": "The Morel Hollow",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 40,
+   "losses": 160,
+   "draws": 0,
+   "n": 200,
+   "win": 0.2,
+   "ci": [
+    0.15,
+    0.261
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "pine-marten"
+    ],
+    "field": "aiGuardLethal, phase cycle, woods, terrain Old Woods T1",
+    "file": "docs/balance/opt/deckopt-map07-mu-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:00:35.441Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "badger-lumberjack": 1,
+     "compost-grub": 2,
+     "dung-beetle": 3,
+     "meadow-frog": 1,
+     "moat-snapper": 1,
+     "owl-nightwatch": 5,
+     "pine-marten": 1,
+     "pond-trout": 2,
+     "truffle-piglet": 4
+    },
+    "score": 0.796,
+    "ci": [
+     0.773,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2549
+  },
+  {
+   "map": 8,
+   "mapId": "m4",
+   "name": "Caves & Alcoves",
+   "ref": "map",
+   "games": 200,
+   "wins": 110,
+   "losses": 90,
+   "draws": 0,
+   "n": 200,
+   "win": 0.55,
+   "ci": [
+    0.481,
+    0.617
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+    "file": "docs/balance/opt/deckopt-map08-m4-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:04:45.292Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bombardier-beetle": 1,
+     "dung-beetle": 5,
+     "giant-cave-huntsman": 3,
+     "otter-centurion": 3,
+     "paper-wasp": 1,
+     "star-nosed-mole": 4,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.812,
+    "ci": [
+     0.791,
+     0.833
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2957
+  },
+  {
+   "map": 8,
+   "mapId": "m4",
+   "name": "Caves & Alcoves",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 84,
+   "losses": 116,
+   "draws": 0,
+   "n": 200,
+   "win": 0.42,
+   "ci": [
+    0.354,
+    0.489
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+    "file": "docs/balance/opt/deckopt-map08-m4-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:04:45.292Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bombardier-beetle": 1,
+     "dung-beetle": 5,
+     "giant-cave-huntsman": 3,
+     "otter-centurion": 3,
+     "paper-wasp": 1,
+     "star-nosed-mole": 4,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.812,
+    "ci": [
+     0.791,
+     0.833
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2172
+  },
+  {
+   "map": 8,
+   "mapId": "m4",
+   "name": "Caves & Alcoves",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 113,
+   "losses": 87,
+   "draws": 0,
+   "n": 200,
+   "win": 0.565,
+   "ci": [
+    0.496,
+    0.632
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+    "file": "docs/balance/opt/deckopt-map08-m4-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:04:45.292Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "bombardier-beetle": 1,
+     "dung-beetle": 5,
+     "giant-cave-huntsman": 3,
+     "otter-centurion": 3,
+     "paper-wasp": 1,
+     "star-nosed-mole": 4,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.812,
+    "ci": [
+     0.791,
+     0.833
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2416
+  },
+  {
+   "map": 9,
+   "mapId": "mk",
+   "name": "The Kelp Mangroves",
+   "ref": "map",
+   "games": 200,
+   "wins": 41,
+   "losses": 159,
+   "draws": 0,
+   "n": 200,
+   "win": 0.205,
+   "ci": [
+    0.155,
+    0.266
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 9,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)",
+    "file": "docs/balance/opt/deckopt-map09-mk-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:09:16.214Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "anaconda-coil": 1,
+     "archerfish": 1,
+     "dung-beetle": 5,
+     "leafcutter-gardener": 1,
+     "meadow-frog": 4,
+     "otter-guard": 1,
+     "pond-algae": 1,
+     "slow-worm": 1,
+     "sulfur-cinder-moth": 1,
+     "vampire-bat": 1,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.779,
+    "ci": [
+     0.756,
+     0.803
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3019
+  },
+  {
+   "map": 9,
+   "mapId": "mk",
+   "name": "The Kelp Mangroves",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 76,
+   "losses": 124,
+   "draws": 0,
+   "n": 200,
+   "win": 0.38,
+   "ci": [
+    0.316,
+    0.449
+   ],
+   "stage": "ref:ref2",
+   "level": 2.25,
+   "deckMap": 9,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)",
+    "file": "docs/balance/opt/deckopt-map09-mk-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:09:16.214Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "anaconda-coil": 1,
+     "archerfish": 1,
+     "dung-beetle": 5,
+     "leafcutter-gardener": 1,
+     "meadow-frog": 4,
+     "otter-guard": 1,
+     "pond-algae": 1,
+     "slow-worm": 1,
+     "sulfur-cinder-moth": 1,
+     "vampire-bat": 1,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.779,
+    "ci": [
+     0.756,
+     0.803
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2340
+  },
+  {
+   "map": 9,
+   "mapId": "mk",
+   "name": "The Kelp Mangroves",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 57,
+   "losses": 143,
+   "draws": 0,
+   "n": 200,
+   "win": 0.285,
+   "ci": [
+    0.227,
+    0.351
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 9,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "anaconda-coil"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)",
+    "file": "docs/balance/opt/deckopt-map09-mk-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:09:16.214Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "anaconda-coil": 1,
+     "archerfish": 1,
+     "dung-beetle": 5,
+     "leafcutter-gardener": 1,
+     "meadow-frog": 4,
+     "otter-guard": 1,
+     "pond-algae": 1,
+     "slow-worm": 1,
+     "sulfur-cinder-moth": 1,
+     "vampire-bat": 1,
+     "wolf-spider-mother": 3
+    },
+    "score": 0.779,
+    "ci": [
+     0.756,
+     0.803
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2659
+  },
+  {
+   "map": 10,
+   "mapId": "m7",
+   "name": "Coral Current",
+   "ref": "map",
+   "games": 200,
+   "wins": 39,
+   "losses": 161,
+   "draws": 0,
+   "n": 200,
+   "win": 0.195,
+   "ci": [
+    0.146,
+    0.255
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1",
+    "file": "docs/balance/opt/deckopt-map10-m7-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:13:17.506Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "chipmunk-skirmisher": 1,
+     "field-vole": 1,
+     "gallery-orb-weaver": 1,
+     "giant-cave-huntsman": 2,
+     "harvest-mouse": 1,
+     "house-cat": 1,
+     "mayfly-dancer": 5,
+     "newt-doctor": 1,
+     "sparrow-chick": 1,
+     "sulfur-cinder-moth": 1,
+     "venomlord-serpent": 1
+    },
+    "score": 0.822,
+    "ci": [
+     0.804,
+     0.841
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2766
+  },
+  {
+   "map": 10,
+   "mapId": "m7",
+   "name": "Coral Current",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 74,
+   "losses": 126,
+   "draws": 0,
+   "n": 200,
+   "win": 0.37,
+   "ci": [
+    0.306,
+    0.439
+   ],
+   "stage": "ref:ref2",
+   "level": 2.5,
+   "deckMap": 10,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1",
+    "file": "docs/balance/opt/deckopt-map10-m7-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:13:17.506Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "chipmunk-skirmisher": 1,
+     "field-vole": 1,
+     "gallery-orb-weaver": 1,
+     "giant-cave-huntsman": 2,
+     "harvest-mouse": 1,
+     "house-cat": 1,
+     "mayfly-dancer": 5,
+     "newt-doctor": 1,
+     "sparrow-chick": 1,
+     "sulfur-cinder-moth": 1,
+     "venomlord-serpent": 1
+    },
+    "score": 0.822,
+    "ci": [
+     0.804,
+     0.841
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2149
+  },
+  {
+   "map": 10,
+   "mapId": "m7",
+   "name": "Coral Current",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 38,
+   "losses": 162,
+   "draws": 0,
+   "n": 200,
+   "win": 0.19,
+   "ci": [
+    0.142,
+    0.25
+   ],
+   "stage": "ref:ref-pool",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "giant-cave-huntsman"
+    ],
+    "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1",
+    "file": "docs/balance/opt/deckopt-map10-m7-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:13:17.506Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "chipmunk-skirmisher": 1,
+     "field-vole": 1,
+     "gallery-orb-weaver": 1,
+     "giant-cave-huntsman": 2,
+     "harvest-mouse": 1,
+     "house-cat": 1,
+     "mayfly-dancer": 5,
+     "newt-doctor": 1,
+     "sparrow-chick": 1,
+     "sulfur-cinder-moth": 1,
+     "venomlord-serpent": 1
+    },
+    "score": 0.822,
+    "ci": [
+     0.804,
+     0.841
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2605
+  },
+  {
+   "map": 11,
+   "mapId": "m10",
+   "name": "Eyrie Heights",
+   "ref": "map",
+   "games": 200,
+   "wins": 32,
+   "losses": 168,
+   "draws": 0,
+   "n": 200,
+   "win": 0.16,
+   "ci": [
+    0.116,
+    0.217
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ibex-rockcaller"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map11-m10-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:19:56.811Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "alpine-marmot": 4,
+     "bloodscent-shark": 1,
+     "crimson-wing-recruit": 1,
+     "eyrie-warden": 3,
+     "gravel-mole": 1,
+     "ibex-rockcaller": 1,
+     "owl-nightwatch": 2,
+     "planarian-splitter": 1,
+     "river-carp": 1,
+     "seed-cache-squirrel": 5
+    },
+    "score": 0.736,
+    "ci": [
+     0.717,
+     0.756
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3944
+  },
+  {
+   "map": 11,
+   "mapId": "m10",
+   "name": "Eyrie Heights",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 84,
+   "losses": 114,
+   "draws": 2,
+   "n": 200,
+   "win": 0.42,
+   "ci": [
+    0.354,
+    0.489
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ibex-rockcaller"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map11-m10-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:19:56.811Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "alpine-marmot": 4,
+     "bloodscent-shark": 1,
+     "crimson-wing-recruit": 1,
+     "eyrie-warden": 3,
+     "gravel-mole": 1,
+     "ibex-rockcaller": 1,
+     "owl-nightwatch": 2,
+     "planarian-splitter": 1,
+     "river-carp": 1,
+     "seed-cache-squirrel": 5
+    },
+    "score": 0.736,
+    "ci": [
+     0.717,
+     0.756
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3319
+  },
+  {
+   "map": 11,
+   "mapId": "m10",
+   "name": "Eyrie Heights",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 39,
+   "losses": 161,
+   "draws": 0,
+   "n": 200,
+   "win": 0.195,
+   "ci": [
+    0.146,
+    0.255
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ibex-rockcaller"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map11-m10-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:19:56.811Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "alpine-marmot": 4,
+     "bloodscent-shark": 1,
+     "crimson-wing-recruit": 1,
+     "eyrie-warden": 3,
+     "gravel-mole": 1,
+     "ibex-rockcaller": 1,
+     "owl-nightwatch": 2,
+     "planarian-splitter": 1,
+     "river-carp": 1,
+     "seed-cache-squirrel": 5
+    },
+    "score": 0.736,
+    "ci": [
+     0.717,
+     0.756
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4044
+  },
+  {
+   "map": 12,
+   "mapId": "mh",
+   "name": "The Briar Maze",
+   "ref": "map",
+   "games": 200,
+   "wins": 91,
+   "losses": 109,
+   "draws": 0,
+   "n": 200,
+   "win": 0.455,
+   "ci": [
+    0.387,
+    0.524
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map12-mh-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:24:46.541Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "buzzed-chipmunk": 1,
+     "compost-grub": 1,
+     "dung-beetle": 5,
+     "hedgehog-scout": 1,
+     "ladybird-guard": 3,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4,
+     "sleepless-shrew": 1,
+     "tunnel-ant": 3
+    },
+    "score": 0.803,
+    "ci": [
+     0.779,
+     0.827
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3344
+  },
+  {
+   "map": 12,
+   "mapId": "mh",
+   "name": "The Briar Maze",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 140,
+   "losses": 60,
+   "draws": 0,
+   "n": 200,
+   "win": 0.7,
+   "ci": [
+    0.633,
+    0.759
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map12-mh-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:24:46.541Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "buzzed-chipmunk": 1,
+     "compost-grub": 1,
+     "dung-beetle": 5,
+     "hedgehog-scout": 1,
+     "ladybird-guard": 3,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4,
+     "sleepless-shrew": 1,
+     "tunnel-ant": 3
+    },
+    "score": 0.803,
+    "ci": [
+     0.779,
+     0.827
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 2658
+  },
+  {
+   "map": 12,
+   "mapId": "mh",
+   "name": "The Briar Maze",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 111,
+   "losses": 89,
+   "draws": 0,
+   "n": 200,
+   "win": 0.555,
+   "ci": [
+    0.486,
+    0.622
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map12-mh-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:24:46.541Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "buzzed-chipmunk": 1,
+     "compost-grub": 1,
+     "dung-beetle": 5,
+     "hedgehog-scout": 1,
+     "ladybird-guard": 3,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4,
+     "sleepless-shrew": 1,
+     "tunnel-ant": 3
+    },
+    "score": 0.803,
+    "ci": [
+     0.779,
+     0.827
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4709
+  },
+  {
+   "map": 13,
+   "mapId": "mr",
+   "name": "The Redwood Deep",
+   "ref": "map",
+   "games": 200,
+   "wins": 49,
+   "losses": 151,
+   "draws": 0,
+   "n": 200,
+   "win": 0.245,
+   "ci": [
+    0.191,
+    0.309
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)",
+    "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:29:11.968Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "burrow-rabbit": 4,
+     "chipmunk-hoarder": 1,
+     "dung-beetle": 5,
+     "kraken-spawnling": 1,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4
+    },
+    "score": 0.851,
+    "ci": [
+     0.832,
+     0.87
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 5418
+  },
+  {
+   "map": 13,
+   "mapId": "mr",
+   "name": "The Redwood Deep",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 50,
+   "losses": 150,
+   "draws": 0,
+   "n": 200,
+   "win": 0.25,
+   "ci": [
+    0.195,
+    0.314
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)",
+    "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:29:11.968Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "burrow-rabbit": 4,
+     "chipmunk-hoarder": 1,
+     "dung-beetle": 5,
+     "kraken-spawnling": 1,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4
+    },
+    "score": 0.851,
+    "ci": [
+     0.832,
+     0.87
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4062
+  },
+  {
+   "map": 13,
+   "mapId": "mr",
+   "name": "The Redwood Deep",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 6,
+   "losses": 194,
+   "draws": 0,
+   "n": 200,
+   "win": 0.03,
+   "ci": [
+    0.014,
+    0.064
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)",
+    "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:29:11.968Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "burrow-rabbit": 4,
+     "chipmunk-hoarder": 1,
+     "dung-beetle": 5,
+     "kraken-spawnling": 1,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4
+    },
+    "score": 0.851,
+    "ci": [
+     0.832,
+     0.87
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 7005
+  },
+  {
+   "map": 14,
+   "mapId": "m5",
+   "name": "Savanna Reaches",
+   "ref": "map",
+   "games": 200,
+   "wins": 32,
+   "losses": 168,
+   "draws": 0,
+   "n": 200,
+   "win": 0.16,
+   "ci": [
+    0.116,
+    0.217
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:33:15.427Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "crimson-wing-recruit": 4,
+     "dung-beetle": 5,
+     "open-ocean-hermit-crab": 1,
+     "riverwing-envoy": 4,
+     "woodpecker-sapper": 2
+    },
+    "score": 0.75,
+    "ci": [
+     0.727,
+     0.772
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3705
+  },
+  {
+   "map": 14,
+   "mapId": "m5",
+   "name": "Savanna Reaches",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 24,
+   "losses": 176,
+   "draws": 0,
+   "n": 200,
+   "win": 0.12,
+   "ci": [
+    0.082,
+    0.172
+   ],
+   "stage": "ref:ref2",
+   "level": 3.5,
+   "deckMap": 14,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:33:15.427Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "crimson-wing-recruit": 4,
+     "dung-beetle": 5,
+     "open-ocean-hermit-crab": 1,
+     "riverwing-envoy": 4,
+     "woodpecker-sapper": 2
+    },
+    "score": 0.75,
+    "ci": [
+     0.727,
+     0.772
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 5283
+  },
+  {
+   "map": 14,
+   "mapId": "m5",
+   "name": "Savanna Reaches",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 5,
+   "losses": 195,
+   "draws": 0,
+   "n": 200,
+   "win": 0.025,
+   "ci": [
+    0.011,
+    0.057
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:33:15.427Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "crimson-wing-recruit": 4,
+     "dung-beetle": 5,
+     "open-ocean-hermit-crab": 1,
+     "riverwing-envoy": 4,
+     "woodpecker-sapper": 2
+    },
+    "score": 0.75,
+    "ci": [
+     0.727,
+     0.772
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 5818
+  },
+  {
+   "map": 15,
+   "mapId": "ml",
+   "name": "The Long Grass",
+   "ref": "map",
+   "games": 200,
+   "wins": 68,
+   "losses": 132,
+   "draws": 0,
+   "n": 200,
+   "win": 0.34,
+   "ci": [
+    0.278,
+    0.408
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:37:19.313Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-lumberjack": 1,
+     "bison-bulldozer": 1,
+     "crimson-wing-recruit": 5,
+     "dung-beetle": 4,
+     "riverwing-envoy": 4,
+     "signal-crayfish": 1
+    },
+    "score": 0.802,
+    "ci": [
+     0.779,
+     0.824
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4586
+  },
+  {
+   "map": 15,
+   "mapId": "ml",
+   "name": "The Long Grass",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 66,
+   "losses": 134,
+   "draws": 0,
+   "n": 200,
+   "win": 0.33,
+   "ci": [
+    0.269,
+    0.398
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:37:19.313Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-lumberjack": 1,
+     "bison-bulldozer": 1,
+     "crimson-wing-recruit": 5,
+     "dung-beetle": 4,
+     "riverwing-envoy": 4,
+     "signal-crayfish": 1
+    },
+    "score": 0.802,
+    "ci": [
+     0.779,
+     0.824
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3432
+  },
+  {
+   "map": 15,
+   "mapId": "ml",
+   "name": "The Long Grass",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 35,
+   "losses": 165,
+   "draws": 0,
+   "n": 200,
+   "win": 0.175,
+   "ci": [
+    0.129,
+    0.234
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "archerfish"
+    ],
+    "field": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)",
+    "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:37:19.313Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-lumberjack": 1,
+     "bison-bulldozer": 1,
+     "crimson-wing-recruit": 5,
+     "dung-beetle": 4,
+     "riverwing-envoy": 4,
+     "signal-crayfish": 1
+    },
+    "score": 0.802,
+    "ci": [
+     0.779,
+     0.824
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4388
+  },
+  {
+   "map": 16,
+   "mapId": "mt",
+   "name": "The Pinewood Taiga",
+   "ref": "map",
+   "games": 200,
+   "wins": 78,
+   "losses": 122,
+   "draws": 0,
+   "n": 200,
+   "win": 0.39,
+   "ci": [
+    0.325,
+    0.459
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:54:00.940Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "beetle-grunt": 1,
+     "box-turtle": 1,
+     "dung-beetle": 5,
+     "great-skua": 2,
+     "otter-centurion": 3,
+     "riverwing-envoy": 4
+    },
+    "score": 0.865,
+    "ci": [
+     0.845,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6758
+  },
+  {
+   "map": 16,
+   "mapId": "mt",
+   "name": "The Pinewood Taiga",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 58,
+   "losses": 142,
+   "draws": 0,
+   "n": 200,
+   "win": 0.29,
+   "ci": [
+    0.232,
+    0.356
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:54:00.940Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "beetle-grunt": 1,
+     "box-turtle": 1,
+     "dung-beetle": 5,
+     "great-skua": 2,
+     "otter-centurion": 3,
+     "riverwing-envoy": 4
+    },
+    "score": 0.865,
+    "ci": [
+     0.845,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6058
+  },
+  {
+   "map": 16,
+   "mapId": "mt",
+   "name": "The Pinewood Taiga",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 36,
+   "losses": 164,
+   "draws": 0,
+   "n": 200,
+   "win": 0.18,
+   "ci": [
+    0.133,
+    0.239
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:54:00.940Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "beetle-grunt": 1,
+     "box-turtle": 1,
+     "dung-beetle": 5,
+     "great-skua": 2,
+     "otter-centurion": 3,
+     "riverwing-envoy": 4
+    },
+    "score": 0.865,
+    "ci": [
+     0.845,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 8232
+  },
+  {
+   "map": 17,
+   "mapId": "m6",
+   "name": "Wolfsbane Tundra",
+   "ref": "map",
+   "games": 200,
+   "wins": 63,
+   "losses": 137,
+   "draws": 0,
+   "n": 200,
+   "win": 0.315,
+   "ci": [
+    0.255,
+    0.382
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "coral-reef-shark"
+    ],
+    "field": "aiGuardLethal, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:59:01.893Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "coral-reef-shark": 1,
+     "dung-beetle": 4,
+     "fox-kit": 1,
+     "hoopoe-herald": 5,
+     "riverwing-envoy": 4,
+     "termite-forager": 1
+    },
+    "score": 0.801,
+    "ci": [
+     0.781,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 8442
+  },
+  {
+   "map": 17,
+   "mapId": "m6",
+   "name": "Wolfsbane Tundra",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 119,
+   "losses": 81,
+   "draws": 0,
+   "n": 200,
+   "win": 0.595,
+   "ci": [
+    0.526,
+    0.661
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "coral-reef-shark"
+    ],
+    "field": "aiGuardLethal, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:59:01.893Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "coral-reef-shark": 1,
+     "dung-beetle": 4,
+     "fox-kit": 1,
+     "hoopoe-herald": 5,
+     "riverwing-envoy": 4,
+     "termite-forager": 1
+    },
+    "score": 0.801,
+    "ci": [
+     0.781,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 5984
+  },
+  {
+   "map": 17,
+   "mapId": "m6",
+   "name": "Wolfsbane Tundra",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 25,
+   "losses": 175,
+   "draws": 0,
+   "n": 200,
+   "win": 0.125,
+   "ci": [
+    0.086,
+    0.178
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "coral-reef-shark"
+    ],
+    "field": "aiGuardLethal, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)",
+    "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T17:59:01.893Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "coral-reef-shark": 1,
+     "dung-beetle": 4,
+     "fox-kit": 1,
+     "hoopoe-herald": 5,
+     "riverwing-envoy": 4,
+     "termite-forager": 1
+    },
+    "score": 0.801,
+    "ci": [
+     0.781,
+     0.82
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 12598
+  },
+  {
+   "map": 18,
+   "mapId": "md",
+   "name": "The Glass Dunes",
+   "ref": "map",
+   "games": 200,
+   "wins": 78,
+   "losses": 122,
+   "draws": 0,
+   "n": 200,
+   "win": 0.39,
+   "ci": [
+    0.325,
+    0.459
+   ],
+   "stage": "road",
+   "level": 3.54,
+   "deckMap": 18,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:06:30.227Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "conch-herald": 1,
+     "duckling": 1,
+     "dung-beetle": 4,
+     "kinkajou-lurker": 4,
+     "lionfish": 1,
+     "otter-centurion": 3,
+     "stable-colt": 1,
+     "warhorse-charger": 1
+    },
+    "score": 0.866,
+    "ci": [
+     0.847,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 12567
+  },
+  {
+   "map": 18,
+   "mapId": "md",
+   "name": "The Glass Dunes",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 96,
+   "losses": 104,
+   "draws": 0,
+   "n": 200,
+   "win": 0.48,
+   "ci": [
+    0.412,
+    0.549
+   ],
+   "stage": "ref:ref2",
+   "level": 4.5,
+   "deckMap": 18,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:06:30.227Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "conch-herald": 1,
+     "duckling": 1,
+     "dung-beetle": 4,
+     "kinkajou-lurker": 4,
+     "lionfish": 1,
+     "otter-centurion": 3,
+     "stable-colt": 1,
+     "warhorse-charger": 1
+    },
+    "score": 0.866,
+    "ci": [
+     0.847,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 9927
+  },
+  {
+   "map": 18,
+   "mapId": "md",
+   "name": "The Glass Dunes",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 29,
+   "losses": 171,
+   "draws": 0,
+   "n": 200,
+   "win": 0.145,
+   "ci": [
+    0.103,
+    0.2
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3.54,
+   "deckMap": 18,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)",
+    "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:06:30.227Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "conch-herald": 1,
+     "duckling": 1,
+     "dung-beetle": 4,
+     "kinkajou-lurker": 4,
+     "lionfish": 1,
+     "otter-centurion": 3,
+     "stable-colt": 1,
+     "warhorse-charger": 1
+    },
+    "score": 0.866,
+    "ci": [
+     0.847,
+     0.885
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 14378
+  },
+  {
+   "map": 19,
+   "mapId": "m3",
+   "name": "Ashen Spurn",
+   "ref": "map",
+   "games": 200,
+   "wins": 34,
+   "losses": 166,
+   "draws": 0,
+   "n": 200,
+   "win": 0.17,
+   "ci": [
+    0.124,
+    0.228
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:10:49.955Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-stonemason": 1,
+     "beaver-feller": 1,
+     "booming-bittern": 1,
+     "dung-beetle": 5,
+     "fire-salamander": 4,
+     "otter-centurion": 3,
+     "otter-guard": 1
+    },
+    "score": 0.865,
+    "ci": [
+     0.848,
+     0.883
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 14800
+  },
+  {
+   "map": 19,
+   "mapId": "m3",
+   "name": "Ashen Spurn",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 53,
+   "losses": 147,
+   "draws": 0,
+   "n": 200,
+   "win": 0.265,
+   "ci": [
+    0.209,
+    0.33
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:10:49.955Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-stonemason": 1,
+     "beaver-feller": 1,
+     "booming-bittern": 1,
+     "dung-beetle": 5,
+     "fire-salamander": 4,
+     "otter-centurion": 3,
+     "otter-guard": 1
+    },
+    "score": 0.865,
+    "ci": [
+     0.848,
+     0.883
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 8816
+  },
+  {
+   "map": 19,
+   "mapId": "m3",
+   "name": "Ashen Spurn",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 16,
+   "losses": 184,
+   "draws": 0,
+   "n": 200,
+   "win": 0.08,
+   "ci": [
+    0.05,
+    0.126
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "otter-centurion"
+    ],
+    "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:10:49.955Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "badger-stonemason": 1,
+     "beaver-feller": 1,
+     "booming-bittern": 1,
+     "dung-beetle": 5,
+     "fire-salamander": 4,
+     "otter-centurion": 3,
+     "otter-guard": 1
+    },
+    "score": 0.865,
+    "ci": [
+     0.848,
+     0.883
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 10271
+  },
+  {
+   "map": 20,
+   "mapId": "m11",
+   "name": "The Sundered Peak",
+   "ref": "map",
+   "games": 200,
+   "wins": 63,
+   "losses": 137,
+   "draws": 0,
+   "n": 200,
+   "win": 0.315,
+   "ci": [
+    0.255,
+    0.382
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ossuary-lammergeier"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:17:29.781Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "burrow-rabbit": 1,
+     "greater-siren": 1,
+     "guano-beetle": 1,
+     "hoopoe-herald": 1,
+     "magma-salamander": 3,
+     "muskrat-reedgatherer": 1,
+     "obsidian-lich": 1,
+     "ossuary-lammergeier": 1,
+     "pack-mule": 2,
+     "stonedrop-vulture": 4
+    },
+    "score": 0.742,
+    "ci": [
+     0.722,
+     0.762
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 9527
+  },
+  {
+   "map": 20,
+   "mapId": "m11",
+   "name": "The Sundered Peak",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 112,
+   "losses": 88,
+   "draws": 0,
+   "n": 200,
+   "win": 0.56,
+   "ci": [
+    0.491,
+    0.627
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ossuary-lammergeier"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:17:29.781Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "burrow-rabbit": 1,
+     "greater-siren": 1,
+     "guano-beetle": 1,
+     "hoopoe-herald": 1,
+     "magma-salamander": 3,
+     "muskrat-reedgatherer": 1,
+     "obsidian-lich": 1,
+     "ossuary-lammergeier": 1,
+     "pack-mule": 2,
+     "stonedrop-vulture": 4
+    },
+    "score": 0.742,
+    "ci": [
+     0.722,
+     0.762
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6204
+  },
+  {
+   "map": 20,
+   "mapId": "m11",
+   "name": "The Sundered Peak",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 48,
+   "losses": 152,
+   "draws": 0,
+   "n": 200,
+   "win": 0.24,
+   "ci": [
+    0.186,
+    0.304
+   ],
+   "stage": "ref:ref-pool",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "ossuary-lammergeier"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+    "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T18:17:29.781Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 4,
+     "burrow-rabbit": 1,
+     "greater-siren": 1,
+     "guano-beetle": 1,
+     "hoopoe-herald": 1,
+     "magma-salamander": 3,
+     "muskrat-reedgatherer": 1,
+     "obsidian-lich": 1,
+     "ossuary-lammergeier": 1,
+     "pack-mule": 2,
+     "stonedrop-vulture": 4
+    },
+    "score": 0.742,
+    "ci": [
+     0.722,
+     0.762
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 11001
+  },
+  {
+   "map": 21,
+   "mapId": "m21",
+   "name": "The Quiet Summit",
+   "ref": "map",
+   "games": 200,
+   "wins": 98,
+   "losses": 102,
+   "draws": 0,
+   "n": 200,
+   "win": 0.49,
+   "ci": [
+    0.422,
+    0.559
+   ],
+   "stage": "road",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "echidna-quillshot"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map21-m21-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:51:13.006Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "arctic-tern": 1,
+     "ash-cloud-condor": 1,
+     "chipmunk-hoarder": 1,
+     "diving-bell-spider": 1,
+     "echidna-quillshot": 1,
+     "electric-catfish": 1,
+     "ent": 3,
+     "field-vole": 1,
+     "gatling-hog": 1,
+     "greyplume-fledgling": 1,
+     "newt-doctor": 1,
+     "quill-volley": 1,
+     "sleepless-shrew": 1,
+     "spitting-cobra": 1
+    },
+    "score": 0.903,
+    "ci": [
+     0.885,
+     0.921
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m21 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 11596
+  },
+  {
+   "map": 21,
+   "mapId": "m21",
+   "name": "The Quiet Summit",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 129,
+   "losses": 71,
+   "draws": 0,
+   "n": 200,
+   "win": 0.645,
+   "ci": [
+    0.577,
+    0.708
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 21,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "echidna-quillshot"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map21-m21-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:51:13.006Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "arctic-tern": 1,
+     "ash-cloud-condor": 1,
+     "chipmunk-hoarder": 1,
+     "diving-bell-spider": 1,
+     "echidna-quillshot": 1,
+     "electric-catfish": 1,
+     "ent": 3,
+     "field-vole": 1,
+     "gatling-hog": 1,
+     "greyplume-fledgling": 1,
+     "newt-doctor": 1,
+     "quill-volley": 1,
+     "sleepless-shrew": 1,
+     "spitting-cobra": 1
+    },
+    "score": 0.903,
+    "ci": [
+     0.885,
+     0.921
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m21 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6356
+  },
+  {
+   "map": 21,
+   "mapId": "m21",
+   "name": "The Quiet Summit",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 68,
+   "losses": 132,
+   "draws": 0,
+   "n": 200,
+   "win": 0.34,
+   "ci": [
+    0.278,
+    0.408
+   ],
+   "stage": "ref:ref-pool",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "echidna-quillshot"
+    ],
+    "field": "aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1)",
+    "file": "docs/balance/opt/deckopt-map21-m21-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:51:13.006Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "arctic-tern": 1,
+     "ash-cloud-condor": 1,
+     "chipmunk-hoarder": 1,
+     "diving-bell-spider": 1,
+     "echidna-quillshot": 1,
+     "electric-catfish": 1,
+     "ent": 3,
+     "field-vole": 1,
+     "gatling-hog": 1,
+     "greyplume-fledgling": 1,
+     "newt-doctor": 1,
+     "quill-volley": 1,
+     "sleepless-shrew": 1,
+     "spitting-cobra": 1
+    },
+    "score": 0.903,
+    "ci": [
+     0.885,
+     0.921
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m21 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 11575
+  },
+  {
+   "map": 22,
+   "mapId": "m22",
+   "name": "The Rimefire Caldera",
+   "ref": "map",
+   "games": 200,
+   "wins": 134,
+   "losses": 66,
+   "draws": 0,
+   "n": 200,
+   "win": 0.67,
+   "ci": [
+    0.602,
+    0.731
+   ],
+   "stage": "road",
+   "level": 4.26,
+   "deckMap": 22,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "caldera-snow-leopard"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2",
+    "file": "docs/balance/opt/deckopt-map22-m22-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:57:29.897Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "caldera-snow-leopard": 1,
+     "cinder-gecko": 2,
+     "fumarole-ibex": 1,
+     "hoopoe-herald": 5,
+     "ice-petrel": 3,
+     "mouse-sapper": 1,
+     "pika-hoarder": 5,
+     "ur-elk": 2
+    },
+    "score": 0.593,
+    "ci": [
+     0.568,
+     0.619
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m22 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6999
+  },
+  {
+   "map": 22,
+   "mapId": "m22",
+   "name": "The Rimefire Caldera",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 148,
+   "losses": 52,
+   "draws": 0,
+   "n": 200,
+   "win": 0.74,
+   "ci": [
+    0.675,
+    0.796
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 22,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "caldera-snow-leopard"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2",
+    "file": "docs/balance/opt/deckopt-map22-m22-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:57:29.897Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "caldera-snow-leopard": 1,
+     "cinder-gecko": 2,
+     "fumarole-ibex": 1,
+     "hoopoe-herald": 5,
+     "ice-petrel": 3,
+     "mouse-sapper": 1,
+     "pika-hoarder": 5,
+     "ur-elk": 2
+    },
+    "score": 0.593,
+    "ci": [
+     0.568,
+     0.619
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m22 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6304
+  },
+  {
+   "map": 22,
+   "mapId": "m22",
+   "name": "The Rimefire Caldera",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 27,
+   "losses": 173,
+   "draws": 0,
+   "n": 200,
+   "win": 0.135,
+   "ci": [
+    0.094,
+    0.189
+   ],
+   "stage": "ref:ref-pool",
+   "level": 4.26,
+   "deckMap": 22,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "caldera-snow-leopard"
+    ],
+    "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2",
+    "file": "docs/balance/opt/deckopt-map22-m22-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T15:57:29.897Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "caldera-snow-leopard": 1,
+     "cinder-gecko": 2,
+     "fumarole-ibex": 1,
+     "hoopoe-herald": 5,
+     "ice-petrel": 3,
+     "mouse-sapper": 1,
+     "pika-hoarder": 5,
+     "ur-elk": 2
+    },
+    "score": 0.593,
+    "ci": [
+     0.568,
+     0.619
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m22 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 7331
+  },
+  {
+   "map": 23,
+   "mapId": "m23",
+   "name": "The Goldfeather Siege",
+   "ref": "map",
+   "games": 200,
+   "wins": 117,
+   "losses": 83,
+   "draws": 0,
+   "n": 200,
+   "win": 0.585,
+   "ci": [
+    0.516,
+    0.651
+   ],
+   "stage": "road",
+   "level": 4.44,
+   "deckMap": 23,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "mangrove-manatee"
+    ],
+    "field": "aiGuardLethal, arrowSlits, phase cycle",
+    "file": "docs/balance/opt/deckopt-map23-m23-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:04:15.535Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "duckling": 1,
+     "howdah-archers": 1,
+     "mangrove-manatee": 1,
+     "mouse-sapper": 2,
+     "pack-mule": 5,
+     "raccoon-bandit": 3,
+     "rimefire-salamander": 3
+    },
+    "score": 0.854,
+    "ci": [
+     0.834,
+     0.873
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m23 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 4112
+  },
+  {
+   "map": 23,
+   "mapId": "m23",
+   "name": "The Goldfeather Siege",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 66,
+   "losses": 134,
+   "draws": 0,
+   "n": 200,
+   "win": 0.33,
+   "ci": [
+    0.269,
+    0.398
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 23,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "mangrove-manatee"
+    ],
+    "field": "aiGuardLethal, arrowSlits, phase cycle",
+    "file": "docs/balance/opt/deckopt-map23-m23-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:04:15.535Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "duckling": 1,
+     "howdah-archers": 1,
+     "mangrove-manatee": 1,
+     "mouse-sapper": 2,
+     "pack-mule": 5,
+     "raccoon-bandit": 3,
+     "rimefire-salamander": 3
+    },
+    "score": 0.854,
+    "ci": [
+     0.834,
+     0.873
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m23 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3921
+  },
+  {
+   "map": 23,
+   "mapId": "m23",
+   "name": "The Goldfeather Siege",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 46,
+   "losses": 154,
+   "draws": 0,
+   "n": 200,
+   "win": 0.23,
+   "ci": [
+    0.177,
+    0.293
+   ],
+   "stage": "ref:ref-pool",
+   "level": 4.44,
+   "deckMap": 23,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "mangrove-manatee"
+    ],
+    "field": "aiGuardLethal, arrowSlits, phase cycle",
+    "file": "docs/balance/opt/deckopt-map23-m23-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:04:15.535Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "archerfish": 4,
+     "duckling": 1,
+     "howdah-archers": 1,
+     "mangrove-manatee": 1,
+     "mouse-sapper": 2,
+     "pack-mule": 5,
+     "raccoon-bandit": 3,
+     "rimefire-salamander": 3
+    },
+    "score": 0.854,
+    "ci": [
+     0.834,
+     0.873
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m23 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3809
+  },
+  {
+   "map": 24,
+   "mapId": "m24",
+   "name": "Goldfeather Keep",
+   "ref": "map",
+   "games": 200,
+   "wins": 104,
+   "losses": 96,
+   "draws": 0,
+   "n": 200,
+   "win": 0.52,
+   "ci": [
+    0.451,
+    0.588
+   ],
+   "stage": "road",
+   "level": 4.62,
+   "deckMap": 24,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "magnate-duck"
+    ],
+    "field": "aiGuardLethal, phase cycle",
+    "file": "docs/balance/opt/deckopt-map24-m24-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:10:22.637Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 1,
+     "bear-cub": 1,
+     "bramblewood-lynx": 1,
+     "briarback-hedgehog": 1,
+     "chipmunk-hoarder": 1,
+     "duckling": 1,
+     "earthworm": 1,
+     "hoopoe-herald": 5,
+     "lamprey": 1,
+     "magnate-duck": 1,
+     "marula-monkey": 1,
+     "meerkat-wayfarer": 1,
+     "obsidian-lich": 1,
+     "porcupine-roller": 1,
+     "rimefire-salamander": 1,
+     "swift-fox": 1
+    },
+    "score": 0.768,
+    "ci": [
+     0.747,
+     0.789
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 6840
+  },
+  {
+   "map": 24,
+   "mapId": "m24",
+   "name": "Goldfeather Keep",
+   "ref": "ref2",
+   "games": 200,
+   "wins": 156,
+   "losses": 44,
+   "draws": 0,
+   "n": 200,
+   "win": 0.78,
+   "ci": [
+    0.718,
+    0.832
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 24,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "magnate-duck"
+    ],
+    "field": "aiGuardLethal, phase cycle",
+    "file": "docs/balance/opt/deckopt-map24-m24-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:10:22.637Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 1,
+     "bear-cub": 1,
+     "bramblewood-lynx": 1,
+     "briarback-hedgehog": 1,
+     "chipmunk-hoarder": 1,
+     "duckling": 1,
+     "earthworm": 1,
+     "hoopoe-herald": 5,
+     "lamprey": 1,
+     "magnate-duck": 1,
+     "marula-monkey": 1,
+     "meerkat-wayfarer": 1,
+     "obsidian-lich": 1,
+     "porcupine-roller": 1,
+     "rimefire-salamander": 1,
+     "swift-fox": 1
+    },
+    "score": 0.768,
+    "ci": [
+     0.747,
+     0.789
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 3160
+  },
+  {
+   "map": 24,
+   "mapId": "m24",
+   "name": "Goldfeather Keep",
+   "ref": "ref-pool",
+   "games": 200,
+   "wins": 82,
+   "losses": 118,
+   "draws": 0,
+   "n": 200,
+   "win": 0.41,
+   "ci": [
+    0.344,
+    0.479
+   ],
+   "stage": "ref:ref-pool",
+   "level": 4.62,
+   "deckMap": 24,
+   "cpu": 1,
+   "optimum": {
+    "leaders": [
+     "magnate-duck"
+    ],
+    "field": "aiGuardLethal, phase cycle",
+    "file": "docs/balance/opt/deckopt-map24-m24-2026-10-27-hub7-maptrue.json",
+    "tag": "2026-10-27-hub7-maptrue",
+    "generated": "2026-10-26T16:10:22.637Z",
+    "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+    "deck": {
+     "ant-warrior": 1,
+     "bear-cub": 1,
+     "bramblewood-lynx": 1,
+     "briarback-hedgehog": 1,
+     "chipmunk-hoarder": 1,
+     "duckling": 1,
+     "earthworm": 1,
+     "hoopoe-herald": 5,
+     "lamprey": 1,
+     "magnate-duck": 1,
+     "marula-monkey": 1,
+     "meerkat-wayfarer": 1,
+     "obsidian-lich": 1,
+     "porcupine-roller": 1,
+     "rimefire-salamander": 1,
+     "swift-fox": 1
+    },
+    "score": 0.768,
+    "ci": [
+     0.747,
+     0.789
+    ],
+    "reproduce": "node tools/opt/deckopt.js --map m24 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+   },
+   "ms": 5121
+  }
+ ]
+}
