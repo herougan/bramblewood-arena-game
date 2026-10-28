@@ -3591,5 +3591,9 @@
  "Not enough Lumber.": "木材不足。",
  "Your card data differs from the host's. Reload the game and join again.": "你的卡牌数据与房主不同。请重新载入游戏后再加入。",
  "Bramble damage dealt: {n}": "对荆棘造成的伤害：{n}",
- "{name} dropped!": "掉落了 {name}！"
+ "{name} dropped!": "掉落了 {name}！",
+ "🃏 Map cards": "🃏 地图卡牌",
+ "{name}: the map's cards": "{name}：地图的卡牌",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "本地图各列表中的所有卡牌：地图本身的、每张支线地图的和特殊的。标有卡包的卡牌也会从该卡包中开出。",
+ "Not obtainable yet: in no map list and no pack": "尚无法获得：不在任何地图列表或卡包中"
 }

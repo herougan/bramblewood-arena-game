@@ -3592,5 +3592,9 @@
  "Not enough Lumber.": "Kulang ang Tabla.",
  "Your card data differs from the host's. Reload the game and join again.": "Iba ang card data mo sa host. I-reload ang laro at sumali ulit.",
  "Bramble damage dealt: {n}": "Pinsalang naidulot sa bramble: {n}",
- "{name} dropped!": "Nakuha ang {name}!"
+ "{name} dropped!": "Nakuha ang {name}!",
+ "🃏 Map cards": "🃏 Mga kard ng mapa",
+ "{name}: the map's cards": "{name}: ang mga kard ng mapa",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Lahat ng kard sa mga listahan ng mapang ito: sarili nito, sa bawat side map at ang mga espesyal. Ang kard na may marka ng pack ay lumalabas din sa pack na iyon.",
+ "Not obtainable yet: in no map list and no pack": "Hindi pa makukuha: wala sa anumang listahan ng mapa o pack"
 }

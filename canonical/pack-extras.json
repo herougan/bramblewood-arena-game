@@ -1,0 +1,7 @@
+{
+ "_about": "Pack extras (2026-10-28, package PACK1, owner 22:47: \"For now, remove all cards from the packs. We'll be more deliberate of our choices. In the end, I do plan to add some cards into packs that do not appear in any skirmish.\"). A basic pack's pool is derived at load (arena_app.js packIndex): the basic-pack cards on the map lists (canonical/map-pools.json) of that pack's maps (Pack 1 Maps 0-6, Pack 2 Maps 7-13, Pack 3 Maps 14-20, Pack 4 Maps 21-27; a side map counts from the map that unlocks it; a card belongs to the pack of its first map list), plus the cards listed here under the pack's number: the owner's own picks, usually cards that are in no map list. A card here is in that pack whatever its source. The admin's Pack editor can override one pack's list live (the pack table's `extras`, published as __cfg:shop-packs); copy such a list back here and publish the table without it.",
+ "1": [],
+ "2": [],
+ "3": [],
+ "4": []
+}

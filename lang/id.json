@@ -3593,5 +3593,9 @@
  "Not enough Lumber.": "Kayu tidak cukup.",
  "Your card data differs from the host's. Reload the game and join again.": "Data kartumu berbeda dari milik tuan rumah. Muat ulang game dan bergabung lagi.",
  "Bramble damage dealt: {n}": "Kerusakan ke semak: {n}",
- "{name} dropped!": "{name} didapat!"
+ "{name} dropped!": "{name} didapat!",
+ "🃏 Map cards": "🃏 Kartu peta",
+ "{name}: the map's cards": "{name}: kartu peta ini",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Semua kartu di daftar peta ini: milik peta ini, tiap peta samping, dan yang khusus. Kartu bertanda paket juga keluar dari paket itu.",
+ "Not obtainable yet: in no map list and no pack": "Belum bisa didapat: tidak ada di daftar peta atau paket mana pun"
 }

@@ -13830,6 +13830,15 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .vis4-mc-card.is-mystery .cnp-rw-back{display:grid; place-items:center; width:100%; height:100%; border-radius:6px; font-size:18px;}
 .vis4-mc-locked{display:inline-flex; align-items:center; height:28px; padding:0 9px; border-radius:999px; font:800 12px/1 'Baloo 2',system-ui,sans-serif; background:rgba(0,0,0,.28); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); cursor:help;}
 @media (max-width:560px){ .vis4-mc-card, .vis4-mc-card .card-tile{width:38px !important; height:48px !important;} }
+/* PACK1 (2026-10-28; owner: the map's cards from the skirmish panel's admin buttons): the 🃏 Map cards overlay (pk1OpenMapCards), VIS4's tiles
+   one section per list, a small "📦 Pack N" under each card a basic pack also gives */
+.pk1-mc-modal{max-width:760px; width:100%; max-height:min(86vh, 900px); display:flex; flex-direction:column;}
+.pk1-mc-overlay .pk1-mc-body{margin-top:4px; padding-top:0; border-top:0; overflow-y:auto; overscroll-behavior:contain; min-height:0;}
+.pk1-mc-sec h3{margin:12px 0 2px; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
+.pk1-mc-sec h3 small{font-weight:700; opacity:.65; margin-left:4px;}
+.pk1-mc-overlay .vis4-mc-row{gap:34px 8px; padding:10px 0 26px;}
+.pk1-mc-pack{position:absolute; left:50%; bottom:-27px; transform:translateX(-50%); white-space:nowrap; font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; padding:0 4px; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; pointer-events:auto;}
+@media (max-width:560px){ .pk1-mc-modal{max-height:92vh;} }
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */

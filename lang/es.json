@@ -3590,5 +3590,9 @@
  "Not enough Lumber.": "No tienes suficiente Madera.",
  "Your card data differs from the host's. Reload the game and join again.": "Tus datos de cartas no coinciden con los del anfitrión. Recarga el juego y vuelve a unirte.",
  "Bramble damage dealt: {n}": "Daño a la zarza: {n}",
- "{name} dropped!": "¡Obtienes {name}!"
+ "{name} dropped!": "¡Obtienes {name}!",
+ "🃏 Map cards": "🃏 Cartas del mapa",
+ "{name}: the map's cards": "{name}: las cartas del mapa",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Todas las cartas de las listas de este mapa: las suyas, las de cada mapa secundario y las especiales. Una carta marcada con un sobre también sale de ese sobre.",
+ "Not obtainable yet: in no map list and no pack": "Aún no se puede obtener: en ninguna lista de mapa ni sobre"
 }

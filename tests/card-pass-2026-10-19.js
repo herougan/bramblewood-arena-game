@@ -46,7 +46,10 @@ const QUEUE = new Set(readJSON('docs/balance/post-balance-queue.json').cards.map
 const HELD = new Set(readJSON('docs/balance/human-pass-1-flagged-2026-10-21.json')); // BAL2: the cards held at their stats on record (no legal line, or a cut held for the owner)
 const SCN = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(JSON.parse(read('canonical/skill-costs.json'))), lvOf = require(path.join(ROOT, 'tools', 'skill_costs.js')).levelOf;
 const band = c=> c.attack != null && c.health != null && (c.attack || c.health) && !c.easterEgg && !['materia', 'spell', 'equipment'].includes(c.cardType) && !c.hatchInto && !c.worldBoss && !c.awaitingSource;
-const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
+// 2026-10-28 (package PACK1): a basic pack draws from the map lists now; the cards its map term put over budget (in no pack: Map 0; or an earlier
+// first list) are owner calls PACK1-2 / PACK1-3, not re-fitted (docs/balance/pack1-pools-2026-10-28.json budget.newlyOver)
+const PACK1_OVER = new Set(readJSON('docs/balance/pack1-pools-2026-10-28.json').budget.newlyOver.map(x=> x.id));
+const over = live.filter(c=> band(c) && !OVER_OK.has(c.id) && !QUEUE.has(c.id) && !HELD.has(c.id) && !PACK1_OVER.has(c.id) && !(SCN.budget(c, {level: 1}).ok && SCN.budget(c, {level: lvOf(c)}).ok)).map(c=> `${c.id} ${c.attack}/${c.health}`);
 ok(!over.length, '1. today\'s budget passes for every live card but the owner-call list, the post-balance queue and the held list: ' + over.slice(0, 8).join('; '));
 // the pass's own fits still hold under the costs it was made with (every applied entry back at its prevValue), or the card is queued
 const SCT = JSON.parse(read('canonical/skill-costs.json')); ['skills', 'triggers', 'actions', 'modifiers'].forEach(k=> (SCT[k] || []).forEach(e=>{ if(e.appliedAt) e.value = e.prevValue; }));
@@ -121,7 +124,7 @@ const md = read('docs/card-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'card-pass-2026-10-19.xlsx')), '5. the spreadsheet');
 ok(ST.every(([id])=> md.includes(defs[id].name)), '5. the doc lists every changed card');
 ok(Object.keys(P.SOURCELESS).every(id=> md.includes(defs[id].name)), '5. the doc lists the cards that stay sourceless');
-ok(read('docs/CHANGELOG.md').slice(0, 260000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it (BF2: 100,000 characters; 2026-10-21 (RP): 150,000; BF5 10-21: 250,000, the later packages pushed it down; BAL7 10-28: 260,000)
+ok(read('docs/CHANGELOG.md').slice(0, 275000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it (BF2: 100,000 characters; 2026-10-21 (RP): 150,000; BF5 10-21: 250,000, the later packages pushed it down; BAL7 10-28: 260,000; PACK1 10-28: 275,000)
 
 console.log(fail ? `card-pass-2026-10-19: ${fail} of ${n} failed` : `card-pass-2026-10-19: all ${n} passed`);
 process.exit(fail ? 1 : 0);

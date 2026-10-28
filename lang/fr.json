@@ -3591,5 +3591,9 @@
  "Not enough Lumber.": "Pas assez de Bois.",
  "Your card data differs from the host's. Reload the game and join again.": "Vos données de cartes diffèrent de celles de l'hôte. Rechargez le jeu et rejoignez à nouveau.",
  "Bramble damage dealt: {n}": "Dégâts infligés au roncier : {n}",
- "{name} dropped!": "{name} obtenu !"
+ "{name} dropped!": "{name} obtenu !",
+ "🃏 Map cards": "🃏 Cartes de la carte",
+ "{name}: the map's cards": "{name} : les cartes de la carte",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Toutes les cartes des listes de cette carte : les siennes, celles de chaque carte annexe et les spéciales. Une carte marquée d’un paquet sort aussi de ce paquet.",
+ "Not obtainable yet: in no map list and no pack": "Pas encore obtenable : dans aucune liste de carte ni aucun paquet"
 }
