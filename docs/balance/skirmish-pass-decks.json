@@ -3,27 +3,27 @@
  "note": "Road decks (tools/skirmish_pass.js decks); the game reads them from arena_app.js WINRATE_REF_DECKS. Map 0 plays the Otter starter.",
  "road": {
   "1": {
-   "pool": 58,
+   "pool": 44,
    "score": 100,
    "cards": [
     {
-     "id": "burrow-rabbit",
-     "name": "Burrow Rabbit",
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
      "n": 4
     },
     {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "n": 4
-    },
-    {
-     "id": "riverwing-envoy",
-     "name": "Riverwing Envoy",
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
      "n": 4
     },
     {
      "id": "soldier-ant",
      "name": "Soldier Ant",
+     "n": 4
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
      "n": 4
     },
     {
@@ -33,25 +33,20 @@
     }
    ],
    "level": 0,
-   "generated": "2026-10-21"
+   "generated": "2026-10-28"
   },
   "2": {
-   "pool": 69,
-   "score": 100,
+   "pool": 46,
+   "score": 93.3,
    "cards": [
     {
-     "id": "burrow-rabbit",
-     "name": "Burrow Rabbit",
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
      "n": 4
     },
     {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "n": 4
-    },
-    {
-     "id": "riverwing-envoy",
-     "name": "Riverwing Envoy",
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
      "n": 4
     },
     {
@@ -60,121 +55,151 @@
      "n": 4
     },
     {
-     "id": "duck-paddler",
-     "name": "Duck Paddler",
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
      "n": 4
     }
    ],
    "level": 0,
-   "generated": "2026-10-21"
+   "generated": "2026-10-28"
   },
   "3": {
-   "pool": 77,
+   "pool": 49,
+   "score": 92.9,
+   "cards": [
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "4": {
+   "pool": 52,
+   "score": 71.7,
+   "cards": [
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 4
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "worker-ant",
+     "name": "Worker Ant",
+     "n": 4
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 2
+    },
+    {
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "n": 2
+    }
+   ],
+   "level": 0,
+   "generated": "2026-10-28"
+  },
+  "5": {
+   "pool": 56,
    "score": 96.4,
    "cards": [
     {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
      "n": 4
     },
     {
-     "id": "meadow-frog",
-     "name": "Meadow Frog",
+     "id": "otter-guard",
+     "name": "Otter Guard",
      "n": 4
     },
     {
-     "id": "soldier-ant",
-     "name": "Soldier Ant",
-     "n": 4
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "n": 2
     },
-    {
-     "id": "gatling-hog",
-     "name": "Gatling Hog",
-     "n": 4
-    },
-    {
-     "id": "cobalt-talon-skirmisher",
-     "name": "Cobalt Talon Skirmisher",
-     "n": 4
-    }
-   ],
-   "level": 0,
-   "generated": "2026-10-21"
-  },
-  "4": {
-   "pool": 87,
-   "score": 100,
-   "cards": [
     {
      "id": "otter-centurion",
      "name": "Otter Centurion",
      "n": 4
     },
     {
-     "id": "meadow-frog",
-     "name": "Meadow Frog",
-     "n": 4
-    },
-    {
-     "id": "soldier-ant",
-     "name": "Soldier Ant",
-     "n": 4
-    },
-    {
-     "id": "tidepool-trapper-crab",
-     "name": "Tidepool Trapper Crab",
-     "n": 4
-    },
-    {
-     "id": "meerkat-wayfarer",
-     "name": "Meerkat Wayfarer",
-     "n": 4
-    }
-   ],
-   "level": 0,
-   "generated": "2026-10-21"
-  },
-  "5": {
-   "pool": 98,
-   "score": 100,
-   "cards": [
-    {
-     "id": "otter-centurion",
-     "name": "Otter Centurion",
-     "n": 4
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 2
     },
     {
      "id": "meadow-frog",
      "name": "Meadow Frog",
      "n": 4
-    },
-    {
-     "id": "soldier-ant",
-     "name": "Soldier Ant",
-     "n": 4
-    },
-    {
-     "id": "tidepool-trapper-crab",
-     "name": "Tidepool Trapper Crab",
-     "n": 4
-    },
-    {
-     "id": "amber-cicada",
-     "name": "Amber Cicada",
-     "n": 4
     }
    ],
    "level": 0,
-   "generated": "2026-10-21"
+   "generated": "2026-10-28"
   },
   "6": {
-   "pool": 111,
-   "score": 100,
+   "pool": 59,
+   "score": 69.8,
    "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
     {
      "id": "otter-centurion",
      "name": "Otter Centurion",
      "n": 4
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "n": 2
     },
     {
      "id": "meadow-frog",
@@ -182,23 +207,13 @@
      "n": 4
     },
     {
-     "id": "soldier-ant",
-     "name": "Soldier Ant",
-     "n": 4
-    },
-    {
-     "id": "tidepool-trapper-crab",
-     "name": "Tidepool Trapper Crab",
-     "n": 4
-    },
-    {
-     "id": "amber-cicada",
-     "name": "Amber Cicada",
-     "n": 4
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 2
     }
    ],
    "level": 0,
-   "generated": "2026-10-21"
+   "generated": "2026-10-28"
   },
   "7": {
    "pool": 128,

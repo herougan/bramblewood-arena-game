@@ -39,7 +39,9 @@ Object.keys(data.maps).forEach(mid=>{
   // MAP tier + its SUBMAP list + SPECIAL + its fight decks)
   ok(map && ent.map === no && (map.sub ? ent.side === map.parent : !ent.side), `1. ${mid} is ${map && map.sub ? 'a side map of' : 'main map'} ${no}`);
   const pk = map.sub ? map.parent : mid, sub = map.sub ? ((gm.pools[pk] || {}).submaps || {})[mid] || [] : [], prefix = P.proPrefix(gm, map);
-  const cap = O.mapRarityCap(gm, map), pool = gm.pools[pk] || {}, own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n=> Object.keys(n.deck))));
+  // 2026-10-28 (BAL7, CONTENT4-1: the map lists are capped, a trimmed pack card keeps its pack and its map): the map's own pack cards count
+  // as its own too (deckopt.js ownPackCards)
+  const cap = O.mapRarityCap(gm, map), pool = gm.pools[pk] || {}, own = new Set((pool.cards || []).concat(pool.special || [], Array.isArray(sub) ? sub : (sub.cards || []), ...O.fightsOf(map).map(n=> Object.keys(n.deck)), O.ownPackCards(gm, pk), map.sub ? O.ownPackCards(gm, mid) : []));
   KINDS.forEach(([list, label, mode])=>{ const L = ent[list] || [];
   ok(L.length >= 1 && L.length <= 4, `1. ${mid}: 1-4 ${label} fights (${L.length})`);
   L.forEach((e, i)=>{

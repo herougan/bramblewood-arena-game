@@ -89,8 +89,8 @@
     "field-mouse (first-clear pack, PRO deck)",
     "cricket-drummer (reward, showcase, PRO deck)",
     "compost-grub (first-clear pack)",
-    "badger-lumberjack (reward, showcase)",
     "woodcock-lookout (PRO deck)",
+    "badger-lumberjack (reward, showcase)",
     "hedgerow-shrew (PRO deck)",
     "slow-worm (PRO deck)",
     "briarback-hedgehog (PRO deck)"
@@ -389,15 +389,15 @@
    "afterNew": 11,
    "afterOld": 4,
    "keptNew": [
+    "shallows-fry (PRO deck)",
     "beaver-builder (PRO deck)",
     "mayfly-dancer (PRO deck)",
     "minnow-skitter (PRO deck)",
-    "shallows-fry (PRO deck)",
+    "great-crested-grebe (PRO deck)",
     "mangrove-mudskipper (PRO deck)",
     "lodge-engineer (showcase, PRO deck)",
     "riverworks-bastion (reward)",
     "camouflage-frog (PRO deck)",
-    "great-crested-grebe (PRO deck)",
     "mudpuppy (PRO deck)",
     "poison-dart-croaker (showcase)"
    ],
@@ -455,8 +455,8 @@
    "afterNew": 11,
    "afterOld": 1,
    "keptNew": [
-    "truffle-piglet (reward, showcase)",
     "leafcutter-gardener (first-clear pack, PRO deck)",
+    "truffle-piglet (reward, showcase)",
     "dung-beetle (first-clear pack, PRO deck)",
     "owl-nightwatch (PRO deck)",
     "ant-warrior (PRO deck)",
@@ -1702,10 +1702,10 @@
    "afterNew": 6,
    "afterOld": 3,
    "keptNew": [
-    "pika-hoarder (reward)",
     "glacier-yak (first-clear pack, showcase)",
-    "snow-owl-sentinel (reward)",
     "snow-leopard (first-clear pack)",
+    "pika-hoarder (reward)",
+    "snow-owl-sentinel (reward)",
     "eagle-sharpshooter",
     "scree-goat"
    ],
@@ -1877,8 +1877,8 @@
    "afterNew": 7,
    "afterOld": 5,
    "keptNew": [
-    "badger-trench-digger (first-clear pack)",
     "howdah-archers (first-clear pack)",
+    "badger-trench-digger (first-clear pack)",
     "testudo-tortoise (reward)",
     "war-elephant (reward)",
     "trebuchet-crew",
