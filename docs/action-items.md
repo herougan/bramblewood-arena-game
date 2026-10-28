@@ -4,6 +4,23 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-28 09:48: the owner's notes
+
+| ID | Package | Note (owner, trimmed) | What to build |
+|---|---|---|---|
+| L1 | ENG12 | "Ambush happens immediately when the trigger is valid. Currently, it waits till you play a card." | Ambush fires the moment its trigger becomes valid. |
+| L2 | CONTENT4 | "Ice Hollow strangely has no field effect. Any map or submap currently like this? It should be a rare thing for a map not to have a field effect (vanilla ... the rarest, maybe at least one between Map 20 to 40) (like briar maze)" | Audit maps and side maps with no field effect; give each a fitting one; keep "vanilla" rare (one between Maps 20-40). |
+| L3 | VIS5 | "The '... joins the fight' and 'Danger' are not... iconic enough." | Make the leader-joins and Danger announcements bold and memorable. |
+| L4 | VIS5 | "After laying the trap, the trap context pip fades away. There is also no trap triggered animation. ... the card played should jump and be discombobulated abit, and a damage number flies from it." | The trap pip stays while armed; a trap-triggered animation on the victim (a jolt, a wobble, a damage number). |
+| L5 | ENG12 | "Shock is too strong. 1.5x, in my opinion. Unless it only takes 1.5x from electric sources." | Shocked units take 1.5x (was more); re-price. |
+| L6 | VIS5 | "Wolfsbane Tundra top right controls are squeezed to all hell. Is there a better way to present those controls" | Re-lay the fight's top-right controls so they never squeeze (overflow menu or wrap). |
+| L7 | CONTENT4 | "Limit the number of cards in a map. (At the later game, maybe ~4-5 old cards, ~4-7 new cards?" | Map card pools capped: later maps about 4-5 earlier cards and 4-7 new ones. |
+| L8 | HUB8 | "In the stat budget and card check sections, let the card names be clickable, opening card detail ... Color the rarity by its rarity." | Hub budget / card-check names open the card detail (with its edit button); rarity text in its colour. |
+| L9 | BAL6 | "Cards like Owl Nightwatch somehow is not included in the testlab testing." | Every playable card in the test pools; list what was missing and why. |
+| L10 | ENG12 | SS#1: "Sleep is active, but it still attacked." (an Owl Nightwatch with zZ1 struck twice) | A sleeping unit never swings: find the remaining path (G4 fixed one). |
+| L11 | ENG12 | SS#2 (the editor's Nocturnal +4/+0): "how can this be 2.5?" | Nocturnal / Diurnal stat bonuses priced by their real uptime (4-round rule); the Owl Nightwatch re-fitted. |
+| L12 | VIS5 | "Even if the cards shown is few, the codex book should still be at 'max height'." | The Codex book keeps its full height with few cards. |
+
 ## 10-27 11:22: the owner's notes (one release when all are done)
 
 | ID | Package | Note (owner, trimmed) | What to build |
