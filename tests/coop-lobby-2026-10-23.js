@@ -1,14 +1,15 @@
 #!/usr/bin/env node
-// The Group Dungeon's room over the mock relay (2026-10-23, package AR3).
+// The Group Dungeon's room over the mock relay (2026-10-23, package AR3; rewritten 2026-10-28, package COOP2).
 //
 //   node tests/coop-lobby-2026-10-23.js
 //
 // Each player is its own VM context running tests/e2e/mock-relay.js (the stand-in Supabase client the two-page tests use), and the room
 // talks through bramblewood-coop.js's supabaseTransport: the same code path as a live room, Realtime broadcasts relayed context to
-// context by this script. Checks: opening a room; three players join with the code and take C, D, B (the 3rd opens the right half); a
-// 5th is turned away; ready-up gates Start; a player who leaves the lobby frees the seat and can come back; the host leaving the lobby
-// hands the room to C; the new host starts; the start and the first rounds reach everyone in step; a player who drops mid-fight is
-// marked away and played by the CPU, and is let back in.
+// context by this script (each delivery on its own tick, so messages from two players can cross).
+// 2026-10-28 (COOP2): the vault is a 2-player type, so a room has exactly 2 seats (0 = player 1, the host; 1 = player 2); seats C / D / B,
+// the 4-seat toggle and the plan rounds are gone. Checks: open a room; a friend joins with the code into seat 1; a 3rd is turned away;
+// ready gates Start; leave and come back in the lobby; the host leaving the lobby hands the room to seat 1; start; the race over the
+// relay (both claim one slot -> player 1's lands, player 2's comes back); rounds in step; a drop played by the CPU and a return.
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const H = require('./lib/harness.js');
@@ -20,7 +21,6 @@ function deckFrom(seed){ const r = H.seededRng(seed); const d = {}; let n = 0; w
 let pass = 0; const fails = [];
 function ok(cond, msg){ if(cond) pass++; else { fails.push(msg); console.log('  ✗ ' + msg); } }
 
-// one browser-like context per player; the relay hands each broadcast to every other context, asynchronously
 const contexts = new Map(), dropped = new Set();
 function newPlayer(id){
   const ctx = {window: {}, console, JSON, Promise, setTimeout}; vm.createContext(ctx); vm.runInContext(RELAY, ctx);
@@ -34,62 +34,55 @@ const clock = {now: ()=> t, setTimeout(fn, ms){ const k = ++seq; timers.set(k, {
 function advance(ms){ const end = t + ms; for(;;){ let nx = null; timers.forEach((v, k)=>{ if(v.at <= end && (!nx || v.at < nx[1].at)) nx = [k, v]; }); if(!nx) break; t = nx[1].at; if(nx[1].every) nx[1].at += nx[1].every; else timers.delete(nx[0]); nx[1].fn(); } t = end; }
 const io = ()=> new Promise(r=> setImmediate(r));
 async function settle(n){ for(let i = 0; i < (n || 8); i++) await io(); }
-async function elapse(ms){ for(let x = 0; x < ms; x += 250){ advance(Math.min(250, ms - x)); await settle(3); } }
+async function elapse(ms){ for(let x = 0; x < ms; x += 50){ advance(Math.min(50, ms - x)); await settle(3); } }
 const deps = {makeSimEngine: H.Engine.makeSimEngine, defs, defsHash: C.defsHash(defs, Object.keys(defs))};
 function session(id, host, code, extra){ const sb = newPlayer(id); const events = [];
-  const s = C.createSession(Object.assign({transport: C.supabaseTransport(sb, code), me: {peerId: id, name: id, deck: deckFrom(id.length * 7 + id.charCodeAt(0)), castleHp: 20}, host, code, deps, clock, seed: 2026, onEvent: (k, d)=> events.push(k)}, extra || {}));
+  const s = C.createSession(Object.assign({transport: C.supabaseTransport(sb, code), me: {peerId: id, name: id, deck: deckFrom(id.length * 7 + id.charCodeAt(0)), castleHp: 15}, host, code, typeId: 'hollow', deps, clock, seed: 2026, onEvent: (k, d)=> events.push([k, d])}, extra || {}));
   s._events = events; return s; }
 
 (async ()=>{
   const code = C.newRoomCode(H.seededRng(9));
   ok(/^[A-Z0-9]{6}$/.test(code) && !/[O0I1]/.test(code), `room code: 6 letters / digits, no look-alikes (${code}), as coop_rooms' check`);
   const host = session('hazel', true, code);
-  ok(host.room && host.room.seats.A && host.room.hostId === 'hazel' && host.room.status === 'lobby', 'open: the host sits in A');
+  ok(host.room && host.room.seats.length === 2 && host.room.seats[0].peerId === 'hazel' && host.room.status === 'lobby', 'open: two seats (the vault\'s count); the host is player 1');
   const pip = session('pip', false, code); await settle();
-  const mia = session('mia', false, code); await settle();
-  const tom = session('tom', false, code); await settle();
-  const seatOf = s=> s.mySeat();
-  ok(seatOf(pip) === 'C' && seatOf(mia) === 'D' && seatOf(tom) === 'B', `join: players take C, D, B in turn (${seatOf(pip)}, ${seatOf(mia)}, ${seatOf(tom)})`);
-  ok(host.room.size === 4 && pip.room.size === 4, 'join: the 3rd player opens the 4-seat board');
-  ok([pip, mia, tom].every(p=> p.room && p.room.hostId === 'hazel'), 'join: everyone has the host\'s roster');
+  ok(pip.mySeat() === 1 && pip.room.hostId === 'hazel', 'join: the friend takes seat 1 (player 2)');
   const late = session('zed', false, code); await settle();
-  ok(late._events.includes('full') && !late.mySeat(), 'join: a 5th player is turned away (room full)');
+  ok(late._events.some(([k])=> k === 'full') && late.mySeat() == null, 'join: a 3rd player is turned away (the type has 2 seats)');
   late.close(); contexts.delete('zed');
-  ok(!host.canStart(), 'ready: no Start until everyone is ready');
-  [pip, mia].forEach(p=> p.setReady(true)); await settle();
-  ok(!host.canStart(), 'ready: still one player not ready');
-  tom.setReady(true); await settle();
-  ok(host.canStart(), 'ready: everyone ready -> Start');
-  // leave and come back (lobby)
-  tom.leave(); contexts.delete('tom'); await settle();
-  ok(!host.room.seats.B && !mia.room.seats.B, 'leave: B is free again on every roster');
-  const tom2 = session('tom', false, code); tom2.setReady(true); await settle(); // Ready pressed before the roster came back: sent once it does
-  ok(seatOf(tom2) === 'B' && host.room.seats.B.ready, 'rejoin: back in B; a Ready pressed before the seat was known still counts');
-  // the host leaves the lobby: C takes the room
+  ok(!host.canStart(), 'ready: no Start until player 2 is ready');
+  pip.leave(); contexts.delete('pip'); await settle();
+  ok(!host.room.seats[1], 'leave: seat 1 is free again');
+  const pip2 = session('pip', false, code); pip2.setReady(true); await settle(); // Ready pressed before the roster came back: sent once it does
+  ok(pip2.mySeat() === 1 && host.room.seats[1].ready && host.canStart(), 'rejoin: back in seat 1; a Ready pressed early still counts; Start opens');
+  // the host leaves the lobby: player 2 takes the room, and its seat 0 is free (a CPU ally at Start)
   host.leave(); contexts.delete('hazel'); await settle();
-  ok(pip.isHost && pip.room.hostId === 'pip' && mia.room.hostId === 'pip' && tom2.room.hostId === 'pip', 'host leaves the lobby: C (pip) is the host on every roster');
-  ok(!pip.room.seats.A, 'host leaves the lobby: their seat is freed');
-  ok(pip.canStart(), 'the new host can start (everyone else ready)');
-  // start, then play through the relay with every player planning by the CPU logic for its own seat
-  [pip, mia, tom2].forEach(p=>{ p._auto = true; });
-  ok(pip.start(), 'start: the new host starts the climb'); await settle();
-  ok([mia, tom2].every(p=> p.mode === 'lockstep' && p.view && p.view.floorIdx === 0), 'start: the start reached everyone; each runs the floor in step');
-  ok(pip.run.seats.find(s=> s.seat === 'A').cpu, 'start: the empty seat A is a CPU ally');
-  const plan = p=>{ const seat = p.mySeat(); if(!p.run || !p.run.fl || p.run.fl.over || p.locked[seat]) return; const c = C.cpuPlan(p.run, seat, 3); p.submitPlan({pitch: c.pitch != null ? c.pitch : null, play: c.play || null}); };
-  for(let r = 0; r < 4; r++){ [pip, mia, tom2].forEach(plan); await settle(); }
-  const h = pip.history;
-  ok(h.length >= 4, `rounds: ${h.length} resolved through the relay`);
-  ok([mia, tom2].every(p=> p.history.length === h.length && p.history.every((x, i)=> x.hash === h[i].hash)), 'rounds: every player\'s state matches the host\'s after every round');
-  // a player drops mid-fight: marked away after 8 s, the CPU plays their seat; they come back and catch up
-  const before = pip.history.length; dropped.add("tom");
-  plan(pip); plan(mia); await settle();
-  await elapse(C.DROP_MS + 2 * C.PING_MS); await settle();
-  ok(pip.room.seats.B.connected === false, 'drop: the silent player is marked away');
-  const lastPlans = pip.history.length;
-  ok(lastPlans > before, 'drop: the round resolved without them (their seat on the CPU plan)');
-  dropped.delete('tom'); tom2.rejoinHello(); await settle(12);
-  ok(pip.room.seats.B.connected === true && tom2.mode === 'mirror' && C.hashView(tom2.view) === C.hashView(pip.view), 'reconnect: back, mirroring the host\'s state');
-  [pip, mia, tom2].forEach(p=> p.close());
+  ok(pip2.isHost && pip2.room.hostId === 'pip' && !pip2.room.seats[0], 'host leaves the lobby: player 2 hosts; seat 0 is free');
+  ok(pip2.start(), 'start: the new host starts alone'); await settle();
+  ok(pip2.room.seats[0].cpu && pip2.T && pip2.T.seats[0].cpu, 'start: the empty seat is a CPU ally');
+  pip2.close(); contexts.clear();
+
+  // a fresh room of two: the race over the relay, rounds in step, a drop
+  const a = session('ana', true, 'RELAY2'), b = session('ben', false, 'RELAY2'); await settle();
+  b.setReady(true); await settle(); a.start(); await settle(); await elapse(100);
+  ok(a.T && b.T && C.tableHash(a.T) === C.tableHash(b.T), 'start: both built the same table');
+  const slot = C.rowLegalSlots(b.T, 1)[0], hb = C.seatData(b.T, 1).hand[0], ha = C.seatData(a.T, 0).hand.find(h=> (defs[h.defId].cost || 0) === 0);
+  b.claim({kind: 'play', uid: hb.uid, row: 1, slot}); a.claim({kind: 'play', uid: ha.uid, row: 1, slot}); // the same moment, player 2's sent first
+  await elapse(400);
+  const u = C.unitAt(a.T, 1, slot);
+  ok(u && u.coopSeat === 0 && C.unitAt(b.T, 1, slot) && C.unitAt(b.T, 1, slot).uid === u.uid, 'race: player 1 (the lower index) lands the slot on both screens');
+  ok(b._events.some(([k, d])=> k === 'reject' && d.by === 0) && C.seatData(b.T, 1).hand.some(h=> h.uid === hb.uid), 'race: player 2 is told, its card is back in hand');
+  for(let r = 0; r < 4; r++){
+    [a, b].forEach(p=>{ const s = p.mySeat(); if(C.seatDone(p.T, s)) return; const x = C.cpuChoice(p.T, s); if(x) p.claim(x.kind === 'pass' ? {kind: 'pass'} : x.kind === 'pitch' ? {kind: 'pitch', uid: x.uid} : {kind: 'play', uid: x.uid, row: x.row, slot: x.slot}); });
+    await elapse(500);
+  }
+  ok(a.T.round >= 3 && a.T.round === b.T.round && C.tableHash(a.T) === C.tableHash(b.T) && !a.desyncs && !b.desyncs, `rounds: in step through the relay (round ${a.T.round}, no desync)`);
+  dropped.add('ben'); const r0 = a.T.round;
+  for(let k = 0; k < 8; k++){ const s = a.mySeat(); if(!C.seatDone(a.T, s)) a.claim({kind: 'pass'}); await elapse(1500); }
+  ok(a.room.seats[1].connected === false && a.T.round > r0, 'drop: player 2 is marked away and the CPU plays its seat; the rounds go on');
+  dropped.delete('ben'); b.rejoinHello(); await elapse(C.PING_MS * 2 + 800);
+  ok(a.isHost && !b.isHost && a.room.seats[1].connected === true && C.tableHash(b.T) === C.tableHash(a.T), 'return: player 2 is back and caught up from the act log');
+  [a, b].forEach(p=> p.close());
   console.log(`coop-lobby: ${pass} passed, ${fails.length} failed`);
   process.exit(fails.length ? 1 : 0);
 })().catch(e=>{ console.error(e); process.exit(1); });
