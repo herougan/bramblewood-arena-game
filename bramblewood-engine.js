@@ -2795,7 +2795,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [players[1], players[2]].filter(pl=> pl && inUpkeep(pl)).forEach(pl=>{
       upkeepUnitsOf(pl).slice().forEach(c=>{
         if(!c || c.gap || !(c.hp > 0) || c.bloomed || c.cageOf || c.stunned) return; // EN5 (2026-10-24, owner BL-1: "the copy can bloom"): a copy blooms too, once (c.bloomed)
-        if(c.wait > 0 || c.frozen > 0 || c.asleep > 0) return; // ENG9 (2026-10-26, owner EN7-2: "Bloom can only start 'testing' when the unit is ready")
+        if(c.wait > 0 || c.frozen > 0 || dozing(c)) return; // ENG9 (2026-10-26, owner EN7-2: "Bloom can only start 'testing' when the unit is ready")
         const bc = effectsOf(c).bloomCopy; if(!bloomCopyOn(bc, c, pl)) return;
         if(isParasiteDef(CARD_DEFS[c.defId])){ if(en7ParasiteBloom(players, sideOf, pl, c, bc, stats, events)) any = true; else if(slotMode){ bloomFail(pl, c, sideOf, events); any = true; } return; } // EN7 (2026-10-24, owner 13:12 #2): a Parasite's copy hooks onto an enemy; ENG9: no host, it fails
         const where = bloomSlotOf(pl, c); if(!where){ bloomFail(pl, c, sideOf, events); any = true; return; } // ENG9 (2026-10-26, owner EN7-2): no room beside it: the split fails, +1/+1 on the unit (was BL-2: it waited)
@@ -3113,7 +3113,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dmg > 0) card._dmgTurn = turnNo; // EN8 (2026-10-24): Coppice reads the last round it took damage
     if(o.suddenDeath && o.suddenDeath(dmg)) card.hp = 0;
     if(o.killerUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, o.killerUid, o.killerDefId); // who:'killer' (2026-10-14)
-    if(o.wake && dmg > 0 && card.asleep > 0 && !card.hibernating /* EN6: Hibernate wakes with the cold, not a hit */){ if(o.wokeBy !== undefined) card._wokeBy = o.wokeBy ? Object.assign({uid: o.wokeBy.uid, n: card.asleep, t: o.wokeBy.t}) : null; card.asleep = 0; noteWoke(card); }
+    if(o.wake && dmg > 0 && card.asleep > 0 && !card.hibernating /* EN6: Hibernate wakes with the cold, not a hit */){ if(o.wokeBy !== undefined) card._wokeBy = o.wokeBy ? Object.assign({uid: o.wokeBy.uid, n: card.asleep, t: o.wokeBy.t}) : null; card.asleep = 0; card._wokeRound = turnNo /* BAL7 (2026-10-28, ENG12-2): woken by a hit, it loses the rest of the round */; noteWoke(card); }
     if(o.shell) shellUp(card);
     if(o.nul && card.hp <= 0) nullifyKill(card);
     return {dmg, tempSoak};
@@ -3554,7 +3554,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // own interceptor now: Spellward (spellwardFor, called from shieldCall).
   // ENG9 (2026-10-26, owner on EN8-8: "Guardian and Rampart only works when the unit is ready."; OWN-Q1 23:58: a Bound unit can't move, so
   // no Guardian or Rampart step-in): a blocker steps in only while Ready (its Wait done, not Stunned, Frozen, Asleep or Petrified) and not Bound.
-  function blockerReady(n){ return !!n && !(n.wait > 0) && !n.stunned && !(n.frozen > 0) && !(n.asleep > 0) && !n.petrified && !(n.bound > 0) && !n.chained; }
+  function blockerReady(n){ return !!n && !(n.wait > 0) && !n.stunned && !(n.frozen > 0) && !dozing(n) && !n.petrified && !(n.bound > 0) && !n.chained; }
   function isLiveGuardian(n){ return !!(n && !n.gap && n.hp > 0 && !n.hibernating /* EN6: asleep, it can't step in */ && n.diveAloft == null /* EN7: aloft or under, it can't */ && blockerReady(n) /* ENG9 */ && ((CARD_DEFS[n.defId]||{}).effects||{}).guardian); }
   // EN4 (2026-10-23, owner 22:23 #9: "Guardian shouldn't intercept an intercepting guardian."): EN3's one hop (a Guardian beside the
   // Guardian that stepped in took the swing in its place, call EN3-3) is reverted. One Guardian steps in, and it takes the swing; no other
@@ -4099,7 +4099,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // of it once (its Attack, through the normal damage pipeline). A counterattack never sets off another counterattack.
   function counterStrike(players, sideOf, ownerId, card, stats, events, killCredit){
     const cd = CARD_DEFS[card.defId];
-    if(!cd || !cd.effects || !cd.effects.counterattack || card.hp <= 0 || card.wait > 0 || card.stunned || card.frozen > 0 || card.asleep > 0) return;
+    if(!cd || !cd.effects || !cd.effects.counterattack || card.hp <= 0 || card.wait > 0 || card.stunned || card.frozen > 0 || dozing(card)) return;
     let opp = opposingCardOf(players, ownerId, card);
     // 2026-10-19 (package TS): in a raid (RESERVE_ACTS) it strikes the closest enemy in its column, any row (rowTargetAt, the rule every
     // row's swing follows since RX), so a counter from the middle or back row, or at a striker there, isn't lost.
@@ -5439,8 +5439,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function springAmbush(players, sideOf, pid, card, stats, events){ watchScan(players, sideOf, stats, events); }
   // ENG12 (2026-10-28, owner L10: a sleeping unit never swings): Ambush is the unit's own strike (EN7), so an Asleep, Stunned, Frozen,
   // Chained or Petrified ambusher lets the unit pass. Waiting is fine (Ambush N: "Ready or Waiting").
-  function ambushCanAct(a){ return !!(a && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !a.chained && !a.petrified); }
-  function sentryCanAct(a){ return !!(a && a.hp > 0 && !(a.wait > 0) && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !(a.bound > 0) && !a.chained && !a.petrified && a._sentryRound !== turnNo); }
+  function ambushCanAct(a){ return !!(a && !a.stunned && !(a.frozen > 0) && !dozing(a) && !a.chained && !a.petrified); }
+  function sentryCanAct(a){ return !!(a && a.hp > 0 && !(a.wait > 0) && !a.stunned && !(a.frozen > 0) && !dozing(a) && !(a.bound > 0) && !a.chained && !a.petrified && a._sentryRound !== turnNo); }
   function sentryWatches(players, pid, a, x){
     if(slotMode) return Number.isInteger(a.slot) && Number.isInteger(x.slot) && Math.abs(x.slot - a.slot) <= 1;
     let opp = null; try{ opp = opposingCardOf(players, pid, a); }catch(e){ opp = null; } if(!opp || !opp.card) return false;
@@ -6554,7 +6554,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pl = players[pid]; if(!pl || !inUpkeep(pl)) continue;
       for(const c of physicalRowOrder(pl).slice()){
         if(!c || c.gap || !(c.hp > 0) || c.cageOf || (c.wait||0) > 0) continue;
-        if(c.asleep > 0 || c.stunned || c.frozen > 0 || c.petrified) continue; // ENG12 (2026-10-28, L10): asleep (stunned, frozen, stone) it neither eats nor throws
+        if(dozing(c) || c.stunned || c.frozen > 0 || c.petrified) continue; // ENG12 (2026-10-28, L10): asleep (stunned, frozen, stone) it neither eats nor throws
         if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return;
         const e = effectsOf(c);
         if(e.banana){ const n = numN(e.banana, 3), hurt = c.hp < c.maxHp && !(c.wither > 0);
@@ -6960,7 +6960,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pl = players[pid]; if(!pl) return false;
       const enemy = players[otherId(pid)]; if(!enemy) return false;
       {
-        if(!c || c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0 || c.cageOf) return false;
+        if(!c || c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || dozing(c) || c.cageOf) return false;
         if(passOnlyUid && c.uid !== passOnlyUid) return false;
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return false;
         if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
@@ -7155,7 +7155,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Attack, On Kill and On Discard always fire. A trigger can opt out with whileWaiting:true; whenReady (the
       // earlier per-trigger flag) is now simply the default.
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
-      if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
+      if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || dozing(boardCard))) return;
       if(hook==='perTurn' && Number(t.every) > 1 && boardCard){ const ek = 'every:' + (t.keyword || i); boardCard._every = boardCard._every || {}; boardCard._every[ek] = (boardCard._every[ek]||0) + 1; if(boardCard._every[ek] % Math.round(Number(t.every)) !== 0) return; } // EN8 (2026-10-24): t.every K, every K-th Ready turn (Stonecutter: 2)
       if(t.keyword !== 'archer' /* its turn already rolled Confused's coin (BX, 2026-10-21) */ && confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
       if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
@@ -7772,7 +7772,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return giHitBonus(d, f, 'physical') + (e.shatter && f.brittle > 0 && !(f.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0) + (e.detonate ? detonateWorth(f.poison || 0, numN(e.detonate, DETONATE_DEF)) : 0); } // (Shatter on a Brittle unit only: the CPU's old play with Frozen stays as it was)
   function aiGiWorth(players, aiId, defId){
     const d = CARD_DEFS[defId] || {}, e = d.effects || {}, ai = players[aiId], foe = players[otherId(aiId)]; if(!ai || !foe || d.cardType || d.field) return 0;
-    const mine = liveUnits(ai), foes = aiFoes(liveUnits(foe)) /* FOG1 (EN) */, probe = {defId}, ready = c=> !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0);
+    const mine = liveUnits(ai), foes = aiFoes(liveUnits(foe)) /* FOG1 (EN) */, probe = {defId}, ready = c=> !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !dozing(c);
     const isWolf = id=> txIsA(CARD_DEFS[id], 'Wolf'); // 2026-10-21 (package TX)
     let v = 0;
     if(e.kinRally){ const n = numN(e.kinRally, 1); v += ai.hand.filter(h=> h.defId !== defId && sharesType(probe, {defId:h.defId})).length * n * 1.0; }
@@ -7792,7 +7792,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.graspingBriars && e.flying) v += 0.5; // ENG10 (2026-10-26): the briars don't reach a Flyer
     return v; }
   // Can this board unit swing at whatever faces it this round? (2026-10-18, the smartest CPU's look across the board.)
-  function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.paralyzed > 0) && !c.cageOf; }
+  function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !dozing(c) && !(c.paralyzed > 0) && !c.cageOf; }
   // How likely that swing is (2026-10-19, package FZ): a Confused unit fumbles its action 1 in 2.
   function aiSwingOdds(c){ return aiCanSwing(c) ? (c.confused > 0 ? 0.5 : 1) : 0; }
   // The smartest CPU's slot (2026-10-18, aiLevel 2). Every legal slot is scored, the best taken; ties go to the slot nearest the
@@ -7930,7 +7930,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // 2026-10-18 (audit 4): Poison hurts every upkeep, but Bleed only on the unit's own actions (bleedTick), so its Bleed counts only
     // while it is about to act (no Wait, not stunned, frozen or asleep).
     const expendable = (f, newVal)=>{ const fd = CARD_DEFS[f.defId] || {}, hp = f.hp || 0;
-      const acts = !((f.wait||0) > 0) && !f.stunned && !(f.frozen > 0) && !(f.asleep > 0);
+      const acts = !((f.wait||0) > 0) && !f.stunned && !(f.frozen > 0) && !dozing(f);
       if((f.prayerTokens||0) >= 2 && !(doomedToo && aiDoomed(players, ai.id, f))) return false; // 2026-10-19 (package E): its Prayer tokens would go with it
       return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (acts ? (f.bleed||0) : 0)) >= hp || cardValue(f.defId) <= newVal * 0.6 || (doomedToo && aiDoomed(players, ai.id, f)); };
     let best = null;
@@ -8432,7 +8432,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Paralyzed/Stunned (all of which also force wait back up or skip the round in
         // gatherAttackers), is NOT ready, so it does not fire Per Turn either — this hook is
         // meant for "stuff that happens on a card's own active turns," not a blanket timer.
-        if(c.wait===0 && !c.stunned && !(c.frozen>0) && !(c.asleep>0) && !(c.paralyzed>0)){
+        if(c.wait===0 && !c.stunned && !(c.frozen>0) && !dozing(c) && !(c.paralyzed>0)){
           runCustomTriggers(players, sideOf, pl.id, c, def, 'perTurn', stats, events);
         }
       });
@@ -8481,6 +8481,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && shieldEvents && card){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exposedHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exposed, crit: crit !== false}); }
     return 1;
   }
+  // BAL7 (2026-10-28, ENG12-2, owner L10 "Sleep is active, but it still attacked."): a unit woken by a hit wakes groggy: for the rest of
+  // that round it neither swings, shoots, blocks nor fires a trigger, as if still Asleep (dozing). From the next round it acts as ever.
+  function dozing(c){ return !!c && (c.asleep > 0 || (c._wokeRound != null && c._wokeRound === turnNo)); }
   function noteWoke(card){
     if(!(recordEvents && shieldEvents) || !card || !(card.hp > 0)) return;
     const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusEnd', status:'asleep', woke:true, side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), uid:card.uid, defId:card.defId});
@@ -8700,7 +8703,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // The upkeep actions, every turn while Ready (endOfRoundUpkeep's Ready pass, beside onReadyGold and Rebuild). Milling is a trigger (trigsOf).
   function sk2ReadyUpkeep(players, sideOf, pl, c, stats, events){
     const e = effectsOf(c); if(!(e.repair || e.foraging || (e.fortification && SK2.fortifyEvery > 0))) return;
-    if(!c || c.gap || !(c.hp > 0) || c.cageOf || c.wait > 0 || c.stunned || c.frozen > 0 || c.asleep > 0) return;
+    if(!c || c.gap || !(c.hp > 0) || c.cageOf || c.wait > 0 || c.stunned || c.frozen > 0 || dozing(c)) return;
     const side = sideOf(pl.id);
     if(e.repair) sk2Repair(players, sideOf, pl, c, sk2N(c, 'repair', SK2.repairN), stats, events);
     if(e.foraging) sk2Forage(players, sideOf, pl, c, stats, events);
@@ -9066,7 +9069,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       upkeepUnitsOf(pl).slice().forEach(c=>{ const def = CARD_DEFS[c.defId], ch = chargeOf(def); if(!ch || !(c.hp > 0) || c.cageOf) return; // + a raid's middle / back rows (2026-10-19, RR)
         if(c.wait > 0 || c.frozen > 0) return;
         if(c.chargeLeft == null){ c.chargeLeft = ch.n; if(recordEvents && events) events.push({type:'charge', side:sideOf(pid), uid:c.uid, defId:c.defId, left:c.chargeLeft, start:true}); return; }
-        if(c.stunned || c.asleep > 0) return;
+        if(c.stunned || dozing(c)) return;
         if(c.bound > 0) return; // ENG9 (2026-10-26, OWN-Q1): Bound, it can't charge (the clock holds)
         c.chargeLeft -= 1;
         const fire = c.chargeLeft <= 0; if(fire) c.chargeLeft = ch.n;
@@ -9189,7 +9192,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       card.revivedOnce = true; card.hasRemovalCounter = true; card.undeadToken = true; card.token = true; // ENG9: back as a token
       card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
       card.poison = 0; card.gpoison = 0; /* EN4 */ card.decay = 0; card.exposed = 0; card.exploit = 0; /* SK1 */ card.scar = 0; card.stunned = false;
-      card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0; card.brittle = 0; /* 2026-10-19 (GI) */
+      card.frozen = 0; card.asleep = 0; card._wokeRound = null; /* BAL7 (2026-10-28, ENG12-2) */ card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0; card.brittle = 0; /* 2026-10-19 (GI) */
       card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
       if(slotMode && Number.isInteger(rv.slot)) card.slot = rv.slot;
       if(card.boon === 'restlessDead'){ card.hp = Math.max(1, card.maxHp); boonFire(card, 'revive', events); } // Restless Dead, a selfish boon (2026-10-24, DF3): back at full Health
@@ -9450,7 +9453,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pl = players[pid]; if(!pl) continue;
       for(const c of upkeepUnitsOf(pl).slice()){ // + a raid's middle / back rows: an extra turn is its row swing (resolveCombat's onlyUid pass), 2026-10-19 RR
         if(!c || c.hp <= 0 || !(c.ffCounters > 0)) continue;
-        if(c.stunned || c.frozen > 0 || c.asleep > 0 || c.cageOf){ c.ffCounters = 0; continue; }
+        if(c.stunned || c.frozen > 0 || dozing(c) || c.cageOf){ c.ffCounters = 0; continue; }
         if(recordEvents && events) events.push({type:'fastForward', side:sideOf(pid), defId:c.defId, uid:c.uid, n:c.ffCounters});
         while(c.ffCounters > 0 && c.hp > 0){
           c.ffCounters -= 1;
@@ -9742,7 +9745,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.reloadRemaining>0){ skipTurn('reload', card, ownId); handledUids.add(uid); return; }
             if(card.stunned){ skipTurn('stunned', card, ownId); handledUids.add(uid); return; }
             if(card.frozen>0){ if(!frozeNoted.has(uid)){ frozeNoted.add(uid); skipTurn('frozen', card, ownId); } card._frozenJustSet = false; handledUids.add(uid); return; } // 2026-10-19 (FZ): a freeze laid this round before it acted is spent now, see the loop below
-            if(card.asleep>0){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
+            if(dozing(card)){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
             // Bound (2026-10-16): was "can't attack"; ENG9 (2026-10-26, OWN-Q1): it swings at half damage (computeHitDamage) and can't move.
@@ -9772,7 +9775,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(((CARD_DEFS[c.defId]||{}).effects||{}).counterattack) return false;
       if(c.stunned){ skipTurn('stunned', c, ownId); return false; }
       if(c.frozen>0){ if(!frozeNoted.has(c.uid)){ frozeNoted.add(c.uid); skipTurn('frozen', c, ownId); } c._frozenJustSet = false; return false; }
-      if(c.asleep>0){ skipTurn('asleep', c, ownId); return false; }
+      if(dozing(c)){ skipTurn('asleep', c, ownId); return false; }
       // 2026-10-19 (package RR): the Wait that runs out on its action makes it Ready as at the front: the round's upkeep gives it its
       // 'ready' and its On Ready skills (endOfRoundUpkeep's readyNow, _rowReadyNow); a Boomerang it caught this round was its action.
       if(c.wait > 0){ c.wait -= 1; if(c.wait === 0) c._rowReadyNow = true; return false; }
@@ -9800,7 +9803,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // stunned, frozen, chained or turned to stone (a Sleep on hit, a Spore Cloud, a stun) loses its swing now; it used to keep its place
       // in the pool and swing anyway.
       poolMeta.forEach((meta, uid)=>{ const c = meta.att; if(!c || !(c.hp > 0)) return;
-        const why = c.asleep > 0 ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : null;
+        const why = dozing(c) ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : null;
         if(!why) return; poolMeta.delete(uid); handledUids.add(uid);
         if(why === 'frozen'){ if(!frozeNoted.has(uid)){ frozeNoted.add(uid); skipTurn('frozen', c, meta.attId); } c._frozenJustSet = false; } else skipTurn(why, c, meta.attId); });
       const candidates = [];
