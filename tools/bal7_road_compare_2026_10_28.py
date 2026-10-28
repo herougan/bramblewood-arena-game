@@ -6,6 +6,9 @@ import json, os, statistics, re
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 rd = lambda t: [json.loads(l) for l in open(os.path.join(ROOT, 'docs/balance/skirmish-pass-%s.jsonl' % t)) if l.strip()]
 B = {r['key']: r for r in rd('bal7-k14-before')}; A = {r['key']: r for r in rd('bal7-k14-after')}
+# the same K14 decks with the cards before M1 (M1's own effect on the road), and the final road: K14 decks, M1 cards, the Map reference decks
+# rebuilt after M1 (skirmish_pass.js decks --keep)
+P0 = {r['key']: r for r in rd('bal7-k14-after-prem1')}; F = {r['key']: r for r in rd('bal7-final')}
 plan = {r['key']: r for r in json.load(open(os.path.join(ROOT, 'docs/balance/bal7-k14-plan-2026-10-28.json')))['rows']}
 def summ(D, keys):
     rows = [D[k] for k in keys if k in D]
@@ -23,20 +26,20 @@ SCORCH_RE = re.compile(r'^(14-5|14-7|18-7|18-A-\d+|11-UC.*)$')
 def check(sel):
     out = []
     for k in keys:
-        r = A[k]
+        r = F[k]
         if not sel(r): continue
-        out.append({'key': k, 'name': r['name'], 'map': r['mapName'], 'before': B[k]['win'], 'after': r['win'], 'target': r.get('target'), 'lo': r.get('lo'), 'hi': r.get('hi'), 'green': r.get('green'),
+        out.append({'key': k, 'name': r['name'], 'map': r['mapName'], 'before': B[k]['win'], 'after': A[k]['win'], 'final': r['win'], 'target': r.get('target'), 'lo': r.get('lo'), 'hi': r.get('hi'), 'green': r.get('green'),
                     'gap': None if r.get('target') is None else round(r['win'] - r['target'], 1)})
     return out
 caves = check(lambda r: r['map'] in CAVE_MAPS)
 scorch = check(lambda r: bool(SCORCH_RE.match(r['key'])))
-out = {'_about': 'BAL7 (2026-10-28): the road before -> after K14 (map reference, 40 games a fight, seeds 9100 + 37g); ENG11-4 cave and Scorching check on the after run',
-       'before': summ(B, keys), 'after': summ(A, keys), 'changedFights': {'before': summ(B, changed), 'after': summ(A, changed)}, 'moved': moved, 'eng11_4': {'caves': caves, 'scorching': scorch}}
+out = {'_about': 'BAL7 (2026-10-28): the road before -> after K14 (map reference, 40 games a fight, seeds 9100 + 37g; both with the M1 cards and the old reference decks), M1 alone (the K14 decks with the pre-M1 cards), and the final road (reference decks rebuilt after M1); ENG11-4 cave and Scorching check on the final run (before / after = the K14 pair)',
+       'before': summ(B, keys), 'after': summ(A, keys), 'afterPreM1': summ(P0, keys), 'final': summ(F, keys), 'changedFights': {'before': summ(B, changed), 'after': summ(A, changed)}, 'moved': moved, 'eng11_4': {'caves': caves, 'scorching': scorch}}
 json.dump(out, open(os.path.join(ROOT, 'docs/balance/bal7-road-2026-10-28.json'), 'w'), indent=1)
-print('all fights', out['before'], '->', out['after'])
+print('all fights', out['before'], '->', out['after']); print('K14 decks, pre-M1 cards', out['afterPreM1']); print('final (rebuilt reference)', out['final'])
 print('K14 fights', out['changedFights']['before'], '->', out['changedFights']['after'])
 print('most moved:')
 for m in moved[:15]: print('  %-8s %-26s %5.1f -> %5.1f (%+5.1f) target %s %s -> %s, %d copies' % (m['key'], m['name'][:26], m['before'], m['after'], m['delta'], m['target'], m['greenBefore'], m['greenAfter'], m['copiesMoved']))
 for nm, L in [('caves', caves), ('scorching', scorch)]:
     print(nm, len(L))
-    for r in L: print('  %-9s %-26s %5.1f -> %5.1f target %s [%s-%s] %s gap %s' % (r['key'], r['name'][:26], r['before'], r['after'], r['target'], r['lo'], r['hi'], r['green'], r['gap']))
+    for r in L: print('  %-9s %-26s %5.1f -> %5.1f, final %5.1f target %s [%s-%s] %s gap %s' % (r['key'], r['name'][:26], r['before'], r['after'], r['final'], r['target'], r['lo'], r['hi'], r['green'], r['gap']))

@@ -1,5 +1,5 @@
 {
- "_about": "BAL7 (2026-10-28): the road before -> after K14 (map reference, 40 games a fight, seeds 9100 + 37g); ENG11-4 cave and Scorching check on the after run",
+ "_about": "BAL7 (2026-10-28): the road before -> after K14 (map reference, 40 games a fight, seeds 9100 + 37g; both with the M1 cards and the old reference decks), M1 alone (the K14 decks with the pre-M1 cards), and the final road (reference decks rebuilt after M1); ENG11-4 cave and Scorching check on the final run (before / after = the K14 pair)",
  "before": {
   "fights": 275,
   "meanWin": 43.4,
@@ -15,6 +15,22 @@
   "green": 37,
   "tooEasy": 33,
   "tooHard": 186
+ },
+ "afterPreM1": {
+  "fights": 275,
+  "meanWin": 61.5,
+  "curveFights": 256,
+  "green": 79,
+  "tooEasy": 65,
+  "tooHard": 112
+ },
+ "final": {
+  "fights": 275,
+  "meanWin": 61.7,
+  "curveFights": 256,
+  "green": 57,
+  "tooEasy": 83,
+  "tooHard": 116
  },
  "changedFights": {
   "before": {
@@ -2186,11 +2202,12 @@
     "map": "Caves & Alcoves",
     "before": 65,
     "after": 65,
+    "final": 42.5,
     "target": 90,
     "lo": 82,
     "hi": 98,
     "green": "hard",
-    "gap": -25
+    "gap": -47.5
    },
    {
     "key": "8-2",
@@ -2198,11 +2215,12 @@
     "map": "Caves & Alcoves",
     "before": 65,
     "after": 65,
+    "final": 67.5,
     "target": 85,
     "lo": 77,
     "hi": 93,
     "green": "hard",
-    "gap": -20
+    "gap": -17.5
    },
    {
     "key": "8-3",
@@ -2210,11 +2228,12 @@
     "map": "Caves & Alcoves",
     "before": 32.5,
     "after": 32.5,
+    "final": 55,
     "target": 80,
     "lo": 72,
     "hi": 88,
     "green": "hard",
-    "gap": -47.5
+    "gap": -25
    },
    {
     "key": "8-4",
@@ -2222,11 +2241,12 @@
     "map": "Caves & Alcoves",
     "before": 22.5,
     "after": 22.5,
+    "final": 30,
     "target": 75,
     "lo": 67,
     "hi": 83,
     "green": "hard",
-    "gap": -52.5
+    "gap": -45
    },
    {
     "key": "8-5",
@@ -2234,11 +2254,12 @@
     "map": "Caves & Alcoves",
     "before": 37.5,
     "after": 37.5,
+    "final": 17.5,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -22.5
+    "gap": -42.5
    },
    {
     "key": "8-6",
@@ -2246,11 +2267,12 @@
     "map": "Caves & Alcoves",
     "before": 12.5,
     "after": 12.5,
+    "final": 20,
     "target": 65,
     "lo": 57,
     "hi": 73,
     "green": "hard",
-    "gap": -52.5
+    "gap": -45
    },
    {
     "key": "8-7",
@@ -2258,11 +2280,12 @@
     "map": "Caves & Alcoves",
     "before": 20,
     "after": 20,
+    "final": 7.5,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -40
+    "gap": -52.5
    },
    {
     "key": "8-8",
@@ -2270,11 +2293,12 @@
     "map": "Caves & Alcoves",
     "before": 57.5,
     "after": 57.5,
+    "final": 62.5,
     "target": 40,
     "lo": 30,
     "hi": 49,
     "green": "easy",
-    "gap": 17.5
+    "gap": 22.5
    },
    {
     "key": "10-A-1",
@@ -2282,11 +2306,12 @@
     "map": "The Sunken Depths",
     "before": 90,
     "after": 90,
+    "final": 60,
     "target": 90,
     "lo": 82,
     "hi": 98,
-    "green": "green",
-    "gap": 0
+    "green": "hard",
+    "gap": -30
    },
    {
     "key": "10-A-2",
@@ -2294,11 +2319,12 @@
     "map": "The Sunken Depths",
     "before": 37.5,
     "after": 62.5,
+    "final": 20,
     "target": 70,
     "lo": 62,
     "hi": 78,
-    "green": "green",
-    "gap": -7.5
+    "green": "hard",
+    "gap": -50
    },
    {
     "key": "10-A-3",
@@ -2306,11 +2332,12 @@
     "map": "The Sunken Depths",
     "before": 70,
     "after": 72.5,
+    "final": 22.5,
     "target": 70,
     "lo": 62,
     "hi": 78,
-    "green": "green",
-    "gap": 2.5
+    "green": "hard",
+    "gap": -47.5
    },
    {
     "key": "10-A-4",
@@ -2318,11 +2345,12 @@
     "map": "The Sunken Depths",
     "before": 55,
     "after": 50,
+    "final": 15,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -10
+    "gap": -45
    },
    {
     "key": "10-A-5",
@@ -2330,11 +2358,12 @@
     "map": "The Sunken Depths",
     "before": 20,
     "after": 27.5,
+    "final": 0,
     "target": 40,
     "lo": 30,
     "hi": 49,
     "green": "hard",
-    "gap": -12.5
+    "gap": -40
    },
    {
     "key": "2-B-1",
@@ -2342,11 +2371,12 @@
     "map": "Smugglers' Grotto",
     "before": 62.5,
     "after": 55,
+    "final": 52.5,
     "target": 90,
     "lo": 82,
     "hi": 98,
     "green": "hard",
-    "gap": -35
+    "gap": -37.5
    },
    {
     "key": "2-B-2",
@@ -2354,11 +2384,12 @@
     "map": "Smugglers' Grotto",
     "before": 70,
     "after": 65,
+    "final": 62.5,
     "target": 75,
     "lo": 67,
     "hi": 83,
     "green": "hard",
-    "gap": -10
+    "gap": -12.5
    },
    {
     "key": "2-B-3",
@@ -2366,11 +2397,12 @@
     "map": "Smugglers' Grotto",
     "before": 87.5,
     "after": 92.5,
+    "final": 80,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "easy",
-    "gap": 32.5
+    "gap": 20
    },
    {
     "key": "2-B-4",
@@ -2378,11 +2410,12 @@
     "map": "Smugglers' Grotto",
     "before": 100,
     "after": 95,
+    "final": 87.5,
     "target": 40,
     "lo": 30,
     "hi": 49,
     "green": "easy",
-    "gap": 55
+    "gap": 47.5
    },
    {
     "key": "7-A-2",
@@ -2390,11 +2423,12 @@
     "map": "The Mycelium Deep",
     "before": 50,
     "after": 52.5,
+    "final": 32.5,
     "target": 70,
     "lo": 62,
     "hi": 78,
     "green": "hard",
-    "gap": -17.5
+    "gap": -37.5
    },
    {
     "key": "7-A-1",
@@ -2402,11 +2436,12 @@
     "map": "The Mycelium Deep",
     "before": 97.5,
     "after": 85,
+    "final": 50,
     "target": 90,
     "lo": 82,
     "hi": 98,
-    "green": "green",
-    "gap": -5
+    "green": "hard",
+    "gap": -40
    },
    {
     "key": "7-A-4",
@@ -2414,11 +2449,12 @@
     "map": "The Mycelium Deep",
     "before": 27.5,
     "after": 25,
+    "final": 17.5,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -35
+    "gap": -42.5
    },
    {
     "key": "7-A-3",
@@ -2426,11 +2462,12 @@
     "map": "The Mycelium Deep",
     "before": 32.5,
     "after": 25,
+    "final": 32.5,
     "target": 70,
     "lo": 62,
     "hi": 78,
     "green": "hard",
-    "gap": -45
+    "gap": -37.5
    },
    {
     "key": "7-A-5",
@@ -2438,11 +2475,12 @@
     "map": "The Mycelium Deep",
     "before": 27.5,
     "after": 15,
+    "final": 20,
     "target": 40,
     "lo": 30,
     "hi": 49,
     "green": "hard",
-    "gap": -25
+    "gap": -20
    }
   ],
   "scorching": [
@@ -2452,11 +2490,12 @@
     "map": "Savanna Reaches",
     "before": 10,
     "after": 10,
+    "final": 52.5,
     "target": 70,
     "lo": 62,
     "hi": 78,
     "green": "hard",
-    "gap": -60
+    "gap": -17.5
    },
    {
     "key": "14-7",
@@ -2464,11 +2503,12 @@
     "map": "Savanna Reaches",
     "before": 2.5,
     "after": 2.5,
+    "final": 25,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -57.5
+    "gap": -35
    },
    {
     "key": "18-7",
@@ -2476,11 +2516,12 @@
     "map": "The Glass Dunes",
     "before": 2.5,
     "after": 2.5,
+    "final": 70,
     "target": 40,
     "lo": 30,
     "hi": 49,
-    "green": "hard",
-    "gap": -37.5
+    "green": "easy",
+    "gap": 30
    },
    {
     "key": "18-A-2",
@@ -2488,11 +2529,12 @@
     "map": "The Pale Desert",
     "before": 5,
     "after": 2.5,
+    "final": 40,
     "target": 85.7,
     "lo": 77.7,
     "hi": 93.7,
     "green": "hard",
-    "gap": -83.2
+    "gap": -45.7
    },
    {
     "key": "18-A-1",
@@ -2500,11 +2542,12 @@
     "map": "The Pale Desert",
     "before": 10,
     "after": 7.5,
+    "final": 42.5,
     "target": 90,
     "lo": 82,
     "hi": 98,
     "green": "hard",
-    "gap": -82.5
+    "gap": -47.5
    },
    {
     "key": "18-A-4",
@@ -2512,11 +2555,12 @@
     "map": "The Pale Desert",
     "before": 27.5,
     "after": 47.5,
+    "final": 35,
     "target": 77.1,
     "lo": 69.1,
     "hi": 85.1,
     "green": "hard",
-    "gap": -29.6
+    "gap": -42.1
    },
    {
     "key": "18-A-3",
@@ -2524,6 +2568,7 @@
     "map": "The Pale Desert",
     "before": 37.5,
     "after": 60,
+    "final": 60,
     "target": 71.4,
     "lo": 63.4,
     "hi": 79.4,
@@ -2536,11 +2581,12 @@
     "map": "The Pale Desert",
     "before": 0,
     "after": 2.5,
+    "final": 20,
     "target": 72.9,
     "lo": 64.9,
     "hi": 80.9,
     "green": "hard",
-    "gap": -70.4
+    "gap": -52.9
    },
    {
     "key": "18-A-6",
@@ -2548,11 +2594,12 @@
     "map": "The Pale Desert",
     "before": 27.5,
     "after": 30,
+    "final": 65,
     "target": 68.6,
     "lo": 60.6,
     "hi": 76.6,
-    "green": "hard",
-    "gap": -38.6
+    "green": "green",
+    "gap": -3.6
    },
    {
     "key": "18-A-8",
@@ -2560,11 +2607,12 @@
     "map": "The Pale Desert",
     "before": 15,
     "after": 7.5,
+    "final": 32.5,
     "target": 60,
     "lo": 52,
     "hi": 68,
     "green": "hard",
-    "gap": -52.5
+    "gap": -27.5
    },
    {
     "key": "18-A-7",
@@ -2572,11 +2620,12 @@
     "map": "The Pale Desert",
     "before": 20,
     "after": 30,
+    "final": 25,
     "target": 64.3,
     "lo": 56.3,
     "hi": 72.3,
     "green": "hard",
-    "gap": -34.3
+    "gap": -39.3
    },
    {
     "key": "18-A-9",
@@ -2584,11 +2633,12 @@
     "map": "The Pale Desert",
     "before": 2.5,
     "after": 20,
+    "final": 27.5,
     "target": 40,
     "lo": 30,
     "hi": 49,
     "green": "hard",
-    "gap": -20
+    "gap": -12.5
    },
    {
     "key": "11-UC-1",
@@ -2596,11 +2646,12 @@
     "map": "The Undercroft",
     "before": 72.5,
     "after": 72.5,
+    "final": 52.5,
     "target": 85,
     "lo": 73,
     "hi": 97,
     "green": "hard",
-    "gap": -12.5
+    "gap": -32.5
    },
    {
     "key": "11-UC-25",
@@ -2608,11 +2659,12 @@
     "map": "The Undercroft",
     "before": 45,
     "after": 57.5,
+    "final": 45,
     "target": 72.5,
     "lo": 60.5,
     "hi": 84.5,
     "green": "hard",
-    "gap": -15.0
+    "gap": -27.5
    },
    {
     "key": "11-UC-10",
@@ -2620,11 +2672,12 @@
     "map": "The Undercroft",
     "before": 60,
     "after": 60,
+    "final": 12.5,
     "target": 45,
     "lo": 33,
     "hi": 57,
-    "green": "easy",
-    "gap": 15
+    "green": "hard",
+    "gap": -32.5
    },
    {
     "key": "11-UC-50",
@@ -2632,11 +2685,12 @@
     "map": "The Undercroft",
     "before": 75,
     "after": 75,
+    "final": 57.5,
     "target": 45,
     "lo": 33,
     "hi": 57,
     "green": "easy",
-    "gap": 30
+    "gap": 12.5
    }
   ]
  }
