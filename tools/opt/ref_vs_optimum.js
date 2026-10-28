@@ -5,6 +5,8 @@
 //
 //   node tools/opt/ref_vs_optimum.js                         Maps 0-24, --ref map,ref2, 60 games a pairing
 //   node tools/opt/ref_vs_optimum.js --maps 21-24 --games 60 --resume
+//   node tools/opt/ref_vs_optimum.js --ref map,ref2,ref-pool --games 200 --out docs/balance/bal6-ref-vs-optimum-2026-10-27.json   (BAL6: + the Pool reference)
+// 2026-10-27 (package BAL6, K17): --ref takes a per-map set from docs/balance/ref/ too (ref-pool: its map's deck at referencePlayerLevel; pro_ease.refOpts).
 //
 // The optimum: optima[0] of the newest map-true run among --tags (first tag that has a file for the map wins; default the HUB7 re-run, then
 // PRO3's 10-25 run). A row says which file it came from, so a reused 10-25 deck is visible.
@@ -44,11 +46,11 @@ function optimumFor(root, no, id, tags) {
 
 async function main(argv) {
   const o = parseArgs(argv);
-  if (o.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 15).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
+  if (o.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 17).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
   const root = path.join(__dirname, '..', '..'), gm = O.loadGame(root), G = gm.G;
   const rule = JSON.parse(fs.readFileSync(path.join(root, 'canonical', 'pro-skirmishes.json'), 'utf8')).rule || {};
   const ai = rule.ai != null ? rule.ai : 1, level = rule.level != null ? rule.level : 1, tags = o.tags.split(',');
-  const refs = o.ref.split(',').filter(Boolean); refs.forEach(r => { if (!G.refSetIds().includes(r)) throw new Error('--ref: no reference set ' + r); });
+  const refs = o.ref.split(',').filter(Boolean); refs.forEach(r => { if (!E.refKnown(gm, r)) throw new Error('--ref: no reference set ' + r); }); // BAL6: a per-map set (ref-pool) too
   const outFile = path.resolve(root, o.out), prev = o.resume && fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : null;
   const done = new Map(((prev || {}).rows || []).map(r => [r.mapId + '|' + r.ref + '|' + r.games + '|' + r.optimum.file, r]));
   const rows = [], want = mapRange(o.maps), t0 = Date.now();

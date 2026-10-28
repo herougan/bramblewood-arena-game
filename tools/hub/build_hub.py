@@ -394,7 +394,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🧬', 'deckopt', 'Deck optimizer', 'The strongest deck per map, the difficulty ladder and how far each fight deck sits below it (tools/opt/deckopt.js)'),  # 2026-10-24 (owner 23:48)
   ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
   ('📖', 'doclib', 'Library', 'Every doc in docs/: canonical and reference docs to read here, dated snapshots under History'),  # 2026-10-24 (package HUB4)
-  ('🗃️', 'ctable', 'Card table', 'Every card in one sortable, filterable table (100 a page), plus the packs and the art that could wear them'),  # 2026-10-25 (package HUB5, H2 / G11)
+  ('🗃️', 'ctable', 'Card table', 'Every card in one sortable, filterable table (100 a page), the packs and the art that could wear them, and each card\'s contribution to winning (too strong / too weak flagged)'),  # 2026-10-25 (package HUB5, H2 / G11); + 🏅 Contribution (2026-10-27, BAL6)
   ('📊', 'curves', 'Curves', 'XP per level (Levels 15-25 marked), Forge and crafting costs, Energy and resource curves'),  # 2026-10-25 (package HUB5, H3)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
@@ -569,7 +569,9 @@ sys.path.insert(0, os.path.join(ROOT, 'tools', 'hub'))
 import hub5_data as H5
 _hubdir = lambda n: open(os.path.join(ROOT, 'tools', 'hub', n), encoding='utf-8').read()
 _ct = H5.card_table(ROOT, CANON, _tix)
-CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\n' + _hubdir('cardtable_tab.js'))
+# 2026-10-27 (package BAL6, K5): the Card table's 🏅 Contribution view reads the newest docs/balance/contribution-<date>.json (tools/balance/contribution.js)
+import contribution_data as CBD
+CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\nconst CT_CONTRIB = {_js(CBD.contribution(ROOT))};\n' + _hubdir('cardtable_tab.js'))
 CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css')
 DOS_JS = _hubdir('deckopt_summary.js')
 _cv = H5.curves(ROOT); _cvc = _cv['code']

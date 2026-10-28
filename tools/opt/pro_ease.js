@@ -17,7 +17,7 @@
 // with the pool facts: the map's rarity cap and its own pool size, map-true and bpro).
 'use strict';
 const path = require('path'), fs = require('fs');
-const O = require('./deckopt.js'), P = require('./pro_skirmishes.js');
+const O = require('./deckopt.js'), P = require('./pro_skirmishes.js'), RP = require('./ref_pool.js');
 const VERSION = '1.0.0 (2026-10-25, PREF)';
 const DEFAULTS = { maps: null, ref: 'map,ref2', games: 40, seed: 'pro-ease', easy: 0.85, tag: null, resume: false, root: null, quiet: false };
 function parseArgs(argv) {
@@ -38,11 +38,19 @@ const r3 = x => Math.round(x * 1000) / 1000;
 // the PRO fight as the game builds it (arena_app.js proNodeOf): pro_skirmishes.proNode plus the CPU skill the PRO rule names
 function gameProNode(gm, map, entry, ent, ai) { const n = P.proNode(gm, map, entry, ent.field || {}); n.ai = ['basic', 'smart', 'smartest'][ai] || 'smart'; if ((entry.leaders || [])[0]) n.showcase = entry.leaders[0]; return n; }
 
+// 2026-10-27 (package BAL6, K17): a per-map set from docs/balance/ref/ (the Pool reference, ref-pool) is not baked into the game: its map's deck
+// goes in as opts.deck, which the game plays at referencePlayerLevel (the Map reference's level), as the set says
+function refOpts(gm, map, node, refSet, seed0) {
+  const set = RP.toolSetIds(gm.root).includes(refSet) ? RP.loadSet(gm.root, refSet) : null;
+  if (!set) return { refSet, seed0 };
+  return { deck: RP.deckFor(set, gm.G.referenceDeckFor(map.id, node).mapNo), seed0 };
+}
+function refKnown(gm, r) { return gm.G.refSetIds().includes(r) || RP.toolSetIds(gm.root).includes(r); }
 function measurePair(gm, map, node, refSet, games, seed0) {
-  const G = gm.G, ctx = G.referenceFightSetup(map.id, node, { refSet, seed0 });
+  const G = gm.G, ctx = G.referenceFightSetup(map.id, node, refOpts(gm, map, node, refSet, seed0));
   let w = 0, l = 0;
   for (let g = 0; g < games; g++) { const r = G.playReferenceGame(ctx, g); if (r.win) w++; else if (r.loss) l++; }
-  return { wins: w, losses: l, draws: games - w - l, n: games, win: r3(w / games), ci: O.wilson(w / games, games).map(r3), stage: ctx.ref.stage, level: ctx.ref.level, deckMap: ctx.ref.deckMap, cpu: ctx.cpu };
+  return { wins: w, losses: l, draws: games - w - l, n: games, win: r3(w / games), ci: O.wilson(w / games, games).map(r3), stage: ctx.ref.stage === 'trial' ? 'ref:' + refSet : ctx.ref.stage, level: ctx.ref.level, deckMap: ctx.ref.deckMap, cpu: ctx.cpu };
 }
 
 async function main(argv) {
@@ -50,7 +58,7 @@ async function main(argv) {
   if (o.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 19).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
   const root = o.root || path.join(__dirname, '..', '..'), gm = O.loadGame(root), G = gm.G;
   const data = JSON.parse(fs.readFileSync(path.join(root, 'canonical', 'pro-skirmishes.json'), 'utf8')), ai = (data.rule || {}).ai != null ? data.rule.ai : 1;
-  const refs = String(o.ref).split(',').filter(Boolean); refs.forEach(r => { if (!G.refSetIds().includes(r)) throw new Error('--ref: no reference set ' + r + ' (known: ' + G.refSetIds().join(', ') + ')'); });
+  const refs = String(o.ref).split(',').filter(Boolean); refs.forEach(r => { if (!refKnown(gm, r)) throw new Error('--ref: no reference set ' + r + ' (known: ' + G.refSetIds().concat(RP.toolSetIds(root)).join(', ') + ')'); });
   const want = mapRange(o.maps), tag = o.tag || new Date().toISOString().slice(0, 10);
   const outFile = path.join(root, 'docs', 'balance', 'pro-ease-' + tag + '.json');
   const prev = o.resume && fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : null, done = new Map(((prev || {}).rows || []).map(r => [r.id + '|' + r.ref + '|' + r.games, r]));
@@ -79,4 +87,4 @@ async function main(argv) {
   log(`done: ${rows.length} pairings, ${Math.round((Date.now() - t0) / 1000)} s -> ${path.relative(root, outFile)}`);
 }
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { VERSION, parseArgs, gameProNode, measurePair, main };
+module.exports = { VERSION, parseArgs, gameProNode, measurePair, refOpts, refKnown, main };

@@ -76,6 +76,10 @@ def _tile(label, value, sub):
 # win rate against that map's optimum (tools/opt/ref_vs_optimum.js). The colour steps are the owner's tolerance widths (DF-1b: 5 / 10 / 15 / 20
 # points) around an even fight, 50%: red = the reference loses (hard), green = it wins (easy).
 HUB7 = 'docs/balance/hub7-ref-vs-optimum-2026-10-27.json'
+# 2026-10-27 (package BAL6, K17): the heatmap re-measured with the Pool reference (ref-pool: per map the optimizer's best deck from the cards a
+# player holds by then) as a third row; the newer file wins when it exists.
+BAL6 = 'docs/balance/bal6-ref-vs-optimum-2026-10-27.json'
+REF_LABEL = {'map': 'Map reference', 'ref2': 'Reference-2', 'ref-pool': 'Pool reference', 'ref3': 'Reference-3'}
 HM_STEPS = [  # (upper bound of the win rate in %, css class, legend label)
     (30, 'hm0', 'under 30%'), (35, 'hm1', '30-35'), (40, 'hm2', '35-40'), (45, 'hm3', '40-45'), (55, 'hm4', '45-55'),
     (60, 'hm5', '55-60'), (65, 'hm6', '60-65'), (70, 'hm7', '65-70'), (101, 'hm8', '70% and up')]
@@ -88,24 +92,37 @@ def _hm_cls(p):
 
 
 def heatmap_html(root, names):
-    fp = os.path.join(root, HUB7)
+    src_file = BAL6 if os.path.exists(os.path.join(root, BAL6)) else HUB7
+    fp = os.path.join(root, src_file)
     if not os.path.exists(fp):
         return ''
-    d = _js(root, HUB7)
+    d = _js(root, src_file)
     rows = d['rows']
     maps = sorted({(r['map'], r['mapId'], r['name']) for r in rows})
     by = {(r['ref'], r['map']): r for r in rows}
-    refs = [('map', 'Map reference'), ('ref2', 'Reference-2'), ('ref3', 'Reference-3')]
+    refs = [(k, REF_LABEL[k]) for k in ('map', 'ref2', 'ref-pool', 'ref3') if k == 'ref3' or any(r['ref'] == k for r in rows)]
     reused = sorted({r['map'] for r in rows if '2026-10-25' in r['optimum']['tag']})
+
+    pool = None
+    pf = os.path.join(root, 'docs', 'balance', 'ref', 'ref-pool.json')
+    if os.path.exists(pf):
+        pool = json.load(open(pf, encoding='utf-8'))
+
+    def pool_deck(r):
+        if not pool:
+            return ''
+        ks = sorted(int(k) for k in pool['decks'] if int(k) <= r['map'])
+        dk = pool['decks'][str(ks[-1])] if ks else {}
+        return ', '.join(f'{names.get(c, c)} x{n}' for c, n in sorted(dk.items(), key=lambda kv: (-kv[1], names.get(kv[0], kv[0]))))
 
     def tip(r):
         o = r['optimum']
         cards = ', '.join(f'{names.get(c, c)} &times;{n}' for c, n in sorted(o['deck'].items(), key=lambda kv: (-kv[1], names.get(kv[0], kv[0]))))
         lead = ('; leader ' + e(names.get(o['leaders'][0], o['leaders'][0]))) if o.get('leaders') else ''
         src = 're-run 2026-10-27 (HUB7)' if '2026-10-27' in o['tag'] else 'reused from 2026-10-25 (PRO3)'
-        return (f'<b>Map {r["map"]}: {e(r["name"])}</b><br>{"Map reference" if r["ref"] == "map" else "Reference-2"} won <b>{r["wins"]} of {r["n"]}</b> '
+        return (f'<b>Map {r["map"]}: {e(r["name"])}</b><br>{REF_LABEL.get(r["ref"], r["ref"])} won <b>{r["wins"]} of {r["n"]}</b> '
                 f'({pc(100 * r["win"])}; 95% {round(100 * r["ci"][0])}-{round(100 * r["ci"][1])}%), lost {r["losses"]}, drew {r["draws"]}. '
-                f'Reference at Level {r["level"]:g}.<br><b>Optimum</b> ({src}, gauntlet {pc(100 * o["score"])}{lead}): {cards}')
+                f'Reference at Level {r["level"]:g}.' + (f' Pool reference deck: {e(pool_deck(r))}.' if r['ref'] == 'ref-pool' else '') + '<br><b>Optimum</b> ({src}, gauntlet {pc(100 * o["score"])}{lead}): {cards}')
 
     head = '<th scope="col" class="hm-rowh">Reference deck</th>' + ''.join(f'<th scope="col" title="{e(nm)}">{n}</th>' for n, _, nm in maps) + '<th scope="col" class="hm-mean">Mean</th>'
     body = []
@@ -138,7 +155,8 @@ def heatmap_html(root, names):
         '<p class="dos-src">Steps: the owner\'s tolerance widths (DF-1b: 5 / 10 / 15 / 20 points) around an even fight (50%). '
         f'{g} games a cell (one cell is about &plusmn;{round(98 / math.sqrt(g))} points at 95%). The reference at its scheduled level with no leader; the optimum at the PRO rule (Level 1, CPU Smart, its showcase leader from Map 2, the map\'s average field). '
         'Optimum: <code>tools/opt/deckopt.js</code> map-true, faction cards out, budget 16,000.' + note_reuse + ' Reference-3 waits for its deck (REF-3). '
-        f'Source: <code>{HUB7}</code> (<code>tools/opt/ref_vs_optimum.js</code>, generated {e(d["generated"][:16].replace("T", " "))} UTC).</p></section>')
+        + (' <b>Pool reference</b> (BAL6, owner K17): per map the optimizer\'s best deck from what a player holds by then (starter, earlier maps\' first-clear cards, faction rewards, 5 random pack Commons a map; <code>docs/balance/ref/ref-pool.json</code>), at the Map reference\'s level. ' if any(r['ref'] == 'ref-pool' for r in rows) else '')
+        + f'Source: <code>{src_file}</code> (<code>tools/opt/ref_vs_optimum.js</code>, generated {e(d["generated"][:16].replace("T", " "))} UTC).</p></section>')
 
 
 def summary_html(root, canon, tix, cols, rows):
