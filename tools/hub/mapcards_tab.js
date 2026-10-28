@@ -22,9 +22,11 @@
   const st = {q: '', f: 'all', side: 'all', open: null, view: 'current'};
   // 2026-10-28 (package THEME1, owner's plan steps 1-2): the Proposal view: each map's proposed list (unique + carried) beside its current list,
   // added / cut / moved marked; D.proposal comes from docs/balance/theme1-proposal-2026-10-28.json (a proposal, nothing applied).
+  // 2026-10-28 (package THEME2, owner 22:47): it now reads docs/balance/theme2-proposal-2026-10-28.json (main 8-11 + 4-5, submaps 1-3 + 10+);
+  // a cut card is "carried elsewhere" or "on no list" (no pack-only / no-home calls), and the summary lists cards on no list per old pack.
   const PR = D.proposal || null;
   const mname = k=> { const m = D.lists.find(x=> x.key === k); return m ? m.name : k; };
-  const dest = to=> to.kind === 'map' ? `→ ${esc(to.name)} (Map ${to.no})` : to.kind === 'pack' ? `pack only (Pack ${esc(to.tier)})` : to.kind === 'base' ? 'Base card' : to.kind === 'none' ? 'no home yet' : `own source (${esc(to.source)})`;
+  const dest = to=> to.kind === 'map' ? `→ ${esc(to.name)} (Map ${to.no})` : to.kind === 'base' ? 'Base card' : to.kind === 'carried' ? 'carried elsewhere' : 'on no list';
   const tags = r=> (r.g && r.g.length ? `<span class="mc-tag" title="cost generator: ${esc(r.g.join(', '))}">${r.g.map(g=> ({lumber:'🪵', stone:'🪨', metal:'🔩'})[g] || g).join('')}</span>` : '') + (r.h ? `<span class="mc-tag" title="high cost">💰${r.c}</span>` : '');
   function propHead(m){
     const p = PR.lists[m.key];
@@ -103,20 +105,18 @@
   }
   function propSumHTML(){
     const T = PR.totals;
-    const pk = PR.packs.map(p=> `<tr><td><b>${esc(p.name)}</b><br><small>${esc(p.maps || 'no maps')}</small></td><td class="mc-n">${p.cards}</td><td class="mc-n">${p.listedNow}</td><td class="mc-n">${p.unique}</td><td class="mc-n">${p.carriedOnly}</td><td class="mc-n ${p.packOnly ? 'mc-over' : ''}">${p.packOnly}</td></tr>`).join('');
+    const pk = PR.packs.map(p=> `<tr><td><b>${esc(p.name)}</b><br><small>${esc(p.maps || 'no maps')}</small></td><td class="mc-n">${p.cards}</td><td class="mc-n">${p.listedNow}</td><td class="mc-n">${p.unique}</td><td class="mc-n">${p.carriedOnly}</td><td class="mc-n">${p.offList}</td></tr>`).join('');
     const sc = (PR.sideClasses || []).map(x=> `<tr><td>${esc(x.name)}</td><td>${x.class === 'ask' ? '<b class="mc-over">Ask owner</b>' : x.class === 'delve' ? 'Full delve' : 'Additional challenges'}</td><td class="mc-n">${x.unique}</td><td>${esc(x.reason)}</td></tr>`).join('');
-    const po = PR.packs.filter(p=> p.packOnlyIds && p.packOnlyIds.length).map(p=> `<details class="mc-none"><summary>${esc(p.name)}: ${p.packOnly} pack only</summary><p class="mc-names">${p.packOnlyIds.map(i=> `<span class="mc-nn">${name(i)} ${rtx(CD[i] ? CD[i].r : '')}</span>`).join(' ')}</p></details>`).join('');
+    const po = PR.packs.filter(p=> p.offListIds && p.offListIds.length).map(p=> `<details class="mc-none"><summary>${esc(p.name)}: ${p.offList} on no list</summary><p class="mc-names">${p.offListIds.map(i=> `<span class="mc-nn">${name(i)} ${rtx(CD[i] ? CD[i].r : '')}</span>`).join(' ')}</p></details>`).join('');
     return `<div class="mc-stats">`
       + `<div class="mc-stat"><b>${T.entriesNow} → ${T.entriesProposed}</b><span>list entries</span><small>${T.lists} lists (the tutorial and endless dungeons kept)</small></div>`
       + `<div class="mc-stat"><b>${T.uniqueNow} → ${T.onAnyList}</b><span>different cards on a list</span><small>${T.uniqueProposed} with a unique home, ${T.rewards} of them skirmish rewards</small></div>`
-      + `<div class="mc-stat mc-plan"><b>${T.packOnly}</b><span>pack cards become pack only</span><small>Packs 1-4; ${T.packOnlyAll} with the faction pool and Mystery Booster</small></div>`
-      + `<div class="mc-stat"><b>${T.noHome}</b><span>creatures with no home yet</span><small>no source, on no list</small></div>`
+      + `<div class="mc-stat"><b>${T.offList}</b><span>cards on no list</span><small>${T.offListPacks} from Packs 1-4; the rest faction pool, Mystery Booster, no-source creatures</small></div>`
       + `<div class="mc-stat"><b>${T.moved}</b><span>cards moved to a better map</span><small>${T.swaps} swaps for the cost mix</small></div></div>`
-      + `<div class="mc-wrap"><table class="mc-t2 mc-pk"><thead><tr><th>Pack</th><th>Cards</th><th>On a list now</th><th>Unique on a map (proposed)</th><th>Carried only</th><th>Pack only</th></tr></thead><tbody>${pk}</tbody></table></div>`
+      + `<div class="mc-wrap"><table class="mc-t2 mc-pk"><thead><tr><th>Old pack</th><th>Cards</th><th>On a list now</th><th>Unique on a map (proposed)</th><th>Carried only</th><th>On no list</th></tr></thead><tbody>${pk}</tbody></table></div>`
       + po
-      + `<h4 class="mc-h4">Side maps: a full delve or additional challenges (owner 10-28 21:49: 1-3 unique cards)</h4><div class="mc-wrap"><table class="mc-t2"><thead><tr><th>Side map</th><th>Call</th><th>Unique</th><th>Why</th></tr></thead><tbody>${sc}</tbody></table></div>`
-      + `<details class="mc-none"><summary>${T.noHome} creatures with no home yet</summary><p class="mc-names">${PR.noHome.map(i=> `<span class="mc-nn">${name(i)} ${rtx(CD[i] ? CD[i].r : '')}</span>`).join(' ')}</p></details>`
-      + `<p class="mc-note">A proposal for decision THEME1-1, built ${esc(PR.built)} by <code>tools/theme1_proposal_2026_10_28.py</code>; the readable version is <code>docs/balance/theme1-proposal-2026-10-28.md</code>. Nothing in <code>canonical/</code> changed.</p>`;
+      + `<h4 class="mc-h4">Submaps: a full delve or additional challenges (owner 10-28: 1-3 unique + 10 or more carried, 11-14 in all)</h4><div class="mc-wrap"><table class="mc-t2"><thead><tr><th>Submap</th><th>Call</th><th>Unique</th><th>Why</th></tr></thead><tbody>${sc}</tbody></table></div>`
+      + `<p class="mc-note">A proposal for decision THEME1-1, built ${esc(PR.built)} by <code>tools/theme2_proposal_2026_10_28.py</code> (THEME2: main maps 8-11 unique + 4-5 carried, 12-16; submaps 1-3 + 10 or more, 11-14); the readable version is <code>docs/balance/theme2-proposal-2026-10-28.md</code>. THEME1's version stays as history. Nothing in <code>canonical/</code> changed.</p>`;
   }
   function renderMaps(){
     const list = D.lists.filter(visible);
@@ -157,7 +157,7 @@
     const host = $('mcHost'); if(!host || host.dataset.built) return; host.dataset.built = '1';
     const oddMaps = D.lists.filter(hasOdd).length;
     host.innerHTML = `<div class="dec-head"><h2>Map cards</h2><p>The card list of each map (<code>canonical/map-pools.json</code>) in road order, a side map at the number it opens on. Each card shows its rarity, pack and role (<b>new</b> to this map, <b>carried</b> from an earlier map, <b>Base</b>, <b>reward</b>, <b>showcase</b>, first-clear pack). The cap is the CONTENT4 L7 proposal (new 7, carried 3 before Map 10 and 5 after), not applied yet. The rarity cap is the game's own (<code>roadRarityCap</code>). Chips mark oddities: <span class="mc-chip mc-hi mc-sm">serious</span> <span class="mc-chip mc-warn mc-sm">worth a look</span> <span class="mc-chip mc-info mc-sm">for information</span>. Theme misfits are only <i>possible</i>: the card's biomes (<code>unit-themes.json</code>) share nothing with the map's biome or its neighbours. Fights read from <code>docs/balance/decks.json</code>${D.decksDate ? ' (exported ' + esc(D.decksDate) + ')' : ''}. Built ${esc(D.built)}.</p></div>`
-      + (PR ? `<details class="mc-sum mc-psum" open hidden><summary><b>🧭 THEME1 proposal: unique cards, the 8-11 cut, the mix</b> <small>steps 1 and 2 of the owner's plan; nothing applied</small></summary>${propSumHTML()}</details>` : '')
+      + (PR ? `<details class="mc-sum mc-psum" open hidden><summary><b>🧭 THEME2 proposal: unique cards, 12-16 per map (11-14 per submap), the mix</b> <small>steps 1 and 2 of the owner's plan; nothing applied</small></summary>${propSumHTML()}</details>` : '')
       + `<details class="mc-sum mc-csum" open><summary><b>📦 Packs against the map lists</b> <small>pack sizes, the unique card total, and what a trim would do</small></summary>${packsHTML()}</details>`
       + `<div class="mc-bar">${PR ? `<div class="dec-seg" role="group" aria-label="View" id="mcV"><button type="button" data-v="current" aria-pressed="true">Current</button><button type="button" data-v="proposal" aria-pressed="false">Proposal</button></div>` : ''}<div class="dec-seg" role="group" aria-label="Show" id="mcF"><button type="button" data-f="all" aria-pressed="true">All maps</button><button type="button" data-f="odd" aria-pressed="false">With oddities (${oddMaps})</button><button type="button" data-f="rar" aria-pressed="false">Rarity</button><button type="button" data-f="size" aria-pressed="false">Size</button><button type="button" data-f="sel" aria-pressed="false">Selection</button></div>`
       + `<div class="dec-seg" role="group" aria-label="Kind of map" id="mcS"><button type="button" data-s="all" aria-pressed="true">Main + side</button><button type="button" data-s="main" aria-pressed="false">Main</button><button type="button" data-s="side" aria-pressed="false">Side</button></div>`
