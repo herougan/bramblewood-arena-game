@@ -69,7 +69,7 @@ PAIRS.forEach(([ar, tr])=>{ let decoys = [];
 PAIRS.forEach(([ar, tr])=>{
   // 2026-10-28 (RELFIX2): G2 (ENG9, 10-26): Fork strikes 2 adjacent enemies, L+C or C+R, never L+R; in every row as on the main row (was "hits L and R")
   const seen = [1, 2, 3, 4, 5, 6, 7, 8].map(seed=> hitSlots(swing('rr-fork', ar, tr, [-1, 0, 1], {seed})));
-  ok(seen.every(h=> same(h, [-1, 0]) || same(h, [0, 1])), `${tag(ar, tr)} Fork with L, C and R: C and one side, never L + R (${seen.map(h=> h.join('/')).join(' ')})`);
+  if(process.env.VERBOSE) console.log(tag(ar, tr), seen.map(h=> h.join("/")).join(" ")); ok(seen.every(h=> same(h, [-1, 0]) || same(h, [0, 1])), `${tag(ar, tr)} Fork with L, C and R: C and one side, never L + R (${seen.map(h=> h.join('/')).join(' ')})`);
   if(tr === 0 || ar === 2){ const b = swing('rr-fork', ar, tr, [0]); ok(same(hitSlots(b), [0]), `${tag(ar, tr)} Fork with C only: hits C (${hitSlots(b)})`); } });
 // ---- Trident: C full, L and R half
 PAIRS.forEach(([ar, tr])=>{ const r = swing('rr-trident', ar, tr, [-2, -1, 0, 1, 2]);
