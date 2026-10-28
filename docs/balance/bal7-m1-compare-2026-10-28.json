@@ -1,0 +1,1975 @@
+{
+ "_about": "BAL7 M1: contribution before -> after (points; vsBand = minus the band median). python3 tools/bal7_m1_compare_2026_10_28.py",
+ "confidence": {
+  "before": {
+   "reliability": 0.965,
+   "medianCI95": 1.8
+  },
+  "after": {
+   "reliability": 0.9583,
+   "medianCI95": 1.8
+  }
+ },
+ "bandMedians": {
+  "before": {
+   "starter": -0.5,
+   "common": -1.9,
+   "uncommon": -1.0,
+   "rare": 1.4,
+   "veryrare+": -0.6
+  },
+  "after": {
+   "starter": 0.5,
+   "common": -1.8,
+   "uncommon": -0.3,
+   "rare": 1.9,
+   "veryrare+": 0.0
+  }
+ },
+ "movedMeanVsBand": [
+  10.6,
+  5.0
+ ],
+ "stillOver8": [
+  "hedge-changeling",
+  "dung-beetle",
+  "ur-elk",
+  "ashbone-ghoul",
+  "tax-collector-teal",
+  "talus-pika",
+  "nutria-reedcutter",
+  "land-tiller",
+  "coral-polyp-colony",
+  "lemming-swarm",
+  "salamander-pyromancer",
+  "termite-forager",
+  "driftwood-crab",
+  "chipmunk-hoarder",
+  "petrified-tree"
+ ],
+ "overshot": [
+  "petrified-tree"
+ ],
+ "outliersAfter": {
+  "strong": 37,
+  "weak": 22
+ },
+ "outliersBefore": {
+  "strong": 68,
+  "weak": 13
+ },
+ "newOutliers": [
+  [
+   "trapdoor-spider",
+   10.8
+  ],
+  [
+   "chained-binturong",
+   -9.5
+  ],
+  [
+   "prospector-mole",
+   9.4
+  ],
+  [
+   "dolphin-knight",
+   9.3
+  ],
+  [
+   "dust-hyena",
+   9.3
+  ],
+  [
+   "slow-loris",
+   9.3
+  ],
+  [
+   "lichen-tortoise",
+   9.2
+  ],
+  [
+   "shellwright-apprentice",
+   9.2
+  ],
+  [
+   "eagle-owl-quartermaster",
+   8.9
+  ],
+  [
+   "earthworm",
+   -8.8
+  ],
+  [
+   "jaguar-stalker",
+   -8.8
+  ],
+  [
+   "squires-mount",
+   8.8
+  ],
+  [
+   "egg-scaly",
+   -8.7
+  ],
+  [
+   "malachite-golem",
+   -8.7
+  ],
+  [
+   "two-headed-calf",
+   8.7
+  ],
+  [
+   "stoat-cutthroat",
+   8.6
+  ],
+  [
+   "electric-ray",
+   8.4
+  ],
+  [
+   "obsidian-scorpion",
+   8.4
+  ],
+  [
+   "otter-shieldback",
+   8.3
+  ],
+  [
+   "stonedrop-vulture",
+   8.3
+  ],
+  [
+   "bone-diviner",
+   -8.2
+  ],
+  [
+   "glass-octopus",
+   8.2
+  ],
+  [
+   "armory",
+   -8.1
+  ],
+  [
+   "badger-berserker",
+   8.1
+  ],
+  [
+   "ember-centipede",
+   -8.1
+  ],
+  [
+   "otter-royal-guard",
+   8.1
+  ],
+  [
+   "planarian-splitter",
+   8.1
+  ],
+  [
+   "upside-down-bat",
+   8.1
+  ],
+  [
+   "alpine-marmot",
+   8.0
+  ],
+  [
+   "beetle-battering-ram",
+   8.0
+  ],
+  [
+   "firefly-swarm",
+   8.0
+  ],
+  [
+   "garden-snail",
+   -8.0
+  ]
+ ],
+ "rows": [
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/11",
+   "to": "3/7",
+   "skill": "spitfire 2 -> 1",
+   "why": null,
+   "contribution": [
+    16.9,
+    1.9
+   ],
+   "vsBand": [
+    17.9,
+    2.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "archerfish",
+   "name": "Archerfish",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/9",
+   "to": "3/6",
+   "skill": "acidBolt 2 -> 1",
+   "why": null,
+   "contribution": [
+    16.9,
+    5.2
+   ],
+   "vsBand": [
+    17.9,
+    5.5
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "hedge-changeling",
+   "name": "Hedge Changeling",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "2/10",
+   "to": "1/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    16.6,
+    9.8
+   ],
+   "vsBand": [
+    17.6,
+    10.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/7",
+   "to": "1/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    14.8,
+    6.9
+   ],
+   "vsBand": [
+    16.7,
+    8.7
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/9",
+   "to": "2/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    13.8,
+    4.4
+   ],
+   "vsBand": [
+    15.7,
+    6.2
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "ur-elk",
+   "name": "\u00dcr-Elk",
+   "rarity": "veryrare",
+   "moved": true,
+   "from": "5/16",
+   "to": "4/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    15.1,
+    8.7
+   ],
+   "vsBand": [
+    15.7,
+    8.7
+   ],
+   "ci95": [
+    1.9,
+    2.0
+   ]
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "5/9",
+   "to": "4/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    14.5,
+    2.7
+   ],
+   "vsBand": [
+    15.5,
+    2.9
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "rarity": "rare",
+   "moved": true,
+   "from": "3/10",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    16.4,
+    8.1
+   ],
+   "vsBand": [
+    14.9,
+    6.2
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "rarity": "veryrare",
+   "moved": true,
+   "from": "4/16",
+   "to": "3/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    14.1,
+    7.4
+   ],
+   "vsBand": [
+    14.7,
+    7.4
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "3/6",
+   "to": "2/4",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    13.6,
+    1.9
+   ],
+   "vsBand": [
+    14.6,
+    2.2
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "moved": true,
+   "from": "6/10",
+   "to": "4/7",
+   "skill": "twinShot 2 -> 1",
+   "why": null,
+   "contribution": [
+    16.1,
+    -0.1
+   ],
+   "vsBand": [
+    14.6,
+    -2.0
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "mire-rat",
+   "name": "Mire Rat",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/8",
+   "to": "2/6",
+   "skill": "pack 2 -> 1",
+   "why": null,
+   "contribution": [
+    11.2,
+    2.3
+   ],
+   "vsBand": [
+    13.1,
+    4.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/9",
+   "to": "2/7",
+   "skill": "remember 2 -> 1",
+   "why": null,
+   "contribution": [
+    10.7,
+    9.6
+   ],
+   "vsBand": [
+    12.6,
+    11.4
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/7",
+   "to": "3/5",
+   "skill": "predator 2 -> 1",
+   "why": null,
+   "contribution": [
+    11.4,
+    1.4
+   ],
+   "vsBand": [
+    12.4,
+    1.7
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "1/6",
+   "to": "1/4",
+   "skill": "hoard 2 -> 1",
+   "why": null,
+   "contribution": [
+    11.2,
+    10.8
+   ],
+   "vsBand": [
+    12.2,
+    11.1
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Spirit",
+   "rarity": "rare",
+   "moved": true,
+   "from": "6/6",
+   "to": "5/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    13.3,
+    8.0
+   ],
+   "vsBand": [
+    11.9,
+    6.1
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "rarity": "rare",
+   "moved": true,
+   "from": "4/13",
+   "to": "3/10",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    13.1,
+    8.7
+   ],
+   "vsBand": [
+    11.7,
+    6.8
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "talus-pika",
+   "name": "Talus Pika",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/9",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.6,
+    9.5
+   ],
+   "vsBand": [
+    11.5,
+    11.3
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/12",
+   "to": "2/9",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.6,
+    8.8
+   ],
+   "vsBand": [
+    11.5,
+    10.5
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "moved": true,
+   "from": "4/9",
+   "to": "3/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.4,
+    1.3
+   ],
+   "vsBand": [
+    11.3,
+    3.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "3/7",
+   "to": "2/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.3,
+    5.8
+   ],
+   "vsBand": [
+    11.3,
+    6.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "rarity": "epic",
+   "moved": true,
+   "from": "6/17",
+   "to": "5/13",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.7,
+    7.8
+   ],
+   "vsBand": [
+    11.2,
+    7.8
+   ],
+   "ci95": [
+    2.0,
+    2.1
+   ]
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "3/9",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.2,
+    4.5
+   ],
+   "vsBand": [
+    11.1,
+    4.8
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "land-tiller",
+   "name": "Land Tiller",
+   "rarity": "common",
+   "moved": true,
+   "from": "1/8",
+   "to": "1/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.0,
+    6.9
+   ],
+   "vsBand": [
+    10.9,
+    8.7
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "common",
+   "moved": true,
+   "from": "0/11",
+   "to": "0/9",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.0,
+    6.8
+   ],
+   "vsBand": [
+    10.9,
+    8.6
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "rarity": "common",
+   "moved": true,
+   "from": "1/5",
+   "to": "1/3",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.9,
+    7.0
+   ],
+   "vsBand": [
+    10.8,
+    8.8
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "moved": true,
+   "from": "2/18",
+   "to": "2/14",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.0,
+    9.7
+   ],
+   "vsBand": [
+    10.6,
+    9.7
+   ],
+   "ci95": [
+    2.0,
+    2.1
+   ]
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/10",
+   "to": "3/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.4,
+    0.9
+   ],
+   "vsBand": [
+    10.4,
+    1.2
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "2/5",
+   "to": "2/4",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.3,
+    5.9
+   ],
+   "vsBand": [
+    10.3,
+    6.2
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "termite-forager",
+   "name": "Termite Forager",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/6",
+   "to": "2/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.4,
+    8.5
+   ],
+   "vsBand": [
+    10.3,
+    10.2
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "moved": true,
+   "from": "5/12",
+   "to": "4/9",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    11.7,
+    2.8
+   ],
+   "vsBand": [
+    10.3,
+    0.9
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "dune-packrat",
+   "name": "Dune Packrat",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "2/14",
+   "to": "2/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.2,
+    6.4
+   ],
+   "vsBand": [
+    10.2,
+    6.7
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/7",
+   "to": "2/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.3,
+    1.3
+   ],
+   "vsBand": [
+    10.2,
+    3.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/9",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.3,
+    6.2
+   ],
+   "vsBand": [
+    10.2,
+    8.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "moved": true,
+   "from": "4/4",
+   "to": "3/3",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.1,
+    0.4
+   ],
+   "vsBand": [
+    10.0,
+    2.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/8",
+   "to": "3/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.0,
+    3.9
+   ],
+   "vsBand": [
+    10.0,
+    4.2
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "rarity": "epic",
+   "moved": true,
+   "from": "6/17",
+   "to": "5/13",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.3,
+    6.9
+   ],
+   "vsBand": [
+    9.9,
+    6.9
+   ],
+   "ci95": [
+    2.1,
+    2.1
+   ]
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "rarity": "veryrare",
+   "moved": true,
+   "from": "4/17",
+   "to": "3/14",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.2,
+    1.8
+   ],
+   "vsBand": [
+    9.8,
+    1.8
+   ],
+   "ci95": [
+    2.0,
+    2.0
+   ]
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/13",
+   "to": "2/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.9,
+    1.4
+   ],
+   "vsBand": [
+    9.8,
+    3.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/7",
+   "to": "2/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.9,
+    4.7
+   ],
+   "vsBand": [
+    9.8,
+    6.5
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/12",
+   "to": "3/10",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.5,
+    2.6
+   ],
+   "vsBand": [
+    9.5,
+    2.9
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "riverstone-slinger",
+   "name": "Riverstone Slinger",
+   "rarity": "rare",
+   "moved": true,
+   "from": "4/9",
+   "to": "3/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.9,
+    5.0
+   ],
+   "vsBand": [
+    9.4,
+    3.1
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "peat-cutter-vole",
+   "name": "Peat-cutter Vole",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/9",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.5,
+    5.0
+   ],
+   "vsBand": [
+    9.4,
+    6.8
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "rarity": "rare",
+   "moved": true,
+   "from": "5/10",
+   "to": "4/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.7,
+    3.0
+   ],
+   "vsBand": [
+    9.2,
+    1.1
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "4/11",
+   "to": "3/10",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.1,
+    3.8
+   ],
+   "vsBand": [
+    9.1,
+    4.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "moved": true,
+   "from": "5/5",
+   "to": "4/4",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.5,
+    5.8
+   ],
+   "vsBand": [
+    9.1,
+    3.9
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "2/12",
+   "to": "2/9",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.0,
+    6.8
+   ],
+   "vsBand": [
+    9.0,
+    7.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "stable-colt",
+   "name": "Stable Colt",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "2/12",
+   "to": "2/9",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.0,
+    5.0
+   ],
+   "vsBand": [
+    9.0,
+    5.3
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "veryrare",
+   "moved": true,
+   "from": "6/12",
+   "to": "5/10",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    8.4,
+    4.9
+   ],
+   "vsBand": [
+    8.9,
+    4.9
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": "rare",
+   "moved": true,
+   "from": "4/7",
+   "to": "3/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.3,
+    5.7
+   ],
+   "vsBand": [
+    8.9,
+    3.8
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "rarity": "rare",
+   "moved": true,
+   "from": "4/5",
+   "to": "3/4",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.3,
+    2.0
+   ],
+   "vsBand": [
+    8.9,
+    0.1
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "3/3",
+   "to": "2/2",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.8,
+    0.1
+   ],
+   "vsBand": [
+    8.8,
+    0.4
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "sleepless-shrew",
+   "name": "Sleepless Shrew",
+   "rarity": "common",
+   "moved": true,
+   "from": "3/9",
+   "to": "2/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.9,
+    -0.3
+   ],
+   "vsBand": [
+    8.8,
+    1.5
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "rarity": "common",
+   "moved": true,
+   "from": "4/7",
+   "to": "3/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.9,
+    0.4
+   ],
+   "vsBand": [
+    8.8,
+    2.1
+   ],
+   "ci95": [
+    1.7,
+    1.7
+   ]
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "3/3",
+   "to": "2/2",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.8,
+    -0.1
+   ],
+   "vsBand": [
+    8.8,
+    0.2
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "moved": true,
+   "from": "6/6",
+   "to": "5/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.8,
+    3.0
+   ],
+   "vsBand": [
+    8.7,
+    4.8
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "moved": true,
+   "from": "1/4",
+   "to": "1/3",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.2,
+    9.5
+   ],
+   "vsBand": [
+    8.7,
+    7.6
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/6",
+   "to": "2/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.8,
+    6.3
+   ],
+   "vsBand": [
+    8.7,
+    8.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "rarity": "rare",
+   "moved": true,
+   "from": "3/13",
+   "to": "2/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.1,
+    3.4
+   ],
+   "vsBand": [
+    8.6,
+    1.5
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "rarity": "common",
+   "moved": true,
+   "from": "1/10",
+   "to": "1/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.7,
+    5.8
+   ],
+   "vsBand": [
+    8.6,
+    7.6
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "moved": true,
+   "from": "2/14",
+   "to": "2/11",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.0,
+    6.6
+   ],
+   "vsBand": [
+    8.5,
+    4.7
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "rarity": "rare",
+   "moved": true,
+   "from": "3/10",
+   "to": "3/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    10.0,
+    6.5
+   ],
+   "vsBand": [
+    8.5,
+    4.6
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/10",
+   "to": "2/8",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.6,
+    4.2
+   ],
+   "vsBand": [
+    8.5,
+    6.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "moved": true,
+   "from": "3/16",
+   "to": "3/13",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.9,
+    7.5
+   ],
+   "vsBand": [
+    8.5,
+    7.5
+   ],
+   "ci95": [
+    2.0,
+    2.0
+   ]
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "moved": true,
+   "from": "2/6",
+   "to": "2/5",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    6.5,
+    5.1
+   ],
+   "vsBand": [
+    8.4,
+    6.9
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  },
+  {
+   "id": "bramblewood-lynx",
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "moved": true,
+   "from": "6/9",
+   "to": "5/7",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.8,
+    1.2
+   ],
+   "vsBand": [
+    8.3,
+    -0.7
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "moved": true,
+   "from": "1/4",
+   "to": "1/3",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    7.2,
+    4.8
+   ],
+   "vsBand": [
+    8.2,
+    5.0
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": "rare",
+   "moved": true,
+   "from": "1/7",
+   "to": "1/6",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    9.6,
+    8.8
+   ],
+   "vsBand": [
+    8.1,
+    7.0
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -9.1,
+    -10.9
+   ],
+   "vsBand": [
+    -8.1,
+    -10.6
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -9.4,
+    -9.3
+   ],
+   "vsBand": [
+    -8.4,
+    -9.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "rarity": "common",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -10.3,
+    -10.6
+   ],
+   "vsBand": [
+    -8.4,
+    -8.8
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "petrified-tree",
+   "name": "Petrified Tree",
+   "rarity": "rare",
+   "moved": true,
+   "from": "0/37",
+   "to": "0/42",
+   "skill": null,
+   "why": null,
+   "contribution": [
+    -7.2,
+    -6.7
+   ],
+   "vsBand": [
+    -8.7,
+    -8.6
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -7.3,
+    -6.9
+   ],
+   "vsBand": [
+    -8.8,
+    -8.8
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -10.0,
+    -10.6
+   ],
+   "vsBand": [
+    -9.0,
+    -10.3
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "bee-drone",
+   "name": "Bee Drone",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": "0/1",
+   "to": null,
+   "skill": null,
+   "why": "on its budget line: the formula leaves no room",
+   "contribution": [
+    -10.3,
+    -10.4
+   ],
+   "vsBand": [
+    -9.4,
+    -10.1
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "moved": false,
+   "from": "3/17",
+   "to": null,
+   "skill": null,
+   "why": "on its budget line: the formula leaves no room",
+   "contribution": [
+    -8.1,
+    -7.5
+   ],
+   "vsBand": [
+    -9.6,
+    -9.4
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "hanging-loafer",
+   "name": "Hanging Loafer",
+   "rarity": "common",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -11.6,
+    -11.7
+   ],
+   "vsBand": [
+    -9.7,
+    -9.9
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": null,
+   "to": null,
+   "skill": null,
+   "why": "a card that hatches, grows or evolves: its design, not its stats",
+   "contribution": [
+    -10.7,
+    -10.8
+   ],
+   "vsBand": [
+    -9.8,
+    -10.6
+   ],
+   "ci95": [
+    1.8,
+    1.8
+   ]
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "moved": false,
+   "from": "1/18",
+   "to": null,
+   "skill": null,
+   "why": "on its budget line: the formula leaves no room",
+   "contribution": [
+    -9.6,
+    -10.5
+   ],
+   "vsBand": [
+    -11.1,
+    -12.4
+   ],
+   "ci95": [
+    1.9,
+    1.9
+   ]
+  },
+  {
+   "id": "badger-stonemason",
+   "name": "Badger Stonemason",
+   "rarity": "uncommon",
+   "moved": false,
+   "from": "1/15",
+   "to": null,
+   "skill": null,
+   "why": "on its budget line: the formula leaves no room",
+   "contribution": [
+    -12.6,
+    -13.8
+   ],
+   "vsBand": [
+    -11.6,
+    -13.6
+   ],
+   "ci95": [
+    1.8,
+    1.9
+   ]
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "rarity": "common",
+   "moved": false,
+   "from": "3/13",
+   "to": null,
+   "skill": null,
+   "why": "on its budget line: the formula leaves no room",
+   "contribution": [
+    -13.9,
+    -14.5
+   ],
+   "vsBand": [
+    -12.0,
+    -12.7
+   ],
+   "ci95": [
+    1.7,
+    1.8
+   ]
+  }
+ ]
+}

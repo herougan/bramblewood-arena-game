@@ -123,7 +123,7 @@ if(require.main !== module){ /* a library */ } else if(CMD === 'plan' || CMD ===
   const rows = run(), ch = rows.filter(r=> r.changed), bad = ch.filter(r=> r.violationsAfter.length);
   console.log(`${rows.length} fights, ${ch.length} change (${ch.reduce((a, r)=> a + r.copiesMoved, 0)} copies moved), ${bad.length} still break the rule`);
   ch.forEach(r=> console.log(`  ${r.key.padEnd(8)} ${r.name.slice(0, 24).padEnd(24)} moved ${String(r.copiesMoved).padStart(2)}  ${r.swaps.join(', ')}${r.violationsAfter.length ? '  STILL: ' + r.violationsAfter.join(', ') : ''}`));
-  fs.writeFileSync(OUT, JSON.stringify({_about: 'Package BAL7 (2026-10-28, owner K14): skirmish decks, non-map-unique cards at most 1 copy each and 6 in all; node tools/bal7_k14_decks_2026_10_28.js plan|apply|check', summary: {fights: rows.length, changed: ch.length, copiesMoved: ch.reduce((a, r)=> a + r.copiesMoved, 0), stillBreaking: bad.map(r=> r.key)}, rows}, null, 1) + '\n');
+  if(!ch.length && fs.existsSync(OUT)) console.log('nothing to change: the decks already follow K14 (the plan file is kept)'); else fs.writeFileSync(OUT, JSON.stringify({_about: 'Package BAL7 (2026-10-28, owner K14): skirmish decks, non-map-unique cards at most 1 copy each and 6 in all; node tools/bal7_k14_decks_2026_10_28.js plan|apply|check', summary: {fights: rows.length, changed: ch.length, copiesMoved: ch.reduce((a, r)=> a + r.copiesMoved, 0), stillBreaking: bad.map(r=> r.key)}, rows}, null, 1) + '\n');
   if(CMD === 'apply'){
     let s = fs.readFileSync(APP, 'utf8'), n = 0;
     for(const r of ch){ if(r.violationsAfter.length && r.copiesMoved === 0) continue;

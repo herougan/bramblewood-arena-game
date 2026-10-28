@@ -3,7 +3,7 @@
  "summary": {
   "fights": 256,
   "changed": 126,
-  "copiesMoved": 490,
+  "copiesMoved": 491,
   "stillBreaking": []
  },
  "rows": [
@@ -726,11 +726,11 @@
    },
    "after": {
     "compost-grub": 1,
-    "dung-beetle": 4,
+    "dung-beetle": 1,
     "fungal-colossus": 3,
     "truffle-piglet": 1,
     "bee-forager": 1,
-    "leafcutter-gardener": 2
+    "leafcutter-gardener": 5
    },
    "violationsBefore": [
     "compost-grub x3",
@@ -738,8 +738,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "compost-grub -> dung-beetle x2",
-    "bee-forager -> dung-beetle"
+    "compost-grub -> leafcutter-gardener x2",
+    "bee-forager -> leafcutter-gardener"
    ],
    "copiesMoved": 3,
    "stuck": [],
@@ -771,7 +771,7 @@
     "honey-bee": 1,
     "garden-snail": 1,
     "truffle-piglet": 4,
-    "tunnel-wyrm": 1
+    "dung-beetle": 1
    },
    "violationsBefore": [
     "compost-grub x3",
@@ -786,7 +786,7 @@
     "honey-bee -> owl-nightwatch x2",
     "garden-snail -> owl-nightwatch",
     "garden-snail -> truffle-piglet",
-    "garden-snail -> tunnel-wyrm"
+    "garden-snail -> dung-beetle"
    ],
    "copiesMoved": 8,
    "stuck": [],
@@ -812,9 +812,9 @@
     "fungal-colossus": 2
    },
    "after": {
-    "leafcutter-gardener": 3,
+    "leafcutter-gardener": 4,
     "planarian-splitter": 4,
-    "bombardier-beetle": 4,
+    "bombardier-beetle": 3,
     "garden-snail": 1,
     "honey-bee": 1,
     "fungal-colossus": 2
@@ -828,8 +828,7 @@
    "swaps": [
     "garden-snail -> planarian-splitter x2",
     "garden-snail -> bombardier-beetle",
-    "honey-bee -> bombardier-beetle",
-    "honey-bee -> leafcutter-gardener"
+    "honey-bee -> leafcutter-gardener x2"
    ],
    "copiesMoved": 5,
    "stuck": [],
@@ -1505,9 +1504,9 @@
     "field-mouse": 2
    },
    "after": {
-    "bramble-hoglet": 4,
+    "bramble-hoglet": 5,
     "cunning-vixen": 2,
-    "hedge-weasel": 2,
+    "hedge-weasel": 1,
     "lyrebird-mimic": 2,
     "gatling-hog": 3,
     "field-mouse": 1
@@ -1517,7 +1516,7 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "field-mouse -> hedge-weasel"
+    "field-mouse -> bramble-hoglet"
    ],
    "copiesMoved": 1,
    "stuck": [],
@@ -2441,8 +2440,8 @@
     "cinder-hornet": 5,
     "badger-berserker": 2,
     "fumarole-ibex": 1,
-    "rimefire-salamander": 3,
-    "ur-elk": 1,
+    "rimefire-salamander": 2,
+    "ur-elk": 2,
     "cinder-gecko": 4
    },
    "violationsBefore": [
@@ -2450,7 +2449,7 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "fumarole-ibex -> rimefire-salamander"
+    "fumarole-ibex -> ur-elk"
    ],
    "copiesMoved": 1,
    "stuck": [],
@@ -2644,7 +2643,7 @@
     "pack-mule": 1,
     "balloon-archer": 1,
     "trebuchet-crew": 3,
-    "werebadger": 1
+    "howdah-archers": 1
    },
    "violationsBefore": [
     "mouse-sapper x2",
@@ -2657,7 +2656,7 @@
     "mouse-sapper -> trebuchet-crew",
     "pack-mule -> badger-trench-digger",
     "pack-mule -> trebuchet-crew",
-    "balloon-archer -> werebadger"
+    "balloon-archer -> howdah-archers"
    ],
    "copiesMoved": 4,
    "stuck": [],
@@ -2741,8 +2740,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "mouse-sapper -> howdah-archers x2",
     "mouse-sapper -> siege-rhino",
+    "mouse-sapper -> howdah-archers x2",
     "balloon-archer -> testudo-tortoise",
     "balloon-archer -> trebuchet-crew x2"
    ],
@@ -2785,8 +2784,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "mouse-sapper -> howdah-archers",
     "mouse-sapper -> siege-rhino x2",
+    "mouse-sapper -> howdah-archers",
     "mouse-sapper -> testudo-tortoise",
     "pack-mule -> beetle-battering-ram",
     "pack-mule -> marching-elephant x3"
@@ -3239,7 +3238,7 @@
     "stag-beetle": 3,
     "house-cat": 1,
     "rabbit-kit": 5,
-    "village-miller": 2
+    "hedgerow-shrew": 2
    },
    "violationsBefore": [
     "bee-sentry x2",
@@ -3255,7 +3254,7 @@
     "burrow-rabbit -> rabbit-kit x2",
     "honey-bee -> rabbit-kit x2",
     "house-cat -> rabbit-kit",
-    "house-cat -> village-miller x2"
+    "house-cat -> hedgerow-shrew x2"
    ],
    "copiesMoved": 10,
    "stuck": [],
@@ -3880,11 +3879,11 @@
    "after": {
     "ashbone-ghoul": 1,
     "cinder-imp": 1,
-    "hellbender": 5,
-    "chained-binturong": 1,
-    "flagellant-vulture": 2,
+    "hellbender": 3,
+    "chained-binturong": 3,
+    "flagellant-vulture": 1,
     "tide-spirit": 1,
-    "echidna-quillshot": 1
+    "echidna-quillshot": 2
    },
    "violationsBefore": [
     "ashbone-ghoul x3",
@@ -3892,8 +3891,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "ashbone-ghoul -> hellbender x2",
-    "cinder-imp -> flagellant-vulture"
+    "ashbone-ghoul -> chained-binturong x2",
+    "cinder-imp -> echidna-quillshot"
    ],
    "copiesMoved": 3,
    "stuck": [],
@@ -4017,12 +4016,11 @@
     "sulfur-vent-crab": 1,
     "obsidian-scorpion": 1,
     "ash-cloud-condor": 1,
-    "cinder-imp": 1,
     "ashbone-ghoul": 1,
     "tide-spirit": 1,
     "beaver-lumberjack": 5,
     "quill-volley": 3,
-    "hellbender": 4,
+    "hellbender": 5,
     "cinder-gecko": 1
    },
    "violationsBefore": [
@@ -4030,20 +4028,21 @@
     "obsidian-scorpion x2",
     "cinder-imp x4",
     "ashbone-ghoul x2",
-    "12 non-unique copies"
+    "13 non-unique copies"
    ],
    "violationsAfter": [],
    "swaps": [
     "sulfur-vent-crab -> hellbender",
     "obsidian-scorpion -> beaver-lumberjack",
     "cinder-imp -> beaver-lumberjack x3",
-    "ashbone-ghoul -> hellbender"
+    "ashbone-ghoul -> hellbender",
+    "cinder-imp -> hellbender"
    ],
-   "copiesMoved": 6,
+   "copiesMoved": 7,
    "stuck": [],
    "distinct": [
     10,
-    10
+    9
    ]
   },
   {
@@ -4117,9 +4116,9 @@
     "ashbone-ghoul": 1,
     "fire-salamander": 4,
     "cinder-gecko": 1,
-    "hellbender": 2,
+    "hellbender": 3,
     "basalt-boar": 1,
-    "cinder-stoker": 4,
+    "cinder-stoker": 3,
     "ember-jackal": 1,
     "beaver-lumberjack": 2,
     "cinder-imp": 1,
@@ -4139,7 +4138,7 @@
     "cinder-gecko -> cinder-stoker",
     "basalt-boar -> fire-salamander",
     "cinder-imp -> fire-salamander",
-    "tide-spirit -> cinder-stoker"
+    "tide-spirit -> hellbender"
    ],
    "copiesMoved": 5,
    "stuck": [],
@@ -4585,8 +4584,8 @@
     "ant-scout": 1,
     "bee-forager": 1,
     "garden-snail": 1,
-    "bombardier-beetle": 4,
-    "dung-beetle": 4
+    "dung-beetle": 5,
+    "planarian-splitter": 3
    },
    "violationsBefore": [
     "honey-bee x4",
@@ -4599,10 +4598,9 @@
    "swaps": [
     "honey-bee -> hawthorn-shieldbug x3",
     "ant-scout -> hawthorn-shieldbug",
-    "ant-scout -> bombardier-beetle x2",
-    "bee-forager -> bombardier-beetle x2",
-    "bee-forager -> dung-beetle",
-    "garden-snail -> dung-beetle x3"
+    "ant-scout -> dung-beetle x2",
+    "bee-forager -> dung-beetle x3",
+    "garden-snail -> planarian-splitter x3"
    ],
    "copiesMoved": 12,
    "stuck": [],
@@ -4722,9 +4720,9 @@
     "garden-snail": 4
    },
    "after": {
-    "fungal-colossus": 3,
+    "fungal-colossus": 2,
     "trapdoor-spider": 3,
-    "dung-beetle": 4,
+    "dung-beetle": 5,
     "swarm-matriarch": 1,
     "tunnel-ant": 1,
     "ant-warrior": 2,
@@ -4735,8 +4733,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "garden-snail -> trapdoor-spider x2",
-    "garden-snail -> fungal-colossus"
+    "garden-snail -> dung-beetle",
+    "garden-snail -> trapdoor-spider x2"
    ],
    "copiesMoved": 3,
    "stuck": [],
@@ -5501,7 +5499,7 @@
     "echo-screecher": 3,
     "beetle-grunt": 1,
     "vampire-bat-nurse": 4,
-    "cave-cricket": 1
+    "sulfur-cinder-moth": 1
    },
    "violationsBefore": [
     "bat-swarmling x4",
@@ -5513,7 +5511,7 @@
     "bat-swarmling -> oilbird",
     "bat-swarmling -> vampire-bat-nurse x2",
     "beetle-grunt -> vampire-bat-nurse x2",
-    "beetle-grunt -> cave-cricket"
+    "beetle-grunt -> sulfur-cinder-moth"
    ],
    "copiesMoved": 6,
    "stuck": [],
@@ -6084,10 +6082,10 @@
     "fennec-fox": 2
    },
    "after": {
-    "armadillo-guard": 4,
+    "armadillo-guard": 5,
     "sandstorm-roc": 3,
     "caustic-scorpion": 3,
-    "dust-devil-kestrel": 2,
+    "dust-devil-kestrel": 1,
     "trapdoor-spider": 1,
     "cinder-gecko": 1,
     "fennec-fox": 2
@@ -6099,8 +6097,7 @@
    "violationsAfter": [],
    "swaps": [
     "trapdoor-spider -> caustic-scorpion x2",
-    "cinder-gecko -> dust-devil-kestrel",
-    "cinder-gecko -> armadillo-guard"
+    "cinder-gecko -> armadillo-guard x2"
    ],
    "copiesMoved": 4,
    "stuck": [],
@@ -6316,8 +6313,8 @@
    ],
    "violationsAfter": [],
    "swaps": [
-    "dust-hyena -> dust-devil-kestrel",
     "dust-hyena -> pale-oryx x2",
+    "dust-hyena -> dust-devil-kestrel",
     "cinder-gecko -> horned-lizard",
     "trapdoor-spider -> horned-lizard x2",
     "rabid-jackal -> horned-lizard"
