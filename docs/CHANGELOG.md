@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-28 (package THEME1: the balancing plan's steps 1 and 2 as a per-map proposal; nothing applied)
+- **A proposal, not a change** (owner 10-28 21:40: "Thematic 1st, winnowing 2nd"; 21:49: "submaps should have only 1-3 unique cards"). Every map 0-24 and every side map in road order: its theme (biome, story, field effect, the skills its fights bring), the cards unique to it by theme (one home a card; a card that fits several maps is noted), 3-5 carried cards, the cut with each card's destination (another map, pack only, no home yet), and the mix (high-cost, generator and plain shares, average cost, Stone / Metal). Main maps 8 unique + 3 carried; side maps 1-3 unique by the delve / challenges call (5 marked "ask owner"). Totals: list entries 613 -> 395; 229 cards with a unique home (108 skirmish rewards); 341 pack cards of Packs 1-4 become pack only; 94 creatures stay with no home. `docs/balance/theme1-proposal-2026-10-28.md` / `.json`, built by `tools/theme1_proposal_2026_10_28.py`; canonical files unchanged.
+- **Hub, 🗺️ Map cards: a Current / Proposal toggle.** Proposal shows each map's current list beside its proposed unique and carried cards (added green, moved amber, cut red with where it goes), the mix and side-map chips, and a summary: totals, packs against the proposal, the side-map calls, the pack-only and no-home names. Files: `tools/hub/mapcards_data.py`, `mapcards_tab.js` / `.css`.
+- Owner call THEME1-1 (`tools/theme1_decisions_2026_10_28.py`).
+
 ## 2026-10-28 release 10-28a (batch: ENG11, VIS4, ENG12, VIS5, CONTENT4, BAL6, HUB8, COOP2, HUB9, BAL7, RELFIX2, plus HUB7 / FIN1 / FIN2 held from 10-27)
 - Rules: Coffee N; dark maps count as night; Scorching by day; Ambush fires at once; Shock priced by its numbers; Nocturnal / Diurnal priced by uptime; a woken unit loses its round; Frigid set as a map field; Give Shield / Bulwark at Shield 0.8.
 - Cards: 69 re-balanced by the contribution test (BAL7 M1), Nocturnal re-fits (ENG12), Shield re-fits (FIN2, BAL7).
