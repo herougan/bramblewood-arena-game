@@ -25035,7 +25035,7 @@ function gdBegin(kind, code, host, opts){
 function gdOnEvent(kind, d){
   const S = GD.s; if(!S) return;
   if(kind === 'roster'){ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); } if(GD.phase === 'lobby') gdRender(); else gdRenderCoopBar(); return; }
-  if(kind === 'full'){ showToast(TX('ui.ar3-full') + (GD.kind === 'live' && !GD.server4p ? ' ' + TX('ui.ar3-cap-2') : ''), 'warn'); gdClose(true); return; }
+  if(kind === 'full'){ showToast(TX('ui.ar3-full'), 'warn'); gdClose(true); return; } // the vault seats its 2 (the live room takes 2 with no new SQL)
   if(kind === 'start'){ GD.startSeed = d.seed >>> 0; if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
     if(GD.kind === 'live' && S.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'playing', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
     return; }

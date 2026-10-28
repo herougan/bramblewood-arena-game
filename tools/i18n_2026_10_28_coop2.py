@@ -58,3 +58,21 @@ for i, code in enumerate(CODES):
         pack[en] = row[i]
     dump(path, pack)
 print('ok', len(K), 'keys')
+# The AR3 board's texts nothing reads any more (the plan timer, the shared centre, the floor mechanics, the 4-seat lobby, the pick of three):
+# each ui.ar3-* / ui.en5-gd-players-range key no page or module names is dropped, and its English row leaves the packs when no other key uses it.
+import re
+used_src = open(os.path.join(ROOT, 'arena_app.js'), encoding='utf-8').read() + open(os.path.join(ROOT, 'bramblewood-coop.js'), encoding='utf-8').read()
+src = open(tp, encoding='utf-8').read()
+gone = []
+for m in re.finditer(r'^  "(ui\.ar3-[A-Za-z0-9-]+|ui\.en5-gd-players-range)": (".*?"),\n', src, re.M):
+    k = m.group(1)
+    if ("'" + k + "'") in used_src: continue
+    gone.append((k, json.loads(m.group(2)), m.group(0)))
+for k, en, line in gone: src = src.replace(line, '')
+open(tp, 'w', encoding='utf-8').write(src)
+for code in CODES:
+    path = os.path.join(ROOT, 'lang', code + '.json'); pack = json.load(open(path, encoding='utf-8'))
+    for k, en, line in gone:
+        if ('": ' + json.dumps(en, ensure_ascii=False) + ',') not in src: pack.pop(en, None)
+    dump(path, pack)
+print('dropped', len(gone), 'AR3 keys:', ' '.join(k for k, _, _ in gone))
