@@ -69,6 +69,9 @@ Object.keys(data.maps).forEach(mid=>{
   if(f.rules && !(ent.field.rules || {}).woods) delete f.rules.woods;
   // 2026-10-24 (package EN8): the same for EN8's flags (the CPU's lethal guard from Map 1, Driftwood's beach, Windfall on the windy maps)
   if(f.rules) ['aiGuardLethal', 'beachMap', 'windfall'].forEach(k=>{ if(!(ent.field.rules || {})[k]) delete f.rules[k]; });
+  // 2026-10-28 (package CONTENT4, L2): the same for a map's own field effect (mapField on its CONQUEST_MAPS entry), added after the PRO file;
+  // compared without it until the next pro_skirmishes --apply
+  { const mp = G.CONQUEST_MAPS ? G.CONQUEST_MAPS.find(x=> x.id === mid) : null; if(f.rules && mp && mp.mapField) Object.keys(mp.mapField).forEach(k=>{ if(!(ent.field.rules || {})[k]) delete f.rules[k]; }); }
   ok(JSON.stringify(f.rules) === JSON.stringify(ent.field.rules) && JSON.stringify(f.terrain) === JSON.stringify(ent.field.terrain), `1. ${mid}: the field is still the map's average (${ent.field.summary})`);
 });
 // the average itself: Map 3's fights (3-1 no terrain, 3-2..3-4 tier I, 3-5..3-7 tier II) tie I / II, so the boss's (the ender, 3-7) tier II wins

@@ -1,0 +1,2992 @@
+{
+ "about": "CONTENT4 L7 proposal (2026-10-28), not applied: docs/balance/content4-map-pools-trim-2026-10-28.js --keep-pro",
+ "lists": {
+  "m1": {
+   "no": 0,
+   "map": "m1",
+   "sub": null,
+   "name": "Bramblewood Outskirts",
+   "before": 25,
+   "beforeNew": 8,
+   "beforeOld": 17,
+   "after": 14,
+   "afterNew": 7,
+   "afterOld": 7,
+   "keptNew": [
+    "fox-kit (PRO deck)",
+    "house-cat (first-clear pack, PRO deck)",
+    "feral-tomcat (PRO deck)",
+    "chipmunk-skirmisher (reward, PRO deck)",
+    "beetle-grunt (PRO deck)",
+    "terrier-pup (reward)",
+    "farm-dog (PRO deck)"
+   ],
+   "keptOld": [
+    "duck-paddler",
+    "pond-duck",
+    "silver-minnow",
+    "ant-scout",
+    "river-carp",
+    "cobalt-talon-fledgling",
+    "bee-forager"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "paper-wasp"
+   ],
+   "trimmedOld": [
+    "cottontail",
+    "duckling",
+    "honey-bee",
+    "crossed-eyes",
+    "garden-snail",
+    "bee-sentry",
+    "meadow-rabbit",
+    "chipmunk-forager",
+    "otter-kit",
+    "forager-ant"
+   ],
+   "keep": [
+    "pond-duck",
+    "silver-minnow",
+    "ant-scout",
+    "river-carp",
+    "bee-forager",
+    "duck-paddler",
+    "house-cat",
+    "feral-tomcat",
+    "chipmunk-skirmisher",
+    "fox-kit",
+    "beetle-grunt",
+    "cobalt-talon-fledgling",
+    "terrier-pup",
+    "farm-dog"
+   ]
+  },
+  "mtut": {
+   "no": 0,
+   "map": "m1",
+   "sub": "mtut",
+   "skipped": true,
+   "before": 18,
+   "after": 18
+  },
+  "mf": {
+   "no": 1,
+   "map": "mf",
+   "sub": null,
+   "name": "Thistlewood",
+   "before": 14,
+   "beforeNew": 12,
+   "beforeOld": 2,
+   "after": 13,
+   "afterNew": 11,
+   "afterOld": 2,
+   "keptNew": [
+    "dormouse (first-clear pack, PRO deck)",
+    "bramble-sprout (PRO deck)",
+    "field-vole (showcase, PRO deck)",
+    "field-mouse (first-clear pack, PRO deck)",
+    "cricket-drummer (reward, showcase, PRO deck)",
+    "compost-grub (first-clear pack)",
+    "badger-lumberjack (reward, showcase)",
+    "woodcock-lookout (PRO deck)",
+    "hedgerow-shrew (PRO deck)",
+    "slow-worm (PRO deck)",
+    "briarback-hedgehog (PRO deck)"
+   ],
+   "keptOld": [
+    "meadow-frog",
+    "harvest-mouse"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "robin-redbreast"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "cricket-drummer",
+    "dormouse",
+    "compost-grub",
+    "bramble-sprout",
+    "field-vole",
+    "field-mouse",
+    "harvest-mouse",
+    "meadow-frog",
+    "badger-lumberjack",
+    "woodcock-lookout",
+    "hedgerow-shrew",
+    "slow-worm",
+    "briarback-hedgehog"
+   ]
+  },
+  "mb": {
+   "no": 2,
+   "map": "mb",
+   "sub": null,
+   "name": "Pebble Beach",
+   "before": 15,
+   "beforeNew": 15,
+   "beforeOld": 0,
+   "after": 13,
+   "afterNew": 13,
+   "afterOld": 0,
+   "keptNew": [
+    "conch-crawler (PRO deck)",
+    "sea-turtle-elder (PRO deck)",
+    "fiddler-crab-swarm (reward, PRO deck)",
+    "pincushion-urchin (first-clear pack, PRO deck)",
+    "tidepool-trapper-crab (first-clear pack)",
+    "open-ocean-hermit-crab (showcase, PRO deck)",
+    "grey-seal-bull (reward, PRO deck)",
+    "conch-herald (reward, PRO deck)",
+    "tide-pool-crab (PRO deck)",
+    "oystercatcher (PRO deck)",
+    "driftwood-crab (PRO deck)",
+    "oyster-bank (PRO deck)",
+    "beachcomber-sanderling (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "gull-thief",
+    "rock-pool-starfish"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "fiddler-crab-swarm",
+    "pincushion-urchin",
+    "tidepool-trapper-crab",
+    "tide-pool-crab",
+    "open-ocean-hermit-crab",
+    "sea-turtle-elder",
+    "conch-crawler",
+    "grey-seal-bull",
+    "conch-herald",
+    "oystercatcher",
+    "oyster-bank",
+    "driftwood-crab",
+    "beachcomber-sanderling"
+   ]
+  },
+  "mc": {
+   "no": 3,
+   "map": "mc",
+   "sub": null,
+   "name": "Gannet Cliffs",
+   "before": 15,
+   "beforeNew": 13,
+   "beforeOld": 2,
+   "after": 12,
+   "afterNew": 10,
+   "afterOld": 2,
+   "keptNew": [
+    "peak-condor (first-clear pack, PRO deck)",
+    "kittiwake-flock (first-clear pack, PRO deck)",
+    "fulmar-spitter (PRO deck)",
+    "puffin-diver (reward, PRO deck)",
+    "golden-eagle-diver (reward, showcase, PRO deck)",
+    "gannet-nestweaver (PRO deck)",
+    "razorbill (PRO deck)",
+    "peregrine-stooper (reward, PRO deck)",
+    "hawk-arrowkeeper (first-clear pack, PRO deck)",
+    "great-skua (PRO deck)"
+   ],
+   "keptOld": [
+    "oyster-bank",
+    "beachcomber-sanderling"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "red-billed-chough",
+    "mountain-goat-climber",
+    "sparrow-chick"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "puffin-diver",
+    "hawk-arrowkeeper",
+    "peak-condor",
+    "kittiwake-flock",
+    "fulmar-spitter",
+    "razorbill",
+    "peregrine-stooper",
+    "golden-eagle-diver",
+    "great-skua",
+    "gannet-nestweaver",
+    "oyster-bank",
+    "beachcomber-sanderling"
+   ]
+  },
+  "m2": {
+   "no": 4,
+   "map": "m2",
+   "sub": null,
+   "name": "Sunken Hollow",
+   "before": 16,
+   "beforeNew": 16,
+   "beforeOld": 0,
+   "after": 15,
+   "afterNew": 15,
+   "afterOld": 0,
+   "keptNew": [
+    "snapstick-turtle (reward, PRO deck)",
+    "stone-turtle-warden (first-clear pack, PRO deck)",
+    "water-vole (PRO deck)",
+    "box-turtle (PRO deck)",
+    "water-shrew (PRO deck)",
+    "muskrat-lodgekeeper (reward, PRO deck)",
+    "old-sturgeon (reward)",
+    "platypus-spur (reward, PRO deck)",
+    "river-mink (PRO deck)",
+    "pyrenean-desman (PRO deck)",
+    "signal-crayfish (PRO deck)",
+    "pond-algae (PRO deck)",
+    "dam-keeper-beaver (PRO deck)",
+    "diving-bell-spider (PRO deck)",
+    "ember-tetra (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "muskrat-reedgatherer"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "snapstick-turtle",
+    "stone-turtle-warden",
+    "water-vole",
+    "box-turtle",
+    "water-shrew",
+    "river-mink",
+    "muskrat-lodgekeeper",
+    "pyrenean-desman",
+    "platypus-spur",
+    "old-sturgeon",
+    "signal-crayfish",
+    "diving-bell-spider",
+    "pond-algae",
+    "dam-keeper-beaver",
+    "ember-tetra"
+   ]
+  },
+  "mw": {
+   "no": 5,
+   "map": "mw",
+   "sub": null,
+   "name": "Gatorback Swamp",
+   "before": 21,
+   "beforeNew": 21,
+   "beforeOld": 0,
+   "after": 13,
+   "afterNew": 13,
+   "afterOld": 0,
+   "keptNew": [
+    "snapper-hatchling (first-clear pack)",
+    "constrictor-coil (first-clear pack)",
+    "venomlord-serpent (first-clear pack, showcase)",
+    "grass-viper (reward, PRO deck)",
+    "raft-spider (PRO deck)",
+    "swamp-alligator (PRO deck)",
+    "fen-mink (reward)",
+    "moat-snapper (PRO deck)",
+    "fire-ant-raft (PRO deck)",
+    "alligator-gar (reward, PRO deck)",
+    "buzzed-chipmunk (PRO deck)",
+    "nutria-reedcutter (PRO deck)",
+    "marsh-harrier (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "caiman-hatchling",
+    "crocodile-ambusher",
+    "grass-snake",
+    "plague-gnat-cloud",
+    "marsh-mallow-hare",
+    "sphagnum-vole",
+    "anhinga-spearbird",
+    "alley-cat"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "snapper-hatchling",
+    "constrictor-coil",
+    "venomlord-serpent",
+    "swamp-alligator",
+    "grass-viper",
+    "fen-mink",
+    "alligator-gar",
+    "buzzed-chipmunk",
+    "fire-ant-raft",
+    "marsh-harrier",
+    "raft-spider",
+    "moat-snapper",
+    "nutria-reedcutter"
+   ]
+  },
+  "m8": {
+   "no": 6,
+   "map": "m8",
+   "sub": null,
+   "name": "Sable Swampmire",
+   "before": 19,
+   "beforeNew": 18,
+   "beforeOld": 1,
+   "after": 11,
+   "afterNew": 10,
+   "afterOld": 1,
+   "keptNew": [
+    "marsh-wisp (first-clear pack, PRO deck)",
+    "bogfire-newt (PRO deck)",
+    "booming-bittern (reward)",
+    "camouflage-frog (first-clear pack)",
+    "newt-doctor (reward, PRO deck)",
+    "raven-scout (PRO deck)",
+    "adder-ambusher (reward, PRO deck)",
+    "poison-dart-croaker (reward)",
+    "anaconda-coil (PRO deck)",
+    "cottonmouth-matriarch (PRO deck)"
+   ],
+   "keptOld": [
+    "constrictor-coil"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "cane-toad",
+    "mire-witch-heron",
+    "lamprey",
+    "peat-cutter-vole",
+    "carrion-beetle",
+    "lotus-frog",
+    "giant-water-bug",
+    "greater-siren"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "poison-dart-croaker",
+    "camouflage-frog",
+    "marsh-wisp",
+    "constrictor-coil",
+    "bogfire-newt",
+    "newt-doctor",
+    "booming-bittern",
+    "raven-scout",
+    "adder-ambusher",
+    "anaconda-coil",
+    "cottonmouth-matriarch"
+   ]
+  },
+  "mp": {
+   "no": 6,
+   "map": "mb",
+   "sub": "mp",
+   "name": "Lilypad Reach",
+   "before": 20,
+   "beforeNew": 14,
+   "beforeOld": 6,
+   "after": 15,
+   "afterNew": 11,
+   "afterOld": 4,
+   "keptNew": [
+    "beaver-builder (PRO deck)",
+    "mayfly-dancer (PRO deck)",
+    "minnow-skitter (PRO deck)",
+    "shallows-fry (PRO deck)",
+    "mangrove-mudskipper (PRO deck)",
+    "lodge-engineer (showcase, PRO deck)",
+    "riverworks-bastion (reward)",
+    "camouflage-frog (PRO deck)",
+    "great-crested-grebe (PRO deck)",
+    "mudpuppy (PRO deck)",
+    "poison-dart-croaker (showcase)"
+   ],
+   "keptOld": [
+    "duckling",
+    "river-carp",
+    "pond-duck",
+    "water-shrew"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "elder-tortoise",
+    "ford-kingfisher",
+    "pike-lancer"
+   ],
+   "trimmedOld": [
+    "guppy",
+    "old-sturgeon"
+   ],
+   "keep": [
+    "riverworks-bastion",
+    "beaver-builder",
+    "camouflage-frog",
+    "duckling",
+    "great-crested-grebe",
+    "lodge-engineer",
+    "mangrove-mudskipper",
+    "mayfly-dancer",
+    "minnow-skitter",
+    "mudpuppy",
+    "poison-dart-croaker",
+    "pond-duck",
+    "river-carp",
+    "shallows-fry",
+    "water-shrew"
+   ]
+  },
+  "mm": {
+   "no": 6,
+   "map": "m8",
+   "sub": "mm",
+   "skipped": true,
+   "before": 6,
+   "after": 6
+  },
+  "mu": {
+   "no": 7,
+   "map": "mu",
+   "sub": null,
+   "name": "The Morel Hollow",
+   "before": 17,
+   "beforeNew": 16,
+   "beforeOld": 1,
+   "after": 12,
+   "afterNew": 11,
+   "afterOld": 1,
+   "keptNew": [
+    "truffle-piglet (reward, showcase)",
+    "leafcutter-gardener (first-clear pack, PRO deck)",
+    "dung-beetle (first-clear pack, PRO deck)",
+    "owl-nightwatch (PRO deck)",
+    "ant-warrior (PRO deck)",
+    "wolf-spider-mother (reward, PRO deck)",
+    "fungus-gnat-cloud (PRO deck)",
+    "hawthorn-shieldbug (PRO deck)",
+    "beaver-feller (PRO deck)",
+    "sleepless-shrew (first-clear pack)",
+    "pine-marten (PRO deck)"
+   ],
+   "keptOld": [
+    "compost-grub"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "planarian-splitter",
+    "fungal-colossus",
+    "bombardier-beetle",
+    "nightjar-drifter",
+    "barkplate-beetle"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "compost-grub",
+    "dung-beetle",
+    "leafcutter-gardener",
+    "owl-nightwatch",
+    "truffle-piglet",
+    "ant-warrior",
+    "wolf-spider-mother",
+    "pine-marten",
+    "fungus-gnat-cloud",
+    "hawthorn-shieldbug",
+    "beaver-feller",
+    "sleepless-shrew"
+   ]
+  },
+  "mg": {
+   "no": 7,
+   "map": "mb",
+   "sub": "mg",
+   "name": "Smugglers' Grotto",
+   "before": 12,
+   "beforeNew": 7,
+   "beforeOld": 5,
+   "after": 12,
+   "afterNew": 7,
+   "afterOld": 5,
+   "keptNew": [
+    "sulfur-vent-crab (PRO deck)",
+    "trash-panda-trickster (PRO deck)",
+    "octopus-tactician (reward)",
+    "blind-cave-fish",
+    "otter-riverguard",
+    "mallard-marauder",
+    "pelican-diver"
+   ],
+   "keptOld": [
+    "mayfly-dancer",
+    "beaver-builder",
+    "duckling",
+    "shallows-fry",
+    "oyster-bank"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "octopus-tactician",
+    "beaver-builder",
+    "blind-cave-fish",
+    "duckling",
+    "mallard-marauder",
+    "mayfly-dancer",
+    "otter-riverguard",
+    "pelican-diver",
+    "shallows-fry",
+    "sulfur-vent-crab",
+    "trash-panda-trickster",
+    "oyster-bank"
+   ]
+  },
+  "m4": {
+   "no": 8,
+   "map": "m4",
+   "sub": null,
+   "name": "Caves & Alcoves",
+   "before": 26,
+   "beforeNew": 25,
+   "beforeOld": 1,
+   "after": 18,
+   "afterNew": 17,
+   "afterOld": 1,
+   "keptNew": [
+    "whip-spider (PRO deck)",
+    "vampire-bat (PRO deck)",
+    "cave-olm (first-clear pack, PRO deck)",
+    "baby-bat (PRO deck)",
+    "subterraneaner (PRO deck)",
+    "star-nosed-mole (reward, PRO deck)",
+    "sulfur-cinder-moth (first-clear pack, PRO deck)",
+    "stalactite-golem (first-clear pack, showcase, PRO deck)",
+    "echo-screecher (reward, PRO deck)",
+    "quarry-mole (reward, PRO deck)",
+    "ghost-crayfish (PRO deck)",
+    "giant-cave-huntsman (reward, PRO deck)",
+    "cave-centipede (PRO deck)",
+    "prospector-mole (PRO deck)",
+    "vampire-bat-nurse (PRO deck)",
+    "gallery-orb-weaver (PRO deck)",
+    "grotto-lobster (PRO deck)"
+   ],
+   "keptOld": [
+    "blind-cave-fish"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "nightshade-moth",
+    "millipede-hauler",
+    "cave-pseudoscorpion",
+    "guano-beetle",
+    "gravel-mole",
+    "coffer-mimic",
+    "dynamite-packrat",
+    "badger-stonemason"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "blind-cave-fish",
+    "cave-olm",
+    "star-nosed-mole",
+    "sulfur-cinder-moth",
+    "stalactite-golem",
+    "vampire-bat",
+    "whip-spider",
+    "giant-cave-huntsman",
+    "echo-screecher",
+    "quarry-mole",
+    "subterraneaner",
+    "cave-centipede",
+    "baby-bat",
+    "vampire-bat-nurse",
+    "gallery-orb-weaver",
+    "grotto-lobster",
+    "ghost-crayfish",
+    "prospector-mole"
+   ]
+  },
+  "mz": {
+   "no": 8,
+   "map": "mu",
+   "sub": "mz",
+   "name": "The Mycelium Deep",
+   "before": 10,
+   "beforeNew": 4,
+   "beforeOld": 6,
+   "after": 9,
+   "afterNew": 4,
+   "afterOld": 5,
+   "keptNew": [
+    "beetle-battering-ram (PRO deck)",
+    "trapdoor-spider (PRO deck)",
+    "rootworm-colony (reward, PRO deck)",
+    "gangrenous-leech"
+   ],
+   "keptOld": [
+    "garden-snail",
+    "bee-forager",
+    "honey-bee",
+    "swarm-matriarch",
+    "tunnel-ant"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [
+    "worker-ant"
+   ],
+   "keep": [
+    "rootworm-colony",
+    "bee-forager",
+    "beetle-battering-ram",
+    "gangrenous-leech",
+    "garden-snail",
+    "honey-bee",
+    "swarm-matriarch",
+    "trapdoor-spider",
+    "tunnel-ant"
+   ]
+  },
+  "mk": {
+   "no": 9,
+   "map": "mk",
+   "sub": null,
+   "name": "The Kelp Mangroves",
+   "before": 22,
+   "beforeNew": 17,
+   "beforeOld": 5,
+   "after": 11,
+   "afterNew": 8,
+   "afterOld": 3,
+   "keptNew": [
+    "archerfish (PRO deck)",
+    "reef-shark (PRO deck)",
+    "sunbittern-strider (PRO deck)",
+    "banded-sea-krait (reward)",
+    "mangrove-manatee (reward)",
+    "mangrove-kingfisher (reward, PRO deck)",
+    "mudflat-godwit (PRO deck)",
+    "electric-catfish (PRO deck)"
+   ],
+   "keptOld": [
+    "mangrove-mudskipper",
+    "minnow-skitter",
+    "mudpuppy"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "mangrove-monitor",
+    "limpet-clinger",
+    "horseshoe-crab",
+    "sea-hare",
+    "elephant-nose-fish",
+    "piranha-shoal",
+    "proboscis-monkey",
+    "fishing-cat",
+    "ironclaw-fiddler"
+   ],
+   "trimmedOld": [
+    "oyster-bank",
+    "beachcomber-sanderling"
+   ],
+   "keep": [
+    "mangrove-mudskipper",
+    "minnow-skitter",
+    "mudpuppy",
+    "reef-shark",
+    "archerfish",
+    "sunbittern-strider",
+    "banded-sea-krait",
+    "mangrove-kingfisher",
+    "mangrove-manatee",
+    "mudflat-godwit",
+    "electric-catfish"
+   ]
+  },
+  "m7": {
+   "no": 10,
+   "map": "m7",
+   "sub": null,
+   "name": "Coral Current",
+   "before": 23,
+   "beforeNew": 23,
+   "beforeOld": 0,
+   "after": 20,
+   "afterNew": 20,
+   "afterOld": 0,
+   "keptNew": [
+    "clownfish-scout (first-clear pack, PRO deck)",
+    "riptide-eel (showcase, PRO deck)",
+    "swordfish-spearman (PRO deck)",
+    "lions-mane-jelly (PRO deck)",
+    "great-barracuda (reward)",
+    "kraken-spawnling (first-clear pack)",
+    "coral-reef-shark (first-clear pack, PRO deck)",
+    "colossal-squid (reward, PRO deck)",
+    "parrotfish (first-clear pack)",
+    "electric-ray (reward, PRO deck)",
+    "crown-of-thorns-star (PRO deck)",
+    "giant-clam (PRO deck)",
+    "coral-polyp-colony (PRO deck)",
+    "sawfish (PRO deck)",
+    "cone-snail (PRO deck)",
+    "cleaner-wrasse (PRO deck)",
+    "sea-cucumber (PRO deck)",
+    "lionfish (PRO deck)",
+    "mantis-shrimp (PRO deck)",
+    "whale-shark (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "bloodscent-shark",
+    "salvager-hermit-crab",
+    "yellow-bellied-sea-snake"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "clownfish-scout",
+    "parrotfish",
+    "kraken-spawnling",
+    "coral-reef-shark",
+    "riptide-eel",
+    "electric-ray",
+    "lions-mane-jelly",
+    "swordfish-spearman",
+    "great-barracuda",
+    "colossal-squid",
+    "sawfish",
+    "mantis-shrimp",
+    "cone-snail",
+    "cleaner-wrasse",
+    "sea-cucumber",
+    "crown-of-thorns-star",
+    "lionfish",
+    "giant-clam",
+    "whale-shark",
+    "coral-polyp-colony"
+   ]
+  },
+  "m10": {
+   "no": 11,
+   "map": "m10",
+   "sub": null,
+   "name": "Eyrie Heights",
+   "before": 14,
+   "beforeNew": 14,
+   "beforeOld": 0,
+   "after": 14,
+   "afterNew": 13,
+   "afterOld": 1,
+   "keptNew": [
+    "alpine-marmot (reward, PRO deck)",
+    "chipmunk-hoarder (first-clear pack, PRO deck)",
+    "eyrie-warden (first-clear pack, PRO deck)",
+    "mountain-hare (PRO deck)",
+    "ibex-rockcaller (reward, PRO deck)",
+    "mountain-goat-climber (PRO deck)",
+    "eagle-owl-quartermaster (reward, PRO deck)",
+    "apollo-butterfly (PRO deck)",
+    "chamois-leaper (reward, PRO deck)",
+    "alpine-swift (PRO deck)",
+    "alpine-salamander (PRO deck)",
+    "marmot-stonecutter (PRO deck)",
+    "balloon-archer (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [
+    "swamp-alligator"
+   ],
+   "trimmedNew": [
+    "gale-swift"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "alpine-marmot",
+    "chipmunk-hoarder",
+    "eyrie-warden",
+    "mountain-hare",
+    "mountain-goat-climber",
+    "apollo-butterfly",
+    "balloon-archer",
+    "chamois-leaper",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "alpine-swift",
+    "alpine-salamander",
+    "marmot-stonecutter",
+    "swamp-alligator"
+   ]
+  },
+  "mj": {
+   "no": 11,
+   "map": "m7",
+   "sub": "mj",
+   "name": "The Sunken Depths",
+   "before": 12,
+   "beforeNew": 8,
+   "beforeOld": 4,
+   "after": 12,
+   "afterNew": 8,
+   "afterOld": 4,
+   "keptNew": [
+    "orca-vanguard (PRO deck)",
+    "abyss-lantern-squid (PRO deck, raid)",
+    "blue-ringed-octopus (reward, PRO deck)",
+    "glass-octopus (PRO deck, raid)",
+    "nautilus-drifter (PRO deck)",
+    "vampire-squid (PRO deck, raid)",
+    "voltaic-eel (PRO deck)",
+    "salvager-hermit-crab (PRO deck)"
+   ],
+   "keptOld": [
+    "silver-minnow",
+    "giant-clam",
+    "sulfur-vent-crab",
+    "mangrove-manatee"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "blue-ringed-octopus",
+    "abyss-lantern-squid",
+    "glass-octopus",
+    "mangrove-manatee",
+    "nautilus-drifter",
+    "orca-vanguard",
+    "silver-minnow",
+    "sulfur-vent-crab",
+    "vampire-squid",
+    "voltaic-eel",
+    "giant-clam",
+    "salvager-hermit-crab"
+   ]
+  },
+  "muc": {
+   "no": 11,
+   "map": "m10",
+   "sub": "muc",
+   "skipped": true,
+   "before": 93,
+   "after": 93
+  },
+  "mh": {
+   "no": 12,
+   "map": "mh",
+   "sub": null,
+   "name": "The Briar Maze",
+   "before": 16,
+   "beforeNew": 15,
+   "beforeOld": 1,
+   "after": 13,
+   "afterNew": 12,
+   "afterOld": 1,
+   "keptNew": [
+    "gatling-hog (PRO deck)",
+    "cunning-vixen (reward, PRO deck)",
+    "hedge-weasel (first-clear pack, PRO deck)",
+    "seed-cache-squirrel (PRO deck)",
+    "lyrebird-mimic (showcase, PRO deck)",
+    "quillguard (reward, PRO deck)",
+    "hedgehog-scout (reward, PRO deck)",
+    "mouse-sapper (first-clear pack)",
+    "thorn-shrike (PRO deck)",
+    "bramble-hoglet (reward, PRO deck)",
+    "carrion-crow (PRO deck)",
+    "skunk-gasser (PRO deck)"
+   ],
+   "keptOld": [
+    "field-mouse"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "fox-sharpshot",
+    "rodent-king",
+    "magpie-collector"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "field-mouse",
+    "hedgehog-scout",
+    "bramble-hoglet",
+    "mouse-sapper",
+    "seed-cache-squirrel",
+    "cunning-vixen",
+    "hedge-weasel",
+    "lyrebird-mimic",
+    "quillguard",
+    "thorn-shrike",
+    "gatling-hog",
+    "skunk-gasser",
+    "carrion-crow"
+   ]
+  },
+  "mq": {
+   "no": 12,
+   "map": "mf",
+   "sub": "mq",
+   "name": "Clovermead",
+   "before": 21,
+   "beforeNew": 9,
+   "beforeOld": 12,
+   "after": 12,
+   "afterNew": 7,
+   "afterOld": 5,
+   "keptNew": [
+    "ladybird-guard (PRO deck)",
+    "lucky-hopper (reward)",
+    "village-miller",
+    "stag-beetle",
+    "buck-brawler",
+    "clover-butterfly",
+    "jay-pilferer"
+   ],
+   "keptOld": [
+    "house-cat",
+    "bee-forager",
+    "cottontail",
+    "honey-bee",
+    "burrow-rabbit"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "pigeon-peon",
+    "field-crow"
+   ],
+   "trimmedOld": [
+    "rabbit-kit",
+    "bee-sentry",
+    "meadow-rabbit",
+    "tunnel-ant",
+    "acorn-chipmunk",
+    "chipmunk-forager",
+    "farm-dog"
+   ],
+   "keep": [
+    "lucky-hopper",
+    "bee-forager",
+    "buck-brawler",
+    "burrow-rabbit",
+    "clover-butterfly",
+    "cottontail",
+    "honey-bee",
+    "house-cat",
+    "jay-pilferer",
+    "ladybird-guard",
+    "stag-beetle",
+    "village-miller"
+   ]
+  },
+  "mr": {
+   "no": 13,
+   "map": "mr",
+   "sub": null,
+   "name": "The Redwood Deep",
+   "before": 18,
+   "beforeNew": 16,
+   "beforeOld": 2,
+   "after": 12,
+   "afterNew": 10,
+   "afterOld": 2,
+   "keptNew": [
+    "bramblewood-lynx (PRO deck)",
+    "grizzly-vanguard (showcase, PRO deck)",
+    "fawn-scout (reward, PRO deck)",
+    "berserker-boar (first-clear pack, PRO deck)",
+    "tasmanian-devil (PRO deck)",
+    "shimmerwing-stag (reward, PRO deck)",
+    "red-backed-salamander (PRO deck)",
+    "hazel-coppice (PRO deck)",
+    "pill-bug (PRO deck)",
+    "redwood-woodpecker (PRO deck)"
+   ],
+   "keptOld": [
+    "fox-kit",
+    "beaver-feller"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "swift-fox",
+    "stag-knight",
+    "woodpecker-sapper",
+    "leopard-slug",
+    "hollow-oath-keeper",
+    "margay"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "fox-kit",
+    "berserker-boar",
+    "grizzly-vanguard",
+    "tasmanian-devil",
+    "bramblewood-lynx",
+    "fawn-scout",
+    "shimmerwing-stag",
+    "pill-bug",
+    "red-backed-salamander",
+    "redwood-woodpecker",
+    "hazel-coppice",
+    "beaver-feller"
+   ]
+  },
+  "ms": {
+   "no": 13,
+   "map": "mw",
+   "sub": "ms",
+   "name": "The Sunken Grove",
+   "before": 9,
+   "beforeNew": 8,
+   "beforeOld": 1,
+   "after": 8,
+   "afterNew": 7,
+   "afterOld": 1,
+   "keptNew": [
+    "baby-horned-capybara (PRO deck)",
+    "echo-keeper (PRO deck)",
+    "bog-leech (PRO deck)",
+    "bog-behemoth (showcase)",
+    "mosquito-cloud (PRO deck)",
+    "hedgehog-herbalist (reward, PRO deck)",
+    "puddle-hopper"
+   ],
+   "keptOld": [
+    "mangrove-mudskipper"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "swamp-rabbit"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "hedgehog-herbalist",
+    "baby-horned-capybara",
+    "bog-behemoth",
+    "bog-leech",
+    "echo-keeper",
+    "mangrove-mudskipper",
+    "mosquito-cloud",
+    "puddle-hopper"
+   ]
+  },
+  "m5": {
+   "no": 14,
+   "map": "m5",
+   "sub": null,
+   "name": "Savanna Reaches",
+   "before": 15,
+   "beforeNew": 15,
+   "beforeOld": 0,
+   "after": 12,
+   "afterNew": 12,
+   "afterOld": 0,
+   "keptNew": [
+    "marula-elephant (PRO deck)",
+    "hoopoe-herald (first-clear pack, PRO deck)",
+    "pangolin-roller (PRO deck)",
+    "dust-hyena (PRO deck)",
+    "springbok-pronker (first-clear pack)",
+    "weaver-bird (first-clear pack, PRO deck)",
+    "grave-grin-hyena (reward, PRO deck)",
+    "spitting-cobra (reward, PRO deck)",
+    "savanna-cheetah (reward, PRO deck)",
+    "meerkat-burrower (PRO deck)",
+    "termite-forager (PRO deck)",
+    "mongoose-duelist (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "lovebird",
+    "marula-monkey",
+    "monitor-rambler"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "springbok-pronker",
+    "hoopoe-herald",
+    "meerkat-burrower",
+    "weaver-bird",
+    "dust-hyena",
+    "grave-grin-hyena",
+    "pangolin-roller",
+    "marula-elephant",
+    "spitting-cobra",
+    "savanna-cheetah",
+    "mongoose-duelist",
+    "termite-forager"
+   ]
+  },
+  "ml": {
+   "no": 15,
+   "map": "ml",
+   "sub": null,
+   "name": "The Long Grass",
+   "before": 19,
+   "beforeNew": 18,
+   "beforeOld": 1,
+   "after": 16,
+   "afterNew": 15,
+   "afterOld": 1,
+   "keptNew": [
+    "raccoon-bandit (PRO deck)",
+    "stable-colt (PRO deck)",
+    "bison-bulldozer (PRO deck)",
+    "stoat-cutthroat (reward, PRO deck)",
+    "pronghorn-racer (first-clear pack)",
+    "shepherds-bark (PRO deck)",
+    "talon-archer (reward, PRO deck)",
+    "warhorse-charger (PRO deck)",
+    "cataphract-destrier (first-clear pack, showcase)",
+    "border-collie (reward, PRO deck)",
+    "springtail-hopper (PRO deck)",
+    "garden-tiger-moth (PRO deck)",
+    "land-tiller (PRO deck)",
+    "moonshell-snail (PRO deck)",
+    "amber-cicada (PRO deck)"
+   ],
+   "keptOld": [
+    "carrion-crow"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "anvil-thrush",
+    "courier-pigeon",
+    "muntjac-barker"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "pronghorn-racer",
+    "warhorse-charger",
+    "cataphract-destrier",
+    "shepherds-bark",
+    "stable-colt",
+    "border-collie",
+    "bison-bulldozer",
+    "stoat-cutthroat",
+    "raccoon-bandit",
+    "talon-archer",
+    "amber-cicada",
+    "springtail-hopper",
+    "garden-tiger-moth",
+    "land-tiller",
+    "moonshell-snail",
+    "carrion-crow"
+   ]
+  },
+  "mv": {
+   "no": 15,
+   "map": "m10",
+   "sub": "mv",
+   "name": "The Aerie Vault",
+   "before": 7,
+   "beforeNew": 4,
+   "beforeOld": 3,
+   "after": 7,
+   "afterNew": 4,
+   "afterOld": 3,
+   "keptNew": [
+    "alpine-avalanche (PRO deck)",
+    "chipmunk-stockpiler (PRO deck)",
+    "rockslide-ram (PRO deck)",
+    "wound-reaver (reward, PRO deck)"
+   ],
+   "keptOld": [
+    "peak-condor",
+    "golden-eagle-diver",
+    "marmot-stonecutter"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "wound-reaver",
+    "alpine-avalanche",
+    "chipmunk-stockpiler",
+    "golden-eagle-diver",
+    "peak-condor",
+    "rockslide-ram",
+    "marmot-stonecutter"
+   ]
+  },
+  "mt": {
+   "no": 16,
+   "map": "mt",
+   "sub": null,
+   "name": "The Pinewood Taiga",
+   "before": 11,
+   "beforeNew": 11,
+   "beforeOld": 0,
+   "after": 11,
+   "afterNew": 11,
+   "afterOld": 0,
+   "keptNew": [
+    "snowshoe-hare (first-clear pack, PRO deck)",
+    "frost-hare-sprinter (first-clear pack, PRO deck)",
+    "trickster-fox (PRO deck)",
+    "dhole-runner (PRO deck)",
+    "alpha-howler (showcase, PRO deck)",
+    "boreal-elk (PRO deck)",
+    "woodland-caribou (reward, showcase, PRO deck)",
+    "wolf-pack-runner (PRO deck)",
+    "taiga-lynx (reward, PRO deck)",
+    "dhole-matriarch (reward, PRO deck)",
+    "cone-cutter-squirrel (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "snowshoe-hare",
+    "frost-hare-sprinter",
+    "dhole-runner",
+    "trickster-fox",
+    "alpha-howler",
+    "boreal-elk",
+    "woodland-caribou",
+    "wolf-pack-runner",
+    "taiga-lynx",
+    "dhole-matriarch",
+    "cone-cutter-squirrel"
+   ]
+  },
+  "mn": {
+   "no": 16,
+   "map": "m4",
+   "sub": "mn",
+   "name": "The Glimmer Depths",
+   "before": 15,
+   "beforeNew": 8,
+   "beforeOld": 7,
+   "after": 12,
+   "afterNew": 7,
+   "afterOld": 5,
+   "keptNew": [
+    "cave-cricket (PRO deck)",
+    "cave-swiftlet (PRO deck)",
+    "lantern-spark-fly (reward, PRO deck)",
+    "barrow-leech-bat (PRO deck)",
+    "cave-flitter (PRO deck)",
+    "glimmer-spider (PRO deck)",
+    "cave-bat-swarm"
+   ],
+   "keptOld": [
+    "beetle-grunt",
+    "swarm-matriarch",
+    "glowworm-cluster",
+    "tunnel-ant",
+    "prospector-mole"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "monarch-wingblade"
+   ],
+   "trimmedOld": [
+    "bat-swarmling",
+    "oilbird"
+   ],
+   "keep": [
+    "lantern-spark-fly",
+    "barrow-leech-bat",
+    "beetle-grunt",
+    "cave-bat-swarm",
+    "cave-cricket",
+    "cave-flitter",
+    "cave-swiftlet",
+    "glowworm-cluster",
+    "swarm-matriarch",
+    "tunnel-ant",
+    "glimmer-spider",
+    "prospector-mole"
+   ]
+  },
+  "m6": {
+   "no": 17,
+   "map": "m6",
+   "sub": null,
+   "name": "Wolfsbane Tundra",
+   "before": 14,
+   "beforeNew": 14,
+   "beforeOld": 0,
+   "after": 12,
+   "afterNew": 12,
+   "afterOld": 0,
+   "keptNew": [
+    "ravenous-wolverine (PRO deck)",
+    "glacial-ape-king (showcase, PRO deck)",
+    "frostmoon-howler (PRO deck)",
+    "snow-ermine (first-clear pack, PRO deck)",
+    "walrus-icebreaker (reward, PRO deck)",
+    "harbor-seal (first-clear pack)",
+    "snow-bunting-archer (first-clear pack, PRO deck)",
+    "lone-grey-wolf (reward)",
+    "polar-bear (reward, PRO deck)",
+    "spitting-spider (PRO deck)",
+    "talus-pika (PRO deck)",
+    "musk-ox-calf (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "musk-ox-matriarch",
+    "beluga"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "snow-ermine",
+    "harbor-seal",
+    "glacial-ape-king",
+    "snow-bunting-archer",
+    "spitting-spider",
+    "frostmoon-howler",
+    "ravenous-wolverine",
+    "lone-grey-wolf",
+    "walrus-icebreaker",
+    "polar-bear",
+    "musk-ox-calf",
+    "talus-pika"
+   ]
+  },
+  "md": {
+   "no": 18,
+   "map": "md",
+   "sub": null,
+   "name": "The Glass Dunes",
+   "before": 16,
+   "beforeNew": 16,
+   "beforeOld": 0,
+   "after": 14,
+   "afterNew": 14,
+   "afterOld": 0,
+   "keptNew": [
+    "roadrunner-courier (first-clear pack, PRO deck)",
+    "caustic-scorpion (reward, PRO deck)",
+    "dromedary (PRO deck)",
+    "sandfish (first-clear pack)",
+    "dust-devil-kestrel (reward, PRO deck)",
+    "komodo-warlord (showcase)",
+    "antlion-pit (reward, PRO deck)",
+    "obsidian-scorpion (reward, showcase, PRO deck)",
+    "thorny-devil (reward, PRO deck)",
+    "glasswing-moth (PRO deck)",
+    "tarantula-hawk (PRO deck)",
+    "dune-packrat (PRO deck)",
+    "frillneck-duelist (PRO deck)",
+    "inland-taipan (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "fennec-fox",
+    "static-fennec"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "thorny-devil",
+    "roadrunner-courier",
+    "sandfish",
+    "komodo-warlord",
+    "caustic-scorpion",
+    "dromedary",
+    "antlion-pit",
+    "obsidian-scorpion",
+    "dust-devil-kestrel",
+    "glasswing-moth",
+    "frillneck-duelist",
+    "tarantula-hawk",
+    "inland-taipan",
+    "dune-packrat"
+   ]
+  },
+  "my": {
+   "no": 18,
+   "map": "m5",
+   "sub": "my",
+   "name": "The Canopy",
+   "before": 16,
+   "beforeNew": 8,
+   "beforeOld": 8,
+   "after": 13,
+   "afterNew": 7,
+   "afterOld": 6,
+   "keptNew": [
+    "siege-rhino (PRO deck)",
+    "bramblewood-macaque (PRO deck)",
+    "termite-mound (PRO deck)",
+    "ancient-sloth-titan (showcase)",
+    "kinkajou-lurker (reward, PRO deck)",
+    "jaguar-stalker (reward, PRO deck)",
+    "hercules-beetle (reward, PRO deck)"
+   ],
+   "keptOld": [
+    "slowpoke-sentinel",
+    "slow-loris",
+    "toucan-courier",
+    "chilli-parrot",
+    "velvet-worm",
+    "carrion-crow"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "howler-monkey"
+   ],
+   "trimmedOld": [
+    "aye-aye-prowler",
+    "old-growth-tortoise"
+   ],
+   "keep": [
+    "jaguar-stalker",
+    "hercules-beetle",
+    "kinkajou-lurker",
+    "ancient-sloth-titan",
+    "bramblewood-macaque",
+    "chilli-parrot",
+    "siege-rhino",
+    "slow-loris",
+    "slowpoke-sentinel",
+    "termite-mound",
+    "toucan-courier",
+    "velvet-worm",
+    "carrion-crow"
+   ]
+  },
+  "m3": {
+   "no": 19,
+   "map": "m3",
+   "sub": null,
+   "name": "Ashen Spurn",
+   "before": 12,
+   "beforeNew": 12,
+   "beforeOld": 0,
+   "after": 8,
+   "afterNew": 8,
+   "afterOld": 0,
+   "keptNew": [
+    "porcupine-roller (PRO deck)",
+    "cinder-stoker (first-clear pack, PRO deck)",
+    "quill-volley (reward, PRO deck)",
+    "yeti (showcase)",
+    "echidna-quillshot (reward, PRO deck)",
+    "glacier-wolf-pack (PRO deck)",
+    "fire-salamander (reward, PRO deck)",
+    "pumice-beetle (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [],
+   "trimmedNew": [
+    "magma-titan",
+    "scree-goat",
+    "phoenix-fledgling",
+    "granite-ox-golem"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "cinder-stoker",
+    "yeti",
+    "glacier-wolf-pack",
+    "porcupine-roller",
+    "fire-salamander",
+    "quill-volley",
+    "echidna-quillshot",
+    "pumice-beetle"
+   ]
+  },
+  "mpd": {
+   "no": 19,
+   "map": "md",
+   "sub": "mpd",
+   "name": "The Pale Desert",
+   "before": 18,
+   "beforeNew": 14,
+   "beforeOld": 4,
+   "after": 12,
+   "afterNew": 8,
+   "afterOld": 4,
+   "keptNew": [
+    "rabid-jackal (PRO deck)",
+    "cinder-gecko (PRO deck)",
+    "stonedrop-vulture (PRO deck)",
+    "pale-oryx (PRO deck)",
+    "quicksand-queen (reward, PRO deck)",
+    "armadillo-guard (PRO deck)",
+    "sandstorm-roc (PRO deck)",
+    "horned-lizard (PRO deck)"
+   ],
+   "keptOld": [
+    "trapdoor-spider",
+    "dust-hyena",
+    "carrion-crow",
+    "meerkat-burrower"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "dune-jackal-scout",
+    "sand-widow",
+    "skull-vulture",
+    "dune-jackal",
+    "meerkat-sentry",
+    "moon-jerboa"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "quicksand-queen",
+    "armadillo-guard",
+    "cinder-gecko",
+    "dust-hyena",
+    "horned-lizard",
+    "meerkat-burrower",
+    "pale-oryx",
+    "rabid-jackal",
+    "sandstorm-roc",
+    "stonedrop-vulture",
+    "trapdoor-spider",
+    "carrion-crow"
+   ]
+  },
+  "m11": {
+   "no": 20,
+   "map": "m11",
+   "sub": null,
+   "name": "The Sundered Peak",
+   "before": 17,
+   "beforeNew": 16,
+   "beforeOld": 1,
+   "after": 16,
+   "afterNew": 15,
+   "afterOld": 1,
+   "keptNew": [
+    "cave-warlord (showcase, PRO deck)",
+    "bear-cub (PRO deck)",
+    "magma-salamander (PRO deck)",
+    "pack-mule (reward, PRO deck)",
+    "ashbone-ghoul (first-clear pack, PRO deck)",
+    "ash-cloud-condor (reward, PRO deck)",
+    "ossuary-lammergeier (reward, PRO deck)",
+    "magma-wraith (reward, PRO deck)",
+    "woodland-brawler (reward, PRO deck)",
+    "cinder-skeleton (first-clear pack)",
+    "obsidian-lich (PRO deck)",
+    "ash-moth (PRO deck)",
+    "firefly-swarm (PRO deck)",
+    "glasswing-butterfly (PRO deck)",
+    "fire-hawk (PRO deck)"
+   ],
+   "keptOld": [],
+   "addedOld": [
+    "ancient-sloth-titan"
+   ],
+   "trimmedNew": [
+    "pall-wraith"
+   ],
+   "trimmedOld": [
+    "marmot-stonecutter"
+   ],
+   "keep": [
+    "pack-mule",
+    "cinder-skeleton",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "bear-cub",
+    "magma-wraith",
+    "ash-cloud-condor",
+    "magma-salamander",
+    "woodland-brawler",
+    "ossuary-lammergeier",
+    "obsidian-lich",
+    "ash-moth",
+    "glasswing-butterfly",
+    "firefly-swarm",
+    "fire-hawk",
+    "ancient-sloth-titan"
+   ]
+  },
+  "me": {
+   "no": 20,
+   "map": "m11",
+   "sub": "me",
+   "name": "Eye of the Volcano",
+   "before": 11,
+   "beforeNew": 5,
+   "beforeOld": 6,
+   "after": 10,
+   "afterNew": 5,
+   "afterOld": 5,
+   "keptNew": [
+    "the-contradiction (reward)",
+    "fumarole-ibex",
+    "basalt-boar",
+    "gorge-wyrm",
+    "silverback-brawler"
+   ],
+   "keptOld": [
+    "cinder-stoker",
+    "cinder-gecko",
+    "blessed-avatar",
+    "sulfur-vent-crab",
+    "cinder-imp"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [
+    "obsidian-scorpion"
+   ],
+   "keep": [
+    "the-contradiction",
+    "basalt-boar",
+    "blessed-avatar",
+    "cinder-gecko",
+    "cinder-imp",
+    "cinder-stoker",
+    "fumarole-ibex",
+    "gorge-wyrm",
+    "silverback-brawler",
+    "sulfur-vent-crab"
+   ]
+  },
+  "mx": {
+   "no": 20,
+   "map": "m11",
+   "sub": "mx",
+   "name": "Volcano Lair",
+   "before": 14,
+   "beforeNew": 10,
+   "beforeOld": 4,
+   "after": 11,
+   "afterNew": 7,
+   "afterOld": 4,
+   "keptNew": [
+    "ember-jackal (PRO deck)",
+    "tide-spirit (PRO deck)",
+    "fire-drake-hatchling (reward)",
+    "basalt-boar (PRO deck)",
+    "cinder-hornet (PRO deck)",
+    "magma-titan (PRO deck)",
+    "ember-centipede"
+   ],
+   "keptOld": [
+    "cinder-stoker",
+    "cinder-gecko",
+    "cinder-imp",
+    "obsidian-scorpion"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "gorge-wyrm",
+    "pyroclast-wyrm",
+    "silverback-brawler"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "fire-drake-hatchling",
+    "basalt-boar",
+    "cinder-gecko",
+    "cinder-hornet",
+    "cinder-imp",
+    "cinder-stoker",
+    "ember-centipede",
+    "ember-jackal",
+    "magma-titan",
+    "obsidian-scorpion",
+    "tide-spirit"
+   ]
+  },
+  "m21": {
+   "no": 21,
+   "map": "m21",
+   "sub": null,
+   "name": "The Quiet Summit",
+   "before": 9,
+   "beforeNew": 6,
+   "beforeOld": 3,
+   "after": 9,
+   "afterNew": 6,
+   "afterOld": 3,
+   "keptNew": [
+    "pika-hoarder (reward)",
+    "glacier-yak (first-clear pack, showcase)",
+    "snow-owl-sentinel (reward)",
+    "snow-leopard (first-clear pack)",
+    "eagle-sharpshooter",
+    "scree-goat"
+   ],
+   "keptOld": [
+    "alpine-marmot",
+    "mountain-goat-climber",
+    "golden-eagle-diver"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "pika-hoarder",
+    "glacier-yak",
+    "eagle-sharpshooter",
+    "alpine-marmot",
+    "mountain-goat-climber",
+    "scree-goat",
+    "golden-eagle-diver",
+    "snow-leopard",
+    "snow-owl-sentinel"
+   ]
+  },
+  "mo": {
+   "no": 21,
+   "map": "m1",
+   "sub": "mo",
+   "name": "The Old Bramble",
+   "before": 9,
+   "beforeNew": 3,
+   "beforeOld": 6,
+   "after": 8,
+   "afterNew": 3,
+   "afterOld": 5,
+   "keptNew": [
+    "elder-willow (PRO deck)",
+    "ent (reward)",
+    "thornwood-palisade"
+   ],
+   "keptOld": [
+    "otter-paddler",
+    "pond-trout",
+    "tunnel-ant",
+    "burrow-rabbit",
+    "glacier-wolf-pack"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [
+    "trash-panda-trickster"
+   ],
+   "keep": [
+    "ent",
+    "burrow-rabbit",
+    "elder-willow",
+    "glacier-wolf-pack",
+    "otter-paddler",
+    "pond-trout",
+    "thornwood-palisade",
+    "tunnel-ant"
+   ]
+  },
+  "mi": {
+   "no": 21,
+   "map": "m6",
+   "sub": "mi",
+   "name": "The Ice Hollow",
+   "before": 11,
+   "beforeNew": 8,
+   "beforeOld": 3,
+   "after": 9,
+   "afterNew": 7,
+   "afterOld": 2,
+   "keptNew": [
+    "krill-swarm (PRO deck)",
+    "lemming-swarm (PRO deck)",
+    "ringed-seal (PRO deck)",
+    "greenland-shark (reward)",
+    "arctic-tern (PRO deck)",
+    "ice-crevasse-wolf (PRO deck)",
+    "harp-seal-pup"
+   ],
+   "keptOld": [
+    "frost-hare-sprinter",
+    "alpha-howler"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "arctic-fox-raider"
+   ],
+   "trimmedOld": [
+    "boreal-elk"
+   ],
+   "keep": [
+    "greenland-shark",
+    "alpha-howler",
+    "arctic-tern",
+    "frost-hare-sprinter",
+    "harp-seal-pup",
+    "ice-crevasse-wolf",
+    "krill-swarm",
+    "lemming-swarm",
+    "ringed-seal"
+   ]
+  },
+  "m22": {
+   "no": 22,
+   "map": "m22",
+   "sub": null,
+   "name": "The Rimefire Caldera",
+   "before": 13,
+   "beforeNew": 9,
+   "beforeOld": 4,
+   "after": 11,
+   "afterNew": 7,
+   "afterOld": 4,
+   "keptNew": [
+    "rimefire-salamander (reward)",
+    "ur-elk (reward)",
+    "badger-berserker (first-clear pack)",
+    "ice-petrel (first-clear pack)",
+    "caldera-snow-leopard (reward)",
+    "permafrost-mammoth",
+    "weathervane-swift"
+   ],
+   "keptOld": [
+    "cinder-gecko",
+    "cinder-hornet",
+    "gorge-wyrm",
+    "fumarole-ibex"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "ashwing-ptarmigan",
+    "petrified-tree"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "cinder-gecko",
+    "cinder-hornet",
+    "gorge-wyrm",
+    "permafrost-mammoth",
+    "ice-petrel",
+    "rimefire-salamander",
+    "badger-berserker",
+    "fumarole-ibex",
+    "ur-elk",
+    "caldera-snow-leopard",
+    "weathervane-swift"
+   ]
+  },
+  "mlb": {
+   "no": 22,
+   "map": "m22",
+   "sub": "mlb",
+   "skipped": true,
+   "before": 6,
+   "after": 6
+  },
+  "m23": {
+   "no": 23,
+   "map": "m23",
+   "sub": null,
+   "name": "The Goldfeather Siege",
+   "before": 12,
+   "beforeNew": 7,
+   "beforeOld": 5,
+   "after": 12,
+   "afterNew": 7,
+   "afterOld": 5,
+   "keptNew": [
+    "badger-trench-digger (first-clear pack)",
+    "howdah-archers (first-clear pack)",
+    "testudo-tortoise (reward)",
+    "war-elephant (reward)",
+    "trebuchet-crew",
+    "marching-elephant",
+    "werebadger"
+   ],
+   "keptOld": [
+    "beetle-battering-ram",
+    "siege-rhino",
+    "mouse-sapper",
+    "balloon-archer",
+    "pack-mule"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [],
+   "keep": [
+    "mouse-sapper",
+    "badger-trench-digger",
+    "pack-mule",
+    "balloon-archer",
+    "howdah-archers",
+    "siege-rhino",
+    "trebuchet-crew",
+    "testudo-tortoise",
+    "beetle-battering-ram",
+    "war-elephant",
+    "marching-elephant",
+    "werebadger"
+   ]
+  },
+  "m9": {
+   "no": 23,
+   "map": "m3",
+   "sub": "m9",
+   "name": "Basalt Foundry",
+   "before": 19,
+   "beforeNew": 2,
+   "beforeOld": 17,
+   "after": 17,
+   "afterNew": 2,
+   "afterOld": 15,
+   "keptNew": [
+    "pyroclast-wyrm (showcase)",
+    "ember-revenant (reward)"
+   ],
+   "keptOld": [
+    "cinder-imp",
+    "hellbender",
+    "tide-spirit",
+    "ashbone-ghoul",
+    "chained-binturong",
+    "ember-jackal",
+    "obsidian-scorpion",
+    "beaver-lumberjack",
+    "cinder-gecko",
+    "basalt-boar",
+    "ash-cloud-condor",
+    "hercules-beetle",
+    "flagellant-vulture",
+    "fruit-bat-familiar",
+    "magma-salamander"
+   ],
+   "addedOld": [],
+   "trimmedNew": [],
+   "trimmedOld": [
+    "sulfur-vent-crab",
+    "vampire-finch"
+   ],
+   "keep": [
+    "ember-revenant",
+    "ash-cloud-condor",
+    "ashbone-ghoul",
+    "basalt-boar",
+    "beaver-lumberjack",
+    "chained-binturong",
+    "cinder-gecko",
+    "cinder-imp",
+    "ember-jackal",
+    "flagellant-vulture",
+    "fruit-bat-familiar",
+    "hellbender",
+    "hercules-beetle",
+    "magma-salamander",
+    "obsidian-scorpion",
+    "pyroclast-wyrm",
+    "tide-spirit"
+   ]
+  },
+  "m24": {
+   "no": 24,
+   "map": "m24",
+   "sub": null,
+   "name": "Goldfeather Keep",
+   "before": 10,
+   "beforeNew": 8,
+   "beforeOld": 2,
+   "after": 9,
+   "afterNew": 7,
+   "afterOld": 2,
+   "keptNew": [
+    "mallard-halberdier (first-clear pack)",
+    "duckling-squadron (first-clear pack)",
+    "tax-collector-teal (first-clear pack)",
+    "elderhorn-monarch (first-clear pack)",
+    "gilded-swan-knight (reward, showcase)",
+    "iron-warden (reward)",
+    "battlement-heron (reward)"
+   ],
+   "keptOld": [
+    "lodge-engineer",
+    "mallard-marauder"
+   ],
+   "addedOld": [],
+   "trimmedNew": [
+    "goose-sentry"
+   ],
+   "trimmedOld": [],
+   "keep": [
+    "duckling-squadron",
+    "elderhorn-monarch",
+    "tax-collector-teal",
+    "lodge-engineer",
+    "mallard-halberdier",
+    "mallard-marauder",
+    "battlement-heron",
+    "gilded-swan-knight",
+    "iron-warden"
+   ]
+  }
+ },
+ "moves": [
+  {
+   "id": "mountain-goat-climber",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mc"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m10"
+   }
+  },
+  {
+   "id": "magma-titan",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "mx"
+   }
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "mx"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "m9"
+   }
+  },
+  {
+   "id": "scree-goat",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m3"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "m21"
+   }
+  },
+  {
+   "id": "salvager-hermit-crab",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m7"
+   },
+   "to": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mj"
+   }
+  }
+ ],
+ "awaiting": [
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "mn"
+   },
+   "mapNo": 16
+  },
+  {
+   "id": "fungal-colossus",
+   "name": "Fungal Colossus",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mu"
+   },
+   "mapNo": 7
+  },
+  {
+   "id": "crocodile-ambusher",
+   "name": "Crocodile Ambusher",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "stag-knight",
+   "name": "Stag Knight",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mh"
+   },
+   "mapNo": 12
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "name": "Hollow Oath-Keeper",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "my"
+   },
+   "mapNo": 18
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "mi"
+   },
+   "mapNo": 21
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "gull-thief",
+   "name": "Gull Thief",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "mapNo": 2
+  },
+  {
+   "id": "mangrove-monitor",
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "mpd"
+   },
+   "mapNo": 19
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m3"
+   },
+   "mapNo": 19
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mc"
+   },
+   "mapNo": 3
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "ml"
+   },
+   "mapNo": 15
+  },
+  {
+   "id": "skull-vulture",
+   "name": "Skull Vulture",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "mpd"
+   },
+   "mapNo": 19
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m11"
+   },
+   "mapNo": 20
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mq"
+   },
+   "mapNo": 12
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "fennec-fox",
+   "name": "Fennec Fox",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "md"
+   },
+   "mapNo": 18
+  },
+  {
+   "id": "bombardier-beetle",
+   "name": "Bombardier Beetle",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mu"
+   },
+   "mapNo": 7
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mh"
+   },
+   "mapNo": 12
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m5"
+   },
+   "mapNo": 14
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mq"
+   },
+   "mapNo": 12
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mu"
+   },
+   "mapNo": 7
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mu"
+   },
+   "mapNo": 7
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m1"
+   },
+   "mapNo": 0
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m5"
+   },
+   "mapNo": 14
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m5"
+   },
+   "mapNo": 14
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "m22"
+   },
+   "mapNo": 22
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "m24"
+   },
+   "mapNo": 24
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mf"
+   },
+   "mapNo": 1
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mb"
+   },
+   "mapNo": 2
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mc"
+   },
+   "mapNo": 3
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "ms"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mr"
+   },
+   "mapNo": 13
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m7"
+   },
+   "mapNo": 10
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "ml"
+   },
+   "mapNo": 15
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "ml"
+   },
+   "mapNo": 15
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m6"
+   },
+   "mapNo": 17
+  },
+  {
+   "id": "petrified-tree",
+   "name": "Petrified Tree",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 4,
+    "map": "m22"
+   },
+   "mapNo": 22
+  },
+  {
+   "id": "coffer-mimic",
+   "name": "Coffer Mimic",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "name": "Ironclaw Fiddler",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mk"
+   },
+   "mapNo": 9
+  },
+  {
+   "id": "barkplate-beetle",
+   "name": "Barkplate Beetle",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mu"
+   },
+   "mapNo": 7
+  },
+  {
+   "id": "bloodscent-shark",
+   "name": "Bloodscent Shark",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m7"
+   },
+   "mapNo": 10
+  },
+  {
+   "id": "cane-toad",
+   "name": "Cane Toad",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "musk-ox-matriarch",
+   "name": "Musk Ox Matriarch",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m6"
+   },
+   "mapNo": 17
+  },
+  {
+   "id": "gravel-mole",
+   "name": "Gravel Mole",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "badger-stonemason",
+   "name": "Badger Stonemason",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m4"
+   },
+   "mapNo": 8
+  },
+  {
+   "id": "marsh-mallow-hare",
+   "name": "Marsh-mallow Hare",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "sphagnum-vole",
+   "name": "Sphagnum Vole",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "mw"
+   },
+   "mapNo": 5
+  },
+  {
+   "id": "gale-swift",
+   "name": "Gale Swift",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "m10"
+   },
+   "mapNo": 11
+  },
+  {
+   "id": "static-fennec",
+   "name": "Static Fennec",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "md"
+   },
+   "mapNo": 18
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m2"
+   },
+   "mapNo": 4
+  },
+  {
+   "id": "peat-cutter-vole",
+   "name": "Peat-cutter Vole",
+   "rarity": "common",
+   "from": {
+    "kind": "pack",
+    "tier": 1,
+    "map": "m8"
+   },
+   "mapNo": 6
+  },
+  {
+   "id": "magpie-collector",
+   "name": "Magpie Collector",
+   "rarity": "uncommon",
+   "from": {
+    "kind": "pack",
+    "tier": 2,
+    "map": "mh"
+   },
+   "mapNo": 12
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "from": {
+    "kind": "pack",
+    "tier": 3,
+    "map": "m3"
+   },
+   "mapNo": 19
+  }
+ ],
+ "added": [
+  {
+   "list": "m10",
+   "id": "swamp-alligator",
+   "fights": 2
+  },
+  {
+   "list": "m11",
+   "id": "ancient-sloth-titan",
+   "fights": 2
+  }
+ ],
+ "summary": {
+  "lists": 44,
+  "cardsBefore": 736,
+  "cardsAfter": 611,
+  "moves": 5,
+  "awaiting": 81
+ }
+}
