@@ -62,20 +62,23 @@ FIELD_LABEL = {'undergrowth': 'Undergrowth', 'sporeCloud': 'Spore Cloud', 'grasp
 # Owner 10-28 21:49 (coordinator relay): "submaps should have only 1-3 unique cards. (How to decide - you can ask me. But to me, it's how
 # obviously supposedly a full dwelve into a new location or just additional challenges)". A full delve gets 3, additional challenges 1, and a
 # side map we could not call is "ask owner" (2 as a placeholder). The owner corrects this table; re-run the script after.
-SIDE_UNIQUE = {'delve': 3, 'challenge': 1, 'ask': 2}
+SIDE_UNIQUE = {'delve': 3, 'challenge': 1, 'ask': 2, 'boss': 5}
+# 2026-10-28 (owner 23:06): "If the theme is unique, then it's a new location (like grotto) otherwise, like those in Map 20, they are just
+# extra challenges. ... Dragon Lair is our overall 0-20 big boss, so it deserves more unique cards and also a flair that's not the normal
+# boss flair." The five ask-owner submaps are classed by that rule; the Volcano Lair gets its own 'boss' class (5 unique + 10 carried).
 SIDE_CLASS = {
     'mp': ('delve', 'A pond of its own (river, lily pads, beaver dams) off a beach map, 7 fights: a new biome, not more of the beach.'),
-    'mg': ('ask', 'A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach\'s extra challenge?'),
+    'mg': ('delve', 'Owner 23:06: a new location (its own theme). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach\'s extra challenge?'),
     'mz': ('challenge', 'Under the Morel Hollow, the same fungal biome, 5 fights: more of the parent\'s hollow.'),
-    'mj': ('ask', 'A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights.'),
-    'mq': ('ask', 'A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights.'),
+    'mj': ('delve', 'Owner 23:06 rule: its own theme (the sunken ferry), so a new location. A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights.'),
+    'mq': ('challenge', 'Owner 23:06 rule: the same meadow theme, so extra challenges. A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights.'),
     'ms': ('challenge', 'The swamp swallowing an old forest: the same swamp biome as Gatorback Swamp, 4 fights.'),
     'mv': ('challenge', 'The oldest nests on the same mountain as Eyrie Heights, 4 fights.'),
-    'mn': ('ask', 'Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage.'),
+    'mn': ('delve', 'Owner 23:06 rule: its own crystal theme, so a new location. Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage.'),
     'my': ('delve', 'The rainforest roof: a jungle biome, not the savanna of its parent, with its own High Canopy.'),
     'mpd': ('delve', 'Its own biome (the pale desert past the glass), 9 fights.'),
-    'me': ('ask', 'Inside the Sundered Peak\'s crater, same volcanic biome, but 7 fights and its own people (the dead at the fire).'),
-    'mx': ('challenge', 'The Sundered Peak\'s own finale: the dragon\'s lair and the world boss, 4 fights.'),
+    'me': ('challenge', 'Owner 23:06: like the other Map 20 submaps, extra challenges. Inside the Sundered Peak\'s crater, same volcanic biome, but 7 fights and its own people (the dead at the fire).'),
+    'mx': ('boss', 'Owner 23:06: the overall 0-20 big boss, more unique cards and its own flair. The Sundered Peak\'s own finale: the dragon\'s lair and the world boss, 4 fights.'),
     'mo': ('challenge', 'A return to the Outskirts\' thorns for a late challenge, 4 fights.'),
     'mi': ('challenge', 'An ice cave under Wolfsbane Tundra, the same tundra biome, 4 fights.'),
     'm9': ('delve', 'A furnace city of its own (10 fights, the metal and fire workshops), a full map in size.'),
@@ -431,7 +434,9 @@ def main():
         n_c = CARRY_MAX if len(u) < CAP_UNIQUE_MAIN else CARRY_MIN
         n_c = max(n_c, TOTAL_MAIN[0] - len(u))
         if m['sub']:
-            n_c = min(SUB_TOTAL[1] - len(u), max(SUB_CARRY_MIN, SUB_TARGET - len(u)))
+            # 2026-10-28 (owner 23:06): the Volcano Lair (boss class) keeps 10 carried beside its 5 unique, 15 in all, over the 14 cap.
+            hi_ = SUB_TOTAL[1] + (1 if SIDE_CLASS.get(k, ('',))[0] == 'boss' else 0)
+            n_c = min(hi_ - len(u), max(SUB_CARRY_MIN, SUB_TARGET - len(u)))
         opts = []
         if m['no'] == 0:
             pool_c = [i for i in cur[k] if i in base_ids]
@@ -541,7 +546,7 @@ def main():
                                               (' New in its fights: ' + ', '.join(th['newSkills']) + '.') if th['newSkills'] else '')
         sc_ = SIDE_CLASS.get(k) if m['sub'] and not m['skipped'] else None
         entry = {'sideClass': ({'class': sc_[0], 'label': {'delve': 'a full delve into a new location', 'challenge': 'additional challenges on the parent map',
-                                                           'ask': 'ask owner'}[sc_[0]], 'unique': SIDE_UNIQUE[sc_[0]], 'reason': sc_[1]} if sc_ else None),
+                                                           'ask': 'ask owner', 'boss': 'the 0-20 final boss (more unique cards, its own flair)'}[sc_[0]], 'unique': SIDE_UNIQUE[sc_[0]], 'reason': sc_[1]} if sc_ else None),
                  'key': k, 'no': m['no'], 'name': m['name'], 'sub': m['sub'], 'parent': m['parent'], 'skipped': m['skipped'], 'theme': th,
                  'cap': m['cap'], 'current': {'ids': cur[k], 'n': len(cur[k]), 'new': m['n']['new'], 'carried': m['n']['old']}}
         if m['skipped']:
@@ -580,6 +585,8 @@ def main():
         if not nh:
             mflags.append('no high-cost card')
         lo, hi = SUB_TOTAL if m['sub'] else TOTAL_MAIN
+        if m['sub'] and SIDE_CLASS.get(k, ('',))[0] == 'boss':
+            hi += 1
         if n < lo:
             mflags.append('%d cards (under %d)' % (n, lo))
         if n > hi:
@@ -728,7 +735,7 @@ def write_md(d, by):
     a('| Submap | Opens at | Call | Unique | Why |')
     a('|---|---|---|---|---|')
     for x in d['sideClasses']:
-        a('| %s | %s | %s | %d | %s |' % (x['name'], mk[x['key']]['no'], {'delve': 'Full delve', 'challenge': 'Additional challenges', 'ask': '**Ask owner**'}[x['class']], x['unique'], x['reason']))
+        a('| %s | %s | %s | %d | %s |' % (x['name'], mk[x['key']]['no'], {'delve': 'Full delve', 'challenge': 'Additional challenges', 'ask': '**Ask owner**', 'boss': 'Final boss (own flair)'}[x['class']], x['unique'], x['reason']))
     a('')
     a('## The numbers')
     a('')

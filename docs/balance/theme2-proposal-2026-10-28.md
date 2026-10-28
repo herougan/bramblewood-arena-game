@@ -19,17 +19,17 @@ The owner's balancing plan (10-28 21:40), steps 1 and 2: *"uniquely identifying 
 | Submap | Opens at | Call | Unique | Why |
 |---|---|---|---|---|
 | Lilypad Reach | 6 | Full delve | 3 | A pond of its own (river, lily pads, beaver dams) off a beach map, 7 fights: a new biome, not more of the beach. |
-| Smugglers' Grotto | 7 | **Ask owner** | 2 | A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge? |
+| Smugglers' Grotto | 7 | Full delve | 3 | Owner 23:06: a new location (its own theme). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge? |
 | The Mycelium Deep | 8 | Additional challenges | 1 | Under the Morel Hollow, the same fungal biome, 5 fights: more of the parent's hollow. |
-| The Sunken Depths | 11 | **Ask owner** | 2 | A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights. |
-| Clovermead | 12 | **Ask owner** | 2 | A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights. |
+| The Sunken Depths | 11 | Full delve | 3 | Owner 23:06 rule: its own theme (the sunken ferry), so a new location. A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights. |
+| Clovermead | 12 | Additional challenges | 1 | Owner 23:06 rule: the same meadow theme, so extra challenges. A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights. |
 | The Sunken Grove | 13 | Additional challenges | 1 | The swamp swallowing an old forest: the same swamp biome as Gatorback Swamp, 4 fights. |
 | The Aerie Vault | 15 | Additional challenges | 1 | The oldest nests on the same mountain as Eyrie Heights, 4 fights. |
-| The Glimmer Depths | 16 | **Ask owner** | 2 | Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage. |
+| The Glimmer Depths | 16 | Full delve | 3 | Owner 23:06 rule: its own crystal theme, so a new location. Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage. |
 | The Canopy | 18 | Full delve | 3 | The rainforest roof: a jungle biome, not the savanna of its parent, with its own High Canopy. |
 | The Pale Desert | 19 | Full delve | 3 | Its own biome (the pale desert past the glass), 9 fights. |
-| Eye of the Volcano | 20 | **Ask owner** | 2 | Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire). |
-| Volcano Lair | 20 | Additional challenges | 1 | The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights. |
+| Eye of the Volcano | 20 | Additional challenges | 1 | Owner 23:06: like the other Map 20 submaps, extra challenges. Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire). |
+| Volcano Lair | 20 | Final boss (own flair) | 5 | Owner 23:06: the overall 0-20 big boss, more unique cards and its own flair. The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights. |
 | The Old Bramble | 21 | Additional challenges | 1 | A return to the Outskirts' thorns for a late challenge, 4 fights. |
 | The Ice Hollow | 21 | Additional challenges | 1 | An ice cave under Wolfsbane Tundra, the same tundra biome, 4 fights. |
 | Basalt Foundry | 23 | Full delve | 3 | A furnace city of its own (10 fights, the metal and fire workshops), a full map in size. |
@@ -38,16 +38,16 @@ The owner's balancing plan (10-28 21:40), steps 1 and 2: *"uniquely identifying 
 
 | | Now | Proposed |
 |---|---|---|
-| List entries (40 lists) | 613 | 559 |
-| Different cards on a list | 509 | 307 (302 unique homes + 5 carried only) |
+| List entries (40 lists) | 613 | 565 |
+| Different cards on a list | 509 | 311 (306 unique homes + 5 carried only) |
 | Skirmish rewards among the unique | | 108 |
-| Cards on no list (packs, faction pool, Mystery Booster, no-source creatures) | | 426 |
+| Cards on no list (packs, faction pool, Mystery Booster, no-source creatures) | | 422 |
 
 | Old pack | Maps | Cards | On a list now | Unique on a map | (in its range) | Carried only | On no list |
 |---|---|---|---|---|---|---|---|
 | Hedgerow Pouch (tier 1) | Maps 0-6 | 145 | 87 | 52 | 49 | 0 | 93 |
-| Tidemire Chest (tier 2) | Maps 7-13 | 154 | 132 | 56 | 54 | 0 | 98 |
-| Highcrest Case (tier 3) | Maps 14-20 | 126 | 111 | 53 | 52 | 0 | 73 |
+| Tidemire Chest (tier 2) | Maps 7-13 | 154 | 132 | 57 | 55 | 0 | 97 |
+| Highcrest Case (tier 3) | Maps 14-20 | 126 | 111 | 56 | 55 | 0 | 70 |
 | Pack 4 (tier 4) | Maps 21-27 | 33 | 32 | 19 | 19 | 0 | 14 |
 | Faction pool (tier 11) | - | 53 | 3 | 0 | 0 | 0 | 53 |
 | Mystery Booster (tier 99) | - | 11 | 0 | 0 | 0 | 0 | 11 |
@@ -68,38 +68,38 @@ The owner's balancing plan (10-28 21:40), steps 1 and 2: *"uniquely identifying 
 | &nbsp;&nbsp;↳ Lilypad Reach | 6 | 20 | 13 | 3 | 10 | 15 | 8 | 2 / 2 / 10 | 0.69 | - |
 | Murgle Mayhem | 6 | 6 | kept | | | | | | | |
 | The Morel Hollow | 7 | 17 | 15 | 11 | 4 | 6 | 4 | 2 / 3 / 10 | 0.73 | - |
-| &nbsp;&nbsp;↳ Smugglers' Grotto | 7 | 12 | 12 | 2 | 10 | 10 | 10 | 2 / 2 / 8 | 0.50 | - |
+| &nbsp;&nbsp;↳ Smugglers' Grotto | 7 | 12 | 13 | 3 | 10 | 9 | 10 | 2 / 2 / 9 | 0.54 | - |
 | Caves & Alcoves | 8 | 26 | 15 | 11 | 4 | 16 | 5 | 2 / 2 / 11 | 0.80 | - |
 | &nbsp;&nbsp;↳ The Mycelium Deep | 8 | 10 | 12 | 1 | 11 | 9 | 11 | 1 / 2 / 9 | 0.75 | - |
-| The Kelp Mangroves | 9 | 22 | 15 | 11 | 4 | 12 | 5 | 3 / 2 / 11 | 0.93 | - |
-| Coral Current | 10 | 23 | 15 | 11 | 4 | 13 | 5 | 4 / 2 / 9 | 1.27 | - |
+| The Kelp Mangroves | 9 | 22 | 15 | 11 | 4 | 11 | 4 | 3 / 1 / 12 | 0.93 | - |
+| Coral Current | 10 | 23 | 15 | 11 | 4 | 13 | 5 | 4 / 2 / 9 | 1.20 | - |
 | Eyrie Heights | 11 | 14 | 15 | 11 | 4 | 3 | 4 | 1 / 2 / 12 | 0.67 | - |
-| &nbsp;&nbsp;↳ The Sunken Depths | 11 | 12 | 12 | 2 | 10 | 8 | 8 | 4 / 2 / 6 | 1.42 | - |
+| &nbsp;&nbsp;↳ The Sunken Depths | 11 | 12 | 13 | 3 | 10 | 8 | 9 | 4 / 2 / 7 | 1.38 | - |
 | The Undercroft | 11 | 93 | kept | | | | | | | |
 | The Briar Maze | 12 | 16 | 15 | 11 | 4 | 5 | 4 | 2 / 2 / 11 | 0.73 | - |
-| &nbsp;&nbsp;↳ Clovermead | 12 | 21 | 12 | 2 | 10 | 18 | 9 | 1 / 1 / 10 | 0.33 | - |
+| &nbsp;&nbsp;↳ Clovermead | 12 | 21 | 12 | 1 | 11 | 19 | 10 | 1 / 1 / 10 | 0.33 | - |
 | The Redwood Deep | 13 | 18 | 15 | 11 | 4 | 8 | 5 | 4 / 2 / 9 | 1.07 | - |
 | &nbsp;&nbsp;↳ The Sunken Grove | 13 | 9 | 12 | 1 | 11 | 7 | 10 | 4 / 1 / 7 | 0.92 | - |
 | Savanna Reaches | 14 | 15 | 15 | 11 | 4 | 5 | 5 | 2 / 3 / 11 | 0.80 | - |
 | The Long Grass | 15 | 19 | 15 | 11 | 4 | 8 | 4 | 3 / 3 / 10 | 1.07 | - |
 | &nbsp;&nbsp;↳ The Aerie Vault | 15 | 7 | 12 | 1 | 11 | 5 | 10 | 1 / 1 / 10 | 0.75 | - |
 | The Pinewood Taiga | 16 | 11 | 15 | 11 | 4 | 0 | 4 | 4 / 2 / 9 | 1.00 | - |
-| &nbsp;&nbsp;↳ The Glimmer Depths | 16 | 15 | 12 | 2 | 10 | 13 | 10 | 1 / 2 / 9 | 0.67 | - |
+| &nbsp;&nbsp;↳ The Glimmer Depths | 16 | 15 | 13 | 3 | 10 | 12 | 10 | 1 / 2 / 10 | 0.62 | - |
 | Wolfsbane Tundra | 17 | 14 | 15 | 11 | 4 | 4 | 5 | 2 / 2 / 11 | 0.93 | - |
 | The Glass Dunes | 18 | 16 | 15 | 11 | 4 | 5 | 4 | 1 / 2 / 12 | 1.07 | - |
 | &nbsp;&nbsp;↳ The Canopy | 18 | 16 | 13 | 3 | 10 | 13 | 10 | 1 / 1 / 11 | 0.85 | - |
 | Ashen Spurn | 19 | 12 | 15 | 11 | 4 | 2 | 5 | 5 / 2 / 8 | 1.40 | - |
 | &nbsp;&nbsp;↳ The Pale Desert | 19 | 18 | 13 | 3 | 10 | 14 | 9 | 1 / 2 / 10 | 1.00 | - |
 | The Sundered Peak | 20 | 17 | 15 | 11 | 4 | 6 | 4 | 2 / 2 / 11 | 1.00 | - |
-| &nbsp;&nbsp;↳ Eye of the Volcano | 20 | 11 | 12 | 2 | 10 | 7 | 8 | 1 / 1 / 10 | 0.83 | - |
-| &nbsp;&nbsp;↳ Volcano Lair | 20 | 14 | 12 | 2 | 10 | 10 | 8 | 4 / 1 / 7 | 1.17 | 2 unique over its 1 (skirmish rewards) |
+| &nbsp;&nbsp;↳ Eye of the Volcano | 20 | 11 | 12 | 1 | 11 | 8 | 9 | 1 / 1 / 10 | 0.92 | - |
+| &nbsp;&nbsp;↳ Volcano Lair | 20 | 14 | 15 | 5 | 10 | 7 | 8 | 3 / 1 / 11 | 0.73 | - |
 | The Quiet Summit | 21 | 9 | 15 | 11 | 4 | 1 | 7 | 3 / 2 / 10 | 0.80 | - |
 | &nbsp;&nbsp;↳ The Old Bramble | 21 | 9 | 12 | 1 | 11 | 7 | 10 | 1 / 1 / 10 | 0.58 | - |
 | &nbsp;&nbsp;↳ The Ice Hollow | 21 | 11 | 12 | 1 | 11 | 9 | 10 | 1 / 1 / 10 | 1.00 | - |
-| The Rimefire Caldera | 22 | 13 | 15 | 11 | 4 | 3 | 5 | 5 / 1 / 9 | 1.40 | - |
+| The Rimefire Caldera | 22 | 13 | 15 | 11 | 4 | 4 | 6 | 4 / 1 / 10 | 1.20 | - |
 | The Long Burrow | 22 | 6 | kept | | | | | | | |
 | The Goldfeather Siege | 23 | 12 | 15 | 11 | 4 | 2 | 5 | 6 / 3 / 7 | 1.33 | - |
-| &nbsp;&nbsp;↳ Basalt Foundry | 23 | 19 | 13 | 3 | 10 | 12 | 6 | 3 / 2 / 8 | 0.92 | - |
+| &nbsp;&nbsp;↳ Basalt Foundry | 23 | 19 | 13 | 3 | 10 | 11 | 5 | 3 / 1 / 9 | 1.00 | - |
 | Goldfeather Keep | 24 | 10 | 15 | 11 | 4 | 1 | 6 | 5 / 4 / 8 | 1.13 | - |
 
 ### Map 0: Bramblewood Outskirts (m1)
@@ -140,7 +140,7 @@ The owner's balancing plan (10-28 21:40), steps 1 and 2: *"uniquely identifying 
 
 **Mix.** 15 cards: 1 high-cost (7%), 1 generators (7%), 13 plain (87%); average cost 0.33 (unique 0.50); resources: lumber.
 
-**HUB9 flags.** Resolved: 1 listed before it is obtainable, 3 theme misfit. Left: no source yet (proposed home: this map's pack tier) (Beaver Lumberjack, Ant Hill), on 4 lists (Beaver Lumberjack, Cypress Root Lurker, Marsh-mallow Hare, Ant Hill).
+**HUB9 flags.** Resolved: 1 listed before it is obtainable, 3 theme misfit. Left: no source yet (proposed home: this map's pack tier) (Beaver Lumberjack, Ant Hill), on 4 lists (Cypress Root Lurker, Marsh-mallow Hare, Ant Hill).
 
 ### Submap: Tutorial (opens at 0, side of Bramblewood Outskirts)
 
@@ -205,7 +205,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Mix.** 15 cards: 1 high-cost (7%), 3 generators (20%), 11 plain (73%); average cost 0.40 (unique 0.45); resources: lumber.
 
-**HUB9 flags.** Resolved: 1 on 4+ lists. Left: theme misfit (Badger Lumberjack, Beaver Lumberjack, Bramble Sprout, Cricket Drummer), no source yet (proposed home: this map's pack tier) (Beaver Lumberjack), on 4 lists (Beaver Lumberjack).
+**HUB9 flags.** Resolved: 1 on 4+ lists. Left: theme misfit (Badger Lumberjack, Beaver Lumberjack, Bramble Sprout, Cricket Drummer), on 4 lists (Badger Lumberjack), no source yet (proposed home: this map's pack tier) (Beaver Lumberjack).
 
 ### Map 3: Gannet Cliffs (mc)
 
@@ -266,7 +266,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Mix.** 15 cards: 1 high-cost (7%), 2 generators (13%), 12 plain (80%); average cost 0.60 (unique 0.64); resources: lumber.
 
-**HUB9 flags.** Resolved: 1 theme misfit. Left: no source yet (proposed home: this map's pack tier) (Beaver Lumberjack), on 4 lists (Beaver Lumberjack, Marsh-mallow Hare, Cypress Root Lurker).
+**HUB9 flags.** Resolved: 1 theme misfit. Left: no source yet (proposed home: this map's pack tier) (Beaver Lumberjack), on 4 lists (Marsh-mallow Hare, Cypress Root Lurker).
 
 ### Map 5: Gatorback Swamp (mw)
 
@@ -337,7 +337,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 ### Submap: Lilypad Reach (opens at 6, side of Pebble Beach)
 
-**Theme.** River & pond. A wide, still pond full of lily pads, beaver dams and very territorial ducks. Field: Rain, Tide. New in its fights: Fragile, On ready gold, Regeneration.
+**Theme.** River & pond. A wide, still pond full of lily pads, beaver dams and very territorial ducks. Field: Tide, Rain. New in its fights: Fragile, On ready gold, Regeneration.
 
 **Submap call:** a full delve into a new location (3 unique). A pond of its own (river, lily pads, beaver dams) off a beach map, 7 fights: a new biome, not more of the beach.
 
@@ -410,27 +410,27 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Theme.** Caves & burrows, Coast & shore. A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in. Field: Darkness. New in its fights: Darksight, Cleave.
 
-**Submap call:** ask owner (2 unique). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?
+**Submap call:** a full delve into a new location (3 unique). Owner 23:06: a new location (its own theme). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?
 
-**Unique (2).**
+**Unique (3).**
 - Octopus Tactician (Rare, map 2-B-4, cost 2)  💰cost 2: Caves & burrows; skirmish reward of 2-B-4; also fits Caves & Alcoves, Coral Current, The Sunken Depths, The Glimmer Depths
 - Trash Panda Trickster (Common, pack 2, cost 0) 🪵: Caves & burrows; also fits Caves & Alcoves, The Glimmer Depths
+- Pelican Diver (Rare, pack 2, cost 1): Caves & burrows; also fits Caves & Alcoves, The Glimmer Depths
 
 **Carried (10).** Open-Ocean Hermit Crab (from Pebble Beach, added); Gull Thief (from Pebble Beach, added); Pincushion Urchin (from Pebble Beach, added); Tide Pool Crab (from Pebble Beach, added); Tidepool Trapper Crab (from Pebble Beach, added); Grey Seal Bull (from Pebble Beach, added); Sea Turtle Elder (from Pebble Beach, added); Fiddler Crab Swarm (from Pebble Beach, added); Conch Crawler (from Pebble Beach, added); Conch Herald (from Pebble Beach, added)
 
-**Cut (10).**
+**Cut (9).**
 - Beaver Builder (Common): on no list
 - Blind Cave Fish (Common): on no list
 - Duckling (Starter): Base card
 - Mallard Marauder (Rare): on no list
 - Mayfly Dancer (Common): on no list
 - Otter Riverguard (Common): on no list
-- Pelican Diver (Rare): on no list
 - Shallows Fry (Common): to Lilypad Reach (Map 6)
 - Sulfur Vent Crab (Uncommon): on no list
 - Oyster Bank (Common): on no list
 
-**Mix.** 12 cards: 2 high-cost (17%), 2 generators (17%), 8 plain (67%); average cost 0.50 (unique 1.00); resources: lumber.
+**Mix.** 13 cards: 2 high-cost (15%), 2 generators (15%), 9 plain (69%); average cost 0.54 (unique 1.00); resources: lumber.
 
 **HUB9 flags.** Resolved: 3 theme misfit, 2 on 4+ lists. Left: on 4 lists (Fiddler Crab Swarm).
 
@@ -451,7 +451,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Whip Spider (Uncommon, pack 2, cost 1): Caves & burrows; also fits Smugglers' Grotto, The Glimmer Depths
 - Badger Stonemason (Uncommon, pack 2, cost 1) 🪨: Caves & burrows; brought in for the mix (generator); also fits Smugglers' Grotto, The Glimmer Depths
 
-**Carried (4).** Octopus Tactician (from Smugglers' Grotto, added); Trash Panda Trickster (from Smugglers' Grotto, added); Ant Warrior (from The Morel Hollow, added); Bombardier Beetle (from The Morel Hollow, added)
+**Carried (4).** Octopus Tactician (from Smugglers' Grotto, added); Trash Panda Trickster (from Smugglers' Grotto, added); Pelican Diver (from Smugglers' Grotto, added); Ant Warrior (from The Morel Hollow, added)
 
 **Cut (16).**
 - Blind Cave Fish (Common): on no list
@@ -482,7 +482,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 **Unique (1).**
 - Rootworm Colony (Common, map 7-A-5, cost 1): Fungal hollow; skirmish reward of 7-A-5
 
-**Carried (11).** Dung Beetle (from The Morel Hollow, added); Fungal Colossus (from The Morel Hollow, added); Compost Grub (from The Morel Hollow, added); Wolf Spider Mother (from The Morel Hollow, added); Ant Warrior (from The Morel Hollow, added); Planarian Splitter (from The Morel Hollow, added); Hawthorn Shieldbug (from The Morel Hollow, added); Leafcutter Gardener (from The Morel Hollow, added); Owl Nightwatch (from The Morel Hollow, added); Truffle Piglet (from The Morel Hollow, added); Bombardier Beetle (from The Morel Hollow, added)
+**Carried (11).** Dung Beetle (from The Morel Hollow, added); Fungal Colossus (from The Morel Hollow, added); Compost Grub (from The Morel Hollow, added); Wolf Spider Mother (from The Morel Hollow, added); Ant Warrior (from The Morel Hollow, added); Planarian Splitter (from The Morel Hollow, added); Bombardier Beetle (from The Morel Hollow, added); Hawthorn Shieldbug (from The Morel Hollow, added); Leafcutter Gardener (from The Morel Hollow, added); Owl Nightwatch (from The Morel Hollow, added); Truffle Piglet (from The Morel Hollow, added)
 
 **Cut (9).**
 - Bee Forager (Starter): Base card
@@ -514,17 +514,16 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Reef Shark (Common, pack 2, cost 2)  💰cost 2: Mangrove & kelp; also fits Coral Current, The Sunken Depths
 - Sunbittern Strider (Uncommon, pack 2, cost 1): Mangrove & kelp
 - Minnow Skitter (Common, pack 2, cost 0): Mangrove & kelp
-- Nautilus Drifter (Rare, pack 2, cost 1) 🪵: kin: Reef & ocean; brought in for the mix (generator); moved from The Kelp Mangroves; also fits Coral Current, The Sunken Depths
+- Fishing Cat (Rare, pack 2, cost 1): Mangrove & kelp
 
 **Carried (4).** Crocodile Ambusher (from Gatorback Swamp, added); Lodge Engineer (from Lilypad Reach, added); Booming Bittern (from Sable Swampmire, added); Caiman Hatchling (from Gatorback Swamp, added)
 
-**Cut (12).**
+**Cut (11).**
 - Mudflat Godwit (Uncommon): on no list
 - Electric Catfish (Rare): on no list
 - Elephant-nose Fish (Uncommon): on no list
 - Piranha Shoal (Uncommon): on no list
 - Limpet Clinger (Common): on no list
-- Fishing Cat (Rare): on no list
 - Proboscis Monkey (Uncommon): on no list
 - Horseshoe Crab (Common): on no list
 - Sea Hare (Common): on no list
@@ -532,7 +531,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Oyster Bank (Common): on no list
 - Beachcomber Sanderling (Common): on no list
 
-**Mix.** 15 cards: 3 high-cost (20%), 2 generators (13%), 11 plain (73%); average cost 0.93 (unique 0.82); resources: lumber.
+**Mix.** 15 cards: 3 high-cost (20%), 1 generators (7%), 12 plain (80%); average cost 0.93 (unique 0.82); resources: lumber.
 
 **HUB9 flags.** Resolved: 6 theme misfit, 1 on 4+ lists. Left: on 6 lists (Lodge Engineer).
 
@@ -553,7 +552,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Swordfish Spearman (Rare, pack 2, cost 1): Reef & ocean; also fits The Sunken Depths
 - Coral Polyp Colony (Common, pack 2, cost 0) 🪵: Reef & ocean; brought in for the mix (generator); also fits The Sunken Depths
 
-**Carried (4).** Reef Shark (from The Kelp Mangroves, added); Nautilus Drifter (from The Kelp Mangroves, added); Banded Sea Krait (from The Kelp Mangroves, added); Mangrove Manatee (from The Kelp Mangroves, added)
+**Carried (4).** Reef Shark (from The Kelp Mangroves, added); Gull Thief (from Pebble Beach, added); Banded Sea Krait (from The Kelp Mangroves, added); Mangrove Manatee (from The Kelp Mangroves, added)
 
 **Cut (13).**
 - Lion's Mane Jelly (Uncommon): on no list
@@ -570,7 +569,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Bloodscent Shark (Uncommon): on no list
 - Salvager Hermit Crab (Common): on no list
 
-**Mix.** 15 cards: 4 high-cost (27%), 2 generators (13%), 9 plain (60%); average cost 1.27 (unique 1.27); resources: lumber.
+**Mix.** 15 cards: 4 high-cost (27%), 2 generators (13%), 9 plain (60%); average cost 1.20 (unique 1.27); resources: lumber.
 
 **HUB9 flags.** Resolved: 1 theme misfit. Left: none.
 
@@ -606,13 +605,14 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Theme.** Reef & ocean. An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above. Field: Crushing Depths, Pitch Black. New in its fights: Octolash, Shock, Corrode, Chain Lightning.
 
-**Submap call:** ask owner (2 unique). A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights.
+**Submap call:** a full delve into a new location (3 unique). Owner 23:06 rule: its own theme (the sunken ferry), so a new location. A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights.
 
-**Unique (2).**
+**Unique (3).**
 - Blue-ringed Octopus (Rare, map 10-A-5, cost 1): Reef & ocean; skirmish reward of 10-A-5
 - Orca Vanguard (Common, pack 2, cost 3)  💰cost 3: Reef & ocean; also fits Coral Current
+- Nautilus Drifter (Rare, pack 2, cost 1) 🪵: Reef & ocean; also fits Coral Current
 
-**Carried (10).** Clownfish Scout (from Coral Current, added); Kraken Spawnling (from Coral Current, added); Parrotfish (from Coral Current, added); Coral Reef Shark (from Coral Current, added); Mangrove Manatee (from The Kelp Mangroves); Nautilus Drifter (from The Kelp Mangroves); Riptide Eel (from Coral Current, added); Colossal Squid (from Coral Current, added); Coral Polyp Colony (from Coral Current, added); Electric Ray (from Coral Current, added)
+**Carried (10).** Clownfish Scout (from Coral Current, added); Kraken Spawnling (from Coral Current, added); Parrotfish (from Coral Current, added); Coral Reef Shark (from Coral Current, added); Mangrove Manatee (from The Kelp Mangroves); Riptide Eel (from Coral Current, added); Colossal Squid (from Coral Current, added); Coral Polyp Colony (from Coral Current, added); Electric Ray (from Coral Current, added); Great Barracuda (from Coral Current, added)
 
 **Cut (8).**
 - Abyss Lantern Squid (Uncommon): on no list
@@ -624,7 +624,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Giant Clam (Common): on no list
 - Salvager Hermit Crab (Common): on no list
 
-**Mix.** 12 cards: 4 high-cost (33%), 2 generators (17%), 6 plain (50%); average cost 1.42 (unique 2.00); resources: lumber.
+**Mix.** 13 cards: 4 high-cost (31%), 2 generators (15%), 7 plain (54%); average cost 1.38 (unique 1.67); resources: lumber.
 
 **HUB9 flags.** Resolved: 3 listed before it is obtainable, 1 on 4+ lists, 2 theme misfit. Left: none.
 
@@ -662,21 +662,20 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Mix.** 15 cards: 2 high-cost (13%), 2 generators (13%), 11 plain (73%); average cost 0.73 (unique 0.73); resources: lumber.
 
-**HUB9 flags.** Resolved: 8 theme misfit, 1 on 4+ lists. Left: no source yet (proposed home: this map's pack tier) (Ant Hill), on 4 lists (Ant Hill).
+**HUB9 flags.** Resolved: 8 theme misfit, 1 on 4+ lists. Left: no source yet (proposed home: this map's pack tier) (Ant Hill), on 4 lists (Ant Hill, Badger Lumberjack).
 
 ### Submap: Clovermead (opens at 12, side of Thistlewood)
 
 **Theme.** Meadow & woodland. A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry. Field: Thunderstorm. New in its fights: Swipe.
 
-**Submap call:** ask owner (2 unique). A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights.
+**Submap call:** additional challenges on the parent map (1 unique). Owner 23:06 rule: the same meadow theme, so extra challenges. A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights.
 
-**Unique (2).**
+**Unique (1).**
 - Lucky Hopper (Rare, map 1-A-5, cost 1): Meadow & woodland; skirmish reward of 1-A-5; also fits The Old Bramble
-- Jay Pilferer (Common, pack 2, cost 1) 🪵: Meadow & woodland; brought in for the mix (generator); also fits The Old Bramble
 
-**Carried (10).** House Cat (from Bramblewood Outskirts); Field Mouse (from Thistlewood, added); Field Vole (from Thistlewood, added); Hedgerow Shrew (from Thistlewood, added); Robin Redbreast (from Thistlewood, added); Slow-worm (from Thistlewood, added); Woodcock Lookout (from Thistlewood, added); Bramble Sprout (from Thistlewood, added); Cricket Drummer (from Thistlewood, added); Ant Hill (from Bramblewood Outskirts, added)
+**Carried (11).** House Cat (from Bramblewood Outskirts); Field Mouse (from Thistlewood, added); Field Vole (from Thistlewood, added); Hedgerow Shrew (from Thistlewood, added); Robin Redbreast (from Thistlewood, added); Slow-worm (from Thistlewood, added); Woodcock Lookout (from Thistlewood, added); Bramble Sprout (from Thistlewood, added); Cricket Drummer (from Thistlewood, added); Badger Lumberjack (from Thistlewood, added); Ant Hill (from Bramblewood Outskirts, added)
 
-**Cut (18).**
+**Cut (19).**
 - Acorn Chipmunk (Starter): Base card
 - Bee Forager (Starter): Base card
 - Bee Sentry (Starter): Base card
@@ -688,6 +687,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Farm Dog (Common): on no list
 - Field Crow (Common): on no list
 - Honey Bee (Starter): Base card
+- Jay Pilferer (Common): on no list
 - Ladybird Guard (Common): on no list
 - Meadow Rabbit (Starter): Base card
 - Pigeon Peon (Common): on no list
@@ -698,7 +698,7 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Mix.** 12 cards: 1 high-cost (8%), 1 generators (8%), 10 plain (83%); average cost 0.33 (unique 1.00); resources: lumber.
 
-**HUB9 flags.** Resolved: 1 theme misfit, 1 no source, 1 on 4+ lists. Left: no source yet (proposed home: this map's pack tier) (Ant Hill), on 4 lists (Ant Hill).
+**HUB9 flags.** Resolved: 1 theme misfit, 1 no source, 1 on 4+ lists. Left: on 4 lists (Badger Lumberjack, Ant Hill), no source yet (proposed home: this map's pack tier) (Ant Hill).
 
 ### Map 13: The Redwood Deep (mr)
 
@@ -865,19 +865,19 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Theme.** Caves & burrows. Below the alcoves the walls start to shine, and things that like shiny things start to gather. Field: Mirage. New in its fights: Prayer.
 
-**Submap call:** ask owner (2 unique). Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage.
+**Submap call:** a full delve into a new location (3 unique). Owner 23:06 rule: its own crystal theme, so a new location. Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage.
 
-**Unique (2).**
+**Unique (3).**
 - Lantern Spark Fly (Uncommon, map 8-A-4, cost 0): Caves & burrows; skirmish reward of 8-A-4
+- Cave Bat Swarm (Rare, pack 3, cost 0): Caves & burrows
 - Prospector Mole (Common, pack 2, cost 0) 🔩: Caves & burrows; brought in for the mix (generator); also fits Smugglers' Grotto, Caves & Alcoves
 
 **Carried (10).** Echo Screecher (from Caves & Alcoves, added); Sulfur Cinder Moth (from Caves & Alcoves, added); Badger Stonemason (from Caves & Alcoves, added); Cave Olm (from Caves & Alcoves, added); Giant Cave Huntsman (from Caves & Alcoves, added); Quarry Mole (from Caves & Alcoves, added); Stalactite Golem (from Caves & Alcoves, added); Star-nosed Mole (from Caves & Alcoves, added); Vampire Bat (from Caves & Alcoves, added); Whip Spider (from Caves & Alcoves, added)
 
-**Cut (13).**
+**Cut (12).**
 - Barrow Leech (Rare): on no list
 - Bat Swarmling (-): on no list
 - Beetle Grunt (Common): on no list
-- Cave Bat Swarm (Rare): on no list
 - Cave Cricket (Common): on no list
 - Cave Flitter (Uncommon): on no list
 - Cave Swiftlet (Common): on no list
@@ -888,13 +888,13 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Tunnel Ant (Rare): Base card
 - Glimmer Spider (Uncommon): on no list
 
-**Mix.** 12 cards: 1 high-cost (8%), 2 generators (17%), 9 plain (75%); average cost 0.67 (unique 0.00); resources: metal, stone; introduces metal.
+**Mix.** 13 cards: 1 high-cost (8%), 2 generators (15%), 10 plain (77%); average cost 0.62 (unique 0.00); resources: metal, stone; introduces metal.
 
 **HUB9 flags.** Resolved: 3 no source, 1 on 4+ lists. Left: none.
 
 ### Map 17: Wolfsbane Tundra (m6)
 
-**Theme.** Tundra & ice. Frozen ground north of the grassland — the packs here hunt in formation. Field: Frigid (frozen ground), frost (Freezing / Frostbite), Frostbite, Freezing. New in its fights: Earthquake, King, Poison Bolt, Pack Howl.
+**Theme.** Tundra & ice. Frozen ground north of the grassland — the packs here hunt in formation. Field: Frigid (frozen ground), frost (Freezing / Frostbite), Freezing, Frostbite. New in its fights: Earthquake, King, Poison Bolt, Pack Howl.
 
 **Unique (11).**
 - Lone Grey Wolf (Very Rare, map 17-2, cost 1): Tundra & ice; skirmish reward of 17-2; also fits Ashen Spurn, The Ice Hollow, The Rimefire Caldera
@@ -1076,24 +1076,24 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Theme.** Volcanic & ash. Down inside the crater, where the dead keep the fire company and the living learned not to need much. Field: Sulphur Fumes (2 of 7 fights). New in its fights: Sacrifice, Grit.
 
-**Submap call:** ask owner (2 unique). Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire).
+**Submap call:** additional challenges on the parent map (1 unique). Owner 23:06: like the other Map 20 submaps, extra challenges. Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire).
 
-**Unique (2).**
+**Unique (1).**
 - The Contradiction (Epic, map 20-A-4, cost 1): Volcanic & ash; skirmish reward of 20-A-4; also fits Volcano Lair, The Rimefire Caldera, Basalt Foundry
-- Gorge Wyrm (Common, pack 3, cost 3)  💰cost 3: Volcanic & ash; also fits Ashen Spurn, The Sundered Peak, Volcano Lair, The Rimefire Caldera
 
-**Carried (10).** Cinder Stoker (from Ashen Spurn); Ashbone Ghoul (from The Sundered Peak, added); Cinder Skeleton (from The Sundered Peak, added); Pack Mule (from The Sundered Peak, added); Obsidian Scorpion (from The Glass Dunes); Ash Cloud Condor (from The Sundered Peak, added); Bear Cub (from The Sundered Peak, added); Magma Wraith (from The Sundered Peak, added); Ossuary Lammergeier (from The Sundered Peak, added); Ash Moth (from The Sundered Peak, added)
+**Carried (11).** Cinder Stoker (from Ashen Spurn); Ashbone Ghoul (from The Sundered Peak, added); Cinder Skeleton (from The Sundered Peak, added); Pack Mule (from The Sundered Peak, added); Obsidian Scorpion (from The Glass Dunes); Ash Cloud Condor (from The Sundered Peak, added); Bear Cub (from The Sundered Peak, added); Magma Wraith (from The Sundered Peak, added); Ossuary Lammergeier (from The Sundered Peak, added); Ash Moth (from The Sundered Peak, added); Cave Warlord (from The Sundered Peak, added)
 
-**Cut (7).**
+**Cut (8).**
 - Basalt Boar (Common): on no list
 - Blessed Avatar (Common): on no list
 - Cinder Gecko (Common): to The Rimefire Caldera (Map 22)
 - Cinder Imp (Common): on no list
 - Fumarole Ibex (Rare): on no list
+- Gorge Wyrm (Common): on no list
 - Silverback Brawler (Common): on no list
 - Sulfur Vent Crab (Uncommon): on no list
 
-**Mix.** 12 cards: 1 high-cost (8%), 1 generators (8%), 10 plain (83%); average cost 0.83 (unique 2.00); resources: lumber.
+**Mix.** 12 cards: 1 high-cost (8%), 1 generators (8%), 10 plain (83%); average cost 0.92 (unique 1.00); resources: lumber.
 
 **HUB9 flags.** Resolved: 3 on 4+ lists, 2 no source, 1 listed before it is obtainable. Left: on 4+ lists (Cinder Stoker, Obsidian Scorpion), on 4 lists (Ashbone Ghoul, Pack Mule, Ash Cloud Condor).
 
@@ -1101,27 +1101,27 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **Theme.** Volcanic & ash. Where the mountain's fire is born. Something vast sleeps in it, and it is waking. Field: Sulphur Fumes. New in its fights: Frenzy, Stun.
 
-**Submap call:** additional challenges on the parent map (1 unique). The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights.
+**Submap call:** the 0-20 final boss (more unique cards, its own flair) (5 unique). Owner 23:06: the overall 0-20 big boss, more unique cards and its own flair. The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights.
 
-**Unique (2).**
+**Unique (5).**
 - Fire Drake Hatchling (Heroic, map 20-B-4, cost 2)  💰cost 2: Volcanic & ash; skirmish reward of 20-B-4
 - The Caldera Wyrm (Heroic, map 20-B-4, cost 0)  💰cost 0: Volcanic & ash; skirmish reward of 20-B-4; moved from Volcano Lair
+- Ember Jackal (Rare, pack 3, cost 1): Volcanic & ash; also fits Ashen Spurn, The Sundered Peak, Eye of the Volcano, The Rimefire Caldera
+- Tide Spirit (Rare, pack 3, cost 0): Volcanic & ash; also fits Ashen Spurn, The Sundered Peak, Eye of the Volcano, The Rimefire Caldera
+- Ember Centipede (Common, pack 3, cost 0): Volcanic & ash; also fits The Glimmer Depths, Ashen Spurn, The Sundered Peak, Eye of the Volcano
 
-**Carried (10).** Magma Salamander (from The Sundered Peak, added); Magma Titan (from Ashen Spurn); Cinder Stoker (from Ashen Spurn); Pack Mule (from The Sundered Peak, added); Obsidian Scorpion (from The Glass Dunes); Cave Warlord (from The Sundered Peak, added); Woodland Brawler (from The Sundered Peak, added); Ash Cloud Condor (from The Sundered Peak, added); Ash Moth (from The Sundered Peak, added); Ashbone Ghoul (from The Sundered Peak, added)
+**Carried (10).** Magma Salamander (from The Sundered Peak, added); Magma Titan (from Ashen Spurn); Cinder Stoker (from Ashen Spurn); Pack Mule (from The Sundered Peak, added); Obsidian Scorpion (from The Glass Dunes); Woodland Brawler (from The Sundered Peak, added); Ash Cloud Condor (from The Sundered Peak, added); Ash Moth (from The Sundered Peak, added); Ashbone Ghoul (from The Sundered Peak, added); Bear Cub (from The Sundered Peak, added)
 
-**Cut (10).**
+**Cut (7).**
 - Basalt Boar (Common): on no list
 - Cinder Gecko (Common): to The Rimefire Caldera (Map 22)
 - Cinder Hornet (Common): to The Rimefire Caldera (Map 22)
 - Cinder Imp (Common): on no list
-- Ember Centipede (Common): on no list
-- Ember Jackal (Rare): on no list
-- Gorge Wyrm (Common): to Eye of the Volcano (Map 20)
+- Gorge Wyrm (Common): on no list
 - Pyroclast Wyrm (Common): on no list
 - Silverback Brawler (Common): on no list
-- Tide Spirit (Rare): on no list
 
-**Mix.** 12 cards: 4 high-cost (33%), 1 generators (8%), 7 plain (58%); average cost 1.17 (unique 1.00); resources: lumber, metal, stone. **Flag: 2 unique over its 1 (skirmish rewards).**
+**Mix.** 15 cards: 3 high-cost (20%), 1 generators (7%), 11 plain (73%); average cost 0.73 (unique 0.60); resources: lumber, metal, stone.
 
 **HUB9 flags.** Resolved: 3 on 4+ lists, 2 listed before it is obtainable, 1 no source. Left: on 4+ lists (Cinder Stoker, Obsidian Scorpion), on 4 lists (Pack Mule, Ash Cloud Condor, Ashbone Ghoul).
 
@@ -1218,14 +1218,15 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Rimeheart Colossus (Epic, none, cost 3)  💰cost 3: Volcanic & ash; added; also fits Eye of the Volcano, Volcano Lair, Basalt Foundry
 - Ash Imp (Common, none, cost 0): Volcanic & ash; added; also fits Ashen Spurn, The Sundered Peak, Eye of the Volcano, Volcano Lair
 
-**Carried (4).** Gorge Wyrm (from Eye of the Volcano); Pumice Beetle (from Ashen Spurn, added); Fire Salamander (from Ashen Spurn, added); Phoenix Fledgling (from Ashen Spurn, added)
+**Carried (4).** Phoenix Fledgling (from Ashen Spurn, added); Pumice Beetle (from Ashen Spurn, added); Ember Centipede (from Volcano Lair, added); Ember Jackal (from Volcano Lair, added)
 
-**Cut (3).**
+**Cut (4).**
+- Gorge Wyrm (Common): on no list
 - Fumarole Ibex (Rare): on no list
 - Weathervane Swift (Rare): on no list
 - Petrified Tree (Rare): on no list
 
-**Mix.** 15 cards: 5 high-cost (33%), 1 generators (7%), 9 plain (60%); average cost 1.40 (unique 1.27); resources: stone.
+**Mix.** 15 cards: 4 high-cost (27%), 1 generators (7%), 10 plain (67%); average cost 1.20 (unique 1.27); resources: stone.
 
 **HUB9 flags.** Resolved: 1 on 4+ lists, 3 theme misfit. Left: no source yet (proposed home: this map's pack tier) (Rimeheart Colossus, Ash Imp).
 
@@ -1273,25 +1274,24 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 - Anvilwhisker Otter (Uncommon, none, cost 2)  💰cost 2: hand call: an otter smith that forges weapons for Stone: the foundry's workshop; added; also fits Sunken Hollow, Lilypad Reach
 - Ore-Smelter Mole (Uncommon, pack 1, cost 1) 🔩: hand call: a mole that makes Metal belongs in the foundry: Basalt Foundry introduces Metal; added; also fits Smugglers' Grotto, Caves & Alcoves, The Glimmer Depths
 
-**Carried (10).** Cinder Gecko (from The Rimefire Caldera); Quill Volley (from Ashen Spurn, added); Ashbone Ghoul (from The Sundered Peak); Magma Salamander (from The Sundered Peak); Ash Cloud Condor (from The Sundered Peak); Fire Salamander (from Ashen Spurn, added); Hercules Beetle (from The Canopy); Phoenix Fledgling (from Ashen Spurn, added); Beaver Lumberjack (from Bramblewood Outskirts); Porcupine Roller (from Ashen Spurn, added)
+**Carried (10).** Tide Spirit (from Volcano Lair); Cinder Gecko (from The Rimefire Caldera); Ember Jackal (from Volcano Lair); Quill Volley (from Ashen Spurn, added); Ashbone Ghoul (from The Sundered Peak); Fire Salamander (from Ashen Spurn, added); Magma Salamander (from The Sundered Peak); Ash Cloud Condor (from The Sundered Peak); Hercules Beetle (from The Canopy); Phoenix Fledgling (from Ashen Spurn, added)
 
-**Cut (12).**
+**Cut (11).**
 - Basalt Boar (Common): on no list
+- Beaver Lumberjack (Common): to Bramblewood Outskirts (Map 0)
 - Chained Binturong (Uncommon): on no list
 - Cinder Imp (Common): on no list
-- Ember Jackal (Rare): on no list
 - Flagellant Vulture (Uncommon): on no list
 - Fruit-bat Familiar (Uncommon): on no list
 - Hellbender (Common): on no list
 - Obsidian Scorpion (Rare): to The Glass Dunes (Map 18)
 - Pyroclast Wyrm (Common): on no list
 - Sulfur Vent Crab (Uncommon): on no list
-- Tide Spirit (Rare): on no list
 - Vampire Finch (Uncommon): on no list
 
-**Mix.** 13 cards: 3 high-cost (23%), 2 generators (15%), 8 plain (62%); average cost 0.92 (unique 1.67); resources: lumber, metal.
+**Mix.** 13 cards: 3 high-cost (23%), 1 generators (8%), 9 plain (69%); average cost 1.00 (unique 1.67); resources: metal.
 
-**HUB9 flags.** Resolved: 4 on 4+ lists, 6 no source. Left: no source (Beaver Lumberjack), no source yet (proposed home: this map's pack tier) (Anvilwhisker Otter), theme misfit (Anvilwhisker Otter).
+**HUB9 flags.** Resolved: 4 on 4+ lists, 7 no source. Left: no source yet (proposed home: this map's pack tier) (Anvilwhisker Otter), theme misfit (Anvilwhisker Otter).
 
 ### Map 24: Goldfeather Keep (m24)
 
@@ -1319,11 +1319,11 @@ Kept as it is (the tutorial and the endless dungeons keep their lists; HUB9 / CO
 
 **HUB9 flags.** Resolved: none. Left: no source yet (proposed home: this map's pack tier) (Great Gate, Nest, Stoneheart Golem).
 
-## Cards on no list, by old pack (426)
+## Cards on no list, by old pack (422)
 
 - **Hedgerow Pouch** (93): Acacia Giraffe, Alley Cat, Anaconda Coil, Anhinga Spearbird, Arc Bat, Beachcomber Sanderling, Beaver Builder, Beetle Grunt, Blister Beetle, Bog Revenant, Bramble Gauntlet, Briarback Hedgehog, Buzzed Chipmunk, Carrion Beetle, Coral Current Eel, Cottonmouth Matriarch, Crown Pretender, Cuttlefish Illusionist, Dam Wall, Dam-Keeper Beaver, Diving Bell Spider, Dolphin Knight, Driftwood Crab, Eagle Diver, Elder Tortoise, Ember Tetra, Farm Dog, Frostbitten Wolverine, Giant Water Bug, Grass Snake, Great Crested Grebe, Great Skua, Greater Siren, Grindstone Boar, Hammerhead Shark, Hawk Arrowkeeper, Heartwood Treant, Honey Badger Fury, Humpback Elder, Ironback Gorilla, Ironmaw Warwolf, Irradiated Couatl, Lamprey, Lotus Frog, Lunar Howler, Malachite Golem, Marsh Gas Toad, Marsh Harrier, Mayfly Dancer, Migration Leader, Mire Witch-Heron, Moat Snapper, Moonlit Hare, Moray Ambusher, Narwhal Lancer, Night Watchman, Owl Fletcher, Oyster Bank, Oystercatcher, Paper Wasp, Parish Sergeant, Plague Gnat Cloud, Plains Zebra, Pond Algae, Pond Paddler, Puddle Changeling, Puddle Skimmer, Puffball Bombardier, Quarry Troll, Rafflesia, Raft Spider, Rainmaker Frog, Reef Manta Glider, River Mink, Rock Pool Starfish, Rot-Swollen Carcass, Shieldbearer Hound, Shoal Shark, Signal Crayfish, Smokescreen Raccoon, Sparrow Chick, Sphagnum Vole, Spring Rain, Static Bat, Sworn Shieldbearer, Tailwind, The Unremembered, Thick Fog, Timber Wolf Pack Leader, Voltwing Bat, War Hound, Weredog, Willow-o'-Wisp
-- **Tidemire Chest** (98): Antler Skirmisher, Baby Bat, Baby Horned Capybara, Badger Sapper, Barkplate Beetle, Barnacle Fortress, Beaver Feller, Blind Cave Fish, Bloodscent Shark, Boar Rampager, Bog Behemoth, Bog Leech, Buck Brawler, Carrion Fly Swarm, Cave Centipede, Cave Pseudoscorpion, Cleaner Wrasse, Clover Butterfly, Coffer Mimic, Cone Snail, Crown-of-thorns Star, Dynamite Packrat, Echo Keeper, Electric Catfish, Elephant-nose Fish, Feral Tuskboar, Field Crow, Firetail Trickster, Fishing Cat, Fox Kit, Fox Sharpshot, Fox Warchief, Full Moon, Fungus Gnat Cloud, Gallery Orb-Weaver, Gangrenous Leech, Ghost Crayfish, Giant Clam, Gravel Mole, Grotto Lobster, Guano Beetle, Hazel Coppice, Hollow Oath-Keeper, Horseshoe Crab, Ironclaw Fiddler, King Maker, Ladybird Guard, Leopard Slug, Limpet Clinger, Lion's Mane Jelly, Lionfish, Magpie Collector, Mallard Marauder, Mantis Shrimp, Margay, Marmot Stonecutter, Millipede Hauler, Mosquito Cloud, Mudflat Godwit, Nightjar Drifter, Nightshade Moth, Pack Rat Looter, Pelican Diver, Pigeon Peon, Pill Bug, Pine Marten, Piranha Shoal, Proboscis Monkey, Puddle Hopper, Pufferfish Bulwark, Quill-Thorn Boar, Raccoon Warlord, Red-backed Salamander, Rodent King, Salvager Hermit Crab, Sawfish, Sea Cucumber, Sea Hare, Seed-cache Squirrel, Skunk Gasser, Sleepless Shrew, Stag Beetle, Subterraneaner, Sulfur Vent Crab, Swamp Rabbit, Thornvine Lasher, Trapdoor Spider, Tunnel Wyrm, Turtle Bastion, Tusked Vanguard, Vampire Bat Nurse, Village Miller, Voltaic Eel, War Panther, Warren Scout, Webspire Sentinel, Whale Shark, Yellow-bellied Sea Snake
-- **Highcrest Case** (73): Alpine Avalanche, Amber Cicada, Ancient Sloth Titan, Anvil Thrush, Armadillo Guard, Armored Mastiff, Barrow Leech, Basalt Boar, Beluga, Blizzard, Bonebreaker, Bramblewood Macaque, Cave Bat Swarm, Cave Bear, Cave Cricket, Cave Flitter, Cave Swiftlet, Chipmunk Stockpiler, Courier Pigeon, Dune Jackal, Dune Jackal Scout, Ember Centipede, Ember Jackal, Fire Hawk, Firefly Swarm, Frillneck Duelist, Frost Thistle Lynx, Frostmoon Howler, Fumarole Ibex, Garden Tiger Moth, Glasswing Butterfly, Glasswing Moth, Glimmer Spider, Granite Ox Golem, Great Horned Owl, Heatwave, Horned Lizard, Howler Monkey, Inland Taipan, Jackrabbit Sprinter, Lovebird, Marula Monkey, Meerkat Sentry, Monarch Wingblade, Mongoose Duelist, Monitor Rambler, Moon Jerboa, Moonshell Snail, Muntjac Barker, Musk Ox Calf, Musk Ox Matriarch, Obsidian Lich, Pack Wolf Reaver, Pale Oryx, Pall Wraith, Pinecone Sapper, Pyroclast Wyrm, Rabid Jackal, Raccoon Nightcrew, Rockslide Ram, Sandstorm Roc, Scraper of Skies, Scree Goat, Silverback Brawler, Springtail Hopper, Static Fennec, Stonedrop Vulture, Tarantula Hawk, Termite Forager, Termite Mound, Tide Spirit, Tundra Musk Ox, Vampire Roost
+- **Tidemire Chest** (97): Antler Skirmisher, Baby Bat, Baby Horned Capybara, Badger Sapper, Barkplate Beetle, Barnacle Fortress, Beaver Feller, Blind Cave Fish, Bloodscent Shark, Boar Rampager, Bog Behemoth, Bog Leech, Buck Brawler, Carrion Fly Swarm, Cave Centipede, Cave Pseudoscorpion, Cleaner Wrasse, Clover Butterfly, Coffer Mimic, Cone Snail, Crown-of-thorns Star, Dynamite Packrat, Echo Keeper, Electric Catfish, Elephant-nose Fish, Feral Tuskboar, Field Crow, Firetail Trickster, Fox Kit, Fox Sharpshot, Fox Warchief, Full Moon, Fungus Gnat Cloud, Gallery Orb-Weaver, Gangrenous Leech, Ghost Crayfish, Giant Clam, Gravel Mole, Grotto Lobster, Guano Beetle, Hazel Coppice, Hollow Oath-Keeper, Horseshoe Crab, Ironclaw Fiddler, Jay Pilferer, King Maker, Ladybird Guard, Leopard Slug, Limpet Clinger, Lion's Mane Jelly, Lionfish, Magpie Collector, Mallard Marauder, Mantis Shrimp, Margay, Marmot Stonecutter, Millipede Hauler, Mosquito Cloud, Mudflat Godwit, Nightjar Drifter, Nightshade Moth, Pack Rat Looter, Pigeon Peon, Pill Bug, Pine Marten, Piranha Shoal, Proboscis Monkey, Puddle Hopper, Pufferfish Bulwark, Quill-Thorn Boar, Raccoon Warlord, Red-backed Salamander, Rodent King, Salvager Hermit Crab, Sawfish, Sea Cucumber, Sea Hare, Seed-cache Squirrel, Skunk Gasser, Sleepless Shrew, Stag Beetle, Subterraneaner, Sulfur Vent Crab, Swamp Rabbit, Thornvine Lasher, Trapdoor Spider, Tunnel Wyrm, Turtle Bastion, Tusked Vanguard, Vampire Bat Nurse, Village Miller, Voltaic Eel, War Panther, Warren Scout, Webspire Sentinel, Whale Shark, Yellow-bellied Sea Snake
+- **Highcrest Case** (70): Alpine Avalanche, Amber Cicada, Ancient Sloth Titan, Anvil Thrush, Armadillo Guard, Armored Mastiff, Barrow Leech, Basalt Boar, Beluga, Blizzard, Bonebreaker, Bramblewood Macaque, Cave Bear, Cave Cricket, Cave Flitter, Cave Swiftlet, Chipmunk Stockpiler, Courier Pigeon, Dune Jackal, Dune Jackal Scout, Fire Hawk, Firefly Swarm, Frillneck Duelist, Frost Thistle Lynx, Frostmoon Howler, Fumarole Ibex, Garden Tiger Moth, Glasswing Butterfly, Glasswing Moth, Glimmer Spider, Gorge Wyrm, Granite Ox Golem, Great Horned Owl, Heatwave, Horned Lizard, Howler Monkey, Inland Taipan, Jackrabbit Sprinter, Lovebird, Marula Monkey, Meerkat Sentry, Monarch Wingblade, Mongoose Duelist, Monitor Rambler, Moon Jerboa, Moonshell Snail, Muntjac Barker, Musk Ox Calf, Musk Ox Matriarch, Obsidian Lich, Pack Wolf Reaver, Pale Oryx, Pall Wraith, Pinecone Sapper, Pyroclast Wyrm, Rabid Jackal, Raccoon Nightcrew, Rockslide Ram, Sandstorm Roc, Scraper of Skies, Scree Goat, Silverback Brawler, Springtail Hopper, Static Fennec, Stonedrop Vulture, Tarantula Hawk, Termite Forager, Termite Mound, Tundra Musk Ox, Vampire Roost
 - **Pack 4** (14): Arctic Fox Raider, Arctic Tern, Elder Willow, Harp Seal Pup, Ice-Crevasse Wolf, Krill Swarm, Lemming Swarm, Marching Elephant, Petrified Tree, Ringed Seal, The Magnate Duck, Thornwood Palisade, Weathervane Swift, Werebadger
 - **Faction pool** (53): Birdlime Dauber, Clap-net Trapper, Cobalt Talon Skirmisher, Crimson Wing Duelist Cadet, Daily Post, Dawn Bellringer, Dominion Nestguard, Ferry Toll-Frog, Ford Kingfisher, Gold-throated Acolyte, Hedge Changeling, Helmeted Otter, Honeyjoe Brewer, Hummingbird Needler, Hush-Wing Spy, Lantern Bearer, Marshal of Rivergate, Mist-net Otter, Nectar Sipper, Nectar Vintner, Net Thrower, Old Willow of the Ford, Optio of the Ford, Otter Angler, Otter Ferryman, Otter Flag Bearer, Otter Lantern Bearer, Otter Netmender, Otter Riverguard, Otter Scout, Otter Shieldback, Petal Fletcher, Pike Lancer, River Warden, Riverbed Diver, Rivergate Drummer, Rivergate Recruit, Rivergate Tribune, Riverside Peddler, Riverstone Slinger, Royal Guard, Ruby-Throat Duelist, Shell-Cracker, Shellwright Apprentice, Sunfeather Scout, Sunspire Choirmother, Sunspire Envoy, Sunspire Sky-Sovereign, Sunthroat Courier, Swordbill Challenger, Truce Heron, Violet Vane Fletcher, Voidfeather Scout
 - **Mystery Booster** (11): Glass Changeling, Glass Golem, Inside-Out Hedgehog, Irradiated Axolotl, Irradiated Glow Wyrm, Mirror Moth, Snail Mail, Teatime Toad, Two-Headed Calf, Upside-Down Bat, Wrong-Way Salmon

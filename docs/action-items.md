@@ -35,6 +35,8 @@ Tools it needs (owner): (T1) a good card-contribution measure; (T2) a quick, fai
 |---|---|---|
 | T1-T3 | TOOLS1 | Build / upgrade the three tools (balance workbench). |
 | S1 | THEME1 | Step 1 proposal per map: unique cards by theme, carried cards, the 8-11 cut (step 2), the cost / generator / creature mix; shown in the hub for the owner; nothing applied. |
+| S2 | THEME2 (done 23:06) | Owner 23:06: "If the theme is unique, then it's a new location (like grotto) otherwise, like those in Map 20, they are just extra challenges." Classed: Smugglers' Grotto, Sunken Depths, Glimmer Depths = new location (3 unique); Clovermead, Eye of the Volcano = extra challenges (1). |
+| S3 | FLAIR1 (open) | Owner 23:06: "Dragon Lair is our overall 0-20 big boss, so it deserves more unique cards and also a flair that's not the normal boss flair." Cards: done in THEME2 (Volcano Lair 5 unique + 10 carried, 15). Flair: a UI package (its own banner, frame and intro, distinct from the boss flair) still to do. |
 
 ## 10-28: release leftovers
 

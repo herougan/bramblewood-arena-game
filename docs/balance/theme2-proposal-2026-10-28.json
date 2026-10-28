@@ -18,7 +18,8 @@
   "uniqueSub": {
    "delve": 3,
    "challenge": 1,
-   "ask": 2
+   "ask": 2,
+   "boss": 5
   },
   "carriedSubMin": 10,
   "totalSub": [
@@ -78,9 +79,9 @@
   {
    "key": "mg",
    "name": "Smugglers' Grotto",
-   "class": "ask",
-   "unique": 2,
-   "reason": "A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?"
+   "class": "delve",
+   "unique": 3,
+   "reason": "Owner 23:06: a new location (its own theme). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?"
   },
   {
    "key": "mz",
@@ -92,16 +93,16 @@
   {
    "key": "mj",
    "name": "The Sunken Depths",
-   "class": "ask",
-   "unique": 2,
-   "reason": "A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights."
+   "class": "delve",
+   "unique": 3,
+   "reason": "Owner 23:06 rule: its own theme (the sunken ferry), so a new location. A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights."
   },
   {
    "key": "mq",
    "name": "Clovermead",
-   "class": "ask",
-   "unique": 2,
-   "reason": "A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights."
+   "class": "challenge",
+   "unique": 1,
+   "reason": "Owner 23:06 rule: the same meadow theme, so extra challenges. A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights."
   },
   {
    "key": "ms",
@@ -120,9 +121,9 @@
   {
    "key": "mn",
    "name": "The Glimmer Depths",
-   "class": "ask",
-   "unique": 2,
-   "reason": "Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage."
+   "class": "delve",
+   "unique": 3,
+   "reason": "Owner 23:06 rule: its own crystal theme, so a new location. Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage."
   },
   {
    "key": "my",
@@ -141,16 +142,16 @@
   {
    "key": "me",
    "name": "Eye of the Volcano",
-   "class": "ask",
-   "unique": 2,
-   "reason": "Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire)."
+   "class": "challenge",
+   "unique": 1,
+   "reason": "Owner 23:06: like the other Map 20 submaps, extra challenges. Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire)."
   },
   {
    "key": "mx",
    "name": "Volcano Lair",
-   "class": "challenge",
-   "unique": 1,
-   "reason": "The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights."
+   "class": "boss",
+   "unique": 5,
+   "reason": "Owner 23:06: the overall 0-20 big boss, more unique cards and its own flair. The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights."
   },
   {
    "key": "mo",
@@ -790,10 +791,6 @@
      {
       "id": "beaver-lumberjack",
       "flag": "no source yet (proposed home: this map's pack tier)"
-     },
-     {
-      "id": "beaver-lumberjack",
-      "flag": "on 4 lists"
      },
      {
       "id": "cypress-root-lurker",
@@ -1849,16 +1846,16 @@
       "flag": "theme misfit"
      },
      {
+      "id": "badger-lumberjack",
+      "flag": "on 4 lists"
+     },
+     {
       "id": "beaver-lumberjack",
       "flag": "no source yet (proposed home: this map's pack tier)"
      },
      {
       "id": "beaver-lumberjack",
       "flag": "theme misfit"
-     },
-     {
-      "id": "beaver-lumberjack",
-      "flag": "on 4 lists"
      },
      {
       "id": "bramble-sprout",
@@ -2903,10 +2900,6 @@
      {
       "id": "beaver-lumberjack",
       "flag": "no source yet (proposed home: this map's pack tier)"
-     },
-     {
-      "id": "beaver-lumberjack",
-      "flag": "on 4 lists"
      },
      {
       "id": "marsh-mallow-hare",
@@ -3997,13 +3990,13 @@
    "theme": {
     "biome": "River & pond",
     "story": "A wide, still pond full of lily pads, beaver dams and very territorial ducks.",
-    "field": "Rain, Tide",
+    "field": "Tide, Rain",
     "newSkills": [
      "Fragile",
      "On ready gold",
      "Regeneration"
     ],
-    "line": "River & pond. A wide, still pond full of lily pads, beaver dams and very territorial ducks. Field: Rain, Tide. New in its fights: Fragile, On ready gold, Regeneration."
+    "line": "River & pond. A wide, still pond full of lily pads, beaver dams and very territorial ducks. Field: Tide, Rain. New in its fights: Fragile, On ready gold, Regeneration."
    },
    "cap": {
     "reveal": "rare",
@@ -5079,10 +5072,10 @@
   },
   {
    "sideClass": {
-    "class": "ask",
-    "label": "ask owner",
-    "unique": 2,
-    "reason": "A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?"
+    "class": "delve",
+    "label": "a full delve into a new location",
+    "unique": 3,
+    "reason": "Owner 23:06: a new location (its own theme). A sea cave under Pebble Beach with its own darkness, but only 4 fights and half coast: a new place or the beach's extra challenge?"
    },
    "key": "mg",
    "no": 7,
@@ -5167,6 +5160,29 @@
       "caves"
      ],
      "score": 11.0,
+     "why": "Caves & burrows",
+     "alsoFits": [
+      "m4",
+      "mn"
+     ],
+     "wasHere": true,
+     "movedFrom": null
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 2",
+     "biomes": [
+      "coast",
+      "caves"
+     ],
+     "score": 10.5,
      "why": "Caves & burrows",
      "alsoFits": [
       "m4",
@@ -5421,15 +5437,6 @@
      }
     },
     {
-     "id": "pelican-diver",
-     "name": "Pelican Diver",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
      "id": "shallows-fry",
      "name": "Shallows Fry",
      "rarity": "common",
@@ -5474,6 +5481,7 @@
    "proposed": [
     "octopus-tactician",
     "trash-panda-trickster",
+    "pelican-diver",
     "open-ocean-hermit-crab",
     "gull-thief",
     "pincushion-urchin",
@@ -5486,14 +5494,14 @@
     "conch-herald"
    ],
    "mix": {
-    "n": 12,
+    "n": 13,
     "high": 2,
     "gen": 2,
-    "plain": 8,
-    "highShare": 0.17,
-    "genShare": 0.17,
-    "plainShare": 0.67,
-    "avgCost": 0.5,
+    "plain": 9,
+    "highShare": 0.15,
+    "genShare": 0.15,
+    "plainShare": 0.69,
+    "avgCost": 0.54,
     "avgCostUnique": 1.0,
     "resources": [
      "lumber"
@@ -5503,10 +5511,10 @@
    },
    "counts": {
     "current": 12,
-    "proposed": 12,
-    "unique": 2,
+    "proposed": 13,
+    "unique": 3,
     "carried": 10,
-    "cut": 10,
+    "cut": 9,
     "added": 10
    },
    "hub9": {
@@ -5888,6 +5896,25 @@
      "wasHere": false
     },
     {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 2",
+     "biomes": [
+      "coast",
+      "caves"
+     ],
+     "score": 5.0,
+     "why": "Caves & burrows; carried for the mix (creature)",
+     "from": "mg",
+     "wasHere": false
+    },
+    {
      "id": "ant-warrior",
      "name": "Ant Warrior",
      "rarity": "uncommon",
@@ -5899,24 +5926,6 @@
      "src": "pack 2",
      "biomes": [
       "meadow-forest",
-      "fungal"
-     ],
-     "score": 2.0,
-     "why": "kin: Fungal hollow; carried for the mix (creature)",
-     "from": "mu",
-     "wasHere": false
-    },
-    {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
-     "rarity": "uncommon",
-     "cost": 1,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": false,
-     "src": "pack 2",
-     "biomes": [
       "fungal"
      ],
      "score": 2.0,
@@ -6077,8 +6086,8 @@
     "echo-matriarch",
     "octopus-tactician",
     "trash-panda-trickster",
-    "ant-warrior",
-    "bombardier-beetle"
+    "pelican-diver",
+    "ant-warrior"
    ],
    "proposed": [
     "echo-screecher",
@@ -6094,8 +6103,8 @@
     "badger-stonemason",
     "octopus-tactician",
     "trash-panda-trickster",
-    "ant-warrior",
-    "bombardier-beetle"
+    "pelican-diver",
+    "ant-warrior"
    ],
    "mix": {
     "n": 15,
@@ -6320,6 +6329,24 @@
      "wasHere": false
     },
     {
+     "id": "bombardier-beetle",
+     "name": "Bombardier Beetle",
+     "rarity": "uncommon",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 2",
+     "biomes": [
+      "fungal"
+     ],
+     "score": 7.0,
+     "why": "Fungal hollow",
+     "from": "mu",
+     "wasHere": false
+    },
+    {
      "id": "hawthorn-shieldbug",
      "name": "Hawthorn Shieldbug",
      "rarity": "common",
@@ -6395,24 +6422,6 @@
       "meadow-forest"
      ],
      "score": 7.0,
-     "why": "Fungal hollow",
-     "from": "mu",
-     "wasHere": false
-    },
-    {
-     "id": "bombardier-beetle",
-     "name": "Bombardier Beetle",
-     "rarity": "uncommon",
-     "cost": 1,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": false,
-     "src": "pack 2",
-     "biomes": [
-      "fungal"
-     ],
-     "score": 6.25,
      "why": "Fungal hollow",
      "from": "mu",
      "wasHere": false
@@ -6510,11 +6519,11 @@
     "wolf-spider-mother",
     "ant-warrior",
     "planarian-splitter",
+    "bombardier-beetle",
     "hawthorn-shieldbug",
     "leafcutter-gardener",
     "owl-nightwatch",
-    "truffle-piglet",
-    "bombardier-beetle"
+    "truffle-piglet"
    ],
    "proposed": [
     "rootworm-colony",
@@ -6524,11 +6533,11 @@
     "wolf-spider-mother",
     "ant-warrior",
     "planarian-splitter",
+    "bombardier-beetle",
     "hawthorn-shieldbug",
     "leafcutter-gardener",
     "owl-nightwatch",
-    "truffle-piglet",
-    "bombardier-beetle"
+    "truffle-piglet"
    ],
    "mix": {
     "n": 12,
@@ -6852,28 +6861,23 @@
      "movedFrom": null
     },
     {
-     "id": "nautilus-drifter",
-     "name": "Nautilus Drifter",
+     "id": "fishing-cat",
+     "name": "Fishing Cat",
      "rarity": "rare",
      "cost": 1,
      "stone": 0,
      "metal": 0,
-     "gen": [
-      "lumber"
-     ],
+     "gen": [],
      "high": false,
      "src": "pack 2",
      "biomes": [
-      "reef-ocean"
+      "mangrove"
      ],
-     "score": 5.0,
-     "why": "kin: Reef & ocean; brought in for the mix (generator)",
-     "alsoFits": [
-      "m7",
-      "mj"
-     ],
-     "wasHere": false,
-     "movedFrom": "mk"
+     "score": 9.5,
+     "why": "Mangrove & kelp",
+     "alsoFits": [],
+     "wasHere": true,
+     "movedFrom": null
     }
    ],
    "carried": [
@@ -7000,15 +7004,6 @@
      }
     },
     {
-     "id": "fishing-cat",
-     "name": "Fishing Cat",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
      "id": "proboscis-monkey",
      "name": "Proboscis Monkey",
      "rarity": "uncommon",
@@ -7064,7 +7059,6 @@
     }
    ],
    "added": [
-    "nautilus-drifter",
     "crocodile-ambusher",
     "lodge-engineer",
     "booming-bittern",
@@ -7081,7 +7075,7 @@
     "reef-shark",
     "sunbittern-strider",
     "minnow-skitter",
-    "nautilus-drifter",
+    "fishing-cat",
     "crocodile-ambusher",
     "lodge-engineer",
     "booming-bittern",
@@ -7090,11 +7084,11 @@
    "mix": {
     "n": 15,
     "high": 3,
-    "gen": 2,
-    "plain": 11,
+    "gen": 1,
+    "plain": 12,
     "highShare": 0.2,
-    "genShare": 0.13,
-    "plainShare": 0.73,
+    "genShare": 0.07,
+    "plainShare": 0.8,
     "avgCost": 0.93,
     "avgCostUnique": 0.82,
     "resources": [
@@ -7108,8 +7102,8 @@
     "proposed": 15,
     "unique": 11,
     "carried": 4,
-    "cut": 12,
-    "added": 5
+    "cut": 11,
+    "added": 4
    },
    "hub9": {
     "resolved": [
@@ -7156,15 +7150,7 @@
      }
     ]
    },
-   "swaps": [
-    {
-     "map": "mk",
-     "need": "generator",
-     "in": "nautilus-drifter",
-     "out": "fishing-cat",
-     "from": null
-    }
-   ]
+   "swaps": []
   },
   {
    "sideClass": null,
@@ -7478,23 +7464,23 @@
      "wasHere": false
     },
     {
-     "id": "nautilus-drifter",
-     "name": "Nautilus Drifter",
-     "rarity": "rare",
-     "cost": 1,
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "rarity": "common",
+     "cost": 0,
      "stone": 0,
      "metal": 0,
      "gen": [
       "lumber"
      ],
      "high": false,
-     "src": "pack 2",
+     "src": "pack 1",
      "biomes": [
-      "reef-ocean"
+      "coast"
      ],
-     "score": 5.0,
-     "why": "Reef & ocean; carried for the mix (generator)",
-     "from": "mk",
+     "score": 0.25,
+     "why": "kin: Coast & shore; carried for the mix (generator)",
+     "from": "mb",
      "wasHere": false
     },
     {
@@ -7658,7 +7644,7 @@
    "added": [
     "reef-admiral",
     "reef-shark",
-    "nautilus-drifter",
+    "gull-thief",
     "banded-sea-krait",
     "mangrove-manatee"
    ],
@@ -7675,7 +7661,7 @@
     "swordfish-spearman",
     "coral-polyp-colony",
     "reef-shark",
-    "nautilus-drifter",
+    "gull-thief",
     "banded-sea-krait",
     "mangrove-manatee"
    ],
@@ -7687,7 +7673,7 @@
     "highShare": 0.27,
     "genShare": 0.13,
     "plainShare": 0.6,
-    "avgCost": 1.27,
+    "avgCost": 1.2,
     "avgCostUnique": 1.27,
     "resources": [
      "lumber"
@@ -8218,10 +8204,10 @@
   },
   {
    "sideClass": {
-    "class": "ask",
-    "label": "ask owner",
-    "unique": 2,
-    "reason": "A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights."
+    "class": "delve",
+    "label": "a full delve into a new location",
+    "unique": 3,
+    "reason": "Owner 23:06 rule: its own theme (the sunken ferry), so a new location. A sunken ferry with its own pitch dark and Crushing Depths, but the same reef biome as Coral Current, 5 fights."
    },
    "key": "mj",
    "no": 11,
@@ -8300,6 +8286,29 @@
       "reef-ocean"
      ],
      "score": 8.0,
+     "why": "Reef & ocean",
+     "alsoFits": [
+      "m7"
+     ],
+     "wasHere": true,
+     "movedFrom": null
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [
+      "lumber"
+     ],
+     "high": false,
+     "src": "pack 2",
+     "biomes": [
+      "reef-ocean"
+     ],
+     "score": 7.0,
      "why": "Reef & ocean",
      "alsoFits": [
       "m7"
@@ -8401,26 +8410,6 @@
      "wasHere": true
     },
     {
-     "id": "nautilus-drifter",
-     "name": "Nautilus Drifter",
-     "rarity": "rare",
-     "cost": 1,
-     "stone": 0,
-     "metal": 0,
-     "gen": [
-      "lumber"
-     ],
-     "high": false,
-     "src": "pack 2",
-     "biomes": [
-      "reef-ocean"
-     ],
-     "score": 7.75,
-     "why": "Reef & ocean",
-     "from": "mk",
-     "wasHere": true
-    },
-    {
      "id": "riptide-eel",
      "name": "Riptide Eel",
      "rarity": "uncommon",
@@ -8487,6 +8476,24 @@
      "gen": [],
      "high": false,
      "src": "map 10-2",
+     "biomes": [
+      "reef-ocean"
+     ],
+     "score": 7.0,
+     "why": "Reef & ocean",
+     "from": "m7",
+     "wasHere": false
+    },
+    {
+     "id": "great-barracuda",
+     "name": "Great Barracuda",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "map 10-6",
      "biomes": [
       "reef-ocean"
      ],
@@ -8578,32 +8585,34 @@
     "riptide-eel",
     "colossal-squid",
     "coral-polyp-colony",
-    "electric-ray"
+    "electric-ray",
+    "great-barracuda"
    ],
    "proposed": [
     "blue-ringed-octopus",
     "orca-vanguard",
+    "nautilus-drifter",
     "clownfish-scout",
     "kraken-spawnling",
     "parrotfish",
     "coral-reef-shark",
     "mangrove-manatee",
-    "nautilus-drifter",
     "riptide-eel",
     "colossal-squid",
     "coral-polyp-colony",
-    "electric-ray"
+    "electric-ray",
+    "great-barracuda"
    ],
    "mix": {
-    "n": 12,
+    "n": 13,
     "high": 4,
     "gen": 2,
-    "plain": 6,
-    "highShare": 0.33,
-    "genShare": 0.17,
-    "plainShare": 0.5,
-    "avgCost": 1.42,
-    "avgCostUnique": 2.0,
+    "plain": 7,
+    "highShare": 0.31,
+    "genShare": 0.15,
+    "plainShare": 0.54,
+    "avgCost": 1.38,
+    "avgCostUnique": 1.67,
     "resources": [
      "lumber"
     ],
@@ -8612,11 +8621,11 @@
    },
    "counts": {
     "current": 12,
-    "proposed": 12,
-    "unique": 2,
+    "proposed": 13,
+    "unique": 3,
     "carried": 10,
     "cut": 8,
-    "added": 8
+    "added": 9
    },
    "hub9": {
     "resolved": [
@@ -9294,6 +9303,10 @@
      {
       "id": "ant-hill",
       "flag": "on 4 lists"
+     },
+     {
+      "id": "badger-lumberjack",
+      "flag": "on 4 lists"
      }
     ]
    },
@@ -9309,10 +9322,10 @@
   },
   {
    "sideClass": {
-    "class": "ask",
-    "label": "ask owner",
-    "unique": 2,
-    "reason": "A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights."
+    "class": "challenge",
+    "label": "additional challenges on the parent map",
+    "unique": 1,
+    "reason": "Owner 23:06 rule: the same meadow theme, so extra challenges. A meadow opening at Map 12 off Thistlewood (Map 1) with its own Thunderstorm, but the same meadow biome, 5 fights."
    },
    "key": "mq",
    "no": 12,
@@ -9379,29 +9392,6 @@
      ],
      "score": 9.0,
      "why": "Meadow & woodland; skirmish reward of 1-A-5",
-     "alsoFits": [
-      "mo"
-     ],
-     "wasHere": true,
-     "movedFrom": null
-    },
-    {
-     "id": "jay-pilferer",
-     "name": "Jay Pilferer",
-     "rarity": "common",
-     "cost": 1,
-     "stone": 0,
-     "metal": 0,
-     "gen": [
-      "lumber"
-     ],
-     "high": false,
-     "src": "pack 2",
-     "biomes": [
-      "meadow-forest"
-     ],
-     "score": 10.0,
-     "why": "Meadow & woodland; brought in for the mix (generator)",
      "alsoFits": [
       "mo"
      ],
@@ -9574,6 +9564,26 @@
      "wasHere": false
     },
     {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "rarity": "uncommon",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [
+      "lumber"
+     ],
+     "high": false,
+     "src": "map 1-5",
+     "biomes": [
+      "meadow-forest"
+     ],
+     "score": 4.5,
+     "why": "Meadow & woodland",
+     "from": "mf",
+     "wasHere": false
+    },
+    {
      "id": "ant-hill",
      "name": "Ant Hill",
      "rarity": "common",
@@ -9693,6 +9703,15 @@
      }
     },
     {
+     "id": "jay-pilferer",
+     "name": "Jay Pilferer",
+     "rarity": "common",
+     "to": {
+      "kind": "off",
+      "note": ""
+     }
+    },
+    {
      "id": "ladybird-guard",
      "name": "Ladybird Guard",
      "rarity": "common",
@@ -9765,11 +9784,11 @@
     "woodcock-lookout",
     "bramble-sprout",
     "cricket-drummer",
+    "badger-lumberjack",
     "ant-hill"
    ],
    "proposed": [
     "lucky-hopper",
-    "jay-pilferer",
     "house-cat",
     "field-mouse",
     "field-vole",
@@ -9779,6 +9798,7 @@
     "woodcock-lookout",
     "bramble-sprout",
     "cricket-drummer",
+    "badger-lumberjack",
     "ant-hill"
    ],
    "mix": {
@@ -9800,10 +9820,10 @@
    "counts": {
     "current": 21,
     "proposed": 12,
-    "unique": 2,
-    "carried": 10,
-    "cut": 18,
-    "added": 9
+    "unique": 1,
+    "carried": 11,
+    "cut": 19,
+    "added": 10
    },
    "hub9": {
     "resolved": [
@@ -9825,6 +9845,10 @@
     ],
     "left": [
      {
+      "id": "badger-lumberjack",
+      "flag": "on 4 lists"
+     },
+     {
       "id": "ant-hill",
       "flag": "no source yet (proposed home: this map's pack tier)"
      },
@@ -9834,15 +9858,7 @@
      }
     ]
    },
-   "swaps": [
-    {
-     "map": "mq",
-     "need": "generator",
-     "in": "jay-pilferer",
-     "out": "stag-beetle",
-     "from": null
-    }
-   ]
+   "swaps": []
   },
   {
    "sideClass": null,
@@ -12562,10 +12578,10 @@
   },
   {
    "sideClass": {
-    "class": "ask",
-    "label": "ask owner",
-    "unique": 2,
-    "reason": "Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage."
+    "class": "delve",
+    "label": "a full delve into a new location",
+    "unique": 3,
+    "reason": "Owner 23:06 rule: its own crystal theme, so a new location. Deeper in the same caves as Caves & Alcoves, 4 fights, but a new crystal / shiny theme with its own Mirage."
    },
    "key": "mn",
    "no": 16,
@@ -12626,6 +12642,25 @@
      ],
      "score": 9.0,
      "why": "Caves & burrows; skirmish reward of 8-A-4",
+     "alsoFits": [],
+     "wasHere": true,
+     "movedFrom": null
+    },
+    {
+     "id": "cave-bat-swarm",
+     "name": "Cave Bat Swarm",
+     "rarity": "rare",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "caves"
+     ],
+     "score": 11.0,
+     "why": "Caves & burrows",
      "alsoFits": [],
      "wasHere": true,
      "movedFrom": null
@@ -12870,15 +12905,6 @@
      }
     },
     {
-     "id": "cave-bat-swarm",
-     "name": "Cave Bat Swarm",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
      "id": "cave-cricket",
      "name": "Cave Cricket",
      "rarity": "common",
@@ -12974,6 +13000,7 @@
    ],
    "proposed": [
     "lantern-spark-fly",
+    "cave-bat-swarm",
     "prospector-mole",
     "echo-screecher",
     "sulfur-cinder-moth",
@@ -12987,14 +13014,14 @@
     "whip-spider"
    ],
    "mix": {
-    "n": 12,
+    "n": 13,
     "high": 1,
     "gen": 2,
-    "plain": 9,
+    "plain": 10,
     "highShare": 0.08,
-    "genShare": 0.17,
-    "plainShare": 0.75,
-    "avgCost": 0.67,
+    "genShare": 0.15,
+    "plainShare": 0.77,
+    "avgCost": 0.62,
     "avgCostUnique": 0.0,
     "resources": [
      "metal",
@@ -13007,10 +13034,10 @@
    },
    "counts": {
     "current": 15,
-    "proposed": 12,
-    "unique": 2,
+    "proposed": 13,
+    "unique": 3,
     "carried": 10,
-    "cut": 13,
+    "cut": 12,
     "added": 10
    },
    "hub9": {
@@ -13043,7 +13070,7 @@
      "map": "mn",
      "need": "generator",
      "in": "prospector-mole",
-     "out": "cave-bat-swarm",
+     "out": "cave-cricket",
      "from": null
     }
    ]
@@ -13059,14 +13086,14 @@
    "theme": {
     "biome": "Tundra & ice",
     "story": "Frozen ground north of the grassland — the packs here hunt in formation.",
-    "field": "Frigid (frozen ground), frost (Freezing / Frostbite), Frostbite, Freezing",
+    "field": "Frigid (frozen ground), frost (Freezing / Frostbite), Freezing, Frostbite",
     "newSkills": [
      "Earthquake",
      "King",
      "Poison Bolt",
      "Pack Howl"
     ],
-    "line": "Tundra & ice. Frozen ground north of the grassland — the packs here hunt in formation. Field: Frigid (frozen ground), frost (Freezing / Frostbite), Frostbite, Freezing. New in its fights: Earthquake, King, Poison Bolt, Pack Howl."
+    "line": "Tundra & ice. Frozen ground north of the grassland — the packs here hunt in formation. Field: Frigid (frozen ground), frost (Freezing / Frostbite), Freezing, Frostbite. New in its fights: Earthquake, King, Poison Bolt, Pack Howl."
    },
    "cap": {
     "reveal": "veryrare",
@@ -14909,7 +14936,7 @@
       "mountain-sky"
      ],
      "score": 4.0,
-     "why": "Tundra & ice; carried for the mix (generator)",
+     "why": "Mountain & sky; carried for the mix (generator)",
      "from": "m6",
      "wasHere": false
     },
@@ -16127,10 +16154,10 @@
   },
   {
    "sideClass": {
-    "class": "ask",
-    "label": "ask owner",
-    "unique": 2,
-    "reason": "Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire)."
+    "class": "challenge",
+    "label": "additional challenges on the parent map",
+    "unique": 1,
+    "reason": "Owner 23:06: like the other Map 20 submaps, extra challenges. Inside the Sundered Peak's crater, same volcanic biome, but 7 fights and its own people (the dead at the fire)."
    },
    "key": "me",
    "no": 20,
@@ -16193,30 +16220,6 @@
       "mx",
       "m22",
       "m9"
-     ],
-     "wasHere": true,
-     "movedFrom": null
-    },
-    {
-     "id": "gorge-wyrm",
-     "name": "Gorge Wyrm",
-     "rarity": "common",
-     "cost": 3,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": true,
-     "src": "pack 3",
-     "biomes": [
-      "volcanic-ash"
-     ],
-     "score": 10.5,
-     "why": "Volcanic & ash",
-     "alsoFits": [
-      "m3",
-      "m11",
-      "mx",
-      "m22"
      ],
      "wasHere": true,
      "movedFrom": null
@@ -16406,6 +16409,25 @@
      "why": "Volcanic & ash",
      "from": "m11",
      "wasHere": false
+    },
+    {
+     "id": "cave-warlord",
+     "name": "Cave Warlord",
+     "rarity": "common",
+     "cost": 4,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": true,
+     "src": "pack 3",
+     "biomes": [
+      "caves",
+      "volcanic-ash"
+     ],
+     "score": 7.0,
+     "why": "Volcanic & ash",
+     "from": "m11",
+     "wasHere": false
     }
    ],
    "cut": [
@@ -16457,6 +16479,15 @@
      }
     },
     {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "to": {
+      "kind": "off",
+      "note": ""
+     }
+    },
+    {
      "id": "silverback-brawler",
      "name": "Silverback Brawler",
      "rarity": "common",
@@ -16483,11 +16514,11 @@
     "bear-cub",
     "magma-wraith",
     "ossuary-lammergeier",
-    "ash-moth"
+    "ash-moth",
+    "cave-warlord"
    ],
    "proposed": [
     "the-contradiction",
-    "gorge-wyrm",
     "cinder-stoker",
     "ashbone-ghoul",
     "cinder-skeleton",
@@ -16497,7 +16528,8 @@
     "bear-cub",
     "magma-wraith",
     "ossuary-lammergeier",
-    "ash-moth"
+    "ash-moth",
+    "cave-warlord"
    ],
    "mix": {
     "n": 12,
@@ -16507,8 +16539,8 @@
     "highShare": 0.08,
     "genShare": 0.08,
     "plainShare": 0.83,
-    "avgCost": 0.83,
-    "avgCostUnique": 2.0,
+    "avgCost": 0.92,
+    "avgCostUnique": 1.0,
     "resources": [
      "lumber"
     ],
@@ -16518,10 +16550,10 @@
    "counts": {
     "current": 11,
     "proposed": 12,
-    "unique": 2,
-    "carried": 10,
-    "cut": 7,
-    "added": 8
+    "unique": 1,
+    "carried": 11,
+    "cut": 8,
+    "added": 9
    },
    "hub9": {
     "resolved": [
@@ -16583,10 +16615,10 @@
   },
   {
    "sideClass": {
-    "class": "challenge",
-    "label": "additional challenges on the parent map",
-    "unique": 1,
-    "reason": "The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights."
+    "class": "boss",
+    "label": "the 0-20 final boss (more unique cards, its own flair)",
+    "unique": 5,
+    "reason": "Owner 23:06: the overall 0-20 big boss, more unique cards and its own flair. The Sundered Peak's own finale: the dragon's lair and the world boss, 4 fights."
    },
    "key": "mx",
    "no": 20,
@@ -16669,6 +16701,80 @@
      "alsoFits": [],
      "wasHere": false,
      "movedFrom": "mx"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "volcanic-ash"
+     ],
+     "score": 10.5,
+     "why": "Volcanic & ash",
+     "alsoFits": [
+      "m3",
+      "m11",
+      "me",
+      "m22"
+     ],
+     "wasHere": true,
+     "movedFrom": null
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
+     "rarity": "rare",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "coast",
+      "volcanic-ash"
+     ],
+     "score": 10.5,
+     "why": "Volcanic & ash",
+     "alsoFits": [
+      "m3",
+      "m11",
+      "me",
+      "m22"
+     ],
+     "wasHere": true,
+     "movedFrom": null
+    },
+    {
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "rarity": "common",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "volcanic-ash",
+      "caves"
+     ],
+     "score": 10.0,
+     "why": "Volcanic & ash",
+     "alsoFits": [
+      "mn",
+      "m3",
+      "m11",
+      "me"
+     ],
+     "wasHere": true,
+     "movedFrom": null
     }
    ],
    "carried": [
@@ -16767,25 +16873,6 @@
      "wasHere": true
     },
     {
-     "id": "cave-warlord",
-     "name": "Cave Warlord",
-     "rarity": "common",
-     "cost": 4,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": true,
-     "src": "pack 3",
-     "biomes": [
-      "caves",
-      "volcanic-ash"
-     ],
-     "score": 7.0,
-     "why": "Volcanic & ash",
-     "from": "m11",
-     "wasHere": false
-    },
-    {
      "id": "woodland-brawler",
      "name": "Woodland Brawler",
      "rarity": "veryrare",
@@ -16856,6 +16943,24 @@
      "why": "Volcanic & ash",
      "from": "m11",
      "wasHere": false
+    },
+    {
+     "id": "bear-cub",
+     "name": "Bear Cub",
+     "rarity": "uncommon",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "volcanic-ash"
+     ],
+     "score": 6.25,
+     "why": "Volcanic & ash",
+     "from": "m11",
+     "wasHere": false
     }
    ],
    "cut": [
@@ -16900,32 +17005,12 @@
      }
     },
     {
-     "id": "ember-centipede",
-     "name": "Ember Centipede",
-     "rarity": "common",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
-     "id": "ember-jackal",
-     "name": "Ember Jackal",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
      "id": "gorge-wyrm",
      "name": "Gorge Wyrm",
      "rarity": "common",
      "to": {
-      "kind": "map",
-      "key": "me",
-      "name": "Eye of the Volcano",
-      "no": 20
+      "kind": "off",
+      "note": ""
      }
     },
     {
@@ -16945,67 +17030,59 @@
       "kind": "off",
       "note": ""
      }
-    },
-    {
-     "id": "tide-spirit",
-     "name": "Tide Spirit",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
     }
    ],
    "added": [
     "caldera-wyrm",
     "magma-salamander",
     "pack-mule",
-    "cave-warlord",
     "woodland-brawler",
     "ash-cloud-condor",
     "ash-moth",
-    "ashbone-ghoul"
+    "ashbone-ghoul",
+    "bear-cub"
    ],
    "proposed": [
     "fire-drake-hatchling",
     "caldera-wyrm",
+    "ember-jackal",
+    "tide-spirit",
+    "ember-centipede",
     "magma-salamander",
     "magma-titan",
     "cinder-stoker",
     "pack-mule",
     "obsidian-scorpion",
-    "cave-warlord",
     "woodland-brawler",
     "ash-cloud-condor",
     "ash-moth",
-    "ashbone-ghoul"
+    "ashbone-ghoul",
+    "bear-cub"
    ],
    "mix": {
-    "n": 12,
-    "high": 4,
+    "n": 15,
+    "high": 3,
     "gen": 1,
-    "plain": 7,
-    "highShare": 0.33,
-    "genShare": 0.08,
-    "plainShare": 0.58,
-    "avgCost": 1.17,
-    "avgCostUnique": 1.0,
+    "plain": 11,
+    "highShare": 0.2,
+    "genShare": 0.07,
+    "plainShare": 0.73,
+    "avgCost": 0.73,
+    "avgCostUnique": 0.6,
     "resources": [
      "lumber",
      "metal",
      "stone"
     ],
     "introduces": [],
-    "flags": [
-     "2 unique over its 1 (skirmish rewards)"
-    ]
+    "flags": []
    },
    "counts": {
     "current": 14,
-    "proposed": 12,
-    "unique": 2,
+    "proposed": 15,
+    "unique": 5,
     "carried": 10,
-    "cut": 10,
+    "cut": 7,
     "added": 8
    },
    "hub9": {
@@ -18697,10 +18774,10 @@
    ],
    "carried": [
     {
-     "id": "gorge-wyrm",
-     "name": "Gorge Wyrm",
+     "id": "phoenix-fledgling",
+     "name": "Phoenix Fledgling",
      "rarity": "common",
-     "cost": 3,
+     "cost": 2,
      "stone": 0,
      "metal": 0,
      "gen": [],
@@ -18709,10 +18786,10 @@
      "biomes": [
       "volcanic-ash"
      ],
-     "score": 9.0,
+     "score": 5.0,
      "why": "Volcanic & ash; carried for the mix (high cost)",
-     "from": "me",
-     "wasHere": true
+     "from": "m3",
+     "wasHere": false
     },
     {
      "id": "pumice-beetle",
@@ -18735,43 +18812,53 @@
      "wasHere": false
     },
     {
-     "id": "fire-salamander",
-     "name": "Fire Salamander",
-     "rarity": "uncommon",
+     "id": "ember-centipede",
+     "name": "Ember Centipede",
+     "rarity": "common",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "volcanic-ash",
+      "caves"
+     ],
+     "score": 5.0,
+     "why": "Volcanic & ash; carried for the mix (creature)",
+     "from": "mx",
+     "wasHere": false
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "rarity": "rare",
      "cost": 1,
      "stone": 0,
      "metal": 0,
      "gen": [],
      "high": false,
-     "src": "map 19-3",
-     "biomes": [
-      "volcanic-ash"
-     ],
-     "score": 5.0,
-     "why": "Volcanic & ash; carried for the mix (creature)",
-     "from": "m3",
-     "wasHere": false
-    },
-    {
-     "id": "phoenix-fledgling",
-     "name": "Phoenix Fledgling",
-     "rarity": "common",
-     "cost": 2,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": true,
      "src": "pack 3",
      "biomes": [
       "volcanic-ash"
      ],
      "score": 5.0,
      "why": "Volcanic & ash",
-     "from": "m3",
+     "from": "mx",
      "wasHere": false
     }
    ],
    "cut": [
+    {
+     "id": "gorge-wyrm",
+     "name": "Gorge Wyrm",
+     "rarity": "common",
+     "to": {
+      "kind": "off",
+      "note": ""
+     }
+    },
     {
      "id": "fumarole-ibex",
      "name": "Fumarole Ibex",
@@ -18803,9 +18890,10 @@
    "added": [
     "rimeheart-colossus",
     "ash-imp",
+    "phoenix-fledgling",
     "pumice-beetle",
-    "fire-salamander",
-    "phoenix-fledgling"
+    "ember-centipede",
+    "ember-jackal"
    ],
    "proposed": [
     "rimefire-salamander",
@@ -18819,20 +18907,20 @@
     "ashwing-ptarmigan",
     "rimeheart-colossus",
     "ash-imp",
-    "gorge-wyrm",
+    "phoenix-fledgling",
     "pumice-beetle",
-    "fire-salamander",
-    "phoenix-fledgling"
+    "ember-centipede",
+    "ember-jackal"
    ],
    "mix": {
     "n": 15,
-    "high": 5,
+    "high": 4,
     "gen": 1,
-    "plain": 9,
-    "highShare": 0.33,
+    "plain": 10,
+    "highShare": 0.27,
     "genShare": 0.07,
-    "plainShare": 0.6,
-    "avgCost": 1.4,
+    "plainShare": 0.67,
+    "avgCost": 1.2,
     "avgCostUnique": 1.27,
     "resources": [
      "stone"
@@ -18845,8 +18933,8 @@
     "proposed": 15,
     "unique": 11,
     "carried": 4,
-    "cut": 3,
-    "added": 5
+    "cut": 4,
+    "added": 6
    },
    "hub9": {
     "resolved": [
@@ -19526,6 +19614,25 @@
    ],
    "carried": [
     {
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
+     "rarity": "rare",
+     "cost": 0,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "coast",
+      "volcanic-ash"
+     ],
+     "score": 10.0,
+     "why": "Volcanic & ash",
+     "from": "mx",
+     "wasHere": true
+    },
+    {
      "id": "cinder-gecko",
      "name": "Cinder Gecko",
      "rarity": "common",
@@ -19541,6 +19648,24 @@
      "score": 9.5,
      "why": "Volcanic & ash",
      "from": "m22",
+     "wasHere": true
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "rarity": "rare",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "pack 3",
+     "biomes": [
+      "volcanic-ash"
+     ],
+     "score": 9.25,
+     "why": "Volcanic & ash",
+     "from": "mx",
      "wasHere": true
     },
     {
@@ -19581,6 +19706,24 @@
      "wasHere": true
     },
     {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "rarity": "uncommon",
+     "cost": 1,
+     "stone": 0,
+     "metal": 0,
+     "gen": [],
+     "high": false,
+     "src": "map 19-3",
+     "biomes": [
+      "volcanic-ash"
+     ],
+     "score": 8.0,
+     "why": "Volcanic & ash",
+     "from": "m3",
+     "wasHere": false
+    },
+    {
      "id": "magma-salamander",
      "name": "Magma Salamander",
      "rarity": "rare",
@@ -19615,24 +19758,6 @@
      "why": "Volcanic & ash",
      "from": "m11",
      "wasHere": true
-    },
-    {
-     "id": "fire-salamander",
-     "name": "Fire Salamander",
-     "rarity": "uncommon",
-     "cost": 1,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": false,
-     "src": "map 19-3",
-     "biomes": [
-      "volcanic-ash"
-     ],
-     "score": 7.25,
-     "why": "Volcanic & ash",
-     "from": "m3",
-     "wasHere": false
     },
     {
      "id": "hercules-beetle",
@@ -19670,46 +19795,6 @@
      "why": "Volcanic & ash",
      "from": "m3",
      "wasHere": false
-    },
-    {
-     "id": "beaver-lumberjack",
-     "name": "Beaver Lumberjack",
-     "rarity": "common",
-     "cost": 0,
-     "stone": 0,
-     "metal": 0,
-     "gen": [
-      "lumber"
-     ],
-     "high": false,
-     "src": "none",
-     "biomes": [
-      "river",
-      "volcanic-ash"
-     ],
-     "score": 7.0,
-     "why": "Volcanic & ash",
-     "from": "m1",
-     "wasHere": true
-    },
-    {
-     "id": "porcupine-roller",
-     "name": "Porcupine Roller",
-     "rarity": "common",
-     "cost": 0,
-     "stone": 0,
-     "metal": 0,
-     "gen": [],
-     "high": false,
-     "src": "pack 3",
-     "biomes": [
-      "maze-briar",
-      "volcanic-ash"
-     ],
-     "score": 7.0,
-     "why": "Volcanic & ash",
-     "from": "m3",
-     "wasHere": false
     }
    ],
    "cut": [
@@ -19720,6 +19805,17 @@
      "to": {
       "kind": "off",
       "note": ""
+     }
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "rarity": "common",
+     "to": {
+      "kind": "map",
+      "key": "m1",
+      "name": "Bramblewood Outskirts",
+      "no": 0
      }
     },
     {
@@ -19735,15 +19831,6 @@
      "id": "cinder-imp",
      "name": "Cinder Imp",
      "rarity": "common",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
-     "id": "ember-jackal",
-     "name": "Ember Jackal",
-     "rarity": "rare",
      "to": {
       "kind": "off",
       "note": ""
@@ -19806,15 +19893,6 @@
      }
     },
     {
-     "id": "tide-spirit",
-     "name": "Tide Spirit",
-     "rarity": "rare",
-     "to": {
-      "kind": "off",
-      "note": ""
-     }
-    },
-    {
      "id": "vampire-finch",
      "name": "Vampire Finch",
      "rarity": "uncommon",
@@ -19829,36 +19907,34 @@
     "ore-smelter-mole",
     "quill-volley",
     "fire-salamander",
-    "phoenix-fledgling",
-    "porcupine-roller"
+    "phoenix-fledgling"
    ],
    "proposed": [
     "ember-revenant",
     "anvilwhisker-otter",
     "ore-smelter-mole",
+    "tide-spirit",
     "cinder-gecko",
+    "ember-jackal",
     "quill-volley",
     "ashbone-ghoul",
+    "fire-salamander",
     "magma-salamander",
     "ash-cloud-condor",
-    "fire-salamander",
     "hercules-beetle",
-    "phoenix-fledgling",
-    "beaver-lumberjack",
-    "porcupine-roller"
+    "phoenix-fledgling"
    ],
    "mix": {
     "n": 13,
     "high": 3,
-    "gen": 2,
-    "plain": 8,
+    "gen": 1,
+    "plain": 9,
     "highShare": 0.23,
-    "genShare": 0.15,
-    "plainShare": 0.62,
-    "avgCost": 0.92,
+    "genShare": 0.08,
+    "plainShare": 0.69,
+    "avgCost": 1.0,
     "avgCostUnique": 1.67,
     "resources": [
-     "lumber",
      "metal"
     ],
     "introduces": [],
@@ -19869,14 +19945,19 @@
     "proposed": 13,
     "unique": 3,
     "carried": 10,
-    "cut": 12,
-    "added": 6
+    "cut": 11,
+    "added": 5
    },
    "hub9": {
     "resolved": [
      {
       "id": "basalt-boar",
       "flag": "on 4+ lists",
+      "how": "cut"
+     },
+     {
+      "id": "beaver-lumberjack",
+      "flag": "no source",
       "how": "cut"
      },
      {
@@ -19926,10 +20007,6 @@
      }
     ],
     "left": [
-     {
-      "id": "beaver-lumberjack",
-      "flag": "no source"
-     },
      {
       "id": "anvilwhisker-otter",
       "flag": "no source yet (proposed home: this map's pack tier)"
@@ -20481,10 +20558,10 @@
    "maps": "Maps 7-13",
    "cards": 154,
    "listedNow": 132,
-   "unique": 56,
-   "uniqueInRange": 54,
+   "unique": 57,
+   "uniqueInRange": 55,
    "carriedOnly": 0,
-   "offList": 98,
+   "offList": 97,
    "offListIds": [
     "antler-skirmisher",
     "baby-bat",
@@ -20514,7 +20591,6 @@
     "feral-tuskboar",
     "field-crow",
     "firetail-trickster",
-    "fishing-cat",
     "fox-kit",
     "fox-sharpshot",
     "fox-warchief",
@@ -20531,6 +20607,7 @@
     "hollow-oath-keeper",
     "horseshoe-crab",
     "ironclaw-fiddler",
+    "jay-pilferer",
     "king-maker",
     "ladybird-guard",
     "leopard-slug",
@@ -20548,7 +20625,6 @@
     "nightjar-drifter",
     "nightshade-moth",
     "pack-rat-looter",
-    "pelican-diver",
     "pigeon-peon",
     "pill-bug",
     "pine-marten",
@@ -20592,10 +20668,10 @@
    "maps": "Maps 14-20",
    "cards": 126,
    "listedNow": 111,
-   "unique": 53,
-   "uniqueInRange": 52,
+   "unique": 56,
+   "uniqueInRange": 55,
    "carriedOnly": 0,
-   "offList": 73,
+   "offList": 70,
    "offListIds": [
     "alpine-avalanche",
     "amber-cicada",
@@ -20609,7 +20685,6 @@
     "blizzard",
     "bramblewood-bonebreaker",
     "bramblewood-macaque",
-    "cave-bat-swarm",
     "deep-cave-troll",
     "cave-cricket",
     "cave-flitter",
@@ -20618,8 +20693,6 @@
     "courier-pigeon",
     "dune-jackal",
     "dune-jackal-scout",
-    "ember-centipede",
-    "ember-jackal",
     "fire-hawk",
     "firefly-swarm",
     "frillneck-duelist",
@@ -20630,6 +20703,7 @@
     "glasswing-butterfly",
     "glasswing-moth",
     "glimmer-spider",
+    "gorge-wyrm",
     "granite-ox-golem",
     "great-horned-owl",
     "heatwave",
@@ -20667,7 +20741,6 @@
     "tarantula-hawk",
     "termite-forager",
     "termite-mound",
-    "tide-spirit",
     "tundra-musk-ox",
     "vampire-roost"
    ]
@@ -20896,14 +20969,14 @@
    "mlb"
   ],
   "entriesNow": 613,
-  "entriesProposed": 559,
+  "entriesProposed": 565,
   "uniqueNow": 509,
-  "uniqueProposed": 302,
-  "onAnyList": 307,
+  "uniqueProposed": 306,
+  "onAnyList": 311,
   "rewards": 108,
-  "packUnique": 180,
-  "offList": 426,
-  "offListPacks": 278,
+  "packUnique": 184,
+  "offList": 422,
+  "offListPacks": 274,
   "noSourcePlaced": [
    "ant-hill",
    "anvilwhisker-otter",
@@ -20920,13 +20993,9 @@
    "rimeheart-colossus",
    "stoneheart-golem"
   ],
-  "swaps": 16,
-  "moved": 21,
-  "mixFlags": {
-   "mx": [
-    "2 unique over its 1 (skirmish rewards)"
-   ]
-  }
+  "swaps": 14,
+  "moved": 20,
+  "mixFlags": {}
  },
  "swaps": [
   {
@@ -20972,13 +21041,6 @@
    "from": null
   },
   {
-   "map": "mk",
-   "need": "generator",
-   "in": "nautilus-drifter",
-   "out": "fishing-cat",
-   "from": null
-  },
-  {
    "map": "m7",
    "need": "generator",
    "in": "coral-polyp-colony",
@@ -20993,13 +21055,6 @@
    "from": null
   },
   {
-   "map": "mq",
-   "need": "generator",
-   "in": "jay-pilferer",
-   "out": "stag-beetle",
-   "from": null
-  },
-  {
    "map": "mr",
    "need": "generator",
    "in": "redwood-woodpecker",
@@ -21010,7 +21065,7 @@
    "map": "mn",
    "need": "generator",
    "in": "prospector-mole",
-   "out": "cave-bat-swarm",
+   "out": "cave-cricket",
    "from": null
   },
   {
