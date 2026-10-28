@@ -1,2 +1,15 @@
+# 2026-10-28 (owner: "We hit the deployment storage cap"): deploy only what the live page loads. Every deploy used to upload the whole
+# repo (~706 MB: docs/ screenshots and balance runs alone are 461 MB); the page is one inlined index.html plus these folders (~87 MB).
+# Checked: a copy of exactly these paths loads Home, Conquest, Deck, Codex and Shop with no failed requests.
+/*
+!/index.html
+!/assets
+!/fonts
+!/art
+!/version.json
+!/robots.txt
+!/vercel.json
+!/CREDITS.md
+!/licenses
 # 2026-10-18: the desktop app's source (fonts, icons, Electron code) is never loaded by the website
 electron/
