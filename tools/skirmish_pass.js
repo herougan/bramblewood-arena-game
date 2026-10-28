@@ -148,7 +148,7 @@ function buildRoadDeck(mapNo, fightsOfMap, seed, prev){
 function measure(f, node, games, seed0, deckOverride){
   node = node || f.n; G.NODE_MAP_HINT.set(node, f.map);
   if(!deckOverride && REF_TOOL_SET) deckOverride = RP.deckFor(REF_TOOL_SET, G.referenceDeckFor(f.map, node).mapNo); // BAL6: a per-map set
-  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null, refSet: REF_TOOL_SET ? null : REF_SET}); // PREF: --ref=ref2 plays that reference set
+  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null, refSet: REF_SET}); // BAL6: with a deck in hand the game ignores refSet (referenceFightSetup), so a per-map set plays its deck // PREF: --ref=ref2 plays that reference set
   return {win: Math.round(r.wins / games * 1000) / 10, loss: Math.round(r.losses / games * 1000) / 10, rounds: r.avgRounds == null ? null : Math.round(r.avgRounds * 10) / 10,
     hpLost: Math.round(r.hpLost * 1000) / 10, cpu: r.cpu, stage: r.stage === 'road' ? 'road ' + r.deckMap : r.stage, level: r.level, hp: r.hp, shield: r.shield, overridden: r.overridden};
 }
