@@ -3608,5 +3608,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "暗盲：沒有暗視或夜行的單位。黑暗之地對夜行與晝行單位視為夜晚。照明單位會照亮己方，以及正對它的敵人。",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷熱，等級 2：每個白天輪（沒有晝夜之處則每輪），雙方各有 3 個隨機單位受到 1 點火焰傷害。耐熱單位不受影響。",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "酷熱，等級 3：每個白天輪（沒有晝夜之處則每輪），雙方各有 4 個隨機單位受到 1 點火焰傷害。耐熱單位不受影響。",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "白天（沒有夜晚之處則一直），雙方各 2 個單位受到 1 點火焰傷害。"
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "白天（沒有夜晚之處則一直），雙方各 2 個單位受到 1 點火焰傷害。",
+ "This map's cards": "本地圖的卡牌",
+ "{n} more, of rarities you haven't reached yet": "還有 {n} 張，屬於你尚未解鎖的稀有度",
+ "That's the most a deck can hold of one card: {n} copies.": "一副卡組中同一張卡最多只能放 {n} 張。",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "越稀有的卡上限越低：這張卡每副卡組最多 {n} 張。"
 }

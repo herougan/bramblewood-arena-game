@@ -102,12 +102,14 @@ async def run(b, url, w):
     ok(r['shellNum'] == '2' and r['bars'] == 0, f"V3. Shell's temporary Health is the blue number too; no Health bar shows {r['shellNum']} {r['bars']}")
     # the live refresh: the shield drops 3 -> 1, then breaks
     r = await pg.evaluate(f"""(async()=>{{ const m = matchState, c = m.engine.allBoardCards(m.players[1]).find(x=> x.uid === {u['1:-1']}); const el = document.querySelector('.board-card[data-uid="{u['1:-1']}"]');
-      c.shield = 1; updateCardStatusDisplay({u['1:-1']}); const a = (el.querySelector('.vis3-shield-num')||{{}}).textContent;
-      renderVfxForEvent({{type:'shieldSoak', uid:{u['1:-1']}, defId:c.defId, soaked:2, left:1}}); await new Promise(r=> setTimeout(r, 120));
-      const dome = document.querySelector('.fxa-dome'), br = dome ? getComputedStyle(dome, '::before').borderRadius : null, round = dome ? getComputedStyle(dome).borderRadius : null;
-      return {{a, br, round, dome: !!dome}}; }})()""")
+      c.shield = 1; updateCardStatusDisplay({u['1:-1']}); await new Promise(r=> setTimeout(r, 400)); const a = (el.querySelector('.vis3-shield-num')||{{}}).textContent;
+      // 2026-10-27 (package VIS4, K7): the number counts down (read it 0.4 s on); the hit's look is VIS4's rectangle (.vis4-shield-rect, its
+      // own 12 px corners; FX.A's dome is no longer drawn), and it waits for the blow (windup + impactPad) while a round plays
+      const am = animMs(); renderVfxForEvent({{type:'shieldSoak', uid:{u['1:-1']}, defId:c.defId, soaked:2, left:1}}); await new Promise(r=> setTimeout(r, am.windup + am.impactPad + 120));
+      const dome = document.querySelector('.vis4-shield-rect'), br = dome ? getComputedStyle(dome).borderRadius : null, round = '0px';
+      return {{a, br, round, dome: !!dome, old: !!document.querySelector('.fxa-dome')}}; }})()""")
     ok(r['a'] == '1', f"V3. the number follows the Shield live {r['a']}")
-    ok(r['dome'] and r['br'] == '12px' and r['round'] in ('0px', '0%'), f"V3. the Shield's hit is a rounded rectangle over the card, not a dome {r}")
+    ok(r['dome'] and r['br'] == '12px' and not r['old'], f"V3. the Shield's hit is a rounded rectangle over the card, not a dome {r}")
     await shot(pg, 'shield-hit-rect', w, f'.board-card[data-uid="{u["1:-1"]}"]', 40)
     # G8: every pip's glyph centred in its pill (the turtle pip was a few px low and left)
     await shot(pg, 'pips', w, f'.board-card[data-uid="{u["2:-2"]}"]', 30)

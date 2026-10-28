@@ -13680,6 +13680,9 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 
 /* V4 (owner #33): the aura a Rampart or Guardian unit gives off as it blocks (vis3BlockPulse) */
 .sfx.vis3-block-aura{border-radius:12px; border:3px solid rgba(255,228,150,.95); box-shadow:0 0 14px 4px rgba(255,200,90,.65), inset 0 0 14px rgba(255,220,140,.5); z-index:9991;}
+/* VIS4 (2026-10-27, K4: "Rampart animation as described not done"): the block aura thicker and brighter, with a second, wider ring after it */
+.sfx.vis3-block-aura{border-width:5px; border-color:rgba(255,236,170,1); box-shadow:0 0 22px 7px rgba(255,196,70,.8), inset 0 0 22px rgba(255,220,140,.65);}
+.sfx.vis3-block-aura.vis4-block-aura-2{border-width:3px; border-color:rgba(255,214,120,.9); box-shadow:0 0 16px 4px rgba(255,180,60,.6);}
 
 /* V5 (owner #14): boss nodes bigger, dark, in a ring of bone teeth with a skull crest; elites a violet double ring with a star crest. */
 .map-node.kind-base-boss{width:70px; height:70px; font-size:32px; border-color:#b3261e; color:#fff;
@@ -13703,13 +13706,23 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
   .map-node.kind-base-boss .map-node-kind{top:-18px; width:26px; height:26px; font-size:17px;} }
 @media (prefers-reduced-motion: reduce){ .map-node.kind-base-boss:not(.done){animation:none;} }
 :where(html[data-fx="none"], html[data-fx="low"]) .map-node.kind-base-boss:not(.done){animation:none;}
+/* VIS4 (2026-10-27, K1; owner 10-27 11:22: "The white wings should be reduced in size, and maybe closer to the red color. Right now it looks
+   like meat and ribs"): the bone teeth are shorter, thinner and fewer-looking, in a dark-to-ember red that sits in the node's red glow; the
+   skull crest's ring is red too. */
+.vis3-skull-frame{inset:-6px;}
+.vis3-skull-frame::before{background:repeating-conic-gradient(from -3deg, #e0503a 0 4.5deg, rgba(224,80,58,0) 4.5deg 22.5deg);
+  -webkit-mask:radial-gradient(circle closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px), #000 calc(100% - 1px), transparent 100%);
+          mask:radial-gradient(circle closest-side, transparent calc(100% - 6px), #000 calc(100% - 5px), #000 calc(100% - 1px), transparent 100%);
+  filter:drop-shadow(0 0 2px rgba(255,60,30,.9)); opacity:.92;}
+.map-node.kind-base-boss .map-node-kind{box-shadow:0 0 0 2px #c8372a, 0 0 10px 2px rgba(255,50,30,.8);}
 /* the boss fight's opener */
 .vs-opener.is-boss{background:linear-gradient(100deg, rgba(12,24,14,.96) 0 49.6%, rgba(58,4,6,.97) 50.4% 100%) !important;}
 .vs-opener.is-boss .vs-rival-ico{position:relative; overflow:visible; font-size:clamp(70px,11vw,124px); width:clamp(112px,15vw,160px); height:clamp(112px,15vw,160px);
   background:radial-gradient(circle at 50% 38%, #5e1515, #1a0303 75%); border-color:#b3261e; box-shadow:0 0 0 5px #1a0303, 0 0 44px 12px rgba(220,40,20,.55);}
 .vs-opener .vs-rival-ico .vis3-skull-frame{inset:-22px;}
-.vs-opener .vs-rival-ico .vis3-skull-frame::before{-webkit-mask:radial-gradient(circle closest-side, transparent calc(100% - 15px), #000 calc(100% - 14px), #000 calc(100% - 1px), transparent 100%);
-  mask:radial-gradient(circle closest-side, transparent calc(100% - 15px), #000 calc(100% - 14px), #000 calc(100% - 1px), transparent 100%);}
+.vs-opener .vs-rival-ico .vis3-skull-frame{inset:-16px;} /* VIS4 (K1): closer in */
+.vs-opener .vs-rival-ico .vis3-skull-frame::before{-webkit-mask:radial-gradient(circle closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px), #000 calc(100% - 1px), transparent 100%);
+  mask:radial-gradient(circle closest-side, transparent calc(100% - 10px), #000 calc(100% - 9px), #000 calc(100% - 1px), transparent 100%);} /* VIS4 (K1): shorter teeth (were 15 px) */
 .vs-opener .vs-rival-ico .vis3-skull-frame::after{content:'💀'; position:absolute; left:50%; top:0; transform:translate(-50%,-50%); font-size:clamp(28px,4vw,40px); line-height:1;
   filter:drop-shadow(0 0 8px rgba(255,40,20,.9)) drop-shadow(0 2px 2px rgba(0,0,0,.6));}
 .vs-opener.is-elite .vs-rival-ico{position:relative; overflow:visible; border-color:#a77ce0; box-shadow:0 0 0 3px #f1e4ff, 0 0 24px rgba(170,120,255,.55);}
@@ -13718,6 +13731,29 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .vs-kind.vis3-kind-boss{color:#ff6a50; font-weight:900; letter-spacing:.14em; text-transform:uppercase; text-shadow:0 0 12px rgba(255,40,20,.85), 0 2px 0 #2a0505;}
 .vs-kind.vis3-kind-elite{color:#d9c2ff; font-weight:900; letter-spacing:.08em;}
 /* VIS3:END */
+/* VIS4 (2026-10-27, K8; owner: "Under this section, let me see the Map's cards."): the map's cards at the foot of the fight panel (vis4MapCardsHTML) */
+.vis4-map-cards{margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,.18);}
+.vis4-mc-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; opacity:.78; margin-bottom:6px;}
+.vis4-mc-row{display:flex; flex-wrap:wrap; gap:14px 6px; align-items:center; padding:6px 0 8px;}
+.vis4-mc-card{position:relative; flex:0 0 auto; width:44px; height:55px; border-radius:6px; cursor:help; transition:transform .12s ease;}
+.vis4-mc-card:hover, .vis4-mc-card:focus-visible{transform:translateY(-2px);}
+.vis4-mc-card .card-tile{width:44px !important; height:55px !important; font-size:5px; margin:0; pointer-events:none;}
+.vis4-mc-card.is-mystery{cursor:default;}
+.vis4-mc-card.is-mystery .cnp-rw-back{display:grid; place-items:center; width:100%; height:100%; border-radius:6px; font-size:18px;}
+.vis4-mc-locked{display:inline-flex; align-items:center; height:28px; padding:0 9px; border-radius:999px; font:800 12px/1 'Baloo 2',system-ui,sans-serif; background:rgba(0,0,0,.28); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); cursor:help;}
+@media (max-width:560px){ .vis4-mc-card, .vis4-mc-card .card-tile{width:38px !important; height:48px !important;} }
+/* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
+   rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
+   number counts down and, at 0, shrinks and fades (vis4ShieldCount). */
+.sfx.vis4-shield-rect{border-radius:12px; border:2px solid rgba(170,222,255,.98); z-index:9990;
+  background:linear-gradient(180deg, rgba(190,230,255,.34), rgba(150,210,255,.1) 45%, rgba(150,210,255,.3));
+  box-shadow:0 0 16px rgba(120,190,255,.75), inset 0 0 18px rgba(170,220,255,.6);}
+.sfx.vis4-shield-rect.is-ripple{background:none; border-width:2px; border-color:rgba(200,236,255,.95); box-shadow:0 0 10px rgba(140,200,255,.7);}
+.sfx.vis4-shield-rect.is-break{border-color:#fff; background:linear-gradient(180deg, rgba(220,242,255,.55), rgba(170,220,255,.25));}
+.sfx.vis4-shield-pane{border-radius:5px; border:1.5px solid rgba(215,240,255,.95); background:linear-gradient(160deg, rgba(225,245,255,.55), rgba(150,210,255,.18)); box-shadow:0 0 8px rgba(130,195,255,.6); z-index:9990;}
+.board-card .card-tile > .vis3-shield-num.vis4-shield-zero{color:#cfe6ff; opacity:.9;}
+.board-card .card-tile > .vis3-shield-num.vis4-shield-out{transition:opacity .45s ease, transform .45s ease; opacity:0; transform:scale(.4);}
+/* VIS4:END */
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

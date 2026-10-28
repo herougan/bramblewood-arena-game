@@ -3608,5 +3608,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "闇で目が見えない：暗視も夜行性も持たないユニット。暗い場所は夜行性・昼行性ユニットにとって夜として扱う。照明ユニットは自陣と、正面の敵を照らす。",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル2：昼のラウンドごとに（昼夜のない場所では毎ラウンド）両陣営のランダムなユニット3体が火炎ダメージ1。熱耐性のあるユニットは無事。",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "灼熱、レベル3：昼のラウンドごとに（昼夜のない場所では毎ラウンド）両陣営のランダムなユニット4体が火炎ダメージ1。熱耐性のあるユニットは無事。",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "昼（夜のない場所では常に）、両陣営のユニット2体が火炎ダメージ1。"
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "昼（夜のない場所では常に）、両陣営のユニット2体が火炎ダメージ1。",
+ "This map's cards": "このマップのカード",
+ "{n} more, of rarities you haven't reached yet": "まだ到達していないレアリティのカードがあと{n}枚",
+ "That's the most a deck can hold of one card: {n} copies.": "1枚のカードをデッキに入れられるのはここまで：{n}枚。",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "レアなカードほど上限が低い：このカードはデッキに{n}枚まで。"
 }

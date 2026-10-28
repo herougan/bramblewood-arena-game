@@ -3611,5 +3611,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "இருள்-குருடு: இருள்பார்வையோ இரவுலாவியோ இல்லாத அலகு. இருண்ட இடங்கள் இரவுலாவி, பகலுலாவி அலகுகளுக்கு இரவாகக் கணக்கிடப்படும். ஒளியூட்டு அலகு தன் பக்கத்தையும், தன்னை எதிர்கொள்ளும் எதிரியையும் ஒளிரச் செய்கிறது.",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "கொளுத்தும் வெயில், நிலை 2: ஒவ்வொரு பகல் சுற்றிலும் (பகலும் இரவும் இல்லாத இடத்தில் ஒவ்வொரு சுற்றும்) ஒவ்வொரு பக்கத்திலும் 3 சீரற்ற அலகுகள் 1 நெருப்புச் சேதம் பெறும். வெப்பம் தாங்கும் அலகுகள் தவிர்க்கப்படும்.",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "கொளுத்தும் வெயில், நிலை 3: ஒவ்வொரு பகல் சுற்றிலும் (பகலும் இரவும் இல்லாத இடத்தில் ஒவ்வொரு சுற்றும்) ஒவ்வொரு பக்கத்திலும் 4 சீரற்ற அலகுகள் 1 நெருப்புச் சேதம் பெறும். வெப்பம் தாங்கும் அலகுகள் தவிர்க்கப்படும்.",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "பகலில் (இரவு இல்லாத இடத்தில் எப்போதும்), ஒவ்வொரு பக்கத்திலும் 2 அலகுகள் 1 நெருப்புச் சேதம் பெறும்."
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "பகலில் (இரவு இல்லாத இடத்தில் எப்போதும்), ஒவ்வொரு பக்கத்திலும் 2 அலகுகள் 1 நெருப்புச் சேதம் பெறும்.",
+ "This map's cards": "இந்த வரைபடத்தின் அட்டைகள்",
+ "{n} more, of rarities you haven't reached yet": "இன்னும் {n}, நீங்கள் இன்னும் அடையாத அரிதுநிலைகளில்",
+ "That's the most a deck can hold of one card: {n} copies.": "ஒரு அட்டையில் ஒரு தளம் வைத்திருக்கக்கூடிய அதிகபட்சம் இதுதான்: {n} நகல்கள்.",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "அரிதான அட்டைகளுக்கு வரம்பு குறைவு: ஒரு தளத்தில் இதில் {n} நகல்கள்."
 }

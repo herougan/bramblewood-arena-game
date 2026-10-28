@@ -3610,5 +3610,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Cega no escuro: uma unidade sem Visão no escuro nem Noturna. Os lugares escuros contam como noite para as unidades Noturnas e Diurnas. Uma unidade com Iluminar ilumina o seu lado e o inimigo à sua frente.",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Escaldante, nível 2: em cada ronda de Dia (todas as rondas onde não há dia nem noite) 3 unidades aleatórias de cada lado sofrem 1 de dano de fogo. As unidades resistentes ao calor são poupadas.",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Escaldante, nível 3: em cada ronda de Dia (todas as rondas onde não há dia nem noite) 4 unidades aleatórias de cada lado sofrem 1 de dano de fogo. As unidades resistentes ao calor são poupadas.",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "De dia (sempre onde não há noite), 2 unidades de cada lado sofrem 1 de dano de fogo."
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "De dia (sempre onde não há noite), 2 unidades de cada lado sofrem 1 de dano de fogo.",
+ "This map's cards": "As cartas deste mapa",
+ "{n} more, of rarities you haven't reached yet": "Mais {n}, de raridades que ainda não alcançaste",
+ "That's the most a deck can hold of one card: {n} copies.": "É o máximo que um baralho pode ter de uma carta: {n} cópias.",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "As cartas mais raras têm um limite menor: {n} cópias desta por baralho."
 }
