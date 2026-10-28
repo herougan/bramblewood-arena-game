@@ -395,6 +395,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🪙', 'resources', 'Resources', 'Every currency and material, where it comes from and goes, and a dedicated player\'s week'),  # 2026-10-23 (package HUB3)
   ('📖', 'doclib', 'Library', 'Every doc in docs/: canonical and reference docs to read here, dated snapshots under History'),  # 2026-10-24 (package HUB4)
   ('🗃️', 'ctable', 'Card table', 'Every card in one sortable, filterable table (100 a page), the packs and the art that could wear them, and each card\'s contribution to winning (too strong / too weak flagged)'),  # 2026-10-25 (package HUB5, H2 / G11); + 🏅 Contribution (2026-10-27, BAL6)
+  ('🗺️', 'mapcards', 'Map cards', 'Every map\'s card list in road order: rarity, pack and role of each card, counts against the proposed cap, oddity chips (rarity, size, selection) and the packs against the lists'),  # 2026-10-28 (package HUB9)
   ('📊', 'curves', 'Curves', 'XP per level (Levels 15-25 marked), Forge and crafting costs, Energy and resource curves'),  # 2026-10-25 (package HUB5, H3)
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
@@ -572,7 +573,10 @@ _ct = H5.card_table(ROOT, CANON, _tix)
 # 2026-10-27 (package BAL6, K5): the Card table's 🏅 Contribution view reads the newest docs/balance/contribution-<date>.json (tools/balance/contribution.js)
 import contribution_data as CBD
 CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\nconst CT_CONTRIB = {_js(CBD.contribution(ROOT))};\n' + _hubdir('cardtable_tab.js'))
-CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css')
+CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css') + _hubdir('mapcards_tab.css')
+# 2026-10-28 (package HUB9, owner 10-28 16:43): the 🗺️ Map cards tab; tools/hub/mapcards_data.py reads the map pools, cards, obtain maps, the game's rarity caps (mapcards_caps.js) and the CONTENT4 plan
+import mapcards_data as MCD
+MC_INLINE = f'const MC_DATA = {_js(MCD.mapcards(ROOT, CANON))};\n' + _hubdir('mapcards_tab.js')
 DOS_JS = _hubdir('deckopt_summary.js')
 _cv = H5.curves(ROOT); _cvc = _cv['code']
 CV_INLINE = (f"const CV_DATA = {_js({'upgrade': _cv['upgrade'], 'resources': _cv['resources'], 'rarityLabel': H5.RARITY_LABEL})};\n"
@@ -700,6 +704,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-resources" aria-controls="p-resources" data-tab="resources">🪙 Resources</button>
 <button role="tab" id="t-chips" aria-controls="p-chips" data-tab="chips">🏷️ Chips &amp; FX</button>
 <button role="tab" id="t-ctable" aria-controls="p-ctable" data-tab="ctable">🗃️ Card table</button>
+<button role="tab" id="t-mapcards" aria-controls="p-mapcards" data-tab="mapcards">🗺️ Map cards</button>
 <button role="tab" id="t-curves" aria-controls="p-curves" data-tab="curves">📊 Curves</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
@@ -743,6 +748,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-resources" role="tabpanel" aria-labelledby="t-resources" hidden><div class="bal rs" id="rsHost"><p class="dec-empty">{'Loading the resources…' if _rs else 'Run node tools/resources_week_2026_10_23.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-chips" role="tabpanel" aria-labelledby="t-chips" hidden><div class="bal ch" id="chHost"><p class="dec-empty">{'Loading the chips…' if _ch else 'Run node tools/hub/chips_inventory.js, then rebuild the hub.'}</p></div></section>
 <section class="panel" id="p-ctable" role="tabpanel" aria-labelledby="t-ctable" hidden><div class="bal ct" id="ctHost"><p class="dec-empty">Loading the card table…</p></div></section>
+<section class="panel" id="p-mapcards" role="tabpanel" aria-labelledby="t-mapcards" hidden><div class="bal ct mc" id="mcHost"><p class="dec-empty">Loading the map cards…</p></div></section>
 <section class="panel" id="p-curves" role="tabpanel" aria-labelledby="t-curves" hidden><div class="bal cv" id="cvHost"><p class="dec-empty">Loading the curves…</p></div></section>
 {curve_panel}
 {decks_panel}
@@ -844,6 +850,7 @@ const SEARCH = {SEARCH_JSON};
 {HB_INLINE}
 {CH_INLINE}
 {CT_INLINE}
+{MC_INLINE}
 {DOS_JS}
 {CV_INLINE}
 if(window.hubBalRender) window.hubBalRender();
