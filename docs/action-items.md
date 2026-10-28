@@ -4,6 +4,26 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-28 21:40: the owner's balancing plan (in this order)
+
+Owner: "Thematic 1st, winnowing 2nd, balancing each card 3rd, optimise enemy decks 4th, decide rarity 6th, Decide drops 7th."
+
+| Step | What | Owner's words |
+|---|---|---|
+| 1 Thematic | For each map, identify the cards unique to it by theme. | "uniquely identifying unique cards for each map" |
+| 2 Winnowing | Cut each map's list to 8-11 if too big; 3-5 may be carried from earlier maps. | "cutting it down to that 8-11 if too big. Note 3-5 cards can be from previous maps, no issue." |
+| 3 Balance each card | Assumes skills are re-costed well first. | "this will assume the skills are recosted well already. so far this seems hard to do." |
+| 4 Enemy decks | Several hard optimised decks per map with different focuses; at most 6 different cards, at most 4 copies each. Each map has a range: high-cost cards, cost generators, normal creatures; maps differ (high average cost, metal ...). "We have to think each map through." | "it's easier to make a bad deck than a good deck" |
+| 6 Rarity | Decide each card's rarity. | |
+| 7 Drops | Decide drops / rewards. | |
+
+Tools it needs (owner): (T1) a good card-contribution measure; (T2) a quick, fair measure of a skill's impact on a card's contribution (skill re-costing); (T3) a deck optimiser for a list of ~15 cards.
+
+| ID | Package | Item |
+|---|---|---|
+| T1-T3 | TOOLS1 | Build / upgrade the three tools (balance workbench). |
+| S1 | THEME1 | Step 1 proposal per map: unique cards by theme, carried cards, the 8-11 cut (step 2), the cost / generator / creature mix; shown in the hub for the owner; nothing applied. |
+
 ## 10-28: release leftovers
 
 | ID | Item |
