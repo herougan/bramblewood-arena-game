@@ -787,16 +787,20 @@ const DEC = {decisions_json};
   let v = '', q = '', key = 'winRate', dir = -1;
   const fixTxt = r=> r.suggest ? `${{r.suggest.stat==='attack'?'Atk':'HP'}} ${{r.suggest.from}} → ${{r.suggest.to}} (${{r.suggest.winRate}}%)` : r.suggestRarity ? `rarity: ${{r.suggestRarity}}` : '';
   const val = (r, k)=> k==='band' ? r.band[0] : k==='fix' ? fixTxt(r) : r[k]==null ? '' : r[k];
+  // 2026-10-28 (package HUB8, L8): the name opens the card detail ([data-card-open], hub_app.js). This script runs before hub_app.js, so it is drawn
+  // again at the end (window.hubBalRender) once hub.hasCard exists: cards the Cards tab does not hold (MissingNo.) stay plain text.
+  const nameBtn = r=> (!(window.hub && hub.hasCard) || hub.hasCard(r.id)) ? `<button type="button" class="cardlink" data-card-open="${{esc(r.id)}}">${{esc(r.name)}}</button>` : esc(r.name);
   function render(){{
     const list = rows.filter(r=> (!v || (v==='norar' ? !r.rarity : v==='fix' ? !!r.suggest : r.verdict===v)) && (!q || (r.name+' '+r.id+' '+(r.skills||[]).join(' ')).toLowerCase().includes(q)))
       .sort((a,b)=>{{ const x = val(a,key), y = val(b,key); return (typeof x==='number' && typeof y==='number' ? x-y : String(x).localeCompare(String(y))) * dir; }});
-    document.getElementById('balBody').innerHTML = list.map(r=> `<tr class="v-${{r.verdict}}"><td>${{esc(r.name)}}${{(r.skills||[]).length ? ` <small style="opacity:.6">${{esc(r.skills.join(', '))}}</small>` : ''}}</td><td>${{esc(r.rarity||'–')}}</td><td>${{r.cost}}</td><td>${{r.wait}}</td><td>${{r.attack}}</td><td>${{r.health}}</td>
+    document.getElementById('balBody').innerHTML = list.map(r=> `<tr class="v-${{r.verdict}}"><td>${{nameBtn(r)}}${{(r.skills||[]).length ? ` <small style="opacity:.6">${{esc(r.skills.join(', '))}}</small>` : ''}}</td><td>${{r.rarity ? `<span class="rtx rtx-${{esc(r.rarity)}}">${{esc(r.rarity)}}</span>` : '–'}}</td><td>${{r.cost}}</td><td>${{r.wait}}</td><td>${{r.attack}}</td><td>${{r.health}}</td>
       <td class="wr">${{r.winRate}}<span class="bal-bar"><i style="left:${{r.band[0]}}%; width:${{r.band[1]-r.band[0]}}%"></i><b style="left:calc(${{Math.min(100,r.winRate)}}% - 1px)"></b></span></td><td>${{Math.round(r.band[0])}}–${{Math.round(r.band[1])}}</td><td>${{esc(fixTxt(r))}}</td></tr>`).join('') || '<tr><td colspan="9" class="dec-empty">Nothing matches.</td></tr>';
     document.querySelectorAll('.bal-t th').forEach(th=> th.dataset.k===key ? th.setAttribute('aria-sort', dir>0?'ascending':'descending') : th.removeAttribute('aria-sort'));
   }}
   document.querySelectorAll('.bal-t th').forEach(th=> th.onclick = ()=>{{ if(key===th.dataset.k) dir = -dir; else {{ key = th.dataset.k; dir = (key==='name'||key==='rarity'||key==='fix') ? 1 : -1; }} render(); }});
   document.querySelectorAll('#balSeg button').forEach(b=> b.onclick = ()=>{{ v = b.dataset.v; if(key==='winRate') dir = v==='weak' ? 1 : -1; /* too weak: weakest first */ document.querySelectorAll('#balSeg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
   document.getElementById('balQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
+  window.hubBalRender = render;
   render();
 }})();
 const tabs = [...document.querySelectorAll('[role=tab]')];
@@ -842,6 +846,7 @@ const SEARCH = {SEARCH_JSON};
 {CT_INLINE}
 {DOS_JS}
 {CV_INLINE}
+if(window.hubBalRender) window.hubBalRender();
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)

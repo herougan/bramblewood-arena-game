@@ -237,7 +237,7 @@
       <div class="sc-rows hb-rows">${CONST.map(constRow).join('')}</div></section>
       <section class="hb-live" aria-label="Live preview"><p class="sc-formula" id="hbFormula"></p><div class="sc-sum" id="hbSum"></div>
       <h3 class="hb-h">N(L) for a few Bases</h3><div class="bal-wrap"><table class="bal-t hb-nt" id="hbNt"></table></div>
-      <h3 class="hb-h">Cards that flip <small id="hbFlipN"></small></h3><p class="note">Against the files' numbers and stats, at ${st.level === 'start' ? 'each card\'s start level' : 'Level 1'}. Tap one to open it in Cards.</p><div class="hb-flips" id="hbFlips"></div></section></div>`;
+      <h3 class="hb-h">Cards that flip <small id="hbFlipN"></small></h3><p class="note">Against the files' numbers and stats, at ${st.level === 'start' ? 'each card\'s start level' : 'Level 1'}. Tap one to open its card; its Edit card button brings you to its row in Cards.</p><div class="hb-flips" id="hbFlips"></div></section></div>`;
     renderBudgetLive();
   }
   function tally(E){ const k = {over: 0, in: 0, under: 0}; cards.forEach(c=> k[E[c.id].status]++); return k; }
@@ -254,7 +254,7 @@
       return `<td class="num">${fmt(n)}${n !== o ? ` <small><s>${fmt(o)}</s></small>` : ''}</td>`; }).join('')}</tr>`).join('') + '</tbody>';
     const NAME = {over: 'over', in: 'in band', under: 'well under'};
     $('hbFlipN').textContent = flips.length ? `(${flips.length})` : '';
-    $('hbFlips').innerHTML = flips.length ? flips.sort((x, y)=> x.name.localeCompare(y.name)).slice(0, 150).map(c=> `<button type="button" class="chip hb-flip v-${NOW[c.id].status}" data-flip="${esc(c.id)}">${esc(c.name)} <small>${NAME[FILE[c.id].status]} → <b>${NAME[NOW[c.id].status]}</b></small></button>`).join('') + (flips.length > 150 ? `<p class="note">and ${flips.length - 150} more: see Cards → Flipped.</p>` : '')
+    $('hbFlips').innerHTML = flips.length ? flips.sort((x, y)=> x.name.localeCompare(y.name)).slice(0, 150).map(c=> `<button type="button" class="chip hb-flip v-${NOW[c.id].status}"${hub.hasCard && !hub.hasCard(c.id) ? ` data-flip="${esc(c.id)}"` : ` data-card-open="${esc(c.id)}"`}>${esc(c.name)} <small>${NAME[FILE[c.id].status]} → <b>${NAME[NOW[c.id].status]}</b></small></button>`).join('') + (flips.length > 150 ? `<p class="note">and ${flips.length - 150} more: see Cards → Flipped.</p>` : '')
       : '<p class="dec-empty">No card changes status.</p>';
   }
 
@@ -299,10 +299,12 @@
       x1: `${fmt(b.x1)} <small>${b.x1 <= b.N + EPS ? '≤' : '&gt;'} ${fmt(b.N)} · ${Math.round(100 * b.share)}%</small>${b.m !== 1 ? ` <small>×${r2(b.m)}</small>` : ''}`,
       x2: `${fmt(b.x2)} <small>${b.x2 <= b.N2 + EPS ? '≤' : '&gt;'} ${fmt(b.N2)}</small>`,
       status: `${ST_LABEL[b.status]}${b.status !== f.status ? ` <small>(was ${ST_LABEL[f.status]})</small>` : ''}`}; }
+  // 2026-10-28 (package HUB8, L8): the name opens the card detail; a card the Cards tab does not hold stays plain text.
+  const nameBtn = c=> hub.hasCard && !hub.hasCard(c.id) ? esc(c.name) : `<button type="button" class="cardlink" data-card-open="${esc(c.id)}">${esc(c.name)}</button>`;
   function cardRow(c){ const b = NOW[c.id], s = statsOf(c), e = cEd[c.id], cells = cardCells(c), open = st.open === c.id;
     const statIn = k=> `<input type="number" min="0" step="1" inputmode="numeric" class="hb-num${s[k] !== c[k] ? ' is-ch' : ''}" data-card="${esc(c.id)}" data-stat="${k}" value="${s[k]}" aria-label="${esc(c.name)} ${k === 'attack' ? 'Attack' : 'Health'}">`;
-    const row = `<tr data-row="${esc(c.id)}" class="v-${b.status === 'in' ? 'ok' : b.status}${e ? ' is-ed' : ''}"><td data-toggle="${esc(c.id)}" tabindex="0" aria-expanded="${open}" class="hb-name"><b>${esc(c.name)}</b><small>${esc(c.id)}${c.animal ? ' · ' + esc(c.animal) : ''}${e && e.note ? ' · 📝' : ''}</small></td>`
-      + `<td>${esc(rarName(c.rarity))}</td><td class="num">${c.wait}</td><td class="num">${c.cost}</td><td class="num" title="${esc(mapLabel(c.mapN))}">${c.mapN || '–'}</td>`
+    const row = `<tr data-row="${esc(c.id)}" class="v-${b.status === 'in' ? 'ok' : b.status}${e ? ' is-ed' : ''}"><td data-toggle="${esc(c.id)}" tabindex="0" aria-expanded="${open}" class="hb-name"><b>${nameBtn(c)}</b><small>${esc(c.id)}${c.animal ? ' · ' + esc(c.animal) : ''}${e && e.note ? ' · 📝' : ''}</small></td>`
+      + `<td><span class="rtx rtx-${esc(c.rarity || 'none')}">${esc(rarName(c.rarity))}</span></td><td class="num">${c.wait}</td><td class="num">${c.cost}</td><td class="num" title="${esc(mapLabel(c.mapN))}">${c.mapN || '–'}</td>`
       + `<td>${statIn('attack')}</td><td>${statIn('health')}</td><td class="hb-sk">${cardSkills(b)}</td>`
       + ['S', 'base', 'N', 'x1', 'x2'].map(k=> `<td class="num${k === 'x1' && b.x1 > b.N + EPS || k === 'x2' && b.x2 > b.N2 + EPS ? ' bad' : ''}" data-c="${k}">${cells[k]}</td>`).join('') + `<td class="sc-v" data-c="status">${cells.status}</td></tr>`;
     if(!open) return row;
@@ -381,6 +383,9 @@
   }
 
   hub.onShow.budget = build;
+  // 2026-10-28 (package HUB8, L8): the card detail's "Edit card" button: this tab's 🎴 Cards view, searched to the card, its row open.
+  hub.editCard = id=>{ if(!CBY[id]) return; hub.show('budget'); build(); st.q = String(id).toLowerCase(); st.v = 'all'; st.r = '*'; st.map = '*'; st.an = '*'; st.open = id; show('cards');
+    const row = document.querySelector(`#hbCbody tr[data-row="${CSS.escape(id)}"]`); if(row){ row.scrollIntoView({block: 'center'}); const n = row.querySelector('.hb-name'); if(n) n.focus(); } };
   // for tests and Claude: the page's state (read-only copies)
   hub.balanceEdits = ()=> JSON.parse(editsJSON());
 })();

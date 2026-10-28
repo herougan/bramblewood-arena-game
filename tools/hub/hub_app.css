@@ -210,3 +210,12 @@ details.cl > summary:hover{color:var(--link);}
 .sc-t tr.sc-detail td{white-space:normal; background:var(--surface-2); font-size:13px;}
 .sc-foot{color:var(--ink-muted); font-size:13px;}
 @media (max-width:600px){ .sc-t{font-size:12.5px;} .sc-t td, .sc-t th{padding:5px 6px;} .sc-t td:nth-child(3), .sc-t th:nth-child(3){display:none;} }
+
+/* 2026-10-28 (package HUB8, L8): card names as buttons that look like links, and rarity text in its rarity colour. */
+.cardlink{font:inherit; font-weight:700; color:inherit; background:none; border:0; padding:0; margin:0; cursor:pointer; text-align:left; text-decoration:underline; text-decoration-style:dotted; text-underline-offset:3px;}
+.cardlink:hover{text-decoration-style:solid;} .cardlink:focus-visible{outline:2px solid currentColor; outline-offset:2px; border-radius:3px;}
+.rtx{font-weight:700; color:var(--rtc,inherit);} .rb.rtx{color:var(--rtc,var(--ink));}
+.rtx-none{--rtc:var(--rc-none);} .rtx-starter{--rtc:var(--rc-starter);} .rtx-common{--rtc:var(--rc-common);} .rtx-uncommon{--rtc:var(--rc-uncommon);} .rtx-rare{--rtc:var(--rc-rare);}
+.rtx-veryrare{--rtc:var(--rc-veryrare);} .rtx-superrare{--rtc:var(--rc-superrare);} .rtx-epic{--rtc:var(--rc-epic);} .rtx-heroic{--rtc:var(--rc-heroic);} .rtx-unique{--rtc:var(--rc-unique);}
+.rtx-legendary{--rtc:var(--rc-legendary);} .rtx-mythic{--rtc:var(--rc-mythic);} .rtx-ancient{--rtc:var(--rc-ancient);} .rtx-divine{--rtc:var(--rc-divine);} .rtx-void{--rtc:var(--rc-void);} .rtx-daemonic{--rtc:var(--rc-daemonic);}
+.cdd-edit{margin:12px 0 0;} .cdd-edit small{display:block; margin-top:4px; color:var(--ink-muted);}

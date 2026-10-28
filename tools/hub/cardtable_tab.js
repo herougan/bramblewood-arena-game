@@ -21,6 +21,8 @@
   const rlab = k=> k ? (RLAB[k] || k) : 'Unrated';
   const baseSk = s=> s.replace(/ [0-9.]+$/, '');
   ROWS.forEach(r=>{ r.hay = (r.n + ' ' + r.id + ' ' + r.sk.join(' ') + ' ' + r.sp + ' ' + r.an + ' ' + r.sd + ' ' + r.ty + ' ' + r.f).toLowerCase(); r.skb = r.sk.map(baseSk); });
+  // 2026-10-28 (package HUB8, L8): a card's name is a button that opens the Cards tab's detail sheet (hub_app.js, [data-card-open]); only for ids it knows.
+  const nameBtn = (id, n)=> hub.hasCard && hub.hasCard(id) ? `<button type="button" class="cardlink" data-card-open="${esc(id)}">${esc(n)}</button>` : esc(n);
   const NONE = '(none)', NOTLISTED = '(not listed)';
   const st = {view: 'table', q: '', rar: '', pk: '', mp: '', fac: '', ty: '', sk: '', hideX: false, key: 'n', dir: 1, page: 0};
   const num = (v, d)=> v == null ? d : v;
@@ -62,8 +64,8 @@
     const rows = slice.map(r=>{
       const sk = r.sk.length ? `<span class="ct-sk" title="${esc(r.sk.join(', '))}">${r.sk.map(s=> `<i>${esc(s)}</i>`).join('')}</span>` : '<span class="ct-dim">–</span>';
       const tags = [r.ty !== 'creature' ? r.ty : '', r.f, r.x ? 'hidden / token / test' : ''].filter(Boolean).map(t=> `<small class="ct-tag">${esc(t)}</small>`).join('');
-      return `<tr><td class="ct-nm">${thumb(r.t, 34)}<span><b>${esc(r.ic)} ${esc(r.n)}</b><small>${esc(r.id)}${r.sp ? ' · ' + esc(r.sp) : ''}</small>${tags}</span></td>`
-        + `<td><span class="ct-r r-${esc(r.r || 'none')}">${esc(rlab(r.r))}</span></td><td class="ct-n">${r.a == null ? '–' : r.a}</td><td class="ct-n">${r.h == null ? '–' : r.h}</td><td class="ct-n">${r.w}</td>`
+      return `<tr><td class="ct-nm">${thumb(r.t, 34)}<span><b>${esc(r.ic)} ${nameBtn(r.id, r.n)}</b><small>${esc(r.id)}${r.sp ? ' · ' + esc(r.sp) : ''}</small>${tags}</span></td>`
+        + `<td><span class="ct-r r-${esc(r.r || 'none')} rtx rtx-${esc(r.r || 'none')}">${esc(rlab(r.r))}</span></td><td class="ct-n">${r.a == null ? '–' : r.a}</td><td class="ct-n">${r.h == null ? '–' : r.h}</td><td class="ct-n">${r.w}</td>`
         + `<td class="ct-cs">${r.cs ? esc(r.cs) : '<span class="ct-dim">0</span>'}</td><td class="ct-skc">${sk}</td>`
         + `<td class="ct-n">${r.mp == null ? '<span class="ct-dim" title="Not listed in canonical/card-obtain-maps.json (the file reads that as Map 0: Base, tutorial, quest, Easter eggs, unsorted)">–</span>' : r.mp}</td>`
         + `<td class="ct-src">${esc(r.sd)}</td><td>${r.pk ? esc(r.pk) + (r.pt != null && r.pt !== 99 && r.pt !== 11 ? ` <small class="ct-dim">T${r.pt}</small>` : '') : '<span class="ct-dim">–</span>'}</td></tr>`;
@@ -97,9 +99,9 @@
   const flagChip0 = r=> r.f === 'strong' ? '<span class="cb-flag cb-strong" title="Top 20 too strong for its rarity band">▲ too strong</span>' : r.f === 'weak' ? '<span class="cb-flag cb-weak" title="Top 20 too weak for its rarity band">▼ too weak</span>' : '';
   const sig = r=> r.z != null && Math.abs(r.z) >= 1.96;
   const bar = v=>{ const w = Math.min(50, Math.abs(v || 0) * 100 / 30 * 50); return `<span class="cb-bar" aria-hidden="true"><i class="${v >= 0 ? 'cb-pos' : 'cb-neg'}" style="${v >= 0 ? 'left:50%' : 'right:50%'};width:${w}%"></i></span>`; };
-  const cardCell = r=>{ const t = byId[r.id]; return `<td class="ct-nm">${thumb(t ? t.t : -1, 30)}<span><b>${esc(t ? t.ic : '')} ${esc(r.n)}</b><small>${r.l} 🪵 · ${r.a == null ? '–' : r.a}/${r.h == null ? '–' : r.h}${r.sk.length ? ' · ' + esc(r.sk.join(', ')) : ''}</small>${flagChip(r)}</span></td>`; };
+  const cardCell = r=>{ const t = byId[r.id]; return `<td class="ct-nm">${thumb(t ? t.t : -1, 30)}<span><b>${esc(t ? t.ic : '')} ${nameBtn(r.id, r.n)}</b><small>${r.l} 🪵 · ${r.a == null ? '–' : r.a}/${r.h == null ? '–' : r.h}${r.sk.length ? ' · ' + esc(r.sk.join(', ')) : ''}</small>${flagChip(r)}</span></td>`; };
   function cbRow(r){
-    return `<tr${r.f ? ` class="cb-row-${r.f}"` : ''}><td class="ct-n">${r.k == null ? '–' : r.k}</td>${cardCell(r)}<td><span class="ct-r r-${esc(r.r)}">${esc(rlab(r.r))}</span><small class="ct-dim cb-sub">${esc(BAND_LAB[r.b] || r.b)} #${r.br == null ? '–' : r.br} of ${r.bs || '–'}</small></td>`
+    return `<tr${r.f ? ` class="cb-row-${r.f}"` : ''}><td class="ct-n">${r.k == null ? '–' : r.k}</td>${cardCell(r)}<td><span class="ct-r r-${esc(r.r)} rtx rtx-${esc(r.r)}">${esc(rlab(r.r))}</span><small class="ct-dim cb-sub">${esc(BAND_LAB[r.b] || r.b)} #${r.br == null ? '–' : r.br} of ${r.bs || '–'}</small></td>`
       + `<td class="ct-n">${r.d}<small class="ct-dim cb-sub">${r.mc} copies</small></td><td class="ct-n">${pts(r.rd)}</td><td class="ct-n">${pts(r.pc)}${ci(r.pcs)}</td>`
       + `<td class="ct-n cb-c"><b>${pts(r.c)}</b>${ci(r.cs)}${bar(r.c)}</td><td class="ct-n${sig(r) ? (r.vb > 0 ? ' cb-hi' : ' cb-lo') : ''}">${pts(r.vb)}</td><td class="ct-n">${r.z == null ? '–' : r.z.toFixed(1)}</td></tr>`;
   }

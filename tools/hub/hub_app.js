@@ -35,6 +35,18 @@
     const cl = e.target.closest('[data-cl]'); if(cl){ document.querySelectorAll('#p-changelog details.cl').forEach(d=> d.open = cl.dataset.cl === 'open'); }
   }, true);
 
+  // 2026-10-28 (package HUB8, L8; owner: "In the stat budget and card check sections, let the card names be clickable, opening card detail ...
+  // Color the rarity by its rarity."): any <button data-card-open="<card id>"> in any tab opens the Cards tab's detail sheet in place (no tab
+  // switch). Names are real buttons, so Enter / Space work. The sheet moves to <body> so it can show over a tab whose Cards panel is hidden.
+  // Rarity text wears .rtx .rtx-<key> (the --rc-<key> colours of cardtable_tab.css, which already have light and dark values).
+  const sheet0 = $('cdSheet'); if(sheet0 && sheet0.parentNode !== document.body) document.body.appendChild(sheet0);
+  document.addEventListener('click', e=>{
+    const o = e.target.closest('[data-card-open]'); if(!o) return;
+    e.preventDefault(); e.stopPropagation(); if(BYID[o.dataset.cardOpen]) openCard(o.dataset.cardOpen);
+  }, true);
+  hub.openCard = id=>{ if(BYID[id]) openCard(id); };
+  hub.hasCard = id=> !!BYID[id];
+
   // ---------- Cards tab ----------
   let built = false;
   const st = {q:'', r:'*', s:'*', m:'*', k:'*', a:'*', o:'rarity', x:false};
@@ -58,7 +70,8 @@
     const bind = (id, key, ev)=> $(id).addEventListener(ev || 'change', e=>{ st[key] = e.target.type === 'checkbox' ? e.target.checked : e.target.value; if(key === 'q') st.q = st.q.trim().toLowerCase(); render(); });
     bind('cdQ', 'q', 'input'); bind('cdR', 'r'); bind('cdS', 's'); bind('cdM', 'm'); bind('cdK', 'k'); bind('cdA', 'a'); bind('cdO', 'o'); bind('cdX', 'x');
     $('cdGrid').addEventListener('click', e=>{ const b = e.target.closest('.cd'); if(b) openCard(b.dataset.id); });
-    $('cdSheet').addEventListener('click', e=>{ if(e.target.closest('[data-close]')) closeCard(); });
+    $('cdSheet').addEventListener('click', e=>{ if(e.target.closest('[data-close]')) closeCard();
+      const ed = e.target.closest('[data-edit-card]'); if(ed && hub.editCard){ const id = ed.dataset.editCard; lastFocus = null; closeCard(); hub.editCard(id); } });
     document.addEventListener('keydown', e=>{ if(e.key === 'Escape' && !$('cdSheet').hidden) closeCard(); });
     render();
   }
@@ -73,7 +86,7 @@
       : o === 'map' ? mapOrder(a) - mapOrder(b) || a.name.localeCompare(b.name) : (num(b, o) - num(a, o)) || a.name.localeCompare(b.name));
     $('cdN').textContent = `${list.length} card${list.length === 1 ? '' : 's'}` + (list.some(c=> c.un) ? ' · faded ones are not obtainable yet' : '');
     $('cdGrid').innerHTML = list.map(c=> `<button type="button" class="cd r-${c.r || 'none'}${c.un ? ' is-un' : ''}" data-id="${esc(c.id)}">${hub.thumb(c, 56)}<span>`
-      + `<b>${esc(c.name)}</b><span class="ln"><span class="rb">${esc(rarName(c.r))}</span> · 🪵${c.c} · ⏳${c.w} · ⚔${c.a} · ❤${c.h}${c.wr ? ` · ${c.wr[0]}%` : ''}</span>`
+      + `<b>${esc(c.name)}</b><span class="ln"><span class="rb rtx rtx-${c.r || 'none'}">${esc(rarName(c.r))}</span> · 🪵${c.c} · ⏳${c.w} · ⚔${c.a} · ❤${c.h}${c.wr ? ` · ${c.wr[0]}%` : ''}</span>`
       + `<span class="sks">${c.sk.length ? esc(c.sk.map(skLabel).join(' · ')) : '<i style="opacity:.6">No skills</i>'}</span></span></button>`).join('')
       || '<p class="dec-empty">Nothing matches. Clear a filter or the search.</p>';
   }
@@ -83,7 +96,8 @@
     const m = MAPS[c.map], go = o=> esc(JSON.stringify(o));
     const verdict = c.wr ? ({strong:'too strong', weak:'too weak', ok:'in band'})[c.wr[3]] || c.wr[3] : '';
     $('cdBody').innerHTML = `<div class="cdd-top r-${c.r || 'none'}">${hub.thumb(c, 96)}<div><h2 id="cdTitle">${esc(c.name)}</h2>`
-      + `<span class="rb">${esc(rarName(c.r))}</span> <code>${esc(c.id)}</code>${c.tok ? ' <span class="chip">token</span>' : ''}${c.test ? ' <span class="chip">test</span>' : ''}</div></div>`
+      + `<span class="rb rtx rtx-${c.r || 'none'}">${esc(rarName(c.r))}</span> <code>${esc(c.id)}</code>${c.tok ? ' <span class="chip">token</span>' : ''}${c.test ? ' <span class="chip">test</span>' : ''}</div></div>`
+      + (hub.editCard && !c.tok && !c.test ? `<p class="cdd-edit"><button type="button" class="btn cdd-editbtn" data-edit-card="${esc(c.id)}">✏️ Edit card</button> <small>Attack, Health and the budget check, in 🎚️ Budget &amp; stats</small></p>` : '')
       + `<div class="cdd-stats"><div><b>${c.c}</b><small>Cost</small></div><div><b>${c.w}</b><small>Wait</small></div><div><b>${c.a}</b><small>Attack</small></div><div><b>${c.h}</b><small>Health</small></div></div>`
       + `<h3>Skills</h3>${c.sk.length ? '<p>' + c.sk.map(s=> `<span class="chip">${esc(skLabel(s))}</span>`).join('') + '</p>' : '<p>None.</p>'}`
       + `<h3>Where to get it</h3><p>${esc(c.where || '—')}${c.un ? ' <span class="chip">not obtainable yet</span>' : ''}</p>`
