@@ -2828,7 +2828,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.vis4-map-cards": "This map's cards",
   "ui.vis4-map-cards-locked": "{n} more, of rarities you haven't reached yet",
   "ui.vis4-cap-tip": "That's the most a deck can hold of one card: {n} copies.",
-  "ui.vis4-cap-tip-rare": "Rarer cards have a lower cap: {n} copies of this one per deck."
+  "ui.vis4-cap-tip-rare": "Rarer cards have a lower cap: {n} copies of this one per deck.",
+  "ui.e12-ambush-codex": "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.",
+  "ui.e12-banana-codex": "Not while it is Asleep, Stunned, Frozen or turned to stone."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

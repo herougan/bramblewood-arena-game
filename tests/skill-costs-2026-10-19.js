@@ -101,7 +101,9 @@ ok(same > 500, `compared ${same} cards`);
 console.log(`  note: the frozen keyword comparison skips ${Object.keys(skipped).length} applied skills (measured worth, appliedAt) on ${Object.values(skipped).reduce((a, b)=> a + b, 0)} card uses: ${Object.entries(skipped).sort((a, b)=> b[1] - a[1]).slice(0, 12).map(([k, n])=> k + ' ' + n).join(', ')}, …`);
 
 // 4b. the applied measured worth (2026-10-19, package TC)
-const all = KINDS.flatMap(k=> table[k].map(e=> [k, e])), applied = all.filter(([, e])=> e.appliedAt);
+// 2026-10-28 (package ENG12): an entry priced by the 4-round rule (e.logic: the time of day, Shock) is not an applied measured worth; it
+// keeps prevValue / appliedAt for the record, and tests/eng12-2026-10-28.js checks its price.
+const all = KINDS.flatMap(k=> table[k].map(e=> [k, e])), applied = all.filter(([, e])=> e.appliedAt && !e.logic);
 ok(applied.length >= 150, `the measured worth is applied (${applied.length} entries with appliedAt)`);
 // the application floored a negative measured worth at 0 (58 entries, the payments Penance / Blood Tithe among them)
 applied.forEach(([k, e])=> ok(typeof e.prevValue === 'number' && typeof e.appliedAt === 'string' && (e.measuredConf === 'high' || /owner/.test(e.appliedAt) /* BF3: Thorns, the owner's call on a low-confidence floor */) && e.value === ((e.prevValue < 0 && /payment/.test(e.note || "")) ? e.measuredS : Math.max(0, e.measuredS)),

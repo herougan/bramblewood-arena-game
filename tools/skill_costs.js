@@ -46,6 +46,10 @@
     function skillCost(id, v){
       const e = SK[id]; if(!e) return null;
       const n = numOf(v), val = +e.value || 0;
+      // ENG12 (2026-10-28): priced by the 4-round rule in bramblewood-budget.js (e.logic). Without the card: the time of day at its uptime
+      // (value) x 2 per Attack point (the flag; true = +1) or 1 per Health point (the Hp key); Shock at Attack 0; Shock Bolt N: Arrow N + its Shock.
+      if(e.logic === 'zeit') return r2(val * (/Hp$/.test(id) ? n : 2 * (v === true ? 1 : n)));
+      if(e.logic === 'shock') return id === 'shockBolt' ? r2((skillCost('arrow', v) || 0) + BB.shockBoltShockS(0)) : BB.shockS(v, 0);
       // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
       if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }
@@ -95,6 +99,15 @@
         // ENG10 (2026-10-26, PROP1-4): the threshold skills, braces x the measured share at their N (bramblewood-budget.js thrS)
         { const th = BB.thrS ? BB.thrS(k, v, effects, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null;
           if(th){ S += th.S; parts.push(['context', k, th.S, th.mult + ' × ' + th.inner]); return; } }
+        // ENG12 (2026-10-28, owner L11): Nocturnal / Diurnal / Crepuscular (+A/+H) at their measured uptime x (2A + H) (bramblewood-budget.js zeitS);
+        // a Nocturnal unit's dark-sight (ENG11) adds Darksight's price x the share of rounds in a dark fight, once (not beside Darksight)
+        { const zs = BB.zeitS ? BB.zeitS(k, effects) : null;
+          if(zs){ let c = zs.S; const sightKey = k === 'nocturnal' || (k === 'nocturnalHp' && !effects.nocturnal);
+            if(sightKey && !effects.darksight && BB.ZEIT_DARK_SHARE) c = r2(c + BB.ZEIT_DARK_SHARE * (skillCost('darksight', true) || 0));
+            S += c; parts.push(['context', k, c, zs.mult ? zs.mult + ' × ' + zs.inner + (c !== zs.S ? ' + dark sight' : '') : (c ? 'dark sight' : 'beside its flag or braces')]); return; } }
+        // ENG12 (2026-10-28, owner L5): Shock and Shock Bolt by the 4-round rule, with the card's own Attack (bramblewood-budget.js shockS)
+        if(k === 'shock' && SK.shock && SK.shock.logic === 'shock'){ const c = BB.shockS(v, card && card.attack); S += c; parts.push(['skill', k, c, '4-round rule']); return; }
+        if(k === 'shockBolt' && SK.shockBolt && SK.shockBolt.logic === 'shock'){ const c = r2((skillCost('arrow', v) || 0) + BB.shockBoltShockS(card && card.attack)); S += c; parts.push(['skill', k, c, 'Arrow ' + numOf(v) + ' + Shock']); return; }
         if(BB.contextFlagCovered && BB.contextFlagCovered(k, effects)){ parts.push(['skill', k, 0, 'its braces carry the cost']); return; }
         { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null; // CX5: inner misses reported
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }

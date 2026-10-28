@@ -684,7 +684,7 @@ re-captured from today's game, so every tile wears its card front frame and ever
 | ♻️ On Pitch ("Scavenge") | each unit's ♻️ badge glows as you pitch | `triggerFiredVfx` | `sk-scavenge` |
 | 🔥 Burn 1 Lumber / Fire on hit | an ember leaves the Lumber pill; "🔥 -N" and two flames at the hit | `skills2Vfx` | `sk-lumber-burn`, `sk-fire-on-hit` |
 | 🐾 Pounce <Att> / <Hp> | the leap deals the card's Attack or Health | `SkillFX.pounceOnto` | `sk-pounce-stat` |
-| 👀 Ambush N | also strikes a unit that moves in | `FX.A.ambushStrike` | `atk-ambush` C |
+| 👀 Ambush N | also strikes a unit that moves in; at once, the round's start too, and never while its unit is Asleep, Stunned, Frozen, Chained or stone (ENG12, 2026-10-28) | `FX.A.ambushStrike` | `atk-ambush` C |
 | 🪞 Reflect | the shot bounces off ("🪞 Reflect!") to a unit on the shooter's side, or their castle | `s17SkillVfx` | `atk-reflect` G, H |
 | 🎖️ Vanguard | "🎖️ +1/+1" on the first card (the opening-hand move is only a log line; B sketches it) | `s17SkillVfx` | `sk-vanguard` |
 | 🕸️ Web | "🕸️ Webbed", the threads bind it, the 🕸️N badge | `s17SkillVfx`, `SkillFX.vineBind` | `sk-web` |

@@ -1415,7 +1415,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         for(let k = 0; k < (sp.count||1); k++){ if(!debugSpawnCard(players, sideOf, pid, sp.defId, rnd() < .5 ? 'left' : 'right', stats, events)) break; }
         if(recordEvents && events) events.push({type:'statusFx', kind:'castleSpawn', side, targetSide:side, targetDefId:sp.defId, amount:sp.count||1}); } }
   }
-  function roundStart(players, round, sideOf, stats, events){
+  // ENG12 (2026-10-28, owner L1: "Ambush happens immediately when the trigger is valid. Currently, it waits till you play a card."): the
+  // round's start moves units (Restless, the wind, a reserve stepping up, a spawn, a field's push), and Ambush / Sentry only looked again
+  // when the next card landed. Now they look as the round's start ends, so a unit that came into an Ambush's watch is struck at once.
+  function roundStart(players, round, sideOf, stats, events){ const r = roundStartInner(players, round, sideOf, stats, events);
+    try{ watchScan(players, sideOf, stats, events); }catch(e){} return r; }
+  function roundStartInner(players, round, sideOf, stats, events){
     curPlayers = players; turnNo += 1;
     rollWind(players, sideOf, events);
     if(RESERVE_ROWS) advanceReserves(players, sideOf, stats, events); // the rows behind step up first (2026-10-12)
@@ -4406,6 +4411,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pl.graveyard.push({defId: hc.defId});
       ensureStat(stats, sideOf(playerId), hc.defId).played++;
       castSpell(players, sideOf, playerId, fdef, stats, events);
+      watchScan(players, sideOf, stats, events); // ENG12 (2026-10-28, L1): a spell that moved or brought in a unit meets Ambush / Sentry at once
       return true;
     }
     const resRow = (popts && popts.reserve) ? (popts.reserve|0) : 0;
@@ -5431,6 +5437,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Sentry N   (2026-10-19, package SK1 rework) an enemy unit that enters one of the 3 slots facing it (the one in front and the two
   //              beside that) takes N each time: On Enemy Enters (Facing): Damage N (sk1Trigs). Was: once a round, while Ready, its Attack.
   function springAmbush(players, sideOf, pid, card, stats, events){ watchScan(players, sideOf, stats, events); }
+  // ENG12 (2026-10-28, owner L10: a sleeping unit never swings): Ambush is the unit's own strike (EN7), so an Asleep, Stunned, Frozen,
+  // Chained or Petrified ambusher lets the unit pass. Waiting is fine (Ambush N: "Ready or Waiting").
+  function ambushCanAct(a){ return !!(a && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !a.chained && !a.petrified); }
   function sentryCanAct(a){ return !!(a && a.hp > 0 && !(a.wait > 0) && !a.stunned && !(a.frozen > 0) && !(a.asleep > 0) && !(a.bound > 0) && !a.chained && !a.petrified && a._sentryRound !== turnNo); }
   function sentryWatches(players, pid, a, x){
     if(slotMode) return Number.isInteger(a.slot) && Number.isInteger(x.slot) && Math.abs(x.slot - a.slot) <= 1;
@@ -5457,7 +5466,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(!(x.hp > 0)) break;
           if(!a || a.gap || !(a.hp > 0) || a.cageOf || moved.has(a)) continue;
           const e = effectsOf(a);
-          if(e.ambush){ let opp = null; try{ opp = opposingCardOf(players, foeId, a); }catch(err){ opp = null; }
+          if(e.ambush && ambushCanAct(a)){ let opp = null; try{ opp = opposingCardOf(players, foeId, a); }catch(err){ opp = null; }
             const n = numN(e.ambush, AMBUSH_DEF);
             if(opp && opp.card === x && n > 0 && !confusedFumbles(a, sideOf(foeId), events, 'ambush')){ anyHit = true; // Confused (2026-10-19, package FZ): 1 in 2 it fumbles
               if(recordEvents && events) events.push({type:'ambush', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:x.uid, targetDefId:x.defId, amount:n, moved: !fresh.has(x) || undefined});
@@ -6265,6 +6274,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(pl.perks && pl.perks.secondPitch && !quietStills(null, sideOf(pid), events, 'secondPitch')) pl.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn (not under Quiet Contemplation, 2026-10-19: the perk waits)
     else pl.discardUsedThisTurn = true;
     try{ firePitchTriggers(players, sideOf, pid, card.defId, stats, events); }catch(e){}
+    try{ watchScan(players, sideOf, stats, events); }catch(e){} // ENG12 (2026-10-28, L1): a pitch trigger's spawn meets Ambush / Sentry at once
     return {defId:card.defId, resource:y.resource, amount:y.amount, gained, darkPoints, discardGains, rebuild};
   }
   // Penance N and Blood Tithe N (2026-10-16, Devilry; user: "Devilry 2 skills: hurting your own castle on play as payment. Also,
@@ -6544,6 +6554,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pl = players[pid]; if(!pl || !inUpkeep(pl)) continue;
       for(const c of physicalRowOrder(pl).slice()){
         if(!c || c.gap || !(c.hp > 0) || c.cageOf || (c.wait||0) > 0) continue;
+        if(c.asleep > 0 || c.stunned || c.frozen > 0 || c.petrified) continue; // ENG12 (2026-10-28, L10): asleep (stunned, frozen, stone) it neither eats nor throws
         if(players[1].hq.hp <= 0 || players[2].hq.hp <= 0) return;
         const e = effectsOf(c);
         if(e.banana){ const n = numN(e.banana, 3), hurt = c.hp < c.maxHp && !(c.wither > 0);

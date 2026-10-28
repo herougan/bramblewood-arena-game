@@ -3614,5 +3614,7 @@
  "This map's cards": "As cartas deste mapa",
  "{n} more, of rarities you haven't reached yet": "Mais {n}, de raridades que ainda não alcançaste",
  "That's the most a deck can hold of one card: {n} copies.": "É o máximo que um baralho pode ter de uma carta: {n} cópias.",
- "Rarer cards have a lower cap: {n} copies of this one per deck.": "As cartas mais raras têm um limite menor: {n} cópias desta por baralho."
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "As cartas mais raras têm um limite menor: {n} cópias desta por baralho.",
+ "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "Golpeia de imediato, mesmo quando uma unidade entra no início da ronda (Inquieta, o vento, um feitiço). Não enquanto estiver a dormir, Atordoada, Congelada, Acorrentada ou feita pedra.",
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Não enquanto estiver a dormir, Atordoada, Congelada ou feita pedra."
 }

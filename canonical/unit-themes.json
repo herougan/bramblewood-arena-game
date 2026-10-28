@@ -2240,7 +2240,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 2,
-    "health": 15,
+    "health": 14,
     "dmg": "physical",
     "resist": []
    },
@@ -3855,7 +3855,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 4,
-    "health": 8,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -12608,7 +12608,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 1,
-    "health": 8,
+    "health": 6,
     "dmg": "physical",
     "resist": []
    },
@@ -18844,7 +18844,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 14,
+    "health": 7,
     "dmg": "physical",
     "resist": []
    },
@@ -19042,7 +19042,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 4,
+    "health": 3,
     "dmg": "physical",
     "resist": []
    },
@@ -21092,7 +21092,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 3,
-    "health": 5,
+    "health": 4,
     "dmg": "physical",
     "resist": []
    },
@@ -26905,7 +26905,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "dmg": "physical",
     "resist": []
    },
@@ -28353,7 +28353,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 5,
-    "health": 10,
+    "health": 9,
     "dmg": "physical",
     "resist": []
    },
@@ -30643,7 +30643,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 9,
+    "health": 8,
     "dmg": "physical",
     "resist": []
    },

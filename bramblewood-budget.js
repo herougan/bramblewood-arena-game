@@ -379,5 +379,50 @@ function thrS(k, v, effects, costOf){ const e = effects || {}; let key = k;
   const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c */; delete rest.attack; delete rest.health;
   const inner = 2 * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key]));
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
-return {EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, shieldHealthOf /* FIN2-c (2026-10-26) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
+// ---- ENG12 (2026-10-28): time of day and Shock by the 4-round rule (docs/workflows/balance.md "Pricing by logic") -----------------------
+// Nocturnal / Diurnal / Crepuscular N (+N Attack, +M Health with the Hp key) (owner L11, on the editor's Nocturnal +4/+0 at 2.5: "how can
+// this be 2.5?"; they were a fixed 1 whatever N was): the bonus is worth what it is worth held all the time (2A + H, the 4-round rule's
+// currency) times the share of a unit's rounds it is on. The shares are measured (tools/eng12_uptime_2026_10_28.js,
+// docs/balance/eng12-uptime-2026-10-28.json: every conquest fight's rules x 4 CPU fights of random live decks, side 1's unit-rounds):
+//   night  = night + Twilight rounds (ENG11: a dark fight is night, so the caves count),
+//   day    = day + Twilight rounds, a day under clouds or ash at half (Diurnal's bonus halves there),
+//   crepuscular = day + night + 2 x Twilight with a Crepuscular card in the deck (its D/N/D/N/T cycle; Twilight brings both parts).
+// Their braces (Nocturnal – {…}, Diurnal – {…}, Crepuscular – {…}) take the same shares (CONTEXT_MULT_BY, was 0.4); Crepuscular's two sets
+// share one multiplier, the mean of its day and night parts.
+const ZEIT_UPTIME = {nocturnal: 0.53 /* 0.528 + 0.004 */, diurnal: 0.38 /* 0.378 + 0.004 - 0.005 / 2 */, crepuscular: 0.99 /* 0.313 + 0.506 + 2 x 0.085 */};
+const ZEIT_GRANT_MULT = {nocturnalGrant: 0.53, diurnalGrant: 0.38, crepuscularGrant: 0.49 /* (0.313 + 0.085 + 0.506 + 0.085) / 2 */};
+Object.assign(CONTEXT_MULT_BY, ZEIT_GRANT_MULT); // the braces' multipliers (contextS reads CONTEXT_MULT_BY)
+// The dark-sight Nocturnal has had since ENG11 (it sees in the dark as Darksight does): Darksight's price x the share of unit-rounds in a
+// dark fight (skill_costs.js adds it beside the bonus; a card with Darksight already pays nothing more).
+const ZEIT_DARK_SHARE = 0.1 /* 0.105 */;
+const ZEIT_KEYS = ['nocturnal', 'diurnal', 'crepuscular'];
+// S of the time-of-day key k ('nocturnal', 'nocturnalHp' ...) on a card: {S, inner, mult} or null when k is not one. The flag carries the
+// price of both parts (+A from the flag, true = +1; +H from the Hp key); the Hp key costs nothing beside its flag; braces beside the flag
+// mean the plain bonus is not there (the engine's phaseStatsOf), so then 0.
+function zeitS(k, effects){ const e = effects || {}, base = /Hp$/.test(k) ? k.slice(0, -2) : k; if(!ZEIT_KEYS.includes(base)) return null;
+  if(k !== base && e[base]) return {S: 0, inner: 0, mult: 0};
+  if(e[base + 'Grant'] && typeof e[base + 'Grant'] === 'object') return {S: 0, inner: 0, mult: 0};
+  const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = 2 * A + Hh, m = ZEIT_UPTIME[base];
+  return {S: r2(inner * m), inner: r2(inner), mult: m}; }
+// Shock (owner L5: "Shock is too strong."): a Shocked unit takes 1.5x from every hit, every source, for the rest of the round it is struck
+// in and N more rounds (the engine's _shockedJustSet). By the 4-round rule, for On hit: Shock (chance p %, N rounds) on a unit with Attack A:
+//   it lands about 3 of 4 swings (SHOCK.land), so each round of its 4-round life its target is Shocked with q = 0.75 p (a round's hit shocks
+//   the next N rounds; a new Shock refreshes, it does not add): Shocked rounds = Σ over rounds 2-4 of 1 - (1 - q)^min(N, rounds before);
+//   a Shocked round adds half of what the target takes that round: the unit's own next swing (A) and the rest (SHOCK.other, the mean hit
+//   damage a unit takes a round, measured: docs/balance/eng12-uptime-2026-10-28.json dmgPerUnitRound), and the round a Shock lands adds
+//   half of the rest of that round (SHOCK.rest);
+//   a point of damage at units is 0.67 of a point (+1 Attack's 2 points buy about 3 damage, balance.md).
+// S = 0.67 x 0.5 x [Shocked rounds x (A + other) + 4 x q x 0.5 x other]. Shock Bolt N (a Speed 1 shot each round, before the swings, then
+// Shocked for a round): Arrow N's price for the shot (skill_costs.js) + its Shock: 4 rounds x 0.9 landed x 0.8 of the round still to come x
+// 0.5 x (other + half its own swing, which meets that unit about half the time) x 0.67.
+const SHOCK = {mult: 0.5, land: 0.75, life: 4, other: 1.05, perDmg: 0.67, rest: 0.5, boltLand: 0.9, boltRest: 0.8, boltOwn: 0.5};
+function shockParams(v){ const o = v && typeof v === 'object'; const p = Math.max(0, Math.min(100, o ? Number(v.chance) || 0 : Number(v) || 0)) / 100;
+  const d = Math.max(1, o ? Number(v.duration) || 1 : 1); return {p, d}; }
+function shockRounds(q, d, life){ let t = 0; for(let r = 2; r <= life; r++) t += 1 - Math.pow(1 - q, Math.min(d, r - 1)); return t; }
+function shockS(v, attack){ const {p, d} = shockParams(v), A = Math.max(0, Number(attack) || 0), q = SHOCK.land * p;
+  const extra = shockRounds(q, d, SHOCK.life) * (A + SHOCK.other) + SHOCK.life * q * SHOCK.rest * SHOCK.other;
+  return r2(SHOCK.perDmg * SHOCK.mult * extra); }
+function shockBoltShockS(attack){ const A = Math.max(0, Number(attack) || 0);
+  return r2(SHOCK.perDmg * SHOCK.mult * SHOCK.life * SHOCK.boltLand * SHOCK.boltRest * (SHOCK.other + SHOCK.boltOwn * A)); }
+return {ZEIT_UPTIME, ZEIT_GRANT_MULT, ZEIT_DARK_SHARE, ZEIT_KEYS, zeitS, SHOCK, shockParams, shockRounds, shockS, shockBoltShockS /* ENG12 (2026-10-28) */, EQUIP_DUR_BY_RARITY, EQUIP_DUR_DEFAULT, EQUIP_LIFE_ROUNDS, equipDurOf, equipLifeMult /* EQ2 (2026-10-24) */, equipLivesOf, THR_UPTIME, THR_PUSH, THR_DEFAULT_N, thrN, thrUptime, thrS /* ENG10 (2026-10-26) */, BLOOM_ODDS, BLOOM_LIVE, BLOOM_LUMBER, bloomOdds, bloomBodyMult /* BL (2026-10-23) */, BLOOM_CHAIN_Q, bloomChainOdds, EN5_UPTIME, CANOPY_UPTIME, canopyMultOf /* EN5 (2026-10-24) */, TRANSFORM_GAIN, transformGainOf, KINGLY_DEFAULT /* TR (2026-10-21) */, CONTEXT_MULT, CONTEXT_MULT_BY /* EN (2026-10-23) */, EN6_UPTIME, EN6_HIBERNATE_UPTIME, EN6_BRAMBLE_SHOTS, EN6_BRAMBLE_ACTIONS, EN6_BRAMBLE_MULT /* EN6 (2026-10-24) */, EN7_EXTRA_HIT, EN7_EXTRA_HIT_KEYS, EN7_TIP_SHOTS, EN7_TIP_MULT, EN7_TIP_ACTIONS /* EN7 (2026-10-24) */, CONTEXT, CONTEXT_FLAG, contextS, contextFlagCovered, rarityParts, rarityCompose, RARITY_FLAGS /* CX2 */, DEFAULTS, LADDER, AS, HALF_MISS, LIGHT, PARAMS, MAJOR, MINOR, LIMIT, SHARE, rankOf, DECK_RANK_CAPS /* DR */, deckRankCapOf, deckRankUsage, deckRankOver, deckRankBlock, ritualPts, baseOf, baseParts, nAt, nOf, nV3, nV4, formulaParts, missMultOf, missMultFor, cap2Limit /* BF11 */, MISS_MULT_BY /* BF10 */, fragileUseOf, capScores /* BF7 (2026-10-22) */, shieldHealthOf /* FIN2-c (2026-10-26) */, productScore, levelKind, forgeCurve, abilitiesOf, nMultOf, chainedMult, CHAINED_PER_ROUND /* ENG9 (2026-10-26) */, TWO_SKILL_FREE, twoSkillFree, skillCountOf /* TR (2026-10-21) */};
 });

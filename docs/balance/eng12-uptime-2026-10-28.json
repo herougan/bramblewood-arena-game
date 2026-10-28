@@ -1,0 +1,46 @@
+{
+ "_about": "tools/eng12_uptime_2026_10_28.js: shares of side 1's unit-rounds (units on the board as combat starts) by the time-givers' phase (engine zeitPhase: a dark fight is night), over every conquest fight's rules x 4 CPU fights of random live band decks; \"crepuscular\": the same with a Crepuscular card in side 1's deck (the D/N/D/N/T cycle). dmgPerUnitRound: mean hit damage a unit takes a round. shock: extra damage the Shocked hits carried per Shock landed, with the card as a quarter of side 1's deck.",
+ "generated": "2026-10-28",
+ "seed": 1,
+ "perFight": 4,
+ "fights": 263,
+ "band": 714,
+ "plain": {
+  "unitRounds": 55235,
+  "day": 0.378,
+  "dayDim": 0.005,
+  "night": 0.528,
+  "twilight": 0.004,
+  "none": 0.09,
+  "dark": 0.105,
+  "dmgPerUnitRound": 1.05
+ },
+ "crepuscular": {
+  "unitRounds": 51438,
+  "day": 0.313,
+  "dayDim": 0.004,
+  "night": 0.506,
+  "twilight": 0.085,
+  "none": 0.096,
+  "dark": 0.101,
+  "dmgPerUnitRound": 1.058
+ },
+ "shock": {
+  "voltaic-eel": {
+   "games": 1052,
+   "shocksLanded": 630,
+   "extraDmgPerShock": 0.595
+  },
+  "abyss-lantern-squid": {
+   "games": 1052,
+   "shocksLanded": 2040,
+   "extraDmgPerShock": 1.14
+  },
+  "electric-catfish": {
+   "games": 1052,
+   "shocksLanded": 6385,
+   "extraDmgPerShock": 1.27
+  }
+ },
+ "seconds": 214
+}

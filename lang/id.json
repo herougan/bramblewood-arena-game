@@ -3614,5 +3614,7 @@
  "This map's cards": "Kartu peta ini",
  "{n} more, of rarities you haven't reached yet": "{n} lagi, dari kelangkaan yang belum kamu capai",
  "That's the most a deck can hold of one card: {n} copies.": "Itu batas satu kartu dalam satu dek: {n} salinan.",
- "Rarer cards have a lower cap: {n} copies of this one per deck.": "Kartu yang lebih langka punya batas lebih rendah: {n} salinan kartu ini per dek."
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "Kartu yang lebih langka punya batas lebih rendah: {n} salinan kartu ini per dek.",
+ "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.": "Ia langsung menyerang, bahkan saat unit masuk di awal ronde (Gelisah, angin, sebuah mantra). Tidak saat ia tertidur, Pingsan, Beku, Terantai, atau menjadi batu.",
+ "Not while it is Asleep, Stunned, Frozen or turned to stone.": "Tidak saat ia tertidur, Pingsan, Beku, atau menjadi batu."
 }

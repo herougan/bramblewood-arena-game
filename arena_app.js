@@ -1904,6 +1904,9 @@ sk1Patch(PASSIVE_DEFS, 'armor', {desc:v=> TX('ui.e10-armor', {n: v}), codexNote:
 sk1Patch(PASSIVE_DEFS, 'coffee', {defaultValue:2, desc:v=> TX('ui.e11-coffee', {n: numOr(v, 2)}), codexNote:TX('ui.e11-coffee-codex')});
 sk1Patch(PASSIVE_DEFS, 'nocturnal', {codexNote:TX('ui.e11-nocturnal-codex')});
 sk1Patch(PASSIVE_DEFS, 'diurnal', {codexNote:TX('ui.e11-diurnal-codex')});
+// ENG12 (2026-10-28, owner L1 / L10): Ambush strikes at once (the round's start too), never while its unit is Asleep; an Asleep Banana unit rests.
+sk1Patch(PASSIVE_DEFS, 'ambush', {codexNote:TX('ui.e12-ambush-codex')});
+sk1Patch(PASSIVE_DEFS, 'banana', {codexNote:TX('ui.e12-banana-codex')});
 sk1Patch(PASSIVE_DEFS, 'fester', {label:TX('ui.e10-gorge-name'), desc:()=> TX('ui.e10-gorge'), codexNote:TX('ui.e10-gorge-codex')});
 PASSIVE_DEFS.push(
   {key:'sunder', category:'passive', label:TX('ui.e10-sunder-name'), kind:'boolean', desc:()=> TX('ui.e10-sunder'), codexNote:TX('ui.e10-hardy-codex')},
@@ -47535,7 +47538,9 @@ function w2SkillVfx(ev){
     case 'spawn': if(ev.kind === 'crystal'){ const u = ev.placements && ev.placements[0] && ev.placements[0].uid; w2Later(380, ()=>{ const el = boardCardEl(u); if(el && fx()) F.crystalForm(el); }); }
       if(ev.kind === 'relic'){ const u = ev.placements && ev.placements[0] && ev.placements[0].uid; w2Later(380, ()=>{ const el = boardCardEl(u); if(el) fl(el, '🏺', 'quick'); }); } break; // Relic (2026-10-19)
     case 'evaded': if(ev.reason === 'invisible'){ const el = boardCardEl(ev.targetUid); fl(el, '🫥 Unseen', 'quick'); } break;
-    case 'statusEnd': if(['invisible', 'invincible', 'bound'].includes(ev.status)){ const rc = rcOf(ev.uid); if(rc){ rc[ev.status] = 0; } refresh(ev.uid);
+    // ENG12 (2026-10-28, owner L10: "Sleep is active, but it still attacked."): a hit wakes a sleeper (the engine's statusEnd {asleep, woke}),
+    // and the unit may then swing that round; the replay kept its 💤 badge from the round's start, so a woken unit looked asleep as it struck.
+    case 'statusEnd': if(['invisible', 'invincible', 'bound', 'asleep'].includes(ev.status)){ const rc = rcOf(ev.uid); if(rc){ rc[ev.status] = 0; } refresh(ev.uid);
         if(ev.status === 'invisible' && ev.attacked){ const el = boardCardEl(ev.uid); if(el && fx()) F.unveil(el); } } break;
     case 'hit': { const rc = rcOf(ev.targetUid); if(rc && rc.invincible > 0 && !(ev.dmg > 0)){ const el = boardCardEl(ev.targetUid); fl(el, '🌟 Invincible', 'quick'); if(el && fx()) F.invincibleBlock(el); } break; }
   }
