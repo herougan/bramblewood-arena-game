@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-28 release 10-28a (batch: ENG11, VIS4, ENG12, VIS5, CONTENT4, BAL6, HUB8, COOP2, HUB9, BAL7, RELFIX2, plus HUB7 / FIN1 / FIN2 held from 10-27)
+- Rules: Coffee N; dark maps count as night; Scorching by day; Ambush fires at once; Shock priced by its numbers; Nocturnal / Diurnal priced by uptime; a woken unit loses its round; Frigid set as a map field; Give Shield / Bulwark at Shield 0.8.
+- Cards: 69 re-balanced by the contribution test (BAL7 M1), Nocturnal re-fits (ENG12), Shield re-fits (FIN2, BAL7).
+- Road: K14 (non-map-unique cards at most 1 copy each, 6 in all; Map 0 and T-2..T-4 out), decks checked against every deck rule; 11 maps given a field effect; the Map reference decks rebuilt. No retune toward the curve (BAL7-3 is the owner's).
+- Visuals: Rampart / Guardian block, Shield ripple and count-down, boss / elite nodes, map cards in the fight panel, faster avalanche, copy-cap tips, leader slam and Danger warning, trap pip and trap spring, fight controls that never squeeze, a full-height Codex.
+- The Tidelock Vault rebuilt as a normal 2-player raid-style fight. The card editor works again; Bramble Armor reads Fortify.
+- Hub: card contribution, the Map 0-24 heatmap with three references, clickable card names with rarity colours, the 🗺️ Map cards tab with oddities and the packs summary.
+- Deploy: .vercelignore now ships only the live page's files (~87 MB a deploy, was ~706 MB).
+- Checks (one final run): full unit tier (RELFIX2's run: no new failures against the known list except mk (passes alone), nv and ts-status-chips (both failing since 10-26)); ui_smoke 3 failures, the tutorial check (TUT-1, the owner's); flows 0 issues; card-matrix golden refreshed for the batch's card and rule changes (0 failures).
+
 ## 2026-10-28 (package RELFIX2: release triage of the 10-28 batch)
 - **Road decks** (K14's swaps broke two older rules): five skirmishes had 8 different cards (5-7 is the rule): 1-1, 1-A-2, 2-A-3, 8-A-2, 0-B-3, each now drops one non-map card and gives its copy to one of the map's own cards. **23-5 Under the Walls** has its Siege Train boon back (9/16 Siege cards; K14 had moved the Mouse Sappers to the off-theme Badger Trench Digger): 2 Trebuchet Crew, the map's own Siege card. K14's rule still holds everywhere; `tools/bal7_k14_decks_2026_10_28.js check` also names a skirmish outside 5-7 cards and a challenge deck whose boon is off.
 - **Offline raid**: a stand-in raider's fight left the cards it derived (`~dv`, `~evo`) in the shared card list, so the seeded raiders and the raid's pool changed between two reads; each simulated fight now has its own copy of the list (`bramblewood-ghosts.js`).
