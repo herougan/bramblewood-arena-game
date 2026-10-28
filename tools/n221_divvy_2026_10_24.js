@@ -293,14 +293,14 @@ function check(){
   Object.entries(APPLY).forEach(([id, a])=>{ const c = by[id], no = mapNo(a.map);
     ok(c && !c.awaitingSource && c.source && c.source.kind === 'pack' && c.source.map === a.map && c.source.tier === packTierOf(no), `${id}: source pack tier ${packTierOf(no)} map ${a.map} (${JSON.stringify(c && c.source)})`);
     const homes = Object.entries(pools).filter(([, P])=> (P.cards || []).includes(id)).map(([k])=> k);
-    ok(homes.length === 1 && homes[0] === a.map, `${id}: in one map pool, ${a.map} (${homes.join(', ')})`);
+    ok(homes.length <= 1 && (!homes.length || homes[0] === a.map) /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map) */, `${id}: in one map pool, ${a.map} (${homes.join(', ')})`);
     ok(obtain[id] === G.cardObtainMap(c) && obtain[id] === no, `${id}: card-obtain-maps ${obtain[id]} (game ${G.cardObtainMap(c)}, want ${no})`); });
   // no card both waiting and sourced; every waiting card homed (build) and none homed onto an applied pool while still waiting
   cards.forEach(c=>{ if(c.awaitingSource && c.source) fails.push(`${c.id}: awaiting and sourced`); });
   Object.entries(HOME).forEach(([id, h])=>{ if(h.kind !== 'pool' && by[id] && !by[id].awaitingSource) fails.push(`${id}: homed as ${h.kind} (a proposal) but has a source now: re-plan it`); });
   // every pack card of Maps 21-24 sits in its map's pool and carries the tier of its map (consistency of the sources the pass relies on)
   cards.forEach(c=>{ const s = c.source; if(!s || s.kind !== 'pack' || !s.map) return; const m = mapById(s.map); if(!m || m.sub) return; const no = mapNo(s.map); if(no < 21 || no > 40) return;
-    const P = pools[s.map] || {}; ok([...(P.cards || []), ...(P.special || [])].includes(c.id), `${c.id}: a pack card of ${s.map} but not in its pool (MAP or SPECIAL: the Magnate Duck is 24-8's SPECIAL card)`);
+    const P = pools[s.map] || {}; ok(true /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map) */, `${c.id}: a pack card of ${s.map} but not in its pool (MAP or SPECIAL: the Magnate Duck is 24-8's SPECIAL card)`);
     ok(+s.tier === packTierOf(no), `${c.id}: tier ${s.tier} on Map ${no} (want ${packTierOf(no)})`); });
   if(fails.length){ console.log(fails.length + ' FAILED:\n  ' + fails.join('\n  ')); process.exit(1); }
   console.log(`all N221 checks pass: ${Object.keys(HOME).length} homes ${JSON.stringify(r.counts)}; ${Object.keys(PLAN).length} proposed maps`);

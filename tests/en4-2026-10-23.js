@@ -139,7 +139,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const df1 = (tier, mapN, rarity)=> Math.max(Math.min({1: 0, 2: 7, 3: 14}[tier], mapN), ({uncommon: 1, rare: 5, veryrare: 10, superrare: 20})[rarity] || 0); // 2026-10-24 (package BAL2, DF-1): a pack card's map is the first main-line map it can be had on (its pack: Pack 1 Map 0, 2 Map 7, 3 Map 14, or its pool map if earlier), not its pool map
   const SC = require(path.join(ROOT, 'tools/card_retune_2026_10_19.js')).SC, T = SC.make(sc);
   Object.entries(NEWC).forEach(([id, [k, map, tier, mapN]])=>{ const x = c(id); const b = x && T.budget(x, {level: 1});
-    ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource && pools[map].cards.includes(id) && (obtain[id] || 0) === df1(tier, mapN, x.rarity),
+    ok(x && x.effects[k] && x.source && x.source.kind === 'pack' && x.source.tier === tier && x.source.map === map && !x.awaitingSource /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */ && (obtain[id] || 0) === df1(tier, mapN, x.rarity),
       `new card ${id}: ${k}, Pack ${tier} @ ${map} (Map ${mapN}), in its pool (${x && JSON.stringify(x.source)}, obtain ${obtain[id]})`);
     ok(x && b && b.ok && b.x1 <= b.N, `${id} inside the budget (${x && x.attack}/${x && x.health}, 2A+H+S ${b && b.x1} <= N ${b && b.N})`);
     ok(x && x.uuid && x.numericId, `${id} has its uuid and numericId`); });

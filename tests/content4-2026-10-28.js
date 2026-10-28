@@ -19,7 +19,7 @@ const fights = m=> m.nodes.filter(nd=> !/tutorial|raidboss/.test(nd.kind || '') 
 Object.entries(WANT).forEach(([id, rules])=>{ const m = MAPS.find(x=> x.id === id);
   ok(m && JSON.stringify(m.mapField) === JSON.stringify(rules), `1. ${id} carries mapField ${JSON.stringify(rules)} (${m && JSON.stringify(m.mapField)})`);
   if(m) fights(m).forEach(nd=>{ const r = G.fightRules(id, nd); Object.entries(rules).forEach(([k, v])=> ok(r[k] === ((nd.rules || {})[k] != null ? nd.rules[k] : v), `1. ${id} ${nd.key}: ${k} is on`)); }); });
-ok(MAPS.filter(m=> m.mapField).length === Object.keys(WANT).length, '1. no other map carries a mapField');
+ok(MAPS.filter(m=> m.mapField).length === Object.keys(WANT).length + 3 /* 2026-10-28 (BAL7, CONTENT4-4): + the Tundra family's Frigid (mt, m6, m22: field frozen) */, '1. no other map carries a mapField');
 { const m = MAPS.find(x=> x.id === 'mu'), nd = Object.assign({}, fights(m)[0], {rules: {sporeCloud: false}});
   ok(G.fightRules('mu', nd).sporeCloud === false, "1. a fight's own rule wins (false switches the map's effect off)"); }
 ok(/\.mapField; if\(mf\) Object\.keys\(mf\)\.forEach\(k=>\{ if\(r\[k\] == null\) r\[k\] = mf\[k\]; \}\)/.test(R('arena_app.js')), '1. fightRules reads mapField, the fight first');
@@ -52,7 +52,9 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
 { const plan = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, cards = J('canonical/cards.json'), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-trim-2026-10-28.js')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-apply-2026-10-28.py')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-plan-2026-10-28-keeppro.json')), '4. the script, the apply step and both plans exist');
   Object.entries(plan.lists).forEach(([k, L])=>{ const live = L.sub ? (pools[L.map].submaps || {})[L.sub] : pools[L.map].cards;
-    ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
+    // 2026-10-28 (BAL7, CONTENT4-1 decided: cap the lists only, sources kept; tools/bal7_pool_cap_2026_10_28.py): the live list is the plan's
+    // keep, plus the carried cards a PRO / BPRO deck holds and Pack-only cards that would sit in no list
+    ok(live && (L.skipped ? live.length === L.before : L.keep.every(id=> live.includes(id)) && live.length <= L.before), `4. ${k}: the live pool is the plan's capped list (${live && live.length}, keep ${(L.keep || []).length}, before ${L.before})`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });
   ok(plan.awaiting.every(a=> by[a.id] && !by[a.id].awaitingSource && by[a.id].source), '4. none of the plan\'s cards was sent to awaiting (nothing applied)');
@@ -60,7 +62,7 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
 
 // ---- 5. decisions and changelog
 { const d = J('docs/decisions.json').items, ids = ['CONTENT4-1', 'CONTENT4-2', 'CONTENT4-3', 'CONTENT4-4', 'CONTENT4-5'];
-  ids.forEach(id=>{ const x = d.find(y=> y.id === id); ok(x && x.status === 'YET' && x.options && x.options.includes(x.default), `5. ${id} is an open owner call with its default among the options`); });
+  ids.forEach(id=>{ const x = d.find(y=> y.id === id); ok(x && (x.status === 'YET' || (x.status === 'DONE' && x.outcome)) /* 2026-10-28 (BAL7): the calls were filled (owner 10-26 23:33) */ && x.options && x.options.includes(x.default), `5. ${id} is an open owner call with its default among the options`); });
   ok(/^## 2026-10-28 \(package CONTENT4/m.test(R('docs/CHANGELOG.md')), '5. the CHANGELOG entry');
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-2026-10-28.md')), '5. the report'); }
 

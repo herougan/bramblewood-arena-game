@@ -37,6 +37,22 @@ for key, r in plan['lists'].items():
     else: ent['cards'] = keep
     n += 1
 if back: print('kept for the PRO / BPRO decks:', json.dumps(back))
+# A pack card with no map in its source (Pack N only) is placed by its list alone: when the cap would leave it in no list, it stays in the
+# list(s) it was in, so no card loses its place (rw5: every live pack card in a map pool).
+listed = set()
+for e in P['maps'].values():
+    listed |= set(e['cards']) | set(e.get('special', []))
+    for l in e.get('submaps', {}).values(): listed |= set(l)
+kept_mapless = {}
+for key, r in plan['lists'].items():
+    if r.get('skipped'): continue
+    ent = P['maps'][r['map']]
+    cur = ent['submaps'][r['sub']] if r['sub'] else ent['cards']
+    for cid in r.get('trimmedNew', []) + r.get('trimmedOld', []):
+        s = (C.get(cid) or {}).get('source') or {}
+        if s.get('kind') == 'pack' and not s.get('map') and str(s.get('tier', 1)) not in ('11', '99') and cid not in listed:
+            cur.append(cid); listed.add(cid); kept_mapless.setdefault(key, []).append(cid)
+if kept_mapless: print('kept (a Pack-only card with no map, else in no list):', json.dumps(kept_mapless))
 P['_about'] = P['_about'].rstrip() + (' BAL7 (2026-10-28, CONTENT4-1): each list capped at about 7 new and 3-5 carried cards (plan ' + os.path.basename(sys.argv[1]) + '); a trimmed pack card keeps its pack and its map (source unchanged), so the lists no longer hold every pack card of their map.' if 'BAL7' not in P['_about'] else '')
 def arr(a): return '[' + ', '.join(json.dumps(x, ensure_ascii=False) for x in a) + ']'
 out = ['{', ' "_about": ' + json.dumps(P['_about'], ensure_ascii=False) + ',', ' "maps": {']

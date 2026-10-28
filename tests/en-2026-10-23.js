@@ -112,7 +112,7 @@ ok(sk('king').value === 1.4 && sk('kingly').value === 3.5, `King 1.4, Kingly 3.5
 ok(sk('assault').scale === 'n' && sk('assault').value === 1.8, `Assault 1.8 a point (${sk('assault').value})`);
 ok(sk('liege').value === 1.08 && BB.CONTEXT_MULT_BY.liegeGrant === 0.3, `Liege 0.3 x Assault 2 = 1.08 (${sk('liege').value}; braces x${BB.CONTEXT_MULT_BY.liegeGrant})`);
 ok(BB.CONTEXT_MULT_BY.rageGrant === 0.4 && !BB.CONTEXT_FLAG.rage, 'Rage – {…}: Rage keeps its price, + 0.4 x the braces');
-ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 9, `Bulwark 9 a point (EN3, owner 19:27 #9; was 6, BF11) (${sk('bulwark').value})`);
+ok(sk('bulwark').scale === 'n' && sk('bulwark').value === 7.2 /* 2026-10-28 (BAL7, FIN2-2): the owner's 9 x Shield's 0.8 Health */, `Bulwark 7.2 a point (EN3's 9 x 0.8, FIN2-2; was 6, BF11) (${sk('bulwark').value})`);
 ok(sk('backstab').scale === 'n' && sk('backstab').value === 0.6, `Backstab 0.6 a point (${sk('backstab').value})`);
 ok(sk('evoluteAlpha').value === 3 && sk('evoluteOmega').value === 3 && sk('evolute').value === 3, 'EV-5: Evolute, Alpha and Omega 3');
 ok(sk('spellward').value > 0 && !costs.skills.some(x=> x.id === 'spellshield' || x.id === 'enraged'), 'GD2-1 / TR-6: spellward priced; no spellshield or enraged entry');
@@ -134,7 +134,7 @@ ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform &
 { const m = byId.get('coffer-mimic');
   ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
-  ok(pools.maps.m4.cards.includes('coffer-mimic'), 'the Coffer Mimic is in Map 8\'s pool (the caves)');
+  ok(pools.maps.m4.cards.includes('coffer-mimic') || byId.get('coffer-mimic').source.map === 'm4' /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */, 'the Coffer Mimic is in Map 8\'s pool (the caves)');
   ok(cards.filter(c=> c.numericId === m.numericId).length === 1, 'its numericId is unique'); }
 ok(byId.get('terraumbra').mechanicLine === 'evolution' && byId.get('terraumbra').cardType === 'equipment', 'EV-1: the Terraumbra is the Evomax equipment');
 

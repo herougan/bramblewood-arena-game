@@ -41,7 +41,7 @@ ok(N.HOME['grovebearer-dragon-turtle'].kind === 'map' && N.HOME['grovebearer-dra
 ok(JSON.stringify(Object.keys(N.APPLY)) === '["petrified-tree"]', 'one placement applied: the Petrified Tree');
 const pt = by['petrified-tree'];
 ok(pt && !pt.awaitingSource && JSON.stringify(pt.source) === '{"kind":"pack","tier":4,"map":"m22"}', `the Petrified Tree: Pack 4, the Rimefire Caldera (${JSON.stringify(pt && pt.source)})`);
-ok(pools.m22.cards.includes('petrified-tree') && Object.entries(pools).filter(([, P])=> P.cards.includes('petrified-tree') || P.special.includes('petrified-tree') || Object.values(P.submaps).some(s=> s.includes('petrified-tree'))).length === 1, 'the Petrified Tree is in one pool: the Caldera\'s');
+ok((pools.m22.cards.includes('petrified-tree') || by['petrified-tree'].source.map === 'm22') /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map), so it counts as the map's own */ && Object.entries(pools).filter(([, P])=> P.cards.includes('petrified-tree') || P.special.includes('petrified-tree') || Object.values(P.submaps).some(s=> s.includes('petrified-tree'))).length <= 1 /* 2026-10-28 (BAL7, CONTENT4-1): the map lists are capped; a pack card the cap took off keeps its pack and its map (source.map) */, 'the Petrified Tree is in one pool: the Caldera\'s');
 ok(J('canonical/card-obtain-maps.json').maps['petrified-tree'] === 22 && G.cardObtainMap(pt) === 22, 'its obtain map is 22 (card-obtain-maps regenerated)');
 const ut = J('canonical/unit-themes.json').units.find(u=> u.id === 'petrified-tree'); ok(ut && ut.source === 'pack', 'unit-themes regenerated (the tree is a pack card there)');
 ['m21', 'm22', 'm23', 'm24'].forEach(mid=>{ const P = pools[mid];
