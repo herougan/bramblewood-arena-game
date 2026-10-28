@@ -16358,6 +16358,7 @@ function wireDeckListDrop(){
     myDeckCounts[defId] = (myDeckCounts[defId]||0) + 1;
     saveMyDeck();
     renderMyDeckPanels();
+    try{ vis4CapTip(defId, myDeckCounts, '#myDeckList'); }catch(e){} // 2026-10-27 (package VIS4, K16)
   });
 }
 // 2026-10-18 (WP4): wireLeaderSlot() and leaderSlotHTML() (Item #10's drag-a-leader slot) are gone: the slot's #leaderSlotWrap
@@ -26492,6 +26493,7 @@ function renderConquestSubTab(body){
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button></div>` : ''}
+      ${vis4MapCardsHTML(map, selectedNode)}
       `;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
     // button lives in the panel's head now, instead of a fixed button floating over the panel and dock.
@@ -30387,6 +30389,26 @@ function bossEntrance(node){
 // (the skull kind glyph moves from the corner to the crest); an elite node (elite, champion, mini-boss) gets a violet double ring and its star
 // as a small crest. The fight's opener for a boss: a darker red side, a bigger rival face in the same skull frame, "Boss" in red, and a sting
 // (SoundKit.bossSting) as it opens. CSS: the vis3Styles block of arena_template.html. (Raid, world and final bosses keep their gold look.)
+// 2026-10-27 (package VIS4, K8; owner 10-27 11:22, on the fight panel: "Under this section, let me see the Map's cards."): the fight panel
+// ends with the cards of this map's pool (mapPoolIds: MAP, this submap's own, SPECIAL), small tiles that zoom on hover, focus or a tap
+// (wireRewardZoom, as the reward strip does), by rarity then name. What a player may see follows the existing rules: a card of a rarity not revealed yet
+// (rarityRevealedForPlayer at the map they reached) is not shown, and they are counted in one 🔒 chip; a card never seen or owned is the
+// ❓ card back (isCardHiddenForPlayer), as in the reward strip. An admin sees the whole pool. None on a tutorial, PRO or virtual fight.
+function vis4MapCardsHTML(map, node){
+  try{
+    if(!map || !node || node.virtual || node.pro || node.kind === 'tutorial') return '';
+    const defs = getCardDefs(), ids = mapPoolIds(map.id).filter(id=>{ const d = defs[id]; return d && !d.token && !d.test && !isEasterEgg(d); }); if(!ids.length) return '';
+    const reach = adminModeEnabled ? Infinity : trackMapReached();
+    const shown = ids.filter(id=> adminModeEnabled || rarityRevealedForPlayer(defs[id].rarity, reach)), lockedN = ids.length - shown.length;
+    shown.sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name)));
+    const tiles = shown.map(id=>{ const d = defs[id];
+      return !adminModeEnabled && isCardHiddenForPlayer(d)
+        ? `<span class="vis4-mc-card is-mystery" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
+        : `<span class="vis4-mc-card" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}</span>`; }).join('');
+    const lock = lockedN ? `<span class="vis4-mc-locked" tabindex="0" data-zoom-tip="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}" aria-label="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}">🔒 +${lockedN}</span>` : '';
+    return `<div class="vis4-map-cards"><div class="vis4-mc-h">${escapeHtml(TX('ui.vis4-map-cards'))}</div><div class="vis4-mc-row">${tiles}${lock}</div></div>`;
+  }catch(e){ return ''; }
+}
 function vis3NodeFrameHTML(node){
   const b = baseKind(node && node.kind || '');
   if(b === 'boss') return '<span class="vis3-skull-frame" aria-hidden="true"></span>';
@@ -37543,11 +37565,55 @@ function vis3ShieldHTML(c){
   return `<span class="vis3-shield-num" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // (the old 💠 chip's words: already in lang/ui)
 }
 function vis3ShieldRefresh(el, c){
-  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num'), html = vis3ShieldHTML(c);
-    if(!html){ if(old) old.remove(); return; }
-    if(old){ if(old.textContent !== String(vis3ShieldAmount(c))){ old.insertAdjacentHTML('afterend', html); old.remove(); const nu = tile.querySelector(':scope > .vis3-shield-num'); if(nu) nu.classList.add('vis3-shield-pop'); } return; }
+  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num:not(.vis4-shield-out)'), html = vis3ShieldHTML(c);
+    // 2026-10-27 (package VIS4, K7: "if the bar is reduced to 0, it should still animate to 0"): a Shield that breaks counts down to 0 and
+    // then fades out (it used to vanish at once); one that drops counts down to its new number (vis4ShieldCount).
+    if(!html){ if(old) vis4ShieldCount(old, Number(old.textContent) || 0, 0, true); return; }
+    if(old){ const to = vis3ShieldAmount(c), from = Number(old.textContent) || 0; if(from !== to){ if(to < from && !reducedMotion()) vis4ShieldCount(old, from, to, false); else { old.insertAdjacentHTML('afterend', html); old.remove(); const nu = tile.querySelector(':scope > .vis3-shield-num'); if(nu) nu.classList.add('vis3-shield-pop'); } } return; }
+    tile.querySelectorAll(':scope > .vis3-shield-num.vis4-shield-out').forEach(x=> x.remove());
     tile.insertAdjacentHTML('beforeend', html); }catch(e){}
 }
+// 2026-10-27 (package VIS4, K7; owner 10-27 11:22: "The electric zap line effect when the shield is attacked ... doesn't look so nice. Also,
+// if the bar is reduced to 0, it should still animate to 0"):
+//   vis4ShieldCount: the blue number steps down one by one (about 60 ms a step, at most 0.35 s in all) with a pop; at 0 it holds a beat, then
+//     shrinks and fades (0.45 s) and is removed. Its title follows the number.
+//   vis4ShieldHit / vis4ShieldBreak replace FX.A's shieldFlare (a round ring and hex chips at the edge) and shieldShatter (white zig-zag cracks
+//     that read as an electric zap): the VIS3 rectangle over the card lights up, a second rectangle ripples out from it and both fade; a
+//     break flashes the rectangle and it falls apart into a few glass panes that slide away and fade. Both wait for the blow: the
+//     'shieldSoak' event comes just before the hit it soaks and now takes no beat of its own (delayForEvent), so the look and the number
+//     land with the blow (animMs: windup + impactPad). Bound once over FX.A (vis4PatchShieldFx; bramblewood-fx-a.js is not changed).
+function vis4ShieldCount(el, from, to, gone){
+  if(!el) return; if(el._vis4t) clearInterval(el._vis4t);
+  const steps = Math.max(1, from - to), ms = Math.max(40, Math.min(60, Math.round(350 / steps))); let n = from;
+  const fin = ()=>{ el.textContent = String(to); el.title = el.title.replace(/\d+/, String(to)); el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
+    if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> el.remove(), 470); }, 420); } };
+  if(reducedMotion() || steps <= 1){ fin(); return; }
+  el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } el.textContent = String(n); }, ms);
+}
+function vis4ShieldRect(el, cls){ const t = el.querySelector('.card-tile') || el, c = en2Ctr(t), r = en2Layer('', 'vis4-shield-rect ' + (cls || ''));
+  gsap.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:0, scale:1}); return {r, c}; }
+function vis4ShieldHit(el){
+  if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const {r} = vis4ShieldRect(el), rip = vis4ShieldRect(el, 'is-ripple').r;
+  gsap.timeline({onComplete:()=> r.remove()}).to(r, {opacity:1, duration:.06}).to(r, {opacity:0, duration:.42, delay:.16, ease:'power1.in'});
+  gsap.timeline({onComplete:()=> rip.remove()}).to(rip, {opacity:.9, duration:.05}).to(rip, {scale:1.12, opacity:0, duration:.5, ease:'power2.out'});
+  try{ const t = el.querySelector('.card-tile') || el; t.animate([{filter:'brightness(1)'}, {filter:'brightness(1.25)'}, {filter:'brightness(1)'}], {duration:260}); }catch(e){}
+}
+function vis4ShieldBreak(el){
+  if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const {r, c} = vis4ShieldRect(el, 'is-break');
+  const tl = gsap.timeline({onComplete:()=> r.remove()}); tl.to(r, {opacity:1, scale:1.03, duration:.07}).to(r, {opacity:0, duration:.1, delay:.12});
+  tl.add(()=>{ const N = 6; for(let i = 0; i < N; i++){ const col = i % 3, row = Math.floor(i / 3), pw = c.w / 3, ph = c.h / 2, px = c.x - c.w/2 + pw * (col + .5), py = c.y - c.h/2 + ph * (row + .5);
+      const p = en2Layer('', 'vis4-shield-pane'); gsap.set(p, {x:px, y:py, xPercent:-50, yPercent:-50, width:pw - 3, height:ph - 3, opacity:.95, rotation:0});
+      const ang = Math.atan2(py - c.y, px - c.x), dist = Math.max(c.w, c.h) * (.22 + Math.random() * .12);
+      gsap.to(p, {x: px + Math.cos(ang) * dist, y: py + Math.sin(ang) * dist + c.h * .12, rotation: (Math.random() * 2 - 1) * 28, opacity:0, scale:.8, duration:.55, ease:'power2.out', onComplete:()=> p.remove()}); }
+    try{ const t = el.querySelector('.card-tile') || el; t.animate([{filter:'brightness(1.5)'}, {filter:'brightness(1)'}], {duration:220}); }catch(e){} }, .12);
+}
+function vis4PatchShieldFx(){ try{ if(!(window.FX && FX.A) || FX.A.__vis4) return; FX.A.__vis4 = true;
+  const at = ()=> matchState && matchState.resolving ? (()=>{ const am = animMs(); return am.windup + am.impactPad; })() : 0;
+  FX.A.shieldFlare = function(el){ const ms = at(); setTimeout(()=> vis4ShieldHit(el), ms); return new Promise(r=> setTimeout(r, ms + 700)); };
+  FX.A.shieldShatter = function(el){ const ms = at(); setTimeout(()=> vis4ShieldBreak(el), ms); return new Promise(r=> setTimeout(r, ms + 800)); }; }catch(e){} }
+setTimeout(vis4PatchShieldFx, 0);
 function boardCardHTML(c, defs, opts){
   opts = opts || {};
   { const disg = changelingDisguiseFor(c, defs, opts.pid); if(disg) c = Object.assign({}, c, {defId: disg, disguised: true}); }
@@ -42568,7 +42634,8 @@ function showCoachTip(tip, anchorEl){
     // 2026-10-08 (playtest, phones): the tip covered your Leader or a castle while explaining
     // something else. Try sliding sideways, then flipping above/below, and keep the first spot that
     // covers neither (the tip's own target excepted); otherwise keep the default spot.
-    const keep = [...document.querySelectorAll('.leader-widget, [data-hq]')].filter(el=> el !== anchorEl && !el.contains(anchorEl) && !anchorEl.contains(el)).map(el=> el.getBoundingClientRect()).filter(k=> k.width);
+    // 2026-10-27 (package VIS4, K16): only in a fight (on the deck screen a large castle tile pushed the cap tip off its card)
+    const keep = !matchState ? [] : [...document.querySelectorAll('.leader-widget, [data-hq]')].filter(el=> el !== anchorEl && !el.contains(anchorEl) && !anchorEl.contains(el)).map(el=> el.getBoundingClientRect()).filter(k=> k.width);
     const hits = (cx, cy)=> keep.some(k=> cx < k.right + 4 && cx + bw > k.left - 4 && cy < k.bottom + 4 && cy + bh > k.top - 4);
     if(hits(x, y)){
       const ys = [y, below ? r.top - bh - 14 : r.bottom + 14].filter(v=> v >= 8 && v + bh <= H - 8);
@@ -43202,6 +43269,20 @@ function lethalDeathFollows(events, i){
     if(e.type === 'hit' || e.type === 'hitHQ' || e.type === 'evaded' || e.type === 'sweepWhiff' || e.type === 'blindMiss' || e.type === 'spawn' || e.type === 'collapseIn' || e.type === 'tipsySwing' || e.type === 'arrow' || e.type === 'bolt') return false; }
   return false;
 }
+// 2026-10-27 (package VIS4, K9; owner 10-27 11:22: "Ibex Rockcaller's avalanche animation of one-by-one is too slow. Speed up the wait between
+// anims by 70%"): the avalanche's steps on each unit (its +1 Wait note and its cold hit, a ranged 'hit' that took the full 1.26 s beat) wait
+// 30% of their usual beat. The 'avalanche' event (fifthPassVfx) opens the run; it ends at the first event that is not one of its steps
+// (a death in between keeps its own beat and does not end it).
+let VIS4_AVA = null;
+function vis4AvalancheBeat(ev, base){
+  if(!ev) return base;
+  if(ev.type === 'avalanche'){ VIS4_AVA = {att: String(ev.attUid), hits: new Set((ev.hits||[]).map(String))}; return base; }
+  if(!VIS4_AVA) return base;
+  const same = String(ev.attUid) === VIS4_AVA.att && VIS4_AVA.hits.has(String(ev.targetUid));
+  if(same && ((ev.type === 'statusFx' && ev.kind === 'avalancheWait') || ((ev.type === 'hit' || ev.type === 'evaded') && ev.ranged))) return Math.round(base * 0.3);
+  if(ev.type !== 'death') VIS4_AVA = null;
+  return base;
+}
 function delayForEvent(ev, prevKind){
   if(emptyHealEvent(ev)) return 0; // 2026-10-19 (package HN): a heal of 0 takes no beat
   let base;
@@ -43227,6 +43308,8 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
   else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
+  else if(ev.type==='rampart' || ev.type==='brambleArmor') base = 0; // 2026-10-27 (package VIS4, K4): the hit they share plays at once, so the block lands with the blow
+  else if(ev.type==='shieldSoak' && matchState && matchState.resolving) base = 0; // 2026-10-27 (package VIS4, K7): the same for a Shield's soak and the blow it soaks
   else if(ev.type==='rebuild') base = 560; // Rebuild (2026-10-17): the planks are in the air; the bar fills as they land
   else if(ev.type==='statusFx' && ev.kind==='inspired') base = (prevKind!=null && vfxKindOf(ev)===prevKind) ? 60 : 380; // PL2 (2026-10-25, #4): the horn, and its allies' Attack going up 0.3 s in
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
@@ -43239,6 +43322,7 @@ function delayForEvent(ev, prevKind){
   // Speed control (2026-09-16, reworked from a one-shot fast-forward into a persistent,
   // always-available multiplier — see the ffBtn wiring in renderMatchUI): 1x/1.5x/2x/3x.
   // Floor it so even at 3x each event still gets a couple of visible frames.
+  base = vis4AvalancheBeat(ev, base); // 2026-10-27 (package VIS4, K9)
   const mult = (matchState && matchState.speedMult) || 1;
   return Math.max(18, Math.round(base / mult));
 }
@@ -45445,6 +45529,7 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
       const el = poolTileEl || chipEl;
       denyShake(el); if(el) floatText(el, _t('Max {n} per deck', {n:maxCopiesForRarity(def.rarity)}), 'debuff');
       try{ fxHook('deckFull', el); }catch(e){} // 2026-10-15 batch F
+      try{ vis4CapTip(id, counts, deckListSel); }catch(e){} // 2026-10-27 (package VIS4, K16)
       return;
     }
     { const rb = deckRankBlockFor(counts, id, getCardDefs(), deckLeaderIds()); // 2026-10-22 (package DR): Legendary 3 / Mythic 2 / higher 1 per deck, the leader counted
@@ -45459,6 +45544,19 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
     flyBetweenRects(fromRect, toRectFallback, (defs[id]&&defs[id].icon)||'🌰');
   }
   try{ fxHook('deckCardMoved', id, remove, poolSel, deckListSel); }catch(e){} // 2026-10-15 batch F: add / remove moment
+  if(!remove && enforceRarityLimit) try{ vis4CapTip(id, counts, deckListSel); }catch(e){} // 2026-10-27 (package VIS4, K16)
+}
+// 2026-10-27 (package VIS4, K16; owner 10-27 11:22: "Tutorial when going over card cap (5/5) then one for higher rarities (3/3)"): the first
+// time a card in your deck reaches its rarity's copy cap (by a click, a drop, or a click past it), a one-line coach tip says so; a card whose
+// cap is below a Common's (Uncommon 4, Rare 3 ...) has its own tip, also once. Only the rarity cap counts (not "you own 2").
+function vis4CapTip(id, counts, listSel){
+  const defs = getCardDefs(), d = defs[id]; if(!d || !counts || !editionCapReached(counts, id, defs)) return;
+  const cap = Math.min(maxCopiesForRarity(((defs[editionRootId(d)] || d).rarity)), maxCopiesForRarity(d.rarity));
+  const rare = cap < maxCopiesForRarity('common'), key = rare ? 'vis4-cap-rare' : 'vis4-cap';
+  if(coachSeen.has(key) || coachOpen) return;
+  const find = ()=> document.querySelector(`${listSel} [data-defid="${id}"]`) || document.querySelector(listSel);
+  setTimeout(()=>{ const el = find(); if(!el || coachSeen.has(key) || coachOpen) return; markCoachSeen(key);
+    showCoachTip({id: key, text: TX(rare ? 'ui.vis4-cap-tip-rare' : 'ui.vis4-cap-tip', {n: cap}), anchor: find}, el); }, 120);
 }
 // Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): a pixel-art arrow PNG, aimed at the
 // target, that crosses the board fast (accelerating), sticks in the target for a moment and fades.
@@ -46453,8 +46551,11 @@ function sixthPassVfx(ev){
     const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💠 +' + ev.amount, 'buff'); }catch(e){} if(F && F.shieldUp) try{ F.shieldUp(el, {}); }catch(e){} }
   }
   if(ev.type==='shieldSoak'){
-    const rc = rcs[ev.uid]; if(rc) rc.shield = ev.left; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
-    const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){}
+    // 2026-10-27 (package VIS4, K7): the number and the float wait for the blow (vis4PatchShieldFx above has the look wait too)
+    vis4PatchShieldFx(); const am = animMs(), at = matchState.resolving ? am.windup + am.impactPad : 0;
+    const rc = rcs[ev.uid]; if(rc) rc.shield = ev.left;
+    setTimeout(()=>{ try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+      const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){} }, at);
   }
   // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the 'electricity' event only notes the chain (attacker, the struck unit); the bolt is drawn by the arc's own hit (and the
   // wet target's zap), and that hit's number pops as its bolt lands (electricityImpactMs). With no hit to follow, a spark crackles.
@@ -47741,24 +47842,33 @@ function en2BoomOrphanFlight(ev){
 //   vis3RampartStep: a beat before the blow lands the Rampart unit slides a little toward its bramble (a third of the way, at most 38 px),
 //     pulses as its share lands, and slides home; a unit the share kills stays there and its death plays on that spot. It moves by left / top
 //     like the Guardian's step-in (en2GuardStepIn, which now pulses too).
+// 2026-10-27 (package VIS4, K4; owner 10-27 11:22: "Rampart animation as described not done"): VIS3's block did play in a real fight
+// (tests/e2e/vis4_2026_10_27.py records one), but it was easy to miss: (1) the 'rampart' event comes just before the hit it shares and
+// took the generic 150 ms beat (delayForEvent), so the step and the pulse ran a beat ahead of the blow, and the unit was heading home as
+// the blow landed; (2) the step was at most 38 px and the shake 4 px, under the hit's own shake, the streak and the floats; (3) the aura
+// was one thin ring gone in half a second. Now the 'rampart' and 'brambleArmor' events take no beat of their own, so their looks land with
+// the blow; the step is up to 45% of the card's width (at least 24 px), the unit holds there through the blow and a little after, it
+// shakes harder (8 px), the card flashes bright, and two thick gold rings grow out of it. The Guardian's step-in uses the same pulse.
 function vis3BlockPulse(el){
   if(!el || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
   const t = el.querySelector('.card-tile') || el, c = en2Ctr(t);
-  try{ t.animate([{translate:'0 0'}, {translate:'-4px 0'}, {translate:'4px 0'}, {translate:'-3px 0'}, {translate:'3px 0'}, {translate:'-1px 0'}, {translate:'0 0'}], {duration:320, easing:'linear'}); }catch(e){}
-  const a = en2Layer('', 'vis3-block-aura'); gsap.set(a, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:.95, scale:1});
-  gsap.to(a, {scale:1.32, opacity:0, duration:.5, ease:'power2.out', onComplete:()=> a.remove()});
+  try{ t.animate([{translate:'0 0'}, {translate:'-8px 0'}, {translate:'8px 0'}, {translate:'-7px 0'}, {translate:'7px 0'}, {translate:'-4px 0'}, {translate:'4px 0'}, {translate:'0 0'}], {duration:440, easing:'linear'}); }catch(e){}
+  try{ t.animate([{filter:'brightness(1)'}, {filter:'brightness(1.5) saturate(1.2)'}, {filter:'brightness(1)'}], {duration:460, easing:'ease-out'}); }catch(e){}
+  [0, .14].forEach((d, i)=>{ const a = en2Layer('', 'vis3-block-aura' + (i ? ' vis4-block-aura-2' : '')); gsap.set(a, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:0, scale:1});
+    gsap.timeline({onComplete:()=> a.remove()}).to(a, {opacity:1, duration:.05}, d).to(a, {scale: i ? 1.62 : 1.42, opacity:0, duration:.66, ease:'power2.out'}, d + .05); });
   try{ SoundKit.markArmor ? SoundKit.markArmor() : SoundKit.clang(); }catch(e){}
 }
 function vis3RampartStep(ev, hitAt, dies){
   const u = boardCardEl(ev.uid), c = hqTileEl(ev.side); if(!u || !c || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
   const ur = u.getBoundingClientRect(), cr = c.getBoundingClientRect(), sc = en2Local(u);
-  let dx = (cr.left + cr.width/2) - (ur.left + ur.width/2), dy = (cr.top + cr.height/2) - (ur.top + ur.height/2); const L = Math.hypot(dx, dy) || 1, k = Math.min(38, L / 3) / L;
+  let dx = (cr.left + cr.width/2) - (ur.left + ur.width/2), dy = (cr.top + cr.height/2) - (ur.top + ur.height/2); const L = Math.hypot(dx, dy) || 1;
+  const k = Math.min(Math.max(24, ur.width * .45), L / 2.5) / L; // VIS4 (K4): was min(38, L/3)
   dx *= k; dy *= k;
-  const pos0 = getComputedStyle(u).position, moveMs = Math.min(260, Math.max(160, hitAt * .5));
+  const pos0 = getComputedStyle(u).position, moveMs = Math.min(240, Math.max(140, hitAt * .45));
   setTimeout(()=>{ u.classList.add('vis3-blocking'); u.style.zIndex = '30'; if(pos0 === 'static') u.style.position = 'relative';
-    gsap.to(u, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration: moveMs/1000, ease:'sine.out'}); }, Math.max(0, hitAt - moveMs - 20));
+    gsap.to(u, {left: (dx/sc) + 'px', top: (dy/sc) + 'px', duration: moveMs/1000, ease:'power2.out'}); }, Math.max(0, hitAt - moveMs));
   setTimeout(()=> vis3BlockPulse(u), hitAt);
-  if(!dies) setTimeout(()=>{ gsap.to(u, {left:'0px', top:'0px', duration:.32, ease:'sine.inOut', onComplete:()=>{ u.style.left = ''; u.style.top = ''; if(pos0 === 'static') u.style.position = ''; u.style.zIndex = ''; u.classList.remove('vis3-blocking'); }}); }, hitAt + 380);
+  if(!dies) setTimeout(()=>{ gsap.to(u, {left:'0px', top:'0px', duration:.34, ease:'sine.inOut', onComplete:()=>{ u.style.left = ''; u.style.top = ''; if(pos0 === 'static') u.style.position = ''; u.style.zIndex = ''; u.classList.remove('vis3-blocking'); }}); }, hitAt + 540);
 }
 const EN7_GUARD_TILT = 10; // degrees (EN7, 2026-10-24, owner 13:12 #4)
 function en2GuardStepIn(ev){
@@ -47865,7 +47975,7 @@ function en3RampartVfx(ev){
     if(c && hasGsap() && !reducedMotion() && fxAtLeast('low')){ const p = en2Ctr(c), q = en2Ctr(u), L = Math.hypot(q.x - p.x, q.y - p.y), ang = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
       const st = en2Layer('', 'en3-rampart-streak'); gsap.set(st, {x:p.x, y:p.y, width:L, height:6, rotation:ang, transformOrigin:'0% 50%', yPercent:-50, scaleX:0, opacity:1});
       gsap.timeline({onComplete:()=> st.remove()}).to(st, {scaleX:1, duration:.16, ease:'power2.out'}).to(st, {opacity:0, duration:.28}); }
-    try{ shakeEl(u); tintPulse(u, 'en3-rampart-pulse'); dnFloat(u, ev.dmg||0, {mods: ev.mods}); floatText(u, '🚧', 'buff'); }catch(e){}
+    try{ if(reducedMotion() || !fxAtLeast('low')) shakeEl(u); /* VIS4 (K4): the block pulse is the shake */ tintPulse(u, 'en3-rampart-pulse'); dnFloat(u, ev.dmg||0, {mods: ev.mods}); floatText(u, '🚧', 'buff'); }catch(e){}
     try{ updateCardHpDisplay(ev.uid); }catch(e){} }, at);
 }
 function en3BrambleArmorVfx(ev){

@@ -3610,5 +3610,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Buta-gelap: unit tanpa Penglihatan Gelap atau Nokturnal. Tempat gelap dihitung sebagai malam bagi unit Nokturnal dan Diurnal. Unit Menerangi menerangi sisinya sendiri, dan musuh di hadapannya.",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 2: di setiap ronde Siang (setiap ronde di tempat tanpa siang atau malam) 3 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Terik, level 3: di setiap ronde Siang (setiap ronde di tempat tanpa siang atau malam) 4 unit acak di tiap sisi menerima 1 kerusakan api. Unit tahan panas tidak terkena.",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "Saat siang (selalu di tempat tanpa malam), 2 unit di tiap sisi menerima 1 kerusakan api."
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "Saat siang (selalu di tempat tanpa malam), 2 unit di tiap sisi menerima 1 kerusakan api.",
+ "This map's cards": "Kartu peta ini",
+ "{n} more, of rarities you haven't reached yet": "{n} lagi, dari kelangkaan yang belum kamu capai",
+ "That's the most a deck can hold of one card: {n} copies.": "Itu batas satu kartu dalam satu dek: {n} salinan.",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "Kartu yang lebih langka punya batas lebih rendah: {n} salinan kartu ini per dek."
 }

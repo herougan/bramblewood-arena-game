@@ -150,3 +150,8 @@ vis3ShieldHTML
 vis3ShieldAmount
 vis3TrapRingHTML
 vis3NodeFrameHTML
+# VIS4 (2026-10-27): the Shield's new hit and break (K7), its count-down; the stronger block pulse is vis3BlockPulse above
+vis4ShieldCount
+vis4ShieldRect
+vis4ShieldHit
+vis4ShieldBreak

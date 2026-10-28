@@ -3608,5 +3608,9 @@
  "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.": "Aveugle dans le noir : une unité sans Vision nocturne ni Nocturne. Les lieux sombres comptent comme la nuit pour les unités Nocturnes et Diurnes. Une unité Illumination éclaire son camp, et l’ennemi en face d’elle.",
  "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Torride, niveau 2 : à chaque tour de Jour (à chaque tour là où il n’y a ni jour ni nuit), 3 unités au hasard de chaque camp subissent 1 dégât de feu. Les unités résistantes à la chaleur sont épargnées.",
  "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.": "Torride, niveau 3 : à chaque tour de Jour (à chaque tour là où il n’y a ni jour ni nuit), 4 unités au hasard de chaque camp subissent 1 dégât de feu. Les unités résistantes à la chaleur sont épargnées.",
- "By day (always where there's no night), 2 units a side take 1 fire damage.": "De jour (toujours là où il n’y a pas de nuit), 2 unités par camp subissent 1 dégât de feu."
+ "By day (always where there's no night), 2 units a side take 1 fire damage.": "De jour (toujours là où il n’y a pas de nuit), 2 unités par camp subissent 1 dégât de feu.",
+ "This map's cards": "Les cartes de cette carte",
+ "{n} more, of rarities you haven't reached yet": "{n} de plus, de raretés que vous n’avez pas encore atteintes",
+ "That's the most a deck can hold of one card: {n} copies.": "C’est le maximum qu’un deck peut contenir d’une même carte : {n} exemplaires.",
+ "Rarer cards have a lower cap: {n} copies of this one per deck.": "Les cartes plus rares ont une limite plus basse : {n} exemplaires de celle-ci par deck."
 }

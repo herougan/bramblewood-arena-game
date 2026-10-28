@@ -2824,7 +2824,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e11-fxx-dark": "Dark-blind: a unit without Darksight or Nocturnal. The dark places count as night for Nocturnal and Diurnal units. An Illuminate unit lights its own side, and the enemy facing it.",
   "ui.e11-scorching1": "By day (always where there's no night), 2 units a side take 1 fire damage.",
   "ui.e11-scorching2": "Scorching, level 2: each Day round (every round where there is no day or night) 3 random units on each side take 1 fire damage. Heat-resistant units are spared.",
-  "ui.e11-scorching3": "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared."
+  "ui.e11-scorching3": "Scorching, level 3: each Day round (every round where there is no day or night) 4 random units on each side take 1 fire damage. Heat-resistant units are spared.",
+  "ui.vis4-map-cards": "This map's cards",
+  "ui.vis4-map-cards-locked": "{n} more, of rarities you haven't reached yet",
+  "ui.vis4-cap-tip": "That's the most a deck can hold of one card: {n} copies.",
+  "ui.vis4-cap-tip-rare": "Rarer cards have a lower cap: {n} copies of this one per deck."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
