@@ -25062,6 +25062,7 @@ function gdStartFloorMatch(T){
   { const sd = buildStandardDefs(), ov = CoopM.floorOverlay(T.typeId, T.floorIdx, sd); Object.keys(ov).forEach(id=>{ sd[id] = Object.assign({}, ov[id], {name: gdNameOf(ov[id])}); }); } // the Tidewarden, for the board and tooltips
   const seat = S.mySeat() != null ? S.mySeat() : 0, f = CoopM.floorDef(T.typeId, T.floorIdx);
   T.dgStart = T.players[2].hq.maxHp;
+  try{ if(T.players[2].character) T.players[2].character.name = gdFloorName(T.floorIdx); }catch(e){} // the vault's bramble goes by the floor's name (a label only: not in the hash)
   matchState = {engine: T.W, players: T.players, sideOf: id=> id === 1 ? 'A' : 'B', stats: T.stats, over: false, winner: 0, selectedUid: null, log: [], round: T.round, resolving: false,
     mode: 'coop', active: 1, turnDone: {1: false, 2: false}, awaitingPass: false, deckTotals: {1: CoopM.seatData(T, seat).deck.length + 3, 2: T.players[2].deck.length + 3}, speedMult: 1,
     battleMode: 'open', leaderDefId: null, leaderUid: T.leaderUids[seat] != null ? T.leaderUids[seat] : null, raidRoundCap: T.cap, opponentName: gdFloorName(T.floorIdx),
