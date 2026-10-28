@@ -4,6 +4,16 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-28: follow-ups found by BAL6 (for BAL7)
+
+| ID | Item |
+|---|---|
+| M1 | Re-balance the contribution outliers (`docs/balance/contribution-2026-10-27.md`: top-20 too strong / too weak against their rarity band), by the formula and the measured contribution. Re-measure the contribution after (Nocturnal was re-priced by ENG12 after BAL6's run). |
+| M2 | The in-game Test Lab's Card check (`cardCheckPool`) leaves out every basic-pack card (the Owl Nightwatch among them): add pack cards with cardObtainMap <= upTo. |
+| M3 | 378 cards carry a stale `unattainable: true` in `canonical/cards.json`: clear it where the card has a source. |
+| M4 | The Pool reference's search does not converge on Maps 13-24 (pools of 175-275): seed it with the Map reference deck and a larger budget, then re-measure its heatmap row. |
+| M5 | The live `card_overrides` row for the Owl Nightwatch (Health 4, source 1-3) is an un-folded owner edit; ENG12 re-balanced the Owl, so the file wins (owner 10-26 14:14); clear it with the next live clear (needs the owner at the Supabase prompt). |
+
 ## 10-28 09:48: the owner's notes
 
 | ID | Package | Note (owner, trimmed) | What to build |
