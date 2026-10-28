@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-28 (package TOOLS1: the balance workbench, tools only; no card, deck, price or game change)
+- **`node tools/bench/bench.js`** (owner 10-28 21:40, tools T1-T3 of the balancing plan), documented in `docs/workflows/balance.md`:
+  - `contrib` (T1): a card's contribution by paired swaps (the same fights with k copies of the card and with k Blanks), any card subset, a map's context (`--map N`) or the global one; cached and resumable, about 15 s a card; reports contribution ± 95%, value per budget point (per copy / N) and the distance from the fair line.
+  - `skill` (T2): a skill's worth in budget points measured on its carriers (with / without at the same stats) against a +1 Attack / +1 Health yardstick, compared with its price; `--all` ranks every skill by mispricing (vanilla carriers for skills on one card) and writes a suggested-price file for review (`canonical/skill-costs.json` untouched).
+  - `deck` (T3): strong decks with different focuses (open, big, economy, stone / metal, swarm, the list's skill families) from a card list under the owner's step-4 rule (at most 6 different cards, 4 copies), over deckopt's gauntlet.
+- First runs: `docs/balance/bench-skills-2026-10-28.md` (+ `bench-skill-prices-2026-10-28.json`), `docs/balance/bench-contrib-global-2026-10-28.md`, `docs/balance/bench-deck-map12-mh-2026-10-28.md`.
+- Hub: a 🧪 Workbench section in the 🧬 Deck optimizer tab (the mispriced skills, value per budget point for every card, the focused decks).
+- `tools/opt/deckopt.js` exports its evaluation helpers (no behaviour change). Test: `tests/tools1-2026-10-28.js`.
+
 ## 2026-10-28 release 10-28a (batch: ENG11, VIS4, ENG12, VIS5, CONTENT4, BAL6, HUB8, COOP2, HUB9, BAL7, RELFIX2, plus HUB7 / FIN1 / FIN2 held from 10-27)
 - Rules: Coffee N; dark maps count as night; Scorching by day; Ambush fires at once; Shock priced by its numbers; Nocturnal / Diurnal priced by uptime; a woken unit loses its round; Frigid set as a map field; Give Shield / Bulwark at Shield 0.8.
 - Cards: 69 re-balanced by the contribution test (BAL7 M1), Nocturnal re-fits (ENG12), Shield re-fits (FIN2, BAL7).

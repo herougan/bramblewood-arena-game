@@ -488,7 +488,8 @@ PP_INLINE = (f'const PP_DATA = {_js(_pp)};\nconst PP_DOC = {_js(_pp_doc)};\n' + 
 _opt_dir = os.path.join(ROOT, 'docs', 'balance', 'opt')
 _opt_files = sorted([f for f in os.listdir(_opt_dir) if f.endswith('.md')], key=lambda f: ('summary' not in f, -os.path.getmtime(os.path.join(_opt_dir, f)))) if os.path.isdir(_opt_dir) else []
 import deckopt_summary as DOS  # 2026-10-26 (package HUB6, owner 10-26 11:19): the summary panel at the top of the 🧬 Deck optimizer tab
-deckopt_html = ('<div class="doc guide"><h1>🧬 Deck optimizer</h1>' + DOS.summary_html(ROOT, CANON, _tix, cols, max(1, math.ceil(len(_thumb_ids) / cols))) + '<h2>Results</h2><p class="lede">Results of <code>tools/opt/deckopt.js</code>: no Claude tokens are spent on the games. '
+import bench_data as BENCH  # 2026-10-28 (package TOOLS1): the 🧪 Workbench section (mispriced skills, value per budget point, focused decks)
+deckopt_html = ('<div class="doc guide"><h1>🧬 Deck optimizer</h1>' + DOS.summary_html(ROOT, CANON, _tix, cols, max(1, math.ceil(len(_thumb_ids) / cols))) + BENCH.html_block(ROOT, md_html) + '<h2>Results</h2><p class="lede">Results of <code>tools/opt/deckopt.js</code>: no Claude tokens are spent on the games. '
   'Run it from GitHub (Actions → Deck optimizer → Run workflow) or locally (<code>node tools/opt/deckopt.js --maps 0-3 --minutes 20</code>), commit the files in '
   '<code>docs/balance/opt/</code>, then ask Claude to rebuild the hub. Raw per-map data: the <code>deckopt-map*.json</code> files there.</p>'
   + (''.join(f'<details{" open" if k == 0 else ""}><summary><b>{H.escape(f)}</b></summary><div class="doc">{md_html(open(os.path.join(_opt_dir, f), encoding="utf-8").read())}</div></details>' for k, f in enumerate(_opt_files)) or '<p>No results yet.</p>')
@@ -573,7 +574,7 @@ _ct = H5.card_table(ROOT, CANON, _tix)
 # 2026-10-27 (package BAL6, K5): the Card table's 🏅 Contribution view reads the newest docs/balance/contribution-<date>.json (tools/balance/contribution.js)
 import contribution_data as CBD
 CT_INLINE = (f'const CT_DATA = {_js(_ct)};\nconst CT_PACKS = {_js(H5.packs(ROOT, CANON, _tix))};\nconst CT_COLS = {cols};\nconst CT_ROWS = {max(1, math.ceil(len(_thumb_ids) / cols))};\nconst CT_CONTRIB = {_js(CBD.contribution(ROOT))};\n' + _hubdir('cardtable_tab.js'))
-CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css') + _hubdir('mapcards_tab.css')
+CT_CSS = _hubdir('cardtable_tab.css') + _hubdir('deckopt_summary.css') + _hubdir('mapcards_tab.css') + _hubdir('bench_tab.css')  # TOOLS1 (2026-10-28): the 🧪 Workbench
 # 2026-10-28 (package HUB9, owner 10-28 16:43): the 🗺️ Map cards tab; tools/hub/mapcards_data.py reads the map pools, cards, obtain maps, the game's rarity caps (mapcards_caps.js) and the CONTENT4 plan
 import mapcards_data as MCD
 MC_INLINE = f'const MC_DATA = {_js(MCD.mapcards(ROOT, CANON))};\n' + _hubdir('mapcards_tab.js')

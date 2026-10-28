@@ -75,6 +75,9 @@ Run simulations alone on the machine (2 cores); other builds or browser tests sl
 | One card's win rate | `tools/card_balance.js` | 100 (400 for cards a pass confirmed or changed) |
 | A skill's worth | `tools/skill_test_robust.js` (robust mode) | 10,000 fights a setup |
 | Every card's contribution (random decks, 30-Health brambles, random map fields, Smart CPU both sides) | `node tools/balance/contribution.js --games 135000 --workers 2` (BAL6) | 135,000 fights over every playable card (about 90 minutes on 2 cores); report the split-half reliability and each card's 95% interval |
+| A card's contribution and value per budget point (paired swaps against Blanks; any card subset, a map's context) | `node tools/bench/bench.js contrib --cards <ids>` / `--all` (TOOLS1) | 200 fights a card (80 in the 10-28 run of every card); report the 95% interval |
+| A skill's worth in budget points against its price (with / without on its carriers, the +1 Attack / +1 Health yardstick) | `node tools/bench/bench.js skill <id>` / `--all` (TOOLS1) | 200 fights a variant (80 in the 10-28 --all run); re-measure a flagged skill at 400 before a price change |
+| Focused decks from a card list (at most 6 different cards, 4 copies) | `node tools/bench/bench.js deck --map N` (TOOLS1) | 9,000 search games, 24 an entry for the reported decks |
 | The Pool reference against each map's optimum (the heatmap) | `node tools/opt/ref_vs_optimum.js --ref map,ref2,ref-pool --games 200` | 200 a pairing |
 | The best deck per map (PRO, BPRO) | `node tools/opt/deckopt.js --maps 0-20 --side --budget 16000 --ladder none --workers 2 --tag <date>-<pkg>-maptrue` and the same with `--bpro` | 16,000 search games a map, then `--final-games` for the reproduce line |
 | A PRO against another deck | head to head, seats swapped, no leaders | 400 or more, 95% interval |

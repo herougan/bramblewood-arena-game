@@ -983,5 +983,7 @@ async function main(argv) {
 }
 // 2026-10-24 (package PRO): + mineFor and playOne, for tools/opt/pro_skirmishes.js's head-to-head under a PRO fight's field
 // 2026-10-24 (package PRO2): + mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES
-if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION };
+if (typeof module !== 'undefined') module.exports = { mapRarityCap, obtainOf, mapTruePools, mapRuleProblems, MODES, mineFor, playOne, parseArgs, loadGame, loadRules, resolveMap, fightsOf, poolsFor, candidatesFor, mapFacts, repair, canAdd, capOf, buildEntries, makeContexts, runJobs, deckKey, deckFromKey, deckTotal, mulberry, wilson, elo, overlap, dist, nicheSelect, neighbours, optimizeMap, compareMap, Evaluator, main, summaryMd, compareMd, VERSION,
+  // 2026-10-28 (package TOOLS1): the evaluation helpers, for tools/bench/deck.js (the workbench's constrained, focused search); no behaviour change
+  Stats, ensure, halving, fitness, uniqDecks, deckable, isFactionCard };
 if (isMainThread && (require.main === module || SEA)) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

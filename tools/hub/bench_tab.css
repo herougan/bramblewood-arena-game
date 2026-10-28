@@ -1,0 +1,9 @@
+/* bench_tab.css: the 🧪 Workbench section of the 🧬 Deck optimizer tab (tools/hub/bench_data.py), package TOOLS1, 2026-10-28.
+   Theme tokens only; long tables scroll inside their box (both ways), never the page. */
+.wb{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px; margin:8px 0 18px; min-width:0;}
+.wb h3{margin:16px 0 4px;}
+.wb details{margin:8px 0;} .wb summary{cursor:pointer; padding:4px 0;}
+.wb-scroll{max-height:70vh; overflow:auto; border:1px solid var(--line); border-radius:10px;}
+.wb-scroll:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.wb-scroll thead th{position:sticky; top:0; background:var(--surface-2); z-index:1;}
+.wb .dos-t td b{overflow-wrap:anywhere;}
