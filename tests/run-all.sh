@@ -240,5 +240,6 @@ run node tests/coop2-2026-10-28.js   # 2026-10-28 (package COOP2, owner K12): th
 run node tests/pack1-2026-10-28.js   # 2026-10-28 (package PACK1, owner 22:47): a basic pack's pool is its maps' lists + canonical/pack-extras.json (Pack N = Maps 7(N-1)-7N-1, a card's first list), cards in no list not obtainable (Map 0), the extras, packs still open, the 🃏 Map cards overlay, texts in 12 packs
 run node tests/flair1-2026-10-28.js   # 2026-10-28 (package FLAIR1, owner 23:06): the Dragon Lair's final-boss flair is data-driven (finalBoss on map mx and node 20-B-4), its hooks, CSS (vignette under the board, reduced motion), texts in 12 packs
 run node tests/review1-2026-10-29.js   # 2026-10-29 (package REVIEW1, owner 00:13): the Map cards overlay shows Chosen / Cut cards / Maybe from canonical/map-review.json (why, by, flip + Copy my picks), "No review yet", texts in 12 packs
+run node tests/skl0-2026-10-29.js   # 2026-10-29 (package SKL0, owner 10-28 23:35 / 10-29 13:07): T-1 / T-2 show every skill but Flying as "?" (cards, zoom, log; Map 0 and Admin unchanged), Bee Knight's Swarm arrives at Level 1 (its T-1 / T-2 copy Level 0, Flying only), budget at Level 0 and 1
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

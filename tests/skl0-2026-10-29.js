@@ -63,7 +63,7 @@ const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
   ok(z && z.id === 'bee-knight~tut0' && z.derivedFrom === 'bee-knight' && z.level === 0 && JSON.stringify(z.effects) === '{"flying":true}', `2. its T-1 / T-2 copy is Level 0 with Flying only (${z && JSON.stringify(z.effects)})`);
   const lv1 = (()=>{ const fx = Object.assign({}, bee.effects); Object.keys(bee.levelSkills).map(Number).filter(k=> k <= 1).forEach(k=> Object.assign(fx, bee.levelSkills[k])); return fx; })();
   ok(lv1.swarm && lv1.flying, '2. at Level 1 (copyDefAt / referencePlayerDeck merge levelSkills <= L) it has Flying + Swarm');
-  ok(['earthworm', 'pond-trout', 'silver-minnow', 'duckling', 'cottontail', 'crossed-eyes'].every(id=> c.R.tutorialLevel0Def(id) === null), '2. the other six T-1 / T-2 cards are Level 0 with no skills: dealt as they are');
+  ok(['earthworm', 'pond-trout', 'silver-minnow', 'duckling', 'cottontail', 'crossed-eyes'].every(id=> c.R.tutorialLevel0Def(id) === null), '2. the other six T-1 / T-2 cards have no skills: dealt as they are (their level unchanged)');
   const deck = c.R.tutorialPlainDeck({'bee-knight': 2, duckling: 3}, 1);
   ok(deck['bee-knight~tut0'] === 2 && deck.duckling === 3 && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copy');
   ok(/rivalCounts = tutorialPlainDeck\(tutDecks\.rival, st\)/.test(app) && /deckCounts = tutorialPlainDeck\(tutDecks\.mine, st\)/.test(app), '2. both T-1 / T-2 decks go through it');

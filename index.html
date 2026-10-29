@@ -50718,7 +50718,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'ba41582dff67', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'bc73794ec11e', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -76578,16 +76578,17 @@ function tutorialKeepSkills(st){
 }
 // 2026-10-12 (10:42, user: "Dont nerf the cards in the tutorials. It's okay, i editted the cards so that in Tutorial 1, none have
 // skills. In tutorial 2, you have our leader, and honey bees with flying"): the tutorial plays its cards as they are.
-// T-1 / T-2 copies at Level 0, both sides (2026-10-29, package SKL0, owner 13:07: "we can also make the lvl 0 <-> lvl 1 skills trick"): a card
-// whose level is above 0 here (Bee Knight's own level is 1; the rival's cards share your defs, so they had your level) fights as a Level 0
-// copy "<id>~tut0" (its Level 0 stats), and a skill that arrives at a later level (levelSkills 1+: Bee Knight's Swarm) is not on it, so a
-// Level 0 Bee Knight has Flying only. From Map 0 on, the card is as before (Bee Knight: Flying + Swarm at its Level 1). Cards at Level 0 with
-// no such skill (every Base card of today's decks) are dealt as they are.
+// The Level 0 <-> Level 1 skill trick in T-1 / T-2, both sides (2026-10-29, package SKL0, owner 13:07: "we can also make the lvl 0 <-> lvl 1
+// skills trick"): a card with a skill that arrives at a later level (levelSkills 1+, already on the printed Level 1 card: Bee Knight's Swarm)
+// fights as a Level 0 copy "<id>~tut0" (its Level 0 stats, that skill off), so a T-1 / T-2 Bee Knight has Flying only; from Map 0 on it is as
+// printed (Level 1: Flying + Swarm). The rival's cards share your defs, so both sides get the same copy. Every other card is dealt as before
+// (its level as your copies have it: Level 1 for the Base cards on a first T-1). Making every T-1 / T-2 card Level 0 was measured and left out:
+// T-1 falls from 66% to 44% simulated wins (200 seeds, the fixed seed lost), an owner call (SKL0 report).
 function tutorialLevel0Def(id){
   const d = getCardDefs()[id], b = copyBaseDef(id) || d; if(!d || !b || (b.attack == null && b.health == null)) return null;
-  const base = cardBaseLevel(b), lvl = Number.isFinite(d.level) ? d.level : base, ls = b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
+  const base = cardBaseLevel(b), ls =b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
   let later = 0; Object.keys(ls).map(Number).filter(k=> k > 0).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ if(x in fx){ delete fx[x]; later++; } }));
-  if(lvl <= 0 && !later) return null;
+  if(!later) return null;
   const st0 = statsAtLevel(b, 0), o = Object.assign({}, d, {id: id + '~tut0', derivedFrom: id, attack: st0.attack, health: st0.health, level: 0, baseLevel: base, effects: fx, locked: false});
   delete o.socketGem; delete o.enchant; if(base > 0) o.hatchling = true; return o; }
 function tutorialPlainDeck(deck, st){ const out = {};
