@@ -1309,9 +1309,9 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 
 ## Map 14: Savanna Reaches (`m5`), your level 1
 
-- Throughput: 22182 games in 244.3 s = **90.8 games/s** (2 workers). Search: ga, budget 8000 games (11134 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Throughput: 22182 games in 294.4 s = **75.4 games/s** (2 workers). Search: ga, budget 8000 games (11134 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
 - Pool: 16 cards (16 map cards + 0 owned by then); phase 2 16 (+0 candidates).
-- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 268 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, pride-queen, the-gannet-queen).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 267 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, pride-queen, the-gannet-queen).
 
 Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome savanna (kin jungle, village-keep), terrain types Desert, Savanna, field aiGuardLethal, field, firstBlood, heatLevel, phase:cycle, wildfire, unit types Bird 2, Hyaenid 2, Insect 2, Rodent 2, Savanna 12, skill families armor 2.
 
@@ -1320,16 +1320,16 @@ Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome sa
 
 Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 693; map rule: over the map's rarity cap (veryrare) 61.
 
-- **Optimum (map cards)**: score 66.3% [64.1%, 68.6%], mirror 75.3%, road 39.5%: 5x Hoopoe Herald, 4x Grave-Grin Hyena, 4x Marula Elephant, 2x Dust Hyena, 2x Plains Zebra, 1x Leafcutter Gardener, 1x Pangolin Roller, 1x Savanna Cheetah
+- **Optimum (map cards)**: score 67% [64.7%, 69.2%], mirror 76.1%, road 39.5%: 5x Hoopoe Herald, 4x Grave-Grin Hyena, 4x Marula Elephant, 2x Dust Hyena, 2x Plains Zebra, 1x Leafcutter Gardener, 1x Pangolin Roller, 1x Savanna Cheetah
 - With the candidates: no deck beat the map-card optimum.
 - Best candidate swaps into the map-card optimum: -
 
 **Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
 
-0. 66.3% [64.1%, 68.6%], 0 copies from the optimum: 5x Hoopoe Herald, 4x Grave-Grin Hyena, 4x Marula Elephant, 2x Dust Hyena, 2x Plains Zebra, 1x Leafcutter Gardener, 1x Pangolin Roller, 1x Savanna Cheetah
+0. 67% [64.7%, 69.2%], 0 copies from the optimum: 5x Hoopoe Herald, 4x Grave-Grin Hyena, 4x Marula Elephant, 2x Dust Hyena, 2x Plains Zebra, 1x Leafcutter Gardener, 1x Pangolin Roller, 1x Savanna Cheetah
 1. 67.8% [65.7%, 69.8%], 7 copies from the optimum: 4x Grave-Grin Hyena, 4x Hoopoe Herald, 3x Weaver Bird, 2x Leafcutter Gardener, 2x Spitting Cobra, 1x Marula Elephant, 1x Mouse Sapper, 1x Pangolin Roller, 1x Plains Zebra, 1x Savanna Cheetah
 2. 67.4% [65.1%, 69.6%], 6 copies from the optimum: 5x Hoopoe Herald, 5x Leafcutter Gardener, 4x Dust Hyena, 4x Grave-Grin Hyena, 1x Plains Zebra, 1x Savanna Cheetah
-3. 58.2% [55.8%, 60.5%], 12 copies from the optimum: 4x Hoopoe Herald, 3x House Cat, 3x Mouse Sapper, 2x Grave-Grin Hyena, 2x Leafcutter Gardener, 2x Springbok Pronker, 1x Lodge Engineer, 1x Meerkat Burrower, 1x Pangolin Roller, 1x Spitting Cobra
+3. 57.9% [55.5%, 60.2%], 12 copies from the optimum: 4x Hoopoe Herald, 3x House Cat, 3x Mouse Sapper, 2x Grave-Grin Hyena, 2x Leafcutter Gardener, 2x Springbok Pronker, 1x Lodge Engineer, 1x Meerkat Burrower, 1x Pangolin Roller, 1x Spitting Cobra
 
 | row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
 |---|---|---|---|---|
@@ -1338,21 +1338,21 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | 2 | 53.9% (+27) | 47.7% (-16) | - | 64.1% (+100) |
 | 3 | 35.2% (-106) | 34.4% (-112) | 35.9% (-100) | - |
 
-- **Fight decks vs the optimum:** Elo gap median 273 (66 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 1 to 52.8 points below the optimum.
+- **Fight decks vs the optimum:** Elo gap median 273 (66 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 1.6 to 53.5 points below the optimum.
 
 | Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
 |---|---|---|---|---|---|
-| 14-1 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 43% | 22.2 ±4 | 90% |
-| 14-2 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 11.1% | 52.8 ±3.6 | 85% |
-| 14-3 skirmish's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 19.9% | 44.6 ±3.9 | 80% |
-| 14-4 skirmish's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 65.3% | 1 ±4 | 75% |
-| 14-5 elite's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 53.5% | 12.8 ±4.1 | 70% |
-| 14-6 elite's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 24% | 40.1 ±3.9 | 65% |
-| 14-7 elite's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 55.2% | 11.6 ±4.1 | 60% |
-| 14-8 miniboss's deck | 65.6% [53.4%-76.1%] | 112 [24, 201] | 54.3% | 12.1 ±4.2 | 40% |
-| reference starter deck under 14-1's field | 93.8% [85%-97.5%] | 470 [301, 640] | 22% | 42.3 ±3.9 | - |
-| reference deck (Map 14) under 14-2's field | 21.9% [13.5%-33.4%] | -221 [-323, -120] | 83.6% | -14 ±3.4 | - |
-| expected player deck (expectedPlayerDeck) under 14-3's field | 82.8% [71.8%-90.1%] | 273 [162, 384] | 32.6% | 32.5 ±4.1 | - |
+| 14-1 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 43% | 22.8 ±4 | 90% |
+| 14-2 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 11.1% | 53.5 ±3.6 | 85% |
+| 14-3 skirmish's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 19.9% | 45.3 ±3.9 | 80% |
+| 14-4 skirmish's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 65.3% | 1.6 ±4 | 75% |
+| 14-5 elite's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 55% | 11.9 ±4.1 | 70% |
+| 14-6 elite's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 24% | 40.5 ±3.9 | 65% |
+| 14-7 elite's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 55.2% | 12.3 ±4.1 | 60% |
+| 14-8 miniboss's deck | 65.6% [53.4%-76.1%] | 112 [24, 201] | 54.3% | 12.8 ±4.2 | 40% |
+| reference starter deck under 14-1's field | 93.8% [85%-97.5%] | 470 [301, 640] | 22% | 43 ±3.9 | - |
+| reference deck (Map 14) under 14-2's field | 26.6% [17.3%-38.5%] | -177 [-272, -81] | 83.6% | -13.7 ±3.4 | - |
+| expected player deck (expectedPlayerDeck) under 14-3's field | 82.8% [71.8%-90.1%] | 273 [162, 384] | 32.6% | 33.2 ±4.1 | - |
 
 | Fight (as the game builds it) | optimum wins | road-curve target |
 |---|---|---|
@@ -1371,12 +1371,12 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | fight:14-2 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 100% | 98.4% | +1.6 [-1.5, 4.6] |
 | fight:14-3 @ 14-3: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 90.6% | 98.4% | -7.8 [-15.6, -0.1] |
 | fight:14-4 @ 14-4: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 67.2% | 48.4% | +18.8 [1.9, 35.6] |
-| fight:14-5 @ 14-5: aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 67.2% | 75% | -7.8 [-23.5, 7.8] |
-| fight:14-6 @ 14-6: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wildfire | 96.9% | 87.5% | +9.4 [0.2, 18.5] |
+| fight:14-5 @ 14-5: aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 68.8% | 75% | -6.2 [-21.8, 9.3] |
+| fight:14-6 @ 14-6: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wildfire | 100% | 87.5% | +12.5 [4.4, 20.6] |
 | fight:14-7 @ 14-7: aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 59.4% | 65.6% | -6.2 [-23, 10.5] |
 | fight:14-8 @ 14-8: aiGuardLethal, firstBlood 2, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 65.6% | 70.3% | -4.7 [-20.8, 11.5] |
 | ref:starter @ 14-1: aiGuardLethal, firstBlood 1, phase cycle | 93.8% | 92.2% | +1.6 [-7.3, 10.4] |
-| ref:road14 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 21.9% | 53.1% | -31.2 [-47.1, -15.4] |
+| ref:road14 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 26.6% | 53.1% | -26.6 [-42.9, -10.2] |
 | ref:expected @ 14-3: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 82.8% | 92.2% | -9.4 [-20.7, 2] |
 
 ## Map 14: The Canopy (`my`, side map of `m5`, opens on Map 18), your level 1

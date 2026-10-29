@@ -1,7 +1,7 @@
 {
  "tool": "tools/opt/deckopt.js",
  "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
- "generated": "2026-10-29T04:15:26.692Z",
+ "generated": "2026-10-29T06:55:47.258Z",
  "map": {
   "id": "m5",
   "num": 14,
@@ -72,7 +72,7 @@
   "excluded": [
    {
     "reason": "not in the map's own pool (BPRO)",
-    "n": 268,
+    "n": 267,
     "ids": [
      "acorn-chipmunk",
      "adder-ambusher",
@@ -281,7 +281,6 @@
      "quarry-mole",
      "quillback-elder",
      "quillguard",
-     "rafflesia",
      "raft-spider",
      "raven-scout",
      "razorbill",
@@ -706,8 +705,8 @@
  ],
  "throughput": {
   "games": 22182,
-  "seconds": 244.3,
-  "gamesPerSecond": 90.8,
+  "seconds": 294.4,
+  "gamesPerSecond": 75.4,
   "workers": 2,
   "sessions": 1
  },
@@ -830,12 +829,12 @@
      "outOfMap": false
     }
    ],
-   "score": 0.663,
+   "score": 0.67,
    "ci": [
-    0.641,
-    0.686
+    0.647,
+    0.692
    ],
-   "mirror": 0.753,
+   "mirror": 0.761,
    "road": 0.395,
    "perEntry": [
     {
@@ -883,9 +882,9 @@
      "label": "vs 14-5 elite's deck",
      "kind": "mirror",
      "neutral": false,
-     "p": 0.672,
-     "lo": 0.55,
-     "hi": 0.774,
+     "p": 0.688,
+     "lo": 0.566,
+     "hi": 0.788,
      "n": 64
     },
     {
@@ -893,9 +892,9 @@
      "label": "vs 14-6 elite's deck",
      "kind": "mirror",
      "neutral": false,
-     "p": 0.969,
-     "lo": 0.893,
-     "hi": 0.991,
+     "p": 1,
+     "lo": 0.943,
+     "hi": 1,
      "n": 64
     },
     {
@@ -933,9 +932,9 @@
      "label": "vs reference deck (Map 14) under 14-2's field",
      "kind": "mirror",
      "neutral": false,
-     "p": 0.219,
-     "lo": 0.135,
-     "hi": 0.334,
+     "p": 0.266,
+     "lo": 0.173,
+     "hi": 0.385,
      "n": 64
     },
     {
@@ -1241,10 +1240,10 @@
      "outOfMap": false
     }
    ],
-   "score": 0.663,
+   "score": 0.67,
    "ci": [
-    0.641,
-    0.686
+    0.647,
+    0.692
    ],
    "copiesApartFromOptimum": 0
   },
@@ -1540,10 +1539,10 @@
      "outOfMap": false
     }
    ],
-   "score": 0.582,
+   "score": 0.579,
    "ci": [
-    0.558,
-    0.605
+    0.555,
+    0.602
    ],
    "copiesApartFromOptimum": 12
   }
@@ -1767,24 +1766,24 @@
    "opponent": "fight:14-5",
    "node": "14-5",
    "rules": "aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
-   "withField": 0.672,
+   "withField": 0.688,
    "noField": 0.75,
-   "delta": -0.078,
+   "delta": -0.062,
    "ci": [
-    -0.235,
-    0.078
+    -0.218,
+    0.093
    ]
   },
   {
    "opponent": "fight:14-6",
    "node": "14-6",
    "rules": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wildfire",
-   "withField": 0.969,
+   "withField": 1,
    "noField": 0.875,
-   "delta": 0.094,
+   "delta": 0.125,
    "ci": [
-    0.002,
-    0.185
+    0.044,
+    0.206
    ]
   },
   {
@@ -1827,12 +1826,12 @@
    "opponent": "ref:road14",
    "node": "14-2",
    "rules": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1",
-   "withField": 0.219,
+   "withField": 0.266,
    "noField": 0.531,
-   "delta": -0.312,
+   "delta": -0.266,
    "ci": [
-    -0.471,
-    -0.154
+    -0.429,
+    -0.102
    ]
   },
   {
@@ -1867,8 +1866,8 @@
    ],
    "n": 64,
    "asPlayer": 0.43,
-   "optimumSame": 0.651,
-   "pointsBelow": 22.2,
+   "optimumSame": 0.658,
+   "pointsBelow": 22.8,
    "pointsCI": 4
   },
   {
@@ -1889,8 +1888,8 @@
    ],
    "n": 64,
    "asPlayer": 0.111,
-   "optimumSame": 0.639,
-   "pointsBelow": 52.8,
+   "optimumSame": 0.645,
+   "pointsBelow": 53.5,
    "pointsCI": 3.6
   },
   {
@@ -1911,8 +1910,8 @@
    ],
    "n": 64,
    "asPlayer": 0.199,
-   "optimumSame": 0.645,
-   "pointsBelow": 44.6,
+   "optimumSame": 0.652,
+   "pointsBelow": 45.3,
    "pointsCI": 3.9
   },
   {
@@ -1933,8 +1932,8 @@
    ],
    "n": 64,
    "asPlayer": 0.653,
-   "optimumSame": 0.663,
-   "pointsBelow": 1,
+   "optimumSame": 0.669,
+   "pointsBelow": 1.6,
    "pointsCI": 4
   },
   {
@@ -1943,20 +1942,20 @@
    "kind": "elite",
    "node": "14-5",
    "target": 0.7,
-   "h2h": 0.672,
+   "h2h": 0.688,
    "h2hCI": [
-    0.55,
-    0.774
+    0.566,
+    0.788
    ],
-   "elo": 124,
+   "elo": 137,
    "eloCI": [
-    35,
-    214
+    46,
+    228
    ],
    "n": 64,
-   "asPlayer": 0.535,
-   "optimumSame": 0.663,
-   "pointsBelow": 12.8,
+   "asPlayer": 0.55,
+   "optimumSame": 0.668,
+   "pointsBelow": 11.9,
    "pointsCI": 4.1
   },
   {
@@ -1965,20 +1964,20 @@
    "kind": "elite",
    "node": "14-6",
    "target": 0.65,
-   "h2h": 0.969,
+   "h2h": 1,
    "h2hCI": [
-    0.893,
-    0.991
+    0.943,
+    1
    ],
-   "elo": 597,
+   "elo": 842,
    "eloCI": [
-    369,
-    824
+    489,
+    842
    ],
    "n": 64,
    "asPlayer": 0.24,
-   "optimumSame": 0.641,
-   "pointsBelow": 40.1,
+   "optimumSame": 0.645,
+   "pointsBelow": 40.5,
    "pointsCI": 3.9
   },
   {
@@ -1999,8 +1998,8 @@
    ],
    "n": 64,
    "asPlayer": 0.552,
-   "optimumSame": 0.668,
-   "pointsBelow": 11.6,
+   "optimumSame": 0.675,
+   "pointsBelow": 12.3,
    "pointsCI": 4.1
   },
   {
@@ -2021,8 +2020,8 @@
    ],
    "n": 64,
    "asPlayer": 0.543,
-   "optimumSame": 0.664,
-   "pointsBelow": 12.1,
+   "optimumSame": 0.671,
+   "pointsBelow": 12.8,
    "pointsCI": 4.2
   },
   {
@@ -2043,8 +2042,8 @@
    ],
    "n": 64,
    "asPlayer": 0.22,
-   "optimumSame": 0.643,
-   "pointsBelow": 42.3,
+   "optimumSame": 0.65,
+   "pointsBelow": 43,
    "pointsCI": 3.9
   },
   {
@@ -2053,20 +2052,20 @@
    "kind": "reference",
    "node": "14-2",
    "target": null,
-   "h2h": 0.219,
+   "h2h": 0.266,
    "h2hCI": [
-    0.135,
-    0.334
+    0.173,
+    0.385
    ],
-   "elo": -221,
+   "elo": -177,
    "eloCI": [
-    -323,
-    -120
+    -272,
+    -81
    ],
    "n": 64,
    "asPlayer": 0.836,
-   "optimumSame": 0.696,
-   "pointsBelow": -14,
+   "optimumSame": 0.699,
+   "pointsBelow": -13.7,
    "pointsCI": 3.4
   },
   {
@@ -2087,8 +2086,8 @@
    ],
    "n": 64,
    "asPlayer": 0.326,
-   "optimumSame": 0.651,
-   "pointsBelow": 32.5,
+   "optimumSame": 0.658,
+   "pointsBelow": 33.2,
    "pointsCI": 4.1
   }
  ]
