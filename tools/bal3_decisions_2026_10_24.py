@@ -37,12 +37,12 @@ for k, note in BUILT.items():
     l = lines[idx[0]]; comma = l.endswith(',')
     x = json.loads(l.strip().rstrip(','))
     x['built'] = True; x['buildNote'] = note
-    lines[idx[0]] = '    ' + json.dumps(x, ensure_ascii=False) + (',' if comma else '')
+    lines[idx[0]] = '    ' + json.dumps({**x, 'group': x.get('group', 'game')}, ensure_ascii=False) + (',' if comma else '')
 src = '\n'.join(lines)
 if not any(x.get('id') == 'BAL3-1' for x in d['items']):
     a = '"items": [\n'
     assert src.count(a) == 1
-    src = src.replace(a, a + ''.join('    ' + json.dumps(x, ensure_ascii=False) + ',\n' for x in NEW))
+    src = src.replace(a, a + ''.join('    ' + json.dumps({**x, 'group': x.get('group', 'game')}, ensure_ascii=False) + ',\n' for x in NEW))
 json.loads(src)
 open(P, 'w', encoding='utf-8').write(src)
 print('decisions: BAL3-1 .. BAL3-%d, build notes on %d' % (len(NEW), len(BUILT)))

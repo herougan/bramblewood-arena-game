@@ -43,7 +43,7 @@ d = json.loads(src)
 assert not any(x.get('id') in {n['id'] for n in NEW} for x in d['items']), 'already applied'
 a = '"items": [\n'
 assert src.count(a) == 1
-src = src.replace(a, a + ''.join('    ' + json.dumps(x, ensure_ascii=False) + ',\n' for x in NEW))
+src = src.replace(a, a + ''.join('    ' + json.dumps({**x, 'group': x.get('group', 'game')}, ensure_ascii=False) + ',\n' for x in NEW))
 json.loads(src)
 open(P, 'w', encoding='utf-8').write(src)
 print('decisions: EN6-1 .. EN6-%d' % len(NEW))

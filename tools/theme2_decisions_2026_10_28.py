@@ -28,7 +28,7 @@ item = json.loads(lines[n].strip().rstrip(','))
 item['body'] = body
 item['status'] = 'YET'
 item['options'] = ['Approve the whole proposal', 'Approve with changes (name them: moves, submap calls, sizes)', 'Not yet']
-lines[n] = '    ' + json.dumps(item, ensure_ascii=False) + (',' if lines[n].rstrip().endswith(',') else '')
+lines[n] = '    ' + json.dumps({**item, 'group': item.get('group', 'game')}, ensure_ascii=False) + (',' if lines[n].rstrip().endswith(',') else '')
 open(P, 'w', encoding='utf-8').write('\n'.join(lines))
 json.load(open(P, encoding='utf-8'))
 print('THEME1-1 body now points at THEME2')

@@ -43,7 +43,7 @@ NEW = [
 ]
 LUM = {"status": "DONE", "decided": A, "outcome": "Owner (22:28 #2): \"We need to build up our stonecutter, prospector, felling, salvage, scavenger, coppice, windfall, driftwood skills! (default 1). Shellfish (new) can create 'Pearls' which can be used as stone OR wood.\" Build all (not the proposal's Smelter, which SK2b already has). Built in package EN8 (calls EN8-5 .. EN8-7, EN8-9)."}
 src = open(P, encoding='utf-8').read()
-def line(o): return '    ' + json.dumps(o, ensure_ascii=False)
+def line(o): return '    ' + json.dumps({**o, 'group': o.get('group', 'game')}, ensure_ascii=False)
 for o in NEW:
     m = re.search(r'^    \{"id": "%s",.*\}(,?)$' % re.escape(o['id']), src, re.M)
     if m: src = src[:m.start()] + line(o) + m.group(1) + src[m.end():]
