@@ -1440,3 +1440,144 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road18 @ 14-A-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 57% | 62.5% | -5.5 [-22.4, 11.5] |
 | ref:expected @ 14-A-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 68.8% | 68.8% | +0 [-16.1, 16.1] |
 
+## Map 15: The Long Grass (`ml`), your level 1
+
+- Throughput: 18890 games in 225.4 s = **83.8 games/s** (2 workers). Search: ga, budget 8000 games (9996 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map ml --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 15 cards (15 map cards + 0 owned by then); phase 2 15 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 279 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome long-grass (kin meadow-forest, village-keep), terrain types Field, Flora, Village, field aiGuardLethal, phase:cycle, tallGrass, undergrowth, unit types Bird 2, Canid 2, Dog 2, Equid 4, Field 3, Horse 4, Mustelid 2, Village 2, skill families economy 2, strike-first 3.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 694; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 67.6% [65.2%, 70%], mirror 73.1%, road 50.9%: 4x Bison Bulldozer, 4x Stable Colt, 3x Raccoon Bandit, 2x Border Collie, 2x Stoat Cutthroat, 2x Talon Archer, 1x Carrion Crow, 1x Gilded Roadwarden, 1x Squire's Mount
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 7 decks the searches ended on): 4
+
+0. 67.6% [65.2%, 70%], 0 copies from the optimum: 4x Bison Bulldozer, 4x Stable Colt, 3x Raccoon Bandit, 2x Border Collie, 2x Stoat Cutthroat, 2x Talon Archer, 1x Carrion Crow, 1x Gilded Roadwarden, 1x Squire's Mount
+1. 64.5% [62%, 67%], 8 copies from the optimum: 4x Carrion Crow, 2x Border Collie, 2x Hedge Weasel, 2x Raccoon Bandit, 2x Squire's Mount, 2x Stoat Cutthroat, 2x Talon Archer, 1x Bison Bulldozer, 1x Lodge Engineer, 1x Shepherd, 1x Stable Colt
+2. 63.7% [61.2%, 66.3%], 9 copies from the optimum: 4x Carrion Crow, 3x Lodge Engineer, 3x Stable Colt, 2x Bison Bulldozer, 2x Hedgehog Herbalist, 2x Squire's Mount, 2x Stoat Cutthroat, 1x Border Collie, 1x Raccoon Bandit
+3. 64% [61.5%, 66.4%], 8 copies from the optimum: 5x Carrion Crow, 4x Border Collie, 4x Stable Colt, 3x Raccoon Bandit, 3x Stoat Cutthroat, 1x Hedgehog Herbalist
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 45.5% (-31) | 56.3% (+44) | 55.4% (+37) |
+| 1 | 54.5% (+31) | - | 53.6% (+25) | 57.1% (+50) |
+| 2 | 43.7% (-44) | 46.4% (-25) | - | 42% (-56) |
+| 3 | 44.6% (-37) | 42.9% (-50) | 58% (+56) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 293 (33 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 3.1 to 58 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 15-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 7% | 58 ±3.3 | 90% |
+| 15-2 skirmish's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 47.8% | 18.4 ±4.4 | 84% |
+| 15-3 skirmish's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 54.2% | 13.2 ±4.5 | 78% |
+| 15-4 skirmish's deck | 65.6% [53.4%-76.1%] | 112 [24, 201] | 52.2% | 15.5 ±4.6 | 72% |
+| 15-5 elite's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 43.3% | 22.7 ±4.4 | 66% |
+| 15-6 elite's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 33.1% | 32.6 ±4.6 | 60% |
+| 15-7 boss's deck | 54.7% [42.6%-66.3%] | 33 [-52, 117] | 65.5% | 3.1 ±4.2 | 40% |
+| reference starter deck under 15-1's field | 90.6% [81%-95.6%] | 394 [252, 536] | 21.8% | 43.9 ±4.3 | - |
+| reference deck (Map 15) under 15-2's field | 14.1% [7.6%-24.6%] | -314 [-434, -194] | 89.7% | -17.8 ±3.6 | - |
+| expected player deck (expectedPlayerDeck) under 15-3's field | 75% [63.2%-84%] | 191 [94, 288] | 45.6% | 21.3 ±4.7 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 15-1 skirmish | 98.4% [91.7%-99.7%] | 90% |
+| 15-2 skirmish | 59.4% [47.1%-70.5%] | 84% |
+| 15-3 skirmish | 57.8% [45.6%-69.1%] | 78% |
+| 15-4 skirmish | 68.8% [56.6%-78.8%] | 72% |
+| 15-5 elite | 26.6% [17.3%-38.5%] | 66% |
+| 15-6 elite | 29.7% [19.9%-41.8%] | 60% |
+| 15-7 boss | 15.6% [8.7%-26.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:15-1 @ 15-1: aiGuardLethal, phase cycle, undergrowth | 100% | 100% | +0 [0, 0] |
+| fight:15-2 @ 15-2: aiGuardLethal, phase cycle, terrain Open Meadow T1, undergrowth | 84.4% | 70.3% | +14.1 [-0.2, 28.4] |
+| fight:15-3 @ 15-3: aiGuardLethal, phase cycle, tallGrass, terrain Open Meadow T1, undergrowth | 70.3% | 71.9% | -1.6 [-17.3, 14.1] |
+| fight:15-4 @ 15-4: aiGuardLethal, phase cycle, tallGrass, terrain Open Meadow T1, undergrowth | 65.6% | 78.1% | -12.5 [-27.9, 2.9] |
+| fight:15-5 @ 15-5: aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1), undergrowth | 85.9% | 76.6% | +9.4 [-4.1, 22.8] |
+| fight:15-6 @ 15-6: aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1), undergrowth | 90.6% | 85.9% | +4.7 [-6.4, 15.8] |
+| fight:15-7 @ 15-7: aiGuardLethal, phase cycle, terrain Open Meadow T2 (Healing 1), undergrowth | 54.7% | 53.1% | +1.6 [-15.7, 18.8] |
+| ref:starter @ 15-1: aiGuardLethal, phase cycle, undergrowth | 90.6% | 90.6% | +0 [-10.1, 10.1] |
+| ref:road15 @ 15-2: aiGuardLethal, phase cycle, terrain Open Meadow T1, undergrowth | 14.1% | 37.5% | -23.4 [-38, -8.8] |
+| ref:expected @ 15-3: aiGuardLethal, phase cycle, tallGrass, terrain Open Meadow T1, undergrowth | 75% | 82.8% | -7.8 [-21.9, 6.3] |
+
+## Map 17: Wolfsbane Tundra (`m6`), your level 1
+
+- Throughput: 21878 games in 252.2 s = **86.8 games/s** (2 workers). Search: ga, budget 8000 games (10792 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m6 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 15 cards (15 map cards + 0 owned by then); phase 2 15 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 311 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, the-gannet-queen, wolfsbane-alpha).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome tundra-ice (kin taiga, volcanic-ash), terrain types Frost, Tundra, field aiGuardLethal, field, freezing, frostCount, frostResist, frostWait, frostbite, hail, phase:cycle, unit types Canid 3, Coastal 2, Frost 5, Lagomorph 3, Mountain 2, Mustelid 2, Pinniped 2, Tundra 9, Wolf 3, skill families cold 3, evasion 5, ranged 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 694; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 62.6% [60.2%, 65%], mirror 74.1%, road 27.9%: 3x Harbor Seal, 3x Snow Ermine, 2x Cone-cutter Squirrel, 2x Frostmoon Howler, 2x Mountain Hare, 2x Snow Bunting Archer, 2x Talus Pika, 2x Walrus Icebreaker, 1x Frost Hare Sprinter, 1x Ravenous Wolverine
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 7 decks the searches ended on): 4
+
+0. 62.6% [60.2%, 65%], 0 copies from the optimum: 3x Harbor Seal, 3x Snow Ermine, 2x Cone-cutter Squirrel, 2x Frostmoon Howler, 2x Mountain Hare, 2x Snow Bunting Archer, 2x Talus Pika, 2x Walrus Icebreaker, 1x Frost Hare Sprinter, 1x Ravenous Wolverine
+1. 61% [58.5%, 63.5%], 8 copies from the optimum: 5x Talus Pika, 4x Snow Ermine, 3x Frost Hare Sprinter, 3x Ravenous Wolverine, 2x Frostmoon Howler, 2x Walrus Icebreaker, 1x Snow Bunting Archer
+2. 59.4% [56.9%, 61.9%], 7 copies from the optimum: 5x Snow Ermine, 3x Frostmoon Howler, 3x Ravenous Wolverine, 2x Glacial Ape-King, 2x Snow Bunting Archer, 2x Walrus Icebreaker, 1x Frost Hare Sprinter, 1x Harbor Seal, 1x Talus Pika
+3. 56.1% [53.7%, 58.5%], 10 copies from the optimum: 5x Mountain Hare, 5x Snow Ermine, 5x Talus Pika, 3x Frostmoon Howler, 2x Frost Hare Sprinter
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 50.8% (+5) | 45.3% (-33) | 68.8% (+137) |
+| 1 | 49.2% (-5) | - | 50% (+0) | 64.1% (+100) |
+| 2 | 54.7% (+33) | 50% (+0) | - | 64.1% (+100) |
+| 3 | 31.3% (-137) | 35.9% (-100) | 35.9% (-100) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 255 (44 to 364); as your deck they score 13.2 to 30.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 17-1 skirmish's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 30% | 30.6 ±4.6 | 90% |
+| 17-2 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 33.1% | 28 ±4.6 | 85% |
+| 17-3 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 32.3% | 28.9 ±4.6 | 80% |
+| 17-4 skirmish's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 49.6% | 13.2 ±4.6 | 75% |
+| 17-5 elite's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 36% | 25.3 ±4.6 | 70% |
+| 17-6 elite's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 31.9% | 29.7 ±4.6 | 65% |
+| 17-7 elite's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 46.9% | 15.8 ±4.6 | 60% |
+| 17-8 miniboss's deck | 56.3% [44.1%-67.7%] | 44 [-41, 129] | 43% | 20.1 ±4.7 | 40% |
+| reference starter deck under 17-1's field | 87.5% [77.2%-93.5%] | 338 [212, 464] | 29.5% | 31.3 ±4.4 | - |
+| reference deck (Map 17) under 17-2's field | 50% [38.1%-61.9%] | 0 [-84, 84] | 65.4% | -1.9 ±4 | - |
+| expected player deck (expectedPlayerDeck) under 17-3's field | 89.1% [79.1%-94.6%] | 364 [231, 497] | 36.9% | 23.7 ±4.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 17-1 skirmish | 78.1% [66.6%-86.5%] | 90% |
+| 17-2 skirmish | 46.9% [35.2%-58.9%] | 85% |
+| 17-3 skirmish | 59.4% [47.1%-70.5%] | 80% |
+| 17-4 skirmish | 4.7% [1.6%-12.9%] | 75% |
+| 17-5 elite | 9.4% [4.4%-19%] | 70% |
+| 17-6 elite | 17.2% [9.9%-28.2%] | 65% |
+| 17-7 elite | 6.3% [2.5%-15%] | 60% |
+| 17-8 miniboss | 1.6% [0.3%-8.3%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:17-1 @ 17-1: aiGuardLethal, field frozen, phase cycle | 89.1% | 82.8% | +6.3 [-5.7, 18.2] |
+| fight:17-2 @ 17-2: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], phase cycle, terrain Frozen Waste T1 | 82.8% | 85.9% | -3.1 [-15.7, 9.4] |
+| fight:17-3 @ 17-3: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], hail, phase cycle, terrain Frozen Waste T1 | 82.8% | 82.8% | +0 [-13.1, 13.1] |
+| fight:17-4 @ 17-4: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], phase cycle, terrain Frozen Waste T1 | 59.4% | 68.8% | -9.4 [-25.9, 7.2] |
+| fight:17-5 @ 17-5: aiGuardLethal, field frozen, freezing, frostResist ["Tundra","Frost","Taiga"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1) | 81.3% | 89.1% | -7.8 [-20.1, 4.4] |
+| fight:17-6 @ 17-6: aiGuardLethal, field frozen, freezing, frostResist ["Tundra","Frost","Taiga"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1) | 76.6% | 81.3% | -4.7 [-18.8, 9.4] |
+| fight:17-7 @ 17-7: aiGuardLethal, field frozen, freezing, frostResist ["Tundra","Frost","Taiga"], frostWait 2, frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1) | 60.9% | 65.6% | -4.7 [-21.4, 12] |
+| fight:17-8 @ 17-8: aiGuardLethal, field frozen, freezing, frostCount 3, frostResist ["Tundra","Frost","Taiga"], frostWait 3, frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1) | 56.3% | 84.4% | -28.1 [-43.2, -13.1] |
+| ref:starter @ 17-1: aiGuardLethal, field frozen, phase cycle | 87.5% | 85.9% | +1.6 [-10.2, 13.3] |
+| ref:road17 @ 17-2: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], phase cycle, terrain Frozen Waste T1 | 50% | 25% | +25 [8.8, 41.2] |
+| ref:expected @ 17-3: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], hail, phase cycle, terrain Frozen Waste T1 | 89.1% | 75% | +14.1 [1, 27.1] |
+
