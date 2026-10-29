@@ -55516,7 +55516,7 @@ function openPackAnimation(pack, opened, opts){
   document.documentElement.classList.add('po2-open');
   let unInert = bwInertOthers(overlay); // 2026-10-21 (package UI3): let, so the admin's ✏️ can lift it while the card editor is open
   const art = packCoverArt(pack);
-  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null; let poPopped = !!reduce; // 2026-10-29 (UI2, R2): the first pack's pop-in (none with reduced motion)
+  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null; let poPopped = !!reduce || !opts.oneByOne; // 2026-10-29 (UI2, R2): a reward reveal's first pack pops in (none with reduced motion; a bought pack opens as before)
   const later = (fn, ms)=> timers.push(setTimeout(()=>{ try{ fn(); }catch(e){ console.error('[Bramblewood] pack opener: timer', e); try{ poRecover(); }catch(_){ } } }, reduce ? Math.min(ms, 60) : ms)); // 2026-10-29 (UI2, R2): a step that throws recovers (poGuard)
   const clearTimers = ()=>{ timers.forEach(clearTimeout); timers = []; };
   const sfx = (name, ...a)=>{ try{ SoundKit[name] && SoundKit[name](...a); }catch(e){} };

@@ -23,7 +23,7 @@ const fnSrc = n=>{ const i = app.indexOf('function ' + n + '('); if(i < 0) retur
   ok(/if\(poFailed\.has\(name\)\)\{ return next \? next\(\) : close\(\); \}/.test(op), 'R2: a stage that threw is not tried again (the fall-through ends)');
   ok(/const later = \(fn, ms\)=> timers\.push\(setTimeout\(\(\)=>\{ try\{ fn\(\); \}catch\(e\)\{[^}]*poRecover\(\)/.test(op) && /autoT = setTimeout\(\(\)=>\{ if\(phase==='reveal' && !overlay\.hidden\)\{ try\{ fn\(\); \}catch\(e\)\{[^}]*poRecover\(\)/.test(op), 'R2: timers and the card auto-advance recover');
   ok(/try\{ if\(currentTab==='shop'\) renderShop\(\); \}catch\(e\)/.test(op), 'R2: closing never throws');
-  ok(/let poPopped = !!reduce;/.test(op) && /ui2-popin/.test(op), 'R2: the first pack pops in, not with reduced motion');
+  ok(/let poPopped = !!reduce \|\| !opts\.oneByOne;/.test(op) && /ui2-popin/.test(op), 'R2: a reward reveal\'s first pack pops in, not with reduced motion (a bought pack opens as before)');
   ok(/\.po2-pile-wrap\.ui2-popin\{animation:ui2PackPop/.test(css) && /@keyframes ui2PackPop\{0%\{scale:\.8/.test(css) && /html\[data-fx="none"\] \.po2-pile-wrap\.ui2-popin, html\[data-fx="low"\] \.po2-pile-wrap\.ui2-popin\{animation:none;\}/.test(css) && /prefers-reduced-motion: reduce\)\{ \.po2-pile-wrap\.ui2-popin\{animation:none;\}/.test(css), 'R2: pop-in CSS, off for reduced motion and Effects Off / Low');
   const fl = fnSrc('floatRewardPackUp'); ok(/scale:sc \* 0\.8, rotation:-2, duration:1\.05, ease:'sine\.inOut'/.test(fl) && /reducedMotion\(\)/.test(fl), 'R2: the reward pack glides to the centre growing to 80% (gentler), skipped with reduced motion');
   // the stub def a missing id gets is drawable by the helpers the opener calls with it

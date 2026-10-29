@@ -50830,7 +50830,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '52047a94e16c', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = '9e6561b925f8', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -102779,7 +102779,7 @@ function openPackAnimation(pack, opened, opts){
   document.documentElement.classList.add('po2-open');
   let unInert = bwInertOthers(overlay); // 2026-10-21 (package UI3): let, so the admin's ✏️ can lift it while the card editor is open
   const art = packCoverArt(pack);
-  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null; let poPopped = !!reduce; // 2026-10-29 (UI2, R2): the first pack's pop-in (none with reduced motion)
+  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null; let poPopped = !!reduce || !opts.oneByOne; // 2026-10-29 (UI2, R2): a reward reveal's first pack pops in (none with reduced motion; a bought pack opens as before)
   const later = (fn, ms)=> timers.push(setTimeout(()=>{ try{ fn(); }catch(e){ console.error('[Bramblewood] pack opener: timer', e); try{ poRecover(); }catch(_){ } } }, reduce ? Math.min(ms, 60) : ms)); // 2026-10-29 (UI2, R2): a step that throws recovers (poGuard)
   const clearTimers = ()=>{ timers.forEach(clearTimeout); timers = []; };
   const sfx = (name, ...a)=>{ try{ SoundKit[name] && SoundKit[name](...a); }catch(e){} };
