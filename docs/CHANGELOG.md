@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-29 (package ART2: card art for 68 listed cards)
+- **68 cards on the map lists now have art** (owner 22:23 R9): 56 from Gemini (14 sheets) and 12 from ChatGPT (thorn-shrike, wolf-spider-mother, field-vole, hedgerow-shrew, old-sturgeon, water-shrew, muskrat-lodgekeeper, pyrenean-desman, razorbill, gannet-nestweaver, alligator-gar, fen-mink), all in the pixel style beside the existing cards. NightCafe was tried; no NightCafe art shipped (frames, a wrong ant raft, and Chrome blocked repeat downloads from the site).
+- Method: one 2x2 sheet per four cards, cut by `tools/art/art2_import_2026_10_29.py` (gap, border and frame trim, centred square), pixel pass to 128 px on `tools/art/palette.json`, x2 nearest to 256 px, palette PNG in `art/cards/<id>.png` with its `<id>.prompt.txt`, the data URI in that card's `art` field (targeted line edit), built to `assets/cards/`. Sheet map: `docs/art/art2-sheets-2026-10-29.json`; prompts: `docs/art/art2-plan-2026-10-29.json`; contact sheet: `docs/art/art2-contact-2026-10-29.png`.
+
 ## 2026-10-29 Release 10-29b (owner 21:36 "Push to online anyway")
 - Shipped: REVIEW2 (Map cards gallery panels, pills, large cards, counts; the Ambush at the middle of its road), UI1 (raid deck card shape, touch dragging, battle camera on the units, Match log only, Errands → Quests + Dailies tab), HUBDEC1 (decision groups and hub tabs), ADMINU1 (admin player list; needs its proposed SQL applied), CARDSIZE1 (design proposal only).
 - Checks: smoke (only the known d-2026-10-19) and the packages' own tests (12/12); each package ran its own e2e. No full run for this release (owner asked to push).
