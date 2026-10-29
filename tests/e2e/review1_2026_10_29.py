@@ -45,6 +45,8 @@ async def run(b, url, w):
     await pg.evaluate("(()=>{ const b = document.getElementById('cnpMapCards'); if(b) b.scrollIntoView({block:'center'}); })()"); await pg.wait_for_timeout(300)
     await shot(pg, 'admin-buttons', w)
     # 1. no review yet
+    # 2026-10-29 (release): THEME3 filled canonical/map-review.json, so empty it in the page for the no-review case
+    await pg.evaluate("Object.keys(MAP_REVIEW.maps).forEach(k=> delete MAP_REVIEW.maps[k])")
     await pg.evaluate("document.getElementById('cnpMapCards').click()"); await pg.wait_for_timeout(700)
     r = await pg.evaluate("({none: document.querySelectorAll('.rv1-none').length, secs: document.querySelectorAll('.pk1-mc-sec').length, rv: document.querySelectorAll('.has-rv1').length, bar: !!document.getElementById('rv1Copy')})")
     ok(r['rv'] == 0 and r['none'] >= 1 and not r['bar'], f'no review data: lists as before + "No review yet" {r}')
