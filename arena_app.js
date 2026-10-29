@@ -30622,10 +30622,11 @@ function rv1TilesHTML(list, kind, defs, secKey){
     const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
     const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
     const pills = rv2TagsOf(e).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
-    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}">`
+    const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
+    return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}">`
       + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
       + `<span class="rv2-pills">${pills}</span>`
-      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="false">${escapeHtml(btn[0])}</button></span>`;
+      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button></span>`;
   }).join('');
 }
 // N / M per list (owner 10-29 19:14): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
@@ -30649,6 +30650,28 @@ function rv2Update(ov){
     ov.querySelectorAll(`[data-rv2-count="${sec.dataset.rvI}"] .rv2-ct`).forEach(el=>{ el.textContent = txt; });
   });
 }
+// 2026-10-29 (package UI3, S10; owner 23:01: "can we do an export all function too?"): the Cut / Keep toggles are remembered for the session (rvFlips, key
+// "<main map>|<list key>|<card id>") so the gallery can export every map's lists, not just the one open. rvFlipTop is the main map being drawn.
+const rvFlips = {}; let rvFlipTop = '';
+function rv3ExportAll(){
+  const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [];
+  const flipped = (top, sec, id)=> !!rvFlips[top + '|' + sec.key + '|' + id];
+  mainConquestMaps().forEach(m=>{
+    const top = m.id, n = mapNumberOf(top), mapLabel = (n == null ? '' : 'Map ' + n + ' · ') + m.name;
+    mapPoolSections(top).forEach(sec=>{
+      const rv = rv1ReviewOf(sec, top); if(!rv) return;
+      const ids = l=> (l || []).filter(e=> e && e.id).map(e=> e.id);
+      const chosen = ids(rv.chosen), maybe = ids(rv.maybe), cut = ids(rv.cut);
+      const keep = maybe.concat(cut).filter(id=> flipped(top, sec, id)), cutNow = chosen.filter(id=> flipped(top, sec, id));
+      data.push({map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut});
+      const names = a=> a.length ? a.map(nm).join(', ') : '-';
+      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
+        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut));
+    });
+  });
+  const head = 'Bramblewood map card lists, exported ' + new Date().toISOString().slice(0, 10) + '. One line per list, in map order: "<map> / <list>: <the owner\'s Keep / Cut choices so far> | chosen: the proposal | maybe: ... | cut: ...".';
+  return {text: head + '\n' + lines.join('\n'), json: {exported: new Date().toISOString(), lists: data}};
+}
 function rv1PicksText(ov){
   const out = [];
   ov.querySelectorAll('.pk1-mc-sec[data-rv-label]').forEach(sec=>{
@@ -30665,6 +30688,7 @@ function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
+  rvFlipTop = top;
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
   const mapLabel = (m.icon ? m.icon + ' ' : '') + m.name;
   const bars = [];
@@ -30683,7 +30707,7 @@ function pk1OpenMapCards(mapId){
   }).join('');
   const anyRv = /has-rv1/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
@@ -30691,7 +30715,7 @@ function pk1OpenMapCards(mapId){
   ov.onclick = e=>{
     if(e.target === ov) return close();
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
-    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
   };
@@ -30702,6 +30726,15 @@ function pk1OpenMapCards(mapId){
     if(!txt){ msg.textContent = TX('ui.rv1-copy-none'); return; }
     window.__rv1Last = txt;
     try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
+  });
+  const ex = document.getElementById('rv3ExportAll');
+  if(ex) ex.addEventListener('click', ()=>{ // 2026-10-29 (UI3, S10): copy everything, and offer it as a .txt / .json download
+    const r = rv3ExportAll(), msg = document.getElementById('rv1CopyMsg'), dl = document.getElementById('rv3Dl'); window.__rv3Last = r;
+    try{ navigator.clipboard.writeText(r.text).then(()=>{ msg.textContent = TX('ui.ui3-export-copied'); }, ()=>{ msg.textContent = TX('ui.ui3-export-ready'); }); }catch(e){ msg.textContent = TX('ui.ui3-export-ready'); }
+    const save = (name, body, type)=>{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type})); a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+    dl.innerHTML = `<button type="button" class="btn small" data-rv3-dl="txt">⬇ .txt</button> <button type="button" class="btn small" data-rv3-dl="json">⬇ .json</button>`;
+    dl.querySelector('[data-rv3-dl=txt]').onclick = ()=> save('bramblewood-map-cards.txt', r.text, 'text/plain');
+    dl.querySelector('[data-rv3-dl=json]').onclick = ()=> save('bramblewood-map-cards.json', JSON.stringify(r.json, null, 1), 'application/json');
   });
   rv2Update(ov);
   try{ wireRewardZoom(ov); }catch(e){}
