@@ -88,9 +88,10 @@ for(const code of CODES){
   // the exact lookup is unchanged
   let exact = 0;
   for(const [k, val] of Object.entries(pack)){ if(/\{\w+\}/.test(k) || exact > 300) continue; exact++; ok(tr(k) === val, `${code}: exact ${k}`); }
-  // values: a map name inside an errand, an English tail after two side-by-side placeholders, an empty value, a leading emoji value
+  // 2026-10-29 UI1: the toast says Quest now (owner O8: the errands are the quests).
+  // values: a map name inside a quest, an English tail after two side-by-side placeholders, an empty value, a leading emoji value
   const map = 'The Old Bramble';
-  ok(pack[map] && (tr(`📜 Errand: ${map} — 2/5`) || '').includes(pack[map]), `${code}: a value that is a key translates: ${tr(`📜 Errand: ${map} — 2/5`)}`);
+  ok(pack[map] && (tr(`📜 Quest: ${map} — 2/5`) || '').includes(pack[map]), `${code}: a value that is a key translates: ${tr(`📜 Quest: ${map} — 2/5`)}`);
   ok((tr('🔗 It now appears after Zorblax · published') || '').includes(pack['published']), `${code}: "· published" after {v1}{v2}: ${tr('🔗 It now appears after Zorblax · published')}`);
   const bday = tr('🎂 Happy birthday! The Bramblewood left you 300 Gold and 5 Gold Leaves.');
   ok(bday && bday.includes('300') && bday.includes('5') && !/\{\w+\}/.test(bday), `${code}: empty {v1}: ${bday}`);
