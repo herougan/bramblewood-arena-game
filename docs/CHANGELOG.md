@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-29 Release 10-29b (owner 21:36 "Push to online anyway")
+- Shipped: REVIEW2 (Map cards gallery panels, pills, large cards, counts; the Ambush at the middle of its road), UI1 (raid deck card shape, touch dragging, battle camera on the units, Match log only, Errands → Quests + Dailies tab), HUBDEC1 (decision groups and hub tabs), ADMINU1 (admin player list; needs its proposed SQL applied), CARDSIZE1 (design proposal only).
+- Checks: smoke (only the known d-2026-10-19) and the packages' own tests (12/12); each package ran its own e2e. No full run for this release (owner asked to push).
+
 ## 2026-10-29 (package ADMINU1: Admin > Players overlay)
 - **Player list for the owner (10-28 23:35, 10-29 19:14):** Admin tab > Players has a new **Open the player list** button (Admin Mode on only). It opens an overlay with every profile: name, level, highest map, cards, fights, last seen (relative) and joined, sortable by any column, with a name search and an "x of y players" count. Works at 390 and 1366. An older "Load players" list (admin_list_players, applied 10-16) was already there and stays.
 - **Waiting for "apply it":** `supabase/proposed/20261029_admin_user_list.sql` adds the read-only, admin-only `admin_user_list()`. Until it is applied the overlay says "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it')." Decision ADMINU1-1. No emails or auth data are returned.
