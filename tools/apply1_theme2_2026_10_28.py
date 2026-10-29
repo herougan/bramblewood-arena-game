@@ -168,6 +168,8 @@ def main():
 #     newly well under (2A + H + S at most 60% of N); no card is re-fitted (the owner's step 3);
 #   - skirmish decks (every fight with a deck) holding a card that is not on the fight's pool (MAP + its SUBMAP + SPECIAL): new since APPLY1
 #     or already so before. No deck is rebuilt (step 4).
+#   2026-10-29 LISTFIX1: this report keeps APPLY1's rule (MAP + SUBMAP + SPECIAL) as history; today's off-pool decks under the new rule (a submap
+#   fight: its SUBMAP + SPECIAL) are docs/balance/listfix1-decks-2026-10-29.json (node docs/balance/listfix1-decks-2026-10-29.js).
 REPORT_JS = r"""
 'use strict';
 const fs = require('fs'), path = require('path'), ROOT = process.cwd();

@@ -174,7 +174,11 @@ for(const lv of [0, 1, 2]){
   ok(by['oyster-bank'].effects.pearlBed && by['giant-clam'].effects.pearlBed, 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls');
   ok(!by['leafcutter-gardener'].effects.growth && (by['leafcutter-gardener'].effects.triggers || []).some(t=> t.on === 'onReady' && t.resource === 'lumber'), 'Leafcutter Gardener: Growth -> On Ready +1 Lumber');
   const early = cards.filter(c=> c.mechanicLine !== 'evolution' && !c.pool && (om[c.id] || 0) < 20 && (((c.effects||{}).stem || (c.effects||{}).stemGrant || ((c.effects||{}).chrysalis && !(c.mysterySkills||[]).includes('chrysalis'))) || Object.values(c.levelSkills || {}).some(s=> s && (s.stem || s.stemGrant))));
-  ok(!early.length, `no Stem / Chrysalis on a non-Evomax card before Map 20 (${early.map(c=> c.id).join(', ')})`);
+  // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): such a card reads obtain map 0 but no one can get it before Map 20 or
+  // ever, so it is reported, not failed (it is checked again when a list or the pack extras place it)
+  const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), outP = early.filter(c=> LMP.budgetHold(c.id) === 'unplaced');
+  if(outP.length) console.log(`  · Stem / Chrysalis, unplaced (on no list, out of play), not checked: ${outP.map(c=> c.id).join(', ')}`);
+  ok(early.length === outP.length, `no Stem / Chrysalis on a non-Evomax card before Map 20 (${early.filter(c=> !outP.includes(c)).map(c=> c.id).join(', ')})`);
   ok((by['egg-bug'].mysterySkills || []).includes('chrysalis'), 'the Cocoon\'s Chrysalis reads "?" (mysterySkills)'); }
 { const B = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = B.G;
   const r0 = G.fightRules('m1', B.byKey('m1', '0-1')), r1 = G.fightRules('mf', B.byKey('mf', '1-1')), rb = G.fightRules('mb', B.byKey('mb', '2-1')), rc = G.fightRules('mc', B.byKey('mc', '3-1'));
