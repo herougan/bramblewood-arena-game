@@ -3194,6 +3194,17 @@ const SKILL_REVEAL = Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k
 const SKILL_REVEAL_PARTS = Object.assign({swimmer:['swimmerGrant']}, Object.fromEntries(Object.entries(SKILL_REVEAL_MAP).map(([k, r])=> [k, (r.parts || []).slice()]))); // + the advanced forms' braces (2026-10-15)
 // In a tutorial fight now? (a skill with tutorials:true reads as itself there)
 function revealInTutorial(){ try{ return typeof matchState !== 'undefined' && !!matchState && matchState.mode === 'tutorial' && !matchState.over; }catch(e){ return false; } }
+// T-1 / T-2: every skill "?" (2026-10-29, package SKL0, owner 13:07: "Regarding T1-T2, all skills to be "?" until Map 0", and 10-28 23:35: "all
+// should be locked in T1/T2 except flying"). While a T-1 / T-2 fight is on screen (matchState.mode 'tutorial', its results too) or the faction
+// screen before it is open, every skill of every card, yours and the rival's, reads as the one "?" chip, Flying aside: card faces, the zoom, the
+// tooltips (maskHiddenSkills), the keyword coach and the codex book (skillHiddenNow) and the battle log (logText, tut12LogMask). T-3 to T-5 are
+// conquest fights, so the usual reveal map holds there. Display only: the engine plays the real cards. Admin Mode shows everything.
+const TUT12_SHOWN = new Set(['flying']);
+function revealTut12(){
+  if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
+  try{ if(typeof matchState !== 'undefined' && matchState && matchState.mode === 'tutorial' && !matchState.fxLib) return true; }catch(e){}
+  try{ if(typeof document !== 'undefined' && document && document.getElementById){ const f = document.getElementById('factionScreen'); if(f && !f.hidden) return true; } }catch(e){}
+  return false; }
 const SKILL_REVEAL_KEY = 'bramblewood_skill_revealed_v1';
 const SKILL_Q_TIP = "Something about this card you'll learn soon.";
 let skillRevealMemo = null;
@@ -3217,16 +3228,20 @@ function skillNewTagHTML(key){ const k = skillNewKey(); if(!k || k !== key) retu
   return ` <span class="sk-new">${escapeHtml(TX('results.new'))}</span>`; }
 function hiddenSkillSet(){
   if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return new Set();
-  const now = Date.now(), tut = revealInTutorial(); if(skillRevealMemo && now - skillRevealMemo.at < 500 && skillRevealMemo.tut === tut) return skillRevealMemo.set;
+  const now = Date.now(), tut = revealInTutorial(), t12 = revealTut12(); if(skillRevealMemo && now - skillRevealMemo.at < 500 && skillRevealMemo.tut === tut && skillRevealMemo.t12 === t12) return skillRevealMemo.set;
+  if(t12){ const all = new Set(Object.keys(SKILL_REVEAL)); // SKL0 (2026-10-29): T-1 / T-2, every known skill but Flying
+    try{ if(typeof SKILL_DEFS !== 'undefined') SKILL_DEFS.forEach(sd=> sd && sd.key && all.add(sd.key)); }catch(e){}
+    try{ if(typeof PASSIVE_DEFS !== 'undefined') PASSIVE_DEFS.forEach(pd=> pd && pd.key && all.add(pd.key)); }catch(e){}
+    TUT12_SHOWN.forEach(k=> all.delete(k)); skillRevealMemo = {at: now, set: all, tut, t12}; return all; }
   const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
   Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; }
     if(tut && SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].tutorials) return; // 2026-10-21 (package TX): the tutorial shows it, unremembered
     if(SKILL_REVEAL_MAP[k] && SKILL_REVEAL_MAP[k].nameFrom != null && far >= SKILL_REVEAL_MAP[k].nameFrom) return; // ENG9: its name shows now (skillNameOnlyNow)
     set.add(k); });
   if(grew) skillRevealSave(st);
-  skillRevealMemo = {at: now, set, tut}; return set;
+  skillRevealMemo = {at: now, set, tut, t12}; return set;
 }
-function skillHiddenNow(key){ return hiddenSkillSet().has(key); }
+function skillHiddenNow(key){ if(key && !TUT12_SHOWN.has(key) && revealTut12()) return true; /* SKL0: T-1 / T-2 */ return hiddenSkillSet().has(key); }
 // ENG9 (2026-10-26, EN8-4): between a gated skill's nameFrom and its from map, its name shows with "?" for its effect.
 function skillNameOnlyNow(key){ const r = SKILL_REVEAL_MAP[key]; if(!r || r.nameFrom == null) return false; if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
   try{ if(skillRevealState().keys.includes(key)) return false; const far = furthestMapReached(); return far >= r.nameFrom && far < r.from; }catch(e){ return false; } }
@@ -3249,6 +3264,9 @@ function cardRevealAfter(d){ if(!d) return null; if(d.revealAfter) return d.reve
   try{ const b = typeof CARD_DEFS_BASELINE !== 'undefined' && CARD_DEFS_BASELINE[d.derivedFrom || d.id]; return (b && b.revealAfter) || null; }catch(e){ return null; } } // a cloud edit saved without the field keeps the shipped gate
 // A display copy of a card with its hidden skills taken off (the engine keeps the real card).
 function maskHiddenSkills(d){
+  if(d && d.effects && revealTut12()){ const e = d.effects, kept = {}; let n = 0; // SKL0 (2026-10-29): T-1 / T-2, all but Flying
+    Object.keys(e).forEach(k=>{ if(!skillValOn(e[k])) return; if(TUT12_SHOWN.has(k)) kept[k] = e[k]; else n++; });
+    return n ? Object.assign({}, d, {effects: kept, _hiddenSkills: n, _revealGated: true}) : d; }
   { const ra = cardRevealAfter(d); if(ra && !revealAfterMet(ra)){ const n = Object.keys(d.effects||{}).filter(k=> skillValOn(d.effects[k])).length; // 2026-10-18: the whole card's skills (revealAfter)
     if(n) return Object.assign({}, d, {effects: {}, _hiddenSkills: n, _revealGated: true}); } }
   const hid = hiddenSkillsOf(d); if(!hid.length) return d;
@@ -44428,8 +44446,16 @@ function sk3Vfx(ev){
   if(ev.kind === 'corpsefeed' || ev.kind === 'graveCall'){ fl(`+${ev.amount||0}/+${ev.amount2||0}`, 'heal'); return; }
   if(ev.kind === 'duplicate'){ fl('👥', 'quick'); return; }
 }
+// SKL0 (2026-10-29): in T-1 / T-2 (revealTut12) a log line names no skill but Flying: each skill's name reads "?".
+function tut12LogMask(r){
+  if(!r || typeof r.text !== 'string' || !r.text) return r;
+  const names = new Set(); try{ (typeof SKILL_DEFS !== 'undefined' ? SKILL_DEFS : []).concat(typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(sd=>{ if(sd && typeof sd.label === 'string' && sd.label.length > 2 && !TUT12_SHOWN.has(sd.key)) names.add(sd.label); }); }catch(e){}
+  if(!names.size) return r;
+  const esc = x=> x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), re = new RegExp('(^|[^\\p{L}])(' + [...names].sort((a, b)=> b.length - a.length).map(esc).join('|') + ')(?![\\p{L}])', 'gu');
+  const t = r.text.replace(re, '$1?'); return t === r.text ? r : Object.assign({}, r, {text: t}); }
 function logText(ev){
-  if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
+  if(emptyHealEvent(ev)) return null;
+  if(ev && !ev.__t12 && revealTut12()) return tut12LogMask(logText(Object.assign({}, ev, {__t12: true}))); // SKL0 (2026-10-29): T-1 / T-2 // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w7 = en7LogText(ev, nm); if(w7) return w7; } // EN7 (2026-10-24): Dive's two turns
