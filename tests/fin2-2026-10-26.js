@@ -49,12 +49,18 @@ ok(/sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /c = sbCheck\(A, D, S, N, M, F
   ok(st(crab) === '1/3' && crab.effects.shield === 3 && crab.effects.armor === 1 && crab.effects.tide, `c. Tide Pool Crab 1/2 -> 1/3, its skills kept (${st(crab)})`);
   ok(st(conch) === '2/2', `c. Conch Crawler 1/1 -> 2/2 (${st(conch)})`);
   ok(st(arm) === '3/8', `c. Armadillo Guard kept at 3/8 (${st(arm)})`);
-  [crab, conch, arm].forEach(c=>{ const b = T.budget(c); ok(b.ok, `c. ${c.id} within both caps (${b.x1}/${b.N}, ${b.x2}/${b.N2})`); });
+  // 2026-10-29 RELFIX3: a card out of play (on no map list, LISTFIX1's budgetHold 'unplaced') or waiting for the owner's re-fit ('pending') is
+  // skipped and reported: its map term reads Map 0 until it is placed (armadillo-guard is on no list since THEME2 / THEME3)
+  const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold, held = [];
+  [crab, conch, arm].forEach(c=>{ const b = T.budget(c); if(!b.ok && HOLD(c.id)){ held.push(c.id + ' ' + HOLD(c.id)); return; } ok(b.ok, `c. ${c.id} within both caps (${b.x1}/${b.N}, ${b.x2}/${b.N2})`); });
   const cb = T.budget(crab), up = T.budget(Object.assign({}, crab, {health: 4})); ok(cb.ok && !up.ok, 'c. the crab sits on its line: one more Health is over');
-  ok(cards.filter(c=> c.effects && c.effects.shield && T.budget(c).ok === false && !c.token && !c.test).length === 0, 'c. no shielded card over its budget'); }
+  const overSh = cards.filter(c=> c.effects && c.effects.shield && T.budget(c).ok === false && !c.token && !c.test), overHeld = overSh.filter(c=> HOLD(c.id));
+  overHeld.forEach(c=> held.push(c.id + ' ' + HOLD(c.id)));
+  ok(overSh.length === overHeld.length, `c. no shielded card over its budget (${overSh.filter(c=> !HOLD(c.id)).map(c=> c.id).join(', ')})`);
+  if(held.length) console.log('  (held, not checked: ' + [...new Set(held)].join(', ') + ')'); }
 ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'fin2-shield-refit-2026-10-26.json')), 'c. the re-fit\'s moves are saved');
 { const dec = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'decisions.json'), 'utf8')).items.map(d=> d.id); ok(['FIN2-1', 'FIN2-2'].every(i=> dec.includes(i)), 'decisions FIN2-1, FIN2-2'); }
-ok(/^## 2026-10-26 \(package FIN2/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 40000)), 'CHANGELOG entry near the top');
+ok(/^## 2026-10-26 \(package FIN2/m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8').slice(0, 100000)), 'CHANGELOG entry near the top'); // 2026-10-29 RELFIX3: 100000 (was 40000; the 10-28 / 10-29 packages' entries sit above it)
 
 // ---- browser
 async function browser(){

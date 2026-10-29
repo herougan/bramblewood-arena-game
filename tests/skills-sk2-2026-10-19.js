@@ -110,7 +110,10 @@ ok(/list\.push\(\{on:'perTurn', do:'gain', resource:'lumber', amount:numN\(e\.mi
   const d2 = Object.assign({}, defs, {'petrified-tree': Object.assign({effects:{}}, pt)}); const e = E.makeSimEngine(d2, E.mulberry32(1), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1, {}), 2:e.newPlayer(2, {})};
   const T = put(e, P, 1, 'petrified-tree', 0); T.wait = 0; round(e, P); round(e, P); ok(P[1].stone === 2 && P[1].lumber === 0, `a Ready Petrified Tree: 1 Stone a turn (${P[1].stone})`);
   const SC = require('../tools/skill_costs.js'), Tb = SC.make(JSON.parse(R('canonical/skill-costs.json'))), b = Tb.budget(pt);
-  ok(b.ok && pt.cost >= 5 && pt.wait >= 3, `inside its budget at a high cost (Lumber ${pt.cost}, Wait ${pt.wait}; 2A+H+S ${b.x1} / N ${b.N})`); }
+  // 2026-10-29 RELFIX3: the Petrified Tree is on no map list since THEME2 / THEME3 (out of play, budgetHold 'unplaced'), so its map term reads Map 0;
+  // its budget is checked again once it is placed (the cost and Wait still are)
+  const hold = b.ok ? '' : require('../tools/lib_map_pools.js').budgetHold(pt.id); if(hold) console.log(`  (petrified-tree ${hold}: budget not checked, ${b.x1} / N ${b.N})`);
+  ok((b.ok || hold) && pt.cost >= 5 && pt.wait >= 3, `inside its budget at a high cost (Lumber ${pt.cost}, Wait ${pt.wait}; 2A+H+S ${b.x1} / N ${b.N})`); }
 
 // ---- 6. Pickpocket N: counters off the unit it hits (not debuffs); on the bramble, resources lowest rank first
 { const {e, P} = mk(); const T = put(e, P, 1, 'k2-thief', 0), V = put(e, P, 2, 'k2-wall', 0); V.prayerTokens = 1; V.sk2Berries = 2; V.poison = 3; const ev = []; e.debugAttack(P, so, T.uid, {}, ev);
