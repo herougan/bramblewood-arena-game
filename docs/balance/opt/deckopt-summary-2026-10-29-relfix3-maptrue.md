@@ -974,3 +974,69 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road14 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 32.8% | 46.9% | -14.1 [-30.8, 2.7] |
 | ref:expected @ 14-3: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 89.1% | 93.8% | -4.7 [-14.4, 5] |
 
+## Map 16: The Pinewood Taiga (`mt`), your level 1
+
+- Throughput: 18392 games in 265.8 s = **69.2 games/s** (2 workers). Search: ga, budget 8000 games (6052 map cards, 0 generations, 2 restarts; 3536 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mt --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 310 cards (16 map cards + 294 owned by then); phase 2 311 (+1 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 1 (balloon-archer); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **1** (score >= 1, lowered from 3 to reach 1). Map: biome taiga (kin redwood, tundra-ice), terrain types Frost, Tundra, field aiGuardLethal, boon, consternation, field, frostCount, frostResist, phase:night, unit types Canid 5, Cervid 3, Deer 3, Felid 2, Forest 2, Lagomorph 2, Taiga 7, Wolf 4, skill families cleave 2, evasion 3, swarm 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Cave Cricket | common | Map 16 | 1 | evasion skills (3 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 74; map rule: not obtainable (not in the progression plan or an earlier map's cards) 276; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 79% [76.8%, 81.1%], mirror 84.2%, road 63.2%: 4x Alpine Marmot (owned), 3x Electric Ray (owned), 3x Fawn Scout, 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 1x Camouflage Frog (owned), 1x Golden Eagle Diver (owned), 1x Great Barracuda (owned), 1x Lovebird (owned), 1x Wolf Spider Mother (owned)
+- **Optimum (map cards + candidates)**: score 80% (+1 pts): 5x Alpine Marmot (owned), 3x Electric Ray (owned), 3x Fawn Scout, 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 1x Cave Cricket (candidate), 1x Great Barracuda (owned), 1x Lovebird (owned), 1x Wolf Spider Mother (owned)
+- Best candidate swaps into the map-card optimum: Cave Cricket x3 +0
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 2
+
+0. 80% [77.9%, 82.1%], 0 copies from the optimum: 5x Alpine Marmot (owned), 3x Electric Ray (owned), 3x Fawn Scout, 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 1x Cave Cricket (candidate), 1x Great Barracuda (owned), 1x Lovebird (owned), 1x Wolf Spider Mother (owned)
+1. 77.4% [75.3%, 79.6%], 6 copies from the optimum: 4x Alpine Marmot (owned), 3x Fawn Scout, 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 2x Planarian Splitter (owned), 2x Wolf Pack Runner, 1x Camouflage Frog (owned), 1x Frost Hare Sprinter, 1x Lovebird (owned), 1x Wolf Spider Mother (owned)
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 58% (+56) |
+| 1 | 42% (-56) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 429 (221 to 720); as your deck they score 22.8 to 63.8 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 16-1 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 27.9% | 50.6 ±4.3 | 90% |
+| 16-2 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 48.3% | 30.6 ±4.5 | 84% |
+| 16-3 skirmish's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 57.4% | 22.8 ±4.5 | 78% |
+| 16-4 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 42.7% | 36.3 ±4.5 | 72% |
+| 16-5 elite's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 15.2% | 63.8 ±3.8 | 66% |
+| 16-6 elite's deck | 86.7% [76.3%-93%] | 326 [203, 449] | 19.7% | 59.8 ±4.1 | 60% |
+| 16-7 miniboss's deck | 91.4% [82%-96.1%] | 411 [263, 558] | 41.3% | 37.7 ±4.5 | 40% |
+| reference starter deck under 16-1's field | 93% [84%-97.1%] | 449 [288, 609] | 34.1% | 44.9 ±4.4 | - |
+| reference deck (Map 16) under 16-2's field | 43.8% [32.3%-55.9%] | -44 [-129, 41] | 85.1% | -2.2 ±3.4 | - |
+| expected player deck (expectedPlayerDeck) under 16-3's field | 85.9% [75.4%-92.4%] | 314 [194, 434] | 51% | 28.5 ±4.5 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 16-1 skirmish | 95.3% [87.1%-98.4%] | 90% |
+| 16-2 skirmish | 62.5% [50.3%-73.3%] | 84% |
+| 16-3 skirmish | 18.8% [11.1%-30%] | 78% |
+| 16-4 skirmish | 81.3% [70%-88.9%] | 72% |
+| 16-5 elite | 79.7% [68.3%-87.7%] | 66% |
+| 16-6 elite | 43.8% [32.3%-55.9%] | 60% |
+| 16-7 miniboss | 62.5% [50.3%-73.3%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:16-1 @ 16-1: aiGuardLethal, field frozen, phase night | 98.4% | 95.3% | +3.1 [-2.9, 9.1] |
+| fight:16-2 @ 16-2: aiGuardLethal, field frozen, phase night, terrain Frozen Waste T1 | 93.8% | 93.8% | +0 [-8.4, 8.4] |
+| fight:16-3 @ 16-3: aiGuardLethal, boon snowVeil, field frozen, phase night, terrain Frozen Waste T1 | 78.1% | 82.8% | -4.7 [-18.4, 9] |
+| fight:16-4 @ 16-4: aiGuardLethal, field frozen, phase night, terrain Frozen Waste T1 | 92.2% | 87.5% | +4.7 [-5.7, 15.1] |
+| fight:16-5 @ 16-5: aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1) | 92.2% | 95.3% | -3.1 [-11.5, 5.2] |
+| fight:16-6 @ 16-6: aiGuardLethal, consternation, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1) | 86.7% | 90.6% | -3.9 [-14.9, 7.1] |
+| fight:16-7 @ 16-7: aiGuardLethal, field frozen, frostCount 1, frostResist ["Tundra","Frost","Taiga"], phase night, terrain Frozen Waste T2 (Frostbite 1) | 91.4% | 89.1% | +2.3 [-7.9, 12.6] |
+| ref:starter @ 16-1: aiGuardLethal, field frozen, phase night | 93% | 94.5% | -1.6 [-9.9, 6.8] |
+| ref:road16 @ 16-2: aiGuardLethal, field frozen, phase night, terrain Frozen Waste T1 | 43.8% | 37.5% | +6.3 [-10.7, 23.2] |
+| ref:expected @ 16-3: aiGuardLethal, boon snowVeil, field frozen, phase night, terrain Frozen Waste T1 | 85.9% | 87.5% | -1.6 [-13.3, 10.2] |
+
