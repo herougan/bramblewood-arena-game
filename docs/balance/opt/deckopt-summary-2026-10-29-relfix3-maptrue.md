@@ -431,3 +431,136 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road4 @ 4-2: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T1, wet | 50% | 7.8% | +42.2 [28.3, 56.1] |
 | ref:expected @ 4-3: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T2 (Inspiring 1), wet | 84.4% | 43.8% | +40.6 [25.6, 55.7] |
 
+## Map 5: Gatorback Swamp (`mw`), your level 1
+
+- Throughput: 19504 games in 332.2 s = **58.7 games/s** (2 workers). Search: ga, budget 8000 games (6086 map cards, 0 generations, 2 restarts; 3502 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mw --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 112 cards (18 map cards + 94 owned by then); phase 2 116 (+4 candidates).
+- Mode: **map-true**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 1 (hedgehog-herbalist); not obtainable (not in the progression plan or an earlier map's cards) 1 (mangrove-mudskipper); over the map's rarity cap (rare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **4** (score >= 1, lowered from 3 to reach 4). Map: biome swamp (kin fungal, mangrove, river), terrain types Mangrove, Swamp, field aiGuardLethal, boon, phase:cycle, swampFever, unit types Beaver 2, Reptile 10, River 2, Rodent 2, Snake 4, Swamp 9, Turtle 3, skill families armor 3, bleed 2, guard 2, poison 3, tide 5.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Anhinga Spearbird | uncommon | Map 5 | 4 | biome swamp; terrain type Swamp; type Swamp (9 map cards) |
+| Marsh Harrier | uncommon | Map 5 | 4 | biome swamp; terrain type Swamp; type Swamp (9 map cards) |
+| Plague Gnat Cloud | common | Map 5 | 4 | biome swamp; terrain type Swamp; type Swamp (9 map cards) |
+| Buzzed Chipmunk | common | Map 5 | 1 | type Rodent (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: first obtainable after this map 210; map rule: not obtainable (not in the progression plan or an earlier map's cards) 330; map rule: over the map's rarity cap (rare) 82; plan bucket nest 7; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 92.8% [91.3%, 94.3%], mirror 92.3%, road 94.2%: 5x Cricket Drummer (owned), 4x Meadow Frog (owned), 4x Otter Guard (owned), 3x Otter Centurion (owned), 2x Tunnel Ant (owned), 1x House Cat (owned), 1x Mosswing (owned)
+- **Optimum (map cards + candidates)**: score 93.8% (+1 pts): 5x Cricket Drummer (owned), 5x Meadow Frog (owned), 4x Otter Guard (owned), 3x Otter Centurion (owned), 2x Tunnel Ant (owned), 1x House Cat (owned)
+- Best candidate swaps into the map-card optimum: Plague Gnat Cloud x3 -2.6; Marsh Harrier x3 -4.6; Buzzed Chipmunk x3 -8.7; Anhinga Spearbird x3 -12.4
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 9 decks the searches ended on): 1
+
+0. 93.8% [92.5%, 95.1%], 0 copies from the optimum: 5x Cricket Drummer (owned), 5x Meadow Frog (owned), 4x Otter Guard (owned), 3x Otter Centurion (owned), 2x Tunnel Ant (owned), 1x House Cat (owned)
+
+- **Fight decks vs the optimum:** Elo gap median 720 (523 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 43.1 to 75.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 5-1 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 32.3% | 61.3 ±4.2 | 90% |
+| 5-2 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 18% | 75.2 ±3.6 | 84% |
+| 5-3 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 40.9% | 52.5 ±4.2 | 78% |
+| 5-4 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 42.9% | 50.4 ±4.1 | 72% |
+| 5-5 elite's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 20.1% | 73.4 ±3.8 | 66% |
+| 5-6 elite's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 35.3% | 58 ±4.1 | 60% |
+| 5-7 boss's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 50.5% | 43.1 ±4.3 | 40% |
+| reference starter deck under 5-1's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 48.4% | 44.9 ±4.3 | - |
+| reference deck (Map 5) under 5-2's field | 54.7% [42.6%-66.3%] | 33 [-52, 117] | 95.8% | 1.1 ±1.9 | - |
+| expected player deck (expectedPlayerDeck) under 5-3's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 69.7% | 23.5 ±3.8 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 5-1 skirmish | 89.1% [79.1%-94.6%] | 90% |
+| 5-2 skirmish | 96.9% [89.3%-99.1%] | 84% |
+| 5-3 skirmish | 89.1% [79.1%-94.6%] | 78% |
+| 5-4 skirmish | 96.9% [89.3%-99.1%] | 72% |
+| 5-5 elite | 87.5% [77.2%-93.5%] | 66% |
+| 5-6 elite | 98.4% [91.7%-99.7%] | 60% |
+| 5-7 boss | 95.3% [87.1%-98.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:5-1 @ 5-1: aiGuardLethal, phase cycle, swampFever 50 | 96.9% | 98.4% | -1.6 [-6.8, 3.7] |
+| fight:5-2 @ 5-2: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T1 | 100% | 98.4% | +1.6 [-1.5, 4.6] |
+| fight:5-3 @ 5-3: aiGuardLethal, boon venomGlands, phase cycle, swampFever 50, terrain Sucking Mire T1 | 98.4% | 98.4% | +0 [-4.3, 4.3] |
+| fight:5-4 @ 5-4: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T1 | 100% | 100% | +0 [0, 0] |
+| fight:5-5 @ 5-5: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 96.9% | 100% | -3.1 [-7.4, 1.1] |
+| fight:5-6 @ 5-6: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 98.4% | 100% | -1.6 [-4.6, 1.5] |
+| fight:5-7 @ 5-7: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 95.3% | 98.4% | -3.1 [-9.1, 2.9] |
+| ref:starter @ 5-1: aiGuardLethal, phase cycle, swampFever 50 | 98.4% | 96.9% | +1.6 [-3.7, 6.8] |
+| ref:road5 @ 5-2: aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T1 | 54.7% | 59.4% | -4.7 [-21.8, 12.4] |
+| ref:expected @ 5-3: aiGuardLethal, boon venomGlands, phase cycle, swampFever 50, terrain Sucking Mire T1 | 100% | 90.6% | +9.4 [2.2, 16.5] |
+
+## Map 6: Sable Swampmire (`m8`), your level 1
+
+- Throughput: 23106 games in 514.3 s = **44.9 games/s** (2 workers, 2 sessions (resumed)). Search: ga, budget 8000 games (6802 map cards, 0 generations, 2 restarts; 4332 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m8 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 125 cards (18 map cards + 107 owned by then); phase 2 133 (+8 candidates).
+- Mode: **map-true**, rarity cap **rare** (the highest of the map's fights); submaps open by then: mm. Left out: not obtainable (not in the progression plan or an earlier map's cards) 3 (bog-leech, puddle-hopper, willow-o-wisp); over the map's rarity cap (rare) 3 (heron-hag, old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **8** (score >= 3). Map: biome swamp (kin fungal, mangrove, river), terrain types Mangrove, Swamp, field aiGuardLethal, phase:night, swampFever, unit types Amphibian 5, Bird 4, Frog 3, Newt 2, Reptile 3, Snake 3, Swamp 7, skill families bleed 2, evasion 2, poison 5, tide 3.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Cottonmouth Matriarch | rare | Map 6 | 7 | biome swamp; terrain type Swamp; type Swamp (7 map cards); type Reptile (3 map cards); animal group snake (like Adder Ambusher); poison skills (5 map cards) |
+| Greater Siren | rare | Map 6 | 7 | biome swamp; terrain type Swamp; type Swamp (7 map cards); type Amphibian (5 map cards); animal group salamander (like Bogfire Newt); tide skills (3 map cards) |
+| Anaconda Coil | rare | Map 6 | 6 | biome swamp; terrain type Swamp; type Swamp (7 map cards); type Reptile (3 map cards); animal group snake (like Adder Ambusher) |
+| Giant Water Bug | uncommon | Map 6 | 6 | biome swamp; terrain type Swamp; type Swamp (7 map cards); poison skills (5 map cards); tide skills (3 map cards) |
+| Carrion Beetle | uncommon | Map 6 | 5 | biome swamp; terrain type Swamp; type Swamp (7 map cards); poison skills (5 map cards) |
+| Great Crested Grebe | common | Map 6 | 4 | kin biome river; type Bird (4 map cards); tide skills (3 map cards); evasion skills (2 map cards) |
+| Lotus Frog | uncommon | Map 6 | 4 | kin biome river; type Amphibian (5 map cards); type Frog (3 map cards); animal group frog (like Camouflage Frog) |
+| Shallows Fry | common | Map 6 | 3 | kin biome river; animal group fish (like Alligator Gar); tide skills (3 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: first obtainable after this map 197; map rule: not obtainable (not in the progression plan or an earlier map's cards) 324; map rule: over the map's rarity cap (rare) 82; plan bucket nest 7; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 83.4% [81.7%, 85%], mirror 90.5%, road 62.1%: 4x Cricket Drummer (owned), 4x Meadow Frog, 4x Otter Guard (owned), 3x Otter Centurion (owned), 2x Burrow Rabbit (owned), 2x Tunnel Ant (owned), 1x Marsh Harrier
+- **Optimum (map cards + candidates)**: score 85.3% (+1.9 pts): 5x Cricket Drummer (owned), 5x Meadow Frog, 4x Otter Guard (owned), 3x Otter Centurion (owned), 3x Tunnel Ant (owned)
+- Best candidate swaps into the map-card optimum: Anaconda Coil x3 -1; Lotus Frog x3 -5.7; Carrion Beetle x3 -2.8; Greater Siren x3 -5.1; Cottonmouth Matriarch x3 -5.3; Giant Water Bug x3 -6.8
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 1
+
+0. 85.3% [83.6%, 86.9%], 0 copies from the optimum: 5x Cricket Drummer (owned), 5x Meadow Frog, 4x Otter Guard (owned), 3x Otter Centurion (owned), 3x Tunnel Ant (owned)
+
+- **Fight decks vs the optimum:** Elo gap median 720 (273 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 16.1 to 68.1 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 6-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 16.1% | 68.1 ±3.5 | 90% |
+| 6-2 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 27.1% | 57.1 ±3.5 | 85% |
+| 6-3 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 22.6% | 61.5 ±3.6 | 80% |
+| 6-4 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 23.7% | 60.7 ±3.7 | 75% |
+| 6-5 elite's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 60.2% | 25.3 ±3.6 | 70% |
+| 6-6 elite's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 53.8% | 31.1 ±3.7 | 65% |
+| 6-7 elite's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 18.6% | 65.7 ±3.7 | 60% |
+| 6-8 miniboss's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 68.8% | 16.1 ±3.3 | 40% |
+| reference starter deck under 6-1's field | 92.2% [83%-96.6%] | 429 [275, 582] | 42.6% | 42.2 ±3.9 | - |
+| reference deck (Map 6) under 6-2's field | 56.3% [44.1%-67.7%] | 44 [-41, 129] | 87.3% | 0 ±2.5 | - |
+| expected player deck (expectedPlayerDeck) under 6-3's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 59% | 25.1 ±3.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 6-1 skirmish | 92.2% [83%-96.6%] | 90% |
+| 6-2 skirmish | 95.3% [87.1%-98.4%] | 85% |
+| 6-3 skirmish | 92.2% [83%-96.6%] | 80% |
+| 6-4 skirmish | 96.9% [89.3%-99.1%] | 75% |
+| 6-5 elite | 51.6% [39.6%-63.4%] | 70% |
+| 6-6 elite | 37.5% [26.7%-49.7%] | 65% |
+| 6-7 elite | 37.5% [26.7%-49.7%] | 60% |
+| 6-8 miniboss | 29.7% [19.9%-41.8%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:6-1 @ 6-1: aiGuardLethal, phase night | 100% | 100% | +0 [0, 0] |
+| fight:6-2 @ 6-2: aiGuardLethal, phase night, terrain Sucking Mire T1 | 100% | 100% | +0 [0, 0] |
+| fight:6-3 @ 6-3: aiGuardLethal, phase night, terrain Sucking Mire T1 | 100% | 96.9% | +3.1 [-1.1, 7.4] |
+| fight:6-4 @ 6-4: aiGuardLethal, phase night, terrain Sucking Mire T1 | 96.9% | 96.9% | +0 [-6, 6] |
+| fight:6-5 @ 6-5: aiGuardLethal, phase night, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 82.8% | 98.4% | -15.6 [-25.4, -5.9] |
+| fight:6-6 @ 6-6: aiGuardLethal, phase night, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 90.6% | 93.8% | -3.1 [-12.4, 6.2] |
+| fight:6-7 @ 6-7: aiGuardLethal, phase night, swampFever 50, terrain Sucking Mire T2 (Poison 1) | 98.4% | 95.3% | +3.1 [-2.9, 9.1] |
+| fight:6-8 @ 6-8: aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1) | 89.1% | 85.9% | +3.1 [-8.3, 14.6] |
+| ref:starter @ 6-1: aiGuardLethal, phase night | 92.2% | 98.4% | -6.2 [-13.5, 1] |
+| ref:road6 @ 6-2: aiGuardLethal, phase night, terrain Sucking Mire T1 | 56.3% | 53.1% | +3.1 [-14.1, 20.4] |
+| ref:expected @ 6-3: aiGuardLethal, phase night, terrain Sucking Mire T1 | 100% | 93.8% | +6.3 [0.3, 12.2] |
+
