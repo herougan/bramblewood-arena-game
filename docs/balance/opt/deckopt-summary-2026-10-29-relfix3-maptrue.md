@@ -303,3 +303,131 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road7 @ 2-B-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush) | 54.7% | 50% | +4.7 [-12.6, 22] |
 | ref:expected @ 2-B-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush) | 70.3% | 70.3% | +0 [-15.8, 15.8] |
 
+## Map 3: Gannet Cliffs (`mc`), your level 1
+
+- Throughput: 19888 games in 174.1 s = **114.2 games/s** (2 workers). Search: ga, budget 8000 games (6086 map cards, 0 generations, 2 restarts; 3842 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mc --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 80 cards (15 map cards + 65 owned by then); phase 2 81 (+1 candidates).
+- Mode: **map-true**, rarity cap **uncommon** (the highest of the map's fights); submaps open by then: none. Left out: over the map's rarity cap (uncommon) 4 (alley-cat, otter-centurion, the-gannet-queen, tunnel-ant).
+
+Phase 2 candidates: **1** (score >= 1, lowered from 3 to reach 1). Map: biome cliffs (kin mountain-sky), terrain types Mountain, field aiGuardLethal, highTide, phase:cycle, wind, windfall, unit types Bird 10, Coastal 7, Mountain 5, skill families strike-first 3, tide 3.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Sparrow Chick | starter | Map 3 | 2 | type Bird (10 map cards); flying (field wind) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 38; map rule: first obtainable after this map 179; map rule: not obtainable (not in the progression plan or an earlier map's cards) 245; map rule: over the map's rarity cap (uncommon) 254; plan bucket nest 7; plan bucket unsorted 14.
+
+- **Optimum (map cards)**: score 68.6% [65.9%, 71.3%], mirror 69.4%, road 66.3%: 4x Cricket Drummer (owned), 4x Otter Guard (owned), 4x Terrier Pup (owned), 1x Bee Sentry (owned), 1x Bramble Sprout (owned), 1x Crimson Recruit (owned), 1x Earthworm (owned), 1x Kittiwake Flock, 1x Owl Sentinel (owned), 1x Razorbill, 1x Sea Turtle Elder (owned)
+- **Optimum (map cards + candidates)**: score 72% (+3.4 pts): 4x Cricket Drummer (owned), 4x Fulmar Spitter, 4x Otter Guard (owned), 4x Terrier Pup (owned), 2x Earthworm (owned), 1x Crimson Recruit (owned), 1x Kittiwake Flock
+- Best candidate swaps into the map-card optimum: Sparrow Chick x3 -8
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 11 decks the searches ended on): 2
+
+0. 72% [69.4%, 74.7%], 0 copies from the optimum: 4x Cricket Drummer (owned), 4x Fulmar Spitter, 4x Otter Guard (owned), 4x Terrier Pup (owned), 2x Earthworm (owned), 1x Crimson Recruit (owned), 1x Kittiwake Flock
+1. 64.9% [62.1%, 67.7%], 6 copies from the optimum: 4x Cricket Drummer (owned), 4x Otter Guard (owned), 4x Terrier Pup (owned), 3x Sparrow Chick (candidate), 1x Earthworm (owned), 1x Golden Eagle Diver, 1x Kittiwake Flock, 1x Owl Sentinel (owned), 1x Sea Turtle Elder (owned)
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 49.1% (-6) |
+| 1 | 50.9% (+6) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 163 (-11 to 338); as your deck they score 11 to 31.9 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 3-1 skirmish's deck | 65.6% [53.4%-76.1%] | 112 [24, 201] | 47.5% | 25.1 ±4.8 | 90% |
+| 3-2 skirmish's deck | 75% [63.2%-84%] | 191 [94, 288] | 47.9% | 23.9 ±5 | 84% |
+| 3-3 skirmish's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 38.9% | 31.9 ±4.9 | 78% |
+| 3-4 skirmish's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 55.8% | 16.3 ±5 | 72% |
+| 3-5 elite's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 46.9% | 25.5 ±5 | 66% |
+| 3-6 elite's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 45.2% | 25.9 ±4.9 | 60% |
+| 3-7 elite's deck | 48.4% [36.6%-60.4%] | -11 [-95, 73] | 63% | 11 ±4.9 | 40% |
+| reference starter deck under 3-1's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 22.6% | 47.5 ±4.7 | - |
+| reference deck (Map 3) under 3-2's field | 48.4% [36.6%-60.4%] | -11 [-95, 73] | 86.6% | -12.7 ±3.9 | - |
+| expected player deck (expectedPlayerDeck) under 3-3's field | 92.2% [83%-96.6%] | 429 [275, 582] | 22.6% | 47.8 ±4.5 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 3-1 skirmish | 59.4% [47.1%-70.5%] | 90% |
+| 3-2 skirmish | 68.8% [56.6%-78.8%] | 84% |
+| 3-3 skirmish | 76.6% [64.9%-85.3%] | 78% |
+| 3-4 skirmish | 59.4% [47.1%-70.5%] | 72% |
+| 3-5 elite | 78.1% [66.6%-86.5%] | 66% |
+| 3-6 elite | 68.8% [56.6%-78.8%] | 60% |
+| 3-7 elite | 60.9% [48.7%-71.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:3-1 @ 3-1: aiGuardLethal, phase cycle, wind windy, windfall | 65.6% | 56.3% | +9.4 [-7.5, 26.2] |
+| fight:3-2 @ 3-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind windy, windfall | 75% | 82.8% | -7.8 [-21.9, 6.3] |
+| fight:3-3 @ 3-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind windy, windfall | 87.5% | 85.9% | +1.6 [-10.2, 13.3] |
+| fight:3-4 @ 3-4: aiGuardLethal, phase cycle, terrain High Crags T1, wind windy, windfall | 71.9% | 62.5% | +9.4 [-6.8, 25.6] |
+| fight:3-5 @ 3-5: aiGuardLethal, highTide, phase cycle, terrain High Crags T2 (Siege 1), wind windy, windfall | 67.2% | 57.8% | +9.4 [-7.3, 26.1] |
+| fight:3-6 @ 3-6: aiGuardLethal, highTide, phase cycle, terrain High Crags T2 (Siege 1), wind windy, windfall | 82.8% | 90.6% | -7.8 [-19.5, 3.9] |
+| fight:3-7 @ 3-7: aiGuardLethal, highTide, phase cycle, terrain High Crags T2 (Siege 1), wind windy, windfall | 48.4% | 68.8% | -20.3 [-37, -3.6] |
+| ref:starter @ 3-1: aiGuardLethal, phase cycle, wind windy, windfall | 96.9% | 85.9% | +10.9 [1.4, 20.5] |
+| ref:road3 @ 3-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind windy, windfall | 48.4% | 21.9% | +26.6 [10.7, 42.5] |
+| ref:expected @ 3-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind windy, windfall | 92.2% | 65.6% | +26.6 [13.2, 39.9] |
+
+## Map 4: Sunken Hollow (`m2`), your level 1
+
+- Throughput: 17302 games in 223.4 s = **77.5 games/s** (2 workers). Search: ga, budget 8000 games (7644 map cards, 1 generations, 2 restarts; 2418 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m2 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 92 cards (16 map cards + 76 owned by then); phase 2 95 (+3 candidates).
+- Mode: **map-true**, rarity cap **uncommon** (the highest of the map's fights); submaps open by then: none. Left out: over the map's rarity cap (uncommon) 5 (alley-cat, drowned-matriarch, otter-centurion, the-gannet-queen, tunnel-ant).
+
+Phase 2 candidates: **3** (score >= 1, lowered from 3 to reach 3). Map: biome river (kin mangrove, swamp), terrain types Pond, River, field aiGuardLethal, permaTide, phase:cycle, rapids, wet, unit types Beaver 2, Fish 2, Forest 2, Pond 2, Reptile 3, River 8, Rodent 4, Turtle 3, skill families armor 2, poison 3, tide 8.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Diving Bell Spider | uncommon | Map 4 | 6 | biome river; terrain type River; type River (8 map cards); tide skills (8 map cards); tide (field wet) |
+| Dam-Keeper Beaver | common | Map 4 | 5 | biome river; type Rodent (4 map cards); type Beaver (2 map cards); animal group beaver (like Beaver Lumberjack) |
+| Signal Crayfish | common | Map 4 | 5 | biome river; terrain type River; type River (8 map cards); armor skills (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 38; map rule: first obtainable after this map 166; map rule: not obtainable (not in the progression plan or an earlier map's cards) 244; map rule: over the map's rarity cap (uncommon) 254; plan bucket nest 7; plan bucket unsorted 14.
+
+- **Optimum (map cards)**: score 71.8% [69.1%, 74.6%], mirror 77.5%, road 54.7%: 2x Pond Algae, 1x Briarback Hedgehog (owned), 1x Cobalt Fledgling (owned), 1x Cricket Drummer (owned), 1x Driftwood Crab (owned), 1x Earthworm (owned), 1x Ember Tetra (owned), 1x Farm Dog (owned), 1x Field Vole (owned), 1x Gannet Nestweaver (owned), 1x House Cat (owned), 1x Muskrat Reedgatherer, 1x Peak Condor (owned), 1x Peregrine Stooper (owned), 1x Pyrenean Desman, 1x River Mink, 1x Riverwing Envoy (owned), 1x Snapstick Turtle, 1x Stone Turtle Warden
+- **Optimum (map cards + candidates)**: score 79.5% (+7.7 pts): 3x Diving Bell Spider (candidate), 2x Pond Algae, 1x Briarback Hedgehog (owned), 1x Cobalt Fledgling (owned), 1x Cricket Drummer (owned), 1x Driftwood Crab (owned), 1x Earthworm (owned), 1x Ember Tetra (owned), 1x Farm Dog (owned), 1x Gannet Nestweaver (owned), 1x House Cat (owned), 1x Peak Condor (owned), 1x Peregrine Stooper (owned), 1x Pyrenean Desman, 1x River Mink, 1x Riverwing Envoy (owned), 1x Snapstick Turtle
+- Best candidate swaps into the map-card optimum: Diving Bell Spider x3 +7.4; Signal Crayfish x3 +6.9; Dam-Keeper Beaver x3 -0.2
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 11 decks the searches ended on): 2
+
+0. 79.5% [76.9%, 82.1%], 0 copies from the optimum: 3x Diving Bell Spider (candidate), 2x Pond Algae, 1x Briarback Hedgehog (owned), 1x Cobalt Fledgling (owned), 1x Cricket Drummer (owned), 1x Driftwood Crab (owned), 1x Earthworm (owned), 1x Ember Tetra (owned), 1x Farm Dog (owned), 1x Gannet Nestweaver (owned), 1x House Cat (owned), 1x Peak Condor (owned), 1x Peregrine Stooper (owned), 1x Pyrenean Desman, 1x River Mink, 1x Riverwing Envoy (owned), 1x Snapstick Turtle
+1. 76.5% [73.8%, 79.1%], 8 copies from the optimum: 4x Cricket Drummer (owned), 3x Diving Bell Spider (candidate), 2x Riverwing Envoy (owned), 2x Terrier Pup (owned), 1x Bee Forager (owned), 1x Briarback Hedgehog (owned), 1x Driftwood Crab (owned), 1x Farm Dog (owned), 1x Pond Algae, 1x Pyrenean Desman, 1x River Mink, 1x Signal Crayfish (candidate), 1x Snapstick Turtle
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 56.3% (+44) |
+| 1 | 43.8% (-44) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 364 (221 to 720); as your deck they score 23.4 to 61.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 4-1 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 46.6% | 32.6 ±5 | 90% |
+| 4-2 skirmish's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 36.2% | 42.3 ±5.1 | 80% |
+| 4-3 elite's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 15.9% | 61.6 ±4.7 | 70% |
+| 4-4 elite's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 33% | 45.2 ±5.3 | 60% |
+| 4-5 elite's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 56.3% | 23.4 ±5.3 | 40% |
+| reference starter deck under 4-1's field | 92.2% [83%-96.6%] | 429 [275, 582] | 27.2% | 50.9 ±4.7 | - |
+| reference deck (Map 4) under 4-2's field | 50% [38.1%-61.9%] | 0 [-84, 84] | 81.7% | 0.8 ±4.3 | - |
+| expected player deck (expectedPlayerDeck) under 4-3's field | 84.4% [73.6%-91.3%] | 293 [178, 408] | 59.1% | 19.9 ±5.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 4-1 skirmish | 65.6% [53.4%-76.1%] | 90% |
+| 4-2 skirmish | 70.3% [58.2%-80.1%] | 80% |
+| 4-3 elite | 71.9% [59.9%-81.4%] | 70% |
+| 4-4 elite | 60.9% [48.7%-71.9%] | 60% |
+| 4-5 elite | 70.3% [58.2%-80.1%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:4-1 @ 4-1: aiGuardLethal, permaTide, phase cycle, rapids, wet | 82.8% | 90.6% | -7.8 [-19.5, 3.9] |
+| fight:4-2 @ 4-2: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T1, wet | 89.1% | 96.9% | -7.8 [-16.6, 0.9] |
+| fight:4-3 @ 4-3: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T2 (Inspiring 1), wet | 98.4% | 95.3% | +3.1 [-2.9, 9.1] |
+| fight:4-4 @ 4-4: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T2 (Inspiring 1), wet | 92.2% | 98.4% | -6.2 [-13.5, 1] |
+| fight:4-5 @ 4-5: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T2 (Inspiring 1), wet | 78.1% | 75% | +3.1 [-11.5, 17.8] |
+| ref:starter @ 4-1: aiGuardLethal, permaTide, phase cycle, rapids, wet | 92.2% | 68.8% | +23.4 [10.3, 36.6] |
+| ref:road4 @ 4-2: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T1, wet | 50% | 7.8% | +42.2 [28.3, 56.1] |
+| ref:expected @ 4-3: aiGuardLethal, permaTide, phase cycle, rapids, terrain Riverbank T2 (Inspiring 1), wet | 84.4% | 43.8% | +40.6 [25.6, 55.7] |
+
