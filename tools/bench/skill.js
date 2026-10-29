@@ -111,6 +111,7 @@ function suggest(row, gm, X) {
 
 // ---------------------------------------------------------------- reports
 const f1 = v => v == null ? '-' : (v >= 0 ? '+' : '') + v.toFixed(1);
+const med = a => { const v = a.filter(x => x != null).sort((x, y) => x - y); return v.length ? v[v.length >> 1] : null; };
 function md(res) {
   const c = res.context, y = res.yardstick;
   const head = '| Rank | Skill | Verdict | Confidence | Measured worth (95%) | Attack-eq | Price now | Net | z | Carriers | Per N (worth / price) |\n|---|---|---|---|---|---|---|---|---|---|---|';
@@ -121,7 +122,9 @@ function md(res) {
     `- Per skill, up to ${res.settings.carriers} cards that carry it; a skill on fewer than ${res.settings.minReal} cards also gets vanilla carriers (${res.vanilla.join(', ')}) given the skill as its card has it. Each carrier plays ${c.fights} paired fights (the bench's slot of ${c.copies} copies, Level ${c.level}, the global field pool, Smart CPU both sides, 30-Health brambles): with the skill, without it at the same stats, and as printed with +1 Attack and with +1 Health.`,
     `- **The yardstick** (pooled over ${y.cards} carriers): +1 Attack on ${c.copies} copies = ${f1(y.attack * 100)} points, +1 Health = ${f1(y.health * 100)} points (1 Attack = ${y.attackInHealth} Health measured; the budget says 2). One budget point (2A + H) = **${(y.perPoint * 100).toFixed(2)} ± ${(y.se * 196).toFixed(2)} win-rate points**.`,
     '- **Measured worth** = the skill\'s paired gain / the yardstick, in budget points; **Attack-eq** = worth / 2. **Price now** = the carrier\'s cap-1 left side (2A + H) x m + S with the skill minus without it, as printed (`bramblewood-budget.js`). **Net** = worth - price: + under-priced (it gives more than it costs), - over-priced. z = net / its standard error; confidence high |z| >= 2.5, medium >= 1.5.',
-    '- Read a low-confidence row as "not measurably mispriced at this many fights", not as "fair". Random decks: a skill that needs partners (a tribe, Lumber makers, a field) reads low.', '',
+    '- Read a low-confidence row as "not measurably mispriced at this many fights", not as "fair". Random decks: a skill that needs partners (a tribe, Lumber makers, a field) reads low.',
+    '- The interval and z count the fights\' noise on these carriers only, not how typical the carriers are: with 2-3 carriers a skill whose worth depends on the card (its Attack, its Lumber, a partner) can read far from its average. Re-measure a flagged skill with more carriers (`--carriers 4 --games 200`) before changing its price.',
+    `- Across all ${res.ranked.length} skills: median worth ${f1(med(res.ranked.map(r => r.worth)))}, median price ${f1(med(res.ranked.map(r => r.price)))}, median net ${f1(med(res.ranked.map(r => r.net)))}. Price rules that zero a stat (an Archer's Attack) show as a negative price: the skill's row then measures swinging against shooting.`, '',
     `## The ${Math.min(15, res.ranked.length)} most mispriced (medium or high confidence first, by |net|)`, '', head, ...res.ranked.slice(0, 15).map(line), '',
     '## Every skill', '', head, ...res.ranked.map(line), '',
     res.skipped.length ? '## Skipped\n\n' + res.skipped.map(s => `- ${s.skill}: ${s.why}`).join('\n') + '\n' : ''].join('\n');
