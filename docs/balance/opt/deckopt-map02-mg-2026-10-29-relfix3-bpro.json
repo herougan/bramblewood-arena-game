@@ -1,0 +1,1732 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-10-29T03:16:47.692Z",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto",
+  "side": "mb",
+  "opensOn": 7
+ },
+ "level": 1,
+ "settings": {
+  "mode": "bpro",
+  "seedRef": false,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": "uncommon",
+  "seed": "bramble",
+  "budget": 8000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mg --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+ "pools": {
+  "mode": "bpro",
+  "cap": "uncommon",
+  "subsOpen": [],
+  "phase1": 23,
+  "mapCards": [
+   "badger-lumberjack",
+   "beaver-builder",
+   "beaver-lumberjack",
+   "blind-cave-fish",
+   "bramble-sprout",
+   "conch-crawler",
+   "conch-herald",
+   "cricket-drummer",
+   "driftwood-crab",
+   "duckling",
+   "fiddler-crab-swarm",
+   "grey-seal-bull",
+   "gull-thief",
+   "mayfly-dancer",
+   "open-ocean-hermit-crab",
+   "oystercatcher",
+   "pincushion-urchin",
+   "sea-turtle-elder",
+   "shallows-fry",
+   "sulfur-vent-crab",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster"
+  ],
+  "owned": [],
+  "phase2": 23,
+  "wholeSpectrum": 23,
+  "excluded": [
+   {
+    "reason": "a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 1,
+    "ids": [
+     "otter-riverguard"
+    ]
+   },
+   {
+    "reason": "not in the map's own pool (BPRO)",
+    "n": 107,
+    "ids": [
+     "acorn-chipmunk",
+     "anhinga-spearbird",
+     "ant-hill",
+     "ant-scout",
+     "bee-forager",
+     "bee-knight",
+     "bee-sentry",
+     "bogfire-newt",
+     "booming-bittern",
+     "box-turtle",
+     "briarback-hedgehog",
+     "burrow-rabbit",
+     "buzzed-chipmunk",
+     "caiman-hatchling",
+     "camouflage-frog",
+     "cane-toad",
+     "carrion-beetle",
+     "chipmunk-cavalry",
+     "chipmunk-forager",
+     "chipmunk-skirmisher",
+     "cobalt-talon-fledgling",
+     "constrictor-coil",
+     "cottontail",
+     "crimson-wing-recruit",
+     "crocodile-ambusher",
+     "crossed-eyes",
+     "cypress-root-lurker",
+     "dam-keeper-beaver",
+     "diving-bell-spider",
+     "dormouse",
+     "duck-paddler",
+     "earthworm",
+     "ember-tetra",
+     "farm-dog",
+     "fen-mink",
+     "feral-tomcat",
+     "field-mouse",
+     "field-vole",
+     "fire-ant-raft",
+     "fleetfootd",
+     "forager-ant",
+     "fulmar-spitter",
+     "gannet-nestweaver",
+     "garden-snail",
+     "giant-water-bug",
+     "golden-eagle-diver",
+     "grass-snake",
+     "grass-viper",
+     "great-crested-grebe",
+     "greyplume-fledgling",
+     "guppy",
+     "harvest-mouse",
+     "hedgerow-shrew",
+     "honey-bee",
+     "house-cat",
+     "kittiwake-flock",
+     "lamprey",
+     "lotus-frog",
+     "marsh-harrier",
+     "meadow-frog",
+     "meadow-rabbit",
+     "meerkat-wayfarer",
+     "moat-snapper",
+     "mosswing-laborer",
+     "mudpuppy",
+     "muskrat-lodgekeeper",
+     "muskrat-reedgatherer",
+     "newt-doctor",
+     "nutria-reedcutter",
+     "old-sturgeon",
+     "otter-guard",
+     "otter-kit",
+     "otter-paddler",
+     "owl-sentinel",
+     "paper-wasp",
+     "peak-condor",
+     "peregrine-stooper",
+     "plague-gnat-cloud",
+     "platypus-spur",
+     "poison-dart-croaker",
+     "pond-algae",
+     "pond-duck",
+     "pond-trout",
+     "puffin-diver",
+     "pyrenean-desman",
+     "raft-spider",
+     "razorbill",
+     "red-billed-chough",
+     "river-carp",
+     "river-mink",
+     "riverwing-envoy",
+     "robin-redbreast",
+     "rock-pool-starfish",
+     "sheep",
+     "signal-crayfish",
+     "silver-minnow",
+     "slow-worm",
+     "snapper-hatchling",
+     "snapstick-turtle",
+     "sparrow-chick",
+     "swamp-alligator",
+     "terrier-pup",
+     "venomlord-serpent",
+     "water-shrew",
+     "water-vole",
+     "woodcock-lookout",
+     "worker-ant"
+    ]
+   },
+   {
+    "reason": "over the map's rarity cap (uncommon)",
+    "n": 15,
+    "ids": [
+     "adder-ambusher",
+     "alley-cat",
+     "alligator-gar",
+     "anaconda-coil",
+     "cottonmouth-matriarch",
+     "greater-siren",
+     "mallard-marauder",
+     "octopus-tactician",
+     "old-shell",
+     "old-snapjaw",
+     "otter-centurion",
+     "pelican-diver",
+     "raven-scout",
+     "the-gannet-queen",
+     "tunnel-ant"
+    ]
+   }
+  ]
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "caves",
+   "kinBiomes": [
+    "coast",
+    "fungal",
+    "volcanic-ash"
+   ],
+   "terrainTypes": [
+    "Cave"
+   ],
+   "mapTypes": [
+    "Beaver 2",
+    "Bird 5",
+    "Coastal 10",
+    "Crustacean 7",
+    "Duck 2",
+    "Fish 2",
+    "Insect 2",
+    "Mustelid 2",
+    "Ocean 3",
+    "River 3",
+    "Rodent 2"
+   ],
+   "mapMechanics": [
+    "armor 8",
+    "cleave 2",
+    "economy 2",
+    "guard 3",
+    "spite 2",
+    "tide 12"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "dark",
+    "phase:off"
+   ],
+   "coreCards": 27
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them)",
+    "n": 38,
+    "e": [
+     "birdlime-dauber",
+     "clap-net-trapper",
+     "cobalt-talon-skirmisher",
+     "crimson-wing-duelist-cadet",
+     "daily-post",
+     "dawn-bellringer"
+    ]
+   },
+   {
+    "reason": "map rule: not in the map's own pool (BPRO)",
+    "n": 503,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "acorn-chipmunk",
+     "alpha-howler"
+    ]
+   },
+   {
+    "reason": "map rule: over the map's rarity cap (uncommon)",
+    "n": 254,
+    "e": [
+     "adder-ambusher",
+     "alley-cat",
+     "alligator-gar",
+     "anaconda-coil",
+     "antler-skirmisher",
+     "arc-bat"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "kind": "mirror",
+   "node": "2-B-1",
+   "label": "vs 2-B-1 skirmish's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off"
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "kind": "mirror",
+   "node": "2-B-2",
+   "label": "vs 2-B-2 elite's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "kind": "mirror",
+   "node": "2-B-3",
+   "label": "vs 2-B-3 elite's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "kind": "mirror",
+   "node": "2-B-4",
+   "label": "vs 2-B-4 elite's deck",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "2-B-1",
+   "label": "vs reference starter deck under 2-B-1's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off"
+  },
+  {
+   "key": "mirror|ref:road7",
+   "kind": "mirror",
+   "node": "2-B-2",
+   "label": "vs reference deck (Map 7) under 2-B-2's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "2-B-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "weight": 0.107,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "road|2-B-1",
+   "kind": "road",
+   "node": "2-B-1",
+   "label": "2-B-1 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off"
+  },
+  {
+   "key": "road|2-B-2",
+   "kind": "road",
+   "node": "2-B-2",
+   "label": "2-B-2 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "road|2-B-3",
+   "kind": "road",
+   "node": "2-B-3",
+   "label": "2-B-3 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "road|2-B-4",
+   "kind": "road",
+   "node": "2-B-4",
+   "label": "2-B-4 as the game builds it",
+   "weight": 0.063,
+   "neutral": false,
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)"
+  },
+  {
+   "key": "neutral|fight:2-B-1",
+   "kind": "mirror",
+   "node": "2-B-1",
+   "label": "vs 2-B-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-B-2",
+   "kind": "mirror",
+   "node": "2-B-2",
+   "label": "vs 2-B-2 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-B-3",
+   "kind": "mirror",
+   "node": "2-B-3",
+   "label": "vs 2-B-3 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-B-4",
+   "kind": "mirror",
+   "node": "2-B-4",
+   "label": "vs 2-B-4 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "2-B-1",
+   "label": "vs reference starter deck under 2-B-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road7",
+   "kind": "mirror",
+   "node": "2-B-2",
+   "label": "vs reference deck (Map 7) under 2-B-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "2-B-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 13878,
+  "seconds": 165.7,
+  "gamesPerSecond": 83.8,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 9174,
+   "gens": 2,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "beaver-builder:1,beaver-lumberjack:1,cricket-drummer:2,driftwood-crab:2,fiddler-crab-swarm:1,grey-seal-bull:2,mayfly-dancer:1,sea-turtle-elder:2,shallows-fry:1,sulfur-vent-crab:4,trash-panda-trickster:3",
+     "f": 0.683,
+     "gens": 1,
+     "games": 4620,
+     "top": [
+      "beaver-builder:1,beaver-lumberjack:1,cricket-drummer:2,driftwood-crab:2,fiddler-crab-swarm:1,grey-seal-bull:2,mayfly-dancer:1,sea-turtle-elder:2,shallows-fry:1,sulfur-vent-crab:4,trash-panda-trickster:3",
+      "beaver-lumberjack:2,bramble-sprout:1,conch-crawler:1,cricket-drummer:2,duckling:1,fiddler-crab-swarm:1,grey-seal-bull:2,mayfly-dancer:1,oystercatcher:1,sea-turtle-elder:1,tide-pool-crab:1,tidepool-trapper-crab:2,trash-panda-trickster:4",
+      "beaver-builder:1,beaver-lumberjack:2,conch-crawler:1,conch-herald:1,driftwood-crab:2,duckling:1,grey-seal-bull:1,mayfly-dancer:1,open-ocean-hermit-crab:1,sea-turtle-elder:2,shallows-fry:1,sulfur-vent-crab:3,tide-pool-crab:1,trash-panda-trickster:2",
+      "beaver-builder:1,beaver-lumberjack:2,conch-crawler:1,driftwood-crab:2,duckling:2,grey-seal-bull:1,mayfly-dancer:1,open-ocean-hermit-crab:1,sea-turtle-elder:2,shallows-fry:1,sulfur-vent-crab:3,tidepool-trapper-crab:1,trash-panda-trickster:2"
+     ]
+    },
+    {
+     "best": "badger-lumberjack:3,conch-crawler:2,cricket-drummer:1,duckling:1,fiddler-crab-swarm:1,grey-seal-bull:2,pincushion-urchin:1,shallows-fry:3,sulfur-vent-crab:2,tide-pool-crab:1,trash-panda-trickster:3",
+     "f": 0.598,
+     "gens": 1,
+     "games": 4554,
+     "top": [
+      "badger-lumberjack:3,conch-crawler:2,cricket-drummer:1,duckling:1,fiddler-crab-swarm:1,grey-seal-bull:2,pincushion-urchin:1,shallows-fry:3,sulfur-vent-crab:2,tide-pool-crab:1,trash-panda-trickster:3",
+      "badger-lumberjack:1,bramble-sprout:3,conch-herald:1,driftwood-crab:1,duckling:1,fiddler-crab-swarm:1,grey-seal-bull:4,open-ocean-hermit-crab:1,oystercatcher:1,shallows-fry:2,sulfur-vent-crab:1,tide-pool-crab:1,trash-panda-trickster:2",
+      "badger-lumberjack:1,bramble-sprout:1,conch-crawler:2,conch-herald:1,cricket-drummer:1,driftwood-crab:2,duckling:1,grey-seal-bull:1,mayfly-dancer:2,pincushion-urchin:2,sea-turtle-elder:1,shallows-fry:3,sulfur-vent-crab:1,trash-panda-trickster:1",
+      "beaver-builder:3,beaver-lumberjack:1,bramble-sprout:1,conch-crawler:3,conch-herald:1,cricket-drummer:1,driftwood-crab:2,grey-seal-bull:1,mayfly-dancer:1,oystercatcher:1,sea-turtle-elder:3,trash-panda-trickster:2"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "beaver-builder": 1,
+    "beaver-lumberjack": 1,
+    "cricket-drummer": 2,
+    "driftwood-crab": 2,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 2,
+    "mayfly-dancer": 1,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 1,
+    "sulfur-vent-crab": 4,
+    "trash-panda-trickster": 3
+   },
+   "cards": [
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beaver-builder",
+     "name": "Beaver Builder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "shallows-fry",
+     "name": "Shallows Fry",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.677,
+   "ci": [
+    0.644,
+    0.709
+   ],
+   "mirror": 0.71,
+   "road": 0.578,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.703,
+     "lo": 0.582,
+     "hi": 0.801,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.641,
+     "lo": 0.518,
+     "hi": 0.747,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.891,
+     "lo": 0.791,
+     "hi": 0.946,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.828,
+     "lo": 0.718,
+     "hi": 0.901,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.344,
+     "lo": 0.239,
+     "hi": 0.466,
+     "n": 64
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.672,
+     "lo": 0.55,
+     "hi": 0.774,
+     "n": 64
+    },
+    {
+     "entry": "road|2-B-1",
+     "label": "2-B-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.503,
+     "hi": 0.733,
+     "n": 64
+    },
+    {
+     "entry": "road|2-B-2",
+     "label": "2-B-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.267,
+     "hi": 0.497,
+     "n": 64
+    },
+    {
+     "entry": "road|2-B-3",
+     "label": "2-B-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.672,
+     "lo": 0.55,
+     "hi": 0.774,
+     "n": 64
+    },
+    {
+     "entry": "road|2-B-4",
+     "label": "2-B-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.641,
+     "lo": 0.518,
+     "hi": 0.747,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.828,
+     "lo": 0.718,
+     "hi": 0.901,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.594,
+     "lo": 0.471,
+     "hi": 0.705,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.688,
+     "lo": 0.566,
+     "hi": 0.788,
+     "n": 64
+    },
+    {
+     "entry": "neutral|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.766,
+     "lo": 0.649,
+     "hi": 0.853,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.438,
+     "lo": 0.323,
+     "hi": 0.559,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.203,
+     "lo": 0.123,
+     "hi": 0.317,
+     "n": 64
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.422,
+     "lo": 0.309,
+     "hi": 0.544,
+     "n": 64
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.683,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "beaver-builder": 1,
+    "beaver-lumberjack": 1,
+    "cricket-drummer": 2,
+    "driftwood-crab": 2,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 2,
+    "mayfly-dancer": 1,
+    "sea-turtle-elder": 2,
+    "shallows-fry": 1,
+    "sulfur-vent-crab": 4,
+    "trash-panda-trickster": 3
+   },
+   "cards": [
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beaver-builder",
+     "name": "Beaver Builder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "shallows-fry",
+     "name": "Shallows Fry",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.677,
+   "ci": [
+    0.644,
+    0.709
+   ],
+   "copiesApartFromOptimum": 0
+  },
+  {
+   "i": 1,
+   "deck": {
+    "beaver-lumberjack": 2,
+    "bramble-sprout": 1,
+    "conch-crawler": 1,
+    "cricket-drummer": 2,
+    "duckling": 1,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 2,
+    "mayfly-dancer": 1,
+    "oystercatcher": 1,
+    "sea-turtle-elder": 1,
+    "tide-pool-crab": 1,
+    "tidepool-trapper-crab": 2,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "mayfly-dancer",
+     "name": "Mayfly Dancer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sea-turtle-elder",
+     "name": "Sea Turtle Elder",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.616,
+   "ci": [
+    0.582,
+    0.65
+   ],
+   "copiesApartFromOptimum": 9
+  },
+  {
+   "i": 2,
+   "deck": {
+    "badger-lumberjack": 3,
+    "conch-crawler": 2,
+    "cricket-drummer": 1,
+    "duckling": 1,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 2,
+    "pincushion-urchin": 1,
+    "shallows-fry": 3,
+    "sulfur-vent-crab": 2,
+    "tide-pool-crab": 1,
+    "trash-panda-trickster": 3
+   },
+   "cards": [
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "shallows-fry",
+     "name": "Shallows Fry",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 2,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.597,
+   "ci": [
+    0.563,
+    0.631
+   ],
+   "copiesApartFromOptimum": 10
+  },
+  {
+   "i": 3,
+   "deck": {
+    "badger-lumberjack": 1,
+    "bramble-sprout": 3,
+    "conch-herald": 1,
+    "driftwood-crab": 1,
+    "duckling": 1,
+    "fiddler-crab-swarm": 1,
+    "grey-seal-bull": 4,
+    "open-ocean-hermit-crab": 1,
+    "oystercatcher": 1,
+    "shallows-fry": 2,
+    "sulfur-vent-crab": 1,
+    "tide-pool-crab": 1,
+    "trash-panda-trickster": 2
+   },
+   "cards": [
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "shallows-fry",
+     "name": "Shallows Fry",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 2,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "oystercatcher",
+     "name": "Oystercatcher",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": true,
+     "owned": false,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.582,
+   "ci": [
+    0.547,
+    0.616
+   ],
+   "copiesApartFromOptimum": 12
+  }
+ ],
+ "optimaH2H": [
+  [
+   null,
+   {
+    "p": 0.563,
+    "elo": 44,
+    "n": 64
+   },
+   {
+    "p": 0.75,
+    "elo": 191,
+    "n": 64
+   },
+   {
+    "p": 0.578,
+    "elo": 55,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.438,
+    "elo": -44,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.688,
+    "elo": 137,
+    "n": 64
+   },
+   {
+    "p": 0.563,
+    "elo": 44,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.25,
+    "elo": -191,
+    "n": 64
+   },
+   {
+    "p": 0.313,
+    "elo": -137,
+    "n": 64
+   },
+   null,
+   {
+    "p": 0.484,
+    "elo": -11,
+    "n": 64
+   }
+  ],
+  [
+   {
+    "p": 0.422,
+    "elo": -55,
+    "n": 64
+   },
+   {
+    "p": 0.438,
+    "elo": -44,
+    "n": 64
+   },
+   {
+    "p": 0.516,
+    "elo": 11,
+    "n": 64
+   },
+   null
+  ]
+ ],
+ "optimaConsidered": 8,
+ "ladder": null,
+ "road": [
+  {
+   "node": "2-B-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.625,
+   "ci": [
+    0.503,
+    0.733
+   ],
+   "n": 64
+  },
+  {
+   "node": "2-B-2",
+   "kind": "elite",
+   "target": 0.75,
+   "optimum": 0.375,
+   "ci": [
+    0.267,
+    0.497
+   ],
+   "n": 64
+  },
+  {
+   "node": "2-B-3",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.672,
+   "ci": [
+    0.55,
+    0.774
+   ],
+   "n": 64
+  },
+  {
+   "node": "2-B-4",
+   "kind": "elite",
+   "target": 0.4,
+   "optimum": 0.641,
+   "ci": [
+    0.518,
+    0.747
+   ],
+   "n": 64
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:2-B-1",
+   "node": "2-B-1",
+   "rules": "aiGuardLethal, dark dark, phase off",
+   "withField": 0.703,
+   "noField": 0.828,
+   "delta": -0.125,
+   "ci": [
+    -0.27,
+    0.02
+   ]
+  },
+  {
+   "opponent": "fight:2-B-2",
+   "node": "2-B-2",
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.641,
+   "noField": 0.594,
+   "delta": 0.047,
+   "ci": [
+    -0.121,
+    0.215
+   ]
+  },
+  {
+   "opponent": "fight:2-B-3",
+   "node": "2-B-3",
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.891,
+   "noField": 0.688,
+   "delta": 0.203,
+   "ci": [
+    0.066,
+    0.34
+   ]
+  },
+  {
+   "opponent": "fight:2-B-4",
+   "node": "2-B-4",
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.891,
+   "noField": 0.766,
+   "delta": 0.125,
+   "ci": [
+    -0.004,
+    0.254
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "2-B-1",
+   "rules": "aiGuardLethal, dark dark, phase off",
+   "withField": 0.828,
+   "noField": 0.438,
+   "delta": 0.391,
+   "ci": [
+    0.238,
+    0.543
+   ]
+  },
+  {
+   "opponent": "ref:road7",
+   "node": "2-B-2",
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.344,
+   "noField": 0.203,
+   "delta": 0.141,
+   "ci": [
+    -0.012,
+    0.293
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "2-B-3",
+   "rules": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush)",
+   "withField": 0.672,
+   "noField": 0.422,
+   "delta": 0.25,
+   "ci": [
+    0.083,
+    0.417
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:2-B-1",
+   "label": "2-B-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-B-1",
+   "target": 0.9,
+   "h2h": 0.703,
+   "h2hCI": [
+    0.582,
+    0.801
+   ],
+   "elo": 150,
+   "eloCI": [
+    58,
+    242
+   ],
+   "n": 64,
+   "asPlayer": 0.526,
+   "optimumSame": 0.674,
+   "pointsBelow": 14.8,
+   "pointsCI": 6.2
+  },
+  {
+   "opponent": "fight:2-B-2",
+   "label": "2-B-2 elite's deck",
+   "kind": "elite",
+   "node": "2-B-2",
+   "target": 0.75,
+   "h2h": 0.641,
+   "h2hCI": [
+    0.518,
+    0.747
+   ],
+   "elo": 100,
+   "eloCI": [
+    13,
+    188
+   ],
+   "n": 64,
+   "asPlayer": 0.552,
+   "optimumSame": 0.681,
+   "pointsBelow": 12.9,
+   "pointsCI": 6.2
+  },
+  {
+   "opponent": "fight:2-B-3",
+   "label": "2-B-3 elite's deck",
+   "kind": "elite",
+   "node": "2-B-3",
+   "target": 0.6,
+   "h2h": 0.891,
+   "h2hCI": [
+    0.791,
+    0.946
+   ],
+   "elo": 364,
+   "eloCI": [
+    231,
+    497
+   ],
+   "n": 64,
+   "asPlayer": 0.234,
+   "optimumSame": 0.651,
+   "pointsBelow": 41.7,
+   "pointsCI": 5.6
+  },
+  {
+   "opponent": "fight:2-B-4",
+   "label": "2-B-4 elite's deck",
+   "kind": "elite",
+   "node": "2-B-4",
+   "target": 0.4,
+   "h2h": 0.891,
+   "h2hCI": [
+    0.791,
+    0.946
+   ],
+   "elo": 364,
+   "eloCI": [
+    231,
+    497
+   ],
+   "n": 64,
+   "asPlayer": 0.21,
+   "optimumSame": 0.651,
+   "pointsBelow": 44.2,
+   "pointsCI": 5.8
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 2-B-1's field",
+   "kind": "reference",
+   "node": "2-B-1",
+   "target": null,
+   "h2h": 0.828,
+   "h2hCI": [
+    0.718,
+    0.901
+   ],
+   "elo": 273,
+   "eloCI": [
+    162,
+    384
+   ],
+   "n": 64,
+   "asPlayer": 0.374,
+   "optimumSame": 0.659,
+   "pointsBelow": 28.5,
+   "pointsCI": 6.1
+  },
+  {
+   "opponent": "ref:road7",
+   "label": "reference deck (Map 7) under 2-B-2's field",
+   "kind": "reference",
+   "node": "2-B-2",
+   "target": null,
+   "h2h": 0.344,
+   "h2hCI": [
+    0.239,
+    0.466
+   ],
+   "elo": -112,
+   "eloCI": [
+    -201,
+    -24
+   ],
+   "n": 64,
+   "asPlayer": 0.764,
+   "optimumSame": 0.717,
+   "pointsBelow": -4.8,
+   "pointsCI": 5.7
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "kind": "reference",
+   "node": "2-B-3",
+   "target": null,
+   "h2h": 0.672,
+   "h2hCI": [
+    0.55,
+    0.774
+   ],
+   "elo": 124,
+   "eloCI": [
+    35,
+    214
+   ],
+   "n": 64,
+   "asPlayer": 0.483,
+   "optimumSame": 0.678,
+   "pointsBelow": 19.4,
+   "pointsCI": 5.8
+  }
+ ]
+}
