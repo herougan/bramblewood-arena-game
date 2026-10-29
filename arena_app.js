@@ -25073,6 +25073,19 @@ function gdPartyCastle(seats){
   const first = (seats || []).find(s=> s && !s.cpu && s.castle) || {};
   return mergeRaidCastles((seats || []).map(s=> brambleChar(CHARACTER_DEFS[(s && !s.cpu && s.castle) || first.castle || 'castle'] || CHARACTER_DEFS['castle'])));
 }
+// 2026-10-29 (package UI3, S9; owner 23:01: "Some random decks to play with you in the multiplayer dungeons"): a CPU ally plays a random ghost deck (the Autobattler's
+// stand-in generator, BramblewoodGhosts.generateGhostDeck, from the Standard cards the vault can play), not a copy of the host's deck as before. It is a pure function of
+// the run's seed and the seat, run on every page when the start message arrives (gdOnEvent 'start'), so every page and the log catch-up build the same table.
+function gdFillerDeck(seed, seat){
+  try{
+    if(!Ghosts || !Ghosts.generateGhostDeck) return null;
+    const all = gdDefs(), defs = {}; Object.keys(all).forEach(id=>{ const d = all[id]; if(d && !d.token && !d.test && !CoopM.unsupportedCard(d) && !CoopM.noSlotCard(d)) defs[id] = d; });
+    return Ghosts.generateGhostDeck(defs, 3, ((seed >>> 0) + 7919 * (seat + 1)) >>> 0);
+  }catch(e){ return null; }
+}
+function gdFillCpuSeats(start){
+  try{ (start && start.seats || []).forEach(x=>{ if(x && x.cpu && !(x.deck && Object.keys(x.deck).length)){ const d = gdFillerDeck(start.seed, x.seat | 0); if(d && Object.keys(d).length){ x.deck = d; x.filler = true; } } }); }catch(e){}
+}
 function gdDeps(){ return {makeSimEngine, defs: gdDefs(), defsHash: GD.defsHash, partyCastle: gdPartyCastle, brambleHp}; }
 // A seat's name: the player's, or "CPU ally"
 function gdSeatName(i){ const r = GD.s && GD.s.room, x = r && r.seats[i]; if(!x) return TX('ui.ar3-seat-empty'); return x.cpu ? TX('ui.coop2-cpu-name') : (x.name || TX('ui.ar3-you')); }
@@ -25163,11 +25176,12 @@ function gdOnEvent(kind, d){
   const S = GD.s; if(!S) return;
   if(kind === 'roster'){ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); } if(GD.phase === 'lobby') gdRender(); else gdRenderCoopBar(); return; }
   if(kind === 'full'){ showToast(TX('ui.ar3-full'), 'warn'); gdClose(true); return; } // the vault seats its 2 (the live room takes 2 with no new SQL)
-  if(kind === 'start'){ GD.startSeed = d.seed >>> 0; if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
+  if(kind === 'start'){ GD.startSeed = d.seed >>> 0; gdFillCpuSeats(d); // 2026-10-29 (UI3, S9): the CPU allies' random decks, before the first floor's table is built
+    if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
     if(GD.kind === 'live' && S.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'playing', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
     return; }
   if(kind === 'floor'){ if(!d.T){ showToast(TX('ui.coop2-defs-differ'), 'warn'); gdClose(true); return; } GD.floorEnd = null; gdStartFloorMatch(d.T); return; }
-  if(kind === 'caughtUp'){ if(d.T && !d.T.over){ GD.floorEnd = null; gdStartFloorMatch(d.T); } else if(d.ended){ gdRunEnded(d.ended); gdShow(); } return; }
+  if(kind === 'caughtUp'){ try{ gdFillCpuSeats(S.startMsg); }catch(e){} if(d.T && !d.T.over){ GD.floorEnd = null; gdStartFloorMatch(d.T); } else if(d.ended){ gdRunEnded(d.ended); gdShow(); } return; }
   if(kind === 'act' || kind === 'pending'){ gdRenderCoopBar(); return; }
   if(kind === 'reject'){ const by = d.by != null && d.by !== S.mySeat() ? gdSeatName(d.by) : null;
     showToast(d.why === 'taken' || d.why === 'cell' ? (by ? TX('ui.coop2-taken', {name: by}) : TX('ui.coop2-taken-anon')) : TX('ui.coop2-refused'), 'warn');
@@ -25288,11 +25302,16 @@ function gdRunEnded(how){
 }
 function gdClose(silent){
   const S = GD.s;
+  // 2026-10-29 (package UI3, S9; owner 23:01: "Pressing back brings you back to the arena page, at the coop section."): leaving a run on its floors or its end screen
+  // (Back, Leave) lands on the Arena page with the Co-op pane open; a silent close (an error toast, a refused join) and the lobby keep their old place
+  const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight') && gdPlayerOpen();
+  if(toArena){ try{ pl2ArenaPane = 'coop'; playSubTab = 'arena'; }catch(e){} }
   if(S){ try{ S.leave(); }catch(e){} if(GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('leave_coop_room', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} if(GD.kind === 'live' && S.isHost && GD.roomId && S.room && S.room.status === 'lobby') try{ sbClient.from('coop_rooms').update({status: 'closed', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){} }
   clearTimeout(GD.joinTimer); GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null;
   gdHide(); const bar = document.getElementById('coopBar'); if(bar) bar.remove();
   if(matchState && matchState.coop) endMatch({coopKeep: true});
   try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
+  if(toArena){ try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
 }
 function gdHide(){ const ov = document.getElementById('gdOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } document.body.classList.remove('gd-open'); }
 function gdShow(){
@@ -25318,8 +25337,8 @@ function gdLobbyHTML(){
   const S = GD.s, r = S.room || {seats: []}, me = S.me.peerId, host = S.isHost, mySeat = S.mySeat(), dg = CoopM.DUNGEONS.hollow;
   const seatTile = (x, i)=>{
     const label = `<span class="gd-seat-where">${escapeHtml(TX('ui.coop2-seat-' + i))}</span>`;
-    if(!x) return `<div class="gd-seat seat-${i} is-empty">${label}<b>${escapeHtml(TX('ui.ar3-seat-empty'))}</b><small>${escapeHtml(TX('ui.ar3-seat-cpu-start'))}</small></div>`;
-    if(x.cpu) return `<div class="gd-seat seat-${i} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.coop2-cpu-name'))}</b></div>`;
+    if(!x) return `<div class="gd-seat seat-${i} is-empty">${label}<b>${escapeHtml(TX('ui.ar3-seat-empty'))}</b><small>${escapeHtml(TX('ui.ui3-seat-cpu-start'))}</small></div>`; // 2026-10-29 (UI3, S9): says the deck is random
+    if(x.cpu) return `<div class="gd-seat seat-${i} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.coop2-cpu-name'))}</b><small>${escapeHtml(TX('ui.ui3-cpu-random'))}</small></div>`;
     const isHost = x.peerId === r.hostId, isMe = x.peerId === me;
     const state = isHost ? `👑 ${escapeHtml(TX('ui.ar3-host'))}` : !x.connected ? `📴 ${escapeHtml(TX('ui.ar3-away'))}` : x.ready ? `✅ ${escapeHtml(TX('ui.ar3-ready'))}` : `⏳ ${escapeHtml(TX('ui.ar3-not-ready'))}`;
     return `<div class="gd-seat seat-${i} ${isMe ? 'is-me' : ''} ${x.ready || isHost ? 'is-ready' : ''}">${label}<b>${escapeHtml(x.name || '?')}${isMe && x.name !== TX('ui.ar3-you') ? ` <em>(${escapeHtml(TX('ui.ar3-you'))})</em>` : ''}</b><small>${state}</small></div>`;
@@ -34865,7 +34884,9 @@ function renderMatchUI(){
   const bottomLabel = isLiveRanked ? (m.liveMySeat===1 ? 'You' : 'Opponent')
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit || m.fxLib ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
-  const showWinModal = m.over && !m.winModalDismissed;
+  // 2026-10-29 (package UI3, S9; owner 23:01: "The winning menu is also interrupted by this. Just show the winning screen."): a group-dungeon floor ends on its own
+  // panel (gdFloorEndHTML / gdEndHTML); the generic "Victory! Play again" card used to open first and sat under it, so it never shows for m.coop
+  const showWinModal = m.over && !m.winModalDismissed && !m.coop;
   try{ if(showWinModal && (coachOpen || coachShield)) hideCoachTip(); }catch(e){} // 2026-10-12: a tutorial step left open used to sit over the results (its shield ate clicks)
   try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
   try{ requestAnimationFrame(()=> syncFightBackdrop(m)); closeGravePeek(); }catch(e){}

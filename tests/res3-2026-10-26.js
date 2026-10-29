@@ -50,7 +50,7 @@ const esc = s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/
   ok(/\.rw-panel \.res3-fan \.pl2-rr\{left:auto; right:-8px; top:-10px; bottom:auto;/.test(tpl), 'R7. the rank ribbon on the card\'s top right'); }
 
 // ---------------- R6 R8 ----------------
-ok(/window\.FX\.E\.nodeRankEmblem = res3RankEmblemFlight/.test(src) && /const ex = W - 46, ey = H - 46, sx = -size/.test(fnSrc('res3RankEmblemFlight')), 'R6. the emblem comes in from the left and lands bottom right');
+ok(/window\.FX\.E\.nodeRankEmblem = res3RankEmblemFlight/.test(src) && /sx = -size/.test(fnSrc('res3RankEmblemFlight')) && /x: W - 46, y: H - 46/.test(fnSrc('res3RankEmblemFlight')), 'R6. the emblem comes in from the left; bottom right stays the fallback landing (2026-10-29 UI3: S3 lands it on its own fight first)');
 { const ARENA_FIGHT_MODES = new Set(['ai', 'pc', 'gauntlet', 'pvp', 'async', 'liveRanked']);
   const f = new Function('ARENA_FIGHT_MODES', fnSrc('pl1XpOnMap') + '\nreturn pl1XpOnMap;')(ARENA_FIGHT_MODES);
   ok(!f({mode:'ai'}) && !f({mode:'pvp'}) && f({mode:'conquest'}) && !f(null), 'R8. the Arena keeps its XP on its results; a Conquest fight\'s waits');
