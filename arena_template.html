@@ -7912,6 +7912,9 @@
   .board-row:has(> :nth-child(21)){gap:0; --gapx:calc(var(--match-card-w) * -0.2); --row-n:21;}
   .board-row:has(> :nth-child(21)) > * + *{margin-left:calc(var(--match-card-w) * -0.2);}
   .board-row > .board-card{width:min(var(--match-card-w), calc((100% - (var(--row-n) - 1) * var(--gapx)) / var(--row-n))); height:auto; aspect-ratio:4 / 5; flex-shrink:1; min-width:0;}
+  /* 2026-10-29 (package UI2, R1): a slot row sized for the columns its units stand in (ui2SetRowSpan sets --row-n): the empty edge columns
+     keep the cards' size and run past the field's edge instead of squeezing every card */
+  .board-row.ui2-span > .board-card{flex-shrink:0;}
   #forfeitMatchBtn{margin-left:10px;} /* playtest: a little space between Forfeit and its neighbours */
   /* Forge hearth flare-ups (2026-10-08) */
   .forge-flareup{position:absolute; bottom:0; width:0; height:0; z-index:3; pointer-events:none;}

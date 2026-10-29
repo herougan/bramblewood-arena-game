@@ -7959,6 +7959,9 @@
   .board-row:has(> :nth-child(21)){gap:0; --gapx:calc(var(--match-card-w) * -0.2); --row-n:21;}
   .board-row:has(> :nth-child(21)) > * + *{margin-left:calc(var(--match-card-w) * -0.2);}
   .board-row > .board-card{width:min(var(--match-card-w), calc((100% - (var(--row-n) - 1) * var(--gapx)) / var(--row-n))); height:auto; aspect-ratio:4 / 5; flex-shrink:1; min-width:0;}
+  /* 2026-10-29 (package UI2, R1): a slot row sized for the columns its units stand in (ui2SetRowSpan sets --row-n): the empty edge columns
+     keep the cards' size and run past the field's edge instead of squeezing every card */
+  .board-row.ui2-span > .board-card{flex-shrink:0;}
   #forfeitMatchBtn{margin-left:10px;} /* playtest: a little space between Forfeit and its neighbours */
   /* Forge hearth flare-ups (2026-10-08) */
   .forge-flareup{position:absolute; bottom:0; width:0; height:0; z-index:3; pointer-events:none;}
@@ -50821,7 +50824,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '8a2bb3b4fedb', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = '247e9c466a3f', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -83662,6 +83665,7 @@ function renderBoard(opts){
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
   if(needMine && rowMine){ const h = emojiRows(rowHTML(m.players[1], p1Rows)); if(!(pl2End && pl2ReconcileRow(rowMine, h))) rowMine.innerHTML = h; }
+  if(slotView) ui2SetRowSpan(m, [p1Rows, p2Rows], [rowEnemy, rowMine]); // 2026-10-29 (UI2, R1): cards shrink only when the units would leave the field
   if(needEnemy || needMine){ if(needEnemy) pl2SeatHpBars(rowEnemy); if(needMine) pl2SeatHpBars(rowMine); } // PL2 (2026-10-25): a flyer's Health bar rides in its .fly-body
   if(needEnemy) vis3CentrePips(rowEnemy); if(needMine) vis3CentrePips(rowMine); // VIS3 (2026-10-26, G8): each pip's glyph centred
   if(!m.over && !m.ending) pl2BounceAfterRedraw(pl2Snap, [needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5)
@@ -84630,10 +84634,19 @@ function mb2FitPhoneBoard(m, battlefield, inner, rowMine){
   const cols = mb2ColumnsFor(m, win, n=> (availW - padX - (n - 1)*gap) / n);
   const rowExtra = 40, divider = 8; // a front row is its card + 40 px (see the phone .board-row rule)
   const wFromH = ((frameH - divider)/2 - rowExtra) * 0.8;
-  let w = Math.max(24, Math.min(handW, cols.wV, wFromH)); w = Math.floor(w*2)/2;
-  const all = cols.wN >= w - 0.5;
+  // 2026-10-29 (package UI2, owner R1: "the screen doesn't zoom out in advance ... just zoom out once the cards go off the screen"): the
+  // cards are sized for the columns the units stand in (with the centre column), not for the window's spare column on each side; the
+  // window's edge columns (the next legal slot) show when they fit at that size and otherwise sit just past the frame's edge (the board
+  // pans). Was: sized for the whole window (cols.wV), so seven units drew at nine columns' size (37 px instead of 48 at 390 wide).
+  const occ = mb2OccupiedSlots(m);
+  let ulo = occ ? Math.min(0, occ[0]) : 0, uhi = occ ? Math.max(0, occ[1]) : 0;
+  { const k = Math.max(-ulo, uhi); if(2*k + 1 - (uhi - ulo + 1) <= MB2_CENTRE_SLACK){ ulo = -k; uhi = k; } }
+  ulo = Math.max(ulo, win.lo); uhi = Math.min(uhi, win.hi);
+  const nU = Math.max(1, uhi - ulo + 1), wU = (availW - padX - (nU - 1)*gap) / nU;
+  let w = Math.max(24, Math.min(handW, Math.max(cols.wV, wU), wFromH)); w = Math.floor(w*2)/2;
+  const all = cols.wN >= w - 0.5, winFits = cols.wV >= w - 0.5;
   app.style.setProperty('--mb2-bw', w + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
-  return {win, cols: all ? cols.N : cols.V, mid: all ? 0 : cols.mid, pitch: w + gap};
+  return {win, cols: all ? cols.N : winFits ? cols.V : nU, mid: all ? 0 : winFits ? cols.mid : (ulo + uhi)/2, pitch: w + gap};
 }
 // The one-step re-frame (300 ms): the board is laid out at its new size at once, then drawn from where it was (a transform that
 // matches the old size and pan) and eased to the new framing. Cards are measured where they are drawn, so lines and FX follow.
@@ -84663,6 +84676,21 @@ function mb2WatchFrame(bf){
 function mb2FrameInnerHeight(battlefield){
   const cs = getComputedStyle(battlefield);
   return Math.max(40, battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0));
+}
+// 2026-10-29 (package UI2, owner R1: "On PC the game zoomed out too soon (on 7 cards). Make sure on both PC, iPad and mobile, the screen
+// doesn't zoom out in advance ... just zoom out once the cards go off the screen."): a slot row draws every column of the board, the empty
+// ones at the edges too (the next legal slot on each side, and the columns a wider moment of the match opened), and the crowded-row rule
+// (.board-row > .board-card, --row-n) and fitBattlefieldZoom() both sized the cards for ALL of those columns. Seven units (slots -3..3)
+// drew nine columns, so the cards shrank before any unit was near the edge. Now both size for the columns the units stand in (the widest
+// unit's slot on either row, both sides of the centre): the empty edge columns may run past the field's edge (the side drop zones still
+// take a card there), and the cards shrink, then the board zooms out, only when a unit itself would leave the field.
+function ui2UnitSpan(rowsList){
+  let far = -1; (rowsList || []).forEach(rows=>{ if(rows) [...(rows.left||[]), ...(rows.center||[]), ...(rows.right||[])].forEach(c=>{ if(c && Number.isInteger(c.slot)) far = Math.max(far, Math.abs(c.slot)); }); });
+  return far < 0 ? 1 : 2*far + 1;
+}
+function ui2SetRowSpan(m, rowsList, rowEls){
+  const n = ui2UnitSpan(rowsList); if(m) m._ui2Span = n;
+  (rowEls || []).forEach(el=>{ if(!el) return; const all = el.children.length, on = all > n; if(on) el.style.setProperty('--row-n', String(n)); else el.style.removeProperty('--row-n'); el.classList.toggle('ui2-span', on); });
 }
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
@@ -84846,7 +84874,9 @@ function fitBattlefieldZoomNowCore(instant){
   // The raid (2026-10-18): its fixed column count, not the rows' children (a dragged card's placement ghost is a child too, and it
   // zoomed the board out and back in on every placement).
   const raidCols = matchState && matchState.raidFull && matchState._slotRange ? 2*matchState._slotRange + 1 : 0;
-  const neededWidth = mb2Span ? widthForCount(mb2Span.cols) : raidCols ? widthForCount(raidCols) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
+  // 2026-10-29 (UI2, R1): a slot board counts the columns its units stand in (ui2UnitSpan), not its empty edge columns
+  const ui2Span = !mb2Span && !raidCols && matchState && isSlotMatch(matchState) && matchState._ui2Span ? Math.min(matchState._ui2Span, Math.max(rowEnemy.children.length, rowMine.children.length)) : 0;
+  const neededWidth = mb2Span ? widthForCount(mb2Span.cols) : raidCols ? widthForCount(raidCols) : ui2Span ? widthForCount(ui2Span) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
 
   // 2026-09-20 (explicit bug report: "Cards are not fitting in reduced PC screen size mode"):
   // this function used to ONLY ever measure horizontal overflow, so a browser window that was
