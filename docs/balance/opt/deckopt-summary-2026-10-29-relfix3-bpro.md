@@ -1030,3 +1030,280 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road11 @ 10-A-2: aiGuardLethal, boon risingTide, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, tide, wet | 75.8% | 25.8% | +50 [35, 65] |
 | ref:expected @ 10-A-3: aiGuardLethal, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, wet | 64.8% | 75% | -10.2 [-25.9, 5.6] |
 
+## Map 11: Eyrie Heights (`m10`), your level 1
+
+- Throughput: 23780 games in 303.1 s = **78.5 games/s** (2 workers). Search: ga, budget 8000 games (8188 map cards, 0 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m10 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 22 cards (22 map cards + 0 owned by then); phase 2 22 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: muc. Left out: not in the map's own pool (BPRO) 263 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, anaconda-coil, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome mountain-sky (kin cliffs, volcanic-ash), terrain types Mountain, field aiGuardLethal, phase:cycle, wind, windfall, unit types Bird 10, Bovine 3, Chipmunk 2, Mountain 13, Owl 2, Rodent 3, skill families evasion 3, ranged 2, strike-first 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 687; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 81.8% [80.1%, 83.6%], mirror 86.1%, road 69.2%: 4x Owl Nightwatch, 2x Chamois Leaper, 2x Eagle-Owl Quartermaster, 2x Peak Condor, 2x Swamp Alligator, 1x Alpine Marmot, 1x Apollo Butterfly, 1x Gale Swift, 1x Gangrenous Leech, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Peregrine Stooper, 1x Wound Reaver
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 81.8% [80.1%, 83.6%], 0 copies from the optimum: 4x Owl Nightwatch, 2x Chamois Leaper, 2x Eagle-Owl Quartermaster, 2x Peak Condor, 2x Swamp Alligator, 1x Alpine Marmot, 1x Apollo Butterfly, 1x Gale Swift, 1x Gangrenous Leech, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Peregrine Stooper, 1x Wound Reaver
+1. 80.1% [78.3%, 82%], 11 copies from the optimum: 3x Alpine Salamander, 3x Eagle-Owl Quartermaster, 2x Gannet Nestweaver, 2x Kittiwake Flock, 2x Owl Nightwatch, 2x Peregrine Stooper, 1x Apollo Butterfly, 1x Eyrie Warden, 1x Gangrenous Leech, 1x Mountain Goat Climber, 1x Swamp Alligator, 1x Wound Reaver
+2. 76% [74%, 77.9%], 10 copies from the optimum: 2x Alpine Swift, 2x Eagle-Owl Quartermaster, 2x Owl Nightwatch, 2x Seed-cache Squirrel, 2x Wound Reaver, 1x Alpine Marmot, 1x Alpine Salamander, 1x Chipmunk Hoarder, 1x Eyrie Warden, 1x Gale Swift, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mountain Hare, 1x Peregrine Stooper, 1x Swamp Alligator
+3. 76.4% [74.6%, 78.3%], 8 copies from the optimum: 4x Gale Swift, 2x Chamois Leaper, 2x Golden Eagle Diver, 2x Ibex Rockcaller, 2x Peak Condor, 1x Alpine Marmot, 1x Chipmunk Hoarder, 1x Eagle-Owl Quartermaster, 1x Eyrie Warden, 1x Gangrenous Leech, 1x Kittiwake Flock, 1x Owl Nightwatch, 1x Wound Reaver
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 55% (+35) | 51.3% (+9) | 56.3% (+44) |
+| 1 | 45% (-35) | - | 49.4% (-4) | 52.5% (+17) |
+| 2 | 48.7% (-9) | 50.6% (+4) | - | 45.3% (-33) |
+| 3 | 43.7% (-44) | 47.5% (-17) | 54.7% (+33) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 523 (229 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 24.1 to 65.5 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 11-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 15.2% | 65.5 ±3 | 90% |
+| 11-2 skirmish's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 49.6% | 32 ±3.9 | 86.3% |
+| 11-3 skirmish's deck | 86.7% [76.3%-93%] | 326 [203, 449] | 41.4% | 40.2 ±3.8 | 82.5% |
+| 11-4 skirmish's deck | 78.9% [67.4%-87.1%] | 229 [126, 332] | 46.5% | 35.5 ±3.8 | 78.8% |
+| 11-5 elite's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 52.4% | 29.3 ±3.8 | 75% |
+| 11-6 elite's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 31.5% | 49.3 ±3.6 | 71.3% |
+| 11-7 elite's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 42.2% | 38.8 ±3.8 | 67.5% |
+| 11-8 elite's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 47.7% | 33.3 ±3.7 | 63.8% |
+| 11-9 elite's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 57.7% | 24.1 ±3.6 | 60% |
+| 11-10 miniboss's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 42% | 38.8 ±3.6 | 40% |
+| reference starter deck under 11-1's field | 92.2% [83%-96.6%] | 429 [275, 582] | 17.9% | 63.3 ±3.4 | - |
+| reference deck (Map 11) under 11-2's field | 25% [16%-36.8%] | -191 [-288, -94] | 87.9% | -2.6 ±2.6 | - |
+| expected player deck (expectedPlayerDeck) under 11-3's field | 95.3% [87.1%-98.4%] | 523 [332, 715] | 13.9% | 67.1 ±3.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 11-1 skirmish | 96.9% [89.3%-99.1%] | 90% |
+| 11-2 skirmish | 45.3% [33.7%-57.4%] | 86.3% |
+| 11-3 skirmish | 50% [38.1%-61.9%] | 82.5% |
+| 11-4 skirmish | 51.6% [39.6%-63.4%] | 78.8% |
+| 11-5 elite | 71.9% [59.9%-81.4%] | 75% |
+| 11-6 elite | 90.6% [81%-95.6%] | 71.3% |
+| 11-7 elite | 73.4% [61.5%-82.7%] | 67.5% |
+| 11-8 elite | 76.6% [64.9%-85.3%] | 63.8% |
+| 11-9 elite | 62.5% [50.3%-73.3%] | 60% |
+| 11-10 miniboss | 73.4% [61.5%-82.7%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:11-1 @ 11-1: aiGuardLethal, phase cycle, wind gale, windfall | 100% | 12.5% | +87.5 [79.4, 95.6] |
+| fight:11-2 @ 11-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 85.9% | 24.2% | +61.7 [48.2, 75.2] |
+| fight:11-3 @ 11-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 86.7% | 23.4% | +63.3 [50, 76.6] |
+| fight:11-4 @ 11-4: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 78.9% | 20.3% | +58.6 [44.6, 72.6] |
+| fight:11-5 @ 11-5: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 84.4% | 32.8% | +51.6 [37, 66.1] |
+| fight:11-6 @ 11-6: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 98.4% | 14.1% | +84.4 [75.3, 93.4] |
+| fight:11-7 @ 11-7: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 95.3% | 12.5% | +82.8 [73.2, 92.4] |
+| fight:11-8 @ 11-8: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 95.3% | 11.7% | +83.6 [74.2, 93] |
+| fight:11-9 @ 11-9: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 82.8% | 6.3% | +76.6 [65.6, 87.5] |
+| fight:11-10 @ 11-10: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 98.4% | 7.8% | +90.6 [83.4, 97.9] |
+| ref:starter @ 11-1: aiGuardLethal, phase cycle, wind gale, windfall | 92.2% | 25% | +67.2 [54.7, 79.7] |
+| ref:road11 @ 11-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 25% | 3.1% | +21.9 [10.4, 33.3] |
+| ref:expected @ 11-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 95.3% | 37.5% | +57.8 [44.9, 70.8] |
+
+## Map 11: The Aerie Vault (`mv`, side map of `m10`, opens on Map 15), your level 1
+
+- Throughput: 13746 games in 180.6 s = **76.1 games/s** (2 workers). Search: ga, budget 8000 games (9042 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mv --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 22 cards (22 map cards + 0 owned by then); phase 2 22 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 267 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, anaconda-coil, anhinga-spearbird, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome mountain-sky (kin cliffs, volcanic-ash), terrain types Mountain, field aiGuardLethal, boon, phase:cycle, wind, windfall, unit types Bird 8, Bovine 4, Chipmunk 2, Mountain 15, Rodent 3, skill families economy 2, evasion 2, ranged 2, strike-first 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 687; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 73.7% [70.8%, 76.5%], mirror 79.5%, road 56.3%: 3x Eagle-Owl Quartermaster, 3x Rockslide Ram, 2x Alpine Marmot, 2x Golden Eagle Diver, 2x Ibex Rockcaller, 2x Mountain Hare, 2x Wound Reaver, 1x Alpine Avalanche, 1x Alpine Swift, 1x Mountain Goat Climber, 1x Peregrine Stooper
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 73.7% [70.8%, 76.5%], 0 copies from the optimum: 3x Eagle-Owl Quartermaster, 3x Rockslide Ram, 2x Alpine Marmot, 2x Golden Eagle Diver, 2x Ibex Rockcaller, 2x Mountain Hare, 2x Wound Reaver, 1x Alpine Avalanche, 1x Alpine Swift, 1x Mountain Goat Climber, 1x Peregrine Stooper
+1. 75.3% [72.5%, 78.2%], 6 copies from the optimum: 3x Alpine Avalanche, 3x Eagle-Owl Quartermaster, 2x Golden Eagle Diver, 2x Ibex Rockcaller, 2x Mountain Hare, 2x Peregrine Stooper, 2x Wound Reaver, 1x Chipmunk Hoarder, 1x Gale Swift, 1x Gangrenous Leech, 1x Mountain Goat Climber
+2. 71.5% [68.5%, 74.4%], 11 copies from the optimum: 4x Chamois Leaper, 4x Rockslide Ram, 3x Eagle-Owl Quartermaster, 3x Gangrenous Leech, 2x Gale Swift, 1x Alpine Swift, 1x Ibex Rockcaller, 1x Peak Condor, 1x Wound Reaver
+3. 72% [69%, 75%], 7 copies from the optimum: 3x Eagle-Owl Quartermaster, 2x Alpine Marmot, 2x Gangrenous Leech, 2x Ibex Rockcaller, 2x Rockslide Ram, 2x Swamp Alligator, 2x Wound Reaver, 1x Alpine Salamander, 1x Chamois Leaper, 1x Chipmunk Hoarder, 1x Golden Eagle Diver, 1x Mountain Hare
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 40.6% (-66) | 46.9% (-22) | 39.1% (-77) |
+| 1 | 59.4% (+66) | - | 60.9% (+77) | 57.8% (+55) |
+| 2 | 53.1% (+22) | 39.1% (-77) | - | 35.9% (-100) |
+| 3 | 60.9% (+77) | 42.2% (-55) | 64.1% (+100) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 364 (124 to 394); as your deck they score 13.7 to 35.3 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 11-A-1 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 37.7% | 35.3 ±5.3 | 90% |
+| 11-A-2 skirmish's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 60.8% | 13.7 ±5.6 | 75% |
+| 11-A-3 skirmish's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 38.9% | 32.8 ±5.3 | 60% |
+| 11-A-4 boss's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 39.5% | 32.3 ±5.3 | 40% |
+| reference starter deck under 11-A-1's field | 92.2% [83%-96.6%] | 429 [275, 582] | 18.6% | 52.8 ±4.9 | - |
+| reference deck (Map 15) under 11-A-2's field | 40.6% [29.5%-52.9%] | -66 [-152, 20] | 82.6% | -5 ±4.7 | - |
+| expected player deck (expectedPlayerDeck) under 11-A-3's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 10.4% | 60.5 ±4.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 11-A-1 skirmish | 68.8% [56.6%-78.8%] | 90% |
+| 11-A-2 skirmish | 25% [16%-36.8%] | 75% |
+| 11-A-3 skirmish | 71.9% [59.9%-81.4%] | 60% |
+| 11-A-4 boss | 59.4% [47.1%-70.5%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:11-A-1 @ 11-A-1: aiGuardLethal, boon skyAmbush, phase cycle, wind gale, windfall | 79.7% | 56.3% | +23.4 [7.8, 39.1] |
+| fight:11-A-2 @ 11-A-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 67.2% | 70.3% | -3.1 [-19.2, 12.9] |
+| fight:11-A-3 @ 11-A-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 90.6% | 59.4% | +31.3 [17.3, 45.2] |
+| fight:11-A-4 @ 11-A-4: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 89.1% | 48.4% | +40.6 [26.2, 55.1] |
+| ref:starter @ 11-A-1: aiGuardLethal, boon skyAmbush, phase cycle, wind gale, windfall | 92.2% | 60.9% | +31.3 [17.6, 44.9] |
+| ref:road15 @ 11-A-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 40.6% | 25% | +15.6 [-0.4, 31.7] |
+| ref:expected @ 11-A-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 96.9% | 78.1% | +18.8 [7.8, 29.7] |
+
+## Map 12: The Briar Maze (`mh`), your level 1
+
+- Throughput: 19434 games in 259.7 s = **74.8 games/s** (2 workers, 2 sessions (resumed)). Search: ga, budget 8000 games (10064 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mh --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 16 cards (16 map cards + 0 owned by then); phase 2 16 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 224 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome maze-briar (kin meadow-forest, redwood), terrain types Field, Flora, Village, field aiGuardLethal, bishopPath, boon, graspingBriars, mirage, phase:cycle, rookRow, unit types Bird 3, Erinaceid 2, Field 3, Forest 2, Hedgehog 3, Mouse 2, Mustelid 2, Porcupine 2, Rodent 5, skill families strike-first 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 693; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 63.2% [60.4%, 66%], mirror 63.6%, road 62.1%: 5x Hedgehog Scout, 3x Carrion Crow, 3x Hedge Weasel, 3x Mouse Sapper, 3x Seed-cache Squirrel, 1x Bramble Hoglet, 1x Field Mouse, 1x Gatling Hog
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 63.2% [60.4%, 66%], 0 copies from the optimum: 5x Hedgehog Scout, 3x Carrion Crow, 3x Hedge Weasel, 3x Mouse Sapper, 3x Seed-cache Squirrel, 1x Bramble Hoglet, 1x Field Mouse, 1x Gatling Hog
+1. 61.5% [58.7%, 64.4%], 9 copies from the optimum: 3x Field Mouse, 3x Seed-cache Squirrel, 2x Carrion Crow, 2x Gatling Hog, 2x Hedgehog Scout, 1x Ant Hill, 1x Badger Lumberjack, 1x Bramble Hoglet, 1x Hedgerow Shrew, 1x Lyrebird Mimic, 1x Mouse Sapper, 1x Quillback Elder, 1x Quillguard
+2. 58.9% [56%, 61.7%], 7 copies from the optimum: 5x Hedgehog Scout, 3x Gatling Hog, 3x Hedge Weasel, 3x Mouse Sapper, 2x Bramble Hoglet, 2x Quillback Elder, 2x Thorn Shrike
+3. 57.4% [54.6%, 60.3%], 13 copies from the optimum: 5x Bramble Hoglet, 3x Gatling Hog, 2x Cunning Vixen, 2x Field Mouse, 2x Hedge Weasel, 2x Lyrebird Mimic, 1x Ant Hill, 1x Carrion Crow, 1x Hedgehog Scout, 1x Thorn Shrike
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 62.5% (+89) | 53.6% (+25) | 58% (+56) |
+| 1 | 37.5% (-89) | - | 50% (+0) | 49.1% (-6) |
+| 2 | 46.4% (-25) | 50% (+0) | - | 44.6% (-37) |
+| 3 | 42% (-56) | 50.9% (+6) | 55.4% (+37) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 77 (-11 to 293); as your deck they score 0.3 to 30.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 12-1 skirmish's deck | 48.4% [36.6%-60.4%] | -11 [-95, 73] | 64% | 0.4 ±4.9 | 90% |
+| 12-2 skirmish's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 30.9% | 30.6 ±4.7 | 84% |
+| 12-3 skirmish's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 49.6% | 14 ±5.2 | 78% |
+| 12-4 skirmish's deck | 51.6% [39.6%-63.4%] | 11 [-73, 95] | 63.9% | 0.3 ±4.9 | 72% |
+| 12-5 elite's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 54.9% | 8.5 ±5 | 66% |
+| 12-6 elite's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 32.5% | 30 ±4.9 | 60% |
+| 12-7 miniboss's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 35.7% | 26 ±5 | 40% |
+| reference starter deck under 12-1's field | 81.3% [70%-88.9%] | 255 [147, 362] | 32.5% | 29.2 ±4.8 | - |
+| reference deck (Map 12) under 12-2's field | 18.8% [11.1%-30%] | -255 [-362, -147] | 88.3% | -21.5 ±4 | - |
+| expected player deck (expectedPlayerDeck) under 12-3's field | 78.1% [66.6%-86.5%] | 221 [120, 323] | 31.2% | 30.8 ±4.9 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 12-1 skirmish | 43.8% [32.3%-55.9%] | 90% |
+| 12-2 skirmish | 79.7% [68.3%-87.7%] | 84% |
+| 12-3 skirmish | 48.4% [36.6%-60.4%] | 78% |
+| 12-4 skirmish | 43.8% [32.3%-55.9%] | 72% |
+| 12-5 elite | 71.9% [59.9%-81.4%] | 66% |
+| 12-6 elite | 75% [63.2%-84%] | 60% |
+| 12-7 miniboss | 71.9% [59.9%-81.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:12-1 @ 12-1: aiGuardLethal, graspingBriars, phase cycle | 48.4% | 56.3% | -7.8 [-25.1, 9.4] |
+| fight:12-2 @ 12-2: aiGuardLethal, graspingBriars, phase cycle, rookRow, terrain Open Meadow T1 | 84.4% | 90.6% | -6.2 [-17.7, 5.2] |
+| fight:12-3 @ 12-3: aiGuardLethal, boon secondBurrow, graspingBriars, phase cycle, terrain Open Meadow T1 | 59.4% | 53.1% | +6.3 [-10.9, 23.4] |
+| fight:12-4 @ 12-4: aiGuardLethal, bishopPath, graspingBriars, phase cycle, terrain Open Meadow T1 | 51.6% | 50% | +1.6 [-15.8, 18.9] |
+| fight:12-5 @ 12-5: aiGuardLethal, graspingBriars, phase cycle, terrain Open Meadow T2 (Healing 1) | 60.9% | 67.2% | -6.2 [-22.8, 10.3] |
+| fight:12-6 @ 12-6: aiGuardLethal, graspingBriars, mirage, phase cycle, terrain Open Meadow T2 (Healing 1) | 71.9% | 78.1% | -6.2 [-21.2, 8.7] |
+| fight:12-7 @ 12-7: aiGuardLethal, graspingBriars, phase cycle, terrain Open Meadow T2 (Healing 1) | 81.3% | 87.5% | -6.2 [-18.8, 6.3] |
+| ref:starter @ 12-1: aiGuardLethal, graspingBriars, phase cycle | 81.3% | 87.5% | -6.2 [-18.8, 6.3] |
+| ref:road12 @ 12-2: aiGuardLethal, graspingBriars, phase cycle, rookRow, terrain Open Meadow T1 | 18.8% | 23.4% | -4.7 [-18.8, 9.4] |
+| ref:expected @ 12-3: aiGuardLethal, boon secondBurrow, graspingBriars, phase cycle, terrain Open Meadow T1 | 78.1% | 85.9% | -7.8 [-21, 5.4] |
+
+## Map 13: The Redwood Deep (`mr`), your level 1
+
+- Throughput: 21418 games in 186.5 s = **114.8 games/s** (2 workers). Search: ga, budget 8000 games (11286 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mr --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 16 cards (16 map cards + 0 owned by then); phase 2 16 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 244 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome redwood (kin maze-briar, meadow-forest, taiga), terrain types Flora, Forest, Rainforest, Taiga, field aiGuardLethal, boon, canopy, phase:cycle, woods, unit types Bird 3, Canid 4, Cervid 3, Deer 3, Forest 2, Fox 3, skill families evasion 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 693; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 76.6% [74.3%, 78.9%], mirror 80.8%, road 63.9%: 5x Fox Kit, 3x Fawn Scout, 2x Bramble Hoglet, 2x Bramblewood Lynx, 2x Grizzly Vanguard, 2x Sergeant Bramblefox, 1x Carrion Crow, 1x Redwood Woodpecker, 1x Swift Fox, 1x Tasmanian Devil
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 3
+
+0. 76.6% [74.3%, 78.9%], 0 copies from the optimum: 5x Fox Kit, 3x Fawn Scout, 2x Bramble Hoglet, 2x Bramblewood Lynx, 2x Grizzly Vanguard, 2x Sergeant Bramblefox, 1x Carrion Crow, 1x Redwood Woodpecker, 1x Swift Fox, 1x Tasmanian Devil
+1. 74.1% [71.8%, 76.4%], 6 copies from the optimum: 5x Fox Kit, 3x Bramblewood Lynx, 3x Fawn Scout, 2x Shimmerwing Stag, 2x Stag Knight, 2x Swift Fox, 1x Bramble Hoglet, 1x Grizzly Vanguard, 1x Sergeant Bramblefox
+2. 74.7% [72.4%, 77%], 8 copies from the optimum: 4x Fox Kit, 3x Bramblewood Lynx, 3x Redwood Woodpecker, 3x Sergeant Bramblefox, 3x Swift Fox, 2x Carrion Crow, 1x Fawn Scout, 1x Stag Knight
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 |
+|---|---|---|---|
+| 0 | - | 61.7% (+83) | 50% (+0) |
+| 1 | 38.3% (-83) | - | 43% (-49) |
+| 2 | 50% (+0) | 57% (+49) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 255 (124 to 720); as your deck they score 15.4 to 56.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 13-1 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 18.8% | 56.2 ±4 | 90% |
+| 13-2 skirmish's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 59.9% | 16.6 ±4.3 | 85% |
+| 13-3 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 26.6% | 48.8 ±4.4 | 80% |
+| 13-4 skirmish's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 47.8% | 28.4 ±4.4 | 75% |
+| 13-5 elite's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 61.7% | 15.6 ±4.5 | 70% |
+| 13-6 elite's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 52% | 25.1 ±4.5 | 65% |
+| 13-7 elite's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 61.1% | 15.4 ±4.4 | 60% |
+| 13-8 miniboss's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 47.3% | 28.9 ±4.6 | 40% |
+| reference starter deck under 13-1's field | 93.8% [85%-97.5%] | 470 [301, 640] | 23.2% | 52.2 ±4.1 | - |
+| reference deck (Map 13) under 13-2's field | 53.1% [41.1%-64.8%] | 22 [-63, 106] | 77% | 1.3 ±4 | - |
+| expected player deck (expectedPlayerDeck) under 13-3's field | 95.3% [87.1%-98.4%] | 523 [332, 715] | 22.9% | 52.3 ±4.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 13-1 skirmish | 84.4% [73.6%-91.3%] | 90% |
+| 13-2 skirmish | 60.9% [48.7%-71.9%] | 85% |
+| 13-3 skirmish | 84.4% [73.6%-91.3%] | 80% |
+| 13-4 skirmish | 53.1% [41.1%-64.8%] | 75% |
+| 13-5 elite | 57.8% [45.6%-69.1%] | 70% |
+| 13-6 elite | 57.8% [45.6%-69.1%] | 65% |
+| 13-7 elite | 45.3% [33.7%-57.4%] | 60% |
+| 13-8 miniboss | 67.2% [55%-77.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:13-1 @ 13-1: aiGuardLethal, canopy, phase cycle, woods | 98.4% | 95.3% | +3.1 [-2.9, 9.1] |
+| fight:13-2 @ 13-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 78.1% | 76.6% | +1.6 [-12.9, 16.1] |
+| fight:13-3 @ 13-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 92.2% | 92.2% | +0 [-9.3, 9.3] |
+| fight:13-4 @ 13-4: aiGuardLethal, boon wildRage, canopy, phase cycle, terrain Old Woods T1, woods | 81.3% | 82.8% | -1.6 [-14.9, 11.7] |
+| fight:13-5 @ 13-5: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 67.2% | 71.9% | -4.7 [-20.6, 11.2] |
+| fight:13-6 @ 13-6: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 70.3% | 89.1% | -18.7 [-32.3, -5.2] |
+| fight:13-7 @ 13-7: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 78.1% | 71.9% | +6.3 [-8.7, 21.2] |
+| fight:13-8 @ 13-8: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 81.3% | 85.9% | -4.7 [-17.5, 8.1] |
+| ref:starter @ 13-1: aiGuardLethal, canopy, phase cycle, woods | 93.8% | 90.6% | +3.1 [-6.2, 12.4] |
+| ref:road13 @ 13-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 53.1% | 68.8% | -15.6 [-32.3, 1.1] |
+| ref:expected @ 13-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 95.3% | 90.6% | +4.7 [-4.1, 13.5] |
+
