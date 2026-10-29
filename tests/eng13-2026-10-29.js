@@ -67,7 +67,7 @@ function swing(att, seed, rules){ const {e, P} = mk(rules || {woods:true}, seed)
 { const res = []; for(let s = 1; s <= 60; s++) res.push(swing('x-arch', s)); const cc = res.filter(r=> /canopyCover/.test(r)).length;
   ok(cc > 15 && cc < 50, `a shot (Arrow) is dodged on about half the seeds (${cc} of 60)`); }
 { let cc = 0; for(let s = 1; s <= 30; s++) if(/canopyCover/.test(swing('x-fly', s, {}))) cc++; ok(cc === 0, `in the open there is no cover (${cc})`); }
-{ const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; ok(/shots and skills/.test(TXT['ui.sk-canopy-cover']) && /Flying/.test(TXT['ui.sk-canopy-cover']), 'the Canopy Cover line names shots, skills and Flying attackers');
+{ const TXT = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT; ok(/shots, skills and Flying attacks/.test(TXT['ui.sk-canopy-cover']) && /Flying/.test(TXT['ui.sk-canopy-cover']), 'the Canopy Cover line names shots, skills and Flying attackers');
   const cat = fs.readFileSync(path.join(ROOT, 'docs', 'effects-catalogue.md'), 'utf8'); ok(/en5FromAbove/.test(cat) && /Slow 🐌/.test(cat), 'docs/effects-catalogue.md describes both'); }
 
 // ---- 1. the Ambush: optional and hard ------------------------------------------------------------------------------------------------

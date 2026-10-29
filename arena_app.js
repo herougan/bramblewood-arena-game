@@ -22902,8 +22902,10 @@ function ambushPending(){ const st = ambushState(); return !!st.triggered && !(l
 function applyAmbushNode(){
   const st = ambushState(), map = ambushMap(); if(!st.triggered || !map || map.nodes.some(n=> n.key === 'ambush')) return;
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
-  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS) and its difficulty (AMBUSH_HARD), not the weak deck a save stored when it triggered
-  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: ambushDeck(foe), hqHp:24,
+  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS, plain data: this runs at load, before the card defs can be read) and its difficulty
+  // (AMBUSH_HARD), not the weak deck a save stored when it triggered
+  const fixed = AMBUSH_DECKS[hb ? 'hummingbirds' : 'otters'];
+  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: fixed ? Object.assign({}, fixed) : (st.deck || ambushDeck(foe)), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
     rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }

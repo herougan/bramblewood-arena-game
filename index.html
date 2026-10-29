@@ -50832,7 +50832,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'f40555ef25ea', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'c21cb0534cee', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -70161,8 +70161,10 @@ function ambushPending(){ const st = ambushState(); return !!st.triggered && !(l
 function applyAmbushNode(){
   const st = ambushState(), map = ambushMap(); if(!st.triggered || !map || map.nodes.some(n=> n.key === 'ambush')) return;
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
-  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS) and its difficulty (AMBUSH_HARD), not the weak deck a save stored when it triggered
-  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: ambushDeck(foe), hqHp:24,
+  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS, plain data: this runs at load, before the card defs can be read) and its difficulty
+  // (AMBUSH_HARD), not the weak deck a save stored when it triggered
+  const fixed = AMBUSH_DECKS[hb ? 'hummingbirds' : 'otters'];
+  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: fixed ? Object.assign({}, fixed) : (st.deck || ambushDeck(foe)), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
     rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }

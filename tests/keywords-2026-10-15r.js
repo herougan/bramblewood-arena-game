@@ -176,7 +176,7 @@ ok(/if\(r\.swampFever\) add\('swampFever'/.test(src) && /if\(r\.freezing\) add\(
   ok(H5.every(h=> { const n = MAIN.indexOf(h.map); return n >= 1 && n <= 20 && h.node.code.startsWith(n + '-H'); }), '56. all on Maps 1–20, coded X-H');
   ok(H5.every(h=> h.reveal && Object.keys(h.reveal).length), '56. each has a reveal condition'); }
 ok(/function refreshHiddenSkirmishes\(\)/.test(src) && /try\{ refreshHiddenSkirmishes\(\); \}catch\(e\)\{\} \/\/ hidden skirmishes/.test(src), '56. revealed ones are put on their maps (applyNodeEdits and each map render)');
-ok(/!\(n\.chance > 0\) && !n\.secret\)\.every/.test(src), '56. a hidden skirmish never blocks the next map');
+ok(/!\(n\.chance > 0\) && !n\.secret && !n\.ambush \/\* 2026-10-29 \(ENG13\): the Ambush is optional \*\/\)\.every/.test(src), '56. a hidden skirmish never blocks the next map'); // 2026-10-29 ENG13: the filter also skips the optional Ambush
 ok(/\.map-node\.secret-pop\{animation:secretPop/.test(tpl) && /'toast\.hidden-skirmish-found'/.test(src), '56. a reveal pop and a toast');
 { // the reveal rules, run on their own
   const pick = name=>{ const i = src.indexOf(`function ${name}(`); let d = 0, j = src.indexOf('{', i); for(; j < src.length; j++){ if(src[j] === '{') d++; else if(src[j] === '}' && --d === 0) break; } return src.slice(i, j + 1); };
