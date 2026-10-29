@@ -73,9 +73,10 @@ const between = (s, a, b)=>{ const i = s.indexOf(a); if(i < 0) return ''; const 
   ok(/gsap\.fromTo\(el, \{x:dx\}, \{x:0,/.test(guard) && !/battlefieldScale > 0\) \? battlefieldScale : 1;\n\s*gsap\.fromTo\(el, \{x:dx\/sc\}/.test(guard), '... and glides a real snap back in those px');
   const f = fnSrc('setBoardLean'); const ctx = {}; vm.createContext(ctx); vm.runInContext('var battlefieldLeanX = 0, battlefieldTilt = 0, battlefieldPanLo = 0, battlefieldPanHi = 0;\n' + f, ctx);
   const L = (c, minX, maxX, W)=> ({c, minX, maxX, W, colW: 100});
-  ctx.setBoardLean(L(150, -100, 400, 1200), 1, 0); ok(ctx.battlefieldLeanX === 0 && ctx.battlefieldTilt === 0, `cards that all fit: no lean, no turn (${ctx.battlefieldLeanX}, ${ctx.battlefieldTilt})`);
-  ctx.setBoardLean(L(300, 100, 700, 1200), 1, 0); ok(Math.abs(ctx.battlefieldLeanX - (576 - 700)) < 1 && ctx.battlefieldTilt === 0, `a card past the right edge: just enough to bring it in (${ctx.battlefieldLeanX})`);
-  ctx.setBoardLean(L(-300, -800, 100, 1200), 1, 0); ok(Math.abs(ctx.battlefieldLeanX - (-576 + 800)) < 1, `past the left edge: the same, the other way (${ctx.battlefieldLeanX})`); }
+  // 2026-10-29 UI1: the camera rests on the mean of the units now (owner O3), so these three cases expect -mean (kept in frame) instead of "no move / just enough to bring a card in".
+  ctx.setBoardLean(L(150, -100, 400, 1200), 1, 0); ok(ctx.battlefieldLeanX === -150 && ctx.battlefieldTilt === 0, `cards that all fit: the camera moves to the cards' mean, no turn (${ctx.battlefieldLeanX}, ${ctx.battlefieldTilt})`);
+  ctx.setBoardLean(L(300, 100, 700, 1200), 1, 0); ok(Math.abs(ctx.battlefieldLeanX - (-300)) < 1 && ctx.battlefieldTilt === 0, `a mass right of the middle: the camera centres on it (${ctx.battlefieldLeanX})`);
+  ctx.setBoardLean(L(-300, -800, 100, 1200), 1, 0); ok(Math.abs(ctx.battlefieldLeanX - 300) < 1, `a mass left of the middle: the other way (${ctx.battlefieldLeanX})`); }
 
 // ---- 19:30 the bramble falls
 { ok(/M\.castleSink = function\(el, opts\)/.test(fxc) && /CASTLE_SINK_MS = 1900/.test(fxc), 'FX.C.castleSink exists');

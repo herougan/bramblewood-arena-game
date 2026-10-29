@@ -50762,7 +50762,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c8d5272e3b20', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'ddbd6df43eb4', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -84345,7 +84345,7 @@ function boardAnimationsBusy(){
 function measureBoardLean(inner, containerWidth){
   const r = inner.getBoundingClientRect(); const mid = r.left + r.width/2;
   const cards = [...inner.querySelectorAll('.board-card[data-uid]')].filter(el=> !el.classList.contains('empty-slot') && !el.classList.contains('center-slot-empty') && !el.classList.contains('slot-target'));
-  if(cards.length < 2) return null;
+  if(cards.length < 1) return null; // 2026-10-29 (package UI1, owner O3): one card is a mass too; an empty board falls back to the middle (null)
   let sum = 0, minX = Infinity, maxX = -Infinity;
   cards.forEach(el=>{ const b = el.getBoundingClientRect(); sum += (b.left + b.width/2) - mid; minX = Math.min(minX, b.left - mid); maxX = Math.max(maxX, b.right - mid); });
   const cw = cards[0].getBoundingClientRect().width, rs = getComputedStyle(cards[0].parentElement || inner), gp = parseFloat(rs.columnGap || rs.gap) || 0;
@@ -84354,24 +84354,27 @@ function measureBoardLean(inner, containerWidth){
 // Leans the camera about 40% of the way toward the cards' centre and turns it up to 3° the same way, never so far that
 // a card leaves the frame (24px margin). Reduced motion keeps the move but drops the turn.
 function setBoardLean(lean, scale, panMax){
-  // 2026-10-12 (user: "The camera shouldn't move for the first 5 central columns"): while every card sits within the middle
-  // five columns, the camera stays put.
-  if(lean && lean.colW > 0 && lean.minX >= -2.5*lean.colW - 2 && lean.maxX <= 2.5*lean.colW + 2) lean = null;
+  // 2026-10-29 (package UI1, owner O3: "we don't focus the camera on the middle but instead on the middle of the mass of units."): the
+  // camera now rests on the average position of the units on the board (both sides, every row; lean.c is that mean in px from the board's
+  // middle), not on the board's middle and not only as far as it takes to keep a card in frame (BV, 2026-10-24). It still never lets a card
+  // leave the frame (24 px margin) and it falls back to the middle when the board is empty (lean null). No jitter: the camera keeps where it
+  // is until the mass has moved by about a third of a column (units trading places, one more card in a row), then eases (smoothIfChanged) to the
+  // new mean. The old "stays put while every card sits in the middle five columns" rule is gone, since it kept the camera off the mass.
   if(!lean){ battlefieldLeanX = 0; battlefieldTilt = 0; battlefieldPanLo = -panMax; battlefieldPanHi = panMax; return; }
   const margin = 24, half = lean.W/2;
   let lo = -half + margin - lean.minX*scale, hi = half - margin - lean.maxX*scale;
   if(panMax > 0.5){ lo = -panMax; hi = panMax; }
   lo = Math.min(lo, 0); hi = Math.max(hi, 0);
   battlefieldPanLo = lo; battlefieldPanHi = hi;
-  // 2026-10-24 (package BV, owner 17:01 #6: "The battlefield should only move to zoom out or capture cards outside the field of
-  // vision"): the camera no longer leans 40% of the way toward the cards' centre nor turns toward them (both moved the board on a
-  // play that needed no move). It shifts only as far as it takes to bring cards that would sit outside the frame (24 px margin)
-  // into view, and not at all when they all fit. A span wider than the frame is centred on the cards.
   const L = -half + margin, Rr = half - margin, a = lean.minX*scale, b = lean.maxX*scale;
-  let need = 0;
-  if(b - a > Rr - L) need = -(a + b)/2; // wider than the frame: centre on the cards
-  else if(a < L) need = L - a; else if(b > Rr) need = Rr - b;
-  battlefieldLeanX = Math.abs(need) < 0.5 ? 0 : Math.max(lo, Math.min(hi, need));
+  // the shifts that keep the cards in frame (a card's edge at the margin): [L - a, Rr - b] when the span fits, [Rr - b, L - a] when it is wider
+  const kLo = Math.min(L - a, Rr - b), kHi = Math.max(L - a, Rr - b);
+  const inFrame = x=> Math.max(kLo, Math.min(kHi, x));
+  let need = inFrame(-lean.c*scale);
+  const prev = battlefieldLeanX, dead = 0.34 * Math.max(8, lean.colW || 0) * scale;
+  if(Math.abs(need - prev) < dead) need = inFrame(prev); // the mass has barely moved: keep the camera where it is
+  need = Math.max(lo, Math.min(hi, need));
+  battlefieldLeanX = Math.abs(need) < 0.5 ? 0 : need;
   battlefieldTilt = 0;
 }
 // The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
@@ -84533,7 +84536,7 @@ function fitBattlefieldZoom(){
   const mm = matchState, raid = !!(mm && mm.raidFull);
   // Only a NEW match frames instantly. A repaint mid-match rebuilds the wrapper with the current framing already on it
   // (see renderMatchUI's template), so it waits for the summon like any other render.
-  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); if(raid) mm._raidFrameKey = raidFrameKey(mm); return; }
+  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; battlefieldLeanX = 0; /* 2026-10-29 (UI1, O3): a new match starts with no remembered camera */ clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); if(raid) mm._raidFrameKey = raidFrameKey(mm); return; }
   if(raid && mm._raidFrameKey === raidFrameKey(mm)) return; // the raid keeps its framing (2026-10-18)
   clearTimeout(fitBattlefieldZoom._settleT);
   if(!fitBattlefieldZoom._waitStart) fitBattlefieldZoom._waitStart = performance.now();
