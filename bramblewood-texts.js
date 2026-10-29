@@ -1818,7 +1818,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-breach": "Every hit it lands also deals {n} damage to the enemy bramble.",
   "ui.sk-breach-codex": "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.",
   "ui.skn-canopy-cover": "Canopy Cover",
-  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.",
+  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.",
   "ui.sk-canopy-cover-codex": "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.",
   "ui.skn-timbered": "Timbered",
   "ui.sk-timbered": "While you hold 3 or more Lumber: {skills}.",

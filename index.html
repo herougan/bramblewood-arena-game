@@ -43297,7 +43297,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=5942506e25", "es": "assets/lang/es.js?v=9aeec358e4", "fr": "assets/lang/fr.js?v=7babc9f7eb", "id": "assets/lang/id.js?v=caebc9edf5", "it": "assets/lang/it.js?v=604941f3c0", "ja": "assets/lang/ja.js?v=64acc3dcd0", "ko": "assets/lang/ko.js?v=c93963b532", "pt": "assets/lang/pt.js?v=90cdd1d21f", "ta": "assets/lang/ta.js?v=77ebae0984", "tl": "assets/lang/tl.js?v=965244b8aa", "zh-Hans": "assets/lang/zh-Hans.js?v=d8bcc1c485", "zh-Hant": "assets/lang/zh-Hant.js?v=5516dc7388"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0b9387c57e", "es": "assets/lang/es.js?v=4424c5ef95", "fr": "assets/lang/fr.js?v=67ae6617bc", "id": "assets/lang/id.js?v=615f747f34", "it": "assets/lang/it.js?v=c04ea7b652", "ja": "assets/lang/ja.js?v=ef2f35d020", "ko": "assets/lang/ko.js?v=6d37f65f74", "pt": "assets/lang/pt.js?v=c18802f9a8", "ta": "assets/lang/ta.js?v=ea3eb209d2", "tl": "assets/lang/tl.js?v=c4f23dd896", "zh-Hans": "assets/lang/zh-Hans.js?v=0c9c5d0418", "zh-Hant": "assets/lang/zh-Hant.js?v=50a6a2c3a0"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45241,7 +45241,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-breach": "Every hit it lands also deals {n} damage to the enemy bramble.",
   "ui.sk-breach-codex": "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.",
   "ui.skn-canopy-cover": "Canopy Cover",
-  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.",
+  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.",
   "ui.sk-canopy-cover-codex": "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.",
   "ui.skn-timbered": "Timbered",
   "ui.sk-timbered": "While you hold 3 or more Lumber: {skills}.",
@@ -50832,7 +50832,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '20a08f098c58', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'f40555ef25ea', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

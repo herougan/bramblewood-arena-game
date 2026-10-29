@@ -3652,7 +3652,7 @@
  "Could not load players: {msg}": "Impossibile caricare i giocatori: {msg}",
  "Slow": "Lento",
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Agisce per ultima tra le unità con la stessa Velocità. Due unità Lente si alternano come al solito.",
- "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.": "Sotto gli alberi, questa unità di terra schiva metà dei tiri e delle abilità rivolti a lei e metà degli attacchi delle unità volanti.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sotto gli alberi: qualsiasi scontro su una mappa di foresta (i Boschi Antichi), Alta Volta o il Sottobosco. A terra: non Volante (un volante a terra conta). Copre gli attacchi a distanza (tiri, abilità, un Boomerang lanciato) e gli attaccanti volanti; l'attacco in mischia di un'unità di terra colpisce comunque. Un solo tiro, come Evasivo, e non in aggiunta a Evasivo. Colpo Sicuro ed Esposto la superano.",
- "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}"
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}",
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Sotto gli alberi, questa unità di terra schiva metà dei tiri, delle abilità e degli attacchi volanti rivolti a lei."
 }

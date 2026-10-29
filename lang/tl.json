@@ -3651,7 +3651,7 @@
  "Could not load players: {msg}": "Hindi ma-load ang mga manlalaro: {msg}",
  "Slow": "Mabagal",
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Huling kumikilos sa mga yunit na pareho ang Bilis. Dalawang Mabagal na yunit ay nagsasalitan gaya ng dati.",
- "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.": "Sa ilalim ng mga puno, naiiwasan ng yunit na ito sa lupa ang kalahati ng mga tira at kasanayang nakatutok dito, at ang kalahati ng mga atake ng mga lumilipad na yunit.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sa ilalim ng mga puno: anumang laban sa mapang kagubatan (ang Lumang Gubat), Mataas na Kanopi o ang Kasukalan. Sa lupa: hindi Lumilipad (bilang ang lumilipad na napababa). Tinatakpan nito ang mga atake mula sa malayo (tira, kasanayan, ibinatong Boomerang) at mga lumilipad na umaatake; tumatama pa rin ang malapitang atake ng yunit sa lupa. Isang tira ng tsansa, gaya ng Evasive, at hindi dagdag sa Evasive. Nakikita ito ng True Strike at Exposed.",
- "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}"
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}",
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Sa ilalim ng mga puno, naiiwasan ng yunit na ito sa lupa ang kalahati ng mga tira, kasanayan at atake ng lumilipad na nakatutok dito."
 }
