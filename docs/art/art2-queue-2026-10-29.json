@@ -1,0 +1,747 @@
+{
+ "built": "2026-10-29",
+ "note": "Listed cards (map lists) with no art, owner 22:23 R9",
+ "done": {
+  "bw-sheet-01-chatgpt.png": [
+   "thorn-shrike",
+   "wolf-spider-mother",
+   "field-vole",
+   "hedgerow-shrew"
+  ],
+  "Gemini_Generated_Image_j6rdokj6rdokj6rd.jpeg": [
+   "robin-redbreast",
+   "slow-worm",
+   "woodcock-lookout",
+   "pincushion-urchin"
+  ]
+ },
+ "cards": [
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "animal": "shrike",
+   "firstList": "m1",
+   "rarity": "rare",
+   "effects": [
+    "flying",
+    "bleed"
+   ]
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "animal": "wolf spider",
+   "firstList": "m1",
+   "rarity": "rare",
+   "effects": [
+    "brood"
+   ]
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "animal": "vole",
+   "firstList": "mf",
+   "rarity": "common",
+   "effects": [
+    "swarm"
+   ]
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "animal": "shrew",
+   "firstList": "mf",
+   "rarity": "common",
+   "effects": [
+    "quick"
+   ]
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "animal": "robin",
+   "firstList": "mf",
+   "rarity": "uncommon",
+   "effects": [
+    "flying",
+    "diurnal"
+   ]
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "animal": "slow-worm",
+   "firstList": "mf",
+   "rarity": "common",
+   "effects": [
+    "undead"
+   ]
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "animal": "woodcock",
+   "firstList": "mf",
+   "rarity": "common",
+   "effects": [
+    "crepuscular",
+    "keenEye"
+   ]
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "animal": "sea urchin",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "thorns",
+    "tide"
+   ]
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "animal": "crab",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "animal": "oystercatcher",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "pierce"
+   ]
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "animal": "crab",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "hunter",
+    "hunterVs",
+    "crabClaws"
+   ]
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "animal": "grey seal",
+   "firstList": "mb",
+   "rarity": "uncommon",
+   "effects": [
+    "tide",
+    "guardian"
+   ]
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "animal": "sturgeon",
+   "firstList": "mb",
+   "rarity": "uncommon",
+   "effects": [
+    "armor",
+    "tide"
+   ]
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "animal": "shrew",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "venomous"
+   ]
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "animal": "muskrat",
+   "firstList": "mb",
+   "rarity": "uncommon",
+   "effects": [
+    "tide",
+    "bulwark"
+   ]
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "animal": "desman",
+   "firstList": "mb",
+   "rarity": "uncommon",
+   "effects": [
+    "tide"
+   ]
+  },
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "animal": "vole",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "tide",
+    "evasive"
+   ]
+  },
+  {
+   "id": "muskrat-reedgatherer",
+   "name": "Muskrat Reedgatherer",
+   "animal": "muskrat",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "stockpile"
+   ]
+  },
+  {
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "animal": "algae",
+   "firstList": "mb",
+   "rarity": "common",
+   "effects": [
+    "bloomCopy"
+   ]
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "animal": "puffin",
+   "firstList": "mc",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "tide",
+    "dive"
+   ]
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "animal": "peregrine falcon",
+   "firstList": "mc",
+   "rarity": "uncommon",
+   "effects": [
+    "pounce",
+    "flying"
+   ]
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "animal": "kittiwake",
+   "firstList": "mc",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "swarm"
+   ]
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "animal": "chough",
+   "firstList": "mc",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "mountainClimber"
+   ]
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "animal": "razorbill",
+   "firstList": "mc",
+   "rarity": "uncommon",
+   "effects": [
+    "flying",
+    "bleed"
+   ]
+  },
+  {
+   "id": "gannet-nestweaver",
+   "name": "Gannet Nestweaver",
+   "animal": "gannet",
+   "firstList": "mc",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "triggers"
+   ]
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "animal": "fire ant",
+   "firstList": "m2",
+   "rarity": "uncommon",
+   "effects": [
+    "poison",
+    "swarm",
+    "tide"
+   ]
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "animal": "gar",
+   "firstList": "mw",
+   "rarity": "rare",
+   "effects": [
+    "armor",
+    "bleed",
+    "tide"
+   ]
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "animal": "mink",
+   "firstList": "mw",
+   "rarity": "uncommon",
+   "effects": [
+    "hunter",
+    "hunterVs"
+   ]
+  },
+  {
+   "id": "nutria-reedcutter",
+   "name": "Nutria Reedcutter",
+   "animal": "nutria",
+   "firstList": "mw",
+   "rarity": "common",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "animal": "bittern",
+   "firstList": "m8",
+   "rarity": "uncommon",
+   "effects": [
+    "invisible",
+    "daunt"
+   ]
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "animal": "newt",
+   "firstList": "m8",
+   "rarity": "uncommon",
+   "effects": [
+    "poison",
+    "detonate"
+   ]
+  },
+  {
+   "id": "cane-toad",
+   "name": "Cane Toad",
+   "animal": "cane toad",
+   "firstList": "m8",
+   "rarity": "uncommon",
+   "effects": [
+    "poison",
+    "greaterPoison"
+   ]
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "animal": "harrier",
+   "firstList": "m8",
+   "rarity": "uncommon",
+   "effects": [
+    "flying",
+    "predator"
+   ]
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "animal": "pig",
+   "firstList": "mu",
+   "rarity": "uncommon",
+   "effects": [
+    "onReadyGold"
+   ]
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "animal": "shieldbug",
+   "firstList": "mu",
+   "rarity": "common",
+   "effects": [
+    "armor"
+   ]
+  },
+  {
+   "id": "sleepless-shrew",
+   "name": "Sleepless Shrew",
+   "animal": "shrew",
+   "firstList": "mu",
+   "rarity": "common",
+   "effects": [
+    "wakeful"
+   ]
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "animal": "huntsman spider",
+   "firstList": "m4",
+   "rarity": "rare",
+   "effects": [
+    "pounce"
+   ]
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "animal": "whip spider",
+   "firstList": "m4",
+   "rarity": "uncommon",
+   "effects": [
+    "sonar",
+    "bleed"
+   ]
+  },
+  {
+   "id": "badger-stonemason",
+   "name": "Badger Stonemason",
+   "animal": "badger",
+   "firstList": "m4",
+   "rarity": "uncommon",
+   "effects": [
+    "quarry"
+   ]
+  },
+  {
+   "id": "prospector-mole",
+   "name": "Prospector Mole",
+   "animal": "mole",
+   "firstList": "m4",
+   "rarity": "common",
+   "effects": [
+    "prospector"
+   ]
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "animal": "manatee",
+   "firstList": "mk",
+   "rarity": "rare",
+   "effects": [
+    "regen",
+    "guardian",
+    "tide"
+   ]
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "animal": "sea krait",
+   "firstList": "mk",
+   "rarity": "uncommon",
+   "effects": [
+    "venomous",
+    "nocturnal"
+   ]
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "animal": "fishing cat",
+   "firstList": "mk",
+   "rarity": "rare",
+   "effects": [
+    "pounce"
+   ]
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "animal": "barracuda",
+   "firstList": "m7",
+   "rarity": "rare",
+   "effects": [
+    "tide",
+    "quick"
+   ]
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "animal": "parrotfish",
+   "firstList": "m7",
+   "rarity": "common",
+   "effects": [
+    "tide",
+    "pierce"
+   ]
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "animal": "chamois",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "mountainClimber",
+    "pounce"
+   ]
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "animal": "hare",
+   "firstList": "m10",
+   "rarity": "common",
+   "effects": [
+    "evasive",
+    "frostbite"
+   ]
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "animal": "butterfly",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "flying",
+    "thorns"
+   ]
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "animal": "salamander",
+   "firstList": "m10",
+   "rarity": "common",
+   "effects": [
+    "regen"
+   ]
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "animal": "swift",
+   "firstList": "m10",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "quick"
+   ]
+  },
+  {
+   "id": "gale-swift",
+   "name": "Gale Swift",
+   "animal": "swift",
+   "firstList": "m10",
+   "rarity": "common",
+   "effects": [
+    "flying",
+    "storm"
+   ]
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "animal": "wolf",
+   "firstList": "m10",
+   "rarity": "rare",
+   "effects": [
+    "packHowl"
+   ]
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "animal": "fulmar",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "flying",
+    "thorns",
+    "storm"
+   ]
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "animal": "hyena",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "executioner"
+   ]
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "animal": "weasel",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "predator"
+   ]
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "animal": "polar bear",
+   "firstList": "m10",
+   "rarity": "veryrare",
+   "effects": [
+    "ambush",
+    "hibernate"
+   ]
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "animal": "caribou",
+   "firstList": "m10",
+   "rarity": "uncommon",
+   "effects": [
+    "mountainClimber",
+    "frostbite"
+   ]
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow",
+   "animal": "crow",
+   "firstList": "mh",
+   "rarity": "common",
+   "effects": [
+    "scavenge",
+    "flying"
+   ]
+  },
+  {
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "animal": "woodpecker",
+   "firstList": "mr",
+   "rarity": "uncommon",
+   "effects": [
+    "milling"
+   ]
+  },
+  {
+   "id": "cone-cutter-squirrel",
+   "name": "Cone-cutter Squirrel",
+   "animal": "red squirrel",
+   "firstList": "mt",
+   "rarity": "common",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "talus-pika",
+   "name": "Talus Pika",
+   "animal": "pika",
+   "firstList": "m6",
+   "rarity": "common",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "animal": "greenland shark",
+   "firstList": "m6",
+   "rarity": "rare",
+   "effects": [
+    "carrion",
+    "armor",
+    "tide"
+   ]
+  },
+  {
+   "id": "sandfish",
+   "name": "Sandfish",
+   "animal": "sandfish skink",
+   "firstList": "md",
+   "rarity": "common",
+   "effects": [
+    "invisible"
+   ]
+  },
+  {
+   "id": "dune-packrat",
+   "name": "Dune Packrat",
+   "animal": "pack rat",
+   "firstList": "md",
+   "rarity": "uncommon",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "quicksand-queen",
+   "name": "Quicksand Queen",
+   "animal": "ant",
+   "firstList": "md",
+   "rarity": "veryrare",
+   "effects": [
+    "trap",
+    "tangle"
+   ]
+  },
+  {
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "animal": "dung beetle",
+   "firstList": "m3",
+   "rarity": "uncommon",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "anvilwhisker-otter",
+   "name": "Anvilwhisker Otter",
+   "animal": "otter",
+   "firstList": "m3",
+   "rarity": "uncommon",
+   "effects": [
+    "triggers"
+   ]
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "animal": "tortoise",
+   "firstList": "m21",
+   "rarity": "uncommon",
+   "effects": [
+    "prayer",
+    "prayerWard"
+   ]
+  }
+ ]
+}
