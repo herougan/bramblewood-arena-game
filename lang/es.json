@@ -3613,5 +3613,16 @@
  "Undo": "Deshacer",
  "Copy my picks": "Copiar mis elecciones",
  "Copied: paste it to Claude": "Copiado: pégalo a Claude",
- "Nothing changed yet": "Nada cambiado aún"
+ "Nothing changed yet": "Nada cambiado aún",
+ "Carried": "Heredada",
+ "Unique": "Propia",
+ "Your note": "Tu nota",
+ "Claude's pick": "Elección de Claude",
+ "You asked for this card (or this cut) in one of your notes.": "Pediste esta carta (o este recorte) en una de tus notas.",
+ "Claude chose this one; you did not ask for it.": "Claude eligió esta; tú no la pediste.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "Copia tus elecciones de Recortar/Conservar como texto, listo para pegar a Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} cartas nuevas, {y}/{m} cartas heredadas",
+ "{x}/{n} new cards": "{x}/{n} cartas nuevas",
+ "{x} new cards, {y} carried cards": "{x} cartas nuevas, {y} cartas heredadas",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "La emboscada está en medio de su camino: no se puede mover ni enlazar."
 }

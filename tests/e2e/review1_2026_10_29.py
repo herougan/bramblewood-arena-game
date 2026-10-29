@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
-"""Package REVIEW1 (2026-10-29): browser checks and screenshots of the skirmish panel's admin buttons (the 🃏 Map cards button after "Mark cleared")
+"""Package REVIEW1 (2026-10-29), reworked by REVIEW2 (owner 19:14: panels, pills, large cards, Copy tooltip, X/N Y/M line): browser checks and screenshots of the skirmish panel's admin buttons (the 🃏 Map cards button after "Mark cleared")
 and of the Map cards overlay with Chosen / Cut cards / Maybe, at 1366 and 390. Fake review entries are set inside the page only (MAP_REVIEW.maps),
 never in canonical/map-review.json.
-    python3 tests/e2e/review1_2026_10_29.py [--widths 1366 390] [--keep]    # shots in tests/out/shots/rv1-*.png; --keep copies them to docs/screens/review1/
+    python3 tests/e2e/review1_2026_10_29.py [--widths 1366 390] [--keep]    # shots in tests/out/shots/rv2-*.png; --keep copies them to docs/screens/review2/
 Build first. Exits 1 on a failed check."""
-import argparse, asyncio, http.server, socketserver, threading, functools, os, sys, shutil
+import re, argparse, asyncio, http.server, socketserver, threading, functools, os, sys, shutil
 from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 OUT = os.path.join(ROOT, 'tests', 'out', 'shots'); os.makedirs(OUT, exist_ok=True)
-KEEP = os.path.join(ROOT, 'docs', 'screens', 'review1')
+KEEP = os.path.join(ROOT, 'docs', 'screens', 'review2')
 CHROME = '/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell'
 DONE = ("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1'); localStorage.setItem('bramblewood_arena_faction','otters');"
         "localStorage.setItem('bramblewood_arena_adminmode','1');"
@@ -22,7 +22,7 @@ def serve():
         def log_message(self, *a): pass
     h = socketserver.TCPServer(('127.0.0.1', 0), functools.partial(Q, directory=ROOT)); threading.Thread(target=h.serve_forever, daemon=True).start(); return h
 async def shot(pg, name, w):
-    f = os.path.join(OUT, f'rv1-{name}-{w}.png'); await pg.screenshot(path=f, animations='allow'); shots.append(f); return f
+    f = os.path.join(OUT, f'rv2-{name}-{w}.png'); await pg.screenshot(path=f, animations='allow'); shots.append(f); return f
 async def run(b, url, w):
     ctx = await b.new_context(viewport={'width': w, 'height': 844 if w < 700 else 860}, has_touch=(w < 700))
     await ctx.grant_permissions(['clipboard-read', 'clipboard-write'])
@@ -54,24 +54,48 @@ async def run(b, url, w):
     await pg.keyboard.press('Escape')
     # 2. a fake review (in the page only)
     await pg.evaluate("""(()=>{ const T = window.__T, o = T.other, i = T.ids;
-      MAP_REVIEW.maps[T.map] = {chosen: i.slice(0, 6).map((id, k)=> ({id, why: 'Fake reason ' + (k + 1) + ': fits the map and fills a gap in the curve', by: ['owner', 'claude', 'kept'][k % 3]})),
+      MAP_REVIEW.maps[T.map] = {chosen: i.slice(0, 6).map((id, k)=> ({id, why: (k % 3 === 0 ? 'Carried from an earlier map; ' : k % 3 === 1 ? 'Meadow card; skirmish reward of 5-2; ' : '') + 'Fake reason ' + (k + 1) + ': fits the map and fills a gap in the curve', by: ['owner', 'claude', 'kept'][k % 3]})),
         cut: o.slice(0, 3).map((id, k)=> ({id, why: 'Fake cut ' + (k + 1) + ': too strong for this early', by: k % 2 ? 'owner' : 'claude'})),
         maybe: o.slice(3, 6).map((id, k)=> ({id, why: 'Fake maybe ' + (k + 1) + ': good in other lists'}))};
       if(T.subId) MAP_REVIEW.maps[T.subId] = {chosen: [], cut: [], maybe: o.slice(6, 8).map(id=> ({id, why: 'Fake sub maybe'}))}; })()""")
     await pg.evaluate("document.getElementById('cnpMapCards').click()"); await pg.wait_for_timeout(700)
     r = await pg.evaluate("""({chosen: document.querySelectorAll('.rv1-part.is-chosen .rv1-tile').length, cut: document.querySelectorAll('.rv1-part.is-cut .rv1-tile').length, maybe: document.querySelectorAll('.rv1-part.is-maybe .rv1-tile').length,
-      badge: document.querySelectorAll('.rv1-part.is-chosen .rv1-by').length, why: [...document.querySelectorAll('.rv1-tile')].every(t=> t.title && t.querySelector('.rv1-why').textContent), zoom: document.querySelectorAll('.rv1-tile [data-zoom]').length,
-      none: document.querySelectorAll('.rv1-none').length, hs: document.documentElement.scrollWidth - innerWidth, mw: document.querySelector('.pk1-mc-modal').getBoundingClientRect().width,
-      parts: [...document.querySelectorAll('.rv1-part h4')].map(h=> h.textContent.trim().replace(/\\s+/g, ' ')).slice(0, 3), overflowTile: [...document.querySelectorAll('.rv1-tile')].filter(t=> t.getBoundingClientRect().right > document.querySelector('.pk1-mc-modal').getBoundingClientRect().right + 1).length})""")
+      pills: [...document.querySelectorAll('.rv1-part.is-chosen .rv1-tile')].map(t=> [...t.querySelectorAll('.rv2-pill')].map(x=> x.textContent).join('+')),
+      kept: [...document.querySelectorAll('.rv2-pill')].filter(x=> /kept/i.test(x.textContent)).length,
+      whyTitle: [...document.querySelectorAll('.rv1-tile')].every(t=> t.title), noWhyText: document.querySelectorAll('.rv1-why, .rv1-cap').length === 0, zoom: document.querySelectorAll('.rv1-tile [data-zoom]').length,
+      hs: document.documentElement.scrollWidth - innerWidth,
+      order: [...document.querySelector('.pk1-mc-sec.has-rv1').querySelectorAll('.rv1-part')].map(x=> x.className.replace(/rv1-part is-/, '')),
+      panel: (()=>{ const s = document.querySelector('.pk1-mc-sec.has-rv1'), c = getComputedStyle(s); return {bg: c.backgroundColor, bw: c.borderTopWidth, rad: c.borderTopLeftRadius}; })(),
+      cardW: Math.round(document.querySelector('.rv1-tile .vis4-mc-card').getBoundingClientRect().width), cardH: Math.round(document.querySelector('.rv1-tile .vis4-mc-card').getBoundingClientRect().height),
+      counts: [...document.querySelectorAll('.rv2-ct')].map(x=> x.textContent), tip: document.getElementById('rv2CopyTip').textContent, copyDesc: document.getElementById('rv1Copy').getAttribute('aria-describedby'),
+      overflowTile: [...document.querySelectorAll('.rv1-tile')].filter(t=> t.getBoundingClientRect().right > document.querySelector('.pk1-mc-modal').getBoundingClientRect().right + 1).length})""")
     ok(r['chosen'] == 6 and r['cut'] == 3 and r['maybe'] == 3, f'Chosen 6, Cut cards 3, Maybe 3 {r["chosen"]}/{r["cut"]}/{r["maybe"]}')
-    ok(r['badge'] == 6 and r['why'] and r['zoom'] >= 12, f'each tile has a by-badge (chosen), a why caption + title, and stays zoomable {r["zoom"]}')
-    ok(r['none'] >= 0 and r['hs'] <= 1 and r['overflowTile'] == 0, f'no horizontal overflow at {w} (page {r["hs"]}, tiles outside {r["overflowTile"]})')
-    print('   ', r['parts'])
+    ok(r['order'] == ['chosen', 'maybe', 'cut'], f'the parts run Chosen, Maybe, Cut cards {r["order"]}')
+    ok(r['panel']['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['panel']['bw'] != '0px' and r['panel']['rad'] != '0px', f'each list is a bounded panel (background, border, radius) {r["panel"]}')
+    ok(r['pills'][0] == 'Carried+Your note' and r['pills'][1] == "Skirmish+Unique+Claude's pick" and r['pills'][2] == 'Unique' and r['kept'] == 0, f'pills read off the why and by, no "kept" pill {r["pills"]}')
+    ok(r['whyTitle'] and r['noWhyText'] and r['zoom'] >= 12, f'the why is the tile title only (not printed), and tiles stay zoomable {r["zoom"]}')
+    ok(r['cardW'] >= (100 if w >= 700 else 80) and r['cardH'] > r['cardW'], f'large cards {r["cardW"]}x{r["cardH"]}')
+    ok(len(r['counts']) >= 1 and all(re.search(r'\d+/\d+ new cards', c) for c in r['counts']) and 'paste to Claude' in r['tip'] and r['copyDesc'] == 'rv2CopyTip', f'counts line {r["counts"]} and tooltip text {r["tip"]!r}')
+    ok(r['hs'] <= 1 and r['overflowTile'] == 0, f'no horizontal overflow at {w} (page {r["hs"]}, tiles outside {r["overflowTile"]})')
+    print('   ', r['counts'])
     await shot(pg, 'review-top', w)
     # zoom still works on a review tile
     await pg.hover('.rv1-part.is-cut .vis4-mc-card'); await pg.wait_for_timeout(500)
     z = await pg.evaluate("!!document.querySelector('.reward-zoom, .rw-zoom, #rewardZoomTip, [class*=zoom]:not([data-zoom]):not(.vis4-mc-card)')")
     await shot(pg, 'zoom', w)
+    # the Copy my picks tooltip shows on hover
+    await pg.hover('#rv1Copy'); await pg.wait_for_timeout(300)
+    vis = await pg.evaluate("getComputedStyle(document.getElementById('rv2CopyTip')).visibility")
+    ok(vis == 'visible', 'the Copy my picks tooltip shows on hover')
+    await shot(pg, 'copy-tip', w)
+    await pg.mouse.move(0, 0)
+    # a flip moves the X/N line: cut a unique chosen card, then undo it
+    before = await pg.evaluate("document.querySelector('.rv2-ct').textContent")
+    await pg.evaluate("document.querySelector('.rv1-part.is-chosen .rv1-tile[data-rv-carried=\"0\"] .rv1-act').click()")
+    after = await pg.evaluate("document.querySelector('.rv2-ct').textContent")
+    ok(int(after.split('/')[0]) == int(before.split('/')[0]) - 1, f'cutting a unique chosen card lowers X by one: {before!r} -> {after!r}')
+    await pg.evaluate("document.querySelector('.rv1-part.is-chosen .rv1-tile.is-flipped .rv1-act').click()")
+    ok(await pg.evaluate("document.querySelector('.rv2-ct').textContent") == before, 'undo gives it back')
     # flip a chosen card (cut) and a cut card (keep), copy
     await pg.mouse.move(0, 0)
     await pg.evaluate("document.querySelector('.rv1-part.is-chosen .rv1-act').click(); document.querySelector('.rv1-part.is-cut .rv1-act').click(); document.querySelector('.rv1-part.is-maybe .rv1-act').click();")

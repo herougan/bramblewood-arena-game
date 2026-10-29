@@ -3615,5 +3615,16 @@
  "Undo": "I-undo",
  "Copy my picks": "Kopyahin ang mga napili ko",
  "Copied: paste it to Claude": "Nakopya: i-paste kay Claude",
- "Nothing changed yet": "Wala pang nabago"
+ "Nothing changed yet": "Wala pang nabago",
+ "Carried": "Dala",
+ "Unique": "Natatangi",
+ "Your note": "Iyong tala",
+ "Claude's pick": "Pinili ni Claude",
+ "You asked for this card (or this cut) in one of your notes.": "Hiniling mo ang kard na ito (o ang pagtanggal na ito) sa isa sa mga tala mo.",
+ "Claude chose this one; you did not ask for it.": "Si Claude ang pumili nito; hindi mo ito hiniling.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "Kinokopya ang mga napili mong Tanggalin/Panatilihin bilang teksto, handa nang i-paste kay Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} bagong kard, {y}/{m} dalang kard",
+ "{x}/{n} new cards": "{x}/{n} bagong kard",
+ "{x} new cards, {y} carried cards": "{x} bagong kard, {y} dalang kard",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Nasa gitna ng daan nito ang Ambush: hindi ito maaaring ilipat o ikabit."
 }

@@ -24124,6 +24124,7 @@ function nodeRequiresAncestors(map, key, seen){ seen = seen || new Set(); const 
 async function toggleNodeLink(map, fromKey, toKey){
   const to = map.nodes.find(n=> n.key===toKey), from = map.nodes.find(n=> n.key===fromKey); if(!to || !from) return;
   if(to.kind==='tutorial'){ showToast(TX('toast.the-tutorial-marker-can-t-require'), 'warn'); return; }
+  if(to.ambush || from.ambush) return; // 2026-10-29 (package REVIEW2, owner: "Ambushes should not have drawn links"): the Ambush sits on a road, it never has a link of its own
   const reqs = (Array.isArray(to._designRequires) ? to._designRequires : (to.requires||[])).slice(), has = reqs.includes(fromKey); // 2026-10-17: the designed links, not the ones resolved past a hidden fight
   if(!has && nodeRequiresAncestors(map, fromKey).has(toKey)){ showToast(TX('toast.that-would-make-a-loop-already', {name: from.name, name2: to.name}), 'warn'); return; }
   const next = has ? reqs.filter(k=> k!==fromKey) : reqs.concat(fromKey);
@@ -24293,6 +24294,7 @@ function wireMapLayoutEditor(map, body){
         const t = ev.target.closest('[data-lkey]'); if(!t) return;
         ev.stopPropagation(); ev.preventDefault();
         const key = t.getAttribute('data-lkey');
+        if(t.classList.contains('is-ambush')) return; // 2026-10-29 (package REVIEW2): the Ambush takes no links
         if(key.startsWith('~')){ // a map tile: the selected fight becomes the one that reveals it (click again to clear)
           if(!conquestLinkFrom || conquestLinkFrom.startsWith('~')){ showToast('Click a skirmish first, then the map tile it should reveal.', 'warn'); return; }
           const from = conquestLinkFrom; conquestLinkFrom = null;
@@ -24329,13 +24331,14 @@ function wireMapLayoutEditor(map, body){
   const ensureLayout = ()=>{
     if(mapLayoutOverrides[map.id]) return mapLayoutOverrides[map.id];
     const pos = mapNodePositions(map), lay = {};
-    map.nodes.forEach((n,i)=>{ lay[n.key] = {x:+pos[i].x.toFixed(1), y:+pos[i].y.toFixed(1)}; });
+    map.nodes.forEach((n,i)=>{ if(n.ambush) return; /* 2026-10-29 (REVIEW2): the Ambush's spot is computed from its road, never saved */ lay[n.key] = {x:+pos[i].x.toFixed(1), y:+pos[i].y.toFixed(1)}; });
     return (mapLayoutOverrides[map.id] = lay);
   };
   const place = (el, key, x, y)=>{
     x = clamp(snap(x)); y = clamp(snap(y));
     { const L = ensureLayout(); L[key] = Object.assign({}, L[key], {x, y}); } // keeps a tile's `after` gate
     el.style.left = x+'%'; el.style.top = y+'%';
+    { const am = canvas.querySelector('.map-node.is-ambush'); if(am){ const sp = ambushRoadSpot(map, mapNodePositionsRaw(map)); if(sp){ am.style.left = sp.x + '%'; am.style.top = sp.y + '%'; } } } // 2026-10-29 (REVIEW2): the Ambush keeps the middle of its road while a neighbour is dragged (re-read from the layout just set)
     canvas.querySelectorAll(`line[data-a="${key}"]`).forEach(l=>{ l.setAttribute('x1', x); l.setAttribute('y1', y); });
     canvas.querySelectorAll(`line[data-b="${key}"]`).forEach(l=>{ l.setAttribute('x2', x); l.setAttribute('y2', y); });
     // 2026-10-15 ("The lines linking items on the conquest map are offset"): a link bowed into a curve follows the drag too (it
@@ -24346,6 +24349,7 @@ function wireMapLayoutEditor(map, body){
   };
   canvas.querySelectorAll('[data-lkey]').forEach(el=>{
     const key = el.getAttribute('data-lkey');
+    if(el.classList.contains('is-ambush')){ el.title = TX('ui.rv2-ambush-fixed'); return; } // 2026-10-29 (REVIEW2): the Ambush lies on its road: not draggable, no links
     el.setAttribute('tabindex', '0');
     el.removeAttribute('aria-hidden');
     el.title = 'Drag to move';
@@ -24373,7 +24377,31 @@ function wireMapLayoutEditor(map, body){
     });
   });
 }
+// 2026-10-29 (package REVIEW2, owner: "Ambushes should not have drawn links. (They were ambushes!) They should lie in the centre of the road (link) as well."):
+// mapRoadGeom is the road j -> i as the map draws it (straight, or bowed round a fight standing in the way; the Ambush never counts as in the way);
+// ambushRoadSpots puts the Ambush at the middle of the road it interrupted (the link into 3-2), computed from the other nodes' places, so it follows
+// them (a layout edit, a resize) and is never a hand-moved coordinate. No link into 3-2 (it has none): the Ambush keeps its saved spot.
+function mapRoadGeom(map, positions, j, i){
+  const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
+  const blocked = positions.some((P, k)=>{ if(k===i || k===j || (map.nodes[k] && map.nodes[k].ambush)) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
+  if(!blocked) return {blocked: false, cx: (A.x+B.x)/2, cy: (A.y+B.y)/2};
+  const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18);
+  return {blocked: true, cx: (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy: (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1)};
+}
+function ambushRoadSpot(map, positions){
+  try{
+    const ai = map.nodes.findIndex(n=> n.ambush); if(ai < 0) return null;
+    const ti = map.nodes.findIndex(n=> !n.ambush && skirmishCode(map.id, n.key) === AMBUSH_AT); if(ti < 0) return null;
+    const j = (map.nodes[ti].requires || []).map(k=> map.nodes.findIndex(n=> n.key === k)).find(x=> x >= 0 && !map.nodes[x].ambush); if(j === undefined) return null;
+    const A = positions[j], B = positions[ti], g = mapRoadGeom(map, positions, j, ti); if(!A || !B) return null;
+    return {index: ai, x: g.blocked ? 0.25*A.x + 0.5*g.cx + 0.25*B.x : g.cx, y: g.blocked ? 0.25*A.y + 0.5*g.cy + 0.25*B.y : g.cy};
+  }catch(e){ return null; }
+}
+function ambushOnRoad(map, pos){ const sp = ambushRoadSpot(map, pos); if(sp) pos[sp.index] = {x: sp.x, y: sp.y}; return pos; }
 function mapNodePositions(map){
+  return ambushOnRoad(map, mapNodePositionsRaw(map));
+}
+function mapNodePositionsRaw(map){
   // Hidden skirmishes (2026-10-15) stand where they were placed and don't reshuffle the rest of the trail.
   const sec = map.nodes.some(n=> n.secret || n.jumper || n.ambush); // so do the jumpers (2026-10-16) and the floating Ambush (2026-10-24, package MAP)
   const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper && !n.ambush)})); let k = 0; return map.nodes.map(n=> (n.secret || n.jumper || n.ambush) ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
@@ -24381,7 +24409,7 @@ function mapNodePositions(map){
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return tutSideCentred(map, base);
   const opening = map.id === 'm1' && !loadTutorial2Done();
-  return tutSideCentred(map, map.nodes.map((n,i)=> (!(opening && n.kind==='tutorial') && ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]));
+  return tutSideCentred(map, map.nodes.map((n,i)=> (!n.ambush && !(opening && n.kind==='tutorial') && ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]));
 }
 // 2026-10-18 (owner: "We talked about showing T1 and T2 as central tutorials without considering the positions of T3-5 and only
 // shifting later, when you unlock the conquest maps"): while T-2…T-4 are off the Tutorial map (the two tutorials not both won yet),
@@ -26282,15 +26310,15 @@ function renderConquestSubTab(body){
     if(tutPhase && n.kind!=='tutorial') return;
     if(n.kind==='tutorial' && n.stage===2 && !loadTutorialDone()) return;
     if(tutSideNodeHidden(map, n)) return; // 2026-10-16: no trail to a hidden T-2…T-4
+    if(n.ambush) return; // 2026-10-29 (package REVIEW2): the Ambush has no link of its own, it lies on the road it interrupted
     const reqs = Array.isArray(n.requires) ? n.requires : (i>0 ? [map.nodes[i-1].key] : []);
     reqs.forEach(reqKey=>{
       const j = nodeIndexByKey[reqKey];
-      if(j===undefined) return;
+      if(j===undefined || map.nodes[j].ambush) return;
       // 2026-10-08 (user: "the otter AND the scorpion are both linked to the raccoon"): a link that
       // would run straight behind another skirmish bows around it as a curve, so it never looks
       // like a chain through the skirmish in the middle.
-      const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
-      const blocked = positions.some((P, k)=>{ if(k===i || k===j) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
+      const A = positions[j], B = positions[i], geo = mapRoadGeom(map, positions, j, i), blocked = geo.blocked; // 2026-10-29 (package REVIEW2): one geometry for the road and the Ambush's midpoint
       let cls = nodeNeedsAllLinks(n) && reqs.length > 1 ? 'is-all' : ''; // 2026-10-25 (package FIX3, F1): links open on any won fight; the rare "all of these" fight's links are the dotted ones
       // Locked links (2026-10-12, user: "When the 'link' between skirmishes has not been unlocked ... the link should be
       // darkened as well. If 1 node is unlocked but the other isn't, the link fades a bit as it goes towards the locked
@@ -26303,7 +26331,7 @@ function renderConquestSubTab(body){
         st = ` style="stroke:url(#${gid})"`; cls += ' is-half'; }
       if(hiddenPopNow.has(n.key) || hiddenPopNow.has(map.nodes[j].key)) cls += ' trail-pop'; // 2026-10-17: a hidden skirmish's trail draws in as it pops onto the map
       cls = cls.trim();
-      if(blocked){ const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18), cx = (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy = (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1);
+      if(blocked){ const cx = geo.cx, cy = geo.cy;
         edgeLines.push(`<path class="${cls} is-curve"${st} data-a="${map.nodes[j].key}" data-b="${n.key}" d="M ${A.x} ${A.y} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${B.x} ${B.y}" />`); }
       else edgeLines.push(`<line ${cls ? `class="${cls}" ` : ''}${st} data-a="${map.nodes[j].key}" data-b="${n.key}" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}" />`);
     });
@@ -30578,10 +30606,11 @@ function vis4MapCardsHTML(map, node){
 // under each card a basic pack also gives (the 🃏 Map cards overlay).
 function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
+  const big = !!(opts && opts.large); // 2026-10-29 (package REVIEW2): the deck-size card, its pack tag under it in the flow
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
-    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
-    const pt = packs ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery${big ? ' is-large' : ''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
+    const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
+    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -30594,18 +30623,54 @@ function rv1ReviewOf(sec, top){
   const M = (MAP_REVIEW && MAP_REVIEW.maps) || {}, k = sec.key === 'cards' ? top : sec.key === 'special' ? top + ':special' : sec.sub;
   const r = M[k]; return r && ((r.chosen || []).length || (r.cut || []).length || (r.maybe || []).length) ? r : null;
 }
+// 2026-10-29 (package REVIEW2; owner 19:14: sections in their own areas, short pills instead of the why text, large cards, a tooltip on Copy my picks,
+// "X/N new cards, Y/M carried cards" beside it): the tile is the game's normal card (cardTileHTML at deck size), a row of pills read off the entry's
+// `why` and `by` ("Skirmish" for a skirmish reward / first-clear card, "Carried" or "Unique", "Your note" for by:owner, "Claude's pick" for by:claude;
+// no "kept" pill: the section says it), and the flip button. The full why stays as the tile's title.
+const RV2_SIDE_CLASS = {mp:'delve', mg:'delve', mz:'challenge', mj:'delve', mq:'challenge', ms:'challenge', mv:'challenge', mn:'delve', my:'delve', mpd:'delve', me:'challenge', mx:'boss', mo:'challenge', mi:'challenge', m9:'delve'}; // docs/balance/theme2-proposal-2026-10-28.json sideClasses
+const RV2_SIDE_UNIQUE = {delve: 3, challenge: 1, ask: 2, boss: 5}; // its rules.uniqueSub (a new location 3, an extra challenge 1, the Volcano Lair 5)
+function rv2IsCarried(e){ return /carried/i.test(String((e && e.why) || '')); }
+function rv2TagsOf(e){
+  const why = String((e && e.why) || ''), t = [];
+  if(/skirmish reward|first-clear/i.test(why)) t.push(['skirmish', TX('ui.rv2-tag-skirmish'), '']);
+  t.push(rv2IsCarried(e) ? ['carried', TX('ui.rv2-tag-carried'), ''] : ['unique', TX('ui.rv2-tag-unique'), '']);
+  if(e.by === 'owner') t.push(['owner', TX('ui.rv2-tag-owner'), TX('ui.rv2-tip-owner')]);
+  else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
+  return t;
+}
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
   const mark = kind === 'cut' ? '✂' : kind === 'maybe' ? '?' : '';
   return list.map(e=>{
-    const by = e.by === 'owner' ? TX('ui.rv1-by-owner') : e.by === 'claude' ? TX('ui.rv1-by-claude') : e.by === 'kept' ? TX('ui.rv1-by-kept') : '';
-    const why = (e.why || '') + (by && kind !== 'maybe' ? ' (' + by + ')' : '');
     const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
-    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" title="${escapeAttr(why)}">`
-      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true})
-      + `<span class="rv1-cap">${by && kind !== 'maybe' ? `<b class="rv1-by is-${escapeAttr(e.by)}">${escapeHtml(by)}</b>` : ''}<span class="rv1-why">${escapeHtml(e.why || '')}</span></span>`
+    const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
+    const pills = rv2TagsOf(e).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" title="${escapeAttr(e.why || '')}">`
+      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true})
+      + `<span class="rv2-pills">${pills}</span>`
       + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="false">${escapeHtml(btn[0])}</button></span>`;
   }).join('');
+}
+// N / M per list (owner 10-29 19:14): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
+// (same rule, cap 5; M = 0, no carried part, for a map nothing is carried to); a submap by its class (RV2_SIDE_UNIQUE) and carried 10+ (M = 10, or
+// more when the list already carries more); the Tutorial's lists and SPECIAL have no target.
+function rv2TargetsOf(sec, top, chosen, all){
+  const u = chosen.filter(e=> !rv2IsCarried(e)).length, c = chosen.filter(rv2IsCarried).length;
+  if(sec.key === 'cards' && top !== 'mtut') return {n: u >= 8 && u <= 11 ? u : 11, m: all.some(rv2IsCarried) ? (c >= 4 && c <= 5 ? c : 5) : 0};
+  if(sec.sub && sec.sub !== 'mtut12' && RV2_SIDE_UNIQUE[RV2_SIDE_CLASS[sec.sub]]) return {n: RV2_SIDE_UNIQUE[RV2_SIDE_CLASS[sec.sub]], m: Math.max(10, c)};
+  return null;
+}
+function rv2CountText(x, y, tg){
+  if(!tg) return TX('ui.rv2-count-free', {x, y});
+  return tg.m ? TX('ui.rv2-count', {x, n: tg.n, y, m: tg.m}) : TX('ui.rv2-count-new', {x, n: tg.n});
+}
+function rv2Update(ov){
+  ov.querySelectorAll('.pk1-mc-sec.has-rv1').forEach(sec=>{
+    let x = 0, y = 0;
+    sec.querySelectorAll('.rv1-tile').forEach(t=>{ const want = t.dataset.rvKind === 'chosen' ? !t.classList.contains('is-flipped') : t.classList.contains('is-flipped'); if(!want) return; if(t.dataset.rvCarried === '1') y++; else x++; });
+    const tg = sec.dataset.rvN ? {n: +sec.dataset.rvN, m: +sec.dataset.rvM} : null, txt = rv2CountText(x, y, tg);
+    ov.querySelectorAll(`[data-rv2-count="${sec.dataset.rvI}"] .rv2-ct`).forEach(el=>{ el.textContent = txt; });
+  });
 }
 function rv1PicksText(ov){
   const out = [];
@@ -30625,15 +30690,20 @@ function pk1OpenMapCards(mapId){
   if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
   const mapLabel = (m.icon ? m.icon + ' ' : '') + m.name;
-  const secs = mapPoolSections(top).map(s=>{
+  const bars = [];
+  const secs = mapPoolSections(top).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
-    if(!rv) return `<section class="pk1-mc-sec"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
+    if(!rv) return `<section class="pk1-mc-sec rv2-panel"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
+    // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
-    return `<section class="pk1-mc-sec has-rv1" data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}</section>`;
+    const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
+    const tg = rv2TargetsOf(s, top, chosen, all);
+    bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
+    return `<section class="pk1-mc-sec has-rv1 rv2-panel" data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}</section>`;
   }).join('');
   const anyRv = /has-rv1/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><button type="button" class="btn small" id="rv1Copy">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="panel-sub" id="rv1CopyMsg" role="status"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
@@ -30643,6 +30713,7 @@ function pk1OpenMapCards(mapId){
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
+    rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
   };
   document.getElementById('pk1McClose').addEventListener('click', close);
   const cp = document.getElementById('rv1Copy');
@@ -30652,6 +30723,7 @@ function pk1OpenMapCards(mapId){
     window.__rv1Last = txt;
     try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
   });
+  rv2Update(ov);
   try{ wireRewardZoom(ov); }catch(e){}
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
