@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "Isangkap sa isa sa mga unit mo: +{a}/+{h}. Isa bawat unit; ginagamit ang iyong laro.",
  "equipment": "isang kagamitan",
  "Equipping uses your play for the turn, and you have already played.": "Ang pag-equip ay gagamit ng tira mo sa turn, at nakatira ka na.",
- "Errand complete: {title}. Claim it on the Notices.": "Tapos ang utos: {title}. I-claim ito sa Mga Paunawa.",
- "Errand done!": "Tapos ang utos!",
- "Errand taken: {label}": "Tinanggap ang utos: {label}",
- "Errand: {title} — {v}/{g}": "Utos: {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "Inukit",
  "Eureka! I have found another way to lose. Next, the way to win.": "Eureka! May nahanap akong isa pang paraan para matalo. Susunod, ang paraan para manalo.",
@@ -3626,5 +3622,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} bagong kard, {y}/{m} dalang kard",
  "{x}/{n} new cards": "{x}/{n} bagong kard",
  "{x} new cards, {y} carried cards": "{x} bagong kard, {y} dalang kard",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "Nasa gitna ng daan nito ang Ambush: hindi ito maaaring ilipat o ikabit."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Nasa gitna ng daan nito ang Ambush: hindi ito maaaring ilipat o ikabit.",
+ "Quest complete: {title}. Claim it on the Notices.": "Tapos ang quest: {title}. I-claim ito sa Mga Paunawa.",
+ "Quest taken: {label}": "Tinanggap ang quest: {label}",
+ "Quest: {title} — {v}/{g}": "Quest: {title} — {v}/{g}"
 }

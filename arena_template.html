@@ -5342,17 +5342,6 @@
   @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
-  .match-history-list{display:flex; flex-direction:column; gap:6px;}
-  .match-history-row{display:grid; grid-template-columns:26px 1fr auto auto auto; align-items:center; gap:10px; font-size:12.5px; padding:9px 12px; border-radius:10px; background:var(--surface-2); cursor:pointer; transition:background .15s;}
-  .match-history-row:hover{background:var(--surface-2-hover, var(--surface));}
-  .match-history-row.expanded{border:1px solid var(--accent, #a5641f);}
-  .mh-result{font-family:'Baloo 2'; font-weight:800; font-size:13px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--badge-ink);}
-  .mh-result.mh-win{background:var(--green, #3f5c3a);}
-  .mh-result.mh-loss{background:var(--danger, #a5342a);}
-  .mh-result.mh-draw{background:var(--ink-soft, #7b8566);}
-  .mh-mode{font-weight:700;}
-  .mh-opponent, .mh-rounds, .mh-date{color:var(--ink-muted); white-space:nowrap;}
-  .match-history-log{display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; padding:8px 4px 2px; font-size:12px;}
   /* Sign-in gate modal (2026-09-24, batch #32) — the shared prompt Online Raid and Shop packs
      both open via requireSignIn() instead of duplicating their own sign-in UI. Reuses the
      existing .modal/.modal-overlay shell (see #editorOverlay) and the Profile tab's own
@@ -13667,6 +13656,18 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
 @media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
 @media (min-width:1700px) and (min-height:950px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 250px) / 4.55), 240px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
+/* 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead."): a card that drags at once, and the drop zones, take every
+   touch move (the browser must not start a scroll the shim's preventDefault comes too late for); a scrolling hand lets its cards pass a sideways swipe on to
+   the strip (JS: syncHandScroll sets .hs-scroll); for the whole of a drag the page takes no touch scroll and no overscroll chaining (body.bw-touch-dragging, set by the touch
+   shim). A touch that starts outside a card, a deck builder card (it needs the hold first) or a button still scrolls the page as before. */
+#handStrip [draggable="true"], #leaderWidget[draggable="true"], #view-play .battlefield [draggable="true"], .discardzone, .skipzone, .reserve-target{touch-action:none;}
+#handStrip.hs-scroll [draggable="true"]{touch-action:pan-x;}
+body.bw-touch-dragging, body.bw-touch-dragging *{touch-action:none !important;}
+html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:none;}
+/* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the two rules above set only --match-card-h on a desktop window, and with the extra
+   html.is-desk-centre class they beat the raid's own pair (#appWrap.in-match.mb2-raid), so the raid's enemy Deck and Environment cards got the big height (142 px) with the
+   raid's small width (64 px). The raid sets height and width together again, after them. */
+@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);} }
 @media (max-width:640px){ #myDeckList .deck-stack{width:clamp(64px, 19vw, 80px);} #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:8px;} }
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}

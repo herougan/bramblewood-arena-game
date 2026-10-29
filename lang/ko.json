@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "내 유닛 하나에 장착: +{a}/+{h}. 유닛당 하나. 플레이를 쓴다.",
  "equipment": "장비",
  "Equipping uses your play for the turn, and you have already played.": "장착은 이번 턴 행동을 쓰는데, 이미 행동했어요.",
- "Errand complete: {title}. Claim it on the Notices.": "심부름 완료: {title}. 공지에서 받으세요.",
- "Errand done!": "심부름 완료!",
- "Errand taken: {label}": "심부름을 맡았어요: {label}",
- "Errand: {title} — {v}/{g}": "심부름: {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "에칭",
  "Eureka! I have found another way to lose. Next, the way to win.": "유레카! 지는 방법을 또 하나 찾았다. 다음은 이기는 방법이다.",
@@ -3628,5 +3624,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "새 카드 {x}/{n}, 이월 카드 {y}/{m}",
  "{x}/{n} new cards": "새 카드 {x}/{n}",
  "{x} new cards, {y} carried cards": "새 카드 {x}, 이월 카드 {y}",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "매복은 길 한가운데에 있습니다. 옮기거나 연결할 수 없습니다."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "매복은 길 한가운데에 있습니다. 옮기거나 연결할 수 없습니다.",
+ "Quest complete: {title}. Claim it on the Notices.": "퀘스트 완료: {title}. 공지에서 받으세요.",
+ "Quest taken: {label}": "퀘스트을 맡았어요: {label}",
+ "Quest: {title} — {v}/{g}": "퀘스트: {title} — {v}/{g}"
 }

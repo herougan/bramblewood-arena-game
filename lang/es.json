@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "Equípala a una de tus unidades: +{a}/+{h}. Una por unidad; usa tu jugada.",
  "equipment": "un equipo",
  "Equipping uses your play for the turn, and you have already played.": "Equipar gasta tu jugada del turno, y ya has jugado.",
- "Errand complete: {title}. Claim it on the Notices.": "Encargo completado: {title}. Reclámalo en los Avisos.",
- "Errand done!": "¡Encargo hecho!",
- "Errand taken: {label}": "Encargo aceptado: {label}",
- "Errand: {title} — {v}/{g}": "Encargo: {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "Grabado",
  "Eureka! I have found another way to lose. Next, the way to win.": "¡Eureka! He encontrado otra forma de perder. Lo siguiente, la de ganar.",
@@ -3624,5 +3620,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} cartas nuevas, {y}/{m} cartas heredadas",
  "{x}/{n} new cards": "{x}/{n} cartas nuevas",
  "{x} new cards, {y} carried cards": "{x} cartas nuevas, {y} cartas heredadas",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "La emboscada está en medio de su camino: no se puede mover ni enlazar."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "La emboscada está en medio de su camino: no se puede mover ni enlazar.",
+ "Quest complete: {title}. Claim it on the Notices.": "Misión completada: {title}. Reclámala en los Avisos.",
+ "Quest taken: {label}": "Misión aceptada: {label}",
+ "Quest: {title} — {v}/{g}": "Misión: {title} — {v}/{g}"
 }

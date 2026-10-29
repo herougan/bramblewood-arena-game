@@ -5389,17 +5389,6 @@
   @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
-  .match-history-list{display:flex; flex-direction:column; gap:6px;}
-  .match-history-row{display:grid; grid-template-columns:26px 1fr auto auto auto; align-items:center; gap:10px; font-size:12.5px; padding:9px 12px; border-radius:10px; background:var(--surface-2); cursor:pointer; transition:background .15s;}
-  .match-history-row:hover{background:var(--surface-2-hover, var(--surface));}
-  .match-history-row.expanded{border:1px solid var(--accent, #a5641f);}
-  .mh-result{font-family:'Baloo 2'; font-weight:800; font-size:13px; width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--badge-ink);}
-  .mh-result.mh-win{background:var(--green, #3f5c3a);}
-  .mh-result.mh-loss{background:var(--danger, #a5342a);}
-  .mh-result.mh-draw{background:var(--ink-soft, #7b8566);}
-  .mh-mode{font-weight:700;}
-  .mh-opponent, .mh-rounds, .mh-date{color:var(--ink-muted); white-space:nowrap;}
-  .match-history-log{display:flex; flex-direction:column; gap:4px; max-height:280px; overflow-y:auto; padding:8px 4px 2px; font-size:12px;}
   /* Sign-in gate modal (2026-09-24, batch #32) — the shared prompt Online Raid and Shop packs
      both open via requireSignIn() instead of duplicating their own sign-in UI. Reuses the
      existing .modal/.modal-overlay shell (see #editorOverlay) and the Profile tab's own
@@ -13714,6 +13703,18 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
 @media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
 @media (min-width:1700px) and (min-height:950px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 250px) / 4.55), 240px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
+/* 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead."): a card that drags at once, and the drop zones, take every
+   touch move (the browser must not start a scroll the shim's preventDefault comes too late for); a scrolling hand lets its cards pass a sideways swipe on to
+   the strip (JS: syncHandScroll sets .hs-scroll); for the whole of a drag the page takes no touch scroll and no overscroll chaining (body.bw-touch-dragging, set by the touch
+   shim). A touch that starts outside a card, a deck builder card (it needs the hold first) or a button still scrolls the page as before. */
+#handStrip [draggable="true"], #leaderWidget[draggable="true"], #view-play .battlefield [draggable="true"], .discardzone, .skipzone, .reserve-target{touch-action:none;}
+#handStrip.hs-scroll [draggable="true"]{touch-action:pan-x;}
+body.bw-touch-dragging, body.bw-touch-dragging *{touch-action:none !important;}
+html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:none;}
+/* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the two rules above set only --match-card-h on a desktop window, and with the extra
+   html.is-desk-centre class they beat the raid's own pair (#appWrap.in-match.mb2-raid), so the raid's enemy Deck and Environment cards got the big height (142 px) with the
+   raid's small width (64 px). The raid sets height and width together again, after them. */
+@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);} }
 @media (max-width:640px){ #myDeckList .deck-stack{width:clamp(64px, 19vw, 80px);} #myDeckPool.pool-grid{grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:8px;} }
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}
@@ -43269,7 +43270,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=f82cf174c7", "es": "assets/lang/es.js?v=287f51bb6c", "fr": "assets/lang/fr.js?v=984cc1cb6c", "id": "assets/lang/id.js?v=452a289ddc", "it": "assets/lang/it.js?v=da46dc9913", "ja": "assets/lang/ja.js?v=642fac8b71", "ko": "assets/lang/ko.js?v=26fe12c8f3", "pt": "assets/lang/pt.js?v=d592fe1f51", "ta": "assets/lang/ta.js?v=75c6a42b6f", "tl": "assets/lang/tl.js?v=f369210388", "zh-Hans": "assets/lang/zh-Hans.js?v=3dbabadaec", "zh-Hant": "assets/lang/zh-Hant.js?v=1e52394566"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c90bf90626", "es": "assets/lang/es.js?v=55aab57b3d", "fr": "assets/lang/fr.js?v=9085649e0f", "id": "assets/lang/id.js?v=2dbe858dd5", "it": "assets/lang/it.js?v=938d38460d", "ja": "assets/lang/ja.js?v=d5b5f19f2d", "ko": "assets/lang/ko.js?v=88eecdfef9", "pt": "assets/lang/pt.js?v=b134e927cd", "ta": "assets/lang/ta.js?v=f7f80757c1", "tl": "assets/lang/tl.js?v=d3ab6191c9", "zh-Hans": "assets/lang/zh-Hans.js?v=106989d0da", "zh-Hant": "assets/lang/zh-Hant.js?v=a3b6502db2"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -44028,7 +44029,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.tower-refunded": "⚡ {n} Energy refunded: a lost Spire floor costs nothing.",
   "results.tower-replay": "A cleared Spire floor: free to fight again, no reward.",
   "toast.dust-maple-leaves": "{v1} {v2} +{dust} Dust, +{gold} Maple Leaves{v5}",
-  "toast.errand-taken": "📌 Errand taken: {label}",
+  "toast.errand-taken": "📌 Quest taken: {label}",
   "dialog.abandon-this-run-you-keep-the": "Abandon this run? You keep the rewards for the wins so far.",
   "results.vs": "VS",
   "results.rounds": "{rounds} rounds{v2}{v3}",
@@ -44490,8 +44491,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "fb.bughunt-reward": "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.",
   "fb.bughunt-title-reward": "Top hunters earn the 🐞 Bug Hunter title.",
   "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on.",
-  "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
-  "toast.errand": "📜 Errand: {title} — {v}/{g}",
+  "toast.errand-complete-claim-it-on-the": "📜 Quest complete: {title}. Claim it on the Notices.",
+  "toast.errand": "📜 Quest: {title} — {v}/{g}",
   "toast.voice-lines": "Voice lines:",
   "toast.npc-dialogue": "NPC dialogue:",
   "toast.nothing-to-fuse-no-card-has": "🧩 Nothing to fuse: no card has more plain copies than a deck can hold. Foil, Shiny and skinned copies are always kept.",
@@ -50769,7 +50770,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '5792ca19e1b0', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'b2c48f3d27f2', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59029,53 +59030,8 @@ async function loadMatchHistory(){
 // var, not let: read by matchHistoryPanelHTML, which can run before this line on an early render.
 var matchHistoryError = false;
 const MATCH_HISTORY_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
-function matchHistoryPanelHTML(){
-  if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
-  if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
-  if(matchHistoryError) return `<div class="panel"><h2>📜 Match History</h2>${netErrorHTML(TX('net.match-history-failed'), 'matchHistory', ()=>{ matchHistoryList = null; matchHistoryError = false; if(currentTab==='profile') renderProfile(); else loadMatchHistory(); })}</div>`; // renderProfile starts the load itself
-  if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a match and it shows up here.</p></div>`;
-  return `<div class="panel">
-    <h2>📜 Match History</h2>
-    <p class="panel-sub">Your last ${matchHistoryList.length} real matches — tap one to read back its full battle log.</p>
-    <div class="match-history-list">
-      ${matchHistoryList.map(row=>{
-        const when = new Date(row.played_at);
-        const whenStr = isNaN(when) ? '' : when.toLocaleDateString(undefined, {month:'short', day:'numeric'});
-        return `<div class="match-history-row" data-histid="${escapeAttr(row.id)}">
-          <span class="mh-result mh-${row.result}">${row.result==='win'?'W':row.result==='loss'?'L':'D'}</span>
-          <span class="mh-mode">${escapeHtml(MATCH_HISTORY_MODE_LABEL[row.mode]||row.mode)}</span>
-          <span class="mh-opponent">vs ${escapeHtml(row.opponent_label)}</span>
-          <span class="mh-rounds">${row.rounds||'?'} rounds</span>
-          <span class="mh-date">${whenStr}</span>
-        </div>
-        <div class="match-history-log" id="mhLog-${escapeAttr(row.id)}" hidden></div>`;
-      }).join('')}
-    </div>
-  </div>`;
-}
-function wireMatchHistoryPanel(){
-  document.querySelectorAll('.match-history-row').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      const id = el.getAttribute('data-histid');
-      const logEl = document.getElementById('mhLog-'+id);
-      if(!logEl) return;
-      const wasOpen = !logEl.hidden;
-      // Only one open at a time — keeps a 30-match list from turning into an endless scroll of
-      // fully-expanded logs.
-      document.querySelectorAll('.match-history-log').forEach(l=>{ l.hidden = true; l.innerHTML=''; });
-      document.querySelectorAll('.match-history-row').forEach(r=>r.classList.remove('expanded'));
-      if(wasOpen) return; // toggle closed
-      const row = (matchHistoryList||[]).find(r=>String(r.id)===id);
-      if(!row) return;
-      logEl.innerHTML = (row.log||[]).map(ev=>{
-        try{ const {cls,text} = logText(ev); return `<div class="log-row ${cls}">${escapeHtml(text)}</div>`; }
-        catch(e){ return ''; } // a future/unknown event shape shouldn't break the whole replay
-      }).join('') || '<div class="log-row">No events recorded for this match.</div>';
-      logEl.hidden = false; logEl.scrollTop = logEl.scrollHeight; // the newest line first (2026-10-18, BP)
-      el.classList.add('expanded');
-    });
-  });
-}
+// 2026-10-29 (package UI1, owner O4: "There are two, match log and match history. Only keep match log."): the Profile's Match History panel (matchHistoryPanelHTML /
+// wireMatchHistoryPanel) is gone; the Match log is the only list. The signed-in match_history rows are still written and loaded because the stats panel reads them.
 // Out-of-game currencies (2026-09-18, Epic B — "Currencies: Gold, Gems, Magic Dust"): distinct
 // from any IN-MATCH resource (the HUD's own 🪙 Gold/acorns, 🪨 Stone/pitch-yield) — these persist
 // across matches in this browser, same as myDeckCounts/myLeaderId below. Naming note: the
@@ -64379,7 +64335,7 @@ const DIALOGUES = {
   unlock_questboard: {lines:[
     {who:'shieldback', text:'A proper quest board. Real requests from real folk, not lodge orders.'},
     {who:'swiftpaw', text:'So when somebody on the road says “could you…”, it goes up here?', options:[{label:'Sounds like work.', goto:'go', act:'quests:errands'}], silent:'go'},
-    {label:'go', who:'shieldback', text:'Errands. Small favours, small rewards. They add up.'},
+    {label:'go', who:'shieldback', text:'Quests. Small favours, small rewards. They add up.'},
   ]},
   unlock_forge: {lines:[
     {who:'traveller', text:'The Foundry’s smiths will temper anything you bring them, for a price.'},
@@ -68495,7 +68451,7 @@ function claimErrand(id){
   e.active = e.active.filter(a=> a.id !== id); e.done++; saveErrands(e);
   try{ awardXp(20, 'quest'); }catch(_){}
   const sp = DIALOGUE_SPEAKERS[x.who] || {};
-  showToast(TX('toast.dust-maple-leaves', {v1: sp.icon||'📌', v2: t.thanks || 'Errand done!', dust: rw.dust, gold: rw.gold, v5: t.shard ? ', an Iron Shard' : ''}), 'ok');
+  showToast(TX('toast.dust-maple-leaves', {v1: sp.icon||'📌', v2: t.thanks || 'Quest done!', dust: rw.dust, gold: rw.gold, v5: t.shard ? ', an Iron Shard' : ''}), 'ok');
   try{ refreshQuestBadge(); }catch(_){}
   return {dust: rw.dust, gold: rw.gold};
 }
@@ -68528,7 +68484,7 @@ function errandsBoardHTML(){
   const day = at=>{ try{ return new Date(at).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(_){ return ''; } };
   const writ = (t, who, cls, status, inner, foot)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
     return `<article class="er-writ ${cls}">
-      <header class="er-band"><span class="er-kind">📜 Errand</span><span class="er-status">${status}</span></header>
+      <header class="er-band"><span class="er-kind">📜 Quest</span><span class="er-status">${status}</span></header>
       <div class="er-top"><span class="er-portrait" aria-hidden="true">${portrait(sp)}</span>
         <div class="er-titles"><h3 class="er-title">${escapeHtml(t.title || t.label || '')}</h3><div class="er-by">Asked by <b>${escapeHtml(sp.name || who || '')}</b></div></div></div>
       <blockquote class="er-ask">“${escapeHtml(t.ask || '')}”</blockquote>
@@ -68540,18 +68496,18 @@ function errandsBoardHTML(){
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(x.label)}</span></div>
       <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${x.goal}" aria-valuenow="${v}" aria-label="${escapeAttr(x.label)}"><span class="er-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}<small>/${x.goal}</small></b></div>`;
     const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-seal" data-errand-claim="${x.id}">🎁 Claim reward</button>`
-      : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this errand">✕ Drop</button>`;
+      : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this quest">✕ Drop</button>`;
     return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : 'In progress', inner, foot); }).join('');
   const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return '';
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(t.label)}</span></div>`;
     const full = e.active.length >= ERRANDS_MAX;
-    const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} errands already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
+    const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} quests already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
     return writ(t, t.who, 'is-offer', 'Offered', inner, foot); }).join('');
   return `<section class="qn-board qn-errands er-board" id="qnErrands">
-    <div class="qn-sign"><b>Errands</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
+    <div class="qn-sign"><b>Quests</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
     ${act ? `<div class="er-writs">${act}</div>` : ''}
     ${offers ? `<div class="er-sub">Offered on the road</div><div class="er-writs">${offers}</div>` : ''}
-    ${!act && !offers ? '<p class="er-empty">No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.</p>' : ''}
+    ${!act && !offers ? '<p class="er-empty">No quests yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.</p>' : ''}
   </section>`;
 }
 function questsModalHTML(){
@@ -68623,8 +68579,8 @@ function noticeQuestListHTML(q){
   // 2026-10-16 (user: "i think quests will be a subtab in notices"): errands have their own Errands tab now, so they're not listed here.
   // 2026-10-16 (user: "I think Hide journies for now."): Journeys stay out of this list while hidden, even for Admin.
   try{ if(journeysOpen() && !JOURNEYS_HIDDEN){ const st = loadJourneys(); Object.keys(SUBFACTION_JOURNEYS).forEach(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n]; if(next) rows.push({k:'Journey', ico:j.icon, label:`${j.name}: ${next[2]}`, v:n, g:j.steps.length, go:'.qn-journeys', journey:true}); }); } }catch(e){}
-  if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>all done for now</span></div></section>`;
-  return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>${rows.length} going</span></div>
+  if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your dailies</b><span>all done for now</span></div></section>`;
+  return `<section class="qn-quests"><div class="qn-sign"><b>Your dailies</b><span>${rows.length} going</span></div>
     <ul class="qn-qlist">${rows.map(r=>{ const done = !r.journey && r.v >= r.g; return `<li><button type="button" class="qn-qrow ${done ? 'is-done' : ''}" data-qn-go="${r.go}"><span class="qn-qk">${r.k}</span><span class="qn-qico" aria-hidden="true">${r.ico}</span><span class="qn-ql">${escapeHtml(r.label)}</span><span class="qn-prog">${bar(r.v, r.g)}<b>${done ? 'Claim!' : `${r.v}/${r.g}`}</b></span></button></li>`; }).join('')}</ul></section>`;
 }
 // Notices sub-tabs (2026-10-16, user: "i think quests will be a subtab in notices ... It's actual quests you got from the
@@ -68642,20 +68598,21 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
   const stShown = scaleTrailTabShown();
   if(noticesSubTab === 'scales' && !stShown) noticesSubTab = 'notices';
   const onSt = noticesSubTab === 'scales';
+  if(noticesSubTab === 'errands' && !erOpen) noticesSubTab = 'notices'; // 2026-10-29 (package UI1, owner O8): the Quests tab (the errands) shows once the Quest Board is open
   const onErr = noticesSubTab === 'errands';
   let erBadge = '';
   if(erOpen){ try{ const e = loadErrands(), ready = claimableErrandCount(), n = e.active.length + e.offers.length;
     erBadge = ready ? `<span class="qn-tab-n is-ready" title="${ready} ready to claim">${ready}</span>` : n ? `<span class="qn-tab-n">${n}</span>` : ''; }catch(e){} }
   const tabs = `<div class="qn-tabs" role="tablist" aria-label="Notices">
-      <button type="button" role="tab" class="qn-tab ${onErr || onSt ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr && !onSt}">📌 Notices</button>
-      <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>
+      <button type="button" role="tab" class="qn-tab ${onErr || onSt ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr && !onSt}">📅 Dailies</button>
+      ${erOpen ? `<button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>` : ''}
       ${stShown ? `<button type="button" role="tab" class="qn-tab ${onSt ? 'is-on' : ''}" data-qn-tab="scales" aria-selected="${onSt}" aria-label="Scale Trail">🐉 <span class="st-tab-long">Scale </span>Trail${scaleTrailTabBadge()}</button>` : ''}
     </div>`;
   const body = onSt ? scaleTrailJournalHTML() : onErr
-    ? `<p class="qn-sub">The quests you're on${erOpen ? ', and the favours folk asked of you on the road' : ''}. Tap one to see its notice; claim the reward when it's done.</p>
-       ${noticeQuestListHTML(q)}
-       ${erOpen ? `<div class="qn-cork er-cork">${errandsBoardHTML()}</div>` : ''}`
+    ? `<p class="qn-sub">The favours folk asked of you on the road. Take one, finish it, and claim the reward.</p>
+       <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
     : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+       ${noticeQuestListHTML(q)}
        <div class="qn-cork">
          ${dailyBoard()}
          ${section('weekly', 'Weekly', nextMon - now)}
@@ -84396,7 +84353,7 @@ function boardAnimationsBusy(){
 function measureBoardLean(inner, containerWidth){
   const r = inner.getBoundingClientRect(); const mid = r.left + r.width/2;
   const cards = [...inner.querySelectorAll('.board-card[data-uid]')].filter(el=> !el.classList.contains('empty-slot') && !el.classList.contains('center-slot-empty') && !el.classList.contains('slot-target'));
-  if(cards.length < 2) return null;
+  if(cards.length < 1) return null; // 2026-10-29 (package UI1, owner O3): one card is a mass too; an empty board falls back to the middle (null)
   let sum = 0, minX = Infinity, maxX = -Infinity;
   cards.forEach(el=>{ const b = el.getBoundingClientRect(); sum += (b.left + b.width/2) - mid; minX = Math.min(minX, b.left - mid); maxX = Math.max(maxX, b.right - mid); });
   const cw = cards[0].getBoundingClientRect().width, rs = getComputedStyle(cards[0].parentElement || inner), gp = parseFloat(rs.columnGap || rs.gap) || 0;
@@ -84405,24 +84362,27 @@ function measureBoardLean(inner, containerWidth){
 // Leans the camera about 40% of the way toward the cards' centre and turns it up to 3° the same way, never so far that
 // a card leaves the frame (24px margin). Reduced motion keeps the move but drops the turn.
 function setBoardLean(lean, scale, panMax){
-  // 2026-10-12 (user: "The camera shouldn't move for the first 5 central columns"): while every card sits within the middle
-  // five columns, the camera stays put.
-  if(lean && lean.colW > 0 && lean.minX >= -2.5*lean.colW - 2 && lean.maxX <= 2.5*lean.colW + 2) lean = null;
+  // 2026-10-29 (package UI1, owner O3: "we don't focus the camera on the middle but instead on the middle of the mass of units."): the
+  // camera now rests on the average position of the units on the board (both sides, every row; lean.c is that mean in px from the board's
+  // middle), not on the board's middle and not only as far as it takes to keep a card in frame (BV, 2026-10-24). It still never lets a card
+  // leave the frame (24 px margin) and it falls back to the middle when the board is empty (lean null). No jitter: the camera keeps where it
+  // is until the mass has moved by about a third of a column (units trading places, one more card in a row), then eases (smoothIfChanged) to the
+  // new mean. The old "stays put while every card sits in the middle five columns" rule is gone, since it kept the camera off the mass.
   if(!lean){ battlefieldLeanX = 0; battlefieldTilt = 0; battlefieldPanLo = -panMax; battlefieldPanHi = panMax; return; }
   const margin = 24, half = lean.W/2;
   let lo = -half + margin - lean.minX*scale, hi = half - margin - lean.maxX*scale;
   if(panMax > 0.5){ lo = -panMax; hi = panMax; }
   lo = Math.min(lo, 0); hi = Math.max(hi, 0);
   battlefieldPanLo = lo; battlefieldPanHi = hi;
-  // 2026-10-24 (package BV, owner 17:01 #6: "The battlefield should only move to zoom out or capture cards outside the field of
-  // vision"): the camera no longer leans 40% of the way toward the cards' centre nor turns toward them (both moved the board on a
-  // play that needed no move). It shifts only as far as it takes to bring cards that would sit outside the frame (24 px margin)
-  // into view, and not at all when they all fit. A span wider than the frame is centred on the cards.
   const L = -half + margin, Rr = half - margin, a = lean.minX*scale, b = lean.maxX*scale;
-  let need = 0;
-  if(b - a > Rr - L) need = -(a + b)/2; // wider than the frame: centre on the cards
-  else if(a < L) need = L - a; else if(b > Rr) need = Rr - b;
-  battlefieldLeanX = Math.abs(need) < 0.5 ? 0 : Math.max(lo, Math.min(hi, need));
+  // the shifts that keep the cards in frame (a card's edge at the margin): [L - a, Rr - b] when the span fits, [Rr - b, L - a] when it is wider
+  const kLo = Math.min(L - a, Rr - b), kHi = Math.max(L - a, Rr - b);
+  const inFrame = x=> Math.max(kLo, Math.min(kHi, x));
+  let need = inFrame(-lean.c*scale);
+  const prev = battlefieldLeanX, dead = 0.34 * Math.max(8, lean.colW || 0) * scale;
+  if(Math.abs(need - prev) < dead) need = inFrame(prev); // the mass has barely moved: keep the camera where it is
+  need = Math.max(lo, Math.min(hi, need));
+  battlefieldLeanX = Math.abs(need) < 0.5 ? 0 : need;
   battlefieldTilt = 0;
 }
 // The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
@@ -84584,7 +84544,7 @@ function fitBattlefieldZoom(){
   const mm = matchState, raid = !!(mm && mm.raidFull);
   // Only a NEW match frames instantly. A repaint mid-match rebuilds the wrapper with the current framing already on it
   // (see renderMatchUI's template), so it waits for the summon like any other render.
-  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); if(raid) mm._raidFrameKey = raidFrameKey(mm); return; }
+  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; battlefieldLeanX = 0; /* 2026-10-29 (UI1, O3): a new match starts with no remembered camera */ clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); if(raid) mm._raidFrameKey = raidFrameKey(mm); return; }
   if(raid && mm._raidFrameKey === raidFrameKey(mm)) return; // the raid keeps its framing (2026-10-18)
   clearTimeout(fitBattlefieldZoom._settleT);
   if(!fitBattlefieldZoom._waitStart) fitBattlefieldZoom._waitStart = performance.now();
@@ -85714,7 +85674,12 @@ function pl1HandPreviewSoon(){ if(pl1HandPreviewSoon._t) return; pl1HandPreviewS
       el.classList.remove('has-sim'); });
     applyHandPreviewStats(m, me, strip); }catch(e){} }, 0); }
 // HAND_PREVIEW:END
+// 2026-10-29 (package UI1, owner O2): the hand strip scrolls sideways once its cards don't fit (phone); .hs-scroll lets its cards pass a sideways swipe to the
+// strip (CSS touch-action: pan-x) while the rest of the time they take every touch move for themselves (touch-action: none). See the touch drag shim.
+function syncHandScroll(){ const st = document.getElementById('handStrip'); if(st) st.classList.toggle('hs-scroll', st.scrollWidth > st.clientWidth + 1); }
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ syncHandScroll(); }catch(e){} }, {passive:true});
 function renderHand(){
+  try{ setTimeout(syncHandScroll, 0); }catch(e){}
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const m = matchState; if(!m) return;
@@ -99218,7 +99183,7 @@ function renderHome(){
         ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
-        ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Notices"><i class="pin" aria-hidden="true">📌</i><b>📌 Notices</b><small>${qn ? `${qn} to claim!` : 'Dailies &amp; quests'}</small></button>` : ''}
         ${res4TrailHomeNoteHTML() /* 2026-10-26 (package RES4): the Trail Mix Trek, from the end of the tutorials */}
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
@@ -104104,7 +104069,6 @@ function renderProfile(){
       </div>
     </div>
     ${matchLogPanelHTML() /* 2026-10-21 (package AR): the match log, moved here from the Arena */}
-    ${matchHistoryPanelHTML()}
   </div>`;
   wireMatchLogPanel(root);
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
@@ -104112,8 +104076,6 @@ function renderProfile(){
   { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
   wireAboutYou(); wireAdminProfileTools();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
-  wireMatchHistoryPanel();
-  if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     if(isSignedIn()){ if(!confirm(TX('dialog.log-out-your-progress-is-saved'))) return; signOutAndSwitch(); return; }
     if(!confirm(TX('dialog.log-out-your-decks-currencies-and'))) return;
@@ -106849,6 +106811,7 @@ const HandDrag = (function(){
   }
   function beginDrag(touch){
     dragActive = true;
+    document.body.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
     dragEl = candidate;
     dt = makeDataTransfer();
     lastTarget = null;
@@ -106877,31 +106840,61 @@ const HandDrag = (function(){
     if(ghost && !keepGhost){ removeDragGhost(ghost); }
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
+    document.body.classList.remove('bw-touch-dragging'); detachTargetListeners();
   }
   // 2026-10-12 (user: "On mobile, in the deck editor, I can't scroll the card selection very well... I mostly drag the
   // cards"): outside the battle hand, a card only starts dragging after you hold it still for a moment (HOLD_TO_DRAG_MS).
   // A finger that moves straight away is a scroll, so the card list scrolls from anywhere, cards included.
   const HOLD_TO_DRAG_MS = 260;
   let startAt = 0, holdNeeded = false;
-  document.addEventListener('touchstart', (e)=>{
+  // 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead. How do we protect against this?"):
+  // what made the screen move, and what protects now:
+  //  1. The browser decides on a scroll with the first touchmoves; a preventDefault that comes only after the 10 px threshold is too late
+  //     (the event is no longer cancelable). So a card that can be dragged straight away (the hand, the leader, a card on the board) and the
+  //     drop zones carry `touch-action: none` in CSS (the hand's cards `pan-x` while the hand itself scrolls sideways, see syncHandScroll,
+  //     and then a mostly sideways move scrolls the hand and a mostly upward one drags), and the page gets `touch-action: none` for the whole
+  //     drag (body.bw-touch-dragging). Touches that start outside a card still scroll the page as before.
+  //  2. A touch keeps its first target for its whole life, but when the hand redraws mid-drag that target leaves the page and the document
+  //     stops hearing the finger (the ghost froze and the page scrolled on). The handlers are also bound to the touched element itself and
+  //     answer once per event (handled), the touch equivalent of setPointerCapture.
+  //  3. preventDefault on every touchmove of a drag, while it can still be cancelled; a deck builder card held for the hold time also
+  //     stops the page's scroll before it has moved 10 px.
+  const handled = new WeakSet();
+  let targetEl = null;
+  function onTouchStart(e){
     const t = e.target.closest('[draggable="true"]');
+    try{ syncHandScroll(); }catch(_){}
     if(!t || t.getAttribute('draggable')==='false') return;
     candidate = t;
     const touch = e.touches[0];
     startX = touch.clientX; startY = touch.clientY;
     startAt = Date.now(); holdNeeded = !t.closest('#handStrip, #leaderWidget, #view-play .battlefield');
-  }, {passive:true});
-  document.addEventListener('touchmove', (e)=>{
-    if(!candidate) return;
+    detachTargetListeners();
+    targetEl = e.target; // the touched node: still gets the finger's events after a redraw took it out of the page
+    targetEl.addEventListener('touchmove', onTouchMove, {passive:false}); targetEl.addEventListener('touchend', onTouchEnd); targetEl.addEventListener('touchcancel', onTouchEnd);
+  }
+  function detachTargetListeners(){
+    if(!targetEl) return;
+    targetEl.removeEventListener('touchmove', onTouchMove); targetEl.removeEventListener('touchend', onTouchEnd); targetEl.removeEventListener('touchcancel', onTouchEnd);
+    targetEl = null;
+  }
+  function onTouchMove(e){
+    if(!candidate || handled.has(e)) return;
+    handled.add(e);
     const touch = e.touches[0];
     if(!dragActive){
       const dx = touch.clientX-startX, dy = touch.clientY-startY;
-      if((dx*dx + dy*dy) < DRAG_THRESHOLD_PX*DRAG_THRESHOLD_PX) return; // still just a tap, let native click fire
-      if(holdNeeded && Date.now() - startAt < HOLD_TO_DRAG_MS){ candidate = null; return; } // moved before the hold: let the page scroll
+      if((dx*dx + dy*dy) < DRAG_THRESHOLD_PX*DRAG_THRESHOLD_PX){
+        if(holdNeeded && Date.now() - startAt >= HOLD_TO_DRAG_MS && e.cancelable) e.preventDefault(); // held long enough: the page must not start scrolling before the drag does
+        return; // still just a tap, let native click fire
+      }
+      if(holdNeeded && Date.now() - startAt < HOLD_TO_DRAG_MS){ candidate = null; detachTargetListeners(); return; } // moved before the hold: let the page scroll
+      // a hand that scrolls sideways: a mostly sideways move on a card scrolls the hand, a mostly upward or downward one drags
+      if(!holdNeeded && candidate.closest('#handStrip.hs-scroll') && Math.abs(dx) > 1.3*Math.abs(dy)){ candidate = null; detachTargetListeners(); return; }
       beginDrag(touch);
     }
-    e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
-    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip, #leaderWidget')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1)+'deg'; } }
+    if(e.cancelable) e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
+    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip, #leaderWidget')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1) + 'deg'; } }
     const target = elementUnderGhost(touch.clientX, touch.clientY);
     if(target !== lastTarget){
       if(lastTarget) fireDragEvent('dragleave', lastTarget, touch, {relatedTarget:target});
@@ -106910,9 +106903,16 @@ const HandDrag = (function(){
     } else if(target){
       fireDragEvent('dragover', target, touch);
     }
-  }, {passive:false});
-  document.addEventListener('touchend', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
-  document.addEventListener('touchcancel', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
+  }
+  function onTouchEnd(e){
+    if(handled.has(e)) return;
+    handled.add(e);
+    if(candidate) endDrag(e.changedTouches[0]); else detachTargetListeners();
+  }
+  document.addEventListener('touchstart', onTouchStart, {passive:true});
+  document.addEventListener('touchmove', onTouchMove, {passive:false});
+  document.addEventListener('touchend', onTouchEnd);
+  document.addEventListener('touchcancel', onTouchEnd);
 })();
 // In-page dropdowns (2026-10-12, user: "the filters ... is not an in-html window for checkboxes but an out-html window. Make
 // it an in-html window selection ... as i have dual screens, this window is hanging in the wrong window"). With a mouse or
