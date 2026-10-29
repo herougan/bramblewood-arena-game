@@ -20,7 +20,10 @@ UI_RENAMES = [
  ("No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.", "No quests yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here."),
  ("You have {v1} errands already", "You have {v1} quests already"),
 ]
-UI_DROP = ["Errand", "Errands", "Your quests", "Errand done!"]
+UI_DROP = ["Errand", "Errands", "Your quests", "Errand done!",
+ # the old Quests tab intro (cut in pieces around its placeholder) and the removed Match History panel
+ ", and the favours folk asked of you on the road", "The quests you're on{v1}. Tap one to see its notice; claim the reward when it's done.",
+ "No events recorded for this match.", "No matches recorded yet — play a match and it shows up here.", "Your last {v1} real matches — tap one to read back its full battle log."]
 MAIN_RENAMES = [
  ("Errand complete: {title}. Claim it on the Notices.", "Quest complete: {title}. Claim it on the Notices."),
  ("Errand taken: {label}", "Quest taken: {label}"),
@@ -102,6 +105,7 @@ for i, code in enumerate(CODES):
     for kind, renames, drop in (('ui', UI_RENAMES, UI_DROP), ('', MAIN_RENAMES, MAIN_DROP)):
         path = os.path.join(ROOT, 'lang', *( [kind] if kind else []), code + '.json'); pack = json.load(open(path, encoding='utf-8'))
         for old, new in renames:
+            if new in pack and old not in pack: continue  # already done (the script can run again)
             val = WRITTEN[code][new] if code in WRITTEN else swap(code, pack.get(old, ''))
             assert val and ph(new) == ph(val), (code, new, val)
             pack.pop(old, None); pack[new] = val
