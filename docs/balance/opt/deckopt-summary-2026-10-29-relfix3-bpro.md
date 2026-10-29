@@ -1581,3 +1581,122 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road17 @ 17-2: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], phase cycle, terrain Frozen Waste T1 | 50% | 25% | +25 [8.8, 41.2] |
 | ref:expected @ 17-3: aiGuardLethal, field frozen, frostResist ["Tundra","Frost","Taiga"], hail, phase cycle, terrain Frozen Waste T1 | 89.1% | 75% | +14.1 [1, 27.1] |
 
+## Map 17: The Ice Hollow (`mi`, side map of `m6`, opens on Map 21), your level 1
+
+- Throughput: 13416 games in 129.2 s = **103.9 games/s** (2 workers). Search: ga, budget 8000 games (8756 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 20 cards (20 map cards + 0 owned by then); phase 2 20 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 367 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (veryrare) 5 (old-snapjaw, ossuary-lammergeier, the-contradiction, the-gannet-queen, wolfsbane-alpha).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome tundra-ice (kin taiga, volcanic-ash), terrain types Frost, Tundra, field aiGuardLethal, boon, phase:off, slippery, unit types Canid 3, Coastal 2, Frost 7, Lagomorph 3, Mountain 2, Mustelid 2, Ocean 2, Pinniped 4, Rodent 2, Tundra 14, Wolf 2, skill families cold 3, evasion 7, ranged 2, swarm 2, tide 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 689; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 58.9% [55.5%, 62.3%], mirror 68.8%, road 29.3%: 3x Lemming Swarm, 2x Krill Swarm, 2x Lone Grey Wolf, 2x Ravenous Wolverine, 2x Snow Ermine, 1x Alpha Howler, 1x Arctic Fox Raider, 1x Cone-cutter Squirrel, 1x Frost Hare Sprinter, 1x Glacial Ape-King, 1x Harp Seal Pup, 1x Mountain Hare, 1x Polar Bear, 1x Snow Bunting Archer
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 58.9% [55.5%, 62.3%], 0 copies from the optimum: 3x Lemming Swarm, 2x Krill Swarm, 2x Lone Grey Wolf, 2x Ravenous Wolverine, 2x Snow Ermine, 1x Alpha Howler, 1x Arctic Fox Raider, 1x Cone-cutter Squirrel, 1x Frost Hare Sprinter, 1x Glacial Ape-King, 1x Harp Seal Pup, 1x Mountain Hare, 1x Polar Bear, 1x Snow Bunting Archer
+1. 61.5% [58.3%, 64.8%], 8 copies from the optimum: 4x Harbor Seal, 3x Krill Swarm, 2x Cone-cutter Squirrel, 2x Lemming Swarm, 1x Arctic Fox Raider, 1x Frost Hare Sprinter, 1x Harp Seal Pup, 1x Lone Grey Wolf, 1x Polar Bear, 1x Ravenous Wolverine, 1x Snow Ermine, 1x Talus Pika, 1x Walrus Icebreaker
+2. 59.5% [56.2%, 62.7%], 11 copies from the optimum: 5x Talus Pika, 3x Lemming Swarm, 3x Snow Ermine, 2x Harp Seal Pup, 2x Snow Bunting Archer, 1x Cone-cutter Squirrel, 1x Harbor Seal, 1x Ravenous Wolverine, 1x Spitting Spider, 1x Walrus Icebreaker
+3. 59.8% [56.5%, 63%], 10 copies from the optimum: 3x Spitting Spider, 3x Talus Pika, 2x Frost Hare Sprinter, 2x Harbor Seal, 2x Krill Swarm, 1x Cone-cutter Squirrel, 1x Harp Seal Pup, 1x Lemming Swarm, 1x Lone Grey Wolf, 1x Polar Bear, 1x Ravenous Wolverine, 1x Snow Bunting Archer, 1x Walrus Icebreaker
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 48.4% (-11) | 50% (+0) | 50% (+0) |
+| 1 | 51.6% (+11) | - | 59.4% (+66) | 51.6% (+11) |
+| 2 | 50% (+0) | 40.6% (-66) | - | 39.1% (-77) |
+| 3 | 50% (+0) | 48.4% (-11) | 60.9% (+77) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 177 (77 to 191); as your deck they score 0.2 to 33 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 17-A-1 skirmish's deck | 75% [63.2%-84%] | 191 [94, 288] | 23.9% | 33 ±5.7 | 90% |
+| 17-A-2 skirmish's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 42.1% | 15.3 ±6 | 75% |
+| 17-A-3 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 36% | 21.2 ±6.2 | 60% |
+| 17-A-4 boss's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 58.4% | 0.2 ±6 | 40% |
+| reference starter deck under 17-A-1's field | 78.1% [66.6%-86.5%] | 221 [120, 323] | 27.6% | 29 ±5.7 | - |
+| reference deck (Map 21) under 17-A-2's field | 48.4% [36.6%-60.4%] | -11 [-95, 73] | 65.5% | -5.4 ±5.7 | - |
+| expected player deck (expectedPlayerDeck) under 17-A-3's field | 73.4% [61.5%-82.7%] | 177 [81, 272] | 33.7% | 23.5 ±5.9 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 17-A-1 skirmish | 35.9% [25.3%-48.2%] | 90% |
+| 17-A-2 skirmish | 23.4% [14.7%-35.1%] | 75% |
+| 17-A-3 skirmish | 54.7% [42.6%-66.3%] | 60% |
+| 17-A-4 boss | 3.1% [0.9%-10.7%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:17-A-1 @ 17-A-1: aiGuardLethal, boon snowVeil, phase off, slippery 30 | 75% | 67.2% | +7.8 [-7.8, 23.5] |
+| fight:17-A-2 @ 17-A-2: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 71.9% | 67.2% | +4.7 [-11.2, 20.6] |
+| fight:17-A-3 @ 17-A-3: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 73.4% | 60.9% | +12.5 [-3.6, 28.6] |
+| fight:17-A-4 @ 17-A-4: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T2 (Frostbite 1) | 60.9% | 42.2% | +18.8 [1.7, 35.8] |
+| ref:starter @ 17-A-1: aiGuardLethal, boon snowVeil, phase off, slippery 30 | 78.1% | 79.7% | -1.6 [-15.7, 12.6] |
+| ref:road21 @ 17-A-2: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 48.4% | 45.3% | +3.1 [-14.2, 20.4] |
+| ref:expected @ 17-A-3: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 73.4% | 78.1% | -4.7 [-19.5, 10.1] |
+
+## Map 18: The Glass Dunes (`md`), your level 1
+
+- Throughput: 16722 games in 298.6 s = **56 games/s** (2 workers). Search: ga, budget 8000 games (9622 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map md --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 17 cards (17 map cards + 0 owned by then); phase 2 17 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 325 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome desert-glass (kin pale-desert), terrain types Desert, Savanna, field aiGuardLethal, boon, field, glassStorm, heatLevel, phase:cycle, sandstorm, wind, windfall, unit types Arachnid 4, Bird 2, Desert 11, Reptile 4, Savanna 3, skill families poison 5.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 692; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 73.1% [70.7%, 75.4%], mirror 78.7%, road 56%: 4x Caustic Scorpion, 3x Antlion Pit, 3x Obsidian Scorpion, 3x Sandfish, 3x Thorny Devil, 2x Dromedary, 1x Dune Packrat, 1x Roadrunner Courier
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 7 decks the searches ended on): 1
+
+0. 73.1% [70.7%, 75.4%], 0 copies from the optimum: 4x Caustic Scorpion, 3x Antlion Pit, 3x Obsidian Scorpion, 3x Sandfish, 3x Thorny Devil, 2x Dromedary, 1x Dune Packrat, 1x Roadrunner Courier
+
+- **Fight decks vs the optimum:** Elo gap median 314 (150 to 429); as your deck they score 10 to 39.3 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 18-1 skirmish's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 41% | 30.9 ±4.4 | 90% |
+| 18-2 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 50.7% | 22.3 ±4.4 | 84% |
+| 18-3 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 32.8% | 38.7 ±4.3 | 78% |
+| 18-4 skirmish's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 51.1% | 22.1 ±4.5 | 72% |
+| 18-5 elite's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 63.3% | 10 ±4.4 | 66% |
+| 18-6 elite's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 38.1% | 33.9 ±4.4 | 60% |
+| 18-7 miniboss's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 32.3% | 39.3 ±4.3 | 40% |
+| reference starter deck under 18-1's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 9.7% | 61.4 ±3.6 | - |
+| reference deck (Map 18) under 18-2's field | 29.7% [19.9%-41.8%] | -150 [-242, -58] | 79.2% | -2.6 ±4 | - |
+| expected player deck (expectedPlayerDeck) under 18-3's field | 89.1% [79.1%-94.6%] | 364 [231, 497] | 11.9% | 59.9 ±3.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 18-1 skirmish | 60.9% [48.7%-71.9%] | 90% |
+| 18-2 skirmish | 65.6% [53.4%-76.1%] | 84% |
+| 18-3 skirmish | 95.3% [87.1%-98.4%] | 78% |
+| 18-4 skirmish | 29.7% [19.9%-41.8%] | 72% |
+| 18-5 elite | 26.6% [17.3%-38.5%] | 66% |
+| 18-6 elite | 39.1% [28.1%-51.3%] | 60% |
+| 18-7 miniboss | 75% [63.2%-84%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:18-1 @ 18-1: aiGuardLethal, phase cycle, sandstorm, wind windy, windfall | 87.5% | 73.4% | +14.1 [0.5, 27.6] |
+| fight:18-2 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 73.4% | 54.7% | +18.8 [2.4, 35.1] |
+| fight:18-3 @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 92.2% | 62.5% | +29.7 [16.1, 43.2] |
+| fight:18-4 @ 18-4: aiGuardLethal, boon sandVeil, phase cycle, sandstorm blind, terrain Hunting Grounds T1, wind windy, windfall | 71.9% | 79.7% | -7.8 [-22.6, 7] |
+| fight:18-5 @ 18-5: aiGuardLethal, glassStorm, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 70.3% | 60.9% | +9.4 [-7, 25.8] |
+| fight:18-6 @ 18-6: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 85.9% | 65.6% | +20.3 [5.9, 34.7] |
+| fight:18-7 @ 18-7: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 90.6% | 78.1% | +12.5 [0.1, 24.9] |
+| ref:starter @ 18-1: aiGuardLethal, phase cycle, sandstorm, wind windy, windfall | 96.9% | 34.4% | +62.5 [50.1, 74.9] |
+| ref:road18 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 29.7% | 35.9% | -6.2 [-22.5, 10] |
+| ref:expected @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 89.1% | 18.8% | +70.3 [58.1, 82.6] |
+
