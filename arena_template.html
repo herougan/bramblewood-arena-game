@@ -13839,6 +13839,26 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .pk1-mc-overlay .vis4-mc-row{gap:34px 8px; padding:10px 0 26px;}
 .pk1-mc-pack{position:absolute; left:50%; bottom:-27px; transform:translateX(-50%); white-space:nowrap; font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; padding:0 4px; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; pointer-events:auto;}
 @media (max-width:560px){ .pk1-mc-modal{max-height:92vh;} }
+/* 2026-10-29 (package REVIEW1): Chosen / Cut cards / Maybe sections in the 🃏 Map cards overlay */
+.rv1-none{margin:0 0 4px; font:600 11px/1.3 'Baloo 2',system-ui,sans-serif; opacity:.6;}
+.rv1-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:4px 0 0;}
+.rv1-part h4{margin:8px 0 0; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif;}
+.rv1-part h4 small{opacity:.65; margin-left:4px;}
+.rv1-part.is-cut h4::before{content:'✂ ';} .rv1-part.is-maybe h4::before{content:'? ';}
+.pk1-mc-overlay .rv1-row{gap:8px 8px; padding:8px 0 6px; align-items:flex-start;}
+.rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; width:92px;}
+.rv1-tile .vis4-mc-card{margin-bottom:22px;}
+.rv1-tile.is-cut .vis4-mc-card{opacity:.5; filter:grayscale(.6);}
+.rv1-tile.is-maybe .vis4-mc-card{outline:2px dashed rgba(255,215,0,.55); outline-offset:2px;}
+.rv1-tile.is-flipped.is-chosen .vis4-mc-card{opacity:.55; filter:grayscale(.8);}
+.rv1-tile.is-flipped.is-cut .vis4-mc-card, .rv1-tile.is-flipped.is-maybe .vis4-mc-card{opacity:1; filter:none; outline:2px solid #6fd16f; outline-offset:2px;}
+.rv1-mark{position:absolute; top:-6px; left:6px; z-index:2; font:800 11px/1 'Baloo 2',system-ui,sans-serif; font-style:normal; padding:2px 4px; border-radius:999px; background:#222; color:#ffd24a; border:1px solid rgba(255,255,255,.3);}
+.rv1-cap{display:flex; flex-direction:column; align-items:center; gap:1px; text-align:center; font:600 10px/1.2 'Baloo 2',system-ui,sans-serif; width:100%;}
+.rv1-why{overflow:hidden; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; opacity:.85;}
+.rv1-by{font-weight:800; font-size:9px; padding:0 5px; border-radius:999px; background:rgba(255,255,255,.16);}
+.rv1-by.is-owner{background:#e0b030; color:#222;}
+.rv1-act{font:700 10px/1 'Baloo 2',system-ui,sans-serif; min-height:24px; padding:3px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.08); color:inherit; cursor:pointer;}
+.rv1-tile.is-flipped .rv1-act{background:#6fd16f; color:#112;}
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */

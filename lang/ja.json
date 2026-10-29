@@ -3601,5 +3601,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "山の炎が生まれる場所に、巨大な何かが眠っている。それは目覚めている。",
  "THE DRAGON FALLS": "ドラゴン、倒れる",
  "The road from Map 0 to Map 20 is walked to its end.": "マップ0からマップ20までの道を歩き終えた。",
- "The lair falls quiet once more.": "巣はふたたび静まり返った。"
+ "The lair falls quiet once more.": "巣はふたたび静まり返った。",
+ "Chosen": "選出",
+ "Cut cards": "カットしたカード",
+ "Maybe": "候補",
+ "No review yet": "まだレビューなし",
+ "owner": "オーナー",
+ "Claude": "Claude",
+ "kept": "据え置き",
+ "✂ Cut": "✂ カット",
+ "↩ Keep": "↩ 残す",
+ "Undo": "元に戻す",
+ "Copy my picks": "選択をコピー",
+ "Copied: paste it to Claude": "コピーしました：Claudeに貼り付けてください",
+ "Nothing changed yet": "まだ変更なし"
 }

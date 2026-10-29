@@ -3600,5 +3600,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "Algo inmenso duerme donde nace el fuego de la montaña. Ya está despierto.",
  "THE DRAGON FALLS": "EL DRAGÓN CAE",
  "The road from Map 0 to Map 20 is walked to its end.": "El camino del Mapa 0 al Mapa 20 se ha recorrido hasta el final.",
- "The lair falls quiet once more.": "La guarida vuelve a quedar en silencio."
+ "The lair falls quiet once more.": "La guarida vuelve a quedar en silencio.",
+ "Chosen": "Elegidas",
+ "Cut cards": "Cartas recortadas",
+ "Maybe": "Quizás",
+ "No review yet": "Aún sin revisión",
+ "owner": "dueño",
+ "Claude": "Claude",
+ "kept": "conservada",
+ "✂ Cut": "✂ Recortar",
+ "↩ Keep": "↩ Conservar",
+ "Undo": "Deshacer",
+ "Copy my picks": "Copiar mis elecciones",
+ "Copied: paste it to Claude": "Copiado: pégalo a Claude",
+ "Nothing changed yet": "Nada cambiado aún"
 }

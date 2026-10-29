@@ -3604,5 +3604,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "மலையின் நெருப்பு பிறக்கும் இடத்தில் பிரம்மாண்டமான ஒன்று உறங்குகிறது. அது விழித்துவிட்டது.",
  "THE DRAGON FALLS": "டிராகன் வீழ்ந்தது",
  "The road from Map 0 to Map 20 is walked to its end.": "வரைபடம் 0 முதல் வரைபடம் 20 வரையிலான பாதை முடிவு வரை நடந்து முடிந்தது.",
- "The lair falls quiet once more.": "குகை மீண்டும் அமைதியாகிறது."
+ "The lair falls quiet once more.": "குகை மீண்டும் அமைதியாகிறது.",
+ "Chosen": "தேர்ந்தவை",
+ "Cut cards": "நீக்கிய அட்டைகள்",
+ "Maybe": "ஒருவேளை",
+ "No review yet": "இன்னும் மதிப்பாய்வு இல்லை",
+ "owner": "உரிமையாளர்",
+ "Claude": "Claude",
+ "kept": "தக்கவைத்தது",
+ "✂ Cut": "✂ நீக்கு",
+ "↩ Keep": "↩ வை",
+ "Undo": "செயல்தவிர்",
+ "Copy my picks": "என் தேர்வுகளை நகலெடு",
+ "Copied: paste it to Claude": "நகலெடுத்தது: Claude-இடம் ஒட்டவும்",
+ "Nothing changed yet": "இன்னும் மாற்றம் இல்லை"
 }

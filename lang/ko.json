@@ -3604,5 +3604,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "산의 불이 태어나는 곳에 거대한 무언가가 잠들어 있다. 그것은 깨어 있다.",
  "THE DRAGON FALLS": "용이 쓰러졌다",
  "The road from Map 0 to Map 20 is walked to its end.": "지도 0에서 지도 20까지의 길을 끝까지 걸었다.",
- "The lair falls quiet once more.": "둥지가 다시 고요해졌다."
+ "The lair falls quiet once more.": "둥지가 다시 고요해졌다.",
+ "Chosen": "선택됨",
+ "Cut cards": "제외된 카드",
+ "Maybe": "후보",
+ "No review yet": "아직 검토 없음",
+ "owner": "소유자",
+ "Claude": "Claude",
+ "kept": "유지",
+ "✂ Cut": "✂ 제외",
+ "↩ Keep": "↩ 유지",
+ "Undo": "실행 취소",
+ "Copy my picks": "내 선택 복사",
+ "Copied: paste it to Claude": "복사됨: Claude에게 붙여넣으세요",
+ "Nothing changed yet": "아직 변경 없음"
 }

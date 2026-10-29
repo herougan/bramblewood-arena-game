@@ -2819,7 +2819,20 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fl1-sub": "Something vast sleeps where the mountain's fire is born. It is awake.",
   "ui.fl1-win": "THE DRAGON FALLS",
   "ui.fl1-win-first": "The road from Map 0 to Map 20 is walked to its end.",
-  "ui.fl1-win-again": "The lair falls quiet once more."
+  "ui.fl1-win-again": "The lair falls quiet once more.",
+  "ui.rv1-chosen": "Chosen",
+  "ui.rv1-cut": "Cut cards",
+  "ui.rv1-maybe": "Maybe",
+  "ui.rv1-none": "No review yet",
+  "ui.rv1-by-owner": "owner",
+  "ui.rv1-by-claude": "Claude",
+  "ui.rv1-by-kept": "kept",
+  "ui.rv1-act-cut": "✂ Cut",
+  "ui.rv1-act-keep": "↩ Keep",
+  "ui.rv1-undo": "Undo",
+  "ui.rv1-copy": "Copy my picks",
+  "ui.rv1-copied": "Copied: paste it to Claude",
+  "ui.rv1-copy-none": "Nothing changed yet"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -3978,6 +3978,8 @@ function cardObtainMap(d){
 // list is in no pack: "Not obtainable yet" (isUnattainable), as an awaitingSource card. Its card data is kept. The Factions pool (11) and the
 // Mystery Booster (99) still read source.tier. Rarity weights, foil chances and pack sizes are unchanged.
 const PACK_EXTRAS_BASE = __PACK_EXTRAS__;
+// 2026-10-29 (package REVIEW1): the map list review (canonical/map-review.json): per map id, chosen / cut / maybe cards with a one-line why (see pk1OpenMapCards)
+const MAP_REVIEW = __MAP_REVIEW__;
 const PACK_MAPS_PER_TIER = 7;
 var packIdxCache = null; // var: mpChanged and the pack-table setters clear it, some of them before this line runs at load
 function packIndexReset(){ packIdxCache = null; }
@@ -30541,20 +30543,72 @@ function vis4MapCardTilesHTML(ids, defs, opts){
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
 // on hover, focus or a tap (wireRewardZoom), each with its pack when a basic pack gives it too. Admins only (the button sits with Edit skirmish).
+// 2026-10-29 (package REVIEW1; owner 10-29 00:13: "also show what you would have cut ... Cut cards ... 'maybe's in a 3rd section"): when MAP_REVIEW has
+// the section's map id (the map, a submap; SPECIAL is looked up as "<map>:special"), the section shows Chosen (the proposal, a "why" caption and a
+// by-badge each), Cut cards (dimmed, ✂) and Maybe (?). Each tile has one small button to flip the owner's call (chosen: ✂ cut it; cut / maybe: keep it);
+// "Copy my picks" puts "<map> / <list>: keep A, B; cut C" on the clipboard for pasting to Claude. No review for the id: the list as before + "No review yet".
+function rv1ReviewOf(sec, top){
+  const M = (MAP_REVIEW && MAP_REVIEW.maps) || {}, k = sec.key === 'cards' ? top : sec.key === 'special' ? top + ':special' : sec.sub;
+  const r = M[k]; return r && ((r.chosen || []).length || (r.cut || []).length || (r.maybe || []).length) ? r : null;
+}
+function rv1TilesHTML(list, kind, defs, secKey){
+  if(!list.length) return '<span class="panel-sub">–</span>';
+  const mark = kind === 'cut' ? '✂' : kind === 'maybe' ? '?' : '';
+  return list.map(e=>{
+    const by = e.by === 'owner' ? TX('ui.rv1-by-owner') : e.by === 'claude' ? TX('ui.rv1-by-claude') : e.by === 'kept' ? TX('ui.rv1-by-kept') : '';
+    const why = (e.why || '') + (by && kind !== 'maybe' ? ' (' + by + ')' : '');
+    const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
+    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" title="${escapeAttr(why)}">`
+      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true})
+      + `<span class="rv1-cap">${by && kind !== 'maybe' ? `<b class="rv1-by is-${escapeAttr(e.by)}">${escapeHtml(by)}</b>` : ''}<span class="rv1-why">${escapeHtml(e.why || '')}</span></span>`
+      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="false">${escapeHtml(btn[0])}</button></span>`;
+  }).join('');
+}
+function rv1PicksText(ov){
+  const out = [];
+  ov.querySelectorAll('.pk1-mc-sec[data-rv-label]').forEach(sec=>{
+    const keep = [], cut = [];
+    sec.querySelectorAll('.rv1-tile.is-flipped').forEach(t=>{
+      const c = t.querySelector('.vis4-mc-card'), n = (c && c.getAttribute('aria-label')) || t.dataset.rvId;
+      (t.dataset.rvKind === 'chosen' ? cut : keep).push(n);
+    });
+    if(keep.length || cut.length) out.push(sec.dataset.rvLabel + ': ' + [keep.length ? 'keep ' + keep.join(', ') : '', cut.length ? 'cut ' + cut.join(', ') : ''].filter(Boolean).join('; '));
+  });
+  return out.join('\n');
+}
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(top); if(!m) return;
   let ov = document.getElementById('pk1MapCardsOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
-  const secs = mapPoolSections(top).map(s=>{ const ids = s.ids.filter(ok); return `<section class="pk1-mc-sec"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div></section>`; }).join('');
-  ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: (m.icon ? m.icon + ' ' : '') + m.name}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p><div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+  const mapLabel = (m.icon ? m.icon + ' ' : '') + m.name;
+  const secs = mapPoolSections(top).map(s=>{
+    const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
+    if(!rv) return `<section class="pk1-mc-sec"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
+    const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
+    return `<section class="pk1-mc-sec has-rv1" data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}</section>`;
+  }).join('');
+  const anyRv = /has-rv1/.test(secs);
+  ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><button type="button" class="btn small" id="rv1Copy">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="panel-sub" id="rv1CopyMsg" role="status"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
   document.addEventListener('keydown', onKey);
-  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.onclick = e=>{
+    if(e.target === ov) return close();
+    const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
+    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
+  };
   document.getElementById('pk1McClose').addEventListener('click', close);
+  const cp = document.getElementById('rv1Copy');
+  if(cp) cp.addEventListener('click', ()=>{
+    const txt = rv1PicksText(ov), msg = document.getElementById('rv1CopyMsg');
+    if(!txt){ msg.textContent = TX('ui.rv1-copy-none'); return; }
+    window.__rv1Last = txt;
+    try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
+  });
   try{ wireRewardZoom(ov); }catch(e){}
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }

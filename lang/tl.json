@@ -3602,5 +3602,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "May isang napakalaking natutulog kung saan isinisilang ang apoy ng bundok. Gising na ito.",
  "THE DRAGON FALLS": "BUMAGSAK ANG DRAGON",
  "The road from Map 0 to Map 20 is walked to its end.": "Natapos na ang daan mula Mapa 0 hanggang Mapa 20.",
- "The lair falls quiet once more.": "Muling tumahimik ang lungga."
+ "The lair falls quiet once more.": "Muling tumahimik ang lungga.",
+ "Chosen": "Napili",
+ "Cut cards": "Mga tinanggal na kard",
+ "Maybe": "Baka",
+ "No review yet": "Wala pang pagsusuri",
+ "owner": "may-ari",
+ "Claude": "Claude",
+ "kept": "pinanatili",
+ "✂ Cut": "✂ Tanggalin",
+ "↩ Keep": "↩ Panatilihin",
+ "Undo": "I-undo",
+ "Copy my picks": "Kopyahin ang mga napili ko",
+ "Copied: paste it to Claude": "Nakopya: i-paste kay Claude",
+ "Nothing changed yet": "Wala pang nabago"
 }

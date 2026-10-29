@@ -3601,5 +3601,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "山火誕生之處沉睡著某種龐然大物。它已經醒了。",
  "THE DRAGON FALLS": "巨龍倒下了",
  "The road from Map 0 to Map 20 is walked to its end.": "從地圖0到地圖20的道路已走到盡頭。",
- "The lair falls quiet once more.": "巢穴再次歸於寂靜。"
+ "The lair falls quiet once more.": "巢穴再次歸於寂靜。",
+ "Chosen": "入選",
+ "Cut cards": "剔除的卡牌",
+ "Maybe": "備選",
+ "No review yet": "尚未評審",
+ "owner": "主人",
+ "Claude": "Claude",
+ "kept": "保留",
+ "✂ Cut": "✂ 剔除",
+ "↩ Keep": "↩ 保留",
+ "Undo": "復原",
+ "Copy my picks": "複製我的選擇",
+ "Copied: paste it to Claude": "已複製：貼給 Claude",
+ "Nothing changed yet": "尚未更改"
 }

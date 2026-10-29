@@ -3600,5 +3600,18 @@
  "Something vast sleeps where the mountain's fire is born. It is awake.": "Etwas Gewaltiges schläft dort, wo das Feuer des Berges geboren wird. Es ist erwacht.",
  "THE DRAGON FALLS": "DER DRACHE FÄLLT",
  "The road from Map 0 to Map 20 is walked to its end.": "Die Straße von Karte 0 bis Karte 20 ist bis zum Ende gegangen.",
- "The lair falls quiet once more.": "Die Höhle wird wieder still."
+ "The lair falls quiet once more.": "Die Höhle wird wieder still.",
+ "Chosen": "Gewählt",
+ "Cut cards": "Gestrichene Karten",
+ "Maybe": "Vielleicht",
+ "No review yet": "Noch keine Prüfung",
+ "owner": "Besitzer",
+ "Claude": "Claude",
+ "kept": "behalten",
+ "✂ Cut": "✂ Streichen",
+ "↩ Keep": "↩ Behalten",
+ "Undo": "Rückgängig",
+ "Copy my picks": "Meine Wahl kopieren",
+ "Copied: paste it to Claude": "Kopiert: an Claude einfügen",
+ "Nothing changed yet": "Noch nichts geändert"
 }
