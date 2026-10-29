@@ -7,6 +7,12 @@
 //   { cards, special, submaps: { "<submapId>": { cards, special } } };
 // normalizeEntry reads either shape and returns the new one (every special list merged into the map's one `special`). The game's mpClean
 // (arena_app.js) does the same for old live rows; keep the two in step.
+// 2026-10-29 LISTFIX1 (decision APPLY1-1; owner 10-28 22:47 "Submaps would be 1-3 cards + 10+ carried over, so 11-14"): a submap's list is its
+// WHOLE list (its own cards + the ones it carries, which may also be on the parent's MAP list), and a submap fight draws only that list +
+// SPECIAL; a main-map fight MAP + SPECIAL. fightPool is that rule (the game's mapPoolTiers / mapPoolIds). The shape is unchanged, so old files and
+// rows still read; an old row's submap list (only the cards not on the parent's list) just gives that submap's fights a smaller pool.
+// isOutOfPlay (decision APPLY1-2; owner 22:47 "Don't worry about the other cards"): a card on no map list (of any tier), not in a pack's extras
+// and given out by nothing else (G.cardObtainableFrom null) is out of play; budget checks skip it and report it as "unplaced" (PACK1-3).
 function uniq(a){ return [...new Set((Array.isArray(a) ? a : []).filter(x=> typeof x === 'string' && x))]; }
 function normalizeEntry(p){
   p = p || {};
@@ -19,4 +25,16 @@ function normalizeEntry(p){
   });
   return {cards: uniq(p.cards), submaps: subs, special};
 }
-module.exports = {normalizeEntry, uniq};
+// the ids a fight draws from: pools = the file's {maps: {...}}, mapId = the fight's map, parentId = its main map when mapId is a submap
+function fightPool(pools, mapId, parentId){
+  const top = parentId || mapId, e = (pools && pools.maps || {})[top]; if(!e) return null; const n = normalizeEntry(e);
+  return new Set((parentId ? (n.submaps[mapId] || []) : n.cards).concat(n.special));
+}
+// every id on any list of the file (MAP, every SUBMAP, SPECIAL)
+function listedIds(pools){ const s = new Set(); Object.values((pools && pools.maps) || {}).forEach(e=>{ const n = normalizeEntry(e); n.cards.concat(n.special).forEach(x=> s.add(x)); Object.values(n.submaps).forEach(l=> l.forEach(x=> s.add(x))); }); return s; }
+// G: tools/lib_bramble.js's G (the game's own cardFirstMapList / cardObtainableFrom); d: a card def
+function isOutOfPlay(G, d){
+  if(!d || d.token || d.test) return false;
+  try{ return !G.cardFirstMapList(d) && !(G.packIndex().extra || {})[d.derivedFrom || d.id] && G.cardObtainableFrom(d) == null; }catch(e){ return false; }
+}
+module.exports = {normalizeEntry, uniq, fightPool, listedIds, isOutOfPlay};
