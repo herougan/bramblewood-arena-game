@@ -695,3 +695,200 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road7 @ 7-2: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 71.9% | 43.8% | +28.1 [11.7, 44.5] |
 | ref:expected @ 7-3: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 92.2% | 81.3% | +10.9 [-0.7, 22.5] |
 
+## Map 8: Caves & Alcoves (`m4`), your level 1
+
+- Throughput: 21456 games in 182.4 s = **117.7 games/s** (2 workers). Search: ga, budget 8000 games (11324 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m4 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 20 cards (20 map cards + 0 owned by then); phase 2 20 (+0 candidates).
+- Mode: **bpro**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 151 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, anaconda-coil, anhinga-spearbird, ...); over the map's rarity cap (rare) 3 (echo-matriarch, old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome caves (kin coast, fungal, volcanic-ash), terrain types Cave, field aiGuardLethal, boon, dark, landslide, phase:off, unit types Arachnid 2, Bat 3, Cave 13, Insect 3, Mole 2, Rodent 2, Swamp 2, skill families armor 3, evasion 2, heal 2, swarm 2, tide 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: not in the map's own pool (BPRO) 670; map rule: over the map's rarity cap (rare) 82.
+
+- **Optimum (map cards)**: score 73.3% [71%, 75.6%], mirror 81%, road 50.2%: 4x Baby Bat, 4x Trash Panda Trickster, 4x Vampire Bat, 3x Echo Screecher, 2x Cave Olm, 2x Subterraneaner, 1x Whip Spider
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 3
+
+0. 73.3% [71%, 75.6%], 0 copies from the optimum: 4x Baby Bat, 4x Trash Panda Trickster, 4x Vampire Bat, 3x Echo Screecher, 2x Cave Olm, 2x Subterraneaner, 1x Whip Spider
+1. 71.8% [69.5%, 74.2%], 6 copies from the optimum: 5x Baby Bat, 5x Trash Panda Trickster, 2x Echo Screecher, 2x Pelican Diver, 2x Subterraneaner, 1x Cave Olm, 1x Star-nosed Mole, 1x Sulfur Cinder Moth, 1x Vampire Bat
+2. 65.3% [62.8%, 67.8%], 8 copies from the optimum: 5x Baby Bat, 4x Vampire Bat, 4x Whip Spider, 2x Millipede Hauler, 2x Sulfur Cinder Moth, 2x Trash Panda Trickster, 1x Echo Screecher
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 |
+|---|---|---|---|
+| 0 | - | 55.1% (+35) | 67.2% (+124) |
+| 1 | 44.9% (-35) | - | 60.9% (+77) |
+| 2 | 32.8% (-124) | 39.1% (-77) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 177 (143 to 523); as your deck they score 12.3 to 49.4 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 8-1 skirmish's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 32.3% | 40.1 ±4.5 | 90% |
+| 8-2 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 22.3% | 49.4 ±4.1 | 85% |
+| 8-3 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 61% | 12.3 ±4.4 | 80% |
+| 8-4 skirmish's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 56.3% | 17.2 ±4.3 | 75% |
+| 8-5 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 49.8% | 23.5 ±4.4 | 70% |
+| 8-6 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 56.3% | 17 ±4.4 | 65% |
+| 8-7 elite's deck | 69.5% [57.4%-79.4%] | 143 [52, 235] | 59.3% | 14.3 ±4.3 | 60% |
+| 8-8 miniboss's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 40.8% | 31.3 ±4.6 | 40% |
+| reference starter deck under 8-1's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 15.4% | 55.9 ±3.7 | - |
+| reference deck (Map 8) under 8-2's field | 57.8% [45.6%-69.1%] | 55 [-31, 140] | 52.8% | 21.7 ±4.2 | - |
+| expected player deck (expectedPlayerDeck) under 8-3's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 16.3% | 55 ±3.7 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 8-1 skirmish | 84.4% [73.6%-91.3%] | 90% |
+| 8-2 skirmish | 75% [63.2%-84%] | 85% |
+| 8-3 skirmish | 32.8% [22.6%-45%] | 80% |
+| 8-4 skirmish | 43.8% [32.3%-55.9%] | 75% |
+| 8-5 skirmish | 35.9% [25.3%-48.2%] | 70% |
+| 8-6 skirmish | 29.7% [19.9%-41.8%] | 65% |
+| 8-7 elite | 53.1% [41.1%-64.8%] | 60% |
+| 8-8 miniboss | 46.9% [35.2%-58.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:8-1 @ 8-1: aiGuardLethal, dark dark, phase off | 85.9% | 65.6% | +20.3 [5.9, 34.7] |
+| fight:8-2 @ 8-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 95.3% | 89.1% | +6.3 [-3, 15.5] |
+| fight:8-3 @ 8-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 73.4% | 51.6% | +21.9 [5.5, 38.2] |
+| fight:8-4 @ 8-4: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1 | 71.9% | 57.8% | +14.1 [-2.3, 30.4] |
+| fight:8-5 @ 8-5: aiGuardLethal, boon blindFury, dark dark, phase off, terrain Deep Dark T1 | 73.4% | 93.8% | -20.3 [-32.7, -8] |
+| fight:8-6 @ 8-6: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1 | 73.4% | 85.9% | -12.5 [-26.3, 1.3] |
+| fight:8-7 @ 8-7: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T2 (Ambush) | 69.5% | 62.5% | +7 [-9.3, 23.4] |
+| fight:8-8 @ 8-8: aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush) | 90.6% | 57.8% | +32.8 [18.8, 46.9] |
+| ref:starter @ 8-1: aiGuardLethal, dark dark, phase off | 100% | 71.9% | +28.1 [17.1, 39.1] |
+| ref:road8 @ 8-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 57.8% | 17.2% | +40.6 [25.4, 55.9] |
+| ref:expected @ 8-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 100% | 82.8% | +17.2 [7.9, 26.4] |
+
+## Map 8: The Glimmer Depths (`mn`, side map of `m4`, opens on Map 16), your level 1
+
+- Throughput: 13482 games in 150.5 s = **89.6 games/s** (2 workers). Search: ga, budget 8000 games (8778 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mn --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 29 cards (29 map cards + 0 owned by then); phase 2 29 (+0 candidates).
+- Mode: **bpro**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 278 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpine-marmot, alpine-salamander, ...); over the map's rarity cap (rare) 8 (colossal-squid, echo-matriarch, ibex-rockcaller, old-snapjaw, savanna-cheetah, shimmerwing-stag, ...).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome caves (kin coast, fungal, volcanic-ash), terrain types Cave, field aiGuardLethal, boon, mirage, phase:off, unit types Ants 2, Arachnid 3, Bat 5, Bird 3, Cave 19, Insect 9, Mole 2, Rodent 2, skill families armor 2, evasion 3, heal 2, poison 2, swarm 3, tide 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: not in the map's own pool (BPRO) 661; map rule: over the map's rarity cap (rare) 82.
+
+- **Optimum (map cards)**: score 67.8% [64.9%, 70.8%], mirror 77.8%, road 37.9%: 4x Beetle Grunt, 4x Lantern Spark Fly, 3x Swarm Matriarch, 2x Tunnel Ant, 2x Vampire Bat, 1x Cave Olm, 1x Giant Cave Huntsman, 1x Glowworm Cluster, 1x Stalactite Golem, 1x Trash Panda Trickster
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 67.8% [64.9%, 70.8%], 0 copies from the optimum: 4x Beetle Grunt, 4x Lantern Spark Fly, 3x Swarm Matriarch, 2x Tunnel Ant, 2x Vampire Bat, 1x Cave Olm, 1x Giant Cave Huntsman, 1x Glowworm Cluster, 1x Stalactite Golem, 1x Trash Panda Trickster
+1. 61.6% [58.5%, 64.8%], 9 copies from the optimum: 2x Ant Warrior, 2x Monarch Wingblade, 2x Swarm Matriarch, 2x Trash Panda Trickster, 2x Tunnel Ant, 2x Vampire Bat, 1x Beetle Grunt, 1x Cave Bat Swarm, 1x Giant Cave Huntsman, 1x Lantern Spark Fly, 1x Quarry Mole, 1x Stalactite Golem, 1x Star-nosed Mole, 1x Sulfur Cinder Moth
+2. 56% [52.9%, 59.1%], 12 copies from the optimum: 2x Cave Bat Swarm, 2x Echo Screecher, 2x Lantern Spark Fly, 1x Ant Warrior, 1x Badger Stonemason, 1x Cave Cricket, 1x Cave Olm, 1x Cave Swiftlet, 1x Giant Cave Huntsman, 1x Glimmer Spider, 1x Glowworm Cluster, 1x Monarch Wingblade, 1x Oilbird, 1x Prospector Mole, 1x Swarm Matriarch, 1x Trash Panda Trickster, 1x Tunnel Ant
+3. 56.7% [53.3%, 60.1%], 10 copies from the optimum: 3x Cave Cricket, 2x Glimmer Spider, 2x Lantern Spark Fly, 2x Swarm Matriarch, 2x Tunnel Ant, 2x Vampire Bat, 1x Barrow Leech, 1x Beetle Grunt, 1x Cave Bat Swarm, 1x Echo Screecher, 1x Glowworm Cluster, 1x Oilbird, 1x Sulfur Cinder Moth
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 53.1% (+22) | 68.8% (+137) | 57.8% (+55) |
+| 1 | 46.9% (-22) | - | 50% (+0) | 50% (+0) |
+| 2 | 31.3% (-137) | 50% (+0) | - | 42.2% (-55) |
+| 3 | 42.2% (-55) | 50% (+0) | 57.8% (+55) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 429 (22 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 4.5 to 45.7 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 8-A-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 20.2% | 43.8 ±5.2 | 90% |
+| 8-A-2 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 19.2% | 45.7 ±5.4 | 75% |
+| 8-A-3 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 45.7% | 20.7 ±5.4 | 60% |
+| 8-A-4 boss's deck | 53.1% [41.1%-64.8%] | 22 [-63, 106] | 65.1% | 4.5 ±5.1 | 40% |
+| reference starter deck under 8-A-1's field | 76.6% [64.9%-85.3%] | 206 [107, 305] | 36% | 30.8 ±5.4 | - |
+| reference deck (Map 16) under 8-A-2's field | 61.7% [49.5%-72.6%] | 83 [-4, 170] | 65.4% | 3.2 ±5.1 | - |
+| expected player deck (expectedPlayerDeck) under 8-A-3's field | 81.3% [70%-88.9%] | 255 [147, 362] | 31% | 35.2 ±5.8 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 8-A-1 skirmish | 70.3% [58.2%-80.1%] | 90% |
+| 8-A-2 skirmish | 64.1% [51.8%-74.7%] | 75% |
+| 8-A-3 skirmish | 4.7% [1.6%-12.9%] | 60% |
+| 8-A-4 boss | 12.5% [6.5%-22.8%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:8-A-1 @ 8-A-1: aiGuardLethal, mirage, phase off | 100% | 100% | +0 [0, 0] |
+| fight:8-A-2 @ 8-A-2: aiGuardLethal, mirage, phase off, terrain Deep Dark T1 | 92.2% | 96.9% | -4.7 [-12.5, 3.1] |
+| fight:8-A-3 @ 8-A-3: aiGuardLethal, boon skyAmbush, mirage, phase off, terrain Deep Dark T1 | 79.7% | 95.3% | -15.6 [-26.8, -4.5] |
+| fight:8-A-4 @ 8-A-4: aiGuardLethal, mirage, phase off, terrain Deep Dark T2 (Ambush) | 53.1% | 54.7% | -1.6 [-18.8, 15.7] |
+| ref:starter @ 8-A-1: aiGuardLethal, mirage, phase off | 76.6% | 85.9% | -9.4 [-22.8, 4.1] |
+| ref:road16 @ 8-A-2: aiGuardLethal, mirage, phase off, terrain Deep Dark T1 | 61.7% | 31.3% | +30.5 [14, 46.9] |
+| ref:expected @ 8-A-3: aiGuardLethal, boon skyAmbush, mirage, phase off, terrain Deep Dark T1 | 81.3% | 89.1% | -7.8 [-20.1, 4.4] |
+
+## Map 9: The Kelp Mangroves (`mk`), your level 1
+
+- Throughput: 18724 games in 242.6 s = **77.2 games/s** (2 workers). Search: ga, budget 8000 games (10200 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mk --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 16 cards (16 map cards + 0 owned by then); phase 2 16 (+0 candidates).
+- Mode: **bpro**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 170 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, anaconda-coil, anhinga-spearbird, ...); over the map's rarity cap (rare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome mangrove (kin coast, reef-ocean, river, swamp), terrain types Coral Reef, Ocean, field aiGuardLethal, boon, highTide, phase:cycle, tangledRoots, tide, wet, unit types Bird 4, Fish 4, Mangrove 8, Ocean 2, Reptile 4, Swamp 3, skill families evasion 2, heal 2, strike-first 2, tide 6.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: not in the map's own pool (BPRO) 674; map rule: over the map's rarity cap (rare) 82.
+
+- **Optimum (map cards)**: score 69% [66.3%, 71.7%], mirror 74.8%, road 51.6%: 5x Mangrove Mudskipper, 4x Mudpuppy, 3x Banded Sea Krait, 3x Fiddler Crab Swarm, 2x Mudflat Godwit, 1x Archerfish, 1x Mangrove Manatee, 1x Sunbittern Strider
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 3
+
+0. 69% [66.3%, 71.7%], 0 copies from the optimum: 5x Mangrove Mudskipper, 4x Mudpuppy, 3x Banded Sea Krait, 3x Fiddler Crab Swarm, 2x Mudflat Godwit, 1x Archerfish, 1x Mangrove Manatee, 1x Sunbittern Strider
+1. 62.7% [59.9%, 65.5%], 9 copies from the optimum: 5x Minnow Skitter, 2x Archerfish, 2x Fiddler Crab Swarm, 2x Mangrove Kingfisher, 2x Mangrove Mudskipper, 2x Mudflat Godwit, 1x Banded Sea Krait, 1x Mangrove Manatee, 1x Mudpuppy, 1x Reef Shark, 1x Sunbittern Strider
+2. 63.8% [61.2%, 66.5%], 11 copies from the optimum: 5x Minnow Skitter, 5x Mudpuppy, 4x Mangrove Monitor, 1x Archerfish, 1x Fiddler Crab Swarm, 1x Mangrove Mudskipper, 1x Mudflat Godwit, 1x Reef Shark, 1x Sunbittern Strider
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 |
+|---|---|---|---|
+| 0 | - | 51.8% (+12) | 72.3% (+167) |
+| 1 | 48.2% (-12) | - | 68.8% (+137) |
+| 2 | 27.7% (-167) | 31.2% (-137) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 150 (77 to 470); as your deck they score 11.6 to 33.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 9-1 skirmish's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 49.8% | 19.1 ±4.7 | 90% |
+| 9-2 skirmish's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 46.3% | 21.8 ±4.8 | 84% |
+| 9-3 skirmish's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 44.5% | 24.4 ±4.9 | 78% |
+| 9-4 skirmish's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 58.1% | 11.6 ±4.9 | 72% |
+| 9-5 elite's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 33.9% | 33.2 ±5.1 | 66% |
+| 9-6 elite's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 43.1% | 25.7 ±5 | 60% |
+| 9-7 miniboss's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 52% | 17.1 ±5 | 40% |
+| reference starter deck under 9-1's field | 85.9% [75.4%-92.4%] | 314 [194, 434] | 20.5% | 47.2 ±4.4 | - |
+| reference deck (Map 9) under 9-2's field | 62.5% [50.3%-73.3%] | 89 [2, 176] | 59.7% | 9.9 ±4.9 | - |
+| expected player deck (expectedPlayerDeck) under 9-3's field | 82.8% [71.8%-90.1%] | 273 [162, 384] | 30.7% | 37.2 ±5 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 9-1 skirmish | 60.9% [48.7%-71.9%] | 90% |
+| 9-2 skirmish | 70.3% [58.2%-80.1%] | 84% |
+| 9-3 skirmish | 78.1% [66.6%-86.5%] | 78% |
+| 9-4 skirmish | 26.6% [17.3%-38.5%] | 72% |
+| 9-5 elite | 56.3% [44.1%-67.7%] | 66% |
+| 9-6 elite | 37.5% [26.7%-49.7%] | 60% |
+| 9-7 miniboss | 31.3% [21.2%-43.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:9-1 @ 9-1: aiGuardLethal, phase cycle, tide, wet | 70.3% | 25% | +45.3 [29.9, 60.7] |
+| fight:9-2 @ 9-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 81.3% | 57.8% | +23.4 [8, 38.9] |
+| fight:9-3 @ 9-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 70.3% | 59.4% | +10.9 [-5.5, 27.4] |
+| fight:9-4 @ 9-4: aiGuardLethal, boon risingTide, phase cycle, terrain Coral Shelf T1, tide, wet | 60.9% | 51.6% | +9.4 [-7.7, 26.5] |
+| fight:9-5 @ 9-5: aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet | 93.8% | 50% | +43.8 [30.1, 57.4] |
+| fight:9-6 @ 9-6: aiGuardLethal, highTide, phase cycle, tangledRoots, terrain Coral Shelf T2 (Thorns 1), wet | 71.9% | 46.9% | +25 [8.5, 41.5] |
+| fight:9-7 @ 9-7: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet | 68.8% | 34.4% | +34.4 [18.1, 50.6] |
+| ref:starter @ 9-1: aiGuardLethal, phase cycle, tide, wet | 85.9% | 56.3% | +29.7 [14.8, 44.5] |
+| ref:road9 @ 9-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 62.5% | 21.9% | +40.6 [25, 56.2] |
+| ref:expected @ 9-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 82.8% | 60.9% | +21.9 [6.8, 37] |
+
