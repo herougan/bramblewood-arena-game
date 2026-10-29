@@ -25304,14 +25304,13 @@ function gdClose(silent){
   const S = GD.s;
   // 2026-10-29 (package UI3, S9; owner 23:01: "Pressing back brings you back to the arena page, at the coop section."): leaving a run on its floors or its end screen
   // (Back, Leave) lands on the Arena page with the Co-op pane open; a silent close (an error toast, a refused join) and the lobby keep their old place
-  const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight') && gdPlayerOpen();
-  if(toArena){ try{ pl2ArenaPane = 'coop'; playSubTab = 'arena'; }catch(e){} }
+  const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight');
   if(S){ try{ S.leave(); }catch(e){} if(GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('leave_coop_room', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} if(GD.kind === 'live' && S.isHost && GD.roomId && S.room && S.room.status === 'lobby') try{ sbClient.from('coop_rooms').update({status: 'closed', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){} }
   clearTimeout(GD.joinTimer); GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null;
   gdHide(); const bar = document.getElementById('coopBar'); if(bar) bar.remove();
   if(matchState && matchState.coop) endMatch({coopKeep: true});
   try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
-  if(toArena){ try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
+  if(toArena){ try{ pl2ArenaPane = 'coop'; playSubTab = 'arena'; }catch(e){} try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
 }
 function gdHide(){ const ov = document.getElementById('gdOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } document.body.classList.remove('gd-open'); }
 function gdShow(){
