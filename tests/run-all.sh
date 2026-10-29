@@ -239,5 +239,6 @@ run node tests/tools1-2026-10-28.js   # 2026-10-28 (package TOOLS1): the balance
 run node tests/coop2-2026-10-28.js   # 2026-10-28 (package COOP2, owner K12): the Tidelock Vault as a normal fight like a raid: 2 players by type, a row each and one bramble, allied slots, one play a turn, the race (lower index lands, the other card back in hand), slot locks, runs in step, drop / return / host migration, the raid's rewards, what was removed, texts in 12 packs
 run node tests/pack1-2026-10-28.js   # 2026-10-28 (package PACK1, owner 22:47): a basic pack's pool is its maps' lists + canonical/pack-extras.json (Pack N = Maps 7(N-1)-7N-1, a card's first list), cards in no list not obtainable (Map 0), the extras, packs still open, the 🃏 Map cards overlay, texts in 12 packs
 run node tests/flair1-2026-10-28.js   # 2026-10-28 (package FLAIR1, owner 23:06): the Dragon Lair's final-boss flair is data-driven (finalBoss on map mx and node 20-B-4), its hooks, CSS (vignette under the board, reduced motion), texts in 12 packs
+run node tests/review1-2026-10-29.js   # 2026-10-29 (package REVIEW1, owner 00:13): the Map cards overlay shows Chosen / Cut cards / Maybe from canonical/map-review.json (why, by, flip + Copy my picks), "No review yet", texts in 12 packs
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

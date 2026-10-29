@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-29 (package REVIEW1: Chosen / Cut cards / Maybe in the 🃏 Map cards overlay; admin only)
+- **The overlay shows the map list review** (owner 10-29 00:13: "also show what you would have cut ... Cut cards ... 'maybe's in a 3rd section"). Data: `canonical/map-review.json` (an empty stub for now; THEME3 fills it), inlined at build like the pack extras. For each list (the map, each side map, SPECIAL as `<map>:special`) with review data: **Chosen** (the cards as before, each with its one-line why and an owner / Claude / kept badge; the why is also the hover / tap title), **Cut cards** (dimmed, ✂) and **Maybe** (?). Without review data a list shows as before plus "No review yet". Tiles still zoom.
+- **Telling Claude your call:** each tile has a small button (✂ Cut on a chosen card, ↩ Keep on a cut or maybe card); **Copy my picks** copies e.g. `Sunken Hollow / Map: keep A, B; cut C` to paste into the chat.
+- The 🃏 Map cards button is in the build after ✅ Mark cleared (checked at 1366 and 390; the owner's 09:29 screenshot without it is most likely the live site, which is built from `main` and has only what is pushed).
+- Texts in 12 packs (`tools/i18n_2026_10_29_review1.py`; Tagalog, Tamil, Japanese and Korean deserve a native read). Tests: `tests/review1-2026-10-29.js`, `tests/e2e/review1_2026_10_29.py`; shots in `docs/screens/review1/` (fake entries, in the test page only).
 ## 2026-10-28 (package TOOLS1: the balance workbench, tools only; no card, deck, price or game change)
 - **`node tools/bench/bench.js`** (owner 10-28 21:40, tools T1-T3 of the balancing plan), documented in `docs/workflows/balance.md`:
   - `contrib` (T1): a card's contribution by paired swaps (the same fights with k copies of the card and with k Blanks), any card subset, a map's context (`--map N`) or the global one; cached and resumable, about 15 s a card; reports contribution ± 95%, value per budget point (per copy / N) and the distance from the fair line.
