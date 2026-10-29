@@ -1700,3 +1700,142 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road18 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 29.7% | 35.9% | -6.2 [-22.5, 10] |
 | ref:expected @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 89.1% | 18.8% | +70.3 [58.1, 82.6] |
 
+## Map 18: The Pale Desert (`mpd`, side map of `md`, opens on Map 19), your level 1
+
+- Throughput: 23460 games in 212.4 s = **110.4 games/s** (2 workers). Search: ga, budget 8000 games (11592 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mpd --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 27 cards (27 map cards + 0 owned by then); phase 2 27 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 329 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome pale-desert (kin desert-glass, volcanic-ash), terrain types -, field aiGuardLethal, boon, field, heatLevel, mirage, phase:cycle, sandstorm, unit types Arachnid 4, Bird 5, Canid 3, Desert 17, Insect 2, Reptile 6, Savanna 5, Volcanic 2, skill families armor 2, evasion 2, poison 5, ranged 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 682; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 63.3% [60.9%, 65.6%], mirror 76.3%, road 24.1%: 5x Cinder Gecko, 5x Roadrunner Courier, 4x Stonedrop Vulture, 3x Trapdoor Spider, 2x Rabid Jackal, 1x Dust Hyena
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 7 decks the searches ended on): 3
+
+0. 63.3% [60.9%, 65.6%], 0 copies from the optimum: 5x Cinder Gecko, 5x Roadrunner Courier, 4x Stonedrop Vulture, 3x Trapdoor Spider, 2x Rabid Jackal, 1x Dust Hyena
+1. 62.4% [59.9%, 64.9%], 10 copies from the optimum: 5x Armadillo Guard, 4x Stonedrop Vulture, 3x Dust Hyena, 3x Trapdoor Spider, 2x Cinder Gecko, 1x Pale Oryx, 1x Quicksand Queen, 1x Skull Vulture
+2. 59.3% [56.9%, 61.7%], 11 copies from the optimum: 4x Dust Hyena, 4x Stonedrop Vulture, 2x Cinder Gecko, 2x Dust-devil Kestrel, 2x Trapdoor Spider, 1x Armadillo Guard, 1x Caustic Scorpion, 1x Dune Jackal Scout, 1x Dune Packrat, 1x Horned Lizard, 1x Pale Oryx
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 |
+|---|---|---|---|
+| 0 | - | 61.8% (+84) | 56.2% (+44) |
+| 1 | 38.2% (-84) | - | 49.3% (-5) |
+| 2 | 43.8% (-44) | 50.7% (+5) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 221 (22 to 364); as your deck they score 12.2 to 33.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 18-A-1 skirmish's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 40.5% | 23 ±4.3 | 90% |
+| 18-A-2 skirmish's deck | 53.1% [41.1%-64.8%] | 22 [-63, 106] | 49.6% | 14.3 ±4.2 | 85.7% |
+| 18-A-3 skirmish's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 27.9% | 33.6 ±4.3 | 81.4% |
+| 18-A-4 skirmish's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 29.1% | 32.7 ±4.4 | 77.1% |
+| 18-A-5 skirmish's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 50.7% | 12.2 ±4.5 | 72.9% |
+| 18-A-6 skirmish's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 31.7% | 30.3 ±4.3 | 68.6% |
+| 18-A-7 skirmish's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 44.6% | 18 ±4.4 | 64.3% |
+| 18-A-8 elite's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 47.3% | 15 ±4.4 | 60% |
+| 18-A-9 boss's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 43.5% | 18.6 ±4.4 | 40% |
+| reference starter deck under 18-A-1's field | 95.3% [87.1%-98.4%] | 523 [332, 715] | 15.8% | 45.3 ±3.9 | - |
+| reference deck (Map 19) under 18-A-2's field | 68.8% [56.6%-78.8%] | 137 [46, 228] | 49.3% | 13.6 ±4.3 | - |
+| expected player deck (expectedPlayerDeck) under 18-A-3's field | 81.3% [70%-88.9%] | 255 [147, 362] | 35.9% | 26.2 ±4.3 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 18-A-1 skirmish | 17.2% [9.9%-28.2%] | 90% |
+| 18-A-2 skirmish | 21.9% [13.5%-33.4%] | 85.7% |
+| 18-A-3 skirmish | 46.9% [35.2%-58.9%] | 81.4% |
+| 18-A-4 skirmish | 34.4% [23.9%-46.6%] | 77.1% |
+| 18-A-5 skirmish | 9.4% [4.4%-19%] | 72.9% |
+| 18-A-6 skirmish | 26.6% [17.3%-38.5%] | 68.6% |
+| 18-A-7 skirmish | 29.7% [19.9%-41.8%] | 64.3% |
+| 18-A-8 elite | 18.8% [11.1%-30%] | 60% |
+| 18-A-9 boss | 12.5% [6.5%-22.8%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:18-A-1 @ 18-A-1: aiGuardLethal, field heatwave, heatLevel 1, phase cycle | 59.4% | 57.8% | +1.6 [-15.5, 18.6] |
+| fight:18-A-2 @ 18-A-2: aiGuardLethal, field heatwave, heatLevel 1, mirage, phase cycle | 53.1% | 56.3% | -3.1 [-20.4, 14.1] |
+| fight:18-A-3 @ 18-A-3: aiGuardLethal, boon sandVeil, field heatwave, heatLevel 1, phase cycle, sandstorm | 89.1% | 92.2% | -3.1 [-13.2, 7] |
+| fight:18-A-4 @ 18-A-4: aiGuardLethal, field heatwave, heatLevel 1, phase cycle, sandstorm | 85.9% | 98.4% | -12.5 [-21.5, -3.5] |
+| fight:18-A-5 @ 18-A-5: aiGuardLethal, field heatwave, heatLevel 2, phase cycle | 68.8% | 75% | -6.2 [-21.8, 9.3] |
+| fight:18-A-6 @ 18-A-6: aiGuardLethal, field heatwave, heatLevel 2, mirage, phase cycle | 81.3% | 84.4% | -3.1 [-16.2, 9.9] |
+| fight:18-A-7 @ 18-A-7: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm | 73.4% | 90.6% | -17.2 [-30.2, -4.2] |
+| fight:18-A-8 @ 18-A-8: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm | 78.1% | 82.8% | -4.7 [-18.4, 9] |
+| fight:18-A-9 @ 18-A-9: aiGuardLethal, field heatwave, heatLevel 2, mirage, phase cycle | 81.3% | 89.1% | -7.8 [-20.1, 4.4] |
+| ref:starter @ 18-A-1: aiGuardLethal, field heatwave, heatLevel 1, phase cycle | 95.3% | 87.5% | +7.8 [-1.8, 17.4] |
+| ref:road19 @ 18-A-2: aiGuardLethal, field heatwave, heatLevel 1, mirage, phase cycle | 68.8% | 56.3% | +12.5 [-4.1, 29.1] |
+| ref:expected @ 18-A-3: aiGuardLethal, boon sandVeil, field heatwave, heatLevel 1, phase cycle, sandstorm | 81.3% | 81.3% | +0 [-13.5, 13.5] |
+
+## Map 19: Ashen Spurn (`m3`), your level 1
+
+- Throughput: 16572 games in 182.4 s = **90.8 games/s** (2 workers). Search: ga, budget 8000 games (8790 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m3 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 15 cards (15 map cards + 0 owned by then); phase 2 15 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 348 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (veryrare) 4 (ember-revenant, old-snapjaw, the-gannet-queen, yeti-chieftain).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashRain, ashy, phase:cycle, wind, windfall, unit types Amphibian 2, Ape 2, Beetle 2, Frost 3, Insect 2, Mountain 2, Porcupine 2, Primate 2, Rodent 2, Volcanic 6, skill families bleed 2, fire 2, siege 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 694; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 61.7% [59.2%, 64.1%], mirror 76%, road 18.5%: 3x Cinder Stoker, 3x Obsidian Scorpion, 3x Quill Volley, 2x Fire Salamander, 2x Porcupine Roller, 2x Pumice Beetle, 1x Echidna Quillshot, 1x Glacier Wolf Pack, 1x Hercules Beetle, 1x Phoenix Fledgling, 1x Talus Pika
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 61.7% [59.2%, 64.1%], 0 copies from the optimum: 3x Cinder Stoker, 3x Obsidian Scorpion, 3x Quill Volley, 2x Fire Salamander, 2x Porcupine Roller, 2x Pumice Beetle, 1x Echidna Quillshot, 1x Glacier Wolf Pack, 1x Hercules Beetle, 1x Phoenix Fledgling, 1x Talus Pika
+1. 63% [60.6%, 65.5%], 8 copies from the optimum: 3x Obsidian Scorpion, 3x Pumice Beetle, 3x Scree Goat, 2x Cinder Stoker, 2x Hercules Beetle, 2x Talus Pika, 2x Yeti, 1x Fire Salamander, 1x Phoenix Fledgling, 1x Quill Volley
+2. 60% [57.5%, 62.5%], 6 copies from the optimum: 3x Quill Volley, 3x Scree Goat, 2x Echidna Quillshot, 2x Phoenix Fledgling, 2x Pumice Beetle, 2x Talus Pika, 1x Cinder Stoker, 1x Fire Salamander, 1x Glacier Wolf Pack, 1x Hercules Beetle, 1x Obsidian Scorpion, 1x Porcupine Roller
+3. 58.1% [55.5%, 60.8%], 7 copies from the optimum: 3x Obsidian Scorpion, 3x Quill Volley, 3x Talus Pika, 2x Cinder Stoker, 2x Echidna Quillshot, 2x Phoenix Fledgling, 2x Pumice Beetle, 1x Glacial Ape-King, 1x Magma Titan, 1x Scree Goat
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 51% (+7) | 56.3% (+44) | 57.3% (+51) |
+| 1 | 49% (-7) | - | 64.6% (+104) | 68.8% (+137) |
+| 2 | 43.7% (-44) | 35.4% (-104) | - | 58.3% (+58) |
+| 3 | 42.7% (-51) | 31.3% (-137) | 41.7% (-58) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 364 (77 to 470); as your deck they score 12.3 to 39.1 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 19-1 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 27.8% | 30.9 ±4.6 | 90% |
+| 19-2 skirmish's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 38.9% | 21.2 ±4.6 | 82.5% |
+| 19-3 elite's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 44.7% | 16 ±4.5 | 75% |
+| 19-4 elite's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 19.9% | 39.1 ±4.5 | 67.5% |
+| 19-5 elite's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 25.6% | 33.6 ±4.6 | 60% |
+| 19-6 miniboss's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 49.4% | 12.3 ±4.4 | 40% |
+| reference starter deck under 19-1's field | 93.8% [85%-97.5%] | 470 [301, 640] | 21.2% | 37.6 ±4.5 | - |
+| reference deck (Map 19) under 19-2's field | 21.9% [13.5%-33.4%] | -221 [-323, -120] | 81.3% | -16 ±3.7 | - |
+| expected player deck (expectedPlayerDeck) under 19-3's field | 84.4% [73.6%-91.3%] | 293 [178, 408] | 27.8% | 31.7 ±4.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 19-1 skirmish | 51.6% [39.6%-63.4%] | 90% |
+| 19-2 skirmish | 31.3% [21.2%-43.4%] | 82.5% |
+| 19-3 elite | 7.8% [3.4%-17%] | 75% |
+| 19-4 elite | 9.4% [4.4%-19%] | 67.5% |
+| 19-5 elite | 4.7% [1.6%-12.9%] | 60% |
+| 19-6 miniboss | 6.3% [2.5%-15%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:19-1 @ 19-1: aiGuardLethal, phase cycle, wind windy, windfall | 93.8% | 89.1% | +4.7 [-5, 14.4] |
+| fight:19-2 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 78.1% | 65.6% | +12.5 [-2.9, 27.9] |
+| fight:19-3 @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 71.9% | 76.6% | -4.7 [-19.8, 10.4] |
+| fight:19-4 @ 19-4: aiGuardLethal, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 90.6% | 90.6% | +0 [-10.1, 10.1] |
+| fight:19-5 @ 19-5: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 89.1% | 95.3% | -6.2 [-15.5, 3] |
+| fight:19-6 @ 19-6: aiGuardLethal, ashy, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 60.9% | 54.7% | +6.3 [-10.8, 23.3] |
+| ref:starter @ 19-1: aiGuardLethal, phase cycle, wind windy, windfall | 93.8% | 89.1% | +4.7 [-5, 14.4] |
+| ref:road19 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 21.9% | 54.7% | -32.8 [-48.7, -17] |
+| ref:expected @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 84.4% | 59.4% | +25 [10, 40] |
+
