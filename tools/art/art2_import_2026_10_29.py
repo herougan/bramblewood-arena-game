@@ -37,11 +37,13 @@ def _line_stats(im, axis):
         vals = [px[i, j] for j in range(0, H, 2)] if axis == 0 else [px[j, i] for j in range(0, W, 2)]
         m = sum(vals) / len(vals)
         sd = (sum((v - m) ** 2 for v in vals) / len(vals)) ** 0.5
-        out.append((m, sd))
+        med = sorted(vals)[len(vals) // 2]
+        near = sum(1 for v in vals if abs(v - med) < 24) / len(vals)  # share of the line in its main colour
+        out.append((m, sd, near))
     return out
 
 
-def _is_gap(m, sd):
+def _is_gap(m, sd, near=0):
     return sd < 18 and (m > 215 or m < 30)
 
 
@@ -59,11 +61,16 @@ def find_split(stats, lo, hi):
     return best
 
 
-def trim_border(stats, n):
+def trim_border(stats, n, pred=_is_gap, frac=8):
     a, b = 0, n
-    while a < n // 8 and _is_gap(*stats[a]): a += 1
-    while b > n - n // 8 and _is_gap(*stats[b - 1]): b -= 1
+    while a < n // frac and pred(*stats[a]): a += 1
+    while b > n - n // frac and pred(*stats[b - 1]): b -= 1
     return a, b
+
+
+def _is_frame(m, sd, near):
+    """A panel edge line mostly of one flat colour (Gemini sometimes draws a coloured frame with rounded corners)."""
+    return near > 0.8 or _is_gap(m, sd)
 
 
 def split_sheet(im, inset=0.0):
@@ -77,7 +84,7 @@ def split_sheet(im, inset=0.0):
         p = im.crop(bx)
         # trim leftover uniform edge lines (thin frame or gap remains), at most 4% per side
         pc, pr = _line_stats(p, 0), _line_stats(p, 1)
-        a, b = trim_border(pc, p.width); c, d = trim_border(pr, p.height)
+        a, b = trim_border(pc, p.width, _is_frame, 16); c, d = trim_border(pr, p.height, _is_frame, 16)
         p = p.crop((a, c, b, d))
         s = min(p.size); l = (p.width - s) // 2; t = (p.height - s) // 2
         k = int(s * inset)  # NightCafe draws a rounded frame per panel: cut inside it
@@ -132,11 +139,12 @@ def main():
         if not ids: ids = [i for v in json.load(open(SHEETS)).values() for i in v]
         return contact(ids, out)
     sheets = json.load(open(SHEETS)); plan = json.load(open(PLAN))
-    subj, sent = {}, {}
+    subj, sent, base_of = {}, {}, {}
     for s in plan['sheets'].values():
         for cid, t in zip(s['ids'], s['subjects']):
             subj[cid] = t
             if s.get('sent'): sent[cid] = s['sent']  # NightCafe needs a shorter prompt; this is the text actually sent
+            if s.get('base'): base_of[cid] = s['base']  # later Gemini sheets asked for white gaps and no borders
     colours = pixelize.load_palette()
     text = open(CARDS, encoding='utf-8').read()
     for fn, ids in sheets.items():
@@ -148,7 +156,7 @@ def main():
             if cid is None: continue
             img = pixel_pass(p, colours)
             path = os.path.join(OUT, cid + '.png'); img.save(path, optimize=True)
-            prompt = sent.get(cid) or (plan['base'] + ' ' + pos + ': ' + subj.get(cid, cid) + '.')
+            prompt = sent.get(cid) or (base_of.get(cid, plan['base']) + ' ' + pos + ': ' + subj.get(cid, cid) + '.')
             open(os.path.join(OUT, cid + '.prompt.txt'), 'w').write(
                 '# ART2 2026-10-29, sheet %s (%s panel), pixel pass 128 px -> x2 nearest\n%s\n' % (fn, pos, prompt))
             uri = 'data:image/png;base64,' + base64.b64encode(open(path, 'rb').read()).decode('ascii')
