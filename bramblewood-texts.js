@@ -2410,6 +2410,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.adminu1-missing": "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').",
   "ui.adminu1-denied": "Only admin accounts can open the player list.",
   "ui.adminu1-error": "Could not load players: {msg}",
+  "ui.ui2-pitch-shift": "Shift+click a card in your hand to pitch it.",
   "ui.rw5-guild-shop": "Guild shop",
   "ui.rw5-guild-shop-sub": "Goods for running your guild.",
   "ui.rw5-guild-shop-member": "Goods for running the guild. Only its owner can buy them.",

@@ -3648,6 +3648,7 @@
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "La liste des joueurs a besoin de la fonction de base de données de supabase/proposed/20261029_admin_user_list.sql (propriétaire : 'apply it').",
  "Only admin accounts can open the player list.": "Seuls les comptes admin peuvent ouvrir la liste des joueurs.",
  "Could not load players: {msg}": "Impossible de charger les joueurs : {msg}",
+ "Shift+click a card in your hand to pitch it.": "Maj+clic sur une carte de votre main pour la défausser.",
  "Slow": "Lent",
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Agit en dernier parmi les unités de même Vitesse. Deux unités Lentes alternent comme d'habitude.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sous les arbres : tout combat sur une carte de forêt (les Vieux Bois), la Haute Canopée ou le Sous-bois. Au sol : pas Volant (un volant cloué au sol compte). Elle couvre les attaques à distance (tirs, compétences, un Boomerang lancé) et les attaquants volants ; l'attaque au corps à corps d'une unité au sol touche toujours. Un seul jet, comme Évasif, et pas en plus d'Évasif. Frappe sûre et Exposé la percent.",

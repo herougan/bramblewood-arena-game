@@ -54,7 +54,7 @@ ok(/const GD_OPEN_AFTER_MAP = 16;/.test(app) && /tutorialFullyDone\(\) && mapsPa
 // P24-18
 ok(/if\(!tabOpen\('deck'\)\)\{ pl1LeaderLessonWaitSave/.test(fnSrc('maybeLeaderLesson')), 'P24-18 the leader lesson waits for the Camp');
 // P24-19
-ok(/moreAfter/.test(fnSrc('openPackAnimation')) && /left \+ more/.test(app) && /poNextSet/.test(app) && /const showSession = /.test(app), 'P24-19 the count runs across sets; the last set shows every card');
+ok(/moreAfter/.test(fnSrc('openPackAnimation')) && /left \+ more/.test(app) && /poNextSet/.test(app) && /(?:const|let) showSession = /.test(app) /* 2026-10-29 UI2: the stages are let now, wrapped by poGuard */, 'P24-19 the count runs across sets; the last set shows every card');
 ok(/spotAvailable\(sp, loadConquestProgress\(\)\)/.test(fnSrc('armouryOpen')) && /releaseHeldPacks\(\)/.test(app.slice(app.indexOf('pl1HeldPackCount() &&'), app.indexOf('pl1HeldPackCount() &&') + 200)), 'P24-19 reward packs open once the Camp is there; held ones open on the map');
 // P24-20
 ok(/\.pool-stack \.ps-count\{right:-11px; bottom:-10px; padding:0 4px; min-width:0; font-size:9\.5px/.test(tpl), 'P24-20 the smaller copy pill in the corner');

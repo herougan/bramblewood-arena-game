@@ -494,6 +494,11 @@
      (it's spent every time you start a fight) and gets a warning tint once you're too low to
      afford even the cheapest thing that costs it (a Skirmish). */
   .energy-pill{display:flex; align-items:center; gap:5px; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--energy-ink);}
+  /* 2026-10-29 (package UI2, R5): the capsule's sparks flying into the Energy pill, and the pill's pulse as they land */
+  .ui2-zap{position:fixed; z-index:10080; pointer-events:none; font-size:20px; line-height:1; filter:drop-shadow(0 0 6px rgba(255,226,90,.95)) drop-shadow(0 0 2px #fff); will-change:transform, opacity;}
+  .energy-pill.ui2-energy-pulse{animation:ui2EnergyPulse .5s ease-out;}
+  @keyframes ui2EnergyPulse{0%{transform:scale(1); box-shadow:0 0 0 0 rgba(255,214,64,.0);} 35%{transform:scale(1.14); box-shadow:0 0 0 5px rgba(255,214,64,.45);} 100%{transform:scale(1); box-shadow:0 0 0 10px rgba(255,214,64,0);}}
+  @media (prefers-reduced-motion: reduce){ .energy-pill.ui2-energy-pulse{animation:none; box-shadow:0 0 0 3px rgba(255,214,64,.5);} }
   .energy-pill .energy-ico{font-size:12px; margin-left:1px;}
   .energy-pill .energy-next{opacity:.85;}
   /* Not enough Energy (2026-10-12): a small toast in the middle of the screen, gone after 2 s; short fight buttons look greyed. */
@@ -7959,6 +7964,9 @@
   .board-row:has(> :nth-child(21)){gap:0; --gapx:calc(var(--match-card-w) * -0.2); --row-n:21;}
   .board-row:has(> :nth-child(21)) > * + *{margin-left:calc(var(--match-card-w) * -0.2);}
   .board-row > .board-card{width:min(var(--match-card-w), calc((100% - (var(--row-n) - 1) * var(--gapx)) / var(--row-n))); height:auto; aspect-ratio:4 / 5; flex-shrink:1; min-width:0;}
+  /* 2026-10-29 (package UI2, R1): a slot row sized for the columns its units stand in (ui2SetRowSpan sets --row-n): the empty edge columns
+     keep the cards' size and run past the field's edge instead of squeezing every card */
+  .board-row.ui2-span > .board-card{flex-shrink:0;}
   #forfeitMatchBtn{margin-left:10px;} /* playtest: a little space between Forfeit and its neighbours */
   /* Forge hearth flare-ups (2026-10-08) */
   .forge-flareup{position:absolute; bottom:0; width:0; height:0; z-index:3; pointer-events:none;}
@@ -8041,6 +8049,15 @@
   /* 2026-10-15 (user: "If there's multiple packs ... you see layered packs ... the pack stack gets smaller"): the packs still to
      open sit in a fanned pile behind the one being torn, one fewer each time. */
   .po2-pile-wrap{position:relative; isolation:isolate;}
+  /* 2026-10-29 (package UI2, owner R2): the opener's first pack pops in from 80% (where the reward pack's glide ends) with a small bounce;
+     none with reduced motion or low effects */
+  .po2-pile-wrap.ui2-popin{animation:ui2PackPop .62s cubic-bezier(.3,1.45,.55,1) both;}
+  @keyframes ui2PackPop{0%{scale:.8; opacity:.2} 45%{scale:1.06; opacity:1} 70%{scale:.975} 88%{scale:1.012} 100%{scale:1}}
+  html[data-fx="none"] .po2-pile-wrap.ui2-popin, html[data-fx="low"] .po2-pile-wrap.ui2-popin{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .po2-pile-wrap.ui2-popin{animation:none;} }
+  /* 2026-10-29 (UI2, R2): a card the opener could not draw */
+  .ui2-po-fallback{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; aspect-ratio:.72; background:#2b2238; color:#fff; border-radius:8px;}
+  .ui2-po-fallback .ico{font-size:34px;} .ui2-po-fallback .nm{font:800 12px 'Nunito',system-ui,sans-serif; text-align:center; padding:0 6px;}
   .po2-pile{position:absolute; inset:0; z-index:-3; pointer-events:none;}
   .po2-pile-pack{position:absolute; left:0; right:0; top:12%; bottom:0; border-radius:4px 4px 8px 8px;
     background:linear-gradient(115deg, #cdb6f5 0%, #f5bedc 30%, #f6e6a8 55%, #b4e6f3 80%, #cbb7f2 100%);
@@ -43303,7 +43320,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0dbde01cbf", "es": "assets/lang/es.js?v=cb52091847", "fr": "assets/lang/fr.js?v=c0bbbb33a8", "id": "assets/lang/id.js?v=231e5e71b8", "it": "assets/lang/it.js?v=968e7c2096", "ja": "assets/lang/ja.js?v=f2d83e7557", "ko": "assets/lang/ko.js?v=c27f903af5", "pt": "assets/lang/pt.js?v=7f29f11c42", "ta": "assets/lang/ta.js?v=e64c30cafa", "tl": "assets/lang/tl.js?v=bcd8ca9033", "zh-Hans": "assets/lang/zh-Hans.js?v=a2f1be204e", "zh-Hant": "assets/lang/zh-Hant.js?v=09ad93a939"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=62c142c89a", "es": "assets/lang/es.js?v=d55b1b7b9d", "fr": "assets/lang/fr.js?v=733737de05", "id": "assets/lang/id.js?v=3ec5dc1418", "it": "assets/lang/it.js?v=8d41223f41", "ja": "assets/lang/ja.js?v=fc56165ab2", "ko": "assets/lang/ko.js?v=7e47997678", "pt": "assets/lang/pt.js?v=e1ac676c61", "ta": "assets/lang/ta.js?v=002ba1e5f8", "tl": "assets/lang/tl.js?v=04b09636a9", "zh-Hans": "assets/lang/zh-Hans.js?v=746cbef805", "zh-Hant": "assets/lang/zh-Hant.js?v=12d5c15f02"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45839,6 +45856,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.adminu1-missing": "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').",
   "ui.adminu1-denied": "Only admin accounts can open the player list.",
   "ui.adminu1-error": "Could not load players: {msg}",
+  "ui.ui2-pitch-shift": "Shift+click a card in your hand to pitch it.",
   "ui.rw5-guild-shop": "Guild shop",
   "ui.rw5-guild-shop-sub": "Goods for running your guild.",
   "ui.rw5-guild-shop-member": "Goods for running the guild. Only its owner can buy them.",
@@ -50845,7 +50863,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '493dabe260e0', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
+const BUILD_ID = 'c58d8111a19f', BUILD_CARD_HASH = '9829539cce7dac917e2dc49b0c08025cb8f0058cb367777fb55e3553a7b2e9a8';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -60610,7 +60628,7 @@ function openEnergyPanel(anchor){
   pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
-  const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); } };
+  const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ const from = cb.getBoundingClientRect(); if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); try{ ui2EnergyZap(from); }catch(e){} } }; // 2026-10-29 (UI2, R5): the sparks fly into the pill
   pop.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#epFree:not([disabled]), #epCapsule'); if(b) try{ fxHook('energyRefill', b.id === 'epCapsule' ? ENERGY_CAPSULE_AMOUNT : FREE_ENERGY_AMOUNT, b.id, b.getBoundingClientRect()); }catch(_){} }, true); // 2026-10-15 batch F
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
@@ -60625,6 +60643,35 @@ function openEnergyPanel(anchor){
     const head = pop.querySelector('.ep-count'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()}`; /* PL2 (2026-10-25) */ const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
   });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
+}
+// 2026-10-29 (package UI2, owner R5: "After using the battery, electric symbols come out and join into your energy X/Y."): a few ⚡ burst out
+// of the capsule button, curve across to the Energy pill on screen (the top bar's or the Play tab's) one after another, and the pill pulses
+// as each lands. Reduced motion or Effects Off / Low: no flight, the pill pulses once.
+function ui2EnergyPill(){ return ['energyPillPlay', 'energyPill'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent && e.getBoundingClientRect().width > 0) || null; }
+function ui2EnergyPulse(pill){ if(!pill) return; pill.classList.remove('ui2-energy-pulse'); void pill.offsetWidth; pill.classList.add('ui2-energy-pulse'); clearTimeout(pill._ui2T); pill._ui2T = setTimeout(()=> pill.classList.remove('ui2-energy-pulse'), 520); }
+function ui2EnergyZap(fromRect, count){
+  const pill = ui2EnergyPill(); if(!pill) return 0;
+  const calm = reducedMotion() || !fxAtLeast('med') || !document.body.animate;
+  if(calm){ ui2EnergyPulse(pill); return 0; }
+  const to = pill.getBoundingClientRect(), tx = to.left + to.width * 0.35, ty = to.top + to.height / 2;
+  const fx = fromRect && fromRect.width ? fromRect.left + fromRect.width / 2 : innerWidth / 2, fy = fromRect && fromRect.height ? fromRect.top + fromRect.height / 2 : innerHeight / 2;
+  const n = Math.max(3, Math.min(8, count || 5)); let landed = 0;
+  for(let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'ui2-zap'; s.textContent = '⚡'; s.setAttribute('aria-hidden', 'true');
+    s.style.left = fx + 'px'; s.style.top = fy + 'px'; document.body.appendChild(s);
+    const ang = (i / n) * Math.PI * 2 + Math.random() * 0.6, r = 26 + Math.random() * 22, bx = Math.cos(ang) * r, by = Math.sin(ang) * r - 10;
+    const dx = tx - fx, dy = ty - fy, mx = dx * 0.5 + bx * 1.4 + (Math.random() - 0.5) * 60, my = Math.min(dy * 0.5, dy * 0.5 - 70) + by;
+    const a = s.animate([
+      {transform:'translate(-50%,-50%) translate(0px,0px) scale(.4) rotate(0deg)', opacity:0},
+      {transform:`translate(-50%,-50%) translate(${bx}px,${by}px) scale(1.25) rotate(${(i % 2 ? 1 : -1) * 18}deg)`, opacity:1, offset:.22},
+      {transform:`translate(-50%,-50%) translate(${mx}px,${my}px) scale(1) rotate(0deg)`, opacity:1, offset:.6},
+      {transform:`translate(-50%,-50%) translate(${dx}px,${dy}px) scale(.45) rotate(0deg)`, opacity:.9}
+    ], {duration: 820 + i * 70, delay: i * 55, easing:'cubic-bezier(.45,.05,.4,1)', fill:'forwards'});
+    const end = ()=>{ s.remove(); landed++; ui2EnergyPulse(pill); if(landed === 1){ try{ SoundKit.at ? SoundKit.at(pill, ()=> SoundKit.pickup && SoundKit.pickup()) : (SoundKit.pickup && SoundKit.pickup()); }catch(e){} } };
+    a.onfinish = end; a.oncancel = ()=> s.remove();
+    setTimeout(()=>{ if(s.isConnected){ s.remove(); } }, 2200);
+  }
+  return n;
 }
 function closeEnergyPanelOutside(e){ const p = document.getElementById('energyPanel'); if(p && !p.contains(e.target)) closeEnergyPanel(); }
 function closeEnergyPanel(){ const p = document.getElementById('energyPanel'); if(p) p.remove(); document.removeEventListener('pointerdown', closeEnergyPanelOutside, true); }
@@ -70636,6 +70683,10 @@ function conquestDeckFree(map, node){
 }
 function conquestDeckRevealed(map, node, progress){
   if(conquestDeckFree(map, node)) return true;
+  // 2026-10-29 (package UI2, owner R8: "The PRO/BPRO skirmishes should have their deck previews enabled by default."): a PRO / BPRO (and
+  // X-REF) fight is a test fight that pays nothing: its deck strip is always shown, no B clear of that fight needed. There is no Show/Hide
+  // toggle to remember any more (removed 2026-10-10), so this is the whole default.
+  if(node && node.pro) return true;
   return rankAtLeast(progress.ranks[conquestNodeId(map.id, node.key)], conquestDeckNeed(node));
 }
 // Map decoration (2026-09-29, per explicit request: "Draw a pond emoji or something in this
@@ -83807,6 +83858,7 @@ function renderBoard(opts){
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
   if(needMine && rowMine){ const h = emojiRows(rowHTML(m.players[1], p1Rows)); if(!(pl2End && pl2ReconcileRow(rowMine, h))) rowMine.innerHTML = h; }
+  if(slotView) ui2SetRowSpan(m, [p1Rows, p2Rows], [rowEnemy, rowMine]); // 2026-10-29 (UI2, R1): cards shrink only when the units would leave the field
   if(needEnemy || needMine){ if(needEnemy) pl2SeatHpBars(rowEnemy); if(needMine) pl2SeatHpBars(rowMine); } // PL2 (2026-10-25): a flyer's Health bar rides in its .fly-body
   if(needEnemy) vis3CentrePips(rowEnemy); if(needMine) vis3CentrePips(rowMine); // VIS3 (2026-10-26, G8): each pip's glyph centred
   if(!m.over && !m.ending) pl2BounceAfterRedraw(pl2Snap, [needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5)
@@ -84775,10 +84827,19 @@ function mb2FitPhoneBoard(m, battlefield, inner, rowMine){
   const cols = mb2ColumnsFor(m, win, n=> (availW - padX - (n - 1)*gap) / n);
   const rowExtra = 40, divider = 8; // a front row is its card + 40 px (see the phone .board-row rule)
   const wFromH = ((frameH - divider)/2 - rowExtra) * 0.8;
-  let w = Math.max(24, Math.min(handW, cols.wV, wFromH)); w = Math.floor(w*2)/2;
-  const all = cols.wN >= w - 0.5;
+  // 2026-10-29 (package UI2, owner R1: "the screen doesn't zoom out in advance ... just zoom out once the cards go off the screen"): the
+  // cards are sized for the columns the units stand in (with the centre column), not for the window's spare column on each side; the
+  // window's edge columns (the next legal slot) show when they fit at that size and otherwise sit just past the frame's edge (the board
+  // pans). Was: sized for the whole window (cols.wV), so seven units drew at nine columns' size (37 px instead of 48 at 390 wide).
+  const occ = mb2OccupiedSlots(m);
+  let ulo = occ ? Math.min(0, occ[0]) : 0, uhi = occ ? Math.max(0, occ[1]) : 0;
+  { const k = Math.max(-ulo, uhi); if(2*k + 1 - (uhi - ulo + 1) <= MB2_CENTRE_SLACK){ ulo = -k; uhi = k; } }
+  ulo = Math.max(ulo, win.lo); uhi = Math.min(uhi, win.hi);
+  const nU = Math.max(1, uhi - ulo + 1), wU = (availW - padX - (nU - 1)*gap) / nU;
+  let w = Math.max(24, Math.min(handW, Math.max(cols.wV, wU), wFromH)); w = Math.floor(w*2)/2;
+  const all = cols.wN >= w - 0.5, winFits = cols.wV >= w - 0.5;
   app.style.setProperty('--mb2-bw', w + 'px'); app.style.setProperty('--mb2-gap', gap + 'px');
-  return {win, cols: all ? cols.N : cols.V, mid: all ? 0 : cols.mid, pitch: w + gap};
+  return {win, cols: all ? cols.N : winFits ? cols.V : nU, mid: all ? 0 : winFits ? cols.mid : (ulo + uhi)/2, pitch: w + gap};
 }
 // The one-step re-frame (300 ms): the board is laid out at its new size at once, then drawn from where it was (a transform that
 // matches the old size and pan) and eased to the new framing. Cards are measured where they are drawn, so lines and FX follow.
@@ -84808,6 +84869,21 @@ function mb2WatchFrame(bf){
 function mb2FrameInnerHeight(battlefield){
   const cs = getComputedStyle(battlefield);
   return Math.max(40, battlefield.clientHeight - (parseFloat(cs.paddingTop)||0) - (parseFloat(cs.paddingBottom)||0));
+}
+// 2026-10-29 (package UI2, owner R1: "On PC the game zoomed out too soon (on 7 cards). Make sure on both PC, iPad and mobile, the screen
+// doesn't zoom out in advance ... just zoom out once the cards go off the screen."): a slot row draws every column of the board, the empty
+// ones at the edges too (the next legal slot on each side, and the columns a wider moment of the match opened), and the crowded-row rule
+// (.board-row > .board-card, --row-n) and fitBattlefieldZoom() both sized the cards for ALL of those columns. Seven units (slots -3..3)
+// drew nine columns, so the cards shrank before any unit was near the edge. Now both size for the columns the units stand in (the widest
+// unit's slot on either row, both sides of the centre): the empty edge columns may run past the field's edge (the side drop zones still
+// take a card there), and the cards shrink, then the board zooms out, only when a unit itself would leave the field.
+function ui2UnitSpan(rowsList){
+  let far = -1; (rowsList || []).forEach(rows=>{ if(rows) [...(rows.left||[]), ...(rows.center||[]), ...(rows.right||[])].forEach(c=>{ if(c && Number.isInteger(c.slot)) far = Math.max(far, Math.abs(c.slot)); }); });
+  return far < 0 ? 1 : 2*far + 1;
+}
+function ui2SetRowSpan(m, rowsList, rowEls){
+  const n = ui2UnitSpan(rowsList); if(m) m._ui2Span = n;
+  (rowEls || []).forEach(el=>{ if(!el) return; const all = el.children.length, on = all > n; if(on) el.style.setProperty('--row-n', String(n)); else el.style.removeProperty('--row-n'); el.classList.toggle('ui2-span', on); });
 }
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
@@ -84991,7 +85067,9 @@ function fitBattlefieldZoomNowCore(instant){
   // The raid (2026-10-18): its fixed column count, not the rows' children (a dragged card's placement ghost is a child too, and it
   // zoomed the board out and back in on every placement).
   const raidCols = matchState && matchState.raidFull && matchState._slotRange ? 2*matchState._slotRange + 1 : 0;
-  const neededWidth = mb2Span ? widthForCount(mb2Span.cols) : raidCols ? widthForCount(raidCols) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
+  // 2026-10-29 (UI2, R1): a slot board counts the columns its units stand in (ui2UnitSpan), not its empty edge columns
+  const ui2Span = !mb2Span && !raidCols && matchState && isSlotMatch(matchState) && matchState._ui2Span ? Math.min(matchState._ui2Span, Math.max(rowEnemy.children.length, rowMine.children.length)) : 0;
+  const neededWidth = mb2Span ? widthForCount(mb2Span.cols) : raidCols ? widthForCount(raidCols) : ui2Span ? widthForCount(ui2Span) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
 
   // 2026-09-20 (explicit bug report: "Cards are not fitting in reduced PC screen size mode"):
   // this function used to ONLY ever measure horizontal overflow, so a browser window that was
@@ -86001,7 +86079,10 @@ function renderHand(){
     const uid = Number(el.getAttribute('data-handuid'));
     // Tap-to-arm: click a card, then click a drop zone — the fallback for touch/keyboard
     // use, same pattern the Classic Skirmish used for its own drag-and-drop.
-    el.addEventListener('click', ()=>{
+    el.addEventListener('click', e=>{
+      // 2026-10-29 (package UI2, owner R7: "Shift+Click shortcut to pitch cards in hand."): Shift+click pitches the card, the same call as
+      // dropping it on the Graveyard (discardCardByUid: the same rules, no confirmation, nothing while pitching is closed or a turn resolves).
+      if(e && e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey){ e.preventDefault(); if(m.selectedUid === uid) m.selectedUid = null; discardCardByUid(uid); return; }
       if(m.selectedUid !== uid) SoundKit.pickup();
       m.selectedUid = (m.selectedUid===uid) ? null : uid; // tap again to un-arm
       renderHand(); updateControlsDisabled(); refreshDiscardZone();
@@ -86109,7 +86190,7 @@ function aiActNow(){
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
-  fightSafe(()=> holdArrivalDead(m, prePos, deferred), 'holdArrivalDead');
+  fightSafe(()=> holdArrivalDead(m, prePos, deferred, events) /* 2026-10-29 (UI2, R3) */, 'holdArrivalDead');
   // 2026-10-19 (package RV2): a raid boss plays 3 cards at once, its middle and back rows' with its front row's (raidBossRowPlays); they
   // fly in from its hand above the board with the front play, each into its own slot (no board redraw).
   if(m.raidFull) fightSafe(()=>{ const plays = raidBossRowPlays(m, null); plays.forEach((pl, i)=>{ pushLog({type:'raidBossPlay', side:'B', defId:pl.defId, uid:pl.uid, row:pl.row, slot:pl.slot}); reserveSlotPut(m, 2, pl.row, pl.slot); bossRowPlayFx(pl.uid, i); }); }, 'raidBossRowPlays');
@@ -86183,8 +86264,14 @@ function boardPosSnapshot(m){
     ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach((c, idx)=>{ if(c && !c.gap && c.uid != null) out.set(String(c.uid), {pid, lane, idx, card:c}); })); });
   return out;
 }
-function holdArrivalDead(m, pre, events){
+// 2026-10-29 (package UI2, owner R3: "Ambush - ... Currently it just looks like it phases out"): root cause, the card that died as it landed
+// was looked up by its 'play' event in `events`, but both callers pass only the events after the play (the deferred arrival), so it was never
+// found, never held, and never drawn: the played card left the hand and was gone, its Ambush strike and death playing on nothing. `all`
+// (the whole list, the play included) is where the play is looked up now; the held card starts at its full Health (the blow's number and
+// the death come after it lands) and a leveled id ('fox-kit@lv0') falls back to its card.
+function holdArrivalDead(m, pre, events, all){
   if(!m || !Array.isArray(events) || !events.some(ev=> ev && ev.type==='death')) return;
+  const playsIn = Array.isArray(all) ? all : events;
   const defs = getCardDefs(); m._arrivalHold = m._arrivalHold || new Map(); m._arrivalCollapse = m._arrivalCollapse || new Map();
   events.forEach(ev=>{
     if(!ev) return;
@@ -86192,9 +86279,9 @@ function holdArrivalDead(m, pre, events){
     if(ev.type!=='death' || ev.uid == null) return;
     const u = String(ev.uid), was = pre && pre.get(u);
     if(was){ m._arrivalHold.set(u, was); return; }
-    const pe = events.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
-    const d = defs[pe.defId] || {};
-    m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: 0, maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
+    const pe = playsIn.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
+    const d = defs[pe.defId] || defs[String(pe.defId).split('@')[0]] || {};
+    m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: Math.max(1, d.health||1), maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
   });
 }
 function clearArrivalHold(m){ if(m){ m._arrivalHold = null; m._arrivalCollapse = null; } }
@@ -86364,7 +86451,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
     const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
     events.filter(ev=> !later.includes(ev)).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
     m.playerArrivalEvents = (m.playerArrivalEvents || []).concat(later); // 2026-10-17: a second play this turn adds to what is still waiting
-    fightSafe(()=> holdArrivalDead(m, prePos, later), 'holdArrivalDead');
+    fightSafe(()=> holdArrivalDead(m, prePos, later, events) /* 2026-10-29 (UI2, R3) */, 'holdArrivalDead');
   } else
   events.forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
   }catch(e){ try{ console.error('[fight] play presentation failed', e); }catch(_){} }
@@ -86494,7 +86581,7 @@ function discardZoneTitle(defId){
     return `Discard this card for +${amount} ${RESOURCE_LABEL[resource]||resource}`;
   }
   const generic = pitchYieldOf(null); // no card def -> falls through to the flat default (Lumber)
-  return `Drag a card here to discard it for +${generic.amount} ${RESOURCE_LABEL[generic.resource]||generic.resource}. Discarded cards pile up here as your Graveyard.`;
+  return `Drag a card here to discard it for +${generic.amount} ${RESOURCE_LABEL[generic.resource]||generic.resource}. Discarded cards pile up here as your Graveyard.` + (pitchAllowedIn(matchState) ? ' ' + TX('ui.ui2-pitch-shift') : ''); // 2026-10-29 (UI2, R7): the Shift+click shortcut
 }
 // 2026-09-19 bugfix found while wiring the tooltip above: tap-to-arm (click a hand card instead
 // of dragging it) sets matchState.selectedUid but never actually refreshed the discard zone's
@@ -91156,7 +91243,7 @@ function delayForEvent(ev, prevKind){
   // the bolt lands within ~0.25 s (2026-10-16); 2026-10-17: every lightning hit, and a jump whose chain goes on hands straight over
   // to the next jump (its bolt has landed by then), so a chain plays as one run of jumps
   else if((ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') && ev._bolt) base = ev._bolt.more ? ev._bolt.ms + 30 : 640;
-  else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : ev.ambush ? 640 /* 2026-10-29 (UI2, R3): Ambush < Attack < Pounce */ : 900;
   // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
   // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
   // full swing: same beat as a melee hit, so the lunge plays out and then the miss/whoosh.
@@ -93212,6 +93299,16 @@ function animateAttacker(attUid, isMine, opts){
       if(opts.scared){ try{ floatText(el, '😨', 'debuff'); }catch(e){} tl.to(tile, {keyframes:[{x:-4, rotation:-3},{x:4, rotation:3},{x:-3, rotation:-2},{x:3, rotation:2},{x:0, rotation:0}], duration:Math.max(.25, windup/1000), ease:'none'}); }
       // 2026-10-16: a flyer's shadow draws in under it during the lunge, so the swing reads as a dive (SkillFX.flyDescend)
       if(el.classList.contains('is-flying') && !opts.scared){ try{ if(window.SkillFX && SkillFX.flyDescend) SkillFX.flyDescend(el, {dir, leanX, windup, strike}); }catch(e){} }
+      // 2026-10-29 (package UI2, owner R3: "Ambush < Attack < Pounce"): Ambush's strike on a unit that just arrived is a short, quick jab
+      // toward it (a little crouch, about half the attack's reach, in about half its time); with reduced motion it doesn't move at all.
+      if(opts.short){
+        if(reducedMotion()){ tl.kill(); attackingUids.delete(String(attUid)); el.classList.remove('is-attacking'); return; }
+        const sl = Math.max(-10, Math.min(10, leanX));
+        tl.to(tile, {y:dir*4, x:sl*0.2, scale:.97, duration:(windup*0.4)/1000, ease:'power2.in'})
+          .to(tile, {y:dir*-8, x:sl*0.7, scale:1.03, duration:(strike*0.3)/1000, ease:'back.out(2.5)'})
+          .to(tile, {y:0, x:0, rotation:0, scale:1, duration:(strike*0.3)/1000, ease:'power2.out', clearProps:'transform'});
+        return;
+      }
       tl
         .to(tile, {y:dir*9, x:leanX*0.35, rotation:rot*0.4, scale:.95, duration:windup/1000, ease:'power2.in'})
         .to(tile, {y:dir*-15, x:leanX, rotation:rot, scale:opts.toCastle?1.1:1.06, duration:(strike*0.55)/1000, ease:'back.out(3)'})
@@ -96218,7 +96315,7 @@ function renderVfxForEvent(ev){
       SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
-    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)
+    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf, short: !!ev.ambush /* 2026-10-29 (UI2, R3): Ambush's strike is a short jab */}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -96230,7 +96327,8 @@ function renderVfxForEvent(ev){
     const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
     const castleAt = castleShotMs(ev); // a castle's own throw (Herb Refinery's brew, a castle bolt) is quick (2026-10-16)
     const bolt = lightningBoltOf(ev); // a lightning hit (2026-10-17): its bolt is the delivery, and its number pops as the bolt lands
-    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
+    const impactDelay = (ev.ambush && !ev.ranged && quickAt == null) ? Math.round(windup*0.5 + impactPad*0.5) /* 2026-10-29 (UI2, R3): the jab lands sooner */ : quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
+    try{ const h = ev.type==='hit' && matchState._arrivalHold && matchState._arrivalHold.get(String(ev.targetUid)); if(h && h.card) h.card.hp = Math.max(0, (h.card.hp||0) - (ev.dmg||0)); }catch(e){} // 2026-10-29 (UI2, R3): a held arrival takes its blow
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     // 2026-10-16: a skin's attack belongs to the copy wearing it (cardLookOf), not to every copy of the card
@@ -102196,10 +102294,14 @@ function floatRewardPackUp(then){
   document.body.appendChild(fly);
   const tx = innerWidth/2 - (f.rect.left + f.rect.width/2), ty = innerHeight*0.46 - (f.rect.top + f.rect.height/2), sc = Math.min(3.2, (Math.min(innerHeight*0.56*0.64, innerWidth*0.7, 300)) / Math.max(1, f.rect.width));
   try{ SoundKit.pickup && SoundKit.pickup(); }catch(e){}
-  gsap.timeline({onComplete:()=>{ then(); setTimeout(()=> fly.remove(), 160); }})
-    .to(fly, {y:-28, scale:1.12, duration:.35, ease:'power2.out'})
-    .to(fly, {x:tx, y:ty, scale:sc, rotation:-4, duration:.6, ease:'power2.inOut'})
-    .to(fly, {opacity:0, duration:.2, ease:'none'}, '-=.04');
+  // 2026-10-29 (package UI2, owner R2: "the going to opening of packs should be a bit more gentle - as the pack goes to the centre of screen,
+  // it slowly becomes bigger until the full size one pops in, bouncing a bit"): a softer lift, a slower glide to the centre that grows
+  // steadily to 80% of the opener's pack, then the opener's pack pops in from 80% with a small bounce (.ui2-popin, see showPack).
+  // Was: a quick lift, a 0.6 s dash to full size and a fade.
+  gsap.timeline({onComplete:()=>{ then(); setTimeout(()=> fly.remove(), 200); }})
+    .to(fly, {y:-18, scale:1.06, duration:.45, ease:'sine.out'})
+    .to(fly, {x:tx, y:ty, scale:sc * 0.8, rotation:-2, duration:1.05, ease:'sine.inOut'})
+    .to(fly, {opacity:0, duration:.16, ease:'none'}, '-=.02');
 }
 function schedulePackReveals(){
   if(packRevealTimer) return;
@@ -102824,6 +102926,15 @@ function openPackAnimation(pack, opened, opts){
   // Back-compat: (pack, results[], {leveledId}) from older callers.
   if(Array.isArray(opened) && opened.length && opened[0] && opened[0].id !== undefined) opened = [{results: opened, leveledId: opts.leveledId || null}];
   const defs = getCardDefs();
+  // 2026-10-29 (package UI2, owner R2: "When opening 4 packs ... it crashed on the 2nd opening. The Skip and Open all function don't
+  // solve it"): every stage of the opener (the reveal, the summary, Open all, the session page) draws its cards from `defs`, and one card
+  // that would not draw (a result id the card list no longer has, or a card face that throws) threw inside the tear's timer: the torn pack
+  // stayed on screen with its card back half out, and Skip / Open all drew the same card and threw again. The cards were already credited
+  // (creditFactionPack), so nothing was lost, but the opener could not be left. Now a card that cannot be found or drawn shows as a plain
+  // fallback tile (its name, or its id), the error is logged with the card's id, and a stage that still throws falls through to the next
+  // one (reveal -> summary -> close), so Skip, Open all and Done always end the opener (poGuard).
+  const defOf = id=> defs[id] || {id, name: String(id || '?'), rarity:'common', icon:'🃏', locked:false, effects:{}};
+  const poTile = (d, o)=>{ try{ return cardTileHTML(d, o); }catch(e){ console.error('[Bramblewood] pack opener: card face', d && d.id, e); return `<div class="card-tile no-art ui2-po-fallback" data-defid="${escapeAttr(String((d && d.id) || ''))}"><div class="ico">${escapeHtml((d && d.icon) || '🃏')}</div><div class="nm">${escapeHtml(String((d && (d.name || d.id)) || '?'))}</div></div>`; } };
   const reduce = reducedMotion();
   const bundle = !!opts.bundle;
   // NEW! once per card per opening, in the order you'll see them (2026-10-10, user: "it says NEW! multiple times although
@@ -102831,7 +102942,7 @@ function openPackAnimation(pack, opened, opts){
   const anyNew = new Set(); opened.forEach(o=> o.results.forEach(r=>{ if(r.isNew) anyNew.add(r.id); }));
   const markFirstNew = list=>{ const seenNew = new Set(); list.forEach(r=>{ r.isNew = anyNew.has(r.id) && !seenNew.has(r.id); if(r.isNew) seenNew.add(r.id); }); return list; };
   markFirstNew([].concat(...opened.map(o=> o.results)));
-  const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
+  const tierOf = id=> RARITY_TIER_BANDS.indexOf((defOf(id) && defOf(id).rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
   if([].concat(...opened.map(o=> o.results)).some(r=> tierOf(r.id) >= RARITY_TIER_BANDS.indexOf('legendary'))) steamUnlock('FIRST_LEGENDARY'); // 2026-10-18 (package C)
   let overlay = document.getElementById('packOpenOverlay');
@@ -102842,8 +102953,8 @@ function openPackAnimation(pack, opened, opts){
   document.documentElement.classList.add('po2-open');
   let unInert = bwInertOthers(overlay); // 2026-10-21 (package UI3): let, so the admin's ✏️ can lift it while the card editor is open
   const art = packCoverArt(pack);
-  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null;
-  const later = (fn, ms)=> timers.push(setTimeout(fn, reduce ? Math.min(ms, 60) : ms));
+  let packIdx = 0, phase = 'pack', cur = 0, timers = [], onKey = null; let poPopped = !!reduce || !opts.oneByOne; // 2026-10-29 (UI2, R2): a reward reveal's first pack pops in (none with reduced motion; a bought pack opens as before)
+  const later = (fn, ms)=> timers.push(setTimeout(()=>{ try{ fn(); }catch(e){ console.error('[Bramblewood] pack opener: timer', e); try{ poRecover(); }catch(_){ } } }, reduce ? Math.min(ms, 60) : ms)); // 2026-10-29 (UI2, R2): a step that throws recovers (poGuard)
   const clearTimers = ()=>{ timers.forEach(clearTimeout); timers = []; };
   const sfx = (name, ...a)=>{ try{ SoundKit[name] && SoundKit[name](...a); }catch(e){} };
   const burst = (el, emojis, count)=>{ if(reduce) return; try{ emojiBurstVfx.burst(el, {emojis, count}); }catch(e){} };
@@ -102852,7 +102963,7 @@ function openPackAnimation(pack, opened, opts){
     if(onKey) document.removeEventListener('keydown', onKey, true);
     unInert(); document.documentElement.classList.remove('po2-open');
     overlay.hidden = true; overlay.innerHTML = '';
-    if(currentTab==='shop') renderShop();
+    try{ if(currentTab==='shop') renderShop(); }catch(e){ console.error('[Bramblewood] pack opener: shop', e); } // 2026-10-29 (UI2, R2): closing never throws
     if(opts.onClose){ try{ opts.onClose(); }catch(e){} } // the next queued reveal (2026-10-14)
   };
   const topBar = ()=> `<div class="po2-top">
@@ -102864,7 +102975,7 @@ function openPackAnimation(pack, opened, opts){
     const oa = overlay.querySelector('#poOpenAll'); if(oa) oa.onclick = ()=>{ clearTimers(); showAll(); };
   };
   // ---- 1. the pack ----
-  const showPack = ()=>{
+  let showPack = ()=>{
     phase = 'pack'; cur = 0;
     const o = opened[packIdx];
     const glow = o.glow, glowCol = glow ? rarityStops(glow.rarity)[0] : '';
@@ -102874,7 +102985,7 @@ function openPackAnimation(pack, opened, opts){
     const behind = Math.max(0, opened.length - packIdx - 1) + Math.max(0, opts.moreAfter|0);
     const pile = behind ? `<div class="po2-pile" aria-hidden="true">${Array.from({length: Math.min(6, behind)}, (_, j)=> `<span class="po2-pile-pack" style="--j:${j + 1}"></span>`).join('')}</div>` : '';
     overlay.innerHTML = topBar() + `<div class="po2-stage">
-      <div class="po2-pile-wrap">${pile}
+      <div class="po2-pile-wrap${poPopped ? "" : (poPopped = true, " ui2-popin") /* 2026-10-29 (UI2, R2): the first pack pops in */}">${pile}
       <div class="po2-pack ${glow ? 'has-glow' : ''} ${o.jackpot ? 'is-jackpot' : ''}" id="poPack" style="${glow ? `--leak:${glowCol}; --glow:${glowCol};` : ''}">
         <span class="po2-shadow" aria-hidden="true"></span><span class="po2-leak" aria-hidden="true"></span>
         <div class="po2-body">
@@ -102924,18 +103035,18 @@ function openPackAnimation(pack, opened, opts){
   // ---- 2. one card at a time ----
   const poPullAttrs = r=> r ? `data-pofoil="${r.foil ? 1 : 0}" data-pofinish="${escapeAttr(r.finish || '')}" data-poshiny="${r.shiny ? 1 : 0}"` : '';
   const cardsHTML = o=> o.results.map((r, i)=>{
-    const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
+    const d = defOf(r.id); const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…") */}"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
-      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      <span class="po2-front">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
   // 2026-10-17 (user: "The number below the card openings e.g. "100 cards" should count down your cards."): the cards still to
   // come (a grouped ×N counts N, a bonus copy counts too).
   const pileLeft = (o, from)=> o.results.slice(from).reduce((n, r)=> n + (r.count || 1) + (r.bonusCopy && !(r.count > 1) ? 1 : 0), 0);
-  const showReveal = pile=>{
+  let showReveal = pile=>{
     phase = 'reveal'; cur = 0;
     const o = deckO = pile || opened[packIdx];
     const slots = !o.isPile && o.results.length <= 12;
@@ -102960,15 +103071,15 @@ function openPackAnimation(pack, opened, opts){
       { const pc = overlay.querySelector('#poPileCount'); if(pc){ const n = pileLeft(deckO, cur); pc.textContent = `${n} card${n===1?'':'s'}`; } }
       c.focus({preventScroll:true});
       autoNext(()=> reveal(c), deckO.isPile ? 1100 : 2600);
-      fxHook('packCardUp', c, deckO.results[+c.dataset.i], defs[deckO.results[+c.dataset.i].id]); // batch D (2026-10-15, docs/effects-lab-contract.md)
+      fxHook('packCardUp', c, deckO.results[+c.dataset.i], defOf(deckO.results[+c.dataset.i].id)); // batch D (2026-10-15, docs/effects-lab-contract.md)
       if(c.classList.contains('tease-rare') || c.classList.contains('tease-epic') || c.classList.contains('tease-legend')) sfx('rareRise', c.classList.contains('tease-legend'));
     };
     let autoT = null;
-    const autoNext = (fn, ms)=>{ clearTimeout(autoT); autoT = setTimeout(()=>{ if(phase==='reveal' && !overlay.hidden) fn(); }, reduce ? Math.min(ms, 1200) : ms); timers.push(autoT); };
+    const autoNext = (fn, ms)=>{ clearTimeout(autoT); autoT = setTimeout(()=>{ if(phase==='reveal' && !overlay.hidden){ try{ fn(); }catch(e){ console.error('[Bramblewood] pack opener: card', e); poRecover(); } } } /* 2026-10-29 (UI2, R2) */, reduce ? Math.min(ms, 1200) : ms); timers.push(autoT); };
     const reveal = c=>{
       if(!c || c.classList.contains('is-revealed')) return;
       c.classList.add('is-revealed'); sfx('cardFlip');
-      const r = deckO.results[+c.dataset.i], d = defs[r.id];
+      const r = deckO.results[+c.dataset.i], d = defOf(r.id);
       fxHook('packCardRevealed', c, r, d); // batch D (2026-10-15, docs/effects-lab-contract.md)
       // light rays in the card's rarity colour: soft for Rare and up, bigger and faster for Epic and up
       if(stage){ const t = tierOf(r.id); if(t >= 4 || r.isNew){ stage.style.setProperty('--ray', rarityStops(d.rarity||'common')[0]); stage.classList.add('is-rays'); stage.classList.toggle('is-rays-big', t >= 7); } }
@@ -102994,8 +103105,8 @@ function openPackAnimation(pack, opened, opts){
       if(!c || c.classList.contains('is-collected')) return;
       const got = overlay.querySelector('#poGot');
       const r = deckO.results[+c.dataset.i];
-      const [ra] = rarityStops(defs[r.id].rarity||'common');
-      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
+      const [ra] = rarityStops(defOf(r.id).rarity||'common');
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
       if(!reduce && mini.animate && cur + 1 < cards.length){ // the last card goes straight into the summary (2026-10-24, BV: see poClearFlights)
@@ -103020,7 +103131,7 @@ function openPackAnimation(pack, opened, opts){
     };
     const act = c=>{ if(!c || +c.dataset.i !== cur) return; if(!c.classList.contains('is-revealed')) reveal(c); else collect(c); };
     cards.forEach(c=>{
-      c.addEventListener('click', ()=> act(c));
+      c.addEventListener('click', ()=>{ try{ act(c); }catch(e){ console.error('[Bramblewood] pack opener: card', e); poRecover(); } }); // 2026-10-29 (UI2, R2)
       // Sweep to reveal: the mouse crossing most of the card in one quick pass (no button held),
       // or a finger swipe across it.
       let sweep = [];
@@ -103081,7 +103192,7 @@ function openPackAnimation(pack, opened, opts){
       try{ unInert(); }catch(_){}
       edOpenCardEditor(id, overlay, ()=>{
         unInert = bwInertOthers(overlay);
-        const nd = getCardDefs()[id]; if(nd) overlay.querySelectorAll(`[data-poview="${CSS.escape(id)}"] .card-tile`).forEach(t=>{ const w = document.createElement('div'); w.innerHTML = cardTileHTML(Object.assign({}, nd, {locked:false}), {editable:false, extraClass: [...t.classList].filter(c=> /^(is-shiny|holo|foil|has-skin|skin-)/.test(c)).join(' ')}); if(w.firstElementChild) t.replaceWith(w.firstElementChild); });
+        const nd = getCardDefs()[id]; if(nd) overlay.querySelectorAll(`[data-poview="${CSS.escape(id)}"] .card-tile`).forEach(t=>{ const w = document.createElement('div'); w.innerHTML = poTile(Object.assign({}, nd, {locked:false}), {editable:false, extraClass: [...t.classList].filter(c=> /^(is-shiny|holo|foil|has-skin|skin-)/.test(c)).join(' ')}); if(w.firstElementChild) t.replaceWith(w.firstElementChild); });
       }); }); });
   const wireView = ()=> overlay.querySelectorAll('[data-poview]').forEach(c=>{
     const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c, pull: {foil: c.dataset.pofoil === '1', finish: c.dataset.pofinish || null, shiny: c.dataset.poshiny === '1'}});
@@ -103093,31 +103204,31 @@ function openPackAnimation(pack, opened, opts){
   // hung there, a small lit card well off to the side of the three, until its own timer removed it. The summary (and Open all) now
   // clear any flight still in the air, and the last card no longer flies (it goes straight into the summary).
   const poClearFlights = ()=>{ try{ document.querySelectorAll('.po2-fly').forEach(g=>{ try{ g.getAnimations().forEach(a=> a.cancel()); }catch(e){} g.remove(); }); }catch(e){} };
-  const showSummary = ()=>{
+  let showSummary = ()=>{
     phase = 'summary';
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</p>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
     wireTop(); wireFoot(); wireView(); wireEdit(); wireTilt();
   };
   // ---- Open all (sets only): everything left, grouped ----
-  const showAll = ()=>{
+  let showAll = ()=>{
     phase = 'all';
     const rest = opened.slice(packIdx);
     const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
     rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
       o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
     const did = k=> tally.get(k).id;
-    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
+    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -103125,19 +103236,19 @@ function openPackAnimation(pack, opened, opts){
     sfx('gold');
   };
   // ---- 2026-10-24 (package PL1, P24-19): every card from every pack of this sitting, mixed packs included ----
-  const showSession = ()=>{
+  let showSession = ()=>{
     phase = 'session';
     const all = sessionPacks(), tally = new Map(); const levels = [];
     all.forEach(({o})=>{ if(o.leveledId) levels.push(o.leveledId);
       o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
     const did = k=> tally.get(k).id;
-    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
+    const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defOf(did(a)).name||'').localeCompare(defOf(did(b)).name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const kinds = [...new Set(all.map(x=> x.pack.icon + ' ' + x.pack.name))];
     const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
     overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
       <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -103160,7 +103271,7 @@ function openPackAnimation(pack, opened, opts){
   // continue. Show a maximum of 10 packs" + "If 100 packs, then it shows a box instead"): packs come out ten at a time and
   // each opens when the slash (or a tap) crosses it; the next ten slide in once all are open. 100 or more arrive as one
   // crate you pry open. Either way the cards then pile into one deck to reveal.
-  const gatherPile = ()=>{
+  let gatherPile = ()=>{
     const all = []; opened.forEach(o=> o.results.forEach(r=> all.push(r)));
     const tierOfR = r=> tierOf(r.id);
     all.sort(()=> Math.random() - .5); all.sort((a, b)=> tierOfR(a) - tierOfR(b)); // the rarest saved for last
@@ -103169,7 +103280,7 @@ function openPackAnimation(pack, opened, opts){
     showReveal({results: markFirstNew(pile), isPile: true});
   };
   let tableFrom = 0;
-  const showTable = ()=>{
+  let showTable = ()=>{
     phase = 'table';
     if(opened.length >= 100) return showCrate();
     const shown = opened.slice(tableFrom, tableFrom + 10);
@@ -103204,7 +103315,7 @@ function openPackAnimation(pack, opened, opts){
     packs.forEach(pk=> pk.addEventListener('click', ()=> openOne(pk)));
     tbl.focus({preventScroll:true});
   };
-  const showCrate = ()=>{
+  let showCrate = ()=>{
     phase = 'table';
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-crate-stage">
       <button type="button" class="po2-crate" id="poCrate" aria-label="Pry open the crate of ${opened.length} packs"><span class="po2-crate-lid"></span><span class="po2-crate-body"><b>${opened.length}</b><small>${escapeHtml(pack.name)}s</small></span><span class="po2-crate-stamp">${pack.icon}</span></button>
@@ -103214,6 +103325,20 @@ function openPackAnimation(pack, opened, opts){
     crate.onclick = ()=>{ if(crate.classList.contains('is-open')) return; crate.classList.add('is-open'); sfx('swipeTone'); sfx('gold'); burst(crate, [pack.icon, '✨', '🐾', '🌟'], 40); if(opened.some(o=> o.jackpot)) later(()=> sfx('rareRise', true), 400); later(gatherPile, 1300); };
     crate.focus({preventScroll:true});
   };
+  // 2026-10-29 (package UI2, R2): each stage falls through to a simpler one when it throws: the pack or the reveal to this pack's summary,
+  // the table, crate or pile to Open all, and a summary, Open all or the session page to closing the opener (the cards are credited
+  // already). A stage that throws once is not tried again in this opener, so the fall-through always ends.
+  const poFailed = new Set();
+  const poGuard = (name, fn, next)=> (...a)=>{
+    if(poFailed.has(name)){ return next ? next() : close(); }
+    try{ return fn(...a); }
+    catch(e){ poFailed.add(name); console.error('[Bramblewood] pack opener: ' + name, e); clearTimers(); poClearFlights(); try{ return next ? next() : close(); }catch(e2){ console.error('[Bramblewood] pack opener: fallback', e2); close(); } }
+  };
+  const poClose = ()=> close();
+  showSummary = poGuard('summary', showSummary, poClose); showAll = poGuard('all', showAll, poClose); showSession = poGuard('session', showSession, poClose);
+  showPack = poGuard('pack', showPack, ()=> showSummary()); showReveal = poGuard('reveal', showReveal, ()=> (deckO && deckO.isPile) || phase === 'table' ? showAll() : showSummary());
+  gatherPile = poGuard('pile', gatherPile, ()=> showAll()); showTable = poGuard('table', showTable, ()=> showAll()); showCrate = poGuard('crate', showCrate, ()=> showAll());
+  const poRecover = ()=>{ if(overlay.hidden) return; clearTimers(); if(phase === 'pack' || phase === 'reveal') showSummary(); else if(phase === 'table') showAll(); else close(); };
   onKey = e=>{
     if(overlay.hidden) return;
     if(e.key === 'Escape'){

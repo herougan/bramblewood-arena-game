@@ -3651,6 +3651,7 @@
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "플레이어 목록에는 supabase/proposed/20261029_admin_user_list.sql 의 데이터베이스 함수가 필요해요 (소유자: 'apply it').",
  "Only admin accounts can open the player list.": "관리자 계정만 플레이어 목록을 열 수 있어요.",
  "Could not load players: {msg}": "플레이어를 불러올 수 없어요: {msg}",
+ "Shift+click a card in your hand to pitch it.": "손에 든 카드를 Shift+클릭하면 버릴 수 있어요.",
  "Slow": "느림",
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "속도가 같은 유닛 중 마지막에 행동해요. 느림 유닛끼리는 평소처럼 번갈아 행동해요.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "나무 아래: 숲 지도(오래된 숲), 높은 수관, 덤불이 있는 모든 전투. 지상: 비행이 아님(떨어진 비행 유닛도 포함). 원거리 공격(사격, 스킬, 던진 부메랑)과 비행 공격자를 막아요. 지상 유닛의 근접 공격은 그대로 맞아요. 회피처럼 한 번 굴리며 회피와 겹치지 않아요. 필중과 노출은 꿰뚫어 봐요.",

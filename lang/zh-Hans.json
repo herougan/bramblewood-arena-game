@@ -3648,6 +3648,7 @@
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "玩家列表需要 supabase/proposed/20261029_admin_user_list.sql 中的数据库函数（所有者：'apply it'）。",
  "Only admin accounts can open the player list.": "只有管理员账号才能打开玩家列表。",
  "Could not load players: {msg}": "无法加载玩家：{msg}",
+ "Shift+click a card in your hand to pitch it.": "Shift+点击手牌即可弃掉它。",
  "Slow": "迟缓",
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "在速度相同的单位中最后行动。两个迟缓单位照常轮流行动。",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "树下：森林地图（古林）、高林冠或下层林中的任何战斗。地面：非飞行（被击落的飞行单位也算）。它挡住远程攻击（射击、技能、掷出的回旋镖）和飞行攻击者；地面单位的近战攻击照样命中。一次判定，与闪避相同，不与闪避叠加。必中和暴露可以看穿它。",
