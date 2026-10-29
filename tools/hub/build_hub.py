@@ -728,7 +728,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
 <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions" hidden><div class="dec">
 <div class="dec-head"><h2>Decisions</h2><p>What's waiting on you, and what's been decided. Reply in chat with the id and your choice, e.g. "E1 yes".</p></div>
-<div class="dec-bar"><div class="dec-seg" role="group" aria-label="Status"><button data-st="YET" aria-pressed="true">⏳ Yet to decide <b id="cYET"></b></button><button data-st="DONE" aria-pressed="false">✅ Done <b id="cDONE"></b></button><button data-st="ALL" aria-pressed="false">All</button></div>
+<div class="dec-bar"><div class="dec-seg dec-grp" id="decGrp" role="group" aria-label="Decision group"><button data-g="game" aria-pressed="true">🎮 Game <b id="gYETgame"></b></button><button data-g="architecture" aria-pressed="false">🏗️ Architecture <b id="gYETarchitecture"></b></button><button data-g="finance" aria-pressed="false">💰 Finance <b id="gYETfinance"></b></button></div></div>
+<div class="dec-bar"><div class="dec-seg" id="decSt" role="group" aria-label="Status"><button data-st="YET" aria-pressed="true">⏳ Yet to decide <b id="cYET"></b></button><button data-st="DONE" aria-pressed="false">✅ Done <b id="cDONE"></b></button><button data-st="ALL" aria-pressed="false">All</button></div>
 <input type="search" id="decQ" placeholder="Search decisions…" aria-label="Search decisions"></div>
 <div class="dec-chips" id="decAreas" role="group" aria-label="Area"></div>
 <div class="dec-chips" id="decKinds" role="group" aria-label="Type"></div>
@@ -762,22 +763,33 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 const DEC = {decisions_json};
 (function(){{
   const items = DEC.items || [], esc = s=> String(s||'').replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
+  // 2026-10-29 (package HUBDEC1, owner: separate the meta decisions): three sub-tabs by item.group (game / architecture / finance; none = game),
+  // each with its own YET / DONE counts, area and type chips. The last sub-tab is remembered in localStorage.
+  const GROUPS = ['game', 'architecture', 'finance'], grpOf = i=> GROUPS.includes(i.group) ? i.group : 'game';
+  let grp = 'game'; try {{ const g = localStorage.getItem('hubDecGroup'); if(GROUPS.includes(g)) grp = g; }} catch(e) {{}}
   let st = 'YET', area = '', kind = '', q = '';
-  const count = s=> items.filter(i=> i.status===s).length;
-  document.getElementById('cYET').textContent = count('YET'); document.getElementById('cDONE').textContent = count('DONE');
+  const inGrp = ()=> items.filter(i=> grpOf(i)===grp);
+  const count = s=> inGrp().filter(i=> i.status===s).length;
+  function counts(){{ document.getElementById('cYET').textContent = count('YET'); document.getElementById('cDONE').textContent = count('DONE');
+    GROUPS.forEach(g=> {{ const l = items.filter(i=> grpOf(i)===g); document.getElementById('gYET'+g).textContent = l.filter(i=> i.status==='YET').length + ' / ' + l.filter(i=> i.status==='DONE').length; }}); }}
   const chips = (el, vals, get, set)=>{{ el.innerHTML = '<button data-v="" aria-pressed="true">All</button>' + vals.map(v=> `<button data-v="${{esc(v)}}" aria-pressed="false">${{esc(v)}}</button>`).join('');
     el.onclick = e=>{{ const b = e.target.closest('button'); if(!b) return; set(b.dataset.v); el.querySelectorAll('button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }}; }};
-  chips(document.getElementById('decAreas'), [...new Set(items.map(i=> i.area))].sort(), ()=>area, v=> area = v);
-  chips(document.getElementById('decKinds'), [...new Set(items.map(i=> i.kind))].sort(), ()=>kind, v=> kind = v);
-  document.querySelectorAll('.dec-seg button').forEach(b=> b.onclick = ()=>{{ st = b.dataset.st; document.querySelectorAll('.dec-seg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
+  function chipsFor(){{ area = ''; kind = '';
+    chips(document.getElementById('decAreas'), [...new Set(inGrp().map(i=> i.area))].sort(), ()=>area, v=> area = v);
+    chips(document.getElementById('decKinds'), [...new Set(inGrp().map(i=> i.kind))].sort(), ()=>kind, v=> kind = v); }}
+  function setGrp(g, keep){{ grp = g; try {{ localStorage.setItem('hubDecGroup', g); }} catch(e) {{}}
+    document.querySelectorAll('#decGrp button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.g===g)); counts(); chipsFor(); if(!keep) render(); }}
+  document.querySelectorAll('#decGrp button').forEach(b=> b.onclick = ()=> setGrp(b.dataset.g));
+  document.querySelectorAll('#decSt button').forEach(b=> b.onclick = ()=>{{ st = b.dataset.st; document.querySelectorAll('#decSt button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
   document.getElementById('decQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
   // 2026-10-15: the global search and the Home tab open one decision: All statuses, searched by its id.
-  window.hubFindDecision = id=>{{ st = 'ALL'; area = ''; kind = ''; document.querySelectorAll('.dec-seg button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.st==='ALL'));
+  window.hubFindDecision = id=>{{ const hit = items.find(i=> i.id.toLowerCase()===String(id).toLowerCase()); if(hit && grpOf(hit)!==grp) setGrp(grpOf(hit), true);
+    st = 'ALL'; area = ''; kind = ''; document.querySelectorAll('#decSt button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.st==='ALL'));
     document.querySelectorAll('#decAreas button, #decKinds button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.v===''));
     const inp = document.getElementById('decQ'); inp.value = id; q = id.toLowerCase(); render();
     const card = [...document.querySelectorAll('#decList .dec-card')].find(c=> c.querySelector('.dec-id').textContent.toLowerCase()===q); if(card){{ card.classList.add('flash'); card.scrollIntoView({{block:'start'}}); }} }};
   function render(){{
-    const list = items.filter(i=> (st==='ALL' || i.status===st) && (!area || i.area===area) && (!kind || i.kind===kind) && (!q || JSON.stringify(i).toLowerCase().includes(q)));
+    const list = inGrp().filter(i=> (st==='ALL' || i.status===st) && (!area || i.area===area) && (!kind || i.kind===kind) && (!q || JSON.stringify(i).toLowerCase().includes(q)));
     document.getElementById('decList').innerHTML = list.length ? list.map(i=> `<article class="dec-card ${{i.status==='DONE'?'done':''}}">
       <div class="dec-top"><span class="dec-id">${{esc(i.id)}}</span><span class="dec-title">${{esc(i.title)}}</span><span class="dec-meta"><span class="dec-tag">${{i.status==='DONE'?'✅ Done':'⏳ Yet'}}</span><span class="dec-tag">${{esc(i.kind)}}</span><span class="dec-tag">${{esc(i.area)}}</span></span></div>
       ${{i.body ? `<p class="dec-body">${{esc(i.body)}}</p>` : ''}}
@@ -786,7 +798,7 @@ const DEC = {decisions_json};
       ${{i.outcome ? `<p class="dec-out"><b>Outcome:</b> ${{esc(i.outcome)}}</p>` : ''}}
       <div class="dec-date">Asked ${{esc(i.asked||'—')}}${{i.decided ? ' · decided ' + esc(i.decided) : ''}}</div></article>`).join('') : '<p class="dec-empty">Nothing matches.</p>';
   }}
-  render();
+  setGrp(grp, true); render();
 }})();
 (function(){{
   const B = {bal_json}, rows = B.rows, esc = s=> String(s==null?'':s).replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
