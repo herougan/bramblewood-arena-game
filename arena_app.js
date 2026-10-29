@@ -32743,6 +32743,80 @@ async function loadAdminPlayers(){
     ${(rows||[]).map(r=> `<tr><td>${escapeHtml(r.display_name || '(no name)')}${r.is_admin ? ' 🛠️' : ''}<small>${escapeHtml(r.friend_code||'')}</small></td><td>${ago(r.last_seen_at || r.created_at)}</td><td>${escapeHtml(String(lvl(r)))}</td><td>${escapeHtml(tut(r))}</td><td>${r.cards_unlocked ?? 0}</td><td>${r.wins ?? 0} / ${r.matches ?? 0}</td></tr>`).join('')}
   </tbody></table></div>`;
 }
+// Admin → Players overlay (2026-10-29, package ADMINU1; owner 10-28 23:35 "How do I use the bramble admin portal to view users and their levels?
+// Has anyone played our game yet" and 10-29 19:14 "Do we have the admin tab to view the user list?"): a searchable, sortable table of every profile
+// from admin_user_list() (supabase/proposed/20261029_admin_user_list.sql; waiting for the owner's "apply it"). Admin only; read-only; no emails.
+function adminu1Level(r){ if(r.tutorial_done === false) return 0; if(r.xp == null || isNaN(Number(r.xp))) return null; try{ return levelFromXp(Number(r.xp)).level; }catch(e){ return null; } }
+function adminu1Map(r){ // the highest map of CONQUEST_MAPS that has a cleared node, as {idx, label}
+  const ids = Array.isArray(r.maps_cleared) ? r.maps_cleared : []; let best = -1, map = null;
+  (typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).forEach((m, i)=>{ if(ids.includes(m.id) && i > best){ best = i; map = m; } });
+  return {idx: best, label: map ? (map.icon || '') + ' ' + map.name : ''};
+}
+function adminu1Ago(t){
+  const ms = t ? Date.now() - Date.parse(t) : NaN; if(!isFinite(ms)) return TX('ui.adminu1-never');
+  const m = Math.max(0, Math.round(ms/60000));
+  return m < 2 ? TX('ui.adminu1-just-now') : m < 60 ? TX('ui.adminu1-min-ago', {n: m}) : m < 1440 ? TX('ui.adminu1-h-ago', {n: Math.round(m/60)}) : TX('ui.adminu1-d-ago', {n: Math.round(m/1440)});
+}
+const ADMINU1_COLS = [ // key, TX label key, sort value, cell html
+  {k:'name', t:'ui.adminu1-c-name', v:r=> (r.display_name||'').toLowerCase(), h:r=> escapeHtml(r.display_name || TX('ui.adminu1-no-name')) + (r.is_admin ? ' 🛠️' : '')},
+  {k:'level', t:'ui.adminu1-c-level', v:r=> adminu1Level(r), h:r=>{ const l = adminu1Level(r); return l == null ? '—' : String(l); }},
+  {k:'map', t:'ui.adminu1-c-map', v:r=> adminu1Map(r).idx, h:r=> escapeHtml(adminu1Map(r).label || '—')},
+  {k:'cards', t:'ui.adminu1-c-cards', v:r=> Number(r.cards)||0, h:r=> String(Number(r.cards)||0)},
+  {k:'fights', t:'ui.adminu1-c-fights', v:r=> Number(r.fights)||0, h:r=> String(Number(r.fights)||0)},
+  {k:'seen', t:'ui.adminu1-c-seen', v:r=> r.last_seen_at ? Date.parse(r.last_seen_at) : null, h:r=> escapeHtml(adminu1Ago(r.last_seen_at))},
+  {k:'created', t:'ui.adminu1-c-created', v:r=> r.created_at ? Date.parse(r.created_at) : null, h:r=> escapeHtml(r.created_at ? String(r.created_at).slice(0, 10) : '—')},
+];
+function adminu1Sorted(rows, key, dir){
+  const c = ADMINU1_COLS.find(x=> x.k === key) || ADMINU1_COLS[5];
+  return rows.slice().sort((a, b)=>{ const x = c.v(a), y = c.v(b); // empty values always last
+    if(x == null && y == null) return 0; if(x == null) return 1; if(y == null) return -1;
+    return (x < y ? -1 : x > y ? 1 : 0) * dir; });
+}
+function adminu1ErrorText(err){
+  const s = String((err && (err.message || err.code)) || err || '');
+  if(/PGRST202|42883|does not exist|not find the function|schema cache/i.test(s) || (err && err.code === 'PGRST202')) return TX('ui.adminu1-missing');
+  if(/42501|not allowed|permission denied/i.test(s)) return TX('ui.adminu1-denied');
+  return TX('ui.adminu1-error', {msg: s || '?'});
+}
+async function openAdminUserList(){
+  if(!adminAllowed() || !adminModeEnabled) return null; // admin mode only
+  document.querySelectorAll('.adminu1-overlay').forEach(o=> o.remove());
+  const ov = document.createElement('div'); ov.className = 'modal-overlay adminu1-overlay';
+  ov.innerHTML = `<div class="modal adminu1-modal" role="dialog" aria-modal="true" aria-label="${escapeAttr(TX('ui.adminu1-title'))}">
+    <div class="modal-head-row"><h2>👥 ${escapeHtml(TX('ui.adminu1-title'))}</h2><button type="button" class="modal-close-btn" data-x aria-label="${escapeAttr(TX('ui.adminu1-close'))}">✕</button></div>
+    <p class="panel-sub">${escapeHtml(TX('ui.adminu1-sub'))}</p>
+    <div class="adminu1-bar"><input type="search" class="adminu1-search" placeholder="${escapeAttr(TX('ui.adminu1-search'))}" aria-label="${escapeAttr(TX('ui.adminu1-search'))}" autocomplete="off"><span class="adminu1-count" aria-live="polite"></span><button type="button" class="btn small ghost" data-refresh>↻ ${escapeHtml(TX('ui.adminu1-refresh'))}</button></div>
+    <div class="adminu1-body"></div></div>`;
+  document.body.appendChild(ov);
+  const body = ov.querySelector('.adminu1-body'), search = ov.querySelector('.adminu1-search'), count = ov.querySelector('.adminu1-count');
+  let rows = [], sortKey = 'seen', dir = -1;
+  const close = ()=> ov.remove();
+  ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.onkeydown = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  const say = txt=>{ body.innerHTML = `<p class="panel-sub adminu1-msg">${escapeHtml(txt)}</p>`; count.textContent = ''; };
+  const draw = ()=>{
+    const q = search.value.trim().toLowerCase();
+    const shown = adminu1Sorted(rows.filter(r=> !q || (r.display_name||'').toLowerCase().includes(q)), sortKey, dir);
+    count.textContent = TX('ui.adminu1-count', {shown: shown.length, total: rows.length});
+    body.innerHTML = `<div class="adminu1-scroll"><table class="admin-pl adminu1-table"><thead><tr>${ADMINU1_COLS.map(c=> `<th><button type="button" class="adminu1-sort" data-k="${c.k}" aria-sort="${c.k === sortKey ? (dir > 0 ? 'ascending' : 'descending') : 'none'}">${escapeHtml(TX(c.t))}${c.k === sortKey ? (dir > 0 ? ' ▲' : ' ▼') : ''}</button></th>`).join('')}</tr></thead><tbody>
+      ${shown.map(r=> `<tr>${ADMINU1_COLS.map(c=> `<td class="adminu1-c-${c.k}">${c.h(r)}</td>`).join('')}</tr>`).join('') || `<tr><td colspan="${ADMINU1_COLS.length}" class="adminu1-none">${escapeHtml(TX('ui.adminu1-none'))}</td></tr>`}</tbody></table></div>`;
+    body.querySelectorAll('.adminu1-sort').forEach(b=> b.onclick = ()=>{ const k = b.dataset.k; if(k === sortKey) dir = -dir; else { sortKey = k; dir = (k === 'name' ? 1 : -1); } draw(); });
+  };
+  const load = async ()=>{
+    if(!sbClient || !isSignedIn()){ say(TX('ui.adminu1-signin')); return; }
+    say(TX('ui.adminu1-loading'));
+    let data = null, err = null;
+    try{ const r = await sbClient.rpc('admin_user_list'); data = r.data; err = r.error; }catch(e){ err = e; }
+    if(err){ say(adminu1ErrorText(err)); return; }
+    rows = Array.isArray(data) ? data : []; draw();
+  };
+  search.oninput = ()=>{ if(rows.length || body.querySelector('table')) draw(); };
+  ov.querySelector('[data-refresh]').onclick = load;
+  setTimeout(()=> search.focus(), 30);
+  await load();
+  return ov;
+}
 // Admin: every resource at once (2026-10-23, package RW5, owner 19:27 item 10: "As an admin, let me press a button to get 99,999 of each
 // resource - then also zero it out"): every currency (CURRENCY_META: Maple Leaves, Gold Leaves, Dust, Metal, Krooni, Laurels, Kibble, Beer
 // ...), the four Materia crystals, every raid's trophy shards and your Raid Tickets to n (0 or ADMIN_RESOURCE_MAX). Energy has its own refill.
@@ -32801,7 +32875,7 @@ function renderAdmin(){
     <div class="panel admin-subpanel"><h3>🔬 Effects library</h3><p class="panel-sub">Every skill, trigger, action and field condition, one at a time: what it says, and a small live stage that plays it with its real effects and sounds, plus a log of what the engine sent and the damage it did. Nothing is saved.</p>
       <button type="button" class="btn small" id="adminFxLibBtn">🔬 Open the Effects library</button></div>
     <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
-      <button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
+      ${adminModeEnabled ? `<button type="button" class="btn small primary" id="adminUserListBtn">👥 ${escapeHtml(TX('ui.adminu1-open'))}</button> ` : '' /* 2026-10-29 (package ADMINU1) */}<button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
     <div class="panel admin-subpanel"><h3>💬 Feedback</h3><p class="panel-sub">What players sent with the 💬 button by their name. Waiting on this device: <b>${Feedback.queued().length}</b>.</p>
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
@@ -32909,6 +32983,7 @@ function renderAdmin(){
   const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
   const fxOpen = document.getElementById('adminFxLibBtn'); if(fxOpen) fxOpen.onclick = ()=> openEffectsLibrary();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
+  const ulBtn = document.getElementById('adminUserListBtn'); if(ulBtn) ulBtn.onclick = openAdminUserList; // 2026-10-29 (package ADMINU1)
   const fbBtn = document.getElementById('adminFeedbackBtn'); if(fbBtn) fbBtn.onclick = ()=> Feedback.loadAdmin(document.getElementById('adminFeedback'));
   { const mcb = document.getElementById('adminMapCardsBtn'); if(mcb) mcb.onclick = ()=> openMapCardsEditor(); } // 2026-10-22 (package MP)
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
