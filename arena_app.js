@@ -23620,7 +23620,10 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true}); }
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true});
+      // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
+      if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
+    if(el.closest && el.closest('.modal-overlay')) z.classList.add('cnp-rw-above'); // 2026-10-29 (UI3, S6): the popover sat under the overlay (z 200 < 600) and never showed
     document.body.appendChild(z);
     const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
     const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
@@ -30584,7 +30587,7 @@ function vis4MapCardTilesHTML(ids, defs, opts){
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
     if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery${big ? ' is-large' : ''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -30614,13 +30617,13 @@ function rv2TagsOf(e){
 }
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
-  const mark = kind === 'cut' ? '✂' : kind === 'maybe' ? '?' : '';
+  const mark = kind === 'cut' ? '✂' : ''; // 2026-10-29 (UI3, S6): no "?" on a maybe (its section says it)
   return list.map(e=>{
     const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
     const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
     const pills = rv2TagsOf(e).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
-    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" title="${escapeAttr(e.why || '')}">`
-      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true})
+    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}">`
+      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
       + `<span class="rv2-pills">${pills}</span>`
       + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="false">${escapeHtml(btn[0])}</button></span>`;
   }).join('');
@@ -30659,13 +30662,16 @@ function rv1PicksText(ov){
   return out.join('\n');
 }
 function pk1OpenMapCards(mapId){
-  const top = mpTopOf(mapId), m = mpMapById(top); if(!m) return;
+  const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
   const mapLabel = (m.icon ? m.icon + ' ' : '') + m.name;
   const bars = [];
-  const secs = mapPoolSections(top).map((s, si)=>{
+  // 2026-10-29 (package UI3, S4; owner 23:01: "dont need to show cards from its submaps - those submaps will show their own submaps cards only"): a main map's fight
+  // shows its MAP list + SPECIAL; a submap's fight shows only that submap's lists (its Tutorial-style extra lists too) + SPECIAL. Was: every list of the main map.
+  const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
+  const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
     if(!rv) return `<section class="pk1-mc-sec rv2-panel"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
