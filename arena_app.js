@@ -24176,7 +24176,7 @@ function mapLayoutToolbarHTML(map){
     <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button>
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button><button type="button" class="btn small" id="mlPlayers" title="${escapeAttr(TX('ui.adminu1-sub'))}">👥 ${escapeHtml(TX('ui.adminu1-title'))}</button><!-- 2026-10-29 (package UI3, S8): the player list from the map's admin bar too -->
       ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
@@ -24259,6 +24259,7 @@ function wireMapLayoutEditor(map, body){
   on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); rerender(); }); // 2026-10-17: every first-clear and clear-again reward
   on('mlUnclearMap', ()=>{ adminUnclearMap(map.id); rerender(); });
   on('mlEdits', ()=> openMapEditsList(map.id));
+  on('mlPlayers', ()=> openAdminUserList()); // 2026-10-29 (UI3, S8)
   on('mlLinks', ()=>{ conquestLinkEdit = true; conquestLinkFrom = null; rerender(); });
   on('mlLinksDone', ()=>{ conquestLinkEdit = false; conquestLinkFrom = null; rerender(); });
   if(conquestLinkEdit){
