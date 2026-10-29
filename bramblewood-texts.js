@@ -1818,8 +1818,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.sk-breach": "Every hit it lands also deals {n} damage to the enemy bramble.",
   "ui.sk-breach-codex": "Only a melee swing that lands on a unit, whatever the hit did to it. Rampart and Fortify still cut it.",
   "ui.skn-canopy-cover": "Canopy Cover",
-  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the single-target attacks aimed at it.",
-  "ui.sk-canopy-cover-codex": "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.",
+  "ui.sk-canopy-cover": "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.",
+  "ui.sk-canopy-cover-codex": "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.",
   "ui.skn-timbered": "Timbered",
   "ui.sk-timbered": "While you hold 3 or more Lumber: {skills}.",
   "ui.sk-timbered-codex": "Plain Timbered gives +0/+2. It turns on and off as your Lumber goes up and down.",
@@ -2870,7 +2870,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv2-count": "{x}/{n} new cards, {y}/{m} carried cards",
   "ui.rv2-count-new": "{x}/{n} new cards",
   "ui.rv2-count-free": "{x} new cards, {y} carried cards",
-  "ui.rv2-ambush-fixed": "The Ambush lies in the middle of its road: it can't be moved or linked."
+  "ui.rv2-ambush-fixed": "The Ambush lies in the middle of its road: it can't be moved or linked.",
+  "ui.eng13-slow-name": "Slow",
+  "ui.eng13-slow": "Acts last among units of the same Speed. Two Slow units take turns as usual.",
+  "ui.eng13-admin-cur-tap": "🛠️ Admin: {name} {from} → {to}"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

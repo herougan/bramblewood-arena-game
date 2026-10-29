@@ -3647,5 +3647,10 @@
  "Sign in with an admin account to see players.": "請使用管理員帳號登入以查看玩家。",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "玩家列表需要 supabase/proposed/20261029_admin_user_list.sql 中的資料庫函式（擁有者：'apply it'）。",
  "Only admin accounts can open the player list.": "只有管理員帳號才能開啟玩家列表。",
- "Could not load players: {msg}": "無法載入玩家：{msg}"
+ "Could not load players: {msg}": "無法載入玩家：{msg}",
+ "Slow": "遲緩",
+ "Acts last among units of the same Speed. Two Slow units take turns as usual.": "在速度相同的單位中最後行動。兩個遲緩單位照常輪流行動。",
+ "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.": "在樹下，這個地面單位能躲開一半瞄準它的射擊和技能，以及一半飛行單位的攻擊。",
+ "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "樹下：森林地圖（古林）、高林冠或下層林中的任何戰鬥。地面：非飛行（被擊落的飛行單位也算）。它擋住遠程攻擊（射擊、技能、擲出的迴旋鏢）和飛行攻擊者；地面單位的近戰攻擊照樣命中。一次判定，與閃避相同，不與閃避疊加。必中和暴露可以看穿它。",
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ 管理員：{name} {from} → {to}"
 }

@@ -1892,6 +1892,11 @@ PASSIVE_DEFS.push(
   {key:'pulverise', category:'passive', label:TX('ui.c3-pulverise-name'), kind:'boolean', desc:()=> TX('ui.c3-pulverise'), codexNote:TX('ui.c3-pulverise-codex')},
   {key:'socket', category:'passive', label:TX('ui.c3-socket-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.c3-socket', {n: numOr(v, 1)}), get:e=> e.socket ? numOr(e.socket, 1) : undefined});
 Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
+// ==== Package ENG13 (2026-10-29, owner 21:36: "New ability: Slow - loses tie when same speed."): Slow, a drawback keyword (rule in
+// bramblewood-engine.js pickNextAttacker: inside one Speed a Slow unit acts after every non-Slow one; price in canonical/skill-costs.json).
+// On no live card yet (the owner places it).
+PASSIVE_DEFS.push({key:'slow', category:'passive', label:TX('ui.eng13-slow-name'), kind:'boolean', desc:()=> TX('ui.eng13-slow')});
+Object.assign(SKILL_ICON, {slow:'🐌'});
 // ==== Package ENG10 (2026-10-26, the owner's 10-26 11:19 answers; rules in bramblewood-engine.js, prices in canonical/skill-costs.json and
 // bramblewood-budget.js): the lines, the card editor's rows and the Codex for
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
@@ -3139,6 +3144,7 @@ PASSIVE_DEFS.push(
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
+Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-29)
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines

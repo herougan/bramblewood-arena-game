@@ -3646,5 +3646,10 @@
  "Sign in with an admin account to see players.": "Melde dich mit einem Admin-Konto an, um Spieler zu sehen.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "Die Spielerliste braucht die Datenbankfunktion aus supabase/proposed/20261029_admin_user_list.sql (Besitzer: 'apply it').",
  "Only admin accounts can open the player list.": "Nur Admin-Konten können die Spielerliste öffnen.",
- "Could not load players: {msg}": "Spieler konnten nicht geladen werden: {msg}"
+ "Could not load players: {msg}": "Spieler konnten nicht geladen werden: {msg}",
+ "Slow": "Langsam",
+ "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Handelt als Letztes unter Einheiten gleicher Geschwindigkeit. Zwei langsame Einheiten wechseln sich wie üblich ab.",
+ "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.": "Unter den Bäumen weicht diese Bodeneinheit der Hälfte der Schüsse und Fähigkeiten auf sie aus und der Hälfte der Angriffe fliegender Einheiten.",
+ "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Unter den Bäumen: jeder Kampf auf einer Waldkarte (die Alten Wälder), Hohes Blätterdach oder das Unterholz. Am Boden: nicht fliegend (ein am Boden festgehaltener Flieger zählt). Sie deckt Fernangriffe (Schüsse, Fähigkeiten, ein geworfener Bumerang) und fliegende Angreifer; der Nahkampfangriff einer Bodeneinheit trifft weiterhin. Ein Wurf, wie Ausweichend, und nicht zusätzlich zu Ausweichend. Sicherer Schlag und Entblößt sehen hindurch.",
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}"
 }

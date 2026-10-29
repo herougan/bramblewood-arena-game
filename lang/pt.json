@@ -3649,5 +3649,10 @@
  "Sign in with an admin account to see players.": "Inicia sessão com uma conta de administrador para ver os jogadores.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "A lista de jogadores precisa da função de base de dados de supabase/proposed/20261029_admin_user_list.sql (dono: 'apply it').",
  "Only admin accounts can open the player list.": "Só contas de administrador podem abrir a lista de jogadores.",
- "Could not load players: {msg}": "Não foi possível carregar os jogadores: {msg}"
+ "Could not load players: {msg}": "Não foi possível carregar os jogadores: {msg}",
+ "Slow": "Lento",
+ "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Age por último entre as unidades da mesma Velocidade. Duas unidades Lentas alternam como de costume.",
+ "Under the trees, this ground unit dodges half the shots and skills aimed at it, and half the attacks of Flying units.": "Sob as árvores, esta unidade terrestre esquiva metade dos disparos e habilidades dirigidos a ela e metade dos ataques de unidades voadoras.",
+ "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sob as árvores: qualquer combate num mapa de floresta (os Bosques Antigos), Copa Alta ou o Sub-bosque. Em terra: não Voadora (uma voadora no chão conta). Cobre ataques à distância (disparos, habilidades, um Bumerangue lançado) e atacantes voadores; o ataque corpo a corpo de uma unidade terrestre continua a acertar. Um só lance, como Evasivo, e não além de Evasivo. Golpe Certeiro e Exposto atravessam-na.",
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}"
 }
