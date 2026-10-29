@@ -1,13 +1,13 @@
 {
  "_about": "LISTFIX1 (2026-10-29): fights whose deck holds a card off the fight's pool (main map: MAP + SPECIAL; submap: its SUBMAP + SPECIAL). Not rebuilt (the owner's step 4). The deck-vs-pool checks read this list and report instead of failing. Built by node docs/balance/listfix1-decks-2026-10-29.js --write.",
  "built": "2026-10-29",
- "fights": 305,
- "offCopies": 1366,
+ "fights": 216,
+ "offCopies": 1118,
  "byMap": {
   "m1": 4,
   "mf": 2,
-  "mb": 3,
-  "mc": 5,
+  "mb": 1,
+  "mc": 7,
   "m2": 1,
   "mw": 3,
   "m8": 2,
@@ -18,10 +18,11 @@
   "m10": 7,
   "mh": 4,
   "m5": 3,
+  "mt": 6,
   "m6": 7,
   "md": 1,
   "m3": 4,
-  "m11": 2,
+  "m11": 8,
   "m21": 4,
   "m22": 8,
   "m23": 1,
@@ -42,9 +43,7 @@
   "mi": 4,
   "mo": 4,
   "mpd": 9,
-  "mm": 50,
-  "mlb": 50,
-  "muc": 42
+  "muc": 41
  },
  "list": [
   {
@@ -58,21 +57,15 @@
    "cards": 6,
    "off": [
     {
-     "id": "crossed-eyes",
-     "copies": 3,
-     "onSomeList": false,
-     "outOfPlay": false
-    },
-    {
      "id": "duckling",
      "copies": 3,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
      "id": "garden-snail",
      "copies": 4,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -106,6 +99,12 @@
    "cards": 6,
    "off": [
     {
+     "id": "duck-paddler",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": false
+    },
+    {
      "id": "river-carp",
      "copies": 4,
      "onSomeList": false,
@@ -113,12 +112,6 @@
     },
     {
      "id": "fox-kit",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "cottontail",
      "copies": 3,
      "onSomeList": true,
      "outOfPlay": false
@@ -136,9 +129,9 @@
    "cards": 6,
    "off": [
     {
-     "id": "cottontail",
+     "id": "chipmunk-forager",
      "copies": 3,
-     "onSomeList": true,
+     "onSomeList": false,
      "outOfPlay": false
     },
     {
@@ -175,6 +168,18 @@
      "id": "cobalt-talon-fledgling",
      "copies": 2,
      "onSomeList": false,
+     "outOfPlay": false
+    },
+    {
+     "id": "duck-paddler",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": false
+    },
+    {
+     "id": "feral-tomcat",
+     "copies": 4,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -246,36 +251,18 @@
    ]
   },
   {
-   "map": "mb",
-   "mapName": "Pebble Beach",
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
    "sub": false,
    "parent": null,
-   "key": "2-2",
-   "name": "Gull Gang",
+   "key": "3-1",
+   "name": "Goat Ledge",
    "kind": "skirmish",
    "cards": 6,
    "off": [
     {
-     "id": "oystercatcher",
-     "copies": 3,
-     "onSomeList": false,
-     "outOfPlay": true
-    }
-   ]
-  },
-  {
-   "map": "mb",
-   "mapName": "Pebble Beach",
-   "sub": false,
-   "parent": null,
-   "key": "2-3",
-   "name": "Hermit Row",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "driftwood-crab",
-     "copies": 1,
+     "id": "fulmar-spitter",
+     "copies": 2,
      "onSomeList": false,
      "outOfPlay": true
     }
@@ -296,6 +283,12 @@
      "copies": 2,
      "onSomeList": true,
      "outOfPlay": false
+    },
+    {
+     "id": "fulmar-spitter",
+     "copies": 2,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -314,6 +307,12 @@
      "copies": 2,
      "onSomeList": true,
      "outOfPlay": false
+    },
+    {
+     "id": "fulmar-spitter",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -350,6 +349,12 @@
      "copies": 4,
      "onSomeList": true,
      "outOfPlay": false
+    },
+    {
+     "id": "fulmar-spitter",
+     "copies": 2,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -364,10 +369,34 @@
    "cards": 7,
    "off": [
     {
+     "id": "fulmar-spitter",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
+    },
+    {
      "id": "mountain-goat-climber",
      "copies": 1,
      "onSomeList": true,
      "outOfPlay": false
+    }
+   ]
+  },
+  {
+   "map": "mc",
+   "mapName": "Gannet Cliffs",
+   "sub": false,
+   "parent": null,
+   "key": "3-7",
+   "name": "The Gannet Queen",
+   "kind": "elite",
+   "cards": 6,
+   "off": [
+    {
+     "id": "fulmar-spitter",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -530,12 +559,6 @@
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": false
-    },
-    {
-     "id": "garden-snail",
-     "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": false
     }
    ]
   },
@@ -549,12 +572,6 @@
    "kind": "skirmish",
    "cards": 6,
    "off": [
-    {
-     "id": "garden-snail",
-     "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": false
-    },
     {
      "id": "honey-bee",
      "copies": 1,
@@ -577,12 +594,6 @@
      "id": "bee-forager",
      "copies": 1,
      "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "garden-snail",
-     "copies": 1,
-     "onSomeList": false,
      "outOfPlay": false
     }
    ]
@@ -1134,6 +1145,114 @@
    ]
   },
   {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-1",
+   "name": "Snowshoe Tracks",
+   "kind": "skirmish",
+   "cards": 6,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-2",
+   "name": "Pinecone Drop",
+   "kind": "skirmish",
+   "cards": 6,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-4",
+   "name": "Lynx Shadow",
+   "kind": "skirmish",
+   "cards": 6,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-5",
+   "name": "The Running Pack",
+   "kind": "elite",
+   "cards": 8,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-6",
+   "name": "Reaver's Hollow",
+   "kind": "elite",
+   "cards": 7,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "mt",
+   "mapName": "The Pinewood Taiga",
+   "sub": false,
+   "parent": null,
+   "key": "16-7",
+   "name": "The Howling Alpha",
+   "kind": "miniboss",
+   "cards": 7,
+   "off": [
+    {
+     "id": "trickster-fox",
+     "copies": 2,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
    "map": "m6",
    "mapName": "Wolfsbane Tundra",
    "sub": false,
@@ -1354,11 +1473,53 @@
    "mapName": "The Sundered Peak",
    "sub": false,
    "parent": null,
+   "key": "20-1",
+   "name": "Silverback Watch",
+   "kind": "skirmish",
+   "cards": 6,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 1,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "key": "20-2",
+   "name": "Grizzly Frontier",
+   "kind": "skirmish",
+   "cards": 5,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
    "key": "20-4",
    "name": "Shrine Steps",
    "kind": "skirmish",
    "cards": 6,
    "off": [
+    {
+     "id": "bear-cub",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    },
     {
      "id": "obsidian-lich",
      "copies": 3,
@@ -1380,6 +1541,84 @@
     {
      "id": "obsidian-lich",
      "copies": 2,
+     "onSomeList": false,
+     "outOfPlay": true
+    },
+    {
+     "id": "bear-cub",
+     "copies": 2,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "key": "20-6",
+   "name": "The Constrictor Sovereign",
+   "kind": "elite",
+   "cards": 7,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "key": "20-8",
+   "name": "The Iron Cataphract",
+   "kind": "elite",
+   "cards": 6,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "key": "20-9",
+   "name": "The Ancient Sloth Titan",
+   "kind": "boss",
+   "cards": 8,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
+    }
+   ]
+  },
+  {
+   "map": "m11",
+   "mapName": "The Sundered Peak",
+   "sub": false,
+   "parent": null,
+   "key": "20-10",
+   "name": "The Cave Warlord",
+   "kind": "worldboss",
+   "cards": 6,
+   "off": [
+    {
+     "id": "bear-cub",
+     "copies": 4,
      "onSomeList": false,
      "outOfPlay": true
     }
@@ -1470,8 +1709,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1488,8 +1727,8 @@
     {
      "id": "gorge-wyrm",
      "copies": 4,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1506,8 +1745,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1524,8 +1763,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1542,8 +1781,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1560,8 +1799,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1578,8 +1817,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1596,14 +1835,14 @@
     {
      "id": "gorge-wyrm",
      "copies": 5,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     },
     {
      "id": "fumarole-ibex",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1792,6 +2031,12 @@
      "outOfPlay": true
     },
     {
+     "id": "house-cat",
+     "copies": 1,
+     "onSomeList": true,
+     "outOfPlay": false
+    },
+    {
      "id": "rabbit-kit",
      "copies": 5,
      "onSomeList": false,
@@ -1813,6 +2058,12 @@
      "id": "honey-bee",
      "copies": 1,
      "onSomeList": false,
+     "outOfPlay": false
+    },
+    {
+     "id": "house-cat",
+     "copies": 1,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -1855,6 +2106,12 @@
      "id": "honey-bee",
      "copies": 1,
      "onSomeList": false,
+     "outOfPlay": false
+    },
+    {
+     "id": "house-cat",
+     "copies": 1,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -1910,6 +2167,12 @@
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": false
+    },
+    {
+     "id": "house-cat",
+     "copies": 1,
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -1948,10 +2211,10 @@
      "outOfPlay": false
     },
     {
-     "id": "tidepool-trapper-crab",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
+     "id": "shallows-fry",
+     "copies": 5,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -1965,12 +2228,6 @@
    "kind": "skirmish",
    "cards": 6,
    "off": [
-    {
-     "id": "duckling",
-     "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": false
-    },
     {
      "id": "guppy",
      "copies": 1,
@@ -1988,6 +2245,12 @@
      "copies": 1,
      "onSomeList": true,
      "outOfPlay": false
+    },
+    {
+     "id": "shallows-fry",
+     "copies": 5,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -2024,6 +2287,12 @@
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": false
+    },
+    {
+     "id": "shallows-fry",
+     "copies": 4,
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -2060,6 +2329,12 @@
      "copies": 3,
      "onSomeList": false,
      "outOfPlay": false
+    },
+    {
+     "id": "shallows-fry",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
     },
     {
      "id": "beaver-builder",
@@ -2101,12 +2376,6 @@
      "id": "mangrove-mudskipper",
      "copies": 1,
      "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "duckling",
-     "copies": 1,
-     "onSomeList": false,
      "outOfPlay": false
     },
     {
@@ -2186,12 +2455,6 @@
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": true
-    },
-    {
-     "id": "duckling",
-     "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": false
     },
     {
      "id": "beaver-builder",
@@ -2820,14 +3083,14 @@
     {
      "id": "duckling",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
      "id": "shallows-fry",
      "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
+     "onSomeList": false,
+     "outOfPlay": true
     },
     {
      "id": "blind-cave-fish",
@@ -2892,7 +3155,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -2934,7 +3197,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     }
    ]
@@ -2958,7 +3221,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -3054,7 +3317,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     }
    ]
@@ -3182,6 +3445,12 @@
      "copies": 2,
      "onSomeList": false,
      "outOfPlay": true
+    },
+    {
+     "id": "savanna-cheetah",
+     "copies": 1,
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -3218,6 +3487,12 @@
      "copies": 2,
      "onSomeList": false,
      "outOfPlay": true
+    },
+    {
+     "id": "dust-hyena",
+     "copies": 4,
+     "onSomeList": true,
+     "outOfPlay": false
     },
     {
      "id": "siege-rhino",
@@ -3270,6 +3545,18 @@
     {
      "id": "siege-rhino",
      "copies": 3,
+     "onSomeList": true,
+     "outOfPlay": false
+    },
+    {
+     "id": "grave-grin-hyena",
+     "copies": 2,
+     "onSomeList": true,
+     "outOfPlay": false
+    },
+    {
+     "id": "springbok-pronker",
+     "copies": 2,
      "onSomeList": true,
      "outOfPlay": false
     },
@@ -3402,8 +3689,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 3,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     },
     {
      "id": "magma-salamander",
@@ -3438,8 +3725,8 @@
     {
      "id": "fumarole-ibex",
      "copies": 2,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     }
    ]
   },
@@ -3479,6 +3766,12 @@
     },
     {
      "id": "gorge-wyrm",
+     "copies": 2,
+     "onSomeList": true,
+     "outOfPlay": false
+    },
+    {
+     "id": "bear-cub",
      "copies": 2,
      "onSomeList": false,
      "outOfPlay": true
@@ -3552,8 +3845,8 @@
     {
      "id": "gorge-wyrm",
      "copies": 1,
-     "onSomeList": false,
-     "outOfPlay": true
+     "onSomeList": true,
+     "outOfPlay": false
     },
     {
      "id": "silverback-brawler",
@@ -3760,6 +4053,12 @@
      "outOfPlay": true
     },
     {
+     "id": "cave-bat-swarm",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
+    },
+    {
      "id": "vampire-bat-nurse",
      "copies": 4,
      "onSomeList": false,
@@ -3782,6 +4081,12 @@
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": false
+    },
+    {
+     "id": "cave-bat-swarm",
+     "copies": 3,
+     "onSomeList": false,
+     "outOfPlay": true
     },
     {
      "id": "monarch-wingblade",
@@ -3809,6 +4114,12 @@
    "off": [
     {
      "id": "beetle-grunt",
+     "copies": 1,
+     "onSomeList": false,
+     "outOfPlay": true
+    },
+    {
+     "id": "cave-bat-swarm",
      "copies": 1,
      "onSomeList": false,
      "outOfPlay": true
@@ -4060,6 +4371,12 @@
      "outOfPlay": false
     },
     {
+     "id": "glacier-wolf-pack",
+     "copies": 1,
+     "onSomeList": true,
+     "outOfPlay": false
+    },
+    {
      "id": "otter-kit",
      "copies": 1,
      "onSomeList": false,
@@ -4224,7 +4541,7 @@
     {
      "id": "duckling",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -4548,2106 +4865,6 @@
    ]
   },
   {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-1",
-   "name": "Murgle Mayhem, floor 1",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-2",
-   "name": "Murgle Mayhem, floor 2",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-3",
-   "name": "Murgle Mayhem, floor 3",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-4",
-   "name": "Murgle Mayhem, floor 4",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-5",
-   "name": "Murgle Mayhem, floor 5",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-6",
-   "name": "Murgle Mayhem, floor 6",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-7",
-   "name": "Murgle Mayhem, floor 7",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-8",
-   "name": "Murgle Mayhem, floor 8",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-9",
-   "name": "Murgle Mayhem, floor 9",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-10",
-   "name": "The Murgle King, floor 10",
-   "kind": "miniboss",
-   "cards": 7,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-11",
-   "name": "Murgle Mayhem, floor 11",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-12",
-   "name": "Murgle Mayhem, floor 12",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-13",
-   "name": "Murgle Mayhem, floor 13",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-14",
-   "name": "Murgle Mayhem, floor 14",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-15",
-   "name": "Murgle Mayhem, floor 15",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-16",
-   "name": "Murgle Mayhem, floor 16",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-17",
-   "name": "Murgle Mayhem, floor 17",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-18",
-   "name": "Murgle Mayhem, floor 18",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-19",
-   "name": "Murgle Mayhem, floor 19",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-20",
-   "name": "The Murgle King, floor 20",
-   "kind": "miniboss",
-   "cards": 7,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-21",
-   "name": "Murgle Mayhem, floor 21",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-22",
-   "name": "Murgle Mayhem, floor 22",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-23",
-   "name": "Murgle Mayhem, floor 23",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-24",
-   "name": "Murgle Mayhem, floor 24",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-25",
-   "name": "Murgle Mayhem, floor 25",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-26",
-   "name": "Murgle Mayhem, floor 26",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-27",
-   "name": "Murgle Mayhem, floor 27",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-28",
-   "name": "Murgle Mayhem, floor 28",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-29",
-   "name": "Murgle Mayhem, floor 29",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-30",
-   "name": "The Murgle King, floor 30",
-   "kind": "miniboss",
-   "cards": 7,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-31",
-   "name": "Murgle Mayhem, floor 31",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-32",
-   "name": "Murgle Mayhem, floor 32",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-33",
-   "name": "Murgle Mayhem, floor 33",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-34",
-   "name": "Murgle Mayhem, floor 34",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-35",
-   "name": "Murgle Mayhem, floor 35",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-36",
-   "name": "Murgle Mayhem, floor 36",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-37",
-   "name": "Murgle Mayhem, floor 37",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-38",
-   "name": "Murgle Mayhem, floor 38",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-39",
-   "name": "Murgle Mayhem, floor 39",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-40",
-   "name": "The Murgle King, floor 40",
-   "kind": "miniboss",
-   "cards": 7,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-41",
-   "name": "Murgle Mayhem, floor 41",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-42",
-   "name": "Murgle Mayhem, floor 42",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-43",
-   "name": "Murgle Mayhem, floor 43",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-44",
-   "name": "Murgle Mayhem, floor 44",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-45",
-   "name": "Murgle Mayhem, floor 45",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-46",
-   "name": "Murgle Mayhem, floor 46",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-47",
-   "name": "Murgle Mayhem, floor 47",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-48",
-   "name": "Murgle Mayhem, floor 48",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-49",
-   "name": "Murgle Mayhem, floor 49",
-   "kind": "skirmish",
-   "cards": 5,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mm",
-   "mapName": "Murgle Mayhem",
-   "sub": true,
-   "parent": "m8",
-   "key": "6-MM-50",
-   "name": "The Murgle King, floor 50",
-   "kind": "miniboss",
-   "cards": 7,
-   "off": [
-    {
-     "id": "marsh-wisp",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-1",
-   "name": "The Long Burrow, floor 1",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-2",
-   "name": "The Long Burrow, floor 2",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-3",
-   "name": "The Long Burrow, floor 3",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-4",
-   "name": "The Long Burrow, floor 4",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-5",
-   "name": "The Long Burrow, floor 5",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-6",
-   "name": "The Long Burrow, floor 6",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-7",
-   "name": "The Long Burrow, floor 7",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-8",
-   "name": "The Long Burrow, floor 8",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-9",
-   "name": "The Long Burrow, floor 9",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-10",
-   "name": "The Sett Lord, floor 10",
-   "kind": "miniboss",
-   "cards": 8,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-11",
-   "name": "The Long Burrow, floor 11",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-12",
-   "name": "The Long Burrow, floor 12",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-13",
-   "name": "The Long Burrow, floor 13",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-14",
-   "name": "The Long Burrow, floor 14",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-15",
-   "name": "The Long Burrow, floor 15",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-16",
-   "name": "The Long Burrow, floor 16",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-17",
-   "name": "The Long Burrow, floor 17",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-18",
-   "name": "The Long Burrow, floor 18",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-19",
-   "name": "The Long Burrow, floor 19",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-20",
-   "name": "The Sett Lord, floor 20",
-   "kind": "miniboss",
-   "cards": 8,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-21",
-   "name": "The Long Burrow, floor 21",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-22",
-   "name": "The Long Burrow, floor 22",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-23",
-   "name": "The Long Burrow, floor 23",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-24",
-   "name": "The Long Burrow, floor 24",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-25",
-   "name": "The Long Burrow, floor 25",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-26",
-   "name": "The Long Burrow, floor 26",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-27",
-   "name": "The Long Burrow, floor 27",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-28",
-   "name": "The Long Burrow, floor 28",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-29",
-   "name": "The Long Burrow, floor 29",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-30",
-   "name": "The Sett Lord, floor 30",
-   "kind": "miniboss",
-   "cards": 8,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-31",
-   "name": "The Long Burrow, floor 31",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-32",
-   "name": "The Long Burrow, floor 32",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-33",
-   "name": "The Long Burrow, floor 33",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-34",
-   "name": "The Long Burrow, floor 34",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-35",
-   "name": "The Long Burrow, floor 35",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-36",
-   "name": "The Long Burrow, floor 36",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-37",
-   "name": "The Long Burrow, floor 37",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-38",
-   "name": "The Long Burrow, floor 38",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-39",
-   "name": "The Long Burrow, floor 39",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-40",
-   "name": "The Sett Lord, floor 40",
-   "kind": "miniboss",
-   "cards": 8,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-41",
-   "name": "The Long Burrow, floor 41",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-42",
-   "name": "The Long Burrow, floor 42",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-43",
-   "name": "The Long Burrow, floor 43",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-44",
-   "name": "The Long Burrow, floor 44",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-45",
-   "name": "The Long Burrow, floor 45",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-46",
-   "name": "The Long Burrow, floor 46",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-47",
-   "name": "The Long Burrow, floor 47",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-48",
-   "name": "The Long Burrow, floor 48",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-49",
-   "name": "The Long Burrow, floor 49",
-   "kind": "skirmish",
-   "cards": 7,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "mlb",
-   "mapName": "The Long Burrow",
-   "sub": true,
-   "parent": "m22",
-   "key": "22-LB-50",
-   "name": "The Sett Lord, floor 50",
-   "kind": "miniboss",
-   "cards": 8,
-   "off": [
-    {
-     "id": "badger-berserker",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ur-elk",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
    "map": "muc",
    "mapName": "The Undercroft",
    "sub": true,
@@ -6918,7 +5135,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -6966,7 +5183,7 @@
     {
      "id": "garden-snail",
      "copies": 1,
-     "onSomeList": false,
+     "onSomeList": true,
      "outOfPlay": false
     },
     {
@@ -7114,31 +5331,7 @@
    "cards": 7,
    "off": [
     {
-     "id": "alpine-marmot",
-     "copies": 5,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "eyrie-warden",
-     "copies": 5,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
      "id": "mountain-goat-climber",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ibex-rockcaller",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "alpine-swift",
      "copies": 1,
      "onSomeList": true,
      "outOfPlay": false
@@ -7156,74 +5349,8 @@
    "cards": 7,
    "off": [
     {
-     "id": "alpine-marmot",
-     "copies": 5,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "eyrie-warden",
-     "copies": 5,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
      "id": "mountain-goat-climber",
      "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ibex-rockcaller",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "alpine-swift",
-     "copies": 1,
-     "onSomeList": true,
-     "outOfPlay": false
-    }
-   ]
-  },
-  {
-   "map": "muc",
-   "mapName": "The Undercroft",
-   "sub": true,
-   "parent": "m10",
-   "key": "11-UC-30",
-   "name": "The Vault Warden, floor 30",
-   "kind": "miniboss",
-   "cards": 5,
-   "off": [
-    {
-     "id": "alpine-marmot",
-     "copies": 4,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "chipmunk-hoarder",
-     "copies": 4,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "apollo-butterfly",
-     "copies": 3,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "ibex-rockcaller",
-     "copies": 2,
-     "onSomeList": true,
-     "outOfPlay": false
-    },
-    {
-     "id": "mountain-hare",
-     "copies": 3,
      "onSomeList": true,
      "outOfPlay": false
     }
@@ -7302,8 +5429,8 @@
     {
      "id": "trickster-fox",
      "copies": 4,
-     "onSomeList": true,
-     "outOfPlay": false
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -7326,8 +5453,8 @@
     {
      "id": "trickster-fox",
      "copies": 4,
-     "onSomeList": true,
-     "outOfPlay": false
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -7350,8 +5477,8 @@
     {
      "id": "trickster-fox",
      "copies": 4,
-     "onSomeList": true,
-     "outOfPlay": false
+     "onSomeList": false,
+     "outOfPlay": true
     }
    ]
   },
@@ -7600,6 +5727,16 @@
      "outOfPlay": false
     }
    ]
+  }
+ ],
+ "overCopies": [
+  {
+   "map": "mz",
+   "key": "7-A-1",
+   "id": "fungal-colossus",
+   "copies": 5,
+   "max": 4,
+   "rarity": "uncommon"
   }
  ]
 }

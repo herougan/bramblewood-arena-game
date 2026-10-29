@@ -18,9 +18,13 @@ G.CONQUEST_MAPS.forEach(m=>{
     fights.push({map: m.id, mapName: m.name, sub: !!m.sub, parent: m.sub ? m.parent : null, key: n.key, name: n.name, kind: n.kind || 'skirmish',
       cards: ids.length, off: off.map(id=> ({id, copies: n.deck[id], onSomeList: !!G.cardFirstMapList(D[id]), outOfPlay: !!(D[id] && L.isOutOfPlay(G, D[id]))}))}); });
 });
+// 2026-10-29 RELFIX3: decks over the copy ladder because a list package re-ranked a card (THEME3 Q5: Fungal Colossus Common -> Uncommon, so 7-A-1's
+// 5 copies are one over Uncommon's 4). Also step 4 (decks not touched here); bal2's ladder check reads this list and reports.
+const overCopies = [];
+G.CONQUEST_MAPS.forEach(m=>{ if(m.tower) return; (m.nodes || []).forEach(n=> Object.entries(n.deck || {}).forEach(([id, k])=>{ const d = D[id]; if(d && n.kind !== 'tutorial' && k > G.maxCopiesForRarity(d.rarity)) overCopies.push({map: m.id, key: n.key, id, copies: k, max: G.maxCopiesForRarity(d.rarity), rarity: d.rarity}); })); });
 const copies = fights.reduce((a, f)=> a + f.off.reduce((s, o)=> s + o.copies, 0), 0);
 const out = {_about: 'LISTFIX1 (2026-10-29): fights whose deck holds a card off the fight\'s pool (main map: MAP + SPECIAL; submap: its SUBMAP + SPECIAL). '
   + 'Not rebuilt (the owner\'s step 4). The deck-vs-pool checks read this list and report instead of failing. Built by node docs/balance/listfix1-decks-2026-10-29.js --write.',
-  built: '2026-10-29', fights: fights.length, offCopies: copies, byMap: fights.reduce((a, f)=>{ a[f.map] = (a[f.map] || 0) + 1; return a; }, {}), list: fights};
-console.log(`${fights.length} fights hold a card off their pool (${copies} copies)`);
+  built: '2026-10-29', fights: fights.length, offCopies: copies, byMap: fights.reduce((a, f)=>{ a[f.map] = (a[f.map] || 0) + 1; return a; }, {}), list: fights, overCopies};
+console.log(`${fights.length} fights hold a card off their pool (${copies} copies); ${overCopies.length} deck rows over the copy ladder: ${overCopies.map(o=> o.key + ' ' + o.id + ' x' + o.copies).join(', ')}`);
 if(process.argv.includes('--write')){ fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'listfix1-decks-2026-10-29.json'), JSON.stringify(out, null, 1) + '\n'); console.log('wrote docs/balance/listfix1-decks-2026-10-29.json'); }

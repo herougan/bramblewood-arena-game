@@ -29,7 +29,9 @@ const mapById = {}; G.CONQUEST_MAPS.forEach(m=> mapById[m.id] = m);
 const unlock = id=>{ const m = mapById[id]; if(!m) return null; if(!m.sub) return G.mapNumberOf(id); const a = m.entry && m.entry.afterMapCleared; return Math.max(G.mapNumberOf(id) || 0, a ? unlock(a) || 0 : 0); };
 const tierOf = n=> n <= 6 ? 1 : n <= 13 ? 2 : n <= 20 ? 3 : 4;
 ok(basic.length > 150, `1. live basic-pack cards (${basic.length})`);
-const noMap = basic.filter(c=> !c.source.map); ok(!noMap.length, '1. every live basic-pack card has a map: ' + noMap.slice(0, 5).map(c=> c.id).join(', '));
+// 2026-10-29 RELFIX3: since PACK1 a basic-pack card's map is its first map list (cardFirstMapList), not source.map; LISTFIX1 (APPLY1-4) gave
+// the listed cards with no source their first map's pack without a source.map (ant-hill, owl-sentinel, ...). So: a map from either
+const noMap = basic.filter(c=> !c.source.map && !G.cardFirstMapList(c)); ok(!noMap.length, '1. every live basic-pack card has a map (its first map list, or source.map): ' + noMap.slice(0, 5).map(c=> c.id).join(', '));
 const badTier = basic.filter(c=> c.source.map && tierOf(unlock(c.source.map)) !== +c.source.tier); ok(!badTier.length, '1. every card\'s tier is its map\'s (0-6 / 7-13 / 14-20 / later): ' + badTier.slice(0, 5).map(c=> c.id + ' ' + c.source.tier + '@' + c.source.map).join(', '));
 const lava1 = basic.filter(c=> +c.source.tier === 1 && (BIO[c.id] || []).includes('volcanic-ash') && c.id !== 'ember-tetra' /* 2026-10-23 (EN4, owner 23:45: "Ember Tetra can be a pack 1."): a small fish of the Sunken Hollow; its 'ember' name reads volcanic */); ok(!lava1.length, '1. no volcanic card in Pack 1: ' + lava1.map(c=> c.id).join(', '));
 ok(G.mapUnlockNumberOf && G.mapUnlockNumberOf('mo') === 21 && G.mapUnlockNumberOf('m3') === 19 && G.mapUnlockNumberOf('ms') === 13, '1. mapUnlockNumberOf: a side map counts from its unlock (the Old Bramble 21, the Sunken Grove 13)');

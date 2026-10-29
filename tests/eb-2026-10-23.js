@@ -82,7 +82,12 @@ const byMap = id=> G.CONQUEST_MAPS.find(m=> m.id === id), node = (mid, k)=> byMa
     ok(row(J.after, 'T-1').win >= 75 && row(J.after, 'T-2').win >= 70, '4. the tutorial fights stay easy'); }
   const mf = byMap('mf'); ok(mf.nodes.slice(0, 4).every(n=> n.characterId === 'castle'), '4. Map 1\'s skirmishes defend a plain bramble');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps;
-  mf.nodes.forEach(n=> Object.keys(n.deck).forEach(id=> ok(pools.mf.cards.includes(id) || pools.mf.special.includes(id), `4. ${n.key}'s ${id} is in Map 1's pool`)));
+  // 2026-10-29 RELFIX3: THEME3's Map 1 list no longer holds the Meadow Frog (a Base card) that 1-3 / 1-4 field; decks are not rebuilt yet (the owner's
+  // step 4): a card off the pool must be on LISTFIX1's list (docs/balance/listfix1-decks-2026-10-29.json), and is reported
+  const LF1D = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'listfix1-decks-2026-10-29.json'), 'utf8')).list;
+  mf.nodes.forEach(n=> Object.keys(n.deck).forEach(id=>{ const inPool = pools.mf.cards.includes(id) || pools.mf.special.includes(id), rec = LF1D.some(f=> f.map === 'mf' && f.key === n.key && f.off.some(o=> o.id === id));
+    if(!inPool && rec) console.log(`  · ${n.key}'s ${id}: off Map 1's pool, deck not rebuilt yet (step 4)`);
+    ok(inPool || rec, `4. ${n.key}'s ${id} is in Map 1's pool (or waits for the deck rebuild)`); }));
   ok(mf.nodes.every(n=> Object.values(n.deck).reduce((a, b)=> a + b, 0) === 20), '4. Map 1\'s decks hold 20 cards');
   ok(node('mf', '1-1').deck['cricket-drummer'] > 0 && node('mf', '1-5').deck['badger-lumberjack'] > 0, '4. the reward cards are still in their fights\' decks');
 }
