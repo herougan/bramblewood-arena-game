@@ -244,5 +244,6 @@ run node tests/review2-2026-10-29.js   # 2026-10-29 (package REVIEW2, owner 19:1
 run node tests/review1-2026-10-29.js  # 2026-10-29 (package REVIEW1, owner 00:13): the Map cards overlay shows Chosen / Cut cards / Maybe from canonical/map-review.json (why, by, flip + Copy my picks), "No review yet", texts in 12 packs
 run node tests/skl0-2026-10-29.js   # 2026-10-29 (package SKL0, owner 10-28 23:35 / 10-29 13:07): T-1 / T-2 show every skill but Flying as "?" (cards, zoom, log; Map 0 and Admin unchanged), Bee Knight's Swarm arrives at Level 1 (its T-1 / T-2 copy Level 0, Flying only), budget at Level 0 and 1
 run node tests/ui1-2026-10-29.js   # 2026-10-29 (package UI1, owner 10-28 23:35 O1 O2 O3 O4 O8): the raid's Deck card keeps card proportions on a desktop window, touch drags (touch-action, drag class, element-bound handlers), the camera on the mean of the units, one Match log, Quests = the errands and a Dailies tab, texts in 12 packs (browser: tests/e2e/ui1_2026_10_29.py)
+run node tests/adminu1-2026-10-29.js   # 2026-10-29 (package ADMINU1, owner 10-28 23:35 / 10-29 19:14): admin_user_list SQL (proposed, admin-gated, no email), the Admin > Players overlay (admin mode only; stubbed rpc, sort, search, missing-function message), 12 packs
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail
