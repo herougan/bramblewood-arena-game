@@ -66,7 +66,7 @@ def trim_border(stats, n):
     return a, b
 
 
-def split_sheet(im):
+def split_sheet(im, inset=0.0):
     im = im.convert('RGB'); W, H = im.size
     cs, rs = _line_stats(im, 0), _line_stats(im, 1)
     x0, x1 = trim_border(cs, W); y0, y1 = trim_border(rs, H)
@@ -80,7 +80,8 @@ def split_sheet(im):
         a, b = trim_border(pc, p.width); c, d = trim_border(pr, p.height)
         p = p.crop((a, c, b, d))
         s = min(p.size); l = (p.width - s) // 2; t = (p.height - s) // 2
-        panels.append(p.crop((l, t, l + s, t + s)))
+        k = int(s * inset)  # NightCafe draws a rounded frame per panel: cut inside it
+        panels.append(p.crop((l + k, t + k, l + s - k, t + s - k)))
     return panels
 
 
@@ -142,7 +143,7 @@ def main():
         if a.only and fn not in a.only: continue
         src = os.path.join(a.src, fn)
         if not os.path.exists(src): print('missing', src); continue
-        panels = split_sheet(Image.open(src))
+        panels = split_sheet(Image.open(src), inset=0.045 if 'nightcafe' in fn else 0.0)
         for cid, pos, p in zip(ids, POS, panels):
             if cid is None: continue
             img = pixel_pass(p, colours)
