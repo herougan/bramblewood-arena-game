@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-28 (package FLAIR1: the Dragon Lair's own final-boss flair)
+- **The Dragon Lair (Volcano Lair, Map 20) is the 0-20 road's last boss and looks it** (owner 23:06: "a flair that's not the normal boss flair"). Driven by `finalBoss:true` on the map `mx` and its node 20-B-4 (`flairLairMap` / `flairLairNode`), not by a name; molten gold and ember where the normal boss is blood red with a skull. CSS and existing glyphs only.
+- **Map:** the lair's entrance on Map 20 gets an ember ring with a slow glow and a crown; the 20-B-4 node a turning molten ring, a crown and a flame.
+- **Fight intro:** the versus opener turns molten gold, with a "Final boss of the road / The Dragon's Lair" banner and a subtitle, held 4.3 s (a retry keeps the short beat); a tap still skips it. The title card after it carries the same name for 3.4 s.
+- **Battle:** a quiet ember edge under the board (z-index -1, click-through), never over a card.
+- **Victory:** "THE DRAGON FALLS" with a crown; the first clear adds "The road from Map 0 to Map 20 is walked to its end."
+- Reduced motion and low / no effects stop every animation. Texts in 12 packs (`tools/i18n_2026_10_28_flair1.py`; Tagalog, Tamil, Japanese, Korean deserve a native read). Tests: `tests/flair1-2026-10-28.js`, `tests/e2e/flair1_2026_10_28.py`; shots in `docs/screens/flair1/`.
 ## 2026-10-28 (package THEME2: the per-map proposal re-sized to the owner's 22:47 numbers; nothing applied)
 - **Still a proposal** (owner 10-28 22:47: "main maps ... 8-11 cards + 4-5 carried over, 12-16 in total. Submaps would be 1-3 cards + 10+ carried over, so 11-14. Don't worry about the other cards"). Main maps now 11 unique (slots 9-11 only for strongly themed cards; Map 0 and Gannet Cliffs 10) + 4-5 carried picked for the mix (a high-cost card, a generator, a creature): 15 a map. Submaps keep THEME1's delve / challenge table and carry 10-11 parent / earlier cards that fit them: 12-13 a submap. Lists 613 -> 559 entries, 307 different cards on a list; the 426 cards on no list are simply listed per old pack. Only flag: Volcano Lair's 2 skirmish rewards over its 1. Files: `tools/theme2_proposal_2026_10_28.py`, `docs/balance/theme2-proposal-2026-10-28.md` / `.json` (THEME1's kept as history).
 - Hub, 🗺️ Map cards: the Proposal toggle reads THEME2; its summary shows "on no list" per old pack instead of pack-only / no-home. THEME1-1's body points at THEME2 (`tools/theme2_decisions_2026_10_28.py`), still open.
