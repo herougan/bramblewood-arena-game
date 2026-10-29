@@ -38,7 +38,7 @@ MEASURE = r"""(screen)=>{
   document.querySelectorAll('.card-tile').forEach(el=> add(el, 'tile'));
   [['#cardPop', 'hover popover #cardPop'], ['.card-detail-card', 'detail .card-detail-card'], ['.vis4-mc-card', 'map chip .vis4-mc-card'], ['.rv1-tile', 'review .rv1-tile'],
    ['.ab-castle-tile', 'castle .ab-castle-tile'], ['.trench-tile', 'trench tile'], ['.env-card', 'env card'], ['.raid-boss-card, .orb-card, .rh-boss', 'raid boss card'], ['.po2-mini', 'pack mini .po2-mini'],
-   ['.zone-peek-mini, .zpm', 'zone peek mini'], ['.dm-card', 'deck mini .dm-card'], ['.ss-card', 'skirmish .ss-card']].forEach(([s, k])=> document.querySelectorAll(s).forEach(el=> add(el, k)));
+   ['.zone-peek-mini, .zpm', 'zone peek mini'], ['.dm-card', 'deck mini .dm-card'], ['.ss-card', 'skirmish .ss-card'], ['.gpk-mini', 'grave peek .gpk-mini'], ['.tr-card', 'trench .tr-card'], ['.char-card', 'bramble .char-card']].forEach(([s, k])=> document.querySelectorAll(s).forEach(el=> add(el, k)));
   // group
   const g = {}; out.forEach((o, i)=>{ const k = o.ctx + '|' + o.w + 'x' + o.h; if(!g[k]) g[k] = {...o, n: 0, idx: i}; g[k].n++; });
   return Object.values(g); }"""
@@ -55,7 +55,7 @@ BOARD = """(async()=>{ switchTab('play'); startConquestMatch('m11', '20-7', {ski
   put(1, [['otter-kit', -2], ['fire-ant-raft', -1], ['ant-scout', 0], ['fire-ant-raft', 1], ['otter-kit', 2]]); put(2, [['voidfeather-scout', -1], ['ember-tetra', 0], ['voidfeather-scout', 1]]);
   [1, 2].forEach(pid=>{ const pl = m.players[pid]; pl.row.left.sort((a, b)=> b.slot - a.slot); pl.row.right.sort((a, b)=> a.slot - b.slot); e.syncSlots(pl); });
   m.players[1].lumber = 9; if(m.players[1].hand.length < 4){ ['otter-kit','ant-scout','fire-ant-raft','ember-tetra'].forEach((id, i)=> m.players[1].hand.push({uid: 990001 + i, defId: id})); }
-  m.replayCards = null; renderMatchUI(); await new Promise(r=> setTimeout(r, 1200)); })()"""
+  m.replayCards = null; renderMatchUI(); await new Promise(r=> setTimeout(r, 3500)); })()"""
 WIN = "(async()=>{ const M = matchState; M.players[2].hq.shield = 0; M.players[2].hq.hp = 0; M.forcedWinner = 1; await resolveRound({manual:true, run:()=> true}); await new Promise(r=> setTimeout(r, 4200)); })()"
 FIRST = "Object.keys(getCardDefs()).find(id=> getCardDefs()[id].art && !getCardDefs()[id].token && getCardDefs()[id].rarity === 'rare') || 'otter-kit'"
 MAP = """(async()=>{ const mains = mainConquestMaps(), M = mains[4], p = loadConquestProgress();
@@ -64,24 +64,30 @@ MAP = """(async()=>{ const mains = mainConquestMaps(), M = mains[4], p = loadCon
   const b = document.getElementById('cnpMapCards'); if(b) b.scrollIntoView({block:'center'}); window.__M = M.id; })()"""
 
 # screen name -> list of (step js, optional hover selector). Each screen gets a fresh page.
+RICH = "(()=>{ const d = getCardDefs(); Object.keys(d).filter(i=> d[i].art && !d[i].token && !d[i].test && !isEasterEgg(d[i])).slice(0, 60).forEach(i=>{ try{ unlockCardForPlayer(i, 'test'); }catch(e){} }); })()"
+TEAR = """(async()=>{ myCurrencies.gold = 99999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze') || getShopPacks()[0]; const o = purchasePackOnce(p, true); o.results.forEach(r=> r.isNew = true); openPackAnimation(p, [o]); await new Promise(r=> setTimeout(r, 1500));
+  const ov = document.getElementById('packOpenOverlay'); const strip = ov.querySelector('#poStrip'); if(strip){ const r = strip.getBoundingClientRect(); const fire = (type, x)=> strip.dispatchEvent(new PointerEvent(type, {bubbles:true, clientX:x, clientY:r.top + r.height/2, pointerId:1, pointerType:'mouse', buttons:1}));
+  fire('pointerdown', r.left + 4); for(let i = 1; i <= 12; i++){ fire('pointermove', r.left + r.width*i/12); await new Promise(z=> setTimeout(z, 16)); } fire('pointerup', r.right - 2); } await new Promise(z=> setTimeout(z, 2200)); })()"""
+CLICK1 = "(async()=>{ const ov = document.getElementById('packOpenOverlay'); const c = ov.querySelector('.po-card:not(.is-collected)'); if(c) c.click(); await new Promise(z=> setTimeout(z, 1600)); })()"
+SUMMARY = "(async()=>{ const ov = document.getElementById('packOpenOverlay'); for(let k = 0; k < 40 && !ov.querySelector('.po2-summary'); k++){ const c = ov.querySelector('.po-card:not(.is-collected)'); if(c){ c.click(); await new Promise(z=> setTimeout(z, 650)); } else await new Promise(z=> setTimeout(z, 300)); } await new Promise(z=> setTimeout(z, 1500)); })()"
 SCREENS = {
-  'codex': ["(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
-  'codex-hover': ["(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()", 'HOVER:#view-codex .card-tile'],
+  'codex': [RICH, "(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
+  'codex-hover': [RICH, "(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()", 'HOVER:#view-codex .card-tile'],
   'detail': [f"(async()=>{{ openCardDetail({FIRST}); await new Promise(r=> setTimeout(r, 1200)); }})()"],
   'inspector': [f"(async()=>{{ openCardInspector({FIRST}); await new Promise(r=> setTimeout(r, 1200)); }})()"],
-  'deck': ["(async()=>{ switchTab('deck'); await new Promise(r=> setTimeout(r, 2500)); })()"],
-  'deck-popup': ["(async()=>{ switchTab('deck'); await new Promise(r=> setTimeout(r, 1500)); try{ openDeckBuilderPopup(); }catch(e){ const b = document.querySelector('[data-deck-edit], .deck-edit-btn, #deckEditBtn'); if(b) b.click(); } await new Promise(r=> setTimeout(r, 2000)); })()"],
+  'deck': [RICH, "(async()=>{ deckShowList = false; deckEditingId = activeDeckId; switchTab('deck'); await new Promise(r=> setTimeout(r, 2500)); })()"],
+  'deck-popup': [RICH, "(async()=>{ switchTab('home'); openDeckBuilderPopup({title:'Skirmish deck', counts:{}, unlimited:true}); await new Promise(r=> setTimeout(r, 2000)); })()"],
   'fight': [BOARD],
   'fight-hover': [BOARD, 'HOVER:#rowMine .board-card .card-tile'],
   'rewards': [BOARD, WIN],
-  'pack': ["(async()=>{ myCurrencies.gold = 99999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze') || getShopPacks()[0]; const o = purchasePackOnce(p, true); o.results.forEach(r=> r.isNew = true); openPackAnimation(p, [o]); await new Promise(r=> setTimeout(r, 1500)); })()"],
-  'pack-revealed': ["(async()=>{ myCurrencies.gold = 99999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze') || getShopPacks()[0]; const o = purchasePackOnce(p, true); o.results.forEach(r=> r.isNew = true); openPackAnimation(p, [o]); await new Promise(r=> setTimeout(r, 1500));"
-                    " for(let i = 0; i < 14; i++){ const b = document.querySelector('.po2-reveal-all, [data-po2-all], .po2-skip, .po-skip, .po2-next, .po2-btn'); const c = document.querySelector('.po2-card:not(.is-flipped), .po-card:not(.flipped)'); (b || c || document.body).click(); await new Promise(r=> setTimeout(r, 450)); } await new Promise(r=> setTimeout(r, 1200)); })()"],
+  'pack-torn': [TEAR],
+  'pack-card': [TEAR, CLICK1],
+  'pack-summary': [TEAR, SUMMARY],
   'map': [MAP],
   'map-cards': [MAP, "(async()=>{ pk1OpenMapCards(window.__M); await new Promise(r=> setTimeout(r, 1200)); })()"],
   'shop': ["(async()=>{ switchTab('shop'); await new Promise(r=> setTimeout(r, 2500)); })()"],
-  'nest': ["(async()=>{ switchTab('nest'); await new Promise(r=> setTimeout(r, 2500)); })()"],
-  'forge': ["(async()=>{ codexSubTab='forge'; switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
+  'nest': [RICH, "(async()=>{ switchTab('nest'); await new Promise(r=> setTimeout(r, 2500)); })()"],
+  'forge': [RICH, "(async()=>{ codexSubTab='forge'; switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
   'raid-hub': ["(async()=>{ playSubTab='raid'; switchTab('play'); await new Promise(r=> setTimeout(r, 2000)); })()"],
   'raid-fight': ["(async()=>{ playSubTab='raid'; switchTab('play'); await new Promise(r=> setTimeout(r, 1200)); document.querySelector('.raid-hub [data-raid-open]').click(); await new Promise(r=> setTimeout(r, 800)); document.querySelector('[data-raid-part=left]').click(); await new Promise(r=> setTimeout(r, 3500)); })()"],
   'skirmish-gallery': ["(async()=>{ openSkirmishGallery(); await new Promise(r=> setTimeout(r, 2000)); })()"],
@@ -119,7 +125,7 @@ async def run_screen(b, url, w, name, steps, report):
                     if cw > 4 and ch > 4: await pg.screenshot(path=f, type='jpeg', quality=80, clip={'x': x, 'y': y, 'width': cw, 'height': ch}); g['shot'] = os.path.relpath(f, ROOT)
             except Exception as e: g['shoterr'] = str(e)[:100]
             g['screen'] = name; g['width'] = w; report.append(g)
-        print(f'  {name}@{w}: {len(groups)} groups', ('ERR ' + errs[0]) if errs else '')
+        print(f'  {name}@{w}: {len(groups)} groups', ('ERR ' + errs[0]) if errs else '', flush=True)
     except Exception as e:
         print(f'  {name}@{w}: FAILED {str(e)[:200]}')
     await ctx.close()
@@ -131,11 +137,13 @@ async def main(a):
         b = await p.chromium.launch(executable_path=exe, args=['--enable-unsafe-swiftshader', '--use-angle=swiftshader', '--ignore-gpu-blocklist'])
         for w in [int(x) for x in a.widths.split(',')]:
             report = []; jf = os.path.join(OUTJ, f'cardsize1-{w}.json')
-            if a.only and os.path.exists(jf): report = [g for g in json.load(open(jf)) if g['screen'] not in a.only.split(',')]
+            if os.path.exists(jf): report = json.load(open(jf))
             for name, steps in SCREENS.items():
                 if a.only and name not in a.only.split(','): continue
+                report = [g for g in report if g['screen'] != name]
                 await run_screen(b, url, w, name, steps, report)
-            json.dump(report, open(jf, 'w'), indent=1); print('wrote', jf)
+                json.dump(report, open(jf, 'w'), indent=1)
+            print('wrote', jf)
         await b.close()
     httpd.shutdown()
 
