@@ -3652,5 +3652,11 @@
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Bajo los árboles: cualquier combate en un mapa de bosque (el Bosque Viejo), Dosel Alto o el Sotobosque. En tierra: no Voladora (una voladora derribada cuenta). Cubre los ataques a distancia (disparos, habilidades, un Bumerán lanzado) y a los atacantes voladores; el ataque cuerpo a cuerpo de una unidad terrestre sigue acertando. Una tirada, como Evasiva, y no además de Evasiva. Golpe Certero y Expuesto la atraviesan.",
  "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}",
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Bajo los árboles, esta unidad terrestre esquiva la mitad de los disparos, habilidades y ataques voladores que la apuntan.",
- "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}"
+ "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}",
+ "Export all": "Exportar todo",
+ "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "Copia todas las listas de todos los mapas (cartas elegidas, quizá y descartadas) con tus decisiones actuales de Cortar/Mantener, en el orden de los mapas, como texto para Claude. También ofrece una descarga .txt y .json.",
+ "Copied everything: paste it to Claude, or download it": "Todo copiado: pégalo a Claude o descárgalo",
+ "Ready: download it": "Listo: descárgalo",
+ "A CPU ally with a random deck joins at Start": "Un aliado de la CPU con un mazo aleatorio se une al empezar",
+ "Plays a random deck": "Juega un mazo aleatorio"
 }

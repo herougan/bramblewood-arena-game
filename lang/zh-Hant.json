@@ -3653,5 +3653,11 @@
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "樹下：森林地圖（古林）、高林冠或下層林中的任何戰鬥。地面：非飛行（被擊落的飛行單位也算）。它擋住遠程攻擊（射擊、技能、擲出的迴旋鏢）和飛行攻擊者；地面單位的近戰攻擊照樣命中。一次判定，與閃避相同，不與閃避疊加。必中和暴露可以看穿它。",
  "🛠️ Admin: {name} {from} → {to}": "🛠️ 管理員：{name} {from} → {to}",
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "在樹下，這個地面單位能躲開一半瞄準它的射擊、技能和飛行攻擊。",
- "Admin: {name} {from} → {to}": "管理員：{name} {from} → {to}"
+ "Admin: {name} {from} → {to}": "管理員：{name} {from} → {to}",
+ "Export all": "全部匯出",
+ "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "按地圖順序複製每張地圖的每個列表（入選、待定和刪除的卡牌）以及你目前的刪除/保留選擇，作為給 Claude 的文字。同時提供 .txt 和 .json 下載。",
+ "Copied everything: paste it to Claude, or download it": "已全部複製：貼給 Claude，或下載",
+ "Ready: download it": "已準備好：請下載",
+ "A CPU ally with a random deck joins at Start": "開始時會有一名使用隨機牌組的 CPU 盟友加入",
+ "Plays a random deck": "使用隨機牌組"
 }
