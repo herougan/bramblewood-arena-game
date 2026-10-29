@@ -1,0 +1,1317 @@
+{
+ "built": "2026-10-29",
+ "lists": [
+  {
+   "map": "mtut12",
+   "name": "Tutorial T-1 / T-2",
+   "no": 0,
+   "sub": true,
+   "parent": "m1",
+   "before": 0,
+   "after": 7,
+   "unique": 7,
+   "carried": 0,
+   "uniqueIds": [
+    "bee-knight",
+    "earthworm",
+    "pond-trout",
+    "silver-minnow",
+    "duckling",
+    "cottontail",
+    "crossed-eyes"
+   ],
+   "in": [
+    "bee-knight",
+    "earthworm",
+    "pond-trout",
+    "silver-minnow",
+    "duckling",
+    "cottontail",
+    "crossed-eyes"
+   ],
+   "out": [],
+   "specialAdded": [],
+   "high": 0,
+   "gen": 0
+  },
+  {
+   "map": "m1",
+   "name": "Bramblewood Outskirts",
+   "no": 0,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 12,
+   "unique": 9,
+   "carried": 3,
+   "uniqueIds": [
+    "chipmunk-skirmisher",
+    "terrier-pup",
+    "house-cat",
+    "bee-forager",
+    "bee-sentry",
+    "ant-scout",
+    "ant-hill",
+    "beaver-lumberjack",
+    "owl-sentinel"
+   ],
+   "in": [
+    "crossed-eyes",
+    "bee-knight",
+    "cottontail"
+   ],
+   "out": [
+    "feral-tomcat",
+    "chipmunk-cavalry",
+    "cypress-root-lurker",
+    "marsh-mallow-hare",
+    "duck-paddler",
+    "chipmunk-forager"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "mtut",
+   "name": "Tutorial T-3 to T-5",
+   "no": 0,
+   "sub": true,
+   "parent": "m1",
+   "before": 18,
+   "after": 18,
+   "unique": 15,
+   "carried": 3,
+   "uniqueIds": [
+    "ash-cloud-condor",
+    "badger-berserker",
+    "burrow-rabbit",
+    "caustic-scorpion",
+    "dynamite-packrat",
+    "eagle-sharpshooter",
+    "golden-eagle-diver",
+    "gull-thief",
+    "otter-paddler",
+    "rockslide-ram",
+    "scree-goat",
+    "thornwood-palisade",
+    "toucan-courier",
+    "trash-panda-trickster",
+    "worker-ant"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "mf",
+   "name": "Thistlewood",
+   "no": 1,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "cricket-drummer",
+    "badger-lumberjack",
+    "dormouse",
+    "field-mouse",
+    "field-vole",
+    "bramble-sprout",
+    "hedgerow-shrew",
+    "robin-redbreast",
+    "slow-worm",
+    "woodcock-lookout",
+    "chipmunk-cavalry"
+   ],
+   "in": [
+    "owl-sentinel",
+    "bee-forager"
+   ],
+   "out": [
+    "fire-ant-raft",
+    "cypress-root-lurker"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "mb",
+   "name": "Pebble Beach",
+   "no": 2,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 14,
+   "unique": 10,
+   "carried": 4,
+   "uniqueIds": [
+    "conch-herald",
+    "old-shell",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "conch-crawler",
+    "gull-thief",
+    "sea-turtle-elder",
+    "tide-pool-crab",
+    "driftwood-crab",
+    "oystercatcher"
+   ],
+   "in": [
+    "driftwood-crab",
+    "oystercatcher"
+   ],
+   "out": [
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "tidepool-trapper-crab"
+   ],
+   "specialAdded": [
+    "tidepool-trapper-crab",
+    "fiddler-crab-swarm",
+    "grey-seal-bull"
+   ],
+   "high": 1,
+   "gen": 4
+  },
+  {
+   "map": "mc",
+   "name": "Gannet Cliffs",
+   "no": 3,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 13,
+   "unique": 10,
+   "carried": 3,
+   "uniqueIds": [
+    "golden-eagle-diver",
+    "puffin-diver",
+    "peregrine-stooper",
+    "the-gannet-queen",
+    "kittiwake-flock",
+    "peak-condor",
+    "red-billed-chough",
+    "razorbill",
+    "gannet-nestweaver",
+    "feral-tomcat"
+   ],
+   "in": [
+    "gull-thief"
+   ],
+   "out": [
+    "fulmar-spitter",
+    "dormouse",
+    "fiddler-crab-swarm"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "m2",
+   "name": "Sunken Hollow",
+   "no": 4,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 14,
+   "unique": 11,
+   "carried": 3,
+   "uniqueIds": [
+    "snapstick-turtle",
+    "muskrat-lodgekeeper",
+    "platypus-spur",
+    "drowned-matriarch",
+    "water-shrew",
+    "water-vole",
+    "box-turtle",
+    "pyrenean-desman",
+    "muskrat-reedgatherer",
+    "fire-ant-raft",
+    "pond-algae"
+   ],
+   "in": [
+    "pond-algae",
+    "duckling",
+    "pond-trout"
+   ],
+   "out": [
+    "old-sturgeon",
+    "stone-turtle-warden",
+    "marsh-mallow-hare",
+    "cypress-root-lurker"
+   ],
+   "specialAdded": [
+    "stone-turtle-warden",
+    "old-sturgeon"
+   ],
+   "high": 0,
+   "gen": 2
+  },
+  {
+   "map": "mw",
+   "name": "Gatorback Swamp",
+   "no": 5,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 14,
+   "unique": 11,
+   "carried": 3,
+   "uniqueIds": [
+    "alligator-gar",
+    "grass-viper",
+    "fen-mink",
+    "old-snapjaw",
+    "constrictor-coil",
+    "snapper-hatchling",
+    "caiman-hatchling",
+    "swamp-alligator",
+    "crocodile-ambusher",
+    "nutria-reedcutter",
+    "cypress-root-lurker"
+   ],
+   "in": [
+    "cypress-root-lurker",
+    "snapstick-turtle"
+   ],
+   "out": [
+    "venomlord-serpent",
+    "stone-turtle-warden",
+    "marsh-mallow-hare"
+   ],
+   "specialAdded": [
+    "venomlord-serpent"
+   ],
+   "high": 4,
+   "gen": 2
+  },
+  {
+   "map": "m8",
+   "name": "Sable Swampmire",
+   "no": 6,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 14,
+   "unique": 10,
+   "carried": 4,
+   "uniqueIds": [
+    "booming-bittern",
+    "newt-doctor",
+    "adder-ambusher",
+    "poison-dart-croaker",
+    "heron-hag",
+    "camouflage-frog",
+    "bogfire-newt",
+    "raven-scout",
+    "cane-toad",
+    "marsh-harrier"
+   ],
+   "in": [
+    "marsh-harrier"
+   ],
+   "out": [
+    "marsh-wisp",
+    "peat-cutter-vole"
+   ],
+   "specialAdded": [
+    "marsh-wisp"
+   ],
+   "high": 3,
+   "gen": 1
+  },
+  {
+   "map": "mp",
+   "name": "Lilypad Reach",
+   "no": 6,
+   "sub": true,
+   "parent": "mb",
+   "before": 13,
+   "after": 14,
+   "unique": 3,
+   "carried": 11,
+   "uniqueIds": [
+    "riverworks-bastion",
+    "lodge-engineer",
+    "alley-cat"
+   ],
+   "in": [
+    "alley-cat",
+    "duckling",
+    "pond-algae"
+   ],
+   "out": [
+    "shallows-fry",
+    "fiddler-crab-swarm"
+   ],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "mu",
+   "name": "The Morel Hollow",
+   "no": 7,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "truffle-piglet",
+    "wolf-spider-mother",
+    "dung-beetle",
+    "leafcutter-gardener",
+    "ant-warrior",
+    "planarian-splitter",
+    "fungal-colossus",
+    "owl-nightwatch",
+    "bombardier-beetle",
+    "hawthorn-shieldbug",
+    "garden-snail"
+   ],
+   "in": [
+    "garden-snail"
+   ],
+   "out": [
+    "peat-cutter-vole"
+   ],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "mg",
+   "name": "Smugglers' Grotto",
+   "no": 7,
+   "sub": true,
+   "parent": "mb",
+   "before": 13,
+   "after": 12,
+   "unique": 3,
+   "carried": 9,
+   "uniqueIds": [
+    "octopus-tactician",
+    "trash-panda-trickster",
+    "pelican-diver"
+   ],
+   "in": [],
+   "out": [
+    "fiddler-crab-swarm"
+   ],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "m4",
+   "name": "Caves & Alcoves",
+   "no": 8,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "star-nosed-mole",
+    "quarry-mole",
+    "echo-matriarch",
+    "cave-olm",
+    "stalactite-golem",
+    "sulfur-cinder-moth",
+    "vampire-bat",
+    "whip-spider",
+    "badger-stonemason"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "mz",
+   "name": "The Mycelium Deep",
+   "no": 8,
+   "sub": true,
+   "parent": "mu",
+   "before": 12,
+   "after": 12,
+   "unique": 1,
+   "carried": 11,
+   "uniqueIds": [
+    "rootworm-colony"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "mk",
+   "name": "The Kelp Mangroves",
+   "no": 9,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "mangrove-kingfisher",
+    "mangrove-manatee",
+    "banded-sea-krait",
+    "mangrove-mudskipper",
+    "archerfish",
+    "mangrove-monitor",
+    "mudpuppy",
+    "reef-shark",
+    "sunbittern-strider",
+    "minnow-skitter",
+    "fishing-cat"
+   ],
+   "in": [
+    "fiddler-crab-swarm"
+   ],
+   "out": [
+    "lodge-engineer"
+   ],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 0
+  },
+  {
+   "map": "m7",
+   "name": "Coral Current",
+   "no": 10,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "colossal-squid",
+    "electric-ray",
+    "great-barracuda",
+    "reef-admiral",
+    "clownfish-scout",
+    "parrotfish",
+    "riptide-eel",
+    "coral-reef-shark",
+    "kraken-spawnling",
+    "swordfish-spearman",
+    "coral-polyp-colony"
+   ],
+   "in": [
+    "open-ocean-hermit-crab"
+   ],
+   "out": [
+    "gull-thief"
+   ],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 1
+  },
+  {
+   "map": "m10",
+   "name": "Eyrie Heights",
+   "no": 11,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "alpine-marmot",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "eyrie-warden",
+    "mountain-hare",
+    "apollo-butterfly",
+    "alpine-salamander",
+    "alpine-swift",
+    "gale-swift"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "mj",
+   "name": "The Sunken Depths",
+   "no": 11,
+   "sub": true,
+   "parent": "m7",
+   "before": 13,
+   "after": 13,
+   "unique": 2,
+   "carried": 11,
+   "uniqueIds": [
+    "blue-ringed-octopus",
+    "nautilus-drifter"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 2
+  },
+  {
+   "map": "mh",
+   "name": "The Briar Maze",
+   "no": 12,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "cunning-vixen",
+    "hedgehog-scout",
+    "quillguard",
+    "bramble-hoglet",
+    "hedge-weasel",
+    "lyrebird-mimic",
+    "thorn-shrike",
+    "mouse-sapper",
+    "gatling-hog",
+    "quillback-elder",
+    "carrion-crow"
+   ],
+   "in": [
+    "hedgerow-shrew"
+   ],
+   "out": [
+    "mountain-hare"
+   ],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "mq",
+   "name": "Clovermead",
+   "no": 12,
+   "sub": true,
+   "parent": "mf",
+   "before": 12,
+   "after": 13,
+   "unique": 1,
+   "carried": 12,
+   "uniqueIds": [
+    "lucky-hopper"
+   ],
+   "in": [
+    "bee-forager",
+    "cottontail"
+   ],
+   "out": [
+    "house-cat"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "mr",
+   "name": "The Redwood Deep",
+   "no": 13,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "fawn-scout",
+    "shimmerwing-stag",
+    "sergeant-bramblefox",
+    "berserker-boar",
+    "grizzly-vanguard",
+    "bramblewood-lynx",
+    "swift-fox",
+    "tasmanian-devil",
+    "stag-knight",
+    "woodpecker-sapper",
+    "redwood-woodpecker"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 2
+  },
+  {
+   "map": "ms",
+   "name": "The Sunken Grove",
+   "no": 13,
+   "sub": true,
+   "parent": "mw",
+   "before": 12,
+   "after": 12,
+   "unique": 1,
+   "carried": 11,
+   "uniqueIds": [
+    "hedgehog-herbalist"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 1
+  },
+  {
+   "map": "m5",
+   "name": "Savanna Reaches",
+   "no": 14,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "grave-grin-hyena",
+    "savanna-cheetah",
+    "spitting-cobra",
+    "pride-queen",
+    "weaver-bird",
+    "springbok-pronker",
+    "dust-hyena",
+    "marula-elephant",
+    "pangolin-roller",
+    "meerkat-burrower",
+    "plains-zebra"
+   ],
+   "in": [
+    "plains-zebra"
+   ],
+   "out": [
+    "hoopoe-herald"
+   ],
+   "specialAdded": [
+    "hoopoe-herald"
+   ],
+   "high": 2,
+   "gen": 3
+  },
+  {
+   "map": "ml",
+   "name": "The Long Grass",
+   "no": 15,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "border-collie",
+    "stoat-cutthroat",
+    "talon-archer",
+    "cataphract-destrier",
+    "pronghorn-racer",
+    "bison-bulldozer",
+    "raccoon-bandit",
+    "stable-colt",
+    "warhorse-charger",
+    "shepherds-bark",
+    "squires-mount"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 3,
+   "gen": 3
+  },
+  {
+   "map": "mv",
+   "name": "The Aerie Vault",
+   "no": 15,
+   "sub": true,
+   "parent": "m10",
+   "before": 12,
+   "after": 12,
+   "unique": 0,
+   "carried": 12,
+   "uniqueIds": [],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "mt",
+   "name": "The Pinewood Taiga",
+   "no": 16,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "woodland-caribou",
+    "taiga-lynx",
+    "dhole-matriarch",
+    "alpha-howler",
+    "frost-hare-sprinter",
+    "snowshoe-hare",
+    "dhole-runner",
+    "wolf-pack-runner",
+    "boreal-elk",
+    "cone-cutter-squirrel",
+    "pinecone-sapper"
+   ],
+   "in": [
+    "pinecone-sapper"
+   ],
+   "out": [
+    "trickster-fox"
+   ],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 2
+  },
+  {
+   "map": "mn",
+   "name": "The Glimmer Depths",
+   "no": 16,
+   "sub": true,
+   "parent": "m4",
+   "before": 13,
+   "after": 13,
+   "unique": 3,
+   "carried": 10,
+   "uniqueIds": [
+    "lantern-spark-fly",
+    "prospector-mole",
+    "glimmer-spider"
+   ],
+   "in": [
+    "glimmer-spider"
+   ],
+   "out": [
+    "cave-bat-swarm"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "m6",
+   "name": "Wolfsbane Tundra",
+   "no": 17,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "lone-grey-wolf",
+    "polar-bear",
+    "walrus-icebreaker",
+    "wolfsbane-alpha",
+    "glacial-ape-king",
+    "harbor-seal",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "ravenous-wolverine",
+    "spitting-spider",
+    "talus-pika"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 2,
+   "gen": 2
+  },
+  {
+   "map": "md",
+   "name": "The Glass Dunes",
+   "no": 18,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "obsidian-scorpion",
+    "antlion-pit",
+    "caustic-scorpion",
+    "dust-devil-kestrel",
+    "thorny-devil",
+    "roadrunner-courier",
+    "sandfish",
+    "komodo-warlord",
+    "dromedary",
+    "fennec-fox",
+    "dune-packrat"
+   ],
+   "in": [
+    "spitting-cobra"
+   ],
+   "out": [
+    "border-collie"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "my",
+   "name": "The Canopy",
+   "no": 18,
+   "sub": true,
+   "parent": "m5",
+   "before": 13,
+   "after": 14,
+   "unique": 4,
+   "carried": 10,
+   "uniqueIds": [
+    "hercules-beetle",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "rafflesia"
+   ],
+   "in": [
+    "rafflesia",
+    "leafcutter-gardener",
+    "vampire-bat",
+    "redwood-woodpecker",
+    "lyrebird-mimic",
+    "apollo-butterfly",
+    "poison-dart-croaker",
+    "camouflage-frog"
+   ],
+   "out": [
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "savanna-cheetah",
+    "springbok-pronker",
+    "marula-elephant",
+    "dust-hyena",
+    "meerkat-burrower"
+   ],
+   "specialAdded": [],
+   "high": 0,
+   "gen": 2
+  },
+  {
+   "map": "m3",
+   "name": "Ashen Spurn",
+   "no": 19,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "echidna-quillshot",
+    "fire-salamander",
+    "quill-volley",
+    "yeti-chieftain",
+    "cinder-stoker",
+    "yeti",
+    "porcupine-roller",
+    "magma-titan",
+    "glacier-wolf-pack",
+    "phoenix-fledgling",
+    "pumice-beetle"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 5,
+   "gen": 2
+  },
+  {
+   "map": "mpd",
+   "name": "The Pale Desert",
+   "no": 19,
+   "sub": true,
+   "parent": "md",
+   "before": 13,
+   "after": 13,
+   "unique": 2,
+   "carried": 11,
+   "uniqueIds": [
+    "quicksand-queen",
+    "skull-vulture"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 2
+  },
+  {
+   "map": "m11",
+   "name": "The Sundered Peak",
+   "no": 20,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "ash-cloud-condor",
+    "magma-wraith",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "cinder-skeleton",
+    "magma-salamander",
+    "ash-moth",
+    "gorge-wyrm",
+    "fumarole-ibex"
+   ],
+   "in": [
+    "gorge-wyrm",
+    "fumarole-ibex"
+   ],
+   "out": [
+    "woodland-brawler",
+    "bear-cub"
+   ],
+   "specialAdded": [
+    "woodland-brawler"
+   ],
+   "high": 3,
+   "gen": 2
+  },
+  {
+   "map": "me",
+   "name": "Eye of the Volcano",
+   "no": 20,
+   "sub": true,
+   "parent": "m11",
+   "before": 12,
+   "after": 11,
+   "unique": 1,
+   "carried": 10,
+   "uniqueIds": [
+    "the-contradiction"
+   ],
+   "in": [],
+   "out": [
+    "bear-cub"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "mx",
+   "name": "Volcano Lair",
+   "no": 20,
+   "sub": true,
+   "parent": "m11",
+   "before": 15,
+   "after": 15,
+   "unique": 5,
+   "carried": 10,
+   "uniqueIds": [
+    "fire-drake-hatchling",
+    "caldera-wyrm",
+    "ember-jackal",
+    "tide-spirit",
+    "ember-centipede"
+   ],
+   "in": [
+    "phoenix-fledgling",
+    "magma-wraith"
+   ],
+   "out": [
+    "woodland-brawler",
+    "bear-cub"
+   ],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 1
+  },
+  {
+   "map": "m21",
+   "name": "The Quiet Summit",
+   "no": 21,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "pika-hoarder",
+    "snow-owl-sentinel",
+    "snow-leopard",
+    "glacier-yak",
+    "eagle-sharpshooter",
+    "mountain-goat-climber",
+    "candle-moth",
+    "chapel-tortoise",
+    "friar-badger",
+    "gale-sprite",
+    "golden-magpie"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 3,
+   "gen": 2
+  },
+  {
+   "map": "mo",
+   "name": "The Old Bramble",
+   "no": 21,
+   "sub": true,
+   "parent": "m1",
+   "before": 12,
+   "after": 13,
+   "unique": 1,
+   "carried": 12,
+   "uniqueIds": [
+    "ent"
+   ],
+   "in": [
+    "dhole-matriarch",
+    "shimmerwing-stag",
+    "thorn-shrike",
+    "gatling-hog",
+    "quillguard",
+    "lucky-hopper",
+    "sergeant-bramblefox",
+    "bramblewood-lynx",
+    "wolf-spider-mother",
+    "taiga-lynx",
+    "hedgehog-herbalist"
+   ],
+   "out": [
+    "owl-sentinel",
+    "terrier-pup",
+    "chipmunk-cavalry",
+    "chipmunk-skirmisher",
+    "feral-tomcat",
+    "glacier-wolf-pack",
+    "cypress-root-lurker",
+    "house-cat",
+    "marsh-mallow-hare",
+    "dune-packrat"
+   ],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 0
+  },
+  {
+   "map": "mi",
+   "name": "The Ice Hollow",
+   "no": 21,
+   "sub": true,
+   "parent": "m6",
+   "before": 12,
+   "after": 12,
+   "unique": 1,
+   "carried": 11,
+   "uniqueIds": [
+    "greenland-shark"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 1,
+   "gen": 1
+  },
+  {
+   "map": "m22",
+   "name": "The Rimefire Caldera",
+   "no": 22,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "rimefire-salamander",
+    "caldera-snow-leopard",
+    "ur-elk",
+    "ice-petrel",
+    "badger-berserker",
+    "cinder-gecko",
+    "cinder-hornet",
+    "permafrost-mammoth",
+    "ashwing-ptarmigan",
+    "rimeheart-colossus",
+    "ash-imp"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 4,
+   "gen": 1
+  },
+  {
+   "map": "m23",
+   "name": "The Goldfeather Siege",
+   "no": 23,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "testudo-tortoise",
+    "war-elephant",
+    "triumvirate",
+    "badger-trench-digger",
+    "howdah-archers",
+    "beetle-battering-ram",
+    "siege-rhino",
+    "trebuchet-crew",
+    "balloon-archer",
+    "colony",
+    "land-tiller"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 6,
+   "gen": 3
+  },
+  {
+   "map": "m9",
+   "name": "Basalt Foundry",
+   "no": 23,
+   "sub": true,
+   "parent": "m3",
+   "before": 13,
+   "after": 13,
+   "unique": 3,
+   "carried": 10,
+   "uniqueIds": [
+    "ember-revenant",
+    "anvilwhisker-otter",
+    "ore-smelter-mole"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 3,
+   "gen": 1
+  },
+  {
+   "map": "m24",
+   "name": "Goldfeather Keep",
+   "no": 24,
+   "sub": false,
+   "parent": null,
+   "before": 15,
+   "after": 15,
+   "unique": 11,
+   "carried": 4,
+   "uniqueIds": [
+    "gilded-swan-knight",
+    "iron-warden",
+    "battlement-heron",
+    "duckling-squadron",
+    "elderhorn-monarch",
+    "mallard-halberdier",
+    "tax-collector-teal",
+    "goose-sentry",
+    "great-gate",
+    "nest",
+    "stoneheart-golem"
+   ],
+   "in": [],
+   "out": [],
+   "specialAdded": [],
+   "high": 5,
+   "gen": 4
+  }
+ ],
+ "specialAdded": {
+  "mb": [
+   {
+    "id": "tidepool-trapper-crab",
+    "list": "mb",
+    "why": "first-clear card of 2-3"
+   },
+   {
+    "id": "fiddler-crab-swarm",
+    "list": "mb",
+    "why": "skirmish reward of 2-1"
+   },
+   {
+    "id": "grey-seal-bull",
+    "list": "mb",
+    "why": "skirmish reward of 2-5"
+   }
+  ],
+  "m2": [
+   {
+    "id": "stone-turtle-warden",
+    "list": "m2",
+    "why": "first-clear card of 4-2"
+   },
+   {
+    "id": "old-sturgeon",
+    "list": "m2",
+    "why": "skirmish reward of 4-5"
+   }
+  ],
+  "mw": [
+   {
+    "id": "venomlord-serpent",
+    "list": "mw",
+    "why": "first-clear card of 5-3"
+   }
+  ],
+  "m8": [
+   {
+    "id": "marsh-wisp",
+    "list": "m8",
+    "why": "first-clear card of 6-4"
+   }
+  ],
+  "m5": [
+   {
+    "id": "hoopoe-herald",
+    "list": "m5",
+    "why": "first-clear card of 14-4"
+   }
+  ],
+  "m11": [
+   {
+    "id": "woodland-brawler",
+    "list": "m11",
+    "why": "skirmish reward of 20-9"
+   }
+  ]
+ },
+ "sizesOutsideRule": {}
+}

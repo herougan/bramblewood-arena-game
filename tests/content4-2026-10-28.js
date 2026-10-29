@@ -53,12 +53,13 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
   ok(fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-trim-2026-10-28.js')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-apply-2026-10-28.py')) && fs.existsSync(path.join(ROOT, 'docs/balance/content4-map-pools-plan-2026-10-28-keeppro.json')), '4. the script, the apply step and both plans exist');
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05). The lists THEME2 rewrote are its proposal now (main map: the proposal; submap: the
   // proposal minus the parent's MAP cards, tools/apply1_theme2_2026_10_28.py); L7 stays not applied, and the lists THEME2 kept are L7's "before".
-  const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m]));
+  const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m])), T3 = Object.fromEntries(Object.entries(JSON.parse(require('fs').readFileSync(require('path').join(ROOT, 'canonical', 'map-review.json'), 'utf8')).maps).map(([k, e])=> [k, e.chosen.map(c=> c.id)]));
   Object.entries(plan.lists).forEach(([k, L])=>{ const live = L.sub ? (pools[L.map].submaps || {})[L.sub] : pools[L.map].cards;
     const t2 = T2[L.sub || L.map];
     // 2026-10-29 LISTFIX1 (decision APPLY1-1): a submap stores its whole proposal (a submap fight reads only its own list + SPECIAL)
-    if(t2){ const want = t2.proposed;
-      ok(live && JSON.stringify(live) === JSON.stringify(want), `4. ${k}: the live list is THEME2's (APPLY1; ${live && live.length} vs ${want.length})`); return; }
+    // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
+    if(t2){ const want = (T3[L.sub || L.map]) || t2.proposed;
+      ok(live && JSON.stringify(live) === JSON.stringify(want), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${live && live.length} vs ${want.length})`); return; }
     ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);
       ok(L.keep.every(id=> live.includes(id) || (L.addedOld || []).includes(id)), `4. ${k}: the plan keeps only cards of its list (or carried deck cards)`); } });
