@@ -1161,3 +1161,71 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road18 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 53.1% | 34.4% | +18.8 [1.9, 35.6] |
 | ref:expected @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 98.4% | 29.7% | +68.8 [57.2, 80.3] |
 
+## Map 18: The Pale Desert (`mpd`, side map of `md`, opens on Map 19), your level 1
+
+- Throughput: 24636 games in 277.7 s = **88.7 games/s** (2 workers). Search: ga, budget 8000 games (6888 map cards, 0 generations, 2 restarts; 3654 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mpd --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 354 cards (27 map cards + 327 owned by then); phase 2 357 (+3 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 2 (balloon-archer, siege-rhino); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **3** (score >= 1, lowered from 3 to reach 3). Map: biome pale-desert (kin desert-glass, volcanic-ash), terrain types -, field aiGuardLethal, boon, field, heatLevel, mirage, phase:cycle, sandstorm, unit types Arachnid 4, Bird 5, Canid 3, Desert 17, Insect 2, Reptile 6, Savanna 5, Volcanic 2, skill families armor 2, evasion 2, poison 5, ranged 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Meerkat Sentry | common | Map 19 | 4 | kin biome desert-glass; type Desert (17 map cards); type Savanna (5 map cards); animal group mongoose (like Meerkat Burrower) |
+| Fire Salamander | uncommon | Map 19 | 2 | kin biome volcanic-ash; type Volcanic (2 map cards) |
+| Moon Jerboa | uncommon | Map 19 | 2 | kin biome desert-glass; type Desert (17 map cards) |
+
+Excluded: a later boss / map-ender fight's reward 1; map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 39; map rule: not obtainable (not in the progression plan or an earlier map's cards) 266; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 55.8% [53.3%, 58.3%], mirror 68.5%, road 17.7%: 5x Hoopoe Herald (owned), 5x Star-nosed Mole (owned), 4x Stonedrop Vulture, 3x Fawn Scout (owned), 3x Tidepool Trapper Crab (owned)
+- **Optimum (map cards + candidates)**: score 61% (+5.2 pts): 5x Hoopoe Herald (owned), 5x Star-nosed Mole (owned), 4x Stonedrop Vulture, 3x Fawn Scout (owned), 3x Meerkat Sentry (candidate)
+- Best candidate swaps into the map-card optimum: Meerkat Sentry x3 +6.4; Moon Jerboa x3 +6.3; Fire Salamander x3 +3.1
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 9 decks the searches ended on): 1
+
+0. 61% [58.6%, 63.3%], 0 copies from the optimum: 5x Hoopoe Herald (owned), 5x Star-nosed Mole (owned), 4x Stonedrop Vulture, 3x Fawn Scout (owned), 3x Meerkat Sentry (candidate)
+
+- **Fight decks vs the optimum:** Elo gap median 89 (22 to 470); as your deck they score 10.3 to 31.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 18-A-1 skirmish's deck | 57.8% [45.6%-69.1%] | 55 [-31, 140] | 40.5% | 20.7 ±4.3 | 90% |
+| 18-A-2 skirmish's deck | 53.1% [41.1%-64.8%] | 22 [-63, 106] | 49.6% | 11.9 ±4.2 | 85.7% |
+| 18-A-3 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 27.9% | 31.6 ±4.3 | 81.4% |
+| 18-A-4 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 29.1% | 29.7 ±4.4 | 77.1% |
+| 18-A-5 skirmish's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 50.7% | 10.3 ±4.5 | 72.9% |
+| 18-A-6 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 31.7% | 28 ±4.3 | 68.6% |
+| 18-A-7 skirmish's deck | 62.5% [50.3%-73.3%] | 89 [2, 176] | 44.6% | 16.2 ±4.4 | 64.3% |
+| 18-A-8 elite's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 47.3% | 13.7 ±4.4 | 60% |
+| 18-A-9 boss's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 43.5% | 16 ±4.4 | 40% |
+| reference starter deck under 18-A-1's field | 90.6% [81%-95.6%] | 394 [252, 536] | 15.8% | 43.2 ±3.9 | - |
+| reference deck (Map 19) under 18-A-2's field | 67.2% [55%-77.4%] | 124 [35, 214] | 49.3% | 11.2 ±4.3 | - |
+| expected player deck (expectedPlayerDeck) under 18-A-3's field | 87.5% [77.2%-93.5%] | 338 [212, 464] | 35.4% | 23.8 ±4.4 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 18-A-1 skirmish | 7.8% [3.4%-17%] | 90% |
+| 18-A-2 skirmish | 15.6% [8.7%-26.4%] | 85.7% |
+| 18-A-3 skirmish | 56.3% [44.1%-67.7%] | 81.4% |
+| 18-A-4 skirmish | 43.8% [32.3%-55.9%] | 77.1% |
+| 18-A-5 skirmish | 4.7% [1.6%-12.9%] | 72.9% |
+| 18-A-6 skirmish | 25% [16%-36.8%] | 68.6% |
+| 18-A-7 skirmish | 31.3% [21.2%-43.4%] | 64.3% |
+| 18-A-8 elite | 23.4% [14.7%-35.1%] | 60% |
+| 18-A-9 boss | 7.8% [3.4%-17%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:18-A-1 @ 18-A-1: aiGuardLethal, field heatwave, heatLevel 1, phase cycle | 57.8% | 53.1% | +4.7 [-12.5, 21.9] |
+| fight:18-A-2 @ 18-A-2: aiGuardLethal, field heatwave, heatLevel 1, mirage, phase cycle | 53.1% | 46.9% | +6.3 [-11, 23.5] |
+| fight:18-A-3 @ 18-A-3: aiGuardLethal, boon sandVeil, field heatwave, heatLevel 1, phase cycle, sandstorm | 82.8% | 89.1% | -6.2 [-18.2, 5.7] |
+| fight:18-A-4 @ 18-A-4: aiGuardLethal, field heatwave, heatLevel 1, phase cycle, sandstorm | 93.8% | 98.4% | -4.7 [-11.4, 2] |
+| fight:18-A-5 @ 18-A-5: aiGuardLethal, field heatwave, heatLevel 2, phase cycle | 60.9% | 70.3% | -9.4 [-25.8, 7] |
+| fight:18-A-6 @ 18-A-6: aiGuardLethal, field heatwave, heatLevel 2, mirage, phase cycle | 79.7% | 75% | +4.7 [-9.8, 19.2] |
+| fight:18-A-7 @ 18-A-7: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm | 62.5% | 85.9% | -23.4 [-38, -8.8] |
+| fight:18-A-8 @ 18-A-8: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm | 60.9% | 73.4% | -12.5 [-28.6, 3.6] |
+| fight:18-A-9 @ 18-A-9: aiGuardLethal, field heatwave, heatLevel 2, mirage, phase cycle | 82.8% | 85.9% | -3.1 [-15.7, 9.4] |
+| ref:starter @ 18-A-1: aiGuardLethal, field heatwave, heatLevel 1, phase cycle | 90.6% | 82.8% | +7.8 [-3.9, 19.5] |
+| ref:road19 @ 18-A-2: aiGuardLethal, field heatwave, heatLevel 1, mirage, phase cycle | 67.2% | 76.6% | -9.4 [-24.9, 6.1] |
+| ref:expected @ 18-A-3: aiGuardLethal, boon sandVeil, field heatwave, heatLevel 1, phase cycle, sandstorm | 87.5% | 65.6% | +21.9 [7.7, 36.1] |
+
