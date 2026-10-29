@@ -3648,5 +3648,6 @@
  "Sign in with an admin account to see players.": "Mag-sign in gamit ang admin account para makita ang mga manlalaro.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "Kailangan ng listahan ng mga manlalaro ang database function mula sa supabase/proposed/20261029_admin_user_list.sql (may-ari: 'apply it').",
  "Only admin accounts can open the player list.": "Admin account lang ang makakabukas ng listahan ng mga manlalaro.",
- "Could not load players: {msg}": "Hindi ma-load ang mga manlalaro: {msg}"
+ "Could not load players: {msg}": "Hindi ma-load ang mga manlalaro: {msg}",
+ "Shift+click a card in your hand to pitch it.": "Shift+click ang isang baraha sa kamay mo para itapon ito."
 }

@@ -3649,5 +3649,6 @@
  "Sign in with an admin account to see players.": "Masuk dengan akun admin untuk melihat pemain.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "Daftar pemain memerlukan fungsi database dari supabase/proposed/20261029_admin_user_list.sql (pemilik: 'apply it').",
  "Only admin accounts can open the player list.": "Hanya akun admin yang bisa membuka daftar pemain.",
- "Could not load players: {msg}": "Tidak bisa memuat pemain: {msg}"
+ "Could not load players: {msg}": "Tidak bisa memuat pemain: {msg}",
+ "Shift+click a card in your hand to pitch it.": "Shift+klik kartu di tanganmu untuk membuangnya."
 }

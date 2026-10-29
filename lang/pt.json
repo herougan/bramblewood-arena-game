@@ -3649,5 +3649,6 @@
  "Sign in with an admin account to see players.": "Inicia sessão com uma conta de administrador para ver os jogadores.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "A lista de jogadores precisa da função de base de dados de supabase/proposed/20261029_admin_user_list.sql (dono: 'apply it').",
  "Only admin accounts can open the player list.": "Só contas de administrador podem abrir a lista de jogadores.",
- "Could not load players: {msg}": "Não foi possível carregar os jogadores: {msg}"
+ "Could not load players: {msg}": "Não foi possível carregar os jogadores: {msg}",
+ "Shift+click a card in your hand to pitch it.": "Shift+clique numa carta da tua mão para a descartar."
 }

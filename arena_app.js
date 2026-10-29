@@ -13295,7 +13295,7 @@ function openEnergyPanel(anchor){
   pop.style.width = w + 'px'; pop.style.top = Math.min(innerHeight - (isAdmin ? 290 : 160), r.bottom + 8) + 'px'; pop.style.left = Math.max(12, Math.min(innerWidth - w - 12, r.left + r.width/2 - w/2)) + 'px';
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
-  const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); } };
+  const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ const from = cb.getBoundingClientRect(); if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); try{ ui2EnergyZap(from); }catch(e){} } }; // 2026-10-29 (UI2, R5): the sparks fly into the pill
   pop.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#epFree:not([disabled]), #epCapsule'); if(b) try{ fxHook('energyRefill', b.id === 'epCapsule' ? ENERGY_CAPSULE_AMOUNT : FREE_ENERGY_AMOUNT, b.id, b.getBoundingClientRect()); }catch(_){} }, true); // 2026-10-15 batch F
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
@@ -13310,6 +13310,35 @@ function openEnergyPanel(anchor){
     const head = pop.querySelector('.ep-count'); if(head) head.textContent = `⚡ ${st.current}/${energyMax()}`; /* PL2 (2026-10-25) */ const inp = pop.querySelector('#epSet'); if(inp) inp.value = st.current;
   });
   setTimeout(()=> document.addEventListener('pointerdown', closeEnergyPanelOutside, true), 0);
+}
+// 2026-10-29 (package UI2, owner R5: "After using the battery, electric symbols come out and join into your energy X/Y."): a few ⚡ burst out
+// of the capsule button, curve across to the Energy pill on screen (the top bar's or the Play tab's) one after another, and the pill pulses
+// as each lands. Reduced motion or Effects Off / Low: no flight, the pill pulses once.
+function ui2EnergyPill(){ return ['energyPillPlay', 'energyPill'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent && e.getBoundingClientRect().width > 0) || null; }
+function ui2EnergyPulse(pill){ if(!pill) return; pill.classList.remove('ui2-energy-pulse'); void pill.offsetWidth; pill.classList.add('ui2-energy-pulse'); clearTimeout(pill._ui2T); pill._ui2T = setTimeout(()=> pill.classList.remove('ui2-energy-pulse'), 520); }
+function ui2EnergyZap(fromRect, count){
+  const pill = ui2EnergyPill(); if(!pill) return 0;
+  const calm = reducedMotion() || !fxAtLeast('med') || !document.body.animate;
+  if(calm){ ui2EnergyPulse(pill); return 0; }
+  const to = pill.getBoundingClientRect(), tx = to.left + to.width * 0.35, ty = to.top + to.height / 2;
+  const fx = fromRect && fromRect.width ? fromRect.left + fromRect.width / 2 : innerWidth / 2, fy = fromRect && fromRect.height ? fromRect.top + fromRect.height / 2 : innerHeight / 2;
+  const n = Math.max(3, Math.min(8, count || 5)); let landed = 0;
+  for(let i = 0; i < n; i++){
+    const s = document.createElement('span'); s.className = 'ui2-zap'; s.textContent = '⚡'; s.setAttribute('aria-hidden', 'true');
+    s.style.left = fx + 'px'; s.style.top = fy + 'px'; document.body.appendChild(s);
+    const ang = (i / n) * Math.PI * 2 + Math.random() * 0.6, r = 26 + Math.random() * 22, bx = Math.cos(ang) * r, by = Math.sin(ang) * r - 10;
+    const dx = tx - fx, dy = ty - fy, mx = dx * 0.5 + bx * 1.4 + (Math.random() - 0.5) * 60, my = Math.min(dy * 0.5, dy * 0.5 - 70) + by;
+    const a = s.animate([
+      {transform:'translate(-50%,-50%) translate(0px,0px) scale(.4) rotate(0deg)', opacity:0},
+      {transform:`translate(-50%,-50%) translate(${bx}px,${by}px) scale(1.25) rotate(${(i % 2 ? 1 : -1) * 18}deg)`, opacity:1, offset:.22},
+      {transform:`translate(-50%,-50%) translate(${mx}px,${my}px) scale(1) rotate(0deg)`, opacity:1, offset:.6},
+      {transform:`translate(-50%,-50%) translate(${dx}px,${dy}px) scale(.45) rotate(0deg)`, opacity:.9}
+    ], {duration: 820 + i * 70, delay: i * 55, easing:'cubic-bezier(.45,.05,.4,1)', fill:'forwards'});
+    const end = ()=>{ s.remove(); landed++; ui2EnergyPulse(pill); if(landed === 1){ try{ SoundKit.at ? SoundKit.at(pill, ()=> SoundKit.pickup && SoundKit.pickup()) : (SoundKit.pickup && SoundKit.pickup()); }catch(e){} } };
+    a.onfinish = end; a.oncancel = ()=> s.remove();
+    setTimeout(()=>{ if(s.isConnected){ s.remove(); } }, 2200);
+  }
+  return n;
 }
 function closeEnergyPanelOutside(e){ const p = document.getElementById('energyPanel'); if(p && !p.contains(e.target)) closeEnergyPanel(); }
 function closeEnergyPanel(){ const p = document.getElementById('energyPanel'); if(p) p.remove(); document.removeEventListener('pointerdown', closeEnergyPanelOutside, true); }
@@ -23297,6 +23326,10 @@ function conquestDeckFree(map, node){
 }
 function conquestDeckRevealed(map, node, progress){
   if(conquestDeckFree(map, node)) return true;
+  // 2026-10-29 (package UI2, owner R8: "The PRO/BPRO skirmishes should have their deck previews enabled by default."): a PRO / BPRO (and
+  // X-REF) fight is a test fight that pays nothing: its deck strip is always shown, no B clear of that fight needed. There is no Show/Hide
+  // toggle to remember any more (removed 2026-10-10), so this is the whole default.
+  if(node && node.pro) return true;
   return rankAtLeast(progress.ranks[conquestNodeId(map.id, node.key)], conquestDeckNeed(node));
 }
 // Map decoration (2026-09-29, per explicit request: "Draw a pond emoji or something in this
@@ -38629,7 +38662,10 @@ function renderHand(){
     const uid = Number(el.getAttribute('data-handuid'));
     // Tap-to-arm: click a card, then click a drop zone — the fallback for touch/keyboard
     // use, same pattern the Classic Skirmish used for its own drag-and-drop.
-    el.addEventListener('click', ()=>{
+    el.addEventListener('click', e=>{
+      // 2026-10-29 (package UI2, owner R7: "Shift+Click shortcut to pitch cards in hand."): Shift+click pitches the card, the same call as
+      // dropping it on the Graveyard (discardCardByUid: the same rules, no confirmation, nothing while pitching is closed or a turn resolves).
+      if(e && e.shiftKey && !e.ctrlKey && !e.metaKey && !e.altKey){ e.preventDefault(); if(m.selectedUid === uid) m.selectedUid = null; discardCardByUid(uid); return; }
       if(m.selectedUid !== uid) SoundKit.pickup();
       m.selectedUid = (m.selectedUid===uid) ? null : uid; // tap again to un-arm
       renderHand(); updateControlsDisabled(); refreshDiscardZone();
@@ -39128,7 +39164,7 @@ function discardZoneTitle(defId){
     return `Discard this card for +${amount} ${RESOURCE_LABEL[resource]||resource}`;
   }
   const generic = pitchYieldOf(null); // no card def -> falls through to the flat default (Lumber)
-  return `Drag a card here to discard it for +${generic.amount} ${RESOURCE_LABEL[generic.resource]||generic.resource}. Discarded cards pile up here as your Graveyard.`;
+  return `Drag a card here to discard it for +${generic.amount} ${RESOURCE_LABEL[generic.resource]||generic.resource}. Discarded cards pile up here as your Graveyard.` + (pitchAllowedIn(matchState) ? ' ' + TX('ui.ui2-pitch-shift') : ''); // 2026-10-29 (UI2, R7): the Shift+click shortcut
 }
 // 2026-09-19 bugfix found while wiring the tooltip above: tap-to-arm (click a hand card instead
 // of dragging it) sets matchState.selectedUid but never actually refreshed the discard zone's

@@ -3647,5 +3647,6 @@
  "Sign in with an admin account to see players.": "プレイヤーを見るには管理者アカウントでログインしてください。",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "プレイヤー一覧には supabase/proposed/20261029_admin_user_list.sql のデータベース関数が必要です（オーナー：'apply it'）。",
  "Only admin accounts can open the player list.": "管理者アカウントだけがプレイヤー一覧を開けます。",
- "Could not load players: {msg}": "プレイヤーを読み込めませんでした：{msg}"
+ "Could not load players: {msg}": "プレイヤーを読み込めませんでした：{msg}",
+ "Shift+click a card in your hand to pitch it.": "手札のカードを Shift+クリックで捨て札にします。"
 }

@@ -3647,5 +3647,6 @@
  "Sign in with an admin account to see players.": "請使用管理員帳號登入以查看玩家。",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "玩家列表需要 supabase/proposed/20261029_admin_user_list.sql 中的資料庫函式（擁有者：'apply it'）。",
  "Only admin accounts can open the player list.": "只有管理員帳號才能開啟玩家列表。",
- "Could not load players: {msg}": "無法載入玩家：{msg}"
+ "Could not load players: {msg}": "無法載入玩家：{msg}",
+ "Shift+click a card in your hand to pitch it.": "Shift+點擊手牌即可棄掉它。"
 }

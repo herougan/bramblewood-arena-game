@@ -3650,5 +3650,6 @@
  "Sign in with an admin account to see players.": "வீரர்களைப் பார்க்க நிர்வாகி கணக்கில் உள்நுழை.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "வீரர் பட்டியலுக்கு supabase/proposed/20261029_admin_user_list.sql இலிருந்து தரவுத்தள செயல்பாடு தேவை (உரிமையாளர்: 'apply it').",
  "Only admin accounts can open the player list.": "நிர்வாகி கணக்குகள் மட்டுமே வீரர் பட்டியலைத் திறக்க முடியும்.",
- "Could not load players: {msg}": "வீரர்களை ஏற்ற முடியவில்லை: {msg}"
+ "Could not load players: {msg}": "வீரர்களை ஏற்ற முடியவில்லை: {msg}",
+ "Shift+click a card in your hand to pitch it.": "உங்கள் கையிலுள்ள அட்டையை நிராகரிக்க Shift+கிளிக் செய்யவும்."
 }

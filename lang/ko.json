@@ -3650,5 +3650,6 @@
  "Sign in with an admin account to see players.": "플레이어를 보려면 관리자 계정으로 로그인하세요.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "플레이어 목록에는 supabase/proposed/20261029_admin_user_list.sql 의 데이터베이스 함수가 필요해요 (소유자: 'apply it').",
  "Only admin accounts can open the player list.": "관리자 계정만 플레이어 목록을 열 수 있어요.",
- "Could not load players: {msg}": "플레이어를 불러올 수 없어요: {msg}"
+ "Could not load players: {msg}": "플레이어를 불러올 수 없어요: {msg}",
+ "Shift+click a card in your hand to pitch it.": "손에 든 카드를 Shift+클릭하면 버릴 수 있어요."
 }
