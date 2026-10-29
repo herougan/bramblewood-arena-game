@@ -13906,6 +13906,8 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
   background:linear-gradient(180deg, #fff3c4 0%, #ffd76a 45%, #ff9a2e 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
   filter:drop-shadow(0 3px 0 rgba(42,13,2,.85)) drop-shadow(0 0 16px rgba(255,140,30,.6));}
 .fl1-sub{font:600 clamp(12.5px, 1.5vw, 16px)/1.3 system-ui, sans-serif; color:#ffe7c0; max-width:min(560px, 86vw); text-shadow:0 1px 3px rgba(0,0,0,.7);}
+/* 2026-10-29 (FLAIR1 review): on a phone the banner covered the player's avatar and "You"; give the opener room above its content */
+@media (max-width:600px){ .vs-opener.is-lair{padding:104px 16px 34px; box-sizing:border-box;} .vs-opener.is-lair .vs-side{gap:5px;} .vs-opener.is-lair .vs-portrait{transform:scale(.8); margin:-12px 0;} .vs-opener.is-lair .vs-taunt{margin-top:0;} .fl1-banner{top:10px; padding:6px 10px;} .fl1-sub{font-size:12px;} }
 @keyframes fl1BannerIn{0%{opacity:0; transform:translateY(-14px) scale(1.12); letter-spacing:.3em;} 55%{opacity:1;} 100%{opacity:1; transform:none;}}
 /* the title card as the fight opens: longer and warmer than the boss card */
 .boss-title.is-lair{top:36%; padding:16px 18px; gap:4px; text-align:center; color:#ffe9b0;
