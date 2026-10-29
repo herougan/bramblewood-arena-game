@@ -4,6 +4,17 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-29 19:14: the owner's notes (after release 10-29a)
+| # | Package | Note |
+|---|---|---|
+| P1 | REVIEW2 | Map cards gallery: "the sections should be in their own sectional areas so its visually clear"; reasons become pills ("Skirmish", "Carried", ...); drop the "kept" pill (the section says it); explain or rename the owner/Claude pill; "use large size cards instead" with the same hover/zoom controls; Maybe above Cut; a tooltip on "Copy my picks"; beside it "X/N new cards, Y/M carried cards desired". |
+| P2 | CARDSIZE1 (audit + proposal) | "Currently we have like 10 sizes. Can we reduce to just 3 or 4? ... One huge blown up one for detail, and 'tacit', you can spin it around etc." |
+| P3 | answered | "Is it legal to put a kofi or donation link at this juncture? Do i need a blog landing page?" (answered 19:2x; FIN decision KOFI-1). |
+| P4 | later | Add-ons: Discord etc. |
+| P5 | HUBDEC1 | Decisions tab: separate the meta ones: one tab for game decisions, one for architecture (cloud services, domain, ...), one for finance. |
+| P6 | ADMINU1 | "Do we have the admin tab to view the user list?" No; ADMINU1 builds it (O5). |
+| P7 | REVIEW2 | "Ambushes should not have drawn links. (They were ambushes!) They should lie in the centre of the road (link) as well." |
+
 ## 10-29 00:10: the owner's list notes (from the earlier pass, "removals are 'at least'")
 | # | Package | Note |
 |---|---|---|
