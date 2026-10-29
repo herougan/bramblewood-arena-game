@@ -842,3 +842,69 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road11 @ 11-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 43% | 46.9% | -3.9 [-21.1, 13.3] |
 | ref:expected @ 11-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 98.4% | 90.6% | +7.8 [0.1, 15.6] |
 
+## Map 11: The Aerie Vault (`mv`, side map of `m10`, opens on Map 15), your level 1
+
+- Throughput: 17318 games in 250.6 s = **69.1 games/s** (2 workers). Search: ga, budget 8000 games (6424 map cards, 1 generations, 2 restarts; 4312 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mv --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 288 cards (22 map cards + 266 owned by then); phase 2 294 (+6 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 1 (balloon-archer); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **6** (score >= 1, lowered from 3 to reach 6). Map: biome mountain-sky (kin cliffs, volcanic-ash), terrain types Mountain, field aiGuardLethal, boon, phase:cycle, wind, windfall, unit types Bird 8, Bovine 4, Chipmunk 2, Mountain 15, Rodent 3, skill families economy 2, evasion 2, ranged 2, strike-first 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Anvil Thrush | common | Map 15 | 2 | type Bird (8 map cards); flying (field wind) |
+| Bison Bulldozer | uncommon | Map 15 | 1 | type Bovine (4 map cards) |
+| Garden Tiger Moth | common | Map 15 | 1 | flying/night (field wind/phase:cycle) |
+| Muntjac Barker | uncommon | Map 15 | 1 | ranged skills (2 map cards) |
+| Pronghorn Racer | common | Map 15 | 1 | strike-first skills (4 map cards) |
+| Springtail Hopper | common | Map 15 | 1 | evasion skills (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 81; map rule: not obtainable (not in the progression plan or an earlier map's cards) 287; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 73.9% [71.1%, 76.6%], mirror 82.6%, road 47.7%: 4x Alpine Marmot, 3x Eagle-Owl Quartermaster, 3x Otter Centurion (owned), 2x Savanna Cheetah (owned), 1x Golden Eagle Diver, 1x Grey Seal Bull (owned), 1x Mangrove Monitor (owned), 1x Nutria Reedcutter (owned), 1x Pangolin Roller (owned), 1x Pond Trout (owned), 1x Swift Fox (owned), 1x Whip Spider (owned)
+- **Optimum (map cards + candidates)**: score 76.6% (+2.7 pts): 4x Alpine Marmot, 3x Eagle-Owl Quartermaster, 3x Otter Centurion (owned), 2x Savanna Cheetah (owned), 1x Fawn Scout (owned), 1x Golden Eagle Diver, 1x Grey Seal Bull (owned), 1x Mangrove Monitor (owned), 1x Pangolin Roller (owned), 1x Pigeon Peon (owned), 1x Stag Beetle (owned), 1x Swift Fox (owned)
+- Best candidate swaps into the map-card optimum: Pronghorn Racer x3 -0.1; Springtail Hopper x3 -0.6; Anvil Thrush x3 -9; Bison Bulldozer x3 -11.3; Muntjac Barker x3 -11.3; Garden Tiger Moth x3 -12.2
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 12 decks the searches ended on): 4
+
+0. 76.6% [73.8%, 79.3%], 0 copies from the optimum: 4x Alpine Marmot, 3x Eagle-Owl Quartermaster, 3x Otter Centurion (owned), 2x Savanna Cheetah (owned), 1x Fawn Scout (owned), 1x Golden Eagle Diver, 1x Grey Seal Bull (owned), 1x Mangrove Monitor (owned), 1x Pangolin Roller (owned), 1x Pigeon Peon (owned), 1x Stag Beetle (owned), 1x Swift Fox (owned)
+1. 71.9% [69%, 74.9%], 8 copies from the optimum: 3x Eagle-Owl Quartermaster, 3x Otter Centurion (owned), 2x Fawn Scout (owned), 2x Savanna Cheetah (owned), 1x Alligator Gar (owned), 1x Alpine Salamander, 1x Bee Sentry (owned), 1x Gannet Nestweaver, 1x Muntjac Barker (candidate), 1x Pangolin Roller (owned), 1x Planarian Splitter (owned), 1x Proboscis Monkey (owned), 1x Stag Beetle (owned), 1x Swift Fox (owned)
+2. 71.1% [68%, 74.1%], 6 copies from the optimum: 4x Alpine Marmot, 3x Eagle-Owl Quartermaster, 3x Pronghorn Racer (candidate), 2x Savanna Cheetah (owned), 1x Bee Sentry (owned), 1x Fawn Scout (owned), 1x Grey Seal Bull (owned), 1x Horseshoe Crab (owned), 1x Mangrove Monitor (owned), 1x Pangolin Roller (owned), 1x Pigeon Peon (owned), 1x Planarian Splitter (owned)
+3. 68.2% [65.2%, 71.2%], 11 copies from the optimum: 3x Eagle-Owl Quartermaster, 3x Fawn Scout (owned), 3x Otter Centurion (owned), 1x Alligator Gar (owned), 1x Bee Sentry (owned), 1x Bramblewood Lynx (owned), 1x Colossal Squid (owned), 1x Gannet Nestweaver, 1x Golden Eagle Diver, 1x Pangolin Roller (owned), 1x Planarian Splitter (owned), 1x Pond Trout (owned), 1x Proboscis Monkey (owned), 1x Wound Reaver
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 46.9% (-22) | 48.4% (-11) | 62.5% (+89) |
+| 1 | 53.1% (+22) | - | 45.3% (-33) | 60.9% (+77) |
+| 2 | 51.6% (+11) | 54.7% (+33) | - | 45.3% (-33) |
+| 3 | 37.5% (-89) | 39.1% (-77) | 54.7% (+33) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 314 (206 to 394); as your deck they score 15.8 to 37.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 11-A-1 skirmish's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 37.7% | 37.2 ±5.3 | 90% |
+| 11-A-2 skirmish's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 60.8% | 15.8 ±5.6 | 75% |
+| 11-A-3 skirmish's deck | 83.6% [72.7%-90.7%] | 283 [170, 396] | 38.9% | 36.9 ±5.1 | 60% |
+| 11-A-4 boss's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 39.5% | 36 ±5.2 | 40% |
+| reference starter deck under 11-A-1's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 18.6% | 55.4 ±4.9 | - |
+| reference deck (Map 15) under 11-A-2's field | 56.3% [44.1%-67.7%] | 44 [-41, 129] | 82.6% | -3.6 ±4.6 | - |
+| expected player deck (expectedPlayerDeck) under 11-A-3's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 10.7% | 63.3 ±4.6 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 11-A-1 skirmish | 76.6% [64.9%-85.3%] | 90% |
+| 11-A-2 skirmish | 39.1% [28.1%-51.3%] | 75% |
+| 11-A-3 skirmish | 64.1% [51.8%-74.7%] | 60% |
+| 11-A-4 boss | 34.4% [23.9%-46.6%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:11-A-1 @ 11-A-1: aiGuardLethal, boon skyAmbush, phase cycle, wind gale, windfall | 90.6% | 76.6% | +14.1 [1.5, 26.7] |
+| fight:11-A-2 @ 11-A-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 76.6% | 83.6% | -7 [-20.8, 6.8] |
+| fight:11-A-3 @ 11-A-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 83.6% | 76.6% | +7 [-6.8, 20.8] |
+| fight:11-A-4 @ 11-A-4: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 85.9% | 51.6% | +34.4 [19.5, 49.3] |
+| ref:starter @ 11-A-1: aiGuardLethal, boon skyAmbush, phase cycle, wind gale, windfall | 98.4% | 96.9% | +1.6 [-3.7, 6.8] |
+| ref:road15 @ 11-A-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 56.3% | 37.5% | +18.8 [1.8, 35.7] |
+| ref:expected @ 11-A-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 98.4% | 87.5% | +10.9 [2.3, 19.6] |
+
