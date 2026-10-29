@@ -11936,8 +11936,226 @@
      "name": "14-PRO-1",
      "level": 1,
      "leaders": [
+      "ibex-rockcaller"
+     ],
+     "deck": {
+      "alpine-marmot": 5,
+      "burrow-rabbit": 1,
+      "eagle-owl-quartermaster": 3,
+      "grass-viper": 1,
+      "hedgehog-scout": 3,
+      "ibex-rockcaller": 2,
+      "marula-monkey": 2,
+      "otter-paddler": 1,
+      "shimmerwing-stag": 1,
+      "thorn-shrike": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-m5-2026-10-29-relfix3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-29T06:07:58.202Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.739,
+      "ci": [
+       0.719,
+       0.76
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "14-BPRO-1",
+     "name": "14-BPRO-1",
+     "level": 1,
+     "leaders": [
       "savanna-cheetah"
      ],
+     "deck": {
+      "dust-hyena": 2,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 5,
+      "leafcutter-gardener": 1,
+      "marula-elephant": 4,
+      "pangolin-roller": 1,
+      "plains-zebra": 2,
+      "savanna-cheetah": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-m5-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-29T06:55:47.258Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.67,
+      "ci": [
+       0.647,
+       0.692
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "14-BPRO-2",
+     "name": "14-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "deck": {
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 4,
+      "leafcutter-gardener": 2,
+      "marula-elephant": 1,
+      "mouse-sapper": 1,
+      "pangolin-roller": 1,
+      "plains-zebra": 1,
+      "savanna-cheetah": 1,
+      "spitting-cobra": 2,
+      "weaver-bird": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-m5-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-29T06:55:47.258Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.678,
+      "ci": [
+       0.657,
+       0.698
+      ],
+      "runElo": 16,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "dust-hyena:2,grave-grin-hyena:4,hoopoe-herald:5,leafcutter-gardener:1,marula-elephant:4,pangolin-roller:1,plains-zebra:2,savanna-cheetah:1",
+      "p": 0.603,
+      "n": 400,
+      "ci": [
+       0.554,
+       0.649
+      ],
+      "elo": 72,
+      "eloCI": [
+       38,
+       107
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "14-BPRO-3",
+     "name": "14-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "deck": {
+      "dust-hyena": 4,
+      "grave-grin-hyena": 4,
+      "hoopoe-herald": 5,
+      "leafcutter-gardener": 5,
+      "plains-zebra": 1,
+      "savanna-cheetah": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-m5-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-29T06:55:47.258Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.674,
+      "ci": [
+       0.651,
+       0.696
+      ],
+      "runElo": 27,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "dust-hyena:2,grave-grin-hyena:4,hoopoe-herald:5,leafcutter-gardener:1,marula-elephant:4,pangolin-roller:1,plains-zebra:2,savanna-cheetah:1",
+      "p": 0.468,
+      "n": 400,
+      "ci": [
+       0.419,
+       0.516
+      ],
+      "elo": -23,
+      "eloCI": [
+       -57,
+       11
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "14-BPRO-4",
+     "name": "14-BPRO-4",
+     "level": 1,
+     "leaders": [
+      "spitting-cobra"
+     ],
+     "deck": {
+      "grave-grin-hyena": 2,
+      "hoopoe-herald": 4,
+      "house-cat": 3,
+      "leafcutter-gardener": 2,
+      "lodge-engineer": 1,
+      "meerkat-burrower": 1,
+      "mouse-sapper": 3,
+      "pangolin-roller": 1,
+      "spitting-cobra": 1,
+      "springbok-pronker": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-m5-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-29T06:55:47.258Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.579,
+      "ci": [
+       0.555,
+       0.602
+      ],
+      "runElo": -106,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "dust-hyena:2,grave-grin-hyena:4,hoopoe-herald:5,leafcutter-gardener:1,marula-elephant:4,pangolin-roller:1,plains-zebra:2,savanna-cheetah:1",
+      "p": 0.44,
+      "n": 400,
+      "ci": [
+       0.392,
+       0.489
+      ],
+      "elo": -42,
+      "eloCI": [
+       -76,
+       -8
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "14-PRO-1",
      "deck": {
       "archerfish": 4,
       "dung-beetle": 4,
@@ -11964,16 +12182,13 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "mountain-goat-climber: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-29"
     },
     {
-     "id": "14-PRO-2",
-     "name": "14-PRO-2",
-     "level": 1,
-     "leaders": [
-      "great-barracuda"
-     ],
+     "kind": "pro",
      "deck": {
       "ant-warrior": 4,
       "archerfish": 4,
@@ -11997,31 +12212,25 @@
       "runElo": -33,
       "renamed": []
      },
+     "lostTo": "alpine-marmot:5,burrow-rabbit:1,eagle-owl-quartermaster:3,grass-viper:1,hedgehog-scout:3,ibex-rockcaller:2,marula-monkey:2,otter-paddler:1,shimmerwing-stag:1,thorn-shrike:1",
      "h2h": {
-      "vs": "archerfish:4,dung-beetle:4,grave-grin-hyena:3,meerkat-burrower:1,mountain-goat-climber:1,open-ocean-hermit-crab:1,pangolin-roller:2,savanna-cheetah:1,weaver-bird:3",
-      "p": 0.478,
+      "p": 0.79,
       "n": 400,
       "ci": [
-       0.429,
-       0.526
+       0.747,
+       0.827
       ],
-      "elo": -16,
+      "elo": 230,
       "eloCI": [
-       -50,
-       18
+       188,
+       272
       ]
      },
-     "later": []
-    }
-   ],
-   "bpro": [
+     "on": "2026-10-29"
+    },
     {
+     "kind": "bpro",
      "id": "14-BPRO-1",
-     "name": "14-BPRO-1",
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
      "deck": {
       "dust-hyena": 1,
       "grave-grin-hyena": 4,
@@ -12048,18 +12257,56 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "mongoose-duelist: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "skipped": [
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map14-m5-2026-10-25-pro3-maptrue.json #0",
+     "problems": [
+      "mountain-goat-climber: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-m5-2026-10-25-pro3-bpro.json #0",
+     "problems": [
+      "mongoose-duelist: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-m5-2026-10-25-pro3-bpro.json #1",
+     "problems": [
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-m5-2026-10-25-pro3-bpro.json #2",
+     "problems": [
+      "lovebird: not in the map's own pool (BPRO)",
+      "mongoose-duelist: not in the map's own pool (BPRO)",
+      "monitor-rambler: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    }
+   ],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "PRO: left out (-147 Elo below the band): archerfish:4,crimson-wing-recruit:1,dung-beetle:4,dust-hyena...",
-    "BPRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: left out (-111 Elo below the band): dust-hyena:4,grave-grin-hyena:4,hoopoe-herald:5,savanna-chee...",
-    "BPRO: left out (-228 Elo below the band): dust-hyena:4,grave-grin-hyena:4,hoopoe-herald:1,lovebird:2,m..."
+    "PRO: 14-PRO-1 dropped: mountain-goat-climber: not obtainable (not in the progression plan or an earlier map's cards)",
+    "PRO: PRO-1 replaced: the challenger scores 0.79 over 400 games [0.747, 0.827]",
+    "PRO: left out (-147 Elo below the band): archerfish:1,coffer-mimic:1,compost-grub:1,crimson-wing-recr...",
+    "PRO: left out (-189 Elo below the band): archerfish:4,crimson-wing-recruit:4,dung-beetle:5,open-ocean...",
+    "PRO: left out (-225 Elo below the band): ant-warrior:4,archerfish:4,dung-beetle:4,great-barracuda:1,h...",
+    "PRO: left out (-301 Elo below the band): archerfish:4,crimson-wing-recruit:1,dung-beetle:4,dust-hyena...",
+    "BPRO: 14-BPRO-1 dropped: mongoose-duelist: not in the map's own pool (BPRO); termite-forager: not in the map's own pool (BPRO)",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
   "my": {
@@ -12069,6 +12316,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "canopy": true,
      "phase": "cycle",
      "woods": true
     },
@@ -12087,7 +12335,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"forest\",\"tier\":1} / {\"biome\":\"forest\",\"tier\":2}), the boss's (14-A-5)"
     ],
-    "summary": "aiGuardLethal, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
+    "summary": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)"
    },
    "pro": [
     {
@@ -12221,6 +12469,56 @@
       ]
      },
      "later": []
+    },
+    {
+     "id": "14-A-PRO-4",
+     "name": "14-A-PRO-4",
+     "level": 1,
+     "leaders": [
+      "pine-marten"
+     ],
+     "deck": {
+      "adder-ambusher": 2,
+      "archerfish": 4,
+      "cone-cutter-squirrel": 1,
+      "cone-snail": 1,
+      "dung-beetle": 5,
+      "house-cat": 1,
+      "otter-centurion": 3,
+      "pine-marten": 1,
+      "snow-ermine": 1,
+      "talus-pika": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-my-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 3,
+      "generated": "2026-10-25T01:43:21.803Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map my --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.82,
+      "ci": [
+       0.798,
+       0.842
+      ],
+      "runElo": -137,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "adder-ambusher:1,ant-warrior:4,archerfish:4,dung-beetle:5,eagle-owl-quartermaster:1,farm-dog:1,ibex-rockcaller:2,pine-marten:1,talus-pika:1",
+      "p": 0.36,
+      "n": 400,
+      "ci": [
+       0.314,
+       0.408
+      ],
+      "elo": -100,
+      "eloCI": [
+       -135,
+       -65
+      ]
+     },
+     "later": []
     }
    ],
    "bpro": [
@@ -12229,8 +12527,46 @@
      "name": "14-A-BPRO-1",
      "level": 1,
      "leaders": [
-      "spitting-cobra"
+      "siege-rhino"
      ],
+     "deck": {
+      "apollo-butterfly": 1,
+      "grave-grin-hyena": 3,
+      "hoopoe-herald": 5,
+      "old-growth-tortoise": 1,
+      "plains-zebra": 1,
+      "siege-rhino": 3,
+      "slow-loris": 5,
+      "springbok-pronker": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map14-my-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-29T06:50:51.177Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map my --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.578,
+      "ci": [
+       0.549,
+       0.607
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": [
+      {
+       "id": "siege-rhino",
+       "first": 23
+      }
+     ]
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "bpro",
+     "id": "14-A-BPRO-1",
      "deck": {
       "dust-hyena": 2,
       "hoopoe-herald": 2,
@@ -12256,16 +12592,14 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "termite-forager: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "14-A-BPRO-2",
-     "name": "14-A-BPRO-2",
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
      "deck": {
       "dust-hyena": 4,
       "hercules-beetle": 1,
@@ -12294,29 +12628,15 @@
       "runElo": -80,
       "renamed": []
      },
-     "h2h": {
-      "vs": "dust-hyena:2,hoopoe-herald:2,kinkajou-lurker:2,pangolin-roller:3,slow-loris:1,spitting-cobra:3,termite-forager:5,termite-mound:2",
-      "p": 0.455,
-      "n": 400,
-      "ci": [
-       0.407,
-       0.504
-      ],
-      "elo": -31,
-      "eloCI": [
-       -65,
-       3
-      ]
-     },
-     "later": []
+     "dropped": [
+      "monitor-rambler: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "14-A-BPRO-3",
-     "name": "14-A-BPRO-3",
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
      "deck": {
       "carrion-crow": 1,
       "chilli-parrot": 1,
@@ -12347,34 +12667,16 @@
       "runElo": -35,
       "renamed": []
      },
-     "h2h": {
-      "vs": "dust-hyena:2,hoopoe-herald:2,kinkajou-lurker:2,pangolin-roller:3,slow-loris:1,spitting-cobra:3,termite-forager:5,termite-mound:2",
-      "p": 0.453,
-      "n": 400,
-      "ci": [
-       0.404,
-       0.501
-      ],
-      "elo": -33,
-      "eloCI": [
-       -67,
-       1
-      ]
-     },
-     "later": [
-      {
-       "id": "siege-rhino",
-       "first": 23
-      }
-     ]
+     "dropped": [
+      "carrion-crow: not in the map's own pool (BPRO)",
+      "marula-monkey: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "14-A-BPRO-4",
-     "name": "14-A-BPRO-4",
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
      "deck": {
       "bramblewood-macaque": 3,
       "carrion-crow": 1,
@@ -12404,34 +12706,56 @@
       "runElo": -26,
       "renamed": []
      },
-     "h2h": {
-      "vs": "dust-hyena:2,hoopoe-herald:2,kinkajou-lurker:2,pangolin-roller:3,slow-loris:1,spitting-cobra:3,termite-forager:5,termite-mound:2",
-      "p": 0.41,
-      "n": 400,
-      "ci": [
-       0.363,
-       0.459
-      ],
-      "elo": -63,
-      "eloCI": [
-       -98,
-       -29
-      ]
-     },
-     "later": [
-      {
-       "id": "siege-rhino",
-       "first": 23
-      }
+     "dropped": [
+      "carrion-crow: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
+    }
+   ],
+   "skipped": [
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-my-2026-10-25-pro3-bpro.json #0",
+     "problems": [
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-my-2026-10-25-pro3-bpro.json #1",
+     "problems": [
+      "carrion-crow: not in the map's own pool (BPRO)",
+      "marula-monkey: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-my-2026-10-25-pro3-bpro.json #2",
+     "problems": [
+      "monitor-rambler: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map14-my-2026-10-25-pro3-bpro.json #3",
+     "problems": [
+      "carrion-crow: not in the map's own pool (BPRO)",
+      "termite-forager: not in the map's own pool (BPRO)"
      ]
     }
    ],
-   "replaced": [],
-   "skipped": [],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "PRO: left out (-139 Elo below the band): adder-ambusher:2,archerfish:4,cone-cutter-squirrel:1,cone-sn...",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: 14-A-BPRO-1 dropped: termite-forager: not in the map's own pool (BPRO)",
+    "BPRO: 14-A-BPRO-2 dropped: monitor-rambler: not in the map's own pool (BPRO); termite-forager: not in the map's own pool (BPRO)",
+    "BPRO: 14-A-BPRO-3 dropped: carrion-crow: not in the map's own pool (BPRO); marula-monkey: not in the map's own pool (BPRO); termite-forager: not in the map's own pool (BPRO)",
+    "BPRO: 14-A-BPRO-4 dropped: carrion-crow: not in the map's own pool (BPRO); termite-forager: not in the map's own pool (BPRO)",
+    "BPRO: first fill: PRO-1 is the newest run's optimum",
+    "BPRO: left out (-117 Elo below the band): apollo-butterfly:1,bramblewood-macaque:3,chilli-parrot:1,gra...",
+    "BPRO: left out (-125 Elo below the band): bramblewood-macaque:2,grave-grin-hyena:2,old-growth-tortoise..."
    ]
   },
   "ml": {
@@ -12468,6 +12792,43 @@
      "name": "15-PRO-1",
      "level": 1,
      "leaders": [
+      "stoat-cutthroat"
+     ],
+     "deck": {
+      "archerfish": 1,
+      "baby-bat": 1,
+      "bison-bulldozer": 3,
+      "crimson-wing-recruit": 1,
+      "crossed-eyes": 1,
+      "dung-beetle": 4,
+      "peregrine-stooper": 1,
+      "signal-crayfish": 1,
+      "stable-colt": 4,
+      "stoat-cutthroat": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-26T17:37:19.313Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.763,
+      "ci": [
+       0.74,
+       0.786
+      ],
+      "runElo": -137,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "15-PRO-2",
+     "name": "15-PRO-2",
+     "level": 1,
+     "leaders": [
       "fawn-scout"
      ],
      "deck": {
@@ -12494,12 +12855,72 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
+     "h2h": {
+      "vs": "archerfish:1,baby-bat:1,bison-bulldozer:3,crimson-wing-recruit:1,crossed-eyes:1,dung-beetle:4,peregrine-stooper:1,signal-crayfish:1,stable-colt:4,stoat-cutthroat:3",
+      "p": 0.415,
+      "n": 400,
+      "ci": [
+       0.368,
+       0.464
+      ],
+      "elo": -60,
+      "eloCI": [
+       -94,
+       -25
+      ]
+     },
      "later": []
     },
     {
-     "id": "15-PRO-2",
-     "name": "15-PRO-2",
+     "id": "15-PRO-3",
+     "name": "15-PRO-3",
+     "level": 1,
+     "leaders": [
+      "bison-bulldozer"
+     ],
+     "deck": {
+      "archerfish": 4,
+      "badger-lumberjack": 1,
+      "bison-bulldozer": 1,
+      "crimson-wing-recruit": 5,
+      "dung-beetle": 4,
+      "riverwing-envoy": 4,
+      "signal-crayfish": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-26T17:37:19.313Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.802,
+      "ci": [
+       0.779,
+       0.824
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "archerfish:1,baby-bat:1,bison-bulldozer:3,crimson-wing-recruit:1,crossed-eyes:1,dung-beetle:4,peregrine-stooper:1,signal-crayfish:1,stable-colt:4,stoat-cutthroat:3",
+      "p": 0.4,
+      "n": 400,
+      "ci": [
+       0.353,
+       0.449
+      ],
+      "elo": -70,
+      "eloCI": [
+       -105,
+       -36
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "15-PRO-4",
+     "name": "15-PRO-4",
      "level": 1,
      "leaders": [
       "archerfish"
@@ -12531,65 +12952,17 @@
       "renamed": []
      },
      "h2h": {
-      "vs": "ant-warrior:4,archerfish:4,crimson-wing-recruit:2,dung-beetle:1,fawn-scout:3,star-nosed-mole:5,tidepool-trapper-crab:1",
-      "p": 0.463,
+      "vs": "archerfish:1,baby-bat:1,bison-bulldozer:3,crimson-wing-recruit:1,crossed-eyes:1,dung-beetle:4,peregrine-stooper:1,signal-crayfish:1,stable-colt:4,stoat-cutthroat:3",
+      "p": 0.368,
       "n": 400,
       "ci": [
-       0.414,
-       0.511
+       0.322,
+       0.416
       ],
-      "elo": -26,
+      "elo": -94,
       "eloCI": [
-       -60,
-       8
-      ]
-     },
-     "later": []
-    },
-    {
-     "id": "15-PRO-3",
-     "name": "15-PRO-3",
-     "level": 1,
-     "leaders": [
-      "shimmerwing-stag"
-     ],
-     "deck": {
-      "archerfish": 4,
-      "baby-horned-capybara": 1,
-      "crimson-wing-recruit": 4,
-      "dung-beetle": 4,
-      "gallery-orb-weaver": 1,
-      "plague-gnat-cloud": 1,
-      "riverwing-envoy": 4,
-      "shimmerwing-stag": 1
-     },
-     "source": {
-      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-25-pro3-maptrue.json",
-      "mode": "map-true",
-      "optimum": 2,
-      "generated": "2026-10-24T23:23:24.642Z",
-      "version": "2.2.0 (2026-10-25, PRO3)",
-      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
-      "score": 0.781,
-      "ci": [
-       0.758,
-       0.804
-      ],
-      "runElo": -116,
-      "renamed": []
-     },
-     "h2h": {
-      "vs": "ant-warrior:4,archerfish:4,crimson-wing-recruit:2,dung-beetle:1,fawn-scout:3,star-nosed-mole:5,tidepool-trapper-crab:1",
-      "p": 0.375,
-      "n": 400,
-      "ci": [
-       0.329,
-       0.423
-      ],
-      "elo": -89,
-      "eloCI": [
-       -124,
-       -54
+       -130,
+       -59
       ]
      },
      "later": []
@@ -12603,6 +12976,228 @@
      "leaders": [
       "talon-archer"
      ],
+     "deck": {
+      "bison-bulldozer": 4,
+      "border-collie": 2,
+      "carrion-crow": 1,
+      "cataphract-destrier": 1,
+      "raccoon-bandit": 3,
+      "squires-mount": 1,
+      "stable-colt": 4,
+      "stoat-cutthroat": 2,
+      "talon-archer": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-29T04:22:09.383Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.676,
+      "ci": [
+       0.652,
+       0.7
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "15-BPRO-2",
+     "name": "15-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "talon-archer"
+     ],
+     "deck": {
+      "bison-bulldozer": 1,
+      "border-collie": 2,
+      "carrion-crow": 4,
+      "hedge-weasel": 2,
+      "lodge-engineer": 1,
+      "raccoon-bandit": 2,
+      "shepherds-bark": 1,
+      "squires-mount": 2,
+      "stable-colt": 1,
+      "stoat-cutthroat": 2,
+      "talon-archer": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-29T04:22:09.383Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.645,
+      "ci": [
+       0.62,
+       0.67
+      ],
+      "runElo": 31,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bison-bulldozer:4,border-collie:2,carrion-crow:1,cataphract-destrier:1,raccoon-bandit:3,squires-mount:1,stable-colt:4,stoat-cutthroat:2,talon-archer:2",
+      "p": 0.5,
+      "n": 400,
+      "ci": [
+       0.451,
+       0.549
+      ],
+      "elo": 0,
+      "eloCI": [
+       -34,
+       34
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "15-BPRO-3",
+     "name": "15-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "squires-mount"
+     ],
+     "deck": {
+      "bison-bulldozer": 2,
+      "border-collie": 1,
+      "carrion-crow": 4,
+      "hedgehog-herbalist": 2,
+      "lodge-engineer": 3,
+      "raccoon-bandit": 1,
+      "squires-mount": 2,
+      "stable-colt": 3,
+      "stoat-cutthroat": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-29T04:22:09.383Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.637,
+      "ci": [
+       0.612,
+       0.663
+      ],
+      "runElo": -44,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bison-bulldozer:4,border-collie:2,carrion-crow:1,cataphract-destrier:1,raccoon-bandit:3,squires-mount:1,stable-colt:4,stoat-cutthroat:2,talon-archer:2",
+      "p": 0.453,
+      "n": 400,
+      "ci": [
+       0.404,
+       0.501
+      ],
+      "elo": -33,
+      "eloCI": [
+       -67,
+       1
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "15-BPRO-4",
+     "name": "15-BPRO-4",
+     "level": 1,
+     "leaders": [
+      "hedgehog-herbalist"
+     ],
+     "deck": {
+      "border-collie": 4,
+      "carrion-crow": 5,
+      "hedgehog-herbalist": 1,
+      "raccoon-bandit": 3,
+      "stable-colt": 4,
+      "stoat-cutthroat": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-29T04:22:09.383Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.64,
+      "ci": [
+       0.615,
+       0.664
+      ],
+      "runElo": -37,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "bison-bulldozer:4,border-collie:2,carrion-crow:1,cataphract-destrier:1,raccoon-bandit:3,squires-mount:1,stable-colt:4,stoat-cutthroat:2,talon-archer:2",
+      "p": 0.413,
+      "n": 400,
+      "ci": [
+       0.365,
+       0.461
+      ],
+      "elo": -61,
+      "eloCI": [
+       -96,
+       -27
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "deck": {
+      "ant-warrior": 4,
+      "archerfish": 4,
+      "crimson-wing-recruit": 2,
+      "dung-beetle": 1,
+      "fawn-scout": 3,
+      "star-nosed-mole": 5,
+      "tidepool-trapper-crab": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map15-ml-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T23:23:24.642Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.838,
+      "ci": [
+       0.816,
+       0.859
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "lostTo": "archerfish:1,baby-bat:1,bison-bulldozer:3,crimson-wing-recruit:1,crossed-eyes:1,dung-beetle:4,peregrine-stooper:1,signal-crayfish:1,stable-colt:4,stoat-cutthroat:3",
+     "h2h": {
+      "p": 0.57,
+      "n": 400,
+      "ci": [
+       0.521,
+       0.618
+      ],
+      "elo": 49,
+      "eloCI": [
+       15,
+       83
+      ]
+     },
+     "on": "2026-10-29"
+    },
+    {
+     "kind": "bpro",
+     "id": "15-BPRO-1",
      "deck": {
       "amber-cicada": 3,
       "bison-bulldozer": 2,
@@ -12628,16 +13223,15 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "amber-cicada: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "15-BPRO-2",
-     "name": "15-BPRO-2",
-     "level": 1,
-     "leaders": [
-      "talon-archer"
-     ],
      "deck": {
       "amber-cicada": 1,
       "bison-bulldozer": 1,
@@ -12667,29 +13261,18 @@
       "runElo": -44,
       "renamed": []
      },
-     "h2h": {
-      "vs": "amber-cicada:3,bison-bulldozer:2,carrion-crow:1,land-tiller:2,raccoon-bandit:3,stable-colt:4,stoat-cutthroat:3,talon-archer:2",
-      "p": 0.38,
-      "n": 400,
-      "ci": [
-       0.334,
-       0.428
-      ],
-      "elo": -85,
-      "eloCI": [
-       -120,
-       -50
-      ]
-     },
-     "later": []
+     "dropped": [
+      "amber-cicada: not in the map's own pool (BPRO)",
+      "garden-tiger-moth: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)",
+      "moonshell-snail: not in the map's own pool (BPRO)",
+      "springtail-hopper: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "15-BPRO-3",
-     "name": "15-BPRO-3",
-     "level": 1,
-     "leaders": [
-      "talon-archer"
-     ],
      "deck": {
       "bison-bulldozer": 2,
       "border-collie": 1,
@@ -12718,27 +13301,49 @@
       "runElo": -130,
       "renamed": []
      },
-     "h2h": {
-      "vs": "amber-cicada:3,bison-bulldozer:2,carrion-crow:1,land-tiller:2,raccoon-bandit:3,stable-colt:4,stoat-cutthroat:3,talon-archer:2",
-      "p": 0.378,
-      "n": 400,
-      "ci": [
-       0.331,
-       0.426
-      ],
-      "elo": -87,
-      "eloCI": [
-       -122,
-       -52
-      ]
-     },
-     "later": []
+     "dropped": [
+      "garden-tiger-moth: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)",
+      "moonshell-snail: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "skipped": [
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map15-ml-2026-10-25-pro3-bpro.json #0",
+     "problems": [
+      "amber-cicada: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map15-ml-2026-10-25-pro3-bpro.json #1",
+     "problems": [
+      "amber-cicada: not in the map's own pool (BPRO)",
+      "garden-tiger-moth: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)",
+      "moonshell-snail: not in the map's own pool (BPRO)",
+      "springtail-hopper: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map15-ml-2026-10-25-pro3-bpro.json #2",
+     "problems": [
+      "garden-tiger-moth: not in the map's own pool (BPRO)",
+      "land-tiller: not in the map's own pool (BPRO)",
+      "moonshell-snail: not in the map's own pool (BPRO)"
+     ]
+    }
+   ],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
+    "PRO: PRO-1 replaced: the challenger scores 0.57 over 400 games [0.521, 0.618]",
+    "BPRO: 15-BPRO-1 dropped: amber-cicada: not in the map's own pool (BPRO); land-tiller: not in the map's own pool (BPRO)",
+    "BPRO: 15-BPRO-2 dropped: amber-cicada: not in the map's own pool (BPRO); garden-tiger-moth: not in the map's own pool (BPRO); land-tiller: not in the map's own pool (BPRO); moonshell-snail: not in the map's own pool (BPRO); springtail-hopper: not in the map's own pool (BPRO)",
+    "BPRO: 15-BPRO-3 dropped: garden-tiger-moth: not in the map's own pool (BPRO); land-tiller: not in the map's own pool (BPRO); moonshell-snail: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
@@ -12748,6 +13353,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "field": "frozen",
      "phase": "night"
     },
     "terrain": {
@@ -12767,7 +13373,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"tundra\",\"tier\":1} / {\"biome\":\"tundra\",\"tier\":2}), the boss's (16-7)"
     ],
-    "summary": "aiGuardLethal, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+    "summary": "aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)"
    },
    "pro": [
     {
@@ -12775,34 +13381,85 @@
      "name": "16-PRO-1",
      "level": 1,
      "leaders": [
-      "otter-centurion"
+      "ibex-rockcaller"
      ],
      "deck": {
-      "alpha-howler": 1,
-      "archerfish": 4,
+      "alpine-marmot": 5,
       "cave-cricket": 1,
-      "cricket-drummer": 1,
-      "dung-beetle": 5,
+      "electric-ray": 3,
+      "fawn-scout": 3,
+      "great-barracuda": 1,
+      "ibex-rockcaller": 2,
+      "lovebird": 1,
       "otter-centurion": 3,
-      "riverwing-envoy": 4,
-      "termite-forager": 1
+      "wolf-spider-mother": 1
      },
      "source": {
-      "file": "docs/balance/opt/deckopt-map16-mt-2026-10-25-pro3-maptrue.json",
+      "file": "docs/balance/opt/deckopt-map16-mt-2026-10-29-relfix3-maptrue.json",
       "mode": "map-true",
       "optimum": 0,
-      "generated": "2026-10-24T23:27:25.295Z",
-      "version": "2.2.0 (2026-10-25, PRO3)",
-      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
-      "score": 0.848,
+      "generated": "2026-10-29T06:12:25.613Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.8,
       "ci": [
-       0.827,
-       0.869
+       0.779,
+       0.821
       ],
       "runElo": 0,
       "renamed": []
      },
      "h2h": null,
+     "later": []
+    },
+    {
+     "id": "16-PRO-2",
+     "name": "16-PRO-2",
+     "level": 1,
+     "leaders": [
+      "ibex-rockcaller"
+     ],
+     "deck": {
+      "alpine-marmot": 4,
+      "camouflage-frog": 1,
+      "fawn-scout": 3,
+      "frost-hare-sprinter": 1,
+      "ibex-rockcaller": 2,
+      "lovebird": 1,
+      "otter-centurion": 3,
+      "planarian-splitter": 2,
+      "wolf-pack-runner": 2,
+      "wolf-spider-mother": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map16-mt-2026-10-29-relfix3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-29T06:12:25.613Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.774,
+      "ci": [
+       0.753,
+       0.796
+      ],
+      "runElo": -56,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "alpine-marmot:5,cave-cricket:1,electric-ray:3,fawn-scout:3,great-barracuda:1,ibex-rockcaller:2,lovebird:1,otter-centurion:3,wolf-spider-mother:1",
+      "p": 0.413,
+      "n": 400,
+      "ci": [
+       0.365,
+       0.461
+      ],
+      "elo": -61,
+      "eloCI": [
+       -96,
+       -27
+      ]
+     },
      "later": []
     }
    ],
@@ -12936,12 +13593,72 @@
      "later": []
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "16-PRO-1",
+     "deck": {
+      "alpha-howler": 1,
+      "archerfish": 4,
+      "cave-cricket": 1,
+      "cricket-drummer": 1,
+      "dung-beetle": 5,
+      "otter-centurion": 3,
+      "riverwing-envoy": 4,
+      "termite-forager": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map16-mt-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-24T23:27:25.295Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.848,
+      "ci": [
+       0.827,
+       0.869
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "dropped": [
+      "termite-forager: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-29"
+    }
+   ],
+   "skipped": [
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json #0",
+     "problems": [
+      "beetle-grunt: not obtainable (not in the progression plan or an earlier map's cards)",
+      "great-skua: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json #1",
+     "problems": [
+      "beaver-feller: not obtainable (not in the progression plan or an earlier map's cards)",
+      "beetle-grunt: not obtainable (not in the progression plan or an earlier map's cards)",
+      "great-skua: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map16-mt-2026-10-25-pro3-maptrue.json #0",
+     "problems": [
+      "termite-forager: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    }
+   ],
    "notes": [
+    "PRO: 16-PRO-1 dropped: termite-forager: not obtainable (not in the progression plan or an earlier map's cards)",
     "PRO: first fill: PRO-1 is the newest run's optimum",
-    "PRO: left out (-115 Elo below the band): archerfish:4,buzzed-chipmunk:1,cave-cricket:3,clover-butterf...",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: left out (-260 Elo below the band): archerfish:4,buzzed-chipmunk:1,cave-cricket:3,clover-butterf...",
+    "BPRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)"
    ]
   },
   "m6": {
@@ -12950,6 +13667,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "field": "frozen",
      "freezing": true,
      "frostResist": [
       "Tundra",
@@ -12978,7 +13696,7 @@
      "freezing: a tie (- / true), the boss's (17-8)",
      "frostbite: a tie (- / 1), the boss's (17-8)"
     ],
-    "summary": "aiGuardLethal, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)"
+    "summary": "aiGuardLethal, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)"
    },
    "pro": [
     {
@@ -13074,6 +13792,137 @@
       "walrus-icebreaker"
      ],
      "deck": {
+      "frost-hare-sprinter": 3,
+      "frostmoon-howler": 2,
+      "ravenous-wolverine": 3,
+      "snow-bunting-archer": 1,
+      "snow-ermine": 4,
+      "talus-pika": 5,
+      "walrus-icebreaker": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-m6-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-29T04:26:21.604Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.61,
+      "ci": [
+       0.585,
+       0.635
+      ],
+      "runElo": -5,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "17-BPRO-2",
+     "name": "17-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "deck": {
+      "frost-hare-sprinter": 1,
+      "frostmoon-howler": 3,
+      "glacial-ape-king": 2,
+      "harbor-seal": 1,
+      "ravenous-wolverine": 3,
+      "snow-bunting-archer": 2,
+      "snow-ermine": 5,
+      "talus-pika": 1,
+      "walrus-icebreaker": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-m6-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-29T04:26:21.604Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.594,
+      "ci": [
+       0.569,
+       0.619
+      ],
+      "runElo": 33,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "frost-hare-sprinter:3,frostmoon-howler:2,ravenous-wolverine:3,snow-bunting-archer:1,snow-ermine:4,talus-pika:5,walrus-icebreaker:2",
+      "p": 0.46,
+      "n": 400,
+      "ci": [
+       0.412,
+       0.509
+      ],
+      "elo": -28,
+      "eloCI": [
+       -62,
+       6
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "17-BPRO-3",
+     "name": "17-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "deck": {
+      "cone-cutter-squirrel": 2,
+      "frost-hare-sprinter": 1,
+      "frostmoon-howler": 2,
+      "harbor-seal": 3,
+      "mountain-hare": 2,
+      "ravenous-wolverine": 1,
+      "snow-bunting-archer": 2,
+      "snow-ermine": 3,
+      "talus-pika": 2,
+      "walrus-icebreaker": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-m6-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-29T04:26:21.604Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.626,
+      "ci": [
+       0.602,
+       0.65
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "frost-hare-sprinter:3,frostmoon-howler:2,ravenous-wolverine:3,snow-bunting-archer:1,snow-ermine:4,talus-pika:5,walrus-icebreaker:2",
+      "p": 0.428,
+      "n": 400,
+      "ci": [
+       0.38,
+       0.476
+      ],
+      "elo": -51,
+      "eloCI": [
+       -85,
+       -16
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "bpro",
+     "id": "17-BPRO-1",
+     "deck": {
       "frostmoon-howler": 3,
       "musk-ox-calf": 4,
       "polar-bear": 2,
@@ -13097,16 +13946,13 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
-     "id": "17-BPRO-2",
-     "name": "17-BPRO-2",
-     "level": 1,
-     "leaders": [
-      "walrus-icebreaker"
-     ],
+     "kind": "bpro",
      "deck": {
       "frostmoon-howler": 3,
       "glacial-ape-king": 2,
@@ -13133,28 +13979,61 @@
       "runElo": 0,
       "renamed": []
      },
+     "lostTo": "frost-hare-sprinter:3,frostmoon-howler:2,ravenous-wolverine:3,snow-bunting-archer:1,snow-ermine:4,talus-pika:5,walrus-icebreaker:2",
      "h2h": {
-      "vs": "frostmoon-howler:3,musk-ox-calf:4,polar-bear:2,snow-bunting-archer:1,snow-ermine:5,talus-pika:3,walrus-icebreaker:2",
-      "p": 0.49,
+      "p": 0.648,
       "n": 400,
       "ci": [
-       0.441,
-       0.539
+       0.599,
+       0.693
       ],
-      "elo": -7,
+      "elo": 106,
       "eloCI": [
-       -41,
-       27
+       70,
+       141
       ]
      },
-     "later": []
+     "on": "2026-10-29"
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "skipped": [
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json #0",
+     "problems": [
+      "fox-kit: not obtainable (not in the progression plan or an earlier map's cards)",
+      "termite-forager: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json #1",
+     "problems": [
+      "termite-forager: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json #2",
+     "problems": [
+      "blind-cave-fish: not obtainable (not in the progression plan or an earlier map's cards)",
+      "termite-forager: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map17-m6-2026-10-25-pro3-bpro.json #0",
+     "problems": [
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ]
+    }
+   ],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: first fill: PRO-1 is the newest run's optimum"
+    "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
+    "BPRO: 17-BPRO-1 dropped: musk-ox-calf: not in the map's own pool (BPRO)",
+    "BPRO: PRO-1 replaced: the challenger scores 0.648 over 400 games [0.599, 0.693]",
+    "BPRO: left out (4 copies from a kept PRO): frostmoon-howler:3,glacial-ape-king:2,polar-bear:1,ravenous-...",
+    "BPRO: left out (-207 Elo below the band): frost-hare-sprinter:2,frostmoon-howler:3,mountain-hare:5,sno..."
    ]
   },
   "mi": {
@@ -13164,7 +14043,8 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
-     "phase": "off"
+     "phase": "off",
+     "slippery": 30
     },
     "terrain": {
      "biome": "tundra",
@@ -13178,7 +14058,7 @@
     ],
     "boss": "17-A-4",
     "ties": [],
-    "summary": "aiGuardLethal, phase off, terrain Frozen Waste T1"
+    "summary": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
    },
    "pro": [
     {
@@ -13186,8 +14066,323 @@
      "name": "17-A-PRO-1",
      "level": 1,
      "leaders": [
-      "savanna-cheetah"
+      "echidna-quillshot"
      ],
+     "deck": {
+      "caiman-hatchling": 1,
+      "echidna-quillshot": 2,
+      "harp-seal-pup": 3,
+      "krill-swarm": 3,
+      "lemming-swarm": 3,
+      "otter-centurion": 3,
+      "snow-ermine": 1,
+      "taiga-lynx": 1,
+      "wolf-spider-mother": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 0,
+      "generated": "2026-10-29T06:15:25.004Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.777,
+      "ci": [
+       0.75,
+       0.804
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "17-A-PRO-2",
+     "name": "17-A-PRO-2",
+     "level": 1,
+     "leaders": [
+      "echidna-quillshot"
+     ],
+     "deck": {
+      "alpine-marmot": 4,
+      "caiman-hatchling": 2,
+      "echidna-quillshot": 2,
+      "newt-doctor": 1,
+      "obsidian-scorpion": 3,
+      "otter-centurion": 3,
+      "spitting-cobra": 1,
+      "taiga-lynx": 1,
+      "wolf-spider-mother": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 1,
+      "generated": "2026-10-29T06:15:25.004Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.713,
+      "ci": [
+       0.683,
+       0.742
+      ],
+      "runElo": -55,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "caiman-hatchling:1,echidna-quillshot:2,harp-seal-pup:3,krill-swarm:3,lemming-swarm:3,otter-centurion:3,snow-ermine:1,taiga-lynx:1,wolf-spider-mother:3",
+      "p": 0.448,
+      "n": 400,
+      "ci": [
+       0.4,
+       0.496
+      ],
+      "elo": -37,
+      "eloCI": [
+       -71,
+       -2
+      ]
+     },
+     "later": []
+    }
+   ],
+   "bpro": [
+    {
+     "id": "17-A-BPRO-1",
+     "name": "17-A-BPRO-1",
+     "level": 1,
+     "leaders": [
+      "polar-bear"
+     ],
+     "deck": {
+      "alpha-howler": 1,
+      "arctic-fox-raider": 1,
+      "cone-cutter-squirrel": 1,
+      "frost-hare-sprinter": 1,
+      "glacial-ape-king": 1,
+      "harp-seal-pup": 1,
+      "krill-swarm": 2,
+      "lemming-swarm": 3,
+      "lone-grey-wolf": 2,
+      "mountain-hare": 1,
+      "polar-bear": 1,
+      "ravenous-wolverine": 2,
+      "snow-bunting-archer": 1,
+      "snow-ermine": 2
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 0,
+      "generated": "2026-10-29T04:28:41.170Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.589,
+      "ci": [
+       0.555,
+       0.623
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "17-A-BPRO-2",
+     "name": "17-A-BPRO-2",
+     "level": 1,
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "deck": {
+      "arctic-fox-raider": 1,
+      "cone-cutter-squirrel": 2,
+      "frost-hare-sprinter": 1,
+      "harbor-seal": 4,
+      "harp-seal-pup": 1,
+      "krill-swarm": 3,
+      "lemming-swarm": 2,
+      "lone-grey-wolf": 1,
+      "polar-bear": 1,
+      "ravenous-wolverine": 1,
+      "snow-ermine": 1,
+      "talus-pika": 1,
+      "walrus-icebreaker": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 1,
+      "generated": "2026-10-29T04:28:41.170Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.615,
+      "ci": [
+       0.583,
+       0.648
+      ],
+      "runElo": 11,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "alpha-howler:1,arctic-fox-raider:1,cone-cutter-squirrel:1,frost-hare-sprinter:1,glacial-ape-king:1,harp-seal-pup:1,krill-swarm:2,lemming-swarm:3,lone-grey-wolf:2,mountain-hare:1,polar-bear:1,ravenous-wolverine:2,snow-bunting-archer:1,snow-ermine:2",
+      "p": 0.573,
+      "n": 400,
+      "ci": [
+       0.524,
+       0.62
+      ],
+      "elo": 51,
+      "eloCI": [
+       16,
+       85
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "17-A-BPRO-3",
+     "name": "17-A-BPRO-3",
+     "level": 1,
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "deck": {
+      "cone-cutter-squirrel": 1,
+      "frost-hare-sprinter": 2,
+      "harbor-seal": 2,
+      "harp-seal-pup": 1,
+      "krill-swarm": 2,
+      "lemming-swarm": 1,
+      "lone-grey-wolf": 1,
+      "polar-bear": 1,
+      "ravenous-wolverine": 1,
+      "snow-bunting-archer": 1,
+      "spitting-spider": 3,
+      "talus-pika": 3,
+      "walrus-icebreaker": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 3,
+      "generated": "2026-10-29T04:28:41.170Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.598,
+      "ci": [
+       0.565,
+       0.63
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "alpha-howler:1,arctic-fox-raider:1,cone-cutter-squirrel:1,frost-hare-sprinter:1,glacial-ape-king:1,harp-seal-pup:1,krill-swarm:2,lemming-swarm:3,lone-grey-wolf:2,mountain-hare:1,polar-bear:1,ravenous-wolverine:2,snow-bunting-archer:1,snow-ermine:2",
+      "p": 0.507,
+      "n": 400,
+      "ci": [
+       0.459,
+       0.556
+      ],
+      "elo": 5,
+      "eloCI": [
+       -29,
+       39
+      ]
+     },
+     "later": []
+    },
+    {
+     "id": "17-A-BPRO-4",
+     "name": "17-A-BPRO-4",
+     "level": 1,
+     "leaders": [
+      "walrus-icebreaker"
+     ],
+     "deck": {
+      "cone-cutter-squirrel": 1,
+      "harbor-seal": 1,
+      "harp-seal-pup": 2,
+      "lemming-swarm": 3,
+      "ravenous-wolverine": 1,
+      "snow-bunting-archer": 2,
+      "snow-ermine": 3,
+      "spitting-spider": 1,
+      "talus-pika": 5,
+      "walrus-icebreaker": 1
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-29-relfix3-bpro.json",
+      "mode": "bpro",
+      "optimum": 2,
+      "generated": "2026-10-29T04:28:41.170Z",
+      "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro",
+      "score": 0.595,
+      "ci": [
+       0.562,
+       0.627
+      ],
+      "runElo": 0,
+      "renamed": []
+     },
+     "h2h": {
+      "vs": "alpha-howler:1,arctic-fox-raider:1,cone-cutter-squirrel:1,frost-hare-sprinter:1,glacial-ape-king:1,harp-seal-pup:1,krill-swarm:2,lemming-swarm:3,lone-grey-wolf:2,mountain-hare:1,polar-bear:1,ravenous-wolverine:2,snow-bunting-archer:1,snow-ermine:2",
+      "p": 0.48,
+      "n": 400,
+      "ci": [
+       0.431,
+       0.529
+      ],
+      "elo": -14,
+      "eloCI": [
+       -48,
+       20
+      ]
+     },
+     "later": []
+    }
+   ],
+   "replaced": [
+    {
+     "kind": "pro",
+     "id": "17-A-PRO-2",
+     "deck": {
+      "ant-warrior": 4,
+      "archerfish": 4,
+      "briarback-hedgehog": 1,
+      "hoopoe-herald": 1,
+      "inland-taipan": 1,
+      "kraken-spawnling": 1,
+      "mangrove-manatee": 2,
+      "raccoon-bandit": 3,
+      "wolf-pack-runner": 3
+     },
+     "source": {
+      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-maptrue.json",
+      "mode": "map-true",
+      "optimum": 2,
+      "generated": "2026-10-25T01:46:19.978Z",
+      "version": "2.2.0 (2026-10-25, PRO3)",
+      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
+      "score": 0.735,
+      "ci": [
+       0.705,
+       0.765
+      ],
+      "runElo": -137,
+      "renamed": []
+     },
+     "dropped": [
+      "inland-taipan: not obtainable (not in the progression plan or an earlier map's cards)"
+     ],
+     "on": "2026-10-29"
+    },
+    {
+     "kind": "pro",
      "deck": {
       "ant-warrior": 2,
       "archerfish": 4,
@@ -13216,119 +14411,25 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "17-A-PRO-2",
-     "name": "17-A-PRO-2",
-     "level": 1,
-     "leaders": [
-      "mangrove-manatee"
-     ],
-     "deck": {
-      "ant-warrior": 4,
-      "archerfish": 4,
-      "briarback-hedgehog": 1,
-      "hoopoe-herald": 1,
-      "inland-taipan": 1,
-      "kraken-spawnling": 1,
-      "mangrove-manatee": 2,
-      "raccoon-bandit": 3,
-      "wolf-pack-runner": 3
-     },
-     "source": {
-      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-maptrue.json",
-      "mode": "map-true",
-      "optimum": 2,
-      "generated": "2026-10-25T01:46:19.978Z",
-      "version": "2.2.0 (2026-10-25, PRO3)",
-      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
-      "score": 0.735,
-      "ci": [
-       0.705,
-       0.765
-      ],
-      "runElo": -137,
-      "renamed": []
-     },
+     "lostTo": "caiman-hatchling:1,echidna-quillshot:2,harp-seal-pup:3,krill-swarm:3,lemming-swarm:3,otter-centurion:3,snow-ermine:1,taiga-lynx:1,wolf-spider-mother:3",
      "h2h": {
-      "vs": "ant-warrior:2,archerfish:4,briarback-hedgehog:1,dune-packrat:1,dung-beetle:1,hoopoe-herald:2,mudpuppy:1,raccoon-bandit:3,savanna-cheetah:1,star-nosed-mole:1,wolf-pack-runner:3",
-      "p": 0.405,
+      "p": 0.868,
       "n": 400,
       "ci": [
-       0.358,
-       0.454
+       0.831,
+       0.897
       ],
-      "elo": -67,
+      "elo": 326,
       "eloCI": [
-       -101,
-       -32
+       276,
+       376
       ]
      },
-     "later": []
+     "on": "2026-10-29"
     },
     {
-     "id": "17-A-PRO-3",
-     "name": "17-A-PRO-3",
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
-     "deck": {
-      "anhinga-spearbird": 1,
-      "archerfish": 4,
-      "bombardier-beetle": 2,
-      "dung-beetle": 1,
-      "meadow-rabbit": 1,
-      "mosswing-laborer": 1,
-      "mudpuppy": 1,
-      "nightjar-drifter": 1,
-      "raccoon-bandit": 3,
-      "savanna-cheetah": 1,
-      "star-nosed-mole": 1,
-      "wolf-pack-runner": 3
-     },
-     "source": {
-      "file": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-maptrue.json",
-      "mode": "map-true",
-      "optimum": 1,
-      "generated": "2026-10-25T01:46:19.978Z",
-      "version": "2.2.0 (2026-10-25, PRO3)",
-      "reproduce": "node tools/opt/deckopt.js --map mi --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true",
-      "score": 0.74,
-      "ci": [
-       0.71,
-       0.77
-      ],
-      "runElo": -112,
-      "renamed": []
-     },
-     "h2h": {
-      "vs": "ant-warrior:2,archerfish:4,briarback-hedgehog:1,dune-packrat:1,dung-beetle:1,hoopoe-herald:2,mudpuppy:1,raccoon-bandit:3,savanna-cheetah:1,star-nosed-mole:1,wolf-pack-runner:3",
-      "p": 0.365,
-      "n": 400,
-      "ci": [
-       0.319,
-       0.413
-      ],
-      "elo": -96,
-      "eloCI": [
-       -131,
-       -61
-      ]
-     },
-     "later": []
-    }
-   ],
-   "bpro": [
-    {
+     "kind": "bpro",
      "id": "17-A-BPRO-1",
-     "name": "17-A-BPRO-1",
-     "level": 1,
-     "leaders": [
-      "lone-grey-wolf"
-     ],
      "deck": {
       "arctic-tern": 1,
       "frost-hare-sprinter": 1,
@@ -13355,16 +14456,17 @@
       "runElo": 0,
       "renamed": []
      },
-     "h2h": null,
-     "later": []
+     "dropped": [
+      "arctic-tern: not in the map's own pool (BPRO)",
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)",
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "17-A-BPRO-2",
-     "name": "17-A-BPRO-2",
-     "level": 1,
-     "leaders": [
-      "walrus-icebreaker"
-     ],
      "deck": {
       "frostmoon-howler": 3,
       "harbor-seal": 1,
@@ -13391,29 +14493,16 @@
       "runElo": -137,
       "renamed": []
      },
-     "h2h": {
-      "vs": "arctic-tern:1,frost-hare-sprinter:1,frostmoon-howler:3,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:5,lone-grey-wolf:1,musk-ox-calf:2",
-      "p": 0.39,
-      "n": 400,
-      "ci": [
-       0.343,
-       0.439
-      ],
-      "elo": -78,
-      "eloCI": [
-       -113,
-       -43
-      ]
-     },
-     "later": []
+     "dropped": [
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)",
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     },
     {
+     "kind": "bpro",
      "id": "17-A-BPRO-3",
-     "name": "17-A-BPRO-3",
-     "level": 1,
-     "leaders": [
-      "polar-bear"
-     ],
      "deck": {
       "alpha-howler": 1,
       "frost-hare-sprinter": 3,
@@ -13441,29 +14530,67 @@
       "runElo": -33,
       "renamed": []
      },
-     "h2h": {
-      "vs": "arctic-tern:1,frost-hare-sprinter:1,frostmoon-howler:3,harbor-seal:1,ice-crevasse-wolf:1,krill-swarm:5,lemming-swarm:5,lone-grey-wolf:1,musk-ox-calf:2",
-      "p": 0.385,
-      "n": 400,
-      "ci": [
-       0.339,
-       0.434
-      ],
-      "elo": -81,
-      "eloCI": [
-       -116,
-       -46
-      ]
-     },
-     "later": []
+     "dropped": [
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)"
+     ],
+     "on": "2026-10-29"
     }
    ],
-   "replaced": [],
-   "skipped": [],
+   "skipped": [
+    {
+     "kind": "pro",
+     "source": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-maptrue.json #2",
+     "problems": [
+      "inland-taipan: not obtainable (not in the progression plan or an earlier map's cards)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-bpro.json #0",
+     "problems": [
+      "arctic-tern: not in the map's own pool (BPRO)",
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)",
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-bpro.json #1",
+     "problems": [
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)",
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-bpro.json #2",
+     "problems": [
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)",
+      "musk-ox-calf: not in the map's own pool (BPRO)"
+     ]
+    },
+    {
+     "kind": "bpro",
+     "source": "docs/balance/opt/deckopt-map17-mi-2026-10-25-pro3-bpro.json #3",
+     "problems": [
+      "frostmoon-howler: not in the map's own pool (BPRO)",
+      "ice-crevasse-wolf: not in the map's own pool (BPRO)"
+     ]
+    }
+   ],
    "notes": [
-    "PRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: first fill: PRO-1 is the newest run's optimum",
-    "BPRO: left out (-109 Elo below the band): arctic-fox-raider:1,frost-hare-sprinter:2,frostmoon-howler:1..."
+    "PRO: 17-A-PRO-2 dropped: inland-taipan: not obtainable (not in the progression plan or an earlier map's cards)",
+    "PRO: PRO-1 replaced: the challenger scores 0.868 over 400 games [0.831, 0.897]",
+    "PRO: left out (-334 Elo below the band): ant-warrior:2,archerfish:4,briarback-hedgehog:1,dune-packrat...",
+    "PRO: left out (-418 Elo below the band): anhinga-spearbird:1,archerfish:4,bombardier-beetle:2,dung-be...",
+    "BPRO: 17-A-BPRO-1 dropped: arctic-tern: not in the map's own pool (BPRO); frostmoon-howler: not in the map's own pool (BPRO); ice-crevasse-wolf: not in the map's own pool (BPRO); musk-ox-calf: not in the map's own pool (BPRO)",
+    "BPRO: 17-A-BPRO-2 dropped: frostmoon-howler: not in the map's own pool (BPRO); ice-crevasse-wolf: not in the map's own pool (BPRO); musk-ox-calf: not in the map's own pool (BPRO)",
+    "BPRO: 17-A-BPRO-3 dropped: frostmoon-howler: not in the map's own pool (BPRO); ice-crevasse-wolf: not in the map's own pool (BPRO)",
+    "BPRO: first fill: PRO-1 is the newest run's optimum"
    ]
   },
   "md": {
