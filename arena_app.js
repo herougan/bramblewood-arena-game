@@ -22866,8 +22866,20 @@ const AMBUSH_KEY = 'bramblewood_ambush_v1', AMBUSH_MAP_INDEX = 3, AMBUSH_AT = '3
 function ambushState(){ try{ return JSON.parse(localStorage.getItem(AMBUSH_KEY) || 'null') || {}; }catch(e){ return {}; } }
 function saveAmbushState(st){ try{ localStorage.setItem(AMBUSH_KEY, JSON.stringify(st)); }catch(e){} }
 function ambushFoe(){ const f = (typeof loadFactionChoice === 'function') ? loadFactionChoice() : 'otters'; return f === 'hummingbirds' ? 'otters' : 'hummingbirds'; }
+// 2026-10-29 (package ENG13, owner 21:36: "Ambushes - no need to be completed to progress - but typically very hard."): the Ambush is
+// optional (it never locks a fight, see ambushLocksNode) and hard. The old deck (the first 7 pack cards of the foe's faction list) let the
+// Map 3 reference deck win 98% against the Hummingbirds (the road's own Map 3 fights: 80-93%). Now each side fields its strongest faction
+// cards (AMBUSH_DECKS, 18 cards, Common / Uncommon, inside the copy ladder) on a Smart CPU at a raised Enemy level (AMBUSH_HARD, the
+// skirmish editor's own node fields ai / enemyLevel), measured with simulateReferenceFight (tests/eng13-2026-10-29.js has the numbers).
+// A card missing from the defs falls back to the old pick below.
+const AMBUSH_DECKS = {
+  hummingbirds: {'dominion-nestguard':3, 'hush-wing-spy':3, 'lantern-bearer':3, 'hummingbird-needler':3, 'petal-fletcher':3, 'dawn-bellringer':3},
+  otters: {'otter-shieldback':3, 'net-thrower':3, 'birdlime-dauber':3, 'riverbed-diver':3, 'otter-flag-bearer':3, 'rivergate-drummer':3},
+};
+const AMBUSH_HARD = {hummingbirds: {ai:'smart', enemyLevel:10}, otters: {ai:'smart', enemyLevel:6}};
 function ambushDeck(foe){
   const defs = getCardDefs(), want = foe === 'hummingbirds' ? 'tribes' : '';
+  { const fixed = AMBUSH_DECKS[foe === 'hummingbirds' ? 'hummingbirds' : 'otters']; if(fixed && Object.keys(fixed).every(id=> defs[id])) return Object.assign({}, fixed); }
   let ids = Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero) return false; const src = cardSourceOf(d) || {};
     return src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11 && (src.side||'') === want && ['common','uncommon','starter'].includes(d.rarity||'common'); });
   if(ids.length < 3){ try{ ids = Object.keys(tutorialDecksFor(1, foe).mine).filter(id=> defs[id]); }catch(e){} }
@@ -22884,22 +22896,20 @@ function ambushPending(){ const st = ambushState(); return !!st.triggered && !(l
 function applyAmbushNode(){
   const st = ambushState(), map = ambushMap(); if(!st.triggered || !map || map.nodes.some(n=> n.key === 'ambush')) return;
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
-  map.nodes.push({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: st.deck || ambushDeck(foe), hqHp:24,
+  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS) and its difficulty (AMBUSH_HARD), not the weak deck a save stored when it triggered
+  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: ambushDeck(foe), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
-    rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, fixedPos: st.pos || null, faction: foe});
+    rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }
 // 2026-10-24 (package MAP, owner 17:01 #3: "Those ambush skirmishes should lock the previous path i was going for. But then they also
 // shouldnt be connected by a link but instead float there. The moment they are observed (ambushed), they are permanently accessible. No
 // need for links."): the Ambush floats (requires nothing, so no trail is drawn to or from it and it is open the moment it is seen; the
 // saved ambush state keeps it on the map for good, won or not). The fight it interrupted (3-2, and so everything past it) stays locked,
 // drawn as a locked fight, until the Ambush is won; losing it, or walking away from it, does not open the path.
-function ambushLocksNode(map, node){
-  try{
-    if(!map || !node || node.ambush) return false;
-    const am = ambushMap(); if(!am || am.id !== map.id || skirmishCode(map.id, node.key) !== AMBUSH_AT) return false;
-    return ambushPending();
-  }catch(e){ return false; }
-}
+// 2026-10-29 (package ENG13, owner 21:36: "Ambushes - no need to be completed to progress"): the Ambush locks nothing any more. It stays on
+// the map, open to fight (won or not), but 3-2 and the road past it are open, and the next map does not wait on it (mapUnlocked,
+// conquestMapCleared and the locked-map line skip node.ambush). Kept as a function so its callers read the rule in one place.
+function ambushLocksNode(map, node){ return false; }
 // 2026-10-17 (user: "Unliked nodes by default are accessible on scratch. The only thing that is like that is the 1st skirmish in a map"):
 // the Ambush hung off the same trail as the fight it interrupts (3-2's own links). 2026-10-24 (package MAP): it floats again, see ambushLocksNode.
 function ambushLinks(map){ const at = map && map.nodes.find(n=> !n.ambush && skirmishCode(map.id, n.key) === AMBUSH_AT); return at && Array.isArray(at.requires) ? at.requires.slice() : []; }
@@ -23525,7 +23535,7 @@ function isMapUnlocked(map, progress){
   // A map "clears" once every one of the PREVIOUS map's story nodes (everything except an
   // optional bonus Raid Boss) is beaten — Raid Bosses are a permanent bonus unlock, not a
   // progression gate.
-  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
+  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
 }
 // Why a map is locked, in one line (2026-10-23, package PG, owner item 13): the signposts' toast and the locked map's notice name what
 // opens it, the same rules isMapUnlocked reads: a side map's way in (its fight, another map, a quest) or its parent map; a main map the
@@ -23544,7 +23554,7 @@ function mapLockReason(map, progress){
       return TX('ui.pg-lock-later', {map: map.name});
     }
     const prev = map.unlockAfter && CONQUEST_MAPS.find(m=> m.id === map.unlockAfter);
-    if(prev){ const left = prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !progress.completed.includes(conquestNodeId(prev.id, n.key)));
+    if(prev){ const left = prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */ && !progress.completed.includes(conquestNodeId(prev.id, n.key)));
       if(left.length) return TX('ui.pg-lock-main', {map: map.name, prev: nm(prev), codes: left.map(n=> skirmishCode(prev.id, n.key)).join(', ')}); }
   }catch(e){}
   return TX('ui.pg-lock-later', {map: map.name});
@@ -30331,7 +30341,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const {node} = found;
   { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
-    if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
+    /* 2026-10-29 (ENG13): an Ambush not yet won no longer turns 3-2's Fight away (owner 21:36: "no need to be completed to progress") */ }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   // 2026-10-25 (package PREF): a reference set instead of your deck (X-REF always; any fight while Admin's switch is on): free, pays nothing
   const refPlaySet = (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
@@ -43254,7 +43264,7 @@ const AVATAR_TITLES = [
 ];
 function conquestMapCleared(mapId){
   try{ const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return false; const p = loadConquestProgress();
-    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret); // world bosses, chance fights and hidden skirmishes (2026-10-15) are optional
+    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */); // world bosses, chance fights and hidden skirmishes (2026-10-15) are optional
     return fights.length > 0 && fights.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } // 2026-10-12: a map with no fights yet is not "cleared" (it gave a new player 2,100 XP)
 }
 Registry.avatarCharacters = ()=> AVATAR_CHARACTERS.map(c=> Object.assign({}, c, {isUnlocked: !c.unlocked || c.unlocked()}));

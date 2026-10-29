@@ -60,7 +60,7 @@ const LF1C = new Set(((JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balan
 const overWait = over.filter(x=> LF1C.has(x)); if(overWait.length) console.log('  · over the copy ladder, deck not rebuilt yet (step 4): ' + overWait.join('; '));
 ok(over.length === overWait.length, '2. every enemy deck (road, side maps, endless floors) follows the copy ladder: ' + over.filter(x=> !LF1C.has(x)).slice(0, 6).join('; '));
 { const AMB = eval('(' + B.grab('ambushDeckSize') + ')')(); ok(AMB.min === 16 && AMB.max === 20 && AMB.target >= 16 && AMB.target <= 20, '2. the ambush deck holds 16-20 cards');
-  const body = B.grab('ambushDeck');
+  const body = B.grab('AMBUSH_DECKS') + '\n' + B.grab('ambushDeck'); // 2026-10-29 ENG13: the deck is AMBUSH_DECKS (the old pick is its fallback)
   ['otters', 'hummingbirds'].forEach(foe=>{ const f = new Function('getCardDefs', 'cardSourceOf', 'maxCopiesForRarity', 'tutorialDecksFor', 'ambushDeckSize', body + '\nreturn ambushDeck;')(G.getCardDefs, G.cardSourceOf, G.maxCopiesForRarity, ()=> ({mine: {}}), ()=> AMB);
     const deck = f(foe), tot = Object.values(deck).reduce((a, b)=> a + b, 0);
     ok(tot >= 16 && tot <= 20, `2. the ${foe}' ambush deck has ${tot} cards (16-20)`);
