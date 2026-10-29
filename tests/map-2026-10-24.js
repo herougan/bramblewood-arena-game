@@ -54,7 +54,7 @@ ok(/try\{ healMapProgress/.test(src) && /function healMapProgress\(/.test(src), 
   ok(run(true, 'm4', 'a', true) === false, '3. the Ambush itself is never locked');
   ok(run(true, 'other', 'a') === false, '3. only the Ambush map is affected');
   ok(/if\(ambushLocksNode\(map, node\)\) return false;/.test(fnSrc('isNodeVisible')), '3. isNodeVisible draws the stopped fight as locked');
-  const pos = fnSrc('mapNodePositions'); ok(/n\.secret \|\| n\.jumper \|\| n\.ambush/.test(pos) && /!n\.ambush/.test(pos), '3. the floating Ambush stands at its own spot and does not reshuffle the trail');
+  const pos = fnSrc('mapNodePositionsRaw'); /* 2026-10-29 (REVIEW2): the layout logic moved to ...Raw; mapNodePositions then puts the Ambush on its road */ ok(/n\.secret \|\| n\.jumper \|\| n\.ambush/.test(pos) && /!n\.ambush/.test(pos), '3. the floating Ambush stands at its own spot and does not reshuffle the trail');
   ok(/'is-ambush is-floating foe-'/.test(src), '3. the node carries the floating look');
   ok(/is-ambush-locked/.test(src) && /lockedTileTap\(el, null\); showToast\(TX\('toast\.the-ambush-still-blocks-the-way'\)/.test(src), '3. a tap on the locked fight shakes and says the ambush blocks it'); }
 
