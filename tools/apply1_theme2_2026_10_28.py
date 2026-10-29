@@ -15,6 +15,13 @@ nothing in a fight, puts the same card twice in the Map cards editor and makes t
 So SUBMAP holds the proposal's cards that are not on the parent's MAP list. The submap fight's pool then holds every card of the proposal;
 it also holds the rest of the parent's MAP list, which the three-tier shape cannot leave out (an owner call, noted in the APPLY1 report).
 
+2026-10-29 LISTFIX1 (decision APPLY1-1, filled per the owner's 10-26 "fill in the decisions"; owner 22:47 "Submaps would be 1-3 cards + 10+
+carried over, so 11-14"): the rule changes: a submap fight draws only its SUBMAP list + SPECIAL (no longer the parent's MAP list), so each
+SUBMAP list now stores the proposal's whole `proposed` list (unique + carried), 11-15 cards. The paragraph above is history. SPECIAL keeps a
+card unless it is on the MAP list AND on every submap's list (then every fight of the family has it already); APPLY1's 6 dropped SPECIAL cards
+are put back where that rule keeps them (RESTORE_SPECIAL), and the first-clear pack cards no longer on their map's MAP list
+(SKIRMISH_FIRST_PACK_CARDS, decision APPLY1-3/4) are added to that map's SPECIAL (FIRST_CLEAR_SPECIAL). Run on today's file it reproduces it.
+
 Usage: python3 tools/apply1_theme2_2026_10_28.py [--dry] [--report <file.json>]
        python3 tools/apply1_theme2_2026_10_28.py report   (after the apply and the regenerations; see the report section below)
   prints what changes; writes canonical/map-pools.json unless --dry; --report writes the per-list changes (run it before the apply: once
@@ -26,6 +33,13 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 POOLS = os.path.join(ROOT, 'canonical', 'map-pools.json')
 PROP = os.path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json')
 DRY = '--dry' in sys.argv
+# 2026-10-29 LISTFIX1: APPLY1's SPECIAL drops (put back where the LISTFIX1 rule keeps them) and the 5 first-clear pack cards off their map's MAP list
+ABOUT = ("Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's whole "
+         "list, one list each: its own cards + the ones it carries) and \"special\" (the cards added through a skirmish deck editor's + Load any card; "
+         "one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from that submap + special "
+         "(2026-10-29 LISTFIX1, decision APPLY1-1: no longer the parent's cards too). Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.")
+RESTORE_SPECIAL = {'m8': ['venomlord-serpent'], 'm7': ['orca-vanguard'], 'm10': ['wound-reaver'], 'mr': ['sergeant-bramblefox'], 'md': ['sand-widow'], 'm22': ['rimeheart-colossus']}
+FIRST_CLEAR_SPECIAL = {'mf': ['compost-grub'], 'mc': ['hawk-arrowkeeper'], 'mu': ['sleepless-shrew'], 'm4': ['blind-cave-fish'], 'mr': ['fox-kit']}
 
 
 def line_list(ids):
@@ -60,19 +74,23 @@ def main():
         if par not in cur or k not in cur[par]['submaps']:
             sys.exit('submap %s is not under %s in map-pools.json' % (k, par))
         on_parent = set(new_main[par])
-        new_sub[k] = (par, [x for x in dict.fromkeys(m['proposed']) if x not in on_parent], [x for x in m['proposed'] if x in on_parent])
+        # 2026-10-29 LISTFIX1: the whole proposed list (a submap fight reads only its own list now); the third item stays for the report
+        new_sub[k] = (par, list(dict.fromkeys(m['proposed'])), [x for x in m['proposed'] if x in on_parent])
 
-    # SPECIAL: drop a card now on one of the entry's lists
+    # SPECIAL: 2026-10-29 LISTFIX1: drop a card only when it is on the MAP list and on every submap's list (was: on any of the entry's lists);
+    # APPLY1's drops come back where this rule keeps them, and the first-clear pack cards off their map's MAP list join SPECIAL
     new_special = {}
     for top, e in cur.items():
-        lists = set(new_main.get(top, e['cards']))
-        for s, ids in e['submaps'].items():
-            lists |= set(new_sub[s][1] if s in new_sub else ids)
-        sp = e.get('special', [])
-        keep = [x for x in sp if x not in lists]
-        if keep != sp:
+        main_l = set(new_main.get(top, e['cards']))
+        sub_ls = [set(new_sub[s][1] if s in new_sub else ids) for s, ids in e['submaps'].items()]
+        on_all = {x for x in main_l if all(x in l for l in sub_ls)}
+        sp0 = e.get('special', [])
+        sp = list(dict.fromkeys(sp0 + [x for x in RESTORE_SPECIAL.get(top, []) + FIRST_CLEAR_SPECIAL.get(top, []) if x in card_ids]))
+        keep = [x for x in sp if x not in on_all]
+        if keep != sp0:
             new_special[top] = keep
-            report['specialDropped'][top] = [x for x in sp if x in lists]
+        if [x for x in sp if x in on_all]:
+            report['specialDropped'][top] = [x for x in sp if x in on_all]
 
     for k, ids in new_main.items():
         old = cur[k]['cards']
@@ -95,7 +113,9 @@ def main():
         mc = re.match(r'^(   "cards": )(\[.*\])(,?)$', ln)
         ms = re.match(r'^(    "([^"]+)": )(\[.*\])(,?)$', ln) if in_subs else None
         msp = re.match(r'^(   "special": )(\[.*\])(,?)$', ln)
-        if mc and top in new_main:
+        if ln.startswith(' "_about": '):   # 2026-10-29 LISTFIX1: the file's own note follows the new submap rule
+            nl = ' "_about": ' + json.dumps(ABOUT) + ','
+        elif mc and top in new_main:
             nl = mc.group(1) + line_list(new_main[top]) + mc.group(3)
         elif ms and ms.group(2) in new_sub:
             nl = ms.group(1) + line_list(new_sub[ms.group(2)][1]) + ms.group(4)
@@ -124,7 +144,7 @@ def main():
 
     print('main maps rewritten: %d; submaps rewritten: %d; kept: %s; lines changed: %d' % (len(new_main), len(new_sub), ', '.join(report['kept']), n_changed))
     for k, r in report['sub'].items():
-        print('  %s (under %s): proposal %d, stored %d (%d come through the parent\'s MAP list), was %d' % (k, r['parent'], r['proposed'], r['after'], len(r['viaParentMap']), r['before']))
+        print('  %s (under %s): proposal %d, stored %d (%d also on the parent\'s MAP list), was %d' % (k, r['parent'], r['proposed'], r['after'], len(r['viaParentMap']), r['before']))
     if report['specialDropped']:
         print('SPECIAL duplicates dropped:', json.dumps(report['specialDropped']))
     if DRY:
@@ -148,6 +168,8 @@ def main():
 #     newly well under (2A + H + S at most 60% of N); no card is re-fitted (the owner's step 3);
 #   - skirmish decks (every fight with a deck) holding a card that is not on the fight's pool (MAP + its SUBMAP + SPECIAL): new since APPLY1
 #     or already so before. No deck is rebuilt (step 4).
+#   2026-10-29 LISTFIX1: this report keeps APPLY1's rule (MAP + SUBMAP + SPECIAL) as history; today's off-pool decks under the new rule (a submap
+#   fight: its SUBMAP + SPECIAL) are docs/balance/listfix1-decks-2026-10-29.json (node docs/balance/listfix1-decks-2026-10-29.js).
 REPORT_JS = r"""
 'use strict';
 const fs = require('fs'), path = require('path'), ROOT = process.cwd();

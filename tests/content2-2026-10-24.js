@@ -25,6 +25,10 @@ const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content2_2
 const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
 const placeOf = Object.fromEntries(C2.NEW.filter(s=> s.place).map(s=> [s.id, s.place[0]]));
 const probs = (chk.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{ const m = /^not in pool (\S+)$/.exec(l); return !(m && placeOf[m[1]] && !(T2[placeOf[m[1]]] || []).includes(m[1])); });
+// 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): "over budget <id>" is reported, not failed, for a card that is unplaced
+// (on no list) or pending the owner's re-fit (step 3) (tools/lib_map_pools.js budgetHold)
+const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js'));
+probs.splice(0, probs.length, ...probs.filter(l=>{ const m = /^over budget (\S+)/.exec(l), h = m && LMP.budgetHold(m[1]); if(h) console.log(`  · ${m[1]}: budget not checked, ${h}`); return !h; }));
 ok(!probs.length, `every new card is on its budget, placed (where THEME2 lists it) or awaiting (${probs.join('; ') || 'ok'})`);
 const nids = cards.map(c=> c.numericId).filter(x=> x != null);
 ok(new Set(nids).size === nids.length, 'numericIds are unique');
@@ -73,13 +77,17 @@ ok(d22 && d22.oystercatcher >= 1 && d22['gull-thief'] >= 1, 'Gull Gang (2-2) has
 ok(d23 && d23['driftwood-crab'] >= 1, 'Hermit Row (2-3) fields the Driftwood Crab');
 ok(d31 && d31['gannet-nestweaver'] && !d31['hawk-arrowkeeper'] && d33 && d33['gannet-nestweaver'] && !d33['hawk-arrowkeeper'], 'N21-2: Gannet Nestweavers for the Hawk Arrowkeepers in 3-1 and 3-3');
 ok(d51 && d51['bog-leech'] >= 1 && !d51['venomlord-serpent'] && pools.mw.special.includes('bog-leech'), 'the Leech Pools (5-1) have leeches; Bog Leech is on Map 5\'s Special list');
+const LF1D = J('docs/balance/listfix1-decks-2026-10-29.json').list; // 2026-10-29 LISTFIX1
 const MAXC = {common: 5, uncommon: 4, rare: 3, veryrare: 2};
 for(const [k, d] of Object.entries({'2-1': d21, '2-2': d22, '2-3': d23, '3-1': d31, '3-3': d33, '5-1': d51})){ if(!d) continue;
   const ids = Object.keys(d), mapId = {'2': 'mb', '3': 'mc', '5': 'mw'}[k[0]], pool = new Set([...pools[mapId].cards, ...pools[mapId].special]);
   ok(ids.length >= 5 && ids.length <= 7, `${k}: 5-7 different cards (${ids.length})`);
   ok(ids.every(id=> d[id] <= (MAXC[by[id].rarity] || 1)), `${k}: inside the copy ladder`);
   ok(ids.every(id=> ['common', 'uncommon', 'starter'].includes(by[id].rarity)), `${k}: Common / Uncommon only (Maps 2-5 skirmishes)`);
-  ok(ids.every(id=> pool.has(id)), `${k}: every card from its map's pool (${ids.filter(id=> !pool.has(id)).join(', ')})`); }
+  // 2026-10-29 LISTFIX1: decks are not rebuilt yet (the owner's step 4): a card off the pool is reported, and it must be on the LISTFIX1 list
+  const offp = ids.filter(id=> !pool.has(id)), rec = (LF1D.find(f=> f.map === mapId && f.key === k) || {off: []}).off.map(o=> o.id);
+  if(offp.length) console.log(`  · ${k}: off its map's pool, not rebuilt yet (step 4): ${offp.join(', ')}`);
+  ok(offp.every(id=> rec.includes(id)), `${k}: every card from its map's pool, or listed in docs/balance/listfix1-decks-2026-10-29.json (${offp.filter(id=> !rec.includes(id)).join(', ')})`); }
 const after = R('docs/balance/skirmish-pass-content2-after.jsonl').trim().split('\n').map(l=> JSON.parse(l));
 ok(after.length === 6 && after.every(r=> r.games === 200), 'the touched fights were re-measured (200 games each, tools/skirmish_pass.js measure)');
 const before = Object.fromEntries(R('docs/balance/skirmish-pass-content2-before.jsonl').trim().split('\n').map(l=> JSON.parse(l)).map(r=> [r.code, r]));

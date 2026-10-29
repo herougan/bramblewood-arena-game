@@ -1,0 +1,84 @@
+{
+ "_about": "LISTFIX1 (2026-10-29): cards on a map list that are over their budget for their first map, waiting for the owner's step 3 (re-fit). The budget checks report these as pending instead of failing. Built by node docs/balance/listfix1-pending-budget-2026-10-29.js --write.",
+ "built": "2026-10-29",
+ "count": 7,
+ "cards": [
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "firstList": "mu",
+   "map": 7,
+   "stats": "2/4",
+   "x1": 15.5,
+   "N": 13.92,
+   "at": "start level"
+  },
+  {
+   "id": "coral-polyp-colony",
+   "name": "Coral Polyp Colony",
+   "rarity": "common",
+   "firstList": "m7",
+   "map": 7,
+   "stats": "0/9",
+   "x1": 16.74,
+   "N": 16.24,
+   "at": "start level"
+  },
+  {
+   "id": "bog-leech",
+   "name": "Bog Leech",
+   "rarity": "uncommon",
+   "firstList": "mw",
+   "map": 1,
+   "stats": "1/8",
+   "x1": 13.6,
+   "N": 12.68,
+   "at": "start level"
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "rarity": "uncommon",
+   "firstList": "m8",
+   "map": 1,
+   "stats": "1/11",
+   "x1": 16.2,
+   "N": 16.03,
+   "at": "start level"
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "rarity": "common",
+   "firstList": "m22",
+   "map": 22,
+   "stats": "2/7",
+   "x1": 17,
+   "N": 15.98,
+   "at": "start level"
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "firstList": "mx",
+   "map": 14,
+   "stats": "1/1",
+   "x1": 12,
+   "N": 17.69,
+   "at": "start level"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "firstList": "m23",
+   "map": 23,
+   "stats": "0/28",
+   "x1": 50.53,
+   "N": 40.01,
+   "at": "start level"
+  }
+ ]
+}

@@ -19924,6 +19924,10 @@ function openDeckBuilderPopup(o){
 // `__cfg:map-nodes:<id>`), win over the file at load, and are folded back by tools/fold_map_pools.js. A fight on a main map draws from MAP +
 // SPECIAL; a fight on a submap from MAP + that SUBMAP + SPECIAL. Old rows and local edits ({cards, special, submaps:{id:{cards, special}}}) are
 // read as the new shape (mpClean; tools/lib_map_pools.js normalizeEntry does the same for the file and the fold).
+// 2026-10-29 LISTFIX1 (decision APPLY1-1; owner 10-28 22:47 "Submaps would be 1-3 cards + 10+ carried over, so 11-14"): a submap's list is its
+// whole list (its own cards + the ones it carries, which may also sit on the parent's MAP list) and a submap fight draws only that SUBMAP +
+// SPECIAL, no longer the parent's MAP list. So a card may be on MAP and on a SUBMAP at once: adding to a list no longer takes it off the others,
+// and a move takes it off the list it came from only. A submap's cards still count for packs from the map that unlocks it (packIndexBuild).
 const MAP_POOLS_BASE = __MAP_POOLS__;
 const MAP_POOLS_KEY = 'bramblewood_map_pools_v1';
 let mapPoolEdits = {}; // {mainMapId: {pool:{cards, submaps, special}, localAt}}
@@ -19949,7 +19953,7 @@ function mpEntry(top){ const e = mapPoolEdits[top]; return mpClean(e && e.pool ?
 function mapPoolScope(mapId){ const sub = mpIsSub(mapId), top = mpTopOf(mapId); return {mapId, top, sub, ent: mpEntry(top)}; }
 // the tiers a FIGHT of this map reads, in order: MAP, its SUBMAP (a submap fight only), SPECIAL. key: 'cards' | 'sub:<submapId>' | 'special'
 function mapPoolTiers(mapId){
-  const sc = mapPoolScope(mapId), out = [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}];
+  const sc = mapPoolScope(mapId), out = sc.sub ? [] : [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}]; // LISTFIX1: a submap fight reads its own list, not MAP
   if(sc.sub){ const sm = mpMapById(mapId); out.push({key: 'sub:' + mapId, sub: mapId, ids: sc.ent.submaps[mapId] || [], label: TX('ui.mp-t-submap', {name: sm ? sm.name : mapId})}); }
   out.push({key: 'special', ids: sc.ent.special, label: TX('ui.mp-t-special')});
   return out;
@@ -19974,16 +19978,19 @@ function mpDrop(ent, id, tier){ // tier: one tier key, or null for every tier
   if(!tier || tier === 'special') ent.special = ent.special.filter(x=> x !== id);
   Object.keys(ent.submaps).forEach(k=>{ if(!tier || tier === 'sub:' + k) ent.submaps[k] = ent.submaps[k].filter(x=> x !== id); });
 }
-// 'special' only ever grows (the + Load any card path); 'cards' or 'sub:<id>' puts the card in that one tier, taking it out of the others (a move)
+// 'special' only ever grows (the + Load any card path); 'cards' or 'sub:<id>' puts the card in that tier. LISTFIX1 (2026-10-29): the other tiers
+// keep it (a submap's list carries cards of MAP); was: taken out of every other tier
 function mapPoolAdd(mapId, tier, id){
   mpMutate(mapId, ent=>{
     if(tier === 'special'){ if(!ent.special.includes(id)) ent.special.push(id); return; }
-    mpDrop(ent, id, null);
-    if(tier === 'cards') ent.cards.push(id); else { const k = String(tier).replace(/^sub:/, ''); (ent.submaps[k] = ent.submaps[k] || []).push(id); }
+    if(tier === 'cards'){ if(!ent.cards.includes(id)) ent.cards.push(id); return; }
+    const k = String(tier).replace(/^sub:/, ''), l = (ent.submaps[k] = ent.submaps[k] || []); if(!l.includes(id)) l.push(id);
   });
 }
 function mapPoolRemove(mapId, id, tier){ mpMutate(mapId, ent=> mpDrop(ent, id, tier || null)); }
-function mapPoolMove(mapId, id, to){ if(to && to !== 'special') mapPoolAdd(mapId, to, id); } // MAP <-> a SUBMAP; SPECIAL is never a move target (owner 07:41)
+function mapPoolMove(mapId, id, to, from){ if(!to || to === 'special') return; // MAP <-> a SUBMAP; SPECIAL is never a move target (owner 07:41)
+  mpMutate(mapId, ent=>{ if(from && from !== 'special') mpDrop(ent, id, from); else if(!from) mpDrop(ent, id, null); // LISTFIX1: off the list it came from only
+    if(to === 'cards'){ if(!ent.cards.includes(id)) ent.cards.push(id); } else { const k = String(to).replace(/^sub:/, ''), l = (ent.submaps[k] = ent.submaps[k] || []); if(!l.includes(id)) l.push(id); } }); }
 function mapPoolReset(mapId){ const top = mpTopOf(mapId); delete mapPoolEdits[top]; persistMapPools(); mpScheduleSave(top); mpChanged(); }
 const mpTimers = {};
 function mpScheduleSave(top){ clearTimeout(mpTimers[top]); mpTimers[top] = setTimeout(()=> publishMapPools(top), 700); }
@@ -20150,7 +20157,7 @@ function openMapCardsEditor(mapId0, o){
     const t = e.target; if(t === ov || t.closest('[data-mc-close]')) return close();
     let b;
     if((b = t.closest('[data-mc-detail]'))) return mpOpenDetail(b.dataset.mcDetail);
-    if((b = t.closest('[data-mc-add]'))){ const id = b.dataset.mcAdd; if(!sections().some(x=> x.ids.includes(id))) mapPoolAdd(mapId, ui.target, id); return; }
+    if((b = t.closest('[data-mc-add]'))){ const id = b.dataset.mcAdd, tg = sections().find(x=> x.key === ui.target); if(!(tg && tg.ids.includes(id))) mapPoolAdd(mapId, ui.target, id); return; } // LISTFIX1: into the chosen list even when another list has it
     if((b = t.closest('[data-mc-remove]'))) return mapPoolRemove(mapId, b.dataset.mcRemove, b.dataset.from);
     if((b = t.closest('[data-mc-density]'))){ ui.density = b.dataset.mcDensity; modal.dataset.density = ui.density; ov.querySelectorAll('[data-mc-density]').forEach(x=> x.classList.toggle('on', x === b)); return saveUi(); }
     if((b = t.closest('[data-mc-target]'))){ ui.target = b.dataset.mcTarget; focusSub = null; renderTarget(); return saveUi(); }
@@ -20158,7 +20165,7 @@ function openMapCardsEditor(mapId0, o){
     if(t.closest('[data-mc-more]')){ ui.shown += 48; const r = $('#mcAdd'), st = r.scrollTop; renderRes(); r.scrollTop = st; return; }
     if(t.closest('#mcReset')){ if(!resetArmed){ resetArmed = 1; renderReset(); setTimeout(()=>{ resetArmed = 0; if(ov.isConnected) renderReset(); }, 3000); return; } resetArmed = 0; return mapPoolReset(mapId); }
   });
-  ov.addEventListener('change', e=>{ const sel = e.target.closest && e.target.closest('[data-mc-moveto]'); if(sel && sel.value) mapPoolMove(mapId, sel.dataset.mcMoveto, sel.value); });
+  ov.addEventListener('change', e=>{ const sel = e.target.closest && e.target.closest('[data-mc-moveto]'); if(sel && sel.value) mapPoolMove(mapId, sel.dataset.mcMoveto, sel.value, sel.dataset.from); }); // LISTFIX1: from that list
   $('#mcMap').addEventListener('change', e=>{ mapId = e.target.value; focusSub = null; ui.target = 'cards'; usage = mpUsage(mapId); resetArmed = 0; ui.shown = 48; renderPool(); renderTarget(); renderReset(); renderRes(); $('#mcPool').scrollTop = 0; });
   $('#mcPoolSort').addEventListener('change', e=>{ ui.sort = e.target.value; saveUi(); renderPool(); });
   $('#mcSearch').addEventListener('input', e=>{ q = e.target.value; ui.shown = 48; clearTimeout(ov._t); ov._t = setTimeout(renderRes, 120); });
@@ -30504,7 +30511,7 @@ function bossEntrance(node, lair){
 // as a small crest. The fight's opener for a boss: a darker red side, a bigger rival face in the same skull frame, "Boss" in red, and a sting
 // (SoundKit.bossSting) as it opens. CSS: the vis3Styles block of arena_template.html. (Raid, world and final bosses keep their gold look.)
 // 2026-10-27 (package VIS4, K8; owner 10-27 11:22, on the fight panel: "Under this section, let me see the Map's cards."): the fight panel
-// ends with the cards of this map's pool (mapPoolIds: MAP, this submap's own, SPECIAL), small tiles that zoom on hover, focus or a tap
+// ends with the cards of this map's pool (mapPoolIds: MAP + SPECIAL; on a submap, 2026-10-29 LISTFIX1: its own whole list + SPECIAL), small tiles that zoom on hover, focus or a tap
 // (wireRewardZoom, as the reward strip does), by rarity then name. What a player may see follows the existing rules: a card of a rarity not revealed yet
 // (rarityRevealedForPlayer at the map they reached) is not shown, and they are counted in one 🔒 chip; a card never seen or owned is the
 // ❓ card back (isCardHiddenForPlayer), as in the reward strip. An admin sees the whole pool. None on a tutorial, PRO or virtual fight.

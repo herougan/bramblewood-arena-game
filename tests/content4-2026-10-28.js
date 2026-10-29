@@ -56,7 +56,8 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
   const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m]));
   Object.entries(plan.lists).forEach(([k, L])=>{ const live = L.sub ? (pools[L.map].submaps || {})[L.sub] : pools[L.map].cards;
     const t2 = T2[L.sub || L.map];
-    if(t2){ const want = t2.sub ? t2.proposed.filter(id=> !pools[L.map].cards.includes(id)) : t2.proposed;
+    // 2026-10-29 LISTFIX1 (decision APPLY1-1): a submap stores its whole proposal (a submap fight reads only its own list + SPECIAL)
+    if(t2){ const want = t2.proposed;
       ok(live && JSON.stringify(live) === JSON.stringify(want), `4. ${k}: the live list is THEME2's (APPLY1; ${live && live.length} vs ${want.length})`); return; }
     ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);

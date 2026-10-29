@@ -70,9 +70,12 @@ const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(read
 // 2026-10-19 (package TC): the cards the applied measured skill worth puts over budget wait for the post-balance step (owner 08:49)
 const QUEUE = new Set(readJSON('docs/balance/post-balance-queue.json').cards.map(c=> c.id));
 const BANDS = {common:[35, 60], uncommon:[45, 68], rare:[52, 75], veryrare:[56, 80], superrare:[60, 84], epic:[62, 87]};
+// 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): a card out of play (tools/lib_map_pools.js budgetHold 'unplaced') or
+// waiting for the owner's re-fit (step 3, 'pending': docs/balance/listfix1-pending-budget-2026-10-29.json) is reported, not failed
+const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), HELD = {unplaced: [], pending: []};
 pool.forEach(c=>{
-  const b = T.budget(c);
-  ok(b.ok || QUEUE.has(c.id), `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
+  const b = T.budget(c), hold = b.ok || QUEUE.has(c.id) ? '' : LMP.budgetHold(c.id); if(hold) HELD[hold].push(c.id);
+  ok(b.ok || QUEUE.has(c.id) || !!hold, `2. ${c.id}: inside budget v3 (2A+H+S ${b.x1} < N ${b.N}, A·H+S ${b.x2} < ${b.N2}) or on the post-balance queue`);
   if(QUEUE.has(c.id)) ok(!b.ok, `2. ${c.id}: queued for the post-balance step and still over (the queue is current)`);
   ok(!b.missing.length, `2. ${c.id}: every skill has a cost entry (${b.missing})`);
   ok(RR.roadRarityOk(c.rarity, numOf(c.poolMap), 'skirmish'), `2. ${c.id}: ${c.rarity} within the Map ${numOf(c.poolMap)} skirmish cap (${RR.roadRarityCap(numOf(c.poolMap), 'skirmish')})`);
@@ -85,6 +88,7 @@ pool.forEach(c=>{
   ok(c.effects && !('swimmer' in c.effects), `2. ${c.id}: uses Tide, not the retired Swimmer`);
 });
 
+if(HELD.unplaced.length || HELD.pending.length) console.log(`  · budget: ${HELD.unplaced.length} unplaced (out of play, not checked): ${HELD.unplaced.join(', ')}; ${HELD.pending.length} pending step 3: ${HELD.pending.join(', ')}`); // 2026-10-29 LISTFIX1
 // ---- 3. out of the live game
 ok(stillPool.every(c=> !c.source && c.locked === true && !c.basic && !c.hidden), '3. no source (no pack, reward or base card), locked');
 ok(pool.filter(c=> !c.pool).every(c=> (rpMoved(cards.find(x=> x.id === c.id)) || (c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish'))) && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields');

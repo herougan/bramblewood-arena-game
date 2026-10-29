@@ -75,7 +75,14 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
 // ---- M3: no card with a source carries the stale unattainable flag ------------------------------------------------------------------------
 { const cards = J('canonical/cards.json'), listed = new Set(); Object.values(J('canonical/map-pools.json').maps).forEach(e=> e.cards.concat(e.special || [], ...Object.values(e.submaps || {})).forEach(id=> listed.add(id)));
   const stale = cards.filter(c=> c.unattainable && c.source && c.source.kind && !c.awaitingSource && !(c.source.kind === 'pack' && ![11, 99].includes(+c.source.tier) && !(c.source.map && listed.has(c.id)))); // a basic-pack card with no map or in no map list is not placed: it keeps the flag
-  ok(stale.length === 0, `M3 no card with a source is flagged unattainable (${stale.length})`); }
+  // 2026-10-29 LISTFIX1 (decision APPLY1-2; owner 22:47): cards on no list are out of play. "On a list" is the game's (cardFirstMapList: the
+  // tutorial, endless dungeon and tower lists name no card's map), so a card only on those is out of play and keeps the flag; the flag follows
+  // tools/lib_map_pools.js isOutOfPlay both ways (docs/balance/listfix1-cards-2026-10-29.py)
+  const LMP = require(path.join(ROOT, 'tools', 'lib_map_pools.js')), BD = require(path.join(ROOT, 'tools', 'lib_bramble.js')).CARD_DEFS_BASELINE;
+  const stale2 = stale.filter(c=> BD[c.id] && !LMP.isOutOfPlay(G, BD[c.id]));
+  ok(stale2.length === 0, `M3 no card with a source and in play is flagged unattainable (${stale2.map(c=> c.id).join(', ') || stale2.length}; ${stale.length - stale2.length} only on the tutorial / endless / tower lists, out of play)`);
+  const unflagged = cards.filter(c=> !c.unattainable && !c.pool && !c.token && !c.test && !c.hero && !c.easterEgg && !['materia', 'spell', 'equipment'].includes(c.cardType) && BD[c.id] && LMP.isOutOfPlay(G, BD[c.id]));
+  ok(unflagged.length === 0, `M3 every card out of play carries the flag (LISTFIX1; ${unflagged.map(c=> c.id).join(', ') || 'all'})`); }
 
 // ---- K14: skirmish decks, non-map-unique cards at most 1 copy each and 6 in all ---------------------------------------------------------
 { const K = require(path.join(ROOT, 'tools', 'bal7_k14_decks_2026_10_28.js')), F = K.fights(), bad = F.filter(f=> K.violations(f, f.n.deck).length);
