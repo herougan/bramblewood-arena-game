@@ -87,7 +87,9 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
 
 // ---- CONTENT4-1 is NOT applied (coordinator, 2026-10-28: the owner decides after HUB9's view): the map lists are as CONTENT4 left them ----
 { const base = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, len = Object.values(pools).reduce((a, e)=> a + e.cards.length + Object.values(e.submaps || {}).reduce((s, l)=> s + l.length, 0), 0);
-  ok(len === base.summary.cardsBefore, `CONTENT4-1 the map lists are not capped (${len} entries, the plan's before ${base.summary.cardsBefore})`); }
+  // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05 "Okay to THEME1-1"), not CONTENT4-1's cap: every main map's MAP list is THEME2's proposal
+  const T2 = J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped && !m.sub), off = T2.filter(m=> JSON.stringify(pools[m.key].cards) !== JSON.stringify(m.proposed));
+  ok(len !== base.summary.cardsBefore && !off.length, `CONTENT4-1 not applied: the map lists are THEME2's (APPLY1; ${len} entries; off THEME2: ${off.map(m=> m.key).join(' ')})`); }
 
 console.log(`\nbal7: ${n - fail}/${n} passed`);
 process.exit(fail ? 1 : 0);
