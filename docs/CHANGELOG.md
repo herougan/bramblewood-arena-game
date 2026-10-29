@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-29 (package HUBDEC1: the hub's Decisions tab in three sub-tabs)
+- **🎮 Game / 🏗️ Architecture / 💰 Finance** (owner 10-29 19:14). Every item in `docs/decisions.json` has a `group` (465+6 game, 17+1 architecture, 1+2 finance, DONE+YET); each sub-tab has its own YET / DONE counts, status, area, type and search filters. Game opens first; the last sub-tab is remembered (localStorage); an item with no group counts as Game; a search or Home link to a decision switches to its sub-tab.
+- Tools: `tools/hub/decisions_add_group.py` (one-off, rewrites only the changed lines); every `tools/*decisions*.py` writer now sets `group` (default game) on the items it adds. Test: `tests/hubdec1-2026-10-29.js`.
+
 ## 2026-10-29 Release 10-29a (batch-1023e round 1: the new map lists)
 - Shipped: PACK1 (packs from the map lists, 🃏 Map cards admin button), APPLY1 + LISTFIX1 + THEME3 (the owner-approved map lists, submaps on their own list, the owner's 23:35 / 00:10 notes, tutorial T-1/T-2 list), REVIEW1 (Map cards gallery: Chosen / Cut cards / Maybe), FLAIR1 (the Dragon Lair's final-boss look), SKL0 (T-1/T-2 skills "?" except Flying; Bee Knight's Swarm at Level 1), TOOLS1 (balance workbench), RELFIX3 (PRO/BPRO reference decks rebuilt).
 - Checks: full unit run in chunks (no new failures; older failures unchanged), card-matrix (0 failures, 0 golden diffs), e2e ui_smoke (only the known tutorial 53%, TUT-1), flows (0 issues), flair1 and review1 (all pass).
