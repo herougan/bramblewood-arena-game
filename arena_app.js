@@ -11827,53 +11827,8 @@ async function loadMatchHistory(){
 // var, not let: read by matchHistoryPanelHTML, which can run before this line on an early render.
 var matchHistoryError = false;
 const MATCH_HISTORY_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
-function matchHistoryPanelHTML(){
-  if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
-  if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
-  if(matchHistoryError) return `<div class="panel"><h2>📜 Match History</h2>${netErrorHTML(TX('net.match-history-failed'), 'matchHistory', ()=>{ matchHistoryList = null; matchHistoryError = false; if(currentTab==='profile') renderProfile(); else loadMatchHistory(); })}</div>`; // renderProfile starts the load itself
-  if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a match and it shows up here.</p></div>`;
-  return `<div class="panel">
-    <h2>📜 Match History</h2>
-    <p class="panel-sub">Your last ${matchHistoryList.length} real matches — tap one to read back its full battle log.</p>
-    <div class="match-history-list">
-      ${matchHistoryList.map(row=>{
-        const when = new Date(row.played_at);
-        const whenStr = isNaN(when) ? '' : when.toLocaleDateString(undefined, {month:'short', day:'numeric'});
-        return `<div class="match-history-row" data-histid="${escapeAttr(row.id)}">
-          <span class="mh-result mh-${row.result}">${row.result==='win'?'W':row.result==='loss'?'L':'D'}</span>
-          <span class="mh-mode">${escapeHtml(MATCH_HISTORY_MODE_LABEL[row.mode]||row.mode)}</span>
-          <span class="mh-opponent">vs ${escapeHtml(row.opponent_label)}</span>
-          <span class="mh-rounds">${row.rounds||'?'} rounds</span>
-          <span class="mh-date">${whenStr}</span>
-        </div>
-        <div class="match-history-log" id="mhLog-${escapeAttr(row.id)}" hidden></div>`;
-      }).join('')}
-    </div>
-  </div>`;
-}
-function wireMatchHistoryPanel(){
-  document.querySelectorAll('.match-history-row').forEach(el=>{
-    el.addEventListener('click', ()=>{
-      const id = el.getAttribute('data-histid');
-      const logEl = document.getElementById('mhLog-'+id);
-      if(!logEl) return;
-      const wasOpen = !logEl.hidden;
-      // Only one open at a time — keeps a 30-match list from turning into an endless scroll of
-      // fully-expanded logs.
-      document.querySelectorAll('.match-history-log').forEach(l=>{ l.hidden = true; l.innerHTML=''; });
-      document.querySelectorAll('.match-history-row').forEach(r=>r.classList.remove('expanded'));
-      if(wasOpen) return; // toggle closed
-      const row = (matchHistoryList||[]).find(r=>String(r.id)===id);
-      if(!row) return;
-      logEl.innerHTML = (row.log||[]).map(ev=>{
-        try{ const {cls,text} = logText(ev); return `<div class="log-row ${cls}">${escapeHtml(text)}</div>`; }
-        catch(e){ return ''; } // a future/unknown event shape shouldn't break the whole replay
-      }).join('') || '<div class="log-row">No events recorded for this match.</div>';
-      logEl.hidden = false; logEl.scrollTop = logEl.scrollHeight; // the newest line first (2026-10-18, BP)
-      el.classList.add('expanded');
-    });
-  });
-}
+// 2026-10-29 (package UI1, owner O4: "There are two, match log and match history. Only keep match log."): the Profile's Match History panel (matchHistoryPanelHTML /
+// wireMatchHistoryPanel) is gone; the Match log is the only list. The signed-in match_history rows are still written and loaded because the stats panel reads them.
 // Out-of-game currencies (2026-09-18, Epic B — "Currencies: Gold, Gems, Magic Dust"): distinct
 // from any IN-MATCH resource (the HUD's own 🪙 Gold/acorns, 🪨 Stone/pitch-yield) — these persist
 // across matches in this browser, same as myDeckCounts/myLeaderId below. Naming note: the
@@ -56902,7 +56857,6 @@ function renderProfile(){
       </div>
     </div>
     ${matchLogPanelHTML() /* 2026-10-21 (package AR): the match log, moved here from the Arena */}
-    ${matchHistoryPanelHTML()}
   </div>`;
   wireMatchLogPanel(root);
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
@@ -56910,8 +56864,6 @@ function renderProfile(){
   { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
   wireAboutYou(); wireAdminProfileTools();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
-  wireMatchHistoryPanel();
-  if(isSignedIn() && matchHistoryList===null) loadMatchHistory();
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     if(isSignedIn()){ if(!confirm(TX('dialog.log-out-your-progress-is-saved'))) return; signOutAndSwitch(); return; }
     if(!confirm(TX('dialog.log-out-your-decks-currencies-and'))) return;
