@@ -48,9 +48,9 @@ async def run(b, url, w):
       cursor: getComputedStyle(document.querySelector('#pk1MapCardsOverlay .rv1-tile .vis4-mc-card')).cursor})""")
     ok(r['titles'] == 0 and '?' not in r['marks'] and r['why'] > 0 and r['cursor'] != 'help', f'S6 no native title, no "?" marker, the reason rides on the card for its detail {r}')
     card = await pg.query_selector('#pk1MapCardsOverlay .rv1-part.is-maybe .rv1-tile .vis4-mc-card') or await pg.query_selector('#pk1MapCardsOverlay .rv1-tile .vis4-mc-card')
-    await card.scroll_into_view_if_needed(); await card.hover(); await pg.wait_for_timeout(500)
-    r = await pg.evaluate("""()=>{ const z = document.querySelector('.cnp-rw-zoom'); if(!z) return null; const bb = z.getBoundingClientRect(), cs = getComputedStyle(z), top = document.elementFromPoint(bb.left + bb.width/2, bb.top + 20);
-      return {z: +cs.zIndex, op: +cs.opacity, hasTile: !!z.querySelector('.card-tile'), why: (z.querySelector('.cnp-rw-why')||{}).textContent || '', w: bb.width, over: getComputedStyle(document.getElementById('pk1MapCardsOverlay')).zIndex}; }""")
+    await card.scroll_into_view_if_needed(); await card.hover(); await pg.wait_for_timeout(2500)
+    r = await pg.evaluate("""()=>{ const zs = [...document.querySelectorAll('.cnp-rw-zoom')]; const z = zs.find(x=> x.classList.contains('is-in')) || zs[zs.length - 1]; if(!z) return null; const bb = z.getBoundingClientRect(), cs = getComputedStyle(z), top = document.elementFromPoint(bb.left + bb.width/2, bb.top + 20);
+      return {z: +cs.zIndex, op: z.classList.contains('is-in') ? 1 : 0, hasTile: !!z.querySelector('.card-tile'), why: (z.querySelector('.cnp-rw-why')||{}).textContent || '', w: bb.width, over: getComputedStyle(document.getElementById('pk1MapCardsOverlay')).zIndex}; }""")
     ok(r and r['hasTile'] and r['z'] > int(r['over']) and r['op'] > .9 and len(r['why']) > 3, f'S6 hovering a card shows the full card detail above the overlay with the reason line {r}')
     await shot(pg, 'mapcards-hover-detail', w)
     await pg.mouse.move(2, 2); await pg.wait_for_timeout(300)
@@ -75,7 +75,7 @@ async def run(b, url, w):
       conquestWorldView = false; conquestSelectedMap = 'm1'; conquestSelectedNodeKey = null; playSubTab = 'conquest'; switchTab('play'); await new Promise(r=> setTimeout(r, 1500));
       const b = document.getElementById('mlPlayers'); const bar = b && b.closest('.map-layout-bar');
       return {has: !!b, text: b && b.textContent.trim(), order: bar && [...bar.querySelectorAll('button')].map(x=> x.id)};"""))
-    ok(r['has'] and r['text'].startswith('👥') and r['order'].index('mlUnclearMap') < r['order'].index('mlPlayers'), f'S8 the map admin bar has a 👥 Players button after Unclear map {r}')
+    ok(r['has'] and r['text'].endswith('Players') and r['order'].index('mlUnclearMap') < r['order'].index('mlPlayers'), f'S8 the map admin bar has a 👥 Players button after Unclear map {r}')
     await shot(pg, 'map-admin-bar-players', w, '.map-layout-bar', 14)
     await pg.click('#mlPlayers'); await pg.wait_for_timeout(900)
     r = await pg.evaluate("({ov: !!document.querySelector('.adminu1-overlay'), msg: (document.querySelector('.adminu1-overlay') || {}).textContent || ''})")

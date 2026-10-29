@@ -2346,6 +2346,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.coop2-cpu-name": "CPU ally",
   "ui.ui3-seat-cpu-start": "A CPU ally with a random deck joins at Start",
   "ui.ui3-cpu-random": "Plays a random deck",
+  "ui.ui3-back-arena": "Back to the Arena",
   "ui.coop2-kind-solo": "You and a CPU ally, a row each.",
   "ui.coop2-kind-live": "Online room: a friend joins with this code (or your invite).",
   "ui.coop2-how": "Each player holds a row and plays from their own hand. You may also play into your ally's empty slots; whoever claims a slot first gets it.",

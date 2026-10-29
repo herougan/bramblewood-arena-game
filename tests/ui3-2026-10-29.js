@@ -108,10 +108,10 @@ ok(/id="mlPlayers"[^>]*>👥 \$\{escapeHtml\(TX\('ui\.adminu1-title'\)\)\}/.test
 
 // ---- texts in 12 packs
 { const keys = {'ui.ui3-export-all': 'Export all', 'ui.ui3-export-all-tip': 'Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.',
-    'ui.ui3-export-copied': 'Copied everything: paste it to Claude, or download it', 'ui.ui3-export-ready': 'Ready: download it', 'ui.ui3-seat-cpu-start': 'A CPU ally with a random deck joins at Start', 'ui.ui3-cpu-random': 'Plays a random deck'};
+    'ui.ui3-export-copied': 'Copied everything: paste it to Claude, or download it', 'ui.ui3-export-ready': 'Ready: download it', 'ui.ui3-seat-cpu-start': 'A CPU ally with a random deck joins at Start', 'ui.ui3-cpu-random': 'Plays a random deck', 'ui.ui3-back-arena': 'Back to the Arena'};
   Object.keys(keys).forEach(k=> ok(texts.includes(`"${k}": ${JSON.stringify(keys[k])}`), 'texts: TX key ' + k));
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const p = JSON.parse(rd('lang/' + c + '.json'));
-    ok(Object.values(keys).every(en=> p[en] && p[en] !== en), 'texts: all 6 rows translated in lang/' + c + '.json'); }); }
+    ok(Object.values(keys).every(en=> p[en] && p[en] !== en), 'texts: all 7 rows translated in lang/' + c + '.json'); }); }
 
 console.log(`ui3: ${checks - fail}/${checks} checks passed`);
 process.exit(fail ? 1 : 0);

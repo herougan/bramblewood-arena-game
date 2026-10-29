@@ -25470,7 +25470,7 @@ function gdEndHTML(){
   return gdHeadHTML(`👥 ${escapeHtml(gdThemedName())}`, gdKindLine()) + `<div class="gd-panel ${all ? 'is-won' : 'is-lost'}" role="status"><h3>${all ? '👑' : '🌊'} ${escapeHtml(all ? TX('ui.ar3-run-cleared') : TX('ui.ar3-run-over'))}</h3>
     <p class="gd-panel-sub">${escapeHtml(TX('ui.ar3-floors-cleared', {n: cleared, total}))} ${ranks}</p>
     ${sum.gold || sum.dust ? `<div class="gd-chest"><span>${escapeHtml(TX('ui.ar3-chests-total'))}</span><b>${CURRENCY_META.gold.glyph} ${sum.gold}</b><b>${CURRENCY_META.dust.glyph} ${sum.dust}</b></div>` : ''}${cards}
-    <button type="button" class="btn primary" data-gd-act="close">${escapeHtml(TX('ui.ar3-back'))}</button></div>`;
+    <button type="button" class="btn primary" data-gd-act="close">${escapeHtml(TX('ui.ui3-back-arena'))}</button></div>`; // 2026-10-29 (UI3, S9): it leads to the Arena's Co-op pane now
 }
 function gdWireOverlay(ov){
   ov.addEventListener('click', e=>{
