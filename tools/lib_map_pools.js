@@ -26,8 +26,11 @@ function normalizeEntry(p){
   return {cards: uniq(p.cards), submaps: subs, special};
 }
 // the ids a fight draws from: pools = the file's {maps: {...}}, mapId = the fight's map, parentId = its main map when mapId is a submap
+const PARENT_POOL_SUBS = new Set(['mm', 'muc', 'mlb']);
 function fightPool(pools, mapId, parentId){
   const top = parentId || mapId, e = (pools && pools.maps || {})[top]; if(!e) return null; const n = normalizeEntry(e);
+  // 2026-10-29 (coordinator): the endless dungeons and the tower keep their parent's MAP list too (the game's MP_PARENT_POOL_SUBS)
+  if(parentId && PARENT_POOL_SUBS.has(mapId)) return new Set(n.cards.concat(n.submaps[mapId] || [], n.special));
   return new Set((parentId ? (n.submaps[mapId] || []) : n.cards).concat(n.special));
 }
 // every id on any list of the file (MAP, every SUBMAP, SPECIAL)

@@ -50667,7 +50667,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd6b4764f310c', BUILD_CARD_HASH = '7ba23ae387ca187fa1e774218956894d0f2ad9ae3217c834e5afd182e256b136';
+const BUILD_ID = 'af40c14f4e82', BUILD_CARD_HASH = '7ba23ae387ca187fa1e774218956894d0f2ad9ae3217c834e5afd182e256b136';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -67070,8 +67070,11 @@ function mpClean(p){
 function mpEntry(top){ const e = mapPoolEdits[top]; return mpClean(e && e.pool ? e.pool : ((MAP_POOLS_BASE || {}).maps || {})[top]); }
 function mapPoolScope(mapId){ const sub = mpIsSub(mapId), top = mpTopOf(mapId); return {mapId, top, sub, ent: mpEntry(top)}; }
 // the tiers a FIGHT of this map reads, in order: MAP, its SUBMAP (a submap fight only), SPECIAL. key: 'cards' | 'sub:<submapId>' | 'special'
+const MP_PARENT_POOL_SUBS = new Set(['mm', 'muc', 'mlb']);
 function mapPoolTiers(mapId){
-  const sc = mapPoolScope(mapId), out = sc.sub ? [] : [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}]; // LISTFIX1: a submap fight reads its own list, not MAP
+  // 2026-10-29 (coordinator, LISTFIX1 follow-up): the endless dungeons and the tower (mm, muc, mlb) were not in THEME2 and keep drawing on
+  // their parent's MAP list as before, until the owner's dungeon plan (10-29 00:10, Q8: own cards + up to 30 carried) gives them their own lists.
+  const sc = mapPoolScope(mapId), out = (sc.sub && !MP_PARENT_POOL_SUBS.has(mapId)) ? [] : [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}]; // LISTFIX1: a submap fight reads its own list, not MAP
   if(sc.sub){ const sm = mpMapById(mapId); out.push({key: 'sub:' + mapId, sub: mapId, ids: sc.ent.submaps[mapId] || [], label: TX('ui.mp-t-submap', {name: sm ? sm.name : mapId})}); }
   out.push({key: 'special', ids: sc.ent.special, label: TX('ui.mp-t-special')});
   return out;

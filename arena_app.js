@@ -19952,8 +19952,11 @@ function mpClean(p){
 function mpEntry(top){ const e = mapPoolEdits[top]; return mpClean(e && e.pool ? e.pool : ((MAP_POOLS_BASE || {}).maps || {})[top]); }
 function mapPoolScope(mapId){ const sub = mpIsSub(mapId), top = mpTopOf(mapId); return {mapId, top, sub, ent: mpEntry(top)}; }
 // the tiers a FIGHT of this map reads, in order: MAP, its SUBMAP (a submap fight only), SPECIAL. key: 'cards' | 'sub:<submapId>' | 'special'
+const MP_PARENT_POOL_SUBS = new Set(['mm', 'muc', 'mlb']);
 function mapPoolTiers(mapId){
-  const sc = mapPoolScope(mapId), out = sc.sub ? [] : [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}]; // LISTFIX1: a submap fight reads its own list, not MAP
+  // 2026-10-29 (coordinator, LISTFIX1 follow-up): the endless dungeons and the tower (mm, muc, mlb) were not in THEME2 and keep drawing on
+  // their parent's MAP list as before, until the owner's dungeon plan (10-29 00:10, Q8: own cards + up to 30 carried) gives them their own lists.
+  const sc = mapPoolScope(mapId), out = (sc.sub && !MP_PARENT_POOL_SUBS.has(mapId)) ? [] : [{key: 'cards', ids: sc.ent.cards, label: TX('ui.mp-t-map')}]; // LISTFIX1: a submap fight reads its own list, not MAP
   if(sc.sub){ const sm = mpMapById(mapId); out.push({key: 'sub:' + mapId, sub: mapId, ids: sc.ent.submaps[mapId] || [], label: TX('ui.mp-t-submap', {name: sm ? sm.name : mapId})}); }
   out.push({key: 'special', ids: sc.ent.special, label: TX('ui.mp-t-special')});
   return out;
