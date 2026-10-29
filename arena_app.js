@@ -29427,7 +29427,22 @@ function tutorialKeepSkills(st){
 }
 // 2026-10-12 (10:42, user: "Dont nerf the cards in the tutorials. It's okay, i editted the cards so that in Tutorial 1, none have
 // skills. In tutorial 2, you have our leader, and honey bees with flying"): the tutorial plays its cards as they are.
-function tutorialPlainDeck(deck, st){ return Object.assign({}, deck||{}); }
+// T-1 / T-2 copies at Level 0, both sides (2026-10-29, package SKL0, owner 13:07: "we can also make the lvl 0 <-> lvl 1 skills trick"): a card
+// whose level is above 0 here (Bee Knight's own level is 1; the rival's cards share your defs, so they had your level) fights as a Level 0
+// copy "<id>~tut0" (its Level 0 stats), and a skill that arrives at a later level (levelSkills 1+: Bee Knight's Swarm) is not on it, so a
+// Level 0 Bee Knight has Flying only. From Map 0 on, the card is as before (Bee Knight: Flying + Swarm at its Level 1). Cards at Level 0 with
+// no such skill (every Base card of today's decks) are dealt as they are.
+function tutorialLevel0Def(id){
+  const d = getCardDefs()[id], b = copyBaseDef(id) || d; if(!d || !b || (b.attack == null && b.health == null)) return null;
+  const base = cardBaseLevel(b), lvl = Number.isFinite(d.level) ? d.level : base, ls = b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
+  let later = 0; Object.keys(ls).map(Number).filter(k=> k > 0).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ if(x in fx){ delete fx[x]; later++; } }));
+  if(lvl <= 0 && !later) return null;
+  const st0 = statsAtLevel(b, 0), o = Object.assign({}, d, {id: id + '~tut0', derivedFrom: id, attack: st0.attack, health: st0.health, level: 0, baseLevel: base, effects: fx, locked: false});
+  delete o.socketGem; delete o.enchant; if(base > 0) o.hatchling = true; return o; }
+function tutorialPlainDeck(deck, st){ const out = {};
+  Object.entries(deck || {}).forEach(([id, n])=>{ let o = null; try{ o = tutorialLevel0Def(id); }catch(e){ o = null; }
+    if(o){ matchDefsOverlay[o.id] = o; out[o.id] = (out[o.id] || 0) + n; } else out[id] = (out[id] || 0) + n; });
+  return out; }
 function tutorialPlainDeckStripped(deck, st){
   const keep = new Set(tutorialKeepSkills(st)), defs = getCardDefs(), out = {};
   Object.entries(deck||{}).forEach(([id, n])=>{

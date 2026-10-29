@@ -175,6 +175,11 @@
       "swarm": true,
       "flying": true
     },
+    "levelSkills": {
+      "1": {
+        "swarm": true
+      }
+    },
     "species": [
       "Insect"
     ],
