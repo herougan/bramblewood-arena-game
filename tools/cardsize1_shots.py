@@ -75,7 +75,7 @@ SCREENS = {
   'codex-hover': [RICH, "(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()", 'HOVER:#view-codex .card-tile'],
   'detail': [f"(async()=>{{ openCardDetail({FIRST}); await new Promise(r=> setTimeout(r, 1200)); }})()"],
   'inspector': [f"(async()=>{{ openCardInspector({FIRST}); await new Promise(r=> setTimeout(r, 1200)); }})()"],
-  'deck': [RICH, "(async()=>{ deckShowList = false; deckEditingId = activeDeckId; switchTab('deck'); await new Promise(r=> setTimeout(r, 2500)); })()"],
+  'deck': [RICH, "(async()=>{ deckShowList = false; deckEditingId = activeDeckId; switchTab('deck'); await new Promise(r=> setTimeout(r, 1500)); const e = document.querySelector('[data-editdeck]'); if(e) e.click(); await new Promise(r=> setTimeout(r, 2500)); })()"],
   'deck-popup': [RICH, "(async()=>{ switchTab('home'); openDeckBuilderPopup({title:'Skirmish deck', counts:{}, unlimited:true}); await new Promise(r=> setTimeout(r, 2000)); })()"],
   'fight': [BOARD],
   'fight-hover': [BOARD, 'HOVER:#rowMine .board-card .card-tile'],
@@ -89,8 +89,8 @@ SCREENS = {
   'nest': [RICH, "(async()=>{ switchTab('nest'); await new Promise(r=> setTimeout(r, 2500)); })()"],
   'forge': [RICH, "(async()=>{ codexSubTab='forge'; switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
   'raid-hub': ["(async()=>{ playSubTab='raid'; switchTab('play'); await new Promise(r=> setTimeout(r, 2000)); })()"],
-  'raid-fight': ["(async()=>{ playSubTab='raid'; switchTab('play'); await new Promise(r=> setTimeout(r, 1200)); document.querySelector('.raid-hub [data-raid-open]').click(); await new Promise(r=> setTimeout(r, 800)); document.querySelector('[data-raid-part=left]').click(); await new Promise(r=> setTimeout(r, 3500)); })()"],
-  'skirmish-gallery': ["(async()=>{ openSkirmishGallery(); await new Promise(r=> setTimeout(r, 2000)); })()"],
+  'raid-fight': ["(async()=>{ playSubTab='raid'; switchTab('play'); await new Promise(r=> setTimeout(r, 1200)); document.querySelector('.raid-hub [data-raid-open]').click(); await new Promise(r=> setTimeout(r, 800)); document.querySelector('[data-raid-part=left]').click(); await new Promise(r=> setTimeout(r, 2500)); const st = [...document.querySelectorAll('button')].find(b=> /Start the fight/.test(b.textContent)); if(st) st.click(); await new Promise(r=> setTimeout(r, 5000)); })()"],
+  'fight-deckview': [BOARD, "(async()=>{ openMatchDeckView(2); await new Promise(r=> setTimeout(r, 1500)); })()"],
   'profile': ["(async()=>{ switchTab('profile'); await new Promise(r=> setTimeout(r, 2500)); })()"],
   'home': ["(async()=>{ switchTab('home'); await new Promise(r=> setTimeout(r, 2000)); })()"],
 }
@@ -110,7 +110,7 @@ async def run_screen(b, url, w, name, steps, report):
             else:
                 await pg.evaluate(s)
         groups = await pg.evaluate(MEASURE, name)
-        full = os.path.join(KEEP, f'{name}-full-{w}.jpg'); await pg.screenshot(path=full, type='jpeg', quality=70)
+        full = os.path.join(KEEP, f'{name}-full-{w}.jpg'); await pg.screenshot(path=full, type='jpeg', quality=70, animations='disabled', timeout=60000)
         for g in groups:
             if g['n'] < 1: continue
             f = os.path.join(KEEP, f"{name}--{slug(g['ctx'])}-{w}.jpg")
@@ -122,7 +122,7 @@ async def run_screen(b, url, w, name, steps, report):
                     vw = w; vh = 844 if w < 700 else 860
                     if y + bb['height'] > vh: await h.scroll_into_view_if_needed(); bb = await h.bounding_box(); x, y = max(0, bb['x'] - pad), max(0, bb['y'] - pad)
                     cw, ch = min(bb['width'] + 2 * pad, vw - x), min(bb['height'] + 2 * pad, vh - y)
-                    if cw > 4 and ch > 4: await pg.screenshot(path=f, type='jpeg', quality=80, clip={'x': x, 'y': y, 'width': cw, 'height': ch}); g['shot'] = os.path.relpath(f, ROOT)
+                    if cw > 4 and ch > 4: await pg.screenshot(path=f, type='jpeg', quality=80, animations='disabled', timeout=60000, clip={'x': x, 'y': y, 'width': cw, 'height': ch}); g['shot'] = os.path.relpath(f, ROOT)
             except Exception as e: g['shoterr'] = str(e)[:100]
             g['screen'] = name; g['width'] = w; report.append(g)
         print(f'  {name}@{w}: {len(groups)} groups', ('ERR ' + errs[0]) if errs else '', flush=True)
