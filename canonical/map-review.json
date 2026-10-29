@@ -3165,11 +3165,6 @@
      "by": "kept"
     },
     {
-     "id": "rafflesia",
-     "why": "Owner C2: placed by THEME3; a rainforest corpse flower (a 4th unique card here: owner call)",
-     "by": "owner"
-    },
-    {
      "id": "leafcutter-gardener",
      "why": "Carried from Map 7: jungle leafcutter ants",
      "by": "claude"
@@ -3240,6 +3235,11 @@
      "id": "meerkat-burrower",
      "why": "A ground burrower under a rainforest roof",
      "by": "claude"
+    },
+    {
+     "id": "rafflesia",
+     "why": "Owner 13:07: \"we'll find another place for it\" (off The Canopy; a later jungle map) (already off since THEME2)",
+     "by": "owner"
     }
    ],
    "maybe": [
