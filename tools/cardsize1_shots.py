@@ -68,7 +68,7 @@ RICH = "(()=>{ const d = getCardDefs(); Object.keys(d).filter(i=> d[i].art && !d
 TEAR = """(async()=>{ myCurrencies.gold = 99999; saveCurrencies(); const p = getShopPacks().find(x=> x.id === 'bronze') || getShopPacks()[0]; const o = purchasePackOnce(p, true); o.results.forEach(r=> r.isNew = true); openPackAnimation(p, [o]); await new Promise(r=> setTimeout(r, 1500));
   const ov = document.getElementById('packOpenOverlay'); const strip = ov.querySelector('#poStrip'); if(strip){ const r = strip.getBoundingClientRect(); const fire = (type, x)=> strip.dispatchEvent(new PointerEvent(type, {bubbles:true, clientX:x, clientY:r.top + r.height/2, pointerId:1, pointerType:'mouse', buttons:1}));
   fire('pointerdown', r.left + 4); for(let i = 1; i <= 12; i++){ fire('pointermove', r.left + r.width*i/12); await new Promise(z=> setTimeout(z, 16)); } fire('pointerup', r.right - 2); } await new Promise(z=> setTimeout(z, 2200)); })()"""
-CLICK1 = "(async()=>{ const ov = document.getElementById('packOpenOverlay'); const c = ov.querySelector('.po-card:not(.is-collected)'); if(c) c.click(); await new Promise(z=> setTimeout(z, 1600)); })()"
+CLICK1 = "(async()=>{ const ov = document.getElementById('packOpenOverlay'); const c = ov.querySelector('.po-card:not(.is-collected)'); if(c) c.click(); await new Promise(z=> setTimeout(z, 700)); })()"
 SUMMARY = "(async()=>{ const ov = document.getElementById('packOpenOverlay'); for(let k = 0; k < 40 && !ov.querySelector('.po2-summary'); k++){ const c = ov.querySelector('.po-card:not(.is-collected)'); if(c){ c.click(); await new Promise(z=> setTimeout(z, 650)); } else await new Promise(z=> setTimeout(z, 300)); } await new Promise(z=> setTimeout(z, 1500)); })()"
 SCREENS = {
   'codex': [RICH, "(async()=>{ switchTab('codex'); await new Promise(r=> setTimeout(r, 2500)); })()"],
@@ -109,6 +109,7 @@ async def run_screen(b, url, w, name, steps, report):
                 if el: await el.hover(); await pg.wait_for_timeout(1400)
             else:
                 await pg.evaluate(s)
+        await pg.add_style_tag(content='#toastHost,.toast-host,.npc-prompt,.coach-tip,.speaker-bubble,.dlg-bubble,:has(> .dlg-body){display:none !important}')
         groups = await pg.evaluate(MEASURE, name)
         full = os.path.join(KEEP, f'{name}-full-{w}.jpg'); await pg.screenshot(path=full, type='jpeg', quality=70, animations='disabled', timeout=60000)
         for g in groups:
@@ -120,7 +121,7 @@ async def run_screen(b, url, w, name, steps, report):
                 if bb and bb['width'] > 0:
                     pad = 10; x, y = max(0, bb['x'] - pad), max(0, bb['y'] - pad)
                     vw = w; vh = 844 if w < 700 else 860
-                    if y + bb['height'] > vh: await h.scroll_into_view_if_needed(); bb = await h.bounding_box(); x, y = max(0, bb['x'] - pad), max(0, bb['y'] - pad)
+                    if y + bb['height'] > vh or bb['y'] < 0: await h.scroll_into_view_if_needed(); bb = await h.bounding_box(); x, y = max(0, bb['x'] - pad), max(0, bb['y'] - pad)
                     cw, ch = min(bb['width'] + 2 * pad, vw - x), min(bb['height'] + 2 * pad, vh - y)
                     if cw > 4 and ch > 4: await pg.screenshot(path=f, type='jpeg', quality=80, animations='disabled', timeout=60000, clip={'x': x, 'y': y, 'width': cw, 'height': ch}); g['shot'] = os.path.relpath(f, ROOT)
             except Exception as e: g['shoterr'] = str(e)[:100]
