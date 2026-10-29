@@ -1381,64 +1381,64 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 
 ## Map 14: The Canopy (`my`, side map of `m5`, opens on Map 18), your level 1
 
-- Throughput: 15260 games in 169.6 s = **90 games/s** (2 workers). Search: ga, budget 8000 games (10348 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map my --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
-- Pool: 37 cards (37 map cards + 0 owned by then); phase 2 37 (+0 candidates).
+- Throughput: 15468 games in 216.4 s = **71.5 games/s** (2 workers). Search: ga, budget 8000 games (10556 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map my --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 36 cards (36 map cards + 0 owned by then); phase 2 36 (+0 candidates).
 - Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 306 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, pride-queen, the-gannet-queen).
 
-Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome jungle (kin savanna, volcanic-ash), terrain types Flora, Forest, Rainforest, Taiga, field aiGuardLethal, canopy, phase:cycle, woods, unit types Amphibian 2, Ape 3, Bird 6, Felid 2, Frog 2, Hyaenid 2, Insect 4, Primate 4, Rainforest 12, Reptile 2, Rodent 2, Savanna 13, Sloth 2, Xenarthran 3, skill families armor 3, evasion 2, ranged 2, siege 2, strike-first 2, tide 3.
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome jungle (kin savanna, volcanic-ash), terrain types Flora, Forest, Rainforest, Taiga, field aiGuardLethal, canopy, phase:cycle, woods, unit types Amphibian 2, Ape 3, Bird 6, Felid 2, Frog 2, Hyaenid 2, Insect 4, Primate 4, Rainforest 11, Reptile 2, Rodent 2, Savanna 13, Sloth 2, Xenarthran 3, skill families armor 3, evasion 2, ranged 2, siege 2, strike-first 2, tide 3.
 
 | Card | rarity | obtainable | score | why |
 |---|---|---|---|---|
 
-Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 672; map rule: over the map's rarity cap (veryrare) 61.
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 673; map rule: over the map's rarity cap (veryrare) 61.
 
-- **Optimum (map cards)**: score 50.6% [47.5%, 53.6%], mirror 63.8%, road 10.9%: 4x Weaver Bird, 3x Siege Rhino, 3x Slow Loris, 3x Slowpoke Sentinel, 2x Bramblewood Macaque, 2x Grave-Grin Hyena, 1x Aye-aye Prowler, 1x Old-Growth Tortoise, 1x Springbok Pronker
+- **Optimum (map cards)**: score 57.8% [54.9%, 60.7%], mirror 72.8%, road 12.8%: 5x Hoopoe Herald, 5x Slow Loris, 3x Grave-Grin Hyena, 3x Siege Rhino, 1x Apollo Butterfly, 1x Old-Growth Tortoise, 1x Plains Zebra, 1x Springbok Pronker
 - With the candidates: no deck beat the map-card optimum.
 - Best candidate swaps into the map-card optimum: -
 
 **Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 3
 
-0. 50.6% [47.5%, 53.6%], 0 copies from the optimum: 4x Weaver Bird, 3x Siege Rhino, 3x Slow Loris, 3x Slowpoke Sentinel, 2x Bramblewood Macaque, 2x Grave-Grin Hyena, 1x Aye-aye Prowler, 1x Old-Growth Tortoise, 1x Springbok Pronker
-1. 48.1% [45%, 51.2%], 11 copies from the optimum: 4x Dust Hyena, 2x Bramblewood Macaque, 2x Chilli Parrot, 2x Siege Rhino, 2x Slow Loris, 2x Slowpoke Sentinel, 1x Aye-aye Prowler, 1x Hercules Beetle, 1x Howler Monkey, 1x Jaguar Stalker, 1x Lyrebird Mimic, 1x Poison Dart Croaker
-2. 46.8% [43.7%, 50%], 14 copies from the optimum: 5x Hoopoe Herald, 3x Bramblewood Macaque, 2x Slowpoke Sentinel, 1x Ancient Sloth Titan, 1x Apollo Butterfly, 1x Dust Hyena, 1x Mouse Sapper, 1x Pangolin Roller, 1x Poison Dart Croaker, 1x Siege Rhino, 1x Spitting Cobra, 1x Velvet Worm, 1x Weaver Bird
+0. 57.8% [54.9%, 60.7%], 0 copies from the optimum: 5x Hoopoe Herald, 5x Slow Loris, 3x Grave-Grin Hyena, 3x Siege Rhino, 1x Apollo Butterfly, 1x Old-Growth Tortoise, 1x Plains Zebra, 1x Springbok Pronker
+1. 48.2% [45.1%, 51.3%], 9 copies from the optimum: 5x Hoopoe Herald, 3x Bramblewood Macaque, 2x Slow Loris, 2x Slowpoke Sentinel, 1x Apollo Butterfly, 1x Chilli Parrot, 1x Grave-Grin Hyena, 1x Old-Growth Tortoise, 1x Siege Rhino, 1x Spitting Cobra, 1x Velvet Worm, 1x Weaver Bird
+2. 49.1% [46%, 52.2%], 11 copies from the optimum: 4x Weaver Bird, 3x Siege Rhino, 2x Bramblewood Macaque, 2x Grave-Grin Hyena, 2x Old-Growth Tortoise, 2x Slow Loris, 2x Slowpoke Sentinel, 2x Springbok Pronker, 1x Toucan Courier
 
 | row vs column (fair h2h, the map's fields) | 0 | 1 | 2 |
 |---|---|---|---|
-| 0 | - | 52.5% (+17) | 60% (+70) |
-| 1 | 47.5% (-17) | - | 53.8% (+26) |
-| 2 | 40% (-70) | 46.2% (-26) | - |
+| 0 | - | 67.5% (+127) | 71.3% (+158) |
+| 1 | 32.5% (-127) | - | 57.5% (+53) |
+| 2 | 28.7% (-158) | 42.5% (-53) | - |
 
-- **Fight decks vs the optimum:** Elo gap median 89 (-44 to 137); as your deck they score -0.6 to 14.8 points below the optimum.
+- **Fight decks vs the optimum:** Elo gap median 100 (44 to 237); as your deck they score 6.7 to 21.6 points below the optimum.
 
 | Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
 |---|---|---|---|---|---|
-| 14-A-1 skirmish's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 46.6% | 2.2 ±5.3 | 90% |
-| 14-A-2 skirmish's deck | 62.5% [50.3%-73.3%] | 89 [2, 176] | 49.9% | -0.6 ±5.5 | 80% |
-| 14-A-3 skirmish's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 33.9% | 14.8 ±5.5 | 70% |
-| 14-A-4 elite's deck | 45.3% [33.7%-57.4%] | -33 [-117, 52] | 47.8% | 3.3 ±5.4 | 60% |
-| 14-A-5 boss's deck | 43.8% [32.3%-55.9%] | -44 [-129, 41] | 48.8% | 2.5 ±5.5 | 40% |
-| reference starter deck under 14-A-1's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 6.3% | 39.5 ±4.3 | - |
-| reference deck (Map 18) under 14-A-2's field | 57% [44.8%-68.4%] | 49 [-36, 134] | 39.7% | 10.2 ±5.5 | - |
-| expected player deck (expectedPlayerDeck) under 14-A-3's field | 68.8% [56.6%-78.8%] | 137 [46, 228] | 34.6% | 14.1 ±5.5 | - |
+| 14-A-1 skirmish's deck | 57.8% [45.6%-69.1%] | 55 [-31, 140] | 46.6% | 11.1 ±5.2 | 90% |
+| 14-A-2 skirmish's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 49.9% | 6.7 ±5.4 | 80% |
+| 14-A-3 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 33.9% | 21.6 ±5.4 | 70% |
+| 14-A-4 elite's deck | 56.3% [44.1%-67.7%] | 44 [-41, 129] | 47.8% | 10.1 ±5.3 | 60% |
+| 14-A-5 boss's deck | 64.1% [51.8%-74.7%] | 100 [13, 188] | 49.2% | 7.9 ±4.4 | 40% |
+| reference starter deck under 14-A-1's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 6.3% | 47.2 ±4.1 | - |
+| reference deck (Map 18) under 14-A-2's field | 80.5% [69.2%-88.3%] | 246 [140, 352] | 39.7% | 15.7 ±5.4 | - |
+| expected player deck (expectedPlayerDeck) under 14-A-3's field | 76.6% [64.9%-85.3%] | 206 [107, 305] | 34.6% | 21.2 ±5.4 | - |
 
 | Fight (as the game builds it) | optimum wins | road-curve target |
 |---|---|---|
-| 14-A-1 skirmish | 14.1% [7.6%-24.6%] | 90% |
-| 14-A-2 skirmish | 21.9% [13.5%-33.4%] | 80% |
-| 14-A-3 skirmish | 10.9% [5.4%-20.9%] | 70% |
-| 14-A-4 elite | 4.7% [1.6%-12.9%] | 60% |
-| 14-A-5 boss | 3.1% [0.9%-10.7%] | 40% |
+| 14-A-1 skirmish | 18.8% [11.1%-30%] | 90% |
+| 14-A-2 skirmish | 15.6% [8.7%-26.4%] | 80% |
+| 14-A-3 skirmish | 26.6% [17.3%-38.5%] | 70% |
+| 14-A-4 elite | 3.1% [0.9%-10.7%] | 60% |
+| 14-A-5 boss | 0% [0%-5.7%] | 40% |
 
 | Field (fight) | optimum with field | without | impact |
 |---|---|---|---|
-| fight:14-A-1 @ 14-A-1: aiGuardLethal, canopy, phase cycle, woods | 67.2% | 59.4% | +7.8 [-8.8, 24.5] |
-| fight:14-A-2 @ 14-A-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 62.5% | 45.3% | +17.2 [0.2, 34.2] |
-| fight:14-A-3 @ 14-A-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 68.8% | 82.8% | -14.1 [-28.7, 0.6] |
-| fight:14-A-4 @ 14-A-4: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 45.3% | 62.5% | -17.2 [-34.2, -0.2] |
-| fight:14-A-5 @ 14-A-5: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 43.8% | 39.1% | +4.7 [-12.4, 21.7] |
-| ref:starter @ 14-A-1: aiGuardLethal, canopy, phase cycle, woods | 96.9% | 93.8% | +3.1 [-4.2, 10.4] |
-| ref:road18 @ 14-A-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 57% | 62.5% | -5.5 [-22.4, 11.5] |
-| ref:expected @ 14-A-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 68.8% | 68.8% | +0 [-16.1, 16.1] |
+| fight:14-A-1 @ 14-A-1: aiGuardLethal, canopy, phase cycle, woods | 57.8% | 59.4% | -1.6 [-18.6, 15.5] |
+| fight:14-A-2 @ 14-A-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 68.8% | 65.6% | +3.1 [-13.1, 19.4] |
+| fight:14-A-3 @ 14-A-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 79.7% | 95.3% | -15.6 [-26.8, -4.5] |
+| fight:14-A-4 @ 14-A-4: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 56.3% | 89.1% | -32.8 [-47.2, -18.5] |
+| fight:14-A-5 @ 14-A-5: aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods | 64.1% | 76.6% | -12.5 [-28.2, 3.2] |
+| ref:starter @ 14-A-1: aiGuardLethal, canopy, phase cycle, woods | 98.4% | 98.4% | +0 [-4.3, 4.3] |
+| ref:road18 @ 14-A-2: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 80.5% | 87.5% | -7 [-19.7, 5.6] |
+| ref:expected @ 14-A-3: aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods | 76.6% | 90.6% | -14.1 [-26.7, -1.5] |
 
 ## Map 15: The Long Grass (`ml`), your level 1
 
