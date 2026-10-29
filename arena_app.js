@@ -1892,6 +1892,11 @@ PASSIVE_DEFS.push(
   {key:'pulverise', category:'passive', label:TX('ui.c3-pulverise-name'), kind:'boolean', desc:()=> TX('ui.c3-pulverise'), codexNote:TX('ui.c3-pulverise-codex')},
   {key:'socket', category:'passive', label:TX('ui.c3-socket-name'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.c3-socket', {n: numOr(v, 1)}), get:e=> e.socket ? numOr(e.socket, 1) : undefined});
 Object.assign(SKILL_ICON, {wakeful:'👁️', pulverise:'🔨', socket:'💎'});
+// ==== Package ENG13 (2026-10-29, owner 21:36: "New ability: Slow - loses tie when same speed."): Slow, a drawback keyword (rule in
+// bramblewood-engine.js pickNextAttacker: inside one Speed a Slow unit acts after every non-Slow one; price in canonical/skill-costs.json).
+// On no live card yet (the owner places it).
+PASSIVE_DEFS.push({key:'slow', category:'passive', label:TX('ui.eng13-slow-name'), kind:'boolean', desc:()=> TX('ui.eng13-slow')});
+Object.assign(SKILL_ICON, {slow:'🐌'});
 // ==== Package ENG10 (2026-10-26, the owner's 10-26 11:19 answers; rules in bramblewood-engine.js, prices in canonical/skill-costs.json and
 // bramblewood-budget.js): the lines, the card editor's rows and the Codex for
 //   the elemental spits named by their element alone (ENG9-3: Cinder, Acid, Venom, Ice, Spark; Ember is a gem, Frost a skill)
@@ -3139,6 +3144,7 @@ PASSIVE_DEFS.push(
   {key:'pry', category:'passive', label:TX('ui.skn-pry'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pry', {n: numOr(v, 1)}), get:e=> e.pry ? numOr(e.pry, 1) : undefined});
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
+Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-29)
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -22866,8 +22872,20 @@ const AMBUSH_KEY = 'bramblewood_ambush_v1', AMBUSH_MAP_INDEX = 3, AMBUSH_AT = '3
 function ambushState(){ try{ return JSON.parse(localStorage.getItem(AMBUSH_KEY) || 'null') || {}; }catch(e){ return {}; } }
 function saveAmbushState(st){ try{ localStorage.setItem(AMBUSH_KEY, JSON.stringify(st)); }catch(e){} }
 function ambushFoe(){ const f = (typeof loadFactionChoice === 'function') ? loadFactionChoice() : 'otters'; return f === 'hummingbirds' ? 'otters' : 'hummingbirds'; }
+// 2026-10-29 (package ENG13, owner 21:36: "Ambushes - no need to be completed to progress - but typically very hard."): the Ambush is
+// optional (it never locks a fight, see ambushLocksNode) and hard. The old deck (the first 7 pack cards of the foe's faction list) let the
+// Map 3 reference deck win 98% against the Hummingbirds (the road's own Map 3 fights: 80-93%). Now each side fields its strongest faction
+// cards (AMBUSH_DECKS, 18 cards, Common / Uncommon, inside the copy ladder) on a Smart CPU at a raised Enemy level (AMBUSH_HARD, the
+// skirmish editor's own node fields ai / enemyLevel), measured with simulateReferenceFight (tests/eng13-2026-10-29.js has the numbers).
+// A card missing from the defs falls back to the old pick below.
+const AMBUSH_DECKS = {
+  hummingbirds: {'dominion-nestguard':3, 'hush-wing-spy':3, 'lantern-bearer':3, 'hummingbird-needler':3, 'petal-fletcher':3, 'dawn-bellringer':3},
+  otters: {'otter-shieldback':3, 'net-thrower':3, 'birdlime-dauber':3, 'riverbed-diver':3, 'otter-flag-bearer':3, 'rivergate-drummer':3},
+};
+const AMBUSH_HARD = {hummingbirds: {ai:'smart', enemyLevel:10}, otters: {ai:'smart', enemyLevel:6}};
 function ambushDeck(foe){
   const defs = getCardDefs(), want = foe === 'hummingbirds' ? 'tribes' : '';
+  { const fixed = AMBUSH_DECKS[foe === 'hummingbirds' ? 'hummingbirds' : 'otters']; if(fixed && Object.keys(fixed).every(id=> defs[id])) return Object.assign({}, fixed); }
   let ids = Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || d.token || d.test || d.hero) return false; const src = cardSourceOf(d) || {};
     return src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11 && (src.side||'') === want && ['common','uncommon','starter'].includes(d.rarity||'common'); });
   if(ids.length < 3){ try{ ids = Object.keys(tutorialDecksFor(1, foe).mine).filter(id=> defs[id]); }catch(e){} }
@@ -22884,22 +22902,22 @@ function ambushPending(){ const st = ambushState(); return !!st.triggered && !(l
 function applyAmbushNode(){
   const st = ambushState(), map = ambushMap(); if(!st.triggered || !map || map.nodes.some(n=> n.key === 'ambush')) return;
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
-  map.nodes.push({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: st.deck || ambushDeck(foe), hqHp:24,
+  // 2026-10-29 (ENG13): always today's deck (AMBUSH_DECKS, plain data: this runs at load, before the card defs can be read) and its difficulty
+  // (AMBUSH_HARD), not the weak deck a save stored when it triggered
+  const fixed = AMBUSH_DECKS[hb ? 'hummingbirds' : 'otters'];
+  map.nodes.push(Object.assign({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: fixed ? Object.assign({}, fixed) : (st.deck || ambushDeck(foe)), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
-    rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, fixedPos: st.pos || null, faction: foe});
+    rewardTokens:['factionGrowth'], requires: [], floating: true, ambush:true, optional: true, fixedPos: st.pos || null, faction: foe}, AMBUSH_HARD[hb ? 'hummingbirds' : 'otters'] || {}));
 }
 // 2026-10-24 (package MAP, owner 17:01 #3: "Those ambush skirmishes should lock the previous path i was going for. But then they also
 // shouldnt be connected by a link but instead float there. The moment they are observed (ambushed), they are permanently accessible. No
 // need for links."): the Ambush floats (requires nothing, so no trail is drawn to or from it and it is open the moment it is seen; the
 // saved ambush state keeps it on the map for good, won or not). The fight it interrupted (3-2, and so everything past it) stays locked,
 // drawn as a locked fight, until the Ambush is won; losing it, or walking away from it, does not open the path.
-function ambushLocksNode(map, node){
-  try{
-    if(!map || !node || node.ambush) return false;
-    const am = ambushMap(); if(!am || am.id !== map.id || skirmishCode(map.id, node.key) !== AMBUSH_AT) return false;
-    return ambushPending();
-  }catch(e){ return false; }
-}
+// 2026-10-29 (package ENG13, owner 21:36: "Ambushes - no need to be completed to progress"): the Ambush locks nothing any more. It stays on
+// the map, open to fight (won or not), but 3-2 and the road past it are open, and the next map does not wait on it (mapUnlocked,
+// conquestMapCleared and the locked-map line skip node.ambush). Kept as a function so its callers read the rule in one place.
+function ambushLocksNode(map, node){ return false; }
 // 2026-10-17 (user: "Unliked nodes by default are accessible on scratch. The only thing that is like that is the 1st skirmish in a map"):
 // the Ambush hung off the same trail as the fight it interrupts (3-2's own links). 2026-10-24 (package MAP): it floats again, see ambushLocksNode.
 function ambushLinks(map){ const at = map && map.nodes.find(n=> !n.ambush && skirmishCode(map.id, n.key) === AMBUSH_AT); return at && Array.isArray(at.requires) ? at.requires.slice() : []; }
@@ -23525,7 +23543,7 @@ function isMapUnlocked(map, progress){
   // A map "clears" once every one of the PREVIOUS map's story nodes (everything except an
   // optional bonus Raid Boss) is beaten — Raid Bosses are a permanent bonus unlock, not a
   // progression gate.
-  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
+  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
 }
 // Why a map is locked, in one line (2026-10-23, package PG, owner item 13): the signposts' toast and the locked map's notice name what
 // opens it, the same rules isMapUnlocked reads: a side map's way in (its fight, another map, a quest) or its parent map; a main map the
@@ -23544,7 +23562,7 @@ function mapLockReason(map, progress){
       return TX('ui.pg-lock-later', {map: map.name});
     }
     const prev = map.unlockAfter && CONQUEST_MAPS.find(m=> m.id === map.unlockAfter);
-    if(prev){ const left = prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !progress.completed.includes(conquestNodeId(prev.id, n.key)));
+    if(prev){ const left = prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */ && !progress.completed.includes(conquestNodeId(prev.id, n.key)));
       if(left.length) return TX('ui.pg-lock-main', {map: map.name, prev: nm(prev), codes: left.map(n=> skirmishCode(prev.id, n.key)).join(', ')}); }
   }catch(e){}
   return TX('ui.pg-lock-later', {map: map.name});
@@ -30331,7 +30349,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   const {node} = found;
   { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
-    if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
+    /* 2026-10-29 (ENG13): an Ambush not yet won no longer turns 3-2's Fight away (owner 21:36: "no need to be completed to progress") */ }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   // 2026-10-25 (package PREF): a reference set instead of your deck (X-REF always; any fight while Admin's switch is on): free, pays nothing
   const refPlaySet = (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
@@ -43254,7 +43272,7 @@ const AVATAR_TITLES = [
 ];
 function conquestMapCleared(mapId){
   try{ const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return false; const p = loadConquestProgress();
-    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret); // world bosses, chance fights and hidden skirmishes (2026-10-15) are optional
+    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret && !n.ambush /* 2026-10-29 (ENG13): the Ambush is optional */); // world bosses, chance fights and hidden skirmishes (2026-10-15) are optional
     return fights.length > 0 && fights.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } // 2026-10-12: a map with no fights yet is not "cleared" (it gave a new player 2,100 XP)
 }
 Registry.avatarCharacters = ()=> AVATAR_CHARACTERS.map(c=> Object.assign({}, c, {isUnlocked: !c.unlocked || c.unlocked()}));
@@ -52529,7 +52547,7 @@ function renderInventory(){
   const mat = slots(shown(['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale','abyssal-ink','strange-materia'].filter(id=> defs[id]).map(id=> ({key:id, icon:defs[id].icon, count:ownedCount(id), name:defs[id].name, sub:''})), 'mat'), 'No Materia yet. It comes from duplicates and the road.');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> e.kind !== 'nurture' && nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
   const crystals = slots(shown(MATERIA_KINDS.map(k=> ({key:k.id, icon:k.icon, count:st[k.id]||0, name:k.name + ' crystal', sub:'for Enchanting'})), 'cry'), 'No crystals yet.');
-  const wallet = Object.keys(CURRENCY_META).filter(currencyShown /* 2026-10-23 (TU2): no Krooni for players */).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
+  const wallet = Object.keys(CURRENCY_META).filter(currencyShown /* 2026-10-23 (TU2): no Krooni for players */).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '').replace('<div class="inv-cell">', `<div class="inv-cell" data-cur-kind="${k}">`)).join(''); // ENG13 (2026-10-29): an admin's tap (adminCurrencyTap)
   // 2026-10-15 (user: "The first 'explanation card' in inventory does not need to be included. Self explanatory." and "Don't show
   // the 'Scale trail' in inventory."): the heading card is a screen-reader heading only, and the Scale Trail is off the shelf.
   root.innerHTML = `<div class="inv-page">
@@ -53424,8 +53442,28 @@ function packCostHTML(pack){
 // CURRENCY_META — the Shop copy talked about "Maple Leaves and Gold Leaves" but the pills never said which was which.
 function currencyPillHTML(kind, extraCls){
   const meta = CURRENCY_META[kind] || {glyph:'', label:kind};
-  return `<span class="hud-pill cur-pill ${extraCls||''}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
+  return `<span class="hud-pill cur-pill ${extraCls||''}" data-cur-kind="${escapeAttr(kind)}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
 }
+// Admin: a tap on a currency (2026-10-29, package ENG13, owner 21:36: "Admin - clicking the currencies +100 then doubles it"): in Admin Mode a
+// tap on a wallet currency (the pills of the Shop, Forge, Profile and Nest, and the Inventory's Wallet: data-cur-kind) adds 100 while the
+// balance is under 100, then doubles it, up to ADMIN_RESOURCE_MAX. No such control existed before (no handler added 200); this builds what
+// the note asks for (decision ENG13-1 asks the owner to confirm the reading). One delegated listener, wired once at load.
+function adminCurrencyTapNext(n){ n = Math.max(0, Math.floor(Number(n) || 0)); return Math.min(ADMIN_RESOURCE_MAX, n < ADMIN_CUR_TAP_STEP ? n + ADMIN_CUR_TAP_STEP : n * 2); }
+const ADMIN_CUR_TAP_STEP = 100;
+function adminCurrencyTap(kind){
+  if(!adminModeEnabled || !adminAllowed() || !CURRENCY_META[kind]) return null;
+  const from = Math.max(0, Math.floor(Number(myCurrencies[kind]) || 0)), to = adminCurrencyTapNext(from);
+  myCurrencies[kind] = to; saveCurrencies();
+  try{ logTxn({action:'adminCurrencyTap', source:'Admin', currency: kind, before: from, after: to}); }catch(e){}
+  return {from, to};
+}
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{
+  const el = e.target && e.target.closest && e.target.closest('[data-cur-kind]'); if(!el || !adminModeEnabled) return;
+  const kind = el.dataset.curKind, r = adminCurrencyTap(kind); if(!r) return;
+  document.querySelectorAll(`[data-cur-kind="${kind}"]`).forEach(p=>{ const meta = CURRENCY_META[kind]; if(p.classList.contains('inv-cell')){ const b = p.querySelector('.inv-n'); if(b) b.textContent = String(r.to); } else p.innerHTML = `${meta.glyph} ${r.to}<span class="cur-label">${escapeHtml(meta.label)}</span>`; });
+  try{ refreshShopAfford && refreshShopAfford(); }catch(_){} try{ SoundKit.gold && SoundKit.gold(); }catch(_){}
+  showToast(TX('ui.eng13-admin-cur-tap', {name: CURRENCY_META[kind].label, from: r.from.toLocaleString('en-US'), to: r.to.toLocaleString('en-US')}), 'ok');
+});
 // T4 (2026-10-03, "display when it matters, don't display when it doesn't"): the Shop only shows
 // what it spends — Maple Leaves and Gold Leaves. Dust and Metal live on the Forge; Profile keeps the
 // full wallet.

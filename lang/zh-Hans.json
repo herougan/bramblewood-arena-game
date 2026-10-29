@@ -3647,5 +3647,11 @@
  "Sign in with an admin account to see players.": "请使用管理员账号登录以查看玩家。",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "玩家列表需要 supabase/proposed/20261029_admin_user_list.sql 中的数据库函数（所有者：'apply it'）。",
  "Only admin accounts can open the player list.": "只有管理员账号才能打开玩家列表。",
- "Could not load players: {msg}": "无法加载玩家：{msg}"
+ "Could not load players: {msg}": "无法加载玩家：{msg}",
+ "Slow": "迟缓",
+ "Acts last among units of the same Speed. Two Slow units take turns as usual.": "在速度相同的单位中最后行动。两个迟缓单位照常轮流行动。",
+ "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "树下：森林地图（古林）、高林冠或下层林中的任何战斗。地面：非飞行（被击落的飞行单位也算）。它挡住远程攻击（射击、技能、掷出的回旋镖）和飞行攻击者；地面单位的近战攻击照样命中。一次判定，与闪避相同，不与闪避叠加。必中和暴露可以看穿它。",
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ 管理员：{name} {from} → {to}",
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "在树下，这个地面单位能躲开一半瞄准它的射击、技能和飞行攻击。",
+ "Admin: {name} {from} → {to}": "管理员：{name} {from} → {to}"
 }

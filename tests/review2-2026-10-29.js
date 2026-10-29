@@ -71,7 +71,8 @@ ok(side.every(x=> A.RV2_SIDE_CLASS[x.key] === x.class), 'A2. the class table mat
 }
 { const f = fnSrc('applyAmbushNode');
   ok(/requires: \[\], floating: true, ambush:true/.test(f), 'B4. the Ambush still requires nothing: no link, open the moment it is seen (unlock order unchanged)');
-  const lock = fnSrc('ambushLocksNode'); ok(/skirmishCode\(map\.id, node\.key\) !== AMBUSH_AT\) return false;\s*return ambushPending\(\)/.test(lock), 'B4. ambushLocksNode (the fight it stopped stays locked until the Ambush is won) is as before');
+  // 2026-10-29 ENG13: the owner made the Ambush optional (21:36), so ambushLocksNode now locks nothing
+  const lock = fnSrc('ambushLocksNode'); ok(/function ambushLocksNode\(map, node\)\{ return false; \}/.test(lock), 'B4. ambushLocksNode locks nothing (ENG13: the Ambush is optional)');
   ok(/if\(n\.ambush\) return; \/\/ 2026-10-29/.test(app) && /j===undefined \|\| map\.nodes\[j\]\.ambush/.test(app), 'B5. the trail drawer draws no road from or to the Ambush');
   ok(/geo = mapRoadGeom\(map, positions, j, i\), blocked = geo\.blocked/.test(app), 'B5. the drawer and the Ambush use the one road geometry');
   const mp = fnSrc('mapNodePositions'), raw = fnSrc('mapNodePositionsRaw');

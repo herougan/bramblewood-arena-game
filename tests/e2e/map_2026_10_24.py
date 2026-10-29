@@ -101,12 +101,9 @@ async def run(b, url, w):
       return {ambush: !!a, floating: !!(a && a.classList.contains('is-floating')), trail: cv.querySelectorAll('.map-trail-svg [data-a="ambush"], .map-trail-svg [data-b="ambush"]').length,
         lockedClass: !!(l && l.classList.contains('is-ambush-locked')), lockedLabel: l ? (l.querySelector('.map-node-gate')||{}).textContent : null, req: am.requires, pending: ambushPending(), btn32: !!cv.querySelector(`button.map-node[data-lkey="${k32}"]`)}; })""", r['k32'])
     ok(st['ambush'] and st['floating'] and st['trail'] == 0 and st['req'] == [], f'3. the Ambush floats: on the map, no trail to or from it {st}')
-    ok(st['lockedClass'] and not st['btn32'] and st['pending'], f'3. the fight it stopped (3-2) is a locked node while the Ambush is not won {st}')
-    ok(st['lockedLabel'] == 'Blocked by the ambush', f"3. the locked node says why ({st['lockedLabel']!r})")
-    await shot(pg, 'ambush-locked', w)
-    await pg.click(f'.map-node-hidden[data-lkey="{r["k32"]}"]'); await pg.wait_for_timeout(120)
-    sh = await pg.evaluate(f"""(()=>{{ const l = document.querySelector('.map-node-hidden[data-lkey="{r["k32"]}"]'); return {{shake: !!(l && l.classList.contains('tile-dull-shake')), toast: Array.from(document.querySelectorAll('.toast')).map(t=> t.textContent).join('|')}}; }})()""")
-    ok(sh['shake'], f'3. a tap on the locked fight shakes it ({sh})')
+    # 2026-10-29 ENG13: the owner made the Ambush optional (21:36: "no need to be completed to progress"): 3-2 stays open beside it
+    ok(not st['lockedClass'] and st['btn32'] and st['pending'], f'3. the fight it stopped (3-2) stays open while the Ambush is not won (ENG13) {st}')
+    await shot(pg, 'ambush-open', w)
     # a reload keeps the Ambush, still floating and still open
     await pg.close(); pg = await page_in(ctx, url, w)
     await open_map(pg, r['id'], None)

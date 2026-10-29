@@ -1015,7 +1015,9 @@ The rules as built (engine: the EN5 block, `en5HemoN`, `en5Breach`, `en5Woods`, 
   dodged swing, or a swing at the bramble itself, gives none. Event `breachHQ {dmg, n}`. Puncture is the same rule under an older name and
   price (call EN5-2).
 - **Canopy Cover 🌳** (`effects.canopyCover`; owner FLY-1): a ground unit (no Flying now; a grounded or ash-grounded flyer counts) dodges 1 in 2
-  of the single-target swings, shots and skills aimed at it, one roll like Evasive (never a second roll on top of Evasive), while the field
+  of the single-target shots and skills aimed at it and of the swings of Flying or throwing (Boomerang, Bananarang) attackers (since ENG13,
+  2026-10-29, owner: "Canopy cover only blocks 50% attacks from ranged and flying attacks"; a ground unit's melee swing is no longer dodged;
+  `en5FromAbove`), one roll like Evasive (never a second roll on top of Evasive), while the field
   has trees over it: rules.woods (every fight on a forest-biome map, set by `fightRules`, the first skirmish too), the Old Woods terrain
   (rules.terrain.biome 'forest'), High Canopy (rules.canopy) or the Undergrowth (rules.undergrowth). A hiding dodge: Exposed and True Strike
   see through it. Miss reason `canopyCover`. Priced as a half-miss skill conditioned on the field: Evasive's 1.37 x uptime 0.4 on the stats.
@@ -1332,3 +1334,18 @@ The rules as built (engine: `coffeeN` / `coffeeRound` / `coffeeStill`, the Coffe
 - **Coffee N** (owner K2: "Double Actions every N turns. Stunned after."; replaces the 2026-10-13 Coffee, Wait −N on play and a nap N rounds later): every Nth round in which the unit acts (rounds it waits or is Stunned, Frozen or asleep don't count; decided at its first action of the round), it acts twice: its shots go twice and it swings once more straight after its swing (after any Twin Strike / Frenzy swing; one extra a round). At that round's end it is Stunned for the next round. Quiet Contemplation stills the second action, and then there is no crash. A cycle of N + 1 rounds holds N + 1 actions, as many as without it: Coffee moves an action a round earlier. Price 1.5 / N (scale n, pow −1; 4-round rule). Not a one-off any more. Events: `statusFx coffee {twice:true}` (float "☕ ×2", log "is wired on coffee"), the second swing's `frenzy {twin, coffee}`, `statusFx coffeeCrash` (😴).
 - **The dark places are night for the time-givers** (owner K6: "Why is the vampire bat blind in the cave map(s)?"): the caves have no day or night (`MAP_DAYNIGHT` off), so a Nocturnal unit there never had its night, and their Darkness made it miss 1 in 4 like any unit without Darksight. Now a fight with its own darkness (`rules.dark`: Darkness, Pitch Black, Absolute; a Cast Darkness unit doesn't count) is night for Nocturnal, Diurnal and Crepuscular (`zeitPhase`): Nocturnal units get their night bonus and see in the dark (no dark miss, as Darksight); Diurnal units get no day bonus and stay dark-blind. The pill, the dawn draw, the moon, Night-blind and Sun-shy still read the real phase. Dark maps (`DARK_MAPS`): Map 8 Caves & Alcoves (m4), 2-B Smugglers' Grotto (mg) and 7-A the Mycelium Deep (mz) in Darkness, 10-A the Sunken Depths (mj) in Pitch Black; also any fight, Arena ruleset or editor field that sets its own darkness. The other places with no day or night (the Mist of Map 0, the Glimmer Depths, the Ice Hollow, the Volcano Lair, Crushing Depths) are lit and stay without a phase.
 - **Scorching by day** (owner K10: "Scorching - only in the day. In places without night/day - scorching is perma-on."): the `heatwave` field burns at the start of a Day round (Twilight counts as day) and rests at night; where the fight has no day or night it burns every round. Its texts say so in 12 languages (`ui.e11-scorching1..3`). The heat state (Heat {…}, Bloom's Heat) still reads the field as hot at night.
+
+## 2026-10-29 additions (package ENG13): Slow, Canopy Cover narrowed, the optional Ambush
+
+The rules as built (engine: `slowRank` in `pickNextAttacker`; `en5FromAbove` in `combatHitLands`; app: `ambushLocksNode`, `AMBUSH_DECKS`, `AMBUSH_HARD`).
+- **Slow 🐌** (`effects.slow`; owner 10-29 21:36: "New ability: Slow - loses tie when same speed."): the combat order goes by Speed, highest first;
+  inside one Speed a Slow unit's swing, shot or action goes after every non-Slow one, whatever its column or side. Two Slow units order as usual
+  (column, then the side that wins ties this round). Speed itself is unchanged: a Slow unit with Speed 1 still goes before a Speed 0 one. A drawback
+  priced -0.8 (`canonical/skill-costs.json`, measured with `bench.js skill slow`). On no live card yet.
+- **Canopy Cover** now covers only ranged attacks (shots, skills) and Flying or throwing attackers' swings, still 1 in 2 on the fight's seeded roll (above).
+- **The Map 3 Ambush is optional** (owner: "Ambushes - no need to be completed to progress - but typically very hard."): it locks no fight and the
+  next map does not wait on it; it fields each faction's strongest Common / Uncommon cards on a Smart CPU at a raised Enemy level.
+
+| Effect | Function | Look | Event |
+|---|---|---|---|
+| 🐌 Slow | `SKILL_ICON.slow`, the passive row | the keyword icon and its line on the card | — (the order only) |

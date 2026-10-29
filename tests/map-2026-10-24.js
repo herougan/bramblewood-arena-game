@@ -45,18 +45,11 @@ ok(/try\{ healMapProgress/.test(src) && /function healMapProgress\(/.test(src), 
 // --- 3. the floating Ambush and the locked path
 { const f = fnSrc('applyAmbushNode');
   ok(/requires: \[\], floating: true, ambush:true/.test(f) && !/ambushLinks\(map\)/.test(f), '3. the Ambush requires nothing: no trail, open as soon as it is seen');
-  const lock = fnSrc('ambushLocksNode'); ok(!!lock, '3. ambushLocksNode exists');
-  const run = (pending, mapId, key, isAmbush)=> new Function('ambushMap', 'skirmishCode', 'AMBUSH_AT', 'ambushPending', lock + '\nreturn ambushLocksNode;')(
-    ()=> ({id:'m4'}), (m, k)=> ({'a':'3-2', 'b':'3-3'}[k] || k), '3-2', ()=> pending)({id: mapId}, {key, ambush: isAmbush});
-  ok(run(true, 'm4', 'a') === true, '3. 3-2 is locked while the Ambush is not won');
-  ok(run(false, 'm4', 'a') === false, '3. 3-2 opens once it is won');
-  ok(run(true, 'm4', 'b') === false, '3. another fight is not touched by the lock itself (those after 3-2 already wait on it)');
-  ok(run(true, 'm4', 'a', true) === false, '3. the Ambush itself is never locked');
-  ok(run(true, 'other', 'a') === false, '3. only the Ambush map is affected');
-  ok(/if\(ambushLocksNode\(map, node\)\) return false;/.test(fnSrc('isNodeVisible')), '3. isNodeVisible draws the stopped fight as locked');
+  // 2026-10-29 ENG13: the owner made the Ambush optional (21:36: "no need to be completed to progress"), so the lock checks became:
+  const lock = fnSrc('ambushLocksNode'); ok(!!lock && new Function(lock + '\nreturn ambushLocksNode;')()({id:'m4'}, {key:'a'}) === false, '3. ambushLocksNode locks nothing (ENG13)');
   const pos = fnSrc('mapNodePositionsRaw'); /* 2026-10-29 (REVIEW2): the layout logic moved to ...Raw; mapNodePositions then puts the Ambush on its road */ ok(/n\.secret \|\| n\.jumper \|\| n\.ambush/.test(pos) && /!n\.ambush/.test(pos), '3. the floating Ambush stands at its own spot and does not reshuffle the trail');
   ok(/'is-ambush is-floating foe-'/.test(src), '3. the node carries the floating look');
-  ok(/is-ambush-locked/.test(src) && /lockedTileTap\(el, null\); showToast\(TX\('toast\.the-ambush-still-blocks-the-way'\)/.test(src), '3. a tap on the locked fight shakes and says the ambush blocks it'); }
+  /* 2026-10-29 ENG13: no fight is locked by the Ambush any more, so the locked-tap check is gone */ }
 
 // --- 5. the raiders, once
 { const blk = src.slice(src.indexOf("fn.node.ambush && !loadDialogueFlags()['raiders_ran_off']") - 200, src.indexOf("m.raidersTook = {n, want}") + 40);

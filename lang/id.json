@@ -3649,5 +3649,11 @@
  "Sign in with an admin account to see players.": "Masuk dengan akun admin untuk melihat pemain.",
  "The player list needs the database function from supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it').": "Daftar pemain memerlukan fungsi database dari supabase/proposed/20261029_admin_user_list.sql (pemilik: 'apply it').",
  "Only admin accounts can open the player list.": "Hanya akun admin yang bisa membuka daftar pemain.",
- "Could not load players: {msg}": "Tidak bisa memuat pemain: {msg}"
+ "Could not load players: {msg}": "Tidak bisa memuat pemain: {msg}",
+ "Slow": "Lambat",
+ "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Bertindak paling akhir di antara unit dengan Kecepatan yang sama. Dua unit Lambat bergiliran seperti biasa.",
+ "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Di bawah pepohonan: pertarungan apa pun di peta hutan (Hutan Tua), Kanopi Tinggi, atau Semak Bawah. Darat: bukan Terbang (penerbang yang dijatuhkan dihitung). Melindungi dari serangan jarak jauh (tembakan, skill, Bumerang yang dilempar) dan penyerang Terbang; serangan jarak dekat unit darat tetap kena. Satu lemparan, seperti Mengelak, dan tidak ditambah Mengelak. Serangan Pasti dan Terekspos menembusnya.",
+ "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}",
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Di bawah pepohonan, unit darat ini menghindari separuh tembakan, skill, dan serangan terbang yang mengarah padanya.",
+ "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}"
 }
