@@ -52539,7 +52539,7 @@ function renderInventory(){
   const mat = slots(shown(['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale','abyssal-ink','strange-materia'].filter(id=> defs[id]).map(id=> ({key:id, icon:defs[id].icon, count:ownedCount(id), name:defs[id].name, sub:''})), 'mat'), 'No Materia yet. It comes from duplicates and the road.');
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> e.kind !== 'nurture' && nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
   const crystals = slots(shown(MATERIA_KINDS.map(k=> ({key:k.id, icon:k.icon, count:st[k.id]||0, name:k.name + ' crystal', sub:'for Enchanting'})), 'cry'), 'No crystals yet.');
-  const wallet = Object.keys(CURRENCY_META).filter(currencyShown /* 2026-10-23 (TU2): no Krooni for players */).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
+  const wallet = Object.keys(CURRENCY_META).filter(currencyShown /* 2026-10-23 (TU2): no Krooni for players */).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '').replace('<div class="inv-cell">', `<div class="inv-cell" data-cur-kind="${k}">`)).join(''); // ENG13 (2026-10-29): an admin's tap (adminCurrencyTap)
   // 2026-10-15 (user: "The first 'explanation card' in inventory does not need to be included. Self explanatory." and "Don't show
   // the 'Scale trail' in inventory."): the heading card is a screen-reader heading only, and the Scale Trail is off the shelf.
   root.innerHTML = `<div class="inv-page">
@@ -53434,8 +53434,28 @@ function packCostHTML(pack){
 // CURRENCY_META — the Shop copy talked about "Maple Leaves and Gold Leaves" but the pills never said which was which.
 function currencyPillHTML(kind, extraCls){
   const meta = CURRENCY_META[kind] || {glyph:'', label:kind};
-  return `<span class="hud-pill cur-pill ${extraCls||''}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
+  return `<span class="hud-pill cur-pill ${extraCls||''}" data-cur-kind="${escapeAttr(kind)}" title="${escapeAttr(meta.label)}">${meta.glyph} ${myCurrencies[kind]||0}<span class="cur-label">${escapeHtml(meta.label)}</span></span>`;
 }
+// Admin: a tap on a currency (2026-10-29, package ENG13, owner 21:36: "Admin - clicking the currencies +100 then doubles it"): in Admin Mode a
+// tap on a wallet currency (the pills of the Shop, Forge, Profile and Nest, and the Inventory's Wallet: data-cur-kind) adds 100 while the
+// balance is under 100, then doubles it, up to ADMIN_RESOURCE_MAX. No such control existed before (no handler added 200); this builds what
+// the note asks for (decision ENG13-1 asks the owner to confirm the reading). One delegated listener, wired once at load.
+function adminCurrencyTapNext(n){ n = Math.max(0, Math.floor(Number(n) || 0)); return Math.min(ADMIN_RESOURCE_MAX, n < ADMIN_CUR_TAP_STEP ? n + ADMIN_CUR_TAP_STEP : n * 2); }
+const ADMIN_CUR_TAP_STEP = 100;
+function adminCurrencyTap(kind){
+  if(!adminModeEnabled || !adminAllowed() || !CURRENCY_META[kind]) return null;
+  const from = Math.max(0, Math.floor(Number(myCurrencies[kind]) || 0)), to = adminCurrencyTapNext(from);
+  myCurrencies[kind] = to; saveCurrencies();
+  try{ logTxn({action:'adminCurrencyTap', source:'Admin', currency: kind, before: from, after: to}); }catch(e){}
+  return {from, to};
+}
+if(typeof document !== 'undefined') document.addEventListener('click', e=>{
+  const el = e.target && e.target.closest && e.target.closest('[data-cur-kind]'); if(!el || !adminModeEnabled) return;
+  const kind = el.dataset.curKind, r = adminCurrencyTap(kind); if(!r) return;
+  document.querySelectorAll(`[data-cur-kind="${kind}"]`).forEach(p=>{ const meta = CURRENCY_META[kind]; if(p.classList.contains('inv-cell')){ const b = p.querySelector('.inv-n'); if(b) b.textContent = String(r.to); } else p.innerHTML = `${meta.glyph} ${r.to}<span class="cur-label">${escapeHtml(meta.label)}</span>`; });
+  try{ refreshShopAfford && refreshShopAfford(); }catch(_){} try{ SoundKit.gold && SoundKit.gold(); }catch(_){}
+  showToast(TX('ui.eng13-admin-cur-tap', {name: CURRENCY_META[kind].label, from: r.from.toLocaleString('en-US'), to: r.to.toLocaleString('en-US')}), 'ok');
+});
 // T4 (2026-10-03, "display when it matters, don't display when it doesn't"): the Shop only shows
 // what it spends — Maple Leaves and Gold Leaves. Dust and Metal live on the Forge; Profile keeps the
 // full wallet.
