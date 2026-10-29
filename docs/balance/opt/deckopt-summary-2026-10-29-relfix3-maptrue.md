@@ -1099,3 +1099,65 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road21 @ 17-A-2: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 75% | 59.4% | +15.6 [-0.4, 31.7] |
 | ref:expected @ 17-A-3: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 96.9% | 90.6% | +6.3 [-2.1, 14.6] |
 
+## Map 18: The Glass Dunes (`md`), your level 1
+
+- Throughput: 19844 games in 378.6 s = **52.4 games/s** (2 workers). Search: ga, budget 8000 games (6086 map cards, 0 generations, 2 restarts; 3910 with the candidates). Reproduce: `node tools/opt/deckopt.js --map md --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 339 cards (17 map cards + 322 owned by then); phase 2 342 (+3 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 3 (balloon-archer, quicksand-queen, skull-vulture); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **3** (score >= 1, lowered from 3 to reach 3). Map: biome desert-glass (kin pale-desert), terrain types Desert, Savanna, field aiGuardLethal, boon, field, glassStorm, heatLevel, phase:cycle, sandstorm, wind, windfall, unit types Arachnid 4, Bird 2, Desert 11, Reptile 4, Savanna 3, skill families poison 5.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Frillneck Duelist | rare | Map 18 | 6 | biome desert-glass; terrain type Desert; type Desert (11 map cards); type Reptile (4 map cards); animal group lizard (like Komodo Warlord) |
+| Glasswing Moth | common | Map 18 | 4 | biome desert-glass; terrain type Desert; type Desert (11 map cards) |
+| Kinkajou Lurker | uncommon | Map 18 | 1 | night (field phase:cycle) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 52; map rule: not obtainable (not in the progression plan or an earlier map's cards) 268; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 64.7% [62.1%, 67.2%], mirror 73.4%, road 38.4%: 3x Adder Ambusher (owned), 3x Echo Screecher (owned), 3x Electric Ray (owned), 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 1x Golden Eagle Diver (owned), 1x Lodge Engineer (owned), 1x Planarian Splitter (owned), 1x Stable Colt (owned), 1x Swamp Alligator (owned), 1x Tunnel Ant (owned)
+- **Optimum (map cards + candidates)**: score 84.6% (+19.9 pts): 3x Adder Ambusher (owned), 3x Antlion Pit, 3x Dromedary, 3x Echo Screecher (owned), 3x Electric Ray (owned), 2x Ibex Rockcaller (owned), 1x Obsidian Scorpion, 1x Proboscis Monkey (owned), 1x Roadrunner Courier
+- Best candidate swaps into the map-card optimum: Kinkajou Lurker x3 -3.6; Glasswing Moth x3 -5.2; Frillneck Duelist x3 -7.4
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 11 decks the searches ended on): 1
+
+0. 84.6% [82.6%, 86.5%], 0 copies from the optimum: 3x Adder Ambusher (owned), 3x Antlion Pit, 3x Dromedary, 3x Echo Screecher (owned), 3x Electric Ray (owned), 2x Ibex Rockcaller (owned), 1x Obsidian Scorpion, 1x Proboscis Monkey (owned), 1x Roadrunner Courier
+
+- **Fight decks vs the optimum:** Elo gap median 411 (273 to 597); as your deck they score 21.4 to 51.7 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 18-1 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 41% | 42.6 ±4.2 | 90% |
+| 18-2 skirmish's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 50.7% | 33.8 ±4.2 | 84% |
+| 18-3 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 32.8% | 50.9 ±4.1 | 78% |
+| 18-4 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 51.1% | 32.9 ±4.3 | 72% |
+| 18-5 elite's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 63.3% | 21.4 ±4.2 | 66% |
+| 18-6 elite's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 38.1% | 46 ±4.2 | 60% |
+| 18-7 miniboss's deck | 91.4% [82%-96.1%] | 411 [263, 558] | 32.3% | 51.7 ±4 | 40% |
+| reference starter deck under 18-1's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 9.7% | 73.6 ±3.4 | - |
+| reference deck (Map 18) under 18-2's field | 53.1% [41.1%-64.8%] | 22 [-63, 106] | 79.2% | 8 ±3.7 | - |
+| expected player deck (expectedPlayerDeck) under 18-3's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 11.1% | 72.3 ±3.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 18-1 skirmish | 78.1% [66.6%-86.5%] | 90% |
+| 18-2 skirmish | 84.4% [73.6%-91.3%] | 84% |
+| 18-3 skirmish | 90.6% [81%-95.6%] | 78% |
+| 18-4 skirmish | 67.2% [55%-77.4%] | 72% |
+| 18-5 elite | 53.1% [41.1%-64.8%] | 66% |
+| 18-6 elite | 60.9% [48.7%-71.9%] | 60% |
+| 18-7 miniboss | 71.9% [59.9%-81.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:18-1 @ 18-1: aiGuardLethal, phase cycle, sandstorm, wind windy, windfall | 96.9% | 46.1% | +50.8 [37.8, 63.7] |
+| fight:18-2 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 85.9% | 59.4% | +26.6 [11.8, 41.3] |
+| fight:18-3 @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 95.3% | 64.8% | +30.5 [17.7, 43.3] |
+| fight:18-4 @ 18-4: aiGuardLethal, boon sandVeil, phase cycle, sandstorm blind, terrain Hunting Grounds T1, wind windy, windfall | 92.2% | 57.8% | +34.4 [20.6, 48.1] |
+| fight:18-5 @ 18-5: aiGuardLethal, glassStorm, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 82.8% | 59.4% | +23.4 [8.3, 38.6] |
+| fight:18-6 @ 18-6: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 90.6% | 60.9% | +29.7 [15.8, 43.6] |
+| fight:18-7 @ 18-7: aiGuardLethal, field heatwave, heatLevel 2, phase cycle, sandstorm, terrain Hunting Grounds T2 (Momentum 1), wind windy, windfall | 91.4% | 78.1% | +13.3 [1, 25.5] |
+| ref:starter @ 18-1: aiGuardLethal, phase cycle, sandstorm, wind windy, windfall | 100% | 55.5% | +44.5 [32.4, 56.7] |
+| ref:road18 @ 18-2: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 53.1% | 34.4% | +18.8 [1.9, 35.6] |
+| ref:expected @ 18-3: aiGuardLethal, phase cycle, sandstorm, terrain Hunting Grounds T1, wind windy, windfall | 98.4% | 29.7% | +68.8 [57.2, 80.3] |
+
