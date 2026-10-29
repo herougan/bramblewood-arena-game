@@ -61,7 +61,7 @@
    ]
   },
   "05": {
-   "sent": "Please draw one square picture split into a 2x2 grid of four cosy pixel-art game card scenes with thin white gaps between them, no borders and no text. 32-bit sprite style, dark outlines, soft light from the upper left, warm muted woodland colours with one bright accent, cute friendly animals, each with its own simple painterly background. Top-left: a round chestnut water vole hopping into a stream from a grassy bank, reeds and a splash. Top-right: a muskrat carrying a bundle of cut reeds in its mouth beside a pond near sand dunes at dusk. Bottom-left: a cute smiling blob of green pond algae with big eyes floating on a still pond among lily pads, with a tiny baby blob beside it. Bottom-right: a cluster of little red ants holding on to each other to make a tiny floating raft on brown rainwater, grassy puddle and grey rain clouds.",
+   "sent": "Please draw one square picture split into a 2x2 grid of four cosy pixel-art game card scenes with thin white gaps between them, no borders and no text. 32-bit sprite style, dark outlines, warm muted woodland colours, cute friendly creatures, each with its own simple background. Top-left: a round chestnut water vole by a stream bank with reeds. Top-right: a muskrat carrying cut reeds beside a pond at dusk. Bottom-left: a friendly green slime creature made of pond weed with big eyes, sitting on a lily pad in a pond. Bottom-right: a group of small red ants riding together on a floating leaf across a rainy puddle.",
    "ids": [
     "water-vole",
     "muskrat-reedgatherer",
@@ -74,7 +74,7 @@
     "a cute living blob of bright green pond algae with big eyes floating on still water among lily pads, a tiny second blob budding off",
     "a cluster of cute red ants holding legs together to form a floating raft on brown flood water, drowned grass and grey rain clouds"
    ],
-   "note": "Redone in Gemini: the NightCafe version had panel frames and showed the ants on a wooden raft."
+   "note": "Redone in Gemini (third wording; two earlier wordings were refused). The first try, on NightCafe, had panel frames and showed the ants on a wooden raft."
   },
   "06": {
    "ids": [
