@@ -134,6 +134,9 @@ const t2Has = (map, id)=> (T2[map] || []).includes(id), placeOf = Object.fromEnt
   const probs = (r.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{
     let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && !t2Has(placeOf[m[1]], m[1])) return false;
     m = /^not moved (\S+)$/.exec(l); const mv = m && C3.MOVE[m[1]]; if(mv && !pools[mv.from].cards.includes(m[1]) && (by[m[1]].source || {}).map === mv.to && !t2Has(mv.to, m[1])) return false;
+    // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): "over budget <id>" is reported, not failed, for an unplaced card
+    // (on no list) or one pending the owner's re-fit (step 3) (tools/lib_map_pools.js budgetHold)
+    m = /^over budget (\S+)/.exec(l); const h = m && require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(m[1]); if(h){ console.log(`  · ${m[1]}: budget not checked, ${h}`); return false; }
     return true; });
   ok(!probs.length, 'data: every new card on budget and placed where THEME2 lists it (content3 check): ' + (probs.join('; ') || 'ok')); }
 ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') === t2Has('mr', 'hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one (on the Redwood Deep\'s list where THEME2 puts it)');

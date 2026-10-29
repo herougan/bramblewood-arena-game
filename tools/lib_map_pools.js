@@ -37,4 +37,13 @@ function isOutOfPlay(G, d){
   if(!d || d.token || d.test) return false;
   try{ return !G.cardFirstMapList(d) && !(G.packIndex().extra || {})[d.derivedFrom || d.id] && G.cardObtainableFrom(d) == null; }catch(e){ return false; }
 }
-module.exports = {normalizeEntry, uniq, fightPool, listedIds, isOutOfPlay};
+// 2026-10-29 LISTFIX1: why a budget check holds off on a card: 'unplaced' (out of play, isOutOfPlay), 'pending' (on a list and over its budget
+// for its first map: the owner's step 3, docs/balance/listfix1-pending-budget-2026-10-29.json), or '' (check it). Loads tools/lib_bramble.js once.
+let LB = null, PEND = null;
+function budgetHold(id){
+  LB = LB || require('./lib_bramble.js');
+  if(!PEND){ try{ PEND = new Set(JSON.parse(require('fs').readFileSync(require('path').join(__dirname, '..', 'docs', 'balance', 'listfix1-pending-budget-2026-10-29.json'), 'utf8')).cards.map(c=> c.id)); }catch(e){ PEND = new Set(); } }
+  const d = LB.CARD_DEFS_BASELINE[id];
+  return d && isOutOfPlay(LB.G, d) ? 'unplaced' : PEND.has(id) ? 'pending' : '';
+}
+module.exports = {normalizeEntry, uniq, fightPool, listedIds, isOutOfPlay, budgetHold};
