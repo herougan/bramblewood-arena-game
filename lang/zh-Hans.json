@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "装备给你的一个单位：+{a}/+{h}。每个单位限一件；消耗你的出牌。",
  "equipment": "装备",
  "Equipping uses your play for the turn, and you have already played.": "装备会用掉你本回合的行动，而你已经出过牌了。",
- "Errand complete: {title}. Claim it on the Notices.": "差事完成：{title}。去公告领取吧。",
- "Errand done!": "差事完成！",
- "Errand taken: {label}": "已接下差事：{label}",
- "Errand: {title} — {v}/{g}": "差事：{title} — {v}/{g}",
  "Español": "Español",
  "Etched": "蚀刻",
  "Eureka! I have found another way to lose. Next, the way to win.": "尤里卡！我又找到了一种输法。下一步，找到赢法。",
@@ -3625,5 +3621,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} 张新卡，{y}/{m} 张沿用卡",
  "{x}/{n} new cards": "{x}/{n} 张新卡",
  "{x} new cards, {y} carried cards": "{x} 张新卡，{y} 张沿用卡",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "伏击位于其道路正中：不能移动，也不能连线。"
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "伏击位于其道路正中：不能移动，也不能连线。",
+ "Quest complete: {title}. Claim it on the Notices.": "任务完成：{title}。去公告领取吧。",
+ "Quest taken: {label}": "已接下任务：{label}",
+ "Quest: {title} — {v}/{g}": "任务：{title} — {v}/{g}"
 }

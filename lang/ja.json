@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "味方ユニット1体に装備：+{a}/+{h}。1体に1つ。このターンのプレイを使う。",
  "equipment": "装備",
  "Equipping uses your play for the turn, and you have already played.": "装備はこのターンの行動を使いますが、もう行動済みです。",
- "Errand complete: {title}. Claim it on the Notices.": "おつかい完了：{title}。お知らせで受け取りましょう。",
- "Errand done!": "おつかい完了！",
- "Errand taken: {label}": "おつかいを受けました：{label}",
- "Errand: {title} — {v}/{g}": "おつかい：{title} — {v}/{g}",
  "Español": "Español",
  "Etched": "エッチング",
  "Eureka! I have found another way to lose. Next, the way to win.": "エウレカ！また負け方を見つけた。次は勝ち方だ。",
@@ -3625,5 +3621,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "新カード {x}/{n}、持ち越しカード {y}/{m}",
  "{x}/{n} new cards": "新カード {x}/{n}",
  "{x} new cards, {y} carried cards": "新カード {x}、持ち越しカード {y}",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "待ち伏せは道の真ん中にあります。移動もリンクもできません。"
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "待ち伏せは道の真ん中にあります。移動もリンクもできません。",
+ "Quest complete: {title}. Claim it on the Notices.": "クエスト完了：{title}。お知らせで受け取りましょう。",
+ "Quest taken: {label}": "クエストを受けました：{label}",
+ "Quest: {title} — {v}/{g}": "クエスト：{title} — {v}/{g}"
 }

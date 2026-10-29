@@ -17132,7 +17132,7 @@ const DIALOGUES = {
   unlock_questboard: {lines:[
     {who:'shieldback', text:'A proper quest board. Real requests from real folk, not lodge orders.'},
     {who:'swiftpaw', text:'So when somebody on the road says “could you…”, it goes up here?', options:[{label:'Sounds like work.', goto:'go', act:'quests:errands'}], silent:'go'},
-    {label:'go', who:'shieldback', text:'Errands. Small favours, small rewards. They add up.'},
+    {label:'go', who:'shieldback', text:'Quests. Small favours, small rewards. They add up.'},
   ]},
   unlock_forge: {lines:[
     {who:'traveller', text:'The Foundry’s smiths will temper anything you bring them, for a price.'},
@@ -21248,7 +21248,7 @@ function claimErrand(id){
   e.active = e.active.filter(a=> a.id !== id); e.done++; saveErrands(e);
   try{ awardXp(20, 'quest'); }catch(_){}
   const sp = DIALOGUE_SPEAKERS[x.who] || {};
-  showToast(TX('toast.dust-maple-leaves', {v1: sp.icon||'📌', v2: t.thanks || 'Errand done!', dust: rw.dust, gold: rw.gold, v5: t.shard ? ', an Iron Shard' : ''}), 'ok');
+  showToast(TX('toast.dust-maple-leaves', {v1: sp.icon||'📌', v2: t.thanks || 'Quest done!', dust: rw.dust, gold: rw.gold, v5: t.shard ? ', an Iron Shard' : ''}), 'ok');
   try{ refreshQuestBadge(); }catch(_){}
   return {dust: rw.dust, gold: rw.gold};
 }
@@ -21281,7 +21281,7 @@ function errandsBoardHTML(){
   const day = at=>{ try{ return new Date(at).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(_){ return ''; } };
   const writ = (t, who, cls, status, inner, foot)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
     return `<article class="er-writ ${cls}">
-      <header class="er-band"><span class="er-kind">📜 Errand</span><span class="er-status">${status}</span></header>
+      <header class="er-band"><span class="er-kind">📜 Quest</span><span class="er-status">${status}</span></header>
       <div class="er-top"><span class="er-portrait" aria-hidden="true">${portrait(sp)}</span>
         <div class="er-titles"><h3 class="er-title">${escapeHtml(t.title || t.label || '')}</h3><div class="er-by">Asked by <b>${escapeHtml(sp.name || who || '')}</b></div></div></div>
       <blockquote class="er-ask">“${escapeHtml(t.ask || '')}”</blockquote>
@@ -21293,18 +21293,18 @@ function errandsBoardHTML(){
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(x.label)}</span></div>
       <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${x.goal}" aria-valuenow="${v}" aria-label="${escapeAttr(x.label)}"><span class="er-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}<small>/${x.goal}</small></b></div>`;
     const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-seal" data-errand-claim="${x.id}">🎁 Claim reward</button>`
-      : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this errand">✕ Drop</button>`;
+      : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this quest">✕ Drop</button>`;
     return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : 'In progress', inner, foot); }).join('');
   const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return '';
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(t.label)}</span></div>`;
     const full = e.active.length >= ERRANDS_MAX;
-    const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} errands already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
+    const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} quests already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
     return writ(t, t.who, 'is-offer', 'Offered', inner, foot); }).join('');
   return `<section class="qn-board qn-errands er-board" id="qnErrands">
-    <div class="qn-sign"><b>Errands</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
+    <div class="qn-sign"><b>Quests</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
     ${act ? `<div class="er-writs">${act}</div>` : ''}
     ${offers ? `<div class="er-sub">Offered on the road</div><div class="er-writs">${offers}</div>` : ''}
-    ${!act && !offers ? '<p class="er-empty">No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.</p>' : ''}
+    ${!act && !offers ? '<p class="er-empty">No quests yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.</p>' : ''}
   </section>`;
 }
 function questsModalHTML(){
@@ -21376,8 +21376,8 @@ function noticeQuestListHTML(q){
   // 2026-10-16 (user: "i think quests will be a subtab in notices"): errands have their own Errands tab now, so they're not listed here.
   // 2026-10-16 (user: "I think Hide journies for now."): Journeys stay out of this list while hidden, even for Admin.
   try{ if(journeysOpen() && !JOURNEYS_HIDDEN){ const st = loadJourneys(); Object.keys(SUBFACTION_JOURNEYS).forEach(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n]; if(next) rows.push({k:'Journey', ico:j.icon, label:`${j.name}: ${next[2]}`, v:n, g:j.steps.length, go:'.qn-journeys', journey:true}); }); } }catch(e){}
-  if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>all done for now</span></div></section>`;
-  return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>${rows.length} going</span></div>
+  if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your dailies</b><span>all done for now</span></div></section>`;
+  return `<section class="qn-quests"><div class="qn-sign"><b>Your dailies</b><span>${rows.length} going</span></div>
     <ul class="qn-qlist">${rows.map(r=>{ const done = !r.journey && r.v >= r.g; return `<li><button type="button" class="qn-qrow ${done ? 'is-done' : ''}" data-qn-go="${r.go}"><span class="qn-qk">${r.k}</span><span class="qn-qico" aria-hidden="true">${r.ico}</span><span class="qn-ql">${escapeHtml(r.label)}</span><span class="qn-prog">${bar(r.v, r.g)}<b>${done ? 'Claim!' : `${r.v}/${r.g}`}</b></span></button></li>`; }).join('')}</ul></section>`;
 }
 // Notices sub-tabs (2026-10-16, user: "i think quests will be a subtab in notices ... It's actual quests you got from the
@@ -21395,20 +21395,21 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
   const stShown = scaleTrailTabShown();
   if(noticesSubTab === 'scales' && !stShown) noticesSubTab = 'notices';
   const onSt = noticesSubTab === 'scales';
+  if(noticesSubTab === 'errands' && !erOpen) noticesSubTab = 'notices'; // 2026-10-29 (package UI1, owner O8): the Quests tab (the errands) shows once the Quest Board is open
   const onErr = noticesSubTab === 'errands';
   let erBadge = '';
   if(erOpen){ try{ const e = loadErrands(), ready = claimableErrandCount(), n = e.active.length + e.offers.length;
     erBadge = ready ? `<span class="qn-tab-n is-ready" title="${ready} ready to claim">${ready}</span>` : n ? `<span class="qn-tab-n">${n}</span>` : ''; }catch(e){} }
   const tabs = `<div class="qn-tabs" role="tablist" aria-label="Notices">
-      <button type="button" role="tab" class="qn-tab ${onErr || onSt ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr && !onSt}">📌 Notices</button>
-      <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>
+      <button type="button" role="tab" class="qn-tab ${onErr || onSt ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr && !onSt}">📅 Dailies</button>
+      ${erOpen ? `<button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>` : ''}
       ${stShown ? `<button type="button" role="tab" class="qn-tab ${onSt ? 'is-on' : ''}" data-qn-tab="scales" aria-selected="${onSt}" aria-label="Scale Trail">🐉 <span class="st-tab-long">Scale </span>Trail${scaleTrailTabBadge()}</button>` : ''}
     </div>`;
   const body = onSt ? scaleTrailJournalHTML() : onErr
-    ? `<p class="qn-sub">The quests you're on${erOpen ? ', and the favours folk asked of you on the road' : ''}. Tap one to see its notice; claim the reward when it's done.</p>
-       ${noticeQuestListHTML(q)}
-       ${erOpen ? `<div class="qn-cork er-cork">${errandsBoardHTML()}</div>` : ''}`
+    ? `<p class="qn-sub">The favours folk asked of you on the road. Take one, finish it, and claim the reward.</p>
+       <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
     : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+       ${noticeQuestListHTML(q)}
        <div class="qn-cork">
          ${dailyBoard()}
          ${section('weekly', 'Weekly', nextMon - now)}
@@ -51971,7 +51972,7 @@ function renderHome(){
         ${raidHome ? `${arenaTile}<button class="btn primary big home-menu-btn home-tile" id="homeRaidBtn"><span class="tab-emoji">🐲</span><span>${(()=>{ try{ return liveRaidDefs().length >= 2 ? 'Raids' : 'Raid'; }catch(e){ return 'Raid'; } })()}</span><small class="home-sub">${escapeHtml(sub.raid || 'Team up against a raid boss')}</small></button>${big('deck','⛺','Camp')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}`
           : `${big('deck','⛺','Camp')}${arenaHome ? arenaTile : big('codex','📖','Codex')}${big('shop','🛒', merchantsUnlocked().length >= 2 ? 'Shops' : 'Shop')}${big('nest','🪺','Nest')}`}
         ${raidHome && tabOpen('nest') ? `<button type="button" class="home-note note-nest" data-hometab="nest" title="Nest"><i class="pin" aria-hidden="true">📌</i><b>🪺 Nest</b><small>${escapeHtml(sub.nest || 'Eggs and babies')}</small></button>` : ''}
-        ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Quests"><i class="pin" aria-hidden="true">📌</i><b>📜 Quests</b><small>${qn ? `${qn} to claim!` : 'Daily &amp; weekly'}</small></button>` : ''}
+        ${tabOpen('quests') ? `<button type="button" class="home-note note-quests" id="homeQuestsBtn" title="Notices"><i class="pin" aria-hidden="true">📌</i><b>📌 Notices</b><small>${qn ? `${qn} to claim!` : 'Dailies &amp; quests'}</small></button>` : ''}
         ${res4TrailHomeNoteHTML() /* 2026-10-26 (package RES4): the Trail Mix Trek, from the end of the tutorials */}
         ${featureUnlocked('market') ? `<button type="button" class="home-note note-market" data-hometab="market" title="Flea Market"><i class="pin" aria-hidden="true">📌</i><b>🧺 Flea Market</b><small>Trade with players</small></button>` : ''}
         ${tabOpen('deck') ? (()=>{ try{ const ctx = achievementContext(); const ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; const got = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;

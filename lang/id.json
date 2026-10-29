@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "Pasang ke salah satu unitmu: +{a}/+{h}. Satu per unit; memakai giliran mainmu.",
  "equipment": "perlengkapan",
  "Equipping uses your play for the turn, and you have already played.": "Memasang perlengkapan memakai jatah mainmu giliran ini, dan kamu sudah bermain.",
- "Errand complete: {title}. Claim it on the Notices.": "Tugas selesai: {title}. Klaim di Pengumuman.",
- "Errand done!": "Tugas selesai!",
- "Errand taken: {label}": "Tugas diambil: {label}",
- "Errand: {title} — {v}/{g}": "Tugas: {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "Ukir",
  "Eureka! I have found another way to lose. Next, the way to win.": "Eureka! Aku menemukan cara lain untuk kalah. Berikutnya, cara untuk menang.",
@@ -3627,5 +3623,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} kartu baru, {y}/{m} kartu terbawa",
  "{x}/{n} new cards": "{x}/{n} kartu baru",
  "{x} new cards, {y} carried cards": "{x} kartu baru, {y} kartu terbawa",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "Penyergapan berada di tengah jalannya: tidak bisa dipindah atau ditautkan."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Penyergapan berada di tengah jalannya: tidak bisa dipindah atau ditautkan.",
+ "Quest complete: {title}. Claim it on the Notices.": "Misi selesai: {title}. Klaim di Pengumuman.",
+ "Quest taken: {label}": "Misi diambil: {label}",
+ "Quest: {title} — {v}/{g}": "Misi: {title} — {v}/{g}"
 }

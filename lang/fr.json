@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "S’équipe sur l’une de tes unités : +{a}/+{h}. Une par unité ; utilise ton action.",
  "equipment": "un équipement",
  "Equipping uses your play for the turn, and you have already played.": "S’équiper utilise votre action du tour, et vous avez déjà joué.",
- "Errand complete: {title}. Claim it on the Notices.": "Course terminée : {title}. Réclamez-la dans les Annonces.",
- "Errand done!": "Course terminée !",
- "Errand taken: {label}": "Course acceptée : {label}",
- "Errand: {title} — {v}/{g}": "Course : {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "Gravé",
  "Eureka! I have found another way to lose. Next, the way to win.": "Eurêka ! J’ai trouvé une autre façon de perdre. Prochaine étape : celle de gagner.",
@@ -3625,5 +3621,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} cartes nouvelles, {y}/{m} cartes reportées",
  "{x}/{n} new cards": "{x}/{n} cartes nouvelles",
  "{x} new cards, {y} carried cards": "{x} cartes nouvelles, {y} cartes reportées",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "L'embuscade se trouve au milieu de sa route : on ne peut ni la déplacer ni la relier."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "L'embuscade se trouve au milieu de sa route : on ne peut ni la déplacer ni la relier.",
+ "Quest complete: {title}. Claim it on the Notices.": "Quête terminée : {title}. Réclamez-la dans les Annonces.",
+ "Quest taken: {label}": "Quête acceptée : {label}",
+ "Quest: {title} — {v}/{g}": "Quête : {title} — {v}/{g}"
 }

@@ -810,10 +810,6 @@
  "Equip to one of your units: +{a}/+{h}. One per unit; uses your play.": "Rüste eine deiner Einheiten aus: +{a}/+{h}. Eine pro Einheit; verbraucht deinen Zug.",
  "equipment": "eine Ausrüstung",
  "Equipping uses your play for the turn, and you have already played.": "Ausrüsten verbraucht deinen Zug, und du hast schon gespielt.",
- "Errand complete: {title}. Claim it on the Notices.": "Auftrag erledigt: {title}. Hol ihn dir bei den Aushängen ab.",
- "Errand done!": "Auftrag erledigt!",
- "Errand taken: {label}": "Auftrag angenommen: {label}",
- "Errand: {title} — {v}/{g}": "Auftrag: {title} — {v}/{g}",
  "Español": "Español",
  "Etched": "Geätzt",
  "Eureka! I have found another way to lose. Next, the way to win.": "Heureka! Ich habe einen weiteren Weg zu verlieren gefunden. Als Nächstes: den Weg zu gewinnen.",
@@ -3624,5 +3620,8 @@
  "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} neue Karten, {y}/{m} übernommene Karten",
  "{x}/{n} new cards": "{x}/{n} neue Karten",
  "{x} new cards, {y} carried cards": "{x} neue Karten, {y} übernommene Karten",
- "The Ambush lies in the middle of its road: it can't be moved or linked.": "Der Hinterhalt liegt mitten auf seiner Straße: Er lässt sich weder verschieben noch verbinden."
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Der Hinterhalt liegt mitten auf seiner Straße: Er lässt sich weder verschieben noch verbinden.",
+ "Quest complete: {title}. Claim it on the Notices.": "Auftrag erledigt: {title}. Hol ihn dir bei den Aushängen ab.",
+ "Quest taken: {label}": "Auftrag angenommen: {label}",
+ "Quest: {title} — {v}/{g}": "Auftrag: {title} — {v}/{g}"
 }
