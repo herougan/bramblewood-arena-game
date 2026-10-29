@@ -2400,12 +2400,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(d > 0 && recordEvents && events) events.push({type:'breachHQ', side:mySide, attDefId:att.defId, attUid:att.uid, targetSide:tSide, dmg:d, n});
     return d; }
   //   Canopy Cover (owner 03:12 FLY-1: "ground units hiding under the cover of trees/canopy for 50% evasion"): a ground unit (no Flying now:
-  //     a grounded or ash-grounded flyer counts) dodges 1 in 2 of the single-target swings, shots and skills aimed at it, as Evasive does
+  //     a grounded or ash-grounded flyer counts) dodges 1 in 2 of the single-target shots and skills aimed at it, and of the swings of Flying
+  //     or throwing attackers (ENG13, 2026-10-29, owner 21:36: "only blocks 50% attacks from ranged and flying attacks"), as Evasive does
   //     (one roll; an Evasive unit gets no second), while the field has trees over it: the map is a forest (rules.woods, set for every fight
   //     on a forest-biome map, Old Woods terrain or not), or the fight names the Old Woods terrain (rules.terrain.biome 'forest'), High
   //     Canopy (rules.canopy) or the Undergrowth (rules.undergrowth). Miss reason 'canopyCover'.
   function en5Woods(){ return !!(rules.woods || rules.canopy || rules.undergrowth || (rules.terrain && rules.terrain.biome === 'forest')); }
   function en5CanopyCover(c){ if(!c || !en5Woods()) return false; const e = effectsOf(c); return !!e.canopyCover && (!e.flying || ashyNow()); }
+  // ENG13 (2026-10-29): which swings the canopy covers: a Flying attacker's or a thrown one (Boomerang, Bananarang); see combatHitLands.
+  function en5FromAbove(ad){ return !!(ad && (ad.flying || ad.boomerang || ad.bananarang)); }
   //   State skills (owner 03:12: "New state-like skills like Tide: ____ - {}, as in, {} activates if ____ is met ... One if wood=3+, one if
   //     stone=2+, one if metal=1+. Help me define the default as well."; 03:12b: "When your bramble health is low - {} is gained. By default,
   //     the unit gains +1/+1."): while the side's state holds, the braces (effects.<k>Grant), or the default when a card prints the plain
@@ -3653,7 +3656,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // against a non-Tide attacker (tideEvades); off unless switched on.
     // + High Canopy / Undergrowth (2026-10-16): Swift (and Quick) units are Evasive among the branches.
     // + Canopy Cover (EN5, 2026-10-24): a ground unit under the trees (en5CanopyCover), in the same one roll
-    const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard);
+    // + 2026-10-29 (package ENG13, owner 21:36: "Canopy cover only blocks 50% attacks from ranged and flying attacks"): a swing is covered
+    //   only when it comes from above or afar: a Flying attacker (en5FromAbove) or a thrown Boomerang / Bananarang. A ground unit's
+    //   melee swing is no longer dodged. Shots and skills (dodgeCheck) are ranged, so they keep the 1-in-2 roll.
+    const cc5 = !!dd.canopyCover && L('canopyCover') && en5CanopyCover(defCard) && en5FromAbove(ad);
     if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd)) || cc5) && !ad.fencing && rnd() < (dd.evasive && defCard.boon === 'snowVeil' ? 2/3 : 0.5)){ lastMissReason = dd.evasive ? 'evasive' : canopySwift(dd) ? 'canopy' : cc5 ? 'canopyCover' : 'evasive'; if(dd.evasive && defCard.boon === 'snowVeil') boonFire(defCard, 'dodge'); return false; } // 2 in 3: Snow Veil, a selfish boon (2026-10-24, DF3) // + Prey (2026-10-16)
     if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
@@ -9824,12 +9830,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!candidates.length) return null;
       // Swift (2026-10-02): inside one Speed it acts before the rest (no card has it at the moment). Since 2026-10-17 Quick is
       // no longer a rank here: it is Speed 2 (swingSpeedOf).
+      const slowRank = c=> ((CARD_DEFS[c.att.defId] || {}).effects || {}).slow ? 1 : 0; // ENG13 (2026-10-29)
       const speedRank = c=>{ if(c.shot) return 1; const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : 1; };
       const grassFirst = c=> !c.shot && rules.tallGrass && (CARD_DEFS[c.att.defId].effects || {}).stealth ? 0 : 1; // Tall Grass (2026-10-16): "stealth units attack first"
       candidates.sort((a,b)=>{
         if(grassFirst(a) !== grassFirst(b)) return grassFirst(a) - grassFirst(b);
         // Speed (2026-10-14): the highest Speed swings first; everything below is the old order within one Speed.
         if(a.spd!==b.spd) return b.spd-a.spd;
+        // Slow (2026-10-29, package ENG13, owner 21:36: "New ability: Slow - loses tie when same speed."): inside one Speed a Slow unit's
+        // swing, shot or action goes after every non-Slow one (whatever its column or side); two Slow units tie as usual (below).
+        const sa = slowRank(a), sb = slowRank(b);
+        if(sa!==sb) return sa-sb;
         const ra = speedRank(a), rb = speedRank(b);
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
