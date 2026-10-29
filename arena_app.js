@@ -20648,10 +20648,22 @@ function res3RankEmblemFlight(node, rank){
   let ny = H * 0.4; try{ const r = node && node.getBoundingClientRect(); if(r && r.height) ny = Math.max(60, Math.min(H - 120, r.top + r.height / 2)); }catch(e){}
   const o = document.createElement('div'); o.className = 'res3-rank-fly'; o.setAttribute('aria-hidden', 'true');
   o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; document.body.appendChild(o);
-  const ex = W - 46, ey = H - 46, sx = -size, sy = ny;
-  const land = ()=>{ const ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = ex + 'px'; ring.style.top = ey + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
-    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} };
-  if(!g || reducedMotion()){ g ? g.set(o, {x:ex - size/2, y:ey - size/2, opacity:0}) : (o.style.transform = `translate(${ex - size/2}px, ${ey - size/2}px)`);
+  // 2026-10-29 (package UI3, S3; owner 23:01: "The emblem dropping animation on the conquest map moves to the bottom of the screen instead"): the landing is
+  // the fight's own spot, read live each frame so a panned / zoomed / scrolled map cannot leave it behind: the open fight panel's corner emblem
+  // (that fight's panel only), else the fight's node (its lower-right corner) when the node is on screen. Only a node scrolled out of view sends it to the
+  // page's bottom-right corner as RES3 R6 did. Was: always the bottom-right corner (ex, ey = W - 46, H - 46).
+  const tgt = ()=>{ try{
+      const pc = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'), key = node && node.dataset && node.dataset.lkey;
+      if(pc && (typeof conquestSelectedNodeKey === 'undefined' || !key || conquestSelectedNodeKey === key)){ const r = pc.getBoundingClientRect(); if(r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: r.left + r.width / 2, y: r.top + r.height / 2, s: Math.max(.3, r.width / size), el: pc}; }
+      const r = node && node.getBoundingClientRect && node.getBoundingClientRect();
+      if(r && r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: Math.max(24, Math.min(W - 24, r.right - r.width * .18)), y: Math.max(24, Math.min(H - 24, r.bottom - r.height * .18)), s: .42, el: null};
+    }catch(e){}
+    return {x: W - 46, y: H - 46, s: .45, el: null}; };
+  const sx = -size, sy = ny; let last = tgt();
+  const land = ()=>{ const e = last = tgt(), ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = e.x + 'px'; ring.style.top = e.y + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
+    if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
+    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e2){} };
+  if(!g || reducedMotion()){ const e0 = last; g ? g.set(o, {x:e0.x - size/2, y:e0.y - size/2, opacity:0}) : (o.style.transform = `translate(${e0.x - size/2}px, ${e0.y - size/2}px)`);
     return new Promise(res=>{ o.animate ? o.animate([{opacity:0}, {opacity:1}, {opacity:0}], {duration:900}).onfinish = ()=>{ o.remove(); res(); } : setTimeout(()=>{ o.remove(); res(); }, 900); }); }
   try{ if(/S/.test(rank)) SoundKit.rareRise && SoundKit.rareRise(); }catch(e){}
   return new Promise(res=>{
@@ -20660,8 +20672,8 @@ function res3RankEmblemFlight(node, rank){
     g.timeline({onComplete:()=>{ o.remove(); res(); }})
       .to(o, {opacity:1, duration:.15})
       .to(st, {k:1, duration:1.45, ease:'power1.inOut', onUpdate:()=>{ const k = st.k, ang = k * turns * Math.PI * 2, rad = R0 * Math.sin(Math.PI * Math.min(1, k * 1.08));
-          const bx = sx + (ex - sx) * k, by = sy + (ey - sy) * (k * k);
-          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - .55 * k}); }}, '<')
+          const T = last = tgt(), bx = sx + (T.x - sx) * k, by = sy + (T.y - sy) * (k * k);
+          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - (1 - T.s) * k}); }}, '<')
       .add(land)
       .to(o, {scale:.2, opacity:0, duration:.22, ease:'power2.in'});
   });
