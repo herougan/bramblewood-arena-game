@@ -38737,7 +38737,7 @@ function aiActNow(){
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
-  fightSafe(()=> holdArrivalDead(m, prePos, deferred), 'holdArrivalDead');
+  fightSafe(()=> holdArrivalDead(m, prePos, deferred, events) /* 2026-10-29 (UI2, R3) */, 'holdArrivalDead');
   // 2026-10-19 (package RV2): a raid boss plays 3 cards at once, its middle and back rows' with its front row's (raidBossRowPlays); they
   // fly in from its hand above the board with the front play, each into its own slot (no board redraw).
   if(m.raidFull) fightSafe(()=>{ const plays = raidBossRowPlays(m, null); plays.forEach((pl, i)=>{ pushLog({type:'raidBossPlay', side:'B', defId:pl.defId, uid:pl.uid, row:pl.row, slot:pl.slot}); reserveSlotPut(m, 2, pl.row, pl.slot); bossRowPlayFx(pl.uid, i); }); }, 'raidBossRowPlays');
@@ -38811,8 +38811,14 @@ function boardPosSnapshot(m){
     ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach((c, idx)=>{ if(c && !c.gap && c.uid != null) out.set(String(c.uid), {pid, lane, idx, card:c}); })); });
   return out;
 }
-function holdArrivalDead(m, pre, events){
+// 2026-10-29 (package UI2, owner R3: "Ambush - ... Currently it just looks like it phases out"): root cause, the card that died as it landed
+// was looked up by its 'play' event in `events`, but both callers pass only the events after the play (the deferred arrival), so it was never
+// found, never held, and never drawn: the played card left the hand and was gone, its Ambush strike and death playing on nothing. `all`
+// (the whole list, the play included) is where the play is looked up now; the held card starts at its full Health (the blow's number and
+// the death come after it lands) and a leveled id ('fox-kit@lv0') falls back to its card.
+function holdArrivalDead(m, pre, events, all){
   if(!m || !Array.isArray(events) || !events.some(ev=> ev && ev.type==='death')) return;
+  const playsIn = Array.isArray(all) ? all : events;
   const defs = getCardDefs(); m._arrivalHold = m._arrivalHold || new Map(); m._arrivalCollapse = m._arrivalCollapse || new Map();
   events.forEach(ev=>{
     if(!ev) return;
@@ -38820,9 +38826,9 @@ function holdArrivalDead(m, pre, events){
     if(ev.type!=='death' || ev.uid == null) return;
     const u = String(ev.uid), was = pre && pre.get(u);
     if(was){ m._arrivalHold.set(u, was); return; }
-    const pe = events.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
-    const d = defs[pe.defId] || {};
-    m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: 0, maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
+    const pe = playsIn.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
+    const d = defs[pe.defId] || defs[String(pe.defId).split('@')[0]] || {};
+    m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: Math.max(1, d.health||1), maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
   });
 }
 function clearArrivalHold(m){ if(m){ m._arrivalHold = null; m._arrivalCollapse = null; } }
@@ -38992,7 +38998,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
     const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
     events.filter(ev=> !later.includes(ev)).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
     m.playerArrivalEvents = (m.playerArrivalEvents || []).concat(later); // 2026-10-17: a second play this turn adds to what is still waiting
-    fightSafe(()=> holdArrivalDead(m, prePos, later), 'holdArrivalDead');
+    fightSafe(()=> holdArrivalDead(m, prePos, later, events) /* 2026-10-29 (UI2, R3) */, 'holdArrivalDead');
   } else
   events.forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
   }catch(e){ try{ console.error('[fight] play presentation failed', e); }catch(_){} }
@@ -43784,7 +43790,7 @@ function delayForEvent(ev, prevKind){
   // the bolt lands within ~0.25 s (2026-10-16); 2026-10-17: every lightning hit, and a jump whose chain goes on hands straight over
   // to the next jump (its bolt has landed by then), so a chain plays as one run of jumps
   else if((ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') && ev._bolt) base = ev._bolt.more ? ev._bolt.ms + 30 : 640;
-  else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : ev.ambush ? 640 /* 2026-10-29 (UI2, R3): Ambush < Attack < Pounce */ : 900;
   // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
   // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
   // full swing: same beat as a melee hit, so the lunge plays out and then the miss/whoosh.
@@ -45840,6 +45846,16 @@ function animateAttacker(attUid, isMine, opts){
       if(opts.scared){ try{ floatText(el, '😨', 'debuff'); }catch(e){} tl.to(tile, {keyframes:[{x:-4, rotation:-3},{x:4, rotation:3},{x:-3, rotation:-2},{x:3, rotation:2},{x:0, rotation:0}], duration:Math.max(.25, windup/1000), ease:'none'}); }
       // 2026-10-16: a flyer's shadow draws in under it during the lunge, so the swing reads as a dive (SkillFX.flyDescend)
       if(el.classList.contains('is-flying') && !opts.scared){ try{ if(window.SkillFX && SkillFX.flyDescend) SkillFX.flyDescend(el, {dir, leanX, windup, strike}); }catch(e){} }
+      // 2026-10-29 (package UI2, owner R3: "Ambush < Attack < Pounce"): Ambush's strike on a unit that just arrived is a short, quick jab
+      // toward it (a little crouch, about half the attack's reach, in about half its time); with reduced motion it doesn't move at all.
+      if(opts.short){
+        if(reducedMotion()){ tl.kill(); attackingUids.delete(String(attUid)); el.classList.remove('is-attacking'); return; }
+        const sl = Math.max(-10, Math.min(10, leanX));
+        tl.to(tile, {y:dir*4, x:sl*0.2, scale:.97, duration:(windup*0.4)/1000, ease:'power2.in'})
+          .to(tile, {y:dir*-8, x:sl*0.7, scale:1.03, duration:(strike*0.3)/1000, ease:'back.out(2.5)'})
+          .to(tile, {y:0, x:0, rotation:0, scale:1, duration:(strike*0.3)/1000, ease:'power2.out', clearProps:'transform'});
+        return;
+      }
       tl
         .to(tile, {y:dir*9, x:leanX*0.35, rotation:rot*0.4, scale:.95, duration:windup/1000, ease:'power2.in'})
         .to(tile, {y:dir*-15, x:leanX, rotation:rot, scale:opts.toCastle?1.1:1.06, duration:(strike*0.55)/1000, ease:'back.out(3)'})
@@ -48846,7 +48862,7 @@ function renderVfxForEvent(ev){
       SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
-    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)
+    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf, short: !!ev.ambush /* 2026-10-29 (UI2, R3): Ambush's strike is a short jab */}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -48858,7 +48874,8 @@ function renderVfxForEvent(ev){
     const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
     const castleAt = castleShotMs(ev); // a castle's own throw (Herb Refinery's brew, a castle bolt) is quick (2026-10-16)
     const bolt = lightningBoltOf(ev); // a lightning hit (2026-10-17): its bolt is the delivery, and its number pops as the bolt lands
-    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
+    const impactDelay = (ev.ambush && !ev.ranged && quickAt == null) ? Math.round(windup*0.5 + impactPad*0.5) /* 2026-10-29 (UI2, R3): the jab lands sooner */ : quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
+    try{ const h = ev.type==='hit' && matchState._arrivalHold && matchState._arrivalHold.get(String(ev.targetUid)); if(h && h.card) h.card.hp = Math.max(0, (h.card.hp||0) - (ev.dmg||0)); }catch(e){} // 2026-10-29 (UI2, R3): a held arrival takes its blow
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     // 2026-10-16: a skin's attack belongs to the copy wearing it (cardLookOf), not to every copy of the card
