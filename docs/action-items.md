@@ -4,6 +4,20 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-29 23:01: the owner's notes
+| # | Package | Note |
+|---|---|---|
+| S1 | BRUP-1 (decision) | Bramble upgrades on a different resource, so players aren't torn between brambles and cards. |
+| S2 | UI3 | Status/context pills: hide irrelevant ones (e.g. night-blind); the Blind context pill alone is enough. |
+| S3 | UI3 | The emblem-drop animation on the conquest map flies to the bottom of the screen instead (bug). |
+| S4 | UI3 | Map cards menu: a main map doesn't show its submaps' cards; each submap shows only its own. |
+| S5 | UI3 | Very slight card tints: resist poison / heat / cold → that colour; see in the dark → blue-black; diurnal → yellow, nocturnal → dark blue. |
+| S6 | UI3 | Map cards gallery: hover shows the card detail (zoom); no "?" / title tooltip. |
+| S7 | done | Admin currency tap: +100 then doubles ("in case the currency has 0") = ENG13-1. |
+| S8 | UI3 | "Where's the see players button?" (Admin tab > Players; also add it to the map admin bar). |
+| S9 | UI3 | Multiplayer dungeons: random decks fill the party when playing alone; the win screen was interrupted by this: show the win screen only; Back returns to the Arena page, Co-op section. |
+| S10 | UI3 | Map cards gallery: an "Export all" function (all lists and picks). |
+
 ## 10-29 22:23: the owner's notes (after release 10-29b)
 | # | Package | Note |
 |---|---|---|
