@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-29 Release 10-29a (batch-1023e round 1: the new map lists)
+- Shipped: PACK1 (packs from the map lists, 🃏 Map cards admin button), APPLY1 + LISTFIX1 + THEME3 (the owner-approved map lists, submaps on their own list, the owner's 23:35 / 00:10 notes, tutorial T-1/T-2 list), REVIEW1 (Map cards gallery: Chosen / Cut cards / Maybe), FLAIR1 (the Dragon Lair's final-boss look), SKL0 (T-1/T-2 skills "?" except Flying; Bee Knight's Swarm at Level 1), TOOLS1 (balance workbench), RELFIX3 (PRO/BPRO reference decks rebuilt).
+- Checks: full unit run in chunks (no new failures; older failures unchanged), card-matrix (0 failures, 0 golden diffs), e2e ui_smoke (only the known tutorial 53%, TUT-1), flows (0 issues), flair1 and review1 (all pass).
+- Not in this release (round 2): per-card re-fit and skill recosting (step 3), skirmish enemy decks rebuilt on the new lists (step 4).
+
 ## 2026-10-29 (package RELFIX3: PRO / BPRO reference decks rebuilt from the new map lists; boss cards to SPECIAL; tests follow)
 - **PRO / BPRO decks hold only cards their map can give** (after THEME2 / APPLY1, LISTFIX1, THEME3 and the Rafflesia change). Every PRO / BPRO deck that broke its map rule (a card off the map's own pool, or one a player cannot hold by then) was dropped to `replaced` and the map refilled from new optimizer runs (`tools/opt/deckopt.js`, budget 8000, `--ladder none`, tag `2026-10-29-relfix3-maptrue` / `-bpro`; `docs/balance/opt/`): map-true runs on mo, mf, mq, mb, mg, mc, m2, mw, m8, mu, m4, m7, m10, mv, m5, mt, mi, md, mpd, m3, m11, me; bpro runs on every map and side map 0-20 but mq, mp, mz, mt (their BPROs were legal). `node tools/opt/pro_skirmishes.js --apply` per map range wrote `canonical/pro-skirmishes.json`; all 198 PRO / BPRO decks now pass the map rule. Skirmish enemy decks are not touched (step 4).
 - **Boss cards moved from MAP to SPECIAL** where they sat over the map's rarity cap (old-shell, the-gannet-queen, drowned-matriarch, old-snapjaw, heron-hag, echo-matriarch, reef-admiral, pride-queen, wolfsbane-alpha, yeti-chieftain, triumvirate; `tools/opt/relfix3_boss_special_2026_10_29.py`). They still come from their boss fight.
