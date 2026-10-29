@@ -1,0 +1,91 @@
+{
+  "note": "ART2 (2026-10-29): sheet plan. Each sheet = one 2x2 image; prompt = base + the four subjects (TL, TR, BL, BR). Built by tools/art/art2_import_2026_10_29.py into art/cards/<id>.prompt.txt.",
+  "base": "Generate one square image: a 2x2 grid of four separate square game-card illustrations of equal size, separated by thin plain gaps, no frames, no text. Style for all four: pixel art, 32-bit era game sprite style, crisp hard edges, limited palette, dark 1-pixel outline, soft light from the upper left, warm muted woodland colours (moss green, bark brown, river teal, berry red) with one bright accent, cute expressive animal character with a slightly large head, clean readable silhouette, full-body character in a small scene, centred, slight low angle, simple painterly background in every panel, no text, no watermark, no signature.",
+  "sheets": {
+    "01": {"note": "made before this plan (ChatGPT); subjects summarised from the cards, not the exact words sent", "ids": ["thorn-shrike", "wolf-spider-mother", "field-vole", "hedgerow-shrew"], "subjects": [
+      "a grey shrike with a black eye mask perched on a thorny bramble branch, autumn woodland edge behind",
+      "a big fuzzy wolf spider mother carrying her babies on her back, leaf litter on the forest floor",
+      "a round brown field vole nibbling a seed among grass stems and clover",
+      "a tiny long-nosed shrew darting along a hedgerow bank under blackberries"]},
+    "02": {"note": "made before this plan (Gemini); subjects summarised from the cards, not the exact words sent", "ids": ["robin-redbreast", "slow-worm", "woodcock-lookout", "pincushion-urchin"], "subjects": [
+      "a robin with a bright red breast perched on a wooden fence post, thistle field behind",
+      "a glossy bronze slow-worm coiled on a mossy log among ferns",
+      "a woodcock with a long bill standing in autumn leaves under tall trees",
+      "a round purple sea urchin in a clear rock pool on a pebble beach"]},
+    "03": {"ids": ["driftwood-crab", "oystercatcher", "tidepool-trapper-crab", "grey-seal-bull"], "subjects": [
+      "a red shore crab dragging a piece of driftwood up a pebble beach, rock pools and grey sea behind",
+      "a black-and-white oystercatcher with a long orange bill prying open a mussel on wet seaweed rocks, surf behind",
+      "a big green crab with both claws raised, waiting in a rock pool as a wave breaks behind it",
+      "a large grey seal bull resting on a shingle beach with a small white pup beside him, misty sea behind"]},
+    "04": {"ids": ["old-sturgeon", "water-shrew", "muskrat-lodgekeeper", "pyrenean-desman"], "subjects": [
+      "an ancient sturgeon with rows of bony plates along its back, swimming over pebbles in clear shallow water, sun rays",
+      "a dark water shrew with a silver belly diving underwater with a trail of shiny bubbles, stony stream bank behind",
+      "a muskrat sitting on top of its dome-shaped reed lodge in a flooded marsh by the beach, soft evening sky",
+      "a small brown desman with a long flexible trunk-like nose and long whiskers swimming in a clear pebbly stream"]},
+    "05": {"sent": "2x2 grid of four square pixel art game card illustrations, thin white gaps, 32-bit sprite style, dark outline, warm muted woodland palette, cute animals, each with its own simple background. Top-left: chestnut water vole jumping into a reedy stream. Top-right: muskrat carrying cut reeds by a pond near sand dunes at dusk. Bottom-left: cute green algae blob with big eyes on a lily pond. Bottom-right: red ants forming a floating raft on brown flood water, grey rain sky.", "ids":["water-vole", "muskrat-reedgatherer", "pond-algae", "fire-ant-raft"], "subjects": [
+      "a round chestnut water vole plopping into a stream from a grassy bank, reeds and splash",
+      "a muskrat carrying a bundle of cut reeds in its mouth beside a brackish pond near sand dunes at dusk",
+      "a cute living blob of bright green pond algae with big eyes floating on still water among lily pads, a tiny second blob budding off",
+      "a cluster of cute red ants holding legs together to form a floating raft on brown flood water, drowned grass and grey rain clouds"]},
+    "06": {"ids": ["puffin-diver", "peregrine-stooper", "kittiwake-flock", "red-billed-chough"], "subjects": [
+      "a puffin with a colourful striped bill holding a row of small silver fish, standing on a grassy cliff top above the sea",
+      "a peregrine falcon diving steeply with wings tucked in, white sea cliffs and blue sea far below",
+      "three white kittiwake gulls with black wingtips calling from narrow ledges on a white chalk cliff",
+      "a glossy black chough with a bright red curved bill and red legs tumbling playfully in the wind off a cliff edge"]},
+    "07": {"ids": ["razorbill", "gannet-nestweaver", "alligator-gar", "fen-mink"], "subjects": [
+      "a black-and-white razorbill seabird with a thick deep bill standing upright on a sea-cliff ledge, waves below",
+      "a white gannet with a soft yellow head arranging a nest of seaweed and feathers on a crowded cliff ledge",
+      "a long olive alligator gar fish with a broad toothy snout and armoured scales lurking in murky green swamp water among cypress roots",
+      "a sleek dark brown mink peering over a mossy log in a warm green swamp, reeds and hanging moss"]},
+    "08": {"ids": ["nutria-reedcutter", "booming-bittern", "bogfire-newt", "cane-toad"], "subjects": [
+      "a nutria with big orange front teeth and a flat tail towing a raft of cut reeds through warm green swamp water",
+      "a streaky brown bittern pointing its bill to the sky, hidden among tall dark reeds in a moonlit black marsh",
+      "a dark newt with glowing orange spots on its skin sitting on a lily pad in a black bog at night, faint glow",
+      "a big warty brown toad with bulging shoulder glands sitting on mud in a dark misty swamp"]},
+    "09": {"ids": ["marsh-harrier", "truffle-piglet", "hawthorn-shieldbug", "sleepless-shrew"], "subjects": [
+      "a brown marsh harrier gliding low over reeds with its wings held in a shallow V, dusky dark marsh",
+      "a pink piglet snuffling in leaf litter and finding a truffle, giant morel mushrooms and old oak trees behind",
+      "a green shield-shaped shieldbug with red trim on a hawthorn twig with red berries, damp mushroom hollow behind",
+      "a tiny brown shrew with tired droopy eyes sneezing in a cloud of glowing spores under giant mushrooms"]},
+    "10": {"sent": "2x2 grid of four square pixel art game card illustrations, thin white gaps, no frames, no text, 32-bit sprite style, dark outline, warm muted palette, cute animals, each with its own simple cave background. Top-left: big fuzzy brown huntsman spider with long legs and cute eyes on a cave wall, stalactites, blue glow. Top-right: flat dark whip spider with two very long thin feeler legs on a cave rock, crystal light. Bottom-left: badger in a leather apron stacking stones into a wall in a lantern-lit cave. Bottom-right: mole with pink digging paws and a tiny head lamp digging toward a glinting crystal vein.", "ids":["giant-cave-huntsman", "whip-spider", "badger-stonemason", "prospector-mole"], "subjects": [
+      "a large fuzzy brown huntsman spider with long legs and big cute eyes on a cave wall, stalactites and a blue glow",
+      "a flat dark whip spider with two very long thin feeler legs and folded front grabbing arms on a cave rock, faint crystal light",
+      "a badger in a leather apron stacking cut stones into a wall in a lantern-lit cave",
+      "a velvety mole with big pink digging paws and a tiny lamp on its head digging toward a glinting crystal vein in a tunnel"]},
+    "11": {"ids": ["mangrove-manatee", "banded-sea-krait", "fishing-cat", "great-barracuda"], "subjects": [
+      "a gentle grey manatee drifting among mangrove roots and seagrass in clear green water",
+      "a black and pale blue banded sea snake gliding between mangrove roots at night, moonlit water",
+      "a spotted grey fishing cat crouching on a mangrove root, tapping the water surface with one paw",
+      "a long silver barracuda with dark bars hanging in a deep blue current above a coral reef"]},
+    "12": {"ids": ["parrotfish", "chamois-leaper", "mountain-hare", "apollo-butterfly"], "subjects": [
+      "a bright turquoise and pink parrotfish with a beak-like mouth nibbling coral on a reef, white sand below",
+      "a chamois with small hooked horns leaping between rocky alpine ledges, snowy peaks and clouds",
+      "a mountain hare in a half-white winter coat leaping across snow on an alpine ridge",
+      "a white apollo butterfly with round red eyespots on its wings resting on an alpine flower, mountain peaks behind"]},
+    "13": {"ids": ["alpine-salamander", "alpine-swift", "gale-swift", "frostmoon-howler"], "subjects": [
+      "a glossy jet-black salamander on a wet mossy alpine rock, misty peaks behind",
+      "a brown and white alpine swift flying fast on long sickle-shaped wings past a sunny cliff, clouds",
+      "a dark swift racing through a storm over a mountain ridge, rain streaks and distant lightning",
+      "a grey wolf howling at a full moon on a snowy alpine crag, wolf pack shapes behind"]},
+    "14": {"ids": ["fulmar-spitter", "grave-grin-hyena", "hedge-weasel", "polar-bear"], "subjects": [
+      "a grey and white fulmar seabird on its cliff nest spitting a jet of oil, cliffs and stormy sea",
+      "a spotted hyena with a wide grin sitting on a windswept mountain rock at dusk",
+      "a slim brown weasel peeking out of a burrow in rocky alpine grass",
+      "a big white polar bear crouching patiently beside a breathing hole in the ice, snowy mountains behind"]},
+    "15": {"ids": ["woodland-caribou", "carrion-crow", "redwood-woodpecker", "cone-cutter-squirrel"], "subjects": [
+      "a caribou with large antlers walking through snow, sniffing for lichen on a cold alpine slope",
+      "a black crow perched on a tall thorny hedge with wild roses, hedge maze behind",
+      "a woodpecker with a red crest pecking at a giant redwood trunk, red wood chips falling, huge red trees behind",
+      "a red squirrel at the top of a pine tree dropping a pine cone, snowy dark pine forest behind"]},
+    "16": {"ids": ["talus-pika", "greenland-shark", "sandfish", "dune-packrat"], "subjects": [
+      "a round little pika sitting on a small pile of dried grass among frosty rocks on the tundra",
+      "a huge slow grey shark with tiny eyes swimming under arctic sea ice, dim blue light",
+      "a smooth sandy-yellow skink with dark bands diving head-first into rippled sand dunes, glinting glass pebbles",
+      "a pack rat beside its big messy pile of sticks, shells and shiny glass bits in desert dunes"]},
+    "17": {"ids": ["quicksand-queen", "pumice-beetle", "anvilwhisker-otter", "chapel-tortoise"], "subjects": [
+      "a large ant queen with a crown-shaped head crest waiting at the bottom of a sand-pit funnel in desert dunes",
+      "a dung beetle rolling a light grey pumice stone down an ashy volcanic slope, steam vents behind",
+      "an otter with long whiskers and a small leather apron hammering a river stone on a flat rock anvil, ashy hills and glowing embers",
+      "a tortoise carrying a tiny stone shrine with a little bell on its shell, on a calm mountain summit above the clouds at dawn"]}
+  }
+}
