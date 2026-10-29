@@ -13656,6 +13656,14 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
 @media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
 @media (min-width:1700px) and (min-height:950px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 250px) / 4.55), 240px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
+/* 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead."): a card that drags at once, and the drop zones, take every
+   touch move (the browser must not start a scroll the shim's preventDefault comes too late for); a scrolling hand lets its cards pass a sideways swipe on to
+   the strip (JS: syncHandScroll sets .hs-scroll); for the whole of a drag the page takes no touch scroll and no overscroll chaining (body.bw-touch-dragging, set by the touch
+   shim). A touch that starts outside a card, a deck builder card (it needs the hold first) or a button still scrolls the page as before. */
+#handStrip [draggable="true"], #leaderWidget[draggable="true"], #view-play .battlefield [draggable="true"], .discardzone, .skipzone, .reserve-target{touch-action:none;}
+#handStrip.hs-scroll [draggable="true"]{touch-action:pan-x;}
+body.bw-touch-dragging, body.bw-touch-dragging *{touch-action:none !important;}
+html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:none;}
 /* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the two rules above set only --match-card-h on a desktop window, and with the extra
    html.is-desk-centre class they beat the raid's own pair (#appWrap.in-match.mb2-raid), so the raid's enemy Deck and Environment cards got the big height (142 px) with the
    raid's small width (64 px). The raid sets height and width together again, after them. */

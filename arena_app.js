@@ -38471,7 +38471,12 @@ function pl1HandPreviewSoon(){ if(pl1HandPreviewSoon._t) return; pl1HandPreviewS
       el.classList.remove('has-sim'); });
     applyHandPreviewStats(m, me, strip); }catch(e){} }, 0); }
 // HAND_PREVIEW:END
+// 2026-10-29 (package UI1, owner O2): the hand strip scrolls sideways once its cards don't fit (phone); .hs-scroll lets its cards pass a sideways swipe to the
+// strip (CSS touch-action: pan-x) while the rest of the time they take every touch move for themselves (touch-action: none). See the touch drag shim.
+function syncHandScroll(){ const st = document.getElementById('handStrip'); if(st) st.classList.toggle('hs-scroll', st.scrollWidth > st.clientWidth + 1); }
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ syncHandScroll(); }catch(e){} }, {passive:true});
 function renderHand(){
+  try{ setTimeout(syncHandScroll, 0); }catch(e){}
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const m = matchState; if(!m) return;
@@ -59603,6 +59608,7 @@ const HandDrag = (function(){
   }
   function beginDrag(touch){
     dragActive = true;
+    document.body.classList.add('bw-touch-dragging'); // 2026-10-29 (package UI1, owner O2): no page scroll or overscroll under a drag (CSS)
     dragEl = candidate;
     dt = makeDataTransfer();
     lastTarget = null;
@@ -59631,31 +59637,61 @@ const HandDrag = (function(){
     if(ghost && !keepGhost){ removeDragGhost(ghost); }
     ghost = null;
     candidate = null; dragEl = null; dt = null; lastTarget = null; dragActive = false;
+    document.body.classList.remove('bw-touch-dragging'); detachTargetListeners();
   }
   // 2026-10-12 (user: "On mobile, in the deck editor, I can't scroll the card selection very well... I mostly drag the
   // cards"): outside the battle hand, a card only starts dragging after you hold it still for a moment (HOLD_TO_DRAG_MS).
   // A finger that moves straight away is a scroll, so the card list scrolls from anywhere, cards included.
   const HOLD_TO_DRAG_MS = 260;
   let startAt = 0, holdNeeded = false;
-  document.addEventListener('touchstart', (e)=>{
+  // 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead. How do we protect against this?"):
+  // what made the screen move, and what protects now:
+  //  1. The browser decides on a scroll with the first touchmoves; a preventDefault that comes only after the 10 px threshold is too late
+  //     (the event is no longer cancelable). So a card that can be dragged straight away (the hand, the leader, a card on the board) and the
+  //     drop zones carry `touch-action: none` in CSS (the hand's cards `pan-x` while the hand itself scrolls sideways, see syncHandScroll,
+  //     and then a mostly sideways move scrolls the hand and a mostly upward one drags), and the page gets `touch-action: none` for the whole
+  //     drag (body.bw-touch-dragging). Touches that start outside a card still scroll the page as before.
+  //  2. A touch keeps its first target for its whole life, but when the hand redraws mid-drag that target leaves the page and the document
+  //     stops hearing the finger (the ghost froze and the page scrolled on). The handlers are also bound to the touched element itself and
+  //     answer once per event (handled), the touch equivalent of setPointerCapture.
+  //  3. preventDefault on every touchmove of a drag, while it can still be cancelled; a deck builder card held for the hold time also
+  //     stops the page's scroll before it has moved 10 px.
+  const handled = new WeakSet();
+  let targetEl = null;
+  function onTouchStart(e){
     const t = e.target.closest('[draggable="true"]');
+    try{ syncHandScroll(); }catch(_){}
     if(!t || t.getAttribute('draggable')==='false') return;
     candidate = t;
     const touch = e.touches[0];
     startX = touch.clientX; startY = touch.clientY;
     startAt = Date.now(); holdNeeded = !t.closest('#handStrip, #leaderWidget, #view-play .battlefield');
-  }, {passive:true});
-  document.addEventListener('touchmove', (e)=>{
-    if(!candidate) return;
+    detachTargetListeners();
+    targetEl = e.target; // the touched node: still gets the finger's events after a redraw took it out of the page
+    targetEl.addEventListener('touchmove', onTouchMove, {passive:false}); targetEl.addEventListener('touchend', onTouchEnd); targetEl.addEventListener('touchcancel', onTouchEnd);
+  }
+  function detachTargetListeners(){
+    if(!targetEl) return;
+    targetEl.removeEventListener('touchmove', onTouchMove); targetEl.removeEventListener('touchend', onTouchEnd); targetEl.removeEventListener('touchcancel', onTouchEnd);
+    targetEl = null;
+  }
+  function onTouchMove(e){
+    if(!candidate || handled.has(e)) return;
+    handled.add(e);
     const touch = e.touches[0];
     if(!dragActive){
       const dx = touch.clientX-startX, dy = touch.clientY-startY;
-      if((dx*dx + dy*dy) < DRAG_THRESHOLD_PX*DRAG_THRESHOLD_PX) return; // still just a tap, let native click fire
-      if(holdNeeded && Date.now() - startAt < HOLD_TO_DRAG_MS){ candidate = null; return; } // moved before the hold: let the page scroll
+      if((dx*dx + dy*dy) < DRAG_THRESHOLD_PX*DRAG_THRESHOLD_PX){
+        if(holdNeeded && Date.now() - startAt >= HOLD_TO_DRAG_MS && e.cancelable) e.preventDefault(); // held long enough: the page must not start scrolling before the drag does
+        return; // still just a tap, let native click fire
+      }
+      if(holdNeeded && Date.now() - startAt < HOLD_TO_DRAG_MS){ candidate = null; detachTargetListeners(); return; } // moved before the hold: let the page scroll
+      // a hand that scrolls sideways: a mostly sideways move on a card scrolls the hand, a mostly upward or downward one drags
+      if(!holdNeeded && candidate.closest('#handStrip.hs-scroll') && Math.abs(dx) > 1.3*Math.abs(dy)){ candidate = null; detachTargetListeners(); return; }
       beginDrag(touch);
     }
-    e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
-    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip, #leaderWidget')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1)+'deg'; } }
+    if(e.cancelable) e.preventDefault(); // once an actual drag is underway, stop the page from scrolling under it
+    if(ghost){ ghost.style.left = touch.clientX+'px'; ghost.style.top = touch.clientY+'px'; if(dragEl && dragEl.closest('#handStrip, #leaderWidget')){ ghost._tilt = (ghost._tilt||0) + (HandDrag.tiltAt(touch.clientX) - (ghost._tilt||0))*0.35; ghost.style.rotate = ghost._tilt.toFixed(1) + 'deg'; } }
     const target = elementUnderGhost(touch.clientX, touch.clientY);
     if(target !== lastTarget){
       if(lastTarget) fireDragEvent('dragleave', lastTarget, touch, {relatedTarget:target});
@@ -59664,9 +59700,16 @@ const HandDrag = (function(){
     } else if(target){
       fireDragEvent('dragover', target, touch);
     }
-  }, {passive:false});
-  document.addEventListener('touchend', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
-  document.addEventListener('touchcancel', (e)=>{ if(candidate) endDrag(e.changedTouches[0]); });
+  }
+  function onTouchEnd(e){
+    if(handled.has(e)) return;
+    handled.add(e);
+    if(candidate) endDrag(e.changedTouches[0]); else detachTargetListeners();
+  }
+  document.addEventListener('touchstart', onTouchStart, {passive:true});
+  document.addEventListener('touchmove', onTouchMove, {passive:false});
+  document.addEventListener('touchend', onTouchEnd);
+  document.addEventListener('touchcancel', onTouchEnd);
 })();
 // In-page dropdowns (2026-10-12, user: "the filters ... is not an in-html window for checkboxes but an out-html window. Make
 // it an in-html window selection ... as i have dual screens, this window is hanging in the wrong window"). With a mouse or
