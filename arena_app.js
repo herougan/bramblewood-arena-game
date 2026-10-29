@@ -8574,6 +8574,28 @@ function socketSlotHTML(d){
     const tip = k ? TX('ui.h1-slot-full', {gem: socketGemName(k.id)}) : TX('ui.h1-slot-empty');
     return `<div class="h1-slot ${k ? 'is-full mk-' + base : 'is-empty'}"${i ? ` style="top:calc(38% + ${i * 22}px)"` : ''} title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img">${k ? `<span>${k.icon}</span>` : ''}</div>`; }).join('');
 }
+// 2026-10-29 (package UI3, S5; owner 23:01: "Cards that resist poison, heat, cold should be slightly (very slightly) tinged towards that colour methinks. Those that
+// can see in the dark as well - blue-black. Those who are diurnal and nocturnal are also very slightly tinged yellow or dark blue."): a faint wash and inner glow over
+// the art, on every card face (cardTileHTML, so hand, board, Codex, rewards, the detail). Resist or Immune to poison -> green; heat / fire (Dry too) -> orange-red;
+// cold -> icy blue; Darksight / Sonar / Keen Sense -> blue-black; Diurnal -> warm yellow; Nocturnal -> dark blue. Up to three blend in that order (the wash is a
+// gradient between them). It sits under the name and numbers (z 1, they are 2+), is static, and goes flat under Low effects and off under No effects.
+const UI3_TINTS = [['poison', '70,185,80'], ['heat', '238,98,40'], ['cold', '118,196,246'], ['dark', '22,30,78'], ['diurnal', '255,206,72'], ['nocturnal', '40,56,160']];
+function ui3TintKeys(d){
+  try{
+    const e = (d && d.effects) || {}, res = [].concat(e.resist || [], d && d.resist || [], e.immune || []).map(x=> String(x).toLowerCase()), on = new Set();
+    if(res.includes('poison')) on.add('poison');
+    if(res.includes('heat') || res.includes('fire') || e.dry) on.add('heat');
+    if(res.includes('cold') || res.includes('ice') || res.includes('frost')) on.add('cold');
+    if(e.darksight || e.sonar || e.keenSense) on.add('dark');
+    if(e.diurnal || e.diurnalHp || e.diurnalGrant) on.add('diurnal');
+    if(e.nocturnal || e.nocturnalHp || e.nocturnalGrant) on.add('nocturnal');
+    return UI3_TINTS.filter(t=> on.has(t[0])).slice(0, 3);
+  }catch(err){ return []; }
+}
+function ui3TintHTML(d){
+  const t = ui3TintKeys(d); if(!t.length) return '';
+  return `<i class="ui3-tint" aria-hidden="true" data-tint="${t.map(x=> x[0]).join(' ')}" style="${t.map((x, i)=> `--t${i + 1}:${x[1]}`).join(';')}"></i>`;
+}
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8633,10 +8655,10 @@ function cardTileHTML(d, opts){
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
-      <div class="rarity-band"></div>${CARD_FRAME_HTML}
+      ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -8655,7 +8677,7 @@ function cardTileHTML(d, opts){
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
-    <div class="rarity-band"></div>${CARD_FRAME_HTML}
+    ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
@@ -8779,6 +8801,17 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
+// 2026-10-29 (package UI3, S2): is this unit blind right now for its own trait? Sun-shy by day, Night-blind at night (the engine's sightMiss), unless an Illuminate
+// unit stands on its side (a foe Illuminate unit facing it lights it too: the engine reads that, this does not). live: the board card's {pid, uid}.
+function ui3SightBlindNow(e, lv){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || !dayNightOn(m)) return false;
+    const ph = m.engine.getPhase(); if(!((ph === 'day' && e.sunshy) || (ph === 'night' && e.nightblind))) return false;
+    if(e.trueStrike) return false;
+    const pl = lv && m.players[lv.pid]; if(!pl) return true;
+    const defs = getCardDefs(), lit = [].concat(pl.row.left || [], pl.row.center || [], pl.row.right || []).some(c=> c && c.hp > 0 && defs[c.defId] && defs[c.defId].effects && (defs[c.defId].effects.illuminate || defs[c.defId].effects.lantern));
+    return !lit;
+  }catch(err){ return false; }
+}
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8814,7 +8847,11 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">${iconHTML('nature-force', '🌪️')}${n1(e.natureForce)}</span>`);
-  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`);
+  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if((e.sunshy || e.nightblind) && !(bopts && bopts.live)) { if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`); }
+  // 2026-10-29 (package UI3, S2; owner 23:01: "If a status/context pill is irrelevant e.g. night-blind, don't show it. In fact, just show that the blind context pill is sufficient."):
+  // in a fight a Sun-shy / Night-blind unit shows no pip while it sees (a night-blind unit by day), and the plain Blind pip while it is blind right now (the Blind status
+  // chip below the card already says it when it carries one: then no pip here, one Blind only). Outside a fight (hand, Codex, detail) the trait pip stays.
+  else if(e.sunshy || e.nightblind){ const lv = bopts.live; if(ui3SightBlindNow(e, lv) && !(lv.blind > 0)) out.push(`<span class="ab-blindnow" title="${escapeAttr('Blind: ' + (STATUS_KEYWORDS.find(k=> k.k === 'blind') || {}).text)}">${iconHTML('blind-now', '🕶️')}</span>`); }
   if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
   if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
@@ -20648,10 +20685,22 @@ function res3RankEmblemFlight(node, rank){
   let ny = H * 0.4; try{ const r = node && node.getBoundingClientRect(); if(r && r.height) ny = Math.max(60, Math.min(H - 120, r.top + r.height / 2)); }catch(e){}
   const o = document.createElement('div'); o.className = 'res3-rank-fly'; o.setAttribute('aria-hidden', 'true');
   o.innerHTML = `<span class="rank-hex rank-${escapeAttr(rank)}"><i></i><b>${escapeHtml(rank)}</b></span>`; document.body.appendChild(o);
-  const ex = W - 46, ey = H - 46, sx = -size, sy = ny;
-  const land = ()=>{ const ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = ex + 'px'; ring.style.top = ey + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
-    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e){} };
-  if(!g || reducedMotion()){ g ? g.set(o, {x:ex - size/2, y:ey - size/2, opacity:0}) : (o.style.transform = `translate(${ex - size/2}px, ${ey - size/2}px)`);
+  // 2026-10-29 (package UI3, S3; owner 23:01: "The emblem dropping animation on the conquest map moves to the bottom of the screen instead"): the landing is
+  // the fight's own spot, read live each frame so a panned / zoomed / scrolled map cannot leave it behind: the open fight panel's corner emblem
+  // (that fight's panel only), else the fight's node (its lower-right corner) when the node is on screen. Only a node scrolled out of view sends it to the
+  // page's bottom-right corner as RES3 R6 did. Was: always the bottom-right corner (ex, ey = W - 46, H - 46).
+  const tgt = ()=>{ try{
+      const pc = document.querySelector('.conquest-node-panel:not([hidden]) > .cnp-rank-corner'), key = node && node.dataset && node.dataset.lkey;
+      if(pc && (typeof conquestSelectedNodeKey === 'undefined' || !key || conquestSelectedNodeKey === key)){ const r = pc.getBoundingClientRect(); if(r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: r.left + r.width / 2, y: r.top + r.height / 2, s: Math.max(.3, r.width / size), el: pc}; }
+      const r = node && node.getBoundingClientRect && node.getBoundingClientRect();
+      if(r && r.width && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W) return {x: Math.max(24, Math.min(W - 24, r.right - r.width * .18)), y: Math.max(24, Math.min(H - 24, r.bottom - r.height * .18)), s: .42, el: null};
+    }catch(e){}
+    return {x: W - 46, y: H - 46, s: .45, el: null}; };
+  const sx = -size, sy = ny; let last = tgt();
+  const land = ()=>{ const e = last = tgt(), ring = document.createElement('i'); ring.className = 'res3-rank-ring'; ring.style.left = e.x + 'px'; ring.style.top = e.y + 'px'; document.body.appendChild(ring); setTimeout(()=> ring.remove(), 900);
+    if(e.el){ e.el.classList.remove('pl1-rank-land'); void e.el.offsetWidth; e.el.classList.add('pl1-rank-land'); }
+    try{ SoundKit.woodKnock && SoundKit.woodKnock(); }catch(e2){} };
+  if(!g || reducedMotion()){ const e0 = last; g ? g.set(o, {x:e0.x - size/2, y:e0.y - size/2, opacity:0}) : (o.style.transform = `translate(${e0.x - size/2}px, ${e0.y - size/2}px)`);
     return new Promise(res=>{ o.animate ? o.animate([{opacity:0}, {opacity:1}, {opacity:0}], {duration:900}).onfinish = ()=>{ o.remove(); res(); } : setTimeout(()=>{ o.remove(); res(); }, 900); }); }
   try{ if(/S/.test(rank)) SoundKit.rareRise && SoundKit.rareRise(); }catch(e){}
   return new Promise(res=>{
@@ -20660,8 +20709,8 @@ function res3RankEmblemFlight(node, rank){
     g.timeline({onComplete:()=>{ o.remove(); res(); }})
       .to(o, {opacity:1, duration:.15})
       .to(st, {k:1, duration:1.45, ease:'power1.inOut', onUpdate:()=>{ const k = st.k, ang = k * turns * Math.PI * 2, rad = R0 * Math.sin(Math.PI * Math.min(1, k * 1.08));
-          const bx = sx + (ex - sx) * k, by = sy + (ey - sy) * (k * k);
-          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - .55 * k}); }}, '<')
+          const T = last = tgt(), bx = sx + (T.x - sx) * k, by = sy + (T.y - sy) * (k * k);
+          g.set(o, {x: bx + Math.cos(ang) * rad - rad - size/2, y: by + Math.sin(ang) * rad - size/2, rotation: k * 360 * turns, scale: 1 + .35 * Math.sin(Math.PI * k) - (1 - T.s) * k}); }}, '<')
       .add(land)
       .to(o, {scale:.2, opacity:0, duration:.22, ease:'power2.in'});
   });
@@ -23620,7 +23669,10 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true}); }
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true});
+      // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
+      if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
+    if(el.closest && el.closest('.modal-overlay')) z.classList.add('cnp-rw-above'); // 2026-10-29 (UI3, S6): the popover sat under the overlay (z 200 < 600) and never showed
     document.body.appendChild(z);
     const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
     const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
@@ -24173,7 +24225,7 @@ function mapLayoutToolbarHTML(map){
     <span class="ml-group"><button type="button" class="btn small primary" id="mlLinksDone">Done</button></span></div>`;
   if(!conquestLayoutEdit){
     const nEdits = mapEditList(map).length;
-    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button>
+    return `<div class="map-layout-bar conquest-scrim"><button type="button" class="btn small" id="mlEdit" title="Move the skirmishes">📐 Layout</button><button type="button" class="btn small" id="mlLinks" title="Choose which skirmish unlocks which">🔗 Links</button><button type="button" class="btn small" id="mlNewSkirmish" title="Add a skirmish">➕ Skirmishes</button><button type="button" class="btn small" id="mlMapCards" title="${escapeAttr(TX('ui.mp-btn-tip'))}">🃏 ${escapeHtml(TX('ui.mp-title'))}</button><button type="button" class="btn small" id="mlClearMap" title="Count every fight on this map as cleared (S rank), with its card rewards">✅ Clear map</button><button type="button" class="btn small ghost" id="mlUnclearMap" title="Set every fight on this map back to not cleared">↩ Unclear map</button><button type="button" class="btn small" id="mlPlayers" title="${escapeAttr(TX('ui.adminu1-sub'))}">👥 ${escapeHtml(TX('ui.adminu1-title'))}</button><!-- 2026-10-29 (package UI3, S8): the player list from the map's admin bar too -->
       ${nEdits ? `<button type="button" class="btn small" id="mlEdits" title="Every change to this map, with Revert">📝 Edits (${nEdits})</button>` : ''}
       <span class="ml-note">${custom ? 'Custom layout' : 'Auto layout'} · Admin</span></div>`;
   }
@@ -24256,6 +24308,7 @@ function wireMapLayoutEditor(map, body){
   on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); rerender(); }); // 2026-10-17: every first-clear and clear-again reward
   on('mlUnclearMap', ()=>{ adminUnclearMap(map.id); rerender(); });
   on('mlEdits', ()=> openMapEditsList(map.id));
+  on('mlPlayers', ()=> openAdminUserList()); // 2026-10-29 (UI3, S8)
   on('mlLinks', ()=>{ conquestLinkEdit = true; conquestLinkFrom = null; rerender(); });
   on('mlLinksDone', ()=>{ conquestLinkEdit = false; conquestLinkFrom = null; rerender(); });
   if(conquestLinkEdit){
@@ -25057,6 +25110,19 @@ function gdPartyCastle(seats){
   const first = (seats || []).find(s=> s && !s.cpu && s.castle) || {};
   return mergeRaidCastles((seats || []).map(s=> brambleChar(CHARACTER_DEFS[(s && !s.cpu && s.castle) || first.castle || 'castle'] || CHARACTER_DEFS['castle'])));
 }
+// 2026-10-29 (package UI3, S9; owner 23:01: "Some random decks to play with you in the multiplayer dungeons"): a CPU ally plays a random ghost deck (the Autobattler's
+// stand-in generator, BramblewoodGhosts.generateGhostDeck, from the Standard cards the vault can play), not a copy of the host's deck as before. It is a pure function of
+// the run's seed and the seat, run on every page when the start message arrives (gdOnEvent 'start'), so every page and the log catch-up build the same table.
+function gdFillerDeck(seed, seat){
+  try{
+    if(!Ghosts || !Ghosts.generateGhostDeck) return null;
+    const all = gdDefs(), defs = {}; Object.keys(all).forEach(id=>{ const d = all[id]; if(d && !d.token && !d.test && !CoopM.unsupportedCard(d) && !CoopM.noSlotCard(d)) defs[id] = d; });
+    return Ghosts.generateGhostDeck(defs, 3, ((seed >>> 0) + 7919 * (seat + 1)) >>> 0);
+  }catch(e){ return null; }
+}
+function gdFillCpuSeats(start){
+  try{ (start && start.seats || []).forEach(x=>{ if(x && x.cpu && !(x.deck && Object.keys(x.deck).length)){ const d = gdFillerDeck(start.seed, x.seat | 0); if(d && Object.keys(d).length){ x.deck = d; x.filler = true; } } }); }catch(e){}
+}
 function gdDeps(){ return {makeSimEngine, defs: gdDefs(), defsHash: GD.defsHash, partyCastle: gdPartyCastle, brambleHp}; }
 // A seat's name: the player's, or "CPU ally"
 function gdSeatName(i){ const r = GD.s && GD.s.room, x = r && r.seats[i]; if(!x) return TX('ui.ar3-seat-empty'); return x.cpu ? TX('ui.coop2-cpu-name') : (x.name || TX('ui.ar3-you')); }
@@ -25147,11 +25213,12 @@ function gdOnEvent(kind, d){
   const S = GD.s; if(!S) return;
   if(kind === 'roster'){ if(GD.phase === 'connecting'){ GD.phase = 'lobby'; clearTimeout(GD.joinTimer); } if(GD.phase === 'lobby') gdRender(); else gdRenderCoopBar(); return; }
   if(kind === 'full'){ showToast(TX('ui.ar3-full'), 'warn'); gdClose(true); return; } // the vault seats its 2 (the live room takes 2 with no new SQL)
-  if(kind === 'start'){ GD.startSeed = d.seed >>> 0; if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
+  if(kind === 'start'){ GD.startSeed = d.seed >>> 0; gdFillCpuSeats(d); // 2026-10-29 (UI3, S9): the CPU allies' random decks, before the first floor's table is built
+    if(spendEnergy(gdCost())) GD.energyPaid = gdCost();
     if(GD.kind === 'live' && S.isHost && GD.roomId) try{ sbClient.from('coop_rooms').update({status: 'playing', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){}
     return; }
   if(kind === 'floor'){ if(!d.T){ showToast(TX('ui.coop2-defs-differ'), 'warn'); gdClose(true); return; } GD.floorEnd = null; gdStartFloorMatch(d.T); return; }
-  if(kind === 'caughtUp'){ if(d.T && !d.T.over){ GD.floorEnd = null; gdStartFloorMatch(d.T); } else if(d.ended){ gdRunEnded(d.ended); gdShow(); } return; }
+  if(kind === 'caughtUp'){ try{ gdFillCpuSeats(S.startMsg); }catch(e){} if(d.T && !d.T.over){ GD.floorEnd = null; gdStartFloorMatch(d.T); } else if(d.ended){ gdRunEnded(d.ended); gdShow(); } return; }
   if(kind === 'act' || kind === 'pending'){ gdRenderCoopBar(); return; }
   if(kind === 'reject'){ const by = d.by != null && d.by !== S.mySeat() ? gdSeatName(d.by) : null;
     showToast(d.why === 'taken' || d.why === 'cell' ? (by ? TX('ui.coop2-taken', {name: by}) : TX('ui.coop2-taken-anon')) : TX('ui.coop2-refused'), 'warn');
@@ -25272,11 +25339,15 @@ function gdRunEnded(how){
 }
 function gdClose(silent){
   const S = GD.s;
+  // 2026-10-29 (package UI3, S9; owner 23:01: "Pressing back brings you back to the arena page, at the coop section."): leaving a run on its floors or its end screen
+  // (Back, Leave) lands on the Arena page with the Co-op pane open; a silent close (an error toast, a refused join) and the lobby keep their old place
+  const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight');
   if(S){ try{ S.leave(); }catch(e){} if(GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('leave_coop_room', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} if(GD.kind === 'live' && S.isHost && GD.roomId && S.room && S.room.status === 'lobby') try{ sbClient.from('coop_rooms').update({status: 'closed', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){} }
   clearTimeout(GD.joinTimer); GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null;
   gdHide(); const bar = document.getElementById('coopBar'); if(bar) bar.remove();
   if(matchState && matchState.coop) endMatch({coopKeep: true});
   try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
+  if(toArena){ try{ pl2ArenaPane = 'coop'; playSubTab = 'arena'; }catch(e){} try{ exitConquestImmersive(); }catch(e){} try{ if(currentTab !== 'play') switchTab('play'); else renderPlay(); }catch(e){} } // 2026-10-29 (UI3, S9)
 }
 function gdHide(){ const ov = document.getElementById('gdOverlay'); if(ov){ ov.hidden = true; ov.innerHTML = ''; } document.body.classList.remove('gd-open'); }
 function gdShow(){
@@ -25302,8 +25373,8 @@ function gdLobbyHTML(){
   const S = GD.s, r = S.room || {seats: []}, me = S.me.peerId, host = S.isHost, mySeat = S.mySeat(), dg = CoopM.DUNGEONS.hollow;
   const seatTile = (x, i)=>{
     const label = `<span class="gd-seat-where">${escapeHtml(TX('ui.coop2-seat-' + i))}</span>`;
-    if(!x) return `<div class="gd-seat seat-${i} is-empty">${label}<b>${escapeHtml(TX('ui.ar3-seat-empty'))}</b><small>${escapeHtml(TX('ui.ar3-seat-cpu-start'))}</small></div>`;
-    if(x.cpu) return `<div class="gd-seat seat-${i} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.coop2-cpu-name'))}</b></div>`;
+    if(!x) return `<div class="gd-seat seat-${i} is-empty">${label}<b>${escapeHtml(TX('ui.ar3-seat-empty'))}</b><small>${escapeHtml(TX('ui.ui3-seat-cpu-start'))}</small></div>`; // 2026-10-29 (UI3, S9): says the deck is random
+    if(x.cpu) return `<div class="gd-seat seat-${i} is-cpu">${label}<b>🤖 ${escapeHtml(TX('ui.coop2-cpu-name'))}</b><small>${escapeHtml(TX('ui.ui3-cpu-random'))}</small></div>`;
     const isHost = x.peerId === r.hostId, isMe = x.peerId === me;
     const state = isHost ? `👑 ${escapeHtml(TX('ui.ar3-host'))}` : !x.connected ? `📴 ${escapeHtml(TX('ui.ar3-away'))}` : x.ready ? `✅ ${escapeHtml(TX('ui.ar3-ready'))}` : `⏳ ${escapeHtml(TX('ui.ar3-not-ready'))}`;
     return `<div class="gd-seat seat-${i} ${isMe ? 'is-me' : ''} ${x.ready || isHost ? 'is-ready' : ''}">${label}<b>${escapeHtml(x.name || '?')}${isMe && x.name !== TX('ui.ar3-you') ? ` <em>(${escapeHtml(TX('ui.ar3-you'))})</em>` : ''}</b><small>${state}</small></div>`;
@@ -25399,7 +25470,7 @@ function gdEndHTML(){
   return gdHeadHTML(`👥 ${escapeHtml(gdThemedName())}`, gdKindLine()) + `<div class="gd-panel ${all ? 'is-won' : 'is-lost'}" role="status"><h3>${all ? '👑' : '🌊'} ${escapeHtml(all ? TX('ui.ar3-run-cleared') : TX('ui.ar3-run-over'))}</h3>
     <p class="gd-panel-sub">${escapeHtml(TX('ui.ar3-floors-cleared', {n: cleared, total}))} ${ranks}</p>
     ${sum.gold || sum.dust ? `<div class="gd-chest"><span>${escapeHtml(TX('ui.ar3-chests-total'))}</span><b>${CURRENCY_META.gold.glyph} ${sum.gold}</b><b>${CURRENCY_META.dust.glyph} ${sum.dust}</b></div>` : ''}${cards}
-    <button type="button" class="btn primary" data-gd-act="close">${escapeHtml(TX('ui.ar3-back'))}</button></div>`;
+    <button type="button" class="btn primary" data-gd-act="close">${escapeHtml(TX('ui.ui3-back-arena'))}</button></div>`; // 2026-10-29 (UI3, S9): it leads to the Arena's Co-op pane now
 }
 function gdWireOverlay(ov){
   ov.addEventListener('click', e=>{
@@ -30584,7 +30655,7 @@ function vis4MapCardTilesHTML(ids, defs, opts){
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
     if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery${big ? ' is-large' : ''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -30614,15 +30685,16 @@ function rv2TagsOf(e){
 }
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
-  const mark = kind === 'cut' ? '✂' : kind === 'maybe' ? '?' : '';
+  const mark = kind === 'cut' ? '✂' : ''; // 2026-10-29 (UI3, S6): no "?" on a maybe (its section says it)
   return list.map(e=>{
     const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
     const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
     const pills = rv2TagsOf(e).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
-    return `<span class="rv1-tile is-${kind}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" title="${escapeAttr(e.why || '')}">`
-      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true})
+    const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
+    return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}">`
+      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
       + `<span class="rv2-pills">${pills}</span>`
-      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="false">${escapeHtml(btn[0])}</button></span>`;
+      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button></span>`;
   }).join('');
 }
 // N / M per list (owner 10-29 19:14): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
@@ -30646,6 +30718,28 @@ function rv2Update(ov){
     ov.querySelectorAll(`[data-rv2-count="${sec.dataset.rvI}"] .rv2-ct`).forEach(el=>{ el.textContent = txt; });
   });
 }
+// 2026-10-29 (package UI3, S10; owner 23:01: "can we do an export all function too?"): the Cut / Keep toggles are remembered for the session (rvFlips, key
+// "<main map>|<list key>|<card id>") so the gallery can export every map's lists, not just the one open. rvFlipTop is the main map being drawn.
+const rvFlips = {}; let rvFlipTop = '';
+function rv3ExportAll(){
+  const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [];
+  const flipped = (top, sec, id)=> !!rvFlips[top + '|' + sec.key + '|' + id];
+  mainConquestMaps().forEach(m=>{
+    const top = m.id, n = mapNumberOf(top), mapLabel = (n == null ? '' : 'Map ' + n + ' · ') + m.name;
+    mapPoolSections(top).forEach(sec=>{
+      const rv = rv1ReviewOf(sec, top); if(!rv) return;
+      const ids = l=> (l || []).filter(e=> e && e.id).map(e=> e.id);
+      const chosen = ids(rv.chosen), maybe = ids(rv.maybe), cut = ids(rv.cut);
+      const keep = maybe.concat(cut).filter(id=> flipped(top, sec, id)), cutNow = chosen.filter(id=> flipped(top, sec, id));
+      data.push({map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut});
+      const names = a=> a.length ? a.map(nm).join(', ') : '-';
+      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
+        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut));
+    });
+  });
+  const head = 'Bramblewood map card lists, exported ' + new Date().toISOString().slice(0, 10) + '. One line per list, in map order: "<map> / <list>: <the owner\'s Keep / Cut choices so far> | chosen: the proposal | maybe: ... | cut: ...".';
+  return {text: head + '\n' + lines.join('\n'), json: {exported: new Date().toISOString(), lists: data}};
+}
 function rv1PicksText(ov){
   const out = [];
   ov.querySelectorAll('.pk1-mc-sec[data-rv-label]').forEach(sec=>{
@@ -30659,13 +30753,17 @@ function rv1PicksText(ov){
   return out.join('\n');
 }
 function pk1OpenMapCards(mapId){
-  const top = mpTopOf(mapId), m = mpMapById(top); if(!m) return;
+  const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
   if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
+  rvFlipTop = top;
   const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
   const mapLabel = (m.icon ? m.icon + ' ' : '') + m.name;
   const bars = [];
-  const secs = mapPoolSections(top).map((s, si)=>{
+  // 2026-10-29 (package UI3, S4; owner 23:01: "dont need to show cards from its submaps - those submaps will show their own submaps cards only"): a main map's fight
+  // shows its MAP list + SPECIAL; a submap's fight shows only that submap's lists (its Tutorial-style extra lists too) + SPECIAL. Was: every list of the main map.
+  const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
+  const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
     if(!rv) return `<section class="pk1-mc-sec rv2-panel"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
@@ -30677,7 +30775,7 @@ function pk1OpenMapCards(mapId){
   }).join('');
   const anyRv = /has-rv1/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
@@ -30685,7 +30783,7 @@ function pk1OpenMapCards(mapId){
   ov.onclick = e=>{
     if(e.target === ov) return close();
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
-    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
   };
@@ -30696,6 +30794,15 @@ function pk1OpenMapCards(mapId){
     if(!txt){ msg.textContent = TX('ui.rv1-copy-none'); return; }
     window.__rv1Last = txt;
     try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
+  });
+  const ex = document.getElementById('rv3ExportAll');
+  if(ex) ex.addEventListener('click', ()=>{ // 2026-10-29 (UI3, S10): copy everything, and offer it as a .txt / .json download
+    const r = rv3ExportAll(), msg = document.getElementById('rv1CopyMsg'), dl = document.getElementById('rv3Dl'); window.__rv3Last = r;
+    try{ navigator.clipboard.writeText(r.text).then(()=>{ msg.textContent = TX('ui.ui3-export-copied'); }, ()=>{ msg.textContent = TX('ui.ui3-export-ready'); }); }catch(e){ msg.textContent = TX('ui.ui3-export-ready'); }
+    const save = (name, body, type)=>{ const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([body], {type})); a.download = name; document.body.appendChild(a); a.click(); a.remove(); };
+    dl.innerHTML = `<button type="button" class="btn small" data-rv3-dl="txt">⬇ .txt</button> <button type="button" class="btn small" data-rv3-dl="json">⬇ .json</button>`;
+    dl.querySelector('[data-rv3-dl=txt]').onclick = ()=> save('bramblewood-map-cards.txt', r.text, 'text/plain');
+    dl.querySelector('[data-rv3-dl=json]').onclick = ()=> save('bramblewood-map-cards.json', JSON.stringify(r.json, null, 1), 'application/json');
   });
   rv2Update(ov);
   try{ wireRewardZoom(ov); }catch(e){}
@@ -34813,7 +34920,9 @@ function renderMatchUI(){
   const bottomLabel = isLiveRanked ? (m.liveMySeat===1 ? 'You' : 'Opponent')
     : isPc ? 'Player 1' : (isSandbox ? (m.testKit || m.fxLib ? 'Your side' : 'Mine (spawn freely)') : 'You');
   const showPassOverlay = isPc && m.awaitingPass && !m.over;
-  const showWinModal = m.over && !m.winModalDismissed;
+  // 2026-10-29 (package UI3, S9; owner 23:01: "The winning menu is also interrupted by this. Just show the winning screen."): a group-dungeon floor ends on its own
+  // panel (gdFloorEndHTML / gdEndHTML); the generic "Victory! Play again" card used to open first and sat under it, so it never shows for m.coop
+  const showWinModal = m.over && !m.winModalDismissed && !m.coop;
   try{ if(showWinModal && (coachOpen || coachShield)) hideCoachTip(); }catch(e){} // 2026-10-12: a tutorial step left open used to sit over the results (its shield ate clicks)
   try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
   try{ requestAnimationFrame(()=> syncFightBackdrop(m)); closeGravePeek(); }catch(e){}
@@ -38206,7 +38315,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}

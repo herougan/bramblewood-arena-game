@@ -31,7 +31,8 @@ ok(!fs.existsSync(path.join(ROOT, 'index.html')) || /const MAP_REVIEW = \{"built
   ok(['ui.rv1-chosen', 'ui.rv1-cut', 'ui.rv1-maybe'].every(k=> body.includes(k)) && /part\('chosen'/.test(body) && /part\('cut'/.test(body) && /part\('maybe'/.test(body), '3. Chosen, Cut cards and Maybe parts');
   ok(/rv1Copy/.test(body) && /clipboard\.writeText/.test(body) && /rv1PicksText\(ov\)/.test(body) && /Escape/.test(body) && /wireRewardZoom\(ov\)/.test(body), '3. Copy my picks, Escape and zoom stay');
   // 2026-10-29 (package REVIEW2): the why is the tile's title only, the by-badge became the pills (tests/review2-2026-10-29.js), the cards are deck-size
-  ok(/vis4MapCardTilesHTML\(\[e\.id\], defs, \{packs: true, large: true\}\)/.test(app) && /title="\$\{escapeAttr\(e\.why \|\| ''\)\}"/.test(app) && /rv2-pill is-/.test(app) && /rv1-act/.test(app), '3. tiles reuse VIS4\'s (zoom) at deck size, carry the why as title, pills and a flip button'); }
+  // 2026-10-29 UI3 (S6): the why is no longer the tile's native title (the card's own hover detail carries it as data-zoom-why) and a maybe has no "?" mark
+  ok(/vis4MapCardTilesHTML\(\[e\.id\], defs, \{packs: true, large: true, why: e\.why \|\| ''\}\)/.test(app) && !/data-rv-carried="\$\{rv2IsCarried\(e\) \? 1 : 0\}" title=/.test(app) && /data-zoom-why=/.test(app) && /rv2-pill is-/.test(app) && /rv1-act/.test(app), '3. tiles reuse VIS4\'s (zoom) at deck size, carry the why in the hover detail (no native title), pills and a flip button'); }
 { const i = app.indexOf('function rv1PicksText('), body = app.slice(i, app.indexOf('\nfunction ', i + 10)), f = new Function(body + '\nreturn rv1PicksText;')();
   const tile = (kind, id, name)=> ({dataset: {rvKind: kind, rvId: id}, querySelector: ()=> ({getAttribute: ()=> name})});
   const sec = {dataset: {rvLabel: 'Map 4 / Map'}, querySelectorAll: ()=> [tile('chosen', 'a', 'Alpha'), tile('cut', 'b', 'Beta'), tile('maybe', 'c', 'Gamma')]};
