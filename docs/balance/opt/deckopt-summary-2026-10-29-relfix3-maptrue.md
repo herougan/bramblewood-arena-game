@@ -564,3 +564,133 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road6 @ 6-2: aiGuardLethal, phase night, terrain Sucking Mire T1 | 56.3% | 53.1% | +3.1 [-14.1, 20.4] |
 | ref:expected @ 6-3: aiGuardLethal, phase night, terrain Sucking Mire T1 | 100% | 93.8% | +6.3 [0.3, 12.2] |
 
+## Map 7: The Morel Hollow (`mu`), your level 1
+
+- Throughput: 18852 games in 215.9 s = **87.3 games/s** (2 workers). Search: ga, budget 8000 games (8430 map cards, 1 generations, 2 restarts; 2550 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mu --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 146 cards (18 map cards + 128 owned by then); phase 2 150 (+4 candidates).
+- Mode: **map-true**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: not obtainable (not in the progression plan or an earlier map's cards) 1 (rootworm-colony); over the map's rarity cap (rare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **4** (score >= 1, lowered from 3 to reach 4). Map: biome fungal (kin caves, swamp), terrain types Flora, Forest, Rainforest, Taiga, field aiGuardLethal, phase:cycle, sporeCloud, woods, unit types Amphibian 2, Annelid 2, Ants 2, Bee 2, Forest 2, Insect 7, Worm 2, skill families armor 2, poison 3, swarm 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Barkplate Beetle | uncommon | Map 7 | 4 | terrain type Forest; type Insect (7 map cards); type Forest (2 map cards); armor skills (2 map cards) |
+| Fungus Gnat Cloud | common | Map 7 | 4 | terrain type Forest; type Insect (7 map cards); type Forest (2 map cards); swarm skills (4 map cards) |
+| Pine Marten | rare | Map 7 | 2 | terrain type Forest; type Forest (2 map cards) |
+| Nightjar Drifter | common | Map 7 | 1 | night (field phase:cycle) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: first obtainable after this map 185; map rule: not obtainable (not in the progression plan or an earlier map's cards) 321; map rule: over the map's rarity cap (rare) 82; plan bucket nest 7; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 74.8% [72.3%, 77.3%], mirror 77.1%, road 68%: 5x Owl Nightwatch, 4x Leafcutter Gardener, 4x Planarian Splitter, 4x Truffle Piglet, 1x Compost Grub, 1x House Cat (owned), 1x Wolf Spider Mother
+- **Optimum (map cards + candidates)**: score 77.1% (+2.3 pts): 5x Owl Nightwatch, 4x Leafcutter Gardener, 4x Planarian Splitter, 4x Truffle Piglet, 3x Barkplate Beetle (candidate)
+- Best candidate swaps into the map-card optimum: Barkplate Beetle x3 +5.2; Fungus Gnat Cloud x3 +0.7; Nightjar Drifter x3 -11.1; Pine Marten x3 -25.7
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 1
+
+0. 77.1% [74.7%, 79.5%], 0 copies from the optimum: 5x Owl Nightwatch, 4x Leafcutter Gardener, 4x Planarian Splitter, 4x Truffle Piglet, 3x Barkplate Beetle (candidate)
+
+- **Fight decks vs the optimum:** Elo gap median 338 (-44 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 2.6 to 62.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 7-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 12.8% | 62.2 ±4.1 | 90% |
+| 7-2 skirmish's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 63.6% | 14.2 ±4.8 | 82.5% |
+| 7-3 skirmish's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 53.4% | 22.7 ±4.8 | 75% |
+| 7-4 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 43.3% | 32 ±4.9 | 67.5% |
+| 7-5 elite's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 46.7% | 29.5 ±4.9 | 60% |
+| 7-6 miniboss's deck | 43.8% [32.3%-55.9%] | -44 [-129, 41] | 77.6% | 2.6 ±4.3 | 40% |
+| reference starter deck under 7-1's field | 82.8% [71.8%-90.1%] | 273 [162, 384] | 36.5% | 40.1 ±5 | - |
+| reference deck (Map 7) under 7-2's field | 54.7% [42.6%-66.3%] | 33 [-52, 117] | 58% | 21.2 ±4.9 | - |
+| expected player deck (expectedPlayerDeck) under 7-3's field | 93.8% [85%-97.5%] | 470 [301, 640] | 37.2% | 38.4 ±4.9 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 7-1 skirmish | 100% [94.3%-100%] | 90% |
+| 7-2 skirmish | 62.5% [50.3%-73.3%] | 82.5% |
+| 7-3 skirmish | 73.4% [61.5%-82.7%] | 75% |
+| 7-4 skirmish | 90.6% [81%-95.6%] | 67.5% |
+| 7-5 elite | 79.7% [68.3%-87.7%] | 60% |
+| 7-6 miniboss | 15.6% [8.7%-26.4%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:7-1 @ 7-1: aiGuardLethal, phase cycle, sporeCloud, woods | 100% | 92.2% | +7.8 [1.2, 14.4] |
+| fight:7-2 @ 7-2: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 68.8% | 81.3% | -12.5 [-27.3, 2.3] |
+| fight:7-3 @ 7-3: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 87.5% | 50% | +37.5 [22.8, 52.2] |
+| fight:7-4 @ 7-4: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 96.9% | 60.9% | +35.9 [23.2, 48.6] |
+| fight:7-5 @ 7-5: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods | 85.9% | 56.3% | +29.7 [14.8, 44.5] |
+| fight:7-6 @ 7-6: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods | 43.8% | 45.3% | -1.6 [-18.8, 15.7] |
+| ref:starter @ 7-1: aiGuardLethal, phase cycle, sporeCloud, woods | 82.8% | 67.2% | +15.6 [0.9, 30.4] |
+| ref:road7 @ 7-2: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 54.7% | 37.5% | +17.2 [0.2, 34.2] |
+| ref:expected @ 7-3: aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods | 93.8% | 60.9% | +32.8 [19.5, 46.2] |
+
+## Map 8: Caves & Alcoves (`m4`), your level 1
+
+- Throughput: 24322 games in 209.5 s = **116.1 games/s** (2 workers). Search: ga, budget 8000 games (6764 map cards, 0 generations, 2 restarts; 5016 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m4 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 168 cards (20 map cards + 148 owned by then); phase 2 176 (+8 candidates).
+- Mode: **map-true**, rarity cap **rare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 2 (glimmer-spider, lantern-spark-fly); not obtainable (not in the progression plan or an earlier map's cards) 1 (prospector-mole); over the map's rarity cap (rare) 3 (echo-matriarch, old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **8** (score >= 3). Map: biome caves (kin coast, fungal, volcanic-ash), terrain types Cave, field aiGuardLethal, boon, dark, landslide, phase:off, unit types Arachnid 2, Bat 3, Cave 13, Insect 3, Mole 2, Rodent 2, Swamp 2, skill families armor 3, evasion 2, heal 2, swarm 2, tide 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Grotto Lobster | rare | Map 8 | 7 | biome caves; terrain type Cave; type Cave (13 map cards); animal group lobster (like Ghost Crayfish); armor skills (3 map cards); swarm skills (2 map cards) |
+| Vampire Bat Nurse | uncommon | Map 8 | 7 | biome caves; terrain type Cave; type Cave (13 map cards); type Bat (3 map cards); animal group bat (like Baby Bat); heal skills (2 map cards) |
+| Gallery Orb-Weaver | rare | Map 8 | 6 | biome caves; terrain type Cave; type Cave (13 map cards); type Arachnid (2 map cards); animal group spider (like Giant Cave Huntsman) |
+| Cave Pseudoscorpion | common | Map 8 | 5 | biome caves; terrain type Cave; type Cave (13 map cards); type Arachnid (2 map cards) |
+| Dynamite Packrat | uncommon | Map 8 | 5 | biome caves; terrain type Cave; type Cave (13 map cards); type Rodent (2 map cards) |
+| Guano Beetle | common | Map 8 | 5 | biome caves; terrain type Cave; type Cave (13 map cards); type Insect (3 map cards) |
+| Cave Centipede | common | Map 8 | 4 | biome caves; terrain type Cave; type Cave (13 map cards) |
+| Coffer Mimic | uncommon | Map 8 | 4 | biome caves; terrain type Cave; type Cave (13 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 46; map rule: first obtainable after this map 166; map rule: not obtainable (not in the progression plan or an earlier map's cards) 314; map rule: over the map's rarity cap (rare) 82; plan bucket nest 7; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 54.7% [52%, 57.3%], mirror 62.2%, road 32%: 4x Baby Bat, 4x Sulfur Cinder Moth, 4x Vampire Bat, 4x Whip Spider, 2x Millipede Hauler, 1x Caiman Hatchling (owned), 1x Dormouse (owned)
+- **Optimum (map cards + candidates)**: score 67.1% (+12.4 pts): 5x Baby Bat, 4x Sulfur Cinder Moth, 4x Vampire Bat, 4x Whip Spider, 3x Grotto Lobster (candidate)
+- Best candidate swaps into the map-card optimum: Grotto Lobster x3 +11.5; Gallery Orb-Weaver x3 +3.3; Cave Centipede x3 +3; Vampire Bat Nurse x3 +7.1; Cave Pseudoscorpion x3 +5.6; Guano Beetle x3 +4.8
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 1
+
+0. 67.1% [64.7%, 69.5%], 0 copies from the optimum: 5x Baby Bat, 4x Sulfur Cinder Moth, 4x Vampire Bat, 4x Whip Spider, 3x Grotto Lobster (candidate)
+
+- **Fight decks vs the optimum:** Elo gap median 100 (44 to 470); as your deck they score 6.9 to 43 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 8-1 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 32.3% | 32.9 ±4.6 | 90% |
+| 8-2 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 22.3% | 43 ±4.2 | 85% |
+| 8-3 skirmish's deck | 56.3% [44.1%-67.7%] | 44 [-41, 129] | 61% | 6.9 ±4.4 | 80% |
+| 8-4 skirmish's deck | 57.8% [45.6%-69.1%] | 55 [-31, 140] | 56.3% | 11.5 ±4.4 | 75% |
+| 8-5 skirmish's deck | 60.9% [48.7%-71.9%] | 77 [-9, 164] | 49.8% | 17.8 ±4.4 | 70% |
+| 8-6 skirmish's deck | 62.5% [50.3%-73.3%] | 89 [2, 176] | 56.3% | 11.1 ±4.4 | 65% |
+| 8-7 elite's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 59.3% | 7.1 ±4.4 | 60% |
+| 8-8 miniboss's deck | 64.1% [51.8%-74.7%] | 100 [13, 188] | 40.8% | 26.6 ±4.6 | 40% |
+| reference starter deck under 8-1's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 15.4% | 49.3 ±3.8 | - |
+| reference deck (Map 8) under 8-2's field | 68.8% [56.6%-78.8%] | 137 [46, 228] | 52.8% | 14.2 ±4.3 | - |
+| expected player deck (expectedPlayerDeck) under 8-3's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 16.3% | 48.5 ±3.8 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 8-1 skirmish | 78.1% [66.6%-86.5%] | 90% |
+| 8-2 skirmish | 73.4% [61.5%-82.7%] | 85% |
+| 8-3 skirmish | 26.6% [17.3%-38.5%] | 80% |
+| 8-4 skirmish | 35.9% [25.3%-48.2%] | 75% |
+| 8-5 skirmish | 21.9% [13.5%-33.4%] | 70% |
+| 8-6 skirmish | 18.8% [11.1%-30%] | 65% |
+| 8-7 elite | 35.9% [25.3%-48.2%] | 60% |
+| 8-8 miniboss | 43.8% [32.3%-55.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:8-1 @ 8-1: aiGuardLethal, dark dark, phase off | 93.8% | 64.1% | +29.7 [16.5, 42.9] |
+| fight:8-2 @ 8-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 92.2% | 89.1% | +3.1 [-7, 13.2] |
+| fight:8-3 @ 8-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 56.3% | 45.3% | +10.9 [-6.3, 28.2] |
+| fight:8-4 @ 8-4: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1 | 57.8% | 56.3% | +1.6 [-15.6, 18.7] |
+| fight:8-5 @ 8-5: aiGuardLethal, boon blindFury, dark dark, phase off, terrain Deep Dark T1 | 60.9% | 81.3% | -20.3 [-35.6, -5] |
+| fight:8-6 @ 8-6: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T1 | 62.5% | 76.6% | -14.1 [-29.8, 1.7] |
+| fight:8-7 @ 8-7: aiGuardLethal, dark dark, landslide, phase off, terrain Deep Dark T2 (Ambush) | 76.6% | 64.1% | +12.5 [-3.2, 28.2] |
+| fight:8-8 @ 8-8: aiGuardLethal, dark dark, phase off, terrain Deep Dark T2 (Ambush) | 64.1% | 64.1% | +0 [-16.6, 16.6] |
+| ref:starter @ 8-1: aiGuardLethal, dark dark, phase off | 100% | 67.2% | +32.8 [21.3, 44.3] |
+| ref:road8 @ 8-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 68.8% | 48.4% | +20.3 [3.6, 37] |
+| ref:expected @ 8-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 98.4% | 82.8% | +15.6 [5.9, 25.4] |
+
