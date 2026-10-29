@@ -694,3 +694,151 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road8 @ 8-2: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 68.8% | 48.4% | +20.3 [3.6, 37] |
 | ref:expected @ 8-3: aiGuardLethal, dark dark, phase off, terrain Deep Dark T1 | 98.4% | 82.8% | +15.6 [5.9, 25.4] |
 
+## Map 10: Coral Current (`m7`), your level 1
+
+- Throughput: 27846 games in 206.6 s = **134.8 games/s** (2 workers). Search: ga, budget 8000 games (7518 map cards, 0 generations, 2 restarts; 5208 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m7 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 208 cards (18 map cards + 190 owned by then); phase 2 217 (+9 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 1 (blue-ringed-octopus); not obtainable (not in the progression plan or an earlier map's cards) 1 (nautilus-drifter); over the map's rarity cap (veryrare) 3 (old-snapjaw, reef-admiral, the-gannet-queen).
+
+Phase 2 candidates: **9** (score >= 3). Map: biome reef-ocean (kin coast, mangrove), terrain types Coral Reef, Ocean, field aiGuardLethal, highTide, phase:cycle, thunderstorm, tide, wet, unit types Cephalopod 2, Cnidaria 2, Coral Reef 6, Fish 9, Mangrove 2, Ocean 8, skill families bleed 2, cleave 4, poison 3, strike-first 2, tide 13.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Yellow-bellied Sea Snake | rare | Map 10 | 9 | biome reef-ocean; terrain type Ocean/Coral Reef; type Ocean (8 map cards); type Coral Reef (6 map cards); animal group snake (like Banded Sea Krait); tide skills (13 map cards); poison skills (3 map cards); tide (field highTide) |
+| Lionfish | uncommon | Map 10 | 8 | biome reef-ocean; terrain type Coral Reef; type Fish (9 map cards); type Coral Reef (6 map cards); animal group fish (like Clownfish Scout); tide skills (13 map cards); tide (field highTide) |
+| Whale Shark | rare | Map 10 | 8 | biome reef-ocean; terrain type Ocean; type Fish (9 map cards); type Ocean (8 map cards); animal group shark (like Bloodscent Shark); tide skills (13 map cards); tide (field highTide) |
+| Sawfish | uncommon | Map 10 | 7 | biome reef-ocean; terrain type Ocean; type Fish (9 map cards); type Ocean (8 map cards); animal group ray (like Electric Ray); bleed skills (2 map cards) |
+| Sea Cucumber | uncommon | Map 10 | 7 | biome reef-ocean; terrain type Coral Reef/Ocean; type Ocean (8 map cards); type Coral Reef (6 map cards); tide skills (13 map cards); tide (field highTide) |
+| Cleaner Wrasse | uncommon | Map 10 | 6 | biome reef-ocean; terrain type Coral Reef; type Fish (9 map cards); type Coral Reef (6 map cards); animal group fish (like Clownfish Scout) |
+| Giant Clam | common | Map 10 | 6 | biome reef-ocean; terrain type Coral Reef; type Coral Reef (6 map cards); tide skills (13 map cards); tide (field highTide) |
+| Cone Snail | uncommon | Map 10 | 5 | biome reef-ocean; terrain type Coral Reef; type Coral Reef (6 map cards); poison skills (3 map cards) |
+| Mantis Shrimp | rare | Map 10 | 4 | biome reef-ocean; terrain type Coral Reef; type Coral Reef (6 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 147; map rule: not obtainable (not in the progression plan or an earlier map's cards) 311; map rule: over the map's rarity cap (veryrare) 61; plan bucket nest 7; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 79% [77%, 81%], mirror 82.9%, road 67.4%: 4x Crimson Recruit (owned), 4x Worker Ant (owned), 3x Adder Ambusher (owned), 3x Wolf Spider Mother (owned), 2x Mangrove Kingfisher (owned), 2x Muskrat Lodgekeeper (owned), 1x Badger Lumberjack (owned), 1x Bogfire Newt (owned)
+- **Optimum (map cards + candidates)**: score 79.7% (+0.7 pts): 5x Worker Ant (owned), 4x Crimson Recruit (owned), 3x Adder Ambusher (owned), 3x Wolf Spider Mother (owned), 2x Mangrove Kingfisher (owned), 2x Muskrat Lodgekeeper (owned), 1x Bogfire Newt (owned)
+- Best candidate swaps into the map-card optimum: Cone Snail x3 -0.2; Sea Cucumber x3 -1.4; Sawfish x3 -1.7; Mantis Shrimp x3 +0.4; Lionfish x3 -1; Cleaner Wrasse x3 -1.8
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 11 decks the searches ended on): 2
+
+0. 79.7% [77.8%, 81.5%], 0 copies from the optimum: 5x Worker Ant (owned), 4x Crimson Recruit (owned), 3x Adder Ambusher (owned), 3x Wolf Spider Mother (owned), 2x Mangrove Kingfisher (owned), 2x Muskrat Lodgekeeper (owned), 1x Bogfire Newt (owned)
+1. 70.4% [68.2%, 72.6%], 20 copies from the optimum: 2x Ember Tetra (owned), 1x Alligator Gar (owned), 1x Ant Hill (owned), 1x Baby Bat (owned), 1x Bee Sentry (owned), 1x Burrow Rabbit (owned), 1x Carrion Beetle (owned), 1x Clownfish Scout, 1x Cricket Drummer (owned), 1x Echo Screecher (owned), 1x Forager Ant (owned), 1x Harvest Mouse (owned), 1x Meadow Rabbit (owned), 1x Pelican Diver (owned), 1x Planarian Splitter (owned), 1x Puffin Diver (owned), 1x Shallows Fry (owned), 1x Star-nosed Mole (owned), 1x Swordfish Spearman
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 59% (+63) |
+| 1 | 41% (-63) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 470 (66 to 842); as your deck they score 28.1 to 52.7 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 10-1 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 32.3% | 46.4 ±4.1 | 90% |
+| 10-2 skirmish's deck | 99.2% [92.9%-99.9%] | 842 [448, 842] | 25.7% | 52.7 ±4 | 85.7% |
+| 10-3 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 34.1% | 44.5 ±4.1 | 81.4% |
+| 10-4 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 44.2% | 34.2 ±4.2 | 77.1% |
+| 10-5 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 30.9% | 47.5 ±4.2 | 72.9% |
+| 10-6 elite's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 33.3% | 45.8 ±4.1 | 68.6% |
+| 10-7 elite's deck | 64.1% [51.8%-74.7%] | 100 [13, 188] | 52.6% | 28.1 ±4.1 | 64.3% |
+| 10-8 elite's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 45.9% | 33.2 ±4.2 | 60% |
+| 10-9 boss's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 48.7% | 32.3 ±4.1 | 40% |
+| reference starter deck under 10-1's field | 79.7% [68.3%-87.7%] | 237 [133, 342] | 41.8% | 37.8 ±4.1 | - |
+| reference deck (Map 10) under 10-2's field | 42.2% [30.9%-54.4%] | -55 [-140, 31] | 84.9% | -2.7 ±3.1 | - |
+| expected player deck (expectedPlayerDeck) under 10-3's field | 92.2% [83%-96.6%] | 429 [275, 582] | 44.2% | 34.6 ±4.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 10-1 skirmish | 85.9% [75.4%-92.4%] | 90% |
+| 10-2 skirmish | 87.5% [77.2%-93.5%] | 85.7% |
+| 10-3 skirmish | 93.8% [85%-97.5%] | 81.4% |
+| 10-4 skirmish | 92.2% [83%-96.6%] | 77.1% |
+| 10-5 skirmish | 82.8% [71.8%-90.1%] | 72.9% |
+| 10-6 elite | 65.6% [53.4%-76.1%] | 68.6% |
+| 10-7 elite | 20.3% [12.3%-31.7%] | 64.3% |
+| 10-8 elite | 73.4% [61.5%-82.7%] | 60% |
+| 10-9 boss | 10.9% [5.4%-20.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:10-1 @ 10-1: aiGuardLethal, phase cycle, tide, wet | 93.8% | 98.4% | -4.7 [-11.4, 2] |
+| fight:10-2 @ 10-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 99.2% | 98.4% | +0.8 [-2.9, 4.5] |
+| fight:10-3 @ 10-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 96.9% | 98.4% | -1.6 [-6.8, 3.7] |
+| fight:10-4 @ 10-4: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 98.4% | 98.4% | +0 [-4.3, 4.3] |
+| fight:10-5 @ 10-5: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 98.4% | 98.4% | +0 [-4.3, 4.3] |
+| fight:10-6 @ 10-6: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet | 89.1% | 95.3% | -6.2 [-15.5, 3] |
+| fight:10-7 @ 10-7: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), thunderstorm, wet | 64.1% | 96.9% | -32.8 [-45.3, -20.3] |
+| fight:10-8 @ 10-8: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet | 89.1% | 92.2% | -3.1 [-13.2, 7] |
+| fight:10-9 @ 10-9: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T3 (Thorns 1), thunderstorm, wet | 59.4% | 95.3% | -35.9 [-49, -22.8] |
+| ref:starter @ 10-1: aiGuardLethal, phase cycle, tide, wet | 79.7% | 85.9% | -6.2 [-19.3, 6.8] |
+| ref:road10 @ 10-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 42.2% | 50% | -7.8 [-25, 9.4] |
+| ref:expected @ 10-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 92.2% | 84.4% | +7.8 [-3.2, 18.9] |
+
+## Map 11: Eyrie Heights (`m10`), your level 1
+
+- Throughput: 20612 games in 306.6 s = **67.2 games/s** (2 workers). Search: ga, budget 8000 games (8234 map cards, 0 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m10 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 230 cards (54 map cards + 176 owned by then); phase 2 230 (+0 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: muc. Left out: first obtainable after this map 27 (antlion-pit, bison-bulldozer, border-collie, cunning-vixen, dhole-matriarch, dhole-runner, ...); not obtainable (not in the progression plan or an earlier map's cards) 28 (alpha-howler, bramblewood-lynx, cinder-stoker, dust-hyena, fawn-scout, fox-kit, ...); over the map's rarity cap (veryrare) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome mountain-sky (kin cliffs, volcanic-ash), terrain types Mountain, field aiGuardLethal, phase:cycle, wind, windfall, unit types Bird 10, Bovine 3, Chipmunk 2, Mountain 13, Owl 2, Rodent 3, skill families evasion 3, ranged 2, strike-first 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 130; map rule: not obtainable (not in the progression plan or an earlier map's cards) 307; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 83% [81.3%, 84.7%], mirror 88.7%, road 65.9%: 4x Burrow Rabbit (owned), 4x Crimson Recruit (owned), 4x Electric Ray (owned), 3x Wolf Spider Mother, 2x Echo Screecher, 2x Muskrat Lodgekeeper, 1x Acorn Chipmunk (owned)
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 1
+
+0. 83% [81.3%, 84.7%], 0 copies from the optimum: 4x Burrow Rabbit (owned), 4x Crimson Recruit (owned), 4x Electric Ray (owned), 3x Wolf Spider Mother, 2x Echo Screecher, 2x Muskrat Lodgekeeper, 1x Acorn Chipmunk (owned)
+
+- **Fight decks vs the optimum:** Elo gap median 429 (237 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 25.1 to 66.7 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 11-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 15.2% | 66.7 ±2.9 | 90% |
+| 11-2 skirmish's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 49.6% | 33.1 ±3.9 | 86.3% |
+| 11-3 skirmish's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 41.4% | 41 ±3.8 | 82.5% |
+| 11-4 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 46.5% | 35.9 ±3.9 | 78.8% |
+| 11-5 elite's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 52.4% | 30.8 ±3.7 | 75% |
+| 11-6 elite's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 31.5% | 50.9 ±3.6 | 71.3% |
+| 11-7 elite's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 42.2% | 39.8 ±3.8 | 67.5% |
+| 11-8 elite's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 47.7% | 34.7 ±3.7 | 63.8% |
+| 11-9 elite's deck | 86.7% [76.3%-93%] | 326 [203, 449] | 57.7% | 25.1 ±3.6 | 60% |
+| 11-10 miniboss's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 42% | 40.8 ±3.5 | 40% |
+| reference starter deck under 11-1's field | 100% [94.3%-100%] | ≥842 [489, ∞] | 17.9% | 64.1 ±3.4 | - |
+| reference deck (Map 11) under 11-2's field | 43% [31.6%-55.2%] | -49 [-134, 36] | 87.9% | -2.4 ±2.6 | - |
+| expected player deck (expectedPlayerDeck) under 11-3's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 13.3% | 68.8 ±3.2 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 11-1 skirmish | 100% [94.3%-100%] | 90% |
+| 11-2 skirmish | 62.5% [50.3%-73.3%] | 86.3% |
+| 11-3 skirmish | 57.8% [45.6%-69.1%] | 82.5% |
+| 11-4 skirmish | 75% [63.2%-84%] | 78.8% |
+| 11-5 elite | 57.8% [45.6%-69.1%] | 75% |
+| 11-6 elite | 71.9% [59.9%-81.4%] | 71.3% |
+| 11-7 elite | 65.6% [53.4%-76.1%] | 67.5% |
+| 11-8 elite | 65.6% [53.4%-76.1%] | 63.8% |
+| 11-9 elite | 75% [63.2%-84%] | 60% |
+| 11-10 miniboss | 28.1% [18.6%-40.1%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:11-1 @ 11-1: aiGuardLethal, phase cycle, wind gale, windfall | 100% | 85.9% | +14.1 [5.5, 22.6] |
+| fight:11-2 @ 11-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 87.5% | 85.9% | +1.6 [-10.2, 13.3] |
+| fight:11-3 @ 11-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 93.8% | 87.5% | +6.3 [-3.8, 16.3] |
+| fight:11-4 @ 11-4: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 92.2% | 82.8% | +9.4 [-2, 20.7] |
+| fight:11-5 @ 11-5: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 79.7% | 82.8% | -3.1 [-16.6, 10.4] |
+| fight:11-6 @ 11-6: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 93.8% | 75% | +18.8 [6.6, 30.9] |
+| fight:11-7 @ 11-7: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 100% | 80.5% | +19.5 [9.8, 29.2] |
+| fight:11-8 @ 11-8: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 92.2% | 78.9% | +13.3 [1.3, 25.2] |
+| fight:11-9 @ 11-9: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 86.7% | 46.1% | +40.6 [25.9, 55.4] |
+| fight:11-10 @ 11-10: aiGuardLethal, phase cycle, terrain High Crags T2 (Siege 1), wind gale, windfall | 85.9% | 47.7% | +38.3 [23.4, 53.2] |
+| ref:starter @ 11-1: aiGuardLethal, phase cycle, wind gale, windfall | 100% | 96.9% | +3.1 [-1.1, 7.4] |
+| ref:road11 @ 11-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 43% | 46.9% | -3.9 [-21.1, 13.3] |
+| ref:expected @ 11-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 98.4% | 90.6% | +7.8 [0.1, 15.6] |
+
