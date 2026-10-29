@@ -1040,3 +1040,62 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road16 @ 16-2: aiGuardLethal, field frozen, phase night, terrain Frozen Waste T1 | 43.8% | 37.5% | +6.3 [-10.7, 23.2] |
 | ref:expected @ 16-3: aiGuardLethal, boon snowVeil, field frozen, phase night, terrain Frozen Waste T1 | 85.9% | 87.5% | -1.6 [-13.3, 10.2] |
 
+## Map 17: The Ice Hollow (`mi`, side map of `m6`, opens on Map 21), your level 1
+
+- Throughput: 16250 games in 177.9 s = **91.3 games/s** (2 workers). Search: ga, budget 8000 games (6226 map cards, 1 generations, 2 restarts; 4642 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mi --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 384 cards (20 map cards + 364 owned by then); phase 2 387 (+3 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 3 (balloon-archer, cinder-gecko, siege-rhino); over the map's rarity cap (veryrare) 5 (old-snapjaw, ossuary-lammergeier, the-contradiction, the-gannet-queen, wolfsbane-alpha).
+
+Phase 2 candidates: **3** (score >= 1, lowered from 3 to reach 3). Map: biome tundra-ice (kin taiga, volcanic-ash), terrain types Frost, Tundra, field aiGuardLethal, boon, phase:off, slippery, unit types Canid 3, Coastal 2, Frost 7, Lagomorph 3, Mountain 2, Mustelid 2, Ocean 2, Pinniped 4, Rodent 2, Tundra 14, Wolf 2, skill families cold 3, evasion 7, ranged 2, swarm 2, tide 4.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Arctic Tern | uncommon | Map 21 | 5 | biome tundra-ice; terrain type Tundra; type Tundra (14 map cards); type Coastal (2 map cards) |
+| Pika Hoarder | common | Map 21 | 3 | type Lagomorph (3 map cards); type Mountain (2 map cards); animal group rabbit (like Frost Hare Sprinter) |
+| Snow Leopard | veryrare | Map 21 | 1 | type Mountain (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 19; map rule: not obtainable (not in the progression plan or an earlier map's cards) 256; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 28.
+
+- **Optimum (map cards)**: score 72.3% [69.3%, 75.2%], mirror 81.3%, road 45.3%: 3x Harp Seal Pup, 3x Krill Swarm, 3x Otter Centurion (owned), 3x Wolf Spider Mother (owned), 2x Echidna Quillshot (owned), 2x Lemming Swarm, 1x Crossed-Eyes (owned), 1x Dust-devil Kestrel (owned), 1x Newt Doctor (owned), 1x Taiga Lynx (owned)
+- **Optimum (map cards + candidates)**: score 77.7% (+5.4 pts): 3x Harp Seal Pup, 3x Krill Swarm, 3x Lemming Swarm, 3x Otter Centurion (owned), 3x Wolf Spider Mother (owned), 2x Echidna Quillshot (owned), 1x Caiman Hatchling (owned), 1x Snow Ermine, 1x Taiga Lynx (owned)
+- Best candidate swaps into the map-card optimum: Arctic Tern x3 -1; Snow Leopard x2 -8; Pika Hoarder x3 -14.6
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 12 decks the searches ended on): 2
+
+0. 77.7% [75%, 80.4%], 0 copies from the optimum: 3x Harp Seal Pup, 3x Krill Swarm, 3x Lemming Swarm, 3x Otter Centurion (owned), 3x Wolf Spider Mother (owned), 2x Echidna Quillshot (owned), 1x Caiman Hatchling (owned), 1x Snow Ermine, 1x Taiga Lynx (owned)
+1. 71.3% [68.3%, 74.2%], 10 copies from the optimum: 4x Alpine Marmot (owned), 3x Obsidian Scorpion (owned), 3x Otter Centurion (owned), 3x Wolf Spider Mother (owned), 2x Caiman Hatchling (owned), 2x Echidna Quillshot (owned), 1x Newt Doctor (owned), 1x Spitting Cobra (owned), 1x Taiga Lynx (owned)
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 57.8% (+55) |
+| 1 | 42.2% (-55) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 273 (221 to 523); as your deck they score 19.2 to 51.6 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 17-A-1 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 23.9% | 51.6 ±5.4 | 90% |
+| 17-A-2 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 41.9% | 35.5 ±5.5 | 75% |
+| 17-A-3 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 36.7% | 40.3 ±5.8 | 60% |
+| 17-A-4 boss's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 58.4% | 19.2 ±5.5 | 40% |
+| reference starter deck under 17-A-1's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 27.6% | 47.8 ±5.4 | - |
+| reference deck (Map 21) under 17-A-2's field | 75% [63.2%-84%] | 191 [94, 288] | 65.5% | 12.5 ±5.3 | - |
+| expected player deck (expectedPlayerDeck) under 17-A-3's field | 96.9% [89.3%-99.1%] | 597 [369, 824] | 33.4% | 41.9 ±5.5 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 17-A-1 skirmish | 65.6% [53.4%-76.1%] | 90% |
+| 17-A-2 skirmish | 43.8% [32.3%-55.9%] | 75% |
+| 17-A-3 skirmish | 78.1% [66.6%-86.5%] | 60% |
+| 17-A-4 boss | 18.8% [11.1%-30%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:17-A-1 @ 17-A-1: aiGuardLethal, boon snowVeil, phase off, slippery 30 | 95.3% | 81.3% | +14.1 [3.2, 24.9] |
+| fight:17-A-2 @ 17-A-2: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 79.7% | 70.3% | +9.4 [-5.5, 24.3] |
+| fight:17-A-3 @ 17-A-3: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 82.8% | 84.4% | -1.6 [-14.4, 11.3] |
+| fight:17-A-4 @ 17-A-4: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T2 (Frostbite 1) | 78.1% | 53.1% | +25 [9.1, 40.9] |
+| ref:starter @ 17-A-1: aiGuardLethal, boon snowVeil, phase off, slippery 30 | 96.9% | 96.9% | +0 [-6, 6] |
+| ref:road21 @ 17-A-2: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 75% | 59.4% | +15.6 [-0.4, 31.7] |
+| ref:expected @ 17-A-3: aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1 | 96.9% | 90.6% | +6.3 [-2.1, 14.6] |
+
