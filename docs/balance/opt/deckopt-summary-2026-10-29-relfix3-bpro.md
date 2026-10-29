@@ -1839,3 +1839,149 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road19 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 21.9% | 54.7% | -32.8 [-48.7, -17] |
 | ref:expected @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 84.4% | 59.4% | +25 [10, 40] |
 
+## Map 19: Basalt Foundry (`m9`, side map of `m3`, opens on Map 23), your level 1
+
+- Throughput: 23780 games in 246.8 s = **96.3 games/s** (2 workers). Search: ga, budget 8000 games (8188 map cards, 0 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m9 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 32 cards (32 map cards + 0 owned by then); phase 2 32 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 388 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (veryrare) 9 (caldera-snow-leopard, ember-revenant, old-snapjaw, ossuary-lammergeier, rimeheart-colossus, snow-owl-sentinel, ...).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashy, boon, lavaSpout, phase:cycle, unit types Amphibian 4, Ape 2, Beetle 2, Bird 3, Canid 2, Devil 4, Frost 3, Insect 2, Newt 2, Porcupine 2, Primate 2, Reptile 2, Rodent 4, Undead 2, Volcanic 17, skill families armor 2, bleed 2, cleave 2, fire 4, ranged 3, spite 2, tide 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 677; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 60.6% [58.5%, 62.7%], mirror 71.8%, road 27.2%: 4x Fire Salamander, 4x Hellbender, 3x Cinder Stoker, 2x Beaver Lumberjack, 1x Ash Cloud Condor, 1x Ashbone Ghoul, 1x Basalt Boar, 1x Cinder Gecko, 1x Cinder Imp, 1x Ember Jackal, 1x Tide Spirit
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 60.6% [58.5%, 62.7%], 0 copies from the optimum: 4x Fire Salamander, 4x Hellbender, 3x Cinder Stoker, 2x Beaver Lumberjack, 1x Ash Cloud Condor, 1x Ashbone Ghoul, 1x Basalt Boar, 1x Cinder Gecko, 1x Cinder Imp, 1x Ember Jackal, 1x Tide Spirit
+1. 56.7% [54.5%, 58.9%], 8 copies from the optimum: 5x Cinder Stoker, 5x Hellbender, 1x Ashbone Ghoul, 1x Basalt Boar, 1x Cinder Imp, 1x Ember Jackal, 1x Flagellant Vulture, 1x Glacial Ape-King, 1x Granite Ox Golem, 1x Hercules Beetle, 1x Porcupine Roller, 1x Tide Spirit
+2. 55.4% [53.1%, 57.6%], 14 copies from the optimum: 5x Talus Pika, 2x Beaver Lumberjack, 2x Chained Binturong, 1x Ash Cloud Condor, 1x Cinder Stoker, 1x Fire Salamander, 1x Fruit-bat Familiar, 1x Glacier Wolf Pack, 1x Magma Salamander, 1x Magma Titan, 1x Obsidian Scorpion, 1x Ore-Smelter Mole, 1x Tide Spirit, 1x Yeti
+3. 57.3% [55%, 59.7%], 15 copies from the optimum: 2x Ashbone Ghoul, 2x Beaver Lumberjack, 2x Echidna Quillshot, 2x Magma Titan, 2x Obsidian Scorpion, 1x Anvilwhisker Otter, 1x Cinder Imp, 1x Ember Jackal, 1x Flagellant Vulture, 1x Hercules Beetle, 1x Porcupine Roller, 1x Pumice Beetle, 1x Quill Volley, 1x Talus Pika, 1x Yeti
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 60% (+70) | 49.4% (-4) | 61.3% (+80) |
+| 1 | 40% (-70) | - | 49.4% (-4) | 55% (+35) |
+| 2 | 50.6% (+4) | 50.6% (+4) | - | 45.6% (-30) |
+| 3 | 38.7% (-80) | 45% (-35) | 54.4% (+30) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 273 (-77 to 720); as your deck they score -0.7 to 51.8 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 19-A-1 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 18.4% | 40 ±3.5 | 90% |
+| 19-A-2 skirmish's deck | 82.8% [71.8%-90.1%] | 273 [162, 384] | 29.6% | 29.6 ±3.9 | 86.3% |
+| 19-A-3 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 28.9% | 29.6 ±3.7 | 82.5% |
+| 19-A-4 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 6.5% | 51.8 ±3 | 78.8% |
+| 19-A-5 skirmish's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 35.2% | 23.9 ±3.8 | 75% |
+| 19-A-6 skirmish's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 32.8% | 26.7 ±3.7 | 71.3% |
+| 19-A-7 elite's deck | 40.6% [29.5%-52.9%] | -66 [-152, 20] | 61.8% | 0 ±3.7 | 67.5% |
+| 19-A-8 elite's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 45.1% | 14.5 ±3.8 | 63.8% |
+| 19-A-9 elite's deck | 64.1% [51.8%-74.7%] | 100 [13, 188] | 47.9% | 12.5 ±3.8 | 60% |
+| 19-A-10 boss's deck | 39.1% [28.1%-51.3%] | -77 [-164, 9] | 62.6% | -0.7 ±3.6 | 40% |
+| reference starter deck under 19-A-1's field | 89.1% [79.1%-94.6%] | 364 [231, 497] | 24.2% | 34.7 ±3.6 | - |
+| reference deck (Map 23) under 19-A-2's field | 20.3% [12.3%-31.7%] | -237 [-342, -133] | 76.5% | -13.5 ±3.1 | - |
+| expected player deck (expectedPlayerDeck) under 19-A-3's field | 68.8% [56.6%-78.8%] | 137 [46, 228] | 48% | 12.1 ±3.7 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 19-A-1 skirmish | 43.8% [32.3%-55.9%] | 90% |
+| 19-A-2 skirmish | 42.2% [30.9%-54.4%] | 86.3% |
+| 19-A-3 skirmish | 32.8% [22.6%-45%] | 82.5% |
+| 19-A-4 skirmish | 68.8% [56.6%-78.8%] | 78.8% |
+| 19-A-5 skirmish | 28.1% [18.6%-40.1%] | 75% |
+| 19-A-6 skirmish | 26.6% [17.3%-38.5%] | 71.3% |
+| 19-A-7 elite | 1.6% [0.3%-8.3%] | 67.5% |
+| 19-A-8 elite | 18.8% [11.1%-30%] | 63.8% |
+| 19-A-9 elite | 7.8% [3.4%-17%] | 60% |
+| 19-A-10 boss | 1.6% [0.3%-8.3%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:19-A-1 @ 19-A-1: aiGuardLethal, ashy, phase cycle | 95.3% | 96.9% | -1.6 [-8.3, 5.1] |
+| fight:19-A-2 @ 19-A-2: aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1 | 82.8% | 81.3% | +1.6 [-11.7, 14.9] |
+| fight:19-A-3 @ 19-A-3: aiGuardLethal, ashy, boon emberBorn, phase cycle, terrain Basalt Floor T1 | 95.3% | 87.5% | +7.8 [-1.8, 17.4] |
+| fight:19-A-4 @ 19-A-4: aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1 | 98.4% | 95.3% | +3.1 [-2.9, 9.1] |
+| fight:19-A-5 @ 19-A-5: aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1 | 84.4% | 76.6% | +7.8 [-5.9, 21.5] |
+| fight:19-A-6 @ 19-A-6: aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1 | 78.1% | 84.4% | -6.2 [-19.7, 7.2] |
+| fight:19-A-7 @ 19-A-7: aiGuardLethal, ashy, lavaSpout, phase cycle, terrain Basalt Floor T2 (Armor 1) | 40.6% | 43.8% | -3.1 [-20.2, 14] |
+| fight:19-A-8 @ 19-A-8: aiGuardLethal, ashy, lavaSpout, phase cycle, terrain Basalt Floor T2 (Armor 1) | 76.6% | 67.2% | +9.4 [-6.1, 24.9] |
+| fight:19-A-9 @ 19-A-9: aiGuardLethal, ashy, lavaSpout, phase cycle, terrain Basalt Floor T2 (Armor 1) | 64.1% | 67.2% | -3.1 [-19.6, 13.3] |
+| fight:19-A-10 @ 19-A-10: aiGuardLethal, ashy, lavaSpout, phase cycle, terrain Basalt Floor T3 (Armor 1) | 39.1% | 54.7% | -15.6 [-32.7, 1.5] |
+| ref:starter @ 19-A-1: aiGuardLethal, ashy, phase cycle | 89.1% | 76.6% | +12.5 [-0.4, 25.4] |
+| ref:road23 @ 19-A-2: aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1 | 20.3% | 21.9% | -1.6 [-15.7, 12.6] |
+| ref:expected @ 19-A-3: aiGuardLethal, ashy, boon emberBorn, phase cycle, terrain Basalt Floor T1 | 68.8% | 60.9% | +7.8 [-8.7, 24.3] |
+
+## Map 20: The Sundered Peak (`m11`), your level 1
+
+- Throughput: 19922 games in 362.9 s = **54.9 games/s** (2 workers, 2 sessions (resumed)). Search: ga, budget 8000 games (8234 map cards, 0 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m11 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 22 cards (22 map cards + 0 owned by then); phase 2 22 (+0 candidates).
+- Mode: **bpro**, rarity cap **superrare** (the highest of the map's fights); submaps open by then: me, mx. Left out: not in the map's own pool (BPRO) 363 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, alpha-howler, alpine-marmot, ...); over the map's rarity cap (superrare) 5 (caldera-wyrm, fire-drake-hatchling, old-snapjaw, the-contradiction, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashyAfterEruption, boon, bossSurge, enemyOre, eruption, phase:cycle, phaseDay, phaseNight, scorchedOverScorching, wildfire, wind, windfall, unit types Amphibian 2, Bear 3, Bird 2, Insect 2, Undead 4, Ursid 3, Volcanic 11, skill families fire 2, ranged 3, siege 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 49; map rule: not in the map's own pool (BPRO) 694; map rule: over the map's rarity cap (superrare) 53.
+
+- **Optimum (map cards)**: score 69.2% [67.1%, 71.2%], mirror 75.4%, road 50.6%: 4x Cave Warlord, 4x Magma Wraith, 3x Ashbone Ghoul, 3x Bear Cub, 3x Magma Salamander, 3x Obsidian Lich
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 1
+
+0. 69.2% [67.1%, 71.2%], 0 copies from the optimum: 4x Cave Warlord, 4x Magma Wraith, 3x Ashbone Ghoul, 3x Bear Cub, 3x Magma Salamander, 3x Obsidian Lich
+
+- **Fight decks vs the optimum:** Elo gap median 237 (-38 to 470); as your deck they score 0 to 46.9 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 20-1 skirmish's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 43.4% | 25.1 ±4 | 90% |
+| 20-2 skirmish's deck | 93% [84%-97.1%] | 449 [288, 609] | 20.8% | 46.9 ±3.6 | 85.7% |
+| 20-3 skirmish's deck | 75.8% [64%-84.6%] | 198 [100, 296] | 36.4% | 32.4 ±4 | 81.4% |
+| 20-4 skirmish's deck | 44.5% [33%-56.7%] | -38 [-123, 47] | 70.7% | 0 ±2.9 | 77.1% |
+| 20-5 elite's deck | 75% [63.2%-84%] | 191 [94, 288] | 45.4% | 23.4 ±3.9 | 72.9% |
+| 20-6 elite's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 47% | 21.5 ±4 | 68.6% |
+| 20-7 elite's deck | 93.8% [85%-97.5%] | 470 [301, 640] | 31.6% | 36 ±3.8 | 64.3% |
+| 20-8 elite's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 38.5% | 29.7 ±4.1 | 60% |
+| 20-9 boss's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 43.2% | 25.4 ±3.9 | 50% |
+| 20-10 worldboss's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 49.8% | 18.9 ±3.8 | 40% |
+| reference starter deck under 20-1's field | 95.3% [87.1%-98.4%] | 523 [332, 715] | 12.6% | 54.9 ±3.4 | - |
+| reference deck (Map 20) under 20-2's field | 10.2% [4.9%-19.9%] | -379 [-516, -241] | 83.1% | -10.3 ±3.2 | - |
+| expected player deck (expectedPlayerDeck) under 20-3's field | 93.8% [85%-97.5%] | 470 [301, 640] | 22% | 45.7 ±3.8 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 20-1 skirmish | 56.3% [44.1%-67.7%] | 90% |
+| 20-2 skirmish | 79.7% [68.3%-87.7%] | 85.7% |
+| 20-3 skirmish | 73.4% [61.5%-82.7%] | 81.4% |
+| 20-4 skirmish | 34.4% [23.9%-46.6%] | 77.1% |
+| 20-5 elite | 32.8% [22.6%-45%] | 72.9% |
+| 20-6 elite | 37.5% [26.7%-49.7%] | 68.6% |
+| 20-7 elite | 76.6% [64.9%-85.3%] | 64.3% |
+| 20-8 elite | 45.3% [33.7%-57.4%] | 60% |
+| 20-9 boss | 35.9% [25.3%-48.2%] | 50% |
+| 20-10 worldboss | 34.4% [23.9%-46.6%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:20-1 @ 20-1: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, wind windy, windfall | 79.7% | 57.8% | +21.9 [6.3, 37.5] |
+| fight:20-2 @ 20-2: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 93% | 85.9% | +7 [-3.5, 17.6] |
+| fight:20-3 @ 20-3: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 75.8% | 60.9% | +14.8 [-1.1, 30.8] |
+| fight:20-4 @ 20-4: aiGuardLethal, ashyAfterEruption, boon restlessDead, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 44.5% | 43.8% | +0.8 [-16.4, 18] |
+| fight:20-5 @ 20-5: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 75% | 54.7% | +20.3 [4.1, 36.5] |
+| fight:20-6 @ 20-6: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 79.7% | 75% | +4.7 [-9.8, 19.2] |
+| fight:20-7 @ 20-7: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 93.8% | 96.9% | -3.1 [-10.4, 4.2] |
+| fight:20-8 @ 20-8: aiGuardLethal, ashyAfterEruption, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption), wildfire, wind windy, windfall | 84.4% | 65.6% | +18.8 [4.1, 33.4] |
+| fight:20-9 @ 20-9: aiGuardLethal, ashyAfterEruption, bossSurge {"atk":2,"hp":4}, eruption 3, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T3 (the eruption), wind windy, windfall | 78.1% | 76.6% | +1.6 [-12.9, 16.1] |
+| fight:20-10 @ 20-10: aiGuardLethal, ashyAfterEruption, bossSurge {"atk":2,"hp":4}, enemyOre {"stone":1,"metal":1,"metalEvery":2}, eruption 3, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T3 (the eruption), wind windy, windfall | 76.6% | 50% | +26.6 [10.5, 42.6] |
+| ref:starter @ 20-1: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, wind windy, windfall | 95.3% | 92.2% | +3.1 [-5.2, 11.5] |
+| ref:road20 @ 20-2: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 10.2% | 57.8% | -47.7 [-61.8, -33.5] |
+| ref:expected @ 20-3: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 93.8% | 73.4% | +20.3 [8, 32.7] |
+
