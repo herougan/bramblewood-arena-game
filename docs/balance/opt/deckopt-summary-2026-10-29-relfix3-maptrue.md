@@ -1229,3 +1229,66 @@ Excluded: a later boss / map-ender fight's reward 1; map rule: a faction card (P
 | ref:road19 @ 18-A-2: aiGuardLethal, field heatwave, heatLevel 1, mirage, phase cycle | 67.2% | 76.6% | -9.4 [-24.9, 6.1] |
 | ref:expected @ 18-A-3: aiGuardLethal, boon sandVeil, field heatwave, heatLevel 1, phase cycle, sandstorm | 87.5% | 65.6% | +21.9 [7.7, 36.1] |
 
+## Map 19: Ashen Spurn (`m3`), your level 1
+
+- Throughput: 19602 games in 259.1 s = **75.7 games/s** (2 workers). Search: ga, budget 8000 games (8670 map cards, 1 generations, 2 restarts; 3030 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m3 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 353 cards (15 map cards + 338 owned by then); phase 2 360 (+7 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 5 (anvilwhisker-otter, ashbone-ghoul, balloon-archer, cinder-gecko, siege-rhino); not obtainable (not in the progression plan or an earlier map's cards) 5 (ash-cloud-condor, ember-jackal, magma-salamander, ore-smelter-mole, tide-spirit); over the map's rarity cap (veryrare) 4 (ember-revenant, old-snapjaw, the-gannet-queen, yeti-chieftain).
+
+Phase 2 candidates: **7** (score >= 1, lowered from 3 to reach 7). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashRain, ashy, phase:cycle, wind, windfall, unit types Amphibian 2, Ape 2, Beetle 2, Frost 3, Insect 2, Mountain 2, Porcupine 2, Primate 2, Rodent 2, Volcanic 6, skill families bleed 2, fire 2, siege 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Stonedrop Vulture | uncommon | Map 19 | 3 | kin biome mountain-sky; type Mountain (2 map cards); flying (field wind) |
+| Quicksand Queen | veryrare | Map 19 | 2 | kin biome pale-desert; type Insect (2 map cards) |
+| Skull Vulture | uncommon | Map 19 | 2 | kin biome pale-desert; flying/night (field wind/phase:cycle) |
+| Armadillo Guard | common | Map 19 | 1 | kin biome pale-desert |
+| Moon Jerboa | uncommon | Map 19 | 1 | type Rodent (2 map cards) |
+| Pale Oryx | uncommon | Map 19 | 1 | kin biome pale-desert |
+| Rabid Jackal | uncommon | Map 19 | 1 | kin biome pale-desert |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 40; map rule: not obtainable (not in the progression plan or an earlier map's cards) 262; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 76.6% [74.5%, 78.6%], mirror 87%, road 45.3%: 3x Adder Ambusher (owned), 3x Echo Screecher (owned), 3x Otter Centurion (owned), 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Baby Horned Capybara (owned), 1x Boreal Elk (owned), 1x Clover Butterfly (owned), 1x Grass Viper (owned), 1x Hawthorn Shieldbug (owned), 1x Tunnel Ant (owned), 1x Walrus Icebreaker (owned)
+- **Optimum (map cards + candidates)**: score 79.4% (+2.8 pts): 3x Adder Ambusher (owned), 3x Echo Screecher (owned), 3x Otter Centurion (owned), 3x Stonedrop Vulture (candidate), 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Baby Horned Capybara (owned), 1x Grass Viper (owned), 1x Hawthorn Shieldbug (owned), 1x Tunnel Ant (owned)
+- Best candidate swaps into the map-card optimum: Armadillo Guard x3 -0.5; Moon Jerboa x3 -4.6; Quicksand Queen x2 -0.7; Stonedrop Vulture x3 -2.7; Pale Oryx x3 -9; Rabid Jackal x3 -13.2
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 9 decks the searches ended on): 1
+
+0. 79.4% [77.3%, 81.5%], 0 copies from the optimum: 3x Adder Ambusher (owned), 3x Echo Screecher (owned), 3x Otter Centurion (owned), 3x Stonedrop Vulture (candidate), 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Baby Horned Capybara (owned), 1x Grass Viper (owned), 1x Hawthorn Shieldbug (owned), 1x Tunnel Ant (owned)
+
+- **Fight decks vs the optimum:** Elo gap median 597 (293 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 29.5 to 58 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 19-1 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 27.8% | 49.7 ±4.5 | 90% |
+| 19-2 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 38.9% | 38.9 ±4.5 | 82.5% |
+| 19-3 elite's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 44.7% | 34.2 ±4.4 | 75% |
+| 19-4 elite's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 19.9% | 58 ±4.4 | 67.5% |
+| 19-5 elite's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 25% | 53.3 ±4.5 | 60% |
+| 19-6 miniboss's deck | 84.4% [73.6%-91.3%] | 293 [178, 408] | 49.4% | 29.5 ±4.3 | 40% |
+| reference starter deck under 19-1's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 21.2% | 56.5 ±4.4 | - |
+| reference deck (Map 19) under 19-2's field | 51.6% [39.6%-63.4%] | 11 [-73, 95] | 81.3% | 0.7 ±3.4 | - |
+| expected player deck (expectedPlayerDeck) under 19-3's field | 81.3% [70%-88.9%] | 255 [147, 362] | 27% | 52.3 ±4.3 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 19-1 skirmish | 96.9% [89.3%-99.1%] | 90% |
+| 19-2 skirmish | 81.3% [70%-88.9%] | 82.5% |
+| 19-3 elite | 35.9% [25.3%-48.2%] | 75% |
+| 19-4 elite | 60.9% [48.7%-71.9%] | 67.5% |
+| 19-5 elite | 34.4% [23.9%-46.6%] | 60% |
+| 19-6 miniboss | 25% [16%-36.8%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:19-1 @ 19-1: aiGuardLethal, phase cycle, wind windy, windfall | 100% | 92.2% | +7.8 [1.2, 14.4] |
+| fight:19-2 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 96.9% | 67.2% | +29.7 [17.4, 42] |
+| fight:19-3 @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 84.4% | 71.9% | +12.5 [-1.7, 26.7] |
+| fight:19-4 @ 19-4: aiGuardLethal, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 96.9% | 89.1% | +7.8 [-0.9, 16.6] |
+| fight:19-5 @ 19-5: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 92.2% | 90.6% | +1.6 [-8.1, 11.3] |
+| fight:19-6 @ 19-6: aiGuardLethal, ashy, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 84.4% | 64.1% | +20.3 [5.6, 35.1] |
+| ref:starter @ 19-1: aiGuardLethal, phase cycle, wind windy, windfall | 98.4% | 82.8% | +15.6 [5.9, 25.4] |
+| ref:road19 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 51.6% | 67.2% | -15.6 [-32.4, 1.2] |
+| ref:expected @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 81.3% | 57.8% | +23.4 [8, 38.9] |
+
