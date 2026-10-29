@@ -7994,6 +7994,15 @@
   /* 2026-10-15 (user: "If there's multiple packs ... you see layered packs ... the pack stack gets smaller"): the packs still to
      open sit in a fanned pile behind the one being torn, one fewer each time. */
   .po2-pile-wrap{position:relative; isolation:isolate;}
+  /* 2026-10-29 (package UI2, owner R2): the opener's first pack pops in from 80% (where the reward pack's glide ends) with a small bounce;
+     none with reduced motion or low effects */
+  .po2-pile-wrap.ui2-popin{animation:ui2PackPop .62s cubic-bezier(.3,1.45,.55,1) both;}
+  @keyframes ui2PackPop{0%{scale:.8; opacity:.2} 45%{scale:1.06; opacity:1} 70%{scale:.975} 88%{scale:1.012} 100%{scale:1}}
+  html[data-fx="none"] .po2-pile-wrap.ui2-popin, html[data-fx="low"] .po2-pile-wrap.ui2-popin{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .po2-pile-wrap.ui2-popin{animation:none;} }
+  /* 2026-10-29 (UI2, R2): a card the opener could not draw */
+  .ui2-po-fallback{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; aspect-ratio:.72; background:#2b2238; color:#fff; border-radius:8px;}
+  .ui2-po-fallback .ico{font-size:34px;} .ui2-po-fallback .nm{font:800 12px 'Nunito',system-ui,sans-serif; text-align:center; padding:0 6px;}
   .po2-pile{position:absolute; inset:0; z-index:-3; pointer-events:none;}
   .po2-pile-pack{position:absolute; left:0; right:0; top:12%; bottom:0; border-radius:4px 4px 8px 8px;
     background:linear-gradient(115deg, #cdb6f5 0%, #f5bedc 30%, #f6e6a8 55%, #b4e6f3 80%, #cbb7f2 100%);
