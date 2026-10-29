@@ -1370,3 +1370,74 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road20 @ 20-2: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 29.7% | 32.8% | -3.1 [-19.2, 12.9] |
 | ref:expected @ 20-3: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 90.6% | 84.4% | +6.3 [-5.2, 17.7] |
 
+## Map 20: Eye of the Volcano (`me`, side map of `m11`, opens on Map 20), your level 1
+
+- Throughput: 23934 games in 434.1 s = **55.1 games/s** (2 workers). Search: ga, budget 8000 games (9316 map cards, 1 generations, 2 restarts; 4488 with the candidates). Reproduce: `node tools/opt/deckopt.js --map me --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 385 cards (29 map cards + 356 owned by then); phase 2 391 (+6 candidates).
+- Mode: **map-true**, rarity cap **epic** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 2 (balloon-archer, siege-rhino); over the map's rarity cap (epic) 2 (old-snapjaw, the-gannet-queen).
+
+Phase 2 candidates: **6** (score >= 2, lowered from 3 to reach 6). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashyAfterEruption, eruption, phase:cycle, phaseDay, phaseNight, sulphurFumes, unit types Amphibian 2, Bear 2, Bird 2, Insect 2, Undead 3, Ursid 3, Volcanic 16, skill families armor 2, cleave 2, evasion 2, fire 2, ranged 3, siege 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Firefly Swarm | uncommon | Map 20 | 8 | biome volcanic-ash; terrain type Volcanic; type Volcanic (16 map cards); type Insect (2 map cards); animal group beetle (like Pumice Beetle); ranged skills (3 map cards); fire skills (2 map cards) |
+| Obsidian Lich | rare | Map 20 | 7 | biome volcanic-ash; terrain type Volcanic; type Volcanic (16 map cards); type Undead (3 map cards); animal group lizard (like Cinder Gecko); armor skills (2 map cards) |
+| Pall Wraith | rare | Map 20 | 6 | biome volcanic-ash; terrain type Volcanic; type Volcanic (16 map cards); type Undead (3 map cards); night (field phase:cycle) |
+| Ember Centipede | common | Map 20 | 4 | biome volcanic-ash; terrain type Volcanic; type Volcanic (16 map cards) |
+| Fire Hawk | rare | Map 20 | 2 | type Bird (2 map cards); fire skills (2 map cards) |
+| Glasswing Butterfly | rare | Map 20 | 2 | kin biome jungle; type Insect (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 50; map rule: first obtainable after this map 33; map rule: not obtainable (not in the progression plan or an earlier map's cards) 256; map rule: over the map's rarity cap (epic) 35; plan bucket materia 6; plan bucket nest 7; plan bucket raid 5; plan bucket smith 1; plan bucket unsorted 34.
+
+- **Optimum (map cards)**: score 53.7% [51%, 56.4%], mirror 63.8%, road 23.4%: 4x Ashbone Ghoul, 2x Cinder Skeleton, 2x Magma Salamander, 1x Amber Cicada (owned), 1x Anaconda Coil (owned), 1x Barkplate Beetle (owned), 1x Blessed Avatar, 1x Bramble Sprout (owned), 1x Cave Centipede (owned), 1x Cinder Gecko, 1x Cinder Stoker, 1x Conch Herald (owned), 1x Fawn Scout (owned), 1x Mayfly Dancer (owned), 1x Plague Gnat Cloud (owned)
+- **Optimum (map cards + candidates)**: score 61.8% (+8.1 pts): 4x Ashbone Ghoul, 3x Fire Hawk (candidate), 2x Cinder Skeleton, 2x Magma Salamander, 1x Amber Cicada (owned), 1x Anaconda Coil (owned), 1x Barkplate Beetle (owned), 1x Bramble Sprout (owned), 1x Cinder Gecko, 1x Cinder Stoker, 1x Conch Herald (owned), 1x Obsidian Lich (candidate), 1x Plague Gnat Cloud (owned)
+- Best candidate swaps into the map-card optimum: Obsidian Lich x3 +6.2; Firefly Swarm x3 -2.8; Fire Hawk x3 -4.9; Glasswing Butterfly x3 -6.7; Pall Wraith x3 -10.4; Ember Centipede x3 -17.9
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 11 decks the searches ended on): 2
+
+0. 61.8% [59.1%, 64.4%], 0 copies from the optimum: 4x Ashbone Ghoul, 3x Fire Hawk (candidate), 2x Cinder Skeleton, 2x Magma Salamander, 1x Amber Cicada (owned), 1x Anaconda Coil (owned), 1x Barkplate Beetle (owned), 1x Bramble Sprout (owned), 1x Cinder Gecko, 1x Cinder Stoker, 1x Conch Herald (owned), 1x Obsidian Lich (candidate), 1x Plague Gnat Cloud (owned)
+1. 61.7% [59.1%, 64.4%], 12 copies from the optimum: 5x Ashbone Ghoul, 3x Fumarole Ibex, 3x Magma Salamander, 1x Basalt Boar, 1x Blessed Avatar, 1x Chipmunk Cavalry (owned), 1x Chipmunk Hoarder (owned), 1x Cinder Gecko, 1x Cinder Stoker, 1x Dust Hyena (owned), 1x Grotto Lobster (owned), 1x Shallows Fry (owned)
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 36.6% (-95) |
+| 1 | 63.4% (+95) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 137 (-77 to 523); as your deck they score -3.4 to 44.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 20-A-1 elite's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 14.8% | 44.2 ±4 | 88.2% |
+| 20-A-2 elite's deck | 54.7% [42.6%-66.3%] | 33 [-52, 117] | 45.8% | 16.6 ±4.6 | 81.3% |
+| 20-A-3 elite's deck | 39.1% [28.1%-51.3%] | -77 [-164, 9] | 67% | -3.4 ±4.1 | 74.6% |
+| 20-A-4 dungeon's deck | 65.6% [53.4%-76.1%] | 112 [24, 201] | 48.5% | 12.9 ±4.4 | 35.5% |
+| 20-A-5 elite's deck | 71.9% [59.9%-81.4%] | 163 [69, 257] | 50.3% | 10.7 ±4.7 | 68% |
+| 20-A-6 elite's deck | 68.8% [56.6%-78.8%] | 137 [46, 228] | 49.6% | 11.6 ±4.4 | 61.6% |
+| 20-A-7 elite's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 40.8% | 19 ±4.7 | 55.4% |
+| reference starter deck under 20-A-1's field | 89.1% [79.1%-94.6%] | 364 [231, 497] | 6.8% | 52.7 ±3.5 | - |
+| reference deck (Map 20) under 20-A-2's field | 46.9% [35.2%-58.9%] | -22 [-106, 63] | 51.3% | 11.7 ±4.7 | - |
+| expected player deck (expectedPlayerDeck) under 20-A-3's field | 85.9% [75.4%-92.4%] | 314 [194, 434] | 16.2% | 43.6 ±4.1 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 20-A-1 elite | 76.6% [64.9%-85.3%] | 88.2% |
+| 20-A-2 elite | 39.1% [28.1%-51.3%] | 81.3% |
+| 20-A-3 elite | 10.9% [5.4%-20.9%] | 74.6% |
+| 20-A-4 dungeon | 59.4% [47.1%-70.5%] | 35.5% |
+| 20-A-5 elite | 6.3% [2.5%-15%] | 68% |
+| 20-A-6 elite | 26.6% [17.3%-38.5%] | 61.6% |
+| 20-A-7 elite | 34.4% [23.9%-46.6%] | 55.4% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:20-A-1 @ 20-A-1: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 95.3% | 90.6% | +4.7 [-4.1, 13.5] |
+| fight:20-A-2 @ 20-A-2: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, sulphurFumes, terrain Volcanic Ground T2 (the eruption) | 54.7% | 59.4% | -4.7 [-21.8, 12.4] |
+| fight:20-A-3 @ 20-A-3: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 39.1% | 35.9% | +3.1 [-13.6, 19.9] |
+| fight:20-A-4 @ 20-A-4: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 65.6% | 64.1% | +1.6 [-15, 18.1] |
+| fight:20-A-5 @ 20-A-5: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 71.9% | 50% | +21.9 [5.4, 38.3] |
+| fight:20-A-6 @ 20-A-6: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, sulphurFumes, terrain Volcanic Ground T2 (the eruption) | 68.8% | 57.8% | +10.9 [-5.7, 27.5] |
+| fight:20-A-7 @ 20-A-7: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 85.9% | 79.7% | +6.3 [-6.8, 19.3] |
+| ref:starter @ 20-A-1: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 89.1% | 85.9% | +3.1 [-8.3, 14.6] |
+| ref:road20 @ 20-A-2: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, sulphurFumes, terrain Volcanic Ground T2 (the eruption) | 46.9% | 35.9% | +10.9 [-6, 27.9] |
+| ref:expected @ 20-A-3: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption) | 85.9% | 78.1% | +7.8 [-5.4, 21] |
+
