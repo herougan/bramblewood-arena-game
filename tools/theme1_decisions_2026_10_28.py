@@ -27,7 +27,7 @@ if any('"id": "THEME1-1"' in l for l in lines):
     print('THEME1-1 already there')
 else:
     i = next(n for n, l in enumerate(lines) if l.strip() == '"items": [')
-    lines.insert(i + 1, '    ' + json.dumps(item, ensure_ascii=False) + ',')
+    lines.insert(i + 1, '    ' + json.dumps({**item, 'group': item.get('group', 'game')}, ensure_ascii=False) + ',')
     open(P, 'w', encoding='utf-8').write('\n'.join(lines))
     json.load(open(P, encoding='utf-8'))
     print('added THEME1-1')

@@ -44,7 +44,7 @@ i = next(n for n, l in enumerate(lines) if l.strip() == '"items": [')
 added = 0
 for it in reversed(items):
     if any('"id": "%s"' % it['id'] in l for l in lines): continue
-    lines.insert(i + 1, '    ' + json.dumps(it, ensure_ascii=False) + ','); added += 1
+    lines.insert(i + 1, '    ' + json.dumps({**it, 'group': it.get('group', 'game')}, ensure_ascii=False) + ','); added += 1
 open(P, 'w', encoding='utf-8').write('\n'.join(lines))
 json.load(open(P, encoding='utf-8'))
 print('added %d PACK1 calls' % added)
