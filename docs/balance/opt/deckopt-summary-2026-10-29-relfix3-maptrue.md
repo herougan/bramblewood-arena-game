@@ -908,3 +908,69 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road15 @ 11-A-2: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 56.3% | 37.5% | +18.8 [1.8, 35.7] |
 | ref:expected @ 11-A-3: aiGuardLethal, phase cycle, terrain High Crags T1, wind gale, windfall | 98.4% | 87.5% | +10.9 [2.3, 19.6] |
 
+## Map 14: Savanna Reaches (`m5`), your level 1
+
+- Throughput: 22270 games in 292 s = **76.3 games/s** (2 workers). Search: ga, budget 8000 games (6764 map cards, 0 generations, 2 restarts; 4484 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m5 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 279 cards (16 map cards + 263 owned by then); phase 2 283 (+4 candidates).
+- Mode: **map-true**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: first obtainable after this map 3 (balloon-archer, hercules-beetle, kinkajou-lurker); not obtainable (not in the progression plan or an earlier map's cards) 1 (jaguar-stalker); over the map's rarity cap (veryrare) 3 (old-snapjaw, pride-queen, the-gannet-queen).
+
+Phase 2 candidates: **4** (score >= 1, lowered from 3 to reach 4). Map: biome savanna (kin jungle, village-keep), terrain types Desert, Savanna, field aiGuardLethal, field, firstBlood, heatLevel, phase:cycle, wildfire, unit types Bird 2, Hyaenid 2, Insect 2, Rodent 2, Savanna 12, skill families armor 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Lovebird | common | Map 14 | 5 | biome savanna; terrain type Savanna; type Savanna (12 map cards); type Bird (2 map cards) |
+| Mongoose Duelist | uncommon | Map 14 | 5 | biome savanna; terrain type Savanna; type Savanna (12 map cards); animal group mongoose (like Meerkat Burrower) |
+| Monitor Rambler | uncommon | Map 14 | 5 | biome savanna; terrain type Savanna; type Savanna (12 map cards); armor skills (2 map cards) |
+| Marula Monkey | common | Map 14 | 4 | biome savanna; terrain type Savanna; type Savanna (12 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: first obtainable after this map 89; map rule: not obtainable (not in the progression plan or an earlier map's cards) 292; map rule: over the map's rarity cap (veryrare) 61; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 73.2% [71.1%, 75.3%], mirror 81.7%, road 47.9%: 4x Alpine Marmot (owned), 3x Eagle-Owl Quartermaster (owned), 3x Hedgehog Scout (owned), 2x Ibex Rockcaller (owned), 2x Shimmerwing Stag (owned), 1x Burrow Rabbit (owned), 1x Grass Viper (owned), 1x Meadow Frog (owned), 1x Otter Centurion (owned), 1x Otter Paddler (owned), 1x Thorn Shrike (owned)
+- **Optimum (map cards + candidates)**: score 73.9% (+0.7 pts): 5x Alpine Marmot (owned), 3x Eagle-Owl Quartermaster (owned), 3x Hedgehog Scout (owned), 2x Ibex Rockcaller (owned), 2x Marula Monkey (candidate), 1x Burrow Rabbit (owned), 1x Grass Viper (owned), 1x Otter Paddler (owned), 1x Shimmerwing Stag (owned), 1x Thorn Shrike (owned)
+- Best candidate swaps into the map-card optimum: Marula Monkey x3 +0.9; Mongoose Duelist x3 +0.5; Lovebird x3 -1.2; Monitor Rambler x3 -1.5
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 1
+
+0. 73.9% [71.9%, 76%], 0 copies from the optimum: 5x Alpine Marmot (owned), 3x Eagle-Owl Quartermaster (owned), 3x Hedgehog Scout (owned), 2x Ibex Rockcaller (owned), 2x Marula Monkey (candidate), 1x Burrow Rabbit (owned), 1x Grass Viper (owned), 1x Otter Paddler (owned), 1x Shimmerwing Stag (owned), 1x Thorn Shrike (owned)
+
+- **Fight decks vs the optimum:** Elo gap median 364 (66 to 842; a 100% head-to-head is shown as "≥", the games could not tell more); as your deck they score 9.7 to 61.2 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 14-1 skirmish's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 43% | 29.9 ±3.8 | 90% |
+| 14-2 skirmish's deck | 96.9% [89.3%-99.1%] | 597 [369, 824] | 11.1% | 61.2 ±3.4 | 85% |
+| 14-3 skirmish's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 19.9% | 52.1 ±3.8 | 80% |
+| 14-4 skirmish's deck | 59.4% [47.1%-70.5%] | 66 [-20, 152] | 65.3% | 9.7 ±3.9 | 75% |
+| 14-5 elite's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 55.3% | 17.6 ±4 | 70% |
+| 14-6 elite's deck | 100% [94.3%-100%] | ≥842 [489, ∞] | 24% | 48 ±3.8 | 65% |
+| 14-7 elite's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 55.2% | 18.2 ±4 | 60% |
+| 14-8 miniboss's deck | 73.4% [61.5%-82.7%] | 177 [81, 272] | 54.3% | 19.7 ±4.1 | 40% |
+| reference starter deck under 14-1's field | 95.3% [87.1%-98.4%] | 523 [332, 715] | 22% | 50.4 ±3.8 | - |
+| reference deck (Map 14) under 14-2's field | 32.8% [22.6%-45%] | -124 [-214, -35] | 83.6% | -6.6 ±3.2 | - |
+| expected player deck (expectedPlayerDeck) under 14-3's field | 89.1% [79.1%-94.6%] | 364 [231, 497] | 32.6% | 40.2 ±4.1 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 14-1 skirmish | 51.6% [39.6%-63.4%] | 90% |
+| 14-2 skirmish | 95.3% [87.1%-98.4%] | 85% |
+| 14-3 skirmish | 82.8% [71.8%-90.1%] | 80% |
+| 14-4 skirmish | 14.1% [7.6%-24.6%] | 75% |
+| 14-5 elite | 50% [38.1%-61.9%] | 70% |
+| 14-6 elite | 60.9% [48.7%-71.9%] | 65% |
+| 14-7 elite | 23.4% [14.7%-35.1%] | 60% |
+| 14-8 miniboss | 14.1% [7.6%-24.6%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:14-1 @ 14-1: aiGuardLethal, firstBlood 1, phase cycle | 89.1% | 71.9% | +17.2 [3.8, 30.6] |
+| fight:14-2 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 96.9% | 98.4% | -1.6 [-6.8, 3.7] |
+| fight:14-3 @ 14-3: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 100% | 100% | +0 [0, 0] |
+| fight:14-4 @ 14-4: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 59.4% | 48.4% | +10.9 [-6.2, 28.1] |
+| fight:14-5 @ 14-5: aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 87.5% | 81.3% | +6.3 [-6.3, 18.8] |
+| fight:14-6 @ 14-6: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1), wildfire | 100% | 96.9% | +3.1 [-1.1, 7.4] |
+| fight:14-7 @ 14-7: aiGuardLethal, field heatwave, firstBlood 1, heatLevel 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 81.3% | 73.4% | +7.8 [-6.6, 22.3] |
+| fight:14-8 @ 14-8: aiGuardLethal, firstBlood 2, phase cycle, terrain Hunting Grounds T2 (Momentum 1) | 73.4% | 62.5% | +10.9 [-5.1, 27] |
+| ref:starter @ 14-1: aiGuardLethal, firstBlood 1, phase cycle | 95.3% | 93.8% | +1.6 [-6.3, 9.4] |
+| ref:road14 @ 14-2: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 32.8% | 46.9% | -14.1 [-30.8, 2.7] |
+| ref:expected @ 14-3: aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T1 | 89.1% | 93.8% | -4.7 [-14.4, 5] |
+
