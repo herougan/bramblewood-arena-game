@@ -98,7 +98,9 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
     ok(p.all['river-carp'] && p.all['burrow-rabbit'], `EB-1. ${label}, ${pick}: the sturdier cards stay`); }
   const C = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), sc = C.find(c=> c.id === 'sparrow-chick');
   ok(JSON.stringify(sc.source) === JSON.stringify({kind:'pack', tier:1, map:'mc'}), 'EB-1. the Sparrow Chick is a Gannet Cliffs pack card');
-  ok(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.mc.cards.includes('sparrow-chick'), 'EB-1. in Gannet Cliffs\' map pool');
+  // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05); THEME2 leaves the Sparrow Chick off Gannet Cliffs' list (on no list: not obtainable yet)
+  const t2mc = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.find(m=> m.key === 'mc');
+  ok(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.mc.cards.includes('sparrow-chick') === t2mc.proposed.includes('sparrow-chick'), 'EB-1. its place on Gannet Cliffs\' list follows THEME2');
   // 2026-10-24 (package BAL2, DF-1): a Pack 1 card counts from Map 0, where the first Pack 1 is paid (was its pool map, 3)
   ok(!JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'card-obtain-maps.json'), 'utf8')).maps['sparrow-chick'], 'EB-1. obtainable from Map 0 (Pack 1, DF-1)'); }
 // ---- the fights: Wildfire Front on 14-6 (savanna) and 20-8 (volcano), one ground fire there

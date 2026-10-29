@@ -17,7 +17,16 @@ const STEP = r=> G.roadRarityStep(r || 'common');
 
 // ---- 1. the tool's check
 const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'n221_divvy_2026_10_24.js'), 'check'], {encoding: 'utf8'});
-ok(chk.status === 0, `the N221 check passes (${((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').slice(0, 6).join(' | ')})`);
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05; sizes owner 22:47: a main map's list 12-16). The tool pins N221's lists: its "mXX: pool N"
+// within 12-16, and a card it wants on a list THEME2 leaves it off (with the obtain map that follows), are no problem; anything else still fails.
+const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
+const t2Has = (map, id)=> (T2[map] || []).includes(id), t2Any = id=> Object.values(T2).some(l=> l.includes(id));
+const n221Probs = ((chk.stdout || '') + (chk.stderr || '')).trim().split('\n').map(l=> l.trim()).filter(l=> l && !/FAILED:?$|^ok\b/.test(l)).filter(l=>{
+  let m = /^(m\d+): pool (\d+)$/.exec(l); if(m && +m[2] >= 12 && +m[2] <= 16) return false;
+  m = /^(\S+): a pack card of (m\w+) but not in its pool/.exec(l); if(m && !t2Has(m[2], m[1])) return false;
+  m = /^(\S+): (in one map pool|card-obtain-maps)/.exec(l); if(m && !t2Any(m[1])) return false;
+  return true; });
+ok(chk.status === 0 || !n221Probs.length, `the N221 check passes, but for THEME2's lists (${n221Probs.slice(0, 6).join(' | ') || 'ok'})`);
 
 // ---- 2. one home each
 const waiting = cards.filter(c=> c.awaitingSource).map(c=> c.id);
@@ -41,11 +50,14 @@ ok(N.HOME['grovebearer-dragon-turtle'].kind === 'map' && N.HOME['grovebearer-dra
 ok(JSON.stringify(Object.keys(N.APPLY)) === '["petrified-tree"]', 'one placement applied: the Petrified Tree');
 const pt = by['petrified-tree'];
 ok(pt && !pt.awaitingSource && JSON.stringify(pt.source) === '{"kind":"pack","tier":4,"map":"m22"}', `the Petrified Tree: Pack 4, the Rimefire Caldera (${JSON.stringify(pt && pt.source)})`);
-ok(pools.m22.cards.includes('petrified-tree') && Object.entries(pools).filter(([, P])=> P.cards.includes('petrified-tree') || P.special.includes('petrified-tree') || Object.values(P.submaps).some(s=> s.includes('petrified-tree'))).length === 1, 'the Petrified Tree is in one pool: the Caldera\'s');
-ok(J('canonical/card-obtain-maps.json').maps['petrified-tree'] === 22 && G.cardObtainMap(pt) === 22, 'its obtain map is 22 (card-obtain-maps regenerated)');
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): THEME2 leaves the Petrified Tree off every list (not obtainable yet: its obtain map reads 0)
+const ptPools = Object.entries(pools).filter(([, P])=> P.cards.includes('petrified-tree') || P.special.includes('petrified-tree') || Object.values(P.submaps).some(s=> s.includes('petrified-tree'))).length;
+ok(pools.m22.cards.includes('petrified-tree') === t2Has('m22', 'petrified-tree') && ptPools === (t2Any('petrified-tree') ? 1 : 0), `the Petrified Tree is on the Caldera's list where THEME2 puts it, on one list at most (${ptPools})`);
+const ptMap = pools.m22.cards.includes('petrified-tree') ? 22 : 0;
+ok((J('canonical/card-obtain-maps.json').maps['petrified-tree'] || 0) === ptMap && (G.cardObtainMap(pt) || 0) === ptMap, `its obtain map is ${ptMap} (card-obtain-maps regenerated)`);
 const ut = J('canonical/unit-themes.json').units.find(u=> u.id === 'petrified-tree'); ok(ut && ut.source === 'pack', 'unit-themes regenerated (the tree is a pack card there)');
 ['m21', 'm22', 'm23', 'm24'].forEach(mid=>{ const P = pools[mid];
-  ok(P && P.cards.length >= 6 && P.cards.length <= 13, `${mid}: pool ${P && P.cards.length} (6-10 guide; 22 / 23 over it, N221-4)`);
+  ok(P && P.cards.length >= 12 && P.cards.length <= 16, `${mid}: pool ${P && P.cards.length} (12-16, owner 10-28 22:47; 2026-10-28 APPLY1: lists follow THEME2)`);
   [...P.cards, ...P.special].forEach(id=> ok(by[id] && !by[id].awaitingSource, `${mid}: ${id} is a sourced card`)); });
 // the skirmish-base cards of Maps 21-24 under their fight's cap; their pack cards carry tier 4
 G.CONQUEST_MAPS.filter(m=> ['m21', 'm22', 'm23', 'm24'].includes(m.id)).forEach(m=>{ const no = G.mapUnlockNumberOf(m.id);

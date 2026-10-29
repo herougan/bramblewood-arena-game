@@ -125,9 +125,18 @@ ok(typeof E.makeSimEngine(defs, E.mulberry32(1), {}).equipTurnsOf !== 'function'
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), by = Object.fromEntries(cards.filter(Boolean).map(c=> [c.id, c]));
 const C3 = require(path.join(ROOT, 'tools', 'content3_2026_10_26.js'));
 C3.NEW.forEach(s=> ok(by[s.id], 'data: ' + s.id + ' is in cards.json'));
-{ const r = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content3_2026_10_26.js'), 'check'], {encoding: 'utf8'}); ok(r.status === 0, 'data: every new card on budget and placed (content3 check): ' + (r.stdout || '').trim().split('\n').pop()); }
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05). The tool pins CONTENT3's placements: its "not in pool <id>" and "not moved <id>" are no
+// problem where THEME2 leaves the card off that map's list (the source map stays); every other problem (a card over its budget) still fails.
 const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps;
-ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one');
+const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
+const t2Has = (map, id)=> (T2[map] || []).includes(id), placeOf = Object.fromEntries(C3.NEW.filter(s=> s.place).map(s=> [s.id, s.place[0]]));
+{ const r = require('child_process').spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content3_2026_10_26.js'), 'check'], {encoding: 'utf8'});
+  const probs = (r.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{
+    let m = /^not in pool (\S+)$/.exec(l); if(m && placeOf[m[1]] && !t2Has(placeOf[m[1]], m[1])) return false;
+    m = /^not moved (\S+)$/.exec(l); const mv = m && C3.MOVE[m[1]]; if(mv && !pools[mv.from].cards.includes(m[1]) && (by[m[1]].source || {}).map === mv.to && !t2Has(mv.to, m[1])) return false;
+    return true; });
+  ok(!probs.length, 'data: every new card on budget and placed where THEME2 lists it (content3 check): ' + (probs.join('; ') || 'ok')); }
+ok(!pools.mu.cards.includes('hollow-oath-keeper') && pools.mr.cards.includes('hollow-oath-keeper') === t2Has('mr', 'hollow-oath-keeper') && by['hollow-oath-keeper'].source.map === 'mr', 'G3 the Hollow Oath-Keeper is a Redwood Deep card, not a Morel Hollow one (on the Redwood Deep\'s list where THEME2 puts it)');
 const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), line = k=>{ const i = app.indexOf('{ key:"' + k + '"'); return i < 0 ? '' : app.slice(i, app.indexOf('\n', i)); };
 ok(['7-2', '7-4', '7-5', '7-6'].every(k=> !/"hollow-oath-keeper"/.test(line(k).replace(/\/\*.*?\*\//g, ''))), 'G3 ... and in no Morel Hollow deck');
 ok(/firstCard:"marsh-mallow-hare"/.test(line('5-1')) && /firstCard:"sphagnum-vole"/.test(line('5-2')), 'C1 5-1 and 5-2 pay a Cure card on their first clear');
