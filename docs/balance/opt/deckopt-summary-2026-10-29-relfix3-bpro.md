@@ -892,3 +892,141 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road9 @ 9-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 62.5% | 21.9% | +40.6 [25, 56.2] |
 | ref:expected @ 9-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 82.8% | 60.9% | +21.9 [6.8, 37] |
 
+## Map 10: Coral Current (`m7`), your level 1
+
+- Throughput: 24648 games in 178.7 s = **137.9 games/s** (2 workers). Search: ga, budget 8000 games (11760 map cards, 1 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m7 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 18 cards (18 map cards + 0 owned by then); phase 2 18 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 192 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, anaconda-coil, anhinga-spearbird, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, reef-admiral, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome reef-ocean (kin coast, mangrove), terrain types Coral Reef, Ocean, field aiGuardLethal, highTide, phase:cycle, thunderstorm, tide, wet, unit types Cephalopod 2, Cnidaria 2, Coral Reef 6, Fish 9, Mangrove 2, Ocean 8, skill families bleed 2, cleave 4, poison 3, strike-first 2, tide 13.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 691; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 75.4% [73.3%, 77.5%], mirror 80.4%, road 60.4%: 5x Coral Polyp Colony, 3x Clownfish Scout, 2x Coral Reef Shark, 2x Electric Ray, 2x Parrotfish, 2x Riptide Eel, 1x Banded Sea Krait, 1x Crown-of-thorns Star, 1x Kraken Spawnling, 1x Swordfish Spearman
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 7 decks the searches ended on): 4
+
+0. 75.4% [73.3%, 77.5%], 0 copies from the optimum: 5x Coral Polyp Colony, 3x Clownfish Scout, 2x Coral Reef Shark, 2x Electric Ray, 2x Parrotfish, 2x Riptide Eel, 1x Banded Sea Krait, 1x Crown-of-thorns Star, 1x Kraken Spawnling, 1x Swordfish Spearman
+1. 73.8% [71.6%, 75.9%], 13 copies from the optimum: 5x Clownfish Scout, 5x Open-Ocean Hermit Crab, 5x Parrotfish, 4x Riptide Eel, 1x Mangrove Manatee
+2. 72.6% [70.4%, 74.7%], 10 copies from the optimum: 5x Clownfish Scout, 5x Parrotfish, 4x Riptide Eel, 2x Coral Reef Shark, 2x Lion's Mane Jelly, 1x Bloodscent Shark, 1x Coral Polyp Colony
+3. 69.3% [67%, 71.5%], 9 copies from the optimum: 4x Parrotfish, 3x Crown-of-thorns Star, 2x Bloodscent Shark, 2x Clownfish Scout, 2x Coral Polyp Colony, 2x Riptide Eel, 1x Electric Ray, 1x Great Barracuda, 1x Orca Vanguard, 1x Reef Shark, 1x Swordfish Spearman
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 58% (+56) | 60.4% (+73) | 59.7% (+68) |
+| 1 | 42% (-56) | - | 59.7% (+68) | 52.8% (+19) |
+| 2 | 39.6% (-73) | 40.3% (-68) | - | 49.3% (-5) |
+| 3 | 40.3% (-68) | 47.2% (-19) | 50.7% (+5) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 326 (206 to 523); as your deck they score 22.8 to 49 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 10-1 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 33.1% | 41 ±4.2 | 90% |
+| 10-2 skirmish's deck | 86.7% [76.3%-93%] | 326 [203, 449] | 25.7% | 49 ±4.1 | 85.7% |
+| 10-3 skirmish's deck | 89.8% [80.1%-95.1%] | 379 [241, 516] | 34.1% | 40.4 ±4.2 | 81.4% |
+| 10-4 skirmish's deck | 78.1% [66.6%-86.5%] | 221 [120, 323] | 44.2% | 31 ±4.3 | 77.1% |
+| 10-5 skirmish's deck | 95.3% [87.1%-98.4%] | 523 [332, 715] | 30.9% | 43.1 ±4.3 | 72.9% |
+| 10-6 elite's deck | 90.6% [81%-95.6%] | 394 [252, 536] | 33.3% | 41.1 ±4.2 | 68.6% |
+| 10-7 elite's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 52.6% | 22.8 ±4.2 | 64.3% |
+| 10-8 elite's deck | 79.7% [68.3%-87.7%] | 237 [133, 342] | 45.9% | 29.2 ±4.3 | 60% |
+| 10-9 boss's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 48.7% | 26.6 ±4.2 | 40% |
+| reference starter deck under 10-1's field | 90.6% [81%-95.6%] | 394 [252, 536] | 41.8% | 32.6 ±4.2 | - |
+| reference deck (Map 10) under 10-2's field | 18% [10.5%-29.1%] | -264 [-373, -155] | 84.9% | -5.6 ±3.3 | - |
+| expected player deck (expectedPlayerDeck) under 10-3's field | 87.5% [77.2%-93.5%] | 338 [212, 464] | 43.5% | 31.1 ±4.4 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 10-1 skirmish | 65.6% [53.4%-76.1%] | 90% |
+| 10-2 skirmish | 46.9% [35.2%-58.9%] | 85.7% |
+| 10-3 skirmish | 67.2% [55%-77.4%] | 81.4% |
+| 10-4 skirmish | 65.6% [53.4%-76.1%] | 77.1% |
+| 10-5 skirmish | 73.4% [61.5%-82.7%] | 72.9% |
+| 10-6 elite | 68.8% [56.6%-78.8%] | 68.6% |
+| 10-7 elite | 43.8% [32.3%-55.9%] | 64.3% |
+| 10-8 elite | 68.8% [56.6%-78.8%] | 60% |
+| 10-9 boss | 43.8% [32.3%-55.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:10-1 @ 10-1: aiGuardLethal, phase cycle, tide, wet | 95.3% | 95.3% | +0 [-7.3, 7.3] |
+| fight:10-2 @ 10-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 86.7% | 84.4% | +2.3 [-9.8, 14.5] |
+| fight:10-3 @ 10-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 89.8% | 84.4% | +5.5 [-6.1, 17] |
+| fight:10-4 @ 10-4: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 78.1% | 80.5% | -2.3 [-16.4, 11.7] |
+| fight:10-5 @ 10-5: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 95.3% | 92.2% | +3.1 [-5.2, 11.5] |
+| fight:10-6 @ 10-6: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet | 90.6% | 82.8% | +7.8 [-3.9, 19.5] |
+| fight:10-7 @ 10-7: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), thunderstorm, wet | 76.6% | 79.7% | -3.1 [-17.4, 11.2] |
+| fight:10-8 @ 10-8: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T2 (Thorns 1), wet | 79.7% | 68.8% | +10.9 [-4.1, 26] |
+| fight:10-9 @ 10-9: aiGuardLethal, highTide, phase cycle, terrain Coral Shelf T3 (Thorns 1), thunderstorm, wet | 76.6% | 79.7% | -3.1 [-17.4, 11.2] |
+| ref:starter @ 10-1: aiGuardLethal, phase cycle, tide, wet | 90.6% | 79.7% | +10.9 [-1.2, 23.1] |
+| ref:road10 @ 10-2: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 18% | 10.9% | +7 [-5.1, 19.2] |
+| ref:expected @ 10-3: aiGuardLethal, phase cycle, terrain Coral Shelf T1, tide, wet | 87.5% | 79.7% | +7.8 [-4.9, 20.6] |
+
+## Map 10: The Sunken Depths (`mj`, side map of `m7`, opens on Map 11), your level 1
+
+- Throughput: 16540 games in 179.4 s = **92.2 games/s** (2 workers). Search: ga, budget 8000 games (10608 map cards, 2 generations, 2 restarts; 0 with the candidates). Reproduce: `node tools/opt/deckopt.js --map mj --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0 --road-weight 0.25 --ladder none --mode bpro`
+- Pool: 25 cards (25 map cards + 0 owned by then); phase 2 25 (+0 candidates).
+- Mode: **bpro**, rarity cap **veryrare** (the highest of the map's fights); submaps open by then: none. Left out: not in the map's own pool (BPRO) 198 (acorn-chipmunk, adder-ambusher, alley-cat, alligator-gar, anaconda-coil, anhinga-spearbird, ...); over the map's rarity cap (veryrare) 3 (old-snapjaw, reef-admiral, the-gannet-queen).
+
+Phase 2 candidates: **0** (score >= 1, lowered from 3 to reach 0). Map: biome reef-ocean (kin coast, mangrove), terrain types Coral Reef, Ocean, field aiGuardLethal, boon, crushingDepths, dark, highTide, phase:off, tide, wet, unit types Cephalopod 7, Coral Reef 7, Crustacean 2, Echinoderm 2, Fish 10, Mangrove 2, Ocean 12, skill families armor 2, bleed 3, cleave 4, economy 2, poison 2, spite 2, strike-first 2, tide 17.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 48; map rule: not in the map's own pool (BPRO) 684; map rule: over the map's rarity cap (veryrare) 61.
+
+- **Optimum (map cards)**: score 74.9% [72.2%, 77.6%], mirror 81.5%, road 55%: 3x Nautilus Drifter, 2x Blue-ringed Octopus, 2x Coral Polyp Colony, 2x Electric Ray, 2x Swordfish Spearman, 2x Voltaic Eel, 1x Abyss Lantern Squid, 1x Colossal Squid, 1x Coral Reef Shark, 1x Crown-of-thorns Star, 1x Reef Shark, 1x Sulfur Vent Crab, 1x Vampire Squid
+- With the candidates: no deck beat the map-card optimum.
+- Best candidate swaps into the map-card optimum: -
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 8 decks the searches ended on): 4
+
+0. 74.9% [72.2%, 77.6%], 0 copies from the optimum: 3x Nautilus Drifter, 2x Blue-ringed Octopus, 2x Coral Polyp Colony, 2x Electric Ray, 2x Swordfish Spearman, 2x Voltaic Eel, 1x Abyss Lantern Squid, 1x Colossal Squid, 1x Coral Reef Shark, 1x Crown-of-thorns Star, 1x Reef Shark, 1x Sulfur Vent Crab, 1x Vampire Squid
+1. 72.2% [69.4%, 75.1%], 11 copies from the optimum: 3x Coral Polyp Colony, 3x Parrotfish, 2x Mangrove Manatee, 2x Sea Cucumber, 2x Voltaic Eel, 1x Abyss Lantern Squid, 1x Banded Sea Krait, 1x Great Barracuda, 1x Nautilus Drifter, 1x Reef Shark, 1x Silver Minnow, 1x Swordfish Spearman, 1x Vampire Squid
+2. 68.4% [65.5%, 71.3%], 11 copies from the optimum: 3x Coral Polyp Colony, 3x Mangrove Manatee, 3x Voltaic Eel, 2x Abyss Lantern Squid, 2x Orca Vanguard, 2x Parrotfish, 1x Colossal Squid, 1x Coral Reef Shark, 1x Electric Ray, 1x Great Barracuda, 1x Nautilus Drifter
+3. 68.1% [65.2%, 71%], 7 copies from the optimum: 2x Blue-ringed Octopus, 2x Coral Polyp Colony, 2x Mangrove Manatee, 1x Abyss Lantern Squid, 1x Clownfish Scout, 1x Colossal Squid, 1x Coral Reef Shark, 1x Crown-of-thorns Star, 1x Electric Ray, 1x Glass Octopus, 1x Kraken Spawnling, 1x Nautilus Drifter, 1x Parrotfish, 1x Reef Shark, 1x Sea Cucumber, 1x Sulfur Vent Crab, 1x Voltaic Eel
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 | 2 | 3 |
+|---|---|---|---|---|
+| 0 | - | 60.6% (+75) | 58.1% (+57) | 54.4% (+30) |
+| 1 | 39.4% (-75) | - | 48.1% (-13) | 46.9% (-22) |
+| 2 | 41.9% (-57) | 51.9% (+13) | - | 42.5% (-53) |
+| 3 | 45.6% (-30) | 53.1% (+22) | 57.5% (+53) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 314 (150 to 720); as your deck they score 21.3 to 48.8 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 10-A-1 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 23.7% | 48.8 ±5 | 90% |
+| 10-A-2 skirmish's deck | 85.9% [75.4%-92.4%] | 314 [194, 434] | 31.8% | 41.9 ±5.4 | 80% |
+| 10-A-3 skirmish's deck | 89.1% [79.1%-94.6%] | 364 [231, 497] | 50.2% | 23.2 ±5.1 | 70% |
+| 10-A-4 elite's deck | 70.3% [58.2%-80.1%] | 150 [58, 242] | 42.1% | 33.3 ±5.4 | 60% |
+| 10-A-5 boss's deck | 75.8% [64%-84.6%] | 198 [100, 296] | 53.5% | 21.3 ±5.2 | 40% |
+| reference starter deck under 10-A-1's field | 92.2% [83%-96.6%] | 429 [275, 582] | 17.5% | 55.6 ±4.7 | - |
+| reference deck (Map 11) under 10-A-2's field | 75.8% [64%-84.6%] | 198 [100, 296] | 59.9% | 14.9 ±4.9 | - |
+| expected player deck (expectedPlayerDeck) under 10-A-3's field | 64.8% [52.6%-75.4%] | 106 [18, 195] | 63.2% | 12.8 ±5 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 10-A-1 skirmish | 93.8% [85%-97.5%] | 90% |
+| 10-A-2 skirmish | 46.9% [35.2%-58.9%] | 80% |
+| 10-A-3 skirmish | 75% [63.2%-84%] | 70% |
+| 10-A-4 elite | 32.8% [22.6%-45%] | 60% |
+| 10-A-5 boss | 26.6% [17.3%-38.5%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:10-A-1 @ 10-A-1: aiGuardLethal, crushingDepths, dark pitch, phase off, wet | 98.4% | 93.8% | +4.7 [-2, 11.4] |
+| fight:10-A-2 @ 10-A-2: aiGuardLethal, boon risingTide, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, tide, wet | 85.9% | 85.9% | +0 [-12, 12] |
+| fight:10-A-3 @ 10-A-3: aiGuardLethal, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, wet | 89.1% | 67.2% | +21.9 [8.1, 35.7] |
+| fight:10-A-4 @ 10-A-4: aiGuardLethal, crushingDepths, dark pitch, highTide, phase off, terrain Coral Shelf T2 (Thorns 1), wet | 70.3% | 34.4% | +35.9 [19.8, 52.1] |
+| fight:10-A-5 @ 10-A-5: aiGuardLethal, crushingDepths, dark pitch, highTide, phase off, terrain Coral Shelf T2 (Thorns 1), wet | 75.8% | 67.2% | +8.6 [-7, 24.2] |
+| ref:starter @ 10-A-1: aiGuardLethal, crushingDepths, dark pitch, phase off, wet | 92.2% | 79.7% | +12.5 [0.7, 24.3] |
+| ref:road11 @ 10-A-2: aiGuardLethal, boon risingTide, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, tide, wet | 75.8% | 25.8% | +50 [35, 65] |
+| ref:expected @ 10-A-3: aiGuardLethal, crushingDepths, dark pitch, phase off, terrain Coral Shelf T1, wet | 64.8% | 75% | -10.2 [-25.9, 5.6] |
+
