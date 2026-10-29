@@ -4,6 +4,57 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-29 00:10: the owner's list notes (from the earlier pass, "removals are 'at least'")
+| # | Package | Note |
+|---|---|---|
+| Q1 | THEME3 | Map 2: remove Oyster Bank, Grey Seal Bull, Fiddler Crab Swarm, Tidepool Trapper Crab. Map 3: remove Oyster Bank, Fulmar Spitter. |
+| Q2 | THEME3 | Map 4 (freshwater lake): keep Pond Algae; remove Old Sturgeon (for now), Signal Crayfish, Stone Turtle Warden. |
+| Q3 | THEME3 | Map 5: remove Buzzed Chipmunk, Alley Cat (move to Lilypad Reach), Sphagnum Vole; Venomlord Serpent to Map 6. |
+| Q4 | THEME3 | Map 6: remove Marsh Wisp, Mire Witch-Heron, Peat-cutter Vole, Lamprey, Lotus Frog, Cottonmouth Matriarch. Lilypad Reach: remove Great Crested Grebe, Shallows Fry. |
+| Q5 | THEME3 + art | Map 7: "Fungal Colossus needs retheme - and it's at least an uncommon." Smugglers' Grotto: remove Sulfur Vent Crab, Shallows Fry, Beaver Builder, Duckling. |
+| Q6 | THEME3 | Map 13: remove Echo Keeper, Swamp Rabbit. Map 14: remove Hoopoe Herald. Map 15: remove Garden Tiger Moth, Moonshell Snail, Anvil Thrush, Courier Pigeon. Map 16: remove Trickster Fox ("not snow themed enough"). Map 18: remove Static Fennec. Pale Desert: remove Armadillo Guard, Meerkat Sentry, Dune Jackal Scout. Map 20: remove Woodland Brawler, Bear Cub. |
+| Q7 | THEME3 | "The Old Bramble: Needs advanced cards, as if it was Map 21." |
+| Q8 | later (dungeons) | "Daily dungeons - have their specific unique cards but mostly carried over - up to 30 carried over cards over the different challenges. Ultimately optimising to become the strongest deck combo with that 30 (from the weakest deck combo), then levelling up." |
+| Q9 | WORLD1 (design) | "The War maps (Siege and Keep were meant to be much further ahead actually, like 30+), spanning at least 3 maps (from battlefront(s) to the keep) and before that, whispers of war." |
+| Q10 | WORLD1 | "20-30 is just advanced versions of what we've faced before. But mostly the jungle/forest/river & pastures themed - in a way, basic+. E.g. Marble golem (an insect again maybe). Malachite golem and the other golem should become insect / elementals." |
+| Q11 | WORLD1 | "Dinosaur maps (im not sure when, but also definitely 30+)". |
+| Q12 | ENG (proposal) | "Anadromous - ? Suggest something for this skill" (proposal sent 00:1x; becomes ANAD-1 in decisions). |
+| Q13 | done | A2: chance of passing written into the decision. |
+| Q14 | REVIEW1 (UI, after FLAIR1) + THEME3 (data) | 00:13: "in the game, in the map cards gallery, also show what you would have cut. So an additional section: "Cut cards". The main section should show the main card proposal(s). I can then let you know to reject a cut-card or cut one of the chosen cards. Then you can also propose 'maybe's in a 3rd section. These are cards you think would be good, based on the 700 other cards, but did not choose." THEME3 writes the review data (chosen / cut / maybe per map list, each with a one-line reason); REVIEW1 shows the three sections in the 🃏 Map cards overlay. |
+
+## 10-28 23:35: the owner's notes (with a raid screenshot)
+| # | Package | Note |
+|---|---|---|
+| O1 | UI1 | "The raids decks are extremely elongated." (the deck pile beside the boss and environment cards is far too tall) |
+| O2 | UI1 | "In mobile, dragging cards sometimes drags the screen instead. How do we protect against this?" (touch-action / pointer capture on draggable cards) |
+| O3 | UI1 | "we don't focus the camera on the middle but instead on the middle of the mass of units." |
+| O4 | UI1 | "There are two, match log and match history. Only keep match log." |
+| O5 | ADMINU1 | "How do I use the bramble admin portal to view users and their levels? Has anyone played our game yet - that's not me?" Answered 23:4x: 4 accounts (2 are the owner's admins; "z" 10-03 and "Rochelle" 10-13 signed in, no fights); guests are not stored. No admin users view exists: ADMINU1 adds one (admin-only read function = proposed SQL, needs "apply it"). |
+| O6 | ART (next art batch) | "Since we have difficulty with ChatGPT and Gemini API keys, you can use my browser to execute. (And nightcafe)" Use the owner's signed-in browser for ChatGPT / Gemini / NightCafe image generation; never sign in, never buy credits. |
+| O7 | THEME3 | "split T1-T2 and T3-T5. We only care about T1-T2 since T3-T5 dont have to be thematic and can house any card for teaching purposes. There will be T6 onwards in the future. And then challenge maps C1-CN (custom deck, custom enemy)" |
+| O8 | UI1 | "Quests page should not show dailies/weeklies. Quests refer to the errands etc. - just rename the errands as just quests. Dailies/weeklies/monthlies are their own thing" |
+| O9 | THEME3 | "In Map 0, you mention "carried" but it's literally the first map. It can only carry cards from T1-T2." |
+| C1 | NEWC1 | New card idea: "Cactus card - and fruiting body". |
+| C2 | (exists) | "Rafflesia": already a card (rafflesia, Pack 1); THEME3 places it. |
+| C3 | later | "Giant Griffin for our Volcano map(s) (maybe in the future)". |
+| L1 | THEME3 | "T1-2: Keep only Bee Knight, Earthworm, Pond Trout, Silver Minnow, Duckling, Cottontail, Crossed-Eyes - the weakest." |
+| L2 | THEME3 | "Map 0, Carry over Crossed-Eyes and Bee Knight and Cottontail (with their skills unlocked - all should be locked in T1/T2 except flying)" |
+| L3 | THEME3 | "Map 0 - choose the remaining. I think there should be 2 bee and 2 ant cards inside. Map 0 can have a slightly bloated list ... (e.g. cap 12, ignoring 3 carried + 7 new maybe)" |
+| L4 | PREVIEW | "Map 1: ... actually can I just view it in game ... This is the first step- choosing which cards fit." The 🃏 Map cards button (PACK1) on the branch preview after APPLY1. |
+| L5 | THEME3 | "After all these comments, make your own cuts/adds as well, as you wish." |
+
+## 10-28 22:50: progression reference decks (REF5, after PACK1 and TOOLS1)
+
+Owner: "for each Map, we get the 1) confirmed rewards so far 2) use the resources gained for completing the missions (before this map) once x1.5 and purchase ALL the packs we can. 3) form the most optimised deck we can for the this map. Do (2) a few times and we'll come up with quite a unique series of decks. Same for levelling, we will assume a certain levelling frequency - you choose this based on your calculations and inform me ... assume the extra 0.5x in resources are used for levelling only. ... make this an application as well. So the output is maybe 5 reference decks per map. When playing REF combats, the default option 'Reference (Random)' plays one of the random 5 reference decks."
+
+| ID | Item |
+|---|---|
+| R1 | An economy sim per map: the confirmed rewards of every fight before the map (first clears, skirmish rewards, faction track, level rewards, Trail Mix Trek's free lane at a stated pace), and the resources those fights pay, x1.5. |
+| R2 | 1.0x of the resources buys every pack it can (the packs as PACK1 defines them, opened with the game's own draw, seeded); 0.5x goes to levelling (the Forge's costs) on a stated, reported schedule. |
+| R3 | Optimise a deck from the resulting collection (TOOLS1's T3 / deckopt) for that map's fights. |
+| R4 | Repeat with 5 seeds: 5 reference decks per map, saved as a reference set the tools read (--ref prog). |
+| R5 | In the game's REF fights: a "Reference (Random)" default that deals one of the map's 5 decks; the others selectable. Heatmap row(s) for it. |
+
 ## 10-28 21:40: the owner's balancing plan (in this order)
 
 Owner: "Thematic 1st, winnowing 2nd, balancing each card 3rd, optimise enemy decks 4th, decide rarity 6th, Decide drops 7th."
@@ -23,6 +74,8 @@ Tools it needs (owner): (T1) a good card-contribution measure; (T2) a quick, fai
 |---|---|---|
 | T1-T3 | TOOLS1 | Build / upgrade the three tools (balance workbench). |
 | S1 | THEME1 | Step 1 proposal per map: unique cards by theme, carried cards, the 8-11 cut (step 2), the cost / generator / creature mix; shown in the hub for the owner; nothing applied. |
+| S2 | THEME2 (done 23:06) | Owner 23:06: "If the theme is unique, then it's a new location (like grotto) otherwise, like those in Map 20, they are just extra challenges." Classed: Smugglers' Grotto, Sunken Depths, Glimmer Depths = new location (3 unique); Clovermead, Eye of the Volcano = extra challenges (1). |
+| S3 | FLAIR1 (open) | Owner 23:06: "Dragon Lair is our overall 0-20 big boss, so it deserves more unique cards and also a flair that's not the normal boss flair." Cards: done in THEME2 (Volcano Lair 5 unique + 10 carried, 15). Flair: a UI package (its own banner, frame and intro, distinct from the boss flair) still to do. |
 
 ## 10-28: release leftovers
 

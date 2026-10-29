@@ -3591,5 +3591,9 @@
  "Not enough Lumber.": "木材が足りません。",
  "Your card data differs from the host's. Reload the game and join again.": "カードデータがホストと異なります。ゲームを再読み込みしてもう一度参加してください。",
  "Bramble damage dealt: {n}": "茨への与ダメージ：{n}",
- "{name} dropped!": "{name}を入手！"
+ "{name} dropped!": "{name}を入手！",
+ "🃏 Map cards": "🃏 マップのカード",
+ "{name}: the map's cards": "{name}：マップのカード",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "このマップのリストにあるすべてのカード：マップ自身のもの、各サイドマップのもの、特別なもの。パックの印があるカードはそのパックからも出ます。",
+ "Not obtainable yet: in no map list and no pack": "まだ入手できません：どのマップのリストにもパックにもありません"
 }

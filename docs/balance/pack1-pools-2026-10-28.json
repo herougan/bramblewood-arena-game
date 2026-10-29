@@ -1,0 +1,7993 @@
+{
+ "packs": {
+  "1": {
+   "name": "Hedgerow Pouch",
+   "maps": [
+    0,
+    6
+   ],
+   "before": 143,
+   "after": 50,
+   "rarityBefore": {
+    "rare": 22,
+    "common": 83,
+    "uncommon": 35,
+    "starter": 1,
+    "epic": 2
+   },
+   "rarityAfter": {
+    "common": 40,
+    "rare": 1,
+    "uncommon": 9
+   },
+   "noRepeat": true,
+   "collectorNoRepeat": true
+  },
+  "2": {
+   "name": "Tidemire Chest",
+   "maps": [
+    7,
+    13
+   ],
+   "before": 154,
+   "after": 57,
+   "rarityBefore": {
+    "uncommon": 44,
+    "rare": 31,
+    "common": 79
+   },
+   "rarityAfter": {
+    "uncommon": 17,
+    "rare": 7,
+    "common": 33
+   },
+   "noRepeat": true,
+   "collectorNoRepeat": true
+  },
+  "3": {
+   "name": "Highcrest Case",
+   "maps": [
+    14,
+    20
+   ],
+   "before": 126,
+   "after": 59,
+   "rarityBefore": {
+    "common": 71,
+    "rare": 23,
+    "uncommon": 32
+   },
+   "rarityAfter": {
+    "common": 38,
+    "rare": 8,
+    "uncommon": 13
+   },
+   "noRepeat": true,
+   "collectorNoRepeat": true
+  },
+  "4": {
+   "name": "Later packs (Maps 21-27, no pack sells them yet)",
+   "maps": [
+    21,
+    27
+   ],
+   "before": 33,
+   "after": 24,
+   "rarityBefore": {
+    "common": 13,
+    "rare": 15,
+    "uncommon": 3,
+    "veryrare": 1,
+    "epic": 1
+   },
+   "rarityAfter": {
+    "rare": 8,
+    "common": 9,
+    "uncommon": 5,
+    "veryrare": 1,
+    "epic": 1
+   },
+   "noRepeat": true,
+   "collectorNoRepeat": true
+  }
+ },
+ "notObtainable": [
+  {
+   "id": "dolphin-knight",
+   "name": "Dolphin Knight",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "scraper-of-skies",
+   "name": "Scraper of Skies",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m3"
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "war-hound",
+   "name": "War Hound",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "armored-mastiff",
+   "name": "Armored Mastiff",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "war-panther",
+   "name": "War Panther",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "bramblewood-macaque",
+   "name": "Bramblewood Macaque",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "my"
+  },
+  {
+   "id": "silverback-brawler",
+   "name": "Silverback Brawler",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "trapdoor-spider",
+   "name": "Trapdoor Spider",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "tunnel-wyrm",
+   "name": "Tunnel Wyrm",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "me"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "wasPack": 4,
+   "map": "mo"
+  },
+  {
+   "id": "pufferfish-bulwark",
+   "name": "Pufferfish Bulwark",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "raccoon-warlord",
+   "name": "Raccoon Warlord",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "boar-rampager",
+   "name": "Boar Rampager",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "turtle-bastion",
+   "name": "Turtle Bastion",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "mc"
+  },
+  {
+   "id": "tusked-vanguard",
+   "name": "Tusked Vanguard",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "chipmunk-stockpiler",
+   "name": "Chipmunk Stockpiler",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mv"
+  },
+  {
+   "id": "badger-sapper",
+   "name": "Badger Sapper",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "antler-skirmisher",
+   "name": "Antler Skirmisher",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "firetail-trickster",
+   "name": "Firetail Trickster",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "beaver-builder",
+   "name": "Beaver Builder",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mp"
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "cave-flitter",
+   "name": "Cave Flitter",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "rodent-king",
+   "name": "Rodent King",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "ms"
+  },
+  {
+   "id": "bog-behemoth",
+   "name": "Bog Behemoth",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "ms"
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "buck-brawler",
+   "name": "Buck Brawler",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "pond-paddler",
+   "name": "Pond Paddler",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mg"
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "name": "Pack Wolf Reaver",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mt"
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mc"
+  },
+  {
+   "id": "hollow-oath-keeper",
+   "name": "Hollow Oath-Keeper",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "my"
+  },
+  {
+   "id": "acacia-giraffe",
+   "name": "Acacia Giraffe",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "termite-mound",
+   "name": "Termite Mound",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "plains-zebra",
+   "name": "Plains Zebra",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "arctic-fox-raider",
+   "name": "Arctic Fox Raider",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "ice-crevasse-wolf",
+   "name": "Ice-Crevasse Wolf",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "alpine-avalanche",
+   "name": "Alpine Avalanche",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mv"
+  },
+  {
+   "id": "rockslide-ram",
+   "name": "Rockslide Ram",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "mv"
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "marsh-gas-toad",
+   "name": "Marsh Gas Toad",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "blind-cave-fish",
+   "name": "Blind Cave Fish",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "pinecone-sapper",
+   "name": "Pinecone Sapper",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mt"
+  },
+  {
+   "id": "timber-wolf-pack",
+   "name": "Timber Wolf Pack Leader",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "barnacle-fortress",
+   "name": "Barnacle Fortress",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "feral-tuskboar",
+   "name": "Feral Tuskboar",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "reef-manta-glider",
+   "name": "Reef Manta Glider",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "narwhal-lancer",
+   "name": "Narwhal Lancer",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "dune-jackal",
+   "name": "Dune Jackal",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mpd"
+  },
+  {
+   "id": "sandstorm-roc",
+   "name": "Sandstorm Roc",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "honey-badger-fury",
+   "name": "Honey Badger Fury",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "cuttlefish-illusionist",
+   "name": "Cuttlefish Illusionist",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "migration-leader",
+   "name": "Migration Leader",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mx"
+  },
+  {
+   "id": "barrow-leech-bat",
+   "name": "Barrow Leech",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "coral-current-eel",
+   "name": "Coral Current Eel",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mt"
+  },
+  {
+   "id": "dune-jackal-scout",
+   "name": "Dune Jackal Scout",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "voltaic-eel",
+   "name": "Voltaic Eel",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "king-maker",
+   "name": "King Maker",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "weathervane-swift",
+   "name": "Weathervane Swift",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "m22"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "name": "Bonebreaker",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "sparrow-chick",
+   "name": "Sparrow Chick",
+   "rarity": "starter",
+   "wasPack": 1,
+   "map": "mc"
+  },
+  {
+   "id": "beetle-grunt",
+   "name": "Beetle Grunt",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m1"
+  },
+  {
+   "id": "blizzard",
+   "name": "Blizzard",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "heatwave",
+   "name": "Heatwave",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "spring-rain",
+   "name": "Spring Rain",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "thick-fog",
+   "name": "Thick Fog",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "full-moon",
+   "name": "Full Moon",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "courier-pigeon",
+   "name": "Courier Pigeon",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "echo-keeper",
+   "name": "Echo Keeper",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "ms"
+  },
+  {
+   "id": "bog-revenant",
+   "name": "Bog Revenant",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "the-unremembered",
+   "name": "The Unremembered",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "weredog",
+   "name": "Weredog",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "parish-sergeant",
+   "name": "Parish Sergeant",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "village-miller",
+   "name": "Village Miller",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "night-watchman",
+   "name": "Night Watchman",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "shieldbearer-hound",
+   "name": "Shieldbearer Hound",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "puddle-changeling",
+   "name": "Puddle Changeling",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "willow-o-wisp",
+   "name": "Willow-o'-Wisp",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "thornwood-palisade",
+   "name": "Thornwood Palisade",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "mo"
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "irradiated-couatl",
+   "name": "Irradiated Couatl",
+   "rarity": "epic",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "quarry-troll",
+   "name": "Quarry Troll",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "crown-pretender",
+   "name": "Crown Pretender",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "rainmaker-frog",
+   "name": "Rainmaker Frog",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "name": "Frostbitten Wolverine",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "pall-wraith",
+   "name": "Pall Wraith",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "marching-elephant",
+   "name": "Marching Elephant",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "m23"
+  },
+  {
+   "id": "stonedrop-vulture",
+   "name": "Stonedrop Vulture",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m1"
+  },
+  {
+   "id": "cave-centipede",
+   "name": "Cave Centipede",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "meerkat-sentry",
+   "name": "Meerkat Sentry",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "buzzed-chipmunk",
+   "name": "Buzzed Chipmunk",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m3"
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "hammerhead-shark",
+   "name": "Hammerhead Shark",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "ironback-gorilla",
+   "name": "Ironback Gorilla",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": null
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "mongoose-duelist",
+   "name": "Mongoose Duelist",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "m23"
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "tarantula-hawk",
+   "name": "Tarantula Hawk",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "firefly-swarm",
+   "name": "Firefly Swarm",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "cone-snail",
+   "name": "Cone Snail",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m1"
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "skunk-gasser",
+   "name": "Skunk Gasser",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "fire-hawk",
+   "name": "Fire Hawk",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m11"
+  },
+  {
+   "id": "cleaner-wrasse",
+   "name": "Cleaner Wrasse",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "me"
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "grotto-lobster",
+   "name": "Grotto Lobster",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "amber-cicada",
+   "name": "Amber Cicada",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "pale-oryx",
+   "name": "Pale Oryx",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mq"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "great-crested-grebe",
+   "name": "Great Crested Grebe",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mp"
+  },
+  {
+   "id": "diving-bell-spider",
+   "name": "Diving Bell Spider",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "ms"
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "ms"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "rarity": "rare",
+   "wasPack": 1,
+   "map": "m8"
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "cave-cricket",
+   "name": "Cave Cricket",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "mn"
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "rarity": "common",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "rarity": "uncommon",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "rarity": "common",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "rarity": "common",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "rarity": "common",
+   "wasPack": 4,
+   "map": "mi"
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "petrified-tree",
+   "name": "Petrified Tree",
+   "rarity": "rare",
+   "wasPack": 4,
+   "map": "m22"
+  },
+  {
+   "id": "ember-tetra",
+   "name": "Ember Tetra",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "coffer-mimic",
+   "name": "Coffer Mimic",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "ironclaw-fiddler",
+   "name": "Ironclaw Fiddler",
+   "rarity": "rare",
+   "wasPack": 2,
+   "map": "mk"
+  },
+  {
+   "id": "pond-algae",
+   "name": "Pond Algae",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "dam-keeper-beaver",
+   "name": "Dam-Keeper Beaver",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "m2"
+  },
+  {
+   "id": "moat-snapper",
+   "name": "Moat Snapper",
+   "rarity": "uncommon",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "briarback-hedgehog",
+   "name": "Briarback Hedgehog",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mf"
+  },
+  {
+   "id": "barkplate-beetle",
+   "name": "Barkplate Beetle",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "great-skua",
+   "name": "Great Skua",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mc"
+  },
+  {
+   "id": "bloodscent-shark",
+   "name": "Bloodscent Shark",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "inland-taipan",
+   "name": "Inland Taipan",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "oyster-bank",
+   "name": "Oyster Bank",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "musk-ox-matriarch",
+   "name": "Musk Ox Matriarch",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "m6"
+  },
+  {
+   "id": "driftwood-crab",
+   "name": "Driftwood Crab",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "termite-forager",
+   "name": "Termite Forager",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "m5"
+  },
+  {
+   "id": "gravel-mole",
+   "name": "Gravel Mole",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m4"
+  },
+  {
+   "id": "marmot-stonecutter",
+   "name": "Marmot Stonecutter",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m10"
+  },
+  {
+   "id": "beaver-feller",
+   "name": "Beaver Feller",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "salvager-hermit-crab",
+   "name": "Salvager Hermit Crab",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "m7"
+  },
+  {
+   "id": "hazel-coppice",
+   "name": "Hazel Coppice",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mr"
+  },
+  {
+   "id": "beachcomber-sanderling",
+   "name": "Beachcomber Sanderling",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mb"
+  },
+  {
+   "id": "moonshell-snail",
+   "name": "Moonshell Snail",
+   "rarity": "common",
+   "wasPack": 3,
+   "map": "ml"
+  },
+  {
+   "id": "sleepless-shrew",
+   "name": "Sleepless Shrew",
+   "rarity": "common",
+   "wasPack": 2,
+   "map": "mu"
+  },
+  {
+   "id": "sphagnum-vole",
+   "name": "Sphagnum Vole",
+   "rarity": "common",
+   "wasPack": 1,
+   "map": "mw"
+  },
+  {
+   "id": "static-fennec",
+   "name": "Static Fennec",
+   "rarity": "uncommon",
+   "wasPack": 3,
+   "map": "md"
+  },
+  {
+   "id": "magpie-collector",
+   "name": "Magpie Collector",
+   "rarity": "uncommon",
+   "wasPack": 2,
+   "map": "mh"
+  },
+  {
+   "id": "granite-ox-golem",
+   "name": "Granite Ox Golem",
+   "rarity": "rare",
+   "wasPack": 3,
+   "map": "m3"
+  }
+ ],
+ "moved": [
+  {
+   "id": "compost-grub",
+   "from": 1,
+   "to": 2,
+   "firstList": "mu"
+  },
+  {
+   "id": "mountain-goat-climber",
+   "from": 1,
+   "to": 4,
+   "firstList": "m21"
+  },
+  {
+   "id": "bog-leech",
+   "from": 2,
+   "to": 1,
+   "firstList": "mw"
+  },
+  {
+   "id": "land-tiller",
+   "from": 3,
+   "to": 4,
+   "firstList": "m23"
+  },
+  {
+   "id": "ore-smelter-mole",
+   "from": 1,
+   "to": 4,
+   "firstList": "m9"
+  },
+  {
+   "id": "balloon-archer",
+   "from": 2,
+   "to": 4,
+   "firstList": "m23"
+  },
+  {
+   "id": "prospector-mole",
+   "from": 2,
+   "to": 3,
+   "firstList": "mn"
+  }
+ ],
+ "budget": {
+  "changed": [
+   {
+    "id": "dolphin-knight",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.89,
+     16.86
+    ],
+    "x1": 17.5,
+    "x2": 34.25,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "scraper-of-skies",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     35.82,
+     32.93
+    ],
+    "x1": 35.6,
+    "x2": 57.76,
+    "N2": 240.97,
+    "inPack": 0
+   },
+   {
+    "id": "owl-fletcher",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     17.89,
+     16.86
+    ],
+    "x1": 16.36,
+    "x2": 28.01,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "great-horned-owl",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.91,
+     28.02
+    ],
+    "x1": 29.56,
+    "x2": 48.55,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "war-hound",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.18,
+     20.09
+    ],
+    "x1": 21,
+    "x2": 45,
+    "N2": 89.69,
+    "inPack": 0
+   },
+   {
+    "id": "armored-mastiff",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     32.46,
+     29.42
+    ],
+    "x1": 32,
+    "x2": 110,
+    "N2": 192.34,
+    "inPack": 0
+   },
+   {
+    "id": "alley-cat",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.54,
+     13.5
+    ],
+    "x1": 9.77,
+    "x2": 46.83,
+    "N2": 40.5,
+    "inPack": 0
+   },
+   {
+    "id": "war-panther",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     30.94,
+     29.42
+    ],
+    "x1": 29,
+    "x2": 95,
+    "N2": 192.34,
+    "inPack": 0
+   },
+   {
+    "id": "bramblewood-macaque",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.75,
+     16.86
+    ],
+    "x1": 17,
+    "x2": 41,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "silverback-brawler",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.91,
+     28.02
+    ],
+    "x1": 30.8,
+    "x2": 81.84,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "trapdoor-spider",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.31,
+     16.86
+    ],
+    "x1": 18,
+    "x2": 37,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "webspire-sentinel",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.94,
+     29.42
+    ],
+    "x1": 30,
+    "x2": 0,
+    "N2": 192.34,
+    "inPack": 0
+   },
+   {
+    "id": "compost-grub",
+    "rarity": "common",
+    "mapBefore": 0,
+    "mapAfter": 7,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.01,
+     13.52
+    ],
+    "x1": 12,
+    "x2": 10,
+    "N2": 40.62,
+    "inPack": 2
+   },
+   {
+    "id": "tunnel-wyrm",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.59,
+     23.08
+    ],
+    "x1": 24,
+    "x2": 64,
+    "N2": 118.37,
+    "inPack": 0
+   },
+   {
+    "id": "gorge-wyrm",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     38.92,
+     36.03
+    ],
+    "x1": 38.68,
+    "x2": 127.34,
+    "N2": 288.48,
+    "inPack": 0
+   },
+   {
+    "id": "carrion-fly-swarm",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     16.86
+    ],
+    "x1": 13.54,
+    "x2": 40.98,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "monarch-wingblade",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21,
+    "x2": 36,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "thornvine-lasher",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.23,
+     17.7
+    ],
+    "x1": 15,
+    "x2": 22,
+    "N2": 69.62,
+    "inPack": 0
+   },
+   {
+    "id": "elder-willow",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     45.79,
+     41.45
+    ],
+    "x1": 42.24,
+    "x2": 38.94,
+    "N2": 381.8,
+    "inPack": 0
+   },
+   {
+    "id": "pufferfish-bulwark",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 21.5,
+    "x2": 20.25,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "raccoon-warlord",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.47,
+     28.02
+    ],
+    "x1": 28.86,
+    "x2": 82.9,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "boar-rampager",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     24.46,
+     23.01
+    ],
+    "x1": 22.8,
+    "x2": 85.84,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "turtle-bastion",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.47,
+     28.02
+    ],
+    "x1": 28.5,
+    "x2": 48.25,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "eagle-diver",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     20.17,
+     19.13
+    ],
+    "x1": 17.86,
+    "x2": 32.51,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "tusked-vanguard",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.7,
+     14.18
+    ],
+    "x1": 15,
+    "x2": 22,
+    "N2": 44.68,
+    "inPack": 0
+   },
+   {
+    "id": "chipmunk-stockpiler",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 13.5,
+    "x2": 15.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "badger-sapper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.08,
+     23.63
+    ],
+    "x1": 24.9,
+    "x2": 60.21,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "antler-skirmisher",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.61,
+     20.09
+    ],
+    "x1": 21,
+    "x2": 45,
+    "N2": 89.69,
+    "inPack": 0
+   },
+   {
+    "id": "fox-kit",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.52,
+     12.01
+    ],
+    "x1": 13,
+    "x2": 18,
+    "N2": 32.05,
+    "inPack": 0
+   },
+   {
+    "id": "firetail-trickster",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.22,
+     15.78
+    ],
+    "x1": 16.6,
+    "x2": 23.96,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "fox-warchief",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     25.08,
+     23.63
+    ],
+    "x1": 22.8,
+    "x2": 85.84,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "cave-flitter",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.67,
+     12.72
+    ],
+    "x1": 10.36,
+    "x2": 7.85,
+    "N2": 35.96,
+    "inPack": 0
+   },
+   {
+    "id": "rodent-king",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.11,
+     24.66
+    ],
+    "x1": 25.24,
+    "x2": 77.94,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "puddle-hopper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12.65,
+    "x2": 11.72,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "bog-behemoth",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     37.48,
+     36.03
+    ],
+    "x1": 35.8,
+    "x2": 86.84,
+    "N2": 288.48,
+    "inPack": 0
+   },
+   {
+    "id": "warren-scout",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     14.95,
+     13.5
+    ],
+    "x1": 11.5,
+    "x2": 14.25,
+    "N2": 40.5,
+    "inPack": 0
+   },
+   {
+    "id": "buck-brawler",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.33,
+     24.81
+    ],
+    "x1": 26,
+    "x2": 80,
+    "N2": 136.79,
+    "inPack": 0
+   },
+   {
+    "id": "pond-paddler",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     14.83,
+     13.77
+    ],
+    "x1": 13.5,
+    "x2": 15,
+    "N2": 42.14,
+    "inPack": 0
+   },
+   {
+    "id": "mallard-marauder",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.22,
+     15.78
+    ],
+    "x1": 16.8,
+    "x2": 21.24,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "quill-thorn-boar",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 18.75,
+    "x2": 39.06,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "pack-wolf-reaver",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 64,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "hollow-oath-keeper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.44,
+     17.92
+    ],
+    "x1": 19,
+    "x2": 39,
+    "N2": 71.36,
+    "inPack": 0
+   },
+   {
+    "id": "howler-monkey",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.36,
+     12.47
+    ],
+    "x1": 12.26,
+    "x2": 20.63,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "termite-mound",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 19.08,
+    "x2": 65.29,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "plains-zebra",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.68,
+     12.47
+    ],
+    "x1": 12,
+    "x2": 9,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "tundra-musk-ox",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26.5,
+    "x2": 46.25,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "arctic-fox-raider",
+    "rarity": "rare",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     20.12,
+     15.78
+    ],
+    "x1": 15,
+    "x2": 18,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "ice-crevasse-wolf",
+    "rarity": "rare",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.47,
+     19.13
+    ],
+    "x1": 23.46,
+    "x2": 45.81,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "mountain-goat-climber",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 21,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.68,
+     16.81
+    ],
+    "x1": 12,
+    "x2": 9,
+    "N2": 62.79,
+    "inPack": 4
+   },
+   {
+    "id": "alpine-avalanche",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 23,
+    "x2": 60,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "rockslide-ram",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.84,
+    "x2": 44.07,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "bog-leech",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 1,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.68
+    ],
+    "x1": 13.6,
+    "x2": 20.96,
+    "N2": 35.73,
+    "inPack": 1
+   },
+   {
+    "id": "blind-cave-fish",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 9,
+    "x2": 21.75,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "sulfur-vent-crab",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     17.27,
+     15.83
+    ],
+    "x1": 14.85,
+    "x2": 24.12,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "pinecone-sapper",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 17,
+    "x2": 16,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "barnacle-fortress",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.51,
+     17.07
+    ],
+    "x1": 18.08,
+    "x2": 65.29,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "feral-tuskboar",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.99,
+    "x2": 39.92,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "dune-jackal",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": false,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 12,
+    "x2": 82,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "sandstorm-roc",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 72,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "raccoon-nightcrew",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 15.86,
+    "x2": 29.18,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "pack-rat-looter",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 14.4,
+    "x2": 19.96,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "jackrabbit-sprinter",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 14,
+    "x2": 34,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "basalt-boar",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 19.05,
+    "x2": 30,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "pyroclast-wyrm",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.62,
+     26.73
+    ],
+    "x1": 28,
+    "x2": 136,
+    "N2": 158.78,
+    "inPack": 0
+   },
+   {
+    "id": "barrow-leech-bat",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.04,
+     16.1
+    ],
+    "x1": 16.36,
+    "x2": 13.85,
+    "N2": 57.6,
+    "inPack": 0
+   },
+   {
+    "id": "coral-current-eel",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.81,
+     15.78
+    ],
+    "x1": 16.5,
+    "x2": 29.25,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "frost-thistle-lynx",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.65,
+     19.75
+    ],
+    "x1": 22.46,
+    "x2": 44.81,
+    "N2": 86.68,
+    "inPack": 0
+   },
+   {
+    "id": "dune-jackal-scout",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 14.68,
+    "x2": 41.26,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "nightshade-moth",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     17.84,
+     16.4
+    ],
+    "x1": 14.36,
+    "x2": 34.73,
+    "N2": 59.77,
+    "inPack": 0
+   },
+   {
+    "id": "voltaic-eel",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": false,
+    "okAfter": false,
+    "N": [
+     19.91,
+     18.46
+    ],
+    "x1": 19.33,
+    "x2": 113.71,
+    "N2": 75.73,
+    "inPack": 0
+   },
+   {
+    "id": "king-maker",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "glasswing-moth",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 14,
+    "x2": 20,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "frostmoon-howler",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.75,
+     16.86
+    ],
+    "x1": 19.5,
+    "x2": 32.25,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "weathervane-swift",
+    "rarity": "rare",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.68,
+     19.13
+    ],
+    "x1": 23,
+    "x2": 51,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "bramblewood-bonebreaker",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 74,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "pill-bug",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.47
+    ],
+    "x1": 12.68,
+    "x2": 11.82,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "courier-pigeon",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 13.31,
+    "x2": 24.58,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "echo-keeper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12,
+    "x2": 16,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "bog-revenant",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.17,
+     19.13
+    ],
+    "x1": 19.92,
+    "x2": 39.69,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "the-unremembered",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.17,
+     19.13
+    ],
+    "x1": 19.92,
+    "x2": 39.69,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "ironmaw-warwolf",
+    "rarity": "epic",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     36.44,
+     31.9
+    ],
+    "x1": 34.99,
+    "x2": 244.72,
+    "N2": 226.14,
+    "inPack": 0
+   },
+   {
+    "id": "weredog",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.57,
+     19.51
+    ],
+    "x1": 19.78,
+    "x2": 91.09,
+    "N2": 84.59,
+    "inPack": 0
+   },
+   {
+    "id": "parish-sergeant",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 36,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "land-tiller",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 23,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     14.33,
+     16.19
+    ],
+    "x1": 14.24,
+    "x2": 44.94,
+    "N2": 58.25,
+    "inPack": 4
+   },
+   {
+    "id": "village-miller",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     13.52,
+     12.01
+    ],
+    "x1": 12,
+    "x2": 18,
+    "N2": 32.05,
+    "inPack": 0
+   },
+   {
+    "id": "shieldbearer-hound",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.73,
+     25.7
+    ],
+    "x1": 26.68,
+    "x2": 77.82,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "willow-o-wisp",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 16.48,
+    "x2": 36.07,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "tailwind",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.7,
+     15.48
+    ],
+    "x1": 0,
+    "x2": 0,
+    "N2": 53.25,
+    "inPack": 0
+   },
+   {
+    "id": "bramble-gauntlet",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.7,
+     15.48
+    ],
+    "x1": 3,
+    "x2": 1,
+    "N2": 53.25,
+    "inPack": 0
+   },
+   {
+    "id": "thornwood-palisade",
+    "rarity": "rare",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.47,
+     19.13
+    ],
+    "x1": 22.9,
+    "x2": 47.61,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "shoal-shark",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     22.18,
+     21.98
+    ],
+    "x1": 21.5,
+    "x2": 50.25,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "malachite-golem",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     31.12,
+     30.09
+    ],
+    "x1": 31,
+    "x2": 78,
+    "N2": 201.2,
+    "inPack": 0
+   },
+   {
+    "id": "irradiated-couatl",
+    "rarity": "epic",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     38.48,
+     33.85
+    ],
+    "x1": 37.5,
+    "x2": 102,
+    "N2": 254.63,
+    "inPack": 0
+   },
+   {
+    "id": "heartwood-treant",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.73,
+     25.7
+    ],
+    "x1": 26,
+    "x2": 47,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "quarry-troll",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 24,
+    "x2": 54,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "ore-smelter-mole",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 23,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     22.85
+    ],
+    "x1": 17.9,
+    "x2": 36.81,
+    "N2": 116.03,
+    "inPack": 4
+   },
+   {
+    "id": "sworn-shieldbearer",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.67,
+    "x2": 33.45,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "crown-pretender",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 36,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "rainmaker-frog",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.5,
+    "x2": 32.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "puddle-skimmer",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.03,
+     15.83
+    ],
+    "x1": 15,
+    "x2": 31,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "moonlit-hare",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": false,
+    "okAfter": false,
+    "N": [
+     16.03,
+     15.83
+    ],
+    "x1": 11,
+    "x2": 65,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "lunar-howler",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": false,
+    "okAfter": false,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 15,
+    "x2": 145,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "frostbitten-wolverine",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.5,
+    "x2": 33.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "pall-wraith",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21.54,
+    "x2": 40.53,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "obsidian-lich",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     25.9,
+     23.01
+    ],
+    "x1": 21.73,
+    "x2": 110.67,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "pigeon-peon",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "marching-elephant",
+    "rarity": "rare",
+    "mapBefore": 23,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     32.15,
+     27.4
+    ],
+    "x1": 31.96,
+    "x2": 55.84,
+    "N2": 166.84,
+    "inPack": 0
+   },
+   {
+    "id": "stonedrop-vulture",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.1,
+    "x2": 12.96,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "subterraneaner",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 44.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "cave-centipede",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 16,
+    "x2": 27,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "millipede-hauler",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 22.68,
+    "x2": 37.9,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "meerkat-sentry",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 17,
+    "x2": 50,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "scree-goat",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.87,
+     21.98
+    ],
+    "x1": 24,
+    "x2": 64,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "fox-sharpshot",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 22,
+    "x2": 53,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "balloon-archer",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 23,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     23.42,
+     26.73
+    ],
+    "x1": 23.4,
+    "x2": 53.16,
+    "N2": 158.78,
+    "inPack": 4
+   },
+   {
+    "id": "frillneck-duelist",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.71,
+     21.82
+    ],
+    "x1": 24,
+    "x2": 55,
+    "N2": 105.8,
+    "inPack": 0
+   },
+   {
+    "id": "monitor-rambler",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.87,
+     21.98
+    ],
+    "x1": 24.53,
+    "x2": 52.52,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "dynamite-packrat",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.47
+    ],
+    "x1": 13.1,
+    "x2": 11.21,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "clover-butterfly",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "lions-mane-jelly",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 22.87,
+    "x2": 39.72,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "glimmer-spider",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "field-crow",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "rabid-jackal",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.36,
+     12.47
+    ],
+    "x1": 12.1,
+    "x2": 41.21,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "rafflesia",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.81,
+     15.78
+    ],
+    "x1": 13.35,
+    "x2": 58.02,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "puffball-bombardier",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.03,
+     15.83
+    ],
+    "x1": 15.7,
+    "x2": 51.38,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "static-bat",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.86,
+    "x2": 32.51,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "arc-bat",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 20.86,
+    "x2": 67.67,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "ironback-gorilla",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     33.34,
+     32.31
+    ],
+    "x1": 33,
+    "x2": 121,
+    "N2": 231.99,
+    "inPack": 0
+   },
+   {
+    "id": "smoke-raccoon",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 36,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "baby-bat",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.56,
+     15.09
+    ],
+    "x1": 16.36,
+    "x2": 19.85,
+    "N2": 50.6,
+    "inPack": 0
+   },
+   {
+    "id": "baby-horned-capybara",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 13.25,
+    "x2": 17.56,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "jay-pilferer",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 15,
+    "x2": 25,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "mongoose-duelist",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "nightjar-drifter",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.46,
+     13.98
+    ],
+    "x1": 13.97,
+    "x2": 17.82,
+    "N2": 43.43,
+    "inPack": 0
+   },
+   {
+    "id": "mudflat-godwit",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.21,
+    "x2": 39.72,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "moon-jerboa",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 80,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "werebadger",
+    "rarity": "rare",
+    "mapBefore": 23,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.45,
+     25.7
+    ],
+    "x1": 29.08,
+    "x2": 81.49,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "carrion-beetle",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 36,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "tarantula-hawk",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 48,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "glasswing-butterfly",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 17,
+    "x2": 31,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "margay",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     27.14,
+     25.7
+    ],
+    "x1": 27,
+    "x2": 60,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "seed-cache-squirrel",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 14.45,
+    "x2": 25.9,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "lotus-frog",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.85,
+    "x2": 19.37,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "vampire-bat-nurse",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": false,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 13,
+    "x2": 101,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "sawfish",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 15.4,
+    "x2": 25.96,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "mantis-shrimp",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.27,
+     21.82
+    ],
+    "x1": 23,
+    "x2": 56,
+    "N2": 105.8,
+    "inPack": 0
+   },
+   {
+    "id": "firefly-swarm",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 53,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "electric-catfish",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.98,
+    "x2": 79.68,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "armadillo-guard",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 16.4,
+    "x2": 31.2,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "elephant-nose-fish",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 36,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "piranha-shoal",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.19,
+     14.74
+    ],
+    "x1": 16,
+    "x2": 30,
+    "N2": 48.28,
+    "inPack": 0
+   },
+   {
+    "id": "cone-snail",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 49,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "anaconda-coil",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 18.6,
+    "x2": 38.56,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "skunk-gasser",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.2,
+    "x2": 56.44,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "fire-hawk",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.9,
+     23.01
+    ],
+    "x1": 25.9,
+    "x2": 68.81,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "cleaner-wrasse",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 37,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "lovebird",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 16,
+    "x2": 24,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "horned-lizard",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.5,
+    "x2": 46.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "marula-monkey",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 15.5,
+    "x2": 26.25,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "fumarole-ibex",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21.6,
+    "x2": 69.76,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "gallery-orb-weaver",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 20.34,
+    "x2": 47.16,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "cottonmouth-matriarch",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 23.1,
+    "x2": 87.61,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "sea-cucumber",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 45.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "grotto-lobster",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.46,
+     23.01
+    ],
+    "x1": 24.3,
+    "x2": 53.29,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "amber-cicada",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.26,
+     26.37
+    ],
+    "x1": 26.94,
+    "x2": 36.52,
+    "N2": 154.53,
+    "inPack": 0
+   },
+   {
+    "id": "pale-oryx",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 47,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "river-mink",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.5,
+    "x2": 32.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "pine-marten",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.6,
+    "x2": 26.96,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "grass-snake",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18.3,
+    "x2": 38.49,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "ladybird-guard",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 11,
+    "x2": 9,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "stag-beetle",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.46,
+     23.01
+    ],
+    "x1": 23.58,
+    "x2": 59.14,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "limpet-clinger",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 11.5,
+    "x2": 34.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "diving-bell-spider",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.5,
+    "x2": 34.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "swamp-rabbit",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 10.5,
+    "x2": 8.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "mosquito-cloud",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12.6,
+    "x2": 18.96,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "anhinga-spearbird",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.6,
+    "x2": 24.96,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "giant-water-bug",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 16.7,
+    "x2": 68.29,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "greater-siren",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 21.3,
+    "x2": 102.49,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "marsh-harrier",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 17.2,
+    "x2": 22.99,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "leopard-slug",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.6,
+    "x2": 16.76,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "fungus-gnat-cloud",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 11.5,
+    "x2": 12.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "springtail-hopper",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 10.5,
+    "x2": 7.5,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "red-backed-salamander",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.2,
+    "x2": 36.04,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "cave-cricket",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 10.5,
+    "x2": 9,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "ghost-crayfish",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 23.28,
+    "x2": 35.32,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "cave-swiftlet",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 14,
+    "x2": 13,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "cave-pseudoscorpion",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12,
+    "x2": 16,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "guano-beetle",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.6,
+    "x2": 16.76,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "proboscis-monkey",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 42.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "horseshoe-crab",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.51,
+     17.07
+    ],
+    "x1": 17.91,
+    "x2": 42.11,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "sea-hare",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 16,
+    "x2": 24,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "yellow-bellied-sea-snake",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.97,
+    "x2": 79.52,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "crown-of-thorns-star",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 65,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "lionfish",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 16,
+    "x2": 32,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "giant-clam",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 21.4,
+    "x2": 65.96,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "whale-shark",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     28.85,
+     27.4
+    ],
+    "x1": 28.68,
+    "x2": 53.26,
+    "N2": 166.84,
+    "inPack": 0
+   },
+   {
+    "id": "muntjac-barker",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 18,
+    "x2": 31,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "anvil-thrush",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 14,
+    "x2": 13,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "garden-tiger-moth",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.62,
+     11.67
+    ],
+    "x1": 11.86,
+    "x2": 9.35,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "harp-seal-pup",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.78,
+     11.44
+    ],
+    "x1": 11,
+    "x2": 15,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "beluga",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.9,
+     23.01
+    ],
+    "x1": 25,
+    "x2": 65,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "arctic-tern",
+    "rarity": "uncommon",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     20.57,
+     16.15
+    ],
+    "x1": 15.76,
+    "x2": 12.58,
+    "N2": 57.96,
+    "inPack": 0
+   },
+   {
+    "id": "lemming-swarm",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     15.78,
+     11.44
+    ],
+    "x1": 9.7,
+    "x2": 25.09,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "krill-swarm",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.78,
+     11.44
+    ],
+    "x1": 15,
+    "x2": 25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "ringed-seal",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.41,
+     17.07
+    ],
+    "x1": 17.22,
+    "x2": 28.81,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "musk-ox-calf",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 18.18,
+    "x2": 34.75,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "petrified-tree",
+    "rarity": "rare",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     45.17,
+     40.63
+    ],
+    "x1": 45,
+    "x2": 9,
+    "N2": 366.84,
+    "inPack": 0
+   },
+   {
+    "id": "ember-tetra",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.03,
+     15.83
+    ],
+    "x1": 16.01,
+    "x2": 48.12,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "coffer-mimic",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 10.6,
+    "x2": 6.76,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "ironclaw-fiddler",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     31.53,
+     30.09
+    ],
+    "x1": 30.18,
+    "x2": 101.47,
+    "N2": 201.2,
+    "inPack": 0
+   },
+   {
+    "id": "moat-snapper",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     24.87,
+     24.66
+    ],
+    "x1": 23.9,
+    "x2": 59.61,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "barkplate-beetle",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     26.11,
+     24.66
+    ],
+    "x1": 24.35,
+    "x2": 61.52,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "bloodscent-shark",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.11,
+     24.66
+    ],
+    "x1": 26,
+    "x2": 74,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "inland-taipan",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     28.59,
+     25.7
+    ],
+    "x1": 26.37,
+    "x2": 98.32,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "musk-ox-matriarch",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     27.56,
+     24.66
+    ],
+    "x1": 26.88,
+    "x2": 66.05,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "termite-forager",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 12.4,
+    "x2": 21.56,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "gravel-mole",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.9,
+    "x2": 12.81,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "marmot-stonecutter",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 15.8,
+    "x2": 15.24,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "prospector-mole",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 14,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     17.69
+    ],
+    "x1": 16.2,
+    "x2": 28.44,
+    "N2": 69.54,
+    "inPack": 3
+   },
+   {
+    "id": "beaver-feller",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.8,
+    "x2": 20.64,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "salvager-hermit-crab",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 15.75,
+    "x2": 13.56,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "hazel-coppice",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 15.1,
+    "x2": 1.21,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "moonshell-snail",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 17.1,
+    "x2": 15.01,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "sleepless-shrew",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": true,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 11.5,
+    "x2": 14.25,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "static-fennec",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.8,
+    "x2": 60.64,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "magpie-collector",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 18.28,
+    "x2": 28.76,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "granite-ox-golem",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     37.89,
+     35
+    ],
+    "x1": 37.6,
+    "x2": 264.16,
+    "N2": 272.22,
+    "inPack": 0
+   }
+  ],
+  "newlyOver": [
+   {
+    "id": "dolphin-knight",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.89,
+     16.86
+    ],
+    "x1": 17.5,
+    "x2": 34.25,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "scraper-of-skies",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     35.82,
+     32.93
+    ],
+    "x1": 35.6,
+    "x2": 57.76,
+    "N2": 240.97,
+    "inPack": 0
+   },
+   {
+    "id": "great-horned-owl",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.91,
+     28.02
+    ],
+    "x1": 29.56,
+    "x2": 48.55,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "war-hound",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.18,
+     20.09
+    ],
+    "x1": 21,
+    "x2": 45,
+    "N2": 89.69,
+    "inPack": 0
+   },
+   {
+    "id": "armored-mastiff",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     32.46,
+     29.42
+    ],
+    "x1": 32,
+    "x2": 110,
+    "N2": 192.34,
+    "inPack": 0
+   },
+   {
+    "id": "alley-cat",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.54,
+     13.5
+    ],
+    "x1": 9.77,
+    "x2": 46.83,
+    "N2": 40.5,
+    "inPack": 0
+   },
+   {
+    "id": "bramblewood-macaque",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.75,
+     16.86
+    ],
+    "x1": 17,
+    "x2": 41,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "silverback-brawler",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.91,
+     28.02
+    ],
+    "x1": 30.8,
+    "x2": 81.84,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "trapdoor-spider",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.31,
+     16.86
+    ],
+    "x1": 18,
+    "x2": 37,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "webspire-sentinel",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.94,
+     29.42
+    ],
+    "x1": 30,
+    "x2": 0,
+    "N2": 192.34,
+    "inPack": 0
+   },
+   {
+    "id": "tunnel-wyrm",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.59,
+     23.08
+    ],
+    "x1": 24,
+    "x2": 64,
+    "N2": 118.37,
+    "inPack": 0
+   },
+   {
+    "id": "gorge-wyrm",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     38.92,
+     36.03
+    ],
+    "x1": 38.68,
+    "x2": 127.34,
+    "N2": 288.48,
+    "inPack": 0
+   },
+   {
+    "id": "monarch-wingblade",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21,
+    "x2": 36,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "elder-willow",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     45.79,
+     41.45
+    ],
+    "x1": 42.24,
+    "x2": 38.94,
+    "N2": 381.8,
+    "inPack": 0
+   },
+   {
+    "id": "pufferfish-bulwark",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 21.5,
+    "x2": 20.25,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "raccoon-warlord",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.47,
+     28.02
+    ],
+    "x1": 28.86,
+    "x2": 82.9,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "turtle-bastion",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.47,
+     28.02
+    ],
+    "x1": 28.5,
+    "x2": 48.25,
+    "N2": 174.47,
+    "inPack": 0
+   },
+   {
+    "id": "tusked-vanguard",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.7,
+     14.18
+    ],
+    "x1": 15,
+    "x2": 22,
+    "N2": 44.68,
+    "inPack": 0
+   },
+   {
+    "id": "chipmunk-stockpiler",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 13.5,
+    "x2": 15.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "badger-sapper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.08,
+     23.63
+    ],
+    "x1": 24.9,
+    "x2": 60.21,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "antler-skirmisher",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.61,
+     20.09
+    ],
+    "x1": 21,
+    "x2": 45,
+    "N2": 89.69,
+    "inPack": 0
+   },
+   {
+    "id": "fox-kit",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.52,
+     12.01
+    ],
+    "x1": 13,
+    "x2": 18,
+    "N2": 32.05,
+    "inPack": 0
+   },
+   {
+    "id": "firetail-trickster",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.22,
+     15.78
+    ],
+    "x1": 16.6,
+    "x2": 23.96,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "rodent-king",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.11,
+     24.66
+    ],
+    "x1": 25.24,
+    "x2": 77.94,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "puddle-hopper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12.65,
+    "x2": 11.72,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "buck-brawler",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.33,
+     24.81
+    ],
+    "x1": 26,
+    "x2": 80,
+    "N2": 136.79,
+    "inPack": 0
+   },
+   {
+    "id": "mallard-marauder",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.22,
+     15.78
+    ],
+    "x1": 16.8,
+    "x2": 21.24,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "pack-wolf-reaver",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 64,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "hollow-oath-keeper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.44,
+     17.92
+    ],
+    "x1": 19,
+    "x2": 39,
+    "N2": 71.36,
+    "inPack": 0
+   },
+   {
+    "id": "termite-mound",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 19.08,
+    "x2": 65.29,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "tundra-musk-ox",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26.5,
+    "x2": 46.25,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "ice-crevasse-wolf",
+    "rarity": "rare",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.47,
+     19.13
+    ],
+    "x1": 23.46,
+    "x2": 45.81,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "rockslide-ram",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.84,
+    "x2": 44.07,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "bog-leech",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 1,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.68
+    ],
+    "x1": 13.6,
+    "x2": 20.96,
+    "N2": 35.73,
+    "inPack": 1
+   },
+   {
+    "id": "pinecone-sapper",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 17,
+    "x2": 16,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "barnacle-fortress",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.51,
+     17.07
+    ],
+    "x1": 18.08,
+    "x2": 65.29,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "feral-tuskboar",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.99,
+    "x2": 39.92,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "sandstorm-roc",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 72,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "pack-rat-looter",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 14.4,
+    "x2": 19.96,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "jackrabbit-sprinter",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 14,
+    "x2": 34,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "basalt-boar",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.96,
+     17.07
+    ],
+    "x1": 19.05,
+    "x2": 30,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "pyroclast-wyrm",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.62,
+     26.73
+    ],
+    "x1": 28,
+    "x2": 136,
+    "N2": 158.78,
+    "inPack": 0
+   },
+   {
+    "id": "barrow-leech-bat",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.04,
+     16.1
+    ],
+    "x1": 16.36,
+    "x2": 13.85,
+    "N2": 57.6,
+    "inPack": 0
+   },
+   {
+    "id": "coral-current-eel",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.81,
+     15.78
+    ],
+    "x1": 16.5,
+    "x2": 29.25,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "frost-thistle-lynx",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.65,
+     19.75
+    ],
+    "x1": 22.46,
+    "x2": 44.81,
+    "N2": 86.68,
+    "inPack": 0
+   },
+   {
+    "id": "dune-jackal-scout",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 14.68,
+    "x2": 41.26,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "king-maker",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "glasswing-moth",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 14,
+    "x2": 20,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "frostmoon-howler",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.75,
+     16.86
+    ],
+    "x1": 19.5,
+    "x2": 32.25,
+    "N2": 63.17,
+    "inPack": 0
+   },
+   {
+    "id": "weathervane-swift",
+    "rarity": "rare",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.68,
+     19.13
+    ],
+    "x1": 23,
+    "x2": 51,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "bramblewood-bonebreaker",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.52,
+     23.63
+    ],
+    "x1": 26,
+    "x2": 74,
+    "N2": 124.08,
+    "inPack": 0
+   },
+   {
+    "id": "pill-bug",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.47
+    ],
+    "x1": 12.68,
+    "x2": 11.82,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "courier-pigeon",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 13.31,
+    "x2": 24.58,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "echo-keeper",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12,
+    "x2": 16,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "bog-revenant",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.17,
+     19.13
+    ],
+    "x1": 19.92,
+    "x2": 39.69,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "the-unremembered",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.17,
+     19.13
+    ],
+    "x1": 19.92,
+    "x2": 39.69,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "ironmaw-warwolf",
+    "rarity": "epic",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     36.44,
+     31.9
+    ],
+    "x1": 34.99,
+    "x2": 244.72,
+    "N2": 226.14,
+    "inPack": 0
+   },
+   {
+    "id": "weredog",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.57,
+     19.51
+    ],
+    "x1": 19.78,
+    "x2": 91.09,
+    "N2": 84.59,
+    "inPack": 0
+   },
+   {
+    "id": "shieldbearer-hound",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.73,
+     25.7
+    ],
+    "x1": 26.68,
+    "x2": 77.82,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "thornwood-palisade",
+    "rarity": "rare",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.47,
+     19.13
+    ],
+    "x1": 22.9,
+    "x2": 47.61,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "malachite-golem",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     31.12,
+     30.09
+    ],
+    "x1": 31,
+    "x2": 78,
+    "N2": 201.2,
+    "inPack": 0
+   },
+   {
+    "id": "irradiated-couatl",
+    "rarity": "epic",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     38.48,
+     33.85
+    ],
+    "x1": 37.5,
+    "x2": 102,
+    "N2": 254.63,
+    "inPack": 0
+   },
+   {
+    "id": "heartwood-treant",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.73,
+     25.7
+    ],
+    "x1": 26,
+    "x2": 47,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "quarry-troll",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 24,
+    "x2": 54,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "pall-wraith",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21.54,
+    "x2": 40.53,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "pigeon-peon",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "marching-elephant",
+    "rarity": "rare",
+    "mapBefore": 23,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     32.15,
+     27.4
+    ],
+    "x1": 31.96,
+    "x2": 55.84,
+    "N2": 166.84,
+    "inPack": 0
+   },
+   {
+    "id": "stonedrop-vulture",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.1,
+    "x2": 12.96,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "subterraneaner",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 44.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "cave-centipede",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 16,
+    "x2": 27,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "millipede-hauler",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 22.68,
+    "x2": 37.9,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "scree-goat",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.87,
+     21.98
+    ],
+    "x1": 24,
+    "x2": 64,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "fox-sharpshot",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 22,
+    "x2": 53,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "frillneck-duelist",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.71,
+     21.82
+    ],
+    "x1": 24,
+    "x2": 55,
+    "N2": 105.8,
+    "inPack": 0
+   },
+   {
+    "id": "monitor-rambler",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.87,
+     21.98
+    ],
+    "x1": 24.53,
+    "x2": 52.52,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "dynamite-packrat",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.92,
+     12.47
+    ],
+    "x1": 13.1,
+    "x2": 11.21,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "clover-butterfly",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "lions-mane-jelly",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 22.87,
+    "x2": 39.72,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "glimmer-spider",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "field-crow",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     13.14,
+     11.67
+    ],
+    "x1": 12,
+    "x2": 12,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "rabid-jackal",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.36,
+     12.47
+    ],
+    "x1": 12.1,
+    "x2": 41.21,
+    "N2": 34.56,
+    "inPack": 0
+   },
+   {
+    "id": "rafflesia",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.81,
+     15.78
+    ],
+    "x1": 13.35,
+    "x2": 58.02,
+    "N2": 55.34,
+    "inPack": 0
+   },
+   {
+    "id": "ironback-gorilla",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     33.34,
+     32.31
+    ],
+    "x1": 33,
+    "x2": 121,
+    "N2": 231.99,
+    "inPack": 0
+   },
+   {
+    "id": "baby-bat",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.56,
+     15.09
+    ],
+    "x1": 16.36,
+    "x2": 19.85,
+    "N2": 50.6,
+    "inPack": 0
+   },
+   {
+    "id": "jay-pilferer",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 15,
+    "x2": 25,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "mongoose-duelist",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 42,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "mudflat-godwit",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.21,
+    "x2": 39.72,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "moon-jerboa",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 80,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "werebadger",
+    "rarity": "rare",
+    "mapBefore": 23,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     30.45,
+     25.7
+    ],
+    "x1": 29.08,
+    "x2": 81.49,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "tarantula-hawk",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 48,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "margay",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     27.14,
+     25.7
+    ],
+    "x1": 27,
+    "x2": 60,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "seed-cache-squirrel",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 14.45,
+    "x2": 25.9,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "mantis-shrimp",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.27,
+     21.82
+    ],
+    "x1": 23,
+    "x2": 56,
+    "N2": 105.8,
+    "inPack": 0
+   },
+   {
+    "id": "firefly-swarm",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 53,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "electric-catfish",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.98,
+    "x2": 79.68,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "armadillo-guard",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 16.4,
+    "x2": 31.2,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "piranha-shoal",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.19,
+     14.74
+    ],
+    "x1": 16,
+    "x2": 30,
+    "N2": 48.28,
+    "inPack": 0
+   },
+   {
+    "id": "cone-snail",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 49,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "skunk-gasser",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.2,
+    "x2": 56.44,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "fire-hawk",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.9,
+     23.01
+    ],
+    "x1": 25.9,
+    "x2": 68.81,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "cleaner-wrasse",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 37,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "lovebird",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 16,
+    "x2": 24,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "horned-lizard",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.5,
+    "x2": 46.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "marula-monkey",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.6,
+     13.71
+    ],
+    "x1": 15.5,
+    "x2": 26.25,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "fumarole-ibex",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.03,
+     19.13
+    ],
+    "x1": 21.6,
+    "x2": 69.76,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "gallery-orb-weaver",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 20.34,
+    "x2": 47.16,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "cottonmouth-matriarch",
+    "rarity": "rare",
+    "mapBefore": 5,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.04,
+     23.01
+    ],
+    "x1": 23.1,
+    "x2": 87.61,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "sea-cucumber",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 45.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "grotto-lobster",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.46,
+     23.01
+    ],
+    "x1": 24.3,
+    "x2": 53.29,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "amber-cicada",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     29.26,
+     26.37
+    ],
+    "x1": 26.94,
+    "x2": 36.52,
+    "N2": 154.53,
+    "inPack": 0
+   },
+   {
+    "id": "pale-oryx",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20,
+    "x2": 47,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "pine-marten",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.6,
+    "x2": 26.96,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "grass-snake",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.31,
+     18.1
+    ],
+    "x1": 18.3,
+    "x2": 38.49,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "stag-beetle",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     24.46,
+     23.01
+    ],
+    "x1": 23.58,
+    "x2": 59.14,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "limpet-clinger",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 11.5,
+    "x2": 34.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "mosquito-cloud",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12.6,
+    "x2": 18.96,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "fungus-gnat-cloud",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 11.5,
+    "x2": 12.25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "ghost-crayfish",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     23.42,
+     21.98
+    ],
+    "x1": 23.28,
+    "x2": 35.32,
+    "N2": 107.36,
+    "inPack": 0
+   },
+   {
+    "id": "cave-pseudoscorpion",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     12.88,
+     11.44
+    ],
+    "x1": 12,
+    "x2": 16,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "proboscis-monkey",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19.5,
+    "x2": 42.25,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "horseshoe-crab",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     18.51,
+     17.07
+    ],
+    "x1": 17.91,
+    "x2": 42.11,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "sea-hare",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 16,
+    "x2": 24,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "yellow-bellied-sea-snake",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.58,
+     19.13
+    ],
+    "x1": 19.97,
+    "x2": 79.52,
+    "N2": 81.32,
+    "inPack": 0
+   },
+   {
+    "id": "crown-of-thorns-star",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 19,
+    "x2": 65,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "giant-clam",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     22.39,
+     20.94
+    ],
+    "x1": 21.4,
+    "x2": 65.96,
+    "N2": 97.44,
+    "inPack": 0
+   },
+   {
+    "id": "whale-shark",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     28.85,
+     27.4
+    ],
+    "x1": 28.68,
+    "x2": 53.26,
+    "N2": 166.84,
+    "inPack": 0
+   },
+   {
+    "id": "garden-tiger-moth",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.62,
+     11.67
+    ],
+    "x1": 11.86,
+    "x2": 9.35,
+    "N2": 30.26,
+    "inPack": 0
+   },
+   {
+    "id": "beluga",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     25.9,
+     23.01
+    ],
+    "x1": 25,
+    "x2": 65,
+    "N2": 117.66,
+    "inPack": 0
+   },
+   {
+    "id": "krill-swarm",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.78,
+     11.44
+    ],
+    "x1": 15,
+    "x2": 25,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "ringed-seal",
+    "rarity": "common",
+    "mapBefore": 21,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     21.41,
+     17.07
+    ],
+    "x1": 17.22,
+    "x2": 28.81,
+    "N2": 64.75,
+    "inPack": 0
+   },
+   {
+    "id": "musk-ox-calf",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 18.18,
+    "x2": 34.75,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "petrified-tree",
+    "rarity": "rare",
+    "mapBefore": 22,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     45.17,
+     40.63
+    ],
+    "x1": 45,
+    "x2": 9,
+    "N2": 366.84,
+    "inPack": 0
+   },
+   {
+    "id": "ember-tetra",
+    "rarity": "uncommon",
+    "mapBefore": 1,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.03,
+     15.83
+    ],
+    "x1": 16.01,
+    "x2": 48.12,
+    "N2": 55.69,
+    "inPack": 0
+   },
+   {
+    "id": "ironclaw-fiddler",
+    "rarity": "rare",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     31.53,
+     30.09
+    ],
+    "x1": 30.18,
+    "x2": 101.47,
+    "N2": 201.2,
+    "inPack": 0
+   },
+   {
+    "id": "bloodscent-shark",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     26.11,
+     24.66
+    ],
+    "x1": 26,
+    "x2": 74,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "inland-taipan",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     28.59,
+     25.7
+    ],
+    "x1": 26.37,
+    "x2": 98.32,
+    "N2": 146.78,
+    "inPack": 0
+   },
+   {
+    "id": "musk-ox-matriarch",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     27.56,
+     24.66
+    ],
+    "x1": 26.88,
+    "x2": 66.05,
+    "N2": 135.14,
+    "inPack": 0
+   },
+   {
+    "id": "termite-forager",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     14.33,
+     11.44
+    ],
+    "x1": 12.4,
+    "x2": 21.56,
+    "N2": 29.08,
+    "inPack": 0
+   },
+   {
+    "id": "gravel-mole",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.9,
+    "x2": 12.81,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "marmot-stonecutter",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 15.8,
+    "x2": 15.24,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "beaver-feller",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 14.8,
+    "x2": 20.64,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "salvager-hermit-crab",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     16.24,
+     14.79
+    ],
+    "x1": 15.75,
+    "x2": 13.56,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "hazel-coppice",
+    "rarity": "common",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     15.16,
+     13.71
+    ],
+    "x1": 15.1,
+    "x2": 1.21,
+    "N2": 41.77,
+    "inPack": 0
+   },
+   {
+    "id": "moonshell-snail",
+    "rarity": "common",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     17.69,
+     14.79
+    ],
+    "x1": 17.1,
+    "x2": 15.01,
+    "N2": 48.61,
+    "inPack": 0
+   },
+   {
+    "id": "static-fennec",
+    "rarity": "uncommon",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     20.99,
+     18.1
+    ],
+    "x1": 20.8,
+    "x2": 60.64,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "magpie-collector",
+    "rarity": "uncommon",
+    "mapBefore": 7,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     19.55,
+     18.1
+    ],
+    "x1": 18.28,
+    "x2": 28.76,
+    "N2": 72.8,
+    "inPack": 0
+   },
+   {
+    "id": "granite-ox-golem",
+    "rarity": "rare",
+    "mapBefore": 14,
+    "mapAfter": 0,
+    "okBefore": true,
+    "okAfter": false,
+    "N": [
+     37.89,
+     35
+    ],
+    "x1": 37.6,
+    "x2": 264.16,
+    "N2": 272.22,
+    "inPack": 0
+   }
+  ],
+  "nowInside": []
+ }
+}

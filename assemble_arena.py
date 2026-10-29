@@ -362,6 +362,8 @@ app_src = sub_once(app_src, "__SKILL_COSTS__", json.dumps(json.load(open(SCRATCH
 app_src = sub_once(app_src, "__UPGRADE_COSTS__", json.dumps(json.load(open(SCRATCH + "canonical/upgrade-costs.json", encoding="utf-8")), ensure_ascii=False))
 # 2026-10-22 (package MP): which cards belong to which map (canonical/map-pools.json); the admin's live edits (card_overrides __cfg:map-pools:<id>) win over it at load, tools/fold_map_pools.js folds them back
 app_src = sub_once(app_src, "__MAP_POOLS__", json.dumps(json.load(open(SCRATCH + "canonical/map-pools.json", encoding="utf-8")), ensure_ascii=False))
+# 2026-10-28 (package PACK1): the owner's pack extras (canonical/pack-extras.json); a basic pack draws from its maps' lists + these (arena_app.js packIndex)
+app_src = sub_once(app_src, "__PACK_EXTRAS__", json.dumps({k: v for k, v in json.load(open(SCRATCH + "canonical/pack-extras.json", encoding="utf-8")).items() if not k.startswith("_")}, ensure_ascii=False))
 # 2026-10-24 (package PRO, owner 00:28): the hidden N-PRO-k fights per map (canonical/pro-skirmishes.json, written by tools/opt/pro_skirmishes.js --apply);
 # only what the game reads is baked in (not the replaced decks, the skipped candidates or the tool's notes)
 def _pro_for_game(d):

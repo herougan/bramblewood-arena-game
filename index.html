@@ -13877,6 +13877,15 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .vis4-mc-card.is-mystery .cnp-rw-back{display:grid; place-items:center; width:100%; height:100%; border-radius:6px; font-size:18px;}
 .vis4-mc-locked{display:inline-flex; align-items:center; height:28px; padding:0 9px; border-radius:999px; font:800 12px/1 'Baloo 2',system-ui,sans-serif; background:rgba(0,0,0,.28); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); cursor:help;}
 @media (max-width:560px){ .vis4-mc-card, .vis4-mc-card .card-tile{width:38px !important; height:48px !important;} }
+/* PACK1 (2026-10-28; owner: the map's cards from the skirmish panel's admin buttons): the 🃏 Map cards overlay (pk1OpenMapCards), VIS4's tiles
+   one section per list, a small "📦 Pack N" under each card a basic pack also gives */
+.pk1-mc-modal{max-width:760px; width:100%; max-height:min(86vh, 900px); display:flex; flex-direction:column;}
+.pk1-mc-overlay .pk1-mc-body{margin-top:4px; padding-top:0; border-top:0; overflow-y:auto; overscroll-behavior:contain; min-height:0;}
+.pk1-mc-sec h3{margin:12px 0 2px; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
+.pk1-mc-sec h3 small{font-weight:700; opacity:.65; margin-left:4px;}
+.pk1-mc-overlay .vis4-mc-row{gap:34px 8px; padding:10px 0 26px;}
+.pk1-mc-pack{position:absolute; left:50%; bottom:-27px; transform:translateX(-50%); white-space:nowrap; font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; padding:0 4px; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; pointer-events:auto;}
+@media (max-width:560px){ .pk1-mc-modal{max-height:92vh;} }
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */
@@ -43120,7 +43129,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9c802f5348", "es": "assets/lang/es.js?v=65dad5dbcb", "fr": "assets/lang/fr.js?v=0255e34452", "id": "assets/lang/id.js?v=a23cfe4220", "it": "assets/lang/it.js?v=6ff5f190cc", "ja": "assets/lang/ja.js?v=f92dfdcbac", "ko": "assets/lang/ko.js?v=a576d8cac8", "pt": "assets/lang/pt.js?v=2848bc145c", "ta": "assets/lang/ta.js?v=c9dc91ccc1", "tl": "assets/lang/tl.js?v=702d8e1405", "zh-Hans": "assets/lang/zh-Hans.js?v=184ee912d4", "zh-Hant": "assets/lang/zh-Hant.js?v=3173828d34"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0baf982a46", "es": "assets/lang/es.js?v=31be457ea5", "fr": "assets/lang/fr.js?v=e9a22af33b", "id": "assets/lang/id.js?v=62418c4850", "it": "assets/lang/it.js?v=36a82b0345", "ja": "assets/lang/ja.js?v=a67cf02fd5", "ko": "assets/lang/ko.js?v=cece70cdd3", "pt": "assets/lang/pt.js?v=98f080c0d6", "ta": "assets/lang/ta.js?v=acc68c233a", "tl": "assets/lang/tl.js?v=bd5261d671", "zh-Hans": "assets/lang/zh-Hans.js?v=9526e78d10", "zh-Hant": "assets/lang/zh-Hant.js?v=51396cc9b9"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46054,7 +46063,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e12-ambush-codex": "It strikes at once, even when a unit walks in at the round's start (Restless, the wind, a spell). Not while it is Asleep, Stunned, Frozen, Chained or turned to stone.",
   "ui.e12-banana-codex": "Not while it is Asleep, Stunned, Frozen or turned to stone.",
   "ui.vis5-danger": "Danger!",
-  "ui.vis5-more-controls": "More controls"
+  "ui.vis5-more-controls": "More controls",
+  "ui.pk1-map-cards-btn": "🃏 Map cards",
+  "ui.pk1-map-cards-title": "{name}: the map's cards",
+  "ui.pk1-map-cards-sub": "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.",
+  "ui.pk1-in-pack": "Pack {n}",
+  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -50566,7 +50580,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '95ddc5d87e85', BUILD_CARD_HASH = 'e589d5f099dc39e0777cc41e8d01c59a9f70ace251acf0018fbbfd502aa2c575';
+const BUILD_ID = '76df47610d3a', BUILD_CARD_HASH = 'e589d5f099dc39e0777cc41e8d01c59a9f70ace251acf0018fbbfd502aa2c575';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -50974,16 +50988,70 @@ function cardObtainMap(d){
   if(!d || isEasterEgg(d)) return 0;
   const s = cardSourceOf(d);
   if(s.kind === 'map' || s.kind === 'secret'){ const n = s.id ? mapUnlockNumberOf(s.id) : null; return n == null ? 0 : n; }
-  if(s.kind === 'pack'){ if(Number(s.tier) === 99) return OBTAIN_MAP_OF.mystery; if(Number(s.tier) === 11) return OBTAIN_MAP_OF.pack;
-    const at = s.map ? mapUnlockNumberOf(s.map) : null, tierAt = PACK_TIER_FROM_MAP[Number(s.tier) || 1];
+  if(s.kind === 'pack' && Number(s.tier) === 99) return OBTAIN_MAP_OF.mystery; if(s.kind === 'pack' && Number(s.tier) >= 11) return OBTAIN_MAP_OF.pack;
+  // 2026-10-28 (package PACK1): a basic-pack card's pack and map come from the map lists (basicPackTierOf, cardFirstMapList), not from
+  // source.tier / source.map. A basic-pack card in no map list and no pack extras is in no pack: not obtainable, Map 0 (as any unobtainable card).
+  const pt = basicPackTierOf(d);
+  if(pt){ const f = cardFirstMapList(d), at = f ? f.n : null, tierAt = PACK_TIER_FROM_MAP[pt] != null ? PACK_TIER_FROM_MAP[pt] : (at == null ? packMapRange(pt)[0] : null);
     const first = [at, tierAt].filter(v=> v != null); return Math.max(first.length ? Math.min(...first) : OBTAIN_MAP_OF.pack, rarityIntroMap(d.rarity)); }
+  if(s.kind === 'pack') return 0;
   return OBTAIN_MAP_OF[s.kind] != null ? OBTAIN_MAP_OF[s.kind] : 0;
 }
+// ---- 2026-10-28 (package PACK1; owner 10-28 22:47: "For now, remove all cards from the packs. We'll be more deliberate of our choices. In
+// the end, I do plan to add some cards into packs that do not appear in any skirmish.") ----
+// A basic pack's pool is derived at load from the map lists (canonical/map-pools.json, with the admin's live __cfg:map-pools rows: mpEntry):
+// Pack N holds the basic-pack cards (source {kind:'pack', tier 1-10}) whose FIRST map list is on Maps 7(N-1) to 7N-1 (Pack 1 Maps 0-6, Pack 2
+// 7-13, Pack 3 14-20, Pack 4 21-27), a side map counting from the map that unlocks it (mapUnlockNumberOf, as RW5's rw5_pack_tiers tool);
+// the Tutorial side map (mtut), the endless dungeons and the tower name no card's map (RW5). Plus the owner's pack extras
+// (canonical/pack-extras.json {"1": [...], ...}; a pack table's `extras` list, edited in the Pack editor, wins live for that pack's pool):
+// a card listed there is in that pack whatever its source, unless a map list already puts it in a pack. source.tier and source.map are
+// no longer read for basic packs, so trimming a map list (the THEME proposal) takes its cards out of the packs too. A basic-pack card in no
+// list is in no pack: "Not obtainable yet" (isUnattainable), as an awaitingSource card. Its card data is kept. The Factions pool (11) and the
+// Mystery Booster (99) still read source.tier. Rarity weights, foil chances and pack sizes are unchanged.
+const PACK_EXTRAS_BASE = {"1": [], "2": [], "3": [], "4": []};
+const PACK_MAPS_PER_TIER = 7;
+var packIdxCache = null; // var: mpChanged and the pack-table setters clear it, some of them before this line runs at load
+function packIndexReset(){ packIdxCache = null; }
+function packTierOfMapNumber(n){ return n == null || !(n >= 0) ? null : Math.floor(n / PACK_MAPS_PER_TIER) + 1; }
+function packMapRange(t){ return [PACK_MAPS_PER_TIER * (t - 1), PACK_MAPS_PER_TIER * t - 1]; }
+function packListSkipped(m){ return !m || m.id === 'mtut' || !!m.endless || !!m.tower || !!m.reserved; }
+// the pack extras of pack pool t: a pack table's own `extras` array (live, Pack editor) wins over the file's list
+function packExtrasList(t){
+  try{ if(typeof getShopPacks === 'function'){ const p = getShopPacks().find(x=> (+x.pool || 1) === t && Array.isArray(x.extras)); if(p) return p.extras.filter(x=> typeof x === 'string' && x); } }catch(e){}
+  const l = (PACK_EXTRAS_BASE || {})[String(t)]; return Array.isArray(l) ? l.filter(x=> typeof x === 'string' && x) : [];
+}
+function packIndex(){
+  if(packIdxCache) return packIdxCache;
+  try{ return packIndexBuild(); }catch(e){ return {first: {}, extra: {}}; } // a call during load, before the map lists are declared: not cached
+}
+function packIndexBuild(){
+  const first = {}, extra = {}, all = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : [], byId = {}; all.forEach(m=> byId[m.id] = m);
+  const tops = new Set(Object.keys(((typeof MAP_POOLS_BASE !== 'undefined' && MAP_POOLS_BASE) || {}).maps || {}).concat(Object.keys((typeof mapPoolEdits !== 'undefined' && mapPoolEdits) || {})));
+  const note = (id, loc)=>{ const m = byId[loc]; if(packListSkipped(m)) return; const n = mapUnlockNumberOf(loc); if(n == null) return; if(!first[id] || n < first[id].n) first[id] = {n, loc}; };
+  tops.forEach(top=>{ if(packListSkipped(byId[top])) return; const e = mpEntry(top);
+    e.cards.forEach(id=> note(id, top)); e.special.forEach(id=> note(id, top)); Object.keys(e.submaps).forEach(s=> e.submaps[s].forEach(id=> note(id, s))); });
+  const tiers = new Set([1, 2, 3, 4].concat(Object.keys(PACK_EXTRAS_BASE || {}).map(Number).filter(n=> n >= 1 && n <= 10)));
+  try{ if(typeof getShopPacks === 'function') getShopPacks().forEach(p=>{ const n = +p.pool || 1; if(n >= 1 && n <= 10) tiers.add(n); }); }catch(e){}
+  [...tiers].sort((a, b)=> a - b).forEach(t=> packExtrasList(t).forEach(id=>{ if(!extra[id]) extra[id] = t; }));
+  return (packIdxCache = {first, extra});
+}
+// the first map list that names this card: {n: the main-line map number it opens at, loc: the map or side map}, or null
+function cardFirstMapList(d){ if(!d) return null; const id = d.derivedFrom || d.id; return packIndex().first[id] || null; }
+function isBasicPackSource(s){ if(!s || s.kind !== 'pack') return false; const t = parseInt(s.tier, 10) || 1; return t >= 1 && t <= 10; }
+// the basic pack (1, 2, 3, 4 ...) a card is in now, 0 = none
+function basicPackTierOf(d){
+  if(!d || d.token || d.test || isEasterEgg(d)) return 0;
+  const id = d.derivedFrom || d.id, idx = packIndex(), s = cardSourceOf(d);
+  if(isBasicPackSource(s)){ const f = idx.first[id]; if(f) return packTierOfMapNumber(f.n) || 0; }
+  else if(s.kind === 'pack') return 0; // the Factions pool and the Mystery Booster keep their own pools
+  return idx.extra[id] || 0;
+}
+function packTierCardIds(t, defs){ defs = defs || getCardDefs(); return Object.keys(defs).filter(id=> basicPackTierOf(defs[id]) === t); }
 // How a card can actually be obtained right now (null = it can't).
 function cardObtainableFrom(d){
   if(isEasterEgg(d)) return null; // 2026-10-19 (package EE): Easter eggs can't be obtained yet
   const src = cardSourceOf(d);
-  if(src.kind==='pack') return 'pack';
+  if(src.kind==='pack') return isBasicPackSource(src) && !basicPackTierOf(d) ? null : 'pack'; // 2026-10-28 (package PACK1): a basic-pack card in no map list and no pack extras is in no pack
   if(src.kind==='map' && src.node) return 'skirmish';
   if(src.kind==='base') return 'base';
   if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12); 2026-10-19 (package RC): crafted in the Forge's Raid tab from its trophy shards
@@ -50994,6 +51062,7 @@ function cardObtainableFrom(d){
   if(src.kind==='smith') return 'smith';
   if(src.kind==='secret') return 'secret';
   if(src.kind==='quest') return 'quest';
+  if(basicPackTierOf(d)) return 'pack'; // 2026-10-28 (package PACK1): a card the owner put in a pack's extras (canonical/pack-extras.json)
   return null; // unsorted, or an event (no event system live yet)
 }
 // Creature rank (2026-10-18, user: "Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add
@@ -51016,7 +51085,9 @@ function cardWhereToGetText(d){
   if(src.kind==='base') return src.tutorialReward ? 'Reward for winning the tutorial' : 'Available from the start';
   if(src.kind==='map' && src.node){ const f = findConquestNode(src.id, src.node); return f ? `Win ${f.node.name} in ${f.map.name} (Conquest)` : 'A Conquest reward'; }
   if(src.kind==='pack' && d.faction === 'base') return TX('ui.codex-base-tip'); // 2026-10-19 (package UT, owner: "Base cards just mean they come from Skirmish rewards, not Card Packs")
-  if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */ : (Number(src.tier) || 1) <= 3 && packTierName(Number(src.tier) || 1) ? TX('ui.rw5-where-pack', {name: packTierName(Number(src.tier) || 1)}) /* RW5: its own pack */ : TX('ui.rw5-where-pack-later'));
+  if(src.kind==='pack' && (Number(src.tier)===99 || Number(src.tier) >= 11)) return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : TX('ui.rp-where-faction') /* 2026-10-21 (package RP): faction rewards are in no pack since 2026-10-13 (BASIC_PACK_POOLS); this said "Any basic pack" */;
+  // 2026-10-28 (package PACK1): the pack the map lists put it in (basicPackTierOf), or a pack's extras; was source.tier
+  { const pt = basicPackTierOf(d); if(pt) return packTierName(pt) ? TX('ui.rw5-where-pack', {name: packTierName(pt)}) /* RW5: its own pack */ : TX('ui.rw5-where-pack-later'); }
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
   if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
@@ -51158,8 +51229,17 @@ function baseGameBeaten(){
   try{ const mains = mainConquestMaps().slice(0, BASE_GAME_MAPS + 1); return mains.length > 0 && mains.every(m=> conquestMapCleared(m.id)); }catch(e){ return false; }
 }
 function codexTierName(tier){ return CODEX_TIER_THEMES[tier-1] || `Further lands ${tier}`; }
+// 2026-10-28 (package PACK1): the source the Codex, the card detail and the Test Lab group a card by: a basic-pack card with the pack the map
+// lists put it in (basicPackTierOf), or no pack at all (unsorted: "Not obtainable yet", as an awaitingSource card); an unsorted card the owner
+// put in a pack's extras with that pack.
+function packViewSourceOf(d){
+  const s = cardSourceOf(d), pt = basicPackTierOf(d);
+  if(isBasicPackSource(s)) return pt ? Object.assign({}, s, {tier: pt}) : {kind:'unsorted', auto:true, packless:true};
+  if(pt && s.kind === 'unsorted') return {kind:'pack', tier: pt, extra:true};
+  return s;
+}
 function codexSectionOf(d){
-  const src = cardSourceOf(d);
+  const src = packViewSourceOf(d); // PACK1
   const split = baseGameBeaten(); // admins see what players see; the "View by" options organise for editing
   const mapTier = idx=> idx < BASE_GAME_MAPS ? 1 : 2 + Math.floor((idx - BASE_GAME_MAPS)/10);
   // 2026-10-19 (package CX, owner 14:07: "Rename all the pool names to simple names like just 'Factions'"): every section name is a
@@ -51243,7 +51323,7 @@ function easterEggSectionOf(){ return {key:'easteregg', order:[9989,0,0,''], lab
 function codexViewSectionOf(d, view){
   if(isEasterEgg(d) && easterEggsShown() /* GD2 */ && !['skirmish', 'pack', 'event', 'unassigned'].includes(view) && !codexFlatById) return easterEggSectionOf();
   if(view==='tiers') return codexSectionOf(d);
-  const src = cardSourceOf(d);
+  const src = packViewSourceOf(d); // PACK1
   if(view==='all'){
     if(src.kind==='smith') return codexSmithSection();
     return {key:'all', order:[0,0,0,''], label:'', bare:true};
@@ -53848,7 +53928,7 @@ function codexAnimalOptionsHTML(defs){
 // Mystery Pack A, B..., Event A, B, C..."): base cards, then map rewards by map number (side maps after their parent) and
 // fight order, then packs by pool, the faction pools, Mystery, events by name, and anything unsorted last.
 function advancementKey(d){
-  const src = cardSourceOf(d) || {}, pad = n=> String(Math.max(0, Math.min(9999, n|0))).padStart(4, '0');
+  const src = packViewSourceOf(d) || {} /* PACK1 */, pad = n=> String(Math.max(0, Math.min(9999, n|0))).padStart(4, '0');
   if(src.kind==='base') return '0';
   if(src.kind==='map'){ const m = CONQUEST_MAPS.find(x=> x.id===src.id), num = mapNumberOf(src.id) ?? 999; const ni = m ? m.nodes.findIndex(n=> n.key===src.node) : 999;
     return '1' + pad(num) + (m && m.sub ? '1' : '0') + pad(ni < 0 ? 999 : ni); }
@@ -56822,7 +56902,7 @@ function neInspectDetailHTML(d){
   // "Abilities" heading and "Where to get it" were dark on dark): where it comes from is one square pill, "📦 Pack 1" for a pack card (the
   // pack's shop name, Hedgerow Pouch, in its tooltip; docs/progression-plan.md calls them Pack 1 / 2 / 3), else the source's own line; no
   // "Where to get it" label. The pill and the heading take colours that read on the detail's parchment and on the dark abilities box.
-  let wherePill = ''; try{ const src = cardSourceOf(d), tier = Number(src && src.tier) || 0;
+  let wherePill = ''; try{ const src = packViewSourceOf(d) /* PACK1 */, tier = Number(src && src.tier) || 0;
     if(src && src.kind === 'pack' && d.faction !== 'base' && tier >= 1 && tier <= 6){ const nm = typeof packTierName === 'function' ? packTierName(tier) : '';
       wherePill = `<span class="pl2-where-pill" title="${escapeAttr(nm || where)}">📦 ${escapeHtml(TX('ui.pl2-pack-n', {n: tier}))}</span>`; }
     else if(where) wherePill = `<span class="pl2-where-pill is-text">${escapeHtml(where)}</span>`; }catch(e){}
@@ -57008,7 +57088,7 @@ function codexPlacementHTML(d){
       <input id="cdpEventName" type="text" aria-label="Event name" placeholder="Event (e.g. Winter Lights 2026)" value="${src.kind==='event'?escapeAttr(src.name||''):''}" ${src.kind==='event'?'':'hidden'}>
     </div>
     <label class="field-checkbox-row"><input type="checkbox" id="cdpHidden" ${raw.hidden === false ? '' : 'checked'}> Hidden — players don’t know it exists until they first see it</label>
-    <p class="cdp-obtain ${isUnattainable(d) ? 'is-no' : 'is-yes'}">${isUnattainable(d) ? '⛔ Not obtainable: no source yet. Pick one above.' : `✅ Obtainable: ${escapeHtml(cardWhereToGetText(d))}`}</p>
+    <p class="cdp-obtain ${isUnattainable(d) ? 'is-no' : 'is-yes'}">${isUnattainable(d) ? escapeHtml(cdpNotObtainableText(d)) : `✅ Obtainable: ${escapeHtml(cardWhereToGetText(d))}`}</p>
     <div class="cdp-actions"><button type="button" class="btn small primary" id="cdpSave">Save placement</button><span class="cdp-msg" id="cdpMsg"></span></div>
   </div>`;
 }
@@ -57052,7 +57132,7 @@ function wireCodexPlacement(defId){
     try{ if(typeof editingCard !== 'undefined' && editingCard && editingCard.id === defId){ if(raw.source) editingCard.source = JSON.parse(JSON.stringify(raw.source)); else delete editingCard.source; if(raw.hidden === false) editingCard.hidden = false; else delete editingCard.hidden; delete editingCard.unattainable; } }catch(e){}
     await saveCard(raw);
     const msg = document.getElementById('cdpMsg'); if(msg) msg.textContent = 'Saved ✓';
-    const ob = document.querySelector('#cdPlacement .cdp-obtain'); if(ob){ const d2 = getCardDefs()[defId] || raw; ob.className = 'cdp-obtain ' + (isUnattainable(d2) ? 'is-no' : 'is-yes'); ob.textContent = isUnattainable(d2) ? '⛔ Not obtainable: no source yet. Pick one above.' : '✅ Obtainable: ' + cardWhereToGetText(d2); }
+    const ob = document.querySelector('#cdPlacement .cdp-obtain'); if(ob){ const d2 = getCardDefs()[defId] || raw; ob.className = 'cdp-obtain ' + (isUnattainable(d2) ? 'is-no' : 'is-yes'); ob.textContent = isUnattainable(d2) ? cdpNotObtainableText(d2) : '✅ Obtainable: ' + cardWhereToGetText(d2); }
     if(currentTab==='codex') renderCodexGrid(true);
   });
 }
@@ -57166,6 +57246,8 @@ const UNATTAINABLE_ADMIN_SOURCES = new Set(['admin', 'adminGrant', 'test', 'sand
 // 2026-10-12 (09:48, user: "The Not obtainable flag seems wrong at the moment. Many of these are used in our maps. These need to
 // be dynamic. Only if they have no source are they flagged as such"): a card is unobtainable only when nothing gives it out:
 // no skirmish reward node, no pack pool, no event, not a Base card. Tokens, tests, materia and the hero don't count.
+// 2026-10-28 (package PACK1): the placement panel's line for a card nothing gives out; a basic-pack card in no map list says why
+function cdpNotObtainableText(d){ try{ if(isBasicPackSource(cardSourceOf(d)) && !basicPackTierOf(d)) return '⛔ ' + TX('ui.pk1-not-in-pack'); }catch(e){} return '⛔ Not obtainable: no source yet. Pick one above.'; }
 function isUnattainable(d){
   if(!d || d.token || d.test || d.hero || d.cardType === 'materia') return false;
   try{ const src = cardSourceOf(d); return !(cardObtainableFrom(d) || src.kind === 'event'); }catch(e){ return false; }
@@ -66873,13 +66955,13 @@ function openDeckBuilderPopup(o){
 // `__cfg:map-nodes:<id>`), win over the file at load, and are folded back by tools/fold_map_pools.js. A fight on a main map draws from MAP +
 // SPECIAL; a fight on a submap from MAP + that SUBMAP + SPECIAL. Old rows and local edits ({cards, special, submaps:{id:{cards, special}}}) are
 // read as the new shape (mpClean; tools/lib_map_pools.js normalizeEntry does the same for the file and the fold).
-const MAP_POOLS_BASE = {"_about": "Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's own cards, one list each) and \"special\" (the cards added through a skirmish deck editor's + Load any card; one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from cards + that submap + special. Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.", "maps": {"m1": {"cards": ["duckling", "honey-bee", "pond-duck", "crossed-eyes", "garden-snail", "silver-minnow", "ant-scout", "bee-sentry", "river-carp", "bee-forager", "forager-ant", "duck-paddler", "house-cat", "cottontail", "feral-tomcat", "meadow-rabbit", "chipmunk-forager", "chipmunk-skirmisher", "fox-kit", "otter-kit", "beetle-grunt", "cobalt-talon-fledgling", "terrier-pup", "farm-dog", "paper-wasp"], "submaps": {"mtut": ["ash-cloud-condor", "badger-berserker", "bee-knight", "burrow-rabbit", "caustic-scorpion", "dynamite-packrat", "eagle-sharpshooter", "earthworm", "golden-eagle-diver", "gull-thief", "otter-paddler", "pond-trout", "rockslide-ram", "scree-goat", "thornwood-palisade", "toucan-courier", "trash-panda-trickster", "worker-ant"], "mo": ["ent", "burrow-rabbit", "elder-willow", "glacier-wolf-pack", "otter-paddler", "pond-trout", "thornwood-palisade", "trash-panda-trickster", "tunnel-ant"]}, "special": []}, "mf": {"cards": ["cricket-drummer", "dormouse", "compost-grub", "bramble-sprout", "field-vole", "field-mouse", "harvest-mouse", "meadow-frog", "badger-lumberjack", "woodcock-lookout", "hedgerow-shrew", "slow-worm", "robin-redbreast", "briarback-hedgehog"], "submaps": {"mq": ["lucky-hopper", "acorn-chipmunk", "bee-forager", "bee-sentry", "buck-brawler", "burrow-rabbit", "chipmunk-forager", "clover-butterfly", "cottontail", "farm-dog", "field-crow", "honey-bee", "house-cat", "jay-pilferer", "ladybird-guard", "meadow-rabbit", "pigeon-peon", "rabbit-kit", "stag-beetle", "tunnel-ant", "village-miller"]}, "special": ["meadow-rabbit", "cottontail", "ant-scout"]}, "mb": {"cards": ["fiddler-crab-swarm", "pincushion-urchin", "gull-thief", "tidepool-trapper-crab", "tide-pool-crab", "open-ocean-hermit-crab", "sea-turtle-elder", "conch-crawler", "grey-seal-bull", "conch-herald", "rock-pool-starfish", "oystercatcher", "oyster-bank", "driftwood-crab", "beachcomber-sanderling"], "submaps": {"mp": ["riverworks-bastion", "beaver-builder", "camouflage-frog", "duckling", "elder-tortoise", "ford-kingfisher", "great-crested-grebe", "guppy", "lodge-engineer", "mangrove-mudskipper", "mayfly-dancer", "minnow-skitter", "mudpuppy", "old-sturgeon", "pike-lancer", "poison-dart-croaker", "pond-duck", "river-carp", "shallows-fry", "water-shrew"], "mg": ["octopus-tactician", "beaver-builder", "blind-cave-fish", "duckling", "mallard-marauder", "mayfly-dancer", "otter-riverguard", "pelican-diver", "shallows-fry", "sulfur-vent-crab", "trash-panda-trickster", "oyster-bank"]}, "special": []}, "mc": {"cards": ["puffin-diver", "hawk-arrowkeeper", "peak-condor", "kittiwake-flock", "red-billed-chough", "fulmar-spitter", "razorbill", "mountain-goat-climber", "peregrine-stooper", "golden-eagle-diver", "sparrow-chick", "great-skua", "gannet-nestweaver", "oyster-bank", "beachcomber-sanderling"], "submaps": {}, "special": []}, "m2": {"cards": ["snapstick-turtle", "stone-turtle-warden", "water-vole", "box-turtle", "water-shrew", "river-mink", "muskrat-lodgekeeper", "pyrenean-desman", "platypus-spur", "old-sturgeon", "signal-crayfish", "diving-bell-spider", "pond-algae", "dam-keeper-beaver", "ember-tetra", "muskrat-reedgatherer"], "submaps": {}, "special": []}, "mw": {"cards": ["snapper-hatchling", "constrictor-coil", "venomlord-serpent", "crocodile-ambusher", "swamp-alligator", "caiman-hatchling", "grass-viper", "grass-snake", "fen-mink", "alligator-gar", "plague-gnat-cloud", "buzzed-chipmunk", "fire-ant-raft", "anhinga-spearbird", "marsh-harrier", "raft-spider", "moat-snapper", "nutria-reedcutter", "alley-cat", "marsh-mallow-hare", "sphagnum-vole"], "submaps": {"ms": ["hedgehog-herbalist", "baby-horned-capybara", "bog-behemoth", "bog-leech", "echo-keeper", "mangrove-mudskipper", "mosquito-cloud", "puddle-hopper", "swamp-rabbit"]}, "special": ["bog-leech"]}, "m8": {"cards": ["poison-dart-croaker", "camouflage-frog", "marsh-wisp", "mire-witch-heron", "constrictor-coil", "bogfire-newt", "newt-doctor", "booming-bittern", "raven-scout", "adder-ambusher", "carrion-beetle", "lotus-frog", "lamprey", "anaconda-coil", "cottonmouth-matriarch", "giant-water-bug", "greater-siren", "cane-toad", "peat-cutter-vole"], "submaps": {"mm": ["bog-leech", "crocodile-ambusher", "meadow-frog", "puddle-hopper", "swamp-alligator", "willow-o-wisp"]}, "special": ["venomlord-serpent"]}, "mu": {"cards": ["compost-grub", "dung-beetle", "leafcutter-gardener", "owl-nightwatch", "fungal-colossus", "truffle-piglet", "ant-warrior", "planarian-splitter", "wolf-spider-mother", "bombardier-beetle", "nightjar-drifter", "pine-marten", "fungus-gnat-cloud", "hawthorn-shieldbug", "barkplate-beetle", "beaver-feller", "sleepless-shrew"], "submaps": {"mz": ["rootworm-colony", "bee-forager", "beetle-battering-ram", "gangrenous-leech", "garden-snail", "honey-bee", "swarm-matriarch", "trapdoor-spider", "tunnel-ant", "worker-ant"]}, "special": []}, "m4": {"cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher", "quarry-mole", "coffer-mimic", "subterraneaner", "cave-centipede", "millipede-hauler", "dynamite-packrat", "baby-bat", "vampire-bat-nurse", "gallery-orb-weaver", "grotto-lobster", "ghost-crayfish", "cave-pseudoscorpion", "guano-beetle", "gravel-mole", "badger-stonemason", "prospector-mole"], "submaps": {"mn": ["lantern-spark-fly", "barrow-leech-bat", "bat-swarmling", "beetle-grunt", "cave-bat-swarm", "cave-cricket", "cave-flitter", "cave-swiftlet", "glowworm-cluster", "monarch-wingblade", "oilbird", "swarm-matriarch", "tunnel-ant", "glimmer-spider", "prospector-mole"]}, "special": []}, "mk": {"cards": ["mangrove-mudskipper", "minnow-skitter", "mudpuppy", "mangrove-monitor", "reef-shark", "archerfish", "sunbittern-strider", "banded-sea-krait", "mangrove-kingfisher", "mangrove-manatee", "mudflat-godwit", "electric-catfish", "elephant-nose-fish", "piranha-shoal", "limpet-clinger", "fishing-cat", "proboscis-monkey", "horseshoe-crab", "sea-hare", "ironclaw-fiddler", "oyster-bank", "beachcomber-sanderling"], "submaps": {}, "special": []}, "m7": {"cards": ["clownfish-scout", "parrotfish", "kraken-spawnling", "coral-reef-shark", "riptide-eel", "electric-ray", "lions-mane-jelly", "swordfish-spearman", "great-barracuda", "colossal-squid", "sawfish", "mantis-shrimp", "cone-snail", "cleaner-wrasse", "sea-cucumber", "yellow-bellied-sea-snake", "crown-of-thorns-star", "lionfish", "giant-clam", "whale-shark", "bloodscent-shark", "coral-polyp-colony", "salvager-hermit-crab"], "submaps": {"mj": ["blue-ringed-octopus", "abyss-lantern-squid", "glass-octopus", "mangrove-manatee", "nautilus-drifter", "orca-vanguard", "silver-minnow", "sulfur-vent-crab", "vampire-squid", "voltaic-eel", "giant-clam", "salvager-hermit-crab"]}, "special": ["orca-vanguard"]}, "m10": {"cards": ["alpine-marmot", "chipmunk-hoarder", "eyrie-warden", "mountain-hare", "mountain-goat-climber", "apollo-butterfly", "balloon-archer", "chamois-leaper", "eagle-owl-quartermaster", "ibex-rockcaller", "alpine-swift", "alpine-salamander", "marmot-stonecutter", "gale-swift"], "submaps": {"mv": ["wound-reaver", "alpine-avalanche", "chipmunk-stockpiler", "golden-eagle-diver", "peak-condor", "rockslide-ram", "marmot-stonecutter"], "muc": ["alpha-howler", "ant-warrior", "antlion-pit", "archerfish", "banded-sea-krait", "bison-bulldozer", "border-collie", "bramblewood-lynx", "cave-olm", "cinder-stoker", "clownfish-scout", "colossal-squid", "compost-grub", "cunning-vixen", "dhole-matriarch", "dhole-runner", "dromedary", "dung-beetle", "dust-devil-kestrel", "dust-hyena", "echidna-quillshot", "echo-screecher", "fawn-scout", "fennec-fox", "fire-salamander", "fox-kit", "frost-hare-sprinter", "frostmoon-howler", "fulmar-spitter", "fungal-colossus", "giant-cave-huntsman", "glacier-wolf-pack", "golden-eagle-diver", "grave-grin-hyena", "great-barracuda", "grizzly-vanguard", "hedge-weasel", "hedgehog-scout", "hollow-oath-keeper", "hoopoe-herald", "kittiwake-flock", "lone-grey-wolf", "lyrebird-mimic", "magma-titan", "mangrove-kingfisher", "mangrove-manatee", "mangrove-monitor", "muskrat-lodgekeeper", "obsidian-scorpion", "old-sturgeon", "owl-nightwatch", "pangolin-roller", "peak-condor", "peregrine-stooper", "planarian-splitter", "platypus-spur", "polar-bear", "porcupine-roller", "puffin-diver", "pyrenean-desman", "quill-volley", "quillguard", "raccoon-bandit", "ravenous-wolverine", "razorbill", "red-billed-chough", "reef-shark", "roadrunner-courier", "savanna-cheetah", "scree-goat", "seed-cache-squirrel", "shimmerwing-stag", "snow-ermine", "snowshoe-hare", "spitting-cobra", "stable-colt", "star-nosed-mole", "stoat-cutthroat", "stone-turtle-warden", "sunbittern-strider", "swift-fox", "swordfish-spearman", "taiga-lynx", "talon-archer", "truffle-piglet", "vampire-bat", "walrus-icebreaker", "warhorse-charger", "weaver-bird", "whip-spider", "wolf-spider-mother", "woodland-caribou", "yeti"]}, "special": ["wound-reaver", "gangrenous-leech", "swamp-alligator"]}, "mh": {"cards": ["field-mouse", "hedgehog-scout", "bramble-hoglet", "mouse-sapper", "seed-cache-squirrel", "cunning-vixen", "hedge-weasel", "lyrebird-mimic", "quillguard", "thorn-shrike", "gatling-hog", "fox-sharpshot", "skunk-gasser", "rodent-king", "carrion-crow", "magpie-collector"], "submaps": {}, "special": []}, "mr": {"cards": ["fox-kit", "swift-fox", "berserker-boar", "stag-knight", "grizzly-vanguard", "tasmanian-devil", "woodpecker-sapper", "bramblewood-lynx", "fawn-scout", "shimmerwing-stag", "pill-bug", "margay", "leopard-slug", "red-backed-salamander", "redwood-woodpecker", "hazel-coppice", "beaver-feller", "hollow-oath-keeper"], "submaps": {}, "special": ["sergeant-bramblefox"]}, "m5": {"cards": ["springbok-pronker", "hoopoe-herald", "meerkat-burrower", "weaver-bird", "dust-hyena", "grave-grin-hyena", "pangolin-roller", "marula-elephant", "spitting-cobra", "savanna-cheetah", "monitor-rambler", "mongoose-duelist", "lovebird", "marula-monkey", "termite-forager"], "submaps": {"my": ["jaguar-stalker", "hercules-beetle", "kinkajou-lurker", "ancient-sloth-titan", "aye-aye-prowler", "bramblewood-macaque", "chilli-parrot", "howler-monkey", "old-growth-tortoise", "siege-rhino", "slow-loris", "slowpoke-sentinel", "termite-mound", "toucan-courier", "velvet-worm", "carrion-crow"]}, "special": []}, "ml": {"cards": ["pronghorn-racer", "warhorse-charger", "cataphract-destrier", "shepherds-bark", "stable-colt", "border-collie", "bison-bulldozer", "stoat-cutthroat", "raccoon-bandit", "talon-archer", "amber-cicada", "springtail-hopper", "muntjac-barker", "anvil-thrush", "garden-tiger-moth", "land-tiller", "moonshell-snail", "carrion-crow", "courier-pigeon"], "submaps": {}, "special": []}, "mt": {"cards": ["snowshoe-hare", "frost-hare-sprinter", "dhole-runner", "trickster-fox", "alpha-howler", "boreal-elk", "woodland-caribou", "wolf-pack-runner", "taiga-lynx", "dhole-matriarch", "cone-cutter-squirrel"], "submaps": {}, "special": []}, "m6": {"cards": ["snow-ermine", "harbor-seal", "glacial-ape-king", "snow-bunting-archer", "spitting-spider", "frostmoon-howler", "ravenous-wolverine", "lone-grey-wolf", "walrus-icebreaker", "polar-bear", "beluga", "musk-ox-calf", "musk-ox-matriarch", "talus-pika"], "submaps": {"mi": ["greenland-shark", "alpha-howler", "arctic-fox-raider", "arctic-tern", "boreal-elk", "frost-hare-sprinter", "harp-seal-pup", "ice-crevasse-wolf", "krill-swarm", "lemming-swarm", "ringed-seal"]}, "special": []}, "md": {"cards": ["thorny-devil", "roadrunner-courier", "sandfish", "komodo-warlord", "caustic-scorpion", "fennec-fox", "dromedary", "antlion-pit", "obsidian-scorpion", "dust-devil-kestrel", "glasswing-moth", "frillneck-duelist", "tarantula-hawk", "inland-taipan", "dune-packrat", "static-fennec"], "submaps": {"mpd": ["quicksand-queen", "armadillo-guard", "cinder-gecko", "dune-jackal", "dune-jackal-scout", "dust-hyena", "horned-lizard", "meerkat-burrower", "meerkat-sentry", "moon-jerboa", "pale-oryx", "rabid-jackal", "sand-widow", "sandstorm-roc", "skull-vulture", "stonedrop-vulture", "trapdoor-spider", "carrion-crow"]}, "special": ["sand-widow"]}, "m3": {"cards": ["cinder-stoker", "magma-titan", "phoenix-fledgling", "yeti", "glacier-wolf-pack", "porcupine-roller", "scree-goat", "fire-salamander", "quill-volley", "echidna-quillshot", "pumice-beetle", "granite-ox-golem"], "submaps": {"m9": ["ember-revenant", "ash-cloud-condor", "ashbone-ghoul", "basalt-boar", "beaver-lumberjack", "chained-binturong", "cinder-gecko", "cinder-imp", "ember-jackal", "flagellant-vulture", "fruit-bat-familiar", "hellbender", "hercules-beetle", "magma-salamander", "obsidian-scorpion", "pyroclast-wyrm", "sulfur-vent-crab", "tide-spirit", "vampire-finch"]}, "special": []}, "m11": {"cards": ["pack-mule", "cinder-skeleton", "ashbone-ghoul", "cave-warlord", "bear-cub", "magma-wraith", "ash-cloud-condor", "magma-salamander", "woodland-brawler", "ossuary-lammergeier", "pall-wraith", "obsidian-lich", "ash-moth", "glasswing-butterfly", "firefly-swarm", "fire-hawk", "marmot-stonecutter"], "submaps": {"me": ["the-contradiction", "basalt-boar", "blessed-avatar", "cinder-gecko", "cinder-imp", "cinder-stoker", "fumarole-ibex", "gorge-wyrm", "obsidian-scorpion", "silverback-brawler", "sulfur-vent-crab"], "mx": ["fire-drake-hatchling", "basalt-boar", "cinder-gecko", "cinder-hornet", "cinder-imp", "cinder-stoker", "ember-centipede", "ember-jackal", "gorge-wyrm", "magma-titan", "obsidian-scorpion", "pyroclast-wyrm", "silverback-brawler", "tide-spirit"]}, "special": ["ancient-sloth-titan", "deep-cave-troll", "stalactite-golem", "vampire-roost"]}, "m21": {"cards": ["pika-hoarder", "glacier-yak", "eagle-sharpshooter", "alpine-marmot", "mountain-goat-climber", "scree-goat", "golden-eagle-diver", "snow-leopard", "snow-owl-sentinel"], "submaps": {}, "special": []}, "m22": {"cards": ["cinder-gecko", "cinder-hornet", "gorge-wyrm", "permafrost-mammoth", "ice-petrel", "rimefire-salamander", "badger-berserker", "fumarole-ibex", "ur-elk", "caldera-snow-leopard", "weathervane-swift", "ashwing-ptarmigan", "petrified-tree"], "submaps": {"mlb": ["badger-sapper", "basalt-boar", "grindstone-boar", "honey-badger-fury", "magma-titan", "ore-smelter-mole"]}, "special": ["rimeheart-colossus"]}, "m23": {"cards": ["mouse-sapper", "badger-trench-digger", "pack-mule", "balloon-archer", "howdah-archers", "siege-rhino", "trebuchet-crew", "testudo-tortoise", "beetle-battering-ram", "war-elephant", "marching-elephant", "werebadger"], "submaps": {}, "special": ["marshal-tuskwell"]}, "m24": {"cards": ["duckling-squadron", "elderhorn-monarch", "tax-collector-teal", "lodge-engineer", "goose-sentry", "mallard-halberdier", "mallard-marauder", "battlement-heron", "gilded-swan-knight", "iron-warden"], "submaps": {}, "special": ["magnate-duck"]}}};
+const MAP_POOLS_BASE = {"_about": "Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's own cards, one list each) and \"special\" (the cards added through a skirmish deck editor's + Load any card; one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from cards + that submap + special. Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.", "maps": {"m1": {"cards": ["chipmunk-skirmisher", "terrier-pup", "beaver-lumberjack", "house-cat", "feral-tomcat", "chipmunk-cavalry", "cypress-root-lurker", "marsh-mallow-hare", "owl-sentinel", "ant-hill", "duck-paddler", "ant-scout", "bee-forager", "bee-sentry", "chipmunk-forager"], "submaps": {"mtut": ["ash-cloud-condor", "badger-berserker", "bee-knight", "burrow-rabbit", "caustic-scorpion", "dynamite-packrat", "eagle-sharpshooter", "earthworm", "golden-eagle-diver", "gull-thief", "otter-paddler", "pond-trout", "rockslide-ram", "scree-goat", "thornwood-palisade", "toucan-courier", "trash-panda-trickster", "worker-ant"], "mo": ["ent", "glacier-wolf-pack", "dune-packrat", "echidna-quillshot"]}, "special": []}, "mf": {"cards": ["cricket-drummer", "badger-lumberjack", "dormouse", "field-mouse", "field-vole", "bramble-sprout", "hedgerow-shrew", "robin-redbreast", "slow-worm", "woodcock-lookout", "fire-ant-raft", "ant-hill", "chipmunk-cavalry", "chipmunk-skirmisher", "cypress-root-lurker"], "submaps": {"mq": ["lucky-hopper", "house-cat"]}, "special": ["meadow-rabbit", "cottontail", "ant-scout"]}, "mb": {"cards": ["conch-herald", "fiddler-crab-swarm", "grey-seal-bull", "old-shell", "open-ocean-hermit-crab", "pincushion-urchin", "tidepool-trapper-crab", "conch-crawler", "gull-thief", "sea-turtle-elder", "tide-pool-crab", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer"], "submaps": {"mp": ["riverworks-bastion", "lodge-engineer", "shallows-fry", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer"], "mg": ["octopus-tactician", "trash-panda-trickster", "pelican-diver"]}, "special": []}, "mc": {"cards": ["golden-eagle-diver", "puffin-diver", "peregrine-stooper", "the-gannet-queen", "kittiwake-flock", "peak-condor", "red-billed-chough", "fulmar-spitter", "razorbill", "gannet-nestweaver", "conch-crawler", "conch-herald", "dormouse", "feral-tomcat", "fiddler-crab-swarm"], "submaps": {}, "special": []}, "m2": {"cards": ["snapstick-turtle", "muskrat-lodgekeeper", "old-sturgeon", "platypus-spur", "drowned-matriarch", "stone-turtle-warden", "water-shrew", "water-vole", "box-turtle", "pyrenean-desman", "muskrat-reedgatherer", "beaver-lumberjack", "fire-ant-raft", "marsh-mallow-hare", "cypress-root-lurker"], "submaps": {}, "special": []}, "mw": {"cards": ["alligator-gar", "grass-viper", "fen-mink", "old-snapjaw", "constrictor-coil", "snapper-hatchling", "venomlord-serpent", "caiman-hatchling", "swamp-alligator", "crocodile-ambusher", "nutria-reedcutter", "stone-turtle-warden", "muskrat-reedgatherer", "fire-ant-raft", "marsh-mallow-hare"], "submaps": {"ms": ["hedgehog-herbalist", "mangrove-mudskipper"]}, "special": ["bog-leech"]}, "m8": {"cards": ["booming-bittern", "newt-doctor", "adder-ambusher", "poison-dart-croaker", "heron-hag", "camouflage-frog", "marsh-wisp", "bogfire-newt", "raven-scout", "cane-toad", "peat-cutter-vole", "constrictor-coil", "nutria-reedcutter", "alligator-gar", "venomlord-serpent"], "submaps": {"mm": ["bog-leech", "crocodile-ambusher", "meadow-frog", "puddle-hopper", "swamp-alligator", "willow-o-wisp"]}, "special": []}, "mu": {"cards": ["truffle-piglet", "wolf-spider-mother", "dung-beetle", "leafcutter-gardener", "ant-warrior", "planarian-splitter", "fungal-colossus", "owl-nightwatch", "bombardier-beetle", "hawthorn-shieldbug", "compost-grub", "cane-toad", "peat-cutter-vole", "adder-ambusher", "bogfire-newt"], "submaps": {"mz": ["rootworm-colony"]}, "special": []}, "m4": {"cards": ["echo-screecher", "giant-cave-huntsman", "star-nosed-mole", "quarry-mole", "echo-matriarch", "cave-olm", "stalactite-golem", "sulfur-cinder-moth", "vampire-bat", "whip-spider", "badger-stonemason", "octopus-tactician", "trash-panda-trickster", "pelican-diver", "ant-warrior"], "submaps": {"mn": ["lantern-spark-fly", "cave-bat-swarm", "prospector-mole"]}, "special": []}, "mk": {"cards": ["mangrove-kingfisher", "mangrove-manatee", "banded-sea-krait", "mangrove-mudskipper", "archerfish", "mangrove-monitor", "mudpuppy", "reef-shark", "sunbittern-strider", "minnow-skitter", "fishing-cat", "crocodile-ambusher", "lodge-engineer", "booming-bittern", "caiman-hatchling"], "submaps": {}, "special": []}, "m7": {"cards": ["colossal-squid", "electric-ray", "great-barracuda", "reef-admiral", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "swordfish-spearman", "coral-polyp-colony", "reef-shark", "gull-thief", "banded-sea-krait", "mangrove-manatee"], "submaps": {"mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter"]}, "special": []}, "m10": {"cards": ["alpine-marmot", "eagle-owl-quartermaster", "ibex-rockcaller", "chamois-leaper", "chipmunk-hoarder", "eyrie-warden", "mountain-hare", "apollo-butterfly", "alpine-salamander", "alpine-swift", "gale-swift", "gannet-nestweaver", "golden-eagle-diver", "peak-condor", "peregrine-stooper"], "submaps": {"mv": ["wound-reaver"], "muc": ["alpha-howler", "ant-warrior", "antlion-pit", "archerfish", "banded-sea-krait", "bison-bulldozer", "border-collie", "bramblewood-lynx", "cave-olm", "cinder-stoker", "clownfish-scout", "colossal-squid", "compost-grub", "cunning-vixen", "dhole-matriarch", "dhole-runner", "dromedary", "dung-beetle", "dust-devil-kestrel", "dust-hyena", "echidna-quillshot", "echo-screecher", "fawn-scout", "fennec-fox", "fire-salamander", "fox-kit", "frost-hare-sprinter", "frostmoon-howler", "fulmar-spitter", "fungal-colossus", "giant-cave-huntsman", "glacier-wolf-pack", "golden-eagle-diver", "grave-grin-hyena", "great-barracuda", "grizzly-vanguard", "hedge-weasel", "hedgehog-scout", "hollow-oath-keeper", "hoopoe-herald", "kittiwake-flock", "lone-grey-wolf", "lyrebird-mimic", "magma-titan", "mangrove-kingfisher", "mangrove-manatee", "mangrove-monitor", "muskrat-lodgekeeper", "obsidian-scorpion", "old-sturgeon", "owl-nightwatch", "pangolin-roller", "peak-condor", "peregrine-stooper", "planarian-splitter", "platypus-spur", "polar-bear", "porcupine-roller", "puffin-diver", "pyrenean-desman", "quill-volley", "quillguard", "raccoon-bandit", "ravenous-wolverine", "razorbill", "red-billed-chough", "reef-shark", "roadrunner-courier", "savanna-cheetah", "scree-goat", "seed-cache-squirrel", "shimmerwing-stag", "snow-ermine", "snowshoe-hare", "spitting-cobra", "stable-colt", "star-nosed-mole", "stoat-cutthroat", "stone-turtle-warden", "sunbittern-strider", "swift-fox", "swordfish-spearman", "taiga-lynx", "talon-archer", "truffle-piglet", "vampire-bat", "walrus-icebreaker", "warhorse-charger", "weaver-bird", "whip-spider", "wolf-spider-mother", "woodland-caribou", "yeti"]}, "special": ["gangrenous-leech", "swamp-alligator"]}, "mh": {"cards": ["cunning-vixen", "hedgehog-scout", "quillguard", "bramble-hoglet", "hedge-weasel", "lyrebird-mimic", "thorn-shrike", "mouse-sapper", "gatling-hog", "quillback-elder", "carrion-crow", "ant-hill", "badger-lumberjack", "field-mouse", "mountain-hare"], "submaps": {}, "special": []}, "mr": {"cards": ["fawn-scout", "shimmerwing-stag", "sergeant-bramblefox", "berserker-boar", "grizzly-vanguard", "bramblewood-lynx", "swift-fox", "tasmanian-devil", "stag-knight", "woodpecker-sapper", "redwood-woodpecker", "quillback-elder", "carrion-crow", "bramble-hoglet", "cunning-vixen"], "submaps": {}, "special": []}, "m5": {"cards": ["grave-grin-hyena", "savanna-cheetah", "spitting-cobra", "pride-queen", "hoopoe-herald", "weaver-bird", "springbok-pronker", "dust-hyena", "marula-elephant", "pangolin-roller", "meerkat-burrower", "lodge-engineer", "leafcutter-gardener", "mouse-sapper", "house-cat"], "submaps": {"my": ["hercules-beetle", "jaguar-stalker", "kinkajou-lurker"]}, "special": []}, "ml": {"cards": ["border-collie", "stoat-cutthroat", "talon-archer", "cataphract-destrier", "pronghorn-racer", "bison-bulldozer", "raccoon-bandit", "stable-colt", "warhorse-charger", "shepherds-bark", "squires-mount", "lodge-engineer", "carrion-crow", "hedge-weasel", "hedgehog-herbalist"], "submaps": {}, "special": []}, "mt": {"cards": ["woodland-caribou", "taiga-lynx", "dhole-matriarch", "alpha-howler", "frost-hare-sprinter", "snowshoe-hare", "dhole-runner", "trickster-fox", "wolf-pack-runner", "boreal-elk", "cone-cutter-squirrel", "berserker-boar", "redwood-woodpecker", "bramblewood-lynx", "fawn-scout"], "submaps": {}, "special": []}, "m6": {"cards": ["lone-grey-wolf", "polar-bear", "walrus-icebreaker", "wolfsbane-alpha", "glacial-ape-king", "harbor-seal", "snow-bunting-archer", "snow-ermine", "ravenous-wolverine", "spitting-spider", "talus-pika", "alpha-howler", "cone-cutter-squirrel", "frost-hare-sprinter", "mountain-hare"], "submaps": {"mi": ["greenland-shark"]}, "special": []}, "md": {"cards": ["obsidian-scorpion", "antlion-pit", "caustic-scorpion", "dust-devil-kestrel", "thorny-devil", "roadrunner-courier", "sandfish", "komodo-warlord", "dromedary", "fennec-fox", "dune-packrat", "dust-hyena", "meerkat-burrower", "bison-bulldozer", "border-collie"], "submaps": {"mpd": ["quicksand-queen", "skull-vulture", "sand-widow"]}, "special": []}, "m3": {"cards": ["echidna-quillshot", "fire-salamander", "quill-volley", "yeti-chieftain", "cinder-stoker", "yeti", "porcupine-roller", "magma-titan", "glacier-wolf-pack", "phoenix-fledgling", "pumice-beetle", "glacial-ape-king", "talus-pika", "hercules-beetle", "obsidian-scorpion"], "submaps": {"m9": ["ember-revenant", "anvilwhisker-otter", "ore-smelter-mole", "tide-spirit", "cinder-gecko", "ember-jackal", "ashbone-ghoul", "magma-salamander", "ash-cloud-condor"]}, "special": []}, "m11": {"cards": ["ash-cloud-condor", "magma-wraith", "ossuary-lammergeier", "pack-mule", "woodland-brawler", "ashbone-ghoul", "cave-warlord", "cinder-skeleton", "bear-cub", "magma-salamander", "ash-moth", "glacier-wolf-pack", "pumice-beetle", "cinder-stoker", "echidna-quillshot"], "submaps": {"me": ["the-contradiction", "obsidian-scorpion"], "mx": ["fire-drake-hatchling", "caldera-wyrm", "ember-jackal", "tide-spirit", "ember-centipede", "magma-titan", "obsidian-scorpion"]}, "special": ["ancient-sloth-titan", "deep-cave-troll", "stalactite-golem", "vampire-roost"]}, "m21": {"cards": ["pika-hoarder", "snow-owl-sentinel", "snow-leopard", "glacier-yak", "eagle-sharpshooter", "mountain-goat-climber", "candle-moth", "chapel-tortoise", "friar-badger", "gale-sprite", "golden-magpie", "eyrie-warden", "talus-pika", "alpine-marmot", "golden-eagle-diver"], "submaps": {}, "special": []}, "m22": {"cards": ["rimefire-salamander", "caldera-snow-leopard", "ur-elk", "ice-petrel", "badger-berserker", "cinder-gecko", "cinder-hornet", "permafrost-mammoth", "ashwing-ptarmigan", "rimeheart-colossus", "ash-imp", "phoenix-fledgling", "pumice-beetle", "ember-centipede", "ember-jackal"], "submaps": {"mlb": ["badger-sapper", "basalt-boar", "grindstone-boar", "honey-badger-fury", "magma-titan", "ore-smelter-mole"]}, "special": []}, "m23": {"cards": ["testudo-tortoise", "war-elephant", "triumvirate", "badger-trench-digger", "howdah-archers", "beetle-battering-ram", "siege-rhino", "trebuchet-crew", "balloon-archer", "colony", "land-tiller", "lodge-engineer", "pack-mule", "mouse-sapper", "stoat-cutthroat"], "submaps": {}, "special": ["marshal-tuskwell"]}, "m24": {"cards": ["gilded-swan-knight", "iron-warden", "battlement-heron", "duckling-squadron", "elderhorn-monarch", "mallard-halberdier", "tax-collector-teal", "goose-sentry", "great-gate", "nest", "stoneheart-golem", "lodge-engineer", "land-tiller", "balloon-archer", "badger-trench-digger"], "submaps": {}, "special": ["magnate-duck"]}}};
 const MAP_POOLS_KEY = 'bramblewood_map_pools_v1';
 let mapPoolEdits = {}; // {mainMapId: {pool:{cards, submaps, special}, localAt}}
 try{ mapPoolEdits = JSON.parse(localStorage.getItem(MAP_POOLS_KEY) || '{}') || {}; }catch(e){ mapPoolEdits = {}; }
 function persistMapPools(){ try{ localStorage.setItem(MAP_POOLS_KEY, JSON.stringify(mapPoolEdits)); }catch(e){} }
 const mpListeners = new Set();
-function mpChanged(kind){ mpListeners.forEach(fn=>{ try{ fn(kind); }catch(e){} }); } // kind 'status': only the publish state changed
+function mpChanged(kind){ if(kind !== 'status') packIndexReset(); /* PACK1 (2026-10-28): the packs follow the map lists */ mpListeners.forEach(fn=>{ try{ fn(kind); }catch(e){} }); } // kind 'status': only the publish state changed
 let mpStatus = null; // {ok, at}: the last publish
 function mpStatusText(){ return !mpStatus ? '' : mpStatus.ok ? '☁️ ' + TX('ui.mp-saved-cloud') : '💾 ' + TX('ui.mp-saved-local'); }
 function mpMapById(id){ return CONQUEST_MAPS.find(m=> m.id === id) || null; }
@@ -73553,7 +73635,7 @@ function renderConquestSubTab(body){
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
-      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button></div>` : ''}
+      ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button><button type="button" class="btn small ghost" id="cnpMapCards" aria-haspopup="dialog">${escapeHtml(TX('ui.pk1-map-cards-btn')) /* 2026-10-28 (package PACK1) */}</button></div>` : ''}
       ${vis4MapCardsHTML(map, selectedNode)}
       `;
     // 2026-10-08 (user: "The fight icon somehow is overlaid over the skirmish description"): the Fight
@@ -73573,6 +73655,7 @@ function renderConquestSubTab(body){
     { const bb = panelEl.querySelector('[data-bramble-edit]'); if(bb) bb.addEventListener('click', e=>{ e.stopPropagation(); openBrambleEditor(map.id, selectedNode.key, bb.closest('.cnp-kind') || bb); }); } // 2026-10-24 (package MAP, owner 13:16 #16)
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
     { const ac = document.getElementById('cnpAdminClear'); if(ac) ac.addEventListener('click', ()=>{ adminCompleteNodes(map.id, [selectedNode.key]); renderConquestSubTab(body); }); }
+    { const mc = document.getElementById('cnpMapCards'); if(mc) mc.addEventListener('click', ()=> pk1OpenMapCards(map.id)); } // 2026-10-28 (package PACK1)
     // (2026-10-18: #cnpAdminClearMap's handler went; "clear the whole map" is the map layout bar's mlClearMap.)
     const nrBtn = document.getElementById('cnpEditRewards');
     if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
@@ -77461,14 +77544,39 @@ function vis4MapCardsHTML(map, node){
     const defs = getCardDefs(), ids = mapPoolIds(map.id).filter(id=>{ const d = defs[id]; return d && !d.token && !d.test && !isEasterEgg(d); }); if(!ids.length) return '';
     const reach = adminModeEnabled ? Infinity : trackMapReached();
     const shown = ids.filter(id=> adminModeEnabled || rarityRevealedForPlayer(defs[id].rarity, reach)), lockedN = ids.length - shown.length;
-    shown.sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name)));
-    const tiles = shown.map(id=>{ const d = defs[id];
-      return !adminModeEnabled && isCardHiddenForPlayer(d)
-        ? `<span class="vis4-mc-card is-mystery" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
-        : `<span class="vis4-mc-card" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}</span>`; }).join('');
+    const tiles = vis4MapCardTilesHTML(shown, defs); // 2026-10-28 (package PACK1): the tiles shared with the 🃏 Map cards overlay
     const lock = lockedN ? `<span class="vis4-mc-locked" tabindex="0" data-zoom-tip="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}" aria-label="${escapeAttr(TX('ui.vis4-map-cards-locked', {n: lockedN}))}">🔒 +${lockedN}</span>` : '';
     return `<div class="vis4-map-cards"><div class="vis4-mc-h">${escapeHtml(TX('ui.vis4-map-cards'))}</div><div class="vis4-mc-row">${tiles}${lock}</div></div>`;
   }catch(e){ return ''; }
+}
+// VIS4's tiles, by rarity then name: a card the player has never seen is the ❓ back (an admin sees every card). opts.packs: a "📦 Pack N" tag
+// under each card a basic pack also gives (the 🃏 Map cards overlay).
+function vis4MapCardTilesHTML(ids, defs, opts){
+  defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
+  return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
+    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
+    const pt = packs ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
+    return `<span class="vis4-mc-card${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+}
+// 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
+// card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
+// on hover, focus or a tap (wireRewardZoom), each with its pack when a basic pack gives it too. Admins only (the button sits with Edit skirmish).
+function pk1OpenMapCards(mapId){
+  const top = mpTopOf(mapId), m = mpMapById(top); if(!m) return;
+  let ov = document.getElementById('pk1MapCardsOverlay');
+  if(!ov){ ov = document.createElement('div'); ov.id = 'pk1MapCardsOverlay'; ov.className = 'modal-overlay pk1-mc-overlay'; document.body.appendChild(ov); }
+  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && (adminModeEnabled || !isEasterEgg(d)); };
+  const secs = mapPoolSections(top).map(s=>{ const ids = s.ids.filter(ok); return `<section class="pk1-mc-sec"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div></section>`; }).join('');
+  ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: (m.icon ? m.icon + ' ' : '') + m.name}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p><div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+  ov.hidden = false;
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  document.getElementById('pk1McClose').addEventListener('click', close);
+  try{ wireRewardZoom(ov); }catch(e){}
+  try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
 function vis3NodeFrameHTML(node){
   const b = baseKind(node && node.kind || '');
@@ -77580,7 +77688,7 @@ function cardCheckPool(upTo){
     if(src.kind === 'pack' && (parseInt(src.tier, 10)||1) === 11) return true; // your faction's cards come with progress
     // BAL7 (2026-10-28, M2; owner L9: "Cards like Owl Nightwatch somehow is not included in the testlab testing"): the basic-pack cards a player
     // can hold by then too (cardObtainMap <= upTo; the Mystery Booster's tier 99 is not a basic pack)
-    if(src.kind === 'pack' && Number(src.tier) !== 99){ const n = cardObtainMap(d); return n != null && n <= upTo; }
+    if(src.kind === 'pack' && Number(src.tier) !== 99){ if(isUnattainable(d)) return false; /* PACK1 (2026-10-28): in no pack now */ const n = cardObtainMap(d); return n != null && n <= upTo; }
     return false; }).sort((a, b)=> (defs[a].name||a).localeCompare(defs[b].name||b));
 }
 function ccLevel1(d){ if(cardBaseLevel(d) >= 1) return d; const s = statsAtLevel(d, 1); return Object.assign({}, d, {attack: s.attack, health: s.health}); }
@@ -79388,7 +79496,10 @@ function packEditorCardHTML(p, i){
   const rar = RARITY_TIER_BANDS.filter(k=> k!=='quest' && k!=='questunique');
   const ffTot = FOIL_FINISHES.reduce((t,f)=> t + Math.max(0, +(p.foilFinishes[f.key]||0)), 0) || 1;
   const poolIds = odds.pool.slice().sort((a,b)=> RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') || (defs[a].name||'').localeCompare(defs[b].name||''));
-  const addable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && packPoolOf(defs[id]) !== (p.pool||1)).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
+  // 2026-10-28 (package PACK1): a basic pack (pool 1-10) draws from the map lists + its extras: adding a card puts it in the pack's extras (this
+  // table's `extras`, published with it), ✕ takes an extra out; a map-list card is taken out on its map's list. Pool 11 / 99 still edit the card's From.
+  const basicPool = (p.pool||1) >= 1 && (p.pool||1) <= 10, extras = !basicPool ? [] : Array.isArray(p.extras) ? p.extras : packExtrasList(p.pool||1);
+  const addable = Object.keys(defs).filter(id=> !defs[id].token && !defs[id].test && !isEasterEgg(defs[id]) && packPoolOf(defs[id]) !== (p.pool||1)).sort((a,b)=> (defs[a].name||'').localeCompare(defs[b].name||''));
   const sharing = packsUsingPool(p.pool||1).filter(x=> x.id !== p.id).map(x=> x.name);
   return `<fieldset class="pe-pack" data-packidx="${i}">
     <legend>${escapeHtml(p.icon||'📦')} ${escapeHtml(p.name)} <small>(${escapeHtml(p.id)})</small></legend>
@@ -79414,8 +79525,9 @@ function packEditorCardHTML(p, i){
     </div>
     <div class="pe-weights">${FOIL_FINISHES.map(f=> `<label title="${escapeAttr(f.hint||'')}">${escapeHtml(f.label)}<input class="pe-in" type="number" min="0" step="1" data-k="foilFinishes.${f.key}" value="${p.foilFinishes[f.key] ?? 0}"><small>${pct(Math.max(0, +(p.foilFinishes[f.key]||0))/ffTot)}</small></label>`).join('')}</div>
     <h4>What's inside · pool ${p.pool||1} <small>${odds.pool.length} card(s)${sharing.length ? ' · shared with ' + escapeHtml(sharing.join(', ')) : ''}</small></h4>
-    <div class="pe-pool">${poolIds.map(id=> `<span class="pe-chip" style="--rarity-a:${(RARITY_DEFS.find(r=> r.key===(defs[id].rarity||'common'))||{}).color||'#777'}">${escapeHtml(defs[id].icon||'')} ${escapeHtml(defs[id].name)}<button type="button" class="pe-x" data-pe-remove="${escapeAttr(id)}" aria-label="Take ${escapeAttr(defs[id].name)} out of this pool">✕</button></span>`).join('') || '<span class="panel-sub">Empty: nothing can come out of this pack.</span>'}</div>
-    <div class="pe-add"><select class="pe-add-sel" aria-label="Add a card to this pool"><option value="">➕ Add a card to pool ${p.pool||1}…</option>${addable.map(id=> `<option value="${escapeAttr(id)}">${escapeHtml(defs[id].name)} · ${escapeHtml(rarityLabelOf(defs[id].rarity||'common'))}${packPoolOf(defs[id]) ? ' (now pool ' + packPoolOf(defs[id]) + ')' : ''}</option>`).join('')}</select></div>
+    ${basicPool ? `<p class="panel-sub">${'' /* 2026-10-28 (package PACK1) */}Pack ${p.pool||1}'s pool is the basic-pack cards on the map lists of Maps ${packMapRange(p.pool||1)[0]}-${packMapRange(p.pool||1)[1]} (a card's first list; edit them with the map's 🃏 Map cards editor) plus this pack's extras below. ${Array.isArray(p.extras) ? 'This table’s extras win over canonical/pack-extras.json.' : 'Extras from canonical/pack-extras.json.'}</p>` : ''}
+    <div class="pe-pool">${poolIds.map(id=> `<span class="pe-chip" style="--rarity-a:${(RARITY_DEFS.find(r=> r.key===(defs[id].rarity||'common'))||{}).color||'#777'}">${escapeHtml(defs[id].icon||'')} ${escapeHtml(defs[id].name)}${basicPool && !extras.includes(id) ? `<small class="pe-from" title="From a map list: take it off the map's list to take it out of the pack">🗺️ ${escapeHtml(String(((cardFirstMapList(defs[id])||{}).loc)||''))}</small>` : `<button type="button" class="pe-x" data-pe-remove="${escapeAttr(id)}" aria-label="Take ${escapeAttr(defs[id].name)} out of this pool">✕</button>`}</span>`).join('') || '<span class="panel-sub">Empty: nothing can come out of this pack.</span>'}</div>
+    <div class="pe-add"><select class="pe-add-sel" aria-label="Add a card to this pool"><option value="">➕ ${basicPool ? 'Add a card to this pack’s extras' : 'Add a card to pool ' + (p.pool||1)}…</option>${addable.map(id=> `<option value="${escapeAttr(id)}">${escapeHtml(defs[id].name)} · ${escapeHtml(rarityLabelOf(defs[id].rarity||'common'))}${packPoolOf(defs[id]) ? ' (now pool ' + packPoolOf(defs[id]) + ')' : ''}</option>`).join('')}</select></div>
   </fieldset>`;
 }
 function renderRollTableAdminHTML(){
@@ -79455,7 +79567,8 @@ function wireRollTableAdmin(){
   root.addEventListener('change', e=>{
     if(e.target.classList.contains('pe-add-sel')){
       const id = e.target.value; if(!id) return;
-      const p = packEditorRead()[+e.target.closest('.pe-pack').dataset.packidx];
+      const packs = packEditorRead(), p = packs[+e.target.closest('.pe-pack').dataset.packidx];
+      if((p.pool||1) <= 10){ packEditorExtrasEdit(packs, p, id, true); rerender(); return; } // 2026-10-28 (package PACK1): a basic pack's extras
       setCardPackPool(id, p.pool||1).then(()=>{ packEditorDraft = packEditorRead(); rerender(); });
       return;
     }
@@ -79463,6 +79576,7 @@ function wireRollTableAdmin(){
   });
   root.querySelectorAll('[data-pe-remove]').forEach(b=> b.addEventListener('click', ()=>{
     packEditorDraft = packEditorRead();
+    { const p = packEditorDraft[+b.closest('.pe-pack').dataset.packidx]; if(p && (p.pool||1) <= 10){ packEditorExtrasEdit(packEditorDraft, p, b.dataset.peRemove, false); rerender(); return; } } // PACK1
     setCardPackPool(b.dataset.peRemove, 0).then(rerender);
   }));
   document.getElementById('rtSaveBtn').addEventListener('click', ()=>{
@@ -79472,16 +79586,23 @@ function wireRollTableAdmin(){
   document.getElementById('rtPublishBtn').addEventListener('click', async ()=>{
     const packs = packEditorRead(); saveShopPacksOverride(packs);
     line.textContent = 'Publishing…';
-    try{ await publishShopPacks(packs); cloudShopPacks = packs; packEditorDraft = null; line.textContent = `✓ Published ${new Date().toLocaleTimeString()}: live for every player.`; }
+    try{ await publishShopPacks(packs); cloudShopPacks = packs; packIndexReset(); packEditorDraft = null; line.textContent = `✓ Published ${new Date().toLocaleTimeString()}: live for every player.`; }
     catch(err){ line.textContent = '⚠ Could not publish: ' + (err && err.message || err); }
   });
   document.getElementById('rtResetBtn').addEventListener('click', async ()=>{
     const ok = await bwConfirm({title:'Back to shipped defaults?', body:'Clears the table saved on this device' + (cloudShopPacks && cloudCardAdmin ? ' and the published one' : '') + '. Card pools (each card\'s From) are not changed.', okLabel:'Reset', focusCancel:true});
     if(!ok) return;
     resetShopPacksOverride(); packEditorDraft = null;
-    if(cloudShopPacks && cloudCardAdmin){ try{ await publishShopPacks(null); cloudShopPacks = null; }catch(e){} }
+    if(cloudShopPacks && cloudCardAdmin){ try{ await publishShopPacks(null); cloudShopPacks = null; packIndexReset(); }catch(e){} }
     rerender();
   });
+}
+// 2026-10-28 (package PACK1): adds (on) or takes out a card of a basic pack's extras. The list starts from canonical/pack-extras.json and is
+// kept in the pack table (`extras`), saved on this device at once (as the old From edit was); Publish makes it live for everyone.
+function packEditorExtrasEdit(packs, p, id, on){
+  const cur = (Array.isArray(p.extras) ? p.extras : packExtrasList(p.pool||1)).filter(x=> x !== id);
+  if(on) cur.push(id);
+  p.extras = cur; saveShopPacksOverride(packs); packEditorDraft = packs;
 }
 // Sets a card's From to pack pool `pool` (0 = take it out of every pack → Unassigned).
 async function setCardPackPool(id, pool){
@@ -100018,6 +100139,7 @@ function normalizePack(p){
 let cloudShopPacks = null;
 function applyCloudShopPacks(r){
   cloudShopPacks = (!r.deleted && r.data && Array.isArray(r.data.packs) && r.data.packs.length) ? r.data.packs : null;
+  packIndexReset(); // PACK1 (2026-10-28): a pack's live extras
   try{ if(currentTab==='shop') renderShop(); }catch(e){}
 }
 async function publishShopPacks(packs){
@@ -100072,9 +100194,11 @@ function advancedPacksOpen(){ const reach = playerMapReach(); return getShopPack
 function shopPacksAll(){ const base = getShopPacks(); return base.concat(advancedPacksOpen().map(advancedPackOf)); }
 function saveShopPacksOverride(packs){
   try{ localStorage.setItem(SHOP_PACKS_OVERRIDE_KEY, JSON.stringify(packs)); }catch(e){}
+  packIndexReset(); // PACK1
 }
 function resetShopPacksOverride(){
   try{ localStorage.removeItem(SHOP_PACKS_OVERRIDE_KEY); }catch(e){}
+  packIndexReset(); // PACK1
 }
 function canAffordPack(pack){ return (myCurrencies.gold||0)>=(pack.cost.gold||0) && (myCurrencies.gems||0)>=(pack.cost.gems||0); }
 function packCostHTML(pack){
@@ -101096,7 +101220,10 @@ function nestCardHTML(id, d){
 }
 // A pack's pool: every card whose From is that pack pool ({kind:'pack', tier:N}; no tier = 1).
 // Without a pool number it is every pack card. Locked or not — packs give copies.
-function packPoolOf(d){ const src = cardSourceOf(d); return src.kind==='pack' ? (parseInt(src.tier, 10) || 1) : 0; }
+// 2026-10-28 (package PACK1): a basic pack's pool comes from the map lists and the pack extras (basicPackTierOf); the Factions pool (11) and
+// the Mystery Booster (99) still from source.tier. So every giver that reads packCardPool (the packs, 'basic': the base track, the card drop,
+// a raid claim, a people's bundle) follows the map lists.
+function packPoolOf(d){ const src = cardSourceOf(d); if(src.kind==='pack' && !isBasicPackSource(src)) return parseInt(src.tier, 10) || 1; return basicPackTierOf(d); }
 // Faction cards in the basic packs (2026-10-11, user: "all otters and hummingbirds are contained within the various card
 // packs ... The otter specific cards are contained throughout the 3 basic packs"): a pack built on pool 1 (the Sprout
 // Pouch, Tidemire Chest and Highcrest Case) also draws from the Otter (11), Hummingbird (12) and shared Riverbank (13) pools.
@@ -101124,8 +101251,8 @@ function packCardPool(defs, pool, exact, gated){
 // The faction pool keeps its own track (FACTION_RARITY_GATES). canonical/map-pools.json lists every map's cards.
 function packCardReached(d, reach){
   if(reach === Infinity) return true;
-  const s = cardSourceOf(d); if(s.kind !== 'pack' || Number(s.tier) === 11) return true;
-  if(s.map){ const n = mapUnlockNumberOf(s.map); if(n != null && reach < n) return false; } // RW5: a side map counts from the map that unlocks it
+  const s = cardSourceOf(d); if(!basicPackTierOf(d) && (s.kind !== 'pack' || Number(s.tier) === 11)) return true;
+  { const f = cardFirstMapList(d); if(f && reach < f.n) return false; } // RW5: a side map counts from the map that unlocks it; PACK1 (2026-10-28): its first map list, was source.map
   return rarityRevealedForPlayer(d.rarity, reach);
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,

@@ -14,6 +14,7 @@ import hub5_data as H5
 
 THRESH_MANY = 4          # a card listed on this many lists or more is "on many maps"
 PLAN = os.path.join('docs', 'balance', 'content4-map-pools-plan-2026-10-28.json')
+PROPOSAL = ('docs', 'balance', 'theme2-proposal-2026-10-28.json')   # 2026-10-28 (THEME2, owner 22:47 sizes): the per-map proposal the tab's Proposal toggle shows (THEME1's file kept as history)
 SKIP_SUB = {'muc', 'mm', 'mlb', 'mtut'}   # the endless dungeons and the tutorial keep their lists (the plan's SKIP_SUB)
 OBTAINABLE_KINDS = {'pack', 'map', 'raid', 'nest', 'smith', 'materia', 'secret', 'quest', 'base'}
 STEPS = ['common', 'uncommon', 'rare', 'veryrare', 'superrare', 'epic', 'heroic', 'unique', 'legendary', 'mythic', 'ancient', 'divine', 'void', 'daemonic']
@@ -264,8 +265,29 @@ def mapcards(root, canon):
         totals['planAwaiting'] = len(plan.get('awaiting') or [])
         totals['planMoves'] = len(plan.get('moves') or [])
         totals['planObtainableNotListed'] = len(obt_ids - pk_all)
+    # ---- the THEME2 proposal (2026-10-28, owner's plan steps 1-2; THEME1's builder with the 22:47 sizes): per list its unique / carried / cut cards; optional, read only ----
+    prop = None
+    try:
+        P = L(*PROPOSAL)
+        prop = {'built': P.get('built'), 'totals': {k: v for k, v in P['totals'].items() if k not in ('noHomeIds',)},
+                'packs': [{k: v for k, v in p.items()} for p in P['packs']], 'sideClasses': P.get('sideClasses', []), 'rules': P.get('rules', {}), 'lists': {}}
+        for e in P['maps']:
+            if e.get('skipped'):
+                prop['lists'][e['key']] = {'kept': 1, 'theme': e['theme']['line']}
+                continue
+            prop['lists'][e['key']] = {
+                'theme': e['theme']['line'], 'side': e.get('sideClass'),
+                'u': [{'id': r['id'], 'w': 1 if r['wasHere'] else 0, 'mf': r.get('movedFrom'), 'why': r['why'], 'g': r['gen'], 'h': 1 if r['high'] else 0, 'c': r['cost'], 'af': r['alsoFits']} for r in e['unique']],
+                'c': [{'id': r['id'], 'w': 1 if r['wasHere'] else 0, 'fr': r['from'], 'g': r['gen'], 'h': 1 if r['high'] else 0, 'c': r['cost']} for r in e['carried']],
+                'x': [{'id': x['id'], 'to': x['to']} for x in e['cut']], 'mix': e['mix'], 'n': e['counts']}
+    except FileNotFoundError:
+        pass
     # ---- card dictionary (once) ----
     used = set(i for m in out_lists for i in (c['id'] for c in m['cards'])) | set(i for p in packs for i in p['none_ids'])
+    if prop:
+        for e in prop['lists'].values():
+            used |= set(r['id'] for r in e.get('u', []) + e.get('c', []))
+        used |= set(i for p in prop['packs'] for i in p.get('offListIds', []))   # THEME2: cards on no list, per old pack
     for m in out_lists:
         for ch in m['chips']:
             used |= set(ch['ids'])
@@ -288,7 +310,7 @@ def mapcards(root, canon):
     labels = {b['id']: b['label'] for b in ut['vocab']['biomes']}
     return {'built': datetime.date.today().isoformat(), 'lists': out_lists, 'cards': cd, 'packs': packs, 'totals': totals,
             'rarities': [{'k': k, 'l': H5.RARITY_LABEL[k]} for k in H5.RARITY_ORDER], 'steps': STEPS, 'biomeLabels': labels,
-            'planned': bool(plan), 'decksDate': decks_date, 'thresholdMany': THRESH_MANY}
+            'planned': bool(plan), 'decksDate': decks_date, 'thresholdMany': THRESH_MANY, 'proposal': prop}
 
 
 if __name__ == '__main__':

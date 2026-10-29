@@ -134,7 +134,9 @@ ok(!cards.some(c=> c.effects && (c.effects.spellshield || (c.effects.transform &
 { const m = byId.get('coffer-mimic');
   ok(m && m.effects.shapeshifter && m.effects.thorns === 2 && m.cost === 1 && m.wait === 1 && (m.archetypes || []).includes('Structure') && !m.effects.changeling, 'the Coffer Mimic: a Structure Shapeshifter, Thorns 2 (BF11, owner EN-4), Lumber 1, Wait 1');
   const pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8'));
-  ok(pools.maps.m4.cards.includes('coffer-mimic'), 'the Coffer Mimic is in Map 8\'s pool (the caves)');
+  // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05); THEME2 leaves the Coffer Mimic off the caves' list (on no list: not obtainable yet)
+  const t2 = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'theme2-proposal-2026-10-28.json'), 'utf8')).maps.find(m=> m.key === 'm4');
+  ok(pools.maps.m4.cards.includes('coffer-mimic') === t2.proposed.includes('coffer-mimic'), 'the Coffer Mimic\'s place on Map 8\'s list (the caves) follows THEME2');
   ok(cards.filter(c=> c.numericId === m.numericId).length === 1, 'its numericId is unique'); }
 ok(byId.get('terraumbra').mechanicLine === 'evolution' && byId.get('terraumbra').cardType === 'equipment', 'EV-1: the Terraumbra is the Evomax equipment');
 

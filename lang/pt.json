@@ -3593,5 +3593,9 @@
  "Not enough Lumber.": "Madeira insuficiente.",
  "Your card data differs from the host's. Reload the game and join again.": "Seus dados de cartas diferem dos do anfitrião. Recarregue o jogo e entre de novo.",
  "Bramble damage dealt: {n}": "Dano ao espinheiro: {n}",
- "{name} dropped!": "{name} caiu!"
+ "{name} dropped!": "{name} caiu!",
+ "🃏 Map cards": "🃏 Cartas do mapa",
+ "{name}: the map's cards": "{name}: as cartas do mapa",
+ "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "Todas as cartas das listas deste mapa: as dele, as de cada mapa secundário e as especiais. Uma carta marcada com um pacote também sai desse pacote.",
+ "Not obtainable yet: in no map list and no pack": "Ainda não obtível: em nenhuma lista de mapa nem pacote"
 }
