@@ -151,14 +151,14 @@ h1{font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:clam
 <body>
 <div class="wrap">
   <h1>Four card sizes</h1>
-  <p class="lede">Package CARDSIZE1, 29 Oct 2026. Today the game draws cards at about 50 different sizes. This mock shows the four that would replace them. Every card on this page comes from one render function, <code>renderCard(def, size)</code>. The size only sets the card's width, and the card decides for itself what fits.</p>
+  <p class="lede">Package CARDSIZE1, 29 Oct 2026. Today the game draws cards at about 20 different sizes on its main screens, from 56 different widths in its CSS. This mock shows the four that would replace them. Every card on this page comes from one render function, <code>renderCard(def, size)</code>. The size only sets the card's width, and the card decides for itself what fits.</p>
 
   <section class="panel" aria-labelledby="h-sizes">
     <h2 id="h-sizes">Side by side</h2>
     <p class="sub">Drag the Detail card to spin it, move the pointer over it to tilt it, or press Flip to see the back.</p>
     <div class="sizes">
       <div class="size-slot">
-        <div class="size-head"><b>Detail</b><code>min(340px, 86vw)</code><span>opens on tap or long-press, one at a time</span></div>
+        <div class="size-head"><b>Detail</b><code>min(400px, 86vw)</code><span>340px on this page; opens on tap or long-press, one at a time</span></div>
         <div class="detail-stage">
           <div class="tilt" id="tilt" tabindex="0" role="button" aria-label="Otter Centurion, detail card. Press Enter to flip.">
             <div class="spinner" id="spinner"></div>
@@ -171,12 +171,12 @@ h1{font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:clam
       </div>
       <div class="small-sizes">
         <div class="size-slot">
-          <div class="size-head"><b>Full</b><code>120px · phone 96px</code><span>Codex, deck builder, rewards, packs, shop, Forge, Nest</span></div>
+          <div class="size-head"><b>Full</b><code>120px · phone 86px</code><span>Codex, deck builder, rewards, packs, shop, Forge, Nest</span></div>
           <div class="row" id="rowFull"></div>
           <p class="note">Art, name, Attack and Health, skill icons, Wait, rarity frame. Skills show as icons; their text is in Detail.</p>
         </div>
         <div class="size-slot">
-          <div class="size-head"><b>Compact</b><code>--match-card-w, 62–132px</code><span>board, hand, leader, Brambles, environment</span></div>
+          <div class="size-head"><b>Compact</b><code>--match-card-w, 49–131px</code><span>board, hand, leader, Brambles, environment</span></div>
           <div class="row" id="rowCompact"></div>
           <p class="note">The same card, sized by the board. Below 70px wide the name drops out and the stats grow, as on a phone board.</p>
         </div>
