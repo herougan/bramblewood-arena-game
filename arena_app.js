@@ -17961,8 +17961,8 @@ function subMapEntrancesHTML(map, progress){
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
     // side map is just its own emblem (a lotus, a clover, a nest…), with a padlock badge while it's locked.
     if(!SUBMAP_CAVES.has(sm.id)){
-      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}${flairLairMap(sm) ? ' is-lair-final' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${flairLairMap(sm) ? flairLairEntranceHTML() /* FLAIR1 (2026-10-28): the Dragon Lair's molten ring and crown */ : ''}${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
     }
     return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
@@ -22551,12 +22551,12 @@ const CONQUEST_MAPS = [
   // The Caldera Heart (2026-10-12, user D60: "The boss caps at 400 exactly. Defeating the boss unlocks the World boss submap and
   // another submap. The world boss submap's skirmishes are 350-400 ... The world boss himself is 500"): the world boss moved
   // here from the Sundered Peak's trail, behind three fights rated 350, 375 and 400.
-  { id:"mx", mapField:{sulphurFumes:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Sulphur Fumes inside the mountain; fightRules sets it where the fight does not set that key */, sub:true, parent:"m11", entry:{x:82, y:30, after:"20-10", label:"The lair"}, name:"Volcano Lair", icon:"🐉", blurb:"Where the mountain's fire is born. Something vast sleeps in it, and it is waking.", sequential:true,
+  { id:"mx", finalBoss:true /* FLAIR1 (2026-10-28, owner 23:06): the Dragon Lair is the 0-20 road's final boss; the flag turns on its own flair (flairLairMap) */, mapField:{sulphurFumes:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Sulphur Fumes inside the mountain; fightRules sets it where the fight does not set that key */, sub:true, parent:"m11", entry:{x:82, y:30, after:"20-10", label:"The lair"}, name:"Volcano Lair", icon:"🐉", blurb:"Where the mountain's fire is born. Something vast sleeps in it, and it is waking.", sequential:true,
     nodes: [
       { key:"20-B-1", rating:350, kind:"skirmish", challenge:true, name:"Cinder Slopes", icon:"🔥", deck:{"cinder-gecko":1,"cinder-hornet":1,"pack-mule":5,"ember-jackal":3,"magma-salamander":3,"tide-spirit":3,"fire-drake-hatchling":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"emberBorn"}, flavor:"The rocks are warm underfoot, then hot, then glowing.", rewards:{"first":{"gold":240,"dust":36}}, requires:[] },
       { key:"20-B-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"basalt-boar":5,"cinder-stoker":1,"ember-centipede":3,"pack-mule":3,"obsidian-scorpion":1,"tide-spirit":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{"first":{"gold":260,"dust":40}}, requires:["20-B-1"] },
       { key:"20-B-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"cinder-imp":1,"cinder-stoker":1,"gorge-wyrm":1,"pack-mule":5,"silverback-brawler":5,"magma-salamander":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"The heat comes in waves now, like breathing.", rewards:{"first":{"gold":280,"dust":44}}, requires:["20-B-2"] },
-      { key:"20-B-4", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":1,"magma-titan":1,"pyroclast-wyrm":4,"magma-salamander":3,"ember-jackal":3,"obsidian-scorpion":1,"cinder-stoker":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL2): Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3 */, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:269 /* 2026-10-24 (BAL2): +29, the Health the Caldera Wyrm card gave up when it got a source (6/36 -> 4/7) */, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
+      { key:"20-B-4", finalBoss:true /* FLAIR1: the lair's last fight */, rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":1,"magma-titan":1,"pyroclast-wyrm":4,"magma-salamander":3,"ember-jackal":3,"obsidian-scorpion":1,"cinder-stoker":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL2): Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3 */, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:269 /* 2026-10-24 (BAL2): +29, the Health the Caldera Wyrm card gave up when it got a source (6/36 -> 4/7) */, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 9 is cleared (afterMapCleared "mk"); its fights count as Map 9 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
@@ -26344,8 +26344,8 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${flairLairNode(map, node) ? 'is-lair-final' : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -30476,14 +30476,15 @@ function rivalTauntFor(map, node){
 }
 // Boss entrance (2026-10-07, effects list two): as a boss's versus opener closes, the ground
 // quakes, dust rings the enemy castle and a title card with the boss's name sweeps across.
-function bossEntrance(node){
+function bossEntrance(node, lair){
   if(!node || !fxAtLeast('low')) return;
   try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bf = document.getElementById('battlefieldEl');
-  const card = document.createElement('div'); card.className = 'boss-title'; card.setAttribute('role', 'status');
-  card.innerHTML = `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
-  (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), 1900);
+  const card = document.createElement('div'); card.className = 'boss-title' + (lair ? ' is-lair' : ''); card.setAttribute('role', 'status');
+  card.innerHTML = lair ? `<span class="bt-kicker">${escapeHtml(TX('ui.fl1-title'))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span><span class="bt-sub">${escapeHtml(TX('ui.fl1-sub'))}</span>`
+    : `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
+  (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), lair ? 3500 : 1900); // FLAIR1 (2026-10-28): the lair's card stays up longer
   if(reduce || !hasGsap() || !fxAtLeast('med')) return;
   if(bf){ gsap.fromTo(bf, {x:0, y:0}, {keyframes:[{x:-7, y:3}, {x:6, y:-2}, {x:-4, y:2}, {x:3, y:-1}, {x:0, y:0}], duration:.55, ease:'none', clearProps:'x,y'}); }
   const castle = hqTileEl('B'); if(castle){
@@ -30547,6 +30548,16 @@ function pk1OpenMapCards(mapId){
   try{ wireRewardZoom(ov); }catch(e){}
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
+// 2026-10-28 (package FLAIR1, owner 23:06: "Dragon Lair is our overall 0-20 big boss ... a flair that's not the normal boss flair"): the Volcano Lair
+// (map `mx`) carries `finalBoss:true` and its last fight (20-B-4) does too; everything below keys off those two flags, not the name. The map's
+// entrance on Map 20, the fight's node, its versus opener and title card, a quiet ember vignette on the battlefield and the victory sign are
+// the lair's own: molten gold and ember where the normal boss is blood red with a skull. CSS: the FLAIR1 block of arena_template.html.
+function flairLairMap(map){ return !!(map && map.finalBoss === true); }
+function flairLairNode(map, node){ return flairLairMap(map) && !!(node && node.finalBoss === true); }
+function flairLairMatch(m){ try{ const cn = m && m.mode === 'conquest' && m.conquestNode; if(!cn) return false; const map = CONQUEST_MAPS.find(x=> x.id === cn.mapId); return flairLairNode(map, map && map.nodes.find(n=> n.key === cn.nodeId)); }catch(e){ return false; } }
+function flairLairNodeHTML(){ return '<span class="fl1-node-ring" aria-hidden="true"></span><span class="fl1-node-crown" aria-hidden="true">👑<i>🔥</i></span>'; }
+function flairLairEntranceHTML(){ return '<span class="fl1-entry-ring" aria-hidden="true"></span><span class="fl1-entry-crown" aria-hidden="true">👑</span>'; }
+function flairLairBannerHTML(){ return `<div class="fl1-banner" aria-hidden="true"><span class="fl1-kicker">${escapeHtml(TX('ui.fl1-kicker'))}</span><b class="fl1-title">${escapeHtml(TX('ui.fl1-title'))}</b><span class="fl1-sub">${escapeHtml(TX('ui.fl1-sub'))}</span></div>`; }
 function vis3NodeFrameHTML(node){
   const b = baseKind(node && node.kind || '');
   if(b === 'boss') return '<span class="vis3-skull-frame" aria-hidden="true"></span>';
@@ -30561,8 +30572,9 @@ function showVersusOpener(map, node, myChar, enemyChar){
   const deck = myDecks.find(d=> d.id===activeDeckId);
   const tauntLine = rivalTauntFor(map, node);
   const rivalPeople = node.people || peopleOfDeck(node.deck) || 'folk';
+  const lair = flairLairNode(map, node); // FLAIR1 (2026-10-28): the Dragon Lair's last fight
   const el = document.createElement('div');
-  el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '');
+  el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '') + (lair ? ' is-lair' : '');
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', `You versus ${node.name}`);
   el.innerHTML = `
     <div class="vs-side vs-me">
@@ -30585,15 +30597,15 @@ function showVersusOpener(map, node, myChar, enemyChar){
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
-    <div class="vs-skip">Tap to skip</div>`;
+    ${lair ? flairLairBannerHTML() : ''}<div class="vs-skip">Tap to skip</div>`;
   host.appendChild(el);
   // a quick retry of the same rival gets a shorter beat
   const key = (map ? map.id : '') + ':' + node.key, now = Date.now();
   const repeat = showVersusOpener.last && showVersusOpener.last.key===key && now - showVersusOpener.last.t < 5*60*1000;
   showVersusOpener.last = {key, t: now};
-  const hold = repeat ? 900 : (isBoss ? 2600 : 1700);
+  const hold = repeat ? 900 : lair ? 4300 : (isBoss ? 2600 : 1700); // FLAIR1: the lair's opener holds longer (a quick retry still gets the short beat); a tap skips it as ever
   let gone = false;
-  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node), 360); };
+  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node, lair), 360); };
   el.addEventListener('click', close);
   setTimeout(close, hold);
   try{ if(isBoss){ if(SoundKit.bossSting) SoundKit.bossSting(); else if(SoundKit.castleCollapse) SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){} // VIS3 (2026-10-26, V5): a boss opens on its sting
@@ -34659,6 +34671,7 @@ function renderMatchUI(){
       </div>
     </div>
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+      ${flairLairMatch(m) ? '<div class="fl1-vignette" aria-hidden="true"></div>' /* FLAIR1 (2026-10-28): the Dragon Lair's last fight: a quiet ember edge, under the cards, never over them */ : ''}
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         ${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy2" data-respid="2" data-resrow="2"></div>` : ''}${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy1" data-respid="2" data-resrow="1"></div>` : ''}
@@ -43327,6 +43340,11 @@ async function showEndSign(m){
   });
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
+  if(kind === 'victory' && flairLairMatch(m)){ // FLAIR1 (2026-10-28): clearing the Dragon Lair: its own banner (the first clear closes the 0-20 road)
+    el.classList.add('end-lair'); el.textContent = '';
+    const t = document.createElement('span'); t.className = 'fl1-win-title'; t.textContent = TX('ui.fl1-win'); el.appendChild(t);
+    const sb = document.createElement('small'); sb.className = 'end-sign-sub fl1-win-sub'; sb.textContent = TX(m.fightFirstClear ? 'ui.fl1-win-first' : 'ui.fl1-win-again'); el.appendChild(sb);
+  }
   if(m.endReason === 'raidTime'){ el.classList.add('end-raid-time'); const sub = document.createElement('small'); sub.className = 'end-sign-sub'; sub.textContent = `The raid ends after ${m.raidRoundCap} turns.`; el.appendChild(sub); }
   battlefield.appendChild(el);
   try{ if(kind==='victory') Songbook.sting('victory'); else if(kind==='defeat') Songbook.sting('defeat'); }catch(e){} // 2026-10-10: Songbook stings

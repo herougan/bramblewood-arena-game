@@ -13898,6 +13898,85 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .board-card .card-tile > .vis3-shield-num.vis4-shield-zero{color:#cfe6ff; opacity:.9;}
 .board-card .card-tile > .vis3-shield-num.vis4-shield-out{transition:opacity .45s ease, transform .45s ease; opacity:0; transform:scale(.4);}
 /* VIS4:END */
+/* FLAIR1 (2026-10-28; owner 23:06: "Dragon Lair is our overall 0-20 big boss ... a flair that's not the normal boss flair"): molten gold and ember,
+   where the normal boss is blood red with bone teeth and a skull. Keyed on the `finalBoss` flag of the Volcano Lair (flairLairMap / flairLairNode in
+   arena_app.js): its entrance on Map 20, its last fight's node, the versus opener, the title card, a battlefield vignette, the victory sign.
+   CSS and existing glyphs only. Motion: slow rotation and opacity, off under reduced motion and at low / no effects. */
+:root{--fl1-gold:#ffd76a; --fl1-gold-2:#ffb23c; --fl1-ember:#ff6a1f; --fl1-deep:#2a0d02;}
+@keyframes fl1Spin{to{transform:rotate(360deg);}}
+@keyframes fl1Pulse{0%,100%{opacity:.72;} 50%{opacity:1;}}
+@keyframes fl1Glow{0%,100%{box-shadow:0 0 0 3px #2a0d02, 0 0 0 5px #e0a02c, 0 0 18px 5px rgba(255,150,40,.45);} 50%{box-shadow:0 0 0 3px #2a0d02, 0 0 0 5px #ffd76a, 0 0 32px 10px rgba(255,120,30,.65);}}
+/* 1. the map: the node of the last fight */
+.map-node.is-lair-final{width:76px; height:76px; font-size:34px; border-color:#ffd76a; color:#fff; overflow:visible;
+  background:radial-gradient(circle at 50% 36%, #a6420a 0, #4a1704 55%, #1d0701 100%) !important;}
+.map-node.is-lair-final:not(.done){box-shadow:0 0 0 3px #2a0d02, 0 0 0 5px #e0a02c, 0 0 22px 6px rgba(255,150,40,.5); animation:fl1Glow 4.2s ease-in-out infinite;}
+.map-node.is-lair-final.done{box-shadow:0 0 0 3px #2a0d02, 0 0 0 5px #ffd76a, 0 0 18px 4px rgba(255,200,90,.5);}
+.map-node.is-lair-final .map-node-ico{position:relative; z-index:1; filter:drop-shadow(0 0 7px rgba(255,170,50,.9));}
+.map-node.is-lair-final .map-node-kind{display:none;}
+.fl1-node-ring{position:absolute; inset:-11px; border-radius:50%; pointer-events:none; z-index:0;
+  background:conic-gradient(from 0deg, #ffd76a, #ff6a1f 18%, rgba(255,106,31,0) 34%, #ffd76a 50%, #ff6a1f 68%, rgba(255,106,31,0) 84%, #ffd76a);
+  -webkit-mask:radial-gradient(circle closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%);
+          mask:radial-gradient(circle closest-side, transparent calc(100% - 5px), #000 calc(100% - 4px), #000 calc(100% - 1px), transparent 100%);
+  filter:drop-shadow(0 0 4px rgba(255,150,40,.9)); animation:fl1Spin 14s linear infinite;}
+.fl1-node-crown{position:absolute; left:50%; top:-27px; transform:translateX(-50%); z-index:3; font-size:25px; line-height:1; pointer-events:none; filter:drop-shadow(0 0 7px rgba(255,170,40,.95)) drop-shadow(0 2px 2px rgba(0,0,0,.6));}
+.fl1-node-crown i{position:absolute; left:50%; top:-10px; transform:translateX(-50%); font-style:normal; font-size:15px; animation:fl1Pulse 1.8s ease-in-out infinite;}
+@media (max-width:560px){ .map-node.is-lair-final{width:60px; height:60px; font-size:27px;} .fl1-node-ring{inset:-8px;} .fl1-node-crown{top:-23px; font-size:21px;} .fl1-node-crown i{top:-9px; font-size:13px;} }
+/* the Map 20 entrance of the lair */
+.map-subemblem.is-lair-final{overflow:visible;}
+.map-subemblem.is-lair-final .mse-ico{position:relative; z-index:1; filter:drop-shadow(0 3px 4px rgba(0,0,0,.45)) drop-shadow(0 0 12px rgba(255,150,40,.95));}
+.fl1-entry-ring{position:absolute; left:50%; top:50%; width:62px; height:62px; margin:-31px 0 0 -31px; border-radius:50%; pointer-events:none; z-index:0;
+  background:radial-gradient(circle at 50% 40%, rgba(255,140,40,.38), rgba(74,23,4,.55) 70%);
+  box-shadow:0 0 0 2px #e0a02c, 0 0 0 4px #2a0d02, 0 0 18px 5px rgba(255,140,30,.55); animation:fl1Pulse 4.2s ease-in-out infinite;}
+.fl1-entry-ring::after{content:''; position:absolute; inset:-6px; border-radius:50%;
+  background:conic-gradient(from 0deg, #ffd76a, rgba(255,106,31,0) 30%, #ff6a1f 52%, rgba(255,106,31,0) 80%, #ffd76a);
+  -webkit-mask:radial-gradient(circle closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px), #000 100%); mask:radial-gradient(circle closest-side, transparent calc(100% - 4px), #000 calc(100% - 3px), #000 100%);
+  animation:fl1Spin 14s linear infinite;}
+.fl1-entry-crown{position:absolute; left:50%; top:-20px; transform:translateX(-50%); z-index:3; font-size:20px; line-height:1; pointer-events:none; filter:drop-shadow(0 0 6px rgba(255,170,40,.95)) drop-shadow(0 2px 2px rgba(0,0,0,.6));}
+.map-subemblem.is-lair-final.is-locked .fl1-entry-ring, .map-subemblem.is-lair-final.is-locked .fl1-entry-crown{opacity:.4; animation:none; filter:grayscale(.7);}
+.map-subemblem.is-lair-final.is-locked .fl1-entry-ring::after{animation:none; opacity:.3;}
+.map-subemblem.is-lair-final .msc-name{color:#ffe9b0; background:rgba(42,13,2,.88); box-shadow:0 0 0 1px #e0a02c;}
+/* 2. the fight's opener: molten gold over the red, a long banner, the rival in a gold ring with a crown */
+.vs-opener.is-boss.is-lair{background:
+    radial-gradient(ellipse 38% 55% at 22% 52%, rgba(140,220,120,.20), transparent 70%),
+    radial-gradient(ellipse 46% 62% at 78% 52%, rgba(255,150,40,.50), transparent 70%),
+    radial-gradient(ellipse 60% 22% at 50% 14%, rgba(255,205,90,.34), transparent 75%),
+    repeating-linear-gradient(100deg, rgba(255,230,160,.04) 0 2px, transparent 2px 13px),
+    radial-gradient(ellipse at 50% 50%, transparent 52%, rgba(0,0,0,.55)),
+    linear-gradient(100deg, rgba(14,26,16,.96) 0 49.6%, rgba(88,30,4,.97) 50.4% 100%) !important;}
+.vs-opener.is-lair .vs-rival-ico{border-color:#ffd76a; background:radial-gradient(circle at 50% 38%, #a6420a, #2a0d02 75%); box-shadow:0 0 0 5px #2a0d02, 0 0 0 7px #e0a02c, 0 0 54px 16px rgba(255,150,40,.6);}
+.vs-opener.is-lair .vs-rival-ico::before{content:'👑'; position:absolute; left:50%; top:0; transform:translate(-50%,-62%); font-size:clamp(30px,4.4vw,46px); line-height:1; filter:drop-shadow(0 0 10px rgba(255,170,40,.95)) drop-shadow(0 2px 2px rgba(0,0,0,.6));}
+.vs-opener.is-lair .vs-kind{color:var(--fl1-gold); text-shadow:0 0 12px rgba(255,150,40,.9), 0 2px 0 #2a0d02;}
+.fl1-banner{position:absolute; left:0; right:0; top:clamp(16px, 6vh, 58px); z-index:2; display:flex; flex-direction:column; align-items:center; gap:3px; padding:10px 14px; text-align:center; pointer-events:none;
+  background:linear-gradient(90deg, transparent, rgba(30,10,2,.78) 16%, rgba(30,10,2,.78) 84%, transparent); animation:fl1BannerIn 1.5s cubic-bezier(.2,.8,.25,1) .45s both;}
+.fl1-kicker{font:800 12px 'Baloo 2', system-ui, sans-serif; letter-spacing:.34em; text-transform:uppercase; color:#ffb870;}
+.fl1-title{font:900 clamp(28px, 5.4vw, 58px)/1.02 'Baloo 2', system-ui, sans-serif; letter-spacing:.02em; color:var(--fl1-gold);
+  background:linear-gradient(180deg, #fff3c4 0%, #ffd76a 45%, #ff9a2e 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(42,13,2,.85)) drop-shadow(0 0 16px rgba(255,140,30,.6));}
+.fl1-sub{font:600 clamp(12.5px, 1.5vw, 16px)/1.3 system-ui, sans-serif; color:#ffe7c0; max-width:min(560px, 86vw); text-shadow:0 1px 3px rgba(0,0,0,.7);}
+@keyframes fl1BannerIn{0%{opacity:0; transform:translateY(-14px) scale(1.12); letter-spacing:.3em;} 55%{opacity:1;} 100%{opacity:1; transform:none;}}
+/* the title card as the fight opens: longer and warmer than the boss card */
+.boss-title.is-lair{top:36%; padding:16px 18px; gap:4px; text-align:center; color:#ffe9b0;
+  background:linear-gradient(90deg, transparent, rgba(38,12,2,.9) 12%, rgba(38,12,2,.9) 88%, transparent); animation:fl1Title 3.4s cubic-bezier(.2,.8,.3,1) forwards;}
+.boss-title.is-lair .bt-kicker{color:#ffb870; letter-spacing:.34em;}
+.boss-title.is-lair .bt-name{color:var(--fl1-gold); text-shadow:0 3px 0 rgba(42,13,2,.8), 0 0 26px rgba(255,140,30,.75);}
+.boss-title .bt-sub{font:600 clamp(12px, 1.5vw, 15px)/1.3 system-ui, sans-serif; color:#ffe7c0; max-width:min(520px, 86%);}
+@keyframes fl1Title{0%{opacity:0; transform:scale(1.18);} 16%{opacity:1; transform:scale(1);} 86%{opacity:1; transform:scale(1.01);} 100%{opacity:0; transform:scale(1.04);}}
+/* 3. the battle: an ember edge UNDER the board (z-index -1 inside the battlefield's own stacking context), so it never covers a card or a number */
+.fl1-vignette{position:absolute; inset:0; z-index:-1; pointer-events:none; border-radius:inherit;
+  box-shadow:inset 0 0 0 2px rgba(255,176,70,.55), inset 0 0 34px 4px rgba(255,100,20,.34), inset 0 -26px 46px -14px rgba(255,90,20,.32);
+  animation:fl1Pulse 7s ease-in-out infinite;}
+/* 4. the victory sign */
+.fight-sign.end-sign.end-lair{flex-direction:column; gap:6px; text-align:center; color:var(--fl1-gold);
+  background:radial-gradient(ellipse 70% 38% at 50% 50%, rgba(50,16,2,.62), transparent 72%);
+  text-shadow:0 0 28px rgba(255,170,50,.95), 0 4px 0 rgba(70,28,0,.75);}
+.fight-sign.end-lair::before{content:'👑'; font-size:.62em; line-height:1; filter:drop-shadow(0 0 12px rgba(255,170,40,.95));}
+.fight-sign.end-lair .fl1-win-title{font-size:.6em; line-height:1.02; letter-spacing:.05em; max-width:94%;}
+.fight-sign.end-lair .fl1-win-sub{color:#ffe7c0; text-shadow:0 1px 3px rgba(0,0,0,.8); font-size:15px; letter-spacing:.02em;}
+@media (max-width:600px){ .fight-sign.end-sign.end-lair{font-size:44px;} .fight-sign.end-lair .fl1-win-sub{font-size:13px;} }
+@media (prefers-reduced-motion: reduce){
+  .map-node.is-lair-final:not(.done), .fl1-node-ring, .fl1-node-crown i, .fl1-entry-ring, .fl1-entry-ring::after, .fl1-vignette{animation:none !important;}
+  .fl1-banner{animation:none; opacity:1;} .boss-title.is-lair{animation:none; opacity:1;} }
+:where(html[data-fx="none"], html[data-fx="low"]) :is(.map-node.is-lair-final:not(.done), .fl1-node-ring, .fl1-node-crown i, .fl1-entry-ring, .fl1-entry-ring::after, .fl1-vignette){animation:none;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
@@ -43129,7 +43208,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0baf982a46", "es": "assets/lang/es.js?v=31be457ea5", "fr": "assets/lang/fr.js?v=e9a22af33b", "id": "assets/lang/id.js?v=62418c4850", "it": "assets/lang/it.js?v=36a82b0345", "ja": "assets/lang/ja.js?v=a67cf02fd5", "ko": "assets/lang/ko.js?v=cece70cdd3", "pt": "assets/lang/pt.js?v=98f080c0d6", "ta": "assets/lang/ta.js?v=acc68c233a", "tl": "assets/lang/tl.js?v=bd5261d671", "zh-Hans": "assets/lang/zh-Hans.js?v=9526e78d10", "zh-Hant": "assets/lang/zh-Hant.js?v=51396cc9b9"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=cee225c75e", "es": "assets/lang/es.js?v=a8f8248953", "fr": "assets/lang/fr.js?v=5f1731d2cf", "id": "assets/lang/id.js?v=caaae07097", "it": "assets/lang/it.js?v=2cfacc78cf", "ja": "assets/lang/ja.js?v=1ad177f763", "ko": "assets/lang/ko.js?v=ef6005d8be", "pt": "assets/lang/pt.js?v=a0c9d5d53d", "ta": "assets/lang/ta.js?v=d7635d2686", "tl": "assets/lang/tl.js?v=a4445ab892", "zh-Hans": "assets/lang/zh-Hans.js?v=0b263f849d", "zh-Hant": "assets/lang/zh-Hant.js?v=06f2cecbb7"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46068,7 +46147,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pk1-map-cards-title": "{name}: the map's cards",
   "ui.pk1-map-cards-sub": "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.",
   "ui.pk1-in-pack": "Pack {n}",
-  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack"
+  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack",
+  "ui.fl1-kicker": "Final boss of the road",
+  "ui.fl1-title": "The Dragon's Lair",
+  "ui.fl1-sub": "Something vast sleeps where the mountain's fire is born. It is awake.",
+  "ui.fl1-win": "THE DRAGON FALLS",
+  "ui.fl1-win-first": "The road from Map 0 to Map 20 is walked to its end.",
+  "ui.fl1-win-again": "The lair falls quiet once more."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -50580,7 +50665,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '76df47610d3a', BUILD_CARD_HASH = 'e589d5f099dc39e0777cc41e8d01c59a9f70ace251acf0018fbbfd502aa2c575';
+const BUILD_ID = 'f7e466a12d4b', BUILD_CARD_HASH = 'e589d5f099dc39e0777cc41e8d01c59a9f70ace251acf0018fbbfd502aa2c575';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -64992,8 +65077,8 @@ function subMapEntrancesHTML(map, progress){
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
     // side map is just its own emblem (a lotus, a clover, a nest…), with a padlock badge while it's locked.
     if(!SUBMAP_CAVES.has(sm.id)){
-      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
-      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
+      return `<button type="button" class="map-cave map-subcave map-subemblem ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}${flairLairMap(sm) ? ' is-lair-final' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
+      <span class="mse-ico" aria-hidden="true">${SUBMAP_EMBLEM_SVG[sm.id] || sm.icon}</span>${flairLairMap(sm) ? flairLairEntranceHTML() /* FLAIR1 (2026-10-28): the Dragon Lair's molten ring and crown */ : ''}${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
     }
     return `<button type="button" class="map-cave map-subcave ${open ? '' : 'is-locked'} ${done && done===fightable.length ? 'is-done' : ''}" ${open ? `data-submap="${sm.id}"` : ''} ${open || conquestLayoutEdit ? '' : 'disabled'} data-lkey="~sub:${sm.id}" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}">
       <span class="mc-rock" aria-hidden="true"></span><span class="mc-mouth" aria-hidden="true"></span>${open ? '' : '<span class="mse-lock" aria-hidden="true">🔒</span>'}${open && !seen ? '<span class="map-spot-new">!</span>' : ''}${open ? `<span class="msc-name">${escapeHtml(sm.name)}</span>` : ''}</button>`;
@@ -69582,12 +69667,12 @@ const CONQUEST_MAPS = [
   // The Caldera Heart (2026-10-12, user D60: "The boss caps at 400 exactly. Defeating the boss unlocks the World boss submap and
   // another submap. The world boss submap's skirmishes are 350-400 ... The world boss himself is 500"): the world boss moved
   // here from the Sundered Peak's trail, behind three fights rated 350, 375 and 400.
-  { id:"mx", mapField:{sulphurFumes:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Sulphur Fumes inside the mountain; fightRules sets it where the fight does not set that key */, sub:true, parent:"m11", entry:{x:82, y:30, after:"20-10", label:"The lair"}, name:"Volcano Lair", icon:"🐉", blurb:"Where the mountain's fire is born. Something vast sleeps in it, and it is waking.", sequential:true,
+  { id:"mx", finalBoss:true /* FLAIR1 (2026-10-28, owner 23:06): the Dragon Lair is the 0-20 road's final boss; the flag turns on its own flair (flairLairMap) */, mapField:{sulphurFumes:true} /* CONTENT4 (2026-10-28, L2, owner: "It should be a rare thing for a map not to have a field effect"): Sulphur Fumes inside the mountain; fightRules sets it where the fight does not set that key */, sub:true, parent:"m11", entry:{x:82, y:30, after:"20-10", label:"The lair"}, name:"Volcano Lair", icon:"🐉", blurb:"Where the mountain's fire is born. Something vast sleeps in it, and it is waking.", sequential:true,
     nodes: [
       { key:"20-B-1", rating:350, kind:"skirmish", challenge:true, name:"Cinder Slopes", icon:"🔥", deck:{"cinder-gecko":1,"cinder-hornet":1,"pack-mule":5,"ember-jackal":3,"magma-salamander":3,"tide-spirit":3,"fire-drake-hatchling":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 5 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (DF3): a challenge skirmish, its selfish boon and its synergy deck */, rules:{"boon":"emberBorn"}, flavor:"The rocks are warm underfoot, then hot, then glowing.", rewards:{"first":{"gold":240,"dust":36}}, requires:[] },
       { key:"20-B-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"basalt-boar":5,"cinder-stoker":1,"ember-centipede":3,"pack-mule":3,"obsidian-scorpion":1,"tide-spirit":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 2 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{"first":{"gold":260,"dust":40}}, requires:["20-B-1"] },
       { key:"20-B-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"cinder-imp":1,"cinder-stoker":1,"gorge-wyrm":1,"pack-mule":5,"silverback-brawler":5,"magma-salamander":3} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 4 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */, flavor:"The heat comes in waves now, like breathing.", rewards:{"first":{"gold":280,"dust":44}}, requires:["20-B-2"] },
-      { key:"20-B-4", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":1,"magma-titan":1,"pyroclast-wyrm":4,"magma-salamander":3,"ember-jackal":3,"obsidian-scorpion":1,"cinder-stoker":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL2): Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3 */, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:269 /* 2026-10-24 (BAL2): +29, the Health the Caldera Wyrm card gave up when it got a source (6/36 -> 4/7) */, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
+      { key:"20-B-4", finalBoss:true /* FLAIR1: the lair's last fight */, rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":1,"magma-titan":1,"pyroclast-wyrm":4,"magma-salamander":3,"ember-jackal":3,"obsidian-scorpion":1,"cinder-stoker":1} /* 2026-10-28 (BAL7, owner K14): non-map-unique cards at most 1 copy each, 6 in all; 3 copies to the map's own cards by theme (size, leaders and first-clear cards kept) */ /* 2026-10-24 (BAL2): Fire Drake Hatchling (Heroic) 2 -> 1; Ember Jackal 2 -> 3 */, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:269 /* 2026-10-24 (BAL2): +29, the Health the Caldera Wyrm card gave up when it got a source (6/36 -> 4/7) */, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   // 2026-10-21 (package RP, owner Oct 21: "Submaps should also only be unlocked quite late in the game. Maybe like smuggler's groto after Map 7"): opens once Map 9 is cleared (afterMapCleared "mk"); its fights count as Map 9 (shieldMap), as Lilypad Reach does. docs/balance/rewards-pass-2026-10-21.md
@@ -73375,8 +73460,8 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush is-floating foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${flairLairNode(map, node) ? 'is-lair-final' : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+          <span class="map-node-ico">${node.icon}</span>${vis3NodeFrameHTML(node) /* VIS3 (2026-10-26, V5): a boss's skull frame, an elite's mark */}${flairLairNode(map, node) ? flairLairNodeHTML() /* FLAIR1 (2026-10-28): the lair's last fight: a molten ring and a crown of flame */ : ''}${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="' + escapeAttr(TX('ui.rw-glint')) + '" aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -77507,14 +77592,15 @@ function rivalTauntFor(map, node){
 }
 // Boss entrance (2026-10-07, effects list two): as a boss's versus opener closes, the ground
 // quakes, dust rings the enemy castle and a title card with the boss's name sweeps across.
-function bossEntrance(node){
+function bossEntrance(node, lair){
   if(!node || !fxAtLeast('low')) return;
   try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   const bf = document.getElementById('battlefieldEl');
-  const card = document.createElement('div'); card.className = 'boss-title'; card.setAttribute('role', 'status');
-  card.innerHTML = `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
-  (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), 1900);
+  const card = document.createElement('div'); card.className = 'boss-title' + (lair ? ' is-lair' : ''); card.setAttribute('role', 'status');
+  card.innerHTML = lair ? `<span class="bt-kicker">${escapeHtml(TX('ui.fl1-title'))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span><span class="bt-sub">${escapeHtml(TX('ui.fl1-sub'))}</span>`
+    : `<span class="bt-kicker">${escapeHtml((KIND_LABEL[node.kind]||'Boss').replace(/^\S+\s/, ''))}</span><span class="bt-name">${escapeHtml(node.icon||'')} ${escapeHtml(node.name)}</span>`;
+  (bf || document.body).appendChild(card); setTimeout(()=> card.remove(), lair ? 3500 : 1900); // FLAIR1 (2026-10-28): the lair's card stays up longer
   if(reduce || !hasGsap() || !fxAtLeast('med')) return;
   if(bf){ gsap.fromTo(bf, {x:0, y:0}, {keyframes:[{x:-7, y:3}, {x:6, y:-2}, {x:-4, y:2}, {x:3, y:-1}, {x:0, y:0}], duration:.55, ease:'none', clearProps:'x,y'}); }
   const castle = hqTileEl('B'); if(castle){
@@ -77578,6 +77664,16 @@ function pk1OpenMapCards(mapId){
   try{ wireRewardZoom(ov); }catch(e){}
   try{ document.getElementById('pk1McClose').focus(); }catch(e){}
 }
+// 2026-10-28 (package FLAIR1, owner 23:06: "Dragon Lair is our overall 0-20 big boss ... a flair that's not the normal boss flair"): the Volcano Lair
+// (map `mx`) carries `finalBoss:true` and its last fight (20-B-4) does too; everything below keys off those two flags, not the name. The map's
+// entrance on Map 20, the fight's node, its versus opener and title card, a quiet ember vignette on the battlefield and the victory sign are
+// the lair's own: molten gold and ember where the normal boss is blood red with a skull. CSS: the FLAIR1 block of arena_template.html.
+function flairLairMap(map){ return !!(map && map.finalBoss === true); }
+function flairLairNode(map, node){ return flairLairMap(map) && !!(node && node.finalBoss === true); }
+function flairLairMatch(m){ try{ const cn = m && m.mode === 'conquest' && m.conquestNode; if(!cn) return false; const map = CONQUEST_MAPS.find(x=> x.id === cn.mapId); return flairLairNode(map, map && map.nodes.find(n=> n.key === cn.nodeId)); }catch(e){ return false; } }
+function flairLairNodeHTML(){ return '<span class="fl1-node-ring" aria-hidden="true"></span><span class="fl1-node-crown" aria-hidden="true">👑<i>🔥</i></span>'; }
+function flairLairEntranceHTML(){ return '<span class="fl1-entry-ring" aria-hidden="true"></span><span class="fl1-entry-crown" aria-hidden="true">👑</span>'; }
+function flairLairBannerHTML(){ return `<div class="fl1-banner" aria-hidden="true"><span class="fl1-kicker">${escapeHtml(TX('ui.fl1-kicker'))}</span><b class="fl1-title">${escapeHtml(TX('ui.fl1-title'))}</b><span class="fl1-sub">${escapeHtml(TX('ui.fl1-sub'))}</span></div>`; }
 function vis3NodeFrameHTML(node){
   const b = baseKind(node && node.kind || '');
   if(b === 'boss') return '<span class="vis3-skull-frame" aria-hidden="true"></span>';
@@ -77592,8 +77688,9 @@ function showVersusOpener(map, node, myChar, enemyChar){
   const deck = myDecks.find(d=> d.id===activeDeckId);
   const tauntLine = rivalTauntFor(map, node);
   const rivalPeople = node.people || peopleOfDeck(node.deck) || 'folk';
+  const lair = flairLairNode(map, node); // FLAIR1 (2026-10-28): the Dragon Lair's last fight
   const el = document.createElement('div');
-  el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '');
+  el.className = 'vs-opener' + (isBoss ? ' is-boss' : isElite ? ' is-elite' : '') + (lair ? ' is-lair' : '');
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', `You versus ${node.name}`);
   el.innerHTML = `
     <div class="vs-side vs-me">
@@ -77616,15 +77713,15 @@ function showVersusOpener(map, node, myChar, enemyChar){
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
-    <div class="vs-skip">Tap to skip</div>`;
+    ${lair ? flairLairBannerHTML() : ''}<div class="vs-skip">Tap to skip</div>`;
   host.appendChild(el);
   // a quick retry of the same rival gets a shorter beat
   const key = (map ? map.id : '') + ':' + node.key, now = Date.now();
   const repeat = showVersusOpener.last && showVersusOpener.last.key===key && now - showVersusOpener.last.t < 5*60*1000;
   showVersusOpener.last = {key, t: now};
-  const hold = repeat ? 900 : (isBoss ? 2600 : 1700);
+  const hold = repeat ? 900 : lair ? 4300 : (isBoss ? 2600 : 1700); // FLAIR1: the lair's opener holds longer (a quick retry still gets the short beat); a tap skips it as ever
   let gone = false;
-  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node), 360); };
+  const close = ()=>{ if(gone) return; gone = true; el.classList.add('is-leaving'); setTimeout(()=> el.remove(), 380); if(isBoss) setTimeout(()=> bossEntrance(node, lair), 360); };
   el.addEventListener('click', close);
   setTimeout(close, hold);
   try{ if(isBoss){ if(SoundKit.bossSting) SoundKit.bossSting(); else if(SoundKit.castleCollapse) SoundKit.castleCollapse(); } else if(SoundKit.pitchChime) SoundKit.pitchChime(); }catch(e){} // VIS3 (2026-10-26, V5): a boss opens on its sting
@@ -81690,6 +81787,7 @@ function renderMatchUI(){
       </div>
     </div>
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
+      ${flairLairMatch(m) ? '<div class="fl1-vignette" aria-hidden="true"></div>' /* FLAIR1 (2026-10-28): the Dragon Lair's last fight: a quiet ember edge, under the cards, never over them */ : ''}
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
         ${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy2" data-respid="2" data-resrow="2"></div>` : ''}${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy1" data-respid="2" data-resrow="1"></div>` : ''}
@@ -90358,6 +90456,11 @@ async function showEndSign(m){
   });
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
+  if(kind === 'victory' && flairLairMatch(m)){ // FLAIR1 (2026-10-28): clearing the Dragon Lair: its own banner (the first clear closes the 0-20 road)
+    el.classList.add('end-lair'); el.textContent = '';
+    const t = document.createElement('span'); t.className = 'fl1-win-title'; t.textContent = TX('ui.fl1-win'); el.appendChild(t);
+    const sb = document.createElement('small'); sb.className = 'end-sign-sub fl1-win-sub'; sb.textContent = TX(m.fightFirstClear ? 'ui.fl1-win-first' : 'ui.fl1-win-again'); el.appendChild(sb);
+  }
   if(m.endReason === 'raidTime'){ el.classList.add('end-raid-time'); const sub = document.createElement('small'); sub.className = 'end-sign-sub'; sub.textContent = `The raid ends after ${m.raidRoundCap} turns.`; el.appendChild(sub); }
   battlefield.appendChild(el);
   try{ if(kind==='victory') Songbook.sting('victory'); else if(kind==='defeat') Songbook.sting('defeat'); }catch(e){} // 2026-10-10: Songbook stings
