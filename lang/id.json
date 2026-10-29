@@ -3616,5 +3616,16 @@
  "Undo": "Urungkan",
  "Copy my picks": "Salin pilihan saya",
  "Copied: paste it to Claude": "Tersalin: tempel ke Claude",
- "Nothing changed yet": "Belum ada perubahan"
+ "Nothing changed yet": "Belum ada perubahan",
+ "Carried": "Dibawa",
+ "Unique": "Khas",
+ "Your note": "Catatanmu",
+ "Claude's pick": "Pilihan Claude",
+ "You asked for this card (or this cut) in one of your notes.": "Kamu meminta kartu ini (atau pencoretan ini) di salah satu catatanmu.",
+ "Claude chose this one; you did not ask for it.": "Claude yang memilih ini; kamu tidak memintanya.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "Menyalin pilihan Coret/Simpan-mu sebagai teks, siap ditempel ke Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} kartu baru, {y}/{m} kartu terbawa",
+ "{x}/{n} new cards": "{x}/{n} kartu baru",
+ "{x} new cards, {y} carried cards": "{x} kartu baru, {y} kartu terbawa",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Penyergapan berada di tengah jalannya: tidak bisa dipindah atau ditautkan."
 }

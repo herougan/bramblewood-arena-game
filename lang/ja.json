@@ -3614,5 +3614,16 @@
  "Undo": "元に戻す",
  "Copy my picks": "選択をコピー",
  "Copied: paste it to Claude": "コピーしました：Claudeに貼り付けてください",
- "Nothing changed yet": "まだ変更なし"
+ "Nothing changed yet": "まだ変更なし",
+ "Carried": "持ち越し",
+ "Unique": "固有",
+ "Your note": "あなたのメモ",
+ "Claude's pick": "Claudeの選択",
+ "You asked for this card (or this cut) in one of your notes.": "このカード（またはこのカット）はあなたのメモで求められたものです。",
+ "Claude chose this one; you did not ask for it.": "これはClaudeが選びました。あなたの指定ではありません。",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "カット/残すの選択をテキストとしてコピーします。そのままClaudeに貼り付けられます",
+ "{x}/{n} new cards, {y}/{m} carried cards": "新カード {x}/{n}、持ち越しカード {y}/{m}",
+ "{x}/{n} new cards": "新カード {x}/{n}",
+ "{x} new cards, {y} carried cards": "新カード {x}、持ち越しカード {y}",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "待ち伏せは道の真ん中にあります。移動もリンクもできません。"
 }

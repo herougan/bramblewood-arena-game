@@ -3616,5 +3616,16 @@
  "Undo": "Annulla",
  "Copy my picks": "Copia le mie scelte",
  "Copied: paste it to Claude": "Copiato: incollalo a Claude",
- "Nothing changed yet": "Nessuna modifica"
+ "Nothing changed yet": "Nessuna modifica",
+ "Carried": "Riportata",
+ "Unique": "Esclusiva",
+ "Your note": "La tua nota",
+ "Claude's pick": "Scelta di Claude",
+ "You asked for this card (or this cut) in one of your notes.": "Hai chiesto questa carta (o questo taglio) in una delle tue note.",
+ "Claude chose this one; you did not ask for it.": "Claude ha scelto questa; non l'avevi chiesta.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "Copia le tue scelte Taglia/Tieni come testo, pronto da incollare a Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} carte nuove, {y}/{m} carte riportate",
+ "{x}/{n} new cards": "{x}/{n} carte nuove",
+ "{x} new cards, {y} carried cards": "{x} carte nuove, {y} carte riportate",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "L'imboscata si trova a metà della sua strada: non si può spostare né collegare."
 }

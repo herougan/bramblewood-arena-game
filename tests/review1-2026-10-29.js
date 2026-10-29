@@ -30,7 +30,8 @@ ok(!fs.existsSync(path.join(ROOT, 'index.html')) || /const MAP_REVIEW = \{"built
   ok(/rv1ReviewOf\(s, top\)/.test(body) && /ui\.rv1-none/.test(body) && /has-rv1/.test(body), '3. a section without review data shows the list as before + "No review yet"');
   ok(['ui.rv1-chosen', 'ui.rv1-cut', 'ui.rv1-maybe'].every(k=> body.includes(k)) && /part\('chosen'/.test(body) && /part\('cut'/.test(body) && /part\('maybe'/.test(body), '3. Chosen, Cut cards and Maybe parts');
   ok(/rv1Copy/.test(body) && /clipboard\.writeText/.test(body) && /rv1PicksText\(ov\)/.test(body) && /Escape/.test(body) && /wireRewardZoom\(ov\)/.test(body), '3. Copy my picks, Escape and zoom stay');
-  ok(/vis4MapCardTilesHTML\(\[e\.id\], defs, \{packs: true\}\)/.test(app) && /title="\$\{escapeAttr\(why\)\}"/.test(app) && /rv1-by is-/.test(app) && /rv1-act/.test(app), '3. tiles reuse VIS4\'s (zoom), carry the why as title + caption, a by-badge and a flip button'); }
+  // 2026-10-29 (package REVIEW2): the why is the tile's title only, the by-badge became the pills (tests/review2-2026-10-29.js), the cards are deck-size
+  ok(/vis4MapCardTilesHTML\(\[e\.id\], defs, \{packs: true, large: true\}\)/.test(app) && /title="\$\{escapeAttr\(e\.why \|\| ''\)\}"/.test(app) && /rv2-pill is-/.test(app) && /rv1-act/.test(app), '3. tiles reuse VIS4\'s (zoom) at deck size, carry the why as title, pills and a flip button'); }
 { const i = app.indexOf('function rv1PicksText('), body = app.slice(i, app.indexOf('\nfunction ', i + 10)), f = new Function(body + '\nreturn rv1PicksText;')();
   const tile = (kind, id, name)=> ({dataset: {rvKind: kind, rvId: id}, querySelector: ()=> ({getAttribute: ()=> name})});
   const sec = {dataset: {rvLabel: 'Map 4 / Map'}, querySelectorAll: ()=> [tile('chosen', 'a', 'Alpha'), tile('cut', 'b', 'Beta'), tile('maybe', 'c', 'Gamma')]};

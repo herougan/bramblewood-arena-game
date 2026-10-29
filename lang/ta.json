@@ -3617,5 +3617,16 @@
  "Undo": "செயல்தவிர்",
  "Copy my picks": "என் தேர்வுகளை நகலெடு",
  "Copied: paste it to Claude": "நகலெடுத்தது: Claude-இடம் ஒட்டவும்",
- "Nothing changed yet": "இன்னும் மாற்றம் இல்லை"
+ "Nothing changed yet": "இன்னும் மாற்றம் இல்லை",
+ "Carried": "எடுத்துச்சென்றது",
+ "Unique": "தனித்துவம்",
+ "Your note": "உங்கள் குறிப்பு",
+ "Claude's pick": "Claude-இன் தேர்வு",
+ "You asked for this card (or this cut) in one of your notes.": "இந்த அட்டையை (அல்லது இந்த நீக்கத்தை) உங்கள் குறிப்புகளில் ஒன்றில் கேட்டீர்கள்.",
+ "Claude chose this one; you did not ask for it.": "இதை Claude தேர்ந்தெடுத்தது; நீங்கள் கேட்கவில்லை.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "உங்கள் நீக்கு/வை தேர்வுகளை உரையாக நகலெடுக்கிறது, Claude-இடம் ஒட்டத் தயார்",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} புதிய அட்டைகள், {y}/{m} எடுத்துச்சென்ற அட்டைகள்",
+ "{x}/{n} new cards": "{x}/{n} புதிய அட்டைகள்",
+ "{x} new cards, {y} carried cards": "{x} புதிய அட்டைகள், {y} எடுத்துச்சென்ற அட்டைகள்",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "பதுங்குத் தாக்குதல் அதன் சாலையின் நடுவில் உள்ளது: நகர்த்தவோ இணைக்கவோ முடியாது."
 }

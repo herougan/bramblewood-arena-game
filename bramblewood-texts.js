@@ -2832,7 +2832,19 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv1-undo": "Undo",
   "ui.rv1-copy": "Copy my picks",
   "ui.rv1-copied": "Copied: paste it to Claude",
-  "ui.rv1-copy-none": "Nothing changed yet"
+  "ui.rv1-copy-none": "Nothing changed yet",
+  "ui.rv2-tag-skirmish": "Skirmish",
+  "ui.rv2-tag-carried": "Carried",
+  "ui.rv2-tag-unique": "Unique",
+  "ui.rv2-tag-owner": "Your note",
+  "ui.rv2-tag-claude": "Claude's pick",
+  "ui.rv2-tip-owner": "You asked for this card (or this cut) in one of your notes.",
+  "ui.rv2-tip-claude": "Claude chose this one; you did not ask for it.",
+  "ui.rv2-copy-tip": "Copies your Cut/Keep choices as text, ready to paste to Claude",
+  "ui.rv2-count": "{x}/{n} new cards, {y}/{m} carried cards",
+  "ui.rv2-count-new": "{x}/{n} new cards",
+  "ui.rv2-count-free": "{x} new cards, {y} carried cards",
+  "ui.rv2-ambush-fixed": "The Ambush lies in the middle of its road: it can't be moved or linked."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -3614,5 +3614,16 @@
  "Undo": "復原",
  "Copy my picks": "複製我的選擇",
  "Copied: paste it to Claude": "已複製：貼給 Claude",
- "Nothing changed yet": "尚未更改"
+ "Nothing changed yet": "尚未更改",
+ "Carried": "沿用",
+ "Unique": "專屬",
+ "Your note": "你的備註",
+ "Claude's pick": "Claude 的選擇",
+ "You asked for this card (or this cut) in one of your notes.": "你在備註裡要求了這張卡牌（或這次剔除）。",
+ "Claude chose this one; you did not ask for it.": "這張由 Claude 選擇，不是你要求的。",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "將你的剔除/保留選擇複製為文字，可直接貼給 Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} 張新卡，{y}/{m} 張沿用卡",
+ "{x}/{n} new cards": "{x}/{n} 張新卡",
+ "{x} new cards, {y} carried cards": "{x} 張新卡，{y} 張沿用卡",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "伏擊位於其道路正中：不能移動，也不能連線。"
 }

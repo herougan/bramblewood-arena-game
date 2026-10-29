@@ -13859,6 +13859,45 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .rv1-by.is-owner{background:#e0b030; color:#222;}
 .rv1-act{font:700 10px/1 'Baloo 2',system-ui,sans-serif; min-height:24px; padding:3px 8px; border-radius:999px; border:1px solid rgba(255,255,255,.3); background:rgba(255,255,255,.08); color:inherit; cursor:pointer;}
 .rv1-tile.is-flipped .rv1-act{background:#6fd16f; color:#112;}
+/* 2026-10-29 (package REVIEW2; owner 19:14): every list is a panel of its own, Chosen / Maybe / Cut cards are boxed parts, the cards are deck-size, the
+   reasons are pills, Copy my picks has a tooltip and a live "X/N new cards, Y/M carried cards" line. */
+.pk1-mc-modal{max-width:1040px;}
+.pk1-mc-overlay .pk1-mc-body{padding:2px 2px 8px;}
+.rv2-panel{margin:14px 0 18px; padding:12px 12px 10px; border-radius:16px; background:var(--surface-2); border:2px solid var(--surface-border); box-shadow:0 2px 0 rgba(0,0,0,.08);}
+.rv2-panel > h3{margin:0 0 6px; padding:0 0 8px; font:800 17px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.01em; border-bottom:2px solid var(--surface-border);}
+.rv2-panel > h3 small{font-size:13px;}
+.rv1-part{margin:10px 0 0; padding:8px 10px 6px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); border-left:6px solid var(--surface-border);}
+.rv1-part.is-chosen{border-left-color:#4caf50;} .rv1-part.is-maybe{border-left-color:#e0b030;} .rv1-part.is-cut{border-left-color:#c8553d; background:rgba(200,85,61,.07);}
+.rv1-part h4{margin:0 0 2px; font:800 14px/1.2 'Baloo 2',system-ui,sans-serif;}
+.pk1-mc-overlay .rv1-row{gap:14px 12px; padding:10px 0 8px; align-items:flex-start;}
+.rv1-tile{width:128px; gap:5px;}
+.rv1-tile .vis4-mc-card.is-large{width:100% !important; height:auto !important; margin:0; aspect-ratio:4/5; border-radius:8px; cursor:help; transform:none;}
+.rv1-tile .vis4-mc-card.is-large:hover, .rv1-tile .vis4-mc-card.is-large:focus-visible{transform:translateY(-2px);}
+.rv1-tile .vis4-mc-card.is-large .card-tile{width:100% !important; height:100% !important; font-size:inherit; margin:0; pointer-events:none;}
+.rv1-tile .vis4-mc-card.is-large.is-mystery .cnp-rw-back{font-size:32px;}
+.rv1-tile .vis4-mc-card.is-large .pk1-mc-pack{position:static; transform:none; display:block; width:max-content; margin:4px auto 0;}
+.rv1-tile .vis4-mc-card.is-large.has-pk1-tag{aspect-ratio:auto;}
+.rv1-tile .vis4-mc-card.is-large.has-pk1-tag .card-tile{height:auto !important; aspect-ratio:4/5;}
+.rv1-tile.is-cut .vis4-mc-card.is-large{opacity:.62; filter:grayscale(.55);}
+.rv1-tile.is-flipped.is-chosen .vis4-mc-card.is-large{opacity:.5; filter:grayscale(.8);}
+.rv1-tile.is-flipped.is-cut .vis4-mc-card.is-large, .rv1-tile.is-flipped.is-maybe .vis4-mc-card.is-large{opacity:1; filter:none;}
+.rv1-mark{top:-8px; left:-4px;}
+.rv2-pills{display:flex; flex-wrap:wrap; justify-content:center; align-content:flex-start; gap:3px; min-height:44px;}
+.rv2-pill.is-pack{background:rgba(0,0,0,.12); color:var(--ink);}
+.rv2-pill{font:800 10.5px/1 'Baloo 2',system-ui,sans-serif; padding:3px 7px; border-radius:999px; background:var(--surface-3); color:var(--ink); border:1px solid var(--surface-border); white-space:nowrap;}
+.rv2-pill.is-skirmish{background:#d98a2b; color:#241405; border-color:transparent;}
+.rv2-pill.is-carried{background:#5b86b8; color:#fff; border-color:transparent;}
+.rv2-pill.is-unique{background:#7da35b; color:#14210a; border-color:transparent;}
+.rv2-pill.is-owner{background:#e0b030; color:#222; border-color:transparent; cursor:help;}
+.rv2-pill.is-claude{background:#8a6fc4; color:#fff; border-color:transparent; cursor:help;}
+.rv1-act{min-height:30px; padding:4px 12px; font-size:12px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
+.rv1-bar{gap:8px 14px; margin:6px 0 2px; align-items:flex-start;}
+.rv2-copy{position:relative; display:inline-block;}
+.rv2-tip{position:absolute; left:0; top:calc(100% + 6px); z-index:5; width:max-content; max-width:min(300px, 80vw); padding:7px 10px; border-radius:10px; background:#222; color:#fff; font:600 12px/1.3 'Baloo 2',system-ui,sans-serif; box-shadow:0 4px 14px rgba(0,0,0,.35); opacity:0; visibility:hidden; transition:opacity .12s ease; pointer-events:none;}
+.rv2-copy:hover .rv2-tip, .rv2-copy:focus-within .rv2-tip{opacity:1; visibility:visible;}
+.rv2-counts{display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 220px; font:700 13px/1.3 'Baloo 2',system-ui,sans-serif;}
+.rv2-cl b{font-weight:800; opacity:.75; margin-right:4px;}
+@media (max-width:560px){ .pk1-mc-modal{max-height:94vh;} .rv2-panel{padding:10px 8px 8px; margin:12px 0 14px;} .rv1-part{padding:6px 6px 4px;} .rv1-tile{width:calc((100% - 12px) / 2); max-width:150px;} .pk1-mc-overlay .rv1-row{gap:12px 12px; justify-content:flex-start;} }
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */

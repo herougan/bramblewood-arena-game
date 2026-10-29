@@ -3617,5 +3617,16 @@
  "Undo": "실행 취소",
  "Copy my picks": "내 선택 복사",
  "Copied: paste it to Claude": "복사됨: Claude에게 붙여넣으세요",
- "Nothing changed yet": "아직 변경 없음"
+ "Nothing changed yet": "아직 변경 없음",
+ "Carried": "이월",
+ "Unique": "고유",
+ "Your note": "내 메모",
+ "Claude's pick": "Claude의 선택",
+ "You asked for this card (or this cut) in one of your notes.": "이 카드(또는 이 제외)는 내 메모에서 요청한 것입니다.",
+ "Claude chose this one; you did not ask for it.": "이 카드는 Claude가 골랐습니다. 내가 요청한 것이 아닙니다.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "제외/유지 선택을 텍스트로 복사합니다. 바로 Claude에게 붙여넣을 수 있습니다",
+ "{x}/{n} new cards, {y}/{m} carried cards": "새 카드 {x}/{n}, 이월 카드 {y}/{m}",
+ "{x}/{n} new cards": "새 카드 {x}/{n}",
+ "{x} new cards, {y} carried cards": "새 카드 {x}, 이월 카드 {y}",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "매복은 길 한가운데에 있습니다. 옮기거나 연결할 수 없습니다."
 }

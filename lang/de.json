@@ -3613,5 +3613,16 @@
  "Undo": "Rückgängig",
  "Copy my picks": "Meine Wahl kopieren",
  "Copied: paste it to Claude": "Kopiert: an Claude einfügen",
- "Nothing changed yet": "Noch nichts geändert"
+ "Nothing changed yet": "Noch nichts geändert",
+ "Carried": "Übernommen",
+ "Unique": "Eigen",
+ "Your note": "Deine Notiz",
+ "Claude's pick": "Claudes Wahl",
+ "You asked for this card (or this cut) in one of your notes.": "Du hast diese Karte (oder diesen Schnitt) in einer deiner Notizen verlangt.",
+ "Claude chose this one; you did not ask for it.": "Claude hat diese gewählt; du hast sie nicht verlangt.",
+ "Copies your Cut/Keep choices as text, ready to paste to Claude": "Kopiert deine Streichen/Behalten-Wahl als Text, bereit zum Einfügen bei Claude",
+ "{x}/{n} new cards, {y}/{m} carried cards": "{x}/{n} neue Karten, {y}/{m} übernommene Karten",
+ "{x}/{n} new cards": "{x}/{n} neue Karten",
+ "{x} new cards, {y} carried cards": "{x} neue Karten, {y} übernommene Karten",
+ "The Ambush lies in the middle of its road: it can't be moved or linked.": "Der Hinterhalt liegt mitten auf seiner Straße: Er lässt sich weder verschieben noch verbinden."
 }
