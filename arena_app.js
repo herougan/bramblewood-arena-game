@@ -4120,11 +4120,11 @@ function mapUnlockNumberOf(mapId, seen){
 // 2026-10-29 (package THEME3, owner 10-28 23:35 O7 / L1: "split T1-T2 and T3-T5. We only care about T1-T2 since T3-T5 dont have to be
 // thematic"): a map list that is not a map of its own. canonical/map-pools.json keeps the Tutorial's two lists under Bramblewood Outskirts'
 // submaps: "mtut12" (T-1 / T-2, the two scripted tutorials) and "mtut" (T-3 to T-5, any card for teaching). mtut12 reads as its map (mtut)
-// for its number (the tools number every list) and shows as its own section in the Map cards overlay and editor (mapPoolSections); no
+// for its number (mapNumberOf, inline: the tools number every list) and shows as its own section in the Map cards overlay and editor (mapPoolSections); no
 // fight draws on it. var: mapNumberOf can run before this line at load.
 var MP_EXTRA_LISTS = {mtut12: {map: 'mtut', label: 'T-1 / T-2', rest: 'T-3 to T-5'}};
 function mapNumberOf(mapId){
-  if(typeof MP_EXTRA_LISTS !== 'undefined' && MP_EXTRA_LISTS && MP_EXTRA_LISTS[mapId]) mapId = MP_EXTRA_LISTS[mapId].map; // THEME3: a list, not a map
+  if(mapId === 'mtut12') mapId = 'mtut'; // THEME3: a list, not a map (MP_EXTRA_LISTS; inline so the tools that lift this function alone still run)
   const all = typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : [], m = all.find(x=> x.id===mapId); if(!m) return null;
   const main = mainConquestMaps(); const i = main.indexOf(m.sub ? all.find(x=> x.id===m.parent) : m);
   // 2026-10-12 (user: "the first map with the otters ... is map 0, not 1"): maps count from 0. Clovermead was inserted as
