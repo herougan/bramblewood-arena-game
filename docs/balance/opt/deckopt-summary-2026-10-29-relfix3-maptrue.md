@@ -1292,3 +1292,81 @@ Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps
 | ref:road19 @ 19-2: aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall | 51.6% | 67.2% | -15.6 [-32.4, 1.2] |
 | ref:expected @ 19-3: aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 81.3% | 57.8% | +23.4 [8, 38.9] |
 
+## Map 20: The Sundered Peak (`m11`), your level 1
+
+- Throughput: 28688 games in 544.8 s = **52.7 games/s** (2 workers). Search: ga, budget 8000 games (8188 map cards, 0 generations, 2 restarts; 4784 with the candidates). Reproduce: `node tools/opt/deckopt.js --map m11 --seed bramble --budget 8000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true`
+- Pool: 380 cards (26 map cards + 354 owned by then); phase 2 384 (+4 candidates).
+- Mode: **map-true**, rarity cap **superrare** (the highest of the map's fights); submaps open by then: me, mx. Left out: first obtainable after this map 3 (balloon-archer, cinder-gecko, siege-rhino); not obtainable (not in the progression plan or an earlier map's cards) 2 (ember-jackal, tide-spirit); over the map's rarity cap (superrare) 5 (caldera-wyrm, fire-drake-hatchling, old-snapjaw, the-contradiction, the-gannet-queen).
+
+Phase 2 candidates: **4** (score >= 1, lowered from 3 to reach 4). Map: biome volcanic-ash (kin caves, jungle, mountain-sky, pale-desert, tundra-ice), terrain types Volcanic, field aiGuardLethal, ashyAfterEruption, boon, bossSurge, enemyOre, eruption, phase:cycle, phaseDay, phaseNight, scorchedOverScorching, wildfire, wind, windfall, unit types Amphibian 2, Bear 3, Bird 2, Insect 2, Undead 4, Ursid 3, Volcanic 11, skill families fire 2, ranged 3, siege 2.
+
+| Card | rarity | obtainable | score | why |
+|---|---|---|---|---|
+| Firefly Swarm | uncommon | Map 20 | 8 | biome volcanic-ash; terrain type Volcanic; type Volcanic (11 map cards); type Insect (2 map cards); animal group beetle (like Pumice Beetle); ranged skills (3 map cards); fire skills (2 map cards) |
+| Pall Wraith | rare | Map 20 | 6 | biome volcanic-ash; terrain type Volcanic; type Volcanic (11 map cards); type Undead (4 map cards); night (field phase:cycle) |
+| Fire Hawk | rare | Map 20 | 2 | type Bird (2 map cards); fire skills (2 map cards) |
+| Glasswing Butterfly | rare | Map 20 | 2 | kin biome jungle; type Insect (2 map cards) |
+
+Excluded: map rule: a faction card (PRO3: left out of PRO pools; --faction keeps them) 49; map rule: first obtainable after this map 32; map rule: not obtainable (not in the progression plan or an earlier map's cards) 255; map rule: over the map's rarity cap (superrare) 53; plan bucket materia 6; plan bucket nest 7; plan bucket raid 4; plan bucket smith 1; plan bucket unsorted 27.
+
+- **Optimum (map cards)**: score 71% [69.1%, 73%], mirror 78.7%, road 48%: 3x Obsidian Scorpion, 3x Otter Centurion (owned), 2x Echidna Quillshot, 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Baby Bat (owned), 1x Cave Warlord, 1x Diving Bell Spider (owned), 1x Eagle-Owl Quartermaster (owned), 1x Kraken Spawnling (owned), 1x Reef Shark (owned), 1x Taiga Lynx (owned), 1x Walrus Icebreaker (owned)
+- **Optimum (map cards + candidates)**: score 75.1% (+4.1 pts): 3x Fire Hawk (candidate), 3x Obsidian Scorpion, 3x Otter Centurion (owned), 2x Baby Bat (owned), 2x Echidna Quillshot, 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Kraken Spawnling (owned), 1x Reef Shark (owned), 1x Walrus Icebreaker (owned)
+- Best candidate swaps into the map-card optimum: Fire Hawk x3 +4.2; Glasswing Butterfly x3 +2.7; Firefly Swarm x3 -0.5; Pall Wraith x3 -1.6
+
+**Distinct optima** (at least 6 copies apart, within 10 points of the best, from 10 decks the searches ended on): 2
+
+0. 75.1% [73.3%, 77%], 0 copies from the optimum: 3x Fire Hawk (candidate), 3x Obsidian Scorpion, 3x Otter Centurion (owned), 2x Baby Bat (owned), 2x Echidna Quillshot, 2x Ibex Rockcaller (owned), 2x Talon Archer (owned), 1x Kraken Spawnling (owned), 1x Reef Shark (owned), 1x Walrus Icebreaker (owned)
+1. 69.2% [67.1%, 71.2%], 20 copies from the optimum: 4x Cave Warlord, 4x Magma Wraith, 3x Ashbone Ghoul, 3x Bear Cub, 3x Magma Salamander, 3x Obsidian Lich
+
+| row vs column (fair h2h, the map's fields) | 0 | 1 |
+|---|---|---|
+| 0 | - | 61.3% (+80) |
+| 1 | 38.7% (-80) | - |
+
+- **Fight decks vs the optimum:** Elo gap median 338 (124 to 842); as your deck they score 4.1 to 52.8 points below the optimum.
+
+| Opponent deck | fair h2h of the optimum | Elo gap | its own score as your deck | pts below optimum | road target |
+|---|---|---|---|---|---|
+| 20-1 skirmish's deck | 92.2% [83%-96.6%] | 429 [275, 582] | 43.4% | 30.7 ±3.9 | 90% |
+| 20-2 skirmish's deck | 99.2% [92.9%-99.9%] | 842 [448, 842] | 20.8% | 52.8 ±3.5 | 85.7% |
+| 20-3 skirmish's deck | 98.4% [91.7%-99.7%] | 720 [417, 842] | 36.4% | 37.3 ±3.9 | 81.4% |
+| 20-4 skirmish's deck | 81.3% [70%-88.9%] | 255 [147, 362] | 70.7% | 4.1 ±2.8 | 77.1% |
+| 20-5 elite's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 45.4% | 28.9 ±3.8 | 72.9% |
+| 20-6 elite's deck | 76.6% [64.9%-85.3%] | 206 [107, 305] | 47% | 28 ±3.8 | 68.6% |
+| 20-7 elite's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 31.6% | 42.7 ±3.7 | 64.3% |
+| 20-8 elite's deck | 67.2% [55%-77.4%] | 124 [35, 214] | 38.5% | 37.1 ±4 | 60% |
+| 20-9 boss's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 43.2% | 31.2 ±3.8 | 50% |
+| 20-10 worldboss's deck | 87.5% [77.2%-93.5%] | 338 [212, 464] | 49.8% | 24.5 ±3.7 | 40% |
+| reference starter deck under 20-1's field | 98.4% [91.7%-99.7%] | 720 [417, 842] | 12.6% | 61.1 ±3.2 | - |
+| reference deck (Map 20) under 20-2's field | 29.7% [19.9%-41.8%] | -150 [-242, -58] | 83.1% | -5.2 ±2.9 | - |
+| expected player deck (expectedPlayerDeck) under 20-3's field | 90.6% [81%-95.6%] | 394 [252, 536] | 22.1% | 52.1 ±3.7 | - |
+
+| Fight (as the game builds it) | optimum wins | road-curve target |
+|---|---|---|
+| 20-1 skirmish | 85.9% [75.4%-92.4%] | 90% |
+| 20-2 skirmish | 92.2% [83%-96.6%] | 85.7% |
+| 20-3 skirmish | 87.5% [77.2%-93.5%] | 81.4% |
+| 20-4 skirmish | 60.9% [48.7%-71.9%] | 77.1% |
+| 20-5 elite | 34.4% [23.9%-46.6%] | 72.9% |
+| 20-6 elite | 12.5% [6.5%-22.8%] | 68.6% |
+| 20-7 elite | 34.4% [23.9%-46.6%] | 64.3% |
+| 20-8 elite | 0% [0%-5.7%] | 60% |
+| 20-9 boss | 50% [38.1%-61.9%] | 50% |
+| 20-10 worldboss | 46.9% [35.2%-58.9%] | 40% |
+
+| Field (fight) | optimum with field | without | impact |
+|---|---|---|---|
+| fight:20-1 @ 20-1: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, wind windy, windfall | 92.2% | 75% | +17.2 [4.7, 29.7] |
+| fight:20-2 @ 20-2: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 99.2% | 92.2% | +7 [0.1, 14] |
+| fight:20-3 @ 20-3: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 98.4% | 82.8% | +15.6 [5.9, 25.4] |
+| fight:20-4 @ 20-4: aiGuardLethal, ashyAfterEruption, boon restlessDead, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 81.3% | 50% | +31.3 [15.7, 46.8] |
+| fight:20-5 @ 20-5: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 87.5% | 57.8% | +29.7 [15.1, 44.2] |
+| fight:20-6 @ 20-6: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 76.6% | 64.1% | +12.5 [-3.2, 28.2] |
+| fight:20-7 @ 20-7: aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T2 (the eruption), wind windy, windfall | 87.5% | 89.1% | -1.6 [-12.7, 9.6] |
+| fight:20-8 @ 20-8: aiGuardLethal, ashyAfterEruption, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption), wildfire, wind windy, windfall | 67.2% | 68.8% | -1.6 [-17.7, 14.6] |
+| fight:20-9 @ 20-9: aiGuardLethal, ashyAfterEruption, bossSurge {"atk":2,"hp":4}, eruption 3, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T3 (the eruption), wind windy, windfall | 87.5% | 76.6% | +10.9 [-2.2, 24.1] |
+| fight:20-10 @ 20-10: aiGuardLethal, ashyAfterEruption, bossSurge {"atk":2,"hp":4}, enemyOre {"stone":1,"metal":1,"metalEvery":2}, eruption 3, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, terrain Volcanic Ground T3 (the eruption), wind windy, windfall | 87.5% | 54.7% | +32.8 [18.2, 47.5] |
+| ref:starter @ 20-1: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, wind windy, windfall | 98.4% | 79.7% | +18.8 [8.4, 29.1] |
+| ref:road20 @ 20-2: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 29.7% | 32.8% | -3.1 [-19.2, 12.9] |
+| ref:expected @ 20-3: aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T1, wind windy, windfall | 90.6% | 84.4% | +6.3 [-5.2, 17.7] |
+
