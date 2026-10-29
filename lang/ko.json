@@ -3598,5 +3598,11 @@
  "🃏 Map cards": "🃏 지도 카드",
  "{name}: the map's cards": "{name}: 지도의 카드",
  "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.": "이 지도 목록의 모든 카드: 지도 자체, 각 보조 지도, 특별 카드. 팩 표시가 있는 카드는 그 팩에서도 나옵니다.",
- "Not obtainable yet: in no map list and no pack": "아직 얻을 수 없음: 어떤 지도 목록에도, 어떤 팩에도 없음"
+ "Not obtainable yet: in no map list and no pack": "아직 얻을 수 없음: 어떤 지도 목록에도, 어떤 팩에도 없음",
+ "Final boss of the road": "이 길의 최종 보스",
+ "The Dragon's Lair": "용의 둥지",
+ "Something vast sleeps where the mountain's fire is born. It is awake.": "산의 불이 태어나는 곳에 거대한 무언가가 잠들어 있다. 그것은 깨어 있다.",
+ "THE DRAGON FALLS": "용이 쓰러졌다",
+ "The road from Map 0 to Map 20 is walked to its end.": "지도 0에서 지도 20까지의 길을 끝까지 걸었다.",
+ "The lair falls quiet once more.": "둥지가 다시 고요해졌다."
 }

@@ -59,7 +59,7 @@ ok(!H.isMapUnlocked(mp, progress), 'a fresh save has it locked');
 // --- 2. the locked entrance
 const SUBMAP_CAVES = new Function(constLine('SUBMAP_CAVES') + '\nreturn SUBMAP_CAVES;')();
 const entrances = new Function('CONQUEST_MAPS', 'H', 'SUBMAP_CAVES', 'getFlags', [fn('escapeAttr'), fn('escapeHtml'),
-  'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false;', fn('mainConquestMaps'), fn('mapNumberOf'), 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
+  'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false;', fn('flairLairMap'), fn('flairLairEntranceHTML'), fn('mainConquestMaps'), fn('mapNumberOf'), 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
   'const isMapUnlocked = H.isMapUnlocked, conquestMapCleared = H.conquestMapCleared, conquestNodeId = H.conquestNodeId;', fn('subMapEntrancesHTML')].join('\n') +
   '\nreturn subMapEntrancesHTML;')(CONQUEST_MAPS, H, SUBMAP_CAVES, ()=> flags);
 progress = JSON.parse(JSON.stringify(before));

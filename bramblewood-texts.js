@@ -2813,7 +2813,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pk1-map-cards-title": "{name}: the map's cards",
   "ui.pk1-map-cards-sub": "Every card on this map's lists: the map's own, each side map's and the special ones. A card marked with a pack also comes out of that pack.",
   "ui.pk1-in-pack": "Pack {n}",
-  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack"
+  "ui.pk1-not-in-pack": "Not obtainable yet: in no map list and no pack",
+  "ui.fl1-kicker": "Final boss of the road",
+  "ui.fl1-title": "The Dragon's Lair",
+  "ui.fl1-sub": "Something vast sleeps where the mountain's fire is born. It is awake.",
+  "ui.fl1-win": "THE DRAGON FALLS",
+  "ui.fl1-win-first": "The road from Map 0 to Map 20 is walked to its end.",
+  "ui.fl1-win-again": "The lair falls quiet once more."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

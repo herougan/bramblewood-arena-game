@@ -10,6 +10,14 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - First runs: `docs/balance/bench-skills-2026-10-28.md` (+ `bench-skill-prices-2026-10-28.json`), `docs/balance/bench-contrib-global-2026-10-28.md`, `docs/balance/bench-deck-map12-mh-2026-10-28.md`.
 - Hub: a 🧪 Workbench section in the 🧬 Deck optimizer tab (the mispriced skills, value per budget point for every card, the focused decks).
 - `tools/opt/deckopt.js` exports its evaluation helpers (no behaviour change). Test: `tests/tools1-2026-10-28.js`.
+## 2026-10-28 (package FLAIR1: the Dragon Lair's own final-boss flair)
+- **The Dragon Lair (Volcano Lair, Map 20) is the 0-20 road's last boss and looks it** (owner 23:06: "a flair that's not the normal boss flair"). Driven by `finalBoss:true` on the map `mx` and its node 20-B-4 (`flairLairMap` / `flairLairNode`), not by a name; molten gold and ember where the normal boss is blood red with a skull. CSS and existing glyphs only.
+- **Map:** the lair's entrance on Map 20 gets an ember ring with a slow glow and a crown; the 20-B-4 node a turning molten ring, a crown and a flame.
+- **Fight intro:** the versus opener turns molten gold, with a "Final boss of the road / The Dragon's Lair" banner and a subtitle, held 4.3 s (a retry keeps the short beat); a tap still skips it. The title card after it carries the same name for 3.4 s.
+- **Battle:** a quiet ember edge under the board (z-index -1, click-through), never over a card.
+- **Victory:** "THE DRAGON FALLS" with a crown; the first clear adds "The road from Map 0 to Map 20 is walked to its end."
+- Reduced motion and low / no effects stop every animation. Texts in 12 packs (`tools/i18n_2026_10_28_flair1.py`; Tagalog, Tamil, Japanese, Korean deserve a native read). Tests: `tests/flair1-2026-10-28.js`, `tests/e2e/flair1_2026_10_28.py`; shots in `docs/screens/flair1/`.
+
 ## 2026-10-28 (package APPLY1: the THEME2 map lists applied)
 - **Every map's card list is THEME2's** (owner 23:05 "Okay to THEME1-1"; 23:06 submap classes). 25 main maps: 15 cards each (8-11 unique + 4-5 carried). 15 submaps: the proposal's cards that are not already on the parent's list (a submap fight draws its parent's list + its own + special, so those come in anyway); a submap fight's pool is 16-27 cards, not the proposal's 11-14 (call in the report). The tutorial, endless dungeons and tower lists are unchanged; 6 special cards now on their map's list dropped as duplicates. List entries 736 -> 554. `python3 tools/apply1_theme2_2026_10_28.py` (targeted rewrite of `canonical/map-pools.json`).
 - **Packs follow** (PACK1's derived pools): Pack 1 92 -> 50, Pack 2 128 -> 57, Pack 3 116 -> 59, Pack 4 29 -> 24; basic-pack cards in no pack ("Not obtainable yet") 91 -> 266. `canonical/card-obtain-maps.json` regenerated (170 cards' map changed).
