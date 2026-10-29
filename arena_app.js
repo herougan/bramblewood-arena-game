@@ -8574,6 +8574,28 @@ function socketSlotHTML(d){
     const tip = k ? TX('ui.h1-slot-full', {gem: socketGemName(k.id)}) : TX('ui.h1-slot-empty');
     return `<div class="h1-slot ${k ? 'is-full mk-' + base : 'is-empty'}"${i ? ` style="top:calc(38% + ${i * 22}px)"` : ''} title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}" role="img">${k ? `<span>${k.icon}</span>` : ''}</div>`; }).join('');
 }
+// 2026-10-29 (package UI3, S5; owner 23:01: "Cards that resist poison, heat, cold should be slightly (very slightly) tinged towards that colour methinks. Those that
+// can see in the dark as well - blue-black. Those who are diurnal and nocturnal are also very slightly tinged yellow or dark blue."): a faint wash and inner glow over
+// the art, on every card face (cardTileHTML, so hand, board, Codex, rewards, the detail). Resist or Immune to poison -> green; heat / fire (Dry too) -> orange-red;
+// cold -> icy blue; Darksight / Sonar / Keen Sense -> blue-black; Diurnal -> warm yellow; Nocturnal -> dark blue. Up to three blend in that order (the wash is a
+// gradient between them). It sits under the name and numbers (z 1, they are 2+), is static, and goes flat under Low effects and off under No effects.
+const UI3_TINTS = [['poison', '70,185,80'], ['heat', '238,98,40'], ['cold', '118,196,246'], ['dark', '22,30,78'], ['diurnal', '255,206,72'], ['nocturnal', '40,56,160']];
+function ui3TintKeys(d){
+  try{
+    const e = (d && d.effects) || {}, res = [].concat(e.resist || [], d && d.resist || [], e.immune || []).map(x=> String(x).toLowerCase()), on = new Set();
+    if(res.includes('poison')) on.add('poison');
+    if(res.includes('heat') || res.includes('fire') || e.dry) on.add('heat');
+    if(res.includes('cold') || res.includes('ice') || res.includes('frost')) on.add('cold');
+    if(e.darksight || e.sonar || e.keenSense) on.add('dark');
+    if(e.diurnal || e.diurnalHp || e.diurnalGrant) on.add('diurnal');
+    if(e.nocturnal || e.nocturnalHp || e.nocturnalGrant) on.add('nocturnal');
+    return UI3_TINTS.filter(t=> on.has(t[0])).slice(0, 3);
+  }catch(err){ return []; }
+}
+function ui3TintHTML(d){
+  const t = ui3TintKeys(d); if(!t.length) return '';
+  return `<i class="ui3-tint" aria-hidden="true" data-tint="${t.map(x=> x[0]).join(' ')}" style="${t.map((x, i)=> `--t${i + 1}:${x[1]}`).join(';')}"></i>`;
+}
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8633,10 +8655,10 @@ function cardTileHTML(d, opts){
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
-      <div class="rarity-band"></div>${CARD_FRAME_HTML}
+      ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -8655,7 +8677,7 @@ function cardTileHTML(d, opts){
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
-    <div class="rarity-band"></div>${CARD_FRAME_HTML}
+    ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
@@ -8779,6 +8801,17 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
+// 2026-10-29 (package UI3, S2): is this unit blind right now for its own trait? Sun-shy by day, Night-blind at night (the engine's sightMiss), unless an Illuminate
+// unit stands on its side (a foe Illuminate unit facing it lights it too: the engine reads that, this does not). live: the board card's {pid, uid}.
+function ui3SightBlindNow(e, lv){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || !dayNightOn(m)) return false;
+    const ph = m.engine.getPhase(); if(!((ph === 'day' && e.sunshy) || (ph === 'night' && e.nightblind))) return false;
+    if(e.trueStrike) return false;
+    const pl = lv && m.players[lv.pid]; if(!pl) return true;
+    const defs = getCardDefs(), lit = [].concat(pl.row.left || [], pl.row.center || [], pl.row.right || []).some(c=> c && c.hp > 0 && defs[c.defId] && defs[c.defId].effects && (defs[c.defId].effects.illuminate || defs[c.defId].effects.lantern));
+    return !lit;
+  }catch(err){ return false; }
+}
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8814,7 +8847,11 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
   if(e.natureForce) out.push(`<span title="Nature's Force">${iconHTML('nature-force', '🌪️')}${n1(e.natureForce)}</span>`);
-  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`);
+  if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if((e.sunshy || e.nightblind) && !(bopts && bopts.live)) { if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`); }
+  // 2026-10-29 (package UI3, S2; owner 23:01: "If a status/context pill is irrelevant e.g. night-blind, don't show it. In fact, just show that the blind context pill is sufficient."):
+  // in a fight a Sun-shy / Night-blind unit shows no pip while it sees (a night-blind unit by day), and the plain Blind pip while it is blind right now (the Blind status
+  // chip below the card already says it when it carries one: then no pip here, one Blind only). Outside a fight (hand, Codex, detail) the trait pip stays.
+  else if(e.sunshy || e.nightblind){ const lv = bopts.live; if(ui3SightBlindNow(e, lv) && !(lv.blind > 0)) out.push(`<span class="ab-blindnow" title="${escapeAttr('Blind: ' + (STATUS_KEYWORDS.find(k=> k.k === 'blind') || {}).text)}">${iconHTML('blind-now', '🕶️')}</span>`); }
   if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
   if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
@@ -38278,7 +38315,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
