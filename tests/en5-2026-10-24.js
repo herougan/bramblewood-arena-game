@@ -15,6 +15,7 @@ const so = id=> id === 1 ? 'A' : 'B';
 const U = (id, effects, o)=> Object.assign({id, name:id, attack:1, health:100, wait:0, cost:0, effects}, o || {});
 const defs = Object.assign({}, H.loadCardDefs(), {
   'x-hit': U('x-hit', {}), 'x-hit0': U('x-hit0', {}, {attack:0}),
+  'x-hitfly': U('x-hitfly', {flying:true}), 'x-breachfly': U('x-breachfly', {breach:2, flying:true}), // 2026-10-29 ENG13: Canopy Cover covers Flying / ranged attackers only
   'x-wall': U('x-wall', {}, {attack:0, health:500, wait:9}),
   'x-breach': U('x-breach', {breach:2}), 'x-breach1': U('x-breach1', {breach:true}),
   'x-cc': U('x-cc', {canopyCover:true}, {attack:0, health:5000, wait:9}), 'x-ccfly': U('x-ccfly', {canopyCover:true, flying:true}, {attack:0, health:5000, wait:9}),
@@ -41,16 +42,19 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   ok(b && b.dmg === 1, `plain Breach is Breach 1 (${b && b.dmg})`); }
 { const {e, P} = mk(); put(e, P, 1, 'x-breach', 0); const h0 = P[2].hq.hp; const ev = round(e, P);
   ok(!ev.some(x=> x.type === 'breachHQ') && P[2].hq.hp === h0 - 1, `no unit in front: it hits the bramble itself, no Breach on top (${h0} -> ${P[2].hq.hp})`); }
+// 2026-10-29 ENG13: the dodging attacker flies now (Canopy Cover no longer dodges a ground unit's melee swing)
 { const {e, P} = mk(); put(e, P, 1, 'x-breach', 0); const C = put(e, P, 2, 'x-cc', 0); let miss = 0, hits = 0; const r = {woods:true};
-  const m2 = mk(r, 9); put(m2.e, m2.P, 1, 'x-breach', 0); put(m2.e, m2.P, 2, 'x-cc', 0);
+  const m2 = mk(r, 9); put(m2.e, m2.P, 1, 'x-breachfly', 0); put(m2.e, m2.P, 2, 'x-cc', 0);
   for(let i = 0; i < 40; i++){ const ev = round(m2.e, m2.P); if(ev.some(x=> x.type === 'evaded')){ miss++; ok(!ev.some(x=> x.type === 'breachHQ'), 'a dodged swing: no Breach'); } else if(ev.some(x=> x.type === 'breachHQ')) hits++; }
   ok(miss > 5 && hits > 5, `Breach only on the swings that land (${hits} landed, ${miss} dodged)`); void C; }
 
 // ---- Canopy Cover -------------------------------------------------------------------------------------------------------------
-function dodges(rules, id, seed){ const {e, P} = mk(rules, seed || 11); put(e, P, 1, 'x-hit', 0); put(e, P, 2, id, 0); let cc = 0, other = 0, N = 300;
+// 2026-10-29 ENG13: the attacker is a Flyer by default (owner 21:36: "Canopy cover only blocks 50% attacks from ranged and flying attacks")
+function dodges(rules, id, seed, att){ const {e, P} = mk(rules, seed || 11); put(e, P, 1, att || 'x-hitfly', 0); put(e, P, 2, id, 0); let cc = 0, other = 0, N = 300;
   for(let i = 0; i < N; i++){ round(e, P).filter(x=> x.type === 'evaded').forEach(x=> x.reason === 'canopyCover' ? cc++ : other++); } return {cc, other, N}; }
 { const a = dodges({woods:true}, 'x-cc'); ok(a.cc > 110 && a.cc < 190 && a.other === 0, `under the trees (a forest map): about half the swings miss (${a.cc}/${a.N})`); }
 { const a = dodges({}, 'x-cc'); ok(a.cc === 0, `in the open: no Canopy Cover (${a.cc})`); }
+{ const a = dodges({woods:true}, 'x-cc', 11, 'x-hit'); ok(a.cc === 0, `2026-10-29 ENG13: a ground unit's melee swing is never dodged by Canopy Cover (${a.cc})`); }
 { const a = dodges({terrain:{biome:'forest', tier:1}}, 'x-cc'); ok(a.cc > 100, `the Old Woods terrain counts (${a.cc})`); }
 { const a = dodges({canopy:true}, 'x-cc'), b = dodges({undergrowth:true}, 'x-cc'); ok(a.cc > 100 && b.cc > 100, `High Canopy and the Undergrowth count (${a.cc}, ${b.cc})`); }
 { const a = dodges({woods:true}, 'x-ccfly'); ok(a.cc === 0, `a Flyer is not a ground unit: no Canopy Cover (its Flying dodge only: ${a.other})`); }
