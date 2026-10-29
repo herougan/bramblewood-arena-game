@@ -3655,5 +3655,6 @@
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "ஒரே வேகமுள்ள அலகுகளில் கடைசியாகச் செயல்படும். இரண்டு மெதுவான அலகுகள் வழக்கம்போல் மாறி மாறிச் செயல்படும்.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "மரங்களின் கீழ்: காட்டு வரைபடத்தில் (பழைய காடுகள்), உயர் மரவிதானம் அல்லது அடிமரப்புதர் உள்ள எந்தச் சண்டையும். தரையில்: பறக்காதது (தரையிறக்கப்பட்ட பறவையும் கணக்கு). இது தொலைவுத் தாக்குதல்களையும் (எய்வுகள், திறன்கள், எறியப்பட்ட பூமராங்) பறக்கும் தாக்குநர்களையும் மறைக்கும்; தரை அலகின் நெருக்கத் தாக்குதல் இன்னும் படும். ஒரே வீச்சு, ஏய்ப்பு போல, ஏய்ப்புக்கு மேல் அல்ல. உறுதித் தாக்கும் வெளிப்பட்டதும் இதைக் கடந்து பார்க்கும்.",
  "🛠️ Admin: {name} {from} → {to}": "🛠️ நிர்வாகி: {name} {from} → {to}",
- "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "மரங்களின் கீழ், இந்தத் தரை அலகு தன்னை நோக்கிய எய்வுகள், திறன்கள், பறக்கும் தாக்குதல்களில் பாதியைத் தவிர்க்கும்."
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "மரங்களின் கீழ், இந்தத் தரை அலகு தன்னை நோக்கிய எய்வுகள், திறன்கள், பறக்கும் தாக்குதல்களில் பாதியைத் தவிர்க்கும்.",
+ "Admin: {name} {from} → {to}": "நிர்வாகி: {name} {from} → {to}"
 }

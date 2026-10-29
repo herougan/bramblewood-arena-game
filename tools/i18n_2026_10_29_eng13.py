@@ -36,6 +36,8 @@ T = [  # English, then the 12 translations in CODES order
   '木々の下：森林マップ（古き森）、高い樹冠、下草のある戦闘すべて。地上：飛行でないこと（地に落ちた飛行ユニットも含む）。遠距離攻撃（射撃、スキル、投げたブーメラン）と飛行ユニットの攻撃を防ぐ。地上ユニットの近接攻撃は当たる。回避と同じく1回の判定で、回避とは重ならない。必中と露呈は見破る。',
   '나무 아래: 숲 지도(오래된 숲), 높은 수관, 덤불이 있는 모든 전투. 지상: 비행이 아님(떨어진 비행 유닛도 포함). 원거리 공격(사격, 스킬, 던진 부메랑)과 비행 공격자를 막아요. 지상 유닛의 근접 공격은 그대로 맞아요. 회피처럼 한 번 굴리며 회피와 겹치지 않아요. 필중과 노출은 꿰뚫어 봐요.']),
  ('🛠️ Admin: {name} {from} → {to}', ['🛠️ Admin : {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ நிர்வாகி: {name} {from} → {to}', '🛠️ Admin: {name} {from} → {to}', '🛠️ 管理员：{name} {from} → {to}', '🛠️ 管理員：{name} {from} → {to}', '🛠️ 管理者：{name} {from} → {to}', '🛠️ 관리자: {name} {from} → {to}']),
+ # the pack's lookup strips a leading emoji (tests/i18n-templates-2026-10-18.js), so the bare template too
+ ('Admin: {name} {from} → {to}', ['Admin : {name} {from} → {to}', 'Admin: {name} {from} → {to}', 'Admin: {name} {from} → {to}', 'Admin: {name} {from} → {to}', 'Admin: {name} {from} → {to}', 'Admin: {name} {from} → {to}', 'நிர்வாகி: {name} {from} → {to}', 'Admin: {name} {from} → {to}', '管理员：{name} {from} → {to}', '管理員：{name} {from} → {to}', '管理者：{name} {from} → {to}', '관리자: {name} {from} → {to}']),
 ]
 ph = lambda s: sorted(set(re.findall(r'\{\w+\}', s)))
 def dump(path, d):

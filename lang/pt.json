@@ -3654,5 +3654,6 @@
  "Acts last among units of the same Speed. Two Slow units take turns as usual.": "Age por último entre as unidades da mesma Velocidade. Duas unidades Lentas alternam como de costume.",
  "Under the trees: any fight on a forest map (the Old Woods), High Canopy or the Undergrowth. Ground: not Flying (a grounded flyer counts). It covers ranged attacks (shots, skills, a thrown Boomerang) and Flying attackers; a ground unit's melee attack still hits. One roll, like Evasive, and not on top of Evasive. True Strike and Exposed see through it.": "Sob as árvores: qualquer combate num mapa de floresta (os Bosques Antigos), Copa Alta ou o Sub-bosque. Em terra: não Voadora (uma voadora no chão conta). Cobre ataques à distância (disparos, habilidades, um Bumerangue lançado) e atacantes voadores; o ataque corpo a corpo de uma unidade terrestre continua a acertar. Um só lance, como Evasivo, e não além de Evasivo. Golpe Certeiro e Exposto atravessam-na.",
  "🛠️ Admin: {name} {from} → {to}": "🛠️ Admin: {name} {from} → {to}",
- "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Sob as árvores, esta unidade terrestre esquiva metade dos disparos, habilidades e ataques voadores dirigidos a ela."
+ "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Sob as árvores, esta unidade terrestre esquiva metade dos disparos, habilidades e ataques voadores dirigidos a ela.",
+ "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}"
 }
