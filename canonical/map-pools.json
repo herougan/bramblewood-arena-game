@@ -96,7 +96,7 @@
   "m5": {
    "cards": ["grave-grin-hyena", "savanna-cheetah", "spitting-cobra", "weaver-bird", "springbok-pronker", "dust-hyena", "marula-elephant", "pangolin-roller", "meerkat-burrower", "lodge-engineer", "leafcutter-gardener", "mouse-sapper", "house-cat", "plains-zebra"],
    "submaps": {
-    "my": ["hercules-beetle", "jaguar-stalker", "kinkajou-lurker", "pangolin-roller", "spitting-cobra", "weaver-bird", "rafflesia", "leafcutter-gardener", "vampire-bat", "redwood-woodpecker", "lyrebird-mimic", "apollo-butterfly", "poison-dart-croaker", "camouflage-frog"]
+    "my": ["hercules-beetle", "jaguar-stalker", "kinkajou-lurker", "pangolin-roller", "spitting-cobra", "weaver-bird", "leafcutter-gardener", "vampire-bat", "redwood-woodpecker", "lyrebird-mimic", "apollo-butterfly", "poison-dart-croaker", "camouflage-frog"]
    },
    "special": ["hoopoe-herald", "pride-queen"]
   },

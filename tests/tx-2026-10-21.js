@@ -166,7 +166,9 @@ ok(/cfBarHTML\(deckCfState, 'dk', defs\)/.test(app) && /cfBarHTML\(cf, 'dbp', nu
   V.noteMapEnteredForReveal('m1'); V.reset();
   ok(V.skillHiddenNow('diurnal') && V.maskHiddenSkills(lark)._hiddenSkills === 1, '7. Diurnal on Map 0 (a road fight): "?"');
   c2.matchState = {mode:'tutorial'}; V.reset();
-  ok(!V.skillHiddenNow('diurnal') && V.maskHiddenSkills(lark) === lark && V.skillHiddenNow('tide'), '7. ...in a tutorial fight it reads as Diurnal (Tide stays "?")');
+  // 2026-10-29 (package SKL0, owner 13:07 "Regarding T1-T2, all skills to be "?" until Map 0"): a T-1 / T-2 fight shows every skill but Flying as "?",
+  // Diurnal too (was: it read as Diurnal there); tests/skl0-2026-10-29.js
+  ok(V.skillHiddenNow('diurnal') && V.maskHiddenSkills(lark)._hiddenSkills === 2 && V.skillHiddenNow('tide'), '7. ...in a T-1 / T-2 fight it is "?" too (SKL0; Tide stays "?")');
   c2.matchState = null; V.reset();
   ok(V.skillHiddenNow('diurnal') && !JSON.parse(store.bramblewood_skill_revealed_v1 || '{"keys":[]}').keys.includes('diurnal'), '7. ...and the tutorial sight is not remembered');
   V.noteMapEnteredForReveal('mf'); V.reset();

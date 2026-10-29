@@ -50,6 +50,8 @@ EXPLICIT = {
 }
 # ---- the owner's cuts: on the list now (removed) or already off since THEME2 (recorded, never put back) ----
 OWNER_CUT = {
+    # 2026-10-29 (owner 13:07): "rafflesia, we'll find another place for it." Off The Canopy; unplaced until a later jungle map (20-30, Q10).
+    'my': {'rafflesia': '13:07: "we\'ll find another place for it" (off The Canopy; a later jungle map)'},
     'mb': {'grey-seal-bull': 'Q1', 'fiddler-crab-swarm': 'Q1', 'tidepool-trapper-crab': 'Q1', 'oyster-bank': 'Q1'},
     'mc': {'fulmar-spitter': 'Q1', 'oyster-bank': 'Q1'},
     'm2': {'old-sturgeon': 'Q2 (for now)', 'signal-crayfish': 'Q2', 'stone-turtle-warden': 'Q2'},
@@ -75,7 +77,6 @@ OWNER_IN = {
     'm2': {'pond-algae': 'Q2: keep Pond Algae on the freshwater lake'},
     'mp': {'alley-cat': 'Q3: moved here from Gatorback Swamp'},
     'm8': {'venomlord-serpent': 'Q3: its home is Map 6 now (Map 5\'s first clear still pays it: Map 5 SPECIAL)'},
-    'my': {'rafflesia': 'C2: placed by THEME3; a rainforest corpse flower (a 4th unique card here: owner call)'},
 }
 # ---- Claude's cuts and adds (L5), on theme: art, name, biome ----
 CLAUDE_CUT = {

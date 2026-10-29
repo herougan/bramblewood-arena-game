@@ -887,17 +887,15 @@
    "sub": true,
    "parent": "m5",
    "before": 13,
-   "after": 14,
-   "unique": 4,
+   "after": 13,
+   "unique": 3,
    "carried": 10,
    "uniqueIds": [
     "hercules-beetle",
     "jaguar-stalker",
-    "kinkajou-lurker",
-    "rafflesia"
+    "kinkajou-lurker"
    ],
    "in": [
-    "rafflesia",
     "leafcutter-gardener",
     "vampire-bat",
     "redwood-woodpecker",
