@@ -4,6 +4,19 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-29 22:23: the owner's notes (after release 10-29b)
+| # | Package | Note |
+|---|---|---|
+| R1 | UI2 | "On PC the game zoomed out too soon (on 7 cards). Make sure on both PC, iPad and mobile, the screen doesn't zoom out in advance ... just zoom out once the cards go off the screen." |
+| R2 | UI2 (bug, first) | Opening 4 packs after the last Morel Hollow skirmish crashed on the 2nd opening (screenshot: "Pack 2 of 2", Rivergate Pack stuck); Skip / Open all don't recover. Also: "the going to opening of packs should be a bit more gentle - as the pack goes to the centre of screen, it slowly becomes bigger until the full size one pops in, bouncing a bit." |
+| R3 | UI2 | "Ambush - the card should play a kind of shorter-distanced attack animation (Ambush < Attack < Pounce) then the card dies. Its on play effects would've still triggered though. Currently it just looks like it phases out." |
+| R4 | BAL8 | "Stealth is a bit too strong. Increase its cost by 33%." |
+| R5 | UI2 | "After using the battery, electric symbols come out and join into your energy X/Y." |
+| R6 | owner | "I will cut babies from the map list." |
+| R7 | UI2 | "Shift+Click shortcut to pitch cards in hand." |
+| R8 | UI2 | "The PRO/BPRO skirmishes should have their deck previews enabled by default." |
+| R9 | ART2 | "You can generate the remaining cards with my chrome, using nightcafe, chatgpt, and gemini." |
+
 ## 10-29 19:14: the owner's notes (after release 10-29a)
 | # | Package | Note |
 |---|---|---|
