@@ -87,7 +87,10 @@ ok(/'proFight', 'refDeck'/.test(app) && /if\(matchState\.proFight \|\| matchStat
   ok(o.ref === 'ref2' && o.games === 48 && PE.parseArgs([]).ref === 'map,ref2' && PE.parseArgs([]).games === 40, '3. pro_ease.js: --ref (default map,ref2), --games (default 40)'); }
 { const f = path.join(ROOT, 'docs/balance/pro-ease-2026-10-25.json');
   ok(fs.existsSync(f), '3. the saved measure docs/balance/pro-ease-2026-10-25.json');
-  if(fs.existsSync(f)){ const j = JSON.parse(fs.readFileSync(f, 'utf8')), data = JSON.parse(rd('canonical/pro-skirmishes.json'));
+  // 2026-10-29 RELFIX3: the PRO / BPRO decks were rebuilt from the new map pools, so the coverage check reads the newest measure
+  // (docs/balance/pro-ease-2026-10-29-relfix3.json, pro_ease.js on the new decks); the 10-25 file stays as PREF's record
+  const newest = fs.readdirSync(path.join(ROOT, 'docs/balance')).filter(n=> /^pro-ease-.*\.json$/.test(n)).sort().pop();
+  if(fs.existsSync(f)){ const j = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance', newest), 'utf8')), data = JSON.parse(rd('canonical/pro-skirmishes.json'));
     const ids = [].concat(...Object.values(data.maps).map(m=> (m.pro || []).concat(m.bpro || []).map(e=> e.id)));
     const missing = []; ids.forEach(id=> ['map', 'ref2'].forEach(r=>{ const row = j.rows.find(x=> x.id === id && x.ref === r); if(!row || row.games < 40) missing.push(id + '/' + r); }));
     ok(!missing.length, '3. every PRO / BPRO fight measured against both sets, 40+ games ' + missing.slice(0, 6).join(', ')); } }
