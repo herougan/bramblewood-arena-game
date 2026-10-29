@@ -20,7 +20,12 @@ const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Ha
 // ---- 1. the new cards
 ok(C2.NEW.length === 18, `18 new cards (${C2.NEW.length})`);
 const chk = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools', 'content2_2026_10_24.js'), 'check'], {encoding: 'utf8'});
-ok(chk.status === 0, `every new card is on its budget, placed or awaiting (${(chk.stdout || '').trim().split('\n').pop()})`);
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the tool's "not in pool <id>" is no problem when THEME2 leaves the card off that map's
+// list (the tool pins CONTENT2's placements); every other problem (a card over its budget) still fails
+const T2 = Object.fromEntries(J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
+const placeOf = Object.fromEntries(C2.NEW.filter(s=> s.place).map(s=> [s.id, s.place[0]]));
+const probs = (chk.stdout || '').trim().split('\n').filter(l=> l && !/^(ok:|\d+ problem)/.test(l)).filter(l=>{ const m = /^not in pool (\S+)$/.exec(l); return !(m && placeOf[m[1]] && !(T2[placeOf[m[1]]] || []).includes(m[1])); });
+ok(!probs.length, `every new card is on its budget, placed (where THEME2 lists it) or awaiting (${probs.join('; ') || 'ok'})`);
 const nids = cards.map(c=> c.numericId).filter(x=> x != null);
 ok(new Set(nids).size === nids.length, 'numericIds are unique');
 const skillCount = e=> Object.keys(e || {}).filter(k=> k !== 'triggers' && k !== 'packLeaderOf').length + ((e && e.triggers) || []).length;
@@ -31,7 +36,7 @@ for(const s of C2.NEW){ const c = by[s.id];
   ok(!c.art, `${s.id}: placeholder art (its emoji ${c.icon})`);
   if(s.place){ const [map, tier] = s.place;
     ok(c.source && c.source.kind === 'pack' && c.source.map === map && c.source.tier === tier && !c.awaitingSource, `${s.id}: a Pack ${tier} card of ${map}`);
-    ok(pools[map].cards.includes(s.id), `${s.id}: in ${map}'s pool`); }
+    ok(pools[map].cards.includes(s.id) === (T2[map] || []).includes(s.id), `${s.id}: its place on ${map}'s list follows THEME2`); } // 2026-10-28 APPLY1: lists follow THEME2
   else ok(c.awaitingSource && !c.source && /proposed:/.test(c.creatorNote), `${s.id}: awaiting a source, with a proposed one`); }
 const gnawed = ['bog-shrew', 'mire-rat', 'hollow-belly-rat', 'gnawed-matriarch'], tide = ['kelpborn-otter', 'conger-eel', 'selkie-wavebinder'];
 gnawed.forEach(id=> ok(utBy[id] && utBy[id].faction === 'gnawed', `${id} is one of the Gnawed (unit themes: ${utBy[id] && utBy[id].faction})`));
@@ -44,9 +49,11 @@ const pays = (c, res)=>{ const e = c.effects || {}; return (res === 'lumber' && 
 ['driftwood-crab', 'gannet-nestweaver', 'nutria-reedcutter', 'redwood-woodpecker', 'termite-forager', 'cone-cutter-squirrel', 'talus-pika', 'dune-packrat', 'land-tiller', 'coral-polyp-colony', 'rodent-king']
   .forEach(id=> ok(pays(by[id], 'lumber'), `${id} gathers Lumber`));
 ok(new Set(['driftwood-crab', 'nutria-reedcutter', 'cone-cutter-squirrel', 'dune-packrat'].map(id=> by[id].effects.triggers[0].amount)).size === 3, 'the gatherers come at different strengths (+1, +2, +3)');
-Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: placed in ${map}'s pool`));
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's list is THEME2's (the Land Tiller is on Maps 23-24's lists now)
+Object.entries(C2.EXISTING).forEach(([id, [map, tier]])=> ok(pools[map].cards.includes(id) === (T2[map] || []).includes(id) && by[id].source.map === map && by[id].source.tier === tier, `${id}: its source is ${map}, its place on ${map}'s list follows THEME2`));
 ok(pays(by['gravel-mole'], 'stone') && pays(by['pumice-beetle'], 'stone'), 'two Stone gatherers');
-ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badger-stonemason') && pools.m4.cards.includes('gravel-mole'), 'the converter (Quarry 1) and a Stone gatherer on the Stone map (Caves & Alcoves)');
+// 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the Gravel Mole is off the caves' list; the Stone gatherer there is THEME2's mix pick
+ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badger-stonemason') && pools.m4.cards.includes('gravel-mole') === T2.m4.includes('gravel-mole'), 'the converter (Quarry 1) on the Stone map (Caves & Alcoves), the Gravel Mole where THEME2 puts it');
 { const H = require('./lib/harness.js'), E = H.Engine, defs = H.loadCardDefs();
   const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
   const mk = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(7), {recordEvents: true, battleMode: 'open'}); return {e, P: {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
@@ -60,7 +67,8 @@ ok(by['badger-stonemason'].effects.quarry === 1 && pools.m4.cards.includes('badg
 const src = R('arena_app.js');
 const deckOf = key=>{ const m = src.match(new RegExp(`key:"${key}"[^\\n]*?deck:(\\{[^}]*\\})`)); return m ? JSON.parse(m[1]) : null; };
 const d21 = deckOf('2-1'), d22 = deckOf('2-2'), d23 = deckOf('2-3'), d31 = deckOf('3-1'), d33 = deckOf('3-3'), d51 = deckOf('5-1');
-ok(d21 && d21['rock-pool-starfish'] >= 1 && pools.mb.cards.includes('rock-pool-starfish'), 'N21-1: the Rock Pool Starfish fights in Rock Pool Raiders (2-1) and sits in the beach pool');
+// 2026-10-28 APPLY1: lists follow THEME2 (the Starfish is on no list now); the deck-vs-pool check below still flags 2-1 until the decks are rebuilt.
+ok(d21 && d21['rock-pool-starfish'] >= 1, 'N21-1: the Rock Pool Starfish fights in Rock Pool Raiders (2-1)');
 ok(d22 && d22.oystercatcher >= 1 && d22['gull-thief'] >= 1, 'Gull Gang (2-2) has its two shore birds');
 ok(d23 && d23['driftwood-crab'] >= 1, 'Hermit Row (2-3) fields the Driftwood Crab');
 ok(d31 && d31['gannet-nestweaver'] && !d31['hawk-arrowkeeper'] && d33 && d33['gannet-nestweaver'] && !d33['hawk-arrowkeeper'], 'N21-2: Gannet Nestweavers for the Hawk Arrowkeepers in 3-1 and 3-3');

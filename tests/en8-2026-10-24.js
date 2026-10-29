@@ -166,7 +166,9 @@ for(const lv of [0, 1, 2]){
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), by = Object.fromEntries(cards.map(c=> [c.id, c]));
   const om = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/card-obtain-maps.json'), 'utf8')).maps, pools = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/map-pools.json'), 'utf8')).maps;
   const C = require(path.join(ROOT, 'tools', 'en8_cards_2026_10_24.js'));
-  C.NEW.forEach(s=>{ const c = by[s.id]; ok(c && !c.faction && (pools[s.place[0]].cards || []).includes(s.id) && c.source && c.source.map === s.place[0], `${s.id}: placed in ${s.place[0]}'s pool, no faction`); });
+  // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05): the card's place on its map's MAP list is THEME2's (several are on no list now)
+  const T2 = Object.fromEntries(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/theme2-proposal-2026-10-28.json'), 'utf8')).maps.filter(m=> !m.skipped).map(m=> [m.key, m.proposed]));
+  C.NEW.forEach(s=>{ const c = by[s.id], m = s.place[0]; ok(c && !c.faction && (pools[m].cards || []).includes(s.id) === (T2[m] || []).includes(s.id) && c.source && c.source.map === m, `${s.id}: its source is ${m}, its place on ${m}'s list follows THEME2, no faction`); });
   const skills = ['stonecutter', 'prospector', 'felling', 'pearlBed', 'coppice', 'driftwood', 'scavenge', 'salvage', 'magicArmor'];
   skills.forEach(k=> ok(cards.some(c=> c.effects && c.effects[k] && !c.pool && !c.awaitingSource), `a placed card carries ${k}`));
   ok(by['oyster-bank'].effects.pearlBed && by['giant-clam'].effects.pearlBed, 'the Shellfish (Oyster Bank, Giant Clam) grow Pearls');

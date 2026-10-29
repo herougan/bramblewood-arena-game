@@ -2,161 +2,161 @@
  "_about": "Per-map card pools (owner 2026-10-22). One entry per main map, three tiers: \"cards\" (the MAP tier), \"submaps\" (each side map's own cards, one list each) and \"special\" (the cards added through a skirmish deck editor's + Load any card; one list for the map and its submaps' fights). A main-map fight draws from cards + special; a submap fight from cards + that submap + special. Shape: tools/lib_map_pools.js. Fold the admin's live edits back with tools/fold_map_pools.js.",
  "maps": {
   "m1": {
-   "cards": ["duckling", "honey-bee", "pond-duck", "crossed-eyes", "garden-snail", "silver-minnow", "ant-scout", "bee-sentry", "river-carp", "bee-forager", "forager-ant", "duck-paddler", "house-cat", "cottontail", "feral-tomcat", "meadow-rabbit", "chipmunk-forager", "chipmunk-skirmisher", "fox-kit", "otter-kit", "beetle-grunt", "cobalt-talon-fledgling", "terrier-pup", "farm-dog", "paper-wasp"],
+   "cards": ["chipmunk-skirmisher", "terrier-pup", "beaver-lumberjack", "house-cat", "feral-tomcat", "chipmunk-cavalry", "cypress-root-lurker", "marsh-mallow-hare", "owl-sentinel", "ant-hill", "duck-paddler", "ant-scout", "bee-forager", "bee-sentry", "chipmunk-forager"],
    "submaps": {
     "mtut": ["ash-cloud-condor", "badger-berserker", "bee-knight", "burrow-rabbit", "caustic-scorpion", "dynamite-packrat", "eagle-sharpshooter", "earthworm", "golden-eagle-diver", "gull-thief", "otter-paddler", "pond-trout", "rockslide-ram", "scree-goat", "thornwood-palisade", "toucan-courier", "trash-panda-trickster", "worker-ant"],
-    "mo": ["ent", "burrow-rabbit", "elder-willow", "glacier-wolf-pack", "otter-paddler", "pond-trout", "thornwood-palisade", "trash-panda-trickster", "tunnel-ant"]
+    "mo": ["ent", "glacier-wolf-pack", "dune-packrat", "echidna-quillshot"]
    },
    "special": []
   },
   "mf": {
-   "cards": ["cricket-drummer", "dormouse", "compost-grub", "bramble-sprout", "field-vole", "field-mouse", "harvest-mouse", "meadow-frog", "badger-lumberjack", "woodcock-lookout", "hedgerow-shrew", "slow-worm", "robin-redbreast", "briarback-hedgehog"],
+   "cards": ["cricket-drummer", "badger-lumberjack", "dormouse", "field-mouse", "field-vole", "bramble-sprout", "hedgerow-shrew", "robin-redbreast", "slow-worm", "woodcock-lookout", "fire-ant-raft", "ant-hill", "chipmunk-cavalry", "chipmunk-skirmisher", "cypress-root-lurker"],
    "submaps": {
-    "mq": ["lucky-hopper", "acorn-chipmunk", "bee-forager", "bee-sentry", "buck-brawler", "burrow-rabbit", "chipmunk-forager", "clover-butterfly", "cottontail", "farm-dog", "field-crow", "honey-bee", "house-cat", "jay-pilferer", "ladybird-guard", "meadow-rabbit", "pigeon-peon", "rabbit-kit", "stag-beetle", "tunnel-ant", "village-miller"]
+    "mq": ["lucky-hopper", "house-cat"]
    },
    "special": ["meadow-rabbit", "cottontail", "ant-scout"]
   },
   "mb": {
-   "cards": ["fiddler-crab-swarm", "pincushion-urchin", "gull-thief", "tidepool-trapper-crab", "tide-pool-crab", "open-ocean-hermit-crab", "sea-turtle-elder", "conch-crawler", "grey-seal-bull", "conch-herald", "rock-pool-starfish", "oystercatcher", "oyster-bank", "driftwood-crab", "beachcomber-sanderling"],
+   "cards": ["conch-herald", "fiddler-crab-swarm", "grey-seal-bull", "old-shell", "open-ocean-hermit-crab", "pincushion-urchin", "tidepool-trapper-crab", "conch-crawler", "gull-thief", "sea-turtle-elder", "tide-pool-crab", "badger-lumberjack", "beaver-lumberjack", "bramble-sprout", "cricket-drummer"],
    "submaps": {
-    "mp": ["riverworks-bastion", "beaver-builder", "camouflage-frog", "duckling", "elder-tortoise", "ford-kingfisher", "great-crested-grebe", "guppy", "lodge-engineer", "mangrove-mudskipper", "mayfly-dancer", "minnow-skitter", "mudpuppy", "old-sturgeon", "pike-lancer", "poison-dart-croaker", "pond-duck", "river-carp", "shallows-fry", "water-shrew"],
-    "mg": ["octopus-tactician", "beaver-builder", "blind-cave-fish", "duckling", "mallard-marauder", "mayfly-dancer", "otter-riverguard", "pelican-diver", "shallows-fry", "sulfur-vent-crab", "trash-panda-trickster", "oyster-bank"]
+    "mp": ["riverworks-bastion", "lodge-engineer", "shallows-fry", "old-sturgeon", "water-shrew", "box-turtle", "muskrat-lodgekeeper", "platypus-spur", "pyrenean-desman", "snapstick-turtle", "water-vole", "muskrat-reedgatherer"],
+    "mg": ["octopus-tactician", "trash-panda-trickster", "pelican-diver"]
    },
    "special": []
   },
   "mc": {
-   "cards": ["puffin-diver", "hawk-arrowkeeper", "peak-condor", "kittiwake-flock", "red-billed-chough", "fulmar-spitter", "razorbill", "mountain-goat-climber", "peregrine-stooper", "golden-eagle-diver", "sparrow-chick", "great-skua", "gannet-nestweaver", "oyster-bank", "beachcomber-sanderling"],
+   "cards": ["golden-eagle-diver", "puffin-diver", "peregrine-stooper", "the-gannet-queen", "kittiwake-flock", "peak-condor", "red-billed-chough", "fulmar-spitter", "razorbill", "gannet-nestweaver", "conch-crawler", "conch-herald", "dormouse", "feral-tomcat", "fiddler-crab-swarm"],
    "submaps": {},
    "special": []
   },
   "m2": {
-   "cards": ["snapstick-turtle", "stone-turtle-warden", "water-vole", "box-turtle", "water-shrew", "river-mink", "muskrat-lodgekeeper", "pyrenean-desman", "platypus-spur", "old-sturgeon", "signal-crayfish", "diving-bell-spider", "pond-algae", "dam-keeper-beaver", "ember-tetra", "muskrat-reedgatherer"],
+   "cards": ["snapstick-turtle", "muskrat-lodgekeeper", "old-sturgeon", "platypus-spur", "drowned-matriarch", "stone-turtle-warden", "water-shrew", "water-vole", "box-turtle", "pyrenean-desman", "muskrat-reedgatherer", "beaver-lumberjack", "fire-ant-raft", "marsh-mallow-hare", "cypress-root-lurker"],
    "submaps": {},
    "special": []
   },
   "mw": {
-   "cards": ["snapper-hatchling", "constrictor-coil", "venomlord-serpent", "crocodile-ambusher", "swamp-alligator", "caiman-hatchling", "grass-viper", "grass-snake", "fen-mink", "alligator-gar", "plague-gnat-cloud", "buzzed-chipmunk", "fire-ant-raft", "anhinga-spearbird", "marsh-harrier", "raft-spider", "moat-snapper", "nutria-reedcutter", "alley-cat", "marsh-mallow-hare", "sphagnum-vole"],
+   "cards": ["alligator-gar", "grass-viper", "fen-mink", "old-snapjaw", "constrictor-coil", "snapper-hatchling", "venomlord-serpent", "caiman-hatchling", "swamp-alligator", "crocodile-ambusher", "nutria-reedcutter", "stone-turtle-warden", "muskrat-reedgatherer", "fire-ant-raft", "marsh-mallow-hare"],
    "submaps": {
-    "ms": ["hedgehog-herbalist", "baby-horned-capybara", "bog-behemoth", "bog-leech", "echo-keeper", "mangrove-mudskipper", "mosquito-cloud", "puddle-hopper", "swamp-rabbit"]
+    "ms": ["hedgehog-herbalist", "mangrove-mudskipper"]
    },
    "special": ["bog-leech"]
   },
   "m8": {
-   "cards": ["poison-dart-croaker", "camouflage-frog", "marsh-wisp", "mire-witch-heron", "constrictor-coil", "bogfire-newt", "newt-doctor", "booming-bittern", "raven-scout", "adder-ambusher", "carrion-beetle", "lotus-frog", "lamprey", "anaconda-coil", "cottonmouth-matriarch", "giant-water-bug", "greater-siren", "cane-toad", "peat-cutter-vole"],
+   "cards": ["booming-bittern", "newt-doctor", "adder-ambusher", "poison-dart-croaker", "heron-hag", "camouflage-frog", "marsh-wisp", "bogfire-newt", "raven-scout", "cane-toad", "peat-cutter-vole", "constrictor-coil", "nutria-reedcutter", "alligator-gar", "venomlord-serpent"],
    "submaps": {
     "mm": ["bog-leech", "crocodile-ambusher", "meadow-frog", "puddle-hopper", "swamp-alligator", "willow-o-wisp"]
    },
-   "special": ["venomlord-serpent"]
+   "special": []
   },
   "mu": {
-   "cards": ["compost-grub", "dung-beetle", "leafcutter-gardener", "owl-nightwatch", "fungal-colossus", "truffle-piglet", "ant-warrior", "planarian-splitter", "wolf-spider-mother", "bombardier-beetle", "nightjar-drifter", "pine-marten", "fungus-gnat-cloud", "hawthorn-shieldbug", "barkplate-beetle", "beaver-feller", "sleepless-shrew"],
+   "cards": ["truffle-piglet", "wolf-spider-mother", "dung-beetle", "leafcutter-gardener", "ant-warrior", "planarian-splitter", "fungal-colossus", "owl-nightwatch", "bombardier-beetle", "hawthorn-shieldbug", "compost-grub", "cane-toad", "peat-cutter-vole", "adder-ambusher", "bogfire-newt"],
    "submaps": {
-    "mz": ["rootworm-colony", "bee-forager", "beetle-battering-ram", "gangrenous-leech", "garden-snail", "honey-bee", "swarm-matriarch", "trapdoor-spider", "tunnel-ant", "worker-ant"]
+    "mz": ["rootworm-colony"]
    },
    "special": []
   },
   "m4": {
-   "cards": ["blind-cave-fish", "cave-olm", "star-nosed-mole", "sulfur-cinder-moth", "stalactite-golem", "nightshade-moth", "vampire-bat", "whip-spider", "giant-cave-huntsman", "echo-screecher", "quarry-mole", "coffer-mimic", "subterraneaner", "cave-centipede", "millipede-hauler", "dynamite-packrat", "baby-bat", "vampire-bat-nurse", "gallery-orb-weaver", "grotto-lobster", "ghost-crayfish", "cave-pseudoscorpion", "guano-beetle", "gravel-mole", "badger-stonemason", "prospector-mole"],
+   "cards": ["echo-screecher", "giant-cave-huntsman", "star-nosed-mole", "quarry-mole", "echo-matriarch", "cave-olm", "stalactite-golem", "sulfur-cinder-moth", "vampire-bat", "whip-spider", "badger-stonemason", "octopus-tactician", "trash-panda-trickster", "pelican-diver", "ant-warrior"],
    "submaps": {
-    "mn": ["lantern-spark-fly", "barrow-leech-bat", "bat-swarmling", "beetle-grunt", "cave-bat-swarm", "cave-cricket", "cave-flitter", "cave-swiftlet", "glowworm-cluster", "monarch-wingblade", "oilbird", "swarm-matriarch", "tunnel-ant", "glimmer-spider", "prospector-mole"]
+    "mn": ["lantern-spark-fly", "cave-bat-swarm", "prospector-mole"]
    },
    "special": []
   },
   "mk": {
-   "cards": ["mangrove-mudskipper", "minnow-skitter", "mudpuppy", "mangrove-monitor", "reef-shark", "archerfish", "sunbittern-strider", "banded-sea-krait", "mangrove-kingfisher", "mangrove-manatee", "mudflat-godwit", "electric-catfish", "elephant-nose-fish", "piranha-shoal", "limpet-clinger", "fishing-cat", "proboscis-monkey", "horseshoe-crab", "sea-hare", "ironclaw-fiddler", "oyster-bank", "beachcomber-sanderling"],
+   "cards": ["mangrove-kingfisher", "mangrove-manatee", "banded-sea-krait", "mangrove-mudskipper", "archerfish", "mangrove-monitor", "mudpuppy", "reef-shark", "sunbittern-strider", "minnow-skitter", "fishing-cat", "crocodile-ambusher", "lodge-engineer", "booming-bittern", "caiman-hatchling"],
    "submaps": {},
    "special": []
   },
   "m7": {
-   "cards": ["clownfish-scout", "parrotfish", "kraken-spawnling", "coral-reef-shark", "riptide-eel", "electric-ray", "lions-mane-jelly", "swordfish-spearman", "great-barracuda", "colossal-squid", "sawfish", "mantis-shrimp", "cone-snail", "cleaner-wrasse", "sea-cucumber", "yellow-bellied-sea-snake", "crown-of-thorns-star", "lionfish", "giant-clam", "whale-shark", "bloodscent-shark", "coral-polyp-colony", "salvager-hermit-crab"],
+   "cards": ["colossal-squid", "electric-ray", "great-barracuda", "reef-admiral", "clownfish-scout", "parrotfish", "riptide-eel", "coral-reef-shark", "kraken-spawnling", "swordfish-spearman", "coral-polyp-colony", "reef-shark", "gull-thief", "banded-sea-krait", "mangrove-manatee"],
    "submaps": {
-    "mj": ["blue-ringed-octopus", "abyss-lantern-squid", "glass-octopus", "mangrove-manatee", "nautilus-drifter", "orca-vanguard", "silver-minnow", "sulfur-vent-crab", "vampire-squid", "voltaic-eel", "giant-clam", "salvager-hermit-crab"]
+    "mj": ["blue-ringed-octopus", "orca-vanguard", "nautilus-drifter"]
    },
-   "special": ["orca-vanguard"]
+   "special": []
   },
   "m10": {
-   "cards": ["alpine-marmot", "chipmunk-hoarder", "eyrie-warden", "mountain-hare", "mountain-goat-climber", "apollo-butterfly", "balloon-archer", "chamois-leaper", "eagle-owl-quartermaster", "ibex-rockcaller", "alpine-swift", "alpine-salamander", "marmot-stonecutter", "gale-swift"],
+   "cards": ["alpine-marmot", "eagle-owl-quartermaster", "ibex-rockcaller", "chamois-leaper", "chipmunk-hoarder", "eyrie-warden", "mountain-hare", "apollo-butterfly", "alpine-salamander", "alpine-swift", "gale-swift", "gannet-nestweaver", "golden-eagle-diver", "peak-condor", "peregrine-stooper"],
    "submaps": {
-    "mv": ["wound-reaver", "alpine-avalanche", "chipmunk-stockpiler", "golden-eagle-diver", "peak-condor", "rockslide-ram", "marmot-stonecutter"],
+    "mv": ["wound-reaver"],
     "muc": ["alpha-howler", "ant-warrior", "antlion-pit", "archerfish", "banded-sea-krait", "bison-bulldozer", "border-collie", "bramblewood-lynx", "cave-olm", "cinder-stoker", "clownfish-scout", "colossal-squid", "compost-grub", "cunning-vixen", "dhole-matriarch", "dhole-runner", "dromedary", "dung-beetle", "dust-devil-kestrel", "dust-hyena", "echidna-quillshot", "echo-screecher", "fawn-scout", "fennec-fox", "fire-salamander", "fox-kit", "frost-hare-sprinter", "frostmoon-howler", "fulmar-spitter", "fungal-colossus", "giant-cave-huntsman", "glacier-wolf-pack", "golden-eagle-diver", "grave-grin-hyena", "great-barracuda", "grizzly-vanguard", "hedge-weasel", "hedgehog-scout", "hollow-oath-keeper", "hoopoe-herald", "kittiwake-flock", "lone-grey-wolf", "lyrebird-mimic", "magma-titan", "mangrove-kingfisher", "mangrove-manatee", "mangrove-monitor", "muskrat-lodgekeeper", "obsidian-scorpion", "old-sturgeon", "owl-nightwatch", "pangolin-roller", "peak-condor", "peregrine-stooper", "planarian-splitter", "platypus-spur", "polar-bear", "porcupine-roller", "puffin-diver", "pyrenean-desman", "quill-volley", "quillguard", "raccoon-bandit", "ravenous-wolverine", "razorbill", "red-billed-chough", "reef-shark", "roadrunner-courier", "savanna-cheetah", "scree-goat", "seed-cache-squirrel", "shimmerwing-stag", "snow-ermine", "snowshoe-hare", "spitting-cobra", "stable-colt", "star-nosed-mole", "stoat-cutthroat", "stone-turtle-warden", "sunbittern-strider", "swift-fox", "swordfish-spearman", "taiga-lynx", "talon-archer", "truffle-piglet", "vampire-bat", "walrus-icebreaker", "warhorse-charger", "weaver-bird", "whip-spider", "wolf-spider-mother", "woodland-caribou", "yeti"]
    },
-   "special": ["wound-reaver", "gangrenous-leech", "swamp-alligator"]
+   "special": ["gangrenous-leech", "swamp-alligator"]
   },
   "mh": {
-   "cards": ["field-mouse", "hedgehog-scout", "bramble-hoglet", "mouse-sapper", "seed-cache-squirrel", "cunning-vixen", "hedge-weasel", "lyrebird-mimic", "quillguard", "thorn-shrike", "gatling-hog", "fox-sharpshot", "skunk-gasser", "rodent-king", "carrion-crow", "magpie-collector"],
+   "cards": ["cunning-vixen", "hedgehog-scout", "quillguard", "bramble-hoglet", "hedge-weasel", "lyrebird-mimic", "thorn-shrike", "mouse-sapper", "gatling-hog", "quillback-elder", "carrion-crow", "ant-hill", "badger-lumberjack", "field-mouse", "mountain-hare"],
    "submaps": {},
    "special": []
   },
   "mr": {
-   "cards": ["fox-kit", "swift-fox", "berserker-boar", "stag-knight", "grizzly-vanguard", "tasmanian-devil", "woodpecker-sapper", "bramblewood-lynx", "fawn-scout", "shimmerwing-stag", "pill-bug", "margay", "leopard-slug", "red-backed-salamander", "redwood-woodpecker", "hazel-coppice", "beaver-feller", "hollow-oath-keeper"],
+   "cards": ["fawn-scout", "shimmerwing-stag", "sergeant-bramblefox", "berserker-boar", "grizzly-vanguard", "bramblewood-lynx", "swift-fox", "tasmanian-devil", "stag-knight", "woodpecker-sapper", "redwood-woodpecker", "quillback-elder", "carrion-crow", "bramble-hoglet", "cunning-vixen"],
    "submaps": {},
-   "special": ["sergeant-bramblefox"]
+   "special": []
   },
   "m5": {
-   "cards": ["springbok-pronker", "hoopoe-herald", "meerkat-burrower", "weaver-bird", "dust-hyena", "grave-grin-hyena", "pangolin-roller", "marula-elephant", "spitting-cobra", "savanna-cheetah", "monitor-rambler", "mongoose-duelist", "lovebird", "marula-monkey", "termite-forager"],
+   "cards": ["grave-grin-hyena", "savanna-cheetah", "spitting-cobra", "pride-queen", "hoopoe-herald", "weaver-bird", "springbok-pronker", "dust-hyena", "marula-elephant", "pangolin-roller", "meerkat-burrower", "lodge-engineer", "leafcutter-gardener", "mouse-sapper", "house-cat"],
    "submaps": {
-    "my": ["jaguar-stalker", "hercules-beetle", "kinkajou-lurker", "ancient-sloth-titan", "aye-aye-prowler", "bramblewood-macaque", "chilli-parrot", "howler-monkey", "old-growth-tortoise", "siege-rhino", "slow-loris", "slowpoke-sentinel", "termite-mound", "toucan-courier", "velvet-worm", "carrion-crow"]
+    "my": ["hercules-beetle", "jaguar-stalker", "kinkajou-lurker"]
    },
    "special": []
   },
   "ml": {
-   "cards": ["pronghorn-racer", "warhorse-charger", "cataphract-destrier", "shepherds-bark", "stable-colt", "border-collie", "bison-bulldozer", "stoat-cutthroat", "raccoon-bandit", "talon-archer", "amber-cicada", "springtail-hopper", "muntjac-barker", "anvil-thrush", "garden-tiger-moth", "land-tiller", "moonshell-snail", "carrion-crow", "courier-pigeon"],
+   "cards": ["border-collie", "stoat-cutthroat", "talon-archer", "cataphract-destrier", "pronghorn-racer", "bison-bulldozer", "raccoon-bandit", "stable-colt", "warhorse-charger", "shepherds-bark", "squires-mount", "lodge-engineer", "carrion-crow", "hedge-weasel", "hedgehog-herbalist"],
    "submaps": {},
    "special": []
   },
   "mt": {
-   "cards": ["snowshoe-hare", "frost-hare-sprinter", "dhole-runner", "trickster-fox", "alpha-howler", "boreal-elk", "woodland-caribou", "wolf-pack-runner", "taiga-lynx", "dhole-matriarch", "cone-cutter-squirrel"],
+   "cards": ["woodland-caribou", "taiga-lynx", "dhole-matriarch", "alpha-howler", "frost-hare-sprinter", "snowshoe-hare", "dhole-runner", "trickster-fox", "wolf-pack-runner", "boreal-elk", "cone-cutter-squirrel", "berserker-boar", "redwood-woodpecker", "bramblewood-lynx", "fawn-scout"],
    "submaps": {},
    "special": []
   },
   "m6": {
-   "cards": ["snow-ermine", "harbor-seal", "glacial-ape-king", "snow-bunting-archer", "spitting-spider", "frostmoon-howler", "ravenous-wolverine", "lone-grey-wolf", "walrus-icebreaker", "polar-bear", "beluga", "musk-ox-calf", "musk-ox-matriarch", "talus-pika"],
+   "cards": ["lone-grey-wolf", "polar-bear", "walrus-icebreaker", "wolfsbane-alpha", "glacial-ape-king", "harbor-seal", "snow-bunting-archer", "snow-ermine", "ravenous-wolverine", "spitting-spider", "talus-pika", "alpha-howler", "cone-cutter-squirrel", "frost-hare-sprinter", "mountain-hare"],
    "submaps": {
-    "mi": ["greenland-shark", "alpha-howler", "arctic-fox-raider", "arctic-tern", "boreal-elk", "frost-hare-sprinter", "harp-seal-pup", "ice-crevasse-wolf", "krill-swarm", "lemming-swarm", "ringed-seal"]
+    "mi": ["greenland-shark"]
    },
    "special": []
   },
   "md": {
-   "cards": ["thorny-devil", "roadrunner-courier", "sandfish", "komodo-warlord", "caustic-scorpion", "fennec-fox", "dromedary", "antlion-pit", "obsidian-scorpion", "dust-devil-kestrel", "glasswing-moth", "frillneck-duelist", "tarantula-hawk", "inland-taipan", "dune-packrat", "static-fennec"],
+   "cards": ["obsidian-scorpion", "antlion-pit", "caustic-scorpion", "dust-devil-kestrel", "thorny-devil", "roadrunner-courier", "sandfish", "komodo-warlord", "dromedary", "fennec-fox", "dune-packrat", "dust-hyena", "meerkat-burrower", "bison-bulldozer", "border-collie"],
    "submaps": {
-    "mpd": ["quicksand-queen", "armadillo-guard", "cinder-gecko", "dune-jackal", "dune-jackal-scout", "dust-hyena", "horned-lizard", "meerkat-burrower", "meerkat-sentry", "moon-jerboa", "pale-oryx", "rabid-jackal", "sand-widow", "sandstorm-roc", "skull-vulture", "stonedrop-vulture", "trapdoor-spider", "carrion-crow"]
+    "mpd": ["quicksand-queen", "skull-vulture", "sand-widow"]
    },
-   "special": ["sand-widow"]
+   "special": []
   },
   "m3": {
-   "cards": ["cinder-stoker", "magma-titan", "phoenix-fledgling", "yeti", "glacier-wolf-pack", "porcupine-roller", "scree-goat", "fire-salamander", "quill-volley", "echidna-quillshot", "pumice-beetle", "granite-ox-golem"],
+   "cards": ["echidna-quillshot", "fire-salamander", "quill-volley", "yeti-chieftain", "cinder-stoker", "yeti", "porcupine-roller", "magma-titan", "glacier-wolf-pack", "phoenix-fledgling", "pumice-beetle", "glacial-ape-king", "talus-pika", "hercules-beetle", "obsidian-scorpion"],
    "submaps": {
-    "m9": ["ember-revenant", "ash-cloud-condor", "ashbone-ghoul", "basalt-boar", "beaver-lumberjack", "chained-binturong", "cinder-gecko", "cinder-imp", "ember-jackal", "flagellant-vulture", "fruit-bat-familiar", "hellbender", "hercules-beetle", "magma-salamander", "obsidian-scorpion", "pyroclast-wyrm", "sulfur-vent-crab", "tide-spirit", "vampire-finch"]
+    "m9": ["ember-revenant", "anvilwhisker-otter", "ore-smelter-mole", "tide-spirit", "cinder-gecko", "ember-jackal", "ashbone-ghoul", "magma-salamander", "ash-cloud-condor"]
    },
    "special": []
   },
   "m11": {
-   "cards": ["pack-mule", "cinder-skeleton", "ashbone-ghoul", "cave-warlord", "bear-cub", "magma-wraith", "ash-cloud-condor", "magma-salamander", "woodland-brawler", "ossuary-lammergeier", "pall-wraith", "obsidian-lich", "ash-moth", "glasswing-butterfly", "firefly-swarm", "fire-hawk", "marmot-stonecutter"],
+   "cards": ["ash-cloud-condor", "magma-wraith", "ossuary-lammergeier", "pack-mule", "woodland-brawler", "ashbone-ghoul", "cave-warlord", "cinder-skeleton", "bear-cub", "magma-salamander", "ash-moth", "glacier-wolf-pack", "pumice-beetle", "cinder-stoker", "echidna-quillshot"],
    "submaps": {
-    "me": ["the-contradiction", "basalt-boar", "blessed-avatar", "cinder-gecko", "cinder-imp", "cinder-stoker", "fumarole-ibex", "gorge-wyrm", "obsidian-scorpion", "silverback-brawler", "sulfur-vent-crab"],
-    "mx": ["fire-drake-hatchling", "basalt-boar", "cinder-gecko", "cinder-hornet", "cinder-imp", "cinder-stoker", "ember-centipede", "ember-jackal", "gorge-wyrm", "magma-titan", "obsidian-scorpion", "pyroclast-wyrm", "silverback-brawler", "tide-spirit"]
+    "me": ["the-contradiction", "obsidian-scorpion"],
+    "mx": ["fire-drake-hatchling", "caldera-wyrm", "ember-jackal", "tide-spirit", "ember-centipede", "magma-titan", "obsidian-scorpion"]
    },
    "special": ["ancient-sloth-titan", "deep-cave-troll", "stalactite-golem", "vampire-roost"]
   },
   "m21": {
-   "cards": ["pika-hoarder", "glacier-yak", "eagle-sharpshooter", "alpine-marmot", "mountain-goat-climber", "scree-goat", "golden-eagle-diver", "snow-leopard", "snow-owl-sentinel"],
+   "cards": ["pika-hoarder", "snow-owl-sentinel", "snow-leopard", "glacier-yak", "eagle-sharpshooter", "mountain-goat-climber", "candle-moth", "chapel-tortoise", "friar-badger", "gale-sprite", "golden-magpie", "eyrie-warden", "talus-pika", "alpine-marmot", "golden-eagle-diver"],
    "submaps": {},
    "special": []
   },
   "m22": {
-   "cards": ["cinder-gecko", "cinder-hornet", "gorge-wyrm", "permafrost-mammoth", "ice-petrel", "rimefire-salamander", "badger-berserker", "fumarole-ibex", "ur-elk", "caldera-snow-leopard", "weathervane-swift", "ashwing-ptarmigan", "petrified-tree"],
+   "cards": ["rimefire-salamander", "caldera-snow-leopard", "ur-elk", "ice-petrel", "badger-berserker", "cinder-gecko", "cinder-hornet", "permafrost-mammoth", "ashwing-ptarmigan", "rimeheart-colossus", "ash-imp", "phoenix-fledgling", "pumice-beetle", "ember-centipede", "ember-jackal"],
    "submaps": {
     "mlb": ["badger-sapper", "basalt-boar", "grindstone-boar", "honey-badger-fury", "magma-titan", "ore-smelter-mole"]
    },
-   "special": ["rimeheart-colossus"]
+   "special": []
   },
   "m23": {
-   "cards": ["mouse-sapper", "badger-trench-digger", "pack-mule", "balloon-archer", "howdah-archers", "siege-rhino", "trebuchet-crew", "testudo-tortoise", "beetle-battering-ram", "war-elephant", "marching-elephant", "werebadger"],
+   "cards": ["testudo-tortoise", "war-elephant", "triumvirate", "badger-trench-digger", "howdah-archers", "beetle-battering-ram", "siege-rhino", "trebuchet-crew", "balloon-archer", "colony", "land-tiller", "lodge-engineer", "pack-mule", "mouse-sapper", "stoat-cutthroat"],
    "submaps": {},
    "special": ["marshal-tuskwell"]
   },
   "m24": {
-   "cards": ["duckling-squadron", "elderhorn-monarch", "tax-collector-teal", "lodge-engineer", "goose-sentry", "mallard-halberdier", "mallard-marauder", "battlement-heron", "gilded-swan-knight", "iron-warden"],
+   "cards": ["gilded-swan-knight", "iron-warden", "battlement-heron", "duckling-squadron", "elderhorn-monarch", "mallard-halberdier", "tax-collector-teal", "goose-sentry", "great-gate", "nest", "stoneheart-golem", "lodge-engineer", "land-tiller", "balloon-archer", "badger-trench-digger"],
    "submaps": {},
    "special": ["magnate-duck"]
   }
