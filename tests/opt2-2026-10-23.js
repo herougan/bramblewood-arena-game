@@ -69,12 +69,15 @@ ok(O.parseArgs(['--ladder', '500,250']).ladder.join() === '500,250' && O.parseAr
   const m0 = O.resolveMap(gm, '0'), p0mt = O.poolsFor(gm, m0, { mode: 'map-true' });
   ok(['ent', 'alley-cat', 'otter-centurion', 'bombardier-beetle', 'badger-berserker'].every(id => !p0mt.p1.includes(id)), 'Map 0 map-true: no Ent (the Old Bramble opens after Map 21), Alley Cat, Otter Centurion, Bombardier Beetle or Badger Berserker');
   ok(O.mapRuleProblems(gm, m0, { ent: 2, 'fox-kit': 18 }, 'map-true').some(x => /^ent: rare is over the map's rarity cap \(common\)/.test(x)), 'mapRuleProblems names the Ent on Map 0');
-  ok(O.mapRuleProblems(gm, O.resolveMap(gm, '2'), { 'beetle-grunt': 5, 'tide-pool-crab': 5 }, 'bpro').some(x => /^beetle-grunt: not in the map's own pool/.test(x)) && !O.mapRuleProblems(gm, O.resolveMap(gm, '2'), { 'beetle-grunt': 5, 'tide-pool-crab': 5 }, 'map-true').length, 'BPRO refuses an outside card that map-true allows');
+  // 2026-10-29 RELFIX3: the Beetle Grunt is on no map list since THEME2 / THEME3 (out of play: map-true refuses it too); the Dormouse (Map 1's list) is the outside card
+  ok(O.mapRuleProblems(gm, O.resolveMap(gm, '2'), { 'dormouse': 4, 'tide-pool-crab': 5 }, 'bpro').some(x => /^dormouse: not in the map's own pool/.test(x)) && !O.mapRuleProblems(gm, O.resolveMap(gm, '2'), { 'dormouse': 4, 'tide-pool-crab': 5 }, 'map-true').length, 'BPRO refuses an outside card that map-true allows');
   ok(O.parseArgs(['--map', '0']).mode === 'map-true' && O.parseArgs(['--bpro']).mode === 'bpro' && O.parseArgs(['--bpro']).crossShare === 0 && O.parseArgs(['--classic']).mode === 'classic', '--mode: map-true by default, --bpro (no phase 2), --classic');
   let bad = false; try { O.parseArgs(['--mode', 'nope']); } catch (e2) { bad = /--mode/.test(e2.message); } ok(bad, '--mode refuses an unknown mode');
   // the Alley Cat (owner #10): a Rare in Map 0's list, whose fights are Common only; now the Gatorback Swamp's (Map 5), still Pack 1 and obtainable on Map 5
   const ac = gm.D['alley-cat'];
-  ok(!mapPool('m1').cards.includes('alley-cat') && mapPool('mw').cards.includes('alley-cat') && ac.source.map === 'mw' && +ac.source.tier === 1 && gm.obtain['alley-cat'] === 5, 'the Alley Cat lives in the Gatorback Swamp (Map 5), Pack 1, obtainable on Map 5');
+  // 2026-10-29 RELFIX3: THEME3 (the owner's call) moved it to Lilypad Reach (mp, Map 2's side map; its pack and map come from that list since PACK1):
+  // still not on Map 0's list, Pack 1, obtainable on Map 5 (a Rare's first map)
+  ok(!mapPool('m1').cards.includes('alley-cat') && (mapPool('mb').submaps.mp || []).includes('alley-cat') && G.basicPackTierOf(ac) === 1 && gm.obtain['alley-cat'] === 5, 'the Alley Cat lives in Lilypad Reach (THEME3), Pack 1, obtainable on Map 5');
   const over = []; G.CONQUEST_MAPS.filter(x => !x.sub && !x.reserved && G.mapNumberOf(x.id) != null && G.mapNumberOf(x.id) <= 40).forEach(x => { const cap = O.mapRarityCap(gm, x);
     (mapPool(x.id).cards || []).forEach(id => { if (gm.D[id] && step(gm.D[id].rarity) > step(cap)) over.push(x.id + ':' + id); }); });
   ok(!over.length, 'no main map (0-40) lists a MAP-tier card over the rarest its fights may hold: ' + over.join(', ')); }

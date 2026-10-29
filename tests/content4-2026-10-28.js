@@ -58,7 +58,9 @@ ok(G.mapNumberOf('m21') >= 20 && G.mapNumberOf('m21') <= 40, '2. and it sits in 
     const t2 = T2[L.sub || L.map];
     // 2026-10-29 LISTFIX1 (decision APPLY1-1): a submap stores its whole proposal (a submap fight reads only its own list + SPECIAL)
     // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
-    if(t2){ const want = (T3[L.sub || L.map]) || t2.proposed;
+    // 2026-10-29 RELFIX3: each map's boss card (Heroic / Unique, over the rarest its fights may hold) moved from MAP to SPECIAL (tools/opt/relfix3_boss_special_2026_10_29.py)
+    const RELFIX3_BOSS = {mb:'old-shell', mc:'the-gannet-queen', m2:'drowned-matriarch', mw:'old-snapjaw', m8:'heron-hag', m4:'echo-matriarch', m7:'reef-admiral', m5:'pride-queen', m6:'wolfsbane-alpha', m3:'yeti-chieftain', m23:'triumvirate'};
+    if(t2){ const want = ((T3[L.sub || L.map]) || t2.proposed).filter(id=> L.sub || RELFIX3_BOSS[L.map] !== id || !(pools[L.map].special || []).includes(id));
       ok(live && JSON.stringify(live) === JSON.stringify(want), `4. ${k}: the live list is THEME3's (THEME2's where THEME3 has none; ${live && live.length} vs ${want.length})`); return; }
     ok(live && live.length === L.before, `4. ${k}: the live pool is the plan's "before" (${live && live.length} vs ${L.before}): not applied`);
     if(!L.skipped){ ok(L.afterNew <= Math.max(7, L.keptNew.filter(s=> / \(/.test(s)).length), `4. ${k}: new cards capped (${L.afterNew})`);

@@ -68,7 +68,8 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
 
 // ---- M2: the Test Lab's Card check takes the basic-pack cards a player can hold by then -------------------------------------------------
 { const src = fsx.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8'), i = src.indexOf('function cardCheckPool(upTo)'), body = src.slice(i, src.indexOf('\n}', i));
-  ok(/src\.kind === 'pack' && Number\(src\.tier\) !== 99\)\{ const n = cardObtainMap\(d\); return n != null && n <= upTo; \}/.test(body), 'M2 cardCheckPool takes pack cards with cardObtainMap <= upTo');
+  // 2026-10-29 RELFIX3: PACK1 added "if(isUnattainable(d)) return false;" (a card in no pack) before the map test
+  ok(/src\.kind === 'pack' && Number\(src\.tier\) !== 99\)\{ (?:if\(isUnattainable\(d\)\) return false; (?:\/\*[^*]*\*\/ )?)?const n = cardObtainMap\(d\); return n != null && n <= upTo; \}/.test(body), 'M2 cardCheckPool takes pack cards with cardObtainMap <= upTo');
   const pool = (()=>{ try{ return G.cardCheckPool(24); }catch(e){ return null; } })();
   if(pool) ok(pool.includes('owl-nightwatch'), `M2 the Owl Nightwatch is in the Card check pool to Map 24 (${pool.length} cards)`); }
 
@@ -95,7 +96,7 @@ const G = require(path.join(ROOT, 'tools', 'lib_bramble.js')).G, MAPS = G.CONQUE
 // ---- CONTENT4-1 is NOT applied (coordinator, 2026-10-28: the owner decides after HUB9's view): the map lists are as CONTENT4 left them ----
 { const base = J('docs/balance/content4-map-pools-plan-2026-10-28.json'), pools = J('canonical/map-pools.json').maps, len = Object.values(pools).reduce((a, e)=> a + e.cards.length + Object.values(e.submaps || {}).reduce((s, l)=> s + l.length, 0), 0);
   // 2026-10-28 APPLY1: lists follow THEME2 (owner 23:05 "Okay to THEME1-1"), not CONTENT4-1's cap: every main map's MAP list is THEME2's proposal
-  const T2 = J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped && !m.sub), T3 = Object.fromEntries(Object.entries(JSON.parse(require('fs').readFileSync(require('path').join(ROOT, 'canonical', 'map-review.json'), 'utf8')).maps).map(([k, e])=> [k, e.chosen.map(c=> c.id)])), off = T2.filter(m=> JSON.stringify(pools[m.key].cards) !== JSON.stringify(T3[m.key] || m.proposed)); // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
+  const T2 = J('docs/balance/theme2-proposal-2026-10-28.json').maps.filter(m=> !m.skipped && !m.sub), T3 = Object.fromEntries(Object.entries(JSON.parse(require('fs').readFileSync(require('path').join(ROOT, 'canonical', 'map-review.json'), 'utf8')).maps).map(([k, e])=> [k, e.chosen.map(c=> c.id)])), RELFIX3_BOSS = {mb:'old-shell', mc:'the-gannet-queen', m2:'drowned-matriarch', mw:'old-snapjaw', m8:'heron-hag', m4:'echo-matriarch', m7:'reef-admiral', m5:'pride-queen', m6:'wolfsbane-alpha', m3:'yeti-chieftain', m23:'triumvirate'} /* 2026-10-29 RELFIX3: each map's boss card moved from MAP to SPECIAL (over the map's rarity cap) */, off = T2.filter(m=> JSON.stringify(pools[m.key].cards) !== JSON.stringify((T3[m.key] || m.proposed).filter(id=> RELFIX3_BOSS[m.key] !== id || !(pools[m.key].special || []).includes(id)))); // 2026-10-29 THEME3: lists follow the owner's 23:35/00:10 notes: the expected list is THEME3's (canonical/map-review.json `chosen`, written by tools/theme3_2026_10_29.py with the file), THEME2's where THEME3 has none
   ok(len !== base.summary.cardsBefore && !off.length, `CONTENT4-1 not applied: the map lists are THEME3's (THEME2 + the owner's notes; ${len} entries; off THEME2: ${off.map(m=> m.key).join(' ')})`); }
 
 console.log(`\nbal7: ${n - fail}/${n} passed`);
