@@ -62,7 +62,7 @@ async def run(b, url, w):
     r = await pg.evaluate("""({chosen: document.querySelectorAll('.rv1-part.is-chosen .rv1-tile').length, cut: document.querySelectorAll('.rv1-part.is-cut .rv1-tile').length, maybe: document.querySelectorAll('.rv1-part.is-maybe .rv1-tile').length,
       pills: [...document.querySelectorAll('.rv1-part.is-chosen .rv1-tile')].map(t=> [...t.querySelectorAll('.rv2-pill')].map(x=> x.textContent).join('+')),
       kept: [...document.querySelectorAll('.rv2-pill')].filter(x=> /kept/i.test(x.textContent)).length,
-      whyTitle: [...document.querySelectorAll('.rv1-tile')].every(t=> t.title), noWhyText: document.querySelectorAll('.rv1-why, .rv1-cap').length === 0, zoom: document.querySelectorAll('.rv1-tile [data-zoom]').length,
+      whyPop: [...document.querySelectorAll('.rv1-tile')].every(t=> { const z = t.querySelector('[data-zoom]'); return z && (z.dataset.zoomWhy || '').length > 0; }), noTitle: document.querySelectorAll('.rv1-tile[title]').length === 0, noWhyText: document.querySelectorAll('.rv1-why, .rv1-cap').length === 0, zoom: document.querySelectorAll('.rv1-tile [data-zoom]').length,
       hs: document.documentElement.scrollWidth - innerWidth,
       order: [...document.querySelector('.pk1-mc-sec.has-rv1').querySelectorAll('.rv1-part')].map(x=> x.className.replace(/rv1-part is-/, '')),
       panel: (()=>{ const s = document.querySelector('.pk1-mc-sec.has-rv1'), c = getComputedStyle(s); return {bg: c.backgroundColor, bw: c.borderTopWidth, rad: c.borderTopLeftRadius}; })(),
@@ -73,7 +73,8 @@ async def run(b, url, w):
     ok(r['order'] == ['chosen', 'maybe', 'cut'], f'the parts run Chosen, Maybe, Cut cards {r["order"]}')
     ok(r['panel']['bg'] not in ('rgba(0, 0, 0, 0)', 'transparent') and r['panel']['bw'] != '0px' and r['panel']['rad'] != '0px', f'each list is a bounded panel (background, border, radius) {r["panel"]}')
     ok(r['pills'][0] == 'Carried+Your note' and r['pills'][1] == "Skirmish+Unique+Claude's pick" and r['pills'][2] == 'Unique' and r['kept'] == 0, f'pills read off the why and by, no "kept" pill {r["pills"]}')
-    ok(r['whyTitle'] and r['noWhyText'] and r['zoom'] >= 12, f'the why is the tile title only (not printed), and tiles stay zoomable {r["zoom"]}')
+    # 2026-10-30 CS-C: since UI3 (S6) the why rides in the hover popover (data-zoom-why: the Full card, its text and the why line), not the tile's title
+    ok(r['whyPop'] and r['noTitle'] and r['noWhyText'] and r['zoom'] >= 12, f'the why is the popover line only (no tile title, not printed), and tiles stay zoomable {r["zoom"]}')
     ok(r['cardW'] >= (100 if w >= 700 else 80) and r['cardH'] > r['cardW'], f'large cards {r["cardW"]}x{r["cardH"]}')
     ok(len(r['counts']) >= 1 and all(re.search(r'\d+/\d+ new cards', c) for c in r['counts']) and 'paste to Claude' in r['tip'] and r['copyDesc'] == 'rv2CopyTip', f'counts line {r["counts"]} and tooltip text {r["tip"]!r}')
     ok(r['hs'] <= 1 and r['overflowTile'] == 0, f'no horizontal overflow at {w} (page {r["hs"]}, tiles outside {r["overflowTile"]})')
@@ -82,6 +83,11 @@ async def run(b, url, w):
     # zoom still works on a review tile
     await pg.hover('.rv1-part.is-cut .vis4-mc-card'); await pg.wait_for_timeout(500)
     z = await pg.evaluate("!!document.querySelector('.reward-zoom, .rw-zoom, #rewardZoomTip, [class*=zoom]:not([data-zoom]):not(.vis4-mc-card)')")
+    # 2026-10-30 CS-C: the popover is the Full card plus its text, with the why as its last line, above the overlay and on screen
+    zp = await pg.evaluate("""(()=>{ const z = document.querySelector('.cnp-rw-zoom'); if(!z) return null; const r = z.getBoundingClientRect();
+      return {full: !!z.querySelector('.card-tile[data-size="full"]'), text: !!z.querySelector('.cp-text'), why: (z.querySelector('.cnp-rw-why') || {}).textContent || '', z: +getComputedStyle(z).zIndex,
+        on: r.left >= 0 && r.top >= 0 && r.right <= innerWidth + 1 && r.bottom <= innerHeight + 1}; })()""")
+    ok(zp and zp['full'] and zp['text'] and zp['why'].startswith('Fake cut') and zp['z'] >= 900 and zp['on'], f'the hover popover: the Full card, its text and the why line, above the overlay, on screen {zp}')
     await shot(pg, 'zoom', w)
     # the Copy my picks tooltip shows on hover
     await pg.hover('#rv1Copy'); await pg.wait_for_timeout(300)

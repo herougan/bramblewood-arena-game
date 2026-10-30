@@ -210,12 +210,13 @@ async def main():
         check(await pg.evaluate("!!(matchState && matchState.mode==='conquest')"), 'Rejoin should bring the fight back')
         await pg.evaluate("endMatch(); 1")
         # 7d: Codex card inspector — opens large, turns about a tilted axis, Esc closes only the inspector (2026-10-08)
-        await pg.evaluate("(()=>{ openCardDetail(Object.keys(getCardDefs()).find(k=> !getCardDefs()[k].token)); document.getElementById('cdInspectBtn').click(); return 1; })()"); await pg.wait_for_timeout(700)
-        ci = await pg.evaluate("(()=>{ const s = document.querySelector('.card-inspect .ci-spin'); const r = s && s.getBoundingClientRect(); return s ? {tf: s.style.transform, w: r.width, back: !!document.querySelector('.ci-back')} : null; })()")
+        # 2026-10-30 CS-C: the Card Detail overlay's card is the inspector now (the Detail card: drag to spin, a back face); no 🔍 Inspect button and
+        # no second overlay over it, so Esc closes the details themselves
+        await pg.evaluate("(()=>{ openCardDetail(Object.keys(getCardDefs()).find(k=> !getCardDefs()[k].token)); return 1; })()"); await pg.wait_for_timeout(700)
+        ci = await pg.evaluate("(()=>{ const s = document.querySelector('#cardDetailOverlay .dc-spin'); const r = s && s.getBoundingClientRect(); return s ? {tf: s.style.transform, w: r.width, back: !!document.querySelector('#cardDetailOverlay .dc-back')} : null; })()")
         check(ci and 'rotateY' in ci['tf'] and ci['w'] >= 280 and ci['back'], f'card inspector should show the card large with a back face and a 3D turn: {ci}')
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)
-        check(await pg.evaluate("!document.querySelector('.card-inspect') && !document.getElementById('cardDetailOverlay').hidden"), 'Esc should close the inspector but leave the card detail open')
-        await pg.evaluate("document.getElementById('cdCloseBtn').click(); 1")
+        check(await pg.evaluate("!document.querySelector('.card-inspect') && document.getElementById('cardDetailOverlay').hidden"), 'Esc should close the card detail (it is the inspector now)')
         # 8: Autobattler fight replay: draft a run, fight once, watch it step by step
         await pg.evaluate("""(()=>{ const d = getCardDefs(); const run = AutoB.newRun(4242, Date.now());
           while(run.phase==='draft'){ const o = AutoB.draftOffers(d, CHARACTER_DEFS, run); AutoB.applyDraftPick(run, o.options[0]); }

@@ -188,7 +188,7 @@ async function browser(){
       const hov = await pg.evaluate(`(()=>{ const b = document.querySelector('${sel}'); const h = fullCardHTML('${pick.id}', null, {shownLevel: +b.dataset.shownLevel}); const f = fullCardHTML('${pick.id}', null, {}); return {same: h === f, ok: h.length > 0}; })()`);
       ok(hov.ok && !hov.same, `B#7@${w} the hover card reads the shown level`);
       await pg.evaluate(`document.querySelector('${sel}').click()`); await pg.waitForTimeout(500);
-      const det = await pg.evaluate("(()=>{ const o = document.getElementById('cardDetailOverlay'); return {open: !o.hidden, atk: parseInt((o.querySelector('.card-pop-visual-tile .stats .atk')||{}).textContent), art: !!o.querySelector('#edArtReject')}; })()");
+      const det = await pg.evaluate("(()=>{ const o = document.getElementById('cardDetailOverlay'); return {open: !o.hidden, atk: parseInt((o.querySelector('.cd-dc .dc-front .card-tile .stats .atk') /* 2026-10-30 CS-C: the detail's card is the Detail card (was .card-pop-visual-tile) */||{}).textContent), art: !!o.querySelector('#edArtReject')}; })()");
       ok(det.open && det.atk === r.want.attack, `B#7@${w} the details show the enemy's stats (${JSON.stringify(det)})`);
       ok(det.art, `B#14@${w} the details have Art rejected for admins`);
       if(w === 1366) await pg.screenshot({path: path.join(SHOTS, `preview-detail-${w}.png`)});
