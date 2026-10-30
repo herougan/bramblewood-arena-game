@@ -3662,5 +3662,11 @@
  "Copied everything: paste it to Claude, or download it": "Tutto copiato: incollalo a Claude o scaricalo",
  "Ready: download it": "Pronto: scaricalo",
  "A CPU ally with a random deck joins at Start": "Un alleato CPU con un mazzo casuale si unisce all'inizio",
- "Plays a random deck": "Gioca un mazzo casuale"
+ "Plays a random deck": "Gioca un mazzo casuale",
+ "Briar Blossoms": "Fiori di rovo",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "Fiori di rovo: rinforzare un rovo li costa. Si vincono negli scontri di Conquista, qualcuno anche perdendo.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Rinforzare costa Fiori di rovo e un po' di Polvere e Foglie. Ne hai {have}. Vinci scontri per averne di più; una sconfitta ne dà qualcuno per i danni inflitti al rovo nemico.",
+ "{n} Briar Blossoms for every floor won": "{n} Fiori di rovo per ogni piano vinto",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Fiori di rovo per la vittoria. Spendili per rinforzare i tuoi rovi alla Forgia.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "Fiori di rovo per i danni inflitti al rovo nemico"
 }

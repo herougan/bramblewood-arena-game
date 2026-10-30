@@ -3660,5 +3660,11 @@
  "Copied everything: paste it to Claude, or download it": "Tout est copié : collez-le à Claude, ou téléchargez-le",
  "Ready: download it": "Prêt : téléchargez-le",
  "A CPU ally with a random deck joins at Start": "Un allié CPU avec un deck aléatoire rejoint au départ",
- "Plays a random deck": "Joue un deck aléatoire"
+ "Plays a random deck": "Joue un deck aléatoire",
+ "Briar Blossoms": "Fleurs de ronce",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "Fleurs de ronce : renforcer une ronce en coûte. Gagnées dans les combats de Conquête, quelques-unes même en cas de défaite.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Renforcer coûte des Fleurs de ronce et un peu de Poussière et de Feuilles. Vous en avez {have}. Gagnez des combats pour en avoir plus ; une défaite en donne quelques-unes pour les dégâts infligés à la ronce ennemie.",
+ "{n} Briar Blossoms for every floor won": "{n} Fleurs de ronce pour chaque étage gagné",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Fleurs de ronce pour la victoire. Dépensez-les pour renforcer vos ronces à la Forge.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "Fleurs de ronce pour les dégâts infligés à la ronce ennemie"
 }

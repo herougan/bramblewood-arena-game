@@ -3663,5 +3663,11 @@
  "Copied everything: paste it to Claude, or download it": "모두 복사했어요: Claude에게 붙여넣거나 다운로드하세요",
  "Ready: download it": "준비됐어요: 다운로드하세요",
  "A CPU ally with a random deck joins at Start": "시작하면 무작위 덱을 쓰는 CPU 아군이 합류해요",
- "Plays a random deck": "무작위 덱을 써요"
+ "Plays a random deck": "무작위 덱을 써요",
+ "Briar Blossoms": "가시덤불 꽃",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "가시덤불 꽃: 가시덤불을 강화하는 데 들어요. 정복 전투에서 얻고, 져도 조금 받아요.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "강화에는 가시덤불 꽃과 약간의 가루와 잎이 들어요. 지금 {have}개 있어요. 전투에서 이기면 더 얻고, 져도 적 가시덤불에 준 피해만큼 조금 받아요.",
+ "{n} Briar Blossoms for every floor won": "이긴 층마다 가시덤불 꽃 {n}개",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "승리로 얻은 가시덤불 꽃. 대장간에서 가시덤불을 강화하는 데 써요.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "적 가시덤불에 준 피해로 얻은 가시덤불 꽃"
 }

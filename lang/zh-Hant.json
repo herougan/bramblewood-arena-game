@@ -3660,5 +3660,11 @@
  "Copied everything: paste it to Claude, or download it": "已全部複製：貼給 Claude，或下載",
  "Ready: download it": "已準備好：請下載",
  "A CPU ally with a random deck joins at Start": "開始時會有一名使用隨機牌組的 CPU 盟友加入",
- "Plays a random deck": "使用隨機牌組"
+ "Plays a random deck": "使用隨機牌組",
+ "Briar Blossoms": "荊棘花",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "荊棘花：強化荊棘需要它。在征服戰鬥中獲得，即使失敗也能得到一些。",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "強化需要荊棘花，以及少量魔塵和葉子。你有 {have}。贏得戰鬥獲得更多；失敗也會按你對敵方荊棘造成的傷害給一些。",
+ "{n} Briar Blossoms for every floor won": "每贏一層 {n} 荊棘花",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "勝利獲得的荊棘花。在熔爐中用來強化你的荊棘。",
+ "Briar Blossoms for the damage you did to the enemy bramble": "你對敵方荊棘造成傷害獲得的荊棘花"
 }

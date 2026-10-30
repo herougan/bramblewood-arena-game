@@ -3659,5 +3659,11 @@
  "Copied everything: paste it to Claude, or download it": "Todo copiado: pégalo a Claude o descárgalo",
  "Ready: download it": "Listo: descárgalo",
  "A CPU ally with a random deck joins at Start": "Un aliado de la CPU con un mazo aleatorio se une al empezar",
- "Plays a random deck": "Juega un mazo aleatorio"
+ "Plays a random deck": "Juega un mazo aleatorio",
+ "Briar Blossoms": "Flores de zarza",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "Flores de zarza: reforzar una zarza cuesta flores. Se ganan en los combates de Conquista, unas pocas incluso al perder.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Reforzar cuesta Flores de zarza y un poco de Polvo y Hojas. Tienes {have}. Gana combates para conseguir más; una derrota da algunas por el daño que hiciste a la zarza enemiga.",
+ "{n} Briar Blossoms for every floor won": "{n} Flores de zarza por cada piso ganado",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Flores de zarza por la victoria. Gástalas para reforzar tus zarzas en la Forja.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "Flores de zarza por el daño que hiciste a la zarza enemiga"
 }
