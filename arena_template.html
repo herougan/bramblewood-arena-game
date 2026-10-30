@@ -1736,6 +1736,20 @@
   .ab-sk.zeit-live[data-sk="diurnal"]{background:rgba(255,200,60,.30); box-shadow:0 0 0 1.5px rgba(255,210,90,.95), 0 0 8px rgba(255,200,60,.65);}
   .ab-sk.zeit-live[data-sk="nocturnal"]{background:rgba(90,110,220,.32); box-shadow:0 0 0 1.5px rgba(140,160,255,.9), 0 0 8px rgba(120,140,255,.6);}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
+  /* 2026-10-30 (package UI5, W5; owner 21:35): a hand card's Tide / Swimmer chip is out (invisible) while the Tide is out. Drawn or going out: a red flash, then it fades;
+     coming in: a green flash while it fades in. Reduced motion / Effects Low / None: no flash, just show / hide. */
+  .tide-hand{transition:opacity .2s;}
+  .tide-hand.tide-hand-off{opacity:0; visibility:hidden;}
+  .abadge:has(> .tide-hand-off), .badges:has(> .abadge:only-child > .tide-hand-off){opacity:0; visibility:hidden;}
+  .abadge.tide-fade-out, .badges.tide-fade-out{animation:ui5PillOut .9s ease-out both;} .abadge.tide-fade-in, .badges.tide-fade-in{animation:ui5PillIn .9s ease-out both;}
+  @keyframes ui5PillOut{0%,45%{opacity:1; visibility:visible;} 100%{opacity:0; visibility:hidden;}}
+  @keyframes ui5PillIn{0%{opacity:0; visibility:visible;} 40%,100%{opacity:1; visibility:visible;}}
+  .tide-hand.tide-fade-out{animation:ui5TideOut .9s ease-out both;}
+  .tide-hand.tide-fade-in{animation:ui5TideIn .9s ease-out both;}
+  @keyframes ui5TideOut{0%{opacity:1; visibility:visible; background:rgba(235,60,60,.55); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 10px rgba(255,70,70,.9); border-radius:999px;} 45%{opacity:1; visibility:visible; background:rgba(235,60,60,.4); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 8px rgba(255,70,70,.7); border-radius:999px;} 100%{opacity:0; visibility:hidden; background:rgba(235,60,60,0); box-shadow:none;}}
+  @keyframes ui5TideIn{0%{opacity:0; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.5);} 40%{opacity:1; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.45);} 100%{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .tide-hand.tide-fade-out, .tide-hand.tide-fade-in, .abadge.tide-fade-out, .abadge.tide-fade-in, .badges.tide-fade-out, .badges.tide-fade-in{animation:none;} .tide-hand{transition:none;} }
+  :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-out, :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-in{animation:none;}
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
   .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
@@ -5818,7 +5832,9 @@
      Shock (+50% damage taken), Corrode (stacking Attack reduction) — Blind/Shock get the same
      overlay-icon-plus-tint treatment as Frozen/Asleep/Paralyzed above; Corrode gets Scar's
      tint-plus-badge-only treatment since it's a passive stat drain, not a turn-gating status. */
-  .board-card.is-blind .card-tile{background:color-mix(in srgb, var(--status-blind-tint) 26%, var(--bg)); filter:grayscale(.5) brightness(.88);}
+  /* 2026-10-30 (package UI5, W12; owner 21:53: "the close eyes anim only plays on play. Then after that its removed. Maybe the card is very slightly (5-10%) darkened."):
+     a Blind / Purblind unit is darkened 7% on the tile (not the popover); the closing eye plays once (fx-b's .fxb-shut, below), then it is gone. */
+  .board-card.is-blind .card-tile{filter:brightness(.93);}
   /* Tipsy and Confused (2026-10-11) */
   .board-card.is-tipsy .card-tile{animation:tipsySway 2.6s ease-in-out infinite; transform-origin:50% 90%;}
   @keyframes tipsySway{0%,100%{rotate:-2deg;} 50%{rotate:2.5deg;}}
@@ -5832,6 +5848,17 @@
   .blind-overlay{font-size:22px; animation:blindDim 2.2s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   /* 2026-10-18 (package D): when FX B's shut eye marks a Blind unit (sightSync 'blind'), it is the one eye; the 👁 overlay stays for FX off */
   .board-card.fxb-why-blind .blind-overlay{display:none;}
+  /* 2026-10-30 (package UI5, W12): no standing eye on a Blind card, with FX B or without: the 👁 overlay is gone, and FX B's shut eye (.fxb-shut) shows only
+     while its one closing blink plays (it is .is-blink only when the unit first goes blind), then fades out; its shade and the art dimming are left off (the 7% above does it). */
+  .board-card.is-blind .blind-overlay{display:none;}
+  .board-card .card-tile .fxd-st.fxd-st-blind{display:none;} /* FX D's standing ink splat over a Blind card is retired too: the 7% darkening and the chip are the standing marks (2026-10-30, W12) */
+  .board-card.fxb-why-blind .fxb-shade{display:none;}
+  .board-card.fxb-cantsee.fxb-why-blind.fxb-look-A .card-tile .ico{filter:none;}
+  .board-card.fxb-why-blind .fxb-shut{opacity:0;}
+  .board-card.fxb-why-blind .fxb-shut.is-blink{animation:ui5EyeOnce 1.9s ease-in-out both;}
+  @keyframes ui5EyeOnce{0%{opacity:0;} 10%{opacity:1;} 78%{opacity:1;} 100%{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.fxb-why-blind .fxb-shut.is-blink{animation:none;} }
+  :where(html[data-fx="none"]) .board-card.fxb-why-blind .fxb-shut{display:none;}
   @keyframes blindDim{0%,100%{opacity:.5;}50%{opacity:1;}}
   .shock-overlay{font-size:22px; animation:paralyzeJitter .22s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   .abadge.blind{background:color-mix(in srgb, var(--status-blind-tint) 24%, var(--surface-2)); color:var(--status-blind-ink);}

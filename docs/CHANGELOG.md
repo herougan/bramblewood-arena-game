@@ -8,6 +8,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **The damage comes out when the tentacle lands** ("the damage should only come out once the tentacle lands on the cards"): the limb reaches each struck card in turn (front to back down a column, along a row from the bramble's side), and that card's damage number, shake and flash, its Health drop and its death happen right then. The turn's redraw waits for the limb, so it no longer stalls the swing halfway or drops Health and removes units before the hit. Each card now shows its own number. Reduced motion: every number as the still tentacle appears; Effects None: as the smack happens. Only timing changed; the engine is untouched (`raidSmackStage` in `arena_app.js`, FX.F `tentacleSmack` `onReach`).
 - **No 🤝 marker on allies' cards**: the corner badge on a raid ally's unit (`.is-ally-card`, the only place it was drawn) is gone; the Esprit skill keeps its 🤝 chip. No text was removed.
 - Tests: `tests/raidfx1-2026-10-30.js`; browser: `tests/e2e/raidfx1_2026_10_30.py` (screens in `docs/screens/raidfx1/`).
+## 2026-10-30 (package UI5: Tide chips by map, Blind looks)
+- **Tide is left out where it cannot happen** (owner 21:35): in a fight on a map that can never have Tide, no card (hand or battlefield) shows a Tide or Swimmer chip. Outside a fight (Codex, detail) they show as before.
+- **A hand card's Tide chip follows the tide**: lit while the Tide is in, invisible while it is out. Drawn with no Tide, or when the Tide goes out, the chip flashes red and fades out; when the Tide comes in it fades back in with a green flash. Board cards keep their lit / unlit chip. Reduced motion and Effects Low / None: no flash, just show / hide. (`ui5TideHandFx`, `.tide-hand` in `arena_template.html`.)
+- **Blind / Purblind** (owner 21:53): the closing-eyes blink plays once when the unit goes blind and is then gone (no standing eye, shade, 👁 overlay or ink splat); a Blind tile is darkened 7% (it was grey and 12%); the chips are the spectacles (🕶️, `blind-now` icon key). Purblind is the same, always.
+- Tests: `tests/ui5-2026-10-30.js`, `tests/e2e/ui5_2026_10_30.py`; shots in `docs/screens/ui5/`.
 
 ## 2026-10-30 (coordinator: Diurnal / Nocturnal light up)
 
