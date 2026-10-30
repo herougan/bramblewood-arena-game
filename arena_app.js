@@ -12334,7 +12334,7 @@ function refreshAccountUI(){
     chip.classList.toggle('signed-in', signedIn);
     const txt = document.getElementById('accountChipText');
     if(txt){ if(signedIn) txt.textContent = cloudUserLabel || 'Signed in'; else txt.innerHTML = '<span class="acc-long">Guest · </span>Sign in'; }
-    chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
+    chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''}. Click to open Profile.` : 'Guest: progress is saved on this device only. Click to sign in.';
   }
   const line = document.getElementById('entranceAccountLine');
   if(line){
@@ -13663,7 +13663,7 @@ function playAgainEnergyAttrs(m){
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
   if(!m.adminTest && isDailyDungeonMap(f.map) && dungeonTicketsLeft() <= 0) return `data-energy-cost="${c}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}"`; // 2026-10-18 (package DK)
-  return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
+  return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡; you have ${currentEnergy()}⚡.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
 // Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
 // have enough energy. It fades off after 2s"). Fight buttons stay pressable, look greyed, and answer with this.
@@ -16259,7 +16259,7 @@ function deckPreviewPillsHTML(d){
     <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Bramble')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
-    <span class="deck-pill deck-pill-level" title="Battle rating: each card's rarity weight × its level factor; the leader counts double. A starting deck is about 10, a full level-10 Ancient deck about 2,500">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
+    <span class="deck-pill deck-pill-level" title="Battle rating: card rarity × level; the leader counts double.">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
   </div>`;
 }
 // Battle rating (2026-10-11, user: "battle rating: Replace deck level ... a beginner level deck has rating 1-25. While
@@ -16606,7 +16606,7 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>${EMOJI_CREDITS[EmojiStyle.active()] || ''}</div></div>
             </div>
           </div>
-          <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
+          <div class="energy-pill" id="energyPillPlay" title="Energy: spent to start fights, refills 1 every 5 minutes.">
             <span id="energyPillPlayText">—</span>
           </div>
         </div>
@@ -21091,7 +21091,7 @@ function checkXpMilestones(){
 }
 function levelBadgeHTML(){
   const L = playerLevelInfo();
-  return `<div class="player-level" id="playerLevelBadge" title="${L.into} / ${L.need} XP to level ${L.level+1} — XP mostly comes from quests and milestones">
+  return `<div class="player-level" id="playerLevelBadge" title="${L.into} / ${L.need} XP to level ${L.level+1}">
     <span class="pl-num">⭐ Level ${L.level}</span><span class="pl-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><span class="pl-xp">${L.into}/${L.need} XP</span></div>`;
 }
 function refreshLevelBadge(){ const el = document.getElementById('playerLevelBadge'); if(el) el.outerHTML = levelBadgeHTML(); try{ res3CheckLevelTrack(); }catch(e){} } // + RES3 (2026-10-26, B1): pays the level track
@@ -21852,7 +21852,7 @@ function abStatusBarHTML(run){
     <span class="ab-stat" title="Wins this run">🏆 <b>${run.wins}</b>${run.endless ? ' · ♾️ Endless' : ` / ${goal}`}</span>
     <span class="ab-stat" title="Fights played">⚔️ Fight ${run.fights + (run.phase==='prep'?1:0)}</span>
     <span class="ab-stat ab-penalty" title="Health lost on a loss">Loss costs ${AutoB.lossPenalty(run.fights+1)} ❤️</span>
-    ${run.leader ? `<span class="ab-stat" title="Deck level: each card's rarity weight × its level; leaders count double">📈 Deck Lv <b>${AutoB.runDeckLevel(getCardDefs(), run)}</b></span>` : ''}
+    ${run.leader ? `<span class="ab-stat" title="Deck level: card rarity × level; leaders count double.">📈 Deck Lv <b>${AutoB.runDeckLevel(getCardDefs(), run)}</b></span>` : ''}
   </div>`;
 }
 function renderAutobattleSubTab(body){
@@ -27007,7 +27007,7 @@ function renderConquestSubTab(body){
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
-          : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
+          : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight. Costs ${energyCost}⚡ a run.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div>${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial; 2026-10-24 (package NE, owner 11:26): in the top row, under the BR */}</div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
@@ -33509,7 +33509,7 @@ function onlineRaidBossCardHTML(boss){
     <div class="cn-kind">Strength ${boss.strength}</div>
     <div class="cn-name">${escapeHtml(boss.name)}</div>
     <div class="cn-hp">🏰 ${curHp}/${maxHp} HP</div>
-    <div class="raid-boss-hp-bar" title="${curHp}/${maxHp} HP remaining — chipped down by every attempt against this boss, yours included"><div class="raid-boss-hp-bar-fill" style="width:${hpPct}%"></div></div>
+    <div class="raid-boss-hp-bar" title="${curHp}/${maxHp} HP remaining"><div class="raid-boss-hp-bar-fill" style="width:${hpPct}%"></div></div>
     <div class="rp-blurb">${escapeHtml(boss.blurb||'')}</div>
     <button class="btn small primary cn-fight" data-bossid="${escapeHtml(boss.id)}">${locked?'🔒 Sign in to fight':`⚔️ Fight (Rank ${myRank.label})`}</button>
   </div>`;
@@ -33544,7 +33544,7 @@ function renderOnlineRaidPanel(body){
     <div class="panel online-raid-panel">
       <h2>🌐 Online Raid</h2>
       <p class="panel-sub">Fixed-strength Raid Bosses, open to everyone right away — your rank: <b>${myRank.label}</b> (rating ${Math.round(myRating)}). Each attempt costs ${RAID_POINTS_COST}🎫 Raid Point and ${ENERGY_COST.onlineRaid}⚡ Energy.</p>
-      <div class="energy-pill raid-points-pill ${rp<RAID_POINTS_COST?'energy-low':''}" title="Raid Points gate Online Raid attempts specifically, on top of Energy — refills slowly (1 every 6h) since a raid boss is the highest-stakes PvE fight in the game.">${rpLine.replace(/^(\d+\/\d+)/, '$1🎫')}</div>
+      <div class="energy-pill raid-points-pill ${rp<RAID_POINTS_COST?'energy-low':''}" title="Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.">${rpLine.replace(/^(\d+\/\d+)/, '$1🎫')}</div>
       ${cloudRaidBosses===null ? `<div class="empty-hint">Loading raid bosses…</div>`
         : (cloudRaidBosses.length ? `<div class="conquest-nodes" id="onlineRaidNodeList">${cloudRaidBosses.map(onlineRaidBossCardHTML).join('')}</div>`
           : `<div class="empty-hint">${cloudRaidBossesError ? 'Couldn’t reach the raid server right now — try again shortly.' : 'No raid is open right now. The next one is on its way — see “Coming Up” below.'}</div>`)}
@@ -35309,7 +35309,7 @@ function renderMatchUI(){
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${enemyHandCountHTML(p2) /* 2026-10-17 (user: "There should be a counter above the enemy's deck that says "5 <Card Emoji>""): their hand size */}
         ${(p2.graveyard||[]).length ? `<button type="button" class="grave-peek-badge" data-grave-peek="2" title="Enemy Graveyard: ${p2.graveyard.length} card${p2.graveyard.length===1?'':'s'}. Tap to see them." aria-label="Enemy Graveyard, ${p2.graveyard.length} cards">💀 ${p2.graveyard.length}</button>` : '' /* 2026-10-15: the opponent's Graveyard, peekable */}
-        ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
+        ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0}.">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
       ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
       <div class="top-right-stack">
@@ -35347,7 +35347,7 @@ function renderMatchUI(){
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
         ${(p1.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
-        ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge is-mine" role="button" tabindex="0" data-open-exile="1" data-can-cast="${p1.exile.some(e=> m.engine.canCastFromExile && m.engine.canCastFromExile(p1, e.defId)) ? 1 : 0}" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
+        ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge is-mine" role="button" tabindex="0" data-open-exile="1" data-can-cast="${p1.exile.some(e=> m.engine.canCastFromExile && m.engine.canCastFromExile(p1, e.defId)) ? 1 : 0}" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0}.">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
@@ -36270,9 +36270,8 @@ function speedKeeps(){ if(SPEED_KEEP_ALWAYS) return true; /* RW5 */ try{ const m
 function keptSpeed(){ if(!speedKeeps()) return 0; try{ return +localStorage.getItem(SPEED_KEEP_KEY) || 0; }catch(e){ return 0; } }
 function ffBtnLabel(mult){ if(mult > 0 && mult < 1) return `<span class="ff-arrows">▷</span> ${mult}×`; const m = (!mult || mult<=1) ? 1 : mult, n = m >= 4 ? 5 : m >= 3 ? 4 : m >= 2 ? 3 : m > 1 ? 2 : 1; return `<span class="ff-arrows">${'▶'.repeat(n)}</span> ${m}×`; }
 // 2026-10-14: the tooltip names the whole cycle and how to go back (Shift-click, or a long press on a touch screen).
-function ffBtnTitle(mult){ const st = speedSteps(), now = (mult > 0 && mult < 1) ? `${mult}x (slow motion)` : (!mult || mult <= 1) ? 'normal' : `${mult}x`;
-  const locks = speedLockedHints(); // 2026-10-19 (package BU): the locked fast speeds and the map that opens each
-  return `Playback speed: ${now}. Click: faster (${st.map(x=> x + 'x').join(' → ')} → 1x). Shift-click (or press and hold): slower${speedKeeps() ? '. Your choice carries over to the next fight' : ''}${locks.length ? '. 🔒 ' + locks.join(' · ') : ''}`; }
+function ffBtnTitle(mult){ /* 2026-10-30 (TIP1, owner 23:30): "simplify to what it exactly does": one short line; the cycle, the carry-over and the locked speeds (speedLockedHints) are no longer in the tooltip */
+  return TX('ui.tip1-speed'); }
 // 2026-09-21 ("Spawning and the movement of the card sometimes collides and messes up. Spawn
 // first, then collapse once the animation is complete"): the per-card entrance ("fall in") tween
 // duration, factored out of renderBoard's own local `dur` so any OTHER code that needs to know
@@ -52132,7 +52131,7 @@ function forgeDupMeltHTML(id, L){
     ${(cr.dust || cr.gold) ? `<p class="forge-note">🧩 ${escapeHtml(TX('ui.fg-card-credit', {dust: cr.dust, gold: cr.gold}))}</p>` : ''}
     <div class="forge-dup-row">
       <button type="button" class="btn small" id="forgeGoFuseBtn" ${spare ? '' : 'disabled'} title="${escapeAttr(TX('ui.fg-fuse-blurb'))}">🧩 ${escapeHtml(TX('ui.fg-go-fuse', {n: spares}))} <small>+✨${dv.dust}</small></button>
-      ${melt ? `<button type="button" class="btn small ghost ${forgeMeltArmed===id?'is-armed':''}" id="forgeMeltBtn" title="${escapeAttr(`Melts ${melt.copies} spare cop${melt.copies===1?'y':'ies'} and takes it back to level ${melt.base}; 97% of what its levels cost comes back.`)}">${forgeMeltArmed===id ? `Confirm: melt for ✨ ${melt.dust}${melt.gold ? ' · ' + melt.gold + ' Leaves' : ''}` : `🔥 Melt down <small>✨${melt.dust}</small>`}</button>` : ''}
+      ${melt ? `<button type="button" class="btn small ghost ${forgeMeltArmed===id?'is-armed':''}" id="forgeMeltBtn" title="${escapeAttr(`Melts ${melt.copies} spare cop${melt.copies===1?'y':'ies'} back to level ${melt.base}. 97% of level costs return.`)}">${forgeMeltArmed===id ? `Confirm: melt for ✨ ${melt.dust}${melt.gold ? ' · ' + melt.gold + ' Leaves' : ''}` : `🔥 Melt down <small>✨${melt.dust}</small>`}</button>` : ''}
     </div>
     ${spare ? '' : `<p class="forge-note">${escapeHtml(TX('ui.fg-fuse-no-spare'))}</p>`}
   </div>`;
