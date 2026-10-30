@@ -684,7 +684,7 @@ function eyeIntro(card, e){ const id = card && card.dataset && card.dataset.uid,
   if(id != null && eyeSeen.has(id) && now - eyeSeen.get(id) < 20*60*1000) return;
   if(id != null){ eyeSeen.set(id, now); if(eyeSeen.size > 300) eyeSeen.clear(); }
   blinkEye(e); }
-if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
+if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(e.closest('.is-blind')) return; /* 2026-10-30 (coordinator, owner 21:53: the blind blink plays once, then is gone) */ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
 // mark(el, kind): kind 'dark' | 'sun' | 'night' (can't see) | 'eyes' (Darksight in the dark) | 'lantern' (the carrier's light pool) | 'lit' | null (clear)
 M.markSight = function(el, kind, o){
   o = o || {}; if(!el || !el.classList) return; const look = o.look || M.sightLook || 'A';

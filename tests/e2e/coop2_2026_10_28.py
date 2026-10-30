@@ -62,7 +62,7 @@ TURN = """async()=>{ const m = matchState, b = window.__bot, C = BramblewoodCoop
   if(!C.seatDone(b.T, 1)){ const x = C.cpuChoice(b.T, 1); if(x) b.claim(x.kind === 'pass' ? {kind:'pass'} : x.kind === 'pitch' ? {kind:'pitch', uid:x.uid} : {kind:'play', uid:x.uid, row:x.row, slot:x.slot}); }
   for(let i = 0; i < 6 && !C.seatDone(T, 0) && !m.resolving; i++){ const me = m.players[1];
     const h = me.hand.find(h=> m.engine.canPlay(me, h.defId, h.uid) && !C.unsupportedCard(getCardDefs()[h.defId]) && !C.noSlotCard(getCardDefs()[h.defId]));
-    const sl = C.rowLegalSlots(T, 0)[0];
+    const sl = C.rowLegalSlots(T, 0, 0)[0]; // 2026-10-30 (COOP3): player 1's own network
     if(h && sl != null) await playCardByUid(h.uid, sl); else await skipTurn();
     await new Promise(r=> setTimeout(r, 400)); }
   for(let i = 0; i < 25 && !C.seatDone(b.T, 1); i++){ const x = C.cpuChoice(b.T, 1); if(x && !Object.keys(b.pending).length) b.claim(x.kind === 'pass' ? {kind:'pass'} : x.kind === 'pitch' ? {kind:'pitch', uid:x.uid} : {kind:'play', uid:x.uid, row:x.row, slot:x.slot}); await new Promise(r=> setTimeout(r, 200)); }
@@ -113,13 +113,16 @@ async def main():
         check(race['ghost'], 'race: my claim waited in its slot (dimmed, locked) until it landed')
         check(race['hash'], 'race: both tables are the same after it')
         # 3. player 2 plays into player 1's row: on the page, an ally's play from its hand
+        # 2026-10-30 (package COOP3, owner W10: "you cannot use your allies' 'network' to place cards"): player 2 has nothing on the board, so
+        # player 1's units open nothing in the front row for it; it plays beside its own row's centre (player 1's card holds it) and the page
+        # draws that as Pip's play. Was: rowLegalSlots(b.T, 0)[0], a front-row slot beside player 1's units (row 0).
         ally = await page.evaluate("""async()=>{ const m = matchState, C = BramblewoodCoop, b = window.__bot, T = m.coop.T; const n0 = window.__bwAllyPlays || 0;
-          const slot = C.rowLegalSlots(b.T, 0)[0], h = C.seatData(b.T, 1).hand.find(x=> b.T.E.canPlay(C.seatData(b.T, 1), x.defId, x.uid) && !C.noSlotCard(getCardDefs()[x.defId]));
-          if(!h || slot == null) return {skip: true}; b.claim({kind: 'play', uid: h.uid, row: 0, slot});
-          await new Promise(r=> setTimeout(r, 500)); const u = C.unitAt(T, 0, slot);
-          return {seat: u && u.coopSeat, plays: (window.__bwAllyPlays || 0) - n0, name: (window.__bwAllyPlayLast || {}).name, locked: !C.rowLegalSlots(T, 0).includes(slot)}; }""")
+          const slot = C.rowLegalSlots(b.T, 1, 1)[0], h = C.seatData(b.T, 1).hand.find(x=> b.T.E.canPlay(C.seatData(b.T, 1), x.defId, x.uid) && !C.noSlotCard(getCardDefs()[x.defId]));
+          if(!h || slot == null) return {skip: true}; b.claim({kind: 'play', uid: h.uid, row: 1, slot});
+          await new Promise(r=> setTimeout(r, 500)); const u = C.unitAt(T, 1, slot);
+          return {seat: u && u.coopSeat, plays: (window.__bwAllyPlays || 0) - n0, name: (window.__bwAllyPlayLast || {}).name, locked: !C.rowLegalSlots(T, 1).includes(slot)}; }""")
         if not ally.get('skip'):
-            check(ally['seat'] == 1 and ally['plays'] >= 1 and ally['name'] == 'Pip' and ally['locked'], f"ally slot: player 2's card lands in player 1's row as Pip's play, the slot taken ({ally})")
+            check(ally['seat'] == 1 and ally['plays'] >= 1 and ally['name'] == 'Pip' and ally['locked'], f"ally play: player 2's card lands as Pip's play, the slot taken (COOP3: in its own row) ({ally})")
         await page.wait_for_timeout(1200)
         for _ in range(30):
             st = await page.evaluate(STATE)
@@ -145,6 +148,11 @@ async def main():
         check(ph['panel'] and ph['rank'] and ph['next'], f'floor won: the floor panel with the rank emblem and Continue for the host ({ph})')
         check(any(ch.isdigit() for ch in ph['chest']), f"floor won: the raid's pay (Maple Leaves, Magic Dust) ({ph['chest'].strip()})")
         await shot(page, 'floor-won')
+        # 2026-10-30 (package COOP3, owner W6): the floor's rewards window opens over this panel; Collect closes it (the panel stays the hub)
+        for _ in range(20):
+            if await page.evaluate("()=> !!document.querySelector('.gd-rw-overlay [data-gd-rw]')"): break
+            await page.wait_for_timeout(200)
+        await page.evaluate("()=>{ const b = document.querySelector('.gd-rw-overlay [data-gd-rw=\"collect\"]'); if(b) b.click(); }"); await page.wait_for_timeout(300)
         if ph['next']: await page.click('#gdOverlay [data-gd-act="next"]'); await page.wait_for_timeout(1500)
         st = await page.evaluate(STATE)
         check(st['floor'] == 1 and st['mode'] == 'coop' and st['page'] == st['bot'], f'continue: floor 2 on both clients, in step ({st})')

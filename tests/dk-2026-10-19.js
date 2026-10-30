@@ -49,7 +49,7 @@ function makeKeys(extra){
   K.dungeonStakeKey('mm'); K.dungeonStakeKey('mm');
   ok(K.dungeonTicketsLeft() === 0 && !K.dungeonGateOk('mm'), '1. 0 keys: the gate is shut');
   ok(K.dungeonStakeKey('mm') === false && K.dungeonTicketsLeft() === 0, '1. 0 keys: nothing is taken, the count never goes below 0');
-  ok(/^No Dungeon keys left\. They fill up to 3 in \d+h\.$/.test(K.dungeonNoKeysText()), `1. the reason names the cap and the hours (${K.dungeonNoKeysText()})`);
+  ok(/^No keys left\. They fill up to 3 in \d+h\.$/.test(K.dungeonNoKeysText()) /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */, `1. the reason names the cap and the hours (${K.dungeonNoKeysText()})`);
   // 4. regeneration fills up to the cap
   const set = patch=>{ const s = JSON.parse(LS.getItem(K.DUNGEON_TICKETS_KEY)); Object.assign(s, patch); LS.setItem(K.DUNGEON_TICKETS_KEY, JSON.stringify(s)); };
   const today = K.dungeonDayIndex(), wk = K.dungeonWeekIndex();
@@ -122,8 +122,8 @@ ok(/data-no-keys="1" aria-disabled="true" title="\$\{escapeAttr\(dungeonNoKeysTe
     nodeEnergyCost: ()=> 6, dungeonTicketsLeft: ()=> keys, dungeonKeyCap: ()=> 3, dungeonNextTicketMs: ()=> 5 * 3600000, Math};
   vm.createContext(ctx); vm.runInContext(['dungeonSweepNode', 'dungeonSweepBtnHTML', 'dungeonNoKeysText'].map(fnSrc).join('\n') + '\nthis.B = dungeonSweepBtnHTML;', ctx);
   const map = {id: 'mm', endless: true, nodes: [1, 2, 3, 4].map(f=> ({key: 'f' + f, floor: f}))};
-  const b0 = ctx.B(map); ok(/data-nokeys="1" aria-disabled="true" title="No Dungeon keys left\. They fill up to 3 in 5h\."/.test(b0), '2. the Dungeons tab Sweep at 0 keys: disabled with the reason');
-  keys = 2; const b2 = ctx.B(map); ok(!/data-nokeys/.test(b2) && /and a Dungeon key/.test(b2), '2. with keys: open, and its tooltip says a run costs a key'); }
+  const b0 = ctx.B(map); ok(/data-nokeys="1" aria-disabled="true" title="No keys left\. They fill up to 3 in 5h\."/.test(b0) /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */, '2. the Dungeons tab Sweep at 0 keys: disabled with the reason');
+  keys = 2; const b2 = ctx.B(map); ok(!/data-nokeys/.test(b2) && /and a key/.test(b2) /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */, '2. with keys: open, and its tooltip says a run costs a key'); }
 ok(/if\(b\.dataset\.nokeys \|\| dungeonTicketsLeft\(\) <= 0\) return dungeonNoKeys\(b\);/.test(src), '2. a click on it with 0 keys says why');
 
 // ---- 3. the Forge row
@@ -133,7 +133,7 @@ ok(/if\(b\.dataset\.nokeys \|\| dungeonTicketsLeft\(\) <= 0\) return dungeonNoKe
     btnCostHTML: (c, extra)=> `<span class="btn-cost">${c.gold}|${c.dust}|${(extra || []).map(x=> x.icon + x.need).join('')}</span>`};
   vm.createContext(ctx); vm.runInContext(fnSrc('dungeonKeyRingHTML') + '\nthis.R = dungeonKeyRingHTML;', ctx);
   const h = ctx.R();
-  ok(/id="forgeKeyCapBtn" aria-disabled="true">⬆️ Widen the key ring<span class="btn-cost">800\|400\|🔮1<\/span>/.test(h) && /Holds 3 Dungeon keys/.test(h) && /Next: holds 4 keys/.test(h), '3. the Key ring row: holds 3, next 4, cost with 🔮 Strange Materia, greyed when short');
+  ok(/id="forgeKeyCapBtn" aria-disabled="true">⬆️ Widen the key ring<span class="btn-cost">800\|400\|🔮1<\/span>/.test(h) && /Holds 3 keys/.test(h) /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */ && /Next: holds 4 keys/.test(h), '3. the Key ring row: holds 3, next 4, cost with 🔮 Strange Materia, greyed when short');
   cap = 5; ok(/Fully widened: 5 keys\./.test(ctx.R()) && !/forgeKeyCapBtn/.test(ctx.R()), '3. at 5: fully widened, no button');
   open = false; ok(ctx.R() === '', '3. no daily dungeon open yet: no row'); }
 ok(/closest\('#forgeKeyCapBtn'\)/.test(src) && /showToast\(TX\('toast\.keyring-up', \{cap: t\.cap\}\), 'ok'\)/.test(src) && /showToast\(TX\('toast\.keyring-short'\), 'warn'\)/.test(src), '3. the button raises the cap or says it is short');
@@ -189,8 +189,8 @@ CODES.forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang
   ok(!pack['+1 Dungeon key ({n} in hand)'] && !pack['A won floor gives your Dungeon key back, so you can keep climbing'], `6. lang/${c}.json dropped the retired lines`); });
 { const fr = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'fr.json'), 'utf8')), tr = createTranslator(fr);
   ok(tr(TX('ui.dungeon-keys-left', {n: 2})) === '🗝️ 2 restante(s)', `6. "🗝️ N left" translates: ${tr(TX('ui.dungeon-keys-left', {n: 2}))}`);
-  ok(tr('🗝️ ' + TX('ui.dungeon-no-keys', {cap: 4, h: 7})) === '🗝️ Plus de clé de donjon. Elles remontent à 4 dans 7 h.', `6. the reason translates: ${tr('🗝️ ' + TX('ui.dungeon-no-keys', {cap: 4, h: 7}))}`);
-  ok(tr(TX('ui.keyring-holds', {cap: 5})) === 'Contient 5 clés de donjon', '6. the Key ring line translates');
+  ok(tr('🗝️ ' + TX('ui.dungeon-no-keys', {cap: 4, h: 7})) === '🗝️ Plus de clé. Elles remontent à 4 dans 7 h.' /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */, `6. the reason translates: ${tr('🗝️ ' + TX('ui.dungeon-no-keys', {cap: 4, h: 7}))}`);
+  ok(tr(TX('ui.keyring-holds', {cap: 5})) === 'Contient 5 clés' /* 2026-10-30 (UI6, X19): "Dungeon key" is now "key" (the Dailies share one set) */, '6. the Key ring line translates');
   ok(tr('⬆️ ' + TX('ui.upgrades-tab')) === '⬆️ Améliorations', '6. the tab translates'); }
 ok(fs.existsSync(path.join(ROOT, 'tools', 'i18n_2026_10_19_dungeon_keys.py')), '6. tools/i18n_2026_10_19_dungeon_keys.py');
 

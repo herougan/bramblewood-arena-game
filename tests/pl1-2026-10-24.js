@@ -62,7 +62,7 @@ ok(/\.pool-stack \.ps-count\{right:-11px; bottom:-10px; padding:0 4px; min-width
 const IDS = ['blindFury', 'hiveChorus', 'risingTide', 'secondBurrow', 'wildRage', 'snowVeil', 'sandVeil', 'restlessDead', 'emberBorn', 'siegeTrain', 'venomGlands', 'skyAmbush'];
 for(const id of IDS){ const eff = T.TX('ui.pl1-boon-' + id), full = T.TX('ui.df3-' + id);
   ok(full.startsWith(eff + ' Theirs only:'), `#1 ${id}: the short effect is the DF3 sentence without its "Theirs only" part`); }
-ok(T.TX('ui.pl1-boon-theme-venomGlands') === 'Reptile' && /`\$\{st\.have\}\/\$\{st\.total\} \$\{boonTheme\(row\.selfish\)\}`/.test(app), '#1 the card says "11/17 Reptile" (2026-10-25, PL2: built in place, no TX key)');
+ok(T.TX('ui.pl1-boon-theme-venomGlands') === 'Reptile' && /row\.short = row\.selfish \? boonTheme\(row\.selfish\)/.test(app), '#1 the card says "Reptile" (2026-10-30, UI6 X23: no "11/17" count any more; was built in place by PL2)');
 ok(T.TX('ui.pl1-boon-venomGlands') + ' ' + T.TX('ui.pl1-boon-theirs', {theme:'Reptile'}) === 'Their Poison gives twice the Poison. Theirs: half their deck Reptile', '#1 the detail: the effect and "Theirs: half their deck Reptile"');
 ok(/function boonShortText\(/.test(app) && /boonShortText\(r\.boon\)/.test(app), '#1 the field rows use the short words');
 // 21:20 #2

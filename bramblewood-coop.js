@@ -119,9 +119,12 @@ function coopEngine(T){
 function createTable(opts){
   const t = typeOf(opts.typeId), n = t.players, idx = opts.floorIdx | 0, f = t.floors[idx]; if(!f) throw new Error('no floor ' + idx);
   const given = (opts.seats || []).slice(0, n);
-  const firstDeck = (given.find(s=> s && !s.cpu && s.deck && Object.keys(s.deck).length) || given.find(s=> s && s.deck && Object.keys(s.deck).length) || {}).deck || {};
-  const seats = []; for(let i = 0; i < n; i++){ const s = given[i] || {cpu: true};
-    seats.push({seat: i, name: s.name || '', cpu: !!s.cpu, deck: Object.assign({}, Object.keys(s.deck || {}).length ? s.deck : firstDeck), leader: s.leader || null, castleHp: Math.max(1, Number(s.castleHp) || 20)}); }
+  const firstSeat = given.find(s=> s && !s.cpu && s.deck && Object.keys(s.deck).length) || given.find(s=> s && s.deck && Object.keys(s.deck).length) || {}, firstDeck = firstSeat.deck || {};
+  // 2026-10-30 (ENG14, owner X8: "Does the CPU on our side ever play leaders btw? If yes, okay."): a CPU seat plays a copy of the first
+  // player's deck and had no leader (leader null), so a CPU ally in a group dungeon never fielded one. It now opens with that deck's
+  // leader in its own row, as a raid's CPU allies do (raidAllyLeaderOf); a CPU seat given its own deck keeps its own leader (or none).
+  const seats = []; for(let i = 0; i < n; i++){ const s = given[i] || {cpu: true}, own = Object.keys(s.deck || {}).length > 0;
+    seats.push({seat: i, name: s.name || '', cpu: !!s.cpu, deck: Object.assign({}, own ? s.deck : firstDeck), leader: s.leader || (s.cpu && !own ? firstSeat.leader || null : null), castleHp: Math.max(1, Number(s.castleHp) || 20)}); }
   const seed = (Number(opts.seed) >>> 0) || 1, bh = opts.brambleHp || (x=> x);
   const defs = Object.assign({}, opts.defs, floorOverlay(opts.typeId, idx, opts.defs));
   const rnd = mulberry32(mixSeed(seed, idx + 1, 0xF100));
@@ -154,8 +157,16 @@ function unitAt(T, row, slot){
   const pl = T.players[1]; if(!row) return T.E.allBoardCards(pl).find(c=> c && !c.gap && c.hp > 0 && c.slot === slot) || null;
   const rw = pl.reserve && pl.reserve[row - 1]; return rw && rw[slot] && rw[slot].hp > 0 ? rw[slot] : null;
 }
+// Whose a board unit is: the seat that played it (coopSeat; a leader too), else the row's player (a token a skill made there).
+function ownerOf(T, c, row){ return c && c.coopSeat != null ? c.coopSeat : seatOfRow(T.typeId, row); }
 // The free slots of one row, by the normal game's rule (the centre, or beside one of the row's units), inside the seven columns.
-function rowLegalSlots(T, row){
+// 2026-10-30 (package COOP3, owner W10: "You can also place cards in your allies' rows and vice versa if you have a card adjacent. However
+// you cannot use your allies' 'network' to place cards."): with a seat, the row's free slots FOR THAT PLAYER (the engine's ownedCells):
+// beside a unit of their own (left, right, or the same column one row in front or behind), in any row, plus the centre of their own
+// row; an ally's units open nothing for them. Without a seat: the old any-unit rule (kept for callers that only ask "is it free").
+function rowLegalSlots(T, row, seat){
+  if(seat != null && T.E.ownedCells){ const home = rowOfSeat(T.typeId, seat);
+    return T.E.ownedCells(T.players[1], (c, r)=> ownerOf(T, c, r) === seat, home).filter(x=> x.row === row && COLS.includes(x.slot)).map(x=> x.slot); }
   if(!row) return T.E.legalSlots(T.players[1]).filter(sl=> COLS.includes(sl));
   const rw = (T.players[1].reserve || [])[row - 1]; if(!rw) return [];
   const occ = new Set(Object.keys(rw).map(Number).filter(sl=> rw[sl] && rw[sl].hp > 0)), out = new Set();
@@ -163,7 +174,7 @@ function rowLegalSlots(T, row){
   occ.forEach(sl=> [sl - 1, sl + 1].forEach(x=>{ if(!occ.has(x) && !rw[x]) out.add(x); }));
   return [...out].filter(sl=> COLS.includes(sl) && !rw[sl]).sort((a, b)=> a - b);
 }
-function allCells(T){ const out = []; for(let r = 0; r < T.n; r++) rowLegalSlots(T, r).forEach(slot=> out.push({row: r, slot, owner: seatOfRow(T.typeId, r)})); return out; }
+function allCells(T, seat){ const out = []; for(let r = 0; r < T.n; r++) rowLegalSlots(T, r, seat).forEach(slot=> out.push({row: r, slot, owner: seatOfRow(T.typeId, r)})); return out; } // + COOP3: a seat's cells
 function seatDone(T, s){ return !!(T.passed[s] || seatData(T, s).playedThisTurn); }
 // Is this act legal right now? act: {kind:'play', seat, uid, row, slot} | {kind:'pitch', seat, uid} | {kind:'pass', seat}
 function checkAct(T, act){
@@ -179,7 +190,7 @@ function checkAct(T, act){
     if(T.passed[s] || (pl.playedThisTurn && !d.field)) return {ok: false, why: 'done'};
     if(!T.E.canPlay(pl, h.defId, h.uid)) return {ok: false, why: 'cost'};
     if(noSlotCard(d)) return {ok: true, noCell: true};
-    if(!(act.row >= 0 && act.row < T.n) || !rowLegalSlots(T, act.row).includes(act.slot)) return {ok: false, why: unitAt(T, act.row, act.slot) ? 'taken' : 'cell'};
+    if(!(act.row >= 0 && act.row < T.n) || !rowLegalSlots(T, act.row, s).includes(act.slot)) return {ok: false, why: unitAt(T, act.row, act.slot) ? 'taken' : 'cell'}; // + COOP3: beside a unit of this seat's own
     return {ok: true};
   });
 }
@@ -210,8 +221,9 @@ function cpuChoice(T, s){
   return withSeat(T, s, pl=>{
     const score = h=>{ const d = defs[h.defId] || {}; return (d.attack || 0) + (d.health || 0) * 0.6 - (d.wait || 0) * 0.5; };
     const hand = pl.hand.filter(h=>{ const d = defs[h.defId] || {}; return !unsupportedCard(d) && !noSlotCard(d) && T.E.canPlay(pl, h.defId, h.uid); }).sort((a, b)=> score(b) - score(a) || a.uid - b.uid);
-    const cells = rowLegalSlots(T, row).sort(byCentre);
-    if(hand.length && cells.length) return {kind: 'play', seat: s, uid: hand[0].uid, row, slot: cells[0]};
+    // 2026-10-30 (package COOP3, W10): the cells this seat may use (its own units' network, any row), its own row first, then nearest the centre
+    const cells = allCells(T, s).sort((a, b)=> (a.row !== row) - (b.row !== row) || byCentre(a.slot, b.slot));
+    if(hand.length && cells.length) return {kind: 'play', seat: s, uid: hand[0].uid, row: cells[0].row, slot: cells[0].slot};
     if(!pl.discardUsedThisTurn && pl.hand.length && cells.length){ const d0 = pl.hand.slice().sort((a, b)=> ((defs[b.defId] || {}).cost || 0) - ((defs[a.defId] || {}).cost || 0) || a.uid - b.uid)[0]; return {kind: 'pitch', seat: s, uid: d0.uid}; }
     return {kind: 'pass', seat: s};
   });
@@ -334,7 +346,7 @@ function createSession(opts){
   const batchMs = opts.batchMs != null ? opts.batchMs : BATCH_MS;
   const S = {me, code: opts.code, typeId, players: N, isHost: !!opts.host, room: null, T: null, startMsg: null, closed: false, epoch: 0,
     seq: 0, log: [], queue: [], busy: false, inbox: [], batchTimer: null, pending: {}, cidSeq: 0, lastSeen: {}, timers: {}, floorIdx: -1, results: [], ended: null,
-    maxHumans: Math.min(N, opts.maxHumans || N), desyncs: 0, rejected: []};
+    maxHumans: Math.min(N, opts.maxHumans || N), desyncs: 0, rejected: [], cpuT: {}, cpuKey: null};
   function send(t, body){ if(S.closed) return; const msg = Object.assign({t, from: me.peerId, epoch: S.epoch}, body || {}); T0.send(msg); return msg; }
   function mySeat(){ if(!S.room) return null; const i = S.room.seats.findIndex(x=> x && x.peerId === me.peerId); return i >= 0 ? i : null; }
   function humans(room){ return (room || S.room).seats.map((x, i)=> x && !x.cpu ? i : -1).filter(i=> i >= 0); }
@@ -382,7 +394,7 @@ function createSession(opts){
   async function applyOne(act){
     if(act.kind === 'floor'){ S.floorIdx = act.idx; S.pending = {}; S.T = null;
       if(S.startMsg && opts.deps && S.defsOk !== false){ try{ S.T = tableFor(S.startMsg, act.idx, opts.deps, mySeat() != null ? mySeat() : 0); }catch(e){ console.error('coop floor', e); } }
-      emit('floor', {idx: act.idx, T: S.T}); maybeAutoPlay(); return; }
+      emit('floor', {idx: act.idx, T: S.T}); maybeAutoPlay(); scheduleCpu(); return; } // + COOP3: the CPU allies' timers
     if(act.kind === 'end'){ S.ended = act.how; if(S.room) S.room.status = 'done'; emit('end', {how: act.how, results: S.results.slice()}); return; }
     const T = S.T; if(!T) return;
     if(act.kind === 'round'){
@@ -392,7 +404,7 @@ function createSession(opts){
       if(res && res.over && !T.over) noteRoundEnd(T, res);
       emit('round', {act, res, T});
       if(T.over){ S.results[T.floorIdx] = T.over; emit('floorEnd', {idx: T.floorIdx, result: T.over, reason: T.reason, T, last: T.floorIdx >= typeOf(typeId).floors.length - 1}); hostAfterFloor(); }
-      else maybeAutoPlay();
+      else { maybeAutoPlay(); scheduleCpu(); } // + COOP3
       return;
     }
     // a play / pitch / pass: the host checked it; here it lands (the page draws it as that player's play)
@@ -408,8 +420,30 @@ function createSession(opts){
     return res;
   }
   // The host, after each act: every player here is done -> the CPU seats (and players who dropped) take their turn, then the round.
+  // 2026-10-30 (package COOP3, owner W4: "The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to
+  // 3.0s. (0.5 to 1.5s in the first turn only)"): with opts.cpuDelay(T, seat) -> ms, the host gives each CPU seat its own timer as a floor
+  // and each round begin; the CPU plays when it fires (in parallel with the players: they may play before it lands, and the round waits for
+  // it). Its acts are numbered and logged like any other, so the delay is presentation only (every page and the catch-up replay the log).
+  // Without opts.cpuDelay (the headless tests) the CPU seats play when the players are done, as before.
+  function clearCpu(){ Object.keys(S.cpuT).forEach(k=> clock.clearTimeout(S.cpuT[k])); S.cpuT = {}; }
+  function scheduleCpu(){
+    const T = S.T; if(!opts.cpuDelay || !S.isHost || S.closed || !T || T.over || !S.room) return;
+    const key = T.floorIdx + ':' + T.round; if(S.cpuKey === key) return;
+    clearCpu(); S.cpuKey = key;
+    S.room.seats.forEach((x, i)=>{ if(!x || !x.cpu || seatDone(T, i)) return; let ms = 0; try{ ms = Math.max(0, Number(opts.cpuDelay(T, i)) || 0); }catch(e){}
+      S.cpuT[i] = clock.setTimeout(()=> cpuTurn(i, key), ms); });
+  }
+  function cpuTurn(i, key){
+    const T = S.T; if(S.closed || !S.isHost || !T || T.over || S.cpuKey !== key){ delete S.cpuT[i]; return; }
+    // a round still playing, or players' claims of this moment not landed yet (they go first: the lower index's race rule): a moment later
+    if(S.busy || S.queue.length || S.inbox.length || S.batchTimer){ S.cpuT[i] = clock.setTimeout(()=> cpuTurn(i, key), 60); return; }
+    delete S.cpuT[i];
+    if(!seatDone(T, i)){ S.busy = true; try{ cpuActs(T, i, a=> hostLand(a)); } finally { S.busy = false; } }
+    maybeRound();
+  }
   function maybeRound(){
     const T = S.T; if(!S.isHost || !T || T.over || S.busy || S.queue.length || S.inbox.length || S.batchTimer) return;
+    if(Object.keys(S.cpuT).length) return; // + COOP3: a CPU ally still taking its time; the round waits for it
     if(!humans().filter(connected).every(i=> seatDone(T, i))) return;
     S.busy = true;
     try{ for(let i = 0; i < N; i++){ if(!seatDone(T, i)) cpuActs(T, i, a=> hostLand(a)); } } // a CPU seat, or a player who is away
@@ -460,7 +494,7 @@ function createSession(opts){
   }
   function onReject(m){
     if(m.seat !== mySeat()) return; const p = S.pending[m.cid]; delete S.pending[m.cid];
-    S.rejected.push({cid: m.cid, why: m.why, by: m.by}); emit('reject', {cid: m.cid, why: m.why, by: m.by, act: p || null});
+    S.rejected.push({cid: m.cid, why: m.why, by: m.by}); emit('reject', {cid: m.cid, why: m.why, by: m.by, act: p || null}); maybeAutoPlay(); // + COOP3 (2026-10-30): auto-play tries again after a refused claim
   }
   function requestSync(why){ if(S.syncAsked && clock.now() - S.syncAsked < 1500) return; S.syncAsked = clock.now(); send('sync', {why, have: S.log.length ? S.log[S.log.length - 1].seq : 0}); }
   // A client that fell out of step (a missed act, a rejoin): it rebuilds the floor from the start message and the host's act log.
@@ -531,7 +565,7 @@ function createSession(opts){
     room.seats.forEach((y, k)=>{ if(y && y.peerId === oldHost){ if(room.status === 'lobby') room.seats[k] = null; else y.connected = false; } });
     broadcastRoster(); emit('hostChanged', {hostId: me.peerId});
     Object.values(S.pending).forEach(p=> hostInbox({seat: p.seat, c: p, cid: p.cid}));
-    if(room.status === 'playing') pump().then(()=> maybeRound());
+    if(room.status === 'playing') pump().then(()=>{ S.cpuKey = null; scheduleCpu(); maybeRound(); }); // + COOP3: the new host times the CPU allies
   }
   T0.onMessage(onMsg);
 
@@ -558,7 +592,7 @@ function createSession(opts){
   function setReady(on, deck, leader){ const seat = mySeat(); if(seat == null){ S.pendingReady = {on: !!on, deck: deck || null}; return; } if(deck) me.deck = deck;
     if(S.isHost){ S.room.seats[seat].ready = !!on; if(deck) S.room.seats[seat].deck = deck; if(leader !== undefined) S.room.seats[seat].leader = leader; broadcastRoster(); } else send('ready', {ready: !!on, deck: deck || null, leader}); }
   function leave(){ if(S.closed) return; send('leave', {host: S.isHost}); close(); }
-  function close(){ S.closed = true; clearBatch(); if(S.timers.ping) clock.clearInterval(S.timers.ping); try{ T0.close(); }catch(e){} }
+  function close(){ S.closed = true; clearBatch(); clearCpu(); if(S.timers.ping) clock.clearInterval(S.timers.ping); try{ T0.close(); }catch(e){} }
   function rejoinHello(){ S.lastSeen = {}; send('hello', {peer: {name: me.name, deck: me.deck, leader: me.leader, castle: me.castle, castleHp: me.castleHp}}); }
   Object.assign(S, {mySeat, setReady, canStart, start, claim, nextFloor, leave, close, rejoinHello, tick, flush, _onMsg: onMsg, humansIn: ()=> S.room ? humans() : [],
     myAutoPlay: maybeAutoPlay, seatDone: i=> S.T ? seatDone(S.T, i) : false});
@@ -572,7 +606,7 @@ function defsHash(defs, ids){ const list = [...new Set(ids)].sort().map(id=>{ co
 function roomCardIds(decks){ const ids = new Set(); Object.values(DUNGEONS).forEach(dg=> dg.floors.forEach(f=>{ Object.keys(f.deck).forEach(id=> ids.add(id)); if(f.boss) ids.add(f.boss.base); })); (decks || []).forEach(d=> Object.keys(d || {}).forEach(id=> ids.add(id))); return [...ids]; }
 
 const api = {DUNGEONS, ENERGY_COST, COLS, SEAT_KEYS, TEXT_KEYS, PING_MS, DROP_MS, BATCH_MS, RANK_MULT, PAY,
-  typeOf, playersOf, rowOfSeat, seatOfRow, floorDef, floorOverlay, bossIdOf, createTable, coopEngine, withSeat, seatData, leadSeat, unitAt, rowLegalSlots, allCells,
+  typeOf, playersOf, rowOfSeat, seatOfRow, floorDef, floorOverlay, bossIdOf, createTable, coopEngine, withSeat, seatData, leadSeat, unitAt, ownerOf, rowLegalSlots, allCells,
   seatDone, checkAct, applyAct, cpuChoice, cpuActs, headlessRound, finishRound, noteRoundEnd, tableHash, applyHeadless, tableFor, unsupportedCard, noSlotCard,
   rankFor, floorPay, cardPool, createHub, broadcastChannelTransport, supabaseTransport, createSession, newRoomCode, defsHash, roomCardIds, mulberry32, mixSeed};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;

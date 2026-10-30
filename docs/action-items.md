@@ -4,6 +4,53 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-30 23:25: the owner's notes
+| # | Package | Note |
+|---|---|---|
+| X1 | done | Applied `20261029_admin_user_list.sql` ("apply it"); now in `supabase/migrations/`. |
+| X2 | UI6 | The card's hover description goes in and out while animations play. |
+| X3 | AUTH1 (proposal) | Keep vercel.app (a .com later maybe). Soften Google's "continue to xjctf…supabase.co". |
+| X4 | UI6 | Hover shows the original card's description (base Health, all skills as printed), not the instance's. |
+| X5 | CONTENT (later) | Four Horses of the Apocalypse (Maps 50+, K3): a donkey, a seahorse, a real horse, and a horse play like the horseshoe crab. Not built yet. |
+| X6 | ENG14 | 8-8 (the final elite) in pitch darkness (Miss 1-2). |
+| X7 | MAPFX1 | Dark maps: touching torches or campfires puts them out; crystals go "ting"; water and bushes play sounds; trees sway very slightly. |
+| X8 | ENG14 | Does our side's CPU (allies) play leaders? |
+| X9 | answered | The diamond on the card's edge is the gem socket (H1, Unique and up). Owner likes it; ideas wanted. |
+| X10 | ENG14 | Mirage works only for one side: both sides, and per player in multiplayer. |
+| X11 | UI6 | Tokens still disappear at game end and come back (UI4 did not fix it). |
+| X12 | later | When everything so far is done: export skills, maps etc. to a Google Sheet (for Codex). |
+| X13 | decisions | DECK1 OK except DECK1-1 and DECK1-5: wait for the next card rebalance (Gannet Cliffs: are its cards strong enough?). |
+| X14 | TOOLS2 | A robust skill-strength measure: a canon set of skills with settled values; new skills and sub-batches measured against it. |
+| X15 | done/hold | RECOST1-5 held; cut War Elephant's Arrow Count if it can be. |
+| X16 | BUDGET2 | Attack = 3 Health: the N formula becomes 3A + H. |
+| X17 | decisions | The rest of the decisions: defaults. |
+| X18 | decisions | BRUP-2: Blossoms from Map 28; be ready to reshuffle. |
+| X19 | UI6 | Names: Dailies (shared keys), Dungeons (multi-step), Multiplayer (energy; multiplayer dailies: keys + energy, none yet), then the Tower. |
+| X20 | ENG14 | SKL0-2 ok; SKL0-3 waits for the rebalance. ANAD-1: Anadromous = the Tide's benefits as +2 Health off the sea, +1 Attack in the sea. |
+| X21 | BAL8 | BAL7-3 yes: retune the road. |
+| X22 | UI6 | Hide Whisper's game from the map for now. |
+| X23 | UI6 | Venom Gland's field text says "12/17 reptiles": don't show the count. |
+| X24 | ENG14 | The CPU never gets to play high-cost cards: it spends Lumber greedily every turn instead of saving (pitching up to 2-3 turns for a big card). |
+| X25 | ENG14 | Elite skirmishes start with +1 card in hand. |
+| X26 | ENG14 | New skill Bola (23:26): like Arrow, but pins its target: it can't move or attack, but can use skills. |
+| X27 | WORLD1 | Map ideas 21-40, 50/60/66/77 (Codex input), saved in `docs/design/world-21-plus-ideas-2026-10-30.md`. |
+
+## 10-30 21:35-21:53: the owner's notes
+| # | Package | Note |
+|---|---|---|
+| W1 | done (coordinator) | "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets highlighted." |
+| W2 | RAIDFX1 | "Why is the tentacle slash in raid so laggy? the damage should only come out once the tentacle lands on the cards" |
+| W3 | RAIDFX1 | "Dont need the handshake symbol to denote allies in multiplayer dungeons/raids" |
+| W4 | COOP3 | Duo dungeon starts zoomed far out; can't play cards in the other slots. CPU allies play their cards first, after a random 0.5-3.0 s (0.5-1.5 s on the first turn). |
+| W5 | UI5 | Don't show Tide where the map has none. A card drawn while the field has no Tide: its pip reds out and fades; the opposite: it fades in green. |
+| W6 | COOP3 | Auto-play in multiplayer dungeons. The floor-cleared screen gets the normal skirmish rewards window. |
+| W7 | DUNG1 | Multi-step dungeons (3 to n steps): the fight continues with your hand, field and deck as they were; the enemy resets and plays, 0.5 s apart, what it would have in 3 turns. Some dungeons have "Rest for a night": your bramble heals 10% (min 1) and 1 random graveyard card goes back into your deck. |
+| W8 | RAIDBAL1, RAID2 | Balance the raid against 3 decks at about the level the raid unlocks, +2 levels. An octopus background hugging the core fight's battlefield; tentacles waving in the background of the first 3 fights (lo-fi: one tentacle, 3 images flickering slowly). |
+| W9 | RAID2 | Raids: the other players' cards a bit bigger; the battlefield the whole screen height. |
+| W10 | COOP3 | Multiplayer dungeons: the other players' cards the same size as yours. You may place cards in an ally's row (and they in yours) next to a card of your own; an ally's network doesn't count. |
+| W11 | answered | ENG13-2 was already done from the 10:34 answer (Slow on the three cards); the hub showed an old copy. |
+| W12 | UI5 | Blind / Purblind: the closing-eyes animation plays once when it starts, then goes; the card is darkened 5-10%; the main symbol is the blindness spectacles. |
+
 ## 10-30 10:34: the owner's notes
 | # | Package | Note |
 |---|---|---|

@@ -41,6 +41,10 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 | 31 | Burn-away | A card burns (heat) | Soft roar with crackles | Noise hiss | 700 ms |
 | 32 | Castle falls | Castle at 0 | Long rumble, stones settling | Long noise fall | 1.4 s |
 | 33 | Pitch | A card is pitched for resources | Wood tock and a bright two-note chime | Coin blip | 330 ms |
+| 36 | Fire out | Tap a lit fire on a dark conquest map | Short "fsst": a hiss of filtered noise over a low breath | Noise blip | 400 ms |
+| 37 | Crystal ting | Tap a crystal on a conquest map | Three bright sine/triangle partials (pitch varies 0.9-1.12 per tap) | Single bell blip | 550 ms |
+| 38 | Water plop | Tap water on a conquest map | A falling sine plop, a splash of band noise, a smaller drip after it | Down-blip | 200 ms |
+| 39 | Bush rustle | Tap a bush on a conquest map | Two short bursts of high filtered noise with crackle | Noise blip | 300 ms |
 
 **Status (2026-10-05):** cues 28–33 are live as Web Audio synths (`SoundKit.arrowLoose/arrowThunk/bleedOut/burnAway/castleCollapse/pitchChime`), built on two new primitives: filtered noise with a sweeping filter (`fnoise`) and a pitch-swept tone (`sweep`). They follow the "mixed" default for D17: an organic body with a little chip on top.
 
@@ -49,6 +53,8 @@ The **A** and **B** columns are the two directions in D17: A is cosy/organic, B 
 - Hits and deaths are panned to where they happen on screen (`SoundKit.at`).
 - New cues: 34 **Materia forms** (`materiaForm`, 800 ms, a glassy shimmer and pings) and 35 **Hero level-up** (`heroLevel`, 1.5 s, a rising bell arpeggio).
 - The ranked to-do list is in `effects-catalogue.md` → Recommendations.
+
+**Status (2026-10-31, package MAPFX1):** cues 36-39 are live as Web Audio synths (`SoundKit.fireOut/crystalTing/waterPlop/bushRustle`; a tapped fire that is lit again reuses `fireIgnite`), played from `mfxPlay` in `arena_app.js`, which limits them (110 ms between any two, 5 per 1.5 s, 260 ms per spot) and pans them to where the tap was. They go through the same primitives as every cue, so the Sound effects slider and the mute rule them.
 
 **Sources, CC0 first:**
 - **Kenney:** Interface Sounds, Impact Sounds, RPG Audio, UI Audio, Casino Audio (card sounds).

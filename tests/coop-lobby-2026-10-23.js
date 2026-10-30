@@ -63,7 +63,9 @@ function session(id, host, code, extra){ const sb = newPlayer(id); const events 
   pip2.close(); contexts.clear();
 
   // a fresh room of two: the race over the relay, rounds in step, a drop
-  const a = session('ana', true, 'RELAY2'), b = session('ben', false, 'RELAY2'); await settle();
+  // 2026-10-30 (package COOP3, owner W10: a slot in an ally's row needs a card of your own beside it): ana brings a leader, so the middle
+  // row's centre (behind it) is a cell player 1 may claim in the race. Was: no leader (any unit opened an ally's slots then).
+  const a = session('ana', true, 'RELAY2', {me: {peerId: 'ana', name: 'ana', deck: deckFrom('ana'.length * 7 + 'ana'.charCodeAt(0)), leader: 'quarry-mole', castleHp: 15}}), b = session('ben', false, 'RELAY2'); await settle();
   b.setReady(true); await settle(); a.start(); await settle(); await elapse(100);
   ok(a.T && b.T && C.tableHash(a.T) === C.tableHash(b.T), 'start: both built the same table');
   const slot = C.rowLegalSlots(b.T, 1)[0], hb = C.seatData(b.T, 1).hand[0], ha = C.seatData(a.T, 0).hand.find(h=> (defs[h.defId].cost || 0) === 0);

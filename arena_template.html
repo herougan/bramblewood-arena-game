@@ -1731,7 +1731,25 @@
   .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
   .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
   .ab-tide.tide-live, .wind-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
+  /* 2026-10-30 (coordinator; owner 21:35): Diurnal lit by day, Nocturnal at night, the Tide's live ring in the sun's gold / the night's blue */
+  .ab-sk.zeit-live{border-radius:999px; padding:0 2px;}
+  .ab-sk.zeit-live[data-sk="diurnal"]{background:rgba(255,200,60,.30); box-shadow:0 0 0 1.5px rgba(255,210,90,.95), 0 0 8px rgba(255,200,60,.65);}
+  .ab-sk.zeit-live[data-sk="nocturnal"]{background:rgba(90,110,220,.32); box-shadow:0 0 0 1.5px rgba(140,160,255,.9), 0 0 8px rgba(120,140,255,.6);}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
+  /* 2026-10-30 (package UI5, W5; owner 21:35): a hand card's Tide / Swimmer chip is out (invisible) while the Tide is out. Drawn or going out: a red flash, then it fades;
+     coming in: a green flash while it fades in. Reduced motion / Effects Low / None: no flash, just show / hide. */
+  .tide-hand{transition:opacity .2s;}
+  .tide-hand.tide-hand-off{opacity:0; visibility:hidden;}
+  .abadge:has(> .tide-hand-off), .badges:has(> .abadge:only-child > .tide-hand-off){opacity:0; visibility:hidden;}
+  .abadge.tide-fade-out, .badges.tide-fade-out{animation:ui5PillOut .9s ease-out both;} .abadge.tide-fade-in, .badges.tide-fade-in{animation:ui5PillIn .9s ease-out both;}
+  @keyframes ui5PillOut{0%,45%{opacity:1; visibility:visible;} 100%{opacity:0; visibility:hidden;}}
+  @keyframes ui5PillIn{0%{opacity:0; visibility:visible;} 40%,100%{opacity:1; visibility:visible;}}
+  .tide-hand.tide-fade-out{animation:ui5TideOut .9s ease-out both;}
+  .tide-hand.tide-fade-in{animation:ui5TideIn .9s ease-out both;}
+  @keyframes ui5TideOut{0%{opacity:1; visibility:visible; background:rgba(235,60,60,.55); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 10px rgba(255,70,70,.9); border-radius:999px;} 45%{opacity:1; visibility:visible; background:rgba(235,60,60,.4); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 8px rgba(255,70,70,.7); border-radius:999px;} 100%{opacity:0; visibility:hidden; background:rgba(235,60,60,0); box-shadow:none;}}
+  @keyframes ui5TideIn{0%{opacity:0; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.5);} 40%{opacity:1; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.45);} 100%{opacity:1;}}
+  @media (prefers-reduced-motion: reduce){ .tide-hand.tide-fade-out, .tide-hand.tide-fade-in, .abadge.tide-fade-out, .abadge.tide-fade-in, .badges.tide-fade-out, .badges.tide-fade-in{animation:none;} .tide-hand{transition:none;} }
+  :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-out, :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-in{animation:none;}
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
   .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
@@ -3933,6 +3951,16 @@
      .84 x 1.15 = .966 of a front card, the rows as tall as their cards. */
   .board-row.reserve-row.raid-rows{height:calc(var(--match-card-h, 149px) * .966 + 8px) !important;}
   .board-row.reserve-row.raid-rows > .board-card{transform:scale(.966); margin-bottom:calc(var(--match-card-h, 149px) * -.034);}
+  /* 2026-10-30 (package COOP3, owner W10: "For multiplayer dungeons - the other players' cards should be the same size."): a group dungeon's
+     rows (.coop-rows) are full rows: an ally's cards at the size of yours (CS-D's in-match --match-card-w), not a back row's 84%, and not dimmed.
+     W4: the vault's own middle row (it never plays there) is hidden while it holds nothing, so the board's height goes to the rows in use. */
+  .board-row.reserve-row.coop-rows{height:calc(var(--match-card-h, 149px) + 8px) !important; opacity:1;}
+  .board-row.reserve-row.coop-rows > .board-card{transform:none; margin-bottom:0;}
+  .board-row.reserve-row.coop-rows .board-card.is-reserve{filter:none;}
+  .board-row.reserve-row.coop-rows.enemy.is-empty{display:none !important;}
+  @media (min-width:701px){ #appWrap.in-match.gd-match, #appWrap.in-match.gd-match .battlefield{--mc-k:var(--gd-k, 1);} } /* COOP3: the match fitted to the window (centreFieldInFs) */
+  .pass-overlay.gd-rw-overlay{z-index:9100; overflow-y:auto;} /* COOP3 (W6): a floor's rewards window, over the vault's floor panel (.gd-overlay, 9000) */
+  .gd-rw-overlay .winloss-card{max-height:calc(100dvh - 40px); overflow-y:auto;}
   /* RV2: a reserve strike under reduced motion / Low effects (no lunge), and an ally's play: its name tag, its hand of card backs,
      the face-down card it plays (turned face up mid-flight), the sparkle trail */
   .board-card.raid-strike-flash .card-tile{box-shadow:0 0 0 2px rgba(255,214,120,.95), 0 0 14px 3px rgba(255,190,80,.55); transition:box-shadow .12s;}
@@ -5814,7 +5842,9 @@
      Shock (+50% damage taken), Corrode (stacking Attack reduction) — Blind/Shock get the same
      overlay-icon-plus-tint treatment as Frozen/Asleep/Paralyzed above; Corrode gets Scar's
      tint-plus-badge-only treatment since it's a passive stat drain, not a turn-gating status. */
-  .board-card.is-blind .card-tile{background:color-mix(in srgb, var(--status-blind-tint) 26%, var(--bg)); filter:grayscale(.5) brightness(.88);}
+  /* 2026-10-30 (package UI5, W12; owner 21:53: "the close eyes anim only plays on play. Then after that its removed. Maybe the card is very slightly (5-10%) darkened."):
+     a Blind / Purblind unit is darkened 7% on the tile (not the popover); the closing eye plays once (fx-b's .fxb-shut, below), then it is gone. */
+  .board-card.is-blind .card-tile{filter:brightness(.93);}
   /* Tipsy and Confused (2026-10-11) */
   .board-card.is-tipsy .card-tile{animation:tipsySway 2.6s ease-in-out infinite; transform-origin:50% 90%;}
   @keyframes tipsySway{0%,100%{rotate:-2deg;} 50%{rotate:2.5deg;}}
@@ -5828,6 +5858,17 @@
   .blind-overlay{font-size:22px; animation:blindDim 2.2s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   /* 2026-10-18 (package D): when FX B's shut eye marks a Blind unit (sightSync 'blind'), it is the one eye; the 👁 overlay stays for FX off */
   .board-card.fxb-why-blind .blind-overlay{display:none;}
+  /* 2026-10-30 (package UI5, W12): no standing eye on a Blind card, with FX B or without: the 👁 overlay is gone, and FX B's shut eye (.fxb-shut) shows only
+     while its one closing blink plays (it is .is-blink only when the unit first goes blind), then fades out; its shade and the art dimming are left off (the 7% above does it). */
+  .board-card.is-blind .blind-overlay{display:none;}
+  .board-card .card-tile .fxd-st.fxd-st-blind{display:none;} /* FX D's standing ink splat over a Blind card is retired too: the 7% darkening and the chip are the standing marks (2026-10-30, W12) */
+  .board-card.fxb-why-blind .fxb-shade{display:none;}
+  .board-card.fxb-cantsee.fxb-why-blind.fxb-look-A .card-tile .ico{filter:none;}
+  .board-card.fxb-why-blind .fxb-shut{opacity:0;}
+  .board-card.fxb-why-blind .fxb-shut.is-blink{animation:ui5EyeOnce 1.9s ease-in-out both;}
+  @keyframes ui5EyeOnce{0%{opacity:0;} 10%{opacity:1;} 78%{opacity:1;} 100%{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .board-card.fxb-why-blind .fxb-shut.is-blink{animation:none;} }
+  :where(html[data-fx="none"]) .board-card.fxb-why-blind .fxb-shut{display:none;}
   @keyframes blindDim{0%,100%{opacity:.5;}50%{opacity:1;}}
   .shock-overlay{font-size:22px; animation:paralyzeJitter .22s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   .abadge.blind{background:color-mix(in srgb, var(--status-blind-tint) 24%, var(--surface-2)); color:var(--status-blind-ink);}
@@ -7501,7 +7542,8 @@
   .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
   /* Raid rows (2026-10-12, user: "The middle and backrows shouldnt be so small, at most a bit smaller") */
-  .board-card.is-ally-card::after{content:'🤝'; position:absolute; left:-6px; top:-8px; font-size:16px; z-index:8; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+  /* 2026-10-30 (package RAIDFX1, owner 21:36: "Dont need the handshake symbol to denote allies in multiplayer dungeons/raids"): the 🤝 corner
+     marker on an ally's card (.is-ally-card::after) is gone; the class stays (the ally's row label and its play tag say whose it is). */
   .hq-tile.raid-castles{transform:scale(1.1); transform-origin:50% 50%;}
   .vs-allies{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:13px;} .vs-ally{display:flex; gap:8px; align-items:center; justify-content:center; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12);}
   /* Wandering merchant deal (2026-10-12) */
@@ -11212,6 +11254,9 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 .map-lock-label{position:absolute; left:50%; top:calc(100% + 4px); transform:translateX(-50%); z-index:12; width:max-content; max-width:130px; padding:2px 8px; border-radius:999px; background:rgba(30,22,12,.9); color:#ffe9b8; font:700 11px/1.25 'Baloo 2',system-ui,sans-serif; text-align:center; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,.35); animation:lockLabelIn .18s ease-out both;}
 @keyframes lockLabelIn{from{opacity:0; transform:translateX(-50%) translateY(-3px);} to{opacity:1; transform:translateX(-50%);}}
 .map-spot.is-waiting{filter:grayscale(.7) brightness(.8); cursor:not-allowed;}
+/* 2026-10-30 (package UI6, X22): a spot hidden from the map (Whisper's Game) shows only in the layout editor, dimmed and marked */
+.map-spot.ui6-map-hidden{opacity:.45; outline:2px dashed rgba(200,60,60,.8); outline-offset:2px;}
+.map-spot.ui6-map-hidden .map-spot-name::after{content:' (hidden)'; color:#c33;}
 .map-spot .map-spot-lock{position:absolute; top:-6px; right:-6px; font-size:12px; line-height:1; filter:none;}
 /* 2026-10-24 (package MAP, owner 13:16 #16): the admin's bramble line is a button, and its small editor card */
 .castle-line.is-admin-edit{background:transparent; border:1px dashed rgba(255,235,190,.55); border-radius:8px; padding:1px 6px; cursor:pointer; font:inherit; color:inherit;}
@@ -11297,6 +11342,37 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cave-fire.is-glow .cf-f2{display:none;} .cave-fire.is-glow .cf-spark{background:#bff8f2; box-shadow:0 0 5px 2px rgba(60,220,220,.8);}
 .cave-fire.is-glow .cf-glow{background:radial-gradient(circle, rgba(90,232,222,.45), rgba(40,160,210,.16) 42%, transparent 70%);}
 @media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
+/* Map decor you can touch (2026-10-31, package MAPFX1, owner X7). The layer sits first in the canvas (z-index 0 = paint order is DOM order),
+   so the trail, nodes, curios, pawn and every button are above it; only its own spots take a tap. */
+.map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none;}
+.conquest-map-canvas.layout-editing .map-fx-layer, .conquest-map-canvas.link-editing .map-fx-layer{display:none;}
+.map-sway-layer{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit;}
+.mfx-hit{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; border-radius:50%; background:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none;}
+.mfx-patch{position:absolute; pointer-events:none; background-repeat:no-repeat; -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); image-rendering:pixelated;}
+/* trees: a very slight sway round the trunk's base, transform only (the JS leaves it out with reduced motion and Effects Low/None) */
+.mfx-sway{transform-origin:50% 80%; will-change:transform; animation:mfxSway 5s ease-in-out infinite alternate;}
+@keyframes mfxSway{from{transform:rotate(calc(var(--sw, .8deg) * -1));} to{transform:rotate(var(--sw, .8deg));}}
+.mfx-shake{transform-origin:50% 85%; animation:mfxShake .5s ease-in-out 1;}
+@keyframes mfxShake{0%{transform:rotate(0);} 18%{transform:rotate(-5deg) scale(1.04);} 42%{transform:rotate(4deg) scale(1.03);} 66%{transform:rotate(-2.5deg);} 85%{transform:rotate(1deg);} 100%{transform:rotate(0);}}
+.mfx-fx{position:absolute; pointer-events:none; z-index:2;}
+.mfx-ripple{width:10px; height:6px; margin:-3px 0 0 -5px; border-radius:50%; border:2px solid rgba(235,248,255,.85); box-shadow:0 0 4px rgba(150,210,255,.6); opacity:0; animation:mfxRipple .95s ease-out forwards;}
+.mfx-ripple.r2{animation-delay:.16s;}
+@keyframes mfxRipple{0%{opacity:.9; transform:scale(.5);} 100%{opacity:0; transform:scale(6);}}
+.mfx-drop{width:4px; height:4px; margin:-2px; border-radius:50%; background:#d8f2ff; box-shadow:0 0 3px rgba(140,210,255,.8); animation:mfxDrop .7s ease-out forwards;}
+@keyframes mfxDrop{0%{opacity:1; transform:translate(0,0);} 55%{opacity:1; transform:translate(var(--dx), var(--dy));} 100%{opacity:0; transform:translate(calc(var(--dx) * 1.2), calc(var(--dy) + 14px));}}
+.mfx-leaf{width:5px; height:4px; margin:-2px; border-radius:60% 0 60% 0; background:#6fae4c; box-shadow:0 0 0 1px #2f5a2a; animation:mfxLeaf .85s ease-out forwards;}
+@keyframes mfxLeaf{0%{opacity:1; transform:translate(0,0) rotate(0);} 100%{opacity:0; transform:translate(var(--dx), calc(var(--dy) + 18px)) rotate(200deg);}}
+.mfx-fx.crystal-sparkle{margin:0;}
+/* fires put out: the flame and the glow fade, a puff of smoke; tapped again they come back */
+.mfx-smoke{position:absolute; left:50%; top:24%; width:12px; height:12px; margin:-6px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(205,205,215,.7), rgba(160,160,175,0) 70%); animation:mfxSmoke 1.6s ease-out forwards;}
+@keyframes mfxSmoke{0%{opacity:0; transform:translate(0,0) scale(.6);} 22%{opacity:.8;} 100%{opacity:0; transform:translate(var(--dx), -38px) scale(2.6);}}
+.cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark{animation:none !important; opacity:0 !important; transform:scale(.2) !important; transition:opacity .5s ease, transform .5s ease;}
+.cave-fire.is-out .cf-logs{background:#5a3a22; box-shadow:0 0 0 1px #2d1c10;}
+.cave-fire.is-out::after{display:none;}
+.map-campfire.is-out .mcf-fire, .map-campfire.is-out .mcf-glow, .map-campfire.is-out .mcf-spark{animation:none !important; opacity:0 !important; transition:opacity .5s ease;}
+.map-campfire .mcf-fire, .map-campfire .mcf-glow{transition:opacity .5s ease;}
+.conquest-map-canvas.mfx-fire-hover{cursor:pointer;}
+@media (prefers-reduced-motion: reduce){ .mfx-sway, .mfx-shake{animation:none !important;} .mfx-fx{display:none !important;} .cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark, .map-campfire.is-out *{transition:none !important;} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
@@ -13294,7 +13370,9 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .r3-bramble > img{width:56px; height:56px; border-radius:10px; flex:0 0 auto; border:1px solid rgba(200,150,255,.45);}
 /* the bramble tile winds up as it smacks */
 .match-castle-tile.u3-bramble-smack{animation:u3BrambleSmack .55s ease-out;}
-@keyframes u3BrambleSmack{0%{filter:none;} 30%{filter:drop-shadow(0 0 10px rgba(214,150,255,.95)) brightness(1.25);} 100%{filter:none;}}
+/* 2026-10-30 (package RAIDFX1, owner 21:36: the smack "so laggy"): it winds up by scale only (the compositor's); the filter glow, a repaint
+   every frame, is now FX.F's .fxf-bflare overlay fading in and out over the tile */
+@keyframes u3BrambleSmack{0%{scale:1;} 30%{scale:1.06;} 100%{scale:1;}}
 @media (prefers-reduced-motion: reduce){ .match-castle-tile.u3-bramble-smack{animation:none;} }
 /* 4. The raid board's rows a touch closer (owner 13:43: "maybe 3% closer? then zoom in abit more? It's okay if the boundary of the
    map touches the border of the bottom row's cards"): each row's own spacing is 3 px (about 3% of a row) less, and the board's
@@ -14476,7 +14554,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
          elementalEnergy (Devilry/Ecclesia) stub — see loadEnergy()/tickEnergyHud() in
          arena_app.js. Lives in the topbar (not a per-tab HUD) since it's an account-level
          resource visible everywhere, same as the Home nav button. -->
-    <div class="energy-pill" id="energyPill" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
+    <div class="energy-pill" id="energyPill" title="Energy: spent to start fights, refills 1 every 5 minutes.">
       <span id="energyPillText">—</span>
     </div>
     <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>

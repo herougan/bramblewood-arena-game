@@ -133,7 +133,7 @@ ok(/Sleep N stacks up to N\+1/.test(TEXT['ui.st-sleep']), 'the Asleep gloss says
 ok(/left: kind === 'sleep' \? defCard\.asleep : undefined/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-engine.js'), 'utf8')) && /rc\.asleep = ev\.left != null \? ev\.left/.test(src), 'the board shows the capped stack (statusFx left)');
 
 // ---- 5. the look
-ok((src.match(/<span class="abadge blind" title="\$\{escapeAttr\(TX\('ui\.blind-pill', \{n: c\.blind\}\)\)\}">🕶️\$\{c\.blind\}<\/span>/g) || []).length === 2, 'Blind: the 🕶️ pill, fresh render and live patch');
+ok((src.match(/<span class="abadge blind" title="\$\{escapeAttr\(TX\('ui\.blind-pill', \{n: c\.blind\}\)\)\}">\$\{iconHTML\('blind-now', '🕶️'\)\}\$\{c\.blind\}<\/span>/g) || []).length === 2, 'Blind: the 🕶️ pill, fresh render and live patch'); // 2026-10-30 (package UI5, W12): the pill's glyph goes through iconHTML('blind-now', '🕶️') (one icon key for every Blind chip); still the spectacles
 ok(!/abadge blind">👁/.test(src), 'no 👁 pill for Blind any more');
 const fxb = fs.readFileSync(path.join(ROOT, 'bramblewood-fx-b.js'), 'utf8'), tpl = fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8');
 ok(/c\.classList\.contains\('is-blind'\)[^\n]*k = 'blind'/.test(fxb), 'Blind: the eye VFX hook (FX B sightSync, kind blind)');

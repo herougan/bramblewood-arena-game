@@ -52,7 +52,7 @@ async def run(b, url, w):
       return {ribbon: c.querySelector('.env-ribbon').textContent.trim(), line: c.querySelector('.env-line').textContent.trim(), on: c.classList.contains('is-boon-on'), shadow: cs.boxShadow, label: c.getAttribute('aria-label') || ''}; })()""")
     ok(r is not None, 'the fight shows the boon as an Environment card')
     ok(r and r['ribbon'] == 'Theirs' and r['on'], f'its ribbon says Theirs and it is on ({r and r["ribbon"]})')
-    ok(r and bool(re.match(r'^\d+/\d+ Cave$', r['line'])), f'its line gives the count and the theme, e.g. "11/17 Cave" ({r and r["line"]})')  # PL1 (2026-10-24, 21:20 #1)
+    ok(r and r['line'] == 'Cave', f'its line gives the theme only, "Cave" ({r and r["line"]})')  # PL1 (2026-10-24, 21:20 #1); 2026-10-30 (UI6, X23): no "11/17" count
     ok(r and ('224, 83, 63' in r['shadow'] or '110, 26, 18' in r['shadow']), 'its frame is red')
     ok(r and 'Blind Fury' in r['label'] and 'hit for double' in r['label'], 'its words say what it does (aria-label / hover)')
     await shot(pg, 'boon-card', w)
