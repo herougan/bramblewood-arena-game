@@ -100,7 +100,8 @@ ok(/classList\.add\('is-shown'\)/.test(fnSrc('openCardDetail')) && /\.ne-cx-copy
   ok(/⚔ \$\{ev\}<\/span>`; \}\)\(\)\}<\/div>\$\{isTut \? '' : skirmishFieldHTML\(map\.id, selectedNode\)/.test(src), '11:26 the field sits in the panel\'s head, under the BR'); }
 // ---- 19:27 #12 / #13
 ok(/shopCounterIntoView\(c\)/.test(fnSrc('renderShopShelves')) && /scrollIntoView/.test(fnSrc('shopCounterIntoView')), '19:27 #12 the shop counter scrolls into view');
-ok(/const split = !!opts\.pull/.test(fnSrc('openCardInspector')) && /neInspectFlyIn\(ov, opts\.returnFocus\)/.test(fnSrc('openCardInspector')) && /grid-template-areas:"stage detail" "bar detail"/.test(tpl), '19:27 #13 the pack viewer: card left, details right, flying in');
+// 2026-10-30 CS-C: the viewer is always split now (card left, details right); the pack's results open it with opts.pull, elsewhere the Card Detail overlay
+ok(/ov\.className = 'card-inspect ci-split'/.test(fnSrc('openCardInspector')) && /neInspectDetailHTML\(d\)/.test(fnSrc('openCardInspector')) && /neInspectFlyIn\(ov, opts\.returnFocus\)/.test(fnSrc('openCardInspector')) && /grid-template-areas:"stage detail" "bar detail"/.test(tpl), '19:27 #13 the pack viewer: card left, details right, flying in');
 // ---- filters reset
 { const s = fnSrc('syncTextFilterPage'), r = fnSrc('resetPageFilters');
   ok(/if\(k !== textFilterPage\)\{ if\(neKeepFiltersOnce\) neKeepFiltersOnce = false; else resetPageFilters\(\); \}/.test(s), '19:27 entering a page resets its filters');
