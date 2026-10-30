@@ -159,8 +159,8 @@ const cells = list=> list.map(x=> x.row + ':' + x.slot).join(' ');
     ok(/if\(m && m\.mode === 'coop' && m\.coop\) return true;/.test(app) && /if\(m\.coop\) return gdAutoStep\(m\)/.test(app), 'page: Auto in a group dungeon (gdAutoStep)');
     ok(/function gdRewardsShow\(\)/.test(app) && /rewardsPanelHTML\(\{conquestRewardEarned/.test(app) && /wireWinLossRewardAnim\(\)/.test(app) && /data-gd-rw="next"/.test(app), 'page: the floor\'s rewards window (the fight\'s rewards block, count-up, Go deeper)');
     // gdCpuDelay's ranges
-    const m = app.match(/function gdCpuDelay\(T\)\{[^\n]*\}/); ok(!!m, 'page: gdCpuDelay is defined');
-    if(m){ const f = new Function(m[0] + '; return gdCpuDelay;')(); let lo1 = 1e9, hi1 = 0, lo = 1e9, hi = 0;
+    const m = app.match(/function gdCpuDelay\(T, seat\)\{[^\n]*\}/); ok(!!m, 'page: gdCpuDelay is defined');
+    if(m){ const f = new Function('const GD = {};' + m[0] + '; return gdCpuDelay;')(); let lo1 = 1e9, hi1 = 0, lo = 1e9, hi = 0;
       for(let i = 0; i < 400; i++){ const a = f({round: 1}), b = f({round: 3}); lo1 = Math.min(lo1, a); hi1 = Math.max(hi1, a); lo = Math.min(lo, b); hi = Math.max(hi, b); }
       ok(lo1 >= 500 && hi1 <= 1500 && lo >= 500 && hi <= 3000 && hi > 1500, `gdCpuDelay: 0.5-1.5 s on the first turn, 0.5-3.0 s after (${lo1}-${hi1}, ${lo}-${hi})`); }
   }

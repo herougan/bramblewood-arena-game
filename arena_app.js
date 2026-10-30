@@ -25495,7 +25495,7 @@ async function gdJoin(code){
 // 2026-10-30 (package COOP3, owner W4: "The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to 3.0s.
 // (0.5 to 1.5s in the first turn only)"): how long a CPU ally waits before its play, drawn per seat each turn (the room's host times it,
 // CoopM.createSession's cpuDelay). Presentation only: its acts are logged and numbered like a player's, so every page replays the same fight.
-function gdCpuDelay(T){ const first = !T || (T.round | 0) <= 1; return Math.round(first ? 500 + Math.random() * 1000 : 500 + Math.random() * 2500); }
+function gdCpuDelay(T, seat){ const first = !T || (T.round | 0) <= 1, ms = Math.round(first ? 500 + Math.random() * 1000 : 500 + Math.random() * 2500); try{ (GD.cpuDrawn = GD.cpuDrawn || []).push({round: T ? T.round : 0, seat, ms}); if(GD.cpuDrawn.length > 60) GD.cpuDrawn.shift(); }catch(e){} return ms; }
 function gdBegin(kind, code, host, opts){
   opts = opts || {};
   let transport = opts.transport || (kind === 'live' ? CoopM.supabaseTransport(sbClient, code, {private: !!GD.server4p}) : kind === 'local' ? CoopM.broadcastChannelTransport(code) : null);
@@ -35817,7 +35817,11 @@ function maybeAutoSkip(){
 function reserveRowsOf(m){ try{ return (m && m.engine && m.engine.reserveRows) || 0; }catch(e){ return 0; } }
 // Reserve-row plays: tap a card in hand, then a "+" behind one of your units (or drag it there).
 document.addEventListener('click', e=>{
-  const t = e.target && e.target.closest && e.target.closest('.reserve-target'); const m = matchState;
+  let t = e.target && e.target.closest && e.target.closest('.reserve-target'); const m = matchState;
+  // 2026-10-30 (package COOP3, W4/W10): in a group dungeon the middle row is redrawn when the CPU ally plays (its timer runs while you
+  // choose); a tap whose "+" was replaced between press and release lands on the row itself: it plays to the row's nearest "+", as a tap
+  // in your front row does (nearestSlotTarget)
+  if(!t && m && m.coop && m.selectedUid != null && e.target && e.target.closest){ const row = e.target.closest('.reserve-row.coop-rows.mine'); if(row && !e.target.closest('.board-card[data-uid]')) t = nearestSlotTarget(row, e.clientX); }
   if(!t || !m || m.over || m.resolving || m.selectedUid == null) return;
   e.preventDefault(); e.stopPropagation();
   playCardByUid(m.selectedUid, Number(t.dataset.slot), null, {reserve: Number(t.dataset.reserve)});
@@ -36928,6 +36932,11 @@ function renderBoard(opts){
       // and the empty row took a quarter of the board's height, shrinking every card; it is hidden while it holds nothing (CSS .coop-rows.is-empty)
       if(m.coop) el.classList.toggle('is-empty', pid === 2 && !Object.keys(pl.reserve[r-1] || {}).some(k=> pl.reserve[r-1][k]));
     });
+    // 2026-10-30 (package COOP3, W10: "the other players' cards should be the same size"): the crowded-row rule (--row-n) counted the middle
+    // row's label as a column, so its cards came out a size apart from yours; every row of a group dungeon now shares one span (UI2's
+    // ui2SetRowSpan, over the units of all of them)
+    if(m.coop && slotView){ try{ const resRows = (m.players[1].reserve || []).map(rw=> ({left: [], center: Object.keys(rw).map(k=> rw[k]).filter(Boolean), right: []}));
+      ui2SetRowSpan(m, [p1Rows, p2Rows, ...resRows], [rowEnemy, rowMine, ...document.querySelectorAll('#battlefieldInner .reserve-row.coop-rows')]); }catch(e){} }
   }
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
   if(m.coop) try{ gdDecorateBoard(m); }catch(e){} // 2026-10-28 (package COOP2): my claims waiting in their slots, whose row is whose
