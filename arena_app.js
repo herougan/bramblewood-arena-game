@@ -11808,7 +11808,7 @@ function recordMatchResult(winner, mode){
     // 2026-10-11 (Forge pacing): every mode with its own payout (Arena, Gauntlet, Ghost runs, Raids, Dungeon runs) no
     // longer stacks this on top; it was a free +8 Dust per win anywhere, the biggest faucet in the game. Quick battles
     // against the computer keep a small trickle.
-    if(!mode || mode === 'ai'){ grantCurrency('gold', 10); grantCurrency('dust', 2); }
+    if(!mode || mode === 'ai'){ grantCurrency('gold', econPay('quickMatch', 'gold', 10)); grantCurrency('dust', econPay('quickMatch', 'dust', 2)); } // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.quickMatch
   } else if(winner===2){
     s.losses += 1;
     s.curStreak = s.curStreakType==='loss' ? s.curStreak+1 : 1;
@@ -13173,7 +13173,7 @@ function econPay(src, kind, n){
   try{ localStorage.setItem(ECON_CARRY_KEY, JSON.stringify(c)); }catch(e){}
   return out;
 }
-function econPayAll(src, obj){ const o = {}; Object.keys(obj || {}).forEach(k=>{ o[k] = typeof obj[k] === 'number' ? econPay(src, k, obj[k]) : obj[k]; }); return o; }
+function econPayAll(src, obj){ const o = {}; Object.keys(obj || {}).forEach(k=>{ o[k] = typeof obj[k] === 'number' && ECON_HALVED_KINDS.indexOf(k) >= 0 ? econPay(src, k, obj[k]) : obj[k]; }); return o; } // other fields as they are
 // ECON1_INCOME:END
 // ECON1_BLOSSOMS:BEGIN (tests/econ1-2026-10-30.js evaluates this block)
 // Briar Blossoms from fights (2026-10-30, package ECON1, owner BRUP-1 10:34: "The bramble resource comes from winning fights. Dealing damage
@@ -17049,13 +17049,13 @@ function settleAsyncRunAfterMatch(m){
   if(won){
     run.wins++;
     saveAsyncGhosts(Ghosts.recordAsyncGhost(loadAsyncGhosts(), {owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), leaders: deckLeaderIds(), stage, at: Date.now(), source:'player'}));
-    const g = 12 + stage*6, d = 2 + stage;
+    const g = econPay('ghostRun', 'gold', 12 + stage*6), d = econPay('ghostRun', 'dust', 2 + stage); // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.ghostRun
     grantCurrency('gold', g); grantCurrency('dust', d);
     m.asyncRewardEarned = {gold:g, dust:d};
   } else run.losses++;
   m.asyncRunAfter = {wins: run.wins, losses: run.losses};
   if(Ghosts.asyncRunOver(run)){
-    if(run.wins >= Ghosts.ASYNC.MAX_WINS){ grantCurrency('gold', 150); grantCurrency('metal', 2); m.asyncRewardEarned = Object.assign({gold:0, dust:0}, m.asyncRewardEarned); m.asyncRewardEarned.gold += 150; m.asyncRewardEarned.metal = 2; }
+    if(run.wins >= Ghosts.ASYNC.MAX_WINS){ const bg = econPay('ghostRun', 'gold', 150), bmt = econPay('ghostRun', 'metal', 2); grantCurrency('gold', bg); grantCurrency('metal', bmt); m.asyncRewardEarned = Object.assign({gold:0, dust:0}, m.asyncRewardEarned); m.asyncRewardEarned.gold += bg; m.asyncRewardEarned.metal = bmt; } // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.ghostRun
     m.asyncRunComplete = true;
     saveAsyncRun(null);
   } else saveAsyncRun(run);
@@ -20997,6 +20997,7 @@ const QUEST_TIERS = {
       {id:'w3-pvp', counter:'pvpWins', goal:10, label:TX('ui.i2-q-pvp-n', {n: 10})}]},
   ],
 };
+econScaleTable('quests', QUEST_TIERS.daily.map(t=> t.reward)); econScaleTable('quests', QUEST_TIERS.weekly.map(t=> t.reward)); // 2026-10-30 (ECON1, owner BRUP-1): halved
 // Medal thresholds for lifetime stats: bronze / silver / gold / platinum.
 const STAT_MEDALS = [
   {counter:'unitsDefeated', label:'Units defeated', icon:'⚔️', steps:[100, 1000, 5000, 20000]},
@@ -21141,6 +21142,7 @@ const QUEST_RANK_WEIGHT = {D:22, C:30, B:30, A:13.8, S:3.5, SS:0.5, SSS:0.2}; //
 const QUEST_RANK_REWARD = {
   D:{gold:40, dust:50, xp:25}, C:{gold:50, dust:60, xp:30}, B:{gold:60, dust:70, xp:40}, A:{gold:100, dust:110, xp:70},
   S:{gold:280, dust:300, gems:6, xp:180}, SS:{gold:560, dust:600, gems:15, xp:360}, SSS:{gold:1100, dust:1200, gems:30, metal:3, xp:750}};
+econScaleTable('notices', QUEST_RANK_REWARD); // 2026-10-30 (ECON1, owner BRUP-1): halved (D 20/25 ... SSS 550/600/15/2); XP is not
 const QUEST_SHOWN_RANKS = new Set(['A','S','SS','SSS']);
 // Field-kit items from quests (D54, 2026-10-13, user: "it comes from dailies, weeklies and so on (won't balance now)"): an A
 // notice or better gives items, and each finished weekly tier gives a few. Random kinds, capped as usual; only once the
@@ -21425,7 +21427,7 @@ function loadErrands(){
 }
 function saveErrands(e){ try{ localStorage.setItem(ERRANDS_KEY, JSON.stringify(e)); }catch(_){} }
 function errandsOpen(){ return featureUnlocked('questboard') || (typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
-function errandReward(t){ return {dust: Math.round(MU(t.mu)), gold: Math.round(MATERIA_UNIT.gold * t.mu)}; }
+function errandReward(t){ return {dust: econScale('errands', 'dust', Math.round(MU(t.mu))), gold: econScale('errands', 'gold', Math.round(MATERIA_UNIT.gold * t.mu))}; } // 2026-10-30 (ECON1): halved, shown and paid
 function errandProgress(x){ const st = loadLifetimeStats(); return Math.max(0, Math.min(x.goal, (st[x.counter]||0) - (x.base||0))); }
 function pickErrandTemplate(e){ const busy = new Set(e.active.map(x=> x.tid).concat(e.offers.map(x=> x.tid))); const pool = ERRAND_TEMPLATES.filter(t=> !busy.has(t.id)); return pool.length ? pool[Math.floor(Math.random()*pool.length)] : null; }
 function acceptErrand(tid){
@@ -21780,7 +21782,7 @@ function renderAutobattleSubTab(body){
     return;
   }
   if(run.phase==='over'){
-    if(!run.rewarded){ const rw = AutoB.runRewards(run); Object.entries(rw).forEach(([k,v])=>{ if(v>0) grantCurrency(k, v); }); run.rewarded = rw; saveAbRun(run); }
+    if(!run.rewarded){ const rw = econPayAll('autobattle', AutoB.runRewards(run)); Object.entries(rw).forEach(([k,v])=>{ if(v>0) grantCurrency(k, v); }); run.rewarded = rw; saveAbRun(run); } // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.autobattle
     const rw = run.rewarded;
     const why = {'out-of-health':'Out of health', 'hard-stop':`Fight ${AutoB.AB.HARD_STOP} — the run is complete`, 'cashed-out':'Cashed out'}[run.overReason] || 'Run over';
     body.innerHTML = `<div class="panel ab-panel ab-center">
@@ -22036,7 +22038,7 @@ function settlePvpAfterMatch(m){
   // Deliberately low raw rewards (MASTER item 10): the big rewards come from quests.
   // 2026-10-10 (user: "a new material gained from arena fights (PVP). Dust and leaves gained should be minimal. Dust
   // should be 0-1, most of the time 0. Leaves should be <5"): Laurels are the Arena's own reward.
-  const g = won ? 4 : m.winner===0 ? 2 : 1, d = (won && Math.random() < 0.25) ? 1 : 0, l = won ? 3 : m.winner===0 ? 2 : 1;
+  const g = econPay('arena', 'gold', won ? 4 : m.winner===0 ? 2 : 1), d = econPay('arena', 'dust', (won && Math.random() < 0.25) ? 1 : 0), l = won ? 3 : m.winner===0 ? 2 : 1; // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.arena (Laurels not)
   grantCurrency('gold', g); if(d) grantCurrency('dust', d); grantCurrency('laurels', l);
   m.pvpRewardEarned = {gold:g, dust:d, laurels:l};
 }
@@ -25482,7 +25484,7 @@ function gdPayFloor(d){
   const hq = T.players[1].hq; let lost = 0; Object.values(T.stats || {}).forEach(st=>{ if(st && st.side === 'A') lost += (st.deaths || 0); });
   const rank = CoopM.rankFor(Math.max(0, hq.hp), hq.maxHp, lost > 0), won = d.result === 'won';
   const dealt = Math.max(0, (T.dgStart || T.players[2].hq.maxHp) - Math.max(0, T.players[2].hq.hp));
-  const pay = Object.assign({key, idx: d.idx, won, dealt}, CoopM.floorPay(T.typeId, d.idx, {dealt, won, rank}));
+  const pay = Object.assign({key, idx: d.idx, won, dealt}, econPayAll('coopDungeon', CoopM.floorPay(T.typeId, d.idx, {dealt, won, rank}))); // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.coopDungeon
   if(m && m.adminWin){ pay.gold = pay.dust = 0; pay.admin = true; }
   else { if(pay.gold > 0) grantCurrency('gold', pay.gold); if(pay.dust > 0) grantCurrency('dust', pay.dust);
     try{ const chance = RaidM && RaidM.raidFightDropChance ? RaidM.raidFightDropChance({killed: won, survived: hq.hp > 0, rank}) : 0;
@@ -27027,7 +27029,7 @@ function settleOfflineRaidAfterMatch(m){
   bumpQuestCounter('raidDamage', dealt);
   m.raidRemainingAfter = after ? after.remaining : 0;
   const strength = m.raidBoss.strength || 1;
-  const g = Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0), d = 3 * (Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0)); // ×3 with forge economy v2: a raid run is ~5-15% of a Materia Unit
+  const g = econPay('raids', 'gold', Math.round(dealt/4) + (m.winner===1 ? 20 + strength*8 : 0)), d = econPay('raids', 'dust', 3 * (Math.round(dealt/25) + (m.winner===1 ? 3 + strength : 0))); // ×3 with forge economy v2: a raid run is ~5-15% of a Materia Unit; 2026-10-30 (ECON1): halved
   if(g>0) grantCurrency('gold', g);
   if(d>0) grantCurrency('dust', d);
   m.raidRewardEarned = {gold:g, dust:d};
@@ -27200,7 +27202,7 @@ async function checkRaidFalls(){
       const rows = ((liveRaidParts[def.id + ':' + cycle] || {}).rows || []).slice().sort((a, b)=> (b.at||0) - (a.at||0)), last = rows[0];
       const fresh = last && Date.now() - (last.at||0) < 10*60*1000;
       showToast(TX('toast.has-fallen', {name: def.name, v2: last && last.name ? ` The last blow: ${last.name}.` : ''}), 'ok');
-      if(fresh && def === hardest){ grantCurrency('dust', 5); grantCurrency('gold', 4); setTimeout(()=> showToast(TX('toast.for-being-there-when-it-fell'), 'ok'), 2600); }
+      if(fresh && def === hardest){ grantCurrency('dust', econPay('raids', 'dust', 5)); grantCurrency('gold', econPay('raids', 'gold', 4)); /* 2026-10-30 (ECON1): halved */ setTimeout(()=> showToast(TX('toast.for-being-there-when-it-fell'), 'ok'), 2600); }
     } }catch(e){}
 }
 // World call-outs (D55, 2026-10-13, user: "The 3-minute check should cover ALL world call-outs, including events and GM
@@ -27346,8 +27348,9 @@ function raidFightCardDrop(def, o){
 function claimRaidReward(def, claim){
   if(!claim || !claim.reward) return null;
   const rw = claim.reward, kill = rw.kind === 'kill';
-  const all = Object.assign({}, rw.base);
-  Object.entries(rw.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
+  const all0 = Object.assign({}, rw.base);
+  Object.entries(rw.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all0[k] = (all0[k]||0) + v; });
+  const all = econPayAll('raids', all0); // 2026-10-30 (ECON1): halved (Leaves, Dust, Gold Leaves, Metal), shown as paid
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
   const screen = raidClaimScreenReady();
   // 2026-10-19 (package RO): the reward says how many cards (RaidM.raidReward: a fall gives them, a strong contributor has a chance at
@@ -28911,7 +28914,7 @@ function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed, rank){
   // 2026-10-19 (package RB): without the x15 an average fight counts ~1/5 of what it did (2,518 -> 479 raid damage in the completion
   // model; the allies holding their rows deal more), so the pay per raid damage is x5.25 (250 -> 48 per Maple Leaf, 1,000 -> 190 per 3
   // Magic Dust): a fight pays about what it did
-  const g = below ? 8 : Math.round(contribution/RAID_ATTEMPT_PAY.goldPer), d = below ? 6 : 3 * Math.round(contribution/RAID_ATTEMPT_PAY.dustPer); // ×3, forge economy v2
+  const g = econPay('raids', 'gold', below ? 8 : Math.round(contribution/RAID_ATTEMPT_PAY.goldPer)), d = econPay('raids', 'dust', below ? 6 : 3 * Math.round(contribution/RAID_ATTEMPT_PAY.dustPer)); // ×3, forge economy v2; 2026-10-30 (ECON1): halved
   if(g>0) grantCurrency('gold', g); if(d>0) grantCurrency('dust', d);
   const ink = below ? 1 : 1 + Math.min(4, Math.floor(dealt / (minDamage * 2))); for(let i = 0; i < ink; i++) try{ unlockCardForPlayer('abyssal-ink', 'materia'); }catch(e){}
   const after = currentRaidStateFor(def);
@@ -41952,9 +41955,9 @@ async function resolveRoundCore(opts){
         // dust across its own repeat/first-clear spread) — strength runs 1-13 so this lands in
         // the same rough range without needing a first-clear/repeat distinction (Online Raid has
         // no "node," just a boss you can fight again any time).
-        const rGold = 30 + strength*13, rDust = 3 * (6 + Math.round(strength*2.2)); // ×3, forge economy v2
-        grantCurrency('gold', rGold); grantCurrency('dust', rDust); grantCurrency('metal', 1);
-        m.raidRewardEarned = {gold:rGold, dust:rDust, metal:1};
+        const rGold = econPay('onlineRaid', 'gold', 30 + strength*13), rDust = econPay('onlineRaid', 'dust', 3 * (6 + Math.round(strength*2.2))), rMetal = econPay('onlineRaid', 'metal', 1); // ×3, forge economy v2; 2026-10-30 (ECON1): halved
+        grantCurrency('gold', rGold); grantCurrency('dust', rDust); grantCurrency('metal', rMetal);
+        m.raidRewardEarned = {gold:rGold, dust:rDust, metal:rMetal};
       }
       // How much of the boss's OWN castle HP this single attempt actually took off (win or
       // loss) — the real number that then permanently chips into its shared current_hp pool.
@@ -41977,14 +41980,15 @@ async function resolveRoundCore(opts){
       let streak = won ? loadGauntletStreak()+1 : 0;
       const peakStreak = streak; // captured before a completed run resets streak back to 0 below
       if(won){
-        const gGold = 15 + streak*5, gDust = 3 + streak;
+        const gGold = econPay('gauntlet', 'gold', 15 + streak*5), gDust = econPay('gauntlet', 'dust', 3 + streak); // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.gauntlet
         grantCurrency('gold', gGold); grantCurrency('dust', gDust);
         m.gauntletRewardEarned = {gold:gGold, dust:gDust};
         if(streak >= GAUNTLET_GOAL){
-          grantCurrency('gold', 100); grantCurrency('metal', 2);
+          const xg = econPay('gauntlet', 'gold', 100), xm = econPay('gauntlet', 'metal', 2); // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.gauntlet
+          grantCurrency('gold', xg); grantCurrency('metal', xm);
           m.gauntletRunComplete = true;
-          m.gauntletRewardEarned.gold += 100;
-          m.gauntletRewardEarned.metal = 2;
+          m.gauntletRewardEarned.gold += xg;
+          m.gauntletRewardEarned.metal = xm;
           streak = 0; // run complete -- a fresh run starts from 0 on the next fight
         }
       }
@@ -42021,9 +42025,10 @@ async function resolveRoundCore(opts){
             // Full clear — pays out and ends the run clean, same shape as Gauntlet's own
             // run-complete payout, scaled up a bit since Dungeon's losses are permanent and a
             // full 3-fight clear is meant to feel like a real accomplishment.
-            grantCurrency('gold', 150); grantCurrency('dust', 30); grantCurrency('metal', 2);
+            const dr = econPayAll('arenaDungeon', {gold:150, dust:30, metal:2}); // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.arenaDungeon
+            grantCurrency('gold', dr.gold); grantCurrency('dust', dr.dust); grantCurrency('metal', dr.metal);
             m.dungeonRunComplete = true;
-            m.dungeonRewardEarned = {gold:150, dust:30, metal:2};
+            m.dungeonRewardEarned = dr;
             clearDungeonRun();
           } else {
             run.stage += 1;
@@ -55008,7 +55013,7 @@ function purchasePackOnce(pack, prepaid, opts){
   // 2026-10-08 (user: "Why is there +10 dust from buying the pack? ... nothing was destroyed"): an older published pack
   // config's dust field is ignored. 2026-10-11 (forge economy v2, user: "Boosters flat rate (depending on the booster rank)
   // give <5% materia"): each booster carries a small flat share of a Materia Unit, by its rank.
-  { const pct = PACK_MATERIA_PCT[pack.id] || 0; if(pct > 0) grantCurrency('dust', MU(pct / 100)); }
+  { const pct = PACK_MATERIA_PCT[pack.id] || 0; if(pct > 0) grantCurrency('dust', econPay('packDust', 'dust', MU(pct / 100))); } // 2026-10-30 (ECON1): halved, ECON_INCOME_MULT.packDust
   if(pack.metal) grantCurrency('metal', pack.metal);
   if(pack.kroon) grantCurrency('kroon', pack.kroon);
   const foils = rollPackFoils(pack, pulls.length);
@@ -56958,6 +56963,7 @@ const TRAIL_FREE = [
   {dust:120}, {metal:2}, {gold:100}, {kit:1}, {pack:1}, {dust:150}, {kibble:20}, {gold:120}, {ticket:1}, {faction:1},
   {dust:150}, {gold:120}, {kit:1}, {metal:2}, {pack:1}, {dust:150}, {gold:150}, {capsule:1}, {dust:110, gold:150}, {chest:1, title:1},
 ];
+econScaleTable('trail', TRAIL_FREE); // 2026-10-30 (ECON1, owner BRUP-1): the free lane's Leaves, Dust and Metal halved (packs, kits, Kibble, capsules not)
 // The premium lane's shape only (icons, locked, "Coming later"): Gold Leaves, cosmetics and packs as in the proposal. Nothing in it can be had.
 const TRAIL_PREMIUM = ['🍂', '🎴', '📦', '🍂', '✨', '📦', '🍂', '😄', '📦', '🐚', '🍂', '📦', '🖼️', '🍂', '📦', '🎫', '🍂', '📦', '👤', '🐚',
   '🍂', '📦', '✨', '🍂', '📦', '🏔️', '🍂', '📦', '🍂', '🎴'];
