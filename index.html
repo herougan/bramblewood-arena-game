@@ -11761,6 +11761,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .rr-card .dc-front.rr-front .card-tile{width:100% !important; height:100% !important;}
 .rr-card .dc-face.rr-front, .rr-card .dc-face.rr-back{position:absolute; inset:0;}
 .rr-card .dc-back.rr-back{transition:none;}
+.rr-card .rr-new{--nt-size:clamp(20px, calc(var(--card-detail-w) * .085), 34px); --nt-stroke:2px; z-index:10;} /* the NEW! stamp grows with the Detail card (was set for 220px) */
 /* the Hero on its plinth (Stomping Grounds, the Camp's Hero Hall): the Detail card */
 .hero-card-big.has-dc{width:auto !important;}
 .hero-card-big .dc .card-tile{pointer-events:none;}
@@ -11768,6 +11769,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 #view-stomp .stomp-plinth .hero-card-big .dc-front > .card-tile, .hero-card-big .dc-front > .card-tile{width:100% !important; height:100% !important;}
 #view-stomp .stomp-plinth::after{width:calc(var(--card-detail-w) * 1.15);}
 .hero-card-big.is-levelling .dc{animation:heroLift 1.4s cubic-bezier(.2,.8,.3,1);}
+@media (max-width:560px){ .hero-card-big.has-dc{max-width:100%;} .hero-card-big.has-dc > .dc{--dc-w:min(var(--card-detail-w), calc(100vw - 110px));} } /* a phone: inside the plinth's panel, its badges too */
 /* the entrance fan, the faction showcase and the Forge's before/after flip turn the same markup (a decorative fan keeps its own sizes) */
 .entrance-fan .ef-card > .dc{--dc-w:168px;}
 .entrance-fan .ef-card:nth-child(2) > .dc{--dc-w:184px; margin-left:-8px;}
