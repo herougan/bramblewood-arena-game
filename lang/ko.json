@@ -3669,5 +3669,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "강화에는 가시덤불 꽃과 약간의 가루와 잎이 들어요. 지금 {have}개 있어요. 전투에서 이기면 더 얻고, 져도 적 가시덤불에 준 피해만큼 조금 받아요.",
  "{n} Briar Blossoms for every floor won": "이긴 층마다 가시덤불 꽃 {n}개",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "승리로 얻은 가시덤불 꽃. 대장간에서 가시덤불을 강화하는 데 써요.",
- "Briar Blossoms for the damage you did to the enemy bramble": "적 가시덤불에 준 피해로 얻은 가시덤불 꽃"
+ "Briar Blossoms for the damage you did to the enemy bramble": "적 가시덤불에 준 피해로 얻은 가시덤불 꽃",
+ "Flip": "뒤집기",
+ "Drag sideways to turn it · tap to flip it over": "옆으로 끌어 돌리기 · 탭하여 뒤집기",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: 옆으로 끌어 돌리기, Enter로 뒤집기"
 }

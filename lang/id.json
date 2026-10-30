@@ -3668,5 +3668,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Memperkuat butuh Bunga Semak Duri dan sedikit Debu serta Daun. Kamu punya {have}. Menangkan pertarungan untuk lebih banyak; kalah pun memberi sedikit untuk kerusakan pada semak duri musuh.",
  "{n} Briar Blossoms for every floor won": "{n} Bunga Semak Duri untuk setiap lantai yang dimenangkan",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Bunga Semak Duri untuk kemenangan. Gunakan di Tempa untuk memperkuat semak durimu.",
- "Briar Blossoms for the damage you did to the enemy bramble": "Bunga Semak Duri untuk kerusakan yang kamu berikan pada semak duri musuh"
+ "Briar Blossoms for the damage you did to the enemy bramble": "Bunga Semak Duri untuk kerusakan yang kamu berikan pada semak duri musuh",
+ "Flip": "Balik",
+ "Drag sideways to turn it · tap to flip it over": "Geser ke samping untuk memutarnya · ketuk untuk membaliknya",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: geser ke samping untuk memutarnya, Enter untuk membaliknya"
 }

@@ -11697,6 +11697,101 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* the review in the Map cards overlay: the Full card (owner 10-29 19:14 wanted large cards there) */
 .rv1-tile .vis4-mc-card.is-large .card-tile[data-size="full"]{max-width:none;}
 /* CS-B:END */
+/* CS-C:BEGIN (2026-10-30, package CS-C, card sizes step 4-5; plan docs/design/card-sizes-2026-10-29.md; owner CS-1 / CS-2 10-30 10:34).
+   The Detail card (detailCardHTML / mountDetailCard in arena_app.js): one card, --dc-w wide (the Detail token, ≤400px, 86vw on a phone),
+   turned by a transform on .dc-spin; the front and the decorative back are two faces. Without a controller the markup turns by data-face.
+   .is-still (prefers-reduced-motion, Effects Low / None): no rotation, the faces swap in place, no tilt, no glare.
+   The hover popover is the Full card plus its text (CS-1). tests/cs-c-2026-10-30.js. */
+.dc{--dc-w:var(--card-detail-w); position:relative; width:var(--dc-w); max-width:100%; flex:none;}
+.dc-stage{position:relative; display:block; perspective:1400px; touch-action:pan-y /* a vertical drag scrolls; a sideways one turns the card */; cursor:grab; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; outline:none; border-radius:7%;}
+.dc.is-dragging .dc-stage{cursor:grabbing;}
+.dc-stage:focus-visible{outline:3px solid #ffd98a; outline-offset:5px;}
+.dc-spin{position:relative; display:block; width:100%; aspect-ratio:4/5; transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.8,.2,1);}
+.dc-spin.is-live{transition:transform .08s linear;} .dc-spin.is-long{transition:transform 1.1s cubic-bezier(.3,.7,.2,1);} .dc-spin.no-anim{transition:none !important;}
+.dc[data-face="back"] .dc-spin{transform:rotateY(180deg);}
+.dc-face{position:absolute; inset:0; display:block; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:7%;}
+.dc-front{transform:none;}
+.dc.is-hot .dc-front{filter:brightness(var(--dc-dim, 1));} /* the face dims edge-on while it is handled (a filter layer only then) */
+.dc-front > .card-tile{position:relative; width:100% !important; height:100% !important; margin:0 !important; transform:none !important; box-sizing:border-box; pointer-events:none;}
+.dc-back{transform:rotateY(180deg); display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.dc-crest{font-size:calc(var(--dc-w) * .3); filter:drop-shadow(0 3px 2px rgba(0,0,0,.45));}
+.bw-back > .dc-crest{display:none;}
+.dc-back-face{transform:rotateY(180deg);}
+/* parallax: the art drifts against the tilt, a soft light follows the pointer and the turn */
+.dc .dc-front .card-tile .ico .card-art-img{translate:calc(var(--dc-px, 0) * -5px) calc(var(--dc-py, 0) * -5px); scale:1.05; transition:translate .25s ease;}
+.dc.is-dragging .dc-front .card-tile .ico .card-art-img, .dc-spin.is-live .card-art-img{transition:none;}
+.dc-glare{position:absolute; inset:0; z-index:9; display:none; border-radius:inherit; pointer-events:none; mix-blend-mode:soft-light; opacity:0; transition:opacity .3s ease;
+  background:radial-gradient(circle at calc(50% + var(--dc-px, 0) * 40%) calc(50% + var(--dc-py, 0) * 40%), rgba(255,255,255,.55), rgba(255,255,255,0) 55%),
+    linear-gradient(105deg, transparent calc(var(--dc-sheen, 50%) - 18%), rgba(255,255,255,.32) var(--dc-sheen, 50%), transparent calc(var(--dc-sheen, 50%) + 18%));}
+.dc.is-hot .dc-glare{display:block; opacity:1;} /* drawn only while the card is handled */
+.dc-shadow{position:absolute; left:12%; right:12%; bottom:-14px; height:26px; display:block; border-radius:50%; background:radial-gradient(closest-side, rgba(0,0,0,.55), transparent); filter:blur(4px); pointer-events:none;}
+/* still: no rotation, the back simply replaces the front */
+.dc.is-still .dc-spin{transform:none !important; transition:none;}
+.dc.is-still .dc-face{backface-visibility:visible; -webkit-backface-visibility:visible; transform:none; transition:opacity .18s linear, visibility 0s;}
+.dc.is-still[data-face="front"] .dc-back, .dc.is-still[data-face="back"] .dc-front{opacity:0; visibility:hidden;}
+.dc.is-still .dc-glare, .dc.is-still .dc-shadow{display:none;}
+.dc.is-still .card-art-img{translate:none !important; scale:none !important;}
+@media (prefers-reduced-motion: reduce){ .dc-spin{transition:none !important;} }
+/* the controls under the card (the Inspector's bar) */
+.dc-bar .ci-actions{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+.dc + .dc-bar, .dc-slot + .dc-bar, .dc-slot ~ .dc-bar{margin-top:calc(var(--card-detail-w) * .06);} /* clear of the skill badges that hang under the card */
+/* the Card Detail overlay: the Detail card on the left with its controls under it, the text on the right; on a phone the text is under it */
+.modal.card-detail-card{width:min(1000px, 100%) !important;}
+.card-detail-card .cd-dc{display:flex; flex-direction:column; align-items:center; gap:10px; width:var(--card-detail-w); max-width:100%;}
+.card-detail-card .cd-dc .ci-bar{color:var(--ink); max-width:100%;}
+.card-detail-card .cd-dc .ci-hint{color:var(--ink-muted); opacity:1;}
+.card-detail-card .cd-dc :is(.ci-fin, .ci-spinbtn){background:var(--surface-2); color:var(--ink); border-color:var(--surface-border); backdrop-filter:none;}
+.card-detail-card .cd-dc .ci-fin.is-on{background:linear-gradient(120deg, #f7d77a, #f2a8d8 50%, #9fd6f7); color:#2b1d10; border-color:transparent;}
+.card-detail-card .cd-dc .ci-finishes{gap:4px;} .card-detail-card .cd-dc .ci-fin{padding:3px 9px; font-size:11.5px;}
+@media (max-width:640px){ .card-detail-card .cd-dc{margin:0 auto;} }
+/* the pack-results viewer (openCardInspector with a pull): the same Detail card; its old stage only holds it now */
+.card-inspect .ci-stage{touch-action:auto; cursor:auto; padding:10px; perspective:none;}
+/* the pack reveal: the Detail card inside each pack card's button, face down until it is revealed */
+.po2-deck{--cw:var(--card-detail-w);}
+.po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(var(--card-detail-w), 50vh * .8);}
+.po2-card > .dc{position:absolute; inset:0; width:auto; max-width:none; --dc-w:var(--cw);}
+.po2-card > .dc > .dc-stage, .po2-card > .dc > .dc-stage > .dc-spin{position:absolute; inset:0; width:auto; aspect-ratio:auto;}
+.po2-card .dc-spin.po2-flip{transform:none;} .po2-card .dc[data-face="back"] .dc-spin.po2-flip{transform:rotateY(180deg);}
+.po2-card .dc-front.po2-front{transform:none;} .po2-card .dc-back.po2-back{transform:rotateY(180deg);}
+.po2-card .dc.is-still .dc-back.po2-back{transform:none;}
+.po2-card:focus-visible .dc-stage{outline:none;}
+/* the reward reveal after a fight (a raid's card too): the Detail card, flipped face up as the shine flashes */
+.rr-card{width:var(--card-detail-w); height:auto;}
+.rr-card > .dc{--dc-w:var(--card-detail-w);}
+.rr-card .dc-front.rr-front .card-tile{width:100% !important; height:100% !important;}
+.rr-card .dc-face.rr-front, .rr-card .dc-face.rr-back{position:absolute; inset:0;}
+.rr-card .dc-back.rr-back{transition:none;}
+/* the Hero on its plinth (Stomping Grounds, the Camp's Hero Hall): the Detail card */
+.hero-card-big.has-dc{width:auto !important;}
+.hero-card-big .dc .card-tile{pointer-events:none;}
+#view-stomp .stomp-plinth .hero-card-big.has-dc{width:auto !important;}
+#view-stomp .stomp-plinth .hero-card-big .dc-front > .card-tile, .hero-card-big .dc-front > .card-tile{width:100% !important; height:100% !important;}
+#view-stomp .stomp-plinth::after{width:calc(var(--card-detail-w) * 1.15);}
+.hero-card-big.is-levelling .dc{animation:heroLift 1.4s cubic-bezier(.2,.8,.3,1);}
+/* the entrance fan, the faction showcase and the Forge's before/after flip turn the same markup (a decorative fan keeps its own sizes) */
+.entrance-fan .ef-card > .dc{--dc-w:168px;}
+.entrance-fan .ef-card:nth-child(2) > .dc{--dc-w:184px; margin-left:-8px;}
+.entrance-fan .ef-card .dc-spin.ef-flip{transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+.entrance-fan .ef-card .dc-spin.ef-flip, .faction-showcase .pl1-fsf .dc-spin{transform:none;}
+.entrance-fan .ef-card .dc[data-face="back"] .dc-spin.ef-flip, .faction-showcase .pl1-fsf .dc[data-face="back"] .dc-spin{transform:rotateY(180deg);}
+.entrance-fan .dc-front .card-tile{box-shadow:0 18px 40px rgba(0,0,0,.45);}
+.faction-showcase .pl1-fsf > .dc{--dc-w:min(9vw, 112px);} /* the showcase's own size (it was the tile's) */
+.faction-showcase .pl1-fsf .dc-spin{transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+.dc.dc-flow > .dc-stage > .dc-spin{aspect-ratio:auto;}
+.dc.dc-flow .dc-front{position:relative;}
+.flip3d-stage > .dc{width:100%; --dc-w:100%;}
+.dc .dc-stage:not([tabindex]){cursor:inherit;}
+/* the hover popover (CS-1): the Full card plus its text, on top of any modal; a caller's extra line (data-pop-line) under the text */
+#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--card-full-w) !important;}
+#cardPop .cp-line{margin:6px 0 2px; padding:5px 8px; border-radius:8px; background:rgba(74,47,26,.12); font:700 12px/1.3 'Baloo 2',system-ui,sans-serif;}
+#cardPop{max-width:calc(100vw - 16px);}
+.cnp-rw-zoom.cp-sheet{width:min(264px, calc(100vw - 16px)); padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
+.cnp-rw-zoom.cp-sheet > .card-tile{display:block; width:var(--card-full-w) !important; margin:-2px auto 8px !important;}
+.cnp-rw-zoom.cp-sheet .cp-text{font:600 12px/1.35 'Nunito',system-ui,sans-serif;}
+.cnp-rw-zoom.cp-sheet .cp-text ul{margin:0 0 4px; padding-left:16px;} .cnp-rw-zoom.cp-sheet .cp-text li{margin-bottom:2px;}
+.cnp-rw-zoom.cp-sheet .cp-text .flavor{font-style:italic; opacity:.8; border-top:1px solid rgba(74,47,26,.25); padding-top:5px; margin-top:3px;}
+.cnp-rw-zoom.cp-sheet .cnp-rw-why{width:auto; margin-top:6px;}
+/* CS-C:END */
 
 /* the card album */
 #codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
@@ -43403,7 +43498,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=941f5c9e4e", "es": "assets/lang/es.js?v=858987117a", "fr": "assets/lang/fr.js?v=01e7f27138", "id": "assets/lang/id.js?v=b40f8162b5", "it": "assets/lang/it.js?v=06846ef7eb", "ja": "assets/lang/ja.js?v=b2cbe71910", "ko": "assets/lang/ko.js?v=9bbfbf7d16", "pt": "assets/lang/pt.js?v=0a59fb07c8", "ta": "assets/lang/ta.js?v=29408f064f", "tl": "assets/lang/tl.js?v=dcf5cc97ca", "zh-Hans": "assets/lang/zh-Hans.js?v=132fe8fffe", "zh-Hant": "assets/lang/zh-Hant.js?v=1eb358ad13"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0c7c6b936c", "es": "assets/lang/es.js?v=76efe75198", "fr": "assets/lang/fr.js?v=cbce8ae34e", "id": "assets/lang/id.js?v=09664ad6b6", "it": "assets/lang/it.js?v=86b482d0d9", "ja": "assets/lang/ja.js?v=a55676f14b", "ko": "assets/lang/ko.js?v=5cee41a413", "pt": "assets/lang/pt.js?v=93d5b5ebe2", "ta": "assets/lang/ta.js?v=ede890e2d9", "tl": "assets/lang/tl.js?v=41e285c302", "zh-Hans": "assets/lang/zh-Hans.js?v=76e8e5f2dc", "zh-Hant": "assets/lang/zh-Hant.js?v=3d894d7728"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45986,6 +46081,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ne-slot-tap": "Tap to build a deck here",
   "ui.ne-cx-copies": "Your copies ({n})",
   "ui.ne-cx-tap-level": "Tap a copy to see its level",
+  "ui.csc-flip": "Flip",
+  "ui.csc-hint": "Drag sideways to turn it · tap to flip it over",
+  "ui.csc-card-aria": "{name}: drag sideways to turn it, Enter to flip it over",
   "ui.bal2-base-cap": "🌰 Base cards stop at Lv 4. Your road cards keep growing past it.",
   "ui.df3-blindFury-name": "Blind Fury",
   "ui.df3-blindFury": "Their units that fight blind (Blind, or blind in the dark) hit for double. Theirs only: on while at least half their deck is Cave.",
@@ -50969,7 +51067,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '869a15e0bfc7', BUILD_CARD_HASH = 'a66d01f92dde1c0164d10d6704744765acb01d6c770a2d044c836f6aac6942df';
+const BUILD_ID = '1603e9e206b5', BUILD_CARD_HASH = 'a66d01f92dde1c0164d10d6704744765acb01d6c770a2d044c836f6aac6942df';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -53921,7 +54019,8 @@ function fullCardHTML(defId, liveCard, opts){
   // 2026-10-12 (user: "Why is the card in the tooltip greyed out?"): the big preview always shows the card in full colour; not
   // owning it isn't a reason to grey out the very card you asked to look at (enemy decks, rewards, the Codex).
   // 2026-10-17: in a fight the big preview wears the hovered copy's own look (opts.lookClass: is-shiny / a skin's tile class)
-  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}</div>`;
+  // 2026-10-30 (package CS-C, owner CS-1 "the hover popover shows the Full card plus text"): the Full card (was 150px)
+  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {size:'full', extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}</div>`;
   // CSRE (2026-09-20): same zero-cost/zero-wait hiding rule as the card tile itself — no bare
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
@@ -53940,7 +54039,14 @@ function fullCardHTML(defId, liveCard, opts){
     ${abilityHTML}${liveStatusGlossHTML(liveC)}${irrSkillsHTML}
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
+    ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
     ${liveCard?cardActionLogHTML(liveCard.uid):''}`;
+}
+// The popover's text for a card outside a fight (2026-10-30, package CS-C, owner CS-1): its skills and flavour, the same lines as fullCardHTML,
+// for the gallery popover beside a preview or a chip (wireRewardZoom), which shows the Full card above it.
+function cardPopTextHTML(d){
+  let lines = []; try{ lines = describeEffects(d, null, {terse:true}); }catch(e){}
+  return `<div class="cp-text">${lines.length ? abilityListHTML(lines) : ''}${d.flavor ? `<div class="flavor">${d.flavor}</div>` : ''}</div>`;
 }
 // 2026-09-17, per explicit request ("hovering a card on the battlefield should, at the bottom,
 // show its transaction log, basic — like Dolphin... Strike -> 5, Dragon... Missile -> 4"): a
@@ -54145,7 +54251,7 @@ function castleHoverHTML(hqSide){
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
       const fogEl = matchState && el.closest ? el.closest('.board-card.is-fogged') : null; // 2026-10-21 (package FOG): a fogged unit's tooltip is "Hidden in the fog"
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */});
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -54201,6 +54307,13 @@ function castleHoverHTML(hqSide){
       const minTop = 8 + lift; if(top < minTop) top = minTop;
       const maxTop = window.innerHeight - ph - 8; if(maxTop >= minTop && top > maxTop) top = maxTop; // short windows: the lift wins over the bottom edge
       const pwReal = pop.offsetWidth || pw; if(left + pwReal > window.innerWidth - 8) left = Math.max(8, window.innerWidth - pwReal - 8); }
+    // 2026-10-30 (package CS-C): a narrow window has no room beside the card: the sheet goes above or below it instead, and never off screen
+    { const pwReal = pop.offsetWidth || pw;
+      if(r.right + 10 + pwReal > window.innerWidth - 8 && r.left - pwReal - 10 < 8 && !el.closest('.rw-half-cards')){
+        left = Math.max(8, Math.min(window.innerWidth - pwReal - 8, r.left + r.width / 2 - pwReal / 2));
+        const lift = (()=>{ const pv = pop.querySelector('.card-pop-visual'); return pv ? Math.max(0, pop.getBoundingClientRect().top - pv.getBoundingClientRect().top) : 0; })();
+        top = r.bottom + 10 + lift + ph <= window.innerHeight - 8 ? r.bottom + 10 + lift : (r.top - 10 - ph >= 8 + lift ? r.top - 10 - ph : Math.max(8 + lift, window.innerHeight - ph - 8)); }
+      left = Math.max(8, Math.min(left, window.innerWidth - pwReal - 8)); }
     pop.style.left = left+'px'; pop.style.top = top+'px';
   }
 })();
@@ -57202,14 +57315,17 @@ function cardSocketDetailHTML(defId, d){
   else parts.push(`<span class="h1-cd-empty">${escapeHtml(TX('ui.h1-socket-empty'))}</span>`);
   return `<div class="cd-where cd-socket"><span class="cd-where-k">💎 ${escapeHtml(TX('ui.h1-detail-socket'))}</span> ${parts.join(' ')}<small class="h1-cd-how">${escapeHtml(TX('ui.h1-detail-how'))}</small></div>`;
 }
+let cardDetailCtl = null; // 2026-10-30 (package CS-C): the open Card Detail overlay's Detail card
 function openCardDetail(defId, opts){
   // 2026-10-19 (package UX): opened from the Codex, the card shows at the Codex's level (codexShownDef: its base level unless "My best")
   const d0 = getCardDefs()[defId], fromCodex = !!(opts && opts.codex), shownLv = opts && opts.shownLevel != null && isFinite(opts.shownLevel) ? opts.shownLevel : null;
   const d = shownLv != null ? defAtShownLevel(defId, shownLv) /* 2026-10-21 (package ED): an enemy card at its fight's level */ : fromCodex ? codexShownDef(defId, d0) : d0;
   const overlay = document.getElementById('cardDetailOverlay');
   if(!d || !overlay) return;
+  if(cardDetailCtl){ try{ cardDetailCtl.destroy(); }catch(e){} cardDetailCtl = null; }
   cardDetailOpenId = defId;
   const ownsFoil = (typeof myCardCopies !== 'undefined') && (myCardCopies[defId] || []).some(c=>c && c.foil);
+  const cdSt = {finish: ownsFoil ? holoClass(d).replace('is-holo','').trim().split(/\s+/)[0] : '', shiny: false}; // CS-C: the look the Detail card wears
   const lines = describeEffects(d, null, {terse:true}); // 2026-10-21 (package UI3): no species / Wait / damage-type lines
   const mechLine = inferMechanicLine(d);
   const abilityHTML = lines.length
@@ -57247,7 +57363,9 @@ function openCardDetail(defId, opts){
   overlay.innerHTML = `<div class="modal card-detail-card ${spawnIds.length ? 'has-spawns' : ''}">
       <button type="button" class="modal-close-btn cd-x-solo" id="cdCloseXBtn" title="Close" aria-label="Close">✕</button>
       <div class="cd-grid">
-      <div class="card-pop-visual">${cardTileHTML(d, {extraClass:'card-pop-visual-tile' + (ownsFoil ? ' ' + holoClass(d) : '')})}${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}<button type="button" class="cd-inspect-btn" id="cdInspectBtn" title="Inspect the card up close and turn it in the light"><span aria-hidden="true">🔍</span> <span>Inspect</span></button></div>
+      ${'' /* 2026-10-30 (package CS-C): the card is the Detail card (tilt, drag sideways to spin, tap to flip to its back) with the Inspector's
+           controls under it (Spin, Flip, an admin's finishes, skins, ▶ Attack); the 🔍 Inspect button and its second overlay are gone */}
+      <div class="card-pop-visual cd-dc"><div class="dc-slot"></div>${ownsFoil ? '<span class="cd-foil-chip" title="You own a foil copy — move the pointer over the card (or tilt your phone)">✨ Foil</span>' : ''}${detailBarHTML(d, cdSt)}</div>
       <div class="cd-info">
       ${'' /* 2026-10-13 (user: "Don't repeat the name of the card in the card detail. Don't repeat its stats too!"): the card shows both */}
       <h2 class="cd-name sr-only">${escapeHtml(d.name||'')}</h2>
@@ -57271,7 +57389,8 @@ function openCardDetail(defId, opts){
     </div>`;
   overlay.hidden = false;
   const onKey = e=>{ if(e.key==='Escape') close(); };
-  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; document.removeEventListener('keydown', onKey); };
+  const close = ()=>{ overlay.hidden = true; overlay.innerHTML=''; cardDetailOpenId = null; document.removeEventListener('keydown', onKey); if(cardDetailCtl){ cardDetailCtl.destroy(); cardDetailCtl = null; }
+    if(opts && opts.returnFocus && opts.returnFocus.isConnected && opts.returnFocus.focus) try{ opts.returnFocus.focus(); }catch(e){} };
   document.addEventListener('keydown', onKey);
   document.getElementById('cdCloseXBtn').addEventListener('click', close);
   document.getElementById('cdCloseBtn').addEventListener('click', close);
@@ -57280,11 +57399,7 @@ function openCardDetail(defId, opts){
   if(editBtn) editBtn.addEventListener('click', ()=>{ close(); openCardEditor(defId); });
   // Admin (2026-10-12, user: "a 'get this card' button in the Codex card detail view").
   { const gb = document.getElementById('cdGetBtn'); if(gb) gb.addEventListener('click', ()=>{ try{ unlockCardForPlayer(defId, 'adminGrant'); grantCardCopy && myUnlockedCardIds.has(defId); }catch(e){} invalidateCardDefs(); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} showToast(TX('toast.is-in-your-nest', {v1: (getCardDefs()[defId]||{}).name || defId}), 'ok'); }); }
-  const inspectBtn = document.getElementById('cdInspectBtn');
-  const inspect = ()=> openCardInspector(defId, {foil: ownsFoil, returnFocus: inspectBtn});
-  if(inspectBtn) inspectBtn.addEventListener('click', inspect);
-  const bigTile = overlay.querySelector('.card-pop-visual-tile');
-  if(bigTile){ bigTile.style.cursor = 'zoom-in'; bigTile.addEventListener('click', inspect); }
+  cardDetailCtl = mountDetailView(overlay.querySelector('.cd-dc'), d, cdSt); // 2026-10-30 (package CS-C)
   if(adminModeEnabled) wireCodexPlacement(defId);
   if(adminModeEnabled) wireArtReviewDetail(defId, ()=>{ if(cardDetailOpenId === defId && !overlay.hidden) openCardDetail(defId, opts); }); // 2026-10-21 (package ED)
   const signInBtn = document.getElementById('cdSignInStatsBtn');
@@ -57373,6 +57488,164 @@ function neInspectDetailHTML(d){
     ${wherePill ? `<div class="pl2-where" aria-label="${escapeAttr(where)}">${wherePill}</div>` : ''}
   </aside>`;
 }
+// ---- CS-C:BEGIN (2026-10-30, package CS-C, card sizes step 4: the Detail card; plan docs/design/card-sizes-2026-10-29.md, owner CS-2 10-30 10:34:
+// "Detail keeps the decorative card back"). One Detail card for every place a single card is shown large and turned over: the Card Detail
+// overlay (which is now the inspector too), the pack-results viewer, the pack reveal, the reward reveal after a fight (and a raid's card),
+// the Hero's plinth, the entrance fan, the faction showcase and the Forge's before/after flip. Before this there were seven 3D flips
+// (.ci-*, .po2-*, .rr-*, .ef-*, .pl1-fsf-*, .flip3d-*, the Hero had none); each screen now draws detailCardHTML and, where the card can be
+// handled, mountDetailCard. The markup alone flips by data-face (CSS); mountDetailCard adds the tilt with parallax (pointer), drag to spin
+// (a clear sideways drag only, so a vertical drag still scrolls on touch: touch-action pan-y), tap / Enter to flip, arrows to turn.
+// With prefers-reduced-motion or Effects Low / None (detailStill) the faces swap with no rotation and there is no tilt.
+function detailStill(){ try{ return reducedMotion() || !fxAtLeast('med'); }catch(e){ return false; } }
+// d: the card. o.tile: the front's HTML instead of the card's own tile; o.tileOpts / o.extraClass: for cardTileHTML; o.back: the back face's
+// classes (default the card's own backing, cardBackClass) or o.backHTML: a second face instead (the Forge's after card); o.face 'back' starts
+// face down; o.cls: classes on the root; o.alias: {stage, spin, face, front, back} class names an older screen's CSS and tests still use;
+// o.label: the stage's accessible name; o.shadow: a soft shadow under the card; o.tag: the root's element (a pack card is inside a button).
+function detailCardHTML(d, o){
+  o = o || {}; const a = o.alias || {}, tag = o.tag || 'div', inner = tag === 'div' ? 'div' : 'span';
+  const tile = o.tile != null ? o.tile : cardTileHTML(d, Object.assign({editable:false}, o.tileOpts || {}, {extraClass: ['dc-tile', o.extraClass || ''].join(' ').trim()}));
+  const backCls = o.backHTML != null ? 'dc-back-face' : (o.back != null ? o.back : (d ? cardBackClass(d) : 'bw-back'));
+  const label = o.label != null ? o.label : (d && d.name ? TX('ui.csc-card-aria', {name: d.name}) : '');
+  const still = detailStill();
+  return `<${tag} class="dc${o.cls ? ' ' + o.cls : ''}${still ? ' is-still' : ''}" data-dc data-face="${o.face === 'back' ? 'back' : 'front'}">`
+    + `<${inner} class="dc-stage${a.stage ? ' ' + a.stage : ''}"${o.focus === false ? '' : ` tabindex="0" role="button" aria-label="${escapeAttr(label)}"`}>`
+    + (o.shadow ? `<${inner} class="dc-shadow${a.shadow ? ' ' + a.shadow : ''}" aria-hidden="true"></${inner}>` : '')
+    + `<${inner} class="dc-spin${a.spin ? ' ' + a.spin : ''}">`
+    + `<${inner} class="dc-face dc-front${a.face ? ' ' + a.face : ''}${a.front ? ' ' + a.front : ''}">${tile}<${inner} class="dc-glare" aria-hidden="true"></${inner}></${inner}>`
+    + `<${inner} class="dc-face dc-back ${backCls}${a.face ? ' ' + a.face : ''}${a.back ? ' ' + a.back : ''}" aria-hidden="true">${o.backHTML != null ? o.backHTML : `<${inner} class="dc-crest">🌰</${inner}>`}</${inner}>`
+    + `</${inner}></${inner}></${tag}>`;
+}
+// The markup's own flip, for a screen that only turns the card over (the fan, the showcase, the reveals): data-face, CSS does the rest.
+function dcSetFace(root, face){ const dc = root && (root.matches && root.matches('[data-dc]') ? root : root.querySelector && root.querySelector('[data-dc]')); if(!dc) return;
+  if(dc._dc) return dc._dc.show(face); dc.classList.toggle('is-still', detailStill()); dc.dataset.face = face === 'back' ? 'back' : 'front'; }
+// o.spin (default true; or a function asked at each drag): drag sideways to turn it; o.tilt (default true): pointer tilt and parallax;
+// o.tap: 'flip' (default) | 'none' (the screen's own click handles it) | a function; o.settle 'front' turns it back face up after a spin;
+// o.keys (default true): Enter / Space flip, arrows turn half a turn. Returns {el, flip, show, spinOnce, setFront, face, destroy}.
+function mountDetailCard(root, o){
+  o = o || {};
+  const dc = root && (root.matches && root.matches('[data-dc]') ? root : root.querySelector('[data-dc]')); if(!dc) return null;
+  if(dc._dc) dc._dc.destroy();
+  const stage = dc.querySelector('.dc-stage'), spin = dc.querySelector('.dc-spin'), front = dc.querySelector('.dc-front'), shadow = dc.querySelector('.dc-shadow');
+  const can = v=> typeof v === 'function' ? !!v() : v !== false;
+  let turn = dc.dataset.face === 'back' ? 180 : 0, tx = 0, ty = 0, px = 0, py = 0, drag = null, swallowClick = 0, dead = false, hover = false, heatT = 0;
+  const heat = ms=>{ if(still()) return; dc.classList.add('is-hot'); clearTimeout(heatT); heatT = setTimeout(()=>{ if(!drag && !hover) dc.classList.remove('is-hot'); }, ms); }; // the light and the edge-on dimming, while it turns
+  const faceOf = t=> ((Math.round(t / 180) % 2) + 2) % 2 ? 'back' : 'front';
+  const still = ()=> o.still != null ? !!o.still : detailStill();
+  const paint = ()=>{
+    if(dead) return;
+    const s0 = still(); dc.classList.toggle('is-still', s0);
+    if(s0){ spin.style.transform = ''; dc.style.removeProperty('--dc-dim'); return; }
+    const deg = turn + ty, r = deg * Math.PI / 180, s = Math.sin(r), c = Math.cos(r);
+    spin.style.transform = `rotateX(${tx.toFixed(2)}deg) rotateY(${deg.toFixed(2)}deg)`;
+    dc.style.setProperty('--dc-px', px.toFixed(3)); dc.style.setProperty('--dc-py', py.toFixed(3));
+    dc.style.setProperty('--dc-dim', (0.62 + 0.38 * Math.abs(c)).toFixed(3));
+    dc.style.setProperty('--dc-sheen', (50 - 140 * s).toFixed(1) + '%');
+    if(shadow) shadow.style.transform = `translateX(${(-26 * s).toFixed(1)}px) scaleX(${(0.25 + 0.75 * Math.abs(c)).toFixed(3)})`;
+    const tile = front && front.querySelector('.card-tile');
+    if(tile && tile.classList.contains('is-holo')){ // a foil's light follows the turn and the pointer (as the Inspector's did)
+      const hx = 0.5 - 0.45 * s + px * 0.2, hy = 0.4 + py * 0.25;
+      tile.style.setProperty('--hx', (hx * 100).toFixed(1) + '%'); tile.style.setProperty('--hy', (hy * 100).toFixed(1) + '%');
+      tile.style.setProperty('--hbx', (50 + (hx - 0.5) * 90).toFixed(1) + '%'); tile.style.setProperty('--hby', (50 + (hy - 0.5) * 90).toFixed(1) + '%');
+      tile.classList.add('holo-active'); }
+  };
+  const mode = m=>{ spin.classList.toggle('is-live', m === 'live'); spin.classList.toggle('is-long', m === 'long'); };
+  const settle = ()=>{ dc.dataset.face = faceOf(turn); stage && stage.setAttribute('aria-pressed', dc.dataset.face === 'back' ? 'true' : 'false'); if(o.onFace) try{ o.onFace(dc.dataset.face); }catch(e){} };
+  const flip = dir=>{ if(dead) return; mode(''); heat(650); turn += (dir < 0 ? -180 : 180); tx = ty = 0; paint(); settle(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} };
+  const show = (face, instant)=>{ if(dead) return; if(faceOf(turn) !== face) turn += 180; if(instant){ spin.classList.add('no-anim'); } mode(''); paint(); settle(); if(instant){ void spin.offsetWidth; spin.classList.remove('no-anim'); } };
+  const spinOnce = ()=>{ if(dead || still()) return; mode('long'); heat(1200); turn += 360; paint(); setTimeout(()=>{ if(!drag) mode(''); }, 1150); };
+  const tiltTo = (e)=>{ const r = stage.getBoundingClientRect(); if(!r.width) return;
+    px = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1)); py = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1));
+    tx = -py * 10; ty = px * 12; hover = true; dc.classList.add('is-hot'); mode('live'); paint(); };
+  const untilt = ()=>{ px = py = tx = ty = 0; hover = false; dc.classList.remove('is-hot'); mode(''); paint(); };
+  const onMove = e=>{
+    if(drag && drag.id === e.pointerId){
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if(!drag.on){
+        // only a clear sideways drag turns the card; a vertical one is the page's (touch-action:pan-y lets the browser scroll it)
+        if(Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.3 && can(o.spin)){ drag.on = true; try{ stage.setPointerCapture(e.pointerId); }catch(_){} dc.classList.add('is-dragging', 'is-hot'); tx = ty = 0; mode('live'); }
+        else if(Math.abs(dy) > 10){ drag = null; return; } else return;
+      }
+      const w = stage.getBoundingClientRect().width || 300, now = performance.now();
+      if(!still()){ turn = drag.turn0 + dx / w * 180; drag.v = (turn - drag.lastTurn) / Math.max(8, now - drag.lastT) * 1000; drag.lastTurn = turn; drag.lastT = now; paint(); }
+      return;
+    }
+    if((e.pointerType === 'mouse' || e.pointerType === 'pen') && can(o.tilt) && !still()) tiltTo(e);
+  };
+  const onDown = e=>{ if(e.button > 0) return; drag = {id: e.pointerId, x: e.clientX, y: e.clientY, turn0: turn, lastTurn: turn, lastT: performance.now(), v: 0, on: false}; };
+  const onUp = e=>{
+    if(!drag || drag.id !== e.pointerId) return; const d0 = drag; drag = null;
+    if(!d0.on) return; // a tap: the click handler below
+    dc.classList.remove('is-dragging'); swallowClick = Date.now() + 400;
+    if(still()){ if(Math.abs(e.clientX - d0.x) > 40) flip(e.clientX < d0.x ? -1 : 1); return; }
+    const extra = Math.max(-3, Math.min(3, Math.round(d0.v * 0.25 / 180))) * 180; // a flick turns it further
+    turn = Math.round((turn + extra) / 180) * 180; if(o.settle === 'front' && faceOf(turn) === 'back') turn += (d0.v < 0 ? -180 : 180);
+    tx = ty = 0; mode(Math.abs(extra) >= 360 ? 'long' : ''); heat(Math.abs(extra) >= 360 ? 1200 : 650); paint(); settle(); if(Math.abs(extra) >= 360) setTimeout(()=> mode(''), 1150);
+    if(e.pointerType !== 'mouse') untilt();
+  };
+  const onCancel = e=>{ if(drag && drag.id === e.pointerId){ const was = drag.on; drag = null; dc.classList.remove('is-dragging'); if(was){ turn = Math.round(turn / 180) * 180; if(o.settle === 'front' && faceOf(turn) === 'back') turn += 180; mode(''); paint(); settle(); } } };
+  const onClick = e=>{ if(Date.now() < swallowClick){ e.preventDefault(); e.stopPropagation(); swallowClick = 0; return; }
+    if(typeof o.tap === 'function'){ o.tap(e); return; } if(o.tap === 'none') return; flip(1); };
+  const onKey = e=>{ if(o.keys === false) return;
+    if(e.key === 'Enter' || e.key === ' '){ if(o.tap === 'none') return; e.preventDefault(); e.stopPropagation(); typeof o.tap === 'function' ? o.tap(e) : flip(1); }
+    else if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){ e.preventDefault(); e.stopPropagation(); flip(e.key === 'ArrowLeft' ? -1 : 1); } };
+  stage.addEventListener('pointermove', onMove); stage.addEventListener('pointerdown', onDown); stage.addEventListener('pointerup', onUp);
+  stage.addEventListener('pointercancel', onCancel); stage.addEventListener('pointerleave', e=>{ if(!drag && e.pointerType !== 'touch') untilt(); });
+  dc.addEventListener('click', onClick, true); stage.addEventListener('keydown', onKey);
+  const ctl = {el: dc, flip, show, spinOnce, face: ()=> faceOf(turn),
+    setFront(html){ front.innerHTML = html + '<span class="dc-glare" aria-hidden="true"></span>'; paint(); },
+    destroy(){ dead = true; stage.removeEventListener('pointermove', onMove); stage.removeEventListener('pointerdown', onDown); stage.removeEventListener('pointerup', onUp);
+      stage.removeEventListener('pointercancel', onCancel); dc.removeEventListener('click', onClick, true); stage.removeEventListener('keydown', onKey); if(dc._dc === ctl) dc._dc = null; }};
+  dc._dc = ctl; paint(); settle();
+  return ctl;
+}
+// The Detail card's controls, shared by the Card Detail overlay and the pack-results viewer (the Inspector's bar, 2026-10-08, under the card):
+// Spin and Flip, then an admin's finish picker, the card's skins and ▶ Attack. st: {finish, skin, shiny} (the shown copy's look).
+function detailBarHTML(d, st, o){
+  o = o || {};
+  const finishes = adminModeEnabled ? [''].concat(CI_FINISHES) : [];
+  const skins = st.skins || [];
+  return `<div class="ci-bar dc-bar">
+      ${o.name ? `<b class="ci-name">${escapeHtml(d.name || '')}</b>` : ''}
+      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn" data-dc-spin><span aria-hidden="true">↻</span> <span>${escapeHtml(_t('Spin'))}</span></button><button type="button" class="btn small ci-spinbtn" data-dc-flip><span aria-hidden="true">⇋</span> <span>${escapeHtml(TX('ui.csc-flip'))}</span></button>${skins.length ? '<button type="button" class="btn small ci-spinbtn ci-fxbtn">▶ Attack</button>' : ''}</div>
+      ${finishes.length > 1 ? `<div class="ci-finishes" role="group" aria-label="${'Finish'}">${finishes.map(f=> `<button type="button" class="ci-fin${f === st.finish ? ' is-on' : ''}" data-fin="${f}">${escapeHtml(CI_FINISH_NAMES[f] || f)}</button>`).join('')}</div>` : ''}
+      ${skins.length ? `<div class="ci-finishes ci-skins" role="group" aria-label="Skin"><button type="button" class="ci-fin ci-skin${!st.skin ? ' is-on' : ''}" data-skin="">Default</button>${skins.map(k=> `<button type="button" class="ci-fin ci-skin${k.id === st.skin ? ' is-on' : ''}" data-skin="${escapeAttr(k.id)}" title="${escapeAttr(k.blurb || '')}">${escapeHtml(k.icon || '')} ${escapeHtml(k.name)}${k.owned ? '' : ' 🔒'}</button>`).join('')}</div>` : ''}
+      <small class="ci-hint ci-skin-msg" aria-live="polite">${escapeHtml(TX('ui.csc-hint'))}</small>
+    </div>`;
+}
+// The Detail card with its look (finish, Shiny, skin) and its bar, wired. host holds both; returns the card's controller.
+function mountDetailView(host, d, st){
+  const defId = d.id;
+  st.skins = st.skins || (window.UnitFX ? UnitFX.skinsFor(defId) : []);
+  if(st.skin === undefined) st.skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
+  const faceHTML = ()=>{ const skinCls = st.skin && window.UnitFX && UnitFX.SKINS[st.skin] ? ' has-skin ' + (UnitFX.SKINS[st.skin].tileClass || '') : '';
+    return cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, size:'detail', extraClass:'ci-tile dc-tile' + (st.finish ? ' is-holo ' + st.finish + (st.finish === 'holo-cosmos' ? ' holo-starlight' : '') : '') + (st.shiny ? ' is-shiny' : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>'; };
+  host.querySelector('.dc-slot').innerHTML = detailCardHTML(d, {tile: faceHTML(), shadow: true, cls: 'dc-main', alias: {stage: 'ci-stage-in', spin: 'ci-spin', face: 'ci-face', front: 'ci-front', back: 'ci-back'}});
+  const ctl = mountDetailCard(host.querySelector('.dc-slot'), {});
+  const front = host.querySelector('.dc-front');
+  const redraw = ()=>{ ctl.setFront(faceHTML()); if(st.finish) try{ decorateHolo(front); }catch(e){} };
+  if(st.finish) try{ decorateHolo(front); }catch(e){}
+  host.querySelectorAll('[data-dc-spin]').forEach(b=> b.addEventListener('click', ()=> ctl.spinOnce()));
+  host.querySelectorAll('[data-dc-flip]').forEach(b=> b.addEventListener('click', ()=> ctl.flip(1)));
+  host.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(b=> b.addEventListener('click', ()=>{ st.finish = b.dataset.fin || ''; host.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(x=> x.classList.toggle('is-on', x === b)); ctl.show('front'); redraw(); }));
+  host.querySelectorAll('.ci-skin').forEach(b=> b.addEventListener('click', ()=>{
+    const id = b.dataset.skin || null, msg = host.querySelector('.ci-skin-msg'), k = id && st.skins.find(x=> x.id === id);
+    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = EmojiStyle.textOf(b).replace(/ 🔒️?/u, ''); }
+    st.skin = id; host.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x === b)); ctl.show('front'); redraw();
+    if(!k || k.owned){ UnitFX.equipSkin(defId, id); if(msg) msg.textContent = id ? `You own ${k.name}: it dresses one copy. Put that copy in your deck at the Camp.` : 'The default look.'; } // 2026-10-16: per copy
+    else if(msg) msg.textContent = `Preview only: you don't own ${k.name} yet.`; }));
+  const fxb = host.querySelector('.ci-fxbtn');
+  if(fxb) fxb.addEventListener('click', ()=>{
+    const fx = UnitFX.resolve(Object.assign({}, d), false), sk = st.skin && UnitFX.SKINS[st.skin], tile = front.querySelector('.card-tile');
+    const kind = (sk && sk.fx && sk.fx.attack) || fx.attack, hit = (sk && sk.fx && sk.fx.hit) || fx.hit;
+    const r = ctl.el.getBoundingClientRect(), tgt = document.createElement('div');
+    tgt.style.cssText = `position:fixed; left:${Math.min(innerWidth - 60, r.right + 40)}px; top:${r.top + r.height * 0.3}px; width:40px; height:52px; pointer-events:none;`;
+    document.body.appendChild(tgt); setTimeout(()=> tgt.remove(), 1200);
+    ctl.show('front');
+    if(kind){ UnitFX.attackFx(kind, tile, tgt, 600); if(SoundKit[kind]) SoundKit[kind](600); }
+    else if(hit && hit !== 'blunt'){ UnitFX.hitMark(hit, tile); if(SoundKit[hit]) SoundKit[hit](); } });
+  return ctl;
+}
+// ---- CS-C:END
 // The fly-in: the big card starts where the tapped card was (its size and place) and grows into place, the detail column slides in after it.
 function neInspectFlyIn(ov, from){
   if(reducedMotion() || !from || !from.getBoundingClientRect) return;
@@ -57386,125 +57659,32 @@ function neInspectFlyIn(ov, from){
 function openCardInspector(defId, opts){
   opts = opts || {};
   const d = getCardDefs()[defId]; if(!d) return;
+  // 2026-10-30 (package CS-C): the Card Detail overlay is the inspector now (its card is the Detail card: tilt, drag to spin, flip, the
+  // finishes and skins under it). Only a viewer over a full-screen layer (a pack's results, opts.pull / opts.over) keeps this overlay.
+  if(!opts.pull && !opts.over && document.getElementById('cardDetailOverlay')){ openCardDetail(defId, {returnFocus: opts.returnFocus}); return; }
   if(cardInspectStop) cardInspectStop();
-  const ownFoil = opts.foil ? holoClass(d).replace('is-holo','').trim().split(/\s+/)[0] : ''; // the finish only (Cosmos also wears Starlight, added in renderFace)
-  // Players see Plain plus the foil they own; admins get every finish (it doubles as the
-  // treatment centre's in-game preview).
-  // 2026-10-08 (user: "Disable the non-admin from selecting the sheen type"): players see the card in the finish
-  // they own; only admins get the finish picker (it doubles as the treatment centre's in-game preview).
-  const finishes = adminModeEnabled ? [''].concat(CI_FINISHES) : [];
-  let finish = ownFoil;
+  // Players see the card in the finish they own; only admins get the finish picker (it doubles as the treatment centre's in-game preview).
   // 2026-10-17: opened from a pack's results, it shows that copy's own finish and Shiny (opts.pull {foil, finish, shiny})
-  const pullShiny = !!(opts.pull && opts.pull.shiny);
-  // 2026-10-24 (package NE, owner 19:27 #13): opened from a pack's results, the big card sits on the left with the card's details on the
-  // right, and it flies in from the card you tapped (neInspectDetailHTML / neInspectFlyIn)
-  const split = !!opts.pull;
-  if(opts.pull){ finish = opts.pull.foil ? ((copyFinishClass(d, {foil:true, finish: opts.pull.finish}).match(/holo-[a-z]+/) || [''])[0]) : ''; }
-  // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
-  const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
-  let skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
+  const st = {finish: opts.foil ? holoClass(d).replace('is-holo','').trim().split(/\s+/)[0] : '', shiny: !!(opts.pull && opts.pull.shiny)};
+  if(opts.pull){ st.finish = opts.pull.foil ? ((copyFinishClass(d, {foil:true, finish: opts.pull.finish}).match(/holo-[a-z]+/) || [''])[0]) : ''; }
   const ov = document.createElement('div');
-  ov.className = 'card-inspect'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
+  ov.className = 'card-inspect ci-split'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true');
   ov.setAttribute('aria-label', 'Inspect: ' + (d.name||''));
+  // 2026-10-24 (package NE, owner 19:27 #13): the big card on the left, the card's details on the right (under it on a phone); it flies in
+  // from the card you tapped (neInspectDetailHTML / neInspectFlyIn)
   ov.innerHTML = `<button type="button" class="ci-x" aria-label="${'Close'}">✕</button>
-    <div class="ci-stage"><div class="ci-shadow"></div><div class="ci-spin">
-      <div class="ci-face ci-front"></div>
-      <div class="ci-face ci-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…"): spin it to see its kind's back */}" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
-    </div></div>
-    <div class="ci-bar">
-      <b class="ci-name">${escapeHtml(d.name||'')}</b>
-      ${finishes.length > 1 ? `<div class="ci-finishes" role="group" aria-label="${'Finish'}">${finishes.map(f=> `<button type="button" class="ci-fin${f===finish?' is-on':''}" data-fin="${f}">${escapeHtml(CI_FINISH_NAMES[f]||f)}</button>`).join('')}</div>` : ''}
-      ${skins.length ? `<div class="ci-finishes ci-skins" role="group" aria-label="Skin"><button type="button" class="ci-fin ci-skin${!skin?' is-on':''}" data-skin="">Default</button>${skins.map(k=> `<button type="button" class="ci-fin ci-skin${k.id===skin?' is-on':''}" data-skin="${escapeAttr(k.id)}" title="${escapeAttr(k.blurb||'')}">${escapeHtml(k.icon||'')} ${escapeHtml(k.name)}${k.owned ? '' : ' 🔒'}</button>`).join('')}</div>` : ''}
-      <div class="ci-actions"><button type="button" class="btn small ci-spinbtn"><span aria-hidden="true">↻</span> <span>Spin</span></button>${skins.length ? '<button type="button" class="btn small ci-fxbtn">▶ Attack</button>' : ''}</div>
-      <small class="ci-hint ci-skin-msg" aria-live="polite">Drag the card to turn it</small>
-    </div>${split ? neInspectDetailHTML(d) : ''}`;
-  if(split) ov.classList.add('ci-split');
+    <div class="ci-stage"><div class="dc-slot"></div></div>
+    ${detailBarHTML(d, Object.assign(st, {skins: window.UnitFX ? UnitFX.skinsFor(defId) : [], skin: window.UnitFX ? UnitFX.equippedSkin(defId) : null}), {name: true})}${neInspectDetailHTML(d)}`;
   document.body.appendChild(ov);
-  if(split) neInspectFlyIn(ov, opts.returnFocus);
-  const front = ov.querySelector('.ci-front'), spin = ov.querySelector('.ci-spin'), shadow = ov.querySelector('.ci-shadow'), stage = ov.querySelector('.ci-stage');
-  let tile = null;
-  const renderFace = ()=>{
-    const skinCls = skin && window.UnitFX && UnitFX.SKINS[skin] ? ' has-skin ' + (UnitFX.SKINS[skin].tileClass||'') : '';
-    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish + (finish === 'holo-cosmos' ? ' holo-starlight' : '') : '') + (pullShiny ? ' is-shiny' : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
-    tile = front.querySelector('.card-tile');
-    if(finish) decorateHolo(front);
-  };
-  renderFace();
-  ov.querySelectorAll('.ci-skin').forEach(b=> b.addEventListener('click', ()=>{
-    const id = b.dataset.skin || null, msg = ov.querySelector('.ci-skin-msg');
-    const k = id && skins.find(x=> x.id===id);
-    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = EmojiStyle.textOf(b).replace(/ 🔒\uFE0F?/u,''); }
-    skin = id; ov.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
-    if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `You own ${k.name}: it dresses one copy. Put that copy in your deck at the Camp.` : 'The default look.'; } // 2026-10-16: per copy
-    else msg.textContent = `Preview only: you don't own ${k.name} yet.`;
-  }));
-  const fxb = ov.querySelector('.ci-fxbtn');
-  if(fxb) fxb.addEventListener('click', ()=>{
-    const fx = UnitFX.resolve(Object.assign({}, d), false), sk = skin && UnitFX.SKINS[skin];
-    const kind = (sk && sk.fx && sk.fx.attack) || fx.attack, hit = (sk && sk.fx && sk.fx.hit) || fx.hit;
-    const r = stage.getBoundingClientRect(), tgt = document.createElement('div');
-    tgt.style.cssText = `position:fixed; left:${Math.min(innerWidth - 60, r.right + 40)}px; top:${r.top + r.height*0.3}px; width:40px; height:52px; pointer-events:none;`;
-    document.body.appendChild(tgt); setTimeout(()=> tgt.remove(), 1200);
-    if(kind){ UnitFX.attackFx(kind, tile, tgt, 600); if(SoundKit[kind]) SoundKit[kind](600); }
-    else if(hit && hit!=='blunt'){ UnitFX.hitMark(hit, tile); if(SoundKit[hit]) SoundKit[hit](); }
-  });
-  ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(b=> b.addEventListener('click', ()=>{
-    finish = b.dataset.fin || ''; ov.querySelectorAll('.ci-fin:not(.ci-skin)').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
-  }));
-  const TILT = -9;                       // axis lean, degrees from vertical
-  const still = reducedMotion();
-  let theta = 0, omega = 0, base = 0, dragging = false, lastX = 0, lastT = 0, t0 = performance.now(), prev = t0, raf = 0, swayFrom = t0;
-  const apply = (now)=>{
-    const r = theta * Math.PI/180, s = Math.sin(r), c = Math.cos(r);
-    spin.style.transform = `rotate(${TILT}deg) rotateY(${theta.toFixed(2)}deg) rotate(${-TILT}deg)`;
-    // Light from the upper left: the face is brightest square-on and dims edge-on.
-    front.style.setProperty('--ci-sheen', (50 - 140*s).toFixed(1) + '%');
-    front.style.setProperty('--ci-sheen-a', (0.10 + 0.45*Math.max(0, 1 - Math.abs(s - 0.35)*1.6)).toFixed(3));
-    front.style.setProperty('--ci-dim', (0.62 + 0.38*Math.abs(c)).toFixed(3));
-    shadow.style.transform = `translateX(${(-26*s).toFixed(1)}px) scaleX(${(0.25 + 0.75*Math.abs(c)).toFixed(3)})`;
-    if(tile && finish){
-      const px = 0.5 - 0.45*s, py = 0.38 + 0.12*Math.sin(r*2 + now/2600);
-      tile.style.setProperty('--hx', (px*100).toFixed(1)+'%'); tile.style.setProperty('--hy', (py*100).toFixed(1)+'%');
-      tile.style.setProperty('--hbx', (50 + (px-0.5)*90).toFixed(1)+'%'); tile.style.setProperty('--hby', (50 + (py-0.5)*90).toFixed(1)+'%');
-      tile.classList.add('holo-active');
-    }
-  };
-  const loop = (now)=>{
-    const dt = Math.min(0.05, (now - prev)/1000); prev = now;
-    if(!dragging){
-      if(still){ theta = base; omega = 0; }
-      else if(Math.abs(omega) > 40){
-        theta += omega*dt; omega *= Math.pow(0.35, dt);          // flick coasts, then slows
-        base = Math.round(theta/360)*360; swayFrom = now;
-      } else {
-        omega = 0;
-        const sway = still ? 0 : 18*Math.sin((now - swayFrom)/1000*0.9) * Math.min(1, (now - swayFrom)/1500);
-        theta += ((base + sway) - theta) * Math.min(1, dt*4);    // settle face-up, then sway
-      }
-    }
-    apply(now);
-    raf = requestAnimationFrame(loop);
-  };
-  raf = requestAnimationFrame(loop);
-  stage.addEventListener('pointerdown', e=>{
-    dragging = true; omega = 0; lastX = e.clientX; lastT = performance.now();
-    try{ stage.setPointerCapture(e.pointerId); }catch(_){}
-  });
-  stage.addEventListener('pointermove', e=>{
-    if(!dragging) return;
-    const now = performance.now(), dx = e.clientX - lastX, dts = Math.max(0.008, (now - lastT)/1000);
-    theta += dx*0.55; omega = still ? 0 : omega*0.5 + (dx*0.55/dts)*0.5; lastX = e.clientX; lastT = now; if(still) base = theta;
-  });
-  const endDrag = ()=>{ if(!dragging) return; dragging = false; if(still){ base = Math.round(theta/180)*180; return; } if(Math.abs(omega) <= 40){ base = Math.round(theta/360)*360; swayFrom = performance.now(); } };
-  stage.addEventListener('pointerup', endDrag); stage.addEventListener('pointercancel', endDrag);
-  ov.querySelector('.ci-spinbtn').addEventListener('click', ()=>{ omega = still ? 0 : 900; if(still){ base += 360; } });
+  const ctl = mountDetailView(ov, d, st);
+  neInspectFlyIn(ov, opts.returnFocus);
   const onKey = e=>{
     if(e.key === 'Escape'){ e.stopImmediatePropagation(); e.preventDefault(); close(); }
-    else if(e.key === 'ArrowLeft' || e.key === 'ArrowRight'){ e.preventDefault(); base += e.key==='ArrowRight' ? 180 : -180; swayFrom = performance.now(); }
+    else if((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !(e.target && e.target.closest && e.target.closest('.dc-stage'))){ e.preventDefault(); ctl.flip(e.key === 'ArrowLeft' ? -1 : 1); }
   };
   const unInert = bwInertOthers(ov);
   const close = ()=>{
-    cancelAnimationFrame(raf); window.removeEventListener('keydown', onKey, true); unInert(); ov.remove(); cardInspectStop = null;
+    ctl.destroy(); window.removeEventListener('keydown', onKey, true); unInert(); ov.remove(); cardInspectStop = null;
     if(opts.returnFocus && opts.returnFocus.focus) opts.returnFocus.focus();
   };
   cardInspectStop = close;
@@ -71252,14 +71432,21 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */});
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */})
+        + cardPopTextHTML(d); z.classList.add('cp-sheet'); // 2026-10-30 (package CS-C, owner CS-1): the Full card plus its text, as the page's hover popover
       // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
       if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
     if(el.closest && el.closest('.modal-overlay')) z.classList.add('cnp-rw-above'); // 2026-10-29 (UI3, S6): the popover sat under the overlay (z 200 < 600) and never showed
     document.body.appendChild(z);
     const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
-    const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
-    const top = r.top - zh - 10 >= 8 ? r.top - zh - 10 : Math.min(innerHeight - zh - 8, r.bottom + 10);
+    let left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
+    let top = r.top - zh - 10 >= 8 ? r.top - zh - 10 : Math.min(innerHeight - zh - 8, r.bottom + 10);
+    // 2026-10-30 (package CS-C): the sheet with its text is taller; with no room above or below, it sits beside the card, and always on screen
+    if(r.top - zh - 10 < 8 && r.bottom + 10 + zh > innerHeight - 8){
+      const right = r.right + 10, leftSide = r.left - zw - 10;
+      if(right + zw <= innerWidth - 8) left = right; else if(leftSide >= 8) left = leftSide;
+      top = Math.max(8, Math.min(innerHeight - zh - 8, r.top + r.height / 2 - zh / 2)); }
+    top = Math.max(8, top);
     z.style.left = left + 'px'; z.style.top = top + 'px';
     requestAnimationFrame(()=> z.classList.add('is-in'));
   };
@@ -76711,7 +76898,8 @@ function pl1FactionStartCards(key){
   [...starters, ...f.cards].forEach(id=>{ if(out.length < 3 && defs[id] && !out.includes(id)) out.push(id); });
   return out;
 }
-function pl1FsFlipHTML(d){ return `<div class="pl1-fsf"><div class="pl1-fsf-in"><div class="pl1-fsf-front">${cardTileHTML(d, {inPlay:true})}</div><div class="pl1-fsf-back ${cardBackClass(d)}" aria-hidden="true"></div></div></div>`; }
+// 2026-10-30 (package CS-C): the Detail card's markup (one flip for the whole game); data-face turns it
+function pl1FsFlipHTML(d){ return `<div class="pl1-fsf">${detailCardHTML(d, {tile: cardTileHTML(d, {inPlay:true}), focus:false, alias:{spin:'pl1-fsf-in', front:'pl1-fsf-front', back:'pl1-fsf-back'}})}</div>`; }
 function pl1FactionCardCycle(screen, layer){
   if(reducedMotion()) return;
   let turn = 0;
@@ -76725,9 +76913,9 @@ function pl1FactionCardCycle(screen, layer){
     const shown = slots.map(el=> (el.querySelector('.card-tile')||{getAttribute:()=>null}).getAttribute('data-defid'));
     const rest = pl1FactionPool(key).filter(id=> !shown.includes(id)); if(!rest.length) return;
     const el = slots[Math.floor(Math.random()*slots.length)], next = rest[Math.floor(Math.random()*rest.length)]; if(!defs[next]) return;
-    el.classList.add('is-down');
-    setTimeout(()=>{ if(!defs[next]) return; const f = el.querySelector('.pl1-fsf-front'), b = el.querySelector('.pl1-fsf-back'); if(f) f.innerHTML = cardTileHTML(defs[next], {inPlay:true}); if(b) b.className = 'pl1-fsf-back ' + cardBackClass(defs[next]);
-      el.classList.remove('is-down'); if(panel.classList.contains('on')){ try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} } }, 650);
+    el.classList.add('is-down'); dcSetFace(el, 'back');
+    setTimeout(()=>{ if(!defs[next]) return; const f = el.querySelector('.pl1-fsf-front'), b = el.querySelector('.pl1-fsf-back'); if(f) f.innerHTML = cardTileHTML(defs[next], {inPlay:true}); if(b) b.className = 'dc-face dc-back pl1-fsf-back ' + cardBackClass(defs[next]);
+      el.classList.remove('is-down'); dcSetFace(el, 'front'); if(panel.classList.contains('on')){ try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} } }, 650);
   }, 2600);
 }
 function wireFactionShowcase(screen){
@@ -91281,15 +91469,18 @@ function playRewardReveal(m){
       later(()=>{
         stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, scale:.9, duration:.2, onComplete:()=> c.remove()}));
         const c = document.createElement('div'); c.className = 'rr-card';
-        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span></div><div class="rr-back ${cardBackClass(defs[id])}"><span>🌰</span></div><div class="rr-shine"></div>`; // 2026-10-16 (user: "Card backings -> 4 types…")
+        // 2026-10-30 (package CS-C): the Detail card, face down on its own backing (2026-10-16); the shine flashes and it turns face up
+        // (was: the back faded out over a hidden front). It tilts under the pointer; any tap still skips.
+        c.innerHTML = detailCardHTML(defs[id], {face:'back', focus:false, tile: cardTileHTML(defs[id], {inPlay:true, size:'detail', extraClass:'dc-tile'}) + `<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span>`, alias:{front:'rr-front', back:'rr-back'}}) + '<div class="rr-shine"></div>';
         stage.appendChild(c);
-        const back = c.querySelector('.rr-back'), front = c.querySelector('.rr-front'), shine = c.querySelector('.rr-shine'), tag = c.querySelector('.rr-new');
-        gsap.set(front, {opacity:0}); gsap.set(tag, {scale:0, rotation:-14});
+        const shine = c.querySelector('.rr-shine'), tag = c.querySelector('.rr-new');
+        mountDetailCard(c, {spin:false, tap:'none', keys:false});
+        gsap.set(tag, {scale:0, rotation:-14});
         try{ SoundKit.rareRise && SoundKit.rareRise(defs[id].rarity==='legendary' || defs[id].rarity==='mythic'); }catch(e){}
         gsap.timeline()
           .fromTo(c, {y:60, scale:.7, opacity:0}, {y:0, scale:1, opacity:1, duration:.35, ease:'back.out(1.6)'})
           .fromTo(shine, {opacity:0, scale:.6}, {opacity:1, scale:1.25, duration:.75, ease:'power2.in'}, '+=0.05')
-          .add(()=>{ back.style.opacity = '0'; gsap.set(front, {opacity:1}); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} })
+          .add(()=>{ dcSetFace(c, 'front'); try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){} })
           .to(shine, {opacity:0, scale:1.6, duration:.6, ease:'power2.out'})
           .to(tag, {scale:1, rotation:-8, duration:.4, ease:'back.out(3)'}, '-=0.35');
       }, t);
@@ -100827,7 +101018,7 @@ function renderHeroHall(body){
   const mats = materiaStore(), noMats = !MATERIA_KINDS.some(k=> (mats[k.id]||0) > 0);
   body.innerHTML = `<section class="panel hero-hall stomp-stage">
     <div class="hero-top">
-      <div class="stomp-plinth"><div class="hero-card-big">${cardTileHTML(d, {extraClass:'is-hero-card'})}</div></div>
+      <div class="stomp-plinth"><div class="hero-card-big has-dc">${detailCardHTML(d, {extraClass:'is-hero-card', tileOpts:{size:'detail'}}) /* 2026-10-30 (package CS-C): the Hero is the Detail card (tilt, spin, flip) */}</div></div>
       <div class="hero-info">
         <h2>🦸 ${escapeHtml(d.name)} <small>${escapeHtml(P.label)}</small></h2>
         <div class="hero-level"><b>Level ${L}</b>${L < HERO_MAX_LEVEL ? heroXpBarHTML(h) : '<small>Max level</small>'}</div>
@@ -100855,6 +101046,7 @@ function renderHeroHall(body){
         <small class="hero-dust">You have ${myCurrencies.dust||0} ✨</small>
       </section>
   </div>`;
+  { const hc = body.querySelector('.hero-card-big.has-dc'); if(hc) mountDetailCard(hc, {}); } // 2026-10-30 (package CS-C)
   body.querySelectorAll('[data-hstat]').forEach(b=> b.addEventListener('click', ()=>{
     const k = b.dataset.hstat, dir = +b.dataset.dir;
     if(dir > 0 && heroPointsFree(myHero) < HERO_COSTS[k]) return;
@@ -103376,8 +103568,8 @@ function openPackAnimation(pack, opened, opts){
   const cardsHTML = o=> o.results.map((r, i)=>{
     const d = defOf(r.id); const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
-      <span class="po2-flip"><span class="po2-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…") */}"><span class="po2-back-crest">🌰</span></span>
-      <span class="po2-front">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
+      ${'' /* 2026-10-30 (package CS-C): the card is the Detail card, face down (its own backing, 2026-10-16) until it is revealed; once it is up it
+           tilts and turns with a sideways drag (enter() mounts it), a tap still moves on */}${detailCardHTML(d, {tag:'span', face:'back', focus:false, tile: poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)}) + (r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''), alias:{spin:'po2-flip', front:'po2-front', back:'po2-back'}})}
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${poTile(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
@@ -103409,6 +103601,7 @@ function openPackAnimation(pack, opened, opts){
       if(tally) tally.textContent = `${cur + 1} of ${cards.length}`;
       { const pc = overlay.querySelector('#poPileCount'); if(pc){ const n = pileLeft(deckO, cur); pc.textContent = `${n} card${n===1?'':'s'}`; } }
       c.focus({preventScroll:true});
+      if(!c._dcCtl) c._dcCtl = mountDetailCard(c, {tap:'none', keys:false, settle:'front', spin: ()=> c.classList.contains('is-revealed') && !c.classList.contains('is-collected'), tilt: ()=> !c.classList.contains('is-collected')}); // 2026-10-30 (CS-C)
       autoNext(()=> reveal(c), deckO.isPile ? 1100 : 2600);
       fxHook('packCardUp', c, deckO.results[+c.dataset.i], defOf(deckO.results[+c.dataset.i].id)); // batch D (2026-10-15, docs/effects-lab-contract.md)
       if(c.classList.contains('tease-rare') || c.classList.contains('tease-epic') || c.classList.contains('tease-legend')) sfx('rareRise', c.classList.contains('tease-legend'));
@@ -103417,7 +103610,7 @@ function openPackAnimation(pack, opened, opts){
     const autoNext = (fn, ms)=>{ clearTimeout(autoT); autoT = setTimeout(()=>{ if(phase==='reveal' && !overlay.hidden){ try{ fn(); }catch(e){ console.error('[Bramblewood] pack opener: card', e); poRecover(); } } } /* 2026-10-29 (UI2, R2) */, reduce ? Math.min(ms, 1200) : ms); timers.push(autoT); };
     const reveal = c=>{
       if(!c || c.classList.contains('is-revealed')) return;
-      c.classList.add('is-revealed'); sfx('cardFlip');
+      c.classList.add('is-revealed'); dcSetFace(c, 'front'); sfx('cardFlip'); // 2026-10-30 (CS-C): the Detail card turns face up
       const r = deckO.results[+c.dataset.i], d = defOf(r.id);
       fxHook('packCardRevealed', c, r, d); // batch D (2026-10-15, docs/effects-lab-contract.md)
       // light rays in the card's rarity colour: soft for Rare and up, bigger and faster for Epic and up
@@ -106056,12 +106249,13 @@ function dressEntrance(splash){
   // 2026-10-12 (user: "The first time you open the page fresh, the 3 cards there are face down, then they flip w sfx one by
   // one"): each card has a front and an acorn back; they deal in face down and turn over left, centre, right.
   // 2026-10-16 (user: "Card backings -> 4 types…"): each card's back is its own kind's backing.
-  const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back ${cardBackClass(defs[id])}" aria-hidden="true"><span>🌰</span></div></div>`;
   const reduceFan = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 2026-10-30 (package CS-C): each card is the Detail card's markup (one flip for the whole game), at the fan's own sizes; data-face turns it
+  const faces = id=> detailCardHTML(defs[id], {tile: tile(id), face: reduceFan ? 'front' : 'back', focus:false, alias:{spin:'ef-flip', front:'ef-front', back:'ef-back'}});
   if(fan && ids.every(Boolean)){
     fan.innerHTML = ids.map((id, k)=> `<div class="ef-card ${reduceFan ? '' : 'is-down'} ${SLOTS[k].outer ? 'is-outer' : ''}" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===2?3:SLOTS[k].outer?0:1}">${faces(id)}</div>`).join('');
     try{ decorateHolo(fan); }catch(e){}
-    if(!reduceFan) [0, 1, 2, 3, 4].forEach((k, i)=> setTimeout(()=>{ const el = fan.children[k]; if(!el) return; el.classList.remove('is-down'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 900 + i * 380));
+    if(!reduceFan) [0, 1, 2, 3, 4].forEach((k, i)=> setTimeout(()=>{ const el = fan.children[k]; if(!el) return; el.classList.remove('is-down'); dcSetFace(el, 'front'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 900 + i * 380));
   }
   const tipEl = document.getElementById('entranceTip');
   const tips = (typeof GAME_TIPS!=='undefined' ? GAME_TIPS.slice() : []).sort(()=> Math.random()-.5);
@@ -106080,9 +106274,9 @@ function dressEntrance(splash){
     const next = pickFrom(k===1 && rare.length ? rare : pool, current); if(!next) return;
     // 2026-10-12 (user: "When the card fades out to be replaced, let it spin into its back face as it fades. Then a card sound
     // plays"): spin to the back while fading, swap, then come back face up.
-    el.classList.add('is-down', 'is-swapping');
+    el.classList.add('is-down', 'is-swapping'); dcSetFace(el, 'back');
     setTimeout(()=>{ const f = el.querySelector('.ef-front'); if(f){ f.innerHTML = tile(next); try{ decorateHolo(el); }catch(e){} } el.classList.remove('is-swapping');
-      setTimeout(()=>{ el.classList.remove('is-down'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 120); }, 700);
+      setTimeout(()=>{ el.classList.remove('is-down'); dcSetFace(el, 'front'); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }, 120); }, 700);
   }, 7000);
 }
 
@@ -106981,19 +107175,15 @@ function flipRevealCard(mountEl, opts){
   if(!mountEl) return null;
   opts = opts || {};
   const durationMs = opts.durationMs || 620;
-  mountEl.innerHTML = `<div class="flip3d-stage">
-      <div class="flip3d-inner" style="transition-duration:${durationMs}ms;">
-        <div class="flip3d-face flip3d-front">${opts.frontHTML||''}</div>
-        <div class="flip3d-face flip3d-back">${opts.backHTML||''}</div>
-      </div>
-    </div>`;
-  const inner = mountEl.querySelector('.flip3d-inner');
+  // 2026-10-30 (package CS-C): the Detail card's markup with a second face instead of a backing (dc-flow: the front keeps its own height)
+  mountEl.innerHTML = `<div class="flip3d-stage">${detailCardHTML(null, {tile: opts.frontHTML||'', backHTML: opts.backHTML||'', focus:false, cls:'dc-flow', alias:{spin:'flip3d-inner', face:'flip3d-face', front:'flip3d-front', back:'flip3d-back'}})}</div>`;
+  const inner = mountEl.querySelector('.flip3d-inner'); if(inner) inner.style.transitionDuration = durationMs + 'ms';
   let revealed = false;
   return {
     reveal(){
       if(revealed || !inner) return; revealed = true;
       SoundKit.cardFlip();
-      inner.classList.add('is-flipped');
+      inner.classList.add('is-flipped'); dcSetFace(mountEl, 'back');
       setTimeout(()=>{ if(opts.onFlipped) opts.onFlipped(); }, durationMs*0.5);
     },
   };

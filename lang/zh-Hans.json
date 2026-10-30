@@ -3666,5 +3666,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "强化需要荆棘花，以及少量魔尘和叶子。你有 {have}。赢得战斗获得更多；失败也会按你对敌方荆棘造成的伤害给一些。",
  "{n} Briar Blossoms for every floor won": "每赢一层 {n} 荆棘花",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "胜利获得的荆棘花。在熔炉中用来强化你的荆棘。",
- "Briar Blossoms for the damage you did to the enemy bramble": "你对敌方荆棘造成伤害获得的荆棘花"
+ "Briar Blossoms for the damage you did to the enemy bramble": "你对敌方荆棘造成伤害获得的荆棘花",
+ "Flip": "翻面",
+ "Drag sideways to turn it · tap to flip it over": "横向拖动来转动 · 点按翻面",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横向拖动来转动，按 Enter 翻面"
 }

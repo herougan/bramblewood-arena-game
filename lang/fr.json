@@ -3666,5 +3666,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Renforcer coûte des Fleurs de ronce et un peu de Poussière et de Feuilles. Vous en avez {have}. Gagnez des combats pour en avoir plus ; une défaite en donne quelques-unes pour les dégâts infligés à la ronce ennemie.",
  "{n} Briar Blossoms for every floor won": "{n} Fleurs de ronce pour chaque étage gagné",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Fleurs de ronce pour la victoire. Dépensez-les pour renforcer vos ronces à la Forge.",
- "Briar Blossoms for the damage you did to the enemy bramble": "Fleurs de ronce pour les dégâts infligés à la ronce ennemie"
+ "Briar Blossoms for the damage you did to the enemy bramble": "Fleurs de ronce pour les dégâts infligés à la ronce ennemie",
+ "Flip": "Retourner",
+ "Drag sideways to turn it · tap to flip it over": "Glisse sur le côté pour la tourner · touche pour la retourner",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name} : glisse sur le côté pour la tourner, Entrée pour la retourner"
 }

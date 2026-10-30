@@ -3666,5 +3666,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "強化にはイバラの花と少しのダストとリーフが必要です。所持数 {have}。戦いに勝つと増えます。負けても敵のイバラに与えたダメージ分だけ少しもらえます。",
  "{n} Briar Blossoms for every floor won": "勝った階ごとにイバラの花 {n}",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "勝利のイバラの花。鍛冶場でイバラの強化に使えます。",
- "Briar Blossoms for the damage you did to the enemy bramble": "敵のイバラに与えたダメージ分のイバラの花"
+ "Briar Blossoms for the damage you did to the enemy bramble": "敵のイバラに与えたダメージ分のイバラの花",
+ "Flip": "裏返す",
+ "Drag sideways to turn it · tap to flip it over": "横にドラッグで回す・タップで裏返す",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横にドラッグで回す、Enterで裏返す"
 }

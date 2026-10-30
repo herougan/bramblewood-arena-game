@@ -3665,5 +3665,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Verstärken kostet Brombeerblüten und etwas Staub und Blätter. Du hast {have}. Gewinne Kämpfe für mehr; eine Niederlage gibt ein paar für den Schaden am gegnerischen Dornwall.",
  "{n} Briar Blossoms for every floor won": "{n} Brombeerblüten für jedes gewonnene Stockwerk",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Brombeerblüten für den Sieg. Gib sie in der Schmiede aus, um deine Dornwälle zu verstärken.",
- "Briar Blossoms for the damage you did to the enemy bramble": "Brombeerblüten für den Schaden am gegnerischen Dornwall"
+ "Briar Blossoms for the damage you did to the enemy bramble": "Brombeerblüten für den Schaden am gegnerischen Dornwall",
+ "Flip": "Umdrehen",
+ "Drag sideways to turn it · tap to flip it over": "Seitlich ziehen zum Drehen · tippen zum Umdrehen",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: seitlich ziehen zum Drehen, Enter zum Umdrehen"
 }

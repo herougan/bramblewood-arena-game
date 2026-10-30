@@ -3668,5 +3668,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Rinforzare costa Fiori di rovo e un po' di Polvere e Foglie. Ne hai {have}. Vinci scontri per averne di più; una sconfitta ne dà qualcuno per i danni inflitti al rovo nemico.",
  "{n} Briar Blossoms for every floor won": "{n} Fiori di rovo per ogni piano vinto",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Fiori di rovo per la vittoria. Spendili per rinforzare i tuoi rovi alla Forgia.",
- "Briar Blossoms for the damage you did to the enemy bramble": "Fiori di rovo per i danni inflitti al rovo nemico"
+ "Briar Blossoms for the damage you did to the enemy bramble": "Fiori di rovo per i danni inflitti al rovo nemico",
+ "Flip": "Gira",
+ "Drag sideways to turn it · tap to flip it over": "Trascina di lato per ruotarla · tocca per girarla",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: trascina di lato per ruotarla, Invio per girarla"
 }

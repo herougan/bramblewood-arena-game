@@ -3669,5 +3669,8 @@
  "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "வலுப்படுத்த முட்புதர் மலர்களும் சிறிது தூசியும் இலைகளும் தேவை. உங்களிடம் {have} உள்ளன. மேலும் பெற யுத்தங்களில் வெல்லுங்கள்; தோல்வியிலும் எதிரி முட்புதருக்குச் செய்த சேதத்திற்குச் சில கிடைக்கும்.",
  "{n} Briar Blossoms for every floor won": "வென்ற ஒவ்வொரு தளத்திற்கும் {n} முட்புதர் மலர்கள்",
  "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "வெற்றிக்கான முட்புதர் மலர்கள். உலைக்கூடத்தில் உங்கள் முட்புதர்களை வலுப்படுத்த இவற்றைச் செலவிடுங்கள்.",
- "Briar Blossoms for the damage you did to the enemy bramble": "எதிரி முட்புதருக்கு நீங்கள் செய்த சேதத்திற்கான முட்புதர் மலர்கள்"
+ "Briar Blossoms for the damage you did to the enemy bramble": "எதிரி முட்புதருக்கு நீங்கள் செய்த சேதத்திற்கான முட்புதர் மலர்கள்",
+ "Flip": "திருப்பு",
+ "Drag sideways to turn it · tap to flip it over": "சுழற்ற பக்கவாட்டில் இழுக்கவும் · திருப்ப தட்டவும்",
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: சுழற்ற பக்கவாட்டில் இழுக்கவும், திருப்ப Enter அழுத்தவும்"
 }

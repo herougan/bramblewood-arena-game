@@ -11650,6 +11650,101 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* the review in the Map cards overlay: the Full card (owner 10-29 19:14 wanted large cards there) */
 .rv1-tile .vis4-mc-card.is-large .card-tile[data-size="full"]{max-width:none;}
 /* CS-B:END */
+/* CS-C:BEGIN (2026-10-30, package CS-C, card sizes step 4-5; plan docs/design/card-sizes-2026-10-29.md; owner CS-1 / CS-2 10-30 10:34).
+   The Detail card (detailCardHTML / mountDetailCard in arena_app.js): one card, --dc-w wide (the Detail token, ≤400px, 86vw on a phone),
+   turned by a transform on .dc-spin; the front and the decorative back are two faces. Without a controller the markup turns by data-face.
+   .is-still (prefers-reduced-motion, Effects Low / None): no rotation, the faces swap in place, no tilt, no glare.
+   The hover popover is the Full card plus its text (CS-1). tests/cs-c-2026-10-30.js. */
+.dc{--dc-w:var(--card-detail-w); position:relative; width:var(--dc-w); max-width:100%; flex:none;}
+.dc-stage{position:relative; display:block; perspective:1400px; touch-action:pan-y /* a vertical drag scrolls; a sideways one turns the card */; cursor:grab; user-select:none; -webkit-user-select:none; -webkit-touch-callout:none; outline:none; border-radius:7%;}
+.dc.is-dragging .dc-stage{cursor:grabbing;}
+.dc-stage:focus-visible{outline:3px solid #ffd98a; outline-offset:5px;}
+.dc-spin{position:relative; display:block; width:100%; aspect-ratio:4/5; transform-style:preserve-3d; transition:transform .55s cubic-bezier(.2,.8,.2,1);}
+.dc-spin.is-live{transition:transform .08s linear;} .dc-spin.is-long{transition:transform 1.1s cubic-bezier(.3,.7,.2,1);} .dc-spin.no-anim{transition:none !important;}
+.dc[data-face="back"] .dc-spin{transform:rotateY(180deg);}
+.dc-face{position:absolute; inset:0; display:block; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:7%;}
+.dc-front{transform:none;}
+.dc.is-hot .dc-front{filter:brightness(var(--dc-dim, 1));} /* the face dims edge-on while it is handled (a filter layer only then) */
+.dc-front > .card-tile{position:relative; width:100% !important; height:100% !important; margin:0 !important; transform:none !important; box-sizing:border-box; pointer-events:none;}
+.dc-back{transform:rotateY(180deg); display:flex; align-items:center; justify-content:center; overflow:hidden;}
+.dc-crest{font-size:calc(var(--dc-w) * .3); filter:drop-shadow(0 3px 2px rgba(0,0,0,.45));}
+.bw-back > .dc-crest{display:none;}
+.dc-back-face{transform:rotateY(180deg);}
+/* parallax: the art drifts against the tilt, a soft light follows the pointer and the turn */
+.dc .dc-front .card-tile .ico .card-art-img{translate:calc(var(--dc-px, 0) * -5px) calc(var(--dc-py, 0) * -5px); scale:1.05; transition:translate .25s ease;}
+.dc.is-dragging .dc-front .card-tile .ico .card-art-img, .dc-spin.is-live .card-art-img{transition:none;}
+.dc-glare{position:absolute; inset:0; z-index:9; display:none; border-radius:inherit; pointer-events:none; mix-blend-mode:soft-light; opacity:0; transition:opacity .3s ease;
+  background:radial-gradient(circle at calc(50% + var(--dc-px, 0) * 40%) calc(50% + var(--dc-py, 0) * 40%), rgba(255,255,255,.55), rgba(255,255,255,0) 55%),
+    linear-gradient(105deg, transparent calc(var(--dc-sheen, 50%) - 18%), rgba(255,255,255,.32) var(--dc-sheen, 50%), transparent calc(var(--dc-sheen, 50%) + 18%));}
+.dc.is-hot .dc-glare{display:block; opacity:1;} /* drawn only while the card is handled */
+.dc-shadow{position:absolute; left:12%; right:12%; bottom:-14px; height:26px; display:block; border-radius:50%; background:radial-gradient(closest-side, rgba(0,0,0,.55), transparent); filter:blur(4px); pointer-events:none;}
+/* still: no rotation, the back simply replaces the front */
+.dc.is-still .dc-spin{transform:none !important; transition:none;}
+.dc.is-still .dc-face{backface-visibility:visible; -webkit-backface-visibility:visible; transform:none; transition:opacity .18s linear, visibility 0s;}
+.dc.is-still[data-face="front"] .dc-back, .dc.is-still[data-face="back"] .dc-front{opacity:0; visibility:hidden;}
+.dc.is-still .dc-glare, .dc.is-still .dc-shadow{display:none;}
+.dc.is-still .card-art-img{translate:none !important; scale:none !important;}
+@media (prefers-reduced-motion: reduce){ .dc-spin{transition:none !important;} }
+/* the controls under the card (the Inspector's bar) */
+.dc-bar .ci-actions{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+.dc + .dc-bar, .dc-slot + .dc-bar, .dc-slot ~ .dc-bar{margin-top:calc(var(--card-detail-w) * .06);} /* clear of the skill badges that hang under the card */
+/* the Card Detail overlay: the Detail card on the left with its controls under it, the text on the right; on a phone the text is under it */
+.modal.card-detail-card{width:min(1000px, 100%) !important;}
+.card-detail-card .cd-dc{display:flex; flex-direction:column; align-items:center; gap:10px; width:var(--card-detail-w); max-width:100%;}
+.card-detail-card .cd-dc .ci-bar{color:var(--ink); max-width:100%;}
+.card-detail-card .cd-dc .ci-hint{color:var(--ink-muted); opacity:1;}
+.card-detail-card .cd-dc :is(.ci-fin, .ci-spinbtn){background:var(--surface-2); color:var(--ink); border-color:var(--surface-border); backdrop-filter:none;}
+.card-detail-card .cd-dc .ci-fin.is-on{background:linear-gradient(120deg, #f7d77a, #f2a8d8 50%, #9fd6f7); color:#2b1d10; border-color:transparent;}
+.card-detail-card .cd-dc .ci-finishes{gap:4px;} .card-detail-card .cd-dc .ci-fin{padding:3px 9px; font-size:11.5px;}
+@media (max-width:640px){ .card-detail-card .cd-dc{margin:0 auto;} }
+/* the pack-results viewer (openCardInspector with a pull): the same Detail card; its old stage only holds it now */
+.card-inspect .ci-stage{touch-action:auto; cursor:auto; padding:10px; perspective:none;}
+/* the pack reveal: the Detail card inside each pack card's button, face down until it is revealed */
+.po2-deck{--cw:var(--card-detail-w);}
+.po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(var(--card-detail-w), 50vh * .8);}
+.po2-card > .dc{position:absolute; inset:0; width:auto; max-width:none; --dc-w:var(--cw);}
+.po2-card > .dc > .dc-stage, .po2-card > .dc > .dc-stage > .dc-spin{position:absolute; inset:0; width:auto; aspect-ratio:auto;}
+.po2-card .dc-spin.po2-flip{transform:none;} .po2-card .dc[data-face="back"] .dc-spin.po2-flip{transform:rotateY(180deg);}
+.po2-card .dc-front.po2-front{transform:none;} .po2-card .dc-back.po2-back{transform:rotateY(180deg);}
+.po2-card .dc.is-still .dc-back.po2-back{transform:none;}
+.po2-card:focus-visible .dc-stage{outline:none;}
+/* the reward reveal after a fight (a raid's card too): the Detail card, flipped face up as the shine flashes */
+.rr-card{width:var(--card-detail-w); height:auto;}
+.rr-card > .dc{--dc-w:var(--card-detail-w);}
+.rr-card .dc-front.rr-front .card-tile{width:100% !important; height:100% !important;}
+.rr-card .dc-face.rr-front, .rr-card .dc-face.rr-back{position:absolute; inset:0;}
+.rr-card .dc-back.rr-back{transition:none;}
+/* the Hero on its plinth (Stomping Grounds, the Camp's Hero Hall): the Detail card */
+.hero-card-big.has-dc{width:auto !important;}
+.hero-card-big .dc .card-tile{pointer-events:none;}
+#view-stomp .stomp-plinth .hero-card-big.has-dc{width:auto !important;}
+#view-stomp .stomp-plinth .hero-card-big .dc-front > .card-tile, .hero-card-big .dc-front > .card-tile{width:100% !important; height:100% !important;}
+#view-stomp .stomp-plinth::after{width:calc(var(--card-detail-w) * 1.15);}
+.hero-card-big.is-levelling .dc{animation:heroLift 1.4s cubic-bezier(.2,.8,.3,1);}
+/* the entrance fan, the faction showcase and the Forge's before/after flip turn the same markup (a decorative fan keeps its own sizes) */
+.entrance-fan .ef-card > .dc{--dc-w:168px;}
+.entrance-fan .ef-card:nth-child(2) > .dc{--dc-w:184px; margin-left:-8px;}
+.entrance-fan .ef-card .dc-spin.ef-flip{transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+.entrance-fan .ef-card .dc-spin.ef-flip, .faction-showcase .pl1-fsf .dc-spin{transform:none;}
+.entrance-fan .ef-card .dc[data-face="back"] .dc-spin.ef-flip, .faction-showcase .pl1-fsf .dc[data-face="back"] .dc-spin{transform:rotateY(180deg);}
+.entrance-fan .dc-front .card-tile{box-shadow:0 18px 40px rgba(0,0,0,.45);}
+.faction-showcase .pl1-fsf > .dc{--dc-w:min(9vw, 112px);} /* the showcase's own size (it was the tile's) */
+.faction-showcase .pl1-fsf .dc-spin{transition:transform .6s cubic-bezier(.4,.1,.3,1);}
+.dc.dc-flow > .dc-stage > .dc-spin{aspect-ratio:auto;}
+.dc.dc-flow .dc-front{position:relative;}
+.flip3d-stage > .dc{width:100%; --dc-w:100%;}
+.dc .dc-stage:not([tabindex]){cursor:inherit;}
+/* the hover popover (CS-1): the Full card plus its text, on top of any modal; a caller's extra line (data-pop-line) under the text */
+#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--card-full-w) !important;}
+#cardPop .cp-line{margin:6px 0 2px; padding:5px 8px; border-radius:8px; background:rgba(74,47,26,.12); font:700 12px/1.3 'Baloo 2',system-ui,sans-serif;}
+#cardPop{max-width:calc(100vw - 16px);}
+.cnp-rw-zoom.cp-sheet{width:min(264px, calc(100vw - 16px)); padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
+.cnp-rw-zoom.cp-sheet > .card-tile{display:block; width:var(--card-full-w) !important; margin:-2px auto 8px !important;}
+.cnp-rw-zoom.cp-sheet .cp-text{font:600 12px/1.35 'Nunito',system-ui,sans-serif;}
+.cnp-rw-zoom.cp-sheet .cp-text ul{margin:0 0 4px; padding-left:16px;} .cnp-rw-zoom.cp-sheet .cp-text li{margin-bottom:2px;}
+.cnp-rw-zoom.cp-sheet .cp-text .flavor{font-style:italic; opacity:.8; border-top:1px solid rgba(74,47,26,.25); padding-top:5px; margin-top:3px;}
+.cnp-rw-zoom.cp-sheet .cnp-rw-why{width:auto; margin-top:6px;}
+/* CS-C:END */
 
 /* the card album */
 #codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
