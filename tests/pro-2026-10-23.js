@@ -54,6 +54,16 @@ Object.keys(data.maps).forEach(mid=>{
     if(list === 'bpro') ok(Object.keys(e.deck).every(id=> own.has(id)), `1. ${e.id}: every card from Map ${no}'s own pool (${Object.keys(e.deck).filter(id=> !own.has(id)).join(', ')})`);
     const mr = O.mapRuleProblems(gm, map, e.deck, mode);
     ok(!mr.length, `1. ${e.id}: the ${mode} map rule (${mr.join('; ')})`);
+    // 2026-10-30 (package DECK1, owner step 4): the PRO decks of Maps 0-20 and their side maps are DECK1's focused decks (tools/opt/deck1_2026_10_30.js;
+    // its own checks: tests/deck1-2026-10-30.js): from a DECK1 search run (tools/bench/bench.js deck, map-true pool), no head-to-head, ordered by
+    // their gauntlet score; the optimum / Elo checks below are for decks from optimizer runs
+    const d1 = list === 'pro' && e.source && e.source.mode === 'deck1';
+    if(d1){ ok(fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its DECK1 run exists (${e.source.file})`);
+      const run = fs.existsSync(path.join(ROOT, e.source.file)) ? JSON.parse(rd(e.source.file)) : {decks: []};
+      ok((run.decks || []).some(x=> O.deckKey(x.deck) === O.deckKey(e.deck) && x.score === e.source.score) && (run.settings || {}).mode === 'map-true', `1. ${e.id}: the deck is a deck of its DECK1 run`);
+      ok(e.focus && e.h2h == null, `1. ${e.id}: a focus (${e.focus}), no head-to-head`);
+      if(i > 0) ok(e.source.score <= L[i - 1].source.score, `1. ${e.id}: ordered by the gauntlet score`);
+      return; }
     ok(e.source && e.source.mode === mode, `1. ${e.id}: from a ${mode} run (${e.source && e.source.mode})`);
     ok(e.source && fs.existsSync(path.join(ROOT, e.source.file)), `1. ${e.id}: its source run exists (${e.source && e.source.file})`);
     if(e.source && fs.existsSync(path.join(ROOT, e.source.file))){ const run = JSON.parse(rd(e.source.file)), op = (run.optima || []).find(x=> x.i === e.source.optimum);
@@ -126,7 +136,7 @@ Object.keys(data.maps).forEach(mid=>{
     ok(dr && dr.dropped.some(x=> /^ent: rare is over the map's rarity cap \(common\)/.test(x)) && dr.dropped.some(x=> /^otter-guard: /.test(x)) && !t2.maps.m1.pro.some(e=> e.deck.ent) && t2.maps.m1.pro.length >= 1, '2. an old PRO with Ents is dropped by the map rule (reasons kept) and the map refilled from the map-true runs ' + JSON.stringify(dr && dr.dropped)); }
   ok(/--apply/.test(cp.execFileSync(process.execPath, [path.join(ROOT, 'tools', 'opt', 'pro_skirmishes.js'), '--help'], {encoding: 'utf8'})), '2. --help');
   const map = G.CONQUEST_MAPS.find(m=> m.id === 'mc'), f = P.averageField(gm, map), opts = Object.assign(P.parseArgs([]), {games: 6});
-  const e = data.maps.mc.pro[0], runOpt = JSON.parse(rd(e.source.file)).optima, other = (runOpt[1] || runOpt[0]).deck; // 2026-10-24 (PRO2): a short run may end with one optimum
+  const e = data.maps.mc.pro[0], runJ = JSON.parse(rd(e.source.file)), runOpt = runJ.optima || runJ.decks /* 2026-10-30 (DECK1): a DECK1 run lists `decks` */, other = (runOpt[1] || runOpt[0]).deck; // 2026-10-24 (PRO2): a short run may end with one optimum
   const m1 = P.makeH2H(gm, map, f, opts)(P.renameDeck(other, ren), e.deck), m2 = P.makeH2H(gm, map, f, opts)(P.renameDeck(other, ren), e.deck);
   ok(m1.n === 6 && JSON.stringify(m1) === JSON.stringify(m2), '2. a head-to-head pairing gives the same result twice (seeded) ' + JSON.stringify(m1)); }
 

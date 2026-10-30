@@ -1,7 +1,7 @@
 {
  "about": "Package PREF (P3): each reference set against each PRO / BPRO fight of canonical/pro-skirmishes.json, as the game plays them (tools/opt/pro_ease.js). win = the reference's win rate; easy = win > 0.85.",
  "tool": "tools/opt/pro_ease.js 1.0.0 (2026-10-25, PREF)",
- "generated": "2026-10-30T12:20:42.567Z",
+ "generated": "2026-10-30T12:38:14.890Z",
  "settings": {
   "refs": [
    "map",
@@ -11,7 +11,7 @@
   "seed": "pro-ease",
   "easy": 0.85,
   "ai": 1,
-  "maps": "0-20"
+  "maps": null
  },
  "maps": [
   {
@@ -22,15 +22,19 @@
    "prefix": "0",
    "refs": {
     "map": {
-     "mean": 0.703,
+     "mean": 0.669,
      "easy": []
     },
     "ref2": {
-     "mean": 0.987,
+     "mean": 0.98,
      "easy": [
       "0-PRO-1",
       "0-PRO-2",
-      "0-PRO-3"
+      "0-PRO-3",
+      "0-BPRO-1",
+      "0-BPRO-2",
+      "0-BPRO-3",
+      "0-BPRO-4"
      ]
     }
    },
@@ -74,11 +78,11 @@
    "prefix": "0-B",
    "refs": {
     "map": {
-     "mean": 0.073,
+     "mean": 0.332,
      "easy": []
     },
     "ref2": {
-     "mean": 0.497,
+     "mean": 0.615,
      "easy": []
     }
    },
@@ -119,12 +123,15 @@
    "prefix": "1",
    "refs": {
     "map": {
-     "mean": 0.47,
+     "mean": 0.567,
      "easy": []
     },
     "ref2": {
-     "mean": 0.595,
-     "easy": []
+     "mean": 0.772,
+     "easy": [
+      "1-BPRO-3",
+      "1-BPRO-4"
+     ]
     }
    },
    "cap": "uncommon",
@@ -161,11 +168,11 @@
    "prefix": "1-A",
    "refs": {
     "map": {
-     "mean": 0.327,
+     "mean": 0.39,
      "easy": []
     },
     "ref2": {
-     "mean": 0.653,
+     "mean": 0.688,
      "easy": []
     }
    },
@@ -213,11 +220,11 @@
    "prefix": "2",
    "refs": {
     "map": {
-     "mean": 0.465,
+     "mean": 0.568,
      "easy": []
     },
     "ref2": {
-     "mean": 0.58,
+     "mean": 0.705,
      "easy": []
     }
    },
@@ -252,11 +259,11 @@
    "prefix": "2-B",
    "refs": {
     "map": {
-     "mean": 0.39,
+     "mean": 0.446,
      "easy": []
     },
     "ref2": {
-     "mean": 0.788,
+     "mean": 0.8,
      "easy": [
       "2-B-PRO-2"
      ]
@@ -299,14 +306,18 @@
    "prefix": "2-A",
    "refs": {
     "map": {
-     "mean": 0.203,
+     "mean": 0.413,
      "easy": []
     },
     "ref2": {
-     "mean": 0.863,
+     "mean": 0.92,
      "easy": [
       "2-A-PRO-1",
-      "2-A-PRO-2"
+      "2-A-PRO-2",
+      "2-A-BPRO-1",
+      "2-A-BPRO-2",
+      "2-A-BPRO-3",
+      "2-A-BPRO-4"
      ]
     }
    },
@@ -366,13 +377,13 @@
    "prefix": "3",
    "refs": {
     "map": {
-     "mean": 0.813,
+     "mean": 0.787,
      "easy": [
       "3-PRO-4"
      ]
     },
     "ref2": {
-     "mean": 0.775,
+     "mean": 0.748,
      "easy": []
     }
    },
@@ -405,11 +416,11 @@
    "prefix": "4",
    "refs": {
     "map": {
-     "mean": 0.345,
+     "mean": 0.378,
      "easy": []
     },
     "ref2": {
-     "mean": 0.523,
+     "mean": 0.6,
      "easy": []
     }
    },
@@ -443,12 +454,19 @@
    "prefix": "5",
    "refs": {
     "map": {
-     "mean": 0.548,
-     "easy": []
+     "mean": 0.665,
+     "easy": [
+      "5-BPRO-3"
+     ]
     },
     "ref2": {
-     "mean": 0.708,
-     "easy": []
+     "mean": 0.815,
+     "easy": [
+      "5-BPRO-1",
+      "5-BPRO-2",
+      "5-BPRO-3",
+      "5-BPRO-4"
+     ]
     }
    },
    "cap": "rare",
@@ -483,13 +501,17 @@
    "prefix": "5-A",
    "refs": {
     "map": {
-     "mean": 0.193,
+     "mean": 0.459,
      "easy": []
     },
     "ref2": {
-     "mean": 0.73,
+     "mean": 0.84,
      "easy": [
-      "5-A-PRO-3"
+      "5-A-PRO-3",
+      "5-A-BPRO-1",
+      "5-A-BPRO-2",
+      "5-A-BPRO-3",
+      "5-A-BPRO-4"
      ]
     }
    },
@@ -530,12 +552,16 @@
    "prefix": "6",
    "refs": {
     "map": {
-     "mean": 0.29,
+     "mean": 0.426,
      "easy": []
     },
     "ref2": {
-     "mean": 0.73,
-     "easy": []
+     "mean": 0.819,
+     "easy": [
+      "6-BPRO-1",
+      "6-BPRO-3",
+      "6-BPRO-4"
+     ]
     }
    },
    "cap": "rare",
@@ -567,11 +593,11 @@
    "prefix": "7",
    "refs": {
     "map": {
-     "mean": 0.148,
+     "mean": 0.204,
      "easy": []
     },
     "ref2": {
-     "mean": 0.57,
+     "mean": 0.548,
      "easy": []
     }
    },
@@ -607,11 +633,11 @@
    "prefix": "7-A",
    "refs": {
     "map": {
-     "mean": 0.19,
+     "mean": 0.224,
      "easy": []
     },
     "ref2": {
-     "mean": 0.453,
+     "mean": 0.494,
      "easy": []
     }
    },
@@ -656,11 +682,11 @@
    "prefix": "8",
    "refs": {
     "map": {
-     "mean": 0.2,
+     "mean": 0.203,
      "easy": []
     },
     "ref2": {
-     "mean": 0.397,
+     "mean": 0.377,
      "easy": []
     }
    },
@@ -698,11 +724,11 @@
    "prefix": "8-A",
    "refs": {
     "map": {
-     "mean": 0.335,
+     "mean": 0.307,
      "easy": []
     },
     "ref2": {
-     "mean": 0.64,
+     "mean": 0.657,
      "easy": []
     }
    },
@@ -749,13 +775,14 @@
    "prefix": "9",
    "refs": {
     "map": {
-     "mean": 0.285,
+     "mean": 0.327,
      "easy": []
     },
     "ref2": {
-     "mean": 0.7,
+     "mean": 0.771,
      "easy": [
-      "9-PRO-3"
+      "9-PRO-3",
+      "9-BPRO-1"
      ]
     }
    },
@@ -789,11 +816,11 @@
    "prefix": "10",
    "refs": {
     "map": {
-     "mean": 0.605,
+     "mean": 0.673,
      "easy": []
     },
     "ref2": {
-     "mean": 0.515,
+     "mean": 0.595,
      "easy": []
     }
    },
@@ -829,11 +856,11 @@
    "prefix": "10-A",
    "refs": {
     "map": {
-     "mean": 0,
+     "mean": 0.046,
      "easy": []
     },
     "ref2": {
-     "mean": 0.297,
+     "mean": 0.4,
      "easy": []
     }
    },
@@ -876,11 +903,11 @@
    "prefix": "11",
    "refs": {
     "map": {
-     "mean": 0.34,
+     "mean": 0.387,
      "easy": []
     },
     "ref2": {
-     "mean": 0.283,
+     "mean": 0.319,
      "easy": []
     }
    },
@@ -920,11 +947,11 @@
    "prefix": "11-A",
    "refs": {
     "map": {
-     "mean": 0.128,
+     "mean": 0.233,
      "easy": []
     },
     "ref2": {
-     "mean": 0.185,
+     "mean": 0.204,
      "easy": []
     }
    },
@@ -964,13 +991,20 @@
    "prefix": "12",
    "refs": {
     "map": {
-     "mean": 0.475,
-     "easy": []
+     "mean": 0.656,
+     "easy": [
+      "12-BPRO-2",
+      "12-BPRO-4"
+     ]
     },
     "ref2": {
-     "mean": 0.665,
+     "mean": 0.798,
      "easy": [
-      "12-PRO-4"
+      "12-PRO-4",
+      "12-BPRO-1",
+      "12-BPRO-2",
+      "12-BPRO-3",
+      "12-BPRO-4"
      ]
     }
    },
@@ -1004,12 +1038,14 @@
    "prefix": "13",
    "refs": {
     "map": {
-     "mean": 0.21,
+     "mean": 0.304,
      "easy": []
     },
     "ref2": {
-     "mean": 0.5,
-     "easy": []
+     "mean": 0.619,
+     "easy": [
+      "13-BPRO-3"
+     ]
     }
    },
    "cap": "veryrare",
@@ -1042,11 +1078,11 @@
    "prefix": "14",
    "refs": {
     "map": {
-     "mean": 0.13,
+     "mean": 0.175,
      "easy": []
     },
     "ref2": {
-     "mean": 0.375,
+     "mean": 0.405,
      "easy": []
     }
    },
@@ -1080,11 +1116,11 @@
    "prefix": "14-A",
    "refs": {
     "map": {
-     "mean": 0.013,
+     "mean": 0.018,
      "easy": []
     },
     "ref2": {
-     "mean": 0.385,
+     "mean": 0.43,
      "easy": []
     }
    },
@@ -1138,11 +1174,11 @@
    "prefix": "15",
    "refs": {
     "map": {
-     "mean": 0.345,
+     "mean": 0.516,
      "easy": []
     },
     "ref2": {
-     "mean": 0.693,
+     "mean": 0.749,
      "easy": []
     }
    },
@@ -1175,11 +1211,11 @@
    "prefix": "16",
    "refs": {
     "map": {
-     "mean": 0.308,
+     "mean": 0.361,
      "easy": []
     },
     "ref2": {
-     "mean": 0.727,
+     "mean": 0.74,
      "easy": [
       "16-PRO-4"
      ]
@@ -1215,11 +1251,11 @@
    "prefix": "17",
    "refs": {
     "map": {
-     "mean": 0.023,
+     "mean": 0.046,
      "easy": []
     },
     "ref2": {
-     "mean": 0.16,
+     "mean": 0.24,
      "easy": []
     }
    },
@@ -1252,11 +1288,11 @@
    "prefix": "17-A",
    "refs": {
     "map": {
-     "mean": 0.213,
+     "mean": 0.25,
      "easy": []
     },
     "ref2": {
-     "mean": 0.483,
+     "mean": 0.545,
      "easy": []
     }
    },
@@ -1294,11 +1330,11 @@
    "prefix": "18",
    "refs": {
     "map": {
-     "mean": 0.297,
+     "mean": 0.36,
      "easy": []
     },
     "ref2": {
-     "mean": 0.297,
+     "mean": 0.39,
      "easy": []
     }
    },
@@ -1333,11 +1369,11 @@
    "prefix": "18-A",
    "refs": {
     "map": {
-     "mean": 0.117,
+     "mean": 0.178,
      "easy": []
     },
     "ref2": {
-     "mean": 0.44,
+     "mean": 0.48,
      "easy": []
     }
    },
@@ -1382,11 +1418,11 @@
    "prefix": "19",
    "refs": {
     "map": {
-     "mean": 0.25,
+     "mean": 0.539,
      "easy": []
     },
     "ref2": {
-     "mean": 0.473,
+     "mean": 0.623,
      "easy": []
     }
    },
@@ -1419,11 +1455,11 @@
    "prefix": "19-A",
    "refs": {
     "map": {
-     "mean": 0.153,
+     "mean": 0.21,
      "easy": []
     },
     "ref2": {
-     "mean": 0.502,
+     "mean": 0.543,
      "easy": []
     }
    },
@@ -1473,12 +1509,16 @@
    "prefix": "20",
    "refs": {
     "map": {
-     "mean": 0.68,
-     "easy": []
+     "mean": 0.735,
+     "easy": [
+      "20-BPRO-1"
+     ]
     },
     "ref2": {
-     "mean": 0.573,
-     "easy": []
+     "mean": 0.655,
+     "easy": [
+      "20-BPRO-1"
+     ]
     }
    },
    "cap": "superrare",
@@ -1517,11 +1557,11 @@
    "prefix": "20-A",
    "refs": {
     "map": {
-     "mean": 0.447,
+     "mean": 0.495,
      "easy": []
     },
     "ref2": {
-     "mean": 0.733,
+     "mean": 0.73,
      "easy": [
       "20-A-PRO-3"
      ]
@@ -1570,11 +1610,11 @@
    "prefix": "20-B",
    "refs": {
     "map": {
-     "mean": 0.43,
+     "mean": 0.393,
      "easy": []
     },
     "ref2": {
-     "mean": 0.65,
+     "mean": 0.67,
      "easy": []
     }
    },
@@ -1759,6 +1799,190 @@
    "easy": true
   },
   {
+   "id": "0-BPRO-1",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 62,
+   "losses": 38,
+   "draws": 0,
+   "n": 100,
+   "win": 0.62,
+   "ci": [
+    0.522,
+    0.709
+   ],
+   "stage": "starter",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 1176,
+   "easy": false
+  },
+  {
+   "id": "0-BPRO-1",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 95,
+   "losses": 5,
+   "draws": 0,
+   "n": 100,
+   "win": 0.95,
+   "ci": [
+    0.888,
+    0.978
+   ],
+   "stage": "ref:ref2",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 932,
+   "easy": true
+  },
+  {
+   "id": "0-BPRO-2",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 72,
+   "losses": 28,
+   "draws": 0,
+   "n": 100,
+   "win": 0.72,
+   "ci": [
+    0.625,
+    0.799
+   ],
+   "stage": "starter",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 1156,
+   "easy": false
+  },
+  {
+   "id": "0-BPRO-2",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 98,
+   "losses": 2,
+   "draws": 0,
+   "n": 100,
+   "win": 0.98,
+   "ci": [
+    0.93,
+    0.994
+   ],
+   "stage": "ref:ref2",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 759,
+   "easy": true
+  },
+  {
+   "id": "0-BPRO-3",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 54,
+   "losses": 46,
+   "draws": 0,
+   "n": 100,
+   "win": 0.54,
+   "ci": [
+    0.443,
+    0.634
+   ],
+   "stage": "starter",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 1023,
+   "easy": false
+  },
+  {
+   "id": "0-BPRO-3",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 99,
+   "losses": 1,
+   "draws": 0,
+   "n": 100,
+   "win": 0.99,
+   "ci": [
+    0.946,
+    0.998
+   ],
+   "stage": "ref:ref2",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 723,
+   "easy": true
+  },
+  {
+   "id": "0-BPRO-4",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 69,
+   "losses": 31,
+   "draws": 0,
+   "n": 100,
+   "win": 0.69,
+   "ci": [
+    0.594,
+    0.772
+   ],
+   "stage": "starter",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 957,
+   "easy": false
+  },
+  {
+   "id": "0-BPRO-4",
+   "mapId": "m1",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 98,
+   "losses": 2,
+   "draws": 0,
+   "n": 100,
+   "win": 0.98,
+   "ci": [
+    0.93,
+    0.994
+   ],
+   "stage": "ref:ref2",
+   "level": 0,
+   "deckMap": 0,
+   "cpu": 1,
+   "ms": 784,
+   "easy": true
+  },
+  {
    "id": "0-B-PRO-1",
    "mapId": "mo",
    "map": 0,
@@ -1897,6 +2121,144 @@
    "easy": false
   },
   {
+   "id": "0-B-BPRO-1",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 2483,
+   "easy": false
+  },
+  {
+   "id": "0-B-BPRO-1",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 74,
+   "losses": 26,
+   "draws": 0,
+   "n": 100,
+   "win": 0.74,
+   "ci": [
+    0.646,
+    0.816
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 923,
+   "easy": false
+  },
+  {
+   "id": "0-B-BPRO-2",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 62,
+   "losses": 38,
+   "draws": 0,
+   "n": 100,
+   "win": 0.62,
+   "ci": [
+    0.522,
+    0.709
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 1674,
+   "easy": false
+  },
+  {
+   "id": "0-B-BPRO-2",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 1032,
+   "easy": false
+  },
+  {
+   "id": "0-B-BPRO-3",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 48,
+   "losses": 52,
+   "draws": 0,
+   "n": 100,
+   "win": 0.48,
+   "ci": [
+    0.385,
+    0.577
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 1772,
+   "easy": false
+  },
+  {
+   "id": "0-B-BPRO-3",
+   "mapId": "mo",
+   "map": 0,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 956,
+   "easy": false
+  },
+  {
    "id": "1-PRO-1",
    "mapId": "mf",
    "map": 1,
@@ -1987,6 +2349,190 @@
    "cpu": 1,
    "ms": 986,
    "easy": false
+  },
+  {
+   "id": "1-BPRO-1",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 52,
+   "losses": 48,
+   "draws": 0,
+   "n": 100,
+   "win": 0.52,
+   "ci": [
+    0.423,
+    0.615
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1627,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-1",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 84,
+   "losses": 16,
+   "draws": 0,
+   "n": 100,
+   "win": 0.84,
+   "ci": [
+    0.756,
+    0.899
+   ],
+   "stage": "ref:ref2",
+   "level": 0.25,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1033,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-2",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 52,
+   "losses": 48,
+   "draws": 0,
+   "n": 100,
+   "win": 0.52,
+   "ci": [
+    0.423,
+    0.615
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1503,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-2",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "ref:ref2",
+   "level": 0.25,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1134,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-3",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1230,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-3",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 86,
+   "losses": 14,
+   "draws": 0,
+   "n": 100,
+   "win": 0.86,
+   "ci": [
+    0.779,
+    0.915
+   ],
+   "stage": "ref:ref2",
+   "level": 0.25,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 906,
+   "easy": true
+  },
+  {
+   "id": "1-BPRO-4",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1457,
+   "easy": false
+  },
+  {
+   "id": "1-BPRO-4",
+   "mapId": "mf",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 93,
+   "losses": 7,
+   "draws": 0,
+   "n": 100,
+   "win": 0.93,
+   "ci": [
+    0.863,
+    0.966
+   ],
+   "stage": "ref:ref2",
+   "level": 0.25,
+   "deckMap": 1,
+   "cpu": 1,
+   "ms": 1072,
+   "easy": true
   },
   {
    "id": "1-A-PRO-1",
@@ -2124,6 +2670,52 @@
    "deckMap": 12,
    "cpu": 1,
    "ms": 1307,
+   "easy": false
+  },
+  {
+   "id": "1-A-BPRO-1",
+   "mapId": "mq",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 58,
+   "losses": 42,
+   "draws": 0,
+   "n": 100,
+   "win": 0.58,
+   "ci": [
+    0.482,
+    0.672
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1908,
+   "easy": false
+  },
+  {
+   "id": "1-A-BPRO-1",
+   "mapId": "mq",
+   "map": 1,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 79,
+   "losses": 21,
+   "draws": 0,
+   "n": 100,
+   "win": 0.79,
+   "ci": [
+    0.7,
+    0.858
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1195,
    "easy": false
   },
   {
@@ -2311,6 +2903,190 @@
    "easy": false
   },
   {
+   "id": "2-BPRO-1",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 68,
+   "losses": 32,
+   "draws": 0,
+   "n": 100,
+   "win": 0.68,
+   "ci": [
+    0.583,
+    0.763
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1879,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-1",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 85,
+   "losses": 15,
+   "draws": 0,
+   "n": 100,
+   "win": 0.85,
+   "ci": [
+    0.767,
+    0.907
+   ],
+   "stage": "ref:ref2",
+   "level": 0.5,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1338,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-2",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 59,
+   "losses": 41,
+   "draws": 0,
+   "n": 100,
+   "win": 0.59,
+   "ci": [
+    0.492,
+    0.681
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1753,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-2",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 85,
+   "losses": 15,
+   "draws": 0,
+   "n": 100,
+   "win": 0.85,
+   "ci": [
+    0.767,
+    0.907
+   ],
+   "stage": "ref:ref2",
+   "level": 0.5,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1363,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-3",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1608,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-3",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "ref:ref2",
+   "level": 0.5,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1409,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-4",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 74,
+   "losses": 26,
+   "draws": 0,
+   "n": 100,
+   "win": 0.74,
+   "ci": [
+    0.646,
+    0.816
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1628,
+   "easy": false
+  },
+  {
+   "id": "2-BPRO-4",
+   "mapId": "mb",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "ref:ref2",
+   "level": 0.5,
+   "deckMap": 2,
+   "cpu": 1,
+   "ms": 1431,
+   "easy": false
+  },
+  {
    "id": "2-B-PRO-1",
    "mapId": "mg",
    "map": 2,
@@ -2495,6 +3271,190 @@
    "easy": false
   },
   {
+   "id": "2-B-BPRO-1",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 44,
+   "losses": 56,
+   "draws": 0,
+   "n": 100,
+   "win": 0.44,
+   "ci": [
+    0.347,
+    0.538
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2207,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-1",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 82,
+   "losses": 18,
+   "draws": 0,
+   "n": 100,
+   "win": 0.82,
+   "ci": [
+    0.733,
+    0.883
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1692,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-2",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 49,
+   "losses": 51,
+   "draws": 0,
+   "n": 100,
+   "win": 0.49,
+   "ci": [
+    0.394,
+    0.587
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2614,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-2",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1553,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-3",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 58,
+   "losses": 42,
+   "draws": 0,
+   "n": 100,
+   "win": 0.58,
+   "ci": [
+    0.482,
+    0.672
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2613,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-3",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 82,
+   "losses": 18,
+   "draws": 0,
+   "n": 100,
+   "win": 0.82,
+   "ci": [
+    0.733,
+    0.883
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1545,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-4",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 50,
+   "losses": 50,
+   "draws": 0,
+   "n": 100,
+   "win": 0.5,
+   "ci": [
+    0.404,
+    0.596
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2338,
+   "easy": false
+  },
+  {
+   "id": "2-B-BPRO-4",
+   "mapId": "mg",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 85,
+   "losses": 15,
+   "draws": 0,
+   "n": 100,
+   "win": 0.85,
+   "ci": [
+    0.767,
+    0.907
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1612,
+   "easy": false
+  },
+  {
    "id": "2-A-PRO-1",
    "mapId": "mp",
    "map": 2,
@@ -2631,6 +3591,190 @@
    "cpu": 1,
    "ms": 2378,
    "easy": false
+  },
+  {
+   "id": "2-A-BPRO-1",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 4035,
+   "easy": false
+  },
+  {
+   "id": "2-A-BPRO-1",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 99,
+   "losses": 1,
+   "draws": 0,
+   "n": 100,
+   "win": 0.99,
+   "ci": [
+    0.946,
+    0.998
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1496,
+   "easy": true
+  },
+  {
+   "id": "2-A-BPRO-2",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 3541,
+   "easy": false
+  },
+  {
+   "id": "2-A-BPRO-2",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 97,
+   "losses": 3,
+   "draws": 0,
+   "n": 100,
+   "win": 0.97,
+   "ci": [
+    0.915,
+    0.99
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1183,
+   "easy": true
+  },
+  {
+   "id": "2-A-BPRO-3",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 31,
+   "losses": 69,
+   "draws": 0,
+   "n": 100,
+   "win": 0.31,
+   "ci": [
+    0.228,
+    0.406
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 2966,
+   "easy": false
+  },
+  {
+   "id": "2-A-BPRO-3",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 94,
+   "losses": 6,
+   "draws": 0,
+   "n": 100,
+   "win": 0.94,
+   "ci": [
+    0.875,
+    0.972
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1337,
+   "easy": true
+  },
+  {
+   "id": "2-A-BPRO-4",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 61,
+   "losses": 39,
+   "draws": 0,
+   "n": 100,
+   "win": 0.61,
+   "ci": [
+    0.512,
+    0.7
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 3073,
+   "easy": false
+  },
+  {
+   "id": "2-A-BPRO-4",
+   "mapId": "mp",
+   "map": 2,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 95,
+   "losses": 5,
+   "draws": 0,
+   "n": 100,
+   "win": 0.95,
+   "ci": [
+    0.888,
+    0.978
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1689,
+   "easy": true
   },
   {
    "id": "3-PRO-1",
@@ -2814,6 +3958,98 @@
    "deckMap": 3,
    "cpu": 1,
    "ms": 1228,
+   "easy": false
+  },
+  {
+   "id": "3-BPRO-1",
+   "mapId": "mc",
+   "map": 3,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 3,
+   "cpu": 1,
+   "ms": 2147,
+   "easy": false
+  },
+  {
+   "id": "3-BPRO-1",
+   "mapId": "mc",
+   "map": 3,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 0.75,
+   "deckMap": 3,
+   "cpu": 1,
+   "ms": 1784,
+   "easy": false
+  },
+  {
+   "id": "3-BPRO-2",
+   "mapId": "mc",
+   "map": 3,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 71,
+   "losses": 29,
+   "draws": 0,
+   "n": 100,
+   "win": 0.71,
+   "ci": [
+    0.615,
+    0.79
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 3,
+   "cpu": 1,
+   "ms": 1677,
+   "easy": false
+  },
+  {
+   "id": "3-BPRO-2",
+   "mapId": "mc",
+   "map": 3,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 72,
+   "losses": 28,
+   "draws": 0,
+   "n": 100,
+   "win": 0.72,
+   "ci": [
+    0.625,
+    0.799
+   ],
+   "stage": "ref:ref2",
+   "level": 0.75,
+   "deckMap": 3,
+   "cpu": 1,
+   "ms": 1259,
    "easy": false
   },
   {
@@ -3001,6 +4237,190 @@
    "easy": false
   },
   {
+   "id": "4-BPRO-1",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 33,
+   "losses": 67,
+   "draws": 0,
+   "n": 100,
+   "win": 0.33,
+   "ci": [
+    0.246,
+    0.427
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 2086,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-1",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 60,
+   "losses": 40,
+   "draws": 0,
+   "n": 100,
+   "win": 0.6,
+   "ci": [
+    0.502,
+    0.691
+   ],
+   "stage": "ref:ref2",
+   "level": 1,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1825,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-2",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 42,
+   "losses": 58,
+   "draws": 0,
+   "n": 100,
+   "win": 0.42,
+   "ci": [
+    0.328,
+    0.518
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 2324,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-2",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "ref:ref2",
+   "level": 1,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1800,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-3",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 53,
+   "losses": 47,
+   "draws": 0,
+   "n": 100,
+   "win": 0.53,
+   "ci": [
+    0.433,
+    0.625
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1647,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-3",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 74,
+   "losses": 26,
+   "draws": 0,
+   "n": 100,
+   "win": 0.74,
+   "ci": [
+    0.646,
+    0.816
+   ],
+   "stage": "ref:ref2",
+   "level": 1,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1357,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-4",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 36,
+   "losses": 64,
+   "draws": 0,
+   "n": 100,
+   "win": 0.36,
+   "ci": [
+    0.273,
+    0.458
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1576,
+   "easy": false
+  },
+  {
+   "id": "4-BPRO-4",
+   "mapId": "m2",
+   "map": 4,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 1,
+   "deckMap": 4,
+   "cpu": 1,
+   "ms": 1365,
+   "easy": false
+  },
+  {
    "id": "5-PRO-1",
    "mapId": "mw",
    "map": 5,
@@ -3185,6 +4605,190 @@
    "easy": false
   },
   {
+   "id": "5-BPRO-1",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1950,
+   "easy": false
+  },
+  {
+   "id": "5-BPRO-1",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 94,
+   "losses": 6,
+   "draws": 0,
+   "n": 100,
+   "win": 0.94,
+   "ci": [
+    0.875,
+    0.972
+   ],
+   "stage": "ref:ref2",
+   "level": 1.25,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1273,
+   "easy": true
+  },
+  {
+   "id": "5-BPRO-2",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1882,
+   "easy": false
+  },
+  {
+   "id": "5-BPRO-2",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 93,
+   "losses": 7,
+   "draws": 0,
+   "n": 100,
+   "win": 0.93,
+   "ci": [
+    0.863,
+    0.966
+   ],
+   "stage": "ref:ref2",
+   "level": 1.25,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1241,
+   "easy": true
+  },
+  {
+   "id": "5-BPRO-3",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 86,
+   "losses": 14,
+   "draws": 0,
+   "n": 100,
+   "win": 0.86,
+   "ci": [
+    0.779,
+    0.915
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1715,
+   "easy": true
+  },
+  {
+   "id": "5-BPRO-3",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 94,
+   "losses": 6,
+   "draws": 0,
+   "n": 100,
+   "win": 0.94,
+   "ci": [
+    0.875,
+    0.972
+   ],
+   "stage": "ref:ref2",
+   "level": 1.25,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1151,
+   "easy": true
+  },
+  {
+   "id": "5-BPRO-4",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 77,
+   "losses": 23,
+   "draws": 0,
+   "n": 100,
+   "win": 0.77,
+   "ci": [
+    0.678,
+    0.842
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1853,
+   "easy": false
+  },
+  {
+   "id": "5-BPRO-4",
+   "mapId": "mw",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 88,
+   "losses": 12,
+   "draws": 0,
+   "n": 100,
+   "win": 0.88,
+   "ci": [
+    0.802,
+    0.93
+   ],
+   "stage": "ref:ref2",
+   "level": 1.25,
+   "deckMap": 5,
+   "cpu": 1,
+   "ms": 1417,
+   "easy": true
+  },
+  {
    "id": "5-A-PRO-1",
    "mapId": "ms",
    "map": 5,
@@ -3320,6 +4924,190 @@
    "deckMap": 13,
    "cpu": 1,
    "ms": 1575,
+   "easy": true
+  },
+  {
+   "id": "5-A-BPRO-1",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2537,
+   "easy": false
+  },
+  {
+   "id": "5-A-BPRO-1",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 87,
+   "losses": 13,
+   "draws": 0,
+   "n": 100,
+   "win": 0.87,
+   "ci": [
+    0.79,
+    0.922
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1548,
+   "easy": true
+  },
+  {
+   "id": "5-A-BPRO-2",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 62,
+   "losses": 38,
+   "draws": 0,
+   "n": 100,
+   "win": 0.62,
+   "ci": [
+    0.522,
+    0.709
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2813,
+   "easy": false
+  },
+  {
+   "id": "5-A-BPRO-2",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 96,
+   "losses": 4,
+   "draws": 0,
+   "n": 100,
+   "win": 0.96,
+   "ci": [
+    0.902,
+    0.984
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1362,
+   "easy": true
+  },
+  {
+   "id": "5-A-BPRO-3",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2495,
+   "easy": false
+  },
+  {
+   "id": "5-A-BPRO-3",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 91,
+   "losses": 9,
+   "draws": 0,
+   "n": 100,
+   "win": 0.91,
+   "ci": [
+    0.838,
+    0.952
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1450,
+   "easy": true
+  },
+  {
+   "id": "5-A-BPRO-4",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 3184,
+   "easy": false
+  },
+  {
+   "id": "5-A-BPRO-4",
+   "mapId": "ms",
+   "map": 5,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 95,
+   "losses": 5,
+   "draws": 0,
+   "n": 100,
+   "win": 0.95,
+   "ci": [
+    0.888,
+    0.978
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1461,
    "easy": true
   },
   {
@@ -3459,6 +5247,190 @@
    "cpu": 1,
    "ms": 1563,
    "easy": false
+  },
+  {
+   "id": "6-BPRO-1",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 50,
+   "losses": 50,
+   "draws": 0,
+   "n": 100,
+   "win": 0.5,
+   "ci": [
+    0.404,
+    0.596
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 2478,
+   "easy": false
+  },
+  {
+   "id": "6-BPRO-1",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 91,
+   "losses": 9,
+   "draws": 0,
+   "n": 100,
+   "win": 0.91,
+   "ci": [
+    0.838,
+    0.952
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1464,
+   "easy": true
+  },
+  {
+   "id": "6-BPRO-2",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 51,
+   "losses": 49,
+   "draws": 0,
+   "n": 100,
+   "win": 0.51,
+   "ci": [
+    0.413,
+    0.606
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 2148,
+   "easy": false
+  },
+  {
+   "id": "6-BPRO-2",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 83,
+   "losses": 17,
+   "draws": 0,
+   "n": 100,
+   "win": 0.83,
+   "ci": [
+    0.745,
+    0.891
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1397,
+   "easy": false
+  },
+  {
+   "id": "6-BPRO-3",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 45,
+   "losses": 55,
+   "draws": 0,
+   "n": 100,
+   "win": 0.45,
+   "ci": [
+    0.356,
+    0.548
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 2362,
+   "easy": false
+  },
+  {
+   "id": "6-BPRO-3",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 92,
+   "losses": 8,
+   "draws": 0,
+   "n": 100,
+   "win": 0.92,
+   "ci": [
+    0.85,
+    0.959
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1499,
+   "easy": true
+  },
+  {
+   "id": "6-BPRO-4",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 65,
+   "losses": 35,
+   "draws": 0,
+   "n": 100,
+   "win": 0.65,
+   "ci": [
+    0.553,
+    0.736
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 2086,
+   "easy": false
+  },
+  {
+   "id": "6-BPRO-4",
+   "mapId": "m8",
+   "map": 6,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 88,
+   "losses": 12,
+   "draws": 0,
+   "n": 100,
+   "win": 0.88,
+   "ci": [
+    0.802,
+    0.93
+   ],
+   "stage": "ref:ref2",
+   "level": 1.5,
+   "deckMap": 6,
+   "cpu": 1,
+   "ms": 1693,
+   "easy": true
   },
   {
    "id": "7-PRO-1",
@@ -3642,6 +5614,190 @@
    "deckMap": 7,
    "cpu": 1,
    "ms": 1275,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-1",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 17,
+   "losses": 83,
+   "draws": 0,
+   "n": 100,
+   "win": 0.17,
+   "ci": [
+    0.109,
+    0.255
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1639,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-1",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 39,
+   "losses": 61,
+   "draws": 0,
+   "n": 100,
+   "win": 0.39,
+   "ci": [
+    0.3,
+    0.488
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1711,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-2",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 20,
+   "losses": 80,
+   "draws": 0,
+   "n": 100,
+   "win": 0.2,
+   "ci": [
+    0.133,
+    0.289
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1486,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-2",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 45,
+   "losses": 55,
+   "draws": 0,
+   "n": 100,
+   "win": 0.45,
+   "ci": [
+    0.356,
+    0.548
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1436,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-3",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 49,
+   "losses": 51,
+   "draws": 0,
+   "n": 100,
+   "win": 0.49,
+   "ci": [
+    0.394,
+    0.587
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2050,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-3",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1298,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-4",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 18,
+   "losses": 82,
+   "draws": 0,
+   "n": 100,
+   "win": 0.18,
+   "ci": [
+    0.117,
+    0.267
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 2293,
+   "easy": false
+  },
+  {
+   "id": "7-BPRO-4",
+   "mapId": "mu",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 51,
+   "losses": 49,
+   "draws": 0,
+   "n": 100,
+   "win": 0.51,
+   "ci": [
+    0.413,
+    0.606
+   ],
+   "stage": "ref:ref2",
+   "level": 1.75,
+   "deckMap": 7,
+   "cpu": 1,
+   "ms": 1738,
    "easy": false
   },
   {
@@ -3829,6 +5985,190 @@
    "easy": false
   },
   {
+   "id": "7-A-BPRO-1",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 27,
+   "losses": 73,
+   "draws": 0,
+   "n": 100,
+   "win": 0.27,
+   "ci": [
+    0.193,
+    0.364
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 2044,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-1",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 59,
+   "losses": 41,
+   "draws": 0,
+   "n": 100,
+   "win": 0.59,
+   "ci": [
+    0.492,
+    0.681
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1581,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-2",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 26,
+   "losses": 74,
+   "draws": 0,
+   "n": 100,
+   "win": 0.26,
+   "ci": [
+    0.184,
+    0.354
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 2075,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-2",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 52,
+   "losses": 48,
+   "draws": 0,
+   "n": 100,
+   "win": 0.52,
+   "ci": [
+    0.423,
+    0.615
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1591,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-3",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 32,
+   "losses": 68,
+   "draws": 0,
+   "n": 100,
+   "win": 0.32,
+   "ci": [
+    0.237,
+    0.417
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1847,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-3",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1661,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-4",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 18,
+   "losses": 82,
+   "draws": 0,
+   "n": 100,
+   "win": 0.18,
+   "ci": [
+    0.117,
+    0.267
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 2650,
+   "easy": false
+  },
+  {
+   "id": "7-A-BPRO-4",
+   "mapId": "mz",
+   "map": 7,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 48,
+   "losses": 52,
+   "draws": 0,
+   "n": 100,
+   "win": 0.48,
+   "ci": [
+    0.385,
+    0.577
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1885,
+   "easy": false
+  },
+  {
    "id": "8-PRO-1",
    "mapId": "m4",
    "map": 8,
@@ -4010,6 +6350,98 @@
    "deckMap": 8,
    "cpu": 1,
    "ms": 1617,
+   "easy": false
+  },
+  {
+   "id": "8-BPRO-1",
+   "mapId": "m4",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 22,
+   "losses": 78,
+   "draws": 0,
+   "n": 100,
+   "win": 0.22,
+   "ci": [
+    0.15,
+    0.311
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1370,
+   "easy": false
+  },
+  {
+   "id": "8-BPRO-1",
+   "mapId": "m4",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 24,
+   "losses": 76,
+   "draws": 0,
+   "n": 100,
+   "win": 0.24,
+   "ci": [
+    0.167,
+    0.332
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1413,
+   "easy": false
+  },
+  {
+   "id": "8-BPRO-2",
+   "mapId": "m4",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 20,
+   "losses": 80,
+   "draws": 0,
+   "n": 100,
+   "win": 0.2,
+   "ci": [
+    0.133,
+    0.289
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1428,
+   "easy": false
+  },
+  {
+   "id": "8-BPRO-2",
+   "mapId": "m4",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 43,
+   "losses": 57,
+   "draws": 0,
+   "n": 100,
+   "win": 0.43,
+   "ci": [
+    0.337,
+    0.528
+   ],
+   "stage": "ref:ref2",
+   "level": 2,
+   "deckMap": 8,
+   "cpu": 1,
+   "ms": 1266,
    "easy": false
   },
   {
@@ -4197,6 +6629,144 @@
    "easy": false
   },
   {
+   "id": "8-A-BPRO-1",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 22,
+   "losses": 78,
+   "draws": 0,
+   "n": 100,
+   "win": 0.22,
+   "ci": [
+    0.15,
+    0.311
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 2648,
+   "easy": false
+  },
+  {
+   "id": "8-A-BPRO-1",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1542,
+   "easy": false
+  },
+  {
+   "id": "8-A-BPRO-2",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 31,
+   "losses": 69,
+   "draws": 0,
+   "n": 100,
+   "win": 0.31,
+   "ci": [
+    0.228,
+    0.406
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 2251,
+   "easy": false
+  },
+  {
+   "id": "8-A-BPRO-2",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1295,
+   "easy": false
+  },
+  {
+   "id": "8-A-BPRO-3",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 28,
+   "losses": 72,
+   "draws": 0,
+   "n": 100,
+   "win": 0.28,
+   "ci": [
+    0.201,
+    0.375
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 2352,
+   "easy": false
+  },
+  {
+   "id": "8-A-BPRO-3",
+   "mapId": "mn",
+   "map": 8,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 59,
+   "losses": 41,
+   "draws": 0,
+   "n": 100,
+   "win": 0.59,
+   "ci": [
+    0.492,
+    0.681
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1790,
+   "easy": false
+  },
+  {
    "id": "9-PRO-1",
    "mapId": "mk",
    "map": 9,
@@ -4381,6 +6951,144 @@
    "easy": false
   },
   {
+   "id": "9-BPRO-1",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 36,
+   "losses": 64,
+   "draws": 0,
+   "n": 100,
+   "win": 0.36,
+   "ci": [
+    0.273,
+    0.458
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 2747,
+   "easy": false
+  },
+  {
+   "id": "9-BPRO-1",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 91,
+   "losses": 9,
+   "draws": 0,
+   "n": 100,
+   "win": 0.91,
+   "ci": [
+    0.838,
+    0.952
+   ],
+   "stage": "ref:ref2",
+   "level": 2.25,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 1658,
+   "easy": true
+  },
+  {
+   "id": "9-BPRO-2",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 43,
+   "losses": 57,
+   "draws": 0,
+   "n": 100,
+   "win": 0.43,
+   "ci": [
+    0.337,
+    0.528
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 2212,
+   "easy": false
+  },
+  {
+   "id": "9-BPRO-2",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 85,
+   "losses": 15,
+   "draws": 0,
+   "n": 100,
+   "win": 0.85,
+   "ci": [
+    0.767,
+    0.907
+   ],
+   "stage": "ref:ref2",
+   "level": 2.25,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 1505,
+   "easy": false
+  },
+  {
+   "id": "9-BPRO-3",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 36,
+   "losses": 64,
+   "draws": 0,
+   "n": 100,
+   "win": 0.36,
+   "ci": [
+    0.273,
+    0.458
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 2804,
+   "easy": false
+  },
+  {
+   "id": "9-BPRO-3",
+   "mapId": "mk",
+   "map": 9,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 84,
+   "losses": 16,
+   "draws": 0,
+   "n": 100,
+   "win": 0.84,
+   "ci": [
+    0.756,
+    0.899
+   ],
+   "stage": "ref:ref2",
+   "level": 2.25,
+   "deckMap": 9,
+   "cpu": 1,
+   "ms": 2165,
+   "easy": false
+  },
+  {
    "id": "10-PRO-1",
    "mapId": "m7",
    "map": 10,
@@ -4470,6 +7178,190 @@
    "deckMap": 10,
    "cpu": 1,
    "ms": 1571,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-1",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1910,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-1",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 66,
+   "losses": 34,
+   "draws": 0,
+   "n": 100,
+   "win": 0.66,
+   "ci": [
+    0.563,
+    0.745
+   ],
+   "stage": "ref:ref2",
+   "level": 2.5,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1856,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-2",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 65,
+   "losses": 35,
+   "draws": 0,
+   "n": 100,
+   "win": 0.65,
+   "ci": [
+    0.553,
+    0.736
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1668,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-2",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "ref:ref2",
+   "level": 2.5,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1222,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-3",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 65,
+   "losses": 35,
+   "draws": 0,
+   "n": 100,
+   "win": 0.65,
+   "ci": [
+    0.553,
+    0.736
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1476,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-3",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 64,
+   "losses": 36,
+   "draws": 0,
+   "n": 100,
+   "win": 0.64,
+   "ci": [
+    0.542,
+    0.727
+   ],
+   "stage": "ref:ref2",
+   "level": 2.5,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1784,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-4",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 83,
+   "losses": 17,
+   "draws": 0,
+   "n": 100,
+   "win": 0.83,
+   "ci": [
+    0.745,
+    0.891
+   ],
+   "stage": "road",
+   "level": 0,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1557,
+   "easy": false
+  },
+  {
+   "id": "10-BPRO-4",
+   "mapId": "m7",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 69,
+   "losses": 31,
+   "draws": 0,
+   "n": 100,
+   "win": 0.69,
+   "ci": [
+    0.594,
+    0.772
+   ],
+   "stage": "ref:ref2",
+   "level": 2.5,
+   "deckMap": 10,
+   "cpu": 1,
+   "ms": 1408,
    "easy": false
   },
   {
@@ -4608,6 +7500,98 @@
    "deckMap": 11,
    "cpu": 1,
    "ms": 3334,
+   "easy": false
+  },
+  {
+   "id": "10-A-BPRO-1",
+   "mapId": "mj",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 6,
+   "losses": 94,
+   "draws": 0,
+   "n": 100,
+   "win": 0.06,
+   "ci": [
+    0.028,
+    0.125
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2941,
+   "easy": false
+  },
+  {
+   "id": "10-A-BPRO-1",
+   "mapId": "mj",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 49,
+   "losses": 51,
+   "draws": 0,
+   "n": 100,
+   "win": 0.49,
+   "ci": [
+    0.394,
+    0.587
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2590,
+   "easy": false
+  },
+  {
+   "id": "10-A-BPRO-2",
+   "mapId": "mj",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 17,
+   "losses": 83,
+   "draws": 0,
+   "n": 100,
+   "win": 0.17,
+   "ci": [
+    0.109,
+    0.255
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2695,
+   "easy": false
+  },
+  {
+   "id": "10-A-BPRO-2",
+   "mapId": "mj",
+   "map": 10,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 62,
+   "losses": 38,
+   "draws": 0,
+   "n": 100,
+   "win": 0.62,
+   "ci": [
+    0.522,
+    0.709
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2691,
    "easy": false
   },
   {
@@ -4795,6 +7779,190 @@
    "easy": false
   },
   {
+   "id": "11-BPRO-1",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 34,
+   "losses": 65,
+   "draws": 1,
+   "n": 100,
+   "win": 0.34,
+   "ci": [
+    0.255,
+    0.437
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2296,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-1",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 31,
+   "losses": 69,
+   "draws": 0,
+   "n": 100,
+   "win": 0.31,
+   "ci": [
+    0.228,
+    0.406
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2007,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-2",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 38,
+   "losses": 62,
+   "draws": 0,
+   "n": 100,
+   "win": 0.38,
+   "ci": [
+    0.291,
+    0.478
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2540,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-2",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 29,
+   "losses": 71,
+   "draws": 0,
+   "n": 100,
+   "win": 0.29,
+   "ci": [
+    0.21,
+    0.385
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2305,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-3",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 30,
+   "losses": 70,
+   "draws": 0,
+   "n": 100,
+   "win": 0.3,
+   "ci": [
+    0.219,
+    0.396
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2747,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-3",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 25,
+   "losses": 75,
+   "draws": 0,
+   "n": 100,
+   "win": 0.25,
+   "ci": [
+    0.175,
+    0.343
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2123,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-4",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 72,
+   "losses": 28,
+   "draws": 0,
+   "n": 100,
+   "win": 0.72,
+   "ci": [
+    0.625,
+    0.799
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2400,
+   "easy": false
+  },
+  {
+   "id": "11-BPRO-4",
+   "mapId": "m10",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 57,
+   "losses": 43,
+   "draws": 0,
+   "n": 100,
+   "win": 0.57,
+   "ci": [
+    0.472,
+    0.663
+   ],
+   "stage": "ref:ref2",
+   "level": 2.75,
+   "deckMap": 11,
+   "cpu": 1,
+   "ms": 2651,
+   "easy": false
+  },
+  {
    "id": "11-A-PRO-1",
    "mapId": "mv",
    "map": 11,
@@ -4976,6 +8144,190 @@
    "deckMap": 15,
    "cpu": 1,
    "ms": 1279,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-1",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 37,
+   "losses": 63,
+   "draws": 0,
+   "n": 100,
+   "win": 0.37,
+   "ci": [
+    0.282,
+    0.468
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2162,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-1",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 14,
+   "losses": 86,
+   "draws": 0,
+   "n": 100,
+   "win": 0.14,
+   "ci": [
+    0.085,
+    0.221
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1823,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-2",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 38,
+   "losses": 62,
+   "draws": 0,
+   "n": 100,
+   "win": 0.38,
+   "ci": [
+    0.291,
+    0.478
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2026,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-2",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 23,
+   "losses": 77,
+   "draws": 0,
+   "n": 100,
+   "win": 0.23,
+   "ci": [
+    0.158,
+    0.322
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1830,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-3",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 28,
+   "losses": 72,
+   "draws": 0,
+   "n": 100,
+   "win": 0.28,
+   "ci": [
+    0.201,
+    0.375
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2454,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-3",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 28,
+   "losses": 72,
+   "draws": 0,
+   "n": 100,
+   "win": 0.28,
+   "ci": [
+    0.201,
+    0.375
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2077,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-4",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 32,
+   "losses": 68,
+   "draws": 0,
+   "n": 100,
+   "win": 0.32,
+   "ci": [
+    0.237,
+    0.417
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2133,
+   "easy": false
+  },
+  {
+   "id": "11-A-BPRO-4",
+   "mapId": "mv",
+   "map": 11,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 24,
+   "losses": 76,
+   "draws": 0,
+   "n": 100,
+   "win": 0.24,
+   "ci": [
+    0.167,
+    0.332
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1981,
    "easy": false
   },
   {
@@ -5163,6 +8515,190 @@
    "easy": true
   },
   {
+   "id": "12-BPRO-1",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 77,
+   "losses": 23,
+   "draws": 0,
+   "n": 100,
+   "win": 0.77,
+   "ci": [
+    0.678,
+    0.842
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 3985,
+   "easy": false
+  },
+  {
+   "id": "12-BPRO-1",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 88,
+   "losses": 12,
+   "draws": 0,
+   "n": 100,
+   "win": 0.88,
+   "ci": [
+    0.802,
+    0.93
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1692,
+   "easy": true
+  },
+  {
+   "id": "12-BPRO-2",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 87,
+   "losses": 13,
+   "draws": 0,
+   "n": 100,
+   "win": 0.87,
+   "ci": [
+    0.79,
+    0.922
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 3301,
+   "easy": true
+  },
+  {
+   "id": "12-BPRO-2",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 95,
+   "losses": 5,
+   "draws": 0,
+   "n": 100,
+   "win": 0.95,
+   "ci": [
+    0.888,
+    0.978
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1617,
+   "easy": true
+  },
+  {
+   "id": "12-BPRO-3",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 3188,
+   "easy": false
+  },
+  {
+   "id": "12-BPRO-3",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 95,
+   "losses": 5,
+   "draws": 0,
+   "n": 100,
+   "win": 0.95,
+   "ci": [
+    0.888,
+    0.978
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1628,
+   "easy": true
+  },
+  {
+   "id": "12-BPRO-4",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 90,
+   "losses": 10,
+   "draws": 0,
+   "n": 100,
+   "win": 0.9,
+   "ci": [
+    0.826,
+    0.945
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 2531,
+   "easy": true
+  },
+  {
+   "id": "12-BPRO-4",
+   "mapId": "mh",
+   "map": 12,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 94,
+   "losses": 6,
+   "draws": 0,
+   "n": 100,
+   "win": 0.94,
+   "ci": [
+    0.875,
+    0.972
+   ],
+   "stage": "ref:ref2",
+   "level": 3,
+   "deckMap": 12,
+   "cpu": 1,
+   "ms": 1476,
+   "easy": true
+  },
+  {
    "id": "13-PRO-1",
    "mapId": "mr",
    "map": 13,
@@ -5347,6 +8883,144 @@
    "easy": false
   },
   {
+   "id": "13-BPRO-1",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 39,
+   "losses": 61,
+   "draws": 0,
+   "n": 100,
+   "win": 0.39,
+   "ci": [
+    0.3,
+    0.488
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2744,
+   "easy": false
+  },
+  {
+   "id": "13-BPRO-1",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 77,
+   "losses": 23,
+   "draws": 0,
+   "n": 100,
+   "win": 0.77,
+   "ci": [
+    0.678,
+    0.842
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1574,
+   "easy": false
+  },
+  {
+   "id": "13-BPRO-2",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 32,
+   "losses": 68,
+   "draws": 0,
+   "n": 100,
+   "win": 0.32,
+   "ci": [
+    0.237,
+    0.417
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2176,
+   "easy": false
+  },
+  {
+   "id": "13-BPRO-2",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1371,
+   "easy": false
+  },
+  {
+   "id": "13-BPRO-3",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 58,
+   "losses": 42,
+   "draws": 0,
+   "n": 100,
+   "win": 0.58,
+   "ci": [
+    0.482,
+    0.672
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 2283,
+   "easy": false
+  },
+  {
+   "id": "13-BPRO-3",
+   "mapId": "mr",
+   "map": 13,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 86,
+   "losses": 14,
+   "draws": 0,
+   "n": 100,
+   "win": 0.86,
+   "ci": [
+    0.779,
+    0.915
+   ],
+   "stage": "ref:ref2",
+   "level": 3.25,
+   "deckMap": 13,
+   "cpu": 1,
+   "ms": 1384,
+   "easy": true
+  },
+  {
    "id": "14-PRO-1",
    "mapId": "m5",
    "map": 14,
@@ -5528,6 +9202,190 @@
    "deckMap": 14,
    "cpu": 1,
    "ms": 1429,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-1",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 12,
+   "losses": 88,
+   "draws": 0,
+   "n": 100,
+   "win": 0.12,
+   "ci": [
+    0.07,
+    0.198
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 2910,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-1",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 36,
+   "losses": 64,
+   "draws": 0,
+   "n": 100,
+   "win": 0.36,
+   "ci": [
+    0.273,
+    0.458
+   ],
+   "stage": "ref:ref2",
+   "level": 3.5,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 1636,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-2",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 22,
+   "losses": 78,
+   "draws": 0,
+   "n": 100,
+   "win": 0.22,
+   "ci": [
+    0.15,
+    0.311
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 2353,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-2",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 41,
+   "losses": 59,
+   "draws": 0,
+   "n": 100,
+   "win": 0.41,
+   "ci": [
+    0.319,
+    0.508
+   ],
+   "stage": "ref:ref2",
+   "level": 3.5,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 1308,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-3",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 17,
+   "losses": 83,
+   "draws": 0,
+   "n": 100,
+   "win": 0.17,
+   "ci": [
+    0.109,
+    0.255
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 2060,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-3",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 30,
+   "losses": 70,
+   "draws": 0,
+   "n": 100,
+   "win": 0.3,
+   "ci": [
+    0.219,
+    0.396
+   ],
+   "stage": "ref:ref2",
+   "level": 3.5,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 1410,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-4",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 37,
+   "losses": 63,
+   "draws": 0,
+   "n": 100,
+   "win": 0.37,
+   "ci": [
+    0.282,
+    0.468
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 2944,
+   "easy": false
+  },
+  {
+   "id": "14-BPRO-4",
+   "mapId": "m5",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 3.5,
+   "deckMap": 14,
+   "cpu": 1,
+   "ms": 1691,
    "easy": false
   },
   {
@@ -5715,6 +9573,52 @@
    "easy": false
   },
   {
+   "id": "14-A-BPRO-1",
+   "mapId": "my",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 4,
+   "losses": 96,
+   "draws": 0,
+   "n": 100,
+   "win": 0.04,
+   "ci": [
+    0.016,
+    0.098
+   ],
+   "stage": "road",
+   "level": 3.54,
+   "deckMap": 18,
+   "cpu": 1,
+   "ms": 2091,
+   "easy": false
+  },
+  {
+   "id": "14-A-BPRO-1",
+   "mapId": "my",
+   "map": 14,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 61,
+   "losses": 39,
+   "draws": 0,
+   "n": 100,
+   "win": 0.61,
+   "ci": [
+    0.512,
+    0.7
+   ],
+   "stage": "ref:ref2",
+   "level": 4.5,
+   "deckMap": 18,
+   "cpu": 1,
+   "ms": 2156,
+   "easy": false
+  },
+  {
    "id": "15-PRO-1",
    "mapId": "ml",
    "map": 15,
@@ -5896,6 +9800,190 @@
    "deckMap": 15,
    "cpu": 1,
    "ms": 1633,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-1",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 72,
+   "losses": 28,
+   "draws": 0,
+   "n": 100,
+   "win": 0.72,
+   "ci": [
+    0.625,
+    0.799
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2932,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-1",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 83,
+   "losses": 17,
+   "draws": 0,
+   "n": 100,
+   "win": 0.83,
+   "ci": [
+    0.745,
+    0.891
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1509,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-2",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 79,
+   "losses": 21,
+   "draws": 0,
+   "n": 100,
+   "win": 0.79,
+   "ci": [
+    0.7,
+    0.858
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2535,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-2",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 77,
+   "losses": 23,
+   "draws": 0,
+   "n": 100,
+   "win": 0.77,
+   "ci": [
+    0.678,
+    0.842
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 2006,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-3",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 60,
+   "losses": 40,
+   "draws": 0,
+   "n": 100,
+   "win": 0.6,
+   "ci": [
+    0.502,
+    0.691
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 3782,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-3",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 83,
+   "losses": 17,
+   "draws": 0,
+   "n": 100,
+   "win": 0.83,
+   "ci": [
+    0.745,
+    0.891
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1760,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-4",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 64,
+   "losses": 36,
+   "draws": 0,
+   "n": 100,
+   "win": 0.64,
+   "ci": [
+    0.542,
+    0.727
+   ],
+   "stage": "road",
+   "level": 3,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 3607,
+   "easy": false
+  },
+  {
+   "id": "15-BPRO-4",
+   "mapId": "ml",
+   "map": 15,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 79,
+   "losses": 21,
+   "draws": 0,
+   "n": 100,
+   "win": 0.79,
+   "ci": [
+    0.7,
+    0.858
+   ],
+   "stage": "ref:ref2",
+   "level": 3.75,
+   "deckMap": 15,
+   "cpu": 1,
+   "ms": 1576,
    "easy": false
   },
   {
@@ -6083,6 +10171,144 @@
    "easy": true
   },
   {
+   "id": "16-BPRO-1",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 41,
+   "losses": 59,
+   "draws": 0,
+   "n": 100,
+   "win": 0.41,
+   "ci": [
+    0.319,
+    0.508
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 3189,
+   "easy": false
+  },
+  {
+   "id": "16-BPRO-1",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1655,
+   "easy": false
+  },
+  {
+   "id": "16-BPRO-2",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 38,
+   "losses": 62,
+   "draws": 0,
+   "n": 100,
+   "win": 0.38,
+   "ci": [
+    0.291,
+    0.478
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 2508,
+   "easy": false
+  },
+  {
+   "id": "16-BPRO-2",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1944,
+   "easy": false
+  },
+  {
+   "id": "16-BPRO-3",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 51,
+   "losses": 49,
+   "draws": 0,
+   "n": 100,
+   "win": 0.51,
+   "ci": [
+    0.413,
+    0.606
+   ],
+   "stage": "road",
+   "level": 3.18,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 2944,
+   "easy": false
+  },
+  {
+   "id": "16-BPRO-3",
+   "mapId": "mt",
+   "map": 16,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 84,
+   "losses": 16,
+   "draws": 0,
+   "n": 100,
+   "win": 0.84,
+   "ci": [
+    0.756,
+    0.899
+   ],
+   "stage": "ref:ref2",
+   "level": 4,
+   "deckMap": 16,
+   "cpu": 1,
+   "ms": 1610,
+   "easy": false
+  },
+  {
    "id": "17-PRO-1",
    "mapId": "m6",
    "map": 17,
@@ -6264,6 +10490,144 @@
    "deckMap": 17,
    "cpu": 1,
    "ms": 1727,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-1",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 4,
+   "losses": 96,
+   "draws": 0,
+   "n": 100,
+   "win": 0.04,
+   "ci": [
+    0.016,
+    0.098
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 3521,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-1",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 27,
+   "losses": 73,
+   "draws": 0,
+   "n": 100,
+   "win": 0.27,
+   "ci": [
+    0.193,
+    0.364
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 1822,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-2",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 7,
+   "losses": 93,
+   "draws": 0,
+   "n": 100,
+   "win": 0.07,
+   "ci": [
+    0.034,
+    0.137
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 3587,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-2",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 36,
+   "losses": 64,
+   "draws": 0,
+   "n": 100,
+   "win": 0.36,
+   "ci": [
+    0.273,
+    0.458
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 1984,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-3",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 12,
+   "losses": 88,
+   "draws": 0,
+   "n": 100,
+   "win": 0.12,
+   "ci": [
+    0.07,
+    0.198
+   ],
+   "stage": "road",
+   "level": 3.36,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 5439,
+   "easy": false
+  },
+  {
+   "id": "17-BPRO-3",
+   "mapId": "m6",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 41,
+   "losses": 59,
+   "draws": 0,
+   "n": 100,
+   "win": 0.41,
+   "ci": [
+    0.319,
+    0.508
+   ],
+   "stage": "ref:ref2",
+   "level": 4.25,
+   "deckMap": 17,
+   "cpu": 1,
+   "ms": 2702,
    "easy": false
   },
   {
@@ -6451,6 +10815,190 @@
    "easy": false
   },
   {
+   "id": "17-A-BPRO-1",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 26,
+   "losses": 74,
+   "draws": 0,
+   "n": 100,
+   "win": 0.26,
+   "ci": [
+    0.184,
+    0.354
+   ],
+   "stage": "road",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 1943,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-1",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 56,
+   "losses": 44,
+   "draws": 0,
+   "n": 100,
+   "win": 0.56,
+   "ci": [
+    0.462,
+    0.653
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 1278,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-2",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 28,
+   "losses": 72,
+   "draws": 0,
+   "n": 100,
+   "win": 0.28,
+   "ci": [
+    0.201,
+    0.375
+   ],
+   "stage": "road",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 2640,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-2",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 61,
+   "losses": 39,
+   "draws": 0,
+   "n": 100,
+   "win": 0.61,
+   "ci": [
+    0.512,
+    0.7
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 1980,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-3",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 30,
+   "losses": 70,
+   "draws": 0,
+   "n": 100,
+   "win": 0.3,
+   "ci": [
+    0.219,
+    0.396
+   ],
+   "stage": "road",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 2669,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-3",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 1695,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-4",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 31,
+   "losses": 69,
+   "draws": 0,
+   "n": 100,
+   "win": 0.31,
+   "ci": [
+    0.228,
+    0.406
+   ],
+   "stage": "road",
+   "level": 4.08,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 2301,
+   "easy": false
+  },
+  {
+   "id": "17-A-BPRO-4",
+   "mapId": "mi",
+   "map": 17,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 71,
+   "losses": 29,
+   "draws": 0,
+   "n": 100,
+   "win": 0.71,
+   "ci": [
+    0.615,
+    0.79
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 21,
+   "cpu": 1,
+   "ms": 1565,
+   "easy": false
+  },
+  {
    "id": "18-PRO-1",
    "mapId": "md",
    "map": 18,
@@ -6586,6 +11134,52 @@
    "deckMap": 18,
    "cpu": 1,
    "ms": 1776,
+   "easy": false
+  },
+  {
+   "id": "18-BPRO-1",
+   "mapId": "md",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "road",
+   "level": 3.54,
+   "deckMap": 18,
+   "cpu": 1,
+   "ms": 4996,
+   "easy": false
+  },
+  {
+   "id": "18-BPRO-1",
+   "mapId": "md",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 4.5,
+   "deckMap": 18,
+   "cpu": 1,
+   "ms": 2084,
    "easy": false
   },
   {
@@ -6727,6 +11321,144 @@
    "easy": false
   },
   {
+   "id": "18-A-BPRO-1",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 15,
+   "losses": 85,
+   "draws": 0,
+   "n": 100,
+   "win": 0.15,
+   "ci": [
+    0.093,
+    0.233
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 2066,
+   "easy": false
+  },
+  {
+   "id": "18-A-BPRO-1",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 42,
+   "losses": 58,
+   "draws": 0,
+   "n": 100,
+   "win": 0.42,
+   "ci": [
+    0.328,
+    0.518
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1531,
+   "easy": false
+  },
+  {
+   "id": "18-A-BPRO-2",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 27,
+   "losses": 72,
+   "draws": 1,
+   "n": 100,
+   "win": 0.27,
+   "ci": [
+    0.193,
+    0.364
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1960,
+   "easy": false
+  },
+  {
+   "id": "18-A-BPRO-2",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 58,
+   "losses": 42,
+   "draws": 0,
+   "n": 100,
+   "win": 0.58,
+   "ci": [
+    0.482,
+    0.672
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1535,
+   "easy": false
+  },
+  {
+   "id": "18-A-BPRO-3",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 30,
+   "losses": 70,
+   "draws": 0,
+   "n": 100,
+   "win": 0.3,
+   "ci": [
+    0.219,
+    0.396
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1917,
+   "easy": false
+  },
+  {
+   "id": "18-A-BPRO-3",
+   "mapId": "mpd",
+   "map": 18,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 56,
+   "losses": 44,
+   "draws": 0,
+   "n": 100,
+   "win": 0.56,
+   "ci": [
+    0.462,
+    0.653
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1532,
+   "easy": false
+  },
+  {
    "id": "19-PRO-1",
    "mapId": "m3",
    "map": 19,
@@ -6862,6 +11594,190 @@
    "deckMap": 19,
    "cpu": 1,
    "ms": 1604,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-1",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 78,
+   "losses": 21,
+   "draws": 1,
+   "n": 100,
+   "win": 0.78,
+   "ci": [
+    0.689,
+    0.85
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 3768,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-1",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 73,
+   "losses": 27,
+   "draws": 0,
+   "n": 100,
+   "win": 0.73,
+   "ci": [
+    0.636,
+    0.807
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1640,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-2",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 62,
+   "losses": 38,
+   "draws": 0,
+   "n": 100,
+   "win": 0.62,
+   "ci": [
+    0.522,
+    0.709
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 3367,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-2",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 67,
+   "losses": 33,
+   "draws": 0,
+   "n": 100,
+   "win": 0.67,
+   "ci": [
+    0.573,
+    0.754
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1975,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-3",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 3327,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-3",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 76,
+   "losses": 24,
+   "draws": 0,
+   "n": 100,
+   "win": 0.76,
+   "ci": [
+    0.668,
+    0.833
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1908,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-4",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 81,
+   "losses": 19,
+   "draws": 0,
+   "n": 100,
+   "win": 0.81,
+   "ci": [
+    0.722,
+    0.875
+   ],
+   "stage": "road",
+   "level": 3.72,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 3221,
+   "easy": false
+  },
+  {
+   "id": "19-BPRO-4",
+   "mapId": "m3",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 78,
+   "losses": 22,
+   "draws": 0,
+   "n": 100,
+   "win": 0.78,
+   "ci": [
+    0.689,
+    0.85
+   ],
+   "stage": "ref:ref2",
+   "level": 4.75,
+   "deckMap": 19,
+   "cpu": 1,
+   "ms": 1944,
    "easy": false
   },
   {
@@ -7049,6 +11965,98 @@
    "easy": false
   },
   {
+   "id": "19-A-BPRO-1",
+   "mapId": "m9",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 33,
+   "losses": 67,
+   "draws": 0,
+   "n": 100,
+   "win": 0.33,
+   "ci": [
+    0.246,
+    0.427
+   ],
+   "stage": "road",
+   "level": 4.44,
+   "deckMap": 23,
+   "cpu": 1,
+   "ms": 2474,
+   "easy": false
+  },
+  {
+   "id": "19-A-BPRO-1",
+   "mapId": "m9",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 23,
+   "cpu": 1,
+   "ms": 1523,
+   "easy": false
+  },
+  {
+   "id": "19-A-BPRO-2",
+   "mapId": "m9",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 32,
+   "losses": 68,
+   "draws": 0,
+   "n": 100,
+   "win": 0.32,
+   "ci": [
+    0.237,
+    0.417
+   ],
+   "stage": "road",
+   "level": 4.44,
+   "deckMap": 23,
+   "cpu": 1,
+   "ms": 2647,
+   "easy": false
+  },
+  {
+   "id": "19-A-BPRO-2",
+   "mapId": "m9",
+   "map": 19,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 70,
+   "losses": 30,
+   "draws": 0,
+   "n": 100,
+   "win": 0.7,
+   "ci": [
+    0.604,
+    0.781
+   ],
+   "stage": "ref:ref2",
+   "level": 5.1,
+   "deckMap": 23,
+   "cpu": 1,
+   "ms": 1580,
+   "easy": false
+  },
+  {
    "id": "20-PRO-1",
    "mapId": "m11",
    "map": 20,
@@ -7185,6 +12193,52 @@
    "cpu": 1,
    "ms": 1805,
    "easy": false
+  },
+  {
+   "id": "20-BPRO-1",
+   "mapId": "m11",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 90,
+   "losses": 10,
+   "draws": 0,
+   "n": 100,
+   "win": 0.9,
+   "ci": [
+    0.826,
+    0.945
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 3354,
+   "easy": true
+  },
+  {
+   "id": "20-BPRO-1",
+   "mapId": "m11",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 90,
+   "losses": 10,
+   "draws": 0,
+   "n": 100,
+   "win": 0.9,
+   "ci": [
+    0.826,
+    0.945
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 1741,
+   "easy": true
   },
   {
    "id": "20-A-PRO-1",
@@ -7325,6 +12379,144 @@
    "easy": true
   },
   {
+   "id": "20-A-BPRO-1",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 59,
+   "losses": 41,
+   "draws": 0,
+   "n": 100,
+   "win": 0.59,
+   "ci": [
+    0.492,
+    0.681
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 3538,
+   "easy": false
+  },
+  {
+   "id": "20-A-BPRO-1",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 75,
+   "losses": 25,
+   "draws": 0,
+   "n": 100,
+   "win": 0.75,
+   "ci": [
+    0.657,
+    0.825
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 2261,
+   "easy": false
+  },
+  {
+   "id": "20-A-BPRO-2",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 49,
+   "losses": 51,
+   "draws": 0,
+   "n": 100,
+   "win": 0.49,
+   "ci": [
+    0.394,
+    0.587
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 3213,
+   "easy": false
+  },
+  {
+   "id": "20-A-BPRO-2",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 69,
+   "losses": 31,
+   "draws": 0,
+   "n": 100,
+   "win": 0.69,
+   "ci": [
+    0.594,
+    0.772
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 2100,
+   "easy": false
+  },
+  {
+   "id": "20-A-BPRO-3",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 55,
+   "losses": 45,
+   "draws": 0,
+   "n": 100,
+   "win": 0.55,
+   "ci": [
+    0.452,
+    0.644
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 3371,
+   "easy": false
+  },
+  {
+   "id": "20-A-BPRO-3",
+   "mapId": "me",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 74,
+   "losses": 26,
+   "draws": 0,
+   "n": 100,
+   "win": 0.74,
+   "ci": [
+    0.646,
+    0.816
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 2192,
+   "easy": false
+  },
+  {
    "id": "20-B-PRO-1",
    "mapId": "mx",
    "map": 20,
@@ -7460,6 +12652,52 @@
    "deckMap": 20,
    "cpu": 1,
    "ms": 1593,
+   "easy": false
+  },
+  {
+   "id": "20-B-BPRO-1",
+   "mapId": "mx",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "map",
+   "games": 100,
+   "wins": 28,
+   "losses": 72,
+   "draws": 0,
+   "n": 100,
+   "win": 0.28,
+   "ci": [
+    0.201,
+    0.375
+   ],
+   "stage": "road",
+   "level": 3.9,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 2684,
+   "easy": false
+  },
+  {
+   "id": "20-B-BPRO-1",
+   "mapId": "mx",
+   "map": 20,
+   "kind": "bpro",
+   "ref": "ref2",
+   "games": 100,
+   "wins": 73,
+   "losses": 27,
+   "draws": 0,
+   "n": 100,
+   "win": 0.73,
+   "ci": [
+    0.636,
+    0.807
+   ],
+   "stage": "ref:ref2",
+   "level": 5,
+   "deckMap": 20,
+   "cpu": 1,
+   "ms": 2181,
    "easy": false
   }
  ]
