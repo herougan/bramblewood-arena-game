@@ -30,13 +30,14 @@ const bee = byId['bee-knight'];
   c.matchState = {mode: 'tutorial', tutorialStage: 1}; V.reset();
   const mb = V.maskHiddenSkills(bee), ml = V.maskHiddenSkills(lark), mt = V.maskHiddenSkills(thorny);
   ok(V.revealTut12(), '1. a T-1 fight is the T-1 / T-2 reveal');
-  ok(JSON.stringify(mb.effects) === '{"flying":true}' && mb._hiddenSkills === 1, `1. T-1: Bee Knight shows Flying and one "?" for Swarm (${JSON.stringify(mb.effects)}, ${mb._hiddenSkills})`);
-  ok(JSON.stringify(ml.effects) === '{"flying":true}' && ml._hiddenSkills === 2, '1. T-1: Diurnal (a reveal-map skill the old tutorials showed) is "?" too');
+// 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying": no Flying exception any more (TUT12_SHOWN empty), every skill "?"
+  ok(JSON.stringify(mb.effects) === '{}' && mb._hiddenSkills === 2, `1. T-1: Bee Knight's Flying and Swarm both read "?" (${JSON.stringify(mb.effects)}, ${mb._hiddenSkills})`);
+  ok(JSON.stringify(ml.effects) === '{}' && ml._hiddenSkills === 3, '1. T-1: Diurnal (a reveal-map skill the old tutorials showed) is "?" too, and Flying');
   ok(JSON.stringify(mt.effects) === '{}' && mt._hiddenSkills === 2, '1. T-1: a number skill and a trigger read "?"');
-  ok(V.maskHiddenSkills(plain) === plain && V.maskHiddenSkills({id: 'hb', effects: {flying: true}}).effects.flying === true, '1. T-1: a vanilla card and a Flying-only card are as they are');
-  ok(V.skillHiddenNow('swarm') && V.skillHiddenNow('thorns') && V.skillHiddenNow('diurnal') && V.skillHiddenNow('anyNewSkill') && !V.skillHiddenNow('flying'), '1. T-1: skillHiddenNow says "?" for every skill but Flying (coach, codex book)');
-  ok(V.hiddenSkillSet().has('swarm') && !V.hiddenSkillSet().has('flying'), '1. T-1: the hidden set (tile cache key) holds Swarm, not Flying');
-  ok(V.tut12LogMask({cls: '', text: '🐝 Bee Knight calls its Swarm! Thorns cut it. It is Flying.'}).text === '🐝 Bee Knight calls its ?! ? cut it. It is Flying.', '1. T-1: the battle log names no skill but Flying');
+  ok(V.maskHiddenSkills(plain) === plain && V.maskHiddenSkills({id: 'hb', effects: {flying: true}}).effects.flying === undefined, '1. T-1: a vanilla card is as it is; a Flying-only card reads "?" (TUT2)');
+  ok(V.skillHiddenNow('swarm') && V.skillHiddenNow('thorns') && V.skillHiddenNow('diurnal') && V.skillHiddenNow('anyNewSkill') && V.skillHiddenNow('flying'), '1. T-1: skillHiddenNow says "?" for every skill, Flying too (TUT2)');
+  ok(V.hiddenSkillSet().has('swarm') && V.hiddenSkillSet().has('flying'), '1. T-1: the hidden set (tile cache key) holds Swarm and Flying (TUT2)');
+  ok(V.tut12LogMask({cls: '', text: '🐝 Bee Knight calls its Swarm! Thorns cut it. It is Flying.'}).text === '🐝 Bee Knight calls its ?! ? cut it. It is ?.', '1. T-1: the battle log names no skill (TUT2: Flying neither)');
   c.matchState = {mode: 'tutorial', tutorialStage: 2, over: true, winner: 1}; V.reset();
   ok(V.maskHiddenSkills(bee).effects.swarm === undefined, '1. T-2, its results screen too');
   // Map 0 (and T-3 to T-5: conquest fights)
@@ -52,7 +53,8 @@ const bee = byId['bee-knight'];
 ok(/if\(ev && !ev\.__t12 && revealTut12\(\)\) return tut12LogMask\(logText\(/.test(fnSrc('logText')), '1. logText masks the line in T-1 / T-2');
 
 // ---- 2. Bee Knight's levels
-ok(bee && JSON.stringify(bee.effects) === '{"swarm":true,"flying":true}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: Swarm arrives at Level 1');
+// 2026-10-30 TUT2: owner SKL0-1 "T-1/T-2 won't have swarm or flying ... no skills till lvl 1": Flying arrives at Level 1 too
+ok(bee && JSON.stringify(bee.effects) === '{"swarm":true,"flying":true}' && JSON.stringify(bee.levelSkills) === '{"1":{"swarm":true,"flying":true}}', '2. cards.json: Bee Knight as printed (Level 1) has Swarm + Flying; levelSkills: both arrive at Level 1 (TUT2)');
 ok(cards.filter(c=> c.levelSkills).every(c=> Object.keys(c.levelSkills).every(k=> +k > 0)), '2. no levelSkills at Level 0');
 const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
 { const overlay = {}, defs = Object.assign({}, L.CARD_DEFS_BASELINE);
@@ -60,18 +62,19 @@ const L = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = L.G;
   vm.createContext(c); vm.runInContext(fnSrc('tutorialLevel0Def') + '\n' + fnSrc('tutorialPlainDeck') + '\n;this.R = {tutorialLevel0Def, tutorialPlainDeck};', c);
   const z = c.R.tutorialLevel0Def('bee-knight');
   ok(G.cardBaseLevel(defs['bee-knight']) === 1, '2. Bee Knight\'s own level is 1 (PP3_LEVEL1_BASE)');
-  ok(z && z.id === 'bee-knight~tut0' && z.derivedFrom === 'bee-knight' && z.level === 0 && JSON.stringify(z.effects) === '{"flying":true}', `2. its T-1 / T-2 copy is Level 0 with Flying only (${z && JSON.stringify(z.effects)})`);
+  ok(z && z.id === 'bee-knight~tut0' && z.derivedFrom === 'bee-knight' && z.level === 0 && JSON.stringify(z.effects) === '{}', `2. its T-1 / T-2 copy is Level 0 with no skill (TUT2; was Flying only) (${z && JSON.stringify(z.effects)})`);
   const lv1 = (()=>{ const fx = Object.assign({}, bee.effects); Object.keys(bee.levelSkills).map(Number).filter(k=> k <= 1).forEach(k=> Object.assign(fx, bee.levelSkills[k])); return fx; })();
   ok(lv1.swarm && lv1.flying, '2. at Level 1 (copyDefAt / referencePlayerDeck merge levelSkills <= L) it has Flying + Swarm');
-  ok(['earthworm', 'pond-trout', 'silver-minnow', 'duckling', 'cottontail', 'crossed-eyes'].every(id=> c.R.tutorialLevel0Def(id) === null), '2. the other six T-1 / T-2 cards have no skills: dealt as they are (their level unchanged)');
+  // 2026-10-30 TUT2: owner SKL0-1 "yes definitely": every T-1 / T-2 card is Level 0; a Base card (own level 1) gets its Level 0 copy too
+  ok(['earthworm', 'crossed-eyes'].every(id=> c.R.tutorialLevel0Def(id) === null) && ['pond-trout', 'silver-minnow', 'duckling', 'cottontail'].every(id=>{ const o = c.R.tutorialLevel0Def(id); return o && o.level === 0; }), '2. the other six T-1 / T-2 cards: Level 0 (the Base cards as their Level 0 copy, TUT2; Earthworm and Crossed-Eyes are Level 0 already)');
   const deck = c.R.tutorialPlainDeck({'bee-knight': 2, duckling: 3}, 1);
-  ok(deck['bee-knight~tut0'] === 2 && deck.duckling === 3 && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copy');
+  ok(deck['bee-knight~tut0'] === 2 && deck['duckling~tut0'] === 3 && !deck['bee-knight'] && overlay['bee-knight~tut0'], '2. the tutorial deck (either side) deals the Level 0 copies');
   ok(/rivalCounts = tutorialPlainDeck\(tutDecks\.rival, st\)/.test(app) && /deckCounts = tutorialPlainDeck\(tutDecks\.mine, st\)/.test(app), '2. both T-1 / T-2 decks go through it');
   // the budget at each level
   const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
   const s0 = G.statsAtLevel(bee, 0), s1 = G.statsAtLevel(bee, 1);
   const b0 = T.budget(Object.assign({}, bee, {attack: s0.attack, health: s0.health, effects: z.effects}), {level: 0}), b1 = T.budget(Object.assign({}, bee, {attack: s1.attack, health: s1.health, effects: lv1}), {level: 1});
-  ok(b0.ok && b1.ok, `2. within budget: Level 0 ${s0.attack}/${s0.health} Flying (2A+H+S ${b0.x1} <= N ${b0.N}; cap 2 ${b0.x2} <= ${b0.N2}), Level 1 ${s1.attack}/${s1.health} Flying + Swarm (${b1.x1} <= ${b1.N}; ${b1.x2} <= ${b1.N2})`); }
+  ok(b0.ok && b1.ok, `2. within budget: Level 0 ${s0.attack}/${s0.health} no skill (2A+H+S ${b0.x1} <= N ${b0.N}; cap 2 ${b0.x2} <= ${b0.N2}), Level 1 ${s1.attack}/${s1.health} Flying + Swarm (${b1.x1} <= ${b1.N}; ${b1.x2} <= ${b1.N2})`); }
 
 console.log(`skl0-2026-10-29: ${n - fail}/${n} passed, ${fail} failure(s)`);
 process.exit(fail ? 1 : 0);
