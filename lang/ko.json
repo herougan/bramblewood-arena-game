@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "모든 카드에는 일반판과 포일판이 있으며, 더 많은 마감이 곧 추가됩니다",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "카드는 맞은편 카드를 공격하고, 빈 칸이면 덤불을 쳐요.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "받는 공격은 모두 치명타(피해 2배)이며 카운터를 1 쓴다. 이 유닛을 향한 공격은 빗나가지 않는다.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "레벨마다 이 카드의 능력치 예산이 늘어난 만큼 오릅니다. 레벨 4, 7, 10이 큰 상승, 레벨 2가 작은 상승이며, 오르지 않는 레벨도 있습니다.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "레벨마다 레이드 전투에서 내 덤불의 체력 +{pct}%.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "내 유닛마다 대기 -{n}. 내 비행 유닛은 다음 전투에서 한 번 더 행동한다.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "매 라운드 1/2 확률: 무작위 유닛에 연막탄을 던진다. 아군은 연기 속에 숨고 적은 실명한다.",
@@ -3392,7 +3391,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "장착 시간",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "유닛이 이 장비를 장착하는 데 걸리는 라운드 수(기본 1). 도난 방지: 훔칠 수 없습니다.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "장착 시간 {n}: 유닛이 장착하는 데 {n}라운드가 걸립니다.",
  "Tamper-proof": "도난 방지",
  "Tamper-proof: it can't be stolen.": "도난 방지: 훔칠 수 없습니다.",
@@ -3672,5 +3670,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "덱에 {n}장(최대 {cap}장, {rarity}). 보유 {owned}장.",
  "Replay the triggers lesson in your next fight.": "다음 전투에서 트리거 강의를 다시 합니다.",
  "Fuse spare copies; you only field one.": "남는 복사본을 융합합니다. 쓸 수 있는 건 하나뿐입니다.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "각 진영이 한 턴에 낼 수 있는 카드 수. 두 번째 진영은 덤불에 방패 +1을 받습니다."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "각 진영이 한 턴에 낼 수 있는 카드 수. 두 번째 진영은 덤불에 방패 +1을 받습니다.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "레벨마다 카드의 능력치 예산이 늘어납니다. 레벨 4, 7, 10에서 가장 많이 늘어납니다.",
+ "Rounds a unit takes to equip this piece (default 1).": "유닛이 이 장비를 착용하는 데 걸리는 라운드 수(기본 1)."
 }

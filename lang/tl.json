@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Bawat card ay may plain at foil na bersyon; may darating pang ibang finish",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Tinatamaan ng bawat kard ang kaharap nito; kung walang laman, ang dawag.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "kritikal ang bawat tama rito (dobleng pinsala) at gumagamit ng 1 counter; hindi sumasablay ang mga atake rito.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Idinadagdag ng bawat level ang paglaki ng stat budget ng card na ito. Ang Level 4, 7 at 10 ang malalaking hakbang, ang Level 2 ay mas maliit; may mga level na walang dagdag.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Bawat level ay nagbibigay sa dawag mo ng +{pct}% Buhay sa mga raid.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Nababawasan ng {n} Hintay ang bawat unit mo; may dagdag na turn ang mga lumilipad mo sa susunod na laban.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Bawat round, 1 sa 2: naghahagis ng smoke bomb sa random na unit. Nagtatago sa Usok ang mga kakampi; nabubulag ang mga kaaway.",
@@ -3390,7 +3389,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Oras ng Pagsuot",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "Ilang round bago maisuot ng isang unit ang piyesang ito (default 1). Tamper-proof: hindi ito mananakaw.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Oras ng Pagsuot {n}: {n} round bago ito maisuot ng isang unit.",
  "Tamper-proof": "Tamper-proof",
  "Tamper-proof: it can't be stolen.": "Tamper-proof: hindi ito mananakaw.",
@@ -3670,5 +3668,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} sa deck (hanggang {cap}, {rarity}). Mayroon kang {owned}.",
  "Replay the triggers lesson in your next fight.": "Ulitin ang aralin sa mga trigger sa susunod mong laban.",
  "Fuse spare copies; you only field one.": "I-fuse ang sobrang kopya; isa lang ang magagamit mo.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Bawat level ay nagdaragdag sa stat budget ng card. Pinakamarami ang Level 4, 7 at 10.",
+ "Rounds a unit takes to equip this piece (default 1).": "Mga round na kailangan ng unit para i-equip ang piyesang ito (default 1)."
 }

@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "每張卡牌都有普通版和閃卡版；更多卡面即將推出",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "每張卡攻擊對面的卡；對面空著就打荊棘叢。",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "每次命中都會暴擊（雙倍傷害）並消耗 1 枚標記；對它的攻擊不會落空。",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "每升一級，增加的是這張卡屬性預算的增長量。4、7、10級是大幅提升，2級是小幅提升；有些等級沒有變化。",
  "Each level gives your bramble +{pct}% Health in raid fights.": "每級讓你的荊棘叢在突襲戰中 +{pct}% 生命。",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "你的每個單位等待 -{n}；你的飛行單位在下次戰鬥中多行動一次。",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "每回合有 1/2 機率：向隨機單位投擲煙霧彈。友軍躲進煙霧；敵人被致盲。",
@@ -3389,7 +3388,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "裝備時間",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "單位裝備此物所需的回合數（預設 1）。防竊：無法被偷走。",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "裝備時間 {n}：單位需要 {n} 回合才能裝備它。",
  "Tamper-proof": "防竊",
  "Tamper-proof: it can't be stolen.": "防竊：無法被偷走。",
@@ -3669,5 +3667,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "牌組中 {n} 張(上限 {cap}，{rarity})。你擁有 {owned} 張。",
  "Replay the triggers lesson in your next fight.": "在下一場戰鬥中重玩觸發器課程。",
  "Fuse spare copies; you only field one.": "融合多餘的複本；你只會上場一張。",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌數。後手的一方荊棘叢 +1 護盾."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌數。後手的一方荊棘叢 +1 護盾.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "每升一級都會增加卡牌的屬性預算。第 4、7、10 級增加最多。",
+ "Rounds a unit takes to equip this piece (default 1).": "單位裝備此物品所需的回合數(預設 1)。"
 }

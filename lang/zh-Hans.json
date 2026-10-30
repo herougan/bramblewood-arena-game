@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "每张卡牌都有普通版和闪卡版；更多卡面即将推出",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "每张卡攻击对面的卡；对面空着就打荆棘丛。",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "每次命中都会暴击（双倍伤害）并消耗 1 枚标记；对它的攻击不会落空。",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "每升一级，增加的是这张卡属性预算的增长量。4、7、10级是大幅提升，2级是小幅提升；有些等级没有变化。",
  "Each level gives your bramble +{pct}% Health in raid fights.": "每级让你的荆棘丛在突袭战中 +{pct}% 生命。",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "你的每个单位等待 -{n}；你的飞行单位在下次战斗中多行动一次。",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "每回合有 1/2 几率：向随机单位投掷烟雾弹。友军躲进烟雾；敌人被致盲。",
@@ -3389,7 +3388,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "装备时间",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "单位装备此物所需的回合数（默认 1）。防窃：无法被偷走。",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "装备时间 {n}：单位需要 {n} 回合才能装备它。",
  "Tamper-proof": "防窃",
  "Tamper-proof: it can't be stolen.": "防窃：无法被偷走。",
@@ -3669,5 +3667,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "卡组中 {n} 张(上限 {cap}，{rarity})。你拥有 {owned} 张。",
  "Replay the triggers lesson in your next fight.": "在下一场战斗中重玩触发器课程。",
  "Fuse spare copies; you only field one.": "融合多余的副本；你只会上场一张。",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "每升一级都会增加卡牌的属性预算。第 4、7、10 级增加最多。",
+ "Rounds a unit takes to equip this piece (default 1).": "单位装备此物品所需的回合数(默认 1)。"
 }

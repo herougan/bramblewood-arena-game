@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "各カードにノーマルとホイルがあります。ほかの仕上げも近日登場",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "カードは向かいのカードを攻撃。向かいが空ならいばらを攻撃。",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "受ける攻撃はすべてクリティカル（2倍）でカウンターを1つ使う。攻撃は外れない。",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "各レベルで、このカードのステータス予算が増えた分だけ上がる。レベル4・7・10が大きな上昇、レベル2が小さな上昇。何も上がらないレベルもある。",
  "Each level gives your bramble +{pct}% Health in raid fights.": "レベルごとに、レイド戦であなたのいばらの体力 +{pct}%。",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "味方ユニットそれぞれの待機 -{n}。飛行ユニットは次の戦闘で1回多く動く。",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "毎ラウンド 2 回に 1 回：ランダムなユニットに煙玉を投げる。味方は煙に隠れ、敵は盲目になる。",
@@ -3389,7 +3388,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "装備時間",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "ユニットがこの装備を身につけるのにかかるラウンド数（既定1）。盗難防止：盗まれない。",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "装備時間 {n}：ユニットが身につけるのに {n} ラウンドかかる。",
  "Tamper-proof": "盗難防止",
  "Tamper-proof: it can't be stolen.": "盗難防止：盗まれない。",
@@ -3669,5 +3667,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "デッキに{n}枚(上限{cap}、{rarity})。所持数は{owned}枚。",
  "Replay the triggers lesson in your next fight.": "次の戦闘で、トリガーのレッスンをもう一度行います。",
  "Fuse spare copies; you only field one.": "余ったコピーを融合します。使えるのは1枚だけです。",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "各陣営が1ターンに出せるカード数。後攻はいばらにシールド+1."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "各陣営が1ターンに出せるカード数。後攻はいばらにシールド+1.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "レベルごとにカードのステータス予算が増えます。レベル4、7、10が最も増えます。",
+ "Rounds a unit takes to equip this piece (default 1).": "ユニットがこの装備を身につけるのにかかるラウンド数(初期値1)。"
 }

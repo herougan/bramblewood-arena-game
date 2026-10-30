@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Jede Karte gibt es normal und als Foil; weitere Varianten folgen",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Jede Karte trifft die gegenüber; eine leere Bahn trifft die Dornenhecke.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "jeder Treffer auf sie ist kritisch (doppelter Schaden) und verbraucht 1 Marke; Angriffe auf sie verfehlen nie.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Jede Stufe fügt hinzu, um wie viel das Wertebudget dieser Karte wächst. Stufen 4, 7 und 10 sind die großen Schritte, Stufe 2 ein kleinerer; manche Stufen bringen nichts.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Jede Stufe gibt deiner Dornenhecke +{pct} % Leben in Raid-Kämpfen.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Jede deiner Einheiten verliert {n} Warten; deine Flieger bekommen im nächsten Kampf einen Extrazug.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Jede Runde, 1 zu 2: wirft eine Rauchbombe auf eine zufällige Einheit. Verbündete verstecken sich im Rauch; Feinde werden geblendet.",
@@ -3388,7 +3387,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Ausrüstzeit",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "Die Runden, die eine Einheit zum Anlegen braucht (Standard 1). Diebstahlsicher: kann nicht gestohlen werden.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Ausrüstzeit {n}: eine Einheit braucht {n} Runde(n) zum Anlegen.",
  "Tamper-proof": "Diebstahlsicher",
  "Tamper-proof: it can't be stolen.": "Diebstahlsicher: kann nicht gestohlen werden.",
@@ -3668,5 +3666,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} im Deck (max. {cap}, {rarity}). Du besitzt {owned}.",
  "Replay the triggers lesson in your next fight.": "Spiele die Auslöser-Lektion im nächsten Kampf erneut.",
  "Fuse spare copies; you only field one.": "Verschmilz überzählige Exemplare; du setzt nur eins ein.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Karten, die jede Seite pro Zug spielen darf. Die Seite, die als Zweite spielt, erhält +1 Schild auf ihrer Dornenhecke."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Karten, die jede Seite pro Zug spielen darf. Die Seite, die als Zweite spielt, erhält +1 Schild auf ihrer Dornenhecke.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Jede Stufe erhöht das Wertebudget der Karte. Stufe 4, 7 und 10 bringen am meisten.",
+ "Rounds a unit takes to equip this piece (default 1).": "Runden, die eine Einheit zum Ausrüsten dieses Teils braucht (Standard 1)."
 }

@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Chaque carte existe en version normale et brillante ; d'autres finitions arrivent",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Chaque carte frappe celle d’en face ; une voie vide touche le roncier.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "chaque coup sur elle est critique (dégâts doublés) et use 1 marqueur ; les attaques contre elle ne ratent pas.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Chaque niveau ajoute ce dont grandit le budget de stats de cette carte. Les niveaux 4, 7 et 10 sont les grands paliers, le niveau 2 un plus petit ; certains niveaux n'ajoutent rien.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Chaque niveau donne +{pct} % de Santé à votre roncier en raid.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Chacune de tes unités perd {n} Attente ; tes unités volantes gagnent un tour de plus au prochain combat.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Chaque tour, 1 sur 2 : lance une bombe fumigène sur une unité au hasard. Les alliées se cachent dans la Fumée ; les ennemies sont aveuglées.",
@@ -3389,7 +3388,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Temps d'équipement",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "Les manches qu'il faut à une unité pour s'équiper de cette pièce (1 par défaut). Inviolable : on ne peut pas la voler.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Temps d'équipement {n} : une unité met {n} manche(s) à s'en équiper.",
  "Tamper-proof": "Inviolable",
  "Tamper-proof: it can't be stolen.": "Inviolable : on ne peut pas le voler.",
@@ -3669,5 +3667,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} dans le deck (max {cap}, {rarity}). Tu en possèdes {owned}.",
  "Replay the triggers lesson in your next fight.": "Rejoue la leçon sur les déclencheurs lors de ton prochain combat.",
  "Fuse spare copies; you only field one.": "Fusionne les copies en trop ; tu n'en alignes qu'une.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartes que chaque camp peut jouer par tour. Le camp qui joue en second reçoit +1 Bouclier sur son roncier."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartes que chaque camp peut jouer par tour. Le camp qui joue en second reçoit +1 Bouclier sur son roncier.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Chaque niveau augmente le budget de stats de la carte. Les niveaux 4, 7 et 10 apportent le plus.",
+ "Rounds a unit takes to equip this piece (default 1).": "Tours qu'une unité met à équiper cette pièce (1 par défaut)."
 }

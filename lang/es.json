@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Cada carta tiene versión normal y foil; llegarán más acabados",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Cada carta golpea a la de enfrente; un carril vacío golpea el zarzal.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "cada golpe sobre ella es crítico (daño doble) y gasta 1 ficha; los ataques contra ella no fallan.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Cada nivel suma lo que crece el presupuesto de estadísticas de esta carta. Los niveles 4, 7 y 10 son los saltos grandes, el nivel 2 uno menor; algunos niveles no suman nada.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Cada nivel da a tu zarzal +{pct} % de Salud en los asaltos.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Cada una de tus unidades pierde {n} de Espera; tus voladoras ganan un turno extra en el próximo combate.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Cada ronda, 1 de cada 2: lanza una bomba de humo a una unidad al azar. Las aliadas se esconden en el Humo; las enemigas quedan cegadas.",
@@ -3388,7 +3387,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Tiempo de equipo",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "Las rondas que tarda una unidad en equiparse esta pieza (1 por defecto). A prueba de robo: no se puede robar.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Tiempo de equipo {n}: una unidad tarda {n} ronda(s) en equiparlo.",
  "Tamper-proof": "A prueba de robo",
  "Tamper-proof: it can't be stolen.": "A prueba de robo: no se puede robar.",
@@ -3668,5 +3666,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} en el mazo (máx. {cap}, {rarity}). Tienes {owned}.",
  "Replay the triggers lesson in your next fight.": "Repite la lección de los desencadenantes en tu próximo combate.",
  "Fuse spare copies; you only field one.": "Fusiona las copias sobrantes; solo usas una.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartas que cada bando puede jugar por turno. El bando que juega segundo recibe +1 Escudo en su zarzal."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartas que cada bando puede jugar por turno. El bando que juega segundo recibe +1 Escudo en su zarzal.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Cada nivel aumenta el presupuesto de estadísticas de la carta. Los niveles 4, 7 y 10 aportan más.",
+ "Rounds a unit takes to equip this piece (default 1).": "Rondas que tarda una unidad en equipar esta pieza (por defecto 1)."
 }

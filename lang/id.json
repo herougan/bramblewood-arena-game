@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Tiap kartu punya versi biasa dan foil; varian lain segera hadir",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Tiap kartu menyerang lawan di depannya; jalur kosong mengenai semak.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "tiap serangan padanya kritis (kerusakan ganda) dan memakai 1 penanda; serangan padanya tak bisa meleset.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Tiap level menambah sebesar pertumbuhan anggaran stat kartu ini. Level 4, 7, dan 10 adalah langkah besar, Level 2 yang lebih kecil; beberapa level tidak menambah apa-apa.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Tiap level memberi semakmu +{pct}% Nyawa dalam pertarungan raid.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Tiap unitmu kehilangan {n} Tunggu; unit terbangmu dapat giliran ekstra di pertempuran berikutnya.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Tiap ronde, 1 dari 2: melempar bom asap ke unit acak. Sekutu bersembunyi di Asap; musuh menjadi Buta.",
@@ -3391,7 +3390,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Waktu Pasang",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "Ronde yang dibutuhkan unit untuk memasang benda ini (bawaan 1). Anti-curi: tak bisa dicuri.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Waktu Pasang {n}: unit butuh {n} ronde untuk memasangnya.",
  "Tamper-proof": "Anti-curi",
  "Tamper-proof: it can't be stolen.": "Anti-curi: tak bisa dicuri.",
@@ -3671,5 +3669,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} di dek (maks {cap}, {rarity}). Kamu punya {owned}.",
  "Replay the triggers lesson in your next fight.": "Mainkan lagi pelajaran pemicu di pertarungan berikutnya.",
  "Fuse spare copies; you only field one.": "Gabungkan salinan lebih; kamu hanya memakai satu.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Tiap level menambah anggaran stat kartu. Level 4, 7, dan 10 menambah paling banyak.",
+ "Rounds a unit takes to equip this piece (default 1).": "Ronde yang dibutuhkan unit untuk memasang bagian ini (default 1)."
 }

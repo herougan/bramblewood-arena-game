@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "ஒவ்வொரு அட்டைக்கும் சாதாரண அச்சும் ஃபாயிலும் உண்டு; மேலும் வடிவங்கள் விரைவில்",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "ஒவ்வொரு அட்டையும் எதிரில் உள்ளதைத் தாக்கும்; காலியாக இருந்தால் முட்புதரை.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "இதன் மீது ஒவ்வோர் அடியும் கடுமை (இரட்டைச் சேதம்), 1 குறியைச் செலவிடும்; இதன் மீதான தாக்குதல்கள் தவறாது.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "ஒவ்வொரு நிலையும் இந்த அட்டையின் புள்ளி வரவு எவ்வளவு வளர்கிறதோ அதைச் சேர்க்கும். நிலைகள் 4, 7, 10 பெரிய படிகள், நிலை 2 சிறியது; சில நிலைகள் எதையும் சேர்க்காது.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "ஒவ்வொரு நிலையும் படையெடுப்புப் போர்களில் உன் முட்புதருக்கு +{pct}% உயிர் தரும்.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "உன் ஒவ்வொரு அலகும் {n} காத்திருப்பை இழக்கும்; உன் பறக்கும் அலகுகள் அடுத்த சண்டையில் கூடுதல் முறை பெறும்.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "ஒவ்வொரு சுற்றிலும், 2-இல் 1: ஒரு சீரற்ற அலகின் மீது புகைக்குண்டு வீசும். நட்பு அலகுகள் புகையில் ஒளியும்; எதிரிகள் குருடாவர்.",
@@ -3392,7 +3391,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "அணியும் நேரம்",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "இந்தப் பொருளை ஒரு அலகு அணிய எடுக்கும் சுற்றுகள் (இயல்பு 1). திருட்டுக்காப்பு: இதைத் திருட முடியாது.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "அணியும் நேரம் {n}: ஒரு அலகு இதை அணிய {n} சுற்று(கள்) எடுக்கும்.",
  "Tamper-proof": "திருட்டுக்காப்பு",
  "Tamper-proof: it can't be stolen.": "திருட்டுக்காப்பு: இதைத் திருட முடியாது.",
@@ -3672,5 +3670,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "தொகுப்பில் {n} (அதிகபட்சம் {cap}, {rarity}). உங்களிடம் {owned} உள்ளன.",
  "Replay the triggers lesson in your next fight.": "அடுத்த சண்டையில் தூண்டுதல் பாடத்தை மீண்டும் இயக்கவும்.",
  "Fuse spare copies; you only field one.": "மிகுதி நகல்களை இணைக்கவும்; ஒன்று மட்டுமே களத்தில் இறங்கும்.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக விளையாடும் தரப்புக்கு அதன் முள்புதரில் +1 கவசம் கிடைக்கும்."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக விளையாடும் தரப்புக்கு அதன் முள்புதரில் +1 கவசம் கிடைக்கும்.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "ஒவ்வொரு நிலையும் அட்டையின் புள்ளிவிவர வரவுசெலவை உயர்த்தும். நிலை 4, 7, 10 அதிகம் சேர்க்கும்.",
+ "Rounds a unit takes to equip this piece (default 1).": "ஒரு அலகு இந்தப் பொருளைப் பொருத்த எடுக்கும் சுற்றுகள் (இயல்பு 1)."
 }

@@ -758,7 +758,6 @@
  "Each card has a plain print and a foil; more finishes are coming": "Ogni carta ha una versione normale e una foil; altre finiture in arrivo",
  "Each card strikes the one across from it; an empty lane hits the bramble.": "Ogni carta colpisce quella di fronte; una corsia vuota colpisce il rovo.",
  "each hit on it crits (double damage) and uses 1 counter; attacks at it can’t miss.": "ogni colpo su di lei è critico (danni doppi) e consuma 1 segnalino; gli attacchi contro di lei non mancano.",
- "Each level adds what this card's stat budget grows by. Levels 4, 7 and 10 are the big steps, Level 2 a smaller one; some levels add nothing.": "Ogni livello aggiunge quanto cresce il budget di statistiche di questa carta. I livelli 4, 7 e 10 sono i salti grandi, il livello 2 uno più piccolo; alcuni livelli non aggiungono nulla.",
  "Each level gives your bramble +{pct}% Health in raid fights.": "Ogni livello dà al tuo rovo +{pct}% di Salute nei raid.",
  "Each of your units loses {n} Wait; your Flyers get an extra turn next combat.": "Ognuna delle tue unità perde {n} Attesa; le tue volanti ottengono un turno extra nel prossimo combattimento.",
  "Each round, 1 in 2: smoke-bombs a random unit. Allies hide in Smoke; enemies are Blinded.": "Ogni round, 1 su 2: lancia una bomba fumogena su un’unità a caso. Le alleate si nascondono nel Fumo; le nemiche restano accecate.",
@@ -3391,7 +3390,6 @@
  "+2 ⚔ +2 ❤": "+2 ⚔ +2 ❤",
  "+6 ❤": "+6 ❤",
  "Equip Time": "Tempo di equipaggiamento",
- "The rounds a unit takes to equip this piece (default 1). Tamper-proof: it can't be stolen.": "I turni che servono a un'unità per equipaggiarla (1 di base). Antifurto: non può essere rubata.",
  "Equip Time {n}: a unit takes {n} round(s) to equip it.": "Tempo di equipaggiamento {n}: un'unità impiega {n} turno(i) a equipaggiarlo.",
  "Tamper-proof": "Antifurto",
  "Tamper-proof: it can't be stolen.": "Antifurto: non può essere rubato.",
@@ -3671,5 +3669,7 @@
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} nel mazzo (max {cap}, {rarity}). Ne possiedi {owned}.",
  "Replay the triggers lesson in your next fight.": "Rigioca la lezione sui trigger nel prossimo scontro.",
  "Fuse spare copies; you only field one.": "Fondi le copie in più; ne schieri solo una.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Carte che ogni lato può giocare per turno. Il lato che gioca per secondo riceve +1 Scudo sul suo rovo."
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Carte che ogni lato può giocare per turno. Il lato che gioca per secondo riceve +1 Scudo sul suo rovo.",
+ "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Ogni livello aumenta il budget di statistiche della carta. I livelli 4, 7 e 10 aggiungono di più.",
+ "Rounds a unit takes to equip this piece (default 1).": "Round che un'unità impiega per equipaggiare questo pezzo (predefinito 1)."
 }
