@@ -125,15 +125,23 @@ async def peek(pg, tag, a):
           window.__held = {t, x, y, c:[c.left, c.top, c.right, c.bottom]}; return 1; }""", sel)
         if not r: ok(False, f'{tag}: no {kind} card to hold'); continue
         await pg.wait_for_timeout(450)
-        p = await pg.evaluate("""(()=>{ const pop = document.getElementById('cardPop'); if(!pop || pop.hidden) return null; const r = pop.getBoundingClientRect(), c = window.__held.c;
-          const ix = Math.max(0, Math.min(r.right, c[2]) - Math.max(r.left, c[0])), iy = Math.max(0, Math.min(r.bottom, c[3]) - Math.max(r.top, c[1]));
+        # the popover rises in on GSAP (FX F cardPopIn), which a headless page draws at a few frames a second: jump its tweens to their end
+        await pg.evaluate("(()=>{ try{ const pop = document.getElementById('cardPop'); gsap.getTweensOf([pop, ...pop.querySelectorAll('*')]).forEach(t=> t.progress(1)); }catch(e){} return 1; })()")
+        await pg.wait_for_timeout(100)
+        p = await pg.evaluate("""(()=>{ const pop = document.getElementById('cardPop'); if(!pop || pop.hidden) return null; const c = window.__held.c;
+          // the Full card sits on the popover's top edge (CS-C): the popover's box and that card together
+          const rs = [pop, pop.querySelector('.card-pop-visual-tile')].filter(Boolean).map(e=> e.getBoundingClientRect());
+          const r = {left: Math.min(...rs.map(q=> q.left)), top: Math.min(...rs.map(q=> q.top)), right: Math.max(...rs.map(q=> q.right)), bottom: Math.max(...rs.map(q=> q.bottom))};
+          // the held card is covered by the popover's box or by its card
+          const cov = q=> Math.max(0, Math.min(q.right, c[2]) - Math.max(q.left, c[0])) * Math.max(0, Math.min(q.bottom, c[3]) - Math.max(q.top, c[1]));
+          const ix = Math.sqrt(Math.max(...rs.map(cov))), iy = ix;
           return {p:[r.left, r.top, r.right, r.bottom].map(Math.round), c:c.map(Math.round), cover: ix * iy / ((c[2] - c[0]) * (c[3] - c[1])), vw: innerWidth, vh: innerHeight,
-            card: !!pop.querySelector('.card-pop-visual-tile') }; })()""")
-        if a.shots: await pg.screenshot(path=os.path.join(ROOT, a.shots, f'peek-{kind}-{a.tag}-{pg.viewport_size["width"]}x{pg.viewport_size["height"]}.jpg'), quality=82, type='jpeg')
+            card: !!pop.querySelector('.card-pop-visual-tile'), op: getComputedStyle(pop).opacity, bg: getComputedStyle(pop).backgroundColor, bgi: getComputedStyle(pop).backgroundImage.slice(0, 80), filt: getComputedStyle(pop).backdropFilter }; })()""")
+        if a.shots: await pg.wait_for_timeout(500); await pg.screenshot(path=os.path.join(ROOT, a.shots, f'peek-{kind}-{a.tag}-{pg.viewport_size["width"]}x{pg.viewport_size["height"]}.jpg'), quality=82, type='jpeg')
         await pg.evaluate("(()=>{ const h = window.__held; h.t.dispatchEvent(new PointerEvent('pointerup', {bubbles:true, cancelable:true, clientX:h.x, clientY:h.y, pointerId:5, pointerType:'touch', isPrimary:true})); document.body.click(); try{ hideCardPop(); }catch(e){} return 1; })()")
         await pg.wait_for_timeout(300)
         if not ok(p is not None, f'{tag}: a hold on a {kind} card opens the popover'): continue
-        print(f'  {tag}: {kind} hold: popover {p["p"]}, card {p["c"]}, covers {p["cover"]:.0%} of it')
+        print(f'  {tag}: {kind} hold: popover {p["p"]}, card {p["c"]}, covers {p["cover"]:.0%} of it; opacity {p["op"]} {p["bg"]} {p["bgi"]} {p["filt"]}')
         ok(p['p'][0] >= -1 and p['p'][2] <= p['vw'] + 1 and p['p'][1] >= -1 and p['p'][3] <= p['vh'] + 1, f'{tag}: the {kind} hold popover is on screen {p["p"]}')
         ok(p['cover'] <= 0.25, f'{tag}: the {kind} hold popover leaves the held card visible (covers {p["cover"]:.0%})')
 
