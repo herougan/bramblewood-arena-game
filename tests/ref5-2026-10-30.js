@@ -27,7 +27,7 @@ maps.forEach(m=>{ const L = set.decks[m]; if(L.length !== 5) bad.push(m + ': ' +
     if(!P){ bad.push(m + '/' + d.seed + ': no pool'); return; }
     Object.keys(d.counts).forEach(id=>{ if(!P.pool.includes(id)) bad.push(m + '/' + d.seed + ': ' + id + ' not owned'); else if(P.copies[id] != null && d.counts[id] > P.copies[id]) bad.push(m + '/' + d.seed + ': ' + id + ' x' + d.counts[id] + ' > ' + P.copies[id] + ' owned'); });
     d.parts.forEach(p=>{ if(p[2] < 0 || p[2] > 10 || p[2] < (G0.cardBaseLevel(G0D[p[0]] || {}) || 0)) bad.push(m + '/' + d.seed + ': ' + p[0] + ' at Lv ' + p[2]); }); }); });
-ok(!bad.length, '1. every deck: 20 cards, inside its seed\'s collection (cards and copies), levels from the card's own to 10 ' + bad.slice(0, 6).join('; '));
+ok(!bad.length, '1. every deck: 20 cards, inside its seed\'s collection (cards and copies), levels from the card\'s own to 10 ' + bad.slice(0, 6).join('; '));
 
 // ---- 2. the game
 { const r = cp.spawnSync(process.execPath, [path.join(ROOT, 'tools/opt/ref_decks.js'), '--check'], {encoding: 'utf8'});
