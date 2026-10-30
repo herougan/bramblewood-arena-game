@@ -212,7 +212,7 @@ async function elapse(hub, clock, ms){ for(let x = 0; x < ms; x += 50){ clock.ad
   const src = fs.readFileSync(path.join(ROOT, 'bramblewood-coop.js'), 'utf8');
   ok(!/PLAN_SECONDS|SHARED_COL|caveIn|MECH\b|bossPicks|resolveRound\(/.test(src), 'removed: the plan timer, the shared centre, the floor mechanics, the pick of three');
   const app = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
-  ['function gdStartFloorMatch', "mode: 'coop'", 'if(matchState && matchState.coop) return gdClaimPlay(', "if(m.coop){ gdClaim({kind:'pitch', uid}); return; }", "if(m.coop){ gdClaim({kind:'pass'}); return; }", 'function gdApply', 'async function gdRoundOnPage', 'allyPlayFx(res.uid', 'function gdPayFloor', 'CoopM.rowLegalSlots(m.coop.T, r)']
+  ['function gdStartFloorMatch', "mode: 'coop'", 'if(matchState && matchState.coop) return gdClaimPlay(', "if(m.coop){ gdClaim({kind:'pitch', uid}); return; }", "if(m.coop){ gdClaim({kind:'pass'}); return; }", 'function gdApply', 'async function gdRoundOnPage', 'allyPlayFx(res.uid', 'function gdPayFloor', 'CoopM.rowLegalSlots(m.coop.T, r, m.coop.seat)' /* 2026-10-30 (COOP3): was rowLegalSlots(m.coop.T, r); the seat's own network now */]
     .forEach(s=> ok(app.includes(s), 'page: ' + s));
   ok(!/function gdFightHTML|gd-hand-card|data-gd-cell/.test(app), 'page: the old co-op board (its own overlay board, hand and cells) is gone');
   const texts = require(path.join(ROOT, 'bramblewood-texts.js')); const T0 = texts.TEXT || texts;
