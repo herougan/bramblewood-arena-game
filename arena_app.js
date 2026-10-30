@@ -23903,17 +23903,24 @@ function mfxFireToggle(f, canvas){
   const out = f.classList.contains('is-out'), camp = f.classList.contains('map-campfire'), vis = mfxVisual(), key = 'fire:' + (f.dataset.fireNode || 'camp');
   const dark = canvas.querySelector(':scope > .cave-dark'), apply = ()=>{ try{ if(dark && dark._apply) dark._apply(); }catch(e){} };
   if(f._lit == null) f._lit = 1;
+  // the light pool eases by wall-clock time (rAF), not gsap's clock: a slow page must not leave a dead fire lit in the mask
+  const ease = (to, ms, done)=>{
+    const tok = f._litTok = (f._litTok || 0) + 1, from = f._lit, t0 = performance.now();
+    if(!vis){ f._lit = to; apply(); if(done) done(); return; }
+    const step = ()=>{ if(f._litTok !== tok) return; const k = Math.min(1, (performance.now() - t0) / ms), e = to < from ? k * k : 1 - (1 - k) * (1 - k); f._lit = from + (to - from) * e; apply();
+      if(k < 1) requestAnimationFrame(step); else if(done) done(); };
+    requestAnimationFrame(step);
+  };
   if(!out){ // put out: the flame and glow fade, a puff of smoke, a soft "fsst"; the light the fire gave the dark map shrinks away
     mfxPlay('fireOut', f, null, key);
     f.classList.add('is-out'); f.classList.remove('is-igniting');
     if(vis) mfxSmoke(f);
-    if(window.gsap && vis) gsap.to(f, {_lit: 0, duration: 0.6, ease: 'power2.in', overwrite: true, onUpdate: apply, onComplete: ()=>{ f.classList.remove('is-lit'); apply(); }});
-    else { f._lit = 0; f.classList.remove('is-lit'); apply(); }
+    ease(0, 600, ()=>{ f.classList.remove('is-lit'); apply(); });
   } else { // light it again
     mfxPlay('fireIgnite', f, null, key);
     f.classList.remove('is-out'); if(!camp) f.classList.add('is-lit', 'is-igniting');
     if(!camp) setTimeout(()=> f.classList.remove('is-igniting'), 1600);
-    if(window.gsap && vis) gsap.to(f, {_lit: 1, duration: 0.8, ease: 'power2.out', overwrite: true, onUpdate: apply}); else { f._lit = 1; apply(); }
+    ease(1, 800);
   }
 }
 // Map adornments (2026-10-10, user): on cave maps 1–2 snails creep in straight lines, very slowly, leaving faint blue
