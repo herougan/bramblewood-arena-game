@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package UI4: owner 10:34, V2 and V3)
+- **V3, tokens stay on the board through the end of a fight.** Cause: the end sign (`showEndSign`) made every summoned token on both sides shatter at a random moment of the end beat (a rule from 2026-10-12, "on a win, tokens randomly shatter"); each slot went to opacity 0, and `revealBoardCardsAtEnd` put them back once the fight was marked over, so they "came back when the screen came out". The shatter is removed; the board is left as it was under the end sign and the result screen. A token that dies in a fight still shatters (`deathVfx`). Reproduced headless (a token's slot at opacity 0 for 1.2 s during the sign) and checked after: win and loss, 390 and 1366, lowest token opacity 1, every token in the DOM and visible when the result screen opens. Earlier attempts (2026-10-12 cards spawned that round, PL2 00:02 #1 the end redraw, FIX3 F5 round-end blinks) fixed other causes.
+- **V2, no lightning on a shielded bramble.** The hit's glowing hex dome (a flickering conic "spoke" layer, `FX.C.castleShield`) is replaced in the game by a plain hit: one blue ring ripples out of the bramble, its blue Shield number pops (brighter on a break), the shield sound plays. `bramblewood-fx-c.js` is unchanged (the Effects Lab still shows the old one); the game binds `ui4PatchCastleShieldFx` once at load, as VIS4 does for the unit shield.
+- Tests: `tests/ui4-2026-10-30.js`, `tests/e2e/ui4_2026_10_30.py`; shots `docs/screens/ui4/ui4-{before,after}-v3-*`.
+
 ## 2026-10-30 Release 10-30a (owner 09:18 "ok")
 - Shipped: UI2 (pack-opener crash guard + gentler entrance, zoom only on overflow, Ambush jab, battery sparks, Shift+click pitch, PRO/BPRO deck preview), UI3 (status pills, emblem flight target, Map cards per list + hover detail + Export all, keyword tints, map-bar Players button, solo group dungeon fillers and uninterrupted win screen), ENG13 (optional hard Ambush, Slow keyword, Canopy Cover only vs ranged/flying, admin currency tap), ART2 (68 card arts), Stealth cost 1.5 -> 2.
 - Checks: smoke (only the known d-2026-10-19) and the packages' own tests (8/8 on the merged batch); each package ran its own e2e. No full run for this release.
