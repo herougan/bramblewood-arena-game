@@ -108,6 +108,12 @@ Each keyword's price lives in `canonical/skill-costs.json`; its behaviour in the
 - **Disenchant values and the Forge costs are in `canonical/upgrade-costs.json`** (editable in the hub's 💰 Upgrade costs tab); Base and Quest cards cannot be disenchanted. [E2, E5, RW3-6, UI4-1]
 - **Raid Tickets:** the Bonus Raid Ticket is sold only when the shop randomly has it and sells out after one; SS notices about once a month, SSS every 2-3 months for a player who full-clears. [RK1, RK2, RK4, RW3-2]
 - **No free pack for guests before sign-in.** [E1]
+- **Brambles have their own resource, Briar Blossoms 💮 (placeholder name), and income is halved except first-time rewards** (owner 2026-10-30 10:34: "Their own resource & a bit of normal resource. The bramble resource comes from winning fights. Dealing damage to bramble does net you a tiny bit even on loss. Overall - help me half all the resources you get, (except first-time rewards). Because, i want to make the first two daily dungeons: one gives bramble resources, the other gives normal resources. - grinding that = lvl 0 common unit levelled to lvl 10 per week."). Built 2026-10-30 (ECON1):
+  - A Reinforce step costs its old Dust in Blossoms plus 25% of its old Dust and Leaves (`canonical/upgrade-costs.json` `bramble`). The castle credit was moved over once.
+  - A won Conquest fight pays Blossoms by kind and map (`BRAMBLE_WIN_BLOSSOMS`, +10% a map). A loss pays a quarter of that, times the share of the enemy bramble taken. Fights pay them from when Reinforce opens (Map 28).
+  - Every repeatable source of Maple Leaves, Magic Dust, Gold Leaves and Metal pays half, through `ECON_INCOME_MULT` in `arena_app.js`, one multiplier per source (0.5 each). First clears, achievements, the level track and one-off gifts pay in full.
+  - Murgle Mayhem pays 69 Dust + 46 Leaves for every won floor, and the Undercroft 63 Blossoms (`DAILY_DUNGEON_PAY`). Over 22 keys a week (11 floors each), that is a Common card Lv 0 → 10 and a Common bramble Lv 0 → 10.
+  - Arithmetic: `docs/balance/econ1-2026-10-30.md`. Cloud column: `supabase/proposed/20261030_bramble_resource.sql` (not applied). Open calls BRUP-2 to BRUP-5. [BRUP-1]
 
 ## 4. Progression and rewards
 
