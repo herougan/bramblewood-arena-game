@@ -48,9 +48,11 @@ FULL.forEach(n=>{ const s = fnSrc(n); ok(s && /size:'full'/.test(s), `3. ${n} as
 ok((fnSrc('renderCodexGrid').match(/size:'full'/g) || []).length >= 2, '3. the Codex: its tile and the easter-egg mask');
 ok((fnSrc('rewardsPanelHTML').match(/size:'full'/g) || []).length >= 7, '3. the cards won: every kind of card won');
 // later steps: in-match cards, the reveal, the hover popover and the detail keep their own sizes for now
-['boardCardHTML', 'renderHand', 'leaderWidgetHTML', 'matchFieldTileHTML', 'openCardDetail', 'openCardInspector', 'fullCardHTML', 'vis4MapCardTilesHTML'].forEach(n=>{
+// 2026-10-30 CS-B: vis4MapCardTilesHTML moved in step 3 (Chips, and the review's Full card); tests/cs-b-2026-10-30.js checks it
+['boardCardHTML', 'renderHand', 'leaderWidgetHTML', 'matchFieldTileHTML', 'openCardDetail', 'openCardInspector', 'fullCardHTML'].forEach(n=>{
   const s = fnSrc(n); ok(s && !/\bsize:'/.test(s), `3. ${n} is not moved yet (a later step)`); });
-{ const pa = fnSrc('openPackAnimation'); ok((pa.match(/size:'full'/g) || []).length === 3 && /po2-mini[^\n]*poTile\(Object\.assign\(\{\}, defOf\(r\.id\), \{locked:false\}\), \{editable:false\}\)/.test(pa), '3. the pack summary is Full; the reveal and the tray minis are not (the flight is a later step)'); }
+// 2026-10-30 CS-B: the tray the flight lands in is Full now (a 4th size:'full'); the reveal is still not (step 4). tests/cs-b-2026-10-30.js checks the tray.
+{ const pa = fnSrc('openPackAnimation'); ok((pa.match(/size:'full'/g) || []).length === 4 && /class="po2-card [\s\S]*?poTile\(Object\.assign\(\{\}, d, \{locked:false\}\), \{editable:false, extraClass/.test(pa), '3. the pack summary and the tray are Full; the reveal is not (step 4)'); }
 
 // --- 4. the guard
 // CSS rules as {sel, body}: comments out, then the innermost `selector{body}` pairs (a rule inside @media is found as itself)

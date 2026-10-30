@@ -64,7 +64,8 @@ const lineOf = start=>{ const i = src.indexOf(start); if(i < 0) return ''; retur
 
 // ---- #7 the enemy level (static)
 ok(/const ov = nodeEnemyLevelOverride\(node\); if\(ov != null\) return ov;/.test(fnSrc('roadEnemyLevelExact')), '#7 roadEnemyLevelExact reads the node\'s Enemy level first (the fight: levelledEnemyDeck)');
-ok(/cardTileHTML\(edEnemyShownDef\(sumNode, id\), \{inPlay:true\}\)/.test(src) && /data-shown-level="\$\{edShownLevel\(sumNode, id\)\}"/.test(src), '#7 the deck preview draws each enemy card at its shown level, data-shown-level for the hover / details');
+// 2026-10-30 CS-B: the squad card is the Compact size now ({inPlay:true, size:'compact'})
+ok(/cardTileHTML\(edEnemyShownDef\(sumNode, id\), \{inPlay:true(, size:'compact'[^}]*)?\}\)/.test(src) && /data-shown-level="\$\{edShownLevel\(sumNode, id\)\}"/.test(src), '#7 the deck preview draws each enemy card at its shown level, data-shown-level for the hover / details');
 ok(/openCardDetail\(b\.dataset\.sqdef, \{shownLevel: \+b\.dataset\.shownLevel\}\)/.test(src) && /defAtShownLevel\(defId, shownLv\)/.test(fnSrc('openCardDetail')) && /opts\.shownLevel != null && isFinite\(opts\.shownLevel\) \? defAtShownLevel/.test(fnSrc('fullCardHTML')), '#7 the details and the hover card read the shown level');
 ok(/id="seEnemyLevel"/.test(fnSrc('openSkirmishEditor')) && /'ai','enemyLevel'\]/.test(fnSrc('openSkirmishEditor')), '#7 the skirmish editor has Enemy level (blank = the curve) and a cleared one is saved as null');
 ok(!/myCardLevels/.test(fnSrc('defAtShownLevel')) && /statsBeyondLevel\(b0, lvl\)/.test(fnSrc('defAtShownLevel')), '#7 the shown card comes from the shared card, never your Forge levels');

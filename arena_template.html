@@ -11612,7 +11612,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
    seen on the win screen, the deck picker's deck strip, the Forge's bulk preview (their rules above now read the token). The Forge's anvil and
    the pack tray are Full. The Chip (--chip-h, 30px tall) is drawn by cardChipHTML: an art disc ringed in the rarity colours, then the name.
    tests/cs-b-2026-10-30.js extends CS-A's guard to these screens. */
-.card-chip{--cc-h:var(--chip-h); display:inline-flex; align-items:center; gap:6px; height:var(--cc-h); max-width:min(100%, 190px); padding:0 10px 0 0; box-sizing:border-box;
+.card-chip{--cc-h:var(--chip-h); display:inline-flex; align-items:center; gap:6px; height:var(--cc-h); max-width:min(100%, calc(var(--cc-h) * 6.4)) /* a long name ends in … */; padding:0 10px 0 0; box-sizing:border-box;
   border-radius:calc(var(--cc-h) / 2); vertical-align:middle; white-space:nowrap; cursor:help; color:#fff3dc; font:800 12.5px/1 'Nunito',system-ui,sans-serif;
   background:linear-gradient(90deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 34%, #2a2216), #2a2216 75%);
   box-shadow:0 0 0 1px color-mix(in srgb, var(--rarity-a, #8a6a45) 75%, transparent), 0 1px 3px rgba(0,0,0,.3);}
