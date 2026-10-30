@@ -4385,7 +4385,7 @@
     .entrance{justify-content:flex-start;}
     .entrance .splash-inner{margin-left:clamp(24px, 6vw, 110px); max-width:440px; background:rgba(14,20,10,.42); border:1px solid rgba(255,244,214,.14); box-shadow:0 20px 60px rgba(0,0,0,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
     .entrance-fan{display:block; position:absolute; right:clamp(60px, 10vw, 200px); top:52%; width:440px; height:340px; transform:translateY(-50%); z-index:1; perspective:900px; pointer-events:none;}
-    .entrance-fan .ef-card{position:absolute; left:50%; top:50%; width:168px; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(var(--y)); transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .5s ease; animation:efFloat 5.5s ease-in-out infinite; animation-delay:var(--d);}
+    .entrance-fan .ef-card{position:absolute; left:50%; top:50%; /* 2026-10-30 (CS-C): its card's --dc-w sizes it */ transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(var(--y)); transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .5s ease; animation:efFloat 5.5s ease-in-out infinite; animation-delay:var(--d);}
     .entrance-fan .ef-card .card-tile{box-shadow:0 18px 40px rgba(0,0,0,.45);} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
     /* 2026-10-12: the pair sits closer to the middle; cards have a flip with an acorn back. */
     .entrance .splash-inner{margin-left:max(24px, calc((100vw - 1000px) / 2)) !important;}
@@ -8088,7 +8088,7 @@
   .cnp-rw-pack b{font:800 12px 'Nunito',system-ui,sans-serif; line-height:1.1; white-space:nowrap;}
   .cnp-rw-pack.is-got{filter:grayscale(.7); opacity:.7;}
   /* the reveal */
-  .po2-deck{--cw:min(58vh * .8, 80vw, 360px); position:relative; width:var(--cw); aspect-ratio:4/5; margin-right:calc(var(--cw) * .1);}
+  .po2-deck{--cw:var(--card-detail-w) /* 2026-10-30 (CS-C): the Detail size (was min(58vh * .8, 80vw, 360px)) */; position:relative; width:var(--cw); aspect-ratio:4/5; margin-right:calc(var(--cw) * .1);}
   .po2-card{position:absolute; inset:0; padding:0; border:0; background:none; cursor:pointer; perspective:1300px; touch-action:pan-y; --k:0;
     transform:translate(calc(var(--k) * 16px), calc(var(--k) * -9px)) rotate(calc(var(--k) * 3.5deg)) scale(calc(1 - var(--k) * .035));
     transition:transform .5s cubic-bezier(.2,.8,.3,1), opacity .4s ease, filter .4s ease; animation:po2DealIn .5s cubic-bezier(.2,.9,.3,1.15) both; animation-delay:calc(var(--k) * 70ms);}
@@ -11682,7 +11682,6 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
    Full card; the reveal is a little smaller while a tray of Full slots sits under it. A pile (no slots) lists Chips that scroll. */
 .po2-got.has-slots{--po2-slot-w:min(var(--card-full-w), calc((min(92vw, 900px) - 20px - (var(--per, 5) - 1) * 6px) / var(--per, 5)), calc(22vh / var(--rows, 1) * .8));
   max-width:calc(var(--per, 5) * var(--po2-slot-w) + (var(--per, 5) - 1) * 6px + 20px);}
-.po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(50vh * .8, 80vw, 360px);}
 .po2-got:not(.has-slots){max-height:min(22vh, 170px); overflow-y:auto; overscroll-behavior:contain;}
 .po2-mini.is-chip{box-shadow:none; border-radius:calc(var(--chip-h) / 2);}
 .po2-mini.is-chip .card-chip{pointer-events:none;}
@@ -11739,7 +11738,6 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* the pack-results viewer (openCardInspector with a pull): the same Detail card; its old stage only holds it now */
 .card-inspect .ci-stage{touch-action:auto; cursor:auto; padding:10px; perspective:none;}
 /* the pack reveal: the Detail card inside each pack card's button, face down until it is revealed */
-.po2-deck{--cw:var(--card-detail-w);}
 .po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(var(--card-detail-w), 50vh * .8);}
 .po2-card > .dc{position:absolute; inset:0; width:auto; max-width:none; --dc-w:var(--cw);}
 .po2-card > .dc > .dc-stage, .po2-card > .dc > .dc-stage > .dc-spin{position:absolute; inset:0; width:auto; aspect-ratio:auto;}
