@@ -1390,7 +1390,6 @@
  "Practice": "Latihan",
  "Prayer Ward": "Perisai Doa",
  "Prayer Ward: Armor {n} while it holds Prayer tokens": "Perisai Doa: Zirah {n} selama memegang token Doa",
- "Prayer 🙏: your 📿 Prayer tokens, those on your units on the field plus your own. A unit with Prayer N gains N at the start of each of your turns; its tokens go when it dies or leaves the field. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, as your pitch, when you summon an Ecclesia card you may exile a hand card for 1 Prayer token of your own, which you keep.": "Doa 🙏: token Doa 📿 milikmu, yang ada di unit-unitmu di arena ditambah milikmu sendiri. Unit dengan Doa N mendapat N di awal setiap giliranmu; tokennya hilang saat ia mati atau meninggalkan arena. Kartu Ecclesia butuh nilai Doa untuk dimainkan; nilai itu tidak pernah terpakai. Sekali tiap giliran, sebagai buanganmu, saat memanggil kartu Ecclesia kamu boleh mengasingkan kartu dari tangan untuk 1 token Doa milikmu sendiri, yang tetap kamu simpan.",
  "Premium": "Premium",
  "Press Fight.": "Tekan Bertarung.",
  "Preview {n}": "Pratinjau {n}",
@@ -3620,7 +3619,6 @@
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Di bawah pepohonan, unit darat ini menghindari separuh tembakan, skill, dan serangan terbang yang mengarah padanya.",
  "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}",
  "Export all": "Ekspor semua",
- "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "Menyalin setiap daftar dari setiap peta (kartu terpilih, mungkin, dan dibuang) beserta pilihan Buang/Simpan Anda saat ini, sesuai urutan peta, sebagai teks untuk Claude. Juga menawarkan unduhan .txt dan .json.",
  "Copied everything: paste it to Claude, or download it": "Semua tersalin: tempelkan ke Claude atau unduh",
  "Ready: download it": "Siap: unduh",
  "A CPU ally with a random deck joins at Start": "Sekutu CPU dengan dek acak bergabung saat Mulai",
@@ -3671,5 +3669,7 @@
  "Fuse spare copies; you only field one.": "Gabungkan salinan lebih; kamu hanya memakai satu.",
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya.",
  "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Tiap level menambah anggaran stat kartu. Level 4, 7, dan 10 menambah paling banyak.",
- "Rounds a unit takes to equip this piece (default 1).": "Ronde yang dibutuhkan unit untuk memasang bagian ini (default 1)."
+ "Rounds a unit takes to equip this piece (default 1).": "Ronde yang dibutuhkan unit untuk memasang bagian ini (default 1).",
+ "Prayer 🙏: tokens on your units and your own. Ecclesia cards need it; it is never spent.": "Doa 🙏: token pada unitmu dan milikmu sendiri. Kartu Ecclesia membutuhkannya; tidak pernah terpakai.",
+ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.": "Menyalin daftar kartu semua peta, beserta pilihan Cut/Keep-mu, sebagai teks untuk Claude."
 }

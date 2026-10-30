@@ -1006,7 +1006,6 @@
  "Darkness": "闇",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "闇や盲目でも地上ユニットへの攻撃は外れない。盲目にならない。",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "闇 ★ {v1}・エコー 🕯️ {v2}。闇が十分にあれば、注意カードはここから唱えられる。",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "闇 ★ — 味方ユニットが倒れるたびに1得る（インプによってはさらに多く、悪魔術のカードを捨てると1）。悪魔術のカードに使う。⛧ はこのターンの闇召喚：1ターン1回、通常のプレイとは別。",
  "Darksight": "暗視",
  "Darksight: it can see in darkness": "暗視：闇の中でも見える",
  "Dart Frogs": "ヤドクガエル",
@@ -5071,5 +5070,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "レイドポイント: オンラインレイドの挑戦に必要です。6時間ごとに1回復します。",
  "{v1}/{v2} HP remaining": "残り {v1}/{v2} HP",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "除外ゾーン: {v1}枚。エコー: {v2}。",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "余ったコピー{v1}枚を溶かし、レベル{v2}に戻します。レベル費用の97%が戻ります。"
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "余ったコピー{v1}枚を溶かし、レベル{v2}に戻します。レベル費用の97%が戻ります。",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "闇 ★: ユニットが倒れると増え、デビルリーカードに使います。⛧: このターンのダークサモン。"
 }

@@ -1390,7 +1390,6 @@
  "Practice": "Training",
  "Prayer Ward": "Gebetsschutz",
  "Prayer Ward: Armor {n} while it holds Prayer tokens": "Gebetsschutz: Rüstung {n}, solange sie Gebetsmarken hält",
- "Prayer 🙏: your 📿 Prayer tokens, those on your units on the field plus your own. A unit with Prayer N gains N at the start of each of your turns; its tokens go when it dies or leaves the field. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, as your pitch, when you summon an Ecclesia card you may exile a hand card for 1 Prayer token of your own, which you keep.": "Gebet 🙏: deine 📿 Gebetsmarken, die auf deinen Einheiten auf dem Feld plus deine eigenen. Eine Einheit mit Gebet N erhält zu Beginn jedes deiner Züge N; ihre Marken gehen, wenn sie stirbt oder das Feld verlässt. Ecclesia-Karten brauchen zum Ausspielen einen Gebetswert; er wird nie verbraucht. Einmal pro Zug, als dein Abwurf, darfst du beim Beschwören einer Ecclesia-Karte eine Handkarte verbannen für 1 eigene Gebetsmarke, die du behältst.",
  "Premium": "Premium",
  "Press Fight.": "Drück auf Kämpfen.",
  "Preview {n}": "Vorschau {n}",
@@ -3617,7 +3616,6 @@
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Unter den Bäumen weicht diese Bodeneinheit der Hälfte der Schüsse, Fähigkeiten und Flugangriffe auf sie aus.",
  "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}",
  "Export all": "Alles exportieren",
- "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "Kopiert jede Liste jeder Karte (gewählte, vielleicht und gestrichene Karten) mit deinen aktuellen Streichen/Behalten-Entscheidungen, in Kartenreihenfolge, als Text für Claude. Bietet auch einen .txt- und einen .json-Download an.",
  "Copied everything: paste it to Claude, or download it": "Alles kopiert: füge es bei Claude ein oder lade es herunter",
  "Ready: download it": "Bereit: lade es herunter",
  "A CPU ally with a random deck joins at Start": "Ein CPU-Verbündeter mit zufälligem Deck stößt beim Start dazu",
@@ -3668,5 +3666,7 @@
  "Fuse spare copies; you only field one.": "Verschmilz überzählige Exemplare; du setzt nur eins ein.",
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Karten, die jede Seite pro Zug spielen darf. Die Seite, die als Zweite spielt, erhält +1 Schild auf ihrer Dornenhecke.",
  "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Jede Stufe erhöht das Wertebudget der Karte. Stufe 4, 7 und 10 bringen am meisten.",
- "Rounds a unit takes to equip this piece (default 1).": "Runden, die eine Einheit zum Ausrüsten dieses Teils braucht (Standard 1)."
+ "Rounds a unit takes to equip this piece (default 1).": "Runden, die eine Einheit zum Ausrüsten dieses Teils braucht (Standard 1).",
+ "Prayer 🙏: tokens on your units and your own. Ecclesia cards need it; it is never spent.": "Gebet 🙏: Gebetsmarken auf deinen Einheiten und deine eigenen. Ecclesia-Karten brauchen es; es wird nie verbraucht.",
+ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.": "Kopiert die Kartenlisten aller Karten samt deiner Cut/Keep-Auswahl als Text für Claude."
 }

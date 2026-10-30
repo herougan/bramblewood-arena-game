@@ -1390,7 +1390,6 @@
  "Practice": "练习",
  "Prayer Ward": "祈祷护符",
  "Prayer Ward: Armor {n} while it holds Prayer tokens": "祈祷护符：持有祈祷标记时护甲{n}",
- "Prayer 🙏: your 📿 Prayer tokens, those on your units on the field plus your own. A unit with Prayer N gains N at the start of each of your turns; its tokens go when it dies or leaves the field. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, as your pitch, when you summon an Ecclesia card you may exile a hand card for 1 Prayer token of your own, which you keep.": "祈祷 🙏：你的 📿 祈祷标记，包括你场上单位身上的和你自己的。拥有祈祷 N 的单位在你每个回合开始时获得 N 个；它阵亡或离开场地时，标记随之消失。Ecclesia 卡需要一定的祈祷值才能打出；祈祷值从不消耗。每回合一次，作为你的弃牌，召唤 Ecclesia 卡时你可以放逐一张手牌，换取 1 个属于你自己的祈祷标记，并一直保留。",
  "Premium": "高级",
  "Press Fight.": "按战斗。",
  "Preview {n}": "预览 {n}",
@@ -3618,7 +3617,6 @@
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "在树下，这个地面单位能躲开一半瞄准它的射击、技能和飞行攻击。",
  "Admin: {name} {from} → {to}": "管理员：{name} {from} → {to}",
  "Export all": "全部导出",
- "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "按地图顺序复制每张地图的每个列表（入选、待定和删除的卡牌）以及你当前的删除/保留选择，作为给 Claude 的文本。同时提供 .txt 和 .json 下载。",
  "Copied everything: paste it to Claude, or download it": "已全部复制：粘贴给 Claude，或下载",
  "Ready: download it": "已准备好：请下载",
  "A CPU ally with a random deck joins at Start": "开始时会有一名使用随机卡组的 CPU 盟友加入",
@@ -3669,5 +3667,7 @@
  "Fuse spare copies; you only field one.": "融合多余的副本；你只会上场一张。",
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾.",
  "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "每升一级都会增加卡牌的属性预算。第 4、7、10 级增加最多。",
- "Rounds a unit takes to equip this piece (default 1).": "单位装备此物品所需的回合数(默认 1)。"
+ "Rounds a unit takes to equip this piece (default 1).": "单位装备此物品所需的回合数(默认 1)。",
+ "Prayer 🙏: tokens on your units and your own. Ecclesia cards need it; it is never spent.": "祈祷 🙏：你的单位和你自己持有的标记。教会卡牌需要它；不会被消耗。",
+ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.": "复制所有地图的卡牌列表及你的 Cut/Keep 选择，作为给 Claude 的文本。"
 }

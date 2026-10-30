@@ -1390,7 +1390,6 @@
  "Practice": "பயிற்சி",
  "Prayer Ward": "பிரார்த்தனைக் காப்பு",
  "Prayer Ward: Armor {n} while it holds Prayer tokens": "பிரார்த்தனைக் காப்பு: பிரார்த்தனை டோக்கன்கள் இருக்கும்வரை கவசம் {n}",
- "Prayer 🙏: your 📿 Prayer tokens, those on your units on the field plus your own. A unit with Prayer N gains N at the start of each of your turns; its tokens go when it dies or leaves the field. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, as your pitch, when you summon an Ecclesia card you may exile a hand card for 1 Prayer token of your own, which you keep.": "பிரார்த்தனை 🙏: உங்கள் 📿 பிரார்த்தனை டோக்கன்கள், களத்திலுள்ள உங்கள் அலகுகளின் மேலுள்ளவையும் உங்களுடையவையும். பிரார்த்தனை N உள்ள அலகு உங்கள் ஒவ்வொரு முறையின் தொடக்கத்திலும் N பெறும்; அது இறந்தாலோ களத்தை விட்டுப் போனாலோ அதன் டோக்கன்கள் போகும். எக்லீசியா அட்டைகளை விளையாட ஒரு பிரார்த்தனை மதிப்பு தேவை; அது ஒருபோதும் செலவாகாது. ஒரு முறைக்கு ஒருமுறை, உங்கள் கைவிடலாக, ஓர் எக்லீசியா அட்டையை அழைக்கும்போது கையிலுள்ள ஓர் அட்டையை நாடுகடத்தி உங்களுக்குச் சொந்தமான 1 பிரார்த்தனை டோக்கனைப் பெறலாம், அது உங்களிடமே இருக்கும்.",
  "Premium": "பிரீமியம்",
  "Press Fight.": "சண்டை அழுத்துங்கள்.",
  "Preview {n}": "முன்னோட்டம் {n}",
@@ -3621,7 +3620,6 @@
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "மரங்களின் கீழ், இந்தத் தரை அலகு தன்னை நோக்கிய எய்வுகள், திறன்கள், பறக்கும் தாக்குதல்களில் பாதியைத் தவிர்க்கும்.",
  "Admin: {name} {from} → {to}": "நிர்வாகி: {name} {from} → {to}",
  "Export all": "அனைத்தையும் ஏற்றுமதி செய்",
- "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "ஒவ்வொரு வரைபடத்தின் ஒவ்வொரு பட்டியலையும் (தேர்ந்தெடுத்த, ஒருவேளை, நீக்கிய அட்டைகள்) உங்கள் தற்போதைய வெட்டு/வைத்திரு தேர்வுகளுடன், வரைபட வரிசையில், Claude-க்கான உரையாக நகலெடுக்கிறது. .txt மற்றும் .json பதிவிறக்கமும் தருகிறது.",
  "Copied everything: paste it to Claude, or download it": "எல்லாம் நகலெடுக்கப்பட்டது: Claude-இல் ஒட்டவும் அல்லது பதிவிறக்கவும்",
  "Ready: download it": "தயார்: பதிவிறக்கவும்",
  "A CPU ally with a random deck joins at Start": "தொடக்கத்தில் சீரற்ற டெக் கொண்ட CPU கூட்டாளி சேர்கிறார்",
@@ -3672,5 +3670,7 @@
  "Fuse spare copies; you only field one.": "மிகுதி நகல்களை இணைக்கவும்; ஒன்று மட்டுமே களத்தில் இறங்கும்.",
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக விளையாடும் தரப்புக்கு அதன் முள்புதரில் +1 கவசம் கிடைக்கும்.",
  "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "ஒவ்வொரு நிலையும் அட்டையின் புள்ளிவிவர வரவுசெலவை உயர்த்தும். நிலை 4, 7, 10 அதிகம் சேர்க்கும்.",
- "Rounds a unit takes to equip this piece (default 1).": "ஒரு அலகு இந்தப் பொருளைப் பொருத்த எடுக்கும் சுற்றுகள் (இயல்பு 1)."
+ "Rounds a unit takes to equip this piece (default 1).": "ஒரு அலகு இந்தப் பொருளைப் பொருத்த எடுக்கும் சுற்றுகள் (இயல்பு 1).",
+ "Prayer 🙏: tokens on your units and your own. Ecclesia cards need it; it is never spent.": "பிரார்த்தனை 🙏: உங்கள் அலகுகளிலும் உங்களிடமும் உள்ள டோக்கன்கள். எக்லீசியா அட்டைகளுக்குத் தேவை; ஒருபோதும் செலவாகாது.",
+ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.": "எல்லா வரைபடங்களின் அட்டைப் பட்டியல்களையும், உங்கள் Cut/Keep தேர்வுகளுடன், Claude க்கான உரையாக நகலெடுக்கும்."
 }

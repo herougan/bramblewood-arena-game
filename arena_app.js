@@ -39601,7 +39601,7 @@ const RESOURCE_TOOLTIP = {
   lumber: 'Lumber — earned by discarding a card from your hand. Some abilities (like Refine) consume it too.',
   grace: 'Grace — Ecclesia\'s currency. Earned by On Spawn/On Ready effects, spent on cards with a Grace Cost.',
   prayer: TX('ui.prayer-hud-tip'), // 2026-10-19 (package E): Prayer tokens
-  devilry: 'Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.',
+  devilry: 'Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.',
   elementalenergy: 'Elemental Energy — the advanced resource. Only produced by a card\'s Refine ability, which consumes Lumber.',
 };
 // 2026-09-19 ("Add tooltip for what resources you would get on discard"): the discard/graveyard

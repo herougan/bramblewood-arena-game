@@ -534,7 +534,6 @@
  "Dark-blind": "Cieca al buio",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "Oscurità e Accecamento non le fanno mancare le unità a terra; non può essere Accecata.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "Oscurità ★ {v1} · Echi 🕯️ {v2}. Una carta Attento può essere lanciata da qui finché la tua Oscurità è abbastanza alta.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "Oscurità ★: ne ottieni 1 ogni volta che una tua unità perisce (alcuni Diavoletti ne danno di più, e scartare una carta Diavoleria ne dà 1). Si spende per le carte Diavoleria. ⛧ è la tua Evocazione oscura di questo turno: 1 per turno, oltre alla tua giocata normale.",
  "Darksight: it can see in darkness": "Vista nel buio: vede nell’oscurità",
  "Daunt {v1}": "Intimidire {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Intimorito: −{v1} Attacco fino alla fine del prossimo round",
@@ -2600,5 +2599,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "Punti raid: servono per i tentativi di raid online. +1 ogni 6 ore.",
  "{v1}/{v2} HP remaining": "Restano {v1}/{v2} PS",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "Zona di rimozione: {v1} carta/e. Echi: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Fonde {v1} copia/e in più, torna al livello {v2}. Torna il 97% del costo dei livelli."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Fonde {v1} copia/e in più, torna al livello {v2}. Torna il 97% del costo dei livelli.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "Oscurità ★: si ottiene quando le tue unità periscono e si spende per le carte Diavoleria. ⛧: la tua Evocazione Oscura di questo turno."
 }

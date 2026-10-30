@@ -1006,7 +1006,6 @@
  "Darkness": "黑暗",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "黑暗和致盲不会让它对地面单位落空；它不会被致盲。",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "黑暗 ★ {v1} · 回响 🕯️ {v2}。只要你的黑暗足够，当心卡就能从这里施放。",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "黑暗 ★ — 你的单位每消亡一个就获得 1（有些小魔鬼给得更多，弃掉一张魔性卡给 1）。用于魔性卡牌。⛧ 是你本回合的暗之召唤：每回合 1 次，独立于正常出牌。",
  "Darksight": "暗视",
  "Darksight: it can see in darkness": "暗视：能在黑暗中视物",
  "Dart Frogs": "箭毒蛙",
@@ -5071,5 +5070,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "团战点数：在线团战尝试所需。每 6 小时恢复 1 点。",
  "{v1}/{v2} HP remaining": "剩余 {v1}/{v2} 生命",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "移除区：{v1} 张。回响：{v2}。",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "熔掉 {v1} 张多余副本，退回 {v2} 级。返还 97% 的升级花费。"
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "熔掉 {v1} 张多余副本，退回 {v2} 级。返还 97% 的升级花费。",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "黑暗 ★：你的单位阵亡时获得，用于魔道卡牌。⛧：你本回合的黑暗召唤。"
 }

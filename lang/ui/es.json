@@ -1006,7 +1006,6 @@
  "Darkness": "Oscuridad",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "La Oscuridad y la Ceguera no le hacen fallar contra unidades de tierra; no puede ser cegada.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "Oscuridad ★ {v1} · Ecos 🕯️ {v2}. Una carta Cuidado con puede lanzarse desde aquí mientras tu Oscuridad sea suficiente.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "Oscuridad ★ — ganas 1 cada vez que perece una de tus unidades (algunos Diablillos dan más, y descartar una carta de Diablura da 1). Se gasta en cartas de Diablura. ⛧ es tu Invocación oscura de este turno: 1 por turno, además de tu jugada normal.",
  "Darksight": "Visión oscura",
  "Darksight: it can see in darkness": "Visión oscura: ve en la oscuridad",
  "Dart Frogs": "Ranas flecha",
@@ -5071,5 +5070,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "Puntos de incursión: necesarios para los intentos de incursión en línea. Recupera 1 cada 6 horas.",
  "{v1}/{v2} HP remaining": "Quedan {v1}/{v2} PS",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "Zona de Remoción: {v1} carta(s). Ecos: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Funde {v1} copia(s) sobrante(s) y vuelve al nivel {v2}. Se recupera el 97% del coste de los niveles."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Funde {v1} copia(s) sobrante(s) y vuelve al nivel {v2}. Se recupera el 97% del coste de los niveles.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "Oscuridad ★: se gana cuando mueren tus unidades y se gasta en cartas de Diablura. ⛧: tu Invocación Oscura de este turno."
 }

@@ -1390,7 +1390,6 @@
  "Practice": "Ensayo",
  "Prayer Ward": "Bantay ng Dasal",
  "Prayer Ward: Armor {n} while it holds Prayer tokens": "Bantay ng Dasal: Armor {n} habang may hawak na Prayer token",
- "Prayer 🙏: your 📿 Prayer tokens, those on your units on the field plus your own. A unit with Prayer N gains N at the start of each of your turns; its tokens go when it dies or leaves the field. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, as your pitch, when you summon an Ecclesia card you may exile a hand card for 1 Prayer token of your own, which you keep.": "Panalangin 🙏: ang mga 📿 Prayer token mo, ang mga nasa unit mo sa field at ang sarili mo. Ang unit na may Panalangin N ay nagkakaroon ng N sa simula ng bawat turn mo; mawawala ang mga token nito kapag namatay ito o umalis sa field. Kailangan ng Ecclesia card ng halaga ng Panalangin para malaro; hindi ito nagagastos. Isang beses bawat turn, bilang pitch mo, kapag nagpatawag ka ng Ecclesia card puwede mong i-exile ang isang card mula sa kamay para sa 1 sariling Prayer token, na iyo na.",
  "Premium": "Premium",
  "Press Fight.": "Pindutin ang Lumaban.",
  "Preview {n}": "Preview {n}",
@@ -3619,7 +3618,6 @@
  "Under the trees, this ground unit dodges half the shots, skills and Flying attacks aimed at it.": "Sa ilalim ng mga puno, naiiwasan ng yunit na ito sa lupa ang kalahati ng mga tira, kasanayan at atake ng lumilipad na nakatutok dito.",
  "Admin: {name} {from} → {to}": "Admin: {name} {from} → {to}",
  "Export all": "I-export lahat",
- "Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.": "Kinokopya ang bawat listahan ng bawat mapa (mga napili, baka at tinanggal na baraha) kasama ang kasalukuyan mong pili na Tanggalin/Itago, ayon sa ayos ng mapa, bilang teksto para kay Claude. May .txt at .json na download din.",
  "Copied everything: paste it to Claude, or download it": "Nakopya na lahat: i-paste kay Claude o i-download",
  "Ready: download it": "Handa na: i-download",
  "A CPU ally with a random deck joins at Start": "May sasamang CPU ally na random ang deck pagsisimula",
@@ -3670,5 +3668,7 @@
  "Fuse spare copies; you only field one.": "I-fuse ang sobrang kopya; isa lang ang magagamit mo.",
  "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito.",
  "Each level adds to the card's stat budget. Levels 4, 7 and 10 add the most.": "Bawat level ay nagdaragdag sa stat budget ng card. Pinakamarami ang Level 4, 7 at 10.",
- "Rounds a unit takes to equip this piece (default 1).": "Mga round na kailangan ng unit para i-equip ang piyesang ito (default 1)."
+ "Rounds a unit takes to equip this piece (default 1).": "Mga round na kailangan ng unit para i-equip ang piyesang ito (default 1).",
+ "Prayer 🙏: tokens on your units and your own. Ecclesia cards need it; it is never spent.": "Dasal 🙏: mga token sa mga unit mo at sa iyo mismo. Kailangan ito ng mga Ecclesia card; hindi ito nauubos.",
+ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.": "Kinokopya ang mga card list ng bawat mapa, kasama ang mga pinili mong Cut/Keep, bilang text para kay Claude."
 }

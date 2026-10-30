@@ -534,7 +534,6 @@
  "Dark-blind": "Cega no escuro",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "A Escuridão e a Cegueira não a fazem falhar unidades em terra; não pode ficar Cega.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "Escuridão ★ {v1} · Ecos 🕯️ {v2}. Uma carta Cuidado pode ser lançada daqui enquanto a tua Escuridão for alta o suficiente.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "Escuridão ★ — ganhas 1 sempre que uma das tuas unidades perece (alguns Diabretes dão mais, e descartar uma carta Diabrura dá 1). Gasta-se em cartas Diabrura. ⛧ é a tua Invocação sombria deste turno: 1 por turno, além da tua jogada normal.",
  "Darksight: it can see in darkness": "Visão no escuro: vê na escuridão",
  "Daunt {v1}": "Intimidar {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Intimidado: −{v1} de Ataque até ao fim da próxima ronda",
@@ -2600,5 +2599,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "Pontos de raid: necessários para tentativas de raid online. Recupera 1 a cada 6 horas.",
  "{v1}/{v2} HP remaining": "Restam {v1}/{v2} PV",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "Zona de Remoção: {v1} carta(s). Ecos: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Derrete {v1} cópia(s) extra e volta ao nível {v2}. Recuperas 97% do custo dos níveis."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Derrete {v1} cópia(s) extra e volta ao nível {v2}. Recuperas 97% do custo dos níveis.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "Escuridão ★: ganha-se quando as tuas unidades perecem e gasta-se em cartas de Diabrura. ⛧: a tua Invocação Sombria deste turno."
 }

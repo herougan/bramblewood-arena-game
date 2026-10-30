@@ -534,7 +534,6 @@
  "Dark-blind": "இருள்-குருடு",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "இருளும் குருடும் இது தரை அலகுகளைத் தவறவிடச் செய்யாது; இதைக் குருடாக்க முடியாது.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "இருள் ★ {v1} · எதிரொலிகள் 🕯️ {v2}. உன் இருள் போதுமான அளவு உயர்ந்திருக்கும் வரை எச்சரிக்கை அட்டையை இங்கிருந்து ஏவலாம்.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "இருள் ★ — உன் அலகுகளில் ஒன்று அழியும்போதெல்லாம் 1 பெறுவாய் (சில குட்டிப்பேய்கள் அதிகம் தரும், பேய்வித்தை அட்டையைக் கைவிட்டால் 1). பேய்வித்தை அட்டைகளுக்குச் செலவாகும். ⛧ என்பது இந்தத் திருப்பத்துக்கான உன் இருள் அழைப்பு: உன் சாதாரண ஆட்டத்துடன் கூடுதலாக ஒரு திருப்பத்துக்கு 1.",
  "Darksight: it can see in darkness": "இருள்பார்வை: இருளிலும் பார்க்கும்",
  "Daunt {v1}": "அச்சுறுத்தல் {v1}",
  "Daunted: −{v1} Attack until the end of next round": "அஞ்சியது: அடுத்த சுற்றின் முடிவு வரை −{v1} தாக்குதல்",
@@ -2600,5 +2599,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "ரெய்டு புள்ளிகள்: ஆன்லைன் ரெய்டு முயற்சிகளுக்குத் தேவை. 6 மணிநேரத்துக்கு 1 நிரம்பும்.",
  "{v1}/{v2} HP remaining": "மீதம் {v1}/{v2} HP",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "நீக்க மண்டலம்: {v1} அட்டை(கள்). எதிரொலிகள்: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "{v1} மிகுதி நகல்(களை) உருக்கி நிலை {v2}க்குத் திருப்பும். நிலைச் செலவில் 97% திரும்பும்."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "{v1} மிகுதி நகல்(களை) உருக்கி நிலை {v2}க்குத் திருப்பும். நிலைச் செலவில் 97% திரும்பும்.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "இருள் ★: உங்கள் அலகுகள் அழியும்போது கிடைக்கும், டெவிலரி அட்டைகளுக்குச் செலவாகும். ⛧: இந்தச் சுற்றுக்கான உங்கள் இருள் அழைப்பு."
 }

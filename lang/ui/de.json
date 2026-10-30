@@ -1006,7 +1006,6 @@
  "Darkness": "Dunkelheit",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "Dunkelheit und Blindheit lassen sie gegen Bodeneinheiten nicht verfehlen; sie kann nicht geblendet werden.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "Dunkelheit ★ {v1} · Echos 🕯️ {v2}. Eine Hüte-dich-Karte kann von hier gewirkt werden, solange deine Dunkelheit hoch genug ist.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "Dunkelheit ★ — du bekommst 1, wann immer eine deiner Einheiten vergeht (manche Imps geben mehr, und das Abwerfen einer Teufelei-Karte gibt 1). Wird für Teufelei-Karten ausgegeben. ⛧ ist deine Dunkle Beschwörung für diesen Zug: 1 pro Zug, zusätzlich zu deinem normalen Zug.",
  "Darksight": "Dunkelsicht",
  "Darksight: it can see in darkness": "Dunkelsicht: Sie sieht in der Dunkelheit",
  "Dart Frogs": "Pfeilgiftfrösche",
@@ -5071,5 +5070,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "Raid-Punkte: nötig für Online-Raid-Versuche. Füllen sich alle 6 Stunden um 1 auf.",
  "{v1}/{v2} HP remaining": "Noch {v1}/{v2} LP",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "Entfernungszone: {v1} Karte(n). Echos: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Schmilzt {v1} übrige(s) Exemplar(e) ein, zurück auf Stufe {v2}. 97 % der Stufenkosten kommen zurück."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Schmilzt {v1} übrige(s) Exemplar(e) ein, zurück auf Stufe {v2}. 97 % der Stufenkosten kommen zurück.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "Dunkelheit ★: wird gewonnen, wenn deine Einheiten fallen, und für Teufelei-Karten ausgegeben. ⛧: deine Dunkle Beschwörung in diesem Zug."
 }

@@ -534,7 +534,6 @@
  "Dark-blind": "Bulag sa dilim",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "Hindi ito pinasasablay ng Dilim at Bulag sa mga yunit sa lupa; hindi ito mabubulag.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "Dilim ★ {v1} · Alingawngaw 🕯️ {v2}. Maaaring ilunsad mula rito ang card na Mag-ingat habang sapat ang taas ng Dilim mo.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "Dilim ★ — nakakakuha ka ng 1 tuwing may namamatay sa mga yunit mo (mas marami ang ibinibigay ng ilang Imp, at 1 ang pagtatapon ng card na Kademonyohan). Ginagastos sa mga card na Kademonyohan. ⛧ ang Madilim na Pagtawag mo ngayong turn: 1 bawat turn, bukod sa karaniwan mong laro.",
  "Darksight: it can see in darkness": "Paningin sa Dilim: nakakakita sa dilim",
  "Daunt {v1}": "Panakot {v1}",
  "Daunted: −{v1} Attack until the end of next round": "Nasindak: −{v1} Atake hanggang matapos ang susunod na round",
@@ -2600,5 +2599,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "Raid Points: kailangan sa mga Online Raid na subok. +1 kada 6 na oras.",
  "{v1}/{v2} HP remaining": "Natitirang {v1}/{v2} HP",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "Removal Zone: {v1} card{s}. Mga Echo: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Tinutunaw ang {v1} sobrang kopya pabalik sa level {v2}. 97% ng gastos sa level ang ibabalik."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "Tinutunaw ang {v1} sobrang kopya pabalik sa level {v2}. 97% ng gastos sa level ang ibabalik.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "Dilim ★: nakukuha kapag namatay ang mga unit mo, ginagastos sa mga Devilry card. ⛧: ang Dark Summon mo ngayong turn."
 }

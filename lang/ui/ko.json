@@ -534,7 +534,6 @@
  "Dark-blind": "어둠에 눈먼",
  "Darkness and Blind don't make it miss grounded units; it can't be Blinded.": "어둠과 실명으로 지상 유닛을 빗맞히지 않아요. 실명에 걸리지 않아요.",
  "Darkness ★ {v1} · Echoes 🕯️ {v2}. A Beware card can be cast from here while your Darkness is high enough.": "어둠 ★ {v1} · 메아리 🕯️ {v2}. 어둠이 충분히 높으면 주의 카드를 여기서 시전할 수 있어요.",
- "Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.": "어둠 ★ — 내 유닛이 쓰러질 때마다 1 얻어요(일부 임프는 더 주고, 악마술 카드를 버리면 1). 악마술 카드에 써요. ⛧는 이번 턴의 어둠의 소환: 일반 플레이와 별도로 턴에 1번.",
  "Darksight: it can see in darkness": "어둠 시야: 어둠 속에서도 볼 수 있어요",
  "Daunt {v1}": "위협 {v1}",
  "Daunted: −{v1} Attack until the end of next round": "위축: 다음 라운드 끝까지 공격 −{v1}",
@@ -2600,5 +2599,6 @@
  "Raid Points: needed for Online Raid attempts. Refills 1 every 6 hours.": "레이드 포인트: 온라인 레이드 도전에 필요합니다. 6시간마다 1씩 차오릅니다.",
  "{v1}/{v2} HP remaining": "남은 체력 {v1}/{v2}",
  "Removal Zone: {v1} card{s}. Echoes: {v2}.": "제외 구역: {v1}장. 메아리: {v2}.",
- "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "남는 복사본 {v1}장을 녹여 레벨 {v2}로 되돌립니다. 레벨 비용의 97%가 돌아옵니다."
+ "Melts {v1} spare cop{s} back to level {v2}. 97% of level costs return.": "남는 복사본 {v1}장을 녹여 레벨 {v2}로 되돌립니다. 레벨 비용의 97%가 돌아옵니다.",
+ "Darkness ★: gained when your units perish, spent on Devilry cards. ⛧: your Dark Summon this turn.": "어둠 ★: 내 유닛이 죽으면 얻고 악마술 카드에 씁니다. ⛧: 이번 턴의 암흑 소환."
 }
