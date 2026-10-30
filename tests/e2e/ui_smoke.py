@@ -184,9 +184,11 @@ async def main():
         # 2026-10-21 (package TT2): simulate part 1 as startTutorialMatch builds it: the tutorial config's decks (tutorialDecksFor; the
         # starter builders behind them are only a fallback since the owner's decks were folded in), Open battles (since 2026-10-12), both
         # brambles at BRAMBLE_SCALE (BF5) and no rival loop cards. The old check measured the fallback decks in gravity mode.
-        tut = await pg.evaluate("""(()=>{ const out = {}, defs = getCardDefs(), cfg = tutorialCfg;
+        # 2026-10-30 TUT2: every T-1 card is now a Level 0 "<id>~tut0" copy (matchDefsOverlay), so the defs are read after the decks are
+        # built and the card cache is cleared, as startTutorialMatch does (the defs taken before them lacked the copies)
+        tut = await pg.evaluate("""(()=>{ const out = {}, cfg = tutorialCfg; matchDefsOverlay = {};
           for(const pick of ['otters','hummingbirds','both']){ let w = 0, fixedWin = false;
-            const D = tutorialDecksFor(1, pick), myD = tutorialPlainDeck(D.mine, 1), rvD = tutorialPlainDeck(D.rival, 1);
+            const D = tutorialDecksFor(1, pick), myD = tutorialPlainDeck(D.mine, 1), rvD = tutorialPlainDeck(D.rival, 1); invalidateCardDefs(); const defs = getCardDefs();
             const myHp = brambleHp(Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX)), rvHp = brambleHp(cfg.rivalHp || 30);
             for(let i=0;i<60;i++){ const seed = i===0 ? TUTORIAL_SEED : 9100+i;
               const engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode:'open'}); const sideOf = id=> id===1?'A':'B', st = {};
@@ -198,6 +200,7 @@ async def main():
             out[pick] = [Math.round(w/60*100), fixedWin]; }
           return out; })()""")
         for pick, (pct, fixed_win) in tut.items():
+            print(f'  tutorial part 1 as {pick}: {pct}% simulated wins, fixed seed win={fixed_win}')  # 2026-10-30 TUT2: reported, not only on a failure
             check(pct >= 70 and fixed_win, f'tutorial as {pick}: {pct}% simulated wins, fixed seed win={fixed_win} (want 70%+ and a fixed-seed win)')
         # 7c: Quit keeps a Conquest fight resumable; Home's Play tile becomes Rejoin (2026-10-08)
         await pg.evaluate("(()=>{ switchTab('play'); startConquestMatch('m1', CONQUEST_MAPS[0].nodes.find(n=> n.kind==='skirmish').key, {skipEnergyCost:true}); return 1; })()"); await pg.wait_for_timeout(1500)
