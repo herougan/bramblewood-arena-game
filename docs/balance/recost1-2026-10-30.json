@@ -1,0 +1,3628 @@
+{
+ "package": "RECOST1",
+ "date": "2026-10-30",
+ "owner": "plan 10-28 21:40 step 3 (skill recosting, then balancing each card); 10-26 \"Fill in the decisions to your best extent unless im absolutely needed\"",
+ "runs": {
+  "skills80": "docs/balance/bench-skills-2026-10-30.json (191 skills on in-play cards, 80 fights, 3 carriers, global context, fingerprint b791b784613a)",
+  "skills200": "docs/balance/bench-skills-2026-10-30-remeasure.json (74 flagged skills, 200 fights, 4 carriers)",
+  "contribBefore": "docs/balance/bench-contrib-global-2026-10-30-inplay.json (430 in-play fieldable cards, 200 fights, after the trims)",
+  "contribAfter": "docs/balance/bench-contrib-global-2026-10-30-final.json (430 in-play fieldable cards, 200 fights, after the trims and lifts)"
+ },
+ "yardstick": {
+  "perPoint": 0.0417,
+  "se": 0.0034,
+  "attack": 0.0954,
+  "attackSE": 0.0078,
+  "health": 0.0298,
+  "healthSE": 0.0027,
+  "cards": 283,
+  "attackCards": 282,
+  "attackInHealth": 3.2033,
+  "from": "this run"
+ },
+ "rule": "a price changes when the 200-fight worth differs from the carriers' price by more than 2 standard errors and at least 0.5 budget points; value = worth / the scale factor at the carriers' N, floored at 0 (a drawback keeps its negative value); owner-set, logic-rule, field-conditional, same-card-synergy, partner-resource and trigger entries are reported, not changed",
+ "pricesChanged": [
+  {
+   "skill": "tsunami",
+   "scale": "half",
+   "before": 15,
+   "after": 3.48,
+   "worth": 5.2158,
+   "worthCI": 1.2396,
+   "price": 22.5,
+   "net": -17.2842,
+   "z": -27.33,
+   "confidence": "high",
+   "carriers": [
+    "sperm-whale-elder",
+    "fathom-leviathan"
+   ]
+  },
+  {
+   "skill": "sturdy",
+   "scale": "half",
+   "before": 8,
+   "after": 0.69,
+   "worth": 0.6894,
+   "worthCI": 0.606,
+   "price": 8,
+   "net": -7.3106,
+   "z": -23.64,
+   "confidence": "high",
+   "carriers": [
+    "pangolin-roller",
+    "grovebearer-dragon-turtle"
+   ]
+  },
+  {
+   "skill": "loneWolf",
+   "scale": "half",
+   "before": 6,
+   "after": 2.62,
+   "worth": 5.2358,
+   "worthCI": 1.1759,
+   "price": 12,
+   "net": -6.7642,
+   "z": -11.27,
+   "confidence": "high",
+   "carriers": [
+    "lone-grey-wolf",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "sweep",
+   "scale": "half",
+   "before": 3.9,
+   "after": 0.55,
+   "worth": 1.0941,
+   "worthCI": 0.5677,
+   "price": 7.8,
+   "net": -6.7059,
+   "z": -23.15,
+   "confidence": "high",
+   "carriers": [
+    "alpha-howler",
+    "boar-rampager",
+    "boreal-elk",
+    "fox-warchief"
+   ]
+  },
+  {
+   "skill": "acidBolt",
+   "scale": "half",
+   "before": 1,
+   "after": 7.23,
+   "worth": 7.2342,
+   "worthCI": 1.468,
+   "price": 1,
+   "net": 6.2342,
+   "z": 8.32,
+   "confidence": "high",
+   "carriers": [
+    "archerfish",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "immolation",
+   "scale": "half",
+   "before": 4,
+   "after": 0.0,
+   "worth": -0.6295,
+   "worthCI": 0.5259,
+   "price": 5,
+   "net": -5.6295,
+   "z": -20.98,
+   "confidence": "high",
+   "carriers": [
+    "magma-titan",
+    "rimeheart-colossus",
+    "ember-wisp",
+    "ashmantle-fiend"
+   ]
+  },
+  {
+   "skill": "spitfire",
+   "scale": "half",
+   "before": 1,
+   "after": 6.12,
+   "worth": 6.1151,
+   "worthCI": 1.3207,
+   "price": 1,
+   "net": 5.1151,
+   "z": 7.59,
+   "confidence": "high",
+   "carriers": [
+    "fire-salamander",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "sacrifice",
+   "scale": "half",
+   "before": 3,
+   "after": 0.0,
+   "worth": -0.06,
+   "worthCI": 0.2635,
+   "price": 4.5,
+   "net": -4.56,
+   "z": -33.92,
+   "confidence": "high",
+   "carriers": [
+    "cinder-imp",
+    "ash-imp"
+   ]
+  },
+  {
+   "skill": "avalanche",
+   "scale": "half",
+   "before": 4,
+   "after": 8.29,
+   "worth": 8.2934,
+   "worthCI": 1.7031,
+   "price": 4,
+   "net": 4.2934,
+   "z": 4.94,
+   "confidence": "high",
+   "carriers": [
+    "ibex-rockcaller",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "regen",
+   "scale": "n",
+   "before": 2.6,
+   "after": 0.48,
+   "worth": 0.9592,
+   "worthCI": 0.4699,
+   "price": 5.2,
+   "net": -4.2408,
+   "z": -17.69,
+   "confidence": "high",
+   "carriers": [
+    "grovebearer-dragon-turtle",
+    "alpine-salamander",
+    "bog-behemoth",
+    "bramble-hoglet"
+   ]
+  },
+  {
+   "skill": "expose",
+   "scale": "half",
+   "before": 2.1,
+   "after": 0.03,
+   "worth": 0.06,
+   "worthCI": 0.589,
+   "price": 4.2,
+   "net": -4.14,
+   "z": -13.78,
+   "confidence": "high",
+   "carriers": [
+    "narwhal-lancer",
+    "snow-owl-sentinel"
+   ]
+  },
+  {
+   "skill": "venomous",
+   "scale": "half",
+   "before": 3.1,
+   "after": 0.74,
+   "worth": 1.289,
+   "worthCI": 0.6805,
+   "price": 5.425,
+   "net": -4.136,
+   "z": -11.91,
+   "confidence": "high",
+   "carriers": [
+    "platypus-spur",
+    "water-shrew",
+    "banded-sea-krait",
+    "giant-water-bug"
+   ]
+  },
+  {
+   "skill": "scare",
+   "scale": "half",
+   "before": 2.5,
+   "after": 0.18,
+   "worth": 0.3147,
+   "worthCI": 0.2662,
+   "price": 4.375,
+   "net": -4.0603,
+   "z": -29.89,
+   "confidence": "high",
+   "carriers": [
+    "ashmantle-fiend",
+    "white-dragon",
+    "yeti",
+    "amber-cicada"
+   ]
+  },
+  {
+   "skill": "rage",
+   "scale": "half",
+   "before": 5,
+   "after": 0.99,
+   "worth": 0.9892,
+   "worthCI": 0.4666,
+   "price": 5,
+   "net": -4.0108,
+   "z": -16.85,
+   "confidence": "high",
+   "carriers": [
+    "berserker-boar",
+    "honey-badger-fury",
+    "ant-warrior",
+    "deep-cave-troll"
+   ]
+  },
+  {
+   "skill": "onReadyGold",
+   "scale": "half",
+   "before": 6.24,
+   "after": 2.31,
+   "worth": 2.3082,
+   "worthCI": 0.7358,
+   "price": 6.24,
+   "net": -3.9318,
+   "z": -10.47,
+   "confidence": "high",
+   "carriers": [
+    "chipmunk-hoarder",
+    "elder-willow",
+    "elderhorn-monarch",
+    "land-tiller"
+   ]
+  },
+  {
+   "skill": "quick",
+   "scale": "fixed",
+   "before": 5,
+   "after": 1.12,
+   "worth": 1.1241,
+   "worthCI": 0.9839,
+   "price": 5,
+   "net": -3.8759,
+   "z": -7.72,
+   "confidence": "high",
+   "carriers": [
+    "caiman-hatchling",
+    "chipmunk-cavalry",
+    "feral-tomcat",
+    "hedgerow-shrew"
+   ]
+  },
+  {
+   "skill": "undead",
+   "scale": "fixed",
+   "before": 4.3,
+   "after": 0.54,
+   "worth": 0.5396,
+   "worthCI": 0.5136,
+   "price": 4.3,
+   "net": -3.7604,
+   "z": -14.35,
+   "confidence": "high",
+   "carriers": [
+    "phoenix-mushrooms",
+    "grass-snake",
+    "slow-worm",
+    "cinder-skeleton"
+   ]
+  },
+  {
+   "skill": "healing",
+   "scale": "half",
+   "before": 4,
+   "after": 1.2,
+   "worth": 1.5987,
+   "worthCI": 0.6575,
+   "price": 5.3333,
+   "net": -3.7346,
+   "z": -11.13,
+   "confidence": "high",
+   "carriers": [
+    "abbey-goose",
+    "newt-doctor",
+    "nectar-vintner"
+   ]
+  },
+  {
+   "skill": "shell",
+   "scale": "half",
+   "before": 2,
+   "after": 0.47,
+   "worth": 1.0492,
+   "worthCI": 0.5032,
+   "price": 4.5,
+   "net": -3.4508,
+   "z": -13.44,
+   "confidence": "high",
+   "carriers": [
+    "malachite-golem",
+    "shellwright-apprentice",
+    "stalactite-golem",
+    "limpet-clinger"
+   ]
+  },
+  {
+   "skill": "strangle",
+   "scale": "half",
+   "before": 0.8,
+   "after": 3.1,
+   "worth": 4.6463,
+   "worthCI": 1.2875,
+   "price": 1.2,
+   "net": 3.4463,
+   "z": 5.25,
+   "confidence": "high",
+   "carriers": [
+    "anaconda-coil",
+    "birdlime-dauber"
+   ]
+  },
+  {
+   "skill": "fastForward",
+   "scale": "half",
+   "before": 5.59,
+   "after": 2.34,
+   "worth": 2.3381,
+   "worthCI": 0.7845,
+   "price": 5.59,
+   "net": -3.2519,
+   "z": -8.12,
+   "confidence": "high",
+   "carriers": [
+    "swift-fox",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "speed",
+   "scale": "half",
+   "before": 1.95,
+   "after": 0.37,
+   "worth": 0.7394,
+   "worthCI": 0.649,
+   "price": 3.9,
+   "net": -3.1606,
+   "z": -9.54,
+   "confidence": "high",
+   "carriers": [
+    "pronghorn-racer",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "rocket",
+   "scale": "half",
+   "before": 1,
+   "after": 2.03,
+   "worth": 6.0951,
+   "worthCI": 1.3277,
+   "price": 3,
+   "net": 3.0951,
+   "z": 4.57,
+   "confidence": "high",
+   "carriers": [
+    "bombardier-beetle",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "fork",
+   "scale": "half",
+   "before": 4,
+   "after": 1.27,
+   "worth": 1.274,
+   "worthCI": 0.5174,
+   "price": 4,
+   "net": -2.726,
+   "z": -10.33,
+   "confidence": "high",
+   "carriers": [
+    "kraken-spawnling",
+    "colossal-squid",
+    "alpine-avalanche",
+    "pack-wolf-reaver"
+   ]
+  },
+  {
+   "skill": "gash",
+   "scale": "half",
+   "before": 1.6,
+   "after": 0.24,
+   "worth": 0.4796,
+   "worthCI": 0.2802,
+   "price": 3.2,
+   "net": -2.7204,
+   "z": -19.03,
+   "confidence": "high",
+   "carriers": [
+    "komodo-warlord",
+    "kraken-spawnling",
+    "colossal-squid"
+   ]
+  },
+  {
+   "skill": "daunt",
+   "scale": "half",
+   "before": 2.5,
+   "after": 0.34,
+   "worth": 0.4197,
+   "worthCI": 0.4281,
+   "price": 3.125,
+   "net": -2.7053,
+   "z": -12.39,
+   "confidence": "high",
+   "carriers": [
+    "booming-bittern",
+    "cave-warlord",
+    "eyrie-warden",
+    "skull-vulture"
+   ]
+  },
+  {
+   "skill": "taunt",
+   "scale": "half",
+   "before": 3,
+   "after": 0.4,
+   "worth": 0.4047,
+   "worthCI": 0.8001,
+   "price": 3,
+   "net": -2.5953,
+   "z": -6.36,
+   "confidence": "high",
+   "carriers": [
+    "swordbill-challenger",
+    "sheep",
+    "goose-sentry",
+    "proboscis-monkey"
+   ]
+  },
+  {
+   "skill": "hunter",
+   "scale": "half",
+   "before": 2,
+   "after": 0.28,
+   "worth": 0.4197,
+   "worthCI": 0.9648,
+   "price": 3,
+   "net": -2.5803,
+   "z": -5.24,
+   "confidence": "high",
+   "carriers": [
+    "fen-mink",
+    "tidepool-trapper-crab"
+   ]
+  },
+  {
+   "skill": "charge",
+   "scale": "fixed",
+   "before": 3,
+   "after": 5.58,
+   "worth": 5.5755,
+   "worthCI": 1.3086,
+   "price": 3,
+   "net": 2.5755,
+   "z": 3.86,
+   "confidence": "high",
+   "carriers": [
+    "electric-ray",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "iceBolt",
+   "scale": "half",
+   "before": 3,
+   "after": 4.21,
+   "worth": 8.4133,
+   "worthCI": 1.6432,
+   "price": 6,
+   "net": 2.4133,
+   "z": 2.88,
+   "confidence": "high",
+   "carriers": [
+    "ice-petrel",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "twinShot",
+   "scale": "half",
+   "before": 9,
+   "after": 6.61,
+   "worth": 6.6147,
+   "worthCI": 1.3545,
+   "price": 9,
+   "net": -2.3853,
+   "z": -3.45,
+   "confidence": "high",
+   "carriers": [
+    "spitting-cobra",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "volley",
+   "scale": "half",
+   "before": 3,
+   "after": 4.56,
+   "worth": 6.8345,
+   "worthCI": 1.6258,
+   "price": 4.5,
+   "net": 2.3345,
+   "z": 2.81,
+   "confidence": "high",
+   "carriers": [
+    "echidna-quillshot",
+    "trebuchet-crew"
+   ]
+  },
+  {
+   "skill": "ambush",
+   "scale": "half",
+   "before": 2,
+   "after": 0.87,
+   "worth": 1.7386,
+   "worthCI": 0.8059,
+   "price": 4,
+   "net": -2.2614,
+   "z": -5.5,
+   "confidence": "high",
+   "carriers": [
+    "polar-bear",
+    "subterraneaner",
+    "tunnel-ant"
+   ]
+  },
+  {
+   "skill": "swipe",
+   "scale": "half",
+   "before": 3,
+   "after": 5.25,
+   "worth": 5.2458,
+   "worthCI": 1.4166,
+   "price": 3,
+   "net": 2.2458,
+   "z": 3.11,
+   "confidence": "high",
+   "carriers": [
+    "jay-pilferer",
+    "tax-collector-teal"
+   ]
+  },
+  {
+   "skill": "lumberjack",
+   "scale": "half",
+   "before": 5,
+   "after": 2.76,
+   "worth": 2.7578,
+   "worthCI": 0.852,
+   "price": 5,
+   "net": -2.2422,
+   "z": -5.16,
+   "confidence": "high",
+   "carriers": [
+    "badger-lumberjack",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "iceArrow",
+   "scale": "half",
+   "before": 2.5,
+   "after": 3.96,
+   "worth": 5.9353,
+   "worthCI": 1.5509,
+   "price": 3.75,
+   "net": 2.1853,
+   "z": 2.76,
+   "confidence": "high",
+   "carriers": [
+    "snow-bunting-archer",
+    "rimefire-salamander"
+   ]
+  },
+  {
+   "skill": "berserk",
+   "scale": "half",
+   "before": 2,
+   "after": 3.09,
+   "worth": 6.1751,
+   "worthCI": 1.3495,
+   "price": 4,
+   "net": 2.1751,
+   "z": 3.16,
+   "confidence": "high",
+   "carriers": [
+    "tasmanian-devil",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "bleed",
+   "scale": "n",
+   "before": 3.6,
+   "after": 2.05,
+   "worth": 2.8477,
+   "worthCI": 0.8557,
+   "price": 4.995,
+   "net": -2.1473,
+   "z": -4.92,
+   "confidence": "high",
+   "carriers": [
+    "wound-reaver",
+    "bog-leech",
+    "frost-thistle-lynx",
+    "glacier-wolf-pack"
+   ]
+  },
+  {
+   "skill": "greaterPoison",
+   "scale": "half",
+   "before": 2.5,
+   "after": 0.39,
+   "worth": 0.3897,
+   "worthCI": 0.5042,
+   "price": 2.5,
+   "net": -2.1103,
+   "z": -8.2,
+   "confidence": "high",
+   "carriers": [
+    "cane-toad",
+    "inland-taipan"
+   ]
+  },
+  {
+   "skill": "onDeathSpawn",
+   "scale": "half",
+   "before": 3,
+   "after": 0.91,
+   "worth": 0.9143,
+   "worthCI": 0.4553,
+   "price": 3,
+   "net": -2.0857,
+   "z": -8.98,
+   "confidence": "high",
+   "carriers": [
+    "fungal-colossus",
+    "goliath-broodmother",
+    "millipede-hauler",
+    "rot-swollen-carcass"
+   ]
+  },
+  {
+   "skill": "counterattack",
+   "scale": "half",
+   "before": 1.9,
+   "after": 0.0,
+   "worth": -0.1799,
+   "worthCI": 0.8077,
+   "price": 1.9,
+   "net": -2.0799,
+   "z": -5.05,
+   "confidence": "high",
+   "carriers": [
+    "thornwood-palisade",
+    "swordbill-challenger"
+   ]
+  },
+  {
+   "skill": "pounce",
+   "scale": "half",
+   "before": 1.8,
+   "after": 0.76,
+   "worth": 1.5288,
+   "worthCI": 0.7314,
+   "price": 3.6,
+   "net": -2.0712,
+   "z": -5.55,
+   "confidence": "high",
+   "carriers": [
+    "anhinga-spearbird",
+    "caldera-snow-leopard",
+    "firetail-trickster",
+    "fishing-cat"
+   ]
+  },
+  {
+   "skill": "corrode",
+   "scale": "half",
+   "before": 1,
+   "after": 0.0,
+   "worth": -0.06,
+   "worthCI": 0.1179,
+   "price": 2,
+   "net": -2.06,
+   "z": -34.25,
+   "confidence": "high",
+   "carriers": [
+    "glass-octopus",
+    "black-dragon"
+   ]
+  },
+  {
+   "skill": "midas",
+   "scale": "half",
+   "before": 1,
+   "after": 0.03,
+   "worth": 0.06,
+   "worthCI": 0.1179,
+   "price": 2,
+   "net": -1.94,
+   "z": -32.25,
+   "confidence": "high",
+   "carriers": [
+    "golden-magpie",
+    "magnate-duck"
+   ]
+  },
+  {
+   "skill": "stockpile",
+   "scale": "n",
+   "before": 0.9,
+   "after": 2.18,
+   "worth": 3.2674,
+   "worthCI": 1.2934,
+   "price": 1.35,
+   "net": 1.9174,
+   "z": 2.91,
+   "confidence": "high",
+   "carriers": [
+    "beaver-lumberjack",
+    "muskrat-reedgatherer"
+   ]
+  },
+  {
+   "skill": "relic",
+   "scale": "fixed",
+   "before": 2,
+   "after": 0.09,
+   "worth": 0.0899,
+   "worthCI": 0.4248,
+   "price": 2,
+   "net": -1.9101,
+   "z": -8.81,
+   "confidence": "high",
+   "carriers": [
+    "friar-badger",
+    "shrine-bell-ringer",
+    "shrine-high-priest",
+    "vigil-owl"
+   ]
+  },
+  {
+   "skill": "drunk",
+   "scale": "half",
+   "before": -3,
+   "after": -1.12,
+   "worth": -1.1191,
+   "worthCI": 0.819,
+   "price": -3,
+   "net": 1.8809,
+   "z": 4.5,
+   "confidence": "high",
+   "carriers": [
+    "marula-elephant",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "remember",
+   "scale": "half",
+   "before": 1,
+   "after": 2.07,
+   "worth": 3.6271,
+   "worthCI": 0.9797,
+   "price": 1.75,
+   "net": 1.8771,
+   "z": 3.76,
+   "confidence": "high",
+   "carriers": [
+    "ashbone-ghoul",
+    "bog-revenant",
+    "marsh-wisp",
+    "the-unremembered"
+   ]
+  },
+  {
+   "skill": "meiosis",
+   "scale": "half",
+   "before": 1,
+   "after": 2.79,
+   "worth": 2.7878,
+   "worthCI": 0.9405,
+   "price": 1,
+   "net": 1.7878,
+   "z": 3.73,
+   "confidence": "high",
+   "carriers": [
+    "planarian-splitter",
+    "phoenix-mushrooms"
+   ]
+  },
+  {
+   "skill": "scavenge",
+   "scale": "n",
+   "before": 1.5,
+   "after": 3.28,
+   "worth": 3.2774,
+   "worthCI": 1.0038,
+   "price": 1.5,
+   "net": 1.7774,
+   "z": 3.47,
+   "confidence": "high",
+   "carriers": [
+    "carrion-crow",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "bulldoze",
+   "scale": "half",
+   "before": 4,
+   "after": 2.48,
+   "worth": 2.478,
+   "worthCI": 0.792,
+   "price": 4,
+   "net": -1.522,
+   "z": -3.77,
+   "confidence": "high",
+   "carriers": [
+    "bison-bulldozer",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "inspiring",
+   "scale": "half",
+   "before": 3.5,
+   "after": 2.3,
+   "worth": 2.8777,
+   "worthCI": 0.7998,
+   "price": 4.375,
+   "net": -1.4973,
+   "z": -3.67,
+   "confidence": "high",
+   "carriers": [
+    "goliath-broodmother",
+    "otter-flag-bearer",
+    "conch-herald",
+    "gilded-swan-knight"
+   ]
+  },
+  {
+   "skill": "pierce",
+   "scale": "half",
+   "before": 1,
+   "after": 0.17,
+   "worth": 0.2998,
+   "worthCI": 0.4002,
+   "price": 1.75,
+   "net": -1.4502,
+   "z": -7.1,
+   "confidence": "high",
+   "carriers": [
+    "anvil-thrush",
+    "ember-revenant",
+    "mallard-halberdier",
+    "oystercatcher"
+   ]
+  },
+  {
+   "skill": "siege",
+   "scale": "half",
+   "before": 1,
+   "after": 0.39,
+   "worth": 0.8693,
+   "worthCI": 0.45,
+   "price": 2.25,
+   "net": -1.3807,
+   "z": -6.01,
+   "confidence": "high",
+   "carriers": [
+    "deep-cave-troll",
+    "trebuchet-crew",
+    "mouse-sapper",
+    "siege-rhino"
+   ]
+  },
+  {
+   "skill": "stunOnHit",
+   "scale": "half",
+   "before": 3,
+   "after": 1.66,
+   "worth": 1.6587,
+   "worthCI": 0.7933,
+   "price": 3,
+   "net": -1.3413,
+   "z": -3.31,
+   "confidence": "high",
+   "carriers": [
+    "cinder-hornet",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "freeze",
+   "scale": "half",
+   "before": 1.8,
+   "after": 0.55,
+   "worth": 0.5546,
+   "worthCI": 0.3898,
+   "price": 1.8,
+   "net": -1.2454,
+   "z": -6.26,
+   "confidence": "high",
+   "carriers": [
+    "glacier-yak",
+    "walrus-icebreaker",
+    "rimeheart-colossus",
+    "white-dragon"
+   ]
+  },
+  {
+   "skill": "guardian",
+   "scale": "half",
+   "before": 1.0,
+   "after": 0.0,
+   "worth": -0.2398,
+   "worthCI": 0.5155,
+   "price": 1,
+   "net": -1.2398,
+   "z": -4.71,
+   "confidence": "high",
+   "carriers": [
+    "grovebearer-dragon-turtle",
+    "alpine-marmot",
+    "cypress-root-lurker",
+    "great-gate"
+   ]
+  },
+  {
+   "skill": "prayerWard",
+   "scale": "n",
+   "before": 2.5,
+   "after": 1.3,
+   "worth": 1.299,
+   "worthCI": 0.6281,
+   "price": 2.5,
+   "net": -1.201,
+   "z": -3.75,
+   "confidence": "high",
+   "carriers": [
+    "chapel-tortoise",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "keenEye",
+   "scale": "half",
+   "before": 1.5,
+   "after": 0.34,
+   "worth": 0.3447,
+   "worthCI": 0.4618,
+   "price": 1.5,
+   "net": -1.1553,
+   "z": -4.9,
+   "confidence": "high",
+   "carriers": [
+    "warren-scout",
+    "fawn-scout",
+    "woodcock-lookout",
+    "owl-sentinel"
+   ]
+  },
+  {
+   "skill": "reflect",
+   "scale": "half",
+   "before": 0,
+   "after": 1.04,
+   "worth": 1.0392,
+   "worthCI": 0.5722,
+   "price": 0,
+   "net": 1.0392,
+   "z": 3.56,
+   "confidence": "high",
+   "carriers": [
+    "mirror-moth",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "changeling",
+   "scale": "half",
+   "before": 0.1,
+   "after": 0.96,
+   "worth": 0.9592,
+   "worthCI": 0.538,
+   "price": 0.1,
+   "net": 0.8592,
+   "z": 3.13,
+   "confidence": "high",
+   "carriers": [
+    "glass-changeling",
+    "hedge-changeling",
+    "puddle-changeling"
+   ]
+  },
+  {
+   "skill": "frenzy",
+   "scale": "half",
+   "before": 0.1,
+   "after": 0.88,
+   "worth": 0.8793,
+   "worthCI": 0.5892,
+   "price": 0.1,
+   "net": 0.7793,
+   "z": 2.59,
+   "confidence": "high",
+   "carriers": [
+    "ember-jackal",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "rupture",
+   "scale": "half",
+   "before": 0,
+   "after": 0.66,
+   "worth": 0.6595,
+   "worthCI": 0.5191,
+   "price": 0,
+   "net": 0.6595,
+   "z": 2.49,
+   "confidence": "medium",
+   "carriers": [
+    "wound-reaver",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  },
+  {
+   "skill": "herbalist",
+   "scale": "half",
+   "before": 0,
+   "after": 0.58,
+   "worth": 0.5795,
+   "worthCI": 0.475,
+   "price": 0,
+   "net": 0.5795,
+   "z": 2.39,
+   "confidence": "medium",
+   "carriers": [
+    "hedgehog-herbalist",
+    "beaver-builder",
+    "squires-mount"
+   ]
+  }
+ ],
+ "flaggedNotApplied": [
+  {
+   "skill": "arrow",
+   "worth": 7.24,
+   "ci95": 1.65,
+   "price": 5.85,
+   "net": 1.39,
+   "z": 1.65,
+   "confidence": "medium",
+   "carriers": [
+    "howdah-archers",
+    "otter-guard",
+    "balloon-archer",
+    "battlement-heron"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "scatterbrained",
+   "worth": -4.9,
+   "ci95": 1.15,
+   "price": -6,
+   "net": 1.1,
+   "z": 1.89,
+   "confidence": "medium",
+   "carriers": [
+    "pika-hoarder",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "frostbite",
+   "worth": 0.94,
+   "ci95": 0.45,
+   "price": 0.5,
+   "net": 0.44,
+   "z": 1.93,
+   "confidence": "medium",
+   "carriers": [
+    "rimeheart-colossus",
+    "frostbitten-wolverine",
+    "mountain-hare",
+    "musk-ox-calf"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "rampart",
+   "worth": -0.18,
+   "ci95": 0.36,
+   "price": 0.22,
+   "net": -0.4,
+   "z": -2.16,
+   "confidence": "medium",
+   "carriers": [
+    "dam-keeper-beaver",
+    "riverworks-bastion",
+    "moat-snapper"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "boomerang",
+   "worth": 2.56,
+   "ci95": 0.88,
+   "price": 1.9,
+   "net": 0.66,
+   "z": 1.47,
+   "confidence": "low",
+   "carriers": [
+    "net-thrower",
+    "otter-centurion",
+    "otter-royal-guard"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "cower",
+   "worth": -0.08,
+   "ci95": 0.77,
+   "price": -0.5,
+   "net": 0.42,
+   "z": 1.07,
+   "confidence": "low",
+   "carriers": [
+    "box-turtle",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 200
+  },
+  {
+   "skill": "scar",
+   "worth": 3.62,
+   "ci95": 0.89,
+   "price": 4,
+   "net": -0.38,
+   "z": -0.84,
+   "confidence": "low",
+   "carriers": [
+    "magma-titan",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 200
+  }
+ ],
+ "ownerSet": [
+  {
+   "skill": "supreme",
+   "worth": 0.1,
+   "ci95": 0.2,
+   "price": 5,
+   "net": -4.9,
+   "z": -48.92,
+   "confidence": "high",
+   "carriers": [
+    "black-dragon",
+    "fathom-leviathan",
+    "green-dragon"
+   ],
+   "fights": 80,
+   "why": "owner BF9 18:20 \"Maybe 3-5\" (5)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "bulwark",
+   "worth": 1.05,
+   "ci95": 1.28,
+   "price": 9.72,
+   "net": -8.67,
+   "z": -13.3,
+   "confidence": "high",
+   "carriers": [
+    "ancient-sloth-titan",
+    "muskrat-lodgekeeper"
+   ],
+   "fights": 80,
+   "why": "owner EN 01:57 / EN3 (ownerSet, 7.2 a point)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "stealth",
+   "worth": 0.4,
+   "ci95": 1.74,
+   "price": 2,
+   "net": -1.6,
+   "z": -1.8,
+   "confidence": "medium",
+   "carriers": [
+    "glass-octopus",
+    "subterraneaner",
+    "moray-ambusher"
+   ],
+   "fights": 80,
+   "why": "owner 10-29 22:23 \"+33%\" (1.5 -> 2)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "slow",
+   "worth": -0.3,
+   "ci95": 0.76,
+   "price": -0.92,
+   "net": 0.62,
+   "z": 1.61,
+   "confidence": "medium",
+   "carriers": [
+    "ancient-sloth-titan",
+    "garden-snail",
+    "old-growth-tortoise"
+   ],
+   "fights": 80,
+   "why": "owner ENG13-2 \"x0.85\" (a multiplier on the card's S)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "thorns",
+   "worth": 3.2,
+   "ci95": 1.42,
+   "price": 1.67,
+   "net": 1.53,
+   "z": 2.11,
+   "confidence": "medium",
+   "carriers": [
+    "fulmar-spitter",
+    "baby-horned-capybara",
+    "hedgehog-scout"
+   ],
+   "fights": 80,
+   "why": "owner BF3 / BF11 (ownerSet, 1.25 a point)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "decay",
+   "worth": 5.69,
+   "ci95": 1.75,
+   "price": 1.12,
+   "net": 4.57,
+   "z": 5.11,
+   "confidence": "high",
+   "carriers": [
+    "dung-beetle",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 80,
+   "why": "owner G4 \"upped by ~12%\" (1.12)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "breach",
+   "worth": 1.2,
+   "ci95": 0.81,
+   "price": 2.85,
+   "net": -1.65,
+   "z": -3.97,
+   "confidence": "high",
+   "carriers": [
+    "badger-sapper",
+    "beetle-battering-ram"
+   ],
+   "fights": 80,
+   "why": "owner EN5 #6 \"Worth maybe 1.9\"",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "evolute",
+   "worth": -1.25,
+   "ci95": 1.08,
+   "price": 3,
+   "net": -4.25,
+   "z": -7.68,
+   "confidence": "high",
+   "carriers": [
+    "gale-sprite",
+    "canopy-sloth-guardian",
+    "raven-harbinger"
+   ],
+   "fights": 80,
+   "why": "owner EV 17:42 \"Suggested: Evolute 3\"",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "fester",
+   "worth": 1.2,
+   "ci95": 0.91,
+   "price": 2.8,
+   "net": -1.6,
+   "z": -3.47,
+   "confidence": "high",
+   "carriers": [
+    "gangrenous-leech",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 80,
+   "why": "owner PROP1-3 \"Fester okay\" (2.8)",
+   "onDeath_bounty_note": null
+  },
+  {
+   "skill": "bounty",
+   "worth": 2.9,
+   "ci95": 1.42,
+   "price": 2.5,
+   "net": 0.4,
+   "z": 0.55,
+   "confidence": "low",
+   "carriers": [
+    "magnate-duck",
+    "chipmunk-stockpiler",
+    "pack-mule"
+   ],
+   "fights": 80,
+   "why": "owner BF5 / BAL2 (2.5 a point)",
+   "onDeath_bounty_note": null
+  }
+ ],
+ "excluded": {
+  "logic rule (bramblewood-budget.js; change the rule, not the value)": [
+   {
+    "skill": "diurnal",
+    "worth": 1.8,
+    "ci95": 1.11,
+    "price": 0.67,
+    "net": 1.13,
+    "z": 1.99,
+    "confidence": "medium",
+    "carriers": [
+     "sunbittern-strider",
+     "toucan-courier",
+     "arctic-tern"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "shock",
+    "worth": -0.15,
+    "ci95": 1.22,
+    "price": 0.95,
+    "net": -1.1,
+    "z": -1.77,
+    "confidence": "medium",
+    "carriers": [
+     "abyss-lantern-squid",
+     "voltaic-eel"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "bloomCopy",
+    "worth": 0.15,
+    "ci95": 0.69,
+    "price": 6.06,
+    "net": -5.91,
+    "z": -16.81,
+    "confidence": "high",
+    "carriers": [
+     "phoenix-mushrooms",
+     "lotus-frog",
+     "pond-algae"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "beset",
+    "worth": 2.9,
+    "ci95": 1.36,
+    "price": 1.8,
+    "net": 1.1,
+    "z": 1.58,
+    "confidence": "medium",
+    "carriers": [
+     "ravenous-wolverine",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "foeScarcity",
+    "worth": 4.09,
+    "ci95": 1.38,
+    "price": 1.54,
+    "net": 2.55,
+    "z": 3.64,
+    "confidence": "high",
+    "carriers": [
+     "stoat-cutthroat",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "heat",
+    "worth": 0,
+    "ci95": 0.92,
+    "price": 1.2,
+    "net": -1.2,
+    "z": -2.55,
+    "confidence": "high",
+    "carriers": [
+     "cinder-stoker",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "frost",
+    "worth": 0.6,
+    "ci95": 0.62,
+    "price": 1.12,
+    "net": -0.52,
+    "z": -1.66,
+    "confidence": "medium",
+    "carriers": [
+     "snow-ermine",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "fog",
+    "worth": 0.2,
+    "ci95": 0.48,
+    "price": 2.7,
+    "net": -2.5,
+    "z": -10.18,
+    "confidence": "high",
+    "carriers": [
+     "ent",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "storm",
+    "worth": 0.8,
+    "ci95": 1.18,
+    "price": 1.8,
+    "net": -1.0,
+    "z": -1.67,
+    "confidence": "medium",
+    "carriers": [
+     "gale-swift",
+     "static-fennec",
+     "fulmar-spitter"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "chrysalis",
+    "worth": 0,
+    "ci95": 0.48,
+    "price": 1.6,
+    "net": -1.6,
+    "z": -6.5,
+    "confidence": "high",
+    "carriers": [
+     "egg-bug",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "evasive",
+    "worth": 2.85,
+    "ci95": 1.52,
+    "price": 4.67,
+    "net": -1.82,
+    "z": -2.35,
+    "confidence": "medium",
+    "carriers": [
+     "cunning-vixen",
+     "mountain-hare",
+     "snow-ermine"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "flying",
+    "worth": 2.9,
+    "ci95": 1.45,
+    "price": 4.5,
+    "net": -1.6,
+    "z": -2.18,
+    "confidence": "medium",
+    "carriers": [
+     "anvil-thrush",
+     "arctic-tern",
+     "ash-cloud-condor"
+    ],
+    "fights": 80
+   }
+  ],
+  "field-conditional (its home maps, not the global field mix)": [
+   {
+    "skill": "tide",
+    "worth": 0.2,
+    "ci95": 0.79,
+    "price": 1.5,
+    "net": -1.3,
+    "z": -3.24,
+    "confidence": "high",
+    "carriers": [
+     "abyss-lantern-squid",
+     "elder-tortoise",
+     "fiddler-crab-swarm"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "darksight",
+    "worth": -0.3,
+    "ci95": 0.71,
+    "price": 3,
+    "net": -3.3,
+    "z": -9.13,
+    "confidence": "high",
+    "carriers": [
+     "black-dragon",
+     "meerkat-burrower",
+     "cave-bat-swarm"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "mountainClimber",
+    "worth": -0.5,
+    "ci95": 0.98,
+    "price": 4,
+    "net": -4.5,
+    "z": -8.98,
+    "confidence": "high",
+    "carriers": [
+     "snow-leopard",
+     "chamois-leaper",
+     "fumarole-ibex"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "dry",
+    "worth": 0.1,
+    "ci95": 0.81,
+    "price": 4,
+    "net": -3.9,
+    "z": -9.42,
+    "confidence": "high",
+    "carriers": [
+     "dromedary",
+     "static-fennec",
+     "fennec-fox"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "keenSense",
+    "worth": 0.5,
+    "ci95": 0.81,
+    "price": 1.63,
+    "net": -1.13,
+    "z": -2.74,
+    "confidence": "high",
+    "carriers": [
+     "quarry-mole",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "sonar",
+    "worth": 0.5,
+    "ci95": 1.2,
+    "price": 2,
+    "net": -1.5,
+    "z": -2.46,
+    "confidence": "medium",
+    "carriers": [
+     "oilbird",
+     "cave-swiftlet",
+     "whip-spider"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "nightblind",
+    "worth": -1.9,
+    "ci95": 1.35,
+    "price": -3,
+    "net": 1.1,
+    "z": 1.6,
+    "confidence": "medium",
+    "carriers": [
+     "hoopoe-herald",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   }
+  ],
+  "same-card synergy (the bench slot holds 6 copies of the card)": [
+   {
+    "skill": "swarm",
+    "worth": 4.99,
+    "ci95": 1.56,
+    "price": 2.5,
+    "net": 2.49,
+    "z": 3.13,
+    "confidence": "high",
+    "carriers": [
+     "ant-warrior",
+     "hedge-changeling",
+     "lemming-swarm"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "pack",
+    "worth": 5.99,
+    "ci95": 2.22,
+    "price": 0,
+    "net": 5.99,
+    "z": 5.3,
+    "confidence": "high",
+    "carriers": [
+     "dhole-runner",
+     "mire-rat"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "kinship",
+    "worth": 5.09,
+    "ci95": 1.59,
+    "price": 3,
+    "net": 2.09,
+    "z": 2.58,
+    "confidence": "high",
+    "carriers": [
+     "honeyjoe-brewer",
+     "rivergate-tribune"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "fletcher",
+    "worth": 4.49,
+    "ci95": 1.63,
+    "price": 0,
+    "net": 4.49,
+    "z": 5.4,
+    "confidence": "high",
+    "carriers": [
+     "mother-carrier",
+     "eagle-owl-quartermaster"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "brood",
+    "worth": 7.39,
+    "ci95": 2.05,
+    "price": 2.93,
+    "net": 4.46,
+    "z": 4.25,
+    "confidence": "high",
+    "carriers": [
+     "wolf-spider-mother",
+     "grotto-lobster",
+     "lemming-swarm"
+    ],
+    "fights": 80
+   },
+   {
+    "skill": "kinRally",
+    "worth": 3.44,
+    "ci95": 1.29,
+    "price": 6.5,
+    "net": -3.06,
+    "z": -4.64,
+    "confidence": "high",
+    "carriers": [
+     "rivergate-drummer",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 80
+   }
+  ],
+  "partner resource or shorthand (re-measured, not applied)": [
+   {
+    "skill": "quarry",
+    "worth": -3.24,
+    "ci95": 0.97,
+    "price": 2.5,
+    "net": -5.74,
+    "z": -11.57,
+    "confidence": "high",
+    "carriers": [
+     "badger-stonemason",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 200
+   },
+   {
+    "skill": "prospector",
+    "worth": 0.2,
+    "ci95": 0.58,
+    "price": 1.2,
+    "net": -1.0,
+    "z": -3.36,
+    "confidence": "high",
+    "carriers": [
+     "prospector-mole",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 200
+   },
+   {
+    "skill": "milling",
+    "worth": 6.12,
+    "ci95": 1.38,
+    "price": 3,
+    "net": 3.12,
+    "z": 4.43,
+    "confidence": "high",
+    "carriers": [
+     "redwood-woodpecker",
+     "beaver-builder",
+     "squires-mount"
+    ],
+    "fights": 200
+   }
+  ]
+ },
+ "triggers": [
+  {
+   "skill": "T:onSpawn>stun",
+   "worth": 0,
+   "ci95": 1.32,
+   "price": 9.45,
+   "net": -9.45,
+   "z": -14.02,
+   "confidence": "high",
+   "carriers": [
+    "ash-cloud-condor",
+    "granite-ox-golem"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onSpawn>addWait",
+   "worth": 0.4,
+   "ci95": 0.62,
+   "price": 5.88,
+   "net": -5.48,
+   "z": -17.33,
+   "confidence": "high",
+   "carriers": [
+    "elder-tortoise",
+    "glacier-yak",
+    "rot-swollen-carcass"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:perTurn>spawnCard",
+   "worth": 3.97,
+   "ci95": 1.72,
+   "price": 9,
+   "net": -5.03,
+   "z": -5.73,
+   "confidence": "high",
+   "carriers": [
+    "ant-hill",
+    "mother-carrier"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onDeath>exileSelf",
+   "worth": 4.49,
+   "ci95": 1.68,
+   "price": -0.08,
+   "net": 4.57,
+   "z": 5.34,
+   "confidence": "high",
+   "carriers": [
+    "ashbone-ghoul",
+    "bog-revenant",
+    "marsh-wisp"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onAttacked>spawnCard",
+   "worth": 3.4,
+   "ci95": 1.35,
+   "price": 7.6,
+   "net": -4.21,
+   "z": -6.11,
+   "confidence": "high",
+   "carriers": [
+    "colony",
+    "scraper-of-skies",
+    "bee-drone"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:perTurn>forgeWeapon",
+   "worth": 0,
+   "ci95": 0.48,
+   "price": 4.2,
+   "net": -4.2,
+   "z": -17.06,
+   "confidence": "high",
+   "carriers": [
+    "anvilwhisker-otter",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onSpawn>drawCard",
+   "worth": 2.75,
+   "ci95": 1.4,
+   "price": 5.74,
+   "net": -3.0,
+   "z": -4.19,
+   "confidence": "high",
+   "carriers": [
+    "courier-pigeon",
+    "daily-post",
+    "snail-mail"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onAllyPlayed>reduceWaitOfSpawned",
+   "worth": 0.7,
+   "ci95": 0.98,
+   "price": 2,
+   "net": -1.3,
+   "z": -2.61,
+   "confidence": "high",
+   "carriers": [
+    "nest",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onAttack>heal",
+   "worth": 2.02,
+   "ci95": 1.39,
+   "price": 0.27,
+   "net": 1.75,
+   "z": 2.47,
+   "confidence": "medium",
+   "carriers": [
+    "forager-ant",
+    "bee-forager"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onReady>gain",
+   "worth": 3.1,
+   "ci95": 1.41,
+   "price": 1.5,
+   "net": 1.6,
+   "z": 2.22,
+   "confidence": "medium",
+   "carriers": [
+    "ore-smelter-mole",
+    "driftwood-crab",
+    "dune-packrat"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onAttack>drawCard",
+   "worth": 4.19,
+   "ci95": 1.46,
+   "price": 5.54,
+   "net": -1.35,
+   "z": -1.8,
+   "confidence": "medium",
+   "carriers": [
+    "worker-ant",
+    "beaver-builder",
+    "squires-mount"
+   ],
+   "fights": 80
+  },
+  {
+   "skill": "T:onSpawn>gain",
+   "worth": 2.95,
+   "ci95": 1.36,
+   "price": 1.75,
+   "net": 1.2,
+   "z": 1.72,
+   "confidence": "medium",
+   "carriers": [
+    "cone-cutter-squirrel",
+    "pumice-beetle",
+    "gannet-nestweaver"
+   ],
+   "fights": 80
+  }
+ ],
+ "refits": [
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "kind": "trim (over budget)",
+   "from": "1/6",
+   "to": "1/5",
+   "map": 7,
+   "level": 1,
+   "N": 18.51,
+   "x1Before": 18.54,
+   "x1After": 17.04,
+   "useBefore": 1.0,
+   "useAfter": 0.92,
+   "x1BeforePrices": 18.54,
+   "skills": [
+    "flying 0",
+    "stealth 2",
+    "nocturnal 4.54"
+   ],
+   "contribBefore": {
+    "perCopy": 5.42,
+    "vsFair": 0.69,
+    "z": 1.15
+   },
+   "contribAfter": {
+    "perCopy": 5.17,
+    "vsFair": 0.49,
+    "z": 0.81
+   }
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "kind": "trim (over budget)",
+   "from": "3/12",
+   "to": "3/11",
+   "map": 14,
+   "level": 1,
+   "N": 18.67,
+   "x1Before": 18.88,
+   "x1After": 17.88,
+   "useBefore": 1.01,
+   "useAfter": 0.96,
+   "x1BeforePrices": 18.1,
+   "skills": [
+    "frenzy 0.88"
+   ],
+   "contribBefore": {
+    "perCopy": 6.5,
+    "vsFair": 1.78,
+    "z": 2.91
+   },
+   "contribAfter": {
+    "perCopy": 6.5,
+    "vsFair": 1.83,
+    "z": 2.94
+   }
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "1/11",
+   "to": "1/10",
+   "map": 1,
+   "level": 1,
+   "N": 16.03,
+   "x1Before": 16.2,
+   "x1After": 15.2,
+   "useBefore": 1.01,
+   "useAfter": 0.95,
+   "x1BeforePrices": 16.2,
+   "skills": [
+    "poison 3",
+    "detonate 0.2"
+   ],
+   "contribBefore": {
+    "perCopy": 4.75,
+    "vsFair": -0.15,
+    "z": -0.27
+   },
+   "contribAfter": {
+    "perCopy": 4.92,
+    "vsFair": 0.06,
+    "z": 0.1
+   }
+  },
+  {
+   "id": "otter-guard",
+   "name": "Otter Guard",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "3/7",
+   "to": "3/6",
+   "map": 0,
+   "level": 1,
+   "N": 18.1,
+   "x1Before": 19,
+   "x1After": 18,
+   "useBefore": 1.05,
+   "useAfter": 0.99,
+   "x1BeforePrices": 19,
+   "skills": [
+    "arrow 6"
+   ],
+   "contribBefore": {
+    "perCopy": 4.75,
+    "vsFair": -0.01,
+    "z": -0.02
+   },
+   "contribAfter": {
+    "perCopy": 4.83,
+    "vsFair": 0.12,
+    "z": 0.2
+   }
+  },
+  {
+   "id": "marsh-wisp",
+   "name": "Marsh Wisp",
+   "rarity": "common",
+   "kind": "trim (over budget)",
+   "from": "2/8",
+   "to": "2/6",
+   "map": 0,
+   "level": 1,
+   "N": 14.79,
+   "x1Before": 16.06,
+   "x1After": 14.06,
+   "useBefore": 1.09,
+   "useAfter": 0.95,
+   "x1BeforePrices": 13.92,
+   "skills": [
+    "remember 4.14",
+    "onDeath → exileSelf -0.08"
+   ],
+   "contribBefore": {
+    "perCopy": 6.08,
+    "vsFair": 1.09,
+    "z": 1.85
+   },
+   "contribAfter": {
+    "perCopy": 5.83,
+    "vsFair": 0.88,
+    "z": 1.47
+   }
+  },
+  {
+   "id": "glass-changeling",
+   "name": "Glass Changeling",
+   "rarity": "rare",
+   "kind": "trim (over budget)",
+   "from": "3/8",
+   "to": "3/7",
+   "map": 13,
+   "level": 1,
+   "N": 21.82,
+   "x1Before": 21.96,
+   "x1After": 20.46,
+   "useBefore": 1.01,
+   "useAfter": 0.94,
+   "x1BeforePrices": 21.1,
+   "skills": [
+    "changeling 0.96",
+    "flying 0"
+   ],
+   "contribBefore": {
+    "perCopy": 5.5,
+    "vsFair": 0.99,
+    "z": 1.72
+   },
+   "contribAfter": {
+    "perCopy": 5.33,
+    "vsFair": 0.88,
+    "z": 1.47
+   }
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "rarity": "starter",
+   "kind": "trim (over budget)",
+   "from": "1/7",
+   "to": "1/6",
+   "map": 0,
+   "level": 0,
+   "N": 9,
+   "x1Before": 9.4,
+   "x1After": 8.4,
+   "useBefore": 1.04,
+   "useAfter": 0.93,
+   "x1BeforePrices": 12,
+   "skills": [
+    "taunt 0.4"
+   ],
+   "contribBefore": {
+    "perCopy": 2.17,
+    "vsFair": -3.12,
+    "z": -6.81
+   },
+   "contribAfter": {
+    "perCopy": 2.25,
+    "vsFair": -3.01,
+    "z": -6.1
+   }
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "4/22",
+   "to": "4/20",
+   "map": 14,
+   "level": 1,
+   "N": 27.56,
+   "x1Before": 28.88,
+   "x1After": 26.88,
+   "useBefore": 1.05,
+   "useAfter": 0.98,
+   "x1BeforePrices": 27,
+   "skills": [
+    "drunk -1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 2.17,
+    "vsFair": -1.95,
+    "z": -4.12
+   },
+   "contribAfter": {
+    "perCopy": 1.83,
+    "vsFair": -2.21,
+    "z": -4.46
+   }
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "3/12",
+   "to": "3/10",
+   "map": 7,
+   "level": 1,
+   "N": 19.55,
+   "x1Before": 20.79,
+   "x1After": 18.79,
+   "useBefore": 1.06,
+   "useAfter": 0.96,
+   "x1BeforePrices": 19,
+   "skills": [
+    "meiosis 2.79"
+   ],
+   "contribBefore": {
+    "perCopy": 7.04,
+    "vsFair": 2.38,
+    "z": 3.93
+   },
+   "contribAfter": {
+    "perCopy": 6.96,
+    "vsFair": 2.35,
+    "z": 3.75
+   }
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "4/9",
+   "to": "3/8",
+   "map": 10,
+   "level": 1,
+   "N": 20.17,
+   "x1Before": 22.58,
+   "x1After": 19.58,
+   "useBefore": 1.12,
+   "useAfter": 0.97,
+   "x1BeforePrices": 20,
+   "skills": [
+    "charge 5.58"
+   ],
+   "contribBefore": {
+    "perCopy": 3.71,
+    "vsFair": -0.91,
+    "z": -1.63
+   },
+   "contribAfter": {
+    "perCopy": 3.96,
+    "vsFair": -0.61,
+    "z": -1.03
+   }
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "1/13",
+   "to": "1/11",
+   "map": 7,
+   "level": 1,
+   "N": 19.55,
+   "x1Before": 21.18,
+   "x1After": 19.18,
+   "useBefore": 1.08,
+   "useAfter": 0.98,
+   "x1BeforePrices": 19,
+   "skills": [
+    "berserk 6.18"
+   ],
+   "contribBefore": {
+    "perCopy": 5.25,
+    "vsFair": 0.59,
+    "z": 0.99
+   },
+   "contribAfter": {
+    "perCopy": 4.83,
+    "vsFair": 0.22,
+    "z": 0.36
+   }
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "veryrare",
+   "kind": "trim (over budget)",
+   "from": "3/13",
+   "to": "3/12",
+   "map": 11,
+   "level": 1,
+   "N": 26.32,
+   "x1Before": 27.29,
+   "x1After": 26.29,
+   "useBefore": 1.04,
+   "useAfter": 1.0,
+   "x1BeforePrices": 23,
+   "skills": [
+    "avalanche 8.29"
+   ],
+   "contribBefore": {
+    "perCopy": 8.46,
+    "vsFair": 4.26,
+    "z": 6.85
+   },
+   "contribAfter": {
+    "perCopy": 8.46,
+    "vsFair": 4.33,
+    "z": 6.85
+   }
+  },
+  {
+   "id": "trebuchet-crew",
+   "name": "Trebuchet Crew",
+   "rarity": "rare",
+   "kind": "trim (over budget)",
+   "from": "0/26",
+   "to": "0/24",
+   "map": 23,
+   "level": 1,
+   "N": 34.84,
+   "x1Before": 35.9,
+   "x1After": 33.9,
+   "useBefore": 1.03,
+   "useAfter": 0.97,
+   "x1BeforePrices": 34,
+   "skills": [
+    "volley 9.12",
+    "siege 0.78"
+   ],
+   "contribBefore": {
+    "perCopy": 4.5,
+    "vsFair": 0.88,
+    "z": 1.54
+   },
+   "contribAfter": {
+    "perCopy": 4.25,
+    "vsFair": 0.73,
+    "z": 1.27
+   }
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "kind": "trim (over budget)",
+   "from": "5/28",
+   "to": "5/25",
+   "map": 13,
+   "level": 1,
+   "N": 50.5,
+   "x1Before": 53.46,
+   "x1After": 50.46,
+   "useBefore": 1.06,
+   "useAfter": 1.0,
+   "x1BeforePrices": 76.5,
+   "skills": [
+    "supreme 5",
+    "tide 1.5",
+    "tsunami 6.96",
+    "wave 2"
+   ],
+   "contribBefore": {
+    "perCopy": 2.13,
+    "vsFair": -0.42,
+    "z": -0.82
+   },
+   "contribAfter": {
+    "perCopy": 1.88,
+    "vsFair": -0.52,
+    "z": -1.01
+   }
+  },
+  {
+   "id": "carrion-crow",
+   "name": "Carrion Crow",
+   "rarity": "common",
+   "kind": "trim (over budget)",
+   "from": "2/5",
+   "to": "2/4",
+   "map": 7,
+   "level": 1,
+   "N": 16.24,
+   "x1Before": 16.78,
+   "x1After": 15.28,
+   "useBefore": 1.03,
+   "useAfter": 0.94,
+   "x1BeforePrices": 15,
+   "skills": [
+    "scavenge 3.28",
+    "flying 0"
+   ],
+   "contribBefore": {
+    "perCopy": 4.96,
+    "vsFair": 0.07,
+    "z": 0.12
+   },
+   "contribAfter": {
+    "perCopy": 4.63,
+    "vsFair": -0.22,
+    "z": -0.37
+   }
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "name": "Phoenix Mushrooms",
+   "rarity": "epic",
+   "kind": "trim (over budget)",
+   "from": "1/11",
+   "to": "1/10",
+   "map": 0,
+   "level": 1,
+   "N": 22.23,
+   "x1Before": 23.37,
+   "x1After": 21.93,
+   "useBefore": 1.05,
+   "useAfter": 0.99,
+   "x1BeforePrices": 25.34,
+   "skills": [
+    "meiosis 2.79",
+    "bloomCopy 1.32",
+    "undead 0.54"
+   ],
+   "contribBefore": {
+    "perCopy": 1.17,
+    "vsFair": -3.31,
+    "z": -7.41
+   },
+   "contribAfter": {
+    "perCopy": 1.0,
+    "vsFair": -3.42,
+    "z": -7.63
+   }
+  },
+  {
+   "id": "birdlime-dauber",
+   "name": "Birdlime Dauber",
+   "rarity": "uncommon",
+   "kind": "trim (over budget)",
+   "from": "2/12",
+   "to": "2/11",
+   "map": 5,
+   "level": 1,
+   "N": 19.13,
+   "x1Before": 19.6,
+   "x1After": 18.6,
+   "useBefore": 1.02,
+   "useAfter": 0.97,
+   "x1BeforePrices": 17.3,
+   "skills": [
+    "reach 0.5",
+    "strangle 3.1"
+   ],
+   "contribBefore": {
+    "perCopy": 6.25,
+    "vsFair": 1.56,
+    "z": 2.58
+   },
+   "contribAfter": {
+    "perCopy": 6.17,
+    "vsFair": 1.53,
+    "z": 2.54
+   }
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "kind": "lift (under budget and weak)",
+   "from": "1/1",
+   "to": "2/3",
+   "map": 5,
+   "level": 1,
+   "N": 29.83,
+   "x1Before": 9.18,
+   "x1After": 13.18,
+   "useBefore": 0.31,
+   "useAfter": 0.44,
+   "x1BeforePrices": 19.23,
+   "skills": [
+    "armor 4.53",
+    "sweep 1.6500000000000001"
+   ],
+   "contribBefore": {
+    "perCopy": 1.5,
+    "vsFair": -2.46,
+    "z": -5.18
+   },
+   "contribAfter": {
+    "perCopy": 2.75,
+    "vsFair": -1.13,
+    "z": -2.11
+   }
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "1/1",
+   "to": "2/3",
+   "map": 14,
+   "level": 1,
+   "N": 17.69,
+   "x1Before": 8.12,
+   "x1After": 12.12,
+   "useBefore": 0.46,
+   "useAfter": 0.69,
+   "x1BeforePrices": 12,
+   "skills": [
+    "quick 1.12",
+    "dry 4"
+   ],
+   "contribBefore": {
+    "perCopy": 0.5,
+    "vsFair": -4.29,
+    "z": -14.97
+   },
+   "contribAfter": {
+    "perCopy": 1.83,
+    "vsFair": -2.91,
+    "z": -6.19
+   }
+  },
+  {
+   "id": "fleetfootd",
+   "name": "Fleetfoot'd",
+   "rarity": "uncommon",
+   "kind": "lift (under budget and weak)",
+   "from": "1/1",
+   "to": "2/3",
+   "map": 0,
+   "level": 1,
+   "N": 12.47,
+   "x1Before": 5.62,
+   "x1After": 9.62,
+   "useBefore": 0.45,
+   "useAfter": 0.77,
+   "x1BeforePrices": 9.5,
+   "skills": [
+    "tide 1.5",
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 1.25,
+    "vsFair": -3.89,
+    "z": -9.64
+   },
+   "contribAfter": {
+    "perCopy": 3.88,
+    "vsFair": -1.24,
+    "z": -2.3
+   }
+  },
+  {
+   "id": "chipmunk-cavalry",
+   "name": "Chipmunk Cavalry",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "3/3",
+   "map": 0,
+   "level": 1,
+   "N": 13.71,
+   "x1Before": 7.12,
+   "x1After": 10.12,
+   "useBefore": 0.52,
+   "useAfter": 0.74,
+   "x1BeforePrices": 11,
+   "skills": [
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 1.33,
+    "vsFair": -3.73,
+    "z": -7.85
+   },
+   "contribAfter": {
+    "perCopy": 2.58,
+    "vsFair": -2.45,
+    "z": -4.31
+   }
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "1/1",
+   "to": "2/1",
+   "map": 5,
+   "level": 1,
+   "N": 12.47,
+   "x1Before": 5.7,
+   "x1After": 8.7,
+   "useBefore": 0.46,
+   "useAfter": 0.7,
+   "x1BeforePrices": 8.5,
+   "skills": [
+    "flying 0",
+    "healing 1.2"
+   ],
+   "contribBefore": {
+    "perCopy": 2.08,
+    "vsFair": -3.06,
+    "z": -6.7
+   },
+   "contribAfter": {
+    "perCopy": 4.17,
+    "vsFair": -0.95,
+    "z": -1.69
+   }
+  },
+  {
+   "id": "golden-magpie",
+   "name": "Golden Magpie",
+   "rarity": "uncommon",
+   "kind": "lift (under budget and weak)",
+   "from": "1/4",
+   "to": "1/6",
+   "map": 21,
+   "level": 1,
+   "N": 16.81,
+   "x1Before": 9.06,
+   "x1After": 12.06,
+   "useBefore": 0.54,
+   "useAfter": 0.72,
+   "x1BeforePrices": 11,
+   "skills": [
+    "midas 0.06",
+    "flying 0"
+   ],
+   "contribBefore": {
+    "perCopy": 1.83,
+    "vsFair": -3.02,
+    "z": -6.06
+   },
+   "contribAfter": {
+    "perCopy": 1.5,
+    "vsFair": -3.31,
+    "z": -6.58
+   }
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "4/4",
+   "to": "5/6",
+   "map": 14,
+   "level": 1,
+   "N": 22.65,
+   "x1Before": 13.1,
+   "x1After": 17.1,
+   "useBefore": 0.58,
+   "useAfter": 0.75,
+   "x1BeforePrices": 19.8,
+   "skills": [
+    "sweep 1.1"
+   ],
+   "contribBefore": {
+    "perCopy": 1.67,
+    "vsFair": -2.78,
+    "z": -5.58
+   },
+   "contribAfter": {
+    "perCopy": 2.75,
+    "vsFair": -1.64,
+    "z": -3.07
+   }
+  },
+  {
+   "id": "ruby-throat-duelist",
+   "name": "Ruby-Throat Duelist",
+   "rarity": "rare",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "3/2",
+   "map": 5,
+   "level": 1,
+   "N": 17.89,
+   "x1Before": 10.29,
+   "x1After": 13.29,
+   "useBefore": 0.58,
+   "useAfter": 0.74,
+   "x1BeforePrices": 15,
+   "skills": [
+    "quick 1.12",
+    "pierce 0.17",
+    "flying 0"
+   ],
+   "contribBefore": {
+    "perCopy": 2.37,
+    "vsFair": -2.4,
+    "z": -5.24
+   },
+   "contribAfter": {
+    "perCopy": 4.67,
+    "vsFair": -0.06,
+    "z": -0.1
+   }
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "2/3",
+   "map": 7,
+   "level": 1,
+   "N": 16.24,
+   "x1Before": 10.12,
+   "x1After": 11.62,
+   "useBefore": 0.62,
+   "useAfter": 0.72,
+   "x1BeforePrices": 14,
+   "skills": [
+    "flying 0",
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 2.63,
+    "vsFair": -2.26,
+    "z": -4.91
+   },
+   "contribAfter": {
+    "perCopy": 3.58,
+    "vsFair": -1.27,
+    "z": -2.35
+   }
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "3/2",
+   "map": 0,
+   "level": 1,
+   "N": 11.44,
+   "x1Before": 7.12,
+   "x1After": 9.12,
+   "useBefore": 0.62,
+   "useAfter": 0.8,
+   "x1BeforePrices": 11,
+   "skills": [
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 3.17,
+    "vsFair": -2.04,
+    "z": -3.92
+   },
+   "contribAfter": {
+    "perCopy": 5.08,
+    "vsFair": -0.11,
+    "z": -0.18
+   }
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "3/2",
+   "map": 0,
+   "level": 1,
+   "N": 11.44,
+   "x1Before": 7.12,
+   "x1After": 9.12,
+   "useBefore": 0.62,
+   "useAfter": 0.8,
+   "x1BeforePrices": 11,
+   "skills": [
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 3.17,
+    "vsFair": -2.04,
+    "z": -3.92
+   },
+   "contribAfter": {
+    "perCopy": 5.08,
+    "vsFair": -0.11,
+    "z": -0.18
+   }
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "2/2",
+   "to": "3/2",
+   "map": 0,
+   "level": 1,
+   "N": 11.44,
+   "x1Before": 7.12,
+   "x1After": 9.12,
+   "useBefore": 0.62,
+   "useAfter": 0.8,
+   "x1BeforePrices": 11,
+   "skills": [
+    "quick 1.12"
+   ],
+   "contribBefore": {
+    "perCopy": 3.25,
+    "vsFair": -1.96,
+    "z": -3.73
+   },
+   "contribAfter": {
+    "perCopy": 5.08,
+    "vsFair": -0.11,
+    "z": -0.18
+   }
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "uncommon",
+   "kind": "lift (under budget and weak)",
+   "from": "4/4",
+   "to": "5/6",
+   "map": 14,
+   "level": 1,
+   "N": 20.99,
+   "x1Before": 12.69,
+   "x1After": 16.69,
+   "useBefore": 0.6,
+   "useAfter": 0.8,
+   "x1BeforePrices": 20,
+   "skills": [
+    "sturdy 0.69"
+   ],
+   "contribBefore": {
+    "perCopy": 2.63,
+    "vsFair": -1.93,
+    "z": -3.47
+   },
+   "contribAfter": {
+    "perCopy": 7.0,
+    "vsFair": 2.49,
+    "z": 3.84
+   }
+  },
+  {
+   "id": "goliath-tentacle",
+   "name": "Goliath Tentacle",
+   "rarity": "epic",
+   "kind": "lift (under budget and weak)",
+   "from": "6/6",
+   "to": "7/8",
+   "map": 13,
+   "level": 1,
+   "N": 35.87,
+   "x1Before": 21.15,
+   "x1After": 25.15,
+   "useBefore": 0.59,
+   "useAfter": 0.7,
+   "x1BeforePrices": 31.2,
+   "skills": [
+    "sweep 1.6500000000000001",
+    "tide 1.5"
+   ],
+   "contribBefore": {
+    "perCopy": 1.92,
+    "vsFair": -1.63,
+    "z": -3.09
+   },
+   "contribAfter": {
+    "perCopy": 2.25,
+    "vsFair": -1.2,
+    "z": -2.25
+   }
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "rare",
+   "kind": "lift (under budget and weak)",
+   "from": "1/1",
+   "to": "2/2",
+   "map": 5,
+   "level": 1,
+   "N": 14.54,
+   "x1Before": 8.22,
+   "x1After": 11.22,
+   "useBefore": 0.57,
+   "useAfter": 0.77,
+   "x1BeforePrices": 9.77,
+   "skills": [
+    "bleed 2.05",
+    "twinStrike 3.17"
+   ],
+   "contribBefore": {
+    "perCopy": 3.46,
+    "vsFair": -1.54,
+    "z": -3.05
+   },
+   "contribAfter": {
+    "perCopy": 7.63,
+    "vsFair": 2.66,
+    "z": 4.36
+   }
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "kind": "lift (under budget and weak)",
+   "from": "5/5",
+   "to": "6/7",
+   "map": 7,
+   "level": 1,
+   "N": 27.14,
+   "x1Before": 17.6,
+   "x1After": 21.6,
+   "useBefore": 0.65,
+   "useAfter": 0.8,
+   "x1BeforePrices": 24.3,
+   "skills": [
+    "sweep 1.1",
+    "tide 1.5"
+   ],
+   "contribBefore": {
+    "perCopy": 1.83,
+    "vsFair": -2.31,
+    "z": -4.54
+   },
+   "contribAfter": {
+    "perCopy": 2.79,
+    "vsFair": -1.28,
+    "z": -2.49
+   }
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "rarity": "uncommon",
+   "kind": "lift (under budget and weak)",
+   "from": "2/9",
+   "to": "2/12",
+   "map": 21,
+   "level": 1,
+   "N": 20.17,
+   "x1Before": 13.09,
+   "x1After": 16.09,
+   "useBefore": 0.65,
+   "useAfter": 0.8,
+   "x1BeforePrices": 15,
+   "skills": [
+    "relic 0.09"
+   ],
+   "contribBefore": {
+    "perCopy": 1.67,
+    "vsFair": -2.95,
+    "z": -6.06
+   },
+   "contribAfter": {
+    "perCopy": 1.58,
+    "vsFair": -2.99,
+    "z": -5.86
+   }
+  },
+  {
+   "id": "cinder-skeleton",
+   "name": "Cinder Skeleton",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "1/5",
+   "to": "1/7",
+   "map": 14,
+   "level": 1,
+   "N": 16.6,
+   "x1Before": 10.72,
+   "x1After": 12.72,
+   "useBefore": 0.65,
+   "useAfter": 0.77,
+   "x1BeforePrices": 14.48,
+   "skills": [
+    "undead 0.54",
+    "requiem 3.18"
+   ],
+   "contribBefore": {
+    "perCopy": 2.5,
+    "vsFair": -2.36,
+    "z": -4.52
+   },
+   "contribAfter": {
+    "perCopy": 2.92,
+    "vsFair": -1.9,
+    "z": -3.34
+   }
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "kind": "lift (under budget and weak)",
+   "from": "1/7",
+   "to": "1/9",
+   "map": 0,
+   "level": 1,
+   "N": 14.79,
+   "x1Before": 9.54,
+   "x1After": 11.54,
+   "useBefore": 0.65,
+   "useAfter": 0.78,
+   "x1BeforePrices": 13.3,
+   "skills": [
+    "undead 0.54"
+   ],
+   "contribBefore": {
+    "perCopy": 3.17,
+    "vsFair": -1.82,
+    "z": -3.73
+   },
+   "contribAfter": {
+    "perCopy": 3.38,
+    "vsFair": -1.57,
+    "z": -3.13
+   }
+  }
+ ],
+ "stillOver": [
+  {
+   "id": "bee-drone",
+   "stats": "0/1",
+   "N": 12.47,
+   "x1": 9.1,
+   "x2": 57.76,
+   "cap2": 34.56,
+   "parts": [
+    "flying 0",
+    "onAttacked → spawnCard 7.6"
+   ]
+  },
+  {
+   "id": "worker-ant",
+   "stats": "1/1",
+   "N": 10.4,
+   "x1": 8.54,
+   "x2": 31.69,
+   "cap2": 24.04,
+   "parts": [
+    "onAttack → drawCard 5.54"
+   ]
+  },
+  {
+   "id": "war-elephant",
+   "stats": "0/28",
+   "N": 40.01,
+   "x1": 50.53,
+   "x2": 507.6,
+   "cap2": 355.73,
+   "parts": [
+    "armor 4.53",
+    "arrow 6",
+    "arrowCount 12"
+   ]
+  }
+ ],
+ "listfix1NowFit": [
+  "ant-warrior",
+  "coral-polyp-colony",
+  "bog-leech",
+  "ash-imp",
+  "ember-centipede"
+ ],
+ "contribution": {
+  "fairLine": {
+   "intercept": 0.0601,
+   "perN": -0.0007,
+   "medianVpb": 0.0026,
+   "meanContribution": 0.2708
+  },
+  "top20": [
+   {
+    "id": "wolf-spider-mother",
+    "stats": "3/10",
+    "rarity": "rare",
+    "N": 20.58,
+    "contribution": 60.25,
+    "vsFair": 5.5,
+    "z": 9.17,
+    "skills": [
+     "brood"
+    ]
+   },
+   {
+    "id": "eagle-owl-quartermaster",
+    "stats": "1/10",
+    "rarity": "rare",
+    "N": 21.41,
+    "contribution": 58.25,
+    "vsFair": 5.23,
+    "z": 8.64,
+    "skills": [
+     "arrow",
+     "fletcher",
+     "flying"
+    ]
+   },
+   {
+    "id": "battlement-heron",
+    "stats": "1/13",
+    "rarity": "rare",
+    "N": 24.09,
+    "contribution": 57.0,
+    "vsFair": 5.21,
+    "z": 8.61,
+    "skills": [
+     "arrow",
+     "sentry"
+    ]
+   },
+   {
+    "id": "pike-lancer",
+    "stats": "4/8",
+    "rarity": "rare",
+    "N": 17.89,
+    "contribution": 59.25,
+    "vsFair": 5.15,
+    "z": 8.9,
+    "skills": [
+     "tide"
+    ]
+   },
+   {
+    "id": "otter-royal-guard",
+    "stats": "4/10",
+    "rarity": "superrare",
+    "N": 22.23,
+    "contribution": 56.75,
+    "vsFair": 5.04,
+    "z": 8.47,
+    "skills": [
+     "armor",
+     "boomerang"
+    ]
+   },
+   {
+    "id": "ashbone-ghoul",
+    "stats": "2/7",
+    "rarity": "common",
+    "N": 17.69,
+    "contribution": 57.75,
+    "vsFair": 4.89,
+    "z": 8.41,
+    "skills": [
+     "remember",
+     "triggers"
+    ]
+   },
+   {
+    "id": "badger-berserker",
+    "stats": "4/16",
+    "rarity": "rare",
+    "N": 24.86,
+    "contribution": 54.25,
+    "vsFair": 4.81,
+    "z": 8.04,
+    "skills": []
+   },
+   {
+    "id": "glass-octopus",
+    "stats": "4/13",
+    "rarity": "rare",
+    "N": 25.7,
+    "contribution": 53.0,
+    "vsFair": 4.66,
+    "z": 7.34,
+    "skills": [
+     "corrode",
+     "stealth"
+    ]
+   },
+   {
+    "id": "old-willow-of-the-ford",
+    "stats": "2/21",
+    "rarity": "legendary",
+    "N": 39.54,
+    "contribution": 46.5,
+    "vsFair": 4.57,
+    "z": 7.35,
+    "skills": [
+     "onReadyGold",
+     "regen"
+    ]
+   },
+   {
+    "id": "two-headed-calf",
+    "stats": "3/11",
+    "rarity": "rare",
+    "N": 21.82,
+    "contribution": 53.75,
+    "vsFair": 4.51,
+    "z": 7.41,
+    "skills": [
+     "fork"
+    ]
+   },
+   {
+    "id": "siege-rhino",
+    "stats": "5/17",
+    "rarity": "rare",
+    "N": 32.15,
+    "contribution": 48.75,
+    "vsFair": 4.42,
+    "z": 6.96,
+    "skills": [
+     "siege"
+    ]
+   },
+   {
+    "id": "hedge-changeling",
+    "stats": "1/7",
+    "rarity": "uncommon",
+    "N": 16.86,
+    "contribution": 55.0,
+    "vsFair": 4.37,
+    "z": 7.14,
+    "skills": [
+     "changeling",
+     "swarm"
+    ]
+   },
+   {
+    "id": "stoat-cutthroat",
+    "stats": "3/12",
+    "rarity": "rare",
+    "N": 22.23,
+    "contribution": 52.5,
+    "vsFair": 4.33,
+    "z": 7.1,
+    "skills": [
+     "backstab",
+     "foeScarcity"
+    ]
+   },
+   {
+    "id": "ibex-rockcaller",
+    "stats": "3/12",
+    "rarity": "veryrare",
+    "N": 26.32,
+    "contribution": 50.75,
+    "vsFair": 4.33,
+    "z": 6.85,
+    "skills": [
+     "avalanche"
+    ]
+   },
+   {
+    "id": "beetle-battering-ram",
+    "stats": "4/11",
+    "rarity": "rare",
+    "N": 27.76,
+    "contribution": 50.0,
+    "vsFair": 4.31,
+    "z": 7.31,
+    "skills": [
+     "breach",
+     "nocturnal",
+     "siege"
+    ]
+   },
+   {
+    "id": "ent",
+    "stats": "2/22",
+    "rarity": "rare",
+    "N": 29.47,
+    "contribution": 49.0,
+    "vsFair": 4.27,
+    "z": 6.96,
+    "skills": [
+     "fog"
+    ]
+   },
+   {
+    "id": "ur-elk",
+    "stats": "4/11",
+    "rarity": "veryrare",
+    "N": 32.98,
+    "contribution": 47.25,
+    "vsFair": 4.23,
+    "z": 6.79,
+    "skills": [
+     "overwhelm",
+     "rage"
+    ]
+   },
+   {
+    "id": "tide-spirit",
+    "stats": "5/5",
+    "rarity": "rare",
+    "N": 19.75,
+    "contribution": 52.75,
+    "vsFair": 4.19,
+    "z": 6.85,
+    "skills": [
+     "tide"
+    ]
+   },
+   {
+    "id": "walrus-icebreaker",
+    "stats": "4/17",
+    "rarity": "veryrare",
+    "N": 27.56,
+    "contribution": 49.25,
+    "vsFair": 4.17,
+    "z": 6.93,
+    "skills": [
+     "freeze",
+     "shatter"
+    ]
+   },
+   {
+    "id": "caldera-snow-leopard",
+    "stats": "3/15",
+    "rarity": "superrare",
+    "N": 25.75,
+    "contribution": 50.0,
+    "vsFair": 4.16,
+    "z": 6.66,
+    "skills": [
+     "pounce"
+    ]
+   }
+  ],
+  "bottom20": [
+   {
+    "id": "bee-drone",
+    "stats": "0/1",
+    "rarity": "uncommon",
+    "N": 12.47,
+    "contribution": -1.0,
+    "vsFair": -5.29,
+    "z": -14.9,
+    "skills": [
+     "flying",
+     "triggers"
+    ]
+   },
+   {
+    "id": "badger-stonemason",
+    "stats": "1/15",
+    "rarity": "uncommon",
+    "N": 19.55,
+    "contribution": -0.75,
+    "vsFair": -4.73,
+    "z": -9.69,
+    "skills": [
+     "quarry"
+    ]
+   },
+   {
+    "id": "irradiated-glow-wyrm",
+    "stats": "1/18",
+    "rarity": "rare",
+    "N": 25.7,
+    "contribution": -0.5,
+    "vsFair": -4.25,
+    "z": -10.28,
+    "skills": [
+     "poison"
+    ]
+   },
+   {
+    "id": "earthworm",
+    "stats": "0/6",
+    "rarity": "starter",
+    "N": 10.92,
+    "contribution": 7.0,
+    "vsFair": -4.06,
+    "z": -10.59,
+    "skills": []
+   },
+   {
+    "id": "blind-cave-fish",
+    "stats": "1/1",
+    "rarity": "common",
+    "N": 12.88,
+    "contribution": 6.75,
+    "vsFair": -3.96,
+    "z": -9.25,
+    "skills": [
+     "darksight",
+     "evasive",
+     "tide"
+    ]
+   },
+   {
+    "id": "garden-snail",
+    "stats": "0/7",
+    "rarity": "starter",
+    "N": 10.4,
+    "contribution": 9.25,
+    "vsFair": -3.72,
+    "z": -8.42,
+    "skills": [
+     "armor",
+     "slow"
+    ]
+   },
+   {
+    "id": "gale-sprite",
+    "stats": "1/8",
+    "rarity": "common",
+    "N": 18.05,
+    "contribution": 6.0,
+    "vsFair": -3.72,
+    "z": -7.78,
+    "skills": [
+     "evolute"
+    ]
+   },
+   {
+    "id": "duckling",
+    "stats": "1/5",
+    "rarity": "starter",
+    "N": 10.92,
+    "contribution": 10.5,
+    "vsFair": -3.48,
+    "z": -7.82,
+    "skills": []
+   },
+   {
+    "id": "phoenix-mushrooms",
+    "stats": "1/10",
+    "rarity": "epic",
+    "N": 22.23,
+    "contribution": 6.0,
+    "vsFair": -3.42,
+    "z": -7.63,
+    "skills": [
+     "bloomCopy",
+     "meiosis",
+     "undead"
+    ]
+   },
+   {
+    "id": "mosswing-laborer",
+    "stats": "0/7",
+    "rarity": "starter",
+    "N": 10.61,
+    "contribution": 11.25,
+    "vsFair": -3.37,
+    "z": -8.02,
+    "skills": [
+     "flying"
+    ]
+   },
+   {
+    "id": "lucky-hopper",
+    "stats": "1/17",
+    "rarity": "rare",
+    "N": 19.17,
+    "contribution": 7.75,
+    "vsFair": -3.35,
+    "z": -6.3,
+    "skills": []
+   },
+   {
+    "id": "golden-magpie",
+    "stats": "1/6",
+    "rarity": "uncommon",
+    "N": 16.81,
+    "contribution": 9.0,
+    "vsFair": -3.31,
+    "z": -6.58,
+    "skills": [
+     "flying",
+     "midas"
+    ]
+   },
+   {
+    "id": "egg-bug",
+    "stats": "0/1",
+    "rarity": "uncommon",
+    "N": 35.05,
+    "contribution": 2.0,
+    "vsFair": -3.17,
+    "z": -15.59,
+    "skills": [
+     "chrysalis"
+    ]
+   },
+   {
+    "id": "ford-kingfisher",
+    "stats": "0/8",
+    "rarity": "uncommon",
+    "N": 15.78,
+    "contribution": 10.25,
+    "vsFair": -3.17,
+    "z": -6.54,
+    "skills": [
+     "flying",
+     "pounce"
+    ]
+   },
+   {
+    "id": "nest",
+    "stats": "0/9",
+    "rarity": "common",
+    "N": 16.4,
+    "contribution": 10.0,
+    "vsFair": -3.16,
+    "z": -6.97,
+    "skills": [
+     "triggers"
+    ]
+   },
+   {
+    "id": "anvilwhisker-otter",
+    "stats": "1/14",
+    "rarity": "uncommon",
+    "N": 25.54,
+    "contribution": 6.25,
+    "vsFair": -3.14,
+    "z": -6.98,
+    "skills": [
+     "triggers"
+    ]
+   },
+   {
+    "id": "otter-riverguard",
+    "stats": "1/14",
+    "rarity": "common",
+    "N": 20.79,
+    "contribution": 8.25,
+    "vsFair": -3.14,
+    "z": -6.93,
+    "skills": [
+     "armor"
+    ]
+   },
+   {
+    "id": "sheep",
+    "stats": "1/6",
+    "rarity": "starter",
+    "N": 10.4,
+    "contribution": 13.5,
+    "vsFair": -3.01,
+    "z": -6.1,
+    "skills": [
+     "taunt"
+    ]
+   },
+   {
+    "id": "guppy",
+    "stats": "2/2",
+    "rarity": "starter",
+    "N": 10.4,
+    "contribution": 13.5,
+    "vsFair": -3.01,
+    "z": -6.06,
+    "skills": [
+     "tide"
+    ]
+   },
+   {
+    "id": "friar-badger",
+    "stats": "2/12",
+    "rarity": "uncommon",
+    "N": 20.17,
+    "contribution": 9.5,
+    "vsFair": -2.99,
+    "z": -5.86,
+    "skills": [
+     "relic"
+    ]
+   }
+  ]
+ }
+}
