@@ -4,6 +4,22 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-30 21:35-21:53: the owner's notes
+| # | Package | Note |
+|---|---|---|
+| W1 | done (coordinator) | "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets highlighted." |
+| W2 | RAIDFX1 | "Why is the tentacle slash in raid so laggy? the damage should only come out once the tentacle lands on the cards" |
+| W3 | RAIDFX1 | "Dont need the handshake symbol to denote allies in multiplayer dungeons/raids" |
+| W4 | COOP3 | Duo dungeon starts zoomed far out; can't play cards in the other slots. CPU allies play their cards first, after a random 0.5-3.0 s (0.5-1.5 s on the first turn). |
+| W5 | UI5 | Don't show Tide where the map has none. A card drawn while the field has no Tide: its pip reds out and fades; the opposite: it fades in green. |
+| W6 | COOP3 | Auto-play in multiplayer dungeons. The floor-cleared screen gets the normal skirmish rewards window. |
+| W7 | DUNG1 | Multi-step dungeons (3 to n steps): the fight continues with your hand, field and deck as they were; the enemy resets and plays, 0.5 s apart, what it would have in 3 turns. Some dungeons have "Rest for a night": your bramble heals 10% (min 1) and 1 random graveyard card goes back into your deck. |
+| W8 | RAIDBAL1, RAID2 | Balance the raid against 3 decks at about the level the raid unlocks, +2 levels. An octopus background hugging the core fight's battlefield; tentacles waving in the background of the first 3 fights (lo-fi: one tentacle, 3 images flickering slowly). |
+| W9 | RAID2 | Raids: the other players' cards a bit bigger; the battlefield the whole screen height. |
+| W10 | COOP3 | Multiplayer dungeons: the other players' cards the same size as yours. You may place cards in an ally's row (and they in yours) next to a card of your own; an ally's network doesn't count. |
+| W11 | answered | ENG13-2 was already done from the 10:34 answer (Slow on the three cards); the hub showed an old copy. |
+| W12 | UI5 | Blind / Purblind: the closing-eyes animation plays once when it starts, then goes; the card is darkened 5-10%; the main symbol is the blindness spectacles. |
+
 ## 10-30 10:34: the owner's notes
 | # | Package | Note |
 |---|---|---|
