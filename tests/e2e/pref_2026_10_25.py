@@ -55,7 +55,7 @@ async def run(b, url, w):
       return {shown: document.querySelectorAll('.pref-toggle').length, on: !!(document.querySelector('[data-pref-on]') || {}).checked, sets: [...((document.querySelector('[data-pref-set]') || {}).options || [])].map(o=> o.value),
         label: ((t || {}).textContent || '').trim(), docW: document.documentElement.scrollWidth, vw: innerWidth,
         xrows: [...document.querySelectorAll('#adminProFights .pro-row')].map(x=> x.dataset.proKey).filter(k=> /-REF$/.test(k))}; })()""")
-    ok(r['shown'] >= 1 and not r['on'] and r['sets'] == ['map', 'ref2'], f"the switch is in Admin, off, offering Map reference and Reference-2 {r['sets']}")
+    ok(r['shown'] >= 1 and not r['on'] and [x for x in r['sets'] if not x.startswith('prog')] == ['map', 'ref2'], f"the switch is in Admin, off, offering Map reference and Reference-2 {r['sets']}")  # 2026-10-31 REF5: the progression reference's choices come first
     ok("Play with the map's reference deck" in r['label'], 'its label reads as the owner asked')
     ok('3-REF' in r['xrows'] and '2-B-REF' in r['xrows'] and len(r['xrows']) == len(DATA['maps']), f"Admin's PRO list has one X-REF row a map ({len(r['xrows'])}: {r['xrows'][:4]}...)")
     ok(r['docW'] <= r['vw'] + 1, f"the Admin page fits ({r['docW']}/{r['vw']})")

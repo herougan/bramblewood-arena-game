@@ -21,7 +21,8 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
 const file = JSON.parse(rd('docs/balance/ref/ref2-owner-main-deck-2026-10-25.json'));
 ok(file.id === 'ref2' && file.label === 'Reference-2' && Object.values(file.counts).reduce((t, n)=> t + n, 0) === 20 && file.schedule.perMap === 5 && file.schedule.fromMap === 1, '1. the Reference-2 file: id, label, 20 cards, +5 copies a map from Map 1');
 const B = require(path.join(ROOT, 'tools/lib_bramble.js')), G = B.G;
-ok(JSON.stringify(G.refSetIds()) === JSON.stringify(['map', 'ref2']), '1. the sets: the map reference, then Reference-2 ' + JSON.stringify(G.refSetIds()));
+// 2026-10-31 REF5: the progression reference (prog, its random pick and decks 1-5) comes first; the map reference, then Reference-2 follow
+ok(JSON.stringify(G.refSetIds().filter(id=> !/^prog(-\d+)?$/.test(id))) === JSON.stringify(['map', 'ref2']), '1. the sets: the map reference, then Reference-2 ' + JSON.stringify(G.refSetIds()));
 { const base = G.referenceBaseDefs(), set = G.REF_DECK_SETS.ref2;
   let prev = null, okStep = true, okCap = true, totals = [];
   const caps = G.refSetCopyLevels(set, 0, base).map(c=> c.id).map(id=>{ const b = base[id]; const isBase = (b.rarity === 'starter' || !!b.basic || !!b.tutorial || G.cardSourceOf(b).kind === 'base'); return (isBase ? 4 : G.cardMaxLevel(b)) - G.cardBaseLevel(b); });
@@ -52,7 +53,7 @@ ok(/function referencePlayerDeck\(deck, level, base, overlay\)\{ return refParts
 { const ents = {mc: {map: 3, pro: [{id: '3-PRO-1'}, {id: '3-PRO-2'}], bpro: [{id: '3-BPRO-1'}]}, mg: {map: 2, side: true, pro: [{id: '2-B-PRO-1'}], bpro: []}};
   const store = {}, localStorage = {getItem: k=> k in store ? store[k] : null, setItem: (k, v)=>{ store[k] = String(v); }};
   const Q = new Function('localStorage', 'adminState', `const REF_DECK_SETS = {ref2: {label: 'Reference-2'}}; const REF_PLAY_KEY = 'p', XREF_VS_KEY = 'v'; const ents = ${JSON.stringify(ents)};
-    function proMapEntries(){ return ents; } ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
+    function proMapEntries(){ return ents; } ${fnSrc('proEntriesOf')} ${fnSrc('refSetIds')} ${fnSrc('refDefaultSet') /* 2026-10-31 REF5: the default pick (the map reference while no per-map set is baked, as in this stub) */} ${fnSrc('refPlayPrefs')} ${fnSrc('saveRefPlayPrefs')} ${fnSrc('xrefKeyOf')} ${fnSrc('xrefVsFor')} ${fnSrc('setXrefVs')}
     function refPlayActive(){ const adminModeEnabled = adminState.on; return !!adminModeEnabled && refPlayPrefs().on; }
     return {refPlayPrefs, saveRefPlayPrefs, refPlayActive, xrefKeyOf, xrefVsFor, setXrefVs};`);
   const admin = {on: true}, F = Q(localStorage, admin);
