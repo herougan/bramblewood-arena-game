@@ -531,13 +531,13 @@
    "leftOut": [
     {
      "focus": "big",
-     "score": 0.4948,
-     "why": "under 50.1%"
+     "score": 0.5365,
+     "why": "under 61%"
     },
     {
      "focus": "economy",
-     "score": 0.3021,
-     "why": "under 50.1%"
+     "score": 0.4844,
+     "why": "under 61%"
     }
    ],
    "result": {
@@ -545,43 +545,44 @@
     "pro": [
      {
       "id": "1-PRO-1",
-      "focus": "swarm",
+      "focus": "open",
       "labels": [
        "swarm (17 copies at 0 Lumber)"
       ],
-      "score": 0.651,
+      "score": 0.7604,
       "ci": [
-       0.5918,
-       0.7102
+       0.7059,
+       0.8149
       ],
       "deck": {
        "bramble-sprout": 4,
-       "burrow-rabbit": 1,
        "chipmunk-cavalry": 3,
-       "chipmunk-skirmisher": 4,
-       "field-mouse": 4,
-       "river-carp": 4
+       "field-mouse": 3,
+       "harvest-mouse": 2,
+       "pond-duck": 4,
+       "terrier-pup": 4
       },
       "leaders": []
      },
      {
       "id": "1-PRO-2",
-      "focus": "open",
+      "focus": "swarm",
       "labels": [
-       "swarm (20 copies at 0 Lumber)"
+       "swarm (16 copies at 0 Lumber)",
+       "strike-first x8"
       ],
-      "score": 0.651,
+      "score": 0.6823,
       "ci": [
-       0.5871,
-       0.715
+       0.6178,
+       0.7468
       ],
       "deck": {
-       "bee-forager": 4,
-       "bramble-sprout": 3,
-       "chipmunk-skirmisher": 2,
-       "cricket-drummer": 4,
-       "forager-ant": 3,
-       "hedgerow-shrew": 4
+       "ant-scout": 1,
+       "chipmunk-cavalry": 4,
+       "chipmunk-skirmisher": 3,
+       "field-mouse": 4,
+       "hedgerow-shrew": 4,
+       "meadow-rabbit": 4
       },
       "leaders": []
      }
@@ -1582,49 +1583,50 @@
     "pro": [
      {
       "id": "3-PRO-1",
-      "focus": "open",
+      "focus": "big",
       "labels": [
-       "big (13 copies at 1 Lumber, average 0.7)",
-       "flying x10",
-       "strike-first x8"
+       "big (10 copies at 1 Lumber, average 0.5)",
+       "flying x14",
+       "strike-first x6"
       ],
-      "score": 0.7208,
+      "score": 0.7458,
       "ci": [
-       0.6733,
-       0.7684
+       0.6971,
+       0.7946
       ],
       "deck": {
-       "conch-herald": 3,
-       "duck-paddler": 4,
+       "conch-crawler": 3,
+       "crimson-wing-recruit": 4,
+       "driftwood-crab": 3,
        "golden-eagle-diver": 4,
-       "peregrine-stooper": 4,
-       "razorbill": 2,
-       "terrier-pup": 3
+       "peak-condor": 4,
+       "peregrine-stooper": 2
       },
       "leaders": [
-       "conch-herald"
+       "peregrine-stooper"
       ]
      },
      {
       "id": "3-PRO-2",
-      "focus": "big",
+      "focus": "economy",
       "labels": [
-       "big (14 copies at 1 Lumber, average 0.7)",
-       "flying x16",
-       "day x8"
+       "big (11 copies at 1 Lumber, average 0.6)",
+       "economy (6 resource makers)",
+       "flying x12",
+       "strike-first x7"
       ],
-      "score": 0.7083,
+      "score": 0.7333,
       "ci": [
-       0.6584,
-       0.7583
+       0.6866,
+       0.7801
       ],
       "deck": {
        "conch-herald": 4,
+       "driftwood-crab": 4,
        "gannet-nestweaver": 2,
-       "golden-eagle-diver": 4,
-       "hawk-arrowkeeper": 4,
-       "kittiwake-flock": 4,
-       "razorbill": 2
+       "golden-eagle-diver": 3,
+       "kittiwake-flock": 3,
+       "peregrine-stooper": 4
       },
       "leaders": [
        "conch-herald"
@@ -1632,52 +1634,52 @@
      },
      {
       "id": "3-PRO-3",
-      "focus": "economy",
+      "focus": "open",
       "labels": [
-       "big (10 copies at 1 Lumber, average 0.5)",
-       "economy (8 resource makers)",
-       "flying x16",
-       "strike-first x8"
+       "big (8 copies at 1 Lumber, average 0.4)",
+       "flying x11",
+       "strike-first x7"
       ],
-      "score": 0.6417,
+      "score": 0.6667,
       "ci": [
-       0.5898,
-       0.6935
+       0.6124,
+       0.7209
       ],
       "deck": {
-       "cobalt-talon-fledgling": 2,
-       "driftwood-crab": 4,
-       "gannet-nestweaver": 4,
+       "conch-crawler": 2,
+       "feral-tomcat": 3,
+       "gannet-nestweaver": 3,
        "golden-eagle-diver": 4,
-       "peregrine-stooper": 4,
-       "puffin-diver": 2
+       "peak-condor": 4,
+       "river-carp": 4
       },
       "leaders": [
-       "peregrine-stooper"
+       "golden-eagle-diver"
       ]
      },
      {
       "id": "3-PRO-4",
       "focus": "swarm",
       "labels": [
-       "swarm (16 copies at 0 Lumber)",
-       "flying x10"
+       "swarm (14 copies at 0 Lumber)",
+       "tide x6",
+       "strike-first x6"
       ],
-      "score": 0.6042,
+      "score": 0.6125,
       "ci": [
-       0.5487,
-       0.6596
+       0.559,
+       0.666
       ],
       "deck": {
-       "crimson-wing-recruit": 4,
-       "duck-paddler": 3,
+       "bramble-sprout": 4,
+       "conch-crawler": 2,
        "feral-tomcat": 4,
-       "gannet-nestweaver": 2,
        "peak-condor": 4,
-       "pincushion-urchin": 3
+       "peregrine-stooper": 2,
+       "pincushion-urchin": 4
       },
       "leaders": [
-       "peak-condor"
+       "peregrine-stooper"
       ]
      }
     ]

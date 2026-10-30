@@ -19,20 +19,21 @@
 const path = require('path'), fs = require('fs');
 const O = require('./deckopt.js'), P = require('./pro_skirmishes.js'), RP = require('./ref_pool.js');
 const VERSION = '1.0.0 (2026-10-25, PREF)';
-const DEFAULTS = { maps: null, ref: 'map,ref2', games: 40, seed: 'pro-ease', easy: 0.85, tag: null, resume: false, root: null, quiet: false };
+const DEFAULTS = { kind: 'both', maps: null, ref: 'map,ref2', games: 40, seed: 'pro-ease', easy: 0.85, tag: null, resume: false, root: null, quiet: false };
 function parseArgs(argv) {
   const o = Object.assign({}, DEFAULTS), a = argv.slice(), take = () => a.shift();
   while (a.length) { const k = take();
     switch (k) {
       case '--maps': case '--map': o.maps = take(); break; case '--ref': o.ref = take(); break; case '--games': o.games = +take(); break;
       case '--seed': o.seed = take(); break; case '--easy': o.easy = +take(); break; case '--tag': o.tag = take(); break; case '--resume': o.resume = true; break;
-      case '--root': o.root = take(); break; case '--quiet': o.quiet = true; break;
+      case '--root': o.root = take(); break; case '--kind': o.kind = take(); break; // 2026-10-30 (DECK1): pro | bpro | both case '--quiet': o.quiet = true; break;
       case '--help': case '-h': o.help = true; break; default: throw new Error('unknown option ' + k);
     } }
   return o;
 }
 function mapRange(spec) { if (spec == null) return null; const out = new Set(); String(spec).split(',').forEach(p => { const m = /^(\d+)-(\d+)$/.exec(p); if (m) { for (let i = +m[1]; i <= +m[2]; i++) out.add(i); } else out.add(+p); }); return out; }
 function fnv(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+const kindOk = (o, k) => o.kind === 'both' || o.kind === k;
 const r3 = x => Math.round(x * 1000) / 1000;
 
 // the PRO fight as the game builds it (arena_app.js proNodeOf): pro_skirmishes.proNode plus the CPU skill the PRO rule names
@@ -81,7 +82,7 @@ async function main(argv) {
     const ent = data.maps[id], map = G.CONQUEST_MAPS.find(m => m.id === id); if (!map || (want && !want.has(ent.map))) continue;
     let facts = {}; try { const mt = O.poolsFor(gm, map, { mode: 'map-true' }), bp = O.poolsFor(gm, map, { mode: 'bpro' }); facts = { cap: mt.cap, mapTruePool: mt.p1.length, bproPool: bp.p1.length, bproCards: bp.p1 }; } catch (e) { facts = { error: String(e.message || e) }; }
     const mrow = Object.assign({ id, map: ent.map, side: !!ent.side, name: ent.name || map.name, prefix: P.proPrefix(gm, map), refs: {} }, facts); maps.push(mrow);
-    for (const kind of ['pro', 'bpro']) for (const e of ent[kind] || []) {
+    for (const kind of ['pro', 'bpro'].filter(k => o.kind === 'both' || o.kind === k)) for (const e of ent[kind] || []) {
       const node = gameProNode(gm, map, e, ent, ai);
       for (const ref of refs) {
         const k = e.id + '|' + ref + '|' + o.games; let row = done.get(k);

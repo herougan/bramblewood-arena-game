@@ -1399,7 +1399,7 @@
     {
      "id": "1-PRO-1",
      "name": "1-PRO-1",
-     "focus": "swarm",
+     "focus": "open",
      "labels": [
       "swarm (17 copies at 0 Lumber)"
      ],
@@ -1407,24 +1407,24 @@
      "leaders": [],
      "deck": {
       "bramble-sprout": 4,
-      "burrow-rabbit": 1,
       "chipmunk-cavalry": 3,
-      "chipmunk-skirmisher": 4,
-      "field-mouse": 4,
-      "river-carp": 4
+      "field-mouse": 3,
+      "harvest-mouse": 2,
+      "pond-duck": 4,
+      "terrier-pup": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map01-mf-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mf --pool acorn-chipmunk,ant-hill,ant-scout,badger-lumberjack,beaver-lumberjack,bee-forager,bee-knight,bramble-sprout,burrow-rabbit,chipmunk-cavalry,chipmunk-forager,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,duck-paddler,field-mouse,field-vole,forager-ant,harvest-mouse,hedgerow-shrew,meadow-rabbit,owl-sentinel,pond-duck,pond-trout,river-carp,robin-redbreast,slow-worm,terrier-pup,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.651,
+      "reproduce": "node tools/bench/bench.js deck --map mf --pool acorn-chipmunk,ant-hill,ant-scout,badger-lumberjack,beaver-lumberjack,bee-forager,bee-knight,bramble-sprout,burrow-rabbit,chipmunk-cavalry,chipmunk-forager,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,duck-paddler,field-mouse,field-vole,forager-ant,harvest-mouse,hedgerow-shrew,meadow-rabbit,owl-sentinel,pond-duck,pond-trout,river-carp,robin-redbreast,slow-worm,terrier-pup,woodcock-lookout --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7604,
       "ci": [
-       0.5918,
-       0.7102
+       0.7059,
+       0.8149
       ],
       "avgLumber": 0.15,
-      "generated": "2026-10-30T10:00:18.620Z"
+      "generated": "2026-10-30T12:14:50.397Z"
      },
      "h2h": null,
      "later": []
@@ -1432,32 +1432,33 @@
     {
      "id": "1-PRO-2",
      "name": "1-PRO-2",
-     "focus": "open",
+     "focus": "swarm",
      "labels": [
-      "swarm (20 copies at 0 Lumber)"
+      "swarm (16 copies at 0 Lumber)",
+      "strike-first x8"
      ],
      "level": 1,
      "leaders": [],
      "deck": {
-      "bee-forager": 4,
-      "bramble-sprout": 3,
-      "chipmunk-skirmisher": 2,
-      "cricket-drummer": 4,
-      "forager-ant": 3,
-      "hedgerow-shrew": 4
+      "ant-scout": 1,
+      "chipmunk-cavalry": 4,
+      "chipmunk-skirmisher": 3,
+      "field-mouse": 4,
+      "hedgerow-shrew": 4,
+      "meadow-rabbit": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map01-mf-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mf --pool acorn-chipmunk,ant-hill,ant-scout,badger-lumberjack,beaver-lumberjack,bee-forager,bee-knight,bramble-sprout,burrow-rabbit,chipmunk-cavalry,chipmunk-forager,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,duck-paddler,field-mouse,field-vole,forager-ant,harvest-mouse,hedgerow-shrew,meadow-rabbit,owl-sentinel,pond-duck,pond-trout,river-carp,robin-redbreast,slow-worm,terrier-pup,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.651,
+      "reproduce": "node tools/bench/bench.js deck --map mf --pool acorn-chipmunk,ant-hill,ant-scout,badger-lumberjack,beaver-lumberjack,bee-forager,bee-knight,bramble-sprout,burrow-rabbit,chipmunk-cavalry,chipmunk-forager,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,duck-paddler,field-mouse,field-vole,forager-ant,harvest-mouse,hedgerow-shrew,meadow-rabbit,owl-sentinel,pond-duck,pond-trout,river-carp,robin-redbreast,slow-worm,terrier-pup,woodcock-lookout --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,chipmunk-cavalry,chipmunk-skirmisher,compost-grub,cottontail,cricket-drummer,dormouse,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,owl-sentinel,robin-redbreast,slow-worm,woodcock-lookout --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6823,
       "ci": [
-       0.5871,
-       0.715
+       0.6178,
+       0.7468
       ],
-      "avgLumber": 0,
-      "generated": "2026-10-30T10:00:18.620Z"
+      "avgLumber": 0.2,
+      "generated": "2026-10-30T12:14:50.397Z"
      },
      "h2h": null,
      "later": []
@@ -1915,7 +1916,7 @@
     "PRO: PRO-1 kept: no candidate beats it by the rule (p >= 0.55 over >= 400 games, interval above 50%)",
     "BPRO: 1-BPRO-1 dropped: briarback-hedgehog: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
-    "DECK1: 2 focused decks (1-PRO-1 swarm, 1-PRO-2 open); the previous PRO decks are under history"
+    "DECK1: 2 focused decks (1-PRO-1 open, 1-PRO-2 swarm); the previous PRO decks are under history"
    ],
    "history": [
     {
@@ -4479,36 +4480,36 @@
     {
      "id": "3-PRO-1",
      "name": "3-PRO-1",
-     "focus": "open",
+     "focus": "big",
      "labels": [
-      "big (13 copies at 1 Lumber, average 0.7)",
-      "flying x10",
-      "strike-first x8"
+      "big (10 copies at 1 Lumber, average 0.5)",
+      "flying x14",
+      "strike-first x6"
      ],
      "level": 1,
      "leaders": [
-      "conch-herald"
+      "peregrine-stooper"
      ],
      "deck": {
-      "conch-herald": 3,
-      "duck-paddler": 4,
+      "conch-crawler": 3,
+      "crimson-wing-recruit": 4,
+      "driftwood-crab": 3,
       "golden-eagle-diver": 4,
-      "peregrine-stooper": 4,
-      "razorbill": 2,
-      "terrier-pup": 3
+      "peak-condor": 4,
+      "peregrine-stooper": 2
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map03-mc-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.7208,
+      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7458,
       "ci": [
-       0.6733,
-       0.7684
+       0.6971,
+       0.7946
       ],
-      "avgLumber": 0.65,
-      "generated": "2026-10-30T10:15:40.227Z"
+      "avgLumber": 0.5,
+      "generated": "2026-10-30T12:19:59.544Z"
      },
      "h2h": null,
      "later": []
@@ -4516,11 +4517,12 @@
     {
      "id": "3-PRO-2",
      "name": "3-PRO-2",
-     "focus": "big",
+     "focus": "economy",
      "labels": [
-      "big (14 copies at 1 Lumber, average 0.7)",
-      "flying x16",
-      "day x8"
+      "big (11 copies at 1 Lumber, average 0.6)",
+      "economy (6 resource makers)",
+      "flying x12",
+      "strike-first x7"
      ],
      "level": 1,
      "leaders": [
@@ -4528,24 +4530,24 @@
      ],
      "deck": {
       "conch-herald": 4,
+      "driftwood-crab": 4,
       "gannet-nestweaver": 2,
-      "golden-eagle-diver": 4,
-      "hawk-arrowkeeper": 4,
-      "kittiwake-flock": 4,
-      "razorbill": 2
+      "golden-eagle-diver": 3,
+      "kittiwake-flock": 3,
+      "peregrine-stooper": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map03-mc-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.7083,
+      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.7333,
       "ci": [
-       0.6584,
-       0.7583
+       0.6866,
+       0.7801
       ],
-      "avgLumber": 0.7,
-      "generated": "2026-10-30T10:15:40.227Z"
+      "avgLumber": 0.55,
+      "generated": "2026-10-30T12:19:59.544Z"
      },
      "h2h": null,
      "later": []
@@ -4553,37 +4555,36 @@
     {
      "id": "3-PRO-3",
      "name": "3-PRO-3",
-     "focus": "economy",
+     "focus": "open",
      "labels": [
-      "big (10 copies at 1 Lumber, average 0.5)",
-      "economy (8 resource makers)",
-      "flying x16",
-      "strike-first x8"
+      "big (8 copies at 1 Lumber, average 0.4)",
+      "flying x11",
+      "strike-first x7"
      ],
      "level": 1,
      "leaders": [
-      "peregrine-stooper"
+      "golden-eagle-diver"
      ],
      "deck": {
-      "cobalt-talon-fledgling": 2,
-      "driftwood-crab": 4,
-      "gannet-nestweaver": 4,
+      "conch-crawler": 2,
+      "feral-tomcat": 3,
+      "gannet-nestweaver": 3,
       "golden-eagle-diver": 4,
-      "peregrine-stooper": 4,
-      "puffin-diver": 2
+      "peak-condor": 4,
+      "river-carp": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map03-mc-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.6417,
+      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6667,
       "ci": [
-       0.5898,
-       0.6935
+       0.6124,
+       0.7209
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-10-30T10:15:40.227Z"
+      "avgLumber": 0.4,
+      "generated": "2026-10-30T12:19:59.544Z"
      },
      "h2h": null,
      "later": []
@@ -4593,33 +4594,34 @@
      "name": "3-PRO-4",
      "focus": "swarm",
      "labels": [
-      "swarm (16 copies at 0 Lumber)",
-      "flying x10"
+      "swarm (14 copies at 0 Lumber)",
+      "tide x6",
+      "strike-first x6"
      ],
      "level": 1,
      "leaders": [
-      "peak-condor"
+      "peregrine-stooper"
      ],
      "deck": {
-      "crimson-wing-recruit": 4,
-      "duck-paddler": 3,
+      "bramble-sprout": 4,
+      "conch-crawler": 2,
       "feral-tomcat": 4,
-      "gannet-nestweaver": 2,
       "peak-condor": 4,
-      "pincushion-urchin": 3
+      "peregrine-stooper": 2,
+      "pincushion-urchin": 4
      },
      "source": {
       "file": "docs/balance/deck1/bench-deck-map03-mc-2026-10-30.json",
       "mode": "deck1",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
-      "score": 0.6042,
+      "reproduce": "node tools/bench/bench.js deck --map mc --pool bee-forager,bramble-sprout,cobalt-talon-fledgling,conch-crawler,conch-herald,crimson-wing-recruit,driftwood-crab,duck-paddler,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,mosswing-laborer,oystercatcher,peak-condor,peregrine-stooper,pincushion-urchin,puffin-diver,razorbill,red-billed-chough,river-carp,rock-pool-starfish,terrier-pup --max-unique 6 --max-copies 4 --budget 24000 --final-games 24 --seed deck1-recheck --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --anchor-min 10 --level 1 --mode map-true",
+      "score": 0.6125,
       "ci": [
-       0.5487,
-       0.6596
+       0.559,
+       0.666
       ],
-      "avgLumber": 0.2,
-      "generated": "2026-10-30T10:15:40.227Z"
+      "avgLumber": 0.3,
+      "generated": "2026-10-30T12:19:59.544Z"
      },
      "h2h": null,
      "later": []
@@ -5239,7 +5241,7 @@
     "BPRO: 3-BPRO-3 dropped: great-skua: not in the map's own pool (BPRO); oyster-bank: not in the map's own pool (BPRO)",
     "BPRO: 3-BPRO-4 dropped: beachcomber-sanderling: not in the map's own pool (BPRO); great-skua: not in the map's own pool (BPRO); oyster-bank: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
-    "DECK1: 4 focused decks (3-PRO-1 open, 3-PRO-2 big, 3-PRO-3 economy, 3-PRO-4 swarm); the previous PRO decks are under history"
+    "DECK1: 4 focused decks (3-PRO-1 big, 3-PRO-2 economy, 3-PRO-3 open, 3-PRO-4 swarm); the previous PRO decks are under history"
    ],
    "history": [
     {
