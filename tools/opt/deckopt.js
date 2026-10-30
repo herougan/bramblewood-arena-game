@@ -86,6 +86,11 @@ function loadGame(root) {
   const rd = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
   const planFile = path.join(root, 'docs', 'balance', 'progression-plan-2026-10-23.json');
   const plan = fs.existsSync(planFile) ? JSON.parse(fs.readFileSync(planFile, 'utf8')) : { cards: [] };
+  // 2026-10-30 (package DECK1): TUT3's effectsAtLevel (arena_app.js, a levelled copy's skills) is called by levelledEnemyDeck but is not in
+  // tools/lib_bramble.js's NAMES, so any map whose fights deal levelled cards with levelSkills (the Ice Hollow, the Volcano Lair) threw
+  // "effectsAtLevel is not defined". The harness body is sloppy-mode, so a global copy of the self-contained function resolves it. The real fix
+  // is one name in lib_bramble's NAMES (outside this package's files); this shim is a no-op once that is done.
+  if (typeof globalThis.effectsAtLevel !== 'function') { try { globalThis.effectsAtLevel = new Function(B.grab('effectsAtLevel') + '\nreturn effectsAtLevel;')(); } catch (e) { /* an older game: none */ } }
   const seededRng = new Function(B.grab('seededRng') + '\nreturn seededRng;')(); // the game's own match PRNG (lib_bramble evaluates it but does not export it)
   const themes = fs.existsSync(path.join(root, 'canonical', 'unit-themes.json')) ? rd('canonical/unit-themes.json') : { units: [], maps: [], vocab: { biomes: [] } };
   const obtain = fs.existsSync(path.join(root, 'canonical', 'card-obtain-maps.json')) ? rd('canonical/card-obtain-maps.json').maps : {};

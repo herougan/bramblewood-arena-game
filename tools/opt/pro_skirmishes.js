@@ -47,7 +47,11 @@ const VERSION = '1.2.0 (2026-10-25, PRO3)';
 // The field is the side map's own average fight; faction cards break the map rule (deckopt PRO3: left out of PRO pools).
 // 2026-10-24 (PRO2): the two kinds: the optimizer mode each reads, its id label and its list in the map's entry
 const KINDS = { pro: { mode: 'map-true', label: 'PRO', list: 'pro' }, bpro: { mode: 'bpro', label: 'BPRO', list: 'bpro' } };
-const DEFAULTS = { kind: 'both', rarityCap: 'map', apply: false, maps: null, files: null, games: 400, replaceAt: 0.55, band: 100, max: 4, distinct: 6, level: 1, ai: 1, seed: 'pro', out: null, root: null, quiet: false, json: false };
+// 2026-10-30 (package DECK1, owner step 4: "at most 6 different cards, at most 4 copies each"): an N-PRO-k deck must keep the 6/4 rule
+// (--max-unique / --max-copies; 0 turns it off); a PRO deck in the file that breaks it is dropped like a map-rule break, and an optimizer
+// optimum that breaks it is skipped. BPRO decks are not held to it yet (decision DECK1-2). The entry's `history` (DECK1's previous decks) and
+// each deck's `focus` / `labels` survive a run.
+const DEFAULTS = { maxUnique: 6, maxCopies: 4, kind: 'both', rarityCap: 'map', apply: false, maps: null, files: null, games: 400, replaceAt: 0.55, band: 100, max: 4, distinct: 6, level: 1, ai: 1, seed: 'pro', out: null, root: null, quiet: false, json: false };
 
 function parseArgs(argv) {
   const o = Object.assign({}, DEFAULTS), a = argv.slice(), take = () => a.shift();
@@ -60,6 +64,7 @@ function parseArgs(argv) {
       case '--max': o.max = +take(); break; case '--distinct': o.distinct = +take(); break; case '--level': o.level = +take(); break;
       case '--ai': o.ai = +take(); break; case '--seed': o.seed = take(); break; case '--out': o.out = take(); break; case '--root': o.root = take(); break;
       case '--quiet': o.quiet = true; break; case '--json': o.json = true; break;
+      case '--max-unique': o.maxUnique = +take(); break; case '--max-copies': o.maxCopies = +take(); break; // 2026-10-30 (DECK1)
       case '--help': case '-h': o.help = true; break;
       default: throw new Error('unknown option ' + k + ' (--help lists them)');
     } }
@@ -90,6 +95,11 @@ function renameDeck(deck, ren) { const out = {}; Object.keys(deck).forEach(id =>
 function wilsonElo(p, n) { const ci = O.wilson(p, n); return { p: r3(p), n, ci: [r3(ci[0]), r3(ci[1])], elo: Math.round(O.elo(p, n)), eloCI: [Math.round(O.elo(ci[0], n)), Math.round(O.elo(ci[1], n))] }; }
 
 // a deck the game can field: 20 cards, every card known and deckable, the rarity copy caps, the top-rank caps (the leader counted)
+// 2026-10-30 (DECK1): the owner's step-4 rule for PRO decks
+function limitProblems(deck, o) { const ids = Object.keys(deck).filter(id => deck[id] > 0), out = [];
+  if (o.maxUnique && ids.length > o.maxUnique) out.push(`${ids.length} different cards (DECK1: at most ${o.maxUnique})`);
+  if (o.maxCopies) ids.forEach(id => { if (deck[id] > o.maxCopies) out.push(`${id} x${deck[id]} (DECK1: at most ${o.maxCopies} copies)`); });
+  return out; }
 function deckProblems(gm, deck, leaders) {
   const out = [], D = gm.D, size = gm.G.DECK_SIZE || 20;
   if (O.deckTotal(deck) !== size) out.push(`${O.deckTotal(deck)} cards, not ${size}`);
@@ -227,22 +237,23 @@ async function main(argv) {
     const no = mapNoOf(gm, map), field = averageField(gm, map); if (!field) continue;
     const old = file.maps[map.id] || {}, today = new Date().toISOString().slice(0, 10);
     const entry = { map: no, side: map.sub ? map.parent : undefined, name: map.name, field: Object.assign({}, field, { summary: fieldSummary(gm, field) }), pro: old.pro || [], bpro: old.bpro || [],
-      replaced: (old.replaced || []).slice(), skipped: (old.skipped || []).filter(x => !kinds.includes(x.kind || 'pro')), notes: (old.notes || []).filter(x => !kinds.some(k => x.startsWith(KINDS[k].label + ': '))) };
+      replaced: (old.replaced || []).slice(), history: old.history /* 2026-10-30 (DECK1): kept */, skipped: (old.skipped || []).filter(x => !kinds.includes(x.kind || 'pro')), notes: (old.notes || []).filter(x => !kinds.some(k => x.startsWith(KINDS[k].label + ': '))) };
     log(`Map ${no} ${map.name} (${map.id}): field ${entry.field.summary || '(none)'}${field.ties.length ? ' [' + field.ties.join('; ') + ']' : ''}; rarity cap ${O.mapRarityCap(gm, map, o.rarityCap)}`);
     for (const kind of kinds) {
       const K = KINDS[kind], t0 = Date.now(), prev = old[K.list] || [], note = s => entry.notes.push(K.label + ': ' + s);
       // the map rule first (PRO2): a deck in the file that breaks it is dropped, so the map is filled again from the new runs
       const cur = [];
-      prev.forEach(e => { const deck = renameDeck(e.deck, ren), probs = O.mapRuleProblems(gm, map, deck, K.mode, o.rarityCap).concat(deckProblems(gm, deck, leadersFor(gm, map, deck)));
+      prev.forEach(e => { const deck = renameDeck(e.deck, ren), probs = O.mapRuleProblems(gm, map, deck, K.mode, o.rarityCap).concat(deckProblems(gm, deck, leadersFor(gm, map, deck)), kind === 'pro' ? limitProblems(deck, o) : []);
         if (probs.length) { entry.replaced.push({ kind, id: e.id, deck, source: e.source, dropped: probs, on: today }); note(`${e.id} dropped: ${probs.join('; ')}`); log(`  · ${K.label}: ${e.id} dropped (the map rule): ${probs.join('; ')}`); }
         else cur.push({ deck, source: e.source, h2h: e.h2h }); });
       const cands = [], skipped = [];
-      candidatesOf(gm, runs, map.id, ren, K.mode).forEach(c => { const p = deckProblems(gm, c.deck, leadersFor(gm, map, c.deck)).concat(O.mapRuleProblems(gm, map, c.deck, K.mode, o.rarityCap));
+      candidatesOf(gm, runs, map.id, ren, K.mode).forEach(c => { const p = deckProblems(gm, c.deck, leadersFor(gm, map, c.deck)).concat(O.mapRuleProblems(gm, map, c.deck, K.mode, o.rarityCap), kind === 'pro' ? limitProblems(c.deck, o) : []);
         if (p.length) skipped.push({ kind, source: c.source.file + ' #' + c.source.optimum, problems: p }); else cands.push(c); });
       const measure = makeH2H(gm, map, field, o);
       const d = decide(cur, cands, measure, o);
       const list = d.pro.map((x, i) => { const id = `${proPrefix(gm, map)}-${K.label}-${i + 1}`; // PRO3: a side map's N-L-
-        return { id, name: id, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, map.sub && gm.G.mapUnlockNumberOf ? gm.G.mapUnlockNumberOf(map.id) : no) }; });
+        const was = prev.find(e => O.deckKey(renameDeck(e.deck, ren)) === O.deckKey(x.deck)) || {}; // DECK1: a kept deck keeps its focus
+        return { id, name: id, focus: was.focus, labels: was.labels, level: o.level, leaders: leadersFor(gm, map, x.deck), deck: Object.fromEntries(Object.keys(x.deck).sort().map(k => [k, x.deck[k]])), source: x.source, h2h: x.h2h, later: laterCards(gm, x.deck, map.sub && gm.G.mapUnlockNumberOf ? gm.G.mapUnlockNumberOf(map.id) : no) }; });
       const before = prev.map(e => O.deckKey(renameDeck(e.deck, ren))).join(' / '), after = list.map(e => O.deckKey(e.deck)).join(' / ');
       entry[K.list] = list;
       d.replaced.forEach(r => entry.replaced.push({ kind, deck: r.deck, source: r.source, lostTo: r.by, h2h: r.h2h, on: today }));
@@ -263,5 +274,5 @@ async function main(argv) {
   else log('dry run: nothing written (--apply writes ' + path.relative(root, outFile) + ')');
   return { plan, file: next };
 }
-module.exports = { VERSION, KINDS, proPrefix, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
+module.exports = { limitProblems, VERSION, KINDS, proPrefix, parseArgs, decide, averageField, fieldSummary, proNode, deckProblems, leadersFor, readRuns, candidatesOf, renamedIds, renameDeck, makeH2H, main };
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

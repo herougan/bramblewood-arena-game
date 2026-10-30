@@ -116,6 +116,84 @@
     "high": [
      "ant-hill"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.4236,
+     "why": "under 64.2%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map00-m1-2026-10-30.json",
+    "pro": [
+     {
+      "id": "0-PRO-1",
+      "focus": "open",
+      "labels": [
+       "swarm (18 copies at 0 Lumber)"
+      ],
+      "score": 0.7917,
+      "ci": [
+       0.7319,
+       0.8515
+      ],
+      "deck": {
+       "burrow-rabbit": 3,
+       "chipmunk-skirmisher": 4,
+       "otter-paddler": 4,
+       "owl-sentinel": 2,
+       "pond-trout": 3,
+       "terrier-pup": 4
+      },
+      "leaders": []
+     },
+     {
+      "id": "0-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (19 copies at 0 Lumber)",
+       "swarm x7"
+      ],
+      "score": 0.6875,
+      "ci": [
+       0.6139,
+       0.7611
+      ],
+      "deck": {
+       "ant-hill": 1,
+       "ant-scout": 3,
+       "bee-forager": 4,
+       "chipmunk-skirmisher": 4,
+       "crossed-eyes": 4,
+       "terrier-pup": 4
+      },
+      "leaders": []
+     },
+     {
+      "id": "0-PRO-3",
+      "focus": "family:flying",
+      "labels": [
+       "swarm (20 copies at 0 Lumber)",
+       "swarm x9",
+       "flying x8"
+      ],
+      "score": 0.6667,
+      "ci": [
+       0.5919,
+       0.7414
+      ],
+      "deck": {
+       "ant-scout": 1,
+       "bee-forager": 4,
+       "bee-knight": 4,
+       "chipmunk-skirmisher": 4,
+       "forager-ant": 4,
+       "pond-trout": 3
+      },
+      "leaders": []
+     }
+    ]
    }
   },
   "mo": {
@@ -250,6 +328,83 @@
      "flying 3"
     ],
     "high": []
+   },
+   "leftOut": [
+    {
+     "focus": "swarm",
+     "score": 0.6964,
+     "why": "under 74.3%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map00-mo-2026-10-30.json",
+    "pro": [
+     {
+      "id": "0-B-PRO-1",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1 Lumber, average 0.4)",
+       "economy (6 resource makers)"
+      ],
+      "score": 0.8929,
+      "ci": [
+       0.8509,
+       0.9348
+      ],
+      "deck": {
+       "hoopoe-herald": 3,
+       "leafcutter-gardener": 2,
+       "porcupine-roller": 3,
+       "seed-cache-squirrel": 4,
+       "swift-fox": 4,
+       "talus-pika": 4
+      },
+      "leaders": []
+     },
+     {
+      "id": "0-B-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.8512,
+      "ci": [
+       0.8014,
+       0.901
+      ],
+      "deck": {
+       "ashbone-ghoul": 3,
+       "fox-sharpshot": 2,
+       "hoopoe-herald": 4,
+       "leafcutter-gardener": 3,
+       "swift-fox": 4,
+       "talus-pika": 4
+      },
+      "leaders": []
+     },
+     {
+      "id": "0-B-PRO-3",
+      "focus": "open",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)"
+      ],
+      "score": 0.8006,
+      "ci": [
+       0.7438,
+       0.8574
+      ],
+      "deck": {
+       "ashbone-ghoul": 3,
+       "dhole-runner": 2,
+       "hoopoe-herald": 3,
+       "jay-pilferer": 4,
+       "mudpuppy": 4,
+       "porcupine-roller": 4
+      },
+      "leaders": []
+     }
+    ]
    }
   },
   "mf": {
@@ -371,6 +526,65 @@
     ],
     "high": [
      "ant-hill"
+    ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.4948,
+     "why": "under 50.1%"
+    },
+    {
+     "focus": "economy",
+     "score": 0.3021,
+     "why": "under 50.1%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map01-mf-2026-10-30.json",
+    "pro": [
+     {
+      "id": "1-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (17 copies at 0 Lumber)"
+      ],
+      "score": 0.651,
+      "ci": [
+       0.5918,
+       0.7102
+      ],
+      "deck": {
+       "bramble-sprout": 4,
+       "burrow-rabbit": 1,
+       "chipmunk-cavalry": 3,
+       "chipmunk-skirmisher": 4,
+       "field-mouse": 4,
+       "river-carp": 4
+      },
+      "leaders": []
+     },
+     {
+      "id": "1-PRO-2",
+      "focus": "open",
+      "labels": [
+       "swarm (20 copies at 0 Lumber)"
+      ],
+      "score": 0.651,
+      "ci": [
+       0.5871,
+       0.715
+      ],
+      "deck": {
+       "bee-forager": 4,
+       "bramble-sprout": 3,
+       "chipmunk-skirmisher": 2,
+       "cricket-drummer": 4,
+       "forager-ant": 3,
+       "hedgerow-shrew": 4
+      },
+      "leaders": []
+     }
     ]
    }
   },
@@ -501,6 +715,81 @@
     "high": [
      "ant-hill"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.4844,
+     "why": "under 61.6%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map01-mq-2026-10-30.json",
+    "pro": [
+     {
+      "id": "1-A-PRO-1",
+      "focus": "open",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)"
+      ],
+      "score": 0.7656,
+      "ci": [
+       0.709,
+       0.8223
+      ],
+      "deck": {
+       "bramble-sprout": 4,
+       "cricket-drummer": 4,
+       "hawthorn-shieldbug": 2,
+       "mudpuppy": 4,
+       "planarian-splitter": 4,
+       "slow-worm": 2
+      },
+      "leaders": []
+     },
+     {
+      "id": "1-A-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)"
+      ],
+      "score": 0.6771,
+      "ci": [
+       0.6217,
+       0.7325
+      ],
+      "deck": {
+       "cricket-drummer": 4,
+       "field-mouse": 3,
+       "field-vole": 4,
+       "hawthorn-shieldbug": 4,
+       "slow-worm": 3,
+       "vampire-bat": 2
+      },
+      "leaders": []
+     },
+     {
+      "id": "1-A-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (6 resource makers)"
+      ],
+      "score": 0.6719,
+      "ci": [
+       0.6124,
+       0.7314
+      ],
+      "deck": {
+       "badger-lumberjack": 3,
+       "bramble-sprout": 3,
+       "field-mouse": 4,
+       "leafcutter-gardener": 3,
+       "meadow-rabbit": 3,
+       "planarian-splitter": 4
+      },
+      "leaders": []
+     }
+    ]
    }
   },
   "mb": {
@@ -622,6 +911,113 @@
     "high": [
      "sea-turtle-elder"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map02-mb-2026-10-30.json",
+    "pro": [
+     {
+      "id": "2-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "economy (6 resource makers)",
+       "tide x10"
+      ],
+      "score": 0.8906,
+      "ci": [
+       0.8545,
+       0.9267
+      ],
+      "deck": {
+       "badger-lumberjack": 2,
+       "beaver-lumberjack": 4,
+       "briarback-hedgehog": 4,
+       "ember-tetra": 4,
+       "grey-seal-bull": 3,
+       "pincushion-urchin": 3
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (17 copies at 0 Lumber)",
+       "tide x12",
+       "armor x7"
+      ],
+      "score": 0.8854,
+      "ci": [
+       0.8434,
+       0.9275
+      ],
+      "deck": {
+       "briarback-hedgehog": 3,
+       "cricket-drummer": 3,
+       "dormouse": 2,
+       "ember-tetra": 4,
+       "pincushion-urchin": 4,
+       "tide-pool-crab": 4
+      },
+      "leaders": [
+       "ember-tetra"
+      ]
+     },
+     {
+      "id": "2-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "economy (4 resource makers)",
+       "tide x14",
+       "guard x7"
+      ],
+      "score": 0.875,
+      "ci": [
+       0.8326,
+       0.9174
+      ],
+      "deck": {
+       "badger-lumberjack": 4,
+       "conch-crawler": 3,
+       "duck-paddler": 2,
+       "ember-tetra": 4,
+       "grey-seal-bull": 4,
+       "pincushion-urchin": 3
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-PRO-4",
+      "focus": "open",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "tide x17",
+       "guard x7"
+      ],
+      "score": 0.8542,
+      "ci": [
+       0.8095,
+       0.8988
+      ],
+      "deck": {
+       "beaver-lumberjack": 3,
+       "ember-tetra": 4,
+       "fiddler-crab-swarm": 2,
+       "fleetfootd": 4,
+       "grey-seal-bull": 4,
+       "tide-pool-crab": 3
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     }
+    ]
    }
   },
   "mg": {
@@ -739,6 +1135,113 @@
     ],
     "high": [
      "sea-turtle-elder"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map02-mg-2026-10-30.json",
+    "pro": [
+     {
+      "id": "2-B-PRO-1",
+      "focus": "open",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "economy (4 resource makers)",
+       "tide x9",
+       "flying x6"
+      ],
+      "score": 0.8571,
+      "ci": [
+       0.8078,
+       0.9065
+      ],
+      "deck": {
+       "conch-herald": 3,
+       "grey-seal-bull": 4,
+       "kittiwake-flock": 4,
+       "mudpuppy": 3,
+       "puffin-diver": 2,
+       "trash-panda-trickster": 4
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-B-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (8 resource makers)",
+       "tide x10",
+       "guard x8"
+      ],
+      "score": 0.8452,
+      "ci": [
+       0.7977,
+       0.8927
+      ],
+      "deck": {
+       "conch-crawler": 4,
+       "conch-herald": 2,
+       "grey-seal-bull": 4,
+       "mudpuppy": 2,
+       "nutria-reedcutter": 4,
+       "trash-panda-trickster": 4
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-B-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "tide x9"
+      ],
+      "score": 0.8423,
+      "ci": [
+       0.7912,
+       0.8933
+      ],
+      "deck": {
+       "conch-herald": 4,
+       "grey-seal-bull": 4,
+       "kittiwake-flock": 4,
+       "newt-doctor": 4,
+       "rock-pool-starfish": 1,
+       "trash-panda-trickster": 3
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-B-PRO-4",
+      "focus": "economy",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "economy (9 resource makers)",
+       "tide x8"
+      ],
+      "score": 0.8274,
+      "ci": [
+       0.7787,
+       0.8761
+      ],
+      "deck": {
+       "driftwood-crab": 4,
+       "grey-seal-bull": 4,
+       "mudpuppy": 3,
+       "nutria-reedcutter": 1,
+       "pincushion-urchin": 4,
+       "trash-panda-trickster": 4
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     }
     ]
    }
   },
@@ -876,6 +1379,91 @@
      "lodge-engineer",
      "riverworks-bastion"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.6583,
+     "why": "under 68.8%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map02-mp-2026-10-30.json",
+    "pro": [
+     {
+      "id": "2-A-PRO-1",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)",
+       "tide x12",
+       "guard x8"
+      ],
+      "score": 0.8375,
+      "ci": [
+       0.7928,
+       0.8822
+      ],
+      "deck": {
+       "box-turtle": 4,
+       "diving-bell-spider": 2,
+       "gannet-nestweaver": 4,
+       "grey-seal-bull": 4,
+       "muskrat-lodgekeeper": 4,
+       "river-mink": 2
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-A-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "tide x13"
+      ],
+      "score": 0.825,
+      "ci": [
+       0.7812,
+       0.8688
+      ],
+      "deck": {
+       "box-turtle": 4,
+       "grey-seal-bull": 3,
+       "pyrenean-desman": 3,
+       "river-mink": 3,
+       "tidepool-trapper-crab": 3,
+       "water-vole": 4
+      },
+      "leaders": [
+       "grey-seal-bull"
+      ]
+     },
+     {
+      "id": "2-A-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)",
+       "tide x12"
+      ],
+      "score": 0.8125,
+      "ci": [
+       0.7652,
+       0.8598
+      ],
+      "deck": {
+       "diving-bell-spider": 4,
+       "driftwood-crab": 3,
+       "fiddler-crab-swarm": 4,
+       "lodge-engineer": 2,
+       "muskrat-lodgekeeper": 4,
+       "nutria-reedcutter": 3
+      },
+      "leaders": [
+       "lodge-engineer"
+      ]
+     }
+    ]
    }
   },
   "mc": {
@@ -987,6 +1575,112 @@
      "tide 5"
     ],
     "high": []
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map03-mc-2026-10-30.json",
+    "pro": [
+     {
+      "id": "3-PRO-1",
+      "focus": "open",
+      "labels": [
+       "big (13 copies at 1 Lumber, average 0.7)",
+       "flying x10",
+       "strike-first x8"
+      ],
+      "score": 0.7208,
+      "ci": [
+       0.6733,
+       0.7684
+      ],
+      "deck": {
+       "conch-herald": 3,
+       "duck-paddler": 4,
+       "golden-eagle-diver": 4,
+       "peregrine-stooper": 4,
+       "razorbill": 2,
+       "terrier-pup": 3
+      },
+      "leaders": [
+       "conch-herald"
+      ]
+     },
+     {
+      "id": "3-PRO-2",
+      "focus": "big",
+      "labels": [
+       "big (14 copies at 1 Lumber, average 0.7)",
+       "flying x16",
+       "day x8"
+      ],
+      "score": 0.7083,
+      "ci": [
+       0.6584,
+       0.7583
+      ],
+      "deck": {
+       "conch-herald": 4,
+       "gannet-nestweaver": 2,
+       "golden-eagle-diver": 4,
+       "hawk-arrowkeeper": 4,
+       "kittiwake-flock": 4,
+       "razorbill": 2
+      },
+      "leaders": [
+       "conch-herald"
+      ]
+     },
+     {
+      "id": "3-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "big (10 copies at 1 Lumber, average 0.5)",
+       "economy (8 resource makers)",
+       "flying x16",
+       "strike-first x8"
+      ],
+      "score": 0.6417,
+      "ci": [
+       0.5898,
+       0.6935
+      ],
+      "deck": {
+       "cobalt-talon-fledgling": 2,
+       "driftwood-crab": 4,
+       "gannet-nestweaver": 4,
+       "golden-eagle-diver": 4,
+       "peregrine-stooper": 4,
+       "puffin-diver": 2
+      },
+      "leaders": [
+       "peregrine-stooper"
+      ]
+     },
+     {
+      "id": "3-PRO-4",
+      "focus": "swarm",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "flying x10"
+      ],
+      "score": 0.6042,
+      "ci": [
+       0.5487,
+       0.6596
+      ],
+      "deck": {
+       "crimson-wing-recruit": 4,
+       "duck-paddler": 3,
+       "feral-tomcat": 4,
+       "gannet-nestweaver": 2,
+       "peak-condor": 4,
+       "pincushion-urchin": 3
+      },
+      "leaders": [
+       "peak-condor"
+      ]
+     }
+    ]
    }
   },
   "m2": {
@@ -1101,6 +1795,110 @@
     ],
     "high": [
      "stone-turtle-warden"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map04-m2-2026-10-30.json",
+    "pro": [
+     {
+      "id": "4-PRO-1",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "tide x16"
+      ],
+      "score": 0.9583,
+      "ci": [
+       0.9319,
+       0.9848
+      ],
+      "deck": {
+       "duck-paddler": 2,
+       "ember-tetra": 4,
+       "fire-ant-raft": 4,
+       "muskrat-reedgatherer": 2,
+       "pyrenean-desman": 4,
+       "snapstick-turtle": 4
+      },
+      "leaders": [
+       "pyrenean-desman"
+      ]
+     },
+     {
+      "id": "4-PRO-2",
+      "focus": "open",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "tide x14"
+      ],
+      "score": 0.9271,
+      "ci": [
+       0.8915,
+       0.9626
+      ],
+      "deck": {
+       "conch-crawler": 4,
+       "ember-tetra": 4,
+       "fire-ant-raft": 2,
+       "gannet-nestweaver": 2,
+       "pond-algae": 4,
+       "snapstick-turtle": 4
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ]
+     },
+     {
+      "id": "4-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (20 copies at 0 Lumber)",
+       "economy (5 resource makers)",
+       "tide x8"
+      ],
+      "score": 0.8854,
+      "ci": [
+       0.8411,
+       0.9297
+      ],
+      "deck": {
+       "beaver-lumberjack": 2,
+       "bramble-sprout": 3,
+       "ember-tetra": 4,
+       "gannet-nestweaver": 3,
+       "pond-trout": 4,
+       "pyrenean-desman": 4
+      },
+      "leaders": [
+       "pyrenean-desman"
+      ]
+     },
+     {
+      "id": "4-PRO-4",
+      "focus": "economy",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "economy (9 resource makers)",
+       "tide x8"
+      ],
+      "score": 0.849,
+      "ci": [
+       0.7994,
+       0.8986
+      ],
+      "deck": {
+       "beaver-lumberjack": 3,
+       "bramble-sprout": 3,
+       "ember-tetra": 4,
+       "fire-ant-raft": 4,
+       "gannet-nestweaver": 2,
+       "muskrat-reedgatherer": 4
+      },
+      "leaders": [
+       "fire-ant-raft"
+      ]
+     }
     ]
    }
   },
@@ -1225,6 +2023,107 @@
      "swamp-alligator",
      "venomlord-serpent"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map05-mw-2026-10-30.json",
+    "pro": [
+     {
+      "id": "5-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "bleed x7",
+       "tide x6"
+      ],
+      "score": 0.8708,
+      "ci": [
+       0.8332,
+       0.9085
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "bog-leech": 4,
+       "box-turtle": 3,
+       "grass-viper": 4,
+       "river-mink": 2,
+       "snapstick-turtle": 4
+      },
+      "leaders": [
+       "alley-cat"
+      ]
+     },
+     {
+      "id": "5-PRO-2",
+      "focus": "open",
+      "labels": [
+       "bleed x6"
+      ],
+      "score": 0.8292,
+      "ci": [
+       0.7851,
+       0.8732
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "bog-leech": 3,
+       "caiman-hatchling": 4,
+       "crocodile-ambusher": 4,
+       "cypress-root-lurker": 3,
+       "otter-centurion": 3
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     },
+     {
+      "id": "5-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)"
+      ],
+      "score": 0.8208,
+      "ci": [
+       0.781,
+       0.8607
+      ],
+      "deck": {
+       "constrictor-coil": 4,
+       "dam-keeper-beaver": 1,
+       "gannet-nestweaver": 4,
+       "nutria-reedcutter": 4,
+       "otter-centurion": 3,
+       "snapstick-turtle": 4
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     },
+     {
+      "id": "5-PRO-4",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 2+ Lumber, average 0.8)",
+       "economy (6 resource makers)"
+      ],
+      "score": 0.7875,
+      "ci": [
+       0.7437,
+       0.8313
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "box-turtle": 3,
+       "constrictor-coil": 4,
+       "gannet-nestweaver": 2,
+       "nutria-reedcutter": 4,
+       "swamp-alligator": 4
+      },
+      "leaders": [
+       "alley-cat"
+      ]
+     }
+    ]
    }
   },
   "ms": {
@@ -1346,6 +2245,88 @@
      "swamp-alligator",
      "venomlord-serpent"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.5536,
+     "why": "under 70.1%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map05-ms-2026-10-30.json",
+    "pro": [
+     {
+      "id": "5-A-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "ranged x6"
+      ],
+      "score": 0.8512,
+      "ci": [
+       0.8029,
+       0.8994
+      ],
+      "deck": {
+       "alpine-marmot": 3,
+       "bog-leech": 4,
+       "eagle-owl-quartermaster": 3,
+       "grass-viper": 4,
+       "hedgehog-herbalist": 3,
+       "otter-centurion": 3
+      },
+      "leaders": [
+       "hedgehog-herbalist"
+      ]
+     },
+     {
+      "id": "5-A-PRO-2",
+      "focus": "family:poison",
+      "labels": [
+       "poison x8"
+      ],
+      "score": 0.8333,
+      "ci": [
+       0.7845,
+       0.8822
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "alpine-marmot": 4,
+       "grass-viper": 4,
+       "hedgehog-herbalist": 2,
+       "venomlord-serpent": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "hedgehog-herbalist"
+      ]
+     },
+     {
+      "id": "5-A-PRO-3",
+      "focus": "open",
+      "labels": [
+       "midrange (average 0.5 Lumber)"
+      ],
+      "score": 0.8214,
+      "ci": [
+       0.7674,
+       0.8755
+      ],
+      "deck": {
+       "alpine-marmot": 4,
+       "blue-ringed-octopus": 3,
+       "bog-leech": 4,
+       "constrictor-coil": 2,
+       "eagle-owl-quartermaster": 3,
+       "mangrove-mudskipper": 4
+      },
+      "leaders": [
+       "blue-ringed-octopus"
+      ]
+     }
+    ]
    }
   },
   "m8": {
@@ -1462,6 +2443,89 @@
      "cane-toad",
      "constrictor-coil",
      "venomlord-serpent"
+    ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.625,
+     "why": "under 74.4%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map06-m8-2026-10-30.json",
+    "pro": [
+     {
+      "id": "6-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "flying x6"
+      ],
+      "score": 0.8939,
+      "ci": [
+       0.8642,
+       0.9237
+      ],
+      "deck": {
+       "bogfire-newt": 4,
+       "box-turtle": 4,
+       "grass-snake": 3,
+       "marsh-harrier": 3,
+       "otter-centurion": 3,
+       "raven-scout": 3
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     },
+     {
+      "id": "6-PRO-2",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)"
+      ],
+      "score": 0.8826,
+      "ci": [
+       0.8514,
+       0.9137
+      ],
+      "deck": {
+       "adder-ambusher": 3,
+       "grass-snake": 4,
+       "marsh-harrier": 3,
+       "meadow-frog": 4,
+       "nutria-reedcutter": 4,
+       "otter-centurion": 2
+      },
+      "leaders": [
+       "adder-ambusher"
+      ]
+     },
+     {
+      "id": "6-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (6 resource makers)",
+       "poison x11"
+      ],
+      "score": 0.8561,
+      "ci": [
+       0.8232,
+       0.8889
+      ],
+      "deck": {
+       "adder-ambusher": 3,
+       "bogfire-newt": 4,
+       "cane-toad": 4,
+       "driftwood-crab": 4,
+       "gannet-nestweaver": 2,
+       "raven-scout": 3
+      },
+      "leaders": [
+       "adder-ambusher"
+      ]
+     }
     ]
    }
   },
@@ -1582,6 +2646,111 @@
      "cane-toad",
      "fungal-colossus"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map07-mu-2026-10-30.json",
+    "pro": [
+     {
+      "id": "7-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (17 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "swarm x7"
+      ],
+      "score": 0.8981,
+      "ci": [
+       0.8601,
+       0.9362
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "bogfire-newt": 3,
+       "leafcutter-gardener": 4,
+       "otter-centurion": 3,
+       "raven-scout": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "7-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.875,
+      "ci": [
+       0.8332,
+       0.9168
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "cottonmouth-matriarch": 3,
+       "dung-beetle": 4,
+       "nutria-reedcutter": 4,
+       "truffle-piglet": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "7-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (10 copies at 1+ Lumber, average 0.5)",
+       "poison x11",
+       "swarm x10"
+      ],
+      "score": 0.8194,
+      "ci": [
+       0.7725,
+       0.8664
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "bogfire-newt": 4,
+       "carrion-beetle": 4,
+       "dung-beetle": 2,
+       "fire-ant-raft": 3,
+       "tunnel-ant": 3
+      },
+      "leaders": [
+       "tunnel-ant"
+      ]
+     },
+     {
+      "id": "7-PRO-4",
+      "focus": "open",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "swarm x7"
+      ],
+      "score": 0.8148,
+      "ci": [
+       0.7653,
+       0.8643
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "carrion-beetle": 3,
+       "leafcutter-gardener": 4,
+       "otter-centurion": 2,
+       "sleepless-shrew": 4,
+       "tunnel-ant": 3
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     }
+    ]
    }
   },
   "mz": {
@@ -1699,6 +2868,108 @@
     ],
     "high": [
      "fungal-colossus"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map07-mz-2026-10-30.json",
+    "pro": [
+     {
+      "id": "7-A-PRO-1",
+      "focus": "big",
+      "labels": [
+       "big (13 copies at 1+ Lumber, average 0.7)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.8125,
+      "ci": [
+       0.7635,
+       0.8615
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "nutria-reedcutter": 4,
+       "owl-nightwatch": 4,
+       "planarian-splitter": 4,
+       "rootworm-colony": 4,
+       "wolf-spider-mother": 1
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "7-A-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (8 resource makers)"
+      ],
+      "score": 0.7865,
+      "ci": [
+       0.7349,
+       0.838
+      ],
+      "deck": {
+       "ant-warrior": 2,
+       "leafcutter-gardener": 4,
+       "mudpuppy": 4,
+       "nutria-reedcutter": 4,
+       "owl-nightwatch": 4,
+       "wolf-spider-mother": 2
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "7-A-PRO-3",
+      "focus": "open",
+      "labels": [
+       "big (10 copies at 1+ Lumber, average 0.5)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.776,
+      "ci": [
+       0.7212,
+       0.8309
+      ],
+      "deck": {
+       "bombardier-beetle": 4,
+       "compost-grub": 2,
+       "leafcutter-gardener": 4,
+       "newt-doctor": 4,
+       "truffle-piglet": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "7-A-PRO-4",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.7292,
+      "ci": [
+       0.6776,
+       0.7808
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "ant-warrior": 4,
+       "barkplate-beetle": 4,
+       "leafcutter-gardener": 4,
+       "otter-centurion": 3,
+       "owl-nightwatch": 2
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     }
     ]
    }
   },
@@ -1821,6 +3092,113 @@
     "high": [
      "octopus-tactician",
      "stalactite-golem"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map08-m4-2026-10-30.json",
+    "pro": [
+     {
+      "id": "8-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "swarm x7",
+       "night x7"
+      ],
+      "score": 0.8674,
+      "ci": [
+       0.8289,
+       0.9059
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "ant-warrior": 4,
+       "echo-screecher": 3,
+       "otter-centurion": 3,
+       "trash-panda-trickster": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "8-PRO-2",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "swarm x7"
+      ],
+      "score": 0.8144,
+      "ci": [
+       0.7703,
+       0.8585
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "echo-screecher": 1,
+       "raft-spider": 4,
+       "star-nosed-mole": 4,
+       "vampire-bat": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "8-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)",
+       "bleed x7",
+       "night x7"
+      ],
+      "score": 0.803,
+      "ci": [
+       0.761,
+       0.8451
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "echo-screecher": 3,
+       "leafcutter-gardener": 4,
+       "otter-centurion": 2,
+       "trash-panda-trickster": 4,
+       "whip-spider": 4
+      },
+      "leaders": [
+       "otter-centurion"
+      ]
+     },
+     {
+      "id": "8-PRO-4",
+      "focus": "open",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)",
+       "economy (8 resource makers)",
+       "swarm x7",
+       "night x7"
+      ],
+      "score": 0.7689,
+      "ci": [
+       0.7211,
+       0.8167
+      ],
+      "deck": {
+       "ant-warrior": 4,
+       "leafcutter-gardener": 4,
+       "raft-spider": 2,
+       "trash-panda-trickster": 4,
+       "vampire-bat": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
     ]
    }
   },
@@ -1948,6 +3326,110 @@
     "high": [
      "stalactite-golem"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map08-mn-2026-10-30.json",
+    "pro": [
+     {
+      "id": "8-A-PRO-1",
+      "focus": "big",
+      "labels": [
+       "big (16 copies at 1+ Lumber, average 0.9)",
+       "flying x7"
+      ],
+      "score": 0.8036,
+      "ci": [
+       0.7467,
+       0.8605
+      ],
+      "deck": {
+       "blue-ringed-octopus": 3,
+       "lantern-spark-fly": 4,
+       "stalactite-golem": 3,
+       "subterraneaner": 4,
+       "sulfur-cinder-moth": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "8-A-PRO-2",
+      "focus": "open",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "economy (4 resource makers)",
+       "evasion x6"
+      ],
+      "score": 0.7857,
+      "ci": [
+       0.7272,
+       0.8442
+      ],
+      "deck": {
+       "blind-cave-fish": 3,
+       "gallery-orb-weaver": 3,
+       "lantern-spark-fly": 4,
+       "prospector-mole": 4,
+       "squires-mount": 3,
+       "subterraneaner": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "8-A-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "big (10 copies at 1+ Lumber, average 0.5)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.7798,
+      "ci": [
+       0.72,
+       0.8396
+      ],
+      "deck": {
+       "baby-bat": 2,
+       "badger-stonemason": 3,
+       "glimmer-spider": 3,
+       "prospector-mole": 4,
+       "star-nosed-mole": 4,
+       "subterraneaner": 4
+      },
+      "leaders": [
+       "badger-stonemason"
+      ]
+     },
+     {
+      "id": "8-A-PRO-4",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "evasion x7"
+      ],
+      "score": 0.7679,
+      "ci": [
+       0.7098,
+       0.8259
+      ],
+      "deck": {
+       "blind-cave-fish": 3,
+       "blue-ringed-octopus": 2,
+       "lantern-spark-fly": 3,
+       "prospector-mole": 4,
+       "star-nosed-mole": 4,
+       "subterraneaner": 4
+      },
+      "leaders": [
+       "blue-ringed-octopus"
+      ]
+     }
+    ]
    }
   },
   "mk": {
@@ -2059,6 +3541,111 @@
     "high": [
      "crocodile-ambusher",
      "reef-shark"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map09-mk-2026-10-30.json",
+    "pro": [
+     {
+      "id": "9-PRO-1",
+      "focus": "family:tide",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "tide x11"
+      ],
+      "score": 0.8,
+      "ci": [
+       0.7509,
+       0.8491
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "banded-sea-krait": 3,
+       "fiddler-crab-swarm": 4,
+       "greater-siren": 3,
+       "minnow-skitter": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "9-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "tide x7",
+       "bleed x6"
+      ],
+      "score": 0.7958,
+      "ci": [
+       0.7465,
+       0.8451
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "alligator-gar": 3,
+       "caiman-hatchling": 3,
+       "minnow-skitter": 4,
+       "mudpuppy": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "9-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "tide x13",
+       "armor x7"
+      ],
+      "score": 0.7708,
+      "ci": [
+       0.7219,
+       0.8198
+      ],
+      "deck": {
+       "alligator-gar": 3,
+       "fiddler-crab-swarm": 4,
+       "mangrove-manatee": 3,
+       "minnow-skitter": 3,
+       "sunbittern-strider": 3,
+       "vampire-bat": 4
+      },
+      "leaders": [
+       "mangrove-manatee"
+      ]
+     },
+     {
+      "id": "9-PRO-4",
+      "focus": "open",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "tide x14",
+       "armor x7"
+      ],
+      "score": 0.7375,
+      "ci": [
+       0.6847,
+       0.7903
+      ],
+      "deck": {
+       "alligator-gar": 3,
+       "caiman-hatchling": 4,
+       "fiddler-crab-swarm": 4,
+       "giant-cave-huntsman": 2,
+       "greater-siren": 3,
+       "minnow-skitter": 4
+      },
+      "leaders": [
+       "giant-cave-huntsman"
+      ]
+     }
     ]
    }
   },
@@ -2181,6 +3768,72 @@
      "colossal-squid",
      "kraken-spawnling",
      "orca-vanguard"
+    ]
+   },
+   "leftOut": [
+    {
+     "focus": "swarm",
+     "score": 0.7222,
+     "why": "under 74.2%"
+    },
+    {
+     "focus": "big",
+     "score": 0.7083,
+     "why": "under 74.2%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map10-m7-2026-10-30.json",
+    "pro": [
+     {
+      "id": "10-PRO-1",
+      "focus": "family:tide",
+      "labels": [
+       "economy (4 resource makers)",
+       "tide x12"
+      ],
+      "score": 0.8924,
+      "ci": [
+       0.863,
+       0.9217
+      ],
+      "deck": {
+       "clownfish-scout": 4,
+       "coral-polyp-colony": 4,
+       "giant-cave-huntsman": 3,
+       "reef-shark": 4,
+       "sea-hare": 2,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "giant-cave-huntsman"
+      ]
+     },
+     {
+      "id": "10-PRO-2",
+      "focus": "open",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "tide x13",
+       "cleave x7"
+      ],
+      "score": 0.7917,
+      "ci": [
+       0.7541,
+       0.8293
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "mangrove-manatee": 2,
+       "parrotfish": 4,
+       "pincushion-urchin": 3,
+       "riptide-eel": 4,
+       "sea-hare": 4
+      },
+      "leaders": [
+       "mangrove-manatee"
+      ]
+     }
     ]
    }
   },
@@ -2306,6 +3959,94 @@
      "kraken-spawnling",
      "orca-vanguard"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.7448,
+     "why": "under 79.3%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map10-mj-2026-10-30.json",
+    "pro": [
+     {
+      "id": "10-A-PRO-1",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)",
+       "tide x10",
+       "heal x7"
+      ],
+      "score": 0.9427,
+      "ci": [
+       0.9109,
+       0.9745
+      ],
+      "deck": {
+       "coral-polyp-colony": 4,
+       "giant-cave-huntsman": 3,
+       "great-barracuda": 3,
+       "mangrove-manatee": 3,
+       "mudpuppy": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "giant-cave-huntsman"
+      ]
+     },
+     {
+      "id": "10-A-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "economy (7 resource makers)",
+       "tide x7",
+       "economy x7"
+      ],
+      "score": 0.9219,
+      "ci": [
+       0.8857,
+       0.9581
+      ],
+      "deck": {
+       "blue-ringed-octopus": 3,
+       "coral-polyp-colony": 4,
+       "electric-ray": 4,
+       "nautilus-drifter": 3,
+       "otter-centurion": 3,
+       "whale-shark": 3
+      },
+      "leaders": [
+       "whale-shark"
+      ]
+     },
+     {
+      "id": "10-A-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (6 resource makers)",
+       "tide x7",
+       "cleave x7"
+      ],
+      "score": 0.9141,
+      "ci": [
+       0.8762,
+       0.9519
+      ],
+      "deck": {
+       "coral-polyp-colony": 3,
+       "kraken-spawnling": 3,
+       "nautilus-drifter": 3,
+       "newt-doctor": 4,
+       "otter-centurion": 3,
+       "parrotfish": 4
+      },
+      "leaders": [
+       "nautilus-drifter"
+      ]
+     }
+    ]
    }
   },
   "m10": {
@@ -2429,6 +4170,109 @@
      "eyrie-warden",
      "swamp-alligator"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map11-m10-2026-10-30.json",
+    "pro": [
+     {
+      "id": "11-PRO-1",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)",
+       "flying x11"
+      ],
+      "score": 0.9391,
+      "ci": [
+       0.9138,
+       0.9644
+      ],
+      "deck": {
+       "anhinga-spearbird": 4,
+       "eagle-owl-quartermaster": 3,
+       "gale-swift": 4,
+       "gannet-nestweaver": 4,
+       "swamp-alligator": 2,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)",
+       "flying x13"
+      ],
+      "score": 0.8846,
+      "ci": [
+       0.8512,
+       0.9181
+      ],
+      "deck": {
+       "chipmunk-hoarder": 4,
+       "eagle-owl-quartermaster": 3,
+       "fulmar-spitter": 2,
+       "gannet-nestweaver": 4,
+       "peregrine-stooper": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (17 copies at 0 Lumber)",
+       "flying x7"
+      ],
+      "score": 0.8814,
+      "ci": [
+       0.8488,
+       0.914
+      ],
+      "deck": {
+       "alley-cat": 3,
+       "alpine-marmot": 4,
+       "apollo-butterfly": 3,
+       "gale-swift": 4,
+       "newt-doctor": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-PRO-4",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 2+ Lumber, average 1.4)",
+       "economy (4 resource makers)",
+       "flying x11"
+      ],
+      "score": 0.8766,
+      "ci": [
+       0.8431,
+       0.9101
+      ],
+      "deck": {
+       "alpine-salamander": 2,
+       "eagle-owl-quartermaster": 3,
+       "eyrie-warden": 4,
+       "gannet-nestweaver": 4,
+       "swamp-alligator": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
+    ]
    }
   },
   "mv": {
@@ -2546,6 +4390,106 @@
      "eyrie-warden",
      "swamp-alligator"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map11-mv-2026-10-30.json",
+    "pro": [
+     {
+      "id": "11-A-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "flying x10"
+      ],
+      "score": 0.8988,
+      "ci": [
+       0.8546,
+       0.943
+      ],
+      "deck": {
+       "apollo-butterfly": 3,
+       "chipmunk-hoarder": 3,
+       "eagle-owl-quartermaster": 3,
+       "gale-swift": 4,
+       "hoopoe-herald": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-A-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)"
+      ],
+      "score": 0.8869,
+      "ci": [
+       0.841,
+       0.9328
+      ],
+      "deck": {
+       "alpine-marmot": 4,
+       "chipmunk-hoarder": 4,
+       "dust-hyena": 4,
+       "eagle-owl-quartermaster": 3,
+       "golden-eagle-diver": 2,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-A-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 2+ Lumber, average 1.4)",
+       "flying x11"
+      ],
+      "score": 0.875,
+      "ci": [
+       0.8273,
+       0.9227
+      ],
+      "deck": {
+       "anhinga-spearbird": 2,
+       "eagle-owl-quartermaster": 3,
+       "eyrie-warden": 4,
+       "gale-swift": 4,
+       "swamp-alligator": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "11-A-PRO-4",
+      "focus": "open",
+      "labels": [
+       "economy (6 resource makers)"
+      ],
+      "score": 0.875,
+      "ci": [
+       0.8274,
+       0.9226
+      ],
+      "deck": {
+       "caiman-hatchling": 4,
+       "chipmunk-hoarder": 3,
+       "dust-hyena": 3,
+       "eagle-owl-quartermaster": 3,
+       "swamp-alligator": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
+    ]
    }
   },
   "mh": {
@@ -2661,6 +4605,107 @@
     "high": [
      "ant-hill",
      "quillback-elder"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map12-mh-2026-10-30.json",
+    "pro": [
+     {
+      "id": "12-PRO-1",
+      "focus": "open",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)"
+      ],
+      "score": 0.8875,
+      "ci": [
+       0.8491,
+       0.9259
+      ],
+      "deck": {
+       "bramble-hoglet": 4,
+       "eagle-owl-quartermaster": 3,
+       "hawthorn-shieldbug": 2,
+       "hedgehog-scout": 4,
+       "hedgerow-shrew": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "12-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "big (10 copies at 1+ Lumber, average 0.5)",
+       "economy (8 resource makers)",
+       "flying x7",
+       "ranged x6"
+      ],
+      "score": 0.85,
+      "ci": [
+       0.8084,
+       0.8916
+      ],
+      "deck": {
+       "badger-lumberjack": 4,
+       "carrion-crow": 4,
+       "eagle-owl-quartermaster": 3,
+       "hedge-weasel": 3,
+       "otter-centurion": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "12-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)"
+      ],
+      "score": 0.8,
+      "ci": [
+       0.7514,
+       0.8486
+      ],
+      "deck": {
+       "eagle-owl-quartermaster": 2,
+       "field-mouse": 4,
+       "field-vole": 4,
+       "hedge-weasel": 2,
+       "hedgehog-scout": 4,
+       "mouse-sapper": 4
+      },
+      "leaders": [
+       "eagle-owl-quartermaster"
+      ]
+     },
+     {
+      "id": "12-PRO-4",
+      "focus": "big",
+      "labels": [
+       "big (10 copies at 1+ Lumber, average 0.5)"
+      ],
+      "score": 0.7958,
+      "ci": [
+       0.7496,
+       0.8421
+      ],
+      "deck": {
+       "alpine-marmot": 4,
+       "eagle-owl-quartermaster": 2,
+       "hedgehog-scout": 4,
+       "hedgerow-shrew": 2,
+       "mouse-sapper": 4,
+       "nightjar-drifter": 4
+      },
+      "leaders": [
+       "eagle-owl-quartermaster"
+      ]
+     }
     ]
    }
   },
@@ -2780,6 +4825,106 @@
      "quillback-elder",
      "stag-knight"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map13-mr-2026-10-30.json",
+    "pro": [
+     {
+      "id": "13-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "big (16 copies at 1+ Lumber, average 0.8)",
+       "economy (8 resource makers)"
+      ],
+      "score": 0.9545,
+      "ci": [
+       0.9305,
+       0.9786
+      ],
+      "deck": {
+       "fox-kit": 4,
+       "ibex-rockcaller": 2,
+       "redwood-woodpecker": 4,
+       "swift-fox": 3,
+       "truffle-piglet": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "13-PRO-2",
+      "focus": "open",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)"
+      ],
+      "score": 0.875,
+      "ci": [
+       0.8371,
+       0.9129
+      ],
+      "deck": {
+       "alpine-marmot": 4,
+       "bramble-hoglet": 4,
+       "fawn-scout": 3,
+       "sergeant-bramblefox": 2,
+       "swift-fox": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "sergeant-bramblefox"
+      ]
+     },
+     {
+      "id": "13-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (12 copies at 1+ Lumber, average 0.8)"
+      ],
+      "score": 0.8561,
+      "ci": [
+       0.8166,
+       0.8955
+      ],
+      "deck": {
+       "berserker-boar": 4,
+       "bramble-hoglet": 4,
+       "fox-kit": 4,
+       "ibex-rockcaller": 2,
+       "sergeant-bramblefox": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "13-PRO-4",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "ranged x6"
+      ],
+      "score": 0.8485,
+      "ci": [
+       0.8074,
+       0.8896
+      ],
+      "deck": {
+       "bramble-hoglet": 4,
+       "fawn-scout": 3,
+       "fox-kit": 4,
+       "swift-fox": 3,
+       "wolf-spider-mother": 3,
+       "woodcock-lookout": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
+    ]
    }
   },
   "m5": {
@@ -2898,6 +5043,106 @@
     "high": [
      "lodge-engineer",
      "marula-elephant"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map14-m5-2026-10-30.json",
+    "pro": [
+     {
+      "id": "14-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.8864,
+      "ci": [
+       0.8505,
+       0.9222
+      ],
+      "deck": {
+       "dust-hyena": 4,
+       "grave-grin-hyena": 4,
+       "hoopoe-herald": 3,
+       "ibex-rockcaller": 2,
+       "leafcutter-gardener": 3,
+       "weaver-bird": 4
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "14-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)",
+       "economy (8 resource makers)"
+      ],
+      "score": 0.8826,
+      "ci": [
+       0.8456,
+       0.9195
+      ],
+      "deck": {
+       "dust-hyena": 4,
+       "grave-grin-hyena": 4,
+       "ibex-rockcaller": 2,
+       "leafcutter-gardener": 4,
+       "pangolin-roller": 4,
+       "savanna-cheetah": 2
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "14-PRO-3",
+      "focus": "open",
+      "labels": [
+       "big (12 copies at 1+ Lumber, average 0.6)"
+      ],
+      "score": 0.8788,
+      "ci": [
+       0.8438,
+       0.9138
+      ],
+      "deck": {
+       "blue-ringed-octopus": 3,
+       "grave-grin-hyena": 4,
+       "hoopoe-herald": 4,
+       "ibex-rockcaller": 2,
+       "lyrebird-mimic": 3,
+       "pangolin-roller": 4
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "14-PRO-4",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)"
+      ],
+      "score": 0.8523,
+      "ci": [
+       0.8112,
+       0.8933
+      ],
+      "deck": {
+       "grave-grin-hyena": 4,
+       "hoopoe-herald": 4,
+       "pangolin-roller": 1,
+       "robin-redbreast": 4,
+       "springbok-pronker": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
     ]
    }
   },
@@ -3022,6 +5267,107 @@
      "night 3"
     ],
     "high": []
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map14-my-2026-10-30.json",
+    "pro": [
+     {
+      "id": "14-A-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "big (13 copies at 1 Lumber, average 0.7)",
+       "economy (6 resource makers)"
+      ],
+      "score": 0.849,
+      "ci": [
+       0.8001,
+       0.8978
+      ],
+      "deck": {
+       "grave-grin-hyena": 3,
+       "leafcutter-gardener": 4,
+       "lovebird": 4,
+       "pangolin-roller": 4,
+       "redwood-woodpecker": 2,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "14-A-PRO-2",
+      "focus": "open",
+      "labels": [
+       "big (9 copies at 1 Lumber, average 0.5)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.8177,
+      "ci": [
+       0.7656,
+       0.8699
+      ],
+      "deck": {
+       "grave-grin-hyena": 4,
+       "hercules-beetle": 2,
+       "hoopoe-herald": 3,
+       "leafcutter-gardener": 4,
+       "pangolin-roller": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "hercules-beetle"
+      ]
+     },
+     {
+      "id": "14-A-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.7292,
+      "ci": [
+       0.6732,
+       0.7852
+      ],
+      "deck": {
+       "grave-grin-hyena": 4,
+       "hoopoe-herald": 3,
+       "leafcutter-gardener": 4,
+       "squires-mount": 3,
+       "vampire-bat": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "14-A-PRO-4",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1 Lumber, average 0.4)"
+      ],
+      "score": 0.724,
+      "ci": [
+       0.665,
+       0.7829
+      ],
+      "deck": {
+       "apollo-butterfly": 4,
+       "grave-grin-hyena": 4,
+       "hoopoe-herald": 4,
+       "ibex-rockcaller": 2,
+       "kinkajou-lurker": 2,
+       "weaver-bird": 4
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     }
+    ]
    }
   },
   "ml": {
@@ -3136,6 +5482,107 @@
     ],
     "high": [
      "cataphract-destrier"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map15-ml-2026-10-30.json",
+    "pro": [
+     {
+      "id": "15-PRO-1",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)"
+      ],
+      "score": 0.8792,
+      "ci": [
+       0.8403,
+       0.9181
+      ],
+      "deck": {
+       "border-collie": 3,
+       "dust-hyena": 4,
+       "grave-grin-hyena": 4,
+       "stable-colt": 4,
+       "stoat-cutthroat": 3,
+       "talon-archer": 2
+      },
+      "leaders": [
+       "talon-archer"
+      ]
+     },
+     {
+      "id": "15-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (6 resource makers)"
+      ],
+      "score": 0.8458,
+      "ci": [
+       0.8027,
+       0.889
+      ],
+      "deck": {
+       "dust-hyena": 3,
+       "hedge-weasel": 4,
+       "raccoon-bandit": 3,
+       "squires-mount": 3,
+       "stable-colt": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "15-PRO-3",
+      "focus": "family:flying",
+      "labels": [
+       "economy (4 resource makers)",
+       "flying x9"
+      ],
+      "score": 0.8417,
+      "ci": [
+       0.8001,
+       0.8832
+      ],
+      "deck": {
+       "border-collie": 4,
+       "carrion-crow": 4,
+       "eagle-owl-quartermaster": 3,
+       "grave-grin-hyena": 4,
+       "talon-archer": 2,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "talon-archer"
+      ]
+     },
+     {
+      "id": "15-PRO-4",
+      "focus": "economy",
+      "labels": [
+       "economy (6 resource makers)",
+       "flying x6"
+      ],
+      "score": 0.7625,
+      "ci": [
+       0.7162,
+       0.8088
+      ],
+      "deck": {
+       "border-collie": 4,
+       "dust-hyena": 4,
+       "eagle-owl-quartermaster": 3,
+       "lodge-engineer": 2,
+       "robin-redbreast": 3,
+       "stable-colt": 4
+      },
+      "leaders": [
+       "eagle-owl-quartermaster"
+      ]
+     }
     ]
    }
   },
@@ -3255,6 +5702,110 @@
      "boreal-elk",
      "dhole-matriarch"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map16-mt-2026-10-30.json",
+    "pro": [
+     {
+      "id": "16-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "big (16 copies at 1+ Lumber, average 0.8)",
+       "economy (8 resource makers)",
+       "swarm x6"
+      ],
+      "score": 0.9125,
+      "ci": [
+       0.8797,
+       0.9453
+      ],
+      "deck": {
+       "cone-cutter-squirrel": 4,
+       "dhole-runner": 3,
+       "redwood-woodpecker": 4,
+       "stoat-cutthroat": 3,
+       "wolf-pack-runner": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-pack-runner"
+      ]
+     },
+     {
+      "id": "16-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "evasion x12"
+      ],
+      "score": 0.9042,
+      "ci": [
+       0.8689,
+       0.9394
+      ],
+      "deck": {
+       "dhole-matriarch": 1,
+       "frost-hare-sprinter": 4,
+       "mountain-hare": 4,
+       "pinecone-sapper": 4,
+       "snowshoe-hare": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "dhole-matriarch"
+      ]
+     },
+     {
+      "id": "16-PRO-3",
+      "focus": "big",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)",
+       "economy (4 resource makers)",
+       "ranged x6"
+      ],
+      "score": 0.8792,
+      "ci": [
+       0.8435,
+       0.9148
+      ],
+      "deck": {
+       "cone-cutter-squirrel": 4,
+       "eagle-owl-quartermaster": 3,
+       "fawn-scout": 3,
+       "grave-grin-hyena": 4,
+       "squires-mount": 3,
+       "wolf-pack-runner": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "16-PRO-4",
+      "focus": "open",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)",
+       "evasion x8"
+      ],
+      "score": 0.85,
+      "ci": [
+       0.8085,
+       0.8915
+      ],
+      "deck": {
+       "fawn-scout": 3,
+       "grave-grin-hyena": 4,
+       "mountain-hare": 4,
+       "snowshoe-hare": 4,
+       "stoat-cutthroat": 2,
+       "wolf-pack-runner": 3
+      },
+      "leaders": [
+       "wolf-pack-runner"
+      ]
+     }
+    ]
    }
   },
   "m6": {
@@ -3371,6 +5922,112 @@
     "high": [
      "glacial-ape-king"
     ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map17-m6-2026-10-30.json",
+    "pro": [
+     {
+      "id": "17-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)",
+       "cold x6"
+      ],
+      "score": 0.8371,
+      "ci": [
+       0.7941,
+       0.8802
+      ],
+      "deck": {
+       "cone-cutter-squirrel": 4,
+       "cunning-vixen": 3,
+       "talus-pika": 4,
+       "walrus-icebreaker": 2,
+       "wolf-spider-mother": 3,
+       "woodland-caribou": 4
+      },
+      "leaders": [
+       "walrus-icebreaker"
+      ]
+     },
+     {
+      "id": "17-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "evasion x10",
+       "cold x7"
+      ],
+      "score": 0.822,
+      "ci": [
+       0.7781,
+       0.8658
+      ],
+      "deck": {
+       "frost-hare-sprinter": 3,
+       "mountain-hare": 4,
+       "snow-ermine": 3,
+       "talus-pika": 4,
+       "wolf-spider-mother": 3,
+       "woodland-caribou": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "17-PRO-3",
+      "focus": "family:evasion",
+      "labels": [
+       "swarm (16 copies at 0 Lumber)",
+       "economy (4 resource makers)",
+       "evasion x8",
+       "cold x6"
+      ],
+      "score": 0.8182,
+      "ci": [
+       0.7728,
+       0.8636
+      ],
+      "deck": {
+       "grave-grin-hyena": 4,
+       "ibex-rockcaller": 2,
+       "mountain-hare": 4,
+       "snow-ermine": 4,
+       "talus-pika": 4,
+       "walrus-icebreaker": 2
+      },
+      "leaders": [
+       "walrus-icebreaker"
+      ]
+     },
+     {
+      "id": "17-PRO-4",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)",
+       "evasion x7"
+      ],
+      "score": 0.8182,
+      "ci": [
+       0.7738,
+       0.8626
+      ],
+      "deck": {
+       "cone-cutter-squirrel": 4,
+       "cunning-vixen": 3,
+       "eagle-owl-quartermaster": 3,
+       "ravenous-wolverine": 3,
+       "snow-ermine": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
+    ]
    }
   },
   "mi": {
@@ -3484,6 +6141,109 @@
     ],
     "high": [
      "glacial-ape-king"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map17-mi-2026-10-30.json",
+    "pro": [
+     {
+      "id": "17-A-PRO-1",
+      "focus": "family:evasion",
+      "labels": [
+       "evasion x8",
+       "swarm x6"
+      ],
+      "score": 0.7321,
+      "ci": [
+       0.6707,
+       0.7936
+      ],
+      "deck": {
+       "frost-hare-sprinter": 4,
+       "frostmoon-howler": 3,
+       "ravenous-wolverine": 3,
+       "snow-bunting-archer": 3,
+       "snow-ermine": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "frostmoon-howler"
+      ]
+     },
+     {
+      "id": "17-A-PRO-2",
+      "focus": "family:cold",
+      "labels": [
+       "economy (4 resource makers)",
+       "cold x10",
+       "evasion x6"
+      ],
+      "score": 0.7143,
+      "ci": [
+       0.6521,
+       0.7765
+      ],
+      "deck": {
+       "frost-hare-sprinter": 3,
+       "mountain-hare": 3,
+       "musk-ox-calf": 4,
+       "snow-bunting-archer": 3,
+       "talus-pika": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "17-A-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.6964,
+      "ci": [
+       0.6375,
+       0.7554
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "grave-grin-hyena": 3,
+       "snow-ermine": 3,
+       "spitting-spider": 4,
+       "talus-pika": 4,
+       "walrus-icebreaker": 2
+      },
+      "leaders": [
+       "walrus-icebreaker"
+      ]
+     },
+     {
+      "id": "17-A-PRO-4",
+      "focus": "open",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)",
+       "evasion x8"
+      ],
+      "score": 0.6726,
+      "ci": [
+       0.6098,
+       0.7354
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "frost-hare-sprinter": 4,
+       "frostmoon-howler": 3,
+       "snow-ermine": 4,
+       "stoat-cutthroat": 3,
+       "walrus-icebreaker": 2
+      },
+      "leaders": [
+       "walrus-icebreaker"
+      ]
+     }
     ]
    }
   },
@@ -3604,6 +6364,87 @@
      "komodo-warlord",
      "sand-widow"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.7542,
+     "why": "under 83.8%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map18-md-2026-10-30.json",
+    "pro": [
+     {
+      "id": "18-PRO-1",
+      "focus": "open",
+      "labels": [
+       "midrange (average 1.0 Lumber)"
+      ],
+      "score": 0.9875,
+      "ci": [
+       0.9726,
+       1.0024
+      ],
+      "deck": {
+       "antlion-pit": 4,
+       "eagle-owl-quartermaster": 3,
+       "ibex-rockcaller": 2,
+       "roadrunner-courier": 4,
+       "thorny-devil": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "18-PRO-2",
+      "focus": "family:poison",
+      "labels": [
+       "poison x9"
+      ],
+      "score": 0.8875,
+      "ci": [
+       0.8524,
+       0.9226
+      ],
+      "deck": {
+       "antlion-pit": 4,
+       "banded-sea-krait": 2,
+       "dromedary": 4,
+       "glimmer-spider": 4,
+       "obsidian-scorpion": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "18-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)"
+      ],
+      "score": 0.85,
+      "ci": [
+       0.8091,
+       0.8909
+      ],
+      "deck": {
+       "antlion-pit": 4,
+       "dune-packrat": 4,
+       "dust-hyena": 4,
+       "roadrunner-courier": 2,
+       "squires-mount": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     }
+    ]
    }
   },
   "mpd": {
@@ -3723,6 +6564,90 @@
     "high": [
      "sand-widow"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "family:poison",
+     "score": 0.6233,
+     "why": "under 70.8%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map18-mpd-2026-10-30.json",
+    "pro": [
+     {
+      "id": "18-A-PRO-1",
+      "focus": "economy",
+      "labels": [
+       "big (13 copies at 1+ Lumber, average 0.7)",
+       "economy (7 resource makers)"
+      ],
+      "score": 0.8576,
+      "ci": [
+       0.8195,
+       0.8958
+      ],
+      "deck": {
+       "antlion-pit": 3,
+       "dune-packrat": 4,
+       "dust-hyena": 3,
+       "grave-grin-hyena": 4,
+       "roadrunner-courier": 4,
+       "squires-mount": 2
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "18-A-PRO-2",
+      "focus": "big",
+      "labels": [
+       "big (16 copies at 1+ Lumber, average 0.8)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.7882,
+      "ci": [
+       0.7432,
+       0.8332
+      ],
+      "deck": {
+       "antlion-pit": 3,
+       "dust-hyena": 4,
+       "ibex-rockcaller": 2,
+       "roadrunner-courier": 4,
+       "sandfish": 4,
+       "squires-mount": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "18-A-PRO-3",
+      "focus": "open",
+      "labels": [
+       "big (12 copies at 1+ Lumber, average 0.6)",
+       "economy (8 resource makers)"
+      ],
+      "score": 0.7882,
+      "ci": [
+       0.743,
+       0.8334
+      ],
+      "deck": {
+       "antlion-pit": 4,
+       "dune-packrat": 4,
+       "dust-hyena": 4,
+       "glasswing-moth": 4,
+       "ibex-rockcaller": 1,
+       "stoat-cutthroat": 3
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     }
+    ]
    }
   },
   "m3": {
@@ -3841,6 +6766,88 @@
      "glacial-ape-king",
      "magma-titan",
      "yeti"
+    ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.7454,
+     "why": "under 74.8%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map19-m3-2026-10-30.json",
+    "pro": [
+     {
+      "id": "19-PRO-1",
+      "focus": "open",
+      "labels": [
+       "midrange (average 0.6 Lumber)"
+      ],
+      "score": 0.8981,
+      "ci": [
+       0.8598,
+       0.9365
+      ],
+      "deck": {
+       "eagle-owl-quartermaster": 3,
+       "echidna-quillshot": 2,
+       "fire-salamander": 4,
+       "guano-beetle": 4,
+       "porcupine-roller": 4,
+       "stag-beetle": 3
+      },
+      "leaders": [
+       "echidna-quillshot"
+      ]
+     },
+     {
+      "id": "19-PRO-2",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)"
+      ],
+      "score": 0.8796,
+      "ci": [
+       0.8399,
+       0.9194
+      ],
+      "deck": {
+       "alpine-salamander": 4,
+       "eagle-owl-quartermaster": 3,
+       "obsidian-scorpion": 2,
+       "pumice-beetle": 4,
+       "stoat-cutthroat": 3,
+       "talus-pika": 4
+      },
+      "leaders": [
+       "stoat-cutthroat"
+      ]
+     },
+     {
+      "id": "19-PRO-3",
+      "focus": "swarm",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)",
+       "spite x7"
+      ],
+      "score": 0.8148,
+      "ci": [
+       0.7695,
+       0.8601
+      ],
+      "deck": {
+       "apollo-butterfly": 3,
+       "cinder-stoker": 4,
+       "fire-salamander": 2,
+       "grave-grin-hyena": 4,
+       "porcupine-roller": 4,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     }
     ]
    }
   },
@@ -3962,6 +6969,106 @@
     "high": [
      "anvilwhisker-otter",
      "phoenix-fledgling"
+    ]
+   },
+   "leftOut": [],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map19-m9-2026-10-30.json",
+    "pro": [
+     {
+      "id": "19-A-PRO-1",
+      "focus": "swarm",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)"
+      ],
+      "score": 0.9455,
+      "ci": [
+       0.9225,
+       0.9685
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "badger-berserker": 2,
+       "cinder-gecko": 4,
+       "grave-grin-hyena": 4,
+       "tide-spirit": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "badger-berserker"
+      ]
+     },
+     {
+      "id": "19-A-PRO-2",
+      "focus": "big",
+      "labels": [
+       "big (8 copies at 1+ Lumber, average 0.4)"
+      ],
+      "score": 0.9263,
+      "ci": [
+       0.9009,
+       0.9517
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "cinder-gecko": 4,
+       "ember-jackal": 3,
+       "grave-grin-hyena": 4,
+       "quill-volley": 3,
+       "squires-mount": 2
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "19-A-PRO-3",
+      "focus": "family:fire",
+      "labels": [
+       "big (12 copies at 1+ Lumber, average 0.7)",
+       "fire x11",
+       "ranged x7"
+      ],
+      "score": 0.9263,
+      "ci": [
+       0.9002,
+       0.9524
+      ],
+      "deck": {
+       "anvilwhisker-otter": 1,
+       "cinder-gecko": 4,
+       "fire-salamander": 4,
+       "firefly-swarm": 4,
+       "grave-grin-hyena": 4,
+       "magma-salamander": 3
+      },
+      "leaders": [
+       "magma-salamander"
+      ]
+     },
+     {
+      "id": "19-A-PRO-4",
+      "focus": "open",
+      "labels": [
+       "big (9 copies at 1+ Lumber, average 0.5)"
+      ],
+      "score": 0.9038,
+      "ci": [
+       0.8762,
+       0.9315
+      ],
+      "deck": {
+       "ashbone-ghoul": 3,
+       "cinder-gecko": 4,
+       "fire-salamander": 3,
+       "grave-grin-hyena": 4,
+       "squires-mount": 3,
+       "stoat-cutthroat": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     }
     ]
    }
   },
@@ -4094,6 +7201,88 @@
      "deep-cave-troll",
      "gorge-wyrm"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.6554,
+     "why": "under 74.4%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map20-m11-2026-10-30.json",
+    "pro": [
+     {
+      "id": "20-PRO-1",
+      "focus": "open",
+      "labels": [
+       "midrange (average 0.9 Lumber)"
+      ],
+      "score": 0.8942,
+      "ci": [
+       0.8668,
+       0.9217
+      ],
+      "deck": {
+       "ancient-sloth-titan": 3,
+       "ashbone-ghoul": 4,
+       "grave-grin-hyena": 4,
+       "magma-salamander": 3,
+       "squires-mount": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "20-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)"
+      ],
+      "score": 0.8141,
+      "ci": [
+       0.7779,
+       0.8503
+      ],
+      "deck": {
+       "ashbone-ghoul": 3,
+       "cinder-stoker": 4,
+       "eagle-owl-quartermaster": 3,
+       "grave-grin-hyena": 4,
+       "pack-mule": 3,
+       "wolf-spider-mother": 3
+      },
+      "leaders": [
+       "wolf-spider-mother"
+      ]
+     },
+     {
+      "id": "20-PRO-3",
+      "focus": "economy",
+      "labels": [
+       "economy (8 resource makers)",
+       "flying x7"
+      ],
+      "score": 0.7564,
+      "ci": [
+       0.7134,
+       0.7994
+      ],
+      "deck": {
+       "gorge-wyrm": 2,
+       "lantern-spark-fly": 3,
+       "pack-mule": 4,
+       "pumice-beetle": 4,
+       "squires-mount": 3,
+       "stonedrop-vulture": 4
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     }
+    ]
    }
   },
   "me": {
@@ -4219,6 +7408,88 @@
      "ancient-sloth-titan",
      "cave-warlord",
      "deep-cave-troll"
+    ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.55,
+     "why": "under 67.9%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map20-me-2026-10-30.json",
+    "pro": [
+     {
+      "id": "20-A-PRO-1",
+      "focus": "open",
+      "labels": [
+       "midrange (average 1.1 Lumber)"
+      ],
+      "score": 0.8292,
+      "ci": [
+       0.7831,
+       0.8752
+      ],
+      "deck": {
+       "ancient-sloth-titan": 4,
+       "ashbone-ghoul": 3,
+       "eagle-owl-quartermaster": 3,
+       "grave-grin-hyena": 4,
+       "obsidian-scorpion": 3,
+       "squires-mount": 3
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     },
+     {
+      "id": "20-A-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (15 copies at 0 Lumber)"
+      ],
+      "score": 0.8167,
+      "ci": [
+       0.7737,
+       0.8596
+      ],
+      "deck": {
+       "ancient-sloth-titan": 3,
+       "ashbone-ghoul": 4,
+       "baby-bat": 3,
+       "cinder-stoker": 4,
+       "grave-grin-hyena": 4,
+       "ibex-rockcaller": 2
+      },
+      "leaders": [
+       "ibex-rockcaller"
+      ]
+     },
+     {
+      "id": "20-A-PRO-3",
+      "focus": "family:flying",
+      "labels": [
+       "flying x10",
+       "night x7"
+      ],
+      "score": 0.8125,
+      "ci": [
+       0.7651,
+       0.8599
+      ],
+      "deck": {
+       "ash-cloud-condor": 3,
+       "ashbone-ghoul": 4,
+       "baby-bat": 3,
+       "obsidian-scorpion": 3,
+       "squires-mount": 3,
+       "vampire-bat": 4
+      },
+      "leaders": [
+       "squires-mount"
+      ]
+     }
     ]
    }
   },
@@ -4359,6 +7630,91 @@
      "stalactite-golem",
      "vampire-roost"
     ]
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.631,
+     "why": "under 76.1%"
+    }
+   ],
+   "result": {
+    "file": "docs/balance/deck1/bench-deck-map20-mx-2026-10-30.json",
+    "pro": [
+     {
+      "id": "20-B-PRO-1",
+      "focus": "open",
+      "labels": [
+       "economy (4 resource makers)",
+       "ranged x6"
+      ],
+      "score": 0.9107,
+      "ci": [
+       0.8716,
+       0.9498
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "cinder-skeleton": 4,
+       "eagle-owl-quartermaster": 3,
+       "magma-salamander": 3,
+       "pack-mule": 4,
+       "stoat-cutthroat": 2
+      },
+      "leaders": [
+       "magma-salamander"
+      ]
+     },
+     {
+      "id": "20-B-PRO-2",
+      "focus": "swarm",
+      "labels": [
+       "swarm (14 copies at 0 Lumber)",
+       "economy (4 resource makers)"
+      ],
+      "score": 0.8512,
+      "ci": [
+       0.804,
+       0.8983
+      ],
+      "deck": {
+       "ashbone-ghoul": 4,
+       "cave-olm": 3,
+       "ember-jackal": 3,
+       "magma-salamander": 3,
+       "pack-mule": 4,
+       "tide-spirit": 3
+      },
+      "leaders": [
+       "magma-salamander"
+      ]
+     },
+     {
+      "id": "20-B-PRO-3",
+      "focus": "family:fire",
+      "labels": [
+       "economy (4 resource makers)",
+       "fire x11",
+       "ranged x7"
+      ],
+      "score": 0.8155,
+      "ci": [
+       0.765,
+       0.8659
+      ],
+      "deck": {
+       "ember-jackal": 3,
+       "fire-salamander": 4,
+       "magma-salamander": 3,
+       "magma-wraith": 4,
+       "pack-mule": 4,
+       "tide-spirit": 2
+      },
+      "leaders": [
+       "magma-salamander"
+      ]
+     }
+    ]
    }
   }
  },
@@ -4372,5 +7728,1051 @@
   "level": 1,
   "budget": 12000,
   "finalGames": 24
- }
+ },
+ "invalidOld": [
+  {
+   "map": "m1",
+   "id": "0-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "fox-kit: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m1",
+   "id": "0-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "fox-kit: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m1",
+   "id": "0-BPRO-3",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": [
+    "fox-kit: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m1",
+   "id": "0-BPRO-4",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "fox-kit: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mo",
+   "id": "0-B-BPRO-1",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mo",
+   "id": "0-B-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "elder-willow: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mo",
+   "id": "0-B-BPRO-3",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": [
+    "elder-willow: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mf",
+   "id": "1-BPRO-1",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mf",
+   "id": "1-BPRO-2",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mf",
+   "id": "1-BPRO-3",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mf",
+   "id": "1-BPRO-4",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mq",
+   "id": "1-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mb",
+   "id": "2-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mb",
+   "id": "2-BPRO-2",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mb",
+   "id": "2-BPRO-3",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mb",
+   "id": "2-BPRO-4",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mg",
+   "id": "2-B-BPRO-1",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "beaver-builder: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "sulfur-vent-crab: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mg",
+   "id": "2-B-BPRO-2",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mg",
+   "id": "2-B-BPRO-3",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": [
+    "sulfur-vent-crab: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mg",
+   "id": "2-B-BPRO-4",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "sulfur-vent-crab: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mp",
+   "id": "2-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": [
+    "mangrove-mudskipper: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "minnow-skitter: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mp",
+   "id": "2-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "mangrove-mudskipper: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "minnow-skitter: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "mudpuppy: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mp",
+   "id": "2-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "beaver-builder: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "camouflage-frog: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "minnow-skitter: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "mudpuppy: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mp",
+   "id": "2-A-BPRO-4",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "mangrove-mudskipper: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "minnow-skitter: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "mudpuppy: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mc",
+   "id": "3-BPRO-1",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "mountain-goat-climber: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mc",
+   "id": "3-BPRO-2",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m2",
+   "id": "4-BPRO-1",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m2",
+   "id": "4-BPRO-2",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m2",
+   "id": "4-BPRO-3",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m2",
+   "id": "4-BPRO-4",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mw",
+   "id": "5-BPRO-1",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mw",
+   "id": "5-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mw",
+   "id": "5-BPRO-3",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mw",
+   "id": "5-BPRO-4",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "ms",
+   "id": "5-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 15,
+   "over64": true,
+   "offList": [
+    "puddle-hopper: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "ms",
+   "id": "5-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "bog-behemoth: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "echo-keeper: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "ms",
+   "id": "5-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "echo-keeper: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "ms",
+   "id": "5-A-BPRO-4",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m8",
+   "id": "6-BPRO-1",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m8",
+   "id": "6-BPRO-2",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": [
+    "mire-witch-heron: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m8",
+   "id": "6-BPRO-3",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m8",
+   "id": "6-BPRO-4",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mu",
+   "id": "7-BPRO-1",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mu",
+   "id": "7-BPRO-2",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mu",
+   "id": "7-BPRO-3",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mu",
+   "id": "7-BPRO-4",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mz",
+   "id": "7-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "swarm-matriarch: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mz",
+   "id": "7-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": [
+    "swarm-matriarch: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mz",
+   "id": "7-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": [
+    "beetle-battering-ram: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mz",
+   "id": "7-A-BPRO-4",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m4",
+   "id": "8-BPRO-1",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m4",
+   "id": "8-BPRO-2",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mn",
+   "id": "8-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": [
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "glowworm-cluster: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "swarm-matriarch: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mn",
+   "id": "8-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "cave-bat-swarm: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "monarch-wingblade: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "swarm-matriarch: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mn",
+   "id": "8-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": [
+    "barrow-leech-bat: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "beetle-grunt: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "cave-bat-swarm: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "glowworm-cluster: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "swarm-matriarch: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mk",
+   "id": "9-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mk",
+   "id": "9-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mk",
+   "id": "9-BPRO-3",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m7",
+   "id": "10-BPRO-1",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m7",
+   "id": "10-BPRO-2",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m7",
+   "id": "10-BPRO-3",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "bloodscent-shark: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m7",
+   "id": "10-BPRO-4",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": [
+    "bloodscent-shark: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mj",
+   "id": "10-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": [
+    "abyss-lantern-squid: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "sulfur-vent-crab: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "vampire-squid: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "voltaic-eel: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mj",
+   "id": "10-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 17,
+   "over64": true,
+   "offList": [
+    "abyss-lantern-squid: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "glass-octopus: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "sulfur-vent-crab: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "voltaic-eel: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m10",
+   "id": "11-BPRO-1",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "mountain-goat-climber: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m10",
+   "id": "11-BPRO-2",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m10",
+   "id": "11-BPRO-3",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m10",
+   "id": "11-BPRO-4",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": [
+    "mountain-goat-climber: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mv",
+   "id": "11-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "alpine-avalanche: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "mountain-goat-climber: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "rockslide-ram: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mv",
+   "id": "11-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "rockslide-ram: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mv",
+   "id": "11-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "alpine-avalanche: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "mountain-goat-climber: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mv",
+   "id": "11-A-BPRO-4",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": [
+    "rockslide-ram: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mh",
+   "id": "12-BPRO-1",
+   "kind": "bpro",
+   "cards": 5,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mh",
+   "id": "12-BPRO-2",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mh",
+   "id": "12-BPRO-3",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mh",
+   "id": "12-BPRO-4",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mr",
+   "id": "13-BPRO-1",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mr",
+   "id": "13-BPRO-2",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mr",
+   "id": "13-BPRO-3",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m5",
+   "id": "14-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m5",
+   "id": "14-BPRO-2",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m5",
+   "id": "14-BPRO-3",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m5",
+   "id": "14-BPRO-4",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "my",
+   "id": "14-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "old-growth-tortoise: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "siege-rhino: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "ml",
+   "id": "15-BPRO-1",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "ml",
+   "id": "15-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "ml",
+   "id": "15-BPRO-3",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "ml",
+   "id": "15-BPRO-4",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mt",
+   "id": "16-BPRO-1",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mt",
+   "id": "16-BPRO-2",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "trickster-fox: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mt",
+   "id": "16-BPRO-3",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": [
+    "trickster-fox: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m6",
+   "id": "17-BPRO-1",
+   "kind": "bpro",
+   "cards": 7,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m6",
+   "id": "17-BPRO-2",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m6",
+   "id": "17-BPRO-3",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mi",
+   "id": "17-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 14,
+   "over64": true,
+   "offList": [
+    "arctic-fox-raider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mi",
+   "id": "17-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": [
+    "arctic-fox-raider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mi",
+   "id": "17-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mi",
+   "id": "17-A-BPRO-4",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "md",
+   "id": "18-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "mpd",
+   "id": "18-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": true,
+   "offList": [
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mpd",
+   "id": "18-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mpd",
+   "id": "18-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "trapdoor-spider: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m3",
+   "id": "19-BPRO-1",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m3",
+   "id": "19-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m3",
+   "id": "19-BPRO-3",
+   "kind": "bpro",
+   "cards": 10,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m3",
+   "id": "19-BPRO-4",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m9",
+   "id": "19-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 13,
+   "over64": true,
+   "offList": []
+  },
+  {
+   "map": "m9",
+   "id": "19-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 12,
+   "over64": true,
+   "offList": [
+    "basalt-boar: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "m11",
+   "id": "20-BPRO-1",
+   "kind": "bpro",
+   "cards": 6,
+   "over64": false,
+   "offList": [
+    "bear-cub: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "me",
+   "id": "20-A-BPRO-1",
+   "kind": "bpro",
+   "cards": 8,
+   "over64": true,
+   "offList": [
+    "bear-cub: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "blessed-avatar: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "me",
+   "id": "20-A-BPRO-2",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "basalt-boar: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "me",
+   "id": "20-A-BPRO-3",
+   "kind": "bpro",
+   "cards": 11,
+   "over64": true,
+   "offList": [
+    "basalt-boar: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "blessed-avatar: only in a road fight's deck (not on the map's list since THEME3, not held by then)",
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  },
+  {
+   "map": "mx",
+   "id": "20-B-BPRO-1",
+   "kind": "bpro",
+   "cards": 9,
+   "over64": true,
+   "offList": [
+    "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
+   ]
+  }
+ ]
 }

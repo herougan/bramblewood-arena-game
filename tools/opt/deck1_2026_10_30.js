@@ -27,6 +27,7 @@ const O = require('./deckopt.js'), P = require('./pro_skirmishes.js'), T3 = requ
 const DATE = '2026-10-30', PLAN = path.join(ROOT, 'docs', 'balance', 'deck1-' + DATE + '.json'), OUTDIR = path.join(ROOT, 'docs', 'balance', 'deck1');
 const PRO_FILE = path.join(ROOT, 'canonical', 'pro-skirmishes.json'), CONTRIB = path.join(ROOT, 'docs', 'balance', 'bench-contrib-global-2026-10-30-final.json');
 const RULE = { maxUnique: 6, maxCopies: 4, size: 20 }, ANCHOR_MIN = 10, HELD_THEME = 6, HELD_STRONG = 6, MAX_FOCUS = 3, BUDGET = 12000, FINAL = 24, LEVEL = 1;
+const HARD_GAP = 0.15;
 const PRIORITY = ['stone/metal', 'economy', 'big', 'swarm']; // then the first skill family
 
 function mapsUpTo20(gm, want) {
@@ -46,15 +47,15 @@ function deck1Pools(gm, map) {
   const list = map.sub ? ownSubList(gm, map) : (pe.cards || []), special = pe.special || [];
   const anchorAll = uniq(list.concat(special)).filter(id => O.deckable(gm, id));
   const anchor = anchorAll.filter(id => !mt.rule(id)).sort();
-  // held: map-true's extra cards (owned by then, open side maps) and, for a side map, its parent's list; never a card that is the map's only
-  // through a road fight's deck
-  const parentList = map.sub ? (pe.cards || []) : [];
-  const subsOpen = [].concat(...(mt.subsOpen || []).map(s => { const l = (pe.submaps || {})[s]; return Array.isArray(l) ? l : (l && l.cards) || []; }));
-  const held = uniq(mt.owned.concat(subsOpen, parentList))
-    .filter(id => O.deckable(gm, id) && !mt.rule(id) && !anchor.includes(id)).sort();
-  const fightOnly = uniq([].concat(...O.fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => O.deckable(gm, id) && !anchor.includes(id) && !held.includes(id)).sort();
-  const rule = id => { const w = mt.rule(id); if (w) return w; if (anchor.includes(id) || held.includes(id)) return null;
-    return fightOnly.includes(id) ? 'only in a road fight\'s deck (not on the map\'s list since THEME3, not held by then)' : 'not on the map\'s list and not held by then'; };
+  // held: the map-true pool of the same map without its road fights' decks (owned by then, earlier main maps' lists, open side maps and,
+  // for a side map, its parent's list), at the map's own rarity cap; a card that is the map's only through a road fight's deck is not in it
+  const mt0 = O.mapTruePools(gm, Object.assign({}, map, { nodes: [] }), { rarityCap: mt.cap }, 'map-true');
+  const held = mt0.p1.filter(id => !anchor.includes(id)).sort();
+  const fightOnly = uniq([].concat(...O.fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => O.deckable(gm, id) && !mt.rule(id) && mt0.rule(id)).sort();
+  // the legality rule is the existing PRO map rule (mapRuleProblems: the map's cards, or obtainable by then, within the cap, no faction
+  // card) with the road fights' decks no longer counting as the map's cards
+  const rule = id => { const w = mt.rule(id); if (w) return w; if (anchor.includes(id) || !mt0.rule(id)) return null;
+    return fightOnly.includes(id) ? 'only in a road fight\'s deck (not on the map\'s list since THEME3, not held by then)' : 'not on the map\'s list and not held by then (' + mt0.rule(id) + ')'; };
   return { mt, list, anchor, anchorDropped: anchorAll.filter(id => mt.rule(id)).map(id => id + ': ' + mt.rule(id)), held, fightOnly, rule, cap: mt.cap, mapNo: mt.mapNo };
 }
 function deck1Problems(gm, map, deck, pools) {
@@ -130,10 +131,15 @@ function apply(gm, opt) {
     const res = JSON.parse(fs.readFileSync(f, 'utf8')), x = j.maps[m.id], pools = deck1Pools(gm, m), field = P.averageField(gm, m);
     const old = file.maps[m.id] || null;
     // the previous decks, checked against the DECK1 rule (the map's current list + held, 6/4) and kept under `history`
-    const prevPro = old ? (old.pro || []) : [], prevB = old ? (old.bpro || []) : [];
+    const isD1 = e => e.source && e.source.mode === 'deck1'; // a re-apply replaces DECK1's own decks without filing them in history
+    const prevPro = old ? (old.pro || []).filter(e => !isD1(e)) : [], prevB = old ? (old.bpro || []) : [];
     prevPro.concat(prevB).forEach(e => { const d = P.renameDeck(e.deck, ren), probs = deck1Problems(gm, m, d, pools), listProbs = probs.filter(s => !/different cards|\(at most \d+\)$/.test(s));
       invalid.push({ map: m.id, id: e.id, kind: /BPRO/.test(e.id) ? 'bpro' : 'pro', cards: Object.keys(d).length, over64: probs.length > listProbs.length, offList: listProbs }); });
-    const decks = res.decks.slice(0, 4), prefix = P.proPrefix(gm, m);
+    // "hard" decks only: a focus whose best deck scores under max(50%, the map's best - 15 points) is left out (kept in the run file and
+    // reported: that focus does not make a hard deck from this map's cards); at least the best 2, at most 4
+    const best = res.decks[0].score, floor = Math.max(0.5, best - HARD_GAP);
+    const decks = res.decks.filter((d, i) => i < 2 || d.score >= floor).slice(0, 4), prefix = P.proPrefix(gm, m);
+    if (x) x.leftOut = res.decks.filter(d => !decks.includes(d)).map(d => ({ focus: d.focus, score: d.score, why: `under ${Math.round(floor * 1000) / 10}%` }));
     const pro = decks.map((d, i) => { const id = `${prefix}-PRO-${i + 1}`, deck = Object.fromEntries(Object.keys(d.deck).sort().map(k => [k, d.deck[k]]));
       return { id, name: id, focus: d.focus, labels: d.labels, level: LEVEL, leaders: P.leadersFor(gm, m, deck), deck,
         source: { file: path.relative(ROOT, f), mode: 'deck1', tool: res.tool, reproduce: res.reproduce, score: d.score, ci: d.ci, avgLumber: d.avgLumber, generated: res.generated }, h2h: null,

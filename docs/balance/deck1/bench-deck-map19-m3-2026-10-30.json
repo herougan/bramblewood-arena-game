@@ -1,0 +1,742 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T11:33:05.427Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-salamander",
+  "apollo-butterfly",
+  "cinder-stoker",
+  "eagle-owl-quartermaster",
+  "echidna-quillshot",
+  "fire-salamander",
+  "glacial-ape-king",
+  "glacier-wolf-pack",
+  "grave-grin-hyena",
+  "guano-beetle",
+  "hercules-beetle",
+  "ibex-rockcaller",
+  "lantern-spark-fly",
+  "magma-titan",
+  "mosquito-cloud",
+  "obsidian-scorpion",
+  "phoenix-fledgling",
+  "porcupine-roller",
+  "pumice-beetle",
+  "quill-volley",
+  "squires-mount",
+  "stag-beetle",
+  "stoat-cutthroat",
+  "talus-pika",
+  "wolf-spider-mother",
+  "yeti"
+ ],
+ "poolNames": [
+  "Alpine Salamander",
+  "Apollo Butterfly",
+  "Cinder Stoker",
+  "Eagle-Owl Quartermaster",
+  "Echidna Quillshot",
+  "Fire Salamander",
+  "Glacial Ape-King",
+  "Glacier Wolf Pack",
+  "Grave-Grin Hyena",
+  "Guano Beetle",
+  "Hercules Beetle",
+  "Ibex Rockcaller",
+  "Lantern Spark Fly",
+  "Magma Titan",
+  "Mosquito Cloud",
+  "Obsidian Scorpion",
+  "Phoenix Fledgling",
+  "Porcupine Roller",
+  "Pumice Beetle",
+  "Quill Volley",
+  "Squire's Mount",
+  "Stag Beetle",
+  "Stoat Cutthroat",
+  "Talus Pika",
+  "Wolf Spider Mother",
+  "Yeti"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "cinder-stoker",
+   "echidna-quillshot",
+   "fire-salamander",
+   "glacial-ape-king",
+   "glacier-wolf-pack",
+   "hercules-beetle",
+   "magma-titan",
+   "obsidian-scorpion",
+   "phoenix-fledgling",
+   "porcupine-roller",
+   "pumice-beetle",
+   "quill-volley",
+   "talus-pika",
+   "yeti"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-1",
+   "label": "vs 19-1 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-2",
+   "label": "vs 19-2 skirmish's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-3",
+   "label": "vs 19-3 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-4",
+   "label": "vs 19-4 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-5",
+   "label": "vs 19-5 elite's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|fight:19-6",
+   "label": "vs 19-6 miniboss's deck",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 19-1's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 19-2's field",
+   "weight": 0.1111
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+   "weight": 0.1111
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "pumice-beetle",
+    "talus-pika"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "glacial-ape-king",
+    "magma-titan",
+    "yeti"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "apollo-butterfly",
+    "cinder-stoker",
+    "grave-grin-hyena",
+    "guano-beetle",
+    "lantern-spark-fly",
+    "mosquito-cloud",
+    "porcupine-roller",
+    "talus-pika"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 11,
+   "moves": 7,
+   "games": 3258,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 10,
+   "moves": 7,
+   "games": 3060,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "swarm",
+   "steps": 10,
+   "moves": 5,
+   "games": 3042,
+   "apartFromEarlier": 17
+  },
+  {
+   "focus": "open",
+   "steps": 11,
+   "moves": 5,
+   "games": 3168,
+   "apartFromEarlier": 14
+  }
+ ],
+ "apart": 6,
+ "seconds": 198,
+ "games": 13104,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "midrange (average 0.6 Lumber)"
+   ],
+   "deck": {
+    "eagle-owl-quartermaster": 3,
+    "echidna-quillshot": 2,
+    "fire-salamander": 4,
+    "guano-beetle": 4,
+    "porcupine-roller": 4,
+    "stag-beetle": 3
+   },
+   "cards": [
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "guano-beetle",
+     "name": "Guano Beetle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stag-beetle",
+     "name": "Stag Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8981,
+   "ci": [
+    0.8598,
+    0.9365
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "alpine-salamander": 4,
+    "eagle-owl-quartermaster": 3,
+    "obsidian-scorpion": 2,
+    "pumice-beetle": 4,
+    "stoat-cutthroat": 3,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8796,
+   "ci": [
+    0.8399,
+    0.9194
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 17
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "spite x7"
+   ],
+   "deck": {
+    "apollo-butterfly": 3,
+    "cinder-stoker": 4,
+    "fire-salamander": 2,
+    "grave-grin-hyena": 4,
+    "porcupine-roller": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "fire-salamander",
+     "name": "Fire Salamander",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8148,
+   "ci": [
+    0.7695,
+    0.8601
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "spite",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.8)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "glacial-ape-king": 4,
+    "ibex-rockcaller": 2,
+    "obsidian-scorpion": 3,
+    "talus-pika": 4,
+    "wolf-spider-mother": 3,
+    "yeti": 4
+   },
+   "cards": [
+    {
+     "id": "glacial-ape-king",
+     "name": "Glacial Ape-King",
+     "copies": 4,
+     "cost": 4,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "yeti",
+     "name": "Yeti",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "obsidian-scorpion",
+     "name": "Obsidian Scorpion",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7454,
+   "ci": [
+    0.691,
+    0.7997
+   ],
+   "avgLumber": 1.8,
+   "avgWait": 2.7,
+   "curve": {
+    "0": 4,
+    "1": 8,
+    "3": 4,
+    "4": 4
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 20
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m3 --pool alpine-salamander,apollo-butterfly,cinder-stoker,eagle-owl-quartermaster,echidna-quillshot,fire-salamander,glacial-ape-king,glacier-wolf-pack,grave-grin-hyena,guano-beetle,hercules-beetle,ibex-rockcaller,lantern-spark-fly,magma-titan,mosquito-cloud,obsidian-scorpion,phoenix-fledgling,porcupine-roller,pumice-beetle,quill-volley,squires-mount,stag-beetle,stoat-cutthroat,talus-pika,wolf-spider-mother,yeti --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor cinder-stoker,echidna-quillshot,fire-salamander,glacial-ape-king,glacier-wolf-pack,hercules-beetle,magma-titan,obsidian-scorpion,phoenix-fledgling,porcupine-roller,pumice-beetle,quill-volley,talus-pika,yeti --anchor-min 10 --level 1 --mode map-true"
+}
