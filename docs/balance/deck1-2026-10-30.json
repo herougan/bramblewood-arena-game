@@ -1,0 +1,4376 @@
+{
+ "about": "Package DECK1 (2026-10-30, owner step 4): per map the pool (anchor = its list + SPECIAL; the held shortlist), its facts, the focuses searched, the decks found and their PRO ids. tools/opt/deck1_2026_10_30.js; report docs/balance/deck1-2026-10-30.md.",
+ "maps": {
+  "m1": {
+   "id": "m1",
+   "num": 0,
+   "side": null,
+   "name": "Bramblewood Outskirts",
+   "opens": 0,
+   "cap": "common",
+   "anchor": [
+    "ant-hill",
+    "ant-scout",
+    "beaver-lumberjack",
+    "bee-forager",
+    "bee-knight",
+    "bee-sentry",
+    "chipmunk-skirmisher",
+    "cottontail",
+    "crossed-eyes",
+    "house-cat",
+    "owl-sentinel",
+    "terrier-pup"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "forager-ant",
+    "worker-ant",
+    "acorn-chipmunk",
+    "burrow-rabbit",
+    "harvest-mouse"
+   ],
+   "heldStrong": [
+    "pond-trout",
+    "otter-paddler",
+    "meerkat-wayfarer",
+    "meadow-frog",
+    "crimson-wing-recruit",
+    "greyplume-fledgling"
+   ],
+   "pool": [
+    "acorn-chipmunk",
+    "ant-hill",
+    "ant-scout",
+    "beaver-lumberjack",
+    "bee-forager",
+    "bee-knight",
+    "bee-sentry",
+    "burrow-rabbit",
+    "chipmunk-skirmisher",
+    "cottontail",
+    "crimson-wing-recruit",
+    "crossed-eyes",
+    "forager-ant",
+    "greyplume-fledgling",
+    "harvest-mouse",
+    "house-cat",
+    "meadow-frog",
+    "meerkat-wayfarer",
+    "otter-paddler",
+    "owl-sentinel",
+    "pond-trout",
+    "terrier-pup",
+    "worker-ant"
+   ],
+   "fightOnly": [
+    "beetle-grunt",
+    "chipmunk-forager",
+    "cobalt-talon-fledgling",
+    "duck-paddler",
+    "duckling",
+    "feral-tomcat",
+    "fox-kit",
+    "garden-snail",
+    "honey-bee",
+    "meadow-rabbit",
+    "otter-kit",
+    "pond-duck",
+    "river-carp",
+    "silver-minnow"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:flying",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 12,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.25,
+     "curve": {
+      "0": 10,
+      "1": 1,
+      "2": 1
+     }
+    },
+    "generators": [
+     "beaver-lumberjack"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 6"
+    ],
+    "high": [
+     "ant-hill"
+    ]
+   }
+  },
+  "mo": {
+   "id": "mo",
+   "num": 0,
+   "side": "m1",
+   "name": "The Old Bramble",
+   "opens": 21,
+   "cap": "common",
+   "anchor": [],
+   "anchorMin": 0,
+   "anchorDropped": [
+    "ent: rare is over the map's rarity cap (common)",
+    "echidna-quillshot: veryrare is over the map's rarity cap (common)",
+    "dhole-matriarch: veryrare is over the map's rarity cap (common)",
+    "shimmerwing-stag: veryrare is over the map's rarity cap (common)",
+    "thorn-shrike: rare is over the map's rarity cap (common)",
+    "gatling-hog: rare is over the map's rarity cap (common)",
+    "quillguard: rare is over the map's rarity cap (common)",
+    "lucky-hopper: rare is over the map's rarity cap (common)",
+    "sergeant-bramblefox: rare is over the map's rarity cap (common)",
+    "bramblewood-lynx: rare is over the map's rarity cap (common)",
+    "wolf-spider-mother: rare is over the map's rarity cap (common)",
+    "taiga-lynx: rare is over the map's rarity cap (common)",
+    "hedgehog-herbalist: rare is over the map's rarity cap (common)"
+   ],
+   "heldTheme": [
+    "dhole-runner",
+    "swamp-rabbit",
+    "fox-sharpshot",
+    "mountain-hare",
+    "fungus-gnat-cloud",
+    "woodcock-lookout",
+    "springtail-hopper",
+    "leopard-slug",
+    "red-backed-salamander",
+    "swift-fox",
+    "jay-pilferer",
+    "seed-cache-squirrel"
+   ],
+   "heldStrong": [
+    "ashbone-ghoul",
+    "alpine-marmot",
+    "hoopoe-herald",
+    "talus-pika",
+    "mudpuppy",
+    "dung-beetle",
+    "bee-forager",
+    "porcupine-roller",
+    "hedgehog-scout",
+    "nutria-reedcutter",
+    "gannet-nestweaver",
+    "leafcutter-gardener"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "ashbone-ghoul",
+    "bee-forager",
+    "dhole-runner",
+    "dung-beetle",
+    "fox-sharpshot",
+    "fungus-gnat-cloud",
+    "gannet-nestweaver",
+    "hedgehog-scout",
+    "hoopoe-herald",
+    "jay-pilferer",
+    "leafcutter-gardener",
+    "leopard-slug",
+    "mountain-hare",
+    "mudpuppy",
+    "nutria-reedcutter",
+    "porcupine-roller",
+    "red-backed-salamander",
+    "seed-cache-squirrel",
+    "springtail-hopper",
+    "swamp-rabbit",
+    "swift-fox",
+    "talus-pika",
+    "woodcock-lookout"
+   ],
+   "fightOnly": [
+    "burrow-rabbit",
+    "duckling",
+    "elder-willow",
+    "ent",
+    "forager-ant",
+    "glacier-wolf-pack",
+    "meadow-rabbit",
+    "otter-kit",
+    "otter-paddler",
+    "pond-duck",
+    "silver-minnow",
+    "thornwood-palisade",
+    "trash-panda-trickster",
+    "tunnel-ant"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:evasion",
+    "family:flying"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 0,
+    "cost": {
+     "min": 0,
+     "max": 1,
+     "avg": 0.21,
+     "curve": {
+      "0": 19,
+      "1": 5
+     }
+    },
+    "generators": [
+     "gannet-nestweaver",
+     "leafcutter-gardener",
+     "nutria-reedcutter",
+     "talus-pika"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "evasion 3",
+     "flying 3"
+    ],
+    "high": []
+   }
+  },
+  "mf": {
+   "id": "mf",
+   "num": 1,
+   "side": null,
+   "name": "Thistlewood",
+   "opens": 1,
+   "cap": "uncommon",
+   "anchor": [
+    "ant-hill",
+    "ant-scout",
+    "badger-lumberjack",
+    "bee-forager",
+    "bramble-sprout",
+    "chipmunk-cavalry",
+    "chipmunk-skirmisher",
+    "compost-grub",
+    "cottontail",
+    "cricket-drummer",
+    "dormouse",
+    "field-mouse",
+    "field-vole",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "owl-sentinel",
+    "robin-redbreast",
+    "slow-worm",
+    "woodcock-lookout"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "acorn-chipmunk",
+    "bee-knight",
+    "burrow-rabbit",
+    "chipmunk-forager",
+    "forager-ant",
+    "harvest-mouse"
+   ],
+   "heldStrong": [
+    "duck-paddler",
+    "river-carp",
+    "terrier-pup",
+    "beaver-lumberjack",
+    "pond-trout",
+    "pond-duck"
+   ],
+   "pool": [
+    "acorn-chipmunk",
+    "ant-hill",
+    "ant-scout",
+    "badger-lumberjack",
+    "beaver-lumberjack",
+    "bee-forager",
+    "bee-knight",
+    "bramble-sprout",
+    "burrow-rabbit",
+    "chipmunk-cavalry",
+    "chipmunk-forager",
+    "chipmunk-skirmisher",
+    "compost-grub",
+    "cottontail",
+    "cricket-drummer",
+    "dormouse",
+    "duck-paddler",
+    "field-mouse",
+    "field-vole",
+    "forager-ant",
+    "harvest-mouse",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "owl-sentinel",
+    "pond-duck",
+    "pond-trout",
+    "river-carp",
+    "robin-redbreast",
+    "slow-worm",
+    "terrier-pup",
+    "woodcock-lookout"
+   ],
+   "fightOnly": [
+    "meadow-frog"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 19,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.26,
+     "curve": {
+      "0": 15,
+      "1": 3,
+      "2": 1
+     }
+    },
+    "generators": [
+     "badger-lumberjack"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 4",
+     "night 2"
+    ],
+    "high": [
+     "ant-hill"
+    ]
+   }
+  },
+  "mq": {
+   "id": "mq",
+   "num": 1,
+   "side": "mf",
+   "name": "Clovermead",
+   "opens": 12,
+   "cap": "uncommon",
+   "anchor": [
+    "ant-hill",
+    "ant-scout",
+    "badger-lumberjack",
+    "bee-forager",
+    "bramble-sprout",
+    "compost-grub",
+    "cottontail",
+    "cricket-drummer",
+    "field-mouse",
+    "field-vole",
+    "hedgerow-shrew",
+    "meadow-rabbit",
+    "robin-redbreast",
+    "slow-worm",
+    "woodcock-lookout"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "lucky-hopper: rare is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "nightjar-drifter",
+    "fire-ant-raft",
+    "mountain-hare",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "water-vole"
+   ],
+   "heldStrong": [
+    "alpine-marmot",
+    "mudpuppy",
+    "newt-doctor",
+    "vampire-bat",
+    "planarian-splitter",
+    "dung-beetle"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "ant-hill",
+    "ant-scout",
+    "badger-lumberjack",
+    "bee-forager",
+    "bramble-sprout",
+    "compost-grub",
+    "cottontail",
+    "cricket-drummer",
+    "dung-beetle",
+    "field-mouse",
+    "field-vole",
+    "fire-ant-raft",
+    "hawthorn-shieldbug",
+    "hedgerow-shrew",
+    "leafcutter-gardener",
+    "meadow-rabbit",
+    "mountain-hare",
+    "mudpuppy",
+    "newt-doctor",
+    "nightjar-drifter",
+    "planarian-splitter",
+    "robin-redbreast",
+    "slow-worm",
+    "vampire-bat",
+    "water-vole",
+    "woodcock-lookout"
+   ],
+   "fightOnly": [
+    "buck-brawler",
+    "burrow-rabbit",
+    "clover-butterfly",
+    "harvest-mouse",
+    "honey-bee",
+    "house-cat",
+    "jay-pilferer",
+    "ladybird-guard",
+    "lucky-hopper",
+    "pigeon-peon",
+    "rabbit-kit",
+    "stag-beetle",
+    "tunnel-ant",
+    "village-miller"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.2,
+     "curve": {
+      "0": 13,
+      "1": 1,
+      "2": 1
+     }
+    },
+    "generators": [
+     "badger-lumberjack"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 3",
+     "night 3"
+    ],
+    "high": [
+     "ant-hill"
+    ]
+   }
+  },
+  "mb": {
+   "id": "mb",
+   "num": 2,
+   "side": null,
+   "name": "Pebble Beach",
+   "opens": 2,
+   "cap": "uncommon",
+   "anchor": [
+    "badger-lumberjack",
+    "beaver-lumberjack",
+    "bramble-sprout",
+    "conch-crawler",
+    "conch-herald",
+    "cricket-drummer",
+    "driftwood-crab",
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "sea-turtle-elder",
+    "tide-pool-crab",
+    "tidepool-trapper-crab"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "old-shell: heroic is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "woodcock-lookout",
+    "briarback-hedgehog",
+    "robin-redbreast",
+    "ember-tetra",
+    "fleetfootd",
+    "garden-snail"
+   ],
+   "heldStrong": [
+    "bee-forager",
+    "duck-paddler",
+    "river-carp",
+    "terrier-pup",
+    "burrow-rabbit",
+    "dormouse"
+   ],
+   "pool": [
+    "badger-lumberjack",
+    "beaver-lumberjack",
+    "bee-forager",
+    "bramble-sprout",
+    "briarback-hedgehog",
+    "burrow-rabbit",
+    "conch-crawler",
+    "conch-herald",
+    "cricket-drummer",
+    "dormouse",
+    "driftwood-crab",
+    "duck-paddler",
+    "ember-tetra",
+    "fiddler-crab-swarm",
+    "fleetfootd",
+    "garden-snail",
+    "grey-seal-bull",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "oystercatcher",
+    "pincushion-urchin",
+    "river-carp",
+    "robin-redbreast",
+    "sea-turtle-elder",
+    "terrier-pup",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "woodcock-lookout"
+   ],
+   "fightOnly": [
+    "rock-pool-starfish"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.38,
+     "curve": {
+      "0": 11,
+      "1": 4,
+      "2": 1
+     }
+    },
+    "generators": [
+     "badger-lumberjack",
+     "beaver-lumberjack",
+     "driftwood-crab",
+     "gull-thief"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 10",
+     "armor 8"
+    ],
+    "high": [
+     "sea-turtle-elder"
+    ]
+   }
+  },
+  "mg": {
+   "id": "mg",
+   "num": 2,
+   "side": "mb",
+   "name": "Smugglers' Grotto",
+   "opens": 7,
+   "cap": "uncommon",
+   "anchor": [
+    "conch-crawler",
+    "conch-herald",
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "sea-turtle-elder",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "trash-panda-trickster"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "octopus-tactician: rare is over the map's rarity cap (uncommon)",
+    "pelican-diver: rare is over the map's rarity cap (uncommon)",
+    "old-shell: heroic is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "moat-snapper",
+    "kittiwake-flock",
+    "puffin-diver",
+    "rock-pool-starfish",
+    "garden-snail"
+   ],
+   "heldStrong": [
+    "mudpuppy",
+    "newt-doctor",
+    "bee-forager",
+    "nutria-reedcutter",
+    "gannet-nestweaver",
+    "driftwood-crab"
+   ],
+   "pool": [
+    "bee-forager",
+    "conch-crawler",
+    "conch-herald",
+    "driftwood-crab",
+    "fiddler-crab-swarm",
+    "gannet-nestweaver",
+    "garden-snail",
+    "grey-seal-bull",
+    "gull-thief",
+    "kittiwake-flock",
+    "moat-snapper",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "puffin-diver",
+    "rock-pool-starfish",
+    "sea-turtle-elder",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "trash-panda-trickster"
+   ],
+   "fightOnly": [
+    "beaver-builder",
+    "blind-cave-fish",
+    "duckling",
+    "mallard-marauder",
+    "mayfly-dancer",
+    "octopus-tactician",
+    "otter-riverguard",
+    "pelican-diver",
+    "shallows-fry",
+    "sulfur-vent-crab"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 11,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.36,
+     "curve": {
+      "0": 8,
+      "1": 2,
+      "2": 1
+     }
+    },
+    "generators": [
+     "gull-thief",
+     "trash-panda-trickster"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 10",
+     "armor 8"
+    ],
+    "high": [
+     "sea-turtle-elder"
+    ]
+   }
+  },
+  "mp": {
+   "id": "mp",
+   "num": 2,
+   "side": "mb",
+   "name": "Lilypad Reach",
+   "opens": 6,
+   "cap": "uncommon",
+   "anchor": [
+    "box-turtle",
+    "duckling",
+    "fiddler-crab-swarm",
+    "grey-seal-bull",
+    "lodge-engineer",
+    "muskrat-lodgekeeper",
+    "muskrat-reedgatherer",
+    "old-sturgeon",
+    "platypus-spur",
+    "pond-algae",
+    "pyrenean-desman",
+    "riverworks-bastion",
+    "snapstick-turtle",
+    "tidepool-trapper-crab",
+    "water-shrew",
+    "water-vole"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "alley-cat: rare is over the map's rarity cap (uncommon)",
+    "old-shell: heroic is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "moat-snapper",
+    "dam-keeper-beaver",
+    "diving-bell-spider",
+    "river-mink",
+    "signal-crayfish",
+    "fleetfootd"
+   ],
+   "heldStrong": [
+    "bee-forager",
+    "nutria-reedcutter",
+    "gannet-nestweaver",
+    "driftwood-crab",
+    "conch-crawler",
+    "duck-paddler"
+   ],
+   "pool": [
+    "bee-forager",
+    "box-turtle",
+    "conch-crawler",
+    "dam-keeper-beaver",
+    "diving-bell-spider",
+    "driftwood-crab",
+    "duck-paddler",
+    "duckling",
+    "fiddler-crab-swarm",
+    "fleetfootd",
+    "gannet-nestweaver",
+    "grey-seal-bull",
+    "lodge-engineer",
+    "moat-snapper",
+    "muskrat-lodgekeeper",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter",
+    "old-sturgeon",
+    "platypus-spur",
+    "pond-algae",
+    "pyrenean-desman",
+    "river-mink",
+    "riverworks-bastion",
+    "signal-crayfish",
+    "snapstick-turtle",
+    "tidepool-trapper-crab",
+    "water-shrew",
+    "water-vole"
+   ],
+   "fightOnly": [
+    "beaver-builder",
+    "camouflage-frog",
+    "elder-tortoise",
+    "ford-kingfisher",
+    "great-crested-grebe",
+    "guppy",
+    "mangrove-mudskipper",
+    "mayfly-dancer",
+    "minnow-skitter",
+    "mudpuppy",
+    "pike-lancer",
+    "poison-dart-croaker",
+    "pond-duck",
+    "river-carp",
+    "shallows-fry"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.63,
+     "curve": {
+      "0": 9,
+      "1": 5,
+      "2": 1,
+      "3": 1
+     }
+    },
+    "generators": [
+     "lodge-engineer",
+     "muskrat-reedgatherer"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 11",
+     "armor 6"
+    ],
+    "high": [
+     "lodge-engineer",
+     "riverworks-bastion"
+    ]
+   }
+  },
+  "mc": {
+   "id": "mc",
+   "num": 3,
+   "side": null,
+   "name": "Gannet Cliffs",
+   "opens": 3,
+   "cap": "uncommon",
+   "anchor": [
+    "conch-crawler",
+    "conch-herald",
+    "feral-tomcat",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "gull-thief",
+    "hawk-arrowkeeper",
+    "kittiwake-flock",
+    "peak-condor",
+    "peregrine-stooper",
+    "puffin-diver",
+    "razorbill",
+    "red-billed-chough"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "the-gannet-queen: heroic is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "cobalt-talon-fledgling",
+    "crimson-wing-recruit",
+    "mosswing-laborer",
+    "oystercatcher",
+    "pincushion-urchin",
+    "rock-pool-starfish"
+   ],
+   "heldStrong": [
+    "bee-forager",
+    "driftwood-crab",
+    "duck-paddler",
+    "river-carp",
+    "bramble-sprout",
+    "terrier-pup"
+   ],
+   "pool": [
+    "bee-forager",
+    "bramble-sprout",
+    "cobalt-talon-fledgling",
+    "conch-crawler",
+    "conch-herald",
+    "crimson-wing-recruit",
+    "driftwood-crab",
+    "duck-paddler",
+    "feral-tomcat",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "gull-thief",
+    "hawk-arrowkeeper",
+    "kittiwake-flock",
+    "mosswing-laborer",
+    "oystercatcher",
+    "peak-condor",
+    "peregrine-stooper",
+    "pincushion-urchin",
+    "puffin-diver",
+    "razorbill",
+    "red-billed-chough",
+    "river-carp",
+    "rock-pool-starfish",
+    "terrier-pup"
+   ],
+   "fightOnly": [
+    "fulmar-spitter",
+    "mountain-goat-climber"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:tide"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 13,
+    "cost": {
+     "min": 0,
+     "max": 1,
+     "avg": 0.54,
+     "curve": {
+      "0": 6,
+      "1": 7
+     }
+    },
+    "generators": [
+     "gannet-nestweaver",
+     "gull-thief"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 15",
+     "tide 5"
+    ],
+    "high": []
+   }
+  },
+  "m2": {
+   "id": "m2",
+   "num": 4,
+   "side": null,
+   "name": "Sunken Hollow",
+   "opens": 4,
+   "cap": "uncommon",
+   "anchor": [
+    "beaver-lumberjack",
+    "box-turtle",
+    "duckling",
+    "fire-ant-raft",
+    "muskrat-lodgekeeper",
+    "muskrat-reedgatherer",
+    "old-sturgeon",
+    "platypus-spur",
+    "pond-algae",
+    "pond-trout",
+    "pyrenean-desman",
+    "snapstick-turtle",
+    "stone-turtle-warden",
+    "water-shrew",
+    "water-vole"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "drowned-matriarch: heroic is over the map's rarity cap (uncommon)"
+   ],
+   "heldTheme": [
+    "fleetfootd",
+    "guppy",
+    "river-carp",
+    "ember-tetra",
+    "pond-duck"
+   ],
+   "heldStrong": [
+    "bee-forager",
+    "gannet-nestweaver",
+    "driftwood-crab",
+    "conch-crawler",
+    "duck-paddler",
+    "bramble-sprout"
+   ],
+   "pool": [
+    "beaver-lumberjack",
+    "bee-forager",
+    "box-turtle",
+    "bramble-sprout",
+    "conch-crawler",
+    "driftwood-crab",
+    "duck-paddler",
+    "duckling",
+    "ember-tetra",
+    "fire-ant-raft",
+    "fleetfootd",
+    "gannet-nestweaver",
+    "guppy",
+    "muskrat-lodgekeeper",
+    "muskrat-reedgatherer",
+    "old-sturgeon",
+    "platypus-spur",
+    "pond-algae",
+    "pond-duck",
+    "pond-trout",
+    "pyrenean-desman",
+    "river-carp",
+    "snapstick-turtle",
+    "stone-turtle-warden",
+    "water-shrew",
+    "water-vole"
+   ],
+   "fightOnly": [
+    "river-mink"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.47,
+     "curve": {
+      "0": 9,
+      "1": 5,
+      "2": 1
+     }
+    },
+    "generators": [
+     "beaver-lumberjack",
+     "muskrat-reedgatherer"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 11",
+     "armor 3"
+    ],
+    "high": [
+     "stone-turtle-warden"
+    ]
+   }
+  },
+  "mw": {
+   "id": "mw",
+   "num": 5,
+   "side": null,
+   "name": "Gatorback Swamp",
+   "opens": 5,
+   "cap": "rare",
+   "anchor": [
+    "alligator-gar",
+    "bog-leech",
+    "caiman-hatchling",
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "cypress-root-lurker",
+    "fen-mink",
+    "fire-ant-raft",
+    "grass-viper",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter",
+    "snapper-hatchling",
+    "snapstick-turtle",
+    "swamp-alligator",
+    "venomlord-serpent"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "old-snapjaw: heroic is over the map's rarity cap (rare)"
+   ],
+   "heldTheme": [
+    "box-turtle",
+    "muskrat-lodgekeeper",
+    "water-vole",
+    "dam-keeper-beaver",
+    "river-mink",
+    "guppy"
+   ],
+   "heldStrong": [
+    "otter-centurion",
+    "alley-cat",
+    "bee-forager",
+    "gannet-nestweaver",
+    "driftwood-crab",
+    "pyrenean-desman"
+   ],
+   "pool": [
+    "alley-cat",
+    "alligator-gar",
+    "bee-forager",
+    "bog-leech",
+    "box-turtle",
+    "caiman-hatchling",
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "cypress-root-lurker",
+    "dam-keeper-beaver",
+    "driftwood-crab",
+    "fen-mink",
+    "fire-ant-raft",
+    "gannet-nestweaver",
+    "grass-viper",
+    "guppy",
+    "muskrat-lodgekeeper",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter",
+    "otter-centurion",
+    "pyrenean-desman",
+    "river-mink",
+    "snapper-hatchling",
+    "snapstick-turtle",
+    "swamp-alligator",
+    "venomlord-serpent",
+    "water-vole"
+   ],
+   "fightOnly": [
+    "grass-snake",
+    "moat-snapper",
+    "raft-spider"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:bleed"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.87,
+     "curve": {
+      "0": 7,
+      "1": 4,
+      "2": 3,
+      "3": 1
+     }
+    },
+    "generators": [
+     "muskrat-reedgatherer",
+     "nutria-reedcutter"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 9",
+     "bleed 3"
+    ],
+    "high": [
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "swamp-alligator",
+     "venomlord-serpent"
+    ]
+   }
+  },
+  "ms": {
+   "id": "ms",
+   "num": 5,
+   "side": "mw",
+   "name": "The Sunken Grove",
+   "opens": 13,
+   "cap": "rare",
+   "anchor": [
+    "alligator-gar",
+    "bog-leech",
+    "caiman-hatchling",
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "fen-mink",
+    "grass-viper",
+    "hedgehog-herbalist",
+    "mangrove-mudskipper",
+    "nutria-reedcutter",
+    "snapper-hatchling",
+    "swamp-alligator",
+    "venomlord-serpent"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "old-snapjaw: heroic is over the map's rarity cap (rare)"
+   ],
+   "heldTheme": [
+    "banded-sea-krait",
+    "cottonmouth-matriarch",
+    "giant-water-bug",
+    "fire-ant-raft",
+    "yellow-bellied-sea-snake",
+    "anaconda-coil"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "blue-ringed-octopus",
+    "alpine-marmot",
+    "otter-centurion",
+    "alley-cat"
+   ],
+   "pool": [
+    "alley-cat",
+    "alligator-gar",
+    "alpine-marmot",
+    "anaconda-coil",
+    "banded-sea-krait",
+    "blue-ringed-octopus",
+    "bog-leech",
+    "caiman-hatchling",
+    "constrictor-coil",
+    "cottonmouth-matriarch",
+    "crocodile-ambusher",
+    "eagle-owl-quartermaster",
+    "fen-mink",
+    "fire-ant-raft",
+    "giant-water-bug",
+    "grass-viper",
+    "hedgehog-herbalist",
+    "mangrove-mudskipper",
+    "nutria-reedcutter",
+    "otter-centurion",
+    "snapper-hatchling",
+    "swamp-alligator",
+    "venomlord-serpent",
+    "wolf-spider-mother",
+    "yellow-bellied-sea-snake"
+   ],
+   "fightOnly": [
+    "baby-horned-capybara",
+    "bog-behemoth",
+    "echo-keeper",
+    "mosquito-cloud",
+    "puddle-hopper",
+    "raft-spider"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:poison",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:tide"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 13,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.85,
+     "curve": {
+      "0": 7,
+      "1": 2,
+      "2": 3,
+      "3": 1
+     }
+    },
+    "generators": [
+     "nutria-reedcutter"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 7",
+     "tide 6"
+    ],
+    "high": [
+     "constrictor-coil",
+     "crocodile-ambusher",
+     "swamp-alligator",
+     "venomlord-serpent"
+    ]
+   }
+  },
+  "m8": {
+   "id": "m8",
+   "num": 6,
+   "side": null,
+   "name": "Sable Swampmire",
+   "opens": 6,
+   "cap": "rare",
+   "anchor": [
+    "adder-ambusher",
+    "alligator-gar",
+    "bogfire-newt",
+    "booming-bittern",
+    "camouflage-frog",
+    "cane-toad",
+    "constrictor-coil",
+    "marsh-harrier",
+    "marsh-wisp",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "poison-dart-croaker",
+    "raven-scout",
+    "venomlord-serpent"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "heron-hag: heroic is over the map's rarity cap (rare)"
+   ],
+   "heldTheme": [
+    "anhinga-spearbird",
+    "fire-ant-raft",
+    "caiman-hatchling",
+    "grass-snake",
+    "raft-spider",
+    "meadow-frog"
+   ],
+   "heldStrong": [
+    "otter-centurion",
+    "alley-cat",
+    "bee-forager",
+    "gannet-nestweaver",
+    "driftwood-crab",
+    "box-turtle"
+   ],
+   "pool": [
+    "adder-ambusher",
+    "alley-cat",
+    "alligator-gar",
+    "anhinga-spearbird",
+    "bee-forager",
+    "bogfire-newt",
+    "booming-bittern",
+    "box-turtle",
+    "caiman-hatchling",
+    "camouflage-frog",
+    "cane-toad",
+    "constrictor-coil",
+    "driftwood-crab",
+    "fire-ant-raft",
+    "gannet-nestweaver",
+    "grass-snake",
+    "marsh-harrier",
+    "marsh-wisp",
+    "meadow-frog",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "otter-centurion",
+    "poison-dart-croaker",
+    "raft-spider",
+    "raven-scout",
+    "venomlord-serpent"
+   ],
+   "fightOnly": [
+    "mire-witch-heron"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:tide"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.93,
+     "curve": {
+      "0": 5,
+      "1": 6,
+      "2": 2,
+      "3": 1
+     }
+    },
+    "generators": [
+     "nutria-reedcutter"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 6",
+     "tide 5"
+    ],
+    "high": [
+     "cane-toad",
+     "constrictor-coil",
+     "venomlord-serpent"
+    ]
+   }
+  },
+  "mu": {
+   "id": "mu",
+   "num": 7,
+   "side": null,
+   "name": "The Morel Hollow",
+   "opens": 7,
+   "cap": "rare",
+   "anchor": [
+    "adder-ambusher",
+    "ant-warrior",
+    "bogfire-newt",
+    "bombardier-beetle",
+    "cane-toad",
+    "compost-grub",
+    "dung-beetle",
+    "fungal-colossus",
+    "garden-snail",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "owl-nightwatch",
+    "planarian-splitter",
+    "sleepless-shrew",
+    "truffle-piglet",
+    "wolf-spider-mother"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "fire-ant-raft",
+    "worker-ant",
+    "carrion-beetle",
+    "tunnel-ant",
+    "cottonmouth-matriarch",
+    "giant-water-bug"
+   ],
+   "heldStrong": [
+    "otter-centurion",
+    "alley-cat",
+    "mudpuppy",
+    "newt-doctor",
+    "raven-scout",
+    "nutria-reedcutter"
+   ],
+   "pool": [
+    "adder-ambusher",
+    "alley-cat",
+    "ant-warrior",
+    "bogfire-newt",
+    "bombardier-beetle",
+    "cane-toad",
+    "carrion-beetle",
+    "compost-grub",
+    "cottonmouth-matriarch",
+    "dung-beetle",
+    "fire-ant-raft",
+    "fungal-colossus",
+    "garden-snail",
+    "giant-water-bug",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "otter-centurion",
+    "owl-nightwatch",
+    "planarian-splitter",
+    "raven-scout",
+    "sleepless-shrew",
+    "truffle-piglet",
+    "tunnel-ant",
+    "wolf-spider-mother",
+    "worker-ant"
+   ],
+   "fightOnly": [
+    "bee-forager",
+    "honey-bee"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.69,
+     "curve": {
+      "0": 7,
+      "1": 7,
+      "2": 2
+     }
+    },
+    "generators": [
+     "leafcutter-gardener",
+     "truffle-piglet"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 7",
+     "armor 2"
+    ],
+    "high": [
+     "cane-toad",
+     "fungal-colossus"
+    ]
+   }
+  },
+  "mz": {
+   "id": "mz",
+   "num": 7,
+   "side": "mu",
+   "name": "The Mycelium Deep",
+   "opens": 8,
+   "cap": "rare",
+   "anchor": [
+    "ant-warrior",
+    "bombardier-beetle",
+    "compost-grub",
+    "dung-beetle",
+    "fungal-colossus",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "owl-nightwatch",
+    "planarian-splitter",
+    "rootworm-colony",
+    "sleepless-shrew",
+    "truffle-piglet",
+    "wolf-spider-mother"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "fire-ant-raft",
+    "barkplate-beetle",
+    "carrion-beetle",
+    "earthworm",
+    "forager-ant"
+   ],
+   "heldStrong": [
+    "otter-centurion",
+    "alley-cat",
+    "mudpuppy",
+    "newt-doctor",
+    "raven-scout",
+    "nutria-reedcutter"
+   ],
+   "pool": [
+    "alley-cat",
+    "ant-warrior",
+    "barkplate-beetle",
+    "bombardier-beetle",
+    "carrion-beetle",
+    "compost-grub",
+    "dung-beetle",
+    "earthworm",
+    "fire-ant-raft",
+    "forager-ant",
+    "fungal-colossus",
+    "hawthorn-shieldbug",
+    "leafcutter-gardener",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "otter-centurion",
+    "owl-nightwatch",
+    "planarian-splitter",
+    "raven-scout",
+    "rootworm-colony",
+    "sleepless-shrew",
+    "truffle-piglet",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "ant-scout",
+    "bee-forager",
+    "beetle-battering-ram",
+    "fungus-gnat-cloud",
+    "gangrenous-leech",
+    "honey-bee",
+    "swarm-matriarch",
+    "trapdoor-spider",
+    "tunnel-ant",
+    "worker-ant"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 13,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.69,
+     "curve": {
+      "0": 5,
+      "1": 7,
+      "2": 1
+     }
+    },
+    "generators": [
+     "leafcutter-gardener",
+     "truffle-piglet"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 3",
+     "armor 2"
+    ],
+    "high": [
+     "fungal-colossus"
+    ]
+   }
+  },
+  "m4": {
+   "id": "m4",
+   "num": 8,
+   "side": null,
+   "name": "Caves & Alcoves",
+   "opens": 8,
+   "cap": "rare",
+   "anchor": [
+    "ant-warrior",
+    "badger-stonemason",
+    "blind-cave-fish",
+    "cave-olm",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "octopus-tactician",
+    "pelican-diver",
+    "quarry-mole",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "sulfur-cinder-moth",
+    "trash-panda-trickster",
+    "vampire-bat",
+    "whip-spider"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "echo-matriarch: heroic is over the map's rarity cap (rare)"
+   ],
+   "heldTheme": [
+    "leafcutter-gardener",
+    "mayfly-dancer",
+    "fire-ant-raft",
+    "raft-spider",
+    "diving-bell-spider",
+    "worker-ant"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "otter-centurion",
+    "alley-cat",
+    "mudpuppy",
+    "newt-doctor",
+    "planarian-splitter"
+   ],
+   "pool": [
+    "alley-cat",
+    "ant-warrior",
+    "badger-stonemason",
+    "blind-cave-fish",
+    "cave-olm",
+    "diving-bell-spider",
+    "echo-screecher",
+    "fire-ant-raft",
+    "giant-cave-huntsman",
+    "leafcutter-gardener",
+    "mayfly-dancer",
+    "mudpuppy",
+    "newt-doctor",
+    "octopus-tactician",
+    "otter-centurion",
+    "pelican-diver",
+    "planarian-splitter",
+    "quarry-mole",
+    "raft-spider",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "sulfur-cinder-moth",
+    "trash-panda-trickster",
+    "vampire-bat",
+    "whip-spider",
+    "wolf-spider-mother",
+    "worker-ant"
+   ],
+   "fightOnly": [
+    "baby-bat",
+    "ghost-crayfish",
+    "millipede-hauler",
+    "nightshade-moth",
+    "subterraneaner"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:tide"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.73,
+     "curve": {
+      "0": 6,
+      "1": 7,
+      "2": 2
+     }
+    },
+    "generators": [
+     "badger-stonemason",
+     "trash-panda-trickster"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 5",
+     "tide 5"
+    ],
+    "high": [
+     "octopus-tactician",
+     "stalactite-golem"
+    ]
+   }
+  },
+  "mn": {
+   "id": "mn",
+   "num": 8,
+   "side": "m4",
+   "name": "The Glimmer Depths",
+   "opens": 16,
+   "cap": "rare",
+   "anchor": [
+    "badger-stonemason",
+    "blind-cave-fish",
+    "cave-olm",
+    "echo-screecher",
+    "giant-cave-huntsman",
+    "glimmer-spider",
+    "lantern-spark-fly",
+    "prospector-mole",
+    "quarry-mole",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "sulfur-cinder-moth",
+    "vampire-bat",
+    "whip-spider"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "echo-matriarch: heroic is over the map's rarity cap (rare)"
+   ],
+   "heldTheme": [
+    "baby-bat",
+    "gallery-orb-weaver",
+    "subterraneaner",
+    "cave-pseudoscorpion",
+    "dynamite-packrat",
+    "guano-beetle"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "blue-ringed-octopus"
+   ],
+   "pool": [
+    "baby-bat",
+    "badger-stonemason",
+    "blind-cave-fish",
+    "blue-ringed-octopus",
+    "cave-olm",
+    "cave-pseudoscorpion",
+    "dynamite-packrat",
+    "eagle-owl-quartermaster",
+    "echo-screecher",
+    "gallery-orb-weaver",
+    "giant-cave-huntsman",
+    "glimmer-spider",
+    "grave-grin-hyena",
+    "guano-beetle",
+    "lantern-spark-fly",
+    "prospector-mole",
+    "quarry-mole",
+    "squires-mount",
+    "stalactite-golem",
+    "star-nosed-mole",
+    "stoat-cutthroat",
+    "subterraneaner",
+    "sulfur-cinder-moth",
+    "vampire-bat",
+    "whip-spider",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "barrow-leech-bat",
+    "beetle-grunt",
+    "cave-bat-swarm",
+    "cave-cricket",
+    "cave-swiftlet",
+    "glowworm-cluster",
+    "monarch-wingblade",
+    "oilbird",
+    "swarm-matriarch",
+    "tunnel-ant",
+    "vampire-bat-nurse"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "stone/metal",
+    "swarm",
+    "family:flying",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.64,
+     "curve": {
+      "0": 6,
+      "1": 7,
+      "2": 1
+     }
+    },
+    "generators": [
+     "badger-stonemason",
+     "prospector-mole"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 6",
+     "night 4"
+    ],
+    "high": [
+     "stalactite-golem"
+    ]
+   }
+  },
+  "mk": {
+   "id": "mk",
+   "num": 9,
+   "side": null,
+   "name": "The Kelp Mangroves",
+   "opens": 9,
+   "cap": "rare",
+   "anchor": [
+    "archerfish",
+    "banded-sea-krait",
+    "booming-bittern",
+    "caiman-hatchling",
+    "crocodile-ambusher",
+    "fiddler-crab-swarm",
+    "fishing-cat",
+    "mangrove-kingfisher",
+    "mangrove-manatee",
+    "mangrove-monitor",
+    "mangrove-mudskipper",
+    "minnow-skitter",
+    "mudpuppy",
+    "reef-shark",
+    "sunbittern-strider"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "greater-siren",
+    "alligator-gar",
+    "great-crested-grebe",
+    "shallows-fry",
+    "anhinga-spearbird",
+    "pincushion-urchin"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "otter-centurion",
+    "alley-cat",
+    "newt-doctor",
+    "giant-cave-huntsman",
+    "vampire-bat"
+   ],
+   "pool": [
+    "alley-cat",
+    "alligator-gar",
+    "anhinga-spearbird",
+    "archerfish",
+    "banded-sea-krait",
+    "booming-bittern",
+    "caiman-hatchling",
+    "crocodile-ambusher",
+    "fiddler-crab-swarm",
+    "fishing-cat",
+    "giant-cave-huntsman",
+    "great-crested-grebe",
+    "greater-siren",
+    "mangrove-kingfisher",
+    "mangrove-manatee",
+    "mangrove-monitor",
+    "mangrove-mudskipper",
+    "minnow-skitter",
+    "mudpuppy",
+    "newt-doctor",
+    "otter-centurion",
+    "pincushion-urchin",
+    "reef-shark",
+    "shallows-fry",
+    "sunbittern-strider",
+    "vampire-bat",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "mudflat-godwit"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:tide",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "swarm",
+    "family:tide",
+    "family:heal"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.8,
+     "curve": {
+      "0": 5,
+      "1": 8,
+      "2": 2
+     }
+    },
+    "generators": [],
+    "stoneMetal": [],
+    "families": [
+     "tide 10",
+     "heal 4"
+    ],
+    "high": [
+     "crocodile-ambusher",
+     "reef-shark"
+    ]
+   }
+  },
+  "m7": {
+   "id": "m7",
+   "num": 10,
+   "side": null,
+   "name": "Coral Current",
+   "opens": 10,
+   "cap": "veryrare",
+   "anchor": [
+    "banded-sea-krait",
+    "clownfish-scout",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "coral-reef-shark",
+    "electric-ray",
+    "great-barracuda",
+    "kraken-spawnling",
+    "mangrove-manatee",
+    "open-ocean-hermit-crab",
+    "orca-vanguard",
+    "parrotfish",
+    "reef-shark",
+    "riptide-eel",
+    "swordfish-spearman"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "reef-admiral: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "pincushion-urchin",
+    "horseshoe-crab",
+    "ironclaw-fiddler",
+    "sea-hare",
+    "alligator-gar",
+    "archerfish"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "otter-centurion",
+    "alley-cat",
+    "mudpuppy",
+    "newt-doctor",
+    "giant-cave-huntsman"
+   ],
+   "pool": [
+    "alley-cat",
+    "alligator-gar",
+    "archerfish",
+    "banded-sea-krait",
+    "clownfish-scout",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "coral-reef-shark",
+    "electric-ray",
+    "giant-cave-huntsman",
+    "great-barracuda",
+    "horseshoe-crab",
+    "ironclaw-fiddler",
+    "kraken-spawnling",
+    "mangrove-manatee",
+    "mudpuppy",
+    "newt-doctor",
+    "open-ocean-hermit-crab",
+    "orca-vanguard",
+    "otter-centurion",
+    "parrotfish",
+    "pincushion-urchin",
+    "reef-shark",
+    "riptide-eel",
+    "sea-hare",
+    "swordfish-spearman",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "bloodscent-shark",
+    "crown-of-thorns-star",
+    "lions-mane-jelly"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:tide",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:cleave"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.33,
+     "curve": {
+      "0": 4,
+      "1": 6,
+      "2": 2,
+      "3": 2,
+      "4": 1
+     }
+    },
+    "generators": [
+     "coral-polyp-colony"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 15",
+     "cleave 5"
+    ],
+    "high": [
+     "colossal-squid",
+     "kraken-spawnling",
+     "orca-vanguard"
+    ]
+   }
+  },
+  "mj": {
+   "id": "mj",
+   "num": 10,
+   "side": "m7",
+   "name": "The Sunken Depths",
+   "opens": 11,
+   "cap": "veryrare",
+   "anchor": [
+    "blue-ringed-octopus",
+    "clownfish-scout",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "coral-reef-shark",
+    "electric-ray",
+    "great-barracuda",
+    "kraken-spawnling",
+    "mangrove-manatee",
+    "nautilus-drifter",
+    "orca-vanguard",
+    "parrotfish",
+    "riptide-eel"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "reef-admiral: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "lionfish",
+    "swordfish-spearman",
+    "whale-shark",
+    "sawfish",
+    "yellow-bellied-sea-snake",
+    "cleaner-wrasse"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "otter-centurion",
+    "alley-cat",
+    "mudpuppy",
+    "newt-doctor",
+    "giant-cave-huntsman"
+   ],
+   "pool": [
+    "alley-cat",
+    "blue-ringed-octopus",
+    "cleaner-wrasse",
+    "clownfish-scout",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "coral-reef-shark",
+    "electric-ray",
+    "giant-cave-huntsman",
+    "great-barracuda",
+    "kraken-spawnling",
+    "lionfish",
+    "mangrove-manatee",
+    "mudpuppy",
+    "nautilus-drifter",
+    "newt-doctor",
+    "orca-vanguard",
+    "otter-centurion",
+    "parrotfish",
+    "riptide-eel",
+    "sawfish",
+    "swordfish-spearman",
+    "whale-shark",
+    "wolf-spider-mother",
+    "yellow-bellied-sea-snake"
+   ],
+   "fightOnly": [
+    "abyss-lantern-squid",
+    "crown-of-thorns-star",
+    "glass-octopus",
+    "sea-cucumber",
+    "silver-minnow",
+    "sulfur-vent-crab",
+    "vampire-squid",
+    "voltaic-eel"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:tide",
+    "family:cleave"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 13,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.38,
+     "curve": {
+      "0": 3,
+      "1": 6,
+      "2": 1,
+      "3": 2,
+      "4": 1
+     }
+    },
+    "generators": [
+     "coral-polyp-colony",
+     "nautilus-drifter"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "tide 13",
+     "cleave 5"
+    ],
+    "high": [
+     "colossal-squid",
+     "kraken-spawnling",
+     "orca-vanguard"
+    ]
+   }
+  },
+  "m10": {
+   "id": "m10",
+   "num": 11,
+   "side": null,
+   "name": "Eyrie Heights",
+   "opens": 11,
+   "cap": "veryrare",
+   "anchor": [
+    "alpine-marmot",
+    "alpine-salamander",
+    "alpine-swift",
+    "apollo-butterfly",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "gale-swift",
+    "gangrenous-leech",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "ibex-rockcaller",
+    "mountain-hare",
+    "peak-condor",
+    "peregrine-stooper",
+    "swamp-alligator",
+    "wound-reaver"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "red-billed-chough",
+    "seed-cache-squirrel",
+    "fulmar-spitter",
+    "puffin-diver",
+    "razorbill",
+    "anhinga-spearbird"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "otter-centurion",
+    "alley-cat",
+    "swordfish-spearman",
+    "mudpuppy",
+    "newt-doctor"
+   ],
+   "pool": [
+    "alley-cat",
+    "alpine-marmot",
+    "alpine-salamander",
+    "alpine-swift",
+    "anhinga-spearbird",
+    "apollo-butterfly",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "fulmar-spitter",
+    "gale-swift",
+    "gangrenous-leech",
+    "gannet-nestweaver",
+    "golden-eagle-diver",
+    "ibex-rockcaller",
+    "mountain-hare",
+    "mudpuppy",
+    "newt-doctor",
+    "otter-centurion",
+    "peak-condor",
+    "peregrine-stooper",
+    "puffin-diver",
+    "razorbill",
+    "red-billed-chough",
+    "seed-cache-squirrel",
+    "swamp-alligator",
+    "swordfish-spearman",
+    "wolf-spider-mother",
+    "wound-reaver"
+   ],
+   "fightOnly": [
+    "mountain-goat-climber"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:strike-first"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 18,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.78,
+     "curve": {
+      "0": 7,
+      "1": 9,
+      "2": 1,
+      "3": 1
+     }
+    },
+    "generators": [
+     "chipmunk-hoarder",
+     "gannet-nestweaver"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 13",
+     "strike-first 5"
+    ],
+    "high": [
+     "eyrie-warden",
+     "swamp-alligator"
+    ]
+   }
+  },
+  "mv": {
+   "id": "mv",
+   "num": 11,
+   "side": "m10",
+   "name": "The Aerie Vault",
+   "opens": 15,
+   "cap": "veryrare",
+   "anchor": [
+    "alpine-marmot",
+    "alpine-salamander",
+    "alpine-swift",
+    "apollo-butterfly",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "gale-swift",
+    "gangrenous-leech",
+    "golden-eagle-diver",
+    "ibex-rockcaller",
+    "swamp-alligator",
+    "wound-reaver"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "peregrine-stooper",
+    "red-billed-chough",
+    "seed-cache-squirrel",
+    "mountain-hare",
+    "anhinga-spearbird",
+    "caiman-hatchling"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "grave-grin-hyena",
+    "blue-ringed-octopus",
+    "dust-hyena",
+    "hoopoe-herald",
+    "otter-centurion"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "alpine-salamander",
+    "alpine-swift",
+    "anhinga-spearbird",
+    "apollo-butterfly",
+    "blue-ringed-octopus",
+    "caiman-hatchling",
+    "chamois-leaper",
+    "chipmunk-hoarder",
+    "dust-hyena",
+    "eagle-owl-quartermaster",
+    "eyrie-warden",
+    "gale-swift",
+    "gangrenous-leech",
+    "golden-eagle-diver",
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "ibex-rockcaller",
+    "mountain-hare",
+    "otter-centurion",
+    "peregrine-stooper",
+    "red-billed-chough",
+    "seed-cache-squirrel",
+    "swamp-alligator",
+    "wolf-spider-mother",
+    "wound-reaver"
+   ],
+   "fightOnly": [
+    "alpine-avalanche",
+    "chipmunk-stockpiler",
+    "mountain-goat-climber",
+    "rockslide-ram"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:strike-first"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 0.86,
+     "curve": {
+      "0": 5,
+      "1": 7,
+      "2": 1,
+      "3": 1
+     }
+    },
+    "generators": [
+     "chipmunk-hoarder"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 8",
+     "strike-first 6"
+    ],
+    "high": [
+     "eyrie-warden",
+     "swamp-alligator"
+    ]
+   }
+  },
+  "mh": {
+   "id": "mh",
+   "num": 12,
+   "side": null,
+   "name": "The Briar Maze",
+   "opens": 12,
+   "cap": "veryrare",
+   "anchor": [
+    "ant-hill",
+    "badger-lumberjack",
+    "bramble-hoglet",
+    "carrion-crow",
+    "cunning-vixen",
+    "field-mouse",
+    "gatling-hog",
+    "hedge-weasel",
+    "hedgehog-scout",
+    "hedgerow-shrew",
+    "lyrebird-mimic",
+    "mouse-sapper",
+    "quillback-elder",
+    "quillguard",
+    "thorn-shrike"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "robin-redbreast",
+    "nightjar-drifter",
+    "briarback-hedgehog",
+    "field-vole",
+    "harvest-mouse",
+    "hawthorn-shieldbug"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "blue-ringed-octopus",
+    "alpine-marmot",
+    "otter-centurion"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "ant-hill",
+    "badger-lumberjack",
+    "blue-ringed-octopus",
+    "bramble-hoglet",
+    "briarback-hedgehog",
+    "carrion-crow",
+    "cunning-vixen",
+    "eagle-owl-quartermaster",
+    "field-mouse",
+    "field-vole",
+    "gatling-hog",
+    "harvest-mouse",
+    "hawthorn-shieldbug",
+    "hedge-weasel",
+    "hedgehog-scout",
+    "hedgerow-shrew",
+    "ibex-rockcaller",
+    "lyrebird-mimic",
+    "mouse-sapper",
+    "nightjar-drifter",
+    "otter-centurion",
+    "quillback-elder",
+    "quillguard",
+    "robin-redbreast",
+    "thorn-shrike",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "seed-cache-squirrel"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.73,
+     "curve": {
+      "0": 6,
+      "1": 7,
+      "2": 2
+     }
+    },
+    "generators": [
+     "badger-lumberjack",
+     "carrion-crow"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 4",
+     "armor 3"
+    ],
+    "high": [
+     "ant-hill",
+     "quillback-elder"
+    ]
+   }
+  },
+  "mr": {
+   "id": "mr",
+   "num": 13,
+   "side": null,
+   "name": "The Redwood Deep",
+   "opens": 13,
+   "cap": "veryrare",
+   "anchor": [
+    "berserker-boar",
+    "bramble-hoglet",
+    "bramblewood-lynx",
+    "carrion-crow",
+    "cunning-vixen",
+    "fawn-scout",
+    "fox-kit",
+    "grizzly-vanguard",
+    "quillback-elder",
+    "redwood-woodpecker",
+    "sergeant-bramblefox",
+    "shimmerwing-stag",
+    "stag-knight",
+    "swift-fox",
+    "tasmanian-devil",
+    "woodpecker-sapper"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "jay-pilferer",
+    "woodcock-lookout",
+    "fox-sharpshot",
+    "lyrebird-mimic",
+    "truffle-piglet",
+    "field-crow"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "blue-ringed-octopus",
+    "alpine-marmot",
+    "otter-centurion"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "berserker-boar",
+    "blue-ringed-octopus",
+    "bramble-hoglet",
+    "bramblewood-lynx",
+    "carrion-crow",
+    "cunning-vixen",
+    "eagle-owl-quartermaster",
+    "fawn-scout",
+    "field-crow",
+    "fox-kit",
+    "fox-sharpshot",
+    "grizzly-vanguard",
+    "ibex-rockcaller",
+    "jay-pilferer",
+    "lyrebird-mimic",
+    "otter-centurion",
+    "quillback-elder",
+    "redwood-woodpecker",
+    "sergeant-bramblefox",
+    "shimmerwing-stag",
+    "stag-knight",
+    "swift-fox",
+    "tasmanian-devil",
+    "truffle-piglet",
+    "wolf-spider-mother",
+    "woodcock-lookout",
+    "woodpecker-sapper"
+   ],
+   "fightOnly": [],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:ranged",
+    "family:flying"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 1,
+     "curve": {
+      "0": 4,
+      "1": 8,
+      "2": 4
+     }
+    },
+    "generators": [
+     "carrion-crow",
+     "redwood-woodpecker"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "ranged 5",
+     "flying 3"
+    ],
+    "high": [
+     "berserker-boar",
+     "grizzly-vanguard",
+     "quillback-elder",
+     "stag-knight"
+    ]
+   }
+  },
+  "m5": {
+   "id": "m5",
+   "num": 14,
+   "side": null,
+   "name": "Savanna Reaches",
+   "opens": 14,
+   "cap": "veryrare",
+   "anchor": [
+    "dust-hyena",
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "house-cat",
+    "leafcutter-gardener",
+    "lodge-engineer",
+    "marula-elephant",
+    "meerkat-burrower",
+    "mouse-sapper",
+    "pangolin-roller",
+    "plains-zebra",
+    "savanna-cheetah",
+    "spitting-cobra",
+    "springbok-pronker",
+    "weaver-bird"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "pride-queen: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "robin-redbreast",
+    "margay",
+    "lyrebird-mimic",
+    "pigeon-peon",
+    "thorn-shrike",
+    "banded-sea-krait"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "ibex-rockcaller",
+    "blue-ringed-octopus",
+    "alpine-marmot",
+    "otter-centurion"
+   ],
+   "pool": [
+    "alpine-marmot",
+    "banded-sea-krait",
+    "blue-ringed-octopus",
+    "dust-hyena",
+    "eagle-owl-quartermaster",
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "house-cat",
+    "ibex-rockcaller",
+    "leafcutter-gardener",
+    "lodge-engineer",
+    "lyrebird-mimic",
+    "margay",
+    "marula-elephant",
+    "meerkat-burrower",
+    "mouse-sapper",
+    "otter-centurion",
+    "pangolin-roller",
+    "pigeon-peon",
+    "plains-zebra",
+    "robin-redbreast",
+    "savanna-cheetah",
+    "spitting-cobra",
+    "springbok-pronker",
+    "thorn-shrike",
+    "weaver-bird",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "termite-mound"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:ranged"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.73,
+     "curve": {
+      "0": 6,
+      "1": 7,
+      "2": 2
+     }
+    },
+    "generators": [
+     "dust-hyena",
+     "leafcutter-gardener",
+     "lodge-engineer"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 4",
+     "ranged 3"
+    ],
+    "high": [
+     "lodge-engineer",
+     "marula-elephant"
+    ]
+   }
+  },
+  "my": {
+   "id": "my",
+   "num": 14,
+   "side": "m5",
+   "name": "The Canopy",
+   "opens": 18,
+   "cap": "veryrare",
+   "anchor": [
+    "apollo-butterfly",
+    "camouflage-frog",
+    "hercules-beetle",
+    "hoopoe-herald",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "leafcutter-gardener",
+    "lyrebird-mimic",
+    "pangolin-roller",
+    "poison-dart-croaker",
+    "redwood-woodpecker",
+    "spitting-cobra",
+    "vampire-bat",
+    "weaver-bird"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "pride-queen: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "lovebird",
+    "meerkat-burrower",
+    "woodpecker-sapper",
+    "stag-beetle",
+    "lotus-frog",
+    "fire-ant-raft"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "apollo-butterfly",
+    "camouflage-frog",
+    "eagle-owl-quartermaster",
+    "fire-ant-raft",
+    "grave-grin-hyena",
+    "hercules-beetle",
+    "hoopoe-herald",
+    "ibex-rockcaller",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "leafcutter-gardener",
+    "lotus-frog",
+    "lovebird",
+    "lyrebird-mimic",
+    "meerkat-burrower",
+    "pangolin-roller",
+    "poison-dart-croaker",
+    "redwood-woodpecker",
+    "spitting-cobra",
+    "squires-mount",
+    "stag-beetle",
+    "stoat-cutthroat",
+    "vampire-bat",
+    "weaver-bird",
+    "wolf-spider-mother",
+    "woodpecker-sapper"
+   ],
+   "fightOnly": [
+    "ancient-sloth-titan",
+    "aye-aye-prowler",
+    "bramblewood-macaque",
+    "chilli-parrot",
+    "howler-monkey",
+    "old-growth-tortoise",
+    "siege-rhino",
+    "slow-loris",
+    "slowpoke-sentinel",
+    "termite-mound",
+    "toucan-courier",
+    "velvet-worm"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 1,
+     "avg": 0.71,
+     "curve": {
+      "0": 4,
+      "1": 10
+     }
+    },
+    "generators": [
+     "leafcutter-gardener",
+     "redwood-woodpecker"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 3",
+     "night 3"
+    ],
+    "high": []
+   }
+  },
+  "ml": {
+   "id": "ml",
+   "num": 15,
+   "side": null,
+   "name": "The Long Grass",
+   "opens": 15,
+   "cap": "veryrare",
+   "anchor": [
+    "bison-bulldozer",
+    "border-collie",
+    "carrion-crow",
+    "cataphract-destrier",
+    "hedge-weasel",
+    "hedgehog-herbalist",
+    "lodge-engineer",
+    "pronghorn-racer",
+    "raccoon-bandit",
+    "shepherds-bark",
+    "squires-mount",
+    "stable-colt",
+    "stoat-cutthroat",
+    "talon-archer",
+    "warhorse-charger"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "nightjar-drifter",
+    "robin-redbreast",
+    "farm-dog",
+    "swift-fox",
+    "pigeon-peon",
+    "thorn-shrike"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "blue-ringed-octopus",
+    "dust-hyena"
+   ],
+   "pool": [
+    "bison-bulldozer",
+    "blue-ringed-octopus",
+    "border-collie",
+    "carrion-crow",
+    "cataphract-destrier",
+    "dust-hyena",
+    "eagle-owl-quartermaster",
+    "farm-dog",
+    "grave-grin-hyena",
+    "hedge-weasel",
+    "hedgehog-herbalist",
+    "ibex-rockcaller",
+    "lodge-engineer",
+    "nightjar-drifter",
+    "pigeon-peon",
+    "pronghorn-racer",
+    "raccoon-bandit",
+    "robin-redbreast",
+    "shepherds-bark",
+    "squires-mount",
+    "stable-colt",
+    "stoat-cutthroat",
+    "swift-fox",
+    "talon-archer",
+    "thorn-shrike",
+    "warhorse-charger",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [],
+   "focuses": [
+    "economy",
+    "swarm",
+    "family:flying",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:strike-first"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.07,
+     "curve": {
+      "0": 4,
+      "1": 8,
+      "2": 2,
+      "4": 1
+     }
+    },
+    "generators": [
+     "carrion-crow",
+     "lodge-engineer",
+     "raccoon-bandit"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 6",
+     "strike-first 3"
+    ],
+    "high": [
+     "cataphract-destrier"
+    ]
+   }
+  },
+  "mt": {
+   "id": "mt",
+   "num": 16,
+   "side": null,
+   "name": "The Pinewood Taiga",
+   "opens": 16,
+   "cap": "veryrare",
+   "anchor": [
+    "alpha-howler",
+    "berserker-boar",
+    "boreal-elk",
+    "bramblewood-lynx",
+    "cone-cutter-squirrel",
+    "dhole-matriarch",
+    "dhole-runner",
+    "fawn-scout",
+    "frost-hare-sprinter",
+    "pinecone-sapper",
+    "redwood-woodpecker",
+    "snowshoe-hare",
+    "taiga-lynx",
+    "wolf-pack-runner",
+    "woodland-caribou"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "mountain-hare",
+    "muntjac-barker",
+    "margay",
+    "swamp-rabbit",
+    "woodpecker-sapper",
+    "alley-cat"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "alley-cat",
+    "alpha-howler",
+    "berserker-boar",
+    "boreal-elk",
+    "bramblewood-lynx",
+    "cone-cutter-squirrel",
+    "dhole-matriarch",
+    "dhole-runner",
+    "eagle-owl-quartermaster",
+    "fawn-scout",
+    "frost-hare-sprinter",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "margay",
+    "mountain-hare",
+    "muntjac-barker",
+    "pinecone-sapper",
+    "redwood-woodpecker",
+    "snowshoe-hare",
+    "squires-mount",
+    "stoat-cutthroat",
+    "swamp-rabbit",
+    "taiga-lynx",
+    "wolf-pack-runner",
+    "wolf-spider-mother",
+    "woodland-caribou",
+    "woodpecker-sapper"
+   ],
+   "fightOnly": [
+    "trickster-fox"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:evasion",
+    "family:cleave"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 15,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.93,
+     "curve": {
+      "0": 5,
+      "1": 6,
+      "2": 4
+     }
+    },
+    "generators": [
+     "cone-cutter-squirrel",
+     "redwood-woodpecker"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "evasion 6",
+     "cleave 3"
+    ],
+    "high": [
+     "alpha-howler",
+     "berserker-boar",
+     "boreal-elk",
+     "dhole-matriarch"
+    ]
+   }
+  },
+  "m6": {
+   "id": "m6",
+   "num": 17,
+   "side": null,
+   "name": "Wolfsbane Tundra",
+   "opens": 17,
+   "cap": "veryrare",
+   "anchor": [
+    "alpha-howler",
+    "cone-cutter-squirrel",
+    "frost-hare-sprinter",
+    "glacial-ape-king",
+    "harbor-seal",
+    "lone-grey-wolf",
+    "mountain-hare",
+    "polar-bear",
+    "ravenous-wolverine",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "spitting-spider",
+    "talus-pika",
+    "walrus-icebreaker"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "wolfsbane-alpha: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "dhole-matriarch",
+    "dhole-runner",
+    "swamp-rabbit",
+    "woodland-caribou",
+    "cunning-vixen",
+    "fox-sharpshot"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "alpha-howler",
+    "cone-cutter-squirrel",
+    "cunning-vixen",
+    "dhole-matriarch",
+    "dhole-runner",
+    "eagle-owl-quartermaster",
+    "fox-sharpshot",
+    "frost-hare-sprinter",
+    "glacial-ape-king",
+    "grave-grin-hyena",
+    "harbor-seal",
+    "ibex-rockcaller",
+    "lone-grey-wolf",
+    "mountain-hare",
+    "polar-bear",
+    "ravenous-wolverine",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "spitting-spider",
+    "squires-mount",
+    "stoat-cutthroat",
+    "swamp-rabbit",
+    "talus-pika",
+    "walrus-icebreaker",
+    "wolf-spider-mother",
+    "woodland-caribou"
+   ],
+   "fightOnly": [
+    "frostmoon-howler"
+   ],
+   "focuses": [
+    "economy",
+    "swarm",
+    "family:evasion",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:evasion",
+    "family:cold"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 0.93,
+     "curve": {
+      "0": 5,
+      "1": 7,
+      "2": 1,
+      "4": 1
+     }
+    },
+    "generators": [
+     "cone-cutter-squirrel",
+     "talus-pika"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "evasion 7",
+     "cold 4"
+    ],
+    "high": [
+     "glacial-ape-king"
+    ]
+   }
+  },
+  "mi": {
+   "id": "mi",
+   "num": 17,
+   "side": "m6",
+   "name": "The Ice Hollow",
+   "opens": 21,
+   "cap": "veryrare",
+   "anchor": [
+    "frost-hare-sprinter",
+    "glacial-ape-king",
+    "greenland-shark",
+    "harbor-seal",
+    "lone-grey-wolf",
+    "polar-bear",
+    "ravenous-wolverine",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "spitting-spider",
+    "talus-pika",
+    "walrus-icebreaker"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "wolfsbane-alpha: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "mountain-hare",
+    "musk-ox-calf",
+    "beluga",
+    "frostmoon-howler",
+    "magma-wraith",
+    "swamp-rabbit"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "ashbone-ghoul",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount"
+   ],
+   "pool": [
+    "ashbone-ghoul",
+    "beluga",
+    "eagle-owl-quartermaster",
+    "frost-hare-sprinter",
+    "frostmoon-howler",
+    "glacial-ape-king",
+    "grave-grin-hyena",
+    "greenland-shark",
+    "harbor-seal",
+    "lone-grey-wolf",
+    "magma-wraith",
+    "mountain-hare",
+    "musk-ox-calf",
+    "polar-bear",
+    "ravenous-wolverine",
+    "snow-bunting-archer",
+    "snow-ermine",
+    "spitting-spider",
+    "squires-mount",
+    "stoat-cutthroat",
+    "swamp-rabbit",
+    "talus-pika",
+    "walrus-icebreaker",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "arctic-fox-raider",
+    "harp-seal-pup",
+    "krill-swarm",
+    "lemming-swarm",
+    "ringed-seal"
+   ],
+   "focuses": [
+    "swarm",
+    "family:evasion",
+    "family:cold",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:evasion",
+    "family:cold"
+   ],
+   "facts": {
+    "listSize": 12,
+    "anchor": 12,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1,
+     "curve": {
+      "0": 3,
+      "1": 8,
+      "4": 1
+     }
+    },
+    "generators": [
+     "talus-pika"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "evasion 7",
+     "cold 4"
+    ],
+    "high": [
+     "glacial-ape-king"
+    ]
+   }
+  },
+  "md": {
+   "id": "md",
+   "num": 18,
+   "side": null,
+   "name": "The Glass Dunes",
+   "opens": 18,
+   "cap": "veryrare",
+   "anchor": [
+    "antlion-pit",
+    "bison-bulldozer",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-packrat",
+    "dust-devil-kestrel",
+    "dust-hyena",
+    "fennec-fox",
+    "komodo-warlord",
+    "meerkat-burrower",
+    "obsidian-scorpion",
+    "roadrunner-courier",
+    "sand-widow",
+    "sandfish",
+    "spitting-cobra",
+    "thorny-devil"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "monitor-rambler",
+    "banded-sea-krait",
+    "glimmer-spider",
+    "grave-grin-hyena",
+    "lovebird",
+    "mongoose-duelist"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "squires-mount",
+    "ibex-rockcaller",
+    "walrus-icebreaker"
+   ],
+   "pool": [
+    "antlion-pit",
+    "banded-sea-krait",
+    "bison-bulldozer",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-packrat",
+    "dust-devil-kestrel",
+    "dust-hyena",
+    "eagle-owl-quartermaster",
+    "fennec-fox",
+    "glimmer-spider",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "komodo-warlord",
+    "lovebird",
+    "meerkat-burrower",
+    "mongoose-duelist",
+    "monitor-rambler",
+    "obsidian-scorpion",
+    "roadrunner-courier",
+    "sand-widow",
+    "sandfish",
+    "spitting-cobra",
+    "squires-mount",
+    "stoat-cutthroat",
+    "thorny-devil",
+    "walrus-icebreaker",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "trapdoor-spider"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "family:poison",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:armor"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 1.13,
+     "curve": {
+      "0": 1,
+      "1": 13,
+      "2": 1,
+      "3": 1
+     }
+    },
+    "generators": [
+     "dune-packrat",
+     "dust-hyena"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 6",
+     "armor 2"
+    ],
+    "high": [
+     "komodo-warlord",
+     "sand-widow"
+    ]
+   }
+  },
+  "mpd": {
+   "id": "mpd",
+   "num": 18,
+   "side": "md",
+   "name": "The Pale Desert",
+   "opens": 19,
+   "cap": "veryrare",
+   "anchor": [
+    "antlion-pit",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-packrat",
+    "dust-devil-kestrel",
+    "dust-hyena",
+    "fennec-fox",
+    "quicksand-queen",
+    "roadrunner-courier",
+    "sand-widow",
+    "sandfish",
+    "skull-vulture",
+    "thorny-devil"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "frillneck-duelist",
+    "glasswing-moth",
+    "glimmer-spider",
+    "meerkat-burrower",
+    "banded-sea-krait",
+    "gallery-orb-weaver"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "antlion-pit",
+    "banded-sea-krait",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-packrat",
+    "dust-devil-kestrel",
+    "dust-hyena",
+    "eagle-owl-quartermaster",
+    "fennec-fox",
+    "frillneck-duelist",
+    "gallery-orb-weaver",
+    "glasswing-moth",
+    "glimmer-spider",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "meerkat-burrower",
+    "quicksand-queen",
+    "roadrunner-courier",
+    "sand-widow",
+    "sandfish",
+    "skull-vulture",
+    "squires-mount",
+    "stoat-cutthroat",
+    "thorny-devil",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "armadillo-guard",
+    "cinder-gecko",
+    "dune-jackal-scout",
+    "horned-lizard",
+    "pale-oryx",
+    "rabid-jackal",
+    "sandstorm-roc",
+    "stonedrop-vulture",
+    "trapdoor-spider"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "family:poison",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:poison",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 13,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 1,
+     "curve": {
+      "0": 1,
+      "1": 11,
+      "2": 1
+     }
+    },
+    "generators": [
+     "dune-packrat",
+     "dust-hyena"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "poison 5",
+     "night 3"
+    ],
+    "high": [
+     "sand-widow"
+    ]
+   }
+  },
+  "m3": {
+   "id": "m3",
+   "num": 19,
+   "side": null,
+   "name": "Ashen Spurn",
+   "opens": 19,
+   "cap": "veryrare",
+   "anchor": [
+    "cinder-stoker",
+    "echidna-quillshot",
+    "fire-salamander",
+    "glacial-ape-king",
+    "glacier-wolf-pack",
+    "hercules-beetle",
+    "magma-titan",
+    "obsidian-scorpion",
+    "phoenix-fledgling",
+    "porcupine-roller",
+    "pumice-beetle",
+    "quill-volley",
+    "talus-pika",
+    "yeti"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "yeti-chieftain: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "guano-beetle",
+    "lantern-spark-fly",
+    "mosquito-cloud",
+    "stag-beetle",
+    "alpine-salamander",
+    "apollo-butterfly"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "alpine-salamander",
+    "apollo-butterfly",
+    "cinder-stoker",
+    "eagle-owl-quartermaster",
+    "echidna-quillshot",
+    "fire-salamander",
+    "glacial-ape-king",
+    "glacier-wolf-pack",
+    "grave-grin-hyena",
+    "guano-beetle",
+    "hercules-beetle",
+    "ibex-rockcaller",
+    "lantern-spark-fly",
+    "magma-titan",
+    "mosquito-cloud",
+    "obsidian-scorpion",
+    "phoenix-fledgling",
+    "porcupine-roller",
+    "pumice-beetle",
+    "quill-volley",
+    "squires-mount",
+    "stag-beetle",
+    "stoat-cutthroat",
+    "talus-pika",
+    "wolf-spider-mother",
+    "yeti"
+   ],
+   "fightOnly": [
+    "scree-goat"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:bleed"
+   ],
+   "facts": {
+    "listSize": 14,
+    "anchor": 14,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.43,
+     "curve": {
+      "0": 3,
+      "1": 6,
+      "2": 2,
+      "3": 2,
+      "4": 1
+     }
+    },
+    "generators": [
+     "pumice-beetle",
+     "talus-pika"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 5",
+     "bleed 3"
+    ],
+    "high": [
+     "glacial-ape-king",
+     "magma-titan",
+     "yeti"
+    ]
+   }
+  },
+  "m9": {
+   "id": "m9",
+   "num": 19,
+   "side": "m3",
+   "name": "Basalt Foundry",
+   "opens": 23,
+   "cap": "veryrare",
+   "anchor": [
+    "anvilwhisker-otter",
+    "ash-cloud-condor",
+    "ashbone-ghoul",
+    "cinder-gecko",
+    "ember-jackal",
+    "fire-salamander",
+    "hercules-beetle",
+    "magma-salamander",
+    "ore-smelter-mole",
+    "phoenix-fledgling",
+    "quill-volley",
+    "tide-spirit"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [
+    "ember-revenant: epic is over the map's rarity cap (veryrare)",
+    "yeti-chieftain: heroic is over the map's rarity cap (veryrare)"
+   ],
+   "heldTheme": [
+    "rimefire-salamander",
+    "firefly-swarm",
+    "ashwing-ptarmigan",
+    "ash-moth",
+    "magma-wraith",
+    "obsidian-lich"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "badger-berserker",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount"
+   ],
+   "pool": [
+    "anvilwhisker-otter",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "ashwing-ptarmigan",
+    "badger-berserker",
+    "cinder-gecko",
+    "eagle-owl-quartermaster",
+    "ember-jackal",
+    "fire-salamander",
+    "firefly-swarm",
+    "grave-grin-hyena",
+    "hercules-beetle",
+    "magma-salamander",
+    "magma-wraith",
+    "obsidian-lich",
+    "ore-smelter-mole",
+    "phoenix-fledgling",
+    "quill-volley",
+    "rimefire-salamander",
+    "squires-mount",
+    "stoat-cutthroat",
+    "tide-spirit",
+    "wolf-spider-mother"
+   ],
+   "fightOnly": [
+    "basalt-boar",
+    "beaver-lumberjack",
+    "chained-binturong",
+    "cinder-imp",
+    "flagellant-vulture",
+    "fruit-bat-familiar",
+    "granite-ox-golem",
+    "hellbender",
+    "pyroclast-wyrm",
+    "sulfur-vent-crab"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:fire",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:fire",
+    "family:flying"
+   ],
+   "facts": {
+    "listSize": 13,
+    "anchor": 12,
+    "cost": {
+     "min": 0,
+     "max": 2,
+     "avg": 0.92,
+     "curve": {
+      "0": 3,
+      "1": 7,
+      "2": 2
+     }
+    },
+    "generators": [
+     "ore-smelter-mole"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "fire 5",
+     "flying 5"
+    ],
+    "high": [
+     "anvilwhisker-otter",
+     "phoenix-fledgling"
+    ]
+   }
+  },
+  "m11": {
+   "id": "m11",
+   "num": 20,
+   "side": null,
+   "name": "The Sundered Peak",
+   "opens": 20,
+   "cap": "superrare",
+   "anchor": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "cinder-skeleton",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "echidna-quillshot",
+    "fumarole-ibex",
+    "glacier-wolf-pack",
+    "gorge-wyrm",
+    "magma-salamander",
+    "magma-wraith",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "pumice-beetle",
+    "stalactite-golem",
+    "vampire-roost",
+    "woodland-brawler"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "fire-salamander",
+    "ember-centipede",
+    "stonedrop-vulture",
+    "lantern-spark-fly",
+    "skull-vulture",
+    "hercules-beetle"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "cinder-skeleton",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "eagle-owl-quartermaster",
+    "echidna-quillshot",
+    "ember-centipede",
+    "fire-salamander",
+    "fumarole-ibex",
+    "glacier-wolf-pack",
+    "gorge-wyrm",
+    "grave-grin-hyena",
+    "hercules-beetle",
+    "ibex-rockcaller",
+    "lantern-spark-fly",
+    "magma-salamander",
+    "magma-wraith",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "pumice-beetle",
+    "skull-vulture",
+    "squires-mount",
+    "stalactite-golem",
+    "stoat-cutthroat",
+    "stonedrop-vulture",
+    "vampire-roost",
+    "wolf-spider-mother",
+    "woodland-brawler"
+   ],
+   "fightOnly": [
+    "bear-cub",
+    "obsidian-lich"
+   ],
+   "focuses": [
+    "economy",
+    "big",
+    "swarm",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:ranged"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 20,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.45,
+     "curve": {
+      "0": 3,
+      "1": 10,
+      "2": 3,
+      "3": 3,
+      "4": 1
+     }
+    },
+    "generators": [
+     "pack-mule",
+     "pumice-beetle"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 7",
+     "ranged 5"
+    ],
+    "high": [
+     "ancient-sloth-titan",
+     "cave-warlord",
+     "deep-cave-troll",
+     "gorge-wyrm"
+    ]
+   }
+  },
+  "me": {
+   "id": "me",
+   "num": 20,
+   "side": "m11",
+   "name": "Eye of the Volcano",
+   "opens": 20,
+   "cap": "epic",
+   "anchor": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "cave-warlord",
+    "cinder-skeleton",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "magma-wraith",
+    "obsidian-scorpion",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "stalactite-golem",
+    "the-contradiction",
+    "vampire-roost",
+    "woodland-brawler"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "fire-salamander",
+    "fumarole-ibex",
+    "skull-vulture",
+    "polar-bear",
+    "baby-bat",
+    "vampire-bat"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "baby-bat",
+    "cave-warlord",
+    "cinder-skeleton",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "eagle-owl-quartermaster",
+    "fire-salamander",
+    "fumarole-ibex",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "magma-wraith",
+    "obsidian-scorpion",
+    "ossuary-lammergeier",
+    "pack-mule",
+    "polar-bear",
+    "skull-vulture",
+    "squires-mount",
+    "stalactite-golem",
+    "stoat-cutthroat",
+    "the-contradiction",
+    "vampire-bat",
+    "vampire-roost",
+    "wolf-spider-mother",
+    "woodland-brawler"
+   ],
+   "fightOnly": [
+    "basalt-boar",
+    "bear-cub",
+    "blessed-avatar",
+    "cinder-gecko",
+    "cinder-imp",
+    "silverback-brawler",
+    "sulfur-vent-crab"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:flying",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "swarm",
+    "family:flying",
+    "family:night"
+   ],
+   "facts": {
+    "listSize": 11,
+    "anchor": 16,
+    "cost": {
+     "min": 0,
+     "max": 4,
+     "avg": 1.38,
+     "curve": {
+      "0": 3,
+      "1": 8,
+      "2": 2,
+      "3": 2,
+      "4": 1
+     }
+    },
+    "generators": [
+     "pack-mule"
+    ],
+    "stoneMetal": [],
+    "families": [
+     "flying 7",
+     "night 5"
+    ],
+    "high": [
+     "ancient-sloth-titan",
+     "cave-warlord",
+     "deep-cave-troll"
+    ]
+   }
+  },
+  "mx": {
+   "id": "mx",
+   "num": 20,
+   "side": "m11",
+   "name": "Volcano Lair",
+   "opens": 20,
+   "cap": "heroic",
+   "anchor": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "caldera-wyrm",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "ember-centipede",
+    "ember-jackal",
+    "fire-drake-hatchling",
+    "magma-salamander",
+    "magma-titan",
+    "magma-wraith",
+    "obsidian-scorpion",
+    "pack-mule",
+    "phoenix-fledgling",
+    "stalactite-golem",
+    "tide-spirit",
+    "vampire-roost",
+    "woodland-brawler"
+   ],
+   "anchorMin": 10,
+   "anchorDropped": [],
+   "heldTheme": [
+    "fire-salamander",
+    "cinder-skeleton",
+    "fumarole-ibex",
+    "stonedrop-vulture",
+    "polar-bear",
+    "cave-olm"
+   ],
+   "heldStrong": [
+    "wolf-spider-mother",
+    "eagle-owl-quartermaster",
+    "stoat-cutthroat",
+    "grave-grin-hyena",
+    "squires-mount",
+    "ibex-rockcaller"
+   ],
+   "pool": [
+    "ancient-sloth-titan",
+    "ash-cloud-condor",
+    "ash-moth",
+    "ashbone-ghoul",
+    "caldera-wyrm",
+    "cave-olm",
+    "cinder-skeleton",
+    "cinder-stoker",
+    "deep-cave-troll",
+    "eagle-owl-quartermaster",
+    "ember-centipede",
+    "ember-jackal",
+    "fire-drake-hatchling",
+    "fire-salamander",
+    "fumarole-ibex",
+    "grave-grin-hyena",
+    "ibex-rockcaller",
+    "magma-salamander",
+    "magma-titan",
+    "magma-wraith",
+    "obsidian-scorpion",
+    "pack-mule",
+    "phoenix-fledgling",
+    "polar-bear",
+    "squires-mount",
+    "stalactite-golem",
+    "stoat-cutthroat",
+    "stonedrop-vulture",
+    "tide-spirit",
+    "vampire-roost",
+    "wolf-spider-mother",
+    "woodland-brawler"
+   ],
+   "fightOnly": [
+    "basalt-boar",
+    "cinder-gecko",
+    "cinder-hornet",
+    "cinder-imp",
+    "pyroclast-wyrm",
+    "silverback-brawler"
+   ],
+   "focuses": [
+    "big",
+    "swarm",
+    "family:fire",
+    "open"
+   ],
+   "focusesAvailable": [
+    "open",
+    "big",
+    "economy",
+    "stone/metal",
+    "swarm",
+    "family:fire",
+    "family:flying"
+   ],
+   "facts": {
+    "listSize": 15,
+    "anchor": 20,
+    "cost": {
+     "min": 0,
+     "max": 3,
+     "avg": 1.2,
+     "curve": {
+      "0": 6,
+      "1": 7,
+      "2": 4,
+      "3": 3
+     }
+    },
+    "generators": [
+     "pack-mule"
+    ],
+    "stoneMetal": [
+     "caldera-wyrm (metal 1)"
+    ],
+    "families": [
+     "fire 5",
+     "flying 5"
+    ],
+    "high": [
+     "ancient-sloth-titan",
+     "deep-cave-troll",
+     "fire-drake-hatchling",
+     "magma-titan",
+     "phoenix-fledgling",
+     "stalactite-golem",
+     "vampire-roost"
+    ]
+   }
+  }
+ },
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchorMin": 10,
+  "heldTheme": 6,
+  "heldStrong": 6,
+  "level": 1,
+  "budget": 12000,
+  "finalGames": 24
+ }
+}

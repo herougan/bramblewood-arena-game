@@ -39,7 +39,8 @@ const HELP = {
   --pool a,b,c      the card list (default: the map's own pool, deckopt's bpro list)
   --max-unique 6 --max-copies 4 --size 20   the deck rule (owner step 4: at most 6 different cards, at most 4 copies each)
   --budget G        search games in all (default 9000, about 8 minutes on 2 cores)   --apart 6   copies each focus's deck keeps from the earlier ones   --focus open,big,economy,swarm,<family>  (default: every focus the pool supports)
-  --final-games F   games per gauntlet entry for the reported decks (default 24)   --level L (default the map's reference level)`,
+  --final-games F   games per gauntlet entry for the reported decks (default 24)   --level L (default the map's reference level)
+  --anchor a,b,c --anchor-min N   (DECK1) at least N copies (default 10) from the anchor list (the map's own list); --focus sets the order`,
 };
 
 async function main(argv) {
@@ -55,6 +56,7 @@ async function main(argv) {
       case '--max-unique': o.maxUnique = +a.shift(); break; case '--max-copies': o.maxCopies = +a.shift(); break; case '--size': o.size = +a.shift(); break;
       case '--budget': o.budget = +a.shift(); break; case '--focus': o.focus = a.shift().split(','); break; case '--final-games': o.finalGames = +a.shift(); break;
       case '--road-weight': o.roadWeight = +a.shift(); break; case '--apart': o.apart = +a.shift(); break;
+      case '--anchor': o.anchor = a.shift().split(',').map(s => s.trim()).filter(Boolean); break; case '--anchor-min': o.anchorMin = +a.shift(); break; // 2026-10-30 (DECK1)
       case '--help': case '-h': console.log(HELP[cmd] || HELP.main); return;
       default: if (!k.startsWith('--') && cmd === 'skill') { (o.skills = o.skills || []).push(k); break; } throw new Error('unknown option ' + k + ' (bench.js help ' + cmd + ')');
     }

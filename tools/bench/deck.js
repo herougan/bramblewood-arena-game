@@ -37,7 +37,10 @@ function focusesFor(gm, pool, rules, want) {
   const fam = Object.keys(rules.families).map(f => ({ f, ids: A.filter(a => a.keys.some(k => rules.families[f].includes(k))).map(a => a.id) })).filter(x => x.ids.length >= 2 && x.f !== 'economy' && x.f !== 'swarm')
     .sort((a, b) => b.ids.length - a.ids.length || (a.f < b.f ? -1 : 1)).slice(0, 2);
   fam.forEach(x => add('family:' + x.f, x.f + ' (skill family)', x.ids, 8));
-  return want ? F.filter(f => want.includes(f.id) || want.includes(f.id.replace(/^family:/, ''))) : F;
+  // 2026-10-30 (package DECK1): the focuses run in the order --focus names them (DECK1 runs the named focuses first and `open` last, so
+  // `open` is the strongest deck at least --apart copies from the focused ones instead of a shallow first search they all start from)
+  const nameOf = f => [f.id, f.id.replace(/^family:/, '')];
+  return want ? want.map(w => F.find(f => nameOf(f).includes(w))).filter(Boolean) : F;
 }
 
 // ---------------------------------------------------------------- the deck rule
@@ -46,7 +49,11 @@ function rule(gm, o) {
   const cap = id => Math.min(C, O.capOf(gm, id));
   const uniq = d => Object.keys(d).filter(k => d[k] > 0).length, tot = O.deckTotal;
   const canAdd = (d, id) => (d[id] || 0) < cap(id) && (d[id] > 0 || uniq(d) < U) && O.canAdd(gm, d, id);
-  const legal = (d, pool) => tot(d) === size && uniq(d) <= U && Object.keys(d).every(id => d[id] > 0 && d[id] <= cap(id) && pool.includes(id));
+  // 2026-10-30 (package DECK1, owner step 4: the decks are the map's, so they are built "from that map's current list"): --anchor a,b,c
+  // (the map's own list) and --anchor-min N: at least N copies of the deck come from the anchor list (0 = no anchor rule)
+  const anchor = o.anchor ? new Set(o.anchor) : null, AM = anchor ? (o.anchorMin != null ? o.anchorMin : 10) : 0;
+  const anchorCopies = d => anchor ? Object.keys(d).reduce((t, id) => t + (anchor.has(id) ? d[id] : 0), 0) : 0;
+  const legal = (d, pool) => tot(d) === size && uniq(d) <= U && Object.keys(d).every(id => d[id] > 0 && d[id] <= cap(id) && pool.includes(id)) && anchorCopies(d) >= AM;
   const focusCopies = (d, f) => f.cards ? Object.keys(d).reduce((t, id) => t + (f.cards.includes(id) ? d[id] : 0), 0) : 0;
   // a legal deck near `deck`: inside the pool and the caps, at most U cards (the fewest copies go), size cards, the focus's minimum
   function repair(deck, pool, rng, f, prefer) {
@@ -69,9 +76,18 @@ function rule(gm, o) {
       if (--d[out] <= 0) delete d[out];
       const inn = f.cards.filter(id => canAdd(d, id)).sort((a, b) => (d[b] ? 1 : 0) - (d[a] ? 1 : 0) || score(b) - score(a))[0]; if (!inn) { d[out] = (d[out] || 0) + 1; break; } d[inn] = (d[inn] || 0) + 1;
     }
+    // DECK1: the anchor, swapping outside copies for the map's own cards (never below the focus's minimum)
+    guard = 0;
+    while (anchor && anchorCopies(d) < AM && guard++ < 60) {
+      const spare = id => !(f && f.cards && f.cards.includes(id)) || focusCopies(d, f) > f.need;
+      const out = Object.keys(d).filter(id => !anchor.has(id) && spare(id)).sort((a, b) => score(a) - score(b))[0]; if (!out) break;
+      if (--d[out] <= 0) delete d[out];
+      const cands = [...anchor].filter(id => pool.includes(id) && canAdd(d, id)), inF = id => f && f.cards && f.cards.includes(id) ? 1 : 0;
+      const inn = cands.sort((a, b) => (d[b] ? 1 : 0) - (d[a] ? 1 : 0) || inF(b) - inF(a) || score(b) - score(a))[0]; if (!inn) { d[out] = (d[out] || 0) + 1; break; } d[inn] = (d[inn] || 0) + 1;
+    }
     return d;
   }
-  return { U, C, size, cap, uniq, canAdd, legal, focusCopies, repair };
+  return { U, C, size, cap, uniq, canAdd, legal, focusCopies, anchorCopies, AM, repair };
 }
 function neighbours(gm, R, deck, pool, rng, f, k) {
   const out = [], seen = new Set([O.deckKey(deck)]); let tries = 0;
@@ -161,11 +177,11 @@ async function main(o) {
       copiesApartFromOpen: openBest ? O.dist(d, O.deckFromKey(openBest)) : null }; }).sort((a, b) => b.score - a.score);
   const res = { tool: 'tools/bench/bench.js deck ' + L.VERSION, generated: new Date().toISOString(), fingerprint: L.fingerprint(),
     map: { id: map.id, num: G.mapNumberOf(map.id), name: map.name }, level, pool, poolNames: pool.map(id => gm.D[id].name),
-    rule: { maxUnique: R.U, maxCopies: R.C, size: R.size }, settings: { seed, budget, finalGames: FG, roadWeight: o.roadWeight != null ? o.roadWeight : 0, mode: o.mode || 'bpro' },
+    rule: { maxUnique: R.U, maxCopies: R.C, size: R.size, anchor: o.anchor || null, anchorMin: R.AM }, settings: { seed, budget, finalGames: FG, roadWeight: o.roadWeight != null ? o.roadWeight : 0, mode: o.mode || 'bpro' },
     gauntlet: main.map(i => ({ key: entries[i].key, label: entries[i].label, weight: L.r4(entries[i].weight) })),
     focuses: focuses.map(f => ({ id: f.id, label: f.label, cards: f.cards, need: f.need })), searches: results.map(r => ({ focus: r.focus.id, steps: r.steps, moves: r.moves, games: r.games, apartFromEarlier: r.apartFromEarlier })), apart,
     seconds: Math.round((Date.now() - t0) / 1000), games: ev.games, decks,
-    reproduce: `node tools/bench/bench.js deck --map ${o.map}${o.pool ? ' --pool ' + o.pool.join(',') : ''} --max-unique ${R.U} --max-copies ${R.C} --budget ${budget} --final-games ${FG} --seed ${seed}${o.focus ? ' --focus ' + o.focus.join(',') : ''}` };
+    reproduce: `node tools/bench/bench.js deck --map ${o.map}${o.pool ? ' --pool ' + o.pool.join(',') : ''} --max-unique ${R.U} --max-copies ${R.C} --budget ${budget} --final-games ${FG} --seed ${seed}${o.focus ? ' --focus ' + o.focus.join(',') : ''}${o.anchor ? ' --anchor ' + o.anchor.join(',') + ' --anchor-min ' + R.AM : ''} --level ${level}${o.mode ? ' --mode ' + o.mode : ''}` };
   log(`${decks.length} decks, ${res.games} games in ${res.seconds} s:`);
   decks.forEach(d => log(`  ${(d.score * 100).toFixed(1)}% [${(d.ci[0] * 100).toFixed(1)}-${(d.ci[1] * 100).toFixed(1)}]  ${d.focus}: ${d.labels.join('; ')} | avg ${d.avgLumber} Lumber | ${d.cards.map(c => c.copies + 'x ' + c.name).join(', ')}`));
   if (!o.noSave) { const f = path.join(o.out || path.join(L.ROOT, 'docs', 'balance'), `bench-deck-map${String(res.map.num).padStart(2, '0')}-${map.id}-${o.tag || new Date().toISOString().slice(0, 10)}.json`);
