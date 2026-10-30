@@ -13946,6 +13946,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .vis4-map-cards{margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,.18);}
 .vis4-mc-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; opacity:.78; margin-bottom:6px;}
 .vis4-mc-row{display:flex; flex-wrap:wrap; gap:14px 6px; align-items:center; padding:6px 0 8px;}
+/* 2026-10-30 (coordinator, CS-B review): the chip strip spilled past the fight panel's foot (the panel has a fixed height and overflow visible); two rows of chips, the rest scrolls inside */
+.conquest-node-panel .vis4-mc-row{max-height:86px; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin;}
 .vis4-mc-card{position:relative; flex:0 0 auto; border-radius:6px; cursor:help; transition:transform .12s ease;}
 .vis4-mc-card:hover, .vis4-mc-card:focus-visible{transform:translateY(-2px);}
 .vis4-mc-card.is-mystery{cursor:default;}
