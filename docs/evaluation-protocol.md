@@ -87,3 +87,19 @@ Run simulations alone on the machine (2 cores); other builds or browser tests sl
 After any engine change that moves the CPU (EN8 is the example) run the road check: measure the whole road, retune only the road decks, measure again. Report: the fights in band before and after, the mean new-player win rate, the fights still outside, and the open owner call. The worked example is `docs/balance/pro3-road-check-2026-10-25.md`.
 
 Where a result needs the owner's play (Maps 16-24 on his new account, DF-1b; the reference deck as X-REF), say so and ask for it. A simulation does not stand in for his play-through.
+
+## 5. Measuring a skill against the canon (package BUDGET2, X14, 2026-10-31)
+
+Owner, 10-30: "we need to think of a robust way to measure skill strength, then for newer skill or doing sub-batching, comparing skills with a set of skills we have 'canonised' their values of."
+
+- **The canon:** the entries of `canonical/skill-costs.json` with `canon: true`. Each has `canonAt` (the numbers it is measured at) and `canonReason`. Their prices are fixed: they change only on the owner's word, and when one changes, every skill measured against the canon is re-read. `node tools/skill_canon_2026_10_31.js anchors` lists them.
+- **The measure:** `node tools/skill_canon_2026_10_31.js measure --skill <id>[=N]` (or the effects as JSON, a trigger as `{"triggers":[{...}]}`; `--map N` for a skill that needs its home maps, RECOST1-4). Six vanilla carriers (a Common and an Uncommon / Rare in each of three shapes: hitter, balanced, wall) each play as printed, with each anchor, with the test skill, +1 Health and +1 Attack, on the same fights (the bench's paired design, `tools/bench/lib.js`; 6-copy slot, Level 1, 30-Health brambles, Smart CPU both sides).
+- **Reading it:**
+  - **the ruler** (the verdict): the anchors sorted by their gain, their prices made non-decreasing; the test's gain is read between its two neighbours ("it gains what Bleed 2 gains, so it is worth what Bleed 2 costs");
+  - the median rate: the median over the anchors of gain / price, the test's gain divided by it;
+  - the stat yardstick: +1 Health = 1 point, +1 Attack = 3 points (3A + H), for comparison;
+  - 95% intervals by a bootstrap over fights; "between" names the two anchors either side.
+  A price that sits inside the ruler's interval is "within its interval", not "fair": the carriers are vanilla, so a skill that needs partners or a field reads low (measure it on its home map).
+- **Games:** 200 paired fights a variant (about 4-5 minutes for the anchors on 2 cores the first time; they are cached by the game's fingerprint, so a further skill in the same game costs about 30 seconds). Before a price change, 400. A stopped run resumes when re-run.
+- **Self-check:** `node tools/skill_canon_2026_10_31.js check` measures each anchor from the others (leave one out). An anchor outside its interval is a canon price to review (BUDGET2-2 records the first reading: 13 of 15 outside, `docs/balance/skill-canon-check-2026-10-31.json`). The check also prints κ, a stat point's worth in canon points: 1 means the canon prices and the 3A + H stats agree (BUDGET2-1).
+- **Sub-batching:** a batch of new skills is measured in one context with the same carriers and seed, so every skill shares the anchors' games and the results are comparable with each other and with the canon.
