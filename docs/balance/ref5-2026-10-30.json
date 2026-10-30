@@ -1,6 +1,6 @@
 {
  "about": "Package REF5 (owner 10-28 22:50, re-confirmed 10-30): the progression reference (\"Reference (Random)\", set id prog): 5 decks a main map from 5 seeded players' collections (docs/balance/ref/ref5-prog.json), measured against the Map reference. Built by tools/opt/ref5_prog.js and tools/opt/ref5_measure.js.",
- "generated": "2026-10-30T18:02:20.176Z",
+ "generated": "2026-10-30T19:41:26.297Z",
  "assumptions": {
   "mult": 1.5,
   "packShare": 1,
@@ -164,10 +164,10 @@
    ],
    "forgeLevels": 0,
    "freeLevels": 5.2,
-   "deckMeanLevel": 0.87,
+   "deckMeanLevel": 0.96,
    "deckLevelRange": [
-    0.65,
-    1.15
+    0.75,
+    1.1
    ],
    "refLevel": 0
   },
@@ -184,10 +184,10 @@
    ],
    "forgeLevels": 0,
    "freeLevels": 4.8,
-   "deckMeanLevel": 0.92,
+   "deckMeanLevel": 0.96,
    "deckLevelRange": [
-    0.65,
-    1.15
+    0.8,
+    1.1
    ],
    "refLevel": 0
   },
@@ -204,7 +204,7 @@
    ],
    "forgeLevels": 0,
    "freeLevels": 4,
-   "deckMeanLevel": 1.1,
+   "deckMeanLevel": 1.08,
    "deckLevelRange": [
     1,
     1.25
@@ -224,10 +224,10 @@
    ],
    "forgeLevels": 0,
    "freeLevels": 3.6,
-   "deckMeanLevel": 1.05,
+   "deckMeanLevel": 1.07,
    "deckLevelRange": [
-    1,
-    1.15
+    0.95,
+    1.25
    ],
    "refLevel": 0
   },
@@ -242,12 +242,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 23,
+   "forgeLevels": 21.2,
    "freeLevels": 3.2,
-   "deckMeanLevel": 2.58,
+   "deckMeanLevel": 2.65,
    "deckLevelRange": [
-    2.5,
-    2.7
+    2.6,
+    2.8
    ],
    "refLevel": 3
   },
@@ -262,12 +262,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 13.4,
+   "forgeLevels": 15.4,
    "freeLevels": 4.8,
-   "deckMeanLevel": 2.51,
+   "deckMeanLevel": 2.43,
    "deckLevelRange": [
     2.3,
-    2.65
+    2.55
    ],
    "refLevel": 3
   },
@@ -282,12 +282,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 13.2,
+   "forgeLevels": 20.6,
    "freeLevels": 3.4,
-   "deckMeanLevel": 2.91,
+   "deckMeanLevel": 2.46,
    "deckLevelRange": [
     2.05,
-    3.95
+    2.75
    ],
    "refLevel": 3
   },
@@ -302,12 +302,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 5.4,
+   "forgeLevels": 5.8,
    "freeLevels": 5.6,
-   "deckMeanLevel": 2.79,
+   "deckMeanLevel": 2.55,
    "deckLevelRange": [
     1.8,
-    4
+    3.2
    ],
    "refLevel": 3
   },
@@ -322,12 +322,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 5,
+   "forgeLevels": 5.6,
    "freeLevels": 3.4,
-   "deckMeanLevel": 2.78,
+   "deckMeanLevel": 2.39,
    "deckLevelRange": [
-    1.95,
-    4
+    1.65,
+    3.2
    ],
    "refLevel": 3
   },
@@ -342,12 +342,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 3.8,
+   "forgeLevels": 5.6,
    "freeLevels": 5.2,
-   "deckMeanLevel": 2.82,
+   "deckMeanLevel": 2.39,
    "deckLevelRange": [
-    1.8,
-    4
+    1.95,
+    3.4
    ],
    "refLevel": 3.18
   },
@@ -362,12 +362,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 5,
+   "forgeLevels": 5.2,
    "freeLevels": 4.6,
-   "deckMeanLevel": 2.89,
+   "deckMeanLevel": 2.25,
    "deckLevelRange": [
-    1.95,
-    4
+    1.85,
+    3.05
    ],
    "refLevel": 3.36
   },
@@ -382,12 +382,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 3.4,
+   "forgeLevels": 5.4,
    "freeLevels": 4,
-   "deckMeanLevel": 2.45,
+   "deckMeanLevel": 2.18,
    "deckLevelRange": [
-    1.45,
-    4
+    1.5,
+    3.55
    ],
    "refLevel": 3.54
   },
@@ -402,12 +402,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 6.8,
+   "forgeLevels": 7.4,
    "freeLevels": 3.8,
-   "deckMeanLevel": 2.47,
+   "deckMeanLevel": 2.11,
    "deckLevelRange": [
-    1.7,
-    3.9
+    1.55,
+    3.65
    ],
    "refLevel": 3.72
   },
@@ -422,12 +422,12 @@
    "packKinds": [
     "bronze"
    ],
-   "forgeLevels": 6.6,
+   "forgeLevels": 7.4,
    "freeLevels": 7.6,
-   "deckMeanLevel": 2.3,
+   "deckMeanLevel": 1.78,
    "deckLevelRange": [
     1.6,
-    3.2
+    2.2
    ],
    "refLevel": 3.9
   }
@@ -764,14 +764,14 @@
   },
   {
    "map": 7,
-   "sharedCopiesMean": 9.5,
+   "sharedCopiesMean": 8.9,
    "sharedCopiesMin": 5,
-   "distinctCards": 25,
+   "distinctCards": 31,
    "inAllFive": [
     "Otter Centurion",
     "Tunnel Ant"
    ],
-   "sharedWithMapRef": 10,
+   "sharedWithMapRef": 9.4,
    "pools": [
     154,
     154,
@@ -782,41 +782,44 @@
    "decks": [
     {
      "seed": 1,
-     "level": 1.15,
-     "cards": "4x Greyplume Fledgling, 4x Soldier Ant, 4x Worker Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Kittiwake Flock, 1x Petal Fletcher"
+     "level": 1.05,
+     "cards": "4x Soldier Ant, 4x Worker Ant, 3x Otter Centurion, 3x Otter Guard, 3x Tunnel Ant, 1x Burrow Rabbit, 1x Cobalt Talon Skirmisher, 1x The Old Shell"
     },
     {
      "seed": 2,
-     "level": 1,
-     "cards": "5x Soldier Ant, 4x Greyplume Fledgling, 3x Otter Centurion, 3x Tunnel Ant, 3x Worker Ant, 1x Otter Guard, 1x Pyrenean Desman"
+     "level": 1.1,
+     "cards": "3x Otter Centurion, 3x Tunnel Ant, 2x Alley Cat, 1x Conch Herald, 1x Cricket Drummer, 1x Fire Ant Raft, 1x Ford Kingfisher, 1x Greyplume Fledgling, 1x Honey Bee, 1x Meadow Frog, 1x Nectar Sipper, 1x Pond Trout, 1x River Carp, 1x Soldier Ant, 1x Terrier Pup"
     },
     {
      "seed": 3,
-     "level": 0.65,
-     "cards": "4x Meadow Frog, 3x Otter Centurion, 3x Otter Guard, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Ant Hill, 1x Ant Scout, 1x Bee Forager, 1x Cricket Drummer, 1x Crossed-Eyes, 1x Sunfeather Scout"
+     "level": 1.05,
+     "cards": "4x Soldier Ant, 4x Worker Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Ant Scout, 1x Crossed-Eyes, 1x Fire Ant Raft, 1x Hedge Changeling, 1x Marsh Harrier, 1x Peak Condor"
     },
     {
      "seed": 4,
      "level": 0.85,
-     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Clap-net Trapper, 1x Cricket Drummer, 1x Fen Mink, 1x Otter Lantern Bearer, 1x Rabbit Kit"
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Burrow Rabbit, 3x Otter Centurion, 2x Tunnel Ant, 1x Clap-net Trapper, 1x Cricket Drummer, 1x Gannet Nestweaver, 1x Otter Lantern Bearer"
     },
     {
      "seed": 5,
-     "level": 0.7,
-     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Tunnel Ant, 1x Box Turtle, 1x Burrow Rabbit, 1x Cricket Drummer, 1x Shellwright Apprentice, 1x Slow-worm, 1x Sparrow Chick, 1x Sunfeather Scout"
+     "level": 0.75,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Shellwright Apprentice, 2x Tunnel Ant, 1x Burrow Rabbit, 1x Cricket Drummer, 1x Hedgerow Shrew, 1x Nutria Reedcutter, 1x Soldier Ant"
     }
    ]
   },
   {
    "map": 8,
-   "sharedCopiesMean": 7.6,
-   "sharedCopiesMin": 2,
-   "distinctCards": 39,
+   "sharedCopiesMean": 13.8,
+   "sharedCopiesMin": 12,
+   "distinctCards": 28,
    "inAllFive": [
+    "Muskrat Lodgekeeper",
     "Otter Centurion",
-    "Otter Guard"
+    "Otter Guard",
+    "Soldier Ant",
+    "Tunnel Ant"
    ],
-   "sharedWithMapRef": 9.6,
+   "sharedWithMapRef": 14.4,
    "pools": [
     173,
     173,
@@ -827,38 +830,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 0.9,
-     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Alley Cat, 1x Alligator Gar, 1x Crossed-Eyes, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Red-billed Chough"
+     "level": 1,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 3x Worker Ant, 1x Constrictor Coil, 1x Muskrat Lodgekeeper, 1x Muskrat Reedgatherer"
     },
     {
      "seed": 2,
-     "level": 1.05,
-     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Beaver Lumberjack, 1x Bee Drone, 1x Conch Crawler, 1x Earthworm, 1x Muskrat Lodgekeeper, 1x Shell-Cracker"
+     "level": 1.1,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Conch Crawler, 1x Muskrat Lodgekeeper, 1x Old Snapjaw, 1x Snapstick Turtle, 1x The Gannet Queen, 1x Truffle Piglet"
     },
     {
      "seed": 3,
-     "level": 0.65,
-     "cards": "4x Meadow Frog, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Ant Hill, 1x Ant Scout, 1x Chipmunk Skirmisher, 1x Constrictor Coil, 1x Cricket Drummer, 1x Meadow Rabbit, 1x Otter Guard, 1x Sunfeather Scout, 1x Truffle Piglet"
+     "level": 0.85,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Chipmunk Skirmisher, 1x Crimson Wing Duelist Cadet, 1x Muskrat Lodgekeeper, 1x Peregrine Stooper, 1x Rivergate Recruit, 1x Voidfeather Scout"
     },
     {
      "seed": 4,
-     "level": 0.85,
-     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Cricket Drummer, 1x Fen Mink, 1x Otter Lantern Bearer, 1x Soldier Ant, 1x Trash Panda Trickster"
+     "level": 1.05,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Bombardier Beetle, 1x Muskrat Lodgekeeper, 1x Pyrenean Desman, 1x Shell-Cracker, 1x Shellwright Apprentice, 1x Woodpecker Sapper"
     },
     {
      "seed": 5,
-     "level": 1.15,
-     "cards": "2x Clap-net Trapper, 1x Ant Scout, 1x Bee Knight, 1x Chipmunk Skirmisher, 1x Cobalt Talon Skirmisher, 1x Compost Grub, 1x Cricket Drummer, 1x Dormouse, 1x Marsh Wisp, 1x Otter Centurion, 1x Otter Guard, 1x Otter Lantern Bearer, 1x Otter Riverguard, 1x Owl Nightwatch, 1x Pond Trout, 1x Shell-Cracker, 1x Snapper Hatchling, 1x Sulfur Cinder Moth, 1x The Drowned Matriarch"
+     "level": 0.8,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Cricket Drummer, 1x Muskrat Lodgekeeper, 1x Owl Nightwatch, 1x Soldier Ant, 1x Stone Turtle Warden, 1x Sunfeather Scout"
     }
    ]
   },
   {
    "map": 9,
-   "sharedCopiesMean": 1.9,
+   "sharedCopiesMean": 2.8,
    "sharedCopiesMin": 0,
-   "distinctCards": 65,
+   "distinctCards": 58,
    "inAllFive": [],
-   "sharedWithMapRef": 3.6,
+   "sharedWithMapRef": 6,
    "pools": [
     188,
     187,
@@ -869,38 +872,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 1.15,
-     "cards": "2x Fire Ant Raft, 2x Otter Guard, 1x Alley Cat, 1x Bog Leech, 1x Caiman Hatchling, 1x Cobalt Fledgling, 1x Dung Beetle, 1x Ferry Toll-Frog, 1x Giant Cave Huntsman, 1x Grass Viper, 1x Grey Seal Bull, 1x Greyplume Fledgling, 1x Hawthorn Shieldbug, 1x Honeyjoe Brewer, 1x Oystercatcher, 1x Star-nosed Mole, 1x The Heron Hag, 1x Tide Pool Crab"
+     "level": 1.25,
+     "cards": "5x Soldier Ant, 4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Alley Cat, 1x Fen Mink, 1x Fire Ant Raft, 1x Phoenix Mushrooms, 1x Pyrenean Desman"
     },
     {
      "seed": 2,
-     "level": 1,
-     "cards": "4x Bee Forager, 4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Dominion Nestguard, 1x Grass Viper"
+     "level": 1.05,
+     "cards": "5x Bee Forager, 5x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Ant Warrior, 1x Beaver Lumberjack, 1x Bee Drone, 1x Shell-Cracker"
     },
     {
      "seed": 3,
-     "level": 1,
-     "cards": "2x Gannet Nestweaver, 1x Alligator Gar, 1x Bramble Sprout, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Dung Beetle, 1x Echo Matriarch, 1x Field Mouse, 1x Helmeted Otter, 1x Lantern Bearer, 1x Nutria Reedcutter, 1x Old Snapjaw, 1x Otter Angler, 1x Phoenix Mushrooms, 1x Pond Algae, 1x Pyrenean Desman, 1x Slow-worm, 1x The Drowned Matriarch, 1x Tunnel Ant"
+     "level": 1.05,
+     "cards": "2x Gannet Nestweaver, 1x Alligator Gar, 1x Beaver Lumberjack, 1x Bramble Sprout, 1x Echo Screecher, 1x Fen Mink, 1x Field Mouse, 1x Hedge Changeling, 1x Helmeted Otter, 1x Lantern Bearer, 1x Phoenix Mushrooms, 1x Puffin Diver, 1x Pyrenean Desman, 1x Slow-worm, 1x Sphagnum Vole, 1x Terrier Pup, 1x The Drowned Matriarch, 1x Tide Pool Crab, 1x Tunnel Ant"
     },
     {
      "seed": 4,
-     "level": 1.25,
-     "cards": "4x Fleetfoot'd, 1x Adder Ambusher, 1x Badger Stonemason, 1x Bramble Sprout, 1x Cobalt Fledgling, 1x Cottontail, 1x Fen Mink, 1x Grass Viper, 1x Grey Seal Bull, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Kit, 1x Otter Netmender, 1x Otter Paddler, 1x Shellwright Apprentice, 1x Silver Minnow, 1x Wolf Spider Mother"
+     "level": 1.05,
+     "cards": "3x Bog Leech, 1x Alligator Gar, 1x Cave Olm, 1x Chipmunk Skirmisher, 1x Conch Herald, 1x Constrictor Coil, 1x Ferry Toll-Frog, 1x Field Vole, 1x Honeyjoe Brewer, 1x Lantern Bearer, 1x Nectar Sipper, 1x Otter Netmender, 1x Owl Nightwatch, 1x Phoenix Mushrooms, 1x Rootworm Colony, 1x Soldier Ant, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 1.1,
-     "cards": "1x Alligator Gar, 1x Birdlime Dauber, 1x Chipmunk Skirmisher, 1x Cobalt Fledgling, 1x Echo Matriarch, 1x Fungal Colossus, 1x Hawthorn Shieldbug, 1x Honey Bee, 1x Honeyjoe Brewer, 1x Mist-net Otter, 1x Old Sturgeon, 1x Otter Ferryman, 1x Otter Shieldback, 1x Pond Algae, 1x Pond Trout, 1x Raven Scout, 1x Riverworks Bastion, 1x Slow-worm, 1x Snapstick Turtle, 1x Sulfur Cinder Moth"
+     "level": 1,
+     "cards": "1x Alligator Gar, 1x Birdlime Dauber, 1x Clap-net Trapper, 1x Cobalt Fledgling, 1x Crossed-Eyes, 1x Echo Matriarch, 1x Hawthorn Shieldbug, 1x Honeyjoe Brewer, 1x Hush-Wing Spy, 1x Old Sturgeon, 1x Otter Ferryman, 1x Otter Shieldback, 1x Pond Algae, 1x Pond Trout, 1x Raven Scout, 1x Riverworks Bastion, 1x Slow-worm, 1x Snapstick Turtle, 1x Sparrow Chick, 1x Sulfur Cinder Moth"
     }
    ]
   },
   {
    "map": 10,
-   "sharedCopiesMean": 1.8,
+   "sharedCopiesMean": 3.4,
    "sharedCopiesMin": 0,
-   "distinctCards": 70,
+   "distinctCards": 55,
    "inAllFive": [],
-   "sharedWithMapRef": 1.2,
+   "sharedWithMapRef": 5.6,
    "pools": [
     199,
     198,
@@ -911,40 +914,41 @@
    "decks": [
     {
      "seed": 1,
-     "level": 1.1,
-     "cards": "1x Alley Cat, 1x Bee Drone, 1x Bog Leech, 1x Chipmunk Forager, 1x Cobalt Fledgling, 1x Dung Beetle, 1x Ferry Toll-Frog, 1x Giant Cave Huntsman, 1x Grass Viper, 1x Grey Seal Bull, 1x Harvest Mouse, 1x Honeyjoe Brewer, 1x Minnow Skitter, 1x Mosswing, 1x Otter Angler, 1x Oystercatcher, 1x Raven Scout, 1x Star-nosed Mole, 1x Swamp Alligator, 1x Voidfeather Scout"
+     "level": 0.95,
+     "cards": "4x Crimson Recruit, 4x Worker Ant, 1x Adder Ambusher, 1x Bee Forager, 1x Echo Screecher, 1x Golden Eagle Diver, 1x Hedgerow Shrew, 1x Honeyjoe Brewer, 1x Mangrove Kingfisher, 1x Mangrove Manatee, 1x Muskrat Lodgekeeper, 1x Riverwing Envoy, 1x Sunfeather Scout, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
      "level": 1,
-     "cards": "4x Bee Forager, 4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Dominion Nestguard, 1x Grass Viper"
+     "cards": "4x Bee Forager, 4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Bee Drone, 1x Grass Viper"
     },
     {
      "seed": 3,
-     "level": 1,
-     "cards": "1x Bog Leech, 1x Bramble Sprout, 1x Dormouse, 1x Dung Beetle, 1x Echo Matriarch, 1x Fen Mink, 1x Field Mouse, 1x Greyplume Fledgling, 1x Hawthorn Shieldbug, 1x Lantern Bearer, 1x Mangrove Kingfisher, 1x Nutria Reedcutter, 1x Old Snapjaw, 1x Otter Angler, 1x Pond Algae, 1x Pyrenean Desman, 1x Slow-worm, 1x The Drowned Matriarch, 1x Tunnel Ant, 1x Wolf Spider Mother"
+     "level": 1.05,
+     "cards": "4x Crimson Recruit, 1x Adder Ambusher, 1x Archerfish, 1x Birdlime Dauber, 1x Bramble Sprout, 1x Dormouse, 1x Echo Matriarch, 1x Field Mouse, 1x Nutria Reedcutter, 1x Old Snapjaw, 1x Otter Angler, 1x Pond Algae, 1x Pyrenean Desman, 1x Rivergate Recruit, 1x Tomcat, 1x Tunnel Ant, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 1,
-     "cards": "1x Adder Ambusher, 1x Box Turtle, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Duckling, 1x Field Vole, 1x Leafcutter Gardener, 1x Mangrove Kingfisher, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Nectar Sipper, 1x Newt Doctor, 1x Otter Angler, 1x Otter Shieldback, 1x Sheep, 1x Trash Panda Trickster, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+     "level": 1.25,
+     "cards": "4x Fleetfoot'd, 1x Adder Ambusher, 1x Badger Stonemason, 1x Bramble Sprout, 1x Cobalt Fledgling, 1x Cottontail, 1x Dawn Bellringer, 1x Fen Mink, 1x Grey Seal Bull, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Kit, 1x Otter Netmender, 1x Otter Paddler, 1x Raven Scout, 1x Sparrow Chick, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 1.15,
-     "cards": "1x Alligator Gar, 1x Birdlime Dauber, 1x Chipmunk Skirmisher, 1x Cobalt Fledgling, 1x Echo Matriarch, 1x Fungal Colossus, 1x Hawthorn Shieldbug, 1x Honey Bee, 1x Honeyjoe Brewer, 1x Mist-net Otter, 1x Old Sturgeon, 1x Otter Ferryman, 1x Otter Shieldback, 1x Pond Algae, 1x Pond Trout, 1x Raven Scout, 1x Riverworks Bastion, 1x Slow-worm, 1x Snapstick Turtle, 1x Sulfur Cinder Moth"
+     "level": 1.1,
+     "cards": "4x Crimson Recruit, 1x Adder Ambusher, 1x Beaver Lumberjack, 1x Bee Forager, 1x Birdlime Dauber, 1x Chipmunk Skirmisher, 1x Fungal Colossus, 1x Honey Bee, 1x Honeyjoe Brewer, 1x Mist-net Otter, 1x Otter Ferryman, 1x Pond Trout, 1x Raven Scout, 1x Slow-worm, 1x Sulfur Cinder Moth, 1x Wolf Spider Mother, 1x Worker Ant"
     }
    ]
   },
   {
    "map": 11,
-   "sharedCopiesMean": 6.4,
+   "sharedCopiesMean": 8.2,
    "sharedCopiesMin": 2,
-   "distinctCards": 52,
+   "distinctCards": 51,
    "inAllFive": [
+    "Muskrat Lodgekeeper",
     "Wolf Spider Mother"
    ],
-   "sharedWithMapRef": 8.2,
+   "sharedWithMapRef": 9.8,
    "pools": [
     215,
     213,
@@ -955,36 +959,36 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.5,
-     "cards": "2x Tomcat, 1x Burrow Rabbit, 1x Crocodile Ambusher, 1x Echo Screecher, 1x Electric Ray, 1x Gannet Nestweaver, 1x Giant Cave Huntsman, 1x Helmeted Otter, 1x Hush-Wing Spy, 1x Muskrat Lodgekeeper, 1x Net Thrower, 1x Newt Doctor, 1x Owl Sentinel, 1x Phoenix Mushrooms, 1x River Carp, 1x Sphagnum Vole, 1x The Heron Hag, 1x Wolf Spider Mother, 1x Worker Ant"
+     "level": 2.8,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Birdlime Dauber, 1x Dormouse, 1x Dung Beetle, 1x Echo Screecher, 1x Electric Ray, 1x Muskrat Lodgekeeper, 1x Net Thrower, 1x River Carp, 1x Sea Turtle Elder, 1x Tomcat, 1x Wolf Spider Mother, 1x Worker Ant"
     },
     {
      "seed": 2,
      "level": 2.6,
-     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Echo Screecher, 1x Electric Ray, 1x Octopus Tactician, 1x Petal Fletcher, 1x Sea Turtle Elder, 1x Upside-Down Bat, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Crimson Wing Duelist Cadet, 1x Echo Screecher, 1x Electric Ray, 1x Muskrat Lodgekeeper, 1x Octopus Tactician, 1x Otter Guard, 1x Petal Fletcher, 1x Sea Turtle Elder, 1x Upside-Down Bat, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
     },
     {
      "seed": 3,
-     "level": 2.5,
-     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Mangrove Manatee, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Riverside Peddler, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+     "level": 2.65,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Adder Ambusher, 1x Chipmunk Cavalry, 1x Conch Herald, 1x Echo Screecher, 1x Hedge Changeling, 1x Meadow Rabbit, 1x Muskrat Lodgekeeper, 1x Octopus Tactician, 1x Razorbill, 1x Riverside Peddler, 1x Tomcat, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
      "level": 2.6,
-     "cards": "1x Adder Ambusher, 1x Box Turtle, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Recruit, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Duckling, 1x Kraken Spawnling, 1x Leafcutter Gardener, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Flag Bearer, 1x Otter Shieldback, 1x Sheep, 1x Swordfish Spearman, 1x Trash Panda Trickster, 1x Violet Vane Fletcher, 1x Wolf Spider Mother, 1x Woodpecker Sapper"
+     "cards": "1x Adder Ambusher, 1x Bog Leech, 1x Box Turtle, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Ferry Toll-Frog, 1x Field Vole, 1x Leafcutter Gardener, 1x Mangrove Kingfisher, 1x Mudpuppy, 1x Muskrat Lodgekeeper, 1x Otter Shieldback, 1x Owl Nightwatch, 1x Peak Condor, 1x Reef Admiral, 1x Sphagnum Vole, 1x Trash Panda Trickster, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 2.7,
-     "cards": "5x Burrow Rabbit, 4x Crimson Recruit, 1x Bee Drone, 1x Coral Reef Shark, 1x Crocodile Ambusher, 1x Echo Screecher, 1x Electric Ray, 1x Mangrove Monitor, 1x Muskrat Lodgekeeper, 1x Shellwright Apprentice, 1x The Heron Hag, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+     "level": 2.6,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 2x Mist-net Otter, 1x Bombardier Beetle, 1x Echo Screecher, 1x Electric Ray, 1x Ferry Toll-Frog, 1x Fungal Colossus, 1x Gold-throated Acolyte, 1x Muskrat Lodgekeeper, 1x The Heron Hag, 1x The Old Shell, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 12,
-   "sharedCopiesMean": 5.9,
-   "sharedCopiesMin": 3,
-   "distinctCards": 58,
+   "sharedCopiesMean": 5.6,
+   "sharedCopiesMin": 2,
+   "distinctCards": 55,
    "inAllFive": [
     "Wolf Spider Mother"
    ],
@@ -1000,37 +1004,41 @@
     {
      "seed": 1,
      "level": 2.3,
-     "cards": "4x Burrow Rabbit, 1x Adder Ambusher, 1x Alligator Gar, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Otter Centurion, 1x Soldier Ant, 1x The Gannet Queen, 1x Water Vole, 1x Wolf Spider Mother"
+     "cards": "5x Burrow Rabbit, 1x Adder Ambusher, 1x Alpine Marmot, 1x Cane Toad, 1x Cave Olm, 1x Eagle-Owl Quartermaster, 1x Glass Golem, 1x Mudpuppy, 1x Otter Centurion, 1x River Carp, 1x Riverwing Envoy, 1x Shellwright Apprentice, 1x Swordfish Spearman, 1x The Heron Hag, 1x Wolf Spider Mother, 1x Worker Ant"
     },
     {
      "seed": 2,
-     "level": 2.6,
-     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Echo Screecher, 1x Electric Ray, 1x Octopus Tactician, 1x Petal Fletcher, 1x Sea Turtle Elder, 1x Upside-Down Bat, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+     "level": 2.55,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Box Turtle, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Wing Duelist Cadet, 1x Dominion Nestguard, 1x Eagle-Owl Quartermaster, 1x Otter Centurion, 1x Petal Fletcher, 1x Riverworks Bastion, 1x Shellwright Apprentice, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
     },
     {
      "seed": 3,
-     "level": 2.5,
-     "cards": "5x Crimson Recruit, 4x Burrow Rabbit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Mangrove Manatee, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+     "level": 2.4,
+     "cards": "5x Burrow Rabbit, 2x Crimson Recruit, 1x Alpine Marmot, 1x Bramble Sprout, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hedge Changeling, 1x Hush-Wing Spy, 1x Mangrove Manatee, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x The Old Shell, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 2.5,
-     "cards": "4x Burrow Rabbit, 1x Adder Ambusher, 1x Alpine Marmot, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Gold-throated Acolyte, 1x Harvest Mouse, 1x Marsh-mallow Hare, 1x Meadow Frog, 1x Otter Centurion, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+     "level": 2.4,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Box Turtle, 1x Chipmunk Forager, 1x Colossal Squid, 1x Constrictor Coil, 1x Coral Polyp Colony, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Eagle-Owl Quartermaster, 1x Fen Mink, 1x Ibex Rockcaller, 1x Kraken Spawnling, 1x Leafcutter Gardener, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Centurion, 1x Rabbit Kit, 1x Sheep, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 2.65,
-     "cards": "1x Adder Ambusher, 1x Ant Scout, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Crimson Recruit, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Ferry Toll-Frog, 1x Garden Snail, 1x Gold-throated Acolyte, 1x Mouse Sapper, 1x Otter Kit, 1x Owl Sentinel, 1x River Carp, 1x Riverside Peddler, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Terrier Pup, 1x Wolf Spider Mother"
+     "level": 2.5,
+     "cards": "2x Bee Sentry, 2x Clap-net Trapper, 1x Adder Ambusher, 1x Alpine Marmot, 1x Badger Lumberjack, 1x Beaver Lumberjack, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Driftwood Crab, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Gold-throated Acolyte, 1x Hedge Changeling, 1x Minnow Skitter, 1x Rivergate Recruit, 1x Sheep, 1x The Old Shell, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 13,
-   "sharedCopiesMean": 3.6,
-   "sharedCopiesMin": 1,
-   "distinctCards": 68,
-   "inAllFive": [],
-   "sharedWithMapRef": 3,
+   "sharedCopiesMean": 6.5,
+   "sharedCopiesMin": 4,
+   "distinctCards": 62,
+   "inAllFive": [
+    "Adder Ambusher",
+    "Alpine Marmot",
+    "Otter Centurion"
+   ],
+   "sharedWithMapRef": 6,
    "pools": [
     246,
     245,
@@ -1041,38 +1049,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.95,
-     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Marsh Wisp, 1x Otter Centurion, 1x Soldier Ant, 1x Water Vole, 1x Wolf Spider Mother"
+     "level": 2.65,
+     "cards": "4x Burrow Rabbit, 1x Adder Ambusher, 1x Alley Cat, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Otter Centurion, 1x Soldier Ant, 1x The Gannet Queen, 1x Water Vole, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 3,
-     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Badger Lumberjack, 1x Burrow Rabbit, 1x Carrion Crow, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Forager Ant, 1x Great Barracuda, 1x Hedge Changeling, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Irradiated Axolotl, 1x Marsh Harrier, 1x Minnow Skitter, 1x Mouse Sapper, 1x Net Thrower, 1x Otter Centurion, 1x Robin Redbreast, 1x Swamp Alligator"
+     "level": 2.55,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Echo Screecher, 1x Great Barracuda, 1x Guppy, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mangrove Monitor, 1x Marsh-mallow Hare, 1x Mouse Sapper, 1x Muskrat Reedgatherer, 1x Nectar Sipper, 1x Otter Centurion, 1x Owl Nightwatch, 1x Quillguard, 1x Riptide Eel, 1x Teatime Toad, 1x Water Shrew, 1x Wolf Spider Mother"
     },
     {
      "seed": 3,
-     "level": 3.95,
-     "cards": "5x Crimson Recruit, 4x Burrow Rabbit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Lyrebird Mimic, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+     "level": 2.75,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Archerfish, 1x Blue-ringed Octopus, 1x Burrow Rabbit, 1x Camouflage Frog, 1x Cobalt Talon Skirmisher, 1x Cottontail, 1x Crimson Recruit, 1x Field Mouse, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Lodge Engineer, 1x Mangrove Manatee, 1x Marsh Wisp, 1x Meadow Rabbit, 1x Net Thrower, 1x Otter Centurion, 1x Otter Lantern Bearer, 1x Sphagnum Vole"
     },
     {
      "seed": 4,
-     "level": 2.6,
-     "cards": "4x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Harvest Mouse, 1x Inside-Out Hedgehog, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Centurion, 1x Otter Shieldback, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+     "level": 2.05,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Burrow Rabbit, 1x Cobalt Talon Skirmisher, 1x Duck Paddler, 1x Field Mouse, 1x Gatling Hog, 1x Great Barracuda, 1x Hedgehog Scout, 1x Hush-Wing Spy, 1x Ibex Rockcaller, 1x Meerkat Wayfarer, 1x Muskrat Lodgekeeper, 1x Net Thrower, 1x Newt Doctor, 1x Otter Centurion, 1x Owl Nightwatch, 1x Riptide Eel, 1x Stone Turtle Warden, 1x Voidfeather Scout"
     },
     {
      "seed": 5,
-     "level": 2.05,
-     "cards": "1x Ant Scout, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Blue-ringed Octopus, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Crocodile Ambusher, 1x Marsh-mallow Hare, 1x Mist-net Otter, 1x Mouse Sapper, 1x Otter Shieldback, 1x Petal Fletcher, 1x River Carp, 1x Riverside Peddler, 1x Riverworks Bastion, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+     "level": 2.3,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Ant Hill, 1x Ant Scout, 1x Apollo Butterfly, 1x Burrow Rabbit, 1x Colossal Squid, 1x Cypress Root Lurker, 1x Fen Mink, 1x Giant Cave Huntsman, 1x Great Barracuda, 1x Hedge Changeling, 1x Hedgehog Scout, 1x Helmeted Otter, 1x Ibex Rockcaller, 1x Lantern Bearer, 1x Net Thrower, 1x Otter Centurion, 1x Sleepless Shrew, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 14,
-   "sharedCopiesMean": 3.1,
-   "sharedCopiesMin": 0,
-   "distinctCards": 67,
+   "sharedCopiesMean": 4.7,
+   "sharedCopiesMin": 2,
+   "distinctCards": 61,
    "inAllFive": [],
-   "sharedWithMapRef": 2.2,
+   "sharedWithMapRef": 4.2,
    "pools": [
     259,
     259,
@@ -1083,38 +1091,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.9,
-     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Crimson Recruit, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Otter Centurion, 1x Terrier Pup, 1x Water Vole, 1x Wolf Spider Mother"
+     "level": 2.85,
+     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Marsh Wisp, 1x Otter Centurion, 1x Soldier Ant, 1x Water Vole, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 1.8,
-     "cards": "2x Box Turtle, 1x Apollo Butterfly, 1x Archerfish, 1x Beaver Lumberjack, 1x Bee Sentry, 1x Caiman Hatchling, 1x Compost Grub, 1x Coral Polyp Colony, 1x Dormouse, 1x Gannet Nestweaver, 1x Kittiwake Flock, 1x Planarian Splitter, 1x Raven Scout, 1x Rivergate Drummer, 1x Sulfur Cinder Moth, 1x Swordfish Spearman, 1x Tasmanian Devil, 1x The Drowned Matriarch, 1x Upside-Down Bat"
+     "level": 2.2,
+     "cards": "2x Burrow Rabbit, 1x Alpine Marmot, 1x Blue-ringed Octopus, 1x Box Turtle, 1x Bramble Sprout, 1x Cave Olm, 1x Eagle-Owl Quartermaster, 1x Electric Ray, 1x Fen Mink, 1x Gatling Hog, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Meadow Frog, 1x Mountain Hare, 1x Otter Centurion, 1x Otter Paddler, 1x Shimmerwing Stag, 1x Swordfish Spearman, 1x Truffle Piglet"
     },
     {
      "seed": 3,
-     "level": 4,
+     "level": 3.2,
      "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Lyrebird Mimic, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 2.9,
-     "cards": "4x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Harvest Mouse, 1x Inside-Out Hedgehog, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Centurion, 1x Otter Shieldback, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+     "level": 2.7,
+     "cards": "5x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Harvest Mouse, 1x Inside-Out Hedgehog, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Centurion, 1x Otter Shieldback, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 2.35,
-     "cards": "1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Blue-ringed Octopus, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Crocodile Ambusher, 1x Marsh-mallow Hare, 1x Mist-net Otter, 1x Old Snapjaw, 1x Otter Lantern Bearer, 1x Otter Shieldback, 1x Petal Fletcher, 1x River Carp, 1x Riverside Peddler, 1x Riverworks Bastion, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+     "level": 1.8,
+     "cards": "2x Coral Polyp Colony, 1x Alligator Gar, 1x Alpine Marmot, 1x Blue-ringed Octopus, 1x Bramble Hoglet, 1x Clownfish Scout, 1x Daily Post, 1x Fawn Scout, 1x Hush-Wing Spy, 1x Meadow Frog, 1x Mist-net Otter, 1x Mouse Sapper, 1x Otter Flag Bearer, 1x Otter Guard, 1x River Carp, 1x Shell-Cracker, 1x Soldier Ant, 1x Tomcat, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 15,
-   "sharedCopiesMean": 4.7,
-   "sharedCopiesMin": 1,
-   "distinctCards": 58,
+   "sharedCopiesMean": 5,
+   "sharedCopiesMin": 0,
+   "distinctCards": 56,
    "inAllFive": [],
-   "sharedWithMapRef": 4.6,
+   "sharedWithMapRef": 5.2,
    "pools": [
     270,
     272,
@@ -1125,38 +1133,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 3.1,
-     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Crimson Recruit, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Otter Centurion, 1x Terrier Pup, 1x Water Vole, 1x Wolf Spider Mother"
+     "level": 2.35,
+     "cards": "4x Burrow Rabbit, 3x Otter Centurion, 1x Alligator Gar, 1x Alpine Marmot, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Fawn Scout, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Nutria Reedcutter, 1x Otter Netmender, 1x Terrier Pup, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 1.95,
-     "cards": "3x Otter Centurion, 2x Otter Paddler, 2x Otter Riverguard, 1x Alpine Marmot, 1x Eagle-Owl Quartermaster, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Guppy, 1x Otter Ferryman, 1x Quillback Elder, 1x Riverbed Diver, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Sleepless Shrew, 1x Sunfeather Scout, 1x The Drowned Matriarch"
+     "level": 2.15,
+     "cards": "3x Otter Centurion, 2x Otter Paddler, 2x Otter Riverguard, 1x Alpine Marmot, 1x Eagle-Owl Quartermaster, 1x Fawn Scout, 1x Gannet Nestweaver, 1x Golden Eagle Diver, 1x Guppy, 1x Mountain Hare, 1x Quillback Elder, 1x Riverbed Diver, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Sleepless Shrew, 1x The Drowned Matriarch"
     },
     {
      "seed": 3,
-     "level": 4,
-     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother"
+     "level": 3.2,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Lyrebird Mimic, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Two-Headed Calf, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 2.85,
-     "cards": "4x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Leafcutter Gardener, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Kit, 1x Otter Shieldback, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+     "level": 2.6,
+     "cards": "4x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Constrictor Coil, 1x Crocodile Ambusher, 1x Eagle-Owl Quartermaster, 1x Fox Kit, 1x Harvest Mouse, 1x Otter Centurion, 1x Owl Nightwatch, 1x Oystercatcher, 1x Rivergate Recruit, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Sunthroat Courier, 1x Wolf Spider Mother"
     },
     {
      "seed": 5,
-     "level": 2,
-     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Coral Reef Shark, 1x Eagle-Owl Quartermaster, 1x Fishing Cat, 1x Hawthorn Shieldbug, 1x Hedge Changeling, 1x Mist-net Otter, 1x Old Snapjaw, 1x Owl Nightwatch, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+     "level": 1.65,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Eagle-Owl Quartermaster, 1x Fawn Scout, 1x Gold-throated Acolyte, 1x Golden Eagle Diver, 1x Mangrove Kingfisher, 1x Mangrove Monitor, 1x Otter Kit, 1x Planarian Splitter, 1x Rabbit Kit, 1x Riverworks Bastion, 1x Savanna Cheetah, 1x Sunthroat Courier, 1x Tomcat, 1x Truffle Piglet, 1x Water Vole, 1x Weaver Bird"
     }
    ]
   },
   {
    "map": 16,
-   "sharedCopiesMean": 5.5,
+   "sharedCopiesMean": 3.6,
    "sharedCopiesMin": 1,
-   "distinctCards": 56,
+   "distinctCards": 64,
    "inAllFive": [],
-   "sharedWithMapRef": 4.8,
+   "sharedWithMapRef": 5.2,
    "pools": [
     285,
     286,
@@ -1167,38 +1175,40 @@
    "decks": [
     {
      "seed": 1,
-     "level": 3.05,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Constrictor Coil, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Terrier Pup, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+     "level": 2.3,
+     "cards": "2x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Alpine Salamander, 1x Dominion Nestguard, 1x Echo Screecher, 1x Forager Ant, 1x Glass Golem, 1x Hedge Changeling, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Lantern Bearer, 1x Marsh Wisp, 1x Marsh-mallow Hare, 1x Riverside Peddler, 1x Terrier Pup, 1x Vampire Bat, 1x Weaver Bird, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 1.8,
-     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Chipmunk Skirmisher, 1x Compost Grub, 1x Earthworm, 1x Echo Matriarch, 1x Electric Ray, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Grizzly Vanguard, 1x Raven Scout, 1x Riverside Peddler, 1x Talon Archer, 1x Tide Pool Crab, 1x Whip Spider, 1x Wolf Spider Mother, 1x Woodcock Lookout"
+     "level": 2,
+     "cards": "3x Otter Centurion, 2x Otter Paddler, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Compost Grub, 1x Electric Ray, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Raven Scout, 1x Riverbed Diver, 1x Riverside Peddler, 1x Snapper Hatchling, 1x Swift Fox, 1x The Drowned Matriarch, 1x Wolf Spider Mother, 1x Woodcock Lookout"
     },
     {
      "seed": 3,
-     "level": 4,
-     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother"
+     "level": 3.4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Archerfish, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Otter Lantern Bearer, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 3,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Hedge Changeling, 1x Leafcutter Gardener, 1x Meadow Rabbit, 1x Otter Kit, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+     "level": 2.3,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Banded Sea Krait, 1x Burrow Rabbit, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Mouse, 1x Field Vole, 1x Gatling Hog, 1x Leafcutter Gardener, 1x Meadow Rabbit, 1x Otter Kit, 1x Otter Shieldback, 1x Pond Trout, 1x Savanna Cheetah, 1x The Drowned Matriarch"
     },
     {
      "seed": 5,
-     "level": 2.25,
-     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Coral Reef Shark, 1x Eagle-Owl Quartermaster, 1x Hawthorn Shieldbug, 1x Hedge Changeling, 1x Mist-net Otter, 1x Old Snapjaw, 1x Owl Nightwatch, 1x Parrotfish, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+     "level": 1.95,
+     "cards": "3x Otter Centurion, 1x Acorn Chipmunk, 1x Alpine Marmot, 1x Bogfire Newt, 1x Border Collie, 1x Conch Crawler, 1x Dust Hyena, 1x Electric Ray, 1x Fawn Scout, 1x Giant Cave Huntsman, 1x Golden Eagle Diver, 1x Hedge Changeling, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mountain Hare, 1x Peregrine Stooper, 1x Soldier Ant, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 17,
-   "sharedCopiesMean": 5.2,
-   "sharedCopiesMin": 1,
-   "distinctCards": 55,
-   "inAllFive": [],
-   "sharedWithMapRef": 5.2,
+   "sharedCopiesMean": 5.7,
+   "sharedCopiesMin": 2,
+   "distinctCards": 56,
+   "inAllFive": [
+    "Ibex Rockcaller"
+   ],
+   "sharedWithMapRef": 6.2,
    "pools": [
     299,
     300,
@@ -1209,38 +1219,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 3,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Carrion Crow, 1x Constrictor Coil, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Grizzly Vanguard, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+     "level": 2.45,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Chipmunk Cavalry, 1x Constrictor Coil, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Great Barracuda, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Terrier Pup, 1x Voidfeather Scout, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 2.4,
-     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Carrion Crow, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Crimson Recruit, 1x Electric Ray, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mouse Sapper, 1x Owl Nightwatch, 1x Taiga Lynx, 1x Teatime Toad, 1x The Drowned Matriarch, 1x Trash Panda Trickster, 1x Weaver Bird"
+     "level": 2,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Earthworm, 1x Electric Ray, 1x Field Vole, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Hush-Wing Spy, 1x Ibex Rockcaller, 1x Lantern Bearer, 1x Leafcutter Gardener, 1x Otter Guard, 1x Pinecone Sapper, 1x Pond Duck, 1x Savanna Cheetah, 1x Taiga Lynx, 1x Wolf Spider Mother"
     },
     {
      "seed": 3,
-     "level": 4,
-     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Warhorse Charger, 1x Wolf Spider Mother"
+     "level": 3.05,
+     "cards": "5x Crimson Recruit, 1x Alpine Marmot, 1x Conch Herald, 1x Echo Screecher, 1x Electric Ray, 1x Hush-Wing Spy, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Nectar Vintner, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Pangolin Roller, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother, 1x Woodpecker Sapper"
     },
     {
      "seed": 4,
-     "level": 3.1,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Alpine Salamander, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Hedge Changeling, 1x Leafcutter Gardener, 1x Meadow Rabbit, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+     "level": 1.9,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Burrow Rabbit, 1x Constrictor Coil, 1x Echo Matriarch, 1x Electric Ray, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Hedge Changeling, 1x Hedgehog Scout, 1x Hoopoe Herald, 1x Ibex Rockcaller, 1x Leafcutter Gardener, 1x Mountain Hare, 1x Riptide Eel, 1x Swift Fox, 1x Taiga Lynx, 1x Tide Pool Crab"
     },
     {
      "seed": 5,
-     "level": 1.95,
-     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Ant Warrior, 1x Badger Lumberjack, 1x Coral Polyp Colony, 1x Electric Ray, 1x Fleetfoot'd, 1x Golden Eagle Diver, 1x Hedgehog Herbalist, 1x Hedgehog Scout, 1x Hedgerow Shrew, 1x Ibex Rockcaller, 1x Marsh-mallow Hare, 1x Mosswing, 1x Otter Scout, 1x Otter Shieldback, 1x Taiga Lynx, 1x Wolf Spider Mother"
+     "level": 1.85,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Bramble Sprout, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Cricket Drummer, 1x Dominion Nestguard, 1x Great Barracuda, 1x Hedge Changeling, 1x Ibex Rockcaller, 1x Muskrat Reedgatherer, 1x Parrotfish, 1x Redwood Woodpecker, 1x Savanna Cheetah, 1x Shell-Cracker, 1x Taiga Lynx, 1x Tide Pool Crab, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 18,
-   "sharedCopiesMean": 3.5,
-   "sharedCopiesMin": 0,
+   "sharedCopiesMean": 4.6,
+   "sharedCopiesMin": 1,
    "distinctCards": 62,
    "inAllFive": [],
-   "sharedWithMapRef": 4.4,
+   "sharedWithMapRef": 6,
    "pools": [
     311,
     311,
@@ -1251,38 +1261,38 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.5,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Electric Ray, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Reef Admiral, 1x Stag Knight, 1x Talon Archer, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+     "level": 1.65,
+     "cards": "3x Otter Centurion, 1x Adder Ambusher, 1x Ant Hill, 1x Bee Drone, 1x Berserker Boar, 1x Echo Screecher, 1x Electric Ray, 1x Fox Kit, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Otter Shieldback, 1x Shepherd, 1x Spitting Cobra, 1x Stag Knight, 1x Swamp Alligator, 1x Tunnel Ant, 1x Water Vole, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 2.6,
-     "cards": "2x Otter Centurion, 1x Alpine Marmot, 1x Carrion Crow, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Crimson Recruit, 1x Electric Ray, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mouse Sapper, 1x Owl Nightwatch, 1x Stone Turtle Warden, 1x Taiga Lynx, 1x Teatime Toad, 1x The Drowned Matriarch, 1x The Gannet Queen, 1x Trash Panda Trickster"
+     "level": 2.2,
+     "cards": "3x Otter Centurion, 1x Acorn Chipmunk, 1x Alpine Marmot, 1x Carrion Crow, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Crimson Recruit, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mouse Sapper, 1x Owl Nightwatch, 1x Taiga Lynx, 1x Teatime Toad, 1x The Drowned Matriarch, 1x Trash Panda Trickster, 1x Weaver Bird"
     },
     {
      "seed": 3,
-     "level": 4,
-     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Warhorse Charger, 1x Wolf Spider Mother"
+     "level": 3.55,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Squire's Mount, 1x Sunfeather Scout, 1x Warhorse Charger, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 1.45,
-     "cards": "2x Riverbed Diver, 1x Badger Lumberjack, 1x Blue-ringed Octopus, 1x Duckling, 1x Gatling Hog, 1x Glass Golem, 1x Hawthorn Shieldbug, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Lucky Hopper, 1x Otter Ferryman, 1x Otter Scout, 1x Razorbill, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Snow Ermine, 1x Squire's Mount, 1x The Drowned Matriarch"
+     "level": 1.5,
+     "cards": "3x Otter Centurion, 1x Adder Ambusher, 1x Border Collie, 1x Bramble Sprout, 1x Cone-cutter Squirrel, 1x Echo Screecher, 1x Electric Ray, 1x Giant Cave Huntsman, 1x Gilded Roadwarden, 1x Golden Eagle Diver, 1x Greyplume Fledgling, 1x Guppy, 1x Hedgehog Herbalist, 1x Ibex Rockcaller, 1x Mangrove Kingfisher, 1x Shimmerwing Stag, 1x Snapstick Turtle, 1x Tunnel Ant"
     },
     {
      "seed": 5,
-     "level": 1.7,
-     "cards": "3x Otter Centurion, 1x Adder Ambusher, 1x Beaver Lumberjack, 1x Colossal Squid, 1x Coral Polyp Colony, 1x Crossed-Eyes, 1x Echo Screecher, 1x Electric Ray, 1x Fleetfoot'd, 1x Frost Hare Sprinter, 1x Golden Eagle Diver, 1x Hedgehog Herbalist, 1x Ibex Rockcaller, 1x Lucky Hopper, 1x Marsh-mallow Hare, 1x Stalactite Golem, 1x Taiga Lynx, 1x Wolfsbane Alpha"
+     "level": 2,
+     "cards": "3x Otter Centurion, 1x Ant Warrior, 1x Bogfire Newt, 1x Cave Warlord, 1x Coral Polyp Colony, 1x Electric Ray, 1x Glass Changeling, 1x Golden Eagle Diver, 1x Hedge Changeling, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Marsh-mallow Hare, 1x Otter Scout, 1x Otter Shieldback, 1x Pride Queen, 1x Snow Bunting Archer, 1x Squire's Mount, 1x Wolf Spider Mother"
     }
    ]
   },
   {
    "map": 19,
-   "sharedCopiesMean": 2.4,
+   "sharedCopiesMean": 2.6,
    "sharedCopiesMin": 0,
-   "distinctCards": 70,
+   "distinctCards": 69,
    "inAllFive": [],
-   "sharedWithMapRef": 3.2,
+   "sharedWithMapRef": 4.6,
    "pools": [
     329,
     329,
@@ -1293,38 +1303,45 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.8,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Electric Ray, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Reef Admiral, 1x Stag Knight, 1x Talon Archer, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+     "level": 1.9,
+     "cards": "3x Otter Centurion, 1x Acorn Chipmunk, 1x Birdlime Dauber, 1x Dormouse, 1x Electric Ray, 1x Hedge Changeling, 1x Helmeted Otter, 1x Ibex Rockcaller, 1x Lantern Spark Fly, 1x Mangrove Monitor, 1x Otter Riverguard, 1x Owl Nightwatch, 1x Pelican Diver, 1x Ravenous Wolverine, 1x Talon Archer, 1x Tomcat, 1x Walrus Icebreaker, 1x Wolf Pack Runner"
     },
     {
      "seed": 2,
-     "level": 1.8,
-     "cards": "1x Alpine Swift, 1x Beaver Lumberjack, 1x Caiman Hatchling, 1x Chipmunk Forager, 1x Eagle-Owl Quartermaster, 1x Fire Ant Raft, 1x Fox Kit, 1x House Cat, 1x Kittiwake Flock, 1x Meerkat Wayfarer, 1x Mosswing, 1x Otter Angler, 1x River Warden, 1x Squire's Mount, 1x Stoat Cutthroat, 1x Sunbittern Strider, 1x Sunspire Envoy, 1x Sunthroat Courier, 1x Thorn Shrike, 1x Weaver Bird"
+     "level": 1.55,
+     "cards": "1x Alpine Swift, 1x Caiman Hatchling, 1x Chipmunk Forager, 1x Eagle-Owl Quartermaster, 1x Fire Ant Raft, 1x Fox Kit, 1x House Cat, 1x Kittiwake Flock, 1x Meerkat Wayfarer, 1x Mosswing, 1x Otter Angler, 1x Otter Lantern Bearer, 1x River Warden, 1x Squire's Mount, 1x Stoat Cutthroat, 1x Sunbittern Strider, 1x Sunspire Envoy, 1x Sunthroat Courier, 1x Weaver Bird, 1x Wolf Spider Mother"
     },
     {
      "seed": 3,
-     "level": 3.9,
-     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Warhorse Charger, 1x Wolf Spider Mother, 1x Wound Reaver"
+     "level": 3.65,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Berserker Boar, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Quillguard, 1x Shellwright Apprentice, 1x Shimmerwing Stag, 1x Warhorse Charger, 1x Wolf Spider Mother"
     },
     {
      "seed": 4,
-     "level": 2.15,
-     "cards": "3x Otter Centurion, 1x Bog Leech, 1x Chipmunk Skirmisher, 1x Duckling, 1x Ford Kingfisher, 1x Gatling Hog, 1x Glass Golem, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Meerkat Burrower, 1x Otter Ferryman, 1x Puffin Diver, 1x Razorbill, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Slow-worm, 1x Squire's Mount, 1x Talon Archer"
+     "level": 1.65,
+     "cards": "3x Otter Centurion, 2x Riverbed Diver, 1x Adder Ambusher, 1x Blue-ringed Octopus, 1x Caiman Hatchling, 1x Clap-net Trapper, 1x Glass Golem, 1x Hawthorn Shieldbug, 1x Ibex Rockcaller, 1x Lucky Hopper, 1x Otter Paddler, 1x Razorbill, 1x Savanna Cheetah, 1x Talon Archer, 1x The Drowned Matriarch, 1x Tunnel Ant, 1x Walrus Icebreaker"
     },
     {
      "seed": 5,
-     "level": 1.7,
-     "cards": "1x Archerfish, 1x Carrion Crow, 1x Coral Reef Shark, 1x Dromedary, 1x Echo Matriarch, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Glimmer Spider, 1x Hedge Weasel, 1x Ibex Rockcaller, 1x Leafcutter Gardener, 1x Minnow Skitter, 1x Net Thrower, 1x Otter Kit, 1x Petal Fletcher, 1x Pyrenean Desman, 1x Swordfish Spearman, 1x Talon Archer, 1x Truce Heron, 1x Walrus Icebreaker"
+     "level": 1.8,
+     "cards": "3x Otter Centurion, 1x Adder Ambusher, 1x Archerfish, 1x Beaver Lumberjack, 1x Coral Reef Shark, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Echo Screecher, 1x Electric Ray, 1x Ibex Rockcaller, 1x Lucky Hopper, 1x Minnow Skitter, 1x Pelican Diver, 1x Planarian Splitter, 1x Rivergate Recruit, 1x Talon Archer, 1x Walrus Icebreaker, 1x Wolfsbane Alpha"
     }
    ]
   },
   {
    "map": 20,
-   "sharedCopiesMean": 5.2,
-   "sharedCopiesMin": 0,
-   "distinctCards": 61,
-   "inAllFive": [],
-   "sharedWithMapRef": 6.6,
+   "sharedCopiesMean": 9.3,
+   "sharedCopiesMin": 8,
+   "distinctCards": 55,
+   "inAllFive": [
+    "Eagle-Owl Quartermaster",
+    "Ibex Rockcaller",
+    "Obsidian Scorpion",
+    "Otter Centurion",
+    "Talon Archer",
+    "Walrus Icebreaker"
+   ],
+   "sharedWithMapRef": 9.6,
    "pools": [
     344,
     344,
@@ -1335,28 +1352,28 @@
    "decks": [
     {
      "seed": 1,
-     "level": 2.8,
-     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpha Howler, 1x Eagle-Owl Quartermaster, 1x Electric Ray, 1x Field Mouse, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mountain Hare, 1x Obsidian Scorpion, 1x Spitting Spider, 1x Stable Colt, 1x Talon Archer, 1x Wolf Spider Mother"
+     "level": 2.2,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Eyrie Warden, 1x Field Mouse, 1x Hoopoe Herald, 1x Ibex Rockcaller, 1x Obsidian Scorpion, 1x Springbok Pronker, 1x Stag Knight, 1x Talon Archer, 1x Walrus Icebreaker, 1x Wolf Spider Mother"
     },
     {
      "seed": 2,
-     "level": 2,
-     "cards": "3x Otter Centurion, 1x Alpine Swift, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Box Turtle, 1x Eagle-Owl Quartermaster, 1x Fox Kit, 1x Gale Swift, 1x Gold-throated Acolyte, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mosswing, 1x Obsidian Scorpion, 1x Otter Paddler, 1x River Warden, 1x Squire's Mount, 1x Stoat Cutthroat, 1x Sunbittern Strider"
+     "level": 1.7,
+     "cards": "3x Otter Centurion, 1x Dawn Bellringer, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Hawk Arrowkeeper, 1x Ibex Rockcaller, 1x Mouse Sapper, 1x Obsidian Scorpion, 1x Otter Shieldback, 1x Pincushion Urchin, 1x Sea Turtle Elder, 1x Stoat Cutthroat, 1x Taiga Lynx, 1x Talon Archer, 1x Thorn Shrike, 1x Walrus Icebreaker, 1x Water Vole, 1x Yeti Chieftain"
     },
     {
      "seed": 3,
-     "level": 3.2,
-     "cards": "5x Burrow Rabbit, 1x Acorn Chipmunk, 1x Dawn Bellringer, 1x Dormouse, 1x Grizzly Vanguard, 1x Hedgerow Shrew, 1x Hush-Wing Spy, 1x Jaguar Stalker, 1x Orca Vanguard, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Prospector Mole, 1x Shellwright Apprentice, 1x Sunbittern Strider, 1x Wolf Spider Mother, 1x Wound Reaver"
+     "level": 1.6,
+     "cards": "3x Otter Centurion, 1x Cane Toad, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Hedgehog Herbalist, 1x Hercules Beetle, 1x Ibex Rockcaller, 1x Lantern Bearer, 1x Obsidian Scorpion, 1x Otter Scout, 1x Quarry Mole, 1x Quillguard, 1x Sulfur Cinder Moth, 1x Taiga Lynx, 1x Talon Archer, 1x Thorn Shrike, 1x Walrus Icebreaker, 1x Woodcock Lookout"
     },
     {
      "seed": 4,
-     "level": 1.6,
-     "cards": "3x Otter Centurion, 1x Bee Forager, 1x Berserker Boar, 1x Clownfish Scout, 1x Cobalt Fledgling, 1x Compost Grub, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Ferry Toll-Frog, 1x Ibex Rockcaller, 1x Obsidian Scorpion, 1x Pike Lancer, 1x Robin Redbreast, 1x Swift Fox, 1x Taiga Lynx, 1x Talon Archer, 1x Walrus Icebreaker, 1x Whip Spider"
+     "level": 1.7,
+     "cards": "3x Otter Centurion, 1x Beaver Lumberjack, 1x Berserker Boar, 1x Clownfish Scout, 1x Cobalt Fledgling, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Ferry Toll-Frog, 1x Ibex Rockcaller, 1x Obsidian Scorpion, 1x Robin Redbreast, 1x Swift Fox, 1x Taiga Lynx, 1x Talon Archer, 1x Terrier Pup, 1x Walrus Icebreaker, 1x Whip Spider, 1x Woodpecker Sapper"
     },
     {
      "seed": 5,
-     "level": 1.9,
-     "cards": "3x Otter Centurion, 1x Cobalt Fledgling, 1x Crocodile Ambusher, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Echo Matriarch, 1x Giant Cave Huntsman, 1x Hawthorn Shieldbug, 1x Hedgerow Shrew, 1x Ibex Rockcaller, 1x Marsh Wisp, 1x Obsidian Scorpion, 1x Otter Netmender, 1x Slow-worm, 1x Taiga Lynx, 1x Talon Archer, 1x Tomcat, 1x Walrus Icebreaker"
+     "level": 1.7,
+     "cards": "3x Otter Centurion, 1x Blue-ringed Octopus, 1x Chipmunk Cavalry, 1x Crimson Wing Duelist Cadet, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Fox Kit, 1x Grizzly Vanguard, 1x Ibex Rockcaller, 1x Newt Doctor, 1x Nutria Reedcutter, 1x Obsidian Scorpion, 1x Snapstick Turtle, 1x Spitting Cobra, 1x Taiga Lynx, 1x Talon Archer, 1x Walrus Icebreaker, 1x Worker Ant"
     }
    ]
   }
@@ -1505,13 +1522,13 @@
    "fights": 6,
    "target": 0.692,
    "mapRef": 0.563,
-   "prog": 0.521,
+   "prog": 0.575,
    "perDeck": [
-    0.486,
-    0.563,
-    0.563,
+    0.583,
+    0.632,
+    0.576,
     0.569,
-    0.424
+    0.514
    ],
    "games": 24
   },
@@ -1522,13 +1539,13 @@
    "fights": 4,
    "target": 0.663,
    "mapRef": 0.698,
-   "prog": 0.721,
+   "prog": 0.817,
    "perDeck": [
-    0.563,
-    0.698,
-    0.771,
-    0.792,
-    0.781
+    0.854,
+    0.708,
+    0.833,
+    0.875,
+    0.813
    ],
    "games": 24
   },
@@ -1539,13 +1556,13 @@
    "fights": 8,
    "target": 0.706,
    "mapRef": 0.37,
-   "prog": 0.306,
+   "prog": 0.342,
    "perDeck": [
-    0.302,
-    0.349,
-    0.266,
-    0.323,
-    0.292
+    0.401,
+    0.286,
+    0.318,
+    0.328,
+    0.375
    ],
    "games": 24
   },
@@ -1556,13 +1573,13 @@
    "fights": 5,
    "target": 0.68,
    "mapRef": 0.4,
-   "prog": 0.355,
+   "prog": 0.432,
    "perDeck": [
-    0.333,
-    0.375,
-    0.308,
-    0.417,
-    0.342
+    0.492,
+    0.392,
+    0.458,
+    0.367,
+    0.45
    ],
    "games": 24
   },
@@ -1573,13 +1590,13 @@
    "fights": 7,
    "target": 0.7,
    "mapRef": 0.435,
-   "prog": 0.443,
+   "prog": 0.458,
    "perDeck": [
-    0.333,
-    0.44,
+    0.399,
     0.649,
-    0.387,
-    0.405
+    0.458,
+    0.464,
+    0.321
    ],
    "games": 24
   },
@@ -1590,13 +1607,13 @@
    "fights": 9,
    "target": 0.711,
    "mapRef": 0.736,
-   "prog": 0.398,
+   "prog": 0.45,
    "perDeck": [
-    0.273,
-    0.347,
-    0.528,
     0.463,
-    0.38
+    0.37,
+    0.472,
+    0.519,
+    0.426
    ],
    "games": 24
   },
@@ -1607,13 +1624,13 @@
    "fights": 10,
    "target": 0.715,
    "mapRef": 0.617,
-   "prog": 0.416,
+   "prog": 0.398,
    "perDeck": [
-    0.371,
-    0.513,
-    0.442,
-    0.379,
-    0.375
+    0.375,
+    0.429,
+    0.342,
+    0.5,
+    0.346
    ],
    "games": 24
   },
@@ -1624,13 +1641,13 @@
    "fights": 5,
    "target": 0.68,
    "mapRef": 0.183,
-   "prog": 0.213,
+   "prog": 0.245,
    "perDeck": [
-    0.3,
-    0.075,
-    0.367,
+    0.258,
+    0.183,
     0.158,
-    0.167
+    0.358,
+    0.267
    ],
    "games": 24
   },
@@ -1641,13 +1658,13 @@
    "fights": 7,
    "target": 0.7,
    "mapRef": 0.845,
-   "prog": 0.585,
+   "prog": 0.626,
    "perDeck": [
-    0.595,
-    0.583,
-    0.625,
-    0.607,
-    0.512
+    0.673,
+    0.565,
+    0.631,
+    0.649,
+    0.613
    ],
    "games": 24
   },
@@ -1658,13 +1675,13 @@
    "fights": 5,
    "target": 0.68,
    "mapRef": 0.725,
-   "prog": 0.273,
+   "prog": 0.328,
    "perDeck": [
-    0.275,
-    0.217,
-    0.258,
-    0.317,
-    0.3
+    0.483,
+    0.167,
+    0.375,
+    0.242,
+    0.375
    ],
    "games": 24
   },
@@ -1675,13 +1692,13 @@
    "fights": 8,
    "target": 0.706,
    "mapRef": 0.677,
-   "prog": 0.471,
+   "prog": 0.53,
    "perDeck": [
-    0.453,
-    0.375,
-    0.505,
-    0.578,
-    0.443
+    0.552,
+    0.563,
+    0.474,
+    0.479,
+    0.583
    ],
    "games": 24
   },
@@ -1692,13 +1709,13 @@
    "fights": 4,
    "target": 0.663,
    "mapRef": 0.646,
-   "prog": 0.575,
+   "prog": 0.631,
    "perDeck": [
-    0.583,
-    0.625,
-    0.625,
-    0.573,
-    0.469
+    0.552,
+    0.677,
+    0.604,
+    0.667,
+    0.656
    ],
    "games": 24
   },
@@ -1709,13 +1726,13 @@
    "fights": 8,
    "target": 0.706,
    "mapRef": 0.49,
-   "prog": 0.249,
+   "prog": 0.257,
    "perDeck": [
-    0.203,
-    0.307,
-    0.344,
-    0.229,
-    0.161
+    0.208,
+    0.349,
+    0.286,
+    0.224,
+    0.219
    ],
    "games": 24
   },
@@ -1726,13 +1743,13 @@
    "fights": 7,
    "target": 0.7,
    "mapRef": 0.685,
-   "prog": 0.486,
+   "prog": 0.49,
    "perDeck": [
-    0.47,
-    0.417,
-    0.625,
     0.482,
-    0.435
+    0.417,
+    0.548,
+    0.53,
+    0.476
    ],
    "games": 24
   },
@@ -1743,13 +1760,13 @@
    "fights": 4,
    "target": 0.663,
    "mapRef": 0.75,
-   "prog": 0.304,
+   "prog": 0.313,
    "perDeck": [
-    0.292,
-    0.24,
-    0.552,
-    0.135,
-    0.302
+    0.313,
+    0.208,
+    0.51,
+    0.323,
+    0.208
    ],
    "games": 24
   },
@@ -1760,13 +1777,13 @@
    "fights": 7,
    "target": 0.7,
    "mapRef": 0.702,
-   "prog": 0.633,
+   "prog": 0.562,
    "perDeck": [
-    0.673,
-    0.56,
-    0.667,
-    0.607,
-    0.661
+    0.595,
+    0.524,
+    0.589,
+    0.536,
+    0.565
    ],
    "games": 24
   },
@@ -1777,13 +1794,13 @@
    "fights": 4,
    "target": 0.663,
    "mapRef": 0.313,
-   "prog": 0.438,
+   "prog": 0.425,
    "perDeck": [
-    0.438,
-    0.448,
+    0.396,
     0.417,
-    0.49,
-    0.396
+    0.427,
+    0.458,
+    0.427
    ],
    "games": 24
   },
@@ -1794,13 +1811,13 @@
    "fights": 8,
    "target": 0.706,
    "mapRef": 0.318,
-   "prog": 0.223,
+   "prog": 0.19,
    "perDeck": [
+    0.141,
     0.188,
-    0.182,
-    0.266,
-    0.266,
-    0.214
+    0.234,
+    0.198,
+    0.188
    ],
    "games": 24
   },
@@ -1811,13 +1828,13 @@
    "fights": 7,
    "target": 0.7,
    "mapRef": 0.601,
-   "prog": 0.262,
+   "prog": 0.205,
    "perDeck": [
-    0.369,
-    0.196,
-    0.357,
-    0.196,
-    0.19
+    0.292,
+    0.089,
+    0.321,
+    0.095,
+    0.226
    ],
    "games": 24
   },
@@ -1828,13 +1845,13 @@
    "fights": 5,
    "target": 0.68,
    "mapRef": 0.042,
-   "prog": 0.062,
+   "prog": 0.057,
    "perDeck": [
-    0.067,
+    0.017,
     0.083,
-    0.05,
-    0.067,
-    0.042
+    0.017,
+    0.042,
+    0.125
    ],
    "games": 24
   },
@@ -1845,13 +1862,13 @@
    "fights": 6,
    "target": 0.692,
    "mapRef": 0.764,
-   "prog": 0.34,
+   "prog": 0.317,
    "perDeck": [
-    0.486,
-    0.222,
-    0.215,
-    0.465,
-    0.313
+    0.319,
+    0.229,
+    0.236,
+    0.278,
+    0.521
    ],
    "games": 24
   },
@@ -1862,13 +1879,13 @@
    "fights": 9,
    "target": 0.711,
    "mapRef": 0.37,
-   "prog": 0.214,
+   "prog": 0.206,
    "perDeck": [
-    0.352,
-    0.19,
-    0.181,
-    0.218,
-    0.13
+    0.194,
+    0.171,
+    0.227,
+    0.12,
+    0.315
    ],
    "games": 24
   },
@@ -1879,13 +1896,13 @@
    "fights": 10,
    "target": 0.69,
    "mapRef": 0.8,
-   "prog": 0.373,
+   "prog": 0.382,
    "perDeck": [
-    0.463,
-    0.317,
-    0.321,
-    0.404,
-    0.363
+    0.429,
+    0.429,
+    0.325,
+    0.313,
+    0.413
    ],
    "games": 24
   }
@@ -1913,13 +1930,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.042,
-   "prog": 0.053,
+   "prog": 0.036,
    "perDeck": [
-    0.083,
-    0.069,
-    0.028,
-    0.069,
-    0.014
+    0.097,
+    0,
+    0,
+    0.014,
+    0.069
    ],
    "games": 24
   },
@@ -1945,13 +1962,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.417,
-   "prog": 0.156,
+   "prog": 0.169,
    "perDeck": [
-    0.097,
-    0.153,
-    0.181,
-    0.153,
-    0.194
+    0.306,
+    0.056,
+    0.236,
+    0.194,
+    0.056
    ],
    "games": 24
   },
@@ -1977,13 +1994,13 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.354,
-   "prog": 0.327,
+   "prog": 0.358,
    "perDeck": [
-    0.333,
-    0.302,
-    0.313,
-    0.354,
-    0.333
+    0.417,
+    0.198,
+    0.531,
+    0.281,
+    0.365
    ],
    "games": 24
   },
@@ -2057,13 +2074,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.194,
-   "prog": 0.211,
+   "prog": 0.219,
    "perDeck": [
-    0.181,
     0.167,
-    0.431,
-    0.167,
-    0.111
+    0.306,
+    0.25,
+    0.208,
+    0.167
    ],
    "games": 24
   },
@@ -2089,13 +2106,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.156,
-   "prog": 0.15,
+   "prog": 0.154,
    "perDeck": [
-    0.135,
-    0.167,
-    0.188,
     0.125,
-    0.135
+    0.188,
+    0.24,
+    0.104,
+    0.115
    ],
    "games": 24
   },
@@ -2105,11 +2122,11 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.188,
-   "prog": 0.148,
+   "prog": 0.167,
    "perDeck": [
-    0.177,
+    0.156,
+    0.188,
     0.167,
-    0.073,
     0.156,
     0.167
    ],
@@ -2121,13 +2138,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.271,
-   "prog": 0.117,
+   "prog": 0.16,
    "perDeck": [
-    0.146,
-    0.125,
-    0.052,
     0.177,
-    0.083
+    0.188,
+    0.094,
+    0.219,
+    0.125
    ],
    "games": 24
   },
@@ -2137,13 +2154,13 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.385,
-   "prog": 0.215,
+   "prog": 0.269,
    "perDeck": [
-    0.188,
-    0.177,
-    0.302,
     0.208,
-    0.198
+    0.281,
+    0.344,
+    0.25,
+    0.26
    ],
    "games": 24
   },
@@ -2153,13 +2170,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.375,
-   "prog": 0.256,
+   "prog": 0.279,
    "perDeck": [
-    0.26,
-    0.385,
-    0.167,
-    0.26,
-    0.208
+    0.25,
+    0.427,
+    0.198,
+    0.229,
+    0.292
    ],
    "games": 24
   },
@@ -2169,13 +2186,13 @@
    "side": false,
    "decks": 2,
    "mapRef": 0.583,
-   "prog": 0.1,
+   "prog": 0.121,
    "perDeck": [
-    0.042,
+    0.125,
     0.063,
-    0.208,
     0.167,
-    0.021
+    0.188,
+    0.063
    ],
    "games": 24
   },
@@ -2185,12 +2202,12 @@
    "side": true,
    "decks": 3,
    "mapRef": 0,
-   "prog": 0.053,
+   "prog": 0.025,
    "perDeck": [
-    0.042,
     0,
-    0.194,
-    0.028,
+    0,
+    0,
+    0.125,
     0
    ],
    "games": 24
@@ -2201,13 +2218,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.302,
-   "prog": 0.065,
+   "prog": 0.081,
    "perDeck": [
-    0.042,
-    0.031,
-    0.094,
+    0.052,
     0.125,
-    0.031
+    0.135,
+    0.052,
+    0.042
    ],
    "games": 24
   },
@@ -2217,13 +2234,13 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.115,
-   "prog": 0.046,
+   "prog": 0.042,
    "perDeck": [
-    0.042,
     0.021,
-    0.094,
-    0.01,
-    0.063
+    0,
+    0.135,
+    0.021,
+    0.031
    ],
    "games": 24
   },
@@ -2233,13 +2250,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.542,
-   "prog": 0.196,
+   "prog": 0.269,
    "perDeck": [
-    0.188,
-    0.188,
-    0.25,
-    0.198,
-    0.156
+    0.313,
+    0.229,
+    0.354,
+    0.208,
+    0.24
    ],
    "games": 24
   },
@@ -2249,13 +2266,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.271,
-   "prog": 0.092,
+   "prog": 0.106,
    "perDeck": [
-    0.125,
-    0.031,
+    0.083,
+    0.094,
+    0.156,
     0.115,
-    0.052,
-    0.135
+    0.083
    ],
    "games": 24
   },
@@ -2265,13 +2282,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.167,
-   "prog": 0.054,
+   "prog": 0.05,
    "perDeck": [
     0.021,
+    0.01,
+    0.167,
     0.031,
-    0.188,
-    0.021,
-    0.01
+    0.021
    ],
    "games": 24
   },
@@ -2281,12 +2298,12 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.021,
-   "prog": 0.01,
+   "prog": 0.008,
    "perDeck": [
+    0.01,
+    0.01,
+    0.01,
     0,
-    0.01,
-    0.021,
-    0.01,
     0.01
    ],
    "games": 24
@@ -2297,13 +2314,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.385,
-   "prog": 0.194,
+   "prog": 0.177,
    "perDeck": [
-    0.167,
-    0.125,
-    0.25,
+    0.208,
+    0.135,
     0.229,
-    0.198
+    0.167,
+    0.146
    ],
    "games": 24
   },
@@ -2313,13 +2330,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.354,
-   "prog": 0.204,
+   "prog": 0.183,
    "perDeck": [
-    0.229,
-    0.063,
-    0.354,
-    0.188,
-    0.188
+    0.177,
+    0.146,
+    0.25,
+    0.104,
+    0.24
    ],
    "games": 24
   },
@@ -2329,13 +2346,13 @@
    "side": false,
    "decks": 4,
    "mapRef": 0.01,
-   "prog": 0.017,
+   "prog": 0.01,
    "perDeck": [
-    0.01,
     0,
-    0.021,
-    0.021,
-    0.031
+    0,
+    0.052,
+    0,
+    0
    ],
    "games": 24
   },
@@ -2345,13 +2362,13 @@
    "side": true,
    "decks": 4,
    "mapRef": 0.271,
-   "prog": 0.038,
+   "prog": 0.04,
    "perDeck": [
-    0.094,
-    0.021,
-    0.031,
-    0.021,
-    0.021
+    0.063,
+    0,
+    0,
+    0.01,
+    0.125
    ],
    "games": 24
   },
@@ -2361,13 +2378,13 @@
    "side": false,
    "decks": 3,
    "mapRef": 0.194,
-   "prog": 0.089,
+   "prog": 0.047,
    "perDeck": [
-    0.097,
-    0.056,
-    0.167,
-    0.097,
-    0.028
+    0.028,
+    0.028,
+    0.111,
+    0.014,
+    0.056
    ],
    "games": 24
   },
@@ -2377,13 +2394,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.097,
-   "prog": 0.044,
+   "prog": 0.042,
    "perDeck": [
-    0.083,
     0.014,
-    0.014,
-    0.083,
-    0.028
+    0.028,
+    0.097,
+    0.056,
+    0.014
    ],
    "games": 24
   },
@@ -2393,13 +2410,13 @@
    "side": false,
    "decks": 3,
    "mapRef": 0.25,
-   "prog": 0.061,
+   "prog": 0.081,
    "perDeck": [
-    0.111,
+    0.125,
     0.014,
-    0.083,
-    0.069,
-    0.028
+    0.042,
+    0.097,
+    0.125
    ],
    "games": 24
   },
@@ -2411,11 +2428,11 @@
    "mapRef": 0.156,
    "prog": 0.015,
    "perDeck": [
+    0,
     0.031,
+    0,
     0.021,
-    0.01,
-    0.01,
-    0
+    0.021
    ],
    "games": 24
   },
@@ -2425,13 +2442,13 @@
    "side": false,
    "decks": 3,
    "mapRef": 0.722,
-   "prog": 0.106,
+   "prog": 0.139,
    "perDeck": [
-    0.153,
-    0.042,
-    0.083,
-    0.097,
-    0.153
+    0.181,
+    0.111,
+    0.139,
+    0.125,
+    0.139
    ],
    "games": 24
   },
@@ -2441,13 +2458,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.514,
-   "prog": 0.122,
+   "prog": 0.161,
    "perDeck": [
-    0.181,
-    0.083,
-    0.125,
-    0.167,
-    0.056
+    0.194,
+    0.153,
+    0.056,
+    0.222,
+    0.181
    ],
    "games": 24
   },
@@ -2457,13 +2474,13 @@
    "side": true,
    "decks": 3,
    "mapRef": 0.444,
-   "prog": 0.036,
+   "prog": 0.072,
    "perDeck": [
-    0.083,
     0.042,
+    0.083,
     0.028,
-    0.028,
-    0
+    0.083,
+    0.125
    ],
    "games": 24
   }
@@ -2490,7 +2507,7 @@
    },
    "maps": "0-20"
   },
-  "generated": "2026-10-30T18:02:06.902Z",
+  "generated": "2026-10-30T19:41:20.083Z",
   "rows": [
    {
     "map": 0,
@@ -2533,7 +2550,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 396,
+    "ms": 430,
     "perDeck": [
      0.825,
      0.725,
@@ -2583,7 +2600,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 559
+    "ms": 680
    },
    {
     "map": 1,
@@ -2627,7 +2644,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 447,
+    "ms": 574,
     "perDeck": [
      0.325,
      0.3,
@@ -2678,7 +2695,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 508
+    "ms": 522
    },
    {
     "map": 2,
@@ -2731,7 +2748,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 460,
+    "ms": 549,
     "perDeck": [
      0.225,
      0.475,
@@ -2791,7 +2808,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 536
+    "ms": 584
    },
    {
     "map": 3,
@@ -2838,7 +2855,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 573,
+    "ms": 668,
     "perDeck": [
      0.65,
      0.625,
@@ -2892,7 +2909,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 612
+    "ms": 631
    },
    {
     "map": 4,
@@ -2944,7 +2961,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 717,
+    "ms": 724,
     "perDeck": [
      0.1,
      0.225,
@@ -3003,7 +3020,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 579
+    "ms": 671
    },
    {
     "map": 5,
@@ -3049,7 +3066,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 515,
+    "ms": 591,
     "perDeck": [
      0.325,
      0.475,
@@ -3102,7 +3119,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 616
+    "ms": 724
    },
    {
     "map": 6,
@@ -3155,7 +3172,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 671,
+    "ms": 707,
     "perDeck": [
      0.3,
      0.325,
@@ -3215,7 +3232,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 727
+    "ms": 809
    },
    {
     "map": 7,
@@ -3223,17 +3240,17 @@
     "name": "The Morel Hollow",
     "ref": "prog",
     "games": 40,
-    "wins": 90,
-    "losses": 110,
+    "wins": 103,
+    "losses": 97,
     "draws": 0,
     "n": 200,
-    "win": 0.45,
+    "win": 0.515,
     "ci": [
-     0.383,
-     0.519
+     0.446,
+     0.583
     ],
     "stage": "ref:prog-1",
-    "level": 0.87,
+    "level": 0.96,
     "deckMap": 7,
     "cpu": 1,
     "optimum": {
@@ -3263,13 +3280,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 767,
+    "ms": 659,
     "perDeck": [
-     0.5,
-     0.625,
-     0.45,
-     0.275,
-     0.4
+     0.525,
+     0.55,
+     0.725,
+     0.35,
+     0.425
     ]
    },
    {
@@ -3318,7 +3335,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 704
+    "ms": 837
    },
    {
     "map": 8,
@@ -3326,17 +3343,17 @@
     "name": "Caves & Alcoves",
     "ref": "prog",
     "games": 40,
-    "wins": 53,
-    "losses": 147,
+    "wins": 44,
+    "losses": 156,
     "draws": 0,
     "n": 200,
-    "win": 0.265,
+    "win": 0.22,
     "ci": [
-     0.209,
-     0.33
+     0.168,
+     0.282
     ],
     "stage": "ref:prog-1",
-    "level": 0.92,
+    "level": 0.96,
     "deckMap": 8,
     "cpu": 1,
     "optimum": {
@@ -3364,13 +3381,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 586,
+    "ms": 694,
     "perDeck": [
-     0.15,
-     0.275,
-     0.2,
-     0.325,
-     0.375
+     0.3,
+     0.175,
+     0.175,
+     0.1,
+     0.35
     ]
    },
    {
@@ -3417,7 +3434,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 695
+    "ms": 610
    },
    {
     "map": 9,
@@ -3425,17 +3442,17 @@
     "name": "The Kelp Mangroves",
     "ref": "prog",
     "games": 40,
-    "wins": 53,
-    "losses": 147,
+    "wins": 63,
+    "losses": 137,
     "draws": 0,
     "n": 200,
-    "win": 0.265,
+    "win": 0.315,
     "ci": [
-     0.209,
-     0.33
+     0.255,
+     0.382
     ],
     "stage": "ref:prog-1",
-    "level": 1.1,
+    "level": 1.08,
     "deckMap": 9,
     "cpu": 1,
     "optimum": {
@@ -3467,13 +3484,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 720,
+    "ms": 703,
     "perDeck": [
+     0.375,
+     0.525,
      0.2,
-     0.575,
-     0.175,
-     0.225,
-     0.15
+     0.3,
+     0.175
     ]
    },
    {
@@ -3524,7 +3541,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 659
+    "ms": 660
    },
    {
     "map": 10,
@@ -3532,17 +3549,17 @@
     "name": "Coral Current",
     "ref": "prog",
     "games": 40,
-    "wins": 48,
-    "losses": 152,
+    "wins": 49,
+    "losses": 151,
     "draws": 0,
     "n": 200,
-    "win": 0.24,
+    "win": 0.245,
     "ci": [
-     0.186,
-     0.304
+     0.191,
+     0.309
     ],
     "stage": "ref:prog-1",
-    "level": 1.05,
+    "level": 1.07,
     "deckMap": 10,
     "cpu": 1,
     "optimum": {
@@ -3575,13 +3592,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 529,
+    "ms": 543,
     "perDeck": [
-     0.075,
-     0.45,
-     0.15,
-     0.325,
-     0.2
+     0.2,
+     0.3,
+     0.275,
+     0.2,
+     0.25
     ]
    },
    {
@@ -3633,7 +3650,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 494
+    "ms": 550
    },
    {
     "map": 11,
@@ -3641,17 +3658,17 @@
     "name": "Eyrie Heights",
     "ref": "prog",
     "games": 40,
-    "wins": 32,
-    "losses": 168,
-    "draws": 0,
+    "wins": 27,
+    "losses": 172,
+    "draws": 1,
     "n": 200,
-    "win": 0.16,
+    "win": 0.135,
     "ci": [
-     0.116,
-     0.217
+     0.094,
+     0.189
     ],
     "stage": "ref:prog-1",
-    "level": 2.58,
+    "level": 2.65,
     "deckMap": 11,
     "cpu": 1,
     "optimum": {
@@ -3682,13 +3699,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 826,
+    "ms": 964,
     "perDeck": [
+     0.225,
+     0.225,
      0.075,
-     0.2,
-     0.3,
-     0.125,
-     0.1
+     0.075,
+     0.075
     ]
    },
    {
@@ -3738,7 +3755,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 895
+    "ms": 899
    },
    {
     "map": 12,
@@ -3746,17 +3763,17 @@
     "name": "The Briar Maze",
     "ref": "prog",
     "games": 40,
-    "wins": 73,
-    "losses": 126,
-    "draws": 1,
+    "wins": 107,
+    "losses": 93,
+    "draws": 0,
     "n": 200,
-    "win": 0.365,
+    "win": 0.535,
     "ci": [
-     0.301,
-     0.434
+     0.466,
+     0.603
     ],
     "stage": "ref:prog-1",
-    "level": 2.51,
+    "level": 2.43,
     "deckMap": 12,
     "cpu": 1,
     "optimum": {
@@ -3786,13 +3803,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1021,
+    "ms": 1208,
     "perDeck": [
-     0.275,
-     0.475,
-     0.4,
-     0.225,
-     0.45
+     0.625,
+     0.525,
+     0.625,
+     0.375,
+     0.525
     ]
    },
    {
@@ -3841,7 +3858,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 988
+    "ms": 1115
    },
    {
     "map": 13,
@@ -3849,17 +3866,17 @@
     "name": "The Redwood Deep",
     "ref": "prog",
     "games": 40,
-    "wins": 61,
-    "losses": 139,
+    "wins": 88,
+    "losses": 112,
     "draws": 0,
     "n": 200,
-    "win": 0.305,
+    "win": 0.44,
     "ci": [
-     0.245,
-     0.372
+     0.373,
+     0.509
     ],
     "stage": "ref:prog-1",
-    "level": 2.91,
+    "level": 2.46,
     "deckMap": 13,
     "cpu": 1,
     "optimum": {
@@ -3887,13 +3904,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1008,
+    "ms": 950,
     "perDeck": [
-     0.325,
-     0.275,
-     0.275,
-     0.475,
-     0.175
+     0.55,
+     0.375,
+     0.3,
+     0.5,
+     0.475
     ]
    },
    {
@@ -3940,7 +3957,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 968
+    "ms": 950
    },
    {
     "map": 14,
@@ -3948,17 +3965,17 @@
     "name": "Savanna Reaches",
     "ref": "prog",
     "games": 40,
-    "wins": 43,
-    "losses": 157,
+    "wins": 38,
+    "losses": 162,
     "draws": 0,
     "n": 200,
-    "win": 0.215,
+    "win": 0.19,
     "ci": [
-     0.164,
-     0.277
+     0.142,
+     0.25
     ],
     "stage": "ref:prog-1",
-    "level": 2.79,
+    "level": 2.55,
     "deckMap": 14,
     "cpu": 1,
     "optimum": {
@@ -3985,13 +4002,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 648,
+    "ms": 572,
     "perDeck": [
-     0.25,
+     0.125,
      0.2,
-     0.375,
-     0.25,
-     0
+     0.325,
+     0.2,
+     0.1
     ]
    },
    {
@@ -4037,7 +4054,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 557
+    "ms": 610
    },
    {
     "map": 15,
@@ -4045,17 +4062,17 @@
     "name": "The Long Grass",
     "ref": "prog",
     "games": 40,
-    "wins": 116,
-    "losses": 84,
+    "wins": 109,
+    "losses": 91,
     "draws": 0,
     "n": 200,
-    "win": 0.58,
+    "win": 0.545,
     "ci": [
-     0.511,
-     0.646
+     0.476,
+     0.613
     ],
     "stage": "ref:prog-1",
-    "level": 2.78,
+    "level": 2.39,
     "deckMap": 15,
     "cpu": 1,
     "optimum": {
@@ -4083,13 +4100,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 823,
+    "ms": 947,
     "perDeck": [
      0.525,
-     0.6,
-     0.725,
-     0.575,
-     0.475
+     0.525,
+     0.625,
+     0.5,
+     0.55
     ]
    },
    {
@@ -4136,7 +4153,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 700
+    "ms": 862
    },
    {
     "map": 16,
@@ -4144,17 +4161,17 @@
     "name": "The Pinewood Taiga",
     "ref": "prog",
     "games": 40,
-    "wins": 113,
-    "losses": 87,
+    "wins": 112,
+    "losses": 88,
     "draws": 0,
     "n": 200,
-    "win": 0.565,
+    "win": 0.56,
     "ci": [
-     0.496,
-     0.632
+     0.491,
+     0.627
     ],
     "stage": "ref:prog-1",
-    "level": 2.82,
+    "level": 2.39,
     "deckMap": 16,
     "cpu": 1,
     "optimum": {
@@ -4182,13 +4199,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1349,
+    "ms": 1021,
     "perDeck": [
-     0.7,
+     0.625,
      0.55,
-     0.375,
-     0.675,
-     0.525
+     0.4,
+     0.6,
+     0.625
     ]
    },
    {
@@ -4235,7 +4252,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1060
+    "ms": 1103
    },
    {
     "map": 17,
@@ -4243,17 +4260,17 @@
     "name": "Wolfsbane Tundra",
     "ref": "prog",
     "games": 40,
-    "wins": 17,
-    "losses": 183,
+    "wins": 24,
+    "losses": 176,
     "draws": 0,
     "n": 200,
-    "win": 0.085,
+    "win": 0.12,
     "ci": [
-     0.054,
-     0.132
+     0.082,
+     0.172
     ],
     "stage": "ref:prog-1",
-    "level": 2.89,
+    "level": 2.25,
     "deckMap": 17,
     "cpu": 1,
     "optimum": {
@@ -4281,13 +4298,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1172,
+    "ms": 1157,
     "perDeck": [
      0.125,
-     0.025,
-     0.15,
-     0.05,
-     0.075
+     0.075,
+     0.2,
+     0.1,
+     0.1
     ]
    },
    {
@@ -4334,7 +4351,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1432
+    "ms": 1431
    },
    {
     "map": 18,
@@ -4342,17 +4359,17 @@
     "name": "The Glass Dunes",
     "ref": "prog",
     "games": 40,
-    "wins": 88,
-    "losses": 112,
-    "draws": 0,
+    "wins": 80,
+    "losses": 119,
+    "draws": 1,
     "n": 200,
-    "win": 0.44,
+    "win": 0.4,
     "ci": [
-     0.373,
-     0.509
+     0.335,
+     0.469
     ],
     "stage": "ref:prog-1",
-    "level": 2.45,
+    "level": 2.18,
     "deckMap": 18,
     "cpu": 1,
     "optimum": {
@@ -4382,13 +4399,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 999,
+    "ms": 1188,
     "perDeck": [
-     0.675,
-     0.2,
-     0.3,
-     0.5,
-     0.525
+     0.525,
+     0.375,
+     0.25,
+     0.45,
+     0.4
     ]
    },
    {
@@ -4437,7 +4454,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1041
+    "ms": 1054
    },
    {
     "map": 19,
@@ -4445,17 +4462,17 @@
     "name": "Ashen Spurn",
     "ref": "prog",
     "games": 40,
-    "wins": 79,
-    "losses": 121,
+    "wins": 87,
+    "losses": 113,
     "draws": 0,
     "n": 200,
-    "win": 0.395,
+    "win": 0.435,
     "ci": [
-     0.33,
-     0.464
+     0.368,
+     0.504
     ],
     "stage": "ref:prog-1",
-    "level": 2.47,
+    "level": 2.11,
     "deckMap": 19,
     "cpu": 1,
     "optimum": {
@@ -4484,13 +4501,13 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 1104,
+    "ms": 1011,
     "perDeck": [
-     0.475,
-     0.375,
-     0.275,
-     0.5,
-     0.35
+     0.425,
+     0.3,
+     0.25,
+     0.575,
+     0.625
     ]
    },
    {
@@ -4538,7 +4555,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 911
+    "ms": 963
    },
    {
     "map": 20,
@@ -4546,17 +4563,17 @@
     "name": "The Sundered Peak",
     "ref": "prog",
     "games": 40,
-    "wins": 43,
-    "losses": 157,
+    "wins": 46,
+    "losses": 154,
     "draws": 0,
     "n": 200,
-    "win": 0.215,
+    "win": 0.23,
     "ci": [
-     0.164,
-     0.277
+     0.177,
+     0.293
     ],
     "stage": "ref:prog-1",
-    "level": 2.3,
+    "level": 1.78,
     "deckMap": 20,
     "cpu": 1,
     "optimum": {
@@ -4588,12 +4605,12 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 958,
+    "ms": 1268,
     "perDeck": [
-     0.275,
-     0.2,
-     0.175,
-     0.225,
+     0.3,
+     0.25,
+     0.15,
+     0.25,
      0.2
     ]
    },
@@ -4645,7 +4662,7 @@
      ],
      "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
     },
-    "ms": 909
+    "ms": 1062
    }
   ]
  }
