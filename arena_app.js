@@ -19721,7 +19721,16 @@ function simulateReferenceFight(mapId, node, games, opts){
 // away). A set's level is a Forge level gained over each copy's own starting level; from schedule.fromMap every map gives schedule.perMap
 // different copies +1, picked by seededRng(hashStr(seed + ':map' + N)) among the copies below their cap (Base Lv 4, else the top level).
 const REF_DECK_SETS = /*REF-DECK-SETS-START*/{"ref2":{"id":"ref2","label":"Reference-2","file":"docs/balance/ref/ref2-owner-main-deck-2026-10-25.json","leader":"old-willow-of-the-ford","counts":{"ant-scout":5,"soldier-ant":5,"tunnel-ant":3,"fire-ant-raft":3,"quicksand-queen":2,"ant-warrior":1,"leafcutter-gardener":1},"schedule":{"fromMap":1,"perMap":5,"seed":"ref2"}}}/*REF-DECK-SETS-END*/;
-function refSetIds(){ return ['map'].concat(Object.keys(REF_DECK_SETS || {})); }
+// 2026-10-30 (package REF5, owner 10-28 22:50: "When playing REF combats, the default option 'Reference (Random)' plays one of the random 5
+// reference decks"): a per-map set (perMap: true, the progression reference "prog", docs/balance/ref/ref5-prog.json) has n decks a map. It
+// offers "<id>" (one of the map's n at random, each time a fight starts) and "<id>-1" .. "<id>-n" (one in particular), first in the list.
+function refSetIds(){ const sets = REF_DECK_SETS || {}, multi = Object.keys(sets).filter(id=> sets[id].perMap), one = Object.keys(sets).filter(id=> !sets[id].perMap);
+  return [].concat(...multi.map(id=> [id].concat(Array.from({length: sets[id].n || 0}, (_, i)=> id + '-' + (i + 1))))).concat(['map'], one); }
+function refMultiOf(setId){ const sets = REF_DECK_SETS || {}; if(sets[setId] && sets[setId].perMap) return {set: sets[setId], id: setId, pick: null};
+  const m = /^(.+)-(\d+)$/.exec(String(setId || '')); if(m && sets[m[1]] && sets[m[1]].perMap && +m[2] >= 1 && +m[2] <= (sets[m[1]].n || 0)) return {set: sets[m[1]], id: m[1], pick: +m[2]}; return null; }
+// the map a per-map set's decks are keyed by: a main map its number, a side map the map it opens on (mapUnlockNumberOf), the Babel Spire the last
+function refMultiMapNo(mapId, node, r){ const m = mapOfNode(node) || CONQUEST_MAPS.find(x=> x.id === mapId) || null; if(m && m.sub && !m.tower){ const u = mapUnlockNumberOf(m.id); if(u != null) return u; } return r.mapNo; }
+function refMultiLabel(i, n){ return typeof TX === 'function' ? TX('ui.ref5-deck', {i, n}) : 'Reference ' + i + ' of ' + n; }
 // the copies of a set at map N: [{id, bump}] in a fixed order (the counts' order, copy by copy); the Forge levels each copy has gained
 function refSetCopyLevels(set, mapNo, base){
   base = base || referenceBaseDefs();
@@ -19737,9 +19746,18 @@ function refSetCopyLevels(set, mapNo, base){
   return copies;
 }
 // The set for a fight: its deck (counts), the copies as [id, n, level] parts (refPartsDeck), the mean level gained, the leader and its label.
-function refSetFor(setId, mapId, node){
+function refSetFor(setId, mapId, node, opts){
   const r = referenceDeckFor(mapId, node);
   if(!setId || setId === 'map') return {set: 'map', label: 'Map reference', mapNo: r.mapNo, deck: r.deck, parts: levelMixDeck(r.deck, r.level), level: r.level, leader: null};
+  const multi = refMultiOf(setId);
+  if(multi){ // REF5: the map's decks (the nearest earlier map's when this one has none), one at random unless a number is picked
+    const want = refMultiMapNo(mapId, node, r), keys = Object.keys(multi.set.decks || {}).map(Number).filter(Number.isFinite).sort((a, b)=> a - b); if(!keys.length) return null;
+    const k = keys.filter(x=> x <= want).pop(), list = multi.set.decks[k != null ? k : keys[0]] || []; if(!list.length) return null;
+    const i = multi.pick != null ? Math.min(list.length, multi.pick) : 1 + Math.floor(((opts && opts.rnd) || Math.random)() * list.length), e = list[i - 1];
+    const parts = (e.parts || []).map(p=> [p[0], p[1] | 0, +p[2] || 0]), n = parts.reduce((t, p)=> t + p[1], 0);
+    return {set: setId, multi: multi.id, pick: i, of: list.length, label: refMultiLabel(i, list.length), mapNo: r.mapNo, deckMap: k, deck: Object.assign({}, e.counts), parts,
+      level: n ? Math.round(parts.reduce((t, p)=> t + p[1] * p[2], 0) / n * 100) / 100 : 0, leader: null};
+  }
   const set = (REF_DECK_SETS || {})[setId]; if(!set) return null;
   const base = referenceBaseDefs(), copies = refSetCopyLevels(set, r.mapNo, base), by = new Map();
   copies.forEach(c=>{ const L = cardBaseLevel(base[c.id]) + c.bump, k = c.id + '|' + L; by.set(k, (by.get(k) || 0) + 1); });
@@ -24216,10 +24234,13 @@ function findProFight(key){
 //     nodes: you always play the chosen reference set, against one of the map's PRO / BPRO decks picked in its panel (XREF_VS_KEY, PRO-1 by
 //     default), under that PRO's field. Like PRO: admin-visible, the same free preview, no rewards or Energy.
 const REF_PLAY_KEY = 'bramblewood_ref_play_v1', XREF_VS_KEY = 'bramblewood_xref_vs_v1';
-function refPlayPrefs(){ let o = null; try{ o = JSON.parse(localStorage.getItem(REF_PLAY_KEY) || 'null'); }catch(e){} o = o || {}; return {on: !!o.on, set: refSetIds().includes(o.set) ? o.set : 'map'}; }
-function saveRefPlayPrefs(p){ try{ localStorage.setItem(REF_PLAY_KEY, JSON.stringify({on: !!p.on, set: p.set || 'map'})); }catch(e){} }
+// 2026-10-30 (package REF5): the default set is "Reference (Random)" (refDefaultSet: the first per-map set, else the map's); a choice saved before
+// REF5 (no v: 2) moves to it once, as the owner asked for it as the default
+function refDefaultSet(){ const ids = refSetIds(); return ids.find(id=> (REF_DECK_SETS[id] || {}).perMap) || 'map'; }
+function refPlayPrefs(){ let o = null; try{ o = JSON.parse(localStorage.getItem(REF_PLAY_KEY) || 'null'); }catch(e){} o = o || {}; const set = o.v === 2 ? o.set : null; return {on: !!o.on, set: refSetIds().includes(set) ? set : refDefaultSet()}; }
+function saveRefPlayPrefs(p){ try{ localStorage.setItem(REF_PLAY_KEY, JSON.stringify({on: !!p.on, set: p.set || refDefaultSet(), v: 2})); }catch(e){} }
 function refPlayActive(){ return !!adminModeEnabled && refPlayPrefs().on; }
-function refSetLabelTX(id){ return !id || id === 'map' ? TX('ui.pref-set-map') : ((REF_DECK_SETS[id] || {}).label || id); }
+function refSetLabelTX(id){ if(!id || id === 'map') return TX('ui.pref-set-map'); const mu = refMultiOf(id); if(mu) return mu.pick == null ? TX('ui.ref5-random') : refMultiLabel(mu.pick, mu.set.n || 0); return (REF_DECK_SETS[id] || {}).label || id; } // REF5
 function xrefKeyOf(entId){ const e = proEntriesOf(proMapEntries()[entId])[0]; return e ? e.id.replace(/-B?PRO-\d+$/, '') + '-REF' : null; }
 function xrefVsFor(entId){ const list = proEntriesOf(proMapEntries()[entId]); let v = null; try{ v = (JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {})[entId]; }catch(e){}
   return list.some(e=> e.id === v) ? v : ((list[0] || {}).id || null); }
@@ -24243,10 +24264,10 @@ function refPlayToggleHTML(){
 // the X-REF panel's extra row: which PRO / BPRO deck you face, and which reference set you play
 function xrefPanelHTML(map, node){
   const id = proEntryIdOf(map.id), list = proEntriesOf(proMapEntries()[id]), p = refPlayPrefs();
-  let rs = null; try{ rs = refSetFor(p.set, map.id, node); }catch(e){}
+  let rs = null; try{ rs = refMultiOf(p.set) && refMultiOf(p.set).pick == null ? null /* REF5: dealt when the fight starts */ : refSetFor(p.set, map.id, node); }catch(e){}
   return `<div class="pref-xref" style="margin:6px 0;"><div class="panel-sub">${escapeHtml(TX('ui.pref-xref-vs'))}</div><div style="display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 6px;">${list.map(e=> `<button type="button" class="btn small ${e.id === node.xrefVs ? 'primary' : 'ghost'}" data-xref-vs="${escapeAttr(e.id)}" data-xref-map="${escapeAttr(id)}" aria-pressed="${e.id === node.xrefVs}">${escapeHtml(e.id)}</button>`).join('')}</div>
     <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-pref-set>${refSetIds().map(sid=> `<option value="${escapeAttr(sid)}" ${sid === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
-    ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
+    ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' || rs.gained == null ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
 }
 try{ if(typeof document !== 'undefined'){
   document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
@@ -30809,7 +30830,8 @@ function startConquestMatch(mapId, nodeKey, opts){
     // leader is already on the field from turn one, so there's nothing left to summon.
     leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
-  if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level}; } // 2026-10-25 (package PREF): no rewards, a REF tag
+  if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refPlay.multi ? refPlay.label : refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level, pick: refPlay.pick || null};
+    if(refPlay.multi) try{ showToast('🎯 ' + TX('ui.ref5-dealt', {name: refPlay.label}), 'ok'); }catch(e){} } // REF5: which of the map's decks was dealt // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
     players[2].hq.maxHp = waves[0].hp; players[2].hq.hp = waves[0].hp; players[2].hq.shield = waves[0].shield || 0; players[2].hq.maxShield = players[2].hq.shield; }
   renderPlay();

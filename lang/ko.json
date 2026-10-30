@@ -3672,5 +3672,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "적 가시덤불에 준 피해로 얻은 가시덤불 꽃",
  "Flip": "뒤집기",
  "Drag sideways to turn it · tap to flip it over": "옆으로 끌어 돌리기 · 탭하여 뒤집기",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: 옆으로 끌어 돌리기, Enter로 뒤집기"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: 옆으로 끌어 돌리기, Enter로 뒤집기",
+ "Reference (Random)": "레퍼런스 (무작위)",
+ "Reference {i} of {n}": "레퍼런스 {i}/{n}",
+ "You play {name}, dealt at random from this map's reference decks.": "이 맵의 레퍼런스 덱 중 무작위로 뽑힌 {name}(으)로 싸워요."
 }

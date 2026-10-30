@@ -26,6 +26,18 @@ function readSets(root) {
     if (!j || !j.id) return;
     // 2026-10-27 (package BAL6, K17): a per-map set ("decks": {"<map>": counts}, the Pool reference) is played by the tools only (ref_pool.js
     // deckFor); the game's refSetFor takes one deck a set, so it is checked here but not baked
+    // 2026-10-30 (package REF5): a per-map set with "bake": true (the progression reference, n decks a map, each {seed, counts, parts}) is baked:
+    // the game's refSetFor deals one of the map's decks at random ("Reference (Random)") or the one picked ("<id>-k")
+    if (j.decks && !j.counts && j.bake) {
+      if (sets[j.id] || toolSets[j.id] || j.id === 'map' || !/^[a-z0-9]+$/.test(j.id)) { problems.push(f + ': bad or repeated id ' + j.id + ' (a baked per-map set: letters and digits only)'); return; }
+      const decks = {}; let n = 0;
+      Object.keys(j.decks).sort((a, b) => a - b).forEach(m => { const list = j.decks[m] || []; n = Math.max(n, list.length);
+        decks[m] = list.map((e, i) => { const c = e.counts || {}, tot = Object.values(c).reduce((t, k) => t + (k | 0), 0), pt = (e.parts || []).reduce((t, p) => t + (p[1] | 0), 0);
+          Object.keys(c).filter(id => !known.has(id)).forEach(id => problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': unknown card ' + id));
+          if (tot !== 20) problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': ' + tot + ' cards (a deck is 20)'); if (pt !== tot) problems.push(f + ': Map ' + m + ' deck ' + (i + 1) + ': parts hold ' + pt + ' copies, counts ' + tot);
+          return { seed: e.seed, counts: c, parts: e.parts || [] }; }); });
+      sets[j.id] = { id: j.id, label: j.label || j.id, file: 'docs/balance/ref/' + f, perMap: true, n, decks }; return;
+    }
     if (j.decks && !j.counts) {
       if (toolSets[j.id] || sets[j.id]) { problems.push(f + ': id ' + j.id + ' is used twice'); return; }
       Object.keys(j.decks).forEach(m => { const d = j.decks[m] || {}, n = Object.values(d).reduce((t, k) => t + (k | 0), 0);

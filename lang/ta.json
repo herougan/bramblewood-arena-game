@@ -3672,5 +3672,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "எதிரி முட்புதருக்கு நீங்கள் செய்த சேதத்திற்கான முட்புதர் மலர்கள்",
  "Flip": "திருப்பு",
  "Drag sideways to turn it · tap to flip it over": "சுழற்ற பக்கவாட்டில் இழுக்கவும் · திருப்ப தட்டவும்",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: சுழற்ற பக்கவாட்டில் இழுக்கவும், திருப்ப Enter அழுத்தவும்"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: சுழற்ற பக்கவாட்டில் இழுக்கவும், திருப்ப Enter அழுத்தவும்",
+ "Reference (Random)": "குறிப்பு (சீரற்ற)",
+ "Reference {i} of {n}": "குறிப்பு {n} இல் {i}",
+ "You play {name}, dealt at random from this map's reference decks.": "இந்த வரைபடத்தின் குறிப்பு அடுக்குகளில் இருந்து சீரற்ற முறையில் தேர்ந்த {name} உடன் விளையாடுகிறீர்கள்."
 }

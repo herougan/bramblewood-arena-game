@@ -3671,5 +3671,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Bunga Semak Duri untuk kerusakan yang kamu berikan pada semak duri musuh",
  "Flip": "Balik",
  "Drag sideways to turn it · tap to flip it over": "Geser ke samping untuk memutarnya · ketuk untuk membaliknya",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: geser ke samping untuk memutarnya, Enter untuk membaliknya"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: geser ke samping untuk memutarnya, Enter untuk membaliknya",
+ "Reference (Random)": "Referensi (acak)",
+ "Reference {i} of {n}": "Referensi {i} dari {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Kamu memainkan {name}, dipilih acak dari dek referensi peta ini."
 }

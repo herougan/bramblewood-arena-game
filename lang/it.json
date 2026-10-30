@@ -3671,5 +3671,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Fiori di rovo per i danni inflitti al rovo nemico",
  "Flip": "Gira",
  "Drag sideways to turn it · tap to flip it over": "Trascina di lato per ruotarla · tocca per girarla",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: trascina di lato per ruotarla, Invio per girarla"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: trascina di lato per ruotarla, Invio per girarla",
+ "Reference (Random)": "Riferimento (casuale)",
+ "Reference {i} of {n}": "Riferimento {i} di {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Giochi con {name}, estratto a caso dai mazzi di riferimento di questa mappa."
 }

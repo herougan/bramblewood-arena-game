@@ -1,0 +1,1193 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-10-30T13:11:46.244Z",
+ "map": {
+  "id": "mb",
+  "num": 2,
+  "name": "Pebble Beach"
+ },
+ "level": 0,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s2",
+  "budget": 3000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mb --seed ref5-s2 --budget 3000 --final-games 16 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode prog --seed-ref --prog-seed 2 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 72,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "ant-hill",
+   "ant-scout",
+   "badger-lumberjack",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "bramble-sprout",
+   "burrow-rabbit",
+   "caiman-hatchling",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "cobalt-talon-fledgling",
+   "compost-grub",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "crossed-eyes",
+   "dominion-nestguard",
+   "dormouse",
+   "duck-paddler",
+   "duckling",
+   "earthworm",
+   "ferry-toll-frog",
+   "field-mouse",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "garden-snail",
+   "greyplume-fledgling",
+   "guppy",
+   "harvest-mouse",
+   "hedgerow-shrew",
+   "honey-bee",
+   "house-cat",
+   "hummingbird-needler",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "mosswing-laborer",
+   "muskrat-reedgatherer",
+   "nectar-sipper",
+   "otter-angler",
+   "otter-centurion",
+   "otter-guard",
+   "otter-kit",
+   "otter-paddler",
+   "otter-shieldback",
+   "owl-sentinel",
+   "phoenix-mushrooms",
+   "pond-duck",
+   "pond-trout",
+   "rabbit-kit",
+   "river-carp",
+   "rivergate-recruit",
+   "riverwing-envoy",
+   "robin-redbreast",
+   "sheep",
+   "shell-cracker",
+   "silver-minnow",
+   "soldier-ant",
+   "sparrow-chick",
+   "sunfeather-scout",
+   "terrier-pup",
+   "tunnel-ant",
+   "water-shrew",
+   "woodcock-lookout",
+   "worker-ant"
+  ],
+  "phase2": 72,
+  "wholeSpectrum": 72,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "coast",
+   "kinBiomes": [
+    "caves",
+    "mangrove",
+    "reef-ocean"
+   ],
+   "terrainTypes": [
+    "Coastal",
+    "Ocean"
+   ],
+   "mapTypes": [
+    "Bird 2",
+    "Coastal 10",
+    "Crustacean 6",
+    "Echinoderm 2",
+    "Ocean 3"
+   ],
+   "mapMechanics": [
+    "armor 6",
+    "guard 3",
+    "tide 9"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "beachMap",
+    "highTide",
+    "phase:cycle",
+    "tide",
+    "tideSpout",
+    "wet"
+   ],
+   "coreCards": 17
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 2's collection",
+    "n": 746,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "adder-ambusher",
+     "alley-cat"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-1",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs 2-1 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs 2-2 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-3",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs 2-3 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|fight:2-4",
+   "kind": "mirror",
+   "node": "2-4",
+   "label": "vs 2-4 skirmish's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, tideSpout, wet"
+  },
+  {
+   "key": "mirror|fight:2-5",
+   "kind": "mirror",
+   "node": "2-5",
+   "label": "vs 2-5 elite's deck",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs reference starter deck under 2-1's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, tide, wet"
+  },
+  {
+   "key": "mirror|ref:road2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs reference deck (Map 2) under 2-2's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+   "weight": 0.094,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-1",
+   "kind": "road",
+   "node": "2-1",
+   "label": "2-1 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, tide, wet"
+  },
+  {
+   "key": "road|2-2",
+   "kind": "road",
+   "node": "2-2",
+   "label": "2-2 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-3",
+   "kind": "road",
+   "node": "2-3",
+   "label": "2-3 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet"
+  },
+  {
+   "key": "road|2-4",
+   "kind": "road",
+   "node": "2-4",
+   "label": "2-4 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, tideSpout, wet"
+  },
+  {
+   "key": "road|2-5",
+   "kind": "road",
+   "node": "2-5",
+   "label": "2-5 as the game builds it",
+   "weight": 0.05,
+   "neutral": false,
+   "rules": "aiGuardLethal, beachMap, highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet"
+  },
+  {
+   "key": "neutral|fight:2-1",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs 2-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs 2-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-3",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs 2-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-4",
+   "kind": "mirror",
+   "node": "2-4",
+   "label": "vs 2-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:2-5",
+   "kind": "mirror",
+   "node": "2-5",
+   "label": "vs 2-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "2-1",
+   "label": "vs reference starter deck under 2-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road2",
+   "kind": "mirror",
+   "node": "2-2",
+   "label": "vs reference deck (Map 2) under 2-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "2-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 5744,
+  "seconds": 81.2,
+  "gamesPerSecond": 70.8,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 3692,
+   "gens": 0,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "bee-forager:4,clap-net-trapper:1,cricket-drummer:1,crimson-wing-recruit:4,otter-paddler:1,phoenix-mushrooms:1,sheep:1,soldier-ant:4,tunnel-ant:3",
+     "f": 0.743,
+     "gens": 0,
+     "games": 2340,
+     "top": [
+      "bee-forager:4,clap-net-trapper:1,cricket-drummer:1,crimson-wing-recruit:4,otter-paddler:1,phoenix-mushrooms:1,sheep:1,soldier-ant:4,tunnel-ant:3",
+      "bee-forager:4,cricket-drummer:1,crimson-wing-recruit:4,fleetfootd:1,forager-ant:1,muskrat-reedgatherer:1,pond-duck:1,soldier-ant:3,tunnel-ant:3,woodcock-lookout:1",
+      "bee-forager:4,cricket-drummer:1,crimson-wing-recruit:4,dormouse:1,fleetfootd:1,muskrat-reedgatherer:1,otter-centurion:1,soldier-ant:4,tunnel-ant:2,woodcock-lookout:1",
+      "acorn-chipmunk:2,ant-hill:1,bee-drone:1,bramble-sprout:1,cottontail:1,crimson-wing-duelist-cadet:1,crossed-eyes:1,dominion-nestguard:1,duck-paddler:1,earthworm:1,fleetfootd:1,forager-ant:1,hedgerow-shrew:1,hummingbird-needler:1,otter-guard:1,otter-shieldback:1,pond-duck:1,sunfeather-scout:1,tunnel-ant:1"
+     ]
+    },
+    {
+     "best": "bee-forager:4,cricket-drummer:1,crimson-wing-recruit:4,fleetfootd:1,forager-ant:1,muskrat-reedgatherer:1,pond-duck:1,soldier-ant:3,tunnel-ant:3,woodcock-lookout:1",
+     "f": 0.693,
+     "gens": 0,
+     "games": 1352,
+     "top": [
+      "bee-forager:4,cricket-drummer:1,crimson-wing-recruit:4,fleetfootd:1,forager-ant:1,muskrat-reedgatherer:1,pond-duck:1,soldier-ant:3,tunnel-ant:3,woodcock-lookout:1",
+      "bee-forager:4,cricket-drummer:1,crimson-wing-recruit:4,fleetfootd:1,meadow-frog:1,muskrat-reedgatherer:1,soldier-ant:4,tunnel-ant:3,woodcock-lookout:1",
+      "burrow-rabbit:1,caiman-hatchling:1,cobalt-talon-fledgling:1,compost-grub:1,crimson-wing-recruit:1,dominion-nestguard:1,duckling:1,field-mouse:1,forager-ant:1,house-cat:1,otter-kit:1,otter-paddler:1,otter-shieldback:1,pond-trout:1,rivergate-recruit:2,silver-minnow:2,terrier-pup:1,worker-ant:1",
+      "ant-hill:1,beaver-lumberjack:1,bee-forager:1,cobalt-talon-fledgling:1,compost-grub:1,cricket-drummer:1,ferry-toll-frog:1,field-mouse:1,hedgerow-shrew:1,house-cat:1,nectar-sipper:1,otter-centurion:2,rivergate-recruit:1,robin-redbreast:1,sheep:1,sparrow-chick:1,terrier-pup:1,tunnel-ant:2"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "bee-forager": 4,
+    "clap-net-trapper": 1,
+    "cricket-drummer": 1,
+    "crimson-wing-recruit": 4,
+    "otter-paddler": 1,
+    "phoenix-mushrooms": 1,
+    "sheep": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "clap-net-trapper",
+     "name": "Clap-net Trapper",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-paddler",
+     "name": "Otter Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "phoenix-mushrooms",
+     "name": "Phoenix Mushrooms",
+     "copies": 1,
+     "rarity": "epic",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.743,
+   "ci": [
+    0.704,
+    0.783
+   ],
+   "mirror": 0.758,
+   "road": 0.7,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:2-1",
+     "label": "vs 2-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.758,
+     "hi": 0.968,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:2-2",
+     "label": "vs 2-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.719,
+     "hi": 0.95,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:2-3",
+     "label": "vs 2-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.719,
+     "hi": 0.95,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:2-4",
+     "label": "vs 2-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.546,
+     "hi": 0.844,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:2-5",
+     "label": "vs 2-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.546,
+     "hi": 0.844,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.546,
+     "hi": 0.844,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.313,
+     "lo": 0.18,
+     "hi": 0.486,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.799,
+     "hi": 0.983,
+     "n": 32
+    },
+    {
+     "entry": "road|2-1",
+     "label": "2-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.844,
+     "lo": 0.682,
+     "hi": 0.931,
+     "n": 32
+    },
+    {
+     "entry": "road|2-2",
+     "label": "2-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.453,
+     "hi": 0.771,
+     "n": 32
+    },
+    {
+     "entry": "road|2-3",
+     "label": "2-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.781,
+     "lo": 0.612,
+     "hi": 0.89,
+     "n": 32
+    },
+    {
+     "entry": "road|2-4",
+     "label": "2-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.719,
+     "lo": 0.546,
+     "hi": 0.844,
+     "n": 32
+    },
+    {
+     "entry": "road|2-5",
+     "label": "2-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.531,
+     "lo": 0.364,
+     "hi": 0.691,
+     "n": 32
+    },
+    {
+     "entry": "neutral|fight:2-1",
+     "label": "vs 2-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.717,
+     "hi": 0.989,
+     "n": 16
+    },
+    {
+     "entry": "neutral|fight:2-2",
+     "label": "vs 2-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.806,
+     "hi": 1,
+     "n": 16
+    },
+    {
+     "entry": "neutral|fight:2-3",
+     "label": "vs 2-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.717,
+     "hi": 0.989,
+     "n": 16
+    },
+    {
+     "entry": "neutral|fight:2-4",
+     "label": "vs 2-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.717,
+     "hi": 0.989,
+     "n": 16
+    },
+    {
+     "entry": "neutral|fight:2-5",
+     "label": "vs 2-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.806,
+     "hi": 1,
+     "n": 16
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 2-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.813,
+     "lo": 0.57,
+     "hi": 0.934,
+     "n": 16
+    },
+    {
+     "entry": "neutral|ref:road2",
+     "label": "vs reference deck (Map 2) under 2-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.25,
+     "lo": 0.102,
+     "hi": 0.495,
+     "n": 16
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.938,
+     "lo": 0.717,
+     "hi": 0.989,
+     "n": 16
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.743,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "bee-forager": 4,
+    "clap-net-trapper": 1,
+    "cricket-drummer": 1,
+    "crimson-wing-recruit": 4,
+    "otter-paddler": 1,
+    "phoenix-mushrooms": 1,
+    "sheep": 1,
+    "soldier-ant": 4,
+    "tunnel-ant": 3
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "clap-net-trapper",
+     "name": "Clap-net Trapper",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-paddler",
+     "name": "Otter Paddler",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "phoenix-mushrooms",
+     "name": "Phoenix Mushrooms",
+     "copies": 1,
+     "rarity": "epic",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "sheep",
+     "name": "Sheep",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.743,
+   "ci": [
+    0.704,
+    0.783
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 7,
+ "ladder": null,
+ "road": [
+  {
+   "node": "2-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.844,
+   "ci": [
+    0.682,
+    0.931
+   ],
+   "n": 32
+  },
+  {
+   "node": "2-2",
+   "kind": "skirmish",
+   "target": 0.8,
+   "optimum": 0.625,
+   "ci": [
+    0.453,
+    0.771
+   ],
+   "n": 32
+  },
+  {
+   "node": "2-3",
+   "kind": "skirmish",
+   "target": 0.7,
+   "optimum": 0.781,
+   "ci": [
+    0.612,
+    0.89
+   ],
+   "n": 32
+  },
+  {
+   "node": "2-4",
+   "kind": "skirmish",
+   "target": 0.6,
+   "optimum": 0.719,
+   "ci": [
+    0.546,
+    0.844
+   ],
+   "n": 32
+  },
+  {
+   "node": "2-5",
+   "kind": "elite",
+   "target": 0.4,
+   "optimum": 0.531,
+   "ci": [
+    0.364,
+    0.691
+   ],
+   "n": 32
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:2-1",
+   "node": "2-1",
+   "rules": "aiGuardLethal, beachMap, phase cycle, tide, wet",
+   "withField": 0.906,
+   "noField": 0.938,
+   "delta": -0.031,
+   "ci": [
+    -0.187,
+    0.125
+   ]
+  },
+  {
+   "opponent": "fight:2-2",
+   "node": "2-2",
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.875,
+   "noField": 1,
+   "delta": -0.125,
+   "ci": [
+    -0.24,
+    -0.01
+   ]
+  },
+  {
+   "opponent": "fight:2-3",
+   "node": "2-3",
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.875,
+   "noField": 0.938,
+   "delta": -0.062,
+   "ci": [
+    -0.227,
+    0.102
+   ]
+  },
+  {
+   "opponent": "fight:2-4",
+   "node": "2-4",
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, tideSpout, wet",
+   "withField": 0.719,
+   "noField": 0.938,
+   "delta": -0.219,
+   "ci": [
+    -0.415,
+    -0.023
+   ]
+  },
+  {
+   "opponent": "fight:2-5",
+   "node": "2-5",
+   "rules": "aiGuardLethal, beachMap, highTide, phase cycle, terrain Tideline T2 (Shell 1), tide, wet",
+   "withField": 0.719,
+   "noField": 1,
+   "delta": -0.281,
+   "ci": [
+    -0.437,
+    -0.125
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "2-1",
+   "rules": "aiGuardLethal, beachMap, phase cycle, tide, wet",
+   "withField": 0.719,
+   "noField": 0.813,
+   "delta": -0.094,
+   "ci": [
+    -0.34,
+    0.153
+   ]
+  },
+  {
+   "opponent": "ref:road2",
+   "node": "2-2",
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.313,
+   "noField": 0.25,
+   "delta": 0.063,
+   "ci": [
+    -0.204,
+    0.329
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "2-3",
+   "rules": "aiGuardLethal, beachMap, phase cycle, terrain Tideline T1, tide, wet",
+   "withField": 0.938,
+   "noField": 0.938,
+   "delta": 0,
+   "ci": [
+    -0.145,
+    0.145
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:2-1",
+   "label": "2-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-1",
+   "target": 0.9,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.758,
+    0.968
+   ],
+   "elo": 394,
+   "eloCI": [
+    198,
+    590
+   ],
+   "n": 32,
+   "asPlayer": 0.111,
+   "optimumSame": 0.727,
+   "pointsBelow": 61.5,
+   "pointsCI": 7.7
+  },
+  {
+   "opponent": "fight:2-2",
+   "label": "2-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-2",
+   "target": 0.8,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.719,
+    0.95
+   ],
+   "elo": 338,
+   "eloCI": [
+    163,
+    513
+   ],
+   "n": 32,
+   "asPlayer": 0.51,
+   "optimumSame": 0.73,
+   "pointsBelow": 21.9,
+   "pointsCI": 9.2
+  },
+  {
+   "opponent": "fight:2-3",
+   "label": "2-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-3",
+   "target": 0.7,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.719,
+    0.95
+   ],
+   "elo": 338,
+   "eloCI": [
+    163,
+    513
+   ],
+   "n": 32,
+   "asPlayer": 0.491,
+   "optimumSame": 0.73,
+   "pointsBelow": 23.9,
+   "pointsCI": 9.5
+  },
+  {
+   "opponent": "fight:2-4",
+   "label": "2-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "2-4",
+   "target": 0.6,
+   "h2h": 0.719,
+   "h2hCI": [
+    0.546,
+    0.844
+   ],
+   "elo": 163,
+   "eloCI": [
+    32,
+    294
+   ],
+   "n": 32,
+   "asPlayer": 0.412,
+   "optimumSame": 0.746,
+   "pointsBelow": 33.4,
+   "pointsCI": 8.9
+  },
+  {
+   "opponent": "fight:2-5",
+   "label": "2-5 elite's deck",
+   "kind": "elite",
+   "node": "2-5",
+   "target": 0.4,
+   "h2h": 0.719,
+   "h2hCI": [
+    0.546,
+    0.844
+   ],
+   "elo": 163,
+   "eloCI": [
+    32,
+    294
+   ],
+   "n": 32,
+   "asPlayer": 0.415,
+   "optimumSame": 0.746,
+   "pointsBelow": 33.1,
+   "pointsCI": 10.4
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 2-1's field",
+   "kind": "reference",
+   "node": "2-1",
+   "target": null,
+   "h2h": 0.719,
+   "h2hCI": [
+    0.546,
+    0.844
+   ],
+   "elo": 163,
+   "eloCI": [
+    32,
+    294
+   ],
+   "n": 32,
+   "asPlayer": 0.378,
+   "optimumSame": 0.746,
+   "pointsBelow": 36.8,
+   "pointsCI": 9.8
+  },
+  {
+   "opponent": "ref:road2",
+   "label": "reference deck (Map 2) under 2-2's field",
+   "kind": "reference",
+   "node": "2-2",
+   "target": null,
+   "h2h": 0.313,
+   "h2hCI": [
+    0.18,
+    0.486
+   ],
+   "elo": -137,
+   "eloCI": [
+    -264,
+    -10
+   ],
+   "n": 32,
+   "asPlayer": 0.886,
+   "optimumSame": 0.788,
+   "pointsBelow": -9.8,
+   "pointsCI": 7
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 2-3's field",
+   "kind": "reference",
+   "node": "2-3",
+   "target": null,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.799,
+    0.983
+   ],
+   "elo": 470,
+   "eloCI": [
+    239,
+    702
+   ],
+   "n": 32,
+   "asPlayer": 0.286,
+   "optimumSame": 0.723,
+   "pointsBelow": 43.7,
+   "pointsCI": 9.8
+  }
+ ]
+}

@@ -3669,5 +3669,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Fleurs de ronce pour les dégâts infligés à la ronce ennemie",
  "Flip": "Retourner",
  "Drag sideways to turn it · tap to flip it over": "Glisse sur le côté pour la tourner · touche pour la retourner",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name} : glisse sur le côté pour la tourner, Entrée pour la retourner"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name} : glisse sur le côté pour la tourner, Entrée pour la retourner",
+ "Reference (Random)": "Référence (au hasard)",
+ "Reference {i} of {n}": "Référence {i} sur {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Vous jouez {name}, tiré au hasard parmi les decks de référence de cette carte."
 }

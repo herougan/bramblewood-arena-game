@@ -3671,5 +3671,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Flores de silva pelo dano que fez à silva inimiga",
  "Flip": "Virar",
  "Drag sideways to turn it · tap to flip it over": "Arraste para o lado para girá-la · toque para virá-la",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arraste para o lado para girá-la, Enter para virá-la"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arraste para o lado para girá-la, Enter para virá-la",
+ "Reference (Random)": "Referência (aleatória)",
+ "Reference {i} of {n}": "Referência {i} de {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Joga com {name}, escolhido ao acaso entre os baralhos de referência deste mapa."
 }

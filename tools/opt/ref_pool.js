@@ -68,11 +68,11 @@ function stable(o) { const c = JSON.parse(JSON.stringify(o)); return JSON.string
 function loadSet(root, id) {
   const dir = path.join(root || ROOT, 'docs', 'balance', 'ref'); if (!fs.existsSync(dir)) return null;
   for (const f of fs.readdirSync(dir).filter(x => x.endsWith('.json')).sort()) { let j; try { j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); } catch (e) { continue; }
-    if (j && j.id && j.decks && (!id || j.id === id)) return Object.assign(j, { file: 'docs/balance/ref/' + f }); }
+    if (j && j.id && j.decks && !j.bake && (!id || j.id === id)) return Object.assign(j, { file: 'docs/balance/ref/' + f }); }
   return null;
 }
 function toolSetIds(root) { const dir = path.join(root || ROOT, 'docs', 'balance', 'ref'); if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir).filter(x => x.endsWith('.json')).sort().map(f => { try { const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); return j && j.id && j.decks ? j.id : null; } catch (e) { return null; } }).filter(Boolean); }
+  return fs.readdirSync(dir).filter(x => x.endsWith('.json')).sort().map(f => { try { const j = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')); return j && j.id && j.decks && !j.bake ? j.id : null; /* REF5: a baked per-map set is the game's (REF_DECK_SETS) */ } catch (e) { return null; } }).filter(Boolean); }
 // the set's deck at map N: its own map's deck, else the nearest earlier one (a side map: its main map number)
 function deckFor(set, mapNo) { const ks = Object.keys(set.decks || {}).map(Number).filter(k => k <= Math.max(0, mapNo | 0)).sort((a, b) => a - b); const k = ks.length ? ks[ks.length - 1] : Math.min(...Object.keys(set.decks).map(Number)); return Object.assign({}, set.decks[k]); }
 

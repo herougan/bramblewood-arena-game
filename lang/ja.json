@@ -3669,5 +3669,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "敵のイバラに与えたダメージ分のイバラの花",
  "Flip": "裏返す",
  "Drag sideways to turn it · tap to flip it over": "横にドラッグで回す・タップで裏返す",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横にドラッグで回す、Enterで裏返す"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横にドラッグで回す、Enterで裏返す",
+ "Reference (Random)": "リファレンス（ランダム）",
+ "Reference {i} of {n}": "リファレンス {i}/{n}",
+ "You play {name}, dealt at random from this map's reference decks.": "このマップのリファレンスデッキからランダムに選ばれた {name} で戦います。"
 }

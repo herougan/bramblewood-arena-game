@@ -3668,5 +3668,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Flores de zarza por el daño que hiciste a la zarza enemiga",
  "Flip": "Voltear",
  "Drag sideways to turn it · tap to flip it over": "Arrastra de lado para girarla · toca para darle la vuelta",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arrastra de lado para girarla, Intro para darle la vuelta"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arrastra de lado para girarla, Intro para darle la vuelta",
+ "Reference (Random)": "Referencia (al azar)",
+ "Reference {i} of {n}": "Referencia {i} de {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Juegas con {name}, elegido al azar entre los mazos de referencia de este mapa."
 }

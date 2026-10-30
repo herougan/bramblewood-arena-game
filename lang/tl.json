@@ -3670,5 +3670,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Bulaklak ng Dawag para sa pinsalang ginawa mo sa dawag ng kalaban",
  "Flip": "Baligtarin",
  "Drag sideways to turn it · tap to flip it over": "I-drag patagilid para paikutin · i-tap para baligtarin",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: i-drag patagilid para paikutin, Enter para baligtarin"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: i-drag patagilid para paikutin, Enter para baligtarin",
+ "Reference (Random)": "Sanggunian (random)",
+ "Reference {i} of {n}": "Sanggunian {i} sa {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Lalaruin mo ang {name}, random na pinili mula sa mga sangguniang deck ng mapang ito."
 }

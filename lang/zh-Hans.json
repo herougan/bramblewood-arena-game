@@ -3669,5 +3669,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "你对敌方荆棘造成伤害获得的荆棘花",
  "Flip": "翻面",
  "Drag sideways to turn it · tap to flip it over": "横向拖动来转动 · 点按翻面",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横向拖动来转动，按 Enter 翻面"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横向拖动来转动，按 Enter 翻面",
+ "Reference (Random)": "参考（随机）",
+ "Reference {i} of {n}": "参考 {i}/{n}",
+ "You play {name}, dealt at random from this map's reference decks.": "你使用 {name}，从本地图的参考卡组中随机抽取。"
 }

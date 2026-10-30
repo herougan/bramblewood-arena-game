@@ -3668,5 +3668,8 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Brombeerblüten für den Schaden am gegnerischen Dornwall",
  "Flip": "Umdrehen",
  "Drag sideways to turn it · tap to flip it over": "Seitlich ziehen zum Drehen · tippen zum Umdrehen",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: seitlich ziehen zum Drehen, Enter zum Umdrehen"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: seitlich ziehen zum Drehen, Enter zum Umdrehen",
+ "Reference (Random)": "Referenz (zufällig)",
+ "Reference {i} of {n}": "Referenz {i} von {n}",
+ "You play {name}, dealt at random from this map's reference decks.": "Du spielst {name}, zufällig aus den Referenzdecks dieser Karte gezogen."
 }
