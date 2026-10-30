@@ -7505,7 +7505,8 @@
   .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
   /* Raid rows (2026-10-12, user: "The middle and backrows shouldnt be so small, at most a bit smaller") */
-  .board-card.is-ally-card::after{content:'🤝'; position:absolute; left:-6px; top:-8px; font-size:16px; z-index:8; filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+  /* 2026-10-30 (package RAIDFX1, owner 21:36: "Dont need the handshake symbol to denote allies in multiplayer dungeons/raids"): the 🤝 corner
+     marker on an ally's card (.is-ally-card::after) is gone; the class stays (the ally's row label and its play tag say whose it is). */
   .hq-tile.raid-castles{transform:scale(1.1); transform-origin:50% 50%;}
   .vs-allies{display:flex; flex-direction:column; gap:4px; margin-top:8px; font-size:13px;} .vs-ally{display:flex; gap:8px; align-items:center; justify-content:center; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12);}
   /* Wandering merchant deal (2026-10-12) */
@@ -13298,7 +13299,9 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) #view-play .play-subtabs-row
 .r3-bramble > img{width:56px; height:56px; border-radius:10px; flex:0 0 auto; border:1px solid rgba(200,150,255,.45);}
 /* the bramble tile winds up as it smacks */
 .match-castle-tile.u3-bramble-smack{animation:u3BrambleSmack .55s ease-out;}
-@keyframes u3BrambleSmack{0%{filter:none;} 30%{filter:drop-shadow(0 0 10px rgba(214,150,255,.95)) brightness(1.25);} 100%{filter:none;}}
+/* 2026-10-30 (package RAIDFX1, owner 21:36: the smack "so laggy"): it winds up by scale only (the compositor's); the filter glow, a repaint
+   every frame, is now FX.F's .fxf-bflare overlay fading in and out over the tile */
+@keyframes u3BrambleSmack{0%{scale:1;} 30%{scale:1.06;} 100%{scale:1;}}
 @media (prefers-reduced-motion: reduce){ .match-castle-tile.u3-bramble-smack{animation:none;} }
 /* 4. The raid board's rows a touch closer (owner 13:43: "maybe 3% closer? then zoom in abit more? It's okay if the boundary of the
    map touches the border of the bottom row's cards"): each row's own spacing is 3 px (about 3% of a row) less, and the board's

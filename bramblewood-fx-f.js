@@ -1106,6 +1106,10 @@ function clipTo(h, hr){ if(!h || !hr || !hr.width) return; Object.assign(h.style
 // again at impact (the round's redraw may have replaced them).
 const TENT = {slam:220, squash:110, back:350};
 css('tentacle', `.fxf .fxf-tentacle{position:fixed; left:0; top:0; overflow:visible; pointer-events:none;}
+.fxf .fxf-tentwrap{position:fixed; left:0; top:0; pointer-events:none; transform-origin:0 0;}
+.fxf .fxf-tentwrap.is-moving{will-change:transform, opacity;}
+.fxf .fxf-tentwrap > .fxf-tentacle{position:absolute; display:block;}
+.fxf .fxf-bflare{position:fixed; border-radius:14px; pointer-events:none; opacity:0; background:radial-gradient(closest-side, rgba(214,150,255,.75), rgba(214,150,255,.3) 60%, rgba(214,150,255,0));}
 .fxf .fxf-tentacle .tb-halo{fill:none; stroke:rgba(214,170,255,.45); stroke-linejoin:round;}
 .fxf .fxf-tentacle .tb-skin{stroke:#1c0a2b; stroke-linejoin:round;}
 .fxf .fxf-tentacle .tb-belly{fill:none; stroke:rgba(247,192,228,.85); stroke-linecap:round; stroke-linejoin:round;}
@@ -1146,6 +1150,8 @@ function tentacleSVG(B, T, w, dir){
   const xs = P.map(p=> p[0]), ys = P.map(p=> p[1]), mx = (Math.min(...xs) - w*2).toFixed(0), my = (Math.min(...ys) - w*2).toFixed(0);
   const mw = (Math.max(...xs) - Math.min(...xs) + w*4).toFixed(0), mh = (Math.max(...ys) - Math.min(...ys) + w*4).toFixed(0);
   const id = 'fxfT' + (++tentN), gx1 = B.x + nx*w*.6, gy1 = B.y + ny*w*.6, gx2 = B.x - nx*w*.6, gy2 = B.y - ny*w*.6;
+  // 2026-10-30 (package RAIDFX1): the limb's box (its spine, plus its half-width and halo), so its layer is only that big
+  const bm = w*.75; tentacleSVG.box = {x:Math.floor(Math.min(...xs) - bm), y:Math.floor(Math.min(...ys) - bm), w:Math.ceil(Math.max(...xs) - Math.min(...xs) + 2*bm), h:Math.ceil(Math.max(...ys) - Math.min(...ys) + 2*bm)};
   return `<defs><linearGradient id="${id}g" gradientUnits="userSpaceOnUse" x1="${gx1.toFixed(1)}" y1="${gy1.toFixed(1)}" x2="${gx2.toFixed(1)}" y2="${gy2.toFixed(1)}">`
     + `<stop offset="0" stop-color="#2c103f"/><stop offset=".35" stop-color="#6a2f8e"/><stop offset=".62" stop-color="#9a58bf"/><stop offset="1" stop-color="#3a1652"/></linearGradient>`
     + `<linearGradient id="${id}m" gradientUnits="userSpaceOnUse" x1="${B.x.toFixed(1)}" y1="${B.y.toFixed(1)}" x2="${T.x.toFixed(1)}" y2="${T.y.toFixed(1)}"><stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/></linearGradient>`
@@ -1197,34 +1203,53 @@ function tentTL(vars){
 }
 // cells: the struck .board-card cells (a column: front to back; a row: left to right), or rects. opts: host (the battlefield, for the
 // base's edge), origin (the boss's bramble tile), horizontal (a row smack), from 'left'|'right' (a row smack's side), flashOnly (a plain
-// flash on the cells under reduced motion: the Tail Sweep's), onImpact, onDone.
+// flash on the cells under reduced motion: the Tail Sweep's), lite (Effects Low: no smoke, no ring), onReach(i) (the limb has reached
+// cells[i]), onImpact, onDone.
+// 2026-10-30 (package RAIDFX1, owner 21:36: "Why is the tentacle slash in raid so laggy? the damage should only come out once the tentacle
+// lands on the cards"). Smoothness: the limb used to be a window-sized <svg> (1366x768 on a desktop) whose inner <g> GSAP scaled or moved
+// every frame, and an SVG child's transform is not composited: each frame re-painted the whole masked, gradient-filled limb (and the
+// bramble tile's flare animated a CSS filter, another repaint per frame). Now the <svg> is only the limb's own box (tentacleSVG.box),
+// inside a wrapper that moves by transform and opacity alone, its own layer (will-change) only while it swings: drawn once, then moved by
+// the compositor. Its first frame is at full size and invisible, so its layer is rastered sharp before it grows. No layout reads after
+// the start (the cells' rects are read once, as before). Timing: a growing limb (out of the bramble, or a row's from the board's edge)
+// reaches each struck cell as its tip passes the cell's middle; that cell shakes, flashes and puffs smoke right then and opts.onReach(i)
+// fires (the game shows that unit's damage number, its Health and its death then: arena_app.js raidSmackStage). A limb that drops in
+// whole (no bramble on screen) reaches every cell at impact; under reduced motion every cell is reached as the still limb shows. Every
+// cell is reached exactly once, at the latest at impact; each reach announces itself ('fxf:tentacle', {phase:'reach', i}).
 M.tentacleSmack = function(cells, opts){
   opts = opts || {};
   cells = (Array.isArray(cells) ? cells : [cells]).filter(Boolean);
-  const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e).filter(r=> r && r.width > 0);
+  const rects = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), rs = rects.filter(r=> r && r.width > 0);
   const relive = e=>{ if(!e || !e.getBoundingClientRect) return null; if(e.isConnected) return e; const d = e.dataset || {};
     return (d.uid && document.querySelector(`.board-card[data-uid="${d.uid}"]`)) || (d.w2cell && document.querySelector(`[data-w2cell="${d.w2cell}"]`)) || null; };
-  const g = G(), reduced = RM() || !g;
-  if(!rs.length){ call(opts.onImpact); return Promise.resolve(finish(opts)); }
-  // the flash on the struck cards (reduced motion; with the still tentacle unless flashOnly)
-  const flash = ms=>{ const host = lay('fxf-tflashh', '', TENT_SAFE);
-    rs.forEach(r=>{ const f = document.createElement('i'); f.className = 'fxf-tflash'; Object.assign(f.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'}); host.appendChild(f);
+  const horiz = !!opts.horizontal, g = G(), reduced = RM() || !g;
+  const reached = new Set(), reach = (i, fx)=>{ if(reached.has(i)) return; reached.add(i); if(fx) call(()=> fx(i)); call(()=> opts.onReach && opts.onReach(i)); tentEmit({phase:'reach', i, uid:(cells[i] && cells[i].dataset) ? cells[i].dataset.uid : undefined, horizontal:horiz, reduced}); };
+  const reachAll = fx=> cells.forEach((_, i)=> reach(i, fx));
+  if(!rs.length){ reachAll(); call(opts.onImpact); return Promise.resolve(finish(opts)); }
+  // the flash on the struck cells (reduced motion: all of them, with the still tentacle unless flashOnly; moving: each as it's reached)
+  const flashRects = (list, ms)=>{ const host = lay('fxf-tflashh', '', TENT_SAFE);
+    list.forEach(r=>{ if(!r || !(r.width > 0)) return; const f = document.createElement('i'); f.className = 'fxf-tflash'; Object.assign(f.style, {left:r.left + 'px', top:r.top + 'px', width:r.width + 'px', height:r.height + 'px'}); host.appendChild(f);
       try{ f.animate([{opacity:0}, {opacity:.85, offset:.25}, {opacity:0}], {duration:ms, easing:'ease-out'}); }catch(e){} });
     return host; };
+  const flash = ms=> flashRects(rs, ms);
   if(reduced && opts.flashOnly){
-    const host = flash(420); call(opts.onImpact);
+    const host = flash(420); reachAll(); call(opts.onImpact);
     return new Promise(res=> setTimeout(()=>{ host.remove(); finish(opts, res); }, 450));
   }
   const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
-  const horiz = !!opts.horizontal, ref = rs[0], cw = Math.min(...rs.map(r=> r.width)), chh = Math.min(...rs.map(r=> r.height));
+  const ref = rs[0], cw = Math.min(...rs.map(r=> r.width)), chh = Math.min(...rs.map(r=> r.height));
   const w = Math.max(30, Math.min(110, cw*.95));     // the base about one card wide
   // 2026-10-19 (package U3, owner 13:43: "The tentacle smack should be a property of the Raid's bramble"): with opts.origin (the boss's
   // bramble tile, top left) the tentacle reaches out of the bramble instead of dropping from nowhere: a column smack's base sits on
   // the bramble and the limb grows from it to the struck column, slams, and draws back into it; a row smack comes in from the board's
   // edge on the bramble's side. The bramble tile flares as it strikes (.u3-bramble-smack). Rects are read once, as before.
   const org = opts.origin && opts.origin.getBoundingClientRect && opts.origin.getClientRects().length ? opts.origin.getBoundingClientRect() : null;
-  if(org && opts.origin.classList){ opts.origin.classList.remove('u3-bramble-smack'); void opts.origin.offsetWidth; opts.origin.classList.add('u3-bramble-smack'); setTimeout(()=>{ try{ opts.origin.classList.remove('u3-bramble-smack'); }catch(e){} }, 700); }
-  let B, T, hits, slamY, dir, fromLeft = false, grow = false;
+  if(org && opts.origin.classList){ opts.origin.classList.remove('u3-bramble-smack'); void opts.origin.offsetWidth; opts.origin.classList.add('u3-bramble-smack'); setTimeout(()=>{ try{ opts.origin.classList.remove('u3-bramble-smack'); }catch(e){} }, 700);
+    // RAIDFX1: the tile's glow is an overlay that fades in and out (opacity only); the tile itself only winds up (scale), no CSS filter
+    if(!reduced){ const fl = lay('fxf-bflareh', '', 1500), f = document.createElement('i'); f.className = 'fxf-bflare'; fl.appendChild(f);
+      Object.assign(f.style, {left:(org.left - org.width*.15) + 'px', top:(org.top - org.height*.15) + 'px', width:(org.width*1.3) + 'px', height:(org.height*1.3) + 'px'});
+      try{ f.animate([{opacity:0}, {opacity:1, offset:.3}, {opacity:0}], {duration:550, easing:'ease-out'}).onfinish = ()=> fl.remove(); }catch(e){ fl.remove(); } } }
+  let B, T, slamY, dir, fromLeft = false, grow = false;
   if(!horiz && org){
     const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom));
     T = {x:cx, y:bottom - chh*.18}; B = {x:org.left + org.width*.62, y:org.top + org.height*.62};
@@ -1236,13 +1261,11 @@ M.tentacleSmack = function(cells, opts){
       B = {x:cx + Math.sign(B.x - cx)*lean, y:top0};
     }
     dir = T.x >= B.x ? 1 : -1; // the tip curls back toward the bramble's side
-    hits = [{x:cx, y:bottom - chh*.1}, {x:cx, y:ref.top + chh*.15}];
     slamY = 0; grow = true;
   } else if(!horiz){
     const cx = ref.left + ref.width/2, bottom = Math.max(...rs.map(r=> r.bottom)), top0 = hr ? hr.top : 0;
     dir = Math.random() < .5 ? 1 : -1;
     T = {x:cx, y:bottom - chh*.18}; B = {x:cx + dir*w*.35, y:Math.min(top0, ref.top - chh*.6) - w*.3};
-    hits = [{x:cx, y:bottom - chh*.1}, {x:cx, y:ref.top + chh*.15}];
     slamY = -(T.y - B.y)*.85;
   } else {
     const lo = Math.min(...rs.map(r=> r.left)), hi = Math.max(...rs.map(r=> r.right)), cy = rs.reduce((t, r)=> t + r.top + r.height/2, 0)/rs.length;
@@ -1251,54 +1274,66 @@ M.tentacleSmack = function(cells, opts){
     B = {x:fromLeft ? left0 - w*.2 : right0 + w*.2, y:cy + chh*.05}; T = {x:fromLeft ? hi - cw*.15 : lo + cw*.15, y:cy + chh*.05};
     if(org) grow = true;
     dir = fromLeft ? -1 : 1; // the tip curls up, away from the row
-    hits = rs.map(r=> ({x:r.left + r.width/2, y:r.top + r.height*.75}));
     slamY = -(cy - (hr ? hr.top : 0) + chh*1.2);
   }
-  const h = lay('fxf-tenth', '', TENT_SAFE), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg');
-  sv.setAttribute('class', 'fxf-tentacle' + (horiz ? ' is-row' : ' is-col') + (reduced ? ' is-still' : '')); sv.setAttribute('width', VW()); sv.setAttribute('height', VH()); sv.style.width = VW() + 'px'; sv.style.height = VH() + 'px';
-  sv.innerHTML = tentacleSVG(B, T, w, dir); h.appendChild(sv);
-  const body = sv.querySelector('.tb-body'), origin = grow ? `${B.x.toFixed(1)} ${B.y.toFixed(1)}` : horiz ? `${((B.x + T.x)/2).toFixed(1)} ${T.y.toFixed(1)}` : `${T.x.toFixed(1)} ${T.y.toFixed(1)}`;
+  // where each cell is hit (its smoke) and how far along the limb it lies (0 at the base, 1 at the tip: when a growing limb reaches it)
+  const L = Math.hypot(T.x - B.x, T.y - B.y) || 1, ux = (T.x - B.x)/L, uy = (T.y - B.y)/L;
+  const along = rects.map(r=> r && r.width > 0 ? Math.max(0, Math.min(1, ((r.left + r.width/2 - B.x)*ux + (r.top + r.height/2 - B.y)*uy)/L)) : 1);
+  const hitAt = rects.map((r, i)=> r && r.width > 0 ? {x:r.left + r.width/2, y:horiz ? r.top + r.height*.75 : (along[i] >= Math.max(...along) ? r.bottom - chh*.1 : r.top + r.height*.5)} : null);
+  const h = lay('fxf-tenth', '', TENT_SAFE), NS = 'http://www.w3.org/2000/svg', sv = document.createElementNS(NS, 'svg'), wrap = document.createElement('div');
+  sv.setAttribute('class', 'fxf-tentacle' + (horiz ? ' is-row' : ' is-col') + (reduced ? ' is-still' : ''));
+  sv.innerHTML = tentacleSVG(B, T, w, dir);
+  const bx = tentacleSVG.box || {x:0, y:0, w:VW(), h:VH()}; // the limb's own box (screen px): the layer is that big, not the window
+  sv.setAttribute('viewBox', `${bx.x} ${bx.y} ${bx.w} ${bx.h}`); sv.setAttribute('width', bx.w); sv.setAttribute('height', bx.h); sv.style.width = bx.w + 'px'; sv.style.height = bx.h + 'px';
+  wrap.className = 'fxf-tentwrap'; Object.assign(wrap.style, {left:bx.x + 'px', top:bx.y + 'px', width:bx.w + 'px', height:bx.h + 'px'});
+  wrap.appendChild(sv); h.appendChild(wrap);
+  const op = grow ? B : horiz ? {x:(B.x + T.x)/2, y:T.y} : T, origin = `${(op.x - bx.x).toFixed(1)}px ${(op.y - bx.y).toFixed(1)}px`;
   const info = {phase:'impact', horizontal:horiz, reduced, base:{x:B.x, y:B.y}, tip:{x:T.x, y:T.y}};
   if(reduced){ // 2026-10-19 (package TF): reduced motion: the tentacle lies still where it strikes (no movement), fades in, holds, fades
     const HOLD = 600, done = res=>{ if(h.isConnected) h.remove(); finish(opts, res); };
     const fl = flash(HOLD + 200);
     return new Promise(res=>{
-      const hit = ()=>{ call(opts.onImpact); tentEmit(info); };
-      if(g){ g.set(body, {opacity:0});
-        tentTL({onComplete:()=>{ fl.remove(); done(res); }}).to(body, {opacity:1, duration:.08, ease:'none'}).add(hit)
-          .to(body, {opacity:0, duration:.2, ease:'power1.in'}, '+=' + (HOLD/1000)); }
+      const hit = ()=>{ reachAll(); call(opts.onImpact); tentEmit(info); };
+      if(g){ g.set(wrap, {opacity:0});
+        tentTL({onComplete:()=>{ fl.remove(); done(res); }}).to(wrap, {opacity:1, duration:.08, ease:'none'}).add(hit)
+          .to(wrap, {opacity:0, duration:.2, ease:'power1.in'}, '+=' + (HOLD/1000)); }
       else { hit(); setTimeout(()=>{ fl.remove(); done(res); }, HOLD + 200); }
     });
   }
   const squash = grow ? {scaleX:1.05, scaleY:1.05} : horiz ? {scaleX:1.02, scaleY:.78} : {scaleX:1.12, scaleY:.9};
-  const impact = ()=>{
-    cells.map(relive).filter(Boolean).forEach(e=> shake(e, {amp:Math.max(3, cw*.07), n:5, y:2}));
-    hits.forEach((p, k)=> smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (k ? 5 : 9), spread:Math.PI*1.7}));
-    ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
+  const tip = along.reduce((k, a, i)=> a > along[k] ? i : k, 0); // the cell under the tip gets the big puff
+  const hitCell = i=>{ const p = hitAt[i]; if(!p) return; const e = relive(cells[i]); if(e) shake(e, {amp:Math.max(3, cw*.07), n:5, y:2});
+    flashRects([rects[i]], 260);
+    if(!opts.lite) smokePuff(p.x, p.y, Math.max(26, cw*.75), {n:horiz ? 5 : (i === tip ? 9 : 5), spread:Math.PI*1.7}); };
+  const impact = ()=>{ reachAll(hitCell);
+    if(!opts.lite) ring(T.x, T.y, {color:'#d9a6ff', size:w*2.2, width:3, dur:.45, glow:false});
     call(opts.onImpact); tentEmit(info); };
+  const S = TENT.slam/1000, endMove = ()=>{ wrap.classList.remove('is-moving'); if(h.isConnected) h.remove(); };
+  wrap.classList.add('is-moving');
+  g.set(wrap, {transformOrigin:origin, scale:1, x:0, y:0, opacity:0}); // the first frame: full size, unseen (its layer rasters sharp)
   if(grow){ // out of the bramble (or the board's edge): it grows from its base to the struck cards, slams, then draws back while fading
     return new Promise(res=>{
-      const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
-      g.set(body, {scale:.06, opacity:0, svgOrigin:origin});
-      tentTL({onComplete:done})
-        .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
-        .to(body, {scale:1, duration:TENT.slam/1000, ease:'power3.in'}, 0)
-        .add(impact)
-        .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
-        .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
-        .to(body, {scale:.08, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
+      const done = ()=>{ endMove(); finish(opts, res); };
+      const t = tentTL({onComplete:done})
+        .fromTo(wrap, {opacity:0}, {opacity:1, duration:.06, ease:'none', immediateRender:false}, 0)
+        .fromTo(wrap, {scale:.06}, {scale:1, duration:S, ease:'power3.in', immediateRender:false}, 0);
+      // the tip passes a cell a fraction a of the way out when .06 + .94 (t/S)^3 = a (power3.in)
+      along.forEach((a, i)=>{ if(i !== tip) t.add(()=> reach(i, hitCell), S*Math.cbrt(Math.max(0, Math.min(1, (a - .06)/.94)))); });
+      t.add(impact, S)
+        .to(wrap, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
+        .to(wrap, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
+        .to(wrap, {scale:.08, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
     });
   }
   return new Promise(res=>{
-    const done = ()=>{ if(h.isConnected) h.remove(); finish(opts, res); };
-    g.set(body, {y:slamY, opacity:0, svgOrigin:origin});
+    const done = ()=>{ endMove(); finish(opts, res); };
     tentTL({onComplete:done})
-      .to(body, {opacity:1, duration:.06, ease:'none'}, 0)
-      .to(body, {y:0, duration:TENT.slam/1000, ease:'power3.in'}, 0)
-      .add(impact)
-      .to(body, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
-      .to(body, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
-      .to(body, {y:slamY*.9, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
+      .fromTo(wrap, {opacity:0}, {opacity:1, duration:.06, ease:'none', immediateRender:false}, 0)
+      .fromTo(wrap, {y:slamY}, {y:0, duration:S, ease:'power3.in', immediateRender:false}, 0)
+      .add(impact, S)
+      .to(wrap, Object.assign({duration:TENT.squash/2000, ease:'power2.out'}, squash))
+      .to(wrap, {scaleX:1, scaleY:1, duration:TENT.squash/2000, ease:'power2.in'})
+      .to(wrap, {y:slamY*.9, opacity:0, duration:TENT.back/1000, ease:'power2.in'}, '+=.04');
   });
 };
 // Tail Sweep (every front-row card): a scaly tail sweeps across the row; each card is knocked as it passes.
@@ -1666,8 +1701,16 @@ function raidSmackFx(ev, env){
       stamp(x, y, typeof window.dnText === 'function' ? window.dnText(ev.dmg, 'physical') : String(ev.dmg), {color:'smack', size:22, hold:.6, rot:-6});
       if(typeof window.dnFloat === 'function') (ev.struck || []).forEach(s=>{ if(s.dmg === ev.dmg && !(window.dnMarkOf && window.dnMarkOf(s.mods, s.dmg))) return;
         const e = struck.find(c=> String(c.dataset.uid || (c.querySelector('[data-uid]') || {dataset:{}}).dataset.uid) === String(s.uid)); if(e) try{ window.dnFloat(e, s.dmg, {mods: s.mods}); }catch(x){} }); };
-    if(ev.front && env.reduced){ M.tentacleSmack(cells, {horizontal:true, flashOnly:true, onImpact:showNum}); return; } // a flash, no motion (TF 2026-10-19: flashOnly)
-    M.tentacleSmack(cells, {host:env.battlefield, origin, horizontal, onImpact:showNum});
+    // 2026-10-30 (package RAIDFX1, owner 21:36: "the damage should only come out once the tentacle lands on the cards"): in a fight the
+    // game hands its hook (ev._smack, arena_app.js raidSmackStage): each struck unit's number, Health and death wait for the limb to reach
+    // its cell (onReach), the rest land at impact, and the upkeep holds until the limb is gone (onDone). Without a hook: the stamp, as before.
+    const hook = ev._smack && typeof ev._smack.reach === 'function' ? ev._smack : null;
+    if(hook) hook.claimed = true;
+    const uidOf = e=> e && e.dataset ? (e.dataset.uid != null ? e.dataset.uid : ((e.querySelector && e.querySelector('[data-uid]')) || {dataset:{}}).dataset.uid) : null;
+    const hk = hook ? {onReach: i=>{ const u = uidOf(cells[i]); if(u != null) hook.reach(u); }, onImpact: ()=> hook.impact(), onDone: ()=> hook.done()} : {onImpact:showNum};
+    if(ev.front && env.reduced){ M.tentacleSmack(cells, Object.assign({horizontal:true, flashOnly:true}, hk)); return; } // a flash, no motion (TF 2026-10-19: flashOnly)
+    if(!hook){ M.tentacleSmack(cells, {host:env.battlefield, origin, horizontal, onImpact:showNum}); return; }
+    M.tentacleSmack(cells, Object.assign({host:env.battlefield, origin, horizontal, lite: !env.fxAtLeast('med')}, hk)); // Effects Low: no smoke, no ring
   }
 }
 

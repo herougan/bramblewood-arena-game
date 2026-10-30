@@ -40601,7 +40601,8 @@ function updateCardHpDisplay(uid){
   const c = currentCardByUid(uid); if(!c) return;
   const el = boardCardEl(uid); if(!el) return;
   const hpSpan = el.querySelector('.stats .hp');
-  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+Math.max(0,c.hp)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
+  const smackHeld = (matchState && matchState._smackHeld && matchState._smackHeld[String(uid)]) || 0; // RAIDFX1 (2026-10-30): a raid smack still on its way (raidSmackStage)
+  if(hpSpan) pl2SetStat(hpSpan, '<i class="sg">❤</i>'+Math.max(0,c.hp + smackHeld)); // PL2 (2026-10-25, owner 22:28 #5): a rise bounces, a fall (damage) does not
   el.classList.toggle('is-low-hp', isLowHp(c));
   el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3)
 }
@@ -42268,7 +42269,8 @@ async function resolveRoundCore(opts){
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     try{ fieldGapStamp(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): two field numbers on one unit, a small gap apart
-    floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
+    const smackSt = m.raidFull ? fightSafe(()=> raidSmackStage(drawEvents, m)) : null; // RAIDFX1 (2026-10-30): the smack's damage lands with the limb
+    floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); if(smackSt && smackSt.defer(ev)) return; renderVfxForEvent(ev); if(smackSt) smackSt.played(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
     try{ envCardsFire(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): the Environment cards of the effects that fired straighten and shine
     // The upkeep (2026-10-16, user: "Don't let me be able to play or pitch cards during upkeep"): the round-start effects (the
     // castles' own actions such as the Herb Refinery's brew, the field's ticks) play out before your turn opens. m.resolving stays
@@ -42276,7 +42278,8 @@ async function resolveRoundCore(opts){
     // recovery).
     { const upMs = upkeepHoldMs(drawEvents, m);
       if(upMs > 0 && matchState === m){ m._upkeep = true; document.documentElement.classList.add('bw-upkeep'); showUpkeepChip();
-        try{ await sleep(upMs); } finally { m._upkeep = false; document.documentElement.classList.remove('bw-upkeep'); hideUpkeepChip(); } } }
+        try{ await Promise.all([sleep(upMs), smackSt ? smackSt.wait().catch(()=>{}) : null]); } finally { m._upkeep = false; document.documentElement.classList.remove('bw-upkeep'); hideUpkeepChip(); } } // + the smack's limb (RAIDFX1)
+      if(smackSt) fightSafe(()=> smackSt.end(), 'raidSmackStage'); }
     if(m.mode==='pvp'){ aiActNow(); setTimeout(()=>{ if(matchState===m && m.aiArrivalEvents) waitForBoardEntrances(1400).then(()=> replayAiArrivalEvents(m)); }, 0); } // "They always go first": the stranger plays before you plan
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
@@ -47183,6 +47186,61 @@ function upkeepHoldMs(events, m){
   const sweep = (events || []).some(ev=> ev && ev.type === 'fieldTick' && (ev.field === 'wildfireSweep' || ev.field === 'scorchedSweep')) ? scorchSweepMs(m) + Math.round(450 / mult) : 0; // the line of fire (FX3; Wildfire Front since FX4)
   const gap = fieldGapMaxMs(events, m); // FX4 (2026-10-23): the field numbers' small gaps on one unit
   return ms ? Math.max(sweep, Math.max(120, Math.round(Math.min(1600, ms) / mult)) + gap) : 0;
+}
+// 2026-10-30 (package RAIDFX1, owner 21:36: "Why is the tentacle slash in raid so laggy? the damage should only come out once the tentacle
+// lands on the cards"). The raid boss's smack is decided at the round's start (raidSpecials: the units have already taken it), and the
+// upkeep used to show it all at once while the limb was still on its way: the struck units' deaths played with the round-start events,
+// and the turn's redraw (renderMatchUI) came 650 ms later, in the middle of the swing: a long frame that stalled the limb, dropped the
+// struck units' Health, took the dead ones off and left the smack's stamp without its cells. Only the timing changes here (the engine and
+// raidSpecials are untouched): each struck unit's damage number, its Health and its death wait for the limb to reach its cell (FX.F's
+// tentacleSmack onReach, through the hook ev._smack), anything left lands at impact, and the upkeep holds the redraw until the limb has
+// gone (at most RAID_SMACK_WAIT_MS). Until then the struck units show their Health from before the smack (m._smackHeld, read by
+// updateCardHpDisplay). No tentacle (Effects None, FX.F missing, no row on screen): everything lands as the smack event plays.
+const RAID_SMACK_WAIT_MS = 3000;
+function raidSmackStage(events, m){
+  const smacks = (events || []).filter(ev=> ev && ev.type === 'raidSmack');
+  if(!smacks.length || !m) return null;
+  const owner = {}, deaths = {}, landed = new Set(), waits = [], speed = ()=> Math.max(1, (m && m.speedMult) || 1);
+  let lastDeath = 0;
+  m._smackHeld = {};
+  const land = s=>{ const k = String(s.uid); if(landed.has(k)) return; landed.add(k);
+    if(m._smackHeld) delete m._smackHeld[k];
+    if(matchState !== m) return;
+    const el = boardCardEl(s.uid);
+    if(el){ const r = el.getBoundingClientRect();
+      if(r.width && Number(s.dmg) > 0){ try{ dnFloat(fxHostAt(el, 1900, r), s.dmg, {type:'physical', mods: s.mods, fit:true}); }catch(e){} }
+      try{ if(currentCardByUid(s.uid)) updateCardHpDisplay(s.uid); else { // a middle / back-row unit (not in currentCardByUid's rows)
+        const c = [1, 2].map(pid=> ((m.players[pid] || {}).reserve || []).map(row=> Object.values(row || {}).find(x=> x && String(x.uid) === k)).find(Boolean)).find(Boolean);
+        const sp = el.querySelector('.stats .hp'); if(sp) pl2SetStat(sp, '<i class="sg">❤</i>' + Math.max(0, c ? c.hp : 0)); } }catch(e){} }
+    const d = deaths[k]; if(d){ delete deaths[k]; const beat = Math.round(140 / speed()); lastDeath = performance.now() + beat;
+      setTimeout(()=>{ if(matchState !== m) return; floatDetachDepth++; try{ renderVfxForEvent(d); }catch(e){} finally { floatDetachDepth--; } }, beat); } };
+  smacks.forEach(ev=>{
+    const struck = (ev.struck || []).filter(s=> s && s.uid != null); let res; const p = new Promise(r=> res = r);
+    struck.forEach(s=>{ const k = String(s.uid); owner[k] = true; m._smackHeld[k] = (m._smackHeld[k] || 0) + (Number(s.dmg) || 0); });
+    const hook = {claimed:false,
+      reach: uid=>{ const s = struck.find(x=> String(x.uid) === String(uid)); if(s) land(s); },
+      impact: ()=> struck.forEach(land),
+      done: ()=>{ hook.impact(); res(); }};
+    ev._smack = hook; waits.push(p);
+  });
+  return {
+    // a struck unit's death waits for the limb (true: held back; it plays as the limb reaches the unit)
+    defer: ev=>{ if(!ev || ev.type !== 'death' || ev.uid == null) return false; const k = String(ev.uid);
+      if(!owner[k] || landed.has(k)) return false; deaths[k] = ev; return true; },
+    // after the smack event played: no tentacle took the hook, so it all lands now
+    played: ev=>{ if(ev && ev._smack && !ev._smack.claimed) ev._smack.done(); },
+    // the upkeep waits for the limbs to finish (capped), then for a held-back death to play out
+    wait: async ()=>{
+      let all = false; const allP = Promise.all(waits).then(()=>{ all = true; }), t0 = performance.now();
+      await Promise.race([allP, sleep(RAID_SMACK_WAIT_MS)]);
+      // a slow device's limb runs on a frame-capped clock (FX.F tentTL): while it is still on screen, keep waiting for it (up to 15 s)
+      while(!all && matchState === m && document.querySelector('.fxf-tenth .fxf-tentacle') && performance.now() - t0 < 15000) await Promise.race([allP, sleep(200)]);
+      smacks.forEach(ev=>{ if(ev._smack) ev._smack.done(); });
+      const tail = lastDeath ? lastDeath + Math.round(650 / speed()) - performance.now() : 0;
+      if(tail > 0) await sleep(tail);
+    },
+    end: ()=>{ smacks.forEach(ev=>{ if(ev._smack) ev._smack.done(); }); Object.keys(deaths).forEach(k=>{ const d = deaths[k]; delete deaths[k]; try{ renderVfxForEvent(d); }catch(e){} }); m._smackHeld = null; },
+  };
 }
 // Scorched Ground's line of fire (2026-10-23, package FX3, owner 01:57 note 3: "a line of fire moves from the left side to the right side. As
 // it touches a card, it takes fire damage."): the Effects Lab's Wildfire front (FX.B.wildfire, a flame band) crosses the battlefield, and each
