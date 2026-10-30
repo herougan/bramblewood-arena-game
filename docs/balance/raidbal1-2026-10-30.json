@@ -3014,6 +3014,221 @@
       "-": 5,
       "B": 9
      }
+    },
+    "map|left|s0.5": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 26,
+     "win": 0.65,
+     "avgDealt": 342,
+     "avgSurvived": 20,
+     "avgContribution": 1040,
+     "ranks": {
+      "SS": 25,
+      "S": 14,
+      "A": 1
+     }
+    },
+    "map|right|s0.5": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 26,
+     "win": 0.65,
+     "avgDealt": 413,
+     "avgSurvived": 20,
+     "avgContribution": 882,
+     "ranks": {
+      "S": 15,
+      "A": 21,
+      "B": 3,
+      "SS": 1
+     }
+    },
+    "map|tail|s0.5": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 247,
+     "avgSurvived": 20,
+     "avgContribution": 1043,
+     "ranks": {
+      "SS": 18,
+      "S": 18,
+      "A": 4
+     }
+    },
+    "map|core|s0.5": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 43,
+     "avgSurvived": 20,
+     "avgContribution": 835,
+     "ranks": {
+      "A": 21,
+      "B": 7,
+      "SS": 2,
+      "S": 7,
+      "C": 2,
+      "D": 1
+     }
+    },
+    "ref2|left|s0.5": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 28,
+     "win": 0.7,
+     "avgDealt": 355,
+     "avgSurvived": 20,
+     "avgContribution": 1166,
+     "ranks": {
+      "SS": 36,
+      "S": 4
+     }
+    },
+    "ref2|right|s0.5": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 33,
+     "win": 0.825,
+     "avgDealt": 449,
+     "avgSurvived": 20,
+     "avgContribution": 1076,
+     "ranks": {
+      "S": 23,
+      "A": 13,
+      "SS": 4
+     }
+    },
+    "ref2|tail|s0.5": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 260,
+     "avgSurvived": 20,
+     "avgContribution": 1183,
+     "ranks": {
+      "SS": 33,
+      "S": 6,
+      "A": 1
+     }
+    },
+    "ref2|core|s0.5": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 40,
+     "avgSurvived": 19.9,
+     "avgContribution": 799,
+     "ranks": {
+      "A": 17,
+      "B": 10,
+      "C": 8,
+      "S": 1,
+      "D": 2,
+      "E": 1,
+      "-": 1
+     }
+    },
+    "opt|left|s0.5": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 21,
+     "win": 0.525,
+     "avgDealt": 328,
+     "avgSurvived": 20,
+     "avgContribution": 936,
+     "ranks": {
+      "S": 12,
+      "SS": 28
+     }
+    },
+    "opt|right|s0.5": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 24,
+     "win": 0.6,
+     "avgDealt": 406,
+     "avgSurvived": 20,
+     "avgContribution": 857,
+     "ranks": {
+      "S": 16,
+      "A": 20,
+      "B": 2,
+      "SS": 2
+     }
+    },
+    "opt|tail|s0.5": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 27,
+     "win": 0.675,
+     "avgDealt": 241,
+     "avgSurvived": 20,
+     "avgContribution": 1006,
+     "ranks": {
+      "S": 16,
+      "SS": 22,
+      "B": 1,
+      "C": 1
+     }
+    },
+    "opt|core|s0.5": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "g0": 0,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 41,
+     "avgSurvived": 20,
+     "avgContribution": 799,
+     "ranks": {
+      "B": 15,
+      "A": 15,
+      "C": 6,
+      "S": 1,
+      "D": 1,
+      "E": 2
+     }
     }
    },
    "raidSha": "e3bf121d9360",
