@@ -4,6 +4,19 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-30 10:34: the owner's notes
+| # | Package | Note |
+|---|---|---|
+| V1 | answered | "has the 'random player decks' thing been done?" Yes (UI3, live in 10-30a). |
+| V2 | UI4 | "Remove the lightning effect when hitting the shielded bramble." |
+| V3 | UI4 | "The tokens still disappear on win/lose, then appear again once the screen comes out." |
+| V4 | CS-A..E | Card sizes: recommendations, except CS-2 decorative back; CS-4 chips okay. |
+| V5-V6 | TUT2 | SKL0-1 yes; T-1/T-2 cards have no skills (no Swarm, no Flying); the Map 0 cards carried from T1-T2 start at Level 0 with no skills until Level 1; Map 0 introduces them at Level 1. |
+| V7 | later | CONTENT4-1, BAL7-3 wait until balancing step 3 is done. |
+| V8 | ECON1 | BRUP-1: bramble resource (from winning fights; a tiny bit from bramble damage even on loss) + a bit of normal resource; halve all resource income except first-time rewards; the first two daily dungeons: one gives bramble resource, the other normal resources; grinding them = a Level 0 common unit to Level 10 per week. |
+| V9 | TUT2 | ENG13-3: reduce Canopy Cover's price by logic. |
+| V10 | TUT2 | ENG13-2: Slow on Ancient Sloth Titan, Old-growth Tortoise, Garden Snail (at Level 1 if it is a T1-T2 card); price ×0.85 (more budget). |
+
 ## 10-29 23:01: the owner's notes
 | # | Package | Note |
 |---|---|---|
