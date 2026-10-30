@@ -25383,7 +25383,7 @@ function unlockedDailyDungeons(progress){
   }catch(e){ return []; }
 }
 function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
-function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : 'Daily Dungeons'; }
+function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : TX('ui.ui6-dailies'); } // 2026-10-30 (UI6, X19): "Dailies" (was "Daily Dungeons")
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
@@ -25964,8 +25964,8 @@ function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
     const note = open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : map.preview ? ' · 🛠️ admin preview' : ' · 🛠️ locked for players';
     return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
       <div class="world-stop is-side is-dungeon map-theme-${map.id} ${open ? '' : 'is-locked is-admin-mark'} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
-        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (daily dungeon)')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
-        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${note}</div></div>
+        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (' + TX('ui.ui6-dailies') + ')')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (' + TX('ui.ui6-dailies') + ')')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ ${escapeHtml(TX('ui.ui6-dailies'))}${note}</div></div>
       </div>`;
   }).join('');
 }
