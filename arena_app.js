@@ -3742,12 +3742,12 @@ function buildCardDefs(){
   Object.keys(out).forEach(id=>{
     const base = out[id]; if(!base || id===HERO_ID) return;
     const b = cardBaseLevel(base), hatch = b > 0 && isHatchling(id), lvl = hatch ? 0 : Math.max(b, Math.min(LIMIT_BREAK_LEVEL, myCardLevels[id]||0));
-    if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); return; }
-    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); return; }
+    if(hatch){ const st = statsAtLevel(base, 0); out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: 0, baseLevel: b, hatchling: true}); if(base.levelSkills) out[id].effects = effectsAtLevel(base, 0); return; } // 2026-10-30 (TUT3): a Level 0 copy has no skill that arrives at Level 1
+    if(lvl === b){ if(base.baseLevel !== b) out[id] = Object.assign({}, base, {baseLevel:b, level:b}); if(base.levelSkills && lvl < 1) out[id] = Object.assign({}, out[id] || base, {effects: effectsAtLevel(base, lvl)}); return; } // 2026-10-30 (TUT3): a card at Level 0 has none of its Level 1 skills
     if(base.attack==null && base.health==null) return;
     const st = statsAtLevel(base, lvl);
     out[id] = Object.assign({}, base, {attack: st.attack, health: st.health, level: lvl, baseLevel: b});
-    if(base.levelSkills){ const fx = Object.assign({}, base.effects||{}); Object.keys(base.levelSkills).map(Number).filter(L=> L <= lvl).sort((x, y)=> x - y).forEach(L=> Object.assign(fx, base.levelSkills[L])); out[id].effects = fx; } // level skills (2026-10-13)
+    if(base.levelSkills) out[id].effects = effectsAtLevel(base, lvl); // level skills (2026-10-13; 2026-10-30 TUT3: below their level they are off)
   });
   // Enchantments (2026-10-08): a socketed Materia adds its small bonus on top of the level.
   // 2026-10-24 (package H1): the gem sits in one COPY's socket now (myCardSockets); the card's def is its best copy, so it wears that
@@ -13664,6 +13664,15 @@ function curveStatsAtLevel(d, L){
   const row = forgeCurveOf(d).rows[lv]; // 2026-10-19 (BF): the budget curve (was +10% / +5% steps)
   return {attack: row ? row.attack : d.attack, health: row ? row.health : d.health};
 }
+// 2026-10-30 (package TUT3, owner TUT2-2: "All start at lvl 0 and have no skills till lvl 1"): the skills of a card at level L. A card's `effects`
+// holds ALL its skills, `levelSkills` says at which level each one arrives; a copy below that level (Level 0) must not have it. Every builder of a
+// levelled / Level 0 copy goes through here: drops the keys of levelSkills[k] for k > L from `fx0` (default the def's effects), then lays k <= L on.
+function effectsAtLevel(b, L, fx0){
+  const fx = Object.assign({}, fx0 || (b && b.effects) || {}), ls = b && b.levelSkills; if(!ls) return fx;
+  const ks = Object.keys(ls).map(Number).sort((x, y)=> x - y);
+  ks.filter(k=> k > L).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ delete fx[x]; }));
+  ks.filter(k=> k <= L).forEach(k=> Object.assign(fx, ls[k]));
+  return fx; }
 function statsAtLevel(d, L){
   if((L|0) < cardBaseLevel(d)){ const ov0 = d.levelStats && (d.levelStats[0] || d.levelStats['0']); const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * 0.85));
     return {attack: ov0 && ov0.attack != null ? ov0.attack : r(d.attack), health: ov0 && ov0.health != null ? ov0.health : r(d.health)}; } // a hatchling (Level 0); the editor can set it
@@ -14221,7 +14230,7 @@ function copyDefAt(id, L, gem){
     delete o.enchant; delete o.socketGem;
     if(want && gemValid(want) && cardHasSocket(o)) Object.assign(o, socketGemStats(o, want)); }
   if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
-  if(b.levelSkills){ const fx = Object.assign({}, b.effects || {}); Object.keys(b.levelSkills).map(Number).filter(k=> k <= L).sort((x, y)=> x - y).forEach(k=> Object.assign(fx, b.levelSkills[k])); o.effects = fx; }
+  if(b.levelSkills) o.effects = effectsAtLevel(b, L); // 2026-10-30 (TUT3): below their level the level skills are off
   return o;
 }
 // Your deck for a fight: each card's copies at their own levels. The strongest copy keeps the card's id; a weaker one fights as
@@ -19429,7 +19438,7 @@ function refPartsDeck(parts, base, overlay){
     if(!b || cardBaseLevel(b) >= level || (b.attack == null && b.health == null)){ out[id] = (out[id] || 0) + k; return; } // an unknown id stays as it is: the setup reports it
     const did = id + '@p' + level;
     if(!overlay[did]){ const st = statsAtLevel(b, level), o = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level, baseLevel: cardBaseLevel(b), locked: false});
-      if(b.levelSkills){ const fx = Object.assign({}, b.effects || {}); Object.keys(b.levelSkills).map(Number).filter(L=> L <= level).sort((x, y)=> x - y).forEach(L=> Object.assign(fx, b.levelSkills[L])); o.effects = fx; }
+      if(b.levelSkills) o.effects = effectsAtLevel(b, level); // 2026-10-30 (TUT3)
       overlay[did] = o; }
     out[did] = (out[did] || 0) + k; });
   return out;
@@ -19714,7 +19723,7 @@ function defAtShownLevel(id, L){
   const out = Object.assign({}, b0, {art: b0.art || (CARD_DEFS_BASELINE[id] || {}).art || shown.art, level: lvl, baseLevel: base, locked: false, edShownLevel: lvl});
   if(b0.attack == null && b0.health == null) return out;
   const st = statsBeyondLevel(b0, lvl); out.attack = st.attack; out.health = st.health;
-  if(b0.levelSkills){ const fx = Object.assign({}, b0.effects || {}); Object.keys(b0.levelSkills).map(Number).filter(x=> x <= lvl).sort((x, y)=> x - y).forEach(x=> Object.assign(fx, b0.levelSkills[x])); out.effects = fx; }
+  if(b0.levelSkills) out.effects = effectsAtLevel(b0, lvl); // 2026-10-30 (TUT3)
   return out;
 }
 function edEnemyShownDef(node, id){ return defAtShownLevel(id, edShownLevel(node, id)); }
@@ -29332,7 +29341,7 @@ const STARTER_CFG_DEFAULT = {
 // 2026-10-18 (X3, owner 15:37 "D. Tutorial only"): your own bramble is very low in the two tutorial fights too: 8 Health (was 16),
 // against the rival's 6 (8 in part 2), and capped there even if a saved tutorial config says more. Map 0's fights keep your bramble's own Health.
 const TUTORIAL_MY_HP_MAX = 8;
-const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:7, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:{"duckling":1,"pond-duck":1,"cottontail":1,"pond-trout":1,"silver-minnow":1,"acorn-chipmunk":1,"chipmunk-forager":1}, rivalDeck:{"duckling":3,"earthworm":3,"harvest-mouse":3,"silver-minnow":3} /* 2026-10-30 (TUT2): the live row's T-1 deck; was {"pond-duck":2,"earthworm":2,"harvest-mouse":2,"pond-trout":2} */, steps:{}, myDeck2:{"duckling":1,"honey-bee":1,"pond-duck":2,"cottontail":2,"pond-trout":3,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2}, rewards:[] /* 2026-10-23 (RW3, RP3): was ["quarry-mole"] */, highlight1:"pond-duck", highlight2:"wandering-traveller", rivalDeck2:{"duckling":3,"earthworm":3,"otter-kit":1,"pond-duck":1,"meadow-rabbit":1,"silver-minnow":2} /* 2026-10-30 (TUT2): was {"duckling":3,"earthworm":3,"honey-bee":3,"otter-kit":1,"pond-duck":1,"pond-trout":1,"crossed-eyes":1,"meadow-rabbit":1,"silver-minnow":3,"chipmunk-forager":1} */, starterBoth:{"dormouse":1,"otter-kit":2,"otter-paddler":2}, starterOtters:{"otter-kit":2,"fleetfootd":1,"otter-centurion":2}, starterShared:{"pond-trout":3,"meadow-frog":2,"crossed-eyes":1,"duck-paddler":2}, starterHummingbirds:{"mosswing-laborer":1,"crimson-wing-recruit":2,"cobalt-talon-fledgling":2}}; // 2026-10-21 (BF5): the owner's live tutorial (10-20) folded in
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:7, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:{"duckling":1,"pond-duck":1,"cottontail":1,"pond-trout":1,"silver-minnow":1,"acorn-chipmunk":1,"chipmunk-forager":1}, rivalDeck:{"duckling":3,"earthworm":3,"harvest-mouse":3,"silver-minnow":3} /* 2026-10-30 (TUT2): the live row's T-1 deck; was {"pond-duck":2,"earthworm":2,"harvest-mouse":2,"pond-trout":2} */, steps:{}, myDeck2:{"duckling":1,"pond-duck":2,"cottontail":2,"pond-trout":4,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2} /* 2026-10-30 (TUT3, owner TUT2-3): no skill cards in T-2: the Honey Bee (Flying) -> a Pond Trout (T-2 as measured: 72% / 95%; a Silver Minnow 70% / 94%); was {"duckling":1,"honey-bee":1,"pond-duck":2,"cottontail":2,"pond-trout":3,"silver-minnow":1,"acorn-chipmunk":3,"chipmunk-forager":2} */, rewards:[] /* 2026-10-23 (RW3, RP3): was ["quarry-mole"] */, highlight1:"pond-duck", highlight2:"wandering-traveller", rivalDeck2:{"duckling":3,"earthworm":3,"otter-kit":1,"pond-duck":1,"meadow-rabbit":1,"silver-minnow":2} /* 2026-10-30 (TUT2): was {"duckling":3,"earthworm":3,"honey-bee":3,"otter-kit":1,"pond-duck":1,"pond-trout":1,"crossed-eyes":1,"meadow-rabbit":1,"silver-minnow":3,"chipmunk-forager":1} */, starterBoth:{"dormouse":1,"otter-kit":2,"otter-paddler":2}, starterOtters:{"otter-kit":2,"fleetfootd":1,"otter-centurion":2}, starterShared:{"pond-trout":3,"meadow-frog":2,"crossed-eyes":1,"duck-paddler":2}, starterHummingbirds:{"mosswing-laborer":1,"crimson-wing-recruit":2,"cobalt-talon-fledgling":2}}; // 2026-10-21 (BF5): the owner's live tutorial (10-20) folded in
 // 2026-10-21 (package TT2): part 1's rival deck eased, the honest lever (no card stats): BF5's halved, rounded stats left the owner's
 // deck winning 35% of simulated part-1 fights (71% on the pre-BF5 stats; the halved brambles alone move it ~1 point). Its two Ducklings
 // (3/3) are now Pond Ducks (2/3) and its two Silver Minnows (2/4) Pond Trout (2/3); the Earthworm walls and Harvest Mice stay: 78%
@@ -30448,6 +30457,7 @@ function levelledEnemyDeck(node, deck){
     const lvl = Math.max(0, Math.min((node && node.levelCap) || LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
     const st = statsBeyondLevel(b, early != null ? lvl : Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16); EB: the early road goes below it (Level 0)
     matchDefsOverlay[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: lvl, baseLevel: cardBaseLevel(b), locked: false});
+    if(b.levelSkills) matchDefsOverlay[did].effects = effectsAtLevel(b, lvl); // 2026-10-30 (TUT3): an EB Level 0 enemy copy drops the skills that arrive at Level 1
     out[did] = (out[did]||0) + n;
   });
   invalidateCardDefs();
