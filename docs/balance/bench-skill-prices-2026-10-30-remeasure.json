@@ -1,0 +1,2036 @@
+{
+ "about": "Package TOOLS1 (T2): suggested skill prices from the workbench's measured worth (tools/bench/bench.js skill --all), for the owner to review. Nothing here is applied: canonical/skill-costs.json is unchanged. Only skills mispriced at medium or high confidence are listed. worth / price / net in budget points (2A + H + S).",
+ "source": "docs/balance/bench-skills-2026-10-30-remeasure.json",
+ "generated": "2026-10-30T06:48:52.172Z",
+ "fingerprint": "b791b784613a",
+ "yardstick": {
+  "perPoint": 0.0417,
+  "se": 0.0034,
+  "attack": 0.0954,
+  "attackSE": 0.0078,
+  "health": 0.0298,
+  "healthSE": 0.0027,
+  "cards": 283,
+  "attackCards": 282,
+  "attackInHealth": 3.2033,
+  "from": "bench-skills-2026-10-30.json"
+ },
+ "skills": [
+  {
+   "skill": "tsunami",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 5.2158,
+   "worthCI": 1.2396,
+   "price": 22.5,
+   "net": -17.2842,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 8.9329,
+     "ci": 1.6907,
+     "price": 15
+    },
+    {
+     "n": 2,
+     "worth": 1.4988,
+     "ci": 0.8319,
+     "price": 30
+    }
+   ],
+   "current": {
+    "value": 15,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.4772,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sturdy",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.6894,
+   "worthCI": 0.606,
+   "price": 8,
+   "net": -7.3106,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.6894,
+     "ci": 0.5959,
+     "price": 8
+    }
+   ],
+   "current": {
+    "value": 8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.6894,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "loneWolf",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 5.2358,
+   "worthCI": 1.1759,
+   "price": 12,
+   "net": -6.7642,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 5.2358,
+     "ci": 0.8263,
+     "price": 12
+    }
+   ],
+   "current": {
+    "value": 6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.6179,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sweep",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0941,
+   "worthCI": 0.5677,
+   "price": 7.8,
+   "net": -6.7059,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.4197,
+     "ci": 0.5557,
+     "price": 7.8
+    },
+    {
+     "n": 3,
+     "worth": 1.7686,
+     "ci": 0.776,
+     "price": 7.8
+    }
+   ],
+   "current": {
+    "value": 3.9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5471,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "acidBolt",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 7.2342,
+   "worthCI": 1.468,
+   "price": 1,
+   "net": 6.2342,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 7.2342,
+     "ci": 0.9047,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 7.2342,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "quarry",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -3.2374,
+   "worthCI": 0.9717,
+   "price": 2.5,
+   "net": -5.7374,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -3.2374,
+     "ci": 0.8225,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "n"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "immolation",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.6295,
+   "worthCI": 0.5259,
+   "price": 5,
+   "net": -5.6295,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.5995,
+     "ci": 0.5546,
+     "price": 4
+    },
+    {
+     "n": 2,
+     "worth": -0.7194,
+     "ci": 0.81,
+     "price": 8
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "spitfire",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 6.1151,
+   "worthCI": 1.3207,
+   "price": 1,
+   "net": 5.1151,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.1151,
+     "ci": 0.8884,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 6.1151,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sacrifice",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.06,
+   "worthCI": 0.2635,
+   "price": 4.5,
+   "net": -4.56,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.2398,
+     "ci": 0.3315,
+     "price": 3
+    },
+    {
+     "n": 2,
+     "worth": 0.1199,
+     "ci": 0.4077,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "avalanche",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 8.2934,
+   "worthCI": 1.7031,
+   "price": 4,
+   "net": 4.2934,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 8.2934,
+     "ci": 1.0695,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 8.2934,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "regen",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.9592,
+   "worthCI": 0.4699,
+   "price": 5.2,
+   "net": -4.2408,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.7386,
+     "ci": 0.8396,
+     "price": 2.6
+    },
+    {
+     "n": 3,
+     "worth": 0.1799,
+     "ci": 0.3107,
+     "price": 7.8
+    }
+   ],
+   "current": {
+    "value": 2.6,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0.4796,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "expose",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.06,
+   "worthCI": 0.589,
+   "price": 4.2,
+   "net": -4.14,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.06,
+     "ci": 0.5889,
+     "price": 4.2
+    }
+   ],
+   "current": {
+    "value": 2.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.03,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "venomous",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.289,
+   "worthCI": 0.6805,
+   "price": 5.425,
+   "net": -4.136,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.4388,
+     "ci": 1.0868,
+     "price": 3.1
+    },
+    {
+     "n": 2,
+     "worth": 1.239,
+     "ci": 0.752,
+     "price": 6.2
+    }
+   ],
+   "current": {
+    "value": 3.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.7366,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scare",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.3147,
+   "worthCI": 0.2662,
+   "price": 4.375,
+   "net": -4.0603,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1391,
+     "ci": 1.0215,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 0.06,
+     "ci": 0.1175,
+     "price": 5
+    },
+    {
+     "n": 3,
+     "worth": 0,
+     "ci": 0,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.1798,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "rage",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.9892,
+   "worthCI": 0.4666,
+   "price": 5,
+   "net": -4.0108,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.9892,
+     "ci": 0.439,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9892,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "onReadyGold",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.3082,
+   "worthCI": 0.7358,
+   "price": 6.24,
+   "net": -3.9318,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.3082,
+     "ci": 0.6367,
+     "price": 6.24
+    }
+   ],
+   "current": {
+    "value": 6.24,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.3082,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "quick",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.1241,
+   "worthCI": 0.9839,
+   "price": 5,
+   "net": -3.8759,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1241,
+     "ci": 0.9673,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 1.1241,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "undead",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.5396,
+   "worthCI": 0.5136,
+   "price": 4.3,
+   "net": -3.7604,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5396,
+     "ci": 0.5063,
+     "price": 4.3
+    }
+   ],
+   "current": {
+    "value": 4.3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.5396,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "healing",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.5987,
+   "worthCI": 0.6575,
+   "price": 5.3333,
+   "net": -3.7346,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.3981,
+     "ci": 0.9087,
+     "price": 4
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 0,
+     "price": 8
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.199,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "shell",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0492,
+   "worthCI": 0.5032,
+   "price": 4.5,
+   "net": -3.4508,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.8969,
+     "ci": 1.4707,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 0.06,
+     "ci": 0.9497,
+     "price": 4
+    },
+    {
+     "n": 4,
+     "worth": 0.1199,
+     "ci": 0.3721,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4663,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "strangle",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.6463,
+   "worthCI": 1.2875,
+   "price": 1.2,
+   "net": 3.4463,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.5156,
+     "ci": 1.412,
+     "price": 0.8
+    },
+    {
+     "n": 2,
+     "worth": 3.777,
+     "ci": 1.3796,
+     "price": 1.6
+    }
+   ],
+   "current": {
+    "value": 0.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.0975,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "fastForward",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.3381,
+   "worthCI": 0.7845,
+   "price": 5.59,
+   "net": -3.2519,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.3381,
+     "ci": 0.6898,
+     "price": 5.59
+    }
+   ],
+   "current": {
+    "value": 5.59,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.3381,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "speed",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.7394,
+   "worthCI": 0.649,
+   "price": 3.9,
+   "net": -3.1606,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.7394,
+     "ci": 0.6382,
+     "price": 3.9
+    }
+   ],
+   "current": {
+    "value": 1.95,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3697,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "milling",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 6.1151,
+   "worthCI": 1.3789,
+   "price": 3,
+   "net": 3.1151,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.1151,
+     "ci": 0.9729,
+     "price": 3
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "no entry in canonical/skill-costs.json (priced by a rule in bramblewood-budget.js or the 1 + floor(N/2) default)"
+  },
+  {
+   "skill": "rocket",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 6.0951,
+   "worthCI": 1.3277,
+   "price": 3,
+   "net": 3.0951,
+   "perN": [
+    {
+     "n": 4,
+     "worth": 6.0951,
+     "ci": 0.9022,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.0317,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "fork",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.274,
+   "worthCI": 0.5174,
+   "price": 4,
+   "net": -2.726,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.274,
+     "ci": 0.4757,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.274,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "gash",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4796,
+   "worthCI": 0.2802,
+   "price": 3.2,
+   "net": -2.7204,
+   "perN": [
+    {
+     "n": 3,
+     "worth": 0.4796,
+     "ci": 0.2695,
+     "price": 3.2
+    }
+   ],
+   "current": {
+    "value": 1.6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2398,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "daunt",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4197,
+   "worthCI": 0.4281,
+   "price": 3.125,
+   "net": -2.7053,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5596,
+     "ci": 0.5637,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 0,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3358,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "taunt",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4047,
+   "worthCI": 0.8001,
+   "price": 3,
+   "net": -2.5953,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4047,
+     "ci": 0.7975,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4047,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "hunter",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4197,
+   "worthCI": 0.9648,
+   "price": 3,
+   "net": -2.5803,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2998,
+     "ci": 1.3373,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 0.5396,
+     "ci": 1.1578,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2798,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "charge",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.5755,
+   "worthCI": 1.3086,
+   "price": 3,
+   "net": 2.5755,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 5.5755,
+     "ci": 0.9585,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 5.5755,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "iceBolt",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 8.4133,
+   "worthCI": 1.6432,
+   "price": 6,
+   "net": 2.4133,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 8.4133,
+     "ci": 0.9447,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.2067,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "twinShot",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 6.6147,
+   "worthCI": 1.3545,
+   "price": 9,
+   "net": -2.3853,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.6147,
+     "ci": 0.8469,
+     "price": 9
+    }
+   ],
+   "current": {
+    "value": 9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 6.6147,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "volley",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 6.8345,
+   "worthCI": 1.6258,
+   "price": 4.5,
+   "net": 2.3345,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 7.6739,
+     "ci": 1.6241,
+     "price": 3
+    },
+    {
+     "n": 2,
+     "worth": 5.9952,
+     "ci": 1.4331,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.5563,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "ambush",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.7386,
+   "worthCI": 0.8059,
+   "price": 4,
+   "net": -2.2614,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.1799,
+     "ci": 0.9494,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 2.3381,
+     "ci": 1.3191,
+     "price": 4
+    },
+    {
+     "n": 4,
+     "worth": 2.6978,
+     "ci": 1.2844,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.8693,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "swipe",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.2458,
+   "worthCI": 1.4166,
+   "price": 3,
+   "net": 2.2458,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.2458,
+     "ci": 1.1419,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.2458,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "lumberjack",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.7578,
+   "worthCI": 0.852,
+   "price": 5,
+   "net": -2.2422,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.7578,
+     "ci": 0.7291,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.7578,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "iceArrow",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.9353,
+   "worthCI": 1.5509,
+   "price": 3.75,
+   "net": 2.1853,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.4149,
+     "ci": 1.5438,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 5.4556,
+     "ci": 1.4882,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.9569,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "berserk",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 6.1751,
+   "worthCI": 1.3495,
+   "price": 4,
+   "net": 2.1751,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 6.1751,
+     "ci": 0.9206,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.0875,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "bleed",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.8477,
+   "worthCI": 0.8557,
+   "price": 4.995,
+   "net": -2.1473,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.8777,
+     "ci": 1.3962,
+     "price": 3.6
+    },
+    {
+     "n": 2,
+     "worth": 2.8377,
+     "ci": 0.7421,
+     "price": 5.46
+    }
+   ],
+   "current": {
+    "value": 3.6,
+    "scale": "n",
+    "pow": 0.6
+   },
+   "suggested": {
+    "value": 2.0535,
+    "scale": "n",
+    "pow": 0.6
+   },
+   "note": ""
+  },
+  {
+   "skill": "greaterPoison",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.3897,
+   "worthCI": 0.5042,
+   "price": 2.5,
+   "net": -2.1103,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.3897,
+     "ci": 0.5003,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3897,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "onDeathSpawn",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.9143,
+   "worthCI": 0.4553,
+   "price": 3,
+   "net": -2.0857,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 0.9143,
+     "ci": 0.4312,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9143,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "counterattack",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.1799,
+   "worthCI": 0.8077,
+   "price": 1.9,
+   "net": -2.0799,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.1799,
+     "ci": 0.8072,
+     "price": 1.9
+    }
+   ],
+   "current": {
+    "value": 1.9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "pounce",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.5288,
+   "worthCI": 0.7314,
+   "price": 3.6,
+   "net": -2.0712,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.8793,
+     "ci": 0.8258,
+     "price": 3.6
+    },
+    {
+     "n": 3,
+     "worth": 3.4772,
+     "ci": 1.2081,
+     "price": 3.6
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.7644,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "corrode",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.06,
+   "worthCI": 0.1179,
+   "price": 2,
+   "net": -2.06,
+   "perN": [
+    {
+     "n": 2,
+     "worth": -0.1199,
+     "ci": 0.235,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 0,
+     "ci": 0,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "midas",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.06,
+   "worthCI": 0.1179,
+   "price": 2,
+   "net": -1.94,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.1199,
+     "ci": 0.235,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 0,
+     "ci": 0,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.03,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "stockpile",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 3.2674,
+   "worthCI": 1.2934,
+   "price": 1.35,
+   "net": 1.9174,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.7386,
+     "ci": 1.5574,
+     "price": 0.9
+    },
+    {
+     "n": 2,
+     "worth": 4.7962,
+     "ci": 1.4523,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 0.9,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 2.1783,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "relic",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0899,
+   "worthCI": 0.4248,
+   "price": 2,
+   "net": -1.9101,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.0899,
+     "ci": 0.4246,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.0899,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "drunk",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": -1.1191,
+   "worthCI": 0.819,
+   "price": -3,
+   "net": 1.8809,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -1.1191,
+     "ci": 0.7993,
+     "price": -3
+    }
+   ],
+   "current": {
+    "value": -3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "remember",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 3.6271,
+   "worthCI": 0.9797,
+   "price": 1.75,
+   "net": 1.8771,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 8.753,
+     "ci": 1.6383,
+     "price": 1
+    },
+    {
+     "n": 2,
+     "worth": 3.717,
+     "ci": 1.3368,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 1.0192,
+     "ci": 0.878,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.0726,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "meiosis",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 2.7878,
+   "worthCI": 0.9405,
+   "price": 1,
+   "net": 1.7878,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.7878,
+     "ci": 0.8283,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.7878,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scavenge",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 3.2774,
+   "worthCI": 1.0038,
+   "price": 1.5,
+   "net": 1.7774,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.2774,
+     "ci": 0.8563,
+     "price": 1.5
+    }
+   ],
+   "current": {
+    "value": 1.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 3.2774,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "bulldoze",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.478,
+   "worthCI": 0.792,
+   "price": 4,
+   "net": -1.522,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.478,
+     "ci": 0.6859,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.478,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "inspiring",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.8777,
+   "worthCI": 0.7998,
+   "price": 4.375,
+   "net": -1.4973,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.5572,
+     "ci": 0.7966,
+     "price": 3.5
+    },
+    {
+     "n": 2,
+     "worth": 0.8393,
+     "ci": 0.7727,
+     "price": 7
+    }
+   ],
+   "current": {
+    "value": 3.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.3022,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "pierce",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.2998,
+   "worthCI": 0.4002,
+   "price": 1.75,
+   "net": -1.4502,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.7194,
+     "ci": 0.5684,
+     "price": 1
+    },
+    {
+     "n": 2,
+     "worth": 0.1599,
+     "ci": 0.4962,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.1713,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "siege",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.8693,
+   "worthCI": 0.45,
+   "price": 2.25,
+   "net": -1.3807,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.0791,
+     "ci": 1.016,
+     "price": 1
+    },
+    {
+     "n": 2,
+     "worth": 0.7194,
+     "ci": 0.5684,
+     "price": 2
+    },
+    {
+     "n": 4,
+     "worth": 0.8393,
+     "ci": 0.5892,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3864,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "stunOnHit",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.6587,
+   "worthCI": 0.7933,
+   "price": 3,
+   "net": -1.3413,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.6587,
+     "ci": 0.7477,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.6587,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "freeze",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.5546,
+   "worthCI": 0.3898,
+   "price": 1.8,
+   "net": -1.2454,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 0.5546,
+     "ci": 0.3796,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5546,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "guardian",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.2398,
+   "worthCI": 0.5155,
+   "price": 1,
+   "net": -1.2398,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.2398,
+     "ci": 0.5141,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "prayerWard",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.299,
+   "worthCI": 0.6281,
+   "price": 2.5,
+   "net": -1.201,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.299,
+     "ci": 0.5928,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 1.299,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "keenEye",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.3447,
+   "worthCI": 0.4618,
+   "price": 1.5,
+   "net": -1.1553,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.3447,
+     "ci": 0.4585,
+     "price": 1.5
+    }
+   ],
+   "current": {
+    "value": 1.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3447,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "reflect",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0392,
+   "worthCI": 0.5722,
+   "price": 0,
+   "net": 1.0392,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.0392,
+     "ci": 0.5476,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.0392,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "prospector",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1998,
+   "worthCI": 0.5826,
+   "price": 1.2,
+   "net": -1.0002,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.1998,
+     "ci": 0.5818,
+     "price": 1.2
+    }
+   ],
+   "current": {
+    "value": 1.2,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0.1998,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "changeling",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 0.9592,
+   "worthCI": 0.538,
+   "price": 0.1,
+   "net": 0.8592,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.9592,
+     "ci": 0.5157,
+     "price": 0.1
+    }
+   ],
+   "current": {
+    "value": 0.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9592,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "frenzy",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 0.8793,
+   "worthCI": 0.5892,
+   "price": 0.1,
+   "net": 0.7793,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.8793,
+     "ci": 0.5722,
+     "price": 0.1
+    }
+   ],
+   "current": {
+    "value": 0.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.8793,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "arrow",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 7.2392,
+   "worthCI": 1.6454,
+   "price": 5.85,
+   "net": 1.3892,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 7.2392,
+     "ci": 1.1701,
+     "price": 5.85
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.6196,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scatterbrained",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": -4.8961,
+   "worthCI": 1.1475,
+   "price": -6,
+   "net": 1.1039,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -4.8961,
+     "ci": 0.8393,
+     "price": -6
+    }
+   ],
+   "current": {
+    "value": -6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "rupture",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.6595,
+   "worthCI": 0.5191,
+   "price": 0,
+   "net": 0.6595,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.6595,
+     "ci": 0.5083,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.6595,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "herbalist",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.5795,
+   "worthCI": 0.475,
+   "price": 0,
+   "net": 0.5795,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5795,
+     "ci": 0.4659,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5795,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "frostbite",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.9442,
+   "worthCI": 0.4519,
+   "price": 0.5,
+   "net": 0.4442,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.9442,
+     "ci": 0.4259,
+     "price": 0.5
+    }
+   ],
+   "current": {
+    "value": 0.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9442,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "rampart",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": -0.1799,
+   "worthCI": 0.3623,
+   "price": 0.22,
+   "net": -0.3999,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.1799,
+     "ci": 0.3612,
+     "price": 0.22
+    }
+   ],
+   "current": {
+    "value": 0.22,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  }
+ ]
+}
