@@ -13175,6 +13175,37 @@ function econPay(src, kind, n){
 }
 function econPayAll(src, obj){ const o = {}; Object.keys(obj || {}).forEach(k=>{ o[k] = typeof obj[k] === 'number' ? econPay(src, k, obj[k]) : obj[k]; }); return o; }
 // ECON1_INCOME:END
+// ECON1_BLOSSOMS:BEGIN (tests/econ1-2026-10-30.js evaluates this block)
+// Briar Blossoms from fights (2026-10-30, package ECON1, owner BRUP-1 10:34: "The bramble resource comes from winning fights. Dealing damage
+// to bramble does net you a tiny bit even on loss."): a won Conquest fight pays BRAMBLE_WIN_BLOSSOMS for its kind, +BRAMBLE_MAP_STEP (10%) a
+// map number (Map 10 pays double); a lost or drawn fight pays BRAMBLE_LOSS_SHARE (a quarter) of that, times the share of the enemy
+// bramble's Health you took (at least 1 when you hit it at all). Earned once brambles can be reinforced (the Forge's Reinforce tab,
+// RES3_FORGE_TAB_MAP.castles), so nobody holds a currency with nothing to spend it on; the Undercroft's floors pay theirs from the start
+// (DAILY_DUNGEON_PAY). The daily dungeons' floors pay only their own table. Not halved (new income, ECON_INCOME_MULT does not list it).
+const BRAMBLE_WIN_BLOSSOMS = {skirmish: 4, elite: 8, miniboss: 8, boss: 15, raidboss: 20, finalboss: 30};
+const BRAMBLE_MAP_STEP = 0.1, BRAMBLE_LOSS_SHARE = 0.25;
+function blossomsOpen(){ try{ return res3ForgeTabOpen('castles'); }catch(e){ return true; } }
+function blossomsShown(){ try{ return blossomsOpen() || ((myCurrencies && myCurrencies.blossoms) || 0) > 0; }catch(e){ return false; } }
+function blossomWinPay(mapId, node){
+  const k = node && node.kind, base = BRAMBLE_WIN_BLOSSOMS[k] || BRAMBLE_WIN_BLOSSOMS[typeof baseKind === 'function' ? baseKind(k) : k] || BRAMBLE_WIN_BLOSSOMS.skirmish;
+  let n = 0; try{ n = mapNumberOf(mapId) || 0; }catch(e){}
+  return Math.round(base * (1 + BRAMBLE_MAP_STEP * Math.max(0, n)));
+}
+function blossomLossPay(winPay, dealt, maxHp){ if(!(dealt > 0) || !(maxHp > 0) || !(winPay > 0)) return 0; return Math.max(1, Math.round(winPay * BRAMBLE_LOSS_SHARE * Math.min(1, dealt / maxHp))); }
+// Once per Conquest match (m.blossomsSettled): the win's or the loss's Blossoms, onto m.conquestBlossomsEarned for the results.
+function settleBlossoms(m){
+  if(!m || m.blossomsSettled || m.mode !== 'conquest' || !m.conquestNode || m.adminTest || m.rewardDuplicate || m.towerReplay) return 0;
+  m.blossomsSettled = true;
+  const map = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId); if(!map || (typeof isDailyDungeonMap === 'function' && isDailyDungeonMap(map))) return 0;
+  if(!blossomsOpen()) return 0;
+  const node = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId) || {}).node || m.conquestNode, win = blossomWinPay(map.id, node);
+  let n = 0;
+  if(m.winner === 1) n = win;
+  else { const hq = m.players && m.players[2] && m.players[2].hq; if(hq) n = blossomLossPay(win, Math.max(0, (hq.maxHp || 0) - Math.max(0, hq.hp || 0)), hq.maxHp || 0); m.conquestBlossomsLoss = n > 0; }
+  if(n > 0){ grantCurrency('blossoms', n); m.conquestBlossomsEarned = (m.conquestBlossomsEarned || 0) + n; }
+  return n;
+}
+// ECON1_BLOSSOMS:END
 // Energy / stamina (2026-09-22, per explicit request and clarification: "Let's do an energy
 // mechanism now" -> "Energy is for doing skirmishes etc. You refill 1 per 1 minute."): a
 // persistent, real-time-regenerating account resource that gates STARTING a Conquest fight
@@ -14884,7 +14915,16 @@ function castleLevelMats(L){ const out = {}; if(L >= CASTLE_MAX_LEVEL){ out['emb
 // Castles level to 20 (2026-10-11, forge economy v2: "A castle has lvl 1-20, and roughly, this costs quadruple to what a
 // normal card costs. I would estimate lvl1-10 costs = lvl1-10 for a normal card"). Levels 0-10 cost what a card of the
 // castle's rarity costs to 10; each of levels 10-20 costs three times the matching step, so 4× in all.
+// Reinforce in Briar Blossoms (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource."; 10-29 23:01:
+// "I don't want people too tied up between choosing to level brambles (looong way) versus cards."): castleLevelUpCostRaw is the old ramp
+// (unchanged), and a step costs BRAMBLE_COST.blossomsPerDust x its Dust in 💮 Briar Blossoms plus BRAMBLE_COST.normalShare (a quarter) of its
+// Dust and Leaves. Levels already bought are kept. canonical/upgrade-costs.json "bramble"; docs/balance/econ1-2026-10-30.md.
+const BRAMBLE_COST = Object.assign({blossomsPerDust: 1, normalShare: 0.25}, (typeof UPGRADE_COSTS !== 'undefined' && UPGRADE_COSTS.bramble) || {});
 function castleLevelUpCost(L, id){
+  const raw = castleLevelUpCostRaw(L, id), out = {blossoms: Math.round(raw.dust * BRAMBLE_COST.blossomsPerDust), dust: Math.round(raw.dust * BRAMBLE_COST.normalShare), gold: Math.round(raw.gold * BRAMBLE_COST.normalShare)};
+  if(raw.mats) out.mats = raw.mats; return out;
+}
+function castleLevelUpCostRaw(L, id){
   L = Math.max(0, Math.min(CASTLE_LIMIT_MAX - 1, L|0));
   const ch = id && CHARACTER_DEFS[id], r = (ch && ch.rarity) || 'common', k = LEVEL_COST_MULT[r] || LEVEL_COST_MULT[(RARITY_DEFS.find(x=> x.key===r) || {}).as] || 1;
   // Limit break 20→25: four times the last normal step, rising a quarter each level, plus castleLevelMats.
@@ -14901,16 +14941,28 @@ const CASTLE_DUPS_KEY = 'bramblewood_castle_dups_v1', CASTLE_CREDIT_KEY = 'bramb
 function loadJSONKey(k){ try{ return JSON.parse(localStorage.getItem(k)||'{}') || {}; }catch(e){ return {}; } }
 function castleDupsOf(id){ return Math.max(0, (loadJSONKey(CASTLE_DUPS_KEY)[id])|0); }
 function addCastleDuplicate(id, n){ const d = loadJSONKey(CASTLE_DUPS_KEY); d[id] = ((d[id])|0) + (n||1); try{ localStorage.setItem(CASTLE_DUPS_KEY, JSON.stringify(d)); }catch(e){} }
-function castleCreditOf(id){ const c = loadJSONKey(CASTLE_CREDIT_KEY)[id] || {}; return {dust: c.dust|0, gold: c.gold|0}; }
-function castleRoadCost(id){ let dust = 0, gold = 0; for(let L = 0; L < CASTLE_MAX_LEVEL; L++){ const c = castleLevelUpCost(L, id); dust += c.dust; gold += c.gold; } return {dust, gold}; }
+// 2026-10-30 (ECON1): credit is {blossoms, dust, gold}. A credit banked before (Dust and Leaves only, no v:2) covered the same steps it
+// covers now: its Dust becomes that much in Blossoms (the step's Blossoms are its old Dust), and its Dust and Leaves shrink to the
+// normal share, so a fused spare still pays off the same part of the road. Moved once, on first read (castleCreditMigrate).
+function castleCreditMigrate(){
+  const cr = loadJSONKey(CASTLE_CREDIT_KEY); let ch = false;
+  Object.keys(cr).forEach(id=>{ const c = cr[id]; if(!c || c.v === 2) return; ch = true;
+    cr[id] = {v: 2, blossoms: Math.round((c.dust|0) * BRAMBLE_COST.blossomsPerDust), dust: Math.round((c.dust|0) * BRAMBLE_COST.normalShare), gold: Math.round((c.gold|0) * BRAMBLE_COST.normalShare)}; });
+  if(ch) try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){}
+  return cr;
+}
+function castleCreditOf(id){ const c = castleCreditMigrate()[id] || {}; return {blossoms: c.blossoms|0, dust: c.dust|0, gold: c.gold|0}; }
+function castleCreditSave(id, c){ const cr = castleCreditMigrate(); cr[id] = {v: 2, blossoms: Math.max(0, c.blossoms|0), dust: Math.max(0, c.dust|0), gold: Math.max(0, c.gold|0)}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){} }
+function castleRoadCost(id){ let blossoms = 0, dust = 0, gold = 0; for(let L = 0; L < CASTLE_MAX_LEVEL; L++){ const c = castleLevelUpCost(L, id); blossoms += c.blossoms || 0; dust += c.dust; gold += c.gold; } return {blossoms, dust, gold}; }
 function fuseCastleDuplicates(id){
   const n = castleDupsOf(id); if(!n) return null;
-  const road = castleRoadCost(id), v = {n, dust: Math.round(road.dust/8)*n, gold: Math.round(road.gold/8)*n};
+  const road = castleRoadCost(id), v = {n, blossoms: Math.round(road.blossoms/8)*n, dust: Math.round(road.dust/8)*n, gold: Math.round(road.gold/8)*n}; // 2026-10-30 (ECON1): + Blossoms
   const d = loadJSONKey(CASTLE_DUPS_KEY); d[id] = 0; try{ localStorage.setItem(CASTLE_DUPS_KEY, JSON.stringify(d)); }catch(e){}
-  const cr = loadJSONKey(CASTLE_CREDIT_KEY), c = cr[id] || {}; cr[id] = {dust:(c.dust|0) + v.dust, gold:(c.gold|0) + v.gold}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){}
+  const c = castleCreditOf(id); castleCreditSave(id, {blossoms: c.blossoms + v.blossoms, dust: c.dust + v.dust, gold: c.gold + v.gold});
   return v;
 }
-function castleNetCost(L, id){ const c = castleLevelUpCost(L, id), cr = castleCreditOf(id); return Object.assign({}, c, {dust: Math.max(0, c.dust - cr.dust), gold: Math.max(0, c.gold - cr.gold), credit:{dust: Math.min(cr.dust, c.dust), gold: Math.min(cr.gold, c.gold)}}); }
+function castleNetCost(L, id){ const c = castleLevelUpCost(L, id), cr = castleCreditOf(id), b = c.blossoms || 0, cb = cr.blossoms || 0; // 2026-10-30 (ECON1): + Blossoms
+  return Object.assign({}, c, {blossoms: Math.max(0, b - cb), dust: Math.max(0, c.dust - (cr.dust||0)), gold: Math.max(0, c.gold - (cr.gold||0)), credit:{blossoms: Math.min(cb, b), dust: Math.min(cr.dust||0, c.dust), gold: Math.min(cr.gold||0, c.gold)}}); }
 // 2026-10-18 (package NF): the spares are copySpareIdx's (plain, no levels paid for on them, never the best copy), and they all go
 // into the card's best copy (fuseAllCountFor / feedDuplicate).
 function spareDuplicatesTotal(){ if(!copyModelOn()) return 0; let n = 0; const defs = getCardDefs(); Object.keys(myCardCopies||{}).forEach(id=>{ const d = defs[id]; if(!d || d.token) return; copyModelSync(id); n += fuseAllCountFor(id, maxCopiesForRarity(d.rarity)); }); return n; }
@@ -15010,12 +15062,12 @@ function fuseAllDuplicates(){
 }
 // 2026-10-19 (package FG): the Brambles list became the Reinforce screen (forgeReinforceHTML, FORGE_FG)
 function forgeCastlesHTML(){ return forgeReinforceHTML(); }
-function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleNetCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
+function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleNetCost(L, id); return (myCurrencies.blossoms||0) >= (c.blossoms||0) && (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
 function temperCastle(id){
   const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX || !castleCanTemper(id)) return false;
   const c = castleNetCost(L, id);
-  myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
-  if(c.credit && (c.credit.dust || c.credit.gold)){ const cr = loadJSONKey(CASTLE_CREDIT_KEY), o = cr[id] || {}; cr[id] = {dust: Math.max(0, (o.dust|0) - c.credit.dust), gold: Math.max(0, (o.gold|0) - c.credit.gold)}; try{ localStorage.setItem(CASTLE_CREDIT_KEY, JSON.stringify(cr)); }catch(e){} }
+  myCurrencies.blossoms = (myCurrencies.blossoms||0) - (c.blossoms||0); myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies(); // 2026-10-30 (ECON1): + Blossoms
+  if(c.credit && (c.credit.blossoms || c.credit.dust || c.credit.gold)){ const o = castleCreditOf(id); castleCreditSave(id, {blossoms: o.blossoms - (c.credit.blossoms||0), dust: o.dust - (c.credit.dust||0), gold: o.gold - (c.credit.gold||0)}); }
   Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
   fxHook('castleTempered', id, L + 1); // batch D (2026-10-15, docs/effects-lab-contract.md)
@@ -22805,7 +22857,7 @@ function endlessDungeon(cfg){
     const thRules = th ? ((boss && th.bossRules) || th.rules) : null;
     nodes.push({key:fk(f), kind: boss ? 'miniboss' : 'skirmish', name: boss ? `${cfg.bossName}, floor ${f}` : `${th ? th.name : cfg.name}, floor ${f}`,
       icon: boss ? cfg.bossIcon : (th ? th.icon : cfg.icon), deck, hqHp: Math.round((cfg.baseHq||40) + f*3 + (boss ? 20 : 0)), floor: f, code: `${cfg.mapNumber}-${cfg.code}-${f}`,
-      ...(th ? {theme: th.key} : {}), ...(thRules ? {rules: Object.assign({}, thRules)} : {}),
+      ...(th ? {theme: th.key} : {}), ...(thRules ? {rules: Object.assign({}, thRules)} : {}), dungeonId: cfg.id, // dungeonId: 2026-10-30 (ECON1, DAILY_DUNGEON_PAY)
       flavor: boss ? cfg.bossFlavor : cfg.flavor, requires: f === 1 ? [] : [fk(f-1)],
       rewards:{first:{gold: 15 + f*3 + (boss ? 40 : 0), dust: 4 + f + (boss ? 20 : 0)}},
       // axis 'x' (2026-10-16, user: "It's like Murgle, but left to right"): floor 1 on the left, running right
@@ -23744,7 +23796,12 @@ function nodeRewardTier(node){
   const o = (node && node.rewards) || {};
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
   if(node.tower) return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:0, dust:0}}; // 2026-10-18 (package Z): a cleared Spire floor pays nothing
-  return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
+  // 2026-10-30 (ECON1): a daily dungeon floor with its own pay (DAILY_DUNGEON_PAY): that on every clear, first clears too (on top of the
+  // floor's first-clear reward, unchanged); no halving, no rank bonus (see the payout), so a week's grind is the number in the table
+  const dp = node.dungeonId && typeof dailyDungeonPay === 'function' && dailyDungeonPay(node.dungeonId), half = (k, v)=> typeof econScale === 'function' ? econScale('conquestRepeat', k, v) : v; // guarded: tools lift this function alone
+  if(dp) return {first:{gold:pick('first','gold') + (dp.gold||0), dust:pick('first','dust') + (dp.dust||0), blossoms: dp.blossoms||0}, repeat:{gold: dp.gold||0, dust: dp.dust||0, blossoms: dp.blossoms||0}, dungeonPay: true};
+  // 2026-10-30 (ECON1, owner BRUP-1): a fight won again pays ECON_INCOME_MULT.conquestRepeat (half) of its kind's clear-again reward
+  return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold: half('gold', pick('repeat','gold')), dust: half('dust', pick('repeat','dust'))}};
 }
 // Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
 // show as cards on the right of the title + the leaves & materia rewards. If already received,
@@ -24952,6 +25009,16 @@ const DAILY_DUNGEONS = [
   {slot:3, mapNumber:40, icon:'🗿'}, // 2026-10-18: no dungeon and no Map 40 yet; the slot reads "Unlocks beyond the charted maps" (mapIsCharted)
 ];
 // A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
+// The first two daily dungeons' pay (2026-10-30, package ECON1, owner BRUP-1 10:34: "i want to make the first two daily dungeons: one gives
+// bramble resources, the other gives normal resources. - grinding that = lvl 0 common unit levelled to lvl 10 per week."): every won floor
+// (first clear or not, minibosses too) pays this, on top of a floor's first-clear reward. Murgle Mayhem (Map 6, the first) pays Dust and
+// Leaves, the Undercroft (Map 11) pays Briar Blossoms. With the key ring's 3 keys a day and the Monday key (22 a week) split between the
+// two (11 won floors each), a week of Murgle pays 11 x 69 = 759 Dust and 11 x 46 = 506 Leaves: a Common card's road from Level 0 to 10
+// (759 Dust, 504 Leaves; canonical/upgrade-costs.json). A week of the Undercroft pays 11 x 63 = 693 Blossoms: a Common bramble's Levels 0 to
+// 10 (690). Arithmetic: docs/balance/econ1-2026-10-30.md. The pay is not halved (ECON_INCOME_MULT) and gets no rank bonus.
+const DAILY_DUNGEON_PAY = {mm: {dust: 69, gold: 46}, muc: {blossoms: 63}};
+const DAILY_DUNGEON_WEEK = {keysPerDay: 3, mondayKeys: 1, dungeons: 2}; // the weekly arithmetic's assumptions (tests/econ1-2026-10-30.js)
+function dailyDungeonPay(mapId){ return DAILY_DUNGEON_PAY[mapId] || null; }
 function dungeonHiddenFromPlayer(map){ return !!(map && map.preview) && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
 const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
 // The key ring (2026-10-18, package DK): how many keys you can hold, DUNGEON_TICKETS_CAP to DUNGEON_KEY_CAP_MAX. Each step is bought
@@ -25024,7 +25091,7 @@ function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); r
 function dungeonGoldLeavesFor(mapId, floor, firstClear){
   const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map) || !(floor > 0)) return 0;
   const dd = DAILY_DUNGEONS.find(x=> x.mapId === mapId);
-  return (firstClear ? 10 : 0) + (dd && dd.goldLeavesEveryClear ? 20 + floor : 0);
+  return (firstClear ? 10 : 0) + (dd && dd.goldLeavesEveryClear ? econScale('dungeonEvery', 'gems', 20 + floor) : 0); // 2026-10-30 (ECON1): the every-clear part halved
 }
 function dungeonGoldLeavesPreview(mapId, node){
   if(!node || !node.floor) return null; const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map)) return null;
@@ -39576,16 +39643,17 @@ function sweepAllowed(mapId, nodeKey){ const nid = conquestNodeId(mapId, nodeKey
 // before the Energy is taken, so a run with no key costs nothing); the sweep stops when the keys run out.
 function runSweep(mapId, nodeKey, count){
   const f = findConquestNode(mapId, nodeKey); if(!f) return null; const node = f.node, map = f.map || CONQUEST_MAPS.find(x=> x.id === mapId);
-  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0, keys = 0;
+  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0, blossoms = 0, keys = 0;
   const tier = nodeRewardTier(node), dg = isDailyDungeonMap(map);
   for(let i = 0; i < count; i++){ if(dg && dungeonTicketsLeft() <= 0) break; if(!spendEnergy(cost)) break; if(dg){ dungeonStakeKey(mapId); keys++; } played++;
     const r = simulateSkirmishVsDeckSeeded(node, myDeckCounts, myCastleDef(), Math.floor(Math.random()*1e9));
-    if(r.win){ wins++; const rank = r.castleLeft >= 0.9 ? 'S' : r.castleLeft >= 0.7 ? 'A' : r.castleLeft >= 0.5 ? 'B' : 'C'; const bm = (RANK_MULT[rank] || 1);
-      if(tier){ gold += Math.round((tier.repeat.gold||0) * bm); dust += Math.round((tier.repeat.dust||0) * bm); }
+    if(r.win){ wins++; const rank = r.castleLeft >= 0.9 ? 'S' : r.castleLeft >= 0.7 ? 'A' : r.castleLeft >= 0.5 ? 'B' : 'C'; const bm = tier && tier.dungeonPay ? 1 : (RANK_MULT[rank] || 1); // 2026-10-30 (ECON1): a daily dungeon's pay gets no rank bonus
+      if(tier){ gold += Math.round((tier.repeat.gold||0) * bm); dust += Math.round((tier.repeat.dust||0) * bm); blossoms += tier.repeat.blossoms || 0; }
+      if(!dg) try{ blossoms += blossomsOpen() ? blossomWinPay(mapId, node) : 0; }catch(e){} // 2026-10-30 (ECON1): a won fight's Briar Blossoms
       try{ bumpQuestCounter('conquestWins', 1); bumpQuestCounter('wins', 1); bumpQuestCounter('energyConquest', cost); }catch(e){} } }
-  if(gold > 0) grantCurrency('gold', gold); if(dust > 0) grantCurrency('dust', dust);
+  if(gold > 0) grantCurrency('gold', gold); if(dust > 0) grantCurrency('dust', dust); if(blossoms > 0) grantCurrency('blossoms', blossoms);
   if(keys){ try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
-  return {played, wins, gold, dust, keys};
+  return {played, wins, gold, dust, blossoms, keys};
 }
 // Sweep results (2026-10-16, user: "Auto Sweep should bring up the reward screen. not just a toast"): a results card like a fight's:
 // the fight, the runs and wins as a rank-style tally, the Maple Leaves and Magic Dust pills counting up from 0, and Collect.
@@ -41714,6 +41782,7 @@ async function resolveRoundCore(opts){
       try{ const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); completeConquestNode(m.conquestNode, rank); m.conquestRankEarned = rank; }catch(e){}
       m.unlockedFights = []; m.unlockedActivities = []; m.nextBattle = null;
     }
+    try{ settleBlossoms(m); }catch(e){} // 2026-10-30 (ECON1): Briar Blossoms, a win's or (from the bramble damage) a loss's
     if(m.rewardDuplicate){ /* 2026-10-21 (package ED, owner #9): this match's result was decided before (a stale copy of it): nothing is paid again */ }
     else if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && !m.towerReplay){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
@@ -41724,6 +41793,7 @@ async function resolveRoundCore(opts){
       const dunMap = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), dunNode = isDailyDungeonMap(dunMap) ? dunMap.nodes.find(n=> n.key === m.conquestNode.nodeId) : null;
       // a daily dungeon floor (2026-10-16): first clear = higher than the best floor ever cleared, since lost climbs wipe the floors
       const isFirstClear = dunNode ? (dunNode.floor || 0) > dungeonBestFloor(dunMap.id) : !preProgress.completed.includes(preId);
+      m.conquestFirstClearNow = !!isFirstClear; // 2026-10-30 (ECON1): read by the boss Metal below
       // Server-paid rewards (2026-10-17, security): with a fight session, this win's Leaves / Gold Leaves / Dust / Metal wait for
       // claim_fight_reward (settleFightReward, after the hand-in); everything else (cards, packs, eggs...) is given here as before.
       fightRewardBegin(m, isFirstClear);
@@ -41743,7 +41813,8 @@ async function resolveRoundCore(opts){
       const rewardTier = nodeRewardTier((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode);
       if(rewardTier){
         const base = isFirstClear ? rewardTier.first : rewardTier.repeat;
-        const bm = isFirstClear ? 0 : ((RANK_MULT[rank] || 1) - 1), bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)}; // first clears are never changed by rank
+        const bm = isFirstClear || rewardTier.dungeonPay ? 0 : ((RANK_MULT[rank] || 1) - 1), bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)}; // first clears are never changed by rank; 2026-10-30 (ECON1): nor a daily dungeon's pay
+        if(base.blossoms > 0){ grantCurrency('blossoms', base.blossoms); m.conquestBlossomsEarned = (m.conquestBlossomsEarned||0) + base.blossoms; } // 2026-10-30 (ECON1): the bramble dungeon (not server-paid: no column there yet)
         const payout = {gold: (base.gold||0) + bonus.gold, dust: (base.dust||0) + bonus.dust};
         if(payout.gold>0) fightGrant(m, 'gold', payout.gold);
         if(payout.dust>0) fightGrant(m, 'dust', payout.dust);
@@ -41863,7 +41934,7 @@ async function resolveRoundCore(opts){
       // aren't, so only those two kinds pay out. A persistent Forge currency, not an in-match
       // resource — see CURRENCY_META's own comment for the full reasoning.
       if(['boss','raidboss','finalboss'].includes(baseKind(m.conquestNode.kind))){
-        const metalAmt = m.conquestNode.kind==='finalboss' ? 3 : 1;
+        const metalFull = m.conquestNode.kind==='finalboss' ? 3 : 1, metalAmt = m.conquestFirstClearNow ? metalFull : econPay('conquestRepeat', 'metal', metalFull); // 2026-10-30 (ECON1): halved on a repeat (every other repeat pays 1)
         fightGrant(m, 'metal', metalAmt);
         m.conquestMetalEarned = metalAmt;
       }
@@ -50954,6 +51025,7 @@ function renderForge(){
         <span class="forge-coin dust" title="Magic Dust">✨ ${myCurrencies.dust||0}</span>
         <span class="forge-coin gold" title="Maple Leaves">${mapleLeafIconHTML()} ${myCurrencies.gold||0}</span>
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
+        ${forgeMode === 'castles' ? `<span class="forge-coin blossoms" data-cur-kind="blossoms" title="${escapeAttr(TX('ui.econ1-blossoms-tip'))}">${CURRENCY_META.blossoms.glyph} ${myCurrencies.blossoms||0}</span>` : '' /* 2026-10-30 (ECON1): only on Reinforce, where they are spent */}
       </div>
     </div>
     <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).filter(k=> res3ForgeTabShown(k)).map(k=> !res3ForgeTabOpen(k) ? res3ForgeLockedTabHTML(k) : `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}${k === 'raid' && forgeRaidAnyReady() ? ' has-ready' : '' /* 2026-10-19 (package RC) */}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
@@ -51566,6 +51638,7 @@ function forgeRaidCostHTML(raid, cost){
 function btnCostHTML(cost, extra){
   cost = cost || {}; const defs = getCardDefs(), parts = [];
   const part = (glyph, need, have, label)=>{ if(!need) return; const short = have < need; parts.push(`<span class="bc ${short ? 'is-short' : ''}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}</span>`); };
+  part(CURRENCY_META.blossoms.glyph, cost.blossoms, myCurrencies.blossoms||0, TX('ui.econ1-blossoms')); // 2026-10-30 (ECON1): a bramble's Reinforce
   part(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves');
   part('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust');
   part('🦴', cost.kibble, myCurrencies.kibble||0, 'Kibble');
@@ -51881,12 +51954,13 @@ function reinforcePreview(id){
   const now = castleLeveled(ch, L), next = atMax ? now : castleLeveled(ch, L + 1);
   const cost = atMax ? null : castleNetCost(L, id), gate = !atMax && L >= 20 ? (levelGateNeed(LIMIT_BREAK_LEVEL) || 0) : 0, short = [];
   if(cost){
+    if((myCurrencies.blossoms || 0) < (cost.blossoms || 0)) short.push({kind:'blossoms', need: cost.blossoms, have: myCurrencies.blossoms || 0}); // 2026-10-30 (ECON1)
     if((myCurrencies.dust || 0) < cost.dust) short.push({kind:'dust', need: cost.dust, have: myCurrencies.dust || 0});
     if((myCurrencies.gold || 0) < cost.gold) short.push({kind:'gold', need: cost.gold, have: myCurrencies.gold || 0});
     Object.entries(cost.mats || {}).forEach(([m, n])=>{ const h = ownedCount(m); if(h < n) short.push({kind: m, need: n, have: h}); });
   }
   return {id, L, cap: L >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL, atMax, breaking, health: {now: now.health, next: next.health},
-    cost, credit: cost ? cost.credit : {dust: 0, gold: 0}, gate, short, ok: !atMax && !gate && !short.length, dups: castleDupsOf(id)};
+    cost, credit: cost ? cost.credit : {blossoms: 0, dust: 0, gold: 0}, gate, short, ok: !atMax && !gate && !short.length, dups: castleDupsOf(id)};
 }
 function reinforcePickId(list){ list = list || reinforceList(); if(reinforcePick && list.some(ch=> ch.id === reinforcePick)) return reinforcePick; const mine = list.find(ch=> ch.id === myCharacterId); return (mine || list[0] || {}).id || null; }
 function forgeReinforceHTML(){
@@ -51894,7 +51968,7 @@ function forgeReinforceHTML(){
   const id = reinforcePickId(list), ch = CHARACTER_DEFS[id], p = reinforcePreview(id), lc = castleLeveled(ch, p.L);
   const tile = (c, L, extra)=> cardTileHTML(Object.assign({}, castleLeveled(c, L), {icon: c.icon || '🏰'}), {isCastle:true, inPlay:true, extraClass: extra || ''});
   const btn = p.atMax ? `<p class="forge-note forge-done">${escapeHtml(TX('ui.fg-rf-max'))}</p>`
-    : `<button type="button" class="btn primary forge-act fg-rf-go" id="fgReinforceBtn" data-rf-id="${escapeAttr(id)}" ${p.ok ? '' : 'aria-disabled="true"'}>${p.breaking ? '💥' : '🧱'} ${escapeHtml(p.breaking ? TX('ui.fg-rf-break', {n: p.L + 1}) : TX('ui.fg-rf-to', {n: p.L + 1}))}${btnCostHTML({dust: p.cost.dust, gold: p.cost.gold, mats: p.cost.mats})}</button>`;
+    : `<button type="button" class="btn primary forge-act fg-rf-go" id="fgReinforceBtn" data-rf-id="${escapeAttr(id)}" ${p.ok ? '' : 'aria-disabled="true"'}>${p.breaking ? '💥' : '🧱'} ${escapeHtml(p.breaking ? TX('ui.fg-rf-break', {n: p.L + 1}) : TX('ui.fg-rf-to', {n: p.L + 1}))}${btnCostHTML({blossoms: p.cost.blossoms, dust: p.cost.dust, gold: p.cost.gold, mats: p.cost.mats})}</button>`;
   return `<div class="fg-rf" role="region" aria-label="${escapeAttr(TX('ui.fg-reinforce-tab'))}">
     <div class="fg-rf-main">
       <div class="fg-rf-stage" id="rfStage"><div class="fg-rf-glow" aria-hidden="true"></div><div class="fg-rf-big">${tile(ch, p.L, 'fg-rf-tile')}</div><span class="fg-rf-lv">${escapeHtml(TX('ui.nf-copy-level', {n: p.L}))}</span></div>
@@ -51907,7 +51981,8 @@ function forgeReinforceHTML(){
         <p class="fg-rf-passive">${escapeHtml(characterDescHTML(lc))}</p>
         ${p.gate ? `<p class="forge-note forge-gate">🗺️ ${escapeHtml(TX('ui.fg-rf-gate', {n: p.gate}))}</p>` : ''}
         ${btn}
-        ${p.credit && (p.credit.dust || p.credit.gold) ? `<p class="forge-note">🧩 ${escapeHtml(TX('ui.fg-rf-credit', {dust: p.credit.dust, gold: p.credit.gold}))}</p>` : ''}
+        ${p.credit && (p.credit.blossoms || p.credit.dust || p.credit.gold) ? `<p class="forge-note">🧩 ${escapeHtml(TX('ui.fg-rf-credit', {dust: p.credit.dust, gold: p.credit.gold}))}${p.credit.blossoms ? ` <span class="fg-rf-credit-bl">· ${CURRENCY_META.blossoms.glyph} ${p.credit.blossoms}</span>` : ''}</p>` : ''}
+        <p class="forge-note fg-rf-econ">${CURRENCY_META.blossoms.glyph} ${escapeHtml(TX('ui.econ1-rf-note', {have: myCurrencies.blossoms || 0}))}</p>
         <button type="button" class="btn small fg-rf-dups" data-fuse-castle="${escapeAttr(id)}" ${p.dups ? '' : 'disabled'} title="${escapeAttr(TX('ui.fg-rf-dups-tip'))}">🧩 ${escapeHtml(TX('ui.fg-rf-dups', {n: p.dups}))}</button>
       </div>
     </div>
