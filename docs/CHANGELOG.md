@@ -2,6 +2,23 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 (package REF5: the progression reference, "Reference (Random)")
+- **New reference set "Reference (Random)"** (owner 10-28 22:50, 10-30): per main map 0-20, 5 decks, one per seeded player. Each player's collection comes from the confirmed rewards before the map, x1.5: 1.0x of the Leaves buys packs, 0.5x goes to the Forge (open from Map 11, tier first, then the deck). Each deck is the optimizer's best deck from that collection, playing at its own card levels. A side map plays the decks of the map it opens on.
+- **In the PRO / X-REF "You play" picker and Admin's reference switch:** Reference (Random) is the default and deals one of the map's five at random each time a fight starts; a toast, the REF tag and the result line say which ("Reference 3 of 5"). Reference 1-5 of 5, the Map reference and Reference-2 stay selectable. A choice saved before REF5 moves to Reference (Random) once. 3 new texts in 12 languages.
+- **Findings** (`docs/balance/ref5-2026-10-30.md`):
+  - No confirmed reward pays Gold Leaves, so only Hedgerow Pouches are bought.
+  - The Forge's Dust share keeps late decks at a mean of Lv 1.8-2.6, against the Map reference's 3-3.9.
+  - Main road fights: 51% won (Map reference 67%). DECK1 PRO fights: 22% (39%). Close up to Map 9, weaker from Map 10.
+  - The searches were short (shared machine), so the decks are not converged.
+  - Owner calls REF5-1..4.
+- **Tools:**
+  - `tools/opt/ref5_prog.js` and `ref5_measure.js`.
+  - `deckopt.js --mode prog` (owned copies, per-card levels, seeded with the previous deck).
+  - `ref_decks.js` bakes a per-map set.
+  - `pro_ease.js` / `ref_vs_optimum.js` take `--ref prog` (`pro_ease --out`).
+  - The hub heatmap has a Reference (Random) row.
+  - Test: `tests/ref5-2026-10-30.js`.
+
 ## 2026-10-30 (package DECK1: step 4 of the owner's balancing plan, focused PRO decks per map)
 - **New PRO decks on every map 0-20 and every side map with its own list** (36 maps, 127 decks, 2-4 a map): at most 6 different cards and 4 copies, each with a named focus (cost generators + payoff, high cost, a swarm of normal creatures, a skill family where one of those cannot be filled, and the strongest other deck), at least 10 of 20 copies from the map's current list, the rest from cards a player holds by then. A focus that does not make a hard deck (under the map's best - 15 points) is left out. The previous PRO decks are kept under each map's `history`; BPRO decks are unchanged.
 - **How hard they are** (100 games a pairing, `docs/balance/pro-ease-deck1-2026-10-30.json`): from Map 7 on the focused decks are as hard or harder than the old ones almost everywhere (Wolfsbane Tundra: the map reference wins 2%, was 13%). Still easy: Gannet Cliffs (a pool ceiling, 68-90%), Map 0 for Reference-2 (Commons only), Maps 10 and 20 (high-cost lists, 60-74%). Map 2 is no longer easy (34-52%). Report: `docs/balance/deck1-2026-10-30.md`.
