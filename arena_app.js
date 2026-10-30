@@ -11942,12 +11942,17 @@ const CURRENCY_META = {
   // Beer (2026-10-15, user: "The Tavern also lets you recruit cards (singles) permanently using resources + a beer (1-3 beer per
   // week)"): 1 every week, +1 for each of the first two weekly quest tiers you finish; you can hold 3. Local like Kibble.
   beer: {glyph:'🍺', label:'Beer'},
+  // Briar Blossoms (2026-10-30, package ECON1, owner BRUP-1 10:34: "Their own resource & a bit of normal resource. The bramble resource comes
+  // from winning fights. Dealing damage to bramble does net you a tiny bit even on loss."): what a bramble's Reinforce mostly costs (with a
+  // small share of Dust and Leaves, BRAMBLE_COST). The name and icon are a placeholder the owner can change (label, glyph and the
+  // TX key ui.econ1-blossoms). Cloud: player_currencies.blossoms once supabase/proposed/20261030_bramble_resource.sql is applied.
+  blossoms: {glyph:'💮', label:'Briar Blossoms'},
 };
 // Krooni retired for now (2026-10-23, package TU2, owner E9: "Retire Krooni for now"): nothing spends them, so players no longer see or
 // earn them (the Highcrest Case's 3 Krooni, the wallet, the pack lines). A saved balance is left exactly as it is (myCurrencies.kroon,
 // still synced), and Admin Mode still shows it (wallet, Admin's currency row, the pack editor). Bring them back: KROONI_RETIRED = false.
 const KROONI_RETIRED = true;
-function currencyShown(k){ return !(k === 'kroon' && KROONI_RETIRED && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
+function currencyShown(k){ if(k === 'blossoms') return blossomsShown(); /* 2026-10-30 (ECON1): only once brambles can be reinforced, or some are held */ return !(k === 'kroon' && KROONI_RETIRED && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
    'win 10 matches'"). Deliberately built entirely on data that ALREADY exists and is already
@@ -12423,7 +12428,10 @@ async function cloudPullState(){
         kibble: Number((myCurrencies && myCurrencies.kibble) || 0), food: Number((myCurrencies && myCurrencies.food) || 0), beer: Number((myCurrencies && myCurrencies.beer) || 0), // local-only until the cloud table gets a column
         // 2026-10-19 (package RC): the raid trophy shards come from the row's raid_shards (supabase/proposed/20261019_raid_shards.sql)
         // once that column exists and has been written; until then this browser's are kept
-        raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards)};
+        raidShards: cur.raid_shards && typeof cur.raid_shards === 'object' && Object.keys(cur.raid_shards).length ? raidShardsClean(cur.raid_shards) : raidShardsClean(myCurrencies && myCurrencies.raidShards),
+        // 2026-10-30 (ECON1): Briar Blossoms from the row's blossoms column (supabase/proposed/20261030_bramble_resource.sql) once it exists;
+        // until then (no column: undefined) this browser's are kept, like the trophy shards
+        blossoms: cur.blossoms != null ? Math.max(0, Number(cur.blossoms)||0) : Math.max(0, Number((myCurrencies && myCurrencies.blossoms) || 0))};
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -12463,6 +12471,8 @@ async function cloudPullState(){
 // back; with the server now adding and taking amounts itself (market, fight rewards) the order matters.
 let cloudCurPushInFlight = null, cloudCurPushQueued = null;
 var cloudShardsColumn = null; // 2026-10-19 (package RC): null not known yet; false: no player_currencies.raid_shards column (not applied yet)
+var cloudBlossomsColumn = null; // 2026-10-30 (ECON1): null not known yet; false: no player_currencies.blossoms column (not applied yet)
+function cloudBlossomsColumnMissing(error){ return !!error && /blossoms/i.test(error.message || ''); }
 function cloudShardsColumnMissing(error){ return !!error && (/raid_shards/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
 function cloudPushCurrencies(){
   if(!sbClient || !isSignedIn()) return;
@@ -12472,9 +12482,15 @@ function cloudPushCurrencies(){
     // 2026-10-19 (package RC): + the raid trophy shards, in the proposed raid_shards column; a server without it says so once, and the
     // row goes again without it (and without it from then on, this session), as the card copies' column does
     if(cloudShardsColumn !== false) row.raid_shards = raidShardsClean(myCurrencies.raidShards);
+    if(cloudBlossomsColumn !== false) row.blossoms = Math.max(0, Math.floor(myCurrencies.blossoms || 0)); // 2026-10-30 (ECON1): the proposed blossoms column
+    // 2026-10-30 (ECON1): a missing proposed column (raid_shards or blossoms) is dropped from the row, once, and the row goes again
+    const retry = (error, n)=>{ let again = false;
+      if(row.blossoms != null && cloudBlossomsColumnMissing(error)){ cloudBlossomsColumn = false; delete row.blossoms; again = true; }
+      else if(row.raid_shards && cloudShardsColumnMissing(error)){ cloudShardsColumn = false; delete row.raid_shards; again = true; }
+      if(!again || n > 2) return; return sbClient.from('player_currencies').upsert(row).then(r=>{ const e = r && r.error; if(e) return retry(e, n + 1); }, ()=>{}); };
     return sbClient.from('player_currencies').upsert(row).then(r=>{ const error = r && r.error;
-      if(error && row.raid_shards && cloudShardsColumnMissing(error)){ cloudShardsColumn = false; delete row.raid_shards; return sbClient.from('player_currencies').upsert(row).then(()=>{}, ()=>{}); }
-      if(!error && row.raid_shards) cloudShardsColumn = true; }, ()=>{}); };
+      if(error) return retry(error, 0);
+      if(row.raid_shards) cloudShardsColumn = true; if(row.blossoms != null) cloudBlossomsColumn = true; }, ()=>{}); };
   const p = (cloudCurPushInFlight || Promise.resolve()).then(send);
   cloudCurPushQueued = p;
   const tail = p.then(()=>{ if(cloudCurPushInFlight === tail) cloudCurPushInFlight = null; });
@@ -13096,7 +13112,8 @@ function loadCurrencies(){
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
         raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4, beer: Number(parsed.beer)||0,
-        raidShards: raidShardsClean(parsed.raidShards)}; // 2026-10-19 (package RC): each raid's trophy shards {raidId: n}
+        raidShards: raidShardsClean(parsed.raidShards), // 2026-10-19 (package RC): each raid's trophy shards {raidId: n}
+        blossoms: Math.max(0, Math.floor(Number(parsed.blossoms)||0))}; // 2026-10-30 (ECON1): Briar Blossoms, the brambles' own resource
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -13115,6 +13132,49 @@ function grantCurrency(kind, amount){
   myCurrencies[kind] = (myCurrencies[kind]||0) + amount;
   saveCurrencies();
 }
+// ECON1_INCOME:BEGIN (tests/econ1-2026-10-30.js evaluates this block)
+// Income halved (2026-10-30, package ECON1, owner BRUP-1 10:34: "Overall - help me half all the resources you get, (except first-time
+// rewards). Because, i want to make the first two daily dungeons: one gives bramble resources, the other gives normal resources."):
+// every repeatable source of the wallet's currencies pays ECON_INCOME_MULT[source] of what it did. First-time rewards (a fight's first
+// clear, achievements, the level track, the Scale Trail's finale, one-off gifts, a dungeon floor's first clear) are not listed and pay
+// in full. Halved currencies: ECON_HALVED_KINDS (Maple Leaves, Magic Dust, Gold Leaves, Metal); Energy, cards, packs, Kibble, Beer,
+// Laurels, XP and raid trophy shards are not. Each source has its own number so one can be tuned alone. docs/project-state.md section 3.
+const ECON_INCOME_MULT = {
+  conquestRepeat: 0.5, // a fight won again (CONQUEST_NODE_REWARDS repeat, a boss's Metal on a repeat, the Sweep, Clear map's repeat part)
+  dungeonEvery: 0.5,   // the Long Burrow's Gold Leaves on every clear (the first two daily dungeons pay DAILY_DUNGEON_PAY instead)
+  quickMatch: 0.5,     // a quick battle against the computer
+  arena: 0.5,          // PvP Arena Leaves and Dust (Laurels are not halved)
+  ghostRun: 0.5,       // Ghost runs (async): each win and the run's end bonus
+  gauntlet: 0.5,       // Gauntlet wins and the run bonus
+  arenaDungeon: 0.5,   // the old Arena dungeon run's full-clear pay (old saves)
+  onlineRaid: 0.5,     // an Online Raid win
+  raids: 0.5,          // offline raid attempts, raid parts, raid kill / participation claims, "there when it fell"
+  coopDungeon: 0.5,    // the group dungeon's floor chests
+  notices: 0.5,        // daily notices (QUEST_RANK_REWARD)
+  quests: 0.5,         // daily and weekly quest tiers (QUEST_TIERS)
+  errands: 0.5,        // errands on the road
+  autobattle: 0.5,     // Auto-battler runs
+  trail: 0.5,          // the monthly Trail's free lane (Leaves, Dust, Metal)
+  packDust: 0.5,       // the Materia share a booster carries (PACK_MATERIA_PCT)
+};
+const ECON_HALVED_KINDS = ['gold', 'dust', 'gems', 'metal'];
+function econMult(src, kind){ if(kind && ECON_HALVED_KINDS.indexOf(kind) < 0) return 1; const m = ECON_INCOME_MULT[src]; return m == null ? 1 : m; }
+// For a shown table or a preview: rounded, and never below 1 when the full amount was at least 1.
+function econScale(src, kind, n){ n = Number(n) || 0; if(n <= 0) return 0; const m = econMult(src, kind); return m === 1 ? n : Math.max(1, Math.round(n * m)); }
+// A table of rewards ({gold, dust, ...} or a list / map of them), halved in place, once (the tables are the game's own consts).
+function econScaleTable(src, t){ const one = r=>{ if(r && typeof r === 'object') Object.keys(r).forEach(k=>{ if(typeof r[k] === 'number' && ECON_HALVED_KINDS.indexOf(k) >= 0) r[k] = econScale(src, k, r[k]); }); };
+  if(Array.isArray(t)) t.forEach(one); else if(t && typeof t === 'object') Object.keys(t).forEach(k=> one(t[k])); return t; }
+// For a variable amount paid now: the fraction is carried to the next payment of that currency (so a 1-Dust win pays 1 every other time).
+const ECON_CARRY_KEY = 'bramblewood_econ_carry_v1';
+function econPay(src, kind, n){
+  n = Number(n) || 0; if(n <= 0) return 0; const m = econMult(src, kind); if(m === 1) return Math.round(n);
+  let c = {}; try{ c = JSON.parse(localStorage.getItem(ECON_CARRY_KEY) || '{}') || {}; }catch(e){}
+  const v = n * m + (Number(c[kind]) || 0), out = Math.floor(v + 1e-9); c[kind] = Math.max(0, Math.min(0.999, v - out));
+  try{ localStorage.setItem(ECON_CARRY_KEY, JSON.stringify(c)); }catch(e){}
+  return out;
+}
+function econPayAll(src, obj){ const o = {}; Object.keys(obj || {}).forEach(k=>{ o[k] = typeof obj[k] === 'number' ? econPay(src, k, obj[k]) : obj[k]; }); return o; }
+// ECON1_INCOME:END
 // Energy / stamina (2026-09-22, per explicit request and clarification: "Let's do an energy
 // mechanism now" -> "Energy is for doing skirmishes etc. You refill 1 per 1 minute."): a
 // persistent, real-time-regenerating account resource that gates STARTING a Conquest fight
