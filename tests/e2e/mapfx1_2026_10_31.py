@@ -85,8 +85,11 @@ async def run(b, url, w):
     # tap a lit fire
     fp = await pg.evaluate("(()=>{ const f = document.querySelector('#conquestCanvas .cave-fire.is-lit'); const r = f.getBoundingClientRect(); return {x: r.left + r.width/2, y: r.top + r.height/2}; })()")
     await clear_cues(pg)
+    clip = {'x': max(0, fp['x'] - 110), 'y': max(0, fp['y'] - 130), 'width': 220, 'height': 190}
+    frames = [await pg.screenshot(clip=clip, animations='allow', timeout=120000)]
     await tap(pg, w, fp['x'], fp['y']); await pg.wait_for_timeout(250)
     mid = await pg.evaluate("(()=>{ const f = document.querySelector('#conquestCanvas .cave-fire.is-out'); return {out: !!f, smoke: document.querySelectorAll('#conquestCanvas .mfx-smoke').length}; })()")
+    frames.append(await pg.screenshot(clip=clip, animations='allow', timeout=120000))
     ok(mid['out'] and mid['smoke'] > 0, f'a tap on a lit fire puts it out and puffs smoke {mid}')
     await shot(pg, 'fire-going-out', w)
     await pg.wait_for_timeout(900)
@@ -97,6 +100,14 @@ async def run(b, url, w):
     ok(after['sel'] is None, f'the tap selected no node {after}')
     ok((await cues(pg)) == ['fireOut'], f'one "fsst" cue played {await cues(pg)}')
     await shot(pg, 'fire-out', w)
+    frames.append(await pg.screenshot(clip=clip, animations='allow', timeout=120000))
+    try:
+        from PIL import Image
+        import io
+        ims = [Image.open(io.BytesIO(fr)).convert('RGB') for fr in frames]; sheet = Image.new('RGB', (sum(i.width for i in ims) + 8 * (len(ims) - 1), ims[0].height), (255, 255, 255)); x = 0
+        for i in ims: sheet.paste(i, (x, 0)); x += i.width + 8
+        f = os.path.join(OUT, f'mapfx1-fire-sequence-{w}.png'); sheet.save(f); shots.append(f)
+    except Exception as e: print('  (no sequence sheet: %s)' % e)
     # tap it again: lit again
     await clear_cues(pg)
     await tap(pg, w, fp['x'], fp['y']); await pg.wait_for_timeout(3500)
@@ -149,7 +160,7 @@ async def run(b, url, w):
         bp = await pg.evaluate(FIND + "('bush')")
         dbg = await pg.evaluate("document.querySelector('#conquestCanvas .map-fx-layer') ? 'layer' : 'nolayer'")
         await tap(pg, w, bp[0]['x'], bp[0]['y']); await pg.wait_for_timeout(180)
-        shake = await pg.evaluate("document.querySelectorAll('#conquestCanvas .mfx-shake').length + ':' + document.querySelectorAll('#conquestCanvas .mfx-leaf').length")
+        shake = await pg.evaluate("document.querySelectorAll('#conquestLayout .mfx-shake').length + ':' + document.querySelectorAll('#conquestCanvas .mfx-leaf').length")
         ok((await cues(pg)) == ['bushRustle'] and shake.split(':')[0] == '1' and int(shake.split(':')[1]) >= 1, f'a bush tap rustles, shakes and drops leaves ({await cues(pg)}, {shake})')
         ok(await pg.evaluate("conquestSelectedNodeKey") == sel0, 'a bush tap selects no node')
         await shot(pg, 'bush', w)
@@ -163,10 +174,10 @@ async def run(b, url, w):
     # --- trees sway
     ctx = await ctx_for(b, w); pg = await page_in(ctx, url)
     await open_map(pg, 'm5', clear=True)
-    tr = await pg.evaluate("""(()=>{ const els = [...document.querySelectorAll('#conquestCanvas .mfx-sway')]; if(!els.length) return {n: 0};
+    tr = await pg.evaluate("""(()=>{ const els = [...document.querySelectorAll('#conquestLayout .mfx-sway')]; if(!els.length) return {n: 0};
       // a headless page may not tick its animation clock between two evaluates, so read the keyframes at two points of the cycle
       const at = (e, ms)=>{ const a = e.getAnimations()[0]; a.pause(); a.currentTime = ms; return getComputedStyle(e).transform; };
-      const m = t=>{ const v = t.match(/matrix\(([^)]+)\)/); if(!v) return 0; const q = v[1].split(',').map(Number); return Math.atan2(q[1], q[0]) * 180 / Math.PI; };
+      const m = t=>{ const v = t.match(/matrix\\(([^)]+)\\)/); if(!v) return 0; const q = v[1].split(',').map(Number); return Math.atan2(q[1], q[0]) * 180 / Math.PI; };
       const e0 = els[0], lo = m(at(e0, 0)), hi = m(at(e0, parseFloat(getComputedStyle(e0).animationDuration) * 1000 * 0.999));
       const cs = getComputedStyle(els[0]); const run = els.map(e=> e.getAnimations()[0] && e.getAnimations()[0].animationName).filter(x=> x === 'mfxSway').length;
       const amps = els.map(e=> parseFloat(getComputedStyle(e).getPropertyValue('--sw')));
@@ -177,12 +188,12 @@ async def run(b, url, w):
     await pg.close(); await ctx.close()
     ctx = await ctx_for(b, w, reduced_motion='reduce'); pg = await page_in(ctx, url)
     await open_map(pg, 'm5', clear=True)
-    n = await pg.evaluate("document.querySelectorAll('#conquestCanvas .mfx-sway').length")
+    n = await pg.evaluate("document.querySelectorAll('#conquestLayout .mfx-sway').length")
     ok(n == 0, f'no tree sway with reduced motion ({n})')
     await pg.close(); await ctx.close()
     ctx = await ctx_for(b, w); pg = await page_in(ctx, url, "localStorage.setItem('bramblewood_fx_level','low');")
     await open_map(pg, 'm5', clear=True)
-    n = await pg.evaluate("document.querySelectorAll('#conquestCanvas .mfx-sway').length")
+    n = await pg.evaluate("document.querySelectorAll('#conquestLayout .mfx-sway').length")
     ok(n == 0, f'no tree sway with Effects Low ({n})')
     await pg.close(); await ctx.close()
     # reduced motion still lets a fire go out (a plain state change) and plays the cue

@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 (package MAPFX1: the map's decor you can touch)
+
+- **Fires go out** (owner X7: "Touching the torches or campfires on darkmaps turns them off! fun interaction"): tap a lit fire on a dark conquest map (the cave fire pits, the Smugglers' Grotto and Sunken Depths lanterns, the Glimmer Depths campfire) and the flame and glow fade, a puff of smoke rises, a soft "fsst" plays, and the light the fire gave the darkness shrinks away. Tap it again and it catches again. Purely visual and per visit: nothing is saved, and a cold fire (its fight not won yet) does not react.
+- **Crystals ting, water plops, bushes rustle**: a tap on a painted crystal plays a short bright "ting" (the pitch varies a little each time) and sparkles; on water, a plop with ripple rings and drops; on a bush, a rustle, a small shake and a few leaves.
+- **Trees sway**, very slightly: up to 14 trees per map turn +-0.6 to 1.0 degrees round their trunk base, each over 4-7 s and out of step with the others. Transform only; off with reduced motion and Effects Low or None.
+- **How it knows where things are:** the map art is painted by `tools/make_map_backgrounds.py`; `tools/map_fx_spots_2026_10_31.py` re-runs each painter, logs every tree, bush, crystal and pond, checks the result is pixel-identical to the shipped `assets/maps/*.png`, and prints `MAP_FX_SPOTS` (in `arena_app.js`). Re-run it after changing a painter; `tests/mapfx1-2026-10-31.js` fails when the table has drifted.
+- **Out of the way:** the spots sit under the nodes, trail, curios and buttons (a tap on any of those never reaches them; a fire hears only a tap that landed on nothing interactive); spots are at least 30 px wide, so a thumb finds them. Sounds are four new `SoundKit` cues (fireOut, crystalTing, waterPlop, bushRustle) through the usual volume gate, with a rate limit (110 ms between any two, 5 per 1.5 s, 260 ms per spot) so spam-clicking cannot stack them. Tests: `tests/mapfx1-2026-10-31.js`, `tests/e2e/mapfx1_2026_10_31.py` (390 and 1366).
+
 ## 2026-10-30 (package COOP3: the group dungeon fits the window, plays into every slot, cross-row placement, CPU allies first, Auto, the rewards window)
 
 - **The duo dungeon opens at the normal size** (owner W4: "Why does the duo dungeon start out at such a far away zoom?"): the vault's own middle row (it never plays there) hides while empty, and on a tablet or computer the whole match is fitted to the window (`--gd-k` scales the card size rule; `centreFieldInFs`), so the hand is no longer below the fold; the board starts at 1:1 and zooms out only when units would leave it. Phones keep their 75 px cards (the ally row now shares the frame's height).

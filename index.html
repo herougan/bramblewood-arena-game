@@ -11390,6 +11390,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
    so the trail, nodes, curios, pawn and every button are above it; only its own spots take a tap. */
 .map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none;}
 .conquest-map-canvas.layout-editing .map-fx-layer, .conquest-map-canvas.link-editing .map-fx-layer{display:none;}
+.map-sway-layer{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit;}
 .mfx-hit{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; border-radius:50%; background:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none;}
 .mfx-patch{position:absolute; pointer-events:none; background-repeat:no-repeat; -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); image-rendering:pixelated;}
 /* trees: a very slight sway round the trunk's base, transform only (the JS leaves it out with reduced motion and Effects Low/None) */
@@ -51239,7 +51240,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'cff5c2c6fab2', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'a3b9a3f504fd', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -71466,11 +71467,12 @@ function mfxPatch(layer, kind, w, h){
   const el = document.createElement('i'); el.className = 'mfx-patch ' + kind; el._w = w; el._h = h; layer.appendChild(el); return el;
 }
 function mfxPlacePatch(layer, el, G, px, py){
-  const w = el._w * G.s, h = el._h * G.s, left = G.ax + px / 100 * G.dw - w / 2, top = G.ay + py / 100 * G.dh - h / 2, layers = layer._bgLayers || [];
+  // the sway layer is a child of #conquestLayout itself, under the weather shader and the map frame, so it is lit exactly like the art it copies
+  const w = el._w * G.s, h = el._h * G.s, ox = (G.L.width - G.dw) / 2, oy = (G.L.height - G.dh) / 2, left = ox + px / 100 * G.dw - w / 2, top = oy + py / 100 * G.dh - h / 2, layers = layer._bgLayers || [];
   el.style.left = left.toFixed(1) + 'px'; el.style.top = top.toFixed(1) + 'px'; el.style.width = w.toFixed(1) + 'px'; el.style.height = h.toFixed(1) + 'px';
   el.style.backgroundImage = layers.join(', ');
   el.style.backgroundSize = layers.map(l=> /url\(/.test(l) ? `${G.dw.toFixed(1)}px ${G.dh.toFixed(1)}px` : `${G.L.width.toFixed(1)}px ${G.L.height.toFixed(1)}px`).join(', ');
-  el.style.backgroundPosition = layers.map(l=> /url\(/.test(l) ? `${(G.ax - left).toFixed(1)}px ${(G.ay - top).toFixed(1)}px` : `${(G.lx - left).toFixed(1)}px ${(G.ly - top).toFixed(1)}px`).join(', ');
+  el.style.backgroundPosition = layers.map(l=> /url\(/.test(l) ? `${(ox - left).toFixed(1)}px ${(oy - top).toFixed(1)}px` : `${(-left).toFixed(1)}px ${(-top).toFixed(1)}px`).join(', ');
 }
 function mountMapFx(canvas, map){
   try{ if(window.__bwMapFxStop) window.__bwMapFxStop(); }catch(e){}
@@ -71481,6 +71483,10 @@ function mountMapFx(canvas, map){
   const layer = document.createElement('div'); layer.className = 'map-fx-layer'; layer.setAttribute('aria-hidden', 'true');
   const svg = canvas.querySelector(':scope > .map-trail-svg');
   if(svg && svg.nextSibling) canvas.insertBefore(layer, svg.nextSibling); else canvas.insertBefore(layer, canvas.firstChild); // under the decor, spots, nodes: DOM order is paint order here
+  // the swaying trees and the bush shake are copies of the art, so they live in their own layer inside #conquestLayout, first, beneath the time-of-day tint and the shader
+  if(layout) layout.querySelectorAll(':scope > .map-sway-layer').forEach(e=> e.remove());
+  const swayLayer = document.createElement('div'); swayLayer.className = 'map-sway-layer'; swayLayer.setAttribute('aria-hidden', 'true');
+  if(layout) layout.insertBefore(swayLayer, layout.firstChild);
   const items = []; // {el, patch, x, y, kind, w, h}
   if(data){
     const addHit = (kind, x, y, w, h)=>{
@@ -71493,7 +71499,7 @@ function mountMapFx(canvas, map){
     if(mfxSway()){
       const trees = (data.t || []).filter(p=> p[0] > 6 && p[0] < 94 && p[1] > 8 && p[1] < 92), step = Math.max(1, Math.ceil(trees.length / 14));
       trees.filter((_, i)=> i % step === 0).forEach((p, i)=>{
-        const el = mfxPatch(layer, 'mfx-sway', 12, 13), amp = 0.6 + ((i * 37) % 5) / 10; // 0.6 to 1.0 degrees
+        const el = mfxPatch(swayLayer, 'mfx-sway', 12, 13), amp = 0.6 + ((i * 37) % 5) / 10; // 0.6 to 1.0 degrees
         el.style.setProperty('--sw', amp.toFixed(2) + 'deg'); el.style.animationDuration = (4 + ((i * 53) % 31) / 10).toFixed(1) + 's'; el.style.animationDelay = '-' + (((i * 29) % 60) / 10).toFixed(1) + 's';
         items.push({el, x: p[0], y: p[1], kind: 'tree', patch: true});
       });
@@ -71502,9 +71508,9 @@ function mountMapFx(canvas, map){
   let G = null;
   const place = ()=>{
     const g = mfxGeo(canvas); if(!g) return; G = g; layer._geo = g;
-    if(!layer._bgLayers){ const css = getComputedStyle(layout).backgroundImage || '', all = mfxSplitLayers(css), u = all.findIndex(l=> /url\(/.test(l)); layer._bgLayers = u >= 0 ? all.slice(0, u + 1) : []; }
+    if(!swayLayer._bgLayers){ const css = getComputedStyle(layout).backgroundImage || '', all = mfxSplitLayers(css), u = all.findIndex(l=> /url\(/.test(l)); swayLayer._bgLayers = u >= 0 ? all.slice(0, u + 1) : []; }
     items.forEach(it=>{
-      if(it.patch){ if(!layer._bgLayers.length){ it.el.style.display = 'none'; return; } mfxPlacePatch(layer, it.el, g, it.x, it.y); return; }
+      if(it.patch){ if(!swayLayer._bgLayers.length){ it.el.style.display = 'none'; return; } mfxPlacePatch(swayLayer, it.el, g, it.x, it.y); return; }
       const cx = g.ax + it.x / 100 * g.dw, cy = g.ay + it.y / 100 * g.dh, tap = Math.max(30, 7 * g.s);
       const w = it.kind === 'water' ? Math.max(30, Math.min(220, it.w / 100 * g.dw * 0.8)) : tap, h = it.kind === 'water' ? Math.max(26, Math.min(140, it.h / 100 * g.dh * 0.8)) : tap;
       it.el.style.left = cx.toFixed(1) + 'px'; it.el.style.top = cy.toFixed(1) + 'px'; it.el.style.width = w.toFixed(1) + 'px'; it.el.style.height = h.toFixed(1) + 'px';
@@ -71528,8 +71534,8 @@ function mountMapFx(canvas, map){
       if(vis){ fx('mfx-ripple', px, py, 1000); fx('mfx-ripple r2', px, py, 1200); for(let i = 0; i < 3; i++) fx('mfx-drop', px, py, 800, {'--dx': ((i - 1) * 9 + (Math.random() - 0.5) * 5).toFixed(1) + 'px', '--dy': (-12 - Math.random() * 8).toFixed(1) + 'px'}); }
     } else if(sp.kind === 'bush'){
       mfxPlay('bushRustle', t, null, 'b:' + sp.x + ',' + sp.y);
-      if(vis && G && layer._bgLayers && layer._bgLayers.length){
-        const p = mfxPatch(layer, 'mfx-shake mfx-fx', 8, 7); mfxPlacePatch(layer, p, G, sp.x, sp.y); setTimeout(()=> p.remove(), 520);
+      if(vis && G && swayLayer._bgLayers && swayLayer._bgLayers.length){
+        const p = mfxPatch(swayLayer, 'mfx-shake', 8, 7); mfxPlacePatch(swayLayer, p, G, sp.x, sp.y); setTimeout(()=> p.remove(), 520);
         for(let i = 0; i < 3; i++) fx('mfx-leaf', cx, cy, 900, {'--dx': ((i - 1) * 14 + (Math.random() - 0.5) * 6).toFixed(1) + 'px', '--dy': (-10 - Math.random() * 12).toFixed(1) + 'px'});
       }
     }
@@ -71554,8 +71560,10 @@ function mountMapFx(canvas, map){
   // ---- keep the spots on the art when the window changes or the map scrolls
   let raf = 0; const kick = ()=>{ if(raf) return; raf = requestAnimationFrame(()=>{ raf = 0; if(!layer.isConnected) return; place(); }); };
   window.addEventListener('resize', kick); document.addEventListener('scroll', kick, {capture: true, passive: true});
-  const iv = setInterval(()=>{ if(!layer.isConnected){ stop(); return; } const g = mfxGeo(canvas); if(g && (!G || g.key !== G.key)) place(); }, 500);
-  function stop(){ clearInterval(iv); window.removeEventListener('resize', kick); document.removeEventListener('scroll', kick, true); canvas.removeEventListener('click', onClick, true); canvas.removeEventListener('pointermove', onMove); if(window.__bwMapFxStop === stop) window.__bwMapFxStop = null; }
+  const iv = setInterval(()=>{ if(!layer.isConnected){ stop(); return; }
+    if(layout && swayLayer.parentNode === layout && layout.firstChild !== swayLayer) layout.insertBefore(swayLayer, layout.firstChild); // first = under the time-of-day tint and the weather shader, so the copies are lit like the art
+    const g = mfxGeo(canvas); if(g && (!G || g.key !== G.key)) place(); }, 500);
+  function stop(){ clearInterval(iv); swayLayer.remove(); window.removeEventListener('resize', kick); document.removeEventListener('scroll', kick, true); canvas.removeEventListener('click', onClick, true); canvas.removeEventListener('pointermove', onMove); if(window.__bwMapFxStop === stop) window.__bwMapFxStop = null; }
   window.__bwMapFxStop = stop;
   return layer;
 }
