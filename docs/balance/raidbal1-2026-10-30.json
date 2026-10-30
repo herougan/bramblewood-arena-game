@@ -1,0 +1,788 @@
+{
+ "package": "RAIDBAL1",
+ "date": "2026-10-30",
+ "runs": {
+  "before": {
+   "raids": "canonical/raids.json",
+   "plus": 2,
+   "n": 40,
+   "cells": {
+    "map|left|s1": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 33,
+     "win": 0.825,
+     "avgDealt": 197,
+     "avgSurvived": 20,
+     "avgContribution": 1238,
+     "ranks": {
+      "SS": 31,
+      "S": 9
+     }
+    },
+    "map|left|s0.5": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 35,
+     "win": 0.875,
+     "avgDealt": 201,
+     "avgSurvived": 20,
+     "avgContribution": 1271,
+     "ranks": {
+      "SS": 28,
+      "S": 11,
+      "A": 1
+     }
+    },
+    "map|right|s1": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 38,
+     "win": 0.95,
+     "avgDealt": 203,
+     "avgSurvived": 20,
+     "avgContribution": 1087,
+     "ranks": {
+      "S": 15,
+      "A": 21,
+      "B": 4
+     }
+    },
+    "map|right|s0.5": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 39,
+     "win": 0.975,
+     "avgDealt": 205,
+     "avgSurvived": 20,
+     "avgContribution": 1116,
+     "ranks": {
+      "S": 14,
+      "A": 21,
+      "B": 4,
+      "SS": 1
+     }
+    },
+    "map|tail|s1": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 185,
+     "avgSurvived": 20,
+     "avgContribution": 1061,
+     "ranks": {
+      "SS": 20,
+      "A": 5,
+      "S": 14,
+      "B": 1
+     }
+    },
+    "map|tail|s0.5": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 191,
+     "avgSurvived": 20,
+     "avgContribution": 1085,
+     "ranks": {
+      "SS": 20,
+      "S": 16,
+      "A": 3,
+      "B": 1
+     }
+    },
+    "map|core|s1": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 8,
+     "win": 0.2,
+     "avgDealt": 50,
+     "avgSurvived": 19.4,
+     "avgContribution": 243,
+     "ranks": {
+      "C": 8,
+      "D": 5,
+      "E": 3,
+      "A": 13,
+      "-": 6,
+      "B": 5
+     }
+    },
+    "map|core|s0.5": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 18,
+     "win": 0.45,
+     "avgDealt": 71,
+     "avgSurvived": 20,
+     "avgContribution": 517,
+     "ranks": {
+      "A": 22,
+      "C": 4,
+      "B": 9,
+      "S": 2,
+      "D": 2,
+      "E": 1
+     }
+    },
+    "ref2|left|s1": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 34,
+     "win": 0.85,
+     "avgDealt": 197,
+     "avgSurvived": 20,
+     "avgContribution": 1300,
+     "ranks": {
+      "SS": 38,
+      "S": 2
+     }
+    },
+    "ref2|right|s1": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 40,
+     "win": 1,
+     "avgDealt": 205,
+     "avgSurvived": 20,
+     "avgContribution": 1158,
+     "ranks": {
+      "S": 24,
+      "A": 15,
+      "B": 1
+     }
+    },
+    "ref2|tail|s1": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 31,
+     "win": 0.775,
+     "avgDealt": 194,
+     "avgSurvived": 20,
+     "avgContribution": 1188,
+     "ranks": {
+      "SS": 32,
+      "A": 2,
+      "S": 4,
+      "B": 2
+     }
+    },
+    "ref2|core|s1": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 5,
+     "win": 0.125,
+     "avgDealt": 30,
+     "avgSurvived": 17,
+     "avgContribution": 144,
+     "ranks": {
+      "-": 22,
+      "B": 10,
+      "D": 3,
+      "E": 1,
+      "A": 2,
+      "C": 2
+     }
+    },
+    "opt|left|s1": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 188,
+     "avgSurvived": 20,
+     "avgContribution": 1173,
+     "ranks": {
+      "SS": 36,
+      "S": 4
+     }
+    },
+    "opt|right|s1": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 35,
+     "win": 0.875,
+     "avgDealt": 201,
+     "avgSurvived": 20,
+     "avgContribution": 1043,
+     "ranks": {
+      "S": 20,
+      "A": 15,
+      "B": 4,
+      "SS": 1
+     }
+    },
+    "opt|tail|s1": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 181,
+     "avgSurvived": 20,
+     "avgContribution": 1037,
+     "ranks": {
+      "S": 18,
+      "SS": 19,
+      "B": 1,
+      "C": 1,
+      "A": 1
+     }
+    },
+    "opt|core|s1": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 3,
+     "win": 0.075,
+     "avgDealt": 36,
+     "avgSurvived": 18.3,
+     "avgContribution": 105,
+     "ranks": {
+      "E": 3,
+      "-": 16,
+      "B": 8,
+      "D": 5,
+      "C": 7,
+      "A": 1
+     }
+    },
+    "ref2|left|s0.5": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 38,
+     "win": 0.95,
+     "avgDealt": 202,
+     "avgSurvived": 20,
+     "avgContribution": 1420,
+     "ranks": {
+      "SS": 37,
+      "S": 3
+     }
+    },
+    "ref2|right|s0.5": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 40,
+     "win": 1,
+     "avgDealt": 205,
+     "avgSurvived": 20,
+     "avgContribution": 1205,
+     "ranks": {
+      "S": 18,
+      "A": 16,
+      "SS": 6
+     }
+    },
+    "ref2|tail|s0.5": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 35,
+     "win": 0.875,
+     "avgDealt": 200,
+     "avgSurvived": 20,
+     "avgContribution": 1314,
+     "ranks": {
+      "SS": 33,
+      "S": 5,
+      "A": 2
+     }
+    },
+    "ref2|core|s0.5": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 14,
+     "win": 0.35,
+     "avgDealt": 66,
+     "avgSurvived": 19.5,
+     "avgContribution": 393,
+     "ranks": {
+      "B": 11,
+      "C": 7,
+      "E": 2,
+      "A": 9,
+      "D": 7,
+      "-": 4
+     }
+    },
+    "opt|left|s0.5": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 31,
+     "win": 0.775,
+     "avgDealt": 198,
+     "avgSurvived": 20,
+     "avgContribution": 1190,
+     "ranks": {
+      "SS": 30,
+      "S": 10
+     }
+    },
+    "opt|right|s0.5": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 39,
+     "win": 0.975,
+     "avgDealt": 204,
+     "avgSurvived": 20,
+     "avgContribution": 1153,
+     "ranks": {
+      "S": 20,
+      "A": 14,
+      "B": 3,
+      "SS": 3
+     }
+    },
+    "opt|tail|s0.5": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 185,
+     "avgSurvived": 20,
+     "avgContribution": 1097,
+     "ranks": {
+      "S": 14,
+      "SS": 24,
+      "B": 1,
+      "D": 1
+     }
+    },
+    "opt|core|s0.5": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s0.5",
+     "n": 40,
+     "wins": 13,
+     "win": 0.325,
+     "avgDealt": 69,
+     "avgSurvived": 19.8,
+     "avgContribution": 372,
+     "ranks": {
+      "B": 15,
+      "C": 9,
+      "D": 5,
+      "E": 2,
+      "A": 7,
+      "-": 2
+     }
+    }
+   },
+   "raidSha": "7de832463540",
+   "tuning": {
+    "bossAtkPct": 0.2,
+    "bossHpPct": 0.15,
+    "raiderCastleBonus": 60,
+    "alliesPerTurn": 2,
+    "rowCap": 2,
+    "reinforce": {
+     "max": 0,
+     "every": 3,
+     "from": 3
+    },
+    "weakenFloor": 0.6
+   },
+   "castleHp": "left:410 right:410 tail:410 core:200"
+  }
+ },
+ "decks": {
+  "plus2": {
+   "map": {
+    "label": "Map reference (Map 13 road deck)",
+    "counts": {
+     "alpine-marmot": 4,
+     "otter-centurion": 1,
+     "great-barracuda": 4,
+     "adder-ambusher": 4,
+     "ibex-rockcaller": 3,
+     "burrow-rabbit": 1,
+     "hedgehog-scout": 3
+    },
+    "baseLevel": 3,
+    "parts": [
+     [
+      "alpine-marmot",
+      4,
+      5
+     ],
+     [
+      "otter-centurion",
+      1,
+      5
+     ],
+     [
+      "great-barracuda",
+      4,
+      5
+     ],
+     [
+      "adder-ambusher",
+      4,
+      5
+     ],
+     [
+      "ibex-rockcaller",
+      3,
+      5
+     ],
+     [
+      "burrow-rabbit",
+      1,
+      5
+     ],
+     [
+      "hedgehog-scout",
+      3,
+      5
+     ]
+    ],
+    "level": 5,
+    "copies": 20,
+    "plus": 2
+   },
+   "ref2": {
+    "label": "Reference-2 (the owner's Ant Deck), Map 13 schedule",
+    "counts": {
+     "ant-scout": 5,
+     "soldier-ant": 5,
+     "tunnel-ant": 3,
+     "fire-ant-raft": 3,
+     "quicksand-queen": 2,
+     "ant-warrior": 1,
+     "leafcutter-gardener": 1
+    },
+    "baseLevel": 3.25,
+    "parts": [
+     [
+      "ant-scout",
+      5,
+      6
+     ],
+     [
+      "soldier-ant",
+      4,
+      6
+     ],
+     [
+      "soldier-ant",
+      1,
+      5
+     ],
+     [
+      "tunnel-ant",
+      3,
+      6
+     ],
+     [
+      "fire-ant-raft",
+      1,
+      9
+     ],
+     [
+      "fire-ant-raft",
+      2,
+      6
+     ],
+     [
+      "quicksand-queen",
+      1,
+      9
+     ],
+     [
+      "quicksand-queen",
+      1,
+      7
+     ],
+     [
+      "ant-warrior",
+      1,
+      4
+     ],
+     [
+      "leafcutter-gardener",
+      1,
+      7
+     ]
+    ],
+    "level": 6.25,
+    "copies": 20,
+    "plus": 2
+   },
+   "opt": {
+    "label": "Deck optimizer, Map 13 map-true optimum (docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json)",
+    "counts": {
+     "archerfish": 4,
+     "burrow-rabbit": 4,
+     "chipmunk-hoarder": 1,
+     "dung-beetle": 5,
+     "kraken-spawnling": 1,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4
+    },
+    "baseLevel": 3,
+    "parts": [
+     [
+      "archerfish",
+      4,
+      5
+     ],
+     [
+      "burrow-rabbit",
+      4,
+      5
+     ],
+     [
+      "chipmunk-hoarder",
+      1,
+      5
+     ],
+     [
+      "dung-beetle",
+      5,
+      5
+     ],
+     [
+      "kraken-spawnling",
+      1,
+      5
+     ],
+     [
+      "otter-centurion",
+      1,
+      5
+     ],
+     [
+      "riverwing-envoy",
+      4,
+      5
+     ]
+    ],
+    "level": 5,
+    "copies": 20,
+    "plus": 2
+   }
+  },
+  "plus0": {
+   "map": {
+    "label": "Map reference (Map 13 road deck)",
+    "counts": {
+     "alpine-marmot": 4,
+     "otter-centurion": 1,
+     "great-barracuda": 4,
+     "adder-ambusher": 4,
+     "ibex-rockcaller": 3,
+     "burrow-rabbit": 1,
+     "hedgehog-scout": 3
+    },
+    "baseLevel": 3,
+    "parts": [
+     [
+      "alpine-marmot",
+      4,
+      3
+     ],
+     [
+      "otter-centurion",
+      1,
+      3
+     ],
+     [
+      "great-barracuda",
+      4,
+      3
+     ],
+     [
+      "adder-ambusher",
+      4,
+      3
+     ],
+     [
+      "ibex-rockcaller",
+      3,
+      3
+     ],
+     [
+      "burrow-rabbit",
+      1,
+      3
+     ],
+     [
+      "hedgehog-scout",
+      3,
+      3
+     ]
+    ],
+    "level": 3,
+    "copies": 20,
+    "plus": 0
+   },
+   "ref2": {
+    "label": "Reference-2 (the owner's Ant Deck), Map 13 schedule",
+    "counts": {
+     "ant-scout": 5,
+     "soldier-ant": 5,
+     "tunnel-ant": 3,
+     "fire-ant-raft": 3,
+     "quicksand-queen": 2,
+     "ant-warrior": 1,
+     "leafcutter-gardener": 1
+    },
+    "baseLevel": 3.25,
+    "parts": [
+     [
+      "ant-scout",
+      5,
+      4
+     ],
+     [
+      "soldier-ant",
+      4,
+      4
+     ],
+     [
+      "soldier-ant",
+      1,
+      3
+     ],
+     [
+      "tunnel-ant",
+      3,
+      4
+     ],
+     [
+      "fire-ant-raft",
+      1,
+      7
+     ],
+     [
+      "fire-ant-raft",
+      2,
+      4
+     ],
+     [
+      "quicksand-queen",
+      1,
+      7
+     ],
+     [
+      "quicksand-queen",
+      1,
+      5
+     ],
+     [
+      "ant-warrior",
+      1,
+      2
+     ],
+     [
+      "leafcutter-gardener",
+      1,
+      5
+     ]
+    ],
+    "level": 4.25,
+    "copies": 20,
+    "plus": 0
+   },
+   "opt": {
+    "label": "Deck optimizer, Map 13 map-true optimum (docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json)",
+    "counts": {
+     "archerfish": 4,
+     "burrow-rabbit": 4,
+     "chipmunk-hoarder": 1,
+     "dung-beetle": 5,
+     "kraken-spawnling": 1,
+     "otter-centurion": 1,
+     "riverwing-envoy": 4
+    },
+    "baseLevel": 3,
+    "parts": [
+     [
+      "archerfish",
+      4,
+      3
+     ],
+     [
+      "burrow-rabbit",
+      4,
+      3
+     ],
+     [
+      "chipmunk-hoarder",
+      1,
+      3
+     ],
+     [
+      "dung-beetle",
+      5,
+      3
+     ],
+     [
+      "kraken-spawnling",
+      1,
+      3
+     ],
+     [
+      "otter-centurion",
+      1,
+      3
+     ],
+     [
+      "riverwing-envoy",
+      4,
+      3
+     ]
+    ],
+    "level": 3,
+    "copies": 20,
+    "plus": 0
+   }
+  }
+ }
+}
