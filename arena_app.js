@@ -39047,16 +39047,17 @@ if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ s
 // with a green flash; unchanged chips are drawn at rest. Reduced motion / Effects Low or None: no flash (CSS drops the animation; the rest state is the same).
 function ui5TideHandFx(m, strip){
   try{
-    const seen = m._ui5TideSeen || {}, now = {};
+    const seen = m._ui5TideSeen || {}, now = {}, t = Date.now();
     strip.querySelectorAll('[data-handuid]').forEach(el=>{
       const uid = el.getAttribute('data-handuid'), chips = el.querySelectorAll('.tide-hand'); if(!chips.length) return;
-      const on = [...chips].some(c=> c.getAttribute('data-tide-on') === '1'); now[uid] = on;
-      const prev = seen[uid];
-      chips.forEach(c=>{
-        if(prev === true && !on) c.classList.add('tide-fade-out');
-        else if(prev === false && on) c.classList.add('tide-fade-in');
-        else if(prev === undefined && !on) c.classList.add('tide-fade-out'); // just drawn with no Tide: it reds out
-      });
+      const on = [...chips].some(c=> c.getAttribute('data-tide-on') === '1'), prev = seen[uid];
+      let anim = null, at = t;
+      if(prev && prev.on === on && prev.anim && t - prev.at < 900){ anim = prev.anim; at = prev.at; } // a re-render mid-fade carries on from where it was
+      else if(!prev && !on) anim = 'tide-fade-out'; // just drawn with no Tide: it reds out
+      else if(prev && prev.on && !on) anim = 'tide-fade-out';
+      else if(prev && !prev.on && on) anim = 'tide-fade-in';
+      now[uid] = {on, anim, at};
+      if(anim) chips.forEach(c=>{ [c, c.parentElement && c.parentElement.classList.contains('abadge') ? c.parentElement : null, (()=>{ const bd = c.closest('.badges'); return bd && bd.children.length === 1 ? bd : null; })()].forEach(n=>{ if(!n) return; n.classList.add(anim); if(at !== t) n.style.animationDelay = '-' + (t - at) + 'ms'; }); }); // the chip flashes, its pill (and the strip, when the chip is all it holds) fades
     });
     m._ui5TideSeen = now;
   }catch(err){}

@@ -1740,12 +1740,16 @@
      coming in: a green flash while it fades in. Reduced motion / Effects Low / None: no flash, just show / hide. */
   .tide-hand{transition:opacity .2s;}
   .tide-hand.tide-hand-off{opacity:0; visibility:hidden;}
+  .abadge:has(> .tide-hand-off), .badges:has(> .abadge:only-child > .tide-hand-off){opacity:0; visibility:hidden;}
+  .abadge.tide-fade-out, .badges.tide-fade-out{animation:ui5PillOut .9s ease-out both;} .abadge.tide-fade-in, .badges.tide-fade-in{animation:ui5PillIn .9s ease-out both;}
+  @keyframes ui5PillOut{0%,45%{opacity:1; visibility:visible;} 100%{opacity:0; visibility:hidden;}}
+  @keyframes ui5PillIn{0%{opacity:0; visibility:visible;} 40%,100%{opacity:1; visibility:visible;}}
   .tide-hand.tide-fade-out{animation:ui5TideOut .9s ease-out both;}
   .tide-hand.tide-fade-in{animation:ui5TideIn .9s ease-out both;}
   @keyframes ui5TideOut{0%{opacity:1; visibility:visible; background:rgba(235,60,60,.55); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 10px rgba(255,70,70,.9); border-radius:999px;} 45%{opacity:1; visibility:visible; background:rgba(235,60,60,.4); box-shadow:0 0 0 1.5px #ff5a5a, 0 0 8px rgba(255,70,70,.7); border-radius:999px;} 100%{opacity:0; visibility:hidden; background:rgba(235,60,60,0); box-shadow:none;}}
   @keyframes ui5TideIn{0%{opacity:0; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.5);} 40%{opacity:1; box-shadow:0 0 0 1.5px #55d66b, 0 0 12px rgba(80,230,110,.95); background:rgba(80,210,100,.45);} 100%{opacity:1;}}
-  @media (prefers-reduced-motion: reduce){ .tide-hand.tide-fade-out, .tide-hand.tide-fade-in{animation:none;} .tide-hand{transition:none;} }
-  :where(html[data-fx="low"], html[data-fx="none"]) .tide-hand.tide-fade-out, :where(html[data-fx="low"], html[data-fx="none"]) .tide-hand.tide-fade-in{animation:none;}
+  @media (prefers-reduced-motion: reduce){ .tide-hand.tide-fade-out, .tide-hand.tide-fade-in, .abadge.tide-fade-out, .abadge.tide-fade-in, .badges.tide-fade-out, .badges.tide-fade-in{animation:none;} .tide-hand{transition:none;} }
+  :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-out, :where(html[data-fx="low"], html[data-fx="none"]) :is(.tide-hand, .abadge, .badges).tide-fade-in{animation:none;}
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
   .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
@@ -5894,6 +5898,7 @@
   /* 2026-10-30 (package UI5, W12): no standing eye on a Blind card, with FX B or without: the 👁 overlay is gone, and FX B's shut eye (.fxb-shut) shows only
      while its one closing blink plays (it is .is-blink only when the unit first goes blind), then fades out; its shade and the art dimming are left off (the 7% above does it). */
   .board-card.is-blind .blind-overlay{display:none;}
+  .board-card .card-tile .fxd-st.fxd-st-blind{display:none;} /* FX D's standing ink splat over a Blind card is retired too: the 7% darkening and the chip are the standing marks (2026-10-30, W12) */
   .board-card.fxb-why-blind .fxb-shade{display:none;}
   .board-card.fxb-cantsee.fxb-why-blind.fxb-look-A .card-tile .ico{filter:none;}
   .board-card.fxb-why-blind .fxb-shut{opacity:0;}
@@ -51096,7 +51101,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7108bda47e15', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = '7da130eacd99', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -86568,16 +86573,17 @@ if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ s
 // with a green flash; unchanged chips are drawn at rest. Reduced motion / Effects Low or None: no flash (CSS drops the animation; the rest state is the same).
 function ui5TideHandFx(m, strip){
   try{
-    const seen = m._ui5TideSeen || {}, now = {};
+    const seen = m._ui5TideSeen || {}, now = {}, t = Date.now();
     strip.querySelectorAll('[data-handuid]').forEach(el=>{
       const uid = el.getAttribute('data-handuid'), chips = el.querySelectorAll('.tide-hand'); if(!chips.length) return;
-      const on = [...chips].some(c=> c.getAttribute('data-tide-on') === '1'); now[uid] = on;
-      const prev = seen[uid];
-      chips.forEach(c=>{
-        if(prev === true && !on) c.classList.add('tide-fade-out');
-        else if(prev === false && on) c.classList.add('tide-fade-in');
-        else if(prev === undefined && !on) c.classList.add('tide-fade-out'); // just drawn with no Tide: it reds out
-      });
+      const on = [...chips].some(c=> c.getAttribute('data-tide-on') === '1'), prev = seen[uid];
+      let anim = null, at = t;
+      if(prev && prev.on === on && prev.anim && t - prev.at < 900){ anim = prev.anim; at = prev.at; } // a re-render mid-fade carries on from where it was
+      else if(!prev && !on) anim = 'tide-fade-out'; // just drawn with no Tide: it reds out
+      else if(prev && prev.on && !on) anim = 'tide-fade-out';
+      else if(prev && !prev.on && on) anim = 'tide-fade-in';
+      now[uid] = {on, anim, at};
+      if(anim) chips.forEach(c=>{ [c, c.parentElement && c.parentElement.classList.contains('abadge') ? c.parentElement : null, (()=>{ const bd = c.closest('.badges'); return bd && bd.children.length === 1 ? bd : null; })()].forEach(n=>{ if(!n) return; n.classList.add(anim); if(at !== t) n.style.animationDelay = '-' + (t - at) + 'ms'; }); }); // the chip flashes, its pill (and the strip, when the chip is all it holds) fades
     });
     m._ui5TideSeen = now;
   }catch(err){}
