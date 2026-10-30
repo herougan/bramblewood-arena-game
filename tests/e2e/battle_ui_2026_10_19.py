@@ -183,7 +183,7 @@ async def tentacle(pg, tag):
     # squash (.11 s) + a beat (.04 s) + about 45% of the 0.35 s pull-back, on GSAP's own clock
     await pg.evaluate("try{ gsap.delayedCall(.31, ()=> gsap.globalTimeline.pause()); gsap.globalTimeline.resume(); }catch(e){} 1")
     await pg.wait_for_timeout(700)
-    op = await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); return b ? +getComputedStyle(b).opacity : -1; })()")
+    op = await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentwrap'); return b ? +getComputedStyle(b).opacity : -1; })()")
     print(f"  {tag}: retract frame at opacity {op:.2f}")
     await shot(pg, f'tentacle-retract-{tag}')
     await pg.evaluate("try{ gsap.globalTimeline.resume(); }catch(e){} 1")
@@ -193,8 +193,8 @@ async def tentacle(pg, tag):
     # the game's own path: a column smack event through fxBatchVfx reaches down the whole column (front, middle and back rows)
     await pg.evaluate("fxBatchVfx({type:'raidSmack', kind:'column', name:'Smack', col:0, row:null, dmg:3, hits:2}); 1")
     for _ in range(200):
-        # (2026-10-19, package U3: the game's smack grows out of the bramble's tile, so "reached" is full scale, not y 0 alone)
-        if await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return false; if(Math.abs(gsap.getProperty(b, 'y')) < 1 && gsap.getProperty(b, 'scaleX') > .99 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); return true; } return false; })()"): break
+        # (2026-10-19, package U3: the game's smack grows out of the bramble's tile, so "reached" is full scale, not y 0 alone) (2026-10-30, RAIDFX1: the wrapper .fxf-tentwrap moves, not .tb-body)
+        if await pg.evaluate("(()=>{ const b = document.querySelector('.fxf-tentwrap'); if(!b) return false; if(Math.abs(gsap.getProperty(b, 'y')) < 1 && gsap.getProperty(b, 'scaleX') > .99 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); return true; } return false; })()"): break
         await pg.wait_for_timeout(5)
     r = await pg.evaluate("""(()=>{ const b = document.querySelector('.fxf-tentacle .tb-body'); if(!b) return null; const t = b.getBoundingClientRect();
       const all = [...document.querySelectorAll('#rowMine > .board-card')], i = Math.floor(all.length/2);

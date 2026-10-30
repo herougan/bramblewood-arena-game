@@ -116,9 +116,9 @@ async def map_part(b, w, h, phone):
 
 # ---------------- 3 + 4 + 5: the raid ----------------
 # plays a smack through the game's own path and pauses GSAP's clock the frame its tentacle has fully reached out (watched in the page,
-# frame by frame, so a slow evaluate round trip can't miss the short impact window)
+# frame by frame, so a slow evaluate round trip can't miss the short impact window); 2026-10-30 (RAIDFX1): its wrapper .fxf-tentwrap is what moves
 SMACK_AT_IMPACT = """(ev)=> new Promise(res=>{ fxBatchVfx(ev); const t0 = performance.now();
-  const step = ()=>{ const b = document.querySelector('.fxf-tentacle .tb-body');
+  const step = ()=>{ const b = document.querySelector('.fxf-tentwrap');
     if(b && gsap.getProperty(b, 'scaleX') > .99 && +getComputedStyle(b).opacity > .9){ gsap.globalTimeline.pause(); res(true); return; }
     if(performance.now() - t0 > 3000){ res(false); return; } requestAnimationFrame(step); }; requestAnimationFrame(step); })"""
 RAID_OPEN = ["playSubTab='raid'; switchTab('play'); 1", "document.querySelector('.raid-hub [data-raid-open]').click()", "document.querySelector('[data-raid-part=left]').click()"]
