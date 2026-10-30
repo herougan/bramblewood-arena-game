@@ -333,6 +333,39 @@
    }
   },
   {
+   "id": "cottontail",
+   "name": "Cottontail",
+   "rarity": "starter",
+   "inPlay": true,
+   "stats": "4/2",
+   "old": {
+    "use": 0.92,
+    "N": 10.92,
+    "x1": 10,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.13,
+    "N": 12.34,
+    "x1": 14,
+    "x2": 8,
+    "N2": 26.56,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -2,
+   "dH": 3,
+   "attack": 2,
+   "health": 5,
+   "to": "2/5",
+   "after": {
+    "use": 0.89,
+    "N": 12.34,
+    "x1": 11,
+    "x2": 10
+   }
+  },
+  {
    "id": "glass-golem",
    "name": "Glass Golem",
    "rarity": "rare",
@@ -564,6 +597,39 @@
    }
   },
   {
+   "id": "pond-trout",
+   "name": "Pond Trout",
+   "rarity": "starter",
+   "inPlay": true,
+   "stats": "3/4",
+   "old": {
+    "use": 0.92,
+    "N": 10.92,
+    "x1": 10,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 12.34,
+    "x1": 13,
+    "x2": 12,
+    "N2": 26.56,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 2,
+   "health": 5,
+   "to": "2/5",
+   "after": {
+    "use": 0.89,
+    "N": 12.34,
+    "x1": 11,
+    "x2": 10
+   }
+  },
+  {
    "id": "woodpecker-sapper",
    "name": "Woodpecker Sapper",
    "rarity": "uncommon",
@@ -660,39 +726,6 @@
     "N": 25.12,
     "x1": 23.5,
     "x2": 42.25
-   }
-  },
-  {
-   "id": "cottontail",
-   "name": "Cottontail",
-   "rarity": "starter",
-   "inPlay": true,
-   "stats": "4/2",
-   "old": {
-    "use": 0.92,
-    "N": 10.92,
-    "x1": 10,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 1.13,
-    "N": 12.34,
-    "x1": 14,
-    "x2": 8,
-    "N2": 26.56,
-    "verdict": "over"
-   },
-   "kind": "trim",
-   "dA": -1,
-   "dH": 0,
-   "attack": 3,
-   "health": 2,
-   "to": "3/2",
-   "after": {
-    "use": 0.89,
-    "N": 12.34,
-    "x1": 11,
-    "x2": 6
    }
   },
   {
@@ -2216,39 +2249,6 @@
   {
    "id": "pond-duck",
    "name": "Pond Duck",
-   "rarity": "starter",
-   "inPlay": true,
-   "stats": "3/4",
-   "old": {
-    "use": 0.92,
-    "N": 10.92,
-    "x1": 10,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 1.05,
-    "N": 12.34,
-    "x1": 13,
-    "x2": 12,
-    "N2": 26.56,
-    "verdict": "over"
-   },
-   "kind": "trim",
-   "dA": 0,
-   "dH": -1,
-   "attack": 3,
-   "health": 3,
-   "to": "3/3",
-   "after": {
-    "use": 0.97,
-    "N": 12.34,
-    "x1": 12,
-    "x2": 9
-   }
-  },
-  {
-   "id": "pond-trout",
-   "name": "Pond Trout",
    "rarity": "starter",
    "inPlay": true,
    "stats": "3/4",

@@ -99,13 +99,21 @@ ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its num
   const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), flat = JSON.stringify(sc);
   // 2026-10-19 (package TC): Cast Darkness now carries its applied measured worth (prevValue 2); True Strike stays the owner's 2
   const scE = id=> sc.skills.find(x=> x.id === id) || {}, cd = scE('castDarkness'), ts = scE('trueStrike');
-  ok(cd.scale === 'fixed' && (cd.value === 2 || (cd.appliedAt && cd.prevValue === 2 && cd.value === Math.max(0, cd.measuredS))) && ts.scale === 'fixed' && ts.value === 2 && !ts.appliedAt,
-    `canonical/skill-costs.json (the balance tools and the hub): Cast Darkness 2 or its applied measured worth (${cd.value}), True Strike 2`);
+  // 2026-10-31 (package BUDGET2): True Strike was re-priced by the owner on 10-21 (1.5, "relative skill, shifted x0.78"; prevValue 2), so the
+  // check takes the table's convention for both: the package-D price, or an applied price that keeps it as prevValue
+  const priced2 = e=> e.scale === 'fixed' && (e.value === 2 || (!!e.appliedAt && e.prevValue === 2 && typeof e.value === 'number'));
+  ok(priced2(cd) && priced2(ts),
+    `canonical/skill-costs.json (the balance tools and the hub): Cast Darkness 2 or its applied price (${cd.value}), True Strike 2 or its applied price (${ts.value})`);
   const rank = {starter:0, common:1, uncommon:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, legendary:9};
   const N = (d, L)=> require(require('path').join(__dirname, '..', 'bramblewood-budget.js')).nOf(d, L); // 2026-10-19 (package BF): budget v4, the shared helper
   const S = d=> Object.keys(d.effects).reduce((t, k)=> t + (typeof costs[k] === 'number' ? costs[k] : 1), 0);
-  const nP = N(pw, 1), sP = S(pw);
-  ok(2 * pw.attack + pw.health + sP < nP && pw.attack * pw.health + sP < (nP / 3) * (nP / 3), `the Pall Wraith fits budget v3 (2A+H+S ${2 * pw.attack + pw.health + sP} < N ${nP})`);
+  // 2026-10-31 (package BUDGET2, owner RECOST1-6): today's budget, the one the game and the hub use (tools/skill_costs.js: 3A + H, N x 1.13, cap 2),
+  // at Level 1 (was a hand copy of budget v3, 2A+H+S < Base + 2L with S from the 10-18 table, which the BF / BF6 N no longer matched)
+  const SCb = require(require('path').join(__dirname, '..', 'tools', 'skill_costs.js')).make(sc), bP = SCb.budget(pw, {level: 1});
+  // a card on no map list is out of play: the budget checks skip it as 'unplaced' (LISTFIX1's rule, tools/lib_map_pools.js budgetHold); the Pall
+  // Wraith is (its reward moved off the Wraith Vents, check 1), so it is reported, not failed
+  const hold = require(require('path').join(__dirname, '..', 'tools', 'lib_map_pools.js')).budgetHold(pw.id);
+  ok(bP.ok || hold === 'unplaced', `the Pall Wraith fits today's budget at Level 1 or is out of play (cap 1 (3A+H)×m+S ${bP.x1} <= N ${bP.N}, cap 2 ${bP.x2} <= ${bP.N2}${hold ? '; ' + hold : ''})`);
 }
 ok(/\{key:'castDarkness', category:'passive', label:'Cast Darkness'/.test(src) && /\{key:'trueStrike', category:'passive', label:'True Strike'/.test(src), 'both skills are in the skill list (keywords, Codex, editor)');
 

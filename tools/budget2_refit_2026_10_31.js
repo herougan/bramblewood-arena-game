@@ -26,6 +26,7 @@ const LMP = require('./lib_map_pools.js');
 const SC = require('./skill_costs.js');
 const TABLE = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
 const OUT = path.join(ROOT, 'docs', 'balance', 'budget2-refit-2026-10-31.json');
+const TUT12 = new Set(((JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.m1 || {}).submaps || {}).mtut12 || []);
 const WELL_UNDER = 0.6, HELD = {'bee-drone': 'RECOST1-5 (owner: hold them)', 'worker-ant': 'RECOST1-5 (owner: hold them)'};
 // War Elephant (item X15 / RECOST1-5, owner "if you can cut the arrow count, do it"): Arrow Count 2 -> 1 (one shot of Arrow 2 a round; the
 // key goes, 1 is the engine's default). Applied to the card's effects before its fit; the applier writes it.
@@ -41,7 +42,10 @@ const r2 = v=> Math.round(v * 100) / 100;
 const BB = require('../bramblewood-budget.js');
 function asOld(fn){ const k = BB.DEFAULTS.attackWeight; BB.DEFAULTS.attackWeight = 2; try{ return fn(); } finally { BB.DEFAULTS.attackWeight = k; } }
 function verdict(T, c){ if(T === OLD && BB.DEFAULTS.attackWeight !== 2) return asOld(()=> verdict(T, c)); const b = T.budget(c), b1 = T.budget(c, {level: 1});
-  const over = !b.ok || !b1.ok, under = !over && b.x1 <= b.N * WELL_UNDER;
+  // the T-1 / T-2 cards (map list m1 / mtut12) fight at Level 0 with no skill (SKL0-1, tests/tut2-2026-10-30.js): that line must hold too
+  let ok0 = true; if(TUT12.has(c.id)){ const st = G.statsAtLevel(c, 0), fx = Object.assign({}, c.effects || {}); Object.keys(c.levelSkills || {}).filter(k=> +k > 0).forEach(k=> Object.keys(c.levelSkills[k]).forEach(x=> delete fx[x]));
+    ok0 = T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: fx}), {level: 0}).ok; }
+  const over = !b.ok || !b1.ok || !ok0, under = !over && b.x1 <= b.N * WELL_UNDER;
   return {over, under, ok: !over && !under, use: b.N ? r2(b.x1 / b.N) : null, x1: b.x1, N: b.N, x2: b.x2, N2: b.N2, x1L1: b1.x1, NL1: b1.N, S: b.S}; }
 function fit(c, v, vOld){ const A0 = +c.attack || 0, H0 = +c.health || 0, e = c.effects || {};
   const lockA = !!(e.archer && !(Number(e.archer) < 0)) || !!e.hibernate || A0 === 0 || c.attack == null;
