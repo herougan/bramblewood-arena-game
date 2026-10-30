@@ -25,8 +25,9 @@ const fnSrc = name=>{ const i = app.indexOf('function ' + name + '('); if(i < 0)
 ok(/\.match-castle-tile\.castle-fallen::before, \.match-castle-tile\.castle-fallen::after\{content:none !important; display:none !important;\}/.test(tpl), 'A 22:28 #1: a fallen bramble draws no mound (its ::before is off)');
 ok(/function pl2ReconcileRow\(row, html\)/.test(app) && /pl2End && pl2ReconcileRow\(rowEnemy, h\)/.test(app) && /pl2End && pl2ReconcileRow\(rowMine, h\)/.test(app), 'A 00:02 #1: once the match is decided, the rows are reconciled cell by cell');
 { const f = fnSrc('pl2ReconcileRow');
-  ok(/ou === nuU/.test(f) && /row\.replaceChild\(nu, od\)/.test(f) && /updateCardHpDisplay\(u\); updateCardAtkDisplay\(u\); updateCardStatusDisplay\(u\); eq2Refresh\(u\)/.test(f) && /fresh\.length !== old\.length\) return false/.test(f),
-    'A 00:02 #1: a cell with the same unit keeps its element (numbers patched), a changed cell is swapped, a new column count rebuilds'); }
+  // 2026-10-30 (package UI6, X11): cells are matched by uid now, also when the column count changed (it used to rebuild the row)
+  ok(/byUid\.get\(nuU\)/.test(f) && /row\.insertBefore\(el, cur \|\| null\)/.test(f) && /updateCardHpDisplay\(u\); updateCardAtkDisplay\(u\); updateCardStatusDisplay\(u\); eq2Refresh\(u\)/.test(f) && !/fresh\.length !== old\.length\) return false/.test(f),
+    'A 00:02 #1 (+UI6 X11): a unit still on the board keeps its element (numbers patched) even when the column count changed; a changed cell is swapped'); }
 ok(/function pl2SeatHpBar\(el\)/.test(app) && /body\.appendChild\(nu\)/.test(fnSrc('pl2SeatHpBar')) && /pl2SeatHpBar\(el\); \/\/ PL2/.test(fnSrc('eq2Refresh')) && /pl2SeatHpBars\(rowEnemy\)/.test(app),
   'A 00:02 SS#1: a flyer\'s / floater\'s Health bar moves into its .fly-body (on render and on eq2Refresh)');
 ok(/\.card-tile\.no-art > \.ico, \.card-tile\.no-art \.ico\{opacity:1;\}/.test(tpl), 'A 00:02 SS#1: an artless card shows its emoji whole (was 55%)');

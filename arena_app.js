@@ -36849,7 +36849,11 @@ function renderBoard(opts){
   // on screen (the card itself at full opacity) right before the rows are rebuilt has been seen: it keeps its place, no second entrance.
   if(needEnemy || needMine){ try{ const seen = [];
     [needEnemy ? rowEnemy : null, needMine ? rowMine : null].forEach(r=>{ if(r) r.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const u = el.getAttribute('data-uid'); if(!knownBoardUids.has(u)) seen.push([u, el]); }); });
-    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); }catch(e){} } // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    // 2026-10-30 (package UI6, X11): the render that ends the match keeps each unit's element (pl2ReconcileRow); a token still on its way in
+    // (spawned by the deciding blow) is already on the page, so it is not "new" here: its own entrance goes on, it never restarts from opacity 0
+    // (it vanished and came back under the end sign). revealBoardCardsAtEnd lands it once the match is over.
+    if(slotView && (m.ending || m.over)) seen.forEach(([u])=> knownBoardUids.add(u)); }catch(e){} }
   const pl2End = !!(slotView && (m.ending || m.over));
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
@@ -41347,19 +41351,31 @@ function settleStrayBoardCards(waited){
 // just landed included, was a new element for a frame (its art decoded again, its hover / float / glow animations started over), the
 // "redraw". Now, once the match is decided, a row whose cells are the same is kept: a cell holding the same unit keeps its element and
 // has its numbers, statuses and Health bar patched in place; only cells that changed (a unit that fell, a token that arrived) are swapped.
-// Returns false (the caller rebuilds the row as before) when the column count changed.
+// Returns false (the caller rebuilds the row as before) when the row was empty.
+// 2026-10-30 (package UI6, owner X11: "Tokens still disappear on game end then reappear again."): the cell-by-cell match above gave up
+// (and the row was rebuilt with innerHTML) whenever the number of cells changed, which is exactly the deciding round where a unit fell or a
+// death spawn put tokens down: every unit on that row, the tokens included, became a new element (art decoded again, the token's look and
+// float started over) under the end sign. Seen headless: a win whose last blow killed a Rot-Swollen Carcass (3 Maggot tokens) rebuilt both
+// rows 1.8 s before the sign. Cells are now matched by their unit's uid wherever they sit: a unit still on the board keeps its element
+// (numbers, statuses, Health bar patched in place); only a unit that fell or a card that arrived is removed or inserted. Kept elements are
+// not moved unless the order really changed.
 function pl2ReconcileRow(row, html){
   try{
     const tmp = document.createElement('div'); tmp.innerHTML = html;
     const fresh = [...tmp.children], old = [...row.children];
-    if(!old.length || fresh.length !== old.length) return false;
+    if(!old.length) return false;
+    const byUid = new Map(); old.forEach(od=>{ const u = od.getAttribute('data-uid'); if(u && !od.matches('.falling, .burning, .is-scattering')) byUid.set(u, od); });
     const kept = [];
-    fresh.forEach((nu, i)=>{
-      const od = old[i], ou = od.getAttribute('data-uid'), nuU = nu.getAttribute('data-uid');
-      if(ou && nuU && ou === nuU && !od.matches('.falling, .burning, .is-scattering')){ kept.push(ou); return; }
-      if(!ou && !nuU && od.outerHTML === nu.outerHTML) return;
-      row.replaceChild(nu, od);
+    const want = fresh.map((nu, i)=>{
+      const nuU = nu.getAttribute('data-uid');
+      if(nuU && byUid.has(nuU)){ const od = byUid.get(nuU); byUid.delete(nuU); kept.push(nuU); return od; }
+      const od = old[i]; if(!nuU && od && !od.getAttribute('data-uid') && od.outerHTML === nu.outerHTML) return od; // an empty cell that did not change
+      return nu;
     });
+    const keep = new Set(want);
+    old.forEach(od=>{ if(!keep.has(od)) od.remove(); });
+    want.forEach((el, i)=>{ const cur = row.children[i]; if(cur !== el) row.insertBefore(el, cur || null); });
+    while(row.children.length > want.length) row.lastElementChild.remove();
     kept.forEach(u=>{ try{ updateCardHpDisplay(u); updateCardAtkDisplay(u); updateCardStatusDisplay(u); eq2Refresh(u); }catch(e){} });
     return true;
   }catch(e){ return false; }
