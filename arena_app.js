@@ -8843,6 +8843,14 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
+// 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
+// highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
+// as night, Twilight lights both).
+function zeitLitNow(k, bopts){
+  if((k !== 'diurnal' && k !== 'nocturnal') || !(bopts && bopts.live)) return false;
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || !m.engine.zeitPhase) return false;
+    const ph = m.engine.zeitPhase(); return ph === 'twilight' || (k === 'diurnal' ? ph === 'day' : ph === 'night'); }catch(e){ return false; }
+}
 // 2026-10-29 (package UI3, S2): is this unit blind right now for its own trait? Sun-shy by day, Night-blind at night (the engine's sightMiss), unless an Illuminate
 // unit stands on its side (a foe Illuminate unit facing it lights it too: the engine reads that, this does not). live: the board card's {pid, uid}.
 function ui3SightBlindNow(e, lv){
@@ -9083,7 +9091,7 @@ function abilityBadges(d, bopts){
   // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
   CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
     if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
-    out.push(`<span class="ab-sk" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
+    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';

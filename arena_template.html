@@ -1731,6 +1731,10 @@
   .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
   .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
   .ab-tide.tide-live, .wind-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
+  /* 2026-10-30 (coordinator; owner 21:35): Diurnal lit by day, Nocturnal at night, the Tide's live ring in the sun's gold / the night's blue */
+  .ab-sk.zeit-live{border-radius:999px; padding:0 2px;}
+  .ab-sk.zeit-live[data-sk="diurnal"]{background:rgba(255,200,60,.30); box-shadow:0 0 0 1.5px rgba(255,210,90,.95), 0 0 8px rgba(255,200,60,.65);}
+  .ab-sk.zeit-live[data-sk="nocturnal"]{background:rgba(90,110,220,.32); box-shadow:0 0 0 1.5px rgba(140,160,255,.9), 0 0 8px rgba(120,140,255,.6);}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */

@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (coordinator: Diurnal / Nocturnal light up)
+
+- In a fight with day and night, a card's Diurnal chip glows gold while its bonus applies (day, Twilight) and its Nocturnal chip glows blue at night (and in Twilight, and all fight on a dark map), the way the Tide chip lights up. Test: `tests/zeit-lit-2026-10-30.js`.
+
 ## 2026-10-30 (package DECK1: step 4 of the owner's balancing plan, focused PRO decks per map)
 - **New PRO decks on every map 0-20 and every side map with its own list** (36 maps, 127 decks, 2-4 a map): at most 6 different cards and 4 copies, each with a named focus (cost generators + payoff, high cost, a swarm of normal creatures, a skill family where one of those cannot be filled, and the strongest other deck), at least 10 of 20 copies from the map's current list, the rest from cards a player holds by then. A focus that does not make a hard deck (under the map's best - 15 points) is left out. The previous PRO decks are kept under each map's `history`; BPRO decks are unchanged.
 - **How hard they are** (100 games a pairing, `docs/balance/pro-ease-deck1-2026-10-30.json`): from Map 7 on the focused decks are as hard or harder than the old ones almost everywhere (Wolfsbane Tundra: the map reference wins 2%, was 13%). Still easy: Gannet Cliffs (a pool ceiling, 68-90%), Map 0 for Reference-2 (Commons only), Maps 10 and 20 (high-cost lists, 60-74%). Map 2 is no longer easy (34-52%). Report: `docs/balance/deck1-2026-10-30.md`.

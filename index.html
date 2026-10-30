@@ -1731,6 +1731,10 @@
   .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
   .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
   .ab-tide.tide-live, .wind-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
+  /* 2026-10-30 (coordinator; owner 21:35): Diurnal lit by day, Nocturnal at night, the Tide's live ring in the sun's gold / the night's blue */
+  .ab-sk.zeit-live{border-radius:999px; padding:0 2px;}
+  .ab-sk.zeit-live[data-sk="diurnal"]{background:rgba(255,200,60,.30); box-shadow:0 0 0 1.5px rgba(255,210,90,.95), 0 0 8px rgba(255,200,60,.65);}
+  .ab-sk.zeit-live[data-sk="nocturnal"]{background:rgba(90,110,220,.32); box-shadow:0 0 0 1.5px rgba(140,160,255,.9), 0 0 8px rgba(120,140,255,.6);}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
   /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
      Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
@@ -51070,7 +51074,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '459799c902f2', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'dc87e3cd8fef', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56338,6 +56342,14 @@ CHIP_FALLBACK_SKILLS.push('mimic'); // Package MT (2026-10-21): Mimic's chip (�
 CHIP_FALLBACK_SKILLS.push('archer'); // Package BX (2026-10-21): Archer N's chip (🏹N); archerStyle is a look, no chip
 CHIP_FALLBACK_SKILLS.push('evolute', 'evoluteAlpha', 'evoluteOmega', 'stem', 'chrysalis'); // Package EV (2026-10-21): 🧬 / 🧬α / 🧬Ω, 🌱, 🐛
 CHIP_FALLBACK_SKILLS.push('king', 'tribute'); // Package TR (2026-10-21): 👑, 🪙
+// 2026-10-30 (coordinator; owner 21:35: "When the Sun's active, Diurnal symbol becomes highlighted, like tide. When it's night, nocturnal symbol gets
+// highlighted."): a board card's Diurnal / Nocturnal chip takes the live Tide look while its bonus applies (the engine's zeitPhase: a dark fight counts
+// as night, Twilight lights both).
+function zeitLitNow(k, bopts){
+  if((k !== 'diurnal' && k !== 'nocturnal') || !(bopts && bopts.live)) return false;
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || !m.engine.zeitPhase) return false;
+    const ph = m.engine.zeitPhase(); return ph === 'twilight' || (k === 'diurnal' ? ph === 'day' : ph === 'night'); }catch(e){ return false; }
+}
 // 2026-10-29 (package UI3, S2): is this unit blind right now for its own trait? Sun-shy by day, Night-blind at night (the engine's sightMiss), unless an Illuminate
 // unit stands on its side (a foe Illuminate unit facing it lights it too: the engine reads that, this does not). live: the board card's {pid, uid}.
 function ui3SightBlindNow(e, lv){
@@ -56578,7 +56590,7 @@ function abilityBadges(d, bopts){
   // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
   CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
     if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
-    out.push(`<span class="ab-sk" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
+    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';
