@@ -1,0 +1,4652 @@
+{
+ "about": "Package REF5 (owner 10-28 22:50, re-confirmed 10-30): the progression reference (\"Reference (Random)\", set id prog): 5 decks a main map from 5 seeded players' collections (docs/balance/ref/ref5-prog.json), measured against the Map reference. Built by tools/opt/ref5_prog.js and tools/opt/ref5_measure.js.",
+ "generated": "2026-10-30T18:02:20.176Z",
+ "assumptions": {
+  "mult": 1.5,
+  "packShare": 1,
+  "forgeShare": 0.5,
+  "trailPace": {
+   "mapsPerDay": 1,
+   "stickersPerDay": 60,
+   "weeklyStickers": 100,
+   "monthDays": 30
+  },
+  "side": "otters",
+  "seeds": [
+   1,
+   2,
+   3,
+   4,
+   5
+  ]
+ },
+ "economy": [
+  {
+   "map": 0,
+   "earnedX15": {
+    "gold": 390,
+    "gems": 0,
+    "dust": 195
+   },
+   "packsBought": 0,
+   "packKinds": [],
+   "forgeLevels": 0,
+   "freeLevels": 1.6,
+   "deckMeanLevel": 0.74,
+   "deckLevelRange": [
+    0.65,
+    0.8
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 1,
+   "earnedX15": {
+    "gold": 555,
+    "gems": 0,
+    "dust": 327
+   },
+   "packsBought": 0,
+   "packKinds": [],
+   "forgeLevels": 0,
+   "freeLevels": 0.4,
+   "deckMeanLevel": 1.03,
+   "deckLevelRange": [
+    0.95,
+    1.2
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 2,
+   "earnedX15": {
+    "gold": 555,
+    "gems": 0,
+    "dust": 297
+   },
+   "packsBought": 0,
+   "packKinds": [],
+   "forgeLevels": 0,
+   "freeLevels": 0.4,
+   "deckMeanLevel": 0.98,
+   "deckLevelRange": [
+    0.95,
+    1
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 3,
+   "earnedX15": {
+    "gold": 810,
+    "gems": 0,
+    "dust": 603
+   },
+   "packsBought": 0,
+   "packKinds": [],
+   "forgeLevels": 0,
+   "freeLevels": 0.6,
+   "deckMeanLevel": 0.87,
+   "deckLevelRange": [
+    0.85,
+    0.95
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 4,
+   "earnedX15": {
+    "gold": 585,
+    "gems": 0,
+    "dust": 516
+   },
+   "packsBought": 0,
+   "packKinds": [],
+   "forgeLevels": 0,
+   "freeLevels": 0.2,
+   "deckMeanLevel": 0.99,
+   "deckLevelRange": [
+    0.95,
+    1.05
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 5,
+   "earnedX15": {
+    "gold": 780,
+    "gems": 0,
+    "dust": 653
+   },
+   "packsBought": 40,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 10,
+   "deckMeanLevel": 0.72,
+   "deckLevelRange": [
+    0.65,
+    0.8
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 6,
+   "earnedX15": {
+    "gold": 1440,
+    "gems": 0,
+    "dust": 1181
+   },
+   "packsBought": 11,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 2.6,
+   "deckMeanLevel": 0.79,
+   "deckLevelRange": [
+    0.6,
+    0.95
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 7,
+   "earnedX15": {
+    "gold": 1215,
+    "gems": 0,
+    "dust": 491
+   },
+   "packsBought": 20,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 5.2,
+   "deckMeanLevel": 0.87,
+   "deckLevelRange": [
+    0.65,
+    1.15
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 8,
+   "earnedX15": {
+    "gold": 1590,
+    "gems": 0,
+    "dust": 530
+   },
+   "packsBought": 17,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 4.8,
+   "deckMeanLevel": 0.92,
+   "deckLevelRange": [
+    0.65,
+    1.15
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 9,
+   "earnedX15": {
+    "gold": 765,
+    "gems": 0,
+    "dust": 531
+   },
+   "packsBought": 22,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 4,
+   "deckMeanLevel": 1.1,
+   "deckLevelRange": [
+    1,
+    1.25
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 10,
+   "earnedX15": {
+    "gold": 1035,
+    "gems": 0,
+    "dust": 830
+   },
+   "packsBought": 10.8,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 0,
+   "freeLevels": 3.6,
+   "deckMeanLevel": 1.05,
+   "deckLevelRange": [
+    1,
+    1.15
+   ],
+   "refLevel": 0
+  },
+  {
+   "map": 11,
+   "earnedX15": {
+    "gold": 1485,
+    "gems": 0,
+    "dust": 1253
+   },
+   "packsBought": 14.2,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 23,
+   "freeLevels": 3.2,
+   "deckMeanLevel": 2.58,
+   "deckLevelRange": [
+    2.5,
+    2.7
+   ],
+   "refLevel": 3
+  },
+  {
+   "map": 12,
+   "earnedX15": {
+    "gold": 975,
+    "gems": 0,
+    "dust": 800
+   },
+   "packsBought": 21,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 13.4,
+   "freeLevels": 4.8,
+   "deckMeanLevel": 2.51,
+   "deckLevelRange": [
+    2.3,
+    2.65
+   ],
+   "refLevel": 3
+  },
+  {
+   "map": 13,
+   "earnedX15": {
+    "gold": 1410,
+    "gems": 0,
+    "dust": 722
+   },
+   "packsBought": 13,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 13.2,
+   "freeLevels": 3.4,
+   "deckMeanLevel": 2.91,
+   "deckLevelRange": [
+    2.05,
+    3.95
+   ],
+   "refLevel": 3
+  },
+  {
+   "map": 14,
+   "earnedX15": {
+    "gold": 810,
+    "gems": 0,
+    "dust": 603
+   },
+   "packsBought": 20,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 5.4,
+   "freeLevels": 5.6,
+   "deckMeanLevel": 2.79,
+   "deckLevelRange": [
+    1.8,
+    4
+   ],
+   "refLevel": 3
+  },
+  {
+   "map": 15,
+   "earnedX15": {
+    "gold": 1380,
+    "gems": 0,
+    "dust": 681
+   },
+   "packsBought": 12,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 5,
+   "freeLevels": 3.4,
+   "deckMeanLevel": 2.78,
+   "deckLevelRange": [
+    1.95,
+    4
+   ],
+   "refLevel": 3
+  },
+  {
+   "map": 16,
+   "earnedX15": {
+    "gold": 1530,
+    "gems": 0,
+    "dust": 605
+   },
+   "packsBought": 18,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 3.8,
+   "freeLevels": 5.2,
+   "deckMeanLevel": 2.82,
+   "deckLevelRange": [
+    1.8,
+    4
+   ],
+   "refLevel": 3.18
+  },
+  {
+   "map": 17,
+   "earnedX15": {
+    "gold": 660,
+    "gems": 0,
+    "dust": 528
+   },
+   "packsBought": 22,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 5,
+   "freeLevels": 4.6,
+   "deckMeanLevel": 2.89,
+   "deckLevelRange": [
+    1.95,
+    4
+   ],
+   "refLevel": 3.36
+  },
+  {
+   "map": 18,
+   "earnedX15": {
+    "gold": 1275,
+    "gems": 0,
+    "dust": 1049
+   },
+   "packsBought": 9,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 3.4,
+   "freeLevels": 4,
+   "deckMeanLevel": 2.45,
+   "deckLevelRange": [
+    1.45,
+    4
+   ],
+   "refLevel": 3.54
+  },
+  {
+   "map": 19,
+   "earnedX15": {
+    "gold": 2505,
+    "gems": 0,
+    "dust": 773
+   },
+   "packsBought": 17,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 6.8,
+   "freeLevels": 3.8,
+   "deckMeanLevel": 2.47,
+   "deckLevelRange": [
+    1.7,
+    3.9
+   ],
+   "refLevel": 3.72
+  },
+  {
+   "map": 20,
+   "earnedX15": {
+    "gold": 0,
+    "gems": 0,
+    "dust": 0
+   },
+   "packsBought": 36,
+   "packKinds": [
+    "bronze"
+   ],
+   "forgeLevels": 6.6,
+   "freeLevels": 7.6,
+   "deckMeanLevel": 2.3,
+   "deckLevelRange": [
+    1.6,
+    3.2
+   ],
+   "refLevel": 3.9
+  }
+ ],
+ "decks": [
+  {
+   "map": 0,
+   "sharedCopiesMean": 8.2,
+   "sharedCopiesMin": 6,
+   "distinctCards": 39,
+   "inAllFive": [
+    "Acorn Chipmunk",
+    "Otter Guard",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 5,
+   "pools": [
+    43,
+    43,
+    43,
+    43,
+    43
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.7,
+     "cards": "2x Otter Centurion, 1x Acorn Chipmunk, 1x Bee Forager, 1x Burrow Rabbit, 1x Cobalt Fledgling, 1x Forager Ant, 1x Greyplume Fledgling, 1x Guppy, 1x Honey Bee, 1x Meadow Frog, 1x Meerkat Wayfarer, 1x Otter Guard, 1x Otter Paddler, 1x Phoenix Mushrooms, 1x Pond Duck, 1x Pond Trout, 1x River Carp, 1x Sparrow Chick, 1x Tunnel Ant"
+    },
+    {
+     "seed": 2,
+     "level": 0.8,
+     "cards": "2x Harvest Mouse, 2x Otter Guard, 2x Pond Trout, 1x Acorn Chipmunk, 1x Cobalt Fledgling, 1x Crimson Recruit, 1x Duckling, 1x Fleetfoot'd, 1x Forager Ant, 1x Meadow Rabbit, 1x Meerkat Wayfarer, 1x Otter Paddler, 1x Rabbit Kit, 1x River Carp, 1x Sheep, 1x Tunnel Ant, 1x Worker Ant"
+    },
+    {
+     "seed": 3,
+     "level": 0.75,
+     "cards": "2x Otter Guard, 2x Soldier Ant, 2x Tunnel Ant, 1x Acorn Chipmunk, 1x Bee Drone, 1x Bee Knight, 1x Fleetfoot'd, 1x Forager Ant, 1x Garden Snail, 1x Meadow Frog, 1x Otter Centurion, 1x Otter Kit, 1x Otter Paddler, 1x Phoenix Mushrooms, 1x Sheep, 1x Silver Minnow, 1x Sparrow Chick"
+    },
+    {
+     "seed": 4,
+     "level": 0.8,
+     "cards": "2x Beaver Lumberjack, 2x Otter Guard, 2x Rabbit Kit, 2x Sparrow Chick, 1x Acorn Chipmunk, 1x Ant Scout, 1x Bee Knight, 1x Burrow Rabbit, 1x Crimson Recruit, 1x Guppy, 1x Honey Bee, 1x Otter Centurion, 1x Otter Kit, 1x Pond Duck, 1x Soldier Ant, 1x Tunnel Ant"
+    },
+    {
+     "seed": 5,
+     "level": 0.65,
+     "cards": "3x Riverwing Envoy, 2x Burrow Rabbit, 2x Crimson Recruit, 1x Acorn Chipmunk, 1x Crossed-Eyes, 1x Earthworm, 1x Honey Bee, 1x Meadow Frog, 1x Mosswing, 1x Otter Centurion, 1x Otter Guard, 1x Otter Paddler, 1x Pond Duck, 1x Rabbit Kit, 1x River Carp, 1x Tunnel Ant"
+    }
+   ]
+  },
+  {
+   "map": 1,
+   "sharedCopiesMean": 17.8,
+   "sharedCopiesMin": 16,
+   "distinctCards": 12,
+   "inAllFive": [
+    "Bee Forager",
+    "Crimson Recruit",
+    "Duck Paddler",
+    "Soldier Ant",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 18.4,
+   "pools": [
+    57,
+    57,
+    57,
+    56,
+    57
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Soldier Ant, 3x Duck Paddler, 3x Tunnel Ant, 1x Otter Guard, 1x Pond Duck"
+    },
+    {
+     "seed": 2,
+     "level": 0.95,
+     "cards": "5x Duck Paddler, 4x Bee Forager, 3x Crimson Recruit, 3x Soldier Ant, 3x Tunnel Ant, 1x Otter Paddler, 1x Sheep"
+    },
+    {
+     "seed": 3,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Duck Paddler, 4x Soldier Ant, 3x Tunnel Ant, 1x Helmeted Otter"
+    },
+    {
+     "seed": 4,
+     "level": 1.2,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Duck Paddler, 4x Soldier Ant, 3x Tunnel Ant, 1x Burrow Rabbit"
+    },
+    {
+     "seed": 5,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Duck Paddler, 4x Soldier Ant, 3x Tunnel Ant, 1x Honey Bee"
+    }
+   ]
+  },
+  {
+   "map": 2,
+   "sharedCopiesMean": 15.9,
+   "sharedCopiesMin": 15,
+   "distinctCards": 22,
+   "inAllFive": [
+    "Bee Forager",
+    "Cricket Drummer",
+    "Crimson Recruit",
+    "Soldier Ant",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 15.8,
+   "pools": [
+    72,
+    72,
+    71,
+    70,
+    71
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.95,
+     "cards": "4x Bee Forager, 4x Soldier Ant, 3x Crimson Recruit, 3x Tunnel Ant, 1x Acorn Chipmunk, 1x Cobalt Fledgling, 1x Cricket Drummer, 1x Field Vole, 1x Guppy, 1x Meadow Rabbit"
+    },
+    {
+     "seed": 2,
+     "level": 0.95,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Soldier Ant, 3x Tunnel Ant, 1x Clap-net Trapper, 1x Cricket Drummer, 1x Otter Paddler, 1x Phoenix Mushrooms, 1x Sheep"
+    },
+    {
+     "seed": 3,
+     "level": 1,
+     "cards": "5x Bee Forager, 4x Crimson Recruit, 4x Soldier Ant, 3x Tunnel Ant, 1x Caiman Hatchling, 1x Cobalt Fledgling, 1x Cricket Drummer, 1x Pond Duck"
+    },
+    {
+     "seed": 4,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Soldier Ant, 3x Tunnel Ant, 1x Cricket Drummer, 1x Driftwood Crab, 1x Hedgerow Shrew, 1x Mist-net Otter, 1x Phoenix Mushrooms"
+    },
+    {
+     "seed": 5,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Crimson Recruit, 4x Soldier Ant, 3x Tunnel Ant, 1x Ant Scout, 1x Cricket Drummer, 1x Duckling, 1x Sheep, 1x Terrier Pup"
+    }
+   ]
+  },
+  {
+   "map": 3,
+   "sharedCopiesMean": 12.1,
+   "sharedCopiesMin": 11,
+   "distinctCards": 40,
+   "inAllFive": [
+    "Otter Centurion",
+    "Otter Guard",
+    "Terrier Pup",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 11.8,
+   "pools": [
+    84,
+    85,
+    83,
+    83,
+    83
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.85,
+     "cards": "4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Cricket Drummer, 1x Fire Ant Raft, 1x Forager Ant, 1x Harvest Mouse, 1x Hedgerow Shrew, 1x Honey Bee, 1x Otter Kit, 1x Pincushion Urchin, 1x Terrier Pup, 1x Tidepool Trapper Crab"
+    },
+    {
+     "seed": 2,
+     "level": 0.85,
+     "cards": "4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Ant Hill, 1x Beaver Lumberjack, 1x Chipmunk Skirmisher, 1x Cricket Drummer, 1x Crimson Recruit, 1x Fleetfoot'd, 1x Muskrat Reedgatherer, 1x Pond Trout, 1x Terrier Pup, 1x Tide Pool Crab"
+    },
+    {
+     "seed": 3,
+     "level": 0.85,
+     "cards": "4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Bee Drone, 1x Conch Herald, 1x Cricket Drummer, 1x House Cat, 1x Owl Sentinel, 1x Pond Duck, 1x Soldier Ant, 1x Sunfeather Scout, 1x Sunthroat Courier, 1x Terrier Pup"
+    },
+    {
+     "seed": 4,
+     "level": 0.95,
+     "cards": "4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 2x Duck Paddler, 1x Bramble Sprout, 1x Conch Herald, 1x Cricket Drummer, 1x Field Mouse, 1x Harvest Mouse, 1x Helmeted Otter, 1x Mist-net Otter, 1x Terrier Pup"
+    },
+    {
+     "seed": 5,
+     "level": 0.85,
+     "cards": "4x Otter Guard, 3x Otter Centurion, 3x Tunnel Ant, 1x Compost Grub, 1x Cottontail, 1x Duck Paddler, 1x Fiddler Crab Swarm, 1x Hedge Changeling, 1x Honey Bee, 1x Pond Duck, 1x Riverbed Diver, 1x Shell-Cracker, 1x Terrier Pup"
+    }
+   ]
+  },
+  {
+   "map": 4,
+   "sharedCopiesMean": 3.3,
+   "sharedCopiesMin": 2,
+   "distinctCards": 71,
+   "inAllFive": [],
+   "sharedWithMapRef": 2.4,
+   "pools": [
+    103,
+    107,
+    103,
+    103,
+    104
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 1.05,
+     "cards": "2x Tunnel Ant, 1x Ant Hill, 1x Chipmunk Cavalry, 1x Chipmunk Forager, 1x Chipmunk Skirmisher, 1x Ferry Toll-Frog, 1x Field Mouse, 1x Gold-throated Acolyte, 1x Hedgerow Shrew, 1x Nectar Sipper, 1x Otter Angler, 1x Otter Ferryman, 1x Otter Netmender, 1x Otter Paddler, 1x Peak Condor, 1x Pyrenean Desman, 1x Rabbit Kit, 1x Sea Turtle Elder, 1x Soldier Ant"
+    },
+    {
+     "seed": 2,
+     "level": 0.95,
+     "cards": "1x Ant Hill, 1x Bramble Sprout, 1x Cane Toad, 1x Compost Grub, 1x Conch Herald, 1x Cricket Drummer, 1x Dominion Nestguard, 1x Duck Paddler, 1x Duckling, 1x Earthworm, 1x Fiddler Crab Swarm, 1x Field Mouse, 1x Ford Kingfisher, 1x Grey Seal Bull, 1x Hedgerow Shrew, 1x Muskrat Reedgatherer, 1x Otter Guard, 1x Otter Lantern Bearer, 1x Otter Shieldback, 1x Woodcock Lookout"
+    },
+    {
+     "seed": 3,
+     "level": 1,
+     "cards": "2x Forager Ant, 2x Otter Guard, 1x Bee Drone, 1x Caiman Hatchling, 1x Chipmunk Forager, 1x Cottontail, 1x Cricket Drummer, 1x Crimson Recruit, 1x Fiddler Crab Swarm, 1x Fleetfoot'd, 1x Kittiwake Flock, 1x Lantern Bearer, 1x Otter Ferryman, 1x Owl Sentinel, 1x Pincushion Urchin, 1x Razorbill, 1x Rivergate Recruit, 1x Tide Pool Crab"
+    },
+    {
+     "seed": 4,
+     "level": 0.95,
+     "cards": "1x Duckling, 1x Fiddler Crab Swarm, 1x Field Mouse, 1x Fleetfoot'd, 1x Gannet Nestweaver, 1x Greyplume Fledgling, 1x Harvest Mouse, 1x Hawk Arrowkeeper, 1x Honey Bee, 1x Hush-Wing Spy, 1x Meadow Rabbit, 1x Otter Flag Bearer, 1x Otter Kit, 1x Otter Shieldback, 1x Pond Duck, 1x Pond Trout, 1x Rabbit Kit, 1x Razorbill, 1x Shellwright Apprentice, 1x Tunnel Ant"
+    },
+    {
+     "seed": 5,
+     "level": 1,
+     "cards": "1x Beaver Lumberjack, 1x Burrow Rabbit, 1x Cobalt Talon Skirmisher, 1x Duck Paddler, 1x Fiddler Crab Swarm, 1x Field Mouse, 1x Hedge Changeling, 1x Helmeted Otter, 1x House Cat, 1x Mosswing, 1x Otter Angler, 1x Otter Netmender, 1x Owl Sentinel, 1x Peak Condor, 1x Peregrine Stooper, 1x Pyrenean Desman, 1x Rabbit Kit, 1x Shellwright Apprentice, 1x The Gannet Queen, 1x The Old Shell"
+    }
+   ]
+  },
+  {
+   "map": 5,
+   "sharedCopiesMean": 14.8,
+   "sharedCopiesMin": 13,
+   "distinctCards": 26,
+   "inAllFive": [
+    "Cricket Drummer",
+    "Meadow Frog",
+    "Otter Centurion",
+    "Otter Guard",
+    "Rabbit Kit",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 15.2,
+   "pools": [
+    131,
+    134,
+    133,
+    133,
+    132
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.8,
+     "cards": "4x Otter Guard, 3x Meadow Frog, 3x Otter Centurion, 2x Rabbit Kit, 2x Tunnel Ant, 1x Alley Cat, 1x Cricket Drummer, 1x Earthworm, 1x Hedgerow Shrew, 1x Sparrow Chick, 1x Tomcat"
+    },
+    {
+     "seed": 2,
+     "level": 0.7,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Rabbit Kit, 2x Tunnel Ant, 1x Cricket Drummer, 1x Pyrenean Desman, 1x Rivergate Recruit, 1x Swamp Alligator, 1x Terrier Pup"
+    },
+    {
+     "seed": 3,
+     "level": 0.65,
+     "cards": "4x Meadow Frog, 3x Otter Centurion, 3x Otter Guard, 2x Rabbit Kit, 2x Tunnel Ant, 1x Cricket Drummer, 1x Dormouse, 1x Duck Paddler, 1x Lantern Bearer, 1x Marsh Harrier, 1x Terrier Pup"
+    },
+    {
+     "seed": 4,
+     "level": 0.65,
+     "cards": "5x Meadow Frog, 3x Otter Guard, 2x Otter Centurion, 2x Rabbit Kit, 2x Tunnel Ant, 1x Burrow Rabbit, 1x Cricket Drummer, 1x Marsh Harrier, 1x Nutria Reedcutter, 1x Rivergate Recruit, 1x Soldier Ant"
+    },
+    {
+     "seed": 5,
+     "level": 0.8,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Rabbit Kit, 2x Tunnel Ant, 1x Cricket Drummer, 1x Field Vole, 1x Fire Ant Raft, 1x Harvest Mouse, 1x Otter Ferryman"
+    }
+   ]
+  },
+  {
+   "map": 6,
+   "sharedCopiesMean": 14.5,
+   "sharedCopiesMin": 14,
+   "distinctCards": 30,
+   "inAllFive": [
+    "Burrow Rabbit",
+    "Cricket Drummer",
+    "Meadow Frog",
+    "Otter Centurion",
+    "Otter Guard",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 15.2,
+   "pools": [
+    143,
+    144,
+    143,
+    143,
+    143
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.95,
+     "cards": "4x Meadow Frog, 3x Otter Centurion, 3x Otter Guard, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Constrictor Coil, 1x Cricket Drummer, 1x Ferry Toll-Frog, 1x Mosswing, 1x Petal Fletcher, 1x Tide Pool Crab"
+    },
+    {
+     "seed": 2,
+     "level": 0.85,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 1x Alley Cat, 1x Conch Crawler, 1x Cricket Drummer, 1x Fire Ant Raft, 1x Snapper Hatchling, 1x Terrier Pup, 1x Tunnel Ant"
+    },
+    {
+     "seed": 3,
+     "level": 0.6,
+     "cards": "4x Meadow Frog, 3x Otter Centurion, 3x Otter Guard, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Ant Hill, 1x Ant Scout, 1x Bee Forager, 1x Cricket Drummer, 1x Crossed-Eyes, 1x Sunfeather Scout"
+    },
+    {
+     "seed": 4,
+     "level": 0.8,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Clap-net Trapper, 1x Cricket Drummer, 1x Fen Mink, 1x Otter Lantern Bearer, 1x Rabbit Kit"
+    },
+    {
+     "seed": 5,
+     "level": 0.75,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Tunnel Ant, 1x Box Turtle, 1x Burrow Rabbit, 1x Cricket Drummer, 1x Hedgerow Shrew, 1x Shellwright Apprentice, 1x Slow-worm, 1x Swamp Alligator"
+    }
+   ]
+  },
+  {
+   "map": 7,
+   "sharedCopiesMean": 9.5,
+   "sharedCopiesMin": 5,
+   "distinctCards": 25,
+   "inAllFive": [
+    "Otter Centurion",
+    "Tunnel Ant"
+   ],
+   "sharedWithMapRef": 10,
+   "pools": [
+    154,
+    154,
+    153,
+    155,
+    154
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 1.15,
+     "cards": "4x Greyplume Fledgling, 4x Soldier Ant, 4x Worker Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Kittiwake Flock, 1x Petal Fletcher"
+    },
+    {
+     "seed": 2,
+     "level": 1,
+     "cards": "5x Soldier Ant, 4x Greyplume Fledgling, 3x Otter Centurion, 3x Tunnel Ant, 3x Worker Ant, 1x Otter Guard, 1x Pyrenean Desman"
+    },
+    {
+     "seed": 3,
+     "level": 0.65,
+     "cards": "4x Meadow Frog, 3x Otter Centurion, 3x Otter Guard, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Ant Hill, 1x Ant Scout, 1x Bee Forager, 1x Cricket Drummer, 1x Crossed-Eyes, 1x Sunfeather Scout"
+    },
+    {
+     "seed": 4,
+     "level": 0.85,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Clap-net Trapper, 1x Cricket Drummer, 1x Fen Mink, 1x Otter Lantern Bearer, 1x Rabbit Kit"
+    },
+    {
+     "seed": 5,
+     "level": 0.7,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Tunnel Ant, 1x Box Turtle, 1x Burrow Rabbit, 1x Cricket Drummer, 1x Shellwright Apprentice, 1x Slow-worm, 1x Sparrow Chick, 1x Sunfeather Scout"
+    }
+   ]
+  },
+  {
+   "map": 8,
+   "sharedCopiesMean": 7.6,
+   "sharedCopiesMin": 2,
+   "distinctCards": 39,
+   "inAllFive": [
+    "Otter Centurion",
+    "Otter Guard"
+   ],
+   "sharedWithMapRef": 9.6,
+   "pools": [
+    173,
+    173,
+    171,
+    173,
+    174
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 0.9,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Alley Cat, 1x Alligator Gar, 1x Crossed-Eyes, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Red-billed Chough"
+    },
+    {
+     "seed": 2,
+     "level": 1.05,
+     "cards": "4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Beaver Lumberjack, 1x Bee Drone, 1x Conch Crawler, 1x Earthworm, 1x Muskrat Lodgekeeper, 1x Shell-Cracker"
+    },
+    {
+     "seed": 3,
+     "level": 0.65,
+     "cards": "4x Meadow Frog, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Ant Hill, 1x Ant Scout, 1x Chipmunk Skirmisher, 1x Constrictor Coil, 1x Cricket Drummer, 1x Meadow Rabbit, 1x Otter Guard, 1x Sunfeather Scout, 1x Truffle Piglet"
+    },
+    {
+     "seed": 4,
+     "level": 0.85,
+     "cards": "4x Meadow Frog, 4x Otter Guard, 3x Otter Centurion, 2x Burrow Rabbit, 2x Tunnel Ant, 1x Cricket Drummer, 1x Fen Mink, 1x Otter Lantern Bearer, 1x Soldier Ant, 1x Trash Panda Trickster"
+    },
+    {
+     "seed": 5,
+     "level": 1.15,
+     "cards": "2x Clap-net Trapper, 1x Ant Scout, 1x Bee Knight, 1x Chipmunk Skirmisher, 1x Cobalt Talon Skirmisher, 1x Compost Grub, 1x Cricket Drummer, 1x Dormouse, 1x Marsh Wisp, 1x Otter Centurion, 1x Otter Guard, 1x Otter Lantern Bearer, 1x Otter Riverguard, 1x Owl Nightwatch, 1x Pond Trout, 1x Shell-Cracker, 1x Snapper Hatchling, 1x Sulfur Cinder Moth, 1x The Drowned Matriarch"
+    }
+   ]
+  },
+  {
+   "map": 9,
+   "sharedCopiesMean": 1.9,
+   "sharedCopiesMin": 0,
+   "distinctCards": 65,
+   "inAllFive": [],
+   "sharedWithMapRef": 3.6,
+   "pools": [
+    188,
+    187,
+    186,
+    188,
+    188
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 1.15,
+     "cards": "2x Fire Ant Raft, 2x Otter Guard, 1x Alley Cat, 1x Bog Leech, 1x Caiman Hatchling, 1x Cobalt Fledgling, 1x Dung Beetle, 1x Ferry Toll-Frog, 1x Giant Cave Huntsman, 1x Grass Viper, 1x Grey Seal Bull, 1x Greyplume Fledgling, 1x Hawthorn Shieldbug, 1x Honeyjoe Brewer, 1x Oystercatcher, 1x Star-nosed Mole, 1x The Heron Hag, 1x Tide Pool Crab"
+    },
+    {
+     "seed": 2,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Dominion Nestguard, 1x Grass Viper"
+    },
+    {
+     "seed": 3,
+     "level": 1,
+     "cards": "2x Gannet Nestweaver, 1x Alligator Gar, 1x Bramble Sprout, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Dung Beetle, 1x Echo Matriarch, 1x Field Mouse, 1x Helmeted Otter, 1x Lantern Bearer, 1x Nutria Reedcutter, 1x Old Snapjaw, 1x Otter Angler, 1x Phoenix Mushrooms, 1x Pond Algae, 1x Pyrenean Desman, 1x Slow-worm, 1x The Drowned Matriarch, 1x Tunnel Ant"
+    },
+    {
+     "seed": 4,
+     "level": 1.25,
+     "cards": "4x Fleetfoot'd, 1x Adder Ambusher, 1x Badger Stonemason, 1x Bramble Sprout, 1x Cobalt Fledgling, 1x Cottontail, 1x Fen Mink, 1x Grass Viper, 1x Grey Seal Bull, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Kit, 1x Otter Netmender, 1x Otter Paddler, 1x Shellwright Apprentice, 1x Silver Minnow, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 5,
+     "level": 1.1,
+     "cards": "1x Alligator Gar, 1x Birdlime Dauber, 1x Chipmunk Skirmisher, 1x Cobalt Fledgling, 1x Echo Matriarch, 1x Fungal Colossus, 1x Hawthorn Shieldbug, 1x Honey Bee, 1x Honeyjoe Brewer, 1x Mist-net Otter, 1x Old Sturgeon, 1x Otter Ferryman, 1x Otter Shieldback, 1x Pond Algae, 1x Pond Trout, 1x Raven Scout, 1x Riverworks Bastion, 1x Slow-worm, 1x Snapstick Turtle, 1x Sulfur Cinder Moth"
+    }
+   ]
+  },
+  {
+   "map": 10,
+   "sharedCopiesMean": 1.8,
+   "sharedCopiesMin": 0,
+   "distinctCards": 70,
+   "inAllFive": [],
+   "sharedWithMapRef": 1.2,
+   "pools": [
+    199,
+    198,
+    199,
+    200,
+    199
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 1.1,
+     "cards": "1x Alley Cat, 1x Bee Drone, 1x Bog Leech, 1x Chipmunk Forager, 1x Cobalt Fledgling, 1x Dung Beetle, 1x Ferry Toll-Frog, 1x Giant Cave Huntsman, 1x Grass Viper, 1x Grey Seal Bull, 1x Harvest Mouse, 1x Honeyjoe Brewer, 1x Minnow Skitter, 1x Mosswing, 1x Otter Angler, 1x Oystercatcher, 1x Raven Scout, 1x Star-nosed Mole, 1x Swamp Alligator, 1x Voidfeather Scout"
+    },
+    {
+     "seed": 2,
+     "level": 1,
+     "cards": "4x Bee Forager, 4x Otter Guard, 4x Soldier Ant, 3x Otter Centurion, 3x Tunnel Ant, 1x Dominion Nestguard, 1x Grass Viper"
+    },
+    {
+     "seed": 3,
+     "level": 1,
+     "cards": "1x Bog Leech, 1x Bramble Sprout, 1x Dormouse, 1x Dung Beetle, 1x Echo Matriarch, 1x Fen Mink, 1x Field Mouse, 1x Greyplume Fledgling, 1x Hawthorn Shieldbug, 1x Lantern Bearer, 1x Mangrove Kingfisher, 1x Nutria Reedcutter, 1x Old Snapjaw, 1x Otter Angler, 1x Pond Algae, 1x Pyrenean Desman, 1x Slow-worm, 1x The Drowned Matriarch, 1x Tunnel Ant, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 1,
+     "cards": "1x Adder Ambusher, 1x Box Turtle, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Duckling, 1x Field Vole, 1x Leafcutter Gardener, 1x Mangrove Kingfisher, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Nectar Sipper, 1x Newt Doctor, 1x Otter Angler, 1x Otter Shieldback, 1x Sheep, 1x Trash Panda Trickster, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 5,
+     "level": 1.15,
+     "cards": "1x Alligator Gar, 1x Birdlime Dauber, 1x Chipmunk Skirmisher, 1x Cobalt Fledgling, 1x Echo Matriarch, 1x Fungal Colossus, 1x Hawthorn Shieldbug, 1x Honey Bee, 1x Honeyjoe Brewer, 1x Mist-net Otter, 1x Old Sturgeon, 1x Otter Ferryman, 1x Otter Shieldback, 1x Pond Algae, 1x Pond Trout, 1x Raven Scout, 1x Riverworks Bastion, 1x Slow-worm, 1x Snapstick Turtle, 1x Sulfur Cinder Moth"
+    }
+   ]
+  },
+  {
+   "map": 11,
+   "sharedCopiesMean": 6.4,
+   "sharedCopiesMin": 2,
+   "distinctCards": 52,
+   "inAllFive": [
+    "Wolf Spider Mother"
+   ],
+   "sharedWithMapRef": 8.2,
+   "pools": [
+    215,
+    213,
+    216,
+    216,
+    216
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.5,
+     "cards": "2x Tomcat, 1x Burrow Rabbit, 1x Crocodile Ambusher, 1x Echo Screecher, 1x Electric Ray, 1x Gannet Nestweaver, 1x Giant Cave Huntsman, 1x Helmeted Otter, 1x Hush-Wing Spy, 1x Muskrat Lodgekeeper, 1x Net Thrower, 1x Newt Doctor, 1x Owl Sentinel, 1x Phoenix Mushrooms, 1x River Carp, 1x Sphagnum Vole, 1x The Heron Hag, 1x Wolf Spider Mother, 1x Worker Ant"
+    },
+    {
+     "seed": 2,
+     "level": 2.6,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Echo Screecher, 1x Electric Ray, 1x Octopus Tactician, 1x Petal Fletcher, 1x Sea Turtle Elder, 1x Upside-Down Bat, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 3,
+     "level": 2.5,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Mangrove Manatee, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Riverside Peddler, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 2.6,
+     "cards": "1x Adder Ambusher, 1x Box Turtle, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Recruit, 1x Crossed-Eyes, 1x Dawn Bellringer, 1x Duckling, 1x Kraken Spawnling, 1x Leafcutter Gardener, 1x Meadow Frog, 1x Muskrat Lodgekeeper, 1x Otter Flag Bearer, 1x Otter Shieldback, 1x Sheep, 1x Swordfish Spearman, 1x Trash Panda Trickster, 1x Violet Vane Fletcher, 1x Wolf Spider Mother, 1x Woodpecker Sapper"
+    },
+    {
+     "seed": 5,
+     "level": 2.7,
+     "cards": "5x Burrow Rabbit, 4x Crimson Recruit, 1x Bee Drone, 1x Coral Reef Shark, 1x Crocodile Ambusher, 1x Echo Screecher, 1x Electric Ray, 1x Mangrove Monitor, 1x Muskrat Lodgekeeper, 1x Shellwright Apprentice, 1x The Heron Hag, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 12,
+   "sharedCopiesMean": 5.9,
+   "sharedCopiesMin": 3,
+   "distinctCards": 58,
+   "inAllFive": [
+    "Wolf Spider Mother"
+   ],
+   "sharedWithMapRef": 6.2,
+   "pools": [
+    233,
+    231,
+    234,
+    234,
+    234
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.3,
+     "cards": "4x Burrow Rabbit, 1x Adder Ambusher, 1x Alligator Gar, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Otter Centurion, 1x Soldier Ant, 1x The Gannet Queen, 1x Water Vole, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 2.6,
+     "cards": "4x Burrow Rabbit, 4x Crimson Recruit, 1x Colossal Squid, 1x Constrictor Coil, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Echo Screecher, 1x Electric Ray, 1x Octopus Tactician, 1x Petal Fletcher, 1x Sea Turtle Elder, 1x Upside-Down Bat, 1x Violet Vane Fletcher, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 3,
+     "level": 2.5,
+     "cards": "5x Crimson Recruit, 4x Burrow Rabbit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Mangrove Manatee, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 2.5,
+     "cards": "4x Burrow Rabbit, 1x Adder Ambusher, 1x Alpine Marmot, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Gold-throated Acolyte, 1x Harvest Mouse, 1x Marsh-mallow Hare, 1x Meadow Frog, 1x Otter Centurion, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 5,
+     "level": 2.65,
+     "cards": "1x Adder Ambusher, 1x Ant Scout, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Crimson Recruit, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Ferry Toll-Frog, 1x Garden Snail, 1x Gold-throated Acolyte, 1x Mouse Sapper, 1x Otter Kit, 1x Owl Sentinel, 1x River Carp, 1x Riverside Peddler, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Terrier Pup, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 13,
+   "sharedCopiesMean": 3.6,
+   "sharedCopiesMin": 1,
+   "distinctCards": 68,
+   "inAllFive": [],
+   "sharedWithMapRef": 3,
+   "pools": [
+    246,
+    245,
+    246,
+    247,
+    245
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.95,
+     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Conch Herald, 1x Cottontail, 1x Crimson Recruit, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Marsh Wisp, 1x Otter Centurion, 1x Soldier Ant, 1x Water Vole, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 3,
+     "cards": "1x Adder Ambusher, 1x Alpine Marmot, 1x Badger Lumberjack, 1x Burrow Rabbit, 1x Carrion Crow, 1x Crimson Wing Duelist Cadet, 1x Dawn Bellringer, 1x Forager Ant, 1x Great Barracuda, 1x Hedge Changeling, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Irradiated Axolotl, 1x Marsh Harrier, 1x Minnow Skitter, 1x Mouse Sapper, 1x Net Thrower, 1x Otter Centurion, 1x Robin Redbreast, 1x Swamp Alligator"
+    },
+    {
+     "seed": 3,
+     "level": 3.95,
+     "cards": "5x Crimson Recruit, 4x Burrow Rabbit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Lyrebird Mimic, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Pond Duck, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 2.6,
+     "cards": "4x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Harvest Mouse, 1x Inside-Out Hedgehog, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Centurion, 1x Otter Shieldback, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 5,
+     "level": 2.05,
+     "cards": "1x Ant Scout, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Blue-ringed Octopus, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Crocodile Ambusher, 1x Marsh-mallow Hare, 1x Mist-net Otter, 1x Mouse Sapper, 1x Otter Shieldback, 1x Petal Fletcher, 1x River Carp, 1x Riverside Peddler, 1x Riverworks Bastion, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 14,
+   "sharedCopiesMean": 3.1,
+   "sharedCopiesMin": 0,
+   "distinctCards": 67,
+   "inAllFive": [],
+   "sharedWithMapRef": 2.2,
+   "pools": [
+    259,
+    259,
+    259,
+    259,
+    259
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.9,
+     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Crimson Recruit, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Otter Centurion, 1x Terrier Pup, 1x Water Vole, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 1.8,
+     "cards": "2x Box Turtle, 1x Apollo Butterfly, 1x Archerfish, 1x Beaver Lumberjack, 1x Bee Sentry, 1x Caiman Hatchling, 1x Compost Grub, 1x Coral Polyp Colony, 1x Dormouse, 1x Gannet Nestweaver, 1x Kittiwake Flock, 1x Planarian Splitter, 1x Raven Scout, 1x Rivergate Drummer, 1x Sulfur Cinder Moth, 1x Swordfish Spearman, 1x Tasmanian Devil, 1x The Drowned Matriarch, 1x Upside-Down Bat"
+    },
+    {
+     "seed": 3,
+     "level": 4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Lyrebird Mimic, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 2.9,
+     "cards": "4x Burrow Rabbit, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Eagle-Owl Quartermaster, 1x Earthworm, 1x Field Vole, 1x Harvest Mouse, 1x Inside-Out Hedgehog, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Centurion, 1x Otter Shieldback, 1x Sphagnum Vole, 1x Sunthroat Courier, 1x The Drowned Matriarch, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 5,
+     "level": 2.35,
+     "cards": "1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Blue-ringed Octopus, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Crocodile Ambusher, 1x Marsh-mallow Hare, 1x Mist-net Otter, 1x Old Snapjaw, 1x Otter Lantern Bearer, 1x Otter Shieldback, 1x Petal Fletcher, 1x River Carp, 1x Riverside Peddler, 1x Riverworks Bastion, 1x Shell-Cracker, 1x Soldier Ant, 1x Teatime Toad, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 15,
+   "sharedCopiesMean": 4.7,
+   "sharedCopiesMin": 1,
+   "distinctCards": 58,
+   "inAllFive": [],
+   "sharedWithMapRef": 4.6,
+   "pools": [
+    270,
+    272,
+    271,
+    272,
+    272
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 3.1,
+     "cards": "4x Burrow Rabbit, 1x Alligator Gar, 1x Alpine Marmot, 1x Crimson Recruit, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Giant Cave Huntsman, 1x Honeyjoe Brewer, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Otter Centurion, 1x Terrier Pup, 1x Water Vole, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 1.95,
+     "cards": "3x Otter Centurion, 2x Otter Paddler, 2x Otter Riverguard, 1x Alpine Marmot, 1x Eagle-Owl Quartermaster, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Guppy, 1x Otter Ferryman, 1x Quillback Elder, 1x Riverbed Diver, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Sleepless Shrew, 1x Sunfeather Scout, 1x The Drowned Matriarch"
+    },
+    {
+     "seed": 3,
+     "level": 4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Hush-Wing Spy, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 2.85,
+     "cards": "4x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Leafcutter Gardener, 1x Meadow Frog, 1x Meadow Rabbit, 1x Otter Kit, 1x Otter Shieldback, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+    },
+    {
+     "seed": 5,
+     "level": 2,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Coral Reef Shark, 1x Eagle-Owl Quartermaster, 1x Fishing Cat, 1x Hawthorn Shieldbug, 1x Hedge Changeling, 1x Mist-net Otter, 1x Old Snapjaw, 1x Owl Nightwatch, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 16,
+   "sharedCopiesMean": 5.5,
+   "sharedCopiesMin": 1,
+   "distinctCards": 56,
+   "inAllFive": [],
+   "sharedWithMapRef": 4.8,
+   "pools": [
+    285,
+    286,
+    287,
+    288,
+    287
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 3.05,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Constrictor Coil, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Terrier Pup, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 1.8,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Chipmunk Skirmisher, 1x Compost Grub, 1x Earthworm, 1x Echo Matriarch, 1x Electric Ray, 1x Fawn Scout, 1x Golden Eagle Diver, 1x Grizzly Vanguard, 1x Raven Scout, 1x Riverside Peddler, 1x Talon Archer, 1x Tide Pool Crab, 1x Whip Spider, 1x Wolf Spider Mother, 1x Woodcock Lookout"
+    },
+    {
+     "seed": 3,
+     "level": 4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Otter Lantern Bearer, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 3,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Hedge Changeling, 1x Leafcutter Gardener, 1x Meadow Rabbit, 1x Otter Kit, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+    },
+    {
+     "seed": 5,
+     "level": 2.25,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Clownfish Scout, 1x Coral Polyp Colony, 1x Coral Reef Shark, 1x Eagle-Owl Quartermaster, 1x Hawthorn Shieldbug, 1x Hedge Changeling, 1x Mist-net Otter, 1x Old Snapjaw, 1x Owl Nightwatch, 1x Parrotfish, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Tide Pool Crab, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 17,
+   "sharedCopiesMean": 5.2,
+   "sharedCopiesMin": 1,
+   "distinctCards": 55,
+   "inAllFive": [],
+   "sharedWithMapRef": 5.2,
+   "pools": [
+    299,
+    300,
+    301,
+    303,
+    301
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 3,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Carrion Crow, 1x Constrictor Coil, 1x Dominion Nestguard, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Forager Ant, 1x Grizzly Vanguard, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Marsh Wisp, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 2.4,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Carrion Crow, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Crimson Recruit, 1x Electric Ray, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mouse Sapper, 1x Owl Nightwatch, 1x Taiga Lynx, 1x Teatime Toad, 1x The Drowned Matriarch, 1x Trash Panda Trickster, 1x Weaver Bird"
+    },
+    {
+     "seed": 3,
+     "level": 4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Warhorse Charger, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 3.1,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpine Marmot, 1x Alpine Salamander, 1x Caiman Hatchling, 1x Chipmunk Skirmisher, 1x Dormouse, 1x Eagle-Owl Quartermaster, 1x Field Vole, 1x Hedge Changeling, 1x Leafcutter Gardener, 1x Meadow Rabbit, 1x Savanna Cheetah, 1x The Drowned Matriarch"
+    },
+    {
+     "seed": 5,
+     "level": 1.95,
+     "cards": "3x Otter Centurion, 1x Alpine Marmot, 1x Ant Warrior, 1x Badger Lumberjack, 1x Coral Polyp Colony, 1x Electric Ray, 1x Fleetfoot'd, 1x Golden Eagle Diver, 1x Hedgehog Herbalist, 1x Hedgehog Scout, 1x Hedgerow Shrew, 1x Ibex Rockcaller, 1x Marsh-mallow Hare, 1x Mosswing, 1x Otter Scout, 1x Otter Shieldback, 1x Taiga Lynx, 1x Wolf Spider Mother"
+    }
+   ]
+  },
+  {
+   "map": 18,
+   "sharedCopiesMean": 3.5,
+   "sharedCopiesMin": 0,
+   "distinctCards": 62,
+   "inAllFive": [],
+   "sharedWithMapRef": 4.4,
+   "pools": [
+    311,
+    311,
+    312,
+    315,
+    313
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.5,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Electric Ray, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Reef Admiral, 1x Stag Knight, 1x Talon Archer, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 2.6,
+     "cards": "2x Otter Centurion, 1x Alpine Marmot, 1x Carrion Crow, 1x Chipmunk Hoarder, 1x Chipmunk Skirmisher, 1x Crimson Recruit, 1x Electric Ray, 1x Golden Eagle Diver, 1x Hedgehog Scout, 1x Ibex Rockcaller, 1x Mangrove Manatee, 1x Mouse Sapper, 1x Owl Nightwatch, 1x Stone Turtle Warden, 1x Taiga Lynx, 1x Teatime Toad, 1x The Drowned Matriarch, 1x The Gannet Queen, 1x Trash Panda Trickster"
+    },
+    {
+     "seed": 3,
+     "level": 4,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Sunfeather Scout, 1x Warhorse Charger, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 4,
+     "level": 1.45,
+     "cards": "2x Riverbed Diver, 1x Badger Lumberjack, 1x Blue-ringed Octopus, 1x Duckling, 1x Gatling Hog, 1x Glass Golem, 1x Hawthorn Shieldbug, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Lucky Hopper, 1x Otter Ferryman, 1x Otter Scout, 1x Razorbill, 1x Riverside Peddler, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Snow Ermine, 1x Squire's Mount, 1x The Drowned Matriarch"
+    },
+    {
+     "seed": 5,
+     "level": 1.7,
+     "cards": "3x Otter Centurion, 1x Adder Ambusher, 1x Beaver Lumberjack, 1x Colossal Squid, 1x Coral Polyp Colony, 1x Crossed-Eyes, 1x Echo Screecher, 1x Electric Ray, 1x Fleetfoot'd, 1x Frost Hare Sprinter, 1x Golden Eagle Diver, 1x Hedgehog Herbalist, 1x Ibex Rockcaller, 1x Lucky Hopper, 1x Marsh-mallow Hare, 1x Stalactite Golem, 1x Taiga Lynx, 1x Wolfsbane Alpha"
+    }
+   ]
+  },
+  {
+   "map": 19,
+   "sharedCopiesMean": 2.4,
+   "sharedCopiesMin": 0,
+   "distinctCards": 70,
+   "inAllFive": [],
+   "sharedWithMapRef": 3.2,
+   "pools": [
+    329,
+    329,
+    331,
+    333,
+    332
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.8,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Dune Packrat, 1x Eagle-Owl Quartermaster, 1x Echo Screecher, 1x Electric Ray, 1x Golden Eagle Diver, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Reef Admiral, 1x Stag Knight, 1x Talon Archer, 1x Voidfeather Scout, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 1.8,
+     "cards": "1x Alpine Swift, 1x Beaver Lumberjack, 1x Caiman Hatchling, 1x Chipmunk Forager, 1x Eagle-Owl Quartermaster, 1x Fire Ant Raft, 1x Fox Kit, 1x House Cat, 1x Kittiwake Flock, 1x Meerkat Wayfarer, 1x Mosswing, 1x Otter Angler, 1x River Warden, 1x Squire's Mount, 1x Stoat Cutthroat, 1x Sunbittern Strider, 1x Sunspire Envoy, 1x Sunthroat Courier, 1x Thorn Shrike, 1x Weaver Bird"
+    },
+    {
+     "seed": 3,
+     "level": 3.9,
+     "cards": "5x Burrow Rabbit, 5x Crimson Recruit, 1x Colossal Squid, 1x Driftwood Crab, 1x Echo Screecher, 1x Hush-Wing Spy, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Shellwright Apprentice, 1x Warhorse Charger, 1x Wolf Spider Mother, 1x Wound Reaver"
+    },
+    {
+     "seed": 4,
+     "level": 2.15,
+     "cards": "3x Otter Centurion, 1x Bog Leech, 1x Chipmunk Skirmisher, 1x Duckling, 1x Ford Kingfisher, 1x Gatling Hog, 1x Glass Golem, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Meerkat Burrower, 1x Otter Ferryman, 1x Puffin Diver, 1x Razorbill, 1x Savanna Cheetah, 1x Sergeant Bramblefox, 1x Slow-worm, 1x Squire's Mount, 1x Talon Archer"
+    },
+    {
+     "seed": 5,
+     "level": 1.7,
+     "cards": "1x Archerfish, 1x Carrion Crow, 1x Coral Reef Shark, 1x Dromedary, 1x Echo Matriarch, 1x Echo Screecher, 1x Giant Cave Huntsman, 1x Glimmer Spider, 1x Hedge Weasel, 1x Ibex Rockcaller, 1x Leafcutter Gardener, 1x Minnow Skitter, 1x Net Thrower, 1x Otter Kit, 1x Petal Fletcher, 1x Pyrenean Desman, 1x Swordfish Spearman, 1x Talon Archer, 1x Truce Heron, 1x Walrus Icebreaker"
+    }
+   ]
+  },
+  {
+   "map": 20,
+   "sharedCopiesMean": 5.2,
+   "sharedCopiesMin": 0,
+   "distinctCards": 61,
+   "inAllFive": [],
+   "sharedWithMapRef": 6.6,
+   "pools": [
+    344,
+    344,
+    345,
+    345,
+    345
+   ],
+   "decks": [
+    {
+     "seed": 1,
+     "level": 2.8,
+     "cards": "5x Burrow Rabbit, 3x Otter Centurion, 1x Alpha Howler, 1x Eagle-Owl Quartermaster, 1x Electric Ray, 1x Field Mouse, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mountain Hare, 1x Obsidian Scorpion, 1x Spitting Spider, 1x Stable Colt, 1x Talon Archer, 1x Wolf Spider Mother"
+    },
+    {
+     "seed": 2,
+     "level": 2,
+     "cards": "3x Otter Centurion, 1x Alpine Swift, 1x Beaver Lumberjack, 1x Birdlime Dauber, 1x Box Turtle, 1x Eagle-Owl Quartermaster, 1x Fox Kit, 1x Gale Swift, 1x Gold-throated Acolyte, 1x Ibex Rockcaller, 1x Kittiwake Flock, 1x Mosswing, 1x Obsidian Scorpion, 1x Otter Paddler, 1x River Warden, 1x Squire's Mount, 1x Stoat Cutthroat, 1x Sunbittern Strider"
+    },
+    {
+     "seed": 3,
+     "level": 3.2,
+     "cards": "5x Burrow Rabbit, 1x Acorn Chipmunk, 1x Dawn Bellringer, 1x Dormouse, 1x Grizzly Vanguard, 1x Hedgerow Shrew, 1x Hush-Wing Spy, 1x Jaguar Stalker, 1x Orca Vanguard, 1x Owl Nightwatch, 1x Petal Fletcher, 1x Prospector Mole, 1x Shellwright Apprentice, 1x Sunbittern Strider, 1x Wolf Spider Mother, 1x Wound Reaver"
+    },
+    {
+     "seed": 4,
+     "level": 1.6,
+     "cards": "3x Otter Centurion, 1x Bee Forager, 1x Berserker Boar, 1x Clownfish Scout, 1x Cobalt Fledgling, 1x Compost Grub, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Ferry Toll-Frog, 1x Ibex Rockcaller, 1x Obsidian Scorpion, 1x Pike Lancer, 1x Robin Redbreast, 1x Swift Fox, 1x Taiga Lynx, 1x Talon Archer, 1x Walrus Icebreaker, 1x Whip Spider"
+    },
+    {
+     "seed": 5,
+     "level": 1.9,
+     "cards": "3x Otter Centurion, 1x Cobalt Fledgling, 1x Crocodile Ambusher, 1x Eagle-Owl Quartermaster, 1x Echidna Quillshot, 1x Echo Matriarch, 1x Giant Cave Huntsman, 1x Hawthorn Shieldbug, 1x Hedgerow Shrew, 1x Ibex Rockcaller, 1x Marsh Wisp, 1x Obsidian Scorpion, 1x Otter Netmender, 1x Slow-worm, 1x Taiga Lynx, 1x Talon Archer, 1x Tomcat, 1x Walrus Icebreaker"
+    }
+   ]
+  }
+ ],
+ "road": [
+  {
+   "map": 0,
+   "mapId": "m1",
+   "side": false,
+   "fights": 4,
+   "target": 0.675,
+   "mapRef": 0.771,
+   "prog": 0.842,
+   "perDeck": [
+    0.865,
+    0.833,
+    0.854,
+    0.802,
+    0.854
+   ],
+   "games": 24
+  },
+  {
+   "map": 1,
+   "mapId": "mf",
+   "side": false,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.833,
+   "prog": 0.733,
+   "perDeck": [
+    0.725,
+    0.675,
+    0.792,
+    0.75,
+    0.725
+   ],
+   "games": 24
+  },
+  {
+   "map": 2,
+   "mapId": "mb",
+   "side": false,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.808,
+   "prog": 0.648,
+   "perDeck": [
+    0.65,
+    0.633,
+    0.667,
+    0.642,
+    0.65
+   ],
+   "games": 24
+  },
+  {
+   "map": 3,
+   "mapId": "mc",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.887,
+   "prog": 0.786,
+   "perDeck": [
+    0.78,
+    0.756,
+    0.72,
+    0.792,
+    0.881
+   ],
+   "games": 24
+  },
+  {
+   "map": 4,
+   "mapId": "m2",
+   "side": false,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.483,
+   "prog": 0.405,
+   "perDeck": [
+    0.35,
+    0.383,
+    0.4,
+    0.408,
+    0.483
+   ],
+   "games": 24
+  },
+  {
+   "map": 5,
+   "mapId": "mw",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.881,
+   "prog": 0.742,
+   "perDeck": [
+    0.708,
+    0.762,
+    0.744,
+    0.786,
+    0.708
+   ],
+   "games": 24
+  },
+  {
+   "map": 6,
+   "mapId": "m8",
+   "side": false,
+   "fights": 8,
+   "target": 0.706,
+   "mapRef": 0.734,
+   "prog": 0.666,
+   "perDeck": [
+    0.615,
+    0.714,
+    0.703,
+    0.656,
+    0.641
+   ],
+   "games": 24
+  },
+  {
+   "map": 6,
+   "mapId": "mp",
+   "side": true,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.685,
+   "prog": 0.558,
+   "perDeck": [
+    0.494,
+    0.565,
+    0.667,
+    0.53,
+    0.536
+   ],
+   "games": 24
+  },
+  {
+   "map": 7,
+   "mapId": "mu",
+   "side": false,
+   "fights": 6,
+   "target": 0.692,
+   "mapRef": 0.563,
+   "prog": 0.521,
+   "perDeck": [
+    0.486,
+    0.563,
+    0.563,
+    0.569,
+    0.424
+   ],
+   "games": 24
+  },
+  {
+   "map": 7,
+   "mapId": "mg",
+   "side": true,
+   "fights": 4,
+   "target": 0.663,
+   "mapRef": 0.698,
+   "prog": 0.721,
+   "perDeck": [
+    0.563,
+    0.698,
+    0.771,
+    0.792,
+    0.781
+   ],
+   "games": 24
+  },
+  {
+   "map": 8,
+   "mapId": "m4",
+   "side": false,
+   "fights": 8,
+   "target": 0.706,
+   "mapRef": 0.37,
+   "prog": 0.306,
+   "perDeck": [
+    0.302,
+    0.349,
+    0.266,
+    0.323,
+    0.292
+   ],
+   "games": 24
+  },
+  {
+   "map": 8,
+   "mapId": "mz",
+   "side": true,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.4,
+   "prog": 0.355,
+   "perDeck": [
+    0.333,
+    0.375,
+    0.308,
+    0.417,
+    0.342
+   ],
+   "games": 24
+  },
+  {
+   "map": 9,
+   "mapId": "mk",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.435,
+   "prog": 0.443,
+   "perDeck": [
+    0.333,
+    0.44,
+    0.649,
+    0.387,
+    0.405
+   ],
+   "games": 24
+  },
+  {
+   "map": 10,
+   "mapId": "m7",
+   "side": false,
+   "fights": 9,
+   "target": 0.711,
+   "mapRef": 0.736,
+   "prog": 0.398,
+   "perDeck": [
+    0.273,
+    0.347,
+    0.528,
+    0.463,
+    0.38
+   ],
+   "games": 24
+  },
+  {
+   "map": 11,
+   "mapId": "m10",
+   "side": false,
+   "fights": 10,
+   "target": 0.715,
+   "mapRef": 0.617,
+   "prog": 0.416,
+   "perDeck": [
+    0.371,
+    0.513,
+    0.442,
+    0.379,
+    0.375
+   ],
+   "games": 24
+  },
+  {
+   "map": 11,
+   "mapId": "mj",
+   "side": true,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.183,
+   "prog": 0.213,
+   "perDeck": [
+    0.3,
+    0.075,
+    0.367,
+    0.158,
+    0.167
+   ],
+   "games": 24
+  },
+  {
+   "map": 12,
+   "mapId": "mh",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.845,
+   "prog": 0.585,
+   "perDeck": [
+    0.595,
+    0.583,
+    0.625,
+    0.607,
+    0.512
+   ],
+   "games": 24
+  },
+  {
+   "map": 12,
+   "mapId": "mq",
+   "side": true,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.725,
+   "prog": 0.273,
+   "perDeck": [
+    0.275,
+    0.217,
+    0.258,
+    0.317,
+    0.3
+   ],
+   "games": 24
+  },
+  {
+   "map": 13,
+   "mapId": "mr",
+   "side": false,
+   "fights": 8,
+   "target": 0.706,
+   "mapRef": 0.677,
+   "prog": 0.471,
+   "perDeck": [
+    0.453,
+    0.375,
+    0.505,
+    0.578,
+    0.443
+   ],
+   "games": 24
+  },
+  {
+   "map": 13,
+   "mapId": "ms",
+   "side": true,
+   "fights": 4,
+   "target": 0.663,
+   "mapRef": 0.646,
+   "prog": 0.575,
+   "perDeck": [
+    0.583,
+    0.625,
+    0.625,
+    0.573,
+    0.469
+   ],
+   "games": 24
+  },
+  {
+   "map": 14,
+   "mapId": "m5",
+   "side": false,
+   "fights": 8,
+   "target": 0.706,
+   "mapRef": 0.49,
+   "prog": 0.249,
+   "perDeck": [
+    0.203,
+    0.307,
+    0.344,
+    0.229,
+    0.161
+   ],
+   "games": 24
+  },
+  {
+   "map": 15,
+   "mapId": "ml",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.685,
+   "prog": 0.486,
+   "perDeck": [
+    0.47,
+    0.417,
+    0.625,
+    0.482,
+    0.435
+   ],
+   "games": 24
+  },
+  {
+   "map": 15,
+   "mapId": "mv",
+   "side": true,
+   "fights": 4,
+   "target": 0.663,
+   "mapRef": 0.75,
+   "prog": 0.304,
+   "perDeck": [
+    0.292,
+    0.24,
+    0.552,
+    0.135,
+    0.302
+   ],
+   "games": 24
+  },
+  {
+   "map": 16,
+   "mapId": "mt",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.702,
+   "prog": 0.633,
+   "perDeck": [
+    0.673,
+    0.56,
+    0.667,
+    0.607,
+    0.661
+   ],
+   "games": 24
+  },
+  {
+   "map": 16,
+   "mapId": "mn",
+   "side": true,
+   "fights": 4,
+   "target": 0.663,
+   "mapRef": 0.313,
+   "prog": 0.438,
+   "perDeck": [
+    0.438,
+    0.448,
+    0.417,
+    0.49,
+    0.396
+   ],
+   "games": 24
+  },
+  {
+   "map": 17,
+   "mapId": "m6",
+   "side": false,
+   "fights": 8,
+   "target": 0.706,
+   "mapRef": 0.318,
+   "prog": 0.223,
+   "perDeck": [
+    0.188,
+    0.182,
+    0.266,
+    0.266,
+    0.214
+   ],
+   "games": 24
+  },
+  {
+   "map": 18,
+   "mapId": "md",
+   "side": false,
+   "fights": 7,
+   "target": 0.7,
+   "mapRef": 0.601,
+   "prog": 0.262,
+   "perDeck": [
+    0.369,
+    0.196,
+    0.357,
+    0.196,
+    0.19
+   ],
+   "games": 24
+  },
+  {
+   "map": 18,
+   "mapId": "my",
+   "side": true,
+   "fights": 5,
+   "target": 0.68,
+   "mapRef": 0.042,
+   "prog": 0.062,
+   "perDeck": [
+    0.067,
+    0.083,
+    0.05,
+    0.067,
+    0.042
+   ],
+   "games": 24
+  },
+  {
+   "map": 19,
+   "mapId": "m3",
+   "side": false,
+   "fights": 6,
+   "target": 0.692,
+   "mapRef": 0.764,
+   "prog": 0.34,
+   "perDeck": [
+    0.486,
+    0.222,
+    0.215,
+    0.465,
+    0.313
+   ],
+   "games": 24
+  },
+  {
+   "map": 19,
+   "mapId": "mpd",
+   "side": true,
+   "fights": 9,
+   "target": 0.711,
+   "mapRef": 0.37,
+   "prog": 0.214,
+   "perDeck": [
+    0.352,
+    0.19,
+    0.181,
+    0.218,
+    0.13
+   ],
+   "games": 24
+  },
+  {
+   "map": 20,
+   "mapId": "m11",
+   "side": false,
+   "fights": 10,
+   "target": 0.69,
+   "mapRef": 0.8,
+   "prog": 0.373,
+   "perDeck": [
+    0.463,
+    0.317,
+    0.321,
+    0.404,
+    0.363
+   ],
+   "games": 24
+  }
+ ],
+ "pro": [
+  {
+   "map": 0,
+   "mapId": "m1",
+   "side": false,
+   "decks": 3,
+   "mapRef": 0.722,
+   "prog": 0.786,
+   "perDeck": [
+    0.806,
+    0.847,
+    0.75,
+    0.722,
+    0.806
+   ],
+   "games": 24
+  },
+  {
+   "map": 0,
+   "mapId": "mo",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.042,
+   "prog": 0.053,
+   "perDeck": [
+    0.083,
+    0.069,
+    0.028,
+    0.069,
+    0.014
+   ],
+   "games": 24
+  },
+  {
+   "map": 1,
+   "mapId": "mf",
+   "side": false,
+   "decks": 2,
+   "mapRef": 0.417,
+   "prog": 0.346,
+   "perDeck": [
+    0.313,
+    0.396,
+    0.375,
+    0.354,
+    0.292
+   ],
+   "games": 24
+  },
+  {
+   "map": 1,
+   "mapId": "mq",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.417,
+   "prog": 0.156,
+   "perDeck": [
+    0.097,
+    0.153,
+    0.181,
+    0.153,
+    0.194
+   ],
+   "games": 24
+  },
+  {
+   "map": 2,
+   "mapId": "mb",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.479,
+   "prog": 0.338,
+   "perDeck": [
+    0.323,
+    0.396,
+    0.375,
+    0.271,
+    0.323
+   ],
+   "games": 24
+  },
+  {
+   "map": 2,
+   "mapId": "mg",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.354,
+   "prog": 0.327,
+   "perDeck": [
+    0.333,
+    0.302,
+    0.313,
+    0.354,
+    0.333
+   ],
+   "games": 24
+  },
+  {
+   "map": 2,
+   "mapId": "mp",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.208,
+   "prog": 0.075,
+   "perDeck": [
+    0.014,
+    0.042,
+    0.208,
+    0.042,
+    0.069
+   ],
+   "games": 24
+  },
+  {
+   "map": 3,
+   "mapId": "mc",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.833,
+   "prog": 0.679,
+   "perDeck": [
+    0.667,
+    0.688,
+    0.583,
+    0.781,
+    0.677
+   ],
+   "games": 24
+  },
+  {
+   "map": 4,
+   "mapId": "m2",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.438,
+   "prog": 0.14,
+   "perDeck": [
+    0.135,
+    0.104,
+    0.208,
+    0.167,
+    0.083
+   ],
+   "games": 24
+  },
+  {
+   "map": 5,
+   "mapId": "mw",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.479,
+   "prog": 0.41,
+   "perDeck": [
+    0.49,
+    0.406,
+    0.49,
+    0.333,
+    0.333
+   ],
+   "games": 24
+  },
+  {
+   "map": 5,
+   "mapId": "ms",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.194,
+   "prog": 0.211,
+   "perDeck": [
+    0.181,
+    0.167,
+    0.431,
+    0.167,
+    0.111
+   ],
+   "games": 24
+  },
+  {
+   "map": 6,
+   "mapId": "m8",
+   "side": false,
+   "decks": 3,
+   "mapRef": 0.236,
+   "prog": 0.142,
+   "perDeck": [
+    0.125,
+    0.194,
+    0.222,
+    0.069,
+    0.097
+   ],
+   "games": 24
+  },
+  {
+   "map": 7,
+   "mapId": "mu",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.156,
+   "prog": 0.15,
+   "perDeck": [
+    0.135,
+    0.167,
+    0.188,
+    0.125,
+    0.135
+   ],
+   "games": 24
+  },
+  {
+   "map": 7,
+   "mapId": "mz",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.188,
+   "prog": 0.148,
+   "perDeck": [
+    0.177,
+    0.167,
+    0.073,
+    0.156,
+    0.167
+   ],
+   "games": 24
+  },
+  {
+   "map": 8,
+   "mapId": "m4",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.271,
+   "prog": 0.117,
+   "perDeck": [
+    0.146,
+    0.125,
+    0.052,
+    0.177,
+    0.083
+   ],
+   "games": 24
+  },
+  {
+   "map": 8,
+   "mapId": "mn",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.385,
+   "prog": 0.215,
+   "perDeck": [
+    0.188,
+    0.177,
+    0.302,
+    0.208,
+    0.198
+   ],
+   "games": 24
+  },
+  {
+   "map": 9,
+   "mapId": "mk",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.375,
+   "prog": 0.256,
+   "perDeck": [
+    0.26,
+    0.385,
+    0.167,
+    0.26,
+    0.208
+   ],
+   "games": 24
+  },
+  {
+   "map": 10,
+   "mapId": "m7",
+   "side": false,
+   "decks": 2,
+   "mapRef": 0.583,
+   "prog": 0.1,
+   "perDeck": [
+    0.042,
+    0.063,
+    0.208,
+    0.167,
+    0.021
+   ],
+   "games": 24
+  },
+  {
+   "map": 10,
+   "mapId": "mj",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0,
+   "prog": 0.053,
+   "perDeck": [
+    0.042,
+    0,
+    0.194,
+    0.028,
+    0
+   ],
+   "games": 24
+  },
+  {
+   "map": 11,
+   "mapId": "m10",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.302,
+   "prog": 0.065,
+   "perDeck": [
+    0.042,
+    0.031,
+    0.094,
+    0.125,
+    0.031
+   ],
+   "games": 24
+  },
+  {
+   "map": 11,
+   "mapId": "mv",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.115,
+   "prog": 0.046,
+   "perDeck": [
+    0.042,
+    0.021,
+    0.094,
+    0.01,
+    0.063
+   ],
+   "games": 24
+  },
+  {
+   "map": 12,
+   "mapId": "mh",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.542,
+   "prog": 0.196,
+   "perDeck": [
+    0.188,
+    0.188,
+    0.25,
+    0.198,
+    0.156
+   ],
+   "games": 24
+  },
+  {
+   "map": 13,
+   "mapId": "mr",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.271,
+   "prog": 0.092,
+   "perDeck": [
+    0.125,
+    0.031,
+    0.115,
+    0.052,
+    0.135
+   ],
+   "games": 24
+  },
+  {
+   "map": 14,
+   "mapId": "m5",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.167,
+   "prog": 0.054,
+   "perDeck": [
+    0.021,
+    0.031,
+    0.188,
+    0.021,
+    0.01
+   ],
+   "games": 24
+  },
+  {
+   "map": 14,
+   "mapId": "my",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.021,
+   "prog": 0.01,
+   "perDeck": [
+    0,
+    0.01,
+    0.021,
+    0.01,
+    0.01
+   ],
+   "games": 24
+  },
+  {
+   "map": 15,
+   "mapId": "ml",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.385,
+   "prog": 0.194,
+   "perDeck": [
+    0.167,
+    0.125,
+    0.25,
+    0.229,
+    0.198
+   ],
+   "games": 24
+  },
+  {
+   "map": 16,
+   "mapId": "mt",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.354,
+   "prog": 0.204,
+   "perDeck": [
+    0.229,
+    0.063,
+    0.354,
+    0.188,
+    0.188
+   ],
+   "games": 24
+  },
+  {
+   "map": 17,
+   "mapId": "m6",
+   "side": false,
+   "decks": 4,
+   "mapRef": 0.01,
+   "prog": 0.017,
+   "perDeck": [
+    0.01,
+    0,
+    0.021,
+    0.021,
+    0.031
+   ],
+   "games": 24
+  },
+  {
+   "map": 17,
+   "mapId": "mi",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.271,
+   "prog": 0.038,
+   "perDeck": [
+    0.094,
+    0.021,
+    0.031,
+    0.021,
+    0.021
+   ],
+   "games": 24
+  },
+  {
+   "map": 18,
+   "mapId": "md",
+   "side": false,
+   "decks": 3,
+   "mapRef": 0.194,
+   "prog": 0.089,
+   "perDeck": [
+    0.097,
+    0.056,
+    0.167,
+    0.097,
+    0.028
+   ],
+   "games": 24
+  },
+  {
+   "map": 18,
+   "mapId": "mpd",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.097,
+   "prog": 0.044,
+   "perDeck": [
+    0.083,
+    0.014,
+    0.014,
+    0.083,
+    0.028
+   ],
+   "games": 24
+  },
+  {
+   "map": 19,
+   "mapId": "m3",
+   "side": false,
+   "decks": 3,
+   "mapRef": 0.25,
+   "prog": 0.061,
+   "perDeck": [
+    0.111,
+    0.014,
+    0.083,
+    0.069,
+    0.028
+   ],
+   "games": 24
+  },
+  {
+   "map": 19,
+   "mapId": "m9",
+   "side": true,
+   "decks": 4,
+   "mapRef": 0.156,
+   "prog": 0.015,
+   "perDeck": [
+    0.031,
+    0.021,
+    0.01,
+    0.01,
+    0
+   ],
+   "games": 24
+  },
+  {
+   "map": 20,
+   "mapId": "m11",
+   "side": false,
+   "decks": 3,
+   "mapRef": 0.722,
+   "prog": 0.106,
+   "perDeck": [
+    0.153,
+    0.042,
+    0.083,
+    0.097,
+    0.153
+   ],
+   "games": 24
+  },
+  {
+   "map": 20,
+   "mapId": "me",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.514,
+   "prog": 0.122,
+   "perDeck": [
+    0.181,
+    0.083,
+    0.125,
+    0.167,
+    0.056
+   ],
+   "games": 24
+  },
+  {
+   "map": 20,
+   "mapId": "mx",
+   "side": true,
+   "decks": 3,
+   "mapRef": 0.444,
+   "prog": 0.036,
+   "perDeck": [
+    0.083,
+    0.042,
+    0.028,
+    0.028,
+    0
+   ],
+   "games": 24
+  }
+ ],
+ "heatmap": {
+  "settings": {
+   "refs": [
+    "map",
+    "prog-1",
+    "prog-2",
+    "prog-3",
+    "prog-4",
+    "prog-5"
+   ],
+   "games": 40,
+   "seed": "hub7",
+   "tags": [
+    "2026-10-27-hub7-maptrue",
+    "2026-10-25-pro3-maptrue"
+   ],
+   "proRule": {
+    "level": 1,
+    "ai": 1
+   },
+   "maps": "0-20"
+  },
+  "generated": "2026-10-30T18:02:06.902Z",
+  "rows": [
+   {
+    "map": 0,
+    "mapId": "m1",
+    "name": "Bramblewood Outskirts",
+    "ref": "prog",
+    "games": 40,
+    "wins": 138,
+    "losses": 62,
+    "draws": 0,
+    "n": 200,
+    "win": 0.69,
+    "ci": [
+     0.623,
+     0.75
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.74,
+    "deckMap": 0,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [],
+     "field": "misty, phase off",
+     "file": "docs/balance/opt/deckopt-map00-m1-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:13:13.342Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "beetle-grunt": 5,
+      "chipmunk-forager": 1,
+      "cobalt-talon-fledgling": 1,
+      "duck-paddler": 4,
+      "feral-tomcat": 4,
+      "fox-kit": 5
+     },
+     "score": 0.885,
+     "ci": [
+      0.859,
+      0.91
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 396,
+    "perDeck": [
+     0.825,
+     0.725,
+     0.675,
+     0.6,
+     0.625
+    ]
+   },
+   {
+    "map": 0,
+    "mapId": "m1",
+    "name": "Bramblewood Outskirts",
+    "ref": "map",
+    "games": 40,
+    "wins": 30,
+    "losses": 10,
+    "draws": 0,
+    "n": 40,
+    "win": 0.75,
+    "ci": [
+     0.598,
+     0.858
+    ],
+    "stage": "starter",
+    "level": 0,
+    "deckMap": 0,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [],
+     "field": "misty, phase off",
+     "file": "docs/balance/opt/deckopt-map00-m1-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:13:13.342Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "beetle-grunt": 5,
+      "chipmunk-forager": 1,
+      "cobalt-talon-fledgling": 1,
+      "duck-paddler": 4,
+      "feral-tomcat": 4,
+      "fox-kit": 5
+     },
+     "score": 0.885,
+     "ci": [
+      0.859,
+      0.91
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m1 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 559
+   },
+   {
+    "map": 1,
+    "mapId": "mf",
+    "name": "Thistlewood",
+    "ref": "prog",
+    "games": 40,
+    "wins": 62,
+    "losses": 138,
+    "draws": 0,
+    "n": 200,
+    "win": 0.31,
+    "ci": [
+     0.25,
+     0.377
+    ],
+    "stage": "ref:prog-1",
+    "level": 1.03,
+    "deckMap": 1,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [],
+     "field": "aiGuardLethal, phase cycle, undergrowth, woods, terrain Old Woods T1",
+     "file": "docs/balance/opt/deckopt-map01-mf-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:17:12.277Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bramble-sprout": 4,
+      "cottontail": 1,
+      "dormouse": 1,
+      "field-mouse": 4,
+      "field-vole": 4,
+      "meadow-frog": 3,
+      "otter-guard": 3
+     },
+     "score": 0.91,
+     "ci": [
+      0.89,
+      0.931
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 447,
+    "perDeck": [
+     0.325,
+     0.3,
+     0.375,
+     0.225,
+     0.325
+    ]
+   },
+   {
+    "map": 1,
+    "mapId": "mf",
+    "name": "Thistlewood",
+    "ref": "map",
+    "games": 40,
+    "wins": 10,
+    "losses": 30,
+    "draws": 0,
+    "n": 40,
+    "win": 0.25,
+    "ci": [
+     0.142,
+     0.402
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 1,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [],
+     "field": "aiGuardLethal, phase cycle, undergrowth, woods, terrain Old Woods T1",
+     "file": "docs/balance/opt/deckopt-map01-mf-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:17:12.277Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bramble-sprout": 4,
+      "cottontail": 1,
+      "dormouse": 1,
+      "field-mouse": 4,
+      "field-vole": 4,
+      "meadow-frog": 3,
+      "otter-guard": 3
+     },
+     "score": 0.91,
+     "ci": [
+      0.89,
+      0.931
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mf --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 508
+   },
+   {
+    "map": 2,
+    "mapId": "mb",
+    "name": "Pebble Beach",
+    "ref": "prog",
+    "games": 40,
+    "wins": 70,
+    "losses": 130,
+    "draws": 0,
+    "n": 200,
+    "win": 0.35,
+    "ci": [
+     0.287,
+     0.418
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.98,
+    "deckMap": 2,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-guard"
+     ],
+     "field": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1",
+     "file": "docs/balance/opt/deckopt-map02-mb-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:23:24.241Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "beetle-grunt": 2,
+      "bramble-sprout": 2,
+      "cricket-drummer": 1,
+      "crimson-wing-recruit": 1,
+      "crossed-eyes": 1,
+      "duck-paddler": 1,
+      "ember-tetra": 3,
+      "feral-tomcat": 1,
+      "harvest-mouse": 1,
+      "honey-bee": 1,
+      "otter-guard": 3,
+      "pond-trout": 1,
+      "river-carp": 1,
+      "sheep": 1
+     },
+     "score": 0.904,
+     "ci": [
+      0.886,
+      0.922
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 460,
+    "perDeck": [
+     0.225,
+     0.475,
+     0.375,
+     0.35,
+     0.325
+    ]
+   },
+   {
+    "map": 2,
+    "mapId": "mb",
+    "name": "Pebble Beach",
+    "ref": "map",
+    "games": 40,
+    "wins": 24,
+    "losses": 16,
+    "draws": 0,
+    "n": 40,
+    "win": 0.6,
+    "ci": [
+     0.446,
+     0.737
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 2,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-guard"
+     ],
+     "field": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1",
+     "file": "docs/balance/opt/deckopt-map02-mb-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:23:24.241Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "beetle-grunt": 2,
+      "bramble-sprout": 2,
+      "cricket-drummer": 1,
+      "crimson-wing-recruit": 1,
+      "crossed-eyes": 1,
+      "duck-paddler": 1,
+      "ember-tetra": 3,
+      "feral-tomcat": 1,
+      "harvest-mouse": 1,
+      "honey-bee": 1,
+      "otter-guard": 3,
+      "pond-trout": 1,
+      "river-carp": 1,
+      "sheep": 1
+     },
+     "score": 0.904,
+     "ci": [
+      0.886,
+      0.922
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mb --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 536
+   },
+   {
+    "map": 3,
+    "mapId": "mc",
+    "name": "Gannet Cliffs",
+    "ref": "prog",
+    "games": 40,
+    "wins": 132,
+    "losses": 68,
+    "draws": 0,
+    "n": 200,
+    "win": 0.66,
+    "ci": [
+     0.592,
+     0.722
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.87,
+    "deckMap": 3,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-guard"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain High Crags T2 (Siege 1)",
+     "file": "docs/balance/opt/deckopt-map03-mc-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:29:27.748Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "fulmar-spitter": 4,
+      "gannet-nestweaver": 1,
+      "golden-eagle-diver": 4,
+      "mountain-goat-climber": 2,
+      "otter-guard": 1,
+      "peak-condor": 3,
+      "puffin-diver": 4,
+      "red-billed-chough": 1
+     },
+     "score": 0.683,
+     "ci": [
+      0.654,
+      0.711
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 573,
+    "perDeck": [
+     0.65,
+     0.625,
+     0.475,
+     0.725,
+     0.825
+    ]
+   },
+   {
+    "map": 3,
+    "mapId": "mc",
+    "name": "Gannet Cliffs",
+    "ref": "map",
+    "games": 40,
+    "wins": 33,
+    "losses": 7,
+    "draws": 0,
+    "n": 40,
+    "win": 0.825,
+    "ci": [
+     0.68,
+     0.913
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 3,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-guard"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain High Crags T2 (Siege 1)",
+     "file": "docs/balance/opt/deckopt-map03-mc-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:29:27.748Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "fulmar-spitter": 4,
+      "gannet-nestweaver": 1,
+      "golden-eagle-diver": 4,
+      "mountain-goat-climber": 2,
+      "otter-guard": 1,
+      "peak-condor": 3,
+      "puffin-diver": 4,
+      "red-billed-chough": 1
+     },
+     "score": 0.683,
+     "ci": [
+      0.654,
+      0.711
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mc --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 612
+   },
+   {
+    "map": 4,
+    "mapId": "m2",
+    "name": "Sunken Hollow",
+    "ref": "prog",
+    "games": 40,
+    "wins": 33,
+    "losses": 167,
+    "draws": 0,
+    "n": 200,
+    "win": 0.165,
+    "ci": [
+     0.12,
+     0.223
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.99,
+    "deckMap": 4,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "river-mink"
+     ],
+     "field": "aiGuardLethal, permaTide, phase cycle, rapids, wet, terrain Riverbank T2 (Inspiring 1)",
+     "file": "docs/balance/opt/deckopt-map04-m2-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:36:44.419Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "briarback-hedgehog": 1,
+      "ember-tetra": 2,
+      "farm-dog": 1,
+      "house-cat": 4,
+      "muskrat-reedgatherer": 2,
+      "otter-guard": 1,
+      "oyster-bank": 1,
+      "oystercatcher": 1,
+      "river-mink": 1,
+      "riverwing-envoy": 1,
+      "stone-turtle-warden": 1,
+      "terrier-pup": 3,
+      "worker-ant": 1
+     },
+     "score": 0.882,
+     "ci": [
+      0.862,
+      0.902
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 717,
+    "perDeck": [
+     0.1,
+     0.225,
+     0.125,
+     0.3,
+     0.075
+    ]
+   },
+   {
+    "map": 4,
+    "mapId": "m2",
+    "name": "Sunken Hollow",
+    "ref": "map",
+    "games": 40,
+    "wins": 15,
+    "losses": 25,
+    "draws": 0,
+    "n": 40,
+    "win": 0.375,
+    "ci": [
+     0.242,
+     0.53
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 4,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "river-mink"
+     ],
+     "field": "aiGuardLethal, permaTide, phase cycle, rapids, wet, terrain Riverbank T2 (Inspiring 1)",
+     "file": "docs/balance/opt/deckopt-map04-m2-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:36:44.419Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "briarback-hedgehog": 1,
+      "ember-tetra": 2,
+      "farm-dog": 1,
+      "house-cat": 4,
+      "muskrat-reedgatherer": 2,
+      "otter-guard": 1,
+      "oyster-bank": 1,
+      "oystercatcher": 1,
+      "river-mink": 1,
+      "riverwing-envoy": 1,
+      "stone-turtle-warden": 1,
+      "terrier-pup": 3,
+      "worker-ant": 1
+     },
+     "score": 0.882,
+     "ci": [
+      0.862,
+      0.902
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m2 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 579
+   },
+   {
+    "map": 5,
+    "mapId": "mw",
+    "name": "Gatorback Swamp",
+    "ref": "prog",
+    "games": 40,
+    "wins": 78,
+    "losses": 122,
+    "draws": 0,
+    "n": 200,
+    "win": 0.39,
+    "ci": [
+     0.325,
+     0.459
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.72,
+    "deckMap": 5,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "tunnel-ant"
+     ],
+     "field": "aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1)",
+     "file": "docs/balance/opt/deckopt-map05-mw-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:44:41.881Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bee-forager": 4,
+      "cricket-drummer": 4,
+      "river-carp": 1,
+      "signal-crayfish": 2,
+      "terrier-pup": 4,
+      "tunnel-ant": 1,
+      "water-shrew": 4
+     },
+     "score": 0.876,
+     "ci": [
+      0.857,
+      0.895
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 515,
+    "perDeck": [
+     0.325,
+     0.475,
+     0.475,
+     0.325,
+     0.35
+    ]
+   },
+   {
+    "map": 5,
+    "mapId": "mw",
+    "name": "Gatorback Swamp",
+    "ref": "map",
+    "games": 40,
+    "wins": 25,
+    "losses": 15,
+    "draws": 0,
+    "n": 40,
+    "win": 0.625,
+    "ci": [
+     0.47,
+     0.758
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 5,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "tunnel-ant"
+     ],
+     "field": "aiGuardLethal, phase cycle, swampFever 50, terrain Sucking Mire T2 (Poison 1)",
+     "file": "docs/balance/opt/deckopt-map05-mw-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:44:41.881Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bee-forager": 4,
+      "cricket-drummer": 4,
+      "river-carp": 1,
+      "signal-crayfish": 2,
+      "terrier-pup": 4,
+      "tunnel-ant": 1,
+      "water-shrew": 4
+     },
+     "score": 0.876,
+     "ci": [
+      0.857,
+      0.895
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mw --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 616
+   },
+   {
+    "map": 6,
+    "mapId": "m8",
+    "name": "Sable Swampmire",
+    "ref": "prog",
+    "games": 40,
+    "wins": 65,
+    "losses": 135,
+    "draws": 0,
+    "n": 200,
+    "win": 0.325,
+    "ci": [
+     0.264,
+     0.393
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.79,
+    "deckMap": 6,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "anaconda-coil"
+     ],
+     "field": "aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1)",
+     "file": "docs/balance/opt/deckopt-map06-m8-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:56:16.359Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "adder-ambusher": 2,
+      "anaconda-coil": 1,
+      "bee-forager": 4,
+      "beetle-grunt": 1,
+      "cricket-drummer": 1,
+      "dormouse": 1,
+      "duck-paddler": 1,
+      "field-mouse": 1,
+      "forager-ant": 1,
+      "grey-seal-bull": 1,
+      "lotus-frog": 1,
+      "mayfly-dancer": 3,
+      "otter-guard": 1,
+      "pond-duck": 1
+     },
+     "score": 0.875,
+     "ci": [
+      0.858,
+      0.892
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 671,
+    "perDeck": [
+     0.3,
+     0.325,
+     0.35,
+     0.25,
+     0.4
+    ]
+   },
+   {
+    "map": 6,
+    "mapId": "m8",
+    "name": "Sable Swampmire",
+    "ref": "map",
+    "games": 40,
+    "wins": 12,
+    "losses": 28,
+    "draws": 0,
+    "n": 40,
+    "win": 0.3,
+    "ci": [
+     0.181,
+     0.454
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 6,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "anaconda-coil"
+     ],
+     "field": "aiGuardLethal, phase night, terrain Sucking Mire T2 (Poison 1)",
+     "file": "docs/balance/opt/deckopt-map06-m8-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T16:56:16.359Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "adder-ambusher": 2,
+      "anaconda-coil": 1,
+      "bee-forager": 4,
+      "beetle-grunt": 1,
+      "cricket-drummer": 1,
+      "dormouse": 1,
+      "duck-paddler": 1,
+      "field-mouse": 1,
+      "forager-ant": 1,
+      "grey-seal-bull": 1,
+      "lotus-frog": 1,
+      "mayfly-dancer": 3,
+      "otter-guard": 1,
+      "pond-duck": 1
+     },
+     "score": 0.875,
+     "ci": [
+      0.858,
+      0.892
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m8 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 727
+   },
+   {
+    "map": 7,
+    "mapId": "mu",
+    "name": "The Morel Hollow",
+    "ref": "prog",
+    "games": 40,
+    "wins": 90,
+    "losses": 110,
+    "draws": 0,
+    "n": 200,
+    "win": 0.45,
+    "ci": [
+     0.383,
+     0.519
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.87,
+    "deckMap": 7,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "pine-marten"
+     ],
+     "field": "aiGuardLethal, phase cycle, sporeCloud, woods, terrain Old Woods T1",
+     "file": "docs/balance/opt/deckopt-map07-mu-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:00:35.441Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "badger-lumberjack": 1,
+      "compost-grub": 2,
+      "dung-beetle": 3,
+      "meadow-frog": 1,
+      "moat-snapper": 1,
+      "owl-nightwatch": 5,
+      "pine-marten": 1,
+      "pond-trout": 2,
+      "truffle-piglet": 4
+     },
+     "score": 0.796,
+     "ci": [
+      0.773,
+      0.82
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 767,
+    "perDeck": [
+     0.5,
+     0.625,
+     0.45,
+     0.275,
+     0.4
+    ]
+   },
+   {
+    "map": 7,
+    "mapId": "mu",
+    "name": "The Morel Hollow",
+    "ref": "map",
+    "games": 40,
+    "wins": 26,
+    "losses": 14,
+    "draws": 0,
+    "n": 40,
+    "win": 0.65,
+    "ci": [
+     0.495,
+     0.779
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 7,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "pine-marten"
+     ],
+     "field": "aiGuardLethal, phase cycle, sporeCloud, woods, terrain Old Woods T1",
+     "file": "docs/balance/opt/deckopt-map07-mu-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:00:35.441Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "badger-lumberjack": 1,
+      "compost-grub": 2,
+      "dung-beetle": 3,
+      "meadow-frog": 1,
+      "moat-snapper": 1,
+      "owl-nightwatch": 5,
+      "pine-marten": 1,
+      "pond-trout": 2,
+      "truffle-piglet": 4
+     },
+     "score": 0.796,
+     "ci": [
+      0.773,
+      0.82
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mu --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 704
+   },
+   {
+    "map": 8,
+    "mapId": "m4",
+    "name": "Caves & Alcoves",
+    "ref": "prog",
+    "games": 40,
+    "wins": 53,
+    "losses": 147,
+    "draws": 0,
+    "n": 200,
+    "win": 0.265,
+    "ci": [
+     0.209,
+     0.33
+    ],
+    "stage": "ref:prog-1",
+    "level": 0.92,
+    "deckMap": 8,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "giant-cave-huntsman"
+     ],
+     "field": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+     "file": "docs/balance/opt/deckopt-map08-m4-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:04:45.292Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bombardier-beetle": 1,
+      "dung-beetle": 5,
+      "giant-cave-huntsman": 3,
+      "otter-centurion": 3,
+      "paper-wasp": 1,
+      "star-nosed-mole": 4,
+      "wolf-spider-mother": 3
+     },
+     "score": 0.812,
+     "ci": [
+      0.791,
+      0.833
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 586,
+    "perDeck": [
+     0.15,
+     0.275,
+     0.2,
+     0.325,
+     0.375
+    ]
+   },
+   {
+    "map": 8,
+    "mapId": "m4",
+    "name": "Caves & Alcoves",
+    "ref": "map",
+    "games": 40,
+    "wins": 15,
+    "losses": 25,
+    "draws": 0,
+    "n": 40,
+    "win": 0.375,
+    "ci": [
+     0.242,
+     0.53
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 8,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "giant-cave-huntsman"
+     ],
+     "field": "aiGuardLethal, dark dark, phase off, terrain Deep Dark T1",
+     "file": "docs/balance/opt/deckopt-map08-m4-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:04:45.292Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "bombardier-beetle": 1,
+      "dung-beetle": 5,
+      "giant-cave-huntsman": 3,
+      "otter-centurion": 3,
+      "paper-wasp": 1,
+      "star-nosed-mole": 4,
+      "wolf-spider-mother": 3
+     },
+     "score": 0.812,
+     "ci": [
+      0.791,
+      0.833
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m4 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 695
+   },
+   {
+    "map": 9,
+    "mapId": "mk",
+    "name": "The Kelp Mangroves",
+    "ref": "prog",
+    "games": 40,
+    "wins": 53,
+    "losses": 147,
+    "draws": 0,
+    "n": 200,
+    "win": 0.265,
+    "ci": [
+     0.209,
+     0.33
+    ],
+    "stage": "ref:prog-1",
+    "level": 1.1,
+    "deckMap": 9,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "anaconda-coil"
+     ],
+     "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)",
+     "file": "docs/balance/opt/deckopt-map09-mk-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:09:16.214Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "anaconda-coil": 1,
+      "archerfish": 1,
+      "dung-beetle": 5,
+      "leafcutter-gardener": 1,
+      "meadow-frog": 4,
+      "otter-guard": 1,
+      "pond-algae": 1,
+      "slow-worm": 1,
+      "sulfur-cinder-moth": 1,
+      "vampire-bat": 1,
+      "wolf-spider-mother": 3
+     },
+     "score": 0.779,
+     "ci": [
+      0.756,
+      0.803
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 720,
+    "perDeck": [
+     0.2,
+     0.575,
+     0.175,
+     0.225,
+     0.15
+    ]
+   },
+   {
+    "map": 9,
+    "mapId": "mk",
+    "name": "The Kelp Mangroves",
+    "ref": "map",
+    "games": 40,
+    "wins": 19,
+    "losses": 21,
+    "draws": 0,
+    "n": 40,
+    "win": 0.475,
+    "ci": [
+     0.329,
+     0.625
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 9,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "anaconda-coil"
+     ],
+     "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)",
+     "file": "docs/balance/opt/deckopt-map09-mk-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:09:16.214Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "anaconda-coil": 1,
+      "archerfish": 1,
+      "dung-beetle": 5,
+      "leafcutter-gardener": 1,
+      "meadow-frog": 4,
+      "otter-guard": 1,
+      "pond-algae": 1,
+      "slow-worm": 1,
+      "sulfur-cinder-moth": 1,
+      "vampire-bat": 1,
+      "wolf-spider-mother": 3
+     },
+     "score": 0.779,
+     "ci": [
+      0.756,
+      0.803
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mk --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 659
+   },
+   {
+    "map": 10,
+    "mapId": "m7",
+    "name": "Coral Current",
+    "ref": "prog",
+    "games": 40,
+    "wins": 48,
+    "losses": 152,
+    "draws": 0,
+    "n": 200,
+    "win": 0.24,
+    "ci": [
+     0.186,
+     0.304
+    ],
+    "stage": "ref:prog-1",
+    "level": 1.05,
+    "deckMap": 10,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "giant-cave-huntsman"
+     ],
+     "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1",
+     "file": "docs/balance/opt/deckopt-map10-m7-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:13:17.506Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "ant-warrior": 4,
+      "chipmunk-skirmisher": 1,
+      "field-vole": 1,
+      "gallery-orb-weaver": 1,
+      "giant-cave-huntsman": 2,
+      "harvest-mouse": 1,
+      "house-cat": 1,
+      "mayfly-dancer": 5,
+      "newt-doctor": 1,
+      "sparrow-chick": 1,
+      "sulfur-cinder-moth": 1,
+      "venomlord-serpent": 1
+     },
+     "score": 0.822,
+     "ci": [
+      0.804,
+      0.841
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 529,
+    "perDeck": [
+     0.075,
+     0.45,
+     0.15,
+     0.325,
+     0.2
+    ]
+   },
+   {
+    "map": 10,
+    "mapId": "m7",
+    "name": "Coral Current",
+    "ref": "map",
+    "games": 40,
+    "wins": 16,
+    "losses": 24,
+    "draws": 0,
+    "n": 40,
+    "win": 0.4,
+    "ci": [
+     0.263,
+     0.554
+    ],
+    "stage": "road",
+    "level": 0,
+    "deckMap": 10,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "giant-cave-huntsman"
+     ],
+     "field": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1",
+     "file": "docs/balance/opt/deckopt-map10-m7-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:13:17.506Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "ant-warrior": 4,
+      "chipmunk-skirmisher": 1,
+      "field-vole": 1,
+      "gallery-orb-weaver": 1,
+      "giant-cave-huntsman": 2,
+      "harvest-mouse": 1,
+      "house-cat": 1,
+      "mayfly-dancer": 5,
+      "newt-doctor": 1,
+      "sparrow-chick": 1,
+      "sulfur-cinder-moth": 1,
+      "venomlord-serpent": 1
+     },
+     "score": 0.822,
+     "ci": [
+      0.804,
+      0.841
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m7 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 494
+   },
+   {
+    "map": 11,
+    "mapId": "m10",
+    "name": "Eyrie Heights",
+    "ref": "prog",
+    "games": 40,
+    "wins": 32,
+    "losses": 168,
+    "draws": 0,
+    "n": 200,
+    "win": 0.16,
+    "ci": [
+     0.116,
+     0.217
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.58,
+    "deckMap": 11,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "ibex-rockcaller"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T2 (Siege 1)",
+     "file": "docs/balance/opt/deckopt-map11-m10-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:19:56.811Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "alpine-marmot": 4,
+      "bloodscent-shark": 1,
+      "crimson-wing-recruit": 1,
+      "eyrie-warden": 3,
+      "gravel-mole": 1,
+      "ibex-rockcaller": 1,
+      "owl-nightwatch": 2,
+      "planarian-splitter": 1,
+      "river-carp": 1,
+      "seed-cache-squirrel": 5
+     },
+     "score": 0.736,
+     "ci": [
+      0.717,
+      0.756
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 826,
+    "perDeck": [
+     0.075,
+     0.2,
+     0.3,
+     0.125,
+     0.1
+    ]
+   },
+   {
+    "map": 11,
+    "mapId": "m10",
+    "name": "Eyrie Heights",
+    "ref": "map",
+    "games": 40,
+    "wins": 18,
+    "losses": 21,
+    "draws": 1,
+    "n": 40,
+    "win": 0.45,
+    "ci": [
+     0.307,
+     0.602
+    ],
+    "stage": "road",
+    "level": 3,
+    "deckMap": 11,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "ibex-rockcaller"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind gale, windfall, terrain High Crags T2 (Siege 1)",
+     "file": "docs/balance/opt/deckopt-map11-m10-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:19:56.811Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "alpine-marmot": 4,
+      "bloodscent-shark": 1,
+      "crimson-wing-recruit": 1,
+      "eyrie-warden": 3,
+      "gravel-mole": 1,
+      "ibex-rockcaller": 1,
+      "owl-nightwatch": 2,
+      "planarian-splitter": 1,
+      "river-carp": 1,
+      "seed-cache-squirrel": 5
+     },
+     "score": 0.736,
+     "ci": [
+      0.717,
+      0.756
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m10 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 895
+   },
+   {
+    "map": 12,
+    "mapId": "mh",
+    "name": "The Briar Maze",
+    "ref": "prog",
+    "games": 40,
+    "wins": 73,
+    "losses": 126,
+    "draws": 1,
+    "n": 200,
+    "win": 0.365,
+    "ci": [
+     0.301,
+     0.434
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.51,
+    "deckMap": 12,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, graspingBriars, phase cycle, terrain Open Meadow T2 (Healing 1)",
+     "file": "docs/balance/opt/deckopt-map12-mh-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:24:46.541Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "buzzed-chipmunk": 1,
+      "compost-grub": 1,
+      "dung-beetle": 5,
+      "hedgehog-scout": 1,
+      "ladybird-guard": 3,
+      "otter-centurion": 1,
+      "riverwing-envoy": 4,
+      "sleepless-shrew": 1,
+      "tunnel-ant": 3
+     },
+     "score": 0.803,
+     "ci": [
+      0.779,
+      0.827
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1021,
+    "perDeck": [
+     0.275,
+     0.475,
+     0.4,
+     0.225,
+     0.45
+    ]
+   },
+   {
+    "map": 12,
+    "mapId": "mh",
+    "name": "The Briar Maze",
+    "ref": "map",
+    "games": 40,
+    "wins": 30,
+    "losses": 10,
+    "draws": 0,
+    "n": 40,
+    "win": 0.75,
+    "ci": [
+     0.598,
+     0.858
+    ],
+    "stage": "road",
+    "level": 3,
+    "deckMap": 12,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, graspingBriars, phase cycle, terrain Open Meadow T2 (Healing 1)",
+     "file": "docs/balance/opt/deckopt-map12-mh-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:24:46.541Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "buzzed-chipmunk": 1,
+      "compost-grub": 1,
+      "dung-beetle": 5,
+      "hedgehog-scout": 1,
+      "ladybird-guard": 3,
+      "otter-centurion": 1,
+      "riverwing-envoy": 4,
+      "sleepless-shrew": 1,
+      "tunnel-ant": 3
+     },
+     "score": 0.803,
+     "ci": [
+      0.779,
+      0.827
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mh --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 988
+   },
+   {
+    "map": 13,
+    "mapId": "mr",
+    "name": "The Redwood Deep",
+    "ref": "prog",
+    "games": 40,
+    "wins": 61,
+    "losses": 139,
+    "draws": 0,
+    "n": 200,
+    "win": 0.305,
+    "ci": [
+     0.245,
+     0.372
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.91,
+    "deckMap": 13,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)",
+     "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:29:11.968Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "burrow-rabbit": 4,
+      "chipmunk-hoarder": 1,
+      "dung-beetle": 5,
+      "kraken-spawnling": 1,
+      "otter-centurion": 1,
+      "riverwing-envoy": 4
+     },
+     "score": 0.851,
+     "ci": [
+      0.832,
+      0.87
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1008,
+    "perDeck": [
+     0.325,
+     0.275,
+     0.275,
+     0.475,
+     0.175
+    ]
+   },
+   {
+    "map": 13,
+    "mapId": "mr",
+    "name": "The Redwood Deep",
+    "ref": "map",
+    "games": 40,
+    "wins": 31,
+    "losses": 9,
+    "draws": 0,
+    "n": 40,
+    "win": 0.775,
+    "ci": [
+     0.625,
+     0.877
+    ],
+    "stage": "road",
+    "level": 3,
+    "deckMap": 13,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, canopy, phase cycle, woods, terrain Old Woods T2 (Regen 1)",
+     "file": "docs/balance/opt/deckopt-map13-mr-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:29:11.968Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "burrow-rabbit": 4,
+      "chipmunk-hoarder": 1,
+      "dung-beetle": 5,
+      "kraken-spawnling": 1,
+      "otter-centurion": 1,
+      "riverwing-envoy": 4
+     },
+     "score": 0.851,
+     "ci": [
+      0.832,
+      0.87
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mr --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 968
+   },
+   {
+    "map": 14,
+    "mapId": "m5",
+    "name": "Savanna Reaches",
+    "ref": "prog",
+    "games": 40,
+    "wins": 43,
+    "losses": 157,
+    "draws": 0,
+    "n": 200,
+    "win": 0.215,
+    "ci": [
+     0.164,
+     0.277
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.79,
+    "deckMap": 14,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "archerfish"
+     ],
+     "field": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
+     "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:33:15.427Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "crimson-wing-recruit": 4,
+      "dung-beetle": 5,
+      "open-ocean-hermit-crab": 1,
+      "riverwing-envoy": 4,
+      "woodpecker-sapper": 2
+     },
+     "score": 0.75,
+     "ci": [
+      0.727,
+      0.772
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 648,
+    "perDeck": [
+     0.25,
+     0.2,
+     0.375,
+     0.25,
+     0
+    ]
+   },
+   {
+    "map": 14,
+    "mapId": "m5",
+    "name": "Savanna Reaches",
+    "ref": "map",
+    "games": 40,
+    "wins": 17,
+    "losses": 23,
+    "draws": 0,
+    "n": 40,
+    "win": 0.425,
+    "ci": [
+     0.285,
+     0.578
+    ],
+    "stage": "road",
+    "level": 3,
+    "deckMap": 14,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "archerfish"
+     ],
+     "field": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)",
+     "file": "docs/balance/opt/deckopt-map14-m5-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:33:15.427Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "crimson-wing-recruit": 4,
+      "dung-beetle": 5,
+      "open-ocean-hermit-crab": 1,
+      "riverwing-envoy": 4,
+      "woodpecker-sapper": 2
+     },
+     "score": 0.75,
+     "ci": [
+      0.727,
+      0.772
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m5 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 557
+   },
+   {
+    "map": 15,
+    "mapId": "ml",
+    "name": "The Long Grass",
+    "ref": "prog",
+    "games": 40,
+    "wins": 116,
+    "losses": 84,
+    "draws": 0,
+    "n": 200,
+    "win": 0.58,
+    "ci": [
+     0.511,
+     0.646
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.78,
+    "deckMap": 15,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "bison-bulldozer"
+     ],
+     "field": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)",
+     "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:37:19.313Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "badger-lumberjack": 1,
+      "bison-bulldozer": 1,
+      "crimson-wing-recruit": 5,
+      "dung-beetle": 4,
+      "riverwing-envoy": 4,
+      "signal-crayfish": 1
+     },
+     "score": 0.802,
+     "ci": [
+      0.779,
+      0.824
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 823,
+    "perDeck": [
+     0.525,
+     0.6,
+     0.725,
+     0.575,
+     0.475
+    ]
+   },
+   {
+    "map": 15,
+    "mapId": "ml",
+    "name": "The Long Grass",
+    "ref": "map",
+    "games": 40,
+    "wins": 29,
+    "losses": 11,
+    "draws": 0,
+    "n": 40,
+    "win": 0.725,
+    "ci": [
+     0.572,
+     0.839
+    ],
+    "stage": "road",
+    "level": 3,
+    "deckMap": 15,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "bison-bulldozer"
+     ],
+     "field": "aiGuardLethal, phase cycle, undergrowth, terrain Open Meadow T2 (Healing 1)",
+     "file": "docs/balance/opt/deckopt-map15-ml-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:37:19.313Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "badger-lumberjack": 1,
+      "bison-bulldozer": 1,
+      "crimson-wing-recruit": 5,
+      "dung-beetle": 4,
+      "riverwing-envoy": 4,
+      "signal-crayfish": 1
+     },
+     "score": 0.802,
+     "ci": [
+      0.779,
+      0.824
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map ml --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 700
+   },
+   {
+    "map": 16,
+    "mapId": "mt",
+    "name": "The Pinewood Taiga",
+    "ref": "prog",
+    "games": 40,
+    "wins": 113,
+    "losses": 87,
+    "draws": 0,
+    "n": 200,
+    "win": 0.565,
+    "ci": [
+     0.496,
+     0.632
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.82,
+    "deckMap": 16,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+     "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:54:00.940Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "beetle-grunt": 1,
+      "box-turtle": 1,
+      "dung-beetle": 5,
+      "great-skua": 2,
+      "otter-centurion": 3,
+      "riverwing-envoy": 4
+     },
+     "score": 0.865,
+     "ci": [
+      0.845,
+      0.885
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1349,
+    "perDeck": [
+     0.7,
+     0.55,
+     0.375,
+     0.675,
+     0.525
+    ]
+   },
+   {
+    "map": 16,
+    "mapId": "mt",
+    "name": "The Pinewood Taiga",
+    "ref": "map",
+    "games": 40,
+    "wins": 36,
+    "losses": 4,
+    "draws": 0,
+    "n": 40,
+    "win": 0.9,
+    "ci": [
+     0.769,
+     0.96
+    ],
+    "stage": "road",
+    "level": 3.18,
+    "deckMap": 16,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)",
+     "file": "docs/balance/opt/deckopt-map16-mt-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:54:00.940Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "beetle-grunt": 1,
+      "box-turtle": 1,
+      "dung-beetle": 5,
+      "great-skua": 2,
+      "otter-centurion": 3,
+      "riverwing-envoy": 4
+     },
+     "score": 0.865,
+     "ci": [
+      0.845,
+      0.885
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map mt --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1060
+   },
+   {
+    "map": 17,
+    "mapId": "m6",
+    "name": "Wolfsbane Tundra",
+    "ref": "prog",
+    "games": 40,
+    "wins": 17,
+    "losses": 183,
+    "draws": 0,
+    "n": 200,
+    "win": 0.085,
+    "ci": [
+     0.054,
+     0.132
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.89,
+    "deckMap": 17,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "coral-reef-shark"
+     ],
+     "field": "aiGuardLethal, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)",
+     "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:59:01.893Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "coral-reef-shark": 1,
+      "dung-beetle": 4,
+      "fox-kit": 1,
+      "hoopoe-herald": 5,
+      "riverwing-envoy": 4,
+      "termite-forager": 1
+     },
+     "score": 0.801,
+     "ci": [
+      0.781,
+      0.82
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1172,
+    "perDeck": [
+     0.125,
+     0.025,
+     0.15,
+     0.05,
+     0.075
+    ]
+   },
+   {
+    "map": 17,
+    "mapId": "m6",
+    "name": "Wolfsbane Tundra",
+    "ref": "map",
+    "games": 40,
+    "wins": 10,
+    "losses": 29,
+    "draws": 1,
+    "n": 40,
+    "win": 0.25,
+    "ci": [
+     0.142,
+     0.402
+    ],
+    "stage": "road",
+    "level": 3.36,
+    "deckMap": 17,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "coral-reef-shark"
+     ],
+     "field": "aiGuardLethal, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)",
+     "file": "docs/balance/opt/deckopt-map17-m6-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T17:59:01.893Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "coral-reef-shark": 1,
+      "dung-beetle": 4,
+      "fox-kit": 1,
+      "hoopoe-herald": 5,
+      "riverwing-envoy": 4,
+      "termite-forager": 1
+     },
+     "score": 0.801,
+     "ci": [
+      0.781,
+      0.82
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m6 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1432
+   },
+   {
+    "map": 18,
+    "mapId": "md",
+    "name": "The Glass Dunes",
+    "ref": "prog",
+    "games": 40,
+    "wins": 88,
+    "losses": 112,
+    "draws": 0,
+    "n": 200,
+    "win": 0.44,
+    "ci": [
+     0.373,
+     0.509
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.45,
+    "deckMap": 18,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)",
+     "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:06:30.227Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "conch-herald": 1,
+      "duckling": 1,
+      "dung-beetle": 4,
+      "kinkajou-lurker": 4,
+      "lionfish": 1,
+      "otter-centurion": 3,
+      "stable-colt": 1,
+      "warhorse-charger": 1
+     },
+     "score": 0.866,
+     "ci": [
+      0.847,
+      0.885
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 999,
+    "perDeck": [
+     0.675,
+     0.2,
+     0.3,
+     0.5,
+     0.525
+    ]
+   },
+   {
+    "map": 18,
+    "mapId": "md",
+    "name": "The Glass Dunes",
+    "ref": "map",
+    "games": 40,
+    "wins": 38,
+    "losses": 1,
+    "draws": 1,
+    "n": 40,
+    "win": 0.95,
+    "ci": [
+     0.835,
+     0.986
+    ],
+    "stage": "road",
+    "level": 3.54,
+    "deckMap": 18,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)",
+     "file": "docs/balance/opt/deckopt-map18-md-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:06:30.227Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "conch-herald": 1,
+      "duckling": 1,
+      "dung-beetle": 4,
+      "kinkajou-lurker": 4,
+      "lionfish": 1,
+      "otter-centurion": 3,
+      "stable-colt": 1,
+      "warhorse-charger": 1
+     },
+     "score": 0.866,
+     "ci": [
+      0.847,
+      0.885
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map md --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1041
+   },
+   {
+    "map": 19,
+    "mapId": "m3",
+    "name": "Ashen Spurn",
+    "ref": "prog",
+    "games": 40,
+    "wins": 79,
+    "losses": 121,
+    "draws": 0,
+    "n": 200,
+    "win": 0.395,
+    "ci": [
+     0.33,
+     0.464
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.47,
+    "deckMap": 19,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+     "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:10:49.955Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "badger-stonemason": 1,
+      "beaver-feller": 1,
+      "booming-bittern": 1,
+      "dung-beetle": 5,
+      "fire-salamander": 4,
+      "otter-centurion": 3,
+      "otter-guard": 1
+     },
+     "score": 0.865,
+     "ci": [
+      0.848,
+      0.883
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 1104,
+    "perDeck": [
+     0.475,
+     0.375,
+     0.275,
+     0.5,
+     0.35
+    ]
+   },
+   {
+    "map": 19,
+    "mapId": "m3",
+    "name": "Ashen Spurn",
+    "ref": "map",
+    "games": 40,
+    "wins": 35,
+    "losses": 5,
+    "draws": 0,
+    "n": 40,
+    "win": 0.875,
+    "ci": [
+     0.739,
+     0.945
+    ],
+    "stage": "road",
+    "level": 3.72,
+    "deckMap": 19,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "otter-centurion"
+     ],
+     "field": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+     "file": "docs/balance/opt/deckopt-map19-m3-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:10:49.955Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "archerfish": 4,
+      "badger-stonemason": 1,
+      "beaver-feller": 1,
+      "booming-bittern": 1,
+      "dung-beetle": 5,
+      "fire-salamander": 4,
+      "otter-centurion": 3,
+      "otter-guard": 1
+     },
+     "score": 0.865,
+     "ci": [
+      0.848,
+      0.883
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m3 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 911
+   },
+   {
+    "map": 20,
+    "mapId": "m11",
+    "name": "The Sundered Peak",
+    "ref": "prog",
+    "games": 40,
+    "wins": 43,
+    "losses": 157,
+    "draws": 0,
+    "n": 200,
+    "win": 0.215,
+    "ci": [
+     0.164,
+     0.277
+    ],
+    "stage": "ref:prog-1",
+    "level": 2.3,
+    "deckMap": 20,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "ossuary-lammergeier"
+     ],
+     "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+     "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:17:29.781Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "ant-warrior": 4,
+      "burrow-rabbit": 1,
+      "greater-siren": 1,
+      "guano-beetle": 1,
+      "hoopoe-herald": 1,
+      "magma-salamander": 3,
+      "muskrat-reedgatherer": 1,
+      "obsidian-lich": 1,
+      "ossuary-lammergeier": 1,
+      "pack-mule": 2,
+      "stonedrop-vulture": 4
+     },
+     "score": 0.742,
+     "ci": [
+      0.722,
+      0.762
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 958,
+    "perDeck": [
+     0.275,
+     0.2,
+     0.175,
+     0.225,
+     0.2
+    ]
+   },
+   {
+    "map": 20,
+    "mapId": "m11",
+    "name": "The Sundered Peak",
+    "ref": "map",
+    "games": 40,
+    "wins": 33,
+    "losses": 7,
+    "draws": 0,
+    "n": 40,
+    "win": 0.825,
+    "ci": [
+     0.68,
+     0.913
+    ],
+    "stage": "road",
+    "level": 3.9,
+    "deckMap": 20,
+    "cpu": 1,
+    "optimum": {
+     "leaders": [
+      "ossuary-lammergeier"
+     ],
+     "field": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)",
+     "file": "docs/balance/opt/deckopt-map20-m11-2026-10-27-hub7-maptrue.json",
+     "tag": "2026-10-27-hub7-maptrue",
+     "generated": "2026-10-26T18:17:29.781Z",
+     "engineVersion": "2.2.0 (2026-10-25, PRO3)",
+     "deck": {
+      "ant-warrior": 4,
+      "burrow-rabbit": 1,
+      "greater-siren": 1,
+      "guano-beetle": 1,
+      "hoopoe-herald": 1,
+      "magma-salamander": 3,
+      "muskrat-reedgatherer": 1,
+      "obsidian-lich": 1,
+      "ossuary-lammergeier": 1,
+      "pack-mule": 2,
+      "stonedrop-vulture": 4
+     },
+     "score": 0.742,
+     "ci": [
+      0.722,
+      0.762
+     ],
+     "reproduce": "node tools/opt/deckopt.js --map m11 --seed bramble --budget 16000 --final-games 64 --method ga --level 1 --cross-share 0.3 --road-weight 0.25 --ladder none --mode map-true"
+    },
+    "ms": 909
+   }
+  ]
+ }
+}

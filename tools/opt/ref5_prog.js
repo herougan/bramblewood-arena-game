@@ -264,7 +264,7 @@ function cmdCollect(argv) {
 function meanLevel(parts) { const n = parts.reduce((t, p) => t + p[1], 0); return n ? parts.reduce((t, p) => t + p[1] * p[2], 0) / n : 0; }
 
 function cmdRun(argv) {
-  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '1500'), pop = arg(argv, '--pop', '8'), g0 = arg(argv, '--g0', '1'), /* from Map 8: 1500 games, population 8, 1 game a gauntlet entry on the first rung, gmax 8, one restart (Map 8 seeds 1-2: gmax 32, two restarts), so the search gets several generations on a shared machine */ fg = arg(argv, '--final-games', '4') /* Maps 0-6 and Map 7 seeds 1-2 ran at 3000 / 16 (Map 0-5 32); from Map 7 seed 5 on 1200 / 4 (Map 7 seeds 3-4: 1200 / 8), seeded with the player's previous deck: the machine was shared (load 8-11 on 2 cores) */;
+  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '3000'), /* 2026-10-31: Maps 7-20 re-run at 3000 (tag 2026-10-31-ref5b), seeded with the Map reference deck and the previous deck */ pop = arg(argv, '--pop', '8'), g0 = arg(argv, '--g0', '1'), /* from Map 8: 1500 games, population 8, 1 game a gauntlet entry on the first rung, gmax 8, one restart (Map 8 seeds 1-2: gmax 32, two restarts), so the search gets several generations on a shared machine */ fg = arg(argv, '--final-games', '4') /* Maps 0-6 and Map 7 seeds 1-2 ran at 3000 / 16 (Map 0-5 32); from Map 7 seed 5 on 1200 / 4 (Map 7 seeds 3-4: 1200 / 8), seeded with the player's previous deck: the machine was shared (load 8-11 on 2 cores) */;
   const half = arg(argv, '--part'); // a = the pools + seeds 1-2, b = seeds 3-4, c = seed 5 + collect (each well under 10 minutes on a shared machine)
   const only = half === 'a' ? [1, 2] : half === 'b' ? [3, 4] : half === 'c' ? [5] : arg(argv, '--seeds') ? mapRange(arg(argv, '--seeds')) : SEEDS, step0 = arg(argv, '--step', 'all');
   for (const n of maps) {
@@ -283,7 +283,7 @@ function cmdRun(argv) {
 // the next steps in order (a map's pools, its seeds one by one, its collect, then the next map), starting new work only while --minutes are
 // left, so one command stays well under 10 minutes on a shared machine
 function cmdAuto(argv) {
-  const gm = game(), to = +arg(argv, '--to', MAX_MAP), mins = +arg(argv, '--minutes', 5), tag = arg(argv, '--tag', '2026-10-30-ref5'), t0 = Date.now(), left = () => Date.now() - t0 < mins * 60000;
+  const gm = game(), to = +arg(argv, '--to', MAX_MAP), mins = +arg(argv, '--minutes', 5), tag = arg(argv, '--tag', '2026-10-31-ref5b'), t0 = Date.now(), left = () => Date.now() - t0 < mins * 60000;
   for (let n = 0; n <= to; n++) {
     const set = loadSetFile(); if (set && set.decks && set.decks[n] && set.decks[n].length === SEEDS.length) continue;
     const pf = path.join(ROOT, POOLS), pools = fs.existsSync(pf) ? JSON.parse(fs.readFileSync(pf, 'utf8')).maps : {};

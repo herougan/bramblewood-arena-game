@@ -722,7 +722,9 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     // BAL7 (2026-10-28, M4: "The Pool reference's search does not converge on Maps 13-24 (pools of 175-275): seed it with the Map reference
     // deck"): --seed-ref puts the Map reference deck (referenceDeckFor, repaired into the pool) and a quarter-population of its 2-4-swap
     // neighbours at the head of every restart's seeds, so a search over a big pool starts from the deck a player is known to hold.
-    if (o.seedRef) { const rd = repair(gm, (pools.prev && Object.keys(pools.prev).length ? pools.prev : null) /* REF5: prog seeds with the player's previous map's deck */ || G.referenceDeckFor(map.id, fights[0]).deck || {}, pools.p1, rng, credit); refSeeds = [rd];
+    if (o.seedRef) { const rd = repair(gm, G.referenceDeckFor(map.id, fights[0]).deck || {}, pools.p1, rng, credit); refSeeds = [rd];
+      // 2026-10-31 (REF5): prog also seeds with the player's previous map's deck (both start the search; a short search keeps the better)
+      if (pools.prev && Object.keys(pools.prev).length) { const pd = repair(gm, pools.prev, pools.p1, rng, credit); if (deckKey(pd) !== deckKey(rd)) refSeeds.push(pd); }
       for (let i = 0; refSeeds.length < Math.max(2, Math.round(o.pop / 4)) && i < o.pop * 4; i++) { const d = perturb(gm, rd, pools.p1, rng, 2 + (i % 3)); if (!refSeeds.some(x => deckKey(x) === deckKey(d))) refSeeds.push(d); }
       seeds = uniqDecks(refSeeds.concat(seeds)).slice(0, o.pop * 2); }
     const r = await search(X, o.method, pools.p1, B1, rng, seeds, 'p1', { restarts: o.restarts, credit, refSeeds });
