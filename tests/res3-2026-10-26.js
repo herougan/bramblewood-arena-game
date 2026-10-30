@@ -90,7 +90,7 @@ ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(
   ok(/\.conquest-node-panel \.cnp-rw \.cnp-rw-card\.is-got \.card-tile[^{]*\{filter:grayscale\(1\) brightness\(\.72\) !important;\}/.test(tpl), 'G6. ...and is greyed, cards as well as items'); }
 
 // ---------------- G10 G12 ----------------
-ok(/const RES3_FIT_MAX = 1\.45;/.test(src) && /wrap\.style\.setProperty\('--res3-fit'/.test(fnSrc('centreFieldInFs')) && /html\.is-desk-centre #appWrap\.in-match\{--match-card-h: min\(calc\(clamp\(104px, calc\(\(100dvh - 214px\) \/ 4\.55\), 149px\) \* var\(--res3-fit, 1\)\)/.test(tpl), 'G10. a desktop window grows the match to its height');
+ok(/const RES3_FIT_MAX = 1\.45;/.test(src) && /wrap\.style\.setProperty\('--res3-fit'/.test(fnSrc('centreFieldInFs')) && /html\.is-desk-centre #appWrap\.in-match\{--mc-fit:var\(--res3-fit, 1\);\}/.test(tpl) /* 2026-10-30 (CS-D): the fit is a parameter of the one match-card formula (tests/cs-d-2026-10-30.js) */, 'G10. a desktop window grows the match to its height');
 ok(/#myDeckList \.deck-stack\{width:clamp\(72px, 7\.4vw, 104px\);\}/.test(tpl) && /#myDeckPool\.pool-grid\{grid-template-columns:repeat\(auto-fill, minmax\(clamp\(112px, 11vw, 150px\), 1fr\)\)/.test(tpl), 'G12. the deck editor: bigger deck cards, a much bigger pool');
 
 // ---------------- G15 G16 ----------------

@@ -18,9 +18,10 @@ const CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Ha
 const pack = c=> JSON.parse(R('lang/' + c + '.json')), uiPack = c=> JSON.parse(R('lang/ui/' + c + '.json'));
 
 // ---- O1 the raid's card size on a desktop window
-{ ok(/@media \(min-width:1200px\)\{ html\.is-desk-centre #appWrap\.in-match\.mb2-raid\{--match-card-h:var\(--mb2-th, 82px\); --match-card-w:calc\(var\(--mb2-th, 82px\) \* \.8\);\} \}/.test(tpl),
-    'O1: a desktop window sets the raid\'s --match-card-h and --match-card-w together again (html.is-desk-centre #appWrap.in-match.mb2-raid)');
-  ok(tpl.indexOf('mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);} }') > tpl.indexOf('html.is-desk-centre #appWrap.in-match{--match-card-h: min('), 'O1: ... after the G10 rules it overrides'); }
+// 2026-10-30 (CS-D): the desktop window's rule only sets --mc-fit now, so the raid's own pair wins without UI1's repeat; no rule sets the height alone
+{ ok(/#appWrap\.in-match\.mb2-raid\{--match-card-h:var\(--mb2-th, 82px\); --match-card-w:calc\(var\(--mb2-th, 82px\) \* \.8\);\}/.test(tpl) && !/html\.is-desk-centre #appWrap\.in-match\{--match-card-h/.test(tpl),
+    'O1: the raid sets --match-card-h and --match-card-w together, and a desktop window no longer sets the height alone');
+  ok(/html\.is-desk-centre #appWrap\.in-match\{--mc-fit:var\(--res3-fit, 1\);\}/.test(tpl), 'O1: ... the desktop window only scales the one formula (tests/cs-d-2026-10-30.js checks it)'); }
 
 // ---- O2 touch drags
 { ok(/#handStrip \[draggable="true"\], #leaderWidget\[draggable="true"\], #view-play \.battlefield \[draggable="true"\], \.discardzone, \.skipzone, \.reserve-target\{touch-action:none;\}/.test(tpl), 'O2: touch-action none on the hand\'s cards, the leader, the board\'s cards and the drop zones');
