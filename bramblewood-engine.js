@@ -9897,8 +9897,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // stunned, frozen, chained or turned to stone (a Sleep on hit, a Spore Cloud, a stun) loses its swing now; it used to keep its place
       // in the pool and swing anyway.
       poolMeta.forEach((meta, uid)=>{ const c = meta.att; if(!c || !(c.hp > 0)) return;
-        const why = dozing(c) ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : null;
-        if(!why) return; poolMeta.delete(uid); handledUids.add(uid);
+        const why = dozing(c) ? 'asleep' : c.stunned ? 'stunned' : c.frozen > 0 ? 'frozen' : c.chained ? 'chained' : c.petrified ? 'petrified' : c.pinDown > 0 ? 'pinned' : null; // + Bola's Pin laid this round before it swung (ENG14, 2026-10-30)
+        if(!why) return; poolMeta.delete(uid); handledUids.add(uid); if(why === 'pinned') bolaPinSpend(c);
         if(why === 'frozen'){ if(!frozeNoted.has(uid)){ frozeNoted.add(uid); skipTurn('frozen', c, meta.attId); } c._frozenJustSet = false; } else skipTurn(why, c, meta.attId); });
       const candidates = [];
       poolMeta.forEach((meta, uid)=>{

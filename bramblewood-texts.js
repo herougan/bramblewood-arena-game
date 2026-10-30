@@ -1221,7 +1221,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxx-crushing-depths": "A Swimmer or Tide unit with Water Resist takes none. No day or night reaches down here.",
   "ui.fx-bishop-path": "A hit on a unit on the slant deals +2 damage.",
   "ui.fxx-bishop-path": "On the slant: half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws.",
-  "ui.fx-mirage": "From round 2, a random unit gets a 1/1 Illusion in a free slot beside it.",
+  "ui.fx-mirage": "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.",
   "ui.fxx-mirage": "None if both slots are taken. The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.",
   "ui.fx-canopy": "Treetops: Pounce +2 damage, Swift and Quick units Evasive, no Flying dodge, Bounty +1.",
   "ui.fx-slippery": "Ice everywhere: attacks at units miss 1 in 2; triggers and on-hit effects fail 1 in 2.",
@@ -2890,7 +2890,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rv2-ambush-fixed": "The Ambush lies in the middle of its road: it can't be moved or linked.",
   "ui.eng13-slow-name": "Slow",
   "ui.eng13-slow": "Acts last among units of the same Speed. Two Slow units take turns as usual.",
-  "ui.eng13-admin-cur-tap": "🛠️ Admin: {name} {from} → {to}"
+  "ui.eng13-admin-cur-tap": "🛠️ Admin: {name} {from} → {to}",
+  "ui.skn-e14-bola": "Bola",
+  "ui.e14-sk-bola": "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.",
+  "ui.e14-sk-bola-codex": "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.",
+  "ui.e14-stn-pinned": "Pinned",
+  "ui.e14-ls-pinned": "loses its next swing and can't move; its skills still work.",
+  "ui.e14-log-pinned": "📌 {att}'s bola pins {name}: it loses its next swing.",
+  "ui.e14-log-pinned-skip": "is pinned down and can't attack this round. 📌",
+  "ui.e14-log-pinned-end": "📌 {name} shakes off the bola.",
+  "ui.skn-e14-anadromous": "Anadromous",
+  "ui.e14-sk-anadromous": "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.",
+  "ui.e14-sk-anadromous-codex": "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

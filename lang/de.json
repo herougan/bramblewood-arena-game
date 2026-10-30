@@ -3668,5 +3668,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Brombeerblüten für den Schaden am gegnerischen Dornwall",
  "Flip": "Umdrehen",
  "Drag sideways to turn it · tap to flip it over": "Seitlich ziehen zum Drehen · tippen zum Umdrehen",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: seitlich ziehen zum Drehen, Enter zum Umdrehen"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: seitlich ziehen zum Drehen, Enter zum Umdrehen",
+ "Bola": "Bola",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "Jede Runde, solange bereit, mit Tempo 1: wirft eine Bola für {n} Schaden auf den Gegner gegenüber (oder den nächsten). Eine getroffene Einheit ist für ihren nächsten Zug festgenagelt.",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Festgenagelt: Sie verliert ihren nächsten Schlag und kann sich nicht bewegen oder bewegt werden; ihre Fähigkeiten, Schüsse und Auslöser wirken weiter. Eine Einheit, die gerade eine Bola abgeschüttelt hat, kann in der Runde danach nicht erneut festgenagelt werden.",
+ "Pinned": "Festgenagelt",
+ "loses its next swing and can't move; its skills still work.": "verliert ihren nächsten Schlag und kann sich nicht bewegen; ihre Fähigkeiten wirken weiter.",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 Die Bola von {att} nagelt {name} fest: verliert den nächsten Schlag.",
+ "is pinned down and can't attack this round. 📌": "ist festgenagelt und kann diese Runde nicht angreifen. 📌",
+ "📌 {name} shakes off the bola.": "📌 {name} schüttelt die Bola ab.",
+ "Anadromous": "Anadrom",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Angriff auf einer Meereskarte (Strand oder Riff); +2 Leben überall sonst.",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Wie ein Lachs kämpft sie im Salzwasser am härtesten und wird flussaufwärts zäh. Die Karte entscheidet, für den ganzen Kampf.",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "Ab Runde 2 bekommt jede Runde jeder Spieler eine 1/1-Illusion in einem freien Platz neben einer seiner Einheiten."
 }

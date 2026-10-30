@@ -3145,6 +3145,16 @@ PASSIVE_DEFS.push(
 Object.assign(SKILL_TEXT, {weaponMaster: v=> TX('ui.sk-weapon-master', {n: numOr(v, 1)}), pry: v=> TX('ui.sk-pry', {n: numOr(v, 1)})});
 Object.assign(SKILL_TEXT, {wakeful: ()=> TX('ui.c3-wakeful'), pulverise: ()=> TX('ui.c3-pulverise'), socket: v=> TX('ui.c3-socket', {n: numOr(v, 1)})}); // CONTENT3 (2026-10-26)
 Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-29)
+// ==== Package ENG14 (2026-10-30, owner 10-30 23:25 X20 / X26; rules in bramblewood-engine.js, prices in canonical/skill-costs.json):
+//   Bola N (X26)        Arrow N's shot; a unit it hits is Pinned for its next turn (no swing, no move; its skills still work)
+//   Anadromous (ANAD-1) +1 Attack on a salt-water map (rules.saltMap: beach, reef), +2 Health anywhere else
+// On no live card yet (decision ENG14-4 proposes cards). Their lit pip rides EN5's state machinery (c._en5On: anadromousSea / anadromousRiver).
+PASSIVE_DEFS.push(
+  {key:'bola', category:'evergreen', label:TX('ui.skn-e14-bola'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.e14-sk-bola', {n: numOr(v, 1)}), codexNote:TX('ui.e14-sk-bola-codex'), get:e=> e.bola ? numOr(e.bola, 1) : undefined},
+  {key:'anadromous', category:'passive', label:TX('ui.skn-e14-anadromous'), kind:'boolean', desc:()=> TX('ui.e14-sk-anadromous'), codexNote:TX('ui.e14-sk-anadromous-codex')});
+Object.assign(SKILL_TEXT, {bola: v=> TX('ui.e14-sk-bola', {n: numOr(v, 1)}), anadromous: ()=> TX('ui.e14-sk-anadromous')});
+Object.assign(SKILL_ICON, {bola:'🪀', anadromous:'🐟', pinDown:'📌'});
+Object.assign(EN5_STATE_KEYS, {anadromousSea:{tx:'e14-anadromous', ico:'🌊'}, anadromousRiver:{tx:'e14-anadromous', ico:'🏞️'}});
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -6443,6 +6453,9 @@ STATUS_KEYWORDS.push({k:'greaterPoison', re:/\b((?:deadly|greater) poison(?:ed)?
 // EN5 (2026-10-24): a lit pip per state skill that is on (🪵 Timbered, 🪨 Bedrock, 🔩 Forged, 🏳️ Last Stand), from the engine's c._en5On
 function en5StatusBadges(c, badges){ const on = String((c && (c.en5On != null ? c.en5On : c._en5On)) || '').split(',').filter(k=> EN5_STATE_KEYS[k]);
   on.forEach(k=> badges.push(`<span class="abadge en5-state" data-en5="${k}" title="${escapeAttr(TX('ui.en5-state-on-tip', {skill: TX('ui.skn-' + EN5_STATE_KEYS[k].tx)}))}">${EN5_STATE_KEYS[k].ico}</span>`)); }
+// ENG14 (2026-10-30, X26): Bola's Pinned, its line under the unit's skills and its glossary colour (the 📌 badge is in the badge list)
+LIVE_STATUS_ROWS.push(['pinDown', 'pinned', TX('ui.e14-stn-pinned'), ()=> TX('ui.e14-ls-pinned'), false]);
+STATUS_KEYWORDS.push({k:'pinned', re:/\b(pinned)\b/gi, cs:true, name:TX('ui.e14-stn-pinned'), c:'#b07a3c', text:TX('ui.e14-ls-pinned')});
 function en4StatusBadges(c, badges){ if(c && c.gpoison > 0) badges.push(`<span class="abadge gpoison" title="${escapeAttr(TX('ui.en4-gp-tip', {n: c.gpoison, d: c.gpoison}))}">💀${c.gpoison}</span>`); }
 Object.assign(SKILL_TEXT, {
   hemorrhage: v=> (v !== true && Number(v) > 0) ? TX('ui.sk-hemorrhage-n', {n: Number(v)}) : TX('ui.sk-hemorrhage'), // + Hemorrhage N (EN5, 2026-10-24)
@@ -32304,7 +32317,7 @@ const FXL_FIELDS = [
     ['crushingDepths', {crushingDepths:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round'], note:'The Tide units take half; the Landlubber takes it all.'}],
     ['rookRow', {rookRow:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:1, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Straight hits get +2 (the Fork\'s second prong, on the slant, does not).'}],
     ['bishopPath', {bishopPath:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}, {role:'ally', slot:1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:1}}}], foes:[{role:'foe', slot:-1}, {role:'foe2', slot:0}]}, note:'The Fork\'s prong and the Backstab land on the slant: +2 each.'}],
-    ['mirage', {mirage:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true, armor:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'An Illusion appears beside a random unit: 1/1, Flying copied, Armor not.'}],
+    ['mirage', {mirage:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true, armor:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'An Illusion appears beside one unit of each side: 1/1, Flying copied, Armor not.' /* ENG14 (X10): each side */}],
     ['canopy', {canopy:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true, bounty:1}}}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'The Lynx pounces for 2+2; the Marten is Evasive; the Hawk gets no Flying dodge.'}],
     ['undergrowth', {undergrowth:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'Like High Canopy, without the Flying and Bounty parts.'}],
     ['tallGrass', {tallGrass:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Stoat', icon:'🦡', effects:{stealth:true}}}, {role:'ally', slot:-1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'The Stoat (Stealth) strikes first; the Backstab hit lands double.'}],
@@ -36462,7 +36475,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -41502,7 +41515,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -45061,7 +45074,7 @@ function lockShards(lock){
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
-const STATUS_END_NAMES = {brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 // ==== Package SK3 (2026-10-19): the board's side of the new skills (rules in bramblewood-engine.js, the Package SK3 block): the replay
 // snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
@@ -45365,6 +45378,7 @@ function logText(ev){
         cower: 'was hit last turn and cowers this turn. 🫣',
         petrified: 'is turned to stone and can\'t act. 🪨',
         bound: 'is Bound and can\'t attack this round. 🪢', // Tangleweed / Strangle (2026-10-16)
+        pinned: TX('ui.e14-log-pinned-skip'), // Bola's Pin (ENG14, 2026-10-30)
         zeroAttack: 'has no Attack left to swing with.',
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
@@ -47899,6 +47913,7 @@ function w2StatusBadges(c, badges){
   try{ sk1StatusBadges(c, badges); }catch(e){} // Exploit tokens, Formation / Isolation (2026-10-19, package SK1)
   try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
+  if(c.pinDown>0) badges.push(`<span class="abadge pinned" title="${escapeAttr(TX('ui.e14-stn-pinned') + ': ' + TX('ui.e14-ls-pinned'))}">📌</span>`); // Bola's Pin (ENG14, 2026-10-30)
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
   if(c.invisible>0) badges.push(`<span class="abadge invisible" title="Invisible: attacks and enemy skills can't find it until it attacks">🫥</span>`);
@@ -48738,11 +48753,13 @@ function s17LogText(ev, nm){
   if(ev.type === 'sentry') return {cls:'', text:`🗼 ${nm(ev.defId)} is on watch: it strikes ${nm(ev.targetDefId)} as it comes in.`};
   if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
   if(ev.type === 'statusFx'){
+    if(ev.kind === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
     if(ev.kind === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.attDefId)} webs ${nm(ev.targetDefId)}: it can't dodge or move for ${ev.amount} round${ev.amount === 1 ? '' : 's'}.`};
     if(ev.kind === 'carrion') return {cls:'heal', text:`🦴 ${nm(ev.attDefId)} feeds on the fallen: +${ev.amount}.`};
     if(ev.kind === 'vanguard') return {cls:'', text:`🎖️ ${nm(ev.attDefId)} leads the way as the first card played: +${ev.amount}/+${ev.amount}.`};
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.defId)} breaks free of the web.`};
+  if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
   return null;
 }
 function s17SkillVfx(ev){
@@ -48766,11 +48783,13 @@ function s17SkillVfx(ev){
     return; }
   if(ev.type === 'sentry'){ fl(boardCardEl(ev.uid), '🗼 Sentry!', 'quick'); snd('ambushTone'); return; }
   if(ev.type === 'statusFx'){
+    if(ev.kind === 'pinDown'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.pinDown = 1; snd('curse'); fl(el, '📌 ' + TX('ui.e14-stn-pinned'), 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; } // Bola (ENG14, 2026-10-30)
     if(ev.kind === 'webbed'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.webbed = Math.max(rc.webbed||0, ev.amount||1); snd('curse'); fl(el, '🕸️ Webbed', 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; }
     if(ev.kind === 'carrion'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.hp = Math.min(rc.maxHp || rc.hp + ev.amount, (rc.hp||0) + (ev.amount||0)); fl(el, `🦴 +${ev.amount}`, 'heal'); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} return; }
     if(ev.kind === 'vanguard'){ w2Later(380, ()=> fl(boardCardEl(ev.targetUid), `🎖️ +${ev.amount}/+${ev.amount}`, 'heal')); return; }
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed'){ const rc = rcOf(ev.uid); if(rc) rc.webbed = 0; refresh(ev.uid); }
+  if(ev.type === 'statusEnd' && ev.status === 'pinDown'){ const rc = rcOf(ev.uid); if(rc) rc.pinDown = 0; refresh(ev.uid); } // ENG14
 }
 // ==== Devilry payments and Ambush N (2026-10-16): battle-log lines and a simple look. Penance: a dark ⛧ pulse sinks into your own
 // castle; Blood Tithe: the same pulse into the ally that pays (or the castle); Ambush: the ambusher's "👀 Ambush" float (its strike

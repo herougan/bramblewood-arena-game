@@ -3672,5 +3672,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "적 가시덤불에 준 피해로 얻은 가시덤불 꽃",
  "Flip": "뒤집기",
  "Drag sideways to turn it · tap to flip it over": "옆으로 끌어 돌리기 · 탭하여 뒤집기",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: 옆으로 끌어 돌리기, Enter로 뒤집기"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: 옆으로 끌어 돌리기, Enter로 뒤집기",
+ "Bola": "볼라",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "준비된 매 라운드, 속도 1로: 마주한 적(없으면 가장 가까운 적)에게 볼라를 던져 피해 {n}. 맞은 유닛은 다음 턴에 묶인다.",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "묶임: 다음 공격을 잃고 움직이거나 옮겨질 수 없다. 스킬, 사격, 트리거는 그대로 작동한다. 볼라를 막 떨쳐낸 유닛은 다음 라운드에 다시 묶이지 않는다.",
+ "Pinned": "묶임",
+ "loses its next swing and can't move; its skills still work.": "다음 공격을 잃고 움직일 수 없다. 스킬은 그대로 작동한다.",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 {att}의 볼라가 {name}을(를) 묶었다: 다음 공격을 잃는다.",
+ "is pinned down and can't attack this round. 📌": "묶여서 이번 라운드에 공격할 수 없다. 📌",
+ "📌 {name} shakes off the bola.": "📌 {name}이(가) 볼라를 떨쳐냈다.",
+ "Anadromous": "소하성",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "바다 맵(해변 또는 산호초)에서 공격 +1, 그 밖의 곳에서는 체력 +2.",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "연어처럼 바닷물에서 가장 맹렬히 싸우고 강 상류에서는 튼튼해진다. 맵이 정하며, 전투 내내 바뀌지 않는다.",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "2라운드부터 매 라운드 각 플레이어의 유닛 하나 옆 빈칸에 1/1 환영이 나타난다."
 }

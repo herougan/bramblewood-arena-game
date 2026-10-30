@@ -3670,5 +3670,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Bulaklak ng Dawag para sa pinsalang ginawa mo sa dawag ng kalaban",
  "Flip": "Baligtarin",
  "Drag sideways to turn it · tap to flip it over": "I-drag patagilid para paikutin · i-tap para baligtarin",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: i-drag patagilid para paikutin, Enter para baligtarin"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: i-drag patagilid para paikutin, Enter para baligtarin",
+ "Bola": "Bola",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "Bawat round habang Handa, sa Bilis 1: naghahagis ng bola na may {n} pinsala sa kaaway sa harap nito (o sa pinakamalapit). Ang yunit na tinamaan ay Nakapako sa susunod nitong turno.",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Nakapako: nawawala ang susunod nitong hampas at hindi ito makakilos o maililipat; gumagana pa rin ang mga kakayahan, tira at trigger nito. Ang yunit na kakakalas lang sa bola ay hindi maipapako muli sa kasunod na round.",
+ "Pinned": "Nakapako",
+ "loses its next swing and can't move; its skills still work.": "nawawala ang susunod nitong hampas at hindi makakilos; gumagana pa rin ang mga kakayahan nito.",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 Naipako ng bola ni {att} si {name}: mawawala ang susunod nitong hampas.",
+ "is pinned down and can't attack this round. 📌": "ay nakapako at hindi makaatake ngayong round. 📌",
+ "📌 {name} shakes off the bola.": "📌 Nakalaya si {name} sa bola.",
+ "Anadromous": "Anadromo",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Atake sa mapa ng dagat (dalampasigan o bahura); +2 Buhay saanman.",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Tulad ng salmon, pinakamalakas itong lumaban sa tubig-alat at tumitibay sa itaas ng ilog. Ang mapa ang nagpapasya, para sa buong laban.",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "Mula round 2, bawat round ang bawat manlalaro ay may 1/1 na Ilusyon sa bakanteng puwesto katabi ng isa sa kanyang mga yunit."
 }

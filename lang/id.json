@@ -3671,5 +3671,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Bunga Semak Duri untuk kerusakan yang kamu berikan pada semak duri musuh",
  "Flip": "Balik",
  "Drag sideways to turn it · tap to flip it over": "Geser ke samping untuk memutarnya · ketuk untuk membaliknya",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: geser ke samping untuk memutarnya, Enter untuk membaliknya"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: geser ke samping untuk memutarnya, Enter untuk membaliknya",
+ "Bola": "Bola",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "Setiap ronde selama Siap, pada Kecepatan 1: melempar bola untuk {n} kerusakan ke musuh di depannya (atau yang terdekat). Unit yang terkena Terjerat pada giliran berikutnya.",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Terjerat: kehilangan serangan berikutnya dan tidak bisa bergerak atau dipindahkan; keterampilan, tembakan, dan pemicunya tetap bekerja. Unit yang baru lepas dari bola tidak bisa Terjerat lagi pada ronde berikutnya.",
+ "Pinned": "Terjerat",
+ "loses its next swing and can't move; its skills still work.": "kehilangan serangan berikutnya dan tidak bisa bergerak; keterampilannya tetap bekerja.",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 Bola {att} menjerat {name}: kehilangan serangan berikutnya.",
+ "is pinned down and can't attack this round. 📌": "terjerat dan tidak bisa menyerang ronde ini. 📌",
+ "📌 {name} shakes off the bola.": "📌 {name} melepaskan diri dari bola.",
+ "Anadromous": "Anadromus",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Serangan di peta laut (pantai atau terumbu); +2 Nyawa di tempat lain.",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Seperti salmon, ia bertarung paling keras di air asin dan menjadi tangguh di hulu sungai. Peta yang menentukan, untuk seluruh pertarungan.",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "Mulai ronde 2, setiap ronde tiap pemain mendapat Ilusi 1/1 di slot kosong di samping salah satu unitnya."
 }

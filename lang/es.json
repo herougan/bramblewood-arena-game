@@ -3668,5 +3668,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "Flores de zarza por el daño que hiciste a la zarza enemiga",
  "Flip": "Voltear",
  "Drag sideways to turn it · tap to flip it over": "Arrastra de lado para girarla · toca para darle la vuelta",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arrastra de lado para girarla, Intro para darle la vuelta"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}: arrastra de lado para girarla, Intro para darle la vuelta",
+ "Bola": "Boleadoras",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "Cada ronda mientras está Lista, a Velocidad 1: lanza unas boleadoras por {n} de daño al enemigo de enfrente (o al más cercano). La unidad alcanzada queda Inmovilizada en su próximo turno.",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Inmovilizada: pierde su próximo golpe y no puede moverse ni ser movida; sus habilidades, disparos y activadores siguen funcionando. Una unidad que acaba de librarse de unas boleadoras no puede ser Inmovilizada otra vez en la ronda siguiente.",
+ "Pinned": "Inmovilizada",
+ "loses its next swing and can't move; its skills still work.": "pierde su próximo golpe y no puede moverse; sus habilidades siguen funcionando.",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 Las boleadoras de {att} inmovilizan a {name}: pierde su próximo golpe.",
+ "is pinned down and can't attack this round. 📌": "está inmovilizada y no puede atacar esta ronda. 📌",
+ "📌 {name} shakes off the bola.": "📌 {name} se libra de las boleadoras.",
+ "Anadromous": "Anádromo",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Ataque en un mapa marino (playa o arrecife); +2 Salud en cualquier otro.",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Como un salmón, lucha con más fuerza en agua salada y se vuelve resistente río arriba. El mapa decide, para todo el combate.",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "Desde la ronda 2, cada ronda cada jugador recibe una Ilusión 1/1 en un espacio libre junto a una de sus unidades."
 }

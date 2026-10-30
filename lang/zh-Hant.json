@@ -3669,5 +3669,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "你對敵方荊棘造成傷害獲得的荊棘花",
  "Flip": "翻面",
  "Drag sideways to turn it · tap to flip it over": "橫向拖動來轉動 · 點按翻面",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}：橫向拖動來轉動，按 Enter 翻面"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：橫向拖動來轉動，按 Enter 翻面",
+ "Bola": "套索球",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "每輪就緒時，以速度 1：向正對的敵人（或最近的敵人）投出套索球，造成 {n} 點傷害。被擊中的單位在其下個回合被縛住。",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "被縛：失去下一次揮擊，且無法移動或被移動；其技能、射擊和觸發仍然有效。剛掙脫套索球的單位在下一輪不能再次被縛。",
+ "Pinned": "被縛",
+ "loses its next swing and can't move; its skills still work.": "失去下一次揮擊且無法移動；其技能仍然有效。",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 {att} 的套索球縛住了 {name}：失去下一次揮擊。",
+ "is pinned down and can't attack this round. 📌": "被縛住了，本輪無法攻擊。📌",
+ "📌 {name} shakes off the bola.": "📌 {name} 掙脫了套索球。",
+ "Anadromous": "溯河洄游",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "海洋地圖（海灘或礁石）上 +1 攻擊；其他地方 +2 生命。",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "如同鮭魚，它在鹹水中戰鬥最猛，在上游變得結實。由地圖決定，整場戰鬥不變。",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "從第 2 輪起，每輪每位玩家都會在其某個單位旁的空位獲得一個 1/1 幻影。"
 }

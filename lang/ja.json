@@ -3669,5 +3669,17 @@
  "Briar Blossoms for the damage you did to the enemy bramble": "敵のイバラに与えたダメージ分のイバラの花",
  "Flip": "裏返す",
  "Drag sideways to turn it · tap to flip it over": "横にドラッグで回す・タップで裏返す",
- "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横にドラッグで回す、Enterで裏返す"
+ "{name}: drag sideways to turn it, Enter to flip it over": "{name}：横にドラッグで回す、Enterで裏返す",
+ "Bola": "ボーラ",
+ "Every round while Ready, at Speed 1: throws a bola for {n} damage at the enemy facing it (or the nearest). A unit it hits is Pinned for its next turn.": "準備完了の各ラウンド、速度1で：正面の敵（いなければ最も近い敵）にボーラを投げ{n}ダメージ。命中したユニットは次のターン拘束される。",
+ "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "拘束：次の攻撃を失い、移動も移動させられることもない。スキル・射撃・トリガーは有効のまま。ボーラを振りほどいた直後のユニットは、次のラウンドには再び拘束されない。",
+ "Pinned": "拘束",
+ "loses its next swing and can't move; its skills still work.": "次の攻撃を失い、移動できない。スキルは有効のまま。",
+ "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 {att}のボーラが{name}を拘束：次の攻撃を失う。",
+ "is pinned down and can't attack this round. 📌": "は拘束されていて、このラウンドは攻撃できない。📌",
+ "📌 {name} shakes off the bola.": "📌 {name}はボーラを振りほどいた。",
+ "Anadromous": "遡河回遊",
+ "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "海のマップ（浜辺かサンゴ礁）では攻撃+1、それ以外では体力+2。",
+ "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "サケのように、海水では最も激しく戦い、川を上ると頑丈になる。どちらかはマップで決まり、戦闘中は変わらない。",
+ "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.": "ラウンド2から、毎ラウンド各プレイヤーの自軍ユニット1体の隣の空き枠に 1/1 の幻影が現れる。"
 }
