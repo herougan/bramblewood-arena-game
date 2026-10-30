@@ -82,7 +82,7 @@ ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(
   ok(/selectedNode\.pro \? startProFight\(selectedNode\.key\)/.test(app) && /\|\| pl2ProNodeOn\(map, conquestSelectedNodeKey\)/.test(app), 'B PRO-UI: the fight panel shows a PRO fight; its Fight button starts it free');
   if(fs.existsSync(path.join(ROOT, 'index.html'))){ const idx = rd('index.html'); ok(/"0-BPRO-1"/.test(idx), 'B PRO-UI: the built page holds the BPRO fights'); } }
 // i18n templates
-ok(!('ui.pl1-boon-card' in T.TEXT) && packs.every(p=> !('{have}/{total} {theme}' in p)) && /`\$\{st\.have\}\/\$\{st\.total\} \$\{boonTheme\(row\.selfish\)\}`/.test(app), 'B i18n-templates: the word-less "{have}/{total} {theme}" key is gone (built in place)');
+ok(!('ui.pl1-boon-card' in T.TEXT) && packs.every(p=> !('{have}/{total} {theme}' in p)) && /row\.short = row\.selfish \? boonTheme\(row\.selfish\)/.test(app) /* 2026-10-30 (UI6, X23): the theme only, no count */, 'B i18n-templates: the word-less "{have}/{total} {theme}" key is gone (built in place)');
 
 // ---- C. audio
 ok(/prongTone\(kind\)\{/.test(app) && /SoundKit\.prongTone \? SoundKit\.prongTone\(ev\.kind\)/.test(app), 'C 00:02 #9: Fork / Trident / Pitchfork play their own tings');

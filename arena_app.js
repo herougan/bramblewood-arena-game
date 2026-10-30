@@ -19441,7 +19441,7 @@ function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? 
 // rows keep the long words (boonText, boonCountLine).
 function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
 function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
-function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? `${st.have}/${st.total} ${boonTheme(row.selfish)}` /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? boonTheme(row.selfish) /* 2026-10-30 (package UI6, X23, owner: "WHy does Venom Gland field effect say 12/17 reptiles? Don't."): the theme only, no count; was `${st.have}/${st.total} ${theme}`. */ /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
