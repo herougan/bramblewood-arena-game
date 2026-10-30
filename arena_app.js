@@ -8705,7 +8705,7 @@ function cardTileHTML(d, opts){
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(atkElementOf(d) ? `<span class="atk${atkPlateCls(d)}${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}" ${atkElementOf(d) === 'magic' ? ' title="Magic attack"' : ''}><i class="sg">${atkGlyphOf(d)}</i>` : `<span class="atk${(Number(d.attack)||0) <= 0 ? ' is-atk-zero' : ''}"><i class="sg">⚔</i>`)+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
-    ${abilityBadges(d, {compact: !!(hand || inMatch), live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
+    ${abilityBadges(d, {compact: !!(hand || inMatch), hand: !!hand /* UI5 (2026-10-30, W5) */, live: (opts.live && opts.live.wait!=null) ? {wait: opts.live.wait} : null})}
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
@@ -8890,9 +8890,17 @@ function abilityBadges(d, bopts){
   // struck through in red once it has been used (the unit came back).
   if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
-  { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
-    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
-    if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
+  // 2026-10-30 (package UI5, W5; owner 21:35: "Don't show tide if its irrelevant to the map. When you draw a card into your hand but the battlefield doesn't currently
+  // have tide, the context pip reds out and fades out. Same for opposite - it green-fades in."): in a fight (a board card or a hand card) on a map that can never
+  // have Tide, the Tide and Swimmer chips are left out. On a Tide map a HAND card's chip is lit while the Tide is in and out (invisible) while it is not;
+  // ui5TideHandFx() (renderHand) plays the red fade-out / green fade-in when that changes. Outside a fight (Codex, detail) the chips show as before.
+  { const ui5Fight = !!(bopts && (bopts.live || bopts.hand)) && (()=>{ try{ return !!(matchState && !matchState.over); }catch(err){ return false; } })();
+    const ui5Map = !ui5Fight || (()=>{ try{ return !!matchHasTide(matchState); }catch(err){ return true; } })();
+    const isHandChip = !!(ui5Fight && bopts.hand && !bopts.live);
+    const lt = (e.tide || e.swimmer) && bopts && (bopts.live || bopts.hand) && ui5Map ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
+    const hcls = isHandChip ? ' tide-hand' + (lt ? '' : ' tide-hand-off') : '', hdat = isHandChip ? ` data-tide-on="${lt ? 1 : 0}"` : '';
+    if(e.tide && ui5Map) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}${hcls}"${hdat} title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
+    if(e.swimmer && ui5Map) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}${hcls}"${hdat} title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span${isHandChip ? ` class="${hcls.trim()}"${hdat}` : ''} title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
   if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
   if(e.esprit) out.push(`<span title="Esprit">${iconHTML('esprit', '🤝')}${n1(e.esprit)}</span>`); if(e.rally) out.push(`<span title="Rally">${iconHTML('rally', '🚩')}${n1(e.rally)}</span>`);
@@ -38600,7 +38608,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
-  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -39034,6 +39042,25 @@ function pl1HandPreviewSoon(){ if(pl1HandPreviewSoon._t) return; pl1HandPreviewS
 // strip (CSS touch-action: pan-x) while the rest of the time they take every touch move for themselves (touch-action: none). See the touch drag shim.
 function syncHandScroll(){ const st = document.getElementById('handStrip'); if(st) st.classList.toggle('hs-scroll', st.scrollWidth > st.clientWidth + 1); }
 if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ syncHandScroll(); }catch(e){} }, {passive:true});
+// 2026-10-30 (package UI5, W5): a hand card's Tide / Swimmer chip (abilityBadges marks it .tide-hand, data-tide-on 1/0) fades when the Tide goes out or comes in.
+// The last state is kept per card uid on the match: a card drawn while the Tide is out flashes red and fades out; a chip that goes from out to in fades back in
+// with a green flash; unchanged chips are drawn at rest. Reduced motion / Effects Low or None: no flash (CSS drops the animation; the rest state is the same).
+function ui5TideHandFx(m, strip){
+  try{
+    const seen = m._ui5TideSeen || {}, now = {};
+    strip.querySelectorAll('[data-handuid]').forEach(el=>{
+      const uid = el.getAttribute('data-handuid'), chips = el.querySelectorAll('.tide-hand'); if(!chips.length) return;
+      const on = [...chips].some(c=> c.getAttribute('data-tide-on') === '1'); now[uid] = on;
+      const prev = seen[uid];
+      chips.forEach(c=>{
+        if(prev === true && !on) c.classList.add('tide-fade-out');
+        else if(prev === false && on) c.classList.add('tide-fade-in');
+        else if(prev === undefined && !on) c.classList.add('tide-fade-out'); // just drawn with no Tide: it reds out
+      });
+    });
+    m._ui5TideSeen = now;
+  }catch(err){}
+}
 function renderHand(){
   try{ setTimeout(syncHandScroll, 0); }catch(e){}
   try{ setTimeout(syncLeaderAfford, 0); }catch(e){}
@@ -39072,6 +39099,7 @@ function renderHand(){
     return cardTileHTML(d, {inPlay:true, size:'compact' /* 2026-10-30 (CS-D) */, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
+  ui5TideHandFx(m, strip); // 2026-10-30 (package UI5, W5): red fade-out / green fade-in of a hand card's Tide chip
   applyHandPreviewStats(m, me, strip); // 2026-10-23 (package UI4): blue numbers for what a card would have if played now
   drawFlipNewHandCards(m, strip);
   if(prevHandRects.size && !reducedMotion()){
@@ -40341,7 +40369,7 @@ function updateCardStatusDisplay(uid){
   if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
-  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">${iconHTML('blind-now', '🕶️')}${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -49555,6 +49583,7 @@ function renderVfxForEvent(ev){
   // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
   // insufficient!"): the tide rolls in across the field on Flow and drains back out on Ebb, then a soft water line stays.
   if(ev.type==='tide' && matchState && matchHasTide(matchState)) tideWaveVfx(ev.tide);
+  if(ev.type==='tide' && matchState && matchHasTide(matchState)) setTimeout(()=>{ try{ if(matchState && !matchState.over) renderHand(); }catch(e){} }, 0); // 2026-10-30 (package UI5, W5): the hand's Tide chips follow the tide at once
   if(ev.type==='advance'){ clearTimeout(window.__bwAdvT); window.__bwAdvT = setTimeout(()=>{ try{ renderBoard(); }catch(e){} const el = boardCardEl(ev.uid); if(el) floatText(el, '⬆', 'quick'); }, 60); }
   if(ev.type==='boomerangWhiff'){ const el = boardCardEl(ev.uid); if(el) missCallout(el, 'whiff'); try{ SoundKit.boomerangWhirr && SoundKit.boomerangWhirr(); }catch(e){}
     // 2026-10-17: the return still flies (one boomerang), back along its throw through the place its target stood, and is caught
