@@ -1,0 +1,867 @@
+{
+ "_about": "SKILL2 (2026-10-31): every skill on an in-play card measured against the canon anchors (tools/skill_canon_2026_10_31.js measure, global context, six vanilla carriers, paired fights). Built by node tools/skill2_measure_2026_10_31.js run; read by tools/skill2_apply_2026_10_31.js. worthRuler = the verdict (canon points = 3A + H stat points since SKILL2); price = the table price on the carriers when measured.",
+ "results": {
+  "arrow=1": {
+   "key": "arrow=1",
+   "id": "arrow",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 3,
+   "cards": [
+    "petal-fletcher",
+    "gatling-hog",
+    "eagle-owl-quartermaster"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "arrow": 1
+    },
+    "gain": 0.1592,
+    "worth": {
+     "m": 4.4328,
+     "lo": 4.2389,
+     "hi": 4.6506
+    },
+    "worthRuler": {
+     "m": 4.4334,
+     "lo": 4.2004,
+     "hi": 4.6735
+    },
+    "worthStat": {
+     "m": 4.4341,
+     "lo": 4.114,
+     "hi": 4.8133
+    },
+    "price": 3,
+    "net": 1.4334,
+    "verdict": "under-priced",
+    "between": [
+     "rage (3.91)",
+     "armor 2 (4.64)"
+    ]
+   }
+  },
+  "arrow=1+fletcher=1": {
+   "key": "arrow=1+fletcher=1",
+   "id": "fletcher",
+   "class": "combo",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "eagle-owl-quartermaster"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "arrow": 1,
+     "fletcher": 1
+    },
+    "gain": 0.2882,
+    "worth": {
+     "m": 8.0254,
+     "lo": 7.6945,
+     "hi": 8.3882
+    },
+    "worthRuler": {
+     "m": 8.0244,
+     "lo": 7.6718,
+     "hi": 8.3693
+    },
+    "worthStat": {
+     "m": 8.0279,
+     "lo": 7.4213,
+     "hi": 8.6996
+    },
+    "price": 3,
+    "net": 5.0244,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (5.62)",
+     "-"
+    ]
+   }
+  },
+  "brood=2": {
+   "key": "brood=2",
+   "id": "brood",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "wolf-spider-mother"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "brood": 2
+    },
+    "gain": 0.2731,
+    "worth": {
+     "m": 7.6053,
+     "lo": 7.2581,
+     "hi": 7.9665
+    },
+    "worthRuler": {
+     "m": 7.6043,
+     "lo": 7.231,
+     "hi": 7.9431
+    },
+    "worthStat": {
+     "m": 7.6077,
+     "lo": 7.0138,
+     "hi": 8.2429
+    },
+    "price": 4.4,
+    "net": 3.2043,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (5.62)",
+     "-"
+    ]
+   }
+  },
+  "executioner=2": {
+   "key": "executioner=2",
+   "id": "executioner",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "grave-grin-hyena"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "executioner": 2
+    },
+    "gain": 0.0167,
+    "worth": {
+     "m": 0.4642,
+     "lo": 0.2695,
+     "hi": 0.6638
+    },
+    "worthRuler": {
+     "m": 0.4637,
+     "lo": 0.2781,
+     "hi": 0.6481
+    },
+    "worthStat": {
+     "m": 0.4643,
+     "lo": 0.2759,
+     "hi": 0.6719
+    },
+    "price": 0.2,
+    "net": 0.2637,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "quick (2.43)"
+    ]
+   }
+  },
+  "fletcher=1": {
+   "key": "fletcher=1",
+   "id": "fletcher",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "eagle-owl-quartermaster"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "fletcher": 1
+    },
+    "gain": 0.0214,
+    "worth": {
+     "m": 0.5965,
+     "lo": 0.391,
+     "hi": 0.7888
+    },
+    "worthRuler": {
+     "m": 0.5959,
+     "lo": 0.4065,
+     "hi": 0.7673
+    },
+    "worthStat": {
+     "m": 0.5966,
+     "lo": 0.3958,
+     "hi": 0.8
+    },
+    "price": 0,
+    "net": 0.5959,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "quick (2.43)"
+    ]
+   }
+  },
+  "remember=1+T:onDeath>exileSelf": {
+   "key": "remember=1+T:onDeath>exileSelf",
+   "id": "remember",
+   "class": "combo",
+   "kind": "measure",
+   "n": 1,
+   "nCards": 1,
+   "cards": [
+    "ashbone-ghoul"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "remember": 1,
+     "triggers": [
+      {
+       "on": "onDeath",
+       "do": "exileSelf"
+      }
+     ]
+    },
+    "gain": 0.2061,
+    "worth": {
+     "m": 5.7394,
+     "lo": 5.5083,
+     "hi": 6.0021
+    },
+    "worthRuler": {
+     "m": 5.7384,
+     "lo": 5.4584,
+     "hi": 6.0461
+    },
+    "worthStat": {
+     "m": 5.7411,
+     "lo": 5.2693,
+     "hi": 6.2381
+    },
+    "price": 1.99,
+    "net": 3.7484,
+    "verdict": "under-priced",
+    "between": [
+     "onReadyGold 1 (5.62)",
+     "-"
+    ]
+   }
+  },
+  "remember=2+T:onDeath>exileSelf": {
+   "key": "remember=2+T:onDeath>exileSelf",
+   "id": "remember",
+   "class": "combo",
+   "kind": "measure",
+   "n": 2,
+   "nCards": 1,
+   "cards": [
+    "marsh-wisp"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "remember": 2,
+     "triggers": [
+      {
+       "on": "onDeath",
+       "do": "exileSelf"
+      }
+     ]
+    },
+    "gain": 0.0991,
+    "worth": {
+     "m": 2.7595,
+     "lo": 2.5437,
+     "hi": 2.9764
+    },
+    "worthRuler": {
+     "m": 2.7595,
+     "lo": 2.5143,
+     "hi": 3.0265
+    },
+    "worthStat": {
+     "m": 2.7603,
+     "lo": 2.4911,
+     "hi": 3.0483
+    },
+    "price": 4.06,
+    "net": -1.3005,
+    "verdict": "over-priced",
+    "between": [
+     "poison 1 (2.68)",
+     "bleed 1 (2.88)"
+    ]
+   }
+  },
+  "flying": {
+   "key": "flying",
+   "id": "flying",
+   "class": "keyword",
+   "kind": "report",
+   "n": true,
+   "nCards": 83,
+   "cards": [
+    "bee-knight",
+    "bee-drone",
+    "owl-sentinel",
+    "raven-scout",
+    "eyrie-warden",
+    "echo-screecher",
+    "eagle-sharpshooter",
+    "hawk-arrowkeeper",
+    "snow-owl-sentinel",
+    "golden-eagle-diver",
+    "peak-condor",
+    "ash-cloud-condor",
+    "gull-thief",
+    "pelican-diver",
+    "mangrove-kingfisher",
+    "duckling-squadron",
+    "owl-nightwatch",
+    "phoenix-fledgling",
+    "sulfur-cinder-moth",
+    "cinder-hornet",
+    "honey-bee",
+    "bee-forager",
+    "bee-sentry",
+    "cobalt-talon-fledgling",
+    "crimson-wing-recruit",
+    "mosswing-laborer",
+    "gold-throated-acolyte",
+    "violet-vane-fletcher",
+    "sunthroat-courier",
+    "voidfeather-scout",
+    "crimson-wing-duelist-cadet",
+    "cobalt-talon-skirmisher",
+    "dominion-nestguard",
+    "sunspire-envoy",
+    "candle-moth",
+    "golden-magpie",
+    "nectar-vintner",
+    "dawn-bellringer",
+    "upside-down-bat",
+    "mirror-moth",
+    "talon-archer",
+    "echo-matriarch",
+    "heron-hag",
+    "daily-post",
+    "petal-fletcher",
+    "nectar-sipper",
+    "sunfeather-scout",
+    "lantern-bearer",
+    "hush-wing-spy",
+    "ruby-throat-duelist",
+    "sunspire-choirmother",
+    "ford-kingfisher",
+    "truce-heron",
+    "glass-changeling",
+    "skull-vulture",
+    "hummingbird-needler",
+    "sunspire-sky-sovereign",
+    "balloon-archer",
+    "the-gannet-queen",
+    "ash-moth",
+    "vampire-bat",
+    "honeyjoe-brewer",
+    "lantern-spark-fly",
+    "ashwing-ptarmigan",
+    "tax-collector-teal",
+    "eagle-owl-quartermaster",
+    "ossuary-lammergeier",
+    "robin-redbreast",
+    "oystercatcher",
+    "puffin-diver",
+    "razorbill",
+    "kittiwake-flock",
+    "peregrine-stooper",
+    "red-billed-chough",
+    "marsh-harrier",
+    "alpine-swift",
+    "apollo-butterfly",
+    "thorn-shrike",
+    "greyplume-fledgling",
+    "swordbill-challenger",
+    "gannet-nestweaver",
+    "carrion-crow",
+    "gale-swift"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "flying": true
+    },
+    "gain": 0.1425,
+    "worth": {
+     "m": 3.9686,
+     "lo": 3.7333,
+     "hi": 4.2214
+    },
+    "worthRuler": {
+     "m": 3.9743,
+     "lo": 3.7351,
+     "hi": 4.2235
+    },
+    "worthStat": {
+     "m": 3.9698,
+     "lo": 3.657,
+     "hi": 4.3694
+    },
+    "price": 10.4167,
+    "net": -6.4424,
+    "verdict": "over-priced",
+    "between": [
+     "rage (3.91)",
+     "armor 2 (4.64)"
+    ]
+   }
+  },
+  "tide": {
+   "key": "tide",
+   "id": "tide",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 49,
+   "cards": [
+    "tide-spirit",
+    "minnow-skitter",
+    "pike-lancer",
+    "reef-shark",
+    "octopus-tactician",
+    "snapper-hatchling",
+    "snapstick-turtle",
+    "poison-dart-croaker",
+    "orca-vanguard",
+    "stone-turtle-warden",
+    "clownfish-scout",
+    "coral-reef-shark",
+    "sea-turtle-elder",
+    "coral-polyp-colony",
+    "blind-cave-fish",
+    "tide-pool-crab",
+    "riptide-eel",
+    "mangrove-mudskipper",
+    "fiddler-crab-swarm",
+    "open-ocean-hermit-crab",
+    "camouflage-frog",
+    "river-warden",
+    "guppy",
+    "fleetfootd",
+    "otter-ferryman",
+    "drowned-matriarch",
+    "reef-admiral",
+    "conch-crawler",
+    "conch-herald",
+    "inkcloud-squid",
+    "abyss-lantern-squid",
+    "goliath-tentacle",
+    "harbor-seal",
+    "otter-angler",
+    "colossal-squid",
+    "fathom-leviathan",
+    "water-vole",
+    "pincushion-urchin",
+    "grey-seal-bull",
+    "puffin-diver",
+    "muskrat-lodgekeeper",
+    "pyrenean-desman",
+    "old-sturgeon",
+    "alligator-gar",
+    "fire-ant-raft",
+    "mangrove-manatee",
+    "parrotfish",
+    "great-barracuda",
+    "greenland-shark"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "tide": true
+    },
+    "gain": 0.03,
+    "worth": {
+     "m": 0.8355,
+     "lo": 0.62,
+     "hi": 1.0251
+    },
+    "worthRuler": {
+     "m": 0.8347,
+     "lo": 0.6379,
+     "hi": 1.0316
+    },
+    "worthStat": {
+     "m": 0.8358,
+     "lo": 0.6338,
+     "hi": 1.0339
+    },
+    "price": 1.5,
+    "net": -0.6653,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "quick (2.43)"
+    ]
+   }
+  },
+  "evasive": {
+   "key": "evasive",
+   "id": "evasive",
+   "class": "keyword",
+   "kind": "report",
+   "n": true,
+   "nCards": 22,
+   "cards": [
+    "plains-zebra",
+    "mountain-goat-climber",
+    "blind-cave-fish",
+    "taiga-lynx",
+    "snowshoe-hare",
+    "mangrove-kingfisher",
+    "shimmerwing-stag",
+    "frost-hare-sprinter",
+    "camouflage-frog",
+    "gold-throated-acolyte",
+    "rabbit-kit",
+    "mirror-moth",
+    "reef-admiral",
+    "magma-wraith",
+    "riverbed-diver",
+    "inkcloud-squid",
+    "cunning-vixen",
+    "harbor-seal",
+    "snow-ermine",
+    "cinder-gecko",
+    "water-vole",
+    "mountain-hare"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "evasive": true
+    },
+    "gain": 0.1376,
+    "worth": {
+     "m": 3.8317,
+     "lo": 3.6099,
+     "hi": 4.0544
+    },
+    "worthRuler": {
+     "m": 3.832,
+     "lo": 3.5242,
+     "hi": 4.0734
+    },
+    "worthStat": {
+     "m": 3.8328,
+     "lo": 3.4824,
+     "hi": 4.1893
+    },
+    "price": 10.4167,
+    "net": -6.5847,
+    "verdict": "over-priced",
+    "between": [
+     "inspiring 1 (3.54)",
+     "regen 2 (3.86)"
+    ]
+   }
+  },
+  "nocturnal": {
+   "key": "nocturnal",
+   "id": "nocturnal",
+   "class": "keyword",
+   "kind": "report",
+   "n": true,
+   "nCards": 14,
+   "cards": [
+    "owl-sentinel",
+    "raccoon-bandit",
+    "beetle-battering-ram",
+    "echo-screecher",
+    "vampire-roost",
+    "snow-owl-sentinel",
+    "permafrost-mammoth",
+    "echo-matriarch",
+    "wolfsbane-alpha",
+    "skull-vulture",
+    "ash-moth",
+    "vampire-bat",
+    "kinkajou-lurker",
+    "banded-sea-krait"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "nocturnal": true
+    },
+    "gain": 0.0832,
+    "worth": {
+     "m": 2.3162,
+     "lo": 2.1422,
+     "hi": 2.4922
+    },
+    "worthRuler": {
+     "m": 2.3141,
+     "lo": 2.0771,
+     "hi": 2.5239
+    },
+    "worthStat": {
+     "m": 2.3169,
+     "lo": 2.1056,
+     "hi": 2.5467
+    },
+    "price": 1.89,
+    "net": 0.4241,
+    "verdict": "under-priced",
+    "between": [
+     "-",
+     "quick (2.43)"
+    ]
+   }
+  },
+  "guardian": {
+   "key": "guardian",
+   "id": "guardian",
+   "class": "keyword",
+   "kind": "measure",
+   "n": true,
+   "nCards": 12,
+   "cards": [
+    "cypress-root-lurker",
+    "badger-trench-digger",
+    "shepherds-bark",
+    "optio-of-the-ford",
+    "truce-heron",
+    "alpine-marmot",
+    "testudo-tortoise",
+    "great-gate",
+    "grey-seal-bull",
+    "mangrove-manatee",
+    "barnacle-bulwark",
+    "reefback-turtle"
+   ],
+   "fights": 1000,
+   "fingerprint": "ea6e5bcc7b96",
+   "canonRate": {
+    "m": 0.0359,
+    "lo": 0.033,
+    "hi": 0.0381
+   },
+   "statRate": {
+    "m": 0.0359,
+    "lo": 0.0321,
+    "hi": 0.0396
+   },
+   "kappa": {
+    "m": 0.9997,
+    "lo": 0.9326,
+    "hi": 1.0689
+   },
+   "test": {
+    "effects": {
+     "guardian": true
+    },
+    "gain": -0.0146,
+    "worth": {
+     "m": -0.4061,
+     "lo": -0.7444,
+     "hi": -0.106
+    },
+    "worthRuler": {
+     "m": -0.4058,
+     "lo": -0.7722,
+     "hi": -0.1069
+    },
+    "worthStat": {
+     "m": -0.4063,
+     "lo": -0.7518,
+     "hi": -0.1012
+    },
+    "price": 0,
+    "net": -0.4058,
+    "verdict": "over-priced",
+    "between": [
+     "-",
+     "quick (2.43)"
+    ]
+   }
+  }
+ }
+}
