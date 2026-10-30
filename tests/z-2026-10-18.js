@@ -84,7 +84,7 @@ ok(/const SKIRMISH_KIT_PER_DAY = 3[,;]/.test(src) /* 2026-10-23 (EB): + KIT_DROP
   ok(P.dungeonSweepableFloor(map, map.nodes[2]) && P.dungeonSweepableFloor(map, map.nodes[3]) && !P.dungeonSweepableFloor(map, map.nodes[4]), '2. floors up to your best can be swept, not above');
   ok(!P.dungeonSweepableFloor({id:'tw', endless:true, tower:true, nodes:[]}, {floor:1}), '2. the Spire is not a daily dungeon');
   const locked = P.dungeonSweepBtnHTML(map);
-  ok(/is-locked/.test(locked) && /aria-disabled="true"/.test(locked) && /<span class="premium-badge">Premium<\/span>/.test(locked) && locked.includes('title="Sweeping daily dungeons is a perk for supporters"'), '2. not premium: locked, Premium badge, supporters tooltip');
+  ok(/is-locked/.test(locked) && /aria-disabled="true"/.test(locked) && /<span class="premium-badge">Premium<\/span>/.test(locked) && locked.includes('title="Sweeping Dailies is a perk for supporters"') /* 2026-10-30 (UI6, X19): the Dailies */, '2. not premium: locked, Premium badge, supporters tooltip');
   ctx.cloudPremium = true; const open = P.dungeonSweepBtnHTML(map);
   ok(!/is-locked/.test(open) && /aria-haspopup="true"/.test(open) && /Sweep floor 4, your best/.test(open) && /costs 6⚡/.test(open), '2. premium: an open Sweep for floor 4 at its Energy cost');
   ok(P.dungeonSweepBtnHTML({id:'mm', endless:true, nodes:map.nodes, best:0}) !== '' , '2. (sanity) a map with a best floor has a button');
@@ -93,7 +93,7 @@ ok(/sbClient\.from\('profiles'\)\.select\('\*'\)\.eq\('id', cloudUserId\)\.maybe
 ok(/refreshPremiumFlag\(\); \/\/ 2026-10-18 \(package Z\)/.test(src), '2. it is read at sign-in');
 ok(/\$\{dungeonSweepBtnHTML\(map\)/.test(src) && /querySelectorAll\('\[data-dungeon-sweep\]'\)/.test(src) && /openSweepMenu\(b, map, node, nodeEnergyCost\(map, node\) \|\| 1, body, \{noIdle:true, after: \(\)=> renderDungeonsSubTab\(body\)\}\)/.test(src), '2. the Dungeons tab Sweep reuses openSweepMenu');
 // 2026-10-18 (package DK, owner 23:54: "I can't sweep past the number of keys I have"): was "A Sweep takes no key"
-ok(/costs \{e\}⚡ and a Dungeon key/.test(TEXT['ui.dungeon-sweep-tip']) && /if\(dg\)\{ dungeonStakeKey\(mapId\); keys\+\+; \}/.test(fnSrc('runSweep')), '2. a dungeon Sweep run uses a key (no longer keyless)');
+ok(/Costs \{e\}⚡ and a key/.test(TEXT['ui.dungeon-sweep-tip']) /* 2026-10-30 (UI6 X19 + TIP1's shorter tip) */ && /if\(dg\)\{ dungeonStakeKey\(mapId\); keys\+\+; \}/.test(fnSrc('runSweep')), '2. a dungeon Sweep run uses a key (no longer keyless)');
 ok(/function openSweepMenu\(anchor, map, node, energyCost, body, how\)/.test(src) && /if\(how && how\.after\) how\.after\(\); else renderConquestSubTab\(body\);/.test(src) && /runSweep\(map\.id, node\.key, n\)/.test(src), '2. the sweep menu runs runSweep and can re-render its own tab');
 ok(/const canSweep = dgSweep \|\| \(done && !selectedNode\.tower && !isDailyDungeonMap\(map\) && sweepAllowed/.test(src) && /if\(so\.dataset\.locked\) return dungeonSweepLocked\(so\);/.test(src), '2. a floor\'s own panel: premium Sweep, locked for others');
 ok(/\.premium-badge\{/.test(tpl) && /\.dg-sweep\.is-locked/.test(tpl), '2. the badge and locked CSS');

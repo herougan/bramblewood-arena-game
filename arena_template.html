@@ -11254,6 +11254,9 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 .map-lock-label{position:absolute; left:50%; top:calc(100% + 4px); transform:translateX(-50%); z-index:12; width:max-content; max-width:130px; padding:2px 8px; border-radius:999px; background:rgba(30,22,12,.9); color:#ffe9b8; font:700 11px/1.25 'Baloo 2',system-ui,sans-serif; text-align:center; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,.35); animation:lockLabelIn .18s ease-out both;}
 @keyframes lockLabelIn{from{opacity:0; transform:translateX(-50%) translateY(-3px);} to{opacity:1; transform:translateX(-50%);}}
 .map-spot.is-waiting{filter:grayscale(.7) brightness(.8); cursor:not-allowed;}
+/* 2026-10-30 (package UI6, X22): a spot hidden from the map (Whisper's Game) shows only in the layout editor, dimmed and marked */
+.map-spot.ui6-map-hidden{opacity:.45; outline:2px dashed rgba(200,60,60,.8); outline-offset:2px;}
+.map-spot.ui6-map-hidden .map-spot-name::after{content:' (hidden)'; color:#c33;}
 .map-spot .map-spot-lock{position:absolute; top:-6px; right:-6px; font-size:12px; line-height:1; filter:none;}
 /* 2026-10-24 (package MAP, owner 13:16 #16): the admin's bramble line is a button, and its small editor card */
 .castle-line.is-admin-edit{background:transparent; border:1px dashed rgba(255,235,190,.55); border-radius:8px; padding:1px 6px; cursor:pointer; font:inherit; color:inherit;}

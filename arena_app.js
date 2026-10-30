@@ -6548,7 +6548,7 @@ function fullCardHTML(defId, liveCard, opts){
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
-    ${liveCard?cardActionLogHTML(liveCard.uid):''}`;
+    ${liveCard ? cardActionLogHTML(liveCard.uid) : opts.logUid != null ? cardActionLogHTML(opts.logUid) : '' /* 2026-10-30 (UI6, X4): the printed card plus this unit's own hit log */}`;
 }
 // The popover's text for a card outside a fight (2026-10-30, package CS-C, owner CS-1): its skills and flavour, the same lines as fullCardHTML,
 // for the gallery popover beside a preview or a chip (wireRewardZoom), which shows the Full card above it.
@@ -6710,7 +6710,12 @@ function castleHoverHTML(hqSide){
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(Date.now() - lastTouchAt < 1500 && el !== touchedEl) return;
+    // 2026-10-30 (package UI6, X2): the board redrew under a resting pointer (an attack, a hit): the same card's new element takes over the
+    // open popover, which stays as it is (no close, no new 1 s wait, no opening animation)
+    const key = popKeyOf(el);
+    if(!pop.hidden && popKey && key === popKey){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } bindPopSrc(el); return; }
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
+    if(key === lostKey && Date.now() - lostAt < 900){ openPopFor(el, {quiet:true}); return; } // it was closed only by a redraw a moment ago
     hoverTimer = setTimeout(()=> openPopFor(el), HOVER_POP_DELAY_MS);
   });
   // Press and hold on a phone in battle (2026-10-12, user: "On mobile, the hold to view stats should be shortened to
@@ -6748,7 +6753,7 @@ function castleHoverHTML(hqSide){
   document.addEventListener('contextmenu', e=>{ if((lastPointerType === 'touch' || lastPointerType === 'pen') && (holdT || holdFired || Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 1500)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   // iOS starts its own drag from a held draggable card (the deck builder's pool): touch drags are the touch shim's, never the browser's
   document.addEventListener('dragstart', e=>{ if(e.isTrusted && (lastPointerType === 'touch' || lastPointerType === 'pen')){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
-  function openPopFor(el){
+  function openPopFor(el, how){
       hoverTimer = null;
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
@@ -6759,34 +6764,88 @@ function castleHoverHTML(hqSide){
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
       const fogEl = matchState && el.closest ? el.closest('.board-card.is-fogged') : null; // 2026-10-21 (package FOG): a fogged unit's tooltip is "Hidden in the fog"
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
+      // 2026-10-30 (package UI6, X4, owner: "When hovering around the card, can we see the original card's desc instead of the instance's? So the HP,
+      // all skills as is"): a unit on the board shows its card as printed (its Attack and Health at its level, every skill it was printed with);
+      // what happened to it in this fight (damage, buffs, statuses, a lost skill) stays on its tile. Only its own hit log is still added.
+      const liveForLog = liveCardFromHoverEl(el);
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false; popSrc = el;
+      pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
       positionPop(el);
-      try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F
+      if(!(how && how.quiet)) try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F (UI6: not again when a redraw had closed it)
       try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
-      TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
-      { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
+      bindPopSrc(el);
+      { const lc = liveForLog; if(lc) lastPeekUid = lc.uid; }
   }
+  // 2026-10-30 (package UI6, X2, owner: "When hovering over a card, I noticed that the card desc tooltip goes in and out as animations play."):
+  // in a fight the rows are redrawn many times a round, and an attack lifts, hides or fades the card under the pointer for a moment. Each of
+  // those closed the popover (its element was gone, hidden or no longer :hover) and the next mouseover opened it again a second later with its
+  // pop-in: in and out. The popover now belongs to the card (its unit's uid, a hand card's uid, else its card id), not to one element:
+  //  - a redraw: the same card's new element under the pointer (or, in a fight, anywhere on the page while the pointer is still inside the
+  //    spot the card stood on) takes over, and the popover stays put, unchanged;
+  //  - it closes when the pointer leaves that spot and is not on the same card, or when the card is gone from the page (it died).
+  // Its text is the printed card (X4), so a redraw has nothing to change in it but the hit log.
+  let popKey = null, popRect = null, lostKey = null, lostAt = 0, ptX = -1, ptY = -1;
+  document.addEventListener('pointermove', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  document.addEventListener('mouseover', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  function popKeyOf(el){
+    if(!el) return null;
+    if(matchState){ const u = el.closest('[data-uid]'); if(u) return 'u' + u.getAttribute('data-uid'); const h = el.closest('[data-handuid]'); if(h) return 'h' + h.getAttribute('data-handuid'); }
+    return 'd' + (el.getAttribute('data-defid') || '') + '|' + (el.getAttribute('data-hq') || '') + '|' + (el.dataset.fieldhover || '');
+  }
+  function sameCardElByKey(key){
+    if(!key) return null; let sel = null;
+    if(key[0] === 'u') sel = `[data-uid="${CSS.escape(key.slice(1))}"]`; else if(key[0] === 'h') sel = `[data-handuid="${CSS.escape(key.slice(1))}"]`; else return null;
+    const host = [...document.querySelectorAll(sel)].find(n=> !pop.contains(n)); if(!host) return null;
+    return host.matches('[data-defid]') ? host : host.querySelector('[data-defid]');
+  }
+  const inRect = (r, x, y)=> !!r && x >= r.left - 2 && x <= r.right + 2 && y >= r.top - 2 && y <= r.bottom + 2;
+  function bindPopSrc(el){
+    popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
+    TipWatch.track(pop, el, ()=>{ if(!rebindPop()) closePopLost(); }, {steady: !!matchState});
+    // the hit log is the one live part: refreshed in place when it changed
+    try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
+      if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
+  }
+  // the card under the pointer, or (a fight only) the same unit anywhere while the pointer still rests on the spot it stood on
+  function rebindPop(){
+    if(pop.hidden || !popKey) return false;
+    let under = null; try{ under = document.elementsFromPoint(ptX, ptY).map(n=> n.closest && n.closest('[data-defid]')).find(n=> n && !pop.contains(n)); }catch(e){}
+    if(under && popKeyOf(under) === popKey){ bindPopSrc(under); return true; }
+    if(matchState && inRect(popRect, ptX, ptY)){
+      const same = sameCardElByKey(popKey);
+      if(same){ popSrc = same; TipWatch.track(pop, same, ()=>{ if(!rebindPop()) closePopLost(); }, {steady:true}); return true; } // still watched: it closes once the unit is gone
+    }
+    return false;
+  }
+  function closePopLost(){ lostKey = popKey; lostAt = Date.now(); pop.hidden = true; popSrc = null; popKey = null; }
+  function closePop(){ pop.hidden = true; popSrc = null; popKey = null; }
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
   // popover stuck (e.g. over the Victory screen). Close it once its card is gone or no longer hovered.
   let popSrc = null;
-  document.addEventListener('mousemove', ()=>{
+  document.addEventListener('mousemove', e=>{
     if(pop.hidden || !popSrc || stripHeld) return;
-    if(!popSrc.isConnected || !popSrc.matches(':hover')){ pop.hidden = true; popSrc = null; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(popSrc.isConnected && popSrc.matches(':hover')){ try{ const r = popSrc.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(_){} return; }
+    if(!rebindPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
   }, {passive:true});
-  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; popSrc = null; };
+  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); };
   document.addEventListener('mouseout', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     if(stripHeld) return;
-    pop.hidden = true;
+    // UI6 (X2): onto the same card's new element, or the card moved out from under a resting pointer (a lunge): it stays
+    const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('[data-defid]') : null;
+    if(!pop.hidden && popKey && to && popKeyOf(to) === popKey){ bindPopSrc(to); return; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(!pop.hidden && popKey && popKeyOf(el) === popKey && rebindPop()) return;
+    closePop();
   });
-  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; });
+  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); });
   // A click usually re-renders the card away, and a removed element never fires mouseout — so the
   // popover would stay stuck on screen. Any click closes it.
   // ...except the lift that ends a press-and-hold peek: that one keeps the details open and doesn't play or pick the card.
@@ -16419,6 +16478,7 @@ const TipWatch = (()=>{
     live.forEach((rec, tip)=>{
       if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
       if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
+      if(rec.steady){ tip.style.opacity = ''; return; } // 2026-10-30 (package UI6, X2): the card popover does not fade with a card an animation dims
       const o = effOpacity(rec.anchor);
       if(o < 0.03){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
       tip.style.opacity = o < 0.98 ? o.toFixed(2) : '';
@@ -16426,7 +16486,7 @@ const TipWatch = (()=>{
     if(live.size) raf = requestAnimationFrame(tick);
   }
   return {
-    track(tip, anchor, hide){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; })}); if(!raf) raf = requestAnimationFrame(tick); },
+    track(tip, anchor, hide, opts){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; }), steady: !!(opts && opts.steady)}); if(!raf) raf = requestAnimationFrame(tick); },
     release(tip){ if(tip){ live.delete(tip); tip.style.opacity = ''; } },
     count(){ return live.size; },
   };
@@ -17983,7 +18043,7 @@ const FEATURE_SPOTS = [
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'coop', icon:'👥', get name(){ return gdThemedName(); } /* RES3 (2026-10-26, B3): its own themed name */, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
-  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, mapHidden:true /* 2026-10-30 (UI6, X22): off the map for everyone, Admin too (ui6SpotOffMap) */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
   {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
@@ -18062,6 +18122,11 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
 function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); if(sp && pl2SpotHidden(sp)) return false; return !sp || featureUnlocked(sp.key); }
 // 2026-10-25 (package PL2, owner 22:28 #6): a spot marked adminOnly (Whisper's Game) is neither on the map nor a tab for anyone but Admin Mode.
 function pl2SpotHidden(sp){ return !!(sp && sp.adminOnly && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
+// 2026-10-30 (package UI6, owner X22: "Hide whisper's game from the map for now."): a spot marked mapHidden is not drawn on the map for anyone,
+// Admin Mode included (PL2's adminOnly still showed it to Admin, and the owner plays in Admin Mode). Only the map layout editor (decorEditing)
+// still draws it, dimmed and marked "hidden", so it can be placed. Bringing it back: drop mapHidden from its FEATURE_SPOTS row.
+// Its tab follows tabOpen / pl2SpotHidden as before (Admin can still open it from the Play tab).
+function ui6SpotOffMap(sp){ if(!sp || !sp.mapHidden) return false; try{ return !decorEditing(); }catch(e){ return true; } }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
@@ -18168,7 +18233,7 @@ function mapSpotsHTML(map, positions, progress){
   // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
   const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
     const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
-  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !spotAvailable(sp, progress)).map(sp=>{
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
     const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
@@ -18176,7 +18241,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -18184,7 +18249,7 @@ function mapSpotsHTML(map, positions, progress){
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key), waits = !!(sp.needs && !featureUnlocked(sp.needs)); // 2026-10-24 (package MAP, owner 13:16 #20): waits for the Notices
-    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}${sp.mapHidden ? ' ui6-map-hidden' /* X22: only the layout editor draws it */ : ''}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${waits ? '<span class="map-spot-lock" aria-hidden="true">🔒</span>' : open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
@@ -19381,7 +19446,7 @@ function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? 
 // rows keep the long words (boonText, boonCountLine).
 function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
 function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
-function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? `${st.have}/${st.total} ${boonTheme(row.selfish)}` /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? boonTheme(row.selfish) /* 2026-10-30 (package UI6, X23, owner: "WHy does Venom Gland field effect say 12/17 reptiles? Don't."): the theme only, no count; was `${st.have}/${st.total} ${theme}`. */ /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
@@ -25318,7 +25383,7 @@ function unlockedDailyDungeons(progress){
   }catch(e){ return []; }
 }
 function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
-function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : 'Daily Dungeons'; }
+function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : TX('ui.ui6-dailies'); } // 2026-10-30 (UI6, X19): "Dailies" (was "Daily Dungeons")
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
@@ -25943,8 +26008,8 @@ function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
     const note = open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : map.preview ? ' · 🛠️ admin preview' : ' · 🛠️ locked for players';
     return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
       <div class="world-stop is-side is-dungeon map-theme-${map.id} ${open ? '' : 'is-locked is-admin-mark'} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
-        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (daily dungeon)')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
-        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${note}</div></div>
+        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (' + TX('ui.ui6-dailies') + ')')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (' + TX('ui.ui6-dailies') + ')')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ ${escapeHtml(TX('ui.ui6-dailies'))}${note}</div></div>
       </div>`;
   }).join('');
 }
@@ -36903,7 +36968,11 @@ function renderBoard(opts){
   // on screen (the card itself at full opacity) right before the rows are rebuilt has been seen: it keeps its place, no second entrance.
   if(needEnemy || needMine){ try{ const seen = [];
     [needEnemy ? rowEnemy : null, needMine ? rowMine : null].forEach(r=>{ if(r) r.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const u = el.getAttribute('data-uid'); if(!knownBoardUids.has(u)) seen.push([u, el]); }); });
-    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); }catch(e){} } // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    // 2026-10-30 (package UI6, X11): the render that ends the match keeps each unit's element (pl2ReconcileRow); a token still on its way in
+    // (spawned by the deciding blow) is already on the page, so it is not "new" here: its own entrance goes on, it never restarts from opacity 0
+    // (it vanished and came back under the end sign). revealBoardCardsAtEnd lands it once the match is over.
+    if(slotView && (m.ending || m.over)) seen.forEach(([u])=> knownBoardUids.add(u)); }catch(e){} }
   const pl2End = !!(slotView && (m.ending || m.over));
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
@@ -41433,19 +41502,31 @@ function settleStrayBoardCards(waited){
 // just landed included, was a new element for a frame (its art decoded again, its hover / float / glow animations started over), the
 // "redraw". Now, once the match is decided, a row whose cells are the same is kept: a cell holding the same unit keeps its element and
 // has its numbers, statuses and Health bar patched in place; only cells that changed (a unit that fell, a token that arrived) are swapped.
-// Returns false (the caller rebuilds the row as before) when the column count changed.
+// Returns false (the caller rebuilds the row as before) when the row was empty.
+// 2026-10-30 (package UI6, owner X11: "Tokens still disappear on game end then reappear again."): the cell-by-cell match above gave up
+// (and the row was rebuilt with innerHTML) whenever the number of cells changed, which is exactly the deciding round where a unit fell or a
+// death spawn put tokens down: every unit on that row, the tokens included, became a new element (art decoded again, the token's look and
+// float started over) under the end sign. Seen headless: a win whose last blow killed a Rot-Swollen Carcass (3 Maggot tokens) rebuilt both
+// rows 1.8 s before the sign. Cells are now matched by their unit's uid wherever they sit: a unit still on the board keeps its element
+// (numbers, statuses, Health bar patched in place); only a unit that fell or a card that arrived is removed or inserted. Kept elements are
+// not moved unless the order really changed.
 function pl2ReconcileRow(row, html){
   try{
     const tmp = document.createElement('div'); tmp.innerHTML = html;
     const fresh = [...tmp.children], old = [...row.children];
-    if(!old.length || fresh.length !== old.length) return false;
+    if(!old.length) return false;
+    const byUid = new Map(); old.forEach(od=>{ const u = od.getAttribute('data-uid'); if(u && !od.matches('.falling, .burning, .is-scattering')) byUid.set(u, od); });
     const kept = [];
-    fresh.forEach((nu, i)=>{
-      const od = old[i], ou = od.getAttribute('data-uid'), nuU = nu.getAttribute('data-uid');
-      if(ou && nuU && ou === nuU && !od.matches('.falling, .burning, .is-scattering')){ kept.push(ou); return; }
-      if(!ou && !nuU && od.outerHTML === nu.outerHTML) return;
-      row.replaceChild(nu, od);
+    const want = fresh.map((nu, i)=>{
+      const nuU = nu.getAttribute('data-uid');
+      if(nuU && byUid.has(nuU)){ const od = byUid.get(nuU); byUid.delete(nuU); kept.push(nuU); return od; }
+      const od = old[i]; if(!nuU && od && !od.getAttribute('data-uid') && od.outerHTML === nu.outerHTML) return od; // an empty cell that did not change
+      return nu;
     });
+    const keep = new Set(want);
+    old.forEach(od=>{ if(!keep.has(od)) od.remove(); });
+    want.forEach((el, i)=>{ const cur = row.children[i]; if(cur !== el) row.insertBefore(el, cur || null); });
+    while(row.children.length > want.length) row.lastElementChild.remove();
     kept.forEach(u=>{ try{ updateCardHpDisplay(u); updateCardAtkDisplay(u); updateCardStatusDisplay(u); eq2Refresh(u); }catch(e){} });
     return true;
   }catch(e){ return false; }

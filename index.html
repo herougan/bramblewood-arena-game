@@ -11301,6 +11301,9 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
 .map-lock-label{position:absolute; left:50%; top:calc(100% + 4px); transform:translateX(-50%); z-index:12; width:max-content; max-width:130px; padding:2px 8px; border-radius:999px; background:rgba(30,22,12,.9); color:#ffe9b8; font:700 11px/1.25 'Baloo 2',system-ui,sans-serif; text-align:center; pointer-events:none; box-shadow:0 2px 6px rgba(0,0,0,.35); animation:lockLabelIn .18s ease-out both;}
 @keyframes lockLabelIn{from{opacity:0; transform:translateX(-50%) translateY(-3px);} to{opacity:1; transform:translateX(-50%);}}
 .map-spot.is-waiting{filter:grayscale(.7) brightness(.8); cursor:not-allowed;}
+/* 2026-10-30 (package UI6, X22): a spot hidden from the map (Whisper's Game) shows only in the layout editor, dimmed and marked */
+.map-spot.ui6-map-hidden{opacity:.45; outline:2px dashed rgba(200,60,60,.8); outline-offset:2px;}
+.map-spot.ui6-map-hidden .map-spot-name::after{content:' (hidden)'; color:#c33;}
 .map-spot .map-spot-lock{position:absolute; top:-6px; right:-6px; font-size:12px; line-height:1; filter:none;}
 /* 2026-10-24 (package MAP, owner 13:16 #16): the admin's bramble line is a button, and its small editor card */
 .castle-line.is-admin-edit{background:transparent; border:1px dashed rgba(255,235,190,.55); border-radius:8px; padding:1px 6px; cursor:pointer; font:inherit; color:inherit;}
@@ -43639,7 +43642,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=9d33f2373b", "es": "assets/lang/es.js?v=07d2075adc", "fr": "assets/lang/fr.js?v=d8989dcaf4", "id": "assets/lang/id.js?v=747d23f9ce", "it": "assets/lang/it.js?v=b7d8bba03d", "ja": "assets/lang/ja.js?v=b8b39d60b3", "ko": "assets/lang/ko.js?v=edd05010f7", "pt": "assets/lang/pt.js?v=858be4e64f", "ta": "assets/lang/ta.js?v=6513264fea", "tl": "assets/lang/tl.js?v=3403d086f2", "zh-Hans": "assets/lang/zh-Hans.js?v=a43b4e76f9", "zh-Hant": "assets/lang/zh-Hant.js?v=112dd58436"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=23061690bb", "es": "assets/lang/es.js?v=8f3c5e4a3d", "fr": "assets/lang/fr.js?v=051f22f208", "id": "assets/lang/id.js?v=f7afa6f8a6", "it": "assets/lang/it.js?v=fa56e1917e", "ja": "assets/lang/ja.js?v=9867155111", "ko": "assets/lang/ko.js?v=f6a58350d8", "pt": "assets/lang/pt.js?v=9f5d7b3bfe", "ta": "assets/lang/ta.js?v=18bd7a14e4", "tl": "assets/lang/tl.js?v=45592b3c8b", "zh-Hans": "assets/lang/zh-Hans.js?v=b623285c51", "zh-Hant": "assets/lang/zh-Hant.js?v=95defb039c"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -43870,8 +43873,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar-new-in": "New in {h}h",
   "ui.ar-rules-tip": "Every Arena fight today plays under these. Ranked Live plays Standard.",
   "ui.ar-modes": "More ways to play",
-  "ui.ar-group-name": "Group Dungeon",
-  "ui.ar-group-sub": "A dungeon with live players, side by side. Your group runs will be recorded here.",
+  "ui.ar-group-name": "Multiplayer",
+  "ui.ar-group-sub": "A dungeon with live players, side by side. Each run uses Energy. Your runs will be recorded here.",
   "ui.ar-group-soon": "Coming soon",
   "ui.ar-log-title": "Match log",
   "ui.ar-log-pve": "PvE",
@@ -44323,10 +44326,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.kit-shop-rule": "{max} items a fight, against the computer.",
   "ui.dungeon-sweep": "🧹 Sweep",
   "ui.premium-badge": "Premium",
-  "ui.dungeon-sweep-locked": "Sweeping daily dungeons is a perk for supporters",
-  "ui.dungeon-sweep-tip": "Sweep floor {floor}: the CPU plays it. Costs {e}⚡ and a Dungeon key.",
+  "ui.dungeon-sweep-locked": "Sweeping Dailies is a perk for supporters",
+  "ui.dungeon-sweep-tip": "Sweep floor {floor}: the CPU plays it. Costs {e}⚡ and a key.",
   "ui.upgrades-tab": "Upgrades",
-  "ui.forge-upgrades-blurb": "Upgrade the Forge itself: its tier (how far it can temper), your max Energy and the Dungeon key ring.",
+  "ui.forge-upgrades-blurb": "Upgrade the Forge itself: its tier (how far it can temper), your max Energy and the key ring for the Dailies.",
   "ui.budget-head-ok": "⚖️ Within budget · N = {n} (Base = {base})",
   "ui.budget-head-over": "⚖️ Over budget · N = {n} (Base = {base})",
   "ui.budget-head-under": "⚖️ Well under budget · N = {n} (Base = {base})",
@@ -44369,27 +44372,27 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.place-nest": "Nest",
   "ui.place-tavern": "The Tavern",
   "ui.keyring-title": "🗝️ Key ring",
-  "ui.keyring-tip": "Your Dungeon keys fill up to this many each day.",
-  "ui.keyring-holds": "Holds {cap} Dungeon keys",
+  "ui.keyring-tip": "Your keys for the Dailies fill up to this many each day.",
+  "ui.keyring-holds": "Holds {cap} keys",
   "ui.keyring-next": "Next: holds {cap} keys",
   "ui.keyring-btn": "⬆️ Widen the key ring",
   "ui.keyring-max": "Fully widened: {cap} keys.",
   "toast.keyring-short": "🗝️ Not enough for the key ring yet: the button shows what it needs.",
-  "toast.keyring-up": "🗝️ The key ring now holds {cap} Dungeon keys.",
-  "ui.dungeon-no-keys": "No Dungeon keys left. They fill up to {cap} in {h}h.",
-  "ui.dungeon-keys-count": "🗝️ Dungeon keys: {n}/{cap}",
+  "toast.keyring-up": "🗝️ The key ring now holds {cap} keys.",
+  "ui.dungeon-no-keys": "No keys left. They fill up to {cap} in {h}h.",
+  "ui.dungeon-keys-count": "🗝️ Keys: {n}/{cap}",
   "ui.dungeon-keep-climbing": "Floor {floor}: keep climbing",
   "ui.dungeon-each-floor-key": "each floor uses a key",
   "ui.dungeon-best-floor": "best: floor {floor}",
   "ui.dungeon-refill-in": "keys refill in {h}h",
-  "ui.dungeon-key-rule": "Each floor you fight uses a Dungeon key and its Energy, win or lose, and so does each Sweep run. Lose or forfeit a floor and the climb starts again from floor 1. Your keys fill up to {cap} each day, and a bonus one comes every Monday.",
-  "ui.dungeons-sub": "Endless climbs, a little harder every floor. Each floor uses a Dungeon key, win or lose; lose and the climb starts again from floor 1.",
-  "ui.dungeon-keys-row": "Dungeon keys: {n}/{cap} · they fill up again in {h}h · a bonus one every Monday",
+  "ui.dungeon-key-rule": "Each floor you fight uses a key and its Energy, win or lose, and so does each Sweep run. All the Dailies share the same keys. Lose or forfeit a floor and the climb starts again from floor 1. Your keys fill up to {cap} each day, and a bonus one comes every Monday.",
+  "ui.dungeons-sub": "Endless climbs, a little harder every floor. Each floor uses a key (all the Dailies share them), win or lose; lose and the climb starts again from floor 1.",
+  "ui.dungeon-keys-row": "Keys: {n}/{cap} · they fill up again in {h}h · a bonus one every Monday",
   "ui.dungeon-keys-left": "🗝️ {n} left",
-  "ui.dungeon-fight-uses-key": "each fight here uses a Dungeon key, win or lose",
-  "toast.dungeon-key-used": "🗝️ A Dungeon key used: {n} left.",
+  "ui.dungeon-fight-uses-key": "each fight here uses a key, win or lose",
+  "toast.dungeon-key-used": "🗝️ A key used: {n} left.",
   "ui.sweep-key-a-run": "🗝️ 1 a run ({n} left)",
-  "results.sweep-keys-used": "🗝️ Dungeon keys used: {n} ({left} left)",
+  "results.sweep-keys-used": "🗝️ Keys used: {n} ({left} left)",
   "ui.tower-free-tag": "0 reward · free",
   "ui.tower-cost-refund": "⚡ {n} · refunded if you lose",
   "ui.tower-cost-free": "⚡ 0 · free · 0 reward: you have cleared this floor",
@@ -44551,7 +44554,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.res3-lt-none": "No reward",
   "ui.pl2-rank-reward": "{rank} reward",
   "ui.pl2-pack-n": "Pack {n}",
-  "ui.pl2-coop": "Co-op",
+  "ui.pl2-coop": "Multiplayer",
   "coach.pl2-trigger": "⚡ This chip is a trigger — read the card.",
   "coach.tl-what": "⚡ This chip is a trigger: something the card does by itself when its moment comes. The left says when, the right says what. Rest your pointer on it (or press and hold) to read it in full.",
   "coach.tl-when": "When does it go off? On Spawn: the moment the card is played. On Attack and On Hit: when it swings and when its blow lands. On Attacked: when it is hit. On Kill and On Death: when it kills and when it dies. On Turn Start (🕐): every round once it is Ready.",
@@ -45288,7 +45291,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ux2-br-skirmish": "Skirmishes",
   "ui.ux2-br-boss": "Bosses",
   "ui.ux2-br-raid": "Raids",
-  "ui.ux2-br-tower": "Tower & dungeons",
+  "ui.ux2-br-tower": "Tower, Dailies & Dungeons",
   "ui.ux2-fx-label": "Effect",
   "ui.ux2-fx-all": "All effects",
   "ui.ux2-fx-start-lumber": "Starting Lumber",
@@ -45798,7 +45801,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.bl-short-lumber": "Once its conditions hold, it pays {n} Lumber: a copy of it grows beside it, with +1/+1.",
   "ui.bl-desc": "Once, at the start of the first round its conditions hold ({when}): a copy of it grows in a free slot beside it, with +1/+1, its damage and its stat changes but none of its counters. The unit itself is unchanged; the copy can bloom once too.",
   "ui.bl-desc-lumber": "Once, at the start of the first round its conditions hold ({when}) and you have {n} Lumber: it pays the Lumber and a copy of it grows in a free slot beside it, with +1/+1, its damage and its stat changes but none of its counters. The unit itself is unchanged; the copy can bloom once too.",
-  "ui.bl-codex": "Conditions: Wet (rain, the Tide in, or a beach, river or sea map), Sunny (day or Twilight, with no Rain, Fog or darkness), Killed an enemy (this unit has killed an enemy unit), and Tide, Ebb, Night, Day, Twilight, Wind, Dark, Heat, Frost, Full Moon, Rain. Beside it means left or right, or in front or behind on a board with more rows (a raid, the Group Dungeon). With no free slot beside it, it waits and tries again next round. The copy arrives with its printed Wait and leaves no card behind when it dies.",
+  "ui.bl-codex": "Conditions: Wet (rain, the Tide in, or a beach, river or sea map), Sunny (day or Twilight, with no Rain, Fog or darkness), Killed an enemy (this unit has killed an enemy unit), and Tide, Ebb, Night, Day, Twilight, Wind, Dark, Heat, Frost, Full Moon, Rain. Beside it means left or right, or in front or behind on a board with more rows (a raid, Multiplayer). With no free slot beside it, it waits and tries again next round. The copy arrives with its printed Wait and leaves no card behind when it dies.",
   "ui.bl-is-copy": "copy",
   "ui.bl-bloomed": "bloomed",
   "ui.bl-log": "🌸 {name} blooms: a copy of it grows beside it, with +1/+1.",
@@ -46092,7 +46095,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-invite": "Invite",
   "ui.ar3-invite-btn": "Invite",
   "ui.ar3-invite-sent": "Invite sent to {v1}.",
-  "ui.ar3-invited": "{name} invites you to the Group Dungeon",
+  "ui.ar3-invited": "{name} invites you to Multiplayer",
   "ui.ar3-floor": "Floor {n}/{total}",
   "ui.ar3-floor-cleared": "Floor cleared!",
   "ui.ar3-floor-time": "The tide came back: out of rounds",
@@ -46104,8 +46107,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ar3-run-cleared": "The Tidelock Vault is cleared!",
   "ui.ar3-run-over": "The climb is over",
   "ui.ar3-floors-cleared": "Floors cleared: {n}/{total}",
-  "ui.ar3-back": "Back to the dungeons",
-  "ui.coop2-tab-sub": "Dungeons you climb with friends, side by side on one board.",
+  "ui.ar3-back": "Back to Multiplayer",
+  "ui.coop2-tab-sub": "Dungeons you climb with friends, side by side on one board. Each run uses Energy.",
   "ui.coop2-group-sub": "A normal fight with a friend: each of you holds a row on one board, and you may play into your ally's empty slots too.",
   "ui.coop2-group-facts": "{floors} floors and a boss · {n} players · ⚡{energy} each",
   "ui.coop2-players-n": "{n} players",
@@ -46130,7 +46133,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.coop2-taken": "{name} took that slot first. Your card is back in your hand.",
   "ui.coop2-taken-anon": "That slot was taken first. Your card is back in your hand.",
   "ui.coop2-refused": "That play isn't possible right now.",
-  "ui.coop2-unsupported": "This card can't be played in the group dungeon yet.",
+  "ui.coop2-unsupported": "This card can't be played in Multiplayer yet.",
+  "ui.ui6-dailies": "Dailies",
   "ui.coop2-one-play": "One play per turn. Wait for your allies, or pass.",
   "ui.coop2-need-lumber": "Not enough Lumber.",
   "ui.coop2-defs-differ": "Your card data differs from the host's. Reload the game and join again.",
@@ -51209,7 +51213,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '50978809aca4', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'da1b31605e4c', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -54182,7 +54186,7 @@ function fullCardHTML(defId, liveCard, opts){
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
-    ${liveCard?cardActionLogHTML(liveCard.uid):''}`;
+    ${liveCard ? cardActionLogHTML(liveCard.uid) : opts.logUid != null ? cardActionLogHTML(opts.logUid) : '' /* 2026-10-30 (UI6, X4): the printed card plus this unit's own hit log */}`;
 }
 // The popover's text for a card outside a fight (2026-10-30, package CS-C, owner CS-1): its skills and flavour, the same lines as fullCardHTML,
 // for the gallery popover beside a preview or a chip (wireRewardZoom), which shows the Full card above it.
@@ -54344,7 +54348,12 @@ function castleHoverHTML(hqSide){
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(Date.now() - lastTouchAt < 1500 && el !== touchedEl) return;
+    // 2026-10-30 (package UI6, X2): the board redrew under a resting pointer (an attack, a hit): the same card's new element takes over the
+    // open popover, which stays as it is (no close, no new 1 s wait, no opening animation)
+    const key = popKeyOf(el);
+    if(!pop.hidden && popKey && key === popKey){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } bindPopSrc(el); return; }
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
+    if(key === lostKey && Date.now() - lostAt < 900){ openPopFor(el, {quiet:true}); return; } // it was closed only by a redraw a moment ago
     hoverTimer = setTimeout(()=> openPopFor(el), HOVER_POP_DELAY_MS);
   });
   // Press and hold on a phone in battle (2026-10-12, user: "On mobile, the hold to view stats should be shortened to
@@ -54382,7 +54391,7 @@ function castleHoverHTML(hqSide){
   document.addEventListener('contextmenu', e=>{ if((lastPointerType === 'touch' || lastPointerType === 'pen') && (holdT || holdFired || Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 1500)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   // iOS starts its own drag from a held draggable card (the deck builder's pool): touch drags are the touch shim's, never the browser's
   document.addEventListener('dragstart', e=>{ if(e.isTrusted && (lastPointerType === 'touch' || lastPointerType === 'pen')){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
-  function openPopFor(el){
+  function openPopFor(el, how){
       hoverTimer = null;
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
@@ -54393,34 +54402,88 @@ function castleHoverHTML(hqSide){
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
       const fogEl = matchState && el.closest ? el.closest('.board-card.is-fogged') : null; // 2026-10-21 (package FOG): a fogged unit's tooltip is "Hidden in the fog"
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
+      // 2026-10-30 (package UI6, X4, owner: "When hovering around the card, can we see the original card's desc instead of the instance's? So the HP,
+      // all skills as is"): a unit on the board shows its card as printed (its Attack and Health at its level, every skill it was printed with);
+      // what happened to it in this fight (damage, buffs, statuses, a lost skill) stays on its tile. Only its own hit log is still added.
+      const liveForLog = liveCardFromHoverEl(el);
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false; popSrc = el;
+      pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
       positionPop(el);
-      try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F
+      if(!(how && how.quiet)) try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F (UI6: not again when a redraw had closed it)
       try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
-      TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
-      { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
+      bindPopSrc(el);
+      { const lc = liveForLog; if(lc) lastPeekUid = lc.uid; }
   }
+  // 2026-10-30 (package UI6, X2, owner: "When hovering over a card, I noticed that the card desc tooltip goes in and out as animations play."):
+  // in a fight the rows are redrawn many times a round, and an attack lifts, hides or fades the card under the pointer for a moment. Each of
+  // those closed the popover (its element was gone, hidden or no longer :hover) and the next mouseover opened it again a second later with its
+  // pop-in: in and out. The popover now belongs to the card (its unit's uid, a hand card's uid, else its card id), not to one element:
+  //  - a redraw: the same card's new element under the pointer (or, in a fight, anywhere on the page while the pointer is still inside the
+  //    spot the card stood on) takes over, and the popover stays put, unchanged;
+  //  - it closes when the pointer leaves that spot and is not on the same card, or when the card is gone from the page (it died).
+  // Its text is the printed card (X4), so a redraw has nothing to change in it but the hit log.
+  let popKey = null, popRect = null, lostKey = null, lostAt = 0, ptX = -1, ptY = -1;
+  document.addEventListener('pointermove', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  document.addEventListener('mouseover', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  function popKeyOf(el){
+    if(!el) return null;
+    if(matchState){ const u = el.closest('[data-uid]'); if(u) return 'u' + u.getAttribute('data-uid'); const h = el.closest('[data-handuid]'); if(h) return 'h' + h.getAttribute('data-handuid'); }
+    return 'd' + (el.getAttribute('data-defid') || '') + '|' + (el.getAttribute('data-hq') || '') + '|' + (el.dataset.fieldhover || '');
+  }
+  function sameCardElByKey(key){
+    if(!key) return null; let sel = null;
+    if(key[0] === 'u') sel = `[data-uid="${CSS.escape(key.slice(1))}"]`; else if(key[0] === 'h') sel = `[data-handuid="${CSS.escape(key.slice(1))}"]`; else return null;
+    const host = [...document.querySelectorAll(sel)].find(n=> !pop.contains(n)); if(!host) return null;
+    return host.matches('[data-defid]') ? host : host.querySelector('[data-defid]');
+  }
+  const inRect = (r, x, y)=> !!r && x >= r.left - 2 && x <= r.right + 2 && y >= r.top - 2 && y <= r.bottom + 2;
+  function bindPopSrc(el){
+    popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
+    TipWatch.track(pop, el, ()=>{ if(!rebindPop()) closePopLost(); }, {steady: !!matchState});
+    // the hit log is the one live part: refreshed in place when it changed
+    try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
+      if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
+  }
+  // the card under the pointer, or (a fight only) the same unit anywhere while the pointer still rests on the spot it stood on
+  function rebindPop(){
+    if(pop.hidden || !popKey) return false;
+    let under = null; try{ under = document.elementsFromPoint(ptX, ptY).map(n=> n.closest && n.closest('[data-defid]')).find(n=> n && !pop.contains(n)); }catch(e){}
+    if(under && popKeyOf(under) === popKey){ bindPopSrc(under); return true; }
+    if(matchState && inRect(popRect, ptX, ptY)){
+      const same = sameCardElByKey(popKey);
+      if(same){ popSrc = same; TipWatch.track(pop, same, ()=>{ if(!rebindPop()) closePopLost(); }, {steady:true}); return true; } // still watched: it closes once the unit is gone
+    }
+    return false;
+  }
+  function closePopLost(){ lostKey = popKey; lostAt = Date.now(); pop.hidden = true; popSrc = null; popKey = null; }
+  function closePop(){ pop.hidden = true; popSrc = null; popKey = null; }
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
   // popover stuck (e.g. over the Victory screen). Close it once its card is gone or no longer hovered.
   let popSrc = null;
-  document.addEventListener('mousemove', ()=>{
+  document.addEventListener('mousemove', e=>{
     if(pop.hidden || !popSrc || stripHeld) return;
-    if(!popSrc.isConnected || !popSrc.matches(':hover')){ pop.hidden = true; popSrc = null; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(popSrc.isConnected && popSrc.matches(':hover')){ try{ const r = popSrc.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(_){} return; }
+    if(!rebindPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
   }, {passive:true});
-  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; popSrc = null; };
+  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); };
   document.addEventListener('mouseout', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     if(stripHeld) return;
-    pop.hidden = true;
+    // UI6 (X2): onto the same card's new element, or the card moved out from under a resting pointer (a lunge): it stays
+    const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('[data-defid]') : null;
+    if(!pop.hidden && popKey && to && popKeyOf(to) === popKey){ bindPopSrc(to); return; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(!pop.hidden && popKey && popKeyOf(el) === popKey && rebindPop()) return;
+    closePop();
   });
-  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; });
+  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); });
   // A click usually re-renders the card away, and a removed element never fires mouseout — so the
   // popover would stay stuck on screen. Any click closes it.
   // ...except the lift that ends a press-and-hold peek: that one keeps the details open and doesn't play or pick the card.
@@ -64053,6 +64116,7 @@ const TipWatch = (()=>{
     live.forEach((rec, tip)=>{
       if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
       if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
+      if(rec.steady){ tip.style.opacity = ''; return; } // 2026-10-30 (package UI6, X2): the card popover does not fade with a card an animation dims
       const o = effOpacity(rec.anchor);
       if(o < 0.03){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
       tip.style.opacity = o < 0.98 ? o.toFixed(2) : '';
@@ -64060,7 +64124,7 @@ const TipWatch = (()=>{
     if(live.size) raf = requestAnimationFrame(tick);
   }
   return {
-    track(tip, anchor, hide){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; })}); if(!raf) raf = requestAnimationFrame(tick); },
+    track(tip, anchor, hide, opts){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; }), steady: !!(opts && opts.steady)}); if(!raf) raf = requestAnimationFrame(tick); },
     release(tip){ if(tip){ live.delete(tip); tip.style.opacity = ''; } },
     count(){ return live.size; },
   };
@@ -65617,7 +65681,7 @@ const FEATURE_SPOTS = [
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'coop', icon:'👥', get name(){ return gdThemedName(); } /* RES3 (2026-10-26, B3): its own themed name */, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
-  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, mapHidden:true /* 2026-10-30 (UI6, X22): off the map for everyone, Admin too (ui6SpotOffMap) */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
   {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
@@ -65696,6 +65760,11 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
 function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); if(sp && pl2SpotHidden(sp)) return false; return !sp || featureUnlocked(sp.key); }
 // 2026-10-25 (package PL2, owner 22:28 #6): a spot marked adminOnly (Whisper's Game) is neither on the map nor a tab for anyone but Admin Mode.
 function pl2SpotHidden(sp){ return !!(sp && sp.adminOnly && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
+// 2026-10-30 (package UI6, owner X22: "Hide whisper's game from the map for now."): a spot marked mapHidden is not drawn on the map for anyone,
+// Admin Mode included (PL2's adminOnly still showed it to Admin, and the owner plays in Admin Mode). Only the map layout editor (decorEditing)
+// still draws it, dimmed and marked "hidden", so it can be placed. Bringing it back: drop mapHidden from its FEATURE_SPOTS row.
+// Its tab follows tabOpen / pl2SpotHidden as before (Admin can still open it from the Play tab).
+function ui6SpotOffMap(sp){ if(!sp || !sp.mapHidden) return false; try{ return !decorEditing(); }catch(e){ return true; } }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
@@ -65802,7 +65871,7 @@ function mapSpotsHTML(map, positions, progress){
   // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
   const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
     const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
-  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !spotAvailable(sp, progress)).map(sp=>{
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
     const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
@@ -65810,7 +65879,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -65818,7 +65887,7 @@ function mapSpotsHTML(map, positions, progress){
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key), waits = !!(sp.needs && !featureUnlocked(sp.needs)); // 2026-10-24 (package MAP, owner 13:16 #20): waits for the Notices
-    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}${sp.mapHidden ? ' ui6-map-hidden' /* X22: only the layout editor draws it */ : ''}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${waits ? '<span class="map-spot-lock" aria-hidden="true">🔒</span>' : open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
@@ -67015,7 +67084,7 @@ function boonCountOfMatch(m){ try{ return m && m.engine && m.engine.boonState ? 
 // rows keep the long words (boonText, boonCountLine).
 function boonTheme(id){ return TX('ui.pl1-boon-theme-' + id); }
 function boonShortText(id){ return TX('ui.pl1-boon-' + id) + ' ' + TX('ui.pl1-boon-theirs', {theme: boonTheme(id)}); }
-function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? `${st.have}/${st.total} ${boonTheme(row.selfish)}` /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
+function boonRowWithCount(row, st){ if(!row || !st) return row; row.short = row.selfish ? boonTheme(row.selfish) /* 2026-10-30 (package UI6, X23, owner: "WHy does Venom Gland field effect say 12/17 reptiles? Don't."): the theme only, no count; was `${st.have}/${st.total} ${theme}`. */ /* PL2 (2026-10-25): no TX key: "{have}/{total} {theme}" has no word of its own, so no pack could compile it (i18n-templates); the theme is translated */ : boonCountLine(st); row.boonOn = !!st.on; return row; }
 // 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
 // opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
 // stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
@@ -72952,7 +73021,7 @@ function unlockedDailyDungeons(progress){
   }catch(e){ return []; }
 }
 function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
-function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : 'Daily Dungeons'; }
+function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : TX('ui.ui6-dailies'); } // 2026-10-30 (UI6, X19): "Dailies" (was "Daily Dungeons")
 // 2026-10-23 (package AR3): the daily dungeons' own switch (their keys, the 🗝️ button, the Forge's key ring) is dailyDungeonsOpen; the
 // Dungeons tab itself also opens for the Group Dungeon (gdPlayerOpen), which players see while the daily dungeons stay hidden (TU2).
 function dailyDungeonsOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
@@ -73577,8 +73646,8 @@ function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
     const note = open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : map.preview ? ' · 🛠️ admin preview' : ' · 🛠️ locked for players';
     return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
       <div class="world-stop is-side is-dungeon map-theme-${map.id} ${open ? '' : 'is-locked is-admin-mark'} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
-        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (daily dungeon)')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
-        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${note}</div></div>
+        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (' + TX('ui.ui6-dailies') + ')')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (' + TX('ui.ui6-dailies') + ')')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ ${escapeHtml(TX('ui.ui6-dailies'))}${note}</div></div>
       </div>`;
   }).join('');
 }
@@ -84537,7 +84606,11 @@ function renderBoard(opts){
   // on screen (the card itself at full opacity) right before the rows are rebuilt has been seen: it keeps its place, no second entrance.
   if(needEnemy || needMine){ try{ const seen = [];
     [needEnemy ? rowEnemy : null, needMine ? rowMine : null].forEach(r=>{ if(r) r.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const u = el.getAttribute('data-uid'); if(!knownBoardUids.has(u)) seen.push([u, el]); }); });
-    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); }catch(e){} } // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    seen.forEach(([u, el])=>{ const cs = getComputedStyle(el); if(parseFloat(cs.opacity) >= .9 && cs.visibility !== 'hidden' && cs.display !== 'none') knownBoardUids.add(u); }); // the card, not its tile: a spawn's own pop (Sprout, the portal) dims the tile for a moment
+    // 2026-10-30 (package UI6, X11): the render that ends the match keeps each unit's element (pl2ReconcileRow); a token still on its way in
+    // (spawned by the deciding blow) is already on the page, so it is not "new" here: its own entrance goes on, it never restarts from opacity 0
+    // (it vanished and came back under the end sign). revealBoardCardsAtEnd lands it once the match is over.
+    if(slotView && (m.ending || m.over)) seen.forEach(([u])=> knownBoardUids.add(u)); }catch(e){} }
   const pl2End = !!(slotView && (m.ending || m.over));
   const pl2Snap = pl2StatSnap([needEnemy ? rowEnemy : null, needMine ? rowMine : null]); // PL2 (2026-10-25, #5): the numbers before the redraw
   if(needEnemy && rowEnemy){ const h = emojiRows(rowHTML(m.players[2], p2Rows)); if(!(pl2End && pl2ReconcileRow(rowEnemy, h))) rowEnemy.innerHTML = h; }
@@ -89067,19 +89140,31 @@ function settleStrayBoardCards(waited){
 // just landed included, was a new element for a frame (its art decoded again, its hover / float / glow animations started over), the
 // "redraw". Now, once the match is decided, a row whose cells are the same is kept: a cell holding the same unit keeps its element and
 // has its numbers, statuses and Health bar patched in place; only cells that changed (a unit that fell, a token that arrived) are swapped.
-// Returns false (the caller rebuilds the row as before) when the column count changed.
+// Returns false (the caller rebuilds the row as before) when the row was empty.
+// 2026-10-30 (package UI6, owner X11: "Tokens still disappear on game end then reappear again."): the cell-by-cell match above gave up
+// (and the row was rebuilt with innerHTML) whenever the number of cells changed, which is exactly the deciding round where a unit fell or a
+// death spawn put tokens down: every unit on that row, the tokens included, became a new element (art decoded again, the token's look and
+// float started over) under the end sign. Seen headless: a win whose last blow killed a Rot-Swollen Carcass (3 Maggot tokens) rebuilt both
+// rows 1.8 s before the sign. Cells are now matched by their unit's uid wherever they sit: a unit still on the board keeps its element
+// (numbers, statuses, Health bar patched in place); only a unit that fell or a card that arrived is removed or inserted. Kept elements are
+// not moved unless the order really changed.
 function pl2ReconcileRow(row, html){
   try{
     const tmp = document.createElement('div'); tmp.innerHTML = html;
     const fresh = [...tmp.children], old = [...row.children];
-    if(!old.length || fresh.length !== old.length) return false;
+    if(!old.length) return false;
+    const byUid = new Map(); old.forEach(od=>{ const u = od.getAttribute('data-uid'); if(u && !od.matches('.falling, .burning, .is-scattering')) byUid.set(u, od); });
     const kept = [];
-    fresh.forEach((nu, i)=>{
-      const od = old[i], ou = od.getAttribute('data-uid'), nuU = nu.getAttribute('data-uid');
-      if(ou && nuU && ou === nuU && !od.matches('.falling, .burning, .is-scattering')){ kept.push(ou); return; }
-      if(!ou && !nuU && od.outerHTML === nu.outerHTML) return;
-      row.replaceChild(nu, od);
+    const want = fresh.map((nu, i)=>{
+      const nuU = nu.getAttribute('data-uid');
+      if(nuU && byUid.has(nuU)){ const od = byUid.get(nuU); byUid.delete(nuU); kept.push(nuU); return od; }
+      const od = old[i]; if(!nuU && od && !od.getAttribute('data-uid') && od.outerHTML === nu.outerHTML) return od; // an empty cell that did not change
+      return nu;
     });
+    const keep = new Set(want);
+    old.forEach(od=>{ if(!keep.has(od)) od.remove(); });
+    want.forEach((el, i)=>{ const cur = row.children[i]; if(cur !== el) row.insertBefore(el, cur || null); });
+    while(row.children.length > want.length) row.lastElementChild.remove();
     kept.forEach(u=>{ try{ updateCardHpDisplay(u); updateCardAtkDisplay(u); updateCardStatusDisplay(u); eq2Refresh(u); }catch(e){} });
     return true;
   }catch(e){ return false; }
