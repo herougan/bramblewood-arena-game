@@ -54,6 +54,7 @@
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
       if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }
       if(e.scale === 'half') return val * (1 + (n > 1 ? Math.floor(n / 2) : 0));
+      if(e.scale === 'mult') return 0; // TUT2 (2026-10-30): Slow is a multiplier on the card's S (cardS, bramblewood-budget.js slowSMultOf), no price of its own
       // EN5 (2026-10-24): `plus` names a skill its number buys on top (Hemorrhage N: the doubling's fixed price + Bleed N's)
       if(e.plus && v !== true && n > 0){ const x = skillCost(e.plus, n); return val + (x || 0); }
       return val;
@@ -126,6 +127,8 @@
       if(BB.EN7_EXTRA_HIT){ Object.keys(BB.EN7_EXTRA_HIT).forEach(x=>{ if(!effects || !effects[x]) return; let st = 0;
         (BB.EN7_EXTRA_HIT_KEYS || []).forEach(q=>{ if(effects[q]) st += skillCost(q, effects[q]) || 0; });
         if(st > 0){ const c = r2(BB.EN7_EXTRA_HIT[x] * st); S += c; parts.push(['combo', x + '+status', c, BB.EN7_EXTRA_HIT[x] + ' x ' + r2(st)]); } }); }
+      // TUT2 (2026-10-30, owner ENG13-2 "The price should be *0.85 instead"): Slow multiplies the rest of a positive S (bramblewood-budget.js slowSMultOf)
+      if(effects && effects.slow && S > 0 && BB.slowSMultOf){ const sm = BB.slowSMultOf(effects, SK.slow); if(sm !== 1){ const c = r2(S * sm - S); S += c; parts.push(['modifier', 'slow', c, 'x' + sm + ' of ' + r2(S - c)]); } }
       return {S:r2(S), parts, missing};
     }
     const g = (k, d)=> B[k] == null ? d : B[k];
