@@ -1349,3 +1349,36 @@ The rules as built (engine: `slowRank` in `pickNextAttacker`; `en5FromAbove` in 
 | Effect | Function | Look | Event |
 |---|---|---|---|
 | 🐌 Slow | `SKILL_ICON.slow`, the passive row | the keyword icon and its line on the card | — (the order only) |
+
+## 2026-10-30 additions (package ENG14): Bola N and Pinned, Anadromous, Mirage for each player, 8-8 Pitch Black, elite opening hand, the CPU's save plan
+
+The rules as built (engine: the Bola shot in `fireShotsOf`, `applyShotStatus('pin')`, `bolaPinnable` / `bolaPinSpend`, the Pin check in
+`discoverEligibleAttackers`, `pickNextAttacker` and `rowSwingReady`, `stuckFast`; `anadromousOf` in `condStatsOf`; `mirageOwnerKey` and the Mirage
+tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFreeCard`; app: `applySkirmishSetup`, 8-8's `rules.dark`).
+- **Bola N 🪀** (`effects.bola`; owner X26: "Bola! Works like arrow, but pins targets down somehow... maybe they can't move and attack? but can
+  use skills?"): Arrow N's shot (Speed 1, the enemy facing it, else the nearest, else the bramble; Fletcher N adds). A unit it hits is
+  **Pinned 📌** (`c.pinDown`) for its next turn: that swing is lost (a Pin laid before it swung this round costs this round's swing) and it
+  can't move or be moved; its skills, shots and triggers still work. An unspent Pin runs out at the end of the next round. A unit that broke
+  free (spent or ran out) last round or this one can't be Pinned again, so one Bola costs a unit at most every other swing; no Pin on a
+  Structure or a cage. Priced by logic: Arrow N + 2 (`canonical/skill-costs.json`). On no card yet (decision ENG14-3).
+- **Anadromous 🐟** (`effects.anadromous`; owner X20 / ANAD-1: "Get tide benefits +2 Health in non-sea, +1 attack in sea."): +1 Attack on a
+  salt-water fight (`rules.saltMap`: the beach and reef biomes, today maps `mb`, `mk`, `m7` and `mj`,
+  or a fight that sets it), +2 Health anywhere else. The map never changes mid-fight, so one half is always on; its pip shows 🌊 or 🏞️.
+  Priced 2 (either half is 2 stat points under 2A + H). On no card yet (decision ENG14-4).
+- **Mirage, each player** (owner X10): every round from round 2, each player gets one Illusion beside one of their own units (was one unit
+  of either side). A side's units are grouped by who played them: a co-op seat (`coopSeat`), a raid ally (`allyOf`), else the side's own
+  player; a middle / back-row unit's Illusion goes into its own row and is that player's.
+- **8-8 (The Stalactite Warden, Map 8's final elite) is Pitch Black**: 1 in 2 misses for units without Darksight, Nocturnal or a light.
+- **Elite-kind fights deal the CPU a 4-card opening hand** (elite, champion, mini-boss; not dungeons or bosses; owner X25).
+- **The CPU saves for a big card** (owner X24): with a card worth 1.5x its best paying play, short only of Lumber / Stone / Metal and within 3
+  pitches, it plays only free cards and pitches for it, at most 2 turns held back for one card, never while losing badly (bramble under 40%,
+  your open swings at least half its bramble, or 2+ more units and 4+ more Attack). It gathers for the most valuable card in reach, and pitches
+  its best free play when that makes the big card payable at once.
+
+| Effect | Function | Look | Event |
+|---|---|---|---|
+| 🪀 Bola | `SKILL_ICON.bola`, the evergreen row | the shot (an `arrow` event with `bola`) | `arrow` (bola) |
+| 📌 Pinned | `en4StatusBadges` neighbour badge, `LIVE_STATUS_ROWS`, `s17SkillVfx` | 📌 badge, "📌 Pinned" float, its status line | `statusFx pinDown`, `skipTurn pinned`, `statusEnd pinDown` |
+| 🐟 Anadromous | EN5's state chip (`anadromousSea` 🌊 / `anadromousRiver` 🏞️) | the chip lit for the fight | `statusFx stateSkill` |
+| 🪞 Mirage | the field row | one Illusion per player | `fieldTick mirage` (row), `spawn` |
+

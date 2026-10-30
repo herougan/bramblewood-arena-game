@@ -164,6 +164,7 @@ Canonical: `canonical/map-pools.json` (card pools), the maps in `arena_app.js`, 
 - **A side map that opens late fights its own PRO / BPRO decks at the road's enemy level of the map it opens on** (the mean over that map's road fights; Level 1 otherwise). **Built (ENG10, 2026-10-26).** [PREF-3; `proLateSideLevel` in `arena_app.js`]
 - **A PvP stranger's deck (Collection PvP) is levelled to your battle rating:** Level = 1 + (your BR / its BR at Level 1 - 1) / 0.31, clamped 1-10 (a fractional level mixes two stat steps); Standard PvP stays at Level 1. **Built (ENG10, 2026-10-26).** [FIX3-4; `pvpStrangerLevel`]
 - **Tutorial fights are T-1 to T-5;** tutorial brambles keep 9 and 11 Health, and the editor's value becomes the one used. [TU-1, TU2-3]
+- **Field effects that hand out units act per player:** Mirage gives each player (co-op seat, raid ally, each side) its own Illusion a round. **Built (ENG14, 2026-10-30).** [owner X10]
 - **Raid bosses sit near 20% win rate** and are rebalanced from where players unlock the raid. [RW2-4; tuning guide section 10]
 
 ## 6. CPU
@@ -173,6 +174,9 @@ Source: `bramblewood-engine.js` (the AI) and `bramblewood-autobattle.js`.
 - **The lethal guard stays at every CPU level** (from Map 1): when your Ready units would swing into open columns for its bramble's Health and Shield, it plays the unit that blocks the most. [EN8-8]
 - **Every level pitches before it plays** (nothing useful: its least valuable card; an unaffordable card with 3+ in hand: a spare). [EN8-8]
 - **A bramble's healing heals an ally;** the Wildpath perks that mend stay "Repair Bramble". [EN8-3]
+- **The CPU saves for a high-cost card:** worth 1.5x its best paying play and within 3 pitches, it plays only free cards and pitches for it, at most 2 turns held back, never while losing badly. **Built (ENG14, 2026-10-30).** [owner X24]
+- **CPU allies field leaders:** a raid's CPU allies open with one; a group dungeon's CPU seat opens with its deck's leader. **Built (ENG14, 2026-10-30).** [owner X8]
+- **Elite-kind fights deal the CPU a 4-card opening hand** (elite, champion, mini-boss). **Built (ENG14, 2026-10-30).** [owner X25]
 - **The CPU does not save Lumber for its leader,** so costly leaders rarely come out (revisit with the difficulty retune). [LEAD-4]
 - **The CPU plays through fog from its own side:** it never sees a fogged unit it could not reach. [FOG1, EN-8]
 - **The CPU keeps a Lumber reserve and pitches only to reach it or to afford a high-value card** (it knows its deck's average cost; low-cost decks should not pitch rapidly). **Decided, not built yet (action item A2).** [EN6-3; owner #33]

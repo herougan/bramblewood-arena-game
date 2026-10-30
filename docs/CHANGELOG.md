@@ -21,6 +21,16 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **X23, no count on a selfish boon:** Venom Glands (and every selfish boon) shows its theme only ("Reptile", not "12/17 Reptile"). The skirmish editor keeps the count.
 - Tests: `tests/ui6-2026-10-30.js`, `tests/e2e/ui6_2026_10_30.py` (the e2e popover check fails on the pre-UI6 build: one close mid-round, live Health shown); stale checks updated in pl1, pl2, df3 e2e, dk, z. Shots in `docs/screens/ui6/`.
 
+## 2026-10-30 (package ENG14: Pitch Black 8-8, Mirage for everyone, Bola, Anadromous, a CPU that saves for big cards, elite +1 card)
+
+- **8-8, the Stalactite Warden, is Pitch Black** (owner X6): units without Darksight, Nocturnal or a light miss 1 in 2 there (the rest of Map 8 stays Darkness, 1 in 4).
+- **Mirage works for both sides, and for each player** (X10): every round each player gets an Illusion beside one of their own units (it used to be one Illusion a round from either side). In raids and group dungeons each ally gets their own, in their own row.
+- **Elite fights: the CPU starts with 4 cards** (X25): elite, champion and mini-boss fights (decision ENG14-2).
+- **The CPU saves for its big cards** (X24): it holds back Lumber-paying plays (at most 2 turns) and pitches toward a card worth 1.5x its best play, unless it is losing badly. Maps 0-20, 12 games a fight: cost 3+ cards played 19.5% -> 27.5% of those drawn (cost 2+: 22.4% -> 33.1%); player win rate 52.6% -> 54.3% (fights with no cost 3+ card unchanged, 50.3% -> 50.4%; with one 59.2% -> 65.6%). Decks not retuned (decision ENG14-1).
+- **CPU allies and leaders** (X8): a raid's CPU allies already opened with a leader; a group dungeon's CPU seat had none and now opens with its deck's leader (`bramblewood-coop.js`).
+- **New skill Bola N** (X26): Arrow N's shot, and the unit it hits is Pinned 📌 for its next turn (loses that swing, can't move; its skills work). A unit that just broke free can't be Pinned the round after. Priced Arrow N + 2. On no card yet (decision ENG14-3).
+- **New skill Anadromous** (X20, ANAD-1): +1 Attack on a sea map (beach, reef), +2 Health anywhere else. Priced 2. On no card yet (decision ENG14-4).
+- Texts in all 12 languages (Mirage's field line reworded). Tests: `tests/eng14-2026-10-30.js`.
 ## 2026-10-30 (package TIP1: shorter tooltips)
 
 - **The speed button's tooltip is one line** (owner 23:30: "too long ... simplify to what it exactly does"): "Changes the speed of the animation. Shift+Click to go back." The cycle list, the carry-over note and the locked-speed hints are gone from it.

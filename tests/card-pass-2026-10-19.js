@@ -127,7 +127,7 @@ const md = read('docs/card-pass-2026-10-19.md');
 ok(fs.existsSync(path.join(ROOT, 'docs', 'card-pass-2026-10-19.xlsx')), '5. the spreadsheet');
 ok(ST.every(([id])=> md.includes(defs[id].name)), '5. the doc lists every changed card');
 ok(Object.keys(P.SOURCELESS).every(id=> md.includes(defs[id].name)), '5. the doc lists the cards that stay sourceless');
-ok(read('docs/CHANGELOG.md').slice(0, 350000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it (BF2: 100,000 characters; 2026-10-21 (RP): 150,000; BF5 10-21: 250,000, the later packages pushed it down; BAL7 10-28: 260,000; PACK1 10-28: 275,000; 2026-10-29 RELFIX3: 300,000, SKL0 / REVIEW1 / RELFIX3 pushed it down; 2026-10-30 TUT3: 320,000, the TUT2 / UI4 / TUT3 entries pushed it down; 2026-10-30 COOP3: 350,000, the batch's TIP1 / UI5 / RAIDBAL1 / COOP3 entries pushed it to 321,762)
+ok(read('docs/CHANGELOG.md').slice(0, 360000).includes('package CB'), '5. a CHANGELOG entry near the top'); // 2026-10-19 (LV): later packages' entries sit above it (BF2: 100,000 characters; 2026-10-21 (RP): 150,000; BF5 10-21: 250,000, the later packages pushed it down; BAL7 10-28: 260,000; PACK1 10-28: 275,000; 2026-10-29 RELFIX3: 300,000, SKL0 / REVIEW1 / RELFIX3 pushed it down; 2026-10-30 TUT3: 320,000, the TUT2 / UI4 / TUT3 entries pushed it down; 2026-10-30 ENG14: 360,000, the batch's TIP1 / RAIDFX1 / ENG14 entries pushed it to 320,667)
 
 console.log(fail ? `card-pass-2026-10-19: ${fail} of ${n} failed` : `card-pass-2026-10-19: all ${n} passed`);
 process.exit(fail ? 1 : 0);
