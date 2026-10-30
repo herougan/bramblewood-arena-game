@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package CS-A: card sizes step 1, the Full size on every browsing screen)
+- **One card size for browsing (owner 10-29 19:14 "reduce to just 3 or 4"; CS-3):** the Codex (album and grid), Forge, Nest Younglings, the deck builder (pool, loadout, Bramble and leader slots), the deck picker popup, the match deck view and an opponent's deck, the profile showcase, the cards won, the pack summary, the Flea Market, Arena offers and slots, and the Discovered! pop all draw the **Full** card: 120px on a desktop, 4 a row on a phone (about 72-86px, see below). Names are readable everywhere (about 12.5px at 120; the Codex's were 8px) and a Full card never hides its name.
+- **Tokens:** `--card-detail-w`, `--card-full-w`, `--card-compact-w`, `--chip-h` on `:root`, plus `--card-full-col` for grids (the Full width or a quarter of the row). `cardTileHTML(d, {size})` writes `data-size`; in-match cards, the reveal, hover and map lists are unchanged (later steps).
+- **Layout:** on a phone the Codex, Camp, Nest and Flea Market use the whole width (the content column was 80%), with thinner frames, and the deck picker, Nest picker and deck view modals are wider; at 1366 the Codex column widens to fit two album pages of 4 Full cards.
+- Checks: `tests/cs-a-2026-10-30.js` (incl. a guard that fails on a new pixel card width on these screens). Shots in `docs/screens/cs-a/` (before / after, 390 and 1366).
+
 ## 2026-10-30 Release 10-30a (owner 09:18 "ok")
 - Shipped: UI2 (pack-opener crash guard + gentler entrance, zoom only on overflow, Ambush jab, battery sparks, Shift+click pitch, PRO/BPRO deck preview), UI3 (status pills, emblem flight target, Map cards per list + hover detail + Export all, keyword tints, map-bar Players button, solo group dungeon fillers and uninterrupted win screen), ENG13 (optional hard Ambush, Slow keyword, Canopy Cover only vs ranged/flying, admin currency tap), ART2 (68 card arts), Stealth cost 1.5 -> 2.
 - Checks: smoke (only the known d-2026-10-19) and the packages' own tests (8/8 on the merged batch); each package ran its own e2e. No full run for this release.
