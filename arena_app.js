@@ -3205,7 +3205,9 @@ function revealInTutorial(){ try{ return typeof matchState !== 'undefined' && !!
 // screen before it is open, every skill of every card, yours and the rival's, reads as the one "?" chip, Flying aside: card faces, the zoom, the
 // tooltips (maskHiddenSkills), the keyword coach and the codex book (skillHiddenNow) and the battle log (logText, tut12LogMask). T-3 to T-5 are
 // conquest fights, so the usual reveal map holds there. Display only: the engine plays the real cards. Admin Mode shows everything.
-const TUT12_SHOWN = new Set(['flying']);
+// 2026-10-30 (package TUT2, owner SKL0-1 "T-1/T-2 won't have swarm or flying ... no skills till lvl 1"): the Flying exception is gone. Every
+// T-1 / T-2 copy is Level 0 with no skill of its own (tutorialLevel0Def), so nothing reads as Flying there; any other card's skill stays "?".
+const TUT12_SHOWN = new Set([]); // was ['flying'] (SKL0)
 function revealTut12(){
   if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return false;
   try{ if(typeof matchState !== 'undefined' && matchState && matchState.mode === 'tutorial' && !matchState.fxLib) return true; }catch(e){}
@@ -29534,16 +29536,17 @@ function tutorialKeepSkills(st){
 // 2026-10-12 (10:42, user: "Dont nerf the cards in the tutorials. It's okay, i editted the cards so that in Tutorial 1, none have
 // skills. In tutorial 2, you have our leader, and honey bees with flying"): the tutorial plays its cards as they are.
 // The Level 0 <-> Level 1 skill trick in T-1 / T-2, both sides (2026-10-29, package SKL0, owner 13:07: "we can also make the lvl 0 <-> lvl 1
-// skills trick"): a card with a skill that arrives at a later level (levelSkills 1+, already on the printed Level 1 card: Bee Knight's Swarm)
-// fights as a Level 0 copy "<id>~tut0" (its Level 0 stats, that skill off), so a T-1 / T-2 Bee Knight has Flying only; from Map 0 on it is as
-// printed (Level 1: Flying + Swarm). The rival's cards share your defs, so both sides get the same copy. Every other card is dealt as before
-// (its level as your copies have it: Level 1 for the Base cards on a first T-1). Making every T-1 / T-2 card Level 0 was measured and left out:
-// T-1 falls from 66% to 44% simulated wins (200 seeds, the fixed seed lost), an owner call (SKL0 report).
+// skills trick"): a card fights as a Level 0 copy "<id>~tut0" (its Level 0 stats; a skill that arrives at a later level, levelSkills 1+, is
+// off). The rival's cards share your defs, so both sides get the same copy. From Map 0 on the card is as your copies have it.
+// 2026-10-30 (package TUT2, owner SKL0-1 "yes definitely" and "T-1/T-2 won't have swarm or flying ... All start at lvl 0 and have no skills
+// till lvl 1"): EVERY T-1 / T-2 card is dealt as its Level 0 copy (SKL0 did it only for a card with a later-level skill; the Base cards were
+// Level 1 on a first T-1). A card already at Level 0 with no later-level skill is dealt as it is (it is its Level 0 copy). The mtut12 cards'
+// skills all arrive at Level 1 (canonical/cards.json levelSkills: Bee Knight's Flying and Swarm), so none fights with a skill there.
 function tutorialLevel0Def(id){
   const d = getCardDefs()[id], b = copyBaseDef(id) || d; if(!d || !b || (b.attack == null && b.health == null)) return null;
-  const base = cardBaseLevel(b), ls =b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
+  const base = cardBaseLevel(b), lvl = Number.isFinite(d.level) ? d.level : base, ls = b.levelSkills || d.levelSkills || {}, fx = Object.assign({}, d.effects || {});
   let later = 0; Object.keys(ls).map(Number).filter(k=> k > 0).forEach(k=> Object.keys(ls[k] || {}).forEach(x=>{ if(x in fx){ delete fx[x]; later++; } }));
-  if(!later) return null;
+  if(lvl <= 0 && !later) return null; // TUT2: was `if(!later)` (SKL0)
   const st0 = statsAtLevel(b, 0), o = Object.assign({}, d, {id: id + '~tut0', derivedFrom: id, attack: st0.attack, health: st0.health, level: 0, baseLevel: base, effects: fx, locked: false});
   delete o.socketGem; delete o.enchant; if(base > 0) o.hatchling = true; return o; }
 function tutorialPlainDeck(deck, st){ const out = {};
