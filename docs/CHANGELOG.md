@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package TIP1: shorter tooltips)
+
+- **The speed button's tooltip is one line** (owner 23:30: "too long ... simplify to what it exactly does"): "Changes the speed of the animation. Shift+Click to go back." The cycle list, the carry-over note and the locked-speed hints are gone from it.
+- **93 other tooltips cut to what the control does** (most 8 to 14 words, none over 20): Forge fuse / dust / melt, raid ratings, tickets and shield, PvP, sync status, energy, battle rating, XP, Prayer and Darkness, deck-builder hints, and the admin card and raid editor fields. Word totals 2,303 -> 1,073. The list is `docs/tooltips-tip1-2026-10-30.md`; all 12 language packs are updated.
+- Left for the owner's later pass: skill and status descriptions, dialogue, tutorial, fight and map text.
+- Tests: `tests/tip1-2026-10-30.js`.
+
 ## 2026-10-30 (package RAIDFX1: the raid tentacle, smooth and on time; no 🤝 on allies)
 
 - **The raid boss's Tentacle Smack plays smoothly** (owner 21:36: "so laggy"): the limb was a window-sized SVG re-painted every frame (its inner group was what moved) and the bramble tile's flare animated a CSS filter. Now the limb is drawn once in a layer its own size and moved by transform and opacity only (its own layer only while it swings); the tile winds up by scale and its glow is a fading overlay. Headless bench, one swing: raster + paint per frame 12-19 ms → 3 ms at 1366, 7 → 0.8 ms at 390.
