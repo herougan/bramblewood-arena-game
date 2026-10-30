@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-10-29, package ADMINU1). Waiting for the owner's "apply it".
+-- APPLIED 2026-10-30 23:3x SGT (owner 23:25: "Apply the supabase/proposed/20261029_admin_user_list.sql (owner: 'apply it')"), migration admin_user_list_20261029. Proposed 2026-10-29 (package ADMINU1).
 -- Purpose: owner asked (10-28 23:35, 10-29 19:14) "view users and their levels / has anyone else played?" in the game's Admin area.
 --   admin_user_list() is the read-only list behind Admin -> Players (overlay): one row per profile with counts of unlocked cards,
 --   fights (fight_sessions) and matches (match_history), the last fight, and a few fields read from the player's saved progress.
