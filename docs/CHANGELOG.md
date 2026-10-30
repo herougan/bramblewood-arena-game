@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package COOP3: the group dungeon fits the window, plays into every slot, cross-row placement, CPU allies first, Auto, the rewards window)
+
+- **The duo dungeon opens at the normal size** (owner W4: "Why does the duo dungeon start out at such a far away zoom?"): the vault's own middle row (it never plays there) hides while empty, and on a tablet or computer the whole match is fitted to the window (`--gd-k` scales the card size rule; `centreFieldInFs`), so the hand is no longer below the fold; the board starts at 1:1 and zooms out only when units would leave it. Phones keep their 75 px cards (the ally row now shares the frame's height).
+- **Every slot plays** (W4: "I couldn't play cards in the other slots"): the board only redrew when the front rows changed, so a play into the middle row (yours or the CPU ally's) left that row stale: the ally's card invisible and a "+" on a slot already taken (the claim then refused). The board's signature now carries the middle row; a tap whose "+" was redrawn mid-press plays to that row's nearest "+".
+- **Cross-row placement by your own network** (W10): you may play into an ally's row (and they into yours) only beside a card of your own: left, right, or the same column one row in front or behind; an ally's cards open nothing for you. Your row's centre stays open; with nothing of yours on the board and your centre taken, the slots beside it open (COOP3-2, COOP3-3). Engine: `ownedCells` (`bramblewood-engine.js`, used only by the group dungeon; solo, PvP and raid rules unchanged); `rowLegalSlots(T, row, seat)` and `checkAct` in `bramblewood-coop.js`; the CPU ally chooses by the same rule, its own row first.
+- **CPU allies play first** (W4): each CPU ally waits 0.5-1.5 s on a floor's first turn, 0.5-3.0 s after, then plays; you may play alongside it and the round waits for it (COOP3-1). The room's host times it; its acts are logged like a player's, so every page stays in step.
+- **Auto-play in group dungeons** (W6): the Auto control plays your seat (the CPU ally's choice, as claims).
+- **The rewards window after a floor** (W6): the fight's own results card (rays, the rank emblem, the rewards block with Maple Leaves and Magic Dust counting up, a card won as a card, an egg) opens over the floor panel; the host's **Go deeper** starts the next floor, **Collect** shows the floor panel, which stays the hub.
+- **Allies' cards are your size** (W10): a group dungeon's rows are full rows (`.coop-rows`, no 84% back-row scale, no dimming) and share one crowded-row span.
+- Tests: `tests/coop3-2026-10-30.js` (new); `tests/e2e/coop3_2026_10_30.py` (new, 390 and 1366; shots in `docs/screens/coop3/`); `tests/coop2-2026-10-28.js` brought up to date with dated notes (the ally-network rule). Owner calls COOP3-1 to COOP3-4.
+
 ## 2026-10-30 (package RAIDFX1: the raid tentacle, smooth and on time; no 🤝 on allies)
 
 - **The raid boss's Tentacle Smack plays smoothly** (owner 21:36: "so laggy"): the limb was a window-sized SVG re-painted every frame (its inner group was what moved) and the bramble tile's flare animated a CSS filter. Now the limb is drawn once in a layer its own size and moved by transform and opacity only (its own layer only while it swings); the tile winds up by scale and its glow is a fading overlay. Headless bench, one swing: raster + paint per frame 12-19 ms → 3 ms at 1366, 7 → 0.8 ms at 390.
