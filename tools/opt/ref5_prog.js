@@ -317,5 +317,5 @@ function main(argv) {
   if (cmd === 'measure') return require('./ref5_measure.js').main(argv.slice(1));
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 12).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
 }
-if (require.main === module) main(process.argv.slice(2));
 module.exports = { walk, game, stateSummary, stepCost, maxForgeLevel, POOLS, SET, SEEDS, MULT, TRAIL_PACE, mainMaps, meanLevel };
+if (require.main === module) main(process.argv.slice(2)); // after the exports: ref5_measure.js requires this file back
