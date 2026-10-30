@@ -18,6 +18,7 @@
     ['melt', 'Disenchanting', 'Magic Dust a plain spare copy melts into, by rarity (treatments multiply it).'],
     ['misc', 'Materia and energy', 'The Materia Unit, the bench price, the Maple Leaf price of an energy upgrade.'],
     // 2026-10-24 (package H1, owner decision H1): Materia gem sockets on Unique and rarer cards, one per copy
+    ['bramble', 'Bramble Reinforce', 'A bramble level costs Briar Blossoms (this × the step\'s Dust) plus this share of the step\'s Dust and Leaves (ECON1, 2026-10-30).'],
     ['socket', 'Gem sockets', 'Unique and rarer cards have one Materia gem socket per copy. Dust and Leaves (gold) to set a gem, and to take it out (the gem comes back), by the card\'s rank.']];
   const E = []; // {path, group, label, note, step}
   function build(t){
@@ -34,6 +35,7 @@
     Object.keys(t.disenchantDust || {}).forEach(k=> add('disenchantDust.' + k, 'melt', rn(k), 'Dust'));
     add('materiaUnit.dust', 'misc', 'Materia Unit: Dust', 'a Common\'s whole road to 10, in Dust'); add('materiaUnit.gold', 'misc', 'Materia Unit: Leaves (gold)');
     add('moteDivisor', 'misc', 'Materia Mote = Unit ÷', 'the Level 0 to 1 step');
+    if(t.bramble){ add('bramble.blossomsPerDust', 'bramble', 'Briar Blossoms per Dust of the step', '×', 0.25); add('bramble.normalShare', 'bramble', 'Share of Dust and Leaves still paid', '×', 0.05); } // ECON1 (2026-10-30)
     add('materiaDustCost', 'misc', 'Materia bench: Dust per crystal'); add('energyUpgradeStep', 'misc', 'Energy upgrade: Leaves × number bought', '150, 300, 450 …');
     Object.keys(t.materiaSocket || {}).forEach(k=> ['apply', 'remove'].forEach(w=> ['dust', 'gold'].forEach(c=>{ // H1 (2026-10-24)
       if(t.materiaSocket[k][w] && typeof t.materiaSocket[k][w][c] === 'number') add('materiaSocket.' + k + '.' + w + '.' + c, 'socket', rn(k) + ': ' + (w === 'apply' ? 'set a gem' : 'take it out'), c === 'dust' ? 'Dust' : 'Leaves (gold)', 5); })));

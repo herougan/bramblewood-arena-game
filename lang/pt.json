@@ -3662,5 +3662,11 @@
  "Copied everything: paste it to Claude, or download it": "Tudo copiado: cole para o Claude ou transfira",
  "Ready: download it": "Pronto: transfira",
  "A CPU ally with a random deck joins at Start": "Um aliado da CPU com um baralho aleatório junta-se ao início",
- "Plays a random deck": "Joga um baralho aleatório"
+ "Plays a random deck": "Joga um baralho aleatório",
+ "Briar Blossoms": "Flores de silva",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "Flores de silva: reforçar uma silva custa flores. Ganham-se nos combates de Conquista, algumas até numa derrota.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Reforçar custa Flores de silva e um pouco de Pó e Folhas. Tem {have}. Ganhe combates para ter mais; uma derrota dá algumas pelo dano que fez à silva inimiga.",
+ "{n} Briar Blossoms for every floor won": "{n} Flores de silva por cada piso ganho",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Flores de silva pela vitória. Gaste-as para reforçar as suas silvas na Forja.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "Flores de silva pelo dano que fez à silva inimiga"
 }

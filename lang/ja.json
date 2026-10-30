@@ -3660,5 +3660,11 @@
  "Copied everything: paste it to Claude, or download it": "すべてコピーしました。Claudeに貼り付けるか、ダウンロードしてください",
  "Ready: download it": "準備できました。ダウンロードしてください",
  "A CPU ally with a random deck joins at Start": "スタート時にランダムなデッキを持つCPU味方が加わります",
- "Plays a random deck": "ランダムなデッキを使います"
+ "Plays a random deck": "ランダムなデッキを使います",
+ "Briar Blossoms": "イバラの花",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "イバラの花：イバラの強化に使います。征服の戦いで手に入り、負けても少しもらえます。",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "強化にはイバラの花と少しのダストとリーフが必要です。所持数 {have}。戦いに勝つと増えます。負けても敵のイバラに与えたダメージ分だけ少しもらえます。",
+ "{n} Briar Blossoms for every floor won": "勝った階ごとにイバラの花 {n}",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "勝利のイバラの花。鍛冶場でイバラの強化に使えます。",
+ "Briar Blossoms for the damage you did to the enemy bramble": "敵のイバラに与えたダメージ分のイバラの花"
 }

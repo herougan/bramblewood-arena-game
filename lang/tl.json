@@ -3661,5 +3661,11 @@
  "Copied everything: paste it to Claude, or download it": "Nakopya na lahat: i-paste kay Claude o i-download",
  "Ready: download it": "Handa na: i-download",
  "A CPU ally with a random deck joins at Start": "May sasamang CPU ally na random ang deck pagsisimula",
- "Plays a random deck": "Random na deck ang gamit"
+ "Plays a random deck": "Random na deck ang gamit",
+ "Briar Blossoms": "Bulaklak ng Dawag",
+ "Briar Blossoms: reinforcing a bramble costs them. Won in Conquest fights, a few even from a loss.": "Bulaklak ng Dawag: ito ang gastos sa pagpapalakas ng dawag. Napapanalunan sa mga laban sa Conquest, may kaunti kahit matalo.",
+ "Reinforcing costs Briar Blossoms and a little Dust and Leaves. You have {have}. Win fights for more; a loss still gives a few for the damage you did to the enemy bramble.": "Ang pagpapalakas ay gumagastos ng Bulaklak ng Dawag at kaunting Alikabok at Dahon. Mayroon kang {have}. Manalo sa mga laban para sa higit pa; kahit matalo, may kaunti para sa pinsalang ginawa mo sa dawag ng kalaban.",
+ "{n} Briar Blossoms for every floor won": "{n} Bulaklak ng Dawag sa bawat palapag na napanalunan",
+ "Briar Blossoms for the win. Spend them to reinforce your brambles in the Forge.": "Bulaklak ng Dawag para sa panalo. Gastusin sa Pandayan para palakasin ang iyong mga dawag.",
+ "Briar Blossoms for the damage you did to the enemy bramble": "Bulaklak ng Dawag para sa pinsalang ginawa mo sa dawag ng kalaban"
 }
