@@ -18043,7 +18043,7 @@ const FEATURE_SPOTS = [
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
   {key:'coop', icon:'👥', get name(){ return gdThemedName(); } /* RES3 (2026-10-26, B3): its own themed name */, get mapNumber(){ return GD_OPEN_AFTER_MAP; }, get map(){ return mapIdAt(GD_OPEN_AFTER_MAP); }, get after(){ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(GD_OPEN_AFTER_MAP)); return m ? mapRewardNodeKey(m) : null; }, tabs:['coop'], go:()=> pl2OpenCoopPop()}, // PL2 (2026-10-25, PL1-3): the Group Dungeon on the map
-  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
+  {key:'autobattle', adminOnly:true /* PL2 (2026-10-25, owner 22:28 #6: "Hide whisper's game for now - only for admin") */, mapHidden:true /* 2026-10-30 (UI6, X22): off the map for everyone, Admin too (ui6SpotOffMap) */, icon:'🧩', name:'Whisper’s Game', mapNumber:5, get map(){ return mapIdAt(5); }, get after(){ return nthFightKey(this.map, 2); }, dialogue:'unlock_autobattler', tabs:['autobattle'], go:()=>{ playSubTab = 'autobattle'; switchTab('play'); }},
   // The Skill Codex two maps after the Codex, the Map Codex two after that (2026-10-13). They're Codex pages, not map spots.
   {key:'skillcodex', icon:'📘', name:'Skill Codex', mapNumber:9, get map(){ return mapIdAt(9); }, after:null, dialogue:'unlock_skillcodex', tabs:['skillcodex'], go:()=>{ codexSubTab = 'skills'; switchTab('codex'); }},
   {key:'mapcodex', icon:'🗺️', name:'Map Codex', mapNumber:11, get map(){ return mapIdAt(11); }, after:null, dialogue:'unlock_mapcodex', tabs:['mapcodex'], go:()=>{ codexSubTab = 'maps'; switchTab('codex'); }},
@@ -18122,6 +18122,11 @@ function migrateBackpack(u){ u.pack1012 = Date.now(); try{ const sp = FEATURE_SP
 function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); if(sp && pl2SpotHidden(sp)) return false; return !sp || featureUnlocked(sp.key); }
 // 2026-10-25 (package PL2, owner 22:28 #6): a spot marked adminOnly (Whisper's Game) is neither on the map nor a tab for anyone but Admin Mode.
 function pl2SpotHidden(sp){ return !!(sp && sp.adminOnly && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)); }
+// 2026-10-30 (package UI6, owner X22: "Hide whisper's game from the map for now."): a spot marked mapHidden is not drawn on the map for anyone,
+// Admin Mode included (PL2's adminOnly still showed it to Admin, and the owner plays in Admin Mode). Only the map layout editor (decorEditing)
+// still draws it, dimmed and marked "hidden", so it can be placed. Bringing it back: drop mapHidden from its FEATURE_SPOTS row.
+// Its tab follows tabOpen / pl2SpotHidden as before (Admin can still open it from the Play tab).
+function ui6SpotOffMap(sp){ if(!sp || !sp.mapHidden) return false; try{ return !decorEditing(); }catch(e){ return true; } }
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   if(spot.needs && !featureUnlocked(spot.needs)) return; // 2026-10-24 (package MAP, owner 13:16 #20)
@@ -18228,7 +18233,7 @@ function mapSpotsHTML(map, positions, progress){
   // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
   const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
     const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
-  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !spotAvailable(sp, progress)).map(sp=>{
+  const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
     const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
@@ -18236,7 +18241,7 @@ function mapSpotsHTML(map, positions, progress){
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
   }).join('') : '';
-  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
+  const html = unknown + FEATURE_SPOTS.filter(sp=> sp.map===map.id && !pl2SpotHidden(sp) && !ui6SpotOffMap(sp) && spotAvailable(sp, progress) && !(sp.vanish && featureUnlocked(sp.key))).map(sp=>{
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
@@ -18244,7 +18249,7 @@ function mapSpotsHTML(map, positions, progress){
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key), waits = !!(sp.needs && !featureUnlocked(sp.needs)); // 2026-10-24 (package MAP, owner 13:16 #20): waits for the Notices
-    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
+    return `<button type="button" class="map-spot ${waits ? 'is-waiting' : open?'is-open':'is-new'}${sp.mapHidden ? ' ui6-map-hidden' /* X22: only the layout editor draws it */ : ''}" ${waits ? `data-needs="${escapeAttr(sp.needs)}" aria-disabled="true" ` : ''}data-spot="${sp.key}" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%; --shk:-${((sp.key||"").length*0.7)%5}s;" title="${escapeAttr(sp.name + (waits ? ' — ' + TX('ui.map-locked-for-now') : open ? '' : ' — something new!'))}" aria-label="${escapeAttr(sp.name)}">
       <span class="map-spot-ico">${sp.icon}</span>${waits ? '<span class="map-spot-lock" aria-hidden="true">🔒</span>' : open ? '' : '<span class="map-spot-new">!</span>'}<span class="map-spot-name">${escapeHtml(sp.name)}</span></button>`;
   }).join('');
   return (links.length ? `<svg class="map-spot-links" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">${links.join('')}</svg>` : '') + html;
