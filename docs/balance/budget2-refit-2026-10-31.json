@@ -3,10 +3,10 @@
  "built": "2026-10-31",
  "counts": {
   "inPlay": 451,
-  "outOfPlay": 354,
+  "outOfPlay": 363,
   "inPlayPushed": 76,
-  "outPushed": 72,
-  "outsideBefore": 152,
+  "outPushed": 74,
+  "outsideBefore": 157,
   "outsideBeforeIds": [
    "dolphin-knight (out of play)",
    "bee-drone",
@@ -137,6 +137,11 @@
    "garden-tiger-moth (out of play)",
    "krill-swarm (out of play)",
    "musk-ox-calf (out of play)",
+   "terraumbra (out of play)",
+   "exo-podas (out of play)",
+   "pink-maus (out of play)",
+   "tobasco-drakon (out of play)",
+   "demo-panda (out of play)",
    "crowbar (out of play)",
    "frost-slick (out of play)",
    "magma-vent (out of play)",
@@ -3567,6 +3572,39 @@
    }
   },
   {
+   "id": "bucketknee-wolf",
+   "name": "Bucketknee Wolf",
+   "rarity": "veryrare",
+   "inPlay": false,
+   "stats": "5/11",
+   "old": {
+    "use": 0.94,
+    "N": 24.04,
+    "x1": 22.68,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 27.17,
+    "x1": 27.68,
+    "x2": 57.82,
+    "N2": 128.78,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 5,
+   "health": 10,
+   "to": "5/10",
+   "after": {
+    "use": 0.98,
+    "N": 27.17,
+    "x1": 26.68,
+    "x2": 52.82
+   }
+  },
+  {
    "id": "buzzed-chipmunk",
    "name": "Buzzed Chipmunk",
    "rarity": "common",
@@ -3795,6 +3833,39 @@
     "N": 20.45,
     "x1": 20,
     "x2": 31
+   }
+  },
+  {
+   "id": "galactic-condor",
+   "name": "Galactic Condor",
+   "rarity": "epic",
+   "inPlay": false,
+   "stats": "3/9",
+   "old": {
+    "use": 0.97,
+    "N": 28.8,
+    "x1": 28.08,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 32.54,
+    "x1": 32.58,
+    "x2": 71.64,
+    "N2": 184.71,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 8,
+   "to": "3/8",
+   "after": {
+    "use": 0.96,
+    "N": 32.54,
+    "x1": 31.08,
+    "x2": 67.14
    }
   },
   {

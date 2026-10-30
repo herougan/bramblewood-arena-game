@@ -31656,7 +31656,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 3,
-    "health": 9,
+    "health": 8,
     "rarity": "epic",
     "species": [
       "Bird"
@@ -31683,7 +31683,7 @@
     "test": false,
     "numericId": 1333,
     "uuid": "ca007286-4127-5e86-ba78-65c7e9b0d623",
-    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Epic, Wait 2, Lumber 2: N = 51.6; S = 4.22 (flying 0, charge 4.22); 2A+H+S x 1.5 (Flying) = 36.33 < 51.6 (70%) and A*H+S x 1.5 (Flying) = 78.33 < (N/3)^2 = 295.84. 2026-10-19 halve (BF5): was 4/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/5. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/8.",
+    "creatorNote": "2026-10-19 (package EE, owner 09:52: \"Easter eggs: Special category, ungettable atm.\"): an Easter egg, not obtainable yet. Budget v3 at Level 1, Epic, Wait 2, Lumber 2: N = 51.6; S = 4.22 (flying 0, charge 4.22); 2A+H+S x 1.5 (Flying) = 36.33 < 51.6 (70%) and A*H+S x 1.5 (Flying) = 78.33 < (N/3)^2 = 295.84. 2026-10-19 halve (BF5): was 4/12. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 2/5. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/8. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 3/9 (cap-1 use 0.97 of N under 2A + H, 1 under 3A + H, now 0.96).",
     "source": {
       "kind": "easteregg"
     },
@@ -31913,7 +31913,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 5,
-    "health": 11,
+    "health": 10,
     "rarity": "veryrare",
     "species": [
       "Canid"
@@ -31933,7 +31933,7 @@
     "test": false,
     "numericId": 1339,
     "uuid": "97a9ed62-b3cb-59a5-bc77-d17d0de0c823",
-    "creatorNote": "2026-10-19 (package EQ, owner 21:36): An Easter egg (package EE's category: ungettable for now). A retired adventurer wolf: the bucket is its Armor 1 and its Helmet (half the arrows glance off it), the old wound in its knee is its Wait 2 (slow to get going), and it has no Pounce. Very Rare, Wait 2, Lumber 1. Budget (today's helper, before the coming halving pass; tools/eq_cards_2026_10_19.js) at Level 1: N = 43.92; S = 2.74 (armor 2.74, helmet 0); 2A+H+S = 28.74 (65.44% of N) and A*H+S = 86.74 <= (N/3)^2 = 214.33. 2026-10-19 halve (BF5): was 6/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6.",
+    "creatorNote": "2026-10-19 (package EQ, owner 21:36): An Easter egg (package EE's category: ungettable for now). A retired adventurer wolf: the bucket is its Armor 1 and its Helmet (half the arrows glance off it), the old wound in its knee is its Wait 2 (slow to get going), and it has no Pounce. Very Rare, Wait 2, Lumber 1. Budget (today's helper, before the coming halving pass; tools/eq_cards_2026_10_19.js) at Level 1: N = 43.92; S = 2.74 (armor 2.74, helmet 0); 2A+H+S = 28.74 (65.44% of N) and A*H+S = 86.74 <= (N/3)^2 = 214.33. 2026-10-19 halve (BF5): was 6/14. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/6. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 5/11 (cap-1 use 0.94 of N under 2A + H, 1.02 under 3A + H, now 0.98).",
     "source": {
       "kind": "easteregg"
     },

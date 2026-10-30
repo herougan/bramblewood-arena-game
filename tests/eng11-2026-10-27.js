@@ -41,7 +41,8 @@ console.log('K2 Coffee N');
 { const SC = require('../tools/skill_costs.js'); const T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
   const S = n=> T.budget(Object.assign({}, defs['e11-plain'], {effects:{coffee:n}})).S;
   ok(Math.abs(S(1) - 1.5) < 0.01 && Math.abs(S(2) - 0.75) < 0.01 && Math.abs(S(3) - 0.5) < 0.01, `priced 1.5 / N (S ${S(1)}, ${S(2)}, ${S(3)})`); }
-{ const chip = base['buzzed-chipmunk']; ok(chip && chip.effects && chip.effects.coffee === 2 && chip.attack === 3 && chip.health === 14, 'Buzzed Chipmunk (Map 5) keeps Coffee 2 at 3/14 (re-fit: its line holds)'); }
+// 2026-10-31 (package BUDGET2): re-fit again under 3A + H (3/14 -> 3/13; its creatorNote carries the line)
+{ const chip = base['buzzed-chipmunk']; ok(chip && chip.effects && chip.effects.coffee === 2 && chip.attack === 3 && (chip.health === 14 || (chip.health === 13 && /BUDGET2 re-fit/.test(chip.creatorNote || ''))), 'Buzzed Chipmunk (Map 5) keeps Coffee 2 at 3/14 (re-fit: its line holds; 3/13 after BUDGET2)'); }
 
 console.log('K6 the dark places are night for Nocturnal / Diurnal');
 { const {e, P} = mk({dark:'dark', phase:'off'}); e.debugSpawnCard(P, so, 1, 'vampire-bat', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'e11-plain', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'e11-day', 'right', {}, []);

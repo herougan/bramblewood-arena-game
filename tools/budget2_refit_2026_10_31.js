@@ -4,7 +4,7 @@
 //   node tools/budget2_refit_2026_10_31.js            the plan (docs/balance/budget2-refit-2026-10-31.json), nothing applied
 //   python3 tools/budget2_apply_2026_10_31.py          writes the plan's stat changes into canonical/cards.json (keeps its format)
 // Which cards: every card the budget measures (tools/skill_costs.js measured: not tokens, tests, Hall of Fame, variants, fields; not pool
-// candidates or Easter eggs) with Health, in play or not (tools/lib_map_pools.js isOutOfPlay: reported apart), that the new formula
+// candidates; Easter eggs included: tests/easter-eggs checks their budget too) with Health, in play or not (tools/lib_map_pools.js isOutOfPlay: reported apart), that the new formula
 // pushed out of tolerance: inside under 2A + H, outside under 3A + H. A card already outside under 2A + H is outside for reasons that are
 // not this package's (eggs and equipment read "well under" by design; bee-drone and worker-ant are held by the owner) and is listed, not
 // moved; War Elephant and Owl Nightwatch are the named exceptions (EFFECT_EDITS).
@@ -67,7 +67,7 @@ function fit(c, v, vOld){ const A0 = +c.attack || 0, H0 = +c.health || 0, e = c.
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
 const rows = [], held = [], counts = {inPlay: 0, outOfPlay: 0, inPlayPushed: 0, outPushed: 0, outsideBefore: 0};
 cards.forEach(c0=>{
-  const d = D[c0.id]; if(!d || c0.pool || c0.token || c0.test || c0.easterEgg || !SC.measured(c0) || c0.health == null) return;
+  const d = D[c0.id]; if(!d || c0.pool || c0.token || c0.test || !SC.measured(c0) || c0.health == null) return;
   const inPlay = !LMP.isOutOfPlay(G, d); counts[inPlay ? 'inPlay' : 'outOfPlay']++;
   const ed = EFFECT_EDITS[c0.id]; let c = c0;
   if(ed){ const e = Object.assign({}, c0.effects); (ed.remove || []).forEach(k=> delete e[k]); Object.assign(e, ed.set || {}); c = Object.assign({}, c0, {effects: e}); }

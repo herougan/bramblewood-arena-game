@@ -3,7 +3,7 @@
  "version": "2026-10-19",
  "table": {
   "version": "2026-10-18",
-  "appliedEntries": 280
+  "appliedEntries": 271
  },
  "ownerCall": [
   "red-dragon",
@@ -13,7 +13,7 @@
   "black-dragon",
   "caldera-wyrm"
  ],
- "count": 120,
+ "count": 118,
  "cards": [
   {"id":"puddle-changeling","name":"Puddle Changeling","rarity":"common","attack":1,"health":1,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":1.1,"sAfter":10.96,"sLegacy":2,"passedBefore":true,"N":12.92,"x1":14.96,"N2":29.12,"x2":121.12,"missMult":1,"overBy":{"x1":2.04,"x2":92},"fails":["2A+H+S","A*H+S"],"costParts":["twin 10","changeling 0.96"]},
   {"id":"weredog","name":"Weredog","rarity":"rare","attack":2,"health":7,"wait":1,"cost":1,"pool":false,"source":"pack","sBefore":11.64,"sAfter":11.43,"sLegacy":5,"passedBefore":false,"N":22.05,"x1":24.43,"N2":84.82,"x2":144.64,"missMult":1,"overBy":{"x1":2.38,"x2":59.82},"fails":["2A+H+S","A*H+S"],"costParts":["nocturnal 11.43 [0.53 × 21 + dark sight]"]},
@@ -118,7 +118,6 @@
   {"id":"garden-tiger-moth","name":"Garden Tiger Moth","rarity":"common","attack":1,"health":5,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":2.1,"sAfter":1.89,"sLegacy":1,"passedBefore":false,"N":13.18,"x1":13.89,"N2":30.3,"x2":11.07,"missMult":1.5,"overBy":{"x1":0.71,"x2":-19.23},"fails":["2A+H+S"],"costParts":["nocturnal 1.89 [0.53 × 3 + dark sight]"]},
   {"id":"wallcreeper","name":"Wallcreeper","rarity":"common","attack":2,"health":6,"wait":1,"cost":0,"pool":true,"source":null,"sBefore":5,"sAfter":5.36,"sLegacy":2,"passedBefore":false,"N":16.72,"x1":17.36,"N2":48.77,"x2":40.73,"missMult":1,"overBy":{"x1":0.64,"x2":-8.04},"fails":["2A+H+S"],"costParts":["mountainClimber 4","invisible 1.36"]},
   {"id":"horseshoe-crab","name":"Horseshoe Crab","rarity":"common","attack":2,"health":9,"wait":1,"cost":1,"pool":false,"source":"pack","sBefore":4.58,"sAfter":4.91,"sLegacy":3,"passedBefore":false,"N":19.29,"x1":19.91,"N2":64.91,"x2":42.11,"missMult":1,"overBy":{"x1":0.62,"x2":-22.8},"fails":["2A+H+S"],"costParts":["armor 4.53","salt 0.38"]},
-  {"id":"bucketknee-wolf","name":"Bucketknee Wolf","rarity":"veryrare","attack":5,"health":11,"wait":2,"cost":1,"pool":false,"source":"easteregg","sBefore":3.56,"sAfter":1.68,"sLegacy":3,"passedBefore":false,"N":27.17,"x1":27.68,"N2":128.78,"x2":57.82,"missMult":1,"overBy":{"x1":0.51,"x2":-70.96},"fails":["2A+H+S"],"costParts":["armor 1.68"]},
   {"id":"ice-crevasse-wolf","name":"Ice-Crevasse Wolf","rarity":"rare","attack":1,"health":16,"wait":1,"cost":1,"pool":false,"source":"pack","sBefore":5.46,"sAfter":3.11,"sLegacy":2,"passedBefore":false,"N":21.62,"x1":22.11,"N2":81.54,"x2":25.67,"missMult":1,"overBy":{"x1":0.49,"x2":-55.87},"fails":["2A+H+S"],"costParts":["bleed 3.11"]},
   {"id":"poison-dart-frog","name":"Poison Dart Frog","rarity":"common","attack":1,"health":1,"wait":0,"cost":1,"pool":false,"source":null,"sBefore":2.16,"sAfter":6.47,"sLegacy":3,"passedBefore":true,"N":15.49,"x1":10.47,"N2":41.86,"x2":42.86,"missMult":1,"overBy":{"x1":-5.02,"x2":1},"fails":["A*H+S"],"costParts":["poison 6.47"]},
   {"id":"feral-tuskboar","name":"Feral Tuskboar","rarity":"rare","attack":2,"health":12,"wait":1,"cost":1,"pool":false,"source":"pack","sBefore":2,"sAfter":3.99,"sLegacy":1,"passedBefore":true,"N":21.62,"x1":21.99,"N2":81.54,"x2":39.92,"missMult":1,"overBy":{"x1":0.37,"x2":-41.62},"fails":["2A+H+S"],"costParts":["onAttacked → buff 3.99 [1.9 × 2.1]"]},
@@ -132,7 +131,6 @@
   {"id":"cave-pseudoscorpion","name":"Cave Pseudoscorpion","rarity":"common","attack":1,"health":7,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":1,"sAfter":3,"sLegacy":1,"passedBefore":true,"N":12.92,"x1":13,"N2":29.12,"x2":16,"missMult":1,"overBy":{"x1":0.08,"x2":-13.12},"fails":["2A+H+S"],"costParts":["poison 3"]},
   {"id":"marmot-stonecutter","name":"Marmot Stonecutter","rarity":"common","attack":1,"health":12,"wait":1,"cost":0,"pool":false,"source":"pack","sBefore":1.8,"sAfter":1.8,"sLegacy":1,"passedBefore":false,"N":16.72,"x1":16.8,"N2":48.77,"x2":15.24,"missMult":1,"overBy":{"x1":0.08,"x2":-33.53},"fails":["2A+H+S"],"costParts":["stonecutter 1.8"]},
   {"id":"beaver-feller","name":"Beaver Feller","rarity":"common","attack":2,"health":10,"wait":1,"cost":0,"pool":false,"source":"pack","sBefore":0.8,"sAfter":0.8,"sLegacy":1,"passedBefore":false,"N":16.72,"x1":16.8,"N2":48.77,"x2":20.64,"missMult":1,"overBy":{"x1":0.08,"x2":-28.13},"fails":["2A+H+S"],"costParts":["felling 0.8"]},
-  {"id":"galactic-condor","name":"Galactic Condor","rarity":"epic","attack":3,"health":9,"wait":2,"cost":2,"pool":false,"source":"easteregg","sBefore":3,"sAfter":5.58,"sLegacy":1,"passedBefore":true,"N":32.54,"x1":32.58,"N2":184.71,"x2":71.64,"missMult":1.5,"overBy":{"x1":0.04,"x2":-113.07},"fails":["2A+H+S"],"costParts":["charge 5.58"]},
   {"id":"salvager-hermit-crab","name":"Salvager Hermit Crab","rarity":"common","attack":1,"health":13,"wait":1,"cost":0,"pool":false,"source":"pack","sBefore":0.75,"sAfter":0.75,"sLegacy":1,"passedBefore":false,"N":16.72,"x1":16.75,"N2":48.77,"x2":13.56,"missMult":1,"overBy":{"x1":0.03,"x2":-35.21},"fails":["2A+H+S"],"costParts":["salvage 0.75"]},
   {"id":"dynamite-packrat","name":"Dynamite Packrat","rarity":"uncommon","attack":1,"health":10,"wait":0,"cost":0,"pool":false,"source":"pack","sBefore":0,"sAfter":1.1,"sLegacy":0,"passedBefore":true,"N":14.09,"x1":14.1,"N2":34.63,"x2":11.21,"missMult":1,"overBy":{"x1":0.01,"x2":-23.42},"fails":["2A+H+S"],"costParts":["dynamite 1.1"]}
  ]
