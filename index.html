@@ -51147,7 +51147,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '242cbfcce3df', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'e163318b5ea7', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -88919,19 +88919,31 @@ function settleStrayBoardCards(waited){
 // just landed included, was a new element for a frame (its art decoded again, its hover / float / glow animations started over), the
 // "redraw". Now, once the match is decided, a row whose cells are the same is kept: a cell holding the same unit keeps its element and
 // has its numbers, statuses and Health bar patched in place; only cells that changed (a unit that fell, a token that arrived) are swapped.
-// Returns false (the caller rebuilds the row as before) when the column count changed.
+// Returns false (the caller rebuilds the row as before) when the row was empty.
+// 2026-10-30 (package UI6, owner X11: "Tokens still disappear on game end then reappear again."): the cell-by-cell match above gave up
+// (and the row was rebuilt with innerHTML) whenever the number of cells changed, which is exactly the deciding round where a unit fell or a
+// death spawn put tokens down: every unit on that row, the tokens included, became a new element (art decoded again, the token's look and
+// float started over) under the end sign. Seen headless: a win whose last blow killed a Rot-Swollen Carcass (3 Maggot tokens) rebuilt both
+// rows 1.8 s before the sign. Cells are now matched by their unit's uid wherever they sit: a unit still on the board keeps its element
+// (numbers, statuses, Health bar patched in place); only a unit that fell or a card that arrived is removed or inserted. Kept elements are
+// not moved unless the order really changed.
 function pl2ReconcileRow(row, html){
   try{
     const tmp = document.createElement('div'); tmp.innerHTML = html;
     const fresh = [...tmp.children], old = [...row.children];
-    if(!old.length || fresh.length !== old.length) return false;
+    if(!old.length) return false;
+    const byUid = new Map(); old.forEach(od=>{ const u = od.getAttribute('data-uid'); if(u && !od.matches('.falling, .burning, .is-scattering')) byUid.set(u, od); });
     const kept = [];
-    fresh.forEach((nu, i)=>{
-      const od = old[i], ou = od.getAttribute('data-uid'), nuU = nu.getAttribute('data-uid');
-      if(ou && nuU && ou === nuU && !od.matches('.falling, .burning, .is-scattering')){ kept.push(ou); return; }
-      if(!ou && !nuU && od.outerHTML === nu.outerHTML) return;
-      row.replaceChild(nu, od);
+    const want = fresh.map((nu, i)=>{
+      const nuU = nu.getAttribute('data-uid');
+      if(nuU && byUid.has(nuU)){ const od = byUid.get(nuU); byUid.delete(nuU); kept.push(nuU); return od; }
+      const od = old[i]; if(!nuU && od && !od.getAttribute('data-uid') && od.outerHTML === nu.outerHTML) return od; // an empty cell that did not change
+      return nu;
     });
+    const keep = new Set(want);
+    old.forEach(od=>{ if(!keep.has(od)) od.remove(); });
+    want.forEach((el, i)=>{ const cur = row.children[i]; if(cur !== el) row.insertBefore(el, cur || null); });
+    while(row.children.length > want.length) row.lastElementChild.remove();
     kept.forEach(u=>{ try{ updateCardHpDisplay(u); updateCardAtkDisplay(u); updateCardStatusDisplay(u); eq2Refresh(u); }catch(e){} });
     return true;
   }catch(e){ return false; }

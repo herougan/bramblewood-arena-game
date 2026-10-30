@@ -6548,7 +6548,7 @@ function fullCardHTML(defId, liveCard, opts){
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${opts.line ? `<div class="cp-line">${escapeHtml(opts.line)}</div>` : '' /* 2026-10-30 (CS-C): a caller's extra line (data-pop-line) */}
-    ${liveCard?cardActionLogHTML(liveCard.uid):''}`;
+    ${liveCard ? cardActionLogHTML(liveCard.uid) : opts.logUid != null ? cardActionLogHTML(opts.logUid) : '' /* 2026-10-30 (UI6, X4): the printed card plus this unit's own hit log */}`;
 }
 // The popover's text for a card outside a fight (2026-10-30, package CS-C, owner CS-1): its skills and flavour, the same lines as fullCardHTML,
 // for the gallery popover beside a preview or a chip (wireRewardZoom), which shows the Full card above it.
@@ -6710,7 +6710,12 @@ function castleHoverHTML(hqSide){
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(Date.now() - lastTouchAt < 1500 && el !== touchedEl) return;
+    // 2026-10-30 (package UI6, X2): the board redrew under a resting pointer (an attack, a hit): the same card's new element takes over the
+    // open popover, which stays as it is (no close, no new 1 s wait, no opening animation)
+    const key = popKeyOf(el);
+    if(!pop.hidden && popKey && key === popKey){ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } bindPopSrc(el); return; }
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
+    if(key === lostKey && Date.now() - lostAt < 900){ openPopFor(el, {quiet:true}); return; } // it was closed only by a redraw a moment ago
     hoverTimer = setTimeout(()=> openPopFor(el), HOVER_POP_DELAY_MS);
   });
   // Press and hold on a phone in battle (2026-10-12, user: "On mobile, the hold to view stats should be shortened to
@@ -6748,7 +6753,7 @@ function castleHoverHTML(hqSide){
   document.addEventListener('contextmenu', e=>{ if((lastPointerType === 'touch' || lastPointerType === 'pen') && (holdT || holdFired || Date.now() < swallowClickUntil || Date.now() - holdOpenedAt < 1500)){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
   // iOS starts its own drag from a held draggable card (the deck builder's pool): touch drags are the touch shim's, never the browser's
   document.addEventListener('dragstart', e=>{ if(e.isTrusted && (lastPointerType === 'touch' || lastPointerType === 'pen')){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
-  function openPopFor(el){
+  function openPopFor(el, how){
       hoverTimer = null;
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
@@ -6759,34 +6764,88 @@ function castleHoverHTML(hqSide){
       if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
         if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
       const fogEl = matchState && el.closest ? el.closest('.board-card.is-fogged') : null; // 2026-10-21 (package FOG): a fogged unit's tooltip is "Hidden in the fog"
-      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
+      // 2026-10-30 (package UI6, X4, owner: "When hovering around the card, can we see the original card's desc instead of the instance's? So the HP,
+      // all skills as is"): a unit on the board shows its card as printed (its Attack and Health at its level, every skill it was printed with);
+      // what happened to it in this fight (damage, buffs, statuses, a lost skill) stays on its tile. Only its own hit log is still added.
+      const liveForLog = liveCardFromHoverEl(el);
+      const html = fogEl ? fogPopHTML(fogEl) : /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), null, {logUid: liveForLog ? liveForLog.uid : null, showPitchYield: isHandTile, lookClass, shownLevel: el.dataset.shownLevel != null && el.dataset.shownLevel !== '' ? +el.dataset.shownLevel : null /* 2026-10-21 (package ED) */, line: (el.closest('[data-pop-line]') || {dataset:{}}).dataset.popLine || '' /* 2026-10-30 (CS-C) */});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false; popSrc = el;
+      pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
       positionPop(el);
-      try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F
+      if(!(how && how.quiet)) try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F (UI6: not again when a redraw had closed it)
       try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
-      TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
-      { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
+      bindPopSrc(el);
+      { const lc = liveForLog; if(lc) lastPeekUid = lc.uid; }
   }
+  // 2026-10-30 (package UI6, X2, owner: "When hovering over a card, I noticed that the card desc tooltip goes in and out as animations play."):
+  // in a fight the rows are redrawn many times a round, and an attack lifts, hides or fades the card under the pointer for a moment. Each of
+  // those closed the popover (its element was gone, hidden or no longer :hover) and the next mouseover opened it again a second later with its
+  // pop-in: in and out. The popover now belongs to the card (its unit's uid, a hand card's uid, else its card id), not to one element:
+  //  - a redraw: the same card's new element under the pointer (or, in a fight, anywhere on the page while the pointer is still inside the
+  //    spot the card stood on) takes over, and the popover stays put, unchanged;
+  //  - it closes when the pointer leaves that spot and is not on the same card, or when the card is gone from the page (it died).
+  // Its text is the printed card (X4), so a redraw has nothing to change in it but the hit log.
+  let popKey = null, popRect = null, lostKey = null, lostAt = 0, ptX = -1, ptY = -1;
+  document.addEventListener('pointermove', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  document.addEventListener('mouseover', e=>{ ptX = e.clientX; ptY = e.clientY; }, {passive:true, capture:true});
+  function popKeyOf(el){
+    if(!el) return null;
+    if(matchState){ const u = el.closest('[data-uid]'); if(u) return 'u' + u.getAttribute('data-uid'); const h = el.closest('[data-handuid]'); if(h) return 'h' + h.getAttribute('data-handuid'); }
+    return 'd' + (el.getAttribute('data-defid') || '') + '|' + (el.getAttribute('data-hq') || '') + '|' + (el.dataset.fieldhover || '');
+  }
+  function sameCardElByKey(key){
+    if(!key) return null; let sel = null;
+    if(key[0] === 'u') sel = `[data-uid="${CSS.escape(key.slice(1))}"]`; else if(key[0] === 'h') sel = `[data-handuid="${CSS.escape(key.slice(1))}"]`; else return null;
+    const host = [...document.querySelectorAll(sel)].find(n=> !pop.contains(n)); if(!host) return null;
+    return host.matches('[data-defid]') ? host : host.querySelector('[data-defid]');
+  }
+  const inRect = (r, x, y)=> !!r && x >= r.left - 2 && x <= r.right + 2 && y >= r.top - 2 && y <= r.bottom + 2;
+  function bindPopSrc(el){
+    popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
+    TipWatch.track(pop, el, ()=>{ if(!rebindPop()) closePopLost(); }, {steady: !!matchState});
+    // the hit log is the one live part: refreshed in place when it changed
+    try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
+      if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
+  }
+  // the card under the pointer, or (a fight only) the same unit anywhere while the pointer still rests on the spot it stood on
+  function rebindPop(){
+    if(pop.hidden || !popKey) return false;
+    let under = null; try{ under = document.elementsFromPoint(ptX, ptY).map(n=> n.closest && n.closest('[data-defid]')).find(n=> n && !pop.contains(n)); }catch(e){}
+    if(under && popKeyOf(under) === popKey){ bindPopSrc(under); return true; }
+    if(matchState && inRect(popRect, ptX, ptY)){
+      const same = sameCardElByKey(popKey);
+      if(same){ popSrc = same; TipWatch.track(pop, same, ()=>{ if(!rebindPop()) closePopLost(); }, {steady:true}); return true; } // still watched: it closes once the unit is gone
+    }
+    return false;
+  }
+  function closePopLost(){ lostKey = popKey; lostAt = Date.now(); pop.hidden = true; popSrc = null; popKey = null; }
+  function closePop(){ pop.hidden = true; popSrc = null; popKey = null; }
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
   // popover stuck (e.g. over the Victory screen). Close it once its card is gone or no longer hovered.
   let popSrc = null;
-  document.addEventListener('mousemove', ()=>{
+  document.addEventListener('mousemove', e=>{
     if(pop.hidden || !popSrc || stripHeld) return;
-    if(!popSrc.isConnected || !popSrc.matches(':hover')){ pop.hidden = true; popSrc = null; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(popSrc.isConnected && popSrc.matches(':hover')){ try{ const r = popSrc.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(_){} return; }
+    if(!rebindPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
   }, {passive:true});
-  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; popSrc = null; };
+  window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); };
   document.addEventListener('mouseout', e=>{
     const el = e.target.closest('[data-defid]');
     if(!el) return;
     if(el.contains(e.relatedTarget)) return;
     if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; }
     if(stripHeld) return;
-    pop.hidden = true;
+    // UI6 (X2): onto the same card's new element, or the card moved out from under a resting pointer (a lunge): it stays
+    const to = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest('[data-defid]') : null;
+    if(!pop.hidden && popKey && to && popKeyOf(to) === popKey){ bindPopSrc(to); return; }
+    ptX = e.clientX; ptY = e.clientY;
+    if(!pop.hidden && popKey && popKeyOf(el) === popKey && rebindPop()) return;
+    closePop();
   });
-  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } pop.hidden = true; });
+  document.addEventListener('dragstart', ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); });
   // A click usually re-renders the card away, and a removed element never fires mouseout — so the
   // popover would stay stuck on screen. Any click closes it.
   // ...except the lift that ends a press-and-hold peek: that one keeps the details open and doesn't play or pick the card.
@@ -16419,6 +16478,7 @@ const TipWatch = (()=>{
     live.forEach((rec, tip)=>{
       if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
       if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
+      if(rec.steady){ tip.style.opacity = ''; return; } // 2026-10-30 (package UI6, X2): the card popover does not fade with a card an animation dims
       const o = effOpacity(rec.anchor);
       if(o < 0.03){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
       tip.style.opacity = o < 0.98 ? o.toFixed(2) : '';
@@ -16426,7 +16486,7 @@ const TipWatch = (()=>{
     if(live.size) raf = requestAnimationFrame(tick);
   }
   return {
-    track(tip, anchor, hide){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; })}); if(!raf) raf = requestAnimationFrame(tick); },
+    track(tip, anchor, hide, opts){ if(!tip || !anchor) return; live.set(tip, {anchor, hide: hide || (()=>{ tip.hidden = true; }), steady: !!(opts && opts.steady)}); if(!raf) raf = requestAnimationFrame(tick); },
     release(tip){ if(tip){ live.delete(tip); tip.style.opacity = ''; } },
     count(){ return live.size; },
   };
