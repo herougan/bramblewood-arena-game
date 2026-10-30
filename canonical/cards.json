@@ -930,9 +930,9 @@
     "test": false,
     "uuid": "920175ff-6c81-49a9-a740-8086ce5a00c7",
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "flavor": "Nine lives, and it\u2019s spending every one of them recklessly.",
-    "health": 1,
+    "health": 2,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -2241,8 +2241,8 @@
     "icon": "\ud83d\udc19",
     "cost": 2,
     "wait": 2,
-    "attack": 5,
-    "health": 5,
+    "attack": 6,
+    "health": 7,
     "effects": {
       "sweep": 3,
       "tide": true
@@ -5879,8 +5879,8 @@
     "icon": "\ud83e\udd8c",
     "cost": 2,
     "wait": 1,
-    "attack": 4,
-    "health": 4,
+    "attack": 5,
+    "health": 6,
     "archetypes": [
       "Taiga",
       "Deer"
@@ -7196,8 +7196,8 @@
     "icon": "\ud83d\udc3f\ufe0f",
     "cost": 1,
     "wait": 0,
-    "attack": 2,
-    "health": 2,
+    "attack": 3,
+    "health": 3,
     "archetypes": [
       "Chipmunk"
     ],
@@ -7670,7 +7670,7 @@
     "test": false,
     "uuid": "5b893731-9d05-42c1-a5b4-493fe637314f",
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "flavor": "Territorial, uninvited, and somehow already attacking before the round starts.",
     "health": 2,
     "locked": true,
@@ -14279,9 +14279,9 @@
     "uuid": "94dfe124-9fba-4d14-a550-caae5b75d321",
     "wait": 0,
     "basic": true,
-    "attack": 1,
+    "attack": 2,
     "flavor": "Already halfway down the riverbank before anyone said go.",
-    "health": 1,
+    "health": 3,
     "locked": false,
     "rarity": "uncommon",
     "resist": [],
@@ -14561,7 +14561,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 4,
+    "health": 6,
     "archetypes": [
       "Bird",
       "Ecclesia"
@@ -14598,7 +14598,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 9,
+    "health": 12,
     "archetypes": [
       "Badger",
       "Ecclesia"
@@ -15113,7 +15113,7 @@
     "id": "nectar-vintner",
     "name": "Nectar Vintner",
     "icon": "\ud83d\udc26",
-    "attack": 1,
+    "attack": 2,
     "health": 1,
     "rarity": "common",
     "species": [
@@ -16347,8 +16347,8 @@
     "icon": "\ud83e\udda6",
     "cost": 2,
     "wait": 2,
-    "attack": 1,
-    "health": 1,
+    "attack": 2,
+    "health": 3,
     "effects": {
       "armor": 2,
       "sweep": 4
@@ -16633,7 +16633,7 @@
     "icon": "\ud83d\udc26",
     "cost": 0,
     "wait": 1,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "effects": {
       "quick": true,
@@ -18536,7 +18536,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 1,
-    "health": 5,
+    "health": 7,
     "rarity": "common",
     "locked": true,
     "archetypes": [
@@ -19876,8 +19876,8 @@
     "icon": "\ud83d\udc19",
     "cost": 2,
     "wait": 3,
-    "attack": 6,
-    "health": 6,
+    "attack": 7,
+    "health": 8,
     "rarity": "epic",
     "effects": {
       "sweep": 5,
@@ -20976,7 +20976,7 @@
     "icon": "\ud83d\udc0a",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "rarity": "common",
     "species": [
@@ -21119,8 +21119,8 @@
     "icon": "\ud83d\udc1b",
     "cost": 0,
     "wait": 1,
-    "attack": 1,
-    "health": 1,
+    "attack": 2,
+    "health": 3,
     "rarity": "common",
     "species": [
       "Myriapod"
@@ -24317,9 +24317,9 @@
     "test": false,
     "uuid": "f3034ae3-9a46-54fe-a727-52928557f451",
     "wait": 1,
-    "attack": 4,
+    "attack": 5,
     "flavor": "Scales like a pinecone, and as hard to argue with.",
-    "health": 4,
+    "health": 6,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -28513,7 +28513,7 @@
     "icon": "\ud83d\udc01",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "rarity": "common",
     "species": [
@@ -28587,7 +28587,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 7,
+    "health": 9,
     "rarity": "common",
     "species": [
       "Reptile"
@@ -30785,7 +30785,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 2,
+    "health": 3,
     "rarity": "common",
     "species": [
       "Bird"
