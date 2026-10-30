@@ -11389,6 +11389,37 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cave-fire.is-glow .cf-f2{display:none;} .cave-fire.is-glow .cf-spark{background:#bff8f2; box-shadow:0 0 5px 2px rgba(60,220,220,.8);}
 .cave-fire.is-glow .cf-glow{background:radial-gradient(circle, rgba(90,232,222,.45), rgba(40,160,210,.16) 42%, transparent 70%);}
 @media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
+/* Map decor you can touch (2026-10-31, package MAPFX1, owner X7). The layer sits first in the canvas (z-index 0 = paint order is DOM order),
+   so the trail, nodes, curios, pawn and every button are above it; only its own spots take a tap. */
+.map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none;}
+.conquest-map-canvas.layout-editing .map-fx-layer, .conquest-map-canvas.link-editing .map-fx-layer{display:none;}
+.map-sway-layer{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit;}
+.mfx-hit{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; border-radius:50%; background:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none;}
+.mfx-patch{position:absolute; pointer-events:none; background-repeat:no-repeat; -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); image-rendering:pixelated;}
+/* trees: a very slight sway round the trunk's base, transform only (the JS leaves it out with reduced motion and Effects Low/None) */
+.mfx-sway{transform-origin:50% 80%; will-change:transform; animation:mfxSway 5s ease-in-out infinite alternate;}
+@keyframes mfxSway{from{transform:rotate(calc(var(--sw, .8deg) * -1));} to{transform:rotate(var(--sw, .8deg));}}
+.mfx-shake{transform-origin:50% 85%; animation:mfxShake .5s ease-in-out 1;}
+@keyframes mfxShake{0%{transform:rotate(0);} 18%{transform:rotate(-5deg) scale(1.04);} 42%{transform:rotate(4deg) scale(1.03);} 66%{transform:rotate(-2.5deg);} 85%{transform:rotate(1deg);} 100%{transform:rotate(0);}}
+.mfx-fx{position:absolute; pointer-events:none; z-index:2;}
+.mfx-ripple{width:10px; height:6px; margin:-3px 0 0 -5px; border-radius:50%; border:2px solid rgba(235,248,255,.85); box-shadow:0 0 4px rgba(150,210,255,.6); opacity:0; animation:mfxRipple .95s ease-out forwards;}
+.mfx-ripple.r2{animation-delay:.16s;}
+@keyframes mfxRipple{0%{opacity:.9; transform:scale(.5);} 100%{opacity:0; transform:scale(6);}}
+.mfx-drop{width:4px; height:4px; margin:-2px; border-radius:50%; background:#d8f2ff; box-shadow:0 0 3px rgba(140,210,255,.8); animation:mfxDrop .7s ease-out forwards;}
+@keyframes mfxDrop{0%{opacity:1; transform:translate(0,0);} 55%{opacity:1; transform:translate(var(--dx), var(--dy));} 100%{opacity:0; transform:translate(calc(var(--dx) * 1.2), calc(var(--dy) + 14px));}}
+.mfx-leaf{width:5px; height:4px; margin:-2px; border-radius:60% 0 60% 0; background:#6fae4c; box-shadow:0 0 0 1px #2f5a2a; animation:mfxLeaf .85s ease-out forwards;}
+@keyframes mfxLeaf{0%{opacity:1; transform:translate(0,0) rotate(0);} 100%{opacity:0; transform:translate(var(--dx), calc(var(--dy) + 18px)) rotate(200deg);}}
+.mfx-fx.crystal-sparkle{margin:0;}
+/* fires put out: the flame and the glow fade, a puff of smoke; tapped again they come back */
+.mfx-smoke{position:absolute; left:50%; top:24%; width:12px; height:12px; margin:-6px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(205,205,215,.7), rgba(160,160,175,0) 70%); animation:mfxSmoke 1.6s ease-out forwards;}
+@keyframes mfxSmoke{0%{opacity:0; transform:translate(0,0) scale(.6);} 22%{opacity:.8;} 100%{opacity:0; transform:translate(var(--dx), -38px) scale(2.6);}}
+.cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark{animation:none !important; opacity:0 !important; transform:scale(.2) !important; transition:opacity .5s ease, transform .5s ease;}
+.cave-fire.is-out .cf-logs{background:#5a3a22; box-shadow:0 0 0 1px #2d1c10;}
+.cave-fire.is-out::after{display:none;}
+.map-campfire.is-out .mcf-fire, .map-campfire.is-out .mcf-glow, .map-campfire.is-out .mcf-spark{animation:none !important; opacity:0 !important; transition:opacity .5s ease;}
+.map-campfire .mcf-fire, .map-campfire .mcf-glow{transition:opacity .5s ease;}
+.conquest-map-canvas.mfx-fire-hover{cursor:pointer;}
+@media (prefers-reduced-motion: reduce){ .mfx-sway, .mfx-shake{animation:none !important;} .mfx-fx{display:none !important;} .cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark, .map-campfire.is-out *{transition:none !important;} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
@@ -51325,7 +51356,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '60af850e76d9', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'b468ad6f1f95', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -53059,6 +53090,25 @@ const SoundKit = (()=>{
     fireIgnite(){
       fnoise(0.45, 0.045, {type:'lowpass', freq:260, freqEnd:900, attack:0.06});
       fnoise(0.7, 0.022, {type:'highpass', freq:2600, crackle:0.05, attack:0.12});
+    },
+    // Map decor taps (2026-10-31, package MAPFX1, owner: "touching the torches or campfires on darkmaps turns them off ... clicking the
+    // crystals has a ting! sound, and clicking water, bushes has sound fx"): a fire put out ("fsst"), a crystal's ting (k = a small pitch
+    // variation, 0.9..1.12), a plop in the water, a rustle in a bush. Short, quiet, built from the same primitives, so the sound slider rules them.
+    fireOut(){
+      fnoise(0.34, 0.05, {type:'bandpass', freq:3600, freqEnd:1500, q:0.9, attack:0.012});
+      fnoise(0.42, 0.028, {type:'lowpass', freq:900, freqEnd:200, attack:0.02});
+    },
+    crystalTing(k){ const p = k || 1;
+      tone(2349*p, 0.55, 'sine', 0.075); tone(3520*p, 0.4, 'sine', 0.035, 0.004); tone(4698*p, 0.22, 'triangle', 0.018, 0.008);
+    },
+    waterPlop(k){ const p = k || 1;
+      sweep(640*p, 210*p, 0.12, 'sine', 0.11);
+      fnoise(0.07, 0.025, {type:'bandpass', freq:2200*p, freqEnd:900, q:1.4, attack:0.003});
+      sweep(820*p, 320*p, 0.08, 'sine', 0.05, 0.11);
+    },
+    bushRustle(){
+      fnoise(0.16, 0.035, {type:'bandpass', freq:4200, freqEnd:2600, q:0.8, crackle:0.03, attack:0.02});
+      fnoise(0.2, 0.03, {type:'bandpass', freq:3400, freqEnd:5200, q:0.8, crackle:0.03, attack:0.03, delay:0.1});
     },
     // Castle falls: a long rumble with stones settling.
     castleCollapse(){
@@ -71557,6 +71607,182 @@ function startMapMovers(canvas, map, decor){
     moverLoop(el, spots, mv.kind, token, start, mapMoverPos[map.id], i, !!saved);
   }
 }
+// ===== Map decor you can touch (2026-10-31, package MAPFX1, owner X7) =====
+// Owner: "Touching the torches or campfires on darkmaps turns them off! fun interaction. clicking the crystals has a ting! sound, and
+// clicking water, bushes has sound fx play. trees sway (very slightly!)". The map art is a painted picture, so the spots come from the
+// painter itself (tools/map_fx_spots_2026_10_31.py re-runs it, logs where it put each tree, bush, crystal and pond, and checks the result
+// is pixel-identical to assets/maps/<id>.png). Positions are % of the 256x144 art; the layer maps them onto the canvas the way the art is
+// drawn (cover, centred on #conquestLayout), so they stay on their crystal when the window changes size or the map scrolls.
+// t = tree (sways), b = bush or reeds (rustle, shake), c = crystal (ting, sparkle), w = water [x, y, w, h] (plop, ripple).
+// Fires are put out and lit again by a tap (the lit cave fires, the sea-lanterns and the Glimmer Depths campfire): purely visual, per visit.
+// Decor stays out of the way: the spots sit under the nodes and under the trail, a tap on a node, a spot, a curio or a button never reaches
+// them, the fires hit-test only when the tap landed on nothing else, and the layer is off while an admin edits the layout or the links.
+// MAP_FX_SPOTS_BEGIN
+// generated by tools/map_fx_spots_2026_10_31.py; skipped (art not from the painter): 
+const MAP_FX_SPOTS = {"m1":{"b":[[52.7,21.9],[90.2,67.0],[25.8,17.0],[68.8,11.5],[41.4,22.6],[16.8,27.4],[3.9,8.0],[44.1,64.2],[55.1,91.3],[35.2,81.6],[59.0,10.1],[84.0,14.9],[51.2,25.3],[96.9,12.8],[81.2,71.9],[59.0,96.2],[88.3,35.8],[54.3,3.8],[62.9,4.5],[93.0,10.8],[35.5,15.6],[94.9,55.9],[60.2,95.5],[78.9,96.9],[28.1,53.1],[8.2,12.2],[82.0,19.1],[88.7,80.9],[15.6,79.5],[64.1,71.2],[63.3,3.1],[3.5,82.3],[55.9,78.1],[88.3,10.1],[12.1,89.9],[56.2,3.8],[82.4,35.1],[12.1,33.7],[2.3,67.7],[60.9,95.5],[72.7,35.8],[30.9,19.1],[78.9,32.3],[55.1,18.4],[55.9,14.2],[97.7,87.8],[47.7,10.8],[57.0,75.3],[80.9,74.7],[36.7,33.0],[65.2,7.3],[41.8,8.7],[54.3,15.6],[41.0,5.2],[92.2,51.0],[5.1,35.8],[11.7,96.9],[37.1,28.8],[3.1,35.8],[57.0,88.5],[50.4,19.1],[84.0,80.2],[85.5,38.5]],"t":[[44.7,89.9],[83.4,30.2],[69.3,21.2],[16.6,27.4],[92.0,73.3],[27.9,87.8],[42.0,76.7],[3.3,33.0],[67.0,46.9],[96.3,21.2],[92.0,96.2]]},"m10":{"t":[[84.2,27.8],[94.7,16.7],[86.9,3.5],[89.3,46.5],[42.8,33.3],[82.6,27.1],[25.6,4.9],[2.5,81.2],[54.9,5.6],[70.5,82.6],[3.7,94.4],[35.0,71.5],[31.4,67.4],[41.2,70.1],[15.0,16.7],[61.9,69.4],[2.1,31.9],[70.5,78.5],[93.9,6.9],[24.8,74.3],[51.4,33.3],[76.4,85.4]]},"m11":{"c":[[47.9,74.7],[12.3,39.2],[51.4,10.1],[40.8,17.0],[88.5,53.1],[88.9,49.0],[59.2,77.4],[15.8,72.6],[46.7,72.6],[35.0,6.6],[46.3,10.1],[6.4,27.4],[85.0,14.9],[41.6,40.6],[79.9,21.2]]},"m2":{"w":[[39.0,10.8,13.7,18.8],[50.0,32.6,20.3,27.8],[32.8,59.9,13.7,20.1],[13.6,68.1,23.0,25.7],[34.5,92.0,12.5,16.0],[3.1,22.6,8.6,5.6],[16.4,20.1,8.6,5.6],[29.7,15.6,8.6,5.6],[43.0,9.7,8.6,5.6],[56.2,6.9,8.6,5.6],[69.5,7.3,8.6,5.6],[82.8,11.5,8.6,5.6],[96.1,16.7,8.6,5.6]],"b":[[34.6,59.7],[49.0,47.2],[68.6,16.0],[65.0,56.2],[45.1,94.4],[36.9,77.1],[63.5,43.8],[42.0,6.2],[54.1,84.0],[33.8,62.5],[58.4,13.2],[34.6,32.6],[86.1,34.0],[83.4,27.1],[44.3,15.3],[20.5,34.0],[40.4,45.8],[72.5,63.9],[56.4,7.6],[41.6,13.2],[67.8,68.1],[34.2,20.8],[30.7,12.5],[52.9,57.6],[7.2,45.1],[66.6,43.8],[11.5,41.7],[26.4,39.6],[17.0,68.1],[31.4,81.9],[93.6,72.2],[81.1,88.2],[43.6,96.5],[10.4,36.8],[59.6,8.3],[49.0,68.8],[2.9,3.5],[65.8,85.4],[6.8,43.1],[23.6,68.8],[6.4,18.1],[58.8,36.8],[78.3,74.3],[59.6,72.9],[71.7,56.9],[76.4,75.0],[34.6,35.4],[88.5,63.2],[61.1,4.2],[15.0,96.5],[50.6,86.8],[93.9,4.9],[88.1,45.8],[10.0,31.9],[14.6,31.9],[92.0,59.0],[17.4,77.1],[79.5,18.8],[38.5,91.7],[63.5,78.5],[93.9,52.8],[68.6,91.7],[67.0,95.8],[81.1,65.3],[56.4,45.8],[10.0,70.1],[74.8,44.4],[64.6,31.2],[17.4,17.4],[50.6,57.6],[34.2,92.4],[32.6,9.0],[56.1,91.7],[90.8,37.5],[66.2,23.6],[45.1,45.1],[90.8,46.5],[20.5,20.8],[31.4,67.4],[8.0,8.3],[48.2,65.3],[44.3,47.9]],"t":[[81.8,38.5],[45.1,12.8],[17.0,77.4],[27.1,69.8],[78.7,15.6],[17.8,66.3],[40.0,85.8],[4.5,6.6],[75.2,95.5],[45.9,69.8],[52.5,5.2],[21.3,28.1],[85.0,67.0],[22.5,35.8],[38.9,19.8],[82.2,69.8],[91.2,84.4],[24.0,22.6]]},"m21":{"w":[[66.0,11.8,10.9,13.9],[25.4,13.4,10.2,12.5],[74.0,64.3,10.5,13.9]],"t":[[8.8,74.7],[38.5,11.5],[71.7,76.7],[60.0,25.3],[85.7,21.9],[43.6,5.2],[43.6,83.0],[2.9,12.8],[17.8,80.9],[88.5,89.9],[8.8,57.3],[53.7,69.8],[27.5,52.4],[9.6,16.3]]},"m22":{"w":[[15.9,31.6,14.5,21.5],[59.3,24.3,5.1,6.2],[41.3,28.0,8.6,13.2],[28.2,80.5,8.2,9.7]],"c":[[81.4,96.2],[82.6,14.2],[76.8,19.8],[4.5,44.1],[51.8,71.2],[29.1,14.9],[78.3,19.8],[9.6,95.5],[96.7,71.9],[68.2,74.0],[42.4,28.8],[24.4,8.0],[43.6,15.6],[35.0,74.7],[9.2,83.7],[61.1,73.3],[43.2,64.2],[60.7,10.1]]},"m23":{},"m24":{"w":[[49.2,29.7,9.0,11.1]],"b":[[21.9,35.8],[78.9,65.6],[20.7,86.5],[51.2,23.3],[46.1,15.6],[46.5,32.3],[7.8,85.1],[85.2,24.0],[4.7,30.2],[34.8,57.3],[87.5,35.8],[13.3,30.9],[55.1,67.7],[32.8,77.4],[9.8,27.4],[18.8,38.5],[93.4,25.3],[12.5,77.4],[12.1,5.2]]},"m3":{"t":[[35.4,96.2],[95.9,96.2],[17.4,85.1],[81.4,22.6],[4.1,4.5],[9.2,96.2],[80.7,15.6],[95.1,26.7],[86.5,74.0],[46.3,30.9],[94.3,43.4],[2.5,82.3],[31.1,17.7],[71.7,17.0],[87.3,67.0],[64.3,79.5],[67.4,12.8],[44.7,24.7],[10.7,68.4],[77.5,13.5],[65.4,74.0],[86.1,76.7],[69.7,65.6],[97.1,24.0],[80.7,94.8]]},"m4":{"w":[[56.4,28.5,9.4,11.8],[62.6,68.2,8.2,10.4],[76.0,72.3,5.1,9.0]],"c":[[10.7,64.9],[61.5,64.2],[24.0,22.6],[95.5,21.9],[67.4,93.4],[93.6,69.8],[4.9,17.0],[60.4,14.9],[85.4,33.7],[35.4,33.7],[88.5,80.2],[52.5,16.3],[96.3,85.1],[77.5,80.9],[26.8,19.1],[72.1,72.6],[28.7,19.8],[53.7,19.1],[19.3,94.8],[23.6,65.6],[64.6,8.0],[94.7,53.8],[42.0,78.8],[81.8,70.5],[68.9,13.5],[75.2,76.7],[78.3,84.4],[29.9,17.0],[22.1,35.8],[91.6,86.5],[78.3,66.3],[68.6,31.6],[52.9,5.9],[90.0,19.8],[3.7,12.8],[81.4,3.8],[93.9,3.8],[36.5,72.6],[94.7,71.2],[89.6,24.0],[97.1,21.2],[94.7,28.1],[49.0,3.1]]},"m5":{"w":[[89.3,8.7,10.2,15.3]],"t":[[88.1,67.7],[9.6,19.1],[55.7,78.8],[30.7,79.5],[81.1,60.8],[91.2,44.8],[92.4,10.1],[73.2,71.2],[46.3,69.8],[9.6,36.5],[51.8,29.5],[96.3,79.5],[22.5,76.7],[77.5,94.8],[42.4,89.9],[89.3,89.2],[45.9,85.8],[21.3,71.9],[35.0,14.9],[45.9,94.1],[79.9,3.8],[42.8,8.7],[40.4,64.9],[55.3,19.1],[24.4,94.1]]},"m6":{"w":[[10.3,73.7,13.7,20.1],[53.4,76.3,11.3,17.4]],"t":[[19.7,26.0],[13.9,26.0],[61.5,89.2],[92.4,14.9],[13.5,12.2],[39.6,14.9],[9.2,78.1],[92.0,39.2],[52.5,17.0],[26.8,86.5],[35.7,21.2],[26.0,3.1],[89.3,95.5],[54.1,67.0],[73.2,37.2],[46.7,92.0],[23.2,7.3],[68.6,65.6],[42.8,65.6],[74.8,71.2],[51.4,89.9],[15.0,86.5],[43.9,64.2],[8.4,67.7],[27.5,53.8],[24.4,3.8],[80.3,17.7],[97.5,89.2],[89.6,12.2],[59.6,28.8],[96.7,16.3],[18.6,5.9],[33.8,21.9],[18.9,78.1]]},"m7":{},"m8":{"w":[[51.4,33.0,9.0,11.1],[16.9,33.2,6.6,9.0],[46.6,60.1,29.7,31.9],[9.4,62.0,10.9,14.6],[88.9,72.9,16.4,22.2]],"t":[[93.6,89.2],[30.3,13.5],[52.5,49.0],[89.3,39.2],[93.6,89.9],[90.8,20.5],[76.8,90.6],[79.1,6.6],[13.9,85.1],[69.3,21.2],[31.8,74.7],[49.8,12.2],[88.5,92.0],[66.2,93.4],[63.5,60.8],[77.1,4.5],[82.2,72.6],[95.9,69.8],[52.1,67.7],[92.0,69.8],[7.6,65.6],[88.5,31.6],[31.1,93.4],[6.4,19.8],[46.3,24.7],[96.3,21.2],[45.5,31.6],[8.4,74.0],[37.7,89.9],[44.7,25.3],[80.7,5.2],[38.1,3.8],[60.4,89.2],[61.1,84.4],[70.1,24.7],[50.6,27.4],[6.4,85.8],[89.6,72.6],[69.3,31.6],[18.6,7.3],[13.5,21.9],[97.5,24.7],[9.2,15.6],[42.4,25.3],[29.1,89.9],[74.4,30.2],[57.2,62.2],[17.8,12.8],[6.1,89.2],[97.9,89.2],[89.6,10.1],[11.1,3.8]],"b":[[38.1,43.8],[9.2,81.9],[63.9,81.2],[77.5,64.6],[76.4,92.4],[86.5,88.9],[49.0,20.1],[13.5,22.9],[84.6,45.1],[37.7,83.3],[57.6,16.7],[33.4,63.2],[89.6,66.7],[6.1,93.8],[9.2,45.1],[85.4,96.5],[24.8,55.6],[45.5,60.4],[7.6,38.2],[68.2,7.6],[76.8,59.7],[46.7,93.8],[19.7,88.9],[56.1,31.2],[29.1,16.7],[16.2,24.3],[14.3,74.3],[75.2,35.4],[95.9,95.1],[61.1,59.7],[47.1,16.0],[52.1,79.2],[9.2,27.8],[82.2,8.3],[46.7,43.1],[60.7,76.4],[61.9,58.3],[74.8,58.3],[41.6,65.3],[71.7,31.9],[64.6,13.2],[42.4,38.9],[62.3,85.4],[12.3,50.0],[25.6,58.3],[51.4,33.3],[43.9,16.0],[57.2,24.3],[92.4,50.0],[28.7,18.1],[95.5,50.0],[72.1,75.0],[7.2,9.7],[38.5,36.1],[91.2,70.8],[87.7,8.3],[16.6,61.8],[22.1,88.9],[86.9,93.8],[12.7,51.4],[80.7,50.7],[26.8,57.6],[35.4,19.4],[93.9,23.6],[43.2,72.2],[39.3,88.2],[61.1,43.1],[7.2,58.3],[42.8,74.3],[7.6,68.8],[62.3,25.0],[49.0,84.7],[66.6,49.3],[63.1,39.6],[75.2,91.0],[63.9,74.3],[96.3,15.3],[51.4,30.6],[63.9,13.2],[49.4,56.9],[57.2,18.8],[67.8,28.5],[34.2,73.6]]},"m9":{"w":[[3.1,29.9,8.6,5.6],[16.4,29.5,8.6,5.6],[29.7,26.4,8.6,5.6],[43.0,21.9,8.6,5.6],[56.2,17.0,8.6,5.6],[69.5,12.8,8.6,5.6],[82.8,10.4,8.6,5.6],[96.1,10.1,8.6,5.6]]},"mabyss":{},"marena":{},"mb":{"w":[[26.6,27.1,8.6,11.1],[7.2,31.2,9.0,13.2],[64.3,31.2,6.6,9.0]]},"mc":{},"md":{},"me":{"w":[[57.5,23.3,18.0,35.4],[42.0,71.6,17.6,22.9]]},"mf":{"w":[[3.1,79.2,8.6,5.6],[16.4,85.8,8.6,5.6],[29.7,89.9,8.6,5.6],[43.0,87.5,8.6,5.6],[56.2,81.2,8.6,5.6],[69.5,74.7,8.6,5.6],[82.8,74.7,8.6,5.6],[96.1,80.2,8.6,5.6],[74.6,86.6,10.9,15.3]],"b":[[5.9,35.8],[61.7,93.4],[62.1,33.0],[96.1,83.7],[85.9,63.5],[63.7,19.8],[41.4,85.8],[27.0,88.5],[4.3,24.0],[34.4,12.2],[97.7,89.9],[9.0,13.5],[23.0,64.9],[43.8,86.5],[82.0,71.9],[86.3,79.5],[34.0,88.5],[23.4,32.3],[94.1,30.9],[40.6,35.8],[80.1,80.2],[40.2,28.1],[37.1,38.5],[93.4,10.1],[16.4,16.3],[74.2,4.5],[17.2,60.1],[43.4,89.9],[35.2,40.6],[53.9,85.8],[49.2,94.8],[23.0,4.5]],"t":[[27.5,88.5],[15.0,21.9],[6.1,85.1],[12.3,88.5],[10.4,92.7],[73.2,21.9],[46.7,59.4],[35.4,85.1],[88.1,17.0],[18.2,26.7],[14.6,11.5],[86.5,44.8],[40.4,76.0],[67.8,19.8],[80.7,67.0],[31.4,85.8],[11.5,35.1],[92.8,84.4],[96.3,16.3],[32.2,95.5],[60.0,87.2],[43.2,72.6],[38.5,92.7],[62.7,75.3],[6.4,94.1],[92.8,10.8],[45.9,23.3],[58.8,14.2],[64.6,3.1],[24.8,28.8],[26.4,35.8],[96.7,5.2],[5.7,62.5],[52.1,34.0],[92.8,83.3],[47.1,20.8],[92.4,13.2],[77.1,6.9],[27.9,93.1],[56.4,91.0],[31.4,47.2],[83.0,17.4],[68.2,18.1],[15.4,15.3],[52.9,86.8],[76.8,86.8],[12.7,54.2],[89.6,81.9],[47.1,15.3],[31.1,20.1],[13.1,34.0],[10.7,23.6],[94.7,8.3],[97.9,70.1],[47.1,22.9],[90.0,84.0],[26.4,95.8],[23.6,87.5],[57.2,16.0],[96.7,91.0],[90.8,81.2],[18.6,91.7],[95.9,4.9],[37.3,32.6],[54.5,9.0],[91.6,16.0],[85.7,22.2],[55.3,91.7],[65.4,15.3]]},"mg":{"w":[[68.9,11.0,11.3,17.4],[45.4,19.0,19.1,13.2],[54.4,72.3,8.6,13.2],[17.9,78.5,15.6,20.8]],"c":[[8.0,28.8],[54.9,35.1],[66.6,67.7],[40.4,21.9],[79.1,86.5],[51.4,8.7],[7.6,78.8],[93.2,74.7],[74.8,80.2],[77.9,5.9],[13.9,19.8],[46.7,72.6],[92.4,64.2],[9.2,73.3]]},"mh":{"b":[[29.7,22.6],[26.2,65.6],[42.2,5.2],[24.6,83.7],[89.5,31.6],[11.7,37.2],[93.8,24.0],[10.5,46.9],[92.2,92.7],[49.6,72.6],[59.0,26.7],[43.4,35.1],[80.9,85.8],[20.7,84.4],[76.6,26.7],[94.9,37.2],[45.7,62.2],[44.9,74.0],[60.2,43.4],[10.2,87.2],[44.5,53.8],[77.7,44.8],[15.6,19.1],[47.7,58.0],[53.5,70.5],[33.2,85.8],[13.3,19.1],[48.4,31.6],[23.0,62.2],[35.5,70.5],[23.8,71.9],[83.6,30.2],[87.1,12.2],[20.3,24.7],[78.5,69.8],[37.5,46.9],[14.1,46.2],[77.7,65.6],[52.7,33.0],[69.1,5.9],[19.1,96.2],[84.0,17.7],[75.4,58.0],[19.5,96.2],[84.0,17.7]]},"mj":{},"mk":{"b":[[34.6,41.0],[81.8,71.5],[89.6,75.7],[32.6,95.1],[79.9,61.8],[88.9,37.5],[10.4,19.4],[33.4,22.9],[8.4,47.9],[10.4,95.1],[47.9,65.3],[48.6,22.2],[89.3,27.1],[52.1,9.7],[74.8,56.2],[12.3,25.0],[35.0,87.5],[19.3,88.2],[97.1,82.6],[13.5,4.9],[58.4,93.8],[76.4,70.1],[85.7,19.4],[11.9,11.1],[3.7,23.6],[43.6,66.7],[17.4,35.4],[33.4,72.2],[22.5,45.1],[67.0,68.8],[4.5,44.4],[84.2,82.6],[32.2,21.5],[71.7,70.8],[40.8,67.4],[92.4,85.4],[19.3,13.9],[73.2,92.4],[41.2,64.6],[2.9,8.3],[54.5,34.7],[96.3,40.3],[29.9,52.1],[34.2,45.8],[43.9,22.9],[50.2,47.9],[28.3,12.5],[58.8,75.0],[6.4,66.7],[21.7,92.4],[26.4,28.5],[37.3,56.9],[27.5,14.6],[15.0,41.7],[47.9,9.7],[8.4,12.5],[22.9,32.6],[94.3,80.6],[2.5,93.8],[74.4,5.6],[83.8,71.5],[11.9,18.1],[29.9,93.8],[23.6,30.6],[23.2,70.8],[59.6,68.8],[97.9,25.7],[72.1,63.2],[69.3,43.8],[6.8,72.2],[67.0,31.2],[65.8,25.7],[94.7,54.9],[94.7,37.5],[95.9,13.9],[96.3,44.4],[15.8,36.1],[35.0,39.6],[56.8,38.9],[22.9,71.5],[7.2,87.5],[24.4,63.2],[95.1,95.1],[77.9,75.7],[97.9,25.7],[43.9,52.8],[22.5,13.2],[25.2,90.3],[58.8,88.2],[33.4,14.6],[80.7,70.8],[64.3,36.8],[51.4,72.9],[58.4,16.0],[83.8,29.2],[53.7,16.7],[93.6,3.5],[13.9,7.6],[63.9,59.0],[49.0,70.1]]},"ml":{"w":[[3.1,65.6,8.6,5.6],[16.4,63.9,8.6,5.6],[29.7,64.6,8.6,5.6],[43.0,67.0,8.6,5.6],[56.2,70.5,8.6,5.6],[69.5,74.0,8.6,5.6],[82.8,75.7,8.6,5.6],[96.1,76.0,8.6,5.6]],"t":[[61.5,7.3],[90.4,94.1],[57.2,33.0],[68.9,89.2],[10.4,89.9],[62.7,69.1],[27.1,84.4],[87.3,30.2]]},"mp":{"w":[[36.3,11.0,13.7,18.1],[51.2,37.2,15.2,20.1],[79.7,57.1,28.5,31.2],[37.1,56.8,13.7,18.8]],"b":[[23.2,50.7],[43.2,61.8],[79.5,23.6],[56.4,84.7],[92.0,45.1],[20.5,13.9],[70.9,9.7],[81.4,27.8],[39.3,36.1],[48.2,68.8],[64.3,29.9],[78.7,50.7],[29.1,63.2],[91.6,6.2],[11.1,54.9],[33.8,91.0],[86.5,46.5],[79.5,32.6],[3.3,47.9],[63.9,7.6],[9.2,41.7],[86.5,43.1],[61.5,36.8],[71.3,22.2],[20.1,15.3],[84.2,22.9],[18.2,84.7],[96.7,34.7],[85.4,54.2],[19.3,88.2],[40.8,66.7],[9.2,39.6],[56.8,70.8],[73.6,93.8],[17.8,72.2],[35.7,56.2],[62.7,30.6],[42.8,57.6],[72.9,95.1],[62.3,81.9],[59.6,41.0],[96.7,46.5],[41.6,77.8],[24.0,79.2],[55.7,11.8],[17.0,22.9],[76.8,63.9],[86.5,68.8],[87.3,74.3],[56.1,60.4],[43.6,15.3],[76.8,86.8],[86.1,82.6],[12.7,67.4],[47.1,52.1],[29.9,43.8],[42.0,50.0],[82.6,58.3],[17.8,37.5],[67.8,16.7],[32.2,59.0]],"t":[[79.9,96.2],[80.7,4.5],[50.6,93.4],[64.6,11.5],[36.1,5.9],[44.7,58.0],[47.1,32.3],[42.8,65.6],[47.9,71.2],[15.8,74.7],[92.4,20.5],[52.1,10.1],[48.2,26.0]]},"mpd":{},"mq":{"w":[[3.1,75.7,8.6,5.6],[16.4,77.1,8.6,5.6],[29.7,79.2,8.6,5.6],[43.0,81.2,8.6,5.6],[56.2,84.7,8.6,5.6],[69.5,86.1,8.6,5.6],[82.8,88.2,8.6,5.6],[96.1,88.2,8.6,5.6]],"b":[[52.3,76.7],[54.3,69.1],[52.3,3.8],[22.3,19.1],[82.8,3.1],[91.4,83.7],[18.0,62.8],[76.6,96.9],[40.2,88.5],[60.5,72.6],[75.4,21.2],[80.9,12.2],[52.3,64.9],[24.6,66.3],[77.0,14.2],[10.5,94.8],[54.3,64.9],[9.8,10.8],[78.9,29.5],[53.5,11.5],[37.9,6.6],[79.3,92.7],[44.5,79.5],[77.3,64.2],[44.5,11.5],[84.8,25.3],[33.2,76.7],[25.8,11.5],[36.3,68.4],[3.5,30.9],[11.7,17.0],[54.3,25.3],[65.2,93.4],[55.9,13.5],[75.8,73.3],[23.8,67.0],[4.3,83.0]],"t":[[68.2,15.6],[72.1,78.1],[91.6,28.8],[40.8,76.7],[63.9,5.9],[33.4,17.7],[18.2,35.8],[52.9,9.4]]},"mr":{"b":[[64.1,8.0],[64.1,79.5],[25.8,78.8],[46.9,11.5],[39.8,24.0],[66.4,20.5],[4.7,6.6],[94.5,24.7],[64.8,23.3],[80.5,15.6],[23.4,76.0],[52.7,87.8],[6.2,8.0],[76.6,92.7],[11.3,5.2],[5.1,43.4],[48.8,34.4],[24.6,89.9],[7.4,83.7],[16.4,93.4],[8.6,34.4],[12.1,84.4],[30.5,8.7],[91.0,14.2],[85.9,3.8],[3.9,15.6],[22.3,35.8]]},"mt":{"w":[[3.1,16.0,8.6,5.6],[16.4,10.4,8.6,5.6],[29.7,10.8,8.6,5.6],[43.0,15.3,8.6,5.6],[56.2,22.6,8.6,5.6],[69.5,28.1,8.6,5.6],[82.8,29.5,8.6,5.6],[96.1,25.7,8.6,5.6]],"t":[[14.6,4.2],[79.9,16.0],[63.1,20.1],[5.3,88.2],[21.7,79.9],[16.6,5.6],[42.0,93.8],[64.3,26.4],[16.2,71.5],[69.3,27.8],[67.0,18.8],[33.4,75.0],[47.5,84.7],[3.7,93.8],[50.2,25.7],[13.5,10.4],[57.2,21.5],[82.6,34.0],[72.1,81.2],[86.9,68.1],[81.1,84.0],[31.4,83.3],[68.9,16.7],[20.1,74.3],[73.6,88.9],[50.6,25.0],[32.2,26.4],[51.8,27.8],[49.4,13.2],[68.9,69.4],[31.8,21.5],[72.1,54.2],[29.9,27.1],[85.4,69.4],[35.4,64.6],[35.4,68.1],[31.4,6.2],[71.7,65.3],[70.1,11.1],[70.1,90.3],[56.8,77.8],[73.6,9.0],[50.2,27.1],[35.4,88.9],[26.0,95.8],[35.7,87.5],[96.7,34.0],[37.7,35.4],[63.5,30.6],[51.0,95.8],[25.6,9.7],[97.1,72.2],[63.9,74.3],[16.2,10.4],[60.0,68.8],[77.9,18.1],[7.6,89.6],[26.0,77.8],[25.6,95.1],[46.3,71.5],[25.6,66.7],[5.3,74.3],[95.1,9.7],[13.5,23.6],[2.5,29.9],[33.4,86.1],[26.0,70.1],[79.9,30.9],[76.4,14.9],[20.1,28.8],[86.9,7.3],[67.8,79.5],[45.5,74.0],[14.6,3.1],[59.2,51.0],[47.9,90.6],[83.8,23.3],[56.4,17.7],[35.7,13.5],[6.8,81.6],[66.2,76.7],[30.7,28.8],[42.8,74.7],[68.2,39.9],[45.9,92.7],[74.0,55.9],[36.5,45.5]]},"mtut":{"w":[[3.1,78.5,8.6,5.6],[16.4,76.7,8.6,5.6],[29.7,76.0,8.6,5.6],[43.0,76.4,8.6,5.6],[56.2,78.1,8.6,5.6],[69.5,81.2,8.6,5.6],[82.8,83.3,8.6,5.6],[96.1,86.1,8.6,5.6]],"b":[[73.4,32.3],[32.0,30.2],[47.3,9.4],[81.6,21.2],[39.8,30.2],[10.2,91.3],[10.9,94.8],[91.0,30.9],[27.0,21.9],[43.0,69.1],[46.1,64.2],[89.8,92.7],[80.1,35.1],[81.2,67.0],[24.6,69.1],[43.0,88.5],[72.7,9.4],[38.7,23.3],[74.2,86.5],[64.1,65.6],[15.2,80.9],[31.2,78.8],[93.0,8.7],[43.0,19.8],[80.9,8.0],[16.4,78.1],[90.2,28.8],[7.8,78.1],[65.6,31.6],[23.8,33.0],[37.1,90.6],[46.1,63.5],[43.8,75.3],[72.3,19.8],[44.9,29.5],[46.5,17.0],[6.6,92.7],[10.9,72.6]],"t":[[23.6,71.2],[95.5,85.1],[17.0,35.1],[38.9,15.6],[12.7,74.0],[39.6,11.5],[42.0,17.0],[9.6,22.6],[67.8,19.8],[33.8,84.4]]},"mu":{"t":[[89.6,42.7],[39.6,67.7],[63.1,83.7],[4.9,21.9],[93.2,64.2],[3.7,5.2],[4.9,6.6],[40.8,92.7],[68.9,16.3],[10.7,37.8],[38.5,3.8],[33.0,56.6],[5.7,65.6],[20.5,69.1],[73.2,69.8],[54.5,35.8],[52.5,17.0],[43.9,41.3]]},"mw":{"w":[[78.2,16.5,18.0,23.6],[56.9,20.2,19.5,27.8],[7.5,36.3,13.7,16.7],[91.0,39.4,15.2,20.8],[64.2,60.4,10.2,14.6],[32.6,86.8,32.0,28.5],[58.5,90.4,19.9,20.8]],"b":[[49.8,20.8],[44.3,27.8],[73.2,72.2],[35.7,96.5],[24.8,77.1],[2.9,81.9],[41.6,67.4],[20.9,92.4],[82.2,88.9],[53.7,16.0],[95.1,78.5],[62.7,73.6],[95.9,41.0],[58.4,38.9],[77.5,86.1],[89.3,57.6],[75.6,65.3],[52.5,24.3],[40.8,20.1],[76.4,63.2],[65.0,16.7],[40.8,81.9],[40.8,66.0],[33.0,11.1],[56.8,67.4],[58.8,39.6],[85.0,72.9],[72.9,75.7],[83.4,78.5],[90.4,6.9],[40.4,31.2],[62.3,44.4],[81.1,16.0],[50.6,96.5],[19.7,76.4],[70.1,72.2],[49.8,34.0],[16.6,68.1],[87.3,21.5],[93.9,9.7],[56.4,34.7],[7.2,27.8],[58.0,32.6],[25.2,82.6],[61.1,77.8],[11.5,91.0],[95.5,67.4],[21.7,63.2],[56.8,43.8],[2.5,16.0],[91.6,68.1],[50.2,46.5],[82.2,94.4],[29.5,95.8],[63.1,29.2],[77.5,28.5],[48.2,72.2],[71.3,85.4],[74.0,18.1],[38.5,43.1],[31.8,36.8],[54.9,31.9],[5.7,53.5],[43.9,15.3],[32.6,94.4],[79.5,82.6],[58.8,29.2],[87.7,36.8],[56.4,63.2],[11.1,54.2],[56.4,34.7],[39.6,16.7],[41.6,23.6],[35.7,74.3],[71.3,28.5],[32.2,44.4],[92.0,53.5],[57.6,56.9],[59.2,63.9],[8.8,70.8],[9.2,75.0],[41.6,80.6],[47.5,69.4],[86.9,59.7],[74.4,22.9],[94.3,38.2],[59.6,63.2],[30.7,22.9]],"t":[[8.0,95.5],[86.9,25.3],[62.3,58.7],[53.7,23.3],[11.5,76.0],[81.8,68.4],[74.0,12.2],[36.1,96.2],[9.6,32.3],[36.1,17.7],[20.5,31.6],[77.1,15.6],[49.0,3.8],[55.7,68.4],[2.5,14.9],[45.1,26.0],[83.8,21.2],[72.9,69.8],[38.1,17.0],[10.0,76.7]]},"my":{"t":[[8.0,26.0],[79.5,9.4],[79.1,25.3],[5.3,66.3],[71.3,8.0],[85.0,22.6],[54.9,10.8],[54.5,83.7],[6.1,76.7],[97.5,26.7],[13.9,17.0],[90.4,12.8],[59.6,15.6],[93.9,26.7],[33.8,17.0],[70.1,91.3],[73.6,24.0],[20.5,3.1],[69.7,33.7],[95.5,88.5],[13.9,94.1],[21.7,32.3],[41.6,16.3],[71.7,18.4],[24.0,21.9],[22.5,14.9],[23.2,35.1],[22.9,7.3],[44.7,32.3],[79.5,96.2],[50.2,72.6],[25.2,92.0],[7.6,77.4],[23.2,29.5],[2.9,31.6],[2.9,22.6],[48.6,65.6],[5.3,21.9],[70.9,90.6],[14.6,87.8],[56.1,26.0],[12.3,89.2],[43.2,35.1],[34.6,92.7],[10.7,5.2],[92.0,35.8],[19.7,35.1],[97.9,85.1],[2.9,35.1],[8.8,12.2],[28.7,19.1],[40.4,92.7],[15.0,3.1],[27.1,94.8],[4.5,69.8],[22.5,12.8],[22.9,3.8],[14.3,28.8],[69.7,28.8],[63.5,65.6],[75.6,49.0],[40.8,92.7]],"b":[[62.5,72.6],[48.8,17.0],[34.8,67.0],[20.7,3.8],[59.0,50.3],[43.8,10.8],[35.5,96.2],[74.2,48.3],[24.2,29.5],[17.6,50.3],[14.1,68.4],[73.4,3.1],[64.8,93.4],[7.4,27.4],[19.9,77.4],[87.9,9.4],[53.5,38.5],[94.5,26.0],[85.5,68.4],[62.9,92.7],[62.5,5.9],[75.4,9.4],[55.9,67.7],[23.4,51.7],[44.9,62.2],[43.8,89.9],[82.4,13.5],[32.4,60.8],[71.9,52.4],[28.1,69.8],[74.2,71.9],[48.0,74.7],[9.4,12.2],[21.5,28.8],[82.4,28.8],[84.0,87.2],[23.0,65.6],[91.4,39.2],[89.8,55.2],[38.7,14.9],[66.8,44.8],[63.3,96.9],[52.7,87.2],[88.9,50.0],[67.8,17.4],[85.4,3.5],[55.3,50.0],[58.4,44.4],[46.3,7.6],[88.1,91.0],[22.9,81.2],[12.3,8.3],[84.2,26.4],[71.7,44.4],[41.2,88.9],[55.7,31.9],[47.5,20.1],[55.7,69.4],[44.7,25.0],[28.3,96.5],[56.8,84.7],[89.6,8.3],[31.8,27.8],[79.1,96.5],[52.9,14.6],[22.9,54.2],[92.0,51.4],[40.8,6.2],[83.8,66.7],[48.2,25.0],[75.2,41.7],[13.5,31.2],[10.4,63.9],[10.7,23.6],[33.4,17.4],[61.5,20.8],[27.9,36.8],[60.7,3.5],[24.0,90.3],[54.9,7.6],[88.5,3.5],[53.3,60.4],[72.1,92.4],[81.1,28.5],[26.8,77.8],[40.0,34.0],[41.2,36.1],[81.4,54.2],[83.8,89.6],[30.3,46.5],[72.9,77.1],[93.6,25.7],[54.5,7.6],[8.8,31.9],[59.2,20.8],[77.9,58.3]]},"mz":{}};
+// MAP_FX_SPOTS_END
+const mfxState = {last: 0, stamps: [], per: {}};
+// Rate limit (so spam-clicking doesn't stack dozens of sounds): 110 ms between any two, at most 5 in 1.5 s, 260 ms per spot.
+function mfxSoundOk(key){
+  const now = performance.now(); mfxState.stamps = mfxState.stamps.filter(t=> now - t < 1500);
+  if(now - mfxState.last < 110 || mfxState.stamps.length >= 5) return false;
+  if(key){ if(mfxState.per[key] && now - mfxState.per[key] < 260) return false; mfxState.per[key] = now; }
+  mfxState.last = now; mfxState.stamps.push(now); return true;
+}
+function mfxPlay(cue, el, arg, key){
+  if(!mfxSoundOk(key || cue)) return false;
+  try{ if(SoundKit[cue]) SoundKit.at(el || 0, ()=> SoundKit[cue](arg)); }catch(e){}
+  return true;
+}
+function mfxVisual(){ try{ return !reducedMotion() && fxAtLeast('low'); }catch(e){ return false; } }
+function mfxSway(){ try{ return !reducedMotion() && fxAtLeast('med'); }catch(e){ return false; } }
+// Where the art sits in the canvas: the art is `center / cover` on #conquestLayout; the canvas is a box inside it.
+function mfxGeo(canvas){
+  const layout = document.getElementById('conquestLayout'); if(!layout || !canvas || !canvas.isConnected) return null;
+  const L = layout.getBoundingClientRect(), C = canvas.getBoundingClientRect(); if(!(L.width > 0) || !(C.width > 0)) return null;
+  const s = Math.max(L.width / 256, L.height / 144), dw = 256 * s, dh = 144 * s, ox = L.left + (L.width - dw) / 2, oy = L.top + (L.height - dh) / 2;
+  return {L, C, s, dw, dh, ax: ox - C.left, ay: oy - C.top, lx: L.left - C.left, ly: L.top - C.top,
+    key: [L.left, L.top, L.width, L.height, C.left, C.top, C.width, C.height].map(v=> Math.round(v)).join(',')};
+}
+function mfxSplitLayers(css){ // split a background-image list at its top-level commas
+  const out = []; let depth = 0, cur = '';
+  for(const ch of css){ if(ch === '(') depth++; else if(ch === ')') depth--; if(ch === ',' && !depth){ out.push(cur.trim()); cur = ''; } else cur += ch; }
+  if(cur.trim()) out.push(cur.trim()); return out;
+}
+// A little copy of the art (with the layout's own vignette over it), cut out round one spot, that can move on its own: a tree swaying
+// or a bush shaking. Feathered at the edge, so where it overlaps the still picture nothing shows but the movement.
+function mfxPatch(layer, kind, w, h){
+  const el = document.createElement('i'); el.className = 'mfx-patch ' + kind; el._w = w; el._h = h; layer.appendChild(el); return el;
+}
+function mfxPlacePatch(layer, el, G, px, py){
+  // the sway layer is a child of #conquestLayout itself, under the weather shader and the map frame, so it is lit exactly like the art it copies
+  const w = el._w * G.s, h = el._h * G.s, ox = (G.L.width - G.dw) / 2, oy = (G.L.height - G.dh) / 2, left = ox + px / 100 * G.dw - w / 2, top = oy + py / 100 * G.dh - h / 2, layers = layer._bgLayers || [];
+  el.style.left = left.toFixed(1) + 'px'; el.style.top = top.toFixed(1) + 'px'; el.style.width = w.toFixed(1) + 'px'; el.style.height = h.toFixed(1) + 'px';
+  el.style.backgroundImage = layers.join(', ');
+  el.style.backgroundSize = layers.map(l=> /url\(/.test(l) ? `${G.dw.toFixed(1)}px ${G.dh.toFixed(1)}px` : `${G.L.width.toFixed(1)}px ${G.L.height.toFixed(1)}px`).join(', ');
+  el.style.backgroundPosition = layers.map(l=> /url\(/.test(l) ? `${(ox - left).toFixed(1)}px ${(oy - top).toFixed(1)}px` : `${(-left).toFixed(1)}px ${(-top).toFixed(1)}px`).join(', ');
+}
+function mountMapFx(canvas, map){
+  try{ if(window.__bwMapFxStop) window.__bwMapFxStop(); }catch(e){}
+  if(!canvas || !map) return;
+  canvas.querySelectorAll(':scope > .map-fx-layer').forEach(e=> e.remove());
+  const layout = document.getElementById('conquestLayout');
+  const data = !map.endless && layout && layout.classList.contains('has-map-art') ? MAP_FX_SPOTS[map.id] : null;
+  const layer = document.createElement('div'); layer.className = 'map-fx-layer'; layer.setAttribute('aria-hidden', 'true');
+  const svg = canvas.querySelector(':scope > .map-trail-svg');
+  if(svg && svg.nextSibling) canvas.insertBefore(layer, svg.nextSibling); else canvas.insertBefore(layer, canvas.firstChild); // under the decor, spots, nodes: DOM order is paint order here
+  // the swaying trees and the bush shake are copies of the art, so they live in their own layer inside #conquestLayout, first, beneath the time-of-day tint and the shader
+  if(layout) layout.querySelectorAll(':scope > .map-sway-layer').forEach(e=> e.remove());
+  const swayLayer = document.createElement('div'); swayLayer.className = 'map-sway-layer'; swayLayer.setAttribute('aria-hidden', 'true');
+  if(layout) layout.insertBefore(swayLayer, layout.firstChild);
+  const items = []; // {el, patch, x, y, kind, w, h}
+  if(data){
+    const addHit = (kind, x, y, w, h)=>{
+      const el = document.createElement('span'); el.className = 'mfx-hit mfx-' + kind; el.dataset.mfxKind = kind; layer.appendChild(el);
+      const it = {el, x, y, kind, w, h}; el._spot = it; items.push(it);
+    };
+    (data.c || []).forEach(p=> addHit('crystal', p[0], p[1]));
+    (data.b || []).forEach(p=> addHit('bush', p[0], p[1]));
+    (data.w || []).forEach(p=> addHit('water', p[0], p[1], p[2], p[3]));
+    if(mfxSway()){
+      const trees = (data.t || []).filter(p=> p[0] > 6 && p[0] < 94 && p[1] > 8 && p[1] < 92), step = Math.max(1, Math.ceil(trees.length / 14));
+      trees.filter((_, i)=> i % step === 0).forEach((p, i)=>{
+        const el = mfxPatch(swayLayer, 'mfx-sway', 12, 13), amp = 0.6 + ((i * 37) % 5) / 10; // 0.6 to 1.0 degrees
+        el.style.setProperty('--sw', amp.toFixed(2) + 'deg'); el.style.animationDuration = (4 + ((i * 53) % 31) / 10).toFixed(1) + 's'; el.style.animationDelay = '-' + (((i * 29) % 60) / 10).toFixed(1) + 's';
+        items.push({el, x: p[0], y: p[1], kind: 'tree', patch: true});
+      });
+    }
+  }
+  let G = null;
+  const place = ()=>{
+    const g = mfxGeo(canvas); if(!g) return; G = g; layer._geo = g;
+    if(!swayLayer._bgLayers){ const css = getComputedStyle(layout).backgroundImage || '', all = mfxSplitLayers(css), u = all.findIndex(l=> /url\(/.test(l)); swayLayer._bgLayers = u >= 0 ? all.slice(0, u + 1) : []; }
+    items.forEach(it=>{
+      if(it.patch){ if(!swayLayer._bgLayers.length){ it.el.style.display = 'none'; return; } mfxPlacePatch(swayLayer, it.el, g, it.x, it.y); return; }
+      const cx = g.ax + it.x / 100 * g.dw, cy = g.ay + it.y / 100 * g.dh, tap = Math.max(30, 7 * g.s);
+      const w = it.kind === 'water' ? Math.max(30, Math.min(220, it.w / 100 * g.dw * 0.8)) : tap, h = it.kind === 'water' ? Math.max(26, Math.min(140, it.h / 100 * g.dh * 0.8)) : tap;
+      it.el.style.left = cx.toFixed(1) + 'px'; it.el.style.top = cy.toFixed(1) + 'px'; it.el.style.width = w.toFixed(1) + 'px'; it.el.style.height = h.toFixed(1) + 'px';
+    });
+  };
+  place();
+  // ---- taps on crystals, water and bushes
+  const live = ()=> layer.querySelectorAll('.mfx-fx').length < 24;
+  const fx = (cls, x, y, ms, css)=>{ const e = document.createElement('i'); e.className = 'mfx-fx ' + cls; e.style.left = x.toFixed(1) + 'px'; e.style.top = y.toFixed(1) + 'px'; if(css) Object.keys(css).forEach(k=> e.style.setProperty(k, css[k])); layer.appendChild(e); setTimeout(()=> e.remove(), ms); return e; };
+  layer.addEventListener('click', e=>{
+    const t = e.target.closest && e.target.closest('.mfx-hit'); if(!t || !t._spot) return;
+    e.stopPropagation();
+    const sp = t._spot, now = performance.now(); if(t._until && now < t._until) return; t._until = now + 320;
+    const r = t.getBoundingClientRect(), C = (G || mfxGeo(canvas) || {C: canvas.getBoundingClientRect()}).C, vis = mfxVisual() && live();
+    const cx = r.left + r.width / 2 - C.left, cy = r.top + r.height / 2 - C.top, px = e.clientX - C.left, py = e.clientY - C.top;
+    if(sp.kind === 'crystal'){
+      mfxPlay('crystalTing', t, 0.9 + Math.random() * 0.22, 'c:' + sp.x + ',' + sp.y);
+      if(vis) for(let i = 0; i < 4; i++) fx('crystal-sparkle', cx + (Math.random() - 0.5) * 22, cy + (Math.random() - 0.5) * 22, 1100).style.animationDelay = (i * 0.08) + 's';
+    } else if(sp.kind === 'water'){
+      mfxPlay('waterPlop', t, 0.9 + Math.random() * 0.25, 'w:' + sp.x + ',' + sp.y);
+      if(vis){ fx('mfx-ripple', px, py, 1000); fx('mfx-ripple r2', px, py, 1200); for(let i = 0; i < 3; i++) fx('mfx-drop', px, py, 800, {'--dx': ((i - 1) * 9 + (Math.random() - 0.5) * 5).toFixed(1) + 'px', '--dy': (-12 - Math.random() * 8).toFixed(1) + 'px'}); }
+    } else if(sp.kind === 'bush'){
+      mfxPlay('bushRustle', t, null, 'b:' + sp.x + ',' + sp.y);
+      if(vis && G && swayLayer._bgLayers && swayLayer._bgLayers.length){
+        const p = mfxPatch(swayLayer, 'mfx-shake', 8, 7); mfxPlacePatch(swayLayer, p, G, sp.x, sp.y); setTimeout(()=> p.remove(), 520);
+        for(let i = 0; i < 3; i++) fx('mfx-leaf', cx, cy, 900, {'--dx': ((i - 1) * 14 + (Math.random() - 0.5) * 6).toFixed(1) + 'px', '--dy': (-10 - Math.random() * 12).toFixed(1) + 'px'});
+      }
+    }
+  });
+  // ---- fires: tap one to put it out, tap again to light it (per visit; nothing is saved)
+  const fireSel = ':scope > .cave-fire.is-lit, :scope > .cave-fire.is-out, :scope > .map-campfire';
+  const editing = ()=> canvas.classList.contains('layout-editing') || canvas.classList.contains('link-editing');
+  const fireAt = (cx, cy)=>{
+    let best = null, bd = 26;
+    canvas.querySelectorAll(fireSel).forEach(f=>{ const r = (f.querySelector('.mcf-fire') || f).getBoundingClientRect(), d = Math.hypot(cx - (r.left + r.width / 2), cy - (r.top + r.height / 2)); if(d < bd){ bd = d; best = f; } });
+    return best;
+  };
+  const onClick = e=>{
+    if(editing() || (e.target.closest && e.target.closest('.map-node, .map-spot, .map-curio, [data-lkey], button, a, input, select, textarea, .map-pawn'))) return;
+    const f = fireAt(e.clientX, e.clientY); if(!f) return;
+    e.stopPropagation(); mfxFireToggle(f, canvas);
+  };
+  canvas.addEventListener('click', onClick, true);
+  let hoverRaf = 0;
+  const onMove = e=>{ if(e.pointerType && e.pointerType !== 'mouse') return; if(hoverRaf) return; hoverRaf = requestAnimationFrame(()=>{ hoverRaf = 0; canvas.classList.toggle('mfx-fire-hover', !editing() && !!fireAt(e.clientX, e.clientY)); }); };
+  canvas.addEventListener('pointermove', onMove, {passive: true});
+  // ---- keep the spots on the art when the window changes or the map scrolls
+  let raf = 0; const kick = ()=>{ if(raf) return; raf = requestAnimationFrame(()=>{ raf = 0; if(!layer.isConnected) return; place(); }); };
+  window.addEventListener('resize', kick); document.addEventListener('scroll', kick, {capture: true, passive: true});
+  const iv = setInterval(()=>{ if(!layer.isConnected){ stop(); return; }
+    if(layout && swayLayer.parentNode === layout && layout.firstChild !== swayLayer) layout.insertBefore(swayLayer, layout.firstChild); // first = under the time-of-day tint and the weather shader, so the copies are lit like the art
+    const g = mfxGeo(canvas); if(g && (!G || g.key !== G.key)) place(); }, 500);
+  function stop(){ clearInterval(iv); swayLayer.remove(); window.removeEventListener('resize', kick); document.removeEventListener('scroll', kick, true); canvas.removeEventListener('click', onClick, true); canvas.removeEventListener('pointermove', onMove); if(window.__bwMapFxStop === stop) window.__bwMapFxStop = null; }
+  window.__bwMapFxStop = stop;
+  return layer;
+}
+function mfxSmoke(f){
+  for(let i = 0; i < 3; i++){ const s = document.createElement('i'); s.className = 'mfx-smoke'; s.style.setProperty('--dx', ((i - 1) * 6 + (Math.random() - 0.5) * 4).toFixed(1) + 'px'); s.style.animationDelay = (i * 0.14) + 's'; f.appendChild(s); setTimeout(()=> s.remove(), 1900); }
+}
+function mfxFireToggle(f, canvas){
+  const now = performance.now(); if(f._fxUntil && now < f._fxUntil) return; f._fxUntil = now + 450;
+  const out = f.classList.contains('is-out'), camp = f.classList.contains('map-campfire'), vis = mfxVisual(), key = 'fire:' + (f.dataset.fireNode || 'camp');
+  const dark = canvas.querySelector(':scope > .cave-dark'), apply = ()=>{ try{ if(dark && dark._apply) dark._apply(); }catch(e){} };
+  if(f._lit == null) f._lit = 1;
+  // the light pool eases by wall-clock time (rAF), not gsap's clock: a slow page must not leave a dead fire lit in the mask
+  const ease = (to, ms, done)=>{
+    const tok = f._litTok = (f._litTok || 0) + 1, from = f._lit, t0 = performance.now();
+    if(!vis){ f._lit = to; apply(); if(done) done(); return; }
+    const step = ()=>{ if(f._litTok !== tok) return; const k = Math.min(1, (performance.now() - t0) / ms), e = to < from ? k * k : 1 - (1 - k) * (1 - k); f._lit = from + (to - from) * e; apply();
+      if(k < 1) requestAnimationFrame(step); else if(done) done(); };
+    requestAnimationFrame(step);
+  };
+  if(!out){ // put out: the flame and glow fade, a puff of smoke, a soft "fsst"; the light the fire gave the dark map shrinks away
+    mfxPlay('fireOut', f, null, key);
+    f.classList.add('is-out'); f.classList.remove('is-igniting');
+    if(vis) mfxSmoke(f);
+    ease(0, 600, ()=>{ f.classList.remove('is-lit'); apply(); });
+  } else { // light it again
+    mfxPlay('fireIgnite', f, null, key);
+    f.classList.remove('is-out'); if(!camp) f.classList.add('is-lit', 'is-igniting');
+    if(!camp) setTimeout(()=> f.classList.remove('is-igniting'), 1600);
+    ease(1, 800);
+  }
+}
 // Map adornments (2026-10-10, user): on cave maps 1–2 snails creep in straight lines, very slowly, leaving faint blue
 // trails; the crystals in the map art sparkle now and then (found by colour in the art itself); and on dark maps a
 // predator's eyes glint in the darkness from time to time, away from your lantern.
@@ -74707,6 +74933,7 @@ function renderConquestSubTab(body){
   { const cv = document.getElementById('conquestCanvas'); if(cv){ const n = cv.querySelectorAll('.map-node, .map-spot').length; cv.style.setProperty('--icon-scale', map.endless ? '1' : Math.pow(0.95, Math.max(0, n - 6)).toFixed(3)); } } // endless maps keep full-size floors
   startMapMovers(document.getElementById('conquestCanvas'), map, genDecor);
   try{ startMapAdornments(document.getElementById('conquestCanvas'), map); }catch(e){}
+  try{ mountMapFx(document.getElementById('conquestCanvas'), map); }catch(e){} // 2026-10-31 (MAPFX1): fires, crystals, water, bushes you can touch; trees that sway
   if(pendingSkirmishReopen && !matchState && adminModeEnabled){ const r = pendingSkirmishReopen; pendingSkirmishReopen = null; setTimeout(()=> openSkirmishEditor(r.mapId, r.key, r.draft), 60); }
   try{ placeMapPawn(document.getElementById('conquestCanvas'), map, positions, progress, visibleFlags); }catch(e){}
   try{ mountCaveDark(document.getElementById('conquestCanvas'), map); }catch(e){}
@@ -106999,7 +107226,7 @@ function caveLightPools(canvas, t){
   const out = [], at = el=> ({x: parseFloat(el.style.left), y: parseFloat(el.style.top)}), ok = q=> isFinite(q.x) && isFinite(q.y);
   const pawn = canvas.querySelector(':scope > .map-pawn:not(.map-foe)'); if(pawn){ const q = at(pawn); if(ok(q)) out.push({x:q.x, y:q.y, r:80}); }
   canvas.querySelectorAll(':scope > .map-node:not(.done):not(.map-node-hidden):not(.kind-tutorial)').forEach(n=>{ const q = at(n); if(ok(q)) out.push({x:q.x, y:q.y, r:52}); });
-  canvas.querySelectorAll(':scope > .cave-fire.is-lit').forEach((f, i)=>{ const q = at(f); if(ok(q)) out.push({x:q.x, y:q.y, r: 66 + (t ? Math.sin(t/90 + i*1.7)*3 + Math.sin(t/37 + i)*2 : 0)}); });
+  canvas.querySelectorAll(':scope > .cave-fire.is-lit').forEach((f, i)=>{ const q = at(f), lit = f._lit == null ? 1 : f._lit; /* 2026-10-31 (MAPFX1): a fire put out shrinks its pool (f._lit 1 to 0) */ if(ok(q) && lit > 0.03) out.push({x:q.x, y:q.y, r: (66 + (t ? Math.sin(t/90 + i*1.7)*3 + Math.sin(t/37 + i)*2 : 0)) * lit}); });
   return out;
 }
 // mask-image for a dark layer: the lantern's soft hole plus a tighter pool per light; `pos(xPct, yPct)` turns a canvas point into
