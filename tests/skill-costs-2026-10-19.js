@@ -25,7 +25,7 @@ const KINDS = ['skills', 'triggers', 'actions', 'modifiers'];
 KINDS.forEach(k=>{ ok(Array.isArray(table[k]) && table[k].length, `table has ${k}`); const seen = new Set();
   (table[k] || []).forEach(e=>{ ok(e && typeof e.id === 'string' && e.id, `${k}: entry has an id`); ok(typeof e.value === 'number' && isFinite(e.value), `${k}: ${e.id} has a number value`);
     ok(!seen.has(e.id), `${k}: ${e.id} only once`); seen.add(e.id); ok(/^[A-Za-z0-9_.:-]+$/.test(e.id), `${k}: ${e.id} is a valid db doc-id segment`); }); });
-table.skills.forEach(e=> ok(['fixed', 'n', 'half'].includes(e.scale), `skill ${e.id} has a known scale`));
+table.skills.forEach(e=> ok(['fixed', 'n', 'half', 'mult' /* 2026-10-30 TUT2: Slow is a x0.85 multiplier on the card's S (owner ENG13-2) */].includes(e.scale), `skill ${e.id} has a known scale`));
 table.actions.forEach(e=> ok(e.per == null || ['amount', 'amount2', 'count'].includes(e.per), `action ${e.id} has a known per field`));
 const ids = k=> new Set(table[k].map(e=> e.id));
 const SKI = ids('skills'), TRI = ids('triggers'), ACT = new Set(table.actions.map(e=> e.id.split('.')[0])), alias = table.aliases || {}, SH = table.shorthands || {};

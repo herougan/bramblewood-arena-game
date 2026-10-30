@@ -110,7 +110,8 @@ function dodges(rules, id, seed, att){ const {e, P} = mk(rules, seed || 11); put
   ok(p[0] === 3 && Math.abs(p[1] - 4.87) < 0.02 && p[2] > p[1], `Poison ${p.join(' / ')}`);
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en5-bleed-poison-2026-10-24.md'), 'utf8'); ok(/bleed 3/.test(md) && /poison 1/.test(md), 'the measurement is filed (docs/balance/en5-bleed-poison-2026-10-24.md)');
   ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').value >= 1.5 && sk('breach').value <= 2.2, `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);
-  ok(sk('canopyCover') && sk('canopyCover').value === 0 && Math.abs(BB.canopyMultOf({canopyCover:true}) - (1 + 0.37 * BB.CANOPY_UPTIME)) < 1e-9 && BB.canopyMultOf({canopyCover:true, evasive:true}) === 1 && BB.canopyMultOf({canopyCover:true, flying:true}) === 1,
+  // 2026-10-30 TUT2: owner ENG13-3 "just use logic and reduce it": x the share of covered attacks (BB.CANOPY_SHARE 0.22)
+  ok(sk('canopyCover') && sk('canopyCover').value === 0 && Math.abs(BB.canopyMultOf({canopyCover:true}) - (1 + 0.37 * BB.CANOPY_UPTIME * BB.CANOPY_SHARE)) < 1e-9 && BB.canopyMultOf({canopyCover:true, evasive:true}) === 1 && BB.canopyMultOf({canopyCover:true, flying:true}) === 1,
     `Canopy Cover: x${BB.canopyMultOf({canopyCover:true})} on the stats (Evasive's 1.37 x uptime ${BB.CANOPY_UPTIME}), none on top of Evasive or on a Flyer`);
   ok(BB.missMultOf({canopyCover:true}) === BB.canopyMultOf({canopyCover:true}), 'the budget\'s miss multiplier carries it (capScores, the forge curve)');
   const st = {timbered:[0.5, 'timberedGrant', 0.25], bedrock:[0.3, 'bedrockGrant', 0.2], forged:[1, 'forgedGrant', 0.5], lastStand:[0.6, 'lastStandGrant', 0.2]};
