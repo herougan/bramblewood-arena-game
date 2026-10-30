@@ -75,7 +75,8 @@ async def open_page(b, w, h, phone):
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(1500)
     # coach tips would cover the board in the screenshots
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; window.showCoachTip = function(){}; 1")
+    # 2026-10-30 (CS-D): the starter deck holds copies a fresh test profile does not own (deckCopyProblem, package PG), so no fight opened
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); myCurrencies.energy = 60; window.showCoachTip = function(){}; window.deckSizeOkOrWarn = ()=> true; 1")
     return ctx, pg, errs
 
 async def layout_checks(pg, tag, phone, raid):
