@@ -1,0 +1,1820 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-10-30T18:33:55.437Z",
+ "map": {
+  "id": "mr",
+  "num": 13,
+  "name": "The Redwood Deep"
+ },
+ "level": 3,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s1",
+  "budget": 3000,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 1,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 8,
+  "children": 16,
+  "g0": 2,
+  "gmax": 8,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mr --seed ref5-s1 --budget 3000 --final-games 4 --method ga --level ref --cross-share 0 --road-weight 0.25 --restarts 1 --ladder none --mode prog --seed-ref --prog-seed 1 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 246,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alley-cat",
+   "alligator-gar",
+   "alpine-marmot",
+   "alpine-salamander",
+   "alpine-swift",
+   "ant-hill",
+   "ant-scout",
+   "ant-warrior",
+   "apollo-butterfly",
+   "archerfish",
+   "badger-lumberjack",
+   "badger-stonemason",
+   "banded-sea-krait",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "birdlime-dauber",
+   "blind-cave-fish",
+   "blue-ringed-octopus",
+   "bog-leech",
+   "bogfire-newt",
+   "bombardier-beetle",
+   "booming-bittern",
+   "box-turtle",
+   "bramble-hoglet",
+   "bramble-sprout",
+   "burrow-rabbit",
+   "caiman-hatchling",
+   "camouflage-frog",
+   "cane-toad",
+   "carrion-crow",
+   "cave-olm",
+   "chamois-leaper",
+   "chipmunk-cavalry",
+   "chipmunk-forager",
+   "chipmunk-hoarder",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "clownfish-scout",
+   "cobalt-talon-fledgling",
+   "cobalt-talon-skirmisher",
+   "colossal-squid",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "constrictor-coil",
+   "coral-polyp-colony",
+   "coral-reef-shark",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "cunning-vixen",
+   "cypress-root-lurker",
+   "daily-post",
+   "dawn-bellringer",
+   "dominion-nestguard",
+   "dormouse",
+   "driftwood-crab",
+   "drowned-matriarch",
+   "duck-paddler",
+   "duckling",
+   "dune-packrat",
+   "dung-beetle",
+   "eagle-owl-quartermaster",
+   "earthworm",
+   "echo-matriarch",
+   "echo-screecher",
+   "electric-ray",
+   "eyrie-warden",
+   "fen-mink",
+   "feral-tomcat",
+   "ferry-toll-frog",
+   "fiddler-crab-swarm",
+   "field-mouse",
+   "field-vole",
+   "fire-ant-raft",
+   "fishing-cat",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "fungal-colossus",
+   "gale-swift",
+   "gangrenous-leech",
+   "gannet-nestweaver",
+   "garden-snail",
+   "gatling-hog",
+   "giant-cave-huntsman",
+   "glass-golem",
+   "gold-throated-acolyte",
+   "golden-eagle-diver",
+   "grass-viper",
+   "great-barracuda",
+   "grey-seal-bull",
+   "greyplume-fledgling",
+   "gull-thief",
+   "guppy",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hawthorn-shieldbug",
+   "hedge-changeling",
+   "hedge-weasel",
+   "hedgehog-scout",
+   "hedgerow-shrew",
+   "helmeted-otter",
+   "heron-hag",
+   "honey-bee",
+   "honeyjoe-brewer",
+   "house-cat",
+   "hummingbird-needler",
+   "hush-wing-spy",
+   "ibex-rockcaller",
+   "kittiwake-flock",
+   "kraken-spawnling",
+   "lantern-bearer",
+   "leafcutter-gardener",
+   "lodge-engineer",
+   "lucky-hopper",
+   "lyrebird-mimic",
+   "mangrove-kingfisher",
+   "mangrove-manatee",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "marsh-harrier",
+   "marsh-mallow-hare",
+   "marsh-wisp",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "minnow-skitter",
+   "mist-net-otter",
+   "mosswing-laborer",
+   "mountain-hare",
+   "mouse-sapper",
+   "mudpuppy",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "nautilus-drifter",
+   "nectar-sipper",
+   "nectar-vintner",
+   "net-thrower",
+   "newt-doctor",
+   "nutria-reedcutter",
+   "octopus-tactician",
+   "old-shell",
+   "old-snapjaw",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "orca-vanguard",
+   "otter-angler",
+   "otter-centurion",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-guard",
+   "otter-kit",
+   "otter-lantern-bearer",
+   "otter-netmender",
+   "otter-paddler",
+   "otter-riverguard",
+   "otter-shieldback",
+   "owl-nightwatch",
+   "owl-sentinel",
+   "oystercatcher",
+   "parrotfish",
+   "peak-condor",
+   "pelican-diver",
+   "peregrine-stooper",
+   "petal-fletcher",
+   "phoenix-mushrooms",
+   "pincushion-urchin",
+   "plains-zebra",
+   "planarian-splitter",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "pond-algae",
+   "pond-duck",
+   "pond-trout",
+   "puffin-diver",
+   "pyrenean-desman",
+   "quarry-mole",
+   "quillback-elder",
+   "quillguard",
+   "rabbit-kit",
+   "raven-scout",
+   "razorbill",
+   "red-billed-chough",
+   "reef-admiral",
+   "reef-shark",
+   "riptide-eel",
+   "river-carp",
+   "riverbed-diver",
+   "rivergate-drummer",
+   "rivergate-recruit",
+   "riverside-peddler",
+   "riverwing-envoy",
+   "riverworks-bastion",
+   "robin-redbreast",
+   "rootworm-colony",
+   "sea-turtle-elder",
+   "sheep",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "silver-minnow",
+   "sleepless-shrew",
+   "slow-worm",
+   "snapper-hatchling",
+   "snapstick-turtle",
+   "soldier-ant",
+   "sparrow-chick",
+   "sphagnum-vole",
+   "springbok-pronker",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "stone-turtle-warden",
+   "sulfur-cinder-moth",
+   "sunbittern-strider",
+   "sunfeather-scout",
+   "sunthroat-courier",
+   "swamp-alligator",
+   "swordfish-spearman",
+   "terrier-pup",
+   "the-gannet-queen",
+   "thorn-shrike",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster",
+   "truffle-piglet",
+   "tunnel-ant",
+   "upside-down-bat",
+   "vampire-bat",
+   "venomlord-serpent",
+   "violet-vane-fletcher",
+   "voidfeather-scout",
+   "water-shrew",
+   "water-vole",
+   "whip-spider",
+   "wolf-spider-mother",
+   "woodcock-lookout",
+   "worker-ant",
+   "wrong-way-salmon"
+  ],
+  "phase2": 246,
+  "wholeSpectrum": 246,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "redwood",
+   "kinBiomes": [
+    "maze-briar",
+    "meadow-forest",
+    "taiga"
+   ],
+   "terrainTypes": [
+    "Flora",
+    "Forest",
+    "Rainforest",
+    "Taiga"
+   ],
+   "mapTypes": [
+    "Bird 3",
+    "Canid 4",
+    "Cervid 3",
+    "Deer 3",
+    "Forest 2",
+    "Fox 3"
+   ],
+   "mapMechanics": [
+    "evasion 2"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "boon",
+    "canopy",
+    "phase:cycle",
+    "woods"
+   ],
+   "coreCards": 16
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 1's collection",
+    "n": 572,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "alpha-howler",
+     "alpine-avalanche"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:13-1",
+   "kind": "mirror",
+   "node": "13-1",
+   "label": "vs 13-1 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, woods"
+  },
+  {
+   "key": "mirror|fight:13-2",
+   "kind": "mirror",
+   "node": "13-2",
+   "label": "vs 13-2 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:13-3",
+   "kind": "mirror",
+   "node": "13-3",
+   "label": "vs 13-3 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:13-4",
+   "kind": "mirror",
+   "node": "13-4",
+   "label": "vs 13-4 skirmish's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon wildRage, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:13-5",
+   "kind": "mirror",
+   "node": "13-5",
+   "label": "vs 13-5 elite's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|fight:13-6",
+   "kind": "mirror",
+   "node": "13-6",
+   "label": "vs 13-6 elite's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|fight:13-7",
+   "kind": "mirror",
+   "node": "13-7",
+   "label": "vs 13-7 elite's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|fight:13-8",
+   "kind": "mirror",
+   "node": "13-8",
+   "label": "vs 13-8 miniboss's deck",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "13-1",
+   "label": "vs reference starter deck under 13-1's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, woods"
+  },
+  {
+   "key": "mirror|ref:road13",
+   "kind": "mirror",
+   "node": "13-2",
+   "label": "vs reference deck (Map 13) under 13-2's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "13-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+   "weight": 0.068,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|13-1",
+   "kind": "road",
+   "node": "13-1",
+   "label": "13-1 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, woods"
+  },
+  {
+   "key": "road|13-2",
+   "kind": "road",
+   "node": "13-2",
+   "label": "13-2 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|13-3",
+   "kind": "road",
+   "node": "13-3",
+   "label": "13-3 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|13-4",
+   "kind": "road",
+   "node": "13-4",
+   "label": "13-4 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, boon wildRage, canopy, phase cycle, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|13-5",
+   "kind": "road",
+   "node": "13-5",
+   "label": "13-5 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "road|13-6",
+   "kind": "road",
+   "node": "13-6",
+   "label": "13-6 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "road|13-7",
+   "kind": "road",
+   "node": "13-7",
+   "label": "13-7 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "road|13-8",
+   "kind": "road",
+   "node": "13-8",
+   "label": "13-8 as the game builds it",
+   "weight": 0.031,
+   "neutral": false,
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "neutral|fight:13-1",
+   "kind": "mirror",
+   "node": "13-1",
+   "label": "vs 13-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-2",
+   "kind": "mirror",
+   "node": "13-2",
+   "label": "vs 13-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-3",
+   "kind": "mirror",
+   "node": "13-3",
+   "label": "vs 13-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-4",
+   "kind": "mirror",
+   "node": "13-4",
+   "label": "vs 13-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-5",
+   "kind": "mirror",
+   "node": "13-5",
+   "label": "vs 13-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-6",
+   "kind": "mirror",
+   "node": "13-6",
+   "label": "vs 13-6 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-7",
+   "kind": "mirror",
+   "node": "13-7",
+   "label": "vs 13-7 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:13-8",
+   "kind": "mirror",
+   "node": "13-8",
+   "label": "vs 13-8 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "13-1",
+   "label": "vs reference starter deck under 13-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road13",
+   "kind": "mirror",
+   "node": "13-2",
+   "label": "vs reference deck (Map 13) under 13-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "13-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 4452,
+  "seconds": 51.1,
+  "gamesPerSecond": 87.1,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 3990,
+   "gens": 2,
+   "restarts": 1,
+   "runs": [
+    {
+     "best": "adder-ambusher:1,alley-cat:1,alpine-marmot:1,burrow-rabbit:4,conch-herald:1,cottontail:1,crimson-wing-recruit:1,dune-packrat:1,eagle-owl-quartermaster:1,forager-ant:1,giant-cave-huntsman:1,honeyjoe-brewer:1,otter-centurion:1,soldier-ant:1,the-gannet-queen:1,water-vole:1,wolf-spider-mother:1",
+     "f": 0.624,
+     "gens": 2,
+     "games": 3990,
+     "top": [
+      "adder-ambusher:1,alley-cat:1,alpine-marmot:1,burrow-rabbit:4,conch-herald:1,cottontail:1,crimson-wing-recruit:1,dune-packrat:1,eagle-owl-quartermaster:1,forager-ant:1,giant-cave-huntsman:1,honeyjoe-brewer:1,otter-centurion:1,soldier-ant:1,the-gannet-queen:1,water-vole:1,wolf-spider-mother:1",
+      "adder-ambusher:1,alley-cat:1,alpine-marmot:1,burrow-rabbit:4,conch-herald:1,cottontail:1,crimson-wing-recruit:1,eagle-owl-quartermaster:1,electric-ray:1,forager-ant:1,giant-cave-huntsman:1,honeyjoe-brewer:1,otter-centurion:1,soldier-ant:1,the-gannet-queen:1,water-vole:1,wolf-spider-mother:1",
+      "adder-ambusher:1,alligator-gar:1,alpine-marmot:1,burrow-rabbit:1,conch-herald:1,cottontail:2,crossed-eyes:1,giant-cave-huntsman:1,honeyjoe-brewer:1,ibex-rockcaller:1,marsh-mallow-hare:1,otter-centurion:1,petal-fletcher:1,plains-zebra:1,sunfeather-scout:1,the-gannet-queen:1,water-vole:1,wolf-spider-mother:1,worker-ant:1",
+      "adder-ambusher:1,alpine-marmot:1,burrow-rabbit:1,cottontail:1,electric-ray:1,fishing-cat:1,great-barracuda:1,hedgehog-scout:1,heron-hag:1,ibex-rockcaller:1,lodge-engineer:1,mist-net-otter:1,nutria-reedcutter:1,octopus-tactician:1,otter-centurion:1,petal-fletcher:1,plains-zebra:1,soldier-ant:1,sunfeather-scout:1,whip-spider:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "adder-ambusher": 1,
+    "alley-cat": 1,
+    "alpine-marmot": 1,
+    "burrow-rabbit": 4,
+    "conch-herald": 1,
+    "cottontail": 1,
+    "crimson-wing-recruit": 1,
+    "dune-packrat": 1,
+    "eagle-owl-quartermaster": 1,
+    "forager-ant": 1,
+    "giant-cave-huntsman": 1,
+    "honeyjoe-brewer": 1,
+    "otter-centurion": 1,
+    "soldier-ant": 1,
+    "the-gannet-queen": 1,
+    "water-vole": 1,
+    "wolf-spider-mother": 1
+   },
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "forager-ant",
+     "name": "Forager Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "honeyjoe-brewer",
+     "name": "Honeyjoe Brewer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "the-gannet-queen",
+     "name": "The Gannet Queen",
+     "copies": 1,
+     "rarity": "heroic",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.624,
+   "ci": [
+    0.552,
+    0.696
+   ],
+   "mirror": 0.67,
+   "road": 0.484,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:13-1",
+     "label": "vs 13-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-2",
+     "label": "vs 13-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-3",
+     "label": "vs 13-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.306,
+     "hi": 0.863,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-4",
+     "label": "vs 13-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-5",
+     "label": "vs 13-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-6",
+     "label": "vs 13-6 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-7",
+     "label": "vs 13-7 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:13-8",
+     "label": "vs 13-8 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 13-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "road|13-1",
+     "label": "13-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "road|13-2",
+     "label": "13-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "road|13-3",
+     "label": "13-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.306,
+     "hi": 0.863,
+     "n": 8
+    },
+    {
+     "entry": "road|13-4",
+     "label": "13-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.125,
+     "lo": 0.022,
+     "hi": 0.471,
+     "n": 8
+    },
+    {
+     "entry": "road|13-5",
+     "label": "13-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "road|13-6",
+     "label": "13-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "road|13-7",
+     "label": "13-7 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "road|13-8",
+     "label": "13-8 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:13-1",
+     "label": "vs 13-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-2",
+     "label": "vs 13-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-3",
+     "label": "vs 13-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-4",
+     "label": "vs 13-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-5",
+     "label": "vs 13-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-6",
+     "label": "vs 13-6 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.25,
+     "lo": 0.046,
+     "hi": 0.699,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-7",
+     "label": "vs 13-7 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:13-8",
+     "label": "vs 13-8 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 13-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:road13",
+     "label": "vs reference deck (Map 13) under 13-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 13-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.624,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "adder-ambusher": 1,
+    "alley-cat": 1,
+    "alpine-marmot": 1,
+    "burrow-rabbit": 4,
+    "conch-herald": 1,
+    "cottontail": 1,
+    "crimson-wing-recruit": 1,
+    "dune-packrat": 1,
+    "eagle-owl-quartermaster": 1,
+    "forager-ant": 1,
+    "giant-cave-huntsman": 1,
+    "honeyjoe-brewer": 1,
+    "otter-centurion": 1,
+    "soldier-ant": 1,
+    "the-gannet-queen": 1,
+    "water-vole": 1,
+    "wolf-spider-mother": 1
+   },
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 4,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "alley-cat",
+     "name": "Alley Cat",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cottontail",
+     "name": "Cottontail",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 1,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "forager-ant",
+     "name": "Forager Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "giant-cave-huntsman",
+     "name": "Giant Cave Huntsman",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "honeyjoe-brewer",
+     "name": "Honeyjoe Brewer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "soldier-ant",
+     "name": "Soldier Ant",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "the-gannet-queen",
+     "name": "The Gannet Queen",
+     "copies": 1,
+     "rarity": "heroic",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.624,
+   "ci": [
+    0.552,
+    0.696
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 4,
+ "ladder": null,
+ "road": [
+  {
+   "node": "13-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.875,
+   "ci": [
+    0.529,
+    0.978
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-2",
+   "kind": "skirmish",
+   "target": 0.85,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-3",
+   "kind": "skirmish",
+   "target": 0.8,
+   "optimum": 0.625,
+   "ci": [
+    0.306,
+    0.863
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-4",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.125,
+   "ci": [
+    0.022,
+    0.471
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-5",
+   "kind": "elite",
+   "target": 0.7,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-6",
+   "kind": "elite",
+   "target": 0.65,
+   "optimum": 0.75,
+   "ci": [
+    0.409,
+    0.929
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-7",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  },
+  {
+   "node": "13-8",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:13-1",
+   "node": "13-1",
+   "rules": "aiGuardLethal, canopy, phase cycle, woods",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:13-2",
+   "node": "13-2",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods",
+   "withField": 0.5,
+   "noField": 0.5,
+   "delta": 0,
+   "ci": [
+    -0.6,
+    0.6
+   ]
+  },
+  {
+   "opponent": "fight:13-3",
+   "node": "13-3",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods",
+   "withField": 0.625,
+   "noField": 0.75,
+   "delta": -0.125,
+   "ci": [
+    -0.666,
+    0.416
+   ]
+  },
+  {
+   "opponent": "fight:13-4",
+   "node": "13-4",
+   "rules": "aiGuardLethal, boon wildRage, canopy, phase cycle, terrain Old Woods T1, woods",
+   "withField": 0.5,
+   "noField": 0.5,
+   "delta": 0,
+   "ci": [
+    -0.6,
+    0.6
+   ]
+  },
+  {
+   "opponent": "fight:13-5",
+   "node": "13-5",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.375,
+   "noField": 0.75,
+   "delta": -0.375,
+   "ci": [
+    -0.916,
+    0.166
+   ]
+  },
+  {
+   "opponent": "fight:13-6",
+   "node": "13-6",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.75,
+   "noField": 0.25,
+   "delta": 0.5,
+   "ci": [
+    -0.02,
+    1.02
+   ]
+  },
+  {
+   "opponent": "fight:13-7",
+   "node": "13-7",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.5,
+   "noField": 1,
+   "delta": -0.5,
+   "ci": [
+    -0.846,
+    -0.154
+   ]
+  },
+  {
+   "opponent": "fight:13-8",
+   "node": "13-8",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.75,
+   "noField": 0.5,
+   "delta": 0.25,
+   "ci": [
+    -0.325,
+    0.825
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "13-1",
+   "rules": "aiGuardLethal, canopy, phase cycle, woods",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "ref:road13",
+   "node": "13-2",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods",
+   "withField": 0.5,
+   "noField": 0.75,
+   "delta": -0.25,
+   "ci": [
+    -0.798,
+    0.298
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "13-3",
+   "rules": "aiGuardLethal, canopy, phase cycle, terrain Old Woods T1, woods",
+   "withField": 0.875,
+   "noField": 1,
+   "delta": -0.125,
+   "ci": [
+    -0.354,
+    0.104
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:13-1",
+   "label": "13-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "13-1",
+   "target": 0.9,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.29,
+   "optimumSame": 0.596,
+   "pointsBelow": 30.7,
+   "pointsCI": 14.8
+  },
+  {
+   "opponent": "fight:13-2",
+   "label": "13-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "13-2",
+   "target": 0.85,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.686,
+   "optimumSame": 0.633,
+   "pointsBelow": -5.3,
+   "pointsCI": 12.8
+  },
+  {
+   "opponent": "fight:13-3",
+   "label": "13-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "13-3",
+   "target": 0.8,
+   "h2h": 0.625,
+   "h2hCI": [
+    0.306,
+    0.863
+   ],
+   "elo": 89,
+   "eloCI": [
+    -142,
+    320
+   ],
+   "n": 8,
+   "asPlayer": 0.343,
+   "optimumSame": 0.624,
+   "pointsBelow": 28.1,
+   "pointsCI": 13.6
+  },
+  {
+   "opponent": "fight:13-4",
+   "label": "13-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "13-4",
+   "target": 0.75,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.453,
+   "optimumSame": 0.633,
+   "pointsBelow": 18,
+   "pointsCI": 16.2
+  },
+  {
+   "opponent": "fight:13-5",
+   "label": "13-5 elite's deck",
+   "kind": "elite",
+   "node": "13-5",
+   "target": 0.7,
+   "h2h": 0.375,
+   "h2hCI": [
+    0.137,
+    0.694
+   ],
+   "elo": -89,
+   "eloCI": [
+    -320,
+    142
+   ],
+   "n": 8,
+   "asPlayer": 0.54,
+   "optimumSame": 0.642,
+   "pointsBelow": 10.3,
+   "pointsCI": 17
+  },
+  {
+   "opponent": "fight:13-6",
+   "label": "13-6 elite's deck",
+   "kind": "elite",
+   "node": "13-6",
+   "target": 0.65,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.52,
+   "optimumSame": 0.615,
+   "pointsBelow": 9.5,
+   "pointsCI": 13.5
+  },
+  {
+   "opponent": "fight:13-7",
+   "label": "13-7 elite's deck",
+   "kind": "elite",
+   "node": "13-7",
+   "target": 0.6,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.649,
+   "optimumSame": 0.633,
+   "pointsBelow": -1.6,
+   "pointsCI": 14.9
+  },
+  {
+   "opponent": "fight:13-8",
+   "label": "13-8 miniboss's deck",
+   "kind": "miniboss",
+   "node": "13-8",
+   "target": 0.4,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.416,
+   "optimumSame": 0.615,
+   "pointsBelow": 19.9,
+   "pointsCI": 14
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 13-1's field",
+   "kind": "reference",
+   "node": "13-1",
+   "target": null,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.29,
+   "optimumSame": 0.596,
+   "pointsBelow": 30.7,
+   "pointsCI": 13.2
+  },
+  {
+   "opponent": "ref:road13",
+   "label": "reference deck (Map 13) under 13-2's field",
+   "kind": "reference",
+   "node": "13-2",
+   "target": null,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.877,
+   "optimumSame": 0.633,
+   "pointsBelow": -24.4,
+   "pointsCI": 12.2
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 13-3's field",
+   "kind": "reference",
+   "node": "13-3",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.309,
+   "optimumSame": 0.606,
+   "pointsBelow": 29.6,
+   "pointsCI": 13.7
+  }
+ ]
+}
