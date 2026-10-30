@@ -36642,7 +36642,13 @@ function renderBoard(opts){
     return slotSig + `L${maxLeft}[${rows.left.map(cardSigPiece).join('|')}]C[${rows.center.map(cardSigPiece).join('|')}]R${maxRight}[${rows.right.map(cardSigPiece).join('|')}]`; // (dance flag dropped 2026-10-08: the dance is retired, no rebuild needed)
   }
   const sig2 = rowSignature(p2Rows, dancingSide===2) + (m._fog ? m._fog.key : ''); // + who is fogged (2026-10-21, package FOG)
-  const sig1 = rowSignature(p1Rows, dancingSide===1);
+  // 2026-10-30 (package COOP3, owner W4: "I couldn't play cards in the other slots"): the signature held only the front rows, so in a group
+  // dungeon a play into the middle row (the CPU ally's, or yours there) and that row's "+" targets never redrew it: the ally's card stayed
+  // invisible and a "+" stayed on a slot already taken (the claim was then refused). Your side's signature now carries your middle row's
+  // cards, its targets for you and your claims waiting.
+  const coopResSig = m.coop ? (()=>{ try{ const pl = m.players[1], show = !m.over && !m.resolving && !m.awaitingPass && !gdMyDone(m);
+    return 'R' + (pl.reserve || []).map((rw, i)=> Object.keys(rw).map(k=> rw[k] ? k + '=' + cardSigPiece(rw[k]) : '').join(',') + '/' + (show ? CoopM.rowLegalSlots(m.coop.T, i + 1, m.coop.seat).join(',') : '')).join(';') + 'P' + Object.keys((GD.s && GD.s.pending) || {}).join(','); }catch(e){ return ''; } })() : '';
+  const sig1 = rowSignature(p1Rows, dancingSide===1) + coopResSig;
   const touchedUidsThisRender = new Set([
     ...attackingUids, ...enteringUids, ...shovedUids,
     ...(opts.collapseLandingUids||[]), ...(opts.attackSpawnLandingUids||[]),
