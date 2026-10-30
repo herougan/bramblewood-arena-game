@@ -50,7 +50,7 @@ async function main(argv) {
   const root = path.join(__dirname, '..', '..'), gm = O.loadGame(root), G = gm.G;
   const rule = JSON.parse(fs.readFileSync(path.join(root, 'canonical', 'pro-skirmishes.json'), 'utf8')).rule || {};
   const ai = rule.ai != null ? rule.ai : 1, level = rule.level != null ? rule.level : 1, tags = o.tags.split(',');
-  const refs = o.ref.split(',').filter(Boolean); refs.forEach(r => { if (!E.refKnown(gm, r)) throw new Error('--ref: no reference set ' + r); }); // BAL6: a per-map set (ref-pool) too
+  const refs = E.expandRefs(gm, o.ref.split(',').filter(Boolean)); refs.forEach(r => { if (!E.refKnown(gm, r)) throw new Error('--ref: no reference set ' + r); }); // BAL6: a per-map set (ref-pool) too
   const outFile = path.resolve(root, o.out), prev = o.resume && fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : null;
   const done = new Map(((prev || {}).rows || []).map(r => [r.mapId + '|' + r.ref + '|' + r.games + '|' + r.optimum.file, r]));
   const rows = [], want = mapRange(o.maps), t0 = Date.now();

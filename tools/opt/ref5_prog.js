@@ -231,7 +231,7 @@ function cmdPools(argv) {
   for (const s of SEEDS) {
     const st = walk(s, mapNo, n => chosenDeck(set, n, s));
     const sum = stateSummary(gm, st, mapNo);
-    entry.seeds[s] = Object.assign(sum, { size: sum.pool.length, bought: st.arrival.bought, packBank: { gold: Math.round(st.packBank.gold), gems: Math.round(st.packBank.gems) } });
+    entry.seeds[s] = Object.assign(sum, { prev: chosenDeck(set, mapNo - 1, s) /* --seed-ref starts the search from it */, size: sum.pool.length, bought: st.arrival.bought, packBank: { gold: Math.round(st.packBank.gold), gems: Math.round(st.packBank.gems) } });
     console.log(`Map ${mapNo} seed ${s}: pool ${sum.pool.length}, levelled ${Object.keys(sum.levels).length}, bought ${JSON.stringify(st.arrival.bought)}`);
   }
   cur.about = 'Package REF5: the collection each of the 5 seeded players holds arriving at each main map (tools/opt/ref5_prog.js pools); read by tools/opt/deckopt.js --mode prog. copies: null = unlimited (Base / starter). levels: absolute card levels where not the card\'s own. No "id": tools/opt/ref_decks.js skips this file.';
@@ -264,7 +264,7 @@ function cmdCollect(argv) {
 function meanLevel(parts) { const n = parts.reduce((t, p) => t + p[1], 0); return n ? parts.reduce((t, p) => t + p[1] * p[2], 0) / n : 0; }
 
 function cmdRun(argv) {
-  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '3000'), fg = arg(argv, '--final-games', '16');
+  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '1200'), fg = arg(argv, '--final-games', '8') /* Maps 0-6 and Map 7 seeds 1-2 ran at 3000 / 16 (Map 0-5 32); from Map 7 seed 3 on 1200 / 8, seeded with the player's previous deck: the machine was shared (load 8-11 on 2 cores) */;
   const half = arg(argv, '--part'); // a = the pools + seeds 1-2, b = seeds 3-4, c = seed 5 + collect (each well under 10 minutes on a shared machine)
   const only = half === 'a' ? [1, 2] : half === 'b' ? [3, 4] : half === 'c' ? [5] : arg(argv, '--seeds') ? mapRange(arg(argv, '--seeds')) : SEEDS, step0 = arg(argv, '--step', 'all');
   for (const n of maps) {

@@ -227,7 +227,7 @@ function progPools(gm, map, opt) {
   gm.progLevels = Object.assign({}, e.levels || {});
   const rule = id => inP.has(id) ? null : 'not in player ' + seed + "'s collection";
   const core = uniq((pe.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => deckable(gm, id)).sort();
-  return { mapNo, mode: 'prog', cap: null, rule, subsOpen: [], mapCards: [], owned: p1, p1, all: p1, core, excluded: [], poolFile: path.relative(gm.root, f), levels: gm.progLevels, progSeed: seed };
+  return { mapNo, mode: 'prog', cap: null, rule, subsOpen: [], mapCards: [], owned: p1, p1, all: p1, core, excluded: [], poolFile: path.relative(gm.root, f), levels: gm.progLevels, progSeed: seed, prev: e.prev || null };
 }
 // the problems of a deck under a mode's map rule (no problems = every card may be in that map's PRO / BPRO deck)
 function mapRuleProblems(gm, map, deck, mode, rarityCap) {
@@ -722,7 +722,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     // BAL7 (2026-10-28, M4: "The Pool reference's search does not converge on Maps 13-24 (pools of 175-275): seed it with the Map reference
     // deck"): --seed-ref puts the Map reference deck (referenceDeckFor, repaired into the pool) and a quarter-population of its 2-4-swap
     // neighbours at the head of every restart's seeds, so a search over a big pool starts from the deck a player is known to hold.
-    if (o.seedRef) { const rd = repair(gm, G.referenceDeckFor(map.id, fights[0]).deck || {}, pools.p1, rng, credit); refSeeds = [rd];
+    if (o.seedRef) { const rd = repair(gm, (pools.prev && Object.keys(pools.prev).length ? pools.prev : null) /* REF5: prog seeds with the player's previous map's deck */ || G.referenceDeckFor(map.id, fights[0]).deck || {}, pools.p1, rng, credit); refSeeds = [rd];
       for (let i = 0; refSeeds.length < Math.max(2, Math.round(o.pop / 4)) && i < o.pop * 4; i++) { const d = perturb(gm, rd, pools.p1, rng, 2 + (i % 3)); if (!refSeeds.some(x => deckKey(x) === deckKey(d))) refSeeds.push(d); }
       seeds = uniqDecks(refSeeds.concat(seeds)).slice(0, o.pop * 2); }
     const r = await search(X, o.method, pools.p1, B1, rng, seeds, 'p1', { restarts: o.restarts, credit, refSeeds });

@@ -25,7 +25,7 @@ function parseArgs(argv) {
   while (a.length) { const k = take();
     switch (k) {
       case '--maps': case '--map': o.maps = take(); break; case '--ref': o.ref = take(); break; case '--games': o.games = +take(); break;
-      case '--seed': o.seed = take(); break; case '--easy': o.easy = +take(); break; case '--tag': o.tag = take(); break; case '--resume': o.resume = true; break;
+      case '--out': o.out = take(); break; /* 2026-10-30 (REF5) */ case '--seed': o.seed = take(); break; case '--easy': o.easy = +take(); break; case '--tag': o.tag = take(); break; case '--resume': o.resume = true; break;
       case '--root': o.root = take(); break; case '--kind': o.kind = take(); break; // 2026-10-30 (DECK1): pro | bpro | both case '--quiet': o.quiet = true; break;
       case '--help': case '-h': o.help = true; break; default: throw new Error('unknown option ' + k);
     } }
@@ -56,6 +56,9 @@ function refOpts(gm, map, node, refSet, seed0) {
   if (!set) return { refSet, seed0 };
   return { deck: RP.deckFor(set, gm.G.referenceDeckFor(map.id, node).mapNo), seed0 };
 }
+// 2026-10-30 (package REF5): a baked per-map set (prog: n decks a map) is measured deck by deck: 'prog' stands for prog-1 .. prog-n (its random
+// pick is the game's, not a tool's)
+function expandRefs(gm, refs) { const S = gm.G.REF_DECK_SETS || {}; return [].concat(...refs.map(r => S[r] && S[r].perMap ? gm.G.refSetIds().filter(x => x.indexOf(r + '-') === 0 && /-\d+$/.test(x)) : [r])); }
 function refKnown(gm, r) { return gm.G.refSetIds().includes(r) || RP.toolSetIds(gm.root).includes(r); }
 function measurePair(gm, map, node, refSet, games, seed0) {
   const G = gm.G, ctx = G.referenceFightSetup(map.id, node, refOpts(gm, map, node, refSet, seed0));
@@ -69,9 +72,9 @@ async function main(argv) {
   if (o.help) { console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 19).map(l => l.replace(/^\/\/ ?/, '')).join('\n')); return; }
   const root = o.root || path.join(__dirname, '..', '..'), gm = O.loadGame(root), G = gm.G;
   const data = JSON.parse(fs.readFileSync(path.join(root, 'canonical', 'pro-skirmishes.json'), 'utf8')), ai = (data.rule || {}).ai != null ? data.rule.ai : 1;
-  const refs = String(o.ref).split(',').filter(Boolean); refs.forEach(r => { if (!refKnown(gm, r)) throw new Error('--ref: no reference set ' + r + ' (known: ' + G.refSetIds().concat(RP.toolSetIds(root)).join(', ') + ')'); });
+  const refs = expandRefs(gm, String(o.ref).split(',').filter(Boolean)); refs.forEach(r => { if (!refKnown(gm, r)) throw new Error('--ref: no reference set ' + r + ' (known: ' + G.refSetIds().concat(RP.toolSetIds(root)).join(', ') + ')'); });
   const want = mapRange(o.maps), tag = o.tag || new Date().toISOString().slice(0, 10);
-  const outFile = path.join(root, 'docs', 'balance', 'pro-ease-' + tag + '.json');
+  const outFile = o.out ? path.resolve(root, o.out) : path.join(root, 'docs', 'balance', 'pro-ease-' + tag + '.json');
   const prev = o.resume && fs.existsSync(outFile) ? JSON.parse(fs.readFileSync(outFile, 'utf8')) : null, done = new Map(((prev || {}).rows || []).map(r => [r.id + '|' + r.ref + '|' + r.games, r]));
   const log = (...x) => { if (!o.quiet) console.log(...x); };
   const rows = [], maps = [], t0 = Date.now();
@@ -98,4 +101,4 @@ async function main(argv) {
   log(`done: ${rows.length} pairings, ${Math.round((Date.now() - t0) / 1000)} s -> ${path.relative(root, outFile)}`);
 }
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { VERSION, parseArgs, gameProNode, lateLevelOf, measurePair, refOpts, refKnown, main };
+module.exports = { VERSION, parseArgs, gameProNode, lateLevelOf, measurePair, refOpts, refKnown, expandRefs, main };

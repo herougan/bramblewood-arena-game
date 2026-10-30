@@ -82,7 +82,10 @@ BAL6 = 'docs/balance/bal6-ref-vs-optimum-2026-10-27.json'
 # 2026-10-28 (package BAL7, M4): re-measured after the Pool reference's Maps 13-24 search was seeded with the Map reference deck (and the Map
 # reference decks rebuilt after M1); the newest file wins.
 BAL7 = 'docs/balance/bal7-ref-vs-optimum-2026-10-28.json'
-REF_LABEL = {'map': 'Map reference', 'ref2': 'Reference-2', 'ref-pool': 'Pool reference', 'ref3': 'Reference-3'}
+REF_LABEL = {'map': 'Map reference', 'ref2': 'Reference-2', 'ref-pool': 'Pool reference', 'ref3': 'Reference-3', 'prog': 'Reference (Random), 5 decks'}
+# 2026-10-30 (package REF5): the progression reference's row (prog: per map 5 decks from 5 seeded players' collections, their games pooled) comes from
+# docs/balance/ref5-2026-10-30.json "heatmap" (tools/opt/ref_vs_optimum.js --ref map,prog, folded in by tools/opt/ref5_prog.js measure report).
+REF5 = 'docs/balance/ref5-2026-10-30.json'
 HM_STEPS = [  # (upper bound of the win rate in %, css class, legend label)
     (30, 'hm0', 'under 30%'), (35, 'hm1', '30-35'), (40, 'hm2', '35-40'), (45, 'hm3', '40-45'), (55, 'hm4', '45-55'),
     (60, 'hm5', '55-60'), (65, 'hm6', '60-65'), (70, 'hm7', '65-70'), (101, 'hm8', '70% and up')]
@@ -100,10 +103,14 @@ def heatmap_html(root, names):
     if not os.path.exists(fp):
         return ''
     d = _js(root, src_file)
-    rows = d['rows']
+    rows = list(d['rows'])
+    r5 = os.path.join(root, REF5)
+    if os.path.exists(r5):  # REF5: the Reference (Random) row
+        h = (json.load(open(r5, encoding='utf-8')) or {}).get('heatmap') or {}
+        rows += [r for r in h.get('rows', []) if r.get('ref') == 'prog']
     maps = sorted({(r['map'], r['mapId'], r['name']) for r in rows})
     by = {(r['ref'], r['map']): r for r in rows}
-    refs = [(k, REF_LABEL[k]) for k in ('map', 'ref2', 'ref-pool', 'ref3') if k == 'ref3' or any(r['ref'] == k for r in rows)]
+    refs = [(k, REF_LABEL[k]) for k in ('map', 'ref2', 'ref-pool', 'prog', 'ref3') if k == 'ref3' or any(r['ref'] == k for r in rows)]
     reused = sorted({r['map'] for r in rows if '2026-10-25' in r['optimum']['tag']})
 
     pool = None
@@ -125,7 +132,7 @@ def heatmap_html(root, names):
         src = 're-run 2026-10-27 (HUB7)' if '2026-10-27' in o['tag'] else 'reused from 2026-10-25 (PRO3)'
         return (f'<b>Map {r["map"]}: {e(r["name"])}</b><br>{REF_LABEL.get(r["ref"], r["ref"])} won <b>{r["wins"]} of {r["n"]}</b> '
                 f'({pc(100 * r["win"])}; 95% {round(100 * r["ci"][0])}-{round(100 * r["ci"][1])}%), lost {r["losses"]}, drew {r["draws"]}. '
-                f'Reference at Level {r["level"]:g}.' + (f' Pool reference deck: {e(pool_deck(r))}.' if r['ref'] == 'ref-pool' else '') + '<br><b>Optimum</b> ({src}, gauntlet {pc(100 * o["score"])}{lead}): {cards}')
+                f'Reference at Level {r["level"]:g}.' + (f' Pool reference deck: {e(pool_deck(r))}.' if r['ref'] == 'ref-pool' else '') + (f' The five decks\' games together (each: {", ".join(str(round(100 * x)) + "%" for x in r.get("perDeck", []))}; {e(REF5)}).' if r['ref'] == 'prog' else '') + '<br><b>Optimum</b> ({src}, gauntlet {pc(100 * o["score"])}{lead}): {cards}')
 
     head = '<th scope="col" class="hm-rowh">Reference deck</th>' + ''.join(f'<th scope="col" title="{e(nm)}">{n}</th>' for n, _, nm in maps) + '<th scope="col" class="hm-mean">Mean</th>'
     body = []
