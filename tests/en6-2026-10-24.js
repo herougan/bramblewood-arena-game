@@ -119,7 +119,9 @@ const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cos
   ok(T.skillCost('fullHand', 2) === 6 && T.skillCost('lean', 1) === 7.5 && T.skillCost('foeFullHand', 1) === 2.4 && T.skillCost('foeLean', 1) === 7.5, 'Full Hand 3.0, Lean 7.5, Foe\'s Full Hand 2.4, Foe\'s Lean 7.5 a point');
   ok(T.skillCost('hibernate', true) === 1.9 && Math.abs(T.skillCost('hibernate', 3) - 2.85) < 1e-9, `Hibernate 0.95 a point, plain = 2 (${T.skillCost('hibernate', true)})`);
   const bear = {id:'t', rarity:'common', attack:4, health:10, effects:{hibernate:true}}, plain = {id:'t', rarity:'common', attack:4, health:10, effects:{}};
-  ok(Math.abs(T.budget(bear, {level:1}).x1 - (2 * 4 * (1 - BB.EN6_HIBERNATE_UPTIME) + 10 + 1.9)) < 0.05 && T.budget(plain, {level:1}).x1 === 18, `a Hibernate unit's Attack counts x${1 - BB.EN6_HIBERNATE_UPTIME} (x1 ${T.budget(bear, {level:1}).x1})`);
+  // 2026-10-31 (package BUDGET2): cap 1 is 3A + H (BB.DEFAULTS.attackWeight)
+  const aw = BB.DEFAULTS.attackWeight || 2;
+  ok(Math.abs(T.budget(bear, {level:1}).x1 - (aw * 4 * (1 - BB.EN6_HIBERNATE_UPTIME) + 10 + 1.9)) < 0.05 && T.budget(plain, {level:1}).x1 === aw * 4 + 10, `a Hibernate unit's Attack counts x${1 - BB.EN6_HIBERNATE_UPTIME} (x1 ${T.budget(bear, {level:1}).x1})`);
   ok(T.cardS({arrow:2, arrowBramble:true}).S === 5.4 && T.cardS({arrowBramble:true}).S === 0 && T.cardS({fireBolt:2, fireBoltBramble:true}).S === Math.round(0.9 * T.cardS({fireBolt:2}).S * 100) / 100, `Arrow 2 – bramble = 0.9 x Arrow 2 (${T.cardS({arrow:2, arrowBramble:true}).S}); the toggle alone costs nothing`);
   const ta = T.cardS({triggers:[{on:'onSpawn', do:'arrow', amount:3}]}).S, tb = T.cardS({triggers:[{on:'onSpawn', do:'arrow', amount:3, bramble:true}]}).S;
   ok(Math.abs(tb - 0.9 * ta) < 0.02, `an On Spawn Arrow 3 – bramble = 0.9 x (${ta} -> ${tb})`);

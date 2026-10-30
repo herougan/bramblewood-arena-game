@@ -23,8 +23,10 @@ const near = (a, b, e)=> Math.abs(a - b) <= (e || 1e-6);
 // 2026-10-19 (package BF2): budget v5, N(L) = (Base + L/5)(1 + L/30), Level 0 Base - 1 (owner 13:52, L/3; L/5 after the 13:54 check)
 // 2026-10-19 (BF5, owner 21:36: "HALF everything" / "Straight up, the total N value"): the whole N × scale 0.5
 // 2026-10-21 (BF6, owner 15:09: the coefficients halved instead, Rarity kept, L/15, Level 0 Base − 1, no scale on the whole N)
-ok(near(BB.nAt(15, 5), (15 + 5 / 15) * (1 + 5 / 30), 0.006) && near(BB.nAt(15, 1), (15 + 1 / 15) * (31 / 30), 0.006) && near(BB.nAt(15, 0), 14) && BB.DEFAULTS.levelLinDiv === 15 && BB.DEFAULTS.levelDiv === 30 && BB.DEFAULTS.scale === 1 && BB.DEFAULTS.base === 10 && BB.DEFAULTS.perWait === 3 && BB.DEFAULTS.perRarity === 1,
-  '1. N(L) = (Base + L/15)(1 + L/30) (BF6, owner 15:09), Level 0 Base - 1: Base 15 -> 14 at Lv 0, 15.57 at Lv 1, 17.89 at Lv 5');
+// 2026-10-31 (package BUDGET2, owner RECOST1-6: 3A + H): the whole N x scale 1.13, fitted so the in-play cards' median cap-1 use stays where it was
+const K = 1.13;
+ok(near(BB.nAt(15, 5), K * (15 + 5 / 15) * (1 + 5 / 30), 0.006) && near(BB.nAt(15, 1), K * (15 + 1 / 15) * (31 / 30), 0.006) && near(BB.nAt(15, 0), K * 14) && BB.DEFAULTS.levelLinDiv === 15 && BB.DEFAULTS.levelDiv === 30 && BB.DEFAULTS.scale === K && BB.DEFAULTS.base === 10 && BB.DEFAULTS.perWait === 3 && BB.DEFAULTS.perRarity === 1 && BB.DEFAULTS.attackWeight === 3,
+  '1. N(L) = 1.13 x (Base + L/15)(1 + L/30) (BF6, owner 15:09; x 1.13 BUDGET2), Level 0 1.13 x (Base - 1): Base 15 -> 15.82 at Lv 0, 17.59 at Lv 1, 20.21 at Lv 5; cap 1 3A + H');
 ok(near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 1}), 14.81) && near(BB.nAt(14, 10, {levelLinDiv: 3, scale: 1}), 23.11) && near(BB.nAt(14, 1, {levelLinDiv: 3, scale: 0.5}), 7.41), '1. the owner\'s example with L/3: Base 14 gives 14.8 at Lv 1 and 23.1 at Lv 10');
 ok(Object.keys(BB.DEFAULTS).every(k=> table.budget[k] === BB.DEFAULTS[k]), '1. the helper\'s numbers (levelLinDiv, levelDiv, zeroPenalty too) are canonical/skill-costs.json\'s budget');
 { const live = cards.filter(SC.measured); let same = 0; const diff = [];
@@ -54,7 +56,9 @@ for(const c of withStats){
   // (BF5 10-21) each level's N is the curve's own (cv.rows[L].N: x the card's N multiplier)
   // (BF5 10-21, merge of BX) an Archer never swings: its Attack is not part of its strength (tools/skill_costs.js budget)
   const atk = L=> (c.effects && c.effects.archer && !(Number(c.effects.archer) < 0)) ? 0 : (cv.rows[L].attack || 0);
-  const room1 = L=> cv.rows[L].N - (2 * atk(L) + (cv.rows[L].health || 0) + b0.S) * cv.m, room2 = L=> Math.pow(cv.rows[L].N / 3, 2) - (atk(L) * (cv.rows[L].health || 0) + b0.S) * cv.m;
+  // 2026-10-31 (package BUDGET2, owner RECOST1-6): cap 1's stat terms are 3A + H (BB.DEFAULTS.attackWeight), cap 2's limit is BB.cap2Limit (BF11's 2 x (N/3)², 1.57 x since BUDGET2)
+  // (the two left sides are the helper's own, capScores: m and f on the stats, Shield as 0.8 Health, S·|S| in cap 2; were hand copies of budget v3)
+  const aw = BB.DEFAULTS.attackWeight || 2, sc = L=> BB.capScores(atk(L), cv.rows[L].health || 0, b0.S, c.effects || {}), room1 = L=> cv.rows[L].N - sc(L).x1, room2 = L=> BB.cap2Limit(cv.rows[L].N) - sc(L).x2;
   for(let L = from + 1; L <= top; L++){ const r = cv.rows[L], p = cv.rows[L - 1];
     if((r.attack || 0) < (p.attack || 0) || (r.health || 0) < (p.health || 0)) mono.push(`${c.id} Lv ${L}`);
     if([4, 7, 10].includes(L) && !(r.points > 0)) majors.push(`${c.id} Lv ${L}`);
@@ -62,7 +66,7 @@ for(const c of withStats){
     const forced = cv.m * Math.max(1, [4, 7, 10, 11].filter(k=> k > from && k <= L && cv.rows[k].points === 1).length); // a point each major / limit forced so far
     const nForced = [4, 7, 10, 11].filter(k=> k > from && k <= L && cv.rows[k].points === 1).length; // (BF5 10-21) a forced point's overrun stays until the bank catches up
     const inside = b0.ok ? room1(L) >= -cv.m * nForced - 0.05 && room2(L) >= (nForced ? -cv.m * Math.max(r.attack || 0, r.health || 0) * nForced : 0) - 0.05 /* inclusive (16:22); BF5: or the forced point's A·H */ : room1(L) >= room1(from) - forced - 1e-9 /* BF2: a major's forced point can run one point ahead of a small bank */ && room2(L) >= Math.min(room2(from), room2(L - 1)) - 1e-9;
-    if(!inside) budget.push(`${c.id} Lv ${L} (2A+H+S ${(2 * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
+    if(!inside) budget.push(`${c.id} Lv ${L} (${aw}A+H+S ${(aw * r.attack + r.health + b0.S).toFixed(1)} / N ${r.N})`);
     if(!c.levelStats){ const st = G.statsAtLevel(c, L); if(st.attack !== r.attack || st.health !== r.health) game.push(`${c.id} Lv ${L}`); } }
   if(c.attack === 0 && Object.values(cv.rows).some(r=> r.attack !== 0)) walls.push(c.id);
 }

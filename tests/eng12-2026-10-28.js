@@ -74,21 +74,24 @@ const ambushHits = (ev, uid)=> ev.filter(x=> x.type === 'hit' && x.ambush && x.a
   ok(near(BB.ZEIT_UPTIME.nocturnal, p.night + p.twilight) && near(BB.ZEIT_UPTIME.diurnal, p.day + p.twilight - p.dayDim / 2) && near(BB.ZEIT_UPTIME.crepuscular, c.day + c.night + 2 * c.twilight),
     `L11 the uptimes are the measured shares (night ${BB.ZEIT_UPTIME.nocturnal}, day ${BB.ZEIT_UPTIME.diurnal}, crepuscular ${BB.ZEIT_UPTIME.crepuscular})`);
   ok(near(BB.ZEIT_DARK_SHARE, p.dark) && near(BB.SHOCK.other, p.dmgPerUnitRound), 'L5/L11 the dark share and the damage a unit takes a round are the measured ones'); }
-ok(BB.zeitS('nocturnal', {nocturnal: 4}).S === 4.24 && BB.zeitS('nocturnal', {nocturnal: true}).S === 1.06, 'L11 Nocturnal 4 (+4/+0) is 0.53 x 8 = 4.24 (was a fixed 1); plain Nocturnal (+1/+0) 1.06');
-ok(BB.zeitS('nocturnal', {nocturnal: 5, nocturnalHp: 6}).S === 8.48 && BB.zeitS('nocturnalHp', {nocturnal: 5, nocturnalHp: 6}).S === 0, 'L11 ... with Nocturnal Hp: 0.53 x (2 x 5 + 6); the Hp key costs nothing beside its flag');
-ok(BB.zeitS('nocturnalHp', {nocturnalHp: 2}).S === 1.06 && BB.zeitS('diurnal', {diurnal: 1}).S === 0.76 && BB.zeitS('crepuscular', {crepuscular: 1}).S === 1.98, 'L11 Nocturnal Hp alone, Diurnal 1 (0.38 x 2), Crepuscular 1 (0.99 x 2)');
+// 2026-10-31 (package BUDGET2, owner RECOST1-6): the bonus is uptime x (3A + H) now (was 2A + H)
+ok(BB.zeitS('nocturnal', {nocturnal: 4}).S === 6.36 && BB.zeitS('nocturnal', {nocturnal: true}).S === 1.59, 'L11 Nocturnal 4 (+4/+0) is 0.53 x 12 = 6.36 (was a fixed 1; 4.24 at 2A + H); plain Nocturnal (+1/+0) 1.59');
+ok(BB.zeitS('nocturnal', {nocturnal: 5, nocturnalHp: 6}).S === 11.13 && BB.zeitS('nocturnalHp', {nocturnal: 5, nocturnalHp: 6}).S === 0, 'L11 ... with Nocturnal Hp: 0.53 x (3 x 5 + 6); the Hp key costs nothing beside its flag');
+ok(BB.zeitS('nocturnalHp', {nocturnalHp: 2}).S === 1.06 && BB.zeitS('diurnal', {diurnal: 1}).S === 1.14 && BB.zeitS('crepuscular', {crepuscular: 1}).S === 2.97, 'L11 Nocturnal Hp alone, Diurnal 1 (0.38 x 3), Crepuscular 1 (0.99 x 3)');
 ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 && BB.CONTEXT_MULT_BY.nocturnalGrant === 0.53 && BB.CONTEXT_MULT_BY.diurnalGrant === 0.38, 'L11 the braces carry their own price, at the same uptimes');
 { const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), card = id=> cards.find(c=> c.id === id);
   const owl = card('owl-nightwatch'), b = T.budget(owl), noc = b.parts.find(x=> x[1] === 'nocturnal');
-  ok(noc && noc[2] === 4.54, `L11 the Owl Nightwatch's Nocturnal 4: 4.24 + the dark-sight 0.3 (${noc && noc[2]})`);
+  // 2026-10-31 (BUDGET2): Nocturnal 4 -> 3 (its night bonus at 3A broke cap 2 for any body): 0.53 x 9 + the dark-sight 0.3
+  ok(noc && noc[2] === 5.07 && owl.effects.nocturnal === 3, `L11 the Owl Nightwatch's Nocturnal 3: 4.77 + the dark-sight 0.3 (${noc && noc[2]})`);
   ok(owl.attack === 1 && owl.health === 5 /* 2026-10-30 RECOST1: 1/6 -> 1/5 after Stealth 1.5 -> 2 (the post-balance queue); was 1/6 */ && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
   const moved = {'great-horned-owl': '2/14', 'raccoon-bandit': '4/7', 'weredog': '2/7', 'night-watchman': '1/3', 'sunspire-choirmother': '3/4', 'vampire-bat': '2/5', 'kinkajou-lurker': '5/9', 'electric-catfish': '2/8'};
   const m1 = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal7-m1-rebalance-2026-10-28.json'), 'utf8')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card or one 'pending' the owner's re-fit (step 3) is reported, not failed
-  const bad = Object.keys(moved).filter(id=> !m1.has(id)).filter(id=>{ const c = card(id); return `${c.attack}/${c.health}` !== moved[id] || !(T.budget(c).ok || HOLD(id)); });
+  const bg2 = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/budget2-refit-2026-10-31.json'), 'utf8')).changes.map(r=> r.id)); // 2026-10-31 (BUDGET2): re-fit under 3A + H
+  const bad = Object.keys(moved).filter(id=> !m1.has(id) && !bg2.has(id)).filter(id=>{ const c = card(id); return `${c.attack}/${c.health}` !== moved[id] || !(T.budget(c).ok || HOLD(id)); });
   ok(!bad.length, `L5/L11 the re-fitted cards hold their new lines within both caps (${bad.join(', ') || 'all'})`);
-  ok(T.skillCost('nocturnal', 4) === 4.24 && T.skillCost('shock', {chance: 40, duration: 1}) === BB.shockS({chance: 40, duration: 1}, 0), 'L5/L11 skill_costs prices one skill the same way without a card');
+  ok(T.skillCost('nocturnal', 4) === 6.36 /* BUDGET2: 0.53 x 3 x 4 */ && T.skillCost('shock', {chance: 40, duration: 1}) === BB.shockS({chance: 40, duration: 1}, 0), 'L5/L11 skill_costs prices one skill the same way without a card');
   const eel = T.budget(card('voltaic-eel')).parts.find(x=> x[1] === 'shock'), cat = T.budget(card('electric-catfish')).parts.find(x=> x[1] === 'shockBolt');
   ok(eel && eel[2] === 0.83 && cat && cat[2] === 7.98, `L5 the Voltaic Eel's Shock 40%/1 at Attack 1: 0.83 (was 0.93); the Catfish's Shock Bolt 2: 7.98 (was 6) (${eel && eel[2]}, ${cat && cat[2]})`); }
 ok(BB.shockS({chance: 100, duration: 2}, 3) > BB.shockS({chance: 100, duration: 1}, 3) && BB.shockS({chance: 100, duration: 1}, 3) > BB.shockS({chance: 50, duration: 1}, 3) && BB.shockS({chance: 50, duration: 1}, 5) > BB.shockS({chance: 50, duration: 1}, 1),

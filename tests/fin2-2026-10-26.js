@@ -53,7 +53,9 @@ ok(/sbCheck\(A, D, S, N, M, F, SH\)/.test(src) && /c = sbCheck\(A, D, S, N, M, F
   // skipped and reported: its map term reads Map 0 until it is placed (armadillo-guard is on no list since THEME2 / THEME3)
   const HOLD = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold, held = [];
   [crab, conch, arm].forEach(c=>{ const b = T.budget(c); if(!b.ok && HOLD(c.id)){ held.push(c.id + ' ' + HOLD(c.id)); return; } ok(b.ok, `c. ${c.id} within both caps (${b.x1}/${b.N}, ${b.x2}/${b.N2})`); });
-  const cb = T.budget(crab), up = T.budget(Object.assign({}, crab, {health: 4})); ok(cb.ok && !up.ok, 'c. the crab sits on its line: one more Health is over');
+  // 2026-10-31 (package BUDGET2): under 3A + H (N x 1.13) a 1-Attack crab has room again; BUDGET2 re-fits only what its formula pushed out of
+  // the band, so the check is now that the crab is inside and above the well-under line (60% of N), not that it sits on its line
+  const cb = T.budget(crab); ok(cb.ok && cb.x1 > 0.6 * cb.N, `c. the crab sits inside its band under 3A + H (${cb.x1} / N ${cb.N})`);
   const overSh = cards.filter(c=> c.effects && c.effects.shield && T.budget(c).ok === false && !c.token && !c.test), overHeld = overSh.filter(c=> HOLD(c.id));
   overHeld.forEach(c=> held.push(c.id + ' ' + HOLD(c.id)));
   ok(overSh.length === overHeld.length, `c. no shielded card over its budget (${overSh.filter(c=> !HOLD(c.id)).map(c=> c.id).join(', ')})`);

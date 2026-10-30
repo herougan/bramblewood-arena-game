@@ -29,6 +29,12 @@ for r in plan['changes']:
         for k in e.get('remove', []): eff.pop(k, None)
         eff.update(e.get('set', {}))
     now = '%s/%s' % (c.get('attack'), c.get('health'))
+    note = c.get('creatorNote') or ''
+    if 'BUDGET2 re-fit' not in note:  # the re-fit's line, as the earlier re-fits left theirs (tests skip a card a later re-fit moved by it)
+        what = ('was %s' % was) if was != now else 'stats kept'
+        if r['id'] == 'war-elephant': what += '; Arrow Count 2 -> 1 (X15 / RECOST1-5)'
+        if r['id'] == 'owl-nightwatch': what += '; Nocturnal 4 -> 3 (its night bonus is priced at 3A now)'
+        c['creatorNote'] = (note + ' 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): %s (cap-1 use %s of N under 2A + H, %s under 3A + H, now %s).' % (what, r['old']['use'], r['new']['use'], r['after']['use'])).strip()
     if was != now or e: n += 1
     print('%-28s %-8s %s -> %s%s' % (r['id'], r['kind'], was, now, (' + ' + json.dumps(e)) if e else ''))
 if '--dry' not in sys.argv:

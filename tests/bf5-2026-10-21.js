@@ -11,9 +11,12 @@ const table = JSON.parse(read('canonical/skill-costs.json')), cards = JSON.parse
 const src = read('arena_app.js');
 
 // 1. N halved, one constant; S unchanged; Bounty 1
-ok(BB.DEFAULTS.scale === 1 && table.budget.scale === 1 && BB.DEFAULTS.base === 10 && table.budget.base === 10, '1. BF6 (owner 15:09): the coefficients halved instead of N x 0.5 (scale 1, base 10) in bramblewood-budget.js DEFAULTS and the skill-costs budget line');
-ok(Math.abs(BB.nAt(11, 1) - (11 + 1 / 15) * (1 + 1 / 30)) < 0.011, `1. BF6: nAt(11, 1) = (Base + 1/15)(1 + 1/30) (${BB.nAt(11, 1)})`);
-ok(Math.abs(BB.nAt(11, 0) - 10) < 0.011, '1. BF6: Level 0 is Base - 1');
+// 2026-10-31 (package BUDGET2, owner RECOST1-6: 3A + H): the whole N x scale 1.13 on top of BF6's halved coefficients (fitted to keep the
+// in-play cards' median cap-1 use); base 10 stays
+const K = BB.DEFAULTS.scale;
+ok(K === 1.13 && table.budget.scale === K && BB.DEFAULTS.base === 10 && table.budget.base === 10, '1. BF6 (owner 15:09): the coefficients halved instead of N x 0.5 (base 10) in bramblewood-budget.js DEFAULTS and the skill-costs budget line; BUDGET2: scale 1.13');
+ok(Math.abs(BB.nAt(11, 1) - K * (11 + 1 / 15) * (1 + 1 / 30)) < 0.011, `1. BF6: nAt(11, 1) = 1.13 x (Base + 1/15)(1 + 1/30) (${BB.nAt(11, 1)})`);
+ok(Math.abs(BB.nAt(11, 0) - K * 10) < 0.011, '1. BF6: Level 0 is 1.13 x (Base - 1)');
 const bounty = [].concat(table.skills || [], table.triggers || []).find(s=> s.id === 'bounty');
 ok(bounty && bounty.value === 1, `1. Bounty 1 a point (owner 21:36: "Let bounty N = N * 2"; got ${bounty && bounty.value})`);
 

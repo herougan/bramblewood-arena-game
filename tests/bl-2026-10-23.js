@@ -95,11 +95,13 @@ const bloomPass = (e, P)=>{ const ev = []; e.bloomCopyPass(P, so, {}, ev); retur
 // ---- 9. the price: bloomOdds, S = 6p, cap 1's stats x (1 + p), the forge bank
 ok(BB.bloomOdds({when:['wet','sunny']}) === 0.27 && BB.bloomOdds({when:['wet','kill']}) === 0.17 && BB.bloomOdds({when:['wet','sunny'], lumber:1}) === 0.23 && BB.bloomOdds({when:['tide','night']}) === 0.24, '9. the odds: Wet & Sunny 0.27, Wet & Kill 0.17, + 1 Lumber 0.23, Tide & Night 0.24');
 // 2026-10-24 (package EN5, owner BL-1: the copy can bloom): priced with the chain, p x (1 + q + q²) (bramblewood-budget.js bloomChainOdds): 0.27 -> 0.44
-{ const pc = BB.bloomChainOdds({when:['wet','sunny']}), S = Math.round(3 * pc * 100) / 100; const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(pc === 0.44 && cx && cx.S === S, `9. S = 3 x the chain's odds (the copies' +1/+1) (${cx && cx.S}; chain ${pc})`);
+// 2026-10-31 (package BUDGET2, owner RECOST1-6): the copy's +1/+1 is 3A + H = 4 points (was 2A + H = 3); cap 1's stats 3A + H
+const AWb = BB.DEFAULTS.attackWeight || 2;
+{ const pc = BB.bloomChainOdds({when:['wet','sunny']}), S = Math.round((AWb + 1) * pc * 100) / 100; const cx = BB.contextS('bloomCopy', {when:['wet','sunny']}, ()=> 0); ok(pc === 0.44 && cx && cx.S === S, `9. S = ${AWb + 1} x the chain's odds (the copies' +1/+1) (${cx && cx.S}; chain ${pc})`);
   const a = BB.capScores(2, 10, S, {bloomCopy:{when:['wet','sunny']}}, null), b = BB.capScores(2, 10, S, {}, null);
-  ok(a.x1 === Math.round(((4 + 10) * (1 + pc) + S) * 100) / 100 && a.x2 === b.x2 && b.x1 === Math.round((14 + S) * 100) / 100, `9. cap 1's stat terms x ${1 + pc}, cap 2 unchanged (${a.x1}, ${a.x2} / ${b.x2})`); }
+  ok(a.x1 === Math.round(((2 * AWb + 10) * (1 + pc) + S) * 100) / 100 && a.x2 === b.x2 && b.x1 === Math.round((2 * AWb + 10 + S) * 100) / 100, `9. cap 1's stat terms x ${1 + pc}, cap 2 unchanged (${a.x1}, ${a.x2} / ${b.x2})`); }
 { const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')));
-  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === Math.round(3 * BB.bloomChainOdds({when:['wet','sunny']}) * 100) / 100 && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S}; EN5: with the chain)`);
+  const r = T.cardS({bloomCopy:{when:['wet','sunny']}}, {attack:1, health:8}); ok(r.S === Math.round((AWb + 1) * BB.bloomChainOdds({when:['wet','sunny']}) * 100) / 100 && !r.missing.length, `9. tools/skill_costs.js prices it through the budget (${r.S}; EN5: with the chain)`);
   const sk = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')).skills.find(s=> s.id === 'bloomCopy'); ok(sk && /bloomOdds/.test(sk.note), '9. canonical/skill-costs.json notes where Bloom is priced'); }
 
 // ---- 10. the cards

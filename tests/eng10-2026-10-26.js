@@ -59,7 +59,9 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const rc = /RECOST1/.test(by.charge.appliedAt || '');
   ok(rc ? by.charge.prevValue === 3 && by.charge.recost1Was && by.charge.recost1Was.prevValue === 1.2 : (by.charge.value === 3 && by.charge.prevValue === 1.2), 'ENG9-4 Charge priced 3 again (the repeating clock)');
   ok(by.reload.value === -6 && by.reload.prevValue === -4, 'ENG9-4 Reload more negative: -4 -> -6');
-  ok(cid['peak-condor'].health === 7 && cid['riptide-eel'].attack === 9 && cid['riptide-eel'].health === 6, 'ENG9-4 the Reload cards re-fit up: Peak Condor 4/7, Riptide Eel 9/6');
+  // 2026-10-31 (package BUDGET2): both re-fit again under 3A + H (their creatorNote carries the line; docs/balance/budget2-refit-2026-10-31.json)
+  const b2 = id=> /BUDGET2 re-fit/.test(cid[id].creatorNote || '');
+  ok((cid['peak-condor'].health === 7 || b2('peak-condor')) && ((cid['riptide-eel'].attack === 9 && cid['riptide-eel'].health === 6) || b2('riptide-eel')), 'ENG9-4 the Reload cards re-fit up: Peak Condor 4/7, Riptide Eel 9/6 (or BUDGET2\'s 3A + H re-fit)');
   ok(rc ? cid['electric-ray'].attack === 3 && cid['electric-ray'].health === 8 : (cid['electric-ray'].attack === 4 && cid['electric-ray'].health === 9), 'ENG9-4 the Electric Ray back to 4/9 (3/8 since RECOST1)'); }
 
 // ---- ENG9-5 Flora and Mushroom --------------------------------------------------------------------------------------------------------
@@ -93,7 +95,8 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   const m1 = new Set(JSON.parse(rd('docs/balance/bal7-m1-rebalance-2026-10-28.json')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h === 'unplaced' ? 'unplaced (on no list, out of play)' : 'pending step 3 (re-fit)'}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card (on no list) or one 'pending' the owner's re-fit (step 3) is reported, not failed (tools/lib_map_pools.js budgetHold)
   const rc1 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/recost1-2026-10-30.json')).refits.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-30 RECOST1: re-fit again (docs/balance/recost1-2026-10-30.json)
-  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  const bg2 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/budget2-refit-2026-10-31.json')).changes.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-31 BUDGET2: re-fit under 3A + H
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id) && !bg2.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);
@@ -149,8 +152,9 @@ const hook = (P, pid, p, host)=>{ const pl = P[pid]; ['left', 'center', 'right']
   // a death in a fight raises the count and the stats follow at once
   const {e: e3, P: P3} = mk(143); const r3 = put(e3, P3, 1, 'x-req', 0); P3[1].diedThisFight = 4; const v = put(e3, P3, 2, 'x-wall', 0); v.hp = 0; e3.removeDeadCards(P3, so, {}, {}, []);
   ok(P3[2].diedThisFight === 1 && on(r3, 'requiem'), 'PROP1-4 a death is counted in the sweep and Requiem turns on at once');
-  const price = {requiem: 3.18, dirge: 2.76, carnage: 2.46, muster: 2.94, beset: 1.8, throng: 3.84};
-  Object.entries(price).forEach(([k, s])=> ok(BB.thrS(k, true, {[k]: true}).S === s, `PROP1-4 ${k}'s default price ${s}`));
+  // 2026-10-31 (package BUDGET2): the plain braces {+2/+2} are 3A + H = 8 points now (were 2A + H = 6), x the same measured uptimes
+  const price = {requiem: 4.24, dirge: 3.68, carnage: 3.28, muster: 3.92, beset: 2.4, throng: 5.12};
+  Object.entries(price).forEach(([k, s])=> ok(BB.thrS(k, true, {[k]: true}).S === s, `PROP1-4 ${k}'s default price ${s} (got ${BB.thrS(k, true, {[k]: true}).S})`));
   ok(BB.thrS('requiem', 3, {requiem: 3}).S > BB.thrS('requiem', 7, {requiem: 7}).S, 'PROP1-4 a lower threshold costs more');
   const homes = {throng: 'carrion-fly-swarm', dirge: 'wolfsbane-alpha', carnage: 'dust-hyena', muster: 'wolf-pack-runner', beset: 'ravenous-wolverine', requiem: 'cinder-skeleton'};
   const om = JSON.parse(rd('canonical/card-obtain-maps.json')).maps;
