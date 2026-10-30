@@ -1322,8 +1322,8 @@
   /* Forge bulk sheet (2026-10-17): Fuse all extras / Disenchant extras, see openForgeBulk */
   .fbulk{max-width:min(640px, calc(100vw - 32px)); width:100%;}
   .fbulk .fb-grid{display:flex; flex-wrap:wrap; gap:12px 10px; justify-content:center; max-height:min(46vh, 360px); overflow:auto; padding:10px 4px 6px; margin:4px 0 8px;}
-  .fbulk .fb-card{position:relative; width:62px; display:flex; flex-direction:column; align-items:center; gap:3px; transition:transform .35s ease, opacity .35s ease, filter .35s ease;}
-  .fbulk .fb-tile .card-tile{width:62px !important; height:78px !important; font-size:7px; margin:0; pointer-events:none;}
+  .fbulk .fb-card{position:relative; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 62px */; display:flex; flex-direction:column; align-items:center; gap:3px; transition:transform .35s ease, opacity .35s ease, filter .35s ease;}
+  .fbulk .fb-tile .card-tile{width:100% !important; height:auto !important; font-size:7px; margin:0; pointer-events:none;}
   .fbulk .fb-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
   .fbulk .fb-val{font-size:10.5px; font-weight:700; text-align:center; line-height:1.2; margin-top:12px; display:block; white-space:nowrap;}
   .fbulk .fb-val > span{display:block;}
@@ -4003,7 +4003,7 @@
   .pool-grid .card-tile.selected{outline:3px solid var(--accent); outline-offset:2px;}
   .forge-detail{position:sticky; top:12px; text-align:center;}
   .forge-preview-wrap{display:flex; justify-content:center; margin-bottom:8px;}
-  .forge-preview-wrap .card-tile.forge-preview{width:120px;}
+  .forge-preview-wrap .card-tile.forge-preview{width:var(--card-full-w);} /* 2026-10-30 (CS-B): Full */
   .forge-detail h3{margin:6px 0 4px; font-size:15px;}
   .forge-stat-row{display:flex; justify-content:center; gap:14px; font-family:'Baloo 2'; font-weight:800; font-size:15px; margin-bottom:10px;}
   .forge-stat-row .atk{color:var(--attack);} .forge-stat-row .hp{color:var(--health);}
@@ -6690,22 +6690,21 @@
   .cnp-rw-k{font:800 10.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:#ffe2a6; writing-mode:horizontal-tb; max-width:56px; line-height:1.15; text-align:right;}
   .cnp-rw.is-done .cnp-rw-k{color:rgba(255,255,255,.65);}
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
-  .cnp-rw-card{position:relative; width:46px; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
+  .cnp-rw-card{position:relative; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 46-74px in five rules */; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
   .cnp-rw-card .card-tile{width:100% !important; pointer-events:none;}
   .cnp-rw-card:hover, .cnp-rw-card:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
-  .cnp-rw-zoom{position:fixed; z-index:200; width:150px; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5;}
+  .cnp-rw-zoom{position:fixed; z-index:200; width:var(--card-full-w) /* 2026-10-30 (CS-B): the Full card, was 150px */; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:100% !important; height:auto !important; aspect-ratio:4/5;}
   .cnp-rw-card.is-got .card-tile, .cnp-rw-card.is-got .cnp-rw-back{filter:grayscale(1) brightness(.7);}
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
   .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
-  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} .cnp-rw-card{width:38px;} }
+  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} }
   /* 2026-10-12 (user: "The first rewards should be clearer and bigger. The skirmish card size should be reduced, not being full
      width"): a narrower panel; the first-clear haul labelled and larger; a hidden deck is a dark slab with a lock and the rank */
   @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-width:760px; margin-left:auto !important; margin-right:auto !important;} }
   .cnp-rw{flex-wrap:wrap; padding:8px 12px; gap:10px; border-color:rgba(255,220,150,.45); background:rgba(0,0,0,.32);}
   .cnp-rw-label{flex:0 0 100%; font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#ffd98a;}
   .cnp-rw .cnp-rw-cur{font-size:18px; padding:4px 12px;}
-  .cnp-rw .cnp-rw-card{width:58px;}
   .cnp-deck-locked{position:relative; display:flex; align-items:center; justify-content:center; gap:10px; height:64px; margin-bottom:8px; border-radius:10px; background:repeating-linear-gradient(135deg, #0b0a0d 0 10px, #141217 10px 20px); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), inset 0 0 24px rgba(0,0,0,.8);}
   .cnp-deck-locked .cdl-lock{font-size:26px; filter:grayscale(.3) drop-shadow(0 2px 4px rgba(0,0,0,.7));}
   .cnp-deck-locked .rank-hex{transform:scale(.9);}
@@ -7170,7 +7169,7 @@
   .leaf-sweep .ls-veil{display:none !important;} /* instant transitions: the leaves stay, the veil that dimmed the new screen goes */
   /* deck list card: the deck's cards (2026-10-08) */
   .dm-cards{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; padding:8px; border-radius:12px; background:color-mix(in srgb, var(--ink) 6%, transparent);}
-  .dm-card{position:relative; width:52px; flex:0 0 auto;} .dm-card .card-tile{width:100% !important; pointer-events:none;}
+  .dm-card{position:relative; flex:0 0 auto;} /* 2026-10-30 (CS-B): a Chip (was a 52px tile) */
   .dm-x{position:absolute; right:-4px; bottom:-4px; z-index:5; font:900 11px 'Baloo 2',system-ui,sans-serif; padding:0 5px; border-radius:999px; background:#2b1d10; color:#ffe2a6; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .dm-delete{margin-left:auto;} .dm-delete:disabled{opacity:.45; cursor:not-allowed;}
   .deck-menu-card .deck-showcase{margin-bottom:6px;}
@@ -7620,7 +7619,7 @@
   .po2-tally{margin-top:16px; font:800 13px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; opacity:.75; min-height:1.2em;}
   .po2-got{padding:8px 10px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.25);}
   .po2-got:empty{display:none;}
-  .po2-slot{width:46px; aspect-ratio:.72; border-radius:8px; border:2px dashed rgba(255,255,255,.22); display:grid; place-items:center;}
+  .po2-slot{width:var(--po2-slot-w, var(--card-full-w)) /* 2026-10-30 (CS-B): a Full slot (was 46px) */; aspect-ratio:4/5; border-radius:8px; border:2px dashed rgba(255,255,255,.22); display:grid; place-items:center;}
   .po2-slot:has(.po2-mini){border-color:transparent;}
   .po2-slot .po2-mini{width:100%;}
   :where(html[data-fx="none"]) .po2-reveal::before, :where(html[data-fx="none"]) .po2-back::after{display:none;}
@@ -8087,7 +8086,7 @@
   .po2-card.is-new-moment .po2-front{animation:poGlow 1.6s ease-in-out infinite alternate;}
   @keyframes po2Stamp{to{opacity:1; transform:translate(-50%, 0) rotate(-10deg) scale(1);}}
   .po2-got{display:flex; gap:6px; justify-content:center; min-height:58px;}
-  .po2-mini{width:46px; animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1);} .po2-mini .card-tile{width:100% !important; pointer-events:none;}
+  .po2-mini{animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1);} /* 2026-10-30 (CS-B): its slot sizes it (Full), or it is a Chip (was 46px) */ .po2-mini .card-tile{width:100% !important; pointer-events:none;}
   @keyframes po2Pop{from{transform:scale(.3); opacity:0}}
   /* summaries */
   .po2-summary{gap:18px;}
@@ -8946,7 +8945,7 @@
   .forge-anvil{text-align:center; position:sticky; top:12px;}
   .anvil-stage{position:relative; padding:14px 0 0; margin-bottom:6px;}
   .anvil-stage .forge-preview-wrap{position:relative; z-index:2; margin-bottom:-6px;}
-  .anvil-stage .card-tile.forge-preview, .anvil-stage .flip3d-stage{width:140px;}
+  .anvil-stage .card-tile.forge-preview, .anvil-stage .flip3d-stage{width:var(--card-full-w);} /* 2026-10-30 (CS-B): the anvil's card is Full (was 140px) */
   .forge-glow{position:absolute; left:50%; bottom:18px; width:220px; height:120px; transform:translateX(-50%); background:radial-gradient(ellipse at 50% 80%, rgba(255,140,50,.35), transparent 70%); pointer-events:none; transition:opacity .3s; opacity:.6;}
   .anvil-art{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; margin:0 auto; width:180px;}
   .anvil-art span{display:block; background:linear-gradient(180deg,#6b6f78,#3a3d44 70%,#2a2c31); box-shadow:inset 0 2px 0 rgba(255,255,255,.25);}
@@ -9612,7 +9611,6 @@
     font-family:'Baloo 2', system-ui, sans-serif;}
   /* 2026-10-16 (user: "Like a speech bubble, the preview div has a pointer to the graveyard"): the cards scroll inside; the tail sits outside */
   .grave-peek .gpk-body{max-height:min(320px, 58vh); overflow:auto;}
-  .grave-peek .gpk-body .gpk-grid{grid-template-columns:repeat(var(--gpk-cols, 6), 46px); justify-content:center;}
   .grave-peek .gpk-tail{position:absolute; left:var(--tail-x, 50%); top:-8px; width:14px; height:14px; transform:translateX(-50%) rotate(45deg); background:rgba(24,19,16,.94); border-left:1px solid rgba(255,255,255,.18); border-top:1px solid rgba(255,255,255,.18); pointer-events:none;}
   .grave-peek.tail-down .gpk-tail{top:auto; bottom:-8px; border:0; border-right:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18);}
   .grave-peek .gpk-sep{display:flex; align-items:center; gap:6px; margin:8px 0 6px; font-size:13px; opacity:.8;}
@@ -9621,13 +9619,8 @@
   .grave-peek .gpk-head span{opacity:.7; font-size:11.5px;}
   .grave-peek .gpk-head.gpk-sub{margin-top:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,.12);}
   .grave-peek .gpk-x{margin-left:auto; border:0; background:none; color:inherit; opacity:.7; cursor:pointer; font-size:13px; padding:0 2px;}
-  .grave-peek .gpk-grid{display:grid; grid-template-columns:repeat(auto-fill, 46px); gap:5px; max-width:302px;}
-  .grave-peek .gpk-mini{position:relative; width:46px; height:58px; border-radius:6px; overflow:hidden; box-sizing:border-box; cursor:help;
-    border:2px solid var(--rarity-a, #8a8a8a); background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12), #1c1209); display:block;}
-  .grave-peek .gpk-art{position:absolute; inset:0 0 13px; background-size:cover; background-position:center; image-rendering:pixelated; filter:saturate(.85);}
-  .grave-peek .gpk-ico{position:absolute; inset:0 0 13px; display:flex; align-items:center; justify-content:center; font-size:22px;}
-  .grave-peek .gpk-nm{position:absolute; left:0; right:0; bottom:0; height:13px; padding:0 2px; font-size:8px; line-height:13px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,.55);}
-  .grave-peek .gpk-n{position:absolute; top:1px; right:1px; font-size:9.5px; line-height:1; padding:1px 3px; border-radius:6px; background:rgba(0,0,0,.7); color:#ffd56e;}
+  /* 2026-10-30 (package CS-B, card sizes step 3): the peek lists Chips (art disc, name, ×N), wrapping (was a grid of 46×58 art squares, 8px names) */
+  .grave-peek .gpk-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:5px; max-width:min(330px, 84vw);}
   .grave-peek .gpk-empty{grid-column:1/-1; font-size:22px; opacity:.45; padding:2px 10px; text-align:center;}
   /* The turn the fight ended on (user: "...I want to see the turn#. It shows up as a pill on the opponent's HP bar in the centre."). */
   .bf-hp .bf-turn-pill{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:2; pointer-events:auto; white-space:nowrap;
@@ -10978,9 +10971,9 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .armour-gem{display:inline-block; width:11px; height:11px; border-radius:2px; transform:rotate(45deg); background:linear-gradient(135deg, var(--g1), var(--g2)); box-shadow:0 0 6px var(--g2); margin-left:3px;}
 .conquest-node-panel .cnp-deck.is-open{max-height:none; overflow:visible;}
 .conquest-node-panel .cnp-squad{flex-wrap:nowrap !important; overflow-x:auto; gap:8px !important; padding:10px 2px 18px; scrollbar-width:thin;}
-.conquest-node-panel .cnp-sq-card{position:relative; flex:0 0 auto; width:62px; padding:0; border:0; background:none; cursor:pointer; transition:transform .12s ease;}
+.conquest-node-panel .cnp-sq-card{position:relative; flex:0 0 auto; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 62px */; padding:0; border:0; background:none; cursor:pointer; transition:transform .12s ease;}
 .conquest-node-panel .cnp-sq-card:hover, .conquest-node-panel .cnp-sq-card:focus-visible{transform:translateY(-3px);}
-.conquest-node-panel .cnp-sq-card .card-tile{width:62px !important; height:78px !important; font-size:7px; margin:0; pointer-events:none;}
+.conquest-node-panel .cnp-sq-card .card-tile{width:100% !important; height:auto !important; font-size:7px; margin:0; pointer-events:none;}
 .conquest-node-panel .cnp-sq-card .cnp-sq-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
 .conquest-node-panel .cnp-squad .dchip{font-size:12.5px; line-height:1.3; padding:2px 8px;}
 @media (max-width:620px){ .conquest-node-panel .cnp-head{grid-template-columns:auto minmax(0,1fr);} .conquest-node-panel .cnp-head > :last-child:not(.cnp-title){grid-column:1 / -1; justify-self:stretch; margin-top:8px;} }
@@ -11360,19 +11353,17 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .map-node.kind-dungeon{border-color:#6b4f9a;} .map-node.kind-worldboss{border-color:#1f8a70; width:62px; height:62px;} .map-node.kind-megaraid{border-color:#d6249f; width:64px; height:64px;}
 
 /* Skirmish panel, simpler (2026-10-10): the showcase card leads, the deck folds away */
-.cnp-showcase{flex:0 0 auto; width:74px; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
+.cnp-showcase{flex:0 0 auto; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 74px (64 in a pair) */; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
 .cnp-showcase .card-tile{width:100% !important;}
 /* 2026-10-23 (package LEAD): a paired boss's two leaders side by side, the second tucked behind the first */
 .cnp-pair{flex:0 0 auto; display:flex; align-items:flex-start; margin-right:4px;}
-.cnp-pair > .cnp-showcase{width:64px; margin-right:0;}
+.cnp-pair > .cnp-showcase{margin-right:0;}
 .cnp-pair > .cnp-showcase + .cnp-showcase{margin-left:-14px; transform:rotate(4deg) translateY(6px);}
 /* 2026-10-12 (22:04, user: "put the S emblem on the top right hand corner (sitting absolute, on the top-right boundary of the
    div)", "make [the reward card] the same size as the card highlight", "battle rating ... <Sword Icon> [value] beside the hp
    and shield values") */
 .conquest-node-panel{position:relative;}
 .conquest-node-panel > .cnp-rank-corner{position:absolute !important; top:0 !important; right:0 !important; left:auto !important; transform:translate(40%,-40%) !important; z-index:6; margin:0;}
-.cnp-rw .cnp-rw-card, .cnp-rw-card{width:74px;}
-@media (max-width:640px){ .cnp-rw .cnp-rw-card, .cnp-rw-card{width:60px;} }
 /* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
@@ -11390,7 +11381,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 html[data-fx="low"] .card-tile > .ui3-tint{box-shadow:inset 0 0 8px 0 rgba(var(--t1),.22);}
 html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cnp-rw-zoom.cnp-rw-above{z-index:900;} /* 2026-10-29 (UI3, S6): over a modal overlay (z 600) */
-.cnp-rw-zoom .cnp-rw-why{display:block; width:150px; box-sizing:border-box; margin-top:5px; padding:5px 8px; border-radius:8px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font:700 11px/1.3 'Baloo 2',system-ui,sans-serif;}
+.cnp-rw-zoom .cnp-rw-why{display:block; width:var(--card-full-w); box-sizing:border-box; margin-top:5px; padding:5px 8px; border-radius:8px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font:700 11px/1.3 'Baloo 2',system-ui,sans-serif;}
 .cnp-rw-zoom.cnp-rw-tip b{font-size:14px;} .cnp-rw-zoom.cnp-rw-tip small{font-size:12px; color:#ffd98a; font-weight:800;}
 /* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
@@ -11424,7 +11415,6 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .conquest-node-panel .cnp-rw .cnp-rw-ok{font-style:normal; color:#8fe08a; margin-left:2px;}
 .conquest-node-panel .cnp-rw .cnp-rw-cur{font-size:15px; padding:2px 9px;}
 .conquest-node-panel .cnp-rw .cnp-rw-curs{gap:4px;}
-.conquest-node-panel .cnp-rw .cnp-rw-card{width:52px;}
 .conquest-node-panel .cnp-rw.is-done .cnp-rw-curs{filter:none; opacity:1;}
 .conquest-node-panel .cnp-rw-card.is-got .card-tile, .conquest-node-panel .cnp-rw-card.is-got .cnp-rw-back{filter:none;}
 .conquest-node-panel{padding-bottom:10px !important;}
@@ -11617,6 +11607,49 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* At 1366 the Codex's two album pages need 1274px for 8 Full cards a row (the column is 80% of the window, 1093px) */
 @media (min-width:1100px){ .content-wrap:has(> #view-codex:not([hidden])){max-width:min(1330px, 98vw);} }
 /* CS-A:END */
+/* CS-B:BEGIN (2026-10-30, package CS-B, card sizes steps 2-3; plan docs/design/card-sizes-2026-10-29.md; owner decisions CS-2/CS-4 10-30 10:34).
+   Compact (--card-compact-w, 64px) for the previews outside a match: the map fight panel's leader, enemy squad and first-clear reward, the cards
+   seen on the win screen, the deck picker's deck strip, the Forge's bulk preview (their rules above now read the token). The Forge's anvil and
+   the pack tray are Full. The Chip (--chip-h, 30px tall) is drawn by cardChipHTML: an art disc ringed in the rarity colours, then the name.
+   tests/cs-b-2026-10-30.js extends CS-A's guard to these screens. */
+.card-chip{--cc-h:var(--chip-h); display:inline-flex; align-items:center; gap:6px; height:var(--cc-h); max-width:min(100%, 190px); padding:0 10px 0 0; box-sizing:border-box;
+  border-radius:calc(var(--cc-h) / 2); vertical-align:middle; white-space:nowrap; cursor:help; color:#fff3dc; font:800 12.5px/1 'Nunito',system-ui,sans-serif;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 34%, #2a2216), #2a2216 75%);
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--rarity-a, #8a6a45) 75%, transparent), 0 1px 3px rgba(0,0,0,.3);}
+.card-chip .cc-disc{position:relative; flex:0 0 auto; width:var(--cc-h); height:var(--cc-h); border-radius:50%; overflow:hidden; display:grid; place-items:center;
+  background:#3a2e1e; box-shadow:inset 0 0 0 2px var(--rarity-a, #8a6a45), inset 0 0 0 3px var(--rarity-b, #5a4630); font-size:calc(var(--cc-h) * .55); line-height:1;}
+.card-chip .cc-disc::before{content:attr(data-ico);}
+.card-chip .cc-art{position:absolute; inset:2px; width:calc(100% - 4px); height:calc(100% - 4px); border-radius:50%; object-fit:cover; object-position:50% 35%; image-rendering:pixelated;}
+.card-chip .cc-nm{min-width:0; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 1px rgba(0,0,0,.5);}
+.card-chip .cc-st{flex:0 0 auto; font-size:11px; font-weight:800; opacity:.85;}
+.card-chip .cc-n{flex:0 0 auto; margin-left:-2px; padding:2px 6px; border-radius:999px; background:#ffd56e; color:#3a2200; font:900 11px/1 'Baloo 2',system-ui,sans-serif;}
+.card-chip.is-mystery{cursor:default;}
+.card-chip.is-mystery .cc-disc{background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; box-shadow:inset 0 0 0 2px #d7b46a;}
+/* a mention inside a line of text (the battle log): the same chip at the line's height */
+.card-chip.is-inline{--cc-h:1.6em; gap:4px; padding-right:7px; margin:1px 1px; font:inherit; font-weight:800; vertical-align:middle;}
+.card-chip.is-inline .cc-disc{font-size:.85em;}
+.card-chip .cc-pre{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:pre;} /* the line's own icon, kept in its text */
+.card-chip.is-inline{position:relative;}
+/* the map's card strip (VIS4) and a list with no review in the Map cards overlay: Chips, the pack tag beside the chip */
+.vis4-mc-card.is-chip{display:inline-flex; align-items:center; gap:4px; border-radius:calc(var(--chip-h) / 2); cursor:zoom-in;}
+.vis4-mc-card.is-chip .card-chip{pointer-events:none;}
+.vis4-mc-card.is-chip.is-mystery{cursor:default;}
+.vis4-mc-card.is-chip .pk1-mc-pack{position:static; transform:none; background:rgba(0,0,0,.18); color:inherit;}
+.vis4-mc-card.is-chip:focus-visible{outline:2px solid #ffd98a; outline-offset:2px;}
+/* the deck's card list, the drop line */
+.dm-cards{gap:6px 6px;}
+.cnp-drops .cnp-drop-tile .card-chip{pointer-events:none; --cc-h:26px; font-size:12px;}
+/* the pack tray: one Full slot a card (a row up to 6, else two), capped by the row's width and the window's height, so the flight lands in a
+   Full card; the reveal is a little smaller while a tray of Full slots sits under it. A pile (no slots) lists Chips that scroll. */
+.po2-got.has-slots{--po2-slot-w:min(var(--card-full-w), calc((min(92vw, 900px) - 20px - (var(--per, 5) - 1) * 6px) / var(--per, 5)), calc(22vh / var(--rows, 1) * .8));
+  max-width:calc(var(--per, 5) * var(--po2-slot-w) + (var(--per, 5) - 1) * 6px + 20px);}
+.po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(50vh * .8, 80vw, 360px);}
+.po2-got:not(.has-slots){max-height:min(22vh, 170px); overflow-y:auto; overscroll-behavior:contain;}
+.po2-mini.is-chip{box-shadow:none; border-radius:calc(var(--chip-h) / 2);}
+.po2-mini.is-chip .card-chip{pointer-events:none;}
+/* the review in the Map cards overlay: the Full card (owner 10-29 19:14 wanted large cards there) */
+.rv1-tile .vis4-mc-card.is-large .card-tile[data-size="full"]{max-width:none;}
+/* CS-B:END */
 
 /* the card album */
 #codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
@@ -11742,7 +11775,7 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}
 .dbp-pool{--cs-gap:10px; display:grid; grid-template-columns:repeat(auto-fill, var(--card-full-col)) /* 2026-10-30 (CS-A): the Full size */; justify-content:center; gap:14px var(--cs-gap); padding:14px 10px 10px; overflow-y:auto; flex:1; min-height:200px;}
 .dbp-stack{display:block; padding:0; border:0; background:none; cursor:pointer; color:inherit;}
-.dbp-deck .dbp-stack{width:66px;}
+.dbp-deck .dbp-stack{width:var(--card-compact-w);} /* 2026-10-30 (CS-B): the deck strip is Compact (was 66px) */
 .dbp-stack .card-tile{width:100% !important; pointer-events:none;}
 .dbp-stack:hover .card-tile, .dbp-stack:focus-visible .card-tile{transform:translateY(-3px);}
 .dbp-stack .ps-count{font-size:10.5px;}
@@ -11860,11 +11893,8 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .cnp-drops .cnp-drops-sep{opacity:.85; margin:0 -2px;}
 /* 2026-10-22 (package GD): a cleared skirmish's reward card on its drop line, a small tile before its chance */
 .cnp-drops .cnp-drop-own{display:inline-flex; align-items:center; gap:4px;}
-.cnp-drops .cnp-drop-tile{display:inline-block; width:30px; flex:0 0 auto; vertical-align:middle; cursor:zoom-in; line-height:0;}
-.cnp-drops .cnp-drop-tile .card-tile{width:100% !important; pointer-events:none;}
-.cnp-drops .cnp-drop-tile .card-tile .stats, .cnp-drops .cnp-drop-tile .card-tile .nm, .cnp-drops .cnp-drop-tile .card-tile .sg,
-.cnp-drops .cnp-drop-tile .card-tile .levelbadge, .cnp-drops .cnp-drop-tile .card-tile .prestigebadge{display:none !important;} /* the art only at this size; tap for the card */
-.cnp-drops .cnp-drop-tile.is-mystery{width:auto; line-height:1;}
+.cnp-drops .cnp-drop-tile{display:inline-block; flex:0 0 auto; vertical-align:middle; cursor:zoom-in; line-height:0;} /* 2026-10-30 (CS-B): a Chip (was a 30px art-only tile) */
+.cnp-drops .cnp-drop-tile.is-mystery{cursor:default;}
 .rank-hex.rw-mini{position:relative !important; top:auto !important; right:auto !important; left:auto !important; width:22px; height:25px; rotate:-8deg; margin:0 2px !important; transform:none !important; z-index:auto; flex:0 0 auto; display:inline-grid; vertical-align:middle;}
 .rank-hex.rw-mini b{font-size:13px !important; letter-spacing:0; -webkit-text-stroke:0 !important;}
 .rank-hex.rw-mini.rank-SS b{font-size:10.5px !important; letter-spacing:-.06em;}
@@ -12113,8 +12143,8 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .sm-recipe .sm-ico{font-size:26px;} .sm-recipe small{display:block; opacity:.7;}
   .sm-dot{margin-left:auto; color:#6fbf4a; font-style:normal;}
   .sm-anvil{display:flex; flex-direction:column; align-items:center; gap:10px; padding:16px; background:radial-gradient(ellipse at 50% 30%, rgba(255,140,60,.18), transparent 60%), var(--surface, #fff);}
-  .sm-stage{position:relative; width:150px;}
-  .sm-card .card-tile{width:150px; height:186px;}
+  .sm-stage{position:relative; width:var(--card-full-w);}
+  .sm-card .card-tile{width:var(--card-full-w); height:auto;} /* 2026-10-30 (CS-B): Full (was 150×186) */
   .sm-sparks{position:absolute; left:50%; top:60%; width:0; height:0; z-index:5; pointer-events:none;}
   .sm-sparks i{position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd36b; box-shadow:0 0 6px #ff9a3d, 0 0 12px #ff6a1a; animation:smSpark var(--t) ease-out forwards;}
   @keyframes smSpark{from{transform:translate(0,0); opacity:1;} to{transform:translate(var(--dx), var(--dy)); opacity:0;}}
@@ -13664,7 +13694,7 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile,
 .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:min(var(--card-full-w), max(78px, 15vh)) !important; height:auto !important; margin:0 !important;} /* 2026-10-30 (CS-A): Full, with the height cap (a short window) */
 .rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile,
-.rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(60px, 10.5vh, 96px) !important; height:auto !important; margin:0 !important;}
+.rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:var(--card-compact-w) !important; height:auto !important; margin:0 !important;} /* 2026-10-30 (CS-B): Compact, was clamp(60px, 10.5vh, 96px) (54-76px on a phone) */
 .rw-panel .res3-fan-seen{max-height:min(30vh, 300px); gap:12px 14px !important;}
 .rw-panel.has-split .rw-half-cards.res3-col{gap:10px; justify-content:flex-start;}
 .rw-panel .rw-sec.rw-seen-cards .rw-head{margin-top:2px;}
@@ -13673,7 +13703,6 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (max-width:640px){
   .rw-panel .rw-cards.res3-fan, .rw-panel.has-split .rw-half-cards .rw-cards.res3-fan{gap:12px 14px !important; padding:12px 10px 8px 4px; max-height:44vh;}
   .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:var(--card-full-w) !important;} /* 2026-10-30 (CS-A): Full */
-  .rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(54px, 16vw, 76px) !important;}
 }
 /* R3: egg and baby cards in the nest's own colours (a warm rose and spring green halo), and the rays of their reveal */
 .rw-card.res3-nest-card{border-radius:10px; box-shadow:0 0 0 3px #f6c6d8, 0 0 0 5px #7fbf6a, 0 0 18px 6px rgba(255,190,220,.55);}
@@ -13917,20 +13946,18 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .vis4-map-cards{margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,.18);}
 .vis4-mc-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; opacity:.78; margin-bottom:6px;}
 .vis4-mc-row{display:flex; flex-wrap:wrap; gap:14px 6px; align-items:center; padding:6px 0 8px;}
-.vis4-mc-card{position:relative; flex:0 0 auto; width:44px; height:55px; border-radius:6px; cursor:help; transition:transform .12s ease;}
+.vis4-mc-card{position:relative; flex:0 0 auto; border-radius:6px; cursor:help; transition:transform .12s ease;}
 .vis4-mc-card:hover, .vis4-mc-card:focus-visible{transform:translateY(-2px);}
-.vis4-mc-card .card-tile{width:44px !important; height:55px !important; font-size:5px; margin:0; pointer-events:none;}
 .vis4-mc-card.is-mystery{cursor:default;}
 .vis4-mc-card.is-mystery .cnp-rw-back{display:grid; place-items:center; width:100%; height:100%; border-radius:6px; font-size:18px;}
 .vis4-mc-locked{display:inline-flex; align-items:center; height:28px; padding:0 9px; border-radius:999px; font:800 12px/1 'Baloo 2',system-ui,sans-serif; background:rgba(0,0,0,.28); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); cursor:help;}
-@media (max-width:560px){ .vis4-mc-card, .vis4-mc-card .card-tile{width:38px !important; height:48px !important;} }
 /* PACK1 (2026-10-28; owner: the map's cards from the skirmish panel's admin buttons): the 🃏 Map cards overlay (pk1OpenMapCards), VIS4's tiles
    one section per list, a small "📦 Pack N" under each card a basic pack also gives */
 .pk1-mc-modal{max-width:760px; width:100%; max-height:min(86vh, 900px); display:flex; flex-direction:column;}
 .pk1-mc-overlay .pk1-mc-body{margin-top:4px; padding-top:0; border-top:0; overflow-y:auto; overscroll-behavior:contain; min-height:0;}
 .pk1-mc-sec h3{margin:12px 0 2px; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
 .pk1-mc-sec h3 small{font-weight:700; opacity:.65; margin-left:4px;}
-.pk1-mc-overlay .vis4-mc-row{gap:34px 8px; padding:10px 0 26px;}
+.pk1-mc-overlay .vis4-mc-row{gap:8px 6px; padding:8px 0 10px;} /* 2026-10-30 (CS-B): Chips, the pack tag beside the chip (was 34px row gaps for a tag under a 44px tile) */
 .pk1-mc-pack{position:absolute; left:50%; bottom:-27px; transform:translateX(-50%); white-space:nowrap; font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; padding:0 4px; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; pointer-events:auto;}
 @media (max-width:560px){ .pk1-mc-modal{max-height:92vh;} }
 /* 2026-10-29 (package REVIEW1): Chosen / Cut cards / Maybe sections in the 🃏 Map cards overlay */
@@ -13940,7 +13967,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv1-part h4 small{opacity:.65; margin-left:4px;}
 .rv1-part.is-cut h4::before{content:'✂ ';} .rv1-part.is-maybe h4::before{content:'? ';}
 .pk1-mc-overlay .rv1-row{gap:8px 8px; padding:8px 0 6px; align-items:flex-start;}
-.rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; width:92px;}
+.rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px;}
 .rv1-tile .vis4-mc-card{margin-bottom:30px;}
 .rv1-tile.is-cut .vis4-mc-card{opacity:.5; filter:grayscale(.6);}
 .rv1-tile.is-maybe .vis4-mc-card{outline:2px dashed rgba(255,215,0,.55); outline-offset:2px;}
@@ -13964,7 +13991,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv1-part.is-chosen{border-left-color:#4caf50;} .rv1-part.is-maybe{border-left-color:#e0b030;} .rv1-part.is-cut{border-left-color:#c8553d; background:rgba(200,85,61,.07);}
 .rv1-part h4{margin:0 0 2px; font:800 14px/1.2 'Baloo 2',system-ui,sans-serif;}
 .pk1-mc-overlay .rv1-row{gap:14px 12px; padding:10px 0 8px; align-items:flex-start;}
-.rv1-tile{width:128px; gap:5px;}
+.rv1-tile{width:var(--card-full-w); gap:5px;} /* 2026-10-30 (CS-B): the review's card is the Full card (was 128px; 2 a row on a phone) */
 .rv1-tile .vis4-mc-card.is-large{width:100% !important; height:auto !important; margin:0; aspect-ratio:4/5; border-radius:8px; cursor:zoom-in; transform:none;}
 .rv1-tile .vis4-mc-card.is-large:hover, .rv1-tile .vis4-mc-card.is-large:focus-visible{transform:translateY(-2px);}
 .rv1-tile .vis4-mc-card.is-large .card-tile{width:100% !important; height:100% !important; font-size:inherit; margin:0; pointer-events:none;}
@@ -13991,7 +14018,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv2-copy:hover .rv2-tip, .rv2-copy:focus-within .rv2-tip{opacity:1; visibility:visible;}
 .rv2-counts{display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 220px; font:700 13px/1.3 'Baloo 2',system-ui,sans-serif;}
 .rv2-cl b{font-weight:800; opacity:.75; margin-right:4px;}
-@media (max-width:560px){ .pk1-mc-modal{max-height:94vh;} .rv2-panel{padding:10px 8px 8px; margin:12px 0 14px;} .rv1-part{padding:6px 6px 4px;} .rv1-tile{width:calc((100% - 12px) / 2); max-width:150px;} .pk1-mc-overlay .rv1-row{gap:12px 12px; justify-content:flex-start;} }
+@media (max-width:560px){ .pk1-mc-modal{max-height:94vh;} .rv2-panel{padding:10px 8px 8px; margin:12px 0 14px;} .rv1-part{padding:6px 6px 4px;} .pk1-mc-overlay .rv1-row{gap:12px 12px; justify-content:flex-start;} }
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */

@@ -8694,6 +8694,24 @@ function cardTileHTML(d, opts){
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
+// 2026-10-30 (package CS-B, card sizes steps 2-3; owner decision CS-4 10-30 10:34: "is for our map cards viewing anyway so okay"): the Chip, the
+// fourth size. Not a card: a 30px-tall token (--chip-h) with the art in a disc ringed in the rarity colours, then the name, for lists and
+// mentions (the map's card strip, the deck's card list, the graveyard peek, the pack pile, drop lines, the battle log). opts:
+//   stat   true: a short ⚔/❤ after the name;    n: a ×N count;    extraClass / attrs: the caller's own class and attributes;
+//   noDefid  true: no data-defid (the caller's wrapper opens the card itself, e.g. VIS4's data-zoom); otherwise hover / hold opens the card
+//            through the page's one [data-defid] popover, as the small tiles did;   mystery  true: the ❓ back, no name.
+// cardChipEl(d, opts) builds the same chip as an element (the battle log keeps its line as text nodes and drops chips in between).
+function cardChipHTML(d, opts){
+  opts = opts || {}; d = d || {}; const [rA, rB] = rarityStops(d.rarity || 'common');
+  const nm = opts.mystery ? '?' : (d.name || d.id || '');
+  // the disc's emoji (no art, or the ❓ back) is drawn from data-ico, so a chip's text is just its name (a log line reads the same as before)
+  const disc = opts.mystery ? '<span class="cc-disc is-back" data-ico="❓" aria-hidden="true"></span>'
+    : `<span class="cc-disc" aria-hidden="true"${d.art ? '' : ` data-ico="${escapeAttr(d.icon || '🃏')}"`}>${d.art ? `<img class="cc-art" src="${escapeAttr(d.art)}" alt="" draggable="false" decoding="async" loading="lazy">` : ''}</span>`;
+  const st = opts.stat && !opts.mystery && d.health != null ? `<span class="cc-st" aria-hidden="true">⚔${d.attack || 0} ❤${d.health}</span>` : '';
+  const n = opts.n > 1 ? `<b class="cc-n" aria-hidden="true">×${opts.n}</b>` : '';
+  return `<span class="card-chip ${rarityTierClass(d.rarity)}${opts.mystery ? ' is-mystery' : ''} ${opts.extraClass || ''}" data-size="chip"${opts.noDefid || opts.mystery || !d.id ? '' : ` data-defid="${escapeAttr(d.id)}"`} role="img" aria-label="${escapeAttr(opts.label || (nm + (opts.n > 1 ? ' ×' + opts.n : '')))}" style="--rarity-a:${rA}; --rarity-b:${rB}" ${opts.attrs || ''}>${disc}<span class="cc-nm">${escapeHtml(nm)}</span>${st}${n}</span>`;
+}
+function cardChipEl(d, opts){ const t = document.createElement('template'); t.innerHTML = cardChipHTML(d, opts); return t.content.firstElementChild; }
 // Discard/pitch resource badge (2026-09-20, per explicit request: "Resources on discard
 // (additional beyond 1 lumber) are placed at the bottom of the card, right on the boundary" —
 // "if lumber == 0, also display as 0, since it's abnormal. For other resources ... if it's >0,
@@ -15015,7 +15033,7 @@ function openForgeBulk(kind, btn){
   ov.innerHTML = `<div class="modal fbulk is-${kind}" role="dialog" aria-modal="true" aria-label="${escapeAttr(title.replace(/^\S+\s/, ''))}">
     <div class="modal-head-row"><h2>${title}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
     <p class="panel-sub fb-blurb">${blurb}</p>
-    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small>${fuse && x.to != null ? `<small class="fb-val fb-to" title="${escapeAttr(TX('ui.fg-fuse-into'))}">→ ${escapeHtml(TX('ui.nf-copy-level', {n: x.to}))}</small>` : ''}</div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
+    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small>${fuse && x.to != null ? `<small class="fb-val fb-to" title="${escapeAttr(TX('ui.fg-fuse-into'))}">→ ${escapeHtml(TX('ui.nf-copy-level', {n: x.to}))}</small>` : ''}</div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
     <div class="fb-total" aria-live="polite"><span class="fb-total-lbl">${plan.copies} cop${plan.copies === 1 ? 'y' : 'ies'} of ${per.length} card${per.length === 1 ? '' : 's'} →</span> <b class="fb-total-val">${fuse ? valHTML(plan.dust, plan.gold) + ' <small>of credit</small>' : `✨${plan.dust} <small>Magic Dust</small>`}</b></div>
     <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-fbok>${fuse ? `🧩 Fuse ${plan.copies}` : `♻️ Disenchant ${plan.copies}`}</button></div></div>`;
   document.body.appendChild(ov);
@@ -16070,7 +16088,8 @@ function deckCardsStripHTML(d){
   const defs = getCardDefs(), counts = d.counts || {};
   const ids = Object.keys(counts).filter(id=> defs[id] && counts[id] > 0).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
   if(!ids.length) return '<p class="panel-sub dm-empty">No cards yet. Edit the deck to add some.</p>';
-  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> `<span class="dm-card" data-defid="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name)} ×${counts[id]}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1 ? `<b class="dm-x">×${counts[id]}</b>` : ''}</span>`).join('')}</div>`;
+  // 2026-10-30 (package CS-B, card sizes step 3): each card is a Chip (art disc, name, ×N) instead of a 52px tile whose name was hidden
+  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> cardChipHTML(defs[id], {n: counts[id], extraClass:'dm-card'})).join('')}</div>`;
 }
 // deck-medium-preview (2026-10-10, user: "the deck-medium-preview ... does not show the cards and highlights the art of
 // the leader and castle. Castle on the left, leader on the right, as the background of the preview"). The large one is the
@@ -20042,7 +20061,7 @@ function openDeckBuilderPopup(o){
   const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q)) && cfMatch(defs[id], cf)).sort(sortBy()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
   const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortBy());
-    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
+    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B): the deck strip */}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
   const poolHTML = ()=>{
     if(pm){ // 2026-10-22 (package MP): the map's pool, tier by tier (MAP, its SUBMAP, SPECIAL)
@@ -23839,7 +23858,7 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true});
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */});
       // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
       if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
     if(el.closest && el.closest('.modal-overlay')) z.classList.add('cnp-rw-above'); // 2026-10-29 (UI3, S6): the popover sat under the overlay (z 200 < 600) and never showed
@@ -23912,7 +23931,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
     const needLbl = (chal ? ', ' + TX('ui.rw2-challenge-card') : '') + (needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '');
     return isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
+    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
   const cur = [];
   // 2026-10-26 (package RES3, G6): the currencies follow the same rule (greyed with a check once the first clear is won)
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur ${done?'is-got':''}" tabindex="0" aria-label="${pay.gold} Maple Leaves" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-leaves-t') + '|' + TX('ui.rw4-tip-leaves', {n: pay.gold}))}"><span class="res3-gv">${mapleLeafIconHTML()} ${pay.gold}</span>${done ? res3GotMark() : ''}</span>`);
@@ -23954,7 +23973,8 @@ function cnpDropsLineHTML(mapId, node, done){
   let odds = null; try{ odds = done && card > 0 ? skirmishOwnDropOdds(mapId, node) : null; }catch(e){}
   if(odds){ const defs = getCardDefs();
     odds.own.forEach(o=>{ const d = defs[o.id]; if(!d) return; let need = null; try{ need = cardRewardRankFor(mapId, node, o.id); }catch(e){}
-      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">❓</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardTileHTML(d, {inPlay:true})}</span>`;
+      // 2026-10-30 (package CS-B, card sizes step 3): the card is a Chip (was a 30px art-only tile); it still zooms to the Full card
+      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">${cardChipHTML(d, {mystery:true})}</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardChipHTML(d, {noDefid:true})}</span>`;
       parts.push(`<span class="cnp-drop cnp-drop-own" role="img" aria-label="${escapeAttr(TX('ui.gd-drop-own', {name: isCardHiddenForPlayer(d) ? '?' : d.name, p: fmtDropPct(o.p)}))}">${tile}<span aria-hidden="true">${fmtDropPct(o.p)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); });
     if(odds.pack > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
       parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true"><i class="cnp-drop-back bw-back bk-unit"></i> ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
@@ -26860,7 +26880,7 @@ function renderConquestSubTab(body){
       // 2026-10-21 (package ED, owner #7): each card at the level the enemy fights it at (edShownLevel: the node's Enemy level or the road
       // curve, a card level set in the editor), not at your Forge level; the hover card and the details read data-shown-level too.
       // Admins get a ✏️ to open the card editor right here (#14).
-      .map(([id,n])=> `<span class="cnp-sq-wrap"><button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(sumNode, id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(edEnemyShownDef(sumNode, id), {inPlay:true})}<b class="cnp-sq-n">×${n}</b></button>${adminModeEnabled ? edEditCardBtnHTML(id) : ''}</span>`).join('');
+      .map(([id,n])=> `<span class="cnp-sq-wrap"><button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(sumNode, id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(edEnemyShownDef(sumNode, id), {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}<b class="cnp-sq-n">×${n}</b></button>${adminModeEnabled ? edEditCardBtnHTML(id) : ''}</span>`).join('');
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
@@ -26883,7 +26903,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div>${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial; 2026-10-24 (package NE, owner 11:26): in the top row, under the BR */}</div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -30843,9 +30863,12 @@ function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
   const big = !!(opts && opts.large); // 2026-10-29 (package REVIEW2): the deck-size card, its pack tag under it in the flow
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
-    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery${big ? ' is-large' : ''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
+    // 2026-10-30 (package CS-B; owner CS-4): a list (the skirmish panel's strip, a list with no review in the 🃏 Map cards overlay) is Chips;
+    // the review's large card (opts.large) is the Full card. The wrapper keeps data-zoom, so hover, focus or a tap still shows the Full card.
+    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return big ? `<span class="vis4-mc-card is-mystery is-large" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
+      : `<span class="vis4-mc-card is-chip is-mystery" role="img" aria-label="A mystery card">${cardChipHTML(d, {mystery:true})}</span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -39916,9 +39939,9 @@ function fieldResourcesHTML(m){ return fieldResSideHTML(m, true) + fieldResSideH
 // (with no card held, a tap there still pitches) or the 💀 badge on the opponent's Deck opens a small popover of mini cards, newest
 // first, repeats stacked as ×N, with that side's Removal Zone under it. Each mini is a [data-defid], so hover / hold shows the card.
 function zonePeekMiniHTML(defId, n){
-  const d = getCardDefs()[defId] || {name: defId, icon:'🃏'}, [ra, rb] = rarityStops(d.rarity || 'common');
-  const art = d.art ? `<span class="gpk-art" style="background-image:url('${d.art}')"></span>` : `<span class="gpk-ico">${d.icon || '🃏'}</span>`;
-  return `<span class="gpk-mini" data-defid="${escapeAttr(defId)}" title="${escapeAttr(d.name || defId)}" style="--rarity-a:${ra}; --rarity-b:${rb}">${art}<span class="gpk-nm">${escapeHtml(d.name || defId)}</span>${n > 1 ? `<b class="gpk-n">×${n}</b>` : ''}</span>`;
+  // 2026-10-30 (package CS-B, card sizes step 3): a Chip (art disc, name, ×N), one a row; was a 46×58 art square with an 8px name
+  const d = getCardDefs()[defId] || {id: defId, name: defId, icon:'🃏'};
+  return cardChipHTML(Object.assign({}, d, {id: defId}), {n, extraClass:'gpk-mini'});
 }
 function zonePeekGroup(list){ const order = [], cnt = new Map(); list.slice().reverse().forEach(e=>{ const id = e && (e.defId || e); if(!id) return; if(!cnt.has(id)){ cnt.set(id, 0); order.push(id); } cnt.set(id, cnt.get(id) + 1); }); return order.map(id=> zonePeekMiniHTML(id, cnt.get(id))).join(''); }
 function closeGravePeek(){ document.querySelectorAll('.grave-peek').forEach(e=> e.remove()); }
@@ -44513,7 +44536,7 @@ function rewardsPanelHTML(m){
   const fightRow = fightsShown.length && m.mode!=='tutorial' ? fightsShown.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length){
-    const defs = getCardDefs(), tiles = seen.filter(id=> defs[id]).map(id=> ({key:id, name:defs[id].name, copy:'', html:`<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>`}));
+    const defs = getCardDefs(), tiles = seen.filter(id=> defs[id]).map(id=> ({key:id, name:defs[id].name, copy:'', html:`<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>`}));
     if(tiles.length) secs.push(`<div class="rw-sec rw-seen-cards"><div class="rw-head">${TX('results.new-cards-seen')}</div>${res3FanHTML(tiles, 'seen')}</div>`);
   }
   if(openRows.length || fightRow || mapBanners){
@@ -45275,6 +45298,27 @@ function logText(ev){
     default: return (ev.dmg > 0 && (ev.defId || ev.targetDefId)) ? {cls:'', text:`${nm(ev.targetDefId || ev.defId)} took ${ev.dmg} damage.`} : {cls:'', text: ev.type};
   }
 }
+// 2026-10-30 (package CS-B, card sizes step 3; plan docs/design/card-sizes-2026-10-29.md "card mentions in the log"): every place a log line names
+// one of the cards its event carries (defId, attDefId, targetDefId...) becomes an inline Chip (the art disc and the name, hover or hold for the
+// card). The line's text is unchanged (the chip's text is the name; its disc is drawn from CSS), so row.textContent reads as before.
+const LOG_CHIP_KEYS = ['defId', 'attDefId', 'targetDefId', 'aDefId', 'bDefId', 'fromDefId', 'otherDefId'];
+function logChipify(row, text, ev){
+  try{
+    const defs = getCardDefs(), ids = [...new Set(LOG_CHIP_KEYS.map(k=> ev && ev[k]).filter(id=> typeof id === 'string' && defs[id] && defs[id].name))];
+    if(!ids.length) return;
+    const hits = []; // [start, end, id, icon prefix], every place a name stands, longest names first, never overlapping
+    ids.sort((a, b)=> defs[b].name.length - defs[a].name.length).forEach(id=>{ const nm = defs[id].name, ic = defs[id].icon ? defs[id].icon + ' ' : '';
+      for(let i = text.indexOf(nm); i >= 0; i = text.indexOf(nm, i + nm.length)){ const pre = ic && text.slice(Math.max(0, i - ic.length), i) === ic ? ic : '', s = i - pre.length;
+        if(!hits.some(h=> s < h[1] && i + nm.length > h[0])) hits.push([s, i + nm.length, id, pre]); } });
+    if(!hits.length) return;
+    hits.sort((a, b)=> a[0] - b[0]); row.textContent = ''; let at = 0;
+    // the line's "🦦 " before a name (logText's nm) goes inside the chip, hidden (the disc shows the card), so the text still reads "🦦 Otter Kit"
+    hits.forEach(([a, b, id, pre])=>{ if(a > at) row.appendChild(document.createTextNode(text.slice(at, a))); const c = cardChipEl(defs[id], {extraClass:'is-inline'});
+      if(c && pre){ const h = document.createElement('span'); h.className = 'cc-pre'; h.textContent = pre; c.insertBefore(h, c.querySelector('.cc-nm')); }
+      row.appendChild(c || document.createTextNode(text.slice(a, b))); at = b; });
+    if(at < text.length) row.appendChild(document.createTextNode(text.slice(at)));
+  }catch(e){ row.textContent = text; }
+}
 const LOG_PLAY_TYPES = new Set(['play', 'spell', 'fieldSet']);
 const LOG_ATTACK_TYPES = new Set(['hit', 'hitHQ', 'evaded', 'blindMiss', 'tipsySwing', 'sweepWhiff']);
 function logIsHeadline(ev){ return !!ev && (LOG_PLAY_TYPES.has(ev.type) || (LOG_ATTACK_TYPES.has(ev.type) && !ev.ranged && !ev.source)); }
@@ -45302,6 +45346,7 @@ function renderLogLine(ev){
   // else (status damage, effects, draws, readies) sits one step in under them.
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
+  logChipify(row, text, ev); // 2026-10-30 (package CS-B): the cards it names are inline Chips
   log.appendChild(row);
   fix3PinLogSoon(log);
 }
@@ -51404,7 +51449,7 @@ function blacksmithHTML(){
     <div class="sm-layout">
       <div class="panel sm-list" role="listbox" aria-label="Recipes">${list}</div>
       <div class="panel sm-anvil" id="smithAnvil">
-        <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
+        <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {size:'full', extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
         <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
         <div class="sm-needs">${needs}</div>
         ${out ? `<button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}${craftNeedsHeld(r.out) ? ` data-needs-held="1" title="${escapeAttr(CRAFT_NEEDS_HELD_TIP)}"` : ''}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>` : ''}
@@ -51713,8 +51758,9 @@ function refineAnvilHTML(id, sel){
   return `
     <div class="anvil-stage refine-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview ' + nowCls})}</div>
-      ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
+      ${'' /* 2026-10-30 (package CS-B): every card on the Forge's anvils (Upgrade, Refine, Socket, Fuse, Enchant, the Blacksmith, and the before / after of each flip) is the Full card (size:'full'; was 140px, 150px at the Blacksmith) */}
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview ' + nowCls})}</div>
+      ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${copy && copy.shiny ? ' <span class="forge-prestige-tag">✦ Shiny</span>' : ''}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -51733,7 +51779,7 @@ function socketGemFx(k){ const p = gemParts(k); if(p.length > 1) return p.map(so
 function socketGemChoices(){ const st = materiaStore(); return MATERIA_KINDS.concat(MATERIA_KINDS.map(m=> socketKind(m.id + '2')).filter(k=> k && (st[k.id]||0) > 0)); }
 function enchantAnvilHTML(id, sel){
   const st = materiaStore(), base = getCardDefs()[id] || sel;
-  if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div></div>
+  if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview'})}</div></div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3><p class="forge-note">${escapeHtml(TX('ui.h1-no-socket'))}</p>`;
   const copy = copyByUid(id, forgeUid(id)), uid = copy && copy.uid, cur = socketGemOfCopy(id, copy), cap = socketSlotsOf(base), gemsIn = gemParts(cur), full = gemsIn.length >= cap; // CONTENT3: Socket N
   let show = sel; try{ const d = copyDefAt(id, copyLevel(id, copy), cur); if(d) show = Object.assign({}, d, {id}); }catch(e){}
@@ -51741,7 +51787,7 @@ function enchantAnvilHTML(id, sel){
   return `
     <div class="anvil-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(show, {extraClass:'forge-preview'})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(show, {size:'full', extraClass:'forge-preview'})}</div>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -51771,11 +51817,11 @@ async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, d = getCardDefs()[id];
   const i = forgeRefineIdx(id), copy = myCardCopies[id][i]; if(copy && copy.uid) forgeCopyPick = {id, uid: copy.uid}; // 2026-10-18 (package NF)
-  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
+  const beforeHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
   const step = refineCard(id, i);
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
-  const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
+  const afterHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }); }catch(e){}
@@ -51817,7 +51863,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
   return `
     <div class="anvil-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview'})}</div>
       <div class="anvil-art" aria-hidden="true"><span class="anvil-top"></span><span class="anvil-waist"></span><span class="anvil-foot"></span></div>
       <span class="forge-hammer" aria-hidden="true">🔨</span>
     </div>
@@ -51878,9 +51924,9 @@ async function forgeLimitBreak(btn){
   const id = forgeSelectedId, uid = forgeUid(id); if(!limitBreakState(id, uid).ok){ denyShake(btn); cobbleSay('limit'); return; }
   forgeBusy = true; btn.disabled = true;
   const keep = (copyByUid(id, uid) || {}).uid; // 2026-10-18 (package NF): the copy that breaks stays on the anvil
-  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   limitBreakCard(id, uid); if(keep) forgeCopyPick = {id, uid: keep};
-  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -51951,7 +51997,7 @@ function fuseAnvilHTML(id, sel){
       <div class="forge-glow" aria-hidden="true"></div>
       <div class="fg-fuse-pile" aria-hidden="true">${pile}${one.spares > 5 ? `<b class="fg-fuse-more">+${one.spares - 5}</b>` : ''}</div>
       ${one.spares ? '<span class="fg-fuse-arrow" aria-hidden="true">➜</span>' : ''}
-      <div class="forge-preview-wrap">${cardTileHTML(showDef, {extraClass:'forge-preview ' + cls})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(showDef, {size:'full', extraClass:'forge-preview ' + cls})}</div>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -52236,7 +52282,7 @@ async function forgePromote(btn){
   const uid = forgeUid(id), cL = forgeCopyLevel(id, uid); // 2026-10-18 (package NF): the copy on the anvil is promoted
   if(!to || !promotionTargets(id).includes(to) || cL < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); if(to && cL >= at){ if(myCurrencies.dust < PROMOTE_COST.dust) cobbleSay('dust'); else if(myCurrencies.gold < PROMOTE_COST.gold) cobbleSay('gold'); } return; }
   forgeBusy = true; btn.disabled = true;
-  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview'});
   myCurrencies.gold -= PROMOTE_COST.gold; myCurrencies.dust -= PROMOTE_COST.dust; saveCurrencies();
   unlockCardForPlayer(to, 'promotion');
   forgeSetCopyLevel(id, uid, 0); // that copy goes back to its starting level (it used to be every copy of the card)
@@ -52246,7 +52292,7 @@ async function forgePromote(btn){
   if(swap(myDeckCounts)) changed = true;
   if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
   logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
-  const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(defs[to], {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -52351,13 +52397,13 @@ async function forgeTemper(btn){
   if(L>=playerLevelCap(id) || L < 1 || !canAffordLevelUp(L, id, uid)){ denyShake(btn); if(L >= 1 && L < playerLevelCap(id)) cobbleWhyNot(L, id, uid); return; } // Level 0 → 1 is the Nest's (2026-10-12); BAL2: a Base card's top is Lv 4
   forgeBusy = true; btn.disabled = true; if(reducedMotion() || !hasGsap()) try{ SoundKit.forgeStrike(); }catch(e){} // with the animation, each blow sounds on its hammer impact (2026-10-15)
   const c = levelUpCost(L, id, uid), keep = (copyByUid(id, uid) || {}).uid;
-  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
   if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit, uid);
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
   try{ bumpQuestCounter('forgeLevels', 1); }catch(e){} // 2026-10-26 (package RES4): a Trail challenge counts copies tempered
-  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the tempering and its LEVEL burst play on
   // the centre stage, then the card flies back to the anvil
   let centred = false; try{ centred = await forgeCentreStage(()=> forgeTemperAnimation(beforeHTML, afterHTML), {burst: {kind: 'levelUp', text: 'LEVEL ' + (L+1) + '!'}, hold: 900}); }catch(e){}
@@ -52372,10 +52418,10 @@ async function forgePrestige(btn){
   const id = forgeSelectedId;
   if(!canAffordPrestige(id)){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
-  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(getCardDefs()[id], {size:'full', extraClass:'forge-preview'});
   if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
   try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
-  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(getCardDefs()[id], {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -55950,7 +55996,7 @@ function openPackAnimation(pack, opened, opts){
     const o = deckO = pile || opened[packIdx];
     const slots = !o.isPile && o.results.length <= 12;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal" id="poStage"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div>${o.isPile ? `<div class="po2-pile-count" id="poPileCount">${pileLeft(o, 0)} cards</div>` : `<div class="po2-tally" id="poTally" aria-hidden="true"></div>`}</div>
-      <div class="po2-got" id="poGot" role="group" aria-label="Cards so far">${slots ? o.results.map(()=> '<span class="po2-slot"></span>').join('') : ''}</div>
+      <div class="po2-got${slots ? ' has-slots' : ''}" id="poGot" role="group" aria-label="Cards so far"${slots ? ` style="--per:${o.results.length > 6 ? Math.ceil(o.results.length / 2) : o.results.length}; --rows:${o.results.length > 6 ? 2 : 1}"` : '' /* 2026-10-30 (CS-B): Full slots, one row up to 6, else two */}>${slots ? o.results.map(()=> '<span class="po2-slot"></span>').join('') : ''}</div>
       <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
     wireTop();
     const cards = [...overlay.querySelectorAll('.po2-card')];
@@ -56005,11 +56051,19 @@ function openPackAnimation(pack, opened, opts){
       const got = overlay.querySelector('#poGot');
       const r = deckO.results[+c.dataset.i];
       const [ra] = rarityStops(defOf(r.id).rarity||'common');
-      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
+      // 2026-10-30 (package CS-B, card sizes step 2; CS-A's flagged risk): a pack of up to 12 cards has a slot per card, and the slots are the Full
+      // card (capped by the row and the window's height, see .po2-got in the CS-B block), so the card flies from the reveal into a Full card, the
+      // same card the summary then shows. A pile (a big set, no slots) lists Chips instead (were 46px tiles); a Chip catches the flight on its disc.
+      const slotMode = !!got.querySelector('.po2-slot');
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (slotMode ? '' : ' is-chip') + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra);
+      mini.innerHTML = (slotMode ? poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full'}) : cardChipHTML(defOf(r.id), {n: r.bonusCopy ? 2 : 0})) + (r.bonusCopy && slotMode ? '<b class="po2-mini-x">×2</b>' : '');
+      { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); if(!slotMode) got.scrollTop = got.scrollHeight; } // never greyed in a reveal (2026-10-12); fills the next empty slot
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
       if(!reduce && mini.animate && cur + 1 < cards.length){ // the last card goes straight into the summary (2026-10-24, BV: see poClearFlights)
-        const from = c.getBoundingClientRect(), to = mini.getBoundingClientRect();
+        // 2026-10-30 (CS-B): the flight aims at the Full slot itself (the mini inside it is still at the start of its pop, 30% of its size), or a
+        // Chip's disc
+        const from = c.getBoundingClientRect(), to = (slotMode && mini.parentElement && mini.parentElement.classList.contains('po2-slot') ? mini.parentElement : (slotMode ? mini : mini.querySelector('.cc-disc') || mini)).getBoundingClientRect();
         if(from.width && to.width){
           const ghost = document.createElement('div'); ghost.className = 'po2-fly';
           ghost.style.cssText = `left:${from.left}px; top:${from.top}px; width:${from.width}px; height:${from.height}px;`;

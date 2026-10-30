@@ -1322,8 +1322,8 @@
   /* Forge bulk sheet (2026-10-17): Fuse all extras / Disenchant extras, see openForgeBulk */
   .fbulk{max-width:min(640px, calc(100vw - 32px)); width:100%;}
   .fbulk .fb-grid{display:flex; flex-wrap:wrap; gap:12px 10px; justify-content:center; max-height:min(46vh, 360px); overflow:auto; padding:10px 4px 6px; margin:4px 0 8px;}
-  .fbulk .fb-card{position:relative; width:62px; display:flex; flex-direction:column; align-items:center; gap:3px; transition:transform .35s ease, opacity .35s ease, filter .35s ease;}
-  .fbulk .fb-tile .card-tile{width:62px !important; height:78px !important; font-size:7px; margin:0; pointer-events:none;}
+  .fbulk .fb-card{position:relative; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 62px */; display:flex; flex-direction:column; align-items:center; gap:3px; transition:transform .35s ease, opacity .35s ease, filter .35s ease;}
+  .fbulk .fb-tile .card-tile{width:100% !important; height:auto !important; font-size:7px; margin:0; pointer-events:none;}
   .fbulk .fb-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
   .fbulk .fb-val{font-size:10.5px; font-weight:700; text-align:center; line-height:1.2; margin-top:12px; display:block; white-space:nowrap;}
   .fbulk .fb-val > span{display:block;}
@@ -4003,7 +4003,7 @@
   .pool-grid .card-tile.selected{outline:3px solid var(--accent); outline-offset:2px;}
   .forge-detail{position:sticky; top:12px; text-align:center;}
   .forge-preview-wrap{display:flex; justify-content:center; margin-bottom:8px;}
-  .forge-preview-wrap .card-tile.forge-preview{width:120px;}
+  .forge-preview-wrap .card-tile.forge-preview{width:var(--card-full-w);} /* 2026-10-30 (CS-B): Full */
   .forge-detail h3{margin:6px 0 4px; font-size:15px;}
   .forge-stat-row{display:flex; justify-content:center; gap:14px; font-family:'Baloo 2'; font-weight:800; font-size:15px; margin-bottom:10px;}
   .forge-stat-row .atk{color:var(--attack);} .forge-stat-row .hp{color:var(--health);}
@@ -6737,22 +6737,21 @@
   .cnp-rw-k{font:800 10.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; color:#ffe2a6; writing-mode:horizontal-tb; max-width:56px; line-height:1.15; text-align:right;}
   .cnp-rw.is-done .cnp-rw-k{color:rgba(255,255,255,.65);}
   .cnp-rw-items{display:flex; align-items:center; gap:6px;}
-  .cnp-rw-card{position:relative; width:46px; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
+  .cnp-rw-card{position:relative; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 46-74px in five rules */; flex:0 0 auto; transition:transform .18s ease, z-index 0s; transform-origin:50% 100%; z-index:1;}
   .cnp-rw-card .card-tile{width:100% !important; pointer-events:none;}
   .cnp-rw-card:hover, .cnp-rw-card:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
-  .cnp-rw-zoom{position:fixed; z-index:200; width:150px; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:150px !important; height:auto !important; aspect-ratio:4/5;}
+  .cnp-rw-zoom{position:fixed; z-index:200; width:var(--card-full-w) /* 2026-10-30 (CS-B): the Full card, was 150px */; pointer-events:none; opacity:0; transform:translateY(6px) scale(.96); transition:opacity .14s ease, transform .14s ease; filter:drop-shadow(0 12px 24px rgba(0,0,0,.55));} .cnp-rw-zoom.is-in{opacity:1; transform:none;} .cnp-rw-zoom .card-tile{width:100% !important; height:auto !important; aspect-ratio:4/5;}
   .cnp-rw-card.is-got .card-tile, .cnp-rw-card.is-got .cnp-rw-back{filter:grayscale(1) brightness(.7);}
   .cnp-rw-tick{position:absolute; right:-4px; top:-4px; width:16px; height:16px; border-radius:50%; background:#3a8f4b; color:#fff; font:900 10px/16px system-ui; text-align:center; font-style:normal; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .cnp-rw-back{display:flex; align-items:center; justify-content:center; aspect-ratio:4/5; border-radius:6px; background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; border:2px solid #d7b46a; font-size:16px;}
   .cnp-rw-cur{display:inline-flex; align-items:center; gap:3px; font:800 14px 'Baloo 2',system-ui,sans-serif; color:#fff; white-space:nowrap; padding:2px 8px; border-radius:999px; background:rgba(255,255,255,.12);}
-  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} .cnp-rw-card{width:38px;} }
+  @media (max-width:640px){ .cnp-rw{margin-left:0; width:100%;} }
   /* 2026-10-12 (user: "The first rewards should be clearer and bigger. The skirmish card size should be reduced, not being full
      width"): a narrower panel; the first-clear haul labelled and larger; a hidden deck is a dark slab with a lock and the rank */
   @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-width:760px; margin-left:auto !important; margin-right:auto !important;} }
   .cnp-rw{flex-wrap:wrap; padding:8px 12px; gap:10px; border-color:rgba(255,220,150,.45); background:rgba(0,0,0,.32);}
   .cnp-rw-label{flex:0 0 100%; font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:#ffd98a;}
   .cnp-rw .cnp-rw-cur{font-size:18px; padding:4px 12px;}
-  .cnp-rw .cnp-rw-card{width:58px;}
   .cnp-deck-locked{position:relative; display:flex; align-items:center; justify-content:center; gap:10px; height:64px; margin-bottom:8px; border-radius:10px; background:repeating-linear-gradient(135deg, #0b0a0d 0 10px, #141217 10px 20px); box-shadow:inset 0 0 0 1px rgba(255,255,255,.08), inset 0 0 24px rgba(0,0,0,.8);}
   .cnp-deck-locked .cdl-lock{font-size:26px; filter:grayscale(.3) drop-shadow(0 2px 4px rgba(0,0,0,.7));}
   .cnp-deck-locked .rank-hex{transform:scale(.9);}
@@ -7217,7 +7216,7 @@
   .leaf-sweep .ls-veil{display:none !important;} /* instant transitions: the leaves stay, the veil that dimmed the new screen goes */
   /* deck list card: the deck's cards (2026-10-08) */
   .dm-cards{display:flex; flex-wrap:wrap; gap:6px; margin:4px 0 10px; padding:8px; border-radius:12px; background:color-mix(in srgb, var(--ink) 6%, transparent);}
-  .dm-card{position:relative; width:52px; flex:0 0 auto;} .dm-card .card-tile{width:100% !important; pointer-events:none;}
+  .dm-card{position:relative; flex:0 0 auto;} /* 2026-10-30 (CS-B): a Chip (was a 52px tile) */
   .dm-x{position:absolute; right:-4px; bottom:-4px; z-index:5; font:900 11px 'Baloo 2',system-ui,sans-serif; padding:0 5px; border-radius:999px; background:#2b1d10; color:#ffe2a6; box-shadow:0 1px 3px rgba(0,0,0,.4);}
   .dm-delete{margin-left:auto;} .dm-delete:disabled{opacity:.45; cursor:not-allowed;}
   .deck-menu-card .deck-showcase{margin-bottom:6px;}
@@ -7667,7 +7666,7 @@
   .po2-tally{margin-top:16px; font:800 13px 'Baloo 2',system-ui,sans-serif; letter-spacing:.06em; opacity:.75; min-height:1.2em;}
   .po2-got{padding:8px 10px; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.18)); box-shadow:inset 0 1px 0 rgba(255,255,255,.12), inset 0 -2px 0 rgba(0,0,0,.25);}
   .po2-got:empty{display:none;}
-  .po2-slot{width:46px; aspect-ratio:.72; border-radius:8px; border:2px dashed rgba(255,255,255,.22); display:grid; place-items:center;}
+  .po2-slot{width:var(--po2-slot-w, var(--card-full-w)) /* 2026-10-30 (CS-B): a Full slot (was 46px) */; aspect-ratio:4/5; border-radius:8px; border:2px dashed rgba(255,255,255,.22); display:grid; place-items:center;}
   .po2-slot:has(.po2-mini){border-color:transparent;}
   .po2-slot .po2-mini{width:100%;}
   :where(html[data-fx="none"]) .po2-reveal::before, :where(html[data-fx="none"]) .po2-back::after{display:none;}
@@ -8134,7 +8133,7 @@
   .po2-card.is-new-moment .po2-front{animation:poGlow 1.6s ease-in-out infinite alternate;}
   @keyframes po2Stamp{to{opacity:1; transform:translate(-50%, 0) rotate(-10deg) scale(1);}}
   .po2-got{display:flex; gap:6px; justify-content:center; min-height:58px;}
-  .po2-mini{width:46px; animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1);} .po2-mini .card-tile{width:100% !important; pointer-events:none;}
+  .po2-mini{animation:po2Pop .35s cubic-bezier(.2,1.4,.4,1);} /* 2026-10-30 (CS-B): its slot sizes it (Full), or it is a Chip (was 46px) */ .po2-mini .card-tile{width:100% !important; pointer-events:none;}
   @keyframes po2Pop{from{transform:scale(.3); opacity:0}}
   /* summaries */
   .po2-summary{gap:18px;}
@@ -8993,7 +8992,7 @@
   .forge-anvil{text-align:center; position:sticky; top:12px;}
   .anvil-stage{position:relative; padding:14px 0 0; margin-bottom:6px;}
   .anvil-stage .forge-preview-wrap{position:relative; z-index:2; margin-bottom:-6px;}
-  .anvil-stage .card-tile.forge-preview, .anvil-stage .flip3d-stage{width:140px;}
+  .anvil-stage .card-tile.forge-preview, .anvil-stage .flip3d-stage{width:var(--card-full-w);} /* 2026-10-30 (CS-B): the anvil's card is Full (was 140px) */
   .forge-glow{position:absolute; left:50%; bottom:18px; width:220px; height:120px; transform:translateX(-50%); background:radial-gradient(ellipse at 50% 80%, rgba(255,140,50,.35), transparent 70%); pointer-events:none; transition:opacity .3s; opacity:.6;}
   .anvil-art{position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; margin:0 auto; width:180px;}
   .anvil-art span{display:block; background:linear-gradient(180deg,#6b6f78,#3a3d44 70%,#2a2c31); box-shadow:inset 0 2px 0 rgba(255,255,255,.25);}
@@ -9659,7 +9658,6 @@
     font-family:'Baloo 2', system-ui, sans-serif;}
   /* 2026-10-16 (user: "Like a speech bubble, the preview div has a pointer to the graveyard"): the cards scroll inside; the tail sits outside */
   .grave-peek .gpk-body{max-height:min(320px, 58vh); overflow:auto;}
-  .grave-peek .gpk-body .gpk-grid{grid-template-columns:repeat(var(--gpk-cols, 6), 46px); justify-content:center;}
   .grave-peek .gpk-tail{position:absolute; left:var(--tail-x, 50%); top:-8px; width:14px; height:14px; transform:translateX(-50%) rotate(45deg); background:rgba(24,19,16,.94); border-left:1px solid rgba(255,255,255,.18); border-top:1px solid rgba(255,255,255,.18); pointer-events:none;}
   .grave-peek.tail-down .gpk-tail{top:auto; bottom:-8px; border:0; border-right:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18);}
   .grave-peek .gpk-sep{display:flex; align-items:center; gap:6px; margin:8px 0 6px; font-size:13px; opacity:.8;}
@@ -9668,13 +9666,8 @@
   .grave-peek .gpk-head span{opacity:.7; font-size:11.5px;}
   .grave-peek .gpk-head.gpk-sub{margin-top:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,.12);}
   .grave-peek .gpk-x{margin-left:auto; border:0; background:none; color:inherit; opacity:.7; cursor:pointer; font-size:13px; padding:0 2px;}
-  .grave-peek .gpk-grid{display:grid; grid-template-columns:repeat(auto-fill, 46px); gap:5px; max-width:302px;}
-  .grave-peek .gpk-mini{position:relative; width:46px; height:58px; border-radius:6px; overflow:hidden; box-sizing:border-box; cursor:help;
-    border:2px solid var(--rarity-a, #8a8a8a); background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12), #1c1209); display:block;}
-  .grave-peek .gpk-art{position:absolute; inset:0 0 13px; background-size:cover; background-position:center; image-rendering:pixelated; filter:saturate(.85);}
-  .grave-peek .gpk-ico{position:absolute; inset:0 0 13px; display:flex; align-items:center; justify-content:center; font-size:22px;}
-  .grave-peek .gpk-nm{position:absolute; left:0; right:0; bottom:0; height:13px; padding:0 2px; font-size:8px; line-height:13px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,.55);}
-  .grave-peek .gpk-n{position:absolute; top:1px; right:1px; font-size:9.5px; line-height:1; padding:1px 3px; border-radius:6px; background:rgba(0,0,0,.7); color:#ffd56e;}
+  /* 2026-10-30 (package CS-B, card sizes step 3): the peek lists Chips (art disc, name, ×N), wrapping (was a grid of 46×58 art squares, 8px names) */
+  .grave-peek .gpk-grid{display:flex; flex-wrap:wrap; justify-content:center; gap:5px; max-width:min(330px, 84vw);}
   .grave-peek .gpk-empty{grid-column:1/-1; font-size:22px; opacity:.45; padding:2px 10px; text-align:center;}
   /* The turn the fight ended on (user: "...I want to see the turn#. It shows up as a pill on the opponent's HP bar in the centre."). */
   .bf-hp .bf-turn-pill{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:2; pointer-events:auto; white-space:nowrap;
@@ -11025,9 +11018,9 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .armour-gem{display:inline-block; width:11px; height:11px; border-radius:2px; transform:rotate(45deg); background:linear-gradient(135deg, var(--g1), var(--g2)); box-shadow:0 0 6px var(--g2); margin-left:3px;}
 .conquest-node-panel .cnp-deck.is-open{max-height:none; overflow:visible;}
 .conquest-node-panel .cnp-squad{flex-wrap:nowrap !important; overflow-x:auto; gap:8px !important; padding:10px 2px 18px; scrollbar-width:thin;}
-.conquest-node-panel .cnp-sq-card{position:relative; flex:0 0 auto; width:62px; padding:0; border:0; background:none; cursor:pointer; transition:transform .12s ease;}
+.conquest-node-panel .cnp-sq-card{position:relative; flex:0 0 auto; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 62px */; padding:0; border:0; background:none; cursor:pointer; transition:transform .12s ease;}
 .conquest-node-panel .cnp-sq-card:hover, .conquest-node-panel .cnp-sq-card:focus-visible{transform:translateY(-3px);}
-.conquest-node-panel .cnp-sq-card .card-tile{width:62px !important; height:78px !important; font-size:7px; margin:0; pointer-events:none;}
+.conquest-node-panel .cnp-sq-card .card-tile{width:100% !important; height:auto !important; font-size:7px; margin:0; pointer-events:none;}
 .conquest-node-panel .cnp-sq-card .cnp-sq-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
 .conquest-node-panel .cnp-squad .dchip{font-size:12.5px; line-height:1.3; padding:2px 8px;}
 @media (max-width:620px){ .conquest-node-panel .cnp-head{grid-template-columns:auto minmax(0,1fr);} .conquest-node-panel .cnp-head > :last-child:not(.cnp-title){grid-column:1 / -1; justify-self:stretch; margin-top:8px;} }
@@ -11407,19 +11400,17 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .map-node.kind-dungeon{border-color:#6b4f9a;} .map-node.kind-worldboss{border-color:#1f8a70; width:62px; height:62px;} .map-node.kind-megaraid{border-color:#d6249f; width:64px; height:64px;}
 
 /* Skirmish panel, simpler (2026-10-10): the showcase card leads, the deck folds away */
-.cnp-showcase{flex:0 0 auto; width:74px; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
+.cnp-showcase{flex:0 0 auto; width:var(--card-compact-w) /* 2026-10-30 (CS-B): Compact, was 74px (64 in a pair) */; margin-right:4px; filter:drop-shadow(0 4px 6px rgba(0,0,0,.35)); transform:rotate(-3deg);}
 .cnp-showcase .card-tile{width:100% !important;}
 /* 2026-10-23 (package LEAD): a paired boss's two leaders side by side, the second tucked behind the first */
 .cnp-pair{flex:0 0 auto; display:flex; align-items:flex-start; margin-right:4px;}
-.cnp-pair > .cnp-showcase{width:64px; margin-right:0;}
+.cnp-pair > .cnp-showcase{margin-right:0;}
 .cnp-pair > .cnp-showcase + .cnp-showcase{margin-left:-14px; transform:rotate(4deg) translateY(6px);}
 /* 2026-10-12 (22:04, user: "put the S emblem on the top right hand corner (sitting absolute, on the top-right boundary of the
    div)", "make [the reward card] the same size as the card highlight", "battle rating ... <Sword Icon> [value] beside the hp
    and shield values") */
 .conquest-node-panel{position:relative;}
 .conquest-node-panel > .cnp-rank-corner{position:absolute !important; top:0 !important; right:0 !important; left:auto !important; transform:translate(40%,-40%) !important; z-index:6; margin:0;}
-.cnp-rw .cnp-rw-card, .cnp-rw-card{width:74px;}
-@media (max-width:640px){ .cnp-rw .cnp-rw-card, .cnp-rw-card{width:60px;} }
 /* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
@@ -11437,7 +11428,7 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 html[data-fx="low"] .card-tile > .ui3-tint{box-shadow:inset 0 0 8px 0 rgba(var(--t1),.22);}
 html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cnp-rw-zoom.cnp-rw-above{z-index:900;} /* 2026-10-29 (UI3, S6): over a modal overlay (z 600) */
-.cnp-rw-zoom .cnp-rw-why{display:block; width:150px; box-sizing:border-box; margin-top:5px; padding:5px 8px; border-radius:8px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font:700 11px/1.3 'Baloo 2',system-ui,sans-serif;}
+.cnp-rw-zoom .cnp-rw-why{display:block; width:var(--card-full-w); box-sizing:border-box; margin-top:5px; padding:5px 8px; border-radius:8px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font:700 11px/1.3 'Baloo 2',system-ui,sans-serif;}
 .cnp-rw-zoom.cnp-rw-tip b{font-size:14px;} .cnp-rw-zoom.cnp-rw-tip small{font-size:12px; color:#ffd98a; font-weight:800;}
 /* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
@@ -11471,7 +11462,6 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .conquest-node-panel .cnp-rw .cnp-rw-ok{font-style:normal; color:#8fe08a; margin-left:2px;}
 .conquest-node-panel .cnp-rw .cnp-rw-cur{font-size:15px; padding:2px 9px;}
 .conquest-node-panel .cnp-rw .cnp-rw-curs{gap:4px;}
-.conquest-node-panel .cnp-rw .cnp-rw-card{width:52px;}
 .conquest-node-panel .cnp-rw.is-done .cnp-rw-curs{filter:none; opacity:1;}
 .conquest-node-panel .cnp-rw-card.is-got .card-tile, .conquest-node-panel .cnp-rw-card.is-got .cnp-rw-back{filter:none;}
 .conquest-node-panel{padding-bottom:10px !important;}
@@ -11664,6 +11654,49 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* At 1366 the Codex's two album pages need 1274px for 8 Full cards a row (the column is 80% of the window, 1093px) */
 @media (min-width:1100px){ .content-wrap:has(> #view-codex:not([hidden])){max-width:min(1330px, 98vw);} }
 /* CS-A:END */
+/* CS-B:BEGIN (2026-10-30, package CS-B, card sizes steps 2-3; plan docs/design/card-sizes-2026-10-29.md; owner decisions CS-2/CS-4 10-30 10:34).
+   Compact (--card-compact-w, 64px) for the previews outside a match: the map fight panel's leader, enemy squad and first-clear reward, the cards
+   seen on the win screen, the deck picker's deck strip, the Forge's bulk preview (their rules above now read the token). The Forge's anvil and
+   the pack tray are Full. The Chip (--chip-h, 30px tall) is drawn by cardChipHTML: an art disc ringed in the rarity colours, then the name.
+   tests/cs-b-2026-10-30.js extends CS-A's guard to these screens. */
+.card-chip{--cc-h:var(--chip-h); display:inline-flex; align-items:center; gap:6px; height:var(--cc-h); max-width:min(100%, 190px); padding:0 10px 0 0; box-sizing:border-box;
+  border-radius:calc(var(--cc-h) / 2); vertical-align:middle; white-space:nowrap; cursor:help; color:#fff3dc; font:800 12.5px/1 'Nunito',system-ui,sans-serif;
+  background:linear-gradient(90deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 34%, #2a2216), #2a2216 75%);
+  box-shadow:0 0 0 1px color-mix(in srgb, var(--rarity-a, #8a6a45) 75%, transparent), 0 1px 3px rgba(0,0,0,.3);}
+.card-chip .cc-disc{position:relative; flex:0 0 auto; width:var(--cc-h); height:var(--cc-h); border-radius:50%; overflow:hidden; display:grid; place-items:center;
+  background:#3a2e1e; box-shadow:inset 0 0 0 2px var(--rarity-a, #8a6a45), inset 0 0 0 3px var(--rarity-b, #5a4630); font-size:calc(var(--cc-h) * .55); line-height:1;}
+.card-chip .cc-disc::before{content:attr(data-ico);}
+.card-chip .cc-art{position:absolute; inset:2px; width:calc(100% - 4px); height:calc(100% - 4px); border-radius:50%; object-fit:cover; object-position:50% 35%; image-rendering:pixelated;}
+.card-chip .cc-nm{min-width:0; overflow:hidden; text-overflow:ellipsis; text-shadow:0 1px 1px rgba(0,0,0,.5);}
+.card-chip .cc-st{flex:0 0 auto; font-size:11px; font-weight:800; opacity:.85;}
+.card-chip .cc-n{flex:0 0 auto; margin-left:-2px; padding:2px 6px; border-radius:999px; background:#ffd56e; color:#3a2200; font:900 11px/1 'Baloo 2',system-ui,sans-serif;}
+.card-chip.is-mystery{cursor:default;}
+.card-chip.is-mystery .cc-disc{background:repeating-linear-gradient(45deg, rgba(0,0,0,.14) 0 4px, transparent 4px 9px), #2f5b3a; box-shadow:inset 0 0 0 2px #d7b46a;}
+/* a mention inside a line of text (the battle log): the same chip at the line's height */
+.card-chip.is-inline{--cc-h:1.6em; gap:4px; padding-right:7px; margin:1px 1px; font:inherit; font-weight:800; vertical-align:middle;}
+.card-chip.is-inline .cc-disc{font-size:.85em;}
+.card-chip .cc-pre{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:pre;} /* the line's own icon, kept in its text */
+.card-chip.is-inline{position:relative;}
+/* the map's card strip (VIS4) and a list with no review in the Map cards overlay: Chips, the pack tag beside the chip */
+.vis4-mc-card.is-chip{display:inline-flex; align-items:center; gap:4px; border-radius:calc(var(--chip-h) / 2); cursor:zoom-in;}
+.vis4-mc-card.is-chip .card-chip{pointer-events:none;}
+.vis4-mc-card.is-chip.is-mystery{cursor:default;}
+.vis4-mc-card.is-chip .pk1-mc-pack{position:static; transform:none; background:rgba(0,0,0,.18); color:inherit;}
+.vis4-mc-card.is-chip:focus-visible{outline:2px solid #ffd98a; outline-offset:2px;}
+/* the deck's card list, the drop line */
+.dm-cards{gap:6px 6px;}
+.cnp-drops .cnp-drop-tile .card-chip{pointer-events:none; --cc-h:26px; font-size:12px;}
+/* the pack tray: one Full slot a card (a row up to 6, else two), capped by the row's width and the window's height, so the flight lands in a
+   Full card; the reveal is a little smaller while a tray of Full slots sits under it. A pile (no slots) lists Chips that scroll. */
+.po2-got.has-slots{--po2-slot-w:min(var(--card-full-w), calc((min(92vw, 900px) - 20px - (var(--per, 5) - 1) * 6px) / var(--per, 5)), calc(22vh / var(--rows, 1) * .8));
+  max-width:calc(var(--per, 5) * var(--po2-slot-w) + (var(--per, 5) - 1) * 6px + 20px);}
+.po2-stage.po2-reveal:has(+ .po2-got.has-slots) .po2-deck{--cw:min(50vh * .8, 80vw, 360px);}
+.po2-got:not(.has-slots){max-height:min(22vh, 170px); overflow-y:auto; overscroll-behavior:contain;}
+.po2-mini.is-chip{box-shadow:none; border-radius:calc(var(--chip-h) / 2);}
+.po2-mini.is-chip .card-chip{pointer-events:none;}
+/* the review in the Map cards overlay: the Full card (owner 10-29 19:14 wanted large cards there) */
+.rv1-tile .vis4-mc-card.is-large .card-tile[data-size="full"]{max-width:none;}
+/* CS-B:END */
 
 /* the card album */
 #codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
@@ -11789,7 +11822,7 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .dbp-tools{flex:0 0 auto; display:flex; gap:8px;} .dbp-tools input{flex:1;}
 .dbp-pool{--cs-gap:10px; display:grid; grid-template-columns:repeat(auto-fill, var(--card-full-col)) /* 2026-10-30 (CS-A): the Full size */; justify-content:center; gap:14px var(--cs-gap); padding:14px 10px 10px; overflow-y:auto; flex:1; min-height:200px;}
 .dbp-stack{display:block; padding:0; border:0; background:none; cursor:pointer; color:inherit;}
-.dbp-deck .dbp-stack{width:66px;}
+.dbp-deck .dbp-stack{width:var(--card-compact-w);} /* 2026-10-30 (CS-B): the deck strip is Compact (was 66px) */
 .dbp-stack .card-tile{width:100% !important; pointer-events:none;}
 .dbp-stack:hover .card-tile, .dbp-stack:focus-visible .card-tile{transform:translateY(-3px);}
 .dbp-stack .ps-count{font-size:10.5px;}
@@ -11907,11 +11940,8 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .cnp-drops .cnp-drops-sep{opacity:.85; margin:0 -2px;}
 /* 2026-10-22 (package GD): a cleared skirmish's reward card on its drop line, a small tile before its chance */
 .cnp-drops .cnp-drop-own{display:inline-flex; align-items:center; gap:4px;}
-.cnp-drops .cnp-drop-tile{display:inline-block; width:30px; flex:0 0 auto; vertical-align:middle; cursor:zoom-in; line-height:0;}
-.cnp-drops .cnp-drop-tile .card-tile{width:100% !important; pointer-events:none;}
-.cnp-drops .cnp-drop-tile .card-tile .stats, .cnp-drops .cnp-drop-tile .card-tile .nm, .cnp-drops .cnp-drop-tile .card-tile .sg,
-.cnp-drops .cnp-drop-tile .card-tile .levelbadge, .cnp-drops .cnp-drop-tile .card-tile .prestigebadge{display:none !important;} /* the art only at this size; tap for the card */
-.cnp-drops .cnp-drop-tile.is-mystery{width:auto; line-height:1;}
+.cnp-drops .cnp-drop-tile{display:inline-block; flex:0 0 auto; vertical-align:middle; cursor:zoom-in; line-height:0;} /* 2026-10-30 (CS-B): a Chip (was a 30px art-only tile) */
+.cnp-drops .cnp-drop-tile.is-mystery{cursor:default;}
 .rank-hex.rw-mini{position:relative !important; top:auto !important; right:auto !important; left:auto !important; width:22px; height:25px; rotate:-8deg; margin:0 2px !important; transform:none !important; z-index:auto; flex:0 0 auto; display:inline-grid; vertical-align:middle;}
 .rank-hex.rw-mini b{font-size:13px !important; letter-spacing:0; -webkit-text-stroke:0 !important;}
 .rank-hex.rw-mini.rank-SS b{font-size:10.5px !important; letter-spacing:-.06em;}
@@ -12160,8 +12190,8 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
   .sm-recipe .sm-ico{font-size:26px;} .sm-recipe small{display:block; opacity:.7;}
   .sm-dot{margin-left:auto; color:#6fbf4a; font-style:normal;}
   .sm-anvil{display:flex; flex-direction:column; align-items:center; gap:10px; padding:16px; background:radial-gradient(ellipse at 50% 30%, rgba(255,140,60,.18), transparent 60%), var(--surface, #fff);}
-  .sm-stage{position:relative; width:150px;}
-  .sm-card .card-tile{width:150px; height:186px;}
+  .sm-stage{position:relative; width:var(--card-full-w);}
+  .sm-card .card-tile{width:var(--card-full-w); height:auto;} /* 2026-10-30 (CS-B): Full (was 150×186) */
   .sm-sparks{position:absolute; left:50%; top:60%; width:0; height:0; z-index:5; pointer-events:none;}
   .sm-sparks i{position:absolute; width:4px; height:4px; border-radius:50%; background:#ffd36b; box-shadow:0 0 6px #ff9a3d, 0 0 12px #ff6a1a; animation:smSpark var(--t) ease-out forwards;}
   @keyframes smSpark{from{transform:translate(0,0); opacity:1;} to{transform:translate(var(--dx), var(--dy)); opacity:0;}}
@@ -13711,7 +13741,7 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile,
 .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:min(var(--card-full-w), max(78px, 15vh)) !important; height:auto !important; margin:0 !important;} /* 2026-10-30 (CS-A): Full, with the height cap (a short window) */
 .rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile,
-.rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(60px, 10.5vh, 96px) !important; height:auto !important; margin:0 !important;}
+.rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:var(--card-compact-w) !important; height:auto !important; margin:0 !important;} /* 2026-10-30 (CS-B): Compact, was clamp(60px, 10.5vh, 96px) (54-76px on a phone) */
 .rw-panel .res3-fan-seen{max-height:min(30vh, 300px); gap:12px 14px !important;}
 .rw-panel.has-split .rw-half-cards.res3-col{gap:10px; justify-content:flex-start;}
 .rw-panel .rw-sec.rw-seen-cards .rw-head{margin-top:2px;}
@@ -13720,7 +13750,6 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 @media (max-width:640px){
   .rw-panel .rw-cards.res3-fan, .rw-panel.has-split .rw-half-cards .rw-cards.res3-fan{gap:12px 14px !important; padding:12px 10px 8px 4px; max-height:44vh;}
   .rw-panel .res3-fan-won .rw-card, .rw-panel .res3-fan-won .res3-copy, .rw-panel .res3-fan-won .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-won .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-won .card-tile{width:var(--card-full-w) !important;} /* 2026-10-30 (CS-A): Full */
-  .rw-panel .res3-fan-seen .rw-card, .rw-panel .res3-fan-seen .card-tile, .rw-panel.has-split .rw-half-cards .res3-fan-seen .rw-card, .rw-panel.has-split .rw-half-cards .res3-fan-seen .card-tile{width:clamp(54px, 16vw, 76px) !important;}
 }
 /* R3: egg and baby cards in the nest's own colours (a warm rose and spring green halo), and the rays of their reveal */
 .rw-card.res3-nest-card{border-radius:10px; box-shadow:0 0 0 3px #f6c6d8, 0 0 0 5px #7fbf6a, 0 0 18px 6px rgba(255,190,220,.55);}
@@ -13964,20 +13993,18 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .vis4-map-cards{margin-top:10px; padding-top:8px; border-top:1px dashed rgba(255,255,255,.18);}
 .vis4-mc-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; opacity:.78; margin-bottom:6px;}
 .vis4-mc-row{display:flex; flex-wrap:wrap; gap:14px 6px; align-items:center; padding:6px 0 8px;}
-.vis4-mc-card{position:relative; flex:0 0 auto; width:44px; height:55px; border-radius:6px; cursor:help; transition:transform .12s ease;}
+.vis4-mc-card{position:relative; flex:0 0 auto; border-radius:6px; cursor:help; transition:transform .12s ease;}
 .vis4-mc-card:hover, .vis4-mc-card:focus-visible{transform:translateY(-2px);}
-.vis4-mc-card .card-tile{width:44px !important; height:55px !important; font-size:5px; margin:0; pointer-events:none;}
 .vis4-mc-card.is-mystery{cursor:default;}
 .vis4-mc-card.is-mystery .cnp-rw-back{display:grid; place-items:center; width:100%; height:100%; border-radius:6px; font-size:18px;}
 .vis4-mc-locked{display:inline-flex; align-items:center; height:28px; padding:0 9px; border-radius:999px; font:800 12px/1 'Baloo 2',system-ui,sans-serif; background:rgba(0,0,0,.28); box-shadow:inset 0 0 0 1px rgba(255,255,255,.2); cursor:help;}
-@media (max-width:560px){ .vis4-mc-card, .vis4-mc-card .card-tile{width:38px !important; height:48px !important;} }
 /* PACK1 (2026-10-28; owner: the map's cards from the skirmish panel's admin buttons): the 🃏 Map cards overlay (pk1OpenMapCards), VIS4's tiles
    one section per list, a small "📦 Pack N" under each card a basic pack also gives */
 .pk1-mc-modal{max-width:760px; width:100%; max-height:min(86vh, 900px); display:flex; flex-direction:column;}
 .pk1-mc-overlay .pk1-mc-body{margin-top:4px; padding-top:0; border-top:0; overflow-y:auto; overscroll-behavior:contain; min-height:0;}
 .pk1-mc-sec h3{margin:12px 0 2px; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.03em;}
 .pk1-mc-sec h3 small{font-weight:700; opacity:.65; margin-left:4px;}
-.pk1-mc-overlay .vis4-mc-row{gap:34px 8px; padding:10px 0 26px;}
+.pk1-mc-overlay .vis4-mc-row{gap:8px 6px; padding:8px 0 10px;} /* 2026-10-30 (CS-B): Chips, the pack tag beside the chip (was 34px row gaps for a tag under a 44px tile) */
 .pk1-mc-pack{position:absolute; left:50%; bottom:-27px; transform:translateX(-50%); white-space:nowrap; font:700 9.5px/1.2 'Baloo 2',system-ui,sans-serif; padding:0 4px; border-radius:999px; background:rgba(0,0,0,.35); color:#fff; pointer-events:auto;}
 @media (max-width:560px){ .pk1-mc-modal{max-height:92vh;} }
 /* 2026-10-29 (package REVIEW1): Chosen / Cut cards / Maybe sections in the 🃏 Map cards overlay */
@@ -13987,7 +14014,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv1-part h4 small{opacity:.65; margin-left:4px;}
 .rv1-part.is-cut h4::before{content:'✂ ';} .rv1-part.is-maybe h4::before{content:'? ';}
 .pk1-mc-overlay .rv1-row{gap:8px 8px; padding:8px 0 6px; align-items:flex-start;}
-.rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px; width:92px;}
+.rv1-tile{position:relative; display:flex; flex-direction:column; align-items:center; gap:3px;}
 .rv1-tile .vis4-mc-card{margin-bottom:30px;}
 .rv1-tile.is-cut .vis4-mc-card{opacity:.5; filter:grayscale(.6);}
 .rv1-tile.is-maybe .vis4-mc-card{outline:2px dashed rgba(255,215,0,.55); outline-offset:2px;}
@@ -14011,7 +14038,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv1-part.is-chosen{border-left-color:#4caf50;} .rv1-part.is-maybe{border-left-color:#e0b030;} .rv1-part.is-cut{border-left-color:#c8553d; background:rgba(200,85,61,.07);}
 .rv1-part h4{margin:0 0 2px; font:800 14px/1.2 'Baloo 2',system-ui,sans-serif;}
 .pk1-mc-overlay .rv1-row{gap:14px 12px; padding:10px 0 8px; align-items:flex-start;}
-.rv1-tile{width:128px; gap:5px;}
+.rv1-tile{width:var(--card-full-w); gap:5px;} /* 2026-10-30 (CS-B): the review's card is the Full card (was 128px; 2 a row on a phone) */
 .rv1-tile .vis4-mc-card.is-large{width:100% !important; height:auto !important; margin:0; aspect-ratio:4/5; border-radius:8px; cursor:zoom-in; transform:none;}
 .rv1-tile .vis4-mc-card.is-large:hover, .rv1-tile .vis4-mc-card.is-large:focus-visible{transform:translateY(-2px);}
 .rv1-tile .vis4-mc-card.is-large .card-tile{width:100% !important; height:100% !important; font-size:inherit; margin:0; pointer-events:none;}
@@ -14038,7 +14065,7 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv2-copy:hover .rv2-tip, .rv2-copy:focus-within .rv2-tip{opacity:1; visibility:visible;}
 .rv2-counts{display:flex; flex-direction:column; gap:2px; min-width:0; flex:1 1 220px; font:700 13px/1.3 'Baloo 2',system-ui,sans-serif;}
 .rv2-cl b{font-weight:800; opacity:.75; margin-right:4px;}
-@media (max-width:560px){ .pk1-mc-modal{max-height:94vh;} .rv2-panel{padding:10px 8px 8px; margin:12px 0 14px;} .rv1-part{padding:6px 6px 4px;} .rv1-tile{width:calc((100% - 12px) / 2); max-width:150px;} .pk1-mc-overlay .rv1-row{gap:12px 12px; justify-content:flex-start;} }
+@media (max-width:560px){ .pk1-mc-modal{max-height:94vh;} .rv2-panel{padding:10px 8px 8px; margin:12px 0 14px;} .rv1-part{padding:6px 6px 4px;} .pk1-mc-overlay .rv1-row{gap:12px 12px; justify-content:flex-start;} }
 /* VIS4 (2026-10-27, K7: "The electric zap line effect when the shield is attacked ... doesn't look so nice"): the Shield's hit is the VIS3
    rectangle lighting up with a ripple; its break is the rectangle falling apart into glass panes (vis4ShieldHit / vis4ShieldBreak); the blue
    number counts down and, at 0, shrinks and fades (vis4ShieldCount). */
@@ -50940,7 +50967,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '01b3fc426ba9', BUILD_CARD_HASH = 'a66d01f92dde1c0164d10d6704744765acb01d6c770a2d044c836f6aac6942df';
+const BUILD_ID = '869a15e0bfc7', BUILD_CARD_HASH = 'a66d01f92dde1c0164d10d6704744765acb01d6c770a2d044c836f6aac6942df';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56059,6 +56086,24 @@ function cardTileHTML(d, opts){
     ${isCastle||hand?'':pitchYieldBadgeHTML(d)}
   </div>`;
 }
+// 2026-10-30 (package CS-B, card sizes steps 2-3; owner decision CS-4 10-30 10:34: "is for our map cards viewing anyway so okay"): the Chip, the
+// fourth size. Not a card: a 30px-tall token (--chip-h) with the art in a disc ringed in the rarity colours, then the name, for lists and
+// mentions (the map's card strip, the deck's card list, the graveyard peek, the pack pile, drop lines, the battle log). opts:
+//   stat   true: a short ⚔/❤ after the name;    n: a ×N count;    extraClass / attrs: the caller's own class and attributes;
+//   noDefid  true: no data-defid (the caller's wrapper opens the card itself, e.g. VIS4's data-zoom); otherwise hover / hold opens the card
+//            through the page's one [data-defid] popover, as the small tiles did;   mystery  true: the ❓ back, no name.
+// cardChipEl(d, opts) builds the same chip as an element (the battle log keeps its line as text nodes and drops chips in between).
+function cardChipHTML(d, opts){
+  opts = opts || {}; d = d || {}; const [rA, rB] = rarityStops(d.rarity || 'common');
+  const nm = opts.mystery ? '?' : (d.name || d.id || '');
+  // the disc's emoji (no art, or the ❓ back) is drawn from data-ico, so a chip's text is just its name (a log line reads the same as before)
+  const disc = opts.mystery ? '<span class="cc-disc is-back" data-ico="❓" aria-hidden="true"></span>'
+    : `<span class="cc-disc" aria-hidden="true"${d.art ? '' : ` data-ico="${escapeAttr(d.icon || '🃏')}"`}>${d.art ? `<img class="cc-art" src="${escapeAttr(d.art)}" alt="" draggable="false" decoding="async" loading="lazy">` : ''}</span>`;
+  const st = opts.stat && !opts.mystery && d.health != null ? `<span class="cc-st" aria-hidden="true">⚔${d.attack || 0} ❤${d.health}</span>` : '';
+  const n = opts.n > 1 ? `<b class="cc-n" aria-hidden="true">×${opts.n}</b>` : '';
+  return `<span class="card-chip ${rarityTierClass(d.rarity)}${opts.mystery ? ' is-mystery' : ''} ${opts.extraClass || ''}" data-size="chip"${opts.noDefid || opts.mystery || !d.id ? '' : ` data-defid="${escapeAttr(d.id)}"`} role="img" aria-label="${escapeAttr(opts.label || (nm + (opts.n > 1 ? ' ×' + opts.n : '')))}" style="--rarity-a:${rA}; --rarity-b:${rB}" ${opts.attrs || ''}>${disc}<span class="cc-nm">${escapeHtml(nm)}</span>${st}${n}</span>`;
+}
+function cardChipEl(d, opts){ const t = document.createElement('template'); t.innerHTML = cardChipHTML(d, opts); return t.content.firstElementChild; }
 // Discard/pitch resource badge (2026-09-20, per explicit request: "Resources on discard
 // (additional beyond 1 lumber) are placed at the bottom of the card, right on the boundary" —
 // "if lumber == 0, also display as 0, since it's abnormal. For other resources ... if it's >0,
@@ -62380,7 +62425,7 @@ function openForgeBulk(kind, btn){
   ov.innerHTML = `<div class="modal fbulk is-${kind}" role="dialog" aria-modal="true" aria-label="${escapeAttr(title.replace(/^\S+\s/, ''))}">
     <div class="modal-head-row"><h2>${title}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
     <p class="panel-sub fb-blurb">${blurb}</p>
-    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small>${fuse && x.to != null ? `<small class="fb-val fb-to" title="${escapeAttr(TX('ui.fg-fuse-into'))}">→ ${escapeHtml(TX('ui.nf-copy-level', {n: x.to}))}</small>` : ''}</div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
+    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small>${fuse && x.to != null ? `<small class="fb-val fb-to" title="${escapeAttr(TX('ui.fg-fuse-into'))}">→ ${escapeHtml(TX('ui.nf-copy-level', {n: x.to}))}</small>` : ''}</div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
     <div class="fb-total" aria-live="polite"><span class="fb-total-lbl">${plan.copies} cop${plan.copies === 1 ? 'y' : 'ies'} of ${per.length} card${per.length === 1 ? '' : 's'} →</span> <b class="fb-total-val">${fuse ? valHTML(plan.dust, plan.gold) + ' <small>of credit</small>' : `✨${plan.dust} <small>Magic Dust</small>`}</b></div>
     <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-fbok>${fuse ? `🧩 Fuse ${plan.copies}` : `♻️ Disenchant ${plan.copies}`}</button></div></div>`;
   document.body.appendChild(ov);
@@ -63435,7 +63480,8 @@ function deckCardsStripHTML(d){
   const defs = getCardDefs(), counts = d.counts || {};
   const ids = Object.keys(counts).filter(id=> defs[id] && counts[id] > 0).sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
   if(!ids.length) return '<p class="panel-sub dm-empty">No cards yet. Edit the deck to add some.</p>';
-  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> `<span class="dm-card" data-defid="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name)} ×${counts[id]}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1 ? `<b class="dm-x">×${counts[id]}</b>` : ''}</span>`).join('')}</div>`;
+  // 2026-10-30 (package CS-B, card sizes step 3): each card is a Chip (art disc, name, ×N) instead of a 52px tile whose name was hidden
+  return `<div class="dm-cards" aria-label="Cards in this deck">${ids.map(id=> cardChipHTML(defs[id], {n: counts[id], extraClass:'dm-card'})).join('')}</div>`;
 }
 // deck-medium-preview (2026-10-10, user: "the deck-medium-preview ... does not show the cards and highlights the art of
 // the leader and castle. Castle on the left, leader on the right, as the background of the preview"). The large one is the
@@ -67407,7 +67453,7 @@ function openDeckBuilderPopup(o){
   const all = ()=>{ const defs = getCardDefs(); return Object.keys(defs).filter(id=> defs[id] && !defs[id].test && id !== HERO_ID && (!q || defs[id].name.toLowerCase().includes(q)) && cfMatch(defs[id], cf)).sort(sortBy()); };
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
   const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortBy());
-    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
+    return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B): the deck strip */}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
   const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
   const poolHTML = ()=>{
     if(pm){ // 2026-10-22 (package MP): the map's pool, tier by tier (MAP, its SUBMAP, SPECIAL)
@@ -71204,7 +71250,7 @@ function wireRewardZoom(root){
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
     // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
     if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
-    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true});
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-B): a Compact preview or a Chip zooms to the Full card */});
       // 2026-10-29 (package UI3, S6): the Map cards gallery's reason rides in the popover (data-zoom-why), no native tooltip, no "?"
       if(el.dataset.zoomWhy) z.insertAdjacentHTML('beforeend', `<span class="cnp-rw-why">${escapeHtml(el.dataset.zoomWhy)}</span>`); }
     if(el.closest && el.closest('.modal-overlay')) z.classList.add('cnp-rw-above'); // 2026-10-29 (UI3, S6): the popover sat under the overlay (z 200 < 600) and never showed
@@ -71277,7 +71323,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
     const needLbl = (chal ? ', ' + TX('ui.rw2-challenge-card') : '') + (needR ? ', ' + TX('ui.rw-needs-rank', {rank: needR}) : '');
     return isCardHiddenForPlayer(defs[id])
     ? `<span class="cnp-rw-card is-mystery ${got?'is-got':''}${chalCls}" role="img" aria-label="A mystery card${escapeAttr(needLbl)}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
+    : `<span class="cnp-rw-card ${got?'is-got':''}${chalCls}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (got ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}${rankMark}${chalMark}${got ? res3GotMark() : ''}</span>`; }).join('');
   const cur = [];
   // 2026-10-26 (package RES3, G6): the currencies follow the same rule (greyed with a check once the first clear is won)
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur ${done?'is-got':''}" tabindex="0" aria-label="${pay.gold} Maple Leaves" data-zoom-tip="${escapeAttr(TX('ui.rw4-tip-leaves-t') + '|' + TX('ui.rw4-tip-leaves', {n: pay.gold}))}"><span class="res3-gv">${mapleLeafIconHTML()} ${pay.gold}</span>${done ? res3GotMark() : ''}</span>`);
@@ -71319,7 +71365,8 @@ function cnpDropsLineHTML(mapId, node, done){
   let odds = null; try{ odds = done && card > 0 ? skirmishOwnDropOdds(mapId, node) : null; }catch(e){}
   if(odds){ const defs = getCardDefs();
     odds.own.forEach(o=>{ const d = defs[o.id]; if(!d) return; let need = null; try{ need = cardRewardRankFor(mapId, node, o.id); }catch(e){}
-      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">❓</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardTileHTML(d, {inPlay:true})}</span>`;
+      // 2026-10-30 (package CS-B, card sizes step 3): the card is a Chip (was a 30px art-only tile); it still zooms to the Full card
+      const tile = isCardHiddenForPlayer(d) ? `<span class="cnp-drop-tile is-mystery" aria-hidden="true">${cardChipHTML(d, {mystery:true})}</span>` : `<span class="cnp-drop-tile" data-zoom="${escapeAttr(o.id)}" tabindex="0" aria-hidden="true">${cardChipHTML(d, {noDefid:true})}</span>`;
       parts.push(`<span class="cnp-drop cnp-drop-own" role="img" aria-label="${escapeAttr(TX('ui.gd-drop-own', {name: isCardHiddenForPlayer(d) ? '?' : d.name, p: fmtDropPct(o.p)}))}">${tile}<span aria-hidden="true">${fmtDropPct(o.p)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); });
     if(odds.pack > 0){ let need = null; try{ need = cardRewardRankFor(mapId, node, null); }catch(e){}
       parts.push(`<span class="cnp-drop" role="img" aria-label="${escapeAttr(TX('ui.rw-drop-card', {p: fmtDropPct(odds.pack)}))}"><span aria-hidden="true"><i class="cnp-drop-back bw-back bk-unit"></i> ${fmtDropPct(odds.pack)}</span></span>${rankEmblemHTML(need, 'rw-mini')}`); }
@@ -74225,7 +74272,7 @@ function renderConquestSubTab(body){
       // 2026-10-21 (package ED, owner #7): each card at the level the enemy fights it at (edShownLevel: the node's Enemy level or the road
       // curve, a card level set in the editor), not at your Forge level; the hover card and the details read data-shown-level too.
       // Admins get a ✏️ to open the card editor right here (#14).
-      .map(([id,n])=> `<span class="cnp-sq-wrap"><button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(sumNode, id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(edEnemyShownDef(sumNode, id), {inPlay:true})}<b class="cnp-sq-n">×${n}</b></button>${adminModeEnabled ? edEditCardBtnHTML(id) : ''}</span>`).join('');
+      .map(([id,n])=> `<span class="cnp-sq-wrap"><button type="button" class="cnp-sq-card" data-sqdef="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" data-shown-level="${edShownLevel(sumNode, id)}" aria-label="${escapeAttr(defs[id].name + ' ×' + n)}">${cardTileHTML(edEnemyShownDef(sumNode, id), {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}<b class="cnp-sq-n">×${n}</b></button>${adminModeEnabled ? edEditCardBtnHTML(id) : ''}</span>`).join('');
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
@@ -74248,7 +74295,7 @@ function renderConquestSubTab(body){
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
         return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
-      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
+      <div class="cnp-head">${(()=>{ const tileOf = sid=> `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" ${(sumNode.deck||{})[sid] ? `data-shown-level="${edShownLevel(sumNode, sid)}"` : ''} aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = (sumNode.deck||{})[sid] ? edEnemyShownDef(sumNode, sid) : defs[sid]; /* 2026-10-21 (package ED): an enemy card at the enemy's level */ return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>`; const L = leadersShownFor(selectedNode, map.id); if(L.length > 1) return `<span class="cnp-pair" title="${escapeAttr(TX('ui.lead-vs-leaders', {a: defs[L[0]].name, b: defs[L[1]].name}))}">${L.slice(0, 2).map(tileOf).join('')}</span>`; /* 2026-10-23 (package LEAD): a paired boss shows both leaders */ const sid = nodeShowcaseId(sumNode); return sid && defs[sid] ? tileOf(sid) : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(sumNode, adminModeEnabled && !isTut && !selectedNode.virtual)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(sumNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div>${isTut ? '' : skirmishFieldHTML(map.id, selectedNode) /* 2026-10-19 (package UX): no Field panel on a tutorial; 2026-10-24 (package NE, owner 11:26): in the top row, under the BR */}</div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
@@ -78208,9 +78255,12 @@ function vis4MapCardTilesHTML(ids, defs, opts){
   defs = defs || getCardDefs(); const packs = !!(opts && opts.packs);
   const big = !!(opts && opts.large); // 2026-10-29 (package REVIEW2): the deck-size card, its pack tag under it in the flow
   return ids.slice().sort((a, b)=> roadRarityStep(defs[a].rarity) - roadRarityStep(defs[b].rarity) || String(defs[a].name).localeCompare(String(defs[b].name))).map(id=>{ const d = defs[id];
-    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return `<span class="vis4-mc-card is-mystery${big ? ' is-large' : ''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`;
+    // 2026-10-30 (package CS-B; owner CS-4): a list (the skirmish panel's strip, a list with no review in the 🃏 Map cards overlay) is Chips;
+    // the review's large card (opts.large) is the Full card. The wrapper keeps data-zoom, so hover, focus or a tap still shows the Full card.
+    if(!adminModeEnabled && isCardHiddenForPlayer(d)) return big ? `<span class="vis4-mc-card is-mystery is-large" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>`
+      : `<span class="vis4-mc-card is-chip is-mystery" role="img" aria-label="A mystery card">${cardChipHTML(d, {mystery:true})}</span>`;
     const pt = packs && !big ? basicPackTierOf(d) : 0, tag = pt ? `<small class="pk1-mc-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</small>` : '';
-    return `<span class="vis4-mc-card${big ? ' is-large' : ''}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${cardTileHTML(d, {inPlay:true})}${tag}</span>`; }).join('');
+    return `<span class="vis4-mc-card${big ? ' is-large' : ' is-chip'}${tag ? ' has-pk1-tag' : ''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}"${opts && opts.why ? ` data-zoom-why="${escapeAttr(opts.why)}"` : ''} aria-label="${escapeAttr(d.name)}">${big ? cardTileHTML(d, {inPlay:true, size:'full'}) : cardChipHTML(d, {noDefid:true})}${tag}</span>`; }).join('');
 }
 // 2026-10-28 (package PACK1; owner 10-28: the map's cards viewable from the skirmish panel's admin button list): 🃏 Map cards opens the whole
 // card list of this fight's map as an overlay, one section per list (mapPoolSections: MAP, each side map's own, SPECIAL), VIS4's tiles that zoom
@@ -87281,9 +87331,9 @@ function fieldResourcesHTML(m){ return fieldResSideHTML(m, true) + fieldResSideH
 // (with no card held, a tap there still pitches) or the 💀 badge on the opponent's Deck opens a small popover of mini cards, newest
 // first, repeats stacked as ×N, with that side's Removal Zone under it. Each mini is a [data-defid], so hover / hold shows the card.
 function zonePeekMiniHTML(defId, n){
-  const d = getCardDefs()[defId] || {name: defId, icon:'🃏'}, [ra, rb] = rarityStops(d.rarity || 'common');
-  const art = d.art ? `<span class="gpk-art" style="background-image:url('${d.art}')"></span>` : `<span class="gpk-ico">${d.icon || '🃏'}</span>`;
-  return `<span class="gpk-mini" data-defid="${escapeAttr(defId)}" title="${escapeAttr(d.name || defId)}" style="--rarity-a:${ra}; --rarity-b:${rb}">${art}<span class="gpk-nm">${escapeHtml(d.name || defId)}</span>${n > 1 ? `<b class="gpk-n">×${n}</b>` : ''}</span>`;
+  // 2026-10-30 (package CS-B, card sizes step 3): a Chip (art disc, name, ×N), one a row; was a 46×58 art square with an 8px name
+  const d = getCardDefs()[defId] || {id: defId, name: defId, icon:'🃏'};
+  return cardChipHTML(Object.assign({}, d, {id: defId}), {n, extraClass:'gpk-mini'});
 }
 function zonePeekGroup(list){ const order = [], cnt = new Map(); list.slice().reverse().forEach(e=>{ const id = e && (e.defId || e); if(!id) return; if(!cnt.has(id)){ cnt.set(id, 0); order.push(id); } cnt.set(id, cnt.get(id) + 1); }); return order.map(id=> zonePeekMiniHTML(id, cnt.get(id))).join(''); }
 function closeGravePeek(){ document.querySelectorAll('.grave-peek').forEach(e=> e.remove()); }
@@ -91878,7 +91928,7 @@ function rewardsPanelHTML(m){
   const fightRow = fightsShown.length && m.mode!=='tutorial' ? fightsShown.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length){
-    const defs = getCardDefs(), tiles = seen.filter(id=> defs[id]).map(id=> ({key:id, name:defs[id].name, copy:'', html:`<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>`}));
+    const defs = getCardDefs(), tiles = seen.filter(id=> defs[id]).map(id=> ({key:id, name:defs[id].name, copy:'', html:`<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'compact' /* 2026-10-30 (CS-B) */})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>`}));
     if(tiles.length) secs.push(`<div class="rw-sec rw-seen-cards"><div class="rw-head">${TX('results.new-cards-seen')}</div>${res3FanHTML(tiles, 'seen')}</div>`);
   }
   if(openRows.length || fightRow || mapBanners){
@@ -92640,6 +92690,27 @@ function logText(ev){
     default: return (ev.dmg > 0 && (ev.defId || ev.targetDefId)) ? {cls:'', text:`${nm(ev.targetDefId || ev.defId)} took ${ev.dmg} damage.`} : {cls:'', text: ev.type};
   }
 }
+// 2026-10-30 (package CS-B, card sizes step 3; plan docs/design/card-sizes-2026-10-29.md "card mentions in the log"): every place a log line names
+// one of the cards its event carries (defId, attDefId, targetDefId...) becomes an inline Chip (the art disc and the name, hover or hold for the
+// card). The line's text is unchanged (the chip's text is the name; its disc is drawn from CSS), so row.textContent reads as before.
+const LOG_CHIP_KEYS = ['defId', 'attDefId', 'targetDefId', 'aDefId', 'bDefId', 'fromDefId', 'otherDefId'];
+function logChipify(row, text, ev){
+  try{
+    const defs = getCardDefs(), ids = [...new Set(LOG_CHIP_KEYS.map(k=> ev && ev[k]).filter(id=> typeof id === 'string' && defs[id] && defs[id].name))];
+    if(!ids.length) return;
+    const hits = []; // [start, end, id, icon prefix], every place a name stands, longest names first, never overlapping
+    ids.sort((a, b)=> defs[b].name.length - defs[a].name.length).forEach(id=>{ const nm = defs[id].name, ic = defs[id].icon ? defs[id].icon + ' ' : '';
+      for(let i = text.indexOf(nm); i >= 0; i = text.indexOf(nm, i + nm.length)){ const pre = ic && text.slice(Math.max(0, i - ic.length), i) === ic ? ic : '', s = i - pre.length;
+        if(!hits.some(h=> s < h[1] && i + nm.length > h[0])) hits.push([s, i + nm.length, id, pre]); } });
+    if(!hits.length) return;
+    hits.sort((a, b)=> a[0] - b[0]); row.textContent = ''; let at = 0;
+    // the line's "🦦 " before a name (logText's nm) goes inside the chip, hidden (the disc shows the card), so the text still reads "🦦 Otter Kit"
+    hits.forEach(([a, b, id, pre])=>{ if(a > at) row.appendChild(document.createTextNode(text.slice(at, a))); const c = cardChipEl(defs[id], {extraClass:'is-inline'});
+      if(c && pre){ const h = document.createElement('span'); h.className = 'cc-pre'; h.textContent = pre; c.insertBefore(h, c.querySelector('.cc-nm')); }
+      row.appendChild(c || document.createTextNode(text.slice(a, b))); at = b; });
+    if(at < text.length) row.appendChild(document.createTextNode(text.slice(at)));
+  }catch(e){ row.textContent = text; }
+}
 const LOG_PLAY_TYPES = new Set(['play', 'spell', 'fieldSet']);
 const LOG_ATTACK_TYPES = new Set(['hit', 'hitHQ', 'evaded', 'blindMiss', 'tipsySwing', 'sweepWhiff']);
 function logIsHeadline(ev){ return !!ev && (LOG_PLAY_TYPES.has(ev.type) || (LOG_ATTACK_TYPES.has(ev.type) && !ev.ranged && !ev.source)); }
@@ -92667,6 +92738,7 @@ function renderLogLine(ev){
   // else (status damage, effects, draws, readies) sits one step in under them.
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
+  logChipify(row, text, ev); // 2026-10-30 (package CS-B): the cards it names are inline Chips
   log.appendChild(row);
   fix3PinLogSoon(log);
 }
@@ -98769,7 +98841,7 @@ function blacksmithHTML(){
     <div class="sm-layout">
       <div class="panel sm-list" role="listbox" aria-label="Recipes">${list}</div>
       <div class="panel sm-anvil" id="smithAnvil">
-        <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
+        <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {size:'full', extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
         <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
         <div class="sm-needs">${needs}</div>
         ${out ? `<button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}${craftNeedsHeld(r.out) ? ` data-needs-held="1" title="${escapeAttr(CRAFT_NEEDS_HELD_TIP)}"` : ''}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>` : ''}
@@ -99078,8 +99150,9 @@ function refineAnvilHTML(id, sel){
   return `
     <div class="anvil-stage refine-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview ' + nowCls})}</div>
-      ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
+      ${'' /* 2026-10-30 (package CS-B): every card on the Forge's anvils (Upgrade, Refine, Socket, Fuse, Enchant, the Blacksmith, and the before / after of each flip) is the Full card (size:'full'; was 140px, 150px at the Blacksmith) */}
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview ' + nowCls})}</div>
+      ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${copy && copy.shiny ? ' <span class="forge-prestige-tag">✦ Shiny</span>' : ''}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -99098,7 +99171,7 @@ function socketGemFx(k){ const p = gemParts(k); if(p.length > 1) return p.map(so
 function socketGemChoices(){ const st = materiaStore(); return MATERIA_KINDS.concat(MATERIA_KINDS.map(m=> socketKind(m.id + '2')).filter(k=> k && (st[k.id]||0) > 0)); }
 function enchantAnvilHTML(id, sel){
   const st = materiaStore(), base = getCardDefs()[id] || sel;
-  if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div></div>
+  if(!cardHasSocket(base)) return `<div class="anvil-stage" id="anvilStage"><div class="forge-glow" aria-hidden="true"></div><div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview'})}</div></div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3><p class="forge-note">${escapeHtml(TX('ui.h1-no-socket'))}</p>`;
   const copy = copyByUid(id, forgeUid(id)), uid = copy && copy.uid, cur = socketGemOfCopy(id, copy), cap = socketSlotsOf(base), gemsIn = gemParts(cur), full = gemsIn.length >= cap; // CONTENT3: Socket N
   let show = sel; try{ const d = copyDefAt(id, copyLevel(id, copy), cur); if(d) show = Object.assign({}, d, {id}); }catch(e){}
@@ -99106,7 +99179,7 @@ function enchantAnvilHTML(id, sel){
   return `
     <div class="anvil-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(show, {extraClass:'forge-preview'})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(show, {size:'full', extraClass:'forge-preview'})}</div>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -99136,11 +99209,11 @@ async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, d = getCardDefs()[id];
   const i = forgeRefineIdx(id), copy = myCardCopies[id][i]; if(copy && copy.uid) forgeCopyPick = {id, uid: copy.uid}; // 2026-10-18 (package NF)
-  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
+  const beforeHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
   const step = refineCard(id, i);
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
-  const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
+  const afterHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'refine', document.getElementById('anvilStage'), {finish: step.key, at: (step.key==='prism' || step.key==='gold') ? 1450 : 1150}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, step.key==='prism' || step.key==='gold'); }); }catch(e){}
@@ -99182,7 +99255,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
   return `
     <div class="anvil-stage" id="anvilStage">
       <div class="forge-glow" aria-hidden="true"></div>
-      <div class="forge-preview-wrap">${cardTileHTML(sel, {extraClass:'forge-preview'})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(sel, {size:'full', extraClass:'forge-preview'})}</div>
       <div class="anvil-art" aria-hidden="true"><span class="anvil-top"></span><span class="anvil-waist"></span><span class="anvil-foot"></span></div>
       <span class="forge-hammer" aria-hidden="true">🔨</span>
     </div>
@@ -99243,9 +99316,9 @@ async function forgeLimitBreak(btn){
   const id = forgeSelectedId, uid = forgeUid(id); if(!limitBreakState(id, uid).ok){ denyShake(btn); cobbleSay('limit'); return; }
   forgeBusy = true; btn.disabled = true;
   const keep = (copyByUid(id, uid) || {}).uid; // 2026-10-18 (package NF): the copy that breaks stays on the anvil
-  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   limitBreakCard(id, uid); if(keep) forgeCopyPick = {id, uid: keep};
-  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -99316,7 +99389,7 @@ function fuseAnvilHTML(id, sel){
       <div class="forge-glow" aria-hidden="true"></div>
       <div class="fg-fuse-pile" aria-hidden="true">${pile}${one.spares > 5 ? `<b class="fg-fuse-more">+${one.spares - 5}</b>` : ''}</div>
       ${one.spares ? '<span class="fg-fuse-arrow" aria-hidden="true">➜</span>' : ''}
-      <div class="forge-preview-wrap">${cardTileHTML(showDef, {extraClass:'forge-preview ' + cls})}</div>
+      <div class="forge-preview-wrap">${cardTileHTML(showDef, {size:'full', extraClass:'forge-preview ' + cls})}</div>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}</h3>
     ${forgeCopyPickerHTML(id)}
@@ -99601,7 +99674,7 @@ async function forgePromote(btn){
   const uid = forgeUid(id), cL = forgeCopyLevel(id, uid); // 2026-10-18 (package NF): the copy on the anvil is promoted
   if(!to || !promotionTargets(id).includes(to) || cL < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); if(to && cL >= at){ if(myCurrencies.dust < PROMOTE_COST.dust) cobbleSay('dust'); else if(myCurrencies.gold < PROMOTE_COST.gold) cobbleSay('gold'); } return; }
   forgeBusy = true; btn.disabled = true;
-  const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(d, {size:'full', extraClass:'forge-preview'});
   myCurrencies.gold -= PROMOTE_COST.gold; myCurrencies.dust -= PROMOTE_COST.dust; saveCurrencies();
   unlockCardForPlayer(to, 'promotion');
   forgeSetCopyLevel(id, uid, 0); // that copy goes back to its starting level (it used to be every copy of the card)
@@ -99611,7 +99684,7 @@ async function forgePromote(btn){
   if(swap(myDeckCounts)) changed = true;
   if(changed){ try{ saveMyDecks(); localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} }
   logTxn({action:'promoted', cardId:to, cardName:defs[to].name, icon:defs[to].icon, source:'Promotion from '+d.name, before:id, after:to});
-  const afterHTML = cardTileHTML(defs[to], {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(defs[to], {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'promote', document.getElementById('anvilStage'), {from: d.rarity, to: defs[to].rarity}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -99716,13 +99789,13 @@ async function forgeTemper(btn){
   if(L>=playerLevelCap(id) || L < 1 || !canAffordLevelUp(L, id, uid)){ denyShake(btn); if(L >= 1 && L < playerLevelCap(id)) cobbleWhyNot(L, id, uid); return; } // Level 0 → 1 is the Nest's (2026-10-12); BAL2: a Base card's top is Lv 4
   forgeBusy = true; btn.disabled = true; if(reducedMotion() || !hasGsap()) try{ SoundKit.forgeStrike(); }catch(e){} // with the animation, each blow sounds on its hammer impact (2026-10-15)
   const c = levelUpCost(L, id, uid), keep = (copyByUid(id, uid) || {}).uid;
-  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
   if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit, uid);
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
   forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
   try{ bumpQuestCounter('forgeLevels', 1); }catch(e){} // 2026-10-26 (package RES4): a Trail challenge counts copies tempered
-  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {size:'full', extraClass:'forge-preview'});
   // 2026-10-19 (package UX, owner 21:36: "Forging should have centre of field treatment"): the tempering and its LEVEL burst play on
   // the centre stage, then the card flies back to the anvil
   let centred = false; try{ centred = await forgeCentreStage(()=> forgeTemperAnimation(beforeHTML, afterHTML), {burst: {kind: 'levelUp', text: 'LEVEL ' + (L+1) + '!'}, hold: 900}); }catch(e){}
@@ -99737,10 +99810,10 @@ async function forgePrestige(btn){
   const id = forgeSelectedId;
   if(!canAffordPrestige(id)){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
-  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const beforeHTML = cardTileHTML(getCardDefs()[id], {size:'full', extraClass:'forge-preview'});
   if(!prestigeUpCard(id)){ forgeBusy = false; denyShake(btn); return; }
   try{ SoundKit.prestigeTone && SoundKit.prestigeTone(); }catch(e){}
-  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const afterHTML = cardTileHTML(getCardDefs()[id], {size:'full', extraClass:'forge-preview'});
   try{ await forgeCentreStage(()=>{ // 2026-10-19 (package UX): on the centre stage
     fxHook('forgeUpgrade', 'prestige', document.getElementById('anvilStage'), {tier: (PRESTIGE_TIERS[getCardPrestige(id) - 1] || {}).key}); // batch D (2026-10-15, docs/effects-lab-contract.md)
     return forgeSmithAnimation(beforeHTML, afterHTML, true); }); }catch(e){}
@@ -103315,7 +103388,7 @@ function openPackAnimation(pack, opened, opts){
     const o = deckO = pile || opened[packIdx];
     const slots = !o.isPile && o.results.length <= 12;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal" id="poStage"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div>${o.isPile ? `<div class="po2-pile-count" id="poPileCount">${pileLeft(o, 0)} cards</div>` : `<div class="po2-tally" id="poTally" aria-hidden="true"></div>`}</div>
-      <div class="po2-got" id="poGot" role="group" aria-label="Cards so far">${slots ? o.results.map(()=> '<span class="po2-slot"></span>').join('') : ''}</div>
+      <div class="po2-got${slots ? ' has-slots' : ''}" id="poGot" role="group" aria-label="Cards so far"${slots ? ` style="--per:${o.results.length > 6 ? Math.ceil(o.results.length / 2) : o.results.length}; --rows:${o.results.length > 6 ? 2 : 1}"` : '' /* 2026-10-30 (CS-B): Full slots, one row up to 6, else two */}>${slots ? o.results.map(()=> '<span class="po2-slot"></span>').join('') : ''}</div>
       <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
     wireTop();
     const cards = [...overlay.querySelectorAll('.po2-card')];
@@ -103370,11 +103443,19 @@ function openPackAnimation(pack, opened, opts){
       const got = overlay.querySelector('#poGot');
       const r = deckO.results[+c.dataset.i];
       const [ra] = rarityStops(defOf(r.id).rarity||'common');
-      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
+      // 2026-10-30 (package CS-B, card sizes step 2; CS-A's flagged risk): a pack of up to 12 cards has a slot per card, and the slots are the Full
+      // card (capped by the row and the window's height, see .po2-got in the CS-B block), so the card flies from the reveal into a Full card, the
+      // same card the summary then shows. A pile (a big set, no slots) lists Chips instead (were 46px tiles); a Chip catches the flight on its disc.
+      const slotMode = !!got.querySelector('.po2-slot');
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (slotMode ? '' : ' is-chip') + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra);
+      mini.innerHTML = (slotMode ? poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full'}) : cardChipHTML(defOf(r.id), {n: r.bonusCopy ? 2 : 0})) + (r.bonusCopy && slotMode ? '<b class="po2-mini-x">×2</b>' : '');
+      { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); if(!slotMode) got.scrollTop = got.scrollHeight; } // never greyed in a reveal (2026-10-12); fills the next empty slot
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
       if(!reduce && mini.animate && cur + 1 < cards.length){ // the last card goes straight into the summary (2026-10-24, BV: see poClearFlights)
-        const from = c.getBoundingClientRect(), to = mini.getBoundingClientRect();
+        // 2026-10-30 (CS-B): the flight aims at the Full slot itself (the mini inside it is still at the start of its pop, 30% of its size), or a
+        // Chip's disc
+        const from = c.getBoundingClientRect(), to = (slotMode && mini.parentElement && mini.parentElement.classList.contains('po2-slot') ? mini.parentElement : (slotMode ? mini : mini.querySelector('.cc-disc') || mini)).getBoundingClientRect();
         if(from.width && to.width){
           const ghost = document.createElement('div'); ghost.className = 'po2-fly';
           ghost.style.cssText = `left:${from.left}px; top:${from.top}px; width:${from.width}px; height:${from.height}px;`;
