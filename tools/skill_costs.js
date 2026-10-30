@@ -88,8 +88,12 @@
       if(t.once && !ONE_SHOT.includes(t.on)) w = Math.min(w, mod('onceCap', 1));
       return {w, missing:null};
     }
-    function triggerCost(t, card){ const a = triggerWeight(t), b = actionValue(t, card);
-      return {cost:r2(a.w * b.value), weight:a.w, value:r2(b.value), missing:[a.missing, b.missing].filter(Boolean)}; }
+    // SKILL2 (2026-10-31): table.pairs["on>do"].mult, a measured trigger-and-action pair's own factor (its worth / weight x action), so a pair
+    // re-priced from its measure moves no other pair sharing its trigger or its action
+    const PAIRS = table.pairs || {};
+    function pairMult(t){ const p = PAIRS[t.on + '>' + (ALIAS[t.do] || t.do)]; return p && typeof p.mult === 'number' ? p.mult : 1; }
+    function triggerCost(t, card){ const a = triggerWeight(t), b = actionValue(t, card), pm = pairMult(t);
+      return {cost:r2(a.w * b.value * pm), weight:r2(a.w * pm), value:r2(b.value), missing:[a.missing, b.missing].filter(Boolean)}; }
     // S of a card's effects: {S, parts:[[kind, id, cost, detail]], missing:[ids with no entry]}.
     function cardS(effects, card){
       const parts = [], missing = []; let S = 0;

@@ -88,8 +88,11 @@ const CONDITIONAL = { tide: 'Tide fields only', mountainClimber: 'mountain terra
   sentry: 'needs an attacker in its lane', king: 'needs its court', converge: 'needs its targets', carrion: 'needs deaths beside it', prey: 'needs a Predator',
   heavyMetal: 'needs Metal', bedrock: 'needs Stone', timbered: 'needs Lumber cards', lumberjack: 'needs Lumber cards', quarry: 'pays in Stone', prospector: 'pays in Metal',
   foePlenty: 'needs the foe\'s resources', foeScarcity: 'needs the foe\'s resources', onSpawnDevilry: 'needs Devilry cards', sacrifice: 'needs allies to spend',
-  wave: 'Tide fields only', tsunami: 'Tide fields only', supreme: 'Tide fields only' };
+  wave: 'Tide fields only', tsunami: 'Tide fields only', supreme: 'Tide fields only',
+  dive: 'needs Flying or swimming (the carriers have neither)', changeling: 'shares a type with partners', prayer: 'needs Prayer partners', keenEye: 'against Changelings and in Mist',
+  frostbite: 'cold maps (Frostbite Resist, Freezing)', taunt: 'protects partners', guardian: 'protects partners' };
 const POW_KEEP = {};
+const HELD_TRIG = ['bee-drone', 'worker-ant'];
 const SPECIAL = {
   // DECK1-1: Remember N acts only from the Exile zone, through its card's own On Death → Exile self; measured as the pair (Remember 1 on the
   // Ashbone Ghoul, Remember 2 on the Marsh Wisp). The pair reads less at 2 (two Echoes to wait for), so Remember is a power curve with a
@@ -116,7 +119,16 @@ function prices(opt) {
     const e0 = SK[id]; const pts = byId[id].filter(r => r.class !== 'combo' || SPECIAL[id]).map(r => ({ key: r.key, n: r.n, w: r.nCards, W: r.test.worthRuler.m, ci: r.test.worthRuler, price: r.test.price, fights: r.fights, conf: confOf(r.test.worthRuler) }));
     if (SH[id] && !e0) { shChanged[id] = pts; return; }
     if (!e0) { kept.push(`${id}: no table entry`); return; }
-    if (e0.canon) { pts.forEach(p => rows.push({ id, kind: 'canon', note: `${p.key}: measured ${r2(p.W)} [${r2(p.ci.lo)}, ${r2(p.ci.hi)}], the canon curve gives ${r2(e0.value * factorOf(e0, p.n))} (kept: a canon entry)` })); return; }
+    if (e0.canon) {
+      // a canon entry with one canon point and readings at other N: its curve between and beyond is refitted as v x N^pow through the canon
+      // point (kept exact), pow from the other readings (log space, weighted by cards); two canon points fix v and pow already
+      const at = (e0.canonAt || []).filter(n => n !== true), others = pts.filter(p => p.W > 0 && numOf(p.n) > 0 && !at.includes(p.n));
+      if (at.length === 1 && others.length) { const Nc = numOf(at[0]), Pc = r2(e0.value * factorOf(e0, at[0])), e = keepWas(JSON.parse(JSON.stringify(e0)));
+        const xs = others.map(p => Math.log(numOf(p.n) / Nc)), ys = others.map(p => Math.log(p.W / Pc)), ws = others.map(p => p.w);
+        const pw = r3(xs.reduce((t, x, i) => t + ws[i] * x * ys[i], 0) / xs.reduce((t, x, i) => t + ws[i] * x * x, 0)); e.scale = 'n'; e.pow = pw; e.value = r2(Pc / Math.pow(Nc, pw));
+        const chk = r2(e.value * Math.pow(Nc, pw)); e.canonCurve = `2026-10-31 (SKILL2): the canon point ${e0.id} ${Nc} = ${Pc} kept (${chk}); the curve v x N^pow refitted through it from ${others.map(p => p.key + ' ' + r2(p.W) + ' [' + r2(p.ci.lo) + ', ' + r2(p.ci.hi) + ']').join('; ')} (was ${e0.scale}${e0.pow != null ? ' pow ' + e0.pow : ''}, which gave ${others.map(p => r2(e0.value * factorOf(e0, p.n))).join(' / ')})`;
+        changed[id] = e; rows.push({ id, kind: 'set', old: e0.value, oldPow: e0.pow, value: e.value, pow: e.pow, scale: e.scale, conf: 'canon', pts, why: e.canonCurve }); return; }
+      pts.forEach(p => rows.push({ id, kind: 'canon', note: `${p.key}: measured ${r2(p.W)} [${r2(p.ci.lo)}, ${r2(p.ci.hi)}], the canon curve gives ${r2(e0.value * factorOf(e0, p.n))} (kept: two canon points fix the curve)` })); return; }
     const e = keepWas(JSON.parse(JSON.stringify(e0)));
     let fitv = null, why = '';
     if (SPECIAL[id]) { const s = SPECIAL[id](byId[id].map(r => ({ key: r.key, n: r.n, W: r.test.worthRuler.m })), e0, R); if (s) { e.scale = s.scale; e.value = s.value; if (s.pow != null) e.pow = s.pow; else delete e.pow; why = s.why; fitv = s.value; } }
@@ -154,26 +166,29 @@ function prices(opt) {
   // shorthands (Bounty, Kin Rally, Milling): a `mult` on the shorthand (tools/skill_costs.js: trigger x action x mult), so the shared trigger
   // weight and action value stay
   const shRows = [];
-  // (computed after the trigger weights below: a shorthand's price moves with its trigger's new weight first)
-  const shorthandRows = trRows => Object.keys(shChanged).forEach(id => { const pts = shChanged[id], sh = SH[id]; const old = sh.mult || 1, tr = trRows.find(t => t.on === sh.trigger), k = tr ? tr.ratio : 1;
-    const num = pts.reduce((t, p) => t + p.w * p.W * (p.price * k / old), 0), den = pts.reduce((t, p) => t + p.w * (p.price * k / old) ** 2, 0), mult = r2(den ? num / den : 1);
+  Object.keys(shChanged).forEach(id => { const pts = shChanged[id], sh = SH[id]; const old = sh.mult || 1;
+    const num = pts.reduce((t, p) => t + p.w * p.W * (p.price / old), 0), den = pts.reduce((t, p) => t + p.w * (p.price / old) ** 2, 0), mult = r2(den ? num / den : 1);
     if (CONDITIONAL[id] && mult < old) { shRows.push({ id, kind: 'kept', mult, old }); return; }
     shRows.push({ id, kind: 'set', old, mult, pts }); });
-  // triggers
-  const trig = {}; Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure').forEach(r => { const on = r.id.split('>')[0]; (trig[on] = trig[on] || []).push(r); });
+  // trigger entries: a pair "on>do" (the action as tools/skill_costs.js aliases it) gets mult = Σ w W p / Σ w p² over its measured in-play
+  // entries (p = the entry's price before, w = its cards): table.pairs, read by tools/skill_costs.js triggerCost
+  const ALIAS = table.aliases || {}, pairs = {};
+  Object.values(R).filter(r => r.class === 'trigger' && r.kind === 'measure').forEach(r => { const t = r.test.effects.triggers[0], k = t.on + '>' + (ALIAS[t.do] || t.do); (pairs[k] = pairs[k] || []).push(r); });
   const trRows = [];
-  Object.keys(trig).sort().forEach(on => { const list = trig[on].filter(r => Math.abs(r.test.price) > 0.05); if (!list.length) return;
-    const xs = []; list.forEach(r => { for (let i = 0; i < r.nCards; i++) xs.push(r.test.worthRuler.m / r.test.price); }); xs.sort((a, b) => a - b);
-    const med = xs.length % 2 ? xs[(xs.length - 1) / 2] : (xs[xs.length / 2 - 1] + xs[xs.length / 2]) / 2;
-    const T0 = table.triggers.find(t => t.id === on); trRows.push({ on, old: T0.value, ratio: r2(med), value: r2(T0.value * Math.max(0, med)), entries: list.map(r => ({ key: r.key, W: r.test.worthRuler.m, price: r.test.price, ratio: r2(r.test.worthRuler.m / r.test.price), cards: r.cards })) }); });
-  shorthandRows(trRows);
+  Object.keys(pairs).sort().forEach(k => { const list = pairs[k].filter(r => Math.abs(r.test.price) > 0.05), old = ((table.pairs || {})[k] || {}).mult || 1; if (!list.length) return;
+    // the owner holds the Bee Drone's and the Worker Ant's trigger prices for RECOST1-3's package (RECOST1-5, 10-30 23:25 "hold them")
+    const held = list.filter(r => r.cards.some(c => HELD_TRIG.includes(c))); if (held.length) { kept.push(`${k}: held (RECOST1-5: ${held.map(r => r.cards.join(', ')).join('; ')}); measured ${list.map(r => r2(r.test.worthRuler.m) + ' / ' + r.test.price).join(', ')}`); return; }
+    const num = list.reduce((t, r) => t + r.nCards * r.test.worthRuler.m * (r.test.price / old), 0), den = list.reduce((t, r) => t + r.nCards * (r.test.price / old) ** 2, 0);
+    let mult = r2(den ? num / den : 1), note = ''; const id0 = k.split('>')[1];
+    if (mult < 0) { mult = 0; note = 'read below 0: set to 0'; }
+    trRows.push({ pair: k, old, mult, note, entries: list.map(r => ({ key: r.key, W: r2(r.test.worthRuler.m), lo: r2(r.test.worthRuler.lo), hi: r2(r.test.worthRuler.hi), price: r.test.price, fights: r.fights, cards: r.cards })) }); });
   // print
   rows.forEach(r => { if (r.kind === 'set') console.log(`set  ${r.id.padEnd(18)} ${String(r.old).padStart(6)}${r.oldPow != null ? '^' + r.oldPow : ''} -> ${String(r.value).padStart(6)}${r.pow != null ? '^' + r.pow : ''} (${r.scale}, ${r.conf})  ${r.pts.map(p => p.key + ' ' + r2(p.W) + ' was ' + p.price).join('; ')} ${r.why || ''}`);
     else if (r.kind === 'kept') console.log(`kept ${r.id.padEnd(18)} ${r.old} (read ${r.fit}): ${r.note}`); else if (r.kind === 'canon') console.log(`canon ${r.id}: ${r.note}`); });
   shRows.forEach(r => console.log(`shorthand ${r.id}: mult ${r.old} -> ${r.mult} (${r.kind})`));
-  trRows.forEach(r => console.log(`trigger ${r.on}: weight ${r.old} x ${r.ratio} = ${r.value}  ${r.entries.map(x => x.key.slice(0, 40) + ' ' + r2(x.W) + '/' + x.price).join(' | ')}`));
+  trRows.forEach(r => console.log(`pair ${r.pair.padEnd(28)} mult ${r.old} -> ${r.mult} ${r.note}  ${r.entries.map(x => x.key.replace(/^T:/, '').slice(0, 44) + ' ' + x.W + ' / ' + x.price).join(' | ')}`));
   kept.forEach(k => console.log('note: ' + k));
-  const plan = { rows, shorthands: shRows, triggers: trRows, kept };
+  const plan = { rows, shorthands: shRows, pairs: trRows, kept };
   fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'skill2-prices-2026-10-31.json'), JSON.stringify(Object.assign({ _about: 'SKILL2 (2026-10-31): the price plan node tools/skill2_apply_2026_10_31.js prices builds from docs/balance/skill2-measures-2026-10-31.json (applied unless --dry).' }, plan), null, 1) + '\n');
   if (opt.dry) return plan;
   let out = writeSkills(text, changed); const t2 = JSON.parse(out);
@@ -181,11 +196,12 @@ function prices(opt) {
   shRows.filter(r => r.kind === 'set').forEach(r => { t2.shorthands[r.id].mult = r.mult; t2.shorthands[r.id].skill2 = `2026-10-31 (SKILL2, BUDGET2-1): mult ${r.old} -> ${r.mult}, measured ${r.pts.map(p => p.key + ' ' + r2(p.W) + ' (price before ' + p.price + ')').join('; ')}`; });
   const lines = out.split('\n');
   const si = lines.findIndex(l => /^ "shorthands": /.test(l)); lines[si] = ' "shorthands": ' + JSON.stringify(t2.shorthands) + ',';
-  trRows.forEach(r => { const i = lines.findIndex(l => l.startsWith('  {"id":"' + r.on + '",')); const t = JSON.parse(lines[i].replace(/,$/, '')); if (t.skill2Was == null) t.skill2Was = { value: t.value };
-    t.value = r.value; t.skill2 = `2026-10-31 (SKILL2, BUDGET2-1): weight ${r.old} x ${r.ratio} (the median of worth / price over its in-play entries: ${r.entries.map(x => x.key.replace(/^T:/, '').slice(0, 60) + ' ' + r2(x.W) + ' / ' + x.price).join('; ')})`;
-    lines[i] = '  ' + JSON.stringify(t) + (lines[i].endsWith(',') ? ',' : ''); });
+  // "pairs": a new one-line key before "skills" (one pair a key: {mult, skill2})
+  const P2 = Object.assign({}, t2.pairs || {}); trRows.forEach(r => { P2[r.pair] = { mult: r.mult, skill2: `2026-10-31 (SKILL2, BUDGET2-1): measured ${r.entries.map(x => x.key.replace(/^T:/, '') + ' ' + x.W + ' [' + x.lo + ', ' + x.hi + '] (' + x.fights + ' fights; price before ' + x.price + '; ' + x.cards.join(', ') + ')').join('; ')}; mult = Σ w W p / Σ w p²${r.note ? '; ' + r.note : ''}` }; });
+  const pi = lines.findIndex(l => /^ "pairs": /.test(l)), pline = ' "pairs": ' + JSON.stringify(P2) + ',';
+  if (pi >= 0) lines[pi] = pline; else lines.splice(lines.findIndex(l => /^ "skills": \[/.test(l)), 0, pline);
   out = lines.join('\n'); JSON.parse(out);
-  fs.writeFileSync(FILE, out); console.log(`-> canonical/skill-costs.json (${Object.keys(changed).length} skills, ${shRows.filter(r => r.kind === 'set').length} shorthands, ${trRows.length} trigger weights)`);
+  fs.writeFileSync(FILE, out); console.log(`-> canonical/skill-costs.json (${Object.keys(changed).length} skills, ${shRows.filter(r => r.kind === 'set').length} shorthands, ${trRows.length} trigger pairs)`);
   return plan;
 }
 
