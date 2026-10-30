@@ -55,7 +55,9 @@ ok(/function stuckFast\(c\)\{ return !!\(c && \(c\.pinned \|\| c\.webbed > 0 \|\
 { const costs = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')); const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')).make(costs);
   const row = costs.skills.find(r=> r.id === 'bola');
   ok(row && row.plus === 'arrow' && SC.skillCost('bola', 1) === SC.skillCost('arrow', 1) + 2 && SC.skillCost('bola', 2) === SC.skillCost('arrow', 2) + 2, `Bola N = Arrow N + 2 (Bola 1 ${SC.skillCost('bola', 1)}, Bola 2 ${SC.skillCost('bola', 2)})`);
-  const ar = costs.skills.find(r=> r.id === 'anadromous'); ok(ar && SC.skillCost('anadromous', true) === 2, 'Anadromous costs 2 (either half is 2 stat points)'); }
+  const ar = costs.skills.find(r=> r.id === 'anadromous'); // 2026-10-31 (package BUDGET2, item 4): at 3A + H the sea half (+1 Attack) is 3 points, the river half (+2 Health) 2; x the salt-water share
+// of the road's fights (0.062): 2.06 -> 2.1
+ok(ar && SC.skillCost('anadromous', true) === 2.1, 'Anadromous costs 2.1 (3 x 0.062 at sea + 2 x 0.938 off it, BUDGET2)'); }
 { const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
   ok(!cards.some(c=> c.effects && (c.effects.bola || c.effects.anadromous)), 'Bola and Anadromous are on no card yet (decision ENG14-4 / ENG14-5)'); }
 

@@ -88,12 +88,20 @@ async function run(o) {
       context: { name: X.name, level: X.level, copies: X.k, fights: M, pool: X.pool.length, fields: X.fields.length, seed: X.seed }, carriers, attackWeight: AW,
       canonRate: r, lsqRate: rl, statRate: rs, kappa, attackInHealth: aInH, line: { r2: L.r4(sst ? 1 - ssr / sst : null) }, anchors: loo,
       outside: loo.filter(a => a.off).map(a => a.key) };
+    // the ruler: the anchors sorted by their gain, their prices made non-decreasing in gain (pool-adjacent-violators), and a gain read off
+    // between its two neighbours (straight lines; past the ends, the median rate). "It gains what Bleed 2 gains, so it is worth what Bleed 2
+    // costs": no assumption that gain is proportional to price.
+    const ruler = (idx, g) => { const pts = DA.map((d, j) => ({ g: meanOf(d, idx), p: P[j], w: 1 })).sort((a, b) => a.g - b.g);
+      const st = []; pts.forEach(x => { st.push({ g: x.g * x.w, p: x.p * x.w, w: x.w }); while (st.length > 1 && st[st.length - 2].p / st[st.length - 2].w > st[st.length - 1].p / st[st.length - 1].w) { const b = st.pop(), a = st.pop(); st.push({ g: a.g + b.g, p: a.p + b.p, w: a.w + b.w }); } });
+      const k = st.map(x => ({ g: x.g / x.w, p: x.p / x.w })), rt = rateOf(idx);
+      if (g <= k[0].g) return k[0].g > 0 ? g * k[0].p / k[0].g : g / rt; if (g >= k[k.length - 1].g) return k[k.length - 1].p + (g - k[k.length - 1].g) / rt;
+      for (let j = 1; j < k.length; j++) if (g <= k[j].g) return k[j - 1].p + (k[j].p - k[j - 1].p) * (g - k[j - 1].g) / Math.max(1e-9, k[j].g - k[j - 1].g); return g / rt; };
     if (test) {
-      const W = est(ix => meanOf(DT, ix) / rateOf(ix)), Ws = est(ix => meanOf(DT, ix) / statRate(ix));
+      const W = est(ix => meanOf(DT, ix) / rateOf(ix)), Ws = est(ix => meanOf(DT, ix) / statRate(ix)), Wr = est(ix => ruler(ix, meanOf(DT, ix)));
       const price = carriers.map(c => { const w = L.budgetOf(L.printedDef(gm, variantFor(c, test)), X.level), p = L.budgetOf(L.printedDef(gm, { base: c }), X.level); return w.x1 - p.x1; });
       const pr = L.r4(price.reduce((t, x) => t + x, 0) / price.length);
       const below = loo.filter(a => a.price <= W.m).sort((a, b) => b.price - a.price)[0], above = loo.filter(a => a.price > W.m).sort((a, b) => a.price - b.price)[0];
-      res.test = { effects: test, gain: L.r4(meanOf(DT)), worth: W, worthStat: Ws, price: pr, net: L.r4(W.m - pr), verdict: pr < W.lo ? 'under-priced' : pr > W.hi ? 'over-priced' : 'within its interval', between: [below ? below.key + ' (' + below.price + ')' : '-', above ? above.key + ' (' + above.price + ')' : '-'] };
+      res.test = { effects: test, gain: L.r4(meanOf(DT)), worth: W, worthRuler: Wr, worthStat: Ws, price: pr, net: L.r4(Wr.m - pr) /* the ruler's */, verdict: pr < Wr.lo ? 'under-priced' : pr > Wr.hi ? 'over-priced' : 'within its interval', between: [below ? below.key + ' (' + below.price + ')' : '-', above ? above.key + ' (' + above.price + ')' : '-'] };
     }
     print(res, B.log);
     if (o.save) { fs.mkdirSync(o.out, { recursive: true }); const f = path.join(o.out, `skill-canon-${o.name || (test ? Object.keys(test)[0] : 'check')}-${o.tag}.json`);
@@ -107,13 +115,13 @@ function print(res, log) {
   log(`currency ratio κ = stat point / canon point = ${ci(res.kappa)} (1 = the anchors and the stats agree); +1 Attack = ${ci(res.attackInHealth)} Health measured; least-squares rate ${L.r4(res.lsqRate.m * 100)}, R² ${res.line.r2}`);
   log('anchor           price   gain    worth from the others (95%)');
   res.anchors.forEach(a => log(`${a.key.padEnd(16)} ${String(a.price).padStart(5)}  ${(a.gain * 100).toFixed(1).padStart(5)}   ${ci(a.worth)}${a.off ? '   <- outside' : ''}`));
-  if (res.test) { const t = res.test; log(`test ${JSON.stringify(t.effects)}: worth ${ci(t.worth)} canon points (${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; net ${t.net}: ${t.verdict}; between ${t.between.join(' and ')}`); }
+  if (res.test) { const t = res.test; log(`test ${JSON.stringify(t.effects)}: gain ${(t.gain * 100).toFixed(1)}; worth ${ci(t.worth)} canon points (the ruler ${ci(t.worthRuler)}; ${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; net ${t.net}: ${t.verdict}; between ${t.between.join(' and ')}`); }
 }
 function md(res) {
   const t = res.test, lines = [`# Skill canon measure (${res.context.name}, ${res.generated.slice(0, 10)})`, '',
     `\`${res.tool}\`; game fingerprint \`${res.fingerprint}\`; ${res.context.fights} paired fights a variant, slot of ${res.context.copies} copies, Level ${res.context.level}; carriers ${res.carriers.join(', ')}.`, '',
     `- One canon point = ${ci(res.canonRate)} win rate (fraction; the median of the anchors' gain / price; least squares ${ci(res.lsqRate)}, R² ${res.line.r2}); one budget point of stats (${res.attackWeight}A + H) = ${ci(res.statRate)}; κ = ${ci(res.kappa)}; +1 Attack = ${ci(res.attackInHealth)} Health measured.`];
-  if (t) lines.push(`- **Test** \`${JSON.stringify(t.effects)}\`: worth **${ci(t.worth)}** canon points (${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; ${t.verdict}; between ${t.between.join(' and ')}.`);
+  if (t) lines.push(`- **Test** \`${JSON.stringify(t.effects)}\`: worth **${ci(t.worth)}** canon points by the median rate, ${ci(t.worthRuler)} by the ruler (${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; ${t.verdict}; between ${t.between.join(' and ')}.`);
   lines.push('', '| Anchor | Canon price | Gain (win rate) | Worth from the other anchors (95%) | |', '|---|---|---|---|---|', ...res.anchors.map(a => `| ${a.key} | ${a.price} | ${(a.gain * 100).toFixed(1)} | ${ci(a.worth)} | ${a.off ? 'outside' : ''} |`), '');
   return lines.join('\n');
 }

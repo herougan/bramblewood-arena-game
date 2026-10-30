@@ -10,6 +10,11 @@ P = os.path.join(ROOT, 'canonical', 'skill-costs.json')
 AT = '2026-10-31 (package BUDGET2, 3A + H)'
 # id -> (new value, why)
 EDITS = {
+    # item 4 (ANAD-1 "+2 Health in non-sea, +1 attack in sea"): one half is always on; the sea half is 3 points now (3A + H), the river half 2.
+    # s = the share of salt-water fights (rules.saltMap) over the road and the dungeons, read with tools/lib_bramble.js now that it loads
+    # the biome tables: 26 of 417 = 0.062 -> 3 x 0.062 + 2 x 0.938 = 2.06, up to the next tenth. Measured (tools/skill_canon_2026_10_31.js,
+    # 200 paired fights on 6 vanilla carriers, global fields): 2.31 [1.88, 2.93] stat points, 1.03 [0.87, 1.32] canon points (the ruler)
+    'anadromous': (2.1, 'priced at 3A + H: +1 Attack at sea (3 points) x the salt-water share 0.062 (26 of 417 fights, tools/lib_bramble.js with the biome tables) + +2 Health elsewhere (2 points) x 0.938 = 2.06, up to the next tenth. Measured: 2.31 [1.88, 2.93] stat points on 6 vanilla carriers (tools/skill_canon_2026_10_31.js, docs/balance/skill-canon-anadromous-2026-10-31.json). On a sea map\'s own list it would be worth up to 3'),
     'assault': (2.7, 'Assault N: a point of Attack on its own swing is 3 in the budget now (3A + H), 0.9 x 3 = 2.7 a point (was 0.9 x 2 = 1.8)'),
     'liege': (1.62, 'a plain Liege is Liege {Assault 2}: 0.3 x (2 x 2.7) = 1.62 (was 0.3 x 3.6 = 1.08)'),
     # the threshold skills' table values are the plain N's default price, documentation of what thrS computes: {+2/+2} is 8 points now
