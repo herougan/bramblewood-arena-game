@@ -11339,6 +11339,36 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cave-fire.is-glow .cf-f2{display:none;} .cave-fire.is-glow .cf-spark{background:#bff8f2; box-shadow:0 0 5px 2px rgba(60,220,220,.8);}
 .cave-fire.is-glow .cf-glow{background:radial-gradient(circle, rgba(90,232,222,.45), rgba(40,160,210,.16) 42%, transparent 70%);}
 @media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
+/* Map decor you can touch (2026-10-31, package MAPFX1, owner X7). The layer sits first in the canvas (z-index 0 = paint order is DOM order),
+   so the trail, nodes, curios, pawn and every button are above it; only its own spots take a tap. */
+.map-fx-layer{position:absolute; inset:0; z-index:0; pointer-events:none;}
+.conquest-map-canvas.layout-editing .map-fx-layer, .conquest-map-canvas.link-editing .map-fx-layer{display:none;}
+.mfx-hit{position:absolute; transform:translate(-50%,-50%); pointer-events:auto; cursor:pointer; border-radius:50%; background:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation; user-select:none;}
+.mfx-patch{position:absolute; pointer-events:none; background-repeat:no-repeat; -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); mask-image:radial-gradient(ellipse 50% 50% at 50% 54%, #000 58%, transparent 100%); image-rendering:pixelated;}
+/* trees: a very slight sway round the trunk's base, transform only (the JS leaves it out with reduced motion and Effects Low/None) */
+.mfx-sway{transform-origin:50% 80%; will-change:transform; animation:mfxSway 5s ease-in-out infinite alternate;}
+@keyframes mfxSway{from{transform:rotate(calc(var(--sw, .8deg) * -1));} to{transform:rotate(var(--sw, .8deg));}}
+.mfx-shake{transform-origin:50% 85%; animation:mfxShake .5s ease-in-out 1;}
+@keyframes mfxShake{0%{transform:rotate(0);} 18%{transform:rotate(-5deg) scale(1.04);} 42%{transform:rotate(4deg) scale(1.03);} 66%{transform:rotate(-2.5deg);} 85%{transform:rotate(1deg);} 100%{transform:rotate(0);}}
+.mfx-fx{position:absolute; pointer-events:none; z-index:2;}
+.mfx-ripple{width:10px; height:6px; margin:-3px 0 0 -5px; border-radius:50%; border:2px solid rgba(235,248,255,.85); box-shadow:0 0 4px rgba(150,210,255,.6); opacity:0; animation:mfxRipple .95s ease-out forwards;}
+.mfx-ripple.r2{animation-delay:.16s;}
+@keyframes mfxRipple{0%{opacity:.9; transform:scale(.5);} 100%{opacity:0; transform:scale(6);}}
+.mfx-drop{width:4px; height:4px; margin:-2px; border-radius:50%; background:#d8f2ff; box-shadow:0 0 3px rgba(140,210,255,.8); animation:mfxDrop .7s ease-out forwards;}
+@keyframes mfxDrop{0%{opacity:1; transform:translate(0,0);} 55%{opacity:1; transform:translate(var(--dx), var(--dy));} 100%{opacity:0; transform:translate(calc(var(--dx) * 1.2), calc(var(--dy) + 14px));}}
+.mfx-leaf{width:5px; height:4px; margin:-2px; border-radius:60% 0 60% 0; background:#6fae4c; box-shadow:0 0 0 1px #2f5a2a; animation:mfxLeaf .85s ease-out forwards;}
+@keyframes mfxLeaf{0%{opacity:1; transform:translate(0,0) rotate(0);} 100%{opacity:0; transform:translate(var(--dx), calc(var(--dy) + 18px)) rotate(200deg);}}
+.mfx-fx.crystal-sparkle{margin:0;}
+/* fires put out: the flame and the glow fade, a puff of smoke; tapped again they come back */
+.mfx-smoke{position:absolute; left:50%; top:24%; width:12px; height:12px; margin:-6px; border-radius:50%; pointer-events:none; opacity:0; background:radial-gradient(circle, rgba(205,205,215,.7), rgba(160,160,175,0) 70%); animation:mfxSmoke 1.6s ease-out forwards;}
+@keyframes mfxSmoke{0%{opacity:0; transform:translate(0,0) scale(.6);} 22%{opacity:.8;} 100%{opacity:0; transform:translate(var(--dx), -38px) scale(2.6);}}
+.cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark{animation:none !important; opacity:0 !important; transform:scale(.2) !important; transition:opacity .5s ease, transform .5s ease;}
+.cave-fire.is-out .cf-logs{background:#5a3a22; box-shadow:0 0 0 1px #2d1c10;}
+.cave-fire.is-out::after{display:none;}
+.map-campfire.is-out .mcf-fire, .map-campfire.is-out .mcf-glow, .map-campfire.is-out .mcf-spark{animation:none !important; opacity:0 !important; transition:opacity .5s ease;}
+.map-campfire .mcf-fire, .map-campfire .mcf-glow{transition:opacity .5s ease;}
+.conquest-map-canvas.mfx-fire-hover{cursor:pointer;}
+@media (prefers-reduced-motion: reduce){ .mfx-sway, .mfx-shake{animation:none !important;} .mfx-fx{display:none !important;} .cave-fire.is-out .cf-flame, .cave-fire.is-out .cf-glow, .cave-fire.is-out .cf-spark, .map-campfire.is-out *{transition:none !important;} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
