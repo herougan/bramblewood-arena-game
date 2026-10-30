@@ -35,9 +35,15 @@ function writeSkills(text, changed) { // changed: {id: entry}
 }
 function keepWas(e) { if (e.skill2Was) return e; const was = {}; ['value', 'pow', 'appliedAt', 'measuredS', 'measuredConf', 'measuredSE', 'measuredHow'].forEach(k => { if (e[k] != null) was[k] = e[k]; }); e.skill2Was = was; return e; }
 
+// the placebo (tools/skill2_measure_2026_10_31.js item 'placebo': {"skill2Placebo": true}, 1,000 fights): gain (win-rate fraction) and worth
+function placeboOf() { const J = fs.existsSync(MEAS) ? JSON.parse(fs.readFileSync(MEAS, 'utf8')) : { results: {} }, p = J.results.placebo;
+  if (!p) throw new Error('no placebo measure yet (node tools/skill2_measure_2026_10_31.js run --only placebo)'); return { gain: p.test.gain, W: p.test.worthRuler.m, ci: p.test.worthRuler }; }
 // ---------------------------------------------------------------- anchors (BUDGET2-2)
 function anchors(opt) {
   const { text, table } = readTable(), chk = JSON.parse(fs.readFileSync(CHECK, 'utf8')), sr = chk.statRate;
+  // the placebo's gain (a key the engine does not know: the CPU's cardValue + 1.5 a key) is each anchor's zero (one key each)
+  const g0 = placeboOf().gain;
+  chk.anchors.forEach(a => { a.gainRaw = a.gain; a.gain = a.gain - g0; if (a.worthStat) a.worthStat = { m: a.worthStat.m - g0 / sr.m, lo: a.worthStat.lo - g0 / sr.m, hi: a.worthStat.hi - g0 / sr.m }; });
   const by = {}; chk.anchors.forEach(a => { (by[a.id] = by[a.id] || []).push(a); });
   const changed = {}, rows = [];
   table.skills.filter(e => e.canon).forEach(e0 => {
@@ -51,8 +57,8 @@ function anchors(opt) {
     e.measuredS = r2(P[0].price / factorOf(Object.assign({}, e, { pow: e.pow }), P[0].n)); e.measuredConf = 'high';
     if (P[0].ws) e.measuredSE = r2((P[0].ws.hi - P[0].ws.lo) / 3.92 / factorOf(e, P[0].n));
     e.appliedAt = '2026-10-31 (package SKILL2, decision BUDGET2-2: the canon re-set from one shared measure, in 3A + H stat points)';
-    e.measuredHow = `2026-10-31 (SKILL2): node tools/skill_canon_2026_10_31.js check --games ${chk.context.fights} (global context, carriers ${chk.carriers.join(', ')}, 6 copies, Level 1; docs/balance/skill-canon-check-2026-10-31-skill2-before.json): price = the anchor's paired gain / the stat yardstick's gain a 3A + H point (${r2(sr.m * 100)} [${r2(sr.lo * 100)}, ${r2(sr.hi * 100)}] win-rate points); ${ci} (95%, a bootstrap over fights)`;
-    e.canonReason = (e.canonReason || '').replace(/; SKILL2: .*$/, '') + `; SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (${P.map(p => p.key + ' ' + p.old + ' -> ' + r2(p.price)).join(', ')})`;
+    e.measuredHow = `2026-10-31 (SKILL2): node tools/skill_canon_2026_10_31.js check --games ${chk.context.fights} (global context, carriers ${chk.carriers.join(', ')}, 6 copies, Level 1; docs/balance/skill-canon-check-2026-10-31-skill2-before.json): price = (the anchor's paired gain - the placebo's ${r2(g0 * 100)}, a key the engine does not know: the CPU's cardValue counts keys) / the stat yardstick's gain a 3A + H point (${r2(sr.m * 100)} [${r2(sr.lo * 100)}, ${r2(sr.hi * 100)}] win-rate points); ${ci} (95%, a bootstrap over fights)`;
+    e.canonReason = (e.canonReason || '').replace(/; SKILL2[ :(].*$/, '') + `; SKILL2 (2026-10-31): re-set from one shared measure in 3A + H points (${P.map(p => p.key + ' ' + p.old + ' -> ' + r2(p.price)).join(', ')})`;
     changed[e.id] = e; P.forEach(p => rows.push(`${p.key.padEnd(15)} ${String(p.old).padStart(6)} -> ${r2(p.price).toString().padStart(6)}  gain ${(p.gain * 100).toFixed(1)}  ${p.ws ? '[' + r2(p.ws.lo) + ', ' + r2(p.ws.hi) + ']' : ''}`));
     rows.push(`   ${e.id}: value ${e0.value}${e0.pow != null ? ' pow ' + e0.pow : ''} -> ${e.value}${e.pow != null ? ' pow ' + e.pow : ''} (${e.scale})`);
   });
@@ -98,6 +104,11 @@ const SPECIAL = {
 function confOf(w) { const se = (w.hi - w.lo) / 3.92, m = Math.abs(w.m); return se <= Math.max(0.3, 0.15 * m) ? 'high' : se <= Math.max(0.6, 0.3 * m) ? 'medium' : 'low'; }
 function prices(opt) {
   const { text, table } = readTable(), J = JSON.parse(fs.readFileSync(MEAS, 'utf8')), R = J.results, SK = {}; table.skills.forEach(e => { SK[e.id] = e; });
+  // each reading less the placebo's, once a key the test adds (the CPU's cardValue counts keys: Remember + its triggers is two, Hunter + Hunter vs two)
+  const Z = placeboOf().W; delete R.placebo;
+  Object.values(R).forEach(r => { if (r.placebo) return; /* measured with the canon tool's own placebo (1.1.0): already less it */
+    const k = Object.keys((r.test && r.test.effects) || {}).length || 1, w = r.test.worthRuler; r.test.worthRulerRaw = w; r.test.placeboKeys = k;
+    r.test.worthRuler = { m: w.m - k * Z, lo: w.lo - k * Z, hi: w.hi - k * Z }; });
   const SH = table.shorthands || {};
   const byId = {}; Object.values(R).forEach(r => { if (r.kind !== 'measure' || r.class === 'trigger') return; const id = r.id; (byId[id] = byId[id] || []).push(r); });
   const changed = {}, rows = [], kept = [], shChanged = {};
@@ -116,7 +127,17 @@ function prices(opt) {
         const sw = Wt.reduce((a, b) => a + b, 0), mx = X.reduce((t, x, i) => t + Wt[i] * x, 0) / sw, my = Y.reduce((t, y, i) => t + Wt[i] * y, 0) / sw;
         const sxx = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (x - mx), 0), sxy = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (Y[i] - my), 0);
         e.pow = r3(sxx ? sxy / sxx : +e.pow); e.value = r2(Math.exp(my - e.pow * mx)); why = 'v x N^pow fitted in log space';
-      } else { const num = use.reduce((t, p) => t + p.w * p.W * factorOf(e, p.n), 0), den = use.reduce((t, p) => t + p.w * factorOf(e, p.n) ** 2, 0); e.value = r2(den ? num / den : e.value); why = use.length > 1 ? 'least squares over ' + use.length + ' N' : ''; }
+      } else { const num = use.reduce((t, p) => t + p.w * p.W * factorOf(e, p.n), 0), den = use.reduce((t, p) => t + p.w * factorOf(e, p.n) ** 2, 0); e.value = r2(den ? num / den : e.value); why = use.length > 1 ? 'least squares over ' + use.length + ' N' : '';
+        // two or more N whose readings the entry's scale fits badly (Arrow 1 / 2 read 4.4 / 6.7, not 1 : 2): a power curve v x N^pow (scale n)
+        // when it halves the weighted squared error
+        const q = use.filter(p => p.W > 0 && numOf(p.n) > 0);
+        if (new Set(q.map(p => numOf(p.n))).size >= 2 && e.scale !== 'fixed') {
+          const X = q.map(p => Math.log(numOf(p.n))), Y = q.map(p => Math.log(p.W)), Wt = q.map(p => p.w), sw = Wt.reduce((a, b) => a + b, 0);
+          const mx = X.reduce((t, x, i) => t + Wt[i] * x, 0) / sw, my = Y.reduce((t, y, i) => t + Wt[i] * y, 0) / sw;
+          const sxx = X.reduce((t, x, i) => t + Wt[i] * (x - mx) ** 2, 0), sxy = X.reduce((t, x, i) => t + Wt[i] * (x - mx) * (Y[i] - my), 0), pw = sxx ? sxy / sxx : 1, v = Math.exp(my - pw * mx);
+          const sse = f => use.reduce((t, p) => t + p.w * (p.W - f(p)) ** 2, 0), sScale = sse(p => e.value * factorOf(e, p.n)), sPow = sse(p => v * Math.pow(Math.max(1, numOf(p.n)), pw));
+          if (sPow < 0.5 * sScale) { why = `a power curve fits its ${q.length} N better than its '${e.scale}' scale (squared error ${r2(sPow)} vs ${r2(sScale)}): scale n, v x N^pow`; e.scale = 'n'; e.value = r2(v); e.pow = r3(pw); }
+        } }
       fitv = e.value;
     }
     if (CONDITIONAL[id] && e.value < e0.value) { kept.push(`${id}: reads ${e.value} < ${e0.value} (${CONDITIONAL[id]}); kept`); rows.push({ id, kind: 'kept', old: e0.value, fit: e.value, note: CONDITIONAL[id] + ': a low reading is not applied', pts }); return; }

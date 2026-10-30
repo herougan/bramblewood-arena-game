@@ -62,8 +62,11 @@ function buildPlan() {
   const xd = { triggers: [{ on: 'onDeath', do: 'exileSelf' }] };
   [1, 2].forEach(n => add('remember=' + n + '+T:onDeath>exileSelf', { kind: 'measure', class: 'combo', id: 'remember', n, test: Object.assign({ remember: n }, xd), pair: true }, n === 1 ? 'ashbone-ghoul' : 'marsh-wisp'));
   add('arrow=1+fletcher=1', { kind: 'measure', class: 'combo', id: 'fletcher', n: 1, test: { arrow: 1, fletcher: 1 }, pair: true, minus: 'arrow=1' }, 'eagle-owl-quartermaster');
+  // the placebo: a key the engine does not know. The CPU values a card by its number of effect keys (bramblewood-engine.js cardValue,
+  // + 1.5 a key: it pitches the card later), so any added key reads a small gain on its own; that reading is the measure's zero for a skill
+  add('placebo', { kind: 'measure', class: 'placebo', id: 'skill2Placebo', n: true, test: { skill2Placebo: true }, pair: true }, '(none)');
   Object.values(items).forEach(it => { if (it.id === 'remember' && !it.pair || it.id === 'onDeath>exileSelf') { it.kind = 'skip'; it.why = 'measured as the pair Remember N + On Death → Exile self'; } });
-  const list = Object.values(items).map(it => Object.assign(it, { nCards: it.cards.length, deck1: DECK1_1.includes(it.id) || it.id === 'onDeath>exileSelf' || it.key === 'arrow=1' }))
+  const list = Object.values(items).map(it => Object.assign(it, { nCards: it.cards.length, deck1: DECK1_1.includes(it.id) || it.id === 'onDeath>exileSelf' || it.key === 'arrow=1' || it.key === 'placebo' }))
     .sort((a, b) => (b.deck1 - a.deck1) || b.nCards - a.nCards || (a.key < b.key ? -1 : 1));
   return list;
 }
@@ -97,7 +100,7 @@ async function main(argv) {
       const M = gamesOf(it), s = Date.now();
       const res = await C.run(Object.assign(L.defaults(), { cmd: 'measure', test: it.test, games: M, cacheDir: o.cacheDir, workers: o.workers, quiet: true }));
       j.results[it.key] = { key: it.key, id: it.id, class: it.class, kind: it.kind, n: it.n, nCards: it.nCards, cards: it.cards, fights: M, fingerprint: res.fingerprint,
-        canonRate: res.canonRate, statRate: res.statRate, kappa: res.kappa, test: res.test };
+        canonRate: res.canonRate, statRate: res.statRate, kappa: res.kappa, placebo: res.placebo || null /* set: the test's reading is already less the placebo's (canon tool 1.1.0) */, test: res.test };
       writeOut(j); done++;
       const t = res.test; console.log(`${it.key.slice(0, 50).padEnd(50)} ${String(M).padStart(5)}  gain ${(t.gain * 100).toFixed(1).padStart(5)}  worth ${t.worthRuler.m} [${t.worthRuler.lo}, ${t.worthRuler.hi}]  price ${t.price}  ${Math.round((Date.now() - s) / 1000)} s`);
     }
