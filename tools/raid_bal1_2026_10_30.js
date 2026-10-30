@@ -45,19 +45,26 @@ function buildDecks(plus){
   return decks;
 }
 
+// --edit '{"parts": {"left": {"fight": {"castleHp": 470}}}, "tuning": {...}}': a trial on top of the raid file (parts merged by id, deep;
+// a deck or an array is replaced whole)
+function merge(a, b){ if(!b || typeof b !== 'object' || Array.isArray(b)) return b; const o = Object.assign({}, a || {});
+  Object.keys(b).forEach(k=>{ o[k] = (k === 'deck' || Array.isArray(b[k])) ? b[k] : merge(o[k], b[k]); }); return o; }
+function applyEdit(def, ed){ if(!ed) return def; const out = Object.assign({}, def);
+  Object.keys(ed).forEach(k=>{ if(k === 'parts') out.parts = def.parts.map(p=> ed.parts[p.id] ? merge(p, ed.parts[p.id]) : p); else out[k] = merge(def[k], ed[k]); });
+  return out; }
 function gameKey(){ return sha(['arena_app.js', 'bramblewood-engine.js', 'bramblewood-raid.js', 'bramblewood-trench.js', 'canonical/cards.json', 'bramblewood-budget.js'].map(f=> fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\u0000')); }
 
 function measure(){
   const tag = arg('tag', 'before'), n = Number(arg('n', 40)), plus = Number(arg('plus', 2));
   const raidsFile = path.resolve(arg('raids', path.join(ROOT, 'canonical/raids.json')));
-  const def = JSON.parse(fs.readFileSync(raidsFile, 'utf8'))[0];
+  const def = applyEdit(JSON.parse(fs.readFileSync(raidsFile, 'utf8'))[0], arg('edit', null) ? JSON.parse(arg('edit')) : null);
   const allDecks = buildDecks(plus), deckKeys = String(arg('decks', 'map,ref2,opt')).split(',');
   const parts = String(arg('parts', 'left,right,tail,core')).split(','), stages = String(arg('stages', 's1,s0.5')).split(',');
   const S = require('./raid_full_sim.js'); S.setDecks(allDecks);
   fs.mkdirSync(CACHE, {recursive: true});
   const gk = gameKey(), out = loadOut(); out.decks = out.decks || {}; out.decks['plus' + plus] = allDecks;
   const run = out.runs[tag] = out.runs[tag] || {raids: path.relative(ROOT, raidsFile), plus, n, cells: {}};
-  run.raidSha = sha(JSON.stringify(def)); run.tuning = def.tuning; run.castleHp = def.parts.map(p=> p.id + ':' + p.fight.castleHp).join(' ');
+  run.raidSha = sha(JSON.stringify(def)); if(arg('edit', null)) run.edit = JSON.parse(arg('edit')); run.tuning = def.tuning; run.castleHp = def.parts.map(p=> p.id + ':' + p.fight.castleHp).join(' ');
   const t0 = Date.now();
   for(const dk of deckKeys) for(const partId of parts) for(const st of stages){
     const key = [dk, partId, st].join('|'), ck = path.join(CACHE, sha([gk, JSON.stringify(def), JSON.stringify(allDecks[dk]), partId, st, n].join('|')) + '.json');

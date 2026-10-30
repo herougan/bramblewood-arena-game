@@ -429,6 +429,742 @@
     "weakenFloor": 0.6
    },
    "castleHp": "left:410 right:410 tail:410 core:200"
+  },
+  "tA": {
+   "raids": "canonical/raids.json",
+   "plus": 2,
+   "n": 40,
+   "cells": {
+    "map|left|s1": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 224,
+     "avgSurvived": 20,
+     "avgContribution": 1154,
+     "ranks": {
+      "SS": 30,
+      "S": 10
+     }
+    },
+    "map|right|s1": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 32,
+     "win": 0.8,
+     "avgDealt": 258,
+     "avgSurvived": 20,
+     "avgContribution": 949,
+     "ranks": {
+      "A": 22,
+      "S": 11,
+      "B": 7
+     }
+    },
+    "map|tail|s1": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 207,
+     "avgSurvived": 20,
+     "avgContribution": 1031,
+     "ranks": {
+      "SS": 16,
+      "A": 5,
+      "S": 18,
+      "B": 1
+     }
+    },
+    "map|core|s1": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 16,
+     "win": 0.4,
+     "avgDealt": 41,
+     "avgSurvived": 19.4,
+     "avgContribution": 438,
+     "ranks": {
+      "C": 8,
+      "D": 6,
+      "A": 12,
+      "-": 6,
+      "B": 5,
+      "S": 1,
+      "E": 2
+     }
+    },
+    "ref2|left|s1": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 34,
+     "win": 0.85,
+     "avgDealt": 226,
+     "avgSurvived": 20,
+     "avgContribution": 1300,
+     "ranks": {
+      "SS": 38,
+      "S": 2
+     }
+    },
+    "ref2|right|s1": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 39,
+     "win": 0.975,
+     "avgDealt": 270,
+     "avgSurvived": 20,
+     "avgContribution": 1132,
+     "ranks": {
+      "S": 22,
+      "A": 16,
+      "B": 2
+     }
+    },
+    "ref2|tail|s1": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 31,
+     "win": 0.775,
+     "avgDealt": 218,
+     "avgSurvived": 20,
+     "avgContribution": 1180,
+     "ranks": {
+      "SS": 31,
+      "A": 2,
+      "S": 5,
+      "B": 2
+     }
+    },
+    "ref2|core|s1": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 6,
+     "win": 0.15,
+     "avgDealt": 26,
+     "avgSurvived": 17,
+     "avgContribution": 171,
+     "ranks": {
+      "-": 22,
+      "B": 8,
+      "D": 3,
+      "A": 4,
+      "E": 1,
+      "C": 2
+     }
+    },
+    "opt|left|s1": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 214,
+     "avgSurvived": 20,
+     "avgContribution": 1143,
+     "ranks": {
+      "SS": 36,
+      "S": 4
+     }
+    },
+    "opt|right|s1": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 253,
+     "avgSurvived": 20,
+     "avgContribution": 925,
+     "ranks": {
+      "S": 16,
+      "A": 19,
+      "B": 4,
+      "SS": 1
+     }
+    },
+    "opt|tail|s1": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 27,
+     "win": 0.675,
+     "avgDealt": 202,
+     "avgSurvived": 20,
+     "avgContribution": 983,
+     "ranks": {
+      "S": 19,
+      "SS": 18,
+      "B": 1,
+      "C": 1,
+      "A": 1
+     }
+    },
+    "opt|core|s1": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 8,
+     "win": 0.2,
+     "avgDealt": 32,
+     "avgSurvived": 18.3,
+     "avgContribution": 219,
+     "ranks": {
+      "D": 5,
+      "-": 16,
+      "B": 9,
+      "E": 2,
+      "C": 7,
+      "A": 1
+     }
+    }
+   },
+   "raidSha": "c6c2b55c7a6e",
+   "edit": {
+    "parts": {
+     "left": {
+      "fight": {
+       "castleHp": 480
+      }
+     },
+     "right": {
+      "fight": {
+       "castleHp": 540
+      }
+     },
+     "tail": {
+      "fight": {
+       "castleHp": 470
+      }
+     },
+     "core": {
+      "fight": {
+       "castleHp": 140
+      }
+     }
+    }
+   },
+   "tuning": {
+    "bossAtkPct": 0.2,
+    "bossHpPct": 0.15,
+    "raiderCastleBonus": 60,
+    "alliesPerTurn": 2,
+    "rowCap": 2,
+    "reinforce": {
+     "max": 0,
+     "every": 3,
+     "from": 3
+    },
+    "weakenFloor": 0.6
+   },
+   "castleHp": "left:480 right:540 tail:470 core:140"
+  },
+  "tB": {
+   "raids": "canonical/raids.json",
+   "plus": 2,
+   "n": 40,
+   "cells": {
+    "map|left|s1": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 269,
+     "avgSurvived": 20,
+     "avgContribution": 1154,
+     "ranks": {
+      "SS": 30,
+      "S": 10
+     }
+    },
+    "map|right|s1": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 31,
+     "win": 0.775,
+     "avgDealt": 321,
+     "avgSurvived": 20,
+     "avgContribution": 915,
+     "ranks": {
+      "A": 19,
+      "S": 9,
+      "B": 12
+     }
+    },
+    "map|tail|s1": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 23,
+     "win": 0.575,
+     "avgDealt": 244,
+     "avgSurvived": 20,
+     "avgContribution": 873,
+     "ranks": {
+      "SS": 16,
+      "A": 5,
+      "S": 18,
+      "B": 1
+     }
+    },
+    "map|core|s1": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 19,
+     "win": 0.475,
+     "avgDealt": 34,
+     "avgSurvived": 19.5,
+     "avgContribution": 511,
+     "ranks": {
+      "C": 9,
+      "D": 4,
+      "A": 12,
+      "-": 5,
+      "B": 6,
+      "E": 3,
+      "S": 1
+     }
+    },
+    "ref2|left|s1": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 33,
+     "win": 0.825,
+     "avgDealt": 276,
+     "avgSurvived": 20,
+     "avgContribution": 1264,
+     "ranks": {
+      "SS": 37,
+      "S": 3
+     }
+    },
+    "ref2|right|s1": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 37,
+     "win": 0.925,
+     "avgDealt": 345,
+     "avgSurvived": 20,
+     "avgContribution": 1087,
+     "ranks": {
+      "S": 19,
+      "A": 19,
+      "B": 2
+     }
+    },
+    "ref2|tail|s1": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 259,
+     "avgSurvived": 20,
+     "avgContribution": 1150,
+     "ranks": {
+      "SS": 31,
+      "A": 3,
+      "S": 4,
+      "B": 2
+     }
+    },
+    "ref2|core|s1": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 9,
+     "win": 0.225,
+     "avgDealt": 23,
+     "avgSurvived": 17,
+     "avgContribution": 244,
+     "ranks": {
+      "-": 22,
+      "A": 5,
+      "B": 7,
+      "D": 3,
+      "E": 1,
+      "C": 2
+     }
+    },
+    "opt|left|s1": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 28,
+     "win": 0.7,
+     "avgDealt": 257,
+     "avgSurvived": 20,
+     "avgContribution": 1109,
+     "ranks": {
+      "SS": 35,
+      "S": 5
+     }
+    },
+    "opt|right|s1": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 29,
+     "win": 0.725,
+     "avgDealt": 312,
+     "avgSurvived": 20,
+     "avgContribution": 901,
+     "ranks": {
+      "S": 14,
+      "A": 21,
+      "B": 4,
+      "SS": 1
+     }
+    },
+    "opt|tail|s1": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 16,
+     "win": 0.4,
+     "avgDealt": 231,
+     "avgSurvived": 20,
+     "avgContribution": 686,
+     "ranks": {
+      "S": 19,
+      "SS": 16,
+      "B": 2,
+      "C": 1,
+      "A": 2
+     }
+    },
+    "opt|core|s1": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 11,
+     "win": 0.275,
+     "avgDealt": 28,
+     "avgSurvived": 18.4,
+     "avgContribution": 290,
+     "ranks": {
+      "D": 5,
+      "-": 15,
+      "B": 10,
+      "E": 3,
+      "C": 6,
+      "A": 1
+     }
+    }
+   },
+   "raidSha": "140b37dba7e4",
+   "edit": {
+    "parts": {
+     "left": {
+      "fight": {
+       "castleHp": 600
+      }
+     },
+     "right": {
+      "fight": {
+       "castleHp": 700
+      }
+     },
+     "tail": {
+      "fight": {
+       "castleHp": 580
+      }
+     },
+     "core": {
+      "fight": {
+       "castleHp": 110
+      }
+     }
+    }
+   },
+   "tuning": {
+    "bossAtkPct": 0.2,
+    "bossHpPct": 0.15,
+    "raiderCastleBonus": 60,
+    "alliesPerTurn": 2,
+    "rowCap": 2,
+    "reinforce": {
+     "max": 0,
+     "every": 3,
+     "from": 3
+    },
+    "weakenFloor": 0.6
+   },
+   "castleHp": "left:600 right:700 tail:580 core:110"
+  },
+  "tC": {
+   "raids": "canonical/raids.json",
+   "plus": 2,
+   "n": 40,
+   "cells": {
+    "map|left|s1": {
+     "deck": "map",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 185,
+     "avgSurvived": 20,
+     "avgContribution": 991,
+     "ranks": {
+      "S": 21,
+      "SS": 13,
+      "A": 6
+     }
+    },
+    "map|right|s1": {
+     "deck": "map",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 32,
+     "win": 0.8,
+     "avgDealt": 190,
+     "avgSurvived": 20,
+     "avgContribution": 985,
+     "ranks": {
+      "A": 17,
+      "S": 19,
+      "SS": 4
+     }
+    },
+    "map|tail|s1": {
+     "deck": "map",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 24,
+     "win": 0.6,
+     "avgDealt": 171,
+     "avgSurvived": 20,
+     "avgContribution": 829,
+     "ranks": {
+      "SS": 9,
+      "S": 23,
+      "B": 1,
+      "C": 1,
+      "A": 6
+     }
+    },
+    "map|core|s1": {
+     "deck": "map",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 11,
+     "win": 0.275,
+     "avgDealt": 30,
+     "avgSurvived": 19,
+     "avgContribution": 299,
+     "ranks": {
+      "B": 7,
+      "-": 12,
+      "D": 4,
+      "A": 9,
+      "C": 5,
+      "E": 3
+     }
+    },
+    "ref2|left|s1": {
+     "deck": "ref2",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 32,
+     "win": 0.8,
+     "avgDealt": 188,
+     "avgSurvived": 20,
+     "avgContribution": 999,
+     "ranks": {
+      "S": 33,
+      "SS": 6,
+      "A": 1
+     }
+    },
+    "ref2|right|s1": {
+     "deck": "ref2",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 33,
+     "win": 0.825,
+     "avgDealt": 193,
+     "avgSurvived": 20,
+     "avgContribution": 1010,
+     "ranks": {
+      "S": 34,
+      "A": 6
+     }
+    },
+    "ref2|tail|s1": {
+     "deck": "ref2",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 183,
+     "avgSurvived": 20,
+     "avgContribution": 960,
+     "ranks": {
+      "S": 27,
+      "A": 7,
+      "SS": 4,
+      "B": 2
+     }
+    },
+    "ref2|core|s1": {
+     "deck": "ref2",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 9,
+     "win": 0.225,
+     "avgDealt": 21,
+     "avgSurvived": 16,
+     "avgContribution": 234,
+     "ranks": {
+      "-": 25,
+      "C": 8,
+      "B": 5,
+      "D": 2
+     }
+    },
+    "opt|left|s1": {
+     "deck": "opt",
+     "part": "left",
+     "stage": "s1",
+     "n": 40,
+     "wins": 30,
+     "win": 0.75,
+     "avgDealt": 182,
+     "avgSurvived": 20,
+     "avgContribution": 942,
+     "ranks": {
+      "S": 35,
+      "SS": 4,
+      "A": 1
+     }
+    },
+    "opt|right|s1": {
+     "deck": "opt",
+     "part": "right",
+     "stage": "s1",
+     "n": 40,
+     "wins": 31,
+     "win": 0.775,
+     "avgDealt": 188,
+     "avgSurvived": 20,
+     "avgContribution": 945,
+     "ranks": {
+      "S": 28,
+      "A": 12
+     }
+    },
+    "opt|tail|s1": {
+     "deck": "opt",
+     "part": "tail",
+     "stage": "s1",
+     "n": 40,
+     "wins": 24,
+     "win": 0.6,
+     "avgDealt": 166,
+     "avgSurvived": 20,
+     "avgContribution": 783,
+     "ranks": {
+      "S": 27,
+      "SS": 4,
+      "A": 6,
+      "B": 2,
+      "C": 1
+     }
+    },
+    "opt|core|s1": {
+     "deck": "opt",
+     "part": "core",
+     "stage": "s1",
+     "n": 40,
+     "wins": 7,
+     "win": 0.175,
+     "avgDealt": 22,
+     "avgSurvived": 16.8,
+     "avgContribution": 187,
+     "ranks": {
+      "E": 3,
+      "-": 20,
+      "C": 8,
+      "D": 6,
+      "B": 3
+     }
+    }
+   },
+   "raidSha": "88648f77ae01",
+   "edit": {
+    "tuning": {
+     "bossAtkPct": 0.3,
+     "bossHpPct": 0.25
+    },
+    "parts": {
+     "core": {
+      "fight": {
+       "castleHp": 110
+      }
+     }
+    }
+   },
+   "tuning": {
+    "bossAtkPct": 0.3,
+    "bossHpPct": 0.25,
+    "raiderCastleBonus": 60,
+    "alliesPerTurn": 2,
+    "rowCap": 2,
+    "reinforce": {
+     "max": 0,
+     "every": 3,
+     "from": 3
+    },
+    "weakenFloor": 0.6
+   },
+   "castleHp": "left:410 right:410 tail:410 core:110"
   }
  },
  "decks": {
