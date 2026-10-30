@@ -3937,6 +3937,16 @@
      .84 x 1.15 = .966 of a front card, the rows as tall as their cards. */
   .board-row.reserve-row.raid-rows{height:calc(var(--match-card-h, 149px) * .966 + 8px) !important;}
   .board-row.reserve-row.raid-rows > .board-card{transform:scale(.966); margin-bottom:calc(var(--match-card-h, 149px) * -.034);}
+  /* 2026-10-30 (package COOP3, owner W10: "For multiplayer dungeons - the other players' cards should be the same size."): a group dungeon's
+     rows (.coop-rows) are full rows: an ally's cards at the size of yours (CS-D's in-match --match-card-w), not a back row's 84%, and not dimmed.
+     W4: the vault's own middle row (it never plays there) is hidden while it holds nothing, so the board's height goes to the rows in use. */
+  .board-row.reserve-row.coop-rows{height:calc(var(--match-card-h, 149px) + 8px) !important; opacity:1;}
+  .board-row.reserve-row.coop-rows > .board-card{transform:none; margin-bottom:0;}
+  .board-row.reserve-row.coop-rows .board-card.is-reserve{filter:none;}
+  .board-row.reserve-row.coop-rows.enemy.is-empty{display:none !important;}
+  @media (min-width:701px){ #appWrap.in-match.gd-match, #appWrap.in-match.gd-match .battlefield{--mc-k:var(--gd-k, 1);} } /* COOP3: the match fitted to the window (centreFieldInFs) */
+  .pass-overlay.gd-rw-overlay{z-index:9100; overflow-y:auto;} /* COOP3 (W6): a floor's rewards window, over the vault's floor panel (.gd-overlay, 9000) */
+  .gd-rw-overlay .winloss-card{max-height:calc(100dvh - 40px); overflow-y:auto;}
   /* RV2: a reserve strike under reduced motion / Low effects (no lunge), and an ally's play: its name tag, its hand of card backs,
      the face-down card it plays (turned face up mid-flight), the sparkle trail */
   .board-card.raid-strike-flash .card-tile{box-shadow:0 0 0 2px rgba(255,214,120,.95), 0 0 14px 3px rgba(255,190,80,.55); transition:box-shadow .12s;}

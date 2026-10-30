@@ -25492,6 +25492,10 @@ async function gdJoin(code){
   gdBegin(kind, code, false);
 }
 // opts (tests): {transport, peerId} to join an in-page hub instead
+// 2026-10-30 (package COOP3, owner W4: "The allies should play their cards first if CPU btw, taking a random amount of time between 0.5 to 3.0s.
+// (0.5 to 1.5s in the first turn only)"): how long a CPU ally waits before its play, drawn per seat each turn (the room's host times it,
+// CoopM.createSession's cpuDelay). Presentation only: its acts are logged and numbered like a player's, so every page replays the same fight.
+function gdCpuDelay(T){ const first = !T || (T.round | 0) <= 1; return Math.round(first ? 500 + Math.random() * 1000 : 500 + Math.random() * 2500); }
 function gdBegin(kind, code, host, opts){
   opts = opts || {};
   let transport = opts.transport || (kind === 'live' ? CoopM.supabaseTransport(sbClient, code, {private: !!GD.server4p}) : kind === 'local' ? CoopM.broadcastChannelTransport(code) : null);
@@ -25502,7 +25506,7 @@ function gdBegin(kind, code, host, opts){
   const maxHumans = kind === 'live' ? (GD.server4p ? 4 : GD_LIVE_MAX_BEFORE_SQL) : kind === 'solo' ? 1 : 4;
   gdDefs();
   GD.s = CoopM.createSession({transport, me: {peerId, name: gdMyName(), deck: publicDeck(myDeckCounts), leader: matchLeaderId(), castle: myCharacterId, castleHp: gdCastleHp()}, host, code,
-    typeId: 'hollow', deps: gdDeps(), maxHumans, onEvent: gdOnEvent, apply: gdApply, batchMs: opts.batchMs});
+    typeId: 'hollow', deps: gdDeps(), maxHumans, onEvent: gdOnEvent, apply: gdApply, batchMs: opts.batchMs, cpuDelay: opts.cpuDelay || gdCpuDelay}); // + COOP3: the CPU allies take their time
   GD.phase = host ? 'lobby' : 'connecting';
   if(!host){ clearTimeout(GD.joinTimer); GD.joinTimer = setTimeout(()=>{ if(GD.phase === 'connecting'){ showToast(TX('ui.ar3-not-found'), 'warn'); gdClose(true); } }, 6000); }
   gdShow();
@@ -25522,7 +25526,7 @@ function gdOnEvent(kind, d){
     showToast(d.why === 'taken' || d.why === 'cell' ? (by ? TX('ui.coop2-taken', {name: by}) : TX('ui.coop2-taken-anon')) : TX('ui.coop2-refused'), 'warn');
     const m = matchState; if(m && m.coop){ delete m.coop.origins[d.act && d.act.uid]; lastBoardSig = {1: null, 2: null}; fightSafe(renderHand, 'renderHand'); fightSafe(renderBoard, 'renderBoard'); fightSafe(updateControlsDisabled); } gdRenderCoopBar(); return; }
   if(kind === 'desync'){ try{ console.warn('[coop] out of step', d); }catch(e){} window.__bwCoopDesyncs = (window.__bwCoopDesyncs || 0) + 1; return; }
-  if(kind === 'floorEnd'){ GD.floorEnd = Object.assign({}, d, {pay: gdPayFloor(d)}); GD.phase = 'floorEnd'; setTimeout(()=>{ if(GD.s && GD.phase === 'floorEnd') gdShow(); }, 900); return; }
+  if(kind === 'floorEnd'){ GD.floorEnd = Object.assign({}, d, {pay: gdPayFloor(d)}); GD.phase = 'floorEnd'; setTimeout(()=>{ if(GD.s && (GD.phase === 'floorEnd' || GD.phase === 'end')){ if(GD.phase === 'floorEnd') gdShow(); gdRewardsShow(); } }, 900); return; } // + COOP3 (W6): the fight's rewards window over the floor panel
   if(kind === 'end'){ gdRunEnded(d.how); setTimeout(()=>{ if(GD.s) gdShow(); }, 900); return; }
   if(kind === 'hostChanged'){ if(d.hostId === S.me.peerId && GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('promote_coop_host', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} // the room row follows the new host (4p SQL)
     showToast(d.hostId === S.me.peerId ? TX('ui.ar3-you-host') : TX('ui.ar3-host-now', {name: gdNameOfPeer(d.hostId)}), 'ok'); gdRender(); gdRenderCoopBar(); return; }
@@ -25544,7 +25548,7 @@ function gdStartFloorMatch(T){
     battleMode: 'open', leaderDefId: null, leaderUid: T.leaderUids[seat] != null ? T.leaderUids[seat] : null, raidRoundCap: T.cap, opponentName: gdFloorName(T.floorIdx),
     aiLevel: T.aiLevel, playRows: 'any', standard: true, enemyBehaviour: null, coop: {T, seat, origins: {}}};
   lastBoardSig = {1: null, 2: null}; knownBoardUids = new Set();
-  GD.phase = 'fight'; gdHide();
+  GD.phase = 'fight'; gdHide(); gdRewardsClose(); GD.turnAt = performance.now(); centreFieldInFs._gdN = 0; // + COOP3: the floor's rewards window goes; the CPU's clock; a fresh fit
   try{ if(currentTab !== 'play') switchTab('play'); }catch(e){}
   renderPlay(); gdRenderCoopBar();
   try{ showToast(`${f.icon || ''} ${TX('ui.ar3-floor', {n: T.floorIdx + 1, total: CoopM.DUNGEONS.hollow.floors.length})} · ${gdFloorName(T.floorIdx)}`, 'ok'); }catch(e){}
@@ -25562,7 +25566,7 @@ function gdClaimPlay(uid, side, dropPoint, popts){
   let act;
   if(CoopM.noSlotCard(d)) act = {kind: 'play', uid};
   else { let slot = typeof side === 'number' ? side : null;
-    if(slot == null){ const legal = CoopM.rowLegalSlots(T, row), want = side === 'left' ? -1 : side === 'right' ? 1 : 0;
+    if(slot == null){ const legal = CoopM.rowLegalSlots(T, row, m.coop.seat) /* COOP3: my own network */, want = side === 'left' ? -1 : side === 'right' ? 1 : 0;
       const pick = legal.filter(sl=> !want || sl === 0 || Math.sign(sl) === want).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b); slot = pick.length ? pick[0] : (legal[0] != null ? legal[0] : null); }
     if(slot == null){ denyShake(tile); return; }
     act = {kind: 'play', uid, row, slot}; }
@@ -25578,6 +25582,16 @@ function gdClaim(c){
   const r = S.claim(c); if(!r || !r.ok){ if(c.kind === 'pitch') denyShake(document.querySelector(`.card-tile[data-handuid="${c.uid}"]`) || document.getElementById('dropDiscard')); if(r && r.why === 'done' && c.kind === 'pass') return; if(c.kind === 'pitch' && r && r.why === 'pitched') return; showToast(TX('ui.coop2-refused'), 'warn'); return; }
   fightSafe(renderHand, 'renderHand'); fightSafe(updateControlsDisabled); gdRenderCoopBar();
 }
+// 2026-10-30 (package COOP3, owner W6: "Give auto-play to multi-player dungeons."): Auto plays my seat as a CPU ally would (CoopM.cpuChoice:
+// my best affordable unit into my own network, my row first, else a pitch, else Pass), one claim at a time through the normal claim path, so
+// the room sees my plays as mine. Called by autoplayStep's timer while Auto is on.
+function gdAutoStep(m){
+  const S = GD.s; if(!m || !m.coop || !S || m.over || m.resolving || gdMyDone(m) || Object.keys(S.pending).length) return;
+  const a = CoopM.cpuChoice(m.coop.T, m.coop.seat); if(!a) return;
+  if(a.kind === 'play'){ const before = Object.keys(S.pending).length; gdClaimPlay(a.uid, a.slot, null, a.row ? {reserve: a.row} : undefined); if(Object.keys(S.pending).length === before && !gdMyDone(m)) gdClaim({kind: 'pass'}); return; }
+  if(a.kind === 'pitch') return gdClaim({kind: 'pitch', uid: a.uid});
+  gdClaim({kind: 'pass'});
+}
 // An act the host numbered lands on this page: the engine call (CoopM.applyAct) and the normal play's look. Returns at once for a play /
 // pitch / pass; a round runs the normal round (aiActNow, then resolveRound) and resolves when its replay is done.
 function gdApply(act, T, S){
@@ -25585,6 +25599,7 @@ function gdApply(act, T, S){
   if(!m || !m.coop || m.coop.T !== T) return CoopM.applyHeadless(T, act); // no fight on screen for this table (it never should be)
   if(act.kind === 'round') return gdRoundOnPage(m);
   const mine = act.seat === m.coop.seat, events = [];
+  try{ const st = S && S.room && S.room.seats[act.seat]; if(st && st.cpu && act.kind !== 'round') (GD.cpuLog = GD.cpuLog || []).push({seat: act.seat, kind: act.kind, round: T.round, ms: Math.round(performance.now() - (GD.turnAt || 0))}); }catch(e){} // COOP3: when a CPU ally acted, after its turn began
   const res = CoopM.applyAct(T, act, events);
   if(!res.ok) return res;
   try{
@@ -25608,6 +25623,7 @@ async function gdRoundOnPage(m){
   try{ await replayAiArrivalEvents(m); }catch(e){}
   await sleep(180);
   await resolveRound();
+  GD.turnAt = performance.now(); // COOP3: the next turn begins (the CPU allies' delays count from here)
   gdRenderCoopBar();
   if(m.over || m.resultDecided){ const w = m.winner; return {over: true, winner: w, reason: m.endReason === 'raidTime' ? 'time' : w === 1 ? 'castle' : 'party'}; }
   return {over: null};
@@ -25641,7 +25657,7 @@ function gdClose(silent){
   // (Back, Leave) lands on the Arena page with the Co-op pane open; a silent close (an error toast, a refused join) and the lobby keep their old place
   const toArena = !silent && !!S && (GD.phase === 'end' || GD.phase === 'floorEnd' || GD.phase === 'fight');
   if(S){ try{ S.leave(); }catch(e){} if(GD.kind === 'live' && GD.roomId && GD.server4p) try{ sbClient.rpc('leave_coop_room', {p_room: GD.roomId}).then(()=>{}, ()=>{}); }catch(e){} if(GD.kind === 'live' && S.isHost && GD.roomId && S.room && S.room.status === 'lobby') try{ sbClient.from('coop_rooms').update({status: 'closed', updated_at: new Date().toISOString()}).eq('id', GD.roomId).then(()=>{}, ()=>{}); }catch(e){} }
-  clearTimeout(GD.joinTimer); GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null;
+  clearTimeout(GD.joinTimer); GD.s = null; GD.hub = null; GD.phase = 'closed'; GD.roomId = null; gdRewardsClose(); // + COOP3: its rewards window too
   gdHide(); const bar = document.getElementById('coopBar'); if(bar) bar.remove();
   if(matchState && matchState.coop) endMatch({coopKeep: true});
   try{ const body = document.getElementById('playSubBody'); if(body && currentTab === 'play' && playSubTab === 'dungeons' && !matchState) renderDungeonsSubTab(body); }catch(e){}
@@ -25759,6 +25775,34 @@ function gdFloorEndHTML(){
     <p class="gd-note">${escapeHtml(TX('ui.coop2-dealt', {n: p.dealt || 0}))}</p>
     ${p.gold || p.dust ? `<div class="gd-chest"><span>${escapeHtml(TX('ui.ar3-chest'))}</span><b>${CURRENCY_META.gold.glyph} ${p.gold}</b><b>${CURRENCY_META.dust.glyph} ${p.dust}</b></div>` : ''}${card}
     ${more ? (S.isHost ? `<button type="button" class="btn primary" data-gd-act="next">⬇️ ${escapeHtml(TX('ui.ar3-continue'))} · ${escapeHtml(gdFloorName(nextIdx))}</button>` : `<p class="gd-note">${escapeHtml(TX('ui.ar3-wait-host-next'))}</p>`) : ''}</div>`;
+}
+// 2026-10-30 (package COOP3, owner W6: "I want to see the rewards window like normal skirmishes. There isn't for that screen"): a floor's end opens
+// the fight's own results window over the floor panel: the same card (.winloss-card, its rays or dusk), the rank emblem, the bramble damage dealt,
+// and the same rewards block (rewardsPanelHTML: the Maple Leaves / Magic Dust pills counting up, a card won as a card, an egg), animated by
+// wireWinLossRewardAnim as a fight's is. The host's primary button goes deeper (the next floor, for everyone); otherwise Collect shows the floor
+// panel (or the run's end), which stays the hub between floors.
+function gdRewardsClose(){ document.querySelectorAll('.gd-rw-overlay').forEach(e=> e.remove()); }
+function gdRewardsShow(){
+  const fe = GD.floorEnd, S = GD.s; if(!fe || !S) return; gdRewardsClose();
+  const p = fe.pay || {}, won = fe.result === 'won', total = CoopM.DUNGEONS.hollow.floors.length, nextIdx = (fe.idx | 0) + 1, more = won && nextIdx < total;
+  const title = won ? TX('ui.ar3-floor-cleared') : fe.reason === 'time' ? TX('ui.ar3-floor-time') : TX('ui.ar3-floor-lost');
+  const rank = p.rank ? `<span class="rank-hex rw-mini gd-rank rank-${escapeAttr(p.rank)}" aria-label="${escapeAttr(TX('ui.coop2-rank-aria', {rank: p.rank}))}"><i></i><b>${escapeHtml(p.rank)}</b></span>` : '';
+  let rewards = '';
+  try{ rewards = rewardsPanelHTML({conquestRewardEarned: {gold: p.gold || 0, dust: p.dust || 0}, rewardCardIds: p.card ? [p.card] : [], discoveredThisMatch: [], conquestEggDrop: p.egg || null, conquestRankEarned: p.rank || null}); }catch(e){ rewards = ''; }
+  const next = more && S.isHost ? `<button type="button" class="btn primary big" data-gd-rw="next">⬇️ ${escapeHtml(TX('ui.ar3-continue'))} · ${escapeHtml(gdFloorName(nextIdx))}</button>` : '';
+  const ov = document.createElement('div'); ov.className = 'pass-overlay winloss-overlay gd-rw-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', title);
+  ov.innerHTML = `<div class="pass-card winloss-card ${won ? 'is-glory' : 'is-fallen'}">
+    ${won ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : ''}
+    <div class="pass-ico" aria-hidden="true">${won ? '🏆' : '🌊'}</div>
+    <h2 class="wl-title">${escapeHtml(title)} ${rank}</h2>
+    <p class="winloss-reason">${escapeHtml(TX('ui.ar3-floor', {n: (fe.idx | 0) + 1, total}))} · ${escapeHtml(gdFloorName(fe.idx | 0))} · ${escapeHtml(TX('ui.coop2-dealt', {n: p.dealt || 0}))}</p>
+    ${rewards}
+    ${more && !S.isHost ? `<p class="gd-note">${escapeHtml(TX('ui.ar3-wait-host-next'))}</p>` : ''}
+    <div class="winloss-actions">${next}<button type="button" class="btn ${next ? '' : 'primary'} big" data-gd-rw="collect">${escapeHtml(TX('results.raid-claim-collect'))}</button></div></div>`;
+  document.body.appendChild(ov);
+  ov.addEventListener('click', e=>{ const b = e.target.closest('[data-gd-rw]'); if(!b) return; const a = b.dataset.gdRw; gdRewardsClose(); if(a === 'next' && GD.s) GD.s.nextFloor(); });
+  try{ wireWinLossRewardAnim(); }catch(e){}
+  setTimeout(()=>{ try{ (ov.querySelector('[data-gd-rw="next"]') || ov.querySelector('[data-gd-rw]')).focus(); }catch(e){} }, 60);
 }
 function gdEndHTML(){
   const e = GD.endInfo || {}, cleared = e.cleared || 0, total = e.total || 4, all = e.how === 'cleared';
@@ -35322,11 +35366,11 @@ function renderMatchUI(){
       ${flairLairMatch(m) ? '<div class="fl1-vignette" aria-hidden="true"></div>' /* FLAIR1 (2026-10-28): the Dragon Lair's last fight: a quiet ember edge, under the cards, never over them */ : ''}
       ${hpRibbonHTML(m, 'B', topLabel)}
       <div class="battlefield-inner" id="battlefieldInner" style="${(()=>{ const t = battlefieldTransformCSS(); return t ? `transform:${t}` : ''; })()}">
-        ${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy2" data-respid="2" data-resrow="2"></div>` : ''}${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : ''}" id="resEnemy1" data-respid="2" data-resrow="1"></div>` : ''}
+        ${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : m.coop ? ' coop-rows' : ''}" id="resEnemy2" data-respid="2" data-resrow="2"></div>` : ''}${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row enemy${m.raidFull ? ' raid-rows' : m.coop ? ' coop-rows' /* 2026-10-30 (package COOP3, W10): a group dungeon's rows are drawn at full size (CSS .coop-rows); the vault's own middle row hides while empty */ : ''}" id="resEnemy1" data-respid="2" data-resrow="1"></div>` : ''}
         <div class="board-row enemy" id="rowEnemy"></div>
         <div class="battlefield-divider">${bfPillsHTML(m) /* 2026-10-14: the phase/tide/wind pills ride the board's middle line, left, where no card ever stands */}</div>
         <div class="board-row mine" id="rowMine"></div>
-        ${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : ''}" id="resMine1" data-respid="1" data-resrow="1"></div>` : ''}${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : ''}" id="resMine2" data-respid="1" data-resrow="2"></div>` : ''}
+        ${reserveRowsOf(m) >= 1 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : m.coop ? ' coop-rows' : ''}" id="resMine1" data-respid="1" data-resrow="1"></div>` : ''}${reserveRowsOf(m) >= 2 ? `<div class="board-row reserve-row mine${m.raidFull ? ' raid-rows' : m.coop ? ' coop-rows' : ''}" id="resMine2" data-respid="1" data-resrow="2"></div>` : ''}
       </div>
       ${hpRibbonHTML(m, 'A', bottomLabel)}
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
@@ -36490,7 +36534,8 @@ function renderBoard(opts){
   let slotRange = 0, legalForViewer = new Set(), viewerPid = viewerHandPid(m);
   if(slotView){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass && !(m.coop && gdMyDone(m)); // + a group-dungeon seat that has played (COOP2)
-    if(showTargets && m.engine.legalSlots) m.engine.legalSlots(m.players[viewerPid]).forEach(sl=> legalForViewer.add(sl));
+    if(showTargets && m.coop) CoopM.rowLegalSlots(m.coop.T, 0, m.coop.seat).forEach(sl=> legalForViewer.add(sl)); // 2026-10-30 (package COOP3, W10): the front row's slots by MY network (the host's own check)
+    else if(showTargets && m.engine.legalSlots) m.engine.legalSlots(m.players[viewerPid]).forEach(sl=> legalForViewer.add(sl));
     [p1Rows, p2Rows].forEach(rows=> [...rows.left, ...rows.center, ...rows.right].forEach(c=>{ if(Number.isInteger(c.slot)) slotRange = Math.max(slotRange, Math.abs(c.slot)); }));
     // 2026-10-10 (user: "The victory mechanic sometimes pushes the cards to the extreme right ... Is there 2 grids?"): the
     // width used to count only the slots shown as "+" targets, which vanish while a round resolves and after the match,
@@ -36864,7 +36909,7 @@ function renderBoard(opts){
       // 2026-10-19 (package RX): a match whose play rows are 'own' (matchPlayRows: a tag-team dungeon's "Your row only") the same way.
       // 2026-10-28 (package COOP2): in the group dungeon a row is a player's: its free slots by the normal rule (CoopM.rowLegalSlots), mine or
       // an ally's (K12: "allies can place in allied spots"), and its label names whose it is
-      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots && matchPlayRows(m) === 'any' ? (m.coop ? CoopM.rowLegalSlots(m.coop.T, r) : m.engine.legalReserveSlots(pl, r)) : []);
+      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots && matchPlayRows(m) === 'any' ? (m.coop ? CoopM.rowLegalSlots(m.coop.T, r, m.coop.seat) /* COOP3: my network */ : m.engine.legalReserveSlots(pl, r)) : []);
       let html = `<span class="reserve-label">${m.coop && pid === 1 ? escapeHtml(gdRowLabel(m, r)) : r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
         const c = m.replayReserve ? raidReplayReserveCard(m, pid, r, sl, replayCardLike) : pl.reserve[r-1][sl]; // mid-round: as the replay stands (2026-10-19, RV2)
@@ -36873,6 +36918,9 @@ function renderBoard(opts){
         else html += '<div class="board-card empty-slot" aria-hidden="true"></div>';
       }
       el.innerHTML = html; pl2SeatHpBars(el); // PL2 (2026-10-25) vis3CentrePips(el); // VIS3 (G8)
+      // 2026-10-30 (package COOP3, owner W4: "Why does the duo dungeon start out at such a far away zoom?"): the vault never fills its own middle row,
+      // and the empty row took a quarter of the board's height, shrinking every card; it is hidden while it holds nothing (CSS .coop-rows.is-empty)
+      if(m.coop) el.classList.toggle('is-empty', pid === 2 && !Object.keys(pl.reserve[r-1] || {}).some(k=> pl.reserve[r-1][k]));
     });
   }
   // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
@@ -37814,7 +37862,9 @@ function mb2FitPhoneBoard(m, battlefield, inner, rowMine){
   const frameH = mb2FrameInnerHeight(battlefield);
   const cols = mb2ColumnsFor(m, win, n=> (availW - padX - (n - 1)*gap) / n);
   const rowExtra = 40, divider = 8; // a front row is its card + 40 px (see the phone .board-row rule)
-  const wFromH = ((frameH - divider)/2 - rowExtra) * 0.8;
+  let wFromH = ((frameH - divider)/2 - rowExtra) * 0.8;
+  // 2026-10-30 (package COOP3, W10): a group dungeon's ally rows are full size too (.coop-rows, a card + 8 px each), so the height is shared with them
+  if(m.coop){ const nRes = document.querySelectorAll('#battlefieldInner .reserve-row.coop-rows:not(.is-empty)').length; if(nRes) wFromH = ((frameH - divider - 2*rowExtra - 8*nRes) / (2 + nRes)) * 0.8; }
   // 2026-10-29 (package UI2, owner R1: "the screen doesn't zoom out in advance ... just zoom out once the cards go off the screen"): the
   // cards are sized for the columns the units stand in (with the centre column), not for the window's spare column on each side; the
   // window's edge columns (the next legal slot) show when they fit at that size and otherwise sit just past the frame's edge (the board
@@ -39800,6 +39850,8 @@ function autoplayAllowed(m){
   // 2026-10-25 (package FIX3, G22, owner: "Let me admin auto-play PVP (And if you're past Map 25 as well)"): the PvP ghost fights, for Admin
   // Mode and for a player who has cleared Map 25. Live two-player matches never (a person sits across the table).
   if(m && m.mode === 'pvp' && !m.testKit) return !!(adminModeEnabled || mapsPassed() >= FIX3_PVP_AUTO_MAP);
+  // 2026-10-30 (package COOP3, owner W6: "Give auto-play to multi-player dungeons."): a group dungeon, always (for your own seat: autoplayStep's gdAutoStep)
+  if(m && m.mode === 'coop' && m.coop) return true;
   if(!m || m.mode !== 'conquest' || !m.conquestNode || m.testKit) return false;
   if(adminModeEnabled) return true;
   return nodeBestRankS(m.conquestNode.mapId, m.conquestNode.nodeId) && autoTier('auto');
@@ -39869,7 +39921,8 @@ function processIdleSweep(){
 setTimeout(()=>{ try{ processIdleSweep(); }catch(e){} }, 6000);
 function setIdleSweepTarget(mapId, nodeKey){ try{ localStorage.setItem(IDLE_SWEEP_KEY, JSON.stringify(mapId ? {mapId, nodeKey} : null)); }catch(e){} }
 async function autoplayStep(){
-  const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass || m.coop) return; // + COOP2: no Auto in a group dungeon
+  const m = matchState; if(!m || !m.autoplay || m.over || m.resolving || m._autoBusy || m.awaitingPass) return;
+  if(m.coop) return gdAutoStep(m); // COOP2 had no Auto in a group dungeon; 2026-10-30 (package COOP3, W6): my seat's turn, as a claim
   if(document.querySelector('.coach-tip.is-blocking, #npcPromptOverlay:not([hidden]), .dialogue-overlay:not([hidden])')) return;
   m._autoBusy = true;
   try{ const me = m.players[1];
@@ -39961,6 +40014,25 @@ function centreFieldInFs(){
     // as well!"): a desktop window (wide, with a mouse) gets the same shift outside full screen; phones and tablets keep their layout.
     const desk = !fs && window.innerWidth >= 900 && !!(window.matchMedia && matchMedia('(hover: hover) and (pointer: fine)').matches);
     document.documentElement.classList.toggle('is-desk-centre', desk && !!bf && wrap.classList.contains('in-match'));
+    // 2026-10-30 (package COOP3, owner W4: "Why does the duo dungeon start out at such a far away zoom? I couldn't play cards in the other slots as
+    // well."): a group dungeon's match has a full-size row more than a fight (the ally's), so on a tablet or a computer it ran past the window: the
+    // hand sat below the fold and the board read as zoomed out. Here the whole match is fitted to the window's height, as RES3 grows a fight:
+    // --gd-k scales the card size rule (arena_template.html, COOP3 block) by window / match height, a pass at a time, between 0.55 and 1 (up to
+    // RES3_FIT_MAX on a wide desktop window). The board then frames at 1:1 and zooms out only when its units would leave it (fitBattlefieldZoom).
+    const gm = !!(matchState && matchState.coop && bf && wrap.classList.contains('in-match') && window.innerWidth > 700);
+    wrap.classList.toggle('gd-match', gm);
+    if(!gm) wrap.style.removeProperty('--gd-k');
+    else {
+      const pad0 = parseFloat(wrap.style.getPropertyValue('--fs-shift')) || 0, wr0 = wrap.getBoundingClientRect();
+      let bottom0 = 0; for(const ch of wrap.children){ const cr = ch.getBoundingClientRect(); if(cr.height > 0) bottom0 = Math.max(bottom0, cr.bottom); }
+      const contentH0 = (bottom0 - wr0.top) - pad0, room = window.innerHeight - Math.max(0, wr0.top + window.scrollY) - 16;
+      const kMax = (fs || desk) && window.innerWidth >= 1200 ? RES3_FIT_MAX : 1;
+      const k0 = parseFloat(wrap.style.getPropertyValue('--gd-k')) || 1, k1 = Math.max(0.55, Math.min(kMax, k0 * room / Math.max(1, contentH0)));
+      if(Math.abs(k1 - k0) > 0.015 && (centreFieldInFs._gdN = (centreFieldInFs._gdN || 0) + 1) < 12){ wrap.style.setProperty('--gd-k', k1.toFixed(3)); centreFieldInFs._gdMoved = true; requestAnimationFrame(()=> centreFieldInFs()); return; }
+      centreFieldInFs._gdN = 0;
+      if(centreFieldInFs._gdMoved){ centreFieldInFs._gdMoved = false; try{ fitBattlefieldZoom(); }catch(e){} }
+      wrap.style.removeProperty('--res3-fit'); // the group dungeon's own fit, not RES3's
+    }
     if(!(fs || desk) || !bf || !wrap.classList.contains('in-match')){ wrap.style.removeProperty('--fs-shift'); wrap.style.removeProperty('--res3-fit'); return; }
     if(!desk) wrap.style.removeProperty('--res3-fit');
     const pad = parseFloat(wrap.style.getPropertyValue('--fs-shift')) || 0;
@@ -39973,7 +40045,7 @@ function centreFieldInFs(){
     // the match grows into the window: --res3-fit scales the cards' height rule (arena_template.html, RES3 block; capped by the width and at
     // RES3_FIT_MAX) until the match fills the window's height. Each pass moves the scale by target / height (the height grows a little less
     // than the cards, so it settles from either side) and asks for one more pass until the change is under 1.5%.
-    if(desk && window.innerWidth >= 1200){
+    if(desk && window.innerWidth >= 1200 && !gm){ // + COOP3: a group dungeon fits by --gd-k above
       const s0 = parseFloat(wrap.style.getPropertyValue('--res3-fit')) || 1, s1 = Math.max(1, Math.min(RES3_FIT_MAX, s0 * (vh - 28) / Math.max(1, contentH)));
       if(Math.abs(s1 - s0) > 0.015 && (centreFieldInFs._fitN = (centreFieldInFs._fitN || 0) + 1) < 12){ wrap.style.setProperty('--res3-fit', s1.toFixed(3)); requestAnimationFrame(()=> centreFieldInFs()); return; }
       centreFieldInFs._fitN = 0;
@@ -39985,7 +40057,7 @@ function centreFieldInFs(){
   });
 }
 document.addEventListener('fullscreenchange', ()=> setTimeout(centreFieldInFs, 120));
-window.addEventListener('resize', ()=>{ centreFieldInFs._fitN = 0; centreFieldInFs(); }); // RES3 (2026-10-26, G10): a resize fits the match again
+window.addEventListener('resize', ()=>{ centreFieldInFs._fitN = 0; centreFieldInFs._gdN = 0; centreFieldInFs(); }); // RES3 (2026-10-26, G10): a resize fits the match again (+ COOP3's --gd-k)
 async function skipTurn(){
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return;
