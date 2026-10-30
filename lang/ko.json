@@ -2744,7 +2744,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "주변: 옆 칸, 맞은편 세 칸, 레이드의 다음 줄. 양쪽의 죽음이 모두 세어지며, 자신은 제외.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "낮과 밤이 3라운드마다 바뀌고, 낮부터 시작해요. 두 번째로 플레이하는 쪽은 덤불에 방패 +1을 얻고 시작해요.",
  "Whoever plays second starts with +1 Shield on its bramble.": "두 번째로 플레이하는 쪽은 덤불에 방패 +1을 얻고 시작해요.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "각 진영이 한 턴에 낼 수 있는 카드 수. 두 번째 진영은 덤불에 방패 +1만 받습니다",
  "The dummy in front is Blind: the Backstab lands.": "앞의 허수아비가 실명 상태: 백스탭이 적중합니다.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "주위 8칸: 좌, 우, 앞, 뒤, 대각선 4칸 (레이드의 줄도 포함).",
  "Eggs and babies": "알과 새끼",
@@ -3672,5 +3671,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: 이미 보유 중입니다. 남는 것은 대장간에서 융합하세요.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "덱에 {n}장(최대 {cap}장, {rarity}). 보유 {owned}장.",
  "Replay the triggers lesson in your next fight.": "다음 전투에서 트리거 강의를 다시 합니다.",
- "Fuse spare copies; you only field one.": "남는 복사본을 융합합니다. 쓸 수 있는 건 하나뿐입니다."
+ "Fuse spare copies; you only field one.": "남는 복사본을 융합합니다. 쓸 수 있는 건 하나뿐입니다.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "각 진영이 한 턴에 낼 수 있는 카드 수. 두 번째 진영은 덤불에 방패 +1을 받습니다."
 }

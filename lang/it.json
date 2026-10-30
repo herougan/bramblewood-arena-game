@@ -2743,7 +2743,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Circostante: gli spazi accanto, i tre di fronte e la fila successiva di un raid. Contano le morti di entrambi i lati, non la sua.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "Giorno e notte si alternano ogni 3 round, iniziando dal giorno. Chi gioca per secondo inizia con +1 Scudo sul suo rovo.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Chi gioca per secondo inizia con +1 Scudo sul suo rovo.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Carte che ogni lato può giocare per turno. Il lato che gioca per secondo riceve +1 Scudo sul suo rovo, e nient'altro",
  "The dummy in front is Blind: the Backstab lands.": "Il fantoccio di fronte è Accecato: la Pugnalata alle spalle va a segno.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "gli 8 posti intorno: sinistra, destra, davanti, dietro e le 4 diagonali (anche le file di un raid).",
  "Eggs and babies": "Uova e cuccioli",
@@ -3671,5 +3670,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: già posseduta. Fondi la copia in più nella Forgia.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} nel mazzo (max {cap}, {rarity}). Ne possiedi {owned}.",
  "Replay the triggers lesson in your next fight.": "Rigioca la lezione sui trigger nel prossimo scontro.",
- "Fuse spare copies; you only field one.": "Fondi le copie in più; ne schieri solo una."
+ "Fuse spare copies; you only field one.": "Fondi le copie in più; ne schieri solo una.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Carte che ogni lato può giocare per turno. Il lato che gioca per secondo riceve +1 Scudo sul suo rovo."
 }

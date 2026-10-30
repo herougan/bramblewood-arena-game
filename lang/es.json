@@ -2742,7 +2742,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Circundante: las casillas de al lado, las tres de enfrente y la fila siguiente de una incursión. Cuentan las muertes de ambos bandos, no la suya.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "El día y la noche se alternan cada 3 rondas, empezando por el día. Quien juega segundo empieza con +1 Escudo en su zarzal.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Quien juega segundo empieza con +1 Escudo en su zarzal.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Cartas que cada bando puede jugar por turno. El bando que juega segundo recibe +1 Escudo en su zarzal, y nada más",
  "The dummy in front is Blind: the Backstab lands.": "El muñeco de enfrente está Cegado: la Puñalada trapera acierta.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "los 8 lugares a su alrededor: izquierda, derecha, delante, detrás y las 4 diagonales (también las filas de una incursión).",
  "Eggs and babies": "Huevos y crías",
@@ -3668,5 +3667,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: ya la tienes. Fusiona la sobrante en la Forja.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} en el mazo (máx. {cap}, {rarity}). Tienes {owned}.",
  "Replay the triggers lesson in your next fight.": "Repite la lección de los desencadenantes en tu próximo combate.",
- "Fuse spare copies; you only field one.": "Fusiona las copias sobrantes; solo usas una."
+ "Fuse spare copies; you only field one.": "Fusiona las copias sobrantes; solo usas una.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartas que cada bando puede jugar por turno. El bando que juega segundo recibe +1 Escudo en su zarzal."
 }

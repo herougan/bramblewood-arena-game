@@ -2742,7 +2742,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Umliegend: die Plätze daneben, die drei gegenüber und in einem Raid die nächste Reihe. Tode beider Seiten zählen, nicht der eigene.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "Tag und Nacht wechseln alle 3 Runden, beginnend mit dem Tag. Wer als Zweiter spielt, beginnt mit +1 Schild auf seiner Dornenhecke.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Wer als Zweiter spielt, beginnt mit +1 Schild auf seiner Dornenhecke.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Karten, die jede Seite pro Zug spielen darf. Die Seite, die als Zweite spielt, erhält +1 Schild auf ihrer Dornenhecke, sonst nichts",
  "The dummy in front is Blind: the Backstab lands.": "Die Puppe gegenüber ist geblendet: das Meucheln trifft.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "die 8 Plätze ringsum: links, rechts, vorn, hinten und die 4 Diagonalen (auch die Reihen eines Raids).",
  "Eggs and babies": "Eier und Junge",
@@ -3668,5 +3667,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: schon vorhanden. Verschmilz das Duplikat in der Schmiede.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} im Deck (max. {cap}, {rarity}). Du besitzt {owned}.",
  "Replay the triggers lesson in your next fight.": "Spiele die Auslöser-Lektion im nächsten Kampf erneut.",
- "Fuse spare copies; you only field one.": "Verschmilz überzählige Exemplare; du setzt nur eins ein."
+ "Fuse spare copies; you only field one.": "Verschmilz überzählige Exemplare; du setzt nur eins ein.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Karten, die jede Seite pro Zug spielen darf. Die Seite, die als Zweite spielt, erhält +1 Schild auf ihrer Dornenhecke."
 }

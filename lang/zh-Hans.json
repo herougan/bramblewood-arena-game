@@ -2743,7 +2743,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "周围：旁边的格子、对面的三个，以及突袭中的下一排。双方的阵亡都算，自己的不算。",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "昼夜每 3 轮交替一次，从白天开始。后手的一方荆棘丛开局 +1 护盾。",
  "Whoever plays second starts with +1 Shield on its bramble.": "后手的一方荆棘丛开局 +1 护盾。",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾，别无其他",
  "The dummy in front is Blind: the Backstab lands.": "正前方的假人失明了：背刺命中。",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "它周围的 8 个位置：左、右、前、后和 4 个斜角（突袭中的各排也算）。",
  "Eggs and babies": "蛋与幼崽",
@@ -3669,5 +3668,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}：你已拥有。可在锻造炉融合多余的。",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "卡组中 {n} 张(上限 {cap}，{rarity})。你拥有 {owned} 张。",
  "Replay the triggers lesson in your next fight.": "在下一场战斗中重玩触发器课程。",
- "Fuse spare copies; you only field one.": "融合多余的副本；你只会上场一张。"
+ "Fuse spare copies; you only field one.": "融合多余的副本；你只会上场一张。",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "每方每回合可出的牌数。后手的一方荆棘丛 +1 护盾."
 }

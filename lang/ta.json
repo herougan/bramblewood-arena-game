@@ -2744,7 +2744,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "சுற்றியுள்ளவை: அருகிலுள்ள இடங்கள், எதிரே உள்ள மூன்று, ரெய்டின் அடுத்த வரிசை. இரு தரப்பு இறப்புகளும் கணக்கு, அதன் சொந்தம் அல்ல.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "பகலும் இரவும் ஒவ்வொரு 3 சுற்றுக்கும் மாறும், பகலில் தொடங்கும். இரண்டாவதாக ஆடுபவர் தன் முட்புதரில் +1 கேடயத்துடன் தொடங்குவார்.",
  "Whoever plays second starts with +1 Shield on its bramble.": "இரண்டாவதாக ஆடுபவர் தன் முட்புதரில் +1 கேடயத்துடன் தொடங்குவார்.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக ஆடும் தரப்புக்குத் தன் முட்புதரில் +1 கேடயம் மட்டும்",
  "The dummy in front is Blind: the Backstab lands.": "எதிரே உள்ள பொம்மை குருடாக உள்ளது: முதுகுக் குத்து விழுகிறது.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "அதைச் சுற்றியுள்ள 8 இடங்கள்: இடம், வலம், முன், பின், 4 மூலைவிட்டங்கள் (ரெய்டின் வரிசைகளும்).",
  "Eggs and babies": "முட்டைகளும் குட்டிகளும்",
@@ -3672,5 +3671,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: ஏற்கனவே உள்ளது. மிகுதியை உலையில் இணைக்கவும்.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "தொகுப்பில் {n} (அதிகபட்சம் {cap}, {rarity}). உங்களிடம் {owned} உள்ளன.",
  "Replay the triggers lesson in your next fight.": "அடுத்த சண்டையில் தூண்டுதல் பாடத்தை மீண்டும் இயக்கவும்.",
- "Fuse spare copies; you only field one.": "மிகுதி நகல்களை இணைக்கவும்; ஒன்று மட்டுமே களத்தில் இறங்கும்."
+ "Fuse spare copies; you only field one.": "மிகுதி நகல்களை இணைக்கவும்; ஒன்று மட்டுமே களத்தில் இறங்கும்.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "ஒவ்வொரு தரப்பும் ஒரு முறைக்கு விளையாடக்கூடிய அட்டைகள். இரண்டாவதாக விளையாடும் தரப்புக்கு அதன் முள்புதரில் +1 கவசம் கிடைக்கும்."
 }

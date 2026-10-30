@@ -2743,7 +2743,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Sekeliling: slot di sebelahnya, tiga di seberangnya, dan baris berikut dalam raid. Kematian kedua pihak dihitung, bukan dirinya.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "Siang dan malam bergantian setiap 3 ronde, dimulai dengan siang. Yang bermain kedua mulai dengan +1 Perisai pada semaknya.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Yang bermain kedua mulai dengan +1 Perisai pada semaknya.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya, tidak lebih",
  "The dummy in front is Blind: the Backstab lands.": "Boneka di depan Buta: Tikaman dari Belakang mengenai.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "8 tempat di sekelilingnya: kiri, kanan, depan, belakang, dan 4 diagonal (juga baris dalam raid).",
  "Eggs and babies": "Telur dan bayi",
@@ -3671,5 +3670,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: sudah dimiliki. Gabungkan sisanya di Tempa.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} di dek (maks {cap}, {rarity}). Kamu punya {owned}.",
  "Replay the triggers lesson in your next fight.": "Mainkan lagi pelajaran pemicu di pertarungan berikutnya.",
- "Fuse spare copies; you only field one.": "Gabungkan salinan lebih; kamu hanya memakai satu."
+ "Fuse spare copies; you only field one.": "Gabungkan salinan lebih; kamu hanya memakai satu.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Kartu yang boleh dimainkan tiap pihak per giliran. Pihak yang bermain kedua mendapat +1 Perisai pada semaknya."
 }

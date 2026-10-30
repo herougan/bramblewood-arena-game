@@ -2743,7 +2743,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Circundante: os espaços ao lado, os três em frente e a fila seguinte de uma incursão. Contam as mortes dos dois lados, não a sua.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "O dia e a noite alternam a cada 3 rondas, começando pelo dia. Quem joga em segundo começa com +1 Escudo no seu silvado.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Quem joga em segundo começa com +1 Escudo no seu silvado.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Cartas que cada lado pode jogar por turno. O lado que joga em segundo recebe +1 Escudo no seu silvado, e nada mais",
  "The dummy in front is Blind: the Backstab lands.": "O boneco em frente está Cego: a Punhalada pelas costas acerta.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "os 8 lugares à volta: esquerda, direita, frente, trás e as 4 diagonais (também as filas de uma incursão).",
  "Eggs and babies": "Ovos e crias",
@@ -3671,5 +3670,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: já a tens. Funde a extra na Forja.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} no baralho (máx. {cap}, {rarity}). Tens {owned}.",
  "Replay the triggers lesson in your next fight.": "Repete a lição dos gatilhos no teu próximo combate.",
- "Fuse spare copies; you only field one.": "Funde as cópias extra; só usas uma."
+ "Fuse spare copies; you only field one.": "Funde as cópias extra; só usas uma.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartas que cada lado pode jogar por turno. O lado que joga em segundo recebe +1 Escudo no seu silvado."
 }

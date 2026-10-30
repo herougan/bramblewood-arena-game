@@ -2742,7 +2742,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Nakapaligid: ang mga puwesto sa tabi, ang tatlo sa tapat, at ang susunod na hanay ng raid. Bilang ang pagkamatay ng magkabilang panig, hindi ang sarili.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "Nagpapalitan ang araw at gabi bawat 3 round, simula sa araw. Ang pangalawang maglalaro ay magsisimula nang may +1 Kalasag sa dawag nito.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Ang pangalawang maglalaro ay magsisimula nang may +1 Kalasag sa dawag nito.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito, at wala nang iba",
  "The dummy in front is Blind: the Backstab lands.": "Bulag ang dummy sa harap: tumatama ang Saksak-Talikod.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "ang 8 puwesto sa paligid nito: kaliwa, kanan, harap, likod at ang 4 na pahilis (pati ang mga hanay ng raid).",
  "Eggs and babies": "Mga itlog at sanggol",
@@ -3670,5 +3669,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name}: pag-aari mo na. I-fuse ang sobra sa Forge.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} sa deck (hanggang {cap}, {rarity}). Mayroon kang {owned}.",
  "Replay the triggers lesson in your next fight.": "Ulitin ang aralin sa mga trigger sa susunod mong laban.",
- "Fuse spare copies; you only field one.": "I-fuse ang sobrang kopya; isa lang ang magagamit mo."
+ "Fuse spare copies; you only field one.": "I-fuse ang sobrang kopya; isa lang ang magagamit mo.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Mga card na maaaring laruin ng bawat panig bawat turno. Ang pangalawang panig ay may +1 Kalasag sa dawag nito."
 }

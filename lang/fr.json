@@ -2743,7 +2743,6 @@
  "Surrounding: the slots beside it, the three across from it, and a raid's next row. Either side's deaths count, not its own.": "Alentour : les cases voisines, les trois en face, et la rangée suivante d'un raid. Les morts des deux camps comptent, pas la sienne.",
  "Day and night alternate every 3 rounds, starting with day. Whoever plays second starts with +1 Shield on its bramble.": "Le jour et la nuit alternent tous les 3 tours, en commençant par le jour. Celui qui joue en second commence avec +1 Bouclier sur son roncier.",
  "Whoever plays second starts with +1 Shield on its bramble.": "Celui qui joue en second commence avec +1 Bouclier sur son roncier.",
- "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else": "Cartes que chaque camp peut jouer par tour. Le camp qui joue en second reçoit +1 Bouclier sur son roncier, et rien d'autre",
  "The dummy in front is Blind: the Backstab lands.": "Le mannequin en face est Aveuglé : le Coup dans le dos porte.",
  "the 8 places around it: left, right, front, back and the 4 diagonals (a raid's rows too).": "les 8 places autour d'elle : gauche, droite, devant, derrière et les 4 diagonales (et les rangées d'un raid).",
  "Eggs and babies": "Œufs et petits",
@@ -3669,5 +3668,6 @@
  "{name}: already owned. Fuse the spare in the Forge.": "{name} : déjà possédée. Fusionne le double à la Forge.",
  "{n} in deck (max {cap}, {rarity}). You own {owned}.": "{n} dans le deck (max {cap}, {rarity}). Tu en possèdes {owned}.",
  "Replay the triggers lesson in your next fight.": "Rejoue la leçon sur les déclencheurs lors de ton prochain combat.",
- "Fuse spare copies; you only field one.": "Fusionne les copies en trop ; tu n'en alignes qu'une."
+ "Fuse spare copies; you only field one.": "Fusionne les copies en trop ; tu n'en alignes qu'une.",
+ "Cards each side may play a turn. The side playing second gets +1 Shield on its bramble.": "Cartes que chaque camp peut jouer par tour. Le camp qui joue en second reçoit +1 Bouclier sur son roncier."
 }
