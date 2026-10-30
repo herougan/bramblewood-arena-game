@@ -766,6 +766,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     const opt = fitK(X, best2).f > fitK(X, best1).f ? best2 : best1;
     // the distinct optima: every search's best decks, restarts' bests and local maxima, measured to gmax, then kept apart
     const pool = uniq(searchKeys(s1).concat(s2.best ? searchKeys(s2) : []));
+    if (o.distinctMax <= 1) return { FG, optimum: opt, optima: [opt], candidatesConsidered: pool.length }; // 2026-10-30 (REF5): one optimum wanted, so the other candidates are not measured to gmax
     await ensure(ev, stats, pool.map(deckFromKey), o.method === 'descent' ? o.dgmax : o.gmax, main);
     const dk = distinctOptima(X, [opt].concat(pool), o.distinctRadius, o.distinctWindow, o.distinctMax);
     const optima = [opt].concat(dk.filter(k => k !== opt && dist(deckFromKey(k), deckFromKey(opt)) >= o.distinctRadius)).slice(0, o.distinctMax);

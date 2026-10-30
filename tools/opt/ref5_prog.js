@@ -265,8 +265,10 @@ function meanLevel(parts) { const n = parts.reduce((t, p) => t + p[1], 0); retur
 
 function cmdRun(argv) {
   const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '3000'), fg = arg(argv, '--final-games', '16');
-  const only = arg(argv, '--seeds') ? mapRange(arg(argv, '--seeds')) : SEEDS, step = arg(argv, '--step', 'all');
+  const half = arg(argv, '--part'); // a = the pools + seeds 1-2, b = seeds 3-4, c = seed 5 + collect (each well under 10 minutes on a shared machine)
+  const only = half === 'a' ? [1, 2] : half === 'b' ? [3, 4] : half === 'c' ? [5] : arg(argv, '--seeds') ? mapRange(arg(argv, '--seeds')) : SEEDS, step0 = arg(argv, '--step', 'all');
   for (const n of maps) {
+    for (const step of half === 'a' ? ['pools', 'opt'] : half === 'b' ? ['opt'] : half === 'c' ? ['opt', 'collect'] : [step0]) {
     if (step === 'all' || step === 'pools') cp.execFileSync('node', [__filename, 'pools', '--map', String(n)], { cwd: ROOT, stdio: 'inherit' });
     if (step === 'all' || step === 'opt') for (const s of only) {
       if (fs.existsSync(path.join(ROOT, optFile(gm, n, s, tag))) && !argv.includes('--redo')) { console.log(`Map ${n} seed ${s}: done`); continue; }
@@ -274,6 +276,7 @@ function cmdRun(argv) {
         '--ladder', 'none', '--distinct-max', '1', '--seed-ref', '--workers', '2', '--tag', tag + '-s' + s, '--seed', 'ref5-s' + s, '--quiet', '--no-summary', '--ckpt-dir', '/home/claude/bench-cache-ref5/ckpt'], { cwd: ROOT, stdio: 'inherit' });
     }
     if (step === 'all' || step === 'collect') cp.execFileSync('node', [__filename, 'collect', '--map', String(n), '--tag', tag], { cwd: ROOT, stdio: 'inherit' });
+    }
   }
 }
 
