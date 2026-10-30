@@ -56,8 +56,9 @@ T12.forEach(id=>{ const c = byId[id]; ok(!!c, '1. ' + id + ' exists'); if(!c) re
     ok(JSON.stringify(rv1) === '{"duckling":3,"earthworm":3,"harvest-mouse":3,"silver-minnow":3}', '3. built-in T-1 rival deck = the live row\'s T-1 deck');
     ok(JSON.stringify(rv2) === '{"duckling":3,"earthworm":3,"otter-kit":1,"pond-duck":1,"meadow-rabbit":1,"silver-minnow":2}', '3. built-in T-2 rival deck (no Flying Honey Bees)');
     ok(Object.keys(rv1).concat(Object.keys(rv2)).every(id=> !Object.keys((byId[id] || {}).effects || {}).length), '3. the rival decks hold no card with a skill');
+    // 2026-10-30 TUT3: the SQL now also updates cfg.myDeck2, and its rollback block is laid out as "Before, for rollback" with both decks
     const sql = fs.readFileSync(path.join(ROOT, 'supabase/proposed/20261030_tutorial_t1t2_decks.sql'), 'utf8');
-    ok(sql.includes(JSON.stringify(rv2)) && /"apply it"/.test(sql) && /Before \(cfg\.rivalDeck2\), for rollback/.test(sql) && /where id = '__cfg:tutorial'/.test(sql), '3. the proposed SQL sets the same T-2 deck on __cfg:tutorial, with the before value for rollback'); } }
+    ok(sql.includes(JSON.stringify(rv2)) && /"apply it"/.test(sql) && /cfg\.rivalDeck2 \{"duckling":3[^\n]*\n--   cfg\.myDeck2/.test(sql) && /where id = '__cfg:tutorial'/.test(sql), '3. the proposed SQL sets the same T-2 deck on __cfg:tutorial, with the before value for rollback'); } }
 ok(/rivalCounts = tutorialPlainDeck\(tutDecks\.rival, st\)/.test(app) && /deckCounts = tutorialPlainDeck\(tutDecks\.mine, st\)/.test(app), '2. both T-1 / T-2 decks go through tutorialPlainDeck');
 ok(/const TUT12_SHOWN = new Set\(\[\]\);/.test(app), '2. the T-1 / T-2 mask has no Flying exception (TUT12_SHOWN empty)');
 
