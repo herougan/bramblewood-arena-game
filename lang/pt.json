@@ -3677,11 +3677,11 @@
  "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Presa: perde o seu próximo golpe e não se pode mover nem ser movida; as suas habilidades, disparos e gatilhos continuam a funcionar. Uma unidade que acabou de se livrar de uma boleadeira não pode ser Presa outra vez na ronda seguinte.",
  "Pinned": "Presa",
  "loses its next swing and can't move; its skills still work.": "perde o próximo golpe e não se pode mover; as suas habilidades continuam a funcionar.",
- "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 A boleadeira de {att} prende {name}: perde o próximo golpe.",
  "is pinned down and can't attack this round. 📌": "está presa e não pode atacar nesta ronda. 📌",
- "📌 {name} shakes off the bola.": "📌 {name} livra-se da boleadeira.",
  "Anadromous": "Anádromo",
  "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Ataque num mapa marinho (praia ou recife); +2 Vida em qualquer outro.",
  "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Como um salmão, luta com mais força em água salgada e torna-se robusta rio acima. O mapa decide, para todo o combate.",
- "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "A partir da ronda 2, em cada ronda cada jogador recebe uma Ilusão 1/1 num espaço livre ao lado de uma das suas unidades."
+ "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "A partir da ronda 2, em cada ronda cada jogador recebe uma Ilusão 1/1 num espaço livre ao lado de uma das suas unidades.",
+ "{att}'s bola pins {name}: it loses its next swing.": "A boleadeira de {att} prende {name}: perde o próximo golpe.",
+ "{name} shakes off the bola.": "{name} livra-se da boleadeira."
 }

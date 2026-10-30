@@ -3674,11 +3674,11 @@
  "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Festgenagelt: Sie verliert ihren nächsten Schlag und kann sich nicht bewegen oder bewegt werden; ihre Fähigkeiten, Schüsse und Auslöser wirken weiter. Eine Einheit, die gerade eine Bola abgeschüttelt hat, kann in der Runde danach nicht erneut festgenagelt werden.",
  "Pinned": "Festgenagelt",
  "loses its next swing and can't move; its skills still work.": "verliert ihren nächsten Schlag und kann sich nicht bewegen; ihre Fähigkeiten wirken weiter.",
- "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 Die Bola von {att} nagelt {name} fest: verliert den nächsten Schlag.",
  "is pinned down and can't attack this round. 📌": "ist festgenagelt und kann diese Runde nicht angreifen. 📌",
- "📌 {name} shakes off the bola.": "📌 {name} schüttelt die Bola ab.",
  "Anadromous": "Anadrom",
  "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Angriff auf einer Meereskarte (Strand oder Riff); +2 Leben überall sonst.",
  "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Wie ein Lachs kämpft sie im Salzwasser am härtesten und wird flussaufwärts zäh. Die Karte entscheidet, für den ganzen Kampf.",
- "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "Ab Runde 2 bekommt jede Runde jeder Spieler eine 1/1-Illusion in einem freien Platz neben einer seiner Einheiten."
+ "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "Ab Runde 2 bekommt jede Runde jeder Spieler eine 1/1-Illusion in einem freien Platz neben einer seiner Einheiten.",
+ "{att}'s bola pins {name}: it loses its next swing.": "Die Bola von {att} nagelt {name} fest: verliert den nächsten Schlag.",
+ "{name} shakes off the bola.": "{name} schüttelt die Bola ab."
 }

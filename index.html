@@ -43669,7 +43669,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=083adf59a7", "es": "assets/lang/es.js?v=0adea98de2", "fr": "assets/lang/fr.js?v=3bc9351d26", "id": "assets/lang/id.js?v=1c23d4c5fa", "it": "assets/lang/it.js?v=1ae3fbb653", "ja": "assets/lang/ja.js?v=d1c51d634e", "ko": "assets/lang/ko.js?v=e3a046d42c", "pt": "assets/lang/pt.js?v=03a78108e1", "ta": "assets/lang/ta.js?v=47bfa7eef8", "tl": "assets/lang/tl.js?v=c888936053", "zh-Hans": "assets/lang/zh-Hans.js?v=dbf46ec433", "zh-Hant": "assets/lang/zh-Hant.js?v=a122c9890e"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=2babbc4687", "es": "assets/lang/es.js?v=b3a1abd799", "fr": "assets/lang/fr.js?v=d5a1e45eb7", "id": "assets/lang/id.js?v=624556dd26", "it": "assets/lang/it.js?v=2e028c1395", "ja": "assets/lang/ja.js?v=4e44479bc1", "ko": "assets/lang/ko.js?v=e0892d78b0", "pt": "assets/lang/pt.js?v=813b5ab473", "ta": "assets/lang/ta.js?v=e40d11055e", "tl": "assets/lang/tl.js?v=101ceb8056", "zh-Hans": "assets/lang/zh-Hans.js?v=5c32c4238a", "zh-Hant": "assets/lang/zh-Hant.js?v=88c2866520"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -46692,9 +46692,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e14-sk-bola-codex": "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.",
   "ui.e14-stn-pinned": "Pinned",
   "ui.e14-ls-pinned": "loses its next swing and can't move; its skills still work.",
-  "ui.e14-log-pinned": "📌 {att}'s bola pins {name}: it loses its next swing.",
+  "ui.e14-log-pinned": "{att}'s bola pins {name}: it loses its next swing.",
   "ui.e14-log-pinned-skip": "is pinned down and can't attack this round. 📌",
-  "ui.e14-log-pinned-end": "📌 {name} shakes off the bola.",
+  "ui.e14-log-pinned-end": "{name} shakes off the bola.",
   "ui.skn-e14-anadromous": "Anadromous",
   "ui.e14-sk-anadromous": "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.",
   "ui.e14-sk-anadromous-codex": "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight."
@@ -51260,7 +51260,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c901a1dbd476', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = '9134ab91dcae', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -96427,13 +96427,13 @@ function s17LogText(ev, nm){
   if(ev.type === 'sentry') return {cls:'', text:`🗼 ${nm(ev.defId)} is on watch: it strikes ${nm(ev.targetDefId)} as it comes in.`};
   if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
   if(ev.type === 'statusFx'){
-    if(ev.kind === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
+    if(ev.kind === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
     if(ev.kind === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.attDefId)} webs ${nm(ev.targetDefId)}: it can't dodge or move for ${ev.amount} round${ev.amount === 1 ? '' : 's'}.`};
     if(ev.kind === 'carrion') return {cls:'heal', text:`🦴 ${nm(ev.attDefId)} feeds on the fallen: +${ev.amount}.`};
     if(ev.kind === 'vanguard') return {cls:'', text:`🎖️ ${nm(ev.attDefId)} leads the way as the first card played: +${ev.amount}/+${ev.amount}.`};
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.defId)} breaks free of the web.`};
-  if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
+  if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
   return null;
 }
 function s17SkillVfx(ev){

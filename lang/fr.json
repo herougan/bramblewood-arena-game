@@ -3675,11 +3675,11 @@
  "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Clouée : elle perd sa prochaine frappe et ne peut ni bouger ni être déplacée ; ses compétences, tirs et déclencheurs fonctionnent toujours. Une unité qui vient de se libérer d’une bola ne peut pas être Clouée de nouveau au tour suivant.",
  "Pinned": "Clouée",
  "loses its next swing and can't move; its skills still work.": "perd sa prochaine frappe et ne peut pas bouger ; ses compétences fonctionnent toujours.",
- "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 La bola de {att} cloue {name} : elle perd sa prochaine frappe.",
  "is pinned down and can't attack this round. 📌": "est clouée au sol et ne peut pas attaquer ce tour. 📌",
- "📌 {name} shakes off the bola.": "📌 {name} se libère de la bola.",
  "Anadromous": "Anadrome",
  "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Attaque sur une carte marine (plage ou récif) ; +2 Santé partout ailleurs.",
  "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Comme un saumon, elle se bat le plus fort en eau salée et devient robuste en remontant la rivière. La carte décide, pour tout le combat.",
- "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "À partir du tour 2, à chaque tour, chaque joueur reçoit une Illusion 1/1 dans un emplacement libre à côté d’une de ses unités."
+ "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "À partir du tour 2, à chaque tour, chaque joueur reçoit une Illusion 1/1 dans un emplacement libre à côté d’une de ses unités.",
+ "{att}'s bola pins {name}: it loses its next swing.": "La bola de {att} cloue {name} : elle perd sa prochaine frappe.",
+ "{name} shakes off the bola.": "{name} se libère de la bola."
 }

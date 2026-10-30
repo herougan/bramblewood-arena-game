@@ -48752,13 +48752,13 @@ function s17LogText(ev, nm){
   if(ev.type === 'sentry') return {cls:'', text:`🗼 ${nm(ev.defId)} is on watch: it strikes ${nm(ev.targetDefId)} as it comes in.`};
   if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
   if(ev.type === 'statusFx'){
-    if(ev.kind === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
+    if(ev.kind === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
     if(ev.kind === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.attDefId)} webs ${nm(ev.targetDefId)}: it can't dodge or move for ${ev.amount} round${ev.amount === 1 ? '' : 's'}.`};
     if(ev.kind === 'carrion') return {cls:'heal', text:`🦴 ${nm(ev.attDefId)} feeds on the fallen: +${ev.amount}.`};
     if(ev.kind === 'vanguard') return {cls:'', text:`🎖️ ${nm(ev.attDefId)} leads the way as the first card played: +${ev.amount}/+${ev.amount}.`};
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.defId)} breaks free of the web.`};
-  if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
+  if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
   return null;
 }
 function s17SkillVfx(ev){

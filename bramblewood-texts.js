@@ -2897,9 +2897,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.e14-sk-bola-codex": "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.",
   "ui.e14-stn-pinned": "Pinned",
   "ui.e14-ls-pinned": "loses its next swing and can't move; its skills still work.",
-  "ui.e14-log-pinned": "📌 {att}'s bola pins {name}: it loses its next swing.",
+  "ui.e14-log-pinned": "{att}'s bola pins {name}: it loses its next swing.",
   "ui.e14-log-pinned-skip": "is pinned down and can't attack this round. 📌",
-  "ui.e14-log-pinned-end": "📌 {name} shakes off the bola.",
+  "ui.e14-log-pinned-end": "{name} shakes off the bola.",
   "ui.skn-e14-anadromous": "Anadromous",
   "ui.e14-sk-anadromous": "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.",
   "ui.e14-sk-anadromous-codex": "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight."

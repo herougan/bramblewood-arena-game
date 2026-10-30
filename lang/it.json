@@ -3677,11 +3677,11 @@
  "Pinned: it loses its next swing and can't move or be moved; its skills, shots and triggers still work. A unit that has just shaken off a bola can't be Pinned again the round after.": "Bloccata: perde il suo prossimo colpo e non può muoversi né essere spostata; le sue abilità, i tiri e gli inneschi funzionano ancora. Un’unità che si è appena liberata da una bola non può essere Bloccata di nuovo nel round dopo.",
  "Pinned": "Bloccata",
  "loses its next swing and can't move; its skills still work.": "perde il prossimo colpo e non può muoversi; le sue abilità funzionano ancora.",
- "📌 {att}'s bola pins {name}: it loses its next swing.": "📌 La bola di {att} blocca {name}: perde il prossimo colpo.",
  "is pinned down and can't attack this round. 📌": "è bloccata a terra e non può attaccare in questo round. 📌",
- "📌 {name} shakes off the bola.": "📌 {name} si libera della bola.",
  "Anadromous": "Anadromo",
  "+1 Attack on a sea map (beach or reef); +2 Health anywhere else.": "+1 Attacco su una mappa marina (spiaggia o scogliera); +2 Salute altrove.",
  "Like a salmon, it fights hardest in salt water and grows sturdy upriver. The map decides, for the whole fight.": "Come un salmone, combatte al meglio in acqua salata e si irrobustisce risalendo il fiume. Decide la mappa, per tutto lo scontro.",
- "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "Dal round 2, ogni round ogni giocatore riceve un’Illusione 1/1 in uno spazio libero accanto a una delle sue unità."
+ "From round 2, each player gets a 1/1 Illusion beside one of their units every round.": "Dal round 2, ogni round ogni giocatore riceve un’Illusione 1/1 in uno spazio libero accanto a una delle sue unità.",
+ "{att}'s bola pins {name}: it loses its next swing.": "La bola di {att} blocca {name}: perde il prossimo colpo.",
+ "{name} shakes off the bola.": "{name} si libera della bola."
 }
