@@ -104,7 +104,8 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
   const want = {poison:2.6, bleed:2.6, gash:1.6, venomous:3.1, poisonBolt:3.1, poisonGas:3.1, rabid:5.1, proliferate:6.1, venomMaster:5.1, perforate:3.6};
   // 2026-10-24 (package EN5, owner BP-1): Bleed and Poison are priced by the measured power curve now (3.6 x N^0.6, 3.0 x N^0.7); EN3's 2.6 is their prevValueEN5
   want.poison = 3; want.bleed = 3.6;
-  ok(Object.keys(want).every(k=> sk(k) && sk(k).value === want[k] && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
+  // 2026-10-30 RECOST1: Bleed, Gash and Venomous re-priced to their bench worth; the value checked here is then their prevValue
+  ok(Object.keys(want).every(k=> sk(k) && (sk(k).value === want[k] || (/RECOST1/.test(sk(k).appliedAt || '') && sk(k).prevValue === want[k])) && sk(k).prevValueEN3 != null) && sk('bleed').prevValueEN5 === 2.6 && sk('poison').prevValueEN5 === 2.6, 'the Bleed / Poison family up a tenth (Bleed / Poison re-priced by EN5): ' + Object.keys(want).map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
   ok(ac('poison').value === 1.4 && ac('bleed').value === 1, `the actions: Poison ${ac('poison').value} (1.3), Bleed ${ac('bleed').value} (0.9)`);
   ok(sk('toxin').value === 5 && sk('detonate').value === 0.2, 'Toxin (never wears off) and Detonate are left'); // 2026-10-26 (release): CONTENT3 reworked Detonate N (0.2 a tick)
   ok(sk('bulwark').value === 7.2 && sk('bulwark').prevValueBAL7 === 9 && sk('bulwark').prevValueEN3 === 6, 'Bulwark 7.2 (BAL7: the owner\'s 9 x 0.8; was 6 before EN3)'); // 2026-10-28 (RELFIX2): BAL7 / FIN2-2 counts the shields' Health at 0.8, so the owner's 9 is 7.2 a point (was === 9)

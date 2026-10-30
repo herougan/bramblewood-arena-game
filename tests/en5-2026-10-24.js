@@ -104,9 +104,11 @@ function dodges(rules, id, seed, att){ const {e, P} = mk(rules, seed || 11); put
   ok(Math.abs(pc - Math.round(p * (1 + q + q * q) * 100) / 100) < 1e-9 && BB.bloomBodyMult({bloomCopy:{when:['wet', 'sunny']}}) === 1 + pc, `Bloom's chain priced: p ${p} -> ${pc} (q ${q})`); }
 
 // ---- prices -------------------------------------------------------------------------------------------------------------------
-{ ok(sk('bleed').pow === 0.6 && sk('bleed').value === 3.6 && sk('poison').pow === 0.7 && sk('poison').value === 3, `Bleed 3.6 x N^0.6, Poison 3.0 x N^0.7 (${sk('bleed').value}^${sk('bleed').pow}, ${sk('poison').value}^${sk('poison').pow})`);
+// 2026-10-30 RECOST1: Bleed re-priced to its bench worth (3.6 -> 2.05 a point, the same N^0.6 curve); EN5's 3.6 is its prevValue
+const bv = /RECOST1/.test(sk('bleed').appliedAt || '') && sk('bleed').prevValue === 3.6 ? sk('bleed').value : 3.6;
+{ ok(sk('bleed').pow === 0.6 && sk('bleed').value === bv && sk('poison').pow === 0.7 && sk('poison').value === 3, `Bleed ${bv} x N^0.6, Poison 3.0 x N^0.7 (${sk('bleed').value}^${sk('bleed').pow}, ${sk('poison').value}^${sk('poison').pow})`);
   const b = [1, 2, 3].map(k=> T.skillCost('bleed', k)), p = [1, 2, 3].map(k=> T.skillCost('poison', k));
-  ok(b[0] === 3.6 && Math.abs(b[1] - 5.46) < 0.02 && Math.abs(b[2] - 6.96) < 0.03 && b[2] > b[1] && b[1] > b[0], `bigger numbers cost more: Bleed ${b.join(' / ')}`);
+  ok(b[0] === bv && Math.abs(b[1] - bv * Math.pow(2, 0.6)) < 0.02 && Math.abs(b[2] - bv * Math.pow(3, 0.6)) < 0.03 && b[2] > b[1] && b[1] > b[0], `bigger numbers cost more: Bleed ${b.join(' / ')}`);
   ok(p[0] === 3 && Math.abs(p[1] - 4.87) < 0.02 && p[2] > p[1], `Poison ${p.join(' / ')}`);
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en5-bleed-poison-2026-10-24.md'), 'utf8'); ok(/bleed 3/.test(md) && /poison 1/.test(md), 'the measurement is filed (docs/balance/en5-bleed-poison-2026-10-24.md)');
   ok(sk('breach') && sk('breach').scale === 'n' && sk('breach').value >= 1.5 && sk('breach').value <= 2.2, `Breach ${sk('breach') && sk('breach').value} a point (the owner's estimate 1.9)`);

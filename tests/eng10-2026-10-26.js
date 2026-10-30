@@ -55,10 +55,12 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   for(let r = 0; r < 4; r++) e.endOfRoundUpkeep(P, so, {}, ev);
   const fired = ev.filter(x=> x.type === 'charge' && x.uid === c.uid && x.fired).length;
   ok(fired >= 3 && !ev.some(x=> x.type === 'skillSpent' && (x.keys || []).includes('charge')), `ENG9-4 Charge 1 goes off every upkeep and stays (${fired} in 4)`);
-  ok(by.charge.value === 3 && by.charge.prevValue === 1.2, 'ENG9-4 Charge priced 3 again (the repeating clock)');
+  // 2026-10-30 RECOST1: Charge re-priced to its bench worth (3 -> 5.58) and the Electric Ray trimmed to 3/8; ENG10's 3 is now its prevValue
+  const rc = /RECOST1/.test(by.charge.appliedAt || '');
+  ok(rc ? by.charge.prevValue === 3 && by.charge.recost1Was && by.charge.recost1Was.prevValue === 1.2 : (by.charge.value === 3 && by.charge.prevValue === 1.2), 'ENG9-4 Charge priced 3 again (the repeating clock)');
   ok(by.reload.value === -6 && by.reload.prevValue === -4, 'ENG9-4 Reload more negative: -4 -> -6');
   ok(cid['peak-condor'].health === 7 && cid['riptide-eel'].attack === 9 && cid['riptide-eel'].health === 6, 'ENG9-4 the Reload cards re-fit up: Peak Condor 4/7, Riptide Eel 9/6');
-  ok(cid['electric-ray'].attack === 4 && cid['electric-ray'].health === 9, 'ENG9-4 the Electric Ray back to 4/9'); }
+  ok(rc ? cid['electric-ray'].attack === 3 && cid['electric-ray'].health === 8 : (cid['electric-ray'].attack === 4 && cid['electric-ray'].health === 9), 'ENG9-4 the Electric Ray back to 4/9 (3/8 since RECOST1)'); }
 
 // ---- ENG9-5 Flora and Mushroom --------------------------------------------------------------------------------------------------------
 { const TX = require(path.join(ROOT, 'bramblewood-taxonomy.js'));
@@ -90,7 +92,8 @@ const tx = require(path.join(ROOT, 'bramblewood-texts.js')).TEXT, app = rd('aren
   ok(cid['barnacle-fortress'].effects.armor === 3 && cid['stone-turtle-warden'].effects.armor === 3, 'ENG9-9 Armor 5 / 4 on a Common has no legal line: Barnacle Fortress and Stone Turtle Warden at Armor 3 (call ENG10-2)');
   const m1 = new Set(JSON.parse(rd('docs/balance/bal7-m1-rebalance-2026-10-28.json')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h === 'unplaced' ? 'unplaced (on no list, out of play)' : 'pending step 3 (re-fit)'}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card (on no list) or one 'pending' the owner's re-fit (step 3) is reported, not failed (tools/lib_map_pools.js budgetHold)
-  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
+  const rc1 = new Set((()=>{ try{ return JSON.parse(rd('docs/balance/recost1-2026-10-30.json')).refits.map(r=> r.id); }catch(e){ return []; } })()); // 2026-10-30 RECOST1: re-fit again (docs/balance/recost1-2026-10-30.json)
+  refit.cut.concat(refit.raised).filter(r=> !m1.has(r.id) && !rc1.has(r.id)).filter(r=> r.id !== 'tide-pool-crab' /* 2026-10-26 (FIN2-c): re-fit again, tests/fin2-2026-10-26.js */).forEach(r=>{ const c = cid[r.id]; ok(c && `${c.attack}/${c.health}` === r.to && (T.budget(c, {level: 1}).ok || HOLD(r.id)), `ENG9-9 ${r.id} at ${r.to}, inside its budget`); }); }
 
 // ---- ENG9-7 On Ready at Wait 0 ---------------------------------------------------------------------------------------------------------
 { const {e, P} = mk(71); const l0 = P[1].lumber || 0; const ev = []; put(e, P, 1, 'x-ready0', 0, ev);

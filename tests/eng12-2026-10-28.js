@@ -82,7 +82,7 @@ ok(BB.zeitS('diurnal', {diurnal: true, diurnalGrant: {evasive: true}}).S === 0 &
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), card = id=> cards.find(c=> c.id === id);
   const owl = card('owl-nightwatch'), b = T.budget(owl), noc = b.parts.find(x=> x[1] === 'nocturnal');
   ok(noc && noc[2] === 4.54, `L11 the Owl Nightwatch's Nocturnal 4: 4.24 + the dark-sight 0.3 (${noc && noc[2]})`);
-  ok(owl.attack === 1 && owl.health === 6 && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
+  ok(owl.attack === 1 && owl.health === 5 /* 2026-10-30 RECOST1: 1/6 -> 1/5 after Stealth 1.5 -> 2 (the post-balance queue); was 1/6 */ && b.ok, `L11 ... and it is re-fitted to ${owl.attack}/${owl.health} (was 1/8), within both caps (${b.x1} / ${b.N})`);
   const moved = {'great-horned-owl': '2/14', 'raccoon-bandit': '4/7', 'weredog': '2/7', 'night-watchman': '1/3', 'sunspire-choirmother': '3/4', 'vampire-bat': '2/5', 'kinkajou-lurker': '5/9', 'electric-catfish': '2/8'};
   const m1 = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/bal7-m1-rebalance-2026-10-28.json'), 'utf8')).plan.filter(p=> p.move).map(p=> p.id)); /* 2026-10-28 (BAL7, M1): the contribution re-balance moved these cards again (docs/balance/bal7-m1-rebalance-2026-10-28.json) */
   const HOLD = id=>{ const h = require(path.join(ROOT, 'tools', 'lib_map_pools.js')).budgetHold(id); if(h) console.log(`  · ${id}: budget not checked, ${h}`); return !!h; }; // 2026-10-29 LISTFIX1: cards on no list are out of play (owner 22:47): an 'unplaced' card or one 'pending' the owner's re-fit (step 3) is reported, not failed

@@ -127,7 +127,7 @@ const round = (e, P, first)=>{ const ev = []; e.resolveCombat(P, so, {}, ev, fir
 // ---- prices, cards, placements -----------------------------------------------------------------------------------------------
 { const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')), sk = id=> sc.skills.find(r=> r.id === id);
   ok(['hemorrhage', 'greaterPoison', 'shoreUp'].every(k=> sk(k) && sk(k).value > 0 && /package EN4/.test(sk(k).note)), 'the three prices: ' + ['hemorrhage', 'greaterPoison', 'shoreUp'].map(k=> k + ' ' + (sk(k) || {}).value).join(', '));
-  ok(sk('greaterPoison').value === 2.5 && sk('hemorrhage').value === 2 && sk('shoreUp').value === 2.2, 'Hemorrhage 2, Greater Poison 2.5 (owner 23:45: it never wears off), Shore Up 2.2');
+  ok((sk('greaterPoison').value === 2.5 || (/RECOST1/.test(sk('greaterPoison').appliedAt || '') && sk('greaterPoison').prevValue === 2.5) /* 2026-10-30 RECOST1: re-priced to its bench worth; EN4's 2.5 is its prevValue */) && sk('hemorrhage').value === 2 && sk('shoreUp').value === 2.2, 'Hemorrhage 2, Greater Poison 2.5 (owner 23:45: it never wears off), Shore Up 2.2');
   ok(sk('greaterPoison').scale === 'half' && sk('hemorrhage').scale === 'fixed' && sk('shoreUp').scale === 'fixed', 'scales: Greater Poison half (N), the others fixed');
   const md = fs.readFileSync(path.join(ROOT, 'docs/balance/en4-skill-test-2026-10-23.md'), 'utf8'); ok(/hemorrhage/.test(md) && /greaterPoison/.test(md) && /shoreUp/.test(md), 'the measurement is filed (docs/balance/en4-skill-test-2026-10-23.md)');
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8')), c = id=> cards.find(x=> x.id === id);

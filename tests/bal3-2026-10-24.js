@@ -49,6 +49,8 @@ const TEN = {'alley-cat': [1, 1], 'honey-badger-fury': [1, 6], 'chipmunk-hoarder
   'sunfeather-scout': [1, 4], 'lone-grey-wolf': [2, 9], 'rock-pool-starfish': [1, 1], 'muskrat-lodgekeeper': [1, 5]};
 // 2026-10-28 (RELFIX2): BAL7 moved two of them on (its notes in cards.json): M1's re-balance chipmunk-hoarder 2/6 -> 2/5, the Shield re-fit (FIN2-2) muskrat-lodgekeeper 1/5 -> 1/7
 TEN['chipmunk-hoarder'] = [2, 5]; TEN['muskrat-lodgekeeper'] = [1, 7];
+// 2026-10-30 RECOST1: Quick and Bleed re-priced to their bench worth, then the under-budget, measurably weak cards lifted (docs/balance/recost1-2026-10-30.json)
+TEN['alley-cat'] = [2, 2]; TEN['chipmunk-cavalry'] = [3, 3];
 const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8')), byId = new Map(cards.map(c=> [c.id, c]));
 const held = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'bal2-refit-2026-10-24.json'), 'utf8')).held || [];
 const flagged = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'balance', 'human-pass-1-flagged-2026-10-21.json'), 'utf8'));

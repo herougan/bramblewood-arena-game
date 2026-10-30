@@ -930,9 +930,9 @@
     "test": false,
     "uuid": "920175ff-6c81-49a9-a740-8086ce5a00c7",
     "wait": 0,
-    "attack": 1,
+    "attack": 2,
     "flavor": "Nine lives, and it\u2019s spending every one of them recklessly.",
-    "health": 1,
+    "health": 2,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -2241,8 +2241,8 @@
     "icon": "\ud83d\udc19",
     "cost": 2,
     "wait": 2,
-    "attack": 5,
-    "health": 5,
+    "attack": 6,
+    "health": 7,
     "effects": {
       "sweep": 3,
       "tide": true
@@ -5879,8 +5879,8 @@
     "icon": "\ud83e\udd8c",
     "cost": 2,
     "wait": 1,
-    "attack": 4,
-    "health": 4,
+    "attack": 5,
+    "health": 6,
     "archetypes": [
       "Taiga",
       "Deer"
@@ -7196,8 +7196,8 @@
     "icon": "\ud83d\udc3f\ufe0f",
     "cost": 1,
     "wait": 0,
-    "attack": 2,
-    "health": 2,
+    "attack": 3,
+    "health": 3,
     "archetypes": [
       "Chipmunk"
     ],
@@ -7522,7 +7522,7 @@
     "wait": 1,
     "attack": 1,
     "flavor": "Sees in the dark. Flies through the gaps everyone else swears aren't there.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -7670,7 +7670,7 @@
     "test": false,
     "uuid": "5b893731-9d05-42c1-a5b4-493fe637314f",
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "flavor": "Territorial, uninvited, and somehow already attacking before the round starts.",
     "health": 2,
     "locked": true,
@@ -7922,7 +7922,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 3,
-    "health": 12,
+    "health": 11,
     "effects": {
       "frenzy": true
     },
@@ -8779,7 +8779,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 11,
+    "health": 10,
     "rarity": "uncommon",
     "species": [
       "Amphibian"
@@ -9129,7 +9129,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "Stands watch at the lodge gate, otter-scout style.",
-    "health": 7,
+    "health": 6,
     "locked": false,
     "rarity": "uncommon",
     "resist": [],
@@ -13796,7 +13796,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 8,
+    "health": 6,
     "rarity": "common",
     "locked": true,
     "archetypes": [
@@ -14279,9 +14279,9 @@
     "uuid": "94dfe124-9fba-4d14-a550-caae5b75d321",
     "wait": 0,
     "basic": true,
-    "attack": 1,
+    "attack": 2,
     "flavor": "Already halfway down the riverbank before anyone said go.",
-    "health": 1,
+    "health": 3,
     "locked": false,
     "rarity": "uncommon",
     "resist": [],
@@ -14561,7 +14561,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 4,
+    "health": 6,
     "archetypes": [
       "Bird",
       "Ecclesia"
@@ -14598,7 +14598,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 9,
+    "health": 12,
     "archetypes": [
       "Badger",
       "Ecclesia"
@@ -15113,7 +15113,7 @@
     "id": "nectar-vintner",
     "name": "Nectar Vintner",
     "icon": "\ud83d\udc26",
-    "attack": 1,
+    "attack": 2,
     "health": 1,
     "rarity": "common",
     "species": [
@@ -16347,8 +16347,8 @@
     "icon": "\ud83e\udda6",
     "cost": 2,
     "wait": 2,
-    "attack": 1,
-    "health": 1,
+    "attack": 2,
+    "health": 3,
     "effects": {
       "armor": 2,
       "sweep": 4
@@ -16633,7 +16633,7 @@
     "icon": "\ud83d\udc26",
     "cost": 0,
     "wait": 1,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "effects": {
       "quick": true,
@@ -17318,7 +17318,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 8,
+    "health": 7,
     "effects": {
       "changeling": true,
       "flying": true
@@ -18536,7 +18536,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 1,
-    "health": 5,
+    "health": 7,
     "rarity": "common",
     "locked": true,
     "archetypes": [
@@ -19876,8 +19876,8 @@
     "icon": "\ud83d\udc19",
     "cost": 2,
     "wait": 3,
-    "attack": 6,
-    "health": 6,
+    "attack": 7,
+    "health": 8,
     "rarity": "epic",
     "effects": {
       "sweep": 5,
@@ -20976,7 +20976,7 @@
     "icon": "\ud83d\udc0a",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "rarity": "common",
     "species": [
@@ -21119,8 +21119,8 @@
     "icon": "\ud83d\udc1b",
     "cost": 0,
     "wait": 1,
-    "attack": 1,
-    "health": 1,
+    "attack": 2,
+    "health": 3,
     "rarity": "common",
     "species": [
       "Myriapod"
@@ -22483,7 +22483,7 @@
     "wait": 0,
     "attack": 1,
     "flavor": "Fluffy, stubborn, and impossible to walk past.",
-    "health": 7,
+    "health": 6,
     "locked": true,
     "rarity": "starter",
     "resist": [],
@@ -23190,7 +23190,7 @@
     "wait": 2,
     "attack": 4,
     "flavor": "The fruit was off. The elephant was on.",
-    "health": 22,
+    "health": 20,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -23932,7 +23932,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "Cut it in half and you have done it a favour.",
-    "health": 12,
+    "health": 10,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24012,9 +24012,9 @@
     "test": false,
     "uuid": "fb92ad94-86b7-53b5-917d-e21e5a81b252",
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "flavor": "It hums quietly on the seabed, counting.",
-    "health": 9,
+    "health": 8,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24317,9 +24317,9 @@
     "test": false,
     "uuid": "f3034ae3-9a46-54fe-a727-52928557f451",
     "wait": 1,
-    "attack": 4,
+    "attack": 5,
     "flavor": "Scales like a pinecone, and as hard to argue with.",
-    "health": 4,
+    "health": 6,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24406,7 +24406,7 @@
     "wait": 1,
     "attack": 1,
     "flavor": "Lose a friend near it and watch it lose its mind.",
-    "health": 13,
+    "health": 11,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -25005,7 +25005,7 @@
     "wait": 2,
     "attack": 3,
     "flavor": "One bleat from the high ledge and the whole slope listens.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "veryrare",
     "resist": [],
@@ -27108,7 +27108,7 @@
     "wait": 3,
     "attack": 0,
     "flavor": "Beavers know timber, and timber knows how to throw a rock over a wall.",
-    "health": 26,
+    "health": 24,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -27822,7 +27822,7 @@
     "cost": 4,
     "wait": 4,
     "attack": 5,
-    "health": 28,
+    "health": 25,
     "rarity": "legendary",
     "creatureRank": 2,
     "archetypes": [
@@ -28513,7 +28513,7 @@
     "icon": "\ud83d\udc01",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
+    "attack": 3,
     "health": 2,
     "rarity": "common",
     "species": [
@@ -28587,7 +28587,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 1,
-    "health": 7,
+    "health": 9,
     "rarity": "common",
     "species": [
       "Reptile"
@@ -30785,7 +30785,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 2,
+    "health": 3,
     "rarity": "common",
     "species": [
       "Bird"
@@ -33876,7 +33876,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "rarity": "common",
     "archetypes": [
       "Bird"
@@ -34015,7 +34015,7 @@
     "name": "Phoenix Mushrooms",
     "wait": 1,
     "attack": 1,
-    "health": 11,
+    "health": 10,
     "locked": false,
     "rarity": "epic",
     "effects": {
@@ -34240,7 +34240,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 12,
+    "health": 11,
     "rarity": "uncommon",
     "archetypes": [
       "Otter",

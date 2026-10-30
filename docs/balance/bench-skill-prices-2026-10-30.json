@@ -1,0 +1,3264 @@
+{
+ "about": "Package TOOLS1 (T2): suggested skill prices from the workbench's measured worth (tools/bench/bench.js skill --all), for the owner to review. Nothing here is applied: canonical/skill-costs.json is unchanged. Only skills mispriced at medium or high confidence are listed. worth / price / net in budget points (2A + H + S).",
+ "source": "docs/balance/bench-skills-2026-10-30.json",
+ "generated": "2026-10-30T05:37:28.120Z",
+ "fingerprint": "b791b784613a",
+ "yardstick": {
+  "perPoint": 0.0417,
+  "se": 0.0034,
+  "attack": 0.0954,
+  "attackSE": 0.0078,
+  "health": 0.0298,
+  "healthSE": 0.0027,
+  "cards": 283,
+  "attackCards": 282,
+  "attackInHealth": 3.2033,
+  "from": "this run"
+ },
+ "skills": [
+  {
+   "skill": "tsunami",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 6.066,
+   "worthCI": 1.8508,
+   "price": 22.5,
+   "net": -16.434,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 10.3347,
+     "ci": 2.7946,
+     "price": 15
+    },
+    {
+     "n": 2,
+     "worth": 1.7973,
+     "ci": 1.3919,
+     "price": 30
+    }
+   ],
+   "current": {
+    "value": 15,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.044,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onSpawn>stun",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0,
+   "worthCI": 1.3212,
+   "price": 9.45,
+   "net": -9.45,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0,
+     "ci": 1.3212,
+     "price": 9.45
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "bulwark",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0485,
+   "worthCI": 1.2775,
+   "price": 9.72,
+   "net": -8.6715,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.7973,
+     "ci": 2.1749,
+     "price": 7.2
+    },
+    {
+     "n": 2,
+     "worth": 0.2996,
+     "ci": 1.3195,
+     "price": 12.24
+    }
+   ],
+   "current": {
+    "value": 7.2,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0.699,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "loneWolf",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 3.8943,
+   "worthCI": 1.3606,
+   "price": 12,
+   "net": -8.1057,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 3.8943,
+     "ci": 1.2139,
+     "price": 12
+    }
+   ],
+   "current": {
+    "value": 6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.9472,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sturdy",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.2996,
+   "worthCI": 0.9331,
+   "price": 8,
+   "net": -7.7004,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2996,
+     "ci": 0.9319,
+     "price": 8
+    }
+   ],
+   "current": {
+    "value": 8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2996,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sweep",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0485,
+   "worthCI": 0.8934,
+   "price": 7.8,
+   "net": -6.7515,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.1498,
+     "ci": 0.8856,
+     "price": 7.8
+    },
+    {
+     "n": 3,
+     "worth": 1.4978,
+     "ci": 1.2091,
+     "price": 7.8
+    }
+   ],
+   "current": {
+    "value": 3.9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5243,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "quarry",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -3.8443,
+   "worthCI": 1.3956,
+   "price": 2.5,
+   "net": -6.3443,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -3.8443,
+     "ci": 1.2568,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "n"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "acidBolt",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 7.3392,
+   "worthCI": 1.8297,
+   "price": 1,
+   "net": 6.3392,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 7.3392,
+     "ci": 1.4164,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 7.3392,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "pack",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.9912,
+   "worthCI": 2.2155,
+   "price": 0,
+   "net": 5.9912,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.5903,
+     "ci": 2.3597,
+     "price": 0
+    },
+    {
+     "n": 2,
+     "worth": 5.392,
+     "ci": 2.5032,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.9941,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "bloomCopy",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1498,
+   "worthCI": 0.6889,
+   "price": 6.0567,
+   "net": -5.9069,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 0.1498,
+     "ci": 0.6885,
+     "price": 6.0567
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.1498,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "regen",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1997,
+   "worthCI": 0.622,
+   "price": 6.0667,
+   "net": -5.867,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2996,
+     "ci": 1.5618,
+     "price": 2.6
+    },
+    {
+     "n": 3,
+     "worth": 0.1498,
+     "ci": 0.5106,
+     "price": 7.8
+    }
+   ],
+   "current": {
+    "value": 2.6,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0.0856,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onSpawn>addWait",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.3994,
+   "worthCI": 0.6198,
+   "price": 5.88,
+   "net": -5.4806,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.3994,
+     "ci": 0.6165,
+     "price": 5.88
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "immolation",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -1.0984,
+   "worthCI": 0.8865,
+   "price": 4,
+   "net": -5.0984,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -1.0984,
+     "ci": 0.8694,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "T:perTurn>spawnCard",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 3.9691,
+   "worthCI": 1.7218,
+   "price": 9,
+   "net": -5.0309,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.9691,
+     "ci": 1.6038,
+     "price": 9
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "supreme",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0999,
+   "worthCI": 0.1963,
+   "price": 5,
+   "net": -4.9001,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.0999,
+     "ci": 0.1957,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0999,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "avalanche",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 8.6872,
+   "worthCI": 2.2182,
+   "price": 4,
+   "net": 4.6872,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 8.6872,
+     "ci": 1.7437,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 8.6872,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sacrifice",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.1498,
+   "worthCI": 0.2945,
+   "price": 4.5,
+   "net": -4.6498,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.2996,
+     "ci": 0.5871,
+     "price": 3
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 0,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "T:onDeath>exileSelf",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.4934,
+   "worthCI": 1.6787,
+   "price": -0.08,
+   "net": 4.5734,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.4934,
+     "ci": 1.5216,
+     "price": -0.08
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "decay",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.6916,
+   "worthCI": 1.7526,
+   "price": 1.12,
+   "net": 4.5716,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.6916,
+     "ci": 1.5049,
+     "price": 1.12
+    }
+   ],
+   "current": {
+    "value": 1.12,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.6916,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "mountainClimber",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.4993,
+   "worthCI": 0.9817,
+   "price": 4,
+   "net": -4.4993,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.4993,
+     "ci": 0.9786,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "fletcher",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.4934,
+   "worthCI": 1.6318,
+   "price": 0,
+   "net": 4.4934,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.4934,
+     "ci": 1.4697,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.4934,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "spitfire",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.4919,
+   "worthCI": 1.6543,
+   "price": 1,
+   "net": 4.4919,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.4919,
+     "ci": 1.4091,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.4919,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "brood",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 7.3891,
+   "worthCI": 2.0525,
+   "price": 2.9333,
+   "net": 4.4558,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.2907,
+     "ci": 1.8672,
+     "price": 2.2
+    },
+    {
+     "n": 2,
+     "worth": 9.5859,
+     "ci": 2.7204,
+     "price": 4.4
+    }
+   ],
+   "current": {
+    "value": 2.2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.5418,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "healing",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.8987,
+   "worthCI": 0.975,
+   "price": 5.3333,
+   "net": -4.4347,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.348,
+     "ci": 1.4469,
+     "price": 4
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 0,
+     "price": 8
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.674,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "evolute",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -1.2482,
+   "worthCI": 1.0841,
+   "price": 3,
+   "net": -4.2482,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -1.2482,
+     "ci": 1.066,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "onReadyGold",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.9971,
+   "worthCI": 0.9957,
+   "price": 6.24,
+   "net": -4.2429,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.9971,
+     "ci": 0.9445,
+     "price": 6.24
+    }
+   ],
+   "current": {
+    "value": 6.24,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.9971,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onAttacked>spawnCard",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 3.395,
+   "worthCI": 1.3495,
+   "price": 7.6,
+   "net": -4.205,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.395,
+     "ci": 1.2386,
+     "price": 7.6
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "quick",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.7988,
+   "worthCI": 1.8223,
+   "price": 5,
+   "net": -4.2012,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.7988,
+     "ci": 1.8179,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.7988,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:perTurn>forgeWeapon",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0,
+   "worthCI": 0.4824,
+   "price": 4.2,
+   "net": -4.2,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0,
+     "ci": 0.4824,
+     "price": 4.2
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "inspiring",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.6975,
+   "worthCI": 0.9494,
+   "price": 5.8333,
+   "net": -4.1358,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.8943,
+     "ci": 1.9495,
+     "price": 3.5
+    },
+    {
+     "n": 2,
+     "worth": 0.5991,
+     "ci": 0.7115,
+     "price": 7
+    }
+   ],
+   "current": {
+    "value": 3.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.0185,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "pounce",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.699,
+   "worthCI": 1.1262,
+   "price": 4.8,
+   "net": -4.101,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.8987,
+     "ci": 1.6594,
+     "price": 3.6
+    },
+    {
+     "n": 6,
+     "worth": 0.2996,
+     "ci": 0.5871,
+     "price": 7.2
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2621,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "rage",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.9985,
+   "worthCI": 0.8213,
+   "price": 5,
+   "net": -4.0015,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.9985,
+     "ci": 0.806,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9985,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "undead",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.2996,
+   "worthCI": 0.9836,
+   "price": 4.3,
+   "net": -4.0004,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2996,
+     "ci": 0.9825,
+     "price": 4.3
+    }
+   ],
+   "current": {
+    "value": 4.3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.2996,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "dry",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0999,
+   "worthCI": 0.8119,
+   "price": 4,
+   "net": -3.9001,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.0999,
+     "ci": 0.8117,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0999,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "venomous",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.2981,
+   "worthCI": 1.2451,
+   "price": 5.1667,
+   "net": -3.8686,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.4978,
+     "ci": 1.9316,
+     "price": 3.1
+    },
+    {
+     "n": 2,
+     "worth": 1.1982,
+     "ci": 1.5407,
+     "price": 6.2
+    }
+   ],
+   "current": {
+    "value": 3.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.7789,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "expose",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4493,
+   "worthCI": 0.9773,
+   "price": 4.2,
+   "net": -3.7507,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.4493,
+     "ci": 0.9748,
+     "price": 4.2
+    }
+   ],
+   "current": {
+    "value": 2.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2247,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "strangle",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.9427,
+   "worthCI": 1.8768,
+   "price": 1.2,
+   "net": 3.7427,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.392,
+     "ci": 2.2068,
+     "price": 0.8
+    },
+    {
+     "n": 2,
+     "worth": 4.4934,
+     "ci": 2.3772,
+     "price": 1.6
+    }
+   ],
+   "current": {
+    "value": 0.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.2951,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "arrow",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 7.6387,
+   "worthCI": 2.3016,
+   "price": 4,
+   "net": 3.6387,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 7.1145,
+     "ci": 2.0263,
+     "price": 3
+    },
+    {
+     "n": 2,
+     "worth": 8.6872,
+     "ci": 2.5404,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.729,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "twinShot",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 5.5917,
+   "worthCI": 1.6106,
+   "price": 9,
+   "net": -3.4083,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.5917,
+     "ci": 1.3473,
+     "price": 9
+    }
+   ],
+   "current": {
+    "value": 9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.5917,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scare",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.7988,
+   "worthCI": 0.9155,
+   "price": 4.1667,
+   "net": -3.3678,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1982,
+     "ci": 1.6501,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 0.5991,
+     "ci": 1.0148,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4793,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "darksight",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.2996,
+   "worthCI": 0.7086,
+   "price": 3,
+   "net": -3.2996,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.2996,
+     "ci": 0.707,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "fastForward",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.3965,
+   "worthCI": 1.0875,
+   "price": 5.59,
+   "net": -3.1935,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.3965,
+     "ci": 1.0196,
+     "price": 5.59
+    }
+   ],
+   "current": {
+    "value": 5.59,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.3965,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "kinRally",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 3.4449,
+   "worthCI": 1.2914,
+   "price": 6.5,
+   "net": -3.0551,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.4449,
+     "ci": 1.1713,
+     "price": 6.5
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "no entry in canonical/skill-costs.json (priced by a rule in bramblewood-budget.js or the 1 + floor(N/2) default)"
+  },
+  {
+   "skill": "speed",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.8487,
+   "worthCI": 0.9406,
+   "price": 3.9,
+   "net": -3.0513,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.8487,
+     "ci": 0.931,
+     "price": 3.9
+    }
+   ],
+   "current": {
+    "value": 1.95,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4244,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "daunt",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.2996,
+   "worthCI": 0.589,
+   "price": 3.3333,
+   "net": -3.0338,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4493,
+     "ci": 0.8807,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 0,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2247,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onSpawn>drawCard",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.7459,
+   "worthCI": 1.4015,
+   "price": 5.7433,
+   "net": -2.9974,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.5727,
+     "ci": 1.5874,
+     "price": 4.31
+    },
+    {
+     "n": 2,
+     "worth": 5.0925,
+     "ci": 2.3177,
+     "price": 8.61
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "rocket",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.9912,
+   "worthCI": 1.8056,
+   "price": 3,
+   "net": 2.9912,
+   "perN": [
+    {
+     "n": 4,
+     "worth": 5.9912,
+     "ci": 1.5382,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.9971,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "fork",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.0485,
+   "worthCI": 0.7257,
+   "price": 4,
+   "net": -2.9515,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.0485,
+     "ci": 0.7066,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.0485,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "taunt",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0499,
+   "worthCI": 1.627,
+   "price": 3,
+   "net": -2.9501,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.0499,
+     "ci": 1.627,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0499,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "onDeathSpawn",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0999,
+   "worthCI": 0.4401,
+   "price": 3,
+   "net": -2.9001,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 0.0999,
+     "ci": 0.4398,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0999,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "ambush",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.1982,
+   "worthCI": 1.2933,
+   "price": 4,
+   "net": -2.8018,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.8987,
+     "ci": 1.7614,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 1.1982,
+     "ci": 2.1949,
+     "price": 4
+    },
+    {
+     "n": 4,
+     "worth": 1.4978,
+     "ci": 1.7415,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5991,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "remember",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.3935,
+   "worthCI": 1.6501,
+   "price": 1.6667,
+   "net": 2.7268,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.8898,
+     "ci": 2.5336,
+     "price": 1
+    },
+    {
+     "n": 2,
+     "worth": 4.7929,
+     "ci": 2.273,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 1.4978,
+     "ci": 1.5279,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.6361,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "gash",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4993,
+   "worthCI": 0.4336,
+   "price": 3.2,
+   "net": -2.7007,
+   "perN": [
+    {
+     "n": 3,
+     "worth": 0.4993,
+     "ci": 0.4264,
+     "price": 3.2
+    }
+   ],
+   "current": {
+    "value": 1.6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2497,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "lumberjack",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.3965,
+   "worthCI": 1.2218,
+   "price": 5,
+   "net": -2.6035,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.3965,
+     "ci": 1.1618,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.3965,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "foeScarcity",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.094,
+   "worthCI": 1.3751,
+   "price": 1.54,
+   "net": 2.554,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.094,
+     "ci": 1.2139,
+     "price": 1.54
+    }
+   ],
+   "current": {
+    "value": 1.54,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 4.094,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "fog",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1997,
+   "worthCI": 0.4814,
+   "price": 2.7,
+   "net": -2.5003,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.1997,
+     "ci": 0.4804,
+     "price": 2.7
+    }
+   ],
+   "current": {
+    "value": 2.7,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.1997,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "swarm",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 4.9926,
+   "worthCI": 1.5602,
+   "price": 2.5,
+   "net": 2.4926,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.9926,
+     "ci": 1.3466,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.9926,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "milling",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.392,
+   "worthCI": 1.6967,
+   "price": 3,
+   "net": 2.392,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 5.392,
+     "ci": 1.4679,
+     "price": 3
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "no entry in canonical/skill-costs.json (priced by a rule in bramblewood-budget.js or the 1 + floor(N/2) default)"
+  },
+  {
+   "skill": "hunter",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.7489,
+   "worthCI": 1.6408,
+   "price": 3,
+   "net": -2.2511,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2996,
+     "ci": 1.9585,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 1.1982,
+     "ci": 2.1949,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4993,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "corrode",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.1498,
+   "worthCI": 0.2945,
+   "price": 2,
+   "net": -2.1498,
+   "perN": [
+    {
+     "n": 2,
+     "worth": -0.2996,
+     "ci": 0.5871,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 0,
+     "ci": 0,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "drunk",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": -0.8987,
+   "worthCI": 1.19,
+   "price": -3,
+   "net": 2.1013,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.8987,
+     "ci": 1.1815,
+     "price": -3
+    }
+   ],
+   "current": {
+    "value": -3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "kinship",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 5.0925,
+   "worthCI": 1.5896,
+   "price": 3,
+   "net": 2.0925,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 5.0925,
+     "ci": 1.3714,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 5.0925,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "shell",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.9971,
+   "worthCI": 1.207,
+   "price": 4,
+   "net": -2.0029,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.2951,
+     "ci": 2.1699,
+     "price": 2
+    },
+    {
+     "n": 2,
+     "worth": 2.696,
+     "ci": 2.2097,
+     "price": 4
+    },
+    {
+     "n": 4,
+     "worth": 0,
+     "ci": 0,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9986,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "relic",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0999,
+   "worthCI": 0.9846,
+   "price": 2,
+   "net": -1.9001,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.0999,
+     "ci": 0.9845,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.0999,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "midas",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1498,
+   "worthCI": 0.2945,
+   "price": 2,
+   "net": -1.8502,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.2996,
+     "ci": 0.5871,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 0,
+     "ci": 0,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0749,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "greaterPoison",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.7489,
+   "worthCI": 0.773,
+   "price": 2.5,
+   "net": -1.7511,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.7489,
+     "ci": 0.764,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.7489,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "stunOnHit",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.2981,
+   "worthCI": 1.1136,
+   "price": 3,
+   "net": -1.7019,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.2981,
+     "ci": 1.0946,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.2981,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "breach",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.1982,
+   "worthCI": 0.8149,
+   "price": 2.85,
+   "net": -1.6518,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.2996,
+     "ci": 0.5871,
+     "price": 1.9
+    },
+    {
+     "n": 2,
+     "worth": 2.0969,
+     "ci": 1.4933,
+     "price": 3.8
+    }
+   ],
+   "current": {
+    "value": 1.9,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0.7988,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "bleed",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 2.5962,
+   "worthCI": 1.2437,
+   "price": 4.22,
+   "net": -1.6238,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5991,
+     "ci": 1.2464,
+     "price": 3.6
+    },
+    {
+     "n": 2,
+     "worth": 6.5903,
+     "ci": 2.5032,
+     "price": 5.46
+    }
+   ],
+   "current": {
+    "value": 3.6,
+    "scale": "n",
+    "pow": 0.6
+   },
+   "suggested": {
+    "value": 2.2154,
+    "scale": "n",
+    "pow": 0.6
+   },
+   "note": ""
+  },
+  {
+   "skill": "fester",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 1.1982,
+   "worthCI": 0.9051,
+   "price": 2.8,
+   "net": -1.6018,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1982,
+     "ci": 0.8852,
+     "price": 2.8
+    }
+   ],
+   "current": {
+    "value": 2.8,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 1.1982,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "chrysalis",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0,
+   "worthCI": 0.4824,
+   "price": 1.6,
+   "net": -1.6,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0,
+     "ci": 0.4824,
+     "price": 1.6
+    }
+   ],
+   "current": {
+    "value": 1.6,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "pierce",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.0999,
+   "worthCI": 0.7099,
+   "price": 1.6667,
+   "net": -1.5668,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5991,
+     "ci": 0.8251,
+     "price": 1
+    },
+    {
+     "n": 2,
+     "worth": -0.1498,
+     "ci": 0.9792,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.0599,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "siege",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4993,
+   "worthCI": 0.5154,
+   "price": 2,
+   "net": -1.5007,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 0.2996,
+     "ci": 0.4125,
+     "price": 2
+    },
+    {
+     "n": 3,
+     "worth": 0.8987,
+     "ci": 1.004,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.2497,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "keenEye",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1498,
+   "worthCI": 0.9494,
+   "price": 1.5,
+   "net": -1.3502,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.1498,
+     "ci": 0.9491,
+     "price": 1.5
+    }
+   ],
+   "current": {
+    "value": 1.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.1498,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onAllyPlayed>reduceWaitOfSpawned",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.699,
+   "worthCI": 0.9788,
+   "price": 2,
+   "net": -1.301,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.699,
+     "ci": 0.9726,
+     "price": 2
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "tide",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.1997,
+   "worthCI": 0.7872,
+   "price": 1.5,
+   "net": -1.3003,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.1997,
+     "ci": 0.7866,
+     "price": 1.5
+    }
+   ],
+   "current": {
+    "value": 1.5,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.1997,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "prospector",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.0999,
+   "worthCI": 0.653,
+   "price": 1.2,
+   "net": -1.2999,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.0999,
+     "ci": 0.6528,
+     "price": 1.2
+    }
+   ],
+   "current": {
+    "value": 1.2,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "n"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "reflect",
+   "verdict": "under-priced",
+   "confidence": "high",
+   "measuredWorth": 1.2981,
+   "worthCI": 0.8801,
+   "price": 0,
+   "net": 1.2981,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.2981,
+     "ci": 0.8559,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.2981,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "freeze",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.5991,
+   "worthCI": 0.8305,
+   "price": 1.8,
+   "net": -1.2009,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 0.5991,
+     "ci": 0.8251,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5991,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "heat",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0,
+   "worthCI": 0.9238,
+   "price": 1.2,
+   "net": -1.2,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0,
+     "ci": 0.9238,
+     "price": 1.2
+    }
+   ],
+   "current": {
+    "value": 1.2,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "keenSense",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0.4993,
+   "worthCI": 0.8084,
+   "price": 1.63,
+   "net": -1.1307,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4993,
+     "ci": 0.8045,
+     "price": 1.63
+    }
+   ],
+   "current": {
+    "value": 1.63,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4993,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "guardian",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": 0,
+   "worthCI": 0.6822,
+   "price": 1,
+   "net": -1,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0,
+     "ci": 0.6822,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "rampart",
+   "verdict": "over-priced",
+   "confidence": "high",
+   "measuredWorth": -0.5492,
+   "worthCI": 0.485,
+   "price": 0.22,
+   "net": -0.7692,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.5492,
+     "ci": 0.4772,
+     "price": 0.22
+    }
+   ],
+   "current": {
+    "value": 0.22,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "iceArrow",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 6.4405,
+   "worthCI": 2.2445,
+   "price": 3.75,
+   "net": 2.6905,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 6.5903,
+     "ci": 2.5032,
+     "price": 2.5
+    },
+    {
+     "n": 2,
+     "worth": 6.2907,
+     "ci": 2.4708,
+     "price": 5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.2937,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "berserk",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 6.091,
+   "worthCI": 1.6978,
+   "price": 4,
+   "net": 2.091,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 6.091,
+     "ci": 1.3994,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.0455,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "charge",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 5.0426,
+   "worthCI": 1.6677,
+   "price": 3,
+   "net": 2.0426,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": 5.0426,
+     "ci": 1.4655,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 5.0426,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "volley",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 6.5154,
+   "worthCI": 2.1244,
+   "price": 4.5,
+   "net": 2.0154,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 7.4889,
+     "ci": 2.4495,
+     "price": 3
+    },
+    {
+     "n": 2,
+     "worth": 5.5418,
+     "ci": 2.2085,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.3436,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "swipe",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 4.8678,
+   "worthCI": 2.0212,
+   "price": 3,
+   "net": 1.8678,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.8678,
+     "ci": 1.8695,
+     "price": 3
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 4.8678,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "evasive",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.8458,
+   "worthCI": 1.5166,
+   "price": 4.6667,
+   "net": -1.8209,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.8458,
+     "ci": 1.4485,
+     "price": 4.6667
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 2.8458,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "stockpile",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 3.1454,
+   "worthCI": 1.8285,
+   "price": 1.35,
+   "net": 1.7954,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.4978,
+     "ci": 2.4136,
+     "price": 0.9
+    },
+    {
+     "n": 2,
+     "worth": 4.7929,
+     "ci": 2.1138,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 0.9,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 2.0969,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onAttack>heal",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.022,
+   "worthCI": 1.39,
+   "price": 0.27,
+   "net": 1.752,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.022,
+     "ci": 1.3529,
+     "price": 0.27
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "flying",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.8957,
+   "worthCI": 1.4455,
+   "price": 4.5,
+   "net": -1.6043,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.8957,
+     "ci": 1.3714,
+     "price": 4.5
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 2.8957,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "stealth",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.3994,
+   "worthCI": 1.7383,
+   "price": 2,
+   "net": -1.6006,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.3994,
+     "ci": 1.7371,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.3994,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onReady>gain",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 3.0954,
+   "worthCI": 1.4084,
+   "price": 1.5,
+   "net": 1.5954,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1982,
+     "ci": 1.2252,
+     "price": 0.9
+    },
+    {
+     "n": 3,
+     "worth": 6.8898,
+     "ci": 2.5336,
+     "price": 2.7
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "iceBolt",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 7.5888,
+   "worthCI": 1.8347,
+   "price": 6,
+   "net": 1.5888,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 7.5888,
+     "ci": 1.3898,
+     "price": 6
+    }
+   ],
+   "current": {
+    "value": 3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.7944,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "meiosis",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.5462,
+   "worthCI": 1.3614,
+   "price": 1,
+   "net": 1.5462,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.5462,
+     "ci": 1.3008,
+     "price": 1
+    }
+   ],
+   "current": {
+    "value": 1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.5462,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "thorns",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 3.1953,
+   "worthCI": 1.4169,
+   "price": 1.6667,
+   "net": 1.5286,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.7929,
+     "ci": 1.7527,
+     "price": 1.25
+    },
+    {
+     "n": 2,
+     "worth": 0,
+     "ci": 1.8684,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 1.25,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 2.3965,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "sonar",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.4993,
+   "worthCI": 1.1955,
+   "price": 2,
+   "net": -1.5007,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4993,
+     "ci": 1.1929,
+     "price": 2
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4993,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scavenge",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.9956,
+   "worthCI": 1.4541,
+   "price": 1.5,
+   "net": 1.4956,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.9956,
+     "ci": 1.3751,
+     "price": 1.5
+    }
+   ],
+   "current": {
+    "value": 1.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 2.9956,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "counterattack",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.4493,
+   "worthCI": 1.2161,
+   "price": 1.9,
+   "net": -1.4507,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4493,
+     "ci": 1.214,
+     "price": 1.9
+    }
+   ],
+   "current": {
+    "value": 1.9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4493,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scatterbrained",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": -4.5932,
+   "worthCI": 1.4882,
+   "price": -6,
+   "net": 1.4068,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -4.5932,
+     "ci": 1.2997,
+     "price": -6
+    }
+   ],
+   "current": {
+    "value": -6,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "bulldoze",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.5962,
+   "worthCI": 1.1463,
+   "price": 4,
+   "net": -1.4038,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 2.5962,
+     "ci": 1.0706,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 4,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 2.5962,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "boomerang",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 3.2951,
+   "worthCI": 1.3117,
+   "price": 1.9,
+   "net": 1.3951,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.2951,
+     "ci": 1.2042,
+     "price": 1.9
+    }
+   ],
+   "current": {
+    "value": 1.9,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 3.2951,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "T:onAttack>drawCard",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 4.1938,
+   "worthCI": 1.4638,
+   "price": 5.54,
+   "net": -1.3462,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 4.1938,
+     "ci": 1.3056,
+     "price": 5.54
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "T:onSpawn>gain",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.9457,
+   "worthCI": 1.3637,
+   "price": 1.75,
+   "net": 1.1957,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 3.1454,
+     "ci": 2.2785,
+     "price": 1.05
+    },
+    {
+     "n": 2,
+     "worth": 2.8458,
+     "ci": 1.4009,
+     "price": 2.1
+    }
+   ],
+   "current": null,
+   "suggested": null,
+   "note": "a trigger entry: priced as trigger weight x action value (canonical/skill-costs.json triggers / actions); the measured worth is for the entry as these cards carry it"
+  },
+  {
+   "skill": "diurnal",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 1.7973,
+   "worthCI": 1.1145,
+   "price": 0.6667,
+   "net": 1.1307,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.7973,
+     "ci": 1.0778,
+     "price": 0.6667
+    }
+   ],
+   "current": {
+    "value": 0.38,
+    "scale": "fixed",
+    "logic": "zeit"
+   },
+   "suggested": null,
+   "note": "priced by the 4-round rule in bramblewood-budget.js (logic zeit): change the rule, not the value"
+  },
+  {
+   "skill": "nightblind",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": -1.8972,
+   "worthCI": 1.3473,
+   "price": -3,
+   "net": 1.1028,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -1.8972,
+     "ci": 1.3136,
+     "price": -3
+    }
+   ],
+   "current": {
+    "value": -3,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "half"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "prayerWard",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 1.3979,
+   "worthCI": 0.9809,
+   "price": 2.5,
+   "net": -1.1021,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.3979,
+     "ci": 0.9557,
+     "price": 2.5
+    }
+   ],
+   "current": {
+    "value": 2.5,
+    "scale": "n"
+   },
+   "suggested": {
+    "value": 1.3979,
+    "scale": "n"
+   },
+   "note": ""
+  },
+  {
+   "skill": "shock",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": -0.1498,
+   "worthCI": 1.2178,
+   "price": 0.95,
+   "net": -1.0998,
+   "perN": [
+    {
+     "n": "braces",
+     "worth": -0.1498,
+     "ci": 1.2176,
+     "price": 0.95
+    }
+   ],
+   "current": {
+    "value": 0.93,
+    "scale": "half",
+    "logic": "shock"
+   },
+   "suggested": null,
+   "note": "priced by the 4-round rule in bramblewood-budget.js (logic shock): change the rule, not the value"
+  },
+  {
+   "skill": "beset",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 2.8957,
+   "worthCI": 1.3627,
+   "price": 1.8,
+   "net": 1.0957,
+   "perN": [
+    {
+     "n": 6,
+     "worth": 2.8957,
+     "ci": 1.2837,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 2.8957,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "storm",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.7988,
+   "worthCI": 1.1753,
+   "price": 1.8,
+   "net": -1.0012,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.7988,
+     "ci": 1.1685,
+     "price": 1.8
+    }
+   ],
+   "current": {
+    "value": 1.8,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.7988,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "cower",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.4993,
+   "worthCI": 1.1955,
+   "price": -0.5,
+   "net": 0.9993,
+   "perN": [
+    {
+     "n": "shell",
+     "worth": 0.4993,
+     "ci": 1.1929,
+     "price": -0.5
+    }
+   ],
+   "current": {
+    "value": -0.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4993,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "scar",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 3.0954,
+   "worthCI": 1.1675,
+   "price": 4,
+   "net": -0.9046,
+   "perN": [
+    {
+     "n": 2,
+     "worth": 3.0954,
+     "ci": 1.0604,
+     "price": 4
+    }
+   ],
+   "current": {
+    "value": 2,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.5477,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "changeling",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.9985,
+   "worthCI": 0.9525,
+   "price": 0.1,
+   "net": 0.8985,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.9985,
+     "ci": 0.9394,
+     "price": 0.1
+    }
+   ],
+   "current": {
+    "value": 0.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.9985,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "frostbite",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 1.1982,
+   "worthCI": 0.7659,
+   "price": 0.5,
+   "net": 0.6982,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 1.1982,
+     "ci": 0.7421,
+     "price": 0.5
+    }
+   ],
+   "current": {
+    "value": 0.5,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 1.1982,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "slow",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": -0.2996,
+   "worthCI": 0.7614,
+   "price": -0.9233,
+   "net": 0.6238,
+   "perN": [
+    {
+     "n": 1,
+     "worth": -0.2996,
+     "ci": 0.7599,
+     "price": -0.9233
+    }
+   ],
+   "current": {
+    "value": 0.85,
+    "scale": "mult"
+   },
+   "suggested": {
+    "value": 0,
+    "scale": "mult"
+   },
+   "note": "measured worth below zero: the skill hurts these carriers; floor 0"
+  },
+  {
+   "skill": "rupture",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.5991,
+   "worthCI": 0.676,
+   "price": 0,
+   "net": 0.5991,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5991,
+     "ci": 0.6693,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.5991,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "frenzy",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.699,
+   "worthCI": 0.7551,
+   "price": 0.1,
+   "net": 0.599,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.699,
+     "ci": 0.747,
+     "price": 0.1
+    }
+   ],
+   "current": {
+    "value": 0.1,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.699,
+    "scale": "half"
+   },
+   "note": ""
+  },
+  {
+   "skill": "frost",
+   "verdict": "over-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.5991,
+   "worthCI": 0.6159,
+   "price": 1.12,
+   "net": -0.5209,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.5991,
+     "ci": 0.6086,
+     "price": 1.12
+    }
+   ],
+   "current": {
+    "value": 1.12,
+    "scale": "fixed"
+   },
+   "suggested": {
+    "value": 0.5991,
+    "scale": "fixed"
+   },
+   "note": ""
+  },
+  {
+   "skill": "herbalist",
+   "verdict": "under-priced",
+   "confidence": "medium",
+   "measuredWorth": 0.4993,
+   "worthCI": 0.5858,
+   "price": 0,
+   "net": 0.4993,
+   "perN": [
+    {
+     "n": 1,
+     "worth": 0.4993,
+     "ci": 0.5805,
+     "price": 0
+    }
+   ],
+   "current": {
+    "value": 0,
+    "scale": "half"
+   },
+   "suggested": {
+    "value": 0.4993,
+    "scale": "half"
+   },
+   "note": ""
+  }
+ ]
+}
