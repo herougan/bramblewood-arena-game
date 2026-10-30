@@ -679,6 +679,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const MAX_HAND = 5;
   function draw(player, n, side, stats, events){
     const opening = !player._openingDealt && !(player.drawnTotal > 0) && n > 0; if(n > 0) player._openingDealt = true; // Vanguard (2026-10-17): a player's first draw is the opening hand
+    // 2026-10-30 (ENG14, owner X25: "Elite skirmishes start with +1 card in their hand."): player.openingExtra (set by the page's
+    // applySkirmishSetup on an elite fight's CPU) adds that many cards to the opening hand.
+    if(opening && player.openingExtra > 0) n += Math.round(Number(player.openingExtra)) || 0;
     for(let i=0;i<n;i++){
       if(player.deck.length===0) return;
       const defId = player.deck.pop();
@@ -1558,6 +1561,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, src, {id, name: (src.name || root) + ' Illusion', attack:1, health:1, wait:1, cost:0, stoneCost:0, metalCost:0, uraniumCost:0, graceCost:0, devilryCost:0,
         derivedFrom: root, token:true, illusionOf: root, effects: eff}); }
     return id; }
+  // 2026-10-30 (ENG14, X10): whose a unit is, for Mirage's one Illusion per player: a co-op seat (coopSeat), a raid ally (allyOf), else
+  // the side's own player. Seat 0 and the side's own units are one player.
+  function mirageOwnerKey(c){ if(c && c.coopSeat > 0) return 'seat' + c.coopSeat; if(c && c.allyOf) return 'ally:' + c.allyOf; return 'main'; }
   function liveUnits(pl){ return pl ? allLive(pl).filter(c=> !c.cageOf) : []; }
   function columnBurst(players){ const cols = {1: combatColumnsOf(players[1]), 2: combatColumnsOf(players[2])};
     const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
@@ -1634,16 +1640,26 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         ev({type:'fieldTick', field:'awash', round, side:sideOf(pid), uid:c.uid, defId:c.defId, n});
         washPush(players, sideOf, pid, c, n, 0, {type:'wave', awash:true, side:sideOf(pid), attUid:null, attDefId:null, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, moves:[], blocked:false, slotMode}, events, stats); }
       else ev({type:'fieldTick', field:'awash', round, none:true}); }
-    // Mirage: a random unit on the field (either side) gets a 1/1 Illusion beside it that copies only Flying, Tide / Swimmer, Haste and Speed.
+    // Mirage: a random unit gets a 1/1 Illusion beside it that copies only Flying, Tide / Swimmer, Haste and Speed.
     // It takes a free slot right beside the unit; with both taken (or on a packed row with no room) no illusion appears.
-    if(rules.mirage){ const pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !(CARD_DEFS[c.defId]||{}).illusionOf).map(c=> [pid, c]));
-      if(pool.length){ const [pid, src] = pool[Math.floor(rnd()*pool.length)], pl = players[pid], iid = illusionDefOf(src.defId); let nc = null;
-        if(slotMode){ const sl = nearestFreeSlot(pl, src.slot, false); // BF6 (owner 15:21): the nearest free slot, not only the two beside it
+    // 2026-10-30 (ENG14, owner X10: "It's not doing Mirage for the opponent. It should do on both side. On multi-player environments, it
+    // should be for each player."): was one unit a round from both sides together; now one a round for EACH player: each side's units are
+    // grouped by who played them (mirageOwnerKey: a co-op seat, a raid ally, else the side's own player) and every group gets its Illusion.
+    // A raid / group dungeon's middle and back rows count (their Illusion goes into the same row), so an ally's row gets its own.
+    if(rules.mirage){ [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      const units = (RESERVE_ROWS > 0 ? rowsUnitsOf(pl) : allBoardCards(pl)).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && !(CARD_DEFS[c.defId]||{}).illusionOf);
+      const groups = new Map(); units.forEach(c=>{ const k = mirageOwnerKey(c); if(!groups.has(k)) groups.set(k, []); groups.get(k).push(c); });
+      [...groups.keys()].sort().forEach(k=>{ const pool = groups.get(k), src = pool[Math.floor(rnd()*pool.length)], iid = illusionDefOf(src.defId); let nc = null;
+        const r = RESERVE_ROWS > 0 ? reserveRowOf(pl, src) : 0;
+        if(r > 0){ const sl = rowFreeSlotNear(pl, r, src.slot, false); if(sl !== null && inSlotCols(sl)){ nc = makeBoardCard(iid); rowPut(pl, r, sl, nc, src); } }
+        else if(slotMode){ const sl = nearestFreeSlot(pl, src.slot, false); // BF6 (owner 15:21): the nearest free slot, not only the two beside it
           if(sl !== null){ nc = makeBoardCard(iid); putInSlot(pl, nc, sl); } }
         else { nc = makeBoardCard(iid); pl.row[flankOrShorter(pl, findCardSide(pl, src.uid) || 'left')].push(nc); }
-        ev({type:'fieldTick', field:'mirage', side:sideOf(pid), uid:src.uid, defId:src.defId, illusionUid: nc ? nc.uid : null, none: !nc || undefined});
-        if(nc){ ev({type:'spawn', side:sideOf(pid), defId:iid, count:1, cause:'triggerSpawn', kind:'mirage', uids:[nc.uid], lane: findCardSide(pl, nc.uid), nearUid:src.uid});
-          fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned'); try{ syncPhaseStats(players, sideOf, events); }catch(e){} } } } // the new Illusion's Speed / Pack
+        if(nc){ if(src.coopSeat != null) nc.coopSeat = src.coopSeat; if(src.allyOf && !nc.allyOf){ nc.allyOf = src.allyOf; nc.allyRow = src.allyRow; } }
+        ev({type:'fieldTick', field:'mirage', side:sideOf(pid), uid:src.uid, defId:src.defId, illusionUid: nc ? nc.uid : null, none: !nc || undefined, row: r || undefined});
+        if(nc){ ev({type:'spawn', side:sideOf(pid), defId:iid, count:1, cause:'triggerSpawn', kind:'mirage', uids:[nc.uid], lane: r > 0 ? undefined : findCardSide(pl, nc.uid), nearUid:src.uid});
+          fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned'); } });
+      }); try{ syncPhaseStats(players, sideOf, events); }catch(e){} } // the new Illusions' Speed / Pack
     // ---- Package GI field effects (2026-10-19, docs/gameplay-ideas-2026-10-19.md). From round 2, every round, one random unit a side:
     // Spore Cloud (rules.sporeCloud): falls Asleep for this round (Sleep 1, so the Sleep cap N+1 holds it at 2; damage wakes it as ever).
     //   Poison-proof units (Structures, poison Immune) breathe nothing in.
@@ -2666,6 +2682,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
 //     for the rest of the fight. effects.fullMoonGrant = {...}: the skills in the braces from then on instead.
 // The skills in the braces ride on the same grant as Loyal / Usurper (a derived card, given and taken back as the condition turns).
   function grantStats(g){ if(!g || typeof g !== 'object') return [0, 0, null]; const rest = Object.assign({}, g); const x = Number(rest.attack)||0, y = Number(rest.health)||0; delete rest.attack; delete rest.health; return [x, y, Object.keys(rest).length ? rest : null]; }
+  // Anadromous (ENG14, 2026-10-30): 'sea' on a salt-water fight (rules.saltMap), 'river' anywhere else, null without the skill.
+  function anadromousOf(e){ return (e && e.anadromous) ? (rules.saltMap ? 'sea' : 'river') : null; }
   function hasTideGrant(e){ return !!(e && e.tideGrant && typeof e.tideGrant === 'object'); }
   function condStatsOf(c, e, pid, players){
     const pl = players[pid], foe = players[otherId(pid)]; let a = 0, h = 0, grant = null;
@@ -2690,6 +2708,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // EN5 (2026-10-24): Timbered / Bedrock / Forged / Last Stand – {…}, while their side's state holds (EN5_STATES); c._en5On lists the ones on
     { const on = en5StatesOn(e, pl); on.forEach(k=> addGrant(en5StateGrant(k, e)));
       const on6 = en6StatesOn(e, pl, foe); on6.forEach(k=> addGrant(en6StateGrant(k, e))); /* EN6 (2026-10-24): hand, heat / frost, weather, season */
+      // Anadromous (2026-10-30, package ENG14, owner X20 / ANAD-1: "Get tide benefits +2 Health in non-sea, +1 attack in sea."): on a
+      // salt-water fight (rules.saltMap: the beach and reef maps, or a fight that sets it) +1 Attack; everywhere else +2 Health. The map
+      // never changes mid-fight, so one of the two is always on; c._en5On names it ('anadromousSea' / 'anadromousRiver') for the chips.
+      const anad = anadromousOf(e); if(anad){ if(anad === 'sea') a += 1; else h += 2; on6.push(anad === 'sea' ? 'anadromousSea' : 'anadromousRiver'); }
       const all = on.concat(on6); c._en5On = all.length ? all.join(',') : ''; }
     a += en6HandAtk(e, pl, foe); // EN6 (2026-10-24): Full Hand / Lean N, yours and the foe's
     // Rage – {…} (2026-10-23, package EN, owner TR-6: "Rage - {...} means the typical effects of Rage, PLUS {...}"): while its Rage is on,
@@ -5681,7 +5703,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     t.webbed = Math.max(t.webbed||0, rounds); t._webbedJustSet = true;
     if(recordEvents && events) events.push({type:'statusFx', kind:'webbed', side, attDefId:att.defId, attUid:att.uid, targetSide:tSide, targetDefId:t.defId, targetUid:t.uid, amount:rounds});
   }
-  function stuckFast(c){ return !!(c && (c.pinned || c.webbed > 0 || sk1Anchored(c))); } // a pinned (Gladiator) or Webbed unit can't be moved; + Anchor (2026-10-19, package SK1)
+  function stuckFast(c){ return !!(c && (c.pinned || c.webbed > 0 || c.pinDown > 0 /* Bola's Pin (ENG14) */ || sk1Anchored(c))); } // a pinned (Gladiator) or Webbed unit can't be moved; + Anchor (2026-10-19, package SK1)
   // Bloodlust (2026-10-17 rework, user: "Bloodlust: when this unit kills an opposing unit, it jumps to oppose next available
   // creature* unit if possible. However, it deals 1/2 damage to structures and brambles."): open boards only (packed rows close up
   // on their own). When its swing kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure, not a
@@ -6941,12 +6963,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind === 'poison'){ if(poisonProof(c)) return; c.poison = (c.poison||0) + n; /* Structures too (2026-10-15) */ if(aStat) aStat.poisonApplied = (aStat.poisonApplied||0) + n; fx('poison', n); }
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
+    else if(kind === 'pin'){ if(!bolaPinnable(c)) return; c.pinDown = 1; c._pinDownJustSet = true; fx('pinDown', 1); } // Bola N (ENG14, 2026-10-30)
   }
+  // Bola's Pin (ENG14, 2026-10-30): not on a unit already Pinned, nor on one that broke free last round or this one (c.pinFreed: the round
+  // its Pin was spent or ran out), nor on a Structure or a cage.
+  function bolaPinnable(c){ return !!c && c.hp > 0 && !(c.pinDown > 0) && !c.cageOf && !isStructureCard(c) && !(c.pinFreed != null && c.pinFreed >= turnNo - 1); }
+  // A Pinned unit's turn: its swing is skipped and the Pin is spent (the caller logs the skip).
+  function bolaPinSpend(c){ if(!(c && c.pinDown > 0)) return false; c.pinDown = 0; c._pinDownJustSet = false; c.pinFreed = turnNo; return true; }
   // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1. Quick happens at Speed = 2."): the shots no
   // longer all go off in one volley before anyone swings. Each shooter's shots are one action at Speed 1 in the round's main
   // order (see pickNextAttacker): after every Speed 2+ swing (Quick, Haste), before the Speed 0 swings. hasShotSkill says who
   // gets that action; fireShotsOf fires one shooter's shots (it re-checks that the shooter can still act at that moment).
-  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe'].concat(Object.keys(BOLT_ELEMENTS));
+  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe', 'bola' /* ENG14 (2026-10-30, X26) */].concat(Object.keys(BOLT_ELEMENTS));
   function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0)); }
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
     let fired = false; const kc = {}; // 2026-10-18: its kills are credited
@@ -6984,6 +7012,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // units (both at the one if there is only one). Volley: once every 2 rounds (its 1st, 3rd, 5th... Ready round), an arrow of
         // N at every enemy unit.
         if(Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow) + fl17, dmgType: 'cold', ice: true, status: 'freezeCounter'});
+        // Bola N (2026-10-30, package ENG14, owner X26: "Bola! Works like arrow, but pins targets down somehow... maybe they can't move and
+        // attack? but can use skills?"): Arrow N's shot (the enemy facing it, else the nearest, else the bramble; Fletcher N adds), and a unit
+        // it hits is Pinned (c.pinDown) for its next turn: it can't swing (its next swing is skipped) and can't move or be moved; its skills,
+        // shots and triggers still work. Claude's call (decision ENG14-3): a unit that broke free of a Pin last round (or this one) can't be
+        // pinned again yet, so one Bola costs a unit at most every other swing (as Ice Arrow never keeps a unit locked).
+        if(Number(fx.bola) > 0) shots.push({amount: Number(fx.bola) + fl17, dmgType: 'physical', bola: true, status: 'pin'});
         if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
           while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
           if(picks.length === 1) picks.push(picks[0]);
@@ -7025,7 +7059,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; }
           const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount};
           if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
-            : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined}, tEv));
+            : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined, bola: shot.bola || undefined /* ENG14 */}, tEv));
           fired = true;
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
@@ -8463,7 +8497,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // live unit's statuses before a step that can end them, pushStatusEnds() then logs one {type:'statusEnd', status} per status
   // that went from on to off. noteWoke() logs a sleeper woken by damage (the line that wakes it calls it). No rule changes.
   const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified','bound','invincible','invisible','webbed','brittle','silenced','stymied','exhaust','grounded','stench']; /* + Package SK3 (2026-10-19) */ // + W2 (2026-10-16); + Webbed (2026-10-17); + Brittle (2026-10-19, GI)
-  STATUS_END_KEYS.push('exploit', 'tangled'); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
+  STATUS_END_KEYS.push('exploit', 'tangled', 'pinDown' /* Bola's Pin (ENG14, 2026-10-30) */); // + Tangled (ENG9, 2026-10-26) // Exploit tokens (2026-10-19, package SK1): the board hears when the last one is used
   const statusOn = (c, k)=> k === 'daunt' ? !!(c.daunts && c.daunts.length) : (c[k] === true || c[k] > 0);
   function statusSnap(players){
     if(!recordEvents) return null;
@@ -8934,6 +8968,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.bound>0){ if(c._boundJustSet) c._boundJustSet=false; else { c.bound -= 1; if(!c.bound) c.boundDmg = 0; } } // Bound (2026-10-16), same convention
       if(c.tangled>0){ if(c._tangledJustSet) c._tangledJustSet=false; else c.tangled -= 1; } // Tangled (ENG9, 2026-10-26), same convention
       if(c.webbed>0){ if(c._webbedJustSet) c._webbedJustSet=false; else c.webbed -= 1; } // Webbed (2026-10-17), same convention
+      if(c.pinDown>0){ if(c._pinDownJustSet) c._pinDownJustSet=false; else { c.pinDown = 0; c.pinFreed = turnNo; } } // Bola's Pin (ENG14, 2026-10-30): unspent, it runs out after the next round
       if(c.brittle>0){ if(c._brittleJustSet) c._brittleJustSet=false; else c.brittle -= 1; } // Brittle (2026-10-19, package GI), same convention
       sk1UpkeepTick(c); // Exposed N rounds (2026-10-19, package SK1), same convention
       const sk3Hold = sk3UpkeepTick(c, pl, sideOf, events); // Package SK3 (2026-10-19): Silence, Magnet's Grounded, Stymie, Petrify N, the Tide washing Stench
@@ -9754,6 +9789,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(dozing(card)){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
+            if(bolaPinSpend(card)){ skipTurn('pinned', card, ownId); handledUids.add(uid); return; } // Bola's Pin (ENG14, 2026-10-30): this swing is lost
             // Bound (2026-10-16): was "can't attack"; ENG9 (2026-10-26, OWN-Q1): it swings at half damage (computeHitDamage) and can't move.
             if(card.cageOf){ handledUids.add(uid); return; } // a cage never acts
             if(card.ritualBase && !ritualMet(players[ownId], card)){ skipTurn('ritual', card, ownId); handledUids.add(uid); return; } // Ritual: not yet
@@ -9789,6 +9825,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.reloadRemaining>0){ skipTurn('reload', c, ownId); return false; }
       if(c.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', c, ownId); return false; }
       if(c.chained){ skipTurn('chained', c, ownId); return false; }
+      if(bolaPinSpend(c)){ skipTurn('pinned', c, ownId); return false; } // Bola's Pin (ENG14, 2026-10-30)
       if(c.ritualBase && !ritualMet(players[ownId], c)){ skipTurn('ritual', c, ownId); return false; }
       if(c.shellSkip || (c.shellQuiet != null && combatNo <= c.shellQuiet)){ skipTurn('shell', c, ownId); return false; }
       if(c.cowerRound === combatNo){ skipTurn('cower', c, ownId); return false; }

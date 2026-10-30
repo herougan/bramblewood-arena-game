@@ -119,9 +119,12 @@ function coopEngine(T){
 function createTable(opts){
   const t = typeOf(opts.typeId), n = t.players, idx = opts.floorIdx | 0, f = t.floors[idx]; if(!f) throw new Error('no floor ' + idx);
   const given = (opts.seats || []).slice(0, n);
-  const firstDeck = (given.find(s=> s && !s.cpu && s.deck && Object.keys(s.deck).length) || given.find(s=> s && s.deck && Object.keys(s.deck).length) || {}).deck || {};
-  const seats = []; for(let i = 0; i < n; i++){ const s = given[i] || {cpu: true};
-    seats.push({seat: i, name: s.name || '', cpu: !!s.cpu, deck: Object.assign({}, Object.keys(s.deck || {}).length ? s.deck : firstDeck), leader: s.leader || null, castleHp: Math.max(1, Number(s.castleHp) || 20)}); }
+  const firstSeat = given.find(s=> s && !s.cpu && s.deck && Object.keys(s.deck).length) || given.find(s=> s && s.deck && Object.keys(s.deck).length) || {}, firstDeck = firstSeat.deck || {};
+  // 2026-10-30 (ENG14, owner X8: "Does the CPU on our side ever play leaders btw? If yes, okay."): a CPU seat plays a copy of the first
+  // player's deck and had no leader (leader null), so a CPU ally in a group dungeon never fielded one. It now opens with that deck's
+  // leader in its own row, as a raid's CPU allies do (raidAllyLeaderOf); a CPU seat given its own deck keeps its own leader (or none).
+  const seats = []; for(let i = 0; i < n; i++){ const s = given[i] || {cpu: true}, own = Object.keys(s.deck || {}).length > 0;
+    seats.push({seat: i, name: s.name || '', cpu: !!s.cpu, deck: Object.assign({}, own ? s.deck : firstDeck), leader: s.leader || (s.cpu && !own ? firstSeat.leader || null : null), castleHp: Math.max(1, Number(s.castleHp) || 20)}); }
   const seed = (Number(opts.seed) >>> 0) || 1, bh = opts.brambleHp || (x=> x);
   const defs = Object.assign({}, opts.defs, floorOverlay(opts.typeId, idx, opts.defs));
   const rnd = mulberry32(mixSeed(seed, idx + 1, 0xF100));
