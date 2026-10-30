@@ -105,7 +105,7 @@ function resolveMap(gm, m) {
 }
 function fightsOf(map) { return (map.nodes || []).filter(n => n.deck && Object.keys(n.deck).length && n.kind !== 'tutorial' && !/raidboss|megaraid/.test(n.kind || '')); }
 function deckable(gm, id) { const d = gm.D[id]; return !!d && !d.token && !d.test && !d.hero && !d.hallOfFame && !d.pool && id !== 'wandering-traveller'; }
-const capOf = (gm, id) => gm.G.maxCopiesForRarity(gm.D[id].rarity);
+const capOf = (gm, id) => { const c = gm.G.maxCopiesForRarity(gm.D[id].rarity), k = gm.copyCap && gm.copyCap[id]; return k != null ? Math.min(c, k) : c; }; // 2026-10-30 (REF5): --mode prog holds a card to the copies the player owns
 function canAdd(gm, deck, id) { if ((deck[id] || 0) >= capOf(gm, id)) return false; try { return !gm.Budget.deckRankBlock(deck, id, gm.D, []); } catch (e) { return true; } }
 const OWNED_ALWAYS = new Set(['tutorialBase', 'base']), OWNED_SKIP = new Set(['unsorted', 'raid', 'materia', 'smith', 'nest', 'pack-nomap']);
 // 2026-10-24 (package PRO2, owner 21:20 #9-#11: "Why is a treant in map 0 pro for example! ... Can we run the PRO ones but with respect to the
@@ -122,10 +122,11 @@ function mapRarityCap(gm, map, which) {
 // the first map a player can hold a card: the HUB3 plan's advancement map (obtainMapOf) or the game's cardObtainMap
 // (canonical/card-obtain-maps.json: a pack card waits for its rarity's reveal, e.g. the Alley Cat Map 5), whichever is later
 function obtainOf(gm, id) { const a = obtainMapOf(gm, id), b = gm.obtain[id]; return Math.max(a == null ? 0 : a, b == null ? 0 : b); }
-const MODES = ['classic', 'map-true', 'bpro', 'ref-pool'];
+const MODES = ['classic', 'map-true', 'bpro', 'ref-pool', 'prog'];
 function poolsFor(gm, map, opt) {
   const mode = (opt && opt.mode) || 'classic';
   if (mode === 'ref-pool') return refPoolPools(gm, map, opt);
+  if (mode === 'prog') return progPools(gm, map, opt); // 2026-10-30 (REF5)
   if (mode !== 'classic') return mapTruePools(gm, map, opt, mode);
   const mapNo = gm.G.mapNumberOf(map.id), e = gm.pools[map.id] || { cards: [], submaps: {} };
   let mapCards = (e.cards || []).slice(); if (opt.submaps !== false) Object.values(e.submaps || {}).forEach(l => { mapCards = mapCards.concat(Array.isArray(l) ? l : (l.cards || [])); });
@@ -212,6 +213,22 @@ function refPoolPools(gm, map, opt) {
   const core = uniq((pe.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => deckable(gm, id)).sort();
   return { mapNo, mode: 'ref-pool', cap: null, rule, subsOpen: [], mapCards: [], owned: p1, p1, all: p1, core, excluded: [], poolFile: path.relative(gm.root, f) };
 }
+// 2026-10-30 (package REF5, owner 10-28 22:50: "form the most optimised deck we can for this map" from one seeded player's collection): --mode prog
+// searches the collection of player --prog-seed K arriving at the map (--pool-file, default docs/balance/ref/ref5-prog-pools.json, built by
+// tools/opt/ref5_prog.js pools): each card up to min(its rarity's cap, the copies owned; copies null = unlimited, Base / starter), and your
+// cards play at their own levels (the file's "levels", else the card's own starting level); the gauntlet's opponents stay at --level.
+function progPools(gm, map, opt) {
+  const G = gm.G, mapNo = G.mapNumberOf(map.id), f = path.resolve(gm.root, (opt && opt.poolFile) || 'docs/balance/ref/ref5-prog-pools.json'), seed = String((opt && opt.progSeed) || 1);
+  if (!fs.existsSync(f)) throw new Error('--mode prog: no pool file ' + f + ' (node tools/opt/ref5_prog.js pools --map N)');
+  const m = (JSON.parse(fs.readFileSync(f, 'utf8')).maps || {})[mapNo], e = m && m.mapId === map.id && m.seeds[seed];
+  if (!e) throw new Error('--mode prog: the pool file has no entry for Map ' + mapNo + ' (' + map.id + ') seed ' + seed);
+  const p1 = uniq(e.pool).filter(id => deckable(gm, id)).sort(), inP = new Set(p1), pe = gm.pools[map.id] || { cards: [] };
+  gm.copyCap = {}; Object.keys(e.copies || {}).forEach(id => { if (e.copies[id] != null) gm.copyCap[id] = e.copies[id]; });
+  gm.progLevels = Object.assign({}, e.levels || {});
+  const rule = id => inP.has(id) ? null : 'not in player ' + seed + "'s collection";
+  const core = uniq((pe.cards || []).concat(...fightsOf(map).map(n => Object.keys(n.deck)))).filter(id => deckable(gm, id)).sort();
+  return { mapNo, mode: 'prog', cap: null, rule, subsOpen: [], mapCards: [], owned: p1, p1, all: p1, core, excluded: [], poolFile: path.relative(gm.root, f), levels: gm.progLevels, progSeed: seed };
+}
 // the problems of a deck under a mode's map rule (no problems = every card may be in that map's PRO / BPRO deck)
 function mapRuleProblems(gm, map, deck, mode, rarityCap) {
   const p = mapTruePools(gm, map, { rarityCap }, mode); return Object.keys(deck).filter(id => deck[id] > 0).sort().map(id => { const w = p.rule(id); return w ? id + ': ' + w : null; }).filter(Boolean);
@@ -255,9 +272,10 @@ function buildEntries(gm, map, opt) {
   return out;
 }
 // levelled copies as the game's referencePlayerDeck makes them ("<id>@p<level>" defs, added to ctx.defs)
-function mineFor(gm, defs, deck, level) {
+function mineFor(gm, defs, deck, level, levels) {
   const G = gm.G, out = {};
-  G.levelMixDeck(deck, level).forEach(([id, k, L]) => { const b = defs[id];
+  const parts = levels ? Object.keys(deck).filter(id => deck[id] > 0).map(id => [id, deck[id], levels[id] != null ? levels[id] : (defs[id] ? G.cardBaseLevel(defs[id]) : 0)]) : G.levelMixDeck(deck, level); // REF5: per-card levels
+  parts.forEach(([id, k, L]) => { const b = defs[id];
     if (!b) return; if (G.cardBaseLevel(b) >= L || (b.attack == null && b.health == null)) { out[id] = (out[id] || 0) + k; return; }
     const did = id + '@p' + L;
     if (!defs[did]) { const st = G.statsAtLevel(b, L), o = Object.assign({}, b, { id: did, derivedFrom: id, attack: st.attack, health: st.health, level: L, baseLevel: G.cardBaseLevel(b), locked: false });
@@ -278,7 +296,7 @@ function makeContexts(gm, spec) {
 }
 function playOne(gm, spec, ctx, deck, g) {
   const E = gm.E, G = gm.G, seed = (ctx.seedBase + Math.imul(g + 1, 2654435761)) >>> 0;
-  const dk = deckKey(deck); let mine = ctx.mineCache.get(dk); if (!mine) { mine = mineFor(gm, ctx.defs, deck, spec.level); if (ctx.mineCache.size > 64) ctx.mineCache.clear(); ctx.mineCache.set(dk, mine); }
+  const dk = deckKey(deck); let mine = ctx.mineCache.get(dk); if (!mine) { mine = mineFor(gm, ctx.defs, deck, spec.level, spec.levels || null); if (ctx.mineCache.size > 64) ctx.mineCache.clear(); ctx.mineCache.set(dk, mine); }
   const mirror = ctx.en.kind === 'mirror', aFirst = !mirror || g % 2 === 0, ai2 = mirror ? spec.ai : ctx.cpu;
   const engine = E.makeSimEngine(ctx.defs, gm.seededRng(seed), { recordEvents: false, battleMode: ctx.mode, rules: ctx.rules, aiAim: true, aiLevel: mirror ? spec.ai : ctx.cpu });
   const sideOf = id => id === 1 ? 'A' : 'B', st = {};
@@ -598,7 +616,7 @@ function parseArgs(argv) {
       case '--faction': o.faction = true; break; case '--no-faction': o.faction = false; break; case '--side': o.side = true; break;
       case '--minutes': o.minutes = +take(); break; case '--budget': o.budget = +take(); break; case '--workers': case '-j': o.workers = +take(); break; case '--seed': o.seed = take(); break;
       case '--cross-share': o.crossShare = +take(); break; case '--road-weight': o.roadWeight = +take(); break; case '--ai': o.ai = +take(); break;
-      case '--owned': o.owned = take(); break; case '--pool-file': o.poolFile = take(); break; case '--ref-pool': o.mode = 'ref-pool'; break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
+      case '--owned': o.owned = take(); break; case '--pool-file': o.poolFile = take(); break; case '--prog-seed': o.progSeed = take(); break; case '--ref-pool': o.mode = 'ref-pool'; break; case '--cross-pool': o.crossPool = take(); break; case '--no-submaps': o.submaps = false; break; case '--rules': o.rules = take(); break;
       case '--method': o.method = take(); break; case '--restarts': o.restarts = +take(); break; case '--niche-radius': o.nicheRadius = +take(); break; case '--niche-cap': o.nicheCap = +take(); break;
       case '--neighbours': case '--neighbors': o.neighbours = +take(); break; case '--patience': o.patience = +take(); break; case '--dgmax': o.dgmax = +take(); break;
       case '--pop': o.pop = +take(); break; case '--children': o.children = +take(); break; case '--g0': o.g0 = +take(); break; case '--gmax': o.gmax = +take(); break;
@@ -617,7 +635,7 @@ function parseArgs(argv) {
   if (o.g0 % 2) o.g0++; // mirror games swap seats: even counts
   if (!['ga', 'descent'].includes(o.method)) throw new Error('--method ga|descent');
   if (!MODES.includes(o.mode)) throw new Error('--mode ' + MODES.join('|'));
-  if (o.mode === 'bpro' || o.mode === 'ref-pool') o.crossShare = 0; // BAL6: ref-pool's pool is everything the player has, so no phase 2 either
+  if (o.mode === 'bpro' || o.mode === 'ref-pool' || o.mode === 'prog') o.crossShare = 0; // BAL6: ref-pool's pool is everything the player has, so no phase 2 either
   if (o.mode === 'bpro') o.crossShare = 0; // 2026-10-24 (PRO2): BPRO has no outside cards, so no phase 2: the whole budget searches the map's own pool
   if (o.budget == null && o.minutes == null) o.minutes = 5;
   return o;
@@ -670,7 +688,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const cands = candidatesFor(gm, map, pools, rules);
   const p2pool = o.crossPool === 'rules' ? uniq(pools.p1.concat(cands.list.map(c => c.id))).sort() : pools.all;
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
-  const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank };
+  const entries = buildEntries(gm, map, o), spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels
   const main = entries.map((e, i) => i).filter(i => !entries[i].neutral);
   const ckFile = path.join(o.ckptDir, 'deckopt2-' + map.id + '-' + fnv(JSON.stringify([VERSION, o.seed, o.mode, o.rarityCap, o.faction ? 'faction' : '', pools.p1, o.budget, o.minutes, o.method, o.restarts, o.nicheRadius, o.nicheCap, o.neighbours, o.patience, o.dgmax, o.roadWeight, o.ai, o.owned, o.crossPool, o.crossShare, o.submaps, o.pop, o.children, o.g0, o.gmax, level, o.beeTank, o.screenCopies, o.finalGames, o.ladder, o.ladderCore, p2pool, entries.map(e => e.key)].concat(o.seedRef ? ['seed-ref'] : []))).toString(36) + '.json');
   let S = null; if (o.resume && fs.existsSync(ckFile)) { S = JSON.parse(fs.readFileSync(ckFile, 'utf8')); log('  resumed from ' + ckFile + ' (stages done: ' + Object.keys(S.stages).join(', ') + ')'); }
@@ -754,7 +772,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
     await ensure(ev, stats, optima.map(deckFromKey), FG, main);
     return { FG, optimum: opt, optima, candidatesConsidered: pool.length }; });
   // ---- head to head: the distinct optima's round robin, and the difficulty ladder against the optimum
-  const hEntries = h2hEntries(map, fin.optima.map(deckFromKey)), hSpec = { mapId: map.id, level, entries: hEntries, seed: o.seed + '|h2h', ai: o.ai, beeTank: o.beeTank };
+  const hEntries = h2hEntries(map, fin.optima.map(deckFromKey)), hSpec = { mapId: map.id, level, entries: hEntries, seed: o.seed + '|h2h', ai: o.ai, beeTank: o.beeTank, levels: pools.levels || null };
   hX = { gm, ev, stats: new Stats(hEntries.length, S.hstats), entries: hEntries, main: idxOf(hEntries, 0), o, log, t0 };
   const needH = !S.stages.h2h || (o.ladder.length && !S.stages.ladder);
   if (needH) await ev.setup(hSpec);
@@ -790,7 +808,7 @@ async function optimizeMap(gm, ev, map, o, log, rules) {
   const out = { tool: 'tools/opt/deckopt.js', version: VERSION, generated: new Date().toISOString(), map: { id: map.id, num: G.mapNumberOf(map.id), name: map.name, side: map.sub ? map.parent : undefined, opensOn: map.sub ? pools.mapNo : undefined },
     level, settings: { mode: o.mode, seedRef: !!o.seedRef, faction: !!o.faction, rarityCap: o.rarityCap, cap: pools.cap || null, seed: o.seed, budget: budget.games, budgetFrom: budget.from, method: o.method, restarts: o.restarts, nicheRadius: o.nicheRadius, nicheCap: o.nicheCap, neighbours: o.neighbours, patience: o.patience, dgmax: o.dgmax, distinctRadius: o.distinctRadius, distinctWindow: o.distinctWindow, ladderCore: o.ladderCore,
       crossShare: o.crossShare, roadWeight: o.roadWeight, ai: o.ai, owned: o.owned, crossPool: o.crossPool, submaps: o.submaps, pop: o.pop, children: o.children, g0: o.g0, gmax: o.gmax, screenCopies: o.screenCopies, beeTank: o.beeTank, minutes: o.minutes, workers: o.workers },
-    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.seedRef ? ' --seed-ref' : '') + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : '') + (o.mode === 'ref-pool' && o.poolFile ? ' --pool-file ' + o.poolFile : ''),
+    reproduce: `node tools/opt/deckopt.js --map ${map.id} --seed ${o.seed} --budget ${budget.games} --final-games ${FG} --method ${o.method} --level ${o.level == null ? 'ref' : o.level} --cross-share ${o.crossShare} --road-weight ${o.roadWeight}` + (o.method === 'ga' && o.restarts !== 2 ? ' --restarts ' + o.restarts : '') + (o.crossPool !== 'rules' ? ' --cross-pool ' + o.crossPool : '') + (o.owned !== 'plan' ? ' --owned ' + o.owned : '') + (o.beeTank ? ' --bee-tank' : '') + (o.ladder.join(',') !== '600,450,300,150' ? ' --ladder ' + (o.ladder.join(',') || 'none') : '') + ' --mode ' + o.mode + (o.seedRef ? ' --seed-ref' : '') + (o.mode !== 'classic' && o.rarityCap !== 'map' ? ' --rarity-cap ' + o.rarityCap : '') + (o.faction && o.mode !== 'classic' ? ' --faction' : '') + (o.mode === 'ref-pool' && o.poolFile ? ' --pool-file ' + o.poolFile : '') + (o.mode === 'prog' ? ' --prog-seed ' + (o.progSeed || 1) + (o.poolFile ? ' --pool-file ' + o.poolFile : '') : ''),
     pools: { mode: pools.mode, cap: pools.cap || null, subsOpen: pools.subsOpen, phase1: pools.p1.length, mapCards: pools.mapCards, owned: pools.owned, phase2: p2pool.length, wholeSpectrum: pools.all.length, excluded: pools.excluded },
     candidates: cands,
     gauntlet: entries.map(e => ({ key: e.key, kind: e.kind, node: e.node, label: e.label, weight: r3(e.weight), neutral: !!e.neutral, rules: ruleSummary(gm, map, e.node, e.neutral) })),
@@ -868,7 +886,7 @@ async function compareMap(gm, ev, map, o, log) {
   const t0 = Date.now(), pools = poolsFor(gm, map, o), fights = fightsOf(map), G = gm.G;
   const level = o.level != null ? o.level : G.referenceFightSetup(map.id, fights[0], { deck: {} }).ref.level;
   const entries = buildEntries(gm, map, o), main = entries.map((e, i) => i).filter(i => !entries[i].neutral), B = o.budget || 12000, res = {};
-  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank }; await ev.setup(spec);
+  const spec = { mapId: map.id, level, entries, seed: o.seed, ai: o.ai, beeTank: o.beeTank, levels: (typeof pools !== 'undefined' && pools && pools.levels) || null }; // REF5: prog's own card levels await ev.setup(spec);
   for (const m of ['ga', 'descent']) {
     const rng = mulberry(fnv(o.seed + '|' + map.id)), X = { gm, ev, stats: new Stats(entries.length), entries, main, o, log, t0: Date.now() }, credit = {};
     const seeds = seedDecks(gm, entries, pools.p1, rng, credit, o.pop * 2), t = Date.now();
