@@ -1220,7 +1220,7 @@
      full card"): the real card tile, scaled up, sitting above the existing stat/ability text —
      see fullCardHTML()'s own comment in arena_app.js. */
   #cardPop .card-pop-visual{display:flex; justify-content:center; margin:-2px 0 10px;}
-  #cardPop .card-pop-visual-tile{width:150px; pointer-events:none;}
+  #cardPop .card-pop-visual-tile{width:var(--card-full-w); pointer-events:none;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   #cardPop .card-pop-visual-tile .ico{opacity:1;}
   #cardPop h4{font-family:'Baloo 2'; font-size:14px; display:flex; gap:6px; align-items:center; margin-bottom:4px;}
   #cardPop .tagrow{display:flex; gap:5px; margin-bottom:6px; flex-wrap:wrap;}
@@ -1387,7 +1387,6 @@
      sit at the same height as the top of the card itself rather than in its own bar above it. */
   .card-detail-card .cd-x-solo{position:absolute; top:16px; right:16px; z-index:2;}
   .card-detail-card .card-pop-visual{display:flex; justify-content:center; margin-bottom:12px;}
-  .card-detail-card .card-pop-visual-tile{width:220px;}
   .cd-stats-block{margin-top:14px;}
   .cd-stat-row{display:flex; gap:8px;}
   .cd-stat{flex:1; background:var(--bg); border:1px solid var(--surface-border); border-radius:10px; padding:10px 6px; text-align:center;}
@@ -4283,7 +4282,7 @@
   .faction-showcase .fs-char-2{right:0; top:30%; animation-delay:-2.2s;}
   @keyframes fsBob{0%,100%{translate:0 0;} 50%{translate:0 -8px;}}
   .faction-showcase .fs-cards{display:flex; gap:8px;}
-  .faction-showcase .fs-cards .card-tile{width:min(9vw, 112px); box-shadow:0 10px 22px rgba(0,0,0,.5);}
+  .faction-showcase .fs-cards .card-tile{box-shadow:0 10px 22px rgba(0,0,0,.5);} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   /* 2026-10-24 (package PL1, P24-1): the example cards turn over to other cards of the faction */
   .faction-showcase .pl1-fsf{perspective:700px;}
   .faction-showcase .pl1-fsf-in{position:relative; transform-style:preserve-3d; transition:transform .6s cubic-bezier(.4,.1,.3,1);}
@@ -4387,7 +4386,7 @@
     .entrance .splash-inner{margin-left:clamp(24px, 6vw, 110px); max-width:440px; background:rgba(14,20,10,.42); border:1px solid rgba(255,244,214,.14); box-shadow:0 20px 60px rgba(0,0,0,.35); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);}
     .entrance-fan{display:block; position:absolute; right:clamp(60px, 10vw, 200px); top:52%; width:440px; height:340px; transform:translateY(-50%); z-index:1; perspective:900px; pointer-events:none;}
     .entrance-fan .ef-card{position:absolute; left:50%; top:50%; width:168px; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(var(--y)); transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .5s ease; animation:efFloat 5.5s ease-in-out infinite; animation-delay:var(--d);}
-    .entrance-fan .ef-card .card-tile{width:168px; box-shadow:0 18px 40px rgba(0,0,0,.45);}
+    .entrance-fan .ef-card .card-tile{box-shadow:0 18px 40px rgba(0,0,0,.45);} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
     /* 2026-10-12: the pair sits closer to the middle; cards have a flip with an acorn back. */
     .entrance .splash-inner{margin-left:max(24px, calc((100vw - 1000px) / 2)) !important;}
     .entrance-fan{right:max(40px, calc((100vw - 1000px) / 2 + 20px)) !important;}
@@ -4397,7 +4396,6 @@
       background:repeating-linear-gradient(45deg, rgba(60,36,14,.18) 0 6px, transparent 6px 13px), radial-gradient(circle at 50% 40%, rgba(255,214,120,.45), transparent 65%), linear-gradient(160deg, #6b4a26, #3a2410); border:3px solid #d9b56a;}
     .entrance-fan .ef-card.is-down .ef-flip{transform:rotateY(180deg);}
     .entrance-fan .ef-card.is-swapping{opacity:0 !important; transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .65s ease;}
-    .entrance-fan .ef-card:nth-child(2) .card-tile{width:184px; margin-left:-8px;}
     .entrance-fan .ef-card.is-swapping{opacity:0; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(calc(var(--y) + 40px)) scale(.9);}
     @keyframes efFloat{0%,100%{margin-top:0;} 50%{margin-top:-12px;}}
   }
@@ -6092,7 +6090,6 @@
   .card-size-md{width:var(--card-md) !important;} .card-size-lg{width:var(--card-lg) !important;}
   .card-size-xl{width:var(--card-xl) !important;}
   /* the detail view and big grids scale with the screen between their min and max sizes */
-  .card-detail-card .card-pop-visual-tile{width:clamp(180px, 34vmin, 300px);}
   .grid-view.full-art .card-tile{width:100%;}
   .grid-view.full-art{grid-template-columns:repeat(auto-fill, minmax(clamp(140px, 19vw, 210px), 1fr)) !important;}
   /* Parchment scroll behind card names (2026-10-03, explicit: "instead of a dark strip... you get a
@@ -7546,9 +7543,8 @@
   .rr-stage{position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center; cursor:pointer;}
   .rr-dim{position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(20,14,30,.38), rgba(6,4,10,.62));} /* 2026-10-23 (package RW4, owner #10): lighter; it rises with the first card (playRewardReveal) */
   .rr-hint{position:absolute; bottom:22px; left:50%; transform:translateX(-50%); font:700 12px 'Baloo 2',system-ui,sans-serif; color:#f3e3bf; opacity:.7; letter-spacing:.05em; text-transform:uppercase;}
-  .rr-card{position:relative; width:220px; height:275px;}
+  .rr-card{position:relative;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   .rr-card .rr-front, .rr-card .rr-back{position:absolute; inset:0;}
-  .rr-card .rr-front .card-tile{width:220px !important; height:275px !important; margin:0;}
   .rr-card .rr-back{border-radius:14px; background:radial-gradient(circle at 50% 40%, #2a2340, #0d0a16 70%); border:3px solid #3b3150; box-shadow:0 18px 40px rgba(0,0,0,.6), inset 0 0 30px rgba(140,110,255,.15); display:flex; align-items:center; justify-content:center; transition:opacity .08s;}
   .rr-card .rr-back span{font-size:64px; filter:grayscale(.5) brightness(.6) drop-shadow(0 0 12px rgba(160,130,255,.35));}
   .rr-card .rr-shine{position:absolute; left:50%; top:50%; width:520px; height:520px; margin:-260px 0 0 -260px; border-radius:50%; pointer-events:none; mix-blend-mode:screen;
@@ -8121,7 +8117,6 @@
   .card-inspect .ci-x{position:absolute; top:max(12px, env(safe-area-inset-top)); right:14px; width:40px; height:40px; border-radius:50%; border:1px solid rgba(255,255,255,.25); background:rgba(255,255,255,.1); color:#fff; font-size:18px; cursor:pointer; backdrop-filter:blur(6px);}
   .ci-stage{position:relative; perspective:1600px; touch-action:none; cursor:grab; user-select:none; -webkit-user-select:none; padding:10px;}
   .ci-stage:active{cursor:grabbing;}
-  .ci-spin{position:relative; transform-style:preserve-3d; will-change:transform; width:min((100vh - 190px) * .8, 80vw, 400px); min-width:150px; aspect-ratio:4/5;}
   .ci-face{position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; border-radius:7%;}
   .ci-front{filter:brightness(var(--ci-dim,1));}
   .ci-front .ci-tile{width:100% !important; height:100% !important; margin:0 !important; transform:none !important; animation:none !important; pointer-events:none; box-shadow:0 0 0 1px rgba(0,0,0,.25);}
@@ -8596,8 +8591,7 @@
   .hero-name-row{display:flex; align-items:center; gap:10px; font-weight:800; margin:6px 0 12px;}
   .hero-name-row input{flex:1; max-width:320px; font:inherit; padding:8px 12px; border-radius:10px; border:2px solid var(--surface-border); background:rgba(255,255,255,.7);}
   .hero-top{display:flex; gap:18px; align-items:flex-start;}
-  .hero-card-big{flex-shrink:0; width:150px;}
-  .hero-card-big .card-tile{width:150px !important; height:188px !important; margin:0; pointer-events:none;}
+  .hero-card-big{flex-shrink:0;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   .card-tile.is-hero-card{box-shadow:0 0 0 3px #c9a46a, 0 0 18px rgba(255,200,90,.55);}
   .card-tile.is-hero-card::after{content:'🦸'; position:absolute; top:-8px; left:-8px; font-size:18px; line-height:1; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4)); z-index:3;}
   .hero-info{flex:1; min-width:0; display:flex; flex-direction:column; gap:8px;}
@@ -8708,8 +8702,7 @@
     background:radial-gradient(ellipse 30% 22% at 30% 45%, rgba(60,38,20,.45), transparent 70%), radial-gradient(ellipse 22% 18% at 72% 60%, rgba(60,38,20,.4), transparent 70%),
       radial-gradient(ellipse at 50% 35%, #c39a66, #9a7044 55%, #6b4a2a 100%);
     box-shadow:inset 0 -6px 0 rgba(0,0,0,.22), inset 0 2px 0 rgba(255,240,210,.35), 0 10px 16px rgba(0,0,0,.28);}
-  #view-stomp .stomp-plinth .hero-card-big{width:168px; z-index:1;}
-  #view-stomp .stomp-plinth .hero-card-big .card-tile{width:168px !important; height:210px !important;}
+  #view-stomp .stomp-plinth .hero-card-big{z-index:1;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   #view-stomp .hero-info{gap:10px;}
   #view-stomp .hero-info h2{font-family:'Baloo 2',system-ui,sans-serif; font-size:24px; line-height:1.15;}
   #view-stomp .hero-info h2 small{display:inline-block; font-size:12.5px; font-weight:800; opacity:1; color:var(--ink-muted); background:var(--surface-2); border:1px solid var(--surface-border); border-radius:999px; padding:2px 10px; vertical-align:middle;}
@@ -9229,7 +9222,6 @@
   .card-detail-card{width:min(820px,100%) !important;}
   .cd-grid{display:grid; grid-template-columns:auto minmax(0,1fr); gap:22px; align-items:start;}
   .card-detail-card .card-pop-visual{margin:0 !important; position:sticky; top:0;}
-  .card-detail-card .card-pop-visual-tile{width:clamp(200px, 30vmin, 280px) !important;}
   .cd-info{display:flex; flex-direction:column; gap:10px; min-width:0; padding-top:4px;}
   .cd-name{margin:0; padding-right:40px; font-size:26px; line-height:1.1; text-wrap:balance;}
   .cd-chips{display:flex; flex-wrap:wrap; gap:6px;}
@@ -10150,7 +10142,7 @@
      top edge, so the sheet doesn't grow (it is shorter than before). positionPop() keeps the lifted part on screen. */
   #cardPop{overflow:visible;}
   #cardPop .card-pop-visual{position:relative; z-index:2; margin:calc(-1 * var(--pop-lift, 84px)) 0 24px;}
-  #cardPop .card-pop-visual-tile{width:204px; filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));}
+  #cardPop .card-pop-visual-tile{filter:drop-shadow(0 10px 12px rgba(20,12,4,.45));} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
   #cardPop .statrow.statrow-live{font-size:13px; padding:0 0 5px; margin-bottom:6px;}
 
   /* 2026-10-10 (user: "Effect symbols can be closer. If same type, they should overlap significantly"):
@@ -11709,17 +11701,12 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .po2-card .dc.is-still .dc-back.po2-back{transform:none;}
 .po2-card:focus-visible .dc-stage{outline:none;}
 /* the reward reveal after a fight (a raid's card too): the Detail card, flipped face up as the shine flashes */
-.rr-card{width:var(--card-detail-w); height:auto;}
 .rr-card > .dc{--dc-w:var(--card-detail-w);}
-.rr-card .dc-front.rr-front .card-tile{width:100% !important; height:100% !important;}
 .rr-card .dc-face.rr-front, .rr-card .dc-face.rr-back{position:absolute; inset:0;}
 .rr-card .dc-back.rr-back{transition:none;}
 .rr-card .rr-new{--nt-size:clamp(20px, calc(var(--card-detail-w) * .085), 34px); --nt-stroke:2px; z-index:10;} /* the NEW! stamp grows with the Detail card (was set for 220px) */
 /* the Hero on its plinth (Stomping Grounds, the Camp's Hero Hall): the Detail card */
-.hero-card-big.has-dc{width:auto !important;}
 .hero-card-big .dc .card-tile{pointer-events:none;}
-#view-stomp .stomp-plinth .hero-card-big.has-dc{width:auto !important;}
-#view-stomp .stomp-plinth .hero-card-big .dc-front > .card-tile, .hero-card-big .dc-front > .card-tile{width:100% !important; height:100% !important;}
 #view-stomp .stomp-plinth::after{width:calc(var(--card-detail-w) * 1.15);}
 .hero-card-big.is-levelling .dc{animation:heroLift 1.4s cubic-bezier(.2,.8,.3,1);}
 @media (max-width:560px){ .hero-card-big.has-dc{max-width:100%;} .hero-card-big.has-dc > .dc{--dc-w:min(var(--card-detail-w), calc(100vw - 110px));} } /* a phone: inside the plinth's panel, its badges too */
@@ -11740,7 +11727,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 #cardPop .card-pop-visual-tile[data-size="full"]{width:var(--card-full-w) !important;}
 #cardPop .cp-line{margin:6px 0 2px; padding:5px 8px; border-radius:8px; background:rgba(74,47,26,.12); font:700 12px/1.3 'Baloo 2',system-ui,sans-serif;}
 #cardPop{max-width:calc(100vw - 16px);}
-.cnp-rw-zoom.cp-sheet{width:min(264px, calc(100vw - 16px)); padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
+.cnp-rw-zoom.cp-sheet{width:min(calc(var(--card-full-w) * 2.2), calc(100vw - 16px)) /* the page popover's 264px at 1366 */; padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
 .cnp-rw-zoom.cp-sheet > .card-tile{display:block; width:var(--card-full-w) !important; margin:-2px auto 8px !important;}
 .cnp-rw-zoom.cp-sheet .cp-text{font:600 12px/1.35 'Nunito',system-ui,sans-serif;}
 .cnp-rw-zoom.cp-sheet .cp-text ul{margin:0 0 4px; padding-left:16px;} .cnp-rw-zoom.cp-sheet .cp-text li{margin-bottom:2px;}
