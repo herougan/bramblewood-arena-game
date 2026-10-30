@@ -8,7 +8,7 @@
 // one into its back row from their own decks), and each attempt is ranked (raidFightRank) and counted with the rank multiplier
 // (RaidM.contributionFor's rank); the rank shares are printed per row.
 //   node tools/raid_full_sim.js [--n 40] [--parts left,right,tail,core] [--stages fresh,Enraged,Thrashing] [--decks starter,6,10,15,20]
-//     [--raids canonical/raids.json] [--leader <cardId>]
+//     [--raids canonical/raids.json] [--leader <cardId>] [--deck-file <json>] (2026-10-30, RAIDBAL1: named decks, see myDeckFor)
 // 2026-10-19 (package RB): --stages also takes s<share> (s1, s0.5, s0.05: the part at that share of its Health, the raid around it as
 // it stands then), and tools/raid_completion_model.js builds the completion model on playOne (docs/balance/raid-balance-2026-10-19.md).
 // Prints, per deck x part x stage: average damage dealt to the part's bramble, the share of attempts reaching the raid's minDamage
@@ -53,12 +53,19 @@ function stateFor(def, stageName, partId){
   if(stageName && stageName !== 'fresh'){ const sg = (def.stages || []).find(s=> s.name === stageName); if(sg){ st.stage = sg; const f = sg.at - 0.01; st.remaining = Math.round(st.total * f); st.parts.forEach(ps=>{ ps.remaining = Math.round(ps.total * f); }); } }
   return st;
 }
+// 2026-10-30 (package RAIDBAL1): named decks with a level per copy ([id, n, level] parts, as refPartsDeck builds them), from
+// --deck-file <json> ({decks: {key: {parts, level}}}) or setDecks(); a key in --decks plays that deck. The road decks build through
+// lib_bramble's refPartsDeck now (the grabbed referencePlayerDeck called a refPartsDeck this tool never grabbed, so every run threw).
+let EXTRA_DECKS = {};
+if(arg('deck-file', null)) EXTRA_DECKS = (JSON.parse(fs.readFileSync(path.resolve(arg('deck-file')), 'utf8')).decks) || {};
+function setDecks(d){ EXTRA_DECKS = d || {}; }
 function myDeckFor(key, overlay){
   const base = Object.assign({}, CARD_DEFS_BASELINE);
+  if(EXTRA_DECKS[key]){ const x = EXTRA_DECKS[key]; return {deck: G.refPartsDeck(x.parts, base, overlay), level: x.level}; }
   if(key === 'starter') return {deck: G.WINRATE_REF_DECKS.starter, level: 1};
   const built = Object.keys(G.WINRATE_REF_DECKS.road).map(Number).sort((a, b)=> a - b), no = Number(key), at = built.filter(k=> k <= no).pop() || built[0];
   const level = A.referencePlayerLevel(no);
-  return {deck: A.referencePlayerDeck(G.WINRATE_REF_DECKS.road[at], level, base, overlay), level};
+  return {deck: G.refPartsDeck(G.levelMixDeck(G.WINRATE_REF_DECKS.road[at], level), base, overlay), level};
 }
 function playOne(def, partId, stageName, deckKey, g){
   const rng = seeded(0x5A1D + g * 977 + partId.length * 31), saveRandom = Math.random; Math.random = seeded(0xA11E5 + g * 131);
@@ -113,4 +120,4 @@ if(require.main === module){
   out.rows.forEach(r=> console.log(`${String(r.deck).padEnd(7)}${String(r.level).padEnd(5)}${r.part.padEnd(7)}${r.stage.padEnd(11)}${String(r.avgDealt).padStart(5)}  ${String(r.paidPct).padStart(5)}  ${String(r.overwhelmPct).padStart(9)}  ${String(r.avgSurvived).padStart(8)}  ${String(r.avgContribution).padStart(11)}  ${Object.entries(r.ranks || {}).map(([k, v])=> k + ':' + v).join(' ')}`));
   console.log(`(${((Date.now() - t0) / 1000).toFixed(1)}s)`);
 }
-module.exports = {run, playOne, A};
+module.exports = {run, playOne, A, setDecks, stateFor};
