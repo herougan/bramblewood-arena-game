@@ -1973,7 +1973,12 @@
      the hand — the thing you use every turn. Cards now size from the viewport height (never larger
      than before), and the board rows track the card height. Phones keep their own fixed sizes. */
   @media (min-width: 701px){
-    #appWrap.in-match{--match-card-h: clamp(104px, calc((100dvh - 214px) / 4.55), 149px); --match-card-w: calc(var(--match-card-h) * 0.8);}
+    /* 2026-10-30 (package CS-D, card sizes step 6): ONE formula for the match card on a tablet or a computer. The variants (a tablet, a big
+       screen, a desktop window's --res3-fit, the tablet's 15% larger field) set only its parameters; the old copies of the formula are gone:
+         h = clamp(min, min((100dvh - top) / 4.55 * fit, a row of 8.4 cards across (100vw - 110px)), max * fit) * k;  w = h * .8
+       --match-card-w/h are registered lengths (@property, CS-D block), so the JS reads px (mb2FitPhoneBoard) and w can never come apart from h. */
+    #appWrap.in-match{--mc-min:104px; --mc-top:214px; --mc-max:149px; --mc-fit:1;}
+    #appWrap.in-match, #appWrap.in-match .battlefield{--match-card-h:calc(clamp(var(--mc-min), min((100dvh - var(--mc-top)) / 4.55 * var(--mc-fit), (100vw - 110px) / 6.72), var(--mc-max) * var(--mc-fit)) * var(--mc-k, 1)); --match-card-w:calc(var(--match-card-h) * .8);}
     #appWrap.in-match .board-row{min-height:calc(var(--match-card-h) + 36px); padding-top:18px; padding-bottom:18px;}
     #appWrap.in-match .battlefield{padding-top:10px; padding-bottom:10px;}
   }
@@ -1981,18 +1986,18 @@
      proportioned"): tablets use the computer layout, with cards sized so a full row (castle, deck, five cards, Graveyard) fits
      the width in portrait too, instead of wrapping your hand into a column. The tablet-only name sizes are gone. */
   @media (min-width: 701px) and (max-width: 1199px){
-    #appWrap.in-match{--match-card-h: clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px);}
+    #appWrap.in-match{--mc-min:92px;} /* 2026-10-30 (CS-D): the formula above; was its own copy */
     #appWrap.in-match .hand-strip{flex-wrap:nowrap;}
     /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): the battlefield's own cards are 15% bigger than
        the hand's (the same size rule x 1.15). A row still never runs wider than the field: .board-row > .board-card shrinks a crowded
        row to fit, and fitBattlefieldZoom() zooms out past that. */
-    #appWrap.in-match .battlefield{--match-card-h: calc(clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px) * 1.15); --match-card-w: calc(var(--match-card-h) * 0.8);}
+    #appWrap.in-match .battlefield{--mc-k:1.15;} /* 2026-10-30 (CS-D): the formula above x 1.15; was its own copy */
   }
   /* RWD large pass (2026-10-12, 10:57 list: "Put Responsive web design (RWD) large pass"): on big screens the match grows into
      the space instead of sitting small in the middle (cards up to 1.6x), and the menu pages scale up as a whole. */
   @media (min-width: 1700px) and (min-height: 950px){
     #appWrap.in-match .content-wrap{max-width:min(2300px, 94vw);}
-    #appWrap.in-match{--match-card-h: clamp(104px, calc((100dvh - 250px) / 4.55), 240px);}
+    #appWrap.in-match{--mc-top:250px; --mc-max:240px;} /* 2026-10-30 (CS-D): the formula above; was its own copy */
     #appWrap.in-match .card-tile{font-size:calc(var(--match-card-w) / 95 * 1em);}
   }
   @media (min-width: 1700px) and (min-height: 950px){ #view-home > *, #view-inventory > *, #view-profile > *, #view-nest > *, #view-shop > *{zoom:1.2;} }
@@ -5984,11 +5989,9 @@
      than the hand's (65x81 -> 75x93; 54x68 -> 62x78 on a short phone) and the rows grow with them. A crowded row still shrinks its
      cards to the field's width (.board-row > .board-card), and fitBattlefieldZoom() zooms out past that, so nothing runs off the side. */
   @media (max-width:700px){
-    #appWrap .battlefield{--match-card-w:75px; --match-card-h:93px;}
+    /* 2026-10-30 (CS-D, step 7): the battlefield's own 75x93 / 62x78 pair is gone: in a match (the only place a battlefield shows) MB2's rules
+       below set it (--mb2-bw on a phone fight, --mb2-bh in a raid) */
     #appWrap .battlefield .board-row{min-height:calc(var(--match-card-h) + 40px);}
-  }
-  @media (max-height:700px) and (max-width:700px){
-    #appWrap .battlefield{--match-card-w:62px; --match-card-h:78px;}
   }
   /* ===== Package MB2 (2026-10-19): the fight fills the screen on a phone, and a raid fills it everywhere =====
      Owner on an iPhone (10:55): "The raid battle btw is too small! we can afford to use all the vertical and horizontal space",
@@ -11732,6 +11735,20 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .cnp-rw-zoom.cp-sheet .cp-text .flavor{font-style:italic; opacity:.8; border-top:1px solid rgba(74,47,26,.25); padding-top:5px; margin-top:3px;}
 .cnp-rw-zoom.cp-sheet .cnp-rw-why{width:auto; margin-top:6px;}
 /* CS-C:END */
+/* CS-D:BEGIN (2026-10-30, package CS-D, card sizes steps 6-7; plan docs/design/card-sizes-2026-10-29.md; owner CS-5 10-30 10:34).
+   In a match every card is Compact: the board's inner tile (boardCardHTML's .board-card wrapper is unchanged: GSAP Flip and the play
+   animation read its uid), the hand, the leader, both Brambles and the Environment cards carry data-size="compact". Compact in a match is
+   the match card, --match-card-w x --match-card-h (one formula, the >=701 rule; phones 75x93 / 62x78 and MB2's raid and phone-board sizes);
+   outside a match it is --card-compact-w (64px, CS-B). The name hides when the tile's content box is 70px or less (CS-5, the container
+   query; with the board's 7px side padding that is a card under about 90px). tests/cs-d-2026-10-30.js guards it. */
+/* registered lengths: a var() of a registered property is computed to px where it is declared, so getComputedStyle reads px (mb2FitPhoneBoard
+   parses --match-card-w) and --match-card-w = calc(var(--match-card-h) * .8) is the height of that same element */
+@property --match-card-w{syntax:'<length>'; inherits:true; initial-value:119px;}
+@property --match-card-h{syntax:'<length>'; inherits:true; initial-value:149px;}
+/* the CS-A base rule gives a Compact card 64px; in a match its own context sizes it, as before */
+.card-tile[data-size="compact"]:is(.match-field-tile, .match-castle-tile, .leader-card-face), .hand-strip > .card-tile[data-size="compact"]{width:var(--match-card-w);}
+.board-card > .card-tile[data-size="compact"]{width:100%;}
+/* CS-D:END */
 
 /* the card album */
 #codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
@@ -13858,8 +13875,8 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 .forge-mode.res3-forge-locked{opacity:.6; cursor:not-allowed; filter:grayscale(.7);} .forge-mode.res3-forge-locked b{font-weight:900;}
 /* G10 (owner: "Not full screen on a MacBook Air the board could be larger"): a desktop window (html.is-desk-centre, not full screen) grows the
    match's card size by --res3-fit (set by centreFieldInFs until the match fills the window's height), never wider than a row fits */
-@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 214px) / 4.55), 149px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
-@media (min-width:1700px) and (min-height:950px){ html.is-desk-centre #appWrap.in-match{--match-card-h: min(calc(clamp(104px, calc((100dvh - 250px) / 4.55), 240px) * var(--res3-fit, 1)), calc((100vw - 110px) / 8.4 / 0.8));} }
+/* 2026-10-30 (CS-D): the fit is a parameter of the one match-card formula (the >=701 rule); these were two more copies of it */
+@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match{--mc-fit:var(--res3-fit, 1);} }
 /* 2026-10-29 (package UI1, owner O2: "In mobile, dragging cards sometimes drags the screen instead."): a card that drags at once, and the drop zones, take every
    touch move (the browser must not start a scroll the shim's preventDefault comes too late for); a scrolling hand lets its cards pass a sideways swipe on to
    the strip (JS: syncHandScroll sets .hs-scroll); for the whole of a drag the page takes no touch scroll and no overscroll chaining (body.bw-touch-dragging, set by the touch
@@ -13868,10 +13885,9 @@ body:has(> #packOpenOverlay:not([hidden])) #cardPop{z-index:9600 !important;}
 #handStrip.hs-scroll [draggable="true"]{touch-action:pan-x;}
 body.bw-touch-dragging, body.bw-touch-dragging *{touch-action:none !important;}
 html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:none;}
-/* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the two rules above set only --match-card-h on a desktop window, and with the extra
-   html.is-desk-centre class they beat the raid's own pair (#appWrap.in-match.mb2-raid), so the raid's enemy Deck and Environment cards got the big height (142 px) with the
-   raid's small width (64 px). The raid sets height and width together again, after them. */
-@media (min-width:1200px){ html.is-desk-centre #appWrap.in-match.mb2-raid{--match-card-h:var(--mb2-th, 82px); --match-card-w:calc(var(--mb2-th, 82px) * .8);} }
+/* 2026-10-29 (package UI1, owner O1: "The raids decks are extremely elongated."): the desktop window's copies of the formula set only --match-card-h and beat the
+   raid's own pair, so its Deck and Environment cards got 64 x 142. 2026-10-30 (CS-D): that rule only sets --mc-fit now, so the raid's own pair
+   (#appWrap.in-match.mb2-raid) wins without a repeat here, and a top-row card is height x .8 wide by construction (CS-D block). */
 @media (max-width:640px){ #myDeckList.is-stacks, #myDeckPool.pool-grid{--cs-gap:8px;} #myDeckPool.pool-grid{gap:10px var(--cs-gap);} } /* 2026-10-30 (CS-A): sizes from the Full token */
 .cnp-rw .res3-got{position:absolute; right:-5px; top:-6px; z-index:7; width:17px; height:17px; border-radius:50%; display:grid; place-items:center; font:900 11px/1 'Nunito',system-ui,sans-serif; font-style:normal;
   background:#3f8a3a; color:#fff; box-shadow:0 0 0 2px #f6efdc, 0 1px 3px rgba(0,0,0,.45); filter:none;}

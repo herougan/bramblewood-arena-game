@@ -8672,7 +8672,7 @@ function cardTileHTML(d, opts){
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
   const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
   if(live){
-    return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}"${cardSizeAttr(opts) /* 2026-10-30 (CS-D): the board's Compact card */} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}${archMarkHTML(d, !!live.waitHTML, true)}
       ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): the 🔁 spawn-only corner pill is gone; a token still has its dashed frame outside fights and its popover line */}
       ${d.level > (d.baseLevel||0) && !opts.fog ?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -34540,7 +34540,7 @@ function leaderWidgetHTML(m){
   if(!d) return '';
   if(m.caged){ const me = m.players[myPidInMatch(m)]; if(me && me.leaderFreed) return '';
     return `<div class="leader-widget is-caged-leader" id="leaderWidget" data-defid="${m.leaderDefId}" title="Your leader is caged on the enemy board, 4 to the right. Break the cage (${m.caged.hp} HP) to free it.">
-      ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}<div class="leader-ribbon">⛓️ Caged</div></div>`; }
+      ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true, size:'compact' /* 2026-10-30 (CS-D) */})}<div class="leader-ribbon">⛓️ Caged</div></div>`; }
   // CSRE (2026-09-20): don't print "Summon · 0🪙" for a free leader — same zero-cost hiding
   // rule as costBadgeParts()/cardTileHTML's own cost badge just above.
   const cost = m.engine.costOfCard(m.leaderDefId);
@@ -34557,7 +34557,7 @@ function leaderWidgetHTML(m){
   // 2026-10-12 (user: "The leader should be greyed out if I don't have enough to cast it").
   const afford = (()=>{ try{ return m.engine.canPlay(m.players[myPidInMatch(m)], m.leaderDefId, null); }catch(e){ return true; } })();
   return `<div class="leader-widget summonable ${afford ? '' : 'is-unaffordable'} ${m.tutorialHighlight && m.tutorialHighlight === m.leaderDefId ? 'tut-highlight' : ''}" id="leaderWidget" data-defid="${m.leaderDefId}" draggable="true">
-    ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true})}
+    ${cardTileHTML(d, {extraClass:'leader-card-face', inPlay:true, size:'compact' /* 2026-10-30 (CS-D) */})}
     <div class="leader-ribbon">👑${ribbon ? ' ' + ribbon : ''}</div>
   </div>`;
 }
@@ -35072,7 +35072,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   // here) -- so the same 🏰 default is re-applied at this call site instead.
   const visualDef = {...def, icon: def.icon || '🏰', health: maxHp};
   return cardTileHTML(visualDef, {
-    isCastle: true,
+    isCastle: true, size: 'compact', // 2026-10-30 (CS-D): an in-match card
     liveHp: hp,
     sideLabel: sideLabel,
     extraClass: 'match-castle-tile' + (def.id === 'raid-castles' || def.raidMerged ? ' raid-castles' : '') // raidMerged: "<your castle> & Co." (2026-10-18)
@@ -38663,7 +38663,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-10-26 (package VIS3, V2; owner #15: "The copy created by fungal colossus should have a token background."): a Bloom copy and an
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+    ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
@@ -39061,7 +39061,7 @@ function renderHand(){
     const hlReady = m.mode !== 'tutorial' || (m.tutorialStage||1) >= 2 || coachSeen.has('g-hand');
     const isHl = !!m.tutorialHighlight && !m._tutHlDone && m._tutHlUid != null && hc.uid === m._tutHlUid; // one card only (2026-10-14, see above)
     const hl = isHl ? (hlReady ? 'tut-highlight tut-hl-cand' : 'tut-hl-cand') : '';
-    return cardTileHTML(d, {inPlay:true, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
+    return cardTileHTML(d, {inPlay:true, size:'compact' /* 2026-10-30 (CS-D) */, hand:{whyNot}, extraClass:`${can?'playable':'unplayable'} ${m.selectedUid===hc.uid?'armed':''} ${canDrag?'draggable-card':''} ${hl}`,
       extraAttrs:`tabindex="0" role="button" aria-label="${escapeAttr(d.name+', '+d.attack+' attack, '+d.health+' health'+(whyNot?' — '+whyNot:''))}" draggable="${canDrag}" data-handuid="${hc.uid}"${whyNot?` data-whynot="${escapeAttr(whyNot)}"`:''}`});
   }).join('');
   applyHandPreviewStats(m, me, strip); // 2026-10-23 (package UI4): blue numbers for what a card would have if played now
@@ -42790,7 +42790,7 @@ document.addEventListener('click', e=>{ const p = e.target.closest && e.target.c
 // tile beside the enemy's Deck, the same card face as a Field card; hover (or hold on a phone) shows all its rows. A weather field
 // played from a hand (Frigid, Heatwave, Rain, Fog, Moon) gets the same card face next to it.
 function matchFieldTileHTML(def, cls, attrs, badges){
-  const html = cardTileHTML(def, {inPlay:true, extraClass:'match-field-tile ' + cls, extraAttrs: attrs});
+  const html = cardTileHTML(def, {inPlay:true, size:'compact' /* 2026-10-30 (CS-D) */, extraClass:'match-field-tile ' + cls, extraAttrs: attrs});
   return badges ? html.replace(/<\/div>\s*$/, badges + '</div>') : html;
 }
 // Environment cards (2026-10-14, user: "split Tide-Spout ... I think effect cards need to have a different frame - so we know its an
