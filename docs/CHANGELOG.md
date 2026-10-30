@@ -12,6 +12,12 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **New skill Bola N** (X26): Arrow N's shot, and the unit it hits is Pinned 📌 for its next turn (loses that swing, can't move; its skills work). A unit that just broke free can't be Pinned the round after. Priced Arrow N + 2. On no card yet (decision ENG14-3).
 - **New skill Anadromous** (X20, ANAD-1): +1 Attack on a sea map (beach, reef), +2 Health anywhere else. Priced 2. On no card yet (decision ENG14-4).
 - Texts in all 12 languages (Mirage's field line reworded). Tests: `tests/eng14-2026-10-30.js`.
+## 2026-10-30 (package TIP1: shorter tooltips)
+
+- **The speed button's tooltip is one line** (owner 23:30: "too long ... simplify to what it exactly does"): "Changes the speed of the animation. Shift+Click to go back." The cycle list, the carry-over note and the locked-speed hints are gone from it.
+- **93 other tooltips cut to what the control does** (most 8 to 14 words, none over 20): Forge fuse / dust / melt, raid ratings, tickets and shield, PvP, sync status, energy, battle rating, XP, Prayer and Darkness, deck-builder hints, and the admin card and raid editor fields. Word totals 2,303 -> 1,073. The list is `docs/tooltips-tip1-2026-10-30.md`; all 12 language packs are updated.
+- Left for the owner's later pass: skill and status descriptions, dialogue, tutorial, fight and map text.
+- Tests: `tests/tip1-2026-10-30.js`.
 
 ## 2026-10-30 (package RAIDFX1: the raid tentacle, smooth and on time; no 🤝 on allies)
 
