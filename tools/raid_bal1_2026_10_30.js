@@ -10,7 +10,7 @@
 // cards at Lv 4 (refPartsDeck). A "win" is the part's bramble destroyed inside the fight's 20 turns (raid_full_sim's overwhelm).
 //   node tools/raid_bal1_2026_10_30.js decks                         write the three decks into the result file
 //   node tools/raid_bal1_2026_10_30.js measure --tag before [--n 40] [--decks map,ref2,opt] [--parts left,right,tail,core] [--stages s1,s0.5]
-//        [--raids <json>] [--plus 2]                                 play the cells (cached per cell; re-running plays only what is missing)
+//        [--raids <json>] [--plus 2] [--g0 0] [--edit <json>]                                 play the cells (cached per cell; re-running plays only what is missing)
 //   node tools/raid_bal1_2026_10_30.js table --tag before            print the cells
 // Cache: /home/claude/bench-cache-raidbal1 (--cache-dir), keyed by the raid def, the decks, the game files and the seeds.
 'use strict';
@@ -55,7 +55,7 @@ function applyEdit(def, ed){ if(!ed) return def; const out = Object.assign({}, d
 function gameKey(){ return sha(['arena_app.js', 'bramblewood-engine.js', 'bramblewood-raid.js', 'bramblewood-trench.js', 'canonical/cards.json', 'bramblewood-budget.js'].map(f=> fs.readFileSync(path.join(ROOT, f), 'utf8')).join('\u0000')); }
 
 function measure(){
-  const tag = arg('tag', 'before'), n = Number(arg('n', 40)), plus = Number(arg('plus', 2));
+  const tag = arg('tag', 'before'), n = Number(arg('n', 40)), plus = Number(arg('plus', 2)), g0 = Number(arg('g0', 0)); // --g0: the first game's index (fresh seeds for a confirm run)
   const raidsFile = path.resolve(arg('raids', path.join(ROOT, 'canonical/raids.json')));
   const def = applyEdit(JSON.parse(fs.readFileSync(raidsFile, 'utf8'))[0], arg('edit', null) ? JSON.parse(arg('edit')) : null);
   const allDecks = buildDecks(plus), deckKeys = String(arg('decks', 'map,ref2,opt')).split(',');
@@ -63,15 +63,15 @@ function measure(){
   const S = require('./raid_full_sim.js'); S.setDecks(allDecks);
   fs.mkdirSync(CACHE, {recursive: true});
   const gk = gameKey(), out = loadOut(); out.decks = out.decks || {}; out.decks['plus' + plus] = allDecks;
-  const run = out.runs[tag] = out.runs[tag] || {raids: path.relative(ROOT, raidsFile), plus, n, cells: {}};
+  const run = out.runs[tag] = out.runs[tag] || {raids: path.relative(ROOT, raidsFile), plus, n, g0, cells: {}};
   run.raidSha = sha(JSON.stringify(def)); if(arg('edit', null)) run.edit = JSON.parse(arg('edit')); run.tuning = def.tuning; run.castleHp = def.parts.map(p=> p.id + ':' + p.fight.castleHp).join(' ');
   const t0 = Date.now();
   for(const dk of deckKeys) for(const partId of parts) for(const st of stages){
-    const key = [dk, partId, st].join('|'), ck = path.join(CACHE, sha([gk, JSON.stringify(def), JSON.stringify(allDecks[dk]), partId, st, n].join('|')) + '.json');
+    const key = [dk, partId, st].join('|'), ck = path.join(CACHE, sha([gk, JSON.stringify(def), JSON.stringify(allDecks[dk]), partId, st, n, g0].join('|')) + '.json');
     let cell = null; try{ cell = JSON.parse(fs.readFileSync(ck, 'utf8')); cell.cached = true; }catch(e){}
     if(!cell){ let w = 0, dealt = 0, surv = 0, contrib = 0; const ranks = {};
-      for(let g = 0; g < n; g++){ const r = S.playOne(def, partId, st, dk, g); if(r.overwhelmed) w++; dealt += r.dealt; surv += r.survived; contrib += r.contribution; ranks[r.rank || '-'] = (ranks[r.rank || '-'] || 0) + 1; }
-      cell = {deck: dk, part: partId, stage: st, n, wins: w, win: Math.round(w / n * 1000) / 1000, avgDealt: Math.round(dealt / n), avgSurvived: +(surv / n).toFixed(1), avgContribution: Math.round(contrib / n), ranks};
+      for(let g = 0; g < n; g++){ const r = S.playOne(def, partId, st, dk, g0 + g); if(r.overwhelmed) w++; dealt += r.dealt; surv += r.survived; contrib += r.contribution; ranks[r.rank || '-'] = (ranks[r.rank || '-'] || 0) + 1; }
+      cell = {deck: dk, part: partId, stage: st, n, g0, wins: w, win: Math.round(w / n * 1000) / 1000, avgDealt: Math.round(dealt / n), avgSurvived: +(surv / n).toFixed(1), avgContribution: Math.round(contrib / n), ranks};
       fs.writeFileSync(ck, JSON.stringify(cell)); }
     run.cells[key] = cell; saveOut(out);
     console.log(`${dk.padEnd(5)} ${partId.padEnd(6)} ${st.padEnd(5)} win ${String(Math.round(cell.win * 100)).padStart(3)}%  dealt ${String(cell.avgDealt).padStart(4)}  survived ${cell.avgSurvived}${cell.cached ? '  (cached)' : ''}`);
