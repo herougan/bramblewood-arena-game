@@ -59,7 +59,7 @@ ok(byId.terraumbra.attack === 1 && byId.terraumbra.health === 1, '4. Terraumbra 
 // 5. the brambles halved when a fight is built; the stored numbers stay full-size
 ok(/const BRAMBLE_SCALE = 0\.5;/.test(src) && /function brambleHp\(v\)/.test(src), '5. BRAMBLE_SCALE 0.5 and brambleHp');
 const raids = JSON.parse(read('canonical/raids.json')), g = raids.find(r=> r.id === 'goliath') || raids[0];
-ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 410), '5. raids.json keeps 410 (B12, BF6) / 55 / Shield 50 (full-size)');
+ok(g.bossHpBonusMax === 55 && g.shield === 50 && g.parts.some(p=> p.fight && p.fight.castleHp === 780), '5. raids.json keeps the full-size numbers: 780 (RAIDBAL1 2026-10-30; was 410, B12, BF6) / 55 / Shield 50');
 ok(/function raidDefScaled\(def\)[\s\S]{0,600}shield: sh\(/.test(src), '5. raidDefScaled halves the raid bramble\'s Shield too (MX, merged in BF5)');
 ok((src.match(/RaidM\.raidShield\(raidDefScaled\(def\), st, (partId|ps\.id)\)/g) || []).length === 3, '5. every raid Shield the game builds or shows goes through raidDefScaled');
 

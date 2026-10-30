@@ -11,7 +11,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Auto-play in group dungeons** (W6): the Auto control plays your seat (the CPU ally's choice, as claims).
 - **The rewards window after a floor** (W6): the fight's own results card (rays, the rank emblem, the rewards block with Maple Leaves and Magic Dust counting up, a card won as a card, an egg) opens over the floor panel; the host's **Go deeper** starts the next floor, **Collect** shows the floor panel, which stays the hub.
 - **Allies' cards are your size** (W10): a group dungeon's rows are full rows (`.coop-rows`, no 84% back-row scale, no dimming) and share one crowded-row span.
-- Tests: `tests/coop3-2026-10-30.js` (new); `tests/e2e/coop3_2026_10_30.py` (new, 390 and 1366; shots in `docs/screens/coop3/`); `tests/coop2-2026-10-28.js` brought up to date with dated notes (the ally-network rule). Owner calls COOP3-1 to COOP3-4.
+- Tests: `tests/coop3-2026-10-30.js` (new); `tests/e2e/coop3_2026_10_30.py` (new, 390 and 1366; shots in `docs/screens/coop3/`); `tests/coop2-2026-10-28.js`, `tests/coop-lobby-2026-10-23.js` and `tests/e2e/coop2_2026_10_28.py` brought up to date with dated notes (the ally-network rule; Collect the rewards window). Owner calls COOP3-1 to COOP3-4.
+## 2026-10-30 (package TIP1: shorter tooltips)
+
+- **The speed button's tooltip is one line** (owner 23:30: "too long ... simplify to what it exactly does"): "Changes the speed of the animation. Shift+Click to go back." The cycle list, the carry-over note and the locked-speed hints are gone from it.
+- **93 other tooltips cut to what the control does** (most 8 to 14 words, none over 20): Forge fuse / dust / melt, raid ratings, tickets and shield, PvP, sync status, energy, battle rating, XP, Prayer and Darkness, deck-builder hints, and the admin card and raid editor fields. Word totals 2,303 -> 1,073. The list is `docs/tooltips-tip1-2026-10-30.md`; all 12 language packs are updated.
+- Left for the owner's later pass: skill and status descriptions, dialogue, tutorial, fight and map text.
+- Tests: `tests/tip1-2026-10-30.js`.
 
 ## 2026-10-30 (package RAIDFX1: the raid tentacle, smooth and on time; no 🤝 on allies)
 
@@ -19,6 +25,15 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **The damage comes out when the tentacle lands** ("the damage should only come out once the tentacle lands on the cards"): the limb reaches each struck card in turn (front to back down a column, along a row from the bramble's side), and that card's damage number, shake and flash, its Health drop and its death happen right then. The turn's redraw waits for the limb, so it no longer stalls the swing halfway or drops Health and removes units before the hit. Each card now shows its own number. Reduced motion: every number as the still tentacle appears; Effects None: as the smack happens. Only timing changed; the engine is untouched (`raidSmackStage` in `arena_app.js`, FX.F `tentacleSmack` `onReach`).
 - **No 🤝 marker on allies' cards**: the corner badge on a raid ally's unit (`.is-ally-card`, the only place it was drawn) is gone; the Esprit skill keeps its 🤝 chip. No text was removed.
 - Tests: `tests/raidfx1-2026-10-30.js`; browser: `tests/e2e/raidfx1_2026_10_30.py` (screens in `docs/screens/raidfx1/`).
+## 2026-10-30 (package UI5: Tide chips by map, Blind looks)
+- **Tide is left out where it cannot happen** (owner 21:35): in a fight on a map that can never have Tide, no card (hand or battlefield) shows a Tide or Swimmer chip. Outside a fight (Codex, detail) they show as before.
+- **A hand card's Tide chip follows the tide**: lit while the Tide is in, invisible while it is out. Drawn with no Tide, or when the Tide goes out, the chip flashes red and fades out; when the Tide comes in it fades back in with a green flash. Board cards keep their lit / unlit chip. Reduced motion and Effects Low / None: no flash, just show / hide. (`ui5TideHandFx`, `.tide-hand` in `arena_template.html`.)
+- **Blind / Purblind** (owner 21:53): the closing-eyes blink plays once when the unit goes blind and is then gone (no standing eye, shade, 👁 overlay or ink splat); a Blind tile is darkened 7% (it was grey and 12%); the chips are the spectacles (🕶️, `blind-now` icon key). Purblind is the same, always.
+- Tests: `tests/ui5-2026-10-30.js`, `tests/e2e/ui5_2026_10_30.py`; shots in `docs/screens/ui5/`.
+## 2026-10-30 (package RAIDBAL1: the raid balanced against Map 13 decks at +2 levels; owner W8)
+- **The Goliath's warm-ups are no longer a sure kill, the Core no longer a near-sure loss.** Measured against three decks a player could hold where the Raid Banner opens (Map 13), at Lv 5 (the map's 3 + 2): the Map reference, Reference-2 and the deck optimizer's Map 13 optimum, 40 fights each. Win (the part's bramble destroyed in 20 turns), fresh part: Left Tentacle 81% -> 60%, Right Tentacle 94% -> 58%, Tail 74% -> 62%, Core 13% -> 40% (fresh seeds: 58 / 62 / 61 / 47). Proposed targets 60% / 40% (call RAIDBAL1-1).
+- **Data only** (`canonical/raids.json`): the warm-ups' brambles 410 -> 780 (Left) / 930 (Right) / 560 (Tail), the Core's 200 -> 100, `raiderCastleBonus` 60 -> 120. Boss card strength, decks, elders, Shield, stages, the classic trench and the engine unchanged. Raid damage a fight: arms and tail about -20%, the Core x2.6 (the week's pace: call RAIDBAL1-2).
+- Tools: `tools/raid_bal1_2026_10_30.js` (decks / measure / table, cached in `/home/claude/bench-cache-raidbal1`); `tools/raid_full_sim.js` builds decks through `refPartsDeck` again (it threw since PREF) and plays named decks (`--deck-file`, `setDecks`). Report `docs/balance/raidbal1-2026-10-30.md` + `.json`. Tests: `tests/raidbal1-2026-10-30.js` (new); `raid-rb2` and `bf5` follow the new brambles (dated notes). Calls RAIDBAL1-1..3.
 
 ## 2026-10-30 (coordinator: Diurnal / Nocturnal light up)
 

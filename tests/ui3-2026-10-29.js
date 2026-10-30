@@ -107,7 +107,7 @@ ok(/id="mlPlayers"[^>]*>👥 \$\{escapeHtml\(TX\('ui\.adminu1-title'\)\)\}/.test
   ok(/ui\.ui3-seat-cpu-start/.test(fnSrc('gdLobbyHTML')) && /ui\.ui3-cpu-random/.test(fnSrc('gdLobbyHTML')), 'S9 the lobby says the CPU ally plays a random deck'); }
 
 // ---- texts in 12 packs
-{ const keys = {'ui.ui3-export-all': 'Export all', 'ui.ui3-export-all-tip': 'Copies every list of every map (chosen, maybe and cut cards) with your current Cut/Keep choices, in map order, as text for Claude. Offers a .txt and a .json download too.',
+{ const keys = {'ui.ui3-export-all': 'Export all', 'ui.ui3-export-all-tip': /* 2026-10-30 (TIP1): shortened */ "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.",
     'ui.ui3-export-copied': 'Copied everything: paste it to Claude, or download it', 'ui.ui3-export-ready': 'Ready: download it', 'ui.ui3-seat-cpu-start': 'A CPU ally with a random deck joins at Start', 'ui.ui3-cpu-random': 'Plays a random deck', 'ui.ui3-back-arena': 'Back to the Arena'};
   Object.keys(keys).forEach(k=> ok(texts.includes(`"${k}": ${JSON.stringify(keys[k])}`), 'texts: TX key ' + k));
   ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(c=>{ const p = JSON.parse(rd('lang/' + c + '.json'));
