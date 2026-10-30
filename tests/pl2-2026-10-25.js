@@ -74,7 +74,7 @@ ok(!/TX\('results\.rare-find'\)/.test(app) && !/TX\('results\.rare-find-2'\)/.te
 { const f = fnSrc('openEnergyPanel');
   ok(/class="ep-count"/.test(f) && /🔋×\$\{capN\}/.test(f) && !/class="ep-cap"/.test(f) && !/ep-grow/.test(f), 'B 00:02 #7: the Energy panel: the count, the refill line, free Energy and 🔋×N Use'); }
 ok(/\{key:'autobattle', adminOnly:true/.test(app) && /if\(sp && pl2SpotHidden\(sp\)\) return false;/.test(fnSrc('tabOpen')), 'B 22:28 #6: Whisper\'s Game is for Admin Mode only');
-ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(app) && /\{key:'coop', icon:'👥'/.test(app) && /data-pl2-arena/.test(app) && T.TEXT['ui.pl2-coop'] === 'Co-op', 'B PL1-3: no Dungeons tab for players; the Arena\'s Co-op tab and the map\'s 👥 spot');
+ok(/function dungeonsTabOpen\(\)\{ try\{ return dungeonsAdminView\(\); \}/.test(app) && /\{key:'coop', icon:'👥'/.test(app) && /data-pl2-arena/.test(app) && T.TEXT['ui.pl2-coop'] === 'Multiplayer' /* 2026-10-30 (UI6, X19): the Co-op tab is called Multiplayer */, 'B PL1-3: no Dungeons tab for players; the Arena\'s Multiplayer (was Co-op) tab and the map\'s 👥 spot');
 // PRO-UI
 { const re = new RegExp(app.match(/const PRO_KEY_RE = \/(.*?)\/;/)[1]);
   ok(re.test('3-PRO-1') && re.test('12-BPRO-4') && !re.test('3-XPRO-1') && !re.test('PRO-1'), 'B PRO-UI: the keys N-PRO-k and N-BPRO-k');
