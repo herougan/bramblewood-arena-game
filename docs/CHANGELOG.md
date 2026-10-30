@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 Release 10-30a (owner 09:18 "ok")
+- Shipped: UI2 (pack-opener crash guard + gentler entrance, zoom only on overflow, Ambush jab, battery sparks, Shift+click pitch, PRO/BPRO deck preview), UI3 (status pills, emblem flight target, Map cards per list + hover detail + Export all, keyword tints, map-bar Players button, solo group dungeon fillers and uninterrupted win screen), ENG13 (optional hard Ambush, Slow keyword, Canopy Cover only vs ranged/flying, admin currency tap), ART2 (68 card arts), Stealth cost 1.5 -> 2.
+- Checks: smoke (only the known d-2026-10-19) and the packages' own tests (8/8 on the merged batch); each package ran its own e2e. No full run for this release.
+
 ## 2026-10-29 (package UI3: pills, emblem landing, Map cards gallery, card tints, Players button, solo group dungeon)
 - **Pills (owner 23:01 "If a status/context pill is irrelevant e.g. night-blind, don't show it. In fact, just show that the blind context pill is sufficient."):** in a fight a Night-blind / Sun-shy unit shows no pip while it sees (night-blind by day), the plain Blind pip while it is blind right now, and none at all when it already carries the Blind status chip (one Blind). Hand, Codex and detail keep the trait pip. Lit by its own Illuminate unit or True Strike: no pip. (S2)
 - **Emblem landing:** the rank emblem's flight now lands on its own fight (the open fight panel's emblem, else the fight's node), read every frame so a panned, zoomed or scrolled map cannot leave it behind; the page's bottom-right corner is only the fallback when the node is off screen. (S3; see the open question in the report)
