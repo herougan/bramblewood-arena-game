@@ -11,7 +11,7 @@
     "basic": true,
     "attack": 3,
     "flavor": "Slick armor plates lashed from birch bark \u2014 first through the gate, first to slide back out.",
-    "health": 7,
+    "health": 6,
     "locked": false,
     "rarity": "rare",
     "resist": [],
@@ -710,7 +710,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 4,
-    "health": 16,
+    "health": 15,
     "flavor": "Carries a driftwood shield strapped to its back. Slides into position, then doesn\u2019t move.",
     "effects": {},
     "locked": true,
@@ -841,7 +841,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "flavor": "Too small to be scary. Nobody told it that.",
     "locked": true,
     "archetypes": [
@@ -1032,7 +1032,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 5,
-    "health": 19,
+    "health": 18,
     "flavor": "Camouflage stripes that were never really necessary \u2014 it\u2019s simply faster than being seen.",
     "effects": {},
     "locked": true,
@@ -1280,7 +1280,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "flavor": "Its chirp is the marching cadence for half the Bramblewood infantry.",
     "locked": true,
     "archetypes": [
@@ -1378,7 +1378,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "flavor": "Barely a seedling. Somehow already armed.",
     "locked": true,
     "archetypes": [
@@ -1715,8 +1715,8 @@
     "icon": "\ud83d\udc20",
     "cost": 0,
     "wait": 1,
-    "attack": 4,
-    "health": 8,
+    "attack": 3,
+    "health": 9,
     "flavor": "A living spear with fins. Subtlety was never the plan.",
     "locked": true,
     "archetypes": [
@@ -1781,7 +1781,7 @@
     "cost": 2,
     "wait": 3,
     "attack": 6,
-    "health": 15,
+    "health": 13,
     "effects": {
       "tide": true
     },
@@ -2180,7 +2180,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "flavor": "Cheeks stuffed with acorns, morale, and absolutely nothing resembling caution.",
     "locked": true,
     "archetypes": [
@@ -2559,7 +2559,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 9,
+    "health": 8,
     "flavor": "All paws and no plan. The plan arrives in a year or two.",
     "locked": true,
     "archetypes": [
@@ -2743,7 +2743,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 5,
-    "health": 16,
+    "health": 14,
     "resist": [
       "cold"
     ],
@@ -3285,7 +3285,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "effects": {},
     "flavor": "Slips through the pantry, the granary, and eventually the war budget.",
     "locked": true,
@@ -3428,7 +3428,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 15,
+    "health": 14,
     "effects": {},
     "flavor": "Carried a squire into three skirmishes before the squire caught up to it in nerve.",
     "locked": true,
@@ -3774,7 +3774,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "flavor": "Looks entirely unbothered above the waterline. Paddling furiously the whole time underneath.",
     "locked": true,
     "archetypes": [
@@ -3806,7 +3806,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "effects": {
       "flying": true,
       "pounce": 1
@@ -4027,7 +4027,7 @@
     "icon": "\ud83d\udc17",
     "cost": 1,
     "wait": 1,
-    "attack": 5,
+    "attack": 4,
     "health": 5,
     "effects": {
       "thorns": 3
@@ -4337,8 +4337,8 @@
     "icon": "\ud83d\udc26\u200d\u2b1b",
     "cost": 2,
     "wait": 2,
-    "attack": 4,
-    "health": 4,
+    "attack": 3,
+    "health": 5,
     "exileCost": {
       "zone": "graveyard",
       "count": 2
@@ -4447,7 +4447,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 0,
-    "health": 9,
+    "health": 10,
     "effects": {
       "triggers": [
         {
@@ -4867,8 +4867,8 @@
     "icon": "\ud83e\udd8a",
     "cost": 1,
     "wait": 0,
-    "attack": 3,
-    "health": 4,
+    "attack": 2,
+    "health": 5,
     "archetypes": [
       "Tundra"
     ],
@@ -4994,7 +4994,7 @@
     "icon": "\ud83e\udd88",
     "cost": 2,
     "wait": 1,
-    "attack": 5,
+    "attack": 4,
     "health": 10,
     "archetypes": [
       "Coral Reef"
@@ -5025,7 +5025,7 @@
     "icon": "\ud83d\udc0d",
     "cost": 1,
     "wait": 2,
-    "attack": 5,
+    "attack": 4,
     "health": 5,
     "archetypes": [
       "Coral Reef"
@@ -5260,7 +5260,7 @@
     "icon": "\ud83e\udda4",
     "cost": 1,
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "health": 7,
     "archetypes": [
       "Mountain"
@@ -5777,7 +5777,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 4,
-    "health": 4,
+    "health": 3,
     "archetypes": [
       "Volcanic"
     ],
@@ -6084,8 +6084,8 @@
     "icon": "\ud83d\udc0d",
     "cost": 1,
     "wait": 1,
-    "attack": 9,
-    "health": 6,
+    "attack": 6,
+    "health": 8,
     "archetypes": [
       "Coastal"
     ],
@@ -6223,7 +6223,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 13,
+    "health": 12,
     "archetypes": [
       "Mangrove",
       "Reptile"
@@ -6285,7 +6285,7 @@
     "cost": 1,
     "wait": 0,
     "attack": 2,
-    "health": 3,
+    "health": 2,
     "archetypes": [
       "Mangrove"
     ],
@@ -6384,7 +6384,7 @@
     "cost": 2,
     "wait": 1,
     "attack": 3,
-    "health": 12,
+    "health": 11,
     "archetypes": [
       "Rainforest",
       "Ape"
@@ -6845,7 +6845,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "archetypes": [
       "Frost"
     ],
@@ -7058,7 +7058,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 7,
+    "health": 6,
     "archetypes": [
       "Raccoon"
     ],
@@ -7301,7 +7301,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 3,
-    "health": 3,
+    "health": 2,
     "archetypes": [
       "Sloth"
     ],
@@ -7535,7 +7535,7 @@
     "effects": {
       "flying": true,
       "stealth": true,
-      "nocturnal": 4
+      "nocturnal": 3
     },
     "species": [
       "Bird"
@@ -7818,7 +7818,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "archetypes": [
       "Frog"
     ],
@@ -8434,8 +8434,8 @@
     "icon": "\ud83d\udc22",
     "cost": 3,
     "wait": 1,
-    "attack": 5,
-    "health": 5,
+    "attack": 4,
+    "health": 6,
     "effects": {
       "triggers": [
         {
@@ -9061,7 +9061,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Keeps to the current. The current keeps it moving.",
-    "health": 4,
+    "health": 3,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -9129,7 +9129,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "Stands watch at the lodge gate, otter-scout style.",
-    "health": 6,
+    "health": 5,
     "locked": false,
     "rarity": "uncommon",
     "resist": [],
@@ -9197,9 +9197,9 @@
     "test": false,
     "uuid": "cbda3976-7532-4fa5-a6a3-46f1c03c536d",
     "wait": 0,
-    "attack": 2,
+    "attack": 1,
     "flavor": "One sting, one job, one very short life.",
-    "health": 3,
+    "health": 4,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -9714,7 +9714,7 @@
     "basic": true,
     "attack": 3,
     "flavor": "Idles in the shallows until the moment it doesn't.",
-    "health": 4,
+    "health": 3,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -9919,7 +9919,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Unbothered, unless you're near the nest.",
-    "health": 4,
+    "health": 3,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -10055,7 +10055,7 @@
     "test": false,
     "uuid": "55585f1d-14cf-4b22-8c05-cf44496a1b9e",
     "wait": 0,
-    "attack": 4,
+    "attack": 3,
     "flavor": "Freezes first, runs second, rarely needs a third option.",
     "health": 2,
     "locked": false,
@@ -10123,7 +10123,7 @@
     "test": false,
     "uuid": "9181f174-7d4e-4807-858c-ba33288ae72b",
     "wait": 0,
-    "attack": 4,
+    "attack": 3,
     "flavor": "Fast enough that \"catch it\" is mostly a suggestion.",
     "health": 2,
     "locked": false,
@@ -10285,7 +10285,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Buries acorns it will absolutely never find again.",
-    "health": 4,
+    "health": 3,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -10348,8 +10348,8 @@
     "icon": "\ud83d\udc26",
     "cost": 0,
     "wait": 0,
-    "attack": 2,
-    "health": 3,
+    "attack": 1,
+    "health": 4,
     "flavor": "Not cleared for border patrol yet. Practices anyway.",
     "locked": false,
     "archetypes": [
@@ -10381,7 +10381,7 @@
     "uuid": "0b3add7e-a043-4a68-a0cf-b9efa61a1f13",
     "wait": 0,
     "basic": true,
-    "attack": 3,
+    "attack": 2,
     "flavor": "Feather-red is earned, not born. This one's still earning it.",
     "health": 1,
     "locked": false,
@@ -10526,7 +10526,7 @@
     "wait": 2,
     "attack": 2,
     "flavor": "Learning the calendar-oaths one verse at a time.",
-    "health": 5,
+    "health": 4,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -10677,7 +10677,7 @@
     "wait": 1,
     "attack": 2,
     "flavor": "Carries messages the Dominion would rather you not read.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -10980,7 +10980,7 @@
     "test": false,
     "uuid": "c495dff8-4a2b-4020-bdf4-f7b240fa9e8d",
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "flavor": "Sunfeather-born, lodge-sworn to no one.",
     "health": 4,
     "locked": true,
@@ -11058,7 +11058,7 @@
     "basic": false,
     "attack": 4,
     "flavor": "Every otter that finishes the run remembers three things: the grip, the current, and who taught them both.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -12352,7 +12352,7 @@
     "uuid": "9b560dd8-d052-4dce-ae47-0c17c7b96742",
     "wait": 0,
     "basic": true,
-    "attack": 4,
+    "attack": 3,
     "flavor": "No banner, no faction \u2014 just a walking stick, a full pack, and a knack for showing up exactly when a new adventure needs a guide.",
     "health": 5,
     "locked": false,
@@ -12666,8 +12666,8 @@
     "icon": "\ud83d\udc09",
     "cost": 4,
     "wait": 5,
-    "attack": 10,
-    "health": 10,
+    "attack": 9,
+    "health": 9,
     "dmgType": "decay",
     "resist": [
       "decay"
@@ -12992,7 +12992,7 @@
     "basic": true,
     "attack": 2,
     "flavor": "Jumps into every puddle and every fight.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -13134,9 +13134,9 @@
     "test": false,
     "uuid": "7d95ff4d-7977-412a-ae37-faa5d85f60be",
     "wait": 0,
-    "attack": 2,
+    "attack": 1,
     "flavor": "Hungry, loud, and surprisingly brave.",
-    "health": 2,
+    "health": 3,
     "locked": true,
     "rarity": "starter",
     "resist": [],
@@ -13210,7 +13210,7 @@
     "wait": 0,
     "attack": 2,
     "flavor": "First to the clover. First to the fight.",
-    "health": 3,
+    "health": 2,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -13355,7 +13355,7 @@
     "wait": 0,
     "attack": 0,
     "flavor": "Cut it in half and it just keeps working.",
-    "health": 6,
+    "health": 7,
     "locked": true,
     "rarity": "starter",
     "resist": [],
@@ -13418,7 +13418,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "flavor": "Asleep for most of the war. Awake for the important part.",
     "locked": true,
     "archetypes": [
@@ -13691,7 +13691,7 @@
     "icon": "\ud83e\uddab",
     "cost": 0,
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "health": 4,
     "rarity": "common",
     "locked": false,
@@ -14054,7 +14054,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 3,
-    "health": 3,
+    "health": 2,
     "rarity": "uncommon",
     "archetypes": [
       "Devil"
@@ -14123,7 +14123,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 3,
-    "health": 10,
+    "health": 9,
     "rarity": "uncommon",
     "archetypes": [
       "Devil"
@@ -14186,7 +14186,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 3,
-    "health": 3,
+    "health": 2,
     "rarity": "rare",
     "archetypes": [
       "Imp"
@@ -14223,7 +14223,7 @@
     "icon": "\ud83d\udc79",
     "cost": 0,
     "wait": 0,
-    "attack": 7,
+    "attack": 6,
     "health": 20,
     "rarity": "epic",
     "archetypes": [
@@ -14353,9 +14353,9 @@
     "uuid": "c2b8fbaa-787d-45f6-899a-9b03aa743d34",
     "wait": 0,
     "basic": true,
-    "attack": 3,
+    "attack": 2,
     "flavor": "Looks at two things at once and pecks a third.",
-    "health": 3,
+    "health": 4,
     "locked": false,
     "rarity": "starter",
     "resist": [],
@@ -14489,7 +14489,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 7,
+    "health": 6,
     "archetypes": [
       "Bird",
       "Ecclesia"
@@ -14814,7 +14814,7 @@
     "name": "Ironmaw Warwolf",
     "icon": "\ud83d\udc3a",
     "attack": 7,
-    "health": 7,
+    "health": 6,
     "rarity": "epic",
     "species": [
       "Canid",
@@ -14971,8 +14971,8 @@
     "unattainable": true,
     "name": "Village Miller",
     "icon": "\ud83d\udc2d",
-    "attack": 3,
-    "health": 6,
+    "attack": 2,
+    "health": 7,
     "rarity": "common",
     "species": [
       "Rodent"
@@ -15044,7 +15044,7 @@
     "name": "Otter Ferryman",
     "icon": "\ud83e\udda6",
     "attack": 3,
-    "health": 8,
+    "health": 7,
     "rarity": "common",
     "species": [
       "Mustelid"
@@ -15150,8 +15150,8 @@
     "id": "dawn-bellringer",
     "name": "Dawn Bellringer",
     "icon": "\ud83d\udd14",
-    "attack": 3,
-    "health": 3,
+    "attack": 2,
+    "health": 4,
     "rarity": "uncommon",
     "species": [
       "Bird"
@@ -15320,7 +15320,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "rarity": "uncommon",
     "species": [
       "Bat"
@@ -15383,7 +15383,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "rarity": "rare",
     "species": [
       "Insect"
@@ -15453,7 +15453,7 @@
     "icon": "\ud83e\uded9",
     "cost": 1,
     "wait": 1,
-    "attack": 8,
+    "attack": 6,
     "health": 5,
     "rarity": "rare",
     "species": [
@@ -15577,7 +15577,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Barks the orders, then runs in first anyway.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -16182,7 +16182,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 9,
+    "health": 8,
     "effects": {},
     "dmgType": "physical",
     "resist": [],
@@ -16280,7 +16280,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 11,
+    "health": 10,
     "effects": {
       "boomerang": true
     },
@@ -16314,7 +16314,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 12,
+    "health": 11,
     "effects": {
       "guardian": true
     },
@@ -16442,7 +16442,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 2,
+    "health": 1,
     "effects": {
       "flying": true,
       "arrow": 1
@@ -16477,7 +16477,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 4,
+    "health": 3,
     "effects": {
       "flying": true
     },
@@ -16546,7 +16546,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 7,
+    "health": 6,
     "effects": {
       "flying": true,
       "illuminate": true
@@ -16598,8 +16598,8 @@
     "icon": "\ud83d\udc26",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
-    "health": 3,
+    "attack": 2,
+    "health": 4,
     "effects": {
       "flying": true,
       "stealth": true
@@ -16674,7 +16674,7 @@
     "wait": 2,
     "attack": 3,
     "flavor": "Every bird that joins the flock joins the song.",
-    "health": 4,
+    "health": 3,
     "locked": true,
     "rarity": "veryrare",
     "resist": [],
@@ -16748,7 +16748,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 7,
+    "health": 6,
     "effects": {
       "triggers": [
         {
@@ -17318,7 +17318,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 7,
+    "health": 6,
     "effects": {
       "changeling": true,
       "flying": true
@@ -17374,7 +17374,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 4,
+    "health": 3,
     "effects": {
       "triggers": [
         {
@@ -17673,7 +17673,7 @@
     "name": "Shoal Shark",
     "icon": "\ud83e\udd88",
     "attack": 4,
-    "health": 12,
+    "health": 11,
     "archetypes": [
       "Coastal"
     ],
@@ -17749,7 +17749,7 @@
     "name": "Irradiated Axolotl",
     "icon": "\ud83e\udd8e",
     "attack": 4,
-    "health": 11,
+    "health": 10,
     "archetypes": [],
     "species": [
       "Amphibian"
@@ -18073,7 +18073,7 @@
     "name": "Sworn Shieldbearer",
     "icon": "\ud83d\udee1\ufe0f",
     "attack": 3,
-    "health": 11,
+    "health": 10,
     "archetypes": [
       "Village"
     ],
@@ -18110,7 +18110,7 @@
     "name": "Crown Pretender",
     "icon": "\ud83e\udd8a",
     "attack": 3,
-    "health": 12,
+    "health": 11,
     "archetypes": [
       "Village"
     ],
@@ -18144,7 +18144,7 @@
     "name": "Grindstone Boar",
     "icon": "\ud83d\udc17",
     "attack": 3,
-    "health": 13,
+    "health": 12,
     "archetypes": [
       "Boar"
     ],
@@ -18179,7 +18179,7 @@
     "name": "Rainmaker Frog",
     "icon": "\ud83d\udc38",
     "attack": 3,
-    "health": 10,
+    "health": 9,
     "archetypes": [
       "Frog"
     ],
@@ -18213,7 +18213,7 @@
     "name": "Puddle Skimmer",
     "icon": "\ud83e\udd9f",
     "attack": 3,
-    "health": 5,
+    "health": 4,
     "archetypes": [
       "Insect"
     ],
@@ -18315,7 +18315,7 @@
     "name": "Frostbitten Wolverine",
     "icon": "\ud83e\udda1",
     "attack": 3,
-    "health": 11,
+    "health": 10,
     "archetypes": [
       "Tundra"
     ],
@@ -19232,7 +19232,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "rarity": "common",
     "locked": true,
     "archetypes": [
@@ -19328,7 +19328,7 @@
     "wait": 1,
     "attack": 4,
     "flavor": "Sworn to the Rivergate throne. The throne is a log, but the oath is real.",
-    "health": 10,
+    "health": 9,
     "locked": false,
     "rarity": "superrare",
     "resist": [],
@@ -19461,7 +19461,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 6,
+    "health": 5,
     "rarity": "uncommon",
     "locked": false,
     "archetypes": [
@@ -20201,7 +20201,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 3,
-    "health": 14,
+    "health": 13,
     "archetypes": [
       "Chipmunk",
       "Village"
@@ -21480,7 +21480,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 3,
-    "health": 3,
+    "health": 2,
     "rarity": "common",
     "species": [
       "Fish"
@@ -21552,7 +21552,7 @@
     "cost": 0,
     "wait": 3,
     "attack": 4,
-    "health": 17,
+    "health": 16,
     "rarity": "rare",
     "species": [
       "Felid"
@@ -22041,7 +22041,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 2,
-    "health": 2,
+    "health": 1,
     "flavor": "Its wings crackle in the dark. Every cave it leaves smells faintly of storms.",
     "locked": true,
     "archetypes": [
@@ -22149,7 +22149,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 14,
+    "health": 13,
     "flavor": "Swings that wide flat head through the shoal like a mallet, and senses who is hiding in the sand.",
     "locked": true,
     "archetypes": [
@@ -22216,8 +22216,8 @@
     "icon": "\ud83e\udd9d",
     "cost": 1,
     "wait": 1,
-    "attack": 4,
-    "health": 8,
+    "attack": 3,
+    "health": 9,
     "flavor": "By the time the smoke clears, so have your pockets.",
     "locked": true,
     "archetypes": [
@@ -22251,7 +22251,7 @@
     "cost": 0,
     "wait": 1,
     "attack": 3,
-    "health": 3,
+    "health": 2,
     "flavor": "Eat it and regret it. The birds that try it once never try it twice.",
     "locked": true,
     "archetypes": [
@@ -22596,7 +22596,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "One whistle and the whole field closes ranks, whether it meant to or not.",
-    "health": 15,
+    "health": 14,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -22729,7 +22729,7 @@
     "wait": 2,
     "attack": 4,
     "flavor": "She whistles, and the pack spreads out like fingers of a hand.",
-    "health": 22,
+    "health": 21,
     "locked": true,
     "rarity": "veryrare",
     "resist": [],
@@ -22818,7 +22818,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Daylight is a rumour it has chosen not to believe.",
-    "health": 5,
+    "health": 4,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -23147,7 +23147,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "Where it walks, wounds forget how to close.",
-    "health": 12,
+    "health": 11,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -23276,7 +23276,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "It forgot where it left the hay. And the plan. And you.",
-    "health": 15,
+    "health": 14,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -23494,7 +23494,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Beep beep, and it is already gone.",
-    "health": 7,
+    "health": 6,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -23625,7 +23625,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "It sprays glue when it hunts, and something worse when it is hurt.",
-    "health": 10,
+    "health": 9,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -23665,7 +23665,7 @@
     "wait": 1,
     "attack": 5,
     "flavor": "It lives near the old mine and does not need a lantern.",
-    "health": 11,
+    "health": 9,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -23705,7 +23705,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "At dusk it is a voice in the canopy. At night it is barely a voice.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -23976,7 +23976,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "What it bites stays bitten. Nothing else happens.",
-    "health": 13,
+    "health": 12,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -24192,7 +24192,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "Its eyes are huge, its grip is soft, and its bite is something else.",
-    "health": 9,
+    "health": 7,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -24494,7 +24494,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "Wherever it hangs, the room gets a little darker.",
-    "health": 10,
+    "health": 9,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24534,7 +24534,7 @@
     "wait": 0,
     "attack": 2,
     "flavor": "Its name does most of the work. The rest is teeth.",
-    "health": 5,
+    "health": 4,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -24571,9 +24571,9 @@
     "test": false,
     "uuid": "99595f06-c63a-52c2-98e1-fe93027ee19a",
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "flavor": "Bark, armour, shield: it is all just wood to a woodpecker.",
-    "health": 4,
+    "health": 5,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24789,7 +24789,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "It spits from under the water and never misses a fly. Or a face.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -24832,7 +24832,7 @@
     "wait": 1,
     "attack": 4,
     "flavor": "It does not weave a web. It throws one, wet.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -25161,9 +25161,9 @@
     "test": false,
     "uuid": "a12b8558-e157-56cb-8b4a-3f07543d2343",
     "wait": 2,
-    "attack": 5,
+    "attack": 4,
     "flavor": "Everything it touches remembers it is going to die.",
-    "health": 10,
+    "health": 11,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -25358,9 +25358,9 @@
     "test": false,
     "uuid": "dd73ba50-84c2-5425-a962-73d9accb0e43",
     "wait": 1,
-    "attack": 4,
+    "attack": 3,
     "flavor": "It reads the water with electricity, and you with something worse.",
-    "health": 8,
+    "health": 9,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -25575,7 +25575,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "It does not take much. It just does not give it back.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -25619,7 +25619,7 @@
     "wait": 0,
     "attack": 2,
     "flavor": "Fierce at first. Then softer with every swat.",
-    "health": 6,
+    "health": 5,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -25832,7 +25832,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "You walked past it twice. It counted.",
-    "health": 9,
+    "health": 8,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -25872,7 +25872,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "It clicks through the dark and finds you anyway.",
-    "health": 10,
+    "health": 9,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -26223,7 +26223,7 @@
     "wait": 2,
     "attack": 4,
     "flavor": "It smiles at the penguins. The penguins do not smile back.",
-    "health": 14,
+    "health": 13,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -26346,7 +26346,7 @@
     "wait": 2,
     "attack": 5,
     "flavor": "When it dies it does not rot. It sparkles.",
-    "health": 11,
+    "health": 9,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -26655,7 +26655,7 @@
     "wait": 1,
     "attack": 4,
     "flavor": "It sounds like your captain. It sounds like your horn. It sounds like you.",
-    "health": 8,
+    "health": 7,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
@@ -26838,7 +26838,7 @@
     "wait": 0,
     "attack": 3,
     "flavor": "White in winter, brown in summer, and grey since the crater started coughing.",
-    "health": 7,
+    "health": 6,
     "locked": true,
     "rarity": "rare",
     "resist": [],
@@ -26982,8 +26982,7 @@
     "resist": [],
     "effects": {
       "armor": 2,
-      "arrow": 2,
-      "arrowCount": 2
+      "arrow": 2
     },
     "species": [
       "Mammal"
@@ -28125,7 +28124,7 @@
     "wait": 1,
     "attack": 3,
     "flavor": "It swims through the dunes the way a fish swims through water, and only comes up to bite.",
-    "health": 11,
+    "health": 10,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -28299,7 +28298,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 10,
+    "health": 9,
     "rarity": "uncommon",
     "species": [
       "Mustelid"
@@ -29062,8 +29061,8 @@
     "icon": "\ud83e\udeb6",
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 3,
+    "attack": 2,
+    "health": 4,
     "rarity": "uncommon",
     "species": [
       "Bird"
@@ -29247,7 +29246,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "rarity": "common",
     "species": [
       "Bird"
@@ -29320,8 +29319,8 @@
     "icon": "\ud83d\udd77\ufe0f",
     "cost": 1,
     "wait": 1,
-    "attack": 4,
-    "health": 8,
+    "attack": 3,
+    "health": 9,
     "rarity": "uncommon",
     "species": [
       "Arachnid"
@@ -29722,7 +29721,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 5,
+    "health": 4,
     "rarity": "uncommon",
     "species": [
       "Bird"
@@ -29760,7 +29759,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 9,
+    "health": 8,
     "rarity": "common",
     "species": [
       "Arachnid"
@@ -29831,7 +29830,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 10,
+    "health": 9,
     "rarity": "rare",
     "species": [
       "Arachnid"
@@ -30012,7 +30011,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 3,
+    "health": 2,
     "rarity": "common",
     "species": [
       "Insect"
@@ -30929,7 +30928,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 4,
+    "health": 3,
     "rarity": "common",
     "species": [
       "Lagomorph"
@@ -32320,7 +32319,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 1,
-    "health": 5,
+    "health": 4,
     "flavor": "Still dove-grey from beak to tail. She will pick her colours when she has earned a war to wear them in.",
     "locked": false,
     "archetypes": [
@@ -32609,7 +32608,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 14,
+    "health": 13,
     "rarity": "uncommon",
     "locked": true,
     "test": false,
@@ -32680,7 +32679,7 @@
     "cost": 2,
     "wait": 2,
     "attack": 4,
-    "health": 14,
+    "health": 13,
     "rarity": "uncommon",
     "locked": true,
     "test": false,
@@ -32717,7 +32716,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 6,
+    "health": 5,
     "rarity": "common",
     "locked": true,
     "test": false,
@@ -32936,7 +32935,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 4,
-    "health": 9,
+    "health": 7,
     "rarity": "uncommon",
     "locked": true,
     "test": false,
@@ -33503,8 +33502,8 @@
     "icon": "\ud83d\udc01",
     "cost": 0,
     "wait": 0,
-    "attack": 3,
-    "health": 4,
+    "attack": 2,
+    "health": 5,
     "rarity": "common",
     "archetypes": [
       "Swamp",
@@ -33603,7 +33602,7 @@
     "cost": 1,
     "wait": 2,
     "attack": 4,
-    "health": 15,
+    "health": 14,
     "rarity": "rare",
     "archetypes": [
       "Mouse",
@@ -34128,7 +34127,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 10,
+    "health": 9,
     "rarity": "common",
     "archetypes": [
       "Swamp",

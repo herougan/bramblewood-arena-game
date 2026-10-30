@@ -1,4 +1,13 @@
 // ============================================================================
+// BUDGET2 (2026-10-31, owner on RECOST1-6, 10-30 23:25: "If Attack = 3 Health, we have to edit the first N formula to 3*attack instead."):
+//   the stat terms count a point of Attack as attackWeight (3) points, was 2: cap 1 is f × ((3A + H) × m + S) ≤ N; the braces of context,
+//   threshold and time-of-day skills (+A/+H) are 3A + H; the Forge curve banks and spends 3A + H points (a point of Attack costs 3).
+//   N re-derived by one factor, scale 1.13 (N = 1.13 × (Base + L/15) × (1 + L/30), Level 0 1.13 × (Base − 1)): the factor that keeps the
+//   in-play cards' median cap-1 use where it was (0.906 under 2A + H, 0.905 under 3A + H × 1.13; 330 in-play cards with stats, each at its
+//   start level for its first map). Fits tried (docs/balance/budget2-2026-10-31.md): N × c for c 1.10-1.15, Base + d, and the least-squares
+//   line N_new = 1.049 N_old + 1.69 over the 252 cards at 80-100% use; their spread of use was within 1-4% of each other, so the one-number
+//   form that keeps the owner's coefficients won. Cap 2 (A·H × m + S·|S|) does not change with the Attack weight, so cap2Mult goes 2 → 1.57
+//   (2 / 1.13²): the cap-2 limit stays where it was in absolute terms. Skill prices are in Health points and keep their values.
 // Bramblewood stat budget N and the Forge level curve (2026-10-19, package BF). DOM-free, one implementation for the game (inlined
 // into the page: global `BramblewoodBudget`), the balance tools (tools/skill_costs.js, tools/card_balance.js ...) and the master
 // hub (tools/hub/build_hub.py inlines it ahead of tools/skill_costs.js).
@@ -53,7 +62,8 @@
 // now 10 / 11.44 / 15.56 (before its multiplier). Rarity weighs twice what it did under BF5 (a Legendary +4.5 over BF5). BF5's multipliers stay.
 // 2026-10-24 (package BAL2, DF-1, owner 10-23 17:34: "Map MUST absolutely contribute at 0.2* per Map ... 20*0.2=4, a reasonable bonus"): perMap 0.2 (was
 // 0.1 since BF6 halved the coefficients); a Map 20 card gets +4 N. The card's map is the first main-line map it can be obtained on (arena_app.js cardObtainMap).
-const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:2 /* BF11 (2026-10-23) */, scale:1, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7, shieldPerHealth:0.8 /* FIN2-c (2026-10-26) */};
+const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:1.57 /* BF11 (2026-10-23) 2; BUDGET2 (2026-10-31) 2 / 1.13² */, scale:1.13 /* BUDGET2 (2026-10-31): N x 1.13, fitted below */, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7, shieldPerHealth:0.8 /* FIN2-c (2026-10-26) */, attackWeight:3 /* BUDGET2 (2026-10-31, owner RECOST1-6): 3A + H, was 2A + H */};
+const AW = DEFAULTS.attackWeight; // BUDGET2 (2026-10-31): the Attack weight of the stat terms (braces, thresholds, time of day), the one number capScores reads too
 // Shield as Health (2026-10-26, package FIN2-c; owner 23:46 #3: "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is
 // heavily undertuned"): a unit's own Shield N (effects.shield: it arrives with N temporary Health that soaks damage first and never comes back)
 // is priced as shieldPerHealth (0.8) x N Health in the stat terms of both caps: cap 1 (2A + H + 0.8·Sh) x m + S, cap 2 A·(H + 0.8·Sh) x m + S·|S|.
@@ -181,7 +191,7 @@ const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'no
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
   sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c (2026-10-26): a Shield in braces is 0.8 Health */; delete rest.attack; delete rest.health;
-    inner += 2 * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); });
+    inner += AW * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); }); // BUDGET2 (2026-10-31): 3A + H (was 2A + H)
   const m = mult == null ? (CONTEXT_MULT_BY[k] != null ? CONTEXT_MULT_BY[k] : CONTEXT_MULT) : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; } // + CONTEXT_MULT_BY (EN, 2026-10-23)
 // true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
 function contextFlagCovered(k, e){ const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
@@ -271,7 +281,7 @@ function nV4(base, L){ L = Math.max(0, Number(L) || 0); return r2((base - 1 + L)
 function formulaParts(cfg){ const g = k=> num(cfg, k), t = (k, label)=> (g(k) === 1 ? '' : g(k) + '×') + label;
   const k = g('scale'), pre = k === 1 ? '' : `${k} × `; // BF5: the scale on the whole N
   // BF7 (2026-10-22): the half-miss m on the stat terms only; Fragile's f on the whole left side (capScores)
-  return {cap1: '(2A + H)×m + S ≤ N', cap2: `A·H×m + S·|S| ≤ ${g('cap2Mult')}×(N/3)²` /* BF6 (owner 15:15); BF7 m on the stats only */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse'),
+  return {cap1: `(${g('attackWeight')}A + H)×m + S ≤ N` /* BUDGET2 (2026-10-31) */, cap2: `A·H×m + S·|S| ≤ ${g('cap2Mult')}×(N/3)²` /* BF6 (owner 15:15); BF7 m on the stats only */, n: `N = ${pre}(Base + Level/${g('levelLinDiv')}) × (1 + Level/${g('levelDiv')})`, zero: `Level 0: ${pre}(Base − ${g('zeroPenalty')})`, scale: k, plain: g('plainBonus'), light: g('lightBonus'), fragile: g('fragileUse'),
     miss: `m = ${g('missMult')} per half-miss skill (Evasive, Swift, Shadow; Flying ${MISS_MULT_BY.flying}), on the stats only, not on S` /* BF7; BF10 Flying */,
     fragileText: `Fragile, Purblind: both left sides × ${g('fragileUse')} (more stats for a card that takes double damage or swings blind)` /* BF7 */,
     context: `Context skills ({…}): ${CONTEXT_MULT} × S of the skills in their braces` /* CX2 */,
@@ -320,7 +330,8 @@ function capScores(A, H, S, effects, cfg, opts){ A = +A || 0; H = +H || 0; S = +
   const m = opts && opts.m != null ? +opts.m : missMultOf(effects, cfg), f = opts && opts.f != null ? +opts.f : fragileUseOf(effects, cfg);
   const k = bloomBodyMult(effects); // Bloom (BL, 2026-10-23): a copy of the body with odds p, cap 1's stat terms only
   const sh = opts && opts.sh != null ? +opts.sh || 0 : shieldHealthOf(effects, cfg), He = H + sh; // FIN2-c (2026-10-26): Shield as 0.8 Health; opts.sh for a caller without the effects
-  return {m, f, k, sh, x1: r2(f * ((2 * A + He) * m * k + S)), x2: r2(f * (A * He * m + S * Math.abs(S)))}; }
+  const aw = num(cfg, 'attackWeight'); // BUDGET2 (2026-10-31, owner RECOST1-6): 3A + H (was 2A + H)
+  return {m, f, k, sh, x1: r2(f * ((aw * A + He) * m * k + S)), x2: r2(f * (A * He * m + S * Math.abs(S)))}; }
 function levelKind(L){ if(L === LIMIT) return 'limit'; if(MAJOR.includes(L) || (L > 10 && L % 3 === 1)) return 'major'; if(MINOR.includes(L)) return 'minor'; return 'other'; }
 
 // The curve for a card d ({attack, health, rarity, wait, cost, effects}) from its start level `from` (0 or 1) to `top` (11 for the
@@ -331,7 +342,7 @@ function forgeCurve(d, from, top, cfg){
   const base = baseOf(d, cfg), m = missMultOf(d.effects, cfg) * fragileUseOf(d.effects, cfg) /* BF7: m × f, see the top */, A0 = d.attack, H0 = d.health, km = nMultOf(d.effects, cfg), NL = L=> r2(nAt(base, L, cfg) * km); // BF5: x the card's N multiplier
   const rows = {}; rows[from] = {attack: A0, health: H0, points: 0, kind: 'base', N: NL(from)};
   if(A0 == null && H0 == null){ for(let L = from + 1; L <= top; L++) rows[L] = {attack: A0, health: H0, points: 0, kind: levelKind(L), N: NL(L)}; return {base, from, top, m, rows}; }
-  const a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, 2 * a0 + h0), sh = shieldHealthOf(d.effects, cfg) /* FIN2-c (2026-10-26): Shield as 0.8 Health in the A·H room */, room0 = Math.pow(NL(from) / 3, 2) - m * a0 * (h0 + sh);
+  const aw = num(cfg, 'attackWeight') /* BUDGET2 (2026-10-31): a point of Attack costs 3 (was 2) */, a0 = +A0 || 0, h0 = +H0 || 0, w0 = Math.max(1, aw * a0 + h0), sh = shieldHealthOf(d.effects, cfg) /* FIN2-c (2026-10-26): Shield as 0.8 Health in the A·H room */, room0 = Math.pow(NL(from) / 3, 2) - m * a0 * (h0 + sh);
   let A = a0, H = h0, P = 0, bank = 0;
   for(let L = from + 1; L <= top; L++){
     const N = NL(L), kind = levelKind(L), room = h=> cap2Limit(N, cfg) - m * h.a * (h.h + sh); /* BF11 */
@@ -339,11 +350,11 @@ function forgeCurve(d, from, top, cfg){
     let p = Math.floor(bank * SHARE[kind] + 1e-9); if(kind === 'major' || kind === 'limit') p = Math.max(1, p);
     // split p points: Attack toward the shape (never more than p/2), the rest Health; Attack only when there is no Health stat
     const split = (pp, prefer)=>{
-      if(H0 == null) { const da = Math.floor(pp / 2); return {a: A + da, h: H, used: 2 * da}; }
+      if(H0 == null) { const da = Math.floor(pp / aw); return {a: A + da, h: H, used: aw * da}; }
       if(A0 == null || a0 <= 0) return {a: A, h: H + pp, used: pp};
-      let da = Math.max(0, Math.min(Math.floor(pp / 2), Math.round(a0 * (w0 + P + pp) / w0) - A));
-      if(prefer === 'health') da = 0; else if(prefer === 'attack') da = Math.floor(pp / 2);
-      return {a: A + da, h: H + pp - 2 * da, used: pp};
+      let da = Math.max(0, Math.min(Math.floor(pp / aw), Math.round(a0 * (w0 + P + pp) / w0) - A));
+      if(prefer === 'health') da = 0; else if(prefer === 'attack') da = Math.floor(pp / aw);
+      return {a: A + da, h: H + pp - aw * da, used: pp};
     };
     let pick = null;
     for(let pp = p; pp >= (kind === 'major' || kind === 'limit' ? 1 : 0) && !pick; pp--){
@@ -389,7 +400,7 @@ function thrUptime(k, N){ const t = THR_UPTIME[k]; if(!t) return 0; const n = Ma
 function thrS(k, v, effects, costOf){ const e = effects || {}; let key = k;
   if(/Grant$/.test(k) && THR_UPTIME[k.slice(0, -5)]){ key = k.slice(0, -5); if(e[key]) return {S: 0, inner: 0, mult: 0}; } else if(!THR_UPTIME[k]) return null;
   const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c */; delete rest.attack; delete rest.health;
-  const inner = 2 * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key]));
+  const inner = AW * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key])); // BUDGET2: 3A + H
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
 // ---- ENG12 (2026-10-28): time of day and Shock by the 4-round rule (docs/workflows/balance.md "Pricing by logic") -----------------------
 // Nocturnal / Diurnal / Crepuscular N (+N Attack, +M Health with the Hp key) (owner L11, on the editor's Nocturnal +4/+0 at 2.5: "how can
@@ -414,7 +425,7 @@ const ZEIT_KEYS = ['nocturnal', 'diurnal', 'crepuscular'];
 function zeitS(k, effects){ const e = effects || {}, base = /Hp$/.test(k) ? k.slice(0, -2) : k; if(!ZEIT_KEYS.includes(base)) return null;
   if(k !== base && e[base]) return {S: 0, inner: 0, mult: 0};
   if(e[base + 'Grant'] && typeof e[base + 'Grant'] === 'object') return {S: 0, inner: 0, mult: 0};
-  const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = 2 * A + Hh, m = ZEIT_UPTIME[base];
+  const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = AW * A + Hh /* BUDGET2: 3A + H */, m = ZEIT_UPTIME[base];
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
 // Shock (owner L5: "Shock is too strong."): a Shocked unit takes 1.5x from every hit, every source, for the rest of the round it is struck
 // in and N more rounds (the engine's _shockedJustSet). By the 4-round rule, for On hit: Shock (chance p %, N rounds) on a unit with Attack A:

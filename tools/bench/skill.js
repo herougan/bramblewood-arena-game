@@ -6,7 +6,7 @@
 //     an Uncommon / Rare, the ones nearest their full budget) given X as its real carrier has it (--no-synthetic skips such skills instead).
 //   - Per carrier, paired swaps on the same fights (tools/bench/lib.js): the card with X and without X at the same stats (Δ_X), and the card
 //     as it is with +1 Attack and with +1 Health (the yardstick). The bumps are pooled over every carrier of the run into one rate: win-rate
-//     points per budget point (Attack 2 points, Health 1, as in the budget's 2A + H); an Archer's Attack bump is left out (it never swings).
+//     points per budget point (Attack 3 points, Health 1, as in the budget's 3A + H since BUDGET2 2026-10-31; 2 before); an Archer's Attack bump is left out (it never swings).
 //   - Worth = Δ_X / that rate, in budget points ("X is worth about k Attack-equivalents": k = worth / 2). Price = the cap-1 left side
 //     (2A + H) x m + S of the carrier with X minus without X (bramblewood-budget.js via tools/skill_costs.js), as printed. Net = worth -
 //     price (+ under-priced, - over-priced), z = net / its standard error (fights resampled through the per-fight mean over carriers).
@@ -17,6 +17,7 @@ const path = require('path'), fs = require('fs');
 const L = require('./lib.js');
 
 const PARAM_RE = /(Hp|Grant|Uses)$/;
+const AW = gm => (gm && gm.Budget && gm.Budget.DEFAULTS && gm.Budget.DEFAULTS.attackWeight) || 2; // BUDGET2 (2026-10-31): Attack's budget points (3A + H)
 function isParam(gm, k) { return (gm.Budget.PARAMS || []).includes(k) || PARAM_RE.test(k); }
 // the skills of a card: its keyword keys (not parameters) and its trigger entries as T:<on>><do>
 function skillsOf(gm, d) {
@@ -68,8 +69,9 @@ function rate(B, X, cards, M) { // the yardstick: win-rate points per budget poi
   cards.forEach(id => { const d = gm.D[id], base = B.scores(X, { base: id }, id, M), h = L.diff(B.scores(X, { base: id, dH: 1 }, id, M), base);
     for (let i = 0; i < M; i++) fh[i] += h[i]; nh++;
     if (d.attack != null && !(d.effects || {}).archer && !(d.effects || {}).hibernate) { const a = L.diff(B.scores(X, { base: id, dA: 1 }, id, M), base); for (let i = 0; i < M; i++) fa[i] += a[i]; na++; } });
-  // per fight: the bumps' gain per budget point, (sum of Attack gains + sum of Health gains) / (2 na + nh)
-  const per = new Float64Array(M); for (let i = 0; i < M; i++) per[i] = (fa[i] + fh[i]) / Math.max(1, 2 * na + nh);
+  // per fight: the bumps' gain per budget point, (sum of Attack gains + sum of Health gains) / (aw na + nh)
+  // BUDGET2 (2026-10-31): aw = the budget's Attack weight (3 since 3A + H; was 2)
+  const aw = AW(gm), per = new Float64Array(M); for (let i = 0; i < M; i++) per[i] = (fa[i] + fh[i]) / Math.max(1, aw * na + nh);
   const ms = L.meanSE(per), A = L.meanSE(Array.from(fa).map(x => x / Math.max(1, na))), H = L.meanSE(Array.from(fh).map(x => x / Math.max(1, nh)));
   return { perPoint: ms.m, se: ms.se, attack: A.m, attackSE: A.se, health: H.m, healthSE: H.se, cards: cards.length, attackCards: na, attackInHealth: H.m ? L.r4(A.m / H.m) : null };
 }
@@ -93,7 +95,7 @@ function skillRow(B, X, s, M, yard, tableEntry) {
   rows.forEach(x => delete x.d);
   return { skill: s.skill, kind: isTrig(s.skill) ? 'trigger' : 'keyword', realCarriers: s.realCarriers, synthetic: rows.some(x => x.synthetic),
     table: tableEntry ? { value: tableEntry.value, scale: tableEntry.scale, pow: tableEntry.pow, logic: tableEntry.logic } : null,
-    delta: L.r4(ms.m), deltaSE: L.r4(ms.se), worth: L.r4(worth), worthCI: L.r4(1.96 * seW), attackEq: L.r4(worth / 2), price: L.r4(price), net: L.r4(net), z: z == null ? null : Math.round(z * 100) / 100,
+    delta: L.r4(ms.m), deltaSE: L.r4(ms.se), worth: L.r4(worth), worthCI: L.r4(1.96 * seW), attackEq: L.r4(worth / AW(B.gm)), price: L.r4(price), net: L.r4(net), z: z == null ? null : Math.round(z * 100) / 100,
     verdict: conf === 'low' ? 'within noise' : net > 0 ? 'under-priced' : 'over-priced', confidence: conf, ownRateWorth: ownR > 0 ? L.r4(ms.m / ownR) : null, perN, carriers: rows };
 }
 // a suggested table price from the measured worth (scale n: value x N^pow; fixed: the worth; half: worth / (1 + floor(N/2))); logic-priced
@@ -120,8 +122,8 @@ function md(res) {
     `Package TOOLS1 (T2). \`node tools/bench/bench.js skill --all --games ${c.fights}\` (${res.tool}); game fingerprint \`${res.fingerprint}\`. Suggested prices: \`${res.pricesFile}\` (nothing written to canonical/skill-costs.json).`, '',
     '## How it is measured', '',
     `- Per skill, up to ${res.settings.carriers} cards that carry it; a skill on fewer than ${res.settings.minReal} cards also gets vanilla carriers (${res.vanilla.join(', ')}) given the skill as its card has it. Each carrier plays ${c.fights} paired fights (the bench's slot of ${c.copies} copies, Level ${c.level}, the global field pool, Smart CPU both sides, 30-Health brambles): with the skill, without it at the same stats, and as printed with +1 Attack and with +1 Health.`,
-    `- **The yardstick** (pooled over ${y.cards} carriers): +1 Attack on ${c.copies} copies = ${f1(y.attack * 100)} points, +1 Health = ${f1(y.health * 100)} points (1 Attack = ${y.attackInHealth} Health measured; the budget says 2). One budget point (2A + H) = **${(y.perPoint * 100).toFixed(2)} ± ${(y.se * 196).toFixed(2)} win-rate points**.`,
-    '- **Measured worth** = the skill\'s paired gain / the yardstick, in budget points; **Attack-eq** = worth / 2. **Price now** = the carrier\'s cap-1 left side (2A + H) x m + S with the skill minus without it, as printed (`bramblewood-budget.js`). **Net** = worth - price: + under-priced (it gives more than it costs), - over-priced. z = net / its standard error; confidence high |z| >= 2.5, medium >= 1.5.',
+    `- **The yardstick** (pooled over ${y.cards} carriers): +1 Attack on ${c.copies} copies = ${f1(y.attack * 100)} points, +1 Health = ${f1(y.health * 100)} points (1 Attack = ${y.attackInHealth} Health measured; the budget says 3 since BUDGET2). One budget point (2A + H) = **${(y.perPoint * 100).toFixed(2)} ± ${(y.se * 196).toFixed(2)} win-rate points**.`,
+    '- **Measured worth** = the skill\'s paired gain / the yardstick, in budget points; **Attack-eq** = worth / 3 (BUDGET2). **Price now** = the carrier\'s cap-1 left side (3A + H) x m + S with the skill minus without it, as printed (`bramblewood-budget.js`). **Net** = worth - price: + under-priced (it gives more than it costs), - over-priced. z = net / its standard error; confidence high |z| >= 2.5, medium >= 1.5.',
     '- Read a low-confidence row as "not measurably mispriced at this many fights", not as "fair". Random decks: a skill that needs partners (a tribe, Lumber makers, a field) reads low.',
     '- The interval and z count the fights\' noise on these carriers only, not how typical the carriers are: with 2-3 carriers a skill whose worth depends on the card (its Attack, its Lumber, a partner) can read far from its average. Re-measure a flagged skill with more carriers (`--carriers 4 --games 200`) before changing its price.',
     `- Across all ${res.ranked.length} skills: median worth ${f1(med(res.ranked.map(r => r.worth)))}, median price ${f1(med(res.ranked.map(r => r.price)))}, median net ${f1(med(res.ranked.map(r => r.net)))}. Price rules that zero a stat (an Archer's Attack) show as a negative price: the skill's row then measures swinging against shooting.`, '',

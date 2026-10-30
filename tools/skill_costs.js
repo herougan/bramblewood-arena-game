@@ -48,7 +48,7 @@
       const n = numOf(v), val = +e.value || 0;
       // ENG12 (2026-10-28): priced by the 4-round rule in bramblewood-budget.js (e.logic). Without the card: the time of day at its uptime
       // (value) x 2 per Attack point (the flag; true = +1) or 1 per Health point (the Hp key); Shock at Attack 0; Shock Bolt N: Arrow N + its Shock.
-      if(e.logic === 'zeit') return r2(val * (/Hp$/.test(id) ? n : 2 * (v === true ? 1 : n)));
+      if(e.logic === 'zeit') return r2(val * (/Hp$/.test(id) ? n : g('attackWeight', (BB.DEFAULTS && BB.DEFAULTS.attackWeight) || 2) * (v === true ? 1 : n))); // BUDGET2 (2026-10-31): x the Attack weight (3; was 2)
       if(e.logic === 'shock') return id === 'shockBolt' ? r2((skillCost('arrow', v) || 0) + BB.shockBoltShockS(0)) : BB.shockS(v, 0);
       // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
