@@ -1150,7 +1150,8 @@ function tentacleSVG(B, T, w, dir){
   const xs = P.map(p=> p[0]), ys = P.map(p=> p[1]), mx = (Math.min(...xs) - w*2).toFixed(0), my = (Math.min(...ys) - w*2).toFixed(0);
   const mw = (Math.max(...xs) - Math.min(...xs) + w*4).toFixed(0), mh = (Math.max(...ys) - Math.min(...ys) + w*4).toFixed(0);
   const id = 'fxfT' + (++tentN), gx1 = B.x + nx*w*.6, gy1 = B.y + ny*w*.6, gx2 = B.x - nx*w*.6, gy2 = B.y - ny*w*.6;
-  tentacleSVG.box = {x:+mx, y:+my, w:+mw, h:+mh}; // 2026-10-30 (package RAIDFX1): the limb's box, so its layer is only that big
+  // 2026-10-30 (package RAIDFX1): the limb's box (its spine, plus its half-width and halo), so its layer is only that big
+  const bm = w*.75; tentacleSVG.box = {x:Math.floor(Math.min(...xs) - bm), y:Math.floor(Math.min(...ys) - bm), w:Math.ceil(Math.max(...xs) - Math.min(...xs) + 2*bm), h:Math.ceil(Math.max(...ys) - Math.min(...ys) + 2*bm)};
   return `<defs><linearGradient id="${id}g" gradientUnits="userSpaceOnUse" x1="${gx1.toFixed(1)}" y1="${gy1.toFixed(1)}" x2="${gx2.toFixed(1)}" y2="${gy2.toFixed(1)}">`
     + `<stop offset="0" stop-color="#2c103f"/><stop offset=".35" stop-color="#6a2f8e"/><stop offset=".62" stop-color="#9a58bf"/><stop offset="1" stop-color="#3a1652"/></linearGradient>`
     + `<linearGradient id="${id}m" gradientUnits="userSpaceOnUse" x1="${B.x.toFixed(1)}" y1="${B.y.toFixed(1)}" x2="${T.x.toFixed(1)}" y2="${T.y.toFixed(1)}"><stop offset="0" stop-color="#000"/><stop offset=".2" stop-color="#fff"/></linearGradient>`

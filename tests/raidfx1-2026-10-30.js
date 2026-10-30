@@ -24,7 +24,7 @@ ok(/if\(e\.esprit\) out\.push\(`<span title="Esprit">\$\{iconHTML\('esprit', 'ðŸ
 // ---- 1a. the limb's layer (static shape)
 const tent = fxf.slice(fxf.indexOf('M.tentacleSmack = function'), fxf.indexOf('// Tail Sweep (every front-row card)'));
 ok(tent.length > 2000, '1. FX.F tentacleSmack found');
-ok(/tentacleSVG\.box = \{x:\+mx, y:\+my, w:\+mw, h:\+mh\}/.test(fxf) && /sv\.setAttribute\('viewBox', `\$\{bx\.x\} \$\{bx\.y\} \$\{bx\.w\} \$\{bx\.h\}`\)/.test(tent), '1. the svg is only the limb\'s own box (viewBox), not the window');
+ok(/const bm = w\*\.75; tentacleSVG\.box = \{x:Math\.floor/.test(fxf) && /sv\.setAttribute\('viewBox', `\$\{bx\.x\} \$\{bx\.y\} \$\{bx\.w\} \$\{bx\.h\}`\)/.test(tent), '1. the svg is only the limb\'s own box (viewBox), not the window');
 ok(!/sv\.setAttribute\('width', VW\(\)\)/.test(tent), '1. no window-sized svg');
 ok(!/svgOrigin/.test(tent) && !/g\.set\(body|\.to\(body|fromTo\(body/.test(tent), '1. no tween on the svg\'s inner <g> (an SVG child\'s transform repaints the limb every frame)');
 const tweens = tent.match(/\.(?:to|fromTo|set)\((\w+),/g) || [];
