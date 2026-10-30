@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package RAIDFX1: the raid tentacle, smooth and on time; no 🤝 on allies)
+
+- **The raid boss's Tentacle Smack plays smoothly** (owner 21:36: "so laggy"): the limb was a window-sized SVG re-painted every frame (its inner group was what moved) and the bramble tile's flare animated a CSS filter. Now the limb is drawn once in a layer its own size and moved by transform and opacity only (its own layer only while it swings); the tile winds up by scale and its glow is a fading overlay. Headless bench, one swing: raster + paint per frame 12-19 ms → 3 ms at 1366, 7 → 0.8 ms at 390.
+- **The damage comes out when the tentacle lands** ("the damage should only come out once the tentacle lands on the cards"): the limb reaches each struck card in turn (front to back down a column, along a row from the bramble's side), and that card's damage number, shake and flash, its Health drop and its death happen right then. The turn's redraw waits for the limb, so it no longer stalls the swing halfway or drops Health and removes units before the hit. Each card now shows its own number. Reduced motion: every number as the still tentacle appears; Effects None: as the smack happens. Only timing changed; the engine is untouched (`raidSmackStage` in `arena_app.js`, FX.F `tentacleSmack` `onReach`).
+- **No 🤝 marker on allies' cards**: the corner badge on a raid ally's unit (`.is-ally-card`, the only place it was drawn) is gone; the Esprit skill keeps its 🤝 chip. No text was removed.
+- Tests: `tests/raidfx1-2026-10-30.js`; browser: `tests/e2e/raidfx1_2026_10_30.py` (screens in `docs/screens/raidfx1/`).
+
 ## 2026-10-30 (coordinator: Diurnal / Nocturnal light up)
 
 - In a fight with day and night, a card's Diurnal chip glows gold while its bonus applies (day, Twilight) and its Nocturnal chip glows blue at night (and in Twilight, and all fight on a dark map), the way the Tide chip lights up. Test: `tests/zeit-lit-2026-10-30.js`.
