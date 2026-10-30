@@ -27,6 +27,8 @@ const SC = require('./skill_costs.js');
 const TABLE = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
 const OUT = path.join(ROOT, 'docs', 'balance', 'budget2-refit-2026-10-31.json');
 const TUT12 = new Set(((JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.m1 || {}).submaps || {}).mtut12 || []);
+// the five Dragons and the Caldera Wyrm may sit over their budget (the owner's creature-ranks rule; tools/post_balance_queue.js OVER_OK)
+const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
 const WELL_UNDER = 0.6, HELD = {'bee-drone': 'RECOST1-5 (owner: hold them)', 'worker-ant': 'RECOST1-5 (owner: hold them)'};
 // War Elephant (item X15 / RECOST1-5, owner "if you can cut the arrow count, do it"): Arrow Count 2 -> 1 (one shot of Arrow 2 a round; the
 // key goes, 1 is the engine's default). Applied to the card's effects before its fit; the applier writes it.
@@ -77,6 +79,7 @@ cards.forEach(c0=>{
   if(!vOld.ok && !ed){ counts.outsideBefore++; (counts.outsideBeforeIds = counts.outsideBeforeIds || []).push(c0.id + (inPlay ? '' : ' (out of play)')); return; } // not pushed out by BUDGET2
   counts[inPlay ? 'inPlayPushed' : 'outPushed']++;
   if(HELD[c0.id]){ held.push(Object.assign(base, {why: HELD[c0.id]})); return; }
+  if(OVER_OK.has(c0.id)){ held.push(Object.assign(base, {why: 'owner call: over on purpose (the creature-ranks rule; tests/card-pass OVER_OK)'})); return; }
   const f = fit(c, vNew, vOld);
   if(!f){ held.push(Object.assign(base, {why: 'no stat change fits (its skills alone break a cap)'})); return; }
   const A = c.attack == null ? null : (+c.attack || 0) + f.dA, H = c.health + f.dH;

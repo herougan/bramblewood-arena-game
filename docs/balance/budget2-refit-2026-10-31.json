@@ -2775,39 +2775,6 @@
    }
   },
   {
-   "id": "black-dragon",
-   "name": "Black Dragon",
-   "rarity": "ancient",
-   "inPlay": false,
-   "stats": "10/10",
-   "old": {
-    "use": 0.96,
-    "N": 55.3,
-    "x1": 53,
-    "verdict": "ok"
-   },
-   "new": {
-    "use": 1.09,
-    "N": 62.49,
-    "x1": 68,
-    "x2": 214,
-    "N2": 681.21,
-    "verdict": "over"
-   },
-   "kind": "trim",
-   "dA": -1,
-   "dH": -1,
-   "attack": 9,
-   "health": 9,
-   "to": "9/9",
-   "after": {
-    "use": 0.99,
-    "N": 62.49,
-    "x1": 62,
-    "x2": 185.5
-   }
-  },
-  {
    "id": "bog-shrew",
    "name": "Bog Shrew",
    "rarity": "common",
@@ -5118,5 +5085,28 @@
    }
   }
  ],
- "held": []
+ "held": [
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "rarity": "ancient",
+   "inPlay": false,
+   "stats": "10/10",
+   "old": {
+    "use": 0.96,
+    "N": 55.3,
+    "x1": 53,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.09,
+    "N": 62.49,
+    "x1": 68,
+    "x2": 214,
+    "N2": 681.21,
+    "verdict": "over"
+   },
+   "why": "owner call: over on purpose (the creature-ranks rule; tests/card-pass OVER_OK)"
+  }
+ ]
 }

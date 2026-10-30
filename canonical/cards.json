@@ -12666,8 +12666,8 @@
     "icon": "\ud83d\udc09",
     "cost": 4,
     "wait": 5,
-    "attack": 9,
-    "health": 9,
+    "attack": 10,
+    "health": 10,
     "dmgType": "decay",
     "resist": [
       "decay"
@@ -12714,7 +12714,7 @@
       ]
     },
     "creatureRank": 1,
-    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 ancient (live server version of 2026-10-16; over budget: 2A+H+S 120% -> 99% of N 99.2). 2026-10-19 halve (BF5): was 8/41. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/17. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/19. 2026-10-21 human pass I (owner's hub skill costs): 4/20 -> 1/1. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/1 -> 8/8. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 8/8 -> 9/9. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 9/9 -> 10/10. 2026-10-31 BUDGET2 re-fit (3A + H, N x 1.13; owner RECOST1-6): was 10/10 (cap-1 use 0.96 of N under 2A + H, 1.09 under 3A + H, now 0.99)."
+    "creatorNote": "2026-10-19 retune (server override folded): was 10/50 ancient (live server version of 2026-10-16; over budget: 2A+H+S 120% -> 99% of N 99.2). 2026-10-19 halve (BF5): was 8/41. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 3/17. 2026-10-21 BF6 (the halved coefficients, cap 2 A\u00b7H+S\u00b7|S|, the new skill worths): was 4/19. 2026-10-21 human pass I (owner's hub skill costs): 4/20 -> 1/1. 2026-10-22 BF7 re-fit (half-miss x1.5 on the stats only, Fragile x0.7 on the caps, the four pass III cuts): 1/1 -> 8/8. 2026-10-22 BF8 (Bounty off, Tide light bonus off, Blinding priced, Purblind x0.7): 8/8 -> 9/9. 2026-10-22 BF9 (Supreme 5, Supreme Tide 4; Red Dragon without Stun on Hit, Blue Dragon without Paralyze): 9/9 -> 10/10."
   },
   {
     "id": "straw-training-dummy",
