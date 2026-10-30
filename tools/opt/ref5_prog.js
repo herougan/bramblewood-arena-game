@@ -264,7 +264,7 @@ function cmdCollect(argv) {
 function meanLevel(parts) { const n = parts.reduce((t, p) => t + p[1], 0); return n ? parts.reduce((t, p) => t + p[1] * p[2], 0) / n : 0; }
 
 function cmdRun(argv) {
-  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '1200'), fg = arg(argv, '--final-games', '8') /* Maps 0-6 and Map 7 seeds 1-2 ran at 3000 / 16 (Map 0-5 32); from Map 7 seed 3 on 1200 / 8, seeded with the player's previous deck: the machine was shared (load 8-11 on 2 cores) */;
+  const gm = game(), maps = mapRange(arg(argv, '--maps')), tag = arg(argv, '--tag', '2026-10-30-ref5'), budget = arg(argv, '--budget', '1500'), pop = arg(argv, '--pop', '8'), g0 = arg(argv, '--g0', '1'), /* from Map 8: 1500 games, population 8, 1 game a gauntlet entry on the first rung, gmax 8, one restart (Map 8 seeds 1-2: gmax 32, two restarts), so the search gets several generations on a shared machine */ fg = arg(argv, '--final-games', '4') /* Maps 0-6 and Map 7 seeds 1-2 ran at 3000 / 16 (Map 0-5 32); from Map 7 seed 5 on 1200 / 4 (Map 7 seeds 3-4: 1200 / 8), seeded with the player's previous deck: the machine was shared (load 8-11 on 2 cores) */;
   const half = arg(argv, '--part'); // a = the pools + seeds 1-2, b = seeds 3-4, c = seed 5 + collect (each well under 10 minutes on a shared machine)
   const only = half === 'a' ? [1, 2] : half === 'b' ? [3, 4] : half === 'c' ? [5] : arg(argv, '--seeds') ? mapRange(arg(argv, '--seeds')) : SEEDS, step0 = arg(argv, '--step', 'all');
   for (const n of maps) {
@@ -273,13 +273,26 @@ function cmdRun(argv) {
     if (step === 'all' || step === 'opt') for (const s of only) {
       if (fs.existsSync(path.join(ROOT, optFile(gm, n, s, tag))) && !argv.includes('--redo')) { console.log(`Map ${n} seed ${s}: done`); continue; }
       cp.execFileSync('node', [path.join(ROOT, 'tools/opt/deckopt.js'), '--map', String(n), '--mode', 'prog', '--prog-seed', String(s), '--pool-file', POOLS, '--level', 'ref', '--budget', budget, '--final-games', fg,
-        '--ladder', 'none', '--distinct-max', '1', '--seed-ref', '--workers', '2', '--tag', tag + '-s' + s, '--seed', 'ref5-s' + s, '--quiet', '--no-summary', '--ckpt-dir', '/home/claude/bench-cache-ref5/ckpt'], { cwd: ROOT, stdio: 'inherit' });
+        '--ladder', 'none', '--distinct-max', '1', '--seed-ref', '--pop', pop, '--children', String(2 * +pop), '--g0', g0, '--gmax', '8', '--restarts', '1', '--workers', '2', '--tag', tag + '-s' + s, '--seed', 'ref5-s' + s, '--quiet', '--no-summary', '--ckpt-dir', '/home/claude/bench-cache-ref5/ckpt'], { cwd: ROOT, stdio: 'inherit' });
     }
     if (step === 'all' || step === 'collect') cp.execFileSync('node', [__filename, 'collect', '--map', String(n), '--tag', tag], { cwd: ROOT, stdio: 'inherit' });
     }
   }
 }
 
+// the next steps in order (a map's pools, its seeds one by one, its collect, then the next map), starting new work only while --minutes are
+// left, so one command stays well under 10 minutes on a shared machine
+function cmdAuto(argv) {
+  const gm = game(), to = +arg(argv, '--to', MAX_MAP), mins = +arg(argv, '--minutes', 5), tag = arg(argv, '--tag', '2026-10-30-ref5'), t0 = Date.now(), left = () => Date.now() - t0 < mins * 60000;
+  for (let n = 0; n <= to; n++) {
+    const set = loadSetFile(); if (set && set.decks && set.decks[n] && set.decks[n].length === SEEDS.length) continue;
+    const pf = path.join(ROOT, POOLS), pools = fs.existsSync(pf) ? JSON.parse(fs.readFileSync(pf, 'utf8')).maps : {};
+    if (!pools[n] || !left()) { if (!left()) return console.log('time up before Map ' + n); cmdRun(['--maps', String(n), '--step', 'pools', '--tag', tag]); }
+    for (const s of SEEDS) { if (fs.existsSync(path.join(ROOT, optFile(gm, n, s, tag)))) continue; if (!left()) return console.log(`time up: Map ${n} seed ${s} next`); cmdRun(['--maps', String(n), '--step', 'opt', '--seeds', String(s), '--tag', tag]); console.log(`Map ${n} seed ${s} done ${Math.round((Date.now() - t0) / 1000)} s`); }
+    cmdRun(['--maps', String(n), '--step', 'collect', '--tag', tag]);
+  }
+  console.log('all maps done');
+}
 function cmdEcon(argv) {
   const gm = game(), set = loadSetFile(), upTo = +arg(argv, '--to', MAX_MAP), out = { pace: TRAIL_PACE, mult: MULT, maps: {} };
   for (const s of SEEDS) {
@@ -300,6 +313,7 @@ function main(argv) {
   if (cmd === 'collect') return cmdCollect(argv);
   if (cmd === 'run') return cmdRun(argv);
   if (cmd === 'econ') return cmdEcon(argv);
+  if (cmd === 'auto') return cmdAuto(argv);
   if (cmd === 'measure') return require('./ref5_measure.js').main(argv.slice(1));
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 12).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
 }

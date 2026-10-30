@@ -1,0 +1,1398 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-10-30T14:46:20.211Z",
+ "map": {
+  "id": "mu",
+  "num": 7,
+  "name": "The Morel Hollow"
+ },
+ "level": 0,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s4",
+  "budget": 1200,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 2,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 16,
+  "children": 32,
+  "g0": 2,
+  "gmax": 32,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map mu --seed ref5-s4 --budget 1200 --final-games 8 --method ga --level ref --cross-share 0 --road-weight 0.25 --ladder none --mode prog --seed-ref --prog-seed 4 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 155,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alley-cat",
+   "alligator-gar",
+   "ant-hill",
+   "ant-scout",
+   "badger-lumberjack",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "birdlime-dauber",
+   "bog-leech",
+   "bogfire-newt",
+   "booming-bittern",
+   "box-turtle",
+   "bramble-sprout",
+   "burrow-rabbit",
+   "caiman-hatchling",
+   "camouflage-frog",
+   "cane-toad",
+   "chipmunk-cavalry",
+   "chipmunk-forager",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "cobalt-talon-fledgling",
+   "cobalt-talon-skirmisher",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "constrictor-coil",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "cypress-root-lurker",
+   "daily-post",
+   "dawn-bellringer",
+   "dominion-nestguard",
+   "dormouse",
+   "driftwood-crab",
+   "drowned-matriarch",
+   "duck-paddler",
+   "duckling",
+   "earthworm",
+   "fen-mink",
+   "feral-tomcat",
+   "ferry-toll-frog",
+   "fiddler-crab-swarm",
+   "field-mouse",
+   "field-vole",
+   "fire-ant-raft",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "gannet-nestweaver",
+   "garden-snail",
+   "golden-eagle-diver",
+   "grass-viper",
+   "grey-seal-bull",
+   "greyplume-fledgling",
+   "gull-thief",
+   "guppy",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hedgerow-shrew",
+   "helmeted-otter",
+   "heron-hag",
+   "honey-bee",
+   "house-cat",
+   "hush-wing-spy",
+   "kittiwake-flock",
+   "lantern-bearer",
+   "lodge-engineer",
+   "marsh-harrier",
+   "marsh-mallow-hare",
+   "marsh-wisp",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-wayfarer",
+   "mist-net-otter",
+   "mosswing-laborer",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "nectar-sipper",
+   "nectar-vintner",
+   "net-thrower",
+   "newt-doctor",
+   "nutria-reedcutter",
+   "old-shell",
+   "old-snapjaw",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "otter-angler",
+   "otter-centurion",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-guard",
+   "otter-kit",
+   "otter-lantern-bearer",
+   "otter-netmender",
+   "otter-paddler",
+   "otter-riverguard",
+   "otter-shieldback",
+   "owl-sentinel",
+   "oystercatcher",
+   "peak-condor",
+   "peregrine-stooper",
+   "phoenix-mushrooms",
+   "pincushion-urchin",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "pond-algae",
+   "pond-duck",
+   "pond-trout",
+   "puffin-diver",
+   "pyrenean-desman",
+   "rabbit-kit",
+   "raven-scout",
+   "razorbill",
+   "red-billed-chough",
+   "river-carp",
+   "riverbed-diver",
+   "rivergate-drummer",
+   "rivergate-recruit",
+   "riverside-peddler",
+   "riverwing-envoy",
+   "riverworks-bastion",
+   "robin-redbreast",
+   "sea-turtle-elder",
+   "sheep",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "silver-minnow",
+   "slow-worm",
+   "snapper-hatchling",
+   "snapstick-turtle",
+   "soldier-ant",
+   "sparrow-chick",
+   "sphagnum-vole",
+   "stone-turtle-warden",
+   "sunfeather-scout",
+   "swamp-alligator",
+   "terrier-pup",
+   "the-gannet-queen",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "tunnel-ant",
+   "venomlord-serpent",
+   "water-shrew",
+   "water-vole",
+   "woodcock-lookout",
+   "worker-ant"
+  ],
+  "phase2": 155,
+  "wholeSpectrum": 155,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "fungal",
+   "kinBiomes": [
+    "caves",
+    "swamp"
+   ],
+   "terrainTypes": [
+    "Flora",
+    "Forest",
+    "Rainforest",
+    "Taiga"
+   ],
+   "mapTypes": [
+    "Amphibian 2",
+    "Annelid 2",
+    "Ants 2",
+    "Bee 2",
+    "Forest 2",
+    "Insect 7",
+    "Worm 2"
+   ],
+   "mapMechanics": [
+    "armor 2",
+    "poison 3",
+    "swarm 4"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "phase:cycle",
+    "sporeCloud",
+    "woods"
+   ],
+   "coreCards": 17
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 4's collection",
+    "n": 663,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "alpha-howler",
+     "alpine-avalanche"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:7-1",
+   "kind": "mirror",
+   "node": "7-1",
+   "label": "vs 7-1 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, woods"
+  },
+  {
+   "key": "mirror|fight:7-2",
+   "kind": "mirror",
+   "node": "7-2",
+   "label": "vs 7-2 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:7-3",
+   "kind": "mirror",
+   "node": "7-3",
+   "label": "vs 7-3 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:7-4",
+   "kind": "mirror",
+   "node": "7-4",
+   "label": "vs 7-4 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|fight:7-5",
+   "kind": "mirror",
+   "node": "7-5",
+   "label": "vs 7-5 elite's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|fight:7-6",
+   "kind": "mirror",
+   "node": "7-6",
+   "label": "vs 7-6 miniboss's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "7-1",
+   "label": "vs reference starter deck under 7-1's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, woods"
+  },
+  {
+   "key": "mirror|ref:road7",
+   "kind": "mirror",
+   "node": "7-2",
+   "label": "vs reference deck (Map 7) under 7-2's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "7-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|7-1",
+   "kind": "road",
+   "node": "7-1",
+   "label": "7-1 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, woods"
+  },
+  {
+   "key": "road|7-2",
+   "kind": "road",
+   "node": "7-2",
+   "label": "7-2 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|7-3",
+   "kind": "road",
+   "node": "7-3",
+   "label": "7-3 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|7-4",
+   "kind": "road",
+   "node": "7-4",
+   "label": "7-4 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods"
+  },
+  {
+   "key": "road|7-5",
+   "kind": "road",
+   "node": "7-5",
+   "label": "7-5 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "road|7-6",
+   "kind": "road",
+   "node": "7-6",
+   "label": "7-6 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods"
+  },
+  {
+   "key": "neutral|fight:7-1",
+   "kind": "mirror",
+   "node": "7-1",
+   "label": "vs 7-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:7-2",
+   "kind": "mirror",
+   "node": "7-2",
+   "label": "vs 7-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:7-3",
+   "kind": "mirror",
+   "node": "7-3",
+   "label": "vs 7-3 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:7-4",
+   "kind": "mirror",
+   "node": "7-4",
+   "label": "vs 7-4 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:7-5",
+   "kind": "mirror",
+   "node": "7-5",
+   "label": "vs 7-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:7-6",
+   "kind": "mirror",
+   "node": "7-6",
+   "label": "vs 7-6 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "7-1",
+   "label": "vs reference starter deck under 7-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road7",
+   "kind": "mirror",
+   "node": "7-2",
+   "label": "vs reference deck (Map 7) under 7-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "7-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 5322,
+  "seconds": 587.1,
+  "gamesPerSecond": 9.1,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 4710,
+   "gens": 0,
+   "restarts": 2,
+   "runs": [
+    {
+     "best": "burrow-rabbit:2,clap-net-trapper:1,cricket-drummer:1,fen-mink:1,meadow-frog:4,otter-centurion:3,otter-guard:4,otter-lantern-bearer:1,rabbit-kit:1,tunnel-ant:2",
+     "f": 0.581,
+     "gens": 0,
+     "games": 2700,
+     "top": [
+      "burrow-rabbit:2,clap-net-trapper:1,cricket-drummer:1,fen-mink:1,meadow-frog:4,otter-centurion:3,otter-guard:4,otter-lantern-bearer:1,rabbit-kit:1,tunnel-ant:2",
+      "burrow-rabbit:2,clap-net-trapper:1,fen-mink:1,marsh-wisp:1,meadow-frog:4,otter-centurion:3,otter-guard:4,otter-kit:1,otter-lantern-bearer:1,tunnel-ant:2",
+      "greyplume-fledgling:4,helmeted-otter:1,otter-centurion:3,riverwing-envoy:1,soldier-ant:4,tunnel-ant:3,worker-ant:4",
+      "duck-paddler:2,fleetfootd:1,golden-eagle-diver:1,honey-bee:3,meadow-frog:1,otter-centurion:1,otter-kit:1,otter-riverguard:1,pond-trout:2,rabbit-kit:1,silver-minnow:3,sparrow-chick:3"
+     ]
+    },
+    {
+     "best": "burrow-rabbit:2,clap-net-trapper:1,cricket-drummer:1,fen-mink:1,meadow-frog:4,otter-centurion:3,otter-guard:4,otter-lantern-bearer:1,rabbit-kit:1,tunnel-ant:2",
+     "f": 0.581,
+     "gens": 0,
+     "games": 2010,
+     "top": [
+      "burrow-rabbit:2,clap-net-trapper:1,cricket-drummer:1,fen-mink:1,meadow-frog:4,otter-centurion:3,otter-guard:4,otter-lantern-bearer:1,rabbit-kit:1,tunnel-ant:2",
+      "burrow-rabbit:2,clap-net-trapper:1,cricket-drummer:1,fen-mink:1,marsh-harrier:1,meadow-frog:4,otter-centurion:3,otter-guard:3,rabbit-kit:1,razorbill:1,tunnel-ant:2",
+      "alley-cat:1,alligator-gar:1,ant-hill:1,ant-scout:1,bramble-sprout:1,chipmunk-skirmisher:1,compost-grub:1,cricket-drummer:1,dawn-bellringer:1,feral-tomcat:2,fiddler-crab-swarm:1,hush-wing-spy:1,meerkat-wayfarer:1,nectar-sipper:1,otter-flag-bearer:1,otter-kit:1,otter-riverguard:1,pond-trout:1,razorbill:1",
+      "ant-hill:1,burrow-rabbit:2,fen-mink:1,lodge-engineer:1,meadow-frog:4,otter-centurion:2,otter-guard:4,otter-lantern-bearer:1,rabbit-kit:1,tide-pool-crab:1,tunnel-ant:2"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "burrow-rabbit": 2,
+    "clap-net-trapper": 1,
+    "cricket-drummer": 1,
+    "fen-mink": 1,
+    "meadow-frog": 4,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-lantern-bearer": 1,
+    "rabbit-kit": 1,
+    "tunnel-ant": 2
+   },
+   "cards": [
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "clap-net-trapper",
+     "name": "Clap-net Trapper",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "fen-mink",
+     "name": "Fen Mink",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-lantern-bearer",
+     "name": "Otter Lantern Bearer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.581,
+   "ci": [
+    0.543,
+    0.618
+   ],
+   "mirror": 0.625,
+   "road": 0.448,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:7-1",
+     "label": "vs 7-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.758,
+     "hi": 0.968,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:7-2",
+     "label": "vs 7-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.594,
+     "lo": 0.423,
+     "hi": 0.745,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:7-3",
+     "label": "vs 7-3 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.229,
+     "hi": 0.547,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:7-4",
+     "label": "vs 7-4 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.594,
+     "lo": 0.423,
+     "hi": 0.745,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:7-5",
+     "label": "vs 7-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.844,
+     "lo": 0.682,
+     "hi": 0.931,
+     "n": 32
+    },
+    {
+     "entry": "mirror|fight:7-6",
+     "label": "vs 7-6 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.094,
+     "lo": 0.032,
+     "hi": 0.242,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 7-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.719,
+     "hi": 0.95,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.406,
+     "lo": 0.255,
+     "hi": 0.577,
+     "n": 32
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.938,
+     "lo": 0.799,
+     "hi": 0.983,
+     "n": 32
+    },
+    {
+     "entry": "road|7-1",
+     "label": "7-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.906,
+     "lo": 0.758,
+     "hi": 0.968,
+     "n": 32
+    },
+    {
+     "entry": "road|7-2",
+     "label": "7-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.406,
+     "lo": 0.255,
+     "hi": 0.577,
+     "n": 32
+    },
+    {
+     "entry": "road|7-3",
+     "label": "7-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.219,
+     "lo": 0.11,
+     "hi": 0.388,
+     "n": 32
+    },
+    {
+     "entry": "road|7-4",
+     "label": "7-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.229,
+     "hi": 0.547,
+     "n": 32
+    },
+    {
+     "entry": "road|7-5",
+     "label": "7-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.625,
+     "lo": 0.453,
+     "hi": 0.771,
+     "n": 32
+    },
+    {
+     "entry": "road|7-6",
+     "label": "7-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.156,
+     "lo": 0.069,
+     "hi": 0.318,
+     "n": 32
+    },
+    {
+     "entry": "neutral|fight:7-1",
+     "label": "vs 7-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:7-2",
+     "label": "vs 7-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:7-3",
+     "label": "vs 7-3 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:7-4",
+     "label": "vs 7-4 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:7-5",
+     "label": "vs 7-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:7-6",
+     "label": "vs 7-6 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 7-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "neutral|ref:road7",
+     "label": "vs reference deck (Map 7) under 7-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 7-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.581,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "burrow-rabbit": 2,
+    "clap-net-trapper": 1,
+    "cricket-drummer": 1,
+    "fen-mink": 1,
+    "meadow-frog": 4,
+    "otter-centurion": 3,
+    "otter-guard": 4,
+    "otter-lantern-bearer": 1,
+    "rabbit-kit": 1,
+    "tunnel-ant": 2
+   },
+   "cards": [
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "copies": 4,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "copies": 4,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "copies": 3,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 2,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "tunnel-ant",
+     "name": "Tunnel Ant",
+     "copies": 2,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "clap-net-trapper",
+     "name": "Clap-net Trapper",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "fen-mink",
+     "name": "Fen Mink",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "otter-lantern-bearer",
+     "name": "Otter Lantern Bearer",
+     "copies": 1,
+     "rarity": "uncommon",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "rabbit-kit",
+     "name": "Rabbit Kit",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.581,
+   "ci": [
+    0.543,
+    0.618
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 7,
+ "ladder": null,
+ "road": [
+  {
+   "node": "7-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.906,
+   "ci": [
+    0.758,
+    0.968
+   ],
+   "n": 32
+  },
+  {
+   "node": "7-2",
+   "kind": "skirmish",
+   "target": 0.825,
+   "optimum": 0.406,
+   "ci": [
+    0.255,
+    0.577
+   ],
+   "n": 32
+  },
+  {
+   "node": "7-3",
+   "kind": "skirmish",
+   "target": 0.75,
+   "optimum": 0.219,
+   "ci": [
+    0.11,
+    0.388
+   ],
+   "n": 32
+  },
+  {
+   "node": "7-4",
+   "kind": "skirmish",
+   "target": 0.675,
+   "optimum": 0.375,
+   "ci": [
+    0.229,
+    0.547
+   ],
+   "n": 32
+  },
+  {
+   "node": "7-5",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0.625,
+   "ci": [
+    0.453,
+    0.771
+   ],
+   "n": 32
+  },
+  {
+   "node": "7-6",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.156,
+   "ci": [
+    0.069,
+    0.318
+   ],
+   "n": 32
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:7-1",
+   "node": "7-1",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, woods",
+   "withField": 0.906,
+   "noField": 0.875,
+   "delta": 0.031,
+   "ci": [
+    -0.219,
+    0.282
+   ]
+  },
+  {
+   "opponent": "fight:7-2",
+   "node": "7-2",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods",
+   "withField": 0.594,
+   "noField": 0.75,
+   "delta": -0.156,
+   "ci": [
+    -0.501,
+    0.189
+   ]
+  },
+  {
+   "opponent": "fight:7-3",
+   "node": "7-3",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods",
+   "withField": 0.375,
+   "noField": 0.375,
+   "delta": 0,
+   "ci": [
+    -0.375,
+    0.375
+   ]
+  },
+  {
+   "opponent": "fight:7-4",
+   "node": "7-4",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods",
+   "withField": 0.594,
+   "noField": 0.375,
+   "delta": 0.219,
+   "ci": [
+    -0.157,
+    0.595
+   ]
+  },
+  {
+   "opponent": "fight:7-5",
+   "node": "7-5",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.844,
+   "noField": 0.875,
+   "delta": -0.031,
+   "ci": [
+    -0.293,
+    0.23
+   ]
+  },
+  {
+   "opponent": "fight:7-6",
+   "node": "7-6",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T2 (Regen 1), woods",
+   "withField": 0.094,
+   "noField": 0.5,
+   "delta": -0.406,
+   "ci": [
+    -0.767,
+    -0.045
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "7-1",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, woods",
+   "withField": 0.875,
+   "noField": 0.75,
+   "delta": 0.125,
+   "ci": [
+    -0.196,
+    0.446
+   ]
+  },
+  {
+   "opponent": "ref:road7",
+   "node": "7-2",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods",
+   "withField": 0.406,
+   "noField": 0.5,
+   "delta": -0.094,
+   "ci": [
+    -0.48,
+    0.292
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "7-3",
+   "rules": "aiGuardLethal, phase cycle, sporeCloud, terrain Old Woods T1, woods",
+   "withField": 0.938,
+   "noField": 0.875,
+   "delta": 0.063,
+   "ci": [
+    -0.182,
+    0.307
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:7-1",
+   "label": "7-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "7-1",
+   "target": 0.9,
+   "h2h": 0.906,
+   "h2hCI": [
+    0.758,
+    0.968
+   ],
+   "elo": 394,
+   "eloCI": [
+    198,
+    590
+   ],
+   "n": 32,
+   "asPlayer": 0.159,
+   "optimumSame": 0.551,
+   "pointsBelow": 39.2,
+   "pointsCI": 9.4
+  },
+  {
+   "opponent": "fight:7-2",
+   "label": "7-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "7-2",
+   "target": 0.825,
+   "h2h": 0.594,
+   "h2hCI": [
+    0.423,
+    0.745
+   ],
+   "elo": 66,
+   "eloCI": [
+    -54,
+    186
+   ],
+   "n": 32,
+   "asPlayer": 0.477,
+   "optimumSame": 0.58,
+   "pointsBelow": 10.2,
+   "pointsCI": 12.2
+  },
+  {
+   "opponent": "fight:7-3",
+   "label": "7-3 skirmish's deck",
+   "kind": "skirmish",
+   "node": "7-3",
+   "target": 0.75,
+   "h2h": 0.375,
+   "h2hCI": [
+    0.229,
+    0.547
+   ],
+   "elo": -89,
+   "eloCI": [
+    -211,
+    33
+   ],
+   "n": 32,
+   "asPlayer": 0.614,
+   "optimumSame": 0.599,
+   "pointsBelow": -1.4,
+   "pointsCI": 12
+  },
+  {
+   "opponent": "fight:7-4",
+   "label": "7-4 skirmish's deck",
+   "kind": "skirmish",
+   "node": "7-4",
+   "target": 0.675,
+   "h2h": 0.594,
+   "h2hCI": [
+    0.423,
+    0.745
+   ],
+   "elo": 66,
+   "eloCI": [
+    -54,
+    186
+   ],
+   "n": 32,
+   "asPlayer": 0.568,
+   "optimumSame": 0.58,
+   "pointsBelow": 1.1,
+   "pointsCI": 11.8
+  },
+  {
+   "opponent": "fight:7-5",
+   "label": "7-5 elite's deck",
+   "kind": "elite",
+   "node": "7-5",
+   "target": 0.6,
+   "h2h": 0.844,
+   "h2hCI": [
+    0.682,
+    0.931
+   ],
+   "elo": 293,
+   "eloCI": [
+    133,
+    453
+   ],
+   "n": 32,
+   "asPlayer": 0.568,
+   "optimumSame": 0.557,
+   "pointsBelow": -1.1,
+   "pointsCI": 12.2
+  },
+  {
+   "opponent": "fight:7-6",
+   "label": "7-6 miniboss's deck",
+   "kind": "miniboss",
+   "node": "7-6",
+   "target": 0.4,
+   "h2h": 0.094,
+   "h2hCI": [
+    0.032,
+    0.242
+   ],
+   "elo": -394,
+   "eloCI": [
+    -590,
+    -198
+   ],
+   "n": 32,
+   "asPlayer": 0.761,
+   "optimumSame": 0.625,
+   "pointsBelow": -13.6,
+   "pointsCI": 10.1
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 7-1's field",
+   "kind": "reference",
+   "node": "7-1",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.719,
+    0.95
+   ],
+   "elo": 338,
+   "eloCI": [
+    163,
+    513
+   ],
+   "n": 32,
+   "asPlayer": 0.386,
+   "optimumSame": 0.554,
+   "pointsBelow": 16.8,
+   "pointsCI": 12.1
+  },
+  {
+   "opponent": "ref:road7",
+   "label": "reference deck (Map 7) under 7-2's field",
+   "kind": "reference",
+   "node": "7-2",
+   "target": null,
+   "h2h": 0.406,
+   "h2hCI": [
+    0.255,
+    0.577
+   ],
+   "elo": -66,
+   "eloCI": [
+    -186,
+    54
+   ],
+   "n": 32,
+   "asPlayer": 0.568,
+   "optimumSame": 0.597,
+   "pointsBelow": 2.8,
+   "pointsCI": 11.4
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 7-3's field",
+   "kind": "reference",
+   "node": "7-3",
+   "target": null,
+   "h2h": 0.938,
+   "h2hCI": [
+    0.799,
+    0.983
+   ],
+   "elo": 470,
+   "eloCI": [
+    239,
+    702
+   ],
+   "n": 32,
+   "asPlayer": 0.102,
+   "optimumSame": 0.548,
+   "pointsBelow": 44.6,
+   "pointsCI": 8.5
+  }
+ ]
+}
