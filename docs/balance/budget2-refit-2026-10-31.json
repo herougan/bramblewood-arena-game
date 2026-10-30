@@ -4,9 +4,9 @@
  "counts": {
   "inPlay": 451,
   "outOfPlay": 354,
-  "inPlayPushed": 73,
-  "outPushed": 68,
-  "outsideBefore": 159,
+  "inPlayPushed": 76,
+  "outPushed": 72,
+  "outsideBefore": 152,
   "outsideBeforeIds": [
    "dolphin-knight (out of play)",
    "bee-drone",
@@ -18,17 +18,13 @@
    "tunnel-wyrm (out of play)",
    "monarch-wingblade (out of play)",
    "raccoon-warlord (out of play)",
-   "wolf-pack-runner",
    "tusked-vanguard (out of play)",
    "chipmunk-stockpiler (out of play)",
    "antler-skirmisher (out of play)",
-   "echo-screecher",
    "puddle-hopper (out of play)",
    "buck-brawler (out of play)",
    "hollow-oath-keeper (out of play)",
-   "howler-monkey (out of play)",
    "poison-dart-frog (out of play)",
-   "dust-hyena",
    "termite-mound (out of play)",
    "tundra-musk-ox (out of play)",
    "ice-crevasse-wolf (out of play)",
@@ -99,20 +95,17 @@
    "egg-water",
    "egg-beast",
    "rafflesia (out of play)",
-   "static-bat (out of play)",
    "ironback-gorilla (out of play)",
    "baby-bat (out of play)",
    "egg-red-dragon",
    "jay-pilferer (out of play)",
    "mongoose-duelist (out of play)",
-   "nightjar-drifter (out of play)",
    "mudflat-godwit (out of play)",
    "moon-jerboa (out of play)",
    "werebadger (out of play)",
    "tarantula-hawk (out of play)",
    "margay (out of play)",
    "seed-cache-squirrel (out of play)",
-   "lotus-frog (out of play)",
    "vampire-bat-nurse (out of play)",
    "mantis-shrimp (out of play)",
    "firefly-swarm (out of play)",
@@ -177,10 +170,10 @@
    "inPlay": true,
    "stats": "1/5",
    "old": {
-    "use": 1.04,
+    "use": 0.92,
     "N": 18.51,
-    "x1": 19.16,
-    "verdict": "over"
+    "x1": 17.04,
+    "verdict": "ok"
    },
    "new": {
     "use": 0.99,
@@ -445,9 +438,9 @@
    "inPlay": true,
    "stats": "3/3",
    "old": {
-    "use": 0.96,
+    "use": 0.93,
     "N": 16.1,
-    "x1": 15.4,
+    "x1": 15.02,
     "verdict": "ok"
    },
    "new": {
@@ -934,6 +927,39 @@
    }
   },
   {
+   "id": "wolf-pack-runner",
+   "name": "Wolf Pack Runner",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "3/13",
+   "old": {
+    "use": 1,
+    "N": 22.03,
+    "x1": 21.94,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 24.89,
+    "x1": 25.92,
+    "x2": 54.37,
+    "N2": 108.07,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 3,
+   "health": 11,
+   "to": "3/11",
+   "after": {
+    "use": 0.96,
+    "N": 24.89,
+    "x1": 23.92,
+    "x2": 48.37
+   }
+  },
+  {
    "id": "acorn-chipmunk",
    "name": "Acorn Chipmunk",
    "rarity": "starter",
@@ -1261,6 +1287,72 @@
     "N": 13.57,
     "x1": 13,
     "x2": 14
+   }
+  },
+  {
+   "id": "dust-hyena",
+   "name": "Dust Hyena",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/7",
+   "old": {
+    "use": 0.97,
+    "N": 15.36,
+    "x1": 14.86,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 17.36,
+    "x1": 17.68,
+    "x2": 35.9,
+    "N2": 52.57,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 6,
+   "to": "2/6",
+   "after": {
+    "use": 0.96,
+    "N": 17.36,
+    "x1": 16.68,
+    "x2": 33.9
+   }
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "2/8",
+   "old": {
+    "use": 0.99,
+    "N": 20.79,
+    "x1": 20.56,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.03,
+    "N": 23.49,
+    "x1": 24.09,
+    "x2": 33.55,
+    "N2": 96.25,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 7,
+   "to": "2/7",
+   "after": {
+    "use": 0.96,
+    "N": 23.49,
+    "x1": 22.59,
+    "x2": 30.55
    }
   },
   {
@@ -2491,9 +2583,9 @@
    "inPlay": true,
    "stats": "3/4",
    "old": {
-    "use": 0.97,
+    "use": 0.94,
     "N": 25.08,
-    "x1": 24.44,
+    "x1": 23.68,
     "verdict": "ok"
    },
    "new": {
@@ -2590,9 +2682,9 @@
    "inPlay": true,
    "stats": "2/5",
    "old": {
-    "use": 0.95,
+    "use": 0.92,
     "N": 15.46,
-    "x1": 14.64,
+    "x1": 14.26,
     "verdict": "ok"
    },
    "new": {
@@ -2947,6 +3039,39 @@
    }
   },
   {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "3/6",
+   "old": {
+    "use": 0.99,
+    "N": 18.1,
+    "x1": 17.85,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.1,
+    "N": 20.45,
+    "x1": 22.41,
+    "x2": 20.43,
+    "N2": 72.95,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 2,
+   "health": 7,
+   "to": "2/7",
+   "after": {
+    "use": 0.96,
+    "N": 20.45,
+    "x1": 19.63,
+    "x2": 16.43
+   }
+  },
+  {
    "id": "smoke-raccoon",
    "name": "Smokescreen Raccoon",
    "rarity": "uncommon",
@@ -3010,6 +3135,39 @@
     "N": 10.37,
     "x1": 9,
     "x2": 4.5
+   }
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "3/3",
+   "old": {
+    "use": 0.99,
+    "N": 18.1,
+    "x1": 17.86,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.12,
+    "N": 20.45,
+    "x1": 22.89,
+    "x2": 37.41,
+    "N2": 72.95,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.97,
+    "N": 20.45,
+    "x1": 19.89,
+    "x2": 35.91
    }
   },
   {
@@ -3937,6 +4095,39 @@
    }
   },
   {
+   "id": "howler-monkey",
+   "name": "Howler Monkey",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "2/5",
+   "old": {
+    "use": 0.98,
+    "N": 12.47,
+    "x1": 12.26,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 14.09,
+    "x1": 14.79,
+    "x2": 24.36,
+    "N2": 34.63,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.98,
+    "N": 14.09,
+    "x1": 13.79,
+    "x2": 22.36
+   }
+  },
+  {
    "id": "hymn-wren",
    "name": "Hymn Wren",
    "rarity": "common",
@@ -4168,6 +4359,39 @@
    }
   },
   {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "1/9",
+   "old": {
+    "use": 1,
+    "N": 13.98,
+    "x1": 13.97,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 15.8,
+    "x1": 15.96,
+    "x2": 24.68,
+    "N2": 43.55,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 8,
+   "to": "1/8",
+   "after": {
+    "use": 0.95,
+    "N": 15.8,
+    "x1": 14.96,
+    "x2": 23.68
+   }
+  },
+  {
    "id": "oilbird",
    "name": "Oilbird",
    "rarity": "uncommon",
@@ -4339,9 +4563,9 @@
    "inPlay": false,
    "stats": "3/7",
    "old": {
-    "use": 0.99,
+    "use": 0.96,
     "N": 17.07,
-    "x1": 16.89,
+    "x1": 16.36,
     "verdict": "ok"
    },
    "new": {
@@ -4735,9 +4959,9 @@
    "inPlay": false,
    "stats": "2/2",
    "old": {
-    "use": 0.94,
+    "use": 0.9,
     "N": 14.79,
-    "x1": 13.89,
+    "x1": 13.36,
     "verdict": "ok"
    },
    "new": {
@@ -4867,9 +5091,9 @@
    "inPlay": false,
    "stats": "4/4",
    "old": {
-    "use": 0.94,
+    "use": 0.91,
     "N": 18.1,
-    "x1": 17.01,
+    "x1": 16.48,
     "verdict": "ok"
    },
    "new": {

@@ -63,7 +63,9 @@
 // 2026-10-24 (package BAL2, DF-1, owner 10-23 17:34: "Map MUST absolutely contribute at 0.2* per Map ... 20*0.2=4, a reasonable bonus"): perMap 0.2 (was
 // 0.1 since BF6 halved the coefficients); a Map 20 card gets +4 N. The card's map is the first main-line map it can be obtained on (arena_app.js cardObtainMap).
 const DEFAULTS = {base:10, perRarity:1, perWait:3, perWait2:0.25, perLumber:2, perLumber2:0.2, perRitual:0.5, perMap:0.2, levelLinDiv:15, levelDiv:30, zeroPenalty:1, missMult:1.5, cap2Mult:1.57 /* BF11 (2026-10-23) 2; BUDGET2 (2026-10-31) 2 / 1.13² */, scale:1.13 /* BUDGET2 (2026-10-31): N x 1.13, fitted below */, plainBonus:1.05, lightBonus:1.02, fragileUse:0.7, shieldPerHealth:0.8 /* FIN2-c (2026-10-26) */, attackWeight:3 /* BUDGET2 (2026-10-31, owner RECOST1-6): 3A + H, was 2A + H */};
-const AW = DEFAULTS.attackWeight; // BUDGET2 (2026-10-31): the Attack weight of the stat terms (braces, thresholds, time of day), the one number capScores reads too
+// BUDGET2 (2026-10-31): the Attack weight of the stat terms (braces, thresholds, time of day): DEFAULTS.attackWeight, read at each call so a
+// comparison tool can price a card under the old 2A + H (tools/budget2_refit_2026_10_31.js sets it to 2 for its "before"); capScores reads cfg first
+const awNow = ()=> +DEFAULTS.attackWeight || 2;
 // Shield as Health (2026-10-26, package FIN2-c; owner 23:46 #3: "Shield should be valued less than health. E.g. maybe 0.8. So tide pool crab is
 // heavily undertuned"): a unit's own Shield N (effects.shield: it arrives with N temporary Health that soaks damage first and never comes back)
 // is priced as shieldPerHealth (0.8) x N Health in the stat terms of both caps: cap 1 (2A + H + 0.8·Sh) x m + S, cap 2 A·(H + 0.8·Sh) x m + S·|S|.
@@ -191,7 +193,7 @@ const CONTEXT_FLAG = {tide: 'tideGrant', diurnal: 'diurnalGrant', nocturnal: 'no
 // skills (no stats in it); the stats in the braces are added here as 2A + H.
 function contextS(k, v, costOf, mult){ const f = CONTEXT[k]; if(!f) return null; const sets = f(v); if(!sets) return null; let inner = 0;
   sets.forEach(g=>{ if(!g) return; const rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c (2026-10-26): a Shield in braces is 0.8 Health */; delete rest.attack; delete rest.health;
-    inner += AW * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); }); // BUDGET2 (2026-10-31): 3A + H (was 2A + H)
+    inner += awNow() * A + H + (Object.keys(rest).length ? (+costOf(rest) || 0) : 0); }); // BUDGET2 (2026-10-31): 3A + H (was 2A + H)
   const m = mult == null ? (CONTEXT_MULT_BY[k] != null ? CONTEXT_MULT_BY[k] : CONTEXT_MULT) : +mult; return {S: r2(m * inner), inner: r2(inner), mult: m}; } // + CONTEXT_MULT_BY (EN, 2026-10-23)
 // true when effects.k is a plain flag whose braces sit beside it (it costs nothing on its own then)
 function contextFlagCovered(k, e){ const g = CONTEXT_FLAG[k]; return !!(g && e && e[g] && typeof e[g] === 'object'); }
@@ -400,7 +402,7 @@ function thrUptime(k, N){ const t = THR_UPTIME[k]; if(!t) return 0; const n = Ma
 function thrS(k, v, effects, costOf){ const e = effects || {}; let key = k;
   if(/Grant$/.test(k) && THR_UPTIME[k.slice(0, -5)]){ key = k.slice(0, -5); if(e[key]) return {S: 0, inner: 0, mult: 0}; } else if(!THR_UPTIME[k]) return null;
   const g = obj(e[key + 'Grant']) && Object.keys(e[key + 'Grant']).length ? e[key + 'Grant'] : THR_DEFAULT_GRANT, rest = Object.assign({}, g), A = +rest.attack || 0, H = (+rest.health || 0) + shieldHealthOf(rest) /* FIN2-c */; delete rest.attack; delete rest.health;
-  const inner = AW * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key])); // BUDGET2: 3A + H
+  const inner = awNow() * A + H + (Object.keys(rest).length && costOf ? (+costOf(rest) || 0) : 0), m = thrUptime(key, thrN(key, e[key])); // BUDGET2: 3A + H
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
 // ---- ENG12 (2026-10-28): time of day and Shock by the 4-round rule (docs/workflows/balance.md "Pricing by logic") -----------------------
 // Nocturnal / Diurnal / Crepuscular N (+N Attack, +M Health with the Hp key) (owner L11, on the editor's Nocturnal +4/+0 at 2.5: "how can
@@ -425,7 +427,7 @@ const ZEIT_KEYS = ['nocturnal', 'diurnal', 'crepuscular'];
 function zeitS(k, effects){ const e = effects || {}, base = /Hp$/.test(k) ? k.slice(0, -2) : k; if(!ZEIT_KEYS.includes(base)) return null;
   if(k !== base && e[base]) return {S: 0, inner: 0, mult: 0};
   if(e[base + 'Grant'] && typeof e[base + 'Grant'] === 'object') return {S: 0, inner: 0, mult: 0};
-  const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = AW * A + Hh /* BUDGET2: 3A + H */, m = ZEIT_UPTIME[base];
+  const v = e[base], A = v === true ? 1 : Math.max(0, Number(v) || 0), Hh = Math.max(0, Number(e[base + 'Hp']) || 0), inner = awNow() * A + Hh /* BUDGET2: 3A + H */, m = ZEIT_UPTIME[base];
   return {S: r2(inner * m), inner: r2(inner), mult: m}; }
 // Shock (owner L5: "Shock is too strong."): a Shocked unit takes 1.5x from every hit, every source, for the rest of the round it is struck
 // in and N more rounds (the engine's _shockedJustSet). By the 4-round rule, for On hit: Shock (chance p %, N rounds) on a unit with Attack A:

@@ -2082,7 +2082,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 3,
-    "health": 13,
+    "health": 11,
     "flavor": "Never fights alone if it can help it. Fights anyway if it can\u2019t.",
     "effects": {
       "muster": 6
@@ -3186,7 +3186,7 @@
     "cost": 1,
     "wait": 1,
     "attack": 2,
-    "health": 8,
+    "health": 7,
     "effects": {
       "onReadyDamage": {
         "amount": 3,
@@ -4483,7 +4483,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 5,
+    "health": 4,
     "archetypes": [
       "Rainforest"
     ],
@@ -4697,7 +4697,7 @@
     "cost": 0,
     "wait": 0,
     "attack": 2,
-    "health": 7,
+    "health": 6,
     "archetypes": [
       "Savanna"
     ],
@@ -22076,8 +22076,8 @@
     "icon": "\ud83e\udd87",
     "cost": 1,
     "wait": 1,
-    "attack": 3,
-    "health": 3,
+    "attack": 2,
+    "health": 4,
     "flavor": "Rubs itself on the cave wall until its fur stands on end, then comes looking for a handshake.",
     "locked": true,
     "archetypes": [
@@ -22773,7 +22773,7 @@
     "wait": 0,
     "attack": 1,
     "flavor": "It wakes when the light turns amber and sings until it turns grey.",
-    "health": 9,
+    "health": 8,
     "locked": true,
     "rarity": "common",
     "resist": [],
@@ -23881,9 +23881,9 @@
     "test": false,
     "uuid": "99a93318-7e77-516b-a51a-f908b2551d04",
     "wait": 1,
-    "attack": 3,
+    "attack": 2,
     "flavor": "When the water rises under the moon, it opens like the flower it sits on.",
-    "health": 6,
+    "health": 7,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],

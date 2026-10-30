@@ -37,7 +37,10 @@ const EFFECT_EDITS = {'war-elephant': {remove: ['arrowCount'], why: 'X15 / RECOS
 const tableWith = over=>{ const t = JSON.parse(JSON.stringify(TABLE)); Object.assign(t.budget, over || {}); return SC.make(t); };
 const NEW = tableWith(), OLD = tableWith({attackWeight: 2, scale: 1, cap2Mult: 2});
 const r2 = v=> Math.round(v * 100) / 100;
-function verdict(T, c){ const b = T.budget(c), b1 = T.budget(c, {level: 1});
+// the old budget prices braces, thresholds and the time of day at 2A + H too (bramblewood-budget.js reads DEFAULTS.attackWeight at each call)
+const BB = require('../bramblewood-budget.js');
+function asOld(fn){ const k = BB.DEFAULTS.attackWeight; BB.DEFAULTS.attackWeight = 2; try{ return fn(); } finally { BB.DEFAULTS.attackWeight = k; } }
+function verdict(T, c){ if(T === OLD && BB.DEFAULTS.attackWeight !== 2) return asOld(()=> verdict(T, c)); const b = T.budget(c), b1 = T.budget(c, {level: 1});
   const over = !b.ok || !b1.ok, under = !over && b.x1 <= b.N * WELL_UNDER;
   return {over, under, ok: !over && !under, use: b.N ? r2(b.x1 / b.N) : null, x1: b.x1, N: b.N, x2: b.x2, N2: b.N2, x1L1: b1.x1, NL1: b1.N, S: b.S}; }
 function fit(c, v, vOld){ const A0 = +c.attack || 0, H0 = +c.health || 0, e = c.effects || {};
