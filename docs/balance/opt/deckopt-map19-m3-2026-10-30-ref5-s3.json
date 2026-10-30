@@ -1,0 +1,1607 @@
+{
+ "tool": "tools/opt/deckopt.js",
+ "version": "2.4.0 (2026-10-28, BAL7: --seed-ref)",
+ "generated": "2026-10-30T17:29:54.021Z",
+ "map": {
+  "id": "m3",
+  "num": 19,
+  "name": "Ashen Spurn"
+ },
+ "level": 3.72,
+ "settings": {
+  "mode": "prog",
+  "seedRef": true,
+  "faction": false,
+  "rarityCap": "map",
+  "cap": null,
+  "seed": "ref5-s3",
+  "budget": 1500,
+  "budgetFrom": "budget",
+  "method": "ga",
+  "restarts": 1,
+  "nicheRadius": 5,
+  "nicheCap": 2,
+  "neighbours": 10,
+  "patience": 3,
+  "dgmax": 16,
+  "distinctRadius": 6,
+  "distinctWindow": 0.1,
+  "ladderCore": 10,
+  "crossShare": 0,
+  "roadWeight": 0.25,
+  "ai": 1,
+  "owned": "plan",
+  "crossPool": "rules",
+  "submaps": true,
+  "pop": 8,
+  "children": 16,
+  "g0": 2,
+  "gmax": 8,
+  "screenCopies": 3,
+  "beeTank": false,
+  "minutes": null,
+  "workers": 2
+ },
+ "reproduce": "node tools/opt/deckopt.js --map m3 --seed ref5-s3 --budget 1500 --final-games 4 --method ga --level ref --cross-share 0 --road-weight 0.25 --restarts 1 --ladder none --mode prog --seed-ref --prog-seed 3 --pool-file docs/balance/ref/ref5-prog-pools.json",
+ "pools": {
+  "mode": "prog",
+  "cap": null,
+  "subsOpen": [],
+  "phase1": 331,
+  "mapCards": [],
+  "owned": [
+   "acorn-chipmunk",
+   "adder-ambusher",
+   "alley-cat",
+   "alligator-gar",
+   "alpha-howler",
+   "alpine-marmot",
+   "alpine-salamander",
+   "alpine-swift",
+   "ancient-sloth-titan",
+   "ant-hill",
+   "ant-scout",
+   "ant-warrior",
+   "antlion-pit",
+   "apollo-butterfly",
+   "archerfish",
+   "badger-lumberjack",
+   "badger-stonemason",
+   "banded-sea-krait",
+   "beaver-lumberjack",
+   "bee-drone",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "berserker-boar",
+   "birdlime-dauber",
+   "bison-bulldozer",
+   "blind-cave-fish",
+   "blue-ringed-octopus",
+   "bog-leech",
+   "bogfire-newt",
+   "bombardier-beetle",
+   "booming-bittern",
+   "border-collie",
+   "boreal-elk",
+   "box-turtle",
+   "bramble-hoglet",
+   "bramble-sprout",
+   "bramblewood-lynx",
+   "burrow-rabbit",
+   "caiman-hatchling",
+   "camouflage-frog",
+   "cane-toad",
+   "carrion-crow",
+   "cataphract-destrier",
+   "caustic-scorpion",
+   "cave-olm",
+   "chamois-leaper",
+   "chipmunk-cavalry",
+   "chipmunk-forager",
+   "chipmunk-hoarder",
+   "chipmunk-skirmisher",
+   "clap-net-trapper",
+   "clownfish-scout",
+   "cobalt-talon-fledgling",
+   "cobalt-talon-skirmisher",
+   "colossal-squid",
+   "compost-grub",
+   "conch-crawler",
+   "conch-herald",
+   "cone-cutter-squirrel",
+   "constrictor-coil",
+   "coral-polyp-colony",
+   "coral-reef-shark",
+   "cottontail",
+   "cricket-drummer",
+   "crimson-wing-duelist-cadet",
+   "crimson-wing-recruit",
+   "crocodile-ambusher",
+   "crossed-eyes",
+   "cunning-vixen",
+   "cypress-root-lurker",
+   "daily-post",
+   "dawn-bellringer",
+   "dhole-matriarch",
+   "dhole-runner",
+   "dominion-nestguard",
+   "dormouse",
+   "driftwood-crab",
+   "dromedary",
+   "drowned-matriarch",
+   "duck-paddler",
+   "duckling",
+   "dune-packrat",
+   "dung-beetle",
+   "dust-devil-kestrel",
+   "dust-hyena",
+   "eagle-owl-quartermaster",
+   "earthworm",
+   "echo-matriarch",
+   "echo-screecher",
+   "electric-ray",
+   "ember-jackal",
+   "eyrie-warden",
+   "fawn-scout",
+   "fen-mink",
+   "fennec-fox",
+   "feral-tomcat",
+   "ferry-toll-frog",
+   "fiddler-crab-swarm",
+   "field-mouse",
+   "field-vole",
+   "fire-ant-raft",
+   "fishing-cat",
+   "fleetfootd",
+   "forager-ant",
+   "ford-kingfisher",
+   "fox-kit",
+   "frost-hare-sprinter",
+   "fungal-colossus",
+   "gale-swift",
+   "gangrenous-leech",
+   "gannet-nestweaver",
+   "garden-snail",
+   "gatling-hog",
+   "giant-cave-huntsman",
+   "glacial-ape-king",
+   "glimmer-spider",
+   "gold-throated-acolyte",
+   "golden-eagle-diver",
+   "grass-viper",
+   "grave-grin-hyena",
+   "great-barracuda",
+   "grey-seal-bull",
+   "greyplume-fledgling",
+   "grizzly-vanguard",
+   "gull-thief",
+   "guppy",
+   "harbor-seal",
+   "harvest-mouse",
+   "hawk-arrowkeeper",
+   "hawthorn-shieldbug",
+   "hedge-changeling",
+   "hedge-weasel",
+   "hedgehog-herbalist",
+   "hedgehog-scout",
+   "hedgerow-shrew",
+   "helmeted-otter",
+   "hercules-beetle",
+   "heron-hag",
+   "honey-bee",
+   "honeyjoe-brewer",
+   "hoopoe-herald",
+   "house-cat",
+   "hummingbird-needler",
+   "hush-wing-spy",
+   "ibex-rockcaller",
+   "inside-out-hedgehog",
+   "irradiated-axolotl",
+   "jaguar-stalker",
+   "kinkajou-lurker",
+   "kittiwake-flock",
+   "komodo-warlord",
+   "kraken-spawnling",
+   "lantern-bearer",
+   "lantern-spark-fly",
+   "leafcutter-gardener",
+   "lodge-engineer",
+   "lone-grey-wolf",
+   "lucky-hopper",
+   "lyrebird-mimic",
+   "mangrove-kingfisher",
+   "mangrove-manatee",
+   "mangrove-monitor",
+   "mangrove-mudskipper",
+   "marsh-harrier",
+   "marsh-mallow-hare",
+   "marsh-wisp",
+   "marula-elephant",
+   "meadow-frog",
+   "meadow-rabbit",
+   "meerkat-burrower",
+   "meerkat-wayfarer",
+   "minnow-skitter",
+   "mist-net-otter",
+   "mosswing-laborer",
+   "mountain-hare",
+   "mouse-sapper",
+   "mudpuppy",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "nautilus-drifter",
+   "nectar-sipper",
+   "nectar-vintner",
+   "net-thrower",
+   "newt-doctor",
+   "nutria-reedcutter",
+   "obsidian-scorpion",
+   "octopus-tactician",
+   "old-shell",
+   "old-snapjaw",
+   "old-sturgeon",
+   "open-ocean-hermit-crab",
+   "orca-vanguard",
+   "otter-angler",
+   "otter-centurion",
+   "otter-ferryman",
+   "otter-flag-bearer",
+   "otter-guard",
+   "otter-kit",
+   "otter-lantern-bearer",
+   "otter-netmender",
+   "otter-paddler",
+   "otter-riverguard",
+   "otter-scout",
+   "otter-shieldback",
+   "owl-nightwatch",
+   "owl-sentinel",
+   "oystercatcher",
+   "pangolin-roller",
+   "parrotfish",
+   "peak-condor",
+   "pelican-diver",
+   "peregrine-stooper",
+   "petal-fletcher",
+   "phoenix-mushrooms",
+   "pike-lancer",
+   "pincushion-urchin",
+   "pinecone-sapper",
+   "plains-zebra",
+   "planarian-splitter",
+   "platypus-spur",
+   "poison-dart-croaker",
+   "polar-bear",
+   "pond-algae",
+   "pond-duck",
+   "pond-trout",
+   "pride-queen",
+   "pronghorn-racer",
+   "prospector-mole",
+   "puffin-diver",
+   "pyrenean-desman",
+   "quarry-mole",
+   "quillback-elder",
+   "quillguard",
+   "rabbit-kit",
+   "raccoon-bandit",
+   "raven-scout",
+   "ravenous-wolverine",
+   "razorbill",
+   "red-billed-chough",
+   "redwood-woodpecker",
+   "reef-admiral",
+   "reef-shark",
+   "riptide-eel",
+   "river-carp",
+   "river-warden",
+   "riverbed-diver",
+   "rivergate-drummer",
+   "rivergate-recruit",
+   "riverside-peddler",
+   "riverstone-slinger",
+   "riverwing-envoy",
+   "riverworks-bastion",
+   "roadrunner-courier",
+   "robin-redbreast",
+   "rootworm-colony",
+   "ruby-throat-duelist",
+   "sand-widow",
+   "sandfish",
+   "savanna-cheetah",
+   "sea-turtle-elder",
+   "sergeant-bramblefox",
+   "sheep",
+   "shell-cracker",
+   "shellwright-apprentice",
+   "shepherds-bark",
+   "shimmerwing-stag",
+   "silver-minnow",
+   "sleepless-shrew",
+   "slow-worm",
+   "snail-mail",
+   "snapper-hatchling",
+   "snapstick-turtle",
+   "snow-bunting-archer",
+   "snow-ermine",
+   "snowshoe-hare",
+   "soldier-ant",
+   "sparrow-chick",
+   "sphagnum-vole",
+   "spitting-cobra",
+   "spitting-spider",
+   "springbok-pronker",
+   "squires-mount",
+   "stable-colt",
+   "stag-knight",
+   "stalactite-golem",
+   "star-nosed-mole",
+   "stoat-cutthroat",
+   "stone-turtle-warden",
+   "sulfur-cinder-moth",
+   "sunbittern-strider",
+   "sunfeather-scout",
+   "sunspire-envoy",
+   "sunthroat-courier",
+   "swamp-alligator",
+   "swift-fox",
+   "swordfish-spearman",
+   "taiga-lynx",
+   "talon-archer",
+   "talus-pika",
+   "tasmanian-devil",
+   "terrier-pup",
+   "the-gannet-queen",
+   "thorn-shrike",
+   "thorny-devil",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster",
+   "truce-heron",
+   "truffle-piglet",
+   "tunnel-ant",
+   "two-headed-calf",
+   "vampire-bat",
+   "venomlord-serpent",
+   "violet-vane-fletcher",
+   "voidfeather-scout",
+   "walrus-icebreaker",
+   "warhorse-charger",
+   "water-shrew",
+   "water-vole",
+   "weaver-bird",
+   "whip-spider",
+   "wolf-pack-runner",
+   "wolf-spider-mother",
+   "wolfsbane-alpha",
+   "woodcock-lookout",
+   "woodland-caribou",
+   "woodpecker-sapper",
+   "worker-ant",
+   "wound-reaver",
+   "wrong-way-salmon"
+  ],
+  "phase2": 331,
+  "wholeSpectrum": 331,
+  "excluded": []
+ },
+ "candidates": {
+  "rules": "tools/opt/phase2-rules.json",
+  "facts": {
+   "biome": "volcanic-ash",
+   "kinBiomes": [
+    "caves",
+    "jungle",
+    "mountain-sky",
+    "pale-desert",
+    "tundra-ice"
+   ],
+   "terrainTypes": [
+    "Volcanic"
+   ],
+   "mapTypes": [
+    "Amphibian 2",
+    "Ape 2",
+    "Beetle 2",
+    "Frost 3",
+    "Insect 2",
+    "Mountain 2",
+    "Porcupine 2",
+    "Primate 2",
+    "Rodent 2",
+    "Volcanic 6"
+   ],
+   "mapMechanics": [
+    "bleed 2",
+    "fire 2",
+    "siege 2"
+   ],
+   "field": [
+    "aiGuardLethal",
+    "ashRain",
+    "ashy",
+    "phase:cycle",
+    "wind",
+    "windfall"
+   ],
+   "coreCards": 15
+  },
+  "minScore": 1,
+  "minScoreAsked": 3,
+  "qualified": 0,
+  "cut": 0,
+  "list": [],
+  "excluded": [
+   {
+    "reason": "map rule: not in player 3's collection",
+    "n": 487,
+    "e": [
+     "abbey-goose",
+     "abyss-lantern-squid",
+     "abyssal-ink",
+     "acacia-giraffe",
+     "alpine-avalanche",
+     "amber-cicada"
+    ]
+   }
+  ],
+  "belowScore": 0
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:19-1",
+   "kind": "mirror",
+   "node": "19-1",
+   "label": "vs 19-1 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, wind windy, windfall"
+  },
+  {
+   "key": "mirror|fight:19-2",
+   "kind": "mirror",
+   "node": "19-2",
+   "label": "vs 19-2 skirmish's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall"
+  },
+  {
+   "key": "mirror|fight:19-3",
+   "kind": "mirror",
+   "node": "19-3",
+   "label": "vs 19-3 elite's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "mirror|fight:19-4",
+   "kind": "mirror",
+   "node": "19-4",
+   "label": "vs 19-4 elite's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "mirror|fight:19-5",
+   "kind": "mirror",
+   "node": "19-5",
+   "label": "vs 19-5 elite's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "mirror|fight:19-6",
+   "kind": "mirror",
+   "node": "19-6",
+   "label": "vs 19-6 miniboss's deck",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashy, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "mirror|ref:starter",
+   "kind": "mirror",
+   "node": "19-1",
+   "label": "vs reference starter deck under 19-1's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, wind windy, windfall"
+  },
+  {
+   "key": "mirror|ref:road19",
+   "kind": "mirror",
+   "node": "19-2",
+   "label": "vs reference deck (Map 19) under 19-2's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall"
+  },
+  {
+   "key": "mirror|ref:expected",
+   "kind": "mirror",
+   "node": "19-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+   "weight": 0.083,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "road|19-1",
+   "kind": "road",
+   "node": "19-1",
+   "label": "19-1 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, wind windy, windfall"
+  },
+  {
+   "key": "road|19-2",
+   "kind": "road",
+   "node": "19-2",
+   "label": "19-2 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall"
+  },
+  {
+   "key": "road|19-3",
+   "kind": "road",
+   "node": "19-3",
+   "label": "19-3 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "road|19-4",
+   "kind": "road",
+   "node": "19-4",
+   "label": "19-4 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "road|19-5",
+   "kind": "road",
+   "node": "19-5",
+   "label": "19-5 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "road|19-6",
+   "kind": "road",
+   "node": "19-6",
+   "label": "19-6 as the game builds it",
+   "weight": 0.042,
+   "neutral": false,
+   "rules": "aiGuardLethal, ashy, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall"
+  },
+  {
+   "key": "neutral|fight:19-1",
+   "kind": "mirror",
+   "node": "19-1",
+   "label": "vs 19-1 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:19-2",
+   "kind": "mirror",
+   "node": "19-2",
+   "label": "vs 19-2 skirmish's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:19-3",
+   "kind": "mirror",
+   "node": "19-3",
+   "label": "vs 19-3 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:19-4",
+   "kind": "mirror",
+   "node": "19-4",
+   "label": "vs 19-4 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:19-5",
+   "kind": "mirror",
+   "node": "19-5",
+   "label": "vs 19-5 elite's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|fight:19-6",
+   "kind": "mirror",
+   "node": "19-6",
+   "label": "vs 19-6 miniboss's deck (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:starter",
+   "kind": "mirror",
+   "node": "19-1",
+   "label": "vs reference starter deck under 19-1's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:road19",
+   "kind": "mirror",
+   "node": "19-2",
+   "label": "vs reference deck (Map 19) under 19-2's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  },
+  {
+   "key": "neutral|ref:expected",
+   "kind": "mirror",
+   "node": "19-3",
+   "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field (no field effects)",
+   "weight": 0,
+   "neutral": true,
+   "rules": "Day, no field effects"
+  }
+ ],
+ "throughput": {
+  "games": 2346,
+  "seconds": 61.6,
+  "gamesPerSecond": 38.1,
+  "workers": 2,
+  "sessions": 1
+ },
+ "phase1": {
+  "search": {
+   "method": "ga",
+   "games": 2040,
+   "gens": 1,
+   "restarts": 1,
+   "runs": [
+    {
+     "best": "burrow-rabbit:5,colossal-squid:1,crimson-wing-recruit:5,driftwood-crab:1,echo-screecher:1,hush-wing-spy:1,owl-nightwatch:1,petal-fletcher:1,shellwright-apprentice:1,warhorse-charger:1,wolf-spider-mother:1,wound-reaver:1",
+     "f": 0.594,
+     "gens": 1,
+     "games": 2040,
+     "top": [
+      "burrow-rabbit:5,colossal-squid:1,crimson-wing-recruit:5,driftwood-crab:1,echo-screecher:1,hush-wing-spy:1,owl-nightwatch:1,petal-fletcher:1,shellwright-apprentice:1,warhorse-charger:1,wolf-spider-mother:1,wound-reaver:1",
+      "burrow-rabbit:5,chipmunk-skirmisher:1,crimson-wing-recruit:2,driftwood-crab:1,echo-matriarch:1,great-barracuda:1,old-shell:1,owl-nightwatch:1,river-carp:1,rivergate-drummer:1,shepherds-bark:1,talus-pika:1,warhorse-charger:1,wolf-spider-mother:1,wound-reaver:1",
+      "burrow-rabbit:1,carrion-crow:1,crimson-wing-recruit:5,cypress-root-lurker:1,dust-devil-kestrel:1,echo-screecher:1,grave-grin-hyena:1,hoopoe-herald:1,petal-fletcher:1,red-billed-chough:1,sergeant-bramblefox:1,tunnel-ant:1,walrus-icebreaker:1,warhorse-charger:1,wolf-spider-mother:1,wound-reaver:1",
+      "burrow-rabbit:5,colossal-squid:1,crimson-wing-recruit:5,driftwood-crab:1,echo-screecher:1,hush-wing-spy:1,owl-nightwatch:1,petal-fletcher:1,shellwright-apprentice:1,sunfeather-scout:1,warhorse-charger:1,wolf-spider-mother:1"
+     ]
+    }
+   ]
+  },
+  "best": {
+   "name": "optimum (map cards)",
+   "deck": {
+    "burrow-rabbit": 5,
+    "colossal-squid": 1,
+    "crimson-wing-recruit": 5,
+    "driftwood-crab": 1,
+    "echo-screecher": 1,
+    "hush-wing-spy": 1,
+    "owl-nightwatch": 1,
+    "petal-fletcher": 1,
+    "shellwright-apprentice": 1,
+    "warhorse-charger": 1,
+    "wolf-spider-mother": 1,
+    "wound-reaver": 1
+   },
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "colossal-squid",
+     "name": "Colossal Squid",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hush-wing-spy",
+     "name": "Hush-Wing Spy",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "petal-fletcher",
+     "name": "Petal Fletcher",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "shellwright-apprentice",
+     "name": "Shellwright Apprentice",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "warhorse-charger",
+     "name": "Warhorse Charger",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.594,
+   "ci": [
+    0.52,
+    0.668
+   ],
+   "mirror": 0.736,
+   "road": 0.167,
+   "perEntry": [
+    {
+     "entry": "mirror|fight:19-1",
+     "label": "vs 19-1 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:19-2",
+     "label": "vs 19-2 skirmish's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:19-3",
+     "label": "vs 19-3 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:19-4",
+     "label": "vs 19-4 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.5,
+     "lo": 0.215,
+     "hi": 0.785,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:19-5",
+     "label": "vs 19-5 elite's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 1,
+     "lo": 0.676,
+     "hi": 1,
+     "n": 8
+    },
+    {
+     "entry": "mirror|fight:19-6",
+     "label": "vs 19-6 miniboss's deck",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.75,
+     "lo": 0.409,
+     "hi": 0.929,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-1's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field",
+     "kind": "mirror",
+     "neutral": false,
+     "p": 0.875,
+     "lo": 0.529,
+     "hi": 0.978,
+     "n": 8
+    },
+    {
+     "entry": "road|19-1",
+     "label": "19-1 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "road|19-2",
+     "label": "19-2 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.375,
+     "lo": 0.137,
+     "hi": 0.694,
+     "n": 8
+    },
+    {
+     "entry": "road|19-3",
+     "label": "19-3 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.125,
+     "lo": 0.022,
+     "hi": 0.471,
+     "n": 8
+    },
+    {
+     "entry": "road|19-4",
+     "label": "19-4 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0,
+     "lo": 0,
+     "hi": 0.324,
+     "n": 8
+    },
+    {
+     "entry": "road|19-5",
+     "label": "19-5 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0,
+     "lo": 0,
+     "hi": 0.324,
+     "n": 8
+    },
+    {
+     "entry": "road|19-6",
+     "label": "19-6 as the game builds it",
+     "kind": "road",
+     "neutral": false,
+     "p": 0.125,
+     "lo": 0.022,
+     "hi": 0.471,
+     "n": 8
+    },
+    {
+     "entry": "neutral|fight:19-1",
+     "label": "vs 19-1 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:19-2",
+     "label": "vs 19-2 skirmish's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:19-3",
+     "label": "vs 19-3 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:19-4",
+     "label": "vs 19-4 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:19-5",
+     "label": "vs 19-5 elite's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 1,
+     "lo": 0.51,
+     "hi": 1,
+     "n": 4
+    },
+    {
+     "entry": "neutral|fight:19-6",
+     "label": "vs 19-6 miniboss's deck (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:starter",
+     "label": "vs reference starter deck under 19-1's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.25,
+     "lo": 0.046,
+     "hi": 0.699,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:road19",
+     "label": "vs reference deck (Map 19) under 19-2's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.5,
+     "lo": 0.15,
+     "hi": 0.85,
+     "n": 4
+    },
+    {
+     "entry": "neutral|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-3's field (no field effects)",
+     "kind": "mirror",
+     "neutral": true,
+     "p": 0.75,
+     "lo": 0.301,
+     "hi": 0.954,
+     "n": 4
+    }
+   ]
+  }
+ },
+ "phase2": {
+  "search": {
+   "method": "ga",
+   "games": 0,
+   "skipped": "no candidates"
+  },
+  "screenBaseline": 0.594,
+  "screened": 0,
+  "topSwaps": [],
+  "best": null,
+  "gainOverPhase1": 0
+ },
+ "optimum": "phase1",
+ "optima": [
+  {
+   "i": 0,
+   "deck": {
+    "burrow-rabbit": 5,
+    "colossal-squid": 1,
+    "crimson-wing-recruit": 5,
+    "driftwood-crab": 1,
+    "echo-screecher": 1,
+    "hush-wing-spy": 1,
+    "owl-nightwatch": 1,
+    "petal-fletcher": 1,
+    "shellwright-apprentice": 1,
+    "warhorse-charger": 1,
+    "wolf-spider-mother": 1,
+    "wound-reaver": 1
+   },
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "copies": 5,
+     "rarity": "starter",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "colossal-squid",
+     "name": "Colossal Squid",
+     "copies": 1,
+     "rarity": "veryrare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "hush-wing-spy",
+     "name": "Hush-Wing Spy",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "owl-nightwatch",
+     "name": "Owl Nightwatch",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "petal-fletcher",
+     "name": "Petal Fletcher",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "shellwright-apprentice",
+     "name": "Shellwright Apprentice",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "warhorse-charger",
+     "name": "Warhorse Charger",
+     "copies": 1,
+     "rarity": "common",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 1,
+     "rarity": "rare",
+     "inMapPool": false,
+     "owned": true,
+     "outOfMap": false
+    }
+   ],
+   "score": 0.594,
+   "ci": [
+    0.52,
+    0.668
+   ],
+   "copiesApartFromOptimum": 0
+  }
+ ],
+ "optimaH2H": [
+  [
+   null
+  ]
+ ],
+ "optimaConsidered": 4,
+ "ladder": null,
+ "road": [
+  {
+   "node": "19-1",
+   "kind": "skirmish",
+   "target": 0.9,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  },
+  {
+   "node": "19-2",
+   "kind": "skirmish",
+   "target": 0.825,
+   "optimum": 0.375,
+   "ci": [
+    0.137,
+    0.694
+   ],
+   "n": 8
+  },
+  {
+   "node": "19-3",
+   "kind": "elite",
+   "target": 0.75,
+   "optimum": 0.125,
+   "ci": [
+    0.022,
+    0.471
+   ],
+   "n": 8
+  },
+  {
+   "node": "19-4",
+   "kind": "elite",
+   "target": 0.675,
+   "optimum": 0,
+   "ci": [
+    0,
+    0.324
+   ],
+   "n": 8
+  },
+  {
+   "node": "19-5",
+   "kind": "elite",
+   "target": 0.6,
+   "optimum": 0,
+   "ci": [
+    0,
+    0.324
+   ],
+   "n": 8
+  },
+  {
+   "node": "19-6",
+   "kind": "miniboss",
+   "target": 0.4,
+   "optimum": 0.125,
+   "ci": [
+    0.022,
+    0.471
+   ],
+   "n": 8
+  }
+ ],
+ "fieldImpact": [
+  {
+   "opponent": "fight:19-1",
+   "node": "19-1",
+   "rules": "aiGuardLethal, phase cycle, wind windy, windfall",
+   "withField": 0.75,
+   "noField": 1,
+   "delta": -0.25,
+   "ci": [
+    -0.55,
+    0.05
+   ]
+  },
+  {
+   "opponent": "fight:19-2",
+   "node": "19-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "fight:19-3",
+   "node": "19-3",
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "fight:19-4",
+   "node": "19-4",
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall",
+   "withField": 0.5,
+   "noField": 1,
+   "delta": -0.5,
+   "ci": [
+    -0.846,
+    -0.154
+   ]
+  },
+  {
+   "opponent": "fight:19-5",
+   "node": "19-5",
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall",
+   "withField": 1,
+   "noField": 1,
+   "delta": 0,
+   "ci": [
+    0,
+    0
+   ]
+  },
+  {
+   "opponent": "fight:19-6",
+   "node": "19-6",
+   "rules": "aiGuardLethal, ashy, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall",
+   "withField": 0.75,
+   "noField": 0.75,
+   "delta": 0,
+   "ci": [
+    -0.52,
+    0.52
+   ]
+  },
+  {
+   "opponent": "ref:starter",
+   "node": "19-1",
+   "rules": "aiGuardLethal, phase cycle, wind windy, windfall",
+   "withField": 0.875,
+   "noField": 0.25,
+   "delta": 0.625,
+   "ci": [
+    0.143,
+    1.107
+   ]
+  },
+  {
+   "opponent": "ref:road19",
+   "node": "19-2",
+   "rules": "aiGuardLethal, phase cycle, terrain Volcanic Ground T1, wind windy, windfall",
+   "withField": 0.375,
+   "noField": 0.5,
+   "delta": -0.125,
+   "ci": [
+    -0.719,
+    0.469
+   ]
+  },
+  {
+   "opponent": "ref:expected",
+   "node": "19-3",
+   "rules": "aiGuardLethal, ashRain, phase cycle, terrain Volcanic Ground T2 (the eruption), wind windy, windfall",
+   "withField": 0.875,
+   "noField": 0.75,
+   "delta": 0.125,
+   "ci": [
+    -0.357,
+    0.607
+   ]
+  }
+ ],
+ "gap": [
+  {
+   "opponent": "fight:19-1",
+   "label": "19-1 skirmish's deck",
+   "kind": "skirmish",
+   "node": "19-1",
+   "target": 0.9,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.318,
+   "optimumSame": 0.58,
+   "pointsBelow": 26.1,
+   "pointsCI": 16.7
+  },
+  {
+   "opponent": "fight:19-2",
+   "label": "19-2 skirmish's deck",
+   "kind": "skirmish",
+   "node": "19-2",
+   "target": 0.825,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.409,
+   "optimumSame": 0.58,
+   "pointsBelow": 17,
+   "pointsCI": 16.7
+  },
+  {
+   "opponent": "fight:19-3",
+   "label": "19-3 elite's deck",
+   "kind": "elite",
+   "node": "19-3",
+   "target": 0.75,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.273,
+   "optimumSame": 0.58,
+   "pointsBelow": 30.7,
+   "pointsCI": 15.6
+  },
+  {
+   "opponent": "fight:19-4",
+   "label": "19-4 elite's deck",
+   "kind": "elite",
+   "node": "19-4",
+   "target": 0.675,
+   "h2h": 0.5,
+   "h2hCI": [
+    0.215,
+    0.785
+   ],
+   "elo": 0,
+   "eloCI": [
+    -225,
+    225
+   ],
+   "n": 8,
+   "asPlayer": 0.136,
+   "optimumSame": 0.602,
+   "pointsBelow": 46.6,
+   "pointsCI": 14.4
+  },
+  {
+   "opponent": "fight:19-5",
+   "label": "19-5 elite's deck",
+   "kind": "elite",
+   "node": "19-5",
+   "target": 0.6,
+   "h2h": 1,
+   "h2hCI": [
+    0.676,
+    1
+   ],
+   "elo": 470,
+   "eloCI": [
+    127,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.318,
+   "optimumSame": 0.557,
+   "pointsBelow": 23.9,
+   "pointsCI": 14.7
+  },
+  {
+   "opponent": "fight:19-6",
+   "label": "19-6 miniboss's deck",
+   "kind": "miniboss",
+   "node": "19-6",
+   "target": 0.4,
+   "h2h": 0.75,
+   "h2hCI": [
+    0.409,
+    0.929
+   ],
+   "elo": 191,
+   "eloCI": [
+    -64,
+    445
+   ],
+   "n": 8,
+   "asPlayer": 0.477,
+   "optimumSame": 0.58,
+   "pointsBelow": 10.2,
+   "pointsCI": 15.9
+  },
+  {
+   "opponent": "ref:starter",
+   "label": "reference starter deck under 19-1's field",
+   "kind": "reference",
+   "node": "19-1",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.364,
+   "optimumSame": 0.568,
+   "pointsBelow": 20.5,
+   "pointsCI": 15.7
+  },
+  {
+   "opponent": "ref:road19",
+   "label": "reference deck (Map 19) under 19-2's field",
+   "kind": "reference",
+   "node": "19-2",
+   "target": null,
+   "h2h": 0.375,
+   "h2hCI": [
+    0.137,
+    0.694
+   ],
+   "elo": -89,
+   "eloCI": [
+    -320,
+    142
+   ],
+   "n": 8,
+   "asPlayer": 0.773,
+   "optimumSame": 0.614,
+   "pointsBelow": -15.9,
+   "pointsCI": 13.8
+  },
+  {
+   "opponent": "ref:expected",
+   "label": "expected player deck (expectedPlayerDeck) under 19-3's field",
+   "kind": "reference",
+   "node": "19-3",
+   "target": null,
+   "h2h": 0.875,
+   "h2hCI": [
+    0.529,
+    0.978
+   ],
+   "elo": 338,
+   "eloCI": [
+    20,
+    470
+   ],
+   "n": 8,
+   "asPlayer": 0.386,
+   "optimumSame": 0.568,
+   "pointsBelow": 18.2,
+   "pointsCI": 13.6
+  }
+ ]
+}
