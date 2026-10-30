@@ -38,7 +38,10 @@ const SC = require(path.join(ROOT, 'tools', 'skill_costs.js')), T = SC.make(JSON
 const OWNER = new Set(P.rows.filter(r=> r.verdict === 'owner').map(r=> r.id));
 ok([...OWNER].join() === 'cave-bat-swarm', `2. one owner call: the Cave Bat Swarm (its server skills need a cut past half) (${[...OWNER]})`);
 const HALVE = JSON.parse(rd('docs/balance/halve-plan-2026-10-19.json')), OWNER5 = new Set(HALVE.rows.filter(x=> x.verdict === 'owner').map(x=> x.id)); // BF5's owner calls (skills over the halved N)
-rows.forEach(r=>{ if(OWNER.has(r.id) || OWNER5.has(r.id)) return; const b = T.budget(by[r.id], {level: 1}); ok(b.ok, `2. ${r.id} passes v5 at Level 1 (2A+H+S ${b.x1} <= N ${b.N}, A·H+S ${b.x2} <= ${b.N2})`); });
+// 2026-10-31 (package BUDGET2): the five Dragons and the Caldera Wyrm are over on purpose (the creature-ranks rule, card-pass's OVER_OK); under
+// 3A + H the Black Dragon (10/10) is 109% of N and BUDGET2 left it as an owner call
+const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
+rows.forEach(r=>{ if(OWNER.has(r.id) || OWNER5.has(r.id) || OVER_OK.has(r.id)) return; const b = T.budget(by[r.id], {level: 1}); ok(b.ok, `2. ${r.id} passes v5 at Level 1 (2A+H+S ${b.x1} <= N ${b.N}, A·H+S ${b.x2} <= ${b.N2})`); });
 ok(P.overBefore.length === 7 && P.overAfter.length === 1, `2. over budget: 7 before (the live versions), 1 after (${P.overBefore.length}, ${P.overAfter.length})`);
 
 // 3.

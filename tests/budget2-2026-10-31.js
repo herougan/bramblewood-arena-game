@@ -66,7 +66,7 @@ ok(/## 5\. Measuring a skill against the canon/.test(rd('docs/evaluation-protoco
 
 // ---- 6. docs and decisions
 const dec = js('docs/decisions.json').items, D = id=> dec.find(x=> x.id === id) || {};
-ok(['BUDGET2-1', 'BUDGET2-2', 'BUDGET2-3', 'BUDGET2-4', 'BUDGET2-5', 'BUDGET2-6'].every(id=> D(id).status === 'YET' && D(id).default), '6. owner calls BUDGET2-1..6 (YET, with a default)');
+ok(['BUDGET2-1', 'BUDGET2-2', 'BUDGET2-3', 'BUDGET2-4', 'BUDGET2-5', 'BUDGET2-6', 'BUDGET2-7'].every(id=> D(id).status === 'YET' && D(id).default), '6. owner calls BUDGET2-1..7 (YET, with a default)');
 ok(['DECK1-1', 'DECK1-5', 'SKL0-3'].every(id=> D(id).status === 'YET' && /BUDGET2 \(2026-10-31/.test(D(id).body)), '6. DECK1-1, DECK1-5 and SKL0-3 carry BUDGET2\'s recommendation and stay YET');
 ok(/BUDGET2/.test(rd('docs/project-state.md')) && /RECOST1-6/.test(rd('docs/project-state.md')), '6. docs/project-state.md\'s budget entry names BUDGET2 and RECOST1-6');
 ok(rd('docs/CHANGELOG.md').split('\n## ')[1].includes('package BUDGET2'), '6. a CHANGELOG entry at the top');

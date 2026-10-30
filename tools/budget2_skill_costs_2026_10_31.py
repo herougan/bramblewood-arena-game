@@ -62,9 +62,9 @@ for ln in lines:
             indent = ln[:len(ln) - len(ln.lstrip())]
             ln = indent + json.dumps(e, ensure_ascii=False, separators=(',', ':')) + (',' if st.endswith(',') else '')
             seen.add('canon:' + e['id']); print('canon %s at %s' % (e['id'], at))
-        if e.get('id') in EDITS and e.get('appliedAt', '').find('BUDGET2') < 0:
+        if e.get('id') in EDITS and 'BUDGET2' not in (e.get('pricedAt', '') + e.get('appliedAt', '')):
             v, why = EDITS[e['id']]
-            e['prevValue'] = e.get('value'); e['value'] = v; e['appliedAt'] = AT
+            e['prevValue'] = e.get('value'); e['value'] = v; e['pricedAt'] = AT  # pricedAt, not appliedAt: a logic price, not a measured worth applied (tests/skill-costs)
             e['note'] = (e.get('note') or '') + ' ' + AT + ': ' + why + '.'
             indent = ln[:len(ln) - len(ln.lstrip())]
             ln = indent + json.dumps(e, ensure_ascii=False, separators=(',', ':')) + (',' if st.endswith(',') else '')
