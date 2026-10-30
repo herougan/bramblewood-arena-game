@@ -43669,7 +43669,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=c6660aea6a", "es": "assets/lang/es.js?v=de0bb7d1b2", "fr": "assets/lang/fr.js?v=88040cb4ff", "id": "assets/lang/id.js?v=139bd22654", "it": "assets/lang/it.js?v=f66c10dc3a", "ja": "assets/lang/ja.js?v=bf3b652ec1", "ko": "assets/lang/ko.js?v=50018b3fec", "pt": "assets/lang/pt.js?v=2d47c4b012", "ta": "assets/lang/ta.js?v=ffb57ffd6c", "tl": "assets/lang/tl.js?v=006d7d4d3c", "zh-Hans": "assets/lang/zh-Hans.js?v=884e197250", "zh-Hant": "assets/lang/zh-Hant.js?v=338cd8a601"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=083adf59a7", "es": "assets/lang/es.js?v=0adea98de2", "fr": "assets/lang/fr.js?v=3bc9351d26", "id": "assets/lang/id.js?v=1c23d4c5fa", "it": "assets/lang/it.js?v=1ae3fbb653", "ja": "assets/lang/ja.js?v=d1c51d634e", "ko": "assets/lang/ko.js?v=e3a046d42c", "pt": "assets/lang/pt.js?v=03a78108e1", "ta": "assets/lang/ta.js?v=47bfa7eef8", "tl": "assets/lang/tl.js?v=c888936053", "zh-Hans": "assets/lang/zh-Hans.js?v=dbf46ec433", "zh-Hant": "assets/lang/zh-Hant.js?v=a122c9890e"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -45016,7 +45016,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxx-crushing-depths": "A Swimmer or Tide unit with Water Resist takes none. No day or night reaches down here.",
   "ui.fx-bishop-path": "A hit on a unit on the slant deals +2 damage.",
   "ui.fxx-bishop-path": "On the slant: half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws.",
-  "ui.fx-mirage": "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.",
+  "ui.fx-mirage": "From round 2, each player gets a 1/1 Illusion beside one of their units every round.",
   "ui.fxx-mirage": "None if both slots are taken. The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.",
   "ui.fx-canopy": "Treetops: Pounce +2 damage, Swift and Quick units Evasive, no Flying dodge, Bounty +1.",
   "ui.fx-slippery": "Ice everywhere: attacks at units miss 1 in 2; triggers and on-hit effects fail 1 in 2.",
@@ -51260,7 +51260,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6e85a7c43625', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
+const BUILD_ID = 'c901a1dbd476', BUILD_CARD_HASH = '459a3e459d40ec12687a5e693f852500083969afa77df77aa8839055c78effc4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

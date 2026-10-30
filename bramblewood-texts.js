@@ -1221,7 +1221,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxx-crushing-depths": "A Swimmer or Tide unit with Water Resist takes none. No day or night reaches down here.",
   "ui.fx-bishop-path": "A hit on a unit on the slant deals +2 damage.",
   "ui.fxx-bishop-path": "On the slant: half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws.",
-  "ui.fx-mirage": "From round 2, every round each player gets a 1/1 Illusion in a free slot beside one of their units.",
+  "ui.fx-mirage": "From round 2, each player gets a 1/1 Illusion beside one of their units every round.",
   "ui.fxx-mirage": "None if both slots are taken. The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.",
   "ui.fx-canopy": "Treetops: Pounce +2 damage, Swift and Quick units Evasive, no Flying dodge, Bounty +1.",
   "ui.fx-slippery": "Ice everywhere: attacks at units miss 1 in 2; triggers and on-hit effects fail 1 in 2.",
