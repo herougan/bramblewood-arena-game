@@ -1,0 +1,785 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T11:14:54.290Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "ml",
+  "num": 15,
+  "name": "The Long Grass"
+ },
+ "level": 1,
+ "pool": [
+  "bison-bulldozer",
+  "blue-ringed-octopus",
+  "border-collie",
+  "carrion-crow",
+  "cataphract-destrier",
+  "dust-hyena",
+  "eagle-owl-quartermaster",
+  "farm-dog",
+  "grave-grin-hyena",
+  "hedge-weasel",
+  "hedgehog-herbalist",
+  "ibex-rockcaller",
+  "lodge-engineer",
+  "nightjar-drifter",
+  "pigeon-peon",
+  "pronghorn-racer",
+  "raccoon-bandit",
+  "robin-redbreast",
+  "shepherds-bark",
+  "squires-mount",
+  "stable-colt",
+  "stoat-cutthroat",
+  "swift-fox",
+  "talon-archer",
+  "thorn-shrike",
+  "warhorse-charger",
+  "wolf-spider-mother"
+ ],
+ "poolNames": [
+  "Bison Bulldozer",
+  "Blue-ringed Octopus",
+  "Border Collie",
+  "Carrion Crow",
+  "Gilded Roadwarden",
+  "Dust Hyena",
+  "Eagle-Owl Quartermaster",
+  "Farm Dog",
+  "Grave-Grin Hyena",
+  "Hedge Weasel",
+  "Hedgehog Herbalist",
+  "Ibex Rockcaller",
+  "Lodge Engineer",
+  "Nightjar Drifter",
+  "Pigeon Peon",
+  "Pronghorn Racer",
+  "Raccoon Bandit",
+  "Robin Redbreast",
+  "Shepherd",
+  "Squire's Mount",
+  "Stable Colt",
+  "Stoat Cutthroat",
+  "Swift Fox",
+  "Talon Archer",
+  "Thorn Shrike",
+  "Warhorse Charger",
+  "Wolf Spider Mother"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "bison-bulldozer",
+   "border-collie",
+   "carrion-crow",
+   "cataphract-destrier",
+   "hedge-weasel",
+   "hedgehog-herbalist",
+   "lodge-engineer",
+   "pronghorn-racer",
+   "raccoon-bandit",
+   "shepherds-bark",
+   "squires-mount",
+   "stable-colt",
+   "stoat-cutthroat",
+   "talon-archer",
+   "warhorse-charger"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:15-1",
+   "label": "vs 15-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-2",
+   "label": "vs 15-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-3",
+   "label": "vs 15-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-4",
+   "label": "vs 15-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-5",
+   "label": "vs 15-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-6",
+   "label": "vs 15-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:15-7",
+   "label": "vs 15-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 15-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road15",
+   "label": "vs reference deck (Map 15) under 15-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "carrion-crow",
+    "dust-hyena",
+    "lodge-engineer",
+    "raccoon-bandit"
+   ],
+   "need": 6
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "carrion-crow",
+    "dust-hyena",
+    "farm-dog",
+    "grave-grin-hyena",
+    "hedge-weasel",
+    "pigeon-peon",
+    "raccoon-bandit",
+    "robin-redbreast",
+    "stable-colt"
+   ],
+   "need": 14
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "carrion-crow",
+    "eagle-owl-quartermaster",
+    "pigeon-peon",
+    "robin-redbreast",
+    "talon-archer",
+    "thorn-shrike"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 10,
+   "moves": 5,
+   "games": 3240,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "swarm",
+   "steps": 9,
+   "moves": 4,
+   "games": 3060,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "family:flying",
+   "steps": 10,
+   "moves": 7,
+   "games": 3020,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 5,
+   "games": 3080,
+   "apartFromEarlier": 9
+  }
+ ],
+ "apart": 6,
+ "seconds": 207,
+ "games": 13040,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "border-collie": 3,
+    "dust-hyena": 4,
+    "grave-grin-hyena": 4,
+    "stable-colt": 4,
+    "stoat-cutthroat": 3,
+    "talon-archer": 2
+   },
+   "cards": [
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stable-colt",
+     "name": "Stable Colt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stoat-cutthroat",
+     "name": "Stoat Cutthroat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8792,
+   "ci": [
+    0.8403,
+    0.9181
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "dust-hyena": 3,
+    "hedge-weasel": 4,
+    "raccoon-bandit": 3,
+    "squires-mount": 3,
+    "stable-colt": 4,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "hedge-weasel",
+     "name": "Hedge Weasel",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stable-colt",
+     "name": "Stable Colt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raccoon-bandit",
+     "name": "Raccoon Bandit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "squires-mount",
+     "name": "Squire's Mount",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8458,
+   "ci": [
+    0.8027,
+    0.889
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x9"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "carrion-crow": 4,
+    "eagle-owl-quartermaster": 3,
+    "grave-grin-hyena": 4,
+    "talon-archer": 2,
+    "wolf-spider-mother": 3
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "wolf-spider-mother",
+     "name": "Wolf Spider Mother",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "talon-archer",
+     "name": "Talon Archer",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8417,
+   "ci": [
+    0.8001,
+    0.8832
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (6 resource makers)",
+    "flying x6"
+   ],
+   "deck": {
+    "border-collie": 4,
+    "dust-hyena": 4,
+    "eagle-owl-quartermaster": 3,
+    "lodge-engineer": 2,
+    "robin-redbreast": 3,
+    "stable-colt": 4
+   },
+   "cards": [
+    {
+     "id": "border-collie",
+     "name": "Border Collie",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "stable-colt",
+     "name": "Stable Colt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "robin-redbreast",
+     "name": "Robin Redbreast",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7625,
+   "ci": [
+    0.7162,
+    0.8088
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 11,
+    "1": 7,
+    "2": 2
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:15-1",
+     "label": "vs 15-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-2",
+     "label": "vs 15-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-3",
+     "label": "vs 15-3 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-4",
+     "label": "vs 15-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-5",
+     "label": "vs 15-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-6",
+     "label": "vs 15-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:15-7",
+     "label": "vs 15-7 boss's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 15-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road15",
+     "label": "vs reference deck (Map 15) under 15-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 15-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map ml --pool bison-bulldozer,blue-ringed-octopus,border-collie,carrion-crow,cataphract-destrier,dust-hyena,eagle-owl-quartermaster,farm-dog,grave-grin-hyena,hedge-weasel,hedgehog-herbalist,ibex-rockcaller,lodge-engineer,nightjar-drifter,pigeon-peon,pronghorn-racer,raccoon-bandit,robin-redbreast,shepherds-bark,squires-mount,stable-colt,stoat-cutthroat,swift-fox,talon-archer,thorn-shrike,warhorse-charger,wolf-spider-mother --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,swarm,family:flying,open --anchor bison-bulldozer,border-collie,carrion-crow,cataphract-destrier,hedge-weasel,hedgehog-herbalist,lodge-engineer,pronghorn-racer,raccoon-bandit,shepherds-bark,squires-mount,stable-colt,stoat-cutthroat,talon-archer,warhorse-charger --anchor-min 10 --level 1 --mode map-true"
+}
