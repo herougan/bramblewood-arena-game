@@ -14,15 +14,18 @@ let pass = 0, fail = 0; const ok = (c, m)=>{ if(c) pass++; else { fail++; consol
 const part = id=> goliath.parts.find(p=> p.id === id);
 
 // ---- the brambles and the elders
-ok(['left', 'right', 'tail'].every(id=> part(id).fight.castleHp === 410), 'the arms and the tail: a 410 bramble a fight (B12, BF6 2026-10-21; was 350, RB2 420)');
-ok(part('core').fight.castleHp === 200, 'the Core keeps its 200 behind its stumps');
+// 2026-10-30 (package RAIDBAL1, owner W8): the brambles re-fit against three Map 13 decks at +2 levels: Left 780, Right 930, Tail 560
+// (were 410 each), the Core 100 (was 200); docs/balance/raidbal1-2026-10-30.md
+ok(part('left').fight.castleHp === 780 && part('right').fight.castleHp === 930 && part('tail').fight.castleHp === 560, 'the arms and the tail: 780 / 930 / 560 (RAIDBAL1; were 410, B12, BF6 2026-10-21; was 350, RB2 420)');
+ok(part('core').fight.castleHp === 100, 'the Core: 100 behind its stumps (RAIDBAL1; was 200)');
 ok(goliath.bossHpBonusMax === 55, 'the elders start at up to 55 Health (was 50): the raid a touch harder');
 { const st = R.raidState(goliath, [], 0, {cycle: 0}), f = R.fightFor(goliath, st, 'left', {});
-  ok(f.castleHp === 410, `fightFor hands the fight the part's 410 (${f.castleHp})`);
+  ok(f.castleHp === 780, `fightFor hands the fight the part's 780 (${f.castleHp})`); // RAIDBAL1 (was 410)
   const A = require(path.join(ROOT, 'tools', 'raid_full_sim.js')).A;
   const b = A.buildRaidFullFight(goliath, 'left', f, st, {rng: A.seededRng(1), rand: A.seededRng(2), allies: [], myDeck: {}, recordEvents: false});
   // 2026-10-21 (BF5): the fight is built at BRAMBLE_SCALE 0.5 (raids.json keeps the full 350 / 55)
-  ok(b.players[2].hq.hp === 175 && b.players[2].hq.maxHp === 175, `the boss's bramble in the built fight: ${b.players[2].hq.hp}/${b.players[2].hq.maxHp} (350 halved)`);
+  // 2026-10-30 (RAIDBAL1): 780 halved (the 175 here was stale since BF6's 410)
+  ok(b.players[2].hq.hp === 390 && b.players[2].hq.maxHp === 390, `the boss's bramble in the built fight: ${b.players[2].hq.hp}/${b.players[2].hq.maxHp} (780 halved)`);
   const u = b.overlay[b.bossUnitId]; ok(u && u.health + b.bossHpBonus === 28, `a fresh raid's elder: ${u && u.health} + ${b.bossHpBonus} = 28 (55 halved)`); }
 
 // ---- saved edits: RB's numbers move, an admin's own stay

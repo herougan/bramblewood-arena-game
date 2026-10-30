@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-30 (package RAIDBAL1: the raid balanced against Map 13 decks at +2 levels; owner W8)
+- **The Goliath's warm-ups are no longer a sure kill, the Core no longer a near-sure loss.** Measured against three decks a player could hold where the Raid Banner opens (Map 13), at Lv 5 (the map's 3 + 2): the Map reference, Reference-2 and the deck optimizer's Map 13 optimum, 40 fights each. Win (the part's bramble destroyed in 20 turns), fresh part: Left Tentacle 81% -> 60%, Right Tentacle 94% -> 58%, Tail 74% -> 62%, Core 13% -> 40% (fresh seeds: 58 / 62 / 61 / 47). Proposed targets 60% / 40% (call RAIDBAL1-1).
+- **Data only** (`canonical/raids.json`): the warm-ups' brambles 410 -> 780 (Left) / 930 (Right) / 560 (Tail), the Core's 200 -> 100, `raiderCastleBonus` 60 -> 120. Boss card strength, decks, elders, Shield, stages, the classic trench and the engine unchanged. Raid damage a fight: arms and tail about -20%, the Core x2.6 (the week's pace: call RAIDBAL1-2).
+- Tools: `tools/raid_bal1_2026_10_30.js` (decks / measure / table, cached in `/home/claude/bench-cache-raidbal1`); `tools/raid_full_sim.js` builds decks through `refPartsDeck` again (it threw since PREF) and plays named decks (`--deck-file`, `setDecks`). Report `docs/balance/raidbal1-2026-10-30.md` + `.json`. Tests: `tests/raidbal1-2026-10-30.js` (new); `raid-rb2` and `bf5` follow the new brambles (dated notes). Calls RAIDBAL1-1..3.
+
 ## 2026-10-30 (coordinator: Diurnal / Nocturnal light up)
 
 - In a fight with day and night, a card's Diurnal chip glows gold while its bonus applies (day, Twilight) and its Nocturnal chip glows blue at night (and in Twilight, and all fight on a dark map), the way the Tide chip lights up. Test: `tests/zeit-lit-2026-10-30.js`.
