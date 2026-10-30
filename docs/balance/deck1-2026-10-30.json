@@ -8776,5 +8776,1370 @@
     "cinder-gecko: only in a road fight's deck (not on the map's list since THEME3, not held by then)"
    ]
   }
- ]
+ ],
+ "previousEase": {
+  "about": "The PRO decks before DECK1 (now under history), measured like pro_ease.js (100 games, seeds fnv(pro-ease|<id>|old|<ref>), PREF-3 levels).",
+  "rows": [
+   {
+    "id": "0-PRO-1",
+    "mapId": "m1",
+    "ref": "map",
+    "win": 0.65,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "0-PRO-1",
+    "mapId": "m1",
+    "ref": "ref2",
+    "win": 0.98,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "0-PRO-2",
+    "mapId": "m1",
+    "ref": "map",
+    "win": 0.68,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "0-PRO-2",
+    "mapId": "m1",
+    "ref": "ref2",
+    "win": 0.97,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "0-B-PRO-1",
+    "mapId": "mo",
+    "ref": "map",
+    "win": 0.28,
+    "n": 100,
+    "cards": 4
+   },
+   {
+    "id": "0-B-PRO-1",
+    "mapId": "mo",
+    "ref": "ref2",
+    "win": 0.48,
+    "n": 100,
+    "cards": 4
+   },
+   {
+    "id": "0-B-PRO-2",
+    "mapId": "mo",
+    "ref": "map",
+    "win": 0.46,
+    "n": 100,
+    "cards": 18
+   },
+   {
+    "id": "0-B-PRO-2",
+    "mapId": "mo",
+    "ref": "ref2",
+    "win": 0.73,
+    "n": 100,
+    "cards": 18
+   },
+   {
+    "id": "0-B-PRO-3",
+    "mapId": "mo",
+    "ref": "map",
+    "win": 0.44,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "0-B-PRO-3",
+    "mapId": "mo",
+    "ref": "ref2",
+    "win": 0.67,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "0-B-PRO-4",
+    "mapId": "mo",
+    "ref": "map",
+    "win": 0.29,
+    "n": 100,
+    "cards": 4
+   },
+   {
+    "id": "0-B-PRO-4",
+    "mapId": "mo",
+    "ref": "ref2",
+    "win": 0.52,
+    "n": 100,
+    "cards": 4
+   },
+   {
+    "id": "1-PRO-1",
+    "mapId": "mf",
+    "ref": "map",
+    "win": 0.27,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "1-PRO-1",
+    "mapId": "mf",
+    "ref": "ref2",
+    "win": 0.55,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "1-PRO-2",
+    "mapId": "mf",
+    "ref": "map",
+    "win": 0.21,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "1-PRO-2",
+    "mapId": "mf",
+    "ref": "ref2",
+    "win": 0.54,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "1-PRO-3",
+    "mapId": "mf",
+    "ref": "map",
+    "win": 0.62,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "1-PRO-3",
+    "mapId": "mf",
+    "ref": "ref2",
+    "win": 0.85,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "1-PRO-4",
+    "mapId": "mf",
+    "ref": "map",
+    "win": 0.34,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "1-PRO-4",
+    "mapId": "mf",
+    "ref": "ref2",
+    "win": 0.48,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "1-A-PRO-1",
+    "mapId": "mq",
+    "ref": "map",
+    "win": 0.19,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "1-A-PRO-1",
+    "mapId": "mq",
+    "ref": "ref2",
+    "win": 0.37,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "2-PRO-1",
+    "mapId": "mb",
+    "ref": "map",
+    "win": 0.37,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "2-PRO-1",
+    "mapId": "mb",
+    "ref": "ref2",
+    "win": 0.52,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "2-PRO-2",
+    "mapId": "mb",
+    "ref": "map",
+    "win": 0.68,
+    "n": 100,
+    "cards": 15
+   },
+   {
+    "id": "2-PRO-2",
+    "mapId": "mb",
+    "ref": "ref2",
+    "win": 0.73,
+    "n": 100,
+    "cards": 15
+   },
+   {
+    "id": "2-PRO-3",
+    "mapId": "mb",
+    "ref": "map",
+    "win": 0.63,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "2-PRO-3",
+    "mapId": "mb",
+    "ref": "ref2",
+    "win": 0.73,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "2-PRO-4",
+    "mapId": "mb",
+    "ref": "map",
+    "win": 0.73,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "2-PRO-4",
+    "mapId": "mb",
+    "ref": "ref2",
+    "win": 0.82,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "2-B-PRO-1",
+    "mapId": "mg",
+    "ref": "map",
+    "win": 0.2,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "2-B-PRO-1",
+    "mapId": "mg",
+    "ref": "ref2",
+    "win": 0.72,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "2-A-PRO-1",
+    "mapId": "mp",
+    "ref": "map",
+    "win": 0.18,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "2-A-PRO-1",
+    "mapId": "mp",
+    "ref": "ref2",
+    "win": 0.71,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "2-A-PRO-2",
+    "mapId": "mp",
+    "ref": "map",
+    "win": 0.25,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "2-A-PRO-2",
+    "mapId": "mp",
+    "ref": "ref2",
+    "win": 0.85,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "3-PRO-1",
+    "mapId": "mc",
+    "ref": "map",
+    "win": 0.63,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "3-PRO-1",
+    "mapId": "mc",
+    "ref": "ref2",
+    "win": 0.71,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "3-PRO-2",
+    "mapId": "mc",
+    "ref": "map",
+    "win": 0.7,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "3-PRO-2",
+    "mapId": "mc",
+    "ref": "ref2",
+    "win": 0.71,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "3-PRO-3",
+    "mapId": "mc",
+    "ref": "map",
+    "win": 0.69,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "3-PRO-3",
+    "mapId": "mc",
+    "ref": "ref2",
+    "win": 0.74,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "4-PRO-1",
+    "mapId": "m2",
+    "ref": "map",
+    "win": 0.23,
+    "n": 100,
+    "cards": 17
+   },
+   {
+    "id": "4-PRO-1",
+    "mapId": "m2",
+    "ref": "ref2",
+    "win": 0.47,
+    "n": 100,
+    "cards": 17
+   },
+   {
+    "id": "5-PRO-1",
+    "mapId": "mw",
+    "ref": "map",
+    "win": 0.5,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "5-PRO-1",
+    "mapId": "mw",
+    "ref": "ref2",
+    "win": 0.56,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "5-A-PRO-1",
+    "mapId": "ms",
+    "ref": "map",
+    "win": 0.47,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "5-A-PRO-1",
+    "mapId": "ms",
+    "ref": "ref2",
+    "win": 0.93,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "6-PRO-1",
+    "mapId": "m8",
+    "ref": "map",
+    "win": 0.12,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "6-PRO-1",
+    "mapId": "m8",
+    "ref": "ref2",
+    "win": 0.35,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "7-PRO-1",
+    "mapId": "mu",
+    "ref": "map",
+    "win": 0.42,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "7-PRO-1",
+    "mapId": "mu",
+    "ref": "ref2",
+    "win": 0.82,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "7-PRO-2",
+    "mapId": "mu",
+    "ref": "map",
+    "win": 0.32,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "7-PRO-2",
+    "mapId": "mu",
+    "ref": "ref2",
+    "win": 0.67,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "7-PRO-3",
+    "mapId": "mu",
+    "ref": "map",
+    "win": 0.49,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "7-PRO-3",
+    "mapId": "mu",
+    "ref": "ref2",
+    "win": 0.79,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "7-A-PRO-1",
+    "mapId": "mz",
+    "ref": "map",
+    "win": 0.23,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "7-A-PRO-1",
+    "mapId": "mz",
+    "ref": "ref2",
+    "win": 0.46,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "7-A-PRO-2",
+    "mapId": "mz",
+    "ref": "map",
+    "win": 0.21,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "7-A-PRO-2",
+    "mapId": "mz",
+    "ref": "ref2",
+    "win": 0.5,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "7-A-PRO-3",
+    "mapId": "mz",
+    "ref": "map",
+    "win": 0.55,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "7-A-PRO-3",
+    "mapId": "mz",
+    "ref": "ref2",
+    "win": 0.74,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "7-A-PRO-4",
+    "mapId": "mz",
+    "ref": "map",
+    "win": 0.63,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "7-A-PRO-4",
+    "mapId": "mz",
+    "ref": "ref2",
+    "win": 0.8,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "8-PRO-1",
+    "mapId": "m4",
+    "ref": "map",
+    "win": 0.16,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "8-PRO-1",
+    "mapId": "m4",
+    "ref": "ref2",
+    "win": 0.29,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "8-A-PRO-1",
+    "mapId": "mn",
+    "ref": "map",
+    "win": 0.41,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "8-A-PRO-1",
+    "mapId": "mn",
+    "ref": "ref2",
+    "win": 0.81,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "9-PRO-1",
+    "mapId": "mk",
+    "ref": "map",
+    "win": 0.43,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "9-PRO-1",
+    "mapId": "mk",
+    "ref": "ref2",
+    "win": 0.74,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "9-PRO-2",
+    "mapId": "mk",
+    "ref": "map",
+    "win": 0.26,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "9-PRO-2",
+    "mapId": "mk",
+    "ref": "ref2",
+    "win": 0.62,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "9-PRO-3",
+    "mapId": "mk",
+    "ref": "map",
+    "win": 0.25,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "9-PRO-3",
+    "mapId": "mk",
+    "ref": "ref2",
+    "win": 0.79,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "10-PRO-1",
+    "mapId": "m7",
+    "ref": "map",
+    "win": 0.6,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "10-PRO-1",
+    "mapId": "m7",
+    "ref": "ref2",
+    "win": 0.64,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "10-PRO-2",
+    "mapId": "m7",
+    "ref": "map",
+    "win": 0.53,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "10-PRO-2",
+    "mapId": "m7",
+    "ref": "ref2",
+    "win": 0.44,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "10-PRO-3",
+    "mapId": "m7",
+    "ref": "map",
+    "win": 0.59,
+    "n": 100,
+    "cards": 19
+   },
+   {
+    "id": "10-PRO-3",
+    "mapId": "m7",
+    "ref": "ref2",
+    "win": 0.55,
+    "n": 100,
+    "cards": 19
+   },
+   {
+    "id": "10-PRO-4",
+    "mapId": "m7",
+    "ref": "map",
+    "win": 0.7,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-PRO-4",
+    "mapId": "m7",
+    "ref": "ref2",
+    "win": 0.78,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-1",
+    "mapId": "mj",
+    "ref": "map",
+    "win": 0.07,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-1",
+    "mapId": "mj",
+    "ref": "ref2",
+    "win": 0.44,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-2",
+    "mapId": "mj",
+    "ref": "map",
+    "win": 0.02,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-2",
+    "mapId": "mj",
+    "ref": "ref2",
+    "win": 0.34,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-3",
+    "mapId": "mj",
+    "ref": "map",
+    "win": 0.05,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "10-A-PRO-3",
+    "mapId": "mj",
+    "ref": "ref2",
+    "win": 0.47,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "11-PRO-1",
+    "mapId": "m10",
+    "ref": "map",
+    "win": 0.35,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "11-PRO-1",
+    "mapId": "m10",
+    "ref": "ref2",
+    "win": 0.14,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "11-A-PRO-1",
+    "mapId": "mv",
+    "ref": "map",
+    "win": 0.3,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "11-A-PRO-1",
+    "mapId": "mv",
+    "ref": "ref2",
+    "win": 0.34,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "11-A-PRO-2",
+    "mapId": "mv",
+    "ref": "map",
+    "win": 0.42,
+    "n": 100,
+    "cards": 14
+   },
+   {
+    "id": "11-A-PRO-2",
+    "mapId": "mv",
+    "ref": "ref2",
+    "win": 0.3,
+    "n": 100,
+    "cards": 14
+   },
+   {
+    "id": "11-A-PRO-3",
+    "mapId": "mv",
+    "ref": "map",
+    "win": 0.4,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "11-A-PRO-3",
+    "mapId": "mv",
+    "ref": "ref2",
+    "win": 0.42,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "11-A-PRO-4",
+    "mapId": "mv",
+    "ref": "map",
+    "win": 0.49,
+    "n": 100,
+    "cards": 14
+   },
+   {
+    "id": "11-A-PRO-4",
+    "mapId": "mv",
+    "ref": "ref2",
+    "win": 0.44,
+    "n": 100,
+    "cards": 14
+   },
+   {
+    "id": "12-PRO-1",
+    "mapId": "mh",
+    "ref": "map",
+    "win": 0.78,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "12-PRO-1",
+    "mapId": "mh",
+    "ref": "ref2",
+    "win": 0.92,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "12-PRO-2",
+    "mapId": "mh",
+    "ref": "map",
+    "win": 0.67,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "12-PRO-2",
+    "mapId": "mh",
+    "ref": "ref2",
+    "win": 0.84,
+    "n": 100,
+    "cards": 11
+   },
+   {
+    "id": "13-PRO-1",
+    "mapId": "mr",
+    "ref": "map",
+    "win": 0.62,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "13-PRO-1",
+    "mapId": "mr",
+    "ref": "ref2",
+    "win": 0.91,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "13-PRO-2",
+    "mapId": "mr",
+    "ref": "map",
+    "win": 0.72,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "13-PRO-2",
+    "mapId": "mr",
+    "ref": "ref2",
+    "win": 0.88,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "13-PRO-3",
+    "mapId": "mr",
+    "ref": "map",
+    "win": 0.74,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "13-PRO-3",
+    "mapId": "mr",
+    "ref": "ref2",
+    "win": 0.99,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "14-PRO-1",
+    "mapId": "m5",
+    "ref": "map",
+    "win": 0.25,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "14-PRO-1",
+    "mapId": "m5",
+    "ref": "ref2",
+    "win": 0.27,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "14-A-PRO-1",
+    "mapId": "my",
+    "ref": "map",
+    "win": 0.02,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "14-A-PRO-1",
+    "mapId": "my",
+    "ref": "ref2",
+    "win": 0.44,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "14-A-PRO-2",
+    "mapId": "my",
+    "ref": "map",
+    "win": 0.09,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "14-A-PRO-2",
+    "mapId": "my",
+    "ref": "ref2",
+    "win": 0.41,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "14-A-PRO-3",
+    "mapId": "my",
+    "ref": "map",
+    "win": 0.08,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "14-A-PRO-3",
+    "mapId": "my",
+    "ref": "ref2",
+    "win": 0.59,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "14-A-PRO-4",
+    "mapId": "my",
+    "ref": "map",
+    "win": 0.08,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "14-A-PRO-4",
+    "mapId": "my",
+    "ref": "ref2",
+    "win": 0.47,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "15-PRO-1",
+    "mapId": "ml",
+    "ref": "map",
+    "win": 0.67,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "15-PRO-1",
+    "mapId": "ml",
+    "ref": "ref2",
+    "win": 0.83,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "15-PRO-2",
+    "mapId": "ml",
+    "ref": "map",
+    "win": 0.58,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "15-PRO-2",
+    "mapId": "ml",
+    "ref": "ref2",
+    "win": 0.82,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "15-PRO-3",
+    "mapId": "ml",
+    "ref": "map",
+    "win": 0.77,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "15-PRO-3",
+    "mapId": "ml",
+    "ref": "ref2",
+    "win": 0.86,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "15-PRO-4",
+    "mapId": "ml",
+    "ref": "map",
+    "win": 0.62,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "15-PRO-4",
+    "mapId": "ml",
+    "ref": "ref2",
+    "win": 0.93,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "16-PRO-1",
+    "mapId": "mt",
+    "ref": "map",
+    "win": 0.53,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "16-PRO-1",
+    "mapId": "mt",
+    "ref": "ref2",
+    "win": 0.65,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "16-PRO-2",
+    "mapId": "mt",
+    "ref": "map",
+    "win": 0.39,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "16-PRO-2",
+    "mapId": "mt",
+    "ref": "ref2",
+    "win": 0.71,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "17-PRO-1",
+    "mapId": "m6",
+    "ref": "map",
+    "win": 0.15,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "17-PRO-1",
+    "mapId": "m6",
+    "ref": "ref2",
+    "win": 0.81,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "17-PRO-2",
+    "mapId": "m6",
+    "ref": "map",
+    "win": 0.11,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "17-PRO-2",
+    "mapId": "m6",
+    "ref": "ref2",
+    "win": 0.5,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "17-A-PRO-1",
+    "mapId": "mi",
+    "ref": "map",
+    "win": 0.16,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "17-A-PRO-1",
+    "mapId": "mi",
+    "ref": "ref2",
+    "win": 0.43,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "17-A-PRO-2",
+    "mapId": "mi",
+    "ref": "map",
+    "win": 0.12,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "17-A-PRO-2",
+    "mapId": "mi",
+    "ref": "ref2",
+    "win": 0.37,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "18-PRO-1",
+    "mapId": "md",
+    "ref": "map",
+    "win": 0.36,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "18-PRO-1",
+    "mapId": "md",
+    "ref": "ref2",
+    "win": 0.35,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "18-A-PRO-1",
+    "mapId": "mpd",
+    "ref": "map",
+    "win": 0.19,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "18-A-PRO-1",
+    "mapId": "mpd",
+    "ref": "ref2",
+    "win": 0.49,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "18-A-PRO-2",
+    "mapId": "mpd",
+    "ref": "map",
+    "win": 0.22,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "18-A-PRO-2",
+    "mapId": "mpd",
+    "ref": "ref2",
+    "win": 0.78,
+    "n": 100,
+    "cards": 7
+   },
+   {
+    "id": "19-PRO-1",
+    "mapId": "m3",
+    "ref": "map",
+    "win": 0.3,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "19-PRO-1",
+    "mapId": "m3",
+    "ref": "ref2",
+    "win": 0.31,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "19-A-PRO-1",
+    "mapId": "m9",
+    "ref": "map",
+    "win": 0.53,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "19-A-PRO-1",
+    "mapId": "m9",
+    "ref": "ref2",
+    "win": 0.61,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "19-A-PRO-2",
+    "mapId": "m9",
+    "ref": "map",
+    "win": 0.38,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "19-A-PRO-2",
+    "mapId": "m9",
+    "ref": "ref2",
+    "win": 0.6,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "19-A-PRO-3",
+    "mapId": "m9",
+    "ref": "map",
+    "win": 0.5,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "19-A-PRO-3",
+    "mapId": "m9",
+    "ref": "ref2",
+    "win": 0.55,
+    "n": 100,
+    "cards": 5
+   },
+   {
+    "id": "20-PRO-1",
+    "mapId": "m11",
+    "ref": "map",
+    "win": 0.77,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "20-PRO-1",
+    "mapId": "m11",
+    "ref": "ref2",
+    "win": 0.66,
+    "n": 100,
+    "cards": 10
+   },
+   {
+    "id": "20-PRO-2",
+    "mapId": "m11",
+    "ref": "map",
+    "win": 0.64,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "20-PRO-2",
+    "mapId": "m11",
+    "ref": "ref2",
+    "win": 0.69,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "20-A-PRO-1",
+    "mapId": "me",
+    "ref": "map",
+    "win": 0.47,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "20-A-PRO-1",
+    "mapId": "me",
+    "ref": "ref2",
+    "win": 0.73,
+    "n": 100,
+    "cards": 12
+   },
+   {
+    "id": "20-A-PRO-2",
+    "mapId": "me",
+    "ref": "map",
+    "win": 0.44,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "20-A-PRO-2",
+    "mapId": "me",
+    "ref": "ref2",
+    "win": 0.74,
+    "n": 100,
+    "cards": 8
+   },
+   {
+    "id": "20-A-PRO-3",
+    "mapId": "me",
+    "ref": "map",
+    "win": 0.55,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "20-A-PRO-3",
+    "mapId": "me",
+    "ref": "ref2",
+    "win": 0.87,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "20-B-PRO-1",
+    "mapId": "mx",
+    "ref": "map",
+    "win": 0.74,
+    "n": 100,
+    "cards": 15
+   },
+   {
+    "id": "20-B-PRO-1",
+    "mapId": "mx",
+    "ref": "ref2",
+    "win": 0.95,
+    "n": 100,
+    "cards": 15
+   },
+   {
+    "id": "20-B-PRO-2",
+    "mapId": "mx",
+    "ref": "map",
+    "win": 0.51,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "20-B-PRO-2",
+    "mapId": "mx",
+    "ref": "ref2",
+    "win": 0.83,
+    "n": 100,
+    "cards": 13
+   },
+   {
+    "id": "20-B-PRO-3",
+    "mapId": "mx",
+    "ref": "map",
+    "win": 0.37,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "20-B-PRO-3",
+    "mapId": "mx",
+    "ref": "ref2",
+    "win": 0.68,
+    "n": 100,
+    "cards": 6
+   },
+   {
+    "id": "20-B-PRO-4",
+    "mapId": "mx",
+    "ref": "map",
+    "win": 0.39,
+    "n": 100,
+    "cards": 9
+   },
+   {
+    "id": "20-B-PRO-4",
+    "mapId": "mx",
+    "ref": "ref2",
+    "win": 0.8,
+    "n": 100,
+    "cards": 9
+   }
+  ]
+ }
 }
