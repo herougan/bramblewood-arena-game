@@ -3910,7 +3910,7 @@ function pumpDiscoverQueue(){
   const el = document.createElement('div');
   el.className = 'discover-pop';
   el.setAttribute('role', 'status');
-  el.innerHTML = `<div class="discover-burst"></div><div class="discover-card">${cardTileHTML(d, {inPlay:true})}</div><div class="discover-text"><span class="discover-title">✨ Discovered!</span><span class="discover-name">${escapeHtml(d.name)}</span></div>`;
+  el.innerHTML = `<div class="discover-burst"></div><div class="discover-card">${cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-A): the Full size */})}</div><div class="discover-text"><span class="discover-title">✨ Discovered!</span><span class="discover-name">${escapeHtml(d.name)}</span></div>`;
   document.body.appendChild(el);
   try{ SoundKit.quick && SoundKit.quick(); }catch(e){}
   requestAnimationFrame(()=> el.classList.add('show'));
@@ -7592,7 +7592,7 @@ function renderCodexGrid(keepPage){
     // is redrawn once Map 0 is cleared, without a reload.
     let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     // Easter eggs (2026-10-19, package EE): one not seen yet is a "???" tile (easterEggMaskDef), not the card.
-    if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
+    if(easterEggMasked(d) && easterEggsShown()){ let mh = `<div class="cx-tile-wrap cx-unowned cx-ee-mask" title="${escapeAttr(TX('ui.ee-mask-tip'))}">${cardTileHTML(easterEggMaskDef(d), {lazyArt:true, extraClass:'ee-masked', size:'full'})}</div>`; try{ mh = EmojiStyle.htmlBlock(mh); }catch(e){} return mh; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
@@ -7601,7 +7601,7 @@ function renderCodexGrid(keepPage){
     if(adminModeEnabled && isEasterEgg(d)) tags.push(`<span class="cx-tag cx-tag-unob cx-tag-sym" title="${escapeAttr(TX('ui.ee-admin-tip'))}" aria-label="${escapeAttr(TX('ui.ee-tag'))}">🥚<span class="cx-tag-words"> ${escapeHtml(TX('ui.ee-tag'))}</span></span>`); // 2026-10-19 (package EE)
     else if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob cx-tag-sym" title="Not obtainable yet: the card editor\'s Obtainable box" aria-label="Not obtainable">🚫<span class="cx-tag-words"> Not obtainable</span></span>');
     const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
-    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable'})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable', size:'full' /* 2026-10-30 (CS-A) */})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
     try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
@@ -8598,6 +8598,13 @@ function ui3TintHTML(d){
   const t = ui3TintKeys(d); if(!t.length) return '';
   return `<i class="ui3-tint" aria-hidden="true" data-tint="${t.map(x=> x[0]).join(' ')}" style="${t.map((x, i)=> `--t${i + 1}:${x[1]}`).join(';')}"></i>`;
 }
+// 2026-10-30 (package CS-A, card sizes step 1; owner 10-29 19:14: "Currently we have like 10 sizes. Can we reduce to just 3 or 4?"; decisions
+// CS-1..5, 10-30 10:34): a card is drawn at one of four sizes, each a CSS token on :root (--card-detail-w, --card-full-w, --card-compact-w,
+// --chip-h; see the CS-A block in arena_template.html). The caller names the size with opts.size ('detail' | 'full' | 'compact') and the tile
+// carries data-size; the screen never sets a pixel width. With no opts.size there is no attribute (the screens that have not moved yet keep
+// their own rules; in-match cards move in a later step). docs/design/card-sizes-2026-10-29.md has the plan; tests/cs-a-2026-10-30.js checks it.
+const CARD_SIZES = ['detail', 'full', 'compact'];
+function cardSizeAttr(opts){ const s = opts && opts.size; return CARD_SIZES.includes(s) ? ` data-size="${s}"` : ''; }
 function cardTileHTML(d, opts){
   opts = opts||{};
   const isCustom = !!liveCards[d.id];
@@ -8664,7 +8671,7 @@ function cardTileHTML(d, opts){
       ${live.bottomHTML||''}
     </div>`;
   }
-  return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}"${cardSizeAttr(opts)} ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
@@ -15025,7 +15032,7 @@ function deckHeroBannerHTML(){
   const d = {counts: myDeckCounts||{}, characterId: myCharacterId, leaderId: myLeaderId};
   const sig = deckSignature(d), total = deckTotal(d.counts), lvl = mainDeckLevel(d.counts, myLeaderId);
   const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
-  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<span class="dt-empty-leader">👑<small>Tap to choose</small></span>`;
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */}) : `<span class="dt-empty-leader">👑<small>Tap to choose</small></span>`;
   const hero = (d.counts[HERO_ID] > 0 && typeof myHero !== 'undefined' && myHero) ? myHero : null;
   // 2026-10-08 (user): smaller cards; the castle and leader art smeared across the background, left
   // to right; Cost/Wait and Attack-by-Wait mini charts; card count, deck level and castle HP moved
@@ -15997,7 +16004,7 @@ function deckShowcaseHTML(d, opts){
   const sig = deckSignature(d);
   const total = deckTotal(d.counts||{});
   const castleTile = matchCastleTileHTML(castle, castle ? castle.health : 30, castle ? castle.health : 30, 'preview', '');
-  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
+  const leaderTile = leader ? cardTileHTML(leader, {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
   return `<div class="deck-showcase ${opts.compact?'is-compact':''}">
     <div class="ds-pair">
       <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Bramble')}</figcaption></figure>
@@ -19924,7 +19931,7 @@ function openDeckBuilderPopup(o){
   const total = ()=> Object.values(counts).reduce((a,b)=> a + (b||0), 0);
   const deckHTML = ()=>{ const defs = getCardDefs(); const ids = Object.keys(counts).filter(id=> counts[id] > 0 && defs[id]).sort(sortBy());
     return ids.length ? ids.map(id=> `<button type="button" class="dbp-stack${pm && !mapPoolHas(pm.mapId, id) ? ' is-offpool' : ''}" data-rm="${escapeAttr(id)}" data-defid="${escapeAttr(id)}" title="${escapeAttr(defs[id].name)}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), counts[id], '×' + counts[id])}</button>`).join('') : '<p class="panel-sub">Empty. Click cards below to add them.</p>'; };
-  const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
+  const poolItem = id=> { const defs = getCardDefs(); return `<button type="button" class="dbp-stack" data-add="${escapeAttr(id)}" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */}), (counts[id]||0) ? Math.min(3, counts[id] + 1) : 1, counts[id] ? 'in deck ×' + counts[id] : '')}</button>`; };
   const poolHTML = ()=>{
     if(pm){ // 2026-10-22 (package MP): the map's pool, tier by tier (MAP, its SUBMAP, SPECIAL)
       const ql = q.trim().toLowerCase();
@@ -21651,7 +21658,7 @@ function renderAutobattleSubTab(body){
     const pickNo = off.kind==='card' ? ` (${run.step-2} of ${AutoB.AB.PICKS})` : '';
     body.innerHTML = `<div class="panel ab-panel">
       <div class="ab-draft-head"><h2>Draft · ${titles[off.kind]}${pickNo}</h2><span class="ab-step">Step ${run.step+1} / ${AutoB.DRAFT_STEPS}</span></div>
-      <div class="ab-offers">${off.options.map(id=> `<button type="button" class="ab-offer" data-pick="${escapeAttr(id)}">${off.kind==='castle' ? castleTileHTML(CHARACTER_DEFS[id]) : cardTileHTML(defs[id], {inPlay:true})}</button>`).join('')}</div>
+      <div class="ab-offers">${off.options.map(id=> `<button type="button" class="ab-offer" data-pick="${escapeAttr(id)}">${off.kind==='castle' ? castleTileHTML(CHARACTER_DEFS[id]) : cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */})}</button>`).join('')}</div>
       ${abDeckSummaryHTML(run)}
     </div>`;
     body.querySelectorAll('[data-pick]').forEach(b=> b.onclick = ()=>{ AutoB.applyDraftPick(run, b.dataset.pick); saveAbRun(run); rerender(); });
@@ -21664,7 +21671,7 @@ function renderAutobattleSubTab(body){
     body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
       <h2>✨ Pick a boon</h2>
       <div class="ab-offers">${run.pendingBoons.map((bn,i)=>{ const d = abDisplayDef(run, bn.card);
-        return `<button type="button" class="ab-offer ab-boon" data-boon="${i}"><div class="ab-boon-label">${bn.type==='dup'?'📑':bn.type==='buff'?'💪':'🔮'} ${escapeHtml(bn.label)}</div>${d?cardTileHTML(d, {inPlay:true}):''}</button>`; }).join('')}</div>
+        return `<button type="button" class="ab-offer ab-boon" data-boon="${i}"><div class="ab-boon-label">${bn.type==='dup'?'📑':bn.type==='buff'?'💪':'🔮'} ${escapeHtml(bn.label)}</div>${d?cardTileHTML(d, {inPlay:true, size:'full'}):''}</button>`; }).join('')}</div>
       ${abDeckSummaryHTML(run)}</div>`;
     body.querySelectorAll('[data-boon]').forEach(b=> b.onclick = ()=>{ AutoB.applyBoon(run, run.pendingBoons[+b.dataset.boon], defs); run.phase = 'prep'; saveAbRun(run); rerender(); });
     return;
@@ -21698,8 +21705,8 @@ function renderAutobattleSubTab(body){
     <div class="ab-prep">
       <div class="ab-commanders">
         <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Bramble',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
-        <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
-        <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
+        <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true, size:'full'}):''}</div>
+        <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true, size:'full'}):''}
           ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
       </div>
       <div class="ab-fight-box"><button class="btn primary big" id="abFightBtn">⚔️ Fight</button><div class="ab-note">vs a run with ${run.wins} win${run.wins===1?'':'s'}</div>
@@ -33566,7 +33573,7 @@ function deckCopyUidsFor(id, n){
 function neDeckPoolStackHTML(id, defs){
   const d = defs[id], owned = ownedCopiesOf(id), used = neDeckUsed(id), left = owned === Infinity ? Infinity : Math.max(0, owned - used), full = neDeckFull(id, defs);
   const fan = neFanCopies(id).length > 1 || neFanSkins(id).length > 0;
-  const tile = cardTileHTML(d, {magnetic:true}); // the card itself; its copies' looks are in the fan
+  const tile = cardTileHTML(d, {magnetic:true, size:'full' /* 2026-10-30 (CS-A) */}); // the card itself; its copies' looks are in the fan
   const st = stackHTML(tile, owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (full ? 'is-spent ne-full' : '') + (fan ? ' ne-fan-host' : ''), deckLimitChipHTML(id, used));
   return fan ? st.replace('<div class="pool-stack', `<div data-ne-fan="${escapeAttr(id)}" class="pool-stack`) : st;
 }
@@ -33672,7 +33679,7 @@ function renderMyDeckPanels(){
     // Shift+click (or right-click); the small − corner does it with a tap on touch screens.
     // 2026-10-16: a card's Shiny / alt-art copies in the deck are their own chips (data-look), after its plain ones.
     const looks = deckLooksFor(id), plainN = n - deckLookCount(looks);
-    const chip = (look, k)=> `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look)}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
+    const chip = (look, k)=> `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look), size:'full' /* 2026-10-30 (CS-A) */}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
     return (plainN > 0 ? chip('', plainN) : '') + Object.keys(looks).map(k=> chip(k, looks[k])).join(''); }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const baseSort = cfSort;
   const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
@@ -44271,7 +44278,7 @@ function rewardCastleDrops(m){ return ((m && m.conquestCastleDrops) || []).filte
 function rewardCastleCardHTML(x){
   const ch = CHARACTER_DEFS[x.id], spare = x.kind !== 'new';
   const tip = spare ? TX('results.spare-bramble-tip', {name: ch.name}) : TX('results.now-in-your-collection', {v1: ch.name});
-  return `<div class="rw-card is-unlock rw-castle is-first-seen${spare ? ' is-spare' : ''}" data-castle="${escapeAttr(ch.id)}" data-tip="${escapeAttr(tip)}">${cardTileHTML(Object.assign({}, ch, {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span><span class="rw-new${spare ? ' rw-spare' : ''}" aria-hidden="true">${spare ? TX('results.spare') : TX('results.new')}</span></div>`;
+  return `<div class="rw-card is-unlock rw-castle is-first-seen${spare ? ' is-spare' : ''}" data-castle="${escapeAttr(ch.id)}" data-tip="${escapeAttr(tip)}">${cardTileHTML(Object.assign({}, ch, {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true, size:'full' /* 2026-10-30 (CS-A) */})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span><span class="rw-new${spare ? ' rw-spare' : ''}" aria-hidden="true">${spare ? TX('results.spare') : TX('results.new')}</span></div>`;
 }
 // A reward card this win was not good enough for (2026-10-22, package RW): a lock, a card and the rank emblem it needs (m.conquestCardsNeedRank = [{id, rank}]).
 function lockedCardChipsHTML(m, cls){
@@ -44340,15 +44347,16 @@ function rewardsPanelHTML(m){
     const rr = m.conquestRankEarned && /^[A-Z]+$/.test(m.conquestRankEarned) ? m.conquestRankEarned : 'S', rankWon = new Set([m.conquestRareFind, m.conquestCardDrop].filter(Boolean));
     const ribbon = `<span class="pl2-rr" aria-label="${escapeAttr(TX('ui.pl2-rank-reward', {rank: rr}))}"><span class="rank-hex rank-${rr}" aria-hidden="true"><i></i><b>${rr}</b></span><span aria-hidden="true">${escapeHtml(TX('ui.pl2-reward'))}</span></span>`;
     const tiles = []; // {key, name, html, copy}: one entry per card won; res3FanHTML groups them by key
-    const add = (key, d, html)=> tiles.push({key, name: d ? d.name : key, html, copy: d ? cardTileHTML(d, {inPlay:true}) : ''});
+    // 2026-10-30 (CS-A): the cards won are Full size (size:'full'; the CSS keeps a height cap for short windows)
+    const add = (key, d, html)=> tiles.push({key, name: d ? d.name : key, html, copy: d ? cardTileHTML(d, {inPlay:true, size:'full'}) : ''});
     cards.slice().sort((x, y)=> (rankWon.has(y) ? 1 : 0) - (rankWon.has(x) ? 1 : 0)).forEach(id=>{ if(!defs[id]) return; const special = rankWon.has(id);
-      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
-    baseCopyIds.forEach(id=> add(id, defs[id], `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`));
+      add(id, defs[id], `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}${special ? ' pl2-rank-reward' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}${special ? ribbon : ''}</div>`); });
+    baseCopyIds.forEach(id=> add(id, defs[id], `<div class="rw-card is-unlock rw-base-copy" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}</div>`));
     castles.forEach(c=> add('castle:' + c.id, CHARACTER_DEFS[c.id], rewardCastleCardHTML(c)));
-    eggCards.forEach(id=>{ const d = defs[id]; if(d) add(id, d, `<div class="rw-card pl2-won rw-egg-card res3-nest-card is-egg" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true})}</div>`); });
-    if(res3EggId){ const d = defs[res3EggId]; add('egg:' + m.conquestEggDrop, d, `<div class="rw-card pl2-won res3-nest-card is-egg" data-tip="${escapeAttr(eggNeedsNestNote() || TX('results.it-s-in-your-pack-place'))}">${cardTileHTML(d, {inPlay:true})}</div>`); }
-    if(res3Baby){ const bi = babyRewardInfo(m.conquestBabyEarned); add('baby:' + bi.type, res3Baby, `<div class="rw-card pl2-won res3-nest-card is-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(escapeHtml(bi.icon) + ' ' + TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}) + '. ' + TX('results.it-s-safe-in-your-nest', {v1: bi.name}))}">${cardTileHTML(res3Baby, {inPlay:true})}</div>`); } // G13: babyRewardInfo is the one source of its type and icon
-    pl2Mat.forEach(([id, n])=>{ for(let k = 0; k < Math.max(1, n|0); k++) add(id, defs[id], `<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true})}</div>`); });
+    eggCards.forEach(id=>{ const d = defs[id]; if(d) add(id, d, `<div class="rw-card pl2-won rw-egg-card res3-nest-card is-egg" data-tip="${escapeAttr(eggCardRewardNote())}">${cardTileHTML(d, {inPlay:true, size:'full'})}</div>`); });
+    if(res3EggId){ const d = defs[res3EggId]; add('egg:' + m.conquestEggDrop, d, `<div class="rw-card pl2-won res3-nest-card is-egg" data-tip="${escapeAttr(eggNeedsNestNote() || TX('results.it-s-in-your-pack-place'))}">${cardTileHTML(d, {inPlay:true, size:'full'})}</div>`); }
+    if(res3Baby){ const bi = babyRewardInfo(m.conquestBabyEarned); add('baby:' + bi.type, res3Baby, `<div class="rw-card pl2-won res3-nest-card is-baby" data-baby-type="${escapeAttr(bi.type)}" data-tip="${escapeAttr(escapeHtml(bi.icon) + ' ' + TX('results.fix3-rescued-baby', {type: bi.name.toLowerCase()}) + '. ' + TX('results.it-s-safe-in-your-nest', {v1: bi.name}))}">${cardTileHTML(res3Baby, {inPlay:true, size:'full'})}</div>`); } // G13: babyRewardInfo is the one source of its type and icon
+    pl2Mat.forEach(([id, n])=>{ for(let k = 0; k < Math.max(1, n|0); k++) add(id, defs[id], `<div class="rw-card pl2-won rw-materia-card" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}</div>`); });
     secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div>${res3FanHTML(tiles, 'won')}
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
@@ -50068,7 +50076,7 @@ function openMatchDeckView(pid){
   const out = tally(outIds);
   const order = ids=> ids.sort((a,b)=> (defs[a].cost||0)-(defs[b].cost||0) || (defs[a].name||'').localeCompare(defs[b].name||''));
   const nLeft = (pl.deck||[]).length;
-  const tile = (id, n, gone)=> `<div class="mdv-card ${gone?'is-gone':''}">${cardTileHTML(defs[id], {inPlay:true})}${n>1?`<span class="ro-x">×${n}</span>`:''}</div>`;
+  const tile = (id, n, gone)=> `<div class="mdv-card ${gone?'is-gone':''}">${cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */})}${n>1?`<span class="ro-x">×${n}</span>`:''}</div>`;
   let overlay = document.getElementById('matchDeckOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'matchDeckOverlay'; overlay.className = 'modal-overlay'; document.body.appendChild(overlay); }
   overlay.innerHTML = `<div class="modal ro-deck-modal mdv-modal" role="dialog" aria-label="Your deck">
@@ -50092,7 +50100,7 @@ function openRecentOpponentDeck(i){
   overlay.innerHTML = `<div class="modal ro-deck-modal" role="dialog" aria-label="Opponent deck">
     <div class="modal-head-row"><h2>${escapeHtml(o.name||'Opponent')}</h2><button class="modal-close-btn" id="roClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">${RECENT_OPP_MODE_LABEL[o.mode]||o.mode} · ${o.result==='win'?'you won':o.result==='loss'?'you lost':'draw'} · ${deckTotal(o.deck)} cards</p>
-    <div class="pool-grid ro-deck-grid">${ids.map(id=> `<div class="ro-deck-card">${cardTileHTML(defs[id], {inPlay:true})}<span class="ro-x">×${o.deck[id]}</span></div>`).join('')}</div>
+    <div class="pool-grid ro-deck-grid">${ids.map(id=> `<div class="ro-deck-card">${cardTileHTML(defs[id], {inPlay:true, size:'full'})}<span class="ro-x">×${o.deck[id]}</span></div>`).join('')}</div>
   </div>`;
   overlay.hidden = false;
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; };
@@ -50965,7 +50973,7 @@ function renderForge(){
     </div>`;
   const poolEl = document.getElementById('forgePool');
   const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
-  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
+  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id), size:'full' /* 2026-10-30 (CS-A) */})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${forgeCountBadgeHTML(id) /* 2026-10-19 (package UX): ×N copies */}</div>`).join('');
   // 2026-10-19 (package UX): picking a card whose copies differ (levels or finishes) opens the copies sheet over the Forge
   poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; const was = forgeSelectedId; forgeSelectedId = el.getAttribute('data-defid'); renderForge();
     if(forgeSelectedId !== was && forgeCopiesWorthASheet(forgeSelectedId)) openForgeCopySheet(forgeSelectedId); }));
@@ -54319,7 +54327,7 @@ function openNestPicker(slot, tab){
     <div class="ne-pick-pane" data-np-pane="eggs" ${tab === 'eggs' ? '' : 'hidden'}>${eggs.length ? `<div class="np-grid">${eggs.map(e=>{ const k = EGG_KINDS[e.kind] || EGG_KINDS.woodland, t = NEST_TYPES[k.type] || NEST_TYPES.woodland;
       return `<button type="button" class="np-item" data-np-egg="${escapeAttr(e.id)}"><span class="np-ico">${k.icon}</span><b>${escapeHtml(k.name)}</b><small>${t.icon} ${escapeHtml(t.name)} · hatches in ${k.hatchHours}h</small></button>`; }).join('')}</div>` : '<p class="panel-sub">No eggs in your pack. They turn up on the road.</p>'}</div>
     <div class="ne-pick-pane" data-np-pane="young" ${tab === 'young' ? '' : 'hidden'}><p class="panel-sub">${escapeHtml(TX('ui.ne-young-help', {h: NURTURE_HOURS}))}</p>
-    ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=>{ const ok = canAffordNurture(id); return `<button type="button" class="np-item np-card ${ok ? '' : 'is-short'} ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (ok ? '' : ': not enough to train yet'))}">${cardTileHTML(defs[id], {inPlay:true})}<b>${escapeHtml(defs[id].name)}</b></button>`; }).join('')}</div>
+    ${kids.length ? `<div class="np-grid np-cards">${kids.map(id=>{ const ok = canAffordNurture(id); return `<button type="button" class="np-item np-card ${ok ? '' : 'is-short'} ${nestNurturePrefill === id ? 'is-pre' : ''}" data-np-card="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (ok ? '' : ': not enough to train yet'))}">${cardTileHTML(defs[id], {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */})}<b>${escapeHtml(defs[id].name)}</b></button>`; }).join('')}</div>
       <div class="np-confirm" hidden></div>` : `<p class="panel-sub">${escapeHtml(TX('ui.ne-young-none'))}</p>`}</div></div>`;
   document.body.appendChild(ov); nestNurturePrefill = null;
   ov.querySelectorAll('[data-np-tab]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); const k = b.dataset.npTab;
@@ -55958,7 +55966,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</p>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
@@ -55977,7 +55985,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon && !KROONI_RETIRED) bits.push(`👑 +${kroon} Krooni`); /* 2026-10-23 (TU2) */ if(levels.length) bits.push(packLevelUpsHTML(levels, defs)); // 2026-10-23 (package RW5, owner item 13): names the cards that levelled
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -55997,7 +56005,7 @@ function openPackAnimation(pack, opened, opts){
     const bits = []; if(levels.length) bits.push(packLevelUpsHTML(levels, defs));
     overlay.innerHTML = `<div class="po2-top"><span class="po2-count">${escapeHtml(TX('ui.pl1-session-title', {n: all.length}))}</span></div><div class="po2-stage po2-summary po2-all pl1-session">
       <p class="pl1-session-kinds">${kinds.map(k=> `<span>${escapeHtml(k)}</span>`).join('')}</p>
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}${t.n > 1 ? ' res3-pile' : '' /* RES3 (2026-10-26, G16): copies stack */}" style="--c:${Math.min(3, t.n - 1)}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(id).name||id)} large">${poTile(defOf(id), {editable:false, size:'full', extraClass: [tierOf(id) >= 4 ? holoClass(defOf(id)) : '', pullClass(t.r, defOf(id))].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}${poEditBtn(id)}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(bits).filter(Boolean).join(' · ')}</p>${footActions()}</div>
     </div>`;
     poClearFlights();
@@ -57733,7 +57741,7 @@ function marketBrowseHTML(){
   return `<div class="mk-grid">${rows.map(l=>{
     const d = Registry.card(l.card_id); const mine = l.seller_id===cloudUserId; const seller = (Registry.users._cache.get(l.seller_id)||{}).display_name || 'Player';
     const afford = (myCurrencies[l.currency]||0) >= l.price;
-    return `<div class="mk-item">${cardTileHTML(d, {inPlay:true})}${l.foil?'<div class="mk-foil">✨ Foil</div>':''}
+    return `<div class="mk-item">${cardTileHTML(d, {inPlay:true, size:'full' /* 2026-10-30 (CS-A) */})}${l.foil?'<div class="mk-foil">✨ Foil</div>':''}
       <div class="mk-meta">${priceHTML(l.price, l.currency)}<span class="mk-seller">by ${escapeHtml(seller)}</span></div>
       ${mine ? '<button type="button" class="btn small" disabled>Your listing</button>' : `<button type="button" class="btn small primary" data-mk-buy="${l.id}" ${afford||!isSignedIn()?'':'disabled'} title="${afford?'':'Not enough '+escapeAttr((CURRENCY_META[l.currency]||{}).label||'')}">Buy</button>`}
     </div>`; }).join('')}</div>`;
@@ -57751,7 +57759,7 @@ function marketSellHTML(){
   return `<form class="mk-sell" id="mkSellForm">
     <label class="inv-label" for="mkSellCard">Card</label>
     <select id="mkSellCard">${owned.map(id=>`<option value="${escapeAttr(id)}" ${id===Market.sellId?'selected':''}>${escapeHtml(Registry.card(id).name)} (×${myCardCopies[id].length})</option>`).join('')}</select>
-    <div class="mk-sell-preview">${cardTileHTML(d, {inPlay:true})}</div>
+    <div class="mk-sell-preview">${cardTileHTML(d, {inPlay:true, size:'full'})}</div>
     ${inDeck ? '<p class="inv-deck is-bad">⚠️ This is your only copy and it’s in your deck — selling it removes it from your collection.</p>' : ''}
     <div class="mk-sell-row">
       <label>Price <input type="number" id="mkSellPrice" min="1" max="100000" value="${Market.sellPrice}"></label>
