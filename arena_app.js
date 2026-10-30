@@ -7222,7 +7222,7 @@ function renderCodex(){
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
       </select>
-      ${devModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexFilter.showTest ? 'is-on' : ''}" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" role="switch" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
+      ${devModeEnabled ? `<label class="cx-test-toggle u4-switch ${codexFilter.showTest ? 'is-on' : ''}" title="Show only test cards. They are hidden from the Codex by default."><input type="checkbox" role="switch" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
     ${codexKindRowHTML() /* 2026-10-19 (package UX): card types + the Base level / My best toggle */}
     <div class="cx-skill-active" id="cxSkillActive" hidden></div>
@@ -10725,7 +10725,7 @@ function renderEditorInner(){
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label>${(()=>{ /* 2026-10-21 (package CX2): the rank ladder (Common → Daemonic; Starter only on a Starter card) and four toggles, Quest, Event, Dev, Special (one at a time) */
         const rp = rarityPartsOf(c.rarity || 'common'), ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && (r.key !== 'starter' || rp.rank === 'starter'));
         return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select><span class="rarity-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">${Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join('')}</span>`; })()}</div>
-      <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
+      <div class="field" title="Unit: stays on the field. Spell: resolves once, then the Graveyard. Equipment: dragged onto a unit."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" id="fEquipTimeRow" ${c.cardType==='equipment'?'':'hidden'} title="${escapeAttr(TX('ui.c3-equip-time-tip'))}"><label>${escapeHtml(TX('ui.c3-equip-time-name'))}</label><span style="display:flex; gap:10px; align-items:center;"><input id="fEquipTime" type="number" min="0" max="5" style="width:64px" value="${(c.equip && c.equip.turns != null) ? c.equip.turns : 1}" aria-label="${escapeAttr(TX('ui.c3-equip-time-name'))}"><label style="display:flex; gap:4px; align-items:center;"><input id="fEquipTamper" type="checkbox" ${(c.equip && c.equip.tamperProof) ? 'checked' : ''}> ${escapeHtml(TX('ui.c3-tamper-name'))}</label><label style="display:flex; gap:4px; align-items:center;" title="${escapeAttr(TX('ui.e10-hardy-tip'))}">${escapeHtml(TX('ui.e10-hardy-name'))} <input id="fEquipHardy" type="number" min="1" max="9" style="width:52px" value="${eqHardyOf(c)}"></label></span></div>
@@ -10746,8 +10746,8 @@ function renderEditorInner(){
            decks)" checkbox — checked meant NOT locked, the opposite of the underlying c.locked
            field it wrote to (c.locked = !checked). Now the checkbox IS c.locked directly: label
            reads "Locked", checked when the card is actually locked, no double-negative. -->
-      <div class="field" title="Locked cards can't be added to a deck yet — use this to keep new/experimental cards out of play until you're ready."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden cards don't appear anywhere for a player until they first see one in play — then it shows a 'Discovered!' pop and becomes a normal Locked card."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}> Hidden</label></div>
-      ${devModeEnabled ? `<div class="field" title="Test cards never appear in the draftable pool or ordinary Codex browsing (same as a locked card, but permanently, regardless of unlocking) -- they only ever show up in the Codex's dedicated 🧪 Test cards filter and the Sandbox Test Battle's spawn picker."><label>Developer</label><label class="field-checkbox-row"><input type="checkbox" id="fTest" ${c.test?'checked':''}> 🧪 Test card</label></div>` : ''}
+      <div class="field" title="Locked cards can't go in a deck yet."><label>Availability</label><label class="field-checkbox-row"><input type="checkbox" id="fLocked" ${c.locked?'checked':''}> Locked</label><label class="field-checkbox-row" title="Hidden until a player first sees one in play, then it becomes Locked."><input type="checkbox" id="fHidden" ${c.hidden===false?'':'checked'}> Hidden</label></div>
+      ${devModeEnabled ? `<div class="field" title="Test cards only show in the Codex 🧪 Test cards filter and the Sandbox spawn picker."><label>Developer</label><label class="field-checkbox-row"><input type="checkbox" id="fTest" ${c.test?'checked':''}> 🧪 Test card</label></div>` : ''}
     </div>
     <div class="field-row">
       <!-- Task #102 (2026-09-16): this used to be the free-text "Archetype(s) — comma list"
@@ -10758,7 +10758,7 @@ function renderEditorInner(){
            2026-09-18: "Structure" now lives in this same pill list as an ordinary Type Tag,
            replacing the old standalone Card Type dropdown — a card with no "Structure" pill is a
            Unit, same implicit default the dropdown used to have (see isStructure()). -->
-      <div class="field" style="grid-column:span 3" title="A card can carry more than one type-tag (e.g. the Scorpion is both Desert and Arachnid), including Structure. Pick one to add it; click − on a pill to remove it.">
+      <div class="field" style="grid-column:span 3" title="A card can carry several type-tags. Pick one to add it; click − on a pill to remove it.">
         <label>Type Tags</label>
         <div class="pill-row" id="archPills">${(c.archetypes&&c.archetypes.length?c.archetypes:[]).map((a,i)=>`<span class="pill">${ARCHETYPE_ICON[a]||'🌰'} ${a}<button type="button" class="pill-rm" data-rmarch="${i}" title="Remove ${escapeAttr(a)}">−</button></span>`).join('') || '<span class="pill-empty">No types yet</span>'}</div>
         <div class="pill-add-row">
@@ -10789,7 +10789,7 @@ function renderEditorInner(){
            computeHitDamage/bramblewood-engine.js -- see the "Poison/Decay as elemental DAMAGE
            TYPES" comment above DMG_TYPES/ELEMENTAL_STATUS_MAP. Still just a plain 'physical'
            default for every other card, unchanged. -->
-      <div class="field" title="This card's basic attack's damage type. Poison/Decay convert the attack's own damage into that element's signature effect instead of ordinary HP loss (see the Reference tab); every other value only affects Resist/Weakness matching, same as before.">
+      <div class="field" title="The damage type of this card's basic attack.">
         <label>Element</label>
         <select id="fDmgType">${[...DMG_TYPES].sort().map(dt=>`<option value="${dt}" ${((c.dmgType||'physical')===dt)?'selected':''}>${dmgTypeOptLabel(dt)}</option>`).join('')}</select>
       </div>
@@ -10811,7 +10811,7 @@ function renderEditorInner(){
            here as card data (c.stoneCost/c.metalCost, effects.bountyStone/bountyMetal) for now,
            same additive-only scope as the Devilry/Ecclesia/Scrapper cost fields further down
            this form, which also only take effect once a matching system reads them. -->
-      <div class="field field-wide" title="What it costs to play this card from hand — Lumber (the only one the match engine currently charges), Stone, and Metal.">
+      <div class="field field-wide" title="What it costs to play this card: Lumber, Stone and Metal.">
         <label>Cost</label>
         <div class="multi-resource-row">
           <input id="fCost" type="number" min="0" value="${c.cost}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
@@ -10819,7 +10819,7 @@ function renderEditorInner(){
           <input id="fCostMetal" type="number" min="0" value="${c.metalCost||0}" title="Metal"><span class="mr-glyph" title="Metal">🔩</span>
         </div>
       </div>
-      <div class="field field-wide" title="Bounty: its owner gains this much Lumber when it is played, and the opponent gains the same when it dies. Stone and Metal are stored but not paid out yet.">
+      <div class="field field-wide" title="Bounty: Lumber its owner gains when played and the opponent gains when it dies.">
         <label>Reward</label>
         <div class="multi-resource-row">
           <input id="fBounty" type="number" min="0" value="${c.effects.bounty||0}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
@@ -10837,7 +10837,7 @@ function renderEditorInner(){
            now folds the Core Evil / Devilry-archetype Dark Point bonus into the shown total
            (previously the tooltip explicitly disclaimed "this preview shows only the base
            yield" — now it doesn't need to, the number IS the effective total). -->
-      <div class="field" title="What discarding this card grants, including any Core Evil / Devilry-archetype Dark Point bonus. Read-only here — set via a card's data, not this form."><label>Pitch</label><input id="fPitchValueDisplay" value="${pitchValueStatDisplay(c)}" disabled></div>
+      <div class="field" title="What discarding this card grants. Read-only here."><label>Pitch</label><input id="fPitchValueDisplay" value="${pitchValueStatDisplay(c)}" disabled></div>
     </div>
 
     <!-- Task #104 (2026-09-16): "Advanced" is now the umbrella header over Archetype (the
@@ -10864,7 +10864,7 @@ function renderEditorInner(){
          handlers below) and the picker snaps back to "+", so there's no separate Add click and
          no button taking up its own row. -->
     <div class="field-row">
-      <div class="field" title="Takes half damage (min 1, floored) from anything matching an entry — a damage type or ability (Elements/Passives), or an archetype/type-tag the attacker belongs to (Types).">
+      <div class="field" title="Takes half damage (min 1) from anything matching an entry.">
         <label>Resistance</label>
         <div class="pill-row" id="resistPills">${(c.effects.resist&&c.effects.resist.length?c.effects.resist:[]).map((r,i)=>`<span class="pill">${escapeHtml(resistOptionLabel(r))}<button type="button" class="pill-rm" data-rmresist="${i}" title="Remove ${escapeAttr(resistOptionLabel(r))}">−</button></span>`).join('') || '<span class="pill-empty">No resistances</span>'}</div>
         <div class="pill-add-row">
@@ -10892,7 +10892,7 @@ function renderEditorInner(){
           </select>
         </div>
       </div>
-      <div class="field" title="Takes NO damage from anything matching an entry (a damage type, an attacker's type or skill). Same matching rules as Resistance.">
+      <div class="field" title="Takes no damage from anything matching an entry.">
         <label>Immune</label>
         <div class="pill-row" id="immunePills">${(c.effects.immune&&c.effects.immune.length?c.effects.immune:[]).map((r,i)=>`<span class="pill">${escapeHtml(resistOptionLabel(r))}<button type="button" class="pill-rm" data-rmimmune="${i}" title="Remove ${escapeAttr(resistOptionLabel(r))}">−</button></span>`).join('') || '<span class="pill-empty">No immunities</span>'}</div>
         <div class="pill-add-row">
@@ -10910,14 +10910,14 @@ function renderEditorInner(){
 
     <div class="section-divider subsection mech-line-${inferMechanicLine(c)}"><span class="st-label">Archetype</span>
       <div class="field-row">
-        <div class="field" title="Grace is part of the Ecclesia line, Exile is part of the Scrapper line, and Devilry is its own line. Choosing one unlocks that line's summoning cost — and, in matches, wraps this card's related abilities in that mechanic's color."><label>Archetype</label><select id="fMechLine">
+        <div class="field" title="Picks this card's summoning line: Grace (Ecclesia), Exile (Scrapper) or Devilry."><label>Archetype</label><select id="fMechLine">
           <option value="none" ${inferMechanicLine(c)==='none'?'selected':''}>None</option>
           <option value="devilry" ${inferMechanicLine(c)==='devilry'?'selected':''}>Devilry</option>
           <option value="grace" ${inferMechanicLine(c)==='grace'?'selected':''}>Ecclesia</option>
           <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
           <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>${escapeHtml(TX('ui.arch-evomax'))}</option>
         </select></div>
-        <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = the Prayer tokens on your units on the field (2026-10-19: a Prayer N unit gains N a turn)."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
+        <div class="field mech-field" data-mech="grace" title="Prayer needed to play this card. Never spent."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
         <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
         <div class="field mech-field" data-mech="exile" title="How many cards must be exiled from that zone to afford this card."><label>Scrapper cost — count</label><input id="fExileCount" type="number" min="0" value="${c.exileCost?c.exileCost.count:0}"></div>
         <div class="field mech-field" data-mech="devilry" title="Extra cost paid from the Devilry resource pool on top of the lumber cost above."><label>Devilry cost</label><input id="fDevilryCost" type="number" min="0" value="${c.devilryCost||0}"></div>
@@ -10957,7 +10957,7 @@ function renderEditorInner(){
          card, a design anecdote, a joke about it — shown only in the new "Learn more" card-detail
          view (openCardDetail), never on the plain card face/popover. Optional, same as Flavor. -->
     <div class="section-divider full-bleed"><span class="st-label">Creator's Note</span><span class="st-sub">Your own commentary — shown in the card's "Learn more" detail view, not on the card itself</span>
-      <textarea id="fCreatorNote" class="full-width" title="Optional out-of-world note in your own voice — a design anecdote, why you made this card, a joke about it. Shown in the card's detail view (opened from a Codex click), never on the card face." placeholder="A tidbit only the creator would know…">${escapeAttr(c.creatorNote||'')}</textarea>
+      <textarea id="fCreatorNote" class="full-width" title="Optional designer note, shown in the card's detail view." placeholder="A tidbit only the creator would know…">${escapeAttr(c.creatorNote||'')}</textarea>
     </div>
 
     <!-- Battlefield Speech (2026-09-29, per explicit request: "Let me edit in custom fields
@@ -10970,7 +10970,7 @@ function renderEditorInner(){
         <div class="field" title="Which moment this line can appear on."><label>Trigger</label>
           <select id="fSpeechTrigger">${CUSTOM_SPEECH_TRIGGERS.map(t=>`<option value="${t.key}" ${((c._speechTrigger||'onSpawn')===t.key)?'selected':''}>${t.label}</option>`).join('')}</select>
         </div>
-        <div class="field" title="One of 3 independent lines for this trigger — all filled slots are eligible, one is picked at random when the trigger fires."><label>Slot</label>
+        <div class="field" title="One of 3 lines for this trigger; one is picked at random."><label>Slot</label>
           <select id="fSpeechSlot">${Array.from({length:CUSTOM_SPEECH_SLOTS}).map((_,i)=>`<option value="${i}" ${((c._speechSlot||0)===i)?'selected':''}>Slot ${i+1}</option>`).join('')}</select>
         </div>
         <div class="field field-wide" title="What this card says for the trigger+slot picked above. Leave blank to clear this slot."><label>Line</label>
@@ -11384,7 +11384,7 @@ function triggerRowHTML(t,i){
   <div class="trigger-row">
     <span>On</span>${onFamilyHtml}${onSubHtml}${turnOfHtml}
     ${filterHtml}
-    ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Triggers like this are off while the card is still Waiting. Tick to let this one fire while it Waits too."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
+    ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Tick to let this trigger fire while the card is Waiting."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].filter(x=> !x.retired || x.key === t.do /* EN4 (2026-10-23): retired actions only on a card that still has one */).sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}${t.do && !ACTION_DEFS.some(x=> x.key===t.do) ? `<option value="${escapeAttr(t.do)}" selected>${escapeHtml(t.do)}</option>` /* FIN2-b (2026-10-26): an action the list lacks (exileSelf) stays as it is, not the first option */ : ''}</select>
     ${actionFieldsHTML(t,i)}
@@ -20633,7 +20633,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         ${draft.kind === 'tutorial' ? '' /* 2026-10-23 (TU2): a tutorial's bramble has no Shield layers (startTutorialMatch never reads them) */ : (()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         ${draft.kind === 'tutorial' ? '' /* 2026-10-23 (TU2): nor a bramble level; its Health is the Bramble Health field */ : `<label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>`}
-        <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
+        <label title="Worked out from this deck at its cards' fight levels.">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
         ${draft.kind === 'tutorial' ? '' : (()=>{ // 2026-10-21 (package ED, owner #7): this fight's enemy level (blank: the road curve), the level its preview and its fight use
           const bare = Object.assign({}, draft, {enemyLevel: null}); NODE_MAP_HINT.set(bare, mapId); const curve = roadEnemyLevelExact(bare), ovr = nodeEnemyLevelOverride(draft);
           return `<label class="ed-enemy-level" title="${escapeAttr(TX('ui.ed-enemy-level-tip', {n: curve}))}">${escapeHtml(TX('ui.ed-enemy-level'))}<input id="seEnemyLevel" type="number" min="0" max="${draft.levelCap || 20}" step="0.05" placeholder="${escapeAttr(String(curve))}" value="${ovr != null ? escapeAttr(String(ovr)) : ''}"><small class="ed-enemy-level-note">${escapeHtml(ovr != null ? TX('ui.ed-enemy-level-set', {n: ovr}) : TX('ui.ed-enemy-level-curve', {n: curve}))}</small></label>`; })()}
@@ -20651,12 +20651,12 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
             <span>Repeat</span>${f('repeat','gold')}<i>🍁</i>${f('repeat','dust')}<i>✨</i></fieldset>`; })()}
         <fieldset class="se-wide se-battle"><legend>⚔️ This skirmish's battle</legend>
           <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
-          <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
+          <label title="Day all match unless the map is a night map. Real time: the player's clock decides.">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
-          <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
-          <label title="Cards each side may play a turn. The side playing second gets +1 Shield on its bramble, and nothing else">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
+          <label title="An uneven day/night cycle. Blank: the map's own, else Switch every.">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
+          <label title="Cards each side may play a turn. The side playing second gets +1 Shield.">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
-          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire the smartest CPU on every floor">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto picks by map and fight kind.">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -27895,17 +27895,17 @@ function openRaidEditor(raidId){
       </div>
       <h3 class="se-h">Tickets, Energy, respawn and instances</h3>
       <div class="se-grid">
-        <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day, topped up to ${RAID_POINTS_MAX} each week.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
-        <label title="Energy a fight takes on a part with no Energy of its own (1-6); each part and stage can change it below">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
-        <label title="The boss bramble's Shield on a fresh raid (soaks hits before Health); it falls with the part's remaining Health, as the boss's weakening: 50 fresh, 25 at half. 0 = off; each part can change it below (2026-10-19, package MX)">Shield<input id="reShield" type="number" min="0" max="999" value="${RaidM.raidShieldMax ? RaidM.raidShieldMax(Object.assign({}, draft, {parts: []}), null) : 50}"></label>
-        <label title="Hours after a kill until the raid comes back at full Health, as a new life with its own rewards (1-168; the week's end still starts a new cycle)">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
-        <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000; 250 by default since 2026-10-19). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
+        <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
+        <label title="Energy a fight takes on a part with none of its own (1-6).">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
+        <label title="The boss bramble's Shield on a fresh raid; it falls with the part's Health. 0 = off.">Shield<input id="reShield" type="number" min="0" max="999" value="${RaidM.raidShieldMax ? RaidM.raidShieldMax(Object.assign({}, draft, {parts: []}), null) : 50}"></label>
+        <label title="Hours after a kill until the raid returns at full Health (1-168).">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
+        <label title="Players in one instance before the next opens (10-1000).">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
         ${adminModeEnabled ? `<div class="se-wide re-restart"><button type="button" class="btn small" id="reRestart">${escapeHtml(TX('ui.raid-restart'))}</button><small class="panel-sub">Every instance starts a fresh life now, at full Health (live once the raid-ops SQL is applied; this browser only until then).</small></div>` : ''}
       </div>
       <h3 class="se-h">Tuning</h3>
       <div class="se-grid">
-        <label title="The boss unit's Health on a fresh raid; it falls with the raid's remaining Health to the unit's own Health (2026-10-19, package RV2: was a bonus on top; package RB: 50 on the Goliath, was 100)">Boss unit Health, fresh raid<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
-        <label title="Your leader's cost in points: each Lumber 1, each Stone 2, each Metal 3. A leader over it can't go into this raid. 0 = no cap (2026-10-19)">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
+        <label title="The boss unit's Health on a fresh raid; it falls with the raid's Health.">Boss unit Health, fresh raid<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
+        <label title="Leader cost cap in points: Lumber 1, Stone 2, Metal 3 each. 0 = no cap.">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
         <label title="Below this much bramble damage an attempt pays a pittance (2026-10-19)">Paying damage (min)<input id="reMinDmg" type="number" min="1" max="9999" value="${draft.minDamage||120}"></label>
         ${(()=>{ const t = draft.tuning || {}, rf = t.reinforce || {}, D = RAID_TUNE_DEFAULTS; // 2026-10-19 (package RX): the full raid's tuning knobs (raidTune)
           return `<label title="The boss's cards fight at this % of their printed Attack">Boss Attack %<input id="reTAtk" type="number" min="5" max="200" value="${Math.round((t.bossAtkPct != null ? t.bossAtkPct : D.bossAtkPct) * 100)}"></label>
@@ -27914,8 +27914,8 @@ function openRaidEditor(raidId){
         <label title="How many of your two CPU allies play a card each turn">Allies playing a turn<input id="reTAllies" type="number" min="1" max="2" value="${t.alliesPerTurn || D.alliesPerTurn}"></label>
         <label title="The boss calls in Commons every N turns">Commons every N turns<input id="reTRfEvery" type="number" min="1" max="10" value="${rf.every || 1}"></label>
         <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>
-        <label title="The boss plays a card into each of its back two rows every turn; a row holding this many waits (2026-10-19, package RV2)">Boss row cap<input id="reTRowCap" type="number" min="0" max="7" value="${t.rowCap != null ? t.rowCap : D.rowCap}"></label>
-        <label title="As a part's Health falls its boss cards weaken, down to this % of their stats as it falls (2026-10-19, package RB: RaidM.bossWeakening)">Boss weakest %<input id="reTWeak" type="number" min="10" max="100" value="${Math.round((RaidM.weakenFloor ? RaidM.weakenFloor(draft) : 0.6) * 100)}"></label>`; })()}
+        <label title="The boss plays a card into each back row every turn; a row holding this many waits.">Boss row cap<input id="reTRowCap" type="number" min="0" max="7" value="${t.rowCap != null ? t.rowCap : D.rowCap}"></label>
+        <label title="Boss cards weaken as the part's Health falls, down to this % of their stats.">Boss weakest %<input id="reTWeak" type="number" min="10" max="100" value="${Math.round((RaidM.weakenFloor ? RaidM.weakenFloor(draft) : 0.6) * 100)}"></label>`; })()}
       </div>
       ${(()=>{ // Field effects and the boss's Commons (2026-10-17): the whole raid's fieldRules as chips (✕ takes one off), an "add" list from
         // FIELD_EFFECTS (Psychic Dampener among them), and the Commons the boss calls in each round (blank = picked from its decks' types).
@@ -27934,7 +27934,7 @@ function openRaidEditor(raidId){
         <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <label title="Energy a fight on this part takes (1-6; blank = the raid's)">Energy per fight (blank = raid)<input data-pf="energy" type="number" min="1" max="6" value="${(P.cost||{}).energy||''}"></label>
-        <label title="This part's bramble Shield on a fresh raid (0-999; 0 = off; blank = the raid's), falling with its remaining Health (2026-10-19, package MX)">Shield (blank = raid)<input data-pf="shield" type="number" min="0" max="999" value="${P.shield != null && P.shield !== '' ? P.shield : ''}"></label>
+        <label title="This part's bramble Shield on a fresh raid (0-999; 0 = off; blank = the raid's).">Shield (blank = raid)<input data-pf="shield" type="number" min="0" max="999" value="${P.shield != null && P.shield !== '' ? P.shield : ''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
         <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
       </div>
@@ -27962,7 +27962,7 @@ function openRaidEditor(raidId){
         return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
           <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
           <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
-          <label title="The boss's back two rows strike this many extra times as each round starts (half their Attack), on top of their strike in combat">extra back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
+          <label title="Extra strikes by the boss's back two rows at each round start (half their Attack).">extra back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
           <label title="Your bramble's max Health changes by this % (-10 = 10% less)">your bramble %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
           <label title="Extra Energy a fight takes in this stage (the part's Energy + this, kept to 1-6)">+Energy<input type="number" min="-5" max="5" data-st-energy="${i}" value="${s.energyAdd||0}"></label>
           <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
@@ -27977,12 +27977,12 @@ function openRaidEditor(raidId){
       </div>
       <h3 class="se-h">Taking part and rewards <small>per life of the raid</small></h3>
       <div class="se-grid">
-        <label title="A participant has at least this many fights and this much raid damage in that life of the raid; under it, no reward">Taking part: fights<input id="rePFights" type="number" min="0" max="99" value="${pr.fights}"></label>
+        <label title="Fights and raid damage a participant needs in that raid life to earn a reward.">Taking part: fights<input id="rePFights" type="number" min="0" max="99" value="${pr.fights}"></label>
         <label>Taking part: damage<input id="rePDmg" type="number" min="0" step="100" value="${pr.damage}"></label>
-        <label title="A competent participant gets the bonus % more of every reward, and that % chance of an extra raid card (2026-10-19: was the strong contributor, at 5,000)">Competent: fights<input id="reSFights" type="number" min="0" max="99" value="${pr.strongFights}"></label>
+        <label title="A competent participant gets this % more of every reward, and this % chance of an extra raid card.">Competent: fights<input id="reSFights" type="number" min="0" max="99" value="${pr.strongFights}"></label>
         <label>Competent: damage<input id="reSDmg" type="number" min="0" step="100" value="${pr.strongDamage}"></label>
         <label>Competent: bonus %<input id="reSPct" type="number" min="0" max="200" value="${pr.strongPct}"></label>
-        <label title="A leading participant gets the bonus % more of every reward and the extra raid cards for certain (2026-10-19, package RV2)">Leading: fights<input id="reLFights" type="number" min="0" max="99" value="${pr.leadFights}"></label>
+        <label title="A leading participant gets this % more of every reward and the extra raid cards.">Leading: fights<input id="reLFights" type="number" min="0" max="99" value="${pr.leadFights}"></label>
         <label>Leading: damage<input id="reLDmg" type="number" min="0" step="1000" value="${pr.leadDamage}"></label>
         <label>Leading: bonus %<input id="reLPct" type="number" min="0" max="300" value="${pr.leadPct}"></label>
         <label>Leading: extra cards<input id="reLCards" type="number" min="0" max="5" value="${pr.leadCards}"></label>
@@ -27990,10 +27990,10 @@ function openRaidEditor(raidId){
         <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
         <label>Kill: XP<input id="reKXp" type="number" min="0" max="5000" value="${rw.xp != null ? rw.xp : 500}"></label>
-        <label title="Reward cards (from the pack pools, now and then a faction card) a participant gets when it falls (the top 10% one more). 2026-10-19 (package RC): never the raid's own cards">Kill: reward cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
-        <label title="2026-10-19 (package RC): the raid's trophy shards a participant gets at least when it falls (package MX: 1 a fight played when that is more; x2 Competent, x5 Leading; the Forge's Raid tab crafts its cards from them)">Kill: trophy shards (at least)<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
+        <label title="Reward cards a participant gets when the raid falls (the top 10% one more).">Kill: reward cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
+        <label title="Trophy shards a participant gets at least when the raid falls (x2 Competent, x5 Leading).">Kill: trophy shards (at least)<input id="reKShards" type="number" min="0" max="999" value="${rw.shards != null ? rw.shards : ((RaidM.RAID_REWARD_TABLE || {}).participant || {}).shards || 6}"></label>
         <label title="If it survives: this % of the general rewards (Gold, Dust, Metal, XP)">Held: general %<input id="reComp" type="number" min="0" max="100" value="${rw.failPct != null ? rw.failPct : 50}"></label>
-        <label title="If it survives: the raid's own rewards (cards, tier extras) at most this %, scaled by how much of its Health went">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
+        <label title="If it survives: at most this % of the raid's own rewards, scaled by Health lost.">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
         ${['top1','top10','top50','participant'].map(tierRow).join('')}
       </div>
       <h3 class="se-h">Ally decks <small>the CPU allies' decks when no other raider's deck is at hand</small></h3>
