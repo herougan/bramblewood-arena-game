@@ -36,7 +36,17 @@ function fnv(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) { h ^= 
 const r3 = x => Math.round(x * 1000) / 1000;
 
 // the PRO fight as the game builds it (arena_app.js proNodeOf): pro_skirmishes.proNode plus the CPU skill the PRO rule names
-function gameProNode(gm, map, entry, ent, ai) { const n = P.proNode(gm, map, entry, ent.field || {}); n.ai = ['basic', 'smart', 'smartest'][ai] || 'smart'; if ((entry.leaders || [])[0]) n.showcase = entry.leaders[0]; return n; }
+function gameProNode(gm, map, entry, ent, ai) { const n = P.proNode(gm, map, entry, ent.field || {}); n.ai = ['basic', 'smart', 'smartest'][ai] || 'smart'; if ((entry.leaders || [])[0]) n.showcase = entry.leaders[0];
+  const late = lateLevelOf(gm, map.id); if (late != null && late > n.enemyLevel) n.enemyLevel = late; // 2026-10-30 (DECK1): PREF-3 as proNodeOf plays it
+  return n; }
+// 2026-10-30 (package DECK1): PREF-3 (ENG10) gives a side map that opens late its PRO fights at the road's enemy level of the map it opens on
+// (arena_app.js proLateSideLevel, read by proNodeOf). The headless game does not export it, so it is built from the app's own source here.
+function lateLevelOf(gm, mapId) {
+  if (!gm._lateLv) { try { const G = gm.G; gm._lateLv = new Function('CONQUEST_MAPS', 'mapNumberOf', 'mapUnlockNumberOf', 'roadCurveFights', 'roadEnemyLevelExact',
+    gm.B.grab('mainConquestMaps') + '\n' + gm.B.grab('proLateSideLevel') + '\nreturn proLateSideLevel;')(G.CONQUEST_MAPS, G.mapNumberOf, G.mapUnlockNumberOf, G.roadCurveFights, G.roadEnemyLevelExact); }
+    catch (e) { gm._lateLv = () => null; } }
+  try { return gm._lateLv(mapId); } catch (e) { return null; }
+}
 
 // 2026-10-27 (package BAL6, K17): a per-map set from docs/balance/ref/ (the Pool reference, ref-pool) is not baked into the game: its map's deck
 // goes in as opts.deck, which the game plays at referencePlayerLevel (the Map reference's level), as the set says
@@ -87,4 +97,4 @@ async function main(argv) {
   log(`done: ${rows.length} pairings, ${Math.round((Date.now() - t0) / 1000)} s -> ${path.relative(root, outFile)}`);
 }
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e.stack || e); process.exit(1); });
-module.exports = { VERSION, parseArgs, gameProNode, measurePair, refOpts, refKnown, main };
+module.exports = { VERSION, parseArgs, gameProNode, lateLevelOf, measurePair, refOpts, refKnown, main };

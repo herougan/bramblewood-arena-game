@@ -1,0 +1,805 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T10:12:13.728Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "mp",
+  "num": 2,
+  "name": "Lilypad Reach"
+ },
+ "level": 1,
+ "pool": [
+  "bee-forager",
+  "box-turtle",
+  "conch-crawler",
+  "dam-keeper-beaver",
+  "diving-bell-spider",
+  "driftwood-crab",
+  "duck-paddler",
+  "duckling",
+  "fiddler-crab-swarm",
+  "fleetfootd",
+  "gannet-nestweaver",
+  "grey-seal-bull",
+  "lodge-engineer",
+  "moat-snapper",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "nutria-reedcutter",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pyrenean-desman",
+  "river-mink",
+  "riverworks-bastion",
+  "signal-crayfish",
+  "snapstick-turtle",
+  "tidepool-trapper-crab",
+  "water-shrew",
+  "water-vole"
+ ],
+ "poolNames": [
+  "Bee Forager",
+  "Box Turtle",
+  "Conch Crawler",
+  "Dam-Keeper Beaver",
+  "Diving Bell Spider",
+  "Driftwood Crab",
+  "Duck Paddler",
+  "Duckling",
+  "Fiddler Crab Swarm",
+  "Fleetfoot'd",
+  "Gannet Nestweaver",
+  "Grey Seal Bull",
+  "Lodge Engineer",
+  "Moat Snapper",
+  "Muskrat Lodgekeeper",
+  "Muskrat Reedgatherer",
+  "Nutria Reedcutter",
+  "Old Sturgeon",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pyrenean Desman",
+  "River Mink",
+  "Riverworks Bastion",
+  "Signal Crayfish",
+  "Snapstick Turtle",
+  "Tidepool Trapper Crab",
+  "Water Shrew",
+  "Water Vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "box-turtle",
+   "duckling",
+   "fiddler-crab-swarm",
+   "grey-seal-bull",
+   "lodge-engineer",
+   "muskrat-lodgekeeper",
+   "muskrat-reedgatherer",
+   "old-sturgeon",
+   "platypus-spur",
+   "pond-algae",
+   "pyrenean-desman",
+   "riverworks-bastion",
+   "snapstick-turtle",
+   "tidepool-trapper-crab",
+   "water-shrew",
+   "water-vole"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-A-1",
+   "label": "vs 2-A-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-2",
+   "label": "vs 2-A-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-3",
+   "label": "vs 2-A-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-4",
+   "label": "vs 2-A-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-5",
+   "label": "vs 2-A-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-6",
+   "label": "vs 2-A-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:2-A-7",
+   "label": "vs 2-A-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-A-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 2-A-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "driftwood-crab",
+    "gannet-nestweaver",
+    "lodge-engineer",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "lodge-engineer",
+    "moat-snapper",
+    "riverworks-bastion"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bee-forager",
+    "box-turtle",
+    "conch-crawler",
+    "driftwood-crab",
+    "duck-paddler",
+    "duckling",
+    "fiddler-crab-swarm",
+    "fleetfootd",
+    "gannet-nestweaver",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter",
+    "pond-algae",
+    "pyrenean-desman",
+    "tidepool-trapper-crab",
+    "water-shrew",
+    "water-vole"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 10,
+   "moves": 7,
+   "games": 3180,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 9,
+   "moves": 5,
+   "games": 3140,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "swarm",
+   "steps": 9,
+   "moves": 5,
+   "games": 3020,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "open",
+   "steps": 10,
+   "moves": 4,
+   "games": 3160,
+   "apartFromEarlier": 11
+  }
+ ],
+ "apart": 6,
+ "seconds": 273,
+ "games": 13140,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "tide x12",
+    "guard x8"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "diving-bell-spider": 2,
+    "gannet-nestweaver": 4,
+    "grey-seal-bull": 4,
+    "muskrat-lodgekeeper": 4,
+    "river-mink": 2
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "diving-bell-spider",
+     "name": "Diving Bell Spider",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "river-mink",
+     "name": "River Mink",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8375,
+   "ci": [
+    0.7928,
+    0.8822
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "tide x13"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "grey-seal-bull": 3,
+    "pyrenean-desman": 3,
+    "river-mink": 3,
+    "tidepool-trapper-crab": 3,
+    "water-vole": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "river-mink",
+     "name": "River Mink",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.825,
+   "ci": [
+    0.7812,
+    0.8688
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (8 resource makers)",
+    "tide x12"
+   ],
+   "deck": {
+    "diving-bell-spider": 4,
+    "driftwood-crab": 3,
+    "fiddler-crab-swarm": 4,
+    "lodge-engineer": 2,
+    "muskrat-lodgekeeper": 4,
+    "nutria-reedcutter": 3
+   },
+   "cards": [
+    {
+     "id": "diving-bell-spider",
+     "name": "Diving Bell Spider",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "muskrat-lodgekeeper",
+     "name": "Muskrat Lodgekeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 2,
+     "cost": 2,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8125,
+   "ci": [
+    0.7652,
+    0.8598
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.25,
+   "curve": {
+    "0": 10,
+    "1": 8,
+    "2": 2
+   },
+   "resourceMakers": 8,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 0.9)",
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "diving-bell-spider": 2,
+    "fleetfootd": 2,
+    "lodge-engineer": 4,
+    "moat-snapper": 4,
+    "muskrat-reedgatherer": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "moat-snapper",
+     "name": "Moat Snapper",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "diving-bell-spider",
+     "name": "Diving Bell Spider",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6583,
+   "ci": [
+    0.6019,
+    0.7147
+   ],
+   "avgLumber": 0.9,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 10,
+    "1": 2,
+    "2": 8
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-A-1",
+     "label": "vs 2-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-2",
+     "label": "vs 2-A-2 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-3",
+     "label": "vs 2-A-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-4",
+     "label": "vs 2-A-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-5",
+     "label": "vs 2-A-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-6",
+     "label": "vs 2-A-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-A-7",
+     "label": "vs 2-A-7 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 2-A-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mp --pool bee-forager,box-turtle,conch-crawler,dam-keeper-beaver,diving-bell-spider,driftwood-crab,duck-paddler,duckling,fiddler-crab-swarm,fleetfootd,gannet-nestweaver,grey-seal-bull,lodge-engineer,moat-snapper,muskrat-lodgekeeper,muskrat-reedgatherer,nutria-reedcutter,old-sturgeon,platypus-spur,pond-algae,pyrenean-desman,river-mink,riverworks-bastion,signal-crayfish,snapstick-turtle,tidepool-trapper-crab,water-shrew,water-vole --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor box-turtle,duckling,fiddler-crab-swarm,grey-seal-bull,lodge-engineer,muskrat-lodgekeeper,muskrat-reedgatherer,old-sturgeon,platypus-spur,pond-algae,pyrenean-desman,riverworks-bastion,snapstick-turtle,tidepool-trapper-crab,water-shrew,water-vole --anchor-min 10 --level 1 --mode map-true"
+}

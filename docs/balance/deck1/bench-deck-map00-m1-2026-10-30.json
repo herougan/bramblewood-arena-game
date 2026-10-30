@@ -1,0 +1,677 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T09:54:16.439Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "m1",
+  "num": 0,
+  "name": "Bramblewood Outskirts"
+ },
+ "level": 1,
+ "pool": [
+  "acorn-chipmunk",
+  "ant-hill",
+  "ant-scout",
+  "beaver-lumberjack",
+  "bee-forager",
+  "bee-knight",
+  "bee-sentry",
+  "burrow-rabbit",
+  "chipmunk-skirmisher",
+  "cottontail",
+  "crimson-wing-recruit",
+  "crossed-eyes",
+  "forager-ant",
+  "greyplume-fledgling",
+  "harvest-mouse",
+  "house-cat",
+  "meadow-frog",
+  "meerkat-wayfarer",
+  "otter-paddler",
+  "owl-sentinel",
+  "pond-trout",
+  "terrier-pup",
+  "worker-ant"
+ ],
+ "poolNames": [
+  "Acorn Chipmunk",
+  "Ant Hill",
+  "Ant Scout",
+  "Beaver Lumberjack",
+  "Bee Forager",
+  "Bee Knight",
+  "Bee Sentry",
+  "Burrow Rabbit",
+  "Chipmunk Skirmisher",
+  "Cottontail",
+  "Crimson Recruit",
+  "Crossed-Eyes",
+  "Forager Ant",
+  "Greyplume Fledgling",
+  "Harvest Mouse",
+  "House Cat",
+  "Meadow Frog",
+  "Meerkat Wayfarer",
+  "Otter Paddler",
+  "Owl Sentinel",
+  "Pond Trout",
+  "Terrier Pup",
+  "Worker Ant"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-hill",
+   "ant-scout",
+   "beaver-lumberjack",
+   "bee-forager",
+   "bee-knight",
+   "bee-sentry",
+   "chipmunk-skirmisher",
+   "cottontail",
+   "crossed-eyes",
+   "house-cat",
+   "owl-sentinel",
+   "terrier-pup"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-1",
+   "label": "vs 0-1 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-2",
+   "label": "vs 0-2 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-3",
+   "label": "vs 0-3 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|fight:0-4",
+   "label": "vs 0-4 skirmish's deck",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-1's field",
+   "weight": 0.1667
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+   "weight": 0.1667
+  }
+ ],
+ "focuses": [
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "ant-hill",
+    "owl-sentinel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "acorn-chipmunk",
+    "ant-scout",
+    "beaver-lumberjack",
+    "bee-forager",
+    "bee-knight",
+    "bee-sentry",
+    "burrow-rabbit",
+    "chipmunk-skirmisher",
+    "cottontail",
+    "crimson-wing-recruit",
+    "crossed-eyes",
+    "forager-ant",
+    "greyplume-fledgling",
+    "harvest-mouse",
+    "house-cat",
+    "meadow-frog",
+    "meerkat-wayfarer",
+    "otter-paddler",
+    "pond-trout",
+    "terrier-pup",
+    "worker-ant"
+   ],
+   "need": 14
+  },
+  {
+   "id": "family:flying",
+   "label": "flying (skill family)",
+   "cards": [
+    "bee-forager",
+    "bee-knight",
+    "bee-sentry",
+    "crimson-wing-recruit",
+    "greyplume-fledgling",
+    "owl-sentinel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "big",
+   "steps": 18,
+   "moves": 5,
+   "games": 3084,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "swarm",
+   "steps": 16,
+   "moves": 4,
+   "games": 3216,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "family:flying",
+   "steps": 17,
+   "moves": 9,
+   "games": 3108,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 17,
+   "moves": 7,
+   "games": 3084,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 6,
+ "seconds": 147,
+ "games": 12876,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "burrow-rabbit": 3,
+    "chipmunk-skirmisher": 4,
+    "otter-paddler": 4,
+    "owl-sentinel": 2,
+    "pond-trout": 3,
+    "terrier-pup": 4
+   },
+   "cards": [
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "otter-paddler",
+     "name": "Otter Paddler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "pond-trout",
+     "name": "Pond Trout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "owl-sentinel",
+     "name": "Owl Sentinel",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7917,
+   "ci": [
+    0.7319,
+    0.8515
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (19 copies at 0 Lumber)",
+    "swarm x7"
+   ],
+   "deck": {
+    "ant-hill": 1,
+    "ant-scout": 3,
+    "bee-forager": 4,
+    "chipmunk-skirmisher": 4,
+    "crossed-eyes": 4,
+    "terrier-pup": 4
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "crossed-eyes",
+     "name": "Crossed-Eyes",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "terrier-pup",
+     "name": "Terrier Pup",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "ant-hill",
+     "name": "Ant Hill",
+     "copies": 1,
+     "cost": 2,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6875,
+   "ci": [
+    0.6139,
+    0.7611
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.15,
+   "curve": {
+    "0": 19,
+    "2": 1
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "swarm (20 copies at 0 Lumber)",
+    "swarm x9",
+    "flying x8"
+   ],
+   "deck": {
+    "ant-scout": 1,
+    "bee-forager": 4,
+    "bee-knight": 4,
+    "chipmunk-skirmisher": 4,
+    "forager-ant": 4,
+    "pond-trout": 3
+   },
+   "cards": [
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "bee-knight",
+     "name": "Bee Knight",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "chipmunk-skirmisher",
+     "name": "Chipmunk Skirmisher",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "forager-ant",
+     "name": "Forager Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pond-trout",
+     "name": "Pond Trout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.6667,
+   "ci": [
+    0.5919,
+    0.7414
+   ],
+   "avgLumber": 0,
+   "avgWait": 0,
+   "curve": {
+    "0": 20
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 9
+    },
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.6)",
+    "flying x7"
+   ],
+   "deck": {
+    "ant-hill": 4,
+    "ant-scout": 2,
+    "bee-forager": 3,
+    "forager-ant": 4,
+    "house-cat": 3,
+    "owl-sentinel": 4
+   },
+   "cards": [
+    {
+     "id": "ant-hill",
+     "name": "Ant Hill",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "forager-ant",
+     "name": "Forager Ant",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "owl-sentinel",
+     "name": "Owl Sentinel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ant-scout",
+     "name": "Ant Scout",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.4236,
+   "ci": [
+    0.3455,
+    0.5018
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1,
+   "curve": {
+    "0": 12,
+    "1": 4,
+    "2": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-1",
+     "label": "vs 0-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-2",
+     "label": "vs 0-2 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-3",
+     "label": "vs 0-3 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-4",
+     "label": "vs 0-4 skirmish's deck",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-1's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-2's field",
+     "p": 0.625,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 18
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m1 --pool acorn-chipmunk,ant-hill,ant-scout,beaver-lumberjack,bee-forager,bee-knight,bee-sentry,burrow-rabbit,chipmunk-skirmisher,cottontail,crimson-wing-recruit,crossed-eyes,forager-ant,greyplume-fledgling,harvest-mouse,house-cat,meadow-frog,meerkat-wayfarer,otter-paddler,owl-sentinel,pond-trout,terrier-pup,worker-ant --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus big,swarm,family:flying,open --anchor ant-hill,ant-scout,beaver-lumberjack,bee-forager,bee-knight,bee-sentry,chipmunk-skirmisher,cottontail,crossed-eyes,house-cat,owl-sentinel,terrier-pup --anchor-min 10 --level 1 --mode map-true"
+}

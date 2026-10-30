@@ -1,0 +1,715 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T10:07:39.116Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "level": 1,
+ "pool": [
+  "bee-forager",
+  "conch-crawler",
+  "conch-herald",
+  "driftwood-crab",
+  "fiddler-crab-swarm",
+  "gannet-nestweaver",
+  "garden-snail",
+  "grey-seal-bull",
+  "gull-thief",
+  "kittiwake-flock",
+  "moat-snapper",
+  "mudpuppy",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "open-ocean-hermit-crab",
+  "pincushion-urchin",
+  "puffin-diver",
+  "rock-pool-starfish",
+  "sea-turtle-elder",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "poolNames": [
+  "Bee Forager",
+  "Conch Crawler",
+  "Conch Herald",
+  "Driftwood Crab",
+  "Fiddler Crab Swarm",
+  "Gannet Nestweaver",
+  "Garden Snail",
+  "Grey Seal Bull",
+  "Gull Thief",
+  "Kittiwake Flock",
+  "Moat Snapper",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Open-Ocean Hermit Crab",
+  "Pincushion Urchin",
+  "Puffin Diver",
+  "Rock Pool Starfish",
+  "Sea Turtle Elder",
+  "Tide Pool Crab",
+  "Tidepool Trapper Crab",
+  "Trash Panda Trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "conch-crawler",
+   "conch-herald",
+   "fiddler-crab-swarm",
+   "grey-seal-bull",
+   "gull-thief",
+   "open-ocean-hermit-crab",
+   "pincushion-urchin",
+   "sea-turtle-elder",
+   "tide-pool-crab",
+   "tidepool-trapper-crab",
+   "trash-panda-trickster"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "label": "vs 2-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "label": "vs 2-B-2 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "label": "vs 2-B-3 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "label": "vs 2-B-4 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 2-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "driftwood-crab",
+    "gannet-nestweaver",
+    "gull-thief",
+    "nutria-reedcutter",
+    "trash-panda-trickster"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "conch-herald",
+    "grey-seal-bull",
+    "moat-snapper",
+    "puffin-diver",
+    "sea-turtle-elder"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bee-forager",
+    "conch-crawler",
+    "driftwood-crab",
+    "fiddler-crab-swarm",
+    "gannet-nestweaver",
+    "garden-snail",
+    "gull-thief",
+    "kittiwake-flock",
+    "mudpuppy",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "rock-pool-starfish",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "trash-panda-trickster"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 14,
+   "moves": 6,
+   "games": 3220,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 14,
+   "moves": 8,
+   "games": 3108,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "swarm",
+   "steps": 14,
+   "moves": 6,
+   "games": 3052,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "open",
+   "steps": 14,
+   "moves": 8,
+   "games": 3192,
+   "apartFromEarlier": 6
+  }
+ ],
+ "apart": 6,
+ "seconds": 248,
+ "games": 13020,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)",
+    "tide x9",
+    "flying x6"
+   ],
+   "deck": {
+    "conch-herald": 3,
+    "grey-seal-bull": 4,
+    "kittiwake-flock": 4,
+    "mudpuppy": 3,
+    "puffin-diver": 2,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "puffin-diver",
+     "name": "Puffin Diver",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8571,
+   "ci": [
+    0.8078,
+    0.9065
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 9
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (8 resource makers)",
+    "tide x10",
+    "guard x8"
+   ],
+   "deck": {
+    "conch-crawler": 4,
+    "conch-herald": 2,
+    "grey-seal-bull": 4,
+    "mudpuppy": 2,
+    "nutria-reedcutter": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8452,
+   "ci": [
+    0.7977,
+    0.8927
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 8,
+   "families": [
+    {
+     "f": "tide",
+     "n": 10
+    },
+    {
+     "f": "guard",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "tide x9"
+   ],
+   "deck": {
+    "conch-herald": 4,
+    "grey-seal-bull": 4,
+    "kittiwake-flock": 4,
+    "newt-doctor": 4,
+    "rock-pool-starfish": 1,
+    "trash-panda-trickster": 3
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "rock-pool-starfish",
+     "name": "Rock Pool Starfish",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8423,
+   "ci": [
+    0.7912,
+    0.8933
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.85,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "tide",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.8958,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 6
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (9 resource makers)",
+    "tide x8"
+   ],
+   "deck": {
+    "driftwood-crab": 4,
+    "grey-seal-bull": 4,
+    "mudpuppy": 3,
+    "nutria-reedcutter": 1,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "driftwood-crab",
+     "name": "Driftwood Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8274,
+   "ci": [
+    0.7787,
+    0.8761
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 9,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mg --pool bee-forager,conch-crawler,conch-herald,driftwood-crab,fiddler-crab-swarm,gannet-nestweaver,garden-snail,grey-seal-bull,gull-thief,kittiwake-flock,moat-snapper,mudpuppy,newt-doctor,nutria-reedcutter,open-ocean-hermit-crab,pincushion-urchin,puffin-diver,rock-pool-starfish,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor conch-crawler,conch-herald,fiddler-crab-swarm,grey-seal-bull,gull-thief,open-ocean-hermit-crab,pincushion-urchin,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --anchor-min 10 --level 1 --mode map-true"
+}

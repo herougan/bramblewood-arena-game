@@ -1,0 +1,671 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T09:57:35.484Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "mo",
+  "num": 0,
+  "name": "The Old Bramble"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "ashbone-ghoul",
+  "bee-forager",
+  "dhole-runner",
+  "dung-beetle",
+  "fox-sharpshot",
+  "fungus-gnat-cloud",
+  "gannet-nestweaver",
+  "hedgehog-scout",
+  "hoopoe-herald",
+  "jay-pilferer",
+  "leafcutter-gardener",
+  "leopard-slug",
+  "mountain-hare",
+  "mudpuppy",
+  "nutria-reedcutter",
+  "porcupine-roller",
+  "red-backed-salamander",
+  "seed-cache-squirrel",
+  "springtail-hopper",
+  "swamp-rabbit",
+  "swift-fox",
+  "talus-pika",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Ashbone Ghoul",
+  "Bee Forager",
+  "Dhole Runner",
+  "Dung Beetle",
+  "Fox Sharpshot",
+  "Fungus Gnat Cloud",
+  "Gannet Nestweaver",
+  "Hedgehog Scout",
+  "Hoopoe Herald",
+  "Jay Pilferer",
+  "Leafcutter Gardener",
+  "Leopard Slug",
+  "Mountain Hare",
+  "Mudpuppy",
+  "Nutria Reedcutter",
+  "Porcupine Roller",
+  "Red-backed Salamander",
+  "Seed-cache Squirrel",
+  "Springtail Hopper",
+  "Swamp Rabbit",
+  "Swift Fox",
+  "Talus Pika",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:0-B-1",
+   "label": "vs 0-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-2",
+   "label": "vs 0-B-2 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-3",
+   "label": "vs 0-B-3 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:0-B-4",
+   "label": "vs 0-B-4 boss's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 0-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road17",
+   "label": "vs reference deck (Map 17) under 0-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "gannet-nestweaver",
+    "leafcutter-gardener",
+    "nutria-reedcutter",
+    "talus-pika"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "dhole-runner",
+    "fox-sharpshot",
+    "jay-pilferer",
+    "seed-cache-squirrel",
+    "swift-fox"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "alpine-marmot",
+    "ashbone-ghoul",
+    "bee-forager",
+    "dung-beetle",
+    "fungus-gnat-cloud",
+    "gannet-nestweaver",
+    "hedgehog-scout",
+    "hoopoe-herald",
+    "leafcutter-gardener",
+    "leopard-slug",
+    "mountain-hare",
+    "mudpuppy",
+    "nutria-reedcutter",
+    "porcupine-roller",
+    "red-backed-salamander",
+    "springtail-hopper",
+    "swamp-rabbit",
+    "talus-pika",
+    "woodcock-lookout"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 14,
+   "moves": 5,
+   "games": 3234,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 16,
+   "moves": 6,
+   "games": 3136,
+   "apartFromEarlier": 7
+  },
+  {
+   "focus": "swarm",
+   "steps": 14,
+   "moves": 4,
+   "games": 3038,
+   "apartFromEarlier": 16
+  },
+  {
+   "focus": "open",
+   "steps": 13,
+   "moves": 5,
+   "games": 3052,
+   "apartFromEarlier": 13
+  }
+ ],
+ "apart": 6,
+ "seconds": 192,
+ "games": 12908,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1 Lumber, average 0.4)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 2,
+    "porcupine-roller": 3,
+    "seed-cache-squirrel": 4,
+    "swift-fox": 4,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "seed-cache-squirrel",
+     "name": "Seed-cache Squirrel",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8929,
+   "ci": [
+    0.8509,
+    0.9348
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 3,
+    "fox-sharpshot": 2,
+    "hoopoe-herald": 4,
+    "leafcutter-gardener": 3,
+    "swift-fox": 4,
+    "talus-pika": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swift-fox",
+     "name": "Swift Fox",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "talus-pika",
+     "name": "Talus Pika",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fox-sharpshot",
+     "name": "Fox Sharpshot",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8512,
+   "ci": [
+    0.8014,
+    0.901
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 3,
+    "dhole-runner": 2,
+    "hoopoe-herald": 3,
+    "jay-pilferer": 4,
+    "mudpuppy": 4,
+    "porcupine-roller": 4
+   },
+   "cards": [
+    {
+     "id": "jay-pilferer",
+     "name": "Jay Pilferer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "porcupine-roller",
+     "name": "Porcupine Roller",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dhole-runner",
+     "name": "Dhole Runner",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8006,
+   "ci": [
+    0.7438,
+    0.8574
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "evasion x8"
+   ],
+   "deck": {
+    "hedgehog-scout": 4,
+    "hoopoe-herald": 4,
+    "jay-pilferer": 4,
+    "mountain-hare": 4,
+    "springtail-hopper": 4
+   },
+   "cards": [
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "jay-pilferer",
+     "name": "Jay Pilferer",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "springtail-hopper",
+     "name": "Springtail Hopper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6964,
+   "ci": [
+    0.6327,
+    0.7602
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "evasion",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:0-B-1",
+     "label": "vs 0-B-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-2",
+     "label": "vs 0-B-2 skirmish's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-3",
+     "label": "vs 0-B-3 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:0-B-4",
+     "label": "vs 0-B-4 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 0-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road17",
+     "label": "vs reference deck (Map 17) under 0-B-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 0-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mo --pool alpine-marmot,ashbone-ghoul,bee-forager,dhole-runner,dung-beetle,fox-sharpshot,fungus-gnat-cloud,gannet-nestweaver,hedgehog-scout,hoopoe-herald,jay-pilferer,leafcutter-gardener,leopard-slug,mountain-hare,mudpuppy,nutria-reedcutter,porcupine-roller,red-backed-salamander,seed-cache-squirrel,springtail-hopper,swamp-rabbit,swift-fox,talus-pika,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

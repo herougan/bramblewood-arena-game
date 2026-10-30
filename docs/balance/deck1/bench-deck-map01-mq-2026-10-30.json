@@ -1,0 +1,734 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-30T10:03:29.154Z",
+ "fingerprint": "5b2112374573",
+ "map": {
+  "id": "mq",
+  "num": 1,
+  "name": "Clovermead"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "ant-hill",
+  "ant-scout",
+  "badger-lumberjack",
+  "bee-forager",
+  "bramble-sprout",
+  "compost-grub",
+  "cottontail",
+  "cricket-drummer",
+  "dung-beetle",
+  "field-mouse",
+  "field-vole",
+  "fire-ant-raft",
+  "hawthorn-shieldbug",
+  "hedgerow-shrew",
+  "leafcutter-gardener",
+  "meadow-rabbit",
+  "mountain-hare",
+  "mudpuppy",
+  "newt-doctor",
+  "nightjar-drifter",
+  "planarian-splitter",
+  "robin-redbreast",
+  "slow-worm",
+  "vampire-bat",
+  "water-vole",
+  "woodcock-lookout"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Ant Hill",
+  "Ant Scout",
+  "Badger Lumberjack",
+  "Bee Forager",
+  "Bramble Sprout",
+  "Compost Grub",
+  "Cottontail",
+  "Cricket Drummer",
+  "Dung Beetle",
+  "Field Mouse",
+  "Field Vole",
+  "Fire Ant Raft",
+  "Hawthorn Shieldbug",
+  "Hedgerow Shrew",
+  "Leafcutter Gardener",
+  "Meadow Rabbit",
+  "Mountain Hare",
+  "Mudpuppy",
+  "Newt Doctor",
+  "Nightjar Drifter",
+  "Planarian Splitter",
+  "Robin Redbreast",
+  "Slow-worm",
+  "Vampire Bat",
+  "Water Vole",
+  "Woodcock Lookout"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": [
+   "ant-hill",
+   "ant-scout",
+   "badger-lumberjack",
+   "bee-forager",
+   "bramble-sprout",
+   "compost-grub",
+   "cottontail",
+   "cricket-drummer",
+   "field-mouse",
+   "field-vole",
+   "hedgerow-shrew",
+   "meadow-rabbit",
+   "robin-redbreast",
+   "slow-worm",
+   "woodcock-lookout"
+  ],
+  "anchorMin": 10
+ },
+ "settings": {
+  "seed": "deck1",
+  "budget": 12000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:1-A-1",
+   "label": "vs 1-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-2",
+   "label": "vs 1-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-3",
+   "label": "vs 1-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-4",
+   "label": "vs 1-A-4 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:1-A-5",
+   "label": "vs 1-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 1-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 1-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "badger-lumberjack",
+    "leafcutter-gardener"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "ant-hill",
+    "badger-lumberjack",
+    "fire-ant-raft",
+    "hawthorn-shieldbug",
+    "nightjar-drifter",
+    "planarian-splitter"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "alpine-marmot",
+    "ant-scout",
+    "bee-forager",
+    "bramble-sprout",
+    "compost-grub",
+    "cottontail",
+    "cricket-drummer",
+    "dung-beetle",
+    "field-mouse",
+    "field-vole",
+    "hedgerow-shrew",
+    "leafcutter-gardener",
+    "meadow-rabbit",
+    "mountain-hare",
+    "mudpuppy",
+    "newt-doctor",
+    "robin-redbreast",
+    "slow-worm",
+    "vampire-bat",
+    "water-vole",
+    "woodcock-lookout"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 12,
+   "moves": 8,
+   "games": 3232,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 13,
+   "moves": 5,
+   "games": 3104,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "swarm",
+   "steps": 11,
+   "moves": 6,
+   "games": 3088,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "open",
+   "steps": 12,
+   "moves": 6,
+   "games": 3184,
+   "apartFromEarlier": 12
+  }
+ ],
+ "apart": 6,
+ "seconds": 185,
+ "games": 13120,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "bramble-sprout": 4,
+    "cricket-drummer": 4,
+    "hawthorn-shieldbug": 2,
+    "mudpuppy": 4,
+    "planarian-splitter": 4,
+    "slow-worm": 2
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mudpuppy",
+     "name": "Mudpuppy",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7656,
+   "ci": [
+    0.709,
+    0.8223
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "cricket-drummer": 4,
+    "field-mouse": 3,
+    "field-vole": 4,
+    "hawthorn-shieldbug": 4,
+    "slow-worm": 3,
+    "vampire-bat": 2
+   },
+   "cards": [
+    {
+     "id": "cricket-drummer",
+     "name": "Cricket Drummer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "field-vole",
+     "name": "Field Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "slow-worm",
+     "name": "Slow-worm",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6771,
+   "ci": [
+    0.6217,
+    0.7325
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 12
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "badger-lumberjack": 3,
+    "bramble-sprout": 3,
+    "field-mouse": 4,
+    "leafcutter-gardener": 3,
+    "meadow-rabbit": 3,
+    "planarian-splitter": 4
+   },
+   "cards": [
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "planarian-splitter",
+     "name": "Planarian Splitter",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "meadow-rabbit",
+     "name": "Meadow Rabbit",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.6719,
+   "ci": [
+    0.6124,
+    0.7314
+   ],
+   "avgLumber": 0.35,
+   "avgWait": 0.35,
+   "curve": {
+    "0": 13,
+    "1": 7
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "swarm x6",
+    "flying x6"
+   ],
+   "deck": {
+    "badger-lumberjack": 3,
+    "bee-forager": 3,
+    "bramble-sprout": 4,
+    "fire-ant-raft": 3,
+    "hawthorn-shieldbug": 4,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "bramble-sprout",
+     "name": "Bramble Sprout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawthorn-shieldbug",
+     "name": "Hawthorn Shieldbug",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "bee-forager",
+     "name": "Bee Forager",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.4844,
+   "ci": [
+    0.4227,
+    0.5461
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 3,
+   "families": [
+    {
+     "f": "swarm",
+     "n": 6
+    },
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:1-A-1",
+     "label": "vs 1-A-1 skirmish's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-2",
+     "label": "vs 1-A-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-3",
+     "label": "vs 1-A-3 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-4",
+     "label": "vs 1-A-4 skirmish's deck",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:1-A-5",
+     "label": "vs 1-A-5 boss's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 1-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 1-A-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 1-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mq --pool alpine-marmot,ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,compost-grub,cottontail,cricket-drummer,dung-beetle,field-mouse,field-vole,fire-ant-raft,hawthorn-shieldbug,hedgerow-shrew,leafcutter-gardener,meadow-rabbit,mountain-hare,mudpuppy,newt-doctor,nightjar-drifter,planarian-splitter,robin-redbreast,slow-worm,vampire-bat,water-vole,woodcock-lookout --max-unique 6 --max-copies 4 --budget 12000 --final-games 24 --seed deck1 --focus economy,big,swarm,open --anchor ant-hill,ant-scout,badger-lumberjack,bee-forager,bramble-sprout,compost-grub,cottontail,cricket-drummer,field-mouse,field-vole,hedgerow-shrew,meadow-rabbit,robin-redbreast,slow-worm,woodcock-lookout --anchor-min 10 --level 1 --mode map-true"
+}
