@@ -143,6 +143,9 @@ function bloomOdds(v){ if(!obj(v)) return 0; const w = (Array.isArray(v.when) ? 
 // copy's copy and one more generation (the board is full by then), q = BLOOM_CHAIN_Q, the share of copies that live to a round where the
 // conditions still hold with a free cell beside them (a formula estimate: the conditions usually still hold the next round, about 0.85 x
 // BLOOM_LIVE, but a free cell is likelier missing for the second copy, x 0.6).
+// ENG15 (2026-10-31, owner FF5): copies no longer bloom; the ORIGINAL keeps trying every Ready round (its two free neighbours, then it waits).
+// The expected copies are the same shape, p x (1 + q + q^2): its second copy the round after (the conditions still hold, about 0.85, and the
+// other side is free, about 0.6: 0.5) and rarely a third (a copy died and freed a cell). q stays 0.43 (a formula estimate, not measured).
 const BLOOM_CHAIN_Q = 0.43;
 function bloomChainOdds(v){ const p = bloomOdds(v), q = BLOOM_CHAIN_Q; return r2(p * (1 + q + q * q)); }
 function bloomBodyMult(effects){ const e = effects || {}; return e.bloomCopy ? 1 + bloomChainOdds(e.bloomCopy) : 1; } // EN5: the chain's copies (was 1 + p)

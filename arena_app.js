@@ -787,12 +787,12 @@ const PASSIVE_DEFS = [
   {key:'leader', category:'passive', label:'Natural Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
   // Dictator (2026-10-12, user: "A new skill: Dictator - this card can only be a leader"): it never goes in a deck.
   {key:'dictator', category:'passive', label:'Dictator', kind:'boolean', desc:()=>`Can only be a leader: it never goes in a deck.`},
-  {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger. On the enemy's side it looks like an ordinary critter until it strikes or is struck, or a Keen Eye unit spots it.`},
+  {key:'changeling', category:'passive', label:'Changeling', kind:'boolean', desc:()=>`A kind little mimic: it shares a type with every unit, so it counts for Swarm and for every type-based skill or trigger. On the enemy's side it looks like an ordinary critter until it strikes or is struck, or a True Sight unit spots it.`},
   {key:'drunk', category:'passive', label:'Drunk', kind:'boolean', desc:()=>`Always Tipsy.`},
   {key:'purblind', category:'passive', label:'Purblind', kind:'boolean', desc:()=>`Always Blind.`},
   {key:'scatterbrained', category:'passive', label:'Scatterbrained', kind:'boolean', desc:()=>`Always Confused.`},
   {key:'primed', category:'passive', label:'Primed', kind:'boolean', desc:()=>`Its triggers stay online while it is Waiting, Stunned, Frozen or Asleep.`},
-  {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
+  {key:'keenEye', category:'passive', label:TX('ui.skn-eng15-true-sight'), kind:'boolean', desc:()=> TX('ui.eng15-sk-true-sight')}, // True Sight (2026-10-31, package ENG15, FF4; was Keen Eye: the key stays)
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
   // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
   // allies."): Lantern's new name, and a little stronger: Absolute darkness is lit too. Lantern stays in the engine for old saves
@@ -819,9 +819,12 @@ const PASSIVE_DEFS = [
   {key:'rabid', category:'passive', label:'Rabid', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits add ${numOr(v, 2)} Poison. Afraid of water: Swimmers and water damage hit it for double.`,
     get:e=> e.rabid ? numOr(e.rabid, 2) : undefined},
   // Cower (user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous turn").
-  {key:'cower', category:'passive', label:'Cower', kind:'select', desc:v=>`The "hit last turn" trigger. If it took damage last round, this round it ${v === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Poison and the field still can)'}. Shell is different: it reacts to the first hit straight away.`,
-    selectOptions:()=> [{value:'shell', label:'Hide in its shell'}, {value:'flee', label:'Flee and heal 2'}],
-    get:e=> e.cower ? (e.cower === 'flee' ? 'flee' : 'shell') : undefined, apply:(e,v)=>{ e.cower = v === 'flee' ? 'flee' : 'shell'; }},
+  // 2026-10-31 (package ENG15, owner FF6): + Cower N (effects.cower = N): no attack, and N Armor while it cowers. A select + number row now.
+  {key:'cower', category:'passive', label:'Cower', kind:'selectNumber', numberWhen:['armor'], numberTitle:'Cower N: the Armor it gains while it cowers',
+    desc:v=>{ const m = Array.isArray(v) ? v[0] : v, n = Array.isArray(v) ? (Number(v[1])||1) : (typeof v === 'number' ? v : 1); return m === 'armor' || typeof v === 'number' ? TX('ui.eng15-cower-desc', {n}) : `The "hit last turn" trigger. If it took damage last round, this round it ${m === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Poison and the field still can)'}. Shell is different: it reacts to the first hit straight away.`; },
+    selectOptions:()=> [{value:'armor', label:'Cower N: N Armor'}, {value:'shell', label:'Hide in its shell'}, {value:'flee', label:'Flee and heal 2'}],
+    get:e=> e.cower ? (typeof e.cower === 'number' ? ['armor', e.cower] : [e.cower === 'flee' ? 'flee' : 'shell', 1]) : undefined,
+    apply:(e, v)=>{ const m = Array.isArray(v) ? v[0] : v; if(m === 'armor'){ e.cower = Math.max(1, Math.round(Number(Array.isArray(v) ? v[1] : 1) || 1)); return; } e.cower = m === 'flee' ? 'flee' : 'shell'; }},
   // Ghost and Magic (user: "Ghost - Can't be affected by Normal Damage. Introduce Magic damage - some units have a wand instead of a
   // sword symbol on their bottom left, blue in colour").
   // 2026-10-14 (user: "Ghost - not just unaffected by physical, those creatures that deal elemental damage physically, deal half. Only
@@ -1158,7 +1161,7 @@ const PASSIVE_DEFS = [
   // Stored as a number, or 'attack' / 'health'.
   {key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', numberWhen:['n'], numberTitle:'How much damage',
     selectOptions:()=> [{value:'n', label:'N damage'}, {value:'attack', label:'its Attack'}, {value:'health', label:'its Health'}],
-    desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${pounceWords(v)} damage (the enemy bramble, if no units are left). Fires the moment it lands, Waiting or not.`,
+    desc:v=>`On Play: pounces on the enemy unit facing it (else one beside it, left or right) for ${pounceWords(v)} damage (the enemy bramble, if none of those three is there). Fires the moment it lands, Waiting or not.`, // ENG15 (2026-10-31, Z5): left, centre, right only
     get:e=> e.pounce ? (e.pounce === 'attack' || e.pounce === 'health' ? [e.pounce, 1] : ['n', numOr(e.pounce, 1)]) : undefined,
     apply:(e, vals)=>{ const m = Array.isArray(vals) ? vals[0] : 'n'; if(m === 'attack' || m === 'health'){ e.pounce = m; return; } const n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0) e.pounce = n; }},
   {key:'skyfall', category:'evergreen', label:'Skyfall', kind:'number', min:0, desc:v=>`On Spawn: crashes down for ${v} damage on a random live enemy creature (the enemy bramble, if none are left) — fires immediately, once.`},
@@ -2872,7 +2875,7 @@ const SKILL_TEXT = {
   immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
   rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
-  cower: v=> v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`,
+  cower: v=> typeof v === 'number' ? TX('ui.eng15-cower-short', {n: v}) : v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`, // + Cower N (ENG15, 2026-10-31)
   ghost: ()=> `Normal attacks pass through it; other elements deal half, magic full. It can't Bleed.`, magic: ()=> `Its attacks deal magic damage.`,
   ichor: v=> `Whoever hits it takes ${v} acid damage, loses 1 Armor and Bleeds 1.`,
   irradiated: v=> `Every upkeep: gives ${v} Irradiation to adjacent units and the enemy facing it, and 1 to itself.`,
@@ -2888,7 +2891,7 @@ const SKILL_TEXT = {
   changeling: ()=> `Shares a type with every unit. The enemy sees it in disguise.`,
   drunk: ()=> `Always Tipsy.`, purblind: ()=> `Always Blind.`, scatterbrained: ()=> `Always Confused.`,
   primed: ()=> `Its triggers work even while Waiting, Stunned, Frozen or Asleep.`,
-  keenEye: ()=> `Sees through Changelings and hits them for 2 more.`,
+  keenEye: ()=> TX('ui.eng15-sk-true-sight-short'), // True Sight (ENG15, 2026-10-31)
   demolisher: v=> `Deals ${v} more damage to Structures.`,
   lantern: ()=> `Lights up the dark: your units don't miss in darkness.`, // shown only on an old card that still has it (2026-10-15)
   illuminate: ()=> `Lights up the dark: your units don't miss in darkness, and nor does the enemy unit facing it.`, // 2026-10-15; the facing foe too (2026-10-17)
@@ -3152,9 +3155,14 @@ Object.assign(SKILL_TEXT, {slow: ()=> TX('ui.eng13-slow')}); // ENG13 (2026-10-2
 PASSIVE_DEFS.push(
   {key:'bola', category:'evergreen', label:TX('ui.skn-e14-bola'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.e14-sk-bola', {n: numOr(v, 1)}), codexNote:TX('ui.e14-sk-bola-codex'), get:e=> e.bola ? numOr(e.bola, 1) : undefined},
   {key:'anadromous', category:'passive', label:TX('ui.skn-e14-anadromous'), kind:'boolean', desc:()=> TX('ui.e14-sk-anadromous'), codexNote:TX('ui.e14-sk-anadromous-codex')});
-Object.assign(SKILL_TEXT, {bola: v=> TX('ui.e14-sk-bola', {n: numOr(v, 1)}), anadromous: ()=> TX('ui.e14-sk-anadromous')});
+Object.assign(SKILL_TEXT, {bola: v=> TX('ui.eng15-sk-bola-short', {n: numOr(v, 1)}), anadromous: ()=> TX('ui.eng15-sk-anadromous-short')}); // ENG15 (2026-10-31): the card lines under 20 words (the full rule is the skill's desc)
 Object.assign(SKILL_ICON, {bola:'🪀', anadromous:'🐟', pinDown:'📌'});
-Object.assign(EN5_STATE_KEYS, {anadromousSea:{tx:'e14-anadromous', ico:'🌊'}, anadromousRiver:{tx:'e14-anadromous', ico:'🏞️'}});
+Object.assign(EN5_STATE_KEYS, {anadromousSea:{tx:'e14-anadromous', ico:'🌊'}, anadromousRiver:{tx:'e14-anadromous', ico:'🏞️'}, anadromousDry:{tx:'e14-anadromous', ico:'🏜️'} /* ENG15 (2026-10-31, Y2): a fight with no Tide */});
+// ==== Package ENG15 (2026-10-31, owner Y3 / decision ENG14-3): Lasso N, once on its first Ready round: Arrow N's shot, and the unit it hits is
+// Lassoed (both ends tied: neither swings or moves; the target loses its Flying and Evasive dodges) until either one dies. Rules in the engine.
+PASSIVE_DEFS.push({key:'lasso', category:'evergreen', label:TX('ui.skn-eng15-lasso'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.eng15-sk-lasso', {n: numOr(v, 1)}), codexNote:TX('ui.eng15-sk-lasso-codex'), get:e=> e.lasso ? numOr(e.lasso, 1) : undefined});
+Object.assign(SKILL_TEXT, {lasso: v=> TX('ui.eng15-sk-lasso-short', {n: numOr(v, 1)})});
+Object.assign(SKILL_ICON, {lasso:'➰', lassoed:'➰'});
 Object.assign(SKILL_ICON, {weaponMaster:'🛡️⚔️', pry:'🪝'}); // (🔧 is SK2's Repair)
 Object.assign(SKILL_TEXT, {mimic: ()=> TX('ui.sk-mimic')}); // Package MT (2026-10-21): Mimic's card line
 // Package EV (2026-10-21): the Evolute, Stem and Chrysalis card lines
@@ -3382,8 +3390,9 @@ function describeEffects(def, liveCard, opt){
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
     if(p.key==='bloomCopy'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // Bloom – {…} (BL, 2026-10-23): spent once it bloomed (EN5: a copy can bloom too)
       // EN5 (2026-10-24, owner: "the copy can bloom"): a copy's line is spent only once it has bloomed too; the "copy" tag stays as a note
-      const tag = (lc && lc.bloomCopy ? ` <b class="sk-used-tag bl-copy-tag">${escapeHtml(TX('ui.bl-is-copy'))}</b>` : '') + (lc && lc.bloomed ? ` <b class="sk-used-tag">${escapeHtml(TX('ui.bl-bloomed'))}</b>` : '');
-      const line = `${ic('bloomCopy')}${escapeHtml(bloomCopyLabel(e.bloomCopy))} — ${skillText(p, v, e)}`; lines.push(lc && lc.bloomed ? `<span class="sk-used">${line}</span>${tag}` : line + tag); return; }
+      // ENG15 (2026-10-31, owner FF5): the original is never spent (it tries every Ready round); a copy is a token with no Bloom: its line is struck
+      const tag = lc && lc.bloomCopy ? ` <b class="sk-used-tag bl-copy-tag">${escapeHtml(TX('ui.eng15-bl-copy-none'))}</b>` : '';
+      const line = `${ic('bloomCopy')}${escapeHtml(bloomCopyLabel(e.bloomCopy))} — ${skillText(p, v, e)}`; lines.push(lc && lc.bloomCopy ? `<span class="sk-used">${line}</span>${tag}` : line + tag); return; }
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${skillValSuffix(p, v === true ? 2 : v)}` : p.label; /* BL (2026-10-23): "Pack", not "Pack 2", at its default */ lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
@@ -6474,6 +6483,7 @@ function en5StatusBadges(c, badges){ const on = String((c && (c.en5On != null ? 
   on.forEach(k=> badges.push(`<span class="abadge en5-state" data-en5="${k}" title="${escapeAttr(TX('ui.en5-state-on-tip', {skill: TX('ui.skn-' + EN5_STATE_KEYS[k].tx)}))}">${EN5_STATE_KEYS[k].ico}</span>`)); }
 // ENG14 (2026-10-30, X26): Bola's Pinned, its line under the unit's skills and its glossary colour (the 📌 badge is in the badge list)
 LIVE_STATUS_ROWS.push(['pinDown', 'pinned', TX('ui.e14-stn-pinned'), ()=> TX('ui.e14-ls-pinned'), false]);
+LIVE_STATUS_ROWS.push(['lassoed', 'lassoed', TX('ui.eng15-stn-lassoed'), ()=> TX('ui.eng15-ls-lassoed'), false]); // ENG15 (2026-10-31): Lasso
 STATUS_KEYWORDS.push({k:'pinned', re:/\b(pinned)\b/gi, cs:true, name:TX('ui.e14-stn-pinned'), c:'#b07a3c', text:TX('ui.e14-ls-pinned')});
 function en4StatusBadges(c, badges){ if(c && c.gpoison > 0) badges.push(`<span class="abadge gpoison" title="${escapeAttr(TX('ui.en4-gp-tip', {n: c.gpoison, d: c.gpoison}))}">💀${c.gpoison}</span>`); }
 Object.assign(SKILL_TEXT, {
@@ -8789,7 +8799,7 @@ function cardTileHTML(d, opts){
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */, cowering: !!live.cowering /* ENG15 (FF6) */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -9055,7 +9065,7 @@ function abilityBadges(d, bopts){
     if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
   if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
   if(e.rabid) out.push(`<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
-  if(e.cower) out.push(`<span title="Cower (${e.cower === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${e.cower === 'flee' ? 'backs off' : 'hides'} this turn">${iconHTML('cower', '🫣')}</span>`);
+  if(e.cower) out.push(eng15CowerChip(e, !!(bopts && bopts.live && bopts.live.cowering))); // ENG15 (2026-10-31, FF6): lit, with its Armor, only while it cowers
   if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
   if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
   if(e.irradiated) out.push(`<span title="Irradiated ${e.irradiated}: gives Irradiation to its adjacent units and the enemy facing it">${iconHTML('irradiated', '☢️')}${n1(e.irradiated)}</span>`);
@@ -11490,8 +11500,10 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
     // 2026-10-31 (package UI10, owner EE8): one dropdown, first entry "Type" = plain Swarm (any shared type); the pick applies at once
     // (written to the row, the "Counts" text updates) and the "x N" box is gone (N stays 1; an old swarmN rides along in a hidden field).
+    // ENG15 (2026-10-31, BB4 / EE8): a picked type that is not in ARCHETYPE_ICON (a taxonomy Type such as Ant or Termite) is offered as the first
+    // option, so the select shows it and a Save keeps it (it used to fall back to "Type", plain Swarm).
     const sel = Array.isArray(row.value) ? row.value : [];
-    valueHtml = `<select class="skill-types" data-sk="vals" data-i="${i}" data-first="${escapeAttr(sel[0]||'')}" data-extra="${escapeAttr(JSON.stringify(sel.slice(1)))}" aria-label="Counts allies of this type (Type: any shared type)" title="Type: any ally that shares a type. Pick a type to count only that type."><option value="" ${sel.length?'':'selected'}>Type</option>${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel[0]===a?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
+    valueHtml = `<select class="skill-types" data-sk="vals" data-i="${i}" data-first="${escapeAttr(sel[0]||'')}" data-extra="${escapeAttr(JSON.stringify(sel.slice(1)))}" aria-label="Counts allies of this type (Type: any shared type)" title="Type: any ally that shares a type. Pick a type to count only that type."><option value="" ${sel.length?'':'selected'}>Type</option>${(sel[0] && !Object.prototype.hasOwnProperty.call(ARCHETYPE_ICON, sel[0]) ? [sel[0]] : []).concat(Object.keys(ARCHETYPE_ICON).sort()).map(a=>`<option value="${escapeAttr(a)}" ${sel[0]===a?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
     if(s.numberKey) valueHtml += `<input type="hidden" data-sk="valN" data-i="${i}" value="${row.n||1}">`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
@@ -19121,7 +19133,8 @@ function applySkirmishSetup(players, node){
   if(leaders.length) players[2].reserveLeaders = leaders.slice();
   // 2026-10-30 (ENG14, owner X25: "Elite skirmishes start with +1 card in their hand."): an elite-kind fight (elite, champion, mini-boss;
   // not a dungeon) deals the CPU a 4-card opening hand (the engine's draw reads openingExtra on the first draw).
-  if(node && baseKind(node.kind || '') === 'elite' && node.kind !== 'dungeon') players[2].openingExtra = 1;
+  // ENG15 (2026-10-31, owner Y7 / decision ENG14-2: "Mini-bosses get +2 (so 5 cards in hand)"): a mini-boss deals 2 more; elite and champion stay +1.
+  if(node && baseKind(node.kind || '') === 'elite' && node.kind !== 'dungeon') players[2].openingExtra = node.kind === 'miniboss' ? 2 : 1;
 }
 // Skirmish tuning helpers (2026-10-09, user: "skirmish editing" is a key thing to start on).
 // What a player would most likely own arriving at this node: every Base card, plus the reward cards of
@@ -32998,7 +33011,7 @@ const FXL_SKILL_SETUPS = {
   vanguard: {unsupported:'It acts on the opening hand and the first card you play, which a staged board can\'t show. See it in a real fight.'},
   reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
   boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
-  keenEye: {foes:[{role:'foe', slot:0, def:{name:'Mimic', icon:'🎭', effects:{changeling:true}}}, {role:'foe2', slot:1}], note:'It faces a Changeling.'},
+  keenEye: {foes:[{role:'foe', slot:0, def:{name:'Veiled Moth', icon:'🦋', effects:{invisible:3}}}, {role:'foe2', slot:1}], note:'It faces an Invisible unit.'}, // True Sight (ENG15, 2026-10-31)
   nocturnal: {rules:{phase:'night'}, note:'Fought at night.'}, nightblind: {rules:{phase:'night'}, note:'Fought at night.'},
   moonborn: {rules:{phase:'night', field:'moon'}, note:'Fought at night under a Full Moon.'},
   // Zeitgeber advanced forms (2026-10-15)
@@ -37065,7 +37078,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, ...pl1AuraSnap(rc) /* PL1 (2026-10-24, P24-12) */, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, dauntN:rc.dauntN||0 /* EN8 */, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, exploit:rc.exploit||0, sk1Atk:rc.sk1Atk||0 /* SK1 */, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, pinDown:rc.pinDown||0 /* ENG14 */, lassoed:rc.lassoed||0, cowering:!!rc.cowering /* ENG15 */, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, ...sk3Snap(rc) /* 2026-10-19 (SK3) */, toxin:rc.toxin||0, gpoison:rc.gpoison||0 /* EN4 */, en5On:rc.en5On||'' /* EN5 */, hibernating:!!rc.hibernating /* EN6 */, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, bloomed:!!rc.bloomed, bloomCopy:!!rc.bloomCopy /* BL */, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce, ...eq2Snap(rc) /* EQ2 (2026-10-24): the piece, its durability, the temporary Health, the Parasite */}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -39329,7 +39342,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, cowering: !!c.cowering /* ENG15 (FF6) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
@@ -39351,8 +39364,16 @@ function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[
 // 2026-10-31 (package UI7, owner Y4): the statuses that hold a unit in place. A unit with any of them gets .is-held on its board card, and
 // bramblewood-fx-b.js wriggles it now and then (.is-struggling, about 0.6 s). A future Lasso status joins by adding its key here (the
 // key is the unit's field: c.pinDown is Bola's Pin, c.webbed Web, c.tangled Entangle, c.bound Bind).
-const HELD_STATUSES = ['pinDown', 'webbed', 'tangled', 'bound'];
+const HELD_STATUSES = ['pinDown', 'webbed', 'tangled', 'bound', 'lassoed' /* ENG15 (2026-10-31, Y3): Lasso */];
 function ui7IsHeld(c){ return !!c && HELD_STATUSES.some(k=> c[k] > 0); }
+// Cower's chip (2026-10-31, package ENG15, owner FF6: "its pip reads like Tide's: highlighted, the cower emoji with N Armor symbols attached"):
+// the plain 🫣 normally; while it cowers (live.cowering) lit like a Tide pip, and a Cower N unit shows its +N Armor (🛡N) beside the emoji.
+function eng15CowerChip(e, on){
+  const v = e && e.cower, n = typeof v === 'number' && v > 0 ? Math.round(v) : 0;
+  const tip = n ? TX(on ? 'ui.eng15-cower-live' : 'ui.eng15-cower-tip', {n}) : `Cower (${v === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${v === 'flee' ? 'backs off' : 'hides'} this turn`;
+  const lit = on ? ' style="color:#2a7fc0;background:rgba(90,180,255,.28);border-radius:999px;box-shadow:0 0 0 1.5px rgba(108,200,255,.9),0 0 8px rgba(108,200,255,.6);padding:0 2px"' : '';
+  return `<span class="ab-cower${on ? ' cower-live' : ''}" title="${escapeAttr(tip)}"${lit}>${iconHTML('cower', '🫣')}${on && n ? `<small class="cower-n">🛡${n}</small>` : ''}</span>`;
+}
 function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison" title="${t}" aria-label="${t}">☠</span>`; }
 const STATUS_CHIP_SLOTS = [2, 3, 4];
 function statusChipsHTML(badges){
@@ -42196,7 +42217,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, ...pl1AuraSnap(c) /* PL1 (2026-10-24, P24-12) */, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, dauntN:c.dauntN||0 /* EN8 */, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, pinDown:c.pinDown||0 /* ENG14 */, lassoed:c.lassoed||0, cowering:!!c.cowering /* ENG15 */, brittle:c.brittle||0 /* 2026-10-19 (GI) */, exploit:c.exploit||0, sk1Atk:c.sk1Atk||0 /* 2026-10-19 (SK1) */, ...sk3Snap(c) /* 2026-10-19 (SK3) */, toxin:c.toxin||0, gpoison:c.gpoison||0 /* EN4 */, en5On:c._en5On||'' /* EN5 (2026-10-24): the state skills on */, hibernating:!!c.hibernating /* EN6 (2026-10-24): Hibernate asleep */, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, bloomed:!!c.bloomed, bloomCopy:!!c.bloomCopy /* BL */, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce, crowned:!!c.crowned, transformed:!!c.transformed /* TR (2026-10-21) */, ...eq2Snap(c) /* EQ2 (2026-10-24) */};
       });
     });
   });
@@ -45757,7 +45778,7 @@ function lockShards(lock){
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
-const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {pinDown:TX('ui.e14-stn-pinned') /* ENG14 */, lassoed:TX('ui.eng15-stn-lassoed') /* ENG15 */, brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 // ==== Package SK3 (2026-10-19): the board's side of the new skills (rules in bramblewood-engine.js, the Package SK3 block): the replay
 // snapshot's counters, the status chips (🚫 Silenced, ⏸️ Stymied, 😫 Exhausted, 🪨 Petrified N, 🧲 Grounded, 🦨 Stench with its green
 // wavy-line look), the battle-log lines and floats. Every string is a TX key.
@@ -46062,6 +46083,7 @@ function logText(ev){
         petrified: 'is turned to stone and can\'t act. 🪨',
         bound: 'is Bound and can\'t attack this round. 🪢', // Tangleweed / Strangle (2026-10-16)
         pinned: TX('ui.e14-log-pinned-skip'), // Bola's Pin (ENG14, 2026-10-30)
+        lassoed: TX('ui.eng15-log-lassoed-skip'), // Lasso (ENG15, 2026-10-31)
         zeroAttack: 'has no Attack left to swing with.',
       }[ev.reason] || 'can\'t act this round.';
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
@@ -48610,6 +48632,7 @@ function w2StatusBadges(c, badges){
   try{ sk2StatusBadges(c, badges); }catch(e){} // Berries, scavenge and salvage points (2026-10-19, package SK2)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.pinDown>0) badges.push(`<span class="abadge pinned" title="${escapeAttr(TX('ui.e14-stn-pinned') + ': ' + TX('ui.e14-ls-pinned'))}">📌</span>`); // Bola's Pin (ENG14, 2026-10-30)
+  if(c.lassoed>0) badges.push(`<span class="abadge lassoed" title="${escapeAttr(TX('ui.eng15-stn-lassoed') + ': ' + TX('ui.eng15-ls-lassoed'))}">➰</span>`); // Lasso (ENG15, 2026-10-31)
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
   if(c.invisible>0) badges.push(`<span class="abadge invisible" title="Invisible: attacks and enemy skills can't find it until it attacks">🫥</span>`);
@@ -49510,12 +49533,14 @@ function s17LogText(ev, nm){
   if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
   if(ev.type === 'statusFx'){
     if(ev.kind === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Bola (ENG14, 2026-10-30)
+    if(ev.kind === 'lasso') return {cls:'', text:'➰ ' + TX('ui.eng15-log-lassoed', {att: nm(ev.attDefId), name: nm(ev.targetDefId)})}; // Lasso (ENG15, 2026-10-31)
     if(ev.kind === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.attDefId)} webs ${nm(ev.targetDefId)}: it can't dodge or move for ${ev.amount} round${ev.amount === 1 ? '' : 's'}.`};
     if(ev.kind === 'carrion') return {cls:'heal', text:`🦴 ${nm(ev.attDefId)} feeds on the fallen: +${ev.amount}.`};
     if(ev.kind === 'vanguard') return {cls:'', text:`🎖️ ${nm(ev.attDefId)} leads the way as the first card played: +${ev.amount}/+${ev.amount}.`};
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.defId)} breaks free of the web.`};
   if(ev.type === 'statusEnd' && ev.status === 'pinDown') return {cls:'', text:'📌 ' + TX('ui.e14-log-pinned-end', {name: nm(ev.defId)})}; // ENG14
+  if(ev.type === 'statusEnd' && ev.status === 'lassoed') return {cls:'', text:'➰ ' + TX('ui.eng15-log-lassoed-end', {name: nm(ev.defId)})}; // ENG15
   return null;
 }
 function s17SkillVfx(ev){
@@ -49539,6 +49564,7 @@ function s17SkillVfx(ev){
     return; }
   if(ev.type === 'sentry'){ fl(boardCardEl(ev.uid), '🗼 Sentry!', 'quick'); snd('ambushTone'); return; }
   if(ev.type === 'statusFx'){
+    if(ev.kind === 'lasso'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.lassoed = 1; snd('curse'); fl(el, '➰ ' + TX('ui.eng15-stn-lassoed'), 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; } // Lasso (ENG15, 2026-10-31)
     if(ev.kind === 'pinDown'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.pinDown = 1; snd('curse'); fl(el, '📌 ' + TX('ui.e14-stn-pinned'), 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; } // Bola (ENG14, 2026-10-30)
     if(ev.kind === 'webbed'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.webbed = Math.max(rc.webbed||0, ev.amount||1); snd('curse'); fl(el, '🕸️ Webbed', 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; }
     if(ev.kind === 'carrion'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.hp = Math.min(rc.maxHp || rc.hp + ev.amount, (rc.hp||0) + (ev.amount||0)); fl(el, `🦴 +${ev.amount}`, 'heal'); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} return; }
@@ -49546,6 +49572,7 @@ function s17SkillVfx(ev){
   }
   if(ev.type === 'statusEnd' && ev.status === 'webbed'){ const rc = rcOf(ev.uid); if(rc) rc.webbed = 0; refresh(ev.uid); }
   if(ev.type === 'statusEnd' && ev.status === 'pinDown'){ const rc = rcOf(ev.uid); if(rc) rc.pinDown = 0; refresh(ev.uid); } // ENG14
+  if(ev.type === 'statusEnd' && ev.status === 'lassoed'){ const rc = rcOf(ev.uid); if(rc) rc.lassoed = 0; refresh(ev.uid); } // ENG15
 }
 // ==== Devilry payments and Ambush N (2026-10-16): battle-log lines and a simple look. Penance: a dark ⛧ pulse sinks into your own
 // castle; Blood Tithe: the same pulse into the ally that pays (or the castle); Ambush: the ambusher's "👀 Ambush" float (its strike
@@ -50572,7 +50599,8 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='recoil'){ if(el){ dnFloat(el, ev.amount, {mods: ev.mods}); /* DN2 */ try{ recoilEl(el, 0.7); }catch(e){} } }
     // 2026-10-14: Ichor's splash on the attacker, and a Cower unit hiding or backing off
     else if(ev.kind==='ichor'){ if(el){ dnFloat(el, ev.amount, {type:'acid', mods: ev.mods}); if(ev.armor) floatText(el, '−1🛡', 'debuff'); /* DN2 */ try{ recoilEl(el, 0.6); }catch(e){} } if(rc){ rc.bleed = (rc.bleed||0) + 1; if(ev.armor) rc.armorLoss = (rc.armorLoss||0) + 1; } }
-    else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff'); }
+    else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : ev.mode === 'armor' ? `🫣 +${ev.armor||0}🛡` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff');
+      if(rc){ rc.cowering = true; try{ const ce = boardCardEl(ev.targetUid); if(ce) ce.querySelectorAll('.ab-cower').forEach(x=> x.outerHTML = eng15CowerChip(getCardDefs()[rc.defId] && getCardDefs()[rc.defId].effects || {}, true)); }catch(e){} } } // ENG15 (2026-10-31, FF6): the pip lights while it cowers
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
     else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.bleed=0; rc.scar=0; rc.exposed=0; rc.exploit=0; rc.shocked=0; rc.corrode=0; rc.brittle=0; rc.staggered=0; rc.armorLoss=0; } /* the physical debuffs only (2026-10-19, SK1) */ }
@@ -50883,7 +50911,7 @@ function renderVfxForEvent(ev){
   }
   if(ev.type==='bloom' && !ev.parasite && !ev.failed){ // EN7 (2026-10-24): a Parasite's bloom hooks onto an enemy (en7Vfx)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); rc.bloomed = true; }
+    if(rc){ rc.atk = (rc.atk||0) + (ev.atk||0); rc.maxHp = (rc.maxHp||0) + (ev.hp||0); rc.hp = (rc.hp||0) + (ev.hp||0); } // ENG15 (2026-10-31, FF5): the original is not spent (no rc.bloomed)
     try{ SoundKit.bloomTone(); }catch(e){}
     setTimeout(()=> afterSettle(boardCardEl(ev.copyUid) ? ev.copyUid : ev.uid, (el, r, row0)=>{ try{ floatText(el || fxHostAt(row0, 1900, r), `🌸 +${ev.copyAtk != null ? ev.copyAtk : 1}/+${ev.copyHp != null ? ev.copyHp : 1}`, 'buff'); }catch(e){} }), 90);
     try{ updateCardHpDisplay(ev.uid); updateCardAtkDisplay(ev.uid); }catch(e){}

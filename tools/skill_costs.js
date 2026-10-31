@@ -29,6 +29,7 @@
   'use strict';
   const LADDER = BB.LADDER;
   const r2 = v=> Math.round(v * 100) / 100;
+  const COWER_ARMOR_UPTIME = 0.4; // Cower N's Armor (2026-10-31, package ENG15): see skillCost
   const ONE_SHOT = ['onSpawn', 'onDeath', 'onReady']; // 2026-10-19 (package TC): triggers that fire at most once anyway; `once` changes nothing
   const numOf = v=> typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b || 0), 0) : 0);
   // The level the budget uses (card_balance.js since 2026-10-18): rewards 1, Base / Starter / tutorial / quest cards 0.
@@ -50,6 +51,10 @@
       // (value) x 2 per Attack point (the flag; true = +1) or 1 per Health point (the Hp key); Shock at Attack 0; Shock Bolt N: Arrow N + its Shock.
       if(e.logic === 'zeit') return r2(val * (/Hp$/.test(id) ? n : g('attackWeight', (BB.DEFAULTS && BB.DEFAULTS.attackWeight) || 2) * (v === true ? 1 : n))); // BUDGET2 (2026-10-31): x the Attack weight (3; was 2)
       if(e.logic === 'shock') return id === 'shockBolt' ? r2((skillCost('arrow', v) || 0) + BB.shockBoltShockS(0)) : BB.shockS(v, 0);
+      // Cower N (2026-10-31, package ENG15, owner FF6): the number is Armor while it cowers, not a size: Cower's own price (the lost swing,
+      // measured on 'shell') + Armor N's at COWER_ARMOR_UPTIME (the rounds it cowers: about 4 in 10 of a front unit's rounds after a hit).
+      // 'shell' / 'flee' (a string) keep the plain price. By logic, not measured.
+      if(id === 'cower' && typeof v === 'number' && v > 0) return r2(val + (skillCost('armor', v) || 0) * COWER_ARMOR_UPTIME);
       // 2026-10-24 (package EN5, owner BP-1: "price it according to your simulation. Note that bigger numbers make them stronger"): an 'n'
       // skill with `pow` costs value × N^pow (Bleed, Poison: fitted to the robust skill test's worth at N 1-3), not value × N.
       if(e.scale === 'n'){ const N = Math.max(1, v === true && e.payDefault ? e.payDefault : n); return e.pow != null ? r2(val * Math.pow(N, +e.pow)) : val * N; }

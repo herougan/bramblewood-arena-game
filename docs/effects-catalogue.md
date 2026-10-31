@@ -463,7 +463,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Expose (`expose`) | 3 | `SkillFX.targetMark` | hit by an Expose unit, statusFx expose | 🆕 |
 | Freeze (`freeze`) | 3 | `SkillFX.freezeEncase` | statusFx freeze | 🆕 |
 | Hive Mind (`hiveMind`) | 3 | `SkillFX.rageFlare` | statusFx berserk (hiveMind) | 🆕 |
-| Keen Eye (`keenEye`) | 3 | none (a rule or stat with no moment of its own) |  |  |
+| True Sight, was Keen Eye (`keenEye`) | 4 | none (a rule or stat with no moment of its own) |  |  |
 | Keen Sense (`keenSense`) | 3 | none (a rule or stat with no moment of its own) |  |  |
 | Lantern (`lantern`) | 3 | `SkillFX.lanternGlow` | play |  |
 | Molting (`molting`) | 3 | floating text / sound only |  | — |
@@ -1382,3 +1382,17 @@ tick; `draw`'s `openingExtra`; `AI_PLAN_*`, `aiSavePlan`, `aiLosingBadly`, `aiFr
 | 🐟 Anadromous | EN5's state chip (`anadromousSea` 🌊 / `anadromousRiver` 🏞️) | the chip lit for the fight | `statusFx stateSkill` |
 | 🪞 Mirage | the field row | one Illusion per player | `fieldTick mirage` (row), `spawn` |
 
+
+## 2026-10-31 additions (package ENG15): True Sight, Bloom keeps trying, Cower N, Poison past the Shield, Bola / Lasso holds, Anadromous rework, Pounce in reach
+- **True Sight** (`keenEye`, was Keen Eye; owner FF4, call AA4): its swings, shots and skills find and hit Invisible units (`isInvisible(c, viewer)`, `trueSightOf`); it lifts the fog (`FOG_REVEAL_KEYS`). No more +2 against a Changeling. A diver aloft or under is still out of reach.
+- **Bloom** (owner FF5, options a + b): the original tests at every round start while Ready and tries again whenever its conditions hold; it is never spent and gets nothing on a failed split (no room, a Parasite with no host: it waits; `bloomFail` is no longer called). A copy is a token (`c.token`, the token frame), has no Bloom, and arrives with the parent's printed Wait. At most one copy a Ready round.
+- **Cower N** (`cower: N`, owner FF6): a third mode beside Shell and Flee: hit last round, it cowers this round (no swing) with +N Armor (`cowerArmorOf`, in both Armor sums); `statusFx cower {mode:'armor', armor}`; `c.cowering` lights its pip (`eng15CowerChip`: lit like Tide's, 🛡N). Priced Cower + Armor N x 0.4 (tools/skill_costs.js).
+- **Poison ticks** (Poison, Toxin, Greater Poison: `damageCardFlat(..., 'poison')` with no attacker) pass Bolster, Shell's temporary Health and the Shield (`applyDamage` `poisonTick`). A poison-typed swing or shot still soaks into them.
+- **Bola's Pin** also strips the Flying and Evasive dodges (`heldFast`). **Lasso N** (new): once, on its first Ready round, Arrow N's shot (`SHOT_KEYS`; `c.lassoUsed`); a unit it hits is Lassoed (`c.lassoed`, `c.lassoBy`; the thrower's `c.lassoing`): neither end swings (`skipTurn lassoed`) or moves (`stuckFast`), the target has no Flying / Evasive dodge; either one dying frees the other (checked live, swept at each upkeep: `statusEnd lassoed`). `lassoed` is in `HELD_STATUSES` (the struggle wriggle).
+- **Anadromous** (owner Y2, decision ENG14-4): a Tide fight on a salty map: +1/+1 and the Tide skill (`anadromousSea`); a Tide fight that is not salty: a 1/1 Tide Fry (`anadromous-fry`) takes its place when it dies (`anadromousRiver`); no Tide: +0/+1 (`anadromousDry` 🏜️).
+- **Pounce** (owner Z5): only the enemy facing it, else one in the column beside it (a coin flip when both), else the bramble.
+
+| Effect | Look | What plays | Events |
+|---|---|---|---|
+| ➰ Lasso | the arrow flight, then `SkillFX.vineBind` on the target | "➰ Lassoed", the ➰ status badge | `arrow {lasso}`, `statusFx lasso`, `skipTurn lassoed`, `statusEnd lassoed` |
+| 🫣 Cower N | `SkillFX.fearShiver`, the lit cower pip | "🫣 +N🛡" | `statusFx cower {mode:'armor'}` |

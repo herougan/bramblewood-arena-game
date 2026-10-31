@@ -32,6 +32,7 @@ const TUT12 = new Set((js('canonical/map-pools.json').maps.m1.submaps || {}).mtu
 // 2026-10-31 SKILL2: a card SKILL2's re-fit moved, held or lifted (docs/balance/skill2-refit-2026-10-31.json) is SKILL2's now (tests/skill2-2026-10-31.js)
 const SK2R = js('docs/balance/skill2-refit-2026-10-31.json'), SK2 = new Set(SK2R.changes.map(r=> r.id) /* in play applied; out of play on record */.concat(SK2R.held.map(h=> h.id)));
 const SPD = new Set(['gold-throated-acolyte', 'mangrove-kingfisher', 'mirror-moth', 'candle-moth']); // 2026-10-31 coordinator (SPEED1-2): +1 Health after the Flying / Evasive re-price
+SPD.add('net-thrower'); // 2026-10-31 (package ENG15, decision ENG14-3): Bola 1 in place of Boomerang, re-fit 3/10 -> 2/9 (tests/eng15-2026-10-31.js)
 const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
   const b = T.budget(c), b1 = T.budget(c, {level: 1}); if(!(b.ok && b1.ok && b.x1 > 0.6 * b.N)) return true;
   if(TUT12.has(r.id)){ const st = G.statsAtLevel(c, 0); if(!T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: {}}), {level: 0}).ok) return true; }
@@ -51,7 +52,9 @@ ok(js('docs/balance/listfix1-pending-budget-2026-10-29.json').count === 0, '2. L
 // ---- 3. the sims' biome tables (tools/lib_bramble.js)
 { let salt = 0, hot = 0, cold = 0, all = 0; LB.MAPS.forEach(m=> (m.nodes || []).forEach(nd=>{ const r = G.fightRules(m.id, nd); all++; if(r.saltMap) salt++; if(r.hotMap) hot++; if(r.coldMap) cold++; }));
   ok(salt > 0 && hot > 0 && cold > 0, `3. sim fights get saltMap / hotMap / coldMap from the map's biome (${salt} / ${hot} / ${cold} of ${all})`);
-  ok(near(table.skills.find(s=> s.id === 'anadromous').value, 2.1, 1e-9) && near(3 * salt / all + 2 * (1 - salt / all), 2.06, 0.05), `3. Anadromous 2.1 = 3 x ${(salt / all).toFixed(3)} + 2 x the rest, up to the next tenth`); }
+  // 2026-10-31 (package ENG15, owner Y2): Anadromous reworked and re-priced 1.4 (its BUDGET2 price 2.1 is kept on the row as anadEng14Was)
+  const anr = table.skills.find(s=> s.id === 'anadromous');
+  ok(near((anr.anadEng14Was || {}).value, 2.1, 1e-9) && near(3 * salt / all + 2 * (1 - salt / all), 2.06, 0.05), `3. Anadromous 2.1 (BUDGET2, now anadEng14Was) = 3 x ${(salt / all).toFixed(3)} + 2 x the rest, up to the next tenth`); }
 
 // ---- 4. the logic prices at 3A + H
 const sk = id=> table.skills.find(s=> s.id === id) || {};

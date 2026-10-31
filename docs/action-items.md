@@ -8,9 +8,9 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - FF1 (UI11; corrects Z6/UI8): the Shield pip is the skill chip on the card's south edge (emoji + number = Shield left), updated as it drops and gone at 0. No Shield badge on the east side (remove UI8's). Rule: context pips only when they matter; a quick pass over every pip that shows when it changes nothing.
 - FF2 (UI11 text): Windy's field text ends "..., Headwind Flyers' skills trigger twice". The odds are already 1 in 3 back / face / calm (engine rollWind); keep them.
 - FF3 (UI11): the card-detail hover tooltip disappears when an animation runs (it should stay); its card is sized by the screen (at full screen it looks smaller than the board card; it should be larger); tilt it 1 degree to the right.
-- FF4 (ENG15): Keen Eye becomes True Sight: sees Invisible units (can target them) and reveals fog as today. Today Keen Eye only adds +2 damage against a Changeling (it does not switch off a Changeling's type synergies). Coordinator call (AA4): drop the Changeling bonus; True Sight = Invisible + fog.
-- FF5 (UI11 logo; ENG15 rule): the Bloom chip icon is off centre. Bloom rule (coordinator call from the owner's options, a + b): the original keeps trying whenever it is ready and its conditions hold (no "spent" after a failed split, and no +1/+1 on a fail: it simply tries again); its copies are tokens (token frame) with no Bloom and arrive with the parent's Wait. So growth is at most one copy a ready turn, and the player can answer it.
-- FF6 (ENG15 + pip): Cower N: while cowering the unit gains N Armor; its pip reads like Tide's: highlighted, the cower emoji with N Armor symbols attached.
+- FF4 (ENG15; done 10-31, not yet released): Keen Eye becomes True Sight: sees Invisible units (can target them) and reveals fog as today. Today Keen Eye only adds +2 damage against a Changeling (it does not switch off a Changeling's type synergies). Coordinator call (AA4): drop the Changeling bonus; True Sight = Invisible + fog.
+- FF5 (UI11 logo; ENG15 rule done 10-31, not yet released): the Bloom chip icon is off centre. Bloom rule (coordinator call from the owner's options, a + b): the original keeps trying whenever it is ready and its conditions hold (no "spent" after a failed split, and no +1/+1 on a fail: it simply tries again); its copies are tokens (token frame) with no Bloom and arrive with the parent's Wait. So growth is at most one copy a ready turn, and the player can answer it.
+- FF6 (ENG15 + pip; done 10-31, not yet released; no card has Cower N yet): Cower N: while cowering the unit gains N Armor; its pip reads like Tide's: highlighted, the cower emoji with N Armor symbols attached.
 - FF7 (UI11): the conquest map's left map list: the selected map also gets a brighter colour, not just a highlighted border.
 - FF8 (done 18:20, coordinator hotfix, live): the Map cards gallery's Cut / Keep picks were kept in memory only; now saved in localStorage (bw_rv_flips_v1) too, so a reload or a release keeps them.
 - FF9 (UI11, first): an "Add card to SPECIAL" button right of Export all: search any card and add it to the open map's SPECIAL list; saved like the picks (localStorage) and included in Export all.
@@ -40,7 +40,7 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - BB1 (UI9): the Nest page gets the nav button back to the conquest map.
 - BB2 (UI9): the trap. After laying it, its context pips go away. Its animation (red circles circling and diving into the middle) drops to 50% opacity, plus inward-falling rosso rectangles that fade in over the first 20% of their fall; the coordinator synthesises a "this is a trap" look from these (snapping jaws / closing frame). The "<trap emoji> <number>" label over the slot sits at 80%+ transparency, 92% on slot hover.
 - BB3 (UI9): a card played onto a trap shows a hit: either hooked slightly down into the ground, or launched up and turned slightly (discombobulated), then back into place.
-- BB4 (ENG15): Swarm <Type>: Swarm shares only with the named type (ant, bee, termite ...); plain Swarm (no type) still means "shares a type". The owner re-tags the swarm cards himself.
+- BB4 (ENG15; engine was done, editor keeps a non-icon type: done 10-31, not yet released): Swarm <Type>: Swarm shares only with the named type (ant, bee, termite ...); plain Swarm (no type) still means "shares a type". The owner re-tags the swarm cards himself.
 - BB5 (owner): step 3 pass: the owner picks each map's cards and may also re-configure cards, then exports (Map cards > Export all) and pastes here. Step 4 (deck optimising) uses his new card definitions; balance is measured only after that.
 - BB6 (PERF2, proposed): images and load. Today: art lives in the GitHub repo (assets/ 34 MB, card art 13 MB, 718 files) and Vercel serves it from its CDN; a deploy re-uploads only changed files, but the assets have no long cache header, so browsers re-check them; index.html is 14.5 MB and re-downloads on every release. Plan: immutable cache headers for the ?v=-hashed assets, split index.html so data and language packs load separately, and load art on demand (eager: the current and last map, the main deck, the raid when the player holds tickets; the rest on deck change or on entering another map's fight).
 
@@ -56,19 +56,19 @@ Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 1
 - Z2 (UI8): leader summoned: remove the leader preview in the centre (the leader is clearly visible).
 - Z3 (idea): new skill Relict, effect to be decided by the owner: decision RELICT-1 (hub 🗳️ 💡 Ideas group).
 - Z4 (UI8): the battle's darkness light that follows the mouse goes under the cards, not over them.
-- Z5 (ENG15): Pounce reaches only the enemies around it (left, centre, right).
-- Z6 (owner 10:20; UI8 + ENG15): Shield badge stays on the card while any Shield is left, its number = Shield left; at 1 the number fades off (the icon alone = 1). Poison skips the Shield and hits Health (today a Poison tick is soaked by Shield / Shell's temporary Health, `damageCardFlat` → `applyDamage` → `spendTempHp`).
+- Z5 (ENG15; done 10-31, not yet released): Pounce reaches only the enemies around it (left, centre, right).
+- Z6 (owner 10:20; UI8 + ENG15; the Poison half done 10-31 in ENG15, not yet released): Shield badge stays on the card while any Shield is left, its number = Shield left; at 1 the number fades off (the icon alone = 1). Poison skips the Shield and hits Health (today a Poison tick is soaked by Shield / Shell's temporary Health, `damageCardFlat` → `applyDamage` → `spendTempHp`).
 - Z7 (owner 10:21): balancing should run on automation (scripts), not agent tokens: SPEED1 also builds one command per balancing step that ends in a short summary.
 
 
 ## 10-31 09:22: the owner's notes
 - Y1 (UI7): status numbers sit closer to their icon (like the shield). Poison and Regeneration show no number. Shield stays as it is (it feeds Health, then disappears).
-- Y2 (ENG15): Anadromous rework: Tide and +1/+1 in seawater (any salty map); in freshwater (swimming pool counts) spawns a 1/1 Fry with Tide on death; maps without Tide: +0/+1. ENG14-4.
-- Y3 (ENG15): Bola also removes Flying and Evade benefits; Bola Spider, Net Thrower, Salmon OK; new skill Lasso (once, On Ready; units tied; released when either dies). ENG14-3.
-- Y4 (UI7 hook, ENG15 for Lasso): a rare, random struggle animation on Lasso, Bola (Pinned), Entangled and similar.
-- Y5 (ENG15): investigate why the CPU can't reach big cards: Lumber gathering skill, gathering too weak, or big cards tuned down.
+- Y2 (ENG15; done 10-31, re-priced 1.4, on Wrong-Way Salmon; not yet released): Anadromous rework: Tide and +1/+1 in seawater (any salty map); in freshwater (swimming pool counts) spawns a 1/1 Fry with Tide on death; maps without Tide: +0/+1. ENG14-4.
+- Y3 (ENG15; done 10-31: Bola strips Flying / Evasive, Net Thrower + new Bolas Spider, Lasso built on no card; not yet released): Bola also removes Flying and Evade benefits; Bola Spider, Net Thrower, Salmon OK; new skill Lasso (once, On Ready; units tied; released when either dies). ENG14-3.
+- Y4 (UI7 hook, ENG15 for Lasso; lassoed is in HELD_STATUSES 10-31): a rare, random struggle animation on Lasso, Bola (Pinned), Entangled and similar.
+- Y5 (ENG15; investigated 10-31, no bug found: see the ENG15 report): investigate why the CPU can't reach big cards: Lumber gathering skill, gathering too weak, or big cards tuned down.
 - Y6: keep CPU saving (ENG14-1).
-- Y7 (ENG15): mini-bosses start with +2 cards (5 in hand) (ENG14-2).
+- Y7 (ENG15; done 10-31, not yet released): mini-bosses start with +2 cards (5 in hand) (ENG14-2).
 - Y8 (ECON2): bonus-copy chance by rarity for +1/+2/+3 copies: Common 8/1.5/0.5%, Unique 0.3/0.05/0.01%, Legendary 0.01/0.002/0.0005%, as one formula (now: one +1 copy only, Common 5%).
 - Y9 (ECON2): first clears pay Gold Leaves; raids pay a little on clear; later a Gold Leaves daily dungeon.
 - Y10 (ECON2): keep upgrades and cards on separate currencies; Pack 1 also costs Gold Leaves.
