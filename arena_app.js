@@ -21768,19 +21768,24 @@ function maybeOfferErrand(force){
   p.then(r=>{ try{ if(r && r.replies && r.replies[0] === 'I’ll do it.'){ if(acceptErrand(t.id)) showToast(TX('toast.errand-taken', {label: t.label}), 'ok'); } }catch(_){} });
   return t.id;
 }
+// 2026-10-31 (package UI10, owner EE1): a quest notice you have not hovered or clicked yet says NEW!; remembered per quest id on this device.
+const QUEST_SEEN_KEY = 'bramblewood_quest_seen_v1';
+function questSeenSet(){ try{ const a = JSON.parse(localStorage.getItem(QUEST_SEEN_KEY) || '[]'); return new Set(Array.isArray(a) ? a : []); }catch(e){ return new Set(); } }
+function questMarkSeen(id){ if(!id) return; try{ const st = questSeenSet(); if(st.has(id)) return; st.add(id); localStorage.setItem(QUEST_SEEN_KEY, JSON.stringify([...st].slice(-400))); }catch(e){} }
+function questNewTag(id, seen){ return seen.has(id) ? '' : `<span class="qn-new" data-new-for="${escapeAttr(id)}" aria-label="New">NEW!</span>`; }
 function errandsBoardHTML(){
   if(!errandsOpen()) return '';
   // Errand writs (2026-10-16, user: "The quests should be bigger more official looking cards - straight not slanted. And it
   // doesn't list dailies or weeklies. It's actual quests you got from the game. It's errands i guess."): each errand is a big,
   // square-set parchment writ on the Errands tab: a header band, the title, the giver's portrait and name, their words, the
   // task with a progress bar and count, the reward, and a wax-seal Claim once it's done. Offers you let pass wait below.
-  const e = loadErrands(), defs = getCardDefs();
+  const e = loadErrands(), defs = getCardDefs(), seenQ = questSeenSet();
   const portrait = sp=> sp.art ? `<img src="${escapeAttr(sp.art)}" alt="" loading="lazy" decoding="async">` : `<span>${sp.icon||'📌'}</span>`;
   const rwChips = t=>{ const rw = errandReward(t); return `<span class="er-rw-chip" title="Dust">✨ ${rw.dust}</span><span class="er-rw-chip" title="Maple Leaves">${(CURRENCY_META.gold||{}).glyph||'🍁'} ${rw.gold}</span><span class="er-rw-chip" title="Experience">⭐ 20</span>${t.shard ? `<span class="er-rw-chip" title="Iron Shard">${(defs['iron-shard']||{}).icon||'🔩'} Iron Shard</span>` : ''}`; };
   const day = at=>{ try{ return new Date(at).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(_){ return ''; } };
-  const writ = (t, who, cls, status, inner, foot)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
-    return `<article class="er-writ ${cls}">
-      <header class="er-band"><span class="er-kind">📜 Quest</span><span class="er-status">${status}</span></header>
+  const writ = (t, who, cls, status, inner, foot, qid, claimId)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
+    return `<article class="er-writ ${cls}" data-qid="${escapeAttr(qid || '')}" ${claimId ? `data-errand-claim="${escapeAttr(claimId)}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+      <header class="er-band"><span class="er-kind">📜 Quest</span>${qid ? questNewTag(qid, seenQ) : ''}<span class="er-status">${status}</span></header>
       <div class="er-top"><span class="er-portrait" aria-hidden="true">${portrait(sp)}</span>
         <div class="er-titles"><h3 class="er-title">${escapeHtml(t.title || t.label || '')}</h3><div class="er-by">Asked by <b>${escapeHtml(sp.name || who || '')}</b></div></div></div>
       <blockquote class="er-ask">“${escapeHtml(t.ask || '')}”</blockquote>
@@ -21791,14 +21796,14 @@ function errandsBoardHTML(){
   const act = e.active.map(x=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05, label:x.label}, v = errandProgress(x), done = v >= x.goal;
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(x.label)}</span></div>
       <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${x.goal}" aria-valuenow="${v}" aria-label="${escapeAttr(x.label)}"><span class="er-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}<small>/${x.goal}</small></b></div>`;
-    const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-seal" data-errand-claim="${x.id}">🎁 Claim reward</button>`
+    const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><span class="er-claimhint" aria-hidden="true">🎁 Click to claim</span>` /* 2026-10-31 (UI10, EE1): the writ itself is the button */
       : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this quest">✕ Drop</button>`;
-    return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : 'In progress', inner, foot); }).join('');
+    return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : '', inner, foot, 'er:' + x.id, done ? x.id : ''); }).join('');
   const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return '';
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(t.label)}</span></div>`;
     const full = e.active.length >= ERRANDS_MAX;
     const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} quests already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
-    return writ(t, t.who, 'is-offer', 'Offered', inner, foot); }).join('');
+    return writ(t, t.who, 'is-offer', 'Offered', inner, foot, 'eo:' + t.id, ''); }).join('');
   return `<section class="qn-board qn-errands er-board" id="qnErrands">
     <div class="qn-sign"><b>Quests</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
     ${act ? `<div class="er-writs">${act}</div>` : ''}
@@ -21811,21 +21816,21 @@ function questsModalHTML(){
   const resetIn = (ms)=>{ const h = Math.floor(ms/3600000), d = Math.floor(h/24); return d ? `${d}d ${h%24}h` : `${h}h ${Math.floor((ms%3600000)/60000)}m`; };
   const now = new Date(), nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay()+6)%7)));
   const rewardChips = r=> Object.entries(r).map(([k,v])=> `<span class="qn-rw" title="${escapeAttr((CURRENCY_META[k]||{label:k}).label)}">${(CURRENCY_META[k]||{}).glyph||''} ${v}</span>`).join('');
-  let noteN = 0;
+  let noteN = 0; const seenQ = questSeenSet();
   const dailyBoard = ()=>{
     const nx = nextNoticeMs();
     const notes = q.dailyList.slice().sort((a,b)=> a.slot - b.slot).map(x=>{
       const v = dailyNoticeProgress(q, x), done = v >= x.goal, got = q.claimedDaily.includes(x.id), rot = ((noteN++ * 37) % 5) - 2;
       const rw = QUEST_RANK_REWARD[x.rank] || QUEST_RANK_REWARD.C, shown = QUEST_SHOWN_RANKS.has(x.rank);
       const canSwap = !q.swapUsed && !done && !got;
-      return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg">
-        <span class="qn-pin" aria-hidden="true"></span>
+      return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg" data-qid="${escapeAttr('d:' + x.id)}" ${done && !got ? `data-claim-kind="daily" data-claim-id="${x.id}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+        <span class="qn-pin" aria-hidden="true"></span>${got ? '' : questNewTag('d:' + x.id, seenQ)}
         ${shown ? `<span class="qn-rank qn-rank-${x.rank}" title="${escapeAttr(TX('ui.rw-rare-notice'))}">${x.rank}</span>` : ''}
         <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
         <div class="qn-label">${escapeHtml(x.label)}</div>
         <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
         <div class="qn-note-rw">${rewardChips(Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')))}<span class="qn-rw" title="Experience">⭐ ${rw.xp}</span></div>
-        <div class="qn-foot">${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="daily" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+        <div class="qn-foot">${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : done ? '<span class="qn-claimhint" aria-hidden="true">🎁 Click to claim</span>' : ''}
           ${canSwap ? `<button type="button" class="qn-swap" data-swap-id="${x.id}" title="Swap this notice for another, free once a day">🔄 Swap</button>` : ''}</div>
       </div>`; }).join('');
     return `<section class="qn-board qn-daily">
@@ -21841,13 +21846,13 @@ function questsModalHTML(){
       <div class="qn-sign"><b>${title}</b><span>resets in ${resetIn(ms)}</span></div>
       ${tiers.map((t,ti)=> `<div class="qn-tier"><div class="qn-tier-k">Tier ${ti+1}</div>
         <div class="qn-notes">${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id); const rot = ((noteN++ * 37) % 5) - 2;
-          return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg">
-            <span class="qn-pin" aria-hidden="true"></span>
+          return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg" data-qid="${escapeAttr('w:' + x.id)}" ${done && !got ? `data-claim-kind="${kind}" data-claim-id="${x.id}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+            <span class="qn-pin" aria-hidden="true"></span>${got ? '' : questNewTag('w:' + x.id, seenQ)}
             <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
             <div class="qn-label">${escapeHtml(x.label)}</div>
             <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
             <div class="qn-note-rw">${rewardChips(t.reward)}</div>
-            ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+            ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : done ? '<span class="qn-claimhint" aria-hidden="true">🎁 Click to claim</span>' : ''}
           </div>`; }).join('')}</div>
       </div>`).join('')}
       ${hidden>0 ? `<div class="qn-more">🔒 ${hidden} more tier${hidden===1?'':'s'} pinned underneath, revealed when this one is done</div>` : ''}
@@ -21908,7 +21913,7 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
     ? `<p class="qn-sub">The favours folk asked of you on the road. Take one, finish it, and claim the reward.</p>
        <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
     : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
-       ${noticeQuestListHTML(q)}
+       ${'' /* 2026-10-31 (UI10, EE1): the top summary ("Your dailies") is gone; Daily and Weekly stay */}
        <div class="qn-cork">
          ${dailyBoard()}
          ${section('weekly', 'Weekly', nextMon - now)}
@@ -21938,6 +21943,10 @@ function openQuestsModal(focus){
   document.getElementById('qsClose').onclick = close;
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const res = claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); questRewardFlight(r, res); }));
+  // 2026-10-31 (UI10, EE1): NEW! goes away when the notice is hovered or clicked (remembered per quest id); Enter / Space on a finished notice claims it
+  overlay.querySelectorAll('[data-qid]').forEach(n=>{ const seen = ()=>{ questMarkSeen(n.dataset.qid); const t = n.querySelector('.qn-new'); if(t) t.remove(); };
+    n.addEventListener('mouseenter', seen); n.addEventListener('click', seen, true); n.addEventListener('focus', seen); });
+  overlay.querySelectorAll('[data-claim-id][role="button"], [data-errand-claim][role="button"]').forEach(n=> n.addEventListener('keydown', e=>{ if((e.key === 'Enter' || e.key === ' ') && e.target === n){ e.preventDefault(); n.click(); } }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ const n = b.closest('.qn-note'); try{ fxHook('noticeSwap', n && n.getBoundingClientRect()); }catch(e){} }, true)); // 2026-10-15 batch F
   overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const rw = claimErrand(b.dataset.errandClaim); if(rw){ openQuestsModal(); rewardRush(r, rw, {xp:20}); } else denyShake(b); }));
