@@ -43,3 +43,6 @@ A historical discovery: fossils, ancient nesting grounds and enormous prehistori
 | 77 | The Empyrean | Ecclesia; divine realms, celestial order and higher powers |
 
 Notes for WORLD1 (coordinator): some names already exist today (the Rimefire Caldera is a current submap; the Goldfeather Siege is Map 23 on the current road), so the 21+ plan has to re-home them. The Four Horses of the Apocalypse (K3, owner 23:25: a donkey, a seahorse, a horse, and a horseshoe-crab play) belong to Maps 50+.
+
+## Relic discovery (owner 2026-10-31 10:17)
+From Map 40 on, a Relic discovery tab opens: it turns fossils and remnants back into animal cards. From Map 30-40 the prehistoric animals you meet still roughly resemble today's animals; through Maps 30-60 they become true dinosaurs. The fossils progress the same way, with fossilised eggs past Map 50. A related skill, Relict, is an open idea (RELICT-1).
