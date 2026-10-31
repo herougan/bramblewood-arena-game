@@ -31,7 +31,8 @@ ok(plan.changes.length >= 140 && plan.changes.filter(r=> r.inPlay).length >= 70,
 const TUT12 = new Set((js('canonical/map-pools.json').maps.m1.submaps || {}).mtut12 || []), LB = require(path.join(ROOT, 'tools', 'lib_bramble.js')), G = LB.G;
 // 2026-10-31 SKILL2: a card SKILL2's re-fit moved, held or lifted (docs/balance/skill2-refit-2026-10-31.json) is SKILL2's now (tests/skill2-2026-10-31.js)
 const SK2R = js('docs/balance/skill2-refit-2026-10-31.json'), SK2 = new Set(SK2R.changes.map(r=> r.id) /* in play applied; out of play on record */.concat(SK2R.held.map(h=> h.id)));
-const bad = plan.changes.filter(r=> !SK2.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
+const SPD = new Set(['gold-throated-acolyte', 'mangrove-kingfisher', 'mirror-moth', 'candle-moth']); // 2026-10-31 coordinator (SPEED1-2): +1 Health after the Flying / Evasive re-price
+const bad = plan.changes.filter(r=> !SK2.has(r.id) && !SPD.has(r.id)).filter(r=>{ const c = byId[r.id]; if(!c || `${c.attack == null ? '-' : c.attack}/${c.health}` !== r.to) return true;
   const b = T.budget(c), b1 = T.budget(c, {level: 1}); if(!(b.ok && b1.ok && b.x1 > 0.6 * b.N)) return true;
   if(TUT12.has(r.id)){ const st = G.statsAtLevel(c, 0); if(!T.budget(Object.assign({}, c, {attack: st.attack, health: st.health, effects: {}}), {level: 0}).ok) return true; }
   return !/BUDGET2 re-fit/.test(c.creatorNote || ''); }).map(r=> r.id);

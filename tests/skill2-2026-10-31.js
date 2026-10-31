@@ -68,7 +68,7 @@ const near = (a, b, e) => Math.abs(a - b) <= (e || 0.011);
   ok(P.maps.mo && !(P.maps.mo.bpro || []).length, '5. the Old Bramble has no BPRO (its list is over its Common cap)'); }
 
 // 6. decisions, report, CHANGELOG, protocol
-{ const D = rd('docs/decisions.json'); ['SKILL2-1', 'SKILL2-2', 'SKILL2-3', 'SKILL2-4'].forEach(id => ok(new RegExp('"id": "' + id + '", "status": "YET"').test(D), `6. ${id} asked`));
+{ const D = rd('docs/decisions.json'); ['SKILL2-1', 'SKILL2-2', 'SKILL2-3', 'SKILL2-4'].forEach(id => ok(new RegExp('"id": "' + id + '", "status": "(YET|DONE)"').test(D), `6. ${id} asked`)); // 2026-10-31 coordinator: answered (DONE) counts too
   ok(fs.existsSync(path.join(ROOT, 'docs', 'balance', 'skill2-2026-10-31.md')), '6. the report');
   ok(/SKILL2/.test(rd('docs/CHANGELOG.md').slice(0, 4000)), '6. the CHANGELOG\'s top entry');
   ok(/### 5a\. The currency/.test(rd('docs/evaluation-protocol.md')), '6. the protocol\'s section 5a'); }

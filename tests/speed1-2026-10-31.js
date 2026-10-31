@@ -84,7 +84,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
 {
   const B = require('../bramblewood-budget.js'), c = K.read();
   ok(B.CAP2_S_SCALE === 0.5 && c.cap2SScale === 0.5, 'CAP2_S_SCALE is 0.5 (SKILL2-1)');
-  ok(B.MISS_MULT_BY.flying === 1.13 && B.MISS_MULT_BY.evasive === 1.13 && B.MISS_MULT_BY.shadow === 1.1, 'Flying and Evasive are x1.13, Shadow unchanged (SKILL2-2)');
+  ok(B.MISS_MULT_BY.flying === 1.17 && B.MISS_MULT_BY.evasive === 1.16 && B.MISS_MULT_BY.shadow === 1.1, 'Flying x1.17, Evasive x1.16, Shadow unchanged (SKILL2-2, SPEED1-2)');
   const x = B.capScores(3, 5, 4, {}, null, { m: 1 }), y = B.capScores(3, 5, -4, {}, null, { m: 1 }), z = B.capScores(3, 5, 4, {}, { cap2SScale: 1 }, { m: 1 });
   ok(x.x2 === 15 + 4, 'cap 2 reads S 4 as (4/2)·|4/2| = 4 (got ' + x.x2 + ')');
   ok(y.x2 === 15 - 4, 'a negative S still frees room: (-2)·|-2| = -4 (got ' + y.x2 + ')');
