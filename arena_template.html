@@ -458,6 +458,32 @@
   .entrance-account-line{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
   .entrance-account-line:not([hidden]){display:flex; align-items:center; justify-content:center; gap:8px;}
   .entrance-account-line img{width:22px; height:22px; border-radius:50%; object-fit:cover; box-shadow:0 0 0 2px #6fbf4a;}
+  /* 2026-10-31 (package UI12, GG4): Start / name / Sign in locked while a sign-in and its cloud save load */
+  .ui12-auth-wait{margin:10px auto 0; font-weight:800; font-size:13.5px; text-align:center; color:#eaf6d6; text-shadow:0 1px 2px rgba(0,0,0,.6);}
+  .ui12-auth-wait:not([hidden])::before{content:''; display:inline-block; width:12px; height:12px; margin-right:8px; vertical-align:-1px; border-radius:50%; border:2px solid rgba(234,246,214,.35); border-top-color:#eaf6d6; animation:ui12Spin .8s linear infinite;}
+  @keyframes ui12Spin{to{transform:rotate(360deg)}}
+  @media (prefers-reduced-motion: reduce){ .ui12-auth-wait:not([hidden])::before{animation:none;} }
+  .entrance .ui12-locked, .name-prompt .ui12-locked{opacity:.55; cursor:progress; filter:saturate(.6);}
+  /* 2026-10-31 (package UI12, GG10): a skirmish deck's rank, 1 (strongest, gold) to 5+ (grey), as a small hex like the rank emblem */
+  .ui12-skirm-row{display:flex; flex-wrap:wrap; align-items:center; gap:4px 6px; margin:3px 0;}
+  .ui12-skirm-id{font-weight:800;}
+  .ui12-drank{position:relative; display:inline-grid; place-items:center; width:22px; height:24px; vertical-align:middle; flex:none;}
+  .ui12-drank i{position:absolute; inset:0; clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%); background:var(--drank-bg, #8a8f99); box-shadow:inset 0 0 0 2px rgba(0,0,0,.25);}
+  .ui12-drank b{position:relative; font-size:11px; font-weight:900; line-height:1; color:#fff; text-shadow:0 1px 1px rgba(0,0,0,.55);}
+  .ui12-drank[data-rank="1"]{--drank-bg:linear-gradient(160deg,#ffe27a,#c98a12);}
+  .ui12-drank[data-rank="2"]{--drank-bg:linear-gradient(160deg,#e9eef5,#8e9aab);}
+  .ui12-drank[data-rank="3"]{--drank-bg:linear-gradient(160deg,#f0b27a,#9a5a26);}
+  .ui12-drank[data-rank="4"]{--drank-bg:linear-gradient(160deg,#8fc7a0,#3d7a52);}
+  .ui12-drank[data-rank="5"]{--drank-bg:linear-gradient(160deg,#a7adb8,#5d636e);}
+  .ui12-skirm-reroll{margin-top:4px;}
+  /* 2026-10-31 (package UI12, GG1): the timed "you draw 1 card each turn" tooltip over the deck: no button, it fades by itself */
+  .coach-tip.is-timed{pointer-events:none; transition:opacity .4s ease, transform .4s ease;}
+  .coach-tip.is-timed.is-fading{opacity:0; transform:translateY(4px);}
+  /* 2026-10-31 (package UI12, GG5): T-2's leader Wait steps block clicks without darkening the screen */
+  .coach-shield.is-clear{background:transparent;}
+  /* 2026-10-31 (package UI12, GG6): the Lumber step with Lumber at 0: the pill stays (faded), the bubble keeps its place without its arrow */
+  .coach-tip.no-arrow::after{display:none;}
+  .hud-pill.lumber.is-zero{opacity:.6;}
   /* The sign-in modal must sit above the entrance splash (z 1000), or the splash's own Sign in
      button opens it invisibly underneath (2026-10-02 bug report: "Sign in doesn't work"). */
   #authGateOverlay{z-index:1100;}
@@ -4434,7 +4460,12 @@
     .entrance-fan .ef-card.is-down .ef-flip{transform:rotateY(180deg);}
     .entrance-fan .ef-card.is-swapping{opacity:0 !important; transition:transform .7s cubic-bezier(.2,.9,.3,1), opacity .65s ease;}
     .entrance-fan .ef-card.is-swapping{opacity:0; transform:translate(-50%,-50%) rotate(var(--r)) translateX(var(--x)) translateY(calc(var(--y) + 40px)) scale(.9);}
-    @keyframes efFloat{0%,100%{margin-top:0;} 50%{margin-top:-12px;}}
+    /* 2026-10-31 (package UI12, GG4, owner: "the front screens are laggy"): the float moved margin-top, so the five fan cards were laid out
+       and repainted on the main thread every frame (~950 ms of long tasks per 4 s at 4x CPU throttle); `translate` runs on the compositor.
+       The holo sheen's drift (custom properties, a repaint per frame) is held still on the fan: the sheen shows, it just doesn't wander. */
+    @keyframes efFloat{0%,100%{translate:0 0;} 50%{translate:0 -12px;}}
+    .entrance-fan .ef-card{will-change:translate;}
+    .entrance-fan .card-tile.is-holo{animation:none !important;}
   }
   @media (prefers-reduced-motion: reduce){
     .splash-title .tl{animation:none; opacity:1; transform:none;}
@@ -9651,7 +9682,9 @@
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
   #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
-  #conquestNodePanel.is-skirm :is(.cnp-deck, .cnp-deck-locked){display:none !important;} /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip */
+  /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip. 2026-10-31 (UI12, GG10): the preview draws the
+     deck the Fight button plays (skirmDraw), so its strip shows that deck again; only the locked placeholder stays hidden */
+  #conquestNodePanel.is-skirm .cnp-deck-locked{display:none !important;}
   /* 2026-10-25 (package PL2, owner 00:02 #3 #5): the cards won as one stack (the first in front, the rest behind it, fanned on hover / tap)
      and a rank-won card's flash and ribbon (the emblem and "reward") */
   .rw-cards.pl2-stack{display:grid !important; grid-template-areas:'s'; justify-items:center; justify-content:center !important; position:relative; padding:6px calc(8px + var(--n) * 7px) 4px 8px; outline:none; cursor:pointer;}

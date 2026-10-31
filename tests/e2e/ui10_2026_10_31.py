@@ -107,9 +107,12 @@ async def ee2(b, url, w):
       const deck = pn.querySelector('.cnp-deck'); return {opts: [...sel.options].map(o=> o.textContent.trim()), val: sel.value, deckHidden: !deck || getComputedStyle(deck).display === 'none', enemy: (pn.querySelector('.skirm-enemy')||{}).textContent, cls: pn.className}; })()""")
     ok(p is not None, 'the skirmish panel has "You play" with My deck / reference sets')
     if p:
-        ok(p['opts'][0] == 'My deck' and len(p['opts']) > 2 and p['val'] == 'my', f"My deck first, then the reference decks {p['opts'][:4]}")
-        ok(p['deckHidden'] and 'random deck' in (p['enemy'] or ''), f"the enemy is described as a random deck, no fixed deck strip ({p['enemy']!r})")
+        # 2026-10-31 (package UI12, GG10): the player's side defaults to a random reference deck of the level (Admin can still pick My deck), and the
+        # preview draws the enemy deck, so its strip shows (tests/e2e/ui12_2026_10_31.py checks the ranks and that Fight plays the previewed decks)
+        ok(p['opts'][0] == 'My deck' and len(p['opts']) > 2 and p['val'] == await pg.evaluate("refDefaultSet()"), f"My deck first, then the reference decks; a random reference deck by default {p['opts'][:4]} ({p['val']})")
+        ok(not p['deckHidden'] and 'random deck' in (p['enemy'] or ''), f"the enemy is a random deck of the map, its drawn deck shown ({p['enemy']!r})")
     await pg.screenshot(path=shot('ee2-panel', w))
+    await pg.evaluate("(()=>{ setSkirmYou('my'); renderPlay(); })()"); await pg.wait_for_timeout(600)   # UI12: My deck, picked
     f1 = await pg.evaluate("""(async ()=>{ const ent = proEntriesOf(proMapEntries().mf)[0]; document.getElementById('cnpFightBtn').click(); await new Promise(r=> setTimeout(r, 900));
       const m = matchState; if(!m) return null; const ids = new Set(ent.decks.flatMap(d=> Object.keys(d.deck))); const en = m.players[2].deck.concat(m.players[2].hand.map(h=> h.defId || h));
       return {key: m.proFight, ref: m.refDeck || null, skirm: m.skirm, enemyOk: en.every(x=> ids.has(String(x).split('@')[0]) || (m.skirm && m.skirm.special === String(x).split('@')[0])), n: en.length, adminTest: m.adminTest}; })()""")

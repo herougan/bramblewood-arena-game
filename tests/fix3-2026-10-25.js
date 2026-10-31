@@ -118,8 +118,9 @@ function literal(decl){ const a = src.indexOf('\n' + decl); let i = src.indexOf(
   ok(/if\(data && data\.user && !data\.session && !\(cloudUserId && cloudIsAnonymous\)\)\{ fix3SetSignupPending\(data\.user\.id\); fix3RememberAuthReturn\(\); return data; \}/.test(li), 'G7. a sign-up waiting for its email is not taken as signed in (nothing applied, nothing pushed into the void)');
   ok(/emailRedirectTo: fix3AuthRedirectUrl\(\)/.test(li), 'G7. the confirmation link leads back to the game');
   ok(/livePushProgress\(true\)/.test(li), 'G7. a linked account sends the map progress up too');
-  const ap = fnSrc('applySessionIdentity');
-  ok(/if\(isSignedIn\(\) && fix3SignupPending\(user\.id\)\)\{ try\{ await Promise\.all\(\[cloudPushCurrencies\(\), cloudPushCardLevels\(\), cloudPushDecks\(true\)\]\)/.test(ap) && /else if\(isSignedIn\(\)\) await cloudPullState\(\);/.test(ap), 'G7. the new account\'s first sign-in sends this device\'s progress up instead of loading its empty rows');
+  // 2026-10-31 (package UI12, GG2): the identity work moved into applySessionIdentityInner; the pending account settles first, the others pull
+  const ap = fnSrc('applySessionIdentityInner');
+  ok(/if\(isSignedIn\(\) && fix3SignupPending\(uid\)\)\{ cloudSyncSettledUid = uid; try\{ await Promise\.all\(\[cloudPushCurrencies\(\), cloudPushCardLevels\(\), cloudPushDecks\(true\)\]\)/.test(ap) && /isSignedIn\(\) \? await cloudPullState\(\) : true/.test(ap), 'G7. the new account\'s first sign-in sends this device\'s progress up instead of loading its empty rows');
   const mem = {}; const ls = {getItem: k=> k in mem ? mem[k] : null, setItem: (k, v)=>{ mem[k] = String(v); }, removeItem: k=>{ delete mem[k]; }};
   const P = new Function('localStorage', `const FIX3_SIGNUP_PENDING_KEY = 'k';\n${fnSrc('fix3SignupPending')}\n${fnSrc('fix3SetSignupPending')}\nreturn {fix3SignupPending, fix3SetSignupPending};`)(ls);
   P.fix3SetSignupPending('u-new'); ok(P.fix3SignupPending('u-new') && !P.fix3SignupPending('u-old') && !P.fix3SignupPending(null), 'G7. only that new account counts as pending (another account signing in here is loaded as before)');
