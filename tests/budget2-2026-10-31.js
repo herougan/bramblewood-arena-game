@@ -71,7 +71,7 @@ const dec = js('docs/decisions.json').items, D = id=> dec.find(x=> x.id === id) 
 ok(['BUDGET2-1', 'BUDGET2-2', 'BUDGET2-3', 'BUDGET2-4', 'BUDGET2-5', 'BUDGET2-6', 'BUDGET2-7'].every(id=> (D(id).status === 'YET' || D(id).outcome) && D(id).default), '6. owner calls BUDGET2-1..7 (with a default; 2026-10-31: decided by the coordinator, outcome recorded)');
 ok(['DECK1-1', 'DECK1-5', 'SKL0-3'].every(id=> (D(id).status === 'YET' || D(id).outcome) && /BUDGET2 \(2026-10-31/.test(D(id).body)), '6. DECK1-1, DECK1-5 and SKL0-3 carry BUDGET2\'s recommendation (2026-10-31: decided, outcome recorded)');
 ok(/BUDGET2/.test(rd('docs/project-state.md')) && /RECOST1-6/.test(rd('docs/project-state.md')), '6. docs/project-state.md\'s budget entry names BUDGET2 and RECOST1-6');
-ok(rd('docs/CHANGELOG.md').split('\n## ').slice(1, 3).some(s=> s.includes('package BUDGET2')), '6. a CHANGELOG entry near the top (2026-10-31: SKILL2\'s is above it)');
+ok(rd('docs/CHANGELOG.md').split('\n## ').slice(1, 8).some(s=> s.includes('package BUDGET2')), '6. a CHANGELOG entry near the top (2026-10-31 coordinator: window widened to 7 entries, later packages sit above it)');
 ok(fs.existsSync(path.join(ROOT, 'docs/balance/budget2-2026-10-31.md')), '6. the report docs/balance/budget2-2026-10-31.md');
 ok(/tests\/budget2-2026-10-31\.js/.test(rd('tests/run-all.sh')), '6. registered in tests/run-all.sh');
 
