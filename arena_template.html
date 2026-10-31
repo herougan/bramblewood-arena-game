@@ -1220,7 +1220,8 @@
      full card"): the real card tile, scaled up, sitting above the existing stat/ability text —
      see fullCardHTML()'s own comment in arena_app.js. */
   #cardPop .card-pop-visual{display:flex; justify-content:center; margin:-2px 0 10px;}
-  #cardPop .card-pop-visual-tile{width:var(--card-full-w); pointer-events:none;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
+  #cardPop .card-pop-visual-tile{width:var(--pop-card-w, var(--card-full-w)); pointer-events:none; rotate:1deg;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now; 2026-10-31 (UI11, FF3): by the window's height (and never smaller than the board card: openPopFor), tilted 1 degree clockwise */
+  #cardPop{--pop-card-w:clamp(var(--card-full-w), 24vh, 360px); width:max(264px, calc(var(--pop-card-w) + 28px));}
   #cardPop .card-pop-visual-tile .ico{opacity:1;}
   #cardPop h4{font-family:'Baloo 2'; font-size:14px; display:flex; gap:6px; align-items:center; margin-bottom:4px;}
   #cardPop .tagrow{display:flex; gap:5px; margin-bottom:6px; flex-wrap:wrap;}
@@ -11840,7 +11841,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .flip3d-stage > .dc{width:100%; --dc-w:100%;}
 .dc .dc-stage:not([tabindex]){cursor:inherit;}
 /* the hover popover (CS-1): the Full card plus its text, on top of any modal; a caller's extra line (data-pop-line) under the text */
-#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--card-full-w) !important;}
+#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--pop-card-w, var(--card-full-w)) !important;}
 #cardPop .cp-line{margin:6px 0 2px; padding:5px 8px; border-radius:8px; background:rgba(74,47,26,.12); font:700 12px/1.3 'Baloo 2',system-ui,sans-serif;}
 #cardPop{max-width:calc(100vw - 16px);}
 .cnp-rw-zoom.cp-sheet{width:min(calc(var(--card-full-w) * 2.2), calc(100vw - 16px)) /* the page popover's 264px at 1366 */; padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
@@ -12013,6 +12014,11 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .conquest-map-item[style*="--band"]{border-left:6px solid var(--band); background:color-mix(in srgb, var(--band) var(--band-mix, 34%), var(--surface)) !important; color:var(--band-fg, inherit);}
 .conquest-map-item[style*="--band-fg"] .cmi-name, .conquest-map-item[style*="--band-fg"] .cmi-body, .conquest-map-item[style*="--band-fg"] small{color:var(--band-fg) !important;}
 .conquest-map-item[style*="--band"].selected{box-shadow:0 0 0 3px #ffd98a inset;}
+/* 2026-10-31 (package UI11, FF7; owner 18:09: the selected map in the left list also gets a brighter colour, not just a highlighted border): a stronger band tint (+26 points) and a lighter / bolder name */
+.conquest-map-item.selected{background:color-mix(in srgb, color-mix(in srgb, var(--accent) 42%, var(--surface)) 78%, #fff);}
+.conquest-map-item[style*="--band"].selected{background:color-mix(in srgb, color-mix(in srgb, var(--band) calc(var(--band-mix, 34%) + 26%), #fff) 74%, #fff) !important;}
+.conquest-map-item[style*="--band-fg"].selected .cmi-name, .conquest-map-item[style*="--band-fg"].selected small{color:#fff !important; text-shadow:0 1px 2px rgba(0,0,0,.45);}
+.conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected .cmi-name{color:#150d05 !important;} .conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected .cmi-sub, .conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected small{color:#3a2a14 !important;}
 #forgePickReady.is-fading{transition:opacity .35s ease, transform .35s ease; opacity:0; transform:scale(.92);}
 .hay-nest.is-empty{cursor:pointer; font:inherit; color:inherit;} button.hay-nest.is-empty{background:none; border:0; padding:0;}
 .hay-nest .nest-plus{position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:22px; opacity:.45; transition:opacity .2s;}

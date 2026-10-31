@@ -6804,7 +6804,11 @@ function castleHoverHTML(hqSide){
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
+      // 2026-10-31 (package UI11, FF3; owner 18:09: "its card is sized by the screen ... at full screen it looks smaller than the board card; it should be larger"): the card in
+      // the popover is sized by the window's height (CSS --pop-card-w) and, for a unit on the board, is never less than 1.3 x that unit's own width
+      pop.style.removeProperty('--pop-card-w'); pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
+      try{ const bc = el.closest('.board-card'), tl = pop.querySelector('.card-pop-visual-tile'), bw = bc ? bc.getBoundingClientRect().width : 0, base = tl ? tl.getBoundingClientRect().width : 0;
+        if(bw && base){ const want = Math.min(bw * 1.3, 360, window.innerHeight * 0.42); if(want > base) pop.style.setProperty('--pop-card-w', Math.round(want) + 'px'); } }catch(_){}
       positionPop(el);
       if(!(how && how.quiet)) try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F (UI6: not again when a redraw had closed it)
       try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
@@ -6835,8 +6839,8 @@ function castleHoverHTML(hqSide){
   }
   const inRect = (r, x, y)=> !!r && x >= r.left - 2 && x <= r.right + 2 && y >= r.top - 2 && y <= r.bottom + 2;
   function bindPopSrc(el){
-    popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
-    TipWatch.track(pop, el, ()=>{ if(!rebindPop()) closePopLost(); }, {steady: !!matchState});
+    holdSince = 0; popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
+    TipWatch.track(pop, el, ()=>{ if(!rebindPop() && !holdPop()) closePopLost(); }, {steady: !!matchState});
     // the hit log is the one live part: refreshed in place when it changed
     try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
       if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
@@ -6852,6 +6856,18 @@ function castleHoverHTML(hqSide){
     }
     return false;
   }
+  // 2026-10-31 (package UI11, FF3; owner 18:09: "the card-detail hover tooltip disappears when an animation runs (it should stay)"): while an animation has the unit's element
+  // away for a moment (hidden, mid-flight, being redrawn: no element to follow), the popover waits for it, for up to 4 s, as long as the unit is still alive in the match
+  // and the pointer still rests on the spot it stood on. It closes the moment the unit dies, the pointer leaves, or the 4 s run out.
+  let holdSince = 0, holdTimer = null;
+  function holdPop(){
+    try{ if(!matchState || !popKey || popKey[0] !== 'u' || !inRect(popRect, ptX, ptY)) { holdSince = 0; return false; }
+      const c = currentCardByUidSafe(popKey.slice(1)); if(!c || !(c.hp > 0)){ holdSince = 0; return false; }
+      if(!holdSince) holdSince = Date.now(); if(Date.now() - holdSince > 4000){ holdSince = 0; return false; }
+      pop.hidden = false; clearTimeout(holdTimer);
+      holdTimer = setTimeout(()=>{ holdTimer = null; if(pop.hidden || !popKey) return; if(rebindPop()){ holdSince = 0; return; } if(!holdPop()) closePopLost(); }, 100);
+      return true; }catch(e){ return false; }
+  }
   function closePopLost(){ lostKey = popKey; lostAt = Date.now(); pop.hidden = true; popSrc = null; popKey = null; }
   function closePop(){ pop.hidden = true; popSrc = null; popKey = null; }
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
@@ -6861,7 +6877,7 @@ function castleHoverHTML(hqSide){
     if(pop.hidden || !popSrc || stripHeld) return;
     ptX = e.clientX; ptY = e.clientY;
     if(popSrc.isConnected && popSrc.matches(':hover')){ try{ const r = popSrc.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(_){} return; }
-    if(!rebindPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
+    if(!rebindPop() && !holdPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
   }, {passive:true});
   window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); };
   document.addEventListener('mouseout', e=>{
@@ -8956,7 +8972,7 @@ function ui3SightBlindNow(e, lv){
 // 2026-10-31 (package UI11, FF1; owner 18:09: "context pips only when they matter"): a board card's Bloom condition pip is left out when its condition can never
 // hold on this map: Tide / Ebb with no Tide in the fight (as UI5 did for the Tide chip). 'and' needs every condition possible, 'or' needs one. Outside a fight: shown.
 function ui11BloomImpossible(bw, bopts){
-  try{ if(!(bopts && bopts.live) || !matchState || matchState.over || bopts.live.inBloom) return false;
+  try{ if(!(bopts && bopts.live) || !matchState || matchState.over || bopts.live.inBloom || !bw || typeof bw !== 'object') return false;
     const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean); if(!when.length) return false;
     const can = k=> (k === 'tide' || k === 'ebb') ? !!matchHasTide(matchState) : true, oks = when.map(can);
     return bw.mode === 'or' ? !oks.some(Boolean) : !oks.every(Boolean);
@@ -9054,7 +9070,7 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy))){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
   if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
@@ -16619,7 +16635,9 @@ const TipWatch = (()=>{
   }
   function tick(){
     raf = 0;
-    live.forEach((rec, tip)=>{
+    // 2026-10-31 (UI11, FF3): a snapshot: a hide() that re-tracks the same tip (the card popover rebinding to a hidden element) re-added it to the Map being walked, which
+    // forEach then visited again in the same pass, for ever (the page froze).
+    [...live].forEach(([tip, rec])=>{
       if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
       if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
       if(rec.steady){ tip.style.opacity = ''; return; } // 2026-10-30 (package UI6, X2): the card popover does not fade with a card an animation dims
@@ -18958,6 +18976,7 @@ function nodeShowcaseId(node){
   const defs = getCardDefs(), deck = (node && node.deck) || {};
   if(node && node.showcase && deck[node.showcase] && defs[node.showcase]) return node.showcase;
   if(node && node.tutShowcase && defs[node.tutShowcase]) return node.tutShowcase; // 2026-10-21 (package ED): Tutorial II's lesson card
+  if(node && node.mapShowcase && defs[node.mapShowcase]) return node.mapShowcase; // 2026-10-31 (UI11): a map's one skirmish (N-SK) shows the map's showcase, not the first deck's card
   const ids = Object.keys(deck).filter(id=> defs[id]);
   ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)));
   return ids[0] || null;
@@ -24654,6 +24673,13 @@ function drawSkirmEnemy(mapId, entry, rnd){
   }catch(e){}
   return {id: d.id, deck, special};
 }
+// 2026-10-31 (package UI11, UI10 leftover): the map's showcase = the strongest card of the map's own list (the same rarity-then-strength order as a skirmish's Auto showcase);
+// a map with no list of its own (a side map) uses its main map's.
+function skirmMapShowcase(mapId){
+  try{ const defs = getCardDefs(), ids = (mpEntry(mpTopOf(mapId)).cards || []).filter(id=> defs[id] && !defs[id].token);
+    ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)) || String(a).localeCompare(String(b)));
+    return ids[0] || null; }catch(e){ return null; }
+}
 let skirmPending = null; // {key, pick}: the draw of the fight being started, read by proNodeOf
 const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v1';
 function skirmYou(){ let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){} return v && v !== 'my' && refSetIds().includes(v) ? v : 'my'; }
@@ -24668,6 +24694,7 @@ function proNodeOf(mapId, e, ent){
   n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
+  if(e.skirm){ const sc = skirmMapShowcase(mapId); if(sc) n.mapShowcase = sc; } // 2026-10-31 (UI11, UI10 leftover): the panel's big card is the map's showcase
   NODE_MAP_HINT.set(n, mapId);
   if(f.terrain) rules.terrain = terrainObj(f.terrain.biome, f.terrain.tier) || false; // the tool's tier, whatever the PRO's place would give
   else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none

@@ -133,7 +133,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-set-map": "Map reference",
   "ui.pref-toggle": "Play with the map's reference deck",
   "ui.pref-set": "Reference:",
-  "ui.pref-toggle-sub": "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.",
+  "ui.pref-toggle-sub": "On: every Conquest fight (road, and the map's skirmish, <N>-SK) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.",
   "ui.pref-xref-vs": "Against:",
   "ui.pref-xref-you": "You play:",
   "ui.ui10-my-deck": "My deck",
