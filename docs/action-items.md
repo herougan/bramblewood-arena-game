@@ -4,6 +4,17 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 16:04: the owner's notes
+- DD1 (UI9): the Quests board shows one column; it should be two columns (2 x N) where the width allows.
+- DD2 (UI9): pack opening said "⭐ Blue-ringed Octopus reached Lv 2" under three other cards. Cause: a pack's levelChance gives a free +1 level to a random draftable card anywhere in the game (arena_app.js ~55797), often one you don't own or play. Coordinator call (AA4): the level-up goes to a card you own (main deck first), and the line shows that card's small face and "+1 Level".
+- DD3 (UI9): the card detail's Spin button does nothing.
+- DD4 (UI9): a new foil finish "Nacre" (holo-nacre): mother-of-pearl, soft pink / peach / lilac iridescence in irregular plates with thin gold-ish seams, shifting with tilt (owner's reference picture). Beside holo-pearl in CI_FINISHES; rolled like the other finishes.
+- DD5 (AUTH1): Google client ID given (871693115882-bhdr13re9l3ejo9c6alsh81nms45uk68.apps.googleusercontent.com, public); the owner confirmed the site is in its Authorized JavaScript origins. AUTH1 runs after UI9.
+- DD6 (owner, step 3): the owner picks map cards and re-works only cards he feels need it (his own balancing for the clearly out-of-sync ones); the coordinator folds his edits into canonical/cards.json, builds decks on them (step 4), then measures.
+
+## 10-31 15:48: the owner's note
+- CC1 (AUTH1, owner "let's do this"): Google's own sign-in button (Google Identity Services) on our page; the ID token goes to Supabase with `signInWithIdToken` (with a nonce), so Google's consent names our site, not supabase.co. Keep today's redirect sign-in as the fallback while the client ID is not set. Owner steps: (1) give the Google OAuth client ID (public, not a secret; Google Cloud > APIs & Services > Credentials, or Supabase > Authentication > Providers > Google); (2) add https://bramblewood-arena.vercel.app to that client's Authorized JavaScript origins; (3) check the OAuth consent screen's app name reads "Bramblewood Arena". Check on a real sign-in after release.
+
 ## 10-31 15:39: the owner's notes
 - BB1 (UI9): the Nest page gets the nav button back to the conquest map.
 - BB2 (UI9): the trap. After laying it, its context pips go away. Its animation (red circles circling and diving into the middle) drops to 50% opacity, plus inward-falling rosso rectangles that fade in over the first 20% of their fall; the coordinator synthesises a "this is a trap" look from these (snapping jaws / closing frame). The "<trap emoji> <number>" label over the slot sits at 80%+ transparency, 92% on slot hover.
