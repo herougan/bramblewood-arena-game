@@ -38,16 +38,19 @@ const NAMED = { edits: {
   // 2.0 win-rate points a copy and +1 Health 0.43 (the stat yardstick split by +1 Attack = 4.6 Health), so each gets +1 Attack, or Health
   // where the card's shape is Health (the Herald, an aura wall). Four of them fly: Flying is priced x1.39 on the stats (10.4 points on the
   // carriers) but measures 4.0 (SKILL2-2), which is why the lift breaks their budget on paper.
-  'peak-condor': { attack: 4, health: 7, why: 'DECK1-5: onto the fair line (-2.3 a copy): 3/7 -> 4/7' },
+  'peak-condor': { attack: 4, health: 10, why: 'DECK1-5: onto the fair line (-2.3 a copy): 3/7 -> 4/7 still read -2.3 in the SKILL2 contribution run (it swings every other round), so 4/10' },
   'hawk-arrowkeeper': { attack: 2, health: 8, why: 'DECK1-5: onto the fair line (-2.2 a copy): 1/8 -> 2/8' },
   'red-billed-chough': { attack: 3, health: 2, why: 'DECK1-5: onto the fair line (-2.2 a copy): 2/2 -> 3/2' },
   'peregrine-stooper': { attack: 2, health: 8, why: 'DECK1-5: onto the fair line (-1.9 a copy): 1/8 -> 2/8' },
-  'conch-herald': { attack: 1, health: 13, why: 'DECK1-5: onto the fair line (-1.5 a copy), within its budget: 1/11 -> 1/13' },
+  'conch-herald': { attack: 2, health: 13, why: 'DECK1-5: onto the fair line (-1.5 a copy): 1/11 -> 1/13 read -1.6 in the SKILL2 contribution run, so 2/13' },
   // DECK1-1: the two of the four whose strength the re-priced skills do not explain (Executioner reads nothing on the carriers; Remember 1
   // with its trigger now 4.92 leaves the Ghoul at 90% of N): trimmed toward the fair line (BUDGET2: Ghoul +4.7 a copy, Hyena +3.2), checked
   // by the contribution run after the re-fit. The Quartermaster (Fletcher 0 -> 3.18) and the Wolf Spider Mother (Brood 2 4.4 -> 7.2) are
   // trimmed by the re-fit rule itself.
-  'ashbone-ghoul': { attack: 2, health: 5, why: 'DECK1-1: toward the fair line (+4.7 a copy): 2/7 -> 2/5 (Remember 1 + its trigger re-priced 1.99 -> 4.92)' },
+  'ashbone-ghoul': { attack: 1, health: 5, why: 'DECK1-1: toward the fair line (+4.7 a copy): 2/7 -> 2/5 still read +3.0 in the SKILL2 contribution run, so 1/5 (Remember 1 + its trigger re-priced 1.99 -> 4.92)' },
+  // the two the re-fit rule trimmed (1/8, 3/7) still read +4.2 / +2.6 a copy in the SKILL2 contribution run: one step more
+  'eagle-owl-quartermaster': { attack: 1, health: 6, why: 'DECK1-1: the re-fit rule gave 1/8 (Fletcher 0 -> 3.18, Arrow 1 3 -> 4.02), still +4.2 a copy over the fair line: 1/6' },
+  'wolf-spider-mother': { attack: 2, health: 7, why: 'DECK1-1: the re-fit rule gave 3/7 (Brood 2 4.4 -> 7.2), still +2.6 a copy over the fair line: 2/7' },
   'grave-grin-hyena': { attack: 2, health: 10, why: 'DECK1-1: toward the fair line (+3.2 a copy): 2/14 -> 2/10 (Executioner reads nothing on the carriers: its strength is the body)' },
 } };
 
@@ -71,7 +74,8 @@ function fit(c, v, vOld) { const A0 = +c.attack || 0, H0 = +c.health || 0, e = c
   return f; }
 
 function main() {
-  const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
+  // the cards as they were at BASE (before SKILL2), so the plan is the same on a re-run after the applier wrote it
+  const cards = JSON.parse(cp.execSync(`git show ${BASE}:canonical/cards.json`, { cwd: ROOT, maxBuffer: 256 << 20 }).toString());
   const rows = [], held = [], counts = { inPlay: 0, outOfPlay: 0, inPlayPushed: 0, outPushed: 0, outsideBefore: 0, outsideBeforeIds: [] };
   cards.forEach(c => {
     const d = D[c.id]; if (!d || c.pool || c.token || c.test || !SC.measured(c) || c.health == null) return;

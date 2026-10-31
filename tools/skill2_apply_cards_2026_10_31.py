@@ -24,7 +24,8 @@ for r in plan['changes']:
     c['health'] = r['health']
     now = '%s/%s' % (c.get('attack'), c.get('health'))
     note = c.get('creatorNote') or ''
-    if 'SKILL2 re-fit' not in note:
+    note = note.split(' 2026-10-31 SKILL2 re-fit:')[0]
+    if True:
         why = r.get('why') or 'the skill re-pricing (BUDGET2-1) pushed it %s' % ('over' if r['kind'] == 'trim' else 'well under')
         c['creatorNote'] = (note + ' 2026-10-31 SKILL2 re-fit: %s -> %s, %s (cap-1 use %s of N before SKILL2, %s with the new skill prices, now %s).' % (r['stats'], r['to'], why, r['old']['use'], r['new']['use'], r['after']['use'])).strip()
     if was != now: n += 1

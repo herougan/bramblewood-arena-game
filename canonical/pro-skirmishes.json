@@ -1,7 +1,7 @@
 {
  "about": "Hidden PRO fights per main map and side map (package PRO, owner 2026-10-24 00:28; PRO2 21:20; PRO3 2026-10-25: side maps as N-L-PRO-k, faction cards left out). N-PRO-k: the best decks of the deck optimizer's map-true runs (the map's own cards + what a player holds by then, within the map's rarity cap); N-BPRO-k (Basic Pro, under `bpro`): its bpro runs (only the map's own pool, within the cap). Written by tools/opt/pro_skirmishes.js --apply; baked into the game by assemble_arena.py (the `pro` list; `bpro` waits for the PRO preview package). Not on the road, no progress, no rewards.",
  "version": 2,
- "updated": "2026-10-30",
+ "updated": "2026-10-31",
  "tool": "tools/opt/pro_skirmishes.js 1.2.0 (2026-10-25, PRO3)",
  "rule": {
   "games": 400,
@@ -2427,6 +2427,7 @@
      "aiGuardLethal": true,
      "beachMap": true,
      "phase": "cycle",
+     "saltMap": true,
      "tide": true,
      "wet": true
     },
@@ -2443,7 +2444,7 @@
     ],
     "boss": "2-5",
     "ties": [],
-    "summary": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1"
+    "summary": "aiGuardLethal, beachMap, phase cycle, saltMap, tide, wet, terrain Tideline T1"
    },
    "pro": [
     {
@@ -3343,6 +3344,34 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "beachMap": true,
+       "phase": "cycle",
+       "tide": true,
+       "wet": true
+      },
+      "terrain": {
+       "biome": "beach",
+       "tier": 1
+      },
+      "fights": [
+       "2-1",
+       "2-2",
+       "2-3",
+       "2-4",
+       "2-5"
+      ],
+      "boss": "2-5",
+      "ties": [],
+      "summary": "aiGuardLethal, beachMap, phase cycle, tide, wet, terrain Tideline T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -7954,7 +7983,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "otter-centurion"
      ],
      "deck": {
       "ant-warrior": 4,
@@ -7990,7 +8019,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "cottonmouth-matriarch"
      ],
      "deck": {
       "alley-cat": 3,
@@ -8064,7 +8093,7 @@
      ],
      "level": 1,
      "leaders": [
-      "otter-centurion"
+      "tunnel-ant"
      ],
      "deck": {
       "ant-warrior": 4,
@@ -8685,6 +8714,22 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "leaders": {
+      "7-PRO-1": [
+       "wolf-spider-mother"
+      ],
+      "7-PRO-2": [
+       "wolf-spider-mother"
+      ],
+      "7-PRO-4": [
+       "otter-centurion"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -9291,7 +9336,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "otter-centurion"
      ],
      "deck": {
       "alley-cat": 3,
@@ -9834,6 +9879,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "leaders": {
+      "8-PRO-1": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -9872,7 +9927,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "blue-ringed-octopus"
      ],
      "deck": {
       "blue-ringed-octopus": 3,
@@ -10405,6 +10460,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "leaders": {
+      "8-A-PRO-1": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -10415,6 +10480,7 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
+     "saltMap": true,
      "tide": true,
      "wet": true
     },
@@ -10435,7 +10501,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (9-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
+    "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
    },
    "pro": [
     {
@@ -10448,7 +10514,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "greater-siren"
      ],
      "deck": {
       "alley-cat": 3,
@@ -10485,7 +10551,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "alligator-gar"
      ],
      "deck": {
       "alley-cat": 3,
@@ -10973,6 +11039,45 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "tide": true,
+       "wet": true
+      },
+      "terrain": {
+       "biome": "reef",
+       "tier": 2
+      },
+      "fights": [
+       "9-1",
+       "9-2",
+       "9-3",
+       "9-4",
+       "9-5",
+       "9-6",
+       "9-7"
+      ],
+      "boss": "9-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (9-7)"
+      ],
+      "summary": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T2 (Thorns 1)"
+     },
+     "leaders": {
+      "9-PRO-1": [
+       "wolf-spider-mother"
+      ],
+      "9-PRO-2": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags) and the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -10983,6 +11088,7 @@
     "rules": {
      "aiGuardLethal": true,
      "phase": "cycle",
+     "saltMap": true,
      "tide": true,
      "wet": true
     },
@@ -11003,7 +11109,7 @@
     ],
     "boss": "10-9",
     "ties": [],
-    "summary": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1"
+    "summary": "aiGuardLethal, phase cycle, saltMap, tide, wet, terrain Coral Shelf T1"
    },
    "pro": [
     {
@@ -11808,6 +11914,37 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "tide": true,
+       "wet": true
+      },
+      "terrain": {
+       "biome": "reef",
+       "tier": 1
+      },
+      "fights": [
+       "10-1",
+       "10-2",
+       "10-3",
+       "10-4",
+       "10-5",
+       "10-6",
+       "10-7",
+       "10-8",
+       "10-9"
+      ],
+      "boss": "10-9",
+      "ties": [],
+      "summary": "aiGuardLethal, phase cycle, tide, wet, terrain Coral Shelf T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -11821,6 +11958,7 @@
      "crushingDepths": true,
      "dark": "pitch",
      "phase": "off",
+     "saltMap": true,
      "wet": true
     },
     "terrain": {
@@ -11838,7 +11976,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (10-A-5)"
     ],
-    "summary": "aiGuardLethal, crushingDepths, dark pitch, phase off, wet, terrain Coral Shelf T2 (Thorns 1)"
+    "summary": "aiGuardLethal, crushingDepths, dark pitch, phase off, saltMap, wet, terrain Coral Shelf T2 (Thorns 1)"
    },
    "pro": [
     {
@@ -12421,6 +12559,36 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "crushingDepths": true,
+       "dark": "pitch",
+       "phase": "off",
+       "wet": true
+      },
+      "terrain": {
+       "biome": "reef",
+       "tier": 2
+      },
+      "fights": [
+       "10-A-1",
+       "10-A-2",
+       "10-A-3",
+       "10-A-4",
+       "10-A-5"
+      ],
+      "boss": "10-A-5",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"reef\",\"tier\":1} / {\"biome\":\"reef\",\"tier\":2}), the boss's (10-A-5)"
+      ],
+      "summary": "aiGuardLethal, crushingDepths, dark pitch, phase off, wet, terrain Coral Shelf T2 (Thorns 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -13989,7 +14157,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "otter-centurion"
      ],
      "deck": {
       "badger-lumberjack": 4,
@@ -14411,6 +14579,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "leaders": {
+      "12-PRO-2": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -14559,7 +14737,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "fawn-scout"
      ],
      "deck": {
       "bramble-hoglet": 4,
@@ -15047,6 +15225,16 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "leaders": {
+      "13-PRO-4": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -15057,7 +15245,8 @@
     "rules": {
      "aiGuardLethal": true,
      "firstBlood": 1,
-     "phase": "cycle"
+     "phase": "cycle",
+     "weatherMap": true
     },
     "terrain": {
      "biome": "savanna",
@@ -15075,7 +15264,7 @@
     ],
     "boss": "14-8",
     "ties": [],
-    "summary": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)"
+    "summary": "aiGuardLethal, firstBlood 1, phase cycle, weatherMap, terrain Hunting Grounds T2 (Momentum 1)"
    },
    "pro": [
     {
@@ -15605,6 +15794,35 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "firstBlood": 1,
+       "phase": "cycle"
+      },
+      "terrain": {
+       "biome": "savanna",
+       "tier": 2
+      },
+      "fights": [
+       "14-1",
+       "14-2",
+       "14-3",
+       "14-4",
+       "14-5",
+       "14-6",
+       "14-7",
+       "14-8"
+      ],
+      "boss": "14-8",
+      "ties": [],
+      "summary": "aiGuardLethal, firstBlood 1, phase cycle, terrain Hunting Grounds T2 (Momentum 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -16958,6 +17176,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "coldMap": true,
      "field": "frozen",
      "phase": "night"
     },
@@ -16978,7 +17197,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"tundra\",\"tier\":1} / {\"biome\":\"tundra\",\"tier\":2}), the boss's (16-7)"
     ],
-    "summary": "aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+    "summary": "aiGuardLethal, coldMap, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)"
    },
    "pro": [
     {
@@ -17419,6 +17638,36 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "field": "frozen",
+       "phase": "night"
+      },
+      "terrain": {
+       "biome": "tundra",
+       "tier": 2
+      },
+      "fights": [
+       "16-1",
+       "16-2",
+       "16-3",
+       "16-4",
+       "16-5",
+       "16-6",
+       "16-7"
+      ],
+      "boss": "16-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"tundra\",\"tier\":1} / {\"biome\":\"tundra\",\"tier\":2}), the boss's (16-7)"
+      ],
+      "summary": "aiGuardLethal, field frozen, phase night, terrain Frozen Waste T2 (Frostbite 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -17428,6 +17677,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "coldMap": true,
      "field": "frozen",
      "freezing": true,
      "frostResist": [
@@ -17457,7 +17707,7 @@
      "freezing: a tie (- / true), the boss's (17-8)",
      "frostbite: a tie (- / 1), the boss's (17-8)"
     ],
-    "summary": "aiGuardLethal, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)"
+    "summary": "aiGuardLethal, coldMap, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)"
    },
    "pro": [
     {
@@ -17952,6 +18202,45 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "field": "frozen",
+       "freezing": true,
+       "frostResist": [
+        "Tundra",
+        "Frost",
+        "Taiga"
+       ],
+       "frostbite": 1,
+       "phase": "cycle"
+      },
+      "terrain": {
+       "biome": "tundra",
+       "tier": 2
+      },
+      "fights": [
+       "17-1",
+       "17-2",
+       "17-3",
+       "17-4",
+       "17-5",
+       "17-6",
+       "17-7",
+       "17-8"
+      ],
+      "boss": "17-8",
+      "ties": [
+       "freezing: a tie (- / true), the boss's (17-8)",
+       "frostbite: a tie (- / 1), the boss's (17-8)"
+      ],
+      "summary": "aiGuardLethal, field frozen, freezing, frostResist [\"Tundra\",\"Frost\",\"Taiga\"], frostbite 1, phase cycle, terrain Frozen Waste T2 (Frostbite 1)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -17962,6 +18251,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "coldMap": true,
      "phase": "off",
      "slippery": 30
     },
@@ -17977,7 +18267,7 @@
     ],
     "boss": "17-A-4",
     "ties": [],
-    "summary": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
+    "summary": "aiGuardLethal, coldMap, phase off, slippery 30, terrain Frozen Waste T1"
    },
    "pro": [
     {
@@ -18664,6 +18954,31 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "off",
+       "slippery": 30
+      },
+      "terrain": {
+       "biome": "tundra",
+       "tier": 1
+      },
+      "fights": [
+       "17-A-1",
+       "17-A-2",
+       "17-A-3",
+       "17-A-4"
+      ],
+      "boss": "17-A-4",
+      "ties": [],
+      "summary": "aiGuardLethal, phase off, slippery 30, terrain Frozen Waste T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -18675,6 +18990,7 @@
      "aiGuardLethal": true,
      "phase": "cycle",
      "sandstorm": true,
+     "weatherMap": true,
      "wind": "windy",
      "windfall": true
     },
@@ -18695,7 +19011,7 @@
     "ties": [
      "terrain: a tie ({\"biome\":\"savanna\",\"tier\":1} / {\"biome\":\"savanna\",\"tier\":2}), the boss's (18-7)"
     ],
-    "summary": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
+    "summary": "aiGuardLethal, phase cycle, sandstorm, weatherMap, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
    },
    "pro": [
     {
@@ -18742,7 +19058,7 @@
      ],
      "level": 1,
      "leaders": [
-      "wolf-spider-mother"
+      "obsidian-scorpion"
      ],
      "deck": {
       "antlion-pit": 4,
@@ -19175,6 +19491,43 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "sandstorm": true,
+       "wind": "windy",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "savanna",
+       "tier": 2
+      },
+      "fights": [
+       "18-1",
+       "18-2",
+       "18-3",
+       "18-4",
+       "18-5",
+       "18-6",
+       "18-7"
+      ],
+      "boss": "18-7",
+      "ties": [
+       "terrain: a tie ({\"biome\":\"savanna\",\"tier\":1} / {\"biome\":\"savanna\",\"tier\":2}), the boss's (18-7)"
+      ],
+      "summary": "aiGuardLethal, phase cycle, sandstorm, wind windy, windfall, terrain Hunting Grounds T2 (Momentum 1)"
+     },
+     "leaders": {
+      "18-PRO-2": [
+       "wolf-spider-mother"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags) and the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   },
@@ -19187,7 +19540,9 @@
      "aiGuardLethal": true,
      "field": "heatwave",
      "heatLevel": 2,
-     "phase": "cycle"
+     "hotMap": true,
+     "phase": "cycle",
+     "weatherMap": true
     },
     "terrain": null,
     "fights": [
@@ -19203,7 +19558,7 @@
     ],
     "boss": "18-A-9",
     "ties": [],
-    "summary": "aiGuardLethal, field heatwave, heatLevel 2, phase cycle"
+    "summary": "aiGuardLethal, field heatwave, heatLevel 2, hotMap, phase cycle, weatherMap"
    },
    "pro": [
     {
@@ -19807,6 +20162,34 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "field": "heatwave",
+       "heatLevel": 2,
+       "phase": "cycle"
+      },
+      "terrain": null,
+      "fights": [
+       "18-A-1",
+       "18-A-2",
+       "18-A-3",
+       "18-A-4",
+       "18-A-5",
+       "18-A-6",
+       "18-A-7",
+       "18-A-8",
+       "18-A-9"
+      ],
+      "boss": "18-A-9",
+      "ties": [],
+      "summary": "aiGuardLethal, field heatwave, heatLevel 2, phase cycle"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -19816,6 +20199,7 @@
    "field": {
     "rules": {
      "aiGuardLethal": true,
+     "hotMap": true,
      "phase": "cycle",
      "wind": "windy",
      "windfall": true
@@ -19834,7 +20218,7 @@
     ],
     "boss": "19-6",
     "ties": [],
-    "summary": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+    "summary": "aiGuardLethal, hotMap, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
    },
    "pro": [
     {
@@ -20289,6 +20673,34 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "phase": "cycle",
+       "wind": "windy",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "ash",
+       "tier": 2
+      },
+      "fights": [
+       "19-1",
+       "19-2",
+       "19-3",
+       "19-4",
+       "19-5",
+       "19-6"
+      ],
+      "boss": "19-6",
+      "ties": [],
+      "summary": "aiGuardLethal, phase cycle, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -20300,6 +20712,7 @@
     "rules": {
      "aiGuardLethal": true,
      "ashy": true,
+     "hotMap": true,
      "phase": "cycle"
     },
     "terrain": {
@@ -20320,7 +20733,7 @@
     ],
     "boss": "19-A-10",
     "ties": [],
-    "summary": "aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1"
+    "summary": "aiGuardLethal, ashy, hotMap, phase cycle, terrain Basalt Floor T1"
    },
    "pro": [
     {
@@ -20757,6 +21170,37 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "ashy": true,
+       "phase": "cycle"
+      },
+      "terrain": {
+       "biome": "forge",
+       "tier": 1
+      },
+      "fights": [
+       "19-A-1",
+       "19-A-2",
+       "19-A-3",
+       "19-A-4",
+       "19-A-5",
+       "19-A-6",
+       "19-A-7",
+       "19-A-8",
+       "19-A-9",
+       "19-A-10"
+      ],
+      "boss": "19-A-10",
+      "ties": [],
+      "summary": "aiGuardLethal, ashy, phase cycle, terrain Basalt Floor T1"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -20768,6 +21212,7 @@
      "aiGuardLethal": true,
      "ashyAfterEruption": true,
      "eruption": 0,
+     "hotMap": true,
      "phase": "cycle",
      "phaseDay": 4,
      "phaseNight": 2,
@@ -20795,7 +21240,7 @@
     "ties": [
      "scorchedOverScorching: a tie (- / true), the boss's (20-10)"
     ],
-    "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+    "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, hotMap, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
    },
    "pro": [
     {
@@ -21277,6 +21722,45 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "ashyAfterEruption": true,
+       "eruption": 0,
+       "phase": "cycle",
+       "phaseDay": 4,
+       "phaseNight": 2,
+       "scorchedOverScorching": true,
+       "wind": "windy",
+       "windfall": true
+      },
+      "terrain": {
+       "biome": "ash",
+       "tier": 2
+      },
+      "fights": [
+       "20-1",
+       "20-2",
+       "20-3",
+       "20-4",
+       "20-5",
+       "20-6",
+       "20-7",
+       "20-8",
+       "20-9",
+       "20-10"
+      ],
+      "boss": "20-10",
+      "ties": [
+       "scorchedOverScorching: a tie (- / true), the boss's (20-10)"
+      ],
+      "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, phase cycle, phaseDay 4, phaseNight 2, scorchedOverScorching, wind windy, windfall, terrain Volcanic Ground T2 (the eruption)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -21289,6 +21773,7 @@
      "aiGuardLethal": true,
      "ashyAfterEruption": true,
      "eruption": 2,
+     "hotMap": true,
      "phase": "cycle",
      "phaseDay": 4,
      "phaseNight": 2
@@ -21308,7 +21793,7 @@
     ],
     "boss": "20-A-7",
     "ties": [],
-    "summary": "aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption)"
+    "summary": "aiGuardLethal, ashyAfterEruption, eruption 2, hotMap, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption)"
    },
    "pro": [
     {
@@ -21922,6 +22407,37 @@
        ]
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "ashyAfterEruption": true,
+       "eruption": 2,
+       "phase": "cycle",
+       "phaseDay": 4,
+       "phaseNight": 2
+      },
+      "terrain": {
+       "biome": "ash",
+       "tier": 2
+      },
+      "fights": [
+       "20-A-1",
+       "20-A-2",
+       "20-A-3",
+       "20-A-4",
+       "20-A-5",
+       "20-A-6",
+       "20-A-7"
+      ],
+      "boss": "20-A-7",
+      "ties": [],
+      "summary": "aiGuardLethal, ashyAfterEruption, eruption 2, phase cycle, phaseDay 4, phaseNight 2, terrain Volcanic Ground T2 (the eruption)"
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags); the previous values are here"
     }
    ]
   },
@@ -21934,6 +22450,7 @@
      "aiGuardLethal": true,
      "ashyAfterEruption": true,
      "eruption": 0,
+     "hotMap": true,
      "phase": "off",
      "sulphurFumes": true
     },
@@ -21949,7 +22466,7 @@
     ],
     "boss": "20-B-4",
     "ties": [],
-    "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, phase off, sulphurFumes, terrain Volcanic Ground T1"
+    "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, hotMap, phase off, sulphurFumes, terrain Volcanic Ground T1"
    },
    "pro": [
     {
@@ -21998,7 +22515,7 @@
      ],
      "level": 1,
      "leaders": [
-      "magma-salamander"
+      "ember-jackal"
      ],
      "deck": {
       "ashbone-ghoul": 4,
@@ -22035,7 +22552,7 @@
      ],
      "level": 1,
      "leaders": [
-      "magma-salamander"
+      "ember-jackal"
      ],
      "deck": {
       "ember-jackal": 3,
@@ -22503,6 +23020,41 @@
        "later": []
       }
      ]
+    },
+    {
+     "package": "SKILL2",
+     "on": "2026-10-31",
+     "field": {
+      "rules": {
+       "aiGuardLethal": true,
+       "ashyAfterEruption": true,
+       "eruption": 0,
+       "phase": "off",
+       "sulphurFumes": true
+      },
+      "terrain": {
+       "biome": "ash",
+       "tier": 1
+      },
+      "fights": [
+       "20-B-1",
+       "20-B-2",
+       "20-B-3",
+       "20-B-4"
+      ],
+      "boss": "20-B-4",
+      "ties": [],
+      "summary": "aiGuardLethal, ashyAfterEruption, eruption 0, phase off, sulphurFumes, terrain Volcanic Ground T1"
+     },
+     "leaders": {
+      "20-B-PRO-2": [
+       "magma-salamander"
+      ],
+      "20-B-PRO-3": [
+       "magma-salamander"
+      ]
+     },
+     "why": "re-baked after BUDGET2 / SKILL2 (decision BUDGET2-7): the stored average field (the maps' biome flags) and the showcase leaders under the re-fit cards; the previous values are here"
     }
    ]
   }
