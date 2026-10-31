@@ -8773,7 +8773,7 @@ function cardTileHTML(d, opts){
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -8953,6 +8953,18 @@ function ui3SightBlindNow(e, lv){
     return !lit;
   }catch(err){ return false; }
 }
+// 2026-10-31 (package UI11, FF1; owner 18:09: "context pips only when they matter"): a board card's Bloom condition pip is left out when its condition can never
+// hold on this map: Tide / Ebb with no Tide in the fight (as UI5 did for the Tide chip). 'and' needs every condition possible, 'or' needs one. Outside a fight: shown.
+function ui11BloomImpossible(bw, bopts){
+  try{ if(!(bopts && bopts.live) || !matchState || matchState.over || bopts.live.inBloom) return false;
+    const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean); if(!when.length) return false;
+    const can = k=> (k === 'tide' || k === 'ebb') ? !!matchHasTide(matchState) : true, oks = when.map(can);
+    return bw.mode === 'or' ? !oks.some(Boolean) : !oks.every(Boolean);
+  }catch(e){ return false; }
+}
+// 2026-10-31 (package UI11, FF5; owner: the Bloom chip's 🌸 sits off centre): UI7 pulled every skill icon's right edge in (margin-right -.16em) to tuck its number closer, which
+// pushed a chip with the icon alone off centre. A chip with no number is marked (.is-icon-only) and keeps no such pull.
+function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8981,6 +8993,7 @@ function abilityBadges(d, bopts){
   // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
   // struck through in red once it has been used (the unit came back).
   if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
+    if(lv && used) { /* 2026-10-31 (UI11, FF1): a spent one-shot changes nothing: the used Undead chip is gone, not struck through */ } else
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
   // 2026-10-30 (package UI5, W5; owner 21:35: "Don't show tide if its irrelevant to the map. When you draw a card into your hand but the battlefield doesn't currently
   // have tide, the context pip reds out and fades out. Same for opposite - it green-fades in."): in a fight (a board card or a hand card) on a map that can never
@@ -9041,8 +9054,8 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy){ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
-  if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
+  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy))){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
@@ -9066,7 +9079,10 @@ function abilityBadges(d, bopts){
   if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
   if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
-  if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  // 2026-10-31 (package UI11, FF1; owner 18:09, correcting Z6 / UI8): on a board card the Shield is this skill chip on the south edge: the 💠 and the number of Shield left
+  // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
+  if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
+  else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -9201,7 +9217,7 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.
   if(out.every(b=> /ab-trig is-spent/.test(b))){ const age = Number((/animation-delay:-(\d+)ms/.exec(out[0])||[])[1])||0;
-    return `<div class="badges badge-slots is-all-spent" style="animation-delay:-${age}ms">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`; }
+    return `<div class="badges badge-slots is-all-spent" style="animation-delay:-${age}ms">${out.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}</div>`; }
   // Skill slots (2026-10-10, user: "is there space to have 3 icons on one row, separated by a small space. If one of them
   // has multiple, they stack closely together. Otherwise ... shows the first two, then periodically they phase between
   // the next two" + "in small card form ... that one symbol phases/cycles between different symbols every 2s"): each
@@ -9210,14 +9226,14 @@ function abilityBadges(d, bopts){
   const maxSlots = (bopts && bopts.compact) ? 3 : 4; // 2026-10-11: the strip sits on the bottom edge now, so it has room for more
   if(out.length > maxSlots){
     const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
-    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
+    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
   }
   // 2026-10-15 (user: "Why do those enemy cards have that slim weird & grey rectangle where their ability context icons would be.
   // Is that 'Bounty'?"): yes — on the board the opponent's Bounty shows as the Lumber bubble and its 🏆 slot is hidden, which left
   // the strip's empty pill behind. A strip holding only the Bounty is marked so the CSS hides the whole strip with it.
   const onlyBounty = out.every(b=> /class="ab-bounty"/.test(b));
-  if(true) return `<div class="badges badge-slots${onlyBounty ? ' only-bounty' : ''}">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`;
-  const pills = out.map(b=>`<span class="abadge">${b}</span>`);
+  if(true) return `<div class="badges badge-slots${onlyBounty ? ' only-bounty' : ''}">${out.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}</div>`;
+  const pills = out.map(b=>`<span class="abadge${ui11IconOnly(b)}">${b}</span>`);
   // 2026-09-29, per explicit request ("depending on how many symbols there are, they might have
   // to stack on each other. If > 8 symbols, they start stacking on two rows"): keep a single row
   // up to 8 badges; once a card has more than that, split it into two rows (first 8, then the
@@ -39055,19 +39071,25 @@ function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'e
 // 2026-10-26 (package VIS3, V3; owner #16: "Shields will just be blue numbers on the card"): a unit's Shield (and its temporary Health from
 // Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
-function vis3ShieldHTML(c){
-  const n = vis3ShieldAmount(c); if(!(n > 0)) return '';
-  return `<span class="vis3-shield-num${n === 1 ? ' is-one' : ''}" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // 2026-10-31 (UI8, Z6): the 💠 is drawn by CSS; at 1 only the icon shows // (the old 💠 chip's words: already in lang/ui)
+function vis3ShieldHTML(c, amt){
+  const n = amt != null ? amt : vis3ShieldAmount(c); if(!(n > 0)) return '';
+  // 2026-10-31 (UI11, FF1): the Shield is a skill chip in the south-edge strip: 💠 + the number left; at 1 the number fades (.is-one), the icon alone = 1
+  return `<span class="ab-unit-shield is-live${n === 1 ? ' is-one' : ''}" data-shield="${n}" title="Shield: ${n} temporary Health, spent before its Health">${iconHTML('shield', '💠')}<b class="shield-n">${n}</b></span>`;
 }
+// the live chip of a board card (null when none), and its slot in the strip
+function ui11ShieldChip(tile){ return tile ? tile.querySelector('.badges .ab-unit-shield.is-live:not(.vis4-shield-out)') : null; }
+function ui11ShieldChipGone(chip){ try{ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
 function vis3ShieldRefresh(el, c){
-  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num:not(.vis4-shield-out)'), html = vis3ShieldHTML(c);
+  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = ui11ShieldChip(tile), to = vis3ShieldAmount(c);
     // 2026-10-27 (package VIS4, K7: "if the bar is reduced to 0, it should still animate to 0"): a Shield that breaks counts down to 0 and
     // then fades out (it used to vanish at once); one that drops counts down to its new number (vis4ShieldCount).
-    if(!html){ if(old) vis4ShieldCount(old, Number(old.textContent) || 0, 0, true); return; }
-    if(old){ const to = vis3ShieldAmount(c), from = Number(old.textContent) || 0; if(from !== to){ if(to < from && !reducedMotion()) vis4ShieldCount(old, from, to, false); else { old.insertAdjacentHTML('afterend', html); old.remove(); const nu = tile.querySelector(':scope > .vis3-shield-num'); if(nu) nu.classList.add('vis3-shield-pop'); } } return; }
-    tile.querySelectorAll(':scope > .vis3-shield-num.vis4-shield-out').forEach(x=> x.remove());
-    tile.insertAdjacentHTML('beforeend', html); }catch(e){}
+    if(!(to > 0)){ if(old) vis4ShieldCount(old, Number(old.dataset.shield) || 0, 0, true); return; }
+    if(old){ const from = Number(old.dataset.shield) || 0; if(from !== to){ if(to < from && !reducedMotion()) vis4ShieldCount(old, from, to, false); else { ui11ShieldSet(old, to); old.classList.remove('vis3-shield-pop'); void old.offsetWidth; old.classList.add('vis3-shield-pop'); } } return; }
+    tile.querySelectorAll('.badges .ab-unit-shield.vis4-shield-out').forEach(ui11ShieldChipGone);
+    let strip = tile.querySelector('.badges'); if(!strip){ strip = document.createElement('div'); strip.className = 'badges badge-slots'; const nm = tile.querySelector('.stats'); if(nm && nm.nextSibling) tile.insertBefore(strip, nm.nextSibling); else tile.appendChild(strip); }
+    const slot = document.createElement('span'); slot.className = 'abadge'; slot.innerHTML = vis3ShieldHTML(c, to); strip.insertBefore(slot, strip.firstChild); slot.firstElementChild.classList.add('vis3-shield-pop'); }catch(e){}
 }
+function ui11ShieldSet(chip, n){ chip.dataset.shield = String(n); const b = chip.querySelector('.shield-n'); if(b) b.textContent = String(n); chip.classList.toggle('is-one', n === 1); chip.title = chip.title.replace(/\d+/, String(n)); }
 // 2026-10-27 (package VIS4, K7; owner 10-27 11:22: "The electric zap line effect when the shield is attacked ... doesn't look so nice. Also,
 // if the bar is reduced to 0, it should still animate to 0"):
 //   vis4ShieldCount: the blue number steps down one by one (about 60 ms a step, at most 0.35 s in all) with a pop; at 0 it holds a beat, then
@@ -39080,10 +39102,10 @@ function vis3ShieldRefresh(el, c){
 function vis4ShieldCount(el, from, to, gone){
   if(!el) return; if(el._vis4t) clearInterval(el._vis4t);
   const steps = Math.max(1, from - to), ms = Math.max(40, Math.min(60, Math.round(350 / steps))); let n = from;
-  const fin = ()=>{ el.textContent = String(to); el.classList.toggle('is-one', to === 1 || (!!gone && from <= 1)); /* UI8 (2026-10-31, Z6): at 1 the number fades, the icon alone */ el.title = el.title.replace(/\d+/, String(to)); el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
-    if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> el.remove(), 470); }, 420); } };
+  const fin = ()=>{ ui11ShieldSet(el, to); el.classList.toggle('is-one', to === 1 || (!!gone && from <= 1)); /* UI11 (FF1): at 1 the number fades, the icon alone */ el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
+    if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> ui11ShieldChipGone(el), 470); }, 420); } };
   if(reducedMotion() || steps <= 1){ fin(); return; }
-  el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } el.textContent = String(n); }, ms);
+  el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } ui11ShieldSet(el, n); }, ms);
 }
 function vis4ShieldRect(el, cls){ const t = el.querySelector('.card-tile') || el, c = en2Ctr(t), r = en2Layer('', 'vis4-shield-rect ' + (cls || ''));
   gsap.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:0, scale:1}); return {r, c}; }
@@ -39244,7 +39266,7 @@ function boardCardHTML(c, defs, opts){
   // (VIS3, 2026-10-26: the Shield is the blue number on the card now, vis3ShieldHTML; no 💠 chip)
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${vis3ShieldHTML(c) /* VIS3 (2026-10-26): the Shield's blue number */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
+  const overlaysHTML = `      ${'' /* 2026-10-31 (UI11, FF1): the Shield is the south-edge chip (abilityBadges), not an east badge */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -39280,7 +39302,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}
