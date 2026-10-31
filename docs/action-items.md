@@ -4,6 +4,16 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 16:32: the owner's notes
+- EE1 (UI10): Quests: remove the top summary ("Dailies") section (the Daily and Weekly sections below stay). Clicking a finished quest notice claims its reward (no separate reward button). No "in progress" text. New quests say NEW!; hover or click clears it.
+- EE2 (UI10 now; decks in step 4): PRO and BPRO fights become one skirmish per map: "my deck" or a reference deck vs a random PRO deck built only from the map's list; 1 in 3 to 1 in 5 of those decks may hold one SPECIAL card from the map's list. UI10 wires it on today's BPRO decks; the decks are rebuilt from the owner's new lists in step 4.
+- EE3 (UI10): no toast when fighting with a reference deck.
+- EE4 (UI10): some cards (Bee Forager, the enemy bees in the owner's shot) draw at half width on the board. Find why and stop it; keep the half size as an opt-in "mini" board size for a future event, with context pips and labels at about 80% of normal size (overlap is fine).
+- EE5 (UI10): art review: the card editor's 🚫 reject + reason exists (card_overrides, `artReject`); add one Rejected art list (admin) with every rejected card, its art and the owner's comment, so the coordinator reads the comments (read-only SQL) when re-writing art prompts. PixelLab tokens reset (owner).
+- EE6 (UI10): on Ambush, the 👀 Ambush pip gives an echo (ripple rings) as the ambush lands.
+- EE7 (UI10): reference decks fight with their own leader and bramble.
+- EE8 (UI10): card editor, Swarm: the type dropdown's choice does not stick until save and reopen; picking a type updates the "Counts <Type>" text at once; drop the x N box (N = 1); the dropdown's first entry is "Type" = plain Swarm (shares any type). Engine already supports swarm: [types] (BB4 is mostly this editor fix). Swarm units are strong in the reference decks until the owner re-tags the ant swarms.
+
 ## 10-31 16:04: the owner's notes
 - DD1 (UI9): the Quests board shows one column; it should be two columns (2 x N) where the width allows.
 - DD2 (UI9): pack opening said "⭐ Blue-ringed Octopus reached Lv 2" under three other cards. Cause: a pack's levelChance gives a free +1 level to a random draftable card anywhere in the game (arena_app.js ~55797), often one you don't own or play. Coordinator call (AA4): the level-up goes to a card you own (main deck first), and the line shows that card's small face and "+1 Level".
