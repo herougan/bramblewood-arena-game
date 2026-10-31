@@ -11238,6 +11238,13 @@ function renderEditorInner(){
     const sdef = keySel && SKILL_DEFS.find(x=>x.key===keySel.value);
     if(readout && sdef) readout.textContent = `${sdef.label} ${resistOptionLabel(sel.value)}`;
   }));
+  // 2026-10-31 (package UI10, owner EE8): the Swarm type dropdown applies at once: the row remembers the pick and the "Counts <Type>" text follows.
+  overlay.querySelectorAll('#skillRows select[data-sk="vals"], #evergreenRows select[data-sk="vals"]').forEach(sel=> sel.addEventListener('change', ()=>{
+    const i = Number(sel.getAttribute('data-i')), rowEl = sel.closest('.skill-row'), hint = rowEl && rowEl.querySelector('.skill-types-hint');
+    if(c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
+    sel.setAttribute('data-first', sel.value); sel.setAttribute('data-extra', '[]');
+    if(hint) hint.textContent = sel.value ? 'Counts ' + sel.value : 'Any shared type';
+  }));
   // Chained (Devilry, 2026-09-17): changing the break-condition dropdown (val0) needs the
   // whole row re-rendered so the damage-threshold number field (val1) shows/hides itself to
   // match — a plain re-render, same pattern the 'key' select change already uses above.
@@ -11449,9 +11456,11 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
       `<input type="number" min="1" class="w-52" data-sk="val1" data-i="${i}" value="${vals[1]||1}" title="${escapeAttr(s.numberTitle || "Damage threshold — only used by the 'Takes more than N damage' condition")}" ${amountRelevant?'':'hidden'}>`;
   } else if(s.kind==='types'){
     // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
+    // 2026-10-31 (package UI10, owner EE8): one dropdown, first entry "Type" = plain Swarm (any shared type); the pick applies at once
+    // (written to the row, the "Counts" text updates) and the "x N" box is gone (N stays 1; an old swarmN rides along in a hidden field).
     const sel = Array.isArray(row.value) ? row.value : [];
-    valueHtml = `<select multiple size="4" class="skill-types" data-sk="vals" data-i="${i}" aria-label="Counts allies of these types (none picked: any shared type)" title="None picked: any ally that shares a type. Pick types to count only those (Ctrl/Cmd-click for several).">${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel.includes(a)?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
-    if(s.numberKey) valueHtml += `<label class="skill-n">× <input type="number" min="1" class="w-52" data-sk="valN" data-i="${i}" value="${row.n||1}" title="How much each one adds (default 1)"></label>`;
+    valueHtml = `<select class="skill-types" data-sk="vals" data-i="${i}" data-first="${escapeAttr(sel[0]||'')}" data-extra="${escapeAttr(JSON.stringify(sel.slice(1)))}" aria-label="Counts allies of this type (Type: any shared type)" title="Type: any ally that shares a type. Pick a type to count only that type."><option value="" ${sel.length?'':'selected'}>Type</option>${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel[0]===a?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
+    if(s.numberKey) valueHtml += `<input type="hidden" data-sk="valN" data-i="${i}" value="${row.n||1}">`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
     // a count (val1) — the exact same picker widget actionFieldsHTML already builds for the
@@ -11857,7 +11866,9 @@ function readEditorFormIntoCard(){
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
       sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
-      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(fx, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
+      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); // 2026-10-31 (UI10): one dropdown; '' = plain Swarm; an untouched multi-type pick keeps its other types
+      const picked = !el ? [] : el.multiple ? [...el.selectedOptions].map(o=> o.value) : el.value ? (el.value === el.getAttribute('data-first') ? [el.value].concat(JSON.parse(el.getAttribute('data-extra') || '[]')) : [el.value]) : [];
+      sdef.apply(fx, picked, nEl ? nEl.value : 1);
     } else {
       sdef.apply(fx, true);
     }
