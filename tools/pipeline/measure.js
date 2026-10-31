@@ -1,6 +1,6 @@
 'use strict';
 // SPEED1 (2026-10-31): the `measure` step. Wraps tools/skill_canon_2026_10_31.js (the measure) with the plan of tools/skill2_measure_2026_10_31.js.
-//   run.sh measure [--skills a,b=3,armor=4] [--map N] [--only plan,keys] [--minutes M] [--fights 200,400,700,1000] [--report] [--force]
+//   run.sh measure [--skills a,b=3,armor=4] [--map N] [--carriers a,b,c] [--only plan,keys] [--minutes M] [--fights 200,400,700,1000] [--report] [--force]
 // --skills: `id` = every plan item of that skill; `id=N` = that item, and when no in-play card carries it, an ad hoc item (Armor 4, 5).
 // --map N: the skills on map N's own context (its pool, fields and level; tools/bench), stored apart from the global ones.
 // Early stopping (new): each item is played in stages of fights (200, 400, 700, 1000); after each the 95% interval of its worth is read and the
@@ -47,12 +47,13 @@ async function step(args, S) {
     if (ok(have)) { reused++; S.cached.hits++; continue; }
     if (s2 && s2.fingerprint === fp && !args.force && s2.fights >= stages[1]) { reused++; S.cached.hits++; S.notes.push(it.key + ': reused the SKILL2 measure (same game)'); continue; }
     if ((Date.now() - t0) / 60000 > budgetMin) { left++; continue; }
-    const s0 = Date.now(), trail = []; let res = null, conv = false;
+    const s0 = Date.now(), trail = []; let res = null, conv = false, empty = false;
     for (const M of stages) {
-      res = await C.run(Object.assign(L.defaults(), { cmd: 'measure', test: it.test, games: M, cacheDir, workers: 2, quiet: true, map: args.map != null ? String(args.map) : null }));
-      const w = res.test.worthRuler; trail.push({ fights: M, m: w.m, lo: w.lo, hi: w.hi }); conv = converged(w, cfg);
+      res = await C.run(Object.assign(L.defaults(), { cmd: 'measure', test: it.test, games: M, cacheDir, workers: 2, quiet: true, map: args.map != null ? String(args.map) : null, carriers: args.carriers ? String(args.carriers).split(',') : undefined }));
+      const w = res.test.worthRuler; if (w.m == null) { empty = true; break; } trail.push({ fights: M, m: w.m, lo: w.lo, hi: w.hi }); conv = converged(w, cfg);
       if (conv) break;
     }
+    if (empty) { S.flagged.push({ id: it.key, why: `no reading in context ${ctx} (no vanilla carriers in its pool?): pass --carriers a,b,c` }); continue; }
     const used = trail[trail.length - 1].fights; if (conv && used < maxF) { early++; saved += maxF - used; }
     const prev = have ? have.test.worthRuler : null, t = res.test;
     store.results[key] = { key: it.key, ctx, id: it.id, class: it.class, kind: it.kind, n: it.n, nCards: it.nCards, cards: it.cards, fights: used, converged: conv, stages: trail, fingerprint: res.fingerprint,

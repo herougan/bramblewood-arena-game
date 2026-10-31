@@ -6,7 +6,7 @@
 // Exit code: 0 ok / partial, 1 failed, 2 usage.
 const P = require('./lib.js');
 const STEPS = ['measure', 'price', 'refit', 'bake', 'tournament', 'test'];
-const VALUED = ['skills', 'map', 'only', 'minutes', 'fights', 'cache-dir', 'set-const', 'games', 'maps', 'tag', 'from', 'only-ids', 'kind', 'baseline', 'budget'];
+const VALUED = ['skills', 'map', 'only', 'minutes', 'fights', 'cache-dir', 'set-const', 'games', 'maps', 'tag', 'from', 'only-ids', 'kind', 'baseline', 'budget', 'carriers'];
 
 async function runStep(step, args, argv) {
   const t0 = Date.now(), S = P.newSummary(step, argv);
