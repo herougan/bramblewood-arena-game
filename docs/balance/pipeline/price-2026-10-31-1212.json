@@ -1,0 +1,105 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "price",
+ "status": "ok",
+ "started": "2026-10-31T04:12:39.279Z",
+ "finished": "2026-10-31T04:12:39.349Z",
+ "durationSec": 0.1,
+ "args": [
+  "--set-const",
+  "cap2SScale=0.5,flying=1.13,evasive=1.13"
+ ],
+ "head": "4b56883f",
+ "inputs": {
+  "measures": "docs/balance/pipeline/state/merged-measures.json",
+  "skill2Items": 231,
+  "pipelineItems": 2,
+  "mapRecordedOnly": 0,
+  "constantsBefore": {
+   "cap2SScale": 1,
+   "flying": 1.39,
+   "evasive": 1.37,
+   "shadow": 1.1
+  },
+  "setConst": {
+   "cap2SScale": 0.5,
+   "flying": 1.13,
+   "evasive": 1.13
+  },
+  "dry": false,
+  "halfMiss": {
+   "evasive": {
+    "measured": 1.12,
+    "lo": 1.11,
+    "hi": 1.13,
+    "now": 1.37,
+    "worth": 3.4215999999999998,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   },
+   "flying": {
+    "measured": 1.13,
+    "lo": 1.12,
+    "hi": 1.14,
+    "now": 1.39,
+    "worth": 3.5639,
+    "from": "SKILL2 measures",
+    "fingerprint": "ea6e5bcc7b96"
+   }
+  },
+  "constantsAfter": {
+   "cap2SScale": 0.5,
+   "flying": 1.13,
+   "evasive": 1.13,
+   "shadow": 1.1
+  }
+ },
+ "counts": {
+  "skills set": 104,
+  "kept": 47,
+  "canon (curve kept)": 4,
+  "table entries changed": 0,
+  "trigger pairs": 13,
+  "constants set": 3
+ },
+ "changed": [
+  {
+   "id": "cap2SScale",
+   "field": "budget constant",
+   "old": 1,
+   "new": 0.5
+  },
+  {
+   "id": "flying",
+   "field": "budget constant",
+   "old": 1.39,
+   "new": 1.13
+  },
+  {
+   "id": "evasive",
+   "field": "budget constant",
+   "old": 1.37,
+   "new": 1.13
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "left as they were (no new measure): arrow, backstab, bulwark, earthquake, esprit, fireArrow, hoard, inspiring, pounce, regen, shell, sweep, thorns, trap",
+  "record: armor=3: measured 4.84 [4.6, 5.09], the canon curve gives 5.56 (kept: two canon points fix the curve)",
+  "record: armor=4: measured 4.95 [4.64, 5.52], the canon curve gives 6.75 (kept: two canon points fix the curve)",
+  "record: armor=5: measured 5.01 [4.75, 5.58], the canon curve gives 7.84 (kept: two canon points fix the curve)",
+  "record: poison=3: measured 5.22 [4.88, 5.58], the canon curve gives 6.35 (kept: two canon points fix the curve)"
+ ],
+ "files": [
+  "docs/balance/pipeline/state/price-plan.json",
+  "docs/balance/pipeline/state/merged-measures.json",
+  "canonical/skill-costs.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/price-2026-10-31-1212.json"
+}

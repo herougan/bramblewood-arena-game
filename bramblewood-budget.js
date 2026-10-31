@@ -295,13 +295,13 @@ function nV3(base, L){ return r2(base + 2 * Math.max(0, Number(L) || 0)); }
 // Cap 2's score before the half-miss multiplier (BF6, owner 15:15): A·H + S·|S|.
 // 2026-10-31 (package SPEED1, owner SKILL2-1): cap 2 reads the skill price S at CAP2_S_SCALE of itself, (S x k)·|S x k|. At 1 it is the old S·|S|; the owner's
 // call is 0.5, so a re-priced skill no longer breaks cap 2 on its own. One constant; tools/pipeline/run.sh price --set-const cap2SScale=0.5 sets it.
-const CAP2_S_SCALE = 1;
+const CAP2_S_SCALE = 0.5; // 2026-10-31 (SPEED1 pipeline, owner SKILL2-1): 1 -> 0.5
 function cap2SOf(S, cfg){ const k = cfg && cfg.cap2SScale != null ? +cfg.cap2SScale : CAP2_S_SCALE, v = (+S || 0) * k; return v * Math.abs(v); }
 function productScore(A, H, S, cfg){ A = +A || 0; H = +H || 0; return A * H + cap2SOf(S, cfg); }
 // Per-skill half-miss multipliers (2026-10-23, package BF10; owner 01:03: "I think Flying may be overcosted."): the robust skill test
 // (docs/balance/skill-test-robust-mono-2000-2026-10-22.md) measured Flying's worth at 5.88 stat points against 6.89 paid at x1.5, so
 // Flying is x1.4. A skill not listed uses missMult (1.5). cfg.missMultBy overrides the table.
-const MISS_MULT_BY = {flying: 1.39, evasive: 1.37, shadow: 1.1}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth
+const MISS_MULT_BY = {flying: 1.13, evasive: 1.13, shadow: 1.1}; // owner 01:57: "I estimate Flying is worth x1.39"; 2026-10-23 (BF12, call BF10-1): Evasive and Shadow at their measured worth // 2026-10-31 (SPEED1 pipeline, owner SKILL2-2, the measured value (docs/balance/skill2-measures-2026-10-31.json)): flying 1.39 -> 1.13, evasive 1.37 -> 1.13
 // Cap 2's limit (2026-10-23, package BF11; owner 11:11: "Im also starting to think N/3 ^2 is too restrictive. Maybe 2*(N/3)^2 since we
 // have A*H + S*|S|."): cap2Mult × (N/3)², cap2Mult 2 (was 1). Every cap-2 check reads this one helper.
 function cap2Limit(N, cfg){ const k = cfg && cfg.cap2Mult != null ? +cfg.cap2Mult : DEFAULTS.cap2Mult; return (N / 3) * (N / 3) * k; }

@@ -1,0 +1,159 @@
+{
+ "_about": "SPEED1 pipeline measures (tools/pipeline/measure.js): key \"<ctx>|<plan key>\"",
+ "results": {
+  "global|armor=4": {
+   "key": "armor=4",
+   "ctx": "global",
+   "id": "armor",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 4,
+   "nCards": 0,
+   "cards": [],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 4.949,
+     "lo": 4.638,
+     "hi": 5.5162
+    }
+   ],
+   "fingerprint": "10346fca4e50",
+   "canonRate": {
+    "m": 0.0314,
+    "lo": 0.0271,
+    "hi": 0.0362
+   },
+   "statRate": {
+    "m": 0.0332,
+    "lo": 0.0247,
+    "hi": 0.0408
+   },
+   "kappa": {
+    "m": 1.059,
+    "lo": 0.8189,
+    "hi": 1.2757
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0258,
+    "worthStat": {
+     "m": 0.7774,
+     "lo": 0.3778,
+     "hi": 1.2
+    }
+   },
+   "test": {
+    "effects": {
+     "armor": 4
+    },
+    "gain": 0.1629,
+    "worth": {
+     "m": 5.1923,
+     "lo": 4.7439,
+     "hi": 5.7386
+    },
+    "worthRuler": {
+     "m": 4.949,
+     "lo": 4.638,
+     "hi": 5.5162
+    },
+    "worthStat": {
+     "m": 4.9028,
+     "lo": 4,
+     "hi": 6.3629
+    },
+    "price": 6.75,
+    "net": -1.801,
+    "verdict": "over-priced",
+    "between": [
+     "fork (4.92)",
+     "onReadyGold 1 (5.21)"
+    ]
+   },
+   "measuredAt": "2026-10-31T04:03:21.652Z",
+   "seconds": 408
+  },
+  "global|armor=5": {
+   "key": "armor=5",
+   "ctx": "global",
+   "id": "armor",
+   "class": "keyword",
+   "kind": "measure",
+   "n": 5,
+   "nCards": 0,
+   "cards": [],
+   "fights": 200,
+   "converged": true,
+   "stages": [
+    {
+     "fights": 200,
+     "m": 5.007,
+     "lo": 4.7476,
+     "hi": 5.5758
+    }
+   ],
+   "fingerprint": "10346fca4e50",
+   "canonRate": {
+    "m": 0.0314,
+    "lo": 0.0271,
+    "hi": 0.0362
+   },
+   "statRate": {
+    "m": 0.0332,
+    "lo": 0.0247,
+    "hi": 0.0408
+   },
+   "kappa": {
+    "m": 1.059,
+    "lo": 0.8189,
+    "hi": 1.2757
+   },
+   "placebo": {
+    "effects": {
+     "skill2Placebo": true
+    },
+    "gain": 0.0258,
+    "worthStat": {
+     "m": 0.7774,
+     "lo": 0.3778,
+     "hi": 1.2
+    }
+   },
+   "test": {
+    "effects": {
+     "armor": 5
+    },
+    "gain": 0.1663,
+    "worth": {
+     "m": 5.2985,
+     "lo": 4.8294,
+     "hi": 5.827
+    },
+    "worthRuler": {
+     "m": 5.007,
+     "lo": 4.7476,
+     "hi": 5.5758
+    },
+    "worthStat": {
+     "m": 5.0031,
+     "lo": 4.0694,
+     "hi": 6.5654
+    },
+    "price": 7.84,
+    "net": -2.833,
+    "verdict": "over-priced",
+    "between": [
+     "onReadyGold 1 (5.21)",
+     "-"
+    ]
+   },
+   "measuredAt": "2026-10-31T04:03:52.583Z",
+   "seconds": 31
+  }
+ }
+}

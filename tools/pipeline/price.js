@@ -22,11 +22,12 @@ function diffTables(a, b) {
   return out;
 }
 // the multiplier a half-miss measure implies: 1 + worth / (the stat terms), the stat terms = the price on the carriers / (the multiplier then - 1)
+// (a SKILL2 reading taken before the canon tool subtracted the placebo itself, `placebo` unset, is less the placebo's worth once, as the price tool does)
 function halfMissReadings(R, table, now) {
-  const out = {};
-  (table.halfMiss || []).forEach(id => { const r = R[id]; if (!r || !r.test) return; const mNow = now[id] != null ? now[id] : (table.budget || {}).missMult || 1.5, price = r.test.price, W = r.test.worthRuler.m;
+  const out = {}, Z = R.placebo && R.placebo.test ? R.placebo.test.worthRuler.m : 0;
+  (table.halfMiss || []).forEach(id => { const r = R[id]; if (!r || !r.test) return; const mNow = now[id] != null ? now[id] : (table.budget || {}).missMult || 1.5, price = r.test.price, z = r.placebo ? 0 : Z, W = r.test.worthRuler.m - z;
     if (!(mNow > 1) || !(price > 0)) return; const stat = price / (mNow - 1);
-    out[id] = { measured: P.r2(1 + W / stat), lo: P.r2(1 + r.test.worthRuler.lo / stat), hi: P.r2(1 + r.test.worthRuler.hi / stat), now: mNow, worth: W, from: r.ctx ? 'pipeline measures' : 'SKILL2 measures', fingerprint: r.fingerprint }; });
+    out[id] = { measured: P.r2(1 + W / stat), lo: P.r2(1 + (r.test.worthRuler.lo - z) / stat), hi: P.r2(1 + (r.test.worthRuler.hi - z) / stat), now: mNow, worth: W, from: r.ctx ? 'pipeline measures' : 'SKILL2 measures', fingerprint: r.fingerprint }; });
   return out;
 }
 
@@ -45,6 +46,17 @@ async function step(args, S) {
   const log = console.log; const lines = []; console.log = (...a) => lines.push(a.join(' '));
   let plan; try { plan = A.prices.call(null, { dry: !!args.dry }) || P.readJson(PLAN); } finally { console.log = log; }
   if (!plan) plan = P.readJson(PLAN);
+  // only skills with a measure in the pipeline's own store are priced here: the price tool re-fits a canon curve through its own rounded point, so
+  // a re-run drifts in the third digit on entries nobody measured; those, the shorthands and the trigger pairs go back unless a new measure names them
+  if (!args.dry) {
+    const mine = new Set(Object.keys(P.readJson(path.join(P.OUTDIR, 'measures.json'), { results: {} }).results).filter(k => args['include-map'] || k.startsWith('global|')).map(k => (P.readJson(path.join(P.OUTDIR, 'measures.json')).results[k] || {}).id)), trig = Object.keys(P.readJson(path.join(P.OUTDIR, 'measures.json'), { results: {} }).results).some(k => /\|T:/.test(k));
+    const text = fs.readFileSync(TABLE, 'utf8'), cur = JSON.parse(text), back = {}; const bySkill = {}; t.skills.forEach(e => { bySkill[e.id] = e; });
+    cur.skills.forEach(e => { if (!mine.has(e.id) && JSON.stringify(e) !== JSON.stringify(bySkill[e.id])) back[e.id] = bySkill[e.id]; });
+    let out = Object.keys(back).length ? A.writeSkills(text, back) : text; const lines = out.split('\n');
+    if (!trig) { const si = lines.findIndex(l => /^ "shorthands": /.test(l)), pi = lines.findIndex(l => /^ "pairs": /.test(l)); if (si >= 0) lines[si] = ' "shorthands": ' + JSON.stringify(t.shorthands) + ','; if (pi >= 0) { if (t.pairs) lines[pi] = ' "pairs": ' + JSON.stringify(t.pairs) + ','; else lines.splice(pi, 1); } }
+    out = lines.join('\n'); JSON.parse(out); if (out !== text) fs.writeFileSync(TABLE, out);
+    if (Object.keys(back).length) S.notes.push(`left as they were (no new measure): ${Object.keys(back).join(', ')}`);
+  }
   const after = P.readJson(TABLE), changed = diffTables(t, after);
   S.changed.push(...changed);
   const kinds = {}; (plan.rows || []).forEach(r => { kinds[r.kind] = (kinds[r.kind] || 0) + 1; });

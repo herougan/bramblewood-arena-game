@@ -29,7 +29,7 @@ function apply(changes, why, date) {
     else { text = text.replace(/^(const MISS_MULT_BY = \{)([^}]*)(\};)/m, (all, a, body, z) => a + body.split(',').map(kv => { const [n, v] = kv.split(':'); return n.trim() === k ? `${n.trim()}: ${to}` : kv.trim(); }).join(', ') + z); }
     done.push({ id: k, field: 'budget constant', old: was[k], new: to }); });
   const miss = done.filter(d => d.id !== 'cap2SScale');
-  if (miss.length) text = text.replace(/^(const MISS_MULT_BY = \{[^}]*\};)/m, `$1 // ${date} (SPEED1 pipeline, ${why.miss || 'owner'}): ` + miss.map(d => `${d.id} ${d.old} -> ${d.new}`).join(', '));
+  if (miss.length) text = text.replace(/^(const MISS_MULT_BY = \{[^}]*\};[^\n]*)/m, `$1 // ${date} (SPEED1 pipeline, ${why.miss || 'owner'}): ` + miss.map(d => `${d.id} ${d.old} -> ${d.new}`).join(', '));
   if (done.length) { new (require('vm').Script)(text); fs.writeFileSync(FILE, text); read(text); }
   return done;
 }

@@ -1,0 +1,72 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "measure",
+ "status": "ok",
+ "started": "2026-10-31T03:56:31.783Z",
+ "finished": "2026-10-31T04:03:52.584Z",
+ "durationSec": 440.8,
+ "args": [
+  "--skills",
+  "armor=4,armor=5"
+ ],
+ "head": "7c0916d9",
+ "inputs": {
+  "context": "global",
+  "fingerprint": "10346fca4e50",
+  "stages": [
+   200,
+   400,
+   700,
+   1000
+  ],
+  "cacheDir": "tests/out/skill2-cache",
+  "maxFights": 1000,
+  "items": [
+   "armor=4",
+   "armor=5"
+  ]
+ },
+ "counts": {
+  "items": 2,
+  "measured": 2,
+  "reused": 0,
+  "stopped early": 2,
+  "fights saved": 1600,
+  "left (--minutes)": 0
+ },
+ "changed": [
+  {
+   "id": "armor=4",
+   "field": "worth",
+   "old": "-",
+   "new": "4.949 [4.638, 5.5162] at 200 fights, price on carriers 6.75"
+  },
+  {
+   "id": "armor=5",
+   "field": "worth",
+   "old": "-",
+   "new": "5.007 [4.7476, 5.5758] at 200 fights, price on carriers 7.84"
+  }
+ ],
+ "flagged": [
+  {
+   "id": "armor=4",
+   "why": "over-priced: worth 4.949 against 6.75 on the carriers"
+  },
+  {
+   "id": "armor=5",
+   "why": "over-priced: worth 5.007 against 7.84 on the carriers"
+  }
+ ],
+ "cached": {
+  "hits": 0,
+  "played": 2
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/measures.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/measure-2026-10-31-1156.json"
+}
