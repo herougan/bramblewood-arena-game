@@ -17,7 +17,7 @@ const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const FILE = path.join(ROOT, 'canonical', 'skill-costs.json');
 const CHECK = path.join(ROOT, 'docs', 'balance', 'skill-canon-check-2026-10-31-skill2-before.json');
-const MEAS = path.join(ROOT, 'docs', 'balance', 'skill2-measures-2026-10-31.json');
+const MEAS = process.env.SKILL2_MEAS || path.join(ROOT, 'docs', 'balance', 'skill2-measures-2026-10-31.json'); // SPEED1 (2026-10-31): SKILL2_MEAS / SKILL2_PRICES_OUT let tools/pipeline/price.js feed it the merged measures and keep the plan out of the dated SKILL2 file
 const r2 = v => Math.round(v * 100) / 100, r3 = v => Math.round(v * 1000) / 1000;
 const numOf = v => typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b) => a + (+b || 0), 0) : 0);
 // the factor an entry's value is multiplied by at N (tools/skill_costs.js skillCost, without pow / plus)
@@ -194,7 +194,7 @@ function prices(opt) {
   trRows.forEach(r => console.log(`pair ${r.pair.padEnd(28)} mult ${r.old} -> ${r.mult} ${r.note}  ${r.entries.map(x => x.key.replace(/^T:/, '').slice(0, 44) + ' ' + x.W + ' / ' + x.price).join(' | ')}`));
   kept.forEach(k => console.log('note: ' + k));
   const plan = { rows, shorthands: shRows, pairs: trRows, kept };
-  fs.writeFileSync(path.join(ROOT, 'docs', 'balance', 'skill2-prices-2026-10-31.json'), JSON.stringify(Object.assign({ _about: 'SKILL2 (2026-10-31): the price plan node tools/skill2_apply_2026_10_31.js prices builds from docs/balance/skill2-measures-2026-10-31.json (applied unless --dry).' }, plan), null, 1) + '\n');
+  fs.writeFileSync(process.env.SKILL2_PRICES_OUT || path.join(ROOT, 'docs', 'balance', 'skill2-prices-2026-10-31.json'), JSON.stringify(Object.assign({ _about: 'SKILL2 (2026-10-31): the price plan node tools/skill2_apply_2026_10_31.js prices builds from docs/balance/skill2-measures-2026-10-31.json (applied unless --dry).' }, plan), null, 1) + '\n');
   if (opt.dry) return plan;
   let out = writeSkills(text, changed); const t2 = JSON.parse(out);
   // shorthands and triggers are single lines too ("shorthands" is one line; trigger entries a line each)
@@ -216,5 +216,5 @@ async function main(argv) {
   if (cmd === 'prices') return prices(opt);
   console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(1, 17).map(l => l.replace(/^\/\/ ?/, '')).join('\n'));
 }
-module.exports = { factorOf, readTable, writeSkills, keepWas };
+module.exports = { factorOf, readTable, writeSkills, keepWas, prices };
 if (require.main === module) main(process.argv.slice(2)).catch(e => { console.error(e && e.stack || e); process.exit(1); });

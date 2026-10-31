@@ -1,0 +1,20 @@
+{
+ "_about": "SPEED1 (2026-10-31): the pipeline's fixed rules. Edit here, not in the steps.",
+ "schema": "bramblewood-pipeline/1",
+ "measure": { "stages": [200, 400, 700, 1000], "seLow": 0.3, "seRel": 0.15, "why": "a variant stops when the 95% interval of its worth (the ruler) is as narrow as tools/skill2_apply_2026_10_31.js confOf calls 'high': se <= max(seLow, seRel x |worth|), se = width / 3.92" },
+ "refit": {
+  "maxStatPoints": 2,
+  "ownerCards": ["marshal-of-rivergate", "peak-condor", "hawk-arrowkeeper", "red-billed-chough", "peregrine-stooper", "conch-herald", "eagle-owl-quartermaster", "ashbone-ghoul", "wolf-spider-mother", "grave-grin-hyena", "bee-drone", "worker-ant", "red-dragon", "white-dragon", "blue-dragon", "green-dragon", "black-dragon", "caldera-wyrm"],
+  "ownerWhy": "named by an owner decision (BUDGET2-5, DECK1-1, DECK1-5, RECOST1-5, the Dragons): the pipeline proposes, never applies",
+  "skipSkills": ["anadromous"],
+  "skipWhy": "ENG15 reworks and re-prices Anadromous",
+  "themeShapes": [[0.4, 99], [0.2, 0.4], [0, 0.2]],
+  "themeWhy": "the change moves the card to another body shape (hitter / balanced / wall: Attack / Health 0.4 and up / 0.2-0.4 / below) or takes its last point of Attack"
+ },
+ "test": {
+  "balanceOnly": "level-curve|forge-curve|card-pass|raid-rb|raid-br|card-pool|budget2|skill2|skill-costs|skill-worth|speed1|bpro|deck1",
+  "knownFailures": ["d-2026-10-19", "skills2", "skill-costs", "skill-worth", "skill-combos", "card-pool", "skills-sk3", "server-overrides-fold", "raid-reward-card", "ed-2026-10-21"],
+  "knownWhy": "failing before SPEED1 (coordinator's list); reported as known, not as new"
+ },
+ "heavy": ["measure", "bake", "tournament", "test", "all"]
+}

@@ -22,16 +22,20 @@ const ROOT = path.join(__dirname, '..');
 const BASE = process.env.SKILL2_BASE || '641db7a8'; // the batch (batch-1023e) as merged, before SKILL2
 const LB = require('./lib_bramble.js'), G = LB.G, D = LB.CARD_DEFS_BASELINE;
 const LMP = require('./lib_map_pools.js'), SC = require('./skill_costs.js'), BB = require('../bramblewood-budget.js');
-const OUT = path.join(ROOT, 'docs', 'balance', 'skill2-refit-2026-10-31.json');
+// SPEED1 (2026-10-31, tools/pipeline/refit.js): environment hooks so the pipeline can run this rule on the cards as they are now, against the
+// skill table and budget constants as they were before its price step, with no owner edits: SKILL2_OLD_TABLE (a docs/balance/pipeline/state
+// snapshot {table, constants}), SKILL2_CARDS (a cards json; default the cards at BASE), SKILL2_OUT (the plan file), SKILL2_NO_NAMED=1.
+const OUT = process.env.SKILL2_OUT || path.join(ROOT, 'docs', 'balance', 'skill2-refit-2026-10-31.json');
 const NEWT = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
-const OLDT = JSON.parse(cp.execSync(`git show ${BASE}:canonical/skill-costs.json`, { cwd: ROOT, maxBuffer: 64 << 20 }).toString());
+const OLDT = (() => { if (!process.env.SKILL2_OLD_TABLE) return JSON.parse(cp.execSync(`git show ${BASE}:canonical/skill-costs.json`, { cwd: ROOT, maxBuffer: 64 << 20 }).toString());
+  const snap = JSON.parse(fs.readFileSync(process.env.SKILL2_OLD_TABLE, 'utf8')), t = snap.table; t.budget = Object.assign({}, t.budget, { cap2SScale: snap.constants.cap2SScale, missMultBy: snap.constants.missMultBy }); return t; })();
 const NEW = SC.make(NEWT), OLD = SC.make(OLDT);
 const TUT12 = new Set(((JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.m1 || {}).submaps || {}).mtut12 || []);
 const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
 const HELD = { 'bee-drone': 'RECOST1-5 (owner: hold them)', 'worker-ant': 'RECOST1-5 (owner: hold them)' };
 const WELL_UNDER = 0.6;
 const r2 = v => Math.round(v * 100) / 100;
-const NAMED = { edits: {
+const NAMED = process.env.SKILL2_NO_NAMED ? { edits: {} } : { edits: {
   'marshal-of-rivergate': { attack: 4, health: 9, why: 'BUDGET2-5 (owner, via the coordinator): lift to 4/9 (was 2/3, 45% of N)' },
   // DECK1-5: Gannet Cliffs' five list cards clearly under the fair line (BUDGET2's contribution run, per copy: Peak Condor -2.3, Hawk
   // Arrowkeeper -2.2, Red-billed Chough -2.2, Peregrine Stooper -1.9, Conch Herald -1.5). On the canon's carriers +1 Attack is worth about
@@ -75,7 +79,7 @@ function fit(c, v, vOld) { const A0 = +c.attack || 0, H0 = +c.health || 0, e = c
 
 function main() {
   // the cards as they were at BASE (before SKILL2), so the plan is the same on a re-run after the applier wrote it
-  const cards = JSON.parse(cp.execSync(`git show ${BASE}:canonical/cards.json`, { cwd: ROOT, maxBuffer: 256 << 20 }).toString());
+  const cards = process.env.SKILL2_CARDS ? JSON.parse(fs.readFileSync(process.env.SKILL2_CARDS, 'utf8')) : JSON.parse(cp.execSync(`git show ${BASE}:canonical/cards.json`, { cwd: ROOT, maxBuffer: 256 << 20 }).toString());
   const rows = [], held = [], counts = { inPlay: 0, outOfPlay: 0, inPlayPushed: 0, outPushed: 0, outsideBefore: 0, outsideBeforeIds: [] };
   cards.forEach(c => {
     const d = D[c.id]; if (!d || c.pool || c.token || c.test || !SC.measured(c) || c.health == null) return;

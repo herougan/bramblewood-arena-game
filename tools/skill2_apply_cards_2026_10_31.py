@@ -9,12 +9,18 @@ import json, os, sys
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 CARDS = os.path.join(ROOT, 'canonical', 'cards.json')
 PLAN = os.path.join(ROOT, 'docs', 'balance', 'skill2-refit-2026-10-31.json')
+# SPEED1 (2026-10-31, tools/pipeline/refit.js): --plan FILE, --ids a,b (only these cards), --label TEXT (the creatorNote marker, default SKILL2 re-fit)
+def opt(name, default=None):
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else default
+PLAN = opt('--plan', PLAN)
+IDS = set(opt('--ids').split(',')) if opt('--ids') else None
+LABEL = opt('--label', 'SKILL2 re-fit')
 plan = json.load(open(PLAN))
 cards = json.load(open(CARDS))
 by = {c['id']: c for c in cards}
 n = 0
 for r in plan['changes']:
-    if not r['inPlay']:
+    if not r['inPlay'] or (IDS is not None and r['id'] not in IDS):
         continue
     c = by.get(r['id'])
     if c is None:
@@ -24,10 +30,10 @@ for r in plan['changes']:
     c['health'] = r['health']
     now = '%s/%s' % (c.get('attack'), c.get('health'))
     note = c.get('creatorNote') or ''
-    note = note.split(' 2026-10-31 SKILL2 re-fit:')[0]
+    note = note.split(' 2026-10-31 %s:' % LABEL)[0]
     if True:
         why = r.get('why') or 'the skill re-pricing (BUDGET2-1) pushed it %s' % ('over' if r['kind'] == 'trim' else 'well under')
-        c['creatorNote'] = (note + ' 2026-10-31 SKILL2 re-fit: %s -> %s, %s (cap-1 use %s of N before SKILL2, %s with the new skill prices, now %s).' % (r['stats'], r['to'], why, r['old']['use'], r['new']['use'], r['after']['use'])).strip()
+        c['creatorNote'] = (note + ' 2026-10-31 ' + LABEL + ': %s -> %s, %s (cap-1 use %s of N before SKILL2, %s with the new skill prices, now %s).' % (r['stats'], r['to'], why, r['old']['use'], r['new']['use'], r['after']['use'])).strip()
     if was != now: n += 1
     print('%-28s %-6s %s -> %s' % (r['id'], r['kind'], was, now))
 if '--dry' not in sys.argv:
