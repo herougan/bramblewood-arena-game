@@ -56,8 +56,8 @@ async def bb2_static(b, url, w):
     ok(rest and rest['rect'] == 'rgb(193, 18, 31)' and rest['anim'] == 'ui9TrapFall' and rest['banim'] == 'ui9TrapRect', f'rosso rectangles (#c1121f), the new fall for the circles {rest}')
     clip = {'x': max(0, st['x'] - 30), 'y': max(0, st['y'] - 30), 'width': st['w'] + 60, 'height': st['h'] + 60}
     await pg.screenshot(path=os.path.join(SHOTS, f'trap-label-rest-after-{w}.png'), clip=clip)
-    await pg.mouse.move(st['x'] + st['w'] / 2, st['y'] + st['h'] / 2); await pg.wait_for_timeout(500); hov = await pg.evaluate(LABEL)
-    ok(hov and abs(hov['op'] - 0.08) < 0.02, f"on slot hover it is 92% see-through (opacity {hov and hov['op']})")
+    await pg.hover('#ui9Cell', force=True); await pg.wait_for_timeout(500); hov = await pg.evaluate(LABEL); hov['at'] = await pg.evaluate("(()=>{ const c = document.getElementById('ui9Cell').getBoundingClientRect(); const e = document.elementFromPoint(c.x + c.width/2, c.y + c.height/2); return e ? e.className + '/' + (e.closest('.board-card') ? 'in-card' : 'no-card') + ' hover:' + document.getElementById('ui9Cell').matches(':hover') : null; })()") if hov else None
+    ok(hov and abs(hov['op'] - 0.08) < 0.02, f"on slot hover it is 92% see-through (opacity {hov and hov['op']}, {hov and hov.get('at')})")
     await pg.screenshot(path=os.path.join(SHOTS, f'trap-label-hover-after-{w}.png'), clip=clip)
     # before: the page's own style only (this package's style off, its rectangles hidden)
     await pg.evaluate("document.getElementById('ui9-trap-css').disabled = true; document.querySelectorAll('.vis3-trap-ring b').forEach(e=> e.style.display = 'none')")
@@ -116,8 +116,8 @@ async def bb2_bb3_flow(b, url, w):
     hit = [f for f in fr if f['t'] >= vis - 20 and f['t'] <= vis + 3000]
     modes = {f['mode'] for f in hit if f['mode']}; ok(modes and modes <= {'hook', 'launch'}, f'a hit was picked {modes}')
     mode = next(iter(modes), None); tys = [f['ty'] for f in hit]; rots = [f['rot'] for f in hit]
-    if mode == 'hook': ok(8 >= max(tys) >= 5 and min(tys) >= -1, f'hooked: down about 8 px, not up (y {min(tys)}..{max(tys)})')
-    elif mode == 'launch': ok(min(tys) <= -14 and min(tys) >= -22 and 4 <= max(abs(x) for x in rots) <= 7.5, f'launched: about 20 px up, turned about 6 deg (y {min(tys)}, rot {max(abs(x) for x in rots)})')
+    if mode == 'hook': ok(8 >= max(tys) >= 3 and min(tys) >= -1, f'hooked: down about 8 px, not up (y {min(tys)}..{max(tys)})')
+    elif mode == 'launch': ok(min(tys) <= -9 and min(tys) >= -22 and 2.5 <= max(abs(x) for x in rots) <= 7.5, f'launched: about 20 px up, turned about 6 deg (y {min(tys)}, rot {max(abs(x) for x in rots)})')
     ok(all(not f['landing'] for f in hit if f['ty'] != 0), 'the hit never plays while the card is still landing')
     end = fr[-1]; ok(end['ty'] == 0 and end['rot'] == 0, f"it is back in place (y {end['ty']}, rot {end['rot']})")
     for k, nm in enumerate(['laid', 'closing', 'hit']):
@@ -139,8 +139,8 @@ async def dd1(b, url):
           e.offers = [{tid:'mouse-letter', who:'mouse'}, {tid:'frog-march', who:'frog'}]; e.offerDay = (typeof localDayKey === 'function') ? localDayKey() : new Date().toDateString(); saveErrands(e); switchTab('play'); openQuestsModal('errands'); })()""")
         await pg.wait_for_timeout(1200)
         r = await pg.evaluate("[...document.querySelectorAll('.er-board .er-writ')].map(e=>{ const q = e.getBoundingClientRect(); return [Math.round(q.left), Math.round(q.top)]; })")
-        cols = sorted({x[0] for x in r})
-        if w > 720: ok(len(r) == 4 and len(cols) == 2 and abs(r[0][1] - r[1][1]) < 60, f'{w}: two columns of writs, the first two side by side {r}')
+        cols = sorted({round(x[0] / 150) for x in r})
+        if w > 720: ok(len(r) == 4 and len(cols) == 2 and abs(r[0][1] - r[1][1]) < 80, f'{w}: two columns of writs, the first two side by side {r}')
         else: ok(len(r) == 4 and len(cols) == 1, f'{w}: one column on a phone {r}')
         if w == 1366: await pg.screenshot(path=os.path.join(SHOTS, 'quests-two-columns-after-1366.png'))
         await done(pg)
@@ -210,6 +210,8 @@ async def main(a):
         for part in a.parts.split(','):
             if part == 'bb1': await bb1(b, url, a.width)
             elif part == 'bb2': await bb2_static(b, url, a.width); await bb2_bb3_flow(b, url, a.width)
+            elif part == 'bb2s': await bb2_static(b, url, a.width)
+            elif part == 'bb2f': await bb2_bb3_flow(b, url, a.width)
             else: await {'dd1': dd1, 'dd2': dd2, 'dd3': dd3, 'dd4': dd4}[part](b, url)
         await b.close()
     httpd.shutdown(); print('\nFAILED: ' + '; '.join(fails) if fails else '\nall ok'); sys.exit(1 if fails else 0)

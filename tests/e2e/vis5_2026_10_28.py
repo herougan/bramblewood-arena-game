@@ -189,8 +189,9 @@ async def run_hz(b, url, w):
     after = [f for f in fr if f['t'] >= vis + 150]
     ok(after and all(f['pips'] == 0 and f['rings'] == 0 for f in after), f"L4. once it has sprung the pip and its ring are gone {[(f['t'], f['pips'], f['rings']) for f in after][:6]}")
     jolt = [f for f in fr if f['t'] >= vis - 20 and f['t'] <= vis + 1300]
-    ok(min([f['ty'] for f in jolt] or [0]) <= -18, f"L4. the card jumps (up to {min([f['ty'] for f in jolt] or [0])} px)")
-    ok(max([abs(f['rot']) for f in jolt] or [0]) >= 6, f"L4. it reels: tilt up to {max([abs(f['rot']) for f in jolt] or [0])} deg {[(f['t'], f['rot']) for f in jolt][:12]}")
+    # 2026-10-31 (package UI9, BB3): the hit is now hooked 8 px down OR launched 20 px up and turned 6 deg (random per trap), about 0.45 s
+    hooked = max([f['ty'] for f in jolt] or [0]) >= 5; launched = min([f['ty'] for f in jolt] or [0]) <= -14 and max([abs(f['rot']) for f in jolt] or [0]) >= 4
+    ok(hooked or launched, f"L4. the card is hooked down or launched and turned (y {min([f['ty'] for f in jolt] or [0])}..{max([f['ty'] for f in jolt] or [0])}, tilt {max([abs(f['rot']) for f in jolt] or [0])} deg)")
     ok(any(f['stars'] >= 3 for f in jolt), "L4. three dizzy stars circle its head")
     ok(any(f['nums'] >= 1 for f in jolt), "L4. a damage number flies from it")
     end = fr[-1]

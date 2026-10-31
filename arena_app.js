@@ -48448,7 +48448,7 @@ function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i sty
 html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.25;} html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);}
 .w2-hazard-mark.trap{opacity:.17; transition:opacity .2s ease;}
 .board-card:hover .w2-hazard-mark.trap, .w2-hazard-mark.trap:hover{opacity:.08;}
-.ui9-trap-snap{position:absolute; inset:0; overflow:hidden; border-radius:14px; pointer-events:none; z-index:7;}
+.ui9-trap-snap{position:fixed; overflow:hidden; border-radius:14px; pointer-events:none; z-index:1000;}
 .ui9-trap-snap b{position:absolute; left:0; right:0; height:20%; background:#c1121f; opacity:0; box-shadow:0 0 6px rgba(193,18,31,.7);}
 .ui9-trap-snap b.t{top:0;} .ui9-trap-snap b.u{bottom:0;}
 `; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
@@ -48476,13 +48476,13 @@ html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.2
 // the slot gives a 1.5 px shake. About 0.7 s; Effects Low: 0.35 s and no shake; Effects None / reduced motion: nothing moves.
 function ui9TrapSnap(host){
   try{ if(!host || !host.animate || reducedMotion() || !fxAtLeast('low')) return null; const low = !fxAtLeast('med'), D = low ? 350 : 520;
-    const w = document.createElement('span'); w.className = 'ui9-trap-snap'; w.setAttribute('aria-hidden', 'true'); w.innerHTML = '<b class="t"></b><b class="u"></b>'; host.appendChild(w);
+    const w = document.createElement('span'); w.className = 'ui9-trap-snap'; w.setAttribute('aria-hidden', 'true'); w.innerHTML = '<b class="t"></b><b class="u"></b>'; const hr = host.getBoundingClientRect(); if(!hr.width) return null; w.style.cssText = `left:${hr.left}px; top:${hr.top}px; width:${hr.width}px; height:${hr.height}px;`; document.body.appendChild(w); /* a page-level overlay: the slot's cell is redrawn at once when the board re-renders, which took an inner one with it */
     const bars = w.querySelectorAll('b'), ease = 'cubic-bezier(.55,0,.9,.4)';
     bars[0].animate([{transform:'translateY(-120%)', opacity:0, offset:0}, {opacity:.75, offset:.2}, {transform:'translateY(150%)', opacity:.85, offset:1}], {duration:D, easing:ease, fill:'forwards'});
     bars[1].animate([{transform:'translateY(120%)', opacity:0, offset:0}, {opacity:.75, offset:.2}, {transform:'translateY(-150%)', opacity:.85, offset:1}], {duration:D, easing:ease, fill:'forwards'});
     const end = ()=>{ try{ w.animate([{opacity:1}, {opacity:0}], {duration:low ? 60 : 120, fill:'forwards'}).onfinish = ()=> w.remove(); }catch(e){ w.remove(); } };
     if(low){ setTimeout(end, D); return w; }
-    setTimeout(()=>{ try{ host.animate([{transform:'translate(0,0)'}, {transform:'translate(-1.5px,1px)'}, {transform:'translate(1.5px,-1px)'}, {transform:'translate(-1px,0)'}, {transform:'translate(0,0)'}], {duration:160}); }catch(e){} end(); }, D);
+    setTimeout(()=>{ try{ (host.isConnected ? host : w).animate([{transform:'translate(0,0)'}, {transform:'translate(-1.5px,1px)'}, {transform:'translate(1.5px,-1px)'}, {transform:'translate(-1px,0)'}, {transform:'translate(0,0)'}], {duration:160}); }catch(e){} end(); }, D);
     return w; }catch(e){ return null; }
 }
 // 2026-10-28 (package VIS5, L4; owner 10-28 09:48: "After laying the trap, the trap context pip fades away. There is also no trap triggered
@@ -49230,7 +49230,7 @@ function w2SkillVfx(ev){
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); let ui9Snapped = false; if(ev.kind === 'trap'){ ui9TrapLaid(ev); if(fx('low')){ const c0 = w2CellEl(ev.pid, ev.slot); if(c0) ui9Snapped = !!ui9TrapSnap(c0); } } /* UI9 (BB2): the closing plays as the trap is laid (the CPU's card often steps on the slot within half a second) */ w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap' && !ui9Snapped) ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
+    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); let ui9Snapped = false; if(ev.kind === 'trap'){ ui9TrapLaid(ev); if(fx('low')){ let c0 = w2CellEl(ev.pid, ev.slot); if(!c0){ const mk = document.querySelector('#battlefieldEl .w2-hazard-mark.trap'); c0 = mk && mk.parentElement; } if(c0) ui9Snapped = !!ui9TrapSnap(c0); } } /* UI9 (BB2): the closing plays as the trap is laid (the CPU's card often steps on the slot within half a second) */ w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap' && !ui9Snapped) ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
     case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
