@@ -1,0 +1,842 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:59:31.317Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "m10",
+  "num": 11,
+  "name": "Eyrie Heights"
+ },
+ "level": 1,
+ "pool": [
+  "alpine-marmot",
+  "alpine-salamander",
+  "alpine-swift",
+  "apollo-butterfly",
+  "chamois-leaper",
+  "chipmunk-hoarder",
+  "eagle-owl-quartermaster",
+  "eyrie-warden",
+  "gale-swift",
+  "gangrenous-leech",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "ibex-rockcaller",
+  "mountain-hare",
+  "peak-condor",
+  "peregrine-stooper",
+  "swamp-alligator",
+  "wound-reaver"
+ ],
+ "poolNames": [
+  "Alpine Marmot",
+  "Alpine Salamander",
+  "Alpine Swift",
+  "Apollo Butterfly",
+  "Chamois Leaper",
+  "Chipmunk Hoarder",
+  "Eagle-Owl Quartermaster",
+  "Eyrie Warden",
+  "Gale Swift",
+  "Gangrenous Leech",
+  "Gannet Nestweaver",
+  "Golden Eagle Diver",
+  "Ibex Rockcaller",
+  "Mountain Hare",
+  "Peak Condor",
+  "Peregrine Stooper",
+  "Swamp Alligator",
+  "Wound Reaver"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:11-1",
+   "label": "vs 11-1 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-2",
+   "label": "vs 11-2 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-3",
+   "label": "vs 11-3 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-4",
+   "label": "vs 11-4 skirmish's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-5",
+   "label": "vs 11-5 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-6",
+   "label": "vs 11-6 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-7",
+   "label": "vs 11-7 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-8",
+   "label": "vs 11-8 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-9",
+   "label": "vs 11-9 elite's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|fight:11-10",
+   "label": "vs 11-10 miniboss's deck",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 11-1's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:road11",
+   "label": "vs reference deck (Map 11) under 11-2's field",
+   "weight": 0.0769
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+   "weight": 0.0769
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "chipmunk-hoarder",
+    "gannet-nestweaver"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "eyrie-warden",
+    "swamp-alligator"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "alpine-marmot",
+    "alpine-swift",
+    "apollo-butterfly",
+    "chipmunk-hoarder",
+    "gale-swift",
+    "gannet-nestweaver",
+    "mountain-hare"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 3,
+   "moves": 3,
+   "games": 1586,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 3,
+   "moves": 2,
+   "games": 1508,
+   "apartFromEarlier": 13
+  },
+  {
+   "focus": "swarm",
+   "steps": 3,
+   "moves": 2,
+   "games": 1560,
+   "apartFromEarlier": 12
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 2,
+   "games": 1794,
+   "apartFromEarlier": 7
+  }
+ ],
+ "apart": 6,
+ "seconds": 93,
+ "games": 7280,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "flying x11"
+   ],
+   "deck": {
+    "alpine-marmot": 3,
+    "alpine-salamander": 4,
+    "eagle-owl-quartermaster": 3,
+    "gale-swift": 4,
+    "golden-eagle-diver": 4,
+    "ibex-rockcaller": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ibex-rockcaller",
+     "name": "Ibex Rockcaller",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.9647,
+   "ci": [
+    0.9452,
+    0.9843
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 7,
+    "1": 13
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-10",
+     "label": "vs 11-10 miniboss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "flying x9"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "alpine-salamander": 3,
+    "chipmunk-hoarder": 4,
+    "eagle-owl-quartermaster": 3,
+    "gale-swift": 4,
+    "gannet-nestweaver": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "chipmunk-hoarder",
+     "name": "Chipmunk Hoarder",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "eagle-owl-quartermaster",
+     "name": "Eagle-Owl Quartermaster",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8782,
+   "ci": [
+    0.8437,
+    0.9127
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "flying",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-10",
+     "label": "vs 11-10 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 7
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "flying x10"
+   ],
+   "deck": {
+    "alpine-marmot": 4,
+    "apollo-butterfly": 2,
+    "gale-swift": 4,
+    "golden-eagle-diver": 4,
+    "mountain-hare": 4,
+    "wound-reaver": 2
+   },
+   "cards": [
+    {
+     "id": "alpine-marmot",
+     "name": "Alpine Marmot",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "mountain-hare",
+     "name": "Mountain Hare",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8478,
+   "ci": [
+    0.8118,
+    0.8838
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-10",
+     "label": "vs 11-10 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.3)",
+    "flying x10"
+   ],
+   "deck": {
+    "alpine-salamander": 3,
+    "apollo-butterfly": 2,
+    "eyrie-warden": 4,
+    "gale-swift": 4,
+    "swamp-alligator": 4,
+    "wound-reaver": 3
+   },
+   "cards": [
+    {
+     "id": "eyrie-warden",
+     "name": "Eyrie Warden",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "gale-swift",
+     "name": "Gale Swift",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "alpine-salamander",
+     "name": "Alpine Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "wound-reaver",
+     "name": "Wound Reaver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.734,
+   "ci": [
+    0.6906,
+    0.7774
+   ],
+   "avgLumber": 1.3,
+   "avgWait": 1.4,
+   "curve": {
+    "0": 6,
+    "1": 6,
+    "2": 4,
+    "3": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 10
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:11-1",
+     "label": "vs 11-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-2",
+     "label": "vs 11-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-3",
+     "label": "vs 11-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-4",
+     "label": "vs 11-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-5",
+     "label": "vs 11-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-6",
+     "label": "vs 11-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-7",
+     "label": "vs 11-7 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-8",
+     "label": "vs 11-8 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-9",
+     "label": "vs 11-9 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:11-10",
+     "label": "vs 11-10 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 11-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 11-2's field",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 11-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m10 --pool alpine-marmot,alpine-salamander,alpine-swift,apollo-butterfly,chamois-leaper,chipmunk-hoarder,eagle-owl-quartermaster,eyrie-warden,gale-swift,gangrenous-leech,gannet-nestweaver,golden-eagle-diver,ibex-rockcaller,mountain-hare,peak-condor,peregrine-stooper,swamp-alligator,wound-reaver --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

@@ -1,0 +1,764 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T03:05:49.954Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "m5",
+  "num": 14,
+  "name": "Savanna Reaches"
+ },
+ "level": 1,
+ "pool": [
+  "dust-hyena",
+  "grave-grin-hyena",
+  "hoopoe-herald",
+  "house-cat",
+  "leafcutter-gardener",
+  "lodge-engineer",
+  "marula-elephant",
+  "meerkat-burrower",
+  "mouse-sapper",
+  "pangolin-roller",
+  "plains-zebra",
+  "savanna-cheetah",
+  "spitting-cobra",
+  "springbok-pronker",
+  "weaver-bird"
+ ],
+ "poolNames": [
+  "Dust Hyena",
+  "Grave-Grin Hyena",
+  "Hoopoe Herald",
+  "House Cat",
+  "Leafcutter Gardener",
+  "Lodge Engineer",
+  "Marula Elephant",
+  "Meerkat Burrower",
+  "Mouse Sapper",
+  "Pangolin Roller",
+  "Plains Zebra",
+  "Savanna Cheetah",
+  "Spitting Cobra",
+  "Springbok Pronker",
+  "Weaver Bird"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-1",
+   "label": "vs 14-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-2",
+   "label": "vs 14-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-3",
+   "label": "vs 14-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-4",
+   "label": "vs 14-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-5",
+   "label": "vs 14-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-6",
+   "label": "vs 14-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-7",
+   "label": "vs 14-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:14-8",
+   "label": "vs 14-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road14",
+   "label": "vs reference deck (Map 14) under 14-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "dust-hyena",
+    "leafcutter-gardener",
+    "lodge-engineer"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "lodge-engineer",
+    "marula-elephant",
+    "meerkat-burrower",
+    "mouse-sapper",
+    "pangolin-roller",
+    "savanna-cheetah",
+    "spitting-cobra",
+    "springbok-pronker",
+    "weaver-bird"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "dust-hyena",
+    "grave-grin-hyena",
+    "hoopoe-herald",
+    "house-cat",
+    "leafcutter-gardener",
+    "plains-zebra"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1892,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 4,
+   "moves": 2,
+   "games": 1584,
+   "apartFromEarlier": 14
+  },
+  {
+   "focus": "swarm",
+   "steps": 4,
+   "moves": 1,
+   "games": 1584,
+   "apartFromEarlier": 7
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 3,
+   "games": 1518,
+   "apartFromEarlier": 8
+  }
+ ],
+ "apart": 6,
+ "seconds": 95,
+ "games": 7282,
+ "decks": [
+  {
+   "focus": "open",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "grave-grin-hyena": 2,
+    "hoopoe-herald": 4,
+    "leafcutter-gardener": 4,
+    "mouse-sapper": 4,
+    "savanna-cheetah": 2,
+    "weaver-bird": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.875,
+   "ci": [
+    0.8395,
+    0.9105
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.3,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "dust-hyena": 2,
+    "hoopoe-herald": 4,
+    "mouse-sapper": 4,
+    "pangolin-roller": 4,
+    "plains-zebra": 4,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "plains-zebra",
+     "name": "Plains Zebra",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.8409,
+   "ci": [
+    0.8007,
+    0.8811
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 2,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "grave-grin-hyena": 3,
+    "hoopoe-herald": 4,
+    "house-cat": 4,
+    "leafcutter-gardener": 4,
+    "lodge-engineer": 3,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "house-cat",
+     "name": "House Cat",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "lodge-engineer",
+     "name": "Lodge Engineer",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7803,
+   "ci": [
+    0.7359,
+    0.8247
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 15,
+    "1": 2,
+    "2": 3
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.2917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "dust-hyena": 3,
+    "grave-grin-hyena": 4,
+    "hoopoe-herald": 4,
+    "leafcutter-gardener": 4,
+    "marula-elephant": 3,
+    "savanna-cheetah": 2
+   },
+   "cards": [
+    {
+     "id": "grave-grin-hyena",
+     "name": "Grave-Grin Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "marula-elephant",
+     "name": "Marula Elephant",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "savanna-cheetah",
+     "name": "Savanna Cheetah",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7652,
+   "ci": [
+    0.7206,
+    0.8097
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.5,
+   "curve": {
+    "0": 15,
+    "1": 2,
+    "2": 3
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-1",
+     "label": "vs 14-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-2",
+     "label": "vs 14-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-3",
+     "label": "vs 14-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-4",
+     "label": "vs 14-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-5",
+     "label": "vs 14-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-6",
+     "label": "vs 14-6 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-7",
+     "label": "vs 14-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-8",
+     "label": "vs 14-8 miniboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road14",
+     "label": "vs reference deck (Map 14) under 14-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

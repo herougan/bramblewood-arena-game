@@ -1,0 +1,792 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T03:17:05.943Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mpd",
+  "num": 18,
+  "name": "The Pale Desert"
+ },
+ "level": 1,
+ "pool": [
+  "antlion-pit",
+  "caustic-scorpion",
+  "dromedary",
+  "dune-packrat",
+  "dust-devil-kestrel",
+  "dust-hyena",
+  "fennec-fox",
+  "quicksand-queen",
+  "roadrunner-courier",
+  "sand-widow",
+  "sandfish",
+  "skull-vulture",
+  "thorny-devil"
+ ],
+ "poolNames": [
+  "Antlion Pit",
+  "Caustic Scorpion",
+  "Dromedary",
+  "Dune Packrat",
+  "Dust-devil Kestrel",
+  "Dust Hyena",
+  "Fennec Fox",
+  "Quicksand Queen",
+  "Roadrunner Courier",
+  "Sand Widow",
+  "Sandfish",
+  "Skull Vulture",
+  "Thorny Devil"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:18-A-1",
+   "label": "vs 18-A-1 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-2",
+   "label": "vs 18-A-2 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-3",
+   "label": "vs 18-A-3 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-4",
+   "label": "vs 18-A-4 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-5",
+   "label": "vs 18-A-5 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-6",
+   "label": "vs 18-A-6 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-7",
+   "label": "vs 18-A-7 skirmish's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-8",
+   "label": "vs 18-A-8 elite's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|fight:18-A-9",
+   "label": "vs 18-A-9 boss's deck",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 18-A-1's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:road19",
+   "label": "vs reference deck (Map 19) under 18-A-2's field",
+   "weight": 0.0833
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+   "weight": 0.0833
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "dune-packrat",
+    "dust-hyena"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "antlion-pit",
+    "caustic-scorpion",
+    "dromedary",
+    "dune-packrat",
+    "dust-devil-kestrel",
+    "fennec-fox",
+    "quicksand-queen",
+    "roadrunner-courier",
+    "sand-widow",
+    "sandfish",
+    "skull-vulture",
+    "thorny-devil"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "caustic-scorpion",
+    "sand-widow"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 4,
+   "moves": 4,
+   "games": 1824,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 4,
+   "moves": 2,
+   "games": 1584,
+   "apartFromEarlier": 8
+  },
+  {
+   "focus": "family:poison",
+   "steps": 4,
+   "moves": 2,
+   "games": 1680,
+   "apartFromEarlier": 8
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 0,
+   "games": 1584,
+   "apartFromEarlier": 8
+  }
+ ],
+ "apart": 6,
+ "seconds": 89,
+ "games": 7440,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.8)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "dune-packrat": 2,
+    "dust-hyena": 4,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 4,
+    "sandfish": 4
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sandfish",
+     "name": "Sandfish",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "quicksand-queen",
+     "name": "Quicksand Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7361,
+   "ci": [
+    0.687,
+    0.7853
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 0.8)",
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "dromedary": 4,
+    "dune-packrat": 4,
+    "dust-hyena": 4,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 4,
+    "thorny-devil": 2
+   },
+   "cards": [
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "quicksand-queen",
+     "name": "Quicksand Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7222,
+   "ci": [
+    0.6732,
+    0.7712
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.7917,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "family:poison",
+   "labels": [
+    "big (16 copies at 1+ Lumber, average 1.0)",
+    "economy (7 resource makers)",
+    "poison x8"
+   ],
+   "deck": {
+    "caustic-scorpion": 4,
+    "dromedary": 1,
+    "dune-packrat": 3,
+    "dust-hyena": 4,
+    "roadrunner-courier": 4,
+    "sand-widow": 4
+   },
+   "cards": [
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dust-hyena",
+     "name": "Dust Hyena",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "sand-widow",
+     "name": "Sand Widow",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dromedary",
+     "name": "Dromedary",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.6111,
+   "ci": [
+    0.5567,
+    0.6655
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.05,
+   "curve": {
+    "0": 4,
+    "1": 12,
+    "2": 4
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "poison",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (20 copies at 1+ Lumber, average 1.0)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "antlion-pit": 4,
+    "caustic-scorpion": 4,
+    "dune-packrat": 4,
+    "quicksand-queen": 2,
+    "roadrunner-courier": 4,
+    "thorny-devil": 2
+   },
+   "cards": [
+    {
+     "id": "antlion-pit",
+     "name": "Antlion Pit",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caustic-scorpion",
+     "name": "Caustic Scorpion",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "dune-packrat",
+     "name": "Dune Packrat",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "roadrunner-courier",
+     "name": "Roadrunner Courier",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "quicksand-queen",
+     "name": "Quicksand Queen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    },
+    {
+     "id": "thorny-devil",
+     "name": "Thorny Devil",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.6111,
+   "ci": [
+    0.5574,
+    0.6648
+   ],
+   "avgLumber": 1,
+   "avgWait": 1.2,
+   "curve": {
+    "1": 20
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:18-A-1",
+     "label": "vs 18-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-2",
+     "label": "vs 18-A-2 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-3",
+     "label": "vs 18-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-4",
+     "label": "vs 18-A-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-5",
+     "label": "vs 18-A-5 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-6",
+     "label": "vs 18-A-6 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-7",
+     "label": "vs 18-A-7 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-8",
+     "label": "vs 18-A-8 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:18-A-9",
+     "label": "vs 18-A-9 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 18-A-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road19",
+     "label": "vs reference deck (Map 19) under 18-A-2's field",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 18-A-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mpd --pool antlion-pit,caustic-scorpion,dromedary,dune-packrat,dust-devil-kestrel,dust-hyena,fennec-fox,quicksand-queen,roadrunner-courier,sand-widow,sandfish,skull-vulture,thorny-devil --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:poison,open --level 1 --mode map-true"
+}

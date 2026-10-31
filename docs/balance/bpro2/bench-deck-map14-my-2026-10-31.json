@@ -1,0 +1,677 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T03:07:19.299Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "my",
+  "num": 14,
+  "name": "The Canopy"
+ },
+ "level": 1,
+ "pool": [
+  "apollo-butterfly",
+  "camouflage-frog",
+  "hercules-beetle",
+  "hoopoe-herald",
+  "jaguar-stalker",
+  "kinkajou-lurker",
+  "leafcutter-gardener",
+  "lyrebird-mimic",
+  "pangolin-roller",
+  "poison-dart-croaker",
+  "redwood-woodpecker",
+  "spitting-cobra",
+  "vampire-bat",
+  "weaver-bird"
+ ],
+ "poolNames": [
+  "Apollo Butterfly",
+  "Camouflage Frog",
+  "Hercules Beetle",
+  "Hoopoe Herald",
+  "Jaguar Stalker",
+  "Kinkajou Lurker",
+  "Leafcutter Gardener",
+  "Lyrebird Mimic",
+  "Pangolin Roller",
+  "Poison Dart Croaker",
+  "Redwood Woodpecker",
+  "Spitting Cobra",
+  "Vampire Bat",
+  "Weaver Bird"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:14-A-1",
+   "label": "vs 14-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-2",
+   "label": "vs 14-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-3",
+   "label": "vs 14-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-4",
+   "label": "vs 14-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:14-A-5",
+   "label": "vs 14-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 14-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road18",
+   "label": "vs reference deck (Map 18) under 14-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "leafcutter-gardener",
+    "redwood-woodpecker"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "camouflage-frog",
+    "hercules-beetle",
+    "jaguar-stalker",
+    "kinkajou-lurker",
+    "lyrebird-mimic",
+    "pangolin-roller",
+    "poison-dart-croaker",
+    "redwood-woodpecker",
+    "spitting-cobra",
+    "weaver-bird"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "apollo-butterfly",
+    "hoopoe-herald",
+    "leafcutter-gardener",
+    "vampire-bat"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 6,
+   "moves": 3,
+   "games": 1712,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 4,
+   "games": 1584,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "swarm",
+   "steps": 7,
+   "moves": 3,
+   "games": 1552,
+   "apartFromEarlier": 7
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 2,
+   "games": 1648,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 6,
+ "seconds": 89,
+ "games": 7008,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "big (12 copies at 1 Lumber, average 0.6)",
+    "economy (6 resource makers)"
+   ],
+   "deck": {
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 2,
+    "leafcutter-gardener": 4,
+    "pangolin-roller": 4,
+    "redwood-woodpecker": 2,
+    "weaver-bird": 4
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "redwood-woodpecker",
+     "name": "Redwood Woodpecker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.849,
+   "ci": [
+    0.8002,
+    0.8977
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 6,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1 Lumber, average 0.5)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "apollo-butterfly": 3,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 3,
+    "leafcutter-gardener": 4,
+    "lyrebird-mimic": 3,
+    "weaver-bird": 4
+   },
+   "cards": [
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "weaver-bird",
+     "name": "Weaver Bird",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8281,
+   "ci": [
+    0.7766,
+    0.8796
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1 Lumber, average 0.6)"
+   ],
+   "deck": {
+    "apollo-butterfly": 4,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 4,
+    "kinkajou-lurker": 2,
+    "pangolin-roller": 4,
+    "spitting-cobra": 3
+   },
+   "cards": [
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pangolin-roller",
+     "name": "Pangolin Roller",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "spitting-cobra",
+     "name": "Spitting Cobra",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "kinkajou-lurker",
+     "name": "Kinkajou Lurker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7292,
+   "ci": [
+    0.6697,
+    0.7886
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.1,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 0,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "flying x6"
+   ],
+   "deck": {
+    "apollo-butterfly": 3,
+    "hercules-beetle": 3,
+    "hoopoe-herald": 4,
+    "jaguar-stalker": 3,
+    "leafcutter-gardener": 4,
+    "vampire-bat": 3
+   },
+   "cards": [
+    {
+     "id": "hoopoe-herald",
+     "name": "Hoopoe Herald",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "leafcutter-gardener",
+     "name": "Leafcutter Gardener",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "apollo-butterfly",
+     "name": "Apollo Butterfly",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "jaguar-stalker",
+     "name": "Jaguar Stalker",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "vampire-bat",
+     "name": "Vampire Bat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.5573,
+   "ci": [
+    0.4953,
+    0.6193
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:14-A-1",
+     "label": "vs 14-A-1 skirmish's deck",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-2",
+     "label": "vs 14-A-2 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-3",
+     "label": "vs 14-A-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-4",
+     "label": "vs 14-A-4 elite's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:14-A-5",
+     "label": "vs 14-A-5 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 14-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road18",
+     "label": "vs reference deck (Map 18) under 14-A-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 14-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map my --pool apollo-butterfly,camouflage-frog,hercules-beetle,hoopoe-herald,jaguar-stalker,kinkajou-lurker,leafcutter-gardener,lyrebird-mimic,pangolin-roller,poison-dart-croaker,redwood-woodpecker,spitting-cobra,vampire-bat,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

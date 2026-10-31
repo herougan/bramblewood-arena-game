@@ -1,0 +1,756 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:44:09.812Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mw",
+  "num": 5,
+  "name": "Gatorback Swamp"
+ },
+ "level": 1,
+ "pool": [
+  "alligator-gar",
+  "bog-leech",
+  "caiman-hatchling",
+  "constrictor-coil",
+  "crocodile-ambusher",
+  "cypress-root-lurker",
+  "fen-mink",
+  "fire-ant-raft",
+  "grass-viper",
+  "muskrat-reedgatherer",
+  "nutria-reedcutter",
+  "snapper-hatchling",
+  "snapstick-turtle",
+  "swamp-alligator",
+  "venomlord-serpent"
+ ],
+ "poolNames": [
+  "Alligator Gar",
+  "Bog Leech",
+  "Caiman Hatchling",
+  "Constrictor Coil",
+  "Crocodile Ambusher",
+  "Cypress Root Lurker",
+  "Fen Mink",
+  "Fire Ant Raft",
+  "Grass Viper",
+  "Muskrat Reedgatherer",
+  "Nutria Reedcutter",
+  "Snapper Hatchling",
+  "Snapstick Turtle",
+  "Swamp Alligator",
+  "Venomlord Serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:5-1",
+   "label": "vs 5-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-2",
+   "label": "vs 5-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-3",
+   "label": "vs 5-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-4",
+   "label": "vs 5-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-5",
+   "label": "vs 5-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-6",
+   "label": "vs 5-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:5-7",
+   "label": "vs 5-7 boss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 5-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road5",
+   "label": "vs reference deck (Map 5) under 5-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "muskrat-reedgatherer",
+    "nutria-reedcutter"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "constrictor-coil",
+    "crocodile-ambusher",
+    "swamp-alligator",
+    "venomlord-serpent"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bog-leech",
+    "caiman-hatchling",
+    "fen-mink",
+    "grass-viper",
+    "muskrat-reedgatherer",
+    "nutria-reedcutter",
+    "snapper-hatchling"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 4,
+   "moves": 3,
+   "games": 1540,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 5,
+   "moves": 3,
+   "games": 1740,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "swarm",
+   "steps": 5,
+   "moves": 2,
+   "games": 1760,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 4,
+   "games": 1760,
+   "apartFromEarlier": 10
+  }
+ ],
+ "apart": 6,
+ "seconds": 93,
+ "games": 7440,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (8 resource makers)",
+    "bleed x7"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "bog-leech": 4,
+    "constrictor-coil": 3,
+    "fire-ant-raft": 2,
+    "muskrat-reedgatherer": 4,
+    "nutria-reedcutter": 4
+   },
+   "cards": [
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8333,
+   "ci": [
+    0.7924,
+    0.8742
+   ],
+   "avgLumber": 0.55,
+   "avgWait": 1.3,
+   "curve": {
+    "0": 12,
+    "1": 5,
+    "2": 3
+   },
+   "resourceMakers": 8,
+   "families": [
+    {
+     "f": "bleed",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "tide x8",
+    "poison x7"
+   ],
+   "deck": {
+    "bog-leech": 4,
+    "caiman-hatchling": 1,
+    "fire-ant-raft": 4,
+    "grass-viper": 3,
+    "muskrat-reedgatherer": 4,
+    "snapstick-turtle": 4
+   },
+   "cards": [
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "caiman-hatchling",
+     "name": "Caiman Hatchling",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8333,
+   "ci": [
+    0.7918,
+    0.8748
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    },
+    {
+     "f": "poison",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "bleed x7",
+    "poison x6"
+   ],
+   "deck": {
+    "alligator-gar": 3,
+    "bog-leech": 4,
+    "caiman-hatchling": 3,
+    "fen-mink": 4,
+    "fire-ant-raft": 2,
+    "grass-viper": 4
+   },
+   "cards": [
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fen-mink",
+     "name": "Fen Mink",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "caiman-hatchling",
+     "name": "Caiman Hatchling",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.825,
+   "ci": [
+    0.7814,
+    0.8686
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "bleed",
+     "n": 7
+    },
+    {
+     "f": "poison",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 2+ Lumber, average 0.9)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "bog-leech": 3,
+    "constrictor-coil": 4,
+    "grass-viper": 4,
+    "nutria-reedcutter": 4,
+    "swamp-alligator": 4,
+    "venomlord-serpent": 1
+   },
+   "cards": [
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "grass-viper",
+     "name": "Grass Viper",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "swamp-alligator",
+     "name": "Swamp Alligator",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "bog-leech",
+     "name": "Bog Leech",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "venomlord-serpent",
+     "name": "Venomlord Serpent",
+     "copies": 1,
+     "cost": 3,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7792,
+   "ci": [
+    0.7297,
+    0.8286
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 1.35,
+   "curve": {
+    "0": 11,
+    "2": 8,
+    "3": 1
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:5-1",
+     "label": "vs 5-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-2",
+     "label": "vs 5-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-3",
+     "label": "vs 5-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-4",
+     "label": "vs 5-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-5",
+     "label": "vs 5-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-6",
+     "label": "vs 5-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:5-7",
+     "label": "vs 5-7 boss's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 5-1's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road5",
+     "label": "vs reference deck (Map 5) under 5-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 5-3's field",
+     "p": 0.6667,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mw --pool alligator-gar,bog-leech,caiman-hatchling,constrictor-coil,crocodile-ambusher,cypress-root-lurker,fen-mink,fire-ant-raft,grass-viper,muskrat-reedgatherer,nutria-reedcutter,snapper-hatchling,snapstick-turtle,swamp-alligator,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

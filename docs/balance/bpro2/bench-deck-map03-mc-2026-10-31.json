@@ -1,0 +1,756 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:41:09.427Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mc",
+  "num": 3,
+  "name": "Gannet Cliffs"
+ },
+ "level": 1,
+ "pool": [
+  "conch-crawler",
+  "conch-herald",
+  "feral-tomcat",
+  "gannet-nestweaver",
+  "golden-eagle-diver",
+  "gull-thief",
+  "hawk-arrowkeeper",
+  "kittiwake-flock",
+  "peak-condor",
+  "peregrine-stooper",
+  "puffin-diver",
+  "razorbill",
+  "red-billed-chough"
+ ],
+ "poolNames": [
+  "Conch Crawler",
+  "Conch Herald",
+  "Tomcat",
+  "Gannet Nestweaver",
+  "Golden Eagle Diver",
+  "Gull Thief",
+  "Hawk Arrowkeeper",
+  "Kittiwake Flock",
+  "Peak Condor",
+  "Peregrine Stooper",
+  "Puffin Diver",
+  "Razorbill",
+  "Red-billed Chough"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:3-1",
+   "label": "vs 3-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-2",
+   "label": "vs 3-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-3",
+   "label": "vs 3-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-4",
+   "label": "vs 3-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-5",
+   "label": "vs 3-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-6",
+   "label": "vs 3-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:3-7",
+   "label": "vs 3-7 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 3-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road3",
+   "label": "vs reference deck (Map 3) under 3-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "gannet-nestweaver",
+    "gull-thief"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "conch-herald",
+    "golden-eagle-diver",
+    "hawk-arrowkeeper",
+    "peak-condor",
+    "peregrine-stooper",
+    "puffin-diver",
+    "razorbill"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "conch-crawler",
+    "feral-tomcat",
+    "gannet-nestweaver",
+    "gull-thief",
+    "kittiwake-flock",
+    "red-billed-chough"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 4,
+   "moves": 2,
+   "games": 1500,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 5,
+   "moves": 2,
+   "games": 1780,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "swarm",
+   "steps": 5,
+   "moves": 3,
+   "games": 1780,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 3,
+   "games": 1700,
+   "apartFromEarlier": 6
+  }
+ ],
+ "apart": 6,
+ "seconds": 82,
+ "games": 7400,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (16 copies at 1 Lumber, average 0.8)",
+    "flying x16"
+   ],
+   "deck": {
+    "conch-herald": 4,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 4,
+    "peak-condor": 4,
+    "peregrine-stooper": 4
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8667,
+   "ci": [
+    0.825,
+    0.9083
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 4,
+    "1": 16
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "flying",
+     "n": 16
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "label": "vs 3-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "label": "vs 3-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "label": "vs 3-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "label": "vs 3-4 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "label": "vs 3-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "label": "vs 3-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "label": "vs 3-7 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 3-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "label": "vs reference deck (Map 3) under 3-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 6
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (14 copies at 1 Lumber, average 0.7)",
+    "economy (6 resource makers)",
+    "flying x16",
+    "strike-first x6"
+   ],
+   "deck": {
+    "conch-herald": 4,
+    "gannet-nestweaver": 4,
+    "golden-eagle-diver": 3,
+    "gull-thief": 2,
+    "peak-condor": 4,
+    "peregrine-stooper": 3
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peak-condor",
+     "name": "Peak Condor",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "golden-eagle-diver",
+     "name": "Golden Eagle Diver",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8417,
+   "ci": [
+    0.7966,
+    0.8867
+   ],
+   "avgLumber": 0.7,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 6,
+    "1": 14
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "flying",
+     "n": 16
+    },
+    {
+     "f": "strike-first",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "label": "vs 3-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "label": "vs 3-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "label": "vs 3-3 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "label": "vs 3-4 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "label": "vs 3-5 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "label": "vs 3-6 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "label": "vs 3-7 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 3-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "label": "vs reference deck (Map 3) under 3-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (12 copies at 1 Lumber, average 0.6)",
+    "economy (4 resource makers)",
+    "flying x17"
+   ],
+   "deck": {
+    "conch-herald": 3,
+    "gannet-nestweaver": 4,
+    "hawk-arrowkeeper": 4,
+    "kittiwake-flock": 4,
+    "peregrine-stooper": 3,
+    "razorbill": 2
+   },
+   "cards": [
+    {
+     "id": "gannet-nestweaver",
+     "name": "Gannet Nestweaver",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hawk-arrowkeeper",
+     "name": "Hawk Arrowkeeper",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "razorbill",
+     "name": "Razorbill",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.8417,
+   "ci": [
+    0.7984,
+    0.8849
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 17
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "label": "vs 3-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "label": "vs 3-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "label": "vs 3-3 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "label": "vs 3-4 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "label": "vs 3-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "label": "vs 3-6 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "label": "vs 3-7 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 3-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "label": "vs reference deck (Map 3) under 3-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "flying x11",
+    "tide x6"
+   ],
+   "deck": {
+    "conch-crawler": 3,
+    "conch-herald": 3,
+    "feral-tomcat": 3,
+    "gull-thief": 4,
+    "kittiwake-flock": 4,
+    "peregrine-stooper": 3
+   },
+   "cards": [
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kittiwake-flock",
+     "name": "Kittiwake Flock",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "feral-tomcat",
+     "name": "Tomcat",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "peregrine-stooper",
+     "name": "Peregrine Stooper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7125,
+   "ci": [
+    0.6592,
+    0.7658
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 0.45,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 11
+    },
+    {
+     "f": "tide",
+     "n": 6
+    },
+    {
+     "f": "strike-first",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:3-1",
+     "label": "vs 3-1 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-2",
+     "label": "vs 3-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-3",
+     "label": "vs 3-3 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-4",
+     "label": "vs 3-4 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-5",
+     "label": "vs 3-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-6",
+     "label": "vs 3-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:3-7",
+     "label": "vs 3-7 elite's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 3-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road3",
+     "label": "vs reference deck (Map 3) under 3-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 3-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mc --pool conch-crawler,conch-herald,feral-tomcat,gannet-nestweaver,golden-eagle-diver,gull-thief,hawk-arrowkeeper,kittiwake-flock,peak-condor,peregrine-stooper,puffin-diver,razorbill,red-billed-chough --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

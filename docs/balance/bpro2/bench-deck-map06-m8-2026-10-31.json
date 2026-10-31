@@ -1,0 +1,784 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:47:11.127Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "m8",
+  "num": 6,
+  "name": "Sable Swampmire"
+ },
+ "level": 1,
+ "pool": [
+  "adder-ambusher",
+  "alligator-gar",
+  "bogfire-newt",
+  "booming-bittern",
+  "camouflage-frog",
+  "cane-toad",
+  "constrictor-coil",
+  "marsh-harrier",
+  "marsh-wisp",
+  "newt-doctor",
+  "nutria-reedcutter",
+  "poison-dart-croaker",
+  "raven-scout",
+  "venomlord-serpent"
+ ],
+ "poolNames": [
+  "Adder Ambusher",
+  "Alligator Gar",
+  "Bogfire Newt",
+  "Booming Bittern",
+  "Camouflage Frog",
+  "Cane Toad",
+  "Constrictor Coil",
+  "Marsh Harrier",
+  "Marsh Wisp",
+  "Newt Doctor",
+  "Nutria Reedcutter",
+  "Poison Dart Croaker",
+  "Raven Scout",
+  "Venomlord Serpent"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:6-1",
+   "label": "vs 6-1 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-2",
+   "label": "vs 6-2 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-3",
+   "label": "vs 6-3 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-4",
+   "label": "vs 6-4 skirmish's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-5",
+   "label": "vs 6-5 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-6",
+   "label": "vs 6-6 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-7",
+   "label": "vs 6-7 elite's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|fight:6-8",
+   "label": "vs 6-8 miniboss's deck",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 6-1's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:road6",
+   "label": "vs reference deck (Map 6) under 6-2's field",
+   "weight": 0.0909
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+   "weight": 0.0909
+  }
+ ],
+ "focuses": [
+  {
+   "id": "big",
+   "label": "big (2+ Lumber cards)",
+   "cards": [
+    "cane-toad",
+    "constrictor-coil",
+    "venomlord-serpent"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bogfire-newt",
+    "marsh-wisp",
+    "newt-doctor",
+    "nutria-reedcutter",
+    "raven-scout"
+   ],
+   "need": 14
+  },
+  {
+   "id": "family:poison",
+   "label": "poison (skill family)",
+   "cards": [
+    "adder-ambusher",
+    "bogfire-newt",
+    "cane-toad",
+    "poison-dart-croaker",
+    "venomlord-serpent"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "big",
+   "steps": 4,
+   "moves": 2,
+   "games": 1606,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "swarm",
+   "steps": 5,
+   "moves": 3,
+   "games": 1738,
+   "apartFromEarlier": 8
+  },
+  {
+   "focus": "family:poison",
+   "steps": 5,
+   "moves": 2,
+   "games": 1782,
+   "apartFromEarlier": 8
+  },
+  {
+   "focus": "open",
+   "steps": 5,
+   "moves": 2,
+   "games": 1628,
+   "apartFromEarlier": 7
+  }
+ ],
+ "apart": 6,
+ "seconds": 87,
+ "games": 7458,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (14 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "poison x6"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "alligator-gar": 3,
+    "bogfire-newt": 3,
+    "newt-doctor": 4,
+    "nutria-reedcutter": 4,
+    "raven-scout": 3
+   },
+   "cards": [
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "bogfire-newt",
+     "name": "Bogfire Newt",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raven-scout",
+     "name": "Raven Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9356,
+   "ci": [
+    0.9093,
+    0.9619
+   ],
+   "avgLumber": 0.3,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 14,
+    "1": 6
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "poison",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 7
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (4 resource makers)",
+    "poison x9",
+    "tide x9"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "alligator-gar": 3,
+    "bogfire-newt": 4,
+    "camouflage-frog": 4,
+    "nutria-reedcutter": 4,
+    "poison-dart-croaker": 2
+   },
+   "cards": [
+    {
+     "id": "bogfire-newt",
+     "name": "Bogfire Newt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "camouflage-frog",
+     "name": "Camouflage Frog",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9242,
+   "ci": [
+    0.8949,
+    0.9536
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 1.35,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "poison",
+     "n": 9
+    },
+    {
+     "f": "tide",
+     "n": 9
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 2+ Lumber, average 1.1)",
+    "economy (4 resource makers)",
+    "poison x7"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "alligator-gar": 2,
+    "cane-toad": 4,
+    "constrictor-coil": 4,
+    "nutria-reedcutter": 4,
+    "raven-scout": 3
+   },
+   "cards": [
+    {
+     "id": "cane-toad",
+     "name": "Cane Toad",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "nutria-reedcutter",
+     "name": "Nutria Reedcutter",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "raven-scout",
+     "name": "Raven Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    },
+    {
+     "id": "alligator-gar",
+     "name": "Alligator Gar",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8068,
+   "ci": [
+    0.7671,
+    0.8466
+   ],
+   "avgLumber": 1.05,
+   "avgWait": 1.55,
+   "curve": {
+    "0": 7,
+    "1": 5,
+    "2": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "poison",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  },
+  {
+   "focus": "family:poison",
+   "labels": [
+    "poison x11"
+   ],
+   "deck": {
+    "adder-ambusher": 3,
+    "bogfire-newt": 4,
+    "constrictor-coil": 3,
+    "newt-doctor": 3,
+    "poison-dart-croaker": 4,
+    "raven-scout": 3
+   },
+   "cards": [
+    {
+     "id": "bogfire-newt",
+     "name": "Bogfire Newt",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "poison-dart-croaker",
+     "name": "Poison Dart Croaker",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "adder-ambusher",
+     "name": "Adder Ambusher",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "constrictor-coil",
+     "name": "Constrictor Coil",
+     "copies": 3,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "newt-doctor",
+     "name": "Newt Doctor",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "raven-scout",
+     "name": "Raven Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.7083,
+   "ci": [
+    0.6611,
+    0.7555
+   ],
+   "avgLumber": 0.65,
+   "avgWait": 1,
+   "curve": {
+    "0": 10,
+    "1": 7,
+    "2": 3
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "poison",
+     "n": 11
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:6-1",
+     "label": "vs 6-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-2",
+     "label": "vs 6-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-3",
+     "label": "vs 6-3 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-4",
+     "label": "vs 6-4 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-5",
+     "label": "vs 6-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-6",
+     "label": "vs 6-6 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-7",
+     "label": "vs 6-7 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:6-8",
+     "label": "vs 6-8 miniboss's deck",
+     "p": 0.25,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 6-1's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road6",
+     "label": "vs reference deck (Map 6) under 6-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 6-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 11
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m8 --pool adder-ambusher,alligator-gar,bogfire-newt,booming-bittern,camouflage-frog,cane-toad,constrictor-coil,marsh-harrier,marsh-wisp,newt-doctor,nutria-reedcutter,poison-dart-croaker,raven-scout,venomlord-serpent --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:poison,open --level 1 --mode map-true"
+}

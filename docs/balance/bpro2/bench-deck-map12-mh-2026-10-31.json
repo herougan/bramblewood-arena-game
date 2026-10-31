@@ -1,0 +1,732 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T03:02:52.856Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mh",
+  "num": 12,
+  "name": "The Briar Maze"
+ },
+ "level": 1,
+ "pool": [
+  "ant-hill",
+  "badger-lumberjack",
+  "bramble-hoglet",
+  "carrion-crow",
+  "cunning-vixen",
+  "field-mouse",
+  "gatling-hog",
+  "hedge-weasel",
+  "hedgehog-scout",
+  "hedgerow-shrew",
+  "lyrebird-mimic",
+  "mouse-sapper",
+  "quillback-elder",
+  "quillguard",
+  "thorn-shrike"
+ ],
+ "poolNames": [
+  "Ant Hill",
+  "Badger Lumberjack",
+  "Bramble Hoglet",
+  "Carrion Crow",
+  "Cunning Vixen",
+  "Field Mouse",
+  "Gatling Hog",
+  "Hedge Weasel",
+  "Hedgehog Scout",
+  "Hedgerow Shrew",
+  "Lyrebird Mimic",
+  "Mouse Sapper",
+  "Quillback Elder",
+  "Quillguard",
+  "Thorn Shrike"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:12-1",
+   "label": "vs 12-1 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-2",
+   "label": "vs 12-2 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-3",
+   "label": "vs 12-3 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-4",
+   "label": "vs 12-4 skirmish's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-5",
+   "label": "vs 12-5 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-6",
+   "label": "vs 12-6 elite's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|fight:12-7",
+   "label": "vs 12-7 miniboss's deck",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 12-1's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:road12",
+   "label": "vs reference deck (Map 12) under 12-2's field",
+   "weight": 0.1
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+   "weight": 0.1
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "badger-lumberjack",
+    "carrion-crow"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "ant-hill",
+    "badger-lumberjack",
+    "cunning-vixen",
+    "gatling-hog",
+    "lyrebird-mimic",
+    "mouse-sapper",
+    "quillback-elder",
+    "quillguard",
+    "thorn-shrike"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "bramble-hoglet",
+    "carrion-crow",
+    "field-mouse",
+    "hedge-weasel",
+    "hedgehog-scout",
+    "hedgerow-shrew"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1740,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 5,
+   "moves": 3,
+   "games": 1740,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "swarm",
+   "steps": 5,
+   "moves": 2,
+   "games": 1860,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "open",
+   "steps": 4,
+   "moves": 4,
+   "games": 1500,
+   "apartFromEarlier": 9
+  }
+ ],
+ "apart": 6,
+ "seconds": 104,
+ "games": 7480,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)"
+   ],
+   "deck": {
+    "badger-lumberjack": 1,
+    "bramble-hoglet": 4,
+    "field-mouse": 4,
+    "gatling-hog": 3,
+    "hedgehog-scout": 4,
+    "hedgerow-shrew": 4
+   },
+   "cards": [
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgerow-shrew",
+     "name": "Hedgerow Shrew",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.775,
+   "ci": [
+    0.724,
+    0.826
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 1,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "carrion-crow": 4,
+    "field-mouse": 4,
+    "gatling-hog": 3,
+    "hedgehog-scout": 4,
+    "mouse-sapper": 3,
+    "quillguard": 2
+   },
+   "cards": [
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "field-mouse",
+     "name": "Field Mouse",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "mouse-sapper",
+     "name": "Mouse Sapper",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.6833,
+   "ci": [
+    0.6288,
+    0.7379
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (10 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "bramble-hoglet": 4,
+    "carrion-crow": 2,
+    "gatling-hog": 3,
+    "hedgehog-scout": 4,
+    "lyrebird-mimic": 4,
+    "quillguard": 3
+   },
+   "cards": [
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "lyrebird-mimic",
+     "name": "Lyrebird Mimic",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "quillguard",
+     "name": "Quillguard",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.65,
+   "ci": [
+    0.5939,
+    0.7061
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.75,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 2,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.75,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 9
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "big (12 copies at 1+ Lumber, average 0.8)",
+    "economy (7 resource makers)"
+   ],
+   "deck": {
+    "badger-lumberjack": 3,
+    "bramble-hoglet": 4,
+    "carrion-crow": 4,
+    "cunning-vixen": 2,
+    "gatling-hog": 3,
+    "quillback-elder": 4
+   },
+   "cards": [
+    {
+     "id": "bramble-hoglet",
+     "name": "Bramble Hoglet",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "carrion-crow",
+     "name": "Carrion Crow",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "quillback-elder",
+     "name": "Quillback Elder",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "common"
+    },
+    {
+     "id": "badger-lumberjack",
+     "name": "Badger Lumberjack",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gatling-hog",
+     "name": "Gatling Hog",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "cunning-vixen",
+     "name": "Cunning Vixen",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.5042,
+   "ci": [
+    0.4488,
+    0.5596
+   ],
+   "avgLumber": 0.8,
+   "avgWait": 1,
+   "curve": {
+    "0": 8,
+    "1": 8,
+    "2": 4
+   },
+   "resourceMakers": 7,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:12-1",
+     "label": "vs 12-1 skirmish's deck",
+     "p": 0.1667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-2",
+     "label": "vs 12-2 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-3",
+     "label": "vs 12-3 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-4",
+     "label": "vs 12-4 skirmish's deck",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-5",
+     "label": "vs 12-5 elite's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-6",
+     "label": "vs 12-6 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:12-7",
+     "label": "vs 12-7 miniboss's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 12-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road12",
+     "label": "vs reference deck (Map 12) under 12-2's field",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 12-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mh --pool ant-hill,badger-lumberjack,bramble-hoglet,carrion-crow,cunning-vixen,field-mouse,gatling-hog,hedge-weasel,hedgehog-scout,hedgerow-shrew,lyrebird-mimic,mouse-sapper,quillback-elder,quillguard,thorn-shrike --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

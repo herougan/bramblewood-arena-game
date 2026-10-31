@@ -1,0 +1,716 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:57:56.412Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mj",
+  "num": 10,
+  "name": "The Sunken Depths"
+ },
+ "level": 1,
+ "pool": [
+  "blue-ringed-octopus",
+  "clownfish-scout",
+  "colossal-squid",
+  "coral-polyp-colony",
+  "coral-reef-shark",
+  "electric-ray",
+  "great-barracuda",
+  "kraken-spawnling",
+  "mangrove-manatee",
+  "nautilus-drifter",
+  "orca-vanguard",
+  "parrotfish",
+  "riptide-eel"
+ ],
+ "poolNames": [
+  "Blue-ringed Octopus",
+  "Clownfish Scout",
+  "Colossal Squid",
+  "Coral Polyp Colony",
+  "Coral Reef Shark",
+  "Electric Ray",
+  "Great Barracuda",
+  "Kraken Spawnling",
+  "Mangrove Manatee",
+  "Nautilus Drifter",
+  "Orca Vanguard",
+  "Parrotfish",
+  "Riptide Eel"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:10-A-1",
+   "label": "vs 10-A-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-2",
+   "label": "vs 10-A-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-3",
+   "label": "vs 10-A-3 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-4",
+   "label": "vs 10-A-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:10-A-5",
+   "label": "vs 10-A-5 boss's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 10-A-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road11",
+   "label": "vs reference deck (Map 11) under 10-A-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "coral-polyp-colony",
+    "nautilus-drifter"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (3+ Lumber cards)",
+   "cards": [
+    "colossal-squid",
+    "kraken-spawnling",
+    "orca-vanguard"
+   ],
+   "need": 8
+  },
+  {
+   "id": "family:tide",
+   "label": "tide (skill family)",
+   "cards": [
+    "clownfish-scout",
+    "colossal-squid",
+    "coral-polyp-colony",
+    "coral-reef-shark",
+    "great-barracuda",
+    "mangrove-manatee",
+    "orca-vanguard",
+    "parrotfish",
+    "riptide-eel"
+   ],
+   "need": 8
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 6,
+   "moves": 1,
+   "games": 1552,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 3,
+   "games": 1632,
+   "apartFromEarlier": 10
+  },
+  {
+   "focus": "family:tide",
+   "steps": 6,
+   "moves": 4,
+   "games": 1616,
+   "apartFromEarlier": 6
+  },
+  {
+   "focus": "open",
+   "steps": 9,
+   "moves": 3,
+   "games": 1664,
+   "apartFromEarlier": 6
+  }
+ ],
+ "apart": 6,
+ "seconds": 99,
+ "games": 6976,
+ "decks": [
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (7 resource makers)",
+    "tide x13",
+    "economy x7"
+   ],
+   "deck": {
+    "clownfish-scout": 4,
+    "coral-polyp-colony": 4,
+    "electric-ray": 4,
+    "mangrove-manatee": 1,
+    "nautilus-drifter": 3,
+    "parrotfish": 4
+   },
+   "cards": [
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "parrotfish",
+     "name": "Parrotfish",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9505,
+   "ci": [
+    0.9213,
+    0.9798
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 1.2,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    },
+    {
+     "f": "economy",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.8542,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 6
+  },
+  {
+   "focus": "family:tide",
+   "labels": [
+    "economy (6 resource makers)",
+    "tide x14",
+    "economy x6"
+   ],
+   "deck": {
+    "clownfish-scout": 3,
+    "coral-polyp-colony": 4,
+    "coral-reef-shark": 4,
+    "electric-ray": 4,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 2
+   },
+   "cards": [
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "coral-reef-shark",
+     "name": "Coral Reef Shark",
+     "copies": 4,
+     "cost": 2,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9141,
+   "ci": [
+    0.8763,
+    0.9518
+   ],
+   "avgLumber": 0.85,
+   "avgWait": 1.35,
+   "curve": {
+    "0": 7,
+    "1": 9,
+    "2": 4
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "tide",
+     "n": 14
+    },
+    {
+     "f": "economy",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 0.8958,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.7083,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 7
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "economy (7 resource makers)",
+    "tide x7",
+    "economy x7"
+   ],
+   "deck": {
+    "blue-ringed-octopus": 3,
+    "clownfish-scout": 3,
+    "coral-polyp-colony": 4,
+    "electric-ray": 4,
+    "kraken-spawnling": 3,
+    "nautilus-drifter": 3
+   },
+   "cards": [
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "electric-ray",
+     "name": "Electric Ray",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "blue-ringed-octopus",
+     "name": "Blue-ringed Octopus",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "copies": 3,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.9141,
+   "ci": [
+    0.8765,
+    0.9516
+   ],
+   "avgLumber": 0.95,
+   "avgWait": 1.45,
+   "curve": {
+    "0": 7,
+    "1": 10,
+    "3": 3
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "tide",
+     "n": 7
+    },
+    {
+     "f": "economy",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.7292,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.5)",
+    "economy (7 resource makers)",
+    "tide x13",
+    "cleave x8"
+   ],
+   "deck": {
+    "clownfish-scout": 2,
+    "coral-polyp-colony": 4,
+    "kraken-spawnling": 4,
+    "mangrove-manatee": 3,
+    "nautilus-drifter": 3,
+    "orca-vanguard": 4
+   },
+   "cards": [
+    {
+     "id": "coral-polyp-colony",
+     "name": "Coral Polyp Colony",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "kraken-spawnling",
+     "name": "Kraken Spawnling",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "orca-vanguard",
+     "name": "Orca Vanguard",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "mangrove-manatee",
+     "name": "Mangrove Manatee",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "clownfish-scout",
+     "name": "Clownfish Scout",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7813,
+   "ci": [
+    0.7259,
+    0.8366
+   ],
+   "avgLumber": 1.5,
+   "avgWait": 2.1,
+   "curve": {
+    "0": 6,
+    "1": 6,
+    "3": 8
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    },
+    {
+     "f": "cleave",
+     "n": 8
+    },
+    {
+     "f": "economy",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:10-A-1",
+     "label": "vs 10-A-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-2",
+     "label": "vs 10-A-2 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-3",
+     "label": "vs 10-A-3 skirmish's deck",
+     "p": 0.7292,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-4",
+     "label": "vs 10-A-4 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:10-A-5",
+     "label": "vs 10-A-5 boss's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 10-A-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road11",
+     "label": "vs reference deck (Map 11) under 10-A-2's field",
+     "p": 0.9375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 10-A-3's field",
+     "p": 0.5,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mj --pool blue-ringed-octopus,clownfish-scout,colossal-squid,coral-polyp-colony,coral-reef-shark,electric-ray,great-barracuda,kraken-spawnling,mangrove-manatee,nautilus-drifter,orca-vanguard,parrotfish,riptide-eel --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:tide,open --level 1 --mode map-true"
+}

@@ -1,0 +1,688 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:42:36.880Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "m2",
+  "num": 4,
+  "name": "Sunken Hollow"
+ },
+ "level": 1,
+ "pool": [
+  "beaver-lumberjack",
+  "box-turtle",
+  "duckling",
+  "fire-ant-raft",
+  "muskrat-lodgekeeper",
+  "muskrat-reedgatherer",
+  "old-sturgeon",
+  "platypus-spur",
+  "pond-algae",
+  "pond-trout",
+  "pyrenean-desman",
+  "snapstick-turtle",
+  "stone-turtle-warden",
+  "water-shrew",
+  "water-vole"
+ ],
+ "poolNames": [
+  "Beaver Lumberjack",
+  "Box Turtle",
+  "Duckling",
+  "Fire Ant Raft",
+  "Muskrat Lodgekeeper",
+  "Muskrat Reedgatherer",
+  "Old Sturgeon",
+  "Platypus Spur",
+  "Pond Algae",
+  "Pond Trout",
+  "Pyrenean Desman",
+  "Snapstick Turtle",
+  "Stone Turtle Warden",
+  "Water Shrew",
+  "Water Vole"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:4-1",
+   "label": "vs 4-1 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-2",
+   "label": "vs 4-2 skirmish's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-3",
+   "label": "vs 4-3 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-4",
+   "label": "vs 4-4 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|fight:4-5",
+   "label": "vs 4-5 elite's deck",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 4-1's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:road4",
+   "label": "vs reference deck (Map 4) under 4-2's field",
+   "weight": 0.125
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+   "weight": 0.125
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "beaver-lumberjack",
+    "muskrat-reedgatherer"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "fire-ant-raft",
+    "muskrat-lodgekeeper",
+    "old-sturgeon",
+    "platypus-spur",
+    "snapstick-turtle",
+    "stone-turtle-warden"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "beaver-lumberjack",
+    "box-turtle",
+    "duckling",
+    "muskrat-reedgatherer",
+    "pond-algae",
+    "pond-trout",
+    "pyrenean-desman",
+    "water-shrew",
+    "water-vole"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 5,
+   "moves": 2,
+   "games": 1536,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 6,
+   "moves": 2,
+   "games": 1632,
+   "apartFromEarlier": 6
+  },
+  {
+   "focus": "swarm",
+   "steps": 6,
+   "moves": 2,
+   "games": 1600,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "open",
+   "steps": 6,
+   "moves": 2,
+   "games": 1552,
+   "apartFromEarlier": 8
+  }
+ ],
+ "apart": 6,
+ "seconds": 87,
+ "games": 6832,
+ "decks": [
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (18 copies at 0 Lumber)",
+    "tide x6"
+   ],
+   "deck": {
+    "beaver-lumberjack": 2,
+    "box-turtle": 4,
+    "pond-algae": 4,
+    "pond-trout": 4,
+    "pyrenean-desman": 4,
+    "snapstick-turtle": 2
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pond-algae",
+     "name": "Pond Algae",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pond-trout",
+     "name": "Pond Trout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.9219,
+   "ci": [
+    0.8865,
+    0.9572
+   ],
+   "avgLumber": 0.1,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 18,
+    "1": 2
+   },
+   "resourceMakers": 2,
+   "families": [
+    {
+     "f": "tide",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "tide x16"
+   ],
+   "deck": {
+    "box-turtle": 3,
+    "duckling": 1,
+    "fire-ant-raft": 4,
+    "pyrenean-desman": 4,
+    "snapstick-turtle": 4,
+    "water-vole": 4
+   },
+   "cards": [
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 1,
+     "cost": 0,
+     "rarity": "starter"
+    }
+   ],
+   "score": 0.8958,
+   "ci": [
+    0.8539,
+    0.9378
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 16
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "tide x12"
+   ],
+   "deck": {
+    "beaver-lumberjack": 2,
+    "box-turtle": 2,
+    "fire-ant-raft": 4,
+    "muskrat-reedgatherer": 4,
+    "pyrenean-desman": 4,
+    "water-vole": 4
+   },
+   "cards": [
+    {
+     "id": "fire-ant-raft",
+     "name": "Fire Ant Raft",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "muskrat-reedgatherer",
+     "name": "Muskrat Reedgatherer",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pyrenean-desman",
+     "name": "Pyrenean Desman",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "beaver-lumberjack",
+     "name": "Beaver Lumberjack",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.8177,
+   "ci": [
+    0.7656,
+    0.8698
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "tide",
+     "n": 12
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 14
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "tide x8"
+   ],
+   "deck": {
+    "box-turtle": 4,
+    "duckling": 4,
+    "pond-trout": 4,
+    "snapstick-turtle": 4,
+    "water-vole": 4
+   },
+   "cards": [
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "duckling",
+     "name": "Duckling",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "pond-trout",
+     "name": "Pond Trout",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "starter"
+    },
+    {
+     "id": "snapstick-turtle",
+     "name": "Snapstick Turtle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "water-vole",
+     "name": "Water Vole",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.776,
+   "ci": [
+    0.7197,
+    0.8324
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.2,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 0,
+   "families": [
+    {
+     "f": "tide",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:4-1",
+     "label": "vs 4-1 skirmish's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-2",
+     "label": "vs 4-2 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-3",
+     "label": "vs 4-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-4",
+     "label": "vs 4-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:4-5",
+     "label": "vs 4-5 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 4-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road4",
+     "label": "vs reference deck (Map 4) under 4-2's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 4-3's field",
+     "p": 0.8333,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map m2 --pool beaver-lumberjack,box-turtle,duckling,fire-ant-raft,muskrat-lodgekeeper,muskrat-reedgatherer,old-sturgeon,platypus-spur,pond-algae,pond-trout,pyrenean-desman,snapstick-turtle,stone-turtle-warden,water-shrew,water-vole --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}
