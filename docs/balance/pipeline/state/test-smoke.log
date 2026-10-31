@@ -1,9 +1,9 @@
 
-✗ d-2026-10-19 (exit 1, 3.2s) — last lines:
+✗ d-2026-10-19 (exit 1, 2.6s) — last lines:
   ✗ its card reward: 20-5 (moved off the Wraith Vents by package RP)
     ✗ no short description reaches 20 words (1):
         werebadger (21): 🐺 Lycanthropy: under {Full Moon}, gain {Regeneration 2, Thorns 2} — Once it happens, it keeps them for the rest of the fight.
     (left for the Prayer / Ecclesia package: 3 lines: When played, deal 4 lightning damage to a random enemy unit, | When played, deal 3 lightning damage to a random enemy unit, | When played, deal 2 lightning damage to a random enemy unit,)
   d-2026-10-19: 74/76 checks passed
 
-smoke: 6 passed, 1 failed, 0 skipped (passed before on identical inputs) · 53s · slowest: two-player 53s, scenarios 24s, i18n-ui-2026-10-18 16s
+smoke: 1 passed, 1 failed, 5 skipped (passed before on identical inputs) · 3s · slowest: d-2026-10-19 3s, card-pass-2026-10-19 2s

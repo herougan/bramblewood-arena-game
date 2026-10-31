@@ -1,12 +1,5 @@
 
-✗ speed1-2026-10-31 (exit 1, 7.2s) — last lines:
-  ✗ with the lock free the step runs; an unknown skill fails the step (exit 75)
-    ✗ a failed step still writes its summary file
-    ✗ 3/2 -> 2/4 stays a hitter and is rule-clean
-    ✗ docs/workflows/balance.md has the Pipeline section with the commands and when to look
-  speed1: 4 of 60 checks FAILED
-
-✗ level-curve-2026-10-19 (exit 1, 8.5s) — last lines:
+✗ level-curve-2026-10-19 (exit 1, 8.3s) — last lines:
   ✗ 3. 63 fights with a Shield override (was 96; at most 50)
     ✗ 3. no Shield override over 2x the rule: 0-B-4 63 (rule 26), 18-A-5 30 (rule 10)
     ✗ 4. it measured the decks the game has now (0/179)
@@ -15,34 +8,7 @@
     ✗ 6. a CHANGELOG entry near the top
   level-curve-2026-10-19: 31/37 checks passed
 
-✗ card-pool-2026-10-19 (exit 1, 3.0s) — last lines:
-    ✗ 2. alpine-swift: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. wallcreeper: queued for the post-balance step and still over (the queue is current)
-    ✗ 2. wallcreeper: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. alpine-salamander: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. apollo-butterfly: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. mountain-hare: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. thorn-shrike: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. hedge-weasel: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. hawthorn-shieldbug: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. muntjac-barker: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. anvil-thrush: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. garden-tiger-moth: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. polar-bear: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. harp-seal-pup: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. beluga: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. arctic-tern: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. lemming-swarm: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. krill-swarm: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. greenland-shark: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. ringed-seal: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. woodland-caribou: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    ✗ 2. musk-ox-calf: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    · budget: 7 unplaced (out of play, not checked): signal-crayfish, stag-beetle, fulmar-spitter, mosquito-cloud, ghost-crayfish, lionfish, giant-clam; 0 pending step 3: 
-    ✗ 3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields
-  card-pool-2026-10-19: 638/748 checks passed
-
-✗ skill-worth-2026-10-19 (exit 1, 23.7s) — last lines:
+✗ skill-worth-2026-10-19 (exit 1, 24.1s) — last lines:
     ✗ skills: fireArrowPoison has measuredS or a reason
     ✗ skills: fireArrowBleed has measuredS or a reason
     ✗ skills: fireBoltPoison has measuredS or a reason
@@ -69,14 +35,46 @@
     ✗ the owner's seeds are untouched (value)
   skill-worth: 1804/1882 passed
 
-✗ skill2-2026-10-31 (exit 1, 2.1s) — last lines:
+✗ card-pool-2026-10-19 (exit 1, 2.8s) — last lines:
+    ✗ 2. alpine-swift: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. wallcreeper: queued for the post-balance step and still over (the queue is current)
+    ✗ 2. wallcreeper: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. alpine-salamander: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. apollo-butterfly: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. mountain-hare: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. thorn-shrike: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. hedge-weasel: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. hawthorn-shieldbug: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. muntjac-barker: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. anvil-thrush: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. garden-tiger-moth: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. polar-bear: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. harp-seal-pup: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. beluga: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. arctic-tern: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. lemming-swarm: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. krill-swarm: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. greenland-shark: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. ringed-seal: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. woodland-caribou: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. musk-ox-calf: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    · budget: 7 unplaced (out of play, not checked): signal-crayfish, stag-beetle, fulmar-spitter, mosquito-cloud, ghost-crayfish, lionfish, giant-clam; 0 pending step 3: 
+    ✗ 3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields
+  card-pool-2026-10-19: 638/748 checks passed
+
+✗ skill2-2026-10-31 (exit 1, 2.2s) — last lines:
   ✗ 6. SKILL2-1 asked
     ✗ 6. SKILL2-2 asked
     ✗ 6. SKILL2-3 asked
     ✗ 6. SKILL2-4 asked
   skill2-2026-10-31: 293/297 checks passed
 
-✗ skill-costs-2026-10-19 (exit 1, 0.6s) — last lines:
+✗ raid-rb2-2026-10-19 (exit 1, 2.1s) — last lines:
+  FAIL a scale-2 edit: 420 -> 350, 50 -> 55; its own 333 kept
+    FAIL a pre-RB edit takes both steps
+  raid-rb2: 18 passed, 2 failed
+
+✗ skill-costs-2026-10-19 (exit 1, 0.7s) — last lines:
     ✗ actions swapPositions: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (0.5 -> 0.2, measured -0.06, high)
     ✗ actions drawCard: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (2 -> 4.1, measured 5.12, high)
     ✗ actions spawnCard: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (5.26 -> 4, measured 4.08, low)
@@ -103,9 +101,4 @@
     note: the Test Lab (SB_DEFAULT_SKILLS in arena_app.js) differs from canonical/skill-costs.json for penance, bloodTithe, shield, blind, quick, helmet, darksight, swimmer, diurnal, nocturnal, crepuscular, tide, molting, dynamite, leader, armor, poison, thorns, heal, regen, rebuild, bleed, arrows, crabClaws, castDarkness, trueStrike, relic, evoluteAlpha, evoluteOmega, stem
   skill-costs: 2559/2708 passed
 
-✗ raid-rb2-2026-10-19 (exit 1, 2.0s) — last lines:
-  FAIL a scale-2 edit: 420 -> 350, 50 -> 55; its own 333 kept
-    FAIL a pre-RB edit takes both steps
-  raid-rb2: 18 passed, 2 failed
-
-tests: 5 passed, 7 failed, 1 skipped (passed before on identical inputs) · 30s · slowest: skill-worth-2026-10-19 24s, level-curve-2026-10-19 8s, speed1-2026-10-31 7s
+tests: 5 passed, 6 failed, 2 skipped (passed before on identical inputs) · 30s · slowest: skill-worth-2026-10-19 24s, speed1-2026-10-31 10s, level-curve-2026-10-19 8s
