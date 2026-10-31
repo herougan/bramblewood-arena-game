@@ -19927,7 +19927,7 @@ function refSetFor(setId, mapId, node, opts){
   copies.forEach(c=>{ const L = cardBaseLevel(base[c.id]) + c.bump, k = c.id + '|' + L; by.set(k, (by.get(k) || 0) + 1); });
   const parts = [...by.entries()].map(([k, n])=>{ const i = k.lastIndexOf('|'); return [k.slice(0, i), n, +k.slice(i + 1)]; });
   const gained = copies.reduce((t, c)=> t + c.bump, 0);
-  return {set: setId, label: set.label || setId, mapNo: r.mapNo, deck: Object.assign({}, set.counts), parts, level: copies.length ? Math.round(gained / copies.length * 100) / 100 : 0, gained, leader: set.leader || null};
+  return {set: setId, label: set.label || setId, mapNo: r.mapNo, deck: Object.assign({}, set.counts), parts, level: copies.length ? Math.round(gained / copies.length * 100) / 100 : 0, gained, leader: set.leader || null, bramble: set.bramble || null /* 2026-10-31 (UI10, EE7) */};
 }
 // The map's difficulty curve in the editor: one chip per fight with the new-player win rate last
 // measured this session (grey until checked), coloured against that fight's target.
@@ -31176,7 +31176,10 @@ function startConquestMatch(mapId, nodeKey, opts){
   const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = earlyHomeBramble(node, myCastleDef()); // 2026-10-23 (package EB): your bramble leads on Maps 0 and 1
+  // 2026-10-31 (package UI10, owner EE7): a reference deck fights with its own bramble: the set's `bramble` (a CHARACTER_DEFS id) when it names one;
+  // no set carries one yet (the data has a leader only), so it keeps your bramble until the owner/coordinator adds `bramble` to a REF_DECK_SETS entry.
+  const refBramble = refPlay && refPlay.bramble && CHARACTER_DEFS[refPlay.bramble] ? brambleChar(castleLeveled(CHARACTER_DEFS[refPlay.bramble], castleLevelOf(refPlay.bramble))) : null;
+  const myCharacter = refBramble || earlyHomeBramble(node, myCastleDef()); // 2026-10-23 (package EB): your bramble leads on Maps 0 and 1
   const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myOwnedDeck, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
@@ -31216,7 +31219,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refPlay.multi ? refPlay.label : refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level, pick: refPlay.pick || null};
-    if(refPlay.multi) try{ showToast('🎯 ' + TX('ui.ref5-dealt', {name: refPlay.label}), 'ok'); }catch(e){} } // REF5: which of the map's decks was dealt // 2026-10-25 (package PREF): no rewards, a REF tag
+    /* 2026-10-31 (package UI10, owner EE3): no toast when a reference deck is dealt (REF5 showed which of the map's decks) */ } // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
     players[2].hq.maxHp = waves[0].hp; players[2].hq.hp = waves[0].hp; players[2].hq.shield = waves[0].shield || 0; players[2].hq.maxShield = players[2].hq.shield; }
   renderPlay();
