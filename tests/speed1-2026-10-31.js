@@ -100,7 +100,7 @@ const P = require('../tools/pipeline/lib.js'), K = require('../tools/pipeline/co
   ok(/tests\/speed1-2026-10-31\.js/.test(rd('tests/run-all.sh')), 'tests/run-all.sh lists this test');
   const wf = rd('docs/workflows/balance.md');
   ok(/## Pipeline/.test(wf) && /tools\/pipeline\/run\.sh/.test(wf) && /When an agent should look/.test(wf), 'docs/workflows/balance.md has the Pipeline section with the commands and when to look');
-  ok(/package SPEED1/.test(rd('docs/CHANGELOG.md').split('\n').slice(0, 14).join('\n')), 'the CHANGELOG has the SPEED1 entry at the top');
+  ok(/package SPEED1/.test(rd('docs/CHANGELOG.md').split('\n').slice(0, 60).join('\n')), 'the CHANGELOG has the SPEED1 entry near the top (2026-10-31 coordinator: window 60 lines, releases sit above it)');
   ['run.sh', 'run.js', 'lib.js', 'measure.js', 'price.js', 'refit.js', 'bake.js', 'tournament.js', 'test.js', 'constants.js', 'config.json'].forEach(f => ok(fs.existsSync(path.join(ROOT, 'tools', 'pipeline', f)), 'tools/pipeline/' + f + ' exists'));
 }
 
