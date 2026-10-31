@@ -4,6 +4,17 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 18:09: the owner's notes
+- FF1 (UI11; corrects Z6/UI8): the Shield pip is the skill chip on the card's south edge (emoji + number = Shield left), updated as it drops and gone at 0. No Shield badge on the east side (remove UI8's). Rule: context pips only when they matter; a quick pass over every pip that shows when it changes nothing.
+- FF2 (UI11 text): Windy's field text ends "..., Headwind Flyers' skills trigger twice". The odds are already 1 in 3 back / face / calm (engine rollWind); keep them.
+- FF3 (UI11): the card-detail hover tooltip disappears when an animation runs (it should stay); its card is sized by the screen (at full screen it looks smaller than the board card; it should be larger); tilt it 1 degree to the right.
+- FF4 (ENG15): Keen Eye becomes True Sight: sees Invisible units (can target them) and reveals fog as today. Today Keen Eye only adds +2 damage against a Changeling (it does not switch off a Changeling's type synergies). Coordinator call (AA4): drop the Changeling bonus; True Sight = Invisible + fog.
+- FF5 (UI11 logo; ENG15 rule): the Bloom chip icon is off centre. Bloom rule (coordinator call from the owner's options, a + b): the original keeps trying whenever it is ready and its conditions hold (no "spent" after a failed split, and no +1/+1 on a fail: it simply tries again); its copies are tokens (token frame) with no Bloom and arrive with the parent's Wait. So growth is at most one copy a ready turn, and the player can answer it.
+- FF6 (ENG15 + pip): Cower N: while cowering the unit gains N Armor; its pip reads like Tide's: highlighted, the cower emoji with N Armor symbols attached.
+- FF7 (UI11): the conquest map's left map list: the selected map also gets a brighter colour, not just a highlighted border.
+- FF8 (done 18:20, coordinator hotfix, live): the Map cards gallery's Cut / Keep picks were kept in memory only; now saved in localStorage (bw_rv_flips_v1) too, so a reload or a release keeps them.
+- FF9 (UI11, first): an "Add card to SPECIAL" button right of Export all: search any card and add it to the open map's SPECIAL list; saved like the picks (localStorage) and included in Export all.
+
 ## 10-31 16:32: the owner's notes
 - EE1 (UI10): Quests: remove the top summary ("Dailies") section (the Daily and Weekly sections below stay). Clicking a finished quest notice claims its reward (no separate reward button). No "in progress" text. New quests say NEW!; hover or click clears it.
 - EE2 (UI10 now; decks in step 4): PRO and BPRO fights become one skirmish per map: "my deck" or a reference deck vs a random PRO deck built only from the map's list; 1 in 3 to 1 in 5 of those decks may hold one SPECIAL card from the map's list. UI10 wires it on today's BPRO decks; the decks are rebuilt from the owner's new lists in step 4.
