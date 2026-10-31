@@ -1,5 +1,9 @@
 
-✗ level-curve-2026-10-19 (exit 1, 8.3s) — last lines:
+✗ speed1-2026-10-31 (exit 1, 10.1s) — last lines:
+  ✗ Flying and Evasive are x1.13, Shadow unchanged (SKILL2-2)
+  speed1: 1 of 60 checks FAILED
+
+✗ level-curve-2026-10-19 (exit 1, 9.6s) — last lines:
   ✗ 3. 63 fights with a Shield override (was 96; at most 50)
     ✗ 3. no Shield override over 2x the rule: 0-B-4 63 (rule 26), 18-A-5 30 (rule 10)
     ✗ 4. it measured the decks the game has now (0/179)
@@ -8,7 +12,14 @@
     ✗ 6. a CHANGELOG entry near the top
   level-curve-2026-10-19: 31/37 checks passed
 
-✗ skill-worth-2026-10-19 (exit 1, 24.1s) — last lines:
+✗ skill2-2026-10-31 (exit 1, 2.0s) — last lines:
+  ✗ 6. SKILL2-1 asked
+    ✗ 6. SKILL2-2 asked
+    ✗ 6. SKILL2-3 asked
+    ✗ 6. SKILL2-4 asked
+  skill2-2026-10-31: 293/297 checks passed
+
+✗ skill-worth-2026-10-19 (exit 1, 26.0s) — last lines:
     ✗ skills: fireArrowPoison has measuredS or a reason
     ✗ skills: fireArrowBleed has measuredS or a reason
     ✗ skills: fireBoltPoison has measuredS or a reason
@@ -35,8 +46,7 @@
     ✗ the owner's seeds are untouched (value)
   skill-worth: 1804/1882 passed
 
-✗ card-pool-2026-10-19 (exit 1, 2.8s) — last lines:
-    ✗ 2. alpine-swift: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+✗ card-pool-2026-10-19 (exit 1, 3.1s) — last lines:
     ✗ 2. wallcreeper: queued for the post-balance step and still over (the queue is current)
     ✗ 2. wallcreeper: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. alpine-salamander: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
@@ -47,6 +57,7 @@
     ✗ 2. hawthorn-shieldbug: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. muntjac-barker: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. anvil-thrush: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
+    ✗ 2. garden-tiger-moth: queued for the post-balance step and still over (the queue is current)
     ✗ 2. garden-tiger-moth: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. polar-bear: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. harp-seal-pup: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
@@ -58,23 +69,21 @@
     ✗ 2. ringed-seal: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. woodland-caribou: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
     ✗ 2. musk-ox-calf: the note's N and (N/3)^2 match the card (v4, or v3 when the note was written)
-    · budget: 7 unplaced (out of play, not checked): signal-crayfish, stag-beetle, fulmar-spitter, mosquito-cloud, ghost-crayfish, lionfish, giant-clam; 0 pending step 3: 
+    · budget: 5 unplaced (out of play, not checked): signal-crayfish, stag-beetle, ghost-crayfish, lionfish, giant-clam; 0 pending step 3: 
     ✗ 3. (TH) each placed card has a source matching its slot (or package RP moved it on) and no pool fields
-  card-pool-2026-10-19: 638/748 checks passed
+  card-pool-2026-10-19: 637/748 checks passed
 
-✗ skill2-2026-10-31 (exit 1, 2.2s) — last lines:
-  ✗ 6. SKILL2-1 asked
-    ✗ 6. SKILL2-2 asked
-    ✗ 6. SKILL2-3 asked
-    ✗ 6. SKILL2-4 asked
-  skill2-2026-10-31: 293/297 checks passed
+✗ budget2-2026-10-31 (exit 1, 2.2s) — last lines:
+  ✗ 2. every re-fit card carries its new stats and its note, inside its band at its start level and Level 1 (T-1 / T-2 cards at Level 0 too): gold-throated-acolyte, mangrove-kingfisher, mirror-moth
+    ✗ 2. no in-play card outside its band but those outside before BUDGET2 or held: mangrove-kingfisher, gold-throated-acolyte, candle-moth, mirror-moth
+  budget2-2026-10-31: 31/33 checks passed
 
-✗ raid-rb2-2026-10-19 (exit 1, 2.1s) — last lines:
+✗ raid-rb2-2026-10-19 (exit 1, 2.0s) — last lines:
   FAIL a scale-2 edit: 420 -> 350, 50 -> 55; its own 333 kept
     FAIL a pre-RB edit takes both steps
   raid-rb2: 18 passed, 2 failed
 
-✗ skill-costs-2026-10-19 (exit 1, 0.7s) — last lines:
+✗ skill-costs-2026-10-19 (exit 1, 1.6s) — last lines:
     ✗ actions swapPositions: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (0.5 -> 0.2, measured -0.06, high)
     ✗ actions drawCard: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (2 -> 4.1, measured 5.12, high)
     ✗ actions spawnCard: applied entry has prevValue, appliedAt, measuredConf high, value = max(0, measuredS) (5.26 -> 4, measured 4.08, low)
@@ -96,9 +105,9 @@
     ✗ owner-set supreme = 1, not replaced by the measured worth (5)
     ✗ owner-set supremeTide = 1, not replaced by the measured worth (4)
     ✗ owner-set trueStrike = 2, not replaced by the measured worth (1.5)
-    ✗ the post-balance queue is current (118 in the file, 149 from the table): run node tools/post_balance_queue.js
+    ✗ the post-balance queue is current (118 in the file, 125 from the table): run node tools/post_balance_queue.js
     ✗ every queued card costs more now and is over by its recorded margin; most passed under prevValue (weredog, salamander-pyromancer, starfall-owl, voltaic-eel, bee-drone, tobasco-drakon, rockslide-ram, irradiated-couatl, horned-lizard, exo-podas, weathervane-swift, bramblewood-bonebreaker, sea-cucumber, margay, armadillo-guard, fire-hawk, monarch-wingblade, armored-mastiff, jay-pilferer, worker-ant, tarantula-hawk, firefly-swarm, bog-revenant, the-unremembered, courier-pigeon, static-fennec, sandstorm-roc, ironclaw-fiddler, scree-goat, bloodscent-shark, glasswing-moth, krill-swarm, marula-monkey, marching-elephant, buck-brawler, trapdoor-spider, baby-bat, trickster-fox, gallery-orb-weaver, shieldbearer-hound, mongoose-duelist, demo-panda, lovebird, ironback-gorilla, dolphin-knight, frostmoon-howler, subterraneaner, fox-sharpshot, werebadger, mantis-shrimp, piranha-shoal, dune-jackal-scout, sanderling, musk-ox-matriarch, tunnel-wyrm, pall-wraith, pigeon-peon, clover-butterfly, field-crow, tundra-musk-ox, basalt-boar, hollow-oath-keeper, raccoon-warlord, monitor-rambler, coral-current-eel, chipmunk-stockpiler, mudflat-godwit, cleaner-wrasse, great-horned-owl, king-maker, moonshell-snail, war-hound, antler-skirmisher, grotto-lobster, sea-hare, echo-keeper, quarry-troll, tusked-vanguard, pack-rat-looter, skunk-gasser, puddle-hopper, musk-ox-calf, pale-oryx, garden-tiger-moth, wallcreeper, horseshoe-crab, ice-crevasse-wolf, electric-catfish, barrow-leech-bat, marmot-stonecutter, beaver-feller, salvager-hermit-crab over under the formula alone)
     note: the Test Lab (SB_DEFAULT_SKILLS in arena_app.js) differs from canonical/skill-costs.json for penance, bloodTithe, shield, blind, quick, helmet, darksight, swimmer, diurnal, nocturnal, crepuscular, tide, molting, dynamite, leader, armor, poison, thorns, heal, regen, rebuild, bleed, arrows, crabClaws, castDarkness, trueStrike, relic, evoluteAlpha, evoluteOmega, stem
   skill-costs: 2559/2708 passed
 
-tests: 5 passed, 6 failed, 2 skipped (passed before on identical inputs) · 30s · slowest: skill-worth-2026-10-19 24s, speed1-2026-10-31 10s, level-curve-2026-10-19 8s
+tests: 5 passed, 8 failed, 0 skipped (passed before on identical inputs) · 35s · slowest: skill-worth-2026-10-19 26s, speed1-2026-10-31 10s, level-curve-2026-10-19 10s
