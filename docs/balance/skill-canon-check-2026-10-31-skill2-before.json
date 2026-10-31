@@ -1,0 +1,369 @@
+{
+ "tool": "tools/skill_canon_2026_10_31.js 1.1.0 (2026-10-31, SKILL2)",
+ "generated": "2026-10-30T22:05:51.967Z",
+ "fingerprint": "ea6e5bcc7b96",
+ "context": {
+  "name": "global",
+  "level": 1,
+  "copies": 6,
+  "fights": 1000,
+  "pool": 767,
+  "fields": 410,
+  "seed": "tools1"
+ },
+ "carriers": [
+  "house-cat",
+  "bramblewood-lynx",
+  "constrictor-coil",
+  "badger-berserker",
+  "rivergate-recruit",
+  "tusked-vanguard"
+ ],
+ "attackWeight": 3,
+ "canonRate": {
+  "m": 0.0723,
+  "lo": 0.0645,
+  "hi": 0.0803
+ },
+ "lsqRate": {
+  "m": 0.0521,
+  "lo": 0.0483,
+  "hi": 0.0552
+ },
+ "statRate": {
+  "m": 0.0359,
+  "lo": 0.0321,
+  "hi": 0.0396
+ },
+ "kappa": {
+  "m": 0.4964,
+  "lo": 0.4552,
+  "hi": 0.5481
+ },
+ "attackInHealth": {
+  "m": 4.5942,
+  "lo": 3.6753,
+  "hi": 6.0456
+ },
+ "line": {
+  "r2": 0.7599
+ },
+ "anchors": [
+  {
+   "id": "armor",
+   "n": 1,
+   "key": "armor 1",
+   "price": 1.68,
+   "reason": "defence per hit; 54 cards; 1.68 x N^1.43 set by the owner's rule (ENG10) on the measured 10-19 worth",
+   "gain": 0.11,
+   "worth": {
+    "m": 1.4638,
+    "lo": 1.3487,
+    "hi": 1.589
+   },
+   "worthStat": {
+    "m": 3.0644,
+    "lo": 2.8056,
+    "hi": 3.3366
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "armor",
+   "n": 2,
+   "key": "armor 2",
+   "price": 4.53,
+   "reason": "defence per hit; 54 cards; 1.68 x N^1.43 set by the owner's rule (ENG10) on the measured 10-19 worth",
+   "gain": 0.1667,
+   "worth": {
+    "m": 2.2179,
+    "lo": 2.0361,
+    "hi": 2.4032
+   },
+   "worthStat": {
+    "m": 4.6431,
+    "lo": 4.2717,
+    "hi": 5.012
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "bleed",
+   "n": 1,
+   "key": "bleed 1",
+   "price": 2.05,
+   "reason": "damage over time that wears off; 17 cards; RECOST1 200-fight measure 2.05 a point (high)",
+   "gain": 0.1033,
+   "worth": {
+    "m": 1.374,
+    "lo": 1.2685,
+    "hi": 1.4794
+   },
+   "worthStat": {
+    "m": 2.8764,
+    "lo": 2.6798,
+    "hi": 3.1229
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "bleed",
+   "n": 2,
+   "key": "bleed 2",
+   "price": 3.11,
+   "reason": "damage over time that wears off; 17 cards; RECOST1 200-fight measure 2.05 a point (high)",
+   "gain": 0.1765,
+   "worth": {
+    "m": 2.3488,
+    "lo": 2.1575,
+    "hi": 2.5481
+   },
+   "worthStat": {
+    "m": 4.917,
+    "lo": 4.5453,
+    "hi": 5.3073
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "fork",
+   "n": true,
+   "key": "fork",
+   "price": 1.27,
+   "reason": "reach (more than one target); 9 cards; RECOST1 measure 1.27 (high)",
+   "gain": 0.1912,
+   "worth": {
+    "m": 2.7748,
+    "lo": 2.6173,
+    "hi": 2.9684
+   },
+   "worthStat": {
+    "m": 5.3256,
+    "lo": 4.9523,
+    "hi": 5.7638
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "inspiring",
+   "n": 1,
+   "key": "inspiring 1",
+   "price": 2.3,
+   "reason": "an aura on allies; 9 cards; RECOST1 measure 2.3 (high)",
+   "gain": 0.1272,
+   "worth": {
+    "m": 1.6923,
+    "lo": 1.5757,
+    "hi": 1.8154
+   },
+   "worthStat": {
+    "m": 3.5427,
+    "lo": 3.2816,
+    "hi": 3.8326
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "onReadyGold",
+   "n": 1,
+   "key": "onReadyGold 1",
+   "price": 2.31,
+   "reason": "economy (a resource); 11 cards; RECOST1 measure 2.31 (high)",
+   "gain": 0.2018,
+   "worth": {
+    "m": 2.9296,
+    "lo": 2.7381,
+    "hi": 3.198
+   },
+   "worthStat": {
+    "m": 5.6228,
+    "lo": 5.1499,
+    "hi": 6.1725
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "poison",
+   "n": 1,
+   "key": "poison 1",
+   "price": 3,
+   "reason": "damage over time; 32 cards; 3.0 x N^0.7 fitted to the robust skill test (EN5), measured 3.13 (high)",
+   "gain": 0.0963,
+   "worth": {
+    "m": 1.282,
+    "lo": 1.179,
+    "hi": 1.3778
+   },
+   "worthStat": {
+    "m": 2.6837,
+    "lo": 2.4722,
+    "hi": 2.9017
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "poison",
+   "n": 2,
+   "key": "poison 2",
+   "price": 4.87,
+   "reason": "damage over time; 32 cards; 3.0 x N^0.7 fitted to the robust skill test (EN5), measured 3.13 (high)",
+   "gain": 0.1709,
+   "worth": {
+    "m": 2.2745,
+    "lo": 2.0902,
+    "hi": 2.4637
+   },
+   "worthStat": {
+    "m": 4.7615,
+    "lo": 4.423,
+    "hi": 5.1443
+   },
+   "off": true,
+   "offStat": false
+  },
+  {
+   "id": "pounce",
+   "n": 2,
+   "key": "pounce 2",
+   "price": 1.52,
+   "reason": "an early extra hit; 17 cards; RECOST1 measure 0.76 (high)",
+   "gain": 0.1099,
+   "worth": {
+    "m": 1.5324,
+    "lo": 1.3938,
+    "hi": 1.672
+   },
+   "worthStat": {
+    "m": 3.0621,
+    "lo": 2.7682,
+    "hi": 3.3472
+   },
+   "off": false,
+   "offStat": true
+  },
+  {
+   "id": "quick",
+   "n": true,
+   "key": "quick",
+   "price": 1.12,
+   "reason": "timing (no Wait to act); 16 cards; RECOST1 measure 1.12 (high)",
+   "gain": 0.0873,
+   "worth": {
+    "m": 1.2676,
+    "lo": 1.1571,
+    "hi": 1.3844
+   },
+   "worthStat": {
+    "m": 2.433,
+    "lo": 2.1933,
+    "hi": 2.689
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "rage",
+   "n": true,
+   "key": "rage",
+   "price": 0.99,
+   "reason": "a stat swing on low Health; 8 cards; RECOST1 measure 0.99 (high)",
+   "gain": 0.1402,
+   "worth": {
+    "m": 2.0345,
+    "lo": 1.911,
+    "hi": 2.1608
+   },
+   "worthStat": {
+    "m": 3.9048,
+    "lo": 3.5929,
+    "hi": 4.238
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "regen",
+   "n": 2,
+   "key": "regen 2",
+   "price": 0.96,
+   "reason": "healing a round; 17 cards; RECOST1 measure 0.48 a point (high)",
+   "gain": 0.1386,
+   "worth": {
+    "m": 2.0115,
+    "lo": 1.8885,
+    "hi": 2.1283
+   },
+   "worthStat": {
+    "m": 3.8607,
+    "lo": 3.5443,
+    "hi": 4.2013
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "shell",
+   "n": 2,
+   "key": "shell 2",
+   "price": 0.94,
+   "reason": "damage reduction once; 8 cards; RECOST1 measure 0.47 a point (high)",
+   "gain": 0.1125,
+   "worth": {
+    "m": 1.6329,
+    "lo": 1.5305,
+    "hi": 1.7442
+   },
+   "worthStat": {
+    "m": 3.1341,
+    "lo": 2.8824,
+    "hi": 3.3893
+   },
+   "off": true,
+   "offStat": true
+  },
+  {
+   "id": "sweep",
+   "n": 2,
+   "key": "sweep 2",
+   "price": 1.1,
+   "reason": "area damage (Cleave); 15 cards; RECOST1 measure 0.55 (high)",
+   "gain": 0.1878,
+   "worth": {
+    "m": 2.7264,
+    "lo": 2.559,
+    "hi": 2.9249
+   },
+   "worthStat": {
+    "m": 5.2327,
+    "lo": 4.8423,
+    "hi": 5.6736
+   },
+   "off": true,
+   "offStat": true
+  }
+ ],
+ "outside": [
+  "armor 1",
+  "armor 2",
+  "bleed 1",
+  "bleed 2",
+  "fork",
+  "inspiring 1",
+  "onReadyGold 1",
+  "poison 1",
+  "poison 2",
+  "quick",
+  "rage",
+  "regen 2",
+  "shell 2",
+  "sweep 2"
+ ]
+}

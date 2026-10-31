@@ -1,0 +1,3282 @@
+{
+ "_about": "SKILL2 (2026-10-31): the card re-fit after the skill re-pricing (canonical/skill-costs.json; the canon and the measured skills in 3A + H points). Built by node tools/skill2_refit_2026_10_31.js; applied by python3 tools/skill2_apply_cards_2026_10_31.py. old = the skill prices before SKILL2 (641db7a8), new = after. use = cap-1 left side / N at the start level.",
+ "built": "2026-10-31",
+ "base": "641db7a8",
+ "counts": {
+  "inPlay": 451,
+  "outOfPlay": 363,
+  "inPlayPushed": 45,
+  "outPushed": 35,
+  "outsideBefore": 148,
+  "outsideBeforeIds": [
+   "dolphin-knight (out of play)",
+   "bee-drone",
+   "great-horned-owl (out of play)",
+   "war-hound (out of play)",
+   "armored-mastiff (out of play)",
+   "bramblewood-macaque (out of play)",
+   "trapdoor-spider (out of play)",
+   "tunnel-wyrm (out of play)",
+   "monarch-wingblade (out of play)",
+   "raccoon-warlord (out of play)",
+   "tusked-vanguard (out of play)",
+   "chipmunk-stockpiler (out of play)",
+   "antler-skirmisher (out of play)",
+   "puddle-hopper (out of play)",
+   "buck-brawler (out of play)",
+   "hollow-oath-keeper (out of play)",
+   "tundra-musk-ox (out of play)",
+   "ice-crevasse-wolf (out of play)",
+   "rockslide-ram (out of play)",
+   "feral-tuskboar (out of play)",
+   "trickster-fox (out of play)",
+   "sandstorm-roc (out of play)",
+   "pack-rat-looter (out of play)",
+   "basalt-boar (out of play)",
+   "barrow-leech-bat (out of play)",
+   "coral-current-eel (out of play)",
+   "dune-jackal-scout (out of play)",
+   "voltaic-eel (out of play)",
+   "king-maker (out of play)",
+   "glasswing-moth (out of play)",
+   "frostmoon-howler (out of play)",
+   "weathervane-swift (out of play)",
+   "worker-ant",
+   "bramblewood-bonebreaker (out of play)",
+   "black-dragon (out of play)",
+   "courier-pigeon (out of play)",
+   "echo-keeper (out of play)",
+   "bog-revenant (out of play)",
+   "the-unremembered (out of play)",
+   "abbey-goose (out of play)",
+   "weredog (out of play)",
+   "shieldbearer-hound (out of play)",
+   "snail-mail",
+   "iron-shard (out of play)",
+   "river-pearl (out of play)",
+   "ember-core (out of play)",
+   "dragon-scale (out of play)",
+   "bark-buckler",
+   "netmender-harpoon",
+   "quill-spear",
+   "sunfeather-plume",
+   "siege-hammer",
+   "dragonscale-mail",
+   "puddle-changeling (out of play)",
+   "tempering-stone (out of play)",
+   "tailwind (out of play)",
+   "bramble-gauntlet (out of play)",
+   "irradiated-couatl (out of play)",
+   "quarry-troll (out of play)",
+   "moonlit-hare (out of play)",
+   "lunar-howler (out of play)",
+   "pall-wraith (out of play)",
+   "abyssal-ink (out of play)",
+   "strange-materia (out of play)",
+   "pigeon-peon (out of play)",
+   "marching-elephant (out of play)",
+   "subterraneaner (out of play)",
+   "cave-centipede (out of play)",
+   "scree-goat (out of play)",
+   "fox-sharpshot (out of play)",
+   "monitor-rambler (out of play)",
+   "dynamite-packrat (out of play)",
+   "clover-butterfly (out of play)",
+   "field-crow (out of play)",
+   "rabid-jackal (out of play)",
+   "egg-woodland",
+   "egg-bird",
+   "egg-otter",
+   "egg-scaly",
+   "egg-bug",
+   "egg-water",
+   "egg-beast",
+   "rafflesia (out of play)",
+   "ironback-gorilla (out of play)",
+   "baby-bat (out of play)",
+   "egg-red-dragon",
+   "jay-pilferer (out of play)",
+   "mongoose-duelist (out of play)",
+   "mudflat-godwit (out of play)",
+   "moon-jerboa (out of play)",
+   "werebadger (out of play)",
+   "tarantula-hawk (out of play)",
+   "margay (out of play)",
+   "seed-cache-squirrel (out of play)",
+   "vampire-bat-nurse (out of play)",
+   "mantis-shrimp (out of play)",
+   "firefly-swarm (out of play)",
+   "electric-catfish (out of play)",
+   "salamander-pyromancer (out of play)",
+   "starfall-owl (out of play)",
+   "armadillo-guard (out of play)",
+   "piranha-shoal (out of play)",
+   "cone-snail (out of play)",
+   "anaconda-coil (out of play)",
+   "skunk-gasser (out of play)",
+   "fire-hawk (out of play)",
+   "cleaner-wrasse (out of play)",
+   "lovebird (out of play)",
+   "horned-lizard (out of play)",
+   "marula-monkey (out of play)",
+   "gallery-orb-weaver (out of play)",
+   "sea-cucumber (out of play)",
+   "grotto-lobster (out of play)",
+   "pale-oryx (out of play)",
+   "rock-pool-starfish (out of play)",
+   "fungus-gnat-cloud (out of play)",
+   "horseshoe-crab (out of play)",
+   "sea-hare (out of play)",
+   "yellow-bellied-sea-snake (out of play)",
+   "crown-of-thorns-star (out of play)",
+   "garden-tiger-moth (out of play)",
+   "krill-swarm (out of play)",
+   "musk-ox-calf (out of play)",
+   "terraumbra (out of play)",
+   "exo-podas (out of play)",
+   "pink-maus (out of play)",
+   "tobasco-drakon (out of play)",
+   "demo-panda (out of play)",
+   "crowbar (out of play)",
+   "frost-slick (out of play)",
+   "magma-vent (out of play)",
+   "bog-seep (out of play)",
+   "miasma (out of play)",
+   "rockfall (out of play)",
+   "grave-call (out of play)",
+   "smoke-screen (out of play)",
+   "magnet (out of play)",
+   "lava-waders",
+   "ironclaw-fiddler (out of play)",
+   "bloodscent-shark (out of play)",
+   "musk-ox-matriarch (out of play)",
+   "termite-forager (out of play)",
+   "marmot-stonecutter (out of play)",
+   "beaver-feller (out of play)",
+   "salvager-hermit-crab (out of play)",
+   "moonshell-snail (out of play)",
+   "static-fennec (out of play)",
+   "magpie-collector (out of play)"
+  ]
+ },
+ "changes": [
+  {
+   "id": "daily-post",
+   "name": "Daily Post",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "1/1",
+   "old": {
+    "use": 0.73,
+    "N": 14.09,
+    "x1": 10.31,
+    "S": 4.31,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.6,
+    "N": 14.09,
+    "x1": 8.41,
+    "x2": 7.31,
+    "N2": 34.63,
+    "S": 2.41,
+    "verdict": "under"
+   },
+   "kind": "lift",
+   "dA": 0,
+   "dH": 1,
+   "attack": 1,
+   "health": 2,
+   "to": "1/2",
+   "after": {
+    "use": 0.7,
+    "N": 14.09,
+    "x1": 9.91,
+    "x2": 8.81,
+    "cap2": 0.25
+   }
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "inPlay": true,
+   "stats": "2/3",
+   "old": {
+    "use": 0.45,
+    "N": 33.71,
+    "x1": 15.18,
+    "S": 6.18,
+    "verdict": "under"
+   },
+   "new": {
+    "use": 0.59,
+    "N": 33.71,
+    "x1": 19.84,
+    "x2": 123.51,
+    "N2": 198.23,
+    "S": 10.84,
+    "verdict": "under"
+   },
+   "kind": "named",
+   "why": "BUDGET2-5 (owner, via the coordinator): lift to 4/9 (was 2/3, 45% of N)",
+   "dA": 2,
+   "dH": 6,
+   "attack": 4,
+   "health": 9,
+   "to": "4/9",
+   "after": {
+    "use": 0.94,
+    "N": 33.71,
+    "x1": 31.84,
+    "x2": 153.51,
+    "cap2": 0.77,
+    "verdict": "ok"
+   }
+  },
+  {
+   "id": "peak-condor",
+   "name": "Peak Condor",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/7",
+   "old": {
+    "use": 0.93,
+    "N": 19.29,
+    "x1": 18,
+    "S": -6,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.98,
+    "N": 19.29,
+    "x1": 18.85,
+    "x2": 4.98,
+    "N2": 64.91,
+    "S": -5.15,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-5: onto the fair line (-2.3 a copy): 3/7 -> 4/7 still read -2.3 in the SKILL2 contribution run (it swings every other round), so 4/10",
+   "dA": 1,
+   "dH": 3,
+   "attack": 4,
+   "health": 10,
+   "to": "4/10",
+   "after": {
+    "use": 1.44,
+    "N": 19.29,
+    "x1": 27.85,
+    "x2": 33.48,
+    "cap2": 0.52,
+    "verdict": "over"
+   }
+  },
+  {
+   "id": "ashbone-ghoul",
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/7",
+   "old": {
+    "use": 0.75,
+    "N": 19.99,
+    "x1": 14.99,
+    "S": 1.99,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.9,
+    "N": 19.99,
+    "x1": 17.92,
+    "x2": 38.21,
+    "N2": 69.71,
+    "S": 4.92,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-1: toward the fair line (+4.7 a copy): 2/7 -> 2/5 still read +3.0 in the SKILL2 contribution run, so 1/5 (Remember 1 + its trigger re-priced 1.99 -> 4.92)",
+   "dA": -1,
+   "dH": -2,
+   "attack": 1,
+   "health": 5,
+   "to": "1/5",
+   "after": {
+    "use": 0.65,
+    "N": 19.99,
+    "x1": 12.92,
+    "x2": 29.21,
+    "cap2": 0.42,
+    "verdict": "ok"
+   }
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "1/11",
+   "old": {
+    "use": 0.85,
+    "N": 20.92,
+    "x1": 17.8,
+    "S": 3.8,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.89,
+    "N": 20.92,
+    "x1": 18.63,
+    "x2": 32.44,
+    "N2": 76.34,
+    "S": 4.63,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-5: onto the fair line (-1.5 a copy): 1/11 -> 1/13 read -1.6 in the SKILL2 contribution run, so 2/13",
+   "dA": 1,
+   "dH": 2,
+   "attack": 2,
+   "health": 13,
+   "to": "2/13",
+   "after": {
+    "use": 1.13,
+    "N": 20.92,
+    "x1": 23.63,
+    "x2": 47.44,
+    "cap2": 0.62,
+    "verdict": "over"
+   }
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "3/9",
+   "old": {
+    "use": 0.96,
+    "N": 23.26,
+    "x1": 22.4,
+    "S": 4.4,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 23.26,
+    "x1": 25.2,
+    "x2": 78.84,
+    "N2": 94.38,
+    "S": 7.2,
+    "verdict": "over"
+   },
+   "kind": "named",
+   "why": "DECK1-1: the re-fit rule gave 3/7 (Brood 2 4.4 -> 7.2), still +2.6 a copy over the fair line: 2/7",
+   "dA": -1,
+   "dH": -2,
+   "attack": 2,
+   "health": 7,
+   "to": "2/7",
+   "after": {
+    "use": 0.87,
+    "N": 23.26,
+    "x1": 20.2,
+    "x2": 65.84,
+    "cap2": 0.7,
+    "verdict": "ok"
+   }
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "1/10",
+   "old": {
+    "use": 0.93,
+    "N": 24.19,
+    "x1": 22.5,
+    "S": 3,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.1,
+    "N": 24.19,
+    "x1": 26.7,
+    "x2": 66.84,
+    "N2": 102.08,
+    "S": 7.2,
+    "verdict": "over"
+   },
+   "kind": "named",
+   "why": "DECK1-1: the re-fit rule gave 1/8 (Fletcher 0 -> 3.18, Arrow 1 3 -> 4.02), still +4.2 a copy over the fair line: 1/6",
+   "dA": 0,
+   "dH": -4,
+   "attack": 1,
+   "health": 6,
+   "to": "1/6",
+   "after": {
+    "use": 0.86,
+    "N": 24.19,
+    "x1": 20.7,
+    "x2": 60.84,
+    "cap2": 0.6,
+    "verdict": "ok"
+   }
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/14",
+   "old": {
+    "use": 0.96,
+    "N": 21.15,
+    "x1": 20.2,
+    "S": 0.2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.96,
+    "N": 21.15,
+    "x1": 20.2,
+    "x2": 28.04,
+    "N2": 78.03,
+    "S": 0.2,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-1: toward the fair line (+3.2 a copy): 2/14 -> 2/10 (Executioner reads nothing on the carriers: its strength is the body)",
+   "dA": 0,
+   "dH": -4,
+   "attack": 2,
+   "health": 10,
+   "to": "2/10",
+   "after": {
+    "use": 0.77,
+    "N": 21.15,
+    "x1": 16.2,
+    "x2": 20.04,
+    "cap2": 0.26,
+    "verdict": "ok"
+   }
+  },
+  {
+   "id": "hawk-arrowkeeper",
+   "name": "Hawk Arrowkeeper",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "1/8",
+   "old": {
+    "use": 0.9,
+    "N": 19.68,
+    "x1": 17.64,
+    "S": 1.14,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.9,
+    "N": 19.68,
+    "x1": 17.64,
+    "x2": 13.3,
+    "N2": 67.56,
+    "S": 1.14,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-5: onto the fair line (-2.2 a copy): 1/8 -> 2/8",
+   "dA": 1,
+   "dH": 0,
+   "attack": 2,
+   "health": 8,
+   "to": "2/8",
+   "after": {
+    "use": 1.13,
+    "N": 19.68,
+    "x1": 22.14,
+    "x2": 25.3,
+    "cap2": 0.37,
+    "verdict": "over"
+   }
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "1/8",
+   "old": {
+    "use": 0.85,
+    "N": 21.15,
+    "x1": 18.02,
+    "S": 1.52,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.91,
+    "N": 21.15,
+    "x1": 19.17,
+    "x2": 19.13,
+    "N2": 78.03,
+    "S": 2.67,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-5: onto the fair line (-1.9 a copy): 1/8 -> 2/8",
+   "dA": 1,
+   "dH": 0,
+   "attack": 2,
+   "health": 8,
+   "to": "2/8",
+   "after": {
+    "use": 1.12,
+    "N": 21.15,
+    "x1": 23.67,
+    "x2": 31.13,
+    "cap2": 0.4,
+    "verdict": "over"
+   }
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/2",
+   "old": {
+    "use": 0.96,
+    "N": 16.72,
+    "x1": 16,
+    "S": 4,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.96,
+    "N": 16.72,
+    "x1": 16,
+    "x2": 22,
+    "N2": 48.77,
+    "S": 4,
+    "verdict": "ok"
+   },
+   "kind": "named",
+   "why": "DECK1-5: onto the fair line (-2.2 a copy): 2/2 -> 3/2",
+   "dA": 1,
+   "dH": 0,
+   "attack": 3,
+   "health": 2,
+   "to": "3/2",
+   "after": {
+    "use": 1.23,
+    "N": 16.72,
+    "x1": 20.5,
+    "x2": 25,
+    "cap2": 0.51,
+    "verdict": "over"
+   }
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/2",
+   "old": {
+    "use": 0.94,
+    "N": 12.92,
+    "x1": 12.12,
+    "S": 1.12,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 12.92,
+    "x1": 13.02,
+    "x2": 10.08,
+    "N2": 29.12,
+    "S": 2.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 2,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.93,
+    "N": 12.92,
+    "x1": 12.02,
+    "x2": 12.08,
+    "cap2": 0.41
+   }
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/2",
+   "old": {
+    "use": 0.94,
+    "N": 12.92,
+    "x1": 12.12,
+    "S": 1.12,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 12.92,
+    "x1": 13.02,
+    "x2": 10.08,
+    "N2": 29.12,
+    "S": 2.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 2,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.93,
+    "N": 12.92,
+    "x1": 12.02,
+    "x2": 12.08,
+    "cap2": 0.41
+   }
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/2",
+   "old": {
+    "use": 0.94,
+    "N": 12.92,
+    "x1": 12.12,
+    "S": 1.12,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 12.92,
+    "x1": 13.02,
+    "x2": 10.08,
+    "N2": 29.12,
+    "S": 2.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 2,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.93,
+    "N": 12.92,
+    "x1": 12.02,
+    "x2": 12.08,
+    "cap2": 0.41
+   }
+  },
+  {
+   "id": "petal-fletcher",
+   "name": "Petal Fletcher",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/1",
+   "old": {
+    "use": 0.96,
+    "N": 14.09,
+    "x1": 13.5,
+    "S": 3,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.03,
+    "N": 14.09,
+    "x1": 14.52,
+    "x2": 19.16,
+    "N2": 34.63,
+    "S": 4.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 2,
+   "attack": 1,
+   "health": 3,
+   "to": "1/3",
+   "after": {
+    "use": 0.92,
+    "N": 14.09,
+    "x1": 13.02,
+    "x2": 20.66,
+    "cap2": 0.6
+   }
+  },
+  {
+   "id": "glass-octopus",
+   "name": "Glass Octopus",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "4/13",
+   "old": {
+    "use": 0.93,
+    "N": 29.04,
+    "x1": 27,
+    "S": 2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.13,
+    "N": 29.04,
+    "x1": 32.7,
+    "x2": 111.29,
+    "N2": 147.11,
+    "S": 7.7,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -4,
+   "attack": 4,
+   "health": 9,
+   "to": "4/9",
+   "after": {
+    "use": 0.99,
+    "N": 29.04,
+    "x1": 28.7,
+    "x2": 95.29,
+    "cap2": 0.65
+   }
+  },
+  {
+   "id": "nectar-vintner",
+   "name": "Nectar Vintner",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/1",
+   "old": {
+    "use": 0.83,
+    "N": 14.09,
+    "x1": 11.7,
+    "S": 1.2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 14.09,
+    "x1": 14.75,
+    "x2": 21.06,
+    "N2": 34.63,
+    "S": 4.25,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 1,
+   "health": 2,
+   "to": "1/2",
+   "after": {
+    "use": 0.83,
+    "N": 14.09,
+    "x1": 11.75,
+    "x2": 21.06,
+    "cap2": 0.61
+   }
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/3",
+   "old": {
+    "use": 0.96,
+    "N": 16.72,
+    "x1": 16,
+    "S": 4,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 16.72,
+    "x1": 18.06,
+    "x2": 45.72,
+    "N2": 48.77,
+    "S": 6.06,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.96,
+    "N": 16.72,
+    "x1": 16.06,
+    "x2": 44.72,
+    "cap2": 0.92
+   }
+  },
+  {
+   "id": "octopus-tactician",
+   "name": "Octopus Tactician",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "6/7",
+   "old": {
+    "use": 0.9,
+    "N": 30.67,
+    "x1": 27.6,
+    "S": 2.6,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 30.67,
+    "x1": 32.3,
+    "x2": 95.29,
+    "N2": 164.09,
+    "S": 7.3,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 0,
+   "attack": 5,
+   "health": 7,
+   "to": "5/7",
+   "after": {
+    "use": 0.96,
+    "N": 30.67,
+    "x1": 29.3,
+    "x2": 88.29,
+    "cap2": 0.54
+   }
+  },
+  {
+   "id": "echo-matriarch",
+   "name": "Echo Matriarch",
+   "rarity": "heroic",
+   "inPlay": true,
+   "stats": "2/13",
+   "old": {
+    "use": 0.97,
+    "N": 32.54,
+    "x1": 31.59,
+    "S": 3.09,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.06,
+    "N": 32.54,
+    "x1": 34.52,
+    "x2": 75.24,
+    "N2": 184.71,
+    "S": 6.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 2,
+   "health": 11,
+   "to": "2/11",
+   "after": {
+    "use": 0.97,
+    "N": 32.54,
+    "x1": 31.52,
+    "x2": 69.24,
+    "cap2": 0.37
+   }
+  },
+  {
+   "id": "echo-screecher",
+   "name": "Echo Screecher",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "2/7",
+   "old": {
+    "use": 0.96,
+    "N": 23.49,
+    "x1": 22.59,
+    "S": 3.09,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.09,
+    "N": 23.49,
+    "x1": 25.52,
+    "x2": 57.24,
+    "N2": 96.25,
+    "S": 6.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 2,
+   "health": 5,
+   "to": "2/5",
+   "after": {
+    "use": 0.96,
+    "N": 23.49,
+    "x1": 22.52,
+    "x2": 51.24,
+    "cap2": 0.53
+   }
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/13",
+   "old": {
+    "use": 0.94,
+    "N": 36.8,
+    "x1": 34.54,
+    "S": 1.54,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.06,
+    "N": 36.8,
+    "x1": 39.02,
+    "x2": 94.74,
+    "N2": 236.24,
+    "S": 6.02,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 3,
+   "health": 11,
+   "to": "3/11",
+   "after": {
+    "use": 0.98,
+    "N": 36.8,
+    "x1": 36.02,
+    "x2": 85.74,
+    "cap2": 0.36
+   }
+  },
+  {
+   "id": "phoenix-mushrooms",
+   "name": "Phoenix Mushrooms",
+   "rarity": "epic",
+   "inPlay": true,
+   "stats": "1/10",
+   "old": {
+    "use": 0.95,
+    "N": 25.12,
+    "x1": 23.81,
+    "S": 5.09,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 25.12,
+    "x1": 27.12,
+    "x2": 80.56,
+    "N2": 110.08,
+    "S": 8.4,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 1,
+   "health": 8,
+   "to": "1/8",
+   "after": {
+    "use": 0.96,
+    "N": 25.12,
+    "x1": 24.24,
+    "x2": 78.56,
+    "cap2": 0.71
+   }
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "3/10",
+   "old": {
+    "use": 0.99,
+    "N": 22.09,
+    "x1": 21.79,
+    "S": 2.79,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.06,
+    "N": 22.09,
+    "x1": 23.5,
+    "x2": 50.25,
+    "N2": 85.12,
+    "S": 4.5,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 3,
+   "health": 8,
+   "to": "3/8",
+   "after": {
+    "use": 0.97,
+    "N": 22.09,
+    "x1": 21.5,
+    "x2": 44.25,
+    "cap2": 0.52
+   }
+  },
+  {
+   "id": "stoat-cutthroat",
+   "name": "Stoat Cutthroat",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "3/12",
+   "old": {
+    "use": 0.97,
+    "N": 25.12,
+    "x1": 24.34,
+    "S": 3.34,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 25.12,
+    "x1": 26.35,
+    "x2": 64.62,
+    "N2": 110.08,
+    "S": 5.35,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 3,
+   "health": 10,
+   "to": "3/10",
+   "after": {
+    "use": 0.97,
+    "N": 25.12,
+    "x1": 24.35,
+    "x2": 58.62,
+    "cap2": 0.53
+   }
+  },
+  {
+   "id": "birdlime-dauber",
+   "name": "Birdlime Dauber",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/11",
+   "old": {
+    "use": 0.95,
+    "N": 21.62,
+    "x1": 20.6,
+    "S": 3.6,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 21.62,
+    "x1": 21.67,
+    "x2": 43.81,
+    "N2": 81.54,
+    "S": 4.67,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 10,
+   "to": "2/10",
+   "after": {
+    "use": 0.96,
+    "N": 21.62,
+    "x1": 20.67,
+    "x2": 41.81,
+    "cap2": 0.51
+   }
+  },
+  {
+   "id": "boreal-elk",
+   "name": "Boreal Elk",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "5/6",
+   "old": {
+    "use": 0.86,
+    "N": 25.59,
+    "x1": 22.1,
+    "S": 1.1,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 25.59,
+    "x1": 25.82,
+    "x2": 53.23,
+    "N2": 114.23,
+    "S": 4.82,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 5,
+   "health": 5,
+   "to": "5/5",
+   "after": {
+    "use": 0.97,
+    "N": 25.59,
+    "x1": 24.82,
+    "x2": 48.23,
+    "cap2": 0.42
+   }
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "6/29",
+   "old": {
+    "use": 0.9,
+    "N": 54.08,
+    "x1": 48.88,
+    "S": 1.88,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 54.08,
+    "x1": 54.23,
+    "x2": 226.27,
+    "N2": 510.19,
+    "S": 7.23,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 6,
+   "health": 28,
+   "to": "6/28",
+   "after": {
+    "use": 0.98,
+    "N": 54.08,
+    "x1": 53.23,
+    "x2": 220.27,
+    "cap2": 0.43
+   }
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/11",
+   "old": {
+    "use": 0.75,
+    "N": 22.56,
+    "x1": 17,
+    "S": 0,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 22.56,
+    "x1": 22.82,
+    "x2": 55.87,
+    "N2": 88.78,
+    "S": 5.82,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 10,
+   "to": "2/10",
+   "after": {
+    "use": 0.97,
+    "N": 22.56,
+    "x1": 21.82,
+    "x2": 53.87,
+    "cap2": 0.61
+   }
+  },
+  {
+   "id": "fathom-leviathan",
+   "name": "Fathom Leviathan",
+   "rarity": "legendary",
+   "inPlay": true,
+   "stats": "5/25",
+   "old": {
+    "use": 0.97,
+    "N": 57.06,
+    "x1": 55.46,
+    "S": 15.46,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 57.06,
+    "x1": 57.26,
+    "x2": 422.91,
+    "N2": 567.96,
+    "S": 17.26,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 5,
+   "health": 24,
+   "to": "5/24",
+   "after": {
+    "use": 0.99,
+    "N": 57.06,
+    "x1": 56.26,
+    "x2": 417.91,
+    "cap2": 0.74
+   }
+  },
+  {
+   "id": "forager-ant",
+   "name": "Forager Ant",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "1/7",
+   "old": {
+    "use": 0.91,
+    "N": 11.3,
+    "x1": 10.27,
+    "S": 0.27,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 11.3,
+    "x1": 12.22,
+    "x2": 11.93,
+    "N2": 22.27,
+    "S": 2.22,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 6,
+   "to": "1/6",
+   "after": {
+    "use": 0.99,
+    "N": 11.3,
+    "x1": 11.22,
+    "x2": 10.93,
+    "cap2": 0.49
+   }
+  },
+  {
+   "id": "hush-wing-spy",
+   "name": "Hush-Wing Spy",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/4",
+   "old": {
+    "use": 0.95,
+    "N": 17.88,
+    "x1": 17,
+    "S": 2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.07,
+    "N": 17.88,
+    "x1": 19.1,
+    "x2": 28.81,
+    "N2": 55.77,
+    "S": 4.1,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 3,
+   "to": "2/3",
+   "after": {
+    "use": 0.98,
+    "N": 17.88,
+    "x1": 17.6,
+    "x2": 25.81,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "4/10",
+   "old": {
+    "use": 0.97,
+    "N": 23.49,
+    "x1": 22.9,
+    "S": 0.9,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 23.49,
+    "x1": 23.97,
+    "x2": 43.88,
+    "N2": 96.25,
+    "S": 1.97,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 9,
+   "to": "4/9",
+   "after": {
+    "use": 0.98,
+    "N": 23.49,
+    "x1": 22.97,
+    "x2": 39.88,
+    "cap2": 0.41
+   }
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "3/12",
+   "old": {
+    "use": 0.98,
+    "N": 24.89,
+    "x1": 24.5,
+    "S": 3.5,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 24.89,
+    "x1": 25.01,
+    "x2": 52.08,
+    "N2": 108.07,
+    "S": 4.01,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 11,
+   "to": "3/11",
+   "after": {
+    "use": 0.96,
+    "N": 24.89,
+    "x1": 24.01,
+    "x2": 49.08,
+    "cap2": 0.45
+   }
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "4/4",
+   "old": {
+    "use": 0.89,
+    "N": 19.29,
+    "x1": 17.2,
+    "S": 1.2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 19.29,
+    "x1": 20.25,
+    "x2": 34.06,
+    "N2": 64.91,
+    "S": 4.25,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 3,
+   "to": "4/3",
+   "after": {
+    "use": 1,
+    "N": 19.29,
+    "x1": 19.25,
+    "x2": 30.06,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "otter-royal-guard",
+   "name": "Royal Guard",
+   "rarity": "superrare",
+   "inPlay": true,
+   "stats": "4/9",
+   "old": {
+    "use": 0.98,
+    "N": 25.12,
+    "x1": 24.58,
+    "S": 3.58,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 25.12,
+    "x1": 25.62,
+    "x2": 57.34,
+    "N2": 110.08,
+    "S": 4.62,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 8,
+   "to": "4/8",
+   "after": {
+    "use": 0.98,
+    "N": 25.12,
+    "x1": 24.62,
+    "x2": 53.34,
+    "cap2": 0.48
+   }
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "5/6",
+   "old": {
+    "use": 0.91,
+    "N": 23.72,
+    "x1": 21.69,
+    "S": 0.69,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 23.72,
+    "x1": 23.96,
+    "x2": 38.76,
+    "N2": 98.15,
+    "S": 2.96,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 5,
+   "health": 5,
+   "to": "5/5",
+   "after": {
+    "use": 0.97,
+    "N": 23.72,
+    "x1": 22.96,
+    "x2": 33.76,
+    "cap2": 0.34
+   }
+  },
+  {
+   "id": "pelican-diver",
+   "name": "Pelican Diver",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "2/9",
+   "old": {
+    "use": 1,
+    "N": 23.26,
+    "x1": 23.22,
+    "S": 0.72,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 23.26,
+    "x1": 24.32,
+    "x2": 30.31,
+    "N2": 94.38,
+    "S": 1.82,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 8,
+   "to": "2/8",
+   "after": {
+    "use": 0.98,
+    "N": 23.26,
+    "x1": 22.82,
+    "x2": 27.31,
+    "cap2": 0.29
+   }
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "8/8",
+   "old": {
+    "use": 0.89,
+    "N": 40.3,
+    "x1": 35.99,
+    "S": 3.99,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 40.3,
+    "x1": 40.69,
+    "x2": 139.52,
+    "N2": 283.31,
+    "S": 8.69,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 8,
+   "health": 7,
+   "to": "8/7",
+   "after": {
+    "use": 0.98,
+    "N": 40.3,
+    "x1": 39.69,
+    "x2": 131.52,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "porcupine-roller",
+   "name": "Porcupine Roller",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "3/3",
+   "old": {
+    "use": 0.9,
+    "N": 16.19,
+    "x1": 14.5,
+    "S": 2.5,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 16.19,
+    "x1": 16.56,
+    "x2": 29.79,
+    "N2": 45.72,
+    "S": 4.56,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 2,
+   "to": "3/2",
+   "after": {
+    "use": 0.96,
+    "N": 16.19,
+    "x1": 15.56,
+    "x2": 26.79,
+    "cap2": 0.59
+   }
+  },
+  {
+   "id": "pumice-beetle",
+   "name": "Pumice Beetle",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "3/12",
+   "old": {
+    "use": 0.97,
+    "N": 23.72,
+    "x1": 23.1,
+    "S": 2.1,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 23.72,
+    "x1": 23.92,
+    "x2": 44.53,
+    "N2": 98.15,
+    "S": 2.92,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 11,
+   "to": "3/11",
+   "after": {
+    "use": 0.97,
+    "N": 23.72,
+    "x1": 22.92,
+    "x2": 41.53,
+    "cap2": 0.42
+   }
+  },
+  {
+   "id": "redwood-woodpecker",
+   "name": "Redwood Woodpecker",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/12",
+   "old": {
+    "use": 0.95,
+    "N": 22.09,
+    "x1": 21,
+    "S": 3,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 22.09,
+    "x1": 22.62,
+    "x2": 45.34,
+    "N2": 85.12,
+    "S": 4.62,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 11,
+   "to": "2/11",
+   "after": {
+    "use": 0.98,
+    "N": 22.09,
+    "x1": 21.62,
+    "x2": 43.34,
+    "cap2": 0.51
+   }
+  },
+  {
+   "id": "riptide-eel",
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "6/8",
+   "old": {
+    "use": 0.97,
+    "N": 22.09,
+    "x1": 21.5,
+    "S": -4.5,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 22.09,
+    "x1": 22.35,
+    "x2": 34.68,
+    "N2": 85.12,
+    "S": -3.65,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 6,
+   "health": 7,
+   "to": "6/7",
+   "after": {
+    "use": 0.97,
+    "N": 22.09,
+    "x1": 21.35,
+    "x2": 28.68,
+    "cap2": 0.34
+   }
+  },
+  {
+   "id": "sunspire-sky-sovereign",
+   "name": "Sunspire Sky-Sovereign",
+   "rarity": "heroic",
+   "inPlay": true,
+   "stats": "2/10",
+   "old": {
+    "use": 0.99,
+    "N": 27.46,
+    "x1": 27.2,
+    "S": 3.2,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 27.46,
+    "x1": 27.62,
+    "x2": 43.1,
+    "N2": 131.54,
+    "S": 3.62,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 9,
+   "to": "2/9",
+   "after": {
+    "use": 0.95,
+    "N": 27.46,
+    "x1": 26.12,
+    "x2": 40.1,
+    "cap2": 0.3
+   }
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/7",
+   "old": {
+    "use": 0.98,
+    "N": 15.02,
+    "x1": 14.68,
+    "S": 1.68,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 15.02,
+    "x1": 15.65,
+    "x2": 21.02,
+    "N2": 39.35,
+    "S": 2.65,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 6,
+   "to": "2/6",
+   "after": {
+    "use": 0.98,
+    "N": 15.02,
+    "x1": 14.65,
+    "x2": 19.02,
+    "cap2": 0.48
+   }
+  },
+  {
+   "id": "two-headed-calf",
+   "name": "Two-Headed Calf",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "3/11",
+   "old": {
+    "use": 0.86,
+    "N": 24.66,
+    "x1": 21.27,
+    "S": 1.27,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 24.66,
+    "x1": 24.92,
+    "x2": 57.21,
+    "N2": 106.08,
+    "S": 4.92,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 10,
+   "to": "3/10",
+   "after": {
+    "use": 0.97,
+    "N": 24.66,
+    "x1": 23.92,
+    "x2": 54.21,
+    "cap2": 0.51
+   }
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/4",
+   "old": {
+    "use": 0.92,
+    "N": 19.52,
+    "x1": 17.89,
+    "S": 2.89,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 19.52,
+    "x1": 19.66,
+    "x2": 33.72,
+    "N2": 66.47,
+    "S": 4.66,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 3,
+   "to": "2/3",
+   "after": {
+    "use": 0.93,
+    "N": 19.52,
+    "x1": 18.16,
+    "x2": 30.72,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "inPlay": false,
+   "stats": "7/6",
+   "old": {
+    "use": 1,
+    "N": 36.04,
+    "x1": 35.91,
+    "S": 8.91,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.13,
+    "N": 36.04,
+    "x1": 40.66,
+    "x2": 228.6,
+    "N2": 226.58,
+    "S": 13.66,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -2,
+   "dH": 1,
+   "attack": 5,
+   "health": 7,
+   "to": "5/7",
+   "after": {
+    "use": 0.99,
+    "N": 36.04,
+    "x1": 35.66,
+    "x2": 221.6,
+    "cap2": 0.98
+   }
+  },
+  {
+   "id": "gnawed-matriarch",
+   "name": "Gnawed Matriarch",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "4/14",
+   "old": {
+    "use": 1,
+    "N": 26,
+    "x1": 26,
+    "S": 0,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.22,
+    "N": 26,
+    "x1": 31.82,
+    "x2": 89.87,
+    "N2": 117.92,
+    "S": 5.82,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -6,
+   "attack": 4,
+   "health": 8,
+   "to": "4/8",
+   "after": {
+    "use": 0.99,
+    "N": 26,
+    "x1": 25.82,
+    "x2": 65.87,
+    "cap2": 0.56
+   }
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "5/5",
+   "old": {
+    "use": 0.99,
+    "N": 23.66,
+    "x1": 23.34,
+    "S": 3.34,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.06,
+    "N": 23.66,
+    "x1": 25.12,
+    "x2": 51.21,
+    "N2": 97.65,
+    "S": 5.12,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 4,
+   "health": 6,
+   "to": "4/6",
+   "after": {
+    "use": 0.98,
+    "N": 23.66,
+    "x1": 23.12,
+    "x2": 50.21,
+    "cap2": 0.51
+   }
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "4/4",
+   "old": {
+    "use": 0.98,
+    "N": 20.45,
+    "x1": 20,
+    "S": 4,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 20.45,
+    "x1": 22.06,
+    "x2": 52.72,
+    "N2": 72.95,
+    "S": 6.06,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 3,
+   "health": 5,
+   "to": "3/5",
+   "after": {
+    "use": 0.98,
+    "N": 20.45,
+    "x1": 20.06,
+    "x2": 51.72,
+    "cap2": 0.71
+   }
+  },
+  {
+   "id": "pack-wolf-reaver",
+   "name": "Pack Wolf Reaver",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "3/16",
+   "old": {
+    "use": 0.98,
+    "N": 26.7,
+    "x1": 26.27,
+    "S": 1.27,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.12,
+    "N": 26.7,
+    "x1": 29.92,
+    "x2": 72.21,
+    "N2": 124.36,
+    "S": 4.92,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -4,
+   "attack": 3,
+   "health": 12,
+   "to": "3/12",
+   "after": {
+    "use": 0.97,
+    "N": 26.7,
+    "x1": 25.92,
+    "x2": 60.21,
+    "cap2": 0.48
+   }
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "3/6",
+   "old": {
+    "use": 0.98,
+    "N": 19.29,
+    "x1": 18.89,
+    "S": 3.89,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.09,
+    "N": 19.29,
+    "x1": 20.99,
+    "x2": 53.88,
+    "N2": 64.91,
+    "S": 5.99,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 2,
+   "health": 7,
+   "to": "2/7",
+   "after": {
+    "use": 0.98,
+    "N": 19.29,
+    "x1": 18.99,
+    "x2": 49.88,
+    "cap2": 0.77
+   }
+  },
+  {
+   "id": "sulfur-vent-crab",
+   "name": "Sulfur Vent Crab",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "4/3",
+   "old": {
+    "use": 1,
+    "N": 17.88,
+    "x1": 17.85,
+    "S": 2.85,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 17.88,
+    "x1": 19.28,
+    "x2": 30.32,
+    "N2": 55.77,
+    "S": 4.28,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 1,
+   "attack": 3,
+   "health": 4,
+   "to": "3/4",
+   "after": {
+    "use": 0.97,
+    "N": 17.88,
+    "x1": 17.28,
+    "x2": 30.32,
+    "cap2": 0.54
+   }
+  },
+  {
+   "id": "inland-taipan",
+   "name": "Inland Taipan",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "4/11",
+   "old": {
+    "use": 0.97,
+    "N": 29.04,
+    "x1": 28.26,
+    "S": 5.26,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.07,
+    "N": 29.04,
+    "x1": 31.2,
+    "x2": 111.24,
+    "N2": 147.11,
+    "S": 8.2,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 0,
+   "attack": 3,
+   "health": 11,
+   "to": "3/11",
+   "after": {
+    "use": 0.97,
+    "N": 29.04,
+    "x1": 28.2,
+    "x2": 100.24,
+    "cap2": 0.68
+   }
+  },
+  {
+   "id": "moray-ambusher",
+   "name": "Moray Ambusher",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "4/5",
+   "old": {
+    "use": 0.95,
+    "N": 23.66,
+    "x1": 22.5,
+    "S": 5.5,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.07,
+    "N": 23.66,
+    "x1": 25.32,
+    "x2": 89.22,
+    "N2": 97.65,
+    "S": 8.32,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 0,
+   "attack": 3,
+   "health": 5,
+   "to": "3/5",
+   "after": {
+    "use": 0.94,
+    "N": 23.66,
+    "x1": 22.32,
+    "x2": 84.22,
+    "cap2": 0.86
+   }
+  },
+  {
+   "id": "quill-thorn-boar",
+   "name": "Quill-Thorn Boar",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "4/5",
+   "old": {
+    "use": 0.96,
+    "N": 21.62,
+    "x1": 20.75,
+    "S": 3.75,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.07,
+    "N": 21.62,
+    "x1": 23.23,
+    "x2": 58.81,
+    "N2": 81.54,
+    "S": 6.23,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": -1,
+   "dH": 0,
+   "attack": 3,
+   "health": 5,
+   "to": "3/5",
+   "after": {
+    "use": 0.94,
+    "N": 21.62,
+    "x1": 20.23,
+    "x2": 53.81,
+    "cap2": 0.66
+   }
+  },
+  {
+   "id": "alpine-avalanche",
+   "name": "Alpine Avalanche",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "4/11",
+   "old": {
+    "use": 0.91,
+    "N": 26.7,
+    "x1": 24.27,
+    "S": 1.27,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 26.7,
+    "x1": 27.92,
+    "x2": 68.21,
+    "N2": 124.36,
+    "S": 4.92,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -2,
+   "attack": 4,
+   "health": 9,
+   "to": "4/9",
+   "after": {
+    "use": 0.97,
+    "N": 26.7,
+    "x1": 25.92,
+    "x2": 60.21,
+    "cap2": 0.48
+   }
+  },
+  {
+   "id": "badger-sapper",
+   "name": "Badger Sapper",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "3/15",
+   "old": {
+    "use": 1,
+    "N": 26.7,
+    "x1": 26.68,
+    "S": 2.68,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 26.7,
+    "x1": 27.67,
+    "x2": 58.47,
+    "N2": 124.36,
+    "S": 3.67,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 14,
+   "to": "3/14",
+   "after": {
+    "use": 1,
+    "N": 26.7,
+    "x1": 26.67,
+    "x2": 55.47,
+    "cap2": 0.45
+   }
+  },
+  {
+   "id": "barkplate-beetle",
+   "name": "Barkplate Beetle",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "4/13",
+   "old": {
+    "use": 0.98,
+    "N": 27.87,
+    "x1": 27.35,
+    "S": 2.35,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.03,
+    "N": 27.87,
+    "x1": 28.78,
+    "x2": 66.29,
+    "N2": 135.5,
+    "S": 3.78,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 12,
+   "to": "4/12",
+   "after": {
+    "use": 1,
+    "N": 27.87,
+    "x1": 27.78,
+    "x2": 62.29,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "bog-shrew",
+   "name": "Bog Shrew",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "2/5",
+   "old": {
+    "use": 0.93,
+    "N": 12.92,
+    "x1": 12,
+    "S": 1,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.07,
+    "N": 12.92,
+    "x1": 13.77,
+    "x2": 17.67,
+    "N2": 29.12,
+    "S": 2.77,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.99,
+    "N": 12.92,
+    "x1": 12.77,
+    "x2": 15.67,
+    "cap2": 0.54
+   }
+  },
+  {
+   "id": "bucketknee-wolf",
+   "name": "Bucketknee Wolf",
+   "rarity": "veryrare",
+   "inPlay": false,
+   "stats": "5/10",
+   "old": {
+    "use": 0.98,
+    "N": 27.17,
+    "x1": 26.68,
+    "S": 1.68,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.03,
+    "N": 27.17,
+    "x1": 27.91,
+    "x2": 58.47,
+    "N2": 128.78,
+    "S": 2.91,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 5,
+   "health": 9,
+   "to": "5/9",
+   "after": {
+    "use": 0.99,
+    "N": 27.17,
+    "x1": 26.91,
+    "x2": 53.47,
+    "cap2": 0.42
+   }
+  },
+  {
+   "id": "conger-eel",
+   "name": "Conger Eel",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "3/6",
+   "old": {
+    "use": 0.87,
+    "N": 20.45,
+    "x1": 17.77,
+    "S": 2.77,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 20.45,
+    "x1": 21.42,
+    "x2": 59.22,
+    "N2": 72.95,
+    "S": 6.42,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 5,
+   "to": "3/5",
+   "after": {
+    "use": 1,
+    "N": 20.45,
+    "x1": 20.42,
+    "x2": 56.22,
+    "cap2": 0.77
+   }
+  },
+  {
+   "id": "eagle-diver",
+   "name": "Eagle Diver",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "3/3",
+   "old": {
+    "use": 0.96,
+    "N": 21.62,
+    "x1": 20.66,
+    "S": 2.66,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 21.62,
+    "x1": 21.81,
+    "x2": 28.02,
+    "N2": 81.54,
+    "S": 3.81,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 2,
+   "to": "3/2",
+   "after": {
+    "use": 0.94,
+    "N": 21.62,
+    "x1": 20.31,
+    "x2": 23.52,
+    "cap2": 0.29
+   }
+  },
+  {
+   "id": "frost-thistle-lynx",
+   "name": "Frost Thistle Lynx",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "1/15",
+   "old": {
+    "use": 0.95,
+    "N": 22.32,
+    "x1": 21.11,
+    "S": 3.11,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 22.32,
+    "x1": 22.51,
+    "x2": 35.34,
+    "N2": 86.91,
+    "S": 4.51,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 14,
+   "to": "1/14",
+   "after": {
+    "use": 0.96,
+    "N": 22.32,
+    "x1": 21.51,
+    "x2": 34.34,
+    "cap2": 0.4
+   }
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "2/4",
+   "old": {
+    "use": 0.94,
+    "N": 20.45,
+    "x1": 19.3,
+    "S": 4.3,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 20.45,
+    "x1": 21.36,
+    "x2": 52.45,
+    "N2": 72.95,
+    "S": 6.36,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 3,
+   "to": "2/3",
+   "after": {
+    "use": 0.97,
+    "N": 20.45,
+    "x1": 19.86,
+    "x2": 49.45,
+    "cap2": 0.68
+   }
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "1/17",
+   "old": {
+    "use": 0.89,
+    "N": 24.83,
+    "x1": 22.16,
+    "S": 2.16,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 24.83,
+    "x1": 24.84,
+    "x2": 40.43,
+    "N2": 107.55,
+    "S": 4.84,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 16,
+   "to": "1/16",
+   "after": {
+    "use": 0.96,
+    "N": 24.83,
+    "x1": 23.84,
+    "x2": 39.43,
+    "cap2": 0.37
+   }
+  },
+  {
+   "id": "gravel-mole",
+   "name": "Gravel Mole",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "1/12",
+   "old": {
+    "use": 0.95,
+    "N": 16.72,
+    "x1": 15.9,
+    "S": 0.9,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 16.72,
+    "x1": 16.97,
+    "x2": 15.88,
+    "N2": 48.77,
+    "S": 1.97,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 11,
+   "to": "1/11",
+   "after": {
+    "use": 0.96,
+    "N": 16.72,
+    "x1": 15.97,
+    "x2": 14.88,
+    "cap2": 0.31
+   }
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "4/13",
+   "old": {
+    "use": 0.99,
+    "N": 26,
+    "x1": 25.7,
+    "S": 0.7,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 26,
+    "x1": 26.04,
+    "x2": 53.08,
+    "N2": 117.92,
+    "S": 1.04,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 12,
+   "to": "4/12",
+   "after": {
+    "use": 0.96,
+    "N": 26,
+    "x1": 25.04,
+    "x2": 49.08,
+    "cap2": 0.42
+   }
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "2/5",
+   "old": {
+    "use": 0.97,
+    "N": 17.83,
+    "x1": 17.26,
+    "S": 0.76,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 17.83,
+    "x1": 18.16,
+    "x2": 17.76,
+    "N2": 55.46,
+    "S": 1.66,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 4,
+   "to": "2/4",
+   "after": {
+    "use": 0.93,
+    "N": 17.83,
+    "x1": 16.66,
+    "x2": 14.76,
+    "cap2": 0.27
+   }
+  },
+  {
+   "id": "millipede-hauler",
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "1/16",
+   "old": {
+    "use": 0.87,
+    "N": 24.83,
+    "x1": 21.59,
+    "S": 2.59,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 24.83,
+    "x1": 25.82,
+    "x2": 62.51,
+    "N2": 107.55,
+    "S": 6.82,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 15,
+   "to": "1/15",
+   "after": {
+    "use": 1,
+    "N": 24.83,
+    "x1": 24.82,
+    "x2": 61.51,
+    "cap2": 0.57
+   }
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "1/4",
+   "old": {
+    "use": 0.97,
+    "N": 12.92,
+    "x1": 12.55,
+    "S": 2.05,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1,
+    "N": 12.92,
+    "x1": 12.97,
+    "x2": 12.1,
+    "N2": 29.12,
+    "S": 2.47,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 3,
+   "to": "1/3",
+   "after": {
+    "use": 0.89,
+    "N": 12.92,
+    "x1": 11.47,
+    "x2": 10.6,
+    "cap2": 0.36
+   }
+  },
+  {
+   "id": "owl-fletcher",
+   "name": "Owl Fletcher",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "1/6",
+   "old": {
+    "use": 0.97,
+    "N": 19.05,
+    "x1": 18.39,
+    "S": 4.89,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 19.05,
+    "x1": 19.41,
+    "x2": 43.93,
+    "N2": 63.31,
+    "S": 5.91,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 5,
+   "to": "1/5",
+   "after": {
+    "use": 0.94,
+    "N": 19.05,
+    "x1": 17.91,
+    "x2": 42.43,
+    "cap2": 0.67
+   }
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "1/9",
+   "old": {
+    "use": 0.97,
+    "N": 14.09,
+    "x1": 13.68,
+    "S": 1.68,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.04,
+    "N": 14.09,
+    "x1": 14.65,
+    "x2": 16.02,
+    "N2": 34.63,
+    "S": 2.65,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 1,
+   "health": 8,
+   "to": "1/8",
+   "after": {
+    "use": 0.97,
+    "N": 14.09,
+    "x1": 13.65,
+    "x2": 15.02,
+    "cap2": 0.43
+   }
+  },
+  {
+   "id": "selkie-wavebinder",
+   "name": "Selkie Wavebinder",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "3/13",
+   "old": {
+    "use": 0.98,
+    "N": 26,
+    "x1": 25.5,
+    "S": 3.5,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 26,
+    "x1": 26.22,
+    "x2": 56.81,
+    "N2": 117.92,
+    "S": 4.22,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 3,
+   "health": 12,
+   "to": "3/12",
+   "after": {
+    "use": 0.97,
+    "N": 26,
+    "x1": 25.22,
+    "x2": 53.81,
+    "cap2": 0.46
+   }
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "2/11",
+   "old": {
+    "use": 0.97,
+    "N": 19.29,
+    "x1": 18.78,
+    "S": 1.78,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 19.29,
+    "x1": 19.75,
+    "x2": 29.56,
+    "N2": 64.91,
+    "S": 2.75,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 10,
+   "to": "2/10",
+   "after": {
+    "use": 0.97,
+    "N": 19.29,
+    "x1": 18.75,
+    "x2": 27.56,
+    "cap2": 0.42
+   }
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "2/14",
+   "old": {
+    "use": 0.86,
+    "N": 26,
+    "x1": 22.23,
+    "S": 2.23,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 26,
+    "x1": 26.17,
+    "x2": 66.07,
+    "N2": 117.92,
+    "S": 6.17,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 2,
+   "health": 13,
+   "to": "2/13",
+   "after": {
+    "use": 0.97,
+    "N": 26,
+    "x1": 25.17,
+    "x2": 64.07,
+    "cap2": 0.54
+   }
+  },
+  {
+   "id": "vigil-owl",
+   "name": "Vigil Owl",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "4/4",
+   "old": {
+    "use": 0.94,
+    "N": 19.05,
+    "x1": 17.98,
+    "S": 1.98,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 19.05,
+    "x1": 19.28,
+    "x2": 26.76,
+    "N2": 63.31,
+    "S": 3.28,
+    "verdict": "over"
+   },
+   "kind": "trim",
+   "dA": 0,
+   "dH": -1,
+   "attack": 4,
+   "health": 3,
+   "to": "4/3",
+   "after": {
+    "use": 0.96,
+    "N": 19.05,
+    "x1": 18.28,
+    "x2": 22.76,
+    "cap2": 0.36
+   }
+  }
+ ],
+ "held": [
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "inPlay": true,
+   "stats": "2/4",
+   "old": {
+    "use": 0.86,
+    "N": 15.72,
+    "x1": 13.49,
+    "S": 3.49,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.05,
+    "N": 15.72,
+    "x1": 16.47,
+    "x2": 49.86,
+    "N2": 43.11,
+    "S": 6.47,
+    "verdict": "over"
+   },
+   "why": "only 1/1 fits (cap 2): more than 40% of its stats; held for SKILL2-1"
+  },
+  {
+   "id": "alley-cat",
+   "name": "Alley Cat",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "2/2",
+   "old": {
+    "use": 0.8,
+    "N": 16.43,
+    "x1": 13.22,
+    "S": 5.22,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.06,
+    "N": 16.43,
+    "x1": 17.46,
+    "x2": 93.49,
+    "N2": 47.09,
+    "S": 9.46,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "inPlay": false,
+   "stats": "1/3",
+   "old": {
+    "use": 0.86,
+    "N": 19.05,
+    "x1": 16.32,
+    "S": 7.32,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.93,
+    "N": 19.05,
+    "x1": 17.72,
+    "x2": 80.54,
+    "N2": 63.31,
+    "S": 8.72,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "tide-pool-crab",
+   "name": "Tide Pool Crab",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "1/3",
+   "old": {
+    "use": 0.9,
+    "N": 12.92,
+    "x1": 11.58,
+    "S": 3.18,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.17,
+    "N": 12.92,
+    "x1": 15.17,
+    "x2": 51.23,
+    "N2": 29.12,
+    "S": 6.77,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "1/5",
+   "old": {
+    "use": 0.91,
+    "N": 20.92,
+    "x1": 19.07,
+    "S": 7.07,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.01,
+    "N": 20.92,
+    "x1": 21.17,
+    "x2": 91.59,
+    "N2": 76.34,
+    "S": 9.17,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "bee-forager",
+   "name": "Bee Forager",
+   "rarity": "starter",
+   "inPlay": true,
+   "stats": "0/5",
+   "old": {
+    "use": 0.87,
+    "N": 11.75,
+    "x1": 10.27,
+    "S": 2.77,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 11.75,
+    "x1": 12.69,
+    "x2": 26.94,
+    "N2": 24.08,
+    "S": 5.19,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "inPlay": true,
+   "stats": "2/2",
+   "old": {
+    "use": 0.82,
+    "N": 16.72,
+    "x1": 13.64,
+    "S": 2.44,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.08,
+    "N": 16.72,
+    "x1": 18.04,
+    "x2": 57.19,
+    "N2": 48.77,
+    "S": 6.84,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "heroic",
+   "inPlay": true,
+   "stats": "4/7",
+   "old": {
+    "use": 0.87,
+    "N": 28.39,
+    "x1": 24.56,
+    "S": 5.56,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.02,
+    "N": 28.39,
+    "x1": 29.06,
+    "x2": 129.2,
+    "N2": 140.6,
+    "S": 10.06,
+    "verdict": "over"
+   },
+   "why": "owner call: over on purpose (the creature-ranks rule)"
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "inPlay": true,
+   "stats": "2/9",
+   "old": {
+    "use": 0.91,
+    "N": 23.26,
+    "x1": 21.17,
+    "S": 6.17,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.12,
+    "N": 23.26,
+    "x1": 26.01,
+    "x2": 139.22,
+    "N2": 94.38,
+    "S": 11.01,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "inPlay": false,
+   "stats": "1/5",
+   "old": {
+    "use": 0.96,
+    "N": 17.88,
+    "x1": 17.24,
+    "S": 7.08,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.98,
+    "N": 17.88,
+    "x1": 17.53,
+    "x2": 59.32,
+    "N2": 55.77,
+    "S": 7.37,
+    "verdict": "over"
+   },
+   "why": "only 1/1 fits (cap 2): more than 40% of its stats; held for SKILL2-1"
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "rarity": "common",
+   "inPlay": false,
+   "stats": "1/3",
+   "old": {
+    "use": 0.83,
+    "N": 12.92,
+    "x1": 10.7,
+    "S": 4.7,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 0.97,
+    "N": 12.92,
+    "x1": 12.57,
+    "x2": 46.16,
+    "N2": 29.12,
+    "S": 6.57,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  },
+  {
+   "id": "mother-carrier",
+   "name": "Mother Carrier",
+   "rarity": "heroic",
+   "inPlay": false,
+   "stats": "0/25",
+   "old": {
+    "use": 0.88,
+    "N": 42.17,
+    "x1": 37,
+    "S": 12,
+    "verdict": "ok"
+   },
+   "new": {
+    "use": 1.03,
+    "N": 42.17,
+    "x1": 43.42,
+    "x2": 339.3,
+    "N2": 310.22,
+    "S": 18.42,
+    "verdict": "over"
+   },
+   "why": "no stat change fits (its skills alone break a cap)"
+  }
+ ]
+}

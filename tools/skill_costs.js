@@ -88,8 +88,12 @@
       if(t.once && !ONE_SHOT.includes(t.on)) w = Math.min(w, mod('onceCap', 1));
       return {w, missing:null};
     }
-    function triggerCost(t, card){ const a = triggerWeight(t), b = actionValue(t, card);
-      return {cost:r2(a.w * b.value), weight:a.w, value:r2(b.value), missing:[a.missing, b.missing].filter(Boolean)}; }
+    // SKILL2 (2026-10-31): table.pairs["on>do"].mult, a measured trigger-and-action pair's own factor (its worth / weight x action), so a pair
+    // re-priced from its measure moves no other pair sharing its trigger or its action
+    const PAIRS = table.pairs || {};
+    function pairMult(t){ const p = PAIRS[t.on + '>' + (ALIAS[t.do] || t.do)]; return p && typeof p.mult === 'number' ? p.mult : 1; }
+    function triggerCost(t, card){ const a = triggerWeight(t), b = actionValue(t, card), pm = pairMult(t);
+      return {cost:r2(a.w * b.value * pm), weight:r2(a.w * pm), value:r2(b.value), missing:[a.missing, b.missing].filter(Boolean)}; }
     // S of a card's effects: {S, parts:[[kind, id, cost, detail]], missing:[ids with no entry]}.
     function cardS(effects, card){
       const parts = [], missing = []; let S = 0;
@@ -112,7 +116,8 @@
         if(BB.contextFlagCovered && BB.contextFlagCovered(k, effects)){ parts.push(['skill', k, 0, 'its braces carry the cost']); return; }
         { const cx = BB.contextS ? BB.contextS(k, v, inner=>{ const r = cardS(inner, card); missing.push(...r.missing); return r.S; }) : null; // CX5: inner misses reported
           if(cx){ S += cx.S; parts.push(['context', k, cx.S, cx.mult + ' × ' + cx.inner]); return; } }
-        if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
+        // SKILL2 (2026-10-31): x the shorthand's own `mult` (its measured worth / trigger x action), so the shared trigger weight and action value stay
+        if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : sh.field ? {do:sh.action, [sh.field]:N} : {do:sh.action, amount:N}, card) /* field (2026-10-19, SK1): Spoils is Health only */, c = r2(w.w * a.value * (typeof sh.mult === 'number' ? sh.mult : 1)); // both (2026-10-19, package GI): +N/+N, Kin Rally
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
         // EN6 (2026-10-24): Arrow / Fire Arrow / Fire Bolt – bramble: (bramble - 1) x the shot's own price (nothing without the shot)
         if(BB.EN6_BRAMBLE_SHOTS && BB.EN6_BRAMBLE_SHOTS[k]){ const base = BB.EN6_BRAMBLE_SHOTS[k], sc = v && effects[base] ? (skillCost(base, effects[base]) || 0) : 0, c = r2((mod('bramble', BB.EN6_BRAMBLE_MULT || 0.9) - 1) * sc); S += c; parts.push(['skill', k, c, 'x' + mod('bramble', 0.9) + ' of ' + base]); return; }

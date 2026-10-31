@@ -1,0 +1,661 @@
+{
+ "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+ "generated": "2026-10-31T02:37:46.784Z",
+ "fingerprint": "6eb8b2ec0b65",
+ "map": {
+  "id": "mg",
+  "num": 2,
+  "name": "Smugglers' Grotto"
+ },
+ "level": 1,
+ "pool": [
+  "conch-crawler",
+  "conch-herald",
+  "fiddler-crab-swarm",
+  "grey-seal-bull",
+  "gull-thief",
+  "open-ocean-hermit-crab",
+  "pincushion-urchin",
+  "sea-turtle-elder",
+  "tide-pool-crab",
+  "tidepool-trapper-crab",
+  "trash-panda-trickster"
+ ],
+ "poolNames": [
+  "Conch Crawler",
+  "Conch Herald",
+  "Fiddler Crab Swarm",
+  "Grey Seal Bull",
+  "Gull Thief",
+  "Open-Ocean Hermit Crab",
+  "Pincushion Urchin",
+  "Sea Turtle Elder",
+  "Tide Pool Crab",
+  "Tidepool Trapper Crab",
+  "Trash Panda Trickster"
+ ],
+ "rule": {
+  "maxUnique": 6,
+  "maxCopies": 4,
+  "size": 20,
+  "anchor": null,
+  "anchorMin": 0
+ },
+ "settings": {
+  "seed": "bpro2",
+  "budget": 6000,
+  "finalGames": 24,
+  "roadWeight": 0,
+  "mode": "map-true"
+ },
+ "gauntlet": [
+  {
+   "key": "mirror|fight:2-B-1",
+   "label": "vs 2-B-1 skirmish's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-2",
+   "label": "vs 2-B-2 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-3",
+   "label": "vs 2-B-3 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|fight:2-B-4",
+   "label": "vs 2-B-4 elite's deck",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:starter",
+   "label": "vs reference starter deck under 2-B-1's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:road7",
+   "label": "vs reference deck (Map 7) under 2-B-2's field",
+   "weight": 0.1429
+  },
+  {
+   "key": "mirror|ref:expected",
+   "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+   "weight": 0.1429
+  }
+ ],
+ "focuses": [
+  {
+   "id": "economy",
+   "label": "economy (resource makers)",
+   "cards": [
+    "gull-thief",
+    "trash-panda-trickster"
+   ],
+   "need": 6
+  },
+  {
+   "id": "big",
+   "label": "big (1+ Lumber cards)",
+   "cards": [
+    "conch-herald",
+    "grey-seal-bull",
+    "sea-turtle-elder"
+   ],
+   "need": 8
+  },
+  {
+   "id": "swarm",
+   "label": "swarm (0-Lumber cards)",
+   "cards": [
+    "conch-crawler",
+    "fiddler-crab-swarm",
+    "gull-thief",
+    "open-ocean-hermit-crab",
+    "pincushion-urchin",
+    "tide-pool-crab",
+    "tidepool-trapper-crab",
+    "trash-panda-trickster"
+   ],
+   "need": 14
+  },
+  {
+   "id": "open",
+   "label": "open (the strongest deck)",
+   "cards": null,
+   "need": 0
+  }
+ ],
+ "searches": [
+  {
+   "focus": "economy",
+   "steps": 8,
+   "moves": 3,
+   "games": 1708,
+   "apartFromEarlier": null
+  },
+  {
+   "focus": "big",
+   "steps": 7,
+   "moves": 3,
+   "games": 1666,
+   "apartFromEarlier": 11
+  },
+  {
+   "focus": "swarm",
+   "steps": 6,
+   "moves": 3,
+   "games": 1526,
+   "apartFromEarlier": 9
+  },
+  {
+   "focus": "open",
+   "steps": 11,
+   "moves": 3,
+   "games": 1638,
+   "apartFromEarlier": 8
+  }
+ ],
+ "apart": 6,
+ "seconds": 96,
+ "games": 6986,
+ "decks": [
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 1+ Lumber, average 0.4)",
+    "economy (4 resource makers)",
+    "tide x16",
+    "guard x12"
+   ],
+   "deck": {
+    "conch-crawler": 4,
+    "conch-herald": 4,
+    "grey-seal-bull": 4,
+    "tide-pool-crab": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7976,
+   "ci": [
+    0.7405,
+    0.8548
+   ],
+   "avgLumber": 0.4,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 12,
+    "1": 8
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 16
+    },
+    {
+     "f": "guard",
+     "n": 12
+    },
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 8
+  },
+  {
+   "focus": "open",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (4 resource makers)",
+    "tide x16",
+    "armor x8"
+   ],
+   "deck": {
+    "conch-herald": 4,
+    "fiddler-crab-swarm": 4,
+    "pincushion-urchin": 4,
+    "tide-pool-crab": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "fiddler-crab-swarm",
+     "name": "Fiddler Crab Swarm",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tide-pool-crab",
+     "name": "Tide Pool Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7738,
+   "ci": [
+    0.7151,
+    0.8325
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.4,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "tide",
+     "n": 16
+    },
+    {
+     "f": "armor",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.7917,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "swarm",
+   "labels": [
+    "swarm (15 copies at 0 Lumber)",
+    "economy (7 resource makers)",
+    "tide x13"
+   ],
+   "deck": {
+    "conch-herald": 2,
+    "grey-seal-bull": 3,
+    "gull-thief": 3,
+    "open-ocean-hermit-crab": 4,
+    "pincushion-urchin": 4,
+    "trash-panda-trickster": 4
+   },
+   "cards": [
+    {
+     "id": "open-ocean-hermit-crab",
+     "name": "Open-Ocean Hermit Crab",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "grey-seal-bull",
+     "name": "Grey Seal Bull",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "uncommon"
+    }
+   ],
+   "score": 0.7619,
+   "ci": [
+    0.7049,
+    0.8189
+   ],
+   "avgLumber": 0.25,
+   "avgWait": 0.6,
+   "curve": {
+    "0": 15,
+    "1": 5
+   },
+   "resourceMakers": 7,
+   "families": [
+    {
+     "f": "tide",
+     "n": 13
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.625,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.9583,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "swarm (16 copies at 0 Lumber)",
+    "economy (6 resource makers)",
+    "tide x11",
+    "armor x6"
+   ],
+   "deck": {
+    "conch-crawler": 3,
+    "conch-herald": 4,
+    "gull-thief": 4,
+    "pincushion-urchin": 4,
+    "tidepool-trapper-crab": 3,
+    "trash-panda-trickster": 2
+   },
+   "cards": [
+    {
+     "id": "conch-herald",
+     "name": "Conch Herald",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pincushion-urchin",
+     "name": "Pincushion Urchin",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "conch-crawler",
+     "name": "Conch Crawler",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "tidepool-trapper-crab",
+     "name": "Tidepool Trapper Crab",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "trash-panda-trickster",
+     "name": "Trash Panda Trickster",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "common"
+    }
+   ],
+   "score": 0.7024,
+   "ci": [
+    0.6425,
+    0.7622
+   ],
+   "avgLumber": 0.2,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 16,
+    "1": 4
+   },
+   "resourceMakers": 6,
+   "families": [
+    {
+     "f": "tide",
+     "n": 11
+    },
+    {
+     "f": "armor",
+     "n": 6
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:2-B-1",
+     "label": "vs 2-B-1 skirmish's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-2",
+     "label": "vs 2-B-2 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-3",
+     "label": "vs 2-B-3 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:2-B-4",
+     "label": "vs 2-B-4 elite's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 2-B-1's field",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road7",
+     "label": "vs reference deck (Map 7) under 2-B-2's field",
+     "p": 0.2083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 2-B-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 10
+  }
+ ],
+ "reproduce": "node tools/bench/bench.js deck --map mg --pool conch-crawler,conch-herald,fiddler-crab-swarm,grey-seal-bull,gull-thief,open-ocean-hermit-crab,pincushion-urchin,sea-turtle-elder,tide-pool-crab,tidepool-trapper-crab,trash-panda-trickster --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true"
+}

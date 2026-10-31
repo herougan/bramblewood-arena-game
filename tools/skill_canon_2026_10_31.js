@@ -27,7 +27,14 @@
 'use strict';
 const path = require('path'), fs = require('fs');
 const L = require('./bench/lib.js');
-const VERSION = '1.0.0 (2026-10-31, BUDGET2 X14)';
+// 1.1.0 (2026-10-31, package SKILL2, BUDGET2-2): each anchor also read by the stat yardstick (worthStat); the canon prices are set in 3A + H
+// stat points from one shared measure (tools/skill2_apply_2026_10_31.js anchors), so κ ≈ 1 by construction and the ruler reads stat points.
+// The placebo (SKILL2): {"skill2Placebo": true}, a key the engine does not know. The CPU values a card by its number of effect keys
+// (bramblewood-engine.js cardValue, + 1.5 a key: it pitches a skilled card later), so any added key gains about 1.5 win-rate points on
+// these carriers (0.41 [0.22, 0.59] stat points at 1,000 fights). Every anchor and test reading is less the placebo's, once a key the
+// variant adds (Remember + its triggers: two). --no-placebo reads them raw (the BUDGET2 reading).
+const PLACEBO = { skill2Placebo: true };
+const VERSION = '1.1.0 (2026-10-31, SKILL2)';
 const BOOT = 400;
 
 function anchorsOf(table, T) {
@@ -63,10 +70,13 @@ async function run(o) {
     const test = o.cmd === 'measure' ? o.test : null;
     const items = [];
     carriers.forEach(c => { items.push({ v: { base: c } }, { v: { base: c, dH: 1 } }, { v: { base: c, dA: 1 } });
-      anchors.forEach(a => items.push({ v: variantFor(c, { [a.id]: a.n }) })); if (test) items.push({ v: variantFor(c, test) }); });
+      anchors.forEach(a => items.push({ v: variantFor(c, { [a.id]: a.n }) })); if (test) items.push({ v: variantFor(c, test) }); if (o.placebo !== false) items.push({ v: variantFor(c, PLACEBO) }); });
     B.log(`canon (${X.name}, Level ${X.level}, ${X.k} copies, ${M} fights a variant): ${anchors.length} anchor points, ${carriers.length} carriers (${carriers.join(', ')}), ${items.length} variants${test ? ', test ' + JSON.stringify(test) : ''}`);
     await B.need(X, items, M);
-    const gain = eff => { const d = new Float64Array(M); carriers.forEach(c => { const g = L.diff(B.scores(X, variantFor(c, eff), c, M), B.scores(X, { base: c }, c, M)); for (let i = 0; i < M; i++) d[i] += g[i] / carriers.length; }); return d; };
+    const gainRaw = eff => { const d = new Float64Array(M); carriers.forEach(c => { const g = L.diff(B.scores(X, variantFor(c, eff), c, M), B.scores(X, { base: c }, c, M)); for (let i = 0; i < M; i++) d[i] += g[i] / carriers.length; }); return d; };
+    // the placebo (SKILL2): every reading less the placebo's gain once a key the variant adds (the CPU's cardValue counts effect keys)
+    const D0 = o.placebo !== false ? gainRaw(PLACEBO) : new Float64Array(M);
+    const gain = eff => { const d = gainRaw(eff), k = Object.keys(eff).length || 1; for (let i = 0; i < M; i++) d[i] -= k * D0[i]; return d; };
     const DA = anchors.map(a => gain({ [a.id]: a.n })), DT = test ? gain(test) : null;
     const dH = new Float64Array(M), dAt = new Float64Array(M); let nA = 0;
     carriers.forEach(c => { const b = B.scores(X, { base: c }, c, M), h = L.diff(B.scores(X, { base: c, dH: 1 }, c, M), b); for (let i = 0; i < M; i++) dH[i] += h[i] / carriers.length;
@@ -83,10 +93,12 @@ async function run(o) {
     const r = est(ix => rateOf(ix)), rl = est(ix => lsqRate(ix)), rs = est(ix => statRate(ix)), kappa = est(ix => statRate(ix) / rateOf(ix)), aInH = est(ix => meanOf(dAt, ix) / meanOf(dH, ix));
     // the anchors' line: R² of the least-squares line through 0, and each anchor from the others
     const dm = DA.map(d => meanOf(d)), rr = lsqRate(null), ssr = dm.reduce((t, d, j) => t + (d - rr * P[j]) ** 2, 0), sst = dm.reduce((t, d) => t + d * d, 0);
-    const loo = anchors.map((a, j) => { const w = est(ix => meanOf(DA[j], ix) / rateOf(ix, j)); return Object.assign({}, a, { gain: L.r4(dm[j]), worth: w, off: !(a.price >= w.lo && a.price <= w.hi) }); });
+    // worthStat (SKILL2, 2026-10-31): the anchor's gain read by the stat yardstick (3A + H points, the canon's currency since BUDGET2-2)
+    const loo = anchors.map((a, j) => { const w = est(ix => meanOf(DA[j], ix) / rateOf(ix, j)), ws = est(ix => meanOf(DA[j], ix) / statRate(ix));
+      return Object.assign({}, a, { gain: L.r4(dm[j]), worth: w, worthStat: ws, off: !(a.price >= w.lo && a.price <= w.hi), offStat: !(a.price >= ws.lo && a.price <= ws.hi) }); });
     const res = { tool: 'tools/skill_canon_2026_10_31.js ' + VERSION, generated: new Date().toISOString(), fingerprint: L.fingerprint(),
       context: { name: X.name, level: X.level, copies: X.k, fights: M, pool: X.pool.length, fields: X.fields.length, seed: X.seed }, carriers, attackWeight: AW,
-      canonRate: r, lsqRate: rl, statRate: rs, kappa, attackInHealth: aInH, line: { r2: L.r4(sst ? 1 - ssr / sst : null) }, anchors: loo,
+      canonRate: r, lsqRate: rl, statRate: rs, kappa, attackInHealth: aInH, line: { r2: L.r4(sst ? 1 - ssr / sst : null) }, placebo: o.placebo !== false ? { effects: PLACEBO, gain: L.r4(meanOf(D0)), worthStat: est(ix => meanOf(D0, ix) / statRate(ix)) } : null, anchors: loo,
       outside: loo.filter(a => a.off).map(a => a.key) };
     // the ruler: the anchors sorted by their gain, their prices made non-decreasing in gain (pool-adjacent-violators), and a gain read off
     // between its two neighbours (straight lines; past the ends, the median rate). "It gains what Bleed 2 gains, so it is worth what Bleed 2
@@ -113,16 +125,18 @@ const ci = e => `${e.m} [${e.lo}, ${e.hi}]`;
 function print(res, log) {
   log(`canon rate: one canon point = ${ci({ m: L.r4(res.canonRate.m * 100), lo: L.r4(res.canonRate.lo * 100), hi: L.r4(res.canonRate.hi * 100) })} win-rate points; stat yardstick (${res.attackWeight}A + H): one budget point = ${L.r4(res.statRate.m * 100)} [${L.r4(res.statRate.lo * 100)}, ${L.r4(res.statRate.hi * 100)}]`);
   log(`currency ratio κ = stat point / canon point = ${ci(res.kappa)} (1 = the anchors and the stats agree); +1 Attack = ${ci(res.attackInHealth)} Health measured; least-squares rate ${L.r4(res.lsqRate.m * 100)}, R² ${res.line.r2}`);
-  log('anchor           price   gain    worth from the others (95%)');
-  res.anchors.forEach(a => log(`${a.key.padEnd(16)} ${String(a.price).padStart(5)}  ${(a.gain * 100).toFixed(1).padStart(5)}   ${ci(a.worth)}${a.off ? '   <- outside' : ''}`));
+  if (res.placebo) log(`placebo ${JSON.stringify(res.placebo.effects)}: gain ${(res.placebo.gain * 100).toFixed(1)} win-rate points (${ci(res.placebo.worthStat)} stat points); every gain below is less it, once a key`);
+  log('anchor           price   gain    worth from the others (95%)        by the stat yardstick (95%)');
+  res.anchors.forEach(a => log(`${a.key.padEnd(16)} ${String(a.price).padStart(5)}  ${(a.gain * 100).toFixed(1).padStart(5)}   ${ci(a.worth).padEnd(30)}${a.off ? ' <- outside' : '           '}  ${a.worthStat ? ci(a.worthStat) : ''}`));
   if (res.test) { const t = res.test; log(`test ${JSON.stringify(t.effects)}: gain ${(t.gain * 100).toFixed(1)}; worth ${ci(t.worth)} canon points (the ruler ${ci(t.worthRuler)}; ${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; net ${t.net}: ${t.verdict}; between ${t.between.join(' and ')}`); }
 }
 function md(res) {
   const t = res.test, lines = [`# Skill canon measure (${res.context.name}, ${res.generated.slice(0, 10)})`, '',
     `\`${res.tool}\`; game fingerprint \`${res.fingerprint}\`; ${res.context.fights} paired fights a variant, slot of ${res.context.copies} copies, Level ${res.context.level}; carriers ${res.carriers.join(', ')}.`, '',
     `- One canon point = ${ci(res.canonRate)} win rate (fraction; the median of the anchors' gain / price; least squares ${ci(res.lsqRate)}, R² ${res.line.r2}); one budget point of stats (${res.attackWeight}A + H) = ${ci(res.statRate)}; κ = ${ci(res.kappa)}; +1 Attack = ${ci(res.attackInHealth)} Health measured.`];
+  if (res.placebo) lines.push(`- Placebo \`${JSON.stringify(res.placebo.effects)}\` (a key the engine does not know; the CPU's cardValue counts keys): gain ${(res.placebo.gain * 100).toFixed(1)} win-rate points, ${ci(res.placebo.worthStat)} stat points; every gain here is less it, once a key the variant adds.`);
   if (t) lines.push(`- **Test** \`${JSON.stringify(t.effects)}\`: worth **${ci(t.worth)}** canon points by the median rate, ${ci(t.worthRuler)} by the ruler (${ci(t.worthStat)} by the stat yardstick); price on its carriers ${t.price}; ${t.verdict}; between ${t.between.join(' and ')}.`);
-  lines.push('', '| Anchor | Canon price | Gain (win rate) | Worth from the other anchors (95%) | |', '|---|---|---|---|---|', ...res.anchors.map(a => `| ${a.key} | ${a.price} | ${(a.gain * 100).toFixed(1)} | ${ci(a.worth)} | ${a.off ? 'outside' : ''} |`), '');
+  lines.push('', '| Anchor | Canon price | Gain (win rate) | Worth from the other anchors (95%) | | Worth by the stat yardstick, 3A + H (95%) |', '|---|---|---|---|---|---|', ...res.anchors.map(a => `| ${a.key} | ${a.price} | ${(a.gain * 100).toFixed(1)} | ${ci(a.worth)} | ${a.off ? 'outside' : ''} | ${a.worthStat ? ci(a.worthStat) : ''} |`), '');
   return lines.join('\n');
 }
 async function main(argv) {
@@ -133,7 +147,7 @@ async function main(argv) {
     const k = a.shift();
     if (k === '--carriers') o.carriers = a.shift().split(',').map(s => s.trim()).filter(Boolean);
     else if (k === '--skill') { const [id, n] = a.shift().split('='); o.test = { [id]: n == null ? true : (isNaN(+n) ? n : +n) }; }
-    else if (k === '--name') o.name = a.shift(); else if (k === '--save') o.save = true;
+    else if (k === '--name') o.name = a.shift(); else if (k === '--save') o.save = true; else if (k === '--no-placebo') o.placebo = false;
     else if (!k.startsWith('--') && o.cmd === 'measure' && !o.test) o.test = JSON.parse(k);
     else throw new Error('unknown option ' + k);
   }
