@@ -51417,7 +51417,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '21a46c97837f', BUILD_CARD_HASH = 'c6edec85fb4b58ad9becd80db4a1fb64e0e01e479bc664be5d1bdab111df1f96';
+const BUILD_ID = 'e0616b21da25', BUILD_CARD_HASH = 'c6edec85fb4b58ad9becd80db4a1fb64e0e01e479bc664be5d1bdab111df1f96';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -57453,6 +57453,31 @@ const enteringUids = new Set();
 // literally spawns from inside the spawner and jumps out?") now ALSO get a real origin — see
 // lastDeathOrigin below — closing the one gap the original comment used to carve out here.
 const pendingEntranceOrigins = new Map();
+// 2026-10-31 (package UI8, owner AA5: "spawned cards (Trojan Raider from the Trojan Horse bramble, every On Death / On Attacked spawn) bounce out of
+// their spawner (the bramble or the card) and land in their slot"): where a spawn event's cards come out of, as an entrance origin of kind
+// 'spawn' (the jump-arc branch in renderBoard): the card that triggered it (nearUid, or fromUid), else that side's bramble. A spawn with no
+// spawner on screen (a round-start 'play' from a castle's own spawn has none but the bramble) used to get no origin and just appeared.
+function spawnerOrigin(ev){
+  try{
+    let el = null;
+    if(ev.nearUid != null) el = boardCardEl(ev.nearUid);
+    if(!el && ev.fromUid != null) el = boardCardEl(ev.fromUid);
+    if(!el && ev.side) el = hqTileEl(ev.side);
+    const r = el && el.getBoundingClientRect(); if(!r || !r.width) return null;
+    return {x: r.left + r.width/2, y: r.top + r.height/2, rotate: Math.random()*16 - 8, kind: 'spawn'};
+  }catch(e){ return null; }
+}
+// Record that origin for every card an events list puts on the board without a hand: round-start 'play' events (a castle's spawn) and the
+// 'spawn' events nobody has given an origin yet. Called before the render that draws them (it consumes the origins).
+function noteSpawnOrigins(events){
+  try{ (events || []).forEach(ev=>{
+    if(!ev) return;
+    const uids = ev.type === 'play' ? ((ev.leader || ev.reserve || ev.uid == null) ? [] : [ev.uid]) : ev.type === 'spawn' && ev.cause !== 'shieldCall' ? (ev.placements ? ev.placements.map(p=> p.uid) : (ev.uids || [])) : [];
+    const fresh = uids.filter(u=> u != null && !pendingEntranceOrigins.has(String(u)));
+    if(!fresh.length) return;
+    const o = spawnerOrigin(ev); if(o) fresh.forEach(u=> pendingEntranceOrigins.set(String(u), Object.assign({}, o, {rotate: Math.random()*16 - 8})));
+  }); }catch(e){}
+}
 // Task list item 2 (2026-09-18) — the death-spawn counterpart to the onAttackedSpawn origin
 // above. onDeathSpawn's own 'spawn' event carries no uid for the card that just died (the
 // engine's event shape never needed one before), so rather than a riskier engine change to add
@@ -85477,6 +85502,10 @@ function renderBoard(opts){
             // 2026-10-08 (user: "When I let go, the landing card should have the same orientation"):
             // a dragged card starts its landing at the exact tilt it had in your hand, then settles.
             fromVars = {opacity:1, scale: origin.w && fr.width ? Math.max(.4, Math.min(1.2, origin.w / fr.width)) : .58, x:dx, y: (origin.rotate!=null || origin.fromTile) ? dy : Math.min(dy, -46), rotate: origin.rotate!=null ? origin.rotate : (Math.random()*22-11)};
+            // 2026-10-31 (package UI8, owner AA3: "an enemy card fades into existence above its slot and lands (as if played from their hand)"):
+            // the enemy's card starts see-through high above its row (their hand) and fades in over the first part of its fall; yours
+            // (above) stays fully visible from the release point (the 2026-09-22 zero-delay rule).
+            if(origin.enemyHand) fromVars.opacity = 0;
           } else {
             // "Spawned from a point" (born from the drone, an onDeathSpawn token, etc.) — kept
             // as the more dramatic shrink-and-lunge-in look, unchanged from before. Task list
@@ -85556,10 +85585,12 @@ function renderBoard(opts){
           // back.out(4) overshoot on the settle leg (was back.out(3)) gives the landing a bit more
           // "thud" now that it isn't dragged out as long, matching the "more satisfying" half of
           // the ask.
-          const handDur = Math.max(0.12, dur*0.62);
+          const handDur = Math.max(0.12, dur*0.62) * ((typeof fxLevel === 'function' && fxLevel() === 'low') ? 0.6 : 1); // Effects Low: shorter (UI8)
+          const enemyFade = !!(origin && origin.enemyHand);
           entranceTl
-            .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.04 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.12, handDur*0.82), ease: sharp ? 'power4.in' : 'power2.in'})
+            .fromTo(el, fromVars, Object.assign({scale:sharp ? 1.04 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.12, handDur*0.82), ease: sharp ? 'power4.in' : 'power2.in'}, enemyFade ? {} : {opacity:1}))
             .to(el, {scale:1, duration:Math.max(.07, handDur*(sharp ? 0.3 : 0.5)), ease: sharp ? 'power3.out' : 'back.out(4)'}, '>-0.02');
+          if(enemyFade) entranceTl.to(el, {opacity:1, duration:Math.max(.08, handDur*0.4), ease:'power1.out'}, 0); // 2026-10-31 (UI8, AA3): fades in as it falls
         } else {
           entranceTl
             .fromTo(el, fromVars, {opacity:1, scale:sharp ? 1.03 : 1.08, x:0, y:0, rotate:0, duration:Math.max(.14, dur*0.85), ease: sharp ? 'power3.in' : 'power2.in'})
@@ -85572,6 +85603,14 @@ function renderBoard(opts){
         // renderMatchUI()-wipe-survivability reason inFlightFlipTimelines/flippingEls are.
         enteringTimelines.set(uid, entranceTl);
         entranceBorn.set(uid, {tl: entranceTl, at: performance.now(), el}); // 2026-10-19 (package RX): the wall-clock watchdog's record
+        // 2026-10-31 (package UI8, AA3/AA5): a card with an origin (your play, the enemy's play from their hand, a spawn out of its spawner)
+        // holds at its first pose until two frames have been drawn, then its clock starts (see handFlightProxy: the main thread is busy
+        // after a play, and the whole 0.15-0.4 s entrance used to run inside that stall). Reduced motion: no flight at all, a short fade.
+        if(origin){
+          if(reducedMotion()) entranceTl.clear().fromTo(el, {opacity:0, x:0, y:0, rotate:0, scale:1}, {opacity:1, duration:.15, ease:'none'}); // no flight, a short fade
+          { entranceTl.pause(); const b0 = entranceBorn.get(uid); if(b0) b0.at = performance.now() + 1500; // until it starts, only a tab that never draws a frame reaches the watchdog
+            armOnFrames(()=>{ if(enteringTimelines.get(uid) !== entranceTl) return; try{ entranceTl.play(0); }catch(e){} const b = entranceBorn.get(uid); if(b && b.tl === entranceTl) b.at = performance.now(); }); }
+        }
       });
       // Single synchronized release for EVERY new card pinned this render. When Flip.from() is
       // ALSO running this render (gsapFlip true), releasing happens from INSIDE its own
@@ -85864,7 +85903,7 @@ function wireBattlefieldPan(){
 function boardAnimationsBusy(){
   try{
     if(inFlightFlipTimelines.some(t=> t && t.isActive && t.isActive())) return true;
-    for(const t of enteringTimelines.values()) if(t && t.isActive && t.isActive()) return true;
+    for(const t of enteringTimelines.values()) if(t && ((t.isActive && t.isActive()) || (t.paused && t.paused()))) return true; // + one still waiting for its first frames (UI8, 2026-10-31)
   }catch(e){}
   return false;
 }
@@ -90007,6 +90046,7 @@ async function resolveRoundCore(opts){
           placements.map(p=>p.uid).forEach(u=> pendingEntranceOrigins.set(String(u), {x:cx, y:cy, rotate: Math.random()*16-8, kind:'spawn'}));
           lastDeathOrigin = null; // one-shot — see its own declaration comment
         }
+        noteSpawnOrigins([ev]); // 2026-10-31 (UI8, AA5): a spawn whose spawner was not found above still comes out of its card or its bramble
         renderBoard({collapseLandingUids:[], attackSpawnLandingUids: spawnUids});
         // Give the entrance fall-in + landing-impact flourish just triggered above a beat to
         // actually be seen (2026-09-17 follow-up, "spawning still does not look animated"):
@@ -90544,6 +90584,7 @@ async function resolveRoundCore(opts){
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
+    noteSpawnOrigins(drawEvents); // 2026-10-31 (package UI8, AA5): a castle's spawn (the Trojan Horse's Raider) bounces out of its bramble
     try{ fieldGapStamp(drawEvents, m); }catch(e){} // 2026-10-23 (package FX4): two field numbers on one unit, a small gap apart
     const smackSt = m.raidFull ? fightSafe(()=> raidSmackStage(drawEvents, m)) : null; // RAIDFX1 (2026-10-30): the smack's damage lands with the limb
     floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); if(smackSt && smackSt.defer(ev)) return; renderVfxForEvent(ev); if(smackSt) smackSt.played(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
@@ -93854,8 +93895,13 @@ const handFlightsLive = new Set(); // uids whose hand flight is still in the air
 const handFlightDue = new Map(); // uid -> {due, land}: when each flight should be down on the wall clock (2026-10-19, playAnimWatchdog)
 function handFlightSec(leader){
   const mult = (matchState && matchState.speedMult) || 1, hd = Math.max(0.12, entranceCardTweenDur(mult)*0.62);
-  return leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82);
+  const lowFx = (typeof fxLevel === 'function' && fxLevel() === 'low') ? 0.6 : 1; // 2026-10-31 (UI8): Effects Low: a shorter flight
+  return (leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82)) * lowFx;
 }
+// 2026-10-31 (package UI8, AA3): run fn two animation frames from now (the first frame draws the card where the animation starts, the
+// second is the first one on a clock that is really ticking), see handFlightProxy. A background tab never draws: the callers have a
+// timer behind them.
+function armOnFrames(fn){ try{ requestAnimationFrame(()=> requestAnimationFrame(()=>{ try{ fn(); }catch(e){} })); }catch(e){ try{ fn(); }catch(_){} } }
 function handFlightProxy(el, uid, origin){
   if(!el || !origin || !hasGsap() || reducedMotion()) return false;
   const tile = el.querySelector('.card-tile'); if(!tile) return false;
@@ -93899,10 +93945,18 @@ function handFlightProxy(el, uid, origin){
       handFlightDue.set(key + ':squash', {due: performance.now() + (leader ? 320 : 200) + 250, land: ()=>{ try{ if(sq.progress() < 1){ sq.progress(1); return true; } }catch(e){} return false; }, squash: true}); } // the watchdog settles it on time (2026-10-19)
     try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); if(origin.dust) impactDust(c); }catch(e){} };
   place();
-  gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
+  // 2026-10-31 (package UI8, owner AA3 "a played card lands from where you let go of it ... the owner no longer sees it"): the flight
+  // is 0.12-0.2 s long and GSAP's clock is the wall clock, but the main thread is busy for 100-500 ms after a drop (the play's own
+  // redraw, the enemy's reply, the round's render: measured in headless Chromium, the first frame after the drop came 150-500 ms
+  // later, more with each package's added render work). The whole flight ran inside that stall, so the first frame the player saw
+  // was the card already on its slot. The copy now waits at the release point (placed just above, so the first frame shows it
+  // there) and its clock starts two frames later, when frames are really being drawn. The wall-clock watchdog (RX) is re-armed from
+  // that start; until then it only covers a tab that never draws a frame.
+  const tw = gsap.to(st, {k:1, duration:fl, paused:true, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
   // 2026-10-19 (package RX): on the wall clock, the flight lands when it should even if frames stall (playAnimWatchdog lands it)
-  handFlightDue.set(key, {due: performance.now() + fl*1000 + 250, land: ()=>{ if(done) return; st.k = 1; try{ place(); }catch(e){} gone(true); }});
-  setTimeout(()=>{ handFlightDue.delete(key); gone(false); }, fl*1000 + 800); // never left behind
+  handFlightDue.set(key, {due: performance.now() + 1500 + fl*1000 + 250, land: ()=>{ if(done) return; st.k = 1; try{ place(); }catch(e){} gone(true); }});
+  armOnFrames(()=>{ if(done) return; try{ tw.play(0); }catch(e){} const f = handFlightDue.get(key); if(f) f.due = performance.now() + fl*1000 + 250; });
+  setTimeout(()=>{ handFlightDue.delete(key); gone(false); }, 1500 + fl*1000 + 800); // never left behind
   return true;
 }
 // An ally plays a card (2026-10-19, package RX, owner 20:46: "Allies should look like they are playing their cards from hand, in Raid

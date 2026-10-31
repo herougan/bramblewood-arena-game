@@ -97,7 +97,7 @@ def at_times(times):
     return lambda s, k: k < len(times) and s['t'] >= times[k]
 
 LEAD_STATE = """(()=>{ const w = document.querySelector('.vis5-lead'); if(!w) return {on: false}; const a = w.querySelector('.vis5-lead-art'), b = w.querySelector('.leader-callout'), band = w.querySelector('.vis5-lead-band');
-  const r = b.getBoundingClientRect(), cs = getComputedStyle(a); return {on: true, calm: w.classList.contains('is-calm'), bare: w.classList.contains('is-bare'), mine: w.classList.contains('is-mine'), artAnim: cs.animationName, artShown: cs.display !== 'none', artOp: +cs.opacity,
+  const r = b.getBoundingClientRect(), cs = a ? getComputedStyle(a) : null; return {on: true, calm: w.classList.contains('is-calm'), bare: w.classList.contains('is-bare'), mine: w.classList.contains('is-mine'), artAnim: cs ? cs.animationName : '', artShown: cs ? cs.display !== 'none' : false, artOp: cs ? +cs.opacity : 0,
     banAnim: getComputedStyle(b).animationName, bandAnim: band ? getComputedStyle(band).animationName : '', bandShown: band ? getComputedStyle(band).display !== 'none' : false, text: b.textContent, tile: !!w.querySelector('.card-tile'),
     bx: [Math.round(r.left), Math.round(r.right)], vw: innerWidth}; })()"""
 
@@ -118,8 +118,8 @@ async def run_lead(b, url, w):
         tag = 'lead-' + ('enemy' if enemy else 'mine')
         pg, fr = await lead_case(b, url, w, enemy, tag, kind='high')
         on = [f for f in fr if f['on']]
-        ok(on and on[0]['tile'] and 'joins the fight!' in on[0]['text'], f"L3. {tag}: the portrait (the leader's card art) and the one-sentence banner show {on[0]['text'] if on else None}")
-        ok(on and on[0]['artAnim'] == 'vis5LeadArt' and on[0]['bandAnim'] == 'vis5LeadBand' and on[0]['banAnim'] == 'vis5LeadBanner' and on[0]['bandShown'], f"L3. {tag}: the slam, band and banner animations run {on[0] if on else None}")
+        ok(on and not on[0]['tile'] and 'joins the fight!' in on[0]['text'], f"L3. {tag}: the one-sentence banner shows and there is no portrait in the middle (UI8, Z2) {on[0]['text'] if on else None}")
+        ok(on and on[0]['bandAnim'] == 'vis5LeadBand' and on[0]['banAnim'] == 'vis5LeadBanner' and on[0]['bandShown'], f"L3. {tag}: the slam, band and banner animations run {on[0] if on else None}")
         gone = next((f['t'] for f in fr if not f['on'] and f['t'] > 300), None)
         last_on = max(f['t'] for f in on) if on else None
         ok(gone is not None and 1100 <= gone <= 1700 and last_on <= 1500, f"L3. {tag}: the whole moment is under 1.5 s (gone at {gone} ms, last frame with it {last_on} ms)")
@@ -128,11 +128,11 @@ async def run_lead(b, url, w):
         await close(pg)
     # the calm forms
     pg, fr = await lead_case(b, url, w, False, 'lead-low', kind='low'); on = [f for f in fr if f['on']]
-    ok(on and on[0]['calm'] and on[0]['artAnim'] == 'vis5LeadFade' and not on[0]['bandShown'], f"L3. FX Low: the card fades in and out, no band, no slam {on[0] if on else None}"); await close(pg)
+    ok(on and on[0]['calm'] and on[0]['banAnim'] == 'vis5LeadFade' and not on[0]['bandShown'], f"L3. FX Low: the banner fades in and out, no band, no slam {on[0] if on else None}"); await close(pg)
     pg, fr = await lead_case(b, url, w, False, 'lead-none', kind='none'); on = [f for f in fr if f['on']]
     ok(on and on[0]['bare'] and not on[0]['artShown'] and 'joins the fight!' in on[0]['text'], f"L3. FX None: the name banner alone {on[0] if on else None}"); await close(pg)
     pg, fr = await lead_case(b, url, w, False, 'lead-rm', kind='high', ctxopts={'reduced_motion': 'reduce'}); on = [f for f in fr if f['on']]
-    ok(on and on[0]['artAnim'] == 'vis5LeadFade' and not on[0]['bandShown'] and on[0]['banAnim'] == 'vis5LeadFade', f"L3. reduced motion: fades only, even at FX High {on[0] if on else None}"); await close(pg)
+    ok(on and not on[0]['bandShown'] and on[0]['banAnim'] == 'vis5LeadFade', f"L3. reduced motion: fades only, even at FX High {on[0] if on else None}"); await close(pg)
 
 DANGER_STATE = """(()=>{ const e = document.querySelector('.danger-warn'); if(!e) return {on: false}; const p = e.querySelector('.dw-plate'), sw = e.querySelector('.dw-sweep'), ed = e.querySelector('.dw-edge');
   const r = p.getBoundingClientRect(), bf = document.getElementById('battlefieldEl').getBoundingClientRect(); return {on: true, calm: e.classList.contains('is-calm'), role: e.getAttribute('role'), head: (e.querySelector('.dw-head')||{}).textContent, name: (e.querySelector('.dw-name')||{}).textContent,
