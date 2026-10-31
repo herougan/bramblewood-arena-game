@@ -10105,8 +10105,8 @@ function bwInertOthers(keep){
   [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
   return ()=> done.forEach(el=>{ el.inert = false; });
 }
-const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight'];
-const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
+const CI_FINISHES = ['holo-pearl','holo-nacre','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight','holo-nacre'];
+const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-nacre':'Nacre','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
 // The pack card viewer's detail column (2026-10-24, package NE, owner 19:27 #13: "When opening a pack, see SS#4, the blown up card should be
 // on the left, then the description and effects (card detail window) on the right. Transition into it btw, dont just - boop - it's there."):
@@ -10196,7 +10196,12 @@ function mountDetailCard(root, o){
   const settle = ()=>{ dc.dataset.face = faceOf(turn); stage && stage.setAttribute('aria-pressed', dc.dataset.face === 'back' ? 'true' : 'false'); if(o.onFace) try{ o.onFace(dc.dataset.face); }catch(e){} };
   const flip = dir=>{ if(dead) return; mode(''); heat(650); turn += (dir < 0 ? -180 : 180); tx = ty = 0; paint(); settle(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} };
   const show = (face, instant)=>{ if(dead) return; if(faceOf(turn) !== face) turn += 180; if(instant){ spin.classList.add('no-anim'); } mode(''); paint(); settle(); if(instant){ void spin.offsetWidth; spin.classList.remove('no-anim'); } };
-  const spinOnce = ()=>{ if(dead || still()) return; mode('long'); heat(1200); turn += 360; paint(); setTimeout(()=>{ if(!drag) mode(''); }, 1150); };
+  // 2026-10-31 (package UI9, DD3; owner: "the card detail's Spin button does nothing"): at Effects Low / None or under reduced motion the card is "still"
+  // (no 3D) and the button returned at once: nothing happened. Still now: reduced motion turns the card face over (no motion); Effects Low turns it
+  // once about its upright axis in 0.7 s (a flat animation on the stage, the 3D layer stays off).
+  const spinOnce = ()=>{ if(dead) return;
+    if(still()){ try{ if(reducedMotion() || !stage || !stage.animate){ flip(1); return; } stage.animate([{transform:'rotateY(0deg)'}, {transform:'rotateY(360deg)'}], {duration:700, easing:'cubic-bezier(.3,.7,.2,1)'}); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }catch(e){ flip(1); } return; }
+    mode('long'); heat(1200); turn += 360; paint(); setTimeout(()=>{ if(!drag) mode(''); }, 1150); };
   const tiltTo = (e)=>{ const r = stage.getBoundingClientRect(); if(!r.width) return;
     px = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1)); py = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1));
     tx = -py * 10; ty = px * 12; hover = true; dc.classList.add('is-hot'); mode('live'); paint(); };
@@ -14653,7 +14658,7 @@ function bestCopyClass(id, d){
 const MATERIA_UNIT = Object.assign({}, UPGRADE_COSTS.materiaUnit); // 2026-10-23 (HUB2): was {dust:675, gold:450}, now canonical/upgrade-costs.json; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below); 1.1 Units since 2026-10-21 (package FG, FORGE_STEP_DUST), the Unit itself unchanged
 const MU = f=> Math.round(f * MATERIA_UNIT.dust); // MU fraction → Dust
 const DISENCHANT_PCT = {starter:0.25, common:0.25, uncommon:0.55, rare:1.15, veryrare:1.75, superrare:2.4, epic:3.25, heroic:4.1, unique:5.0, legendary:6.2, mythic:7.3, ancient:8.5, divine:10};
-const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
+const FINISH_BONUS = {rainbow:2, pearl:1, nacre:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
 function copyTreatmentBonus(d, copy){
   let b = 0; copy = copy || {};
   if(copy.foil){ const f = copy.finish && copy.finish !== 'auto' ? copy.finish : ((holoClass(d).match(/holo-(\w+)/) || [])[1] || 'rainbow'); b += FINISH_BONUS[f] || 1; }
@@ -48434,18 +48439,38 @@ function vis3CentrePips(root){
 // when the trap is laid. The CSS is added here (it rides after the page's own style, so it wins) rather than in arena_template.html.
 function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i><b style="--a:${i * 45}deg; --d:${(i * 0.21 + 0.1).toFixed(2)}s"></b>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
 (function ui9TrapCss(){ try{ if(document.getElementById('ui9-trap-css')) return; const st = document.createElement('style'); st.id = 'ui9-trap-css'; st.textContent = `
-.vis3-trap-ring i{animation-name:ui9TrapFall;}
+.vis3-trap-ring.vis3-trap-ring i{animation-name:ui9TrapFall;}
 @keyframes ui9TrapFall{0%{opacity:0; transform:rotate(var(--a)) translateY(-215%) scale(1.15);} 22%{opacity:.475;} 80%{opacity:.275;} 100%{opacity:0; transform:rotate(var(--a)) translateY(0) scale(.35);}}
-.vis3-trap-ring b{position:absolute; left:50%; top:50%; width:9%; height:20%; margin:-10% 0 0 -4.5%; border-radius:2px; background:#c1121f; opacity:0;
+.vis3-trap-ring.vis3-trap-ring b{position:absolute; left:50%; top:50%; width:9%; height:20%; margin:-10% 0 0 -4.5%; border-radius:2px; background:#c1121f; opacity:0;
   transform:rotate(var(--a)) translateY(-235%); animation:ui9TrapRect 1.68s cubic-bezier(.45,0,.75,.6) var(--d) infinite;}
 @keyframes ui9TrapRect{0%{opacity:0; transform:rotate(var(--a)) translateY(-235%) scaleY(1);} 20%{opacity:.6;} 85%{opacity:.5;} 100%{opacity:0; transform:rotate(var(--a)) translateY(-8%) scaleY(.45);}}
-@media (prefers-reduced-motion: reduce){ .vis3-trap-ring i{animation:none; opacity:.25;} .vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);} }
-:where(html[data-fx="none"]) .vis3-trap-ring i{animation:none; opacity:.25;} :where(html[data-fx="none"]) .vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);}
+@media (prefers-reduced-motion: reduce){ .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.25;} .vis3-trap-ring.vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);} }
+html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.25;} html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);}
 .w2-hazard-mark.trap{opacity:.17; transition:opacity .2s ease;}
-.board-card:hover .w2-hazard-mark.trap{opacity:.08;}
+.board-card:hover .w2-hazard-mark.trap, .w2-hazard-mark.trap:hover{opacity:.08;}
 .ui9-trap-snap{position:absolute; inset:0; overflow:hidden; border-radius:14px; pointer-events:none; z-index:7;}
 .ui9-trap-snap b{position:absolute; left:0; right:0; height:20%; background:#c1121f; opacity:0; box-shadow:0 0 6px rgba(193,18,31,.7);}
 .ui9-trap-snap b.t{top:0;} .ui9-trap-snap b.u{bottom:0;}
+`; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
+// 2026-10-31 (package UI9, DD1 / DD2): the Quests board's writs in two columns (one on phones); the levelled card's small face in the pack summary.
+(function ui9Css(){ try{ if(document.getElementById('ui9-css')) return; const st = document.createElement('style'); st.id = 'ui9-css'; st.textContent = `
+@media (min-width:721px){ .qn-board.er-board{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; align-items:start;}
+  .qn-board.er-board > .qn-sign, .qn-board.er-board > .er-sub, .qn-board.er-board > .er-empty{grid-column:1 / -1;} .qn-board.er-board > .er-writs{display:contents;} }
+.pack-open-foot > .ui9-p{margin:0 0 10px; font-size:15px;} .po2 .pack-open-foot > .ui9-p{color:#fbeefe;}
+.ui9-lvl-up{display:inline-flex; align-items:center; gap:6px; vertical-align:middle;}
+.ui9-lvl-face{display:inline-block; zoom:.55; pointer-events:none; vertical-align:middle;}
+/* DD4: Nacre, mother-of-pearl: pale plates (pink, peach, lilac, blue) split by thin warm-gold seams; a soft sheen and the colours slide with the tilt (--hbx / --hby) */
+.card-tile.holo-nacre .holo-layer{
+  background-image:
+    linear-gradient(112deg, rgba(255,255,255,0) 34%, rgba(255,255,255,.62) 46%, rgba(255,236,244,.18) 54%, rgba(255,255,255,0) 66%),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20125'%20preserveAspectRatio='none'%3E%3Cpolygon%20points='63.8,37.5%2065.2,44.6%2063.6,49.3%2030.9,96.8%2024.4,90.7%2027.1,49.2%2053.4,35.4'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,22.5%20105.0,89.8%2069.1,47.2%2065.5,39.2'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='29.9,96.3%2065.2,45.1%2061.3,93.7%2034.4,103.9'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='26.3,48.9%2023.5,91.1%20-5.0,85.2%20-5.0,54.7%2013.7,47.2'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='77.0,130.0%2034.2,130.0%2034.4,101.9%2062.0,91.4%2091.6,99.6'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='18.5,44.8%20-5.0,54.2%20-5.0,15.9%20-0.7,17.2'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='35.2,130.0%20-5.0,130.0%20-5.0,85.5%2025.0,91.6%2032.4,98.5%2035.3,103.4'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='63.8,-5.0%20105.0,-5.0%20105.0,20.9%2065.8,37.4'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,90.6%20105.0,130.0%2077.7,130.0%2093.4,97.4'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,87.0%20105.0,91.4%2091.7,99.2%2063.0,91.3%2067.0,42.0'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='-5.0,-5.0%2032.7,-5.0%2032.4,8.2%20-2.6,16.7%20-5.0,16.0'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='31.1,-5.0%2064.4,-5.0%2066.4,38.4%2062.3,38.4%2050.2,36.0%2030.8,6.9'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='49.7,34.1%2023.6,47.9%2019.6,47.3%20-1.6,16.9%2032.6,8.6'%20fill='none'%20fill='none'%20stroke='%23d9a85b'%20stroke-opacity='.9'%20stroke-width='.55'%20stroke-linejoin='round'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255,196,214,.62) 0%, rgba(255,214,186,.6) 18%, rgba(226,204,248,.62) 36%, rgba(196,222,255,.62) 54%, rgba(255,204,222,.6) 72%, rgba(255,222,190,.6) 86%, rgba(226,204,248,.62) 100%),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20125'%20preserveAspectRatio='none'%3E%3Cpolygon%20points='63.8,37.5%2065.2,44.6%2063.6,49.3%2030.9,96.8%2024.4,90.7%2027.1,49.2%2053.4,35.4'%20fill='%23ffd3e0'%20fill-opacity='.55'/%3E%3Cpolygon%20points='105.0,22.5%20105.0,89.8%2069.1,47.2%2065.5,39.2'%20fill='%23ffdcc2'%20fill-opacity='.55'/%3E%3Cpolygon%20points='29.9,96.3%2065.2,45.1%2061.3,93.7%2034.4,103.9'%20fill='%23e6d3f7'%20fill-opacity='.55'/%3E%3Cpolygon%20points='26.3,48.9%2023.5,91.1%20-5.0,85.2%20-5.0,54.7%2013.7,47.2'%20fill='%23d3e6ff'%20fill-opacity='.55'/%3E%3Cpolygon%20points='77.0,130.0%2034.2,130.0%2034.4,101.9%2062.0,91.4%2091.6,99.6'%20fill='%23fbe3d6'%20fill-opacity='.55'/%3E%3Cpolygon%20points='18.5,44.8%20-5.0,54.2%20-5.0,15.9%20-0.7,17.2'%20fill='%23f3d6ee'%20fill-opacity='.55'/%3E%3Cpolygon%20points='35.2,130.0%20-5.0,130.0%20-5.0,85.5%2025.0,91.6%2032.4,98.5%2035.3,103.4'%20fill='%23d9e9f7'%20fill-opacity='.55'/%3E%3Cpolygon%20points='63.8,-5.0%20105.0,-5.0%20105.0,20.9%2065.8,37.4'%20fill='%23ffe6c9'%20fill-opacity='.55'/%3E%3Cpolygon%20points='105.0,90.6%20105.0,130.0%2077.7,130.0%2093.4,97.4'%20fill='%23ffd3e0'%20fill-opacity='.55'/%3E%3Cpolygon%20points='105.0,87.0%20105.0,91.4%2091.7,99.2%2063.0,91.3%2067.0,42.0'%20fill='%23ffdcc2'%20fill-opacity='.55'/%3E%3Cpolygon%20points='-5.0,-5.0%2032.7,-5.0%2032.4,8.2%20-2.6,16.7%20-5.0,16.0'%20fill='%23e6d3f7'%20fill-opacity='.55'/%3E%3Cpolygon%20points='31.1,-5.0%2064.4,-5.0%2066.4,38.4%2062.3,38.4%2050.2,36.0%2030.8,6.9'%20fill='%23d3e6ff'%20fill-opacity='.55'/%3E%3Cpolygon%20points='49.7,34.1%2023.6,47.9%2019.6,47.3%20-1.6,16.9%2032.6,8.6'%20fill='%23fbe3d6'%20fill-opacity='.55'/%3E%3C/svg%3E");
+  background-size:300% 300%, 100% 100%, 260% 260%, 100% 100%;
+  background-position:var(--hbx,50%) var(--hby,50%), 0 0, var(--hbx,50%) var(--hby,50%), 0 0;
+  mix-blend-mode:normal; opacity:.5; filter:none;}
+.card-tile.holo-nacre.holo-active .holo-layer{opacity:.68;}
+.card-tile.holo-nacre{box-shadow:inset 0 0 0 2px rgba(238,200,140,.7), 0 0 10px rgba(255,214,200,.35);}
 `; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
 // The closing: two rosso jaw bars drop in from the slot's top and bottom edges to meet in the middle (fading in over the first 20% of the fall), then
 // the slot gives a 1.5 px shake. About 0.7 s; Effects Low: 0.35 s and no shake; Effects None / reduced motion: nothing moves.
@@ -49205,7 +49230,7 @@ function w2SkillVfx(ev){
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); if(ev.kind === 'trap') ui9TrapLaid(ev); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap') ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
+    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); let ui9Snapped = false; if(ev.kind === 'trap'){ ui9TrapLaid(ev); if(fx('low')){ const c0 = w2CellEl(ev.pid, ev.slot); if(c0) ui9Snapped = !!ui9TrapSnap(c0); } } /* UI9 (BB2): the closing plays as the trap is laid (the CPU's card often steps on the slot within half a second) */ w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap' && !ui9Snapped) ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
     case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
@@ -54489,14 +54514,14 @@ const SHOP_PACKS_DEFAULT = [
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
-  {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'cosmos', label:'Cosmos'},
+  {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'nacre', label:'Nacre', hint:'mother-of-pearl (2026-10-31, UI9 DD4)'}, {key:'cosmos', label:'Cosmos'},
   {key:'prism', label:'Prism'}, {key:'hex', label:'Hex'}, {key:'etched', label:'Etched'},
   {key:'ice', label:'Cracked ice'}, {key:'reverse', label:'Reverse'}, {key:'gold', label:'Gold'},
   // 2026-10-14: the Effects Lab finishes, now rare pack prints
   {key:'aurora', label:'Aurora'}, {key:'galaxy', label:'Galaxy swirl'}, {key:'molten', label:'Molten gold'}, {key:'frost', label:'Frost crystal'}, {key:'oilslick', label:'Oil slick'},
   {key:'sakura', label:'Sakura'}, {key:'sparkle', label:'Glitter field'}, {key:'scanline', label:'Holo scanlines'}, {key:'old', label:'Cards of old'},
 ];
-const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
+const PACK_FOIL_FINISHES_DEFAULT = {auto:60, nacre:4, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
 // 2026-10-23 (package RW5, item 15): the basic packs' own pools (packCardPool). A saved admin edit or a published table from before RW5 says
 // pool 1 for all three; that old default is read as the pack's own pool. Any other pool an admin picked is kept.
 const PACK_TIER_POOL = {bronze:1, silver:2, gold:3};
@@ -55493,7 +55518,7 @@ function holoClass(d){
 // Card workbench (2026-10-12, user: "make sure i can use a dropdown in the effects lab or something when im viewing and
 // experimenting with cards - choose art, properties of the foil, art type etc."): Admin → 🧪 Card workbench. One card, drawn
 // live by the game's own card code, with every look switchable. Nothing is saved.
-const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines'], ['holo-old', 'Cards of old']];
+const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-nacre', 'Nacre'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines'], ['holo-old', 'Cards of old']];
 function openCardWorkbench(startId){
   const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].token && defs[id].cardType !== 'materia').sort((a, b)=> defs[a].name.localeCompare(defs[b].name));
   const artIds = ids.filter(id=> defs[id].art);
@@ -55840,9 +55865,9 @@ function purchasePackOnce(pack, prepaid, opts){
   results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
-    const defs = getCardDefs();
-    const candidates = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && getCardLevel(id)<10);
-    if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; }
+    // 2026-10-31 (package UI9, DD2; owner: "Blue-ringed Octopus reached Lv 2 under three other cards"): the free level goes to a card you OWN (main
+    // deck cards first, then any other owned card; never one at Lv 10), not to a random card of the whole game. The pack's own cards count as owned.
+    leveledId = ui9PackLevelPick(); if(leveledId) myCardLevels[leveledId] = getCardLevel(leveledId)+1;
   }
   const glow = jackpot ? {tier:RARITY_TIER_BANDS.length - 1, rarity:RARITY_TIER_BANDS[RARITY_TIER_BANDS.length - 1], jackpot:true} : rollPackGlow(results, getCardDefs());
   return {results, leveledId, glow, jackpot};
@@ -55850,6 +55875,13 @@ function purchasePackOnce(pack, prepaid, opts){
 // 2026-10-23 (package RW5, owner 19:27 item 13: "After buying a pack, what does 3 free level-ups mean?"): a pack's levelChance (Hedgerow Pouch
 // 20%, Tidemire Chest 40%, Highcrest Case 80%) levels one card you own by 1 for free. The bundle summary now says which: "⭐ 3 free level-ups:
 // Alley Cat → Lv 3, Pond Duck → Lv 2 ...", the same card twice counted once with its last level, and a tooltip saying where they come from.
+function ui9PackLevelPick(){
+  try{ const defs = getCardDefs(), ok = id=> defs[id] && !defs[id].locked && !defs[id].token && getCardLevel(id) < 10;
+    const owned = [...myUnlockedCardIds].filter(ok); if(!owned.length) return null;
+    const md = (myDecks || []).find(d=> d.id === mainDeckId) || getActiveDeck(), counts = (md && md.counts) || {};
+    const inDeck = owned.filter(id=> (counts[id] | 0) > 0), pool = inDeck.length ? inDeck : owned;
+    return pool[Math.floor(Math.random() * pool.length)]; }catch(e){ return null; }
+}
 function packLevelUpsHTML(levels, defs){
   defs = defs || getCardDefs(); const by = new Map(); levels.forEach(id=>{ if(defs[id]) by.set(id, (by.get(id) || 0) + 1); });
   const names = [...by.keys()].map(id=> `${escapeHtml(defs[id].name)} → ${escapeHtml(TX('ui.rw5-lv', {n: getCardLevel(id)}))}${by.get(id) > 1 ? ` (×${by.get(id)})` : ''}`);
@@ -56825,7 +56857,8 @@ function openPackAnimation(pack, opened, opts){
   // ---- 3. this pack's summary ----
   const footBits = o=>{
     const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon && !KROONI_RETIRED) bits.push(`👑 +${pack.kroon} Krooni`); // 2026-10-23 (TU2): none paid while retired
-    if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
+    // 2026-10-31 (package UI9, DD2): the levelled card's small face and "+1 Level" (its name and new level in the tooltip).
+    if(o.leveledId && defs[o.leveledId]) bits.push(`<span class="ui9-lvl-up" title="${escapeAttr(defs[o.leveledId].name + ' → ' + TX('ui.rw5-lv', {n: getCardLevel(o.leveledId)}))}">⭐ <span class="ui9-lvl-face" data-lvl-defid="${escapeAttr(o.leveledId)}">${cardTileHTML(defs[o.leveledId], {inPlay:true, size:'compact'})}</span> <b>+1 Level</b></span>`);
     if(o.bonus) bits.push(`🎁 ${_t('Bonus card: nothing Uncommon or better, so you get one more')}`);
     return bits;
   };
@@ -56886,7 +56919,7 @@ function openPackAnimation(pack, opened, opts){
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
       <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
-      <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</p>${footActions()}</div>
+      <div class="pack-open-foot" id="poFoot"><div class="ui9-p">${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</div>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
     wireTop(); wireFoot(); wireView(); wireEdit(); wireTilt();
