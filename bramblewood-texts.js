@@ -1298,6 +1298,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.u4-arena-tip": "The Arena",
   "ui.u4-arena-back": "Back to the Arena",
   "ui.u4-forge": "Forge",
+  "ui.ui9-back-to-map": "Back to the map",
   "ui.u4-sort-advance": "Sort: Advancement",
   "ui.u3-map-chip-tip": "Map {n}: {name} ({done}/{total} cleared)",
   "ui.u3-map-chip-tip-cleared": "Map {n}: {name} (cleared)",
