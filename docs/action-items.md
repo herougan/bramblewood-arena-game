@@ -4,6 +4,13 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 14:24: the owner's notes
+- AA1 (UI8): the bramble's health bar: remove the blue electricity line once the Shield is gone. Shield layers (L1, L2 ...) and Health ease into their new size, not jump: 0.25 s; 0.4 s for 5+ damage; 0.7 s for 10+.
+- AA2 (UI8): the fight intro (VS screen, SS 14-A-5 boss): the right side is messy (status pill, HP / Armour line, leader pill, Smart CPU pill, BR box, quote stacked with uneven gaps). Tidy into one aligned column matching the left side.
+- AA3 (UI8, regression): a played card lands from where you let go of it; an enemy card fades into existence above its slot and lands (as if from their hand). The code is still there (arena_app.js placeCard dropPoint, renderBoard 'hand' entrance) but the owner no longer sees it: find which change broke it and restore it, with an e2e check.
+- AA4 (coordinator): balancing calls are the coordinator's from here (owner: "just do what you think is best. I'll be going one full 0-20 pass anyway"). Daily Post stays 1/2 (lifted once by SKILL2); Candle Moth 1/6 done.
+- AA5 (UI8): spawned cards (Trojan Raider from the Trojan Horse bramble, every On Death / On Attacked spawn) bounce out of their spawner (the bramble or the card) and land in their slot.
+
 ## 10-31 10:17: the owner's notes
 - Z1 (WORLD1, idea): from Map 40 on, a Relic discovery tab turns fossils and remnants into animal cards. Maps 30-40: prehistoric animals still roughly like ours; Maps 30-60 grow into true dinosaurs; fossils follow (fossilised eggs past Map 50). In `docs/design/world-21-plus-ideas-2026-10-30.md`.
 - Z2 (UI8): leader summoned: remove the leader preview in the centre (the leader is clearly visible).
