@@ -31542,24 +31542,70 @@ function rv2Update(ov){
 const RV_FLIPS_KEY = 'bw_rv_flips_v1';
 const rvFlips = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_FLIPS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } })(); let rvFlipTop = '';
 function rvFlipsSave(){ try{ localStorage.setItem(RV_FLIPS_KEY, JSON.stringify(rvFlips)); }catch(e){} }
+// 2026-10-31 (package UI11, FF9; owner 18:09: "Add card to SPECIAL" beside Export all): cards the owner adds to a map's SPECIAL list from the gallery, kept
+// per main map in localStorage (bw_rv_special_add_v1: {mapId: [cardId, ...]}) next to the picks, shown as "Added" tiles in the SPECIAL section and
+// exported (txt + json) as SPECIAL entries flagged `added`. The picks (rvFlips) are stored exactly as before.
+const RV_SPECIAL_ADD_KEY = 'bw_rv_special_add_v1';
+const rvSpecialAdd = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_SPECIAL_ADD_KEY) || '{}'); return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; } })();
+function rvSpecialAddSave(){ try{ localStorage.setItem(RV_SPECIAL_ADD_KEY, JSON.stringify(rvSpecialAdd)); }catch(e){} }
+function rvAddedOf(top){ const a = rvSpecialAdd[top]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
+function rvAddedPartHTML(top, defs){
+  const ids = rvAddedOf(top).filter(id=> defs[id]);
+  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button></span>`).join('');
+  return `<div class="rv1-part is-added" data-rv-added-part${ids.length ? '' : ' hidden'}><h4>${escapeHtml(TX('ui.ff9-added-title'))} <small>${ids.length}</small></h4><div class="vis4-mc-row rv1-row">${tiles}</div></div>`;
+}
 function rv3ExportAll(){
   const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [];
   const flipped = (top, sec, id)=> !!rvFlips[top + '|' + sec.key + '|' + id];
   mainConquestMaps().forEach(m=>{
     const top = m.id, n = mapNumberOf(top), mapLabel = (n == null ? '' : 'Map ' + n + ' · ') + m.name;
     mapPoolSections(top).forEach(sec=>{
-      const rv = rv1ReviewOf(sec, top); if(!rv) return;
+      const rv = rv1ReviewOf(sec, top), added = sec.key === 'special' ? rvAddedOf(top).filter(id=> defs[id]) : []; if(!rv && !added.length) return;
       const ids = l=> (l || []).filter(e=> e && e.id).map(e=> e.id);
-      const chosen = ids(rv.chosen), maybe = ids(rv.maybe), cut = ids(rv.cut);
+      const R = rv || {}, chosen = ids(R.chosen), maybe = ids(R.maybe), cut = ids(R.cut);
       const keep = maybe.concat(cut).filter(id=> flipped(top, sec, id)), cutNow = chosen.filter(id=> flipped(top, sec, id));
-      data.push({map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut});
+      const row = {map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut};
+      if(added.length) row.added = added.map(id=> ({id, name: nm(id), added: true})); // 2026-10-31 (UI11, FF9): SPECIAL entries the owner added
+      data.push(row);
       const names = a=> a.length ? a.map(nm).join(', ') : '-';
-      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
-        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut));
+      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : '', added.length ? 'added ' + added.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
+        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut) + (added.length ? ' | added: ' + added.map(nm).join(', ') : ''));
     });
   });
   const head = 'Bramblewood map card lists, exported ' + new Date().toISOString().slice(0, 10) + '. One line per list, in map order: "<map> / <list>: <the owner\'s Keep / Cut choices so far> | chosen: the proposal | maybe: ... | cut: ...".';
   return {text: head + '\n' + lines.join('\n'), json: {exported: new Date().toISOString(), lists: data}};
+}
+function ff9RefreshAdded(ov, top){
+  const sec = ov.querySelector('.pk1-mc-sec[data-rv-special]'); if(!sec) return;
+  const old = sec.querySelector('[data-rv-added-part]'), tmp = document.createElement('div'); tmp.innerHTML = rvAddedPartHTML(top, getCardDefs());
+  if(old) old.replaceWith(tmp.firstChild); else sec.appendChild(tmp.firstChild);
+  try{ wireRewardZoom(ov); }catch(e){}
+}
+function ff9RemoveAdded(ov, top, id){
+  rvSpecialAdd[top] = rvAddedOf(top).filter(x=> x !== id); if(!rvSpecialAdd[top].length) delete rvSpecialAdd[top]; rvSpecialAddSave(); ff9RefreshAdded(ov, top);
+}
+// the small searchable picker: name search over every non-token card (ok = the gallery's own filter); a card already in this map's SPECIAL is marked and not offered again
+function ff9OpenPicker(ov, top, ok){
+  ov.querySelectorAll('.ff9-picker').forEach(e=> e.remove());
+  const defs = getCardDefs(), inSpecial = new Set((mpEntry(top).special || []).concat(rvAddedOf(top)));
+  const all = Object.keys(defs).filter(ok).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name)));
+  const box = document.createElement('div'); box.className = 'ff9-picker'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.ff9-picker-title'));
+  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
+  ov.querySelector('.pk1-mc-modal').appendChild(box);
+  const q = box.querySelector('.ff9-pk-q'), list = box.querySelector('.ff9-pk-list');
+  const draw = ()=>{
+    const t = q.value.trim().toLowerCase(), hit = all.filter(id=> !t || String(defs[id].name).toLowerCase().includes(t)).slice(0, 60);
+    list.innerHTML = hit.length ? hit.map(id=>{ const has = inSpecial.has(id); return `<button type="button" class="ff9-pk-row${has ? ' is-has' : ''}" data-ff9-id="${escapeAttr(id)}"${has ? ' disabled' : ''}><span>${escapeHtml(defs[id].name)}</span><small>${escapeHtml(String(defs[id].rarity || ''))}${has ? ' · ' + escapeHtml(TX('ui.ff9-already')) : ''}</small></button>`; }).join('') : `<p class="panel-sub">${escapeHtml(TX('ui.ff9-no-match'))}</p>`;
+  };
+  q.addEventListener('input', draw); draw();
+  box.querySelector('.ff9-pk-x').onclick = ()=> box.remove();
+  box.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); box.remove(); } });
+  list.addEventListener('click', e=>{
+    const r = e.target.closest('.ff9-pk-row'); if(!r || r.disabled) return;
+    const id = r.dataset.ff9Id, a = rvAddedOf(top); if(!a.includes(id)) a.push(id); rvSpecialAdd[top] = a; rvSpecialAddSave();
+    inSpecial.add(id); ff9RefreshAdded(ov, top); r.disabled = true; r.classList.add('is-has'); r.querySelector('small').textContent += ' · ' + TX('ui.ff9-already');
+  });
+  try{ q.focus(); }catch(e){}
 }
 function rv1PicksText(ov){
   const out = [];
@@ -31586,17 +31632,17 @@ function pk1OpenMapCards(mapId){
   const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
   const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
-    if(!rv) return `<section class="pk1-mc-sec rv2-panel"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
+    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
     const tg = rv2TargetsOf(s, top, chosen, all);
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
-    return `<section class="pk1-mc-sec has-rv1 rv2-panel" data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}</section>`;
+    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
   }).join('');
-  const anyRv = /has-rv1/.test(secs);
+  const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
@@ -31604,6 +31650,7 @@ function pk1OpenMapCards(mapId){
   ov.onclick = e=>{
     if(e.target === ov) return close();
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
+    if(b.dataset.rvAct === 'remove-added'){ ff9RemoveAdded(ov, top, b.closest('.rv1-tile').dataset.rvId); return; } // 2026-10-31 (UI11, FF9)
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
@@ -31616,6 +31663,7 @@ function pk1OpenMapCards(mapId){
     window.__rv1Last = txt;
     try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
   });
+  const ad = document.getElementById('ff9AddSpecial'); if(ad) ad.addEventListener('click', ()=> ff9OpenPicker(ov, top, ok));
   const ex = document.getElementById('rv3ExportAll');
   if(ex) ex.addEventListener('click', ()=>{ // 2026-10-29 (UI3, S10): copy everything, and offer it as a .txt / .json download
     const r = rv3ExportAll(), msg = document.getElementById('rv1CopyMsg'), dl = document.getElementById('rv3Dl'); window.__rv3Last = r;

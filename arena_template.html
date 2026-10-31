@@ -14205,6 +14205,16 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 /* 2026-10-29 (package REVIEW1): Chosen / Cut cards / Maybe sections in the 🃏 Map cards overlay */
 .rv1-none{margin:0 0 4px; font:600 11px/1.3 'Baloo 2',system-ui,sans-serif; opacity:.6;}
 .rv1-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:4px 0 0;}
+/* 2026-10-31 (package UI11, FF9): Add card to SPECIAL - the picker over the gallery, and the Added part */
+.rv1-part[hidden]{display:none;}
+.pk1-mc-modal{position:relative;}
+.ff9-picker{position:absolute; z-index:60; isolation:isolate; top:64px; left:50%; transform:translateX(-50%); width:min(420px,92%); max-height:min(70vh,520px); display:flex; flex-direction:column; gap:8px; padding:10px; border-radius:12px; background:#fff6e0; color:#2b2218; border:2px solid #8a6a3b; box-shadow:0 12px 40px rgba(0,0,0,.55);}
+.ff9-pk-head{display:flex; justify-content:space-between; align-items:center; gap:8px;}
+.ff9-pk-q{width:100%; box-sizing:border-box; padding:8px 10px; border-radius:8px; border:1px solid #8a6a3b; background:#fff; color:#2b2218; font:inherit;}
+.ff9-pk-list{overflow-y:auto; display:flex; flex-direction:column; gap:2px; min-height:0;}
+.ff9-pk-row{display:flex; justify-content:space-between; gap:8px; text-align:left; padding:7px 9px; border-radius:7px; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer;}
+.ff9-pk-row:hover,.ff9-pk-row:focus-visible{background:rgba(138,106,59,.22); outline:none;}
+.ff9-pk-row.is-has{opacity:.5; cursor:default;} .ff9-pk-row small{opacity:.7;}
 .rv1-part h4{margin:8px 0 0; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif;}
 .rv1-part h4 small{opacity:.65; margin-left:4px;}
 .rv1-part.is-cut h4::before{content:'✂ ';} .rv1-part.is-maybe h4::before{content:'? ';}
