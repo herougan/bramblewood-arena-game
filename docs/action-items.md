@@ -4,6 +4,19 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 09:22: the owner's notes
+- Y1 (UI7): status numbers sit closer to their icon (like the shield). Poison and Regeneration show no number. Shield stays as it is (it feeds Health, then disappears).
+- Y2 (ENG15): Anadromous rework: Tide and +1/+1 in seawater (any salty map); in freshwater (swimming pool counts) spawns a 1/1 Fry with Tide on death; maps without Tide: +0/+1. ENG14-4.
+- Y3 (ENG15): Bola also removes Flying and Evade benefits; Bola Spider, Net Thrower, Salmon OK; new skill Lasso (once, On Ready; units tied; released when either dies). ENG14-3.
+- Y4 (UI7 hook, ENG15 for Lasso): a rare, random struggle animation on Lasso, Bola (Pinned), Entangled and similar.
+- Y5 (ENG15): investigate why the CPU can't reach big cards: Lumber gathering skill, gathering too weak, or big cards tuned down.
+- Y6: keep CPU saving (ENG14-1).
+- Y7 (ENG15): mini-bosses start with +2 cards (5 in hand) (ENG14-2).
+- Y8 (ECON2): bonus-copy chance by rarity for +1/+2/+3 copies: Common 8/1.5/0.5%, Unique 0.3/0.05/0.01%, Legendary 0.01/0.002/0.0005%, as one formula (now: one +1 copy only, Common 5%).
+- Y9 (ECON2): first clears pay Gold Leaves; raids pay a little on clear; later a Gold Leaves daily dungeon.
+- Y10 (ECON2): keep upgrades and cards on separate currencies; Pack 1 also costs Gold Leaves.
+- Y11 (pipeline): owner's balancing loop: skills, cards, (owner picks map cards, Claude suggests), decks on set cards, (Claude suggests skirmish decks, owner picks), (owner playthrough check), decks on Map 0-20 cards in tournament chunks. Asked how to make it faster (carriers, 2nd-order combos, two-skill cards). Answered in chat 10-31; SPEED1 builds it.
+
 ## 10-30 23:25: the owner's notes
 | # | Package | Note |
 |---|---|---|
