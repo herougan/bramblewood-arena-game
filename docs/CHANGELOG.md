@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 Package UI10 (owner EE1-EE8, AUTH1 / CC1 / DD5; not yet released)
+- Flyers (Bee Forager, Honey Bee, floating Tide units) draw at the full board width again (CS-D's tile rule missed their .fly-body wrapper); the old half size is kept as an opt-in `board-mini` mode (off). Quests: no top summary, a finished notice is the claim button, no "In progress", NEW! until hovered or clicked. Ambush gives echo rings on its pip. No toast for a reference deck; reference decks fight with their own leader (bramble when a set names one). One skirmish per map (N-SK): My deck or a reference deck vs a random BPRO deck, 1 in 4 with a SPECIAL card. Card editor Swarm: one type dropdown (first entry "Type" = plain Swarm) that applies at once, no "x N". Admin: a Rejected art list. Sign-in: Google's own button (Google Identity Services, nonce, signInWithIdToken), the redirect stays as "Other sign-in" and as the fallback; CSP report-only updated for accounts.google.com.
+- Checks: tests/e2e/ui10_2026_10_31.py.
+
 ## 2026-10-31 Release 10-31c (UI9)
 - Shipped: UI9 (Nest back-to-map button; trap look: half-opacity ring, falling rosso bars, closing jaws, faint label; trap hit hook / launch; Quests in two columns; pack level-up goes to an owned card and shows it; Spin works on Effects Low; Nacre foil).
 - Checks: smoke (only the known d-2026-10-19); ui9 e2e full run all ok after merge; ui8 e2e all ok (agent's run).

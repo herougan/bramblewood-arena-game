@@ -148,6 +148,7 @@ async def ee1(b, url, w):
       note.click(); await new Promise(r=> setTimeout(r, 700)); info.claimed = loadQuestState().claimedDaily.includes(x.id); return info; })()""")
     ok(c is not None and c['role'] == 'button' and c['cid'] and c['btn'] == 0 and c['claimed'], f'clicking the finished notice claims it (no separate button) {c}')
     await pg.screenshot(path=shot('ee1-quests-after', w))
+    await pg.mouse.move(2, 2)   # (a pointer resting over the new writ would clear its NEW! at once)
     e = await pg.evaluate("""(async ()=>{ const t = ERRAND_TEMPLATES[0]; acceptErrand(t.id); const act = loadErrands().active[0]; noticesSubTab = 'errands'; openQuestsModal('errands'); await new Promise(r=> setTimeout(r, 500));
       const w0 = document.querySelector('.er-writ'); const before = {status: w0.querySelector('.er-status').textContent.trim(), news: document.querySelectorAll('.er-writ .qn-new').length, seal: document.querySelectorAll('.er-seal').length};
       window.errandProgress = x=> x.goal; openQuestsModal('errands'); await new Promise(r=> setTimeout(r, 500)); const w1 = document.querySelector('.er-writ.is-ready'); const after = {seal: document.querySelectorAll('.er-seal').length, role: w1 && w1.getAttribute('role')};
@@ -218,7 +219,7 @@ async def ee5(b, url, w):
     print(f'-- EE5: Rejected art list ({w})')
     pg = await W.fresh(b, url, w)
     r = await pg.evaluate("""(async ()=>{ adminModeEnabled = true; window.__rows = []; cloudCardAdmin = true; cloudUserId = cloudUserId || 'test-admin';
-      sbClient = {from: t=> ({upsert: async row=>{ window.__rows.push({t, row: JSON.parse(JSON.stringify(row))}); return {error: null}; })}), auth: {}};
+      sbClient = {from: t=> ({upsert: async row=>{ window.__rows.push({t, row: JSON.parse(JSON.stringify(row))}); return {error: null}; }}), auth: {}};
       await saveArtReview('bee-forager', true, 'wings look wrong'); await saveArtReview('honey-bee', true, 'too dark: redo with a meadow');
       switchTab('admin'); await new Promise(r=> setTimeout(r, 800)); const p = document.getElementById('adminRejectedArt'); if(!p) return null;
       const rows = [...p.querySelectorAll('.ra-row')].map(x=> ({id: x.dataset.raId, name: x.querySelector('.ra-name').textContent, comment: x.querySelector('.ra-comment').textContent, art: !!x.querySelector('.card-tile'), link: !!x.querySelector('[data-ra-open]')}));
@@ -258,16 +259,16 @@ async def auth1(b, url, w):
     ok(c['id'] == '871693115882-bhdr13re9l3ejo9c6alsh81nms45uk68.apps.googleusercontent.com' and c['hex'] and c['btn'], f"Google's button renders; client ID and a hashed nonce passed to initialize {c['id'][:12]}...")
     ok(c['link'] == 'Other sign-in' and c['linkVisible'] and c['oldBig'] == 0, f"the redirect is a small \"Other sign-in\" link ({c['link']!r})")
     await pg.screenshot(path=shot('auth1-button', w))
+    await pg.evaluate("window.__calls.length = 0; document.getElementById('authGateGoogleBtn').click()"); await pg.wait_for_timeout(200)
+    ok(await pg.evaluate("window.__calls.map(x=> x[0]).join()") == 'oauth', '"Other sign-in" still starts the redirect sign-in (signInWithOAuth)')
+    await pg.evaluate("window.__calls.length = 0; window.__gsiCfg.callback({credential: ''})"); await pg.wait_for_timeout(300)
+    ok(await pg.evaluate("window.__calls.length") == 0, 'a callback without a credential calls nothing')
     cb = await pg.evaluate("""(async ()=>{ await window.__gsiCfg.callback({credential: 'FAKE.ID.TOKEN'}); await new Promise(r=> setTimeout(r, 200)); const call = window.__calls.find(x=> x[0] === 'idtoken'); if(!call) return null; const a = call[1];
       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(a.nonce)); const hex = [...new Uint8Array(buf)].map(x=> x.toString(16).padStart(2, '0')).join('');
       return {provider: a.provider, token: a.token, rawNonce: /^[0-9a-f]{32}$/.test(a.nonce), hashedMatches: hex === window.__gsiCfg.nonce, differs: a.nonce !== window.__gsiCfg.nonce}; })()""")
     ok(cb is not None and cb['provider'] == 'google' and cb['token'] == 'FAKE.ID.TOKEN', f'the callback calls signInWithIdToken({{provider: google, token}}) {cb and cb["provider"]}')
     ok(cb is not None and cb['rawNonce'] and cb['hashedMatches'] and cb['differs'], 'it passes the RAW nonce; its SHA-256 hex is what Google got')
-    await pg.evaluate("window.__calls.length = 0; document.getElementById('authGateGoogleBtn').click()"); await pg.wait_for_timeout(200)
-    ok(await pg.evaluate("window.__calls.map(x=> x[0]).join()") == 'oauth', '"Other sign-in" still starts the redirect sign-in (signInWithOAuth)')
-    await pg.evaluate("window.__calls.length = 0; window.__gsiCfg.callback({credential: ''})"); await pg.wait_for_timeout(300)
-    ok(await pg.evaluate("window.__calls.length") == 0, 'a callback without a credential calls nothing')
-    leak = await pg.evaluate("document.body.innerText.includes('FAKE.ID.TOKEN')"); ok(not leak, 'the token is not shown anywhere')
+    leak =await pg.evaluate("document.body.innerText.includes('FAKE.ID.TOKEN')"); ok(not leak, 'the token is not shown anywhere')
     await done(pg)
     # B: the script cannot load
     ctx = await b.new_context(viewport={'width': w, 'height': 844 if w < 700 else 900}, has_touch=(w < 700)); pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e))); pg._errs = errs; pg._ctx = ctx
