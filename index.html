@@ -1220,7 +1220,8 @@
      full card"): the real card tile, scaled up, sitting above the existing stat/ability text —
      see fullCardHTML()'s own comment in arena_app.js. */
   #cardPop .card-pop-visual{display:flex; justify-content:center; margin:-2px 0 10px;}
-  #cardPop .card-pop-visual-tile{width:var(--card-full-w); pointer-events:none;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now */
+  #cardPop .card-pop-visual-tile{width:var(--pop-card-w, var(--card-full-w)); pointer-events:none; rotate:1deg;} /* 2026-10-30 (CS-C): the size is the Detail / Full token now; 2026-10-31 (UI11, FF3): by the window's height (and never smaller than the board card: openPopFor), tilted 1 degree clockwise */
+  #cardPop{--pop-card-w:clamp(var(--card-full-w), 24vh, 360px); width:max(264px, calc(var(--pop-card-w) + 28px));}
   #cardPop .card-pop-visual-tile .ico{opacity:1;}
   #cardPop h4{font-family:'Baloo 2'; font-size:14px; display:flex; gap:6px; align-items:center; margin-bottom:4px;}
   #cardPop .tagrow{display:flex; gap:5px; margin-bottom:6px; flex-wrap:wrap;}
@@ -11887,7 +11888,7 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 .flip3d-stage > .dc{width:100%; --dc-w:100%;}
 .dc .dc-stage:not([tabindex]){cursor:inherit;}
 /* the hover popover (CS-1): the Full card plus its text, on top of any modal; a caller's extra line (data-pop-line) under the text */
-#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--card-full-w) !important;}
+#cardPop .card-pop-visual-tile[data-size="full"]{width:var(--pop-card-w, var(--card-full-w)) !important;}
 #cardPop .cp-line{margin:6px 0 2px; padding:5px 8px; border-radius:8px; background:rgba(74,47,26,.12); font:700 12px/1.3 'Baloo 2',system-ui,sans-serif;}
 #cardPop{max-width:calc(100vw - 16px);}
 .cnp-rw-zoom.cp-sheet{width:min(calc(var(--card-full-w) * 2.2), calc(100vw - 16px)) /* the page popover's 264px at 1366 */; padding:10px; border-radius:12px; background:#efe0bd; color:#2e2414; border:1.5px solid #7a5332; box-shadow:0 14px 34px rgba(0,0,0,.45); filter:none; box-sizing:border-box;}
@@ -12060,6 +12061,11 @@ body:has(.ds2-overlay) #cardPop{z-index:9100 !important;} /* 2026-10-23 (package
 .conquest-map-item[style*="--band"]{border-left:6px solid var(--band); background:color-mix(in srgb, var(--band) var(--band-mix, 34%), var(--surface)) !important; color:var(--band-fg, inherit);}
 .conquest-map-item[style*="--band-fg"] .cmi-name, .conquest-map-item[style*="--band-fg"] .cmi-body, .conquest-map-item[style*="--band-fg"] small{color:var(--band-fg) !important;}
 .conquest-map-item[style*="--band"].selected{box-shadow:0 0 0 3px #ffd98a inset;}
+/* 2026-10-31 (package UI11, FF7; owner 18:09: the selected map in the left list also gets a brighter colour, not just a highlighted border): a stronger band tint (+26 points) and a lighter / bolder name */
+.conquest-map-item.selected{background:color-mix(in srgb, color-mix(in srgb, var(--accent) 42%, var(--surface)) 78%, #fff);}
+.conquest-map-item[style*="--band"].selected{background:color-mix(in srgb, color-mix(in srgb, var(--band) calc(var(--band-mix, 34%) + 26%), #fff) 74%, #fff) !important;}
+.conquest-map-item[style*="--band-fg"].selected .cmi-name, .conquest-map-item[style*="--band-fg"].selected small{color:#fff !important; text-shadow:0 1px 2px rgba(0,0,0,.45);}
+.conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected .cmi-name{color:#150d05 !important;} .conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected .cmi-sub, .conquest-map-item[style*="--band"]:not([style*="--band-fg"]).selected small{color:#3a2a14 !important;}
 #forgePickReady.is-fading{transition:opacity .35s ease, transform .35s ease; opacity:0; transform:scale(.92);}
 .hay-nest.is-empty{cursor:pointer; font:inherit; color:inherit;} button.hay-nest.is-empty{background:none; border:0; padding:0;}
 .hay-nest .nest-plus{position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); font-size:22px; opacity:.45; transition:opacity .2s;}
@@ -13557,6 +13563,7 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .board-card .card-tile .status-chips > .abadge{gap:0 !important;}
 .board-card .card-tile .status-chips > .abadge.poison{padding:0 !important; width:var(--sc-h);}
 .board-card .card-tile .badges .abadge img.tw-emoji{margin-right:-.16em !important;}
+.board-card .card-tile .badges .abadge.is-icon-only img.tw-emoji{margin-right:0 !important;} /* 2026-10-31 (UI11, FF5): an icon-only chip is centred */
 .board-card .card-tile .badges .abadge .ab-poison img.tw-emoji:last-child, .board-card .card-tile .badges .abadge .ab-sk[data-sk="regen"] img.tw-emoji:last-child{margin-right:0 !important;}
 /* each status keeps its colour as the chip's ring and number */
 .board-card .card-tile .status-chips > .abadge.poison{--sc-ring:var(--poison, #7ac943); color:#c9f59a;}
@@ -14154,21 +14161,15 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 
 /* V3 (owner #16): no Health bar on units; the Shield (and temporary Health) is a blue number just above the Health. */
 .eq2-hpbar{display:none !important;}
-.board-card .card-tile > .vis3-shield-num{position:absolute; z-index:7; right:5px; bottom:30%; min-width:1.1em; text-align:center; pointer-events:auto; cursor:help;
-  font:900 18px/1 'Baloo 2', system-ui, sans-serif; color:#8fd2ff; letter-spacing:-.02em;
-  text-shadow:-1px -1px 0 #08243f, 1px -1px 0 #08243f, -1px 1px 0 #08243f, 1px 1px 0 #08243f, 0 0 8px rgba(80,170,255,.9);}
-@supports (width:1cqw){ .board-card .card-tile > .vis3-shield-num{right:clamp(2px, 6cqw, 10px); font-size:clamp(11px, 17cqw, 28px);} }
-/* 2026-10-31 (package UI8, owner Z6): the Shield is a 💠 badge: the icon, then the number of Shield left (it stays while any is left). At exactly 1
-   the number fades out and the icon alone means 1 (.is-one); at 0 the badge fades out whole (vis4ShieldCount). The icon is drawn here, so the badge's
-   text stays the plain number (the tests and vis4ShieldCount read it). */
-.board-card .card-tile > .vis3-shield-num{white-space:nowrap;}
-.board-card .card-tile > .vis3-shield-num::before{content:'💠'; font-size:.7em; margin-right:.1em; vertical-align:.08em; letter-spacing:0; text-shadow:none; filter:drop-shadow(0 0 3px rgba(80,170,255,.9));}
-.board-card .card-tile > .vis3-shield-num{transition:color .4s ease, text-shadow .4s ease;}
-.board-card .card-tile > .vis3-shield-num.is-one{color:transparent; text-shadow:none;}
-@media (prefers-reduced-motion: reduce){ .board-card .card-tile > .vis3-shield-num{transition:none;} }
-.board-card .card-tile > .vis3-shield-num.vis3-shield-pop{animation:vis3ShieldPop .45s ease-out;}
+/* 2026-10-31 (package UI11, FF1; owner 18:09, correcting Z6 / UI8): the Shield is a skill chip on the card's south edge (in the .badges strip): 💠, then the number of
+   Shield left. At exactly 1 the number fades out and the icon alone means 1 (.is-one); at 0 the chip fades out (vis4ShieldCount). No east-side badge. */
+.board-card .badges .ab-unit-shield.is-live{white-space:nowrap; cursor:help; transition:opacity .4s ease, transform .45s ease;}
+.board-card .badges .ab-unit-shield.is-live .shield-n{display:inline-block; max-width:3em; overflow:hidden; vertical-align:bottom; color:#9ed8ff; font-weight:900; transition:opacity .4s ease, max-width .4s ease;}
+.board-card .badges .ab-unit-shield.is-live.is-one .shield-n{opacity:0; max-width:0;}
+@media (prefers-reduced-motion: reduce){ .board-card .badges .ab-unit-shield.is-live, .board-card .badges .ab-unit-shield.is-live .shield-n{transition:none;} }
+.board-card .badges .ab-unit-shield.is-live.vis3-shield-pop{animation:vis3ShieldPop .45s ease-out;}
 @keyframes vis3ShieldPop{0%{transform:scale(.7);} 45%{transform:scale(1.3);} 100%{transform:none;}}
-@media (prefers-reduced-motion: reduce){ .board-card .card-tile > .vis3-shield-num.vis3-shield-pop{animation:none;} }
+@media (prefers-reduced-motion: reduce){ .board-card .badges .ab-unit-shield.is-live.vis3-shield-pop{animation:none;} }
 /* the Shield's hit: a rectangle over the card (FX.A's dome, bramblewood-fx-a.js, was round; its box is 1.25 x 1.15 of the card, so the
    rectangle is drawn inset to the card's own size) */
 .fxa-dome{border:0 !important; background:none !important; box-shadow:none !important; border-radius:0 !important;}
@@ -14252,6 +14253,16 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 /* 2026-10-29 (package REVIEW1): Chosen / Cut cards / Maybe sections in the 🃏 Map cards overlay */
 .rv1-none{margin:0 0 4px; font:600 11px/1.3 'Baloo 2',system-ui,sans-serif; opacity:.6;}
 .rv1-bar{display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin:4px 0 0;}
+/* 2026-10-31 (package UI11, FF9): Add card to SPECIAL - the picker over the gallery, and the Added part */
+.rv1-part[hidden]{display:none;}
+.pk1-mc-modal{position:relative;}
+.ff9-picker{position:absolute; z-index:60; isolation:isolate; top:64px; left:50%; transform:translateX(-50%); width:min(420px,92%); max-height:min(70vh,520px); display:flex; flex-direction:column; gap:8px; padding:10px; border-radius:12px; background:#fff6e0; color:#2b2218; border:2px solid #8a6a3b; box-shadow:0 12px 40px rgba(0,0,0,.55);}
+.ff9-pk-head{display:flex; justify-content:space-between; align-items:center; gap:8px;}
+.ff9-pk-q{width:100%; box-sizing:border-box; padding:8px 10px; border-radius:8px; border:1px solid #8a6a3b; background:#fff; color:#2b2218; font:inherit;}
+.ff9-pk-list{overflow-y:auto; display:flex; flex-direction:column; gap:2px; min-height:0;}
+.ff9-pk-row{display:flex; justify-content:space-between; gap:8px; text-align:left; padding:7px 9px; border-radius:7px; border:0; background:transparent; color:inherit; font:inherit; cursor:pointer;}
+.ff9-pk-row:hover,.ff9-pk-row:focus-visible{background:rgba(138,106,59,.22); outline:none;}
+.ff9-pk-row.is-has{opacity:.5; cursor:default;} .ff9-pk-row small{opacity:.7;}
 .rv1-part h4{margin:8px 0 0; font:800 12px/1.2 'Baloo 2',system-ui,sans-serif;}
 .rv1-part h4 small{opacity:.65; margin-left:4px;}
 .rv1-part.is-cut h4::before{content:'✂ ';} .rv1-part.is-maybe h4::before{content:'? ';}
@@ -14317,9 +14328,8 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .sfx.vis4-shield-rect.is-ripple{background:none; border-width:2px; border-color:rgba(200,236,255,.95); box-shadow:0 0 10px rgba(140,200,255,.7);}
 .sfx.vis4-shield-rect.is-break{border-color:#fff; background:linear-gradient(180deg, rgba(220,242,255,.55), rgba(170,220,255,.25));}
 .sfx.vis4-shield-pane{border-radius:5px; border:1.5px solid rgba(215,240,255,.95); background:linear-gradient(160deg, rgba(225,245,255,.55), rgba(150,210,255,.18)); box-shadow:0 0 8px rgba(130,195,255,.6); z-index:9990;}
-.board-card .card-tile > .vis3-shield-num.vis4-shield-zero{color:#cfe6ff; opacity:.9;}
-.board-card .card-tile > .vis3-shield-num.is-one.vis4-shield-zero{color:transparent;} /* UI8 (2026-10-31, Z6): 1 -> 0: the icon alone fades out, no "0" */
-.board-card .card-tile > .vis3-shield-num.vis4-shield-out{transition:opacity .45s ease, transform .45s ease; opacity:0; transform:scale(.4);}
+.board-card .badges .ab-unit-shield.is-live.vis4-shield-zero{opacity:.9;} .board-card .badges .ab-unit-shield.is-live.vis4-shield-zero .shield-n{color:#cfe6ff;}
+.board-card .badges .ab-unit-shield.is-live.vis4-shield-out{transition:opacity .45s ease, transform .45s ease; opacity:0; transform:scale(.4);}
 /* VIS4:END */
 /* FLAIR1 (2026-10-28; owner 23:06: "Dragon Lair is our overall 0-20 big boss ... a flair that's not the normal boss flair"): molten gold and ember,
    where the normal boss is blood red with bone teeth and a skull. Keyed on the `finalBoss` flag of the Volcano Lair (flairLairMap / flairLairNode in
@@ -44115,7 +44125,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-set-map": "Map reference",
   "ui.pref-toggle": "Play with the map's reference deck",
   "ui.pref-set": "Reference:",
-  "ui.pref-toggle-sub": "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.",
+  "ui.pref-toggle-sub": "On: every Conquest fight (road, and the map's skirmish, <N>-SK) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.",
   "ui.pref-xref-vs": "Against:",
   "ui.pref-xref-you": "You play:",
   "ui.ui10-my-deck": "My deck",
@@ -45268,9 +45278,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxx-petrify": "From round 2, for the round.",
   "ui.fx-eruption": "May burn a unit a side for {n}, then 3 rounds of comets.",
   "ui.fxx-eruption": "From round 2. After an eruption the odds reset, and comets hit every unit for 1 fire (fire-resistant units take half).",
-  "ui.fx-windy": "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.",
-  "ui.fxx-windy": "At your back, in your face, or calm (1 in 3 each).",
-  "ui.fx-gale": "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' shots and Snipe go twice.",
+  "ui.fx-windy": "Wind turns each round (back, face, calm): Tailwind Flyers are Quick, Headwind Flyers' skills trigger twice.",
+  "ui.fxx-windy": "Each round the wind is at your back, in your face, or calm (1 in 3 each). Headwind Flyers' skills trigger twice.",
+  "ui.fx-gale": "Strong wind every round, back or face: Tailwind Flyers are Quick, Headwind Flyers' skills trigger twice.",
   "ui.fxx-gale": "It blows a random way: at your back or in your face (1 in 2 each).",
   "ui.fx-swamp-fever": "From round 2, every unit may catch 1 Poison each round ({odds}).",
   "ui.fxx-swamp-fever": "Structures never catch it.",
@@ -46882,6 +46892,15 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui3-export-all-tip": "Copies every map's card lists, with your Cut/Keep choices, as text for Claude.",
   "ui.ui3-export-copied": "Copied everything: paste it to Claude, or download it",
   "ui.ui3-export-ready": "Ready: download it",
+  "ui.ff9-add-special": "➕ Add card to SPECIAL",
+  "ui.ff9-add-special-tip": "Search any card and add it to this map's SPECIAL list (kept on this device and included in Export all).",
+  "ui.ff9-search": "Search cards by name",
+  "ui.ff9-no-match": "No card matches",
+  "ui.ff9-added-title": "Added to SPECIAL",
+  "ui.ff9-added-pill": "Added",
+  "ui.ff9-remove": "Remove",
+  "ui.ff9-picker-title": "Add a card to SPECIAL",
+  "ui.ff9-already": "already there",
   "ui.rv2-count": "{x}/{n} new cards, {y}/{m} carried cards",
   "ui.rv2-count-new": "{x}/{n} new cards",
   "ui.rv2-count-free": "{x} new cards, {y} carried cards",
@@ -51484,7 +51503,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '2932482298f1', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
+const BUILD_ID = '5c7eccd32dcf', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -54703,7 +54722,11 @@ function castleHoverHTML(hqSide){
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
-      pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
+      // 2026-10-31 (package UI11, FF3; owner 18:09: "its card is sized by the screen ... at full screen it looks smaller than the board card; it should be larger"): the card in
+      // the popover is sized by the window's height (CSS --pop-card-w) and, for a unit on the board, is never less than 1.3 x that unit's own width
+      pop.style.removeProperty('--pop-card-w'); pop.hidden = false; popSrc = el; popKey = popKeyOf(el); lostKey = null;
+      try{ const bc = el.closest('.board-card'), tl = pop.querySelector('.card-pop-visual-tile'), bw = bc ? bc.getBoundingClientRect().width : 0, base = tl ? tl.getBoundingClientRect().width : 0;
+        if(bw && base){ const want = Math.min(bw * 1.3, 360, window.innerHeight * 0.42); if(want > base) pop.style.setProperty('--pop-card-w', Math.round(want) + 'px'); } }catch(_){}
       positionPop(el);
       if(!(how && how.quiet)) try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F (UI6: not again when a redraw had closed it)
       try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
@@ -54734,8 +54757,8 @@ function castleHoverHTML(hqSide){
   }
   const inRect = (r, x, y)=> !!r && x >= r.left - 2 && x <= r.right + 2 && y >= r.top - 2 && y <= r.bottom + 2;
   function bindPopSrc(el){
-    popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
-    TipWatch.track(pop, el, ()=>{ if(!rebindPop()) closePopLost(); }, {steady: !!matchState});
+    holdSince = 0; popSrc = el; try{ const r = el.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(e){}
+    TipWatch.track(pop, el, ()=>{ if(!rebindPop() && !holdPop()) closePopLost(); }, {steady: !!matchState});
     // the hit log is the one live part: refreshed in place when it changed
     try{ const lc = matchState ? liveCardFromHoverEl(el) : null, old = pop.querySelector('.card-txn-log');
       if(lc){ const h = (cardActionLogHTML(lc.uid) || '').trim(); if(old ? old.outerHTML !== h : h){ if(old) old.remove(); if(h) pop.insertAdjacentHTML('beforeend', h); } } }catch(e){}
@@ -54751,6 +54774,18 @@ function castleHoverHTML(hqSide){
     }
     return false;
   }
+  // 2026-10-31 (package UI11, FF3; owner 18:09: "the card-detail hover tooltip disappears when an animation runs (it should stay)"): while an animation has the unit's element
+  // away for a moment (hidden, mid-flight, being redrawn: no element to follow), the popover waits for it, for up to 4 s, as long as the unit is still alive in the match
+  // and the pointer still rests on the spot it stood on. It closes the moment the unit dies, the pointer leaves, or the 4 s run out.
+  let holdSince = 0, holdTimer = null;
+  function holdPop(){
+    try{ if(!matchState || !popKey || popKey[0] !== 'u' || !inRect(popRect, ptX, ptY)) { holdSince = 0; return false; }
+      const c = currentCardByUidSafe(popKey.slice(1)); if(!c || !(c.hp > 0)){ holdSince = 0; return false; }
+      if(!holdSince) holdSince = Date.now(); if(Date.now() - holdSince > 4000){ holdSince = 0; return false; }
+      pop.hidden = false; clearTimeout(holdTimer);
+      holdTimer = setTimeout(()=>{ holdTimer = null; if(pop.hidden || !popKey) return; if(rebindPop()){ holdSince = 0; return; } if(!holdPop()) closePopLost(); }, 100);
+      return true; }catch(e){ return false; }
+  }
   function closePopLost(){ lostKey = popKey; lostAt = Date.now(); pop.hidden = true; popSrc = null; popKey = null; }
   function closePop(){ pop.hidden = true; popSrc = null; popKey = null; }
   // 2026-10-08 playtest: a re-render can remove the hovered card without any mouseout, leaving the
@@ -54760,7 +54795,7 @@ function castleHoverHTML(hqSide){
     if(pop.hidden || !popSrc || stripHeld) return;
     ptX = e.clientX; ptY = e.clientY;
     if(popSrc.isConnected && popSrc.matches(':hover')){ try{ const r = popSrc.getBoundingClientRect(); if(r.width && r.height) popRect = {left:r.left, top:r.top, right:r.right, bottom:r.bottom}; }catch(_){} return; }
-    if(!rebindPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
+    if(!rebindPop() && !holdPop()) closePop(); // UI6 (X2): the same card redrawn keeps it; leaving the card closes it
   }, {passive:true});
   window.hideCardPop = ()=>{ if(hoverTimer){ clearTimeout(hoverTimer); hoverTimer = null; } closePop(); };
   document.addEventListener('mouseout', e=>{
@@ -56672,7 +56707,7 @@ function cardTileHTML(d, opts){
       ${ui3TintHTML(d)}<div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow && !opts.fog ? ' is-atk-low' : ''}${live.atkZero && !opts.fog ? ' is-atk-zero' : ''}${opts.fog && !opts.fog.atk ? '' : atkPlateCls(d)}">${atkElementOf(d) && !(opts.fog && !opts.fog.atk) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', `<i class="sg">${atkGlyphOf(d)}</i>`) : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */}})}
+      ${opts.fog ? fogChipsHTML(d, opts.fog.skill) : abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, bloomed: live.bloomed, bloomCopy: live.bloomCopy /* BL */, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */, blind: live.blind /* 2026-10-29 (UI3, S2) */, shieldAmt: live.shieldAmt /* 2026-10-31 (UI11, FF1) */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -56852,6 +56887,18 @@ function ui3SightBlindNow(e, lv){
     return !lit;
   }catch(err){ return false; }
 }
+// 2026-10-31 (package UI11, FF1; owner 18:09: "context pips only when they matter"): a board card's Bloom condition pip is left out when its condition can never
+// hold on this map: Tide / Ebb with no Tide in the fight (as UI5 did for the Tide chip). 'and' needs every condition possible, 'or' needs one. Outside a fight: shown.
+function ui11BloomImpossible(bw, bopts){
+  try{ if(!(bopts && bopts.live) || !matchState || matchState.over || bopts.live.inBloom || !bw || typeof bw !== 'object') return false;
+    const when = (Array.isArray(bw.when) ? bw.when : [bw.when]).filter(Boolean); if(!when.length) return false;
+    const can = k=> (k === 'tide' || k === 'ebb') ? !!matchHasTide(matchState) : true, oks = when.map(can);
+    return bw.mode === 'or' ? !oks.some(Boolean) : !oks.every(Boolean);
+  }catch(e){ return false; }
+}
+// 2026-10-31 (package UI11, FF5; owner: the Bloom chip's 🌸 sits off centre): UI7 pulled every skill icon's right edge in (margin-right -.16em) to tuck its number closer, which
+// pushed a chip with the icon alone off centre. A chip with no number is marked (.is-icon-only) and keeps no such pull.
+function ui11IconOnly(html){ try{ return String(html).replace(/<[^>]*>/g, '').replace(/[\s\uFE0F\u200D]|\p{Extended_Pictographic}/gu, '') === '' ? ' is-icon-only' : ''; }catch(e){ return ''; } }
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -56880,6 +56927,7 @@ function abilityBadges(d, bopts){
   // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
   // struck through in red once it has been used (the unit came back).
   if(e.undead){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })()); // ENG9 (2026-10-26): Undead, the old Revive chip
+    if(lv && used) { /* 2026-10-31 (UI11, FF1): a spent one-shot changes nothing: the used Undead chip is gone, not struck through */ } else
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${escapeAttr(TX(used ? 'ui.eng9-undead-used' : 'ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}<b>${escapeHtml(TX('ui.eng9-undead-name'))}</b></span>` : `<span class="ab-revive" title="${escapeAttr(TX('ui.eng9-undead-chip'))}">${iconHTML('revive', '↺')}</span>`); }
   // 2026-10-30 (package UI5, W5; owner 21:35: "Don't show tide if its irrelevant to the map. When you draw a card into your hand but the battlefield doesn't currently
   // have tide, the context pip reds out and fades out. Same for opposite - it green-fades in."): in a fight (a board card or a hand card) on a map that can never
@@ -56940,8 +56988,8 @@ function abilityBadges(d, bopts){
   // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
-  if(e.bloomCopy){ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
-  if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
+  if(e.bloomCopy && !(bopts && bopts.live && (bopts.live.bloomed || bopts.live.bloomCopy)) && !ui11BloomImpossible(e.bloomCopy, bopts)){ /* 2026-10-31 (UI11, FF1): a Bloom that is spent, or that a copy does not have, shows no chip on the board */ const lv = bopts && bopts.live, spent = !!(lv && lv.bloomed); /* EN5 (2026-10-24): a copy can bloom, so only a bloomed unit's chip greys */ out.push(`<span class="ab-bloom ab-bloomcopy${spent ? ' is-spent' : ''}" title="${escapeAttr(bloomCopyLabel(e.bloomCopy) + (lv && lv.bloomCopy ? ' · ' + TX('ui.bl-is-copy') : spent ? ' · ' + TX('ui.bl-bloomed') : ''))}">🌸</span>`); } // BL (2026-10-23)
+  if(e.bloomWhen && !ui11BloomImpossible(e.bloomWhen, bopts)){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
@@ -56965,7 +57013,10 @@ function abilityBadges(d, bopts){
   if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
   if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
-  if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
+  // 2026-10-31 (package UI11, FF1; owner 18:09, correcting Z6 / UI8): on a board card the Shield is this skill chip on the south edge: the 💠 and the number of Shield left
+  // (vis3ShieldHTML), shown only while some is left; at 1 the number fades and the icon alone means 1; at 0 the chip is gone. No badge on the east side any more.
+  if(bopts && bopts.live){ const sa = Number(bopts.live.shieldAmt) || 0; if(sa > 0) out.push(vis3ShieldHTML(null, sa)); }
+  else if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit adjacent to the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
   if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units adjacent to the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -57100,7 +57151,7 @@ function abilityBadges(d, bopts){
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.
   if(out.every(b=> /ab-trig is-spent/.test(b))){ const age = Number((/animation-delay:-(\d+)ms/.exec(out[0])||[])[1])||0;
-    return `<div class="badges badge-slots is-all-spent" style="animation-delay:-${age}ms">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`; }
+    return `<div class="badges badge-slots is-all-spent" style="animation-delay:-${age}ms">${out.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}</div>`; }
   // Skill slots (2026-10-10, user: "is there space to have 3 icons on one row, separated by a small space. If one of them
   // has multiple, they stack closely together. Otherwise ... shows the first two, then periodically they phase between
   // the next two" + "in small card form ... that one symbol phases/cycles between different symbols every 2s"): each
@@ -57109,14 +57160,14 @@ function abilityBadges(d, bopts){
   const maxSlots = (bopts && bopts.compact) ? 3 : 4; // 2026-10-11: the strip sits on the bottom edge now, so it has room for more
   if(out.length > maxSlots){
     const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
-    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
+    return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
   }
   // 2026-10-15 (user: "Why do those enemy cards have that slim weird & grey rectangle where their ability context icons would be.
   // Is that 'Bounty'?"): yes — on the board the opponent's Bounty shows as the Lumber bubble and its 🏆 slot is hidden, which left
   // the strip's empty pill behind. A strip holding only the Bounty is marked so the CSS hides the whole strip with it.
   const onlyBounty = out.every(b=> /class="ab-bounty"/.test(b));
-  if(true) return `<div class="badges badge-slots${onlyBounty ? ' only-bounty' : ''}">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`;
-  const pills = out.map(b=>`<span class="abadge">${b}</span>`);
+  if(true) return `<div class="badges badge-slots${onlyBounty ? ' only-bounty' : ''}">${out.map(b=> `<span class="abadge${ui11IconOnly(b)}">${b}</span>`).join('')}</div>`;
+  const pills = out.map(b=>`<span class="abadge${ui11IconOnly(b)}">${b}</span>`);
   // 2026-09-29, per explicit request ("depending on how many symbols there are, they might have
   // to stack on each other. If > 8 symbols, they start stacking on two rows"): keep a single row
   // up to 8 badges; once a card has more than that, split it into two rows (first 8, then the
@@ -64502,7 +64553,9 @@ const TipWatch = (()=>{
   }
   function tick(){
     raf = 0;
-    live.forEach((rec, tip)=>{
+    // 2026-10-31 (UI11, FF3): a snapshot: a hide() that re-tracks the same tip (the card popover rebinding to a hidden element) re-added it to the Map being walked, which
+    // forEach then visited again in the same pass, for ever (the page froze).
+    [...live].forEach(([tip, rec])=>{
       if(!tip.isConnected || tip.hidden){ tip.style.opacity = ''; live.delete(tip); return; }
       if(gone(rec.anchor)){ tip.style.opacity = ''; live.delete(tip); try{ rec.hide(); }catch(e){} return; }
       if(rec.steady){ tip.style.opacity = ''; return; } // 2026-10-30 (package UI6, X2): the card popover does not fade with a card an animation dims
@@ -66841,6 +66894,7 @@ function nodeShowcaseId(node){
   const defs = getCardDefs(), deck = (node && node.deck) || {};
   if(node && node.showcase && deck[node.showcase] && defs[node.showcase]) return node.showcase;
   if(node && node.tutShowcase && defs[node.tutShowcase]) return node.tutShowcase; // 2026-10-21 (package ED): Tutorial II's lesson card
+  if(node && node.mapShowcase && defs[node.mapShowcase]) return node.mapShowcase; // 2026-10-31 (UI11): a map's one skirmish (N-SK) shows the map's showcase, not the first deck's card
   const ids = Object.keys(deck).filter(id=> defs[id]);
   ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)));
   return ids[0] || null;
@@ -72537,6 +72591,13 @@ function drawSkirmEnemy(mapId, entry, rnd){
   }catch(e){}
   return {id: d.id, deck, special};
 }
+// 2026-10-31 (package UI11, UI10 leftover): the map's showcase = the strongest card of the map's own list (the same rarity-then-strength order as a skirmish's Auto showcase);
+// a map with no list of its own (a side map) uses its main map's.
+function skirmMapShowcase(mapId){
+  try{ const defs = getCardDefs(), ids = (mpEntry(mpTopOf(mapId)).cards || []).filter(id=> defs[id] && !defs[id].token);
+    ids.sort((a,b)=> (RARITY_TIER_BANDS.indexOf(defs[b].rarity||'common') - RARITY_TIER_BANDS.indexOf(defs[a].rarity||'common')) || (((defs[b].attack||0) + (defs[b].health||0)*0.5) - ((defs[a].attack||0) + (defs[a].health||0)*0.5)) || String(a).localeCompare(String(b)));
+    return ids[0] || null; }catch(e){ return null; }
+}
 let skirmPending = null; // {key, pick}: the draw of the fight being started, read by proNodeOf
 const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v1';
 function skirmYou(){ let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){} return v && v !== 'my' && refSetIds().includes(v) ? v : 'my'; }
@@ -72551,6 +72612,7 @@ function proNodeOf(mapId, e, ent){
   n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
+  if(e.skirm){ const sc = skirmMapShowcase(mapId); if(sc) n.mapShowcase = sc; } // 2026-10-31 (UI11, UI10 leftover): the panel's big card is the map's showcase
   NODE_MAP_HINT.set(n, mapId);
   if(f.terrain) rules.terrain = terrainObj(f.terrain.biome, f.terrain.tier) || false; // the tool's tier, whatever the PRO's place would give
   else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none
@@ -79441,24 +79503,70 @@ function rv2Update(ov){
 const RV_FLIPS_KEY = 'bw_rv_flips_v1';
 const rvFlips = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_FLIPS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } })(); let rvFlipTop = '';
 function rvFlipsSave(){ try{ localStorage.setItem(RV_FLIPS_KEY, JSON.stringify(rvFlips)); }catch(e){} }
+// 2026-10-31 (package UI11, FF9; owner 18:09: "Add card to SPECIAL" beside Export all): cards the owner adds to a map's SPECIAL list from the gallery, kept
+// per main map in localStorage (bw_rv_special_add_v1: {mapId: [cardId, ...]}) next to the picks, shown as "Added" tiles in the SPECIAL section and
+// exported (txt + json) as SPECIAL entries flagged `added`. The picks (rvFlips) are stored exactly as before.
+const RV_SPECIAL_ADD_KEY = 'bw_rv_special_add_v1';
+const rvSpecialAdd = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_SPECIAL_ADD_KEY) || '{}'); return (o && typeof o === 'object' && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; } })();
+function rvSpecialAddSave(){ try{ localStorage.setItem(RV_SPECIAL_ADD_KEY, JSON.stringify(rvSpecialAdd)); }catch(e){} }
+function rvAddedOf(top){ const a = rvSpecialAdd[top]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
+function rvAddedPartHTML(top, defs){
+  const ids = rvAddedOf(top).filter(id=> defs[id]);
+  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button></span>`).join('');
+  return `<div class="rv1-part is-added" data-rv-added-part${ids.length ? '' : ' hidden'}><h4>${escapeHtml(TX('ui.ff9-added-title'))} <small>${ids.length}</small></h4><div class="vis4-mc-row rv1-row">${tiles}</div></div>`;
+}
 function rv3ExportAll(){
   const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [];
   const flipped = (top, sec, id)=> !!rvFlips[top + '|' + sec.key + '|' + id];
   mainConquestMaps().forEach(m=>{
     const top = m.id, n = mapNumberOf(top), mapLabel = (n == null ? '' : 'Map ' + n + ' · ') + m.name;
     mapPoolSections(top).forEach(sec=>{
-      const rv = rv1ReviewOf(sec, top); if(!rv) return;
+      const rv = rv1ReviewOf(sec, top), added = sec.key === 'special' ? rvAddedOf(top).filter(id=> defs[id]) : []; if(!rv && !added.length) return;
       const ids = l=> (l || []).filter(e=> e && e.id).map(e=> e.id);
-      const chosen = ids(rv.chosen), maybe = ids(rv.maybe), cut = ids(rv.cut);
+      const R = rv || {}, chosen = ids(R.chosen), maybe = ids(R.maybe), cut = ids(R.cut);
       const keep = maybe.concat(cut).filter(id=> flipped(top, sec, id)), cutNow = chosen.filter(id=> flipped(top, sec, id));
-      data.push({map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut});
+      const row = {map: mapLabel, mapId: top, list: sec.label, listKey: sec.key, keep, cutNow, chosen, maybe, cut};
+      if(added.length) row.added = added.map(id=> ({id, name: nm(id), added: true})); // 2026-10-31 (UI11, FF9): SPECIAL entries the owner added
+      data.push(row);
       const names = a=> a.length ? a.map(nm).join(', ') : '-';
-      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
-        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut));
+      lines.push(mapLabel + ' / ' + sec.label + ': ' + ([keep.length ? 'keep ' + keep.map(nm).join(', ') : '', cutNow.length ? 'cut ' + cutNow.map(nm).join(', ') : '', added.length ? 'added ' + added.map(nm).join(', ') : ''].filter(Boolean).join('; ') || 'no changes')
+        + ' | chosen: ' + names(chosen) + ' | maybe: ' + names(maybe) + ' | cut: ' + names(cut) + (added.length ? ' | added: ' + added.map(nm).join(', ') : ''));
     });
   });
   const head = 'Bramblewood map card lists, exported ' + new Date().toISOString().slice(0, 10) + '. One line per list, in map order: "<map> / <list>: <the owner\'s Keep / Cut choices so far> | chosen: the proposal | maybe: ... | cut: ...".';
   return {text: head + '\n' + lines.join('\n'), json: {exported: new Date().toISOString(), lists: data}};
+}
+function ff9RefreshAdded(ov, top){
+  const sec = ov.querySelector('.pk1-mc-sec[data-rv-special]'); if(!sec) return;
+  const old = sec.querySelector('[data-rv-added-part]'), tmp = document.createElement('div'); tmp.innerHTML = rvAddedPartHTML(top, getCardDefs());
+  if(old) old.replaceWith(tmp.firstChild); else sec.appendChild(tmp.firstChild);
+  try{ wireRewardZoom(ov); }catch(e){}
+}
+function ff9RemoveAdded(ov, top, id){
+  rvSpecialAdd[top] = rvAddedOf(top).filter(x=> x !== id); if(!rvSpecialAdd[top].length) delete rvSpecialAdd[top]; rvSpecialAddSave(); ff9RefreshAdded(ov, top);
+}
+// the small searchable picker: name search over every non-token card (ok = the gallery's own filter); a card already in this map's SPECIAL is marked and not offered again
+function ff9OpenPicker(ov, top, ok){
+  ov.querySelectorAll('.ff9-picker').forEach(e=> e.remove());
+  const defs = getCardDefs(), inSpecial = new Set((mpEntry(top).special || []).concat(rvAddedOf(top)));
+  const all = Object.keys(defs).filter(ok).sort((a, b)=> String(defs[a].name).localeCompare(String(defs[b].name)));
+  const box = document.createElement('div'); box.className = 'ff9-picker'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-label', TX('ui.ff9-picker-title'));
+  box.innerHTML = `<div class="ff9-pk-head"><b>${escapeHtml(TX('ui.ff9-picker-title'))}</b><button type="button" class="modal-close-btn ff9-pk-x" aria-label="Close">✕</button></div><input type="search" class="ff9-pk-q" autocomplete="off" placeholder="${escapeAttr(TX('ui.ff9-search'))}" aria-label="${escapeAttr(TX('ui.ff9-search'))}"><div class="ff9-pk-list" role="listbox"></div>`;
+  ov.querySelector('.pk1-mc-modal').appendChild(box);
+  const q = box.querySelector('.ff9-pk-q'), list = box.querySelector('.ff9-pk-list');
+  const draw = ()=>{
+    const t = q.value.trim().toLowerCase(), hit = all.filter(id=> !t || String(defs[id].name).toLowerCase().includes(t)).slice(0, 60);
+    list.innerHTML = hit.length ? hit.map(id=>{ const has = inSpecial.has(id); return `<button type="button" class="ff9-pk-row${has ? ' is-has' : ''}" data-ff9-id="${escapeAttr(id)}"${has ? ' disabled' : ''}><span>${escapeHtml(defs[id].name)}</span><small>${escapeHtml(String(defs[id].rarity || ''))}${has ? ' · ' + escapeHtml(TX('ui.ff9-already')) : ''}</small></button>`; }).join('') : `<p class="panel-sub">${escapeHtml(TX('ui.ff9-no-match'))}</p>`;
+  };
+  q.addEventListener('input', draw); draw();
+  box.querySelector('.ff9-pk-x').onclick = ()=> box.remove();
+  box.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); box.remove(); } });
+  list.addEventListener('click', e=>{
+    const r = e.target.closest('.ff9-pk-row'); if(!r || r.disabled) return;
+    const id = r.dataset.ff9Id, a = rvAddedOf(top); if(!a.includes(id)) a.push(id); rvSpecialAdd[top] = a; rvSpecialAddSave();
+    inSpecial.add(id); ff9RefreshAdded(ov, top); r.disabled = true; r.classList.add('is-has'); r.querySelector('small').textContent += ' · ' + TX('ui.ff9-already');
+  });
+  try{ q.focus(); }catch(e){}
 }
 function rv1PicksText(ov){
   const out = [];
@@ -79485,17 +79593,17 @@ function pk1OpenMapCards(mapId){
   const inScope = s=> s.key === 'cards' ? !mpIsSub(mapId) : s.key === 'special' ? true : !!(mpIsSub(mapId) && (s.sub === mapId || (MP_EXTRA_LISTS[s.sub] && MP_EXTRA_LISTS[s.sub].map === mapId)));
   const secs = mapPoolSections(top).filter(inScope).map((s, si)=>{
     const rv = rv1ReviewOf(s, top), ids = s.ids.filter(ok);
-    if(!rv) return `<section class="pk1-mc-sec rv2-panel"><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}</section>`;
+    if(!rv) return `<section class="pk1-mc-sec rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''}><h3>${escapeHtml(s.label)} <small>${ids.length}</small></h3><div class="vis4-mc-row">${ids.length ? vis4MapCardTilesHTML(ids, defs, {packs: true}) : '<span class="panel-sub">–</span>'}</div>${ids.length ? `<p class="rv1-none">${escapeHtml(TX('ui.rv1-none'))}</p>` : ''}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
     const tg = rv2TargetsOf(s, top, chosen, all);
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
-    return `<section class="pk1-mc-sec has-rv1 rv2-panel" data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}</section>`;
+    return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
   }).join('');
-  const anyRv = /has-rv1/.test(secs);
+  const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
-    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
+    <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
   const onKey = e=>{ if(e.key === 'Escape') close(); };
@@ -79503,6 +79611,7 @@ function pk1OpenMapCards(mapId){
   ov.onclick = e=>{
     if(e.target === ov) return close();
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
+    if(b.dataset.rvAct === 'remove-added'){ ff9RemoveAdded(ov, top, b.closest('.rv1-tile').dataset.rvId); return; } // 2026-10-31 (UI11, FF9)
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
@@ -79515,6 +79624,7 @@ function pk1OpenMapCards(mapId){
     window.__rv1Last = txt;
     try{ navigator.clipboard.writeText(txt).then(()=>{ msg.textContent = TX('ui.rv1-copied'); }, ()=>{ msg.textContent = txt; }); }catch(e){ msg.textContent = txt; }
   });
+  const ad = document.getElementById('ff9AddSpecial'); if(ad) ad.addEventListener('click', ()=> ff9OpenPicker(ov, top, ok));
   const ex = document.getElementById('rv3ExportAll');
   if(ex) ex.addEventListener('click', ()=>{ // 2026-10-29 (UI3, S10): copy everything, and offer it as a .txt / .json download
     const r = rv3ExportAll(), msg = document.getElementById('rv1CopyMsg'), dl = document.getElementById('rv3Dl'); window.__rv3Last = r;
@@ -86906,19 +87016,25 @@ function fightTreatmentClass(pid){ return fightTreatmentKind(pid)==='elite' ? 'e
 // 2026-10-26 (package VIS3, V3; owner #16: "Shields will just be blue numbers on the card"): a unit's Shield (and its temporary Health from
 // Bolster or Shell, which soaks the same way) is one blue number on the card, just above its Health; the 💠 chip in the status row is gone.
 function vis3ShieldAmount(c){ return c ? Math.max(0, (Number(c.shield) || 0) + (Number(c.tempHp) || 0) + (Number(c.tempHpR) || 0)) : 0; }
-function vis3ShieldHTML(c){
-  const n = vis3ShieldAmount(c); if(!(n > 0)) return '';
-  return `<span class="vis3-shield-num${n === 1 ? ' is-one' : ''}" title="Shield: ${n} temporary Health, spent before its Health">${n}</span>`; // 2026-10-31 (UI8, Z6): the 💠 is drawn by CSS; at 1 only the icon shows // (the old 💠 chip's words: already in lang/ui)
+function vis3ShieldHTML(c, amt){
+  const n = amt != null ? amt : vis3ShieldAmount(c); if(!(n > 0)) return '';
+  // 2026-10-31 (UI11, FF1): the Shield is a skill chip in the south-edge strip: 💠 + the number left; at 1 the number fades (.is-one), the icon alone = 1
+  return `<span class="ab-unit-shield is-live${n === 1 ? ' is-one' : ''}" data-shield="${n}" title="Shield: ${n} temporary Health, spent before its Health">${iconHTML('shield', '💠')}<b class="shield-n">${n}</b></span>`;
 }
+// the live chip of a board card (null when none), and its slot in the strip
+function ui11ShieldChip(tile){ return tile ? tile.querySelector('.badges .ab-unit-shield.is-live:not(.vis4-shield-out)') : null; }
+function ui11ShieldChipGone(chip){ try{ const slot = chip.closest('.abadge') || chip, strip = slot.parentElement; slot.remove(); if(strip && strip.classList.contains('badges') && !strip.querySelector('.abadge, .badge-cycle')) strip.remove(); }catch(e){} }
 function vis3ShieldRefresh(el, c){
-  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = tile.querySelector(':scope > .vis3-shield-num:not(.vis4-shield-out)'), html = vis3ShieldHTML(c);
+  try{ const tile = el && el.querySelector('.card-tile'); if(!tile) return; const old = ui11ShieldChip(tile), to = vis3ShieldAmount(c);
     // 2026-10-27 (package VIS4, K7: "if the bar is reduced to 0, it should still animate to 0"): a Shield that breaks counts down to 0 and
     // then fades out (it used to vanish at once); one that drops counts down to its new number (vis4ShieldCount).
-    if(!html){ if(old) vis4ShieldCount(old, Number(old.textContent) || 0, 0, true); return; }
-    if(old){ const to = vis3ShieldAmount(c), from = Number(old.textContent) || 0; if(from !== to){ if(to < from && !reducedMotion()) vis4ShieldCount(old, from, to, false); else { old.insertAdjacentHTML('afterend', html); old.remove(); const nu = tile.querySelector(':scope > .vis3-shield-num'); if(nu) nu.classList.add('vis3-shield-pop'); } } return; }
-    tile.querySelectorAll(':scope > .vis3-shield-num.vis4-shield-out').forEach(x=> x.remove());
-    tile.insertAdjacentHTML('beforeend', html); }catch(e){}
+    if(!(to > 0)){ if(old) vis4ShieldCount(old, Number(old.dataset.shield) || 0, 0, true); return; }
+    if(old){ const from = Number(old.dataset.shield) || 0; if(from !== to){ if(to < from && !reducedMotion()) vis4ShieldCount(old, from, to, false); else { ui11ShieldSet(old, to); old.classList.remove('vis3-shield-pop'); void old.offsetWidth; old.classList.add('vis3-shield-pop'); } } return; }
+    tile.querySelectorAll('.badges .ab-unit-shield.vis4-shield-out').forEach(ui11ShieldChipGone);
+    let strip = tile.querySelector('.badges'); if(!strip){ strip = document.createElement('div'); strip.className = 'badges badge-slots'; const nm = tile.querySelector('.stats'); if(nm && nm.nextSibling) tile.insertBefore(strip, nm.nextSibling); else tile.appendChild(strip); }
+    const slot = document.createElement('span'); slot.className = 'abadge'; slot.innerHTML = vis3ShieldHTML(c, to); strip.insertBefore(slot, strip.firstChild); slot.firstElementChild.classList.add('vis3-shield-pop'); }catch(e){}
 }
+function ui11ShieldSet(chip, n){ chip.dataset.shield = String(n); const b = chip.querySelector('.shield-n'); if(b) b.textContent = String(n); chip.classList.toggle('is-one', n === 1); chip.title = chip.title.replace(/\d+/, String(n)); }
 // 2026-10-27 (package VIS4, K7; owner 10-27 11:22: "The electric zap line effect when the shield is attacked ... doesn't look so nice. Also,
 // if the bar is reduced to 0, it should still animate to 0"):
 //   vis4ShieldCount: the blue number steps down one by one (about 60 ms a step, at most 0.35 s in all) with a pop; at 0 it holds a beat, then
@@ -86931,10 +87047,10 @@ function vis3ShieldRefresh(el, c){
 function vis4ShieldCount(el, from, to, gone){
   if(!el) return; if(el._vis4t) clearInterval(el._vis4t);
   const steps = Math.max(1, from - to), ms = Math.max(40, Math.min(60, Math.round(350 / steps))); let n = from;
-  const fin = ()=>{ el.textContent = String(to); el.classList.toggle('is-one', to === 1 || (!!gone && from <= 1)); /* UI8 (2026-10-31, Z6): at 1 the number fades, the icon alone */ el.title = el.title.replace(/\d+/, String(to)); el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
-    if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> el.remove(), 470); }, 420); } };
+  const fin = ()=>{ ui11ShieldSet(el, to); el.classList.toggle('is-one', to === 1 || (!!gone && from <= 1)); /* UI11 (FF1): at 1 the number fades, the icon alone */ el.classList.remove('vis3-shield-pop'); void el.offsetWidth; el.classList.add('vis3-shield-pop');
+    if(gone){ el.classList.add('vis4-shield-zero'); setTimeout(()=>{ el.classList.remove('vis3-shield-pop'); el.classList.add('vis4-shield-out'); setTimeout(()=> ui11ShieldChipGone(el), 470); }, 420); } };
   if(reducedMotion() || steps <= 1){ fin(); return; }
-  el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } el.textContent = String(n); }, ms);
+  el._vis4t = setInterval(()=>{ n -= 1; if(n <= to){ clearInterval(el._vis4t); el._vis4t = null; fin(); return; } ui11ShieldSet(el, n); }, ms);
 }
 function vis4ShieldRect(el, cls){ const t = el.querySelector('.card-tile') || el, c = en2Ctr(t), r = en2Layer('', 'vis4-shield-rect ' + (cls || ''));
   gsap.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w, height:c.h, opacity:0, scale:1}); return {r, c}; }
@@ -87095,7 +87211,7 @@ function boardCardHTML(c, defs, opts){
   // (VIS3, 2026-10-26: the Shield is the blue number on the card now, vis3ShieldHTML; no 💠 chip)
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${vis3ShieldHTML(c) /* VIS3 (2026-10-26): the Shield's blue number */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
+  const overlaysHTML = `      ${'' /* 2026-10-31 (UI11, FF1): the Shield is the south-edge chip (abilityBadges), not an east badge */}${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${'' /* ENG9 (2026-10-26, owner G19: "no lock icon needed"): no chain glyph over a Chained unit; its tint (is-chained) says it */}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -87131,7 +87247,7 @@ function boardCardHTML(c, defs, opts){
   // Undead unit back as a token (ENG9) wear the token look (is-token) like a printed token card.
   return withOwnerEdgeInTile(`<div class="board-card ${fog ? fogWrapClasses(fog) : ''} ${cageCls} ${raging && !fog ?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClassesShown} ${(d.token || c.token || c.bloomCopy || c.undeadToken)?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}${c.evoStack && c.evoStack.length ? ' has-evo-stack' : ''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${fog ? '' : evoStackHTML(c, defs)}${fog ? '' : trCrownHTML(c, d)}${(!fog && c.transformed && trTfName(d) === 'gilded') ? TR_SHEEN : ''}${c.fuse > 0 && !fog ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, size:'compact' /* 2026-10-30 (CS-D): only the inner tile; the .board-card wrapper (Flip, uids) is unchanged */, fog: fog ? fogTileOpts(fog) : null, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, bloomed: !!c.bloomed, bloomCopy: !!c.bloomCopy /* BL */, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, blind: c.blind||0 /* 2026-10-29 (UI3, S2) */, shieldAmt: vis3ShieldAmount(c) /* 2026-10-31 (UI11, FF1): the Shield chip on the south edge */, atkLabel, atkLow, atkZero, hp: c.hp, fallbackName: c.defId,
       overlaysHTML: fog ? '' : overlaysHTML,
       bottomHTML: fog ? '' : statusChipsHTML(badges), // the status chips on the card's top edge (2026-10-19, package TS)
     }})}${(flies || floats)?'</div>':''}${fog ? '' : bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) && !fog ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}${fogC ? fogVeilHTML(fogC) : ''}

@@ -267,6 +267,7 @@ run node tests/ui7-2026-10-31.js   # 2026-10-31 (package UI7, owner Y1 / Y4): Po
 # browser check for package UI8 (AA1-AA5, Z2, Z4, Z6): python3 tests/e2e/ui8_2026_10_31.py (needs Playwright; not run by run.js)
 # browser check for package UI9 (BB1-BB3, DD1-DD4): python3 tests/e2e/ui9_2026_10_31.py (needs Playwright; not run by run.js)
 # browser check for package UI10 (EE1-EE8, AUTH1): python3 tests/e2e/ui10_2026_10_31.py (needs Playwright; not run by run.js)
+# browser check for package UI11 (FF1-FF3, FF5, FF7, FF9): python3 tests/e2e/ui11_2026_10_31.py (needs Playwright; not run by run.js)
 run node tests/raidbal1-2026-10-30.js   # 2026-10-30 (package RAIDBAL1, owner W8): the Goliath brambles re-fit against three Map 13 decks at +2 (Left 780, Right 930, Tail 560, Core 100, raiderCastleBonus 120), the measured before / after / confirm runs inside RAIDBAL1-1 bands, raid_full_sim plays named decks
 run node tests/eng14-2026-10-30.js   # 2026-10-30 (package ENG14, owner X6 X8 X10 X20 X24 X25 X26): 8-8 Pitch Black, Mirage one Illusion per player (raid / co-op rows), Anadromous (+1 Attack on saltMap, else +2 Health), Bola N + Pinned, elite opening hand 4, CPU save plan, co-op CPU seat leader, texts
 run node tests/tip1-2026-10-30.js   # 2026-10-30 (package TIP1, owner 23:30): the speed button's tooltip is exactly "Changes the speed of the animation. Shift+Click to go back.", no tooltip TX value over 20 words, each shortened tooltip translated in all 12 packs
