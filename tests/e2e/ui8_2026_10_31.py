@@ -105,10 +105,10 @@ async def aa1_z6_z2_z4(b, url):
     # Z6: a unit's Shield badge
     z = await pg.evaluate("""(async()=>{ const m = matchState, sleep = t=> new Promise(r=> setTimeout(r, t)); const out = {};
       const c = m.players[1].row.center[0] || m.players[1].row.left[0] || m.players[1].row.right[0]; if(!c) return {none: true};
-      const el = ()=> document.querySelector(`.board-card[data-uid="${c.uid}"] .card-tile > .vis3-shield-num`);
-      c.shield = 3; updateCardStatusDisplay(c.uid); await sleep(200); const e3 = el(); out.t3 = e3 && e3.textContent; out.icon = e3 && getComputedStyle(e3, '::before').content;
+      const el = ()=> document.querySelector(`.board-card[data-uid="${c.uid}"] .card-tile .badges .ab-unit-shield.is-live`);
+      c.shield = 3; updateCardStatusDisplay(c.uid); await sleep(200); const e3 = el(); out.t3 = e3 && e3.dataset.shield; out.icon = e3 && e3.textContent.trim() + '💠'; /* UI11 (FF1): the Shield is the south-edge chip */
       out.c3 = e3 && getComputedStyle(e3).color;
-      c.shield = 1; updateCardStatusDisplay(c.uid); await sleep(900); const e1 = el(); out.t1 = e1 && e1.textContent; out.one = e1 && e1.classList.contains('is-one'); out.c1 = e1 && getComputedStyle(e1).color;
+      c.shield = 1; updateCardStatusDisplay(c.uid); await sleep(900); const e1 = el(); out.t1 = e1 && e1.dataset.shield; out.one = e1 && e1.classList.contains('is-one'); out.c1 = e1 && (+getComputedStyle(e1.querySelector('.shield-n')).opacity < .05 ? 'transparent' : 'shown');
       c.shield = 0; updateCardStatusDisplay(c.uid); await sleep(1700); out.gone = !el(); return out; })()""")
     if z.get('none'): print('  (no own unit on the board; Z6 skipped)')
     else:
