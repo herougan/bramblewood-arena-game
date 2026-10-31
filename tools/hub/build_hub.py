@@ -728,7 +728,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
 <section class="panel" id="p-decisions" role="tabpanel" aria-labelledby="t-decisions" hidden><div class="dec">
 <div class="dec-head"><h2>Decisions</h2><p>What's waiting on you, and what's been decided. Reply in chat with the id and your choice, e.g. "E1 yes".</p></div>
-<div class="dec-bar"><div class="dec-seg dec-grp" id="decGrp" role="group" aria-label="Decision group"><button data-g="game" aria-pressed="true">🎮 Game <b id="gYETgame"></b></button><button data-g="architecture" aria-pressed="false">🏗️ Architecture <b id="gYETarchitecture"></b></button><button data-g="finance" aria-pressed="false">💰 Finance <b id="gYETfinance"></b></button></div></div>
+<div class="dec-bar"><div class="dec-seg dec-grp" id="decGrp" role="group" aria-label="Decision group"><button data-g="game" aria-pressed="true">🎮 Game <b id="gYETgame"></b></button><button data-g="architecture" aria-pressed="false">🏗️ Architecture <b id="gYETarchitecture"></b></button><button data-g="finance" aria-pressed="false">💰 Finance <b id="gYETfinance"></b></button><button data-g="idea" aria-pressed="false">💡 Ideas <b id="gYETidea"></b></button></div></div>
 <div class="dec-bar"><div class="dec-seg" id="decSt" role="group" aria-label="Status"><button data-st="YET" aria-pressed="true">⏳ Yet to decide <b id="cYET"></b></button><button data-st="DONE" aria-pressed="false">✅ Done <b id="cDONE"></b></button><button data-st="ALL" aria-pressed="false">All</button></div>
 <input type="search" id="decQ" placeholder="Search decisions…" aria-label="Search decisions"></div>
 <div class="dec-chips" id="decAreas" role="group" aria-label="Area"></div>
@@ -765,7 +765,7 @@ const DEC = {decisions_json};
   const items = DEC.items || [], esc = s=> String(s||'').replace(/[&<>"]/g, c=> ({{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}})[c]);
   // 2026-10-29 (package HUBDEC1, owner: separate the meta decisions): three sub-tabs by item.group (game / architecture / finance; none = game),
   // each with its own YET / DONE counts, area and type chips. The last sub-tab is remembered in localStorage.
-  const GROUPS = ['game', 'architecture', 'finance'], grpOf = i=> GROUPS.includes(i.group) ? i.group : 'game';
+  const GROUPS = ['game', 'architecture', 'finance', 'idea'], grpOf = i=> GROUPS.includes(i.group) ? i.group : 'game';
   let grp = 'game'; try {{ const g = localStorage.getItem('hubDecGroup'); if(GROUPS.includes(g)) grp = g; }} catch(e) {{}}
   let st = 'YET', area = '', kind = '', q = '';
   const inGrp = ()=> items.filter(i=> grpOf(i)===grp);
