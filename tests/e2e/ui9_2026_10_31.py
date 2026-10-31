@@ -189,8 +189,8 @@ async def dd2(b, url):
     ok(r['otherOwned'] and not r['lv10'], 'with none in the deck any owned card; never a Lv 10 card, never an unowned one')
     await pg.evaluate("""((o)=>{ const pack = {id:'bronze', name:'Hedgerow Pouch', icon:'🌿', cards:1, metal:0}; openPackAnimation(pack, [{results:[{id:o.other, isNew:false, foil:false}], leveledId:o.id, glow:null, jackpot:false}], {}); })""", {'id': r['id'], 'other': r['other']})
     await pg.wait_for_timeout(2500); await tear(pg); await pg.wait_for_timeout(3000)
-    for _ in range(6):
-        if await pg.evaluate("!!document.querySelector('#poFoot .ui9-lvl-face')"): break
+    for _ in range(20):   # 2026-11-01: 6 x 0.9 s was too short on the shared CPU (failed 1 run in 2); wait up to about 18 s
+        if await pg.evaluate("!!document.querySelector('#poFoot .ui9-lvl-up')"): break
         await pg.evaluate("(()=>{ const c = document.querySelector('.po2-card:not(.is-collected), .pack-card:not(.is-collected)'); if(c) c.click(); })()"); await pg.wait_for_timeout(900)
     f = await pg.evaluate("(()=>{ const e = document.querySelector('#poFoot .ui9-lvl-up'); return e ? {tile: !!e.querySelector('.card-tile'), txt: e.textContent.replace(/\\s+/g, ' ').trim().slice(-12)} : null; })()")
     ok(f and f['tile'] and '+1 Level' in f['txt'], f'the summary shows the levelled card face and "+1 Level" {f}')
