@@ -11860,6 +11860,13 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* the CS-A base rule gives a Compact card 64px; in a match its own context sizes it, as before */
 .card-tile[data-size="compact"]:is(.match-field-tile, .match-castle-tile, .leader-card-face), .hand-strip > .card-tile[data-size="compact"]{width:var(--match-card-w);}
 .board-card > .card-tile[data-size="compact"]{width:100%;}
+/* 2026-10-31 (package UI10, owner EE4): the cause of Bee Forager / Honey Bee (every Flyer, and every floating Tide unit) drawing at half width: their tile sits in
+   .fly-body / .float-body, so the child-only rule above missed it and the tile kept the outside-a-match 64px. The same width, one level down. */
+.board-card > :is(.fly-body, .float-body) > .card-tile[data-size="compact"]{width:100%;}
+/* Mini board size (2026-10-31, UI10, EE4): the old half-width look, kept as an opt-in mode for a future event. Off by default; boardMiniOn() (flag in arena_app.js,
+   or localStorage bramblewood_board_mini_v1 = 1) puts .board-mini on #appWrap. Context pips and labels scale to 80% (they may overlap). */
+#appWrap.board-mini .board-card > .card-tile[data-size="compact"], #appWrap.board-mini .board-card > :is(.fly-body, .float-body) > .card-tile[data-size="compact"]{width:50%; margin-inline:auto;}
+#appWrap.board-mini .board-card .card-tile :is(.badges, .badges-bottom, .nm, .stats){scale:.8; transform-origin:50% 100%;}
 /* CS-D:END */
 
 /* the card album */

@@ -35599,7 +35599,12 @@ function fitTopRowControls(){
 window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
 // TOP_ROW_FIT:END
 const BOARD_ROW_IDS = ['resEnemy2', 'resEnemy1', 'rowEnemy', 'rowMine', 'resMine1', 'resMine2']; // 2026-10-23 (package UI4): the battlefield's card rows
+// 2026-10-31 (package UI10, owner EE4): the Mini board size (cards at half width, pips and labels at 80%) is off; flip BOARD_MINI_FLAG, or set localStorage
+// bramblewood_board_mini_v1 to 1, for a future event.
+const BOARD_MINI_FLAG = false;
+function boardMiniOn(){ if(BOARD_MINI_FLAG) return true; try{ return localStorage.getItem('bramblewood_board_mini_v1') === '1'; }catch(e){ return false; } }
 function renderMatchUI(){
+  try{ const aw = document.getElementById('appWrap'); if(aw) aw.classList.toggle('board-mini', boardMiniOn()); }catch(e){}
   try{ if(matchState && !matchState._preloaded) preloadFightAssets(matchState); }catch(e){} // 2026-10-16: the fight's assets, up front
   try{ centreFieldInFs(); }catch(e){}
   try{ const mm = matchState; if(mm && !mm.over && dayNightOn(mm)) document.body.dataset.phase = mm.engine.getPhase(); else delete document.body.dataset.phase; }catch(e){}
