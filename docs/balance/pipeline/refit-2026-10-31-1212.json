@@ -1,0 +1,42 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "refit",
+ "status": "ok",
+ "started": "2026-10-31T04:12:44.586Z",
+ "finished": "2026-10-31T04:12:46.734Z",
+ "durationSec": 2.1,
+ "args": [],
+ "head": "2c9781d9",
+ "inputs": {
+  "priceSnapshot": "docs/balance/pipeline/state/skill-costs.before-price.json",
+  "plan": "docs/balance/pipeline/state/refit-plan.json",
+  "cardsSha": "8f9db0e6ed",
+  "dry": false,
+  "rule": "tools/skill2_refit_2026_10_31.js",
+  "limits": {
+   "maxStatPoints": 2
+  }
+ },
+ "counts": {
+  "in play checked": 451,
+  "pushed out": 0,
+  "rule-clean": 0,
+  "flagged": 0,
+  "out of play (not touched)": 0,
+  "outside before (left)": 185,
+  "applied": 0
+ },
+ "changed": [],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [],
+ "files": [
+  "docs/balance/pipeline/state/refit-plan.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/refit-2026-10-31-1212.json"
+}

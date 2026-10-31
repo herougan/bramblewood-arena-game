@@ -30,6 +30,14 @@ const NEWT = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-cost
 const OLDT = (() => { if (!process.env.SKILL2_OLD_TABLE) return JSON.parse(cp.execSync(`git show ${BASE}:canonical/skill-costs.json`, { cwd: ROOT, maxBuffer: 64 << 20 }).toString());
   const snap = JSON.parse(fs.readFileSync(process.env.SKILL2_OLD_TABLE, 'utf8')), t = snap.table; t.budget = Object.assign({}, t.budget, { cap2SScale: snap.constants.cap2SScale, missMultBy: snap.constants.missMultBy }); return t; })();
 const NEW = SC.make(NEWT), OLD = SC.make(OLDT);
+// SPEED1 (2026-10-31, SKILL2_MISSMULT=1 from tools/pipeline/refit.js): tools/skill_costs.js budget() multiplies every half-miss skill by the table's flat
+// missMult (1.5) and never reads MISS_MULT_BY, which is what the game's sbCheck reads (Flying x1.39 -> x1.13, SKILL2-2). Here the half-miss
+// multiplier is swapped for the budget file's own (BB.missMultOf, with the table's budget as cfg, so an old snapshot's missMultBy applies) and cap 2
+// reads S at CAP2_S_SCALE; the stat terms of both caps scale linearly with m. Left off by default: the SKILL2 plan stays reproducible.
+if (process.env.SKILL2_MISSMULT) [[NEW, NEWT], [OLD, OLDT]].forEach(([T, table]) => { const B = table.budget || {}, f = T.budget;
+  T.budget = function (d, o) { const b = f(d, o), e = (d && d.effects) || {}, mNew = BB.missMultOf(e, B); if (!(b.m > 0) || Math.abs(mNew - b.m) < 1e-9) return b;
+    const fz = b.f || 1, q = mNew / b.m, cs = BB.cap2SOf ? BB.cap2SOf(b.S, B) : (b.S * Math.abs(b.S)), x1 = r2(fz * ((b.x1 / fz - b.S) * q + b.S)), x2 = r2(fz * ((b.x2 / fz - cs) * q + cs)), ok = x1 <= b.N && x2 <= b.N2;
+    return Object.assign({}, b, { x1, x2, ok, wellUnder: ok && x1 <= b.N * 0.6, m: mNew }); }; });
 const TUT12 = new Set(((JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'map-pools.json'), 'utf8')).maps.m1 || {}).submaps || {}).mtut12 || []);
 const OVER_OK = new Set(['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm']);
 const HELD = { 'bee-drone': 'RECOST1-5 (owner: hold them)', 'worker-ant': 'RECOST1-5 (owner: hold them)' };

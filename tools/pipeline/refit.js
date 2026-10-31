@@ -34,7 +34,7 @@ async function step(args, S) {
     P.writeJson(before, { savedAt: new Date().toISOString(), note: 'taken from the committed table: no price step ran first', constants: { cap2SScale: K.cap2SScale, missMultBy: { flying: K.flying, evasive: K.evasive, shadow: K.shadow } }, table: JSON.parse(r.out) });
     S.notes.push('no price snapshot: the committed skill table is the "before"');
   }
-  const env = { SKILL2_OLD_TABLE: before, SKILL2_CARDS: CARDS, SKILL2_OUT: PLANF, SKILL2_NO_NAMED: '1' };
+  const env = { SKILL2_OLD_TABLE: before, SKILL2_CARDS: CARDS, SKILL2_OUT: PLANF, SKILL2_NO_NAMED: '1', SKILL2_MISSMULT: '1' };
   const r = P.run('node', ['tools/skill2_refit_2026_10_31.js'], { env, log: path.join(P.STATE, 'refit.log') });
   if (r.code) throw new Error('refit rule failed: ' + r.out.split('\n').slice(-5).join(' / '));
   const plan = P.readJson(PLANF), ip = plan.changes.filter(x => x.inPlay), ids = args.ids ? new Set(String(args.ids).split(',')) : null;
