@@ -278,5 +278,7 @@ run node tests/speed1-2026-10-31.js   # 2026-10-31 (package SPEED1, owner: balan
 run node tests/eng15-2026-10-31.js   # 2026-10-31 (package ENG15, owner FF4 FF5 FF6 Z5 Z6 Y2 Y3 Y7 BB4): True Sight (Invisible + fog), Bloom (the original keeps trying; token copies with the parent's Wait), Cower N Armor + pip, Poison skips the Shield, Bola lifts Flying / Evasive, Lasso, Anadromous rework + price, mini-boss +2 cards, Pounce L/C/R, Swarm type in the editor
 run node tests/ui12-save-guard-2026-10-31.js   # 2026-10-31 (package UI12, GG2): sign-in → cloud load → save against a fake Supabase: nothing is pushed before the account's cloud save is read, an emptier progress blob never replaces a richer one (SAVE_GUARD_UI12), a failed read writes nothing, the account's name comes back, admin resets shrink once
 # browser check for package UI12 (GG1-GG6, GG8, GG10): python3 tests/e2e/ui12_2026_10_31.py (needs Playwright; not run by run.js)
+run node tests/ui13-2026-11-01.js   # 2026-11-01 (package UI13, HH1 HH3 HH4 HH7): kind "baby" on the BABY list only (Base / Faction derived), Baby and Unlikely pills, counts without Baby / Unlikely cards, the eggs panel, edit from the gallery, the Torch (equipment, Illuminate, m4 bracket once per save)
+# browser check for package UI13 (HH1, HH3, HH4, HH7): python3 tests/e2e/ui13_2026_11_01.py (needs Playwright; not run by run.js)
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

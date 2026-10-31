@@ -14297,6 +14297,30 @@ html:has(body.bw-touch-dragging), body.bw-touch-dragging{overscroll-behavior:non
 .rv2-pill.is-unique{background:#7da35b; color:#14210a; border-color:transparent;}
 .rv2-pill.is-owner{background:#e0b030; color:#222; border-color:transparent; cursor:help;}
 .rv2-pill.is-claude{background:#8a6fc4; color:#fff; border-color:transparent; cursor:help;}
+/* UI13 (2026-11-01): the Unlikely pill (HH7, its flagWhy as the tooltip), the Baby and Egg pills and the Baby cards panel (HH1), the ✏️ on a tile (HH3), the kind chip */
+.rv2-pill.is-unlikely{background:#b8463a; color:#fff; border-color:transparent; cursor:help;}
+.rv2-pill.is-baby{background:#f3c6d4; color:#4a1f2c; border-color:transparent; cursor:help;}
+.rv2-pill.is-egg{background:#efe2c0; color:#3b2c10; border-color:transparent; cursor:help;}
+.rv1-tile.is-unlikely.is-chosen:not(.is-flipped) .vis4-mc-card.is-large{outline:2px dashed rgba(184,70,58,.85); outline-offset:2px;}
+.ui13-acts{display:flex; justify-content:center; align-items:center; gap:5px;}
+.ui13-acts .rv1-act{white-space:nowrap; padding:4px 10px;}
+.rv1-tile .ui13-edit{width:30px; height:30px; flex:0 0 30px; padding:0; border-radius:50%; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font-size:13px; line-height:1; cursor:pointer;}
+.rv1-tile .ui13-edit:hover, .rv1-tile .ui13-edit:focus-visible{background:var(--surface-3);}
+.ui13-baby-sec .panel-sub{margin:2px 0 8px;}
+.cd-chip.cd-kind.kind-baby{background:#f3c6d4; color:#4a1f2c;}
+.cd-chip.cd-kind.kind-faction{background:#d7c48a; color:#2e2410;}
+/* HH4: the torch bracket beside Caves & Alcoves' first fire pit; under the dark (z 7) like the pits (z 5), so only the pit's light shows it */
+.ui13-torch{position:absolute; z-index:6; width:30px; height:34px; padding:0; transform:translate(-50%,-50%); border:0; background:none; cursor:pointer; touch-action:manipulation;}
+.ui13-torch .ut-bracket{position:absolute; left:50%; bottom:2px; width:16px; height:7px; transform:translateX(-50%); border-radius:2px 2px 5px 5px; background:linear-gradient(#5d5650, #2c2724); box-shadow:0 1px 2px rgba(0,0,0,.6);}
+.ui13-torch .ut-stick{position:absolute; left:50%; bottom:6px; transform:translateX(-50%) rotate(-8deg); font-size:19px; line-height:1; font-style:normal; filter:grayscale(1) brightness(.45); opacity:.7; transition:filter .4s ease, opacity .4s ease;}
+.ui13-torch:disabled{cursor:default;}
+.ui13-torch.is-lit .ut-stick{filter:none; opacity:1; animation:ui13TorchGlow 1.6s ease-in-out infinite; text-shadow:0 0 8px rgba(255,170,60,.9);}
+.ui13-torch.is-lit:hover .ut-stick, .ui13-torch.is-lit:focus-visible .ut-stick{transform:translateX(-50%) rotate(-8deg) scale(1.15);}
+.ui13-torch.is-taken .ut-stick{display:none;}
+.ui13-torch.is-taken{cursor:default; opacity:.8;}
+@keyframes ui13TorchGlow{0%,100%{filter:drop-shadow(0 0 3px rgba(255,180,70,.7));} 50%{filter:drop-shadow(0 0 9px rgba(255,150,40,1));}}
+@media (prefers-reduced-motion: reduce){ .ui13-torch.is-lit .ut-stick{animation:none;} }
+/* UI13:END */
 .rv1-act{min-height:30px; padding:4px 12px; font-size:12px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
 .rv1-bar{gap:8px 14px; margin:6px 0 2px; align-items:flex-start;}
 .rv2-copy{position:relative; display:inline-block;}

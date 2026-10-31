@@ -68,7 +68,7 @@ function fnSrc(name){
     ok(pick('mp') === 'sub:mp,special' && pick('mg') === 'sub:mg,special', 'S4 a submap shows only its own list + SPECIAL (' + pick('mp') + ')');
     ok(pick('mtut') === 'sub:mtut12,sub:mtut,special', 'S4 the Tutorial\'s two lists both belong to it (' + pick('mtut') + ')'); }
   ok(/m = mpMapById\(mapId\) \|\| mpMapById\(top\)/.test(f), 'S4 the title names the submap itself');
-  const t = fnSrc('rv1TilesHTML'), z = fnSrc('wireRewardZoom');
+  const t = fnSrc('rv1TilesHTML') + '\n' + fnSrc('rv1TileHTML') /* 2026-11-01 (UI13): the tile moved into rv1TileHTML */, z = fnSrc('wireRewardZoom');
   ok(!/title="\$\{escapeAttr\(e\.why/.test(t) && /why: e\.why \|\| ''/.test(t) && !/'\?'/.test(t.split('\n')[2] || ''), 'S6 no native title on the tile, no "?" mark; the reason goes to the card');
   ok(/data-zoom-why/.test(fnSrc('vis4MapCardTilesHTML')) && /cnp-rw-why/.test(z) && /cnp-rw-above/.test(z), 'S6 the hover detail adds the reason line and sits above the overlay');
   ok(/\.cnp-rw-zoom\.cnp-rw-above\{z-index:900/.test(css) && /\.modal-overlay\{[^}]*z-index:600/.test(css), 'S6 CSS: the popover (900) is above the overlay (600); it used to be 200, under it');
