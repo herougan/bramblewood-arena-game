@@ -8966,7 +8966,8 @@ function abilityBadges(d, bopts){
   // just not the identical glyph as the cost pill it sits beside.
   // 2026-10-11 (user: "I wanted ALL symbols (incl like flying and poison) to be on the south border"): poison joins the
   // skill strip, which now sits on the card's bottom edge.
-  if(e.poison) out.push(`<span class="ab-poison">${iconHTML('poison', '☠')}${n1(e.poison)}</span>`);
+  if(e.poison){ const ui7P = !!(bopts && bopts.live), ui7T = ui7P ? escapeAttr(TX('ui.ui7-poison-skill-tip', {n: e.poison === true ? 1 : e.poison})) : ''; // 2026-10-31 (package UI7, owner Y1): on a board card the Poison skill is the icon alone
+    out.push(`<span class="ab-poison"${ui7P ? ` title="${ui7T}" aria-label="${ui7T}"` : ''}>${iconHTML('poison', '☠')}${ui7P ? '' : n1(e.poison)}</span>`); }
   if(e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(e.bounty)}</span>`); // on the board the opponent's bounty shows as a Lumber bubble instead (bountyBubbleHTML)
   if(e.explode) out.push(`${iconHTML('explode', '💣')}${e.explode.time}/${e.explode.damage}`);
   // Poison moved out to its own bottom-center stat pill (see poisonTagHTML above, 2026-09-29).
@@ -9190,7 +9191,9 @@ function abilityBadges(d, bopts){
   // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
   CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
     if(k === 'magic') return; // 2026-10-21 (package BX, owner: "For magic units, dont have to have the magic context label since it's obvious from their attack label")
-    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
+    const ui7NoNum = !!(bopts && bopts.live) && k === 'regen'; // 2026-10-31 (package UI7, owner Y1): Regeneration on a board card is the icon alone (the value is in the tooltip)
+    const ui7Tip = ui7NoNum ? escapeAttr(TX('ui.ui7-regen-tip', {n: v})) : '';
+    out.push(`<span class="ab-sk${zeitLitNow(k, bopts) ? ' zeit-live' : ''}" data-sk="${k}"${ui7NoNum ? ` title="${ui7Tip}" aria-label="${ui7Tip}"` : ''}>${iconHTML(k, SKILL_ICON[k] || '✦')}${!ui7NoNum && (typeof v === 'number' || /^\d+$/.test(String(v))) ? n1(v) : ''}</span>`); });
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';
@@ -38910,6 +38913,7 @@ function boardCardHTML(c, defs, opts){
   // Status VFX (item #13): poisoned/bled/stunned each get their own tint + overlay icon on the
   // card frame, not just a badge number — see .board-card.is-* in arena_template.html.
   const statusClasses = [
+    ui7IsHeld(c) ? 'is-held' : '', // 2026-10-31 (package UI7, owner Y4): held by Pinned / Webbed / Tangled / Bound (HELD_STATUSES); the rare struggle wriggle hangs on it
     c.poison>0 ? 'is-poisoned' : '', pl1PoisonLethal(c) ? 'pl1-lethal' : '', // 2026-10-24 (package PL1, owner 21:20 #2): Poison that will kill it
     c.bleed>0 ? 'is-bled' : '',
     c.stunned ? 'is-stunned' : '',
@@ -38965,7 +38969,7 @@ function boardCardHTML(c, defs, opts){
   const atkZero = printedAtk <= 0 && effAtk <= 0;
   // Live status stacks (poison/bleed/scar/etc currently affecting THIS unit right now).
   const badges = [];
-  if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
+  if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
@@ -39065,6 +39069,14 @@ function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[
 // (2, 3 or 4 slots, CSS container queries in #tsStyles); past that the last slot is a "+N" chip: oK on the strip says there are more
 // than K statuses, data-mK is the +N it shows at K slots (the rest, plus the chip it replaces). The strip keeps the old class
 // badges-bottom for the effects code that finds it (FX.D's poison drop and chip pop).
+// 2026-10-31 (package UI7, owner Y1: "Poison and regeneration do not need [the number], the idea of it sufficient"): the live Poison chip is the icon alone;
+// the exact stack stays in its tooltip and aria-label. The Poison and Regeneration skill chips on a board card do the same (abilityBadges, bopts.live).
+// 2026-10-31 (package UI7, owner Y4): the statuses that hold a unit in place. A unit with any of them gets .is-held on its board card, and
+// bramblewood-fx-b.js wriggles it now and then (.is-struggling, about 0.6 s). A future Lasso status joins by adding its key here (the
+// key is the unit's field: c.pinDown is Bola's Pin, c.webbed Web, c.tangled Entangle, c.bound Bind).
+const HELD_STATUSES = ['pinDown', 'webbed', 'tangled', 'bound'];
+function ui7IsHeld(c){ return !!c && HELD_STATUSES.some(k=> c[k] > 0); }
+function ui7PoisonChip(c){ const t = escapeAttr(TX('ui.ui7-poison-tip', {n: c.poison})); return `<span class="abadge poison" title="${t}" aria-label="${t}">☠</span>`; }
 const STATUS_CHIP_SLOTS = [2, 3, 4];
 function statusChipsHTML(badges){
   if(!badges || !badges.length) return '';
@@ -40745,6 +40757,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-blind', c.blind>0); el.classList.toggle('is-tipsy', c.tipsy>0); el.classList.toggle('is-confused', c.confused>0);
   el.classList.toggle('is-shocked', c.shocked>0);
   el.classList.toggle('has-shield', c.shield > 0); // 2026-10-21 (package UI3): its Health number is blue while the Shield stands
+  el.classList.toggle('is-held', ui7IsHeld(c)); // 2026-10-31 (package UI7, owner Y4)
   vis3ShieldRefresh(el, c); // VIS3 (2026-10-26): the Shield's blue number
   el.classList.toggle('is-corroded', c.corrode>0);
   el.classList.toggle('is-staggered', c.staggered>0);
@@ -40752,7 +40765,7 @@ function updateCardStatusDisplay(uid){
   el.classList.toggle('is-gpoisoned', c.gpoison>0); // EN4 (2026-10-23)
   el.classList.toggle('en7-aloft', c.diveAloft != null && c.diveMode !== 'tide'); el.classList.toggle('en7-under', c.diveAloft != null && c.diveMode === 'tide'); // EN7 (2026-10-24)
   const badges = [];
-  if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
+  if(c.poison>0) badges.push(ui7PoisonChip(c)); // 2026-10-31 (package UI7, owner Y1): the icon alone; the exact value is in the tooltip and aria-label
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)

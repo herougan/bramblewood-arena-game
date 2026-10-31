@@ -1678,4 +1678,31 @@ const mapRainSeen = {};
 M.hooks.mapRain = (host, rain, mapId, env)=>{ const was = mapRainSeen[mapId]; mapRainSeen[mapId] = !!rain;
   if(was == null || was === !!rain || !host || !env.fxAtLeast('med')) return; M.rainStartStop(host, {start:!!rain}); };
 
+/* 2026-10-31 (package UI7, owner Y4: "a struggle animation that plays randomly and rarely on Pinned (Bola), Entangled and similar"): a held unit
+   (.is-held, set by arena_app.js from HELD_STATUSES) wriggles now and then: a short left-right shake of its tile and a tiny tug of the status
+   chip, about 0.6 s. Each held card has its own timer: the first roll comes 1-12 s after it is first seen and then every 6-12 s, so a row never
+   moves together. Effects Medium or higher; off with reduced motion. It uses the individual `translate` / `rotate` properties so GSAP's own
+   transform on the card (lunges, Flip) is untouched. */
+css('ui7struggle', `.board-card.is-struggling > .card-tile, .board-card.is-struggling > .fly-body > .card-tile{animation:ui7Wriggle .6s ease-in-out 1 both;}
+.board-card.is-struggling .status-chips > .abadge:is(.pinned,.webbed,.bound,.tangled){animation:ui7Tug .6s ease-in-out 1 both;}
+@keyframes ui7Wriggle{0%,100%{translate:0 0;} 12%{translate:-3px 0;} 28%{translate:3px 0;} 44%{translate:-2.5px 0;} 60%{translate:2px 0;} 76%{translate:-1px 0;} 90%{translate:.5px 0;}}
+@keyframes ui7Tug{0%,100%{translate:0 0; rotate:0deg;} 20%{translate:-1px 1.5px; rotate:-14deg;} 45%{translate:1px 1px; rotate:12deg;} 70%{translate:-.5px 1px; rotate:-7deg;} 85%{translate:0 .5px; rotate:3deg;}}
+@media (prefers-reduced-motion: reduce){ .board-card.is-struggling > .card-tile, .board-card.is-struggling > .fly-body > .card-tile, .board-card.is-struggling .status-chips > .abadge{animation:none !important;} }`);
+const UI7_MIN_MS = 6000, UI7_MAX_MS = 12000;
+const ui7Next = new WeakMap(); // card element -> the time its next roll is due
+function ui7Allowed(){ try{ return (typeof fxAtLeast !== 'function' || fxAtLeast('med')) && !(typeof reducedMotion === 'function' && reducedMotion()) && !document.hidden; }catch(e){ return false; } }
+function ui7Struggle(card){ if(!card || !card.classList) return; card.classList.remove('is-struggling'); void card.offsetWidth; card.classList.add('is-struggling'); setTimeout(()=> card.classList.remove('is-struggling'), 700); }
+function ui7Tick(now){
+  if(!ui7Allowed()) return;
+  document.querySelectorAll('.board-card.is-held').forEach(card=>{
+    if(!ui7Next.has(card)){ ui7Next.set(card, now + 1000 + Math.random() * (UI7_MAX_MS - 1000)); return; } // staggered first roll
+    if(now < ui7Next.get(card)) return;
+    ui7Next.set(card, now + UI7_MIN_MS + Math.random() * (UI7_MAX_MS - UI7_MIN_MS));
+    if(card.classList.contains('is-struggling') || card.classList.contains('is-fogged')) return;
+    ui7Struggle(card); });
+}
+if(typeof setInterval === 'function') setInterval(()=>{ try{ ui7Tick(Date.now()); }catch(err){} }, 1000);
+M.ui7Struggle = ui7Struggle; // the test and a future Lasso hook can call it
+if(typeof window !== 'undefined') window.ui7StruggleNow = ()=>{ if(ui7Allowed()) document.querySelectorAll('.board-card.is-held').forEach(ui7Struggle); }; // test hook: every held card rolls now (still gated by level and reduced motion)
+
 })(typeof window !== 'undefined' ? window : globalThis);

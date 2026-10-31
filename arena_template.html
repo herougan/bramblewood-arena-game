@@ -13455,6 +13455,12 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
   box-shadow:0 0 0 1px var(--sc-ring, rgba(201,162,90,.85)), 0 1px 3px rgba(0,0,0,.55) !important; filter:none !important;
   text-shadow:0 1px 0 rgba(0,0,0,.7); white-space:nowrap; letter-spacing:0;}
 .board-card .card-tile .status-chips > .abadge img.tw-emoji{width:1.05em !important; height:1.05em !important; margin:0 !important; vertical-align:0 !important;}
+/* 2026-10-31 (package UI7, owner Y1: "like shield -> put the number closer to the icon"): on a board card an icon and its number sit tight, as the shield's
+   number does: no flex gap in the chip, and the skill strip's emoji gives back the blank edge its glyph carries. An icon-only chip (Poison) is a plain round chip. */
+.board-card .card-tile .status-chips > .abadge{gap:0 !important;}
+.board-card .card-tile .status-chips > .abadge.poison{padding:0 !important; width:var(--sc-h);}
+.board-card .card-tile .badges .abadge img.tw-emoji{margin-right:-.16em !important;}
+.board-card .card-tile .badges .abadge .ab-poison img.tw-emoji:last-child, .board-card .card-tile .badges .abadge .ab-sk[data-sk="regen"] img.tw-emoji:last-child{margin-right:0 !important;}
 /* each status keeps its colour as the chip's ring and number */
 .board-card .card-tile .status-chips > .abadge.poison{--sc-ring:var(--poison, #7ac943); color:#c9f59a;}
 .board-card .card-tile .status-chips > .abadge.toxin{--sc-ring:#9bd64a; color:#d8ff9a;}
