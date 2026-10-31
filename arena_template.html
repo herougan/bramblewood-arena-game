@@ -3799,6 +3799,9 @@
   .gsi-btn:hover:not(:disabled){background:#f6f8fc; box-shadow:0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);}
   .gsi-btn:focus-visible{outline:2px solid #4285F4; outline-offset:2px;}
   .gsi-btn:disabled{opacity:.5; cursor:not-allowed;}
+  .gsi-host{display:flex; justify-content:center; min-height:44px; margin:2px 0;} .gsi-host[hidden]{display:none;} /* 2026-10-31 (UI10, AUTH1): Google's own button */
+  .auth-other-link{display:block; margin:4px auto 0; padding:2px 6px; background:none; border:0; color:var(--ink-muted, #8a8f98); font:inherit; font-size:12.5px; text-decoration:underline; cursor:pointer;}
+  .auth-other-link:hover{color:var(--ink, #fff);}
   .gsi-btn .gsi-logo{width:20px; height:20px; flex:none;}
   .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-muted); text-transform:lowercase;}
   .auth-or::before, .auth-or::after{content:''; flex:1; height:1px; background:currentColor; opacity:.35;}
@@ -6949,6 +6952,14 @@
   .pf-medals .pf-medal-case{padding:10px; border-radius:12px; background:linear-gradient(180deg,#5a3d22,#3f2a16); box-shadow:inset 0 0 0 2px #7a5530;}
   @media (prefers-reduced-motion: reduce){ .qn-flash{animation:none;} }
   @media (prefers-reduced-motion:reduce){ .qn-note.is-ready .qn-claim{animation:none;} }
+  /* 2026-10-31 (package UI10, owner EE1): the finished notice is the button; NEW! until hovered or clicked */
+  .qn-note[data-claim-id], .er-writ[data-errand-claim]{cursor:pointer;}
+  .qn-note[data-claim-id]:hover, .er-writ[data-errand-claim]:hover{filter:brightness(1.05); box-shadow:0 0 0 2px #e0504a, 0 6px 14px rgba(0,0,0,.3);}
+  .qn-note[data-claim-id]:focus-visible, .er-writ[data-errand-claim]:focus-visible{outline:2px solid #9e1f1a; outline-offset:3px;}
+  .qn-claimhint, .er-claimhint{align-self:flex-start; font:800 12.5px 'Nunito',system-ui,sans-serif; color:#9e1f1a; animation:qnPulse 1.4s ease-in-out infinite;}
+  .qn-new{position:absolute; top:-6px; left:-4px; z-index:2; padding:2px 7px; border-radius:999px; background:#c1121f; color:#fff; font:900 11px/1.1 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; box-shadow:0 2px 0 #5e100c; pointer-events:none;}
+  .er-band .qn-new{position:static; margin-left:auto; margin-right:8px;}
+  @media (prefers-reduced-motion:reduce){ .qn-claimhint, .er-claimhint{animation:none;} }
   /* Field effects (2026-10-08): the Field card beside the enemy deck, snowfall, and the ice pulse */
   .field-card{flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 4px; position:relative; cursor:help;}
   .field-card.field-frozen{background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.55), transparent 60%), linear-gradient(180deg,#bfe6ff,#6aa9d8) !important; border:2px solid #e8f7ff !important; color:#0f3350; box-shadow:inset 0 0 0 3px rgba(255,255,255,.35), 0 3px 0 rgba(0,0,0,.2), 0 0 14px rgba(160,220,255,.55);}
@@ -9639,6 +9650,7 @@
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
   #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
+  #conquestNodePanel.is-skirm :is(.cnp-deck, .cnp-deck-locked){display:none !important;} /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip */
   /* 2026-10-25 (package PL2, owner 00:02 #3 #5): the cards won as one stack (the first in front, the rest behind it, fanned on hover / tap)
      and a rank-won card's flash and ribbon (the emblem and "reward") */
   .rw-cards.pl2-stack{display:grid !important; grid-template-areas:'s'; justify-items:center; justify-content:center !important; position:relative; padding:6px calc(8px + var(--n) * 7px) 4px 8px; outline:none; cursor:pointer;}
@@ -11851,6 +11863,13 @@ html[data-fx="none"] .card-tile > .ui3-tint{display:none;}
 /* the CS-A base rule gives a Compact card 64px; in a match its own context sizes it, as before */
 .card-tile[data-size="compact"]:is(.match-field-tile, .match-castle-tile, .leader-card-face), .hand-strip > .card-tile[data-size="compact"]{width:var(--match-card-w);}
 .board-card > .card-tile[data-size="compact"]{width:100%;}
+/* 2026-10-31 (package UI10, owner EE4): the cause of Bee Forager / Honey Bee (every Flyer, and every floating Tide unit) drawing at half width: their tile sits in
+   .fly-body / .float-body, so the child-only rule above missed it and the tile kept the outside-a-match 64px. The same width, one level down. */
+.board-card > :is(.fly-body, .float-body) > .card-tile[data-size="compact"]{width:100%;}
+/* Mini board size (2026-10-31, UI10, EE4): the old half-width look, kept as an opt-in mode for a future event. Off by default; boardMiniOn() (flag in arena_app.js,
+   or localStorage bramblewood_board_mini_v1 = 1) puts .board-mini on #appWrap. Context pips and labels scale to 80% (they may overlap). */
+#appWrap.board-mini .board-card > .card-tile[data-size="compact"], #appWrap.board-mini .board-card > :is(.fly-body, .float-body) > .card-tile[data-size="compact"]{width:50%; margin-inline:auto;}
+#appWrap.board-mini .board-card .card-tile :is(.badges, .badges-bottom, .nm, .stats){scale:.8; transform-origin:50% 100%;}
 /* CS-D:END */
 
 /* the card album */
@@ -13456,6 +13475,10 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .ed-art-review .ed-art-reason{display:block; margin:2px 0 4px; color:#ffb4b4;}
 .ed-art-review .btn{margin:2px 4px 0 0;}
 .ed-art-wrap{display:flex; flex-direction:column; align-items:center; gap:4px; max-width:120px;}
+.rejected-art .ra-list{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));} /* 2026-10-31 (UI10, EE5) */
+.rejected-art .ra-row{display:flex; gap:10px; align-items:flex-start; padding:8px; border-radius:10px; background:color-mix(in srgb, var(--surface-2, #333) 70%, transparent);}
+.rejected-art .ra-art{flex:0 0 var(--card-compact-w); width:var(--card-compact-w);} .rejected-art .ra-art .card-tile{width:var(--card-compact-w) !important;}
+.rejected-art .ra-text{display:flex; flex-direction:column; gap:4px; min-width:0;} .rejected-art .ra-comment{color:#ffb4b4; overflow-wrap:anywhere; white-space:pre-wrap;} .rejected-art .ra-when{opacity:.7;}
 .ed-art-wrap .ed-art-why{font-size:11px; line-height:1.25; color:#ffb4b4; text-align:center; overflow-wrap:anywhere;}
 </style>
 <style id="tsStyles">

@@ -68,7 +68,7 @@ const pack = c=> JSON.parse(R('lang/' + c + '.json')), uiPack = c=> JSON.parse(R
   const body = shell.slice(shell.indexOf('const body ='), shell.indexOf('return `<div class="modal quests-modal'));
   const [onQuests, onDailies] = [body.slice(body.indexOf('onErr'), body.indexOf(': `<p class="qn-sub">Jobs posted')), body.slice(body.indexOf(': `<p class="qn-sub">Jobs posted'))];
   ok(/errandsBoardHTML\(\)/.test(onQuests) && !/noticeQuestListHTML|dailyBoard|section\('weekly'|journeysHTML/.test(onQuests), 'O8: the Quests tab holds the errands and no daily / weekly / journey');
-  ok(/noticeQuestListHTML\(q\)/.test(onDailies) && /dailyBoard\(\)/.test(onDailies) && /section\('weekly'/.test(onDailies) && /journeysHTML\(\)/.test(onDailies) && !/errandsBoardHTML/.test(onDailies), 'O8: the Dailies tab holds the daily / weekly / journey notices and the "Your dailies" list');
+  ok(!/noticeQuestListHTML\(q\)/.test(onDailies) /* 2026-10-31 (UI10, EE1): the "Your dailies" summary is gone */ && /dailyBoard\(\)/.test(onDailies) && /section\('weekly'/.test(onDailies) && /journeysHTML\(\)/.test(onDailies) && !/errandsBoardHTML/.test(onDailies), 'O8: the Dailies tab holds the daily / weekly / journey notices and the "Your dailies" list');
   ok(/if\(noticesSubTab === 'errands' && !erOpen\) noticesSubTab = 'notices'/.test(shell) && /\$\{erOpen \? `<button[^`]*data-qn-tab="errands"/.test(shell), 'O8: the Quests tab appears once the Quest Board is open');
   ok(/<b>Your dailies<\/b>/.test(src) && !/<b>Your quests<\/b>/.test(src), 'O8: the list of dailies says so');
   // nothing the player reads says Errand any more

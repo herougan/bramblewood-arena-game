@@ -11238,6 +11238,13 @@ function renderEditorInner(){
     const sdef = keySel && SKILL_DEFS.find(x=>x.key===keySel.value);
     if(readout && sdef) readout.textContent = `${sdef.label} ${resistOptionLabel(sel.value)}`;
   }));
+  // 2026-10-31 (package UI10, owner EE8): the Swarm type dropdown applies at once: the row remembers the pick and the "Counts <Type>" text follows.
+  overlay.querySelectorAll('#skillRows select[data-sk="vals"], #evergreenRows select[data-sk="vals"]').forEach(sel=> sel.addEventListener('change', ()=>{
+    const i = Number(sel.getAttribute('data-i')), rowEl = sel.closest('.skill-row'), hint = rowEl && rowEl.querySelector('.skill-types-hint');
+    if(c._skillRows && c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
+    sel.setAttribute('data-first', sel.value); sel.setAttribute('data-extra', '[]');
+    if(hint) hint.textContent = sel.value ? 'Counts ' + sel.value : 'Any shared type';
+  }));
   // Chained (Devilry, 2026-09-17): changing the break-condition dropdown (val0) needs the
   // whole row re-rendered so the damage-threshold number field (val1) shows/hides itself to
   // match — a plain re-render, same pattern the 'key' select change already uses above.
@@ -11449,9 +11456,11 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
       `<input type="number" min="1" class="w-52" data-sk="val1" data-i="${i}" value="${vals[1]||1}" title="${escapeAttr(s.numberTitle || "Damage threshold — only used by the 'Takes more than N damage' condition")}" ${amountRelevant?'':'hidden'}>`;
   } else if(s.kind==='types'){
     // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
+    // 2026-10-31 (package UI10, owner EE8): one dropdown, first entry "Type" = plain Swarm (any shared type); the pick applies at once
+    // (written to the row, the "Counts" text updates) and the "x N" box is gone (N stays 1; an old swarmN rides along in a hidden field).
     const sel = Array.isArray(row.value) ? row.value : [];
-    valueHtml = `<select multiple size="4" class="skill-types" data-sk="vals" data-i="${i}" aria-label="Counts allies of these types (none picked: any shared type)" title="None picked: any ally that shares a type. Pick types to count only those (Ctrl/Cmd-click for several).">${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel.includes(a)?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
-    if(s.numberKey) valueHtml += `<label class="skill-n">× <input type="number" min="1" class="w-52" data-sk="valN" data-i="${i}" value="${row.n||1}" title="How much each one adds (default 1)"></label>`;
+    valueHtml = `<select class="skill-types" data-sk="vals" data-i="${i}" data-first="${escapeAttr(sel[0]||'')}" data-extra="${escapeAttr(JSON.stringify(sel.slice(1)))}" aria-label="Counts allies of this type (Type: any shared type)" title="Type: any ally that shares a type. Pick a type to count only that type."><option value="" ${sel.length?'':'selected'}>Type</option>${Object.keys(ARCHETYPE_ICON).sort().map(a=>`<option value="${escapeAttr(a)}" ${sel[0]===a?'selected':''}>${ARCHETYPE_ICON[a]||''} ${escapeHtml(a)}</option>`).join('')}</select><small class="skill-types-hint">${sel.length ? 'Counts ' + escapeHtml(sel.join(', ')) : 'Any shared type'}</small>`;
+    if(s.numberKey) valueHtml += `<input type="hidden" data-sk="valN" data-i="${i}" value="${row.n||1}">`;
   } else if(s.kind==='cardCount'){
     // On Death: Spawn / On Attacked: Spawn (2026-09-21): a card-name dropdown (val0=defId) plus
     // a count (val1) — the exact same picker widget actionFieldsHTML already builds for the
@@ -11857,7 +11866,9 @@ function readEditorFormIntoCard(){
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
       sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
-      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(fx, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
+      const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); // 2026-10-31 (UI10): one dropdown; '' = plain Swarm; an untouched multi-type pick keeps its other types
+      const picked = !el ? [] : el.multiple ? [...el.selectedOptions].map(o=> o.value) : el.value ? (el.value === el.getAttribute('data-first') ? [el.value].concat(JSON.parse(el.getAttribute('data-extra') || '[]')) : [el.value]) : [];
+      sdef.apply(fx, picked, nEl ? nEl.value : 1);
     } else {
       sdef.apply(fx, true);
     }
@@ -13097,6 +13108,49 @@ async function cloudSignInWithGoogle(){
   // No return value on purpose — the page is about to navigate away to Google.
 }
 
+// 2026-10-31 (package UI10, AUTH1 / owner CC1, DD5): Google's own sign-in button (Google Identity Services) on our page, so Google's consent names this site,
+// not supabase.co. Flow: a random raw nonce; its SHA-256 hex goes to google.accounts.id.initialize; the callback hands Google's ID token and the raw nonce to
+// Supabase's signInWithIdToken. The script (https://accounts.google.com/gsi/client) loads only when a sign-in screen is drawn. Today's redirect
+// (cloudSignInWithGoogle) stays as the "Other sign-in" link, and takes over by itself when the script cannot load. Nothing here prints or stores a token.
+const GOOGLE_CLIENT_ID = '871693115882-bhdr13re9l3ejo9c6alsh81nms45uk68.apps.googleusercontent.com'; // public (an OAuth client ID is not a secret)
+const GSI_SRC = 'https://accounts.google.com/gsi/client';
+let gsiLoadPromise = null;
+function gsiLoad(timeoutMs){
+  if(typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) return Promise.resolve(window.google);
+  if(gsiLoadPromise) return gsiLoadPromise;
+  gsiLoadPromise = new Promise((resolve, reject)=>{
+    let done = false; const fail = why=>{ if(done) return; done = true; gsiLoadPromise = null; reject(new Error(why)); };
+    const t = setTimeout(()=> fail('timeout'), timeoutMs || 8000);
+    try{
+      const sc = document.createElement('script'); sc.src = GSI_SRC; sc.async = true; sc.defer = true;
+      sc.onload = ()=>{ if(done) return; if(window.google && window.google.accounts && window.google.accounts.id){ done = true; clearTimeout(t); resolve(window.google); } else { clearTimeout(t); fail('no google.accounts.id'); } };
+      sc.onerror = ()=>{ clearTimeout(t); try{ sc.remove(); }catch(e){} fail('load error'); };
+      document.head.appendChild(sc);
+    }catch(e){ clearTimeout(t); fail('load error'); }
+  });
+  return gsiLoadPromise;
+}
+function gsiRandomNonce(){ const a = new Uint8Array(16); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i)=>{ a[i] = Math.floor(Math.random() * 256); }); return [...a].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+async function gsiSha256Hex(text){ const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)); return [...new Uint8Array(buf)].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+// the callback Google calls with the ID token: Supabase checks it (and the raw nonce against the token's hashed one)
+async function gsiHandleCredential(response, rawNonce){
+  if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  if(!response || !response.credential) throw new Error('Google did not send a sign-in. Try again.');
+  const { error } = await sbClient.auth.signInWithIdToken({ provider: 'google', token: response.credential, nonce: rawNonce });
+  if(error) throw error;
+}
+// mounts Google's button in `host`; resolves true when drawn, false when the script is unavailable (the caller then shows the redirect button)
+async function gsiMountButton(host, onDone, onError){
+  if(!host || !sbClient) return false;
+  let g; try{ g = await gsiLoad(); }catch(e){ return false; }
+  try{
+    const raw = gsiRandomNonce(), hashed = await gsiSha256Hex(raw);
+    g.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, nonce: hashed, callback: async resp=>{ try{ await gsiHandleCredential(resp, raw); onDone && onDone(); }catch(err){ onError && onError(err); } }});
+    host.innerHTML = ''; g.accounts.id.renderButton(host, {type: 'standard', theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', logo_alignment: 'left', width: Math.max(200, Math.min(400, Math.round(host.getBoundingClientRect().width) || 320))});
+    return true;
+  }catch(e){ return false; }
+}
+
 // 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
 // email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
 let fix3AuthReturn = null;
@@ -13134,6 +13188,7 @@ function authFormHTML(prefix){
   const online = isHostedOnline();
   return `<div class="auth-form" id="${prefix}AuthForm">
     <p class="auth-lede">Signing in unlocks online play and syncs your data across devices.</p>
+    <div class="gsi-host" id="${prefix}GsiHost" ${online ? '' : 'hidden'}></div>
     <button type="button" class="gsi-btn" id="${prefix}GoogleBtn" ${online?'':'disabled'} title="${online?'':'Google sign-in only works on the hosted site.'}">${GOOGLE_G_SVG}<span>Sign in with Google</span></button>
     <div class="auth-or"><span>or</span></div>
     <form class="auth-email-form" id="${prefix}EmailForm" autocomplete="on" novalidate>
@@ -13161,6 +13216,13 @@ function wireAuthForm(prefix, onSuccess){
   const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
   const g = document.getElementById(prefix+'GoogleBtn');
   if(g) g.addEventListener('click', async ()=>{ if(g.disabled) return; try{ await cloudSignInWithGoogle(); }catch(err){ showMsg(authErrorText(err), true); } });
+  // 2026-10-31 (UI10, AUTH1): Google's own button first; the redirect button above becomes the small "Other sign-in" link, or stays the main button if the script can't load
+  { const host = document.getElementById(prefix + 'GsiHost');
+    if(g && host && !g.disabled){ g.hidden = true; // no flash of the old button while the script loads
+      gsiMountButton(host, ()=>{ onSuccess('login'); }, err=> showMsg(authErrorText(err), true)).then(ok=>{
+        if(!document.body.contains(g)) return;
+        if(ok){ g.classList.remove('gsi-btn'); g.classList.add('auth-other-link'); g.textContent = TX('ui.ui10-other-signin'); g.hidden = false; host.hidden = false; }
+        else { host.hidden = true; g.hidden = false; } }); } }
   const vals = ()=> ({email:(document.getElementById(prefix+'Email')||{}).value?.trim()||'', password:(document.getElementById(prefix+'Password')||{}).value||''});
   const busy = on=> ['LoginBtn','CreateBtn'].forEach(k=>{ const b = document.getElementById(prefix+k); if(b) b.disabled = on; });
   const form = document.getElementById(prefix+'EmailForm');
@@ -19916,7 +19978,7 @@ function refSetFor(setId, mapId, node, opts){
   copies.forEach(c=>{ const L = cardBaseLevel(base[c.id]) + c.bump, k = c.id + '|' + L; by.set(k, (by.get(k) || 0) + 1); });
   const parts = [...by.entries()].map(([k, n])=>{ const i = k.lastIndexOf('|'); return [k.slice(0, i), n, +k.slice(i + 1)]; });
   const gained = copies.reduce((t, c)=> t + c.bump, 0);
-  return {set: setId, label: set.label || setId, mapNo: r.mapNo, deck: Object.assign({}, set.counts), parts, level: copies.length ? Math.round(gained / copies.length * 100) / 100 : 0, gained, leader: set.leader || null};
+  return {set: setId, label: set.label || setId, mapNo: r.mapNo, deck: Object.assign({}, set.counts), parts, level: copies.length ? Math.round(gained / copies.length * 100) / 100 : 0, gained, leader: set.leader || null, bramble: set.bramble || null /* 2026-10-31 (UI10, EE7) */};
 }
 // The map's difficulty curve in the editor: one chip per fight with the new-player win rate last
 // measured this session (grey until checked), coloured against that fight's target.
@@ -20066,6 +20128,20 @@ function adminArtRejectedGridHTML(){
   const defs = getCardDefs(), ids = artRejectedIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`;
   return `<div class="grid-view admin-manage-grid">${ids.map(id=> `<div class="ed-art-wrap">${cardTileHTML(defs[id], {extraClass:'admin-manage-tile'})}<small class="ed-art-why">🚫 ${escapeHtml(artReviewOf(defs[id]).reason || '-')}</small></div>`).join('')}</div>`;
 }
+// 2026-10-31 (package UI10, owner EE5): Admin's "Rejected art" list: every card with an art rejection (the card editor's 🚫 + reason, card.artReview), its
+// art, name and the owner's comment, and a link that opens the card in the editor. The mark is saved on the card itself (saveCard -> card_overrides.data.artReview
+// for a cloud admin), so the coordinator reads it with read-only SQL: select id, data->'artReview'->>'reason' from card_overrides where data->'artReview' is not null.
+function rejectedArtAdminHTML(){
+  const defs = getCardDefs(), ids = artRejectedIds();
+  const rows = ids.map(id=>{ const d = defs[id], r = artReviewOf(d), when = r.at ? new Date(r.at).toLocaleDateString() : '';
+    return `<li class="ra-row" data-ra-id="${escapeAttr(id)}"><span class="ra-art">${cardTileHTML(d, {extraClass:'admin-manage-tile'})}</span>
+      <span class="ra-text"><b class="ra-name">${escapeHtml(d.name || id)}</b>${when ? ` <small class="ra-when">${escapeHtml(when)}</small>` : ''}<span class="ra-comment">${escapeHtml(r.reason || TX('ui.ui10-ra-no-comment'))}</span>
+      <button type="button" class="btn small ghost ra-open" data-ra-open="${escapeAttr(id)}">✏️ ${escapeHtml(TX('ui.ui10-ra-open'))}</button></span></li>`; }).join('');
+  return `<div class="panel admin-subpanel rejected-art" id="adminRejectedArt"><h3>🚫 ${escapeHtml(TX('ui.ui10-ra-title'))} <small>(${ids.length})</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui10-ra-sub'))}</p>
+    ${ids.length ? `<ul class="ra-list">${rows}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`}</div>`;
+}
+try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-ra-open]'); if(!b) return; ev.preventDefault();
+  edOpenCardEditor(b.dataset.raOpen, null, ()=>{ try{ if(currentTab === 'admin') renderAdmin(); }catch(e){} }); }); }catch(e){}
 // -- Card editing from the editors (#14: "Let me edit a card in the skirmish editor or deck preview itself"): a ✏️ on each card of the
 // skirmish editor's deck list and of a skirmish's deck preview opens the card editor itself; closing it brings the editor or the map back.
 function edEditCardBtnHTML(id){ return `<button type="button" class="ed-edit-card" data-ed-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
@@ -21757,19 +21833,24 @@ function maybeOfferErrand(force){
   p.then(r=>{ try{ if(r && r.replies && r.replies[0] === 'I’ll do it.'){ if(acceptErrand(t.id)) showToast(TX('toast.errand-taken', {label: t.label}), 'ok'); } }catch(_){} });
   return t.id;
 }
+// 2026-10-31 (package UI10, owner EE1): a quest notice you have not hovered or clicked yet says NEW!; remembered per quest id on this device.
+const QUEST_SEEN_KEY = 'bramblewood_quest_seen_v1';
+function questSeenSet(){ try{ const a = JSON.parse(localStorage.getItem(QUEST_SEEN_KEY) || '[]'); return new Set(Array.isArray(a) ? a : []); }catch(e){ return new Set(); } }
+function questMarkSeen(id){ if(!id) return; try{ const st = questSeenSet(); if(st.has(id)) return; st.add(id); localStorage.setItem(QUEST_SEEN_KEY, JSON.stringify([...st].slice(-400))); }catch(e){} }
+function questNewTag(id, seen){ return seen.has(id) ? '' : `<span class="qn-new" data-new-for="${escapeAttr(id)}" aria-label="New">NEW!</span>`; }
 function errandsBoardHTML(){
   if(!errandsOpen()) return '';
   // Errand writs (2026-10-16, user: "The quests should be bigger more official looking cards - straight not slanted. And it
   // doesn't list dailies or weeklies. It's actual quests you got from the game. It's errands i guess."): each errand is a big,
   // square-set parchment writ on the Errands tab: a header band, the title, the giver's portrait and name, their words, the
   // task with a progress bar and count, the reward, and a wax-seal Claim once it's done. Offers you let pass wait below.
-  const e = loadErrands(), defs = getCardDefs();
+  const e = loadErrands(), defs = getCardDefs(), seenQ = questSeenSet();
   const portrait = sp=> sp.art ? `<img src="${escapeAttr(sp.art)}" alt="" loading="lazy" decoding="async">` : `<span>${sp.icon||'📌'}</span>`;
   const rwChips = t=>{ const rw = errandReward(t); return `<span class="er-rw-chip" title="Dust">✨ ${rw.dust}</span><span class="er-rw-chip" title="Maple Leaves">${(CURRENCY_META.gold||{}).glyph||'🍁'} ${rw.gold}</span><span class="er-rw-chip" title="Experience">⭐ 20</span>${t.shard ? `<span class="er-rw-chip" title="Iron Shard">${(defs['iron-shard']||{}).icon||'🔩'} Iron Shard</span>` : ''}`; };
   const day = at=>{ try{ return new Date(at).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(_){ return ''; } };
-  const writ = (t, who, cls, status, inner, foot)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
-    return `<article class="er-writ ${cls}">
-      <header class="er-band"><span class="er-kind">📜 Quest</span><span class="er-status">${status}</span></header>
+  const writ = (t, who, cls, status, inner, foot, qid, claimId)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
+    return `<article class="er-writ ${cls}" data-qid="${escapeAttr(qid || '')}" ${claimId ? `data-errand-claim="${escapeAttr(claimId)}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+      <header class="er-band"><span class="er-kind">📜 Quest</span>${qid ? questNewTag(qid, seenQ) : ''}<span class="er-status">${status}</span></header>
       <div class="er-top"><span class="er-portrait" aria-hidden="true">${portrait(sp)}</span>
         <div class="er-titles"><h3 class="er-title">${escapeHtml(t.title || t.label || '')}</h3><div class="er-by">Asked by <b>${escapeHtml(sp.name || who || '')}</b></div></div></div>
       <blockquote class="er-ask">“${escapeHtml(t.ask || '')}”</blockquote>
@@ -21780,14 +21861,14 @@ function errandsBoardHTML(){
   const act = e.active.map(x=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05, label:x.label}, v = errandProgress(x), done = v >= x.goal;
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(x.label)}</span></div>
       <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${x.goal}" aria-valuenow="${v}" aria-label="${escapeAttr(x.label)}"><span class="er-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}<small>/${x.goal}</small></b></div>`;
-    const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-seal" data-errand-claim="${x.id}">🎁 Claim reward</button>`
+    const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><span class="er-claimhint" aria-hidden="true">🎁 Click to claim</span>` /* 2026-10-31 (UI10, EE1): the writ itself is the button */
       : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this quest">✕ Drop</button>`;
-    return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : 'In progress', inner, foot); }).join('');
+    return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : '', inner, foot, 'er:' + x.id, done ? x.id : ''); }).join('');
   const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return '';
     const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(t.label)}</span></div>`;
     const full = e.active.length >= ERRANDS_MAX;
     const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} quests already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
-    return writ(t, t.who, 'is-offer', 'Offered', inner, foot); }).join('');
+    return writ(t, t.who, 'is-offer', 'Offered', inner, foot, 'eo:' + t.id, ''); }).join('');
   return `<section class="qn-board qn-errands er-board" id="qnErrands">
     <div class="qn-sign"><b>Quests</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
     ${act ? `<div class="er-writs">${act}</div>` : ''}
@@ -21800,21 +21881,21 @@ function questsModalHTML(){
   const resetIn = (ms)=>{ const h = Math.floor(ms/3600000), d = Math.floor(h/24); return d ? `${d}d ${h%24}h` : `${h}h ${Math.floor((ms%3600000)/60000)}m`; };
   const now = new Date(), nextMon = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (7 - ((now.getDay()+6)%7)));
   const rewardChips = r=> Object.entries(r).map(([k,v])=> `<span class="qn-rw" title="${escapeAttr((CURRENCY_META[k]||{label:k}).label)}">${(CURRENCY_META[k]||{}).glyph||''} ${v}</span>`).join('');
-  let noteN = 0;
+  let noteN = 0; const seenQ = questSeenSet();
   const dailyBoard = ()=>{
     const nx = nextNoticeMs();
     const notes = q.dailyList.slice().sort((a,b)=> a.slot - b.slot).map(x=>{
       const v = dailyNoticeProgress(q, x), done = v >= x.goal, got = q.claimedDaily.includes(x.id), rot = ((noteN++ * 37) % 5) - 2;
       const rw = QUEST_RANK_REWARD[x.rank] || QUEST_RANK_REWARD.C, shown = QUEST_SHOWN_RANKS.has(x.rank);
       const canSwap = !q.swapUsed && !done && !got;
-      return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg">
-        <span class="qn-pin" aria-hidden="true"></span>
+      return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''} ${shown ? 'rank-' + x.rank : ''}" style="--rot:${rot*0.7}deg" data-qid="${escapeAttr('d:' + x.id)}" ${done && !got ? `data-claim-kind="daily" data-claim-id="${x.id}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+        <span class="qn-pin" aria-hidden="true"></span>${got ? '' : questNewTag('d:' + x.id, seenQ)}
         ${shown ? `<span class="qn-rank qn-rank-${x.rank}" title="${escapeAttr(TX('ui.rw-rare-notice'))}">${x.rank}</span>` : ''}
         <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
         <div class="qn-label">${escapeHtml(x.label)}</div>
         <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
         <div class="qn-note-rw">${rewardChips(Object.fromEntries(Object.entries(rw).filter(([k])=> k !== 'xp')))}<span class="qn-rw" title="Experience">⭐ ${rw.xp}</span></div>
-        <div class="qn-foot">${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="daily" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+        <div class="qn-foot">${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : done ? '<span class="qn-claimhint" aria-hidden="true">🎁 Click to claim</span>' : ''}
           ${canSwap ? `<button type="button" class="qn-swap" data-swap-id="${x.id}" title="Swap this notice for another, free once a day">🔄 Swap</button>` : ''}</div>
       </div>`; }).join('');
     return `<section class="qn-board qn-daily">
@@ -21830,13 +21911,13 @@ function questsModalHTML(){
       <div class="qn-sign"><b>${title}</b><span>resets in ${resetIn(ms)}</span></div>
       ${tiers.map((t,ti)=> `<div class="qn-tier"><div class="qn-tier-k">Tier ${ti+1}</div>
         <div class="qn-notes">${t.quests.map(x=>{ const v = Math.min(x.goal, counts[x.counter]||0), done = v>=x.goal, got = claimed.includes(x.id); const rot = ((noteN++ * 37) % 5) - 2;
-          return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg">
-            <span class="qn-pin" aria-hidden="true"></span>
+          return `<div class="qn-note ${got?'is-claimed':done?'is-ready':''}" style="--rot:${rot*0.7}deg" data-qid="${escapeAttr('w:' + x.id)}" ${done && !got ? `data-claim-kind="${kind}" data-claim-id="${x.id}" role="button" tabindex="0" aria-label="Claim reward"` : ''}>
+            <span class="qn-pin" aria-hidden="true"></span>${got ? '' : questNewTag('w:' + x.id, seenQ)}
             <div class="qn-ico" aria-hidden="true">${QUEST_ICON[x.counter] || '📜'}</div>
             <div class="qn-label">${escapeHtml(x.label)}</div>
             <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
             <div class="qn-note-rw">${rewardChips(t.reward)}</div>
-            ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : `<button class="qn-claim" data-claim-kind="${kind}" data-claim-id="${x.id}" ${done?'':'disabled'} aria-label="${done ? 'Claim reward' : 'Not finished yet'}">${done ? '🎁 Claim' : 'In progress'}</button>`}
+            ${got ? '<span class="qn-stamp" aria-label="Claimed">Claimed</span>' : done ? '<span class="qn-claimhint" aria-hidden="true">🎁 Click to claim</span>' : ''}
           </div>`; }).join('')}</div>
       </div>`).join('')}
       ${hidden>0 ? `<div class="qn-more">🔒 ${hidden} more tier${hidden===1?'':'s'} pinned underneath, revealed when this one is done</div>` : ''}
@@ -21897,7 +21978,7 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
     ? `<p class="qn-sub">The favours folk asked of you on the road. Take one, finish it, and claim the reward.</p>
        <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
     : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
-       ${noticeQuestListHTML(q)}
+       ${'' /* 2026-10-31 (UI10, EE1): the top summary ("Your dailies") is gone; Daily and Weekly stay */}
        <div class="qn-cork">
          ${dailyBoard()}
          ${section('weekly', 'Weekly', nextMon - now)}
@@ -21927,6 +22008,10 @@ function openQuestsModal(focus){
   document.getElementById('qsClose').onclick = close;
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const res = claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); questRewardFlight(r, res); }));
+  // 2026-10-31 (UI10, EE1): NEW! goes away when the notice is hovered or clicked (remembered per quest id); Enter / Space on a finished notice claims it
+  overlay.querySelectorAll('[data-qid]').forEach(n=>{ const seen = ()=>{ questMarkSeen(n.dataset.qid); const t = n.querySelector('.qn-new'); if(t) t.remove(); };
+    n.addEventListener('mouseenter', seen); n.addEventListener('click', seen, true); n.addEventListener('focus', seen); });
+  overlay.querySelectorAll('[data-claim-id][role="button"], [data-errand-claim][role="button"]').forEach(n=> n.addEventListener('keydown', e=>{ if((e.key === 'Enter' || e.key === ' ') && e.target === n){ e.preventDefault(); n.click(); } }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ const n = b.closest('.qn-note'); try{ fxHook('noticeSwap', n && n.getBoundingClientRect()); }catch(e){} }, true)); // 2026-10-15 batch F
   overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const rw = claimErrand(b.dataset.errandClaim); if(rw){ openQuestsModal(); rewardRush(r, rw, {xp:20}); } else denyShake(b); }));
@@ -24524,23 +24609,53 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF)$/; // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
+const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF|SK)$/; // 2026-10-31 (UI10): + the map's one skirmish, N-SK // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
 const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
 // both kinds of a map's entry, PRO first (2026-10-25, PL2)
-function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
+// 2026-10-31 (package UI10, owner EE2): PRO and BPRO fights are ONE skirmish per map ("<N>-SK"): you play your deck or a reference deck, the enemy is a
+// random BPRO deck of the map (built from the map's list only; docs/balance/bpro2-2026-10-31.json, baked from canonical/pro-skirmishes.json), and 1 in 4
+// draws swaps one card for a SPECIAL card of the map's list. The decks come from skirmDecksOf (the one place to point at the owner's rebuilt decks later).
+const SKIRM_SPECIAL_ODDS = 0.25;
+function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ? b : ((ent && ent.pro) || []); } // later: the decks rebuilt from the owner's new map lists
+function proEntriesOf(ent){
+  if(!ent) return []; let e = ent._skirm; if(e !== undefined) return e ? [e] : [];
+  const list = skirmDecksOf(ent); if(!list.length){ Object.defineProperty(ent, '_skirm', {value: null, enumerable: false, writable: true}); return []; }
+  const key = String(list[0].id).replace(/-B?PRO-\d+$/, '') + '-SK';
+  e = {id: key, name: key, level: list[0].level != null ? list[0].level : 1, leaders: [], deck: Object.assign({}, list[0].deck || {}), skirm: true, decks: list};
+  Object.defineProperty(ent, '_skirm', {value: e, enumerable: false, writable: true}); return [e];
+}
+// the enemy for one fight: a random deck of the map; with chance SKIRM_SPECIAL_ODDS one card of it becomes a SPECIAL card of the map's list (same size, no card past the copy cap)
+function drawSkirmEnemy(mapId, entry, rnd){
+  rnd = rnd || Math.random; const list = (entry && entry.decks) || []; if(!list.length) return null;
+  const d = list[Math.floor(rnd() * list.length)], deck = Object.assign({}, d.deck || {}); let special = null;
+  try{
+    const defs = getCardDefs(), cap = Math.max(1, ((PRO_SKIRMISHES && PRO_SKIRMISHES.rule) || {}).maxCopies || 4);
+    const pool = (mpEntry(mpTopOf(mapId)).special || []).filter(id=> defs[id] && (deck[id] || 0) < cap && !(defs[id].effects && defs[id].effects.leader));
+    if(pool.length && rnd() < SKIRM_SPECIAL_ODDS){
+      const copies = Object.keys(deck).flatMap(id=> Array(deck[id] | 0).fill(id)); // one random copy out, so a card with more copies is likelier to be the one swapped
+      if(copies.length){ const out = copies[Math.floor(rnd() * copies.length)], sp = pool[Math.floor(rnd() * pool.length)];
+        deck[out]--; if(deck[out] <= 0) delete deck[out]; deck[sp] = (deck[sp] || 0) + 1; special = sp; } }
+  }catch(e){}
+  return {id: d.id, deck, special};
+}
+let skirmPending = null; // {key, pick}: the draw of the fight being started, read by proNodeOf
+const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v1';
+function skirmYou(){ let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){} return v && v !== 'my' && refSetIds().includes(v) ? v : 'my'; }
+function setSkirmYou(v){ try{ localStorage.setItem(SKIRM_YOU_KEY, v || 'my'); }catch(e){} }
 const PRO_NODE_CACHE = new Map();
 function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
 function proNodeOf(mapId, e, ent){
-  const ck = mapId + ':' + e.id; let n = PRO_NODE_CACHE.get(ck); if(n) return n;
+  const ck = mapId + ':' + e.id; let n = e.skirm ? null : PRO_NODE_CACHE.get(ck); if(n) return n;
   const f = (ent && ent.field) || {}, rules = Object.assign({}, f.rules || {}), ai = CPU_AI_KEYS[((PRO_SKIRMISHES.rule || {}).ai != null ? PRO_SKIRMISHES.rule.ai : 1)] || 'smart';
   let lv = e.level != null ? e.level : 1; { const late = proLateSideLevel(mapId); if(late != null && late > lv) lv = late; } // ENG10 (2026-10-26, PREF-3): a late side map's PRO level
-  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, deck: Object.assign({}, e.deck || {}), enemyLevel: lv,
+  const pend = e.skirm && skirmPending && skirmPending.key === e.id ? skirmPending.pick : null; // UI10: the deck drawn for this fight
+  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
   NODE_MAP_HINT.set(n, mapId);
   if(f.terrain) rules.terrain = terrainObj(f.terrain.biome, f.terrain.tier) || false; // the tool's tier, whatever the PRO's place would give
   else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none
-  PRO_NODE_CACHE.set(ck, n); return n;
+  if(!e.skirm) PRO_NODE_CACHE.set(ck, n); return n;
 }
 // 2026-10-25 (package PRO3, owner 10-24 22:28 #11: "PRO not done for Map 1-20 yet and its submaps"): a side map with its own entry shows its own
 // PRO fights (N-L-PRO-k); one without shows its parent's, as before (proEntryIdOf)
@@ -24548,7 +24663,7 @@ function proEntryIdOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); 
 function proFightsOf(mapId){ const id = proEntryIdOf(mapId), ent = proMapEntries()[id];
   return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
-  if(XREF_KEY_RE.test(key || '')) return findXrefFight(key); // 2026-10-25 (package PREF)
+  key = String(key || '').replace(/-(?:B?PRO-\d+|REF)$/, '-SK'); // 2026-10-31 (UI10, EE2): an old PRO / BPRO / X-REF link opens the map's one skirmish
   for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
     if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
   return null;
@@ -24570,7 +24685,7 @@ function refPlayPrefs(){ let o = null; try{ o = JSON.parse(localStorage.getItem(
 function saveRefPlayPrefs(p){ try{ localStorage.setItem(REF_PLAY_KEY, JSON.stringify({on: !!p.on, set: p.set || refDefaultSet(), v: 2})); }catch(e){} }
 function refPlayActive(){ return !!adminModeEnabled && refPlayPrefs().on; }
 function refSetLabelTX(id){ if(!id || id === 'map') return TX('ui.pref-set-map'); const mu = refMultiOf(id); if(mu) return mu.pick == null ? TX('ui.ref5-random') : refMultiLabel(mu.pick, mu.set.n || 0); return (REF_DECK_SETS[id] || {}).label || id; } // REF5
-function xrefKeyOf(entId){ const e = proEntriesOf(proMapEntries()[entId])[0]; return e ? e.id.replace(/-B?PRO-\d+$/, '') + '-REF' : null; }
+function xrefKeyOf(entId){ return null; } // 2026-10-31 (UI10, EE2): the X-REF node is part of the map's one skirmish now (N-SK: your deck or a reference set)
 function xrefVsFor(entId){ const list = proEntriesOf(proMapEntries()[entId]); let v = null; try{ v = (JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {})[entId]; }catch(e){}
   return list.some(e=> e.id === v) ? v : ((list[0] || {}).id || null); }
 function setXrefVs(entId, proId){ let o = {}; try{ o = JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {}; }catch(e){} o[entId] = proId; try{ localStorage.setItem(XREF_VS_KEY, JSON.stringify(o)); }catch(e){} }
@@ -24590,20 +24705,18 @@ function refPlayToggleHTML(){
     <label class="panel-sub">${escapeHtml(TX('ui.pref-set'))} <select data-pref-set>${ids.map(id=> `<option value="${escapeAttr(id)}" ${id === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(id))}</option>`).join('')}</select></label></div>
     <p class="panel-sub">${escapeHtml(TX('ui.pref-toggle-sub'))}</p>`;
 }
-// the X-REF panel's extra row: which PRO / BPRO deck you face, and which reference set you play
+// the skirmish panel's extra row (2026-10-31, UI10, EE2; was X-REF's): who you play (My deck or a reference set) and a line on the enemy
 function xrefPanelHTML(map, node){
-  const id = proEntryIdOf(map.id), list = proEntriesOf(proMapEntries()[id]), p = refPlayPrefs();
-  let rs = null; try{ rs = refMultiOf(p.set) && refMultiOf(p.set).pick == null ? null /* REF5: dealt when the fight starts */ : refSetFor(p.set, map.id, node); }catch(e){}
-  return `<div class="pref-xref" style="margin:6px 0;"><div class="panel-sub">${escapeHtml(TX('ui.pref-xref-vs'))}</div><div style="display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 6px;">${list.map(e=> `<button type="button" class="btn small ${e.id === node.xrefVs ? 'primary' : 'ghost'}" data-xref-vs="${escapeAttr(e.id)}" data-xref-map="${escapeAttr(id)}" aria-pressed="${e.id === node.xrefVs}">${escapeHtml(e.id)}</button>`).join('')}</div>
-    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-pref-set>${refSetIds().map(sid=> `<option value="${escapeAttr(sid)}" ${sid === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
+  const cur = skirmYou(), ids = refSetIds(); let rs = null; try{ rs = cur === 'my' || (refMultiOf(cur) && refMultiOf(cur).pick == null) ? null : refSetFor(cur, map.id, node); }catch(e){}
+  return `<div class="pref-xref skirm-you" style="margin:6px 0;"><p class="panel-sub skirm-enemy">${escapeHtml(TX('ui.pref-xref-vs'))} ${escapeHtml(TX('ui.ui10-skirm-enemy'))}</p>
+    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
     ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' || rs.gained == null ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
 }
 try{ if(typeof document !== 'undefined'){
   document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
     if(t.matches('[data-pref-on]')){ const p = refPlayPrefs(); p.on = !!t.checked; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-on]').forEach(x=>{ x.checked = p.on; }); return; }
-    if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); if(currentTab === 'play' && !matchState && XREF_KEY_RE.test(conquestSelectedNodeKey || '')) renderPlay(); } });
-  document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-xref-vs]'); if(!b) return; ev.preventDefault(); ev.stopPropagation();
-    setXrefVs(b.dataset.xrefMap, b.dataset.xrefVs); if(currentTab === 'play' && !matchState) renderPlay(); });
+    if(t.matches('[data-skirm-you]')){ setSkirmYou(t.value); return; } // 2026-10-31 (UI10, EE2)
+    if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); } });
 } }catch(e){}
 // 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
 // trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
@@ -24626,8 +24739,10 @@ function startProFight(key){
   if(matchState && matchState.over) endMatch();
   { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
   playSubTab = 'conquest'; switchTab('play');
-  const ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.xref ? refPlayPrefs().set : undefined}); // PREF: X-REF always deals the chosen reference set
-  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; }
+  // 2026-10-31 (UI10, EE2): the skirmish draws its enemy now (one BPRO deck of the map, 1 in 4 with a SPECIAL card), and plays your deck ('my') or the chosen reference set
+  let pick = null; if(f.node.skirm){ pick = drawSkirmEnemy(f.map.id, f.entry); skirmPending = pick ? {key: f.node.key, pick} : null; }
+  let ok = false; try{ ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.node.skirm ? skirmYou() : undefined}); }finally{ skirmPending = null; }
+  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; if(pick) matchState.skirm = {deck: pick.id, special: pick.special || null}; }
   return ok;
 }
 // #pro=<key>: the link opens the fight once the page has loaded (and on a later hash change); the hash is cleared so a reload doesn't
@@ -24654,7 +24769,7 @@ function proRowHTML(mapId, e, node, opts){
   const vs = e.h2h ? TX('ui.pro-vs1', {elo: (e.h2h.elo >= 0 ? '+' : '') + e.h2h.elo}) : '';
   return `<div class="pro-row" data-pro-key="${escapeAttr(e.id)}"><div class="pro-row-head"><b class="pro-id">🏆 ${escapeHtml(e.id)}</b>${score ? `<span class="pro-stat">${escapeHtml(score)}</span>` : ''}${vs ? `<span class="pro-stat" title="${escapeAttr(e.h2h.p != null ? Math.round(e.h2h.p * 1000) / 10 + '% · ' + e.h2h.n : '')}">${escapeHtml(vs)}</span>` : ''}${lead ? `<span class="pro-stat">${escapeHtml(TX('ui.pro-leader', {name: lead}))}</span>` : ''}
     <span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(e.id)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button>${opts && opts.compact ? '' : `<button type="button" class="btn small ghost" data-pro-copy="${escapeAttr(e.id)}" title="${escapeAttr(proLinkFor(e.id))}">🔗 ${escapeHtml(TX('ui.pro-copy-link'))}</button>`}</span></div>
-    ${opts && opts.compact ? '' : `<div class="pro-deck">${proDeckLineHTML(node.deck)}</div>`}</div>`;
+    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.pref-xref-vs') + ' ' + TX('ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
 }
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
@@ -27370,7 +27485,7 @@ function renderConquestSubTab(body){
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = (selectedNode.virtual || selectedNode.pro) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
-    panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
+    panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); panelEl.classList.toggle('is-skirm', !!selectedNode.skirm); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
     document.body.classList.add('cq-node-focus');
@@ -27393,7 +27508,7 @@ function renderConquestSubTab(body){
       </div>
       ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
       ${newSkillRibbonHTML(selectedNode)}
-      ${selectedNode.xref ? xrefPanelHTML(map, selectedNode) : '' /* 2026-10-25 (package PREF): X-REF's opponent and your reference set */}
+      ${selectedNode.skirm ? xrefPanelHTML(map, selectedNode) : '' /* 2026-10-31 (UI10, EE2): the map's skirmish: your deck or a reference set */}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
@@ -31118,7 +31233,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     /* 2026-10-29 (ENG13): an Ambush not yet won no longer turns 3-2's Fight away (owner 21:36: "no need to be completed to progress") */ }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   // 2026-10-25 (package PREF): a reference set instead of your deck (X-REF always; any fight while Admin's switch is on): free, pays nothing
-  const refPlaySet = (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
+  const refPlaySet = (opts && opts.refSet === 'my') ? null /* 2026-10-31 (UI10, EE2): "My deck" even with Admin's reference switch on */ : (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
   let refPlay = null; if(refPlaySet){ try{ refPlay = refSetFor(refPlaySet, mapId, node); }catch(e){ refPlay = null; } }
   if(refPlay && !(opts && opts.skipEnergyCost)) opts = Object.assign({}, opts, {skipEnergyCost: true});
   if(!refPlay && !deckSizeOkOrWarn()) return false;
@@ -31165,7 +31280,10 @@ function startConquestMatch(mapId, nodeKey, opts){
   const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = earlyHomeBramble(node, myCastleDef()); // 2026-10-23 (package EB): your bramble leads on Maps 0 and 1
+  // 2026-10-31 (package UI10, owner EE7): a reference deck fights with its own bramble: the set's `bramble` (a CHARACTER_DEFS id) when it names one;
+  // no set carries one yet (the data has a leader only), so it keeps your bramble until the owner/coordinator adds `bramble` to a REF_DECK_SETS entry.
+  const refBramble = refPlay && refPlay.bramble && CHARACTER_DEFS[refPlay.bramble] ? brambleChar(castleLeveled(CHARACTER_DEFS[refPlay.bramble], castleLevelOf(refPlay.bramble))) : null;
+  const myCharacter = refBramble || earlyHomeBramble(node, myCastleDef()); // 2026-10-23 (package EB): your bramble leads on Maps 0 and 1
   const enemyCharacter = skirmishCastle(node).character;
   let myDeck = myOwnedDeck, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
@@ -31205,7 +31323,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     leaderDefId: battleMode==='gladiator' ? null : refPlay ? (refPlay.leader && getCardDefs()[refPlay.leader] ? refPlay.leader : null) /* PREF: the set's leader */ : matchLeaderId(),
     leaderUid: battleMode==='gladiator' && players[1].gladiatorLeaderUid!=null ? players[1].gladiatorLeaderUid : null};
   if(refPlay){ matchState.adminTest = true; matchState.refDeck = {set: refPlay.set, label: refPlay.multi ? refPlay.label : refSetLabelTX(refPlay.set), mapNo: refPlay.mapNo, level: refPlay.level, pick: refPlay.pick || null};
-    if(refPlay.multi) try{ showToast('🎯 ' + TX('ui.ref5-dealt', {name: refPlay.label}), 'ok'); }catch(e){} } // REF5: which of the map's decks was dealt // 2026-10-25 (package PREF): no rewards, a REF tag
+    /* 2026-10-31 (package UI10, owner EE3): no toast when a reference deck is dealt (REF5 showed which of the map's decks) */ } // 2026-10-25 (package PREF): no rewards, a REF tag
   if(node.kind === 'dungeon'){ const cfg = dungeonConfig(node), waves = dungeonWaves(node); matchState.dungeon = {cfg, waves, wave:0, startRound:1};
     players[2].hq.maxHp = waves[0].hp; players[2].hq.hp = waves[0].hp; players[2].hq.shield = waves[0].shield || 0; players[2].hq.maxShield = players[2].hq.shield; }
   renderPlay();
@@ -33708,6 +33826,7 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
+    ${rejectedArtAdminHTML() /* 2026-10-31 (package UI10, owner EE5): every card whose art was rejected, with the comment */}
     ${proFightsAdminHTML() /* 2026-10-24 (package PRO): the hidden PRO fights, per map */}
     ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
       <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}
@@ -35549,7 +35668,12 @@ function fitTopRowControls(){
 window.addEventListener('resize', ()=>{ clearTimeout(fitTopRowControls._t); fitTopRowControls._t = setTimeout(fitTopRowControls, 80); });
 // TOP_ROW_FIT:END
 const BOARD_ROW_IDS = ['resEnemy2', 'resEnemy1', 'rowEnemy', 'rowMine', 'resMine1', 'resMine2']; // 2026-10-23 (package UI4): the battlefield's card rows
+// 2026-10-31 (package UI10, owner EE4): the Mini board size (cards at half width, pips and labels at 80%) is off; flip BOARD_MINI_FLAG, or set localStorage
+// bramblewood_board_mini_v1 to 1, for a future event.
+const BOARD_MINI_FLAG = false;
+function boardMiniOn(){ if(BOARD_MINI_FLAG) return true; try{ return localStorage.getItem('bramblewood_board_mini_v1') === '1'; }catch(e){ return false; } }
 function renderMatchUI(){
+  try{ const aw = document.getElementById('appWrap'); if(aw) aw.classList.toggle('board-mini', boardMiniOn()); }catch(e){}
   try{ if(matchState && !matchState._preloaded) preloadFightAssets(matchState); }catch(e){} // 2026-10-16: the fight's assets, up front
   try{ centreFieldInFs(); }catch(e){}
   try{ const mm = matchState; if(mm && !mm.over && dayNightOn(mm)) document.body.dataset.phase = mm.engine.getPhase(); else delete document.body.dataset.phase; }catch(e){}
@@ -35703,7 +35827,7 @@ function renderMatchUI(){
       ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
       <div class="top-right-stack">
       <div class="top-row-controls">
-        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>${m.refDeck ? `<span class="hud-ref-tag" style="font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:1px 6px; border-radius:6px; border:1.5px solid currentColor; color:var(--gold, #b8860b); white-space:nowrap; align-self:center;" title="${escapeAttr(TX('ui.pref-ref-tag-tip', {name: m.refDeck.label || ''}))}">${escapeHtml(TX('ui.pref-ref-tag'))}</span>` : '' /* 2026-10-25 (package PREF): playing a reference set */}
+        <span class="hud-opponent-tag" title="Who you're facing this match">🎯 vs ${escapeHtml(hudOpponentName)}</span>${m.refDeck ? `<span class="hud-ref-tag" style="font-size:10.5px; font-weight:800; letter-spacing:.04em; padding:1px 6px; border-radius:6px; border:1.5px solid currentColor; color:var(--gold, #b8860b); white-space:nowrap; align-self:center;" title="${escapeAttr(m.refDeck.multi || m.refDeck.pick ? TX('ui.ref5-dealt', {name: m.refDeck.label || ''}) : TX('ui.pref-ref-tag-tip', {name: m.refDeck.label || ''}))}">${escapeHtml(TX('ui.pref-ref-tag'))}</span>` : '' /* 2026-10-25 (package PREF): playing a reference set */}
         <button class="btn small" id="ffBtn" title="${ffBtnTitle(m.speedMult)}" aria-label="Playback speed">${ffBtnLabel(m.speedMult)}</button>
         <button class="btn small" id="battleLogHudBtn" title="Battle log" aria-label="Battle log">📜</button>
         <button class="btn small" id="fsBtn" title="${document.fullscreenElement?'Exit full screen':'Play full screen'}" aria-label="${document.fullscreenElement?'Exit full screen':'Play full screen'}">${document.fullscreenElement?'⤡':'⤢'}</button>
@@ -47471,7 +47595,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // Ambush (2026-09-17): this card's guaranteed-crit, un-dodgeable first strike — the engine
   // flags it via ev.ambush on the 'hit'/'hitHQ' event itself (only true the ONE time it's
   // actually consumed), so this fires exactly once per card's lifetime on the board.
-  if(ev.ambush && attEl){ setTimeout(()=> { SoundKit.ambushTone(); floatText(attEl, '🗡 Ambush!', 'quick'); }, animMs().windup-40); }
+  if(ev.ambush && attEl){ setTimeout(()=> { SoundKit.ambushTone(); floatText(attEl, '🗡 Ambush!', 'quick'); try{ ambushEcho(attEl); }catch(e){} }, animMs().windup-40); } // + the pip's echo (2026-10-31, UI10, EE6)
   // Siege (2026-09-17): bonus flat damage specifically when a swing lands on the castle — cue
   // on the HQ tile itself, right alongside the normal hitHQ damage flash.
   if(ev.type==='hitHQ' && ev.siege && targetEl){ setTimeout(()=> { SoundKit.siegeTone(); floatText(targetEl, '🏰 Siege!', 'debuff'); }, 60); }
@@ -49359,6 +49483,20 @@ function devilPulse(el){
     ring.animate([{opacity:0, transform:'translate(-50%,-50%) scale(1.5)'}, {opacity:.9, transform:'translate(-50%,-50%) scale(.9)', offset:.5}, {opacity:0, transform:'translate(-50%,-50%) scale(.3)'}], {duration:900, easing:'ease-in'});
     setTimeout(done, 950);
   }catch(e){ done(); }
+}
+// 2026-10-31 (package UI10, owner EE6): when an Ambush lands, the unit's 👀 Ambush pip gives off echo rings (ripples): 3 expanding, fading rings over
+// ~0.6 s; 2 over ~0.4 s on Effects Low; none on Effects None or with reduced motion. Rings are fixed-position, pointer-less, removed when done.
+function ambushEcho(cardEl){
+  if(!cardEl || reducedMotion()) return 0; const lv = fxLevel(); if(lv === 'none') return 0;
+  const pip = cardEl.querySelector('.ab-sk[data-sk="ambush"]'), r = (pip && pip.getBoundingClientRect().width > 0 ? pip : cardEl).getBoundingClientRect(); if(!(r.width > 0)) return 0;
+  const n = lv === 'low' ? 2 : 3, ms = lv === 'low' ? 400 : 600, x = r.left + r.width / 2, y = r.top + r.height / 2, size = Math.max(14, Math.min(26, r.width)); let made = 0;
+  for(let i = 0; i < n; i++){
+    const d = document.createElement('div'); d.className = 'ambush-echo-ring'; d.setAttribute('aria-hidden', 'true');
+    Object.assign(d.style, {position:'fixed', left:x + 'px', top:y + 'px', width:size + 'px', height:size + 'px', marginLeft:(-size / 2) + 'px', marginTop:(-size / 2) + 'px', borderRadius:'50%', border:'2px solid #ffe14a', boxShadow:'0 0 6px #ffcf2a', zIndex:9990, pointerEvents:'none', opacity:0});
+    document.body.appendChild(d); made++;
+    try{ const an = d.animate([{opacity:.9, transform:'scale(.6)'}, {opacity:0, transform:'scale(3)'}], {duration:ms, delay:i * Math.round(ms / 5), easing:'ease-out', fill:'both'}); an.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), ms * 2 + 400); }catch(e){ d.remove(); }
+  }
+  return made;
 }
 function devilPayVfx(ev){
   if(ev && matchState && ['amore', 'amoreBroken', 'lumberBurn', 'fireHit'].includes(ev.type)) return skills2Vfx(ev); // 2026-10-16 (skills 2)
