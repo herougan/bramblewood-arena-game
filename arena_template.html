@@ -3799,6 +3799,9 @@
   .gsi-btn:hover:not(:disabled){background:#f6f8fc; box-shadow:0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);}
   .gsi-btn:focus-visible{outline:2px solid #4285F4; outline-offset:2px;}
   .gsi-btn:disabled{opacity:.5; cursor:not-allowed;}
+  .gsi-host{display:flex; justify-content:center; min-height:44px; margin:2px 0;} .gsi-host[hidden]{display:none;} /* 2026-10-31 (UI10, AUTH1): Google's own button */
+  .auth-other-link{display:block; margin:4px auto 0; padding:2px 6px; background:none; border:0; color:var(--ink-muted, #8a8f98); font:inherit; font-size:12.5px; text-decoration:underline; cursor:pointer;}
+  .auth-other-link:hover{color:var(--ink, #fff);}
   .gsi-btn .gsi-logo{width:20px; height:20px; flex:none;}
   .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-muted); text-transform:lowercase;}
   .auth-or::before, .auth-or::after{content:''; flex:1; height:1px; background:currentColor; opacity:.35;}

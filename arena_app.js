@@ -13108,6 +13108,49 @@ async function cloudSignInWithGoogle(){
   // No return value on purpose — the page is about to navigate away to Google.
 }
 
+// 2026-10-31 (package UI10, AUTH1 / owner CC1, DD5): Google's own sign-in button (Google Identity Services) on our page, so Google's consent names this site,
+// not supabase.co. Flow: a random raw nonce; its SHA-256 hex goes to google.accounts.id.initialize; the callback hands Google's ID token and the raw nonce to
+// Supabase's signInWithIdToken. The script (https://accounts.google.com/gsi/client) loads only when a sign-in screen is drawn. Today's redirect
+// (cloudSignInWithGoogle) stays as the "Other sign-in" link, and takes over by itself when the script cannot load. Nothing here prints or stores a token.
+const GOOGLE_CLIENT_ID = '871693115882-bhdr13re9l3ejo9c6alsh81nms45uk68.apps.googleusercontent.com'; // public (an OAuth client ID is not a secret)
+const GSI_SRC = 'https://accounts.google.com/gsi/client';
+let gsiLoadPromise = null;
+function gsiLoad(timeoutMs){
+  if(typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) return Promise.resolve(window.google);
+  if(gsiLoadPromise) return gsiLoadPromise;
+  gsiLoadPromise = new Promise((resolve, reject)=>{
+    let done = false; const fail = why=>{ if(done) return; done = true; gsiLoadPromise = null; reject(new Error(why)); };
+    const t = setTimeout(()=> fail('timeout'), timeoutMs || 8000);
+    try{
+      const sc = document.createElement('script'); sc.src = GSI_SRC; sc.async = true; sc.defer = true;
+      sc.onload = ()=>{ if(done) return; if(window.google && window.google.accounts && window.google.accounts.id){ done = true; clearTimeout(t); resolve(window.google); } else { clearTimeout(t); fail('no google.accounts.id'); } };
+      sc.onerror = ()=>{ clearTimeout(t); try{ sc.remove(); }catch(e){} fail('load error'); };
+      document.head.appendChild(sc);
+    }catch(e){ clearTimeout(t); fail('load error'); }
+  });
+  return gsiLoadPromise;
+}
+function gsiRandomNonce(){ const a = new Uint8Array(16); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i)=>{ a[i] = Math.floor(Math.random() * 256); }); return [...a].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+async function gsiSha256Hex(text){ const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)); return [...new Uint8Array(buf)].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+// the callback Google calls with the ID token: Supabase checks it (and the raw nonce against the token's hashed one)
+async function gsiHandleCredential(response, rawNonce){
+  if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  if(!response || !response.credential) throw new Error('Google did not send a sign-in. Try again.');
+  const { error } = await sbClient.auth.signInWithIdToken({ provider: 'google', token: response.credential, nonce: rawNonce });
+  if(error) throw error;
+}
+// mounts Google's button in `host`; resolves true when drawn, false when the script is unavailable (the caller then shows the redirect button)
+async function gsiMountButton(host, onDone, onError){
+  if(!host || !sbClient) return false;
+  let g; try{ g = await gsiLoad(); }catch(e){ return false; }
+  try{
+    const raw = gsiRandomNonce(), hashed = await gsiSha256Hex(raw);
+    g.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, nonce: hashed, callback: async resp=>{ try{ await gsiHandleCredential(resp, raw); onDone && onDone(); }catch(err){ onError && onError(err); } }});
+    host.innerHTML = ''; g.accounts.id.renderButton(host, {type: 'standard', theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', logo_alignment: 'left', width: Math.max(200, Math.min(400, Math.round(host.getBoundingClientRect().width) || 320))});
+    return true;
+  }catch(e){ return false; }
+}
+
 // 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
 // email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
 let fix3AuthReturn = null;
@@ -13145,6 +13188,7 @@ function authFormHTML(prefix){
   const online = isHostedOnline();
   return `<div class="auth-form" id="${prefix}AuthForm">
     <p class="auth-lede">Signing in unlocks online play and syncs your data across devices.</p>
+    <div class="gsi-host" id="${prefix}GsiHost" ${online ? '' : 'hidden'}></div>
     <button type="button" class="gsi-btn" id="${prefix}GoogleBtn" ${online?'':'disabled'} title="${online?'':'Google sign-in only works on the hosted site.'}">${GOOGLE_G_SVG}<span>Sign in with Google</span></button>
     <div class="auth-or"><span>or</span></div>
     <form class="auth-email-form" id="${prefix}EmailForm" autocomplete="on" novalidate>
@@ -13172,6 +13216,13 @@ function wireAuthForm(prefix, onSuccess){
   const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
   const g = document.getElementById(prefix+'GoogleBtn');
   if(g) g.addEventListener('click', async ()=>{ if(g.disabled) return; try{ await cloudSignInWithGoogle(); }catch(err){ showMsg(authErrorText(err), true); } });
+  // 2026-10-31 (UI10, AUTH1): Google's own button first; the redirect button above becomes the small "Other sign-in" link, or stays the main button if the script can't load
+  { const host = document.getElementById(prefix + 'GsiHost');
+    if(g && host && !g.disabled){ g.hidden = true; // no flash of the old button while the script loads
+      gsiMountButton(host, ()=>{ onSuccess('login'); }, err=> showMsg(authErrorText(err), true)).then(ok=>{
+        if(!document.body.contains(g)) return;
+        if(ok){ g.classList.remove('gsi-btn'); g.classList.add('auth-other-link'); g.textContent = TX('ui.ui10-other-signin'); g.hidden = false; host.hidden = false; }
+        else { host.hidden = true; g.hidden = false; } }); } }
   const vals = ()=> ({email:(document.getElementById(prefix+'Email')||{}).value?.trim()||'', password:(document.getElementById(prefix+'Password')||{}).value||''});
   const busy = on=> ['LoginBtn','CreateBtn'].forEach(k=>{ const b = document.getElementById(prefix+k); if(b) b.disabled = on; });
   const form = document.getElementById(prefix+'EmailForm');

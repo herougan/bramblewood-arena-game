@@ -137,6 +137,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-xref-vs": "Against:",
   "ui.pref-xref-you": "You play:",
   "ui.ui10-my-deck": "My deck",
+  "ui.ui10-other-signin": "Other sign-in",
   "ui.ui10-ra-title": "Rejected art",
   "ui.ui10-ra-sub": "Every card whose art was rejected, with your comment. Open a card to change it or clear the mark.",
   "ui.ui10-ra-open": "Open card",
