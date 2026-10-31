@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 (package UI7: status numbers and the struggle, owner Y1 / Y4)
+- **Poison and Regeneration are the icon alone** on a board card (the Poison status chip, the Poison skill chip, the Regeneration skill chip); the exact value is in the tooltip and aria-label. Other chips keep their number, now tight against the icon. The Shield number is unchanged.
+- **Held units struggle now and then:** a unit that is Pinned (Bola), Webbed, Tangled or Bound wriggles left-right with a tug of its status chip, about 0.6 s, each card on its own 6-12 s timer; Effects Medium or higher, off with reduced motion. One list, `HELD_STATUSES` in `arena_app.js`, drives `.is-held`; a Lasso status joins by adding its key. New TX keys: `ui.ui7-poison-tip`, `ui.ui7-poison-skill-tip`, `ui.ui7-regen-tip` (not yet translated).
+
 ## 2026-10-31 (package BUDGET2: the budget at 3A + H, the card re-fit, the canon skill set)
 - **Attack counts 3, Health 1** (owner on RECOST1-6: "If Attack = 3 Health, we have to edit the first N formula to 3*attack instead."): cap 1 is (3A + H) x m + S <= N; N = 1.13 x (Base + L/15)(1 + L/30), the factor that keeps the in-play cards' median use (0.906 -> 0.905); cap 2's multiplier 2 -> 1.57 (its limit unchanged); stats in braces, the time of day and the Forge curve's level gains use the same weight (`bramblewood-budget.js` attackWeight, scale).
 - **151 cards re-fit, 78 in play** (only cards the new formula pushed out of their band): mostly -1 Health; Attack-heavy cards lose Attack and get some Health back (Riptide Eel 9/6 -> 6/8, Glass Golem 8/5 -> 6/5, Cottontail 4/2 -> 2/5, Pond Trout 3/4 -> 2/5, Honey Bee 2/3 -> 1/4, Pike Lancer 4/8 -> 3/9, Wolf Spider Mother 3/10 -> 3/9); Earthworm 0/6 -> 0/7, Nest 0/9 -> 0/10. War Elephant: Arrow Count 2 -> 1 (X15). Owl Nightwatch: Nocturnal 4 -> 3. `tools/budget2_refit_2026_10_31.js`, `tools/budget2_apply_2026_10_31.py`.
