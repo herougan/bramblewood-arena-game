@@ -51454,7 +51454,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '2fa61b7b8be7', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
+const BUILD_ID = '44ef2b4cd61a', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -79288,7 +79288,11 @@ function rv2Update(ov){
 }
 // 2026-10-29 (package UI3, S10; owner 23:01: "can we do an export all function too?"): the Cut / Keep toggles are remembered for the session (rvFlips, key
 // "<main map>|<list key>|<card id>") so the gallery can export every map's lists, not just the one open. rvFlipTop is the main map being drawn.
-const rvFlips = {}; let rvFlipTop = '';
+// 2026-10-31 (coordinator, owner 18:09 #8 "Does my export remember ALL my cut/include decisions?"): kept in localStorage too, so a
+// reload or a new release no longer drops the owner's step-3 picks (they lived in memory only).
+const RV_FLIPS_KEY = 'bw_rv_flips_v1';
+const rvFlips = (()=>{ try{ const o = JSON.parse(localStorage.getItem(RV_FLIPS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } })(); let rvFlipTop = '';
+function rvFlipsSave(){ try{ localStorage.setItem(RV_FLIPS_KEY, JSON.stringify(rvFlips)); }catch(e){} }
 function rv3ExportAll(){
   const defs = getCardDefs(), nm = id=> (defs[id] && defs[id].name) || id, data = [], lines = [];
   const flipped = (top, sec, id)=> !!rvFlips[top + '|' + sec.key + '|' + id];
@@ -79351,7 +79355,7 @@ function pk1OpenMapCards(mapId){
   ov.onclick = e=>{
     if(e.target === ov) return close();
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
-    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; } b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
     b.textContent = on ? TX('ui.rv1-undo') : (t.dataset.rvKind === 'chosen' ? TX('ui.rv1-act-cut') : TX('ui.rv1-act-keep'));
     rv2Update(ov); // 2026-10-29 (package REVIEW2): the X/N, Y/M line follows the toggles
   };
