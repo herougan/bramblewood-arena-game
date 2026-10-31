@@ -1693,7 +1693,7 @@ const ui7Next = new WeakMap(); // card element -> the time its next roll is due
 function ui7Allowed(){ try{ return (typeof fxAtLeast !== 'function' || fxAtLeast('med')) && !(typeof reducedMotion === 'function' && reducedMotion()) && !document.hidden; }catch(e){ return false; } }
 function ui7Struggle(card){ if(!card || !card.classList) return; card.classList.remove('is-struggling'); void card.offsetWidth; card.classList.add('is-struggling'); setTimeout(()=> card.classList.remove('is-struggling'), 700); }
 function ui7Tick(now){
-  if(!ui7Allowed()) return;
+  if(!ui7Allowed() || (typeof window !== 'undefined' && window.__ui7Pause)) return; // 2026-10-31 (coordinator): the e2e pauses the random rolls so they can't overlap its timing checks
   document.querySelectorAll('.board-card.is-held').forEach(card=>{
     if(!ui7Next.has(card)){ ui7Next.set(card, now + 1000 + Math.random() * (UI7_MAX_MS - 1000)); return; } // staggered first roll
     if(now < ui7Next.get(card)) return;

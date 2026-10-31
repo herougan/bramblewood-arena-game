@@ -34751,7 +34751,7 @@ const ui7Next = new WeakMap(); // card element -> the time its next roll is due
 function ui7Allowed(){ try{ return (typeof fxAtLeast !== 'function' || fxAtLeast('med')) && !(typeof reducedMotion === 'function' && reducedMotion()) && !document.hidden; }catch(e){ return false; } }
 function ui7Struggle(card){ if(!card || !card.classList) return; card.classList.remove('is-struggling'); void card.offsetWidth; card.classList.add('is-struggling'); setTimeout(()=> card.classList.remove('is-struggling'), 700); }
 function ui7Tick(now){
-  if(!ui7Allowed()) return;
+  if(!ui7Allowed() || (typeof window !== 'undefined' && window.__ui7Pause)) return; // 2026-10-31 (coordinator): the e2e pauses the random rolls so they can't overlap its timing checks
   document.querySelectorAll('.board-card.is-held').forEach(card=>{
     if(!ui7Next.has(card)){ ui7Next.set(card, now + 1000 + Math.random() * (UI7_MAX_MS - 1000)); return; } // staggered first roll
     if(now < ui7Next.get(card)) return;
@@ -51408,7 +51408,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '6447382509a6', BUILD_CARD_HASH = '9ed102899af2a1855cd389577a1aa110e4a613fa9f2cd9b3ae6e5be23cc57bf1';
+const BUILD_ID = '59d9c94c7aba', BUILD_CARD_HASH = '9ed102899af2a1855cd389577a1aa110e4a613fa9f2cd9b3ae6e5be23cc57bf1';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;

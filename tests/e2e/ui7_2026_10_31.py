@@ -60,7 +60,7 @@ async def main(a):
             ok(pz and ('3' in pz[0]['title'] or '3' in pz[0]['aria']), f'{w} poison keeps the exact value in tooltip/aria {pz}')
             await pg.evaluate(CLICK); await pg.wait_for_timeout(500); await pg.evaluate(CLICK); await pg.wait_for_timeout(300)
             await pg.screenshot(path=os.path.join(a.shots, f'board-{w}.png'), timeout=120000); bb = await pg.evaluate("(()=>{ const r = document.getElementById('battlefieldEl').getBoundingClientRect(); return {x:r.x,y:r.y,width:r.width,height:r.height}; })()"); await pg.screenshot(path=os.path.join(a.shots, f'board-zoom-{w}.png'), clip=bb, timeout=120000)
-            await pg.evaluate("window.ui7StruggleNow && ui7StruggleNow()"); await pg.wait_for_timeout(150)
+            await pg.evaluate("window.__ui7Pause = true; document.querySelectorAll('.board-card.is-struggling').forEach(c=>c.classList.remove('is-struggling'))"); await pg.evaluate("window.ui7StruggleNow && ui7StruggleNow()"); await pg.wait_for_timeout(150)
             n = await pg.evaluate("document.querySelectorAll('.board-card.is-struggling').length")
             ok(n >= 1, f'{w} a held card is struggling right after a roll ({n})')
             await pg.screenshot(path=os.path.join(a.shots, f'struggle-{w}.png'), timeout=120000)
