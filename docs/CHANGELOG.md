@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 Package UI9 (owner BB1-BB3, DD1-DD4; not yet released)
+- Nest: a "Back to the map" button. Trap: the laying card's Trap chip goes once it is laid; the ring's circles at half opacity with falling rosso rectangles; a short closing (jaw bars + a 1.5 px shake) when laid; the slot label 83% see-through (92% on hover). A card stepping on a trap is hooked 8 px down or launched 20 px and turned 6 degrees (~0.45 s), after it has landed.
+- Quests board in two columns (one on phones). A pack's free level goes to a card you own (main deck first), shown with its face and "+1 Level". The card detail's Spin works at Effects Low / reduced motion. New foil finish Nacre (mother-of-pearl), rolled with the others.
+
 ## 2026-10-31 Release 10-31b (UI8 for the owner's 0-20 pass)
 - Shipped: UI8 (cards land from where you let go; enemy cards fade in and land; spawns bounce out of their spawner; bramble bar eases, no blue line at 0 Shield; Shield badge number; no centre leader portrait; darkness light under the cards; tidier VS screen).
 - Checks: smoke (only the known d-2026-10-19), pl2 / ui7 unit tests, UI8's e2e (all ok). keywords-2026-10-14f and i18n-templates-2026-10-18 fail the same on the batch before UI8 (TESTFIX).

@@ -9080,6 +9080,7 @@ function abilityBadges(d, bopts){
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
     ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
+    if(k === 'trap' && bopts && bopts.live && matchState && matchState.ui9Laid && matchState.ui9Laid[bopts.live.uid]) return; // UI9 (BB2): laid, the chip is spent
     if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
@@ -10104,8 +10105,8 @@ function bwInertOthers(keep){
   [...document.body.children].forEach(el=>{ if(el === keep || el.inert || /^(SCRIPT|STYLE|LINK)$/.test(el.tagName)) return; el.inert = true; done.push(el); });
   return ()=> done.forEach(el=>{ el.inert = false; });
 }
-const CI_FINISHES = ['holo-pearl','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight'];
-const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
+const CI_FINISHES = ['holo-pearl','holo-nacre','holo-rainbow','holo-cosmos','holo-hex','holo-etched','holo-ice','holo-gold','holo-reverse','holo-prism','holo-lattice','holo-aurora','holo-galaxy','holo-molten','holo-frost','holo-oilslick','holo-sakura','holo-sparkle','holo-scanline','holo-old','holo-starlight','holo-nacre'];
+const CI_FINISH_NAMES = {'':'Plain','holo-pearl':'Pearl','holo-nacre':'Nacre','holo-rainbow':'Rainbow','holo-cosmos':'Cosmos','holo-hex':'Hex','holo-etched':'Etched','holo-ice':'Ice','holo-gold':'Gold leaf','holo-reverse':'Reverse','holo-prism':'Prism','holo-lattice':'Lattice','holo-starlight':'Starlight'};
 let cardInspectStop = null;
 // The pack card viewer's detail column (2026-10-24, package NE, owner 19:27 #13: "When opening a pack, see SS#4, the blown up card should be
 // on the left, then the description and effects (card detail window) on the right. Transition into it btw, dont just - boop - it's there."):
@@ -10195,7 +10196,12 @@ function mountDetailCard(root, o){
   const settle = ()=>{ dc.dataset.face = faceOf(turn); stage && stage.setAttribute('aria-pressed', dc.dataset.face === 'back' ? 'true' : 'false'); if(o.onFace) try{ o.onFace(dc.dataset.face); }catch(e){} };
   const flip = dir=>{ if(dead) return; mode(''); heat(650); turn += (dir < 0 ? -180 : 180); tx = ty = 0; paint(); settle(); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} };
   const show = (face, instant)=>{ if(dead) return; if(faceOf(turn) !== face) turn += 180; if(instant){ spin.classList.add('no-anim'); } mode(''); paint(); settle(); if(instant){ void spin.offsetWidth; spin.classList.remove('no-anim'); } };
-  const spinOnce = ()=>{ if(dead || still()) return; mode('long'); heat(1200); turn += 360; paint(); setTimeout(()=>{ if(!drag) mode(''); }, 1150); };
+  // 2026-10-31 (package UI9, DD3; owner: "the card detail's Spin button does nothing"): at Effects Low / None or under reduced motion the card is "still"
+  // (no 3D) and the button returned at once: nothing happened. Still now: reduced motion turns the card face over (no motion); Effects Low turns it
+  // once about its upright axis in 0.7 s (a flat animation on the stage, the 3D layer stays off).
+  const spinOnce = ()=>{ if(dead) return;
+    if(still()){ try{ if(reducedMotion() || !stage || !stage.animate){ flip(1); return; } stage.animate([{transform:'rotateY(0deg)'}, {transform:'rotateY(360deg)'}], {duration:700, easing:'cubic-bezier(.3,.7,.2,1)'}); try{ SoundKit.cardFlip && SoundKit.cardFlip(); }catch(e){} }catch(e){ flip(1); } return; }
+    mode('long'); heat(1200); turn += 360; paint(); setTimeout(()=>{ if(!drag) mode(''); }, 1150); };
   const tiltTo = (e)=>{ const r = stage.getBoundingClientRect(); if(!r.width) return;
     px = Math.max(-1, Math.min(1, (e.clientX - r.left) / r.width * 2 - 1)); py = Math.max(-1, Math.min(1, (e.clientY - r.top) / r.height * 2 - 1));
     tx = -py * 10; ty = px * 12; hover = true; dc.classList.add('is-hot'); mode('live'); paint(); };
@@ -14652,7 +14658,7 @@ function bestCopyClass(id, d){
 const MATERIA_UNIT = Object.assign({}, UPGRADE_COSTS.materiaUnit); // 2026-10-23 (HUB2): was {dust:675, gold:450}, now canonical/upgrade-costs.json; // one Materia Unit: a Common's Forge cost from level 1 to 10 (see the Forge economy v2 note below); 1.1 Units since 2026-10-21 (package FG, FORGE_STEP_DUST), the Unit itself unchanged
 const MU = f=> Math.round(f * MATERIA_UNIT.dust); // MU fraction → Dust
 const DISENCHANT_PCT = {starter:0.25, common:0.25, uncommon:0.55, rare:1.15, veryrare:1.75, superrare:2.4, epic:3.25, heroic:4.1, unique:5.0, legendary:6.2, mythic:7.3, ancient:8.5, divine:10};
-const FINISH_BONUS = {rainbow:2, pearl:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
+const FINISH_BONUS = {rainbow:2, pearl:1, nacre:1, cosmos:3, prism:2, hex:2, etched:2, ice:2, reverse:1, gold:3, lattice:2, starlight:1, aurora:3, galaxy:3, molten:3, frost:2, oilslick:2, sakura:2, sparkle:2, scanline:2, old:3};
 function copyTreatmentBonus(d, copy){
   let b = 0; copy = copy || {};
   if(copy.foil){ const f = copy.finish && copy.finish !== 'auto' ? copy.finish : ((holoClass(d).match(/holo-(\w+)/) || [])[1] || 'rainbow'); b += FINISH_BONUS[f] || 1; }
@@ -48426,7 +48432,59 @@ function vis3CentrePips(root){
       img.style.translate = o ? `${(-o[0] * 100).toFixed(1)}% ${(-o[1] * 100).toFixed(1)}%` : ''; };
     if(img.complete) apply(); else img.addEventListener('load', apply, {once: true}); }); }catch(e){}
 }
-function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
+// 2026-10-31 (package UI9, BB2; owner: "the trap animation (red circles circling and diving into the middle) drops to 50% opacity, plus inward-falling
+// rosso rectangles that fade in over the first 20% of their fall ... a trap look (snapping jaws / closing frame). The '<trap emoji> <number>' label over
+// the slot sits at 80%+ transparency, 92% on slot hover."): the ring gets eight rosso (#c1121f) rectangles <b>, one per drop, falling the same way
+// and fading in over the first 20% of the fall; the circles are at half their old opacity; ui9TrapSnap() plays the one-shot "closing" on the slot
+// when the trap is laid. The CSS is added here (it rides after the page's own style, so it wins) rather than in arena_template.html.
+function vis3TrapRingHTML(){ let s = ''; for(let i = 0; i < 8; i++) s += `<i style="--a:${i * 45}deg; --d:${(i * 0.21).toFixed(2)}s"></i><b style="--a:${i * 45}deg; --d:${(i * 0.21 + 0.1).toFixed(2)}s"></b>`; return `<span class="vis3-trap-ring" aria-hidden="true">${s}</span>`; }
+(function ui9TrapCss(){ try{ if(document.getElementById('ui9-trap-css')) return; const st = document.createElement('style'); st.id = 'ui9-trap-css'; st.textContent = `
+.vis3-trap-ring.vis3-trap-ring i{animation-name:ui9TrapFall;}
+@keyframes ui9TrapFall{0%{opacity:0; transform:rotate(var(--a)) translateY(-215%) scale(1.15);} 22%{opacity:.475;} 80%{opacity:.275;} 100%{opacity:0; transform:rotate(var(--a)) translateY(0) scale(.35);}}
+.vis3-trap-ring.vis3-trap-ring b{position:absolute; left:50%; top:50%; width:9%; height:20%; margin:-10% 0 0 -4.5%; border-radius:2px; background:#c1121f; opacity:0;
+  transform:rotate(var(--a)) translateY(-235%); animation:ui9TrapRect 1.68s cubic-bezier(.45,0,.75,.6) var(--d) infinite;}
+@keyframes ui9TrapRect{0%{opacity:0; transform:rotate(var(--a)) translateY(-235%) scaleY(1);} 20%{opacity:.6;} 85%{opacity:.5;} 100%{opacity:0; transform:rotate(var(--a)) translateY(-8%) scaleY(.45);}}
+@media (prefers-reduced-motion: reduce){ .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.25;} .vis3-trap-ring.vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);} }
+html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring i{animation:none; opacity:.25;} html[data-fx="none"] .vis3-trap-ring.vis3-trap-ring b{animation:none; opacity:.35; transform:rotate(var(--a)) translateY(-150%);}
+.w2-hazard-mark.trap{opacity:.17; transition:opacity .2s ease;}
+.board-card:hover .w2-hazard-mark.trap, .w2-hazard-mark.trap:hover{opacity:.08;}
+.ui9-trap-snap{position:fixed; overflow:hidden; border-radius:14px; pointer-events:none; z-index:1000;}
+.ui9-trap-snap b{position:absolute; left:0; right:0; height:20%; background:#c1121f; opacity:0; box-shadow:0 0 6px rgba(193,18,31,.7);}
+.ui9-trap-snap b.t{top:0;} .ui9-trap-snap b.u{bottom:0;}
+`; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
+// 2026-10-31 (package UI9, DD1 / DD2): the Quests board's writs in two columns (one on phones); the levelled card's small face in the pack summary.
+(function ui9Css(){ try{ if(document.getElementById('ui9-css')) return; const st = document.createElement('style'); st.id = 'ui9-css'; st.textContent = `
+@media (min-width:721px){ .qn-board.er-board{display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:18px; align-items:start;}
+  .qn-board.er-board > .qn-sign, .qn-board.er-board > .er-sub, .qn-board.er-board > .er-empty{grid-column:1 / -1;} .qn-board.er-board > .er-writs{display:contents;} }
+.pack-open-foot > .ui9-p{margin:0 0 10px; font-size:15px;} .po2 .pack-open-foot > .ui9-p{color:#fbeefe;}
+.ui9-lvl-up{display:inline-flex; align-items:center; gap:6px; vertical-align:middle;}
+.ui9-lvl-face{display:inline-block; zoom:.55; pointer-events:none; vertical-align:middle;}
+/* DD4: Nacre, mother-of-pearl: pale plates (pink, peach, lilac, blue) split by thin warm-gold seams; a soft sheen and the colours slide with the tilt (--hbx / --hby) */
+.card-tile.is-holo.holo-nacre .holo-layer{
+  background-image:
+    linear-gradient(112deg, rgba(255,255,255,0) 34%, rgba(255,255,255,.6) 46%, rgba(255,236,244,.18) 54%, rgba(255,255,255,0) 66%),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20125'%20preserveAspectRatio='none'%3E%3Cpolygon%20points='63.8,37.5%2065.2,44.6%2063.6,49.3%2030.9,96.8%2024.4,90.7%2027.1,49.2%2053.4,35.4'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,22.5%20105.0,89.8%2069.1,47.2%2065.5,39.2'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='29.9,96.3%2065.2,45.1%2061.3,93.7%2034.4,103.9'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='26.3,48.9%2023.5,91.1%20-5.0,85.2%20-5.0,54.7%2013.7,47.2'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='77.0,130.0%2034.2,130.0%2034.4,101.9%2062.0,91.4%2091.6,99.6'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='18.5,44.8%20-5.0,54.2%20-5.0,15.9%20-0.7,17.2'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='35.2,130.0%20-5.0,130.0%20-5.0,85.5%2025.0,91.6%2032.4,98.5%2035.3,103.4'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='63.8,-5.0%20105.0,-5.0%20105.0,20.9%2065.8,37.4'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,90.6%20105.0,130.0%2077.7,130.0%2093.4,97.4'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='105.0,87.0%20105.0,91.4%2091.7,99.2%2063.0,91.3%2067.0,42.0'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='-5.0,-5.0%2032.7,-5.0%2032.4,8.2%20-2.6,16.7%20-5.0,16.0'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='31.1,-5.0%2064.4,-5.0%2066.4,38.4%2062.3,38.4%2050.2,36.0%2030.8,6.9'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3Cpolygon%20points='49.7,34.1%2023.6,47.9%2019.6,47.3%20-1.6,16.9%2032.6,8.6'%20fill='none'%20stroke='%23e6aa3c'%20stroke-width='.9'%20stroke-linejoin='round'/%3E%3C/svg%3E"),
+    linear-gradient(118deg, rgba(255,196,214,.55) 0%, rgba(255,214,186,.5) 18%, rgba(226,204,248,.55) 36%, rgba(196,222,255,.55) 54%, rgba(255,204,222,.5) 72%, rgba(255,222,190,.5) 86%, rgba(226,204,248,.55) 100%),
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%20125'%20preserveAspectRatio='none'%3E%3Cpolygon%20points='63.8,37.5%2065.2,44.6%2063.6,49.3%2030.9,96.8%2024.4,90.7%2027.1,49.2%2053.4,35.4'%20fill='%23ff9fbf'%20fill-opacity='.8'/%3E%3Cpolygon%20points='105.0,22.5%20105.0,89.8%2069.1,47.2%2065.5,39.2'%20fill='%23ffc09a'%20fill-opacity='.8'/%3E%3Cpolygon%20points='29.9,96.3%2065.2,45.1%2061.3,93.7%2034.4,103.9'%20fill='%23c3a5f0'%20fill-opacity='.8'/%3E%3Cpolygon%20points='26.3,48.9%2023.5,91.1%20-5.0,85.2%20-5.0,54.7%2013.7,47.2'%20fill='%239ec8ff'%20fill-opacity='.8'/%3E%3Cpolygon%20points='77.0,130.0%2034.2,130.0%2034.4,101.9%2062.0,91.4%2091.6,99.6'%20fill='%23ffd2b8'%20fill-opacity='.8'/%3E%3Cpolygon%20points='18.5,44.8%20-5.0,54.2%20-5.0,15.9%20-0.7,17.2'%20fill='%23e9a8dc'%20fill-opacity='.8'/%3E%3Cpolygon%20points='35.2,130.0%20-5.0,130.0%20-5.0,85.5%2025.0,91.6%2032.4,98.5%2035.3,103.4'%20fill='%23a9d3f2'%20fill-opacity='.8'/%3E%3Cpolygon%20points='63.8,-5.0%20105.0,-5.0%20105.0,20.9%2065.8,37.4'%20fill='%23ffe0a8'%20fill-opacity='.8'/%3E%3Cpolygon%20points='105.0,90.6%20105.0,130.0%2077.7,130.0%2093.4,97.4'%20fill='%23ff9fbf'%20fill-opacity='.8'/%3E%3Cpolygon%20points='105.0,87.0%20105.0,91.4%2091.7,99.2%2063.0,91.3%2067.0,42.0'%20fill='%23ffc09a'%20fill-opacity='.8'/%3E%3Cpolygon%20points='-5.0,-5.0%2032.7,-5.0%2032.4,8.2%20-2.6,16.7%20-5.0,16.0'%20fill='%23c3a5f0'%20fill-opacity='.8'/%3E%3Cpolygon%20points='31.1,-5.0%2064.4,-5.0%2066.4,38.4%2062.3,38.4%2050.2,36.0%2030.8,6.9'%20fill='%239ec8ff'%20fill-opacity='.8'/%3E%3Cpolygon%20points='49.7,34.1%2023.6,47.9%2019.6,47.3%20-1.6,16.9%2032.6,8.6'%20fill='%23ffd2b8'%20fill-opacity='.8'/%3E%3C/svg%3E");
+  background-size:300% 300%, 100% 100%, 260% 260%, 100% 100%;
+  background-position:var(--hbx,50%) var(--hby,50%), 0 0, var(--hbx,50%) var(--hby,50%), 0 0;
+  mix-blend-mode:normal; opacity:.4; filter:none; -webkit-mask-image:none; mask-image:none;}
+.card-tile.is-holo.holo-nacre.holo-active .holo-layer{opacity:.55;}
+.card-tile.holo-nacre{box-shadow:inset 0 0 0 2px rgba(238,200,140,.7), 0 0 10px rgba(255,214,200,.35);}
+`; (document.head || document.documentElement).appendChild(st); }catch(e){} })();
+// The closing: two rosso jaw bars drop in from the slot's top and bottom edges to meet in the middle (fading in over the first 20% of the fall), then
+// the slot gives a 1.5 px shake. About 0.7 s; Effects Low: 0.35 s and no shake; Effects None / reduced motion: nothing moves.
+function ui9TrapSnap(host){
+  try{ if(!host || !host.animate || reducedMotion() || !fxAtLeast('low')) return null; const low = !fxAtLeast('med'), D = low ? 350 : 520;
+    const w = document.createElement('span'); w.className = 'ui9-trap-snap'; w.setAttribute('aria-hidden', 'true'); w.innerHTML = '<b class="t"></b><b class="u"></b>'; const hr = host.getBoundingClientRect(); if(!hr.width) return null; w.style.cssText = `left:${hr.left}px; top:${hr.top}px; width:${hr.width}px; height:${hr.height}px;`; document.body.appendChild(w); /* a page-level overlay: the slot's cell is redrawn at once when the board re-renders, which took an inner one with it */
+    const bars = w.querySelectorAll('b'), ease = 'cubic-bezier(.55,0,.9,.4)';
+    bars[0].animate([{transform:'translateY(-120%)', opacity:0, offset:0}, {opacity:.75, offset:.2}, {transform:'translateY(150%)', opacity:.85, offset:1}], {duration:D, easing:ease, fill:'forwards'});
+    bars[1].animate([{transform:'translateY(120%)', opacity:0, offset:0}, {opacity:.75, offset:.2}, {transform:'translateY(-150%)', opacity:.85, offset:1}], {duration:D, easing:ease, fill:'forwards'});
+    const end = ()=>{ try{ w.animate([{opacity:1}, {opacity:0}], {duration:low ? 60 : 120, fill:'forwards'}).onfinish = ()=> w.remove(); }catch(e){ w.remove(); } };
+    if(low){ setTimeout(end, D); return w; }
+    setTimeout(()=>{ try{ (host.isConnected ? host : w).animate([{transform:'translate(0,0)'}, {transform:'translate(-1.5px,1px)'}, {transform:'translate(1.5px,-1px)'}, {transform:'translate(-1px,0)'}, {transform:'translate(0,0)'}], {duration:160}); }catch(e){} end(); }, D);
+    return w; }catch(e){ return null; }
+}
 // 2026-10-28 (package VIS5, L4; owner 10-28 09:48: "After laying the trap, the trap context pip fades away. There is also no trap triggered
 // animation. ... the card played should jump and be discombobulated abit, and a damage number flies from it."):
 //  - THE PIP. The engine settles a whole turn at once, so by the time a trap's drop plays, the CPU's card has often stepped on it and the
@@ -48441,6 +48499,13 @@ function vis5HazardMap(m){
   const now = Date.now(), out = Object.assign({}, live);
   Object.keys(keep).forEach(k=>{ const e = keep[k]; if(!e || now - e.t > 40000){ delete keep[k]; return; } out[k] = Object.assign({}, e.h, out[k] || {}); });
   return out;
+}
+// 2026-10-31 (package UI9, BB2): once its trap is laid, the laying card's Trap chip is spent: it fades off the card (and abilityBadges leaves it out
+// of later draws for that card, m.ui9Laid). The slot keeps its label (the trap is still there).
+function ui9TrapLaid(ev){
+  try{ const m = matchState; if(!m || ev.srcUid == null) return; m.ui9Laid = m.ui9Laid || {}; m.ui9Laid[ev.srcUid] = true;
+    const el = boardCardEl(ev.srcUid); if(!el) return;
+    el.querySelectorAll('.ab-w2.ab-trap').forEach(x=>{ try{ x.style.transition = 'opacity .3s ease'; x.style.opacity = '0'; setTimeout(()=> x.remove(), 340); }catch(e){} }); }catch(e){}
 }
 function vis5HzArm(ev){
   try{ const m = matchState; if(!m || !ev || !(ev.n > 0)) return; const k = ev.pid + ':s' + ev.slot; m.vis5Hz = m.vis5Hz || {};
@@ -48459,6 +48524,8 @@ function vis5HzSprung(ev, tries){
   tries = tries || 0;
   const el = boardCardEl(ev.uid);
   if(!el){ if(tries < 14) setTimeout(()=> vis5HzSprung(ev, tries + 1), 150); else vis5HzDisarm(ev, null); return; } // the card is still in flight: wait for it (was: nothing at all)
+  // 2026-10-31 (package UI9, BB3): the hit waits for the card's landing (UI8's flight / entrance: is-entering, the flight copy) to finish.
+  if((el.classList.contains('is-entering') || document.querySelector('.hand-flight-proxy')) && tries < 40){ setTimeout(()=> vis5HzSprung(ev, tries + 1), 100); return; }
   vis5HzDisarm(ev, el);
   try{ dnFloat(el, ev.dmg, {type: ev.dmgType || (ev.kind === 'trap' ? 'physical' : 'heat'), mods: ev.mods}); }catch(e){} // DN2: through dnFloat
   try{ snd(ev.kind === 'trap' ? 'bite' : 'burnAway'); }catch(e){}
@@ -48468,15 +48535,14 @@ function vis5HzJolt(el, kind){
   const tile = (el.querySelector && el.querySelector('.card-tile')) || el;
   if(!hasGsap() || reducedMotion() || !fxAtLeast('low')){ // calm: a flash, no movement
     try{ tile.classList.add('vis5-hz-flash'); setTimeout(()=> tile.classList.remove('vis5-hz-flash'), 520); }catch(e){} return; }
+  // 2026-10-31 (package UI9, BB3; owner: "a card played onto a trap shows a hit: either hooked slightly down into the ground, or launched up and
+  // turned slightly (discombobulated), then back into place"): about 0.45 s. Hooked: a quick yank 8 px down, then back. Launched: 20 px up and
+  // turned +-6 degrees, then it settles. A trap picks one at random; burning ground always launches. (Was a 38 px jump and a long wobble.)
+  const mode = kind === 'trap' && Math.random() < 0.5 ? 'hook' : 'launch'; try{ tile.dataset.ui9Hit = mode; }catch(e){}
   gsap.killTweensOf(tile, 'y,rotation,scale');
   const tl = gsap.timeline({onComplete:()=> gsap.set(tile, {clearProps:'transform'})});
-  tl.to(tile, {y:-38, scale:1.12, rotation:-10, duration:.16, ease:'power2.out'})        // the jump
-    .to(tile, {y:0, scale:1, rotation:8, duration:.24, ease:'bounce.out'})               // lands, rocks over
-    .to(tile, {rotation:-12, duration:.12, ease:'sine.inOut'})                          // the wobble
-    .to(tile, {rotation:9, duration:.12, ease:'sine.inOut'})
-    .to(tile, {rotation:-6, duration:.11, ease:'sine.inOut'})
-    .to(tile, {rotation:3, duration:.1, ease:'sine.inOut'})
-    .to(tile, {rotation:0, duration:.12, ease:'sine.out'});                              // settles
+  if(mode === 'hook') tl.to(tile, {y:8, duration:.1, ease:'power3.in'}).to(tile, {y:0, duration:.35, ease:'back.out(2.2)'});
+  else { const tilt = (Math.random() < .5 ? -1 : 1) * 6; tl.to(tile, {y:-20, rotation:tilt, duration:.16, ease:'power2.out'}).to(tile, {y:0, rotation:0, duration:.29, ease:'back.out(1.7)'}); }
   if(!fxAtLeast('med')) return;
   try{ const q = el.getBoundingClientRect(); if(!q.width) return; const stars = [0, 1, 2].map(i=>{ const s = document.createElement('i'); s.className = 'vis5-dizzy' + (kind === 'trap' ? '' : ' is-fire'); s.setAttribute('aria-hidden', 'true'); s.textContent = kind === 'trap' ? '💫' : '🔥'; document.body.appendChild(s); return s; });
     const cx = q.left + q.width / 2, cy = q.top + q.height * 0.12, o = {a: 0, k: 0};
@@ -49164,7 +49230,7 @@ function w2SkillVfx(ev){
       snd('bubble'); try{ dnFloat(el, ev.dmg, {type:'poison', mods: ev.mods, cls:'poison-tick'}); }catch(e){} /* DN2 */ if(el){ try{ shakeEl(el); tintPulse(el, 'poison-tint-pulse'); }catch(e){} } try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
     case 'strangleTick': { const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc) rc.hp = Math.max(0, rc.hp - (ev.dmg||0));
       try{ dnFloat(el, ev.dmg, {type:'strangle', mods: ev.mods}); }catch(e){} if(el && fx()) F.squeeze(el); /* DN2 */ try{ updateCardHpDisplay(ev.uid); }catch(e){} break; }
-    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')) F.trapSet(c, {kind: ev.kind}); }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
+    case 'hazardSet': snd(ev.kind === 'trap' ? 'swipeTone' : 'burnAway'); vis5HzArm(ev); let ui9Snapped = false; if(ev.kind === 'trap'){ ui9TrapLaid(ev); if(fx('low')){ let c0 = w2CellEl(ev.pid, ev.slot); if(!c0){ const mk = document.querySelector('#battlefieldEl .w2-hazard-mark.trap'); c0 = mk && mk.parentElement; } if(c0) ui9Snapped = !!ui9TrapSnap(c0); } } /* UI9 (BB2): the closing plays as the trap is laid (the CPU's card often steps on the slot within half a second) */ w2Later(480, ()=>{ const c = w2CellEl(ev.pid, ev.slot); if(c && fx('low')){ F.trapSet(c, {kind: ev.kind}); if(ev.kind === 'trap' && !ui9Snapped) ui9TrapSnap(c); } }); break; // + VIS5 (L4): the pip is armed in the replay, and stays until the card steps on it
     case 'hazardSprung': w2Later(560, ()=> vis5HzSprung(ev)); break; // VIS5 (L4, 2026-10-28): the card played onto it jumps and reels, a number flies from it (was a 3 px shake, and nothing if the card had not landed yet)
     case 'poisonGas': { const els = (ev.hits||[]).map(u=>{ const rc = rcOf(u); if(rc) rc.poison = (rc.poison||0) + (ev.n||0); return boardCardEl(u); }).filter(Boolean);
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
@@ -54448,14 +54514,14 @@ const SHOP_PACKS_DEFAULT = [
 ];
 const FOIL_FINISHES = [
   {key:'auto', label:'By rarity', hint:'pearl for Rare to Super Rare, rainbow for Epic up to Unique, cosmos for Legendary and up'},
-  {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'cosmos', label:'Cosmos'},
+  {key:'rainbow', label:'Rainbow'}, {key:'pearl', label:'Pearl'}, {key:'nacre', label:'Nacre', hint:'mother-of-pearl (2026-10-31, UI9 DD4)'}, {key:'cosmos', label:'Cosmos'},
   {key:'prism', label:'Prism'}, {key:'hex', label:'Hex'}, {key:'etched', label:'Etched'},
   {key:'ice', label:'Cracked ice'}, {key:'reverse', label:'Reverse'}, {key:'gold', label:'Gold'},
   // 2026-10-14: the Effects Lab finishes, now rare pack prints
   {key:'aurora', label:'Aurora'}, {key:'galaxy', label:'Galaxy swirl'}, {key:'molten', label:'Molten gold'}, {key:'frost', label:'Frost crystal'}, {key:'oilslick', label:'Oil slick'},
   {key:'sakura', label:'Sakura'}, {key:'sparkle', label:'Glitter field'}, {key:'scanline', label:'Holo scanlines'}, {key:'old', label:'Cards of old'},
 ];
-const PACK_FOIL_FINISHES_DEFAULT = {auto:60, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
+const PACK_FOIL_FINISHES_DEFAULT = {auto:60, nacre:4, prism:9, hex:8, etched:7, ice:7, reverse:6, gold:3, aurora:3, galaxy:2, molten:2, frost:3, oilslick:3, sakura:3, sparkle:3, scanline:2, old:2};
 // 2026-10-23 (package RW5, item 15): the basic packs' own pools (packCardPool). A saved admin edit or a published table from before RW5 says
 // pool 1 for all three; that old default is read as the pack's own pool. Any other pool an admin picked is kept.
 const PACK_TIER_POOL = {bronze:1, silver:2, gold:3};
@@ -55378,7 +55444,9 @@ function renderNest(){
   if(nestTab !== 'upgrades') nestTab = 'eggs';
   const ownedIds = [];
   const eggN = nestState().eggs.filter(e=> e.kind !== 'nurture').length; // in the nests, the basket and your pack
-  root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
+  // 2026-10-31 (package UI9, BB1; owner: "the Nest page gets the nav button back to the conquest map"): the Shop's own "← Back to the map" button
+  // (shop-back: small, top left of the panel), always on the Nest, whichever way you came; it goes to the Conquest map.
+  root.innerHTML = `<div class="panel"><button type="button" class="btn small shop-back nest-map-back" id="nestMapBackBtn">← ${escapeHtml(TX('ui.ui9-back-to-map'))}</button><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${escapeHtml(TX('ui.tu2-nest-eggs-sub', {n: eggN}))}</p>
       ${neWalletHTML(['gold', 'dust', 'kibble'])}
@@ -55388,6 +55456,7 @@ function renderNest(){
     </div>
     <div class="grid-view" id="nestGrid" hidden></div>`;
   { const tb = root.querySelector('#nestTrainBtn'); if(tb) tb.onclick = ()=> openNestPicker(); }
+  { const mb = root.querySelector('#nestMapBackBtn'); if(mb) mb.onclick = ()=>{ pageCameFrom = null; playSubTab = 'conquest'; switchTab('play'); }; } // 2026-10-31 (UI9, BB1)
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
   if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
     if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
@@ -55449,7 +55518,7 @@ function holoClass(d){
 // Card workbench (2026-10-12, user: "make sure i can use a dropdown in the effects lab or something when im viewing and
 // experimenting with cards - choose art, properties of the foil, art type etc."): Admin → 🧪 Card workbench. One card, drawn
 // live by the game's own card code, with every look switchable. Nothing is saved.
-const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines'], ['holo-old', 'Cards of old']];
+const WB_FOILS = [['', 'No foil'], ['holo-pearl', 'Pearl (Rare–Super Rare)'], ['holo-nacre', 'Nacre'], ['holo-rainbow', 'Rainbow (Epic–Quest Unique)'], ['holo-cosmos', 'Cosmos (Legendary+)'], ['holo-hex', 'Hex'], ['holo-etched', 'Etched'], ['holo-ice', 'Cracked ice'], ['holo-gold', 'Gold leaf'], ['holo-reverse', 'Reverse holo'], ['holo-prism', 'Prism'], ['holo-lattice', 'Lattice'], ['holo-aurora', 'Aurora'], ['holo-galaxy', 'Galaxy swirl'], ['holo-molten', 'Molten gold'], ['holo-frost', 'Frost crystal'], ['holo-oilslick', 'Oil slick'], ['holo-sakura', 'Sakura'], ['holo-sparkle', 'Glitter field'], ['holo-scanline', 'Holo scanlines'], ['holo-old', 'Cards of old']];
 function openCardWorkbench(startId){
   const defs = getCardDefs(), ids = Object.keys(defs).filter(id=> !defs[id].token && defs[id].cardType !== 'materia').sort((a, b)=> defs[a].name.localeCompare(defs[b].name));
   const artIds = ids.filter(id=> defs[id].art);
@@ -55796,9 +55865,9 @@ function purchasePackOnce(pack, prepaid, opts){
   results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
-    const defs = getCardDefs();
-    const candidates = getDraftableIds().filter(id=> !defs[id].locked && !defs[id].token && getCardLevel(id)<10);
-    if(candidates.length){ leveledId = candidates[Math.floor(Math.random()*candidates.length)]; myCardLevels[leveledId] = getCardLevel(leveledId)+1; }
+    // 2026-10-31 (package UI9, DD2; owner: "Blue-ringed Octopus reached Lv 2 under three other cards"): the free level goes to a card you OWN (main
+    // deck cards first, then any other owned card; never one at Lv 10), not to a random card of the whole game. The pack's own cards count as owned.
+    leveledId = ui9PackLevelPick(); if(leveledId) myCardLevels[leveledId] = getCardLevel(leveledId)+1;
   }
   const glow = jackpot ? {tier:RARITY_TIER_BANDS.length - 1, rarity:RARITY_TIER_BANDS[RARITY_TIER_BANDS.length - 1], jackpot:true} : rollPackGlow(results, getCardDefs());
   return {results, leveledId, glow, jackpot};
@@ -55806,6 +55875,13 @@ function purchasePackOnce(pack, prepaid, opts){
 // 2026-10-23 (package RW5, owner 19:27 item 13: "After buying a pack, what does 3 free level-ups mean?"): a pack's levelChance (Hedgerow Pouch
 // 20%, Tidemire Chest 40%, Highcrest Case 80%) levels one card you own by 1 for free. The bundle summary now says which: "⭐ 3 free level-ups:
 // Alley Cat → Lv 3, Pond Duck → Lv 2 ...", the same card twice counted once with its last level, and a tooltip saying where they come from.
+function ui9PackLevelPick(){
+  try{ const defs = getCardDefs(), ok = id=> defs[id] && !defs[id].locked && !defs[id].token && getCardLevel(id) < 10;
+    const owned = [...myUnlockedCardIds].filter(ok); if(!owned.length) return null;
+    const md = (myDecks || []).find(d=> d.id === mainDeckId) || getActiveDeck(), counts = (md && md.counts) || {};
+    const inDeck = owned.filter(id=> (counts[id] | 0) > 0), pool = inDeck.length ? inDeck : owned;
+    return pool[Math.floor(Math.random() * pool.length)]; }catch(e){ return null; }
+}
 function packLevelUpsHTML(levels, defs){
   defs = defs || getCardDefs(); const by = new Map(); levels.forEach(id=>{ if(defs[id]) by.set(id, (by.get(id) || 0) + 1); });
   const names = [...by.keys()].map(id=> `${escapeHtml(defs[id].name)} → ${escapeHtml(TX('ui.rw5-lv', {n: getCardLevel(id)}))}${by.get(id) > 1 ? ` (×${by.get(id)})` : ''}`);
@@ -56781,7 +56857,8 @@ function openPackAnimation(pack, opened, opts){
   // ---- 3. this pack's summary ----
   const footBits = o=>{
     const bits = []; if(pack.metal) bits.push(`🔩 +${pack.metal} Metal`); if(pack.kroon && !KROONI_RETIRED) bits.push(`👑 +${pack.kroon} Krooni`); // 2026-10-23 (TU2): none paid while retired
-    if(o.leveledId && defs[o.leveledId]) bits.push(`⭐ ${escapeHtml(defs[o.leveledId].name)} reached Lv ${getCardLevel(o.leveledId)}`);
+    // 2026-10-31 (package UI9, DD2): the levelled card's small face and "+1 Level" (its name and new level in the tooltip).
+    if(o.leveledId && defs[o.leveledId]) bits.push(`<span class="ui9-lvl-up" title="${escapeAttr(defs[o.leveledId].name + ' → ' + TX('ui.rw5-lv', {n: getCardLevel(o.leveledId)}))}">⭐ <span class="ui9-lvl-face" data-lvl-defid="${escapeAttr(o.leveledId)}">${cardTileHTML(defs[o.leveledId], {inPlay:true, size:'compact'})}</span> <b>+1 Level</b></span>`);
     if(o.bonus) bits.push(`🎁 ${_t('Bonus card: nothing Uncommon or better, so you get one more')}`);
     return bits;
   };
@@ -56842,7 +56919,7 @@ function openPackAnimation(pack, opened, opts){
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
       <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defOf(r.id).name||r.id)} large">${poTile(Object.assign({}, defOf(r.id), {locked:false}), {editable:false, size:'full' /* 2026-10-30 (CS-A) */, extraClass: pullClass(r, defOf(r.id))})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}${poEditBtn(r.id)}</div>`).join('')}</div>
-      <div class="pack-open-foot" id="poFoot"><p>${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</p>${footActions()}</div>
+      <div class="pack-open-foot" id="poFoot"><div class="ui9-p">${[nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b>` : ''].concat(footBits(o)).filter(Boolean).join(' · ') /* 2026-10-24 (BV): no dangling "·" */}</div>${footActions()}</div>
     </div>`;
     poClearFlights(); // 2026-10-24 (package BV): the last card's flight to the pile ends here (see poClearFlights)
     wireTop(); wireFoot(); wireView(); wireEdit(); wireTilt();
