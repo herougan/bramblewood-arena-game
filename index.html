@@ -44172,7 +44172,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.codex-animal-filter": "Animal",
   "ui.codex-animal-tip": "Animal: {animal}",
   "ui.codex-subtype-tip": "{subtype}: its body takes the shape of a {animal}",
-  "ui.codex-base-chip": "Base",
+  "ui.codex-base-chip": "Starter",
   "ui.codex-base-tip": "A Base card: earned from skirmish rewards, not card packs",
   "ui.subtype-ghost": "Ghost",
   "ui.subtype-spirit": "Spirit",
@@ -47035,13 +47035,13 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.ui13-baby-sub": "Eggs are on no list: a fight drops one now and then, and its kind follows the fight's deck. Baby cards on the lists above carry a Baby pill and are not counted.",
   "ui.ui13-egg-why": "Drops from {fights} (first clear up to {p})",
   "ui.ui13-egg-sure": "{node} gives one for sure on its first clear.",
-  "ui.ui13-kind": "Kind",
+  "ui.ui13-kind": "Card group",
   "ui.ui13-kind-base": "Base",
   "ui.ui13-kind-baby": "Baby",
   "ui.ui13-kind-faction": "Faction",
-  "ui.ui13-kind-tip-base": "Kind: Base",
-  "ui.ui13-kind-tip-baby": "Kind: Baby (an egg or a young animal)",
-  "ui.ui13-kind-tip-faction": "Kind: Faction (a card of your side)",
+  "ui.ui13-kind-tip-base": "Card group: Base",
+  "ui.ui13-kind-tip-baby": "Card group: Baby (an egg or a young animal)",
+  "ui.ui13-kind-tip-faction": "Card group: Faction (a card of your side)",
   "ui.ui13-kind-edit-tip": "Base or Faction follows the card's faction; choose Baby for eggs and young animals.",
   "map.ui13-torch-tip": "A torch in a bracket, lit by the fire pit. Take it",
   "map.ui13-torch-dark": "Something hangs on the wall, too dark to see",
@@ -51681,7 +51681,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '3b570d164cee', BUILD_CARD_HASH = '421fe1cfd25f89b72e377b22a5817afbe0661077be69935a2618a3f970bd17dc';
+const BUILD_ID = 'f6d3ba6539f2', BUILD_CARD_HASH = '421fe1cfd25f89b72e377b22a5817afbe0661077be69935a2618a3f970bd17dc';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -65773,7 +65773,7 @@ function livePushProgress(force){
   const now = Date.now();
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
   // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
-  sbClient.from('player_progress').upsert({profile_id: uid, data: snap, updated_at: new Date(now).toISOString()})
+  sbClient.from('player_progress').upsert({profile_id: uid, data: (shrinkOk && score < cloudScore) ? Object.assign({}, snap, {bw_progress_shrink_ok: '1'}) : snap, updated_at: new Date(now).toISOString()}) // 2026-11-01: the server guard (guard_progress_shrink, applied 11-01) lets a smaller blob through only with this marker, sent on the one push an admin reset makes
     .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null;
         if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
       ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });

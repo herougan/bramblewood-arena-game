@@ -17686,7 +17686,7 @@ function livePushProgress(force){
   const now = Date.now();
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
   // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
-  sbClient.from('player_progress').upsert({profile_id: uid, data: snap, updated_at: new Date(now).toISOString()})
+  sbClient.from('player_progress').upsert({profile_id: uid, data: (shrinkOk && score < cloudScore) ? Object.assign({}, snap, {bw_progress_shrink_ok: '1'}) : snap, updated_at: new Date(now).toISOString()}) // 2026-11-01: the server guard (guard_progress_shrink, applied 11-01) lets a smaller blob through only with this marker, sent on the one push an admin reset makes
     .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null;
         if(!error && uid === cloudUserId){ LiveData.cloudProgress = {uid, score}; if(shrinkOk) try{ localStorage.removeItem(PROGRESS_SHRINK_OK_KEY); }catch(e){} } },
       ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
