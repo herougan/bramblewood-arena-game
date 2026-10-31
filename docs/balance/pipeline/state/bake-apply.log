@@ -1,0 +1,9 @@
+mk: 9-BPRO-1 open 0.7792; 9-BPRO-2 big 0.7583; 9-BPRO-3 swarm 0.7417; 9-BPRO-4 family:tide 0.675
+m5: 14-BPRO-1 big 0.8826; 14-BPRO-2 open 0.8788; 14-BPRO-3 swarm 0.8561; 14-BPRO-4 economy 0.75
+my: 14-A-BPRO-1 economy 0.849; 14-A-BPRO-2 big 0.8281; 14-A-BPRO-3 open 0.7292
+m3: 19-BPRO-1 economy 0.8704; 19-BPRO-2 open 0.8565
+m9: 19-A-BPRO-1 open 0.8494; 19-A-BPRO-2 big 0.8462
+m11: 20-BPRO-1 open 0.7804; 20-BPRO-2 economy 0.742
+me: 20-A-BPRO-1 open 0.6042; 20-A-BPRO-2 family:flying 0.5958
+mx: 20-B-BPRO-1 swarm 0.881; 20-B-BPRO-2 open 0.8036; 20-B-BPRO-3 family:fire 0.75
+-> canonical/pro-skirmishes.json (rebuild the game to bake it in)

@@ -1,6 +1,6 @@
 # Focused decks: Map 9 The Kelp Mangroves (2026-10-31)
 
-Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 7220 games in 107 s.
+Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true` (tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)), 7260 games in 94 s.
 
 - The list (15): Archerfish, Banded Sea Krait, Booming Bittern, Caiman Hatchling, Crocodile Ambusher, Fiddler Crab Swarm, Fishing Cat, Mangrove Kingfisher, Mangrove Manatee, Mangrove Monitor, Mangrove Mudskipper, Minnow Skitter, Mudpuppy, Reef Shark, Sunbittern Strider.
 - The rule: at most 6 different cards, at most 4 copies (never above a rarity's cap), 20 cards. Level 1.
@@ -9,16 +9,16 @@ Package TOOLS1 (T3). `node tools/bench/bench.js deck --map mk --pool archerfish,
 
 | Deck | Focus | Labels | Win rate (95%) | Avg Lumber | Curve (Lumber: copies) | Cards | Apart from open |
 |---|---|---|---|---|---|---|---|
-| 1 | big | big (8 copies at 1+ Lumber, average 0.4); tide x11 | 78% (72%-83%) | 0.4 | 0: 12, 1: 8 | 4x Caiman Hatchling, 4x Fiddler Crab Swarm, 4x Mangrove Mudskipper, 4x Sunbittern Strider, 3x Mangrove Manatee, 1x Mangrove Kingfisher | 10 |
-| 2 | swarm | swarm (17 copies at 0 Lumber); tide x12; heal x7 | 73% (67%-78%) | 0.15 | 0: 17, 1: 3 | 4x Caiman Hatchling, 4x Fiddler Crab Swarm, 4x Minnow Skitter, 4x Mudpuppy, 3x Mangrove Manatee, 1x Mangrove Mudskipper | 6 |
-| 3 | family:tide | big (11 copies at 1+ Lumber, average 0.6); tide x9 | 73% (67%-78%) | 0.55 | 0: 9, 1: 11 | 4x Fiddler Crab Swarm, 4x Mangrove Monitor, 4x Sunbittern Strider, 3x Caiman Hatchling, 3x Mangrove Manatee, 2x Minnow Skitter | 12 |
-| 4 | open | swarm (15 copies at 0 Lumber); tide x13; heal x6 | 64% (58%-70%) | 0.25 | 0: 15, 1: 5 | 4x Fiddler Crab Swarm, 4x Mangrove Mudskipper, 4x Mudpuppy, 3x Fishing Cat, 3x Minnow Skitter, 2x Mangrove Manatee | 0 |
+| 1 | open | swarm (14 copies at 0 Lumber); tide x10; heal x7 | 78% (73%-83%) | 0.3 | 0: 14, 1: 6 | 4x Fiddler Crab Swarm, 4x Mudpuppy, 3x Caiman Hatchling, 3x Mangrove Manatee, 3x Minnow Skitter, 3x Sunbittern Strider | 0 |
+| 2 | big | big (12 copies at 1+ Lumber, average 0.6); tide x7; heal x7 | 76% (71%-81%) | 0.6 | 0: 8, 1: 12 | 4x Fiddler Crab Swarm, 4x Mudpuppy, 4x Sunbittern Strider, 3x Banded Sea Krait, 3x Mangrove Manatee, 2x Mangrove Monitor | 6 |
+| 3 | swarm | swarm (15 copies at 0 Lumber); tide x15 | 74% (69%-80%) | 0.25 | 0: 15, 1: 5 | 4x Fiddler Crab Swarm, 4x Mangrove Mudskipper, 4x Minnow Skitter, 3x Caiman Hatchling, 3x Mangrove Manatee, 2x Mangrove Monitor | 7 |
+| 4 | family:tide | big (11 copies at 1+ Lumber, average 0.6); tide x10 | 68% (62%-73%) | 0.55 | 0: 9, 1: 11 | 4x Archerfish, 4x Mangrove Monitor, 4x Mangrove Mudskipper, 3x Mangrove Manatee, 3x Minnow Skitter, 2x Mudpuppy | 12 |
 
 ## Per opponent
 
 | Deck | fight:9-1 | fight:9-2 | fight:9-3 | fight:9-4 | fight:9-5 | fight:9-6 | fight:9-7 | ref:starter | ref:road9 | ref:expected |
 |---|---|---|---|---|---|---|---|---|---|---|
-| 1 big | 79% | 79% | 83% | 71% | 88% | 88% | 63% | 92% | 67% | 67% |
-| 2 swarm | 79% | 71% | 71% | 63% | 83% | 83% | 71% | 88% | 67% | 54% |
-| 3 family:tide | 79% | 75% | 67% | 54% | 83% | 67% | 67% | 92% | 75% | 71% |
-| 4 open | 38% | 54% | 63% | 58% | 79% | 75% | 79% | 79% | 63% | 50% |
+| 1 open | 79% | 79% | 75% | 75% | 83% | 67% | 71% | 100% | 75% | 75% |
+| 2 big | 79% | 79% | 79% | 75% | 83% | 67% | 71% | 100% | 71% | 54% |
+| 3 swarm | 75% | 75% | 63% | 54% | 88% | 79% | 79% | 96% | 67% | 67% |
+| 4 family:tide | 50% | 63% | 75% | 54% | 83% | 67% | 67% | 88% | 67% | 63% |

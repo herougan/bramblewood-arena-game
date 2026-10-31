@@ -40,13 +40,6 @@
     "swarm",
     "family:flying"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5833,
-     "why": "under 60%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map00-m1-2026-10-31.json",
     "bpro": [
@@ -176,18 +169,6 @@
     "family:flying",
     "family:night"
    ],
-   "leftOut": [
-    {
-     "focus": "family:flying",
-     "score": 0.5,
-     "why": "under 57.9%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4427,
-     "why": "under 57.9%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map01-mf-2026-10-31.json",
     "bpro": [
@@ -273,18 +254,6 @@
     "swarm",
     "family:flying"
    ],
-   "leftOut": [
-    {
-     "focus": "family:flying",
-     "score": 0.4062,
-     "why": "under 50%"
-    },
-    {
-     "focus": "big",
-     "score": 0.349,
-     "why": "under 50%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map01-mq-2026-10-31.json",
     "bpro": [
@@ -368,7 +337,6 @@
     "family:tide",
     "family:armor"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map02-mb-2026-10-31.json",
     "bpro": [
@@ -498,7 +466,6 @@
     "family:tide",
     "family:armor"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map02-mg-2026-10-31.json",
     "bpro": [
@@ -634,13 +601,6 @@
     "family:tide",
     "family:armor"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5417,
-     "why": "under 68.3%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map02-mp-2026-10-31.json",
     "bpro": [
@@ -745,13 +705,6 @@
     "swarm",
     "family:flying",
     "family:strike-first"
-   ],
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.7125,
-     "why": "under 71.7%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map03-mc-2026-10-31.json",
@@ -859,7 +812,6 @@
     "family:tide",
     "family:poison"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map04-m2-2026-10-31.json",
     "bpro": [
@@ -986,7 +938,6 @@
     "family:tide",
     "family:poison"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map05-mw-2026-10-31.json",
     "bpro": [
@@ -1116,7 +1067,6 @@
     "family:tide",
     "family:armor"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map05-ms-2026-10-31.json",
     "bpro": [
@@ -1245,13 +1195,6 @@
     "family:poison",
     "family:tide"
    ],
-   "leftOut": [
-    {
-     "focus": "family:poison",
-     "score": 0.7083,
-     "why": "under 78.6%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map06-m8-2026-10-31.json",
     "bpro": [
@@ -1358,7 +1301,6 @@
     "family:poison",
     "family:armor"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map07-mu-2026-10-31.json",
     "bpro": [
@@ -1485,7 +1427,6 @@
     "economy",
     "swarm"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map07-mz-2026-10-31.json",
     "bpro": [
@@ -1615,7 +1556,6 @@
     "family:flying",
     "family:night"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map08-m4-2026-10-31.json",
     "bpro": [
@@ -1749,7 +1689,6 @@
     "family:flying",
     "family:night"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map08-mn-2026-10-31.json",
     "bpro": [
@@ -1874,25 +1813,24 @@
     "family:tide",
     "family:evasion"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
     "bpro": [
      {
       "id": "9-BPRO-1",
-      "focus": "big",
-      "score": 0.775,
+      "focus": "open",
+      "score": 0.7792,
       "ci": [
-       0.7236,
-       0.8264
+       0.7278,
+       0.8306
       ],
       "deck": {
-       "caiman-hatchling": 4,
+       "caiman-hatchling": 3,
        "fiddler-crab-swarm": 4,
-       "mangrove-kingfisher": 1,
        "mangrove-manatee": 3,
-       "mangrove-mudskipper": 4,
-       "sunbittern-strider": 4
+       "minnow-skitter": 3,
+       "mudpuppy": 4,
+       "sunbittern-strider": 3
       },
       "leaders": [
        "mangrove-manatee"
@@ -1900,38 +1838,18 @@
      },
      {
       "id": "9-BPRO-2",
-      "focus": "swarm",
-      "score": 0.7292,
+      "focus": "big",
+      "score": 0.7583,
       "ci": [
-       0.6744,
-       0.784
+       0.7061,
+       0.8106
       ],
       "deck": {
-       "caiman-hatchling": 4,
+       "banded-sea-krait": 3,
        "fiddler-crab-swarm": 4,
        "mangrove-manatee": 3,
-       "mangrove-mudskipper": 1,
-       "minnow-skitter": 4,
-       "mudpuppy": 4
-      },
-      "leaders": [
-       "mangrove-manatee"
-      ]
-     },
-     {
-      "id": "9-BPRO-3",
-      "focus": "family:tide",
-      "score": 0.7292,
-      "ci": [
-       0.6744,
-       0.784
-      ],
-      "deck": {
-       "caiman-hatchling": 3,
-       "fiddler-crab-swarm": 4,
-       "mangrove-manatee": 3,
-       "mangrove-monitor": 4,
-       "minnow-skitter": 2,
+       "mangrove-monitor": 2,
+       "mudpuppy": 4,
        "sunbittern-strider": 4
       },
       "leaders": [
@@ -1939,27 +1857,48 @@
       ]
      },
      {
-      "id": "9-BPRO-4",
-      "focus": "open",
-      "score": 0.6375,
+      "id": "9-BPRO-3",
+      "focus": "swarm",
+      "score": 0.7417,
       "ci": [
-       0.5792,
-       0.6958
+       0.6883,
+       0.7951
       ],
       "deck": {
+       "caiman-hatchling": 3,
        "fiddler-crab-swarm": 4,
-       "fishing-cat": 3,
-       "mangrove-manatee": 2,
+       "mangrove-manatee": 3,
+       "mangrove-monitor": 2,
+       "mangrove-mudskipper": 4,
+       "minnow-skitter": 4
+      },
+      "leaders": [
+       "mangrove-manatee"
+      ]
+     },
+     {
+      "id": "9-BPRO-4",
+      "focus": "family:tide",
+      "score": 0.675,
+      "ci": [
+       0.6174,
+       0.7326
+      ],
+      "deck": {
+       "archerfish": 4,
+       "mangrove-manatee": 3,
+       "mangrove-monitor": 4,
        "mangrove-mudskipper": 4,
        "minnow-skitter": 3,
-       "mudpuppy": 4
+       "mudpuppy": 2
       },
       "leaders": [
        "mangrove-manatee"
       ]
      }
     ]
-   }
+   },
+   "leftOut": []
   },
   "m7": {
    "id": "m7",
@@ -2003,13 +1942,6 @@
     "swarm",
     "family:tide",
     "family:cleave"
-   ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.7083,
-     "why": "under 71.8%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map10-m7-2026-10-31.json",
@@ -2122,13 +2054,6 @@
     "family:tide",
     "family:cleave"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.7813,
-     "why": "under 80.1%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map10-mj-2026-10-31.json",
     "bpro": [
@@ -2240,13 +2165,6 @@
     "family:flying",
     "family:strike-first"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.734,
-     "why": "under 81.5%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map11-m10-2026-10-31.json",
     "bpro": [
@@ -2356,13 +2274,6 @@
     "family:flying",
     "family:strike-first"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.619,
-     "why": "under 67.7%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map11-mv-2026-10-31.json",
     "bpro": [
@@ -2467,13 +2378,6 @@
     "swarm",
     "family:flying",
     "family:strike-first"
-   ],
-   "leftOut": [
-    {
-     "focus": "economy",
-     "score": 0.5042,
-     "why": "under 62.5%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map12-mh-2026-10-31.json",
@@ -2580,7 +2484,6 @@
     "swarm",
     "family:evasion"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map13-mr-2026-10-31.json",
     "bpro": [
@@ -2708,20 +2611,19 @@
     "economy",
     "swarm"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json",
     "bpro": [
      {
       "id": "14-BPRO-1",
-      "focus": "open",
-      "score": 0.875,
+      "focus": "big",
+      "score": 0.8826,
       "ci": [
-       0.8395,
-       0.9105
+       0.8468,
+       0.9183
       ],
       "deck": {
-       "grave-grin-hyena": 2,
+       "dust-hyena": 2,
        "hoopoe-herald": 4,
        "leafcutter-gardener": 4,
        "mouse-sapper": 4,
@@ -2734,18 +2636,18 @@
      },
      {
       "id": "14-BPRO-2",
-      "focus": "big",
-      "score": 0.8409,
+      "focus": "open",
+      "score": 0.8788,
       "ci": [
-       0.8007,
-       0.8811
+       0.8427,
+       0.9149
       ],
       "deck": {
        "dust-hyena": 2,
        "hoopoe-herald": 4,
-       "mouse-sapper": 4,
+       "house-cat": 4,
+       "leafcutter-gardener": 4,
        "pangolin-roller": 4,
-       "plains-zebra": 4,
        "savanna-cheetah": 2
       },
       "leaders": [
@@ -2754,18 +2656,18 @@
      },
      {
       "id": "14-BPRO-3",
-      "focus": "economy",
-      "score": 0.7803,
+      "focus": "swarm",
+      "score": 0.8561,
       "ci": [
-       0.7359,
-       0.8247
+       0.8154,
+       0.8967
       ],
       "deck": {
-       "grave-grin-hyena": 3,
+       "grave-grin-hyena": 2,
        "hoopoe-herald": 4,
        "house-cat": 4,
        "leafcutter-gardener": 4,
-       "lodge-engineer": 3,
+       "plains-zebra": 4,
        "savanna-cheetah": 2
       },
       "leaders": [
@@ -2774,26 +2676,27 @@
      },
      {
       "id": "14-BPRO-4",
-      "focus": "swarm",
-      "score": 0.7652,
+      "focus": "economy",
+      "score": 0.75,
       "ci": [
-       0.7206,
-       0.8097
+       0.7064,
+       0.7936
       ],
       "deck": {
-       "dust-hyena": 3,
-       "grave-grin-hyena": 4,
+       "dust-hyena": 4,
+       "grave-grin-hyena": 3,
        "hoopoe-herald": 4,
-       "leafcutter-gardener": 4,
-       "marula-elephant": 3,
-       "savanna-cheetah": 2
+       "lodge-engineer": 2,
+       "pangolin-roller": 3,
+       "plains-zebra": 4
       },
       "leaders": [
-       "savanna-cheetah"
+       "lodge-engineer"
       ]
      }
     ]
-   }
+   },
+   "leftOut": []
   },
   "my": {
    "id": "my",
@@ -2843,13 +2746,6 @@
     "swarm",
     "family:flying",
     "family:night"
-   ],
-   "leftOut": [
-    {
-     "focus": "swarm",
-     "score": 0.5573,
-     "why": "under 69.9%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map14-my-2026-10-31.json",
@@ -2915,7 +2811,14 @@
       ]
      }
     ]
-   }
+   },
+   "leftOut": [
+    {
+     "focus": "swarm",
+     "score": 0.5573,
+     "why": "under 69.9%"
+    }
+   ]
   },
   "ml": {
    "id": "ml",
@@ -2955,13 +2858,6 @@
     "swarm",
     "family:strike-first",
     "family:flying"
-   ],
-   "leftOut": [
-    {
-     "focus": "family:strike-first",
-     "score": 0.6292,
-     "why": "under 66.3%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map15-ml-2026-10-31.json",
@@ -3070,7 +2966,6 @@
     "family:evasion",
     "family:cleave"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map16-mt-2026-10-31.json",
     "bpro": [
@@ -3197,7 +3092,6 @@
     "family:evasion",
     "family:cold"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map17-m6-2026-10-31.json",
     "bpro": [
@@ -3322,7 +3216,6 @@
     "family:evasion",
     "family:cold"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map17-mi-2026-10-31.json",
     "bpro": [
@@ -3409,18 +3302,6 @@
     "economy",
     "swarm",
     "family:poison"
-   ],
-   "leftOut": [
-    {
-     "focus": "economy",
-     "score": 0.6875,
-     "why": "under 72.5%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4875,
-     "why": "under 72.5%"
-    }
    ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map18-md-2026-10-31.json",
@@ -3509,7 +3390,6 @@
     "swarm",
     "family:poison"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map18-mpd-2026-10-31.json",
     "bpro": [
@@ -3636,18 +3516,6 @@
     "family:bleed",
     "family:fire"
    ],
-   "leftOut": [
-    {
-     "focus": "family:bleed",
-     "score": 0.6111,
-     "why": "under 72%"
-    },
-    {
-     "focus": "big",
-     "score": 0.4815,
-     "why": "under 72%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map19-m3-2026-10-31.json",
     "bpro": [
@@ -3692,7 +3560,19 @@
       ]
      }
     ]
-   }
+   },
+   "leftOut": [
+    {
+     "focus": "family:bleed",
+     "score": 0.6111,
+     "why": "under 72%"
+    },
+    {
+     "focus": "big",
+     "score": 0.4815,
+     "why": "under 72%"
+    }
+   ]
   },
   "m9": {
    "id": "m9",
@@ -3737,52 +3617,52 @@
     "family:fire",
     "family:flying"
    ],
-   "leftOut": [],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map19-m9-2026-10-31.json",
     "bpro": [
      {
       "id": "19-A-BPRO-1",
       "focus": "open",
-      "score": 0.8397,
+      "score": 0.8494,
       "ci": [
-       0.8031,
-       0.8764
+       0.8141,
+       0.8846
       ],
       "deck": {
        "ashbone-ghoul": 4,
        "cinder-gecko": 4,
-       "fire-salamander": 3,
+       "ember-jackal": 3,
        "magma-salamander": 3,
-       "quill-volley": 3,
-       "tide-spirit": 3
+       "ore-smelter-mole": 4,
+       "tide-spirit": 2
       },
       "leaders": [
-       "magma-salamander"
+       "ember-jackal"
       ]
      },
      {
       "id": "19-A-BPRO-2",
       "focus": "big",
-      "score": 0.8045,
+      "score": 0.8462,
       "ci": [
-       0.7656,
-       0.8434
+       0.8093,
+       0.8831
       ],
       "deck": {
        "ashbone-ghoul": 4,
-       "cinder-gecko": 3,
-       "ember-jackal": 3,
+       "cinder-gecko": 4,
+       "hercules-beetle": 3,
        "magma-salamander": 3,
-       "ore-smelter-mole": 4,
+       "quill-volley": 3,
        "tide-spirit": 3
       },
       "leaders": [
-       "ember-jackal"
+       "hercules-beetle"
       ]
      }
     ]
-   }
+   },
+   "leftOut": []
   },
   "m11": {
    "id": "m11",
@@ -3830,78 +3710,63 @@
     "family:flying",
     "family:ranged"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4375,
-     "why": "under 60.5%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map20-m11-2026-10-31.json",
     "bpro": [
      {
       "id": "20-BPRO-1",
       "focus": "open",
-      "score": 0.7548,
+      "score": 0.7804,
       "ci": [
-       0.7139,
-       0.7957
+       0.7449,
+       0.816
       ],
       "deck": {
-       "ashbone-ghoul": 4,
-       "cinder-stoker": 3,
-       "glacier-wolf-pack": 4,
+       "ashbone-ghoul": 3,
+       "cinder-stoker": 4,
+       "echidna-quillshot": 2,
        "magma-salamander": 3,
-       "pack-mule": 4,
-       "woodland-brawler": 2
+       "magma-wraith": 4,
+       "pack-mule": 4
       },
       "leaders": [
-       "woodland-brawler"
+       "echidna-quillshot"
       ]
      },
      {
       "id": "20-BPRO-2",
       "focus": "economy",
-      "score": 0.7436,
+      "score": 0.742,
       "ci": [
-       0.704,
-       0.7832
+       0.7044,
+       0.7796
       ],
       "deck": {
-       "ashbone-ghoul": 3,
-       "cinder-skeleton": 4,
-       "magma-salamander": 3,
-       "magma-wraith": 4,
-       "pack-mule": 4,
-       "pumice-beetle": 2
-      },
-      "leaders": [
-       "magma-salamander"
-      ]
-     },
-     {
-      "id": "20-BPRO-3",
-      "focus": "family:flying",
-      "score": 0.6731,
-      "ci": [
-       0.6296,
-       0.7165
-      ],
-      "deck": {
-       "ash-cloud-condor": 3,
-       "ash-moth": 4,
-       "ashbone-ghoul": 4,
+       "cinder-skeleton": 3,
        "cinder-stoker": 4,
-       "magma-wraith": 4,
-       "ossuary-lammergeier": 1
+       "echidna-quillshot": 2,
+       "magma-salamander": 3,
+       "pack-mule": 4,
+       "pumice-beetle": 4
       },
       "leaders": [
-       "ossuary-lammergeier"
+       "echidna-quillshot"
       ]
      }
     ]
-   }
+   },
+   "leftOut": [
+    {
+     "focus": "family:flying",
+     "score": 0.5256,
+     "why": "under 63%"
+    },
+    {
+     "focus": "big",
+     "score": 0.5032,
+     "why": "under 63%"
+    }
+   ]
   },
   "me": {
    "id": "me",
@@ -3950,43 +3815,36 @@
     "family:flying",
     "family:armor"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.4208,
-     "why": "under 50%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map20-me-2026-10-31.json",
     "bpro": [
      {
       "id": "20-A-BPRO-1",
       "focus": "open",
-      "score": 0.6458,
+      "score": 0.6042,
       "ci": [
-       0.5945,
-       0.6971
+       0.5497,
+       0.6586
       ],
       "deck": {
-       "ashbone-ghoul": 4,
+       "cinder-skeleton": 1,
        "cinder-stoker": 4,
+       "magma-wraith": 4,
        "obsidian-scorpion": 3,
        "pack-mule": 4,
-       "vampire-roost": 3,
-       "woodland-brawler": 2
+       "stalactite-golem": 4
       },
       "leaders": [
-       "woodland-brawler"
+       "obsidian-scorpion"
       ]
      },
      {
       "id": "20-A-BPRO-2",
       "focus": "family:flying",
-      "score": 0.6292,
+      "score": 0.5958,
       "ci": [
-       0.574,
-       0.6844
+       0.5407,
+       0.6509
       ],
       "deck": {
        "ash-cloud-condor": 3,
@@ -4001,7 +3859,14 @@
       ]
      }
     ]
-   }
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.425,
+     "why": "under 50%"
+    }
+   ]
   },
   "mx": {
    "id": "mx",
@@ -4055,13 +3920,6 @@
     "family:fire",
     "family:armor"
    ],
-   "leftOut": [
-    {
-     "focus": "big",
-     "score": 0.5119,
-     "why": "under 73.1%"
-    }
-   ],
    "result": {
     "file": "docs/balance/bpro2/bench-deck-map20-mx-2026-10-31.json",
     "bpro": [
@@ -4087,15 +3945,35 @@
      },
      {
       "id": "20-B-BPRO-2",
-      "focus": "family:fire",
-      "score": 0.7917,
+      "focus": "open",
+      "score": 0.8036,
       "ci": [
-       0.7383,
-       0.845
+       0.7509,
+       0.8562
       ],
       "deck": {
-       "ashbone-ghoul": 4,
        "cinder-stoker": 4,
+       "ember-jackal": 3,
+       "magma-salamander": 3,
+       "obsidian-scorpion": 2,
+       "pack-mule": 4,
+       "phoenix-fledgling": 4
+      },
+      "leaders": [
+       "ember-jackal"
+      ]
+     },
+     {
+      "id": "20-B-BPRO-3",
+      "focus": "family:fire",
+      "score": 0.75,
+      "ci": [
+       0.6974,
+       0.8026
+      ],
+      "deck": {
+       "cinder-stoker": 4,
+       "ember-centipede": 4,
        "fire-drake-hatchling": 1,
        "magma-salamander": 3,
        "magma-wraith": 4,
@@ -4104,29 +3982,16 @@
       "leaders": [
        "fire-drake-hatchling"
       ]
-     },
-     {
-      "id": "20-B-BPRO-3",
-      "focus": "open",
-      "score": 0.75,
-      "ci": [
-       0.7004,
-       0.7996
-      ],
-      "deck": {
-       "ashbone-ghoul": 4,
-       "cinder-stoker": 4,
-       "ember-centipede": 4,
-       "magma-wraith": 3,
-       "pack-mule": 2,
-       "tide-spirit": 3
-      },
-      "leaders": [
-       "tide-spirit"
-      ]
      }
     ]
-   }
+   },
+   "leftOut": [
+    {
+     "focus": "big",
+     "score": 0.5238,
+     "why": "under 73.1%"
+    }
+   ]
   }
  },
  "rule": {

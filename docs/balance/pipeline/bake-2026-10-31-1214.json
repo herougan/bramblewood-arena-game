@@ -1,0 +1,89 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "bake",
+ "status": "ok",
+ "started": "2026-10-31T04:14:39.416Z",
+ "finished": "2026-10-31T04:24:51.805Z",
+ "durationSec": 612.4,
+ "args": [
+  "--baseline",
+  "7c0916d9"
+ ],
+ "head": "2a017730",
+ "inputs": {
+  "rebake": "applied",
+  "bproMaps": 35,
+  "stale": [
+   "mk",
+   "m5",
+   "m9",
+   "m11",
+   "me",
+   "mx"
+  ],
+  "budgetGames": 6000,
+  "engine": "3639853c27",
+  "cards": "cefc213f9c"
+ },
+ "counts": {
+  "fields re-baked": 0,
+  "leaders re-baked": 0,
+  "BPRO maps": 35,
+  "BPRO maps stale": 6,
+  "BPRO maps rebuilt": 6
+ },
+ "changed": [
+  {
+   "id": "BPRO mk",
+   "field": "best deck score",
+   "old": 0.775,
+   "new": 0.7792
+  },
+  {
+   "id": "BPRO m5",
+   "field": "best deck score",
+   "old": 0.875,
+   "new": 0.8826
+  },
+  {
+   "id": "BPRO m9",
+   "field": "best deck score",
+   "old": 0.8397,
+   "new": 0.8494
+  },
+  {
+   "id": "BPRO m11",
+   "field": "best deck score",
+   "old": 0.7548,
+   "new": 0.7804
+  },
+  {
+   "id": "BPRO me",
+   "field": "best deck score",
+   "old": 0.6458,
+   "new": 0.6042
+  },
+  {
+   "id": "BPRO mx",
+   "field": "best deck score",
+   "old": 0.881,
+   "new": 0.881
+  }
+ ],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "first bake: 7c0916d9 is the baseline for the BPRO runs on file"
+ ],
+ "files": [
+  "canonical/pro-skirmishes.json",
+  "docs/balance/bpro2/",
+  "docs/balance/pipeline/state/bake-inputs.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/bake-2026-10-31-1214.json"
+}

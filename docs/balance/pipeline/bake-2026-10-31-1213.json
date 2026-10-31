@@ -1,0 +1,32 @@
+{
+ "schema": "bramblewood-pipeline/1",
+ "step": "bake",
+ "status": "fail",
+ "started": "2026-10-31T04:13:58.008Z",
+ "finished": "2026-10-31T04:13:59.794Z",
+ "durationSec": 1.8,
+ "args": [
+  "--dry"
+ ],
+ "head": "2a017730",
+ "inputs": {},
+ "counts": {
+  "fields re-baked": 0,
+  "leaders re-baked": 0
+ },
+ "changed": [],
+ "flagged": [],
+ "cached": {
+  "hits": 0,
+  "played": 0
+ },
+ "notes": [
+  "error: Cannot access 'rebuilt' before initialization"
+ ],
+ "files": [
+  "canonical/pro-skirmishes.json"
+ ],
+ "tests": null,
+ "stages": null,
+ "file": "docs/balance/pipeline/bake-2026-10-31-1213.json"
+}

@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T03:19:33.128Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-10-31T04:18:57.374Z",
+ "fingerprint": "0f26914716c7",
  "map": {
   "id": "m9",
   "num": 19,
@@ -144,33 +144,185 @@
  "searches": [
   {
    "focus": "big",
-   "steps": 8,
-   "moves": 4,
-   "games": 3302,
+   "steps": 7,
+   "moves": 3,
+   "games": 3042,
    "apartFromEarlier": null
   },
   {
    "focus": "open",
-   "steps": 12,
-   "moves": 4,
-   "games": 3198,
+   "steps": 10,
+   "moves": 2,
+   "games": 3146,
    "apartFromEarlier": 7
   }
  ],
  "apart": 6,
- "seconds": 76,
- "games": 6916,
+ "seconds": 68,
+ "games": 6604,
  "decks": [
   {
    "focus": "open",
    "labels": [
-    "big (9 copies at 1+ Lumber, average 0.5)",
-    "fire x6"
+    "big (10 copies at 1+ Lumber, average 0.5)",
+    "economy (4 resource makers)"
    ],
    "deck": {
     "ashbone-ghoul": 4,
     "cinder-gecko": 4,
-    "fire-salamander": 3,
+    "ember-jackal": 3,
+    "magma-salamander": 3,
+    "ore-smelter-mole": 4,
+    "tide-spirit": 2
+   },
+   "cards": [
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "cinder-gecko",
+     "name": "Cinder Gecko",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ore-smelter-mole",
+     "name": "Ore-Smelter Mole",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "ember-jackal",
+     "name": "Ember Jackal",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "tide-spirit",
+     "name": "Tide Spirit",
+     "copies": 2,
+     "cost": 0,
+     "rarity": "rare"
+    }
+   ],
+   "score": 0.8494,
+   "ci": [
+    0.8141,
+    0.8846
+   ],
+   "avgLumber": 0.5,
+   "avgWait": 0.65,
+   "curve": {
+    "0": 10,
+    "1": 10
+   },
+   "resourceMakers": 4,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:19-A-1",
+     "label": "vs 19-A-1 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-2",
+     "label": "vs 19-A-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-3",
+     "label": "vs 19-A-3 skirmish's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-4",
+     "label": "vs 19-A-4 skirmish's deck",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-5",
+     "label": "vs 19-A-5 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-6",
+     "label": "vs 19-A-6 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-7",
+     "label": "vs 19-A-7 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-8",
+     "label": "vs 19-A-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-9",
+     "label": "vs 19-A-9 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:19-A-10",
+     "label": "vs 19-A-10 boss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 19-A-1's field",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road23",
+     "label": "vs reference deck (Map 23) under 19-A-2's field",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
+     "p": 0.875,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (9 copies at 1+ Lumber, average 0.5)"
+   ],
+   "deck": {
+    "ashbone-ghoul": 4,
+    "cinder-gecko": 4,
+    "hercules-beetle": 3,
     "magma-salamander": 3,
     "quill-volley": 3,
     "tide-spirit": 3
@@ -191,11 +343,11 @@
      "rarity": "common"
     },
     {
-     "id": "fire-salamander",
-     "name": "Fire Salamander",
+     "id": "hercules-beetle",
+     "name": "Hercules Beetle",
      "copies": 3,
      "cost": 1,
-     "rarity": "uncommon"
+     "rarity": "rare"
     },
     {
      "id": "magma-salamander",
@@ -219,176 +371,18 @@
      "rarity": "rare"
     }
    ],
-   "score": 0.8397,
+   "score": 0.8462,
    "ci": [
-    0.8031,
-    0.8764
+    0.8093,
+    0.8831
    ],
    "avgLumber": 0.45,
-   "avgWait": 0.65,
+   "avgWait": 0.8,
    "curve": {
     "0": 11,
     "1": 9
    },
    "resourceMakers": 0,
-   "families": [
-    {
-     "f": "fire",
-     "n": 6
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:19-A-1",
-     "label": "vs 19-A-1 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-2",
-     "label": "vs 19-A-2 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-3",
-     "label": "vs 19-A-3 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-4",
-     "label": "vs 19-A-4 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-5",
-     "label": "vs 19-A-5 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-6",
-     "label": "vs 19-A-6 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-7",
-     "label": "vs 19-A-7 elite's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-8",
-     "label": "vs 19-A-8 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-9",
-     "label": "vs 19-A-9 elite's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:19-A-10",
-     "label": "vs 19-A-10 boss's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 19-A-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road23",
-     "label": "vs reference deck (Map 23) under 19-A-2's field",
-     "p": 0.5417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
-     "p": 0.7917,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (10 copies at 1+ Lumber, average 0.5)",
-    "economy (4 resource makers)"
-   ],
-   "deck": {
-    "ashbone-ghoul": 4,
-    "cinder-gecko": 3,
-    "ember-jackal": 3,
-    "magma-salamander": 3,
-    "ore-smelter-mole": 4,
-    "tide-spirit": 3
-   },
-   "cards": [
-    {
-     "id": "ashbone-ghoul",
-     "name": "Ashbone Ghoul",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ore-smelter-mole",
-     "name": "Ore-Smelter Mole",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "cinder-gecko",
-     "name": "Cinder Gecko",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ember-jackal",
-     "name": "Ember Jackal",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "magma-salamander",
-     "name": "Magma Salamander",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "tide-spirit",
-     "name": "Tide Spirit",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "rare"
-    }
-   ],
-   "score": 0.8045,
-   "ci": [
-    0.7656,
-    0.8434
-   ],
-   "avgLumber": 0.5,
-   "avgWait": 0.7,
-   "curve": {
-    "0": 10,
-    "1": 10
-   },
-   "resourceMakers": 4,
    "families": [],
    "perOpponent": [
     {
@@ -400,13 +394,13 @@
     {
      "entry": "mirror|fight:19-A-2",
      "label": "vs 19-A-2 skirmish's deck",
-     "p": 0.875,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-3",
      "label": "vs 19-A-3 skirmish's deck",
-     "p": 0.8333,
+     "p": 0.9167,
      "n": 24
     },
     {
@@ -418,55 +412,55 @@
     {
      "entry": "mirror|fight:19-A-5",
      "label": "vs 19-A-5 skirmish's deck",
-     "p": 0.875,
+     "p": 0.7917,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-6",
      "label": "vs 19-A-6 skirmish's deck",
-     "p": 0.9167,
+     "p": 1,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-7",
      "label": "vs 19-A-7 elite's deck",
-     "p": 0.5,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-8",
      "label": "vs 19-A-8 elite's deck",
-     "p": 0.9583,
+     "p": 0.75,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-9",
      "label": "vs 19-A-9 elite's deck",
-     "p": 0.7917,
+     "p": 0.9583,
      "n": 24
     },
     {
      "entry": "mirror|fight:19-A-10",
      "label": "vs 19-A-10 boss's deck",
-     "p": 0.625,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 19-A-1's field",
-     "p": 1,
+     "p": 0.875,
      "n": 24
     },
     {
      "entry": "mirror|ref:road23",
      "label": "vs reference deck (Map 23) under 19-A-2's field",
-     "p": 0.4167,
+     "p": 0.5417,
      "n": 24
     },
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 19-A-3's field",
-     "p": 0.6667,
+     "p": 0.75,
      "n": 24
     }
    ],

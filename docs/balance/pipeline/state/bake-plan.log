@@ -1,0 +1,37 @@
+Map 0 m1 Bramblewood Outskirts: list 12; focuses big, swarm, family:flying, open
+  side 0 mo The Old Bramble: list 0; NONE: no card of the list is inside the map's rarity cap (common)
+Map 1 mf Thistlewood: list 19; focuses big, swarm, family:flying, open
+  side 1 mq Clovermead: list 15; focuses big, swarm, family:flying, open
+Map 2 mb Pebble Beach: list 16; focuses economy, big, swarm, open
+  side 2 mg Smugglers' Grotto: list 11; focuses economy, big, swarm, open
+  side 2 mp Lilypad Reach: list 16; focuses economy, big, swarm, open
+Map 3 mc Gannet Cliffs: list 13; focuses economy, big, swarm, open
+Map 4 m2 Sunken Hollow: list 15; focuses economy, big, swarm, open
+Map 5 mw Gatorback Swamp: list 15; focuses economy, big, swarm, open
+  side 5 ms The Sunken Grove: list 13; focuses big, swarm, family:tide, open
+Map 6 m8 Sable Swampmire: list 14; focuses big, swarm, family:poison, open
+Map 7 mu The Morel Hollow: list 16; focuses economy, big, swarm, open
+  side 7 mz The Mycelium Deep: list 13; focuses economy, big, swarm, open
+Map 8 m4 Caves & Alcoves: list 15; focuses economy, big, swarm, open
+  side 8 mn The Glimmer Depths: list 14; focuses economy, big, swarm, open
+Map 9 mk The Kelp Mangroves: list 15; focuses big, swarm, family:tide, open
+Map 10 m7 Coral Current: list 15; focuses big, swarm, family:tide, open
+  side 10 mj The Sunken Depths: list 13; focuses economy, big, family:tide, open
+Map 11 m10 Eyrie Heights: list 18; focuses economy, big, swarm, open
+  side 11 mv The Aerie Vault: list 14; focuses big, swarm, family:flying, open
+Map 12 mh The Briar Maze: list 15; focuses economy, big, swarm, open
+Map 13 mr The Redwood Deep: list 16; focuses economy, big, swarm, open
+Map 14 m5 Savanna Reaches: list 15; focuses economy, big, swarm, open
+  side 14 my The Canopy: list 14; focuses economy, big, swarm, open
+Map 15 ml The Long Grass: list 15; focuses economy, swarm, family:strike-first, open
+Map 16 mt The Pinewood Taiga: list 15; focuses economy, big, swarm, open
+Map 17 m6 Wolfsbane Tundra: list 14; focuses economy, swarm, family:evasion, open
+  side 17 mi The Ice Hollow: list 12; focuses family:evasion, open
+Map 18 md The Glass Dunes: list 16; focuses economy, big, family:poison, open
+  side 18 mpd The Pale Desert: list 13; focuses economy, big, family:poison, open
+Map 19 m3 Ashen Spurn: list 14; focuses economy, big, family:bleed, open
+  side 19 m9 Basalt Foundry: list 12; focuses big, open
+Map 20 m11 The Sundered Peak: list 20; focuses economy, big, family:flying, open
+  side 20 me Eye of the Volcano: list 16; focuses big, family:flying, open
+  side 20 mx Volcano Lair: list 20; focuses big, swarm, family:fire, open
+-> docs/balance/bpro2-2026-10-31.json

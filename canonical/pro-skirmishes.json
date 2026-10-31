@@ -12663,83 +12663,11 @@
     {
      "id": "9-BPRO-1",
      "name": "9-BPRO-1",
-     "focus": "big",
+     "focus": "open",
      "labels": [
-      "big (8 copies at 1+ Lumber, average 0.4)",
-      "tide x11"
-     ],
-     "level": 1,
-     "leaders": [
-      "mangrove-manatee"
-     ],
-     "deck": {
-      "caiman-hatchling": 4,
-      "fiddler-crab-swarm": 4,
-      "mangrove-kingfisher": 1,
-      "mangrove-manatee": 3,
-      "mangrove-mudskipper": 4,
-      "sunbittern-strider": 4
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.775,
-      "ci": [
-       0.7236,
-       0.8264
-      ],
-      "avgLumber": 0.4,
-      "generated": "2026-10-31T02:55:09.576Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "9-BPRO-2",
-     "name": "9-BPRO-2",
-     "focus": "swarm",
-     "labels": [
-      "swarm (17 copies at 0 Lumber)",
-      "tide x12",
+      "swarm (14 copies at 0 Lumber)",
+      "tide x10",
       "heal x7"
-     ],
-     "level": 1,
-     "leaders": [
-      "mangrove-manatee"
-     ],
-     "deck": {
-      "caiman-hatchling": 4,
-      "fiddler-crab-swarm": 4,
-      "mangrove-manatee": 3,
-      "mangrove-mudskipper": 1,
-      "minnow-skitter": 4,
-      "mudpuppy": 4
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.7292,
-      "ci": [
-       0.6744,
-       0.784
-      ],
-      "avgLumber": 0.15,
-      "generated": "2026-10-31T02:55:09.576Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "9-BPRO-3",
-     "name": "9-BPRO-3",
-     "focus": "family:tide",
-     "labels": [
-      "big (11 copies at 1+ Lumber, average 0.6)",
-      "tide x9"
      ],
      "level": 1,
      "leaders": [
@@ -12749,8 +12677,45 @@
       "caiman-hatchling": 3,
       "fiddler-crab-swarm": 4,
       "mangrove-manatee": 3,
-      "mangrove-monitor": 4,
-      "minnow-skitter": 2,
+      "minnow-skitter": 3,
+      "mudpuppy": 4,
+      "sunbittern-strider": 3
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
+      "score": 0.7792,
+      "ci": [
+       0.7278,
+       0.8306
+      ],
+      "avgLumber": 0.3,
+      "generated": "2026-10-31T04:16:19.107Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "9-BPRO-2",
+     "name": "9-BPRO-2",
+     "focus": "big",
+     "labels": [
+      "big (12 copies at 1+ Lumber, average 0.6)",
+      "tide x7",
+      "heal x7"
+     ],
+     "level": 1,
+     "leaders": [
+      "mangrove-manatee"
+     ],
+     "deck": {
+      "banded-sea-krait": 3,
+      "fiddler-crab-swarm": 4,
+      "mangrove-manatee": 3,
+      "mangrove-monitor": 2,
+      "mudpuppy": 4,
       "sunbittern-strider": 4
      },
      "source": {
@@ -12758,13 +12723,49 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.7292,
+      "score": 0.7583,
       "ci": [
-       0.6744,
-       0.784
+       0.7061,
+       0.8106
       ],
-      "avgLumber": 0.55,
-      "generated": "2026-10-31T02:55:09.576Z"
+      "avgLumber": 0.6,
+      "generated": "2026-10-31T04:16:19.107Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "9-BPRO-3",
+     "name": "9-BPRO-3",
+     "focus": "swarm",
+     "labels": [
+      "swarm (15 copies at 0 Lumber)",
+      "tide x15"
+     ],
+     "level": 1,
+     "leaders": [
+      "mangrove-manatee"
+     ],
+     "deck": {
+      "caiman-hatchling": 3,
+      "fiddler-crab-swarm": 4,
+      "mangrove-manatee": 3,
+      "mangrove-monitor": 2,
+      "mangrove-mudskipper": 4,
+      "minnow-skitter": 4
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
+      "score": 0.7417,
+      "ci": [
+       0.6883,
+       0.7951
+      ],
+      "avgLumber": 0.25,
+      "generated": "2026-10-31T04:16:19.107Z"
      },
      "h2h": null,
      "later": []
@@ -12772,36 +12773,35 @@
     {
      "id": "9-BPRO-4",
      "name": "9-BPRO-4",
-     "focus": "open",
+     "focus": "family:tide",
      "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "tide x13",
-      "heal x6"
+      "big (11 copies at 1+ Lumber, average 0.6)",
+      "tide x10"
      ],
      "level": 1,
      "leaders": [
       "mangrove-manatee"
      ],
      "deck": {
-      "fiddler-crab-swarm": 4,
-      "fishing-cat": 3,
-      "mangrove-manatee": 2,
+      "archerfish": 4,
+      "mangrove-manatee": 3,
+      "mangrove-monitor": 4,
       "mangrove-mudskipper": 4,
       "minnow-skitter": 3,
-      "mudpuppy": 4
+      "mudpuppy": 2
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map09-mk-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mk --pool archerfish,banded-sea-krait,booming-bittern,caiman-hatchling,crocodile-ambusher,fiddler-crab-swarm,fishing-cat,mangrove-kingfisher,mangrove-manatee,mangrove-monitor,mangrove-mudskipper,minnow-skitter,mudpuppy,reef-shark,sunbittern-strider --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:tide,open --level 1 --mode map-true",
-      "score": 0.6375,
+      "score": 0.675,
       "ci": [
-       0.5792,
-       0.6958
+       0.6174,
+       0.7326
       ],
-      "avgLumber": 0.25,
-      "generated": "2026-10-31T02:55:09.576Z"
+      "avgLumber": 0.55,
+      "generated": "2026-10-31T04:16:19.107Z"
      },
      "h2h": null,
      "later": []
@@ -12913,7 +12913,7 @@
     "BPRO: 9-BPRO-1 dropped: electric-catfish: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "DECK1: 4 focused decks (9-PRO-1 family:tide, 9-PRO-2 swarm, 9-PRO-3 big, 9-PRO-4 open); the previous PRO decks are under history",
-    "SKILL2 BPRO: 4 focused decks from the map's list (9-BPRO-1 big, 9-BPRO-2 swarm, 9-BPRO-3 family:tide, 9-BPRO-4 open); the previous BPRO decks are under history"
+    "SKILL2 BPRO: 4 focused decks from the map's list (9-BPRO-1 open, 9-BPRO-2 big, 9-BPRO-3 swarm, 9-BPRO-4 family:tide); the previous BPRO decks are under history"
    ],
    "history": [
     {
@@ -18307,17 +18307,17 @@
     {
      "id": "14-BPRO-1",
      "name": "14-BPRO-1",
-     "focus": "open",
+     "focus": "big",
      "labels": [
       "big (10 copies at 1+ Lumber, average 0.5)",
-      "economy (4 resource makers)"
+      "economy (6 resource makers)"
      ],
      "level": 1,
      "leaders": [
       "savanna-cheetah"
      ],
      "deck": {
-      "grave-grin-hyena": 2,
+      "dust-hyena": 2,
       "hoopoe-herald": 4,
       "leafcutter-gardener": 4,
       "mouse-sapper": 4,
@@ -18329,13 +18329,13 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.875,
+      "score": 0.8826,
       "ci": [
-       0.8395,
-       0.9105
+       0.8468,
+       0.9183
       ],
       "avgLumber": 0.5,
-      "generated": "2026-10-31T03:05:49.954Z"
+      "generated": "2026-10-31T04:17:48.116Z"
      },
      "h2h": null,
      "later": []
@@ -18343,9 +18343,10 @@
     {
      "id": "14-BPRO-2",
      "name": "14-BPRO-2",
-     "focus": "big",
+     "focus": "open",
      "labels": [
-      "big (10 copies at 1+ Lumber, average 0.5)"
+      "swarm (14 copies at 0 Lumber)",
+      "economy (6 resource makers)"
      ],
      "level": 1,
      "leaders": [
@@ -18354,8 +18355,44 @@
      "deck": {
       "dust-hyena": 2,
       "hoopoe-herald": 4,
-      "mouse-sapper": 4,
+      "house-cat": 4,
+      "leafcutter-gardener": 4,
       "pangolin-roller": 4,
+      "savanna-cheetah": 2
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true",
+      "score": 0.8788,
+      "ci": [
+       0.8427,
+       0.9149
+      ],
+      "avgLumber": 0.3,
+      "generated": "2026-10-31T04:17:48.116Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "14-BPRO-3",
+     "name": "14-BPRO-3",
+     "focus": "swarm",
+     "labels": [
+      "swarm (18 copies at 0 Lumber)",
+      "economy (4 resource makers)"
+     ],
+     "level": 1,
+     "leaders": [
+      "savanna-cheetah"
+     ],
+     "deck": {
+      "grave-grin-hyena": 2,
+      "hoopoe-herald": 4,
+      "house-cat": 4,
+      "leafcutter-gardener": 4,
       "plains-zebra": 4,
       "savanna-cheetah": 2
      },
@@ -18364,49 +18401,13 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.8409,
+      "score": 0.8561,
       "ci": [
-       0.8007,
-       0.8811
+       0.8154,
+       0.8967
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-10-31T03:05:49.954Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "14-BPRO-3",
-     "name": "14-BPRO-3",
-     "focus": "economy",
-     "labels": [
-      "swarm (15 copies at 0 Lumber)",
-      "economy (7 resource makers)"
-     ],
-     "level": 1,
-     "leaders": [
-      "savanna-cheetah"
-     ],
-     "deck": {
-      "grave-grin-hyena": 3,
-      "hoopoe-herald": 4,
-      "house-cat": 4,
-      "leafcutter-gardener": 4,
-      "lodge-engineer": 3,
-      "savanna-cheetah": 2
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.7803,
-      "ci": [
-       0.7359,
-       0.8247
-      ],
-      "avgLumber": 0.4,
-      "generated": "2026-10-31T03:05:49.954Z"
+      "avgLumber": 0.1,
+      "generated": "2026-10-31T04:17:48.116Z"
      },
      "h2h": null,
      "later": []
@@ -18414,35 +18415,35 @@
     {
      "id": "14-BPRO-4",
      "name": "14-BPRO-4",
-     "focus": "swarm",
+     "focus": "economy",
      "labels": [
       "swarm (15 copies at 0 Lumber)",
-      "economy (7 resource makers)"
+      "economy (6 resource makers)"
      ],
      "level": 1,
      "leaders": [
-      "savanna-cheetah"
+      "lodge-engineer"
      ],
      "deck": {
-      "dust-hyena": 3,
-      "grave-grin-hyena": 4,
+      "dust-hyena": 4,
+      "grave-grin-hyena": 3,
       "hoopoe-herald": 4,
-      "leafcutter-gardener": 4,
-      "marula-elephant": 3,
-      "savanna-cheetah": 2
+      "lodge-engineer": 2,
+      "pangolin-roller": 3,
+      "plains-zebra": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map14-m5-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m5 --pool dust-hyena,grave-grin-hyena,hoopoe-herald,house-cat,leafcutter-gardener,lodge-engineer,marula-elephant,meerkat-burrower,mouse-sapper,pangolin-roller,plains-zebra,savanna-cheetah,spitting-cobra,springbok-pronker,weaver-bird --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,swarm,open --level 1 --mode map-true",
-      "score": 0.7652,
+      "score": 0.75,
       "ci": [
-       0.7206,
-       0.8097
+       0.7064,
+       0.7936
       ],
-      "avgLumber": 0.4,
-      "generated": "2026-10-31T03:05:49.954Z"
+      "avgLumber": 0.35,
+      "generated": "2026-10-31T04:17:48.116Z"
      },
      "h2h": null,
      "later": []
@@ -18604,7 +18605,7 @@
     "BPRO: 14-BPRO-1 dropped: mongoose-duelist: not in the map's own pool (BPRO); termite-forager: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "DECK1: 4 focused decks (14-PRO-1 swarm, 14-PRO-2 economy, 14-PRO-3 open, 14-PRO-4 big); the previous PRO decks are under history",
-    "SKILL2 BPRO: 4 focused decks from the map's list (14-BPRO-1 open, 14-BPRO-2 big, 14-BPRO-3 economy, 14-BPRO-4 swarm); the previous BPRO decks are under history"
+    "SKILL2 BPRO: 4 focused decks from the map's list (14-BPRO-1 big, 14-BPRO-2 open, 14-BPRO-3 swarm, 14-BPRO-4 economy); the previous BPRO decks are under history"
    ],
    "history": [
     {
@@ -24856,42 +24857,6 @@
      "name": "19-A-BPRO-1",
      "focus": "open",
      "labels": [
-      "big (9 copies at 1+ Lumber, average 0.5)",
-      "fire x6"
-     ],
-     "level": 1,
-     "leaders": [
-      "magma-salamander"
-     ],
-     "deck": {
-      "ashbone-ghoul": 4,
-      "cinder-gecko": 4,
-      "fire-salamander": 3,
-      "magma-salamander": 3,
-      "quill-volley": 3,
-      "tide-spirit": 3
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map19-m9-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m9 --pool anvilwhisker-otter,ash-cloud-condor,ashbone-ghoul,cinder-gecko,ember-jackal,fire-salamander,hercules-beetle,magma-salamander,ore-smelter-mole,phoenix-fledgling,quill-volley,tide-spirit --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,open --level 1 --mode map-true",
-      "score": 0.8397,
-      "ci": [
-       0.8031,
-       0.8764
-      ],
-      "avgLumber": 0.45,
-      "generated": "2026-10-31T03:19:33.128Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "19-A-BPRO-2",
-     "name": "19-A-BPRO-2",
-     "focus": "big",
-     "labels": [
       "big (10 copies at 1+ Lumber, average 0.5)",
       "economy (4 resource makers)"
      ],
@@ -24901,10 +24866,45 @@
      ],
      "deck": {
       "ashbone-ghoul": 4,
-      "cinder-gecko": 3,
+      "cinder-gecko": 4,
       "ember-jackal": 3,
       "magma-salamander": 3,
       "ore-smelter-mole": 4,
+      "tide-spirit": 2
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map19-m9-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map m9 --pool anvilwhisker-otter,ash-cloud-condor,ashbone-ghoul,cinder-gecko,ember-jackal,fire-salamander,hercules-beetle,magma-salamander,ore-smelter-mole,phoenix-fledgling,quill-volley,tide-spirit --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,open --level 1 --mode map-true",
+      "score": 0.8494,
+      "ci": [
+       0.8141,
+       0.8846
+      ],
+      "avgLumber": 0.5,
+      "generated": "2026-10-31T04:18:57.374Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "19-A-BPRO-2",
+     "name": "19-A-BPRO-2",
+     "focus": "big",
+     "labels": [
+      "big (9 copies at 1+ Lumber, average 0.5)"
+     ],
+     "level": 1,
+     "leaders": [
+      "hercules-beetle"
+     ],
+     "deck": {
+      "ashbone-ghoul": 4,
+      "cinder-gecko": 4,
+      "hercules-beetle": 3,
+      "magma-salamander": 3,
+      "quill-volley": 3,
       "tide-spirit": 3
      },
      "source": {
@@ -24912,13 +24912,13 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m9 --pool anvilwhisker-otter,ash-cloud-condor,ashbone-ghoul,cinder-gecko,ember-jackal,fire-salamander,hercules-beetle,magma-salamander,ore-smelter-mole,phoenix-fledgling,quill-volley,tide-spirit --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,open --level 1 --mode map-true",
-      "score": 0.8045,
+      "score": 0.8462,
       "ci": [
-       0.7656,
-       0.8434
+       0.8093,
+       0.8831
       ],
-      "avgLumber": 0.5,
-      "generated": "2026-10-31T03:19:33.128Z"
+      "avgLumber": 0.45,
+      "generated": "2026-10-31T04:18:57.374Z"
      },
      "h2h": null,
      "later": []
@@ -25407,32 +25407,34 @@
      "name": "20-BPRO-1",
      "focus": "open",
      "labels": [
-      "economy (4 resource makers)"
+      "economy (4 resource makers)",
+      "ranged x9",
+      "fire x7"
      ],
      "level": 1,
      "leaders": [
-      "woodland-brawler"
+      "echidna-quillshot"
      ],
      "deck": {
-      "ashbone-ghoul": 4,
-      "cinder-stoker": 3,
-      "glacier-wolf-pack": 4,
+      "ashbone-ghoul": 3,
+      "cinder-stoker": 4,
+      "echidna-quillshot": 2,
       "magma-salamander": 3,
-      "pack-mule": 4,
-      "woodland-brawler": 2
+      "magma-wraith": 4,
+      "pack-mule": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-m11-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m11 --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,cave-warlord,cinder-skeleton,cinder-stoker,deep-cave-troll,echidna-quillshot,fumarole-ibex,glacier-wolf-pack,gorge-wyrm,magma-salamander,magma-wraith,ossuary-lammergeier,pack-mule,pumice-beetle,stalactite-golem,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:flying,open --level 1 --mode map-true",
-      "score": 0.7548,
+      "score": 0.7804,
       "ci": [
-       0.7139,
-       0.7957
+       0.7449,
+       0.816
       ],
-      "avgLumber": 0.65,
-      "generated": "2026-10-31T03:21:52.530Z"
+      "avgLumber": 0.45,
+      "generated": "2026-10-31T04:21:18.260Z"
      },
      "h2h": null,
      "later": []
@@ -25442,69 +25444,32 @@
      "name": "20-BPRO-2",
      "focus": "economy",
      "labels": [
-      "economy (6 resource makers)",
-      "ranged x7",
-      "fire x7"
+      "economy (8 resource makers)"
      ],
      "level": 1,
      "leaders": [
-      "magma-salamander"
+      "echidna-quillshot"
      ],
      "deck": {
-      "ashbone-ghoul": 3,
-      "cinder-skeleton": 4,
-      "magma-salamander": 3,
-      "magma-wraith": 4,
-      "pack-mule": 4,
-      "pumice-beetle": 2
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map20-m11-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map m11 --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,cave-warlord,cinder-skeleton,cinder-stoker,deep-cave-troll,echidna-quillshot,fumarole-ibex,glacier-wolf-pack,gorge-wyrm,magma-salamander,magma-wraith,ossuary-lammergeier,pack-mule,pumice-beetle,stalactite-golem,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:flying,open --level 1 --mode map-true",
-      "score": 0.7436,
-      "ci": [
-       0.704,
-       0.7832
-      ],
-      "avgLumber": 0.65,
-      "generated": "2026-10-31T03:21:52.530Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "20-BPRO-3",
-     "name": "20-BPRO-3",
-     "focus": "family:flying",
-     "labels": [
-      "flying x8"
-     ],
-     "level": 1,
-     "leaders": [
-      "ossuary-lammergeier"
-     ],
-     "deck": {
-      "ash-cloud-condor": 3,
-      "ash-moth": 4,
-      "ashbone-ghoul": 4,
+      "cinder-skeleton": 3,
       "cinder-stoker": 4,
-      "magma-wraith": 4,
-      "ossuary-lammergeier": 1
+      "echidna-quillshot": 2,
+      "magma-salamander": 3,
+      "pack-mule": 4,
+      "pumice-beetle": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-m11-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map m11 --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,cave-warlord,cinder-skeleton,cinder-stoker,deep-cave-troll,echidna-quillshot,fumarole-ibex,glacier-wolf-pack,gorge-wyrm,magma-salamander,magma-wraith,ossuary-lammergeier,pack-mule,pumice-beetle,stalactite-golem,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus economy,big,family:flying,open --level 1 --mode map-true",
-      "score": 0.6731,
+      "score": 0.742,
       "ci": [
-       0.6296,
-       0.7165
+       0.7044,
+       0.7796
       ],
       "avgLumber": 0.6,
-      "generated": "2026-10-31T03:21:52.530Z"
+      "generated": "2026-10-31T04:21:18.260Z"
      },
      "h2h": null,
      "later": []
@@ -25756,7 +25721,7 @@
     "BPRO: 20-BPRO-3 dropped: fire-hawk: not in the map's own pool (BPRO); glasswing-butterfly: not in the map's own pool (BPRO)",
     "BPRO: first fill: PRO-1 is the newest run's optimum",
     "DECK1: 3 focused decks (20-PRO-1 open, 20-PRO-2 swarm, 20-PRO-3 economy); the previous PRO decks are under history",
-    "SKILL2 BPRO: 3 focused decks from the map's list (20-BPRO-1 open, 20-BPRO-2 economy, 20-BPRO-3 family:flying); the previous BPRO decks are under history"
+    "SKILL2 BPRO: 2 focused decks from the map's list (20-BPRO-1 open, 20-BPRO-2 economy); the previous BPRO decks are under history"
    ],
    "history": [
     {
@@ -26075,32 +26040,33 @@
      "name": "20-A-BPRO-1",
      "focus": "open",
      "labels": [
-      "economy (4 resource makers)"
+      "economy (4 resource makers)",
+      "armor x7"
      ],
      "level": 1,
      "leaders": [
-      "woodland-brawler"
+      "obsidian-scorpion"
      ],
      "deck": {
-      "ashbone-ghoul": 4,
+      "cinder-skeleton": 1,
       "cinder-stoker": 4,
+      "magma-wraith": 4,
       "obsidian-scorpion": 3,
       "pack-mule": 4,
-      "vampire-roost": 3,
-      "woodland-brawler": 2
+      "stalactite-golem": 4
      },
      "source": {
       "file": "docs/balance/bpro2/bench-deck-map20-me-2026-10-31.json",
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map me --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,cave-warlord,cinder-skeleton,cinder-stoker,deep-cave-troll,magma-wraith,obsidian-scorpion,ossuary-lammergeier,pack-mule,stalactite-golem,the-contradiction,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,family:flying,open --level 1 --mode map-true",
-      "score": 0.6458,
+      "score": 0.6042,
       "ci": [
-       0.5945,
-       0.6971
+       0.5497,
+       0.6586
       ],
-      "avgLumber": 0.55,
-      "generated": "2026-10-31T03:23:56.474Z"
+      "avgLumber": 0.8,
+      "generated": "2026-10-31T04:23:08.098Z"
      },
      "h2h": null,
      "later": []
@@ -26130,13 +26096,13 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map me --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,cave-warlord,cinder-skeleton,cinder-stoker,deep-cave-troll,magma-wraith,obsidian-scorpion,ossuary-lammergeier,pack-mule,stalactite-golem,the-contradiction,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,family:flying,open --level 1 --mode map-true",
-      "score": 0.6292,
+      "score": 0.5958,
       "ci": [
-       0.574,
-       0.6844
+       0.5407,
+       0.6509
       ],
       "avgLumber": 0.6,
-      "generated": "2026-10-31T03:23:56.474Z"
+      "generated": "2026-10-31T04:23:08.098Z"
      },
      "h2h": null,
      "later": []
@@ -26855,7 +26821,7 @@
        0.9246
       ],
       "avgLumber": 0.3,
-      "generated": "2026-10-31T03:25:36.322Z"
+      "generated": "2026-10-31T04:24:48.122Z"
      },
      "h2h": null,
      "later": []
@@ -26863,6 +26829,41 @@
     {
      "id": "20-B-BPRO-2",
      "name": "20-B-BPRO-2",
+     "focus": "open",
+     "labels": [
+      "economy (4 resource makers)"
+     ],
+     "level": 1,
+     "leaders": [
+      "ember-jackal"
+     ],
+     "deck": {
+      "cinder-stoker": 4,
+      "ember-jackal": 3,
+      "magma-salamander": 3,
+      "obsidian-scorpion": 2,
+      "pack-mule": 4,
+      "phoenix-fledgling": 4
+     },
+     "source": {
+      "file": "docs/balance/bpro2/bench-deck-map20-mx-2026-10-31.json",
+      "mode": "bpro2",
+      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
+      "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,caldera-wyrm,cinder-stoker,deep-cave-troll,ember-centipede,ember-jackal,fire-drake-hatchling,magma-salamander,magma-titan,magma-wraith,obsidian-scorpion,pack-mule,phoenix-fledgling,stalactite-golem,tide-spirit,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:fire,open --level 1 --mode map-true",
+      "score": 0.8036,
+      "ci": [
+       0.7509,
+       0.8562
+      ],
+      "avgLumber": 0.8,
+      "generated": "2026-10-31T04:24:48.122Z"
+     },
+     "h2h": null,
+     "later": []
+    },
+    {
+     "id": "20-B-BPRO-3",
+     "name": "20-B-BPRO-3",
      "focus": "family:fire",
      "labels": [
       "economy (4 resource makers)",
@@ -26874,8 +26875,8 @@
       "fire-drake-hatchling"
      ],
      "deck": {
-      "ashbone-ghoul": 4,
       "cinder-stoker": 4,
+      "ember-centipede": 4,
       "fire-drake-hatchling": 1,
       "magma-salamander": 3,
       "magma-wraith": 4,
@@ -26886,48 +26887,13 @@
       "mode": "bpro2",
       "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
       "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,caldera-wyrm,cinder-stoker,deep-cave-troll,ember-centipede,ember-jackal,fire-drake-hatchling,magma-salamander,magma-titan,magma-wraith,obsidian-scorpion,pack-mule,phoenix-fledgling,stalactite-golem,tide-spirit,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:fire,open --level 1 --mode map-true",
-      "score": 0.7917,
-      "ci": [
-       0.7383,
-       0.845
-      ],
-      "avgLumber": 0.45,
-      "generated": "2026-10-31T03:25:36.322Z"
-     },
-     "h2h": null,
-     "later": []
-    },
-    {
-     "id": "20-B-BPRO-3",
-     "name": "20-B-BPRO-3",
-     "focus": "open",
-     "labels": [
-      "swarm (17 copies at 0 Lumber)"
-     ],
-     "level": 1,
-     "leaders": [
-      "tide-spirit"
-     ],
-     "deck": {
-      "ashbone-ghoul": 4,
-      "cinder-stoker": 4,
-      "ember-centipede": 4,
-      "magma-wraith": 3,
-      "pack-mule": 2,
-      "tide-spirit": 3
-     },
-     "source": {
-      "file": "docs/balance/bpro2/bench-deck-map20-mx-2026-10-31.json",
-      "mode": "bpro2",
-      "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
-      "reproduce": "node tools/bench/bench.js deck --map mx --pool ancient-sloth-titan,ash-cloud-condor,ash-moth,ashbone-ghoul,caldera-wyrm,cinder-stoker,deep-cave-troll,ember-centipede,ember-jackal,fire-drake-hatchling,magma-salamander,magma-titan,magma-wraith,obsidian-scorpion,pack-mule,phoenix-fledgling,stalactite-golem,tide-spirit,vampire-roost,woodland-brawler --max-unique 6 --max-copies 4 --budget 6000 --final-games 24 --seed bpro2 --focus big,swarm,family:fire,open --level 1 --mode map-true",
       "score": 0.75,
       "ci": [
-       0.7004,
-       0.7996
+       0.6974,
+       0.8026
       ],
-      "avgLumber": 0.15,
-      "generated": "2026-10-31T03:25:36.322Z"
+      "avgLumber": 0.45,
+      "generated": "2026-10-31T04:24:48.122Z"
      },
      "h2h": null,
      "later": []
@@ -27128,7 +27094,7 @@
     "BPRO: left out (-113 Elo below the band): ash-cloud-condor:1,ashbone-ghoul:3,cinder-gecko:2,echidna-qu...",
     "BPRO: left out (-145 Elo below the band): ash-cloud-condor:1,ashbone-ghoul:1,caldera-wyrm:1,cinder-gec...",
     "DECK1: 3 focused decks (20-B-PRO-1 open, 20-B-PRO-2 swarm, 20-B-PRO-3 family:fire); the previous PRO decks are under history",
-    "SKILL2 BPRO: 3 focused decks from the map's list (20-B-BPRO-1 swarm, 20-B-BPRO-2 family:fire, 20-B-BPRO-3 open); the previous BPRO decks are under history"
+    "SKILL2 BPRO: 3 focused decks from the map's list (20-B-BPRO-1 swarm, 20-B-BPRO-2 open, 20-B-BPRO-3 family:fire); the previous BPRO decks are under history"
    ],
    "history": [
     {

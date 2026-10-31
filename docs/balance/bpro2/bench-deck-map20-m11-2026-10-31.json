@@ -1,7 +1,7 @@
 {
  "tool": "tools/bench/bench.js deck 1.0.0 (2026-10-28, TOOLS1)",
- "generated": "2026-10-31T03:21:52.530Z",
- "fingerprint": "6eb8b2ec0b65",
+ "generated": "2026-10-31T04:21:18.260Z",
+ "fingerprint": "0f26914716c7",
  "map": {
   "id": "m11",
   "num": 20,
@@ -174,51 +174,374 @@
  "searches": [
   {
    "focus": "economy",
-   "steps": 4,
+   "steps": 3,
    "moves": 2,
-   "games": 1794,
+   "games": 1560,
    "apartFromEarlier": null
   },
   {
    "focus": "big",
-   "steps": 3,
+   "steps": 4,
    "moves": 3,
-   "games": 1560,
-   "apartFromEarlier": 13
+   "games": 1820,
+   "apartFromEarlier": 10
   },
   {
    "focus": "family:flying",
-   "steps": 4,
-   "moves": 3,
-   "games": 1638,
-   "apartFromEarlier": 13
+   "steps": 5,
+   "moves": 2,
+   "games": 1534,
+   "apartFromEarlier": 12
   },
   {
    "focus": "open",
    "steps": 4,
-   "moves": 2,
+   "moves": 3,
    "games": 1898,
-   "apartFromEarlier": 10
+   "apartFromEarlier": 7
   }
  ],
  "apart": 6,
  "seconds": 139,
- "games": 7722,
+ "games": 7644,
  "decks": [
   {
    "focus": "open",
    "labels": [
-    "economy (4 resource makers)"
+    "economy (4 resource makers)",
+    "ranged x9",
+    "fire x7"
    ],
    "deck": {
-    "ashbone-ghoul": 4,
-    "cinder-stoker": 3,
-    "glacier-wolf-pack": 4,
+    "ashbone-ghoul": 3,
+    "cinder-stoker": 4,
+    "echidna-quillshot": 2,
     "magma-salamander": 3,
-    "pack-mule": 4,
-    "woodland-brawler": 2
+    "magma-wraith": 4,
+    "pack-mule": 4
    },
    "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-wraith",
+     "name": "Magma Wraith",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ashbone-ghoul",
+     "name": "Ashbone Ghoul",
+     "copies": 3,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.7804,
+   "ci": [
+    0.7449,
+    0.816
+   ],
+   "avgLumber": 0.45,
+   "avgWait": 0.7,
+   "curve": {
+    "0": 11,
+    "1": 9
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "ranged",
+     "n": 9
+    },
+    {
+     "f": "fire",
+     "n": 7
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.3958,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.9167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.0417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.9167,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 0
+  },
+  {
+   "focus": "economy",
+   "labels": [
+    "economy (8 resource makers)"
+   ],
+   "deck": {
+    "cinder-skeleton": 3,
+    "cinder-stoker": 4,
+    "echidna-quillshot": 2,
+    "magma-salamander": 3,
+    "pack-mule": 4,
+    "pumice-beetle": 4
+   },
+   "cards": [
+    {
+     "id": "cinder-stoker",
+     "name": "Cinder Stoker",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "pumice-beetle",
+     "name": "Pumice Beetle",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "uncommon"
+    },
+    {
+     "id": "cinder-skeleton",
+     "name": "Cinder Skeleton",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "common"
+    },
+    {
+     "id": "magma-salamander",
+     "name": "Magma Salamander",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "echidna-quillshot",
+     "name": "Echidna Quillshot",
+     "copies": 2,
+     "cost": 1,
+     "rarity": "veryrare"
+    }
+   ],
+   "score": 0.742,
+   "ci": [
+    0.7044,
+    0.7796
+   ],
+   "avgLumber": 0.6,
+   "avgWait": 0.55,
+   "curve": {
+    "0": 8,
+    "1": 12
+   },
+   "resourceMakers": 8,
+   "families": [],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.9583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.3333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.7708,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.8333,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.875,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.6667,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 1,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 1,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 7
+  },
+  {
+   "focus": "family:flying",
+   "labels": [
+    "economy (4 resource makers)",
+    "flying x8"
+   ],
+   "deck": {
+    "ash-cloud-condor": 3,
+    "ash-moth": 4,
+    "ashbone-ghoul": 4,
+    "deep-cave-troll": 4,
+    "ossuary-lammergeier": 1,
+    "pack-mule": 4
+   },
+   "cards": [
+    {
+     "id": "ash-moth",
+     "name": "Ash Moth",
+     "copies": 4,
+     "cost": 1,
+     "rarity": "common"
+    },
     {
      "id": "ashbone-ghoul",
      "name": "Ashbone Ghoul",
@@ -227,10 +550,162 @@
      "rarity": "common"
     },
     {
-     "id": "glacier-wolf-pack",
-     "name": "Glacier Wolf Pack",
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
      "copies": 4,
-     "cost": 2,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "pack-mule",
+     "name": "Pack Mule",
+     "copies": 4,
+     "cost": 0,
+     "rarity": "common"
+    },
+    {
+     "id": "ash-cloud-condor",
+     "name": "Ash Cloud Condor",
+     "copies": 3,
+     "cost": 1,
+     "rarity": "rare"
+    },
+    {
+     "id": "ossuary-lammergeier",
+     "name": "Ossuary Lammergeier",
+     "copies": 1,
+     "cost": 1,
+     "rarity": "superrare"
+    }
+   ],
+   "score": 0.5256,
+   "ci": [
+    0.4731,
+    0.5782
+   ],
+   "avgLumber": 1,
+   "avgWait": 0.8,
+   "curve": {
+    "0": 8,
+    "1": 8,
+    "3": 4
+   },
+   "resourceMakers": 4,
+   "families": [
+    {
+     "f": "flying",
+     "n": 8
+    }
+   ],
+   "perOpponent": [
+    {
+     "entry": "mirror|fight:20-1",
+     "label": "vs 20-1 skirmish's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-2",
+     "label": "vs 20-2 skirmish's deck",
+     "p": 0.75,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-3",
+     "label": "vs 20-3 skirmish's deck",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-4",
+     "label": "vs 20-4 skirmish's deck",
+     "p": 0.4167,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-5",
+     "label": "vs 20-5 elite's deck",
+     "p": 0.5,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-6",
+     "label": "vs 20-6 elite's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-7",
+     "label": "vs 20-7 elite's deck",
+     "p": 0.4583,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-8",
+     "label": "vs 20-8 elite's deck",
+     "p": 0.5417,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-9",
+     "label": "vs 20-9 boss's deck",
+     "p": 0.5833,
+     "n": 24
+    },
+    {
+     "entry": "mirror|fight:20-10",
+     "label": "vs 20-10 worldboss's deck",
+     "p": 0.375,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:starter",
+     "label": "vs reference starter deck under 20-1's field",
+     "p": 0.7083,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:road20",
+     "label": "vs reference deck (Map 20) under 20-2's field",
+     "p": 0.125,
+     "n": 24
+    },
+    {
+     "entry": "mirror|ref:expected",
+     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
+     "p": 0.5833,
+     "n": 24
+    }
+   ],
+   "copiesApartFromOpen": 13
+  },
+  {
+   "focus": "big",
+   "labels": [
+    "big (8 copies at 3+ Lumber, average 1.4)",
+    "economy (4 resource makers)"
+   ],
+   "deck": {
+    "ancient-sloth-titan": 4,
+    "cinder-stoker": 3,
+    "deep-cave-troll": 4,
+    "magma-salamander": 3,
+    "pack-mule": 4,
+    "woodland-brawler": 2
+   },
+   "cards": [
+    {
+     "id": "ancient-sloth-titan",
+     "name": "Ancient Sloth Titan",
+     "copies": 4,
+     "cost": 3,
+     "rarity": "common"
+    },
+    {
+     "id": "deep-cave-troll",
+     "name": "Cave Bear",
+     "copies": 4,
+     "cost": 3,
      "rarity": "common"
     },
     {
@@ -262,17 +737,17 @@
      "rarity": "veryrare"
     }
    ],
-   "score": 0.7548,
+   "score": 0.5032,
    "ci": [
-    0.7139,
-    0.7957
+    0.4509,
+    0.5555
    ],
-   "avgLumber": 0.65,
-   "avgWait": 0.65,
+   "avgLumber": 1.45,
+   "avgWait": 1.85,
    "curve": {
-    "0": 11,
+    "0": 7,
     "1": 5,
-    "2": 4
+    "3": 8
    },
    "resourceMakers": 4,
    "families": [],
@@ -280,182 +755,19 @@
     {
      "entry": "mirror|fight:20-1",
      "label": "vs 20-1 skirmish's deck",
-     "p": 0.8125,
+     "p": 0.6667,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-2",
      "label": "vs 20-2 skirmish's deck",
-     "p": 0.875,
+     "p": 0.6458,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-3",
      "label": "vs 20-3 skirmish's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-4",
-     "label": "vs 20-4 skirmish's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-5",
-     "label": "vs 20-5 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-6",
-     "label": "vs 20-6 elite's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-7",
-     "label": "vs 20-7 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-8",
-     "label": "vs 20-8 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-9",
-     "label": "vs 20-9 boss's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-10",
-     "label": "vs 20-10 worldboss's deck",
-     "p": 0.5833,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 20-1's field",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road20",
-     "label": "vs reference deck (Map 20) under 20-2's field",
-     "p": 0.125,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
-     "p": 0.9583,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 0
-  },
-  {
-   "focus": "economy",
-   "labels": [
-    "economy (6 resource makers)",
-    "ranged x7",
-    "fire x7"
-   ],
-   "deck": {
-    "ashbone-ghoul": 3,
-    "cinder-skeleton": 4,
-    "magma-salamander": 3,
-    "magma-wraith": 4,
-    "pack-mule": 4,
-    "pumice-beetle": 2
-   },
-   "cards": [
-    {
-     "id": "cinder-skeleton",
-     "name": "Cinder Skeleton",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "magma-wraith",
-     "name": "Magma Wraith",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "pack-mule",
-     "name": "Pack Mule",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "ashbone-ghoul",
-     "name": "Ashbone Ghoul",
-     "copies": 3,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "magma-salamander",
-     "name": "Magma Salamander",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "pumice-beetle",
-     "name": "Pumice Beetle",
-     "copies": 2,
-     "cost": 1,
-     "rarity": "uncommon"
-    }
-   ],
-   "score": 0.7436,
-   "ci": [
-    0.704,
-    0.7832
-   ],
-   "avgLumber": 0.65,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 7,
-    "1": 13
-   },
-   "resourceMakers": 6,
-   "families": [
-    {
-     "f": "ranged",
-     "n": 7
-    },
-    {
-     "f": "fire",
-     "n": 7
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:20-1",
-     "label": "vs 20-1 skirmish's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-2",
-     "label": "vs 20-2 skirmish's deck",
-     "p": 0.9167,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-3",
-     "label": "vs 20-3 skirmish's deck",
-     "p": 0.875,
+     "p": 0.5417,
      "n": 24
     },
     {
@@ -467,361 +779,43 @@
     {
      "entry": "mirror|fight:20-5",
      "label": "vs 20-5 elite's deck",
-     "p": 0.6667,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-6",
      "label": "vs 20-6 elite's deck",
-     "p": 0.8333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-7",
-     "label": "vs 20-7 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-8",
-     "label": "vs 20-8 elite's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-9",
-     "label": "vs 20-9 boss's deck",
-     "p": 0.875,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-10",
-     "label": "vs 20-10 worldboss's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 20-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road20",
-     "label": "vs reference deck (Map 20) under 20-2's field",
-     "p": 0.0417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
-     "p": 0.75,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 10
-  },
-  {
-   "focus": "family:flying",
-   "labels": [
-    "flying x8"
-   ],
-   "deck": {
-    "ash-cloud-condor": 3,
-    "ash-moth": 4,
-    "ashbone-ghoul": 4,
-    "cinder-stoker": 4,
-    "magma-wraith": 4,
-    "ossuary-lammergeier": 1
-   },
-   "cards": [
-    {
-     "id": "ash-moth",
-     "name": "Ash Moth",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "common"
-    },
-    {
-     "id": "ashbone-ghoul",
-     "name": "Ashbone Ghoul",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "magma-wraith",
-     "name": "Magma Wraith",
-     "copies": 4,
-     "cost": 1,
-     "rarity": "uncommon"
-    },
-    {
-     "id": "ash-cloud-condor",
-     "name": "Ash Cloud Condor",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "ossuary-lammergeier",
-     "name": "Ossuary Lammergeier",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "superrare"
-    }
-   ],
-   "score": 0.6731,
-   "ci": [
-    0.6296,
-    0.7165
-   ],
-   "avgLumber": 0.6,
-   "avgWait": 0.6,
-   "curve": {
-    "0": 8,
-    "1": 12
-   },
-   "resourceMakers": 0,
-   "families": [
-    {
-     "f": "flying",
-     "n": 8
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:20-1",
-     "label": "vs 20-1 skirmish's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-2",
-     "label": "vs 20-2 skirmish's deck",
-     "p": 0.9583,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-3",
-     "label": "vs 20-3 skirmish's deck",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-4",
-     "label": "vs 20-4 skirmish's deck",
-     "p": 0.3333,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-5",
-     "label": "vs 20-5 elite's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-6",
-     "label": "vs 20-6 elite's deck",
-     "p": 0.7083,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-7",
-     "label": "vs 20-7 elite's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-8",
-     "label": "vs 20-8 elite's deck",
-     "p": 0.7917,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-9",
-     "label": "vs 20-9 boss's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-10",
-     "label": "vs 20-10 worldboss's deck",
-     "p": 0.5,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:starter",
-     "label": "vs reference starter deck under 20-1's field",
-     "p": 1,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:road20",
-     "label": "vs reference deck (Map 20) under 20-2's field",
-     "p": 0.0417,
-     "n": 24
-    },
-    {
-     "entry": "mirror|ref:expected",
-     "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
-     "p": 0.7083,
-     "n": 24
-    }
-   ],
-   "copiesApartFromOpen": 13
-  },
-  {
-   "focus": "big",
-   "labels": [
-    "big (8 copies at 3+ Lumber, average 1.6)",
-    "economy (4 resource makers)",
-    "siege x8"
-   ],
-   "deck": {
-    "cave-warlord": 4,
-    "cinder-stoker": 4,
-    "gorge-wyrm": 4,
-    "magma-salamander": 3,
-    "ossuary-lammergeier": 1,
-    "pack-mule": 4
-   },
-   "cards": [
-    {
-     "id": "cave-warlord",
-     "name": "Cave Warlord",
-     "copies": 4,
-     "cost": 4,
-     "rarity": "common"
-    },
-    {
-     "id": "cinder-stoker",
-     "name": "Cinder Stoker",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "gorge-wyrm",
-     "name": "Gorge Wyrm",
-     "copies": 4,
-     "cost": 3,
-     "rarity": "common"
-    },
-    {
-     "id": "pack-mule",
-     "name": "Pack Mule",
-     "copies": 4,
-     "cost": 0,
-     "rarity": "common"
-    },
-    {
-     "id": "magma-salamander",
-     "name": "Magma Salamander",
-     "copies": 3,
-     "cost": 1,
-     "rarity": "rare"
-    },
-    {
-     "id": "ossuary-lammergeier",
-     "name": "Ossuary Lammergeier",
-     "copies": 1,
-     "cost": 1,
-     "rarity": "superrare"
-    }
-   ],
-   "score": 0.4375,
-   "ci": [
-    0.3872,
-    0.4878
-   ],
-   "avgLumber": 1.6,
-   "avgWait": 2,
-   "curve": {
-    "0": 8,
-    "1": 4,
-    "3": 4,
-    "4": 4
-   },
-   "resourceMakers": 4,
-   "families": [
-    {
-     "f": "siege",
-     "n": 8
-    }
-   ],
-   "perOpponent": [
-    {
-     "entry": "mirror|fight:20-1",
-     "label": "vs 20-1 skirmish's deck",
-     "p": 0.6667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-2",
-     "label": "vs 20-2 skirmish's deck",
-     "p": 0.625,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-3",
-     "label": "vs 20-3 skirmish's deck",
      "p": 0.4583,
      "n": 24
     },
     {
-     "entry": "mirror|fight:20-4",
-     "label": "vs 20-4 skirmish's deck",
-     "p": 0.1667,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-5",
-     "label": "vs 20-5 elite's deck",
-     "p": 0.3542,
-     "n": 24
-    },
-    {
-     "entry": "mirror|fight:20-6",
-     "label": "vs 20-6 elite's deck",
-     "p": 0.5,
-     "n": 24
-    },
-    {
      "entry": "mirror|fight:20-7",
      "label": "vs 20-7 elite's deck",
-     "p": 0.3542,
+     "p": 0.7083,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-8",
      "label": "vs 20-8 elite's deck",
-     "p": 0.5625,
+     "p": 0.5208,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-9",
      "label": "vs 20-9 boss's deck",
-     "p": 0.4167,
+     "p": 0.4583,
      "n": 24
     },
     {
      "entry": "mirror|fight:20-10",
      "label": "vs 20-10 worldboss's deck",
-     "p": 0.2083,
+     "p": 0.4167,
      "n": 24
     },
     {
      "entry": "mirror|ref:starter",
      "label": "vs reference starter deck under 20-1's field",
-     "p": 0.75,
+     "p": 0.5833,
      "n": 24
     },
     {
@@ -833,7 +827,7 @@
     {
      "entry": "mirror|ref:expected",
      "label": "vs expected player deck (expectedPlayerDeck) under 20-3's field",
-     "p": 0.5833,
+     "p": 0.6667,
      "n": 24
     }
    ],
