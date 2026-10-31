@@ -3799,6 +3799,9 @@
   .gsi-btn:hover:not(:disabled){background:#f6f8fc; box-shadow:0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);}
   .gsi-btn:focus-visible{outline:2px solid #4285F4; outline-offset:2px;}
   .gsi-btn:disabled{opacity:.5; cursor:not-allowed;}
+  .gsi-host{display:flex; justify-content:center; min-height:44px; margin:2px 0;} .gsi-host[hidden]{display:none;} /* 2026-10-31 (UI10, AUTH1): Google's own button */
+  .auth-other-link{display:block; margin:4px auto 0; padding:2px 6px; background:none; border:0; color:var(--ink-muted, #8a8f98); font:inherit; font-size:12.5px; text-decoration:underline; cursor:pointer;}
+  .auth-other-link:hover{color:var(--ink, #fff);}
   .gsi-btn .gsi-logo{width:20px; height:20px; flex:none;}
   .auth-or{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--ink-muted); text-transform:lowercase;}
   .auth-or::before, .auth-or::after{content:''; flex:1; height:1px; background:currentColor; opacity:.35;}
@@ -13519,6 +13522,10 @@ body.bw-battle-edit .battlefield .board-card:hover .card-tile, body.bw-battle-ed
 .ed-art-review .ed-art-reason{display:block; margin:2px 0 4px; color:#ffb4b4;}
 .ed-art-review .btn{margin:2px 4px 0 0;}
 .ed-art-wrap{display:flex; flex-direction:column; align-items:center; gap:4px; max-width:120px;}
+.rejected-art .ra-list{list-style:none; margin:8px 0 0; padding:0; display:grid; gap:10px; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));} /* 2026-10-31 (UI10, EE5) */
+.rejected-art .ra-row{display:flex; gap:10px; align-items:flex-start; padding:8px; border-radius:10px; background:color-mix(in srgb, var(--surface-2, #333) 70%, transparent);}
+.rejected-art .ra-art{flex:0 0 96px; width:96px;} .rejected-art .ra-art .card-tile{width:96px !important;}
+.rejected-art .ra-text{display:flex; flex-direction:column; gap:4px; min-width:0;} .rejected-art .ra-comment{color:#ffb4b4; overflow-wrap:anywhere; white-space:pre-wrap;} .rejected-art .ra-when{opacity:.7;}
 .ed-art-wrap .ed-art-why{font-size:11px; line-height:1.25; color:#ffb4b4; text-align:center; overflow-wrap:anywhere;}
 </style>
 <style id="tsStyles">
@@ -44112,6 +44119,11 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-xref-vs": "Against:",
   "ui.pref-xref-you": "You play:",
   "ui.ui10-my-deck": "My deck",
+  "ui.ui10-other-signin": "Other sign-in",
+  "ui.ui10-ra-title": "Rejected art",
+  "ui.ui10-ra-sub": "Every card whose art was rejected, with your comment. Open a card to change it or clear the mark.",
+  "ui.ui10-ra-open": "Open card",
+  "ui.ui10-ra-no-comment": "(no comment)",
   "ui.ui10-skirm-enemy": "Enemy: a random deck built from this map's card list.",
   "ui.pref-level": "Level {n}",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
@@ -51472,7 +51484,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7b5c595a3864', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
+const BUILD_ID = '27c12ee12943', BUILD_CARD_HASH = 'ed4f312ece4b117733b815a2761e5256307bb024615eb144b509114334854b30';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59128,7 +59140,7 @@ function renderEditorInner(){
   // 2026-10-31 (package UI10, owner EE8): the Swarm type dropdown applies at once: the row remembers the pick and the "Counts <Type>" text follows.
   overlay.querySelectorAll('#skillRows select[data-sk="vals"], #evergreenRows select[data-sk="vals"]').forEach(sel=> sel.addEventListener('change', ()=>{
     const i = Number(sel.getAttribute('data-i')), rowEl = sel.closest('.skill-row'), hint = rowEl && rowEl.querySelector('.skill-types-hint');
-    if(c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
+    if(c._skillRows && c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
     sel.setAttribute('data-first', sel.value); sel.setAttribute('data-extra', '[]');
     if(hint) hint.textContent = sel.value ? 'Counts ' + sel.value : 'Any shared type';
   }));
@@ -60995,6 +61007,49 @@ async function cloudSignInWithGoogle(){
   // No return value on purpose — the page is about to navigate away to Google.
 }
 
+// 2026-10-31 (package UI10, AUTH1 / owner CC1, DD5): Google's own sign-in button (Google Identity Services) on our page, so Google's consent names this site,
+// not supabase.co. Flow: a random raw nonce; its SHA-256 hex goes to google.accounts.id.initialize; the callback hands Google's ID token and the raw nonce to
+// Supabase's signInWithIdToken. The script (https://accounts.google.com/gsi/client) loads only when a sign-in screen is drawn. Today's redirect
+// (cloudSignInWithGoogle) stays as the "Other sign-in" link, and takes over by itself when the script cannot load. Nothing here prints or stores a token.
+const GOOGLE_CLIENT_ID = '871693115882-bhdr13re9l3ejo9c6alsh81nms45uk68.apps.googleusercontent.com'; // public (an OAuth client ID is not a secret)
+const GSI_SRC = 'https://accounts.google.com/gsi/client';
+let gsiLoadPromise = null;
+function gsiLoad(timeoutMs){
+  if(typeof window !== 'undefined' && window.google && window.google.accounts && window.google.accounts.id) return Promise.resolve(window.google);
+  if(gsiLoadPromise) return gsiLoadPromise;
+  gsiLoadPromise = new Promise((resolve, reject)=>{
+    let done = false; const fail = why=>{ if(done) return; done = true; gsiLoadPromise = null; reject(new Error(why)); };
+    const t = setTimeout(()=> fail('timeout'), timeoutMs || 8000);
+    try{
+      const sc = document.createElement('script'); sc.src = GSI_SRC; sc.async = true; sc.defer = true;
+      sc.onload = ()=>{ if(done) return; if(window.google && window.google.accounts && window.google.accounts.id){ done = true; clearTimeout(t); resolve(window.google); } else { clearTimeout(t); fail('no google.accounts.id'); } };
+      sc.onerror = ()=>{ clearTimeout(t); try{ sc.remove(); }catch(e){} fail('load error'); };
+      document.head.appendChild(sc);
+    }catch(e){ clearTimeout(t); fail('load error'); }
+  });
+  return gsiLoadPromise;
+}
+function gsiRandomNonce(){ const a = new Uint8Array(16); (window.crypto || {}).getRandomValues ? crypto.getRandomValues(a) : a.forEach((_, i)=>{ a[i] = Math.floor(Math.random() * 256); }); return [...a].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+async function gsiSha256Hex(text){ const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)); return [...new Uint8Array(buf)].map(b=> b.toString(16).padStart(2, '0')).join(''); }
+// the callback Google calls with the ID token: Supabase checks it (and the raw nonce against the token's hashed one)
+async function gsiHandleCredential(response, rawNonce){
+  if(!sbClient) throw new Error('Cloud sync is not available right now.');
+  if(!response || !response.credential) throw new Error('Google did not send a sign-in. Try again.');
+  const { error } = await sbClient.auth.signInWithIdToken({ provider: 'google', token: response.credential, nonce: rawNonce });
+  if(error) throw error;
+}
+// mounts Google's button in `host`; resolves true when drawn, false when the script is unavailable (the caller then shows the redirect button)
+async function gsiMountButton(host, onDone, onError){
+  if(!host || !sbClient) return false;
+  let g; try{ g = await gsiLoad(); }catch(e){ return false; }
+  try{
+    const raw = gsiRandomNonce(), hashed = await gsiSha256Hex(raw);
+    g.accounts.id.initialize({client_id: GOOGLE_CLIENT_ID, nonce: hashed, callback: async resp=>{ try{ await gsiHandleCredential(resp, raw); onDone && onDone(); }catch(err){ onError && onError(err); } }});
+    host.innerHTML = ''; g.accounts.id.renderButton(host, {type: 'standard', theme: 'outline', size: 'large', text: 'signin_with', shape: 'pill', logo_alignment: 'left', width: Math.max(200, Math.min(400, Math.round(host.getBoundingClientRect().width) || 320))});
+    return true;
+  }catch(e){ return false; }
+}
+
 // 2026-10-25 (package FIX3, G7): the screen to come back to after signing in (the Profile page is where the form lives; Google and the
 // email confirmation reload the page). fix3AfterSignIn: one sync (decks, currencies, levels, map progress), then that screen.
 let fix3AuthReturn = null;
@@ -61032,6 +61087,7 @@ function authFormHTML(prefix){
   const online = isHostedOnline();
   return `<div class="auth-form" id="${prefix}AuthForm">
     <p class="auth-lede">Signing in unlocks online play and syncs your data across devices.</p>
+    <div class="gsi-host" id="${prefix}GsiHost" ${online ? '' : 'hidden'}></div>
     <button type="button" class="gsi-btn" id="${prefix}GoogleBtn" ${online?'':'disabled'} title="${online?'':'Google sign-in only works on the hosted site.'}">${GOOGLE_G_SVG}<span>Sign in with Google</span></button>
     <div class="auth-or"><span>or</span></div>
     <form class="auth-email-form" id="${prefix}EmailForm" autocomplete="on" novalidate>
@@ -61059,6 +61115,13 @@ function wireAuthForm(prefix, onSuccess){
   const showMsg = (text, isError)=>{ if(!msgEl) return; msgEl.hidden = false; msgEl.textContent = text; msgEl.classList.toggle('error', !!isError); };
   const g = document.getElementById(prefix+'GoogleBtn');
   if(g) g.addEventListener('click', async ()=>{ if(g.disabled) return; try{ await cloudSignInWithGoogle(); }catch(err){ showMsg(authErrorText(err), true); } });
+  // 2026-10-31 (UI10, AUTH1): Google's own button first; the redirect button above becomes the small "Other sign-in" link, or stays the main button if the script can't load
+  { const host = document.getElementById(prefix + 'GsiHost');
+    if(g && host && !g.disabled){ g.hidden = true; // no flash of the old button while the script loads
+      gsiMountButton(host, ()=>{ onSuccess('login'); }, err=> showMsg(authErrorText(err), true)).then(ok=>{
+        if(!document.body.contains(g)) return;
+        if(ok){ g.classList.remove('gsi-btn'); g.classList.add('auth-other-link'); g.textContent = TX('ui.ui10-other-signin'); g.hidden = false; host.hidden = false; }
+        else { host.hidden = true; g.hidden = false; } }); } }
   const vals = ()=> ({email:(document.getElementById(prefix+'Email')||{}).value?.trim()||'', password:(document.getElementById(prefix+'Password')||{}).value||''});
   const busy = on=> ['LoginBtn','CreateBtn'].forEach(k=>{ const b = document.getElementById(prefix+k); if(b) b.disabled = on; });
   const form = document.getElementById(prefix+'EmailForm');
@@ -67964,6 +68027,20 @@ function adminArtRejectedGridHTML(){
   const defs = getCardDefs(), ids = artRejectedIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`;
   return `<div class="grid-view admin-manage-grid">${ids.map(id=> `<div class="ed-art-wrap">${cardTileHTML(defs[id], {extraClass:'admin-manage-tile'})}<small class="ed-art-why">🚫 ${escapeHtml(artReviewOf(defs[id]).reason || '-')}</small></div>`).join('')}</div>`;
 }
+// 2026-10-31 (package UI10, owner EE5): Admin's "Rejected art" list: every card with an art rejection (the card editor's 🚫 + reason, card.artReview), its
+// art, name and the owner's comment, and a link that opens the card in the editor. The mark is saved on the card itself (saveCard -> card_overrides.data.artReview
+// for a cloud admin), so the coordinator reads it with read-only SQL: select id, data->'artReview'->>'reason' from card_overrides where data->'artReview' is not null.
+function rejectedArtAdminHTML(){
+  const defs = getCardDefs(), ids = artRejectedIds();
+  const rows = ids.map(id=>{ const d = defs[id], r = artReviewOf(d), when = r.at ? new Date(r.at).toLocaleDateString() : '';
+    return `<li class="ra-row" data-ra-id="${escapeAttr(id)}"><span class="ra-art">${cardTileHTML(d, {extraClass:'admin-manage-tile'})}</span>
+      <span class="ra-text"><b class="ra-name">${escapeHtml(d.name || id)}</b>${when ? ` <small class="ra-when">${escapeHtml(when)}</small>` : ''}<span class="ra-comment">${escapeHtml(r.reason || TX('ui.ui10-ra-no-comment'))}</span>
+      <button type="button" class="btn small ghost ra-open" data-ra-open="${escapeAttr(id)}">✏️ ${escapeHtml(TX('ui.ui10-ra-open'))}</button></span></li>`; }).join('');
+  return `<div class="panel admin-subpanel rejected-art" id="adminRejectedArt"><h3>🚫 ${escapeHtml(TX('ui.ui10-ra-title'))} <small>(${ids.length})</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui10-ra-sub'))}</p>
+    ${ids.length ? `<ul class="ra-list">${rows}</ul>` : `<p class="panel-sub">${escapeHtml(TX('ui.ed-art-filter-none'))}</p>`}</div>`;
+}
+try{ if(typeof document !== 'undefined') document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-ra-open]'); if(!b) return; ev.preventDefault();
+  edOpenCardEditor(b.dataset.raOpen, null, ()=>{ try{ if(currentTab === 'admin') renderAdmin(); }catch(e){} }); }); }catch(e){}
 // -- Card editing from the editors (#14: "Let me edit a card in the skirmish editor or deck preview itself"): a ✏️ on each card of the
 // skirmish editor's deck list and of a skirmish's deck preview opens the card editor itself; closing it brings the editor or the map back.
 function edEditCardBtnHTML(id){ return `<button type="button" class="ed-edit-card" data-ed-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
@@ -81645,6 +81722,7 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
+    ${rejectedArtAdminHTML() /* 2026-10-31 (package UI10, owner EE5): every card whose art was rejected, with the comment */}
     ${proFightsAdminHTML() /* 2026-10-24 (package PRO): the hidden PRO fights, per map */}
     ${adminModeEnabled ? `<div class="panel admin-subpanel"><h3>🃏 ${escapeHtml(TX('ui.mp-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.mp-admin-sub'))}</p>
       <button type="button" class="btn small" id="adminMapCardsBtn">🃏 ${escapeHtml(TX('ui.mp-open'))}</button></div>` : '' /* 2026-10-22 (package MP) */}

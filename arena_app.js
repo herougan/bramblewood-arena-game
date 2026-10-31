@@ -11241,7 +11241,7 @@ function renderEditorInner(){
   // 2026-10-31 (package UI10, owner EE8): the Swarm type dropdown applies at once: the row remembers the pick and the "Counts <Type>" text follows.
   overlay.querySelectorAll('#skillRows select[data-sk="vals"], #evergreenRows select[data-sk="vals"]').forEach(sel=> sel.addEventListener('change', ()=>{
     const i = Number(sel.getAttribute('data-i')), rowEl = sel.closest('.skill-row'), hint = rowEl && rowEl.querySelector('.skill-types-hint');
-    if(c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
+    if(c._skillRows && c._skillRows[i]) c._skillRows[i].value = sel.value ? [sel.value] : [];
     sel.setAttribute('data-first', sel.value); sel.setAttribute('data-extra', '[]');
     if(hint) hint.textContent = sel.value ? 'Counts ' + sel.value : 'Any shared type';
   }));
