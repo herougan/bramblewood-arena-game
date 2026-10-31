@@ -56,7 +56,12 @@ async def bb2_static(b, url, w):
     ok(rest and rest['rect'] == 'rgb(193, 18, 31)' and rest['anim'] == 'ui9TrapFall' and rest['banim'] == 'ui9TrapRect', f'rosso rectangles (#c1121f), the new fall for the circles {rest}')
     clip = {'x': max(0, st['x'] - 30), 'y': max(0, st['y'] - 30), 'width': st['w'] + 60, 'height': st['h'] + 60}
     await pg.screenshot(path=os.path.join(SHOTS, f'trap-label-rest-after-{w}.png'), clip=clip)
-    await pg.hover('#ui9Cell', force=True); await pg.wait_for_timeout(500); hov = await pg.evaluate(LABEL); hov['at'] = await pg.evaluate("(()=>{ const c = document.getElementById('ui9Cell').getBoundingClientRect(); const e = document.elementFromPoint(c.x + c.width/2, c.y + c.height/2); return e ? e.className + '/' + (e.closest('.board-card') ? 'in-card' : 'no-card') + ' hover:' + document.getElementById('ui9Cell').matches(':hover') : null; })()") if hov else None
+    await pg.hover('#ui9Cell', force=True); await pg.wait_for_timeout(300)
+    for _ in range(12):
+        hov = await pg.evaluate(LABEL)
+        if hov and hov['op'] < 0.12: break
+        await pg.screenshot(path=os.path.join(SHOTS, '_tmp.png'), clip={'x': 0, 'y': 0, 'width': 10, 'height': 10}); await pg.wait_for_timeout(250)  # a screenshot makes the headless browser draw a frame, so the opacity transition advances
+    hov = await pg.evaluate(LABEL); hov['at'] = await pg.evaluate("(()=>{ const c = document.getElementById('ui9Cell').getBoundingClientRect(); const e = document.elementFromPoint(c.x + c.width/2, c.y + c.height/2); return e ? e.className + '/' + (e.closest('.board-card') ? 'in-card' : 'no-card') + ' hover:' + document.getElementById('ui9Cell').matches(':hover') : null; })()") if hov else None
     ok(hov and abs(hov['op'] - 0.08) < 0.02, f"on slot hover it is 92% see-through (opacity {hov and hov['op']}, {hov and hov.get('at')})")
     await pg.screenshot(path=os.path.join(SHOTS, f'trap-label-hover-after-{w}.png'), clip=clip)
     # before: the page's own style only (this package's style off, its rectangles hidden)
