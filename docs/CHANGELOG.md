@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 Release 10-31b (UI8 for the owner's 0-20 pass)
+- Shipped: UI8 (cards land from where you let go; enemy cards fade in and land; spawns bounce out of their spawner; bramble bar eases, no blue line at 0 Shield; Shield badge number; no centre leader portrait; darkness light under the cards; tidier VS screen).
+- Checks: smoke (only the known d-2026-10-19), pl2 / ui7 unit tests, UI8's e2e (all ok). keywords-2026-10-14f and i18n-templates-2026-10-18 fail the same on the batch before UI8 (TESTFIX).
+
 ## 2026-10-31 Release 10-31a (owner 14:34 "push the latest asap")
 - Shipped: REF5 (progression reference, "Reference (Random)"), BUDGET2 (3A + H budget, card re-fit, canon skills), SKILL2 (skills re-priced, 47 cards re-fit, PRO / BPRO 6/4 rebuilt), SPEED1 (one-command balance pipeline; Flying x1.17, Evasive x1.16; cap 2 reads S / 2), UI7 (icon-only Poison / Regen, the struggle), MAPFX1, four flyers +1 Health (SPEED1-2), skill_costs.js reads MISS_MULT_BY.
 - Checks: smoke (only the known d-2026-10-19) and each package's own tests. A full unit run (non-full mode, 24 min, shared with a running package) showed 178 passed, 74 failed, 12 cached: the failures are stale one-check expectations accumulated since 10-24e (no full run since then), queued as TESTFIX. The e2e ui_smoke / flows run timed out on the shared 2 cores and is not reported as passed. UI8 (running) ships in the next release.
