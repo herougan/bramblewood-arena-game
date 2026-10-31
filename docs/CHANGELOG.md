@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 Release 10-31c (UI9)
+- Shipped: UI9 (Nest back-to-map button; trap look: half-opacity ring, falling rosso bars, closing jaws, faint label; trap hit hook / launch; Quests in two columns; pack level-up goes to an owned card and shows it; Spin works on Effects Low; Nacre foil).
+- Checks: smoke (only the known d-2026-10-19); ui9 e2e full run all ok after merge; ui8 e2e all ok (agent's run).
+
 ## 2026-10-31 Package UI9 (owner BB1-BB3, DD1-DD4; not yet released)
 - Nest: a "Back to the map" button. Trap: the laying card's Trap chip goes once it is laid; the ring's circles at half opacity with falling rosso rectangles; a short closing (jaw bars + a 1.5 px shake) when laid; the slot label 83% see-through (92% on hover). A card stepping on a trap is hooked 8 px down or launched 20 px and turned 6 degrees (~0.45 s), after it has landed.
 - Quests board in two columns (one on phones). A pack's free level goes to a card you own (main deck first), shown with its face and "+1 Level". The card detail's Spin works at Effects Low / reduced motion. New foil finish Nacre (mother-of-pearl), rolled with the others.
