@@ -24535,23 +24535,54 @@ function findConquestNode(mapId, nodeKey){
 // map's row) and a link #pro=<key> (e.g. #pro=3-PRO-1). Owner calls PRO-1 (reveal them after a map's boss; default No) and PRO-2 (a
 // cosmetic flag for a win; default none).
 const PRO_SKIRMISHES = __PRO_SKIRMISHES__;
-const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF)$/; // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
+const PRO_KEY_RE = /^\d+(?:-[A-Z])?-(?:B?PRO-\d+|REF|SK)$/; // 2026-10-31 (UI10): + the map's one skirmish, N-SK // 2026-10-25 (package PREF): + a map's X-REF fight (N-REF, N-L-REF)
 const XREF_KEY_RE = /^\d+(?:-[A-Z])?-REF$/; // 2026-10-25 (package PL2, PRO-UI): + the BPRO fights (N-BPRO-k); (PRO3) + a side map's own, N-L-PRO-k (e.g. 2-B-PRO-1)
 // both kinds of a map's entry, PRO first (2026-10-25, PL2)
-function proEntriesOf(ent){ return ent ? (ent.pro || []).concat(ent.bpro || []) : []; }
+// 2026-10-31 (package UI10, owner EE2): PRO and BPRO fights are ONE skirmish per map ("<N>-SK"): you play your deck or a reference deck, the enemy is a
+// random BPRO deck of the map (built from the map's list only; docs/balance/bpro2-2026-10-31.json, baked from canonical/pro-skirmishes.json), and 1 in 4
+// draws swaps one card for a SPECIAL card of the map's list. The decks come from skirmDecksOf (the one place to point at the owner's rebuilt decks later).
+const SKIRM_SPECIAL_ODDS = 0.25;
+function skirmDecksOf(ent){ const b = (ent && ent.bpro) || []; return b.length ? b : ((ent && ent.pro) || []); } // later: the decks rebuilt from the owner's new map lists
+const SKIRM_ENTRY_CACHE = new WeakMap();
+function proEntriesOf(ent){
+  if(!ent) return []; let e = SKIRM_ENTRY_CACHE.get(ent); if(e !== undefined) return e ? [e] : [];
+  const list = skirmDecksOf(ent); if(!list.length){ SKIRM_ENTRY_CACHE.set(ent, null); return []; }
+  const key = String(list[0].id).replace(/-B?PRO-\d+$/, '') + '-SK';
+  e = {id: key, name: key, level: list[0].level != null ? list[0].level : 1, leaders: [], deck: Object.assign({}, list[0].deck || {}), skirm: true, decks: list};
+  SKIRM_ENTRY_CACHE.set(ent, e); return [e];
+}
+// the enemy for one fight: a random deck of the map; with chance SKIRM_SPECIAL_ODDS one card of it becomes a SPECIAL card of the map's list (same size, no card past the copy cap)
+function drawSkirmEnemy(mapId, entry, rnd){
+  rnd = rnd || Math.random; const list = (entry && entry.decks) || []; if(!list.length) return null;
+  const d = list[Math.floor(rnd() * list.length)], deck = Object.assign({}, d.deck || {}); let special = null;
+  try{
+    const defs = getCardDefs(), cap = Math.max(1, ((PRO_SKIRMISHES && PRO_SKIRMISHES.rule) || {}).maxCopies || 4);
+    const pool = (mpEntry(mpTopOf(mapId)).special || []).filter(id=> defs[id] && (deck[id] || 0) < cap && !(defs[id].effects && defs[id].effects.leader));
+    if(pool.length && rnd() < SKIRM_SPECIAL_ODDS){
+      const copies = Object.keys(deck).flatMap(id=> Array(deck[id] | 0).fill(id)); // one random copy out, so a card with more copies is likelier to be the one swapped
+      if(copies.length){ const out = copies[Math.floor(rnd() * copies.length)], sp = pool[Math.floor(rnd() * pool.length)];
+        deck[out]--; if(deck[out] <= 0) delete deck[out]; deck[sp] = (deck[sp] || 0) + 1; special = sp; } }
+  }catch(e){}
+  return {id: d.id, deck, special};
+}
+let skirmPending = null; // {key, pick}: the draw of the fight being started, read by proNodeOf
+const SKIRM_YOU_KEY = 'bramblewood_skirm_you_v1';
+function skirmYou(){ let v = null; try{ v = localStorage.getItem(SKIRM_YOU_KEY); }catch(e){} return v && v !== 'my' && refSetIds().includes(v) ? v : 'my'; }
+function setSkirmYou(v){ try{ localStorage.setItem(SKIRM_YOU_KEY, v || 'my'); }catch(e){} }
 const PRO_NODE_CACHE = new Map();
 function proMapEntries(){ return (PRO_SKIRMISHES && PRO_SKIRMISHES.maps) || {}; }
 function proNodeOf(mapId, e, ent){
-  const ck = mapId + ':' + e.id; let n = PRO_NODE_CACHE.get(ck); if(n) return n;
+  const ck = mapId + ':' + e.id; let n = e.skirm ? null : PRO_NODE_CACHE.get(ck); if(n) return n;
   const f = (ent && ent.field) || {}, rules = Object.assign({}, f.rules || {}), ai = CPU_AI_KEYS[((PRO_SKIRMISHES.rule || {}).ai != null ? PRO_SKIRMISHES.rule.ai : 1)] || 'smart';
   let lv = e.level != null ? e.level : 1; { const late = proLateSideLevel(mapId); if(late != null && late > lv) lv = late; } // ENG10 (2026-10-26, PREF-3): a late side map's PRO level
-  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, deck: Object.assign({}, e.deck || {}), enemyLevel: lv,
+  const pend = e.skirm && skirmPending && skirmPending.key === e.id ? skirmPending.pick : null; // UI10: the deck drawn for this fight
+  n = {key: e.id, kind: 'skirmish', name: e.name || e.id, icon: '🏆', pro: true, skirm: !!e.skirm, deck: Object.assign({}, pend ? pend.deck : (e.deck || {})), enemyLevel: lv,
     leaders: (e.leaders || []).slice(), ai, rules, requires: [], flavor: ''};
   if((e.leaders || [])[0]) n.showcase = e.leaders[0];
   NODE_MAP_HINT.set(n, mapId);
   if(f.terrain) rules.terrain = terrainObj(f.terrain.biome, f.terrain.tier) || false; // the tool's tier, whatever the PRO's place would give
   else { try{ if(fightRules(mapId, n).terrain) rules.terrain = false; }catch(err){} } // the average fight has none
-  PRO_NODE_CACHE.set(ck, n); return n;
+  if(!e.skirm) PRO_NODE_CACHE.set(ck, n); return n;
 }
 // 2026-10-25 (package PRO3, owner 10-24 22:28 #11: "PRO not done for Map 1-20 yet and its submaps"): a side map with its own entry shows its own
 // PRO fights (N-L-PRO-k); one without shows its parent's, as before (proEntryIdOf)
@@ -24559,7 +24590,7 @@ function proEntryIdOf(mapId){ const m = CONQUEST_MAPS.find(x=> x.id === mapId); 
 function proFightsOf(mapId){ const id = proEntryIdOf(mapId), ent = proMapEntries()[id];
   return ent ? proEntriesOf(ent).map(e=> proNodeOf(id, e, ent)) : []; }
 function findProFight(key){
-  if(XREF_KEY_RE.test(key || '')) return findXrefFight(key); // 2026-10-25 (package PREF)
+  key = String(key || '').replace(/-(?:B?PRO-\d+|REF)$/, '-SK'); // 2026-10-31 (UI10, EE2): an old PRO / BPRO / X-REF link opens the map's one skirmish
   for(const id of Object.keys(proMapEntries())){ const ent = proMapEntries()[id], e = proEntriesOf(ent).find(x=> x.id === key);
     if(e){ const map = CONQUEST_MAPS.find(m=> m.id === id); if(map) return {map, node: proNodeOf(id, e, ent), entry: e}; } }
   return null;
@@ -24581,7 +24612,7 @@ function refPlayPrefs(){ let o = null; try{ o = JSON.parse(localStorage.getItem(
 function saveRefPlayPrefs(p){ try{ localStorage.setItem(REF_PLAY_KEY, JSON.stringify({on: !!p.on, set: p.set || refDefaultSet(), v: 2})); }catch(e){} }
 function refPlayActive(){ return !!adminModeEnabled && refPlayPrefs().on; }
 function refSetLabelTX(id){ if(!id || id === 'map') return TX('ui.pref-set-map'); const mu = refMultiOf(id); if(mu) return mu.pick == null ? TX('ui.ref5-random') : refMultiLabel(mu.pick, mu.set.n || 0); return (REF_DECK_SETS[id] || {}).label || id; } // REF5
-function xrefKeyOf(entId){ const e = proEntriesOf(proMapEntries()[entId])[0]; return e ? e.id.replace(/-B?PRO-\d+$/, '') + '-REF' : null; }
+function xrefKeyOf(entId){ return null; } // 2026-10-31 (UI10, EE2): the X-REF node is part of the map's one skirmish now (N-SK: your deck or a reference set)
 function xrefVsFor(entId){ const list = proEntriesOf(proMapEntries()[entId]); let v = null; try{ v = (JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {})[entId]; }catch(e){}
   return list.some(e=> e.id === v) ? v : ((list[0] || {}).id || null); }
 function setXrefVs(entId, proId){ let o = {}; try{ o = JSON.parse(localStorage.getItem(XREF_VS_KEY) || '{}') || {}; }catch(e){} o[entId] = proId; try{ localStorage.setItem(XREF_VS_KEY, JSON.stringify(o)); }catch(e){} }
@@ -24601,20 +24632,18 @@ function refPlayToggleHTML(){
     <label class="panel-sub">${escapeHtml(TX('ui.pref-set'))} <select data-pref-set>${ids.map(id=> `<option value="${escapeAttr(id)}" ${id === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(id))}</option>`).join('')}</select></label></div>
     <p class="panel-sub">${escapeHtml(TX('ui.pref-toggle-sub'))}</p>`;
 }
-// the X-REF panel's extra row: which PRO / BPRO deck you face, and which reference set you play
+// the skirmish panel's extra row (2026-10-31, UI10, EE2; was X-REF's): who you play (My deck or a reference set) and a line on the enemy
 function xrefPanelHTML(map, node){
-  const id = proEntryIdOf(map.id), list = proEntriesOf(proMapEntries()[id]), p = refPlayPrefs();
-  let rs = null; try{ rs = refMultiOf(p.set) && refMultiOf(p.set).pick == null ? null /* REF5: dealt when the fight starts */ : refSetFor(p.set, map.id, node); }catch(e){}
-  return `<div class="pref-xref" style="margin:6px 0;"><div class="panel-sub">${escapeHtml(TX('ui.pref-xref-vs'))}</div><div style="display:flex; flex-wrap:wrap; gap:4px; margin:4px 0 6px;">${list.map(e=> `<button type="button" class="btn small ${e.id === node.xrefVs ? 'primary' : 'ghost'}" data-xref-vs="${escapeAttr(e.id)}" data-xref-map="${escapeAttr(id)}" aria-pressed="${e.id === node.xrefVs}">${escapeHtml(e.id)}</button>`).join('')}</div>
-    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-pref-set>${refSetIds().map(sid=> `<option value="${escapeAttr(sid)}" ${sid === p.set ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
+  const cur = skirmYou(), ids = refSetIds(); let rs = null; try{ rs = cur === 'my' || (refMultiOf(cur) && refMultiOf(cur).pick == null) ? null : refSetFor(cur, map.id, node); }catch(e){}
+  return `<div class="pref-xref skirm-you" style="margin:6px 0;"><p class="panel-sub skirm-enemy">${escapeHtml(TX('ui.ui10-skirm-enemy'))}</p>
+    <label class="panel-sub">${escapeHtml(TX('ui.pref-xref-you'))} <select data-skirm-you aria-label="${escapeAttr(TX('ui.pref-xref-you'))}"><option value="my" ${cur === 'my' ? 'selected' : ''}>${escapeHtml(TX('ui.ui10-my-deck'))}</option>${ids.map(sid=> `<option value="${escapeAttr(sid)}" ${sid === cur ? 'selected' : ''}>${escapeHtml(refSetLabelTX(sid))}</option>`).join('')}</select></label>
     ${rs ? `<span class="panel-sub"> · ${escapeHtml(TX('ui.pref-level', {n: rs.set === 'map' || rs.gained == null ? rs.level : '+' + rs.gained}))}</span>` : ''}</div>`;
 }
 try{ if(typeof document !== 'undefined'){
   document.addEventListener('change', ev=>{ const t = ev.target; if(!t || !t.matches) return;
     if(t.matches('[data-pref-on]')){ const p = refPlayPrefs(); p.on = !!t.checked; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-on]').forEach(x=>{ x.checked = p.on; }); return; }
-    if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); if(currentTab === 'play' && !matchState && XREF_KEY_RE.test(conquestSelectedNodeKey || '')) renderPlay(); } });
-  document.addEventListener('click', ev=>{ const b = ev.target && ev.target.closest && ev.target.closest('[data-xref-vs]'); if(!b) return; ev.preventDefault(); ev.stopPropagation();
-    setXrefVs(b.dataset.xrefMap, b.dataset.xrefVs); if(currentTab === 'play' && !matchState) renderPlay(); });
+    if(t.matches('[data-skirm-you]')){ setSkirmYou(t.value); return; } // 2026-10-31 (UI10, EE2)
+    if(t.matches('[data-pref-set]')){ const p = refPlayPrefs(); p.set = t.value; saveRefPlayPrefs(p); document.querySelectorAll('[data-pref-set]').forEach(x=>{ x.value = p.set; }); } });
 } }catch(e){}
 // 2026-10-25 (package PL2, PRO-UI, PRO2's notes: "clicking a PRO/BPRO fight opens a skirmish preview"): a PRO or BPRO fight (Admin's list, the
 // trophy nodes on an admin's map, the skirmish editor's row, a #pro= link) opens the map's normal fight panel with that fight picked: its deck
@@ -24637,8 +24666,10 @@ function startProFight(key){
   if(matchState && matchState.over) endMatch();
   { const o = document.getElementById('skirmishEditorOverlay'); if(o && !o.hidden){ o.hidden = true; o.innerHTML = ''; } }
   playSubTab = 'conquest'; switchTab('play');
-  const ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.xref ? refPlayPrefs().set : undefined}); // PREF: X-REF always deals the chosen reference set
-  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; }
+  // 2026-10-31 (UI10, EE2): the skirmish draws its enemy now (one BPRO deck of the map, 1 in 4 with a SPECIAL card), and plays your deck ('my') or the chosen reference set
+  let pick = null; if(f.node.skirm){ pick = drawSkirmEnemy(f.map.id, f.entry); skirmPending = pick ? {key: f.node.key, pick} : null; }
+  let ok = false; try{ ok = startConquestMatch(f.map.id, f.node.key, {skipEnergyCost: true, noAmbush: true, refSet: f.node.skirm ? skirmYou() : undefined}); }finally{ skirmPending = null; }
+  if(ok && matchState){ matchState.adminTest = true; matchState.proFight = f.node.key; if(pick) matchState.skirm = {deck: pick.id, special: pick.special || null}; }
   return ok;
 }
 // #pro=<key>: the link opens the fight once the page has loaded (and on a later hash change); the hash is cleared so a reload doesn't
@@ -24665,7 +24696,7 @@ function proRowHTML(mapId, e, node, opts){
   const vs = e.h2h ? TX('ui.pro-vs1', {elo: (e.h2h.elo >= 0 ? '+' : '') + e.h2h.elo}) : '';
   return `<div class="pro-row" data-pro-key="${escapeAttr(e.id)}"><div class="pro-row-head"><b class="pro-id">🏆 ${escapeHtml(e.id)}</b>${score ? `<span class="pro-stat">${escapeHtml(score)}</span>` : ''}${vs ? `<span class="pro-stat" title="${escapeAttr(e.h2h.p != null ? Math.round(e.h2h.p * 1000) / 10 + '% · ' + e.h2h.n : '')}">${escapeHtml(vs)}</span>` : ''}${lead ? `<span class="pro-stat">${escapeHtml(TX('ui.pro-leader', {name: lead}))}</span>` : ''}
     <span class="pro-acts"><button type="button" class="btn small primary" data-pro-start="${escapeAttr(e.id)}">▶ ${escapeHtml(TX('ui.pro-fight'))}</button>${opts && opts.compact ? '' : `<button type="button" class="btn small ghost" data-pro-copy="${escapeAttr(e.id)}" title="${escapeAttr(proLinkFor(e.id))}">🔗 ${escapeHtml(TX('ui.pro-copy-link'))}</button>`}</span></div>
-    ${opts && opts.compact ? '' : `<div class="pro-deck">${proDeckLineHTML(node.deck)}</div>`}</div>`;
+    ${opts && opts.compact ? '' : `<div class="pro-deck">${e.skirm ? escapeHtml(TX('ui.ui10-skirm-enemy')) : proDeckLineHTML(node.deck)}</div>`}</div>`;
 }
 function proFightsAdminHTML(){
   const ents = proMapEntries(), ids = Object.keys(ents).sort((a, b)=> (ents[a].map || 0) - (ents[b].map || 0));
@@ -27381,7 +27412,7 @@ function renderConquestSubTab(body){
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = (selectedNode.virtual || selectedNode.pro) ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
-    panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
+    panelEl.hidden = false; panelEl.classList.toggle('pl2-is-pro', !!selectedNode.pro); panelEl.classList.toggle('is-skirm', !!selectedNode.skirm); // PL2 (2026-10-25, PRO-UI): a PRO fight pays nothing and is not edited here: no rewards, drops or admin edits
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
     document.body.classList.add('cq-node-focus');
@@ -27404,7 +27435,7 @@ function renderConquestSubTab(body){
       </div>
       ${cnpDropsLineHTML(map.id, selectedNode, done) /* 2026-10-22 (package RW, owner N22-6): one short line of the small drop chances */}
       ${newSkillRibbonHTML(selectedNode)}
-      ${selectedNode.xref ? xrefPanelHTML(map, selectedNode) : '' /* 2026-10-25 (package PREF): X-REF's opponent and your reference set */}
+      ${selectedNode.skirm ? xrefPanelHTML(map, selectedNode) : '' /* 2026-10-31 (UI10, EE2): the map's skirmish: your deck or a reference set */}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
@@ -31129,7 +31160,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     /* 2026-10-29 (ENG13): an Ambush not yet won no longer turns 3-2's Fight away (owner 21:36: "no need to be completed to progress") */ }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   // 2026-10-25 (package PREF): a reference set instead of your deck (X-REF always; any fight while Admin's switch is on): free, pays nothing
-  const refPlaySet = (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
+  const refPlaySet = (opts && opts.refSet === 'my') ? null /* 2026-10-31 (UI10, EE2): "My deck" even with Admin's reference switch on */ : (opts && opts.refSet) || (refPlayActive() ? refPlayPrefs().set : null);
   let refPlay = null; if(refPlaySet){ try{ refPlay = refSetFor(refPlaySet, mapId, node); }catch(e){ refPlay = null; } }
   if(refPlay && !(opts && opts.skipEnergyCost)) opts = Object.assign({}, opts, {skipEnergyCost: true});
   if(!refPlay && !deckSizeOkOrWarn()) return false;

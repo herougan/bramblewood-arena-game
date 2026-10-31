@@ -136,6 +136,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.pref-toggle-sub": "On: every Conquest fight (road, PRO, BPRO, X-REF) deals you the chosen reference deck at that map's levels instead of your deck. Free, no rewards. Kept on this device.",
   "ui.pref-xref-vs": "Against:",
   "ui.pref-xref-you": "You play:",
+  "ui.ui10-my-deck": "My deck",
+  "ui.ui10-skirm-enemy": "Enemy: a random deck built from this map's card list.",
   "ui.pref-level": "Level {n}",
   "ui.pref-xref-node-tip": "{key}: the reference deck against this map's PRO decks",
   "ui.pref-xref-row": "Reference deck vs this map's PRO decks",

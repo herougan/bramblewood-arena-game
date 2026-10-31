@@ -9639,6 +9639,7 @@
   .pl2-coop-x{position:absolute; top:6px; right:8px; background:none; border:0; font-size:18px; color:var(--ink); cursor:pointer;}
   /* 2026-10-25 (package PL2, PRO-UI): a PRO / BPRO fight's panel: no rewards, no drops, no admin edits (it pays nothing; the decks come from the tool) */
   #conquestNodePanel.pl2-is-pro :is(.cnp-rw, .cnp-drops, .cnp-admin-side){display:none !important;}
+  #conquestNodePanel.is-skirm :is(.cnp-deck, .cnp-deck-locked){display:none !important;} /* 2026-10-31 (UI10, EE2): the map skirmish draws its enemy deck at random: no fixed deck strip */
   /* 2026-10-25 (package PL2, owner 00:02 #3 #5): the cards won as one stack (the first in front, the rest behind it, fanned on hover / tap)
      and a rank-won card's flash and ribbon (the emblem and "reward") */
   .rw-cards.pl2-stack{display:grid !important; grid-template-areas:'s'; justify-items:center; justify-content:center !important; position:relative; padding:6px calc(8px + var(--n) * 7px) 4px 8px; outline:none; cursor:pointer;}
