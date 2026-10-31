@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-31 (package UI8: where cards come from, bramble bar, Shield badge, VS screen; owner AA1-AA5, Z2, Z4, Z6)
+- **A played card starts where you let go (AA3).** The flight copy of a dragged card is at the release point on the first frame drawn, a tapped card flies from its hand tile, the enemy's card fades in above its slot and lands. Cause: the flights ran on the wall clock for 0.12-0.4 s while a play blocks the page for 150-500 ms, so they were over before one frame was drawn; they now hold the start pose and run from two frames later. No single commit is the culprit (the block grew with the work done per play).
+- **Spawns bounce out of their spawner (AA5):** the Trojan Raider out of its bramble, On Death / On Attacked / summon spawns out of the spawning card.
+- **Bramble bar (AA1):** no blue line at 0 Shield; Health and Shield layers ease 0.25 s, 0.4 s (5+ damage), 0.7 s (10+).
+- **Shield badge (Z6, UI part):** 💠 and the number while any Shield is left, the number fades at exactly 1, gone at 0.
+- **Leader summon (Z2):** no portrait in the middle. **Darkness light (Z4):** the pointer's warm pool is under the cards.
+- **VS screen (AA2):** the enemy side is one centred column, small facts as two rows of one pill style, BR box level with ours, quote last. Shots: `tests/e2e/shots/ui8/`. Test: `tests/e2e/ui8_2026_10_31.py`.
+
 ## 2026-10-31 (package SPEED1: the balance pipeline, owner "balancing runs as automation, not agent tokens")
 - **`tools/pipeline/run.sh <measure|price|refit|bake|tournament|test|all>`**: each balancing step is one unattended command that writes `docs/balance/pipeline/<step>-<date-time>.json` (inputs, counts, old -> new, flagged items, durations, test counts) and prints at most 20 lines. It wraps the SKILL2 tools. Heavy steps share one `flock` (a second call exits 75 or `--wait`s); `measure` stops each item once its interval is as narrow as `high` confidence (200 fights instead of 1,000 for Armor 4 and 5). `refit` applies only the rule-clean stat changes and flags owner cards, changes over 2 stat points, theme clashes, no-fit cards and cards the tests' budget still rejects. Procedure: `docs/workflows/balance.md` "Pipeline"; test `tests/speed1-2026-10-31.js`.
 - **Owner calls SKILL2-1 / -2 / -3 run through it:** cap 2 reads the skill price at half, (S/2)·|S/2| (`CAP2_S_SCALE` 0.5, one constant); Flying and Evasive x1.13 (`MISS_MULT_BY`, was 1.39 / 1.37); Armor 4 and 5 measured, record only: 4.95 and 5.01 stat points against 6.75 and 7.84 on the price curve (the curve flattens: 2.65 / 4.23 / 4.84 / 4.95 / 5.01). Skill prices unchanged.

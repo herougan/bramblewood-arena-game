@@ -40,7 +40,7 @@ ok(/\.card-tile\.no-art > \.ico, \.card-tile\.no-art \.ico\{opacity:1;\}/.test(t
 { const f = fnSrc('pl2SetStat');
   ok(/scale:\.78, duration:\.08/.test(f) && /scale:1\.38/.test(f) && /\(opts\.any \|\| after > before\)/.test(f), 'A 22:28 #5: the bounce: shrink, swap, overshoot, settle; Health only when it rises');
   ok(/pl2SetStat\(a, atkLabelHTML\(tot, d\.attack, d\), \{any:true\}\)/.test(app) && /pl2SetStat\(hpSpan, /.test(app) && /pl2BounceAfterRedraw\(pl2Snap/.test(app), 'A 22:28 #5: the Attack / Health updaters and the board redraw use it'); }
-ok(/function pl2RibbonFill\(/.test(app) && /duration: 420, easing: 'cubic-bezier\(\.22,\.8,\.3,1\)'/.test(app) && /pl2-hp-chip/.test(tpl) && /pl2RibbonFromAttr\(m, side, pct\)/.test(app), 'A 22:28 #7: the bramble bars ease (also across a redraw), with a drain chip on damage');
+ok(/function pl2RibbonFill\(/.test(app) && /duration: easeMs, easing: 'cubic-bezier\(\.22,\.8,\.3,1\)'/.test(app) && /pl2-hp-chip/.test(tpl) && /pl2RibbonFromAttr\(m, side, pct\)/.test(app), 'A 22:28 #7: the bramble bars ease (also across a redraw), with a drain chip on damage');
 ok(/pl2BrambleHitFx\(el, tier\)/.test(app) && /pl2BrambleMendFx\(tile\)/.test(app) && /const PL2_CHIP_COLOURS = \['#6b5a44', '#8a7556', '#4e4234'/.test(app), 'A 21:54: the bramble\'s hit and repair throw the fall\'s bark / stone chips');
 ok(T.TEXT['ui.en7-float-poison'] === '☠{n}', 'A 00:02 #4: the applied-Poison float is ☠N');
 ok(/\.field-res\.enemy\{opacity:0; transition:opacity \.16s ease; visibility:hidden;\}/.test(tpl) && /html\.pl2-shift \.field-res\.enemy\{opacity:1; visibility:visible;\}/.test(tpl) && /pl2ShiftWatch/.test(app) && /pl2-tip-res/.test(app),
