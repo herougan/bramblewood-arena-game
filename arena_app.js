@@ -7054,6 +7054,15 @@ function animalChipsHTML(d){
   if(d && d.faction === 'base') out.push(`<span class="cd-chip cd-base" title="${escapeAttr(TX('ui.codex-base-tip'))}">🌰 ${escapeHtml(TX('ui.codex-base-chip'))}</span>`);
   return out;
 }
+// 2026-11-01 (package UI13, HH1; owner 11-01 00:29: "a card kind beside rarity: Base, Baby, Faction"): only Baby is stored (kind:"baby" in
+// canonical/cards.json: eggs, hatchlings, kits, cubs, pups, calves, chicks, fry, Duckling, Compost Grub). Faction = a faction card (d.faction set:
+// the starter cards you begin with and the Factions pool), Base = everything else; both are worked out here, never written into the data.
+function cardKindOf(d){ if(!d) return 'base'; if(d.kind === 'baby') return 'baby'; return d.faction ? 'faction' : 'base'; }
+const CARD_KIND_ICON = {base: '🃏', baby: '🍼', faction: '🚩'};
+// the keys spelled out (tools/text/keyify.py drops TX keys whose names are built at run time)
+function cardKindLabel(k){ return k === 'baby' ? TX('ui.ui13-kind-baby') : k === 'faction' ? TX('ui.ui13-kind-faction') : TX('ui.ui13-kind-base'); }
+function cardKindTip(k){ return k === 'baby' ? TX('ui.ui13-kind-tip-baby') : k === 'faction' ? TX('ui.ui13-kind-tip-faction') : TX('ui.ui13-kind-tip-base'); }
+function cardKindChipHTML(d){ const k = cardKindOf(d); return `<span class="cd-chip cd-kind kind-${k}" title="${escapeAttr(cardKindTip(k))}">${CARD_KIND_ICON[k]} ${escapeHtml(cardKindLabel(k))}</span>`; }
 // The Codex's animal filter: each kind present in `defs`, with its count.
 function codexAnimalOptionsHTML(defs){
   const n = {}; Object.values(defs).forEach(d=>{ if(!d || d.test || !d.animal) return; const g = animalGroupOf(d.animal); n[g] = (n[g] || 0) + 1; });
@@ -10028,7 +10037,7 @@ function openCardDetail(defId, opts){
   // columns — the card big on the left; its name, chips, stat tiles, abilities, flavour and where
   // to get it on the right. Stacks on phones.
   const rar = String(d.rarity||'common').replace(/_/g,' ');
-  const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`]
+  const chips = [`<span class="cd-chip cd-rar rar-${escapeAttr(String(d.rarity||'common'))}">${escapeHtml(rar.replace(/\b\w/g, c=> c.toUpperCase()))}</span>`, cardKindChipHTML(d) /* 2026-11-01 (package UI13, HH1): the kind beside the rarity */]
     .concat((d.species||[]).slice(0,2).map(sp=> `<span class="cd-chip cd-species" title="${escapeAttr(SPECIES_PHYLUM[sp] && SPECIES_PHYLUM[sp] !== sp ? sp + ' · ' + SPECIES_PHYLUM[sp] : sp)}">${speciesIcon(sp)} ${escapeHtml(sp)}</span>`))
     .concat(animalChipsHTML(d)) // 2026-10-19 (package UT): the animal, the subtype, the Base mark
     .concat(d.token ? ['<span class="cd-chip">Token</span>'] : [])
@@ -10892,6 +10901,9 @@ function renderEditorInner(){
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label>${(()=>{ /* 2026-10-21 (package CX2): the rank ladder (Common → Daemonic; Starter only on a Starter card) and four toggles, Quest, Event, Dev, Special (one at a time) */
         const rp = rarityPartsOf(c.rarity || 'common'), ladder = RARITY_DEFS.filter(r=> !r.as && !r.special && (r.key !== 'starter' || rp.rank === 'starter'));
         return `<select id="fRarity" aria-label="Rank">${ladder.map(r=>`<option value="${r.key}" ${rp.rank===r.key?'selected':''}>${r.label}</option>`).join('')}</select><span class="rarity-flags" role="group" aria-label="${escapeAttr(TX('ui.cx-rarity-flags'))}">${Object.keys(RARITY_FLAG_LABEL).map(f=> `<label class="rarity-flag" title="${escapeAttr(RARITY_FLAG_TEXT[f][1]())}"><input type="checkbox" data-rflag="${f}" ${rp.flag===f?'checked':''}>${escapeHtml(RARITY_FLAG_TEXT[f][0]())}</label>`).join('')}</span>`; })()}</div>
+      ${(()=>{ /* 2026-11-01 (package UI13, HH1): Base / Baby / Faction beside the rarity; only Baby is stored, Base or Faction follows the card's faction */
+        const auto = c.faction ? 'faction' : 'base';
+        return `<div class="field ui13-kind-field" title="${escapeAttr(TX('ui.ui13-kind-edit-tip'))}"><label for="fKind">${escapeHtml(TX('ui.ui13-kind'))}</label><select id="fKind"><option value="">${CARD_KIND_ICON[auto]} ${escapeHtml(cardKindLabel(auto))}</option><option value="baby" ${c.kind === 'baby' ? 'selected' : ''}>${CARD_KIND_ICON.baby} ${escapeHtml(cardKindLabel('baby'))}</option></select></div>`; })()}
       <div class="field" title="Unit: stays on the field. Spell: resolves once, then the Graveyard. Equipment: dragged onto a unit."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack'], ['graveCall', TX('ui.spell3-grave-call', {cap: 10})], ['smokeScreen', TX('ui.act3-smoke-screen')], ['magnet', TX('ui.act3-magnet')] /* 2026-10-19 (SK3) */].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
       <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
@@ -11825,6 +11837,7 @@ function readEditorFormIntoCard(){
   const fTestEl = document.getElementById('fTest');
   c.test = fTestEl ? fTestEl.checked : !!c.test;
   { const f = document.querySelector('#editorOverlay [data-rflag]:checked'); c.rarity = rarityComposeOf(document.getElementById('fRarity').value, f ? f.getAttribute('data-rflag') : null); } // CX2 (2026-10-21): rank + flag -> the stored string
+  { const k = document.getElementById('fKind'); if(k){ if(k.value === 'baby') c.kind = 'baby'; else delete c.kind; } } // 2026-11-01 (package UI13, HH1): only Baby is stored
   { const fk = document.getElementById('fCardKind'); if(fk){ const kind = fk.value; // 2026-10-11: Unit / Spell / Equipment
       if(kind === 'spell'){ c.cardType = 'spell'; c.spell = {do: document.getElementById('fSpellDo').value, amount: Math.max(0, Number(document.getElementById('fSpellAmt').value)||0)}; delete c.equip; if(!(c.archetypes||[]).includes('Spell')) c.archetypes = ['Spell'].concat((c.archetypes||[]).filter(a=> a!=='Misc')); }
       else if(kind === 'equipment'){ c.cardType = 'equipment'; delete c.spell; const gk = document.getElementById('fEquipGrant').value, pd = PASSIVE_DEFS.find(p=> p.key===gk);
@@ -31744,27 +31757,60 @@ function rv1ReviewOf(sec, top){
 const RV2_SIDE_CLASS = {mp:'delve', mg:'delve', mz:'challenge', mj:'delve', mq:'challenge', ms:'challenge', mv:'challenge', mn:'delve', my:'delve', mpd:'delve', me:'challenge', mx:'boss', mo:'challenge', mi:'challenge', m9:'delve'}; // docs/balance/theme2-proposal-2026-10-28.json sideClasses
 const RV2_SIDE_UNIQUE = {delve: 3, challenge: 1, ask: 2, boss: 5}; // its rules.uniqueSub (a new location 3, an extra challenge 1, the Volcano Lair 5)
 function rv2IsCarried(e){ return /carried/i.test(String((e && e.why) || '')); }
-function rv2TagsOf(e){
+// 2026-11-01 (package UI13): baby (HH1): a Baby card shows "Baby" instead of Carried / Unique (it counts toward neither number); e.flag "unlikely"
+// (HH7, THEME4's over-limit chosen cards, canonical/map-review.json) adds an "Unlikely" pill whose tooltip is e.flagWhy.
+function rv2TagsOf(e, baby){
   const why = String((e && e.why) || ''), t = [];
   if(/skirmish reward|first-clear/i.test(why)) t.push(['skirmish', TX('ui.rv2-tag-skirmish'), '']);
-  t.push(rv2IsCarried(e) ? ['carried', TX('ui.rv2-tag-carried'), ''] : ['unique', TX('ui.rv2-tag-unique'), '']);
+  if(e && e.flag === 'unlikely') t.push(['unlikely', TX('ui.ui13-tag-unlikely'), String(e.flagWhy || '') || TX('ui.ui13-tip-unlikely')]);
+  t.push(baby ? ['baby', TX('ui.ui13-tag-baby'), TX('ui.ui13-tip-baby')] : rv2IsCarried(e) ? ['carried', TX('ui.rv2-tag-carried'), ''] : ['unique', TX('ui.rv2-tag-unique'), '']);
   if(e.by === 'owner') t.push(['owner', TX('ui.rv2-tag-owner'), TX('ui.rv2-tip-owner')]);
   else if(e.by === 'claude') t.push(['claude', TX('ui.rv2-tag-claude'), TX('ui.rv2-tip-claude')]);
   return t;
 }
 function rv1TilesHTML(list, kind, defs, secKey){
   if(!list.length) return '<span class="panel-sub">–</span>';
+  return list.map(e=> rv1TileHTML(e, kind, defs, secKey)).join('');
+}
+// 2026-11-01 (package UI13): one tile, so a tile can be drawn again on its own (HH3: after the card editor saves). rvTileEntries keeps each
+// tile's review entry ("<list key>|<card id>|<part>") for that redraw. data-rv-baby (HH1) and data-rv-unlikely (HH7) feed rv2Update's counts.
+const rvTileEntries = new Map();
+function ui13IsBaby(id, defs){ const d = (defs || getCardDefs())[id]; return cardKindOf(d) === 'baby'; }
+function ui13EditBtnHTML(id){ return `<button type="button" class="ui13-edit" data-ui13-edit="${escapeAttr(id)}" title="${escapeAttr(TX('ui.ed-edit-card-tip'))}" aria-label="${escapeAttr(TX('ui.ed-edit-card'))}">✏️</button>`; }
+function rv1TileHTML(e, kind, defs, secKey){
+  rvTileEntries.set(secKey + '|' + e.id + '|' + kind, e);
   const mark = kind === 'cut' ? '✂' : ''; // 2026-10-29 (UI3, S6): no "?" on a maybe (its section says it)
-  return list.map(e=>{
-    const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
-    const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
-    const pills = rv2TagsOf(e).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
-    const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
-    return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}">`
-      + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
-      + `<span class="rv2-pills">${pills}</span>`
-      + `<button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button></span>`;
-  }).join('');
+  const btn = kind === 'chosen' ? [TX('ui.rv1-act-cut'), 'cut'] : [TX('ui.rv1-act-keep'), 'keep'];
+  const dd = defs[e.id], pt = dd ? basicPackTierOf(dd) : 0; // the pack a basic pack also gives it from, as a pill (was a tag under the small tile)
+  const baby = ui13IsBaby(e.id, defs), unlikely = e.flag === 'unlikely';
+  const pills = rv2TagsOf(e, baby).map(([k, txt, tip])=> `<b class="rv2-pill is-${k}"${tip ? ` title="${escapeAttr(tip)}"` : ''}>${escapeHtml(txt)}</b>`).join('') + (pt && !(!adminModeEnabled && isCardHiddenForPlayer(dd)) ? `<b class="rv2-pill is-pack" title="${escapeAttr(packTierName(pt) || TX('ui.rw5-where-pack-later'))}">📦 ${escapeHtml(TX('ui.pk1-in-pack', {n: pt}))}</b>` : '');
+  const fl = !!rvFlips[rvFlipTop + '|' + secKey + '|' + e.id]; // 2026-10-29 (UI3, S10): a toggle made earlier this session is still on
+  return `<span class="rv1-tile is-${kind}${fl ? ' is-flipped' : ''}${baby ? ' is-baby' : ''}${unlikely ? ' is-unlikely' : ''}" data-rv-id="${escapeAttr(e.id)}" data-rv-sec="${escapeAttr(secKey)}" data-rv-kind="${kind}" data-rv-carried="${rv2IsCarried(e) ? 1 : 0}" data-rv-baby="${baby ? 1 : 0}" data-rv-unlikely="${unlikely ? 1 : 0}">`
+    + (mark ? `<i class="rv1-mark" aria-hidden="true">${mark}</i>` : '') + vis4MapCardTilesHTML([e.id], defs, {packs: true, large: true, why: e.why || ''})
+    + `<span class="rv2-pills">${pills}</span>`
+    + `<span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="${btn[1]}" aria-pressed="${fl ? 'true' : 'false'}">${escapeHtml(fl ? TX('ui.rv1-undo') : btn[0])}</button>${adminModeEnabled ? ui13EditBtnHTML(e.id) : ''}</span></span>`;
+}
+// 2026-11-01 (package UI13, HH1; owner: "the Map cards view shows them (today eggs and hatchlings are missing there)"). Why they were missing:
+// the gallery draws the map's lists (canonical/map-pools.json, read through map-review.json), and no egg card is on any list: an egg is a Nest
+// card (source.kind "nest") that a fight drops (rollEggDrop: 2% a skirmish's first clear ... 20% a world boss), its kind following the fight's
+// deck (eggKindForNode). So the eggs a map can give never had a place there. The Baby cards on the lists (the hatchlings, Duckling, Compost
+// Grub ...) were drawn, but counted as new or carried cards. Now: a "Baby cards" panel lists the egg cards this map's own fights can drop (each
+// with the fights and the first-clear chance), and the lists' Baby cards carry a Baby pill and stay out of the X/N, Y/M numbers.
+function ui13MapEggs(mapId){
+  const m = mpMapById(mapId); if(!m) return [];
+  const by = {};
+  (m.nodes || []).forEach(n=>{ if(!n || n.kind === 'tutorial' || !n.deck || n.virtual) return; let kind = 'woodland'; try{ kind = eggKindForNode(n); }catch(e){}
+    const id = 'egg-' + (EGG_KINDS[kind] ? kind : 'woodland'), p = (()=>{ try{ return eggChanceFor(n, mapId, true); }catch(e){ return 0; } })(); if(!(p > 0)) return;
+    (by[id] = by[id] || {id, nodes: [], best: 0}).nodes.push(n.key); by[id].best = Math.max(by[id].best, p); });
+  try{ if(mapId === mapIdAt(1)){ const n = (m.nodes || []).find(x=> x.key === EGG_MAP1_NODE); if(n && n.deck){ const id = 'egg-' + eggKindForNode(n); if(by[id]) by[id].sure = true; else by[id] = {id, nodes: [n.key], best: 1, sure: true}; } } }catch(e){} // Map 1's one guaranteed egg
+  return Object.values(by);
+}
+function ui13BabyPanelHTML(mapId, defs){
+  const eggs = ui13MapEggs(mapId).filter(x=> defs[x.id]);
+  const pct = p=> (Math.round(p * 1000) / 10) + '%';
+  const tiles = eggs.map(x=>{ const why = TX('ui.ui13-egg-why', {fights: x.nodes.join(', '), p: pct(x.best)}) + (x.sure ? ' ' + TX('ui.ui13-egg-sure', {node: EGG_MAP1_NODE}) : '');
+    return `<span class="rv1-tile is-egg is-baby" data-rv-id="${escapeAttr(x.id)}" data-rv-sec="baby" data-rv-kind="egg" data-rv-baby="1">${vis4MapCardTilesHTML([x.id], defs, {large: true, why})}<span class="rv2-pills"><b class="rv2-pill is-baby" title="${escapeAttr(TX('ui.ui13-tip-baby'))}">${escapeHtml(TX('ui.ui13-tag-baby'))}</b><b class="rv2-pill is-egg" title="${escapeAttr(why)}">🥚 ${escapeHtml(TX('ui.ui13-tag-egg'))}</b></span>${adminModeEnabled ? `<span class="ui13-acts">${ui13EditBtnHTML(x.id)}</span>` : ''}</span>`; }).join('');
+  return `<section class="pk1-mc-sec rv2-panel ui13-baby-sec" data-ui13-baby="1"><h3>🍼 ${escapeHtml(TX('ui.ui13-baby-title'))} <small>${eggs.length}</small></h3><p class="panel-sub">${escapeHtml(TX('ui.ui13-baby-sub'))}</p><div class="vis4-mc-row rv1-row">${tiles || '<span class="panel-sub">–</span>'}</div></section>`;
 }
 // N / M per list (owner 10-29 19:14): the map's own cards 8-11 (N = the list's current unique count when it is in range, else the cap 11) and carried 4-5
 // (same rule, cap 5; M = 0, no carried part, for a map nothing is carried to); a submap by its class (RV2_SIDE_UNIQUE) and carried 10+ (M = 10, or
@@ -31781,9 +31827,12 @@ function rv2CountText(x, y, tg){
 }
 function rv2Update(ov){
   ov.querySelectorAll('.pk1-mc-sec.has-rv1').forEach(sec=>{
-    let x = 0, y = 0;
-    sec.querySelectorAll('.rv1-tile').forEach(t=>{ const want = t.dataset.rvKind === 'chosen' ? !t.classList.contains('is-flipped') : t.classList.contains('is-flipped'); if(!want) return; if(t.dataset.rvCarried === '1') y++; else x++; });
-    const tg = sec.dataset.rvN ? {n: +sec.dataset.rvN, m: +sec.dataset.rvM} : null, txt = rv2CountText(x, y, tg);
+    // 2026-11-01 (package UI13): Baby cards count toward neither number (HH1); a second count leaves the Unlikely cards out (HH7)
+    let x = 0, y = 0, xu = 0, yu = 0, un = 0;
+    sec.querySelectorAll('.rv1-tile').forEach(t=>{ if(t.dataset.rvKind === 'added' || t.dataset.rvKind === 'egg' || t.dataset.rvBaby === '1') return;
+      const want = t.dataset.rvKind === 'chosen' ? !t.classList.contains('is-flipped') : t.classList.contains('is-flipped'); if(!want) return;
+      const c = t.dataset.rvCarried === '1'; if(c) y++; else x++; if(t.dataset.rvUnlikely === '1'){ un++; return; } if(c) yu++; else xu++; });
+    const tg = sec.dataset.rvN ? {n: +sec.dataset.rvN, m: +sec.dataset.rvM} : null, txt = rv2CountText(x, y, tg) + (un ? ' · ' + TX('ui.ui13-count-wo-unlikely', {counts: rv2CountText(xu, yu, tg)}) : '');
     ov.querySelectorAll(`[data-rv2-count="${sec.dataset.rvI}"] .rv2-ct`).forEach(el=>{ el.textContent = txt; });
   });
 }
@@ -31803,7 +31852,7 @@ function rvSpecialAddSave(){ try{ localStorage.setItem(RV_SPECIAL_ADD_KEY, JSON.
 function rvAddedOf(top){ const a = rvSpecialAdd[top]; return Array.isArray(a) ? a.filter(x=> typeof x === 'string') : []; }
 function rvAddedPartHTML(top, defs){
   const ids = rvAddedOf(top).filter(id=> defs[id]);
-  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button></span>`).join('');
+  const tiles = ids.map(id=> `<span class="rv1-tile is-added" data-rv-id="${escapeAttr(id)}" data-rv-sec="special" data-rv-kind="added">${vis4MapCardTilesHTML([id], defs, {packs: true, large: true})}<span class="rv2-pills"><b class="rv2-pill is-owner">${escapeHtml(TX('ui.ff9-added-pill'))}</b></span><span class="ui13-acts"><button type="button" class="rv1-act" data-rv-act="remove-added">${escapeHtml(TX('ui.ff9-remove'))}</button>${adminModeEnabled ? ui13EditBtnHTML(id) /* 2026-11-01 (UI13, HH3) */ : ''}</span></span>`).join('');
   return `<div class="rv1-part is-added" data-rv-added-part${ids.length ? '' : ' hidden'}><h4>${escapeHtml(TX('ui.ff9-added-title'))} <small>${ids.length}</small></h4><div class="vis4-mc-row rv1-row">${tiles}</div></div>`;
 }
 function rv3ExportAll(){
@@ -31871,6 +31920,23 @@ function rv1PicksText(ov){
   });
   return out.join('\n');
 }
+// 2026-11-01 (package UI13, HH3; owner 11-01: "edit a card from the Map cards view"): ✏️ on a gallery tile (admins) opens the existing card editor
+// (edOpenCardEditor: the gallery hides meanwhile and comes back on close); a Save goes through the editor's own save path (onSaveEditor ->
+// saveCard). On close the tile is drawn again from the fresh card (its face, its Baby pill) and the counts follow; the picks are untouched.
+function ui13EditFromGallery(ov, tile){
+  if(!tile || !adminModeEnabled) return; const id = tile.dataset.rvId; if(!id) return;
+  const box = ov.querySelector('.pk1-mc-modal'), keep = box ? box.scrollTop : 0;
+  edOpenCardEditor(id, ov, ()=>{ try{ ui13RefreshTile(ov, tile); }catch(e){} if(box) box.scrollTop = keep; });
+}
+function ui13RefreshTile(ov, tile){
+  if(!tile || !tile.isConnected) return;
+  const defs = getCardDefs(), id = tile.dataset.rvId, sec = tile.dataset.rvSec, kind = tile.dataset.rvKind, tmp = document.createElement('div');
+  let fresh = null;
+  if(kind === 'egg' || kind === 'added'){ const card = tile.querySelector('.vis4-mc-card'), why = card ? card.getAttribute('data-zoom-why') || '' : ''; if(!card || !defs[id]) return;
+    tmp.innerHTML = vis4MapCardTilesHTML([id], defs, kind === 'egg' ? {large: true, why} : {packs: true, large: true}); fresh = tmp.firstElementChild; card.replaceWith(fresh); }
+  else { const e = rvTileEntries.get(sec + '|' + id + '|' + kind); if(!e || !defs[id]) return; tmp.innerHTML = rv1TileHTML(e, kind, defs, sec); fresh = tmp.firstElementChild; tile.replaceWith(fresh); }
+  rv2Update(ov); try{ if(fresh) wireRewardZoom(fresh.matches('[data-zoom]') ? fresh.parentNode : fresh); }catch(e){} // only the new tile (a second wiring of the rest would double their listeners)
+}
 function pk1OpenMapCards(mapId){
   const top = mpTopOf(mapId), m = mpMapById(mapId) || mpMapById(top); if(!m) return; // 2026-10-29 (package UI3, S4): a submap's fight is labelled by the submap itself
   let ov = document.getElementById('pk1MapCardsOverlay');
@@ -31888,19 +31954,21 @@ function pk1OpenMapCards(mapId){
     // 2026-10-29 (package REVIEW2): each list is a panel of its own; Chosen, Maybe, Cut cards in that order, each a boxed part
     const part = (kind, label, list)=>{ const l = (list || []).filter(e=> e && ok(e.id)); return `<div class="rv1-part is-${kind}"><h4>${escapeHtml(label)} <small>${l.length}</small></h4><div class="vis4-mc-row rv1-row">${rv1TilesHTML(l, kind, defs, s.key)}</div></div>`; };
     const chosen = (rv.chosen || []).filter(e=> e && ok(e.id)), all = chosen.concat((rv.cut || []).filter(e=> e && ok(e.id)), (rv.maybe || []).filter(e=> e && ok(e.id)));
-    const tg = rv2TargetsOf(s, top, chosen, all);
+    const nb = e=> !ui13IsBaby(e.id, defs); // 2026-11-01 (package UI13, HH1): Baby cards are left out of the N / M targets too
+    const tg = rv2TargetsOf(s, top, chosen.filter(nb), all.filter(nb));
     bars.push(`<span class="rv2-cl" data-rv2-count="${si}"><b>${escapeHtml(s.label)}</b> <span class="rv2-ct"></span></span>`);
     return `<section class="pk1-mc-sec has-rv1 rv2-panel"${s.key === 'special' ? ' data-rv-special="1"' : ''} data-rv-i="${si}"${tg ? ` data-rv-n="${tg.n}" data-rv-m="${tg.m}"` : ''} data-rv-label="${escapeAttr(mapLabel + ' / ' + s.label)}"><h3>${escapeHtml(s.label)}</h3>${part('chosen', TX('ui.rv1-chosen'), rv.chosen)}${part('maybe', TX('ui.rv1-maybe'), rv.maybe)}${part('cut', TX('ui.rv1-cut'), rv.cut)}${s.key === 'special' ? rvAddedPartHTML(top, defs) : ''}</section>`;
-  }).join('');
+  }).join('') + (adminModeEnabled ? ui13BabyPanelHTML(mapId, defs) : ''); // 2026-11-01 (package UI13, HH1): the eggs this map's fights drop
   const anyRv = /has-rv1/.test(secs) || /data-rv-special/.test(secs);
   ov.innerHTML = `<div class="modal pk1-mc-modal" role="dialog" aria-modal="true" aria-labelledby="pk1McTitle"><div class="modal-head-row"><h2 id="pk1McTitle">${escapeHtml(TX('ui.pk1-map-cards-title', {name: mapLabel}))}</h2><button type="button" class="modal-close-btn" id="pk1McClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">${escapeHtml(TX('ui.pk1-map-cards-sub'))}</p>${anyRv ? `<div class="rv1-bar"><span class="rv2-copy"><button type="button" class="btn small" id="rv1Copy" aria-describedby="rv2CopyTip">${escapeHtml(TX('ui.rv1-copy'))}</button><span class="rv2-tip" id="rv2CopyTip" role="tooltip">${escapeHtml(TX('ui.rv2-copy-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="rv3ExportAll" aria-describedby="rv3ExportTip">${escapeHtml(TX('ui.ui3-export-all'))}</button><span class="rv2-tip" id="rv3ExportTip" role="tooltip">${escapeHtml(TX('ui.ui3-export-all-tip'))}</span></span><span class="rv2-copy"><button type="button" class="btn small" id="ff9AddSpecial" aria-describedby="ff9AddTip">${escapeHtml(TX('ui.ff9-add-special'))}</button><span class="rv2-tip" id="ff9AddTip" role="tooltip">${escapeHtml(TX('ui.ff9-add-special-tip'))}</span></span><span class="rv2-counts">${bars.join('')}</span><span class="panel-sub" id="rv1CopyMsg" role="status"></span><span class="rv3-dl" id="rv3Dl"></span></div>` : ''}<div class="vis4-map-cards pk1-mc-body">${secs}</div></div>`;
   ov.hidden = false;
   const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey); };
-  const onKey = e=>{ if(e.key === 'Escape') close(); };
+  const onKey = e=>{ if(e.key === 'Escape' && !ov.hidden) close(); }; // 2026-11-01 (UI13, HH3): not while the card editor has it hidden
   document.addEventListener('keydown', onKey);
   ov.onclick = e=>{
     if(e.target === ov) return close();
+    const ed = e.target.closest && e.target.closest('[data-ui13-edit]'); if(ed){ e.stopPropagation(); ui13EditFromGallery(ov, ed.closest('.rv1-tile')); return; } // 2026-11-01 (UI13, HH3)
     const b = e.target.closest && e.target.closest('.rv1-act'); if(!b) return;
     if(b.dataset.rvAct === 'remove-added'){ ff9RemoveAdded(ov, top, b.closest('.rv1-tile').dataset.rvId); return; } // 2026-10-31 (UI11, FF9)
     const t = b.closest('.rv1-tile'), on = t.classList.toggle('is-flipped'); { const k = top + '|' + t.dataset.rvSec + '|' + t.dataset.rvId; if(on) rvFlips[k] = true; else delete rvFlips[k]; rvFlipsSave(); } b.setAttribute('aria-pressed', on ? 'true' : 'false');
@@ -60278,6 +60346,49 @@ function mountCaveFires(canvas, map){
     if(done) lit.add(sp.key + '@' + sp.x.toFixed(1));
   });
   caveFiresSeen[map.id] = lit;
+  try{ ui13MountTorch(canvas, map); }catch(e){} // 2026-11-01 (package UI13, HH4)
+}
+// 2026-11-01 (package UI13, HH4; owner 11-01: "Torch, common equipment: the equipped creature gets Illuminated. Found on Caves & Alcoves by clicking
+// an interactable that only becomes clickable once a firepit lights it up"): beside Caves & Alcoves' lowest fire pit (caveFireSpots, the same seeded
+// spot mountCaveFires draws) a torch bracket waits in the dark. While that pit is cold (its fight not cleared) the bracket is disabled and unlit;
+// once the pit burns, a tap takes the Torch card (unlockCardForPlayer, source "secret": canonical/cards.json torch, source {kind: secret, id: m4}),
+// once per save (dialogue flag "torch:m4", which rides in the cloud progress blob). A pit put out by a tap (MAPFX1) darkens it again until relit.
+// Taken: an empty bracket that says so. The engine already reads an equipment grant (equip.grant {illuminate: true}) through deriveDef.
+const UI13_TORCH = {map: 'm4', card: 'torch', flag: 'torch:m4'};
+function ui13TorchTaken(){ try{ return !!loadDialogueFlags()[UI13_TORCH.flag]; }catch(e){ return false; } }
+function ui13MountTorch(canvas, map){
+  canvas.querySelectorAll(':scope > .ui13-torch').forEach(e=> e.remove());
+  if(!map || map.id !== UI13_TORCH.map || !getCardDefs()[UI13_TORCH.card]) return;
+  // the pit lowest on the map (the seeded spots never move, so neither does it): the top strip sits under the map's name card
+  const pits = [...canvas.querySelectorAll(':scope > .cave-fire')].filter(f=> isFinite(parseFloat(f.style.top))), pit = pits.sort((a, b)=> parseFloat(b.style.top) - parseFloat(a.style.top))[0]; if(!pit) return;
+  const x = parseFloat(pit.style.left), y = parseFloat(pit.style.top); if(!isFinite(x) || !isFinite(y)) return;
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'ui13-torch'; // a button: the map's decor taps (MAPFX1) leave it alone; no data-lkey, so the layout and link editors don't take it for a map tile
+  b.style.left = Math.max(3, Math.min(97, x + (x > 90 ? -3.2 : 3.2))).toFixed(2) + '%'; b.style.top = Math.max(6, y - 2.4).toFixed(2) + '%';
+  b.dataset.pitNode = pit.dataset.fireNode || ''; // the fight whose clear lights it
+  b.innerHTML = '<i class="ut-bracket" aria-hidden="true"></i><i class="ut-stick" aria-hidden="true">🔥</i>';
+  canvas.appendChild(b);
+  const sync = ()=>{
+    if(!b.isConnected) return;
+    const taken = ui13TorchTaken(), litNow = pit.classList.contains('is-lit') && !pit.classList.contains('is-out');
+    b.classList.toggle('is-taken', taken); b.classList.toggle('is-lit', litNow && !taken);
+    b.disabled = !litNow && !taken;
+    const tip = taken ? TX('map.ui13-torch-taken') : litNow ? TX('map.ui13-torch-tip') : TX('map.ui13-torch-dark');
+    b.title = tip; b.setAttribute('aria-label', tip);
+  };
+  sync();
+  try{ new MutationObserver(sync).observe(pit, {attributes: true, attributeFilter: ['class']}); }catch(e){} // the pit igniting (a first visit after the clear) or a tap putting it out
+  b.addEventListener('click', e=>{
+    e.stopPropagation(); sync(); if(b.disabled) return;
+    if(!mapTapGate(b, 1600)) return;
+    if(ui13TorchTaken()){ showSpeechBubble(b, TX('map.ui13-torch-taken')); return; }
+    if(!(pit.classList.contains('is-lit') && !pit.classList.contains('is-out'))) return;
+    setDialogueFlag(UI13_TORCH.flag, true);
+    try{ unlockCardForPlayer(UI13_TORCH.card, 'secret'); }catch(err){}
+    try{ invalidateCardDefs(); }catch(err){}
+    try{ SoundKit.fireIgnite && SoundKit.fireIgnite(); SoundKit.unlock && SoundKit.unlock(); }catch(err){}
+    try{ showToast(TX('toast.ui13-torch-got', {name: (getCardDefs()[UI13_TORCH.card] || {}).name || 'Torch'}), 'ok'); }catch(err){}
+    sync();
+  });
 }
 function showMapVeil(host, map, layer){
   if(!host || !map) return;

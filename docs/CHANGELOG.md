@@ -3,6 +3,12 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 
+## 2026-11-01 Package UI13 (owner HH1, HH3, HH4, HH7; not yet released)
+- **HH4 (Torch):** a new common equipment card, Torch (numericId 9183, `awaitingSource` until it has art): the equipped creature gets Illuminate (the existing keyword, through `equip.grant`; no engine change). On Caves & Alcoves a torch bracket hangs beside the lowest fire pit: disabled and dark while the pit is cold, clickable once the pit's fight is cleared and it burns (a pit put out by a tap disables it again); a click gives the Torch once per save (dialogue flag `torch:m4`, in the cloud progress blob).
+- **HH1 (card kind):** `kind: "baby"` on the 21 BABY cards (tools/theme4/plan_2026_11_01.py); Faction (a card with a faction) and Base (the rest) are worked out, not stored. The card detail shows the kind as a chip beside the rarity; the card editor has a Kind field (Base or Faction by the card's faction, or Baby). Map cards gallery: Baby cards show a Baby pill instead of Unique / Carried and count toward neither "X/N new, Y/M carried" number (nor the N / M targets). Why eggs were missing: no egg card is on any map list (eggs are Nest cards a fight drops, their kind following the fight's deck), so a new "Baby cards: eggs from these fights" panel lists the egg cards the map's own fights drop, with the fights and the first-clear chance.
+- **HH7:** chosen entries flagged `unlikely` in canonical/map-review.json show an "Unlikely" pill (tooltip: its `flagWhy`, dashed red outline); the count line adds "without Unlikely: X/N new, Y/M carried" while any Unlikely card is in.
+- **HH3:** each gallery tile (admins) has a ✏️ beside Cut / Keep that opens the existing card editor (the gallery steps aside); Save goes through the editor's own save path, and on close the tile is drawn again (face, pills) and the counts follow.
+- Tests: tests/ui13-2026-11-01.js (in run-all.sh), browser tests/e2e/ui13_2026_11_01.py (1366 and 390). tests/ui3-2026-10-29.js reads the tile from the new rv1TileHTML.
 ## 2026-11-01 THEME4: the owner's map card picks folded
 - Map lists (canonical/map-pools.json) follow the owner's Map cards export, worked from Map 0 up; Claude's carried fills and 15 "Unlikely" flags in canonical/map-review.json (tools/theme4/). Dolphin Knight joins Pebble Beach. Cards on no list lost / gained their out-of-play flag (LISTFIX1 script); card-obtain-maps.json regenerated.
 ## 2026-10-31 Package UI12 (owner GG1-GG6, GG8, GG10; not yet released)
