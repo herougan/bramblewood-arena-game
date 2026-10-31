@@ -4,6 +4,14 @@
 
 Every document in `docs/` is read in the master hub's 📖 Library tab (owner, 10-23 00:10, item 71: everything within the master hub). It shows the canonical docs and the still-relevant reference docs in full, with each file's path and last-changed date, and keeps the dated snapshots in a collapsed History group that opens on demand. Docs that already have a tab (this list, the Changelog, Decisions, the Progression plan, the Design sheets, Claude's guide) are linked to their tab, not repeated. The files stay on disk because agents and tools read them; the hub is where the owner reads them, and its search covers all of them.
 
+## 10-31 15:39: the owner's notes
+- BB1 (UI9): the Nest page gets the nav button back to the conquest map.
+- BB2 (UI9): the trap. After laying it, its context pips go away. Its animation (red circles circling and diving into the middle) drops to 50% opacity, plus inward-falling rosso rectangles that fade in over the first 20% of their fall; the coordinator synthesises a "this is a trap" look from these (snapping jaws / closing frame). The "<trap emoji> <number>" label over the slot sits at 80%+ transparency, 92% on slot hover.
+- BB3 (UI9): a card played onto a trap shows a hit: either hooked slightly down into the ground, or launched up and turned slightly (discombobulated), then back into place.
+- BB4 (ENG15): Swarm <Type>: Swarm shares only with the named type (ant, bee, termite ...); plain Swarm (no type) still means "shares a type". The owner re-tags the swarm cards himself.
+- BB5 (owner): step 3 pass: the owner picks each map's cards and may also re-configure cards, then exports (Map cards > Export all) and pastes here. Step 4 (deck optimising) uses his new card definitions; balance is measured only after that.
+- BB6 (PERF2, proposed): images and load. Today: art lives in the GitHub repo (assets/ 34 MB, card art 13 MB, 718 files) and Vercel serves it from its CDN; a deploy re-uploads only changed files, but the assets have no long cache header, so browsers re-check them; index.html is 14.5 MB and re-downloads on every release. Plan: immutable cache headers for the ?v=-hashed assets, split index.html so data and language packs load separately, and load art on demand (eager: the current and last map, the main deck, the raid when the player holds tickets; the rest on deck change or on entering another map's fight).
+
 ## 10-31 14:24: the owner's notes
 - AA1 (UI8): the bramble's health bar: remove the blue electricity line once the Shield is gone. Shield layers (L1, L2 ...) and Health ease into their new size, not jump: 0.25 s; 0.4 s for 5+ damage; 0.7 s for 10+.
 - AA2 (UI8): the fight intro (VS screen, SS 14-A-5 boss): the right side is messy (status pill, HP / Armour line, leader pill, Smart CPU pill, BR box, quote stacked with uneven gaps). Tidy into one aligned column matching the left side.
